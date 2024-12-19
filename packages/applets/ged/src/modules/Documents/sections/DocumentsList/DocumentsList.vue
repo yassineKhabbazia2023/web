@@ -15,15 +15,15 @@
       @row-click="selectRow"
       @selection-change="handleSelectionChange"
     >
-      <!-- That is the current way of adding paddings without overriding styleguide -->
-      <PTableColumn width="32" label="" />
+      <!-- Align selection column and header -->
+      <PTableColumn width="1" label="" />
 
       <PTableColumn type="selection" />
       <PTableColumn
         v-for="(column, index) in documentsListWithTableStructure.documentHeaders"
         :key="index"
         :label="column.columnName"
-        :minWidth="columnSizes[column.columnName]"
+        :width="columnSizes[column.columnName]"
         :sortable="sortableColumns.includes(column.columnName)"
       >
         <template #default="scope">
@@ -38,9 +38,6 @@
           />
         </template>
       </PTableColumn>
-
-      <!-- That is the current way of adding paddings without overriding styleguide -->
-      <PTableColumn width="40" label="" />
     </PTable>
 
     <div class="blur-fade" />
@@ -88,7 +85,6 @@ const documentsListTable = ref<InstanceType<typeof ElTable>>()
 const selectedDocuments = ref<DocumentsListProps['documentsListWithTableStructure']['documentsPage']['items']>([])
 const sortableColumns = ['Nom du document', 'Déposé le']
 const columnSizes: Record<string, number> = {
-  'Nom du document': 590,
   '': 199,
   'Déposé le': 199,
   Statut: 199,

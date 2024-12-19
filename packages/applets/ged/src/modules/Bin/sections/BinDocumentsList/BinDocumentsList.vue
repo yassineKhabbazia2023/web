@@ -8,16 +8,13 @@
       pStripe
       @sort-change="handleSortChange"
     >
-      <!-- That is the current way of adding paddings without overriding styleguide -->
-      <PTableColumn width="22" label="" />
-
       <PTableColumn
         v-for="(
           column, index
         ) in binDocuments.documentHeaders"
         :key="index"
         :label="column.columnName"
-        :minWidth="columnSizes[column.columnName]"
+        :width="columnSizes[column.columnName]"
         :sortable="sortableColumns.includes(column.columnName)"
       >
         <template #default="scope">
@@ -29,9 +26,6 @@
           />
         </template>
       </PTableColumn>
-
-      <!-- That is the current way of adding paddings without overriding styleguide -->
-      <PTableColumn width="24" label="" />
     </PTable>
 
     <div class="blur-fade" />
@@ -56,7 +50,6 @@ const sortableColumns = ['Nom du document', 'Supprimé le']
 // Column size calculation is a current topic we're discusing
 // Meanwhile, it is done here in a raw manner
 const columnSizes: Record<string, number> = {
-  'Nom du document': 770,
   'Supprimé le': 160,
   '': 72,
 }
