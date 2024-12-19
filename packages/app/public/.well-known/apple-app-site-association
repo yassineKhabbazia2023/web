@@ -3,12 +3,8 @@
         "apps": [],
         "details": [
             {
-                "appID": "EFN6XUH87W.fr.kpmg.mes.collab",
-                "paths": [ "*", "/uni/*" ]
-            },
-            {
-                "appID": "5HJ75TPDDB.fr.kpmg.mes",
-                "paths": [ "*", "/uni/*" ]
+                "appID": "J8GPHW3KRU.fr.rydge.app",
+                "paths": [ "*", "*/*" ]
             }
         ]
     }
