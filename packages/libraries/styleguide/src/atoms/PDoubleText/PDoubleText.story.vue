@@ -4,27 +4,44 @@
     icon="fluent:button-16-regular"
     :layout="{ type: 'grid', width: '350px' }"
   >
-    <Variant title="Basic Usage" :source="source">
+    <Variant title="Basic Usage">
       <PDoubleText
-        :pIcon="PIFiletypePdf"
-        :pProfile="PDoubleTextBasicData.profile"
-        :pTitle="PDoubleTextBasicData.title"
-        :pContent="PDoubleTextBasicData.content"
-        :pType="PDoubleTextBasicData.type"
-        :pDisabled="PDoubleTextBasicData.disabled"
-        :pSelected="PDoubleTextBasicData.selected"
+        :pIconName="pIconName"
+        :pProfile="pProfile"
+        :pTitle="pTitle"
+        :pContent="pContent"
+        :pIconColor="pIconColor"
+        :pIconType="pIconType"
+        :pType="pType"
+        :pSelected="pSelected"
+        :pDisabled="pDisabled"
+        :pBold="pBold"
       />
       <template #controls>
+        <HstText v-model="pIconName" title="pIconName" />
+        <HstText v-model="pProfile" title="pProfile" />
+        <HstText v-model="pTitle" title="pTitle" />
+        <HstText v-model="pContent" title="pContent" />
+
         <hstSelect
-          v-model="PDoubleTextBasicData.type"
-          title="Type"
-          :options="typeOptions"
+          v-model="pIconColor"
+          title="pIconColor"
+          :options="pIconColors"
         />
-        <HstText v-model="PDoubleTextBasicData.profile" title="Profile" />
-        <HstText v-model="PDoubleTextBasicData.title" title="Title" />
-        <HstText v-model="PDoubleTextBasicData.content" title="Content" />
-        <HstCheckbox v-model="PDoubleTextBasicData.disabled" title="Disabled" />
-        <HstCheckbox v-model="PDoubleTextBasicData.selected" title="Selected" />
+        <HstSelect
+          v-model="pIconType"
+          title="pIconType"
+          :options="pIconTypes"
+        />
+        <HstSelect
+          v-model="pType"
+          title="pType"
+          :options="pTypes"
+        />
+
+        <HstCheckbox v-model="pDisabled" title="pDisabled" />
+        <HstCheckbox v-model="pSelected" title="pSelected" />
+        <HstCheckbox v-model="pBold" title="pBold" />
       </template>
     </Variant>
   </Story>
@@ -32,33 +49,47 @@
 
 <script setup lang="ts">
 import PDoubleText from '.'
-import { reactive } from 'vue'
-import { PIFiletypePdf } from '../PIcon/components'
-const type = 'primary' as 'primary' | 'secondary'
+import { ref } from 'vue'
+import type { PDoubleTextProps } from './PDoubleTextTypes'
 
-const PDoubleTextBasicData = reactive({
-  icon: PIFiletypePdf,
-  profile: 'FL',
-  title: 'Cell title',
-  content: 'Cell subtitle',
-  type,
-  disabled: false,
-  selected: false,
-})
+const pIconName = ref<PDoubleTextProps['pIconName']>('filetypePdf')
+const pProfile = ref<PDoubleTextProps['pProfile']>('FL')
+const pTitle = ref<PDoubleTextProps['pTitle']>('Cell title')
+const pContent = ref<PDoubleTextProps['pContent']>('Cell subtitle')
+const pIconColor = ref<PDoubleTextProps['pIconColor']>()
+const pIconType = ref<PDoubleTextProps['pIconType']>('small')
+const pType = ref<PDoubleTextProps['pType']>('primary')
+const pSelected = ref<PDoubleTextProps['pSelected']>(false)
+const pDisabled = ref<PDoubleTextProps['pDisabled']>(false)
+const pBold = ref<PDoubleTextProps['pBold']>(false)
 
-const typeOptions = ['primary', 'secondary']
+const pTypes = [
+  'primary',
+  'secondary',
+]
 
-const source = `
-import { PDoubleText } from '@pulse/styleguide/components'
+const pIconColors: PDoubleTextProps['pIconColor'][] = [
+  'persian-gradient',
+  'orange',
+  'persian',
+  'cyan',
+  'amethyste',
+  'teal',
+  'green',
+  'fuschia',
+  'gray',
+  'white',
+  'bordered-persian',
+  'blue-pulse',
+]
 
-<PDoubleText
-  :title="Consectetur adpiscipiline'",
-  :content="'Lorem ipsum dolor sit amet, consectetur adpiscipiline'"
-  :type="'primary'"
-  :disabled:= "false"
-  :selected:= "false"
-/>
-`
+const pIconTypes: PDoubleTextProps['pIconType'][] = [
+  'default',
+  'small',
+  'large',
+  'xsmall',
+  'xlarge',
+]
 </script>
 
 <docs lang="md">

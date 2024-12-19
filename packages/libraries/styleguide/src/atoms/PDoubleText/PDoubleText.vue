@@ -5,8 +5,16 @@
     :disabled="pDisabled"
     :selected="pSelected"
   >
-    <div v-if="pIcon" class="p-double-text__icon">
-      <PIcon :size="16">
+    <div v-if="pIconName || pIcon" class="p-double-text__icon">
+      <PIcon
+        v-if="pIconName"
+        :size="16"
+        :pName="pIconName"
+      />
+      <PIcon
+        v-else
+        :size="16"
+      >
         <component :is="pIcon" />
       </PIcon>
     </div>
@@ -44,7 +52,6 @@ import PIcon from '../../atoms/PIcon'
 import type { PDoubleTextProps } from './PDoubleTextTypes'
 
 withDefaults(defineProps<PDoubleTextProps>(), {
-  pIcon: undefined,
   pIconShape: 'circle',
   pIconColor: 'persian-gradient',
   pBold: false,
