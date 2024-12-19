@@ -81,6 +81,7 @@
         v-if="documents && documents.documentsPage.items.length > 0 && !isSearchLoading"
         v-model:p-current-page="currentPage"
         v-model:p-page-size="currentPageSize"
+        class="margin-x--6"
         :pTotal="documents.documentsPage.totalItems"
         pShowTotalPageCounter
         :pPageSizes="pagesRanges"

@@ -15,6 +15,7 @@
       v-if="binDocuments && binDocuments.documentsPage.items.length > 0"
       v-model:p-current-page="currentPage"
       v-model:p-page-size="currentPageSize"
+      class="margin-x--6"
       :pTotal="binDocuments.documentsPage.totalItems"
       pShowTotalPageCounter
       :pPageSizes="pagesRanges"
