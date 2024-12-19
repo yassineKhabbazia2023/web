@@ -62,13 +62,15 @@ vi.mock('./FolderHelper', () => {
 })
 
 const mockRouterPush = vi.fn()
-let useRouteResponse = {}
+const useRouteSpy = vi.hoisted(() => vi.fn(() => ({
+  name: 'wallet',
+})))
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush,
   }),
-  useRoute: () => useRouteResponse,
+  useRoute: useRouteSpy,
 }))
 
 const createWrapper = () =>
@@ -88,7 +90,6 @@ describe('folder', () => {
 
   beforeEach(async () => {
     vi.useFakeTimers()
-    useRouteResponse = {}
     spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
 
     wrapper = createWrapper()
@@ -97,7 +98,7 @@ describe('folder', () => {
 
   describe('display', () => {
     it('displays the home page if route equal to folder', async () => {
-      useRouteResponse = { name: 'folder' }
+      useRouteSpy.mockReturnValueOnce({ name: 'folder' })
       wrapper = createWrapper()
 
       await flushPromises()
