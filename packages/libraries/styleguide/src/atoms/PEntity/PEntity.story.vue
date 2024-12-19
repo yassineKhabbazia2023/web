@@ -9,7 +9,7 @@
         :pContent="PTextBasicData.pContent"
         :pType="PTextBasicData.type"
         :pSelected="PTextBasicData.selected"
-        :pIcon="PIPulse"
+        pIconName="pulse"
       />
       <template #controls>
         <hstSelect
@@ -27,7 +27,6 @@
 <script setup lang="ts">
 import PEntity from '.'
 import { reactive } from 'vue'
-import { PIPulse } from '../PIcon/components'
 
 const type = 'primary' as 'primary' | 'secondary'
 

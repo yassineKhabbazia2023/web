@@ -10,7 +10,11 @@
         :pType="pIconType"
         :pColor="pIconColor"
       >
-        <PIcon v-if="pIcon">
+        <PIcon
+          v-if="pIconName"
+          :pName="pIconName"
+        />
+        <PIcon v-else-if="pIcon">
           <component :is="pIcon" />
         </PIcon>
       </PAvatar>
@@ -29,7 +33,6 @@ import type { PEntityProps } from './PEntityTypes'
 
 const props = withDefaults(defineProps<PEntityProps>(), {
   pType: 'primary',
-  pIcon: '',
   pIconShape: 'circle',
   pIconColor: 'persian-gradient',
   pIconType: 'xsmall',

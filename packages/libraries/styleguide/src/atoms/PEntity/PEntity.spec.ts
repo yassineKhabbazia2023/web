@@ -1,10 +1,33 @@
-// Import necessary modules
 import { shallowMount } from '@vue/test-utils'
 import PEntity from './'
 import { describe, it, expect } from 'vitest'
 import type { PEntityProps } from './PEntityTypes'
 
 const content = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
+
+const defaultProps: PEntityProps = {
+  pContent: content,
+  pType: 'primary',
+}
+
+function createWrapper(overridenProps: Partial<PEntityProps> = {}) {
+  const props = {
+    ...defaultProps,
+    ...overridenProps,
+  }
+  return shallowMount(PEntity, {
+    props,
+    global: {
+      stubs: {
+        PAvatar: {
+          name: 'PAvatar',
+          template: '<div><slot /></div>',
+        },
+        PIcon: true,
+      },
+    },
+  })
+}
 
 describe('tests for p-entity', () => {
   it('renders with content', () => {
@@ -13,34 +36,32 @@ describe('tests for p-entity', () => {
       pType: 'primary',
       pSelected: false,
     }
-    const wrapper = shallowMount(PEntity, {
-      props,
-    })
+    const wrapper = createWrapper(props)
 
-    // Check if the cell renders correctly
-    const PEntitylement = wrapper.findComponent({ name: 'PEntity' })
+    const pEntity = wrapper.findComponent({ name: 'PEntity' })
 
-    expect(PEntitylement.exists()).toBeTruthy()
+    expect(pEntity.exists()).toBeTruthy()
 
-    // Check if the content is rendered correctly in the cell
     const text = wrapper.text()
-    expect(text.indexOf(content)).toBeGreaterThan(-1)
+    expect(text).toBe(content)
   })
 
   it('renders with an avatar', () => {
     const props: PEntityProps = {
       pContent: content,
       pType: 'primary',
+      pIconName: 'pulse',
       pIconShape: 'circle',
       pIconColor: 'persian-gradient',
       pSelected: false,
     }
-    const wrapper = shallowMount(PEntity, {
-      props,
-    })
+    const wrapper = createWrapper(props)
 
-    // Check if the table renders correctly
-    const avatarElement = wrapper.findComponent({ name: 'PAvatar' })
-    expect(avatarElement.exists()).toBeTruthy()
+    const pAvatar = wrapper.findComponent({ name: 'PAvatar' })
+    const pIcon = pAvatar.findComponent({ name: 'PIcon' })
+
+    expect(pAvatar.exists()).toBeTruthy()
+    expect(pIcon.exists()).toBeTruthy()
+    expect(pIcon.props('pName')).toBe(props.pIconName)
   })
 })
