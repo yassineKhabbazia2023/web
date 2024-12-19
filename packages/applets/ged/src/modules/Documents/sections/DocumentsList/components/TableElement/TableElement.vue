@@ -123,10 +123,7 @@ const getTagProps = computed(() => {
 })
 
 const isCertified = computed(() => {
-  if (!props.data.properties?.HasSubscribedToVault) {
-    return false
-  }
-  return props.data.properties.HasSubscribedToVault === 'Oui'
+  return props.data.properties?.HasSubscribedToVault !== undefined
 })
 
 // Actions dropdown

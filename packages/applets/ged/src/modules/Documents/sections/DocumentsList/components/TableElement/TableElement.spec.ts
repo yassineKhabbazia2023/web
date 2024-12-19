@@ -303,7 +303,7 @@ describe('tableElement', () => {
         fieldName: '',
         data: {
           ...document,
-          properties: { syncStatus: '', HasSubscribedToVault: 'Non' },
+          properties: { syncStatus: '' },
         },
       }
 

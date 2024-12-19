@@ -61,7 +61,7 @@ export const mapExplorerDocumentFromDocuments = (documents: Document[]): Explore
   if (documents.length > 0 && documents) {
     documents.forEach((document) => {
       const canMoveDocument = document.permissions.includes('CAN_MOVE_DOCUMENT')
-      const isCertified = document.properties.HasSubscribedToVault === 'Oui'
+      const isCertified = document.properties?.HasSubscribedToVault !== undefined
       let codeError = ''
       if (isCertified) {
         codeError = 'DocumentCertifiedError'

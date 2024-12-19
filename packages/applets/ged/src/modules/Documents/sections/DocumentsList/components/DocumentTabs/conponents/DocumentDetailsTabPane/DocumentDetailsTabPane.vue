@@ -165,7 +165,7 @@ const getTagProps = computed(() => {
 })
 
 const isCertified = computed(() => {
-  return props.document.properties?.HasSubscribedToVault
+  return props.document.properties?.HasSubscribedToVault !== undefined
 })
 
 const getDocumentSize = computed(() => {
