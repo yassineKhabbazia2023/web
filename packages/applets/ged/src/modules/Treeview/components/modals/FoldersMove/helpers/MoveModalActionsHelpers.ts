@@ -17,7 +17,7 @@ export const modalButtonsMove: Record<string, ModalActionsWithOrder> = {
   CANCEL_MOVE_FOLDER: {
     modalButton: getButtonAction(
       'Annuler',
-      'modal-cancel-folder-action-click'
+      'modal-cancel-folder-action-click',
     ),
     order: 1,
   },

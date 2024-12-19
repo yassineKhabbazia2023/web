@@ -28,7 +28,7 @@ const createAxiosInstance = (domain: string) => {
     baseURL: domainToBaseUrl(domain),
     headers: { 'Content-type': 'application/json' },
   })
-  
+
   instance.interceptors.request.use(requestInterceptor)
   instance.interceptors.response.use(
     responseInterceptorSuccess,

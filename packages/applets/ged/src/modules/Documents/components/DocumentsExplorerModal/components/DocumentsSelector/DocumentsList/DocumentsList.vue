@@ -18,7 +18,7 @@
     >
       {{ documentsSelectorEmptyDocumentsListLabel }}
     </p>
-</div>
+  </div>
 </template>
 
 <script setup lang="ts">
