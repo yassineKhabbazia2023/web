@@ -1,20 +1,19 @@
 import { describe, it, expect } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import PCollapse from '../../molecules/PCollapse'
-import { PIPulse } from '../../atoms/PIcon/components'
 import PCollapseItem from '.'
 import type { PCollapseItemTypes } from './PCollapseItemTypes'
+import type { IconName } from '../../types/IconName.types'
 
 const title = 'Validated'
 type PCollapseItemTypesTest = PCollapseItemTypes['pType']
-const componenRootCSSClass = 'p-collapse-item'
 
 const defaultProps = {
   pTitleCollapseItem: title,
 }
 
 function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
-  const { pType, pTitleCollapseItem, pIcon, pFullBody } = {
+  const { pType, pTitleCollapseItem, pIconName, pFullBody } = {
     ...defaultProps,
     ...overridenProps,
   }
@@ -24,7 +23,7 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
       <PCollapseItem
         :pType="pType"
         :pTitleCollapseItem="pTitleCollapseItem"
-        :pIcon="pIcon"
+        :pIconName="pIconName"
         :pFullBody="pFullBody"
       />
     </PCollapse>
@@ -33,7 +32,7 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
       return {
         pType,
         pTitleCollapseItem,
-        pIcon,
+        pIconName,
         pFullBody,
       }
     },
@@ -51,46 +50,49 @@ function createWrapper(overridenProps: Partial<PCollapseItemTypes> = {}) {
 
 describe('pCollapseItem', () => {
   describe('props', () => {
-    it.each([
-      {
-        pIcon: PIPulse,
-        hasIcon: true,
-        text: 'show',
-      },
-      {
-        pIcon: '',
-        hasIcon: false,
-        text: 'hide',
-      },
-    ])('should $text icon zone when icon is $hasIcon',
-      async ({ pIcon, hasIcon }) => {
-        const wrapper = createWrapper({ pIcon })
-        await flushPromises()
-        const hasIconClass = wrapper.find('.p-collapse-item__icon').exists()
-        const hasIconComponent = wrapper.findComponent({ name: 'PIPulse' }).exists()
-        expect(hasIconClass).toBe(hasIcon)
-        expect(hasIconComponent).toBe(hasIcon)
+    const tests: {
+      pIconName?: IconName
+      hasIcon: boolean
+      text: string
+    }[] = [{
+      pIconName: 'pulse',
+      hasIcon: true,
+      text: 'show',
+    }, {
+      pIconName: undefined,
+      hasIcon: false,
+      text: 'hide',
+    }]
+    it.each(tests)('should $text icon zone when icon is $hasIcon',
+      async ({ pIconName, hasIcon }) => {
+        const wrapper = createWrapper({ pIconName })
+        const pIcon = wrapper.findComponent({ name: 'PIcon' })
+
+        expect(pIcon.exists()).toBe(hasIcon)
+        if (hasIcon) {
+          expect(pIcon.props('pName')).toBe(pIconName)
+        }
       },
     )
 
     it('should have the "default" type by default', () => {
       const wrapper = createWrapper()
       const pCollapseItem = wrapper.findComponent(PCollapseItem)
-      expect(pCollapseItem.classes()).toContain(`${componenRootCSSClass}--type-default`)
+      expect(pCollapseItem.classes()).toContain('p-collapse-item--type-default')
     })
 
     it.each([
       {
         pType: 'default',
-        expectedClassBinding: `${componenRootCSSClass}--type-default`,
+        expectedClassBinding: 'p-collapse-item--type-default',
       },
       {
         pType: 'shadow',
-        expectedClassBinding: `${componenRootCSSClass}--type-shadow`,
+        expectedClassBinding: 'p-collapse-item--type-shadow',
       },
       {
         pType: 'alert',
-        expectedClassBinding: `${componenRootCSSClass}--type-alert`,
+        expectedClassBinding: 'p-collapse-item--type-alert',
       },
     ])(
       'should always bind class based on current type',

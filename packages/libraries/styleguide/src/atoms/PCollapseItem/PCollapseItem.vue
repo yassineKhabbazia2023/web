@@ -6,7 +6,13 @@
   >
     <template #title>
       <PIcon
-        v-if="pIcon"
+        v-if="pIconName"
+        :pName="pIconName"
+        :size="16"
+        class="p-collapse-item__icon margin-right--2"
+      />
+      <PIcon
+        v-else-if="pIcon"
         :size="16"
         class="p-collapse-item__icon margin-right--2"
       >
