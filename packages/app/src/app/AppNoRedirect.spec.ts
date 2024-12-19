@@ -14,6 +14,15 @@ import App from '.'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
 
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
+  fetchNotifications: vi.fn(() => Promise.resolve({
+    notifications: [],
+  })),
+  fetchUnreadNotificationsCount: vi.fn(() => Promise.resolve({
+    count: 1,
+  })),
+}))
+
 vi.mock('@pulse/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {

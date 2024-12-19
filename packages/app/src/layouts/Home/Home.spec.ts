@@ -24,6 +24,15 @@ const loggerDebugSpy = vi.hoisted(() => vi.fn())
 const loggerWarnSpy = vi.hoisted(() => vi.fn())
 const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
+  fetchNotifications: vi.fn(() => Promise.resolve({
+    notifications: [],
+  })),
+  fetchUnreadNotificationsCount: vi.fn(() => Promise.resolve({
+    count: 1,
+  })),
+}))
+
 vi.mock('@pulse/core', () => ({
   logger: {
     debug: loggerDebugSpy,

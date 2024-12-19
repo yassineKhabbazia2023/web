@@ -1,6 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
-import { afterEach, beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { flushPromises, mount } from '@vue/test-utils'
@@ -80,7 +80,10 @@ const createWrapper = (): VueWrapper<any> =>
     attachTo: document.body,
     global: {
       plugins: [pinia],
-      stubs: ['LogoutButton'],
+      stubs: [
+        'LogoutButton',
+        'LegalLinks',
+      ],
     },
   })
 
