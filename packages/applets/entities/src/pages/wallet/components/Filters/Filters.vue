@@ -14,11 +14,13 @@
       <PFilterGroupEntityStatus
         :modelValue="activeFilters"
         :pFilters="onBoardingFilters"
-        class="filters__filter-group--with-separator padding-x--3"
+        class="filters__filter-group--with-separator padding-right--3"
         @toggle="onToggleFilter"
       />
     </div>
-    <div>
+    <div
+      class="padding-left--3"
+    >
       <div
         class="
           margin-bottom--2
@@ -32,8 +34,8 @@
       <PFilterGroupEntityStatus
         :modelValue="activeFilters"
         :pFilters="userConnectionFilters"
+        class="padding-right--3"
         @toggle="onToggleFilter"
-        class="padding-x--3"
       />
     </div>
   </div>
