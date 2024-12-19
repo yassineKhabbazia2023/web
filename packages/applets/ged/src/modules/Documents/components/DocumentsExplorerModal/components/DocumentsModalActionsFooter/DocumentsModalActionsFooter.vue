@@ -8,7 +8,6 @@
         :pCircle="item.buttonName === '' ? true : false"
         :pLoading="item.loading"
         :pDisabled="item.disabled"
-        :pSize="item.size"
         class="document-modal-action-explorer__button"
         @click="$emit('modal-action-button-clicked', item.buttonActionName)"
       >
@@ -32,10 +31,6 @@ defineEmits<{
 </script>
 <style lang="scss">
 .document-modal-action-explorer__button {
-  margin-right: 16px;
-
-  &:last-of-type {
-    margin-right: 0;
-  }
+  margin-right: 0;
 }
 </style>

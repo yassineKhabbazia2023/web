@@ -138,6 +138,7 @@ export type ImageName =
 'company' |
 'delegation' |
 'envelope-duotone' |
+'empty-subfolder' |
 'folder-open-duotone' |
 'loader-duotone' |
 'person-delegation-duotone' |

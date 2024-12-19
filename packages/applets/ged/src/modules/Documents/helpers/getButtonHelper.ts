@@ -14,7 +14,6 @@ export function getButtonAction(
     circle: false,
     loading: false,
     disabled: false,
-    size: 'small',
   }
 
   return {

@@ -34,7 +34,11 @@
       class="folder-list__empty-folder"
       data-test-id="folders-list-empty-folder-label"
     >
-      <p class="folder-list__empty-folder__label">
+      <div class="folder-list__no-subfolder-image">
+        <PImage pName="empty-subfolder" />
+      </div>
+
+      <p class="folder-list__empty-folder__label margin-top--2">
         {{ foldersListEmptyFolderLabel }}
       </p>
     </div>
@@ -55,7 +59,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PAlert, PFolderLineNavigationItem } from '@pulse/styleguide/components'
+import { PAlert, PFolderLineNavigationItem, PImage } from '@pulse/styleguide/components'
 import type { FoldersListProps } from './FoldersListTypes'
 import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import type { Folder } from '@ged/models/Folder'
@@ -157,7 +161,6 @@ const propagateUpdateSourceFolders = (createdFolder: Folder) => {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    transform: translateY(-51%);
     margin-top: auto;
     margin-bottom: auto;
 
@@ -175,6 +178,10 @@ const propagateUpdateSourceFolders = (createdFolder: Folder) => {
       font-weight: 400;
       line-height: 120%;
     }
+  }
+
+  &__no-subfolder-image {
+    width: 80px;
   }
 }
 </style>

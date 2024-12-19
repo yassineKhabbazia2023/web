@@ -6,17 +6,28 @@
         @p-breadcrumb-item-click="navigateToFolder"
       />
     </div>
-    <div class="folders-breadcrumb__create-folder">
+    <div
+      class="
+        folders-breadcrumb__create-folder
+        flex
+        flex--align-items-center
+        font-semibold
+        font-small
+      "
+      @click="handleCreateFolderButtonClick"
+    >
       <PIcon
         class="el-button__icon--left"
         pName="folderPlus"
-        @click="handleCreateFolderButtonClick"
+        pSize="16"
       />
+      <span>{{ t('newFolder') }}</span>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { PBreadcrumb, PIcon } from '@pulse/styleguide/components'
 import { computed } from 'vue'
 import type {
@@ -25,6 +36,11 @@ import type {
 import type { Folder } from '@ged/models/Folder'
 import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import type { BreadcrumbItems } from '@pulse/styleguide/types'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
 
 const props = defineProps<FoldersBreadCrumbProps>()
 const emit = defineEmits(['navigate-to-folder', 'open-create-folder-modal'])
@@ -86,15 +102,28 @@ const handleCreateFolderButtonClick = () => {
   }
 
   &__create-folder {
-    height: 16px;
-    width: 16px;
+    gap: 8px;
     margin-left: 1.6rem;
     cursor: pointer;
     flex-grow: 0;
     flex-shrink: 0;
+
+    span {
+      transition: color 100ms ease-in;
+    }
+    &:hover {
+      color: var(--el-color-persian-400);
+    }
   }
   .el-breadcrumb__item {
     float: none;
   }
 }
 </style>
+
+<i18n lang="yaml">
+en-US:
+  newFolder: 'Create folder'
+fr-FR:
+  newFolder: 'Nouveau dossier'
+</i18n>

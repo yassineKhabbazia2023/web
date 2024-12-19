@@ -19,7 +19,6 @@ const btnActions: Array<ButtonAction> = [
     circle: false,
     loading: false,
     disabled: false,
-    size: 'default',
   },
   {
     buttonName: 'Annuler',
@@ -30,7 +29,6 @@ const btnActions: Array<ButtonAction> = [
     circle: false,
     loading: false,
     disabled: false,
-    size: 'small',
   },
 ]
 
@@ -70,7 +68,6 @@ describe('documentsModalActionsFooter', () => {
       expect(btns[0].props('pDisabled')).toBeFalsy()
       expect(btns[1].props('pDisabled')).toBeFalsy()
       expect(btns[0].props('pSize')).toBe('default')
-      expect(btns[1].props('pSize')).toBe('small')
     })
   })
 

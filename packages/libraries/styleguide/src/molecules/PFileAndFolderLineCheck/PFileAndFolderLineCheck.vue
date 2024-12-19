@@ -174,7 +174,7 @@ const stateIconName = computed<IconName | undefined>(() => {
   }
 
   &--selected {
-    color: var(--el-color-base-persian);
+    color: var(--el-color-blue-pulse);
     font-weight: 600;
     background-color: var(--el-color-persian-50);
     cursor: pointer;
