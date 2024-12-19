@@ -49,7 +49,7 @@ export function getData2(pButtonName: string) {
     {
       pButtonName,
       pButton: {
-        pType: 'secondary',
+        pType: 'default',
         pRound: false,
         pCircle: false,
         pLoading: false,
