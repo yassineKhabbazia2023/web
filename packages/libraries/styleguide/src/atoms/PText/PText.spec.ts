@@ -31,7 +31,7 @@ describe('tests for p-text', () => {
   it('renders with an icon', () => {
     const wrapper = shallowMount(PText, {
       props: {
-        pIcon: markRaw(PIPerson),
+        pIconName: 'person',
         pContent,
         pType: 'primary',
         disabled: false,

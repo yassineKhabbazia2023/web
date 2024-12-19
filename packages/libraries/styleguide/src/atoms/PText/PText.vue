@@ -4,8 +4,16 @@
     :disabled="disabled"
     :selected="selected"
   >
-    <div v-if="pIcon" class="p-text__icon">
-      <PIcon :size="16">
+    <div v-if="pIconName || pIcon" class="p-text__icon">
+      <PIcon
+        v-if="pIconName"
+        :size="16"
+        :pName="pIconName"
+      />
+      <PIcon
+        v-else
+        :size="16"
+      >
         <component :is="pIcon" />
       </PIcon>
     </div>
@@ -21,7 +29,6 @@ import PIcon from '../PIcon'
 import type { PTextProps } from './PTextTypes'
 
 const props = withDefaults(defineProps<PTextProps>(), {
-  pIcon: undefined,
   pBold: false,
   selected: false,
   disabled: false,
