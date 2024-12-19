@@ -1,5 +1,4 @@
 import type { ExtendedUser } from '../../UsersClientTypes'
-
 interface UserToRemoveInfo {
   initials: ExtendedUser['initials']
   fullName: ExtendedUser['fullName']
@@ -9,6 +8,6 @@ interface UserToRemoveInfo {
 
 export interface RemoveUserDialogProps {
   modelValue: boolean
-  userToRemove: UserToRemoveInfo
+  userToRemove: UserToRemoveInfo | undefined
   isCollab?: boolean
 }

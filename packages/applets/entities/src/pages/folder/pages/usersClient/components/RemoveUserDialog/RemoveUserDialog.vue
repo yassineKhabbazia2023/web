@@ -93,7 +93,7 @@ const handleCloseDrawer = () => {
 
 const displaySuccessNotificationRemovedCollaborator = () => {
   PNotification({
-    message: t('userHasBeenRemoved', { fullName: props.userToRemove.fullName }),
+    message: t('userHasBeenRemoved', { fullName: props.userToRemove?.fullName ?? '' }),
     icon: PICheck,
     showClose: true,
     customClass: 'success',
@@ -103,7 +103,7 @@ const displaySuccessNotificationRemovedCollaborator = () => {
 
 const displayErrorNotificationRemovedCollaborator = () => {
   PNotification({
-    message: t('userWasNotRemoved', { fullName: props.userToRemove.fullName }),
+    message: t('userWasNotRemoved', { fullName: props.userToRemove?.fullName ?? '' }),
     icon: PIExclamationTriangle,
     showClose: true,
     customClass: 'error',
@@ -113,7 +113,7 @@ const displayErrorNotificationRemovedCollaborator = () => {
 
 const handleRemoveUser = async () => {
   try {
-    await deleteContactFromAccount(currentEntityId, props.userToRemove.contactId)
+    await deleteContactFromAccount(currentEntityId, props.userToRemove?.contactId ?? 0)
     displaySuccessNotificationRemovedCollaborator()
     emits('user-removed')
   } catch (error) {

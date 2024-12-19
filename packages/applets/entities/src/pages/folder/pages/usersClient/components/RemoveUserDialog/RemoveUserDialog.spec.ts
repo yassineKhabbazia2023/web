@@ -1,12 +1,13 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { deleteContactFromAccount } from '@entities/services/account'
 import * as accountServices from '@entities/services/account'
 import { nextTick } from 'vue'
+import { RemoveUserDialogProps } from './RemoveUserDialogTypes'
 import RemoveUserDialog from '.'
 
 const ACCOUNT_ID = '42'
-const USER_TO_REMOVE = {
+const USER_TO_REMOVE: RemoveUserDialogProps['userToRemove'] = {
   initials: 'ab',
   fullName: 'a b',
   email: 'customEmail@labas.be',
@@ -43,7 +44,7 @@ vi.mock('vue-router', () => ({
 }))
 
 let wrapper: VueWrapper<any>
-const createWrapper = (userToRemove: any, isCollab?: boolean): VueWrapper<any> =>
+const createWrapper = (userToRemove: RemoveUserDialogProps['userToRemove'], isCollab?: boolean): VueWrapper<any> =>
   shallowMount(RemoveUserDialog, {
     props: {
       userToRemove,
@@ -57,15 +58,7 @@ const createWrapper = (userToRemove: any, isCollab?: boolean): VueWrapper<any> =
           template: '<div><slot/><slot name="footer"/></div>',
           events: ['update:model-value'],
         },
-        PUserCard: {
-          name: 'PUserCard',
-          template: '<div> />',
-          props: [
-            'pAvatarContent',
-            'pTitle',
-            'pSubtitle',
-          ],
-        },
+        PUserCard: true,
       },
     },
   })
