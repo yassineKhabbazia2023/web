@@ -6,7 +6,7 @@
           :pXs="24"
           :pSm="24"
           :pMd="12"
-          class="content padding-top--10"
+          class="content"
         >
           <PImage
             pType="logos"
