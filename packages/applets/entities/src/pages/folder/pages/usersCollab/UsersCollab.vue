@@ -89,7 +89,7 @@
               <PTag
                 :pContent="scope.row.status.text"
                 :pColor="scope.row.status.color"
-                :pIconLeft="scope.row.status.icon"
+                :pIconLeftName="scope.row.status.iconName"
                 pEffect="light"
               />
             </template>

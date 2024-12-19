@@ -2,7 +2,7 @@
   <PTag
     :pColor="tagProperties.color"
     pEffect="light"
-    :pIconLeft="tagProperties.icon"
+    :pIconLeftName="tagProperties.iconName"
     :pContent="tagProperties.content"
     :pClosable="false"
     :pRound="false"

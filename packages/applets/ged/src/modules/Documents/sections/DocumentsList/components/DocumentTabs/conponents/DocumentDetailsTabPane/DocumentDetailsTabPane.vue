@@ -9,7 +9,7 @@
           <PTag
             pColor="gray-900"
             pContent="Certifié"
-            :pIconLeft="PIPatchCheck"
+            :pIconLeftName="patchCheck"
             pEffect="light"
             pSize="default"
             :pClosable="false"
@@ -74,7 +74,7 @@
           <PTag
             :pColor="getTagProps.type"
             :pContent="document.piaStatus.labelFr"
-            :pIconLeft="getTagProps.icon"
+            :pIconLeftName="getTagProps.iconName"
             pEffect="light"
             pSize="default"
             :pClosable="false"
@@ -106,7 +106,6 @@ import type { DocumentDetailsTabPaneProps, PiaStatusTag } from './DocumentDetail
 import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
 import {
   PTag,
-  PIPatchCheck,
   PICheckCircle,
   PIcon,
   PButton,

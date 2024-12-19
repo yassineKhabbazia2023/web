@@ -86,7 +86,7 @@
             <PTag
               :pContent="scope.row.statusTag.text"
               :pColor="scope.row.statusTag.color"
-              :pIconLeft="scope.row.statusTag.icon"
+              :pIconLeftName="scope.row.statusTag.iconName"
               pEffect="light"
             />
           </template>

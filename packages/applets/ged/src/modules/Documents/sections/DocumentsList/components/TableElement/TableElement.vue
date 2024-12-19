@@ -33,7 +33,7 @@
     v-else-if="fieldType === 'Tag' && isCertified && fieldName === ''"
     pColor="gray-900"
     pContent="Certifié"
-    :pIconLeft="PIPatchCheck"
+    pIconLeftName="patchCheck"
     pEffect="light"
     pSize="default"
     :pClosable="false"
@@ -45,7 +45,7 @@
     v-else-if="fieldType === 'Tag' && getTagProps !== null && fieldName === 'Statut'"
     :pColor="getTagProps.type"
     :pContent="data.piaStatus.labelFr"
-    :pIconLeft="getTagProps.icon"
+    :pIconLeftName="getTagProps.iconName"
     pEffect="light"
     pSize="default"
     :pClosable="false"
@@ -72,7 +72,6 @@ import {
   PICheckCircle,
   PText,
   PTag,
-  PIPatchCheck,
   PDoubleText,
 } from '@pulse/styleguide/components'
 import DocumentActions from '@ged/modules/Documents/sections/DocumentsList/components/DocumentsActions'

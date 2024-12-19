@@ -114,7 +114,7 @@
           <PTag
             :pContent="scope.row.deploymentStatus.text"
             :pColor="scope.row.deploymentStatus.color"
-            :pIconLeft="scope.row.deploymentStatus.icon"
+            :pIconLeftName="scope.row.deploymentStatus.iconName"
             pEffect="light"
           />
         </template>

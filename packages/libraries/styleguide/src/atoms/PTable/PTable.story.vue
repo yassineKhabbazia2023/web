@@ -96,8 +96,8 @@
               pColor="success"
               pSize="default"
               pEffect="light"
-              :pIconLeft="scope.row.tag.iconLeft"
-              :pIconRight="scope.row.tag.iconRight"
+              :pIconLeftName="scope.row.tag.iconLeftName"
+              :pIconRightName="scope.row.tag.iconRightName"
               :pContent="scope.row.tag.content"
             />
           </template>
