@@ -50,7 +50,7 @@ const sortableColumns = ['Nom du document', 'Supprimé le']
 // Column size calculation is a current topic we're discusing
 // Meanwhile, it is done here in a raw manner
 const columnSizes: Record<string, number> = {
-  'Supprimé le': 160,
+  'Supprimé le': 125,
   '': 72,
 }
 

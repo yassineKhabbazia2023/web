@@ -85,9 +85,9 @@ const documentsListTable = ref<InstanceType<typeof ElTable>>()
 const selectedDocuments = ref<DocumentsListProps['documentsListWithTableStructure']['documentsPage']['items']>([])
 const sortableColumns = ['Nom du document', 'Déposé le']
 const columnSizes: Record<string, number> = {
-  '': 199,
-  'Déposé le': 199,
-  Statut: 199,
+  '': 125,
+  'Déposé le': 125,
+  Statut: 125,
   Actions: 71,
 }
 
