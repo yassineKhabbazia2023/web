@@ -7,7 +7,7 @@
     <Variant title="PText">
       <PText
         :pContent="PTextBasicData.content"
-        pIconName="person"
+        :pIcon="PIPerson"
         :pBold="PTextBasicData.bold"
         :pType="PTextBasicData.type"
         :disabled="PTextBasicData.disabled"
@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { PIPerson } from '../../atoms/PIcon/components'
 import type { PTextProps } from './PTextTypes'
 import PText from './'
 

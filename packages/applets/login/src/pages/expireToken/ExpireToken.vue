@@ -22,6 +22,7 @@
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { logger } from '@pulse/core'
 import { commonApi } from '@pulse/common'
 import { PButton } from '@pulse/styleguide/components'
 import { logger } from '@pulse/core'
