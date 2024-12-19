@@ -1,8 +1,8 @@
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import { PIPulse } from '../../atoms/PIcon/components'
 import PTag from '.'
 import type { PTagProps } from './PTagTypes'
+import type { IconName } from '../../types/IconName.types'
 
 const createWrapper = (overridenProps: Partial<PTagProps> = {}) => {
   const props: PTagProps = {
@@ -31,22 +31,24 @@ const createWrapper = (overridenProps: Partial<PTagProps> = {}) => {
 
 describe('pTag', () => {
   describe('props', () => {
-    it.each([
-      {
-        pIconLeft: PIPulse,
-        shouldHaveIconLeftClass: true,
-        text: 'show',
-      },
-      {
-        pIconLeft: '',
-        shouldHaveIconLeftClass: false,
-        text: 'hide',
-      },
-    ])(
-      'should $text icon zone when pIconLeft is $shouldHaveIconLeftClass',
-      async ({ pIconLeft, shouldHaveIconLeftClass }) => {
+    const leftTests: {
+      pIconLeftName?: IconName
+      shouldHaveIconLeftClass: boolean
+      text: string
+    }[] = [{
+      pIconLeftName: 'pulse',
+      shouldHaveIconLeftClass: true,
+      text: 'show',
+    }, {
+      pIconLeftName: undefined,
+      shouldHaveIconLeftClass: false,
+      text: 'hide',
+    }]
+    it.each(leftTests)(
+      'should $text icon zone when pIconLeftName is $shouldHaveIconLeftClass',
+      async ({ pIconLeftName, shouldHaveIconLeftClass }) => {
         const wrapper = createWrapper({
-          pIconLeft,
+          pIconLeftName,
         })
         await flushPromises()
 
@@ -55,22 +57,25 @@ describe('pTag', () => {
         expect(hasIconLeftClass).toBe(shouldHaveIconLeftClass)
       },
     )
-    it.each([
-      {
-        pIconRight: PIPulse,
-        shouldHaveIconRightClass: true,
-        text: 'show',
-      },
-      {
-        pIconRight: '',
-        shouldHaveIconRightClass: false,
-        text: 'hide',
-      },
-    ])(
-      'should $text icon zone when pIconRight is $shouldHaveIconRightClass',
-      async ({ pIconRight, shouldHaveIconRightClass }) => {
+
+    const rightTests: {
+      pIconRightName?: IconName
+      shouldHaveIconRightClass: boolean
+      text: string
+    }[] = [{
+      pIconRightName: 'pulse',
+      shouldHaveIconRightClass: true,
+      text: 'show',
+    }, {
+      pIconRightName: undefined,
+      shouldHaveIconRightClass: false,
+      text: 'hide',
+    }]
+    it.each(rightTests)(
+      'should $text icon zone when pIconRightName is $shouldHaveIconRightClass',
+      async ({ pIconRightName, shouldHaveIconRightClass }) => {
         const wrapper = createWrapper({
-          pIconRight,
+          pIconRightName,
         })
         await flushPromises()
         const hasIconRightClass = wrapper.find('.el-tag__icon--right').exists()

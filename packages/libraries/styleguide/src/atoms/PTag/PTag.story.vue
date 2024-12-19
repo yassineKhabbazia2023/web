@@ -11,9 +11,9 @@
         :pColor="color"
         :pSize="currentSize"
         :pEffect="currentTheme"
-        :pIconLeft="tagBasicData.iconLeft"
-        :pIconRight="tagBasicData.iconRight"
-        :pContent="tagBasicData.content"
+        :pIconLeftName="pIconLeftName"
+        :pIconRightName="pIconRightName"
+        :pContent="pContent"
       />
       <template #controls>
         <HstRadio
@@ -39,9 +39,9 @@
         :pColor="color"
         pEffect="plain"
         :pDisableTransitions="disableTransitions"
-        :pIconLeft="tagBasicData.iconLeft"
-        :pIconRight="tagBasicData.iconRight"
-        :pContent="tagBasicData.content"
+        :pIconLeftName="pIconLeftName"
+        :pIconRightName="pIconRightName"
+        :pContent="pContent"
         @close="fireClose"
       />
       <template #controls>
@@ -59,9 +59,9 @@
         :pColor="color"
         :pEffect="currentTheme"
         :pRound="rounded"
-        :pIconLeft="tagBasicData.iconLeft"
-        :pIconRight="tagBasicData.iconRight"
-        :pContent="tagBasicData.content"
+        :pIconLeftName="pIconLeftName"
+        :pIconRightName="pIconRightName"
+        :pContent="pContent"
       />
       <template #controls>
         <HstRadio
@@ -106,7 +106,7 @@
               :pColor="colorItem.value"
               :pEffect="theme.value"
               :pDisableTransitions="disableTransitions"
-              :pContent="tagBasicData.content"
+              :pContent="pContent"
               @close="fireClose"
             />
           </td>
@@ -120,18 +120,16 @@
 import { ref } from 'vue'
 import type { PTagProps } from './PTagTypes'
 import { logEvent } from 'histoire/client'
-import { PIStars } from '../../atoms/PIcon/components'
 import PTag from '../../atoms/PTag'
 
 const color = ref<PTagProps['pColor']>('success')
 const closable = ref(true)
 const rounded = ref(true)
 const disableTransitions = ref(true)
-const tagBasicData = {
-  content: 'My tag',
-  iconLeft: PIStars,
-  iconRight: PIStars,
-}
+
+const pContent = ref<PTagProps['pContent']>('My tag')
+const pIconLeftName = ref<PTagProps['pIconLeftName']>('stars')
+const pIconRightName = ref<PTagProps['pIconRightName']>('stars')
 
 const tagColorList: { label: string, value: PTagProps['pColor'] }[] = [
   {

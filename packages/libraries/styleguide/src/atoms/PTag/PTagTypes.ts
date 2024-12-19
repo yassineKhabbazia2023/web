@@ -1,4 +1,5 @@
 import { type Component } from 'vue'
+import type { IconName } from '../../types/IconName.types'
 
 export interface PTagProps {
   pColor: ''
@@ -17,8 +18,10 @@ export interface PTagProps {
   pEffect: 'dark' | 'light' | 'plain'
   pSize?: 'large' | 'default' | 'small' | ''
   pContent?: string
-  pIconLeft?: Component | string
-  pIconRight?: Component | string
+  pIconLeft?: Component | string // @deprecated, TODO replace pIconLeft by pIconLeftName
+  pIconRight?: Component | string // @deprecated, TODO replace pIconRight by pIconRightName
+  pIconLeftName?: IconName
+  pIconRightName?: IconName
   pRound?: boolean
   pDisableTransitions?: boolean
   pClosable?: boolean

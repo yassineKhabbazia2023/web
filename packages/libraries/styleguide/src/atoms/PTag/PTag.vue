@@ -8,13 +8,23 @@
     :disableTransitions="pDisableTransitions"
     :closable="pClosable"
   >
-    <PIcon v-if="pIconLeft" class="el-tag__icon--left">
+    <PIcon
+      v-if="pIconLeftName"
+      class="el-tag__icon--left"
+      :pName="pIconLeftName"
+    />
+    <PIcon v-else-if="pIconLeft" class="el-tag__icon--left">
       <component :is="getIcon(pIconLeft)" />
     </PIcon>
     <template v-if="pContent">
       {{ pContent }}
     </template>
-    <PIcon v-if="pIconRight" class="el-tag__icon--right">
+    <PIcon
+      v-if="pIconRightName"
+      class="el-tag__icon--right"
+      :pName="pIconRightName"
+    />
+    <PIcon v-else-if="pIconRight" class="el-tag__icon--right">
       <component :is="getIcon(pIconRight)" />
     </PIcon>
   </ElTag>
