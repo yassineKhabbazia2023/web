@@ -8,7 +8,7 @@ import type { QueryResult } from '@entities/common/types'
 import type { AccountRow, ReferentialStructure, Hub } from './accountTypes'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
-  const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}`
+  const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/currentuser`
 
   return await fetchGatewayApi<Account>(url)
 }
@@ -38,7 +38,7 @@ export async function fetchAccountReferential() {
 }
 
 export async function patchAccount(accountId: number, patchOperations: PatchOperation[]): Promise<void> {
-  const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}`
+  const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/currentuser`
 
   await commonApi().gateway.patch(url, patchOperations)
 }
