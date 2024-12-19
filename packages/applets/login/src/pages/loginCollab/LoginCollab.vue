@@ -70,6 +70,10 @@ onMounted(async () => {
   }
 }
 
+p {
+  white-space: pre-line;
+}
+
 .formTitle {
   font-size: 1.6rem;
 }
@@ -82,18 +86,19 @@ onMounted(async () => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  welcomeTo: 'Welcome to your'
-  collaboratorSpace: 'your collaborator space !'
-  login: 'Login'
-  formTitle: >-
-    Welcome to your Rydge platform. Please log in to access to all your services.
-fr-FR:
-  welcomeTo: 'Bienvenue sur votre'
-  collaboratorSpace: 'espace collaborateur !'
-  login: 'Se connecter'
-  formTitle: >-
-    Bienvenue sur votre plateforme Rydge. Veuillez vous connecter pour accéder
-    à tous vos services.
+<i18n lang="json">
+{
+  "en-US": {
+    "welcomeTo": "Welcome to your",
+    "collaboratorSpace": "your collaborator space !",
+    "login": "Login",
+    "formTitle": "Welcome to your Rydge platform.\n Please log in to access to all your services."
+  },
+  "fr-FR": {
+    "welcomeTo": "Bienvenue sur votre",
+    "collaboratorSpace": "espace collaborateur !",
+    "login": "Se connecter",
+    "formTitle": "Bienvenue sur votre plateforme Rydge.\n Veuillez vous connecter pour accéder à tous vos\u202Fservices."
+  }
+}
 </i18n>
