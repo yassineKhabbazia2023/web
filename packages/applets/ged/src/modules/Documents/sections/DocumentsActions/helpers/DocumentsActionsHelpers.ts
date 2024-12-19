@@ -33,7 +33,7 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
     actionbarButton: {
       pButtonName: 'Filtrer',
       pButton: {
-        pType: 'secondary',
+        pType: 'default',
         pRound: false,
         pCircle: false,
         pLoading: false,
