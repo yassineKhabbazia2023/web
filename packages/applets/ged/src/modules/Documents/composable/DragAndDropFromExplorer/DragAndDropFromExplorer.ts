@@ -246,7 +246,7 @@ export function useDragAndDropFromExplorer(
 
   const { t } = useI18n({
     inheritLocale: true,
-    useScope: 'local',
+    useScope: 'global',
     messages,
   })
 
