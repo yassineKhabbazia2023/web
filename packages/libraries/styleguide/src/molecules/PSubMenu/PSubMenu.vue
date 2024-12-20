@@ -11,7 +11,12 @@
     class="p-submenu"
   >
     <template #title>
-      <PIcon v-if="pIcon" class="p-submenu__icon">
+      <PIcon
+        v-if="pIconName"
+        class="p-submenu__icon"
+        :pName="pIconName"
+      />
+      <PIcon v-else-if="pIcon" class="p-submenu__icon">
         <component :is="iconResolver(pIcon)" />
       </PIcon>
       <span class="p-submenu__title margin-left--2">

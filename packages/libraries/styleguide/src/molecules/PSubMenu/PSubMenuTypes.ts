@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import type { IconName } from '../../types/IconName.types'
 
 export interface PSubMenuProps {
   pIndex: string
@@ -8,4 +9,5 @@ export interface PSubMenuProps {
   pHideTimeout?: number
   pDisabled?: boolean
   pIcon?: Component | string
+  pIconName?: IconName
 }

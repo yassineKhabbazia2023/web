@@ -40,7 +40,7 @@ const createWrapper = (
           :pPopperOffset="submenuProps.popperOffset"
           :pShowTimeout="submenuProps.showTimeout"
           :pHideTimeout="submenuProps.hideTimeout"
-          pIcon="PIHouse"
+          pIconName="house"
           data-testid="submenu"
         >
           <template #title>
@@ -110,8 +110,9 @@ describe('pSubMenu', () => {
       const wrapper = createWrapper()
 
       await flushPromises()
-      const iconElement = wrapper.find('.p-submenu__icon')
+      const iconElement = wrapper.findComponent({ name: 'PIcon' })
       expect(iconElement.exists()).toBeTruthy()
+      expect(iconElement.props('pName')).toBe('house')
     })
   })
 })
