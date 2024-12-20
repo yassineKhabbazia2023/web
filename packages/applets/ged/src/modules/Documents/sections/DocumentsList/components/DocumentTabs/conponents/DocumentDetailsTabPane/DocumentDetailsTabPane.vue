@@ -9,7 +9,7 @@
           <PTag
             pColor="gray-900"
             pContent="Certifié"
-            :pIconLeftName="patchCheck"
+            pIconLeftName="patchCheck"
             pEffect="light"
             pSize="default"
             :pClosable="false"
@@ -106,7 +106,6 @@ import type { DocumentDetailsTabPaneProps, PiaStatusTag } from './DocumentDetail
 import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
 import {
   PTag,
-  PICheckCircle,
   PIcon,
   PButton,
 } from '@pulse/styleguide/components'
@@ -134,20 +133,16 @@ const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = com
 const { handleDownloadDocumentsEvent } =
 useDownloadDocuments(downloadDocumentsProps)
 
-const tagIconByState = {
-  success: PICheckCircle,
-}
-
 const tagTypeProps = (piaStatus: string): PiaStatusTag => {
   switch (piaStatus) {
   case 'Collected':
-    return { icon: tagIconByState.success, type: 'success' }
+    return { iconName: 'checkCircle', type: 'success' }
   case 'Duplicate':
-    return { icon: tagIconByState.success, type: 'success' }
+    return { iconName: 'checkCircle', type: 'success' }
   case 'Archived':
-    return { icon: tagIconByState.success, type: 'success' }
+    return { iconName: 'checkCircle', type: 'success' }
   default:
-    return { icon: tagIconByState.success, type: 'success' }
+    return { iconName: 'checkCircle', type: 'success' }
   }
 }
 
