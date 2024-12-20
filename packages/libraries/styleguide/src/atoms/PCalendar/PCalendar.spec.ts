@@ -1,10 +1,14 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import PCalendar from '.'
 import type { PCalendarProps } from './PCalendarTypes'
 import { itemsGroupedByDate } from './PCalendarMocks'
-import PCalendarDateCell from '../../atoms/PCalendarDateCell'
+
+const getDateTypeMock = vi.hoisted(() => vi.fn(() => 'current-month'))
+vi.mock('./PCalendarUtils', () => ({
+  getDateType: getDateTypeMock,
+}))
 
 const defaultProps: PCalendarProps = {
   pItemsGroupedByDate: itemsGroupedByDate,
@@ -16,12 +20,12 @@ const createWrapper = (props: any = defaultProps): VueWrapper =>
     props,
     global: {
       stubs: {
-        PCalendarDateCell,
+        PCalendarDateCell: true,
         ElCalendar: {
           name: 'ElCalendar',
           template: `<div>
           <slot name="header" />
-          <slot name="date-cell" :data="data" :type="type" />
+          <slot name="date-cell" :data="data" />
           </div>`,
           data() {
             const data = {
@@ -42,15 +46,15 @@ describe('calendar', () => {
   describe('props', () => {
     it('renders custom cells', () => {
       const wrapper = createWrapper()
-      const customCellElements = wrapper.findAll('.p-calendar-date-cell')
-      expect(customCellElements.length).toBeTruthy()
+      const customCellElements = wrapper.findAll('[data-testid="p-calendar-date-cell"]')
+      expect(customCellElements).toHaveLength(1)
     })
   })
 
   describe('interactions', () => {
     it('emits an ISO 8601 string on cell-click', () => {
       const wrapper = createWrapper()
-      const firstCalendarCell = wrapper.findComponent(PCalendarDateCell)
+      const firstCalendarCell = wrapper.findComponent({ name: 'PCalendarDateCell' })
       // cannot use trigger here as cell-click does not corresponds to the whole cell click
       firstCalendarCell.vm.$emit('cell-click')
 
@@ -61,7 +65,7 @@ describe('calendar', () => {
     it('should emits select-deadline with occurence id', () => {
       const wrapper = createWrapper()
       const cellItemId = 12345
-      const firstCalendarCell = wrapper.findComponent(PCalendarDateCell)
+      const firstCalendarCell = wrapper.findComponent({ name: 'PCalendarDateCell' })
       firstCalendarCell.vm.$emit('select-deadline', cellItemId)
       expect(wrapper.emitted('select-deadline')).toStrictEqual([[cellItemId]])
     })

@@ -1,7 +1,7 @@
 import DeadlineReminders from '.'
 import { expect, describe, it } from 'vitest'
 import type { DeadlineRemindersProps } from './DeadlineRemindersTypes'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 
 function createWrapper(override: Partial<DeadlineRemindersProps> = {}) {
   const defaultProps: DeadlineRemindersProps = {
@@ -12,15 +12,13 @@ function createWrapper(override: Partial<DeadlineRemindersProps> = {}) {
     ...override,
   }
 
-  const wrapper = mount(DeadlineReminders, {
+  const wrapper = shallowMount(DeadlineReminders, {
     props,
     global: {
       stubs: {
-        PIcon: {
-          name: 'PIcon',
-        },
-        PIBell: {
-          name: 'PIBell',
+        PIcon: true,
+        'i18n-t': {
+          template: '<div>Notification <slot name="days" /> <slot name="beforeOrAfter" /> deadline date</div>',
         },
       },
     },

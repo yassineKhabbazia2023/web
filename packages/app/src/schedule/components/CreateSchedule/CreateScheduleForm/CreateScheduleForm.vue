@@ -379,7 +379,9 @@ defineExpose({
       "recipients": "Choose one or several files",
       "reminder": "Choose a template or enter a title"
     },
-    "toggleAllCheckboxLabel": "Select all"
+    "toggleAllCheckboxLabel": "Select all",
+    "no-data": "No data",
+    "no-match": "No match"
  },
   "fr-FR": {
     "reminder": "Titre du rappel",
@@ -410,6 +412,8 @@ defineExpose({
       "recipients": "Choisir un ou plusieurs dossiers",
       "reminder": "Choisir un modèle ou saisir un titre"
     },
-    "toggleAllCheckboxLabel": "Tout le portefeuille"
+    "toggleAllCheckboxLabel": "Tout le portefeuille",
+    "no-data": "Aucun résultat",
+    "no-match": "Pas de correspondance"
   }
 }</i18n>

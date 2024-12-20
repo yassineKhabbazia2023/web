@@ -15,6 +15,7 @@
         :pCellElements="findItemsByDate(data.day)"
         :pCellDate="data.day"
         :pCellType="getDateType(pInitialDateRange, data.day, data.type)"
+        data-testid="p-calendar-date-cell"
         @cell-click="handleCellClick(data.day)"
         @select-deadline="$emit('select-deadline', $event)"
       />
