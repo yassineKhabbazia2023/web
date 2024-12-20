@@ -31,7 +31,7 @@ const getFavoritesMock = vi.fn(() =>
     ],
   }),
 )
-
+const mockedGatewayGet = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     wallet: {
@@ -39,14 +39,7 @@ vi.mock('@pulse/common', () => ({
       get: () => getFavoritesMock(),
     },
     gateway: {
-      get: vi.fn().mockImplementation((url) => {
-        if (url.includes('account/api/accounts/')) {
-          return Promise.resolve({
-            data: mockedAccount,
-          })
-        }
-        return Promise.reject(new Error(`unmnanaged url '${url}'`))
-      }),
+      get: mockedGatewayGet,
     },
   }),
   commonPinia: () => createPinia(),
@@ -109,6 +102,7 @@ setActivePinia(pinia)
 describe('deploy', () => {
   let mockFetchWalletData: MockInstance
   beforeEach(() => {
+    mockedGatewayGet.mockResolvedValue(mockedAccount)
     mockFetchWalletData = vi
       .spyOn(DeployUtils, 'fetchWalletData')
       .mockResolvedValue(mockedQueryResult)
