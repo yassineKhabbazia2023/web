@@ -41,7 +41,7 @@
               pSize="small"
               pColor="gray-500"
               pEffect="light"
-              :pIconLeft="pEntityIcon"
+              :pIconLeftName="pEntityIconName"
               :pContent="pEntity"
               data-testid="history-card-entity"
             />
@@ -51,7 +51,7 @@
             pSize="small"
             pColor="gray-500"
             pEffect="light"
-            :pIconLeft="pEntityIcon"
+            :pIconLeftName="pEntityIconName"
             :pContent="pEntity"
             data-testid="history-card-entity"
           />

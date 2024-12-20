@@ -1,9 +1,9 @@
-import type { Component } from 'vue'
+import type { IconName } from '../../types/IconName.types'
 
 export interface PHistoryCardProps {
   pDate: string
   pType: string
-  pEntityIcon?: Component | string
+  pEntityIconName?: IconName
   pEntity?: string
   pTooltipEntityContent?: string
 }

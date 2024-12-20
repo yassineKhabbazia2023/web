@@ -15,7 +15,7 @@
           <PHistoryCard
             pDate="03/03/2024"
             pType="Délégation"
-            pEntityIcon="PIShop"
+            pEntityIconName="shop"
             pEntity="Restaurant Le Grand Bleu"
           >
             <template #text>
@@ -42,7 +42,7 @@
           <PHistoryCard
             pDate="03/03/2024"
             pType="Délégation"
-            pEntityIcon="PIShop"
+            pEntityIconName="shop"
             pEntity="Restaurant Le Grand Bleu"
           >
             <template #text>
@@ -69,7 +69,7 @@
           <PHistoryCard
             pDate="03/03/2024"
             pType="Délégation"
-            pEntityIcon="PIShop"
+            pEntityIconName="shop"
             pEntity="Restaurant Le Grand Bleu"
           >
             <template #text>
@@ -96,7 +96,7 @@
           <PHistoryCard
             pDate="03/03/2024"
             pType="Délégation"
-            pEntityIcon="PIShop"
+            pEntityIconName="shop"
             pEntity="Restaurant Le Grand Bleu"
           >
             <template #text>

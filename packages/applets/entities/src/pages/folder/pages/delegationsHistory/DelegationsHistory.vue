@@ -28,7 +28,7 @@
               :pDate="d(new Date(creationDate), 'short')"
               :pEntity="accountLegalName"
               :pType="t('delegation')"
-              pEntityIcon="PIShop"
+              pEntityIconName="shop"
             >
               <template #text>
                 <i18n-t

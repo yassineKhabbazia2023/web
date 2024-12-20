@@ -8,7 +8,7 @@ import { nextTick } from 'vue'
 const props: PHistoryCardProps = {
   pDate: '12/12/24',
   pType: 'Délégation',
-  pEntityIcon: 'PIShop',
+  pEntityIconName: 'shop',
   pEntity: 'Entity',
 }
 const createWrapper = (defaultProps = props, hasSlots = false) => {
