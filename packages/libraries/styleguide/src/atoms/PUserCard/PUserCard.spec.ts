@@ -91,7 +91,7 @@ describe('pUserCard', () => {
         pTag: {
           pColor: 'persian',
           pSize: 'small',
-          pIconLeft: 'PIPerson',
+          pIconLeftName: 'person',
           pContent: 'Client',
           pEffect: 'light',
         },
