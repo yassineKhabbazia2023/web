@@ -25,7 +25,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { logger } from '@pulse/core'
 import { commonApi } from '@pulse/common'
 import { PButton } from '@pulse/styleguide/components'
-import { logger } from '@pulse/core'
 
 const { t } = useI18n({
   inheritLocale: true,
