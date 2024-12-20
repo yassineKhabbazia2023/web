@@ -8,4 +8,5 @@ export interface PDialogProps {
   pBeforeClose?: Function
   pAlignCenter?: boolean
   pShowClose?: boolean
+  pDestroyOnClose?: boolean
 }

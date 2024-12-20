@@ -9,6 +9,7 @@
     :center="pCenter"
     :alignCenter="pAlignCenter"
     :showClose="pShowClose"
+    :destroyOnClose="pDestroyOnClose"
     @close="handleClose"
   >
     <slot />
@@ -32,6 +33,7 @@ const props = withDefaults(defineProps<PDialogProps>(), {
   pBeforeClose: () => {},
   pShowClose: true,
   pAlignCenter: false,
+  pDestroyOnClose: false,
 })
 
 const dialogModel = computed({

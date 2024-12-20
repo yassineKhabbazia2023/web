@@ -3,6 +3,7 @@
     v-model="isDialogVisible"
     :title="modalTitle"
     :beforeClose="handleCloseModal"
+    pDestroyOnClose
     class="documents-explorer-modal"
   >
     <DocumentsExplorerHeader
