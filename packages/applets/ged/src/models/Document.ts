@@ -18,7 +18,7 @@ interface Account {
 
 interface Properties {
   syncStatus: string
-  HasSubscribedToVault: string
+  HasSubscribedToVault?: string
 }
 
 interface Source {
