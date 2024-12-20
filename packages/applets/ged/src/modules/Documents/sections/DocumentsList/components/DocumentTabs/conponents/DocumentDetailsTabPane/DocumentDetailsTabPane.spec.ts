@@ -5,10 +5,6 @@ import DocumentDetailsTabPane from '.'
 import type { DocumentDetailsTabPaneProps } from './DocumentDetailsTabPaneTypes'
 import { vi, describe, it, expect } from 'vitest'
 import { createPinia } from 'pinia'
-import {
-  PButton,
-  PICheckCircle, PTag,
-} from '@pulse/styleguide/components'
 import { downloadDocument } from '@ged/services/Documents'
 import { documentMock } from '@ged/modules/Documents/mocks/documentMock'
 import { nextTick } from 'vue'
@@ -69,7 +65,7 @@ describe('documentDetailsTabPane', () => {
     expect(documentDetailsTabPane.findAll('.label')[4].text()).toBe('Jane Doe')
     expect(documentDetailsTabPane.findAll('.label')[5].text()).toBe('10/10/2023')
     expect(documentDetailsTabPane.findAll('.label')[6].text()).toBe('11/10/2023')
-    const buttonUpload = documentDetailsTabPane.findComponent(PButton)
+    const buttonUpload = documentDetailsTabPane.findComponent({ name: 'PButton' })
     expect(buttonUpload.exists()).toBeTruthy()
 
     buttonUpload.trigger('click')
@@ -84,15 +80,15 @@ describe('documentDetailsTabPane', () => {
     const cases = [
       {
         status: 'Collected',
-        expectedIcon: PICheckCircle,
+        expectedIcon: 'checkCircle',
       },
       {
         status: 'Duplicate',
-        expectedIcon: PICheckCircle,
+        expectedIcon: 'checkCircle',
       },
       {
         status: 'Archived',
-        expectedIcon: PICheckCircle,
+        expectedIcon: 'checkCircle',
       },
     ]
 
@@ -103,11 +99,11 @@ describe('documentDetailsTabPane', () => {
         const updatedProps = { ...defaultProps, document: updatedDocument }
         await nextTick()
         const documentDetailsTabPane = createWrapper(updatedProps)
-        const pTagWrapper = documentDetailsTabPane.findAllComponents(PTag)[1]
+        const pTagWrapper = documentDetailsTabPane.findAllComponents({ name: 'PTag' })[1]
         await nextTick()
 
         expect(
-          pTagWrapper.props('pIconLeft'),
+          pTagWrapper.props('pIconLeftName'),
         ).toBe(expectedIcon)
       },
     )
@@ -119,7 +115,7 @@ describe('documentDetailsTabPane', () => {
     const updatedProps = { ...defaultProps, document: updatedDocument }
     await nextTick()
     const documentDetailsTabPane = createWrapper(updatedProps)
-    const pTagWrapper = documentDetailsTabPane.findAllComponents(PTag)
+    const pTagWrapper = documentDetailsTabPane.findAllComponents({ name: 'PTag' })
     await nextTick()
 
     expect(pTagWrapper).toHaveLength(1)
@@ -131,7 +127,7 @@ describe('documentDetailsTabPane', () => {
     const updatedProps = { ...defaultProps, document: updatedDocument }
     await nextTick()
     const documentDetailsTabPane = createWrapper(updatedProps)
-    const pTagWrapper = documentDetailsTabPane.findAllComponents(PTag)
+    const pTagWrapper = documentDetailsTabPane.findAllComponents({ name: 'PTag' })
     await nextTick()
 
     expect(pTagWrapper).toHaveLength(1)
@@ -153,7 +149,7 @@ describe('documentDetailsTabPane', () => {
     const updatedProps = { ...defaultProps, document: updatedDocument }
     await nextTick()
     const documentDetailsTabPane = createWrapper(updatedProps)
-    const pTagWrapper = documentDetailsTabPane.findAllComponents(PTag)
+    const pTagWrapper = documentDetailsTabPane.findAllComponents({ name: 'PTag' })
     await nextTick()
 
     expect(pTagWrapper).toHaveLength(1)
@@ -165,7 +161,7 @@ describe('documentDetailsTabPane', () => {
     const updatedProps = { ...defaultProps, document: updatedDocument }
     await nextTick()
     const documentDetailsTabPane = createWrapper(updatedProps)
-    const pTagWrapper = documentDetailsTabPane.findAllComponents(PTag)
+    const pTagWrapper = documentDetailsTabPane.findAllComponents({ name: 'PTag' })
     await nextTick()
 
     expect(pTagWrapper).toHaveLength(1)

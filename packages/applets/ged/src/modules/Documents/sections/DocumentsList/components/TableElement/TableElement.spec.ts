@@ -8,12 +8,6 @@ import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
 import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
-import {
-  PIArrowRepeat,
-  PIStars,
-  PICheckCircle,
-  PIExclamationTriangle,
-} from '@pulse/styleguide/components'
 
 const document: Document = {
   id: '1',
@@ -317,35 +311,35 @@ describe('tableElement', () => {
       const cases = [
         {
           status: 'New',
-          expectedIcon: PIStars,
+          expectedIcon: 'stars',
         },
         {
           status: 'Collectable',
-          expectedIcon: PIArrowRepeat,
+          expectedIcon: 'arrowRepeat',
         },
         {
           status: 'Collected',
-          expectedIcon: PICheckCircle,
+          expectedIcon: 'checkCircle',
         },
         {
           status: 'Duplicate',
-          expectedIcon: PICheckCircle,
+          expectedIcon: 'checkCircle',
         },
         {
           status: 'Error',
-          expectedIcon: PIExclamationTriangle,
+          expectedIcon: 'exclamationTriangle',
         },
         {
           status: 'Archived',
-          expectedIcon: PICheckCircle,
+          expectedIcon: 'checkCircle',
         },
         {
           status: 'NotTransmitted',
-          expectedIcon: PIExclamationTriangle,
+          expectedIcon: 'exclamationTriangle',
         },
         {
           status: 'Unknown',
-          expectedIcon: PIExclamationTriangle,
+          expectedIcon: 'exclamationTriangle',
         },
       ]
 
@@ -374,7 +368,7 @@ describe('tableElement', () => {
           const pTagWrapper = wrapper.findComponent({ name: 'PTag' })
           await nextTick()
 
-          expect(pTagWrapper.props('pIconLeft')).toBe(expectedIcon)
+          expect(pTagWrapper.props('pIconLeftName')).toBe(expectedIcon)
         },
       )
     })
