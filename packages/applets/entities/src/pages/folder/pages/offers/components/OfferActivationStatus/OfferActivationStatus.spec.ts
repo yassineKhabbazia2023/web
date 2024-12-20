@@ -1,14 +1,23 @@
 import { describe, expect, it } from 'vitest'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import type { OfferActivationStatusProps } from './OfferActivationStatusTypes'
 import OfferActivationStatus from '.'
 
 const createWrapper = (
   status: OfferActivationStatusProps['status'],
 ): VueWrapper<any> => {
-  return mount(OfferActivationStatus, {
+  return shallowMount(OfferActivationStatus, {
     props: {
       status,
+    },
+    global: {
+      stubs: {
+        PTag: {
+          name: 'PTag',
+          template: '<div />',
+          props: ['pColor', 'pIconLeftName', 'pContent'],
+        },
+      },
     },
   })
 }
@@ -19,21 +28,25 @@ describe('offerActivationStatus', () => {
       {
         status: 'validated',
         expectedValue: {
-          text: 'Validated',
-          color: 'success',
-          icon: 'PICheckCircle',
+          pContent: 'Validated',
+          pColor: 'success',
+          pIconLeftName: 'checkCircle',
         },
       },
       {
         status: 'rejected',
-        expectedValue: { text: 'Rejected', color: 'danger', icon: 'PIXCircle' },
+        expectedValue: {
+          pContent: 'Rejected',
+          pColor: 'danger',
+          pIconLeftName: 'xCircle',
+        },
       },
       {
         status: 'pending',
         expectedValue: {
-          text: 'Pending',
-          color: 'warning',
-          icon: 'PIInfoCircle',
+          pContent: 'Pending',
+          pColor: 'warning',
+          pIconLeftName: 'infoCircle',
         },
       },
     ])(
@@ -43,7 +56,8 @@ describe('offerActivationStatus', () => {
           status as OfferActivationStatusProps['status'],
         )
 
-        expect(wrapper.vm.formattedStatus).toStrictEqual(expectedValue)
+        const pTag = wrapper.findComponent({ name: 'PTag' })
+        expect(pTag.props()).toStrictEqual(expectedValue)
       },
     )
   })

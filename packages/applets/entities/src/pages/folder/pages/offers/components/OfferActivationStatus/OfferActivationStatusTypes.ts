@@ -1,5 +1,4 @@
-import type { PTagProps } from '@pulse/styleguide/types'
-
+import type { IconName, PTagProps } from '@pulse/styleguide/types'
 
 export enum OfferActivationStatus {
   VALIDATED = 'validated',
@@ -11,7 +10,7 @@ export enum OfferActivationStatus {
 export interface ActivationStatus {
   text: string
   color: PTagProps['pColor']
-  icon: string
+  iconName: IconName
 }
 
 export interface OfferActivationStatusProps {

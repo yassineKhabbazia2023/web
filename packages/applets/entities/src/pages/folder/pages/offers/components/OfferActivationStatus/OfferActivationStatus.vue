@@ -2,7 +2,7 @@
   <PTag
     :pColor="formattedStatus.color"
     pEffect="light"
-    :pIconLeft="formattedStatus.icon"
+    :pIconLeftName="formattedStatus.iconName"
     :pContent="formattedStatus.text"
   />
 </template>
@@ -27,11 +27,11 @@ const props = defineProps<OfferActivationStatusProps>()
 const formattedStatus = computed((): ActivationStatus => {
   switch (props.status) {
   case OfferActivationStatus.VALIDATED:
-    return { text: t('validated'), color: 'success', icon: 'PICheckCircle' }
+    return { text: t('validated'), color: 'success', iconName: 'checkCircle' }
   case OfferActivationStatus.REJECTED:
-    return { text: t('rejected'), color: 'danger', icon: 'PIXCircle' }
+    return { text: t('rejected'), color: 'danger', iconName: 'xCircle' }
   default:
-    return { text: t('pending'), color: 'warning', icon: 'PIInfoCircle' }
+    return { text: t('pending'), color: 'warning', iconName: 'infoCircle' }
   }
 })
 </script>
