@@ -4,6 +4,7 @@ import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 import vitest from '@vitest/eslint-plugin'
 import stylistic from '@stylistic/eslint-plugin'
+import importPlugin from 'eslint-plugin-import'
 
 import { includeIgnoreFile } from '@eslint/compat'
 import path from 'node:path'
@@ -25,6 +26,7 @@ export default [
   {
     plugins: {
       '@stylistic': stylistic,
+      'import': importPlugin,
     },
     rules: {
       'no-console': 'error',
@@ -77,6 +79,7 @@ export default [
       //   ignoreRegExpLiterals: true,
       //   ignorePattern: '^\\s*<path',
       // }],
+      'import/no-duplicates': 'error',
       'no-empty': 'error',
       'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
       'no-multiple-empty-lines': ['error', { 'max': 2, 'maxBOF': 1, 'maxEOF': 0 }],

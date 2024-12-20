@@ -1,6 +1,6 @@
-import { type App, shallowRef, reactive } from 'vue'
+import { shallowRef, reactive } from 'vue'
 import { createPinia } from 'pinia'
-import type { Component, DefineComponent } from 'vue'
+import type { App, Component, DefineComponent } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import api from './api'
 import i18n from './i18n'
