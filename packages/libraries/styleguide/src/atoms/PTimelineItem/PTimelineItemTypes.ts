@@ -1,5 +1,4 @@
-import type { Component } from 'vue'
-
+import type { IconName } from '../../types/IconName.types'
 export interface PTimelineItemProps {
   pTimestamp?: string
   pHideTimestamp?: boolean
@@ -8,6 +7,6 @@ export interface PTimelineItemProps {
   pType?: 'primary' | 'success' | 'warning' | 'danger' | 'info'
   pColor?: 'hsl' | 'hsv' | 'hex' | 'rgb'
   pSize?: 'normal' | 'large'
-  pIcon?: Component | string
+  pIconName?: IconName
   pHollow?: boolean
 }

@@ -15,19 +15,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { ElIcon } from 'element-plus'
-import { iconResolver } from '../../utils/iconResolver'
-import { capitalize } from '../../utils/text'
+import { getIconComponent } from '../../utils/iconHelper'
 import type { PIconProps } from './PIcon.types'
+
 const props = defineProps<PIconProps>()
 
-const resolvedIconComponent = computed(() => {
-  if (props.pName === undefined) {
-    return null
-  }
-
-  return iconResolver(`PI${capitalize(props.pName)}`)
-})
-
+const resolvedIconComponent = computed(() => getIconComponent(props.pName))
 </script>
 
 <style scoped>

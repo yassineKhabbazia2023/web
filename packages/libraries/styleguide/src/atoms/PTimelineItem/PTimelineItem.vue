@@ -9,7 +9,7 @@
     :type="pType"
     :color="pColor"
     :size="pSize"
-    :icon="pIcon"
+    :icon="resolvedIconComponent"
     :hollow="pHollow"
   >
     <slot />
@@ -23,9 +23,9 @@
 import { computed } from 'vue'
 import { ElTimelineItem } from 'element-plus'
 import type { PTimelineItemProps } from './PTimelineItemTypes'
+import { getIconComponent } from '../../utils/iconHelper'
 
 const props = withDefaults(defineProps<PTimelineItemProps>(), {
-  pIcon: undefined,
   pTimestamp: '',
   pHideTimestamp: true,
   pCenter: false,
@@ -38,4 +38,6 @@ const props = withDefaults(defineProps<PTimelineItemProps>(), {
 const pClassMapper = computed(() => ({
   [`p-timeline-item--size-${props.pSize}`]: true,
 }))
+
+const resolvedIconComponent = computed(() => getIconComponent(props.pIconName))
 </script>
