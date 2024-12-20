@@ -45,8 +45,8 @@
     "node:clean": "rm -rf node_modules && rm -rf ./packages/**/**/node_modules",
     "turbo:test": "turbo test",
     "turbo:test:continue": "turbo test --continue",
-    "turbo:build": "turbo build",
-    "turbo:build:continue": "turbo build --continue",
+    "turbo:build": "turbo build:types",
+    "turbo:build:continue": "turbo build:types --continue",
     "turbo:lint": "turbo lint",
     "prepare": "husky"
   },
