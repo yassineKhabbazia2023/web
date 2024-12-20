@@ -7,10 +7,10 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build --emptyOutDir",
+    "build": "npm run build:vite",
     "preview": "vite preview",
-    "build-only": "vite build --emptyOutDir",
-    "type-check": "vue-tsc --build --force",
+    "build:vite": "vite build --emptyOutDir",
+    "build:types": "vue-tsc --build --force",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test": "vitest run",
