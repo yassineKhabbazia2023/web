@@ -13,29 +13,6 @@
         {{ t('legalNotice') }}
       </a>
     </li>
-    <li class="legal-links__item flex flex--align-items-center">
-      <button
-        type="button"
-        class="legal-links__link"
-        data-testid="legal-links-notices"
-        @click="handleClick"
-        @click.stop.prevent
-      >
-        {{ t('cookiesNotices') }}
-      </button>
-    </li>
-    <li class="legal-links__item flex flex--align-items-center">
-      <!-- OneTrust Cookies Settings button start -->
-      <button
-        id="ot-sdk-btn"
-        type="button"
-        class="legal-links__link ot-sdk-show-settings"
-        @click.stop.prevent
-      >
-        {{ t('cookiesParameters') }}
-      </button>
-      <!-- OneTrust Cookies Settings button end -->
-    </li>
     <li
       v-if="!isCollab && route.name !== 'login'"
       class="legal-links__item flex flex--align-items-center"
@@ -61,35 +38,6 @@
       </a>
     </li>
   </ul>
-  <div
-    v-show="drawerVisibility"
-    :class="drawerVisibility ? 'open' : 'close'"
-    data-testid="cookies-notices-drawer"
-  >
-    <PDrawer
-      modelValue
-      :pTitle="t('cookiesNotices')"
-      :class="{
-        'padding-top--12': isAuthenticated
-      }"
-      :closeOnClickModal="false"
-      @close-drawer-button="drawerVisibility = false"
-    >
-      <!-- OneTrust Cookies List start -->
-      <div id="ot-sdk-cookie-policy" />
-      <!-- OneTrust Cookies List end -->
-
-      <template #footer>
-        <PButton
-          pType="primary"
-          data-testid="drawer-close-button"
-          @click="drawerVisibility = false"
-        >
-          {{ t('close') }}
-        </PButton>
-      </template>
-    </PDrawer>
-  </div>
 </template>
 
 <script lang="ts" setup>
@@ -97,9 +45,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
-import { PButton, PDrawer } from '@pulse/styleguide/components'
 import { commonStore, fetchUrlTerms } from '@pulse/common'
-import { ReloadOneTrust } from '@app/plugins/OneTrust'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -110,15 +56,9 @@ defineProps({
   dark: Boolean,
 })
 
-const { isCollab, isAuthenticated } = storeToRefs(commonStore())
+const { isCollab } = storeToRefs(commonStore())
 const route = useRoute()
 
-const drawerVisibility = ref(false)
-
-const handleClick = () => {
-  drawerVisibility.value = !drawerVisibility.value
-  ReloadOneTrust()
-}
 const urlTerms = ref()
 onMounted(async () => {
   urlTerms.value = await fetchUrlTerms()

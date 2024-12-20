@@ -35,7 +35,6 @@
       <div class="footer__legal-links margin-bottom--4">
         <LegalLinks dark />
       </div>
-
       <div class="footer__support">
         <SupportInfo />
       </div>
@@ -117,6 +116,7 @@ onMounted(() => {
 
 $footer-margin: 24px;
 .footer {
+  color: var(--el-color-white);
   @media (min-width: 992px) and (min-height: 750px) {
     position: absolute;
     left: 0;

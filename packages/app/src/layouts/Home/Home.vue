@@ -60,7 +60,6 @@ import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import { getBrowserName } from '@app/helper'
 import UserProfile from '@app/components/UserProfile'
 import HomeScheduleDrawer from '@app/components/HomeScheduleDrawer'
-import { ReloadOneTrust } from '@app/plugins/OneTrust'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import { storeToRefs } from 'pinia'
@@ -109,7 +108,6 @@ const hasUserProfileDrawerOpened = ref(false)
 
 const handleClick = () => {
   hasUserProfileDrawerOpened.value = true
-  ReloadOneTrust()
 }
 
 // Computed

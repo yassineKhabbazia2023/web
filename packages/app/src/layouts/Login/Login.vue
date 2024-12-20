@@ -36,11 +36,11 @@
     </main>
 
     <footer class="footer">
-      <div class="footer__support">
-        <SupportInfo />
-      </div>
       <div class="footer__legal-links margin-bottom--4">
         <LegalLinks dark />
+      </div>
+      <div class="footer__support">
+        <SupportInfo />
       </div>
     </footer>
 
@@ -57,13 +57,7 @@
 import { PCol, PImage, PRow } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
-import { onMounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { getIllustration } from './LoginHelper'
-
-const route = useRoute()
-
-const illustration = computed(() => getIllustration(route.name))
+import { onMounted } from 'vue'
 
 onMounted(() => {
   localStorage.removeItem('selected-entity')
