@@ -13,7 +13,7 @@
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import { getFullName } from '@entities/common/utils'
-import { PUserCard, PIVectorPen } from '@pulse/styleguide/components'
+import { PUserCard } from '@pulse/styleguide/components'
 import type { PrincipalContactProps } from './PrincipalContactTypes'
 import type { PTagProps } from '@pulse/styleguide/types'
 
@@ -28,7 +28,7 @@ const contactTag: PTagProps = {
   pSize: 'default',
   pColor: 'persian',
   pContent: t('signatoryCustomer'),
-  pIconLeft: PIVectorPen,
+  pIconLeftName: 'vectorPen',
   pEffect: 'light',
 }
 

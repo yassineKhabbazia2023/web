@@ -14,7 +14,7 @@
       <PTag
         pColor="gray-900"
         pSize="default"
-        pIconLeft="PIPerson"
+        pIconLeftName="person"
         :pContent="userInfo?.persona?.name ?? ''"
         pEffect="light"
         data-testid="persona"

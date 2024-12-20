@@ -3,7 +3,7 @@ import type { ImageName } from '../../atoms/PImage/ImageNameTypes'
 
 export interface PUserCardProps {
   pTitle?: string
-  pTag?: PTagProps
+  pTag?: Omit<PTagProps, 'pIconLeft' | 'pIconRight'>
   pSubtitle?: string
   pDescription?: string
   pImageName?: ImageName

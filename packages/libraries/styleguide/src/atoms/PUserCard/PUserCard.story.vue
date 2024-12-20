@@ -77,7 +77,6 @@
 <script lang="ts" setup>
 import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
-import { PIBuilding } from '../../atoms/PIcon/components'
 import PTag from '../../atoms/PTag'
 import PUserCard from './'
 import type { PUserCardProps } from './PUserCardTypes'
@@ -91,7 +90,7 @@ const data: PUserCardProps = {
     pSize: 'default',
     pColor: 'gray-900',
     pContent: 'Entity',
-    pIconLeft: PIBuilding,
+    pIconLeftName: 'building',
     pEffect: 'light',
   },
 }

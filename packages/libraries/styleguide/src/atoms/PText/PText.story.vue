@@ -35,7 +35,6 @@ import PText from './'
 
 const PTextBasicData = reactive({
   content: 'Lorem ipsum dolor sit amet, consectetur adpiscipiline',
-  icon: PIPerson,
   type: ref<PTextProps['pType']>('primary'),
   bold: false,
   disabled: false,

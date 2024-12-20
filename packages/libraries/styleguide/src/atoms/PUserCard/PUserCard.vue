@@ -32,8 +32,8 @@
             :pDisableTransitions="pTag.pDisableTransitions"
             :pClosable="pTag.pClosable"
             :pContent="pTag.pContent"
-            :pIconLeft="pTag.pIconLeft"
-            :pIconRight="pTag.pIconRight"
+            :pIconLeftName="pTag.pIconLeftName"
+            :pIconRightName="pTag.pIconRightName"
             :pColor="pTag.pColor"
             data-ut="user-card-tag"
           />
