@@ -2,12 +2,11 @@ import { shallowMount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import type { PFilterOptionProps } from './PFilterOptionTypes'
 import PFilterOption from '.'
-import { PIArrowUpCircle } from '../../atoms/PIcon/components'
 
 const defaultProps: PFilterOptionProps = {
   pColor: 'warning',
   pContent: 'to deployed',
-  pIcon: PIArrowUpCircle,
+  pIconName: 'arrowUpCircle',
   pSelected: false,
   pDisabled: false,
   pValue: 0,

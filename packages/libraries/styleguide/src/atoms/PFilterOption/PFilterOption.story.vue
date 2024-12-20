@@ -7,7 +7,7 @@
           :pDisabled="props.pDisabled"
           :pContent="props.pContent"
           :pColor="props.pColor"
-          :pIcon="props.pIcon"
+          :pIconName="props.pIconName"
           :pValue="props.pValue"
           @update:p-selected="logEvent('update:p-selected', $event)"
         />
@@ -28,7 +28,6 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
-import { PIArrowUpCircle } from '../../atoms/PIcon/components'
 import PFilterOption from '.'
 import type { PFilterOptionProps } from './PFilterOptionTypes'
 
@@ -36,7 +35,7 @@ const props: PFilterOptionProps = reactive({
   pSelected: false,
   pDisabled: false,
   pContent: 'A déployer',
-  pIcon: PIArrowUpCircle,
+  pIconName: 'arrowUpCircle',
   pValue: 3,
   pColor: 'warning',
 })

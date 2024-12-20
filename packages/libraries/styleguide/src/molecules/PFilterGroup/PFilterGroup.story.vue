@@ -36,34 +36,34 @@ const pSelectedCodes = ref<string[]>([])
 const selectedIds = ref<number[]>([])
 const pFilters: FilterOption[] = [
   {
-    pIcon: 'PICheck',
+    pIconName: 'check',
     pValue: '2',
     pContent: 'Incident',
     pColor: 'danger',
     pCode: 'incident',
   },
   {
-    pIcon: 'PICheck',
+    pIconName: 'check',
     pValue: '4',
     pContent: 'Deploiment',
     pColor: 'warning',
     pCode: 'deploiment',
   },
   {
-    pIcon: 'PICheck',
+    pIconName: 'check',
     pContent: 'Actif',
     pColor: 'success',
     pCode: 'actif',
   },
   {
-    pIcon: 'PICheck',
+    pIconName: 'check',
     pValue: 2,
     pContent: 'En cours',
     pColor: 'amethyste',
     pCode: 'en-cours',
   },
   {
-    pIcon: 'PIXCircle',
+    pIconName: 'xCircle',
     pValue: '9',
     pContent: 'Résilié',
     pColor: 'gray-900',
@@ -72,34 +72,34 @@ const pFilters: FilterOption[] = [
 ]
 const filtersNumber: FilterOption<number>[] = [
   {
-    pIcon: 'PICheck',
+    pIconName: 'check',
     pValue: '2',
     pContent: 'Incident',
     pColor: 'danger',
     pCode: 1,
   },
   {
-    pIcon: 'PICheck',
+    pIconName: 'check',
     pValue: '4',
     pContent: 'Deploiment',
     pColor: 'warning',
     pCode: 2,
   },
   {
-    pIcon: 'PICheck',
+    pIconName: 'check',
     pContent: 'Actif',
     pColor: 'success',
     pCode: 3,
   },
   {
-    pIcon: 'PICheck',
+    pIconName: 'check',
     pValue: 2,
     pContent: 'En cours',
     pColor: 'amethyste',
     pCode: 4,
   },
   {
-    pIcon: 'PIXCircle',
+    pIconName: 'xCircle',
     pValue: '9',
     pContent: 'Résilié',
     pColor: 'gray-900',

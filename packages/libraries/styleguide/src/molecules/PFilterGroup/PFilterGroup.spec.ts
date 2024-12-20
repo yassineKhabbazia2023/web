@@ -11,7 +11,7 @@ function getMockedFilter(code: string): FilterOption {
     pContent: `content ${code}`,
     pColor: 'success',
     pDisabled: code === 'B',
-    pIcon: 'PIAdd',
+    pIconName: 'add',
   }
 }
 
@@ -55,7 +55,8 @@ describe('filterGroup', () => {
       pColor: mockedFilterA.pColor,
       pSelected: false,
       pDisabled: mockedFilterA.pDisabled,
-      pIcon: mockedFilterA.pIcon,
+      pIcon: undefined,
+      pIconName: mockedFilterA.pIconName,
     }
     const expectedPropsB = {
       pValue: mockedFilterB.pValue,
@@ -63,7 +64,8 @@ describe('filterGroup', () => {
       pColor: mockedFilterB.pColor,
       pSelected: true,
       pDisabled: mockedFilterB.pDisabled,
-      pIcon: mockedFilterB.pIcon,
+      pIcon: undefined,
+      pIconName: mockedFilterB.pIconName,
     }
     const pFilterOptionA = pFilterOptions[0]
     const pFilterOptionB = pFilterOptions[1]

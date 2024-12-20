@@ -1,4 +1,5 @@
 import type { Component } from 'vue'
+import { IconName } from '../../types/IconName.types'
 
 export interface PFilterOptionProps {
   pValue?: string | number
@@ -6,5 +7,6 @@ export interface PFilterOptionProps {
   pColor: 'success' | 'warning' | 'amethyste' | 'danger' | 'gray-500' | 'gray-900'
   pSelected?: boolean
   pDisabled?: boolean
-  pIcon: Component | string
+  pIcon?: Component | string
+  pIconName?: IconName
 }

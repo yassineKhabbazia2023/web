@@ -10,7 +10,7 @@
     "
   >
     <li
-      v-for="({ pCode, pValue, pContent, pColor, pSelected, pDisabled, pIcon }, index) in internalFilters"
+      v-for="({ pCode, pValue, pContent, pColor, pSelected, pDisabled, pIcon, pIconName }, index) in internalFilters"
       :key="index"
       class="p-filter-group__item"
       data-testid="p-filter-group-item"
@@ -22,6 +22,7 @@
         :pSelected="pSelected"
         :pDisabled="pDisabled"
         :pIcon="pIcon"
+        :pIconName="pIconName"
         @update:p-selected="onToggleSelected(pCode, $event)"
       />
     </li>
@@ -59,13 +60,14 @@ function emitUpdateSelectedCodes(selectedCodes: T[]) {
 }
 
 const internalFilters = computed(() => props.pFilters
-  .map(({ pCode, pValue, pContent, pColor, pDisabled, pIcon }) => ({
+  .map(({ pCode, pValue, pContent, pColor, pDisabled, pIcon, pIconName }) => ({
     pCode,
     pValue,
     pContent,
     pColor,
     pDisabled,
     pIcon,
+    pIconName,
     pSelected: props.modelValue?.includes(pCode),
   })))
 </script>

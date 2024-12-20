@@ -25,6 +25,7 @@
       :pContent="pContent"
       :pColor="colorMapper"
       :pIconLeft="pIcon"
+      :pIconLeftName="pIconName"
       pEffect="light"
     />
     <PIcon
