@@ -1,4 +1,4 @@
-import type { Component } from 'vue'
+import type { IconName } from '@pulse/styleguide/types'
 
 export interface Contact {
   contactId: number
@@ -27,5 +27,5 @@ export interface UserStatus {
     | 'gray-300'
     | 'gray-500'
     | 'gray-900'
-  icon: Component
+  iconName: IconName
 }

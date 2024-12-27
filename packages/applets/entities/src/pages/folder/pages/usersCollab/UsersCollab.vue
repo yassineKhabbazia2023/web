@@ -342,19 +342,19 @@ const getStatus = (status: string): UserStatus => {
   case 'Declared':
     return {
       text: t('statusDeclared'),
-      icon: PIPatchCheck,
+      iconName: 'patchCheck',
       color: 'gray-900',
     }
   case 'Connected':
     return {
       text: t('statusConnect'),
-      icon: PIPower,
+      iconName: 'power',
       color: 'success',
     }
   default:
     return {
       text: t('statusInvite'),
-      icon: PIPerson,
+      iconName: 'person',
       color: 'persian',
     }
   }

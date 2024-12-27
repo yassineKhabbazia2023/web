@@ -1,7 +1,6 @@
 import { nextTick } from 'vue'
 import { expect, beforeEach, describe, it, vi } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
-import { PIPatchCheck, PIPerson, PIPower } from '@pulse/styleguide/components'
 import type { AccountRow } from '@entities/common/types'
 import TableData from '@entities/pages/folder/pages/usersClient/components/TableData'
 import * as walletServices from '@entities/services/wallet'
@@ -189,17 +188,17 @@ describe('resendActivationEmailDrawer', () => {
 
       expect(declared).toMatchObject({
         text: 'Declared',
-        icon: PIPatchCheck,
+        iconName: 'patchCheck',
         color: 'gray-900',
       })
       expect(connected).toMatchObject({
         text: 'Connected',
-        icon: PIPower,
+        iconName: 'power',
         color: 'success',
       })
       expect(invited).toMatchObject({
         text: 'Invited',
-        icon: PIPerson,
+        iconName: 'person',
         color: 'persian',
       })
     })
