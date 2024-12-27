@@ -1,8 +1,9 @@
 <template>
   <PTag
+    v-if="tagProperties !== undefined"
     :pColor="tagProperties.color"
     pEffect="light"
-    :pIconLeft="tagProperties.icon"
+    :pIconLeftName="tagProperties.iconName"
     :pContent="tagProperties.content"
     :pClosable="false"
     :pRound="false"
@@ -14,15 +15,8 @@
 <script setup lang='ts'>
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import {
-  PIArrowRepeat,
-  PICheckCircle,
-  PIExclamationTriangle,
-  PIHourglass,
-  PIUpload,
-  PIXCircle,
-  PTag,
-} from '@pulse/styleguide/components'
+import { PTag } from '@pulse/styleguide/components'
+import { type PTagProps } from '@pulse/styleguide/types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -35,16 +29,22 @@ type TagProps = {
 
 const props = defineProps<TagProps>()
 
-const statusMap = new Map([
-  [99, { color: 'cyan', icon: PIHourglass, content: t('creating') }],
-  [10, { color: 'danger', icon: PIExclamationTriangle, content: t('incident') }],
-  [20, { color: 'warning', icon: PIUpload, content: t('to-do') }],
-  [30, { color: 'amethyste', icon: PIArrowRepeat, content: t('in-progress') }],
-  [40, { color: 'success', icon: PICheckCircle, content: t('active') }],
-  [50, { color: 'gray-900', icon: PIXCircle, content: t('inactive') }],
+interface StatusMap {
+  color: PTagProps['pColor']
+  iconName: PTagProps['pIconLeftName']
+  content: PTagProps['pContent']
+}
+
+const statusMap = new Map<number, StatusMap>([
+  [99, { color: 'cyan', iconName: 'hourglass', content: t('creating') }],
+  [10, { color: 'danger', iconName: 'exclamationTriangle', content: t('incident') }],
+  [20, { color: 'warning', iconName: 'upload', content: t('to-do') }],
+  [30, { color: 'amethyste', iconName: 'arrowRepeat', content: t('in-progress') }],
+  [40, { color: 'success', iconName: 'checkCircle', content: t('active') }],
+  [50, { color: 'gray-900', iconName: 'xCircle', content: t('inactive') }],
 ])
 
-const tagProperties: any = computed(() => statusMap.get(Number(props.status)))
+const tagProperties = computed(() => statusMap.get(Number(props.status)))
 </script>
 
 <i18n lang="yaml">

@@ -15,7 +15,7 @@
         :pContent="collabDetails.role"
         pColor="gray-500"
         pSize="default"
-        pIconLeft="PIPerson"
+        pIconLeftName="person"
         pEffect="light"
       />
     </PUserCard>

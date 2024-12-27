@@ -18,7 +18,7 @@
         pSize="default"
         pEffect="light"
         pColor="gray-900"
-        pIconLeft="PIBuilding"
+        pIconLeftName="building"
         :pContent="t('clientCompany')"
       />
     </PUserCard>

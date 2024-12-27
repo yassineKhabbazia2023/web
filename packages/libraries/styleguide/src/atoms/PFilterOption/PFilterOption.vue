@@ -24,7 +24,6 @@
       class="p-filter-option__tag"
       :pContent="pContent"
       :pColor="colorMapper"
-      :pIconLeft="pIcon"
       :pIconLeftName="pIconName"
       pEffect="light"
     />

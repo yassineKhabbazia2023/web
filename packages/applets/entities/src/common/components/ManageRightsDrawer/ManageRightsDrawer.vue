@@ -18,7 +18,7 @@
         pSize="default"
         pEffect="light"
         pColor="gray-900"
-        pIconLeft="PIPerson"
+        pIconLeftName="person"
         :pContent="selectedUser.role"
       />
     </PUserCard>

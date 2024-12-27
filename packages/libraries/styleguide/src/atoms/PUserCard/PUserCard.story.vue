@@ -65,7 +65,7 @@
         <PTag
           pColor="persian"
           pSize="default"
-          pIconLeft="PIPerson"
+          pIconLeftName="person"
           pContent="Client"
           pEffect="light"
         />

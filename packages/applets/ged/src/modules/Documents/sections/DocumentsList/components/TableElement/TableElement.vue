@@ -33,7 +33,7 @@
     v-else-if="fieldType === 'Tag' && isCertified && fieldName === ''"
     pColor="gray-900"
     pContent="Certifié"
-    :pIconLeft="PIPatchCheck"
+    pIconLeftName="patchCheck"
     pEffect="light"
     pSize="default"
     :pClosable="false"
@@ -45,7 +45,7 @@
     v-else-if="fieldType === 'Tag' && getTagProps !== null && fieldName === 'Statut'"
     :pColor="getTagProps.type"
     :pContent="data.piaStatus.labelFr"
-    :pIconLeft="getTagProps.icon"
+    :pIconLeftName="getTagProps.iconName"
     pEffect="light"
     pSize="default"
     :pClosable="false"
@@ -66,49 +66,45 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import {
-  PIStars,
-  PIArrowRepeat,
-  PIExclamationTriangle,
-  PICheckCircle,
   PText,
   PTag,
-  PIPatchCheck,
   PDoubleText,
 } from '@pulse/styleguide/components'
 import DocumentActions from '@ged/modules/Documents/sections/DocumentsList/components/DocumentsActions'
 import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
 import { getIconName } from '@pulse/styleguide'
+import { type IconName } from '@pulse/styleguide/types'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
 import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'
 
 const props = defineProps<TableElementPops>()
 const emit = defineEmits(['actions-dropdown-opened', 'toolbox-action-triggered'])
 
-const tagIconByState = {
-  default: PIStars,
-  warning: PIArrowRepeat,
-  danger: PIExclamationTriangle,
-  success: PICheckCircle,
+const tagIconByState: Record<string, IconName> = {
+  default: 'stars',
+  warning: 'arrowRepeat',
+  danger: 'exclamationTriangle',
+  success: 'checkCircle',
 }
 
 const tagTypeProps = (piaStatus: string): PiaStatusTag => {
   switch (piaStatus) {
   case 'New':
-    return { icon: tagIconByState.default, type: '' }
+    return { iconName: tagIconByState.default, type: '' }
   case 'Collectable':
-    return { icon: tagIconByState.warning, type: 'warning' }
+    return { iconName: tagIconByState.warning, type: 'warning' }
   case 'Collected':
-    return { icon: tagIconByState.success, type: 'success' }
+    return { iconName: tagIconByState.success, type: 'success' }
   case 'Duplicate':
-    return { icon: tagIconByState.success, type: 'success' }
+    return { iconName: tagIconByState.success, type: 'success' }
   case 'Error':
-    return { icon: tagIconByState.danger, type: 'danger' }
+    return { iconName: tagIconByState.danger, type: 'danger' }
   case 'Archived':
-    return { icon: tagIconByState.success, type: 'success' }
+    return { iconName: tagIconByState.success, type: 'success' }
   case 'NotTransmitted':
-    return { icon: tagIconByState.danger, type: 'danger' }
+    return { iconName: tagIconByState.danger, type: 'danger' }
   default:
-    return { icon: tagIconByState.danger, type: 'danger' }
+    return { iconName: tagIconByState.danger, type: 'danger' }
   }
 }
 

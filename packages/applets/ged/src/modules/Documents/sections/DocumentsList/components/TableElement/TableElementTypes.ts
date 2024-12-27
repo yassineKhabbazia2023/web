@@ -1,4 +1,5 @@
 import type { Document, DocumentsTableStructure } from '@ged/models/Document'
+import type { IconName, PTagProps } from '@pulse/styleguide/types'
 
 export interface TableElementPops {
   fieldType: DocumentsTableStructure['fieldType']
@@ -7,9 +8,7 @@ export interface TableElementPops {
   isInSearchScope?: boolean
 }
 
-// At the moment we're unable to correctly import the tag types without importing
-// it from sources files so we need to use any
 export interface PiaStatusTag {
-  icon: any
-  type: any
+  iconName: IconName
+  type: PTagProps['pColor']
 }

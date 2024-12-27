@@ -16,7 +16,7 @@
       <PTag
         pColor="gray-900"
         pSize="default"
-        pIconLeft="PIPerson"
+        pIconLeftName="person"
         pEffect="light"
         :pContent="rowData.role"
       />
