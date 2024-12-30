@@ -5,7 +5,7 @@
         :pFolderName="firstVariantProps.folderName"
         :pFolderId="firstVariantProps.folderId"
         :pHasArrow="firstVariantProps.pHasArrow"
-        :pLeftIcon="firstVariantProps.pLeftIcon"
+        :pIconLeftName="firstVariantProps.pIconLeftName"
         :pSelected="firstVariantProps.selected"
         :pDisabled="firstVariantProps.disabled"
         @on-click-folder-navigation="logEvent('on-click-folder-navigation', $event)"
@@ -13,7 +13,7 @@
       />
       <template #controls>
         <HstText v-model="firstVariantProps.folderName" title="FolderName" />
-        <HstText v-model="firstVariantProps.pLeftIcon" title="pLeftIcon" />
+        <HstText v-model="firstVariantProps.pIconLeftName" title="pIconLeftName" />
         <HstCheckbox v-model="firstVariantProps.disabled" title="disabled" />
         <HstCheckbox v-model="firstVariantProps.pHasArrow" title="pHasArrow" />
       </template>
@@ -24,7 +24,7 @@
         :pFolderName="secondVariantProps.folderName"
         :pFolderId="secondVariantProps.folderId"
         :pHasArrow="secondVariantProps.pHasArrow"
-        :pLeftIcon="secondVariantProps.pLeftIcon"
+        :pIconLeftName="secondVariantProps.pIconLeftName"
         :pSelected="secondVariantProps.selected"
         :pDisabled="secondVariantProps.disabled"
         @on-click-folder-navigation="logEvent('on-click-folder-navigation', $event)"
@@ -32,7 +32,7 @@
       />
       <template #controls>
         <HstText v-model="secondVariantProps.folderName" title="FolderName" />
-        <HstText v-model="secondVariantProps.pLeftIcon" title="pLeftIcon" />
+        <HstText v-model="secondVariantProps.pIconLeftName" title="pIconLeftName" />
         <HstCheckbox v-model="secondVariantProps.disabled" title="disabled" />
         <HstCheckbox v-model="secondVariantProps.pHasArrow" title="pHasArrow" />
       </template>
@@ -43,7 +43,7 @@
         :pFolderName="thirdVariantProps.folderName"
         :pFolderId="thirdVariantProps.folderId"
         :pHasArrow="thirdVariantProps.pHasArrow"
-        :pLeftIcon="thirdVariantProps.pLeftIcon"
+        :pIconLeftName="thirdVariantProps.pIconLeftName"
         :pSelected="thirdVariantProps.selected"
         :pDisabled="thirdVariantProps.disabled"
         :pTooltipContent="thirdVariantProps.pTooltipContent"
@@ -52,7 +52,7 @@
       />
       <template #controls>
         <HstText v-model="thirdVariantProps.folderName" title="FolderName" />
-        <HstText v-model="thirdVariantProps.pLeftIcon" title="pLeftIcon" />
+        <HstText v-model="thirdVariantProps.pIconLeftName" title="pIconLeftName" />
         <HstCheckbox v-model="thirdVariantProps.disabled" title="disabled" />
         <HstCheckbox v-model="thirdVariantProps.pHasArrow" title="pHasArrow" />
       </template>
@@ -64,33 +64,44 @@
 import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
 import PFolderLineNavigationItem from './'
+import { type IconName } from '../../types/IconName.types'
 
-const firstVariantProps = reactive({
+interface VariantProps {
+  selected: boolean
+  disabled: boolean
+  folderName: string
+  folderId: number
+  pHasArrow: boolean
+  pIconLeftName: IconName
+  pTooltipContent?: string
+}
+
+const firstVariantProps = reactive<VariantProps>({
   selected: false,
   disabled: false,
   folderName: 'Name of folder',
   folderId: 3116446,
   pHasArrow: true,
-  pLeftIcon: 'PIFolder',
+  pIconLeftName: 'folder',
 })
 
-const secondVariantProps = reactive({
+const secondVariantProps = reactive<VariantProps>({
   selected: false,
   disabled: false,
   folderName: 'This is a really really really looooooooooooooooooooooooooooooooooooooooooooooooooooooong name',
   folderId: 3116446,
   pHasArrow: true,
-  pLeftIcon: 'PIFolder',
+  pIconLeftName: 'folder',
   pTooltipContent: "Tooltip won't show",
 })
 
-const thirdVariantProps = reactive({
+const thirdVariantProps = reactive<VariantProps>({
   selected: false,
   disabled: true,
   folderName: 'A disabled line',
   folderId: 3116446,
   pHasArrow: true,
-  pLeftIcon: 'PIFolder',
+  pIconLeftName: 'folder',
   pTooltipContent: "You can't access this folder",
 })
 </script>

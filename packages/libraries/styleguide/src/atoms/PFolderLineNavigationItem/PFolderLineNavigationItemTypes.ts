@@ -1,3 +1,5 @@
+import { type IconName } from '../../types/IconName.types'
+
 export interface PFolderLineNavigationItemProps {
   pSelected?: boolean
   pDisabled?: boolean
@@ -5,5 +7,6 @@ export interface PFolderLineNavigationItemProps {
   pFolderId: number
   pHasArrow?: boolean
   pLeftIcon?: string
+  pIconLeftName?: IconName
   pTooltipContent?: string
 }

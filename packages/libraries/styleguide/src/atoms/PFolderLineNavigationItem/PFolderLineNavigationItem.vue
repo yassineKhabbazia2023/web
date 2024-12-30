@@ -11,7 +11,12 @@
       :disabled="!pTooltipContent && !pDisabled"
     >
       <div class="p-folder-line-navigation-item__folder">
-        <PIcon class="margin-right--2">
+        <PIcon
+          v-if="pIconLeftName"
+          :pName="pIconLeftName"
+          class="margin-right--2"
+        />
+        <PIcon v-else-if="pLeftIcon" class="margin-right--2">
           <component :is="resolvedIconsLeft" />
         </PIcon>
         <span
@@ -47,7 +52,7 @@ const props = withDefaults(defineProps<PFolderLineNavigationItemProps>(), {
   pDisabled: false,
   pFolderName: 'Name of folder',
   pHasArrow: true,
-  pLeftIcon: 'PIFolder',
+  pIconLeftName: 'folder',
   pTooltipContent: '',
 })
 
@@ -68,7 +73,7 @@ const handleDoubleClickFolderNavigation = (pFolderId: number) => {
 }
 
 const resolvedIconsLeft = computed(() => {
-  return iconResolver(props.pLeftIcon)
+  return props.pLeftIcon ? iconResolver(props.pLeftIcon) : undefined
 })
 </script>
 
