@@ -69,7 +69,7 @@ vi.mock('@pulse/common', () => ({
     },
   }),
   userPermissions: () => ({
-    hasPermission: () => vi.fn(),
+    hasPermission: vi.fn(() => true),
   }),
 }))
 

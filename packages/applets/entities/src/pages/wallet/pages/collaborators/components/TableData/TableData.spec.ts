@@ -1,4 +1,4 @@
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { MENU_ACTIONS_NAME } from './constants'
@@ -31,7 +31,7 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 const createWrapper = (): VueWrapper<any> =>
-  mount(TableData, {
+  shallowMount(TableData, {
     props: {
       data: mock.items.map(({
         firstName,
@@ -55,6 +55,38 @@ const createWrapper = (): VueWrapper<any> =>
       })),
     },
     attachTo: document.body,
+    global: {
+      stubs: {
+        PTable: {
+          name: 'PTable',
+          template: '<div><slot /></div>',
+        },
+        PTableColumn: {
+          name: 'PTableColumn',
+          template: '<div><slot :row="row" /></div>',
+          data: () => {
+            const row = {
+            }
+
+            return {
+              row,
+            }
+          }
+        },
+        PAvatar: {
+          name: 'PAvatar',
+          template: '<div><slot /></div>',
+        },
+        CollabDetailsDrawer: {
+          name: 'CollabDetailsDrawer',
+          template: '<div class="p-drawer" />',
+        },
+        CollabRightsDrawer: {
+          name: 'CollabRightsDrawer',
+          template: '<div class="p-drawer" />',
+        },
+      }
+    }
   })
 
 const getMenu = () => document.querySelector('.el-popper') as HTMLElement
@@ -73,9 +105,10 @@ describe('tableData', () => {
     wrapper = createWrapper()
   })
 
-  it('has a menu with 3 items', () => {
-    const menuItems = getMenu().querySelectorAll('li')
-    expect(menuItems).toHaveLength(2)
+  it('has a menu with 2 items', () => {
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+    expect(pToolbox.props('pElements')).toHaveLength(2)
   })
 
   const { collaboratorInformation, manageAccessRights } = MENU_ACTIONS_NAME

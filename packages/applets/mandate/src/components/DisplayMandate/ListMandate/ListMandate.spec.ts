@@ -2,8 +2,6 @@ import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import Table from '.'
 import { expect, describe, it, vi } from 'vitest'
 import * as mandateService from '@mandate/services/mandate'
-import * as NotificationHelper from '@mandate/helpers/NotificationHelper'
-import type { NotificationHandle } from '@mandate/helpers/NotificationHelperTypes'
 import { nextTick } from 'vue'
 import { getMockedMandatesData } from '@mandate/../tests/mocks/mandateMock'
 import { flushPromises } from '@vue/test-utils'
@@ -17,8 +15,13 @@ declare let document: any
 
 const currentPage = 1
 
+const mockedNotification = {
+  close: vi.fn(),
+}
+const showNotificationMock = vi.hoisted(() => vi.fn(() => mockedNotification))
+
 vi.mock('@mandate/helpers/NotificationHelper', () => ({
-  showNotification: vi.fn(),
+  showNotification: showNotificationMock,
 }))
 
 vi.mock('@mandate/services/mandate', () => {
@@ -131,10 +134,8 @@ describe('mandate collection', () => {
     await flushPromises()
 
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
-    pToolbox.vm.$emit('p-toolbox-item-clicked')
+    pToolbox.vm.$emit('p-toolbox-item-clicked', 'cancel-telecollection')
     const id = 567
-    const mandate = { id }
-    await wrapper.vm.actionClicked('p-toolbox-item-clicked', 'cancel-telecollection', mandate)
     await wrapper.vm.terminateMandateAction(id)
 
     expect(mandateService.terminateMandate).toHaveBeenCalledWith(id)
@@ -198,10 +199,6 @@ describe('mandate collection', () => {
   })
   it('submit the signed mandate', async () => {
     const currentPage = 2
-    const mockedNotification = vi.fn()
-    const showNotificationSpy = vi
-      .spyOn(NotificationHelper, 'showNotification')
-      .mockReturnValue(mockedNotification as unknown as NotificationHandle)
     const wrapper = createWrapper({
       currentPage,
       data: [],
@@ -239,9 +236,9 @@ describe('mandate collection', () => {
     }
 
     expect(mandateService.uploadSignedMandate).toHaveBeenCalledWith({ mandateId: '123', file })
-    expect(showNotificationSpy).toHaveBeenCalledTimes(2)
-    expect(showNotificationSpy).toHaveBeenNthCalledWith(1, notificationMessages, 'loading', false)
-    expect(showNotificationSpy)
+    expect(showNotificationMock).toHaveBeenCalledTimes(2)
+    expect(showNotificationMock).toHaveBeenNthCalledWith(1, notificationMessages, 'loading', false)
+    expect(showNotificationMock)
       .toHaveBeenNthCalledWith(2, notificationMessages, 'success', true, mockedNotification)
     const refreshMandateCollectionEvent = wrapper.emitted('refresh-mandate-collection')
     expect(refreshMandateCollectionEvent).toStrictEqual([[{

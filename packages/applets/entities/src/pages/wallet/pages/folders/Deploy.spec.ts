@@ -13,7 +13,6 @@ import {
   getMockedSearchCriteria,
 } from './DeployUtilsMock'
 import { getMockedAccount } from '@entities/services/account/accountMock'
-import * as walletServices from '@entities/services/wallet'
 import type { ComponentWrapper } from '@entities/common/types'
 
 const mockedAccount = getMockedAccount()
@@ -32,6 +31,22 @@ const getFavoritesMock = vi.fn(() =>
   }),
 )
 const mockedGatewayGet = vi.hoisted(() => vi.fn())
+vi.mock('@entities/services/subscription', () => ({
+  fetchAccountSubscriptions: vi.fn(() => ([])),
+}))
+
+const fetchFavoriteEntitiesMock = vi.hoisted(() => vi.fn())
+const fetchAccountContactsMock = vi.hoisted(() => vi.fn(() => ({
+  items: [],
+})))
+const manageFavoriteEntitiesMock = vi.hoisted(() => vi.fn())
+
+vi.mock('@entities/services/wallet', () => ({
+  fetchFavoriteEntities: fetchFavoriteEntitiesMock,
+  fetchAccountContacts: fetchAccountContactsMock,
+  manageFavoriteEntities: manageFavoriteEntitiesMock,
+}))
+
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     wallet: {
@@ -65,11 +80,10 @@ vi.mock('@pulse/common', () => ({
 }))
 
 const mockRouterPush = vi.fn()
+const onBeforeRouteUpdateMock = vi.hoisted(() => vi.fn())
 let queryAccountNumbers: string | string[] | undefined = ''
 vi.mock('vue-router', async () => {
-  const actual = await vi.importActual('vue-router')
   return {
-    ...(actual as object),
     useRouter: () => ({
       push: mockRouterPush,
     }),
@@ -78,6 +92,7 @@ vi.mock('vue-router', async () => {
         accountNumbers: queryAccountNumbers,
       },
     }),
+    onBeforeRouteUpdate: onBeforeRouteUpdateMock,
   }
 })
 
@@ -131,16 +146,12 @@ describe('deploy', () => {
   })
 
   it("should send a request to manage favorite entities when 'handleAddFavorite' is called", async () => {
-    const spyManageFavoriteEntities = vi.spyOn(
-      walletServices,
-      'manageFavoriteEntities',
-    )
     const wrapper = createWrapper()
     wrapper.vm.handleAddFavorite(mockedAccount.accountId, true)
     await flushPromises()
 
-    expect(spyManageFavoriteEntities).toHaveBeenCalledOnce()
-    expect(spyManageFavoriteEntities).toHaveBeenCalledWith(
+    expect(manageFavoriteEntitiesMock).toHaveBeenCalledOnce()
+    expect(manageFavoriteEntitiesMock).toHaveBeenCalledWith(
       mockedAccount.accountId,
       true,
     )
@@ -151,7 +162,7 @@ describe('deploy', () => {
     await flushPromises()
 
     const pagination = wrapper.findComponent({ name: 'PPagination' })
-    pagination.vm.$emit('update:p-current-page', 5)
+    pagination.vm.$emit('update:pCurrentPage', 5)
     await nextTick()
 
     expect(wrapper.vm.searchCriteria.currentPage).toBe(5)

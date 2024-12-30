@@ -1,13 +1,39 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import FeedCenterDrawer from '.'
 import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'
 import { fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
 import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
 
 function createWrapper(props: FeedCenterDrawerProps = FeedCenterDrawerBaseProps) {
-  return mount(FeedCenterDrawer, {
+  return shallowMount(FeedCenterDrawer, {
     props,
+    global: {
+      stubs: {
+        PDrawer: {
+          name: 'PDrawer',
+          template: '<div><slot/> </div>',
+          events: ['close-drawer-button'],
+        },
+        PTabs: {
+          name: 'PTabs',
+          template: '<div><slot /></div>',
+        },
+        PTabPane: {
+          name: 'PTabPane',
+          template: '<div><slot /><slot name="label" /></div>',
+        },
+        PPastille: {
+          name: 'PPastille',
+          template: '<div><slot /></div>',
+        },
+        NotificationsWrapper: {
+          name: 'NotificationsWrapper',
+          template: '<div />',
+          events: ['notification-clicked'],
+        },
+      },
+    },
   })
 }
 
@@ -38,7 +64,7 @@ describe('feed center drawer', () => {
         count: 100,
         expectedTextOutput: '99+',
       },
-    ])('displays the formatted unread notifiactions count', async ({ count, expectedTextOutput }) => {
+    ])('displays the formatted unread notifications count', async ({ count, expectedTextOutput }) => {
       wrapper = createWrapper(
         {
           ...FeedCenterDrawerBaseProps,
@@ -52,16 +78,18 @@ describe('feed center drawer', () => {
 
   describe('interactions', () => {
     it('should close drawer on close-drawer-button', async () => {
+      const expectedEmitModelValue = false
       const drawerWrapper = findFeedCenterDrawer(wrapper)
       await drawerWrapper.vm.$emit('close-drawer-button')
-      expect(drawerWrapper.isVisible()).toBeFalsy()
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[expectedEmitModelValue]])
     })
 
-    it('should close drawer on "notification-clicked" event', () => {
+    it('should close drawer on "notification-clicked" event', async () => {
+      const expectedEmitModelValue = false
       const notificationWrapper = wrapper.findComponent({ name: 'NotificationsWrapper' })
       notificationWrapper.vm.$emit('notification-clicked')
-      const drawerWrapper = findFeedCenterDrawer(wrapper)
-      expect(drawerWrapper.isVisible()).toBeFalsy()
+
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[expectedEmitModelValue]])
     })
   })
 

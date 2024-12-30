@@ -1,32 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { subscriptionRequestMock } from './mocks/SubscriptionRequestMock'
 import { nextTick } from 'vue'
 import Subscriptions from '.'
 
-const subscriptionGetMock = vi.fn().mockResolvedValue({
-  data: subscriptionRequestMock,
-})
-const subscriptionPutMock = vi.fn(() => Promise.resolve())
-
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
-    offer: {
-      get: subscriptionGetMock,
-      put: subscriptionPutMock,
-    },
-  }),
-  commonStore: () => ({
-    user: {
-      email: 'test@test.com',
-    },
-  }),
-}))
-
 describe('subscriptions', () => {
   let wrapper: VueWrapper
   beforeEach(async () => {
-    wrapper = mount(Subscriptions)
+    wrapper = shallowMount(Subscriptions)
     await flushPromises()
   })
   it("should open the subscription drawer when clicked on 'consult'", async () => {

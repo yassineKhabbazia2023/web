@@ -20,6 +20,7 @@ vi.mock('@pulse/common', () => ({
 }))
 
 vi.mock('@mandate/services/mandate', () => ({
+  getMandateAvailability: vi.fn(),
   createMandate: vi.fn(() => {
     return Promise.resolve({
       data: { id: 'e4ec92f2-a375-4574-dssdA' },
