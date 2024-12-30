@@ -30,7 +30,7 @@
             v-for="submenu in submenus"
             :key="submenu.index"
             :pIndex="submenu.index"
-            pIcon="PIHouse"
+            pIconName="house"
             :pDisabled="menuConfig.disabledSubmenus"
           >
             <template #title>

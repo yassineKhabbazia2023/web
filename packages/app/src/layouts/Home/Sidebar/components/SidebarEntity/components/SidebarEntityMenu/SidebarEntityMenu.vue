@@ -22,7 +22,7 @@
           {{ t('home') }}
         </template>
       </PMenuItem>
-      <PSubMenu :pIndex="folderSubmenu.index" :pIcon="folderSubmenu.icon">
+      <PSubMenu :pIndex="folderSubmenu.index" :pIconName="folderSubmenu.iconName">
         <template #title>
           {{ folderSubmenu.title }}
         </template>
@@ -65,6 +65,7 @@ import { fetchBIReports } from '@app/services/reporting'
 import { PMenuItem, PMenu, PSubMenu } from '@pulse/styleguide/components'
 import { PERMISSION_CODES } from '@app/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
+import type { IconName } from '@pulse/styleguide/types'
 
 const route = useRoute()
 const { t } = useI18n({
@@ -80,10 +81,22 @@ const hasBIReports = ref(false)
 const isMenuCollapsed = ref(true)
 const activeMenuItem = ref<string>(route.fullPath)
 
-const folderSubmenu = computed(() => ({
+interface MenuItem {
+  index: string
+  title: string
+  display: boolean
+}
+interface FolderSubmenu {
+  index: string
+  title: string
+  iconName: IconName
+  menuItems: MenuItem[]
+}
+
+const folderSubmenu = computed<FolderSubmenu>(() => ({
   index: 'folder',
   title: t('folder'),
-  icon: 'PIBuilding',
+  iconName: 'building',
   menuItems: [
     {
       title: t('users'),
