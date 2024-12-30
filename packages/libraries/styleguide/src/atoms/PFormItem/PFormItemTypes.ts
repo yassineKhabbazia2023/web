@@ -13,4 +13,5 @@ export interface PFormItemProps {
   pSize?: '' | 'large' | 'default' | 'small'
   pFor?: string
   pValidateStatus?: '' | 'error' | 'validating' | 'success'
+  pHasMargin?: boolean
 }

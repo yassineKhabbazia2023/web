@@ -1,5 +1,8 @@
 <template>
   <ElFormItem
+    :class="{
+      'el-form-item--no-margin': !pHasMargin,
+    }"
     :prop="pProp"
     :label="pLabel"
     :labelWidth="pLabelWidth"
@@ -38,5 +41,6 @@ withDefaults(defineProps<PFormItemProps>(), {
   pSize: '',
   pFor: undefined,
   pValidateStatus: undefined,
+  pHasMargin: true,
 })
 </script>

@@ -5,7 +5,7 @@
     :pModel="formValues"
     @submit.prevent
   >
-    <PFormItem prop="search">
+    <PFormItem prop="search" :pHasMargin="false">
       <PInput
         v-model="formValues.search"
         :pPlaceholder="placeholder"

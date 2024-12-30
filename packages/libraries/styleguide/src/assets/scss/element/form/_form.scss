@@ -26,6 +26,9 @@ $form-item-error-padding-top: (
 .el-form {
   .el-form-item {
     margin-bottom: 16px;
+    &--no-margin {
+      margin-bottom: 0;
+    }
     &.is-error {
         div {
           &.el-input__wrapper {
