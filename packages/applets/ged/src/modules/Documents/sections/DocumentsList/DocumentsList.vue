@@ -16,7 +16,7 @@
       @selection-change="handleSelectionChange"
     >
       <!-- Align selection column and header -->
-      <PTableColumn width="1" label="" />
+      <PTableColumn width="4" label="" />
 
       <PTableColumn type="selection" />
       <PTableColumn
@@ -25,6 +25,7 @@
         :label="column.columnName"
         :width="columnSizes[column.columnName]"
         :sortable="sortableColumns.includes(column.columnName)"
+        :align="getRowAlignmentClass(index, documentsListWithTableStructure.documentHeaders)"
       >
         <template #default="scope">
           <TableElement
@@ -65,6 +66,7 @@ import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDocumentsDragAndDrop } from './composables/DocumentsDragAndDrop'
 import DocumentDragGhost from './components/DocumentDragGhost'
+import { getRowAlignmentClass } from './documents-list.manager'
 
 const { t } = useI18n({
   inheritLocale: true,
