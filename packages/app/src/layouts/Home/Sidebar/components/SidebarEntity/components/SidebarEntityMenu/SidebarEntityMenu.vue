@@ -199,7 +199,8 @@ onMounted(async () => {
   }
 
   &__main-menu {
-    margin-top: 72px;
+    // Same margin as left sidebar section - left section gap - left section first item height  - left section item margin-top
+    margin-top: calc(56px + 50px);
   }
 
   @media only screen and (max-width: 991px) {

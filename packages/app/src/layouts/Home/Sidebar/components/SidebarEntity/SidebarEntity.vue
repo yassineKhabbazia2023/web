@@ -13,6 +13,7 @@
       <!-- Sidebar items -->
       <ul class="sidenav-entity__actions flex flex--direction-column">
         <li
+          class="flex flex--align-items-center"
           :class="{
             'text-right sidenav-entity__actions-toggle-item': isSidebarOpened,
           }"
@@ -34,7 +35,7 @@
           </SidebarEntityItem>
         </li>
         <li
-          class="sidenav-entity__actions-wallet flex flex--align-items-center margin-top--1"
+          class="sidenav-entity__actions-wallet flex flex--align-items-center"
           :class="getActiveWallet"
           data-testid="wallet-item"
         >
@@ -55,7 +56,7 @@
         <li
           v-if="selectedEntity"
           :class="isSelectedEntityActive"
-          class="flex flex--align-items-center margin-top--4 is-entity"
+          class="flex flex--align-items-center is-entity"
           data-testid="selected-entity"
         >
           <EntityAvatar
@@ -75,8 +76,9 @@
           <div data-testid="star-divider">
             <PIcon
               class="sidenav-entity__star-divider-icon"
+              :class="isSidebarOpened ? 'margin-right--2' : 'margin-right--3'"
               :color="AppColors.WHITE"
-              size="18"
+              size="14"
               pName="starFill"
             />
           </div>
@@ -233,7 +235,7 @@ onMounted(() => {
 
   position: sticky;
   top: 0;
-  width: 54px;
+  width: 50px;
   height: 100vh;
   flex-grow: 0;
   flex-shrink: 0;
@@ -251,7 +253,7 @@ onMounted(() => {
   }
 
   &__star-divider {
-    padding-left: 10px;
+    padding-left: 8px;
     &-icon {
       width: var(--default-size);
     }
@@ -266,13 +268,12 @@ onMounted(() => {
 
   &__actions {
     > li {
-      padding-left: 10px;
+      padding-left: 8px;
       height: var(--default-height);
     }
 
     $actions: &;
-    margin-top: 72px;
-    gap: 8px;
+    margin-top: 56px;
 
     &-icon {
       width: var(--default-size);
@@ -325,12 +326,12 @@ onMounted(() => {
   }
 
   &__favorites {
-    gap: 12px;
+    height: 50px;
     overflow-y: scroll;
     overscroll-behavior-y: contain;
 
     > li {
-      padding-left: 10px;
+      padding-left: 8px;
     }
 
     li:first-child {

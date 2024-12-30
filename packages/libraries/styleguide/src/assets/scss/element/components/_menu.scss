@@ -374,7 +374,6 @@ $menu: (
 }
 
 .p-menu.el-menu {
-  padding-top: 1.8rem;
   padding-bottom: 0.6rem;
   border: none;
   width: 100%;
@@ -389,11 +388,33 @@ $menu: (
       background-color: var(--el-color-persian-100);
       border-color: var(--el-color-base-persian);
     }
+
+    &.el-menu-item {
+      height: 50px;
+    }
+  }
+
+  .p-menu-item,
+  .p-submenu {
+    height: auto;
+
+    &.is-opened {
+      height: auto;
+    }
+  }
+
+  .el-sub-menu.p-submenu {
+    .el-sub-menu__title {
+      height: 50px;
+      margin-bottom: 0;
+
+    }
   }
 
   &.p-menu--collapsed {
     .p-menu-item,
     .p-submenu {
+
       &__title,
       .el-menu,
       .el-sub-menu__icon-arrow {
@@ -424,6 +445,7 @@ $menu: (
   .p-menu-item__title {
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 1;
   }
 
   > .el-menu-item {
@@ -438,9 +460,8 @@ $menu: (
 
   .el-menu-item {
     padding: 1.5rem !important; // erase element-plus default padding
-    margin-bottom: 1.2rem;
+    margin-bottom: 0rem;
     border-radius: var(--el-border-radius-base);
-    height: auto;
     line-height: 1.2;
 
     .p-menu-item__left-icon {
@@ -465,10 +486,9 @@ $menu: (
 
     .el-sub-menu__title {
       position: relative;
-      height: auto;
       padding: 1.5rem;
-      margin-bottom: 1.2rem;
-      line-height: 1.2;
+      margin-bottom: 0rem;
+      line-height: 1;
     }
 
     .p-submenu__title {

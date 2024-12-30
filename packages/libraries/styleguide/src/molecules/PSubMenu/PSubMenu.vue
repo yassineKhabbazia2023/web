@@ -16,7 +16,7 @@
         class="p-submenu__icon"
         :pName="pIconName"
       />
-      <span class="p-submenu__title margin-left--2">
+      <span class="p-submenu__title margin-left--3">
         <slot name="title" />
       </span>
     </template>
