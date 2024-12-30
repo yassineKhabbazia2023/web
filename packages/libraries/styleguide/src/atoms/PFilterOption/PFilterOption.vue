@@ -76,6 +76,7 @@ const colorMapper = computed(() => {
 <style lang="scss" scoped>
 .p-filter-option {
   $self: &;
+  height: 32px;
   border: 1px solid transparent;
   cursor: pointer;
   padding-top: 5px;
