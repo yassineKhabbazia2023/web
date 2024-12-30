@@ -12,11 +12,11 @@
         class="p-collapse-item__icon margin-right--2"
       />
       <PIcon
-        v-else-if="pIcon"
+        v-else-if="pIconName"
         :size="16"
         class="p-collapse-item__icon margin-right--2"
       >
-        <component :is="iconResolver(pIcon)" />
+        <component :is="iconResolver(pIconName)" />
       </PIcon>
       <span class="p-collapse-item__title margin-right--2 text-left">{{ pTitleCollapseItem }}</span>
     </template>

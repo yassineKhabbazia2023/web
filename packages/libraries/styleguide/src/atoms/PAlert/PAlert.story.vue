@@ -62,7 +62,7 @@
           <PCollapseItem
             pType="alert"
             pTitleCollapseItem="Some documents cannot be moved to your document space"
-            :pIcon="PIExclamationTriangle"
+            pIconName="exclamationTriangle"
             name="1"
           >
             <div>
@@ -72,7 +72,7 @@
           <PCollapseItem
             pType="alert"
             pTitleCollapseItem="Some documents cannot be moved to your document space"
-            :pIcon="PIExclamationTriangle"
+            pIconName="exclamationTriangle"
             name="2"
           >
             <div>

@@ -9,7 +9,7 @@
           <PCollapseItem
             pType="default"
             :pTitleCollapseItem="firstCollapseItem.pTitleCollapseItem"
-            :pIcon="firstCollapseItem.pIcon"
+            :pIconName="firstCollapseItem.pIconName"
             :disabled="firstCollapseItem.disabled"
             :pFullBody="firstCollapseItem.pFullBody"
             name="1"
@@ -21,7 +21,7 @@
           <PCollapseItem
             pType="default"
             :pTitleCollapseItem="secondCollapseItem.pTitleCollapseItem"
-            :pIcon="firstCollapseItem.pIcon"
+            :pIconName="firstCollapseItem.pIconName"
             :disabled="secondCollapseItem.disabled"
             :pFullBody="firstCollapseItem.pFullBody"
             name="2"
@@ -56,7 +56,7 @@
           <PCollapseItem
             pType="shadow"
             :pTitleCollapseItem="firstCollapseItem.pTitleCollapseItem"
-            :pIcon="firstCollapseItem.pIcon"
+            :pIconName="firstCollapseItem.pIconName"
             :disabled="firstCollapseItem.disabled"
             :pFullBody="firstCollapseItem.pFullBody"
             name="1"
@@ -68,7 +68,7 @@
           <PCollapseItem
             pType="shadow"
             :pTitleCollapseItem="secondCollapseItem.pTitleCollapseItem"
-            :pIcon="firstCollapseItem.pIcon"
+            :pIconName="firstCollapseItem.pIconName"
             :disabled="secondCollapseItem.disabled"
             :pFullBody="firstCollapseItem.pFullBody"
             name="2"
@@ -103,7 +103,7 @@
           <PCollapseItem
             pType="alert"
             :pTitleCollapseItem="firstCollapseItem.pTitleCollapseItem"
-            :pIcon="firstCollapseItem.pIcon"
+            :pIconName="firstCollapseItem.pIconName"
             :disabled="firstCollapseItem.disabled"
             :pFullBody="firstCollapseItem.pFullBody"
             name="1"
@@ -115,7 +115,7 @@
           <PCollapseItem
             pType="alert"
             :pTitleCollapseItem="secondCollapseItem.pTitleCollapseItem"
-            :pIcon="firstCollapseItem.pIcon"
+            :pIconName="firstCollapseItem.pIconName"
             :disabled="secondCollapseItem.disabled"
             :pFullBody="firstCollapseItem.pFullBody"
             name="2"
@@ -150,7 +150,7 @@
           <PCollapseItem
             pType="gray"
             :pTitleCollapseItem="firstCollapseItem.pTitleCollapseItem"
-            :pIcon="firstCollapseItem.pIcon"
+            :pIconName="firstCollapseItem.pIconName"
             :disabled="firstCollapseItem.disabled"
             :pFullBody="firstCollapseItem.pFullBody"
             name="1"
@@ -162,7 +162,7 @@
           <PCollapseItem
             pType="gray"
             :pTitleCollapseItem="secondCollapseItem.pTitleCollapseItem"
-            :pIcon="firstCollapseItem.pIcon"
+            :pIconName="firstCollapseItem.pIconName"
             :disabled="secondCollapseItem.disabled"
             :pFullBody="firstCollapseItem.pFullBody"
             name="2"
@@ -193,16 +193,21 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { PIArchive } from '../../atoms/PIcon/components'
+import { IconName } from '../../types/IconName.types'
 import PCollapseItem from '../../atoms/PCollapseItem'
 import PCollapse from '../../molecules/PCollapse'
 import { ElDivider } from 'element-plus'
 
 const activeNames = ref(['1'])
 const accordion = ref(false)
-const firstCollapseItem = reactive({
+const firstCollapseItem = reactive<{
+  pTitleCollapseItem: string
+  pIconName: IconName
+  disabled: boolean
+  pFullBody: boolean
+}>({
   pTitleCollapseItem: 'Consistency',
-  pIcon: PIArchive,
+  pIconName: 'archive',
   disabled: false,
   pFullBody: false,
 })
