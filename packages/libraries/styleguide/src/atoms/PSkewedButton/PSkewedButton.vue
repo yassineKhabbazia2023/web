@@ -63,8 +63,9 @@ function handleClick(event: MouseEvent) {
   transform: skew(-30deg);
   color: var(--el-color-base-white);
   // The skew effect is lengthening the button on the sides.
-  // It increases the width by approximately 16px with a 30 degree skew and the paddings (4) on the y-axis.
-  margin-left: 16px;
+  // It increases the width by approximately 13px with a 30 degree skew and the paddings (4) on the y-axis.
+  margin-left: 13px;
+  margin-right: 13px;
   transition: all 100ms ease-in-out;
   line-height: 1.6rem;
   // Intentionally ignoring our spacing rules here due to the component's unusual design
