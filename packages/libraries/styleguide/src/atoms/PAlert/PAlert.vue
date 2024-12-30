@@ -40,7 +40,7 @@ defineEmits<{
 }>()
 
 const typeModifierClass = computed(() => `p-alert--type-${props.pType}`)
-const iconSize = computed(() => props.pIcon ? 32 : 16)
+const iconSize = computed(() => props.pIconName ? 32 : 16)
 
 const iconName = computed<PIconProps['pName']>(() => {
   switch (props.pType) {
@@ -51,7 +51,7 @@ const iconName = computed<PIconProps['pName']>(() => {
   case 'danger':
     return 'xCircle'
   default:
-    return props.pIcon ?? 'infoCircle'
+    return props.pIconName ?? 'infoCircle'
   }
 })
 

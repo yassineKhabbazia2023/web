@@ -58,7 +58,7 @@ describe('pAlert', () => {
     expect(wrapper.emitted('close')).toBeTruthy()
   })
   it('should show the arrow icon', async () => {
-    const wrapper = createWrapper({ pIcon: 'arrowHere' })
+    const wrapper = createWrapper({ pIconName: 'arrowHere' })
     await vi.dynamicImportSettled()
     const pIconComponent = wrapper.findComponent({ name: 'PIcon' })
     expect(pIconComponent.props('pName')).toBe('arrowHere')
