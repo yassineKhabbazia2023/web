@@ -1,11 +1,9 @@
 import { describe, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { nextTick } from 'vue'
 import { ElMenuItem } from 'element-plus'
 import type { PMenuItemProps } from './PMenuItemTypes'
 import PMenuItem from '.'
-import PMenu from '../PMenu'
 
 const testMenuItemProps = {
   index: '1-1',
@@ -40,8 +38,8 @@ const createWrapper = (items: PMenuItemProps[] = defaultItems): VueWrapper => {
           :pIndex="item.pIndex"
           :pRoute="item.pRoute"
           :pDisabled="item.pDisabled"
-          pLeftIcon="PIHouse"
-          pRightIcon="PICheckCircle"
+          pIconLeftName="house"
+          pIconRightName="checkCircle"
           data-testid="menu-item"
         >
           <template #title>
@@ -74,10 +72,7 @@ const createWrapper = (items: PMenuItemProps[] = defaultItems): VueWrapper => {
           name: 'PMenu',
           template: '<div><slot /></div>',
         },
-        PIcon: {
-          name: 'PIcon',
-          template: '<div><slot /></div>',
-        },
+        PIcon: true,
       },
     },
   })
@@ -110,13 +105,19 @@ describe('pMenu', () => {
       const wrapper = createWrapper()
       await flushPromises()
       const leftIconElement = wrapper.find('.p-menu-item__left-icon')
-      expect(leftIconElement).toBeTruthy()
+      const pIcon = leftIconElement.findComponent({ name: 'PIcon' })
+
+      expect(pIcon.exists()).toBeTruthy()
+      expect(pIcon.props('pName')).toBe('house')
     })
     it('should display the rightIcon if it exists', async () => {
       const wrapper = createWrapper()
       await flushPromises()
       const rightIconElement = wrapper.find('.p-menu-item__right-icon')
-      expect(rightIconElement.exists()).toBeTruthy()
+      const pIcon = rightIconElement.findComponent({ name: 'PIcon' })
+
+      expect(pIcon.exists()).toBeTruthy()
+      expect(pIcon.props('pName')).toBe('checkCircle')
     })
   })
 })

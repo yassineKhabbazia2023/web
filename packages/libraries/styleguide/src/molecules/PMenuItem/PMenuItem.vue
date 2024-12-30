@@ -6,12 +6,22 @@
     class="p-menu-item"
   >
     <template v-if="slots.title" #title>
-      <PIcon v-if="pLeftIcon" class="p-menu-item__left-icon">
+      <PIcon
+        v-if="pIconLeftName"
+        :pName="pIconLeftName"
+        class="p-menu-item__left-icon"
+      />
+      <PIcon v-else-if="pLeftIcon" class="p-menu-item__left-icon">
         <component :is="iconResolver(pLeftIcon)" />
       </PIcon>
       <span class="p-menu-item__title margin-left--2">
         <slot name="title" />
       </span>
+      <PIcon
+        v-if="pIconRightName"
+        :pName="pIconRightName"
+        class="p-menu-item__right-icon"
+      />
       <PIcon v-if="pRightIcon" class="p-menu-item__right-icon">
         <component :is="iconResolver(pRightIcon)" />
       </PIcon>
