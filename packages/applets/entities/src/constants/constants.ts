@@ -1,6 +1,6 @@
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import type { DefineDateTimeFormat } from 'vue-i18n'
-import { PFilterOptionProps } from '@pulse/styleguide/types'
+import { IconName, PFilterOptionProps } from '@pulse/styleguide/types'
 
 export const DATE_TIME_FORMATS = {
   'en-US': {
@@ -58,8 +58,8 @@ export const ENTITY_STATUS_COLOR: Record<EntityStatus, PFilterOptionProps['pColo
   [EntityStatus.CONNECTED]: 'success',
 }
 
-export const ENTITY_STATUS_ICON_NAME: Record<EntityStatus, string> = {
-  [EntityStatus.TO_DEPLOY]: 'PIArrowUpCircle',
-  [EntityStatus.IN_PROGRESS]: 'PIArrowRepeat',
-  [EntityStatus.CONNECTED]: 'PICheckCircle',
+export const ENTITY_STATUS_ICON_NAME: Record<EntityStatus, IconName> = {
+  [EntityStatus.TO_DEPLOY]: 'arrowUpCircle',
+  [EntityStatus.IN_PROGRESS]: 'arrowRepeat',
+  [EntityStatus.CONNECTED]: 'checkCircle',
 }

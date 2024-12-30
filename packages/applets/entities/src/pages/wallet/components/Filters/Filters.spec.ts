@@ -34,19 +34,19 @@ describe('filter', () => {
         'pCode': 1,
         'pColor': 'warning',
         'pContent': 'To Deploy',
-        'pIcon': 'PIArrowUpCircle',
+        'pIconName': 'arrowUpCircle',
         'pValue': 3,
       }, {
         'pCode': 2,
         'pColor': 'amethyste',
         'pContent': 'In progress',
-        'pIcon': 'PIArrowRepeat',
+        'pIconName': 'arrowRepeat',
         'pValue': 0,
       }, {
         'pCode': 3,
         'pColor': 'success',
         'pContent': 'Connected',
-        'pIcon': 'PICheckCircle',
+        'pIconName': 'checkCircle',
         'pValue': 0,
       }],
     }
@@ -57,29 +57,29 @@ describe('filter', () => {
         'pColor': 'gray-900',
         'pContent': 'Declared',
         'pDisabled': true,
-        'pIcon': 'PIPatchCheck',
+        'pIconName': 'patchCheck',
         'pValue': 6,
       }, {
         'pCode': undefined,
         'pColor': 'gray-900',
         'pContent': 'Connected',
         'pDisabled': true,
-        'pIcon': 'PIPower',
+        'pIconName': 'power',
         'pValue': 0,
       }, {
         'pCode': undefined,
         'pColor': 'gray-900',
         'pContent': 'Guest(s)',
         'pDisabled': true,
-        'pIcon': 'PIPerson',
+        'pIconName': 'person',
         'pValue': 0,
       }],
     }
 
     const pFilterGroups = wrapper.findAllComponents({ name: 'PFilterGroup' })
-    const [pFilterGroup1, pFilterGrou2] = pFilterGroups
+    const [pFilterGroup1, pFilterGroup2] = pFilterGroups
     expect(pFilterGroup1.props()).toStrictEqual(expectedProps1)
-    expect(pFilterGrou2.props()).toStrictEqual(expectedProps2)
+    expect(pFilterGroup2.props()).toStrictEqual(expectedProps2)
   })
 
   it('should emit event filterByStatus when click on the entityStatus button', async () => {

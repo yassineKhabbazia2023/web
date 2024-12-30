@@ -4,7 +4,7 @@
     "pColor": "gray-900",
     "pContent": "declared",
     "pDisabled": true,
-    "pIcon": "PIPatchCheck",
+    "pIconName": "patchCheck",
     "pValue": 6,
   },
   {
@@ -12,7 +12,7 @@
     "pColor": "gray-900",
     "pContent": "connected",
     "pDisabled": true,
-    "pIcon": "PIPower",
+    "pIconName": "power",
     "pValue": 0,
   },
   {
@@ -20,7 +20,7 @@
     "pColor": "gray-900",
     "pContent": "guests",
     "pDisabled": true,
-    "pIcon": "PIPerson",
+    "pIconName": "person",
     "pValue": 0,
   },
 ]

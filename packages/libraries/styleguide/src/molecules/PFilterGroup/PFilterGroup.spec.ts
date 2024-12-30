@@ -55,7 +55,6 @@ describe('filterGroup', () => {
       pColor: mockedFilterA.pColor,
       pSelected: false,
       pDisabled: mockedFilterA.pDisabled,
-      pIcon: undefined,
       pIconName: mockedFilterA.pIconName,
     }
     const expectedPropsB = {
@@ -64,7 +63,6 @@ describe('filterGroup', () => {
       pColor: mockedFilterB.pColor,
       pSelected: true,
       pDisabled: mockedFilterB.pDisabled,
-      pIcon: undefined,
       pIconName: mockedFilterB.pIconName,
     }
     const pFilterOptionA = pFilterOptions[0]

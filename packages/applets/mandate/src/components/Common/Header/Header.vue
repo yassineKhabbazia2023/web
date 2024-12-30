@@ -92,31 +92,31 @@ const filters: FilterOption<number>[] = [
     pContent: t('incident'),
     pCode: 10,
     pColor: 'danger',
-    pIcon: 'PIExclamationTriangle',
+    pIconName: 'exclamationTriangle',
   },
   {
     pContent: t('to-do'),
     pCode: 20,
     pColor: 'warning',
-    pIcon: 'PIUpload',
+    pIconName: 'upload',
   },
   {
     pContent: t('in-progress'),
     pCode: 30,
     pColor: 'amethyste',
-    pIcon: 'PIArrowRepeat',
+    pIconName: 'arrowRepeat',
   },
   {
     pContent: t('active'),
     pCode: 40,
     pColor: 'success',
-    pIcon: 'PICheckCircle',
+    pIconName: 'checkCircle',
   },
   {
     pContent: t('inactive'),
     pCode: 50,
     pColor: 'gray-900',
-    pIcon: 'PIXCircle',
+    pIconName: 'xCircle',
   },
 ]
 </script>

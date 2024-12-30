@@ -60,31 +60,31 @@ describe('header.vue', () => {
           pContent: 'Incident',
           pCode: 10,
           pColor: 'danger',
-          pIcon: 'PIExclamationTriangle',
+          pIconName: 'exclamationTriangle',
         },
         {
           pContent: 'To do',
           pCode: 20,
           pColor: 'warning',
-          pIcon: 'PIUpload',
+          pIconName: 'upload',
         },
         {
           pContent: 'In progress',
           pCode: 30,
           pColor: 'amethyste',
-          pIcon: 'PIArrowRepeat',
+          pIconName: 'arrowRepeat',
         },
         {
           pContent: 'Active',
           pCode: 40,
           pColor: 'success',
-          pIcon: 'PICheckCircle',
+          pIconName: 'checkCircle',
         },
         {
           pContent: 'Inactive',
           pCode: 50,
           pColor: 'gray-900',
-          pIcon: 'PIXCircle',
+          pIconName: 'xCircle',
         },
       ]
       const expectedRefreshMandateCollectionEvent = [

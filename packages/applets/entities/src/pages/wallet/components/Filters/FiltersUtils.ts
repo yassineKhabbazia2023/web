@@ -13,21 +13,21 @@ export function getOnboardingFilters(
       pCode: EntityStatus.TO_DEPLOY,
       pValue: entitiesStatistics?.accountToDeploy,
       pColor: ENTITY_STATUS_COLOR[EntityStatus.TO_DEPLOY],
-      pIcon: ENTITY_STATUS_ICON_NAME[EntityStatus.TO_DEPLOY],
+      pIconName: ENTITY_STATUS_ICON_NAME[EntityStatus.TO_DEPLOY],
     },
     {
       pContent: filterLabels['inProgress'],
       pCode: EntityStatus.IN_PROGRESS,
       pValue: entitiesStatistics?.accountInProgress,
       pColor: ENTITY_STATUS_COLOR[EntityStatus.IN_PROGRESS],
-      pIcon: ENTITY_STATUS_ICON_NAME[EntityStatus.IN_PROGRESS],
+      pIconName: ENTITY_STATUS_ICON_NAME[EntityStatus.IN_PROGRESS],
     },
     {
       pContent: filterLabels['connected'],
       pCode: EntityStatus.CONNECTED,
       pValue: entitiesStatistics?.accountConnected,
       pColor: ENTITY_STATUS_COLOR[EntityStatus.CONNECTED],
-      pIcon: ENTITY_STATUS_ICON_NAME[EntityStatus.CONNECTED],
+      pIconName: ENTITY_STATUS_ICON_NAME[EntityStatus.CONNECTED],
     },
   ]
 
@@ -44,7 +44,7 @@ export function getUserConnexionFilters(
       pCode: undefined,
       pValue: entitiesStatistics?.contactDeclared,
       pColor: 'gray-900',
-      pIcon: 'PIPatchCheck',
+      pIconName: 'patchCheck',
       pDisabled: true,
     },
     {
@@ -52,7 +52,7 @@ export function getUserConnexionFilters(
       pCode: undefined,
       pValue: entitiesStatistics?.contactConnected,
       pColor: 'gray-900',
-      pIcon: 'PIPower',
+      pIconName: 'power',
       pDisabled: true,
     },
     {
@@ -60,7 +60,7 @@ export function getUserConnexionFilters(
       pCode: undefined,
       pValue: entitiesStatistics?.contactInvited,
       pColor: 'gray-900',
-      pIcon: 'PIPerson',
+      pIconName: 'person',
       pDisabled: true,
     },
   ]
