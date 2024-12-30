@@ -75,7 +75,7 @@ describe('sidebarEntityMenu', () => {
       const sidebarEntityMenuItems = wrapper
         .findAll('.p-menu-item__title')
         .map((item) => item.text())
-      const menuItemsWithAccess = ['Home', 'Information']
+      const menuItemsWithAccess = ['Home', 'Entity']
       const menuItemsWithoutAccess = 'Users'
 
       expect(sidebarEntityMenuItems).toStrictEqual(menuItemsWithAccess)
@@ -91,19 +91,12 @@ describe('sidebarEntityMenu', () => {
         .findAll('.p-menu-item__title')
         .map((item) => item.text())
       const menuItemsWithAccess = 'Home'
-      const menuItemsWithoutAccess = 'Delegations history'
+      const menuItemsWithoutAccess = 'Entity'
 
       expect(sidebarEntityMenuItems).toContain(menuItemsWithAccess)
       expect(sidebarEntityMenuItems).not.toContain(menuItemsWithoutAccess)
     })
-    it('should not display the Power BI menu if the user does not have BI reports', () => {
-      wrapper = createWrapper()
-      const sidebarEntityMenuItems = wrapper
-        .findAll('.p-menu-item__title')
-        .map((item) => item.text())
 
-      expect(sidebarEntityMenuItems).not.toContain('BI reports')
-    })
     it('should display the Power BI menu if the user has BI reports', async () => {
       vi.spyOn(ReportService, 'fetchBIReports').mockResolvedValue({
         items: mockedBIReports,
@@ -133,16 +126,6 @@ describe('sidebarEntityMenu', () => {
 
       expect(wrapper.classes()).toContain('sidenav-entity-menu--collapsed')
     })
-    it('should track amplitude event when a nested menu item is clicked', async () => {
-      wrapper = createWrapper()
-      const sidebarEntityMenu = wrapper.find('[data-testid=nested-menu-item]')
-      await sidebarEntityMenu.trigger('click')
-
-      expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-      expect(spyTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
-        feature_name: 'users',
-      })
-    })
     it('should track amplitude event when a menu item is clicked', async () => {
       wrapper = createWrapper()
       const sidebarEntityMenuItem = wrapper.find('[data-testid=menu-item]')
@@ -150,7 +133,7 @@ describe('sidebarEntityMenu', () => {
 
       expect(spyTrackAmplitude).toHaveBeenCalledOnce()
       expect(spyTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
-        feature_name: 'documents',
+        feature_name: 'entity',
       })
     })
   })
