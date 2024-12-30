@@ -1,5 +1,5 @@
 <template>
-  <div class="wallet padding--2">
+  <div class="wallet">
     <h3 class="h3 margin-bottom--6 wallet__title">
       {{ t('hello') }} {{ user?.firstName }}
     </h3>

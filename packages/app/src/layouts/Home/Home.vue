@@ -218,7 +218,7 @@ onBeforeUnmount(() => {
 
   .main-container {
     display: block;
-    padding: 16px;
+    padding: 24px;
     position: relative;
     width: 100%;
     height: calc(100vh - 56px);

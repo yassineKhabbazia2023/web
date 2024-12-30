@@ -4,7 +4,7 @@
       <PLoader pType="primary" size="42" />
     </div>
 
-    <div v-else-if="defaultFolder !== null">
+    <div v-else-if="defaultFolder !== null" class="padding-top--4 padding-left--2">
       <CreateFolderSection
         :entityId="selectedEntity"
         :isCreateFolderModalVisible="isCreateFolderModalVisible"
@@ -556,10 +556,6 @@ defineExpose({
 
   &__loader {
     margin-top: 40px;
-  }
-
-  &__new-folder {
-    margin: 8px 0 0 8px;
   }
 
   &__trees {
