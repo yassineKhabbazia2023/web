@@ -27,18 +27,13 @@ describe('clientHome', () => {
   it('should render the the component', () => {
     expect(wrapper.find('.home-folder').exists()).toBeTruthy()
   })
-  it('displays correctly the header of the page', () => {
-    const wrapper = createWrapper()
-    const arrowRightIcon = wrapper.findComponent({ name: 'PIcon' })
 
-    expect(arrowRightIcon.exists()).toBeTruthy()
-    expect(wrapper.find('[data-testid=home-folder-name]').text()).toBe(
-      mockedEntity.legalName,
-    )
-    expect(wrapper.find('[data-testid=home-folder-account-number]').text()).toBe(
-      mockedEntity.accountNumber,
-    )
+  it('renders the entity header', () => {
+    const wrapper = createWrapper()
+    const entityHeaderWrapper = wrapper.findComponent({ name: 'EntityHeader' })
+    expect(entityHeaderWrapper.exists()).toBeTruthy()
   })
+
   it('should display the tooltip button when the user is a collab', () => {
     const btnAction = wrapper.findComponent(
       '[data-testid=home-folder-button]',
@@ -46,6 +41,7 @@ describe('clientHome', () => {
 
     expect(btnAction.classes()).toContain('el-tooltip__trigger')
   })
+
   it('should correctly display the page header for the client', async () => {
     const wrapper = createWrapper()
     const store = commonStore()

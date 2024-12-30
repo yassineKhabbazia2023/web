@@ -111,14 +111,11 @@ describe('folder', () => {
       expect(folderTabsWrapper.exists()).toBeFalsy()
     })
 
-    it('displays correctly the table', () => {
-      expect(wrapper.find('.folder-wrapper__default-entity').text()).toBe(
-        mockedEntity.legalName,
-      )
-      expect(wrapper.find('[data-testid="folder-account-number"]').text()).toBe(
-        mockedEntity.accountNumber,
-      )
+    it('renders the entity header', () => {
+      const entityHeaderWrapper = wrapper.findComponent({ name: 'EntityHeader' })
+      expect(entityHeaderWrapper.exists()).toBeTruthy()
     })
+
     it.each([
       ['collaborateurs', 'tab-collab'],
       ['utilisateurs', 'tab-users'],
@@ -132,6 +129,7 @@ describe('folder', () => {
         feature_name: tabName,
       })
     })
+
     it.each([
       ['collab', 'tab-collab'],
       ['users', 'tab-users'],
@@ -144,6 +142,7 @@ describe('folder', () => {
         name: tabs,
       })
     })
+
     it('should only display tabs to which the user has permission to access', async () => {
       const title = 'Information'
       const mockedTabs: Tab[] = [
@@ -163,6 +162,7 @@ describe('folder', () => {
         expect(label).toBe(tabPane)
       })
     })
+
     it("should not display the 'Add User' button if the client does not have the necessary permissions", async () => {
       vi.spyOn(FolderHelper, 'getTabs').mockReturnValue([])
 

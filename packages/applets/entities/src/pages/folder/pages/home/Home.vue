@@ -1,21 +1,10 @@
 <template>
   <div class="home-folder">
-    <header class="home-folder__header padding-bottom--4 flex flex--align-items-center">
-      <PAvatar
-        pShape="circle"
-        pType="small"
-        pColor="orange"
-      >
-        <PIcon pName="pulse" />
-      </PAvatar>
-      <h2 class="h4 margin-left--2" data-testid="home-folder-name">
-        {{ defaultEntity?.legalName }}
-      </h2>
-      <div class="home-folder__header-separator margin-x--3 bg--neutral-gray-100" />
-      <p class="text-color--neutral-gray-500" data-testid="home-folder-account-number">
-        {{ defaultEntity?.accountNumber }}
-      </p>
-    </header>
+    <EntityHeader
+      v-if="defaultEntity"
+      :legalName="defaultEntity.legalName"
+      :accountNumber="defaultEntity.accountNumber"
+    />
     <PRow :pGutter="24">
       <PCol
         :pSpan="24"
@@ -194,6 +183,7 @@ import {
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { commonStore } from '@pulse/common'
+import EntityHeader from '@entities/common/components/EntityHeader'
 
 const { t } = useI18n({
   inheritLocale: true,

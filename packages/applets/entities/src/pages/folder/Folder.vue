@@ -4,18 +4,11 @@
     class="folder-wrapper"
     data-testid="folder-tabs-wrapper"
   >
-    <div class="flex flex--align-items-center">
-      <PAvatar pColor="orange">
-        <PIcon pName="pulse" />
-      </PAvatar>
-      <p class="margin-left--3 folder-wrapper__default-entity h4">
-        {{ defaultEntity?.legalName }}
-      </p>
-      <div class="folder-wrapper__header-separator margin-x--3 bg--neutral-gray-100" />
-      <p class="text-color--neutral-gray-500" data-testid="folder-account-number">
-        {{ defaultEntity?.accountNumber }}
-      </p>
-    </div>
+    <EntityHeader
+      v-if="defaultEntity"
+      :legalName="defaultEntity.legalName"
+      :accountNumber="defaultEntity.accountNumber"
+    />
     <PTabs
       v-if="!isLoading"
       :modelValue="activeTab"
@@ -48,6 +41,7 @@ import {
 import Home from './pages/home'
 import { getTabAuthorisations, getTabs } from './FolderHelper'
 import type { TabName, Tab } from './FolderTypes'
+import EntityHeader from '@entities/common/components/EntityHeader'
 
 const { t } = useI18n({
   inheritLocale: true,
