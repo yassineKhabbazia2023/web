@@ -2,7 +2,7 @@
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 $switch: (
-  'on-color': var(--el-color-base-persian),
+  'on-color': var(--el-color-base-blue-pulse),
   'off-color': var(--el-color-neutral-gray-100),
 );
 
@@ -12,7 +12,7 @@ div.el-switch {
 
   &.is-disabled > .el-switch__core .el-switch__action {
     --el-switch-on-color: var(--el-color-persian-200);
-    --el-switch-off-color: var(--el-color-neutral-gray-100);
+    --el-switch-off-color: var(--el-color-neutral-gray-50);
 
     background-color: var(--el-color-neutral-gray-300);
   }
