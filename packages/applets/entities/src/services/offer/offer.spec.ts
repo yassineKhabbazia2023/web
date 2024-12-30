@@ -25,6 +25,10 @@ const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
 
+vi.mock('@entities/helper/helper', () => ({
+  handleRequestError: vi.fn(),
+}))
+
 vi.mock('env-vars', () => ({
   VITE_CONFIG_OFFERS_BOOK: 'offers-book-test-link',
 }))

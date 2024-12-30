@@ -21,6 +21,18 @@ import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawer
 
 const TEST_DATE = '2024-08-14'
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 interface Window {
   showSaveFilePicker: any
   URL: any
