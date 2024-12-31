@@ -146,7 +146,6 @@
     v-model:p-page-size="state.limit"
     :pTotal="state.totalItems"
     :pPageSizes="PAGE_SIZES"
-    :pPageSizeSelectorGroupLabel="t('numberOfUsersPerPage')"
     pPageSizeSelectorSuffix=""
     pShowTotalPageCounter
     class="flex--grow-0 flex--shrink-0 margin-negative-x--2"
@@ -489,7 +488,6 @@ en-US:
   collaboratorEmail: 'E-mail'
   collaboratorFunction: 'Function'
   collaboratorOffice: 'Office'
-  numberOfUsersPerPage: 'Number of collaborators per page'
   on: 'on'
   addCollaborator: 'Add collaborator'
   removeCollaborator: 'Remove collaborator'
@@ -502,7 +500,6 @@ fr-FR:
   collaboratorEmail: 'E-mail'
   collaboratorFunction: 'Fonction'
   collaboratorOffice: 'Bureau'
-  numberOfUsersPerPage: 'Nombre de collaborateurs par page'
   on: 'sur'
   addCollaborator: 'Ajouter un collaborateur'
   removeCollaborator: 'Retirer le collaborateur'

@@ -39,7 +39,6 @@
       v-model:p-page-size="state.limit"
       :pTotal="state.totalItems"
       :pPageSizes="PAGE_SIZES"
-      :pPageSizeSelectorGroupLabel="t('numberOfCollaboratorsPerPage')"
       pPageSizeSelectorSuffix=""
       pShowTotalPageCounter
       class="flex--grow-0 flex--shrink-0 margin-negative-x--2"
@@ -191,9 +190,7 @@ onMounted(async () => {
 
 <i18n lang="yaml">
 en-US:
-  numberOfCollaboratorsPerPage: 'Number of collaborators per page'
   on: 'on'
 fr-FR:
-  numberOfCollaboratorsPerPage: 'Nombre de collaborateurs par page'
   on: 'sur'
 </i18n>

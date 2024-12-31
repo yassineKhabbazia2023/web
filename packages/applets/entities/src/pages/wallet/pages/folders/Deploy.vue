@@ -62,7 +62,6 @@
         :pCurrentPage="searchResult.currentPage"
         :pTotal="searchResult.totalItems"
         :pPageSizes="PAGE_SIZES"
-        :pPageSizeSelectorGroupLabel="t('numberOfFoldersPerPage')"
         pPageSizeSelectorSuffix=""
         pShowTotalPageCounter
         @on-page-range-changed="handlePageRangeChanged"
@@ -321,7 +320,6 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
     toDeploy: 'To Deploy'
     inProgress: 'In progress'
     connected: 'Connected'
-    numberOfFoldersPerPage: 'number of folder per page'
     on: 'on'
     delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
   fr-FR:
@@ -329,7 +327,6 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'
-    numberOfFoldersPerPage: 'nombre de dossiers par page'
     on: 'sur'
     delegation: 'Déléguer mon portefeuille | Déléguer le dossier | Déléguer les dossiers'
 </i18n>

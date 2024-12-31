@@ -19,7 +19,6 @@
       :pTotal="binDocuments.documentsPage.totalItems"
       pShowTotalPageCounter
       :pPageSizes="pagesRanges"
-      :pPageSizeSelectorGroupLabel="t('numberOfDocumentsPerPage')"
       pPageSizeSelectorSuffix=""
       @on-page-range-changed="setCurrentPageSize"
     >
@@ -159,10 +158,3 @@ onMounted(async () => {
   await fetchBin()
 })
 </script>
-
-<i18n lang="yaml">
-  en-US:
-    numberOfDocumentsPerPage: 'Number of documents per page'
-  fr-FR:
-    numberOfDocumentsPerPage: 'Nombre de documents par page'
-</i18n>

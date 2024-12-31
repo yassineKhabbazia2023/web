@@ -86,7 +86,6 @@
         pShowTotalPageCounter
         :pPageSizes="pagesRanges"
         pTestIdRoot="ged-documents"
-        :pPageSizeSelectorGroupLabel="t('numberOfDocumentsPerPage')"
         pPageSizeSelectorSuffix=""
         @on-page-range-changed="setCurrentPageSize"
       >
@@ -748,10 +747,3 @@ defineExpose({
     }
   }
 </style>
-
-<i18n lang="yaml">
-  en-US:
-    numberOfDocumentsPerPage: 'Number of documents per page'
-  fr-FR:
-    numberOfDocumentsPerPage: 'Nombre de documents par page'
-</i18n>
