@@ -4,6 +4,7 @@ import { describe, it, expect } from 'vitest'
 import PTabPane from '.'
 import type { PTabPaneProps } from './PTabPaneTypes'
 import type { PTooltipProps } from '../../atoms/PTooltip/PTooltipTypes'
+import type { IconName } from '../../types/IconName.types'
 
 const propsValue: PTabPaneProps = {
   pLabel: 'label',
@@ -11,7 +12,7 @@ const propsValue: PTabPaneProps = {
   pName: 'name',
   pClosable: false,
   pLazy: false,
-  pTabIcon: 'PICalendarEvent',
+  pIconName: 'calendarEvent',
   pTooltip: undefined,
 }
 
@@ -30,7 +31,7 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
           :pName="props.pName"
           :pClosable="props.pClosable"
           :pLazy="props.pLazy"
-          :pTabIcon="props.pTabIcon"
+          :pIconName="props.pIconName"
           :pTooltip="props.pTooltip"
         >
           <template
@@ -71,6 +72,7 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
         PIcon: {
           name: 'PIcon',
           template: '<div><slot /></div>',
+          props: ['pName'],
         },
         PTooltip: {
           name: 'PTooltip',
@@ -98,48 +100,54 @@ describe('pTabPane', () => {
 
     expect(wrapper.find('[data-testid="p-tab-pane"]').text()).toBe('content')
   })
-  // TODO enable this test when using PIcon.pName props
-  it.skip.each([
-    {
-      pTabIcon: 'PICalendarEvent',
-      shouldHaveIconClass: true,
-    },
-    {
-      pTabIcon: '',
-      shouldHaveIconClass: false,
-    },
-  ])('should have icon component : $shouldHaveIconClass',
-    async ({ pTabIcon, shouldHaveIconClass }) => {
+  const tests1: {
+    pIconName?: IconName
+    shouldHaveIconClass: boolean
+  }[] = [{
+    pIconName: 'calendarEvent',
+    shouldHaveIconClass: true,
+  }, {
+    pIconName: undefined,
+    shouldHaveIconClass: false,
+  }]
+  it.each(tests1)('should have icon component : $shouldHaveIconClass',
+    async ({ pIconName, shouldHaveIconClass }) => {
       const wrapper: VueWrapper<any> = createWrapper({
         ...propsValue,
-        pTabIcon,
+        pIconName,
       }, 'content')
       await flushPromises()
       const iconClass = wrapper.find('.p-tab-pane__icon').exists()
-      expect(wrapper.findComponent({ name: pTabIcon as string })).toBeTruthy()
+      const pIcon = wrapper.findComponent({ name: 'PIcon' })
+      expect(pIcon.exists()).toBe(pIconName !== undefined)
+      if (pIconName !== undefined) {
+        expect(pIcon.props('pName')).toBe(pIconName)
+      }
       expect(iconClass).toBe(shouldHaveIconClass)
     },
   )
-  it.each([
-    {
-      pTooltip: {
-        pPlacement: 'bottom',
-        pContent: 'this is a tooltip',
-        disabled: false,
-      } as PTooltipProps,
-      pTabIcon: 'PICalendarEvent',
-      shouldHaveTooltipClass: true,
-    },
-    {
-      pTooltip: undefined,
-      pTabIcon: 'PICalendarEvent',
-      shouldHaveTooltipClass: false,
-    },
-  ])('should have Tooltip component : $shouldHaveTooltipClass',
-    async ({ pTabIcon, pTooltip, shouldHaveTooltipClass }) => {
+  const tests2: {
+    pTooltip?: PTooltipProps
+    pIconName: IconName
+    shouldHaveTooltipClass: boolean
+  }[] = [{
+    pTooltip: {
+      pPlacement: 'bottom',
+      pContent: 'this is a tooltip',
+      disabled: false,
+    } as PTooltipProps,
+    pIconName: 'calendarEvent',
+    shouldHaveTooltipClass: true,
+  }, {
+    pTooltip: undefined,
+    pIconName: 'calendarEvent',
+    shouldHaveTooltipClass: false,
+  }]
+  it.each(tests2)('should have Tooltip component : $shouldHaveTooltipClass',
+    async ({ pIconName, pTooltip, shouldHaveTooltipClass }) => {
       const wrapper: VueWrapper<any> = createWrapper({
         ...propsValue,
-        pTabIcon,
+        pIconName,
         pTooltip,
       }, 'content')
       await flushPromises()
@@ -151,7 +159,7 @@ describe('pTabPane', () => {
       expect(pTooltipElement.exists()).toBe(shouldHaveTooltipClass)
 
       expect(wrapper.find('.p-tab-pane__icon').exists()).toBeTruthy()
-      expect(wrapper.findComponent({ name: pTabIcon as string })).toBeTruthy()
+      expect(wrapper.findComponent({ name: pIconName as string })).toBeTruthy()
     },
   )
 })
