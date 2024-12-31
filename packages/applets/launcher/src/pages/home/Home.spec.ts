@@ -1,13 +1,23 @@
 import { nextTick } from 'vue'
-import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
+import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { mockedEntity, mockedEnvVars, mockHasPermission } from '@launcher/../vitest.setup'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
 import { LauncherKey } from './HomeTypes'
-import * as HomeUtils from './HomeUtils'
 import Home from '.'
+import mockedLaunchCards from './__mock__/mockedLaunchCards.json'
 import * as VueRouter from 'vue-router'
+
+const mockedPercent = 47
+const getLaunchCardsMock = vi.hoisted(() => vi.fn())
+const handleClickActionMock = vi.hoisted(() => vi.fn())
+const handleDownloadMock = vi.hoisted(() => vi.fn((_key: LauncherKey, onSilaeDownloadProgress: (_: number) => void) => {
+  onSilaeDownloadProgress(mockedPercent)
+
+  return Promise.resolve()
+}))
+const getSilaeDownloadLabelMock = vi.hoisted(() => vi.fn())
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -15,9 +25,21 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('./HomeUtils', async () => {
-  return await vi.importActual('./HomeUtils')
-})
+vi.mock('./HomeUtils', () => ({
+  getLaunchCards: getLaunchCardsMock,
+  handleClickAction: handleClickActionMock,
+  handleDownload: handleDownloadMock,
+  getSilaeDownloadLabel: getSilaeDownloadLabelMock,
+}))
+
+const mockedSilaeUrl = 'https://mocked.silae.url'
+vi.mock('@launcher/services/launcherServices', () => ({
+  getSsoSilaeUrl: vi.fn(() => mockedSilaeUrl),
+  downloadApplication: vi.fn(() => mockedSilaeUrl),
+  saveApplication: vi.fn(() => mockedSilaeUrl),
+}))
+
+const mockedSilaeDownloadLabel = 'silae download label'
 
 function getWrapper() {
   return shallowMount(Home, {
@@ -45,6 +67,8 @@ function getLaunchCardComponents(wrapper: VueWrapper) {
 describe('test Home', () => {
   let wrapper: VueWrapper
   beforeEach(() => {
+    getLaunchCardsMock.mockReturnValue(mockedLaunchCards)
+    getSilaeDownloadLabelMock.mockReturnValue(mockedSilaeDownloadLabel)
     wrapper = getWrapper()
   })
 
@@ -70,16 +94,30 @@ describe('test Home', () => {
     })
 
     it('should display filtered cards', async () => {
+      const mockedFiltersLaunchCards = [mockedLaunchCards.at(0)]
+      getLaunchCardsMock.mockReturnValue(mockedFiltersLaunchCards)
       mockHasPermission.mockImplementation((permissions: string[]) =>
         permissions.includes(
           LAUNCHER_AUTHORIZATIONS[2].authorizationCodes[0],
         ),
       )
+
       const wrapper = getWrapper()
       await flushPromises()
       const launchCards = getLaunchCardComponents(wrapper)
       const noLauncher = wrapper.find('[data-testid="home-no-launcher"]')
+      const expectedParams1stCall = [
+        LauncherKey.MEG,
+        LauncherKey.SILAE,
+        LauncherKey.PENNYLANE,
+      ]
+      const expectedParams2thCall = [
+        LauncherKey.PENNYLANE,
+      ]
 
+      expect(getLaunchCardsMock).toHaveBeenCalledTimes(2)
+      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(1, mockedSilaeDownloadLabel, expectedParams1stCall)
+      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(2, mockedSilaeDownloadLabel, expectedParams2thCall)
       expect(noLauncher.exists()).toBeFalsy()
       expect(launchCards).toHaveLength(1)
     })
@@ -158,12 +196,15 @@ describe('test Home', () => {
 
   describe('when no launcher app to display', () => {
     it('should display filtered cards', async () => {
+      getLaunchCardsMock.mockReturnValue([])
       mockHasPermission.mockImplementation(() => false)
       const wrapper = getWrapper()
       await flushPromises()
       const launchCards = getLaunchCardComponents(wrapper)
       const noLauncher = wrapper.find('[data-testid="home-no-launcher"]')
 
+      expect(getLaunchCardsMock).toHaveBeenCalledTimes(2)
+      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(2, mockedSilaeDownloadLabel, [])
       expect(noLauncher.exists()).toBeTruthy()
       expect(launchCards).toHaveLength(0)
     })
@@ -172,32 +213,20 @@ describe('test Home', () => {
   describe('when click action on Silae LaunchCard', () => {
     it('should call handleClickAction with proper arguments', () => {
       const key = LauncherKey.SILAE
-      const handleClickActionSpy = vi.spyOn(HomeUtils, 'handleClickAction')
       const silaeLaunchCard = getLaunchCardComponent(wrapper, key)
 
       silaeLaunchCard.vm.$emit('click-action')
 
-      expect(handleClickActionSpy).toHaveBeenCalledOnce()
-      expect(handleClickActionSpy).toHaveBeenNthCalledWith(1, key)
+      expect(handleClickActionMock).toHaveBeenCalledOnce()
+      expect(handleClickActionMock).toHaveBeenNthCalledWith(1, key)
     })
   })
 
   describe('when click downlad on Silae LaunchCard', () => {
-    const mockedPercent = 47
     const launcherKey = LauncherKey.SILAE
 
-    let handleDownloadSpy: MockInstance
-    let getSilaeDownloadLabelSpy: MockInstance
     let silaeLaunchCard: VueWrapper
     beforeEach(() => {
-      handleDownloadSpy = vi
-        .spyOn(HomeUtils, 'handleDownload')
-        .mockImplementation((_key: LauncherKey, onSilaeDownloadProgress: (_: number) => void) => {
-          onSilaeDownloadProgress(mockedPercent)
-
-          return Promise.resolve()
-        })
-      getSilaeDownloadLabelSpy = vi.spyOn(HomeUtils, 'getSilaeDownloadLabel')
       silaeLaunchCard = getLaunchCardComponent(wrapper, launcherKey)
     })
 
@@ -205,11 +234,12 @@ describe('test Home', () => {
       silaeLaunchCard.vm.$emit('click-download')
       await nextTick()
 
-      expect(handleDownloadSpy).toHaveBeenCalledOnce()
-      expect(handleDownloadSpy).toHaveBeenNthCalledWith(1, launcherKey, expect.any(Function))
+      expect(handleDownloadMock).toHaveBeenCalledOnce()
+      expect(handleDownloadMock).toHaveBeenNthCalledWith(1, launcherKey, expect.any(Function))
 
-      expect(getSilaeDownloadLabelSpy).toHaveBeenCalledTimes(1)
-      expect(getSilaeDownloadLabelSpy).toHaveBeenNthCalledWith(1, mockedPercent)
+      expect(getSilaeDownloadLabelMock).toHaveBeenCalledTimes(2)
+      expect(getSilaeDownloadLabelMock).toHaveBeenNthCalledWith(1, undefined)
+      expect(getSilaeDownloadLabelMock).toHaveBeenNthCalledWith(2, mockedPercent)
     })
 
     it('should call onClickAction twice once when resolve between two clicks on action-download', async () => {
@@ -217,14 +247,14 @@ describe('test Home', () => {
       await flushPromises()
       silaeLaunchCard.vm.$emit('click-download')
 
-      expect(handleDownloadSpy).toHaveBeenCalledTimes(2)
+      expect(handleDownloadMock).toHaveBeenCalledTimes(2)
     })
 
     it('should call onClickAction only once when resolve after two clicks on action-download', () => {
       silaeLaunchCard.vm.$emit('click-download')
       silaeLaunchCard.vm.$emit('click-download')
 
-      expect(handleDownloadSpy).toHaveBeenCalledOnce()
+      expect(handleDownloadMock).toHaveBeenCalledOnce()
     })
   })
 })

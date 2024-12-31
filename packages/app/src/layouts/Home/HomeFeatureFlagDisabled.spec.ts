@@ -22,6 +22,7 @@ const mock = vi.hoisted(() => {
   }
 })
 
+vi.mock('@pulse/core')
 vi.mock('@app/schedule/services', () => ScheduleServicesMock)
 vi.mock('@app/services/entities', async () => {
   const actual = await vi.importActual('@app/services/entities') as Record<string, any>

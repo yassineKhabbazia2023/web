@@ -3,6 +3,7 @@ import * as imageResolverInit from './utils/imageResolverInit'
 import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { getAssetsBaseUrl, setCachedAssetsBaseUrl, getCachedAssetsBaseUrl, initHistoire } from './initHistoireUtils'
 
+vi.mock('@pulse/core')
 vi.mock('axios')
 const VITE_ASSETS_BASE_URL = 'https://test.test'
 

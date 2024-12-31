@@ -13,8 +13,13 @@ declare let window: Window
 
 const currentPage = 1
 
+const mockedNotification = {
+  close: vi.fn(),
+}
+const showNotificationMock = vi.hoisted(() => vi.fn(() => mockedNotification))
+
 vi.mock('@mandate/helpers/NotificationHelper', () => ({
-  showNotification: vi.fn(),
+  showNotification: showNotificationMock,
 }))
 
 vi.mock('@mandate/services/mandate', () => {

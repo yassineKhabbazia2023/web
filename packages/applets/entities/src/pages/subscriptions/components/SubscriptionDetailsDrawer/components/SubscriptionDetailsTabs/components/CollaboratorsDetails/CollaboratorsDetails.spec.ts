@@ -8,7 +8,7 @@ const mockedSubscriptionCollaborators =
   getMockedSubscriptionDetails().collaborators
 
 vi.mock('@pulse/common', () => ({
-  getInitials: vi.fn(),
+  getInitials: vi.fn(() => ''),
 }))
 
 const createWrapper = (
