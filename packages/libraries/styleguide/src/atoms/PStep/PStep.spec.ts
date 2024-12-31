@@ -8,7 +8,6 @@ import type { PStepProps } from './PStepTypes'
 const propsValue: PStepProps = {
   pTitle: 'title',
   pDescription: 'description',
-  pIcon: 'icon',
   pStatus: 'wait',
 }
 
@@ -37,7 +36,6 @@ describe('pStep', () => {
       const expectedProps = {
         title: propsValue.pTitle,
         description: propsValue.pDescription,
-        icon: propsValue.pIcon,
         status: propsValue.pStatus,
       }
       expect(component.props()).toMatchObject(expectedProps)

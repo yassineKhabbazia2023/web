@@ -2,7 +2,6 @@
   <ElStep
     :title="pTitle"
     :description="pDescription"
-    :icon="pIcon"
     :status="pStatus"
   />
 </template>
