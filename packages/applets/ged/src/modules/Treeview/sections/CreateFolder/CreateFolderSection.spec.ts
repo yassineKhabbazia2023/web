@@ -10,6 +10,7 @@ import { CreateFolder } from '@ged/services/Folder'
 import CreateFolderModal from '@ged/modules/Treeview/components/modals/Create'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
 const pinia = createPinia()
 
@@ -50,7 +51,7 @@ export type CreateFolderSectionWrapper = VueWrapper<
   ComponentPublicInstance<CreateFolderSectionSetup, CreateFolderSectionProps>
 >
 
-const mockToastPlugin = vi.fn()
+vi.mock('@pulse/styleguide')
 
 const createWrapper = (
   props: CreateFolderSectionProps = defaultProps,
@@ -59,9 +60,6 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   }) as unknown as CreateFolderSectionWrapper
 }
@@ -250,8 +248,8 @@ describe('createFolderSection', () => {
       modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
 
-      expect(mockToastPlugin).toHaveBeenCalledTimes(1)
-      const callArguments = mockToastPlugin.mock.calls[0][0]
+      expect(PNotificationMock).toHaveBeenCalledTimes(1)
+      const callArguments = PNotificationMock.mock.calls[0][0]
       expect(callArguments.message).toBe(
         'Le dossier a été créé avec succès.',
       )

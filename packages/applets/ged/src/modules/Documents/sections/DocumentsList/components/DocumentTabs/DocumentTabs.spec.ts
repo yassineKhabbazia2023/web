@@ -26,9 +26,6 @@ const createWrapper = (
     global: {
       plugins: [pinia],
     },
-    provide: {
-      toast: vi.fn(),
-    },
   })
 }
 

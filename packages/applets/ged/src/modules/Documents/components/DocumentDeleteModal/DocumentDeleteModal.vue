@@ -22,7 +22,7 @@ import ConfirmationPopup from
   '@ged/modules/common/templates/popups'
 import { type DocumentDeleteModalTypesProps }
   from '@ged/modules/Documents/components/DocumentDeleteModal/DocumentDeleteModalTypes'
-import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
+import { PNotification } from '@pulse/styleguide'
 import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 import { trackDocumentDelete } from '@ged/services/tracking/tracking.service'
 // DeleteFolderConfirmationPopup definitions
@@ -30,10 +30,6 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
-// Forcing the cast as we know it exsits from Styleguide
-// This should be updated to a PNotification import
-const toastPlugin = inject('toast') as ToastPluginFunc
 
 const props = defineProps<DocumentDeleteModalTypesProps>()
 
@@ -99,7 +95,7 @@ const handleConfirmDeleteFolder = async () => {
 }
 
 const triggerErrorNotification = () => {
-  toastPlugin({
+  PNotification({
     message: t('popup.notifications.error'),
     icon: PIExclamationTriangle,
     customClass: 'error',
@@ -113,7 +109,7 @@ const triggerSuccessNotification = () => {
     ? t('popupMulti.notifications.success', { documentsCount: props.documentIds.length })
     : t('popup.notifications.success')
 
-  toastPlugin({
+  PNotification({
     message: msg,
     icon: PICheck,
     showClose: true,

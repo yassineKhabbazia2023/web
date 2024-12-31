@@ -13,7 +13,7 @@ import { computed, ref, inject } from 'vue'
 import type { DocumentRenameProps } from './DocumentRenameTypes.ts'
 import DocumentRenameModal from './components/DocumentRenameModal.vue'
 import { renameDocument } from '@ged/services/Documents'
-import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
+import { PNotification } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 import { trackDocumentRename } from '@ged/services/tracking/tracking.service'
@@ -25,10 +25,6 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
-// Forcing the cast as we know it exsits from Styleguide
-// This should be updated to a PNotification import
-const toastPlugin = inject('toast') as ToastPluginFunc
 
 const isRenameDocumentModalOpened = computed({
   get() {
@@ -52,7 +48,7 @@ const handleDocumentRename = async (documentName: string) => {
     isRenameDocumentModalOpened.value = false
 
     emit('document-rename')
-    toastPlugin({
+    PNotification({
       message: t('toaster.success'),
       icon: PICheck,
       showClose: true,
@@ -61,7 +57,7 @@ const handleDocumentRename = async (documentName: string) => {
     })
     trackDocumentRename({ isRenameSuccessful: true })
   } catch {
-    toastPlugin({
+    PNotification({
       message: t('toaster.error'),
       icon: PIExclamationTriangle,
       showClose: true,

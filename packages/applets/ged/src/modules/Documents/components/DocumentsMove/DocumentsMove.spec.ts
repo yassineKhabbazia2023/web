@@ -54,11 +54,11 @@ export type DocumentsMoveWrapper = VueWrapper<
   ComponentPublicInstance<DocumentMoveProps, DocumentMoveSetup>
 >
 
+vi.mock('@pulse/styleguide')
+
 vi.mock('@ged/services/Documents', () => ({
   moveDocuments: vi.fn(),
 }))
-
-const mockToastPlugin = vi.fn()
 
 const createWrapper = (
   props: DocumentMoveProps = defaultProps,
@@ -67,9 +67,6 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   }) as unknown as DocumentsMoveWrapper
 }

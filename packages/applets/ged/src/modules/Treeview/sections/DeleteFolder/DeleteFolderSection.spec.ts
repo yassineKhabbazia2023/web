@@ -10,6 +10,9 @@ import { createPinia, setActivePinia } from 'pinia'
 import { deleteFolder } from '@ged/services/Folder'
 import { nextTick } from 'vue'
 import { getMockedFolder } from '../../helpers/testHelper'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
+
+vi.mock('@pulse/styleguide')
 
 const pinia = createPinia()
 
@@ -32,15 +35,11 @@ const defaultProps: DeleteFolderSectionProps = {
   isDeleteFolderPopupVisible: false,
 }
 
-const mockToastPlugin = vi.fn()
 const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
   return mount(DeleteFolderSection, {
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   })
 }
@@ -171,8 +170,8 @@ describe('deleteFolderSection', () => {
       await popup.vm.$emit('confirm-delete-folder')
       await nextTick()
 
-      expect(mockToastPlugin).toHaveBeenCalledTimes(1)
-      const callArguments = mockToastPlugin.mock.calls[0][0]
+      expect(PNotificationMock).toHaveBeenCalledTimes(1)
+      const callArguments = PNotificationMock.mock.calls[0][0]
       expect(callArguments.message).toBe('Dossier "A" supprimé.')
       expect(callArguments.customClass).toBe('success')
     })

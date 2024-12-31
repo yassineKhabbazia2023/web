@@ -8,6 +8,9 @@ import { createPinia, setActivePinia } from 'pinia'
 import { RenameFolder } from '@ged/services/Folder'
 import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
+
+vi.mock('@pulse/styleguide')
 
 const pinia = createPinia()
 
@@ -38,16 +41,11 @@ const defaultProps: RenameFolderSectionProps = {
   folderId: 2,
 }
 
-const mockToastPlugin = vi.fn()
-
 const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
   return mount(RenameFolderSection, {
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   })
 }
@@ -186,8 +184,8 @@ describe('renameFolderSection', () => {
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()
 
-      expect(mockToastPlugin).toHaveBeenCalledTimes(1)
-      const callArguments = mockToastPlugin.mock.calls[0][0]
+      expect(PNotificationMock).toHaveBeenCalledTimes(1)
+      const callArguments = PNotificationMock.mock.calls[0][0]
       expect(callArguments.message).toBe(
         'Le dossier a été renommé avec succès.',
       )

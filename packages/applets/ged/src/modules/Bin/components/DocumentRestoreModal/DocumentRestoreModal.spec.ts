@@ -9,6 +9,9 @@ import { createPinia, setActivePinia } from 'pinia'
 import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
+
+vi.mock('@pulse/styleguide')
 
 const defaultProps: DocumentRestoreModalTypesProps = {
   isVisible: false,
@@ -26,8 +29,6 @@ const i18n = createI18n({
 })
 const pinia = createPinia()
 
-const mockToastPlugin = vi.fn()
-
 const createWrapper = (
   props: DocumentRestoreModalTypesProps = defaultProps,
 ) => {
@@ -36,7 +37,6 @@ const createWrapper = (
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin,
         i18n,
       },
     },
@@ -104,8 +104,8 @@ describe('documentRestoreModal', () => {
         )
         await nextTick()
         expect(wrapper.emitted('confirm-restore-document')).toBeTruthy()
-        expect(mockToastPlugin).toHaveBeenCalledTimes(1)
-        const callArguments = mockToastPlugin.mock.calls[0][0]
+        expect(PNotificationMock).toHaveBeenCalledTimes(1)
+        const callArguments = PNotificationMock.mock.calls[0][0]
         expect(callArguments.message)
           .toBe('1 document restauré dans le dossier Test - Voir le document')
         expect(callArguments.customClass).toBe('success')

@@ -11,6 +11,7 @@ import { nextTick } from 'vue'
 import { deleteDocuments } from '@ged/services/Documents'
 import { createI18n } from 'vue-i18n'
 import { trackDocumentDelete } from '@ged/services/tracking/tracking.service'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
 const defaultProps: DocumentDeleteModalTypesProps = {
   isVisible: false,
@@ -23,8 +24,6 @@ const i18n = createI18n({
 })
 const pinia = createPinia()
 
-const mockToastPlugin = vi.fn()
-
 const createWrapper = (
   props: DocumentDeleteModalTypesProps = defaultProps,
 ) => {
@@ -33,7 +32,6 @@ const createWrapper = (
     global: {
       plugins: [pinia],
       provide: {
-        toast: mockToastPlugin,
         i18n,
       },
     },
@@ -44,6 +42,7 @@ vi.mock('@ged/services/Documents', () => ({
   deleteDocuments: vi.fn(),
 }))
 vi.mock('@ged/services/tracking/tracking.service')
+vi.mock('@pulse/styleguide')
 
 const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent(ConfirmationPopup)
 
@@ -135,8 +134,8 @@ describe('deleteFolderConfirmationPopup', () => {
           ['1'],
         )
 
-        expect(mockToastPlugin).toHaveBeenCalledTimes(1)
-        const callArguments = mockToastPlugin.mock.calls[0][0]
+        expect(PNotificationMock).toHaveBeenCalledTimes(1)
+        const callArguments = PNotificationMock.mock.calls[0][0]
         expect(callArguments.message).toBe('1 document supprimé.')
         expect(callArguments.customClass).toBe('success')
         expect(wrapper.emitted('confirm-delete-document')).toBeTruthy()
@@ -162,8 +161,8 @@ describe('deleteFolderConfirmationPopup', () => {
           ['1', '2'],
         )
 
-        expect(mockToastPlugin).toHaveBeenCalledTimes(1)
-        const callArguments = mockToastPlugin.mock.calls[0][0]
+        expect(PNotificationMock).toHaveBeenCalledTimes(1)
+        const callArguments = PNotificationMock.mock.calls[0][0]
         expect(callArguments.message).toBe('"2" documents supprimés.')
         expect(callArguments.customClass).toBe('success')
         expect(wrapper.emitted('confirm-delete-document')).toBeTruthy()

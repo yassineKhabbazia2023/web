@@ -30,8 +30,6 @@ export type DocumentsWrapper = VueWrapper<
    ComponentPublicInstance<DocumentsSetup, DocumentsProps>
  >
 
-const mockToastPlugin = vi.fn()
-
 const pinia = createPinia()
 
 const defaultProps = {
@@ -112,9 +110,6 @@ describe('documents', () => {
             },
           },
           plugins: [pinia],
-          provide: {
-            toast: mockToastPlugin,
-          },
         },
       }) as unknown as DocumentsWrapper
       await flushPromises()
@@ -137,9 +132,6 @@ describe('documents', () => {
             },
           },
           plugins: [pinia],
-          provide: {
-            toast: mockToastPlugin,
-          },
         },
       }) as unknown as DocumentsWrapper
       await flushPromises()
@@ -175,9 +167,6 @@ describe('documents', () => {
             },
           },
           plugins: [pinia],
-          provide: {
-            toast: mockToastPlugin,
-          },
         },
       }) as unknown as DocumentsWrapper
       await flushPromises()
@@ -212,9 +201,6 @@ describe('documents', () => {
             },
           },
           plugins: [pinia],
-          provide: {
-            toast: mockToastPlugin,
-          },
         },
       }) as unknown as DocumentsWrapper
       await flushPromises()

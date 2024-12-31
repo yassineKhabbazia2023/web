@@ -20,7 +20,7 @@ vi.mock('@ged/services/Documents', () => ({
   }),
 }))
 
-const mockToastPlugin = vi.fn()
+vi.mock('@pulse/styleguide')
 
 const createWrapper = (
   props: DocumentUploadProps = defaultProps,
@@ -29,9 +29,6 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   }) as unknown as DocumentsUploadWrapper
 }

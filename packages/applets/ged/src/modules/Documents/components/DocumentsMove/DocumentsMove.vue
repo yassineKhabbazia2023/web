@@ -46,12 +46,10 @@ import { generateActionsForModal } from '../DocumentsExplorerModal/helpers/Modal
 import { modalButtonsMove } from './helpers/MoveModalActionsHelpers'
 import { moveDocuments } from '@ged/services/Documents'
 import { mapExplorerDocumentFromDocuments } from '../../helpers/documentExplorerMapper'
-import type { ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
+import { PNotification } from '@pulse/styleguide'
 import { PICheck } from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '../../DocumentsTypes'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
-
-const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -242,7 +240,7 @@ const triggerSuccessNotification = (
   documentsCount: number,
   folderName: string,
 ) => {
-  toastPlugin({
+  PNotification({
     message:
       documentsCount > 1
         ? t('notifications.successMsg.plural', {

@@ -39,15 +39,12 @@ import { PICheck, PIExclamationTriangle, PButton, PIcon }
 import { canCreateFolder } from '@ged/modules/Treeview/helpers/folderPermissionsHelper'
 import { type CreateFolderSectionProps }
   from '@ged/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
-import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
+import { PNotification } from '@pulse/styleguide'
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
-// Forcing the cast as we know it exsits from Styleguide
-// This should be updated to a PNotification import
-const toastPlugin = inject('toast') as ToastPluginFunc
 
 const props = withDefaults(defineProps<CreateFolderSectionProps>(), {
   isCreateFolderModaleCenterd: false,
@@ -104,7 +101,7 @@ watch(toRef(props, 'isCreateFolderModalVisible'), (newVal) => {
 
 // Notifications
 const triggerSuccessNotification = () => {
-  toastPlugin({
+  PNotification({
     message: t('notifications.successMsg'),
     icon: PICheck,
     showClose: true,
@@ -114,7 +111,7 @@ const triggerSuccessNotification = () => {
 }
 
 const triggerErrorNotification = () => {
-  toastPlugin({
+  PNotification({
     message: t('notifications.errorMsg'),
     icon: PIExclamationTriangle,
     customClass: 'error',

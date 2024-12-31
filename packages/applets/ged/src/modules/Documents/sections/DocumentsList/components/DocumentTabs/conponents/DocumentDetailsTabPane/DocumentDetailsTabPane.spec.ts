@@ -34,11 +34,13 @@ function getMockedUpdatedDocument(status: string, labelFr: string|null, path: st
   return updatedDocument
 }
 
+vi.mock('@pulse/styleguide')
+
 vi.mock('@ged/services/Documents', () => ({
   downloadDocument: vi.fn(),
 }))
+
 const pinia = createPinia()
-const mockToastPlugin = vi.fn()
 
 const createWrapper = (
   props: DocumentDetailsTabPaneProps = defaultProps,
@@ -47,9 +49,6 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   })
 }

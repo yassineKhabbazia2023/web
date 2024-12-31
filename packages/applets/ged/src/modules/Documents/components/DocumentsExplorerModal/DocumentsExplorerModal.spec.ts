@@ -81,7 +81,7 @@ const defaultProps: DocumentsModalExplorerProps = {
   canCloseModal: false,
 }
 
-const mockToastPlugin = vi.fn()
+vi.mock('@pulse/styleguide')
 
 const createWrapper = (
   props: DocumentsModalExplorerProps = defaultProps,
@@ -89,9 +89,6 @@ const createWrapper = (
   return mount(DocumentsExplorerModal, {
     props,
     global: {
-      provide: {
-        toast: mockToastPlugin,
-      },
       plugins: [pinia],
     },
   }) as unknown as DocumentsExplorerModalWrapper

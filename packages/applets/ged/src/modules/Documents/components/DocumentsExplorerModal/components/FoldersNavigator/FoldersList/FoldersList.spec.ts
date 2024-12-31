@@ -10,6 +10,8 @@ import { type FoldersListProps }
 import { foldersData, newFolderData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 
+vi.mock('@pulse/styleguide')
+
 const defaultProps: FoldersListProps = {
   currentFolder: foldersData[0][0].children[0],
   currentServiceFolder: foldersData[0],
@@ -27,9 +29,6 @@ const createWrapper = (
 ): VueWrapper<any> => {
   return mount(FoldersList, {
     props,
-    provide: {
-      toast: vi.fn(),
-    },
   })
 }
 
