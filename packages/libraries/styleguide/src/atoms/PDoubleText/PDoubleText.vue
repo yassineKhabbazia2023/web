@@ -5,18 +5,12 @@
     :disabled="pDisabled"
     :selected="pSelected"
   >
-    <div v-if="pIconName || pIcon" class="p-double-text__icon">
+    <div v-if="pIconName" class="p-double-text__icon">
       <PIcon
         v-if="pIconName"
         :size="16"
         :pName="pIconName"
       />
-      <PIcon
-        v-else
-        :size="16"
-      >
-        <component :is="pIcon" />
-      </PIcon>
     </div>
     <div v-if="pProfile" class="p-double-text__icon">
       <PAvatar

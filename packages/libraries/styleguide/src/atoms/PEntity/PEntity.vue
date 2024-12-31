@@ -14,9 +14,6 @@
           v-if="pIconName"
           :pName="pIconName"
         />
-        <PIcon v-else-if="pIcon">
-          <component :is="pIcon" />
-        </PIcon>
       </PAvatar>
     </div>
     <div :class="['p-entity__content', 'text-left', { 'p-entity__content--bold': pBold }]">

@@ -44,7 +44,7 @@
           <template #default="scope">
             <PText
               :pContent="scope.row.text.content"
-              :pIcon="iconResolver(scope.row.text.icon)"
+              :pIconName="scope.row.text.iconName"
               :pBold="false"
               :pType="scope.row.text.type"
               :disabled="false"
@@ -61,7 +61,7 @@
           <template #default="scope">
             <PEntity
               :pContent="scope.row.entity.name"
-              :pIcon="iconResolver(scope.row.entity.icon)"
+              :pIconName="scope.row.entity.iconName"
               :pType="scope.row.entity.type"
               :pSelected="false"
             />
@@ -75,7 +75,7 @@
         >
           <template #default="scope">
             <PDoubleText
-              :pIcon="iconResolver(scope.row.doubleText.icon)"
+              :pIconName="scope.row.doubleText.iconName"
               :pProfile="scope.row.doubleText.profile"
               :pTitle="scope.row.doubleText.title"
               :pContent="scope.row.doubleText.content"
@@ -151,8 +151,6 @@
 
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { iconResolver } from '../../utils/iconResolver'
-import { PIFolder, PIStars } from '../../atoms/PIcon/components'
 import PDoubleText from '../../atoms/PDoubleText'
 import PEntity from '../../atoms/PEntity'
 import PTag from '../../atoms/PTag'
@@ -211,15 +209,15 @@ const tableInputsWithCells = reactive({
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        icon: 'PICupHot',
+        iconName: 'cupHot',
         type: 'primary',
       },
       entity: {
-        icon: 'PIBuilding',
+        iconName: 'building',
         name: 'Lorem Ipsum Factory',
       },
       doubleText: {
-        icon: 'PICupHot',
+        iconName: 'cupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
@@ -227,8 +225,8 @@ const tableInputsWithCells = reactive({
       },
       tag: {
         content: 'Validated',
-        iconLeft: PIFolder,
-        iconRight: PIStars,
+        iconLeftName: 'folder',
+        iconRightName: 'stars',
       },
       switch: {
         status: true,
@@ -238,16 +236,16 @@ const tableInputsWithCells = reactive({
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        icon: 'PICupHot',
+        iconName: 'cupHot',
         type: 'primary',
       },
       entity: {
-        icon: 'PIPulse',
+        iconName: 'pulse',
         name: 'Olympia Stadium',
         type: 'primary',
       },
       doubleText: {
-        icon: 'PICupHot',
+        iconName: 'cupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
@@ -255,8 +253,8 @@ const tableInputsWithCells = reactive({
       },
       tag: {
         content: 'Validated',
-        iconLeft: PIFolder,
-        iconRight: PIStars,
+        iconLeftName: 'folder',
+        iconRightName: 'stars',
       },
       switch: {
         status: false,
@@ -266,15 +264,15 @@ const tableInputsWithCells = reactive({
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        icon: 'PICupHot',
+        iconName: 'cupHot',
         type: 'primary',
       },
       entity: {
-        icon: 'PICupStraw',
+        iconName: 'cupStraw',
         name: 'Baquery',
       },
       doubleText: {
-        icon: 'PICupHot',
+        iconName: 'cupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
@@ -282,8 +280,8 @@ const tableInputsWithCells = reactive({
       },
       tag: {
         content: 'Validated',
-        iconLeft: PIFolder,
-        iconRight: PIStars,
+        iconLeftName: 'folder',
+        iconRightName: 'stars',
       },
       switch: {
         status: true,
@@ -293,15 +291,15 @@ const tableInputsWithCells = reactive({
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        icon: 'PICupHot',
+        iconName: 'cupHot',
         type: 'primary',
       },
       entity: {
-        icon: 'PIShop',
+        iconName: 'shop',
         name: 'Lorem Ipsum Factory',
       },
       doubleText: {
-        icon: 'PICupHot',
+        iconName: 'cupHot',
         profile: 'JL',
         title: 'Restaurant Alfredo\'s House',
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
@@ -309,8 +307,8 @@ const tableInputsWithCells = reactive({
       },
       tag: {
         content: 'Validated',
-        iconLeft: PIFolder,
-        iconRight: PIStars,
+        iconLeftName: 'folder',
+        iconRightName: 'stars',
       },
       switch: {
         status: true,
@@ -320,15 +318,15 @@ const tableInputsWithCells = reactive({
     {
       text: {
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',
-        icon: 'PICupHot',
+        iconName: 'cupHot',
         type: 'primary',
       },
       entity: {
-        icon: 'PIBuilding',
+        iconName: 'building',
         name: 'Neverland Swiming Pool',
       },
       doubleText: {
-        icon: 'PICupHot',
+        iconName: 'cupHot',
         profile: 'JL',
         title: 'Lorem ipsum',
         content: 'Lorem ipsum dolor apicus storea parsem vida aleum parsea',

@@ -4,18 +4,12 @@
     :disabled="disabled"
     :selected="selected"
   >
-    <div v-if="pIconName || pIcon" class="p-text__icon">
+    <div v-if="pIconName" class="p-text__icon">
       <PIcon
         v-if="pIconName"
         :size="16"
         :pName="pIconName"
       />
-      <PIcon
-        v-else
-        :size="16"
-      >
-        <component :is="pIcon" />
-      </PIcon>
     </div>
     <div :class="['p-text__content', { 'font-bold': pBold }]">
       {{ pContent ?? '' }}
