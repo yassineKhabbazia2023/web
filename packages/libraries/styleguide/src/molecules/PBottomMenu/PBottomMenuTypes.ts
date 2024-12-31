@@ -1,7 +1,9 @@
+import type { IconName } from '../../types/IconName.types'
+
 export interface PItem {
   pName: string
   pPath: string
-  pIcon: string
+  pIconName: IconName
 }
 
 export interface PBottomMenuProps {

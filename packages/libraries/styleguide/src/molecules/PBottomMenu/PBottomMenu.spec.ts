@@ -6,6 +6,7 @@ import { ElMenuItem, ElMenu } from 'element-plus'
 import { menu } from '../../constants/routesSamples'
 import PBottomMenu from '.'
 import type { PItem } from './PBottomMenuTypes'
+import type { IconName } from '../../types/IconName.types'
 
 const router = createRouter({
   history: createMemoryHistory(),
@@ -30,7 +31,7 @@ describe('pBottomMenu', () => {
           return {
             pPath: m.path,
             pName: m.name,
-            pIcon: m.meta.icon,
+            pIconName: m.meta.iconName as IconName,
           }
         }),
       },

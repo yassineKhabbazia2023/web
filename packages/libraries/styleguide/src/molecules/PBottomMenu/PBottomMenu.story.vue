@@ -17,12 +17,13 @@ import { useRoute } from 'vue-router'
 import { menu } from '../../constants/routesSamples'
 import PBottomMenu from './'
 import type { PItem } from './PBottomMenuTypes'
+import type { IconName } from '../../types/IconName.types'
 
 const menuItems = menu.map((m): PItem => {
   return {
     pName: m.name,
     pPath: m.path,
-    pIcon: m.meta.icon,
+    pIconName: m.meta.iconName as IconName,
   }
 })
 
@@ -42,7 +43,7 @@ It should have almost the same content as the top/main menu.
 | -------------- | ---------------------------------------------- | --------- | ----------------------------------------------- | ------- |
 | pHideOnDesktop | Hide this element on desktop (lg and up)       | `Boolean` | `true` or `false`                               | `true`  |
 | pUseRouter     | Use vue router                                 | `Boolean` | `true` or `false`                               | `true`  |
-| pItems         | Items of the menu                              | `Array`   | [{icon: string, text: string: path: string}...] | `[]`    |
+| pItems         | Items of the menu                              | `Array`   | [{iconName: IconName, text: string: path: string}...] | `[]`    |
 |                | The path in the object refer to the route path |           |                                                 |         |
 | defaultActive  | The default active item                        | `String`  | a route path                                    |         |
 

@@ -6,7 +6,7 @@ export const menu = [
       render: () => 'Your are in the route named Dashboard',
     },
     meta: {
-      icon: 'PIColumnsGap',
+      iconName: 'columnsGap',
     },
   },
   {
@@ -17,7 +17,7 @@ export const menu = [
       render: () => 'Your are in the route named Document',
     },
     meta: {
-      icon: 'PIFiles',
+      iconName: 'files',
     },
   },
 ]
