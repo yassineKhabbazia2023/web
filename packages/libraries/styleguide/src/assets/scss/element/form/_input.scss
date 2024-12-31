@@ -22,11 +22,11 @@ $input-font-size: (
 
 div.el-textarea {
   --el-input-border-radius: var(--el-border-radius-base);
-  
+
   box-shadow: none;
   border-bottom: 2px solid var(--el-color-persian-200);
   &:hover {
-    border-bottom: 2px solid var(--el-color-base-persian); 
+    border-bottom: 2px solid var(--el-color-base-persian);
   }
 
   &.is-disabled {
@@ -59,7 +59,7 @@ div.el-textarea {
   }
   border-bottom: 2px solid var(--el-color-persian-200);
   &:hover {
-    border-bottom: 2px solid var(--el-color-base-persian); 
+    border-bottom: 2px solid var(--el-color-base-persian);
   }
   div {
     &#{$self}__wrapper {
@@ -77,6 +77,10 @@ div.el-textarea {
         background-color: var(--el-color-neutral-gray-50);
       }
     }
+  }
+
+  &.el-date-editor.el-date-editor--date {
+    height: 46px;
   }
 }
 
