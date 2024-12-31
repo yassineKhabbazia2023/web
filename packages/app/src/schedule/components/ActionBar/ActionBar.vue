@@ -37,12 +37,12 @@
       >
         <PTabPane
           pName="calendar"
-          pTabIcon="PICalendarEvent"
+          pIconName="calendarEvent"
           :pTooltip="{ pContent: t('month-view'), pPlacement: 'bottom' }"
         />
         <PTabPane
           pName="list"
-          pTabIcon="PIListUl"
+          pIconName="listUl"
           :pTooltip="{ pContent: t('list-view'), pPlacement: 'bottom' }"
         />
       </PTabs>

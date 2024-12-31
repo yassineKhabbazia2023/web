@@ -98,7 +98,7 @@
           v-for="tab in tabs"
           :key="tab.name"
           :pName="tab.name"
-          pTabIcon="PICalendarEvent"
+          pIconName="calendarEvent"
         >
           {{ tab.content }}
         </PTabPane>
@@ -115,7 +115,7 @@
           v-for="tab in tabs"
           :key="tab.name"
           :pName="tab.name"
-          pTabIcon="PICalendarEvent"
+          pIconName="calendarEvent"
           :pTooltip="tab.pTooltip"
         >
           {{ tab.content }}
@@ -132,11 +132,11 @@
       >
         <PTabPane
           pName="calendar"
-          pTabIcon="PICalendarEvent"
+          pIconName="calendarEvent"
         />
         <PTabPane
           pName="list"
-          pTabIcon="PIListUl"
+          pIconName="listUl"
         />
       </PTabs>
     </Variant>
