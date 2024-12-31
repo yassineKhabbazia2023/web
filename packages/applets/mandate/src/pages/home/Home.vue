@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header
-      class="padding-top--2 margin-bottom--6"
+      class="margin-bottom--6"
       @refresh-mandate-collection="onUpdateSearchParams"
     />
     <div class="margin-bottom--3">

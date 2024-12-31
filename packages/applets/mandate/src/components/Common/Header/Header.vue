@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <div class="header__title font-normal">
+      <div class="header__title margin-bottom--2">
         {{ t('bank-mandates') }}
       </div>
       <PFilterGroupNumber
@@ -126,12 +126,13 @@ const filters: FilterOption<number>[] = [
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 
   &__title {
-    color: var(--el-color-neutral-gray-900);
-    font-size: 24px;
-    font-style: normal;
-    line-height: 120%;
+    color: var(--el-color-neutral-gray-800);
+    font-size: 1.2rem;
+    flex-basis: 100%;
+    margin-top: 9px;
   }
 
   &__create-mandate-button {
@@ -146,7 +147,7 @@ const filters: FilterOption<number>[] = [
 
 <i18n lang="yaml">
   en-US:
-    bank-mandates: ''
+    bank-mandates: 'Collection Status'
     new-mandate: 'New mandate'
     incident: 'Incident'
     to-do: 'To do'
@@ -154,7 +155,7 @@ const filters: FilterOption<number>[] = [
     active: 'Active'
     inactive: 'Inactive'
   fr-FR:
-    bank-mandates: ''
+    bank-mandates: 'Statut des collectes'
     new-mandate: 'Nouveau mandat'
     incident: 'Incident'
     to-do: 'À déposer'
