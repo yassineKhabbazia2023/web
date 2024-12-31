@@ -40,7 +40,7 @@
               v-for="item in submenu.items"
               :key="item.index"
               :pIndex="item.index"
-              :pRightIcon="PICheckCircle"
+              pIconRightName="checkCircle"
               :pDisabled="menuConfig.disabledMenuItems"
             >
               <template #title>
@@ -52,7 +52,7 @@
             v-for="item in menuItems"
             :key="item.index"
             :pIndex="item.index"
-            pLeftIcon="PIHouse"
+            pIconLeftName="house"
             :pDisabled="menuConfig.disabledMenuItems"
           >
             <template #title>

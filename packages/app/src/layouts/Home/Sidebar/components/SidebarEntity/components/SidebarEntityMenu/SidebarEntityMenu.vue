@@ -16,7 +16,7 @@
     >
       <PMenuItem
         :pIndex="`/dossier/${props.selectedEntityId}`"
-        pLeftIcon="PIHouse"
+        pIconLeftName="house"
       >
         <template #title>
           {{ t('home') }}
@@ -30,7 +30,7 @@
           v-for="menuItem in folderSubmenu.menuItems"
           :key="menuItem.index"
           :pIndex="`/dossier/${selectedEntityId}/${menuItem.index}`"
-          pRightIcon="PICheckCircle"
+          pIconRightName="checkCircle"
           data-testid="nested-menu-item"
           @click="logAmplitudeEvent(menuItem.title)"
         >
@@ -43,7 +43,7 @@
         v-for="menuItem in menuItems"
         :key="menuItem.index"
         :pIndex="menuItem.index"
-        :pLeftIcon="menuItem.leftIcon"
+        :pIconLeftName="menuItem.iconLeftName"
         data-testid="menu-item"
         @click="logAmplitudeEvent(menuItem.title)"
       >
@@ -85,6 +85,7 @@ interface MenuItem {
   index: string
   title: string
   display: boolean
+  iconLeftName?: IconName
 }
 interface FolderSubmenu {
   index: string
@@ -126,40 +127,41 @@ const folderSubmenu = computed<FolderSubmenu>(() => ({
   ].filter((item) => item.display),
 }))
 
-const menuItems = computed(() =>
-  [
+const menuItems = computed<MenuItem[]>(() => {
+  const menuItems: MenuItem[] = [
     {
       title: t('biReports'),
       index: `/dossier/${props.selectedEntityId}/rapports-bi`,
-      leftIcon: 'PIClipboardData',
+      iconLeftName: 'clipboardData',
       display: hasBIReports.value,
     },
     {
       index: `/dossier/${props.selectedEntityId}/ged`,
       title: t('documents'),
-      leftIcon: 'PIFolder',
+      iconLeftName: 'folder',
       display: hasPermission(PERMISSION_CODES.ACCOUNT_GED),
     },
     {
       index: `/dossier/${props.selectedEntityId}/banque`,
       title: t('bank'),
-      leftIcon: 'PIPiggyBank',
+      iconLeftName: 'piggyBank',
       display: hasPermission(PERMISSION_CODES.ACCOUNT_BANK),
     },
     {
       index: `/dossier/${props.selectedEntityId}/indicateurs`,
       title: t('indicators'),
-      leftIcon: 'PISpeedometer2',
+      iconLeftName: 'speedometer2',
       display: hasPermission(PERMISSION_CODES.ACCOUNT_INDICATORS),
     },
     {
       index: `/dossier/${props.selectedEntityId}/launcher`,
       title: t('apps'),
-      leftIcon: 'PIGrid',
+      iconLeftName: 'grid',
       display: !isCollab.value && hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
     },
-  ].filter((item) => item.display),
-)
+  ]
+  return menuItems.filter((item) => item.display)
+})
 
 const logAmplitudeEvent = (featureName: string) => {
   amplitudeService.track('Feature Consulted', {
