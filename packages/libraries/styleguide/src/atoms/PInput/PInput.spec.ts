@@ -3,7 +3,6 @@ import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PInput from '.'
 import type { PInputProps } from './PInputTypes'
-import { PIPulse } from '../../atoms/PIcon/components'
 
 const mockedCb = vi.fn()
 const propsValue: PInputProps = {
@@ -99,8 +98,8 @@ describe('pInput', () => {
         id: undefined,
         formatter: mockedCb,
         parser: mockedCb,
-        prefixIcon: null,
-        suffixIcon: null,
+        prefixIcon: undefined,
+        suffixIcon: undefined,
         type: propsValue.pType,
         showWordLimit: propsValue.pShowWordLimit,
         placeholder: propsValue.pPlaceholder,
@@ -128,7 +127,7 @@ describe('pInput', () => {
       const wrapper = createWrapper({
         ...propsValue,
         pType: 'input',
-        pPrefixIcon: PIPulse,
+        pPrefixIconName: 'pulse',
       })
       const elInput = wrapper.findComponent({ name: 'ElInput' })
       expect(elInput.props('prefixIcon')).toBeDefined()
@@ -138,7 +137,7 @@ describe('pInput', () => {
       const wrapper = createWrapper({
         ...propsValue,
         pType: 'input',
-        pSuffixIcon: PIPulse,
+        pSuffixIconName: 'pulse',
       })
       const elInput = wrapper.findComponent({ name: 'ElInput' })
       expect(elInput.props('suffixIcon')).toBeDefined()

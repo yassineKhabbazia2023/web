@@ -45,7 +45,7 @@
         v-model="searchInputData.inputValue"
         :pType="searchInputData.type"
         :pPlaceholder="searchInputData.placeholder"
-        :pPrefixIcon="searchInputData.prefixIcon"
+        :pPrefixIconName="searchInputData.prefixIconName"
         :pClearable="searchInputData.clearable"
       />
       <template #controls>
@@ -57,7 +57,7 @@
         v-model="searchInputData.inputValue"
         :pType="searchInputData.type"
         :pPlaceholder="searchInputData.placeholder"
-        :pPrefixIcon="searchInputData.prefixIcon"
+        :pPrefixIconName="searchInputData.prefixIconName"
         :pClearable="searchInputData.clearable"
         size="small"
       />
@@ -109,9 +109,9 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import PIcon from '../../atoms/PIcon'
-import { PISearch } from '../../atoms/PIcon/components'
 import PInput from '../../atoms/PInput'
 import { AppColors } from '../../utils/AppColorsEnum'
+import type { IconName } from '../../types/IconName.types'
 
 const basicInputData = reactive({
   type: 'text',
@@ -132,11 +132,17 @@ const passwordInputData = reactive({
   showPassword: true,
   inputValue: 'Hello i am your password',
 })
-const searchInputData = reactive({
+const searchInputData = reactive<{
+  type: string
+  placeholder: string
+  clearable: boolean
+  prefixIconName: IconName
+  inputValue: string
+}>({
   type: 'search',
   placeholder: 'Search',
   clearable: true,
-  prefixIcon: PISearch,
+  prefixIconName: 'search',
   inputValue: '',
 })
 </script>

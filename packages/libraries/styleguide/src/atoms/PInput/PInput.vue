@@ -48,6 +48,7 @@
 <script setup lang="ts">
 import { computed, useSlots, ref } from 'vue'
 import { mutable } from 'element-plus/es/utils/typescript'
+import { getIconComponent } from '../../utils/iconHelper'
 import { iconResolver } from '../../utils/iconResolver'
 import { ElInput } from 'element-plus'
 import type { PInputProps } from './PInputTypes'
@@ -55,11 +56,17 @@ import type { PInputProps } from './PInputTypes'
 const slots = useSlots()
 
 const prefixIcon = computed(() => {
-  return props.pPrefixIcon ? iconResolver(props.pPrefixIcon) : null
+  if (props.pPrefixIcon) {
+    return iconResolver(props.pPrefixIcon)
+  }
+  return props.pPrefixIconName ? getIconComponent(props.pPrefixIconName) : undefined
 })
 
 const suffixIcon = computed(() => {
-  return props.pSuffixIcon ? iconResolver(props.pSuffixIcon) : null
+  if (props.pSuffixIcon) {
+    return iconResolver(props.pSuffixIcon)
+  }
+  return props.pSuffixIconName ? getIconComponent(props.pSuffixIconName) : undefined
 })
 
 const props = withDefaults(defineProps<PInputProps>(), {

@@ -1,4 +1,5 @@
 import type { CSSProperties, Component } from 'vue'
+import type { IconName } from '../../types/IconName.types'
 
 export interface PInputProps {
   pType?: string
@@ -14,6 +15,8 @@ export interface PInputProps {
   pSize?: 'large' | 'default' | 'small'
   pPrefixIcon?: string | Component
   pSuffixIcon?: string | Component
+  pPrefixIconName?: IconName
+  pSuffixIconName?: IconName
   pRows?: number
   pAutosize?: boolean | { minRows?: number, maxRows?: number }
   pAutocomplete?: string
