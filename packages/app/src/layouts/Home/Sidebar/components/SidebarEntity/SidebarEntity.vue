@@ -326,7 +326,7 @@ onMounted(() => {
   }
 
   &__favorites {
-    height: 50px;
+    gap: 12px;
     overflow-y: scroll;
     overscroll-behavior-y: contain;
 
