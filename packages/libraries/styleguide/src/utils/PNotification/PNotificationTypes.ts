@@ -10,4 +10,6 @@ export interface PNotificationProps {
   customClass?: string
   position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left',
   duration?: number
+  onClose?: () => void
+  onClick?: () => void
 }

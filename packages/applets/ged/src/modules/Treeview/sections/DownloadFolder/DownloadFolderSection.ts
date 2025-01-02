@@ -2,8 +2,7 @@ import type { ComputedRef } from 'vue'
 import { inject, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { DownloadFolderComposableProps } from './DownloadFolderTypes'
-import { type ToastPluginFunc } from
-  '@ged/modules/common/Types/toastPluginTypes'
+import { PNotification } from '@pulse/styleguide'
 import { PICheck, PIExclamationTriangle, PILoader } from '@pulse/styleguide/components'
 import { formatDate } from '@ged/modules/common/helpers/dateFormatHelper'
 import { downloadFolder } from '@ged/services/Folder'
@@ -34,10 +33,6 @@ export function useDownloadFolder(
       },
     },
   })
-
-  // Forcing the cast as we know it exsits from Styleguide
-  // This should be updated to a PNotification import
-  const toastPlugin = inject('toast') as ToastPluginFunc
 
   const inProgressNotification = ref()
 
@@ -73,7 +68,7 @@ export function useDownloadFolder(
   // Define the notification functions
 
   const triggerInProgressNotification = () => {
-    inProgressNotification.value = toastPlugin({
+    inProgressNotification.value = PNotification({
       message: t('notifications.inProgress'),
       icon: PILoader,
       showClose: true,
@@ -83,7 +78,7 @@ export function useDownloadFolder(
   }
 
   const triggerSuccessNotification = () => {
-    toastPlugin({
+    PNotification({
       message: t('notifications.success'),
       icon: PICheck,
       showClose: true,
@@ -93,7 +88,7 @@ export function useDownloadFolder(
   }
 
   const triggerFailureNotification = () => {
-    toastPlugin({
+    PNotification({
       message: t('notifications.error'),
       icon: PIExclamationTriangle,
       customClass: 'error',

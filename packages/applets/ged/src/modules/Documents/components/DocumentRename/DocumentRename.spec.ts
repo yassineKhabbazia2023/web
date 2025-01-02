@@ -9,6 +9,7 @@ import { renameDocument } from '@ged/services/Documents'
 import DocumentRename from './'
 import DocumentRenameModal from './components/DocumentRenameModal.vue'
 import { trackDocumentRename } from '@ged/services/tracking/tracking.service'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
 const pinia = createPinia()
 
@@ -18,9 +19,12 @@ const mocks = vi.hoisted(() => {
   }
 })
 
+vi.mock('@pulse/styleguide')
+
 vi.mock('@ged/services/Documents', () => ({
   renameDocument: mocks.patch,
 }))
+
 vi.mock('@ged/services/tracking/tracking.service')
 const defaultProps: DocumentRenameProps = {
   modelValue: false,
@@ -29,8 +33,6 @@ const defaultProps: DocumentRenameProps = {
   document: documentMock,
 }
 
-const mockToastPlugin = vi.fn()
-
 const createWrapper = (
   props: DocumentRenameProps = defaultProps,
 ): VueWrapper<any> => {
@@ -38,9 +40,6 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   })
 }
@@ -59,7 +58,7 @@ describe('interactions', () => {
     )
 
     await nextTick()
-    expect(mockToastPlugin).toHaveBeenCalledTimes(1)
+    expect(PNotificationMock).toHaveBeenCalledTimes(1)
     expect(trackDocumentRename).toHaveBeenCalledWith({ isRenameSuccessful: true })
   })
 
@@ -73,7 +72,7 @@ describe('interactions', () => {
     await renameModalWrapper.vm.$emit('rename-confirmed', 'abcd')
 
     await nextTick()
-    expect(mockToastPlugin).toHaveBeenCalledTimes(1)
+    expect(PNotificationMock).toHaveBeenCalledTimes(1)
     expect(trackDocumentRename).toHaveBeenCalledWith({ isRenameSuccessful: false })
     expect(renameModalWrapper.props('isConfirmButtonLoading')).toBeFalsy()
   })

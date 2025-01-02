@@ -1,6 +1,6 @@
 import type { ComputedRef } from 'vue'
 import { inject, ref } from 'vue'
-import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
+import { PNotification } from '@pulse/styleguide'
 import { PICheck, PIExclamationTriangle, PILoader } from '@pulse/styleguide/components'
 import { downloadFile } from '@ged/modules/common/helpers/downloadFilesHelper'
 import {
@@ -37,10 +37,6 @@ export function useDownloadDocuments(
       },
     },
   })
-
-  // Inject the toast plugin
-
-  const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
   // Define the composable state
 
@@ -112,7 +108,7 @@ export function useDownloadDocuments(
   // Define the notification functions
 
   const triggerInProgressNotification = () => {
-    inProgressNotification.value = toastPlugin({
+    inProgressNotification.value = PNotification({
       message: t('notifications.inProgress'),
       icon: PILoader,
       showClose: true,
@@ -122,7 +118,7 @@ export function useDownloadDocuments(
   }
 
   const triggerSuccessNotification = () => {
-    toastPlugin({
+    PNotification({
       message: t('notifications.success'),
       icon: PICheck,
       showClose: true,
@@ -132,7 +128,7 @@ export function useDownloadDocuments(
   }
 
   const triggerFailureNotification = () => {
-    toastPlugin({
+    PNotification({
       message: t('notifications.error'),
       icon: PIExclamationTriangle,
       customClass: 'error',

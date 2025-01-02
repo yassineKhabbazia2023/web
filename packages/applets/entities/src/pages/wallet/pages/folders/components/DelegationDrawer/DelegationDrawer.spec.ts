@@ -11,6 +11,7 @@ import NextPreviousButtons from '@entities/common/components/NextPreviousButtons
 import AddDelegatesStep from './components/AddDelegatesStep'
 import DelegationPreviewList from './components/DelegationPreviewList'
 import DelegationDrawer from '.'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
 const USER_ID = 'a custom user id'
 const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
@@ -24,11 +25,6 @@ const SECOND_SELECTED_FOLDER = {
   accountNumber: 'another custom number',
   name: 'another custom name',
 }
-
-const getNotificationSuccess = () =>
-  document.body.getElementsByClassName('el-notification success')
-const getNotificationError = () =>
-  document.body.getElementsByClassName('el-notification error')
 
 let gatewayPostMock = vi.fn().mockResolvedValue({})
 vi.mock('@pulse/common', () => ({
@@ -70,7 +66,7 @@ const i18n = createI18n({
   locale: 'fr-FR',
 })
 
-const mockToastPlugin = vi.fn()
+vi.mock('@pulse/styleguide')
 
 const createWrapper = (
   props: DelegationDrawerProps = defaultProps,
@@ -81,7 +77,6 @@ const createWrapper = (
       plugins: [pinia],
       provide: {
         i18n,
-        toast: mockToastPlugin,
       },
       stubs: [
         'AddDelegatesStep',
@@ -208,7 +203,7 @@ describe('delegationDrawer', () => {
         await nextTick()
 
         const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
-        expect(getNotificationSuccess()).toHaveLength(0)
+        expect(PNotificationMock).not.toHaveBeenCalled()
 
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
 
@@ -256,7 +251,7 @@ describe('delegationDrawer', () => {
         expect(getNextButton().attributes('disabled')).toBeUndefined()
         expect(getNextButton().classes('is-loading')).toBeFalsy()
 
-        expect(getNotificationSuccess()).toHaveLength(1)
+        expect(PNotificationMock).toHaveBeenCalledOnce()
       })
 
       it('should display failure notification when api call fails then close the drawer', async () => {
@@ -266,7 +261,7 @@ describe('delegationDrawer', () => {
         await nextTick()
 
         const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
-        expect(getNotificationError()).toHaveLength(0)
+        expect(PNotificationMock).not.toHaveBeenCalled()
 
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
 
@@ -277,14 +272,14 @@ describe('delegationDrawer', () => {
         expect(gatewayPostMock).toHaveBeenCalledOnce()
 
         await flushPromises()
-        expect(getNotificationError()).toHaveLength(1)
+        expect(PNotificationMock).toHaveBeenCalledOnce()
       })
 
       it('should directly post user on "specific" delegation flow type', async () => {
         const nextPreviousButtonsWrapper = findNextPreviousButton(wrapper)
         const getNextButton = () => nextPreviousButtonsWrapper.findAll('button')[1]
 
-        expect(getNotificationSuccess()).toHaveLength(0)
+        expect(PNotificationMock).not.toHaveBeenCalled()
 
         const addDelegatesStepWrapper = findAddDelegatesStepWrapper(wrapper)
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
@@ -328,7 +323,7 @@ describe('delegationDrawer', () => {
         expect(getNextButton().attributes('disabled')).toBeUndefined()
         expect(getNextButton().classes('is-loading')).toBeFalsy()
 
-        expect(getNotificationSuccess()).toHaveLength(1)
+        expect(PNotificationMock).toHaveBeenCalledOnce()
       })
     })
   })

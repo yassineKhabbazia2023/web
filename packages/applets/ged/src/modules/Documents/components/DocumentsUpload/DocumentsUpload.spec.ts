@@ -12,6 +12,7 @@ import { uploadDocument } from '@ged/services/Documents'
 import DocumentsUpload from '.'
 import DocumentsModalActionsFooter from '../DocumentsExplorerModal/components/DocumentsModalActionsFooter'
 import { PButton } from '@pulse/styleguide/components'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
 import { generateTestFiles, defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
 import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 
@@ -75,7 +76,7 @@ vi.mock('@ged/services/Documents', () => ({
   }),
 }))
 
-const mockToastPlugin = vi.fn()
+vi.mock('@pulse/styleguide')
 
 const createWrapper = (
   props: DocumentUploadProps = defaultProps,
@@ -84,9 +85,6 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   }) as unknown as DocumentsUploadWrapper
 }
@@ -313,7 +311,7 @@ describe('test DocumentsUpload', () => {
 
           await flushPromises()
           await nextTick()
-          expect(mockToastPlugin).toHaveBeenCalled()
+          expect(PNotificationMock).toHaveBeenCalled()
         })
       })
 

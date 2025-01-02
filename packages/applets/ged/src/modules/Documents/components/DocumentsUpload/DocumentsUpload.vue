@@ -37,13 +37,10 @@ import { generateActionsForModal } from '../DocumentsExplorerModal/helpers/Modal
 import { modalButtonsUpload } from './helpers/ModalUploadActionsHelpers'
 import { uploadDocument } from '@ged/services/Documents'
 import { mapExplorerDocumentFromFiles } from '../../helpers/documentExplorerMapper'
-
-import type { ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
+import { PNotification } from '@pulse/styleguide'
 import { PICheck } from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '../../DocumentsTypes'
 import { trackDepositedDocument } from '@ged/services/tracking/tracking.service'
-
-const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -243,7 +240,7 @@ const canCloseModal = computed(() =>
 
 // Notifications Scope
 const triggerSuccessNotification = (documentsCount: number, folderName : string) => {
-  toastPlugin({
+  PNotification({
     message: documentsCount > 1
       ? t('notifications.successMsg.plural',
         { documentCount: documentsCount, folderName })
@@ -255,7 +252,7 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
   })
 }
 const triggerErrorNotification = (failedCount : number, errorDetails : string) => {
-  toastPlugin({
+  PNotification({
     message: t('notifications.errorMsg', { failedCount , errorDetails }, failedCount),
     icon: PICheck,
     showClose: true,

@@ -47,8 +47,6 @@ import { TriggerSource } from '@ged/services/tracking/tracking.types'
 
 type DocumentsWrapper = ComponentWrapper<InstanceType<typeof Documents>>
 
-const mockToastPlugin = vi.fn()
-
 const pinia = createPinia()
 
 const defaultProps: DocumentsProps = {
@@ -78,9 +76,6 @@ const createWrapper = (
         },
       },
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   })
 }
@@ -308,8 +303,6 @@ describe('documents', () => {
         )
       })
 
-    // an exceptional test to be able to cover the composable code cause of the
-    // complexity of mocking i18n and the toastPlugin (not recommended)
     it('should call download document composable oppon  toolbox-action-triggered', async () => {
       const wrapper = createWrapper()
       await nextTick()

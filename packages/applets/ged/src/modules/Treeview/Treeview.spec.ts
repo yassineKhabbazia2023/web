@@ -43,15 +43,13 @@ vi.mock('@ged/services/Folder', () => ({
 
 vi.mock('@ged/services/tracking/tracking.service')
 
-const mockToastPlugin = vi.fn()
+vi.mock('@pulse/styleguide')
+
 const createWrapper = (props: TreeviewProps = defaultProps) : TreeviewWrapper => {
   return mount(Treeview, {
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
       stubs: {
         PButton: {
           template: '<div />',

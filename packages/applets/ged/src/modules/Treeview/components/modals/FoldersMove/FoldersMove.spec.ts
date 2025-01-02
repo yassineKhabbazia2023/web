@@ -1,5 +1,5 @@
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { FoldersMoveProps } from './FoldersMoveTypes'
 import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
@@ -10,6 +10,7 @@ import FoldersMove from '.'
 import { moveFolderAsync } from '@ged/services/Folder'
 import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
 import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
 const unValidDestination: Folder = foldersData[0][0] // id: 135393636
 const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
@@ -19,7 +20,7 @@ vi.mock('@ged/services/Folder', () => ({
   moveFolderAsync: vi.fn(),
 }))
 
-const mockToastPlugin = vi.fn()
+vi.mock('@pulse/styleguide')
 
 const createWrapper = (
   props: FoldersMoveProps = defaultProps,
@@ -28,9 +29,6 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   }) as unknown as FoldersMoveWrapper
 }
@@ -284,8 +282,8 @@ describe('test FoldersMove', () => {
           )
 
           await nextTick()
-          expect(mockToastPlugin).toHaveBeenCalledTimes(1)
-          const callArguments = mockToastPlugin.mock.calls[0][0]
+          expect(PNotificationMock).toHaveBeenCalledTimes(1)
+          const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
           expect(callArguments.message).toBe(
             `Le dossier ${defaultProps.folderToMove.name} a été déplacé dans le dossier ${defaultProps.folder.name}`,
           )

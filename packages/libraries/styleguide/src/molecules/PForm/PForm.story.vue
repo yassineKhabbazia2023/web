@@ -63,14 +63,13 @@
 <script setup lang="ts">
 import { computed, inject, reactive, ref } from 'vue'
 // the following types are exported in the styleguide as PFormInstance & PFormRules
-import type { ElNotification, FormInstance, FormRules } from 'element-plus'
+import type { FormInstance, FormRules } from 'element-plus'
 import { PICheck, PIExclamationTriangle } from '../../atoms/PIcon/components'
 import PFormItem from '../../atoms/PFormItem'
 import PButton from '../../atoms/PButton'
 import PInput from '../../atoms/PInput'
 import PForm from '../../molecules/PForm'
-
-const toastPlugin = inject('toast') as typeof ElNotification
+import { PNotification } from '../../utils/PNotification/PNotification'
 
 const formRef = ref<FormInstance>()
 
@@ -146,7 +145,7 @@ export interface openToastArgs {
 }
 
 const openToast = ({ message, icon, customClass }: openToastArgs) => {
-  toastPlugin({
+  PNotification({
     message,
     icon,
     showClose: false,

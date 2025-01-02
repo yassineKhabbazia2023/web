@@ -1,12 +1,15 @@
 import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
 import { type RenameFolderSectionProps }
   from '@ged/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
 import { createPinia, setActivePinia } from 'pinia'
 import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
 import { getMockedFolder } from '../../helpers/testHelper'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
+
+vi.mock('@pulse/styleguide')
 
 const pinia = createPinia()
 
@@ -28,16 +31,11 @@ const defaultProps: RenameFolderSectionProps = {
   folderId: 2,
 }
 
-const mockToastPlugin = vi.fn()
-
 const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
   return mount(RenameFolderSection, {
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   })
 }
@@ -71,8 +69,8 @@ describe('renameFolderSection', () => {
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()
 
-      expect(mockToastPlugin).toHaveBeenCalledTimes(1)
-      const callArguments = mockToastPlugin.mock.calls[0][0]
+      expect(PNotificationMock).toHaveBeenCalledTimes(1)
+      const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
       expect(callArguments.message).toBe('Connexion au serveur interrompue.')
       expect(callArguments.customClass).toBe('error')
     })

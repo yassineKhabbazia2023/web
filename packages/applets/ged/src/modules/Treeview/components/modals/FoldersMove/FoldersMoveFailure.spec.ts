@@ -1,5 +1,5 @@
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { FoldersMoveProps } from './FoldersMoveTypes'
 import { mount } from '@vue/test-utils'
@@ -7,6 +7,7 @@ import { nextTick } from 'vue'
 import FoldersMove from '.'
 import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
 import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
 vi.mock('@ged/services/Folder', () => ({
   moveFolderAsync: () => {
@@ -14,7 +15,7 @@ vi.mock('@ged/services/Folder', () => ({
   },
 }))
 
-const mockToastPlugin = vi.fn()
+vi.mock('@pulse/styleguide')
 
 const createWrapper = (
   props: FoldersMoveProps = defaultProps,
@@ -23,9 +24,6 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
-      provide: {
-        toast: mockToastPlugin,
-      },
     },
   }) as unknown as FoldersMoveWrapper
 }
@@ -57,8 +55,8 @@ describe('test FoldersMove failure', () => {
           )
 
           await nextTick()
-          expect(mockToastPlugin).toHaveBeenCalledTimes(1)
-          const callArguments = mockToastPlugin.mock.calls[0][0]
+          expect(PNotificationMock).toHaveBeenCalledTimes(1)
+          const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
           expect(callArguments.message).toBe('Connexion au serveur interrompue')
           expect(callArguments.customClass).toBe('error')
         })

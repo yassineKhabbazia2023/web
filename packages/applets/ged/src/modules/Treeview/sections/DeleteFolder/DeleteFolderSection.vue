@@ -21,17 +21,13 @@ import { type DeleteFolderSectionProps }
 
 import { deleteFolder } from '@ged/services/Folder'
 import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
-import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
+import { PNotification } from '@pulse/styleguide'
 
 // Definitions
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
-// Forcing the cast as we know it exsits from Styleguide
-// This should be updated to a PNotification import
-const toastPlugin = inject('toast') as ToastPluginFunc
 
 const emit = defineEmits([
   'on-delete-folder-completed',
@@ -79,7 +75,7 @@ const handleConfirmDeleteFolder = async () => {
 // Notifications
 
 const triggerErrorNotification = () => {
-  toastPlugin({
+  PNotification({
     message: t('notifications.error'),
     icon: PIExclamationTriangle,
     customClass: 'error',
@@ -89,7 +85,7 @@ const triggerErrorNotification = () => {
 }
 
 const triggerSuccessNotification = () => {
-  toastPlugin({
+  PNotification({
     message: t('notifications.success', { folderName: props.selectedFolder.name }),
     icon: PICheck,
     showClose: true,

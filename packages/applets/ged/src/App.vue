@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, provide } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Treeview from '@ged/modules/Treeview'
 import Documents from '@ged/modules/Documents'
@@ -67,11 +67,7 @@ import {
 import { PCol, PRow, PIX } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import { commonStore } from '@pulse/common'
-/* This might be refactored later to import 'PNotification' every time we need the notifications.
-The current toaster uses a mock of the 'inject' property.
-That's why we're providing the new PNotification for now.
-*/
-provide('toast', PNotification)
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',

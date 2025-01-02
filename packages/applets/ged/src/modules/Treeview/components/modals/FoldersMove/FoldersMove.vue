@@ -44,12 +44,10 @@ import { generateActionsForModal } from
   '@ged/modules/Documents/components/DocumentsExplorerModal/helpers/ModalsActionsHelpers'
 import { modalButtonsMove } from './helpers/MoveModalActionsHelpers'
 import { mapExplorerDocumentFromFolders } from '@ged/modules/Documents/helpers/documentExplorerMapper'
-import type { ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
+import { PNotification } from '@pulse/styleguide'
 import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 import type { ExplorerDocument, ExplorerFoldersListLineDisabledState } from '@ged/modules/Documents/DocumentsTypes'
 import { moveFolderAsync } from '@ged/services/Folder'
-
-const toastPlugin = inject('toast') as unknown as ToastPluginFunc
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -214,7 +212,7 @@ const triggerSuccessNotification = (
   movedFolderName: string,
   targetFolderName: string,
 ) => {
-  toastPlugin({
+  PNotification({
     message: t('notifications.successMsg', { movedFolderName, targetFolderName }),
     icon: PICheck,
     showClose: true,
@@ -225,7 +223,7 @@ const triggerSuccessNotification = (
 
 const triggerFailureNotification = (
 ) => {
-  toastPlugin({
+  PNotification({
     message: t('notifications.failureMsg'),
     icon: PIExclamationTriangle,
     showClose: true,

@@ -9,11 +9,9 @@ import NextPreviousButtons from '@entities/common/components/NextPreviousButtons
 import AddCollaboratorsDrawer from '.'
 import AddCollaboratorsCard from './components/AddCollaboratorsCard'
 import { API_PREFIXES } from '@entities/common/config/services'
+import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
 const SELECTED_CONTACTS = [{ id: 1 }, { id: 2 }]
-
-const getNotificationSuccess = () =>
-  document.body.getElementsByClassName('el-notification success')
 
 const gatewayPostMock = vi.fn().mockResolvedValue({})
 vi.mock('@pulse/common', () => ({
@@ -24,6 +22,8 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 
+vi.mock('@pulse/styleguide')
+
 const defaultProps: AddCollaboratorsDrawerProps = {
   modelValue: true,
   entityId: entityMock.accountId,
@@ -33,8 +33,6 @@ const i18n = createI18n({
   locale: 'fr-FR',
 })
 
-const mockToastPlugin = vi.fn()
-
 const createWrapper = (
   props: AddCollaboratorsDrawerProps = defaultProps,
 ): VueWrapper => {
@@ -43,7 +41,6 @@ const createWrapper = (
     global: {
       provide: {
         i18n,
-        toast: mockToastPlugin,
       },
       stubs: ['AddCollaboratorsCard', 'AddCollaboratorsAutocomplete'],
     },
@@ -107,7 +104,7 @@ describe('add collaborators drawer', () => {
     describe('nextPreviousButtons', () => {
       it('should call api to add collaborators to entity', async () => {
         const addCollaboratorsCard = findAddCollaboratorsCardWrapper(wrapper)
-        expect(getNotificationSuccess()).toHaveLength(0)
+        expect(PNotificationMock).not.toHaveBeenCalled()
 
         await addCollaboratorsCard.vm.$emit(
           'collaboratorSelection',
@@ -153,7 +150,7 @@ describe('add collaborators drawer', () => {
 
         expect(nextPreviousButtonWrapper.props('isNextButtonLoading')).toBeTruthy()
         await flushPromises()
-        expect(getNotificationSuccess()).toHaveLength(1)
+        expect(PNotificationMock).toHaveBeenCalledOnce()
       })
     })
   })

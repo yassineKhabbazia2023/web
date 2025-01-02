@@ -21,7 +21,7 @@ import ConfirmationPopup from
   '@ged/modules/common/templates/popups'
 import { type DocumentRestoreModalTypesProps }
   from '@ged/modules/Bin/components/DocumentRestoreModal/DocumentRestoreModalTypes'
-import { type ToastPluginFunc } from '@ged/modules/common/Types/toastPluginTypes'
+import { PNotification } from '@pulse/styleguide'
 import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 
 // DeleteFolderConfirmationPopup definitions
@@ -29,10 +29,6 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
-// Forcing the cast as we know it exsits from Styleguide
-// This should be updated to a PNotification import
-const toastPlugin = inject('toast') as ToastPluginFunc
 
 const props = defineProps<DocumentRestoreModalTypesProps>()
 
@@ -103,7 +99,7 @@ const goToFolder = (folderId: number) => {
 }
 
 const triggerErrorNotification = () => {
-  toastPlugin({
+  PNotification({
     message: t('restore.notifications.error'),
     icon: PIExclamationTriangle,
     customClass: 'error',
@@ -118,7 +114,7 @@ const triggerSuccessNotification = (folderId: number, path: string) => {
       folder: path,
     })
 
-  toastPlugin({
+  PNotification({
     message: msg,
     icon: PICheck,
     showClose: true,

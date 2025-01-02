@@ -16,6 +16,8 @@ import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreMod
 import { PBreadcrumb, PPagination, PLoader } from '@pulse/styleguide/components'
 import type { BinDocument, BinDocumentsWithTableStructure } from '@ged/models/Document'
 
+vi.mock('@pulse/styleguide')
+
 const defaultProps: BinDocumentProps = {
   currentBinService: 'serv',
   selectedEntity: 'ent',
@@ -42,9 +44,6 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
-    },
-    provide: {
-      toast: vi.fn(),
     },
   }) as unknown as BinDocumentsWrapper
 }
