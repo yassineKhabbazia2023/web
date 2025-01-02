@@ -98,7 +98,7 @@ const filters: FilterOption<number>[] = [
     pContent: t('to-do'),
     pCode: 20,
     pColor: 'warning',
-    pIcon: 'arrowUpCircle',
+    pIconName: 'arrowUpCircle',
   },
   {
     pContent: t('in-progress'),

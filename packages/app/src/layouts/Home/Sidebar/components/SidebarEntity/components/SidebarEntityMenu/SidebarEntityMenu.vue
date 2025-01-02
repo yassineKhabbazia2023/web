@@ -68,7 +68,7 @@ const activeMenuItem = ref<string>(route.fullPath)
 
 interface MenuItem {
   index: string
-  title?: string
+  title: string
   display: boolean
   iconLeftName?: IconName
 }
@@ -97,7 +97,15 @@ const folderOrEntityMenuItem = computed<MenuItem[]>(() => {
       display: isCollab.value && hasPermission(PERMISSION_CODES.HISTORY),
     },
   ].find((item) => item.display)
-  return menuItem ? [{ ...menuItem, title, iconLeftName: 'building' }] : []
+
+  return menuItem
+    ? [{
+      index: menuItem.index,
+      display: menuItem.display,
+      title,
+      iconLeftName: 'building',
+    }]
+    : []
 })
 
 const menuItems = computed<MenuItem[]>(() => {

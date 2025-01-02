@@ -66,7 +66,7 @@ describe('header.vue', () => {
           pContent: 'To do',
           pCode: 20,
           pColor: 'warning',
-          pIcon: 'arrowUpCircle',
+          pIconName: 'arrowUpCircle',
         },
         {
           pContent: 'In progress',
