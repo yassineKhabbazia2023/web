@@ -69,7 +69,7 @@ import PFormItem from '../../atoms/PFormItem'
 import PButton from '../../atoms/PButton'
 import PInput from '../../atoms/PInput'
 import PForm from '../../molecules/PForm'
-import PNotification from '../../utils/PNotification/PNotification'
+import { PNotification } from '../../utils/PNotification/PNotification'
 
 const formRef = ref<FormInstance>()
 

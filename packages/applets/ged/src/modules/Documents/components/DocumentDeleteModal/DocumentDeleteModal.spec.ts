@@ -2,7 +2,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import DocumentDeleteModal
   from '@ged/modules/Documents/components/DocumentDeleteModal'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
 import { type DocumentDeleteModalTypesProps }
   from '@ged/modules/Documents/components/DocumentDeleteModal/DocumentDeleteModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
@@ -135,7 +135,7 @@ describe('deleteFolderConfirmationPopup', () => {
         )
 
         expect(PNotificationMock).toHaveBeenCalledTimes(1)
-        const callArguments = PNotificationMock.mock.calls[0][0]
+        const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
         expect(callArguments.message).toBe('1 document supprimé.')
         expect(callArguments.customClass).toBe('success')
         expect(wrapper.emitted('confirm-delete-document')).toBeTruthy()
@@ -162,7 +162,7 @@ describe('deleteFolderConfirmationPopup', () => {
         )
 
         expect(PNotificationMock).toHaveBeenCalledTimes(1)
-        const callArguments = PNotificationMock.mock.calls[0][0]
+        const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
         expect(callArguments.message).toBe('"2" documents supprimés.')
         expect(callArguments.customClass).toBe('success')
         expect(wrapper.emitted('confirm-delete-document')).toBeTruthy()

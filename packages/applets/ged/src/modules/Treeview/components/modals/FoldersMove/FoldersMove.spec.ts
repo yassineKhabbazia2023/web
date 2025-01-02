@@ -1,5 +1,5 @@
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { FoldersMoveProps } from './FoldersMoveTypes'
 import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
@@ -283,7 +283,7 @@ describe('test FoldersMove', () => {
 
           await nextTick()
           expect(PNotificationMock).toHaveBeenCalledTimes(1)
-          const callArguments = PNotificationMock.mock.calls[0][0]
+          const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
           expect(callArguments.message).toBe(
             `Le dossier ${defaultProps.folderToMove.name} a été déplacé dans le dossier ${defaultProps.folder.name}`,
           )

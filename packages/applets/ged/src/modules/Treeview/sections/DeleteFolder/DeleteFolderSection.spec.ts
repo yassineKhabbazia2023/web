@@ -1,7 +1,7 @@
 
 import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
 import { type DeleteFolderSectionProps }
   from '@ged/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
 import type { Folder } from '@ged/models/Folder'
@@ -171,7 +171,7 @@ describe('deleteFolderSection', () => {
       await nextTick()
 
       expect(PNotificationMock).toHaveBeenCalledTimes(1)
-      const callArguments = PNotificationMock.mock.calls[0][0]
+      const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
       expect(callArguments.message).toBe('Dossier "A" supprimé.')
       expect(callArguments.customClass).toBe('success')
     })

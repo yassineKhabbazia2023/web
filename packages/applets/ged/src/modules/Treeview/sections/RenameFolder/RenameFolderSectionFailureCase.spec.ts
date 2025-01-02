@@ -1,6 +1,6 @@
 import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
 import { type RenameFolderSectionProps }
   from '@ged/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
 import { createPinia, setActivePinia } from 'pinia'
@@ -70,7 +70,7 @@ describe('renameFolderSection', () => {
       await nextTick()
 
       expect(PNotificationMock).toHaveBeenCalledTimes(1)
-      const callArguments = PNotificationMock.mock.calls[0][0]
+      const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
       expect(callArguments.message).toBe('Connexion au serveur interrompue.')
       expect(callArguments.customClass).toBe('error')
     })

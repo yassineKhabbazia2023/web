@@ -1,7 +1,7 @@
 import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
 import { type CreateFolderSectionProps }
   from '@ged/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
 import type { Folder, FolderProperties } from '@ged/models/Folder'
@@ -249,7 +249,7 @@ describe('createFolderSection', () => {
       await nextTick()
 
       expect(PNotificationMock).toHaveBeenCalledTimes(1)
-      const callArguments = PNotificationMock.mock.calls[0][0]
+      const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
       expect(callArguments.message).toBe(
         'Le dossier a été créé avec succès.',
       )

@@ -2,7 +2,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'
 import { restoreDocuments } from '@ged/services/BinDocuments'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
 import { type DocumentRestoreModalTypesProps }
   from '@ged/modules/Bin/components/DocumentRestoreModal/DocumentRestoreModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
@@ -105,7 +105,7 @@ describe('documentRestoreModal', () => {
         await nextTick()
         expect(wrapper.emitted('confirm-restore-document')).toBeTruthy()
         expect(PNotificationMock).toHaveBeenCalledTimes(1)
-        const callArguments = PNotificationMock.mock.calls[0][0]
+        const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
         expect(callArguments.message)
           .toBe('1 document restauré dans le dossier Test - Voir le document')
         expect(callArguments.customClass).toBe('success')
