@@ -20,7 +20,7 @@
       pClearable
       :pMaxlength="pMaxLength"
       :pPlaceholder="pPlaceholder"
-      :pPrefixIcon="PISearch"
+      pPrefixIconName="search"
       pSize="small"
       pType="search"
       @blur="handleBlur"
@@ -36,7 +36,6 @@ import PIcon from '../PIcon'
 import type { PExpandableSearchProps } from './PExpandableSearchTypes'
 import PButton from '../../atoms/PButton'
 import PInput from '../../atoms/PInput'
-import { PISearch } from '../../atoms/PIcon/components'
 
 const props = withDefaults(defineProps<PExpandableSearchProps>(), {
   pType: 'white',

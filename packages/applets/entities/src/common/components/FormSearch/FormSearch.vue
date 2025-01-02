@@ -9,7 +9,7 @@
       <PInput
         v-model="formValues.search"
         :pPlaceholder="placeholder"
-        :pPrefixIcon="PISearch"
+        pPrefixIconName="search"
         pName="search"
         pSize="small"
         pType="search"
@@ -26,7 +26,6 @@ import {
   PForm,
   PFormItem,
   PInput,
-  PISearch,
 } from '@pulse/styleguide/components'
 import type { FormInstance, FormRules } from '@pulse/styleguide/types'
 import type { Props } from './types'
