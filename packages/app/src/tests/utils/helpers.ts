@@ -21,6 +21,20 @@ const helpers = () => {
     history: createWebHistory(),
     routes: [
       {
+        name: 'home',
+        path: '/',
+        component: {
+          template: '<div />',
+        },
+      },
+      {
+        name: 'wallet',
+        path: '/wallet',
+        component: {
+          template: '<div />',
+        },
+      },
+      {
         name: 'login',
         path: '/login',
         component: {

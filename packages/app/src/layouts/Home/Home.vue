@@ -33,6 +33,7 @@
             v-if="hasUserProfileDrawerOpened"
             v-model="hasUserProfileDrawerOpened"
             :hasDrawerOpened="hasUserProfileDrawerOpened"
+            data-testid="home-user-profile"
           />
           <router-view />
         </PContainer>

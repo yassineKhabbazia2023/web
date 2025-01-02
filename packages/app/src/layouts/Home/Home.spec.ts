@@ -5,10 +5,9 @@ import {
 } from '@app/schedule/tests/mocks/commonViMock'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { commonStore as store } from '@pulse/common'
 import { createTestingPinia } from '@pinia/testing'
-import router from '@app/plugins/router'
 import helpers from '@app/tests/utils/helpers'
 import { nextTick } from 'vue'
 import * as entitiesServices from '@app/services/entities'
@@ -17,7 +16,7 @@ import { getMockedFavoriteEntities } from './Sidebar/components/SidebarEntity/Mo
 import Home from '.'
 
 const pinia = createTestingPinia()
-const { fakeUser } = helpers()
+const { fakeUser, router } = helpers()
 const mockedEntity = getMockedFavoriteEntities()[0]
 
 const loggerDebugSpy = vi.hoisted(() => vi.fn())
@@ -91,15 +90,20 @@ window.embedded_svc = {
 } as any
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(Home, {
+  shallowMount(Home, {
     attachTo: document.body,
     global: {
       plugins: [pinia, router],
       stubs: {
         Schedule: { template: '<div data-testid="schedule-stub" />' },
         MyInformation: { template: '<div />' },
+        PContainer: { template: '<div><slot /></div>' },
+        PCHeader: { template: '<div><slot /></div>' },
         PAside: true,
         PDrawer: true,
+        Header: true,
+        HomeScheduleDrawer: true,
+        FeedCenterDrawer: true,
       },
     },
   })
@@ -186,13 +190,15 @@ describe('home', () => {
     wrapper.vm.defaultEntity = true
     await nextTick()
 
-    const getUserProfileDrawer = () =>
-      document.querySelector('.user-profile-drawer') as HTMLElement
-    expect(getUserProfileDrawer()).toBeFalsy()
+    const userProfileBefore = wrapper.find('[data-testid="home-user-profile"]')
+    expect(userProfileBefore.exists()).toBeFalsy()
 
-    const userAvatar = wrapper.find('.header-section__user-avatar')
-    await userAvatar.trigger('click')
-    expect(getUserProfileDrawer()).toBeTruthy()
+    const header = wrapper.findComponent({ name: 'Header' })
+    header.vm.$emit('show-user-profile-drawer')
+    await nextTick()
+
+    const userProfileAfter = wrapper.find('[data-testid="home-user-profile"]')
+    expect(userProfileAfter.exists()).toBeTruthy()
   })
 
   it('should display the app after retrieving all current user data', async () => {
