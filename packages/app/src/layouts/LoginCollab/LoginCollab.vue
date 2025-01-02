@@ -8,12 +8,19 @@
           :pMd="12"
           class="content"
         >
-          <PImage
-            pType="logos"
-            pName="brand-color"
-            class="brand-logo-content"
-            alt="Brand logo"
-          />
+          <a
+            :href="OFFICIAL_WEBSITE_URL"
+            rel="noopener"
+            target="_blank"
+            data-testid="login-brand-link"
+          >
+            <PImage
+              pType="logos"
+              pName="brand-color"
+              class="brand-logo-content"
+              alt="Brand logo"
+            />
+          </a>
           <router-view />
         </PCol>
 
@@ -54,6 +61,7 @@ import { onMounted } from 'vue'
 import { PCol, PRow, PImage } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
+import { OFFICIAL_WEBSITE_URL } from '@pulse/core'
 
 onMounted(() => {
   localStorage.removeItem('selected-entity')
