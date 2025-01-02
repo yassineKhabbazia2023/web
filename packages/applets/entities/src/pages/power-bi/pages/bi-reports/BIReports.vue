@@ -8,36 +8,40 @@
   </div>
   <div v-else-if="!isLoading && selectedReport" class="bi-reports flex">
     <ReportsList v-model:selectedReport="selectedReport" :reports="reports" />
-    <ReportDisplay :selectedReport="selectedReport" :token="powerBiToken" />
+    <ReportDisplay :selectedReport="selectedReport" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { useI18n } from 'vue-i18n'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { PLoader } from '@pulse/styleguide/components'
-import { fetchBIReports, fetchBIToken } from '@entities/services/reporting'
+import { fetchBIReports } from '@entities/services/reporting'
 import type { Report } from './BIReportsTypes'
 import ReportsList from './components/ReportsList'
 import ReportDisplay from './components/ReportDisplay'
+import { displayNotification } from '@entities/common/utils'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
 
 const route = useRoute()
 const isLoading = ref(true)
 const reports = ref<Report[]>([])
-const powerBiToken = ref<string>('')
 const selectedReport = ref<Report>()
 
 onMounted(async () => {
   try {
     const accountId = +route.params.id
     const { items } = await fetchBIReports(accountId)
-    powerBiToken.value = await fetchBIToken()
     reports.value = items
     // We always select the first report by default
     selectedReport.value = reports.value[0]
   } catch (error) {
-    logger.error('Unable to fetch BI reports: ', error)
+    displayNotification('error', t('biReportsUnavailable'))
   } finally {
     isLoading.value = false
   }
@@ -49,3 +53,10 @@ onMounted(async () => {
   height: calc(100vh - 56px);
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    biReportsUnavailable: "There's a technical issue with fetching BI reports. Please check back later."
+  fr-FR:
+    biReportsUnavailable: "Un problème technique empêche la récupération des rapports BI. Merci de vérifier plus tard."
+</i18n>

@@ -26,21 +26,30 @@
 
 <script setup lang="ts">
 import 'powerbi-client'
+import { useI18n } from 'vue-i18n'
 import { watch, toRefs, computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import { commonStore } from '@pulse/common'
 import type { ReportDisplayProps } from './ReportDisplayTypes'
+import { fetchBIToken } from '@entities/services/reporting'
+import { displayNotification } from '@entities/common/utils'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
 
 const props = defineProps<ReportDisplayProps>()
 
+const reportToken = ref<string>('')
 const powerbiSection = ref<HTMLElement>()
 const { selectedReport } = toRefs(props)
 const { defaultEntity } = storeToRefs(commonStore())
 
 const powerBIConfig = computed(() => ({
   type: 'report',
-  accessToken: props.token,
+  accessToken: reportToken.value,
   embedUrl: selectedReport.value.embededReportUrl,
   id: selectedReport.value.embededReportId,
   settings: {
@@ -49,10 +58,15 @@ const powerBIConfig = computed(() => ({
   },
 }))
 
-const loadPowerBIReport = () => {
+const loadPowerBIReport = async () => {
   const powerbiContainer = powerbiSection.value as HTMLElement
   window.powerbi.reset(powerbiContainer)
-  window.powerbi.embed(powerbiContainer, powerBIConfig.value)
+  try {
+    reportToken.value = await fetchBIToken(selectedReport.value.embededReportId)
+    window.powerbi.embed(powerbiContainer, powerBIConfig.value)
+  } catch {
+    displayNotification('error', t('biReportLoadingError'))
+  }
 }
 
 // If a different report is selected, the new report should be loaded again
@@ -76,3 +90,10 @@ onMounted(() => {
   }
 }
 </style>
+
+<i18n lang="yaml">
+  en-US:
+    biReportLoadingError: "The BI report can't be loaded at the moment. Please try again later."
+  fr-FR:
+    biReportLoadingError: "Le rapport BI ne peut pas être chargé pour le moment. Merci de réessayer plus tard."
+</i18n>

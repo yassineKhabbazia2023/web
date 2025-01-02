@@ -15,6 +15,7 @@ const mockedAccountId = 602
 const mockedBIToken = 'tokenTest'
 const mockedAccount = getMockedAccount()
 const mockedBIReports = getMockedBIReports()
+const mockedDefaultReport = mockedBIReports[0]
 const mockedBIReportTypes = getMockedBIReportTypes()
 const mockedReportUploadInfo = {
   accountId: 2,
@@ -33,7 +34,7 @@ vi.mock('@pulse/common', () => ({
           return Promise.resolve({
             data: mockedBIReports,
           })
-        } else if (url === `${API_PREFIXES.REPORTING}/reports/token`) {
+        } else if (url === `${API_PREFIXES.REPORTING}/reports/${mockedDefaultReport.embededReportId}/embedToken`) {
           return Promise.resolve({
             data: mockedBIToken,
           })
@@ -69,7 +70,7 @@ describe('reportingServices', () => {
   })
   describe('fetchBIToken', () => {
     it('should return the BI token', async () => {
-      const biToken = await fetchBIToken()
+      const biToken = await fetchBIToken(mockedDefaultReport.embededReportId)
 
       expect(biToken).toStrictEqual(mockedBIToken)
     })

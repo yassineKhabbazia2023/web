@@ -41,9 +41,9 @@ export const fetchBIReportTypes = async (): Promise<ReportType[]> => {
   return data
 }
 
-export const fetchBIToken = async (): Promise<string> => {
+export const fetchBIToken = async (reportId: string): Promise<string> => {
   const { data } = await commonApi().gateway.get(
-    `${API_PREFIXES.REPORTING}/reports/token`,
+    `${API_PREFIXES.REPORTING}/reports/${reportId}/embedToken`,
   )
 
   return data
