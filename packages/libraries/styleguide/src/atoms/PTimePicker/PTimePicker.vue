@@ -17,8 +17,6 @@
     :defaultValue="pDefaultValue"
     :name="pName"
     :label="pLabel"
-    :prefixIcon="pPrefixIcon"
-    :clearIcon="pClearIcon"
     :disabledHours="pDisabledHours"
     :disabledMinutes="pDisabledMinutes"
     :disabledSeconds="pDisabledSeconds"
@@ -49,8 +47,7 @@ withDefaults(defineProps<PTimePickerProps>(), {
   pId: undefined,
   pName: '',
   pLabel: undefined,
-  pPrefixIcon: '',
-  pClearIcon: '',
+
   pDisabledHours: undefined,
   pDisabledMinutes: undefined,
   pDisabledSeconds: undefined,

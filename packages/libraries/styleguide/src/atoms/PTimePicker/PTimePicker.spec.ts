@@ -22,8 +22,6 @@ const propsValue: PTimePickerProps = {
   pId: 'id',
   pName: 'name',
   pLabel: 'label',
-  pPrefixIcon: 'prefixIcon',
-  pClearIcon: 'clearIcon',
   pDisabledHours: vi.fn(),
   pDisabledMinutes: vi.fn(),
   pDisabledSeconds: vi.fn(),
@@ -58,8 +56,6 @@ describe('pTimePicker', () => {
       id: propsValue.pId,
       name: propsValue.pName,
       label: propsValue.pLabel,
-      prefixIcon: propsValue.pPrefixIcon,
-      clearIcon: propsValue.pClearIcon,
       disabledHours: propsValue.pDisabledHours,
       disabledMinutes: propsValue.pDisabledMinutes,
       disabledSeconds: propsValue.pDisabledSeconds,
@@ -85,8 +81,6 @@ describe('pTimePicker', () => {
     expect(componentVM.id).toBe(propsValue.pId)
     expect(componentVM.name).toBe(propsValue.pName)
     expect(componentVM.label).toBe(propsValue.pLabel)
-    expect(componentVM.prefixIcon).toBe(propsValue.pPrefixIcon)
-    expect(componentVM.clearIcon).toBe(propsValue.pClearIcon)
     expect(componentVM.disabledHours).toBe(propsValue.pDisabledHours)
     expect(componentVM.disabledMinutes).toBe(propsValue.pDisabledMinutes)
     expect(componentVM.disabledSeconds).toBe(propsValue.pDisabledSeconds)
