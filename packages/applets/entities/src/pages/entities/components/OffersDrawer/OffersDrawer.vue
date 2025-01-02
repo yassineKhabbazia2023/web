@@ -27,7 +27,7 @@
       <template #header-suffix>
         <div
           v-if="offerSanitizedUrl"
-          class="offers-drawer__details margin-left--4"
+          class="offers-drawer__details"
         >
           <PIcon
             :color="AppColors.PRIMARY"
@@ -469,6 +469,13 @@ onMounted(async () => {
     display: flex;
     align-items: center;
     flex: 0 0 auto;
+    margin-left: 16px;
+
+    @media screen and (max-width: 1200px) {
+      width: 100%;
+      margin-left: 0;
+      margin-top: 8px;
+    }
 
     &-link {
       color: var(--el-color-persian-500);

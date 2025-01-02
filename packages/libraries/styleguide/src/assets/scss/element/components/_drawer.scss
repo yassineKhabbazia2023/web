@@ -53,7 +53,7 @@ div.el-overlay:not(.p-drawer--mini) {
       position: inherit;
       box-shadow: 0px 0px 2px 0px rgba(32, 32, 32, 0.1), 0px 1px 2px 0px rgba(32, 32, 32, 0.05), 0px 2px 4px 0px rgba(32, 32, 32, 0.08), 0px 3px 4px 0px rgba(32, 32, 32, 0.1);
     }
-    
+
     .p-drawer.ttb {
       right: 24px;
       left: auto;
@@ -118,8 +118,9 @@ div.el-overlay:not(.p-drawer--mini) {
     &-prefix {
       justify-content: space-between;
     }
-  
-    &-suffix { 
+
+    &-suffix {
+      flex-wrap: wrap;
       justify-content: start;
 
       &--column {
@@ -155,10 +156,10 @@ div.el-overlay:not(.p-drawer--mini) {
   }
 
   &__header,
-  &__header-right, 
+  &__header-right,
   &__header-left,
   &__title,
-  &__icon-document { 
+  &__icon-document {
     display: flex;
     align-items: center;
   }
