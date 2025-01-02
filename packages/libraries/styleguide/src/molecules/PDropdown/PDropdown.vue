@@ -29,9 +29,7 @@
     :teleported="pTeleported"
     :persistent="pPersistent"
     :automaticDropdown="pAutomaticDropdown"
-    :clearIcon="pClearIcon"
     :fitInputWidth="pFitInputWidth"
-    :suffixIcon="pSuffixIcon"
     :suffixTransition="pSuffixTransition"
     :tagType="pTagType"
     :validateEvent="pValidateEvent"
@@ -91,7 +89,6 @@ const props = withDefaults(defineProps<PDropdownProps>(), {
   pAutocomplete: 'off',
   pAutomaticDropdown: false,
   pClearable: false,
-  pClearIcon: undefined,
   pCollapseTags: false,
   pCollapseTagsTooltip: false,
   pDefaultFirstOption: false,
@@ -117,7 +114,6 @@ const props = withDefaults(defineProps<PDropdownProps>(), {
   pRemoteShowSuffix: false,
   pReserveKeyword: true,
   pSize: undefined,
-  pSuffixIcon: undefined,
   pSuffixTransition: true,
   pTagType: 'info',
   pTeleported: true,

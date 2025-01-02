@@ -1,5 +1,4 @@
 import type { PlacementOptions } from '../../constants/placementOptions'
-import type { Component } from 'vue'
 
 export interface PSelectProps {
   pMultiple?: boolean
@@ -30,9 +29,7 @@ export interface PSelectProps {
   pTeleported?: boolean
   pPersistent?: boolean
   pAutomaticDropdown?: boolean
-  pClearIcon?: string | Component
   pFitInputWidth?: boolean
-  pSuffixIcon?: string | Component
   pSuffixTransition?: boolean
   pTagType?: '' | 'success' | 'info' | 'warning' | 'danger'
   pValidateEvent?: boolean

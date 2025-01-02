@@ -37,9 +37,7 @@ function getPropsValue(pOptions: PDropdownOption[], pCheckAllLabel = '') {
     pTeleported: false,
     pPersistent: true,
     pAutomaticDropdown: false,
-    pClearIcon: 'clearicon',
     pFitInputWidth: false,
-    pSuffixIcon: 'suffixicon',
     pSuffixTransition: true,
     pTagType: 'info',
     pValidateEvent: true,
@@ -106,9 +104,7 @@ describe('test PDropdown', () => {
         teleported: propsValue.pTeleported,
         persistent: propsValue.pPersistent,
         automaticDropdown: propsValue.pAutomaticDropdown,
-        clearIcon: propsValue.pClearIcon,
         fitInputWidth: propsValue.pFitInputWidth,
-        suffixIcon: propsValue.pSuffixIcon,
         suffixTransition: propsValue.pSuffixTransition,
         tagType: propsValue.pTagType,
         validateEvent: propsValue.pValidateEvent,
@@ -171,9 +167,7 @@ describe('test PDropdown', () => {
       expect(componentVM.teleported).toBe(propsValue.pTeleported)
       expect(componentVM.persistent).toBe(propsValue.pPersistent)
       expect(componentVM.automaticDropdown).toBe(propsValue.pAutomaticDropdown)
-      expect(componentVM.clearIcon).toBe(propsValue.pClearIcon)
       expect(componentVM.fitInputWidth).toBe(propsValue.pFitInputWidth)
-      expect(componentVM.suffixIcon).toBe(propsValue.pSuffixIcon)
       expect(componentVM.suffixTransition).toBe(propsValue.pSuffixTransition)
       expect(componentVM.tagType).toBe(propsValue.pTagType)
       expect(componentVM.validateEvent).toBe(propsValue.pValidateEvent)
