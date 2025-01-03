@@ -101,7 +101,7 @@ const pClassMapper = computed(() => ({
 
   &:not([disabled]) {
     &:hover {
-      background: var(--el-color-base-persian-light);
+      background: var(--el-color-base-hover);
     }
     &:active {
       background: var(--el-color-persian-50);

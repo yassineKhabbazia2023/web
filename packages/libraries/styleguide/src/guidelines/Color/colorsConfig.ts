@@ -3,6 +3,7 @@ export const colorsConfig: Record<string, Record<string, string>> = {
     'blue-pulse': '#0E0F30',
     persian: 'primary-color',
     'persian-light': '#E7FFFF',
+    'hover': '#E4FCF7',
     white: '#FFFFFF',
   },
   persian: {

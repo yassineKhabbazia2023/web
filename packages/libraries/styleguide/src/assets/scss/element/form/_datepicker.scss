@@ -4,7 +4,7 @@
 $datepicker: (
   'icon-color': getCssVar('text-color-regular'),
   'inrange-bg-color': getCssVar('color', 'base-persian-light'),
-  'inrange-hover-bg-color': getCssVar('color', 'base-persian-light'),
+  'inrange-hover-bg-color': getCssVar('color', 'base-hover'),
   'active-color': getCssVar('color-primary'),
   'hover-text-color': getCssVar('color-primary'),
 );
@@ -228,7 +228,7 @@ div.el-date-picker__header {
 
     &:hover {
       color: getCssVar('color-primary');
-      background: getCssVar('color', 'base-persian-light');
+      background: getCssVar('color', 'base-hover');
     }
   }
 }

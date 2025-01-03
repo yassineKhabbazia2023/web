@@ -13,7 +13,7 @@ $select-option: (
   'text-color': getCssVar('text-color-regular'),
   'disabled-color': getCssVar('text-color-placeholder'),
   'height': 32px,
-  'hover-background':  var(--el-color-base-persian-light),
+  'hover-background':  var(--el-color-base-hover),
   'selected-text-color': var(--el-color-base-blue-pulse),
 );
 

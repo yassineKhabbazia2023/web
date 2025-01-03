@@ -56,7 +56,7 @@ $pagination: (
         }
 
         &:hover {
-          background-color: var(--el-color-base-persian-light);
+          background-color: var(--el-color-base-hover);
           color: var(--el-color-base-blue-pulse);
         }
       }
@@ -76,7 +76,7 @@ $pagination: (
         background-color: var(--el-color-base-white);
 
         &:hover {
-          background-color: var(--el-color-base-persian-light);
+          background-color: var(--el-color-base-hover);
           color: var(--el-color-base-blue-pulse);
         }
 
