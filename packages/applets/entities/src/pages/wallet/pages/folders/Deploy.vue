@@ -8,6 +8,7 @@
         flex--align-items-end
         flex--justify-content-space-between
         margin-bottom--6
+        flex-row-gap--3
       "
     >
       <Filters
