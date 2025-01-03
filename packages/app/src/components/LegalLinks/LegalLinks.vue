@@ -6,7 +6,7 @@
     <li class="legal-links__item flex flex--align-items-center">
       <a
         class="legal-links__link"
-        href="https://kpmg.com/fr/fr/home/misc/legal.html"
+        :href="LEGAL_NOTICE_URL"
         target="_blank"
         rel="noopener"
       >
@@ -30,7 +30,7 @@
     <li class="legal-links__item flex flex--align-items-center">
       <a
         class="legal-links__link"
-        href="https://kpmg.com/fr/fr/home/misc/confidentialite-gestion-donnees.html"
+        :href="PRIVACY_POLICY_URL"
         target="_blank"
         rel="noopener"
       >
@@ -46,6 +46,7 @@ import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { commonStore, fetchUrlTerms } from '@pulse/common'
+import { LEGAL_NOTICE_URL, PRIVACY_POLICY_URL } from '@pulse/core'
 
 const { t } = useI18n({
   inheritLocale: true,

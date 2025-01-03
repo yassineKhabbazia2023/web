@@ -8,14 +8,19 @@ const createWrapper = () => mount(SupportInfo)
 describe('supportInfo', () => {
   const wrapper: VueWrapper<any> = createWrapper()
 
-  it('can read the copyrights', async () => {
+  it('can read the phone number', async () => {
     await flushPromises()
-    await vi.dynamicImportSettled()
-    const copyrightLink = wrapper.find('[data-testid="copyright-link"]')
-    const copyrightDrawer = wrapper.findComponent({ name: 'PDrawer' })
+    const phoneLink = wrapper.find('[data-testid="phone-link"]')
 
-    expect(copyrightDrawer.props('modelValue')).toBeFalsy()
-    await copyrightLink.trigger('click')
-    expect(copyrightDrawer.props('modelValue')).toBeTruthy()
+    expect(phoneLink.exists()).toBeTruthy()
+    expect(phoneLink.attributes('href')).toMatch(/^tel:/)
+  })
+
+  it('can read the mail', async () => {
+    await flushPromises()
+    const emailLink = wrapper.find('[data-testid="email-link"]')
+
+    expect(emailLink.exists()).toBeTruthy()
+    expect(emailLink.attributes('href')).toMatch(/^mailto:/)
   })
 })

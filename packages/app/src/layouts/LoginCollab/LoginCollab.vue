@@ -43,7 +43,7 @@
         <LegalLinks dark />
       </div>
       <div class="footer__support">
-        <SupportInfo />
+        <SupportInfoCollab />
       </div>
     </footer>
 
@@ -60,7 +60,7 @@
 import { onMounted } from 'vue'
 import { PCol, PRow, PImage } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
-import SupportInfo from '@app/components/SupportInfo'
+import SupportInfoCollab from '@app/components/SupportInfoCollab'
 import { OFFICIAL_WEBSITE_URL } from '@pulse/core'
 
 onMounted(() => {
