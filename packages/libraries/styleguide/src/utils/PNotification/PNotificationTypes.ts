@@ -4,7 +4,6 @@ import type { IconName } from '../../types/IconName.types'
 export interface PNotificationProps {
   title?: string
   message?: string
-  icon?: Component
   iconName?: IconName
   showClose?: boolean
   customClass?: string

@@ -77,7 +77,6 @@ import {
   PForm,
   PRow,
   PLoader,
-  PIX,
 } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import UploadBIReport from './components/UploadBIReport'
@@ -147,7 +146,7 @@ const handleUploadBIReport = async () => {
     handleResetUploadInfo()
     PNotification({
       message: t('reportUploadFailed'),
-      icon: PIX,
+      iconName: 'x',
       showClose: true,
       customClass: 'error',
       position: 'bottom-right',

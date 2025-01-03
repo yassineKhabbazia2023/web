@@ -63,11 +63,9 @@ import { useRouter } from 'vue-router'
 import { computed, ref, onMounted } from 'vue'
 import {
   PDrawer,
-  PICheck,
   PTag,
   PUserCard,
   PLoader,
-  PIXCircle,
 } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import CollabRoles from './components/CollabRoles'
@@ -144,7 +142,7 @@ const handleUpdatePermissions = async () => {
       message: t('modifyRightsSucceeded', {
         fullName: props.rowData.fullName,
       }),
-      icon: PICheck,
+      iconName: 'check',
       showClose: true,
       customClass: 'success',
       position: 'bottom-right',
@@ -153,7 +151,7 @@ const handleUpdatePermissions = async () => {
   } catch (error) {
     PNotification({
       message: t('modifyRightsFailed', { fullName: props.rowData.fullName }),
-      icon: PIXCircle,
+      iconName: 'xCircle',
       showClose: true,
       customClass: 'error',
       position: 'bottom-right',
@@ -182,7 +180,7 @@ const handleUpdateRole = async () => {
     isDrawerVisible.value = false
     PNotification({
       message: t('successNotification', { fullName: props.rowData.fullName }),
-      icon: PICheck,
+      iconName: 'check',
       showClose: true,
       customClass: 'success',
       position: 'bottom-right',
@@ -191,7 +189,7 @@ const handleUpdateRole = async () => {
   } catch (error) {
     PNotification({
       message: t('errorNotification', { fullName: props.rowData.fullName }),
-      icon: PIXCircle,
+      iconName: 'xCircle',
       showClose: true,
       customClass: 'error',
       position: 'bottom-right',

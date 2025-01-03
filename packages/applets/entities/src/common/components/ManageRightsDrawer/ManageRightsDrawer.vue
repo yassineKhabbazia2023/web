@@ -59,7 +59,6 @@ import {
   PTag,
   PButton,
   PLoader,
-  PICheck,
 } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import type {
@@ -125,7 +124,7 @@ const handleUpdateUserPermissions = async () => {
       message: t('rightsModificationSucceeded', {
         userFullName: props.selectedUser.fullName,
       }),
-      icon: PICheck,
+      iconName: 'check',
       showClose: true,
       customClass: 'success',
       position: 'bottom-right',

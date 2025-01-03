@@ -1,5 +1,4 @@
 import type { AccessibleMenuItem } from '@entities/common/types'
-import { PICheck, PIX } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 
@@ -36,7 +35,7 @@ export const displayNotification = (
 ) => {
   PNotification({
     message,
-    icon: type === 'success' ? PICheck : PIX,
+    iconName: type === 'success' ? 'check' : 'x',
     showClose: true,
     customClass: type,
     position,

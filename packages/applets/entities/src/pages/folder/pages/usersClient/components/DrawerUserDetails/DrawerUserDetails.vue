@@ -113,8 +113,6 @@ import {
   PInput,
   PUserCard,
   PTag,
-  PICheck,
-  PIX,
 } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import type { FormInstance, FormRules } from '@pulse/styleguide/types'
@@ -161,7 +159,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
       const pachedContact = await patchContact(props.userId, formValues)
       PNotification({
         message: t('patchSuccess', { fullName: fullName.value }),
-        icon: PICheck,
+        iconName: 'check',
         showClose: true,
         customClass: 'success',
         position: 'bottom-right',
@@ -170,7 +168,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     } catch (error) {
       PNotification({
         message: t('patchFailed', { fullName: fullName.value }),
-        icon: PIX,
+        iconName: 'x',
         showClose: true,
         customClass: 'error',
         position: 'bottom-right',

@@ -23,7 +23,6 @@ import ConfirmationPopup from
 import { type DocumentDeleteModalTypesProps }
   from '@ged/modules/Documents/components/DocumentDeleteModal/DocumentDeleteModalTypes'
 import { PNotification } from '@pulse/styleguide'
-import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 import { trackDocumentDelete } from '@ged/services/tracking/tracking.service'
 // DeleteFolderConfirmationPopup definitions
 const { t } = useI18n({
@@ -97,7 +96,7 @@ const handleConfirmDeleteFolder = async () => {
 const triggerErrorNotification = () => {
   PNotification({
     message: t('popup.notifications.error'),
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     customClass: 'error',
     showClose: true,
     position: 'bottom-right',
@@ -111,7 +110,7 @@ const triggerSuccessNotification = () => {
 
   PNotification({
     message: msg,
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',

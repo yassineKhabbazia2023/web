@@ -62,13 +62,13 @@ describe('getFullName', () => {
 })
 describe('displayNotification', () => {
   it.each([
-    ['success', 'PICheck'],
-    ['error', 'PIX'],
-  ])('should display correctly the notification', (type: any, icon) => {
+    ['success', 'check'],
+    ['error', 'x'],
+  ])('should display correctly the notification', (type: any, iconName) => {
     const expectedParams = {
       customClass: type,
       duration: 3000,
-      icon,
+      iconName,
       message: 'Test Message',
       position: 'bottom-right',
       showClose: true,

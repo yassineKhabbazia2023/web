@@ -111,8 +111,6 @@ import {
   PButton,
   PForm,
   PFormItem,
-  PICheck,
-  PIExclamationTriangle,
   PImage,
   PInput,
   PLoader,
@@ -173,7 +171,7 @@ const handleFormSubmit = async (formEl: FormInstance | undefined) => {
 
       PNotification({
         message: t('notificationSuccess'),
-        icon: PICheck,
+        iconName: 'check',
         showClose: true,
         customClass: 'success',
         position: 'bottom-right',
@@ -181,7 +179,7 @@ const handleFormSubmit = async (formEl: FormInstance | undefined) => {
     } catch (error) {
       PNotification({
         message: t('notificationError'),
-        icon: PIExclamationTriangle,
+        iconName: 'exclamationTriangle',
         showClose: true,
         customClass: 'error',
         position: 'bottom-right',

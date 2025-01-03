@@ -34,7 +34,7 @@ import type { Folder } from '@ged/models/Folder'
 import { CreateFolder } from '@ged/services/Folder'
 import { useI18n } from 'vue-i18n'
 import CreateFolderModal from '@ged/modules/Treeview/components/modals/Create'
-import { PICheck, PIExclamationTriangle, PButton, PIcon }
+import { PButton, PIcon }
   from '@pulse/styleguide/components'
 import { canCreateFolder } from '@ged/modules/Treeview/helpers/folderPermissionsHelper'
 import { type CreateFolderSectionProps }
@@ -103,7 +103,7 @@ watch(toRef(props, 'isCreateFolderModalVisible'), (newVal) => {
 const triggerSuccessNotification = () => {
   PNotification({
     message: t('notifications.successMsg'),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -113,7 +113,7 @@ const triggerSuccessNotification = () => {
 const triggerErrorNotification = () => {
   PNotification({
     message: t('notifications.errorMsg'),
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     customClass: 'error',
     showClose: true,
     position: 'bottom-right',

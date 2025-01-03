@@ -45,7 +45,6 @@ import { generateActionsForModal } from
 import { modalButtonsMove } from './helpers/MoveModalActionsHelpers'
 import { mapExplorerDocumentFromFolders } from '@ged/modules/Documents/helpers/documentExplorerMapper'
 import { PNotification } from '@pulse/styleguide'
-import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 import type { ExplorerDocument, ExplorerFoldersListLineDisabledState } from '@ged/modules/Documents/DocumentsTypes'
 import { moveFolderAsync } from '@ged/services/Folder'
 
@@ -214,7 +213,7 @@ const triggerSuccessNotification = (
 ) => {
   PNotification({
     message: t('notifications.successMsg', { movedFolderName, targetFolderName }),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -225,7 +224,7 @@ const triggerFailureNotification = (
 ) => {
   PNotification({
     message: t('notifications.failureMsg'),
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     showClose: true,
     customClass: 'error',
     position: 'bottom-right',

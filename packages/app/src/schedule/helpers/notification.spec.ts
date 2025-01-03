@@ -2,13 +2,10 @@ import type { MockInstance } from 'vitest'
 import { expect, describe, it, vi } from 'vitest'
 import { showNotification } from './notification'
 import type { NotificationType } from './notificationTypes'
+import type { IconName } from '@pulse/styleguide/types'
 
 const PNotificationMocked = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/styleguide/components', () => ({
-  PICheck: 'PICheck',
-  PIDownload: 'PIDownload',
-  PIExclamationTriangle: 'PIExclamationTriangle',
-}))
+
 vi.mock('@pulse/styleguide', () => ({
   PNotification: PNotificationMocked,
 }))
@@ -24,32 +21,32 @@ describe('test NotificationHelper', () => {
   const tests: {
     type: NotificationType
     duration: number | undefined
-    icon: string
+    iconName: IconName
   }[] = [{
     type: 'downloading',
     duration: 0,
-    icon: 'PIDownload',
+    iconName: 'download',
   }, {
     type: 'success',
     duration: undefined,
-    icon: 'PICheck',
+    iconName: 'check',
   }, {
     type: 'error',
     duration: undefined,
-    icon: 'PIExclamationTriangle',
+    iconName: 'exclamationTriangle',
   }]
 
   it.each(tests)('should call PNotification with proper params when type is $type', ({
     type,
     duration,
-    icon,
+    iconName,
   }) => {
     showNotification(messagesByType, type)
     const expectedParams = {
       message: messagesByType[type],
       duration,
       customClass: type,
-      icon,
+      iconName,
       position: 'bottom-right',
       showClose: true,
     }

@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ref, type Ref } from 'vue'
 import { useDragAndDropFromExplorer } from '.'
-import { PIExclamationTriangle, PICheck } from '@pulse/styleguide/components'
 import type { DocumentsProps } from '@ged/modules/Documents/DocumentsTypes'
 import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 
@@ -217,7 +216,7 @@ describe('drag and drop from explorer composable', () => {
 
     expect(spyPNotification).toHaveBeenCalledWith(expect.objectContaining({
       message: 'documentsUploaded',
-      icon: PICheck,
+      iconName: 'check',
       showClose: true,
       customClass: 'success',
       position: 'bottom-right',
@@ -249,7 +248,7 @@ describe('drag and drop from explorer composable', () => {
 
     expect(spyPNotification).toHaveBeenCalledWith(expect.objectContaining({
       message: 'connectionLost',
-      icon: PIExclamationTriangle,
+      iconName: 'exclamationTriangle',
       showClose: true,
       customClass: 'error',
       position: 'bottom-right',
@@ -286,7 +285,7 @@ describe('drag and drop from explorer composable', () => {
 
     expect(spyPNotification).toHaveBeenNthCalledWith(1, expect.objectContaining({
       message: 'emptyDocuments',
-      icon: PIExclamationTriangle,
+      iconName: 'exclamationTriangle',
       showClose: true,
       customClass: 'error',
       position: 'bottom-right',
@@ -295,7 +294,7 @@ describe('drag and drop from explorer composable', () => {
 
     expect(spyPNotification).toHaveBeenNthCalledWith(2, expect.objectContaining({
       message: 'limitExceededDocuments',
-      icon: PIExclamationTriangle,
+      iconName: 'exclamationTriangle',
       showClose: true,
       customClass: 'error',
       position: 'bottom-right',
@@ -304,7 +303,7 @@ describe('drag and drop from explorer composable', () => {
 
     expect(spyPNotification).toHaveBeenNthCalledWith(3, expect.objectContaining({
       message: 'unknowExtensions',
-      icon: PIExclamationTriangle,
+      iconName: 'exclamationTriangle',
       showClose: true,
       customClass: 'error',
       position: 'bottom-right',

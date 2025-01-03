@@ -1,9 +1,8 @@
 import type { ComputedRef } from 'vue'
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { DownloadFolderComposableProps } from './DownloadFolderTypes'
 import { PNotification } from '@pulse/styleguide'
-import { PICheck, PIExclamationTriangle, PILoader } from '@pulse/styleguide/components'
 import { formatDate } from '@ged/modules/common/helpers/dateFormatHelper'
 import { downloadFolder } from '@ged/services/Folder'
 import { downloadFile } from '@ged/modules/common/helpers/downloadFilesHelper'
@@ -70,7 +69,7 @@ export function useDownloadFolder(
   const triggerInProgressNotification = () => {
     inProgressNotification.value = PNotification({
       message: t('notifications.inProgress'),
-      icon: PILoader,
+      iconName: 'loader',
       showClose: true,
       customClass: 'loading',
       position: 'bottom-right',
@@ -80,7 +79,7 @@ export function useDownloadFolder(
   const triggerSuccessNotification = () => {
     PNotification({
       message: t('notifications.success'),
-      icon: PICheck,
+      iconName: 'check',
       showClose: true,
       customClass: 'success',
       position: 'bottom-right',
@@ -90,7 +89,7 @@ export function useDownloadFolder(
   const triggerFailureNotification = () => {
     PNotification({
       message: t('notifications.error'),
-      icon: PIExclamationTriangle,
+      iconName: 'exclamationTriangle',
       customClass: 'error',
       showClose: true,
       position: 'bottom-right',

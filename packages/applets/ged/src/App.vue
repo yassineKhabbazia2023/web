@@ -64,7 +64,7 @@ import {
   deleteFolder,
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
-import { PCol, PRow, PIX } from '@pulse/styleguide/components'
+import { PCol, PRow } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import { commonStore } from '@pulse/common'
 
@@ -114,7 +114,7 @@ function displayUnavailableServicesNotification(services: Service[]) {
   services.forEach((service) => {
     PNotification({
       message: t('unavailableService', { serviceName: service.ServiceName }),
-      icon: PIX,
+      iconName: 'x',
       showClose: true,
       customClass: 'error',
       position: 'bottom-right',

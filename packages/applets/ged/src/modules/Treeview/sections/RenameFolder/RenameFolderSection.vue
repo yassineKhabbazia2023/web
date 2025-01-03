@@ -16,8 +16,7 @@
   />
 </template>
 <script setup lang="ts">
-import { inject, ref, toRef, watch } from 'vue'
-import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
+import { ref, toRef, watch } from 'vue'
 import { RenameFolder } from '@ged/services/Folder'
 import type { Folder } from '@ged/models/Folder'
 import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
@@ -69,7 +68,7 @@ watch(toRef(props, 'isRenameFolderModalVisible'), (newVal) => {
 const triggerSuccessNotification = () => {
   PNotification({
     message: t('notifications.successMsg'),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -79,7 +78,7 @@ const triggerSuccessNotification = () => {
 const triggerErrorNotification = () => {
   PNotification({
     message: t('notifications.errorMsg'),
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     customClass: 'error',
     showClose: true,
     position: 'bottom-right',

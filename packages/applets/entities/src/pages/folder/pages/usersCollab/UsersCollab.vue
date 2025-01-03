@@ -170,14 +170,9 @@ import {
   PToolbox,
   PButton,
   PIcon,
-  PIPatchCheck,
-  PIPower,
   PLoader,
   PAvatar,
-  PIPerson,
   PPagination,
-  PICheck,
-  PIExclamationTriangle,
 } from '@pulse/styleguide/components'
 // TODO should move this component to a common folder
 import RemoveUserDialog from '../usersClient/components/RemoveUserDialog'
@@ -462,7 +457,7 @@ async function setAccountSignatories() {
 function showAddSignatorySuccess(userFullName: string) {
   PNotification({
     message: t('signatoryAdded', { userFullName }),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -472,7 +467,7 @@ function showAddSignatorySuccess(userFullName: string) {
 function showSuccessNotification(messageKey: string, userFullName: string) {
   PNotification({
     message: t(messageKey, { userFullName }),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -482,7 +477,7 @@ function showSuccessNotification(messageKey: string, userFullName: string) {
 function showTechnicalError() {
   PNotification({
     message: t('technicalError'),
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     showClose: true,
     customClass: 'error',
     position: 'bottom-right',

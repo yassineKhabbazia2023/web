@@ -93,8 +93,6 @@ import {
   PButton,
   PHistoryCard,
   PIcon,
-  PICheck,
-  PIX,
   PLoader,
   PScrollbar,
   PTimeline,
@@ -202,7 +200,7 @@ const fetchDelegationsHistory = async () => {
 const displaySuccessNotification = (delegatee: Delegation['delegatee']) => {
   PNotification({
     message: t('successNotification', { delegateeFullName: `${delegatee.firstName} ${delegatee.lastName}` }),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -212,7 +210,7 @@ const displaySuccessNotification = (delegatee: Delegation['delegatee']) => {
 const displayErrorNotification = (delegatee: Delegation['delegatee']) => {
   PNotification({
     message: t('errorNotification', { delegateeFullName: `${delegatee.firstName} ${delegatee.lastName}` }),
-    icon: PIX,
+    iconName: 'x',
     showClose: true,
     customClass: 'error',
     position: 'bottom-right',

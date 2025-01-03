@@ -47,7 +47,6 @@ import { modalButtonsMove } from './helpers/MoveModalActionsHelpers'
 import { moveDocuments } from '@ged/services/Documents'
 import { mapExplorerDocumentFromDocuments } from '../../helpers/documentExplorerMapper'
 import { PNotification } from '@pulse/styleguide'
-import { PICheck } from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '../../DocumentsTypes'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
 
@@ -248,7 +247,7 @@ const triggerSuccessNotification = (
           folderName,
         })
         : t('notifications.successMsg.single', { folderName }),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',

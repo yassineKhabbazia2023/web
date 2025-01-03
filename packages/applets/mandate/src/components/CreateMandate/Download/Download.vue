@@ -114,7 +114,6 @@ import {
   PButton,
   PFileCard,
   PIcon,
-  PIExclamationTriangle,
   PImage,
   PLoader,
 } from '@pulse/styleguide/components'
@@ -200,7 +199,7 @@ function handleErroredMandate() {
 function displayErrorStatusNotification() {
   PNotification({
     message: t('notification.technical-error'),
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     showClose: true,
     customClass: 'error',
     position: 'bottom-right',

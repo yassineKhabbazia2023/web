@@ -6,7 +6,6 @@ export function PNotification(props: PNotificationProps) {
   const {
     title,
     message,
-    icon,
     iconName,
     showClose,
     customClass,
@@ -16,7 +15,7 @@ export function PNotification(props: PNotificationProps) {
 
   const iconComponent = iconName
     ? getIconComponent(iconName)
-    : icon
+    : undefined
 
   return ElNotification({
     title,

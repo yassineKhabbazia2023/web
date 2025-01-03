@@ -22,7 +22,6 @@ import ConfirmationPopup from
 import { type DocumentRestoreModalTypesProps }
   from '@ged/modules/Bin/components/DocumentRestoreModal/DocumentRestoreModalTypes'
 import { PNotification } from '@pulse/styleguide'
-import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 
 // DeleteFolderConfirmationPopup definitions
 const { t } = useI18n({
@@ -101,7 +100,7 @@ const goToFolder = (folderId: number) => {
 const triggerErrorNotification = () => {
   PNotification({
     message: t('restore.notifications.error'),
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     customClass: 'error',
     showClose: true,
     position: 'bottom-right',
@@ -116,7 +115,7 @@ const triggerSuccessNotification = (folderId: number, path: string) => {
 
   PNotification({
     message: msg,
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',

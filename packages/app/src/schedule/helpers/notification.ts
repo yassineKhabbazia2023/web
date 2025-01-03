@@ -1,15 +1,11 @@
-import {
-  PICheck,
-  PIExclamationTriangle,
-  PIDownload,
-} from '@pulse/styleguide/components'
+import { type IconName } from '@pulse/styleguide/types'
 import { PNotification } from '@pulse/styleguide'
 import type { NotificationType, NotificationHandle } from './notificationTypes'
 
-const ICONS_BY_TYPE = {
-  success: PICheck,
-  error: PIExclamationTriangle,
-  downloading: PIDownload,
+const ICONS_BY_TYPE: Record<NotificationType, IconName> = {
+  success: 'check',
+  error: 'exclamationTriangle',
+  downloading: 'download',
 }
 
 export function showNotification(
@@ -25,7 +21,7 @@ export function showNotification(
     showClose: true,
     customClass: type,
     message: messagesByType?.[type] ?? '',
-    icon: ICONS_BY_TYPE[type],
+    iconName: ICONS_BY_TYPE[type],
     position: 'bottom-right',
     duration,
   })

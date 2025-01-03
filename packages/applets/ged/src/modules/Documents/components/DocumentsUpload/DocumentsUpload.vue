@@ -38,7 +38,6 @@ import { modalButtonsUpload } from './helpers/ModalUploadActionsHelpers'
 import { uploadDocument } from '@ged/services/Documents'
 import { mapExplorerDocumentFromFiles } from '../../helpers/documentExplorerMapper'
 import { PNotification } from '@pulse/styleguide'
-import { PICheck } from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '../../DocumentsTypes'
 import { trackDepositedDocument } from '@ged/services/tracking/tracking.service'
 
@@ -245,7 +244,7 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
       ? t('notifications.successMsg.plural',
         { documentCount: documentsCount, folderName })
       : t('notifications.successMsg.single', { folderName }),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -254,7 +253,7 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
 const triggerErrorNotification = (failedCount : number, errorDetails : string) => {
   PNotification({
     message: t('notifications.errorMsg', { failedCount , errorDetails }, failedCount),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'error',
     position: 'bottom-right',

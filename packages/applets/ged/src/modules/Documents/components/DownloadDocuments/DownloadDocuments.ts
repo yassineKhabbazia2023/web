@@ -1,7 +1,6 @@
 import type { ComputedRef } from 'vue'
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
 import { PNotification } from '@pulse/styleguide'
-import { PICheck, PIExclamationTriangle, PILoader } from '@pulse/styleguide/components'
 import { downloadFile } from '@ged/modules/common/helpers/downloadFilesHelper'
 import {
   downloadDocument,
@@ -110,7 +109,7 @@ export function useDownloadDocuments(
   const triggerInProgressNotification = () => {
     inProgressNotification.value = PNotification({
       message: t('notifications.inProgress'),
-      icon: PILoader,
+      iconName: 'loader',
       showClose: true,
       customClass: 'loading',
       position: 'bottom-right',
@@ -120,7 +119,7 @@ export function useDownloadDocuments(
   const triggerSuccessNotification = () => {
     PNotification({
       message: t('notifications.success'),
-      icon: PICheck,
+      iconName: 'check',
       showClose: true,
       customClass: 'success',
       position: 'bottom-right',
@@ -130,7 +129,7 @@ export function useDownloadDocuments(
   const triggerFailureNotification = () => {
     PNotification({
       message: t('notifications.error'),
-      icon: PIExclamationTriangle,
+      iconName: 'exclamationTriangle',
       customClass: 'error',
       showClose: true,
       position: 'bottom-right',

@@ -20,7 +20,6 @@ import { type DeleteFolderSectionProps }
   from '@ged/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
 
 import { deleteFolder } from '@ged/services/Folder'
-import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 
 // Definitions
@@ -77,7 +76,7 @@ const handleConfirmDeleteFolder = async () => {
 const triggerErrorNotification = () => {
   PNotification({
     message: t('notifications.error'),
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     customClass: 'error',
     showClose: true,
     position: 'bottom-right',
@@ -87,7 +86,7 @@ const triggerErrorNotification = () => {
 const triggerSuccessNotification = () => {
   PNotification({
     message: t('notifications.success', { folderName: props.selectedFolder.name }),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',

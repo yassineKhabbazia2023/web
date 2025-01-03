@@ -64,12 +64,12 @@
 import { computed, inject, reactive, ref } from 'vue'
 // the following types are exported in the styleguide as PFormInstance & PFormRules
 import type { FormInstance, FormRules } from 'element-plus'
-import { PICheck, PIExclamationTriangle } from '../../atoms/PIcon/components'
 import PFormItem from '../../atoms/PFormItem'
 import PButton from '../../atoms/PButton'
 import PInput from '../../atoms/PInput'
 import PForm from '../../molecules/PForm'
 import { PNotification } from '../../utils/PNotification/PNotification'
+import { IconName } from '../../types/IconName.types'
 
 const formRef = ref<FormInstance>()
 
@@ -140,14 +140,14 @@ const rules = reactive<FormRules<typeof formValues>>({
 
 export interface openToastArgs {
   message: string
-  icon: any
+  iconName: IconName
   customClass: string
 }
 
-const openToast = ({ message, icon, customClass }: openToastArgs) => {
+const openToast = ({ message, iconName, customClass }: openToastArgs) => {
   PNotification({
     message,
-    icon,
+    iconName,
     showClose: false,
     customClass,
   })
@@ -160,7 +160,7 @@ const handleSubmit = (formEl: FormInstance | undefined) => {
   formEl.validate().then((valid) => {
     openToast({
       message: valid ? 'Form submitted' : 'Error',
-      icon: valid ? PICheck : PIExclamationTriangle,
+      iconName: valid ? 'check' : 'exclamationTriangle',
       customClass: valid ? 'success' : 'error',
     })
     if (!valid) {

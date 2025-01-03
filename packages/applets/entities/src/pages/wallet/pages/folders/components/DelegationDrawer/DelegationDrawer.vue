@@ -71,7 +71,7 @@
 import { logger } from '@pulse/core'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PSteps, PStep, PICheck, PIX } from '@pulse/styleguide/components'
+import { PDrawer, PSteps, PStep } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import { commonApi, commonStore } from '@pulse/common'
 import { DelegationFlowType } from './DelegationDrawerTypes'
@@ -201,7 +201,7 @@ const delegateFolder = async (delegationRequest: any) => {
 const displaySuccessNotification = (message:string) => {
   PNotification({
     message,
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -211,7 +211,7 @@ const displaySuccessNotification = (message:string) => {
 const displayFailureNotification = (message: string) => {
   PNotification({
     message,
-    icon: PIX,
+    iconName: 'x',
     showClose: true,
     customClass: 'error',
     position: 'bottom-right',

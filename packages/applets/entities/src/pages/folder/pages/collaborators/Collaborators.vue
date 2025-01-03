@@ -156,9 +156,7 @@ import { useI18n } from 'vue-i18n'
 import {
   PAvatar,
   PButton,
-  PICheck,
   PIcon,
-  PIExclamationTriangle,
   PLoader,
   PPagination,
   PTable,
@@ -286,7 +284,7 @@ const handleToolboxItemClick = async (action: string, row: any) => {
 const displaySuccessNotificationRemovedCollaborator = () => {
   PNotification({
     message: t('collaboratorHasBeenRemoved'),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -296,7 +294,7 @@ const displaySuccessNotificationRemovedCollaborator = () => {
 const displayErrorNotificationRemovedCollaborator = () => {
   PNotification({
     message: t('collaboratorWasNotRemoved'),
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     showClose: true,
     customClass: 'error',
     position: 'bottom-right',

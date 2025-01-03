@@ -49,9 +49,7 @@ import { useRoute } from 'vue-router'
 import {
   PButton,
   PDialog,
-  PICheck,
   PIcon,
-  PIExclamationTriangle,
   PUserCard,
 } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
@@ -94,7 +92,7 @@ const handleCloseDrawer = () => {
 const displaySuccessNotificationRemovedCollaborator = () => {
   PNotification({
     message: t('userHasBeenRemoved', { fullName: props.userToRemove?.fullName ?? '' }),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -104,7 +102,7 @@ const displaySuccessNotificationRemovedCollaborator = () => {
 const displayErrorNotificationRemovedCollaborator = () => {
   PNotification({
     message: t('userWasNotRemoved', { fullName: props.userToRemove?.fullName ?? '' }),
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     showClose: true,
     customClass: 'error',
     position: 'bottom-right',

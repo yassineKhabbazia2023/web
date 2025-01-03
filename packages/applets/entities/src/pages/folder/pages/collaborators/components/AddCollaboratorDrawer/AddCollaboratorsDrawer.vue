@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PICheck, PIX } from '@pulse/styleguide/components'
+import { PDrawer } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import type { AddCollaboratorsDrawerProps } from './AddCollaboratorsDrawerTypes'
@@ -98,7 +98,7 @@ function displayAddCollaboratorSuccessNotifications(successfulResponses: any[]) 
   const amountOfAddedPeople = successfulResponses.length
   PNotification({
     message: t('addCollaboratorsSuccess', { amountOfAddedPeople }, amountOfAddedPeople),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -118,7 +118,7 @@ function displayAddCollaboratorErrorNotifications(failedResponses: any[]) {
     setTimeout(() => {
       PNotification({
         message: t('addCollaboratorsError', { collaboratorFullName }),
-        icon: PIX,
+        iconName: 'x',
         showClose: true,
         customClass: 'error',
         position: 'bottom-right',

@@ -1,6 +1,5 @@
 import { type Ref, ref, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PIExclamationTriangle, PICheck } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import { getFileExtension, isExtensionAuthorized } from '@pulse/core'
 import { uploadDocument } from '@ged/services/Documents'
@@ -144,7 +143,7 @@ export function useDragAndDropFromExplorer(
         },
         documentsCount,
       ),
-      icon: PICheck,
+      iconName: 'check',
       showClose: true,
       customClass: 'success',
       position: 'bottom-right',
@@ -162,7 +161,7 @@ export function useDragAndDropFromExplorer(
           { documentsCount },
           documentsCount,
         ),
-        icon: PIExclamationTriangle,
+        iconName: 'exclamationTriangle',
         showClose: true,
         customClass: 'error',
         position: 'bottom-right',
@@ -183,7 +182,7 @@ export function useDragAndDropFromExplorer(
           { documentsCount: emptyFiles.value.length },
           emptyFiles.value.length,
         ),
-        icon: PIExclamationTriangle,
+        iconName: 'exclamationTriangle',
         showClose: true,
         customClass: 'error',
         position: 'bottom-right',
@@ -199,7 +198,7 @@ export function useDragAndDropFromExplorer(
           { documentsCount: tooLargeFiles.value.length },
           tooLargeFiles.value.length,
         ),
-        icon: PIExclamationTriangle,
+        iconName: 'exclamationTriangle',
         showClose: true,
         customClass: 'error',
         position: 'bottom-right',
@@ -215,7 +214,7 @@ export function useDragAndDropFromExplorer(
           { documentsCount: filesWithUnsupportedExtensions.value.length },
           filesWithUnsupportedExtensions.value.length,
         ),
-        icon: PIExclamationTriangle,
+        iconName: 'exclamationTriangle',
         showClose: true,
         customClass: 'error',
         position: 'bottom-right',

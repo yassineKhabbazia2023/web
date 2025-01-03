@@ -116,7 +116,7 @@ import type { Folder } from '@ged/models/Folder'
 import type { Bin } from '@ged/models/Bin'
 import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
-import { PScrollbar, PTree, PLoader, PICheck, PIX } from '@pulse/styleguide/components'
+import { PScrollbar, PTree, PLoader } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
 import { findFolderDeepById } from './helpers/folderArrayHelper'
@@ -474,7 +474,7 @@ function displaySuccessNotification(droppedDocumentsCount: number) {
       },
       droppedDocumentsCount,
     ),
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     position: 'bottom-right',
@@ -491,7 +491,7 @@ function displayErrorNotification(droppedDocumentsCount: number) {
       },
       droppedDocumentsCount,
     ),
-    icon: PIX,
+    iconName: 'x',
     showClose: true,
     customClass: 'error',
     position: 'bottom-right',

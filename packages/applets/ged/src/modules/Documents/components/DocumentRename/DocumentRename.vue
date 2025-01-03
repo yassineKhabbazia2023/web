@@ -15,7 +15,6 @@ import DocumentRenameModal from './components/DocumentRenameModal.vue'
 import { renameDocument } from '@ged/services/Documents'
 import { PNotification } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
-import { PICheck, PIExclamationTriangle } from '@pulse/styleguide/components'
 import { trackDocumentRename } from '@ged/services/tracking/tracking.service'
 
 const props = defineProps<DocumentRenameProps>()
@@ -50,7 +49,7 @@ const handleDocumentRename = async (documentName: string) => {
     emit('document-rename')
     PNotification({
       message: t('toaster.success'),
-      icon: PICheck,
+      iconName: 'check',
       showClose: true,
       customClass: 'success',
       position: 'bottom-right',
@@ -59,7 +58,7 @@ const handleDocumentRename = async (documentName: string) => {
   } catch {
     PNotification({
       message: t('toaster.error'),
-      icon: PIExclamationTriangle,
+      iconName: 'exclamationTriangle',
       showClose: true,
       customClass: 'error',
       position: 'bottom-right',

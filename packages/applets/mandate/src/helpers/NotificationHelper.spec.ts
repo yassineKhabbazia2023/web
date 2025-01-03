@@ -2,6 +2,7 @@ import type { MockInstance } from 'vitest'
 import { expect, describe, it, vi, beforeEach } from 'vitest'
 import { showNotification } from './NotificationHelper'
 import type { NotificationMessagesByType } from './NotificationHelperTypes'
+import { type IconName } from '@pulse/styleguide/types'
 
 const PNotificationMocked = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/styleguide/components', () => ({
@@ -26,36 +27,36 @@ describe('test NotificationHelper', () => {
     type: 'loading' | 'success' | 'error'
     autoClose: boolean
     duration: number | undefined
-    icon: string
+    iconName: IconName
   }[] = [{
     type: 'loading',
     autoClose: false,
     duration: 0,
-    icon: 'PILoader',
+    iconName: 'loader',
   }, {
     type: 'success',
     autoClose: true,
     duration: undefined,
-    icon: 'PICheck',
+    iconName: 'check',
   }, {
     type: 'error',
     autoClose: true,
     duration: undefined,
-    icon: 'PIExclamationTriangle',
+    iconName: 'exclamationTriangle',
   }]
 
   it.each(tests)('should call PNotification with proper params when type is $type', ({
     type,
     autoClose,
     duration,
-    icon,
+    iconName,
   }) => {
     showNotification(messagesByType, type, autoClose)
     const expectedParams = {
       message: messagesByType[type],
       duration,
       customClass: type,
-      icon,
+      iconName,
       position: 'bottom-right',
       showClose: true,
     }
@@ -73,7 +74,7 @@ describe('test NotificationHelper', () => {
     const expectedParams1 = {
       customClass: 'loading',
       duration: undefined,
-      icon: 'PILoader',
+      iconName: 'loader',
       message: 'is loading',
       position: 'bottom-right',
       showClose: true,
@@ -81,7 +82,7 @@ describe('test NotificationHelper', () => {
     const expectedParams2 = {
       customClass: 'loading',
       duration: 0,
-      icon: 'PILoader',
+      iconName: 'loader',
       message: 'is loading',
       position: 'bottom-right',
       showClose: true,
