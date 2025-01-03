@@ -49,14 +49,14 @@
       <div class="footer__support">
         <SupportInfo />
       </div>
-    </footer>
 
-    <PImage
-      pType="logos"
-      pName="brand-white"
-      class="logo-footer hidden-sm-and-down"
-      alt="Brand logo"
-    />
+      <PImage
+        pType="logos"
+        pName="brand-white"
+        class="logo-footer hidden-sm-and-down"
+        alt="Brand logo"
+      />
+    </footer>
   </div>
 </template>
 
@@ -75,15 +75,15 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .wrapper {
-  position: relative;
   padding: 2.4rem 1.6rem;
   background: var(--el-color-base-blue-pulse);
   height: 100vh;
   text-align: center;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
-  @media screen and (max-height: 700px) {
-    overflow-y: scroll;
-  }
   @media (min-width: 992px) {
     padding-top: 10vh;
   }
@@ -115,13 +115,8 @@ onMounted(() => {
 
 $footer-margin: 24px;
 .footer {
+  position: relative;
   color: var(--el-color-white);
-  @media (min-width: 992px) and (min-height: 700px) {
-    position: absolute;
-    left: 0;
-    bottom: $footer-margin;
-    width: 100%;
-  }
   &__legal-links,
   &__support {
     text-align: center;
@@ -130,8 +125,8 @@ $footer-margin: 24px;
 
 .logo-footer {
   position: absolute;
-  right: $footer-margin;
-  bottom: $footer-margin;
+  right: 0;
+  bottom: 0;
   width: 100px;
 }
 
