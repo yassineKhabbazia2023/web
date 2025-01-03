@@ -1,6 +1,7 @@
 <template>
   <div
     class="p-error flex flex--align-items-stretch"
+    :class="{ 'p-error--full-size': pIsFullSize }"
   >
     <div class="flex--basis-11 flex--shrink-1" />
     <div class="flex flex--grow-1">
@@ -70,9 +71,8 @@
         p-error__image
         hidden-sm-and-down
         flex--shrink-1
-        flex--basis-44
       "
-      pFit="cover"
+      pFit="contain"
     />
   </div>
 </template>
@@ -86,6 +86,7 @@ import { getErrorText } from './PErrorHelper'
 
 const props = withDefaults(defineProps<PErrorBlockProps>(), {
   pHasFooter: true,
+  pIsFullSize: true,
 })
 
 defineEmits<{
@@ -99,6 +100,8 @@ const errorText = computed(() => getErrorText(props.pErrorName, props.pErrorText
 @use '../../assets/scss/pegase/_breakpoints';
 
 .p-error {
+  $self: &;
+
   height: 100%;
   color: var(--el-color-base-white);
   background: var(--el-color-base-blue-pulse);
@@ -121,11 +124,44 @@ const errorText = computed(() => getErrorText(props.pErrorName, props.pErrorText
     font-size: 1.8rem;
     font-weight: 500;
     max-width: 60%;
+
+    @include breakpoints.media(md2) {
+      max-width: 100%;
+    }
+    @include breakpoints.media(sm) {
+      max-width: 80%;
+    }
   }
 
   &__image {
     :deep(.el-image__inner) {
-      object-position: left bottom;
+      object-position: right bottom;
+    }
+
+    flex-basis: 38%;
+
+    @include breakpoints.media(lg) {
+      flex-basis: 72%;
+    }
+
+    @include breakpoints.media(md2) {
+      flex-basis: 36%;
+    }
+
+    @include breakpoints.media(md) {
+      flex-basis: 56%;
+    }
+
+    @include breakpoints.media(xxs) {
+      font-size: 3.2rem;
+    }
+  }
+
+  &:not(.p-error--full-size) {
+    #{$self}__image {
+      @include breakpoints.media(md2) {
+        flex-basis: 72%;
+      }
     }
   }
 }

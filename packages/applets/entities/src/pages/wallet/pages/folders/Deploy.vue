@@ -7,6 +7,7 @@
         flex--wrap
         flex--align-items-end
         flex--justify-content-space-between
+        flex-gap--3
         margin-bottom--6
         flex-row-gap--3
       "

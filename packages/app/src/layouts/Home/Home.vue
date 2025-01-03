@@ -225,10 +225,6 @@ onBeforeUnmount(() => {
     margin-top: 56px;
     overflow: auto;
 
-    @media only screen and (max-width: 991px) {
-      height: calc(100vh - 108px);
-    }
-
     &--no-paddings {
       padding: 0;
     }

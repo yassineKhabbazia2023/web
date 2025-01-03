@@ -4,6 +4,7 @@
     pIllustrationName="error-page-3"
     pErrorName=""
     pErrorText=""
+    :pIsFullSize="false"
     :pTitle="t('title')"
   />
 </template>

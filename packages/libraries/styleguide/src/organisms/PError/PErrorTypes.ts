@@ -6,6 +6,7 @@ export interface PErrorBlockProps {
   pErrorName: string
   pErrorText: string
   pHasFooter?: boolean
+  pIsFullSize?: boolean
   pTitle: string
   pIllustrationName: ImageName
 }
