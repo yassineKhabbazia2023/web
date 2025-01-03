@@ -3,7 +3,7 @@ import type { ToolboxLineWithOrder } from '../helpers/toolboxHelper'
 export const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
   CAN_DELETE_FOLDER: {
     toolboxLine: {
-      pIconName: 'PITrash',
+      pIconName: 'trash',
       pValue: 'Supprimer',
       pActionName: 'toolbox-delete-action-click',
     },
@@ -11,7 +11,7 @@ export const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
   },
   CAN_CREATE_FOLDER: {
     toolboxLine: {
-      pIconName: 'PIFolderPlus',
+      pIconName: 'folderPlus',
       pValue: 'Nouveau dossier',
       pActionName: 'toolbox-create-action-click',
     },
@@ -19,7 +19,7 @@ export const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
   },
   CAN_RENAME_FOLDER: {
     toolboxLine: {
-      pIconName: 'PIInputCursorText',
+      pIconName: 'inputCursorText',
       pValue: 'Renommer dossier',
       pActionName: 'toolbox-rename-action-click',
     },
@@ -27,7 +27,7 @@ export const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
   },
   CAN_DOWNLOAD_FOLDER: {
     toolboxLine: {
-      pIconName: 'PIDownload',
+      pIconName: 'download',
       pValue: 'Télécharger',
       pActionName: 'toolbox-download-action-click',
     },
@@ -35,7 +35,7 @@ export const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
   },
   CAN_MOVE_FOLDER: {
     toolboxLine: {
-      pIconName: 'PIFolderMove',
+      pIconName: 'folderMove',
       pValue: 'Déplacer vers',
       pActionName: 'move-folder',
     },
@@ -46,7 +46,7 @@ export const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
 export const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
   CAN_RENAME_DOCUMENT: {
     toolboxLine: {
-      pIconName: 'PIInputCursorText',
+      pIconName: 'inputCursorText',
       pValue: 'Renommer',
       pActionName: 'rename-document',
     },
@@ -54,7 +54,7 @@ export const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
   },
   CAN_TRANSMIT_DOCUMENT: {
     toolboxLine: {
-      pIconName: 'PIRocket',
+      pIconName: 'rocket',
       pValue: 'Envoi immédiat',
       pActionName: 'transmit-document',
     },
@@ -63,7 +63,7 @@ export const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
 
   CAN_DOWNLOAD_DOCUMENT: {
     toolboxLine: {
-      pIconName: 'PIDownload',
+      pIconName: 'download',
       pValue: 'Télécharger',
       pActionName: 'download-document',
     },
@@ -71,7 +71,7 @@ export const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
   },
   CAN_MOVE_DOCUMENT: {
     toolboxLine: {
-      pIconName: 'PIFolderMove',
+      pIconName: 'folderMove',
       pValue: 'Déplacer vers',
       pActionName: 'move-document',
     },
@@ -79,7 +79,7 @@ export const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
   },
   CAN_GO_TO_DOCUMENT: {
     toolboxLine: {
-      pIconName: 'PIArrowBarRight',
+      pIconName: 'arrowBarRight',
       pValue: 'Accéder au dossier',
       pActionName: 'go-to-document',
     },
@@ -87,7 +87,7 @@ export const documentsMappingRecord: Record<string, ToolboxLineWithOrder> = {
   },
   CAN_DELETE_DOCUMENT: {
     toolboxLine: {
-      pIconName: 'PITrash',
+      pIconName: 'trash',
       pValue: 'Supprimer',
       pActionName: 'delete-document',
     },

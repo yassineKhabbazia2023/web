@@ -29,13 +29,13 @@ vi.mock('@pulse/common', () => ({
 
 const requestMenu = [
   {
-    pIconName: 'PIEye',
+    pIconName: 'eye',
     pValue: 'Consult',
     pActionName: 'consult',
     pState: 'default',
   },
   {
-    pIconName: 'PICheck',
+    pIconName: 'check',
     pValue: 'Validate request',
     pActionName: 'validate',
     pState: 'default',

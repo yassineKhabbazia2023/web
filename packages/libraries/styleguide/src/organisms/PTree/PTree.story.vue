@@ -56,25 +56,25 @@ import PIcon from '../../atoms/PIcon'
 
 const toolboxItems: PToolboxItemProps[] = [
   {
-    pIconName: 'PITrash',
+    pIconName: 'trash',
     pValue: 'Delete',
     pActionName: 'delete',
     pState: 'danger',
   },
   {
-    pIconName: 'PIAdd',
+    pIconName: 'add',
     pValue: 'Add',
     pActionName: 'add',
     pState: 'default',
   },
   {
-    pIconName: 'PIVectorPen',
+    pIconName: 'vectorPen',
     pValue: 'Rename',
     pActionName: 'rename',
     pState: 'default',
   },
   {
-    pIconName: 'PISend',
+    pIconName: 'send',
     pValue: 'Transmit',
     pActionName: 'transmit',
     pState: 'default',

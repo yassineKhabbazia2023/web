@@ -248,7 +248,7 @@ function handleToolboxClick(userRow: any) {
   toolboxItems.value.length = 0
   const items: PToolboxItemProps[] = [
     {
-      pIconName: 'PIPencilSquare',
+      pIconName: 'pencilSquare',
       pValue: t('modifyRights'),
       pActionName: userActions.MODIFY_RIGHTS,
       pState: 'default',
@@ -256,7 +256,7 @@ function handleToolboxClick(userRow: any) {
   ]
   if (hasPermission(PERMISSION_CODES.COLLAB_REMOVE_USER)) {
     items.push({
-      pIconName: 'PIPersonRemove',
+      pIconName: 'personRemove',
       pValue: t('removeUser'),
       pActionName: userActions.REMOVE_USER,
       pState: 'default',
@@ -266,7 +266,7 @@ function handleToolboxClick(userRow: any) {
   if (!isContactSignatory(userRow.contactId)) {
     items.unshift(
       {
-        pIconName: 'PIPatchCheck',
+        pIconName: 'patchCheck',
         pValue: t('assignSignatory'),
         pActionName: userActions.ASSIGN_SIGNATORY,
         pState: 'default',
@@ -278,7 +278,7 @@ function handleToolboxClick(userRow: any) {
     const tooltipContent = !hasMultipleSignatories() ? t('deleteSignatoryTooltip') : undefined
     items.unshift(
       {
-        pIconName: 'PIPatchCheck',
+        pIconName: 'patchCheck',
         pValue: t('removeSignatory'),
         pActionName: userActions.UNASSIGN_SIGNATORY,
         pState: 'default',

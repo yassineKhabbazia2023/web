@@ -3,6 +3,7 @@ import { shallowMount } from '@vue/test-utils'
 import PToolboxItem from '../../atoms/PToolboxItem'
 import { PIAdd } from '../../atoms/PIcon/components'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
+import type { IconName } from '../../types/IconName.types'
 
 const action = 'delete'
 const value = 'Hello'
@@ -11,7 +12,7 @@ const componenRootCSSClass = 'p-toolbox-item'
 const defaultProps: PToolboxItemProps = {
   pValue: value,
   pActionName: action,
-  pIconName: 'PIAdd',
+  pIconName: 'add',
   disabled: false,
   pState: 'default',
 }
@@ -24,6 +25,7 @@ const createWrapper = (props = defaultProps) =>
         PIcon: {
           name: 'PIcon',
           template: '<div><slot /></div>',
+          props: ['pName'],
         },
         PTooltip: {
           name: 'PTooltip',
@@ -80,17 +82,17 @@ describe('pToolboxItem', () => {
       },
     )
 
-    // TODO restore this when using PIcon.pName props
-    it.skip.each([
-      {
-        pIconName: 'PIAdd',
-        shouldHaveIcon: true,
-      },
-      {
-        pIconName: '',
-        shouldHaveIcon: false,
-      },
-    ])(
+    const tests: {
+      pIconName?: IconName
+      shouldHaveIcon: boolean
+    }[] = [{
+      pIconName: 'add',
+      shouldHaveIcon: true,
+    }, {
+      pIconName: undefined,
+      shouldHaveIcon: false,
+    }]
+    it.each(tests)(
       'should have Icon when Icon is set',
       async ({ pIconName, shouldHaveIcon }) => {
         const wrapper = createWrapper({
@@ -99,19 +101,23 @@ describe('pToolboxItem', () => {
         })
 
         await vi.dynamicImportSettled()
-        const iconComponent = wrapper.findComponent({ name: pIconName })
+        const iconComponent = wrapper.findComponent({ name: 'PIcon' })
         expect(iconComponent.exists()).toBe(shouldHaveIcon)
+        if (shouldHaveIcon) {
+          expect(iconComponent.props('pName')).toBe(pIconName)
+        }
       },
     )
 
     it('should has icon when pIconName is a component', () => {
-      const pIconName = PIAdd
+      const pIconName = 'add'
       const wrapper = createWrapper({
         ...defaultProps,
         pIconName,
       })
-      const iconComponent = wrapper.findComponent({ name: 'PIAdd' })
+      const iconComponent = wrapper.findComponent({ name: 'PIcon' })
       expect(iconComponent.exists()).toBeTruthy()
+      expect(iconComponent.props('pName')).toBe(pIconName)
     })
 
     it('should render the action name value of the component', () => {

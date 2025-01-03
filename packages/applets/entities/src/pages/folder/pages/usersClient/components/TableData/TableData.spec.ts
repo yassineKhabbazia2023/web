@@ -21,7 +21,7 @@ let wrapper: VueWrapper<any>
 
 const toolBoxElementsWithoutPermissions = [
   {
-    pIconName: 'PIPerson',
+    pIconName: 'person',
     pValue: 'User information',
     pActionName: 'userInformation',
     pState: 'default',

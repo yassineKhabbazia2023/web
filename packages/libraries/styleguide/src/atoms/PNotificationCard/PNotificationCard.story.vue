@@ -56,25 +56,25 @@ const currentColor = ref<PAvatarProps['pColor']>('persian-gradient')
 
 const toolboxBasicData: PToolboxItemProps[] = [
   {
-    pIconName: 'PICheck',
+    pIconName: 'check',
     pValue: 'Mark all read',
     pActionName: 'readall',
     pState: 'default',
   },
   {
-    pIconName: 'PITrash',
+    pIconName: 'trash',
     pValue: 'Delete notification',
     pActionName: 'delete',
     pState: 'default',
   },
   {
-    pIconName: 'PIGear',
+    pIconName: 'gear',
     pValue: "Access to the notification's parameters",
     pActionName: 'parameters',
     pState: 'default',
   },
   {
-    pIconName: 'PIBellSlash',
+    pIconName: 'bellSlash',
     pValue: 'Disable this type of notifications',
     pActionName: 'disable',
     pState: 'default',

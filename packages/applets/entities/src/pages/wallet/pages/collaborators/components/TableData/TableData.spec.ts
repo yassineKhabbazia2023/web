@@ -6,6 +6,7 @@ import TableData from './'
 import mock from '../../mockCollaborators.json'
 import { getInitials } from '@entities/helper'
 import { PTable } from '@pulse/styleguide/components'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 
 let wrapper: VueWrapper<any>
 
@@ -71,7 +72,7 @@ const createWrapper = (): VueWrapper<any> =>
             return {
               row,
             }
-          }
+          },
         },
         PAvatar: {
           name: 'PAvatar',
@@ -85,15 +86,15 @@ const createWrapper = (): VueWrapper<any> =>
           name: 'CollabRightsDrawer',
           template: '<div class="p-drawer" />',
         },
-      }
-    }
+      },
+    },
   })
 
 const getMenu = () => document.querySelector('.el-popper') as HTMLElement
 
-const toolBoxElementsWithoutPermissions = [
+const toolBoxElementsWithoutPermissions: PToolboxItemProps[] = [
   {
-    pIconName: 'PIPerson',
+    pIconName: 'person',
     pValue: 'Collaborator information',
     pActionName: 'collaboratorInformation',
     pState: 'default',

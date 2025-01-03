@@ -207,14 +207,14 @@ const { hasPermission } = userPermissions()
 
 const defaultMenuElements : AccessibleMenuItem[] = [
   {
-    pIconName: 'PIFolder',
+    pIconName: 'folder',
     pValue: t('accessThisFolder'),
     pActionName: 'access',
     pState: 'default',
     display: true,
   },
   {
-    pIconName: 'PISend',
+    pIconName: 'send',
     pValue: t('resendActivationEmail'),
     pActionName: 'retryMassActivationEmail',
     pState: 'default',
@@ -224,7 +224,7 @@ const defaultMenuElements : AccessibleMenuItem[] = [
 
 const menuToDeployElements : AccessibleMenuItem[] = [
   {
-    pIconName: 'PIArrowUpCircle',
+    pIconName: 'arrowUpCircle',
     pValue: t('deployThisFolder'),
     pActionName: 'deploy',
     pState: 'default',
@@ -235,14 +235,14 @@ const menuToDeployElements : AccessibleMenuItem[] = [
 
 const accountManagementMenu : AccessibleMenuItem[] = [
   {
-    pIconName: 'PIGrid',
+    pIconName: 'grid',
     pValue: t('manageAccountRights'),
     pActionName: 'manageAccountRights',
     pState: 'default',
     display: hasPermission(PERMISSION_CODES.MODIFY_ACCOUNT_RIGHTS),
   },
   {
-    pIconName: 'PISend',
+    pIconName: 'send',
     pValue: t('resendActivationEmail'),
     pActionName: 'retryMassActivationEmail',
     pState: 'default',

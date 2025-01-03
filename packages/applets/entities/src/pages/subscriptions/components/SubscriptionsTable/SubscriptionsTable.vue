@@ -160,13 +160,13 @@ const subscriptions = ref<SubscriptionRequest[]>([])
 const filteredSubscriptions = ref<SubscriptionRequest[]>([])
 const requestMenu: PToolboxItemProps[] = [
   {
-    pIconName: 'PIEye',
+    pIconName: 'eye',
     pValue: t('consult'),
     pActionName: 'consult',
     pState: 'default',
   },
   {
-    pIconName: 'PICheck',
+    pIconName: 'check',
     pValue: t('validate'),
     pActionName: 'validate',
     pState: 'default',

@@ -52,7 +52,7 @@ import { useI18n } from 'vue-i18n'
 import Tag from '@app/schedule/components/Common/Tag'
 import Icon from '@app/schedule/components/Common/Icon'
 import {
-  PIcon, PToolbox, PButton, PIEye, PITrash,
+  PIcon, PToolbox, PButton,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
@@ -79,14 +79,14 @@ const emit = defineEmits<{
 const getToolboxElements = (status: Status): PToolboxItemProps[] => {
   return [
     {
-      pIconName: PIEye,
+      pIconName: 'eye',
       pValue: t('reminder-details'),
       disabled: !status,
       pActionName: 'view-reminder-details',
       pState: 'default',
     },
     {
-      pIconName: PITrash,
+      pIconName: 'trash',
       pValue: t('delete-reminder'),
       disabled: true,
       pActionName: 'delete-reminder',

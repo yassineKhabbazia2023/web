@@ -144,21 +144,21 @@ const {
 const menuElements = computed<PToolboxItemProps[]>(() =>
   [
     {
-      pIconName: 'PIPerson',
+      pIconName: 'person',
       pValue: t('userInformation'),
       pActionName: userInformation,
       pState: 'default',
       display: true,
     },
     {
-      pIconName: 'PIPencilSquare',
+      pIconName: 'pencilSquare',
       pValue: t('modifyRights'),
       pActionName: modifyRights,
       pState: 'default',
       display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER) && props.isInAnEntityPage,
     },
     {
-      pIconName: 'PIPersonRemove',
+      pIconName: 'personRemove',
       pValue: t('removeUser'),
       pActionName: removeUser,
       pState: 'default',
@@ -166,7 +166,7 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
     },
     {
       // this item will be handle soon
-      pIconName: 'PITrash',
+      pIconName: 'trash',
       pValue: t('deleteUser'),
       pActionName: deleteUser,
       pState: 'danger',

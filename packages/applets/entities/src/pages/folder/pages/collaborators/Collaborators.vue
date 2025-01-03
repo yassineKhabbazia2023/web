@@ -343,14 +343,14 @@ const toolboxItems = computed(
   () =>
     [
       {
-        pIconName: 'PIPerson',
+        pIconName: 'person',
         pValue: t('collaboratorInformation'),
         pActionName: 'collaboratorInformation',
         pState: 'default',
         display: isCollab.value,
       },
       {
-        pIconName: 'PITrash',
+        pIconName: 'trash',
         pValue: t('removeCollaborator'),
         pActionName: 'removeCollaborator',
         pState: 'default',

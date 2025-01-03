@@ -5,14 +5,14 @@ import { displayNotification, filterAccessibleMenuItems, getFullName } from '.'
 // Mocks
 const mockedMenuItems: AccessibleMenuItem[] = [
   {
-    pIconName: 'PIArrowUpCircle',
+    pIconName: 'arrowUpCircle',
     pValue: 'Deploy this folder',
     pActionName: 'deploy',
     pState: 'default',
     display: false,
   },
   {
-    pIconName: 'PIFolder',
+    pIconName: 'folder',
     pValue: 'Access this folder',
     pActionName: 'access',
     pState: 'default',
@@ -31,7 +31,7 @@ vi.mock('@pulse/styleguide/components', () => ({
 
 // Expectations
 const expectedAccessibleMenuItems = {
-  pIconName: 'PIFolder',
+  pIconName: 'folder',
   pValue: 'Access this folder',
   pActionName: 'access',
   pState: 'default',

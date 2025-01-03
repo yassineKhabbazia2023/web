@@ -44,11 +44,10 @@
 import { reactive } from 'vue'
 import PToolboxItem from '../../atoms/PToolboxItem'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
-import { PIAdd } from '../../atoms/PIcon/components'
 
 const defaultState: PToolboxItemProps = reactive({
   pValue: 'Supprimer',
-  pIconName: 'PITrash',
+  pIconName: 'trash',
   pActionName: 'delete',
   disabled: false,
   pState: 'default',
@@ -56,7 +55,7 @@ const defaultState: PToolboxItemProps = reactive({
 
 const dangerState: PToolboxItemProps = reactive({
   pValue: 'Supprimer',
-  pIconName: PIAdd,
+  pIconName: 'add',
   pActionName: 'delete',
   disabled: false,
   pState: 'danger',
@@ -66,7 +65,7 @@ const WithoutIconState = reactive({
   pActionName: 'add',
   pValue: 'Hello world',
   disabled: false,
-  pIconName: '',
+  pIconName: undefined,
 })
 </script>
 <docs lang="md">

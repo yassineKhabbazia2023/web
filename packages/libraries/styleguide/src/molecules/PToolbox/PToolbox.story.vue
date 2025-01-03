@@ -15,26 +15,26 @@ import type { PToolboxItemProps } from '../../atoms/PToolboxItem/PToolboxItemTyp
 
 const toolboxBasicData: PToolboxItemProps[] = [
   {
-    pIconName: 'PITrash',
+    pIconName: 'trash',
     pValue: 'Delete',
     pActionName: 'delete',
     pState: 'default',
     pContentTooltip: 'Test tooltip',
   },
   {
-    pIconName: 'PIAdd',
+    pIconName: 'add',
     pValue: 'Add',
     pActionName: 'add',
     pState: 'default',
   },
   {
-    pIconName: 'PIVectorPen',
+    pIconName: 'vectorPen',
     pValue: 'Rename',
     pActionName: 'rename',
     pState: 'default',
   },
   {
-    pIconName: 'PISend',
+    pIconName: 'send',
     pValue: 'Transmit',
     pActionName: 'transmit',
     pState: 'danger',

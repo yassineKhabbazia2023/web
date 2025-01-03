@@ -138,21 +138,21 @@ const { collaboratorInformation, manageAccessRights } = MENU_ACTIONS_NAME
 const menuElements = computed<PToolboxItemProps[]>(() =>
   [
     {
-      pIconName: 'PIPerson',
+      pIconName: 'person',
       pValue: t('collaboratorInformation'),
       pActionName: collaboratorInformation,
       pState: 'default',
       display: true,
     },
     {
-      pIconName: 'PIClipboardData',
+      pIconName: 'clipboardData',
       pValue: t('detailsOfDelegations'),
       pActionName: 'detailsOfDelegations',
       pState: 'default',
       display: false,
     },
     {
-      pIconName: 'PIGrid',
+      pIconName: 'grid',
       pValue: t('manageAccessRights'),
       pActionName: manageAccessRights,
       pState: 'default',

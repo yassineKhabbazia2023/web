@@ -10,6 +10,7 @@ import { getMockedAccount } from '@entities/services/account/accountMock'
 import { nextTick, ref } from 'vue'
 import { getMockedOperations } from '@entities/common/mocks/mockedOperations'
 import { userActions } from './types'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 
 const DEFAULT_CURRENT_PAGE = 1
 const DEFAULT_ROUTE_PARAMS_ID = 5
@@ -110,15 +111,15 @@ let wrapper: VueWrapper<any>
 
 const getRows = () => wrapper.findAll('tr.el-table__row')
 
-const addSignatoryToolboxItem = {
-  pIconName: 'PIPatchCheck',
+const addSignatoryToolboxItem: PToolboxItemProps = {
+  pIconName: 'patchCheck',
   pValue: 'Designate as signatory',
   pActionName: 'assignSignatory',
   pState: 'default',
 }
 
-const removeSignatoryToolboxItemEnabled = {
-  pIconName: 'PIPatchCheck',
+const removeSignatoryToolboxItemEnabled: PToolboxItemProps = {
+  pIconName: 'patchCheck',
   pValue: 'Revoke signatory status',
   pActionName: 'unassignSignatory',
   pState: 'default',
@@ -126,8 +127,8 @@ const removeSignatoryToolboxItemEnabled = {
   pContentTooltip: undefined,
 }
 
-const removeSignatoryToolboxItemDisabled = {
-  pIconName: 'PIPatchCheck',
+const removeSignatoryToolboxItemDisabled: PToolboxItemProps = {
+  pIconName: 'patchCheck',
   pValue: 'Revoke signatory status',
   pActionName: 'unassignSignatory',
   pState: 'default',
@@ -135,15 +136,15 @@ const removeSignatoryToolboxItemDisabled = {
   pContentTooltip: 'A folder should have at least one signatory',
 }
 
-const modifyToolboxItem = {
-  pIconName: 'PIPencilSquare',
+const modifyToolboxItem: PToolboxItemProps = {
+  pIconName: 'pencilSquare',
   pValue: 'Change the rights',
   pActionName: 'modifyRights',
   pState: 'default',
 }
 
-const removeUserToolboxItem = {
-  pIconName: 'PIPersonRemove',
+const removeUserToolboxItem: PToolboxItemProps = {
+  pIconName: 'personRemove',
   pValue: 'Remove user',
   pActionName: 'removeUser',
   pState: 'default',

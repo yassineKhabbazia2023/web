@@ -9,17 +9,17 @@ describe('toolbox helper', () => {
         permissions: ['CAN_DELETE_FOLDER', 'CAN_RENAME_FOLDER'],
         expectedResult: [
           {
-            pIconName: 'PIInputCursorText',
+            pIconName: 'inputCursorText',
             pValue: 'Renommer dossier',
             pActionName: 'toolbox-rename-action-click',
           },
           {
-            pIconName: 'PIDownload',
+            pIconName: 'download',
             pValue: 'Télécharger',
             pActionName: 'toolbox-download-action-click',
           },
           {
-            pIconName: 'PITrash',
+            pIconName: 'trash',
             pValue: 'Supprimer',
             pActionName: 'toolbox-delete-action-click',
           },
@@ -34,22 +34,22 @@ describe('toolbox helper', () => {
         ],
         expectedResult: [
           {
-            pIconName: 'PIInputCursorText',
+            pIconName: 'inputCursorText',
             pValue: 'Renommer',
             pActionName: 'rename-document',
           },
           {
-            pIconName: 'PIDownload',
+            pIconName: 'download',
             pValue: 'Télécharger',
             pActionName: 'download-document',
           },
           {
-            pIconName: 'PIArrowBarRight',
+            pIconName: 'arrowBarRight',
             pValue: 'Accéder au dossier',
             pActionName: 'go-to-document',
           },
           {
-            pIconName: 'PITrash',
+            pIconName: 'trash',
             pValue: 'Supprimer',
             pActionName: 'delete-document',
           },

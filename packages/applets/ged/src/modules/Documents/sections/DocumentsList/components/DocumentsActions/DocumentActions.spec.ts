@@ -65,12 +65,12 @@ describe('documentActions', () => {
       expect(componentInstance.toolboxBasicData).toStrictEqual([
         {
           pActionName: 'download-document',
-          pIconName: 'PIDownload',
+          pIconName: 'download',
           pValue: 'Télécharger',
         },
         {
           pActionName: 'delete-document',
-          pIconName: 'PITrash',
+          pIconName: 'trash',
           pValue: 'Supprimer',
         },
       ])
@@ -88,7 +88,7 @@ describe('documentActions', () => {
       expect(componentInstance.toolboxBasicData).toStrictEqual([
         {
           pActionName: 'download-document',
-          pIconName: 'PIDownload',
+          pIconName: 'download',
           pValue: 'Télécharger',
         },
       ])
