@@ -271,7 +271,7 @@ const productFruitsTrigger = (productFruitsKey: string) => {
 <i18n lang="yaml">
   en-US:
     welcomeTo: 'Welcome to'
-    yourSpace: 'your Rydge Space!'
+    yourSpace: 'your Space!'
     formTitle: 'Please login to access all your services.'
     email: 'Email'
     emailPlaceholder: 'Enter your email address'

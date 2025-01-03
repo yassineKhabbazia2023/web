@@ -149,7 +149,7 @@ const back = () => router.back()
     cguMessagePartOne: 'By checking this box, I confirm that I have read and accepted the '
     cguRequired: 'Accept terms in order to access platform'
     cguLink: 'general terms and conditions of use '
-    cguMessagePartTwo: 'of Rydge.'
+    cguMessagePartTwo: 'of Rydge Conseil.'
     confirm: 'Confirm'
     back: 'Back'
   fr-FR:
@@ -158,7 +158,7 @@ const back = () => router.back()
     cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté les'
     cguRequired: 'Veuillez accepter les CGU pour accéder à la plateforme'
     cguLink: "conditions générales d'utilisation "
-    cguMessagePartTwo: 'de Rydge.'
+    cguMessagePartTwo: 'de Rydge Conseil.'
     confirm: 'Confirmer'
     back: 'Retour'
 </i18n>

@@ -31,7 +31,7 @@ function findSkewedButton(wrapper: VueWrapper) {
 
 describe('pError', () => {
   beforeEach(() => {
-    setAssetsBaseUrl('https://www.example.kpmg')
+    setAssetsBaseUrl('https://www.example.test')
   })
   describe('props', () => {
     it.each([

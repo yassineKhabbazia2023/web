@@ -6,7 +6,7 @@
     "pFieldKey": "contact.email",
     "pFieldType": "input",
     "pLabel": "E-mail de contact",
-    "pPlaceholder": "contact@rydge.fr",
+    "pPlaceholder": "contact@test.fr",
     "pRules": [
       {
         "message": "Veuillez saisir une adresse email correcte",

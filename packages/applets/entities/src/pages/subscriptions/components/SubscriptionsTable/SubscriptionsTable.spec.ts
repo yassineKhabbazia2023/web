@@ -77,9 +77,9 @@ describe('subscriptionsTable', () => {
       'Test Indicators 1',
       'V900000163',
       '3/24/2023',
-      'test-01@rydge.fr',
+      'test-01@test.fr',
       'Modules MEG : facturation et caisse',
-      'TTTFirsName TLastNameTLastName+test@rydge.onmicrosoft.com',
+      'TTTFirsName TLastNameTLastName+test@test.onmicrosoft.com',
       'To validate',
       '',
     ]

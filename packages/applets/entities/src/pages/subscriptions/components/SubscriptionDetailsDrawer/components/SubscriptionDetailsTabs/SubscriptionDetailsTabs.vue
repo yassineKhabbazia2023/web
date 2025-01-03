@@ -91,11 +91,11 @@ const subscriptionDetailsTabsList: SubscriptionDetailsTab[] = [
 en-US:
   services: 'Services'
   customerUsers: 'Customer Users'
-  collaborators: 'Rydge Collaborators'
+  collaborators: 'Rydge Conseil Collaborators'
   information: 'Information'
 fr-FR:
   services: 'Services'
   customerUsers: 'Utilisateurs Clients'
-  collaborators: 'Collaborateurs Rydge'
+  collaborators: 'Collaborateurs Rydge Conseil'
   information: 'Informations'
 </i18n>

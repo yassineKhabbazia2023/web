@@ -25,7 +25,7 @@ export function getMockedFields(
       getMockedInputField(
         'contact.email',
         'E-mail de contact',
-        'contact@rydge.fr',
+        'contact@test.fr',
         45,
         false,
         ['email'],

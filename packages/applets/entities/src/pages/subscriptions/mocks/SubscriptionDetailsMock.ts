@@ -73,14 +73,14 @@ export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
       firstName: 'Alice',
       lastName: 'Durand',
       type: ContactType.Customer,
-      email: 'alice.durand@example.com',
+      email: 'alice.durand@test.fr',
     },
     {
       contactId: 25,
       firstName: 'Jannelle',
       lastName: 'Boyd',
       type: ContactType.Customer,
-      email: 'janelle.boyd@example.com',
+      email: 'janelle.boyd@test.fr',
     },
   ],
   collaborators: [
@@ -89,7 +89,7 @@ export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
       firstName: 'Jerry',
       lastName: 'Nantenaina',
       type: ContactType.Collaborator,
-      email: 'jnantenaina@rydge.fr',
+      email: 'jnantenaina@test.fr',
     },
   ],
   notes: [

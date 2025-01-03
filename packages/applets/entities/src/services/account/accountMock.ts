@@ -28,7 +28,7 @@ export function getMockedSignatory(override: Partial<Signatory> = {}): Signatory
     globalContactId: '231231-34234',
     firstName: 'Signa',
     lastName: 'Tory',
-    email: 'sign@rydge.fr',
+    email: 'sign@test.fr',
     status: 'status',
     personaName: 'person Name',
     creationDate: '2024-03-25',

@@ -12,7 +12,7 @@ const i18n = createI18n({
 })
 
 const styleguideParameters = {
-  assetsBaseUrl: 'https://www.example.rydge',
+  assetsBaseUrl: 'https://www.example.test',
 }
 config.global.plugins = [
   i18n,

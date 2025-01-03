@@ -55,7 +55,7 @@ import { getMockedOptions } from './PUserActionMocks'
 const exampleOffer1 = reactive<PUserActionProps>({
   pProfile: 'SL',
   pTitle: 'Suliman Lescot',
-  pDescription: 'suliman.lescot@rydge.fr',
+  pDescription: 'suliman.lescot@test.fr',
   pTagContent: '',
   pRole: 'Consultant advisory',
   pShowInput: false,
@@ -67,7 +67,7 @@ const exampleOffer1 = reactive<PUserActionProps>({
 const exampleOffer2 = reactive<PUserActionProps>({
   pProfile: 'SL',
   pTitle: 'Suliman Lescot',
-  pDescription: 'suliman.lescot@rydge.fr',
+  pDescription: 'suliman.lescot@test.fr',
   pTagContent: 'By default',
   pRole: '',
   pShowInput: true,
@@ -78,7 +78,7 @@ const exampleOffer2 = reactive<PUserActionProps>({
 const exampleOffer3 = reactive<PUserActionProps>({
   pProfile: 'SL',
   pTitle: 'Suliman Lescot',
-  pDescription: 'suliman.lescot@rydge.fr',
+  pDescription: 'suliman.lescot@test.fr',
   pTagContent: 'By default',
   pRole: '',
   pShowInput: true,
@@ -90,7 +90,7 @@ const exampleOffer3 = reactive<PUserActionProps>({
 const exampleOffer4 = reactive<PUserActionProps>({
   pProfile: 'SL',
   pTitle: 'Suliman Lescot',
-  pDescription: 'suliman.lescot@rydge.fr',
+  pDescription: 'suliman.lescot@test.fr',
   pTagContent: '',
   pRole: '',
   pShowInput: false,
@@ -106,7 +106,7 @@ const exampleOffer4 = reactive<PUserActionProps>({
 const exampleOffer5 = reactive<PUserActionProps>({
   pProfile: 'SL',
   pTitle: 'Suliman Lescot',
-  pDescription: 'suliman.lescot@rydge.fr',
+  pDescription: 'suliman.lescot@test.fr',
   pTagContent: '',
   pRole: '',
   pWarningContent: 'Vous avez déjà délégué votre portefeuille à ce collaborateur.',

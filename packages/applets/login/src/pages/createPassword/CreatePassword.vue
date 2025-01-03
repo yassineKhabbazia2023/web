@@ -325,7 +325,7 @@ defineExpose({ submitForm })
     validCgu: 'Please valid the General Terms and Conditions of use'
     cguMessagePartOne: 'By checking this box, I confirm that I have read and accepted the '
     cguLink: 'general terms and conditions of use '
-    cguMessagePartTwo: 'of Rydge.'
+    cguMessagePartTwo: 'of Rydge Conseil.'
     alertConfirmPass: 'Please confirm the password'
     alertPasswordNotMatch: "Passwords don't match!"
     alertCgu: 'Please accept the general terms and conditions of use'
@@ -343,7 +343,7 @@ defineExpose({ submitForm })
     validCgu: "Validez les conditions générales d'utilisation."
     cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté les'
     cguLink: "conditions générales d'utilisation "
-    cguMessagePartTwo: 'de Rydge.'
+    cguMessagePartTwo: 'de Rydge Conseil.'
     alertConfirmPass: 'Veuillez confirmer votre mot de passe'
     alertPasswordNotMatch: 'Mot de passe ne correspondent pas!'
     alertCgu: "Veuillez accepter les conditions générales d'utilisation"

@@ -24,7 +24,7 @@ const createWrapper = (props: Partial<PDocumentDisplayProps> = {}) =>
 
 describe('pDocumentDisplay', () => {
   beforeEach(() => {
-    setAssetsBaseUrl('https://www.example.kpmg')
+    setAssetsBaseUrl('https://www.example.test')
   })
   it('renders an image preview if the document is an image and not loading', () => {
     const wrapper = createWrapper()

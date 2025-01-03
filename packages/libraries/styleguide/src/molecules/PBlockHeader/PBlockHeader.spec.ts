@@ -31,7 +31,7 @@ const createWrapper = (props: any = defaultProps, slots: any = {}) =>
 
 describe('pBlockHeader', () => {
   beforeEach(() => {
-    setAssetsBaseUrl('https://www.example.kpmg')
+    setAssetsBaseUrl('https://www.example.test')
   })
   describe('props', () => {
     it('should render the title values of the component', () => {

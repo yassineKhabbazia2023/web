@@ -44,10 +44,10 @@ describe('subscriptionService', () => {
   describe('validateSubscriptionRequest', () => {
     it('should call subscription.put()', async () => {
       const subscriptionId = 1
-      await validateSubscriptionRequest(subscriptionId, 'test@test.com')
+      await validateSubscriptionRequest(subscriptionId, 'test@test.fr')
       expect(subscriptionPutMock).toHaveBeenNthCalledWith(
         1,
-        `${API_PREFIXES.OFFER}/subscription/1?validator=test@test.com`,
+        `${API_PREFIXES.OFFER}/subscription/1?validator=test@test.fr`,
       )
     })
   })
