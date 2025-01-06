@@ -11,6 +11,12 @@
         @update:model-value="debouncedRefreshData"
       />
     </div>
+    <div
+      v-if="isLoading"
+      class="loader flex flex--justify-content-center flex--align-items-center"
+    >
+      <PLoader pType="primary" pSize="50" />
+    </div>
     <ListMandate
       :currentPage="searchParams.currentPage"
       :data="mandatesCollection.data"
@@ -39,6 +45,7 @@ import { debounce } from '@mandate/helpers/utils'
 import type { MandateCollection } from './Models'
 import { PAGE_SIZES } from '@mandate/constants'
 import { amplitudeService } from '@pulse/common'
+import { PLoader } from '@pulse/styleguide/components'
 
 const mandatesCollection = ref<MandateCollection>({
   counters: {
@@ -65,12 +72,17 @@ const searchParams = ref<SearchMandateParams>({
   modificationDateEnd: '',
 })
 
+const isLoading = ref(false)
+
 async function refreshData() {
   try {
+    isLoading.value = true
     const { data } = await getMandatesCollection(searchParams.value)
     mandatesCollection.value = data
   } catch (error) {
     logger.error(`Error while refresh data ${error}`)
+  } finally {
+    isLoading.value = false
   }
 }
 
