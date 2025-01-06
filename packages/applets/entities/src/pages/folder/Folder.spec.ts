@@ -5,7 +5,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { mockedEntity } from '../wallet/components/TableData/mockData'
 import type { Tab } from './FolderTypes'
 import * as FolderHelper from './FolderHelper'
-import { amplitudeService, sanitizeUrl } from '@pulse/common'
+import { amplitudeService } from '@pulse/common'
 import type { ComponentWrapper } from '@entities/common/types'
 import Folder from '.'
 

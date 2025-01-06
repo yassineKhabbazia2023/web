@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
-import { commonStore, sanitizeUrl } from '@pulse/common'
 import { createTestingPinia } from '@pinia/testing'
 import { mockedEntity } from '../../../wallet/components/TableData/mockData'
 import Home from '.'
