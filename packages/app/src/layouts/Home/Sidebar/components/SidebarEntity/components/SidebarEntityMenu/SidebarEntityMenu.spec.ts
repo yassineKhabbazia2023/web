@@ -133,7 +133,7 @@ describe('sidebarEntityMenu', () => {
 
       expect(spyTrackAmplitude).toHaveBeenCalledOnce()
       expect(spyTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
-        feature_name: 'entity',
+        feature_name: 'documents',
       })
     })
   })

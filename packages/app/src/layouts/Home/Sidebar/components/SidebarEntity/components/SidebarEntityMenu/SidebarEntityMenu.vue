@@ -24,6 +24,16 @@
         </template>
       </PMenuItem>
       <PMenuItem
+        v-if="folderOrEntityMenuItem"
+        :pIndex="folderOrEntityMenuItem.index"
+        :pIconLeftName="folderOrEntityMenuItem.iconLeftName"
+        :class="{ 'sidenav-entity-menu__item-menu': isEntityOrFolderPath }"
+      >
+        <template #title>
+          {{ folderOrEntityMenuItem.title }}
+        </template>
+      </PMenuItem>
+      <PMenuItem
         v-for="menuItem in menuItems"
         :key="menuItem.index"
         :pIndex="menuItem.index"
@@ -40,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, onMounted } from 'vue'
+import { ref, watchEffect, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
@@ -64,7 +74,7 @@ const { isCollab } = storeToRefs(commonStore())
 const hasBIReports = ref(false)
 const isMenuCollapsed = ref(true)
 const activeMenuItem = ref<string>(route.fullPath)
-
+const isEntityOrFolderPath = ref(false)
 
 interface MenuItem {
   index: string
@@ -73,7 +83,7 @@ interface MenuItem {
   iconLeftName?: IconName
 }
 
-const folderOrEntityMenuItem = computed<MenuItem[]>(() => {
+const folderOrEntityMenuItem = computed<MenuItem | null>(() => {
   const title = isCollab.value ? t('folder') : t('entity')
   const menuItem = [
     {
@@ -97,15 +107,8 @@ const folderOrEntityMenuItem = computed<MenuItem[]>(() => {
       display: isCollab.value && hasPermission(PERMISSION_CODES.HISTORY),
     },
   ].find((item) => item.display)
-
-  return menuItem
-    ? [{
-      index: menuItem.index,
-      display: menuItem.display,
-      title,
-      iconLeftName: 'building',
-    }]
-    : []
+  return menuItem ? { index: menuItem.index,
+    display: menuItem.display, title, iconLeftName: 'building' } : null
 })
 
 const menuItems = computed<MenuItem[]>(() => {
@@ -141,10 +144,7 @@ const menuItems = computed<MenuItem[]>(() => {
       display: !isCollab.value && hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
     },
   ]
-  const filteredList = list.filter(({ display }) => display)
-  const menuItems = folderOrEntityMenuItem.value.concat(filteredList)
-
-  return menuItems
+  return list.filter(({ display }) => display)
 })
 
 const logAmplitudeEvent = (featureName: string) => {
@@ -153,8 +153,9 @@ const logAmplitudeEvent = (featureName: string) => {
   })
 }
 
-watch(route, (currentRoute) => {
-  activeMenuItem.value = currentRoute.fullPath
+watchEffect(() => {
+  activeMenuItem.value = route.fullPath
+  isEntityOrFolderPath.value = ['gestion-utilisateurs', 'collaborateurs', 'offres', 'informations', 'historique-delegations'].some((path) => route.fullPath.includes(path))
 })
 
 onMounted(async () => {
@@ -184,6 +185,11 @@ onMounted(async () => {
   &__main-menu {
     // Same margin as left sidebar section - left section gap - left section first item height  - left section item margin-top
     margin-top: calc(56px + 50px);
+  }
+
+  &__item-menu {
+    background-color: rgba(var(--el-color-secondary-fuschia-rgb), 0.2);
+    border-color: var(--el-color-secondary-fuschia) !important;
   }
 
   @media only screen and (max-width: 991px) {
