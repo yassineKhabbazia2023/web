@@ -19,7 +19,7 @@
       :pPrefixLabelFileLine="t('prefixLabelFileLine')"
       :pSuffixLabelFileLine="t('suffixLabelFileLine')"
       pAuthorizedFileFormat="PBX"
-      pTextLimitSize="100 Mo"
+      pTextLimitSize="50 Mo"
       pColorFileLine="persian"
       :pDisabled="isDisabled"
       @files-selected="handleReportUpload"
