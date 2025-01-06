@@ -111,6 +111,7 @@ export type ImageName =
 'person_man_office_2x' |
 'person_man_office_3x' |
 'person_man_office_4x' |
+'phones_with_app' |
 'pulse_meeting_1x' |
 'pulse_meeting_2x' |
 'pulse_meeting_3x' |
@@ -127,6 +128,7 @@ export type ImageName =
 'pulse_person_man_office_2x' |
 'pulse_person_man_office_3x' |
 'pulse_person_man_office_4x' |
+'road_with_brand_shape' |
 'worker-with-brand-shape' |
 'activation' |
 'collab-female-add' |
@@ -137,8 +139,8 @@ export type ImageName =
 'collab-non-binary' |
 'company' |
 'delegation' |
-'envelope-duotone' |
 'empty-subfolder' |
+'envelope-duotone' |
 'folder-open-duotone' |
 'loader-duotone' |
 'person-delegation-duotone' |

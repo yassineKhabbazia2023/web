@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
-import { commonStore } from '@pulse/common'
+import { commonStore, sanitizeUrl } from '@pulse/common'
 import { createTestingPinia } from '@pinia/testing'
 import { mockedEntity } from '../../../wallet/components/TableData/mockData'
 import Home from '.'
@@ -14,6 +14,7 @@ vi.mock('@pulse/common', () => ({
       defaultEntity: () => mockedEntity,
     },
   }),
+  sanitizeUrl: vi.fn(),
 }))
 
 const createWrapper = (): VueWrapper<any> => mount(Home, {
@@ -32,24 +33,5 @@ describe('clientHome', () => {
     const wrapper = createWrapper()
     const entityHeaderWrapper = wrapper.findComponent({ name: 'EntityHeader' })
     expect(entityHeaderWrapper.exists()).toBeTruthy()
-  })
-
-  it('should display the tooltip button when the user is a collab', () => {
-    const btnAction = wrapper.findComponent(
-      '[data-testid=home-folder-button]',
-    ) as VueWrapper
-
-    expect(btnAction.classes()).toContain('el-tooltip__trigger')
-  })
-
-  it('should correctly display the page header for the client', async () => {
-    const wrapper = createWrapper()
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
-    await flushPromises()
-
-    const arrowRightIcon = wrapper.find('[data-testid=join-arrow-right-icon]')
-    expect(arrowRightIcon.exists()).toBeTruthy()
   })
 })

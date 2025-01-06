@@ -9,128 +9,171 @@
       <PCol
         :pSpan="24"
         :pMd="16"
-        :pLg="18"
+        class="position--relative"
       >
-        <div class="padding--6 bg--neutral-gray-50 height-100">
-          <PRow :pGutter="24" class="height-100">
-            <div class="flex flex--direction-column padding--6 flex--justify-content-center height-100">
-              <h1 class="h2 margin-bottom--4 text-color--neutral-gray-800">
-                {{ t('titleWelcome') }}
-                <span class="text-color--persian-500">
-                  {{ t('namePlateform') }}
-                </span>
+        <div
+          class="
+            height-100
+            padding--12
+            bg--base-blue-pulse
+            text-color--base-white
+          "
+        >
+          <PRow :pGutter="0">
+            <PCol :pSpan="12">
+              <h1 class="home-folder__title font-semibold">
+                {{ t('entityWelcomeTitle') }}
+                <span class="text-color--base-persian">{{ t('brandName') }}</span>
               </h1>
-              <p class="text-color--neutral-gray-700 margin-bottom--4">
-                {{ t('onBuild') }}
-              </p>
-              <p class="text-color--neutral-gray-700">
-                {{ t('helpUs') }}
-                <span class="font-semibold">{{ t('clubClient') }}</span>
-                {{ t('participationHelp') }}
-              </p>
-              <div class="home-folder__button">
-                <PTooltip v-if="isCollab" :pContent="t('accessClient')">
-                  <PButton
-                    pType="primary"
-                    pSize="default"
-                    pDisabled
-                    data-testid="home-folder-button"
-                  >
-                    {{ t('joinClub') }}
-                    <PIcon class="el-button__icon--right" pName="arrowRight" />
-                  </PButton>
-                </PTooltip>
-                <PButton
-                  v-else
-                  pType="primary"
-                  pSize="default"
-                  tag="a"
-                  href="https://forms.office.com/e/zMP0Ectm8P"
-                  target="_blank"
-                  data-testid="home-folder-button"
-                >
-                  {{ t('joinClub') }}
-                  <PIcon
-                    class="el-button__icon--right"
-                    pName="arrowRight"
-                    data-testid="join-arrow-right-icon"
-                  />
-                </PButton>
-              </div>
-            </div>
+            </PCol>
           </PRow>
-        </div>
-      </PCol>
-      <PCol
-        :pSpan="24"
-        :pMd="8"
-        :pLg="6"
-      >
-        <div class="padding--6 home-folder__mobile height-100 bg--secondary-cyan-bg">
-          <PRow>
+
+          <PRow class="margin-top--8">
+            <PCol>
+              <h2>{{ t('welcome') }}</h2>
+            </PCol>
+          </PRow>
+
+          <PRow class="margin-top--8">
             <PCol
               :pSpan="24"
-              :pSM="12"
-              :pMd="24"
+              :pLg="12"
+              :pMd="20"
             >
-              <p
-                class="
-                  margin-bottom--2
-                  font-xsmall text-uppercase
-                  text-color--secondary-cyan-txt
-                "
-              >
-                {{ t('mobileApp') }}
-              </p>
-              <h3 class="font-semibold font-large margin-bottom--4">
-                {{ t('titleMobileApp') }}
-              </h3>
-              <ul class="text-color--neutral-gray-700 list-style-none home-folder__mobile-list">
-                <li class="margin-bottom--2 flex flex--align-items-center font-small">
-                  <PIcon
-                    :size="16"
-                    :color="AppColors.SECONDARY_CYAN_TXT"
-                    class="margin-right--2"
-                    pName="check"
-                  />
-                  {{ t('gedMobile') }}
-                </li>
-                <li class="margin-bottom--2 flex flex--align-items-center font-small">
-                  <PIcon
-                    :size="16"
-                    :color="AppColors.SECONDARY_CYAN_TXT"
-                    class="margin-right--2"
-                    pName="check"
-                  />
-                  {{ t('notifMobile') }}
-                </li>
-                <li class="margin-bottom--2 flex flex--align-items-center font-small">
-                  <PIcon
-                    :size="16"
-                    :color="AppColors.SECONDARY_CYAN_TXT"
-                    class="margin-right--2"
-                    pName="check"
-                  />
-                  {{ t('perfMobile') }}
-                </li>
-                <li class="flex flex--align-items-center font-small">
-                  <PIcon
-                    :size="16"
-                    :color="AppColors.SECONDARY_CYAN_TXT"
-                    class="margin-right--2"
-                    pName="check"
-                  />
-                  {{ t('socialMobile') }}
+              <p>{{ t('introductionText') }}</p>
+            </PCol>
+          </PRow>
+
+          <PRow class="margin-top--8">
+            <PCol>
+              <h2>{{ t('secondSection.title') }}</h2>
+            </PCol>
+          </PRow>
+
+          <PRow class="margin-top--8">
+            <PCol
+              :pSpan="24"
+              :pLg="12"
+              :pMd="18"
+            >
+              <ul class="margin-left--8">
+                <li>{{ t('secondSection.listItems.first') }}</li>
+                <li>
+                  <i18n-t
+                    keypath="secondSection.listItems.second"
+                    tag="p"
+                  >
+                    <template #loginUrl>
+                      <a
+                        class="text-color--base-persian text-underline"
+                        :href="loginUrl"
+                      >
+                        {{ t('secondSection.listItems.loginUrl') }}
+                      </a>
+                    </template>
+                  </i18n-t>
                 </li>
               </ul>
             </PCol>
+          </PRow>
+
+          <PRow class="margin-top--8">
+            <PCol>
+              <h2>{{ t('thirdSection.title') }}</h2>
+            </PCol>
+          </PRow>
+
+          <PRow class="margin-top--8">
             <PCol
               :pSpan="24"
-              :pSm="12"
-              :pMd="24"
+              :pLg="16"
+              :pMd="20"
             >
-              <PRow :pGutter="24">
-                <PCol :pSpan="12">
+              <ul class="margin-left--8">
+                <li>{{ t('thirdSection.listItems.first') }}</li>
+                <li>{{ t('thirdSection.listItems.second') }}</li>
+                <li>{{ t('thirdSection.listItems.third') }}</li>
+                <li>{{ t('thirdSection.listItems.fourth') }}</li>
+              </ul>
+            </PCol>
+          </PRow>
+
+          <PRow class="margin-top--8">
+            <PCol :pSpan="16">
+              <p class="font-bold">
+                {{ t('greetings.message') }}<br>
+                {{ t('greetings.signature') }}
+              </p>
+            </PCol>
+          </PRow>
+        </div>
+
+        <div class="home-folder__background position--absolute">
+          <PImage pName="road_with_brand_shape" pFit="contain" />
+        </div>
+      </PCol>
+
+      <PCol
+        :pSpan="24"
+        :pMd="8"
+      >
+        <div
+          class="
+            home-folder__mobile
+            height-100
+            bg--polar-50
+            padding-top--6
+            padding-left--6
+            padding-right--6
+          "
+        >
+          <PRow class="height-100">
+            <PCol>
+              <PRow>
+                <PCol
+                  :pSpan="24"
+                  :pSM="12"
+                  :pMd="24"
+                >
+                  <p
+                    class="
+                  font-xsmall
+                  text-uppercase
+                  font-bold
+                  text-color--base-persian
+                "
+                  >
+                    {{ t('mobileApp') }}
+                  </p>
+                </PCol>
+              </PRow>
+
+              <PRow class="margin-top--2">
+                <PCol>
+                  <h3 class="font-semibold font-large text-color--base-blue-pulse">
+                    {{ t('titleMobileApp') }}
+                  </h3>
+                </PCol>
+              </PRow>
+
+              <PRow class="margin-top--5">
+                <PCol>
+                  <p class="font-normal font-large text-underline text-color--base-blue-pulse">
+                    {{ t('downloadTutorial') }}
+                  </p>
+                </PCol>
+              </PRow>
+
+              <PRow
+                class="margin-top--5"
+                :pGutter="24"
+                pJustify="center"
+              >
+                <PCol
+                  :pSpan="6"
+                  :pMd="8"
+                  :pLg="6"
+                >
                   <div class="home-folder__qrcode home-folder__qrcode--left">
                     <figure class="text-center">
                       <PImage
@@ -145,7 +188,12 @@
                     </figure>
                   </div>
                 </PCol>
-                <PCol :pSpan="12">
+
+                <PCol
+                  :pSpan="6"
+                  :pMd="8"
+                  :pLg="6"
+                >
                   <div class="home-folder__qrcode home-folder__qrcode--right">
                     <figure class="text-center">
                       <PImage
@@ -161,6 +209,58 @@
                   </div>
                 </PCol>
               </PRow>
+
+              <PRow class="margin-y--5">
+                <PCol>
+                  <ul class="text-color--neutral-gray-700 list-style-none home-folder__mobile-list">
+                    <li class="margin-bottom--2 flex flex--align-items-center font-small">
+                      <PIcon
+                        :size="16"
+                        :color="AppColors.PRIMARY"
+                        class="margin-right--2"
+                        pName="check"
+                      />
+                      {{ t('mobileListItems.first') }}
+                    </li>
+                    <li class="margin-bottom--2 flex flex--align-items-center font-small">
+                      <PIcon
+                        :size="16"
+                        :color="AppColors.PRIMARY"
+                        class="margin-right--2"
+                        pName="check"
+                      />
+                      {{ t('mobileListItems.second') }}
+                    </li>
+                    <li class="margin-bottom--2 flex flex--align-items-center font-small">
+                      <PIcon
+                        :size="16"
+                        :color="AppColors.PRIMARY"
+                        class="margin-right--2"
+                        pName="check"
+                      />
+                      {{ t('mobileListItems.third') }}
+                    </li>
+                    <li class="flex flex--align-items-center font-small">
+                      <PIcon
+                        :size="16"
+                        :color="AppColors.PRIMARY"
+                        class="margin-right--2"
+                        pName="check"
+                      />
+                      {{ t('mobileListItems.fourth') }}
+                    </li>
+                  </ul>
+                </PCol>
+              </PRow>
+            </PCol>
+            <PCol class="home-folder__phone-section">
+              <PRow pAlign="bottom">
+                <PCol>
+                  <div class="flex">
+                    <PImage pName="phones_with_app" />
+                  </div>
+                </PCol>
+              </PRow>
             </PCol>
           </PRow>
         </div>
@@ -170,27 +270,27 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import {
-  PAvatar,
-  PButton,
   PCol,
   PIcon,
   PImage,
   PRow,
-  PTooltip,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
-import { commonStore } from '@pulse/common'
+import { commonStore, sanitizeUrl } from '@pulse/common'
 import EntityHeader from '@entities/common/components/EntityHeader'
-
+import { LOGIN_URL } from '@pulse/core'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const { defaultEntity, isCollab } = storeToRefs(commonStore())
+const { defaultEntity } = storeToRefs(commonStore())
+
+const loginUrl = computed(() => sanitizeUrl(LOGIN_URL))
 </script>
 
 <style lang="scss" scoped>
@@ -200,87 +300,93 @@ const { defaultEntity, isCollab } = storeToRefs(commonStore())
   }
 }
 .home-folder {
-  &__header-separator {
-    width: 1px;
-    height: 12px;
-  }
-  &__button {
-    margin-top: 4rem;
-  }
-  &__img {
-    max-width: 400px;
 
-    @media screen and (max-width: 992px) {
-      margin-top: 4rem;
-    }
+  &__title {
+    font-size: 2.6rem;
   }
-  &__mobile {
-    @media screen and (max-width: 992px) {
-      margin-top: 2.4rem;
-    }
-  }
-  &__mobile-list {
-    @media screen and (max-width: 768px) {
-      margin-bottom: 4rem;
-    }
-    @media screen and (min-width: 992px) {
-      margin-bottom: 4rem;
-    }
-  }
-  &__qrcode {
-    max-width: 120px;
-    width: 100%;
 
-    &--left {
-      margin: 0 0 0 auto;
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 500;
+  }
+
+  &__background {
+    height: 80%;
+    bottom: 0;
+    right: 12px;
+
+    > div {
+      height: 100%;
     }
 
-    &--right {
-      margin: 0 auto 0 0;
+    @media screen and (max-width: 1363px) {
+      height: 60%;
     }
+    @media screen and (max-width: 1200px) {
+      height: 45%;
+    }
+  }
 
-    @media screen and (min-width: 992px) {
-      max-width: none;
-    }
+  &__phone-section {
+    align-content: end;
   }
 }
 </style>
 
 <i18n lang="yaml">
   en-US:
-    titleWelcome: 'Welcome to your new platform'
-    namePlateform: 'Rydge'
-    onBuild: 'The home page is currently under construction by our teams.'
-    helpUs: 'To help us enrich your experience, join the '
-    clubClient: 'Rydge Customer Club'
-    participationHelp: 'and take part in improving the platform
-      through user tests and individual or group exchanges.'
-    joinClub: 'Join Club Rydge'
-    mobileApp: 'Mobile application'
-    titleMobileApp: 'Control your business from your pocket!'
-    gedMobile: 'Consult, scan and deliver your documents to your expert'
-    notifMobile: 'Be notified and track the history of filed documents'
-    perfMobile: "Track your company's performance"
-    socialMobile: "Enter your employees' pay variables"
-    ios: 'iOS'
-    android: 'Android'
-    accessClient: 'This feature is only accessible to your customer'
-  fr-FR:
-    titleWelcome: 'Bienvenue sur votre nouvelle plateforme'
-    namePlateform: 'Rydge'
-    onBuild: "La page d'accueil est en cours de construction par nos équipes."
-    helpUs: 'Pour nous aider à enrichir votre expérience, rejoignez-le '
-    clubClient: 'Club Client Rydge'
-    participationHelp: "et participez à l'amélioration de la plateforme
-      via des tests utilisateurs et des échanges individuels ou en groupe."
-    joinClub: 'Rejoindre le Club Rydge'
+    entityWelcomeTitle: 'A compter du 13 janvier 2025, KPMG Pulse devient'
+    brandName: 'Rydge Conseil'
+    welcome: 'Bienvenu sur votre nouvelle interface'
+    introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page A propos'
+    secondSection:
+      title: 'Ce que cela change pour vous :'
+      listItems:
+        first: 'Une nouvelle apparence pour la même navigation'
+        second: 'Une nouvelle adresse de connexion : votre plateforme est accessible à l’adresse {loginUrl} (guide de connexion)'
+        loginUrl: 'app.rydge.fr/login'
+    thirdSection:
+      title: 'Ce qui reste inchangé :'
+      listItems:
+        first: 'Le soin que nous prenons de vos données'
+        second: "L'historique de vos documents"
+        third: "L'engagement de nos 4500 collaborateurs à vos côtés, partout en France"
+        fourth: 'Notre appui solide pour construire votre réussite durablement'
+    greetings:
+      message: 'Nous restons à votre disposition et à bientôt.'
+      signature: "L'équipe Rydge Conseil"
     mobileApp: 'Application mobile'
-    titleMobileApp: 'Pilotez votre activité depuis votre poche !'
-    gedMobile: 'Consultez, scannez et déposez vos documents à votre expert'
-    notifMobile: "Soyez notifié et suivez l'historique des documents déposés"
-    perfMobile: 'Suivez les performances de votre entreprise'
-    socialMobile: 'Saisissez les variables de paie de vos salariés'
-    ios: 'iOS'
+    titleMobileApp: "L'app mobile KPMG Pulse devient Rydge Conseil"
+    downloadTutorial: 'Comment télécharger votre nouvelle application mobile ?'
+  fr-FR:
+    entityWelcomeTitle: 'A compter du 13 janvier 2025, KPMG Pulse devient'
+    brandName: 'Rydge Conseil'
+    welcome: 'Bienvenu sur votre nouvelle interface'
+    introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page A propos'
+    secondSection:
+      title: 'Ce que cela change pour vous :'
+      listItems:
+        first: 'Une nouvelle apparence pour la même navigation'
+        second: 'Une nouvelle adresse de connexion : votre plateforme est accessible à l’adresse {loginUrl} (guide de connexion)'
+        loginUrl: 'app.rydge.fr/login'
+    thirdSection:
+      title: 'Ce qui reste inchangé :'
+      listItems:
+        first: 'Le soin que nous prenons de vos données'
+        second: "L'historique de vos documents"
+        third: "L'engagement de nos 4500 collaborateurs à vos côtés, partout en France"
+        fourth: 'Notre appui solide pour construire votre réussite durablement'
+    greetings:
+      message: 'Nous restons à votre disposition et à bientôt.'
+      signature: "L'équipe Rydge Conseil"
+    mobileApp: 'Application mobile'
+    titleMobileApp: "L'app mobile KPMG Pulse devient Rydge Conseil"
+    downloadTutorial: 'Comment télécharger votre nouvelle application mobile ?'
+    ios: 'IOS'
     android: 'Android'
-    accessClient: "Cette fonctionnalité n'est accessible que par votre client"
+    mobileListItems:
+      first: 'Accèder à vos données avec notre authentification sécurisée'
+      second: 'Prenez en photo vos justificatifs et envoyez-les à votre expert'
+      third: "Consultez l’historique de vos documents"
+      fourth: 'Suivez les performances de votre entreprise'
 </i18n>

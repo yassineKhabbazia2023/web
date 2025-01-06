@@ -57,7 +57,7 @@
   font-weight: 600;
 
   @include fontToRem(18);
-  
+
   @include res(sm) {
     @include fontToRem(21);
   }
@@ -120,6 +120,10 @@ h4 {
 
 .font-normal {
   font-weight: 400 !important;
+}
+
+.font-medium {
+  font-weight: 500 !important;
 }
 
 .font-semibold {
