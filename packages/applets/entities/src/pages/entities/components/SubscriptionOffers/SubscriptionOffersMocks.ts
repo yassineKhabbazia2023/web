@@ -5,7 +5,7 @@ export function getMockedSubscriptionOffers() {
   const Subscription = [{
     offerId: 1,
     offerName: 'Gestion Smart',
-    offerLabel: 'Mon Expert en Gestion (MEG) en version start (inclus dans Rydge)',
+    offerLabel: 'Mon Expert en Gestion (MEG) en version start (inclus dans RYDGE)',
     offerPrice: 0,
     offerCode: 'MEG Smart',
     offerPriceType: SubscriptionPriceType.free,
@@ -23,7 +23,7 @@ export function getMockedSubscriptionOffers() {
   {
     offerId: 3,
     offerName: 'Mes Modules de Compta',
-    offerLabel: 'Loop collaboratif (Rydge compta)',
+    offerLabel: 'Loop collaboratif (RYDGE compta)',
     offerPrice: 0,
     offerCode: 'Loop compta',
     offerPriceType: SubscriptionPriceType.free,
@@ -32,7 +32,7 @@ export function getMockedSubscriptionOffers() {
   {
     offerId: 4,
     offerName: 'Externalisation de la paie',
-    offerLabel: 'Gestion de la paie par Rydge, pour le clients, sur Silae',
+    offerLabel: 'Gestion de la paie par RYDGE, pour le clients, sur Silae',
     offerPrice: 0,
     offerCode: 'Loop collaboratif',
     offerPriceType: SubscriptionPriceType.free,
@@ -41,7 +41,7 @@ export function getMockedSubscriptionOffers() {
   {
     offerId: 5,
     offerName: 'Mes modules de paie',
-    offerLabel: 'Gestion de la paie par le client , sous supervision Rydge, sur Silae',
+    offerLabel: 'Gestion de la paie par le client, sous supervision RYDGE, sur Silae',
     offerPrice: 0,
     offerCode: 'Silae Externalisation',
     offerPriceType: SubscriptionPriceType.free,

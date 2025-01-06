@@ -336,7 +336,7 @@ const loginUrl = computed(() => sanitizeUrl(LOGIN_URL))
 <i18n lang="yaml">
   en-US:
     entityWelcomeTitle: 'A compter du 13 janvier 2025, KPMG Pulse devient'
-    brandName: 'Rydge Conseil'
+    brandName: 'RYDGE Conseil'
     welcome: 'Bienvenu sur votre nouvelle interface'
     introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page A propos'
     secondSection:
@@ -354,13 +354,13 @@ const loginUrl = computed(() => sanitizeUrl(LOGIN_URL))
         fourth: 'Notre appui solide pour construire votre réussite durablement'
     greetings:
       message: 'Nous restons à votre disposition et à bientôt.'
-      signature: "L'équipe Rydge Conseil"
+      signature: "L'équipe RYDGE Conseil"
     mobileApp: 'Application mobile'
-    titleMobileApp: "L'app mobile KPMG Pulse devient Rydge Conseil"
+    titleMobileApp: "L'app mobile KPMG Pulse devient RYDGE Conseil"
     downloadTutorial: 'Comment télécharger votre nouvelle application mobile ?'
   fr-FR:
     entityWelcomeTitle: 'A compter du 13 janvier 2025, KPMG Pulse devient'
-    brandName: 'Rydge Conseil'
+    brandName: 'RYDGE Conseil'
     welcome: 'Bienvenu sur votre nouvelle interface'
     introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page A propos'
     secondSection:
@@ -378,9 +378,9 @@ const loginUrl = computed(() => sanitizeUrl(LOGIN_URL))
         fourth: 'Notre appui solide pour construire votre réussite durablement'
     greetings:
       message: 'Nous restons à votre disposition et à bientôt.'
-      signature: "L'équipe Rydge Conseil"
+      signature: "L'équipe RYDGE Conseil"
     mobileApp: 'Application mobile'
-    titleMobileApp: "L'app mobile KPMG Pulse devient Rydge Conseil"
+    titleMobileApp: "L'app mobile KPMG Pulse devient RYDGE Conseil"
     downloadTutorial: 'Comment télécharger votre nouvelle application mobile ?'
     ios: 'IOS'
     android: 'Android'

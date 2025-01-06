@@ -69,7 +69,7 @@ if (process.env.HISTOIRE) {
           700: '#409eff',
         },
       },
-      title: 'Rydge Conseil Styleguide - Pegase',
+      title: 'RYDGE Conseil Styleguide - Pegase',
       logo: {
         dark: logo,
         light: logo,

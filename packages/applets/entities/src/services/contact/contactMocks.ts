@@ -10,7 +10,7 @@ export function getMockedCollaborators(): Contact[] {
       landPhone: '0674589002',
       mobilePhone: '0785667002',
       type: 'Collaborator',
-      office: 'Rydge Paris – Liège',
+      office: 'RYDGE Paris – Liège',
       persona: {
         id: 2,
         name: 'Admin / Collab Product',
@@ -25,7 +25,7 @@ export function getMockedCollaborators(): Contact[] {
       landPhone: '0674589005',
       mobilePhone: '0785667005',
       type: 'Collaborator',
-      office: 'Rydge Paris – Liège',
+      office: 'RYDGE Paris – Liège',
       persona: {
         id: 4,
         name: 'Partner GS',
@@ -40,7 +40,7 @@ export function getMockedCollaborators(): Contact[] {
       landPhone: '0674589011',
       mobilePhone: '0785667020',
       type: 'Collaborator',
-      office: 'Rydge Paris – Liège',
+      office: 'RYDGE Paris – Liège',
       persona: {
         id: 4,
         name: 'Partner GS',

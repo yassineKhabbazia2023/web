@@ -121,13 +121,13 @@ p {
     "welcomeTo": "Welcome to your",
     "collaboratorSpace": "your collaborator space !",
     "login": "Login",
-    "formTitle": "Welcome to your Rydge Conseil platform.\n Please log in to access to all your services."
+    "formTitle": "Welcome to your RYDGE Conseil platform.\n Please log in to access to all your services."
   },
   "fr-FR": {
     "welcomeTo": "Bienvenue sur votre",
     "collaboratorSpace": "espace collaborateur !",
     "login": "Se connecter",
-    "formTitle": "Bienvenue sur votre plateforme Rydge Conseil.\n Veuillez vous connecter pour accéder à tous vos\u202Fservices."
+    "formTitle": "Bienvenue sur votre plateforme RYDGE Conseil.\n Veuillez vous connecter pour accéder à tous vos\u202Fservices."
   }
 }
 </i18n>

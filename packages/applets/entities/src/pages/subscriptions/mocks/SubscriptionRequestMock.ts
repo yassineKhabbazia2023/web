@@ -41,7 +41,7 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
     offer: {
       offerId: 6,
       offerCode: 'Pennylane',
-      offerLabel: "Mise à disposition de l'outil Pennylane alliée à l'expertise de Rydge",
+      offerLabel: "Mise à disposition de l'outil Pennylane alliée à l'expertise de RYDGE",
     },
     clients: [
       {

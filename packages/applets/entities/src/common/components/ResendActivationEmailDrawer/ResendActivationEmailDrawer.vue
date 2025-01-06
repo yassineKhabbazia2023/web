@@ -191,7 +191,7 @@ onMounted(async () => {
     customersInvitationFailed: 'There was an issue inviting all selected customers.'
     customerInvitationSucceeded: 'The selected customer has been successfully invited.'
     customersInvitationSucceeded: 'All {customerCount} selected customers have been successfully invited.'
-    pleaseSelectUsers: 'Please select the users for whom you wish to send a Rydge Conseil account activation email.'
+    pleaseSelectUsers: 'Please select the users for whom you wish to send a RYDGE Conseil account activation email.'
   fr-FR:
     submit: 'Valider'
     statusInvite: 'Invité'
@@ -205,5 +205,5 @@ onMounted(async () => {
     customersInvitationSucceeded: 'Tous les {customerCount} clients sélectionnés ont été invités avec succès.'
     pleaseSelectUsers: >-
       Veuillez sélectionner les utilisateurs pour lesquels vous souhaitez envoyer un e-mail
-      d'activation du compte Rydge Conseil.
+      d'activation du compte RYDGE Conseil.
   </i18n>

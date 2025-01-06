@@ -33,14 +33,14 @@ const offerCardData: POfferCardProps[] = reactive([
   {
     pLogo: 'loop-color',
     pTitle: 'Mes Modules de Compta',
-    pDescription: 'Loop collaboratif (Rydge compta)',
+    pDescription: 'Loop collaboratif (RYDGE compta)',
     disabled: false,
   },
   {
     pLogo: 'meg',
     pTitle: 'Gestion Smart',
     pDescription:
-      'Mon Expert en Gestion (MEG) en version start (inclus dans Rydge)',
+      'Mon Expert en Gestion (MEG) en version start (inclus dans RYDGE)',
     disabled: false,
   },
   {

@@ -1,5 +1,5 @@
-export const APP_NAME = 'Rydge Conseil'
-export const APP_COPYRIGHT = '© 2025 Rydge Conseil'
+export const APP_NAME = 'RYDGE Conseil'
+export const APP_COPYRIGHT = '© 2025 RYDGE Conseil'
 export const OFFICIAL_WEBSITE_URL = 'https://www.rydge.fr/'
 export const LEGAL_NOTICE_URL = 'https://www.rydge.fr/mentions-legales/'
 export const PRIVACY_POLICY_URL = 'https://www.rydge.fr/confidentialite-gestion-donnees/'
