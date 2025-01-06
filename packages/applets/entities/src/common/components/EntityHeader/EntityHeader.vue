@@ -10,7 +10,7 @@
     <PAvatar
       pShape="circle"
       pType="small"
-      pColor="green"
+      :pColor="entityAvatarColor"
     >
       <PIcon pName="pulse" />
     </PAvatar>
@@ -38,9 +38,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import type { EntityHeaderProps } from './entity-header.types'
-defineProps<EntityHeaderProps>()
+import { getAvatarColorFromKey } from '@pulse/styleguide'
+
+const props = defineProps<EntityHeaderProps>()
+const entityAvatarColor = computed(() => getAvatarColorFromKey(props.accountNumber))
 </script>
 
 <style lang="scss">

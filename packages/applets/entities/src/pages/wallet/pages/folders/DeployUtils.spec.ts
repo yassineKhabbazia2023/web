@@ -76,7 +76,6 @@ describe('test DeployUtils', () => {
           accountNumber: '10102',
           deploymentStatus: deploymentStatuses[0],
         },
-        'orange',
       )
       const expectedQueryResult = {
         currentPage: 0,
@@ -128,7 +127,6 @@ describe('test DeployUtils', () => {
         {
           deploymentStatus: deploymentStatuses[0],
         },
-        'orange',
       )
 
       expect(mappedAccount).toMatchObject(expected)
@@ -155,7 +153,6 @@ describe('test DeployUtils', () => {
           hub: '',
           city: '',
         },
-        'orange',
       )
 
       expect(mappedAccount).toMatchObject(expected)

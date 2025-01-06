@@ -48,7 +48,7 @@ export function getMockedDeploymentStatus(override: Partial<DeploymentStatus> = 
 
 export function getMockedMappedAccount(
   override: Partial<WalletData> = {},
-  avatarColor = 'persian',
+  avatarColor = 'persian-400',
 ): WalletData {
   const defaultMappedAccount: WalletData = {
     accountId: 1,

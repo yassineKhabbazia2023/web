@@ -10,7 +10,7 @@
       <PAvatar
         pShape="circle"
         pType="small"
-        :pColor="entity.color"
+        :pColor="entityAvatarColor"
         :pSelected="selected"
         class="entity-wrapper__avatar margin-right--2"
       >
@@ -39,6 +39,7 @@ import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import type { EntityAvatarProps } from './EntityAvatarTypes'
 import type { Entity } from '@pulse/common/types'
 import SidebarEntityItem from '../SidebarEntityItem'
+import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 const props = defineProps<EntityAvatarProps>()
 defineEmits<{
@@ -48,6 +49,7 @@ defineEmits<{
 const entityTooltipContent = computed(() => {
   return `${props.entity.legalName} \n ${props.entity.accountNumber}`
 })
+const entityAvatarColor = computed(() => getAvatarColorFromKey(props.entity?.accountNumber))
 </script>
 
 <style scoped lang="scss">

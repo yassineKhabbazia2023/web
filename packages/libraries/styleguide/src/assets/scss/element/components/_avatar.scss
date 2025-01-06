@@ -86,6 +86,24 @@ $avatar-size: (
       color: var(--el-color-persian-500);
     }
 
+    &--color-persian-light {
+      border-color: var(--el-color-base-persian-light);
+      background: var(--el-color-base-persian-light);
+      color: var(--el-color-persian-600);
+    }
+
+    &--color-persian-400 {
+      border-color: var(--el-color-persian-400);
+      background: var(--el-color-persian-400);
+      color: var(--el-color-persian-50);
+    }
+
+    &--color-persian-600 {
+      border-color: var(--el-color-persian-600);
+      background: var(--el-color-persian-600);
+      color: var(--el-color-base-persian-light);
+    }
+
     &--color-teal {
       border-color: var(--el-color-functionnal-teal-bg);
       background: var(--el-color-functionnal-teal-bg);

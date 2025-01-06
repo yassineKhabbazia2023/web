@@ -1,9 +1,9 @@
 import type { WalletData, SearchCriteria, DeploymentStatus } from '../../types'
 import type { AccountRow } from '@entities/services/account'
 import { fetchAccounts } from '@entities/services/account'
-import { COLORS } from './DeployConst'
 import { getInitials, removeFalsyValues } from '@entities/helper'
 import type { QueryResult } from '@entities/common/types'
+import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 export function getQueryParams(searchCriteria: SearchCriteria) {
   return {
@@ -65,8 +65,7 @@ export function getMappedAccount(
   const { status } = deployment
 
   const initials = getInitials(firstName, lastName)
-  const colorIndex = index % COLORS.length
-  const avatarColor = COLORS[colorIndex]
+  const avatarColor = getAvatarColorFromKey(accountNumber) as string
 
   const mappedAccount: WalletData = {
     owner: {
