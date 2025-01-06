@@ -4,17 +4,19 @@
       <PLoader pType="primary" size="42" />
     </div>
 
-    <div v-else-if="defaultFolder !== null" class="padding-top--4 padding-left--2">
-      <CreateFolderSection
-        :entityId="selectedEntity"
-        :isCreateFolderModalVisible="isCreateFolderModalVisible"
-        :isInBinContext="isInBinContext"
-        :selectedFolder="selectedFolder"
-        :serviceId="currentService"
-        hasCreateFolderButton
-        @on-close-create-folder="handleCloseCreateFolderModal"
-        @update-source-folders="handleOnTreeContentRefresh"
-      />
+    <div v-else-if="defaultFolder !== null" class="padding-top--4">
+      <div class="padding-left--2">
+        <CreateFolderSection
+          :entityId="selectedEntity"
+          :isCreateFolderModalVisible="isCreateFolderModalVisible"
+          :isInBinContext="isInBinContext"
+          :selectedFolder="selectedFolder"
+          :serviceId="currentService"
+          hasCreateFolderButton
+          @on-close-create-folder="handleCloseCreateFolderModal"
+          @update-source-folders="handleOnTreeContentRefresh"
+        />
+      </div>
 
       <DeleteFolderSection
         :entityId="selectedEntity"
