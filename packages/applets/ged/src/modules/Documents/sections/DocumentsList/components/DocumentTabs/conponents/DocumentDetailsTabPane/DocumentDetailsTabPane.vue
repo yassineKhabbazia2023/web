@@ -92,7 +92,7 @@
       pPlain
       @click="handleDownloadClick"
     >
-      <PIcon class="el-button__icon--left" pName="upload" />
+      <PIcon class="el-button__icon--left" pName="download" />
       {{ t('label.download') }}
     </PButton>
   </div>
