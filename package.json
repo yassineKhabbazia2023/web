@@ -71,6 +71,7 @@
     "msal": "^1.4.18",
     "pinia": "^2.2.4",
     "powerbi-client": "^2.23.1",
+    "powerbi-models": "^1.15.2",
     "product-fruits": "^1.0.26",
     "tslog": "^4.9.2",
     "vue": "^3.3.4",

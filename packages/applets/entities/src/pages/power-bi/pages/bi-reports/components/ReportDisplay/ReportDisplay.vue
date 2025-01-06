@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import 'powerbi-client'
+import * as models from 'powerbi-models'
 import { useI18n } from 'vue-i18n'
 import { watch, toRefs, computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
@@ -56,6 +57,7 @@ const powerBIConfig = computed(() => ({
     filterPaneEnabled: false,
     navContentPaneEnabled: true,
   },
+  tokenType: models.TokenType.Embed,
 }))
 
 const loadPowerBIReport = async () => {
