@@ -49,7 +49,7 @@ const services = computed(() =>
 )
 
 const ProviderCategoryTitles: Record<string, string> = {
-  pulse: t('platform'),
+  rydge: t('platform'),
   external: t('provider'),
   internal: t('services'),
 }
