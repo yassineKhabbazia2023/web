@@ -582,6 +582,9 @@ const validateEmail = (_: any, value: string, callback: any) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!value || emailRegex.test(value)) {
     callback()
+    // FIXME: this call will erase other validation errors
+    // and make the user be able to go to the next step
+    // with errors in other fields
     areFieldsFilledStepBased(2)
   } else {
     callback(new Error(t('form.error.correctEmail')))
@@ -614,6 +617,9 @@ const rules = reactive<any>({
           emit('enable-disable-next', false)
         } else {
           callback()
+          // FIXME: this call will erase other validation errors
+          // and make the user be able to go to the next step
+          // with errors in other fields
           areFieldsFilledStepBased(2)
         }
       },
@@ -658,7 +664,28 @@ const rules = reactive<any>({
 })
 
 // Watchers
-watch(() => props.step, () => areFieldsFilledStepBased(props.step))
+watch(() => props.step, async (newValue) => {
+  areFieldsFilledStepBased(props.step)
+  // we check with extra care the second step
+  // we don't want the user to be able to go to next step with errors
+  if(newValue === 2) {
+    try {
+      // the solution if far from optimal (see FIXMEs above)
+      // but it's the only way to make it work in a short time
+      // without refactoring the whole component
+      if(areStep2FieldsFilled.value === true) {
+        const fieldStepValid = await createMandateFormRef.value.validate()
+        if(fieldStepValid) {
+          emit('enable-disable-next', true)
+        } else {
+          emit('enable-disable-next', false)
+        }
+      }
+    } catch (error) {
+      emit('enable-disable-next', false)
+    }
+  }
+})
 watch(areStep2FieldsFilled, () => areFieldsFilledStepBased(2))
 watch(
   () => createMandateForm.erpId,
