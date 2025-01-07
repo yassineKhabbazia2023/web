@@ -5,7 +5,7 @@
       :legalName="defaultEntity.legalName"
       :accountNumber="defaultEntity.accountNumber"
     />
-    <PRow :pGutter="24">
+    <PRow :pGutter="24" class="flex-row-gap--4">
       <PCol
         :pSpan="24"
         :pMd="16"
@@ -68,7 +68,16 @@
                         class="text-color--base-persian text-underline"
                         :href="loginUrl"
                       >
-                        {{ t('secondSection.listItems.loginUrl') }}
+                        {{ loginDisplayUrl }}
+                      </a>
+                    </template>
+                    <template #connexionGuide>
+                      <a
+                        class="text-underline"
+                        :href="CLIENT_HELP_URL"
+                        target="_blank"
+                      >
+                        {{ t('secondSection.listItems.connexionGuide') }}
                       </a>
                     </template>
                   </i18n-t>
@@ -108,7 +117,7 @@
           </PRow>
         </div>
 
-        <div class="home-folder__background position--absolute">
+        <div class="home-folder__background position--absolute hidden-sm-and-down">
           <PImage pName="road_with_brand_shape" pFit="contain" />
         </div>
       </PCol>
@@ -159,7 +168,9 @@
               <PRow class="margin-top--5">
                 <PCol>
                   <p class="font-normal font-large text-underline text-color--base-blue-pulse">
-                    {{ t('downloadTutorial') }}
+                    <a :href="MOBILE_APPLICATION_DOCUMENTATION_URL" target="_blank">
+                      {{ t('downloadTutorial') }}
+                    </a>
                   </p>
                 </PCol>
               </PRow>
@@ -280,9 +291,13 @@ import {
   PRow,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
-import { commonStore, sanitizeUrl } from '@pulse/common'
+import { commonStore } from '@pulse/common'
 import EntityHeader from '@entities/common/components/EntityHeader'
-import { LOGIN_URL } from '@pulse/core'
+import {
+  OFFICIAL_WEBSITE_URL,
+  HOST_NAME,
+  CLIENT_HELP_URL,
+  MOBILE_APPLICATION_DOCUMENTATION_URL } from '@pulse/core'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
@@ -290,7 +305,9 @@ const { t } = useI18n({
 
 const { defaultEntity } = storeToRefs(commonStore())
 
-const loginUrl = computed(() => sanitizeUrl(LOGIN_URL))
+const loginUrl = `${OFFICIAL_WEBSITE_URL}/login`
+const loginDisplayUrl = `${HOST_NAME}/login`
+
 </script>
 
 <style lang="scss" scoped>
@@ -343,7 +360,8 @@ const loginUrl = computed(() => sanitizeUrl(LOGIN_URL))
       title: 'Ce que cela change pour vous :'
       listItems:
         first: 'Une nouvelle apparence pour la même navigation'
-        second: 'Une nouvelle adresse de connexion : votre plateforme est accessible à l’adresse {loginUrl} (guide de connexion)'
+        connexionGuide: 'guide de connexion'
+        second: 'Une nouvelle adresse de connexion : votre plateforme est accessible à l’adresse {loginUrl} ({connexionGuide})'
         loginUrl: 'app.rydge.fr/login'
     thirdSection:
       title: 'Ce qui reste inchangé :'
@@ -367,7 +385,8 @@ const loginUrl = computed(() => sanitizeUrl(LOGIN_URL))
       title: 'Ce que cela change pour vous :'
       listItems:
         first: 'Une nouvelle apparence pour la même navigation'
-        second: 'Une nouvelle adresse de connexion : votre plateforme est accessible à l’adresse {loginUrl} (guide de connexion)'
+        connexionGuide: 'guide de connexion'
+        second: 'Une nouvelle adresse de connexion : votre plateforme est accessible à l’adresse {loginUrl} ({connexionGuide})'
         loginUrl: 'app.rydge.fr/login'
     thirdSection:
       title: 'Ce qui reste inchangé :'
