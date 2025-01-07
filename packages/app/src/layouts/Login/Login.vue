@@ -64,13 +64,21 @@
 import { PCol, PImage, PRow } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
-import { onMounted } from 'vue'
+import { onMounted, onBeforeUnmount } from 'vue'
 import { OFFICIAL_WEBSITE_URL } from '@pulse/core'
+import { initProductFruits, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
+import { VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT } from 'env-vars'
 
 onMounted(() => {
-  localStorage.removeItem('selected-entity')
+  initProductFruits({
+    lang: 'fr',
+    key: VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT,
+  })
 })
 
+onBeforeUnmount(() => {
+  stopProductFruits()
+})
 </script>
 
 <style lang="scss" scoped>

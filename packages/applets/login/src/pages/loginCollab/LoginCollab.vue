@@ -21,16 +21,11 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { productFruits } from 'product-fruits'
 import { PSkewedButton } from '@pulse/styleguide/components'
 import { msalInstance } from '@login/services/msal'
 import useInitAuth from '@login/composable/useInitUserAuth'
 import { amplitudeService } from '@pulse/common'
 import useNavigation from '@login/composable/useNavigation'
-import { userNameGenerator } from '@login/helper'
-import {
-  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY,
-} from 'env-vars'
 
 const { initAuthCollab, isTokenRetrieve } = useInitAuth()
 const { navigateToWallet } = useNavigation()
@@ -44,37 +39,13 @@ const handleLoginCollab = () => {
   msalInstance.loginRedirect()
 }
 
-declare global {
-  interface Window {
-    productFruits: any
-    HubSpotConversations: any
-    productFruitsUser: any
-  }
-}
-
 onMounted(async () => {
   amplitudeService.reset()
-  productFruitsTrigger(VITE_PRODUCT_FRUITS_ANONYMOUS_KEY)
   await initAuthCollab()
   if (isTokenRetrieve.value) {
     navigateToWallet()
   }
 })
-
-const productFruitsTrigger = (productFruitsKey: string) => {
-  if (productFruitsKey) {
-    productFruits.init(productFruitsKey, 'fr', {
-      username: userNameGenerator(),
-    })
-    window.addEventListener(
-      'productfruits_button_ext_widget_init',
-      () => {
-        (window as any).HubSpotConversations.widget.load({ widgetOpen: true });
-        (window as any).HubSpotConversations.widget.open()
-      },
-    )
-  }
-}
 </script>
 
 <style lang="scss">

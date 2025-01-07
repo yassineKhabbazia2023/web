@@ -10,6 +10,7 @@ import mandateApplet from '@pulse/mandate'
 import commonLibrary from '@pulse/common'
 import styleguideLibrary from '@pulse/styleguide'
 import axeptioPlugin from '@app/plugins/Axeptio/axeptio.plugin'
+import productFruitsPlugin from '@app/plugins/ProductFruits/productFruits.plugin'
 import hubspotPlugin from '@app/plugins/Hubspot/hubspot.plugin'
 
 import App from './app/App.vue'
@@ -23,11 +24,17 @@ declare let window: {
 
 window.version = AppVersionManager.getMonorepoVersion()
 
+const isProd = import.meta.env.PROD
 
 const app = createApp(App)
   // install plugins
   .use(axeptioPlugin)
-  .use(hubspotPlugin)
+  .use(productFruitsPlugin, {
+    isActive: isProd,
+  })
+  .use(hubspotPlugin, {
+    isActive: isProd,
+  })
   .use(commonLibrary, { locale })
   // install applets
   .use(entitiesApplet, { router })

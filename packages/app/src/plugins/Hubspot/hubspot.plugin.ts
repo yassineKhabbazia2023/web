@@ -1,30 +1,53 @@
+import { type App } from 'vue'
 import { logger } from '@pulse/core'
+import type { InitHubspotParams, HubSpotState, InstallHubSpotParams } from './hubspot.plugin.types'
 
 declare let window: {
-  hsConversationsOnReady: any // HubSpot Conversations API
+  HubSpotConversations: {
+    on: (_eventName: string, _cb: () => void) => void
+    widget: {
+      load: ({ widgetOpen }: { widgetOpen: boolean }) => void
+      open: () => void
+      remove: () => void
+    }
+  }
 } & Window
 
+const hubSpotStatus: HubSpotState = {
+  isActive: false,
+  isInitialized: false,
+}
+export const openHubspot = () => {
+  if (!hubSpotStatus.isInitialized) {
+    logger.error('hubSpot is not initialized')
+    return
+  }
+  window.HubSpotConversations.widget.load({ widgetOpen: true })
+  window.HubSpotConversations.widget.open()
+}
+
+export const closeHubspot = () => {
+  window.HubSpotConversations.widget.remove()
+}
+
+export function initHubspot({ onHubspotClose }: InitHubspotParams) {
+  if (!hubSpotStatus.isActive) {
+    logger.error('hubSpot plugin is not active')
+  }
+  if (!window.HubSpotConversations) {
+    logger.error('window.HubSpotConversations does not exist')
+  }
+  window.HubSpotConversations.on('widgetClosed', () => {
+    closeHubspot()
+    onHubspotClose()
+  })
+  hubSpotStatus.isInitialized = true
+}
+
 export default {
-  install() {
-    if (import.meta.env.PROD) {
-      /*
-        If external API methods are already available, use them.
-      */
-      if (window.HubSpotConversations) {
-        window.HubSpotConversations.on('widgetClosed', () => {
-          window.productFruits.api.inAppCenter.show()
-          window.productFruits.api.inAppCenter.close()
-          window.HubSpotConversations.widget.remove()
-        })
-      } else {
-        /*
-          Otherwise, callbacks can be added to the hsConversationsOnReady on the window object.
-          These callbacks will be called once the external API has been initialized.
-        */
-        window.hsConversationsOnReady = () => {
-          logger.warn(`HubSpot Conversations API: ${window.HubSpotConversations}`)
-        }
-      }
-    }
+  install(_app: App, {
+    isActive,
+  }: InstallHubSpotParams) {
+    hubSpotStatus.isActive = isActive
   },
 }

@@ -13,6 +13,17 @@ const testEntity: Entity = getMockedFavoriteEntities()[0]
 
 const mockUserOrigin = vi.fn()
 
+vi.mock('@app/plugins/ProductFruits/productFruits.plugin')
+
+vi.mock('env-vars', () => ({
+  VITE_IDLE_DURATION: 1000,
+  VITE_AMPLITUDE_API_KEY: 'VITE_AMPLITUDE_API_KEY',
+  VITE_AMPLITUDE_SERVER_URL: 'VITE_AMPLITUDE_SERVER_URL',
+  VITE_PRODUCT_FRUITS_KEY: 'product fruits collab key',
+  VITE_PRODUCT_FRUITS_KEY_CLIENT: 'product fruits client key',
+  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT: 'product fruits anonymous client key',
+}))
+
 vi.mock('@pulse/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {

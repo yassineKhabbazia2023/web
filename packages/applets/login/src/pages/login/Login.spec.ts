@@ -23,10 +23,6 @@ const mockAuthPost = vi.fn((_url, { _email }) => {
   })
 })
 
-vi.mock('env-vars', () => ({
-  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT: 'TEST_KEY',
-}))
-
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush,
@@ -84,12 +80,6 @@ vi.mock('@login/services/cgu', () => ({
     })),
 }))
 
-window.HubSpotConversations = {
-  widget: {
-    load: vi.fn(),
-    open: vi.fn(),
-  },
-} as any
 const createWrapper = (): ComponentWrapper<InstanceType <typeof Login>> =>
   mount(Login, {
     global: {
@@ -120,14 +110,6 @@ describe('login', () => {
 
   afterEach(() => {
     wrapper.unmount()
-  })
-
-  it('should open hubspot when productfruits_button_ext_widget_init event is triggered', async () => {
-    window.dispatchEvent(new Event('productfruits_button_ext_widget_init'))
-    await flushPromises()
-    await nextTick()
-    expect(window.HubSpotConversations.widget.load).toHaveBeenCalledOnce()
-    expect(window.HubSpotConversations.widget.open).toHaveBeenCalledOnce()
   })
 
   it('fill the login page and has a redirection to the home page', async () => {

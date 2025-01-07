@@ -32,14 +32,6 @@ vi.mock('@login/composable/useNavigation', () => ({
   },
 }))
 
-
-window.HubSpotConversations = {
-  widget: {
-    load: vi.fn(),
-    open: vi.fn(),
-  },
-} as any
-
 const createWrapper = () => mount(LoginCollab)
 
 describe('loginCollab', () => {
@@ -50,15 +42,6 @@ describe('loginCollab', () => {
   describe('events', () => {
     it('should not redirect to the wallet if the user is unauthenticated', () => {
       expect(navigateToWalletMock).toHaveBeenCalledTimes(0)
-    })
-  })
-  describe('productfruits', () => {
-    it('should open hubspot when productfruits_button_ext_widget_init event is triggered', async () => {
-      window.dispatchEvent(new Event('productfruits_button_ext_widget_init'))
-      await flushPromises()
-      await nextTick()
-      expect(window.HubSpotConversations.widget.load).toHaveBeenCalledTimes(2)
-      expect(window.HubSpotConversations.widget.open).toHaveBeenCalledTimes(2)
     })
   })
 })

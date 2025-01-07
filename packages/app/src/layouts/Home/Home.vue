@@ -49,7 +49,6 @@
 import { logger, FeatureFlagManager } from '@pulse/core'
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
-import { productFruits } from 'product-fruits'
 import {
   VITE_PRODUCT_FRUITS_KEY,
   VITE_PRODUCT_FRUITS_KEY_CLIENT,
@@ -57,7 +56,6 @@ import {
 } from 'env-vars'
 import { commonStore as store, dataProvider } from '@pulse/common'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
-import { getBrowserName } from '@app/helper'
 import UserProfile from '@app/components/UserProfile'
 import HomeScheduleDrawer from '@app/components/HomeScheduleDrawer'
 import Header from './Header'
@@ -68,14 +66,8 @@ import { getDefaultEntity } from './Sidebar/components/SidebarEntity/utils'
 import FeedCenterDrawer from '@app/modules/FeedCenter/components/FeedCenterDrawer'
 import { fetchUnreadNotificationsCount } from '@app/modules/FeedCenter/services/notifications.service'
 import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
-
-declare global {
-  interface Window {
-    embedded_svc: any
-    productFruits: any
-    HubSpotConversations: any
-  }
-}
+import { initProductFruits, showProductFruits, stopProductFruits, hideProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
+import { initHubspot, openHubspot } from '@app/plugins/Hubspot/hubspot.plugin'
 
 // Variables
 const router = useRouter()
@@ -83,7 +75,6 @@ const { fetchUserData } = dataProvider()
 const isLoading = ref<boolean>(true)
 const calendarIsOpened = ref(false)
 const calendarHasBeenOpened = ref(false)
-const isProd = import.meta.env.PROD
 
 const showCalendar = computed({
   get: () => calendarIsOpened.value,
@@ -118,6 +109,10 @@ const stylesMetaProperties = computed(
 const globalStore = store()
 const { defaultEntity, isCollab } = storeToRefs(globalStore)
 
+function openChat() {
+  hideProductFruits()
+  openHubspot()
+}
 // Hooks
 onMounted(async () => {
   try {
@@ -135,31 +130,18 @@ onMounted(async () => {
       },
     })
 
-    if (isProd) {
-      const productFruitsKey = isCollab.value ? VITE_PRODUCT_FRUITS_KEY : VITE_PRODUCT_FRUITS_KEY_CLIENT
-      if (productFruitsKey) {
-        productFruits.init(productFruitsKey, 'fr', {
-          username: user?.id,
-          email: user?.email,
-          firstname: user?.firstName,
-          lastname: user?.lastName,
-          role: user?.isCollab ? 'Collaborateur' : 'Client',
-          props: {
-            browser: getBrowserName(),
-          },
-        })
-
-        window.addEventListener(
-          'productfruits_button_ext_widget_init',
-          () => {
-            window.HubSpotConversations?.widget.load({ widgetOpen: true })
-            window.HubSpotConversations?.widget.open()
-          },
-        )
-      }
-    }
+    const key = user?.isCollab ? VITE_PRODUCT_FRUITS_KEY : VITE_PRODUCT_FRUITS_KEY_CLIENT
+    initProductFruits({
+      lang: 'fr',
+      key,
+      user,
+      openChat,
+    })
+    initHubspot({
+      onHubspotClose: () => showProductFruits(),
+    })
   } catch (error) {
-    logger.error('Unable to fetch current user information: ', error)
+    logger.error('Something wrong occurred: ', error)
   } finally {
     isLoading.value = false
   }
@@ -189,6 +171,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   clearInterval(notificationsCountIntervalId)
+  stopProductFruits()
 })
 </script>
 

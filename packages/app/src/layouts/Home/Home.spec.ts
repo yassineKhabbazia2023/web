@@ -13,6 +13,15 @@ import { nextTick } from 'vue'
 import * as entitiesServices from '@app/services/entities'
 import mockedEntities from '@app/mocks/entities.mock.json'
 import Home from '.'
+import { initProductFruits as initProductFruitsMock } from '@app/plugins/ProductFruits/productFruits.plugin'
+
+declare let window: {
+  embedded_svc: {
+    addEventHandler: () => void
+    settings: () => void
+    init: () => void
+  }
+} & Window
 
 const pinia = createTestingPinia()
 const { fakeUser, router } = helpers()
@@ -38,6 +47,9 @@ vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
     count: 1,
   })),
 }))
+
+vi.mock('@app/plugins/ProductFruits/productFruits.plugin')
+vi.mock('@app/plugins/Hubspot/hubspot.plugin')
 
 vi.mock('@pulse/core', async () => {
   const actual = await vi.importActual('@pulse/core')
@@ -73,6 +85,8 @@ const feedCenterActivatedFlag = vi.hoisted(() => ({
 vi.mock('env-vars', () => ({
   ...envVarsValues,
   VITE_FEED_CENTER_ACTIVATED: feedCenterActivatedFlag.value,
+  VITE_PRODUCT_FRUITS_KEY: 'product fruits collab key',
+  VITE_PRODUCT_FRUITS_KEY_CLIENT: 'product fruits client key',
 }))
 
 import.meta.env.PROD = true
@@ -81,7 +95,7 @@ window.embedded_svc = {
   addEventHandler: vi.fn(),
   settings: vi.fn(),
   init: vi.fn(),
-} as any
+}
 
 const createWrapper = (): VueWrapper<any> =>
   shallowMount(Home, {
@@ -120,6 +134,24 @@ describe('home', () => {
     expect(entitiesServices.fetchEntities).toHaveBeenCalledOnce()
   })
 
+  it('should call initProductFruits on mount', async () => {
+    const expectedArguments = {
+      key: 'product fruits client key',
+      lang: 'fr',
+      openChat: expect.anything(),
+      user: {
+        id: 123,
+        email: 'john@example.com',
+        firstName: 'John',
+        lastName: 'Doe',
+        isCollab: false,
+      },
+    }
+
+    expect(initProductFruitsMock).toHaveBeenCalledOnce()
+    expect(initProductFruitsMock).toHaveBeenNthCalledWith(1, expectedArguments)
+  })
+
   it('should log a logger.error message when the request fails', async () => {
     const expectedErrorMessage = 'API Error: 503 Service Unavailable'
 
@@ -131,7 +163,7 @@ describe('home', () => {
 
     expect(loggerErrorSpy).toHaveBeenCalledOnce()
     expect(loggerErrorSpy).toHaveBeenCalledWith(
-      'Unable to fetch current user information: ',
+      'Something wrong occurred: ',
       expectedErrorMessage,
     )
   })
