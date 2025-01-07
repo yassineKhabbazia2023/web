@@ -28,7 +28,7 @@ declare let window: {
 const productFruitConfig: ProductFruitConfig = {
   openChat: undefined,
 }
-  
+
 const productFruitStatus: ProductFruitStatus = {
   isActive: false,
   isInitialized: false,
@@ -81,11 +81,11 @@ export function initProductFruits({
   user,
   openChat,
 }: InitProductFruitsParams) {
+  if (!productFruitStatus.isActive) {
+    return
+  }
   if (productFruitStatus.isInitialized) {
     throw new Error('productFruit is already initialized')
-  }
-  if (!productFruitStatus.isActive) {
-    throw new Error('productFruit is not active')
   }
 
   const productFruitsOptions = getProductFruitsOptions(user)

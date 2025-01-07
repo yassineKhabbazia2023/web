@@ -237,13 +237,14 @@ describe('test productFruits plugin', () => {
       expect(addEventListenerSpy).toHaveBeenNthCalledWith(1, ...expectedParams)
     })
 
-    it('should throw an error when is NOT active', () => {
+    it('should do nothing when is NOT active', () => {
       const expectedError = 'productFruit is not active'
       productFruitsPlugin.install({} as App, {
         isActive: false,
       })
 
-      expect(() => initProductFruits({ lang, key, user: clientUser, openChat: mockedOpenChat })).toThrow(expectedError)
+      initProductFruits({ lang, key, user: clientUser, openChat: mockedOpenChat })
+      expect(mockedProductFruitsInit).not.toHaveBeenCalled()
     })
 
     it('should throw an error when initProductFruits is called twice', () => {
