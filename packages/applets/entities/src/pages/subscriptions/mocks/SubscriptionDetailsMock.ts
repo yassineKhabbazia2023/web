@@ -20,10 +20,10 @@ export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
     logoName: 'meg',
     providers: [
       {
-        providerName: ProviderName.PULSE,
-        providerEditor: 'KPMG',
-        providerCategory: 'PULSE',
-        logoName: 'iconpulse-color',
+        providerName: ProviderName.RYDGE,
+        providerEditor: 'RYDGE',
+        providerCategory: 'RYDGE',
+        logoName: 'brand-color',
         products: [
           {
             productConfigurationId: 1,

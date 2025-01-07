@@ -433,7 +433,7 @@ const onCloseOffersDrawer = () => {
 
 const providerName = computed(() => {
   const filteredProviders = currentSubscriptionOffer.value?.providers
-    .filter(({ providerName }) => providerName !== ProviderName.PULSE)
+    .filter(({ providerName }) => providerName !== ProviderName.RYDGE)
   const firstFilteredProviders = filteredProviders?.at(0)
 
   return firstFilteredProviders?.providerName

@@ -65,7 +65,7 @@ const accountModel = ref<Account>()
 
 const providerName = computed(() => {
   const filteredProviders = props.subscriptionOfferDetails?.providers
-    .filter(({ providerName }) => providerName !== ProviderName.PULSE)
+    .filter(({ providerName }) => providerName !== ProviderName.RYDGE)
   const firstFilteredProviders = filteredProviders?.at(0)
 
   return firstFilteredProviders?.providerName ?? ProviderName.LOOP
