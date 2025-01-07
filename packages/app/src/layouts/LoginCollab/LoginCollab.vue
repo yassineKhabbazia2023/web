@@ -61,17 +61,21 @@ import { onMounted, onBeforeUnmount } from 'vue'
 import { PCol, PRow, PImage } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfoCollab from '@app/components/SupportInfoCollab'
-import { OFFICIAL_WEBSITE_URL } from '@pulse/core'
+import { logger, OFFICIAL_WEBSITE_URL } from '@pulse/core'
 import { initProductFruits, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { VITE_PRODUCT_FRUITS_ANONYMOUS_KEY } from 'env-vars'
 
 onMounted(() => {
   localStorage.removeItem('selected-entity')
 
-  initProductFruits({
-    lang: 'fr',
-    key: VITE_PRODUCT_FRUITS_ANONYMOUS_KEY,
-  })
+  try {
+    initProductFruits({
+      lang: 'fr',
+      key: VITE_PRODUCT_FRUITS_ANONYMOUS_KEY,
+    })
+  } catch (error) {
+    logger.error('Something wrong occurred: ', error)
+  }
 })
 
 onBeforeUnmount(() => {

@@ -93,6 +93,12 @@ describe('test productFruits plugin', () => {
 
     beforeEach(() => {
       removeEventListenerSpy = vi.spyOn(window, 'removeEventListener')
+      initProductFruits({
+        lang,
+        key: mockedProductFruitsKey,
+        user: clientUser,
+        openChat: mockedOpenChat,
+      })
       stopProductFruits()
     })
 
@@ -238,7 +244,6 @@ describe('test productFruits plugin', () => {
     })
 
     it('should do nothing when is NOT active', () => {
-      const expectedError = 'productFruit is not active'
       productFruitsPlugin.install({} as App, {
         isActive: false,
       })
@@ -247,7 +252,7 @@ describe('test productFruits plugin', () => {
       expect(mockedProductFruitsInit).not.toHaveBeenCalled()
     })
 
-    it('should throw an error when initProductFruits is called twice', () => {
+    it('should display an error when initProductFruits is called twice', () => {
       const expectedError = 'productFruit is already initialized'
       const params = {
         lang,
@@ -256,8 +261,10 @@ describe('test productFruits plugin', () => {
         openChat: mockedOpenChat,
       }
       initProductFruits(params)
+      initProductFruits(params)
 
-      expect(() => initProductFruits(params)).toThrow(expectedError)
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, 'productFruit is already initialized')
     })
   })
 })

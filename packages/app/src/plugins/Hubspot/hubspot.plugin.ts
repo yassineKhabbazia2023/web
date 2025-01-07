@@ -32,10 +32,11 @@ export const closeHubspot = () => {
 
 export function initHubspot({ onHubspotClose }: InitHubspotParams) {
   if (!hubSpotStatus.isActive) {
-    logger.error('hubSpot plugin is not active')
+    return
   }
   if (!window.HubSpotConversations) {
     logger.error('window.HubSpotConversations does not exist')
+    return
   }
   window.HubSpotConversations.on('widgetClosed', () => {
     closeHubspot()

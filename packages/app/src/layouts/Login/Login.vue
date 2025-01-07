@@ -65,15 +65,19 @@ import { PCol, PImage, PRow } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
 import { onMounted, onBeforeUnmount } from 'vue'
-import { OFFICIAL_WEBSITE_URL } from '@pulse/core'
+import { logger, OFFICIAL_WEBSITE_URL } from '@pulse/core'
 import { initProductFruits, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT } from 'env-vars'
 
 onMounted(() => {
-  initProductFruits({
-    lang: 'fr',
-    key: VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT,
-  })
+  try {
+    initProductFruits({
+      lang: 'fr',
+      key: VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT,
+    })
+  } catch (error) {
+    logger.error('Something wrong occurred: ', error)
+  }
 })
 
 onBeforeUnmount(() => {

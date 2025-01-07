@@ -1,5 +1,5 @@
 import { type App } from 'vue'
-import { getRandomString } from '@pulse/core'
+import { getRandomString, logger } from '@pulse/core'
 import { getBrowserName } from '@app/helper'
 import { productFruits } from 'product-fruits'
 import type {
@@ -39,6 +39,9 @@ export function onProductFruitsButtonExtWidgetInit() {
 }
 
 export function stopProductFruits() {
+  if (!productFruitStatus.isInitialized) {
+    return
+  }
   window.productFruits.services.destroy()
   window.removeEventListener(
     'productfruits_button_ext_widget_init',
@@ -85,7 +88,8 @@ export function initProductFruits({
     return
   }
   if (productFruitStatus.isInitialized) {
-    throw new Error('productFruit is already initialized')
+    logger.error('productFruit is already initialized')
+    return
   }
 
   const productFruitsOptions = getProductFruitsOptions(user)
