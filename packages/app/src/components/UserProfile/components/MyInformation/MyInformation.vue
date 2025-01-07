@@ -69,7 +69,7 @@
           <LegalLinks />
         </div>
 
-        <Teleport to=".el-drawer__footer">
+        <Teleport to="#my-information__footer-drawer">
           <div class="flex flex--justify-content-space-between">
             <LogoutButton />
 

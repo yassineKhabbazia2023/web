@@ -9,7 +9,9 @@
     @close-drawer-button="drawerModel = false"
   >
     <MyInformation />
-    <template #footer />
+    <template #footer>
+      <div id="my-information__footer-drawer" />
+    </template>
   </PDrawer>
 </template>
 

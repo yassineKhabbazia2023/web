@@ -94,7 +94,7 @@ const getAllInputs = () => wrapper.findAll('input')
 describe('myInformation', () => {
   beforeEach(() => {
     const drawerFooter = document.createElement('div')
-    drawerFooter.classList.add('el-drawer__footer')
+    drawerFooter.id = 'my-information__footer-drawer'
     document.body.appendChild(drawerFooter)
 
     wrapper = createWrapper()
