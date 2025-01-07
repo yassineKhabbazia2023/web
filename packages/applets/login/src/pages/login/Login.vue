@@ -16,7 +16,7 @@
           class="el-form-item__error"
           data-testid="login-error-message"
         >
-          {{ t('error') }}
+          {{ customErrorMessage }}
         </p>
       </div>
     </div>
@@ -44,6 +44,7 @@
           pAutocomplete="on"
           pAutofocus
           data-testid="login-input-email"
+          @input="onInput"
         />
       </PFormItem>
       <PFormItem
@@ -58,6 +59,7 @@
           pType="password"
           pShowPassword
           data-testid="login-input-password"
+          @input="onInput"
         />
       </PFormItem>
       <router-link
@@ -115,7 +117,8 @@ const isFormValid = computed(() =>
   formValidity.email && formValidity.password,
 )
 
-const hasCustomError = ref(false)
+const customErrorMessage = ref('')
+const hasCustomError = computed(() => customErrorMessage.value !== '')
 
 const validatePassword = (_rule: any, value: any, callback: any) => {
   if (!value) {
@@ -189,10 +192,10 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     }
     router.push({ name: 'validationCGU', params: { termsId: terms.termsId } })
   } catch (error: any) {
-    const hasEmailOrPasswordInvalid = error.response?.data?.errorCode === '403042'
-    if (hasEmailOrPasswordInvalid) {
-      hasCustomError.value = true
-    }
+    const hasEmailOrPasswordInvalid = error.status === 404 || error.response?.data?.errorCode === '403042'
+    customErrorMessage.value = hasEmailOrPasswordInvalid
+      ? t('emailOrPasswordError')
+      : t('technicalError')
     amplitudeService.track('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
@@ -206,6 +209,10 @@ onMounted(() => {
 })
 
 defineExpose({ handleSubmit })
+
+function onInput() {
+  customErrorMessage.value = ''
+}
 </script>
 
 <style lang="scss" scoped>
@@ -249,7 +256,8 @@ defineExpose({ handleSubmit })
     password: 'Password'
     passwordPlaceholder: 'Enter your password'
     login: 'Log in'
-    error: 'The email and password combination is incorrect.'
+    emailOrPasswordError: 'The email and password combination is incorrect.'
+    technicalError: 'A technical error occurred.'
     forgotPassword: 'Forgot your password?'
     alertPasswordRequired: 'Please enter your password'
     alertMailRequired: 'Please enter your mail'
@@ -263,7 +271,8 @@ defineExpose({ handleSubmit })
     password: 'Mot de passe'
     passwordPlaceholder: 'Saisissez votre mot de passe'
     login: 'Me connecter'
-    error: 'La combinaison email et mot de passe est incorrecte.'
+    emailOrPasswordError: 'La combinaison email et mot de passe est incorrecte.'
+    technicalError: 'Une erreur technique est survenue.'
     forgotPassword: 'Mot de passe oublié ?'
     alertPasswordRequired: 'Veuillez saisir votre mot de passe'
     alertMailRequired: 'Veuillez saisir votre email'

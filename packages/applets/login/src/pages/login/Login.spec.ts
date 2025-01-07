@@ -180,9 +180,16 @@ describe('login', () => {
       sign_in_result: 'failed',
     })
     expect(mockRouterPush).not.toHaveBeenCalled()
+
+    const pInput = wrapper.findComponent({ name: 'PInput' })
+    pInput.vm.$emit('input')
+    await nextTick()
+
+    const loginErrorMessageAfter = wrapper.find('[data-testid="login-error-message"]')
+    expect(loginErrorMessageAfter.exists()).toBeFalsy()
   })
 
-  it('does not display error message if the api return an unkown error', async () => {
+  it('does display error message if the api return an unkown error', async () => {
     mockAuthPost.mockRejectedValueOnce({
       response: {
         data: {
@@ -198,7 +205,9 @@ describe('login', () => {
     await flushPromises()
 
     const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
-    expect(loginErrorMessage.exists()).toBeFalsy() // it should not be the case
+    expect(loginErrorMessage.exists()).toBeTruthy()
+    expect(loginErrorMessage.text()).toBe('A technical error occurred.')
+
     expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledOnce()
     expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledWith('user_type', 'Client')
     expect(spyTrackAmplitude).toHaveBeenCalledOnce()
@@ -207,6 +216,13 @@ describe('login', () => {
       sign_in_result: 'failed',
     })
     expect(mockRouterPush).not.toHaveBeenCalled()
+
+    const pInput = wrapper.findComponent({ name: 'PInput' })
+    pInput.vm.$emit('input')
+    await nextTick()
+
+    const loginErrorMessageAfter = wrapper.find('[data-testid="login-error-message"]')
+    expect(loginErrorMessageAfter.exists()).toBeFalsy()
   })
 
   it('give empty values in form', async () => {
