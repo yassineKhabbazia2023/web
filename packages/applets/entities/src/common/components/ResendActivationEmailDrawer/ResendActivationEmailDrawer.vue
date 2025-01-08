@@ -72,9 +72,6 @@ import {
   PButton,
   PTag,
   PLoader,
-  PIPatchCheck,
-  PIPower,
-  PIPerson,
 } from '@pulse/styleguide/components'
 import type { ResendActivationEmailDrawerProps } from './ResendActivationEmailDrawerTypes'
 import { fetchAccountContacts } from '@entities/services/wallet'

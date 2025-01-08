@@ -24,11 +24,6 @@ vi.mock('@pulse/styleguide', () => ({
   PNotification: PNotificationMocked,
 }))
 
-vi.mock('@pulse/styleguide/components', () => ({
-  PICheck: 'PICheck',
-  PIX: 'PIX',
-}))
-
 // Expectations
 const expectedAccessibleMenuItems = {
   pIconName: 'folder',

@@ -36,7 +36,6 @@ import { reactive, computed } from 'vue'
 import {
   PCollapse,
   PCollapseItem,
-  PIExclamationTriangle,
   PFileAndFolderLineCheck,
   PTooltip,
 } from '@pulse/styleguide/components'
@@ -50,7 +49,6 @@ const props = defineProps<DocumentsExplorerHeaderProps>()
 
 const firstCollapseItem = reactive({
   pTitleCollapseItem: props.headerTitle,
-  pIcon: PIExclamationTriangle,
 })
 
 const filteredFailedDocuments = computed(() => props.documents
