@@ -5,7 +5,6 @@ import type { UserInfo } from '@pulse/common/types'
 const menu = [
   {
     name: 'wallet',
-    icon: 'PIGrid',
     path: '/portefeuille',
   },
 ]

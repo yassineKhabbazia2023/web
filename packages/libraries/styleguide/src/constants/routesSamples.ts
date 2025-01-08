@@ -10,7 +10,6 @@ export const menu = [
     },
   },
   {
-    icon: '',
     name: 'Document',
     path: '/bottom-menu-document',
     component: {

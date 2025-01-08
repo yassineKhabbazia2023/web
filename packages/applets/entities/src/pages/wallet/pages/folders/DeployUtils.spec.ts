@@ -21,7 +21,6 @@ import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersT
 const deploymentStatuses: DeploymentStatus[] = [
   {
     text: 'toDeploy',
-    icon: PIArrowUpCircle,
     color: ENTITY_STATUS_COLOR[EntityStatus.TO_DEPLOY],
   },
 ]

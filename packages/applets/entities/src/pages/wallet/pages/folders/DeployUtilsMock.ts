@@ -37,7 +37,6 @@ export function getMockedSearchCriteria(override: Partial<SearchCriteria> = {}):
 export function getMockedDeploymentStatus(override: Partial<DeploymentStatus> = {}): DeploymentStatus {
   const defaultMappedAccount: DeploymentStatus = {
     text: 'To Deploy',
-    icon: PIArrowUpCircle,
     color: 'warning',
   }
 

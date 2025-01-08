@@ -156,17 +156,14 @@ const numberOfFoldersInPortfolio = computed(() => searchResult.value.totalItems)
 const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
   {
     text: t('toDeploy'),
-    icon: PIArrowUpCircle,
     color: ENTITY_STATUS_COLOR[EntityStatus.TO_DEPLOY],
   },
   {
     text: t('inProgress'),
-    icon: PIArrowRepeat,
     color: ENTITY_STATUS_COLOR[EntityStatus.IN_PROGRESS],
   },
   {
     text: t('connected'),
-    icon: PICheckCircle,
     color: ENTITY_STATUS_COLOR[EntityStatus.CONNECTED],
   },
 ] as const

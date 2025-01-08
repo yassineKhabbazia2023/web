@@ -4,7 +4,6 @@ import type { Component } from 'vue'
 
 export interface DeploymentStatus {
   text: string
-  icon: Component
   color: string
 }
 
