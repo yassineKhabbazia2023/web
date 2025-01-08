@@ -25,7 +25,12 @@
               item.pButtonName === '' ? 'el-button--icon' : ''
             ]"
           >
-            <PIcon class="el-button__icon--left">
+            <PIcon
+              v-if="item.pButtonIconName"
+              :pName="item.pButtonIconName"
+              class="el-button__icon--left"
+            />
+            <PIcon v-else class="el-button__icon--left">
               <component :is="resolvedIconsLeft[index]" />
             </PIcon>
             <p>{{ item.pButtonName }}</p>
@@ -47,7 +52,12 @@
           ]"
           @click="emit('p-action-bar-button-clicked', item.pButtonActionName)"
         >
-          <PIcon class="el-button__icon--left">
+          <PIcon
+            v-if="item.pButtonIconName"
+            :pName="item.pButtonIconName"
+            class="el-button__icon--left"
+          />
+          <PIcon v-else class="el-button__icon--left">
             <component :is="resolvedIconsLeft[index]" />
           </PIcon>
           <p>
@@ -81,7 +91,15 @@
         ]"
         @click="emit('p-action-bar-button-clicked', item.pButtonActionName)"
       >
-        <PIcon class="el-button__icon--left">
+        <PIcon
+          v-if="item.pButtonIconName"
+          :pName="item.pButtonIconName"
+          class="el-button__icon--left"
+        />
+        <PIcon
+          v-else
+          class="el-button__icon--left"
+        >
           <component :is="resolvedIconsRight[index]" />
         </PIcon>
         <span v-if="!isSearchExpanded" class="hidden-sm-and-down">

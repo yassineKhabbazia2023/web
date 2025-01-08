@@ -1,9 +1,11 @@
 import type { PButtonProps } from '../../atoms/PButton/PButtonTypes'
+import type { IconName } from '../../types/IconName.types'
 
 export interface PButtonActionBarProps {
   pButton: PButtonProps
   pButtonName: string
-  pButtonIcon: string
+  pButtonIcon?: string
+  pButtonIconName?: IconName
   pButtonActionName: string
 }
 

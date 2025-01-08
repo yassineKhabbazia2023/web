@@ -53,7 +53,7 @@ function getButton(
 const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
   {
     pButtonName: 'Déposer un document',
-    pButtonIcon: 'PIUpload',
+    pButtonIconName: 'upload',
     pButtonActionName: 'buttonActionName',
     pComponentType: 'UPLOAD',
     pMultiple: true,
@@ -61,13 +61,13 @@ const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
   },
   {
     pButtonName: 'Filtrer',
-    pButtonIcon: 'PIFunnel',
+    pButtonIconName: 'funnel',
     pButtonActionName: 'buttonActionName',
     pButton: getButton('primary', { pPlain: true }),
   },
   {
     pButtonName: '',
-    pButtonIcon: 'PISearch',
+    pButtonIconName: 'search',
     pButtonActionName: 'buttonActionName',
     pComponentType: 'SEARCH',
     pButton: getButton('white', { pCircle: true }),
@@ -77,37 +77,37 @@ const pLeftSideIcons = reactive<ComponentDefinitionProps[]>([
 const pRightSideIcons2 = reactive<ComponentDefinitionProps[]>([
   {
     pButtonName: 'Renommer',
-    pButtonIcon: 'PIPencilSquare',
+    pButtonIconName: 'pencilSquare',
     pButtonActionName: 'buttonActionName',
     pButton: getButton('white', { pPlain: true }),
   },
   {
     pButtonName: 'Envoi immédiat',
-    pButtonIcon: 'PIRocket',
+    pButtonIconName: 'rocket',
     pButtonActionName: 'buttonActionName',
     pButton: getButton('white', { pPlain: true }),
   },
   {
     pButtonName: 'Filtrer',
-    pButtonIcon: 'PIFunnel',
+    pButtonIconName: 'funnel',
     pButtonActionName: 'buttonActionName',
     pButton: getButton('white', { pPlain: true }),
   },
   {
     pButtonName: 'Télécharger',
-    pButtonIcon: 'PIDownload',
+    pButtonIconName: 'download',
     pButtonActionName: 'buttonActionName',
     pButton: getButton('white'),
   },
   {
     pButtonName: 'Supprimer',
-    pButtonIcon: 'PITrash',
+    pButtonIconName: 'trash',
     pButtonActionName: 'buttonActionName',
     pButton: getButton('white'),
   },
   {
     pButtonName: 'Consulter',
-    pButtonIcon: 'PIEye',
+    pButtonIconName: 'eye',
     pButtonActionName: 'buttonActionName',
     pButton: getButton('white'),
   },
@@ -123,6 +123,7 @@ You can add buttons to the left or right side of the action bar layout by passin
 export interface PActionBarProps {
   pButtonName: string;
   pButtonIcon: string;
+  pButtonIconName: IconName;
   pButtonActionName: string;
   pButton: PButtonProps
 }
@@ -137,7 +138,7 @@ export interface ComponentDefinitionProps extends PButtonActionBarProps {
 ```javascript
 const pLeftSideIcons = ref([{
   pButtonName: 'Déposer un document',
-  pButtonIcon: 'PIUpload',
+  pButtonIconName: 'upload',
   pButtonActionName: 'buttonActionName',
   pButton: {
     pType: 'primary',
@@ -156,7 +157,8 @@ const pLeftSideIcons = ref([{
 |-------------------|---------------------|-----------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | pButtonName       | string              | The text content of the button                                                                |                                                                                                                                                                                  |
 | pType             | string              | The type of the button. Different button types are mentioned in the PButton story.    | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809)  |
-| pButtonIcon       | string              | The icon name to display. The icons' names are available in the PIcon story.            | [Figma PIcon](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D23%253A212%26mode%3Ddev) |
+| pButtonIcon       | string              | Deprecated The icon name to display. The icons' names are available in the PIcon story.            | [Figma PIcon](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D23%253A212%26mode%3Ddev) |
+| pButtonIconName   | IconName            | The icon name to display. The icons' names are available in the PIcon story.            | [Figma PIcon](https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2FhycpUsOrc1fFD7xcYY0ryN%2F%25F0%259F%25A6%2584-Librairie-de-composants%3Ftype%3Ddesign%26node-id%3D23%253A212%26mode%3Ddev) |
 | pButtonActionName | string              | The text value of the action that will be emitted                                             |                                                                                                                                                                                  |
 | pSize, pPlain, pRound, pCircle, pLoading, pDisabled | Check  PButton story | All of these properties are the PButton properties that define how the buttons will look like inside the action bar | [Figma PButton](https://www.figma.com/embed?embed_host=sastdstorybook.z28.web.core.windows.net&amp;url=https://www.figma.com/file/xcugC6MchXrgyIq6yHrjf7/Librairie?node-id=5373%3A17809)  |
 | componentType     | ComponentType   | It is used to specify which component to render, could be PButton, UploadComponent, or other       |                                                                                                                  |

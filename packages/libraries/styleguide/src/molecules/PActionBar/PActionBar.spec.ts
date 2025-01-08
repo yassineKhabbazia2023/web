@@ -16,7 +16,7 @@ type PActionBarSetup = {
 const defaultButtons: ComponentDefinitionProps[] = [
   {
     pButtonName: 'Hello',
-    pButtonIcon: 'PISearch',
+    pButtonIconName: 'search',
     pButtonActionName: 'buttonActionName',
     pButton: {
       pType: 'white',
@@ -72,7 +72,7 @@ const createWrapper = (
 const generateButtonsArray = (nbr: number): ComponentDefinitionProps[] => {
   return Array.from({ length: nbr }, () => ({
     pButtonName: 'Hello',
-    pButtonIcon: 'PISearch',
+    pButtonIconName: 'search',
     pButtonActionName: 'action',
     pButton: {
       ...defaultButtons[0].pButton,
@@ -169,7 +169,7 @@ describe('pActionBar', () => {
             },
             pButtonName: 'Hello',
             pButtonActionName: 'buttonActionName',
-            pButtonIcon: 'PISearch',
+            pButtonIconName: 'search',
             pComponentType: 'SEARCH',
           },
         ],
@@ -192,7 +192,7 @@ describe('events', () => {
       {
         pButtonName: 'Hello',
         pButtonActionName: 'Hello i am your action',
-        pButtonIcon: 'PISearch',
+        pButtonIconName: 'search',
         pButton: {
           pType: 'white',
           pSize: 'small',
@@ -226,7 +226,7 @@ describe('events', () => {
       {
         pButtonName: 'Hello',
         pButtonActionName: 'Hello i am your action',
-        pButtonIcon: 'PISearch',
+        pButtonIconName: 'search',
         pButton: {
           pType: 'white',
           pSize: 'small',
@@ -276,7 +276,7 @@ describe('events', () => {
           },
           pButtonName: 'Hello',
           pButtonActionName: 'buttonActionName',
-          pButtonIcon: 'PISearch',
+          pButtonIconName: 'search',
           pComponentType: 'UPLOAD',
         },
       ],
@@ -306,7 +306,7 @@ describe('events', () => {
           },
           pButtonName: 'Hello',
           pButtonActionName: 'buttonActionName',
-          pButtonIcon: 'PISearch',
+          pButtonIconName: 'search',
           pComponentType: 'SEARCH',
         },
       ],
@@ -334,7 +334,7 @@ describe('events', () => {
           },
           pButtonName: 'Hello',
           pButtonActionName: 'buttonActionName',
-          pButtonIcon: 'PISearch',
+          pButtonIconName: 'search',
           pComponentType: 'SEARCH',
         },
       ],
@@ -363,7 +363,7 @@ describe('events', () => {
             },
             pButtonName: 'Hello',
             pButtonActionName: 'buttonActionName',
-            pButtonIcon: 'PISearch',
+            pButtonIconName: 'search',
             pComponentType: 'SEARCH',
           },
         ],
