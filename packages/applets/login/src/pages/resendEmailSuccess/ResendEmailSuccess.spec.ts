@@ -12,10 +12,8 @@ describe('test ResendEmailSuccess', () => {
 
   describe('display', () => {
     it('should display component properly', () => {
-      const a = wrapper.find('a')
-      const expectedLink = '/login'
-
-      expect(a.attributes('href')).toBe(expectedLink)
+      const backToLoginBtn = wrapper.find('.back-to-login-button')
+      expect(backToLoginBtn.exists()).toBeTruthy()
     })
   })
 })

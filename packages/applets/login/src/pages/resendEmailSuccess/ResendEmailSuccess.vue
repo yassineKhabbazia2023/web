@@ -6,22 +6,27 @@
     <p class="msgInfo">
       {{ t('msgInfo') }}
     </p>
-    <a
-      href="/login"
-      class="link hidden-sm-and-down"
+    <PButton
+      pType="white"
+      class="back-to-login-button margin-bottom--4"
+      @click="router.push({ name: 'loginClient' })"
     >
       {{ t('returnLoginPage') }}
-    </a>
+    </PButton>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { PButton } from '@pulse/styleguide/components'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+const router = useRouter()
 </script>
 
 <style lang="scss" scoped>

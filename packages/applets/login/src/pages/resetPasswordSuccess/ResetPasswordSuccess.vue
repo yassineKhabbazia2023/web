@@ -24,7 +24,7 @@
     </p>
     <PButton
       pType="white"
-      class="back-to-login-button hidden-sm-and-down"
+      class="back-to-login-button margin-bottom--4"
       @click="router.push({ name: 'loginClient' })"
     >
       {{ t('backToLogin') }}
