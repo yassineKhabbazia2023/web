@@ -16,9 +16,6 @@
           :pName="pIconLeftName"
           class="margin-right--2"
         />
-        <PIcon v-else-if="pLeftIcon" class="margin-right--2">
-          <component :is="resolvedIconsLeft" />
-        </PIcon>
         <span
           class="
             p-folder-line-navigation-item__folder-name
@@ -41,11 +38,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import PTooltip from '../../atoms/PTooltip'
 import PIcon from '../PIcon'
 import type { PFolderLineNavigationItemProps } from './PFolderLineNavigationItemTypes'
-import { iconResolver } from '../../utils/iconResolver'
 
 const props = withDefaults(defineProps<PFolderLineNavigationItemProps>(), {
   pSelected: false,
@@ -71,10 +67,6 @@ const handleDoubleClickFolderNavigation = (pFolderId: number) => {
   isSelected.value = !isSelected.value
   emit('on-db-click-folder-navigation', pFolderId)
 }
-
-const resolvedIconsLeft = computed(() => {
-  return props.pLeftIcon ? iconResolver(props.pLeftIcon) : undefined
-})
 </script>
 
 <style lang="scss" scoped>
