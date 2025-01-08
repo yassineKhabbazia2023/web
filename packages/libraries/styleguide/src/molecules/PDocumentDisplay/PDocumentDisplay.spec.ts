@@ -69,4 +69,12 @@ describe('pDocumentDisplay', () => {
     const image = wrapper.findComponent(ElImage)
     expect(image.exists()).toBeTruthy()
   })
+
+  it('renders the error message if source is empty', () => {
+    const wrapper = createWrapper({
+      pSrc: '',
+    })
+
+    expect(wrapper.find('.preview-section_notAllowed').exists()).toBeTruthy()
+  })
 })

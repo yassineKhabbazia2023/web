@@ -28,7 +28,7 @@
         :pIsLoading="isLoadingDocument"
         :pDocumentExtension="documentExtension"
         :errorMsgTitle="t('errorTitle')"
-        :errorMsgText="t('errorMessage')"
+        :errorMsgText="previewErrorText"
       />
     </template>
     <template #content>
@@ -109,6 +109,8 @@ const fetchPreview = async () => {
   }
 }
 
+const previewErrorText = computed(() => previewImage.value ? t('errorMessageExtension') : t('errorMessageNotAvailable'))
+
 const handleNextButtonClick = () => {
   emit('next-document-preview-button-click')
 }
@@ -141,9 +143,11 @@ const handleClose = () => {
 <i18n lang="yaml">
 en-US:
   errorTitle: Aperçu indisponible
-  errorMessage: Le format de document n'est pas supporté
+  errorMessageExtension: Le format de document n'est pas supporté
+  errorMessageNotAvailable: La prévisualisation du document n'est pas disponible pour le moment
 
 fr-FR:
   errorTitle: Aperçu indisponible
-  errorMessage: Le format de document n'est pas supporté
+  errorMessageExtension: Le format de document n'est pas supporté
+  errorMessageNotAvailable: La prévisualisation du document n'est pas disponible pour le moment
 </i18n>

@@ -1,9 +1,9 @@
 <template>
   <div class="preview-section">
-    <div v-if="isImage && !isLoadingDocument" class="preview-section_image">
+    <div v-if="shouldDisplayPreview" class="preview-section_image">
       <ElImage :src="url" fit="fill" />
     </div>
-    <div v-if="!isProvidedExtensionSupported && !isLoadingDocument" class="preview-section_notAllowed">
+    <div v-if="shouldDisplayErrorMessage" class="preview-section_notAllowed">
       <div>
         <PText
           :pContent="errorMsgTitle"
@@ -41,6 +41,10 @@ import { isImageDocument, isPdfDocument } from '@pulse/core'
 import type { FileExtension } from '@pulse/core/types'
 
 const props = defineProps<PDocumentDisplayProps>()
+
+const isSourceDefined = computed(() => !!props.pSrc)
+const shouldDisplayPreview = computed(() => isSourceDefined.value && isImage.value && !isLoadingDocument.value)
+const shouldDisplayErrorMessage = computed(() => !isSourceDefined.value || (!isProvidedExtensionSupported.value && !isLoadingDocument.value))
 
 const isLoadingDocument = computed(() => props.pIsLoading)
 const isImage = computed(() => {

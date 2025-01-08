@@ -1,7 +1,7 @@
 
 import { createPinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
-import { shallowMount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
 import { documentMock } from '../../mocks/documentMock'
@@ -59,13 +59,16 @@ const createWrapper = (
     },
   })
 }
+
+const previewDocumentMock = vi.hoisted(() => vi.fn(() => {
+  return Promise.resolve({
+    data: new ArrayBuffer(1),
+    headers: { 'content-type': 'image/jpeg' },
+  })
+}))
+
 vi.mock('@ged/services/Documents', () => ({
-  previewDocument: vi.fn(() => {
-    return Promise.resolve({
-      data: new ArrayBuffer(1),
-      headers: { 'content-type': 'image/jpeg' },
-    })
-  }),
+  previewDocument: previewDocumentMock,
   downloadDocument: vi.fn(),
 }))
 
@@ -113,6 +116,27 @@ describe('documentPreview', () => {
       const pDocumentDisplay = wrapper.findComponent({ name: 'PDocumentDisplay' })
       expect(pDocumentDisplay.props('pIsLoading')).toBeTruthy()
       expect(pDocumentDisplay.props('pDocumentExtension')).toBe('pdf')
+    })
+
+    it('should show unsupported extension error message by default', async () => {
+      const document = { ...documentMock, name: 'cool_picture.jpg' }
+
+      const wrapper = createWrapper({ ...defaultProps, document })
+      await flushPromises()
+
+      const pDocumentDisplayWrapper = wrapper.findComponent(PDocumentDisplay)
+      expect(pDocumentDisplayWrapper.props('errorMsgText')).toBe('Le format de document n\'est pas supporté')
+    })
+
+    it('should show not available message if image has failed to resolve', async () => {
+      const documentWithEmptyName = { ...documentMock, name: '' }
+      previewDocumentMock.mockRejectedValueOnce({})
+
+      const wrapper = createWrapper({ ...defaultProps, document: documentWithEmptyName })
+      await flushPromises()
+      const pDocumentDisplayWrapper = wrapper.findComponent(PDocumentDisplay)
+
+      expect(pDocumentDisplayWrapper.props('errorMsgText')).toBe('La prévisualisation du document n\'est pas disponible pour le moment')
     })
   })
 
