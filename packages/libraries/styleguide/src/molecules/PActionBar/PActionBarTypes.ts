@@ -4,8 +4,7 @@ import type { IconName } from '../../types/IconName.types'
 export interface PButtonActionBarProps {
   pButton: PButtonProps
   pButtonName: string
-  pButtonIcon?: string
-  pButtonIconName?: IconName
+  pButtonIconName: IconName
   pButtonActionName: string
 }
 

@@ -26,13 +26,9 @@
             ]"
           >
             <PIcon
-              v-if="item.pButtonIconName"
               :pName="item.pButtonIconName"
               class="el-button__icon--left"
             />
-            <PIcon v-else class="el-button__icon--left">
-              <component :is="resolvedIconsLeft[index]" />
-            </PIcon>
             <p>{{ item.pButtonName }}</p>
           </PButton>
         </PUpload>
@@ -53,13 +49,9 @@
           @click="emit('p-action-bar-button-clicked', item.pButtonActionName)"
         >
           <PIcon
-            v-if="item.pButtonIconName"
             :pName="item.pButtonIconName"
             class="el-button__icon--left"
           />
-          <PIcon v-else class="el-button__icon--left">
-            <component :is="resolvedIconsLeft[index]" />
-          </PIcon>
           <p>
             {{ item.pButtonName }}
           </p>
@@ -92,16 +84,9 @@
         @click="emit('p-action-bar-button-clicked', item.pButtonActionName)"
       >
         <PIcon
-          v-if="item.pButtonIconName"
           :pName="item.pButtonIconName"
           class="el-button__icon--left"
         />
-        <PIcon
-          v-else
-          class="el-button__icon--left"
-        >
-          <component :is="resolvedIconsRight[index]" />
-        </PIcon>
         <span v-if="!isSearchExpanded" class="hidden-sm-and-down">
           {{ item.pButtonName }}
         </span>
@@ -115,7 +100,6 @@ import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
 import PExpandableSearch from '../../atoms/PExpandableSearch'
 import PUpload from '../../atoms/PUpload'
-import { iconsResolver } from '../../utils/iconResolver'
 import type { PActionBarProps } from './PActionBarTypes'
 const props = withDefaults(defineProps<PActionBarProps>(), {
   pSearchMaxLength: 255,
@@ -140,15 +124,6 @@ const truncatedLeftSideButtons = computed(() => {
   return props.pLeftSideButtons.length > 3
     ? props.pLeftSideButtons.slice(0, 3)
     : props.pLeftSideButtons
-})
-
-const resolvedIconsRight = computed(() => {
-  return iconsResolver(props.pRightSideButtons, 'pButtonIcon')
-})
-
-const resolvedIconsLeft = computed(() => {
-  const resolvedIcons = iconsResolver(props.pLeftSideButtons, 'pButtonIcon')
-  return resolvedIcons
 })
 
 const isWindowUnderDesktop = ref(window.innerWidth < 992)
