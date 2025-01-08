@@ -18,6 +18,9 @@ export const modalButtonsMove: Record<string, ModalActionsWithOrder> = {
     modalButton: getButtonAction(
       'Annuler',
       'modal-cancel-folder-action-click',
+      {
+        buttonType: 'secondary',
+      },
     ),
     order: 1,
   },
