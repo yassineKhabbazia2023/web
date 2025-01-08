@@ -71,6 +71,7 @@
           <a
             href="https://help.collaborateurs.app.rydge.fr/fr/article/mandat-parcours-et-creation"
             class="download-or-wait-mandate__alert-body--color"
+            target="_blank"
           >{{ t('help-label-link') }}
           </a>
           {{ t('help-label-suffix') }}
