@@ -174,13 +174,13 @@ watch(searchCriteria, async () => {
 
 <i18n lang="yaml">
   en-US:
-    search: "Search by the folder ID"
+    search: "Search by client code or email"
     toDeploy: 'To Deploy'
     inProgress: 'In progress'
     connected: 'Connected'
     on: 'on'
   fr-FR:
-    search: "Rechercher par l'ID de dossier"
+    search: "Rechercher par code client ou email"
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'

@@ -325,7 +325,7 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
     on: 'on'
     delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
   fr-FR:
-    search: 'Rechercher par nom de société, ID de dossier, prénom, nom et e-mail du dirigeant'
+    search: 'Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant'
     toDeploy: 'A déployer'
     inProgress: 'En cours'
     connected: 'Connecté'

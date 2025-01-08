@@ -4,6 +4,7 @@
       <div class="margin-bottom--6">
         <FormSearch
           class="max-width-500"
+          :placeholder="t('search')"
           @search-value-submitted="handleSearchValueSubmitted"
         />
       </div>
@@ -191,6 +192,8 @@ onMounted(async () => {
 <i18n lang="yaml">
 en-US:
   on: 'on'
+  search: 'Search by lastname, firstname, email, phone, role, office'
 fr-FR:
   on: 'sur'
+  search: 'Rechercher par nom, prénom, e-mail, téléphone, rôle ou bureau'
 </i18n>

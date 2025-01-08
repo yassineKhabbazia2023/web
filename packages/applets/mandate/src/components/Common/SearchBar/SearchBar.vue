@@ -43,5 +43,5 @@ const { t } = useI18n({
   en-US:
     search: 'Search'
   fr-FR:
-    search: 'Rechercher'
+    search: 'Rechercher par raison sociale, code client, n° de compte ou banque'
 </i18n>
