@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import PIcon from '../PIcon'
-import { iconResolver } from '../../utils/iconResolver'
+import { getIconComponent } from '../../utils/iconHelper'
 import type { PLoaderProps } from './PLoaderTypes'
 
 const props = withDefaults(defineProps<PLoaderProps>(), {
@@ -24,8 +24,8 @@ const props = withDefaults(defineProps<PLoaderProps>(), {
 
 const iconToLoad = computed(() => {
   return props.pType === 'gradient'
-    ? iconResolver('PILoaderGradient')
-    : iconResolver('PILoader')
+    ? getIconComponent('loaderGradient')
+    : getIconComponent('loader')
 })
 
 const iconClassNameModifier = computed(() => `p-loader__icon--type-${props.pType}`)

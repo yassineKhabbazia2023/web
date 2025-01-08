@@ -49,7 +49,6 @@
 import { computed, useSlots, ref } from 'vue'
 import { mutable } from 'element-plus/es/utils/typescript'
 import { getIconComponent } from '../../utils/iconHelper'
-import { iconResolver } from '../../utils/iconResolver'
 import { ElInput } from 'element-plus'
 import type { PInputProps } from './PInputTypes'
 

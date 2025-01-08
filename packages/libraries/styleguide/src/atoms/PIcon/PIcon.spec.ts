@@ -2,9 +2,9 @@ import { vi, describe, it, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import PIcon from '.'
 
-const iconResolverMock = vi.hoisted(() => vi.fn())
-vi.mock('../../utils/iconResolver', () => ({
-  iconResolver: iconResolverMock,
+const getIconComponentMock = vi.hoisted(() => vi.fn())
+vi.mock('../../utils/iconHelper', () => ({
+  getIconComponent: getIconComponentMock,
 }))
 
 describe('p icon', () => {
@@ -22,7 +22,7 @@ describe('p icon', () => {
         },
       },
     })
-    expect(iconResolverMock).toHaveBeenCalledOnce()
-    expect(iconResolverMock).toHaveBeenNthCalledWith(1, 'PIArrowBarLeft')
+    expect(getIconComponentMock).toHaveBeenCalledOnce()
+    expect(getIconComponentMock).toHaveBeenNthCalledWith(1, 'arrowBarLeft')
   })
 })

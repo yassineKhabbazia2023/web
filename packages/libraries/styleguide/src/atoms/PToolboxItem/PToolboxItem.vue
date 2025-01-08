@@ -34,7 +34,6 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { iconResolver } from '../../utils/iconResolver'
 import PTooltip from '../../atoms/PTooltip'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
 import PIcon from '../../atoms/PIcon'

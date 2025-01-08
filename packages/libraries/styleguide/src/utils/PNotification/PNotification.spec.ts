@@ -1,9 +1,9 @@
 import { vi, describe, it, expect } from 'vitest'
 import { PNotification } from './PNotification'
 
-const iconResolverMock = vi.hoisted(() => vi.fn())
-vi.mock('../../utils/iconResolver', () => ({
-  iconResolver: iconResolverMock,
+const getIconComponentMock = vi.hoisted(() => vi.fn())
+vi.mock('../../utils/iconHelper', () => ({
+  getIconComponent: getIconComponentMock,
 }))
 
 const ElNotificationMock = vi.hoisted(() => vi.fn())
@@ -21,7 +21,7 @@ describe('test PNotification', () => {
       icon: mockedIconComponent,
     }
 
-    iconResolverMock.mockReturnValue(mockedIconComponent)
+    getIconComponentMock.mockReturnValue(mockedIconComponent)
     ElNotificationMock.mockReturnValue(mockedNotification)
 
     const notification = PNotification({

@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import { computed, watch } from 'vue'
-import { iconResolver } from '../../utils/iconResolver'
+import { getIconComponent } from '../../utils/iconHelper'
 import { getFileExtension } from '@pulse/core'
 import PCheckbox from '../../atoms/PCheckbox'
 import PIcon from '../../atoms/PIcon'
@@ -98,10 +98,10 @@ const isCheckboxDisplayed = computed(() => isDefaultState.value)
 const fileIconComponent = computed(() => {
   switch (getFileExtension(props.pFileName)) {
   case 'pdf':
-    return iconResolver('PIFiletypePdf')
+    return getIconComponent('filetypePdf')
 
   default:
-    return iconResolver('PIFileText')
+    return getIconComponent('fileText')
   }
 })
 </script>

@@ -51,7 +51,6 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
-import { iconResolver } from '../../utils/iconResolver'
 import PButton from '../../atoms/PButton'
 import PLoader from '../../atoms/PLoader'
 import PTooltip from '../../atoms/PTooltip'

@@ -25,7 +25,6 @@
 </template>
 
 <script setup lang="ts">
-import { iconResolver } from '../../utils/iconResolver'
 import { ElSubMenu } from 'element-plus'
 import { PICaretDown, PICaretUp } from '../../atoms/PIcon/components'
 import type { PSubMenuProps } from './PSubMenuTypes'

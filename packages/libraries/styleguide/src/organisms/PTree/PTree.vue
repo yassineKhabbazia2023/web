@@ -20,9 +20,9 @@
 <script setup lang="ts">
 import { ElTree } from 'element-plus'
 import type { PTreeProps } from './PTreeTypes'
-import { iconResolver } from '../../utils/iconResolver'
+import { getIconComponent } from '../../utils/iconHelper'
 
-const treeLineIcon = iconResolver('PICaretRightFill')
+const treeLineIcon = getIconComponent('caretRightFill')
 
 withDefaults(defineProps<PTreeProps>(), {
   pCurrentNodeKey: undefined,
