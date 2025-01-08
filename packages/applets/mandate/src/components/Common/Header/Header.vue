@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="header">
-      <div class="header__title margin-bottom--2">
+    <div class="header flex-row-gap--2">
+      <div class="header__title">
         {{ t('bank-mandates') }}
       </div>
       <PFilterGroupNumber
