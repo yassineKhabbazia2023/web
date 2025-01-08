@@ -56,16 +56,10 @@ import type { PInputProps } from './PInputTypes'
 const slots = useSlots()
 
 const prefixIcon = computed(() => {
-  if (props.pPrefixIcon) {
-    return iconResolver(props.pPrefixIcon)
-  }
   return props.pPrefixIconName ? getIconComponent(props.pPrefixIconName) : undefined
 })
 
 const suffixIcon = computed(() => {
-  if (props.pSuffixIcon) {
-    return iconResolver(props.pSuffixIcon)
-  }
   return props.pSuffixIconName ? getIconComponent(props.pSuffixIconName) : undefined
 })
 
@@ -81,8 +75,6 @@ const props = withDefaults(defineProps<PInputProps>(), {
   pShowPassword: false,
   pDisabled: false,
   pSize: undefined,
-  pPrefixIcon: undefined,
-  pSuffixIcon: undefined,
   pRows: 2,
   pAutosize: false,
   pAutocomplete: 'off',

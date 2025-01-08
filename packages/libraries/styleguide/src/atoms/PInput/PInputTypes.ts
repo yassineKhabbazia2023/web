@@ -13,8 +13,6 @@ export interface PInputProps {
   pShowPassword?: boolean
   pDisabled?: boolean
   pSize?: 'large' | 'default' | 'small'
-  pPrefixIcon?: string | Component
-  pSuffixIcon?: string | Component
   pPrefixIconName?: IconName
   pSuffixIconName?: IconName
   pRows?: number
