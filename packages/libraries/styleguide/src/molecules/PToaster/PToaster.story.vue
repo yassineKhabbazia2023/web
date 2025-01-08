@@ -29,39 +29,39 @@
 <script setup lang="ts">
 import PButton from '../../atoms/PButton'
 import { PICheck, PIExclamationTriangle, PILoader } from '../../atoms/PIcon/components'
-import { ElNotification } from 'element-plus'
+import { PNotification } from '../../utils/PNotification/PNotification'
 
 const openSuccess = () => {
-  ElNotification({
+  PNotification({
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: PICheck,
+    iconName: 'check',
     showClose: false,
     customClass: 'success',
   })
 }
 
 const openLoading = () => {
-  ElNotification({
+  PNotification({
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: PILoader,
+    iconName: 'loader',
     showClose: false,
     customClass: 'loading',
   })
 }
 
 const openError = () => {
-  ElNotification({
+  PNotification({
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: PIExclamationTriangle,
+    iconName: 'exclamationTriangle',
     customClass: 'error',
     showClose: false,
   })
 }
 
 const openWithClose = () => {
-  ElNotification({
+  PNotification({
     message: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    icon: PICheck,
+    iconName: 'check',
     showClose: true,
     customClass: 'success',
     duration: 0,
@@ -78,7 +78,7 @@ const openWithClose = () => {
 | message                  | description text                                                    | string \| VNode      |
 | dangerouslyUseHTMLString | whether message is treated as HTML string                           | boolean              |
 | type                     | notification type                                                   | enum                 |
-| icon                     | custom icon component.It will be overridden by type                 | string \| Component  |
+| iconName                 | custom icon component name. It will be overridden by type           | string \| Component  |
 | customClass              | custom class name for Notification (success, error, loading)        | string               |
 | duration                 | duration before close. It will not automatically close if set 0     | number               |
 | position                 | custom position                                                     | enum                 |
