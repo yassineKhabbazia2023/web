@@ -80,7 +80,7 @@ describe('foldersList', () => {
       const lines = wrapper.findAllComponents(PFolderLineNavigationItem)
       expect(lines).toHaveLength(1)
       expect(lines[0].props('pHasArrow')).toBeTruthy()
-      expect(lines[0].props('pLeftIcon')).toBe('PIFolder')
+      expect(lines[0].props('pIconLeftName')).toBe('folder')
       expect(lines[0].props('pDisabled')).toBeFalsy()
 
       const img = wrapper.findComponent(PImage)

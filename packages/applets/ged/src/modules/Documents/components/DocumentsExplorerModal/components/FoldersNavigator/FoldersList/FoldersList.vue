@@ -22,7 +22,7 @@
       :pFolderName="folder.name"
       :pFolderId="folder.id"
       :pHasArrow="folder.children.length !== 0"
-      :pLeftIcon="getIconMapping(folder.iconName)"
+      :pIconLeftName="getIconMapping(folder.iconName)"
       :pDisabled="isFolderLineDisabled(folder.id)"
       :pSelected="false"
       :pTooltipContent="getTooltipContent(folder.id)"
@@ -68,6 +68,7 @@ import type { FoldersListProps } from './FoldersListTypes'
 import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import type { Folder } from '@ged/models/Folder'
 import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
+import { type IconName } from '@pulse/styleguide/types'
 
 const props = defineProps<FoldersListProps>()
 const emit = defineEmits([
@@ -81,20 +82,20 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const getIconMapping = (iconName: string | undefined) => {
+const getIconMapping = (iconName: string | undefined): IconName => {
   switch (iconName) {
   case 'accountingRoot':
-    return 'PICalculatorEuro'
+    return 'calculatorEuro'
   case 'socialRoot':
-    return 'PIPersonVcard'
+    return 'personVcard'
   case 'deposit':
-    return 'PIInbox'
+    return 'inbox'
   case 'reservedKpmg':
-    return 'PIKpmg'
+    return 'kpmg'
   case 'binIcon':
-    return 'PITrash'
+    return 'trash'
   default:
-    return 'PIFolder'
+    return 'folder'
   }
 }
 
