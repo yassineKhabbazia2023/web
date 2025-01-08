@@ -9,9 +9,9 @@
   >
     <slot />
 
-    <template v-if="!!slots['label'] || hasIconComponent" #label>
+    <template v-if="!!slots['label'] || pIconName" #label>
       <PTooltip
-        v-if="hasIconComponent && pTooltip"
+        v-if="pIconName && pTooltip"
         v-bind="pTooltip"
       >
         <PIcon
@@ -21,13 +21,6 @@
           size="14px"
           :pName="pIconName"
         />
-        <PIcon
-          class="p-tab-pane__icon"
-          data-testid="tooltip-icon"
-          size="14px"
-        >
-          <component :is="iconComponent" />
-        </PIcon>
       </PTooltip>
       <PIcon
         v-else-if="pIconName"
@@ -35,13 +28,6 @@
         size="14px"
         :pName="pIconName"
       />
-      <PIcon
-        v-else-if="iconComponent"
-        class="p-tab-pane__icon"
-        size="14px"
-      >
-        <component :is="iconComponent" />
-      </PIcon>
       <slot v-else name="label" />
     </template>
   </ElTabPane>
@@ -62,14 +48,5 @@ const props = withDefaults(defineProps<PTabPaneProps>(), {
   pName: undefined,
   pClosable: false,
   pLazy: false,
-})
-const hasIconComponent = computed(() => props.pTabIcon || props.pIconName)
-const iconComponent = computed(() => {
-  if (!props.pTabIcon) {
-    return undefined
-  }
-  return typeof props.pTabIcon === 'string'
-    ? iconResolver(props.pTabIcon)
-    : props.pTabIcon
 })
 </script>

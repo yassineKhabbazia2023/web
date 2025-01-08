@@ -8,7 +8,6 @@ export interface PTabPaneProps {
   pName?: string | number
   pClosable?: boolean
   pLazy?: boolean
-  pTabIcon?: Component | string // don't use this deprecated props
   pIconName?: IconName
   pTooltip?: PTooltipProps
 }
