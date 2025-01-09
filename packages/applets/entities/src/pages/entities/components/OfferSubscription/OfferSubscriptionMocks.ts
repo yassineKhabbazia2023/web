@@ -141,7 +141,7 @@ export function getMockedSubscriptionOffersServices() {
     {
       offerId: 4,
       offerName: 'Externalisation de la paie',
-      offerLabel: 'Gestion de la paie par KPMG, pour le clients, sur Silae',
+      offerLabel: 'Gestion de la paie par RYDGE, pour le clients, sur Silae',
       offerPrice: 0,
       offerCode: 'Silae Externalisation',
       offerPriceType: SubscriptionPriceType.free,

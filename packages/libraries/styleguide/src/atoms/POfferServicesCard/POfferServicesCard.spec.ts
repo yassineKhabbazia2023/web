@@ -9,7 +9,7 @@ let wrapper: VueWrapper<any>
 const offerTitle: string = 'RYDGE platform services'
 
 const defaultProps: POfferServicesCardProps = {
-  pLogo: 'iconpulse-color',
+  pLogo: 'brand-color',
   pTitle: offerTitle,
   pServices: [
     {

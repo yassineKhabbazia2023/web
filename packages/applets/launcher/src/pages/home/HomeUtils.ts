@@ -10,7 +10,7 @@ export function getLaunchCards(downloadSilaeLabel: string, authorizedKeys: Launc
       title: 'Mon outil de gestion',
       subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
       imageType: 'logos',
-      imageName: 'iconpulse-color',
+      imageName: 'brand-color',
       actionLabel: 'Se connecter à l\'outil de gestion',
       actionUrl: VITE_GESTION_MEG,
       downloadLabel: '',

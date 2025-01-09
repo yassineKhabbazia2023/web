@@ -128,7 +128,7 @@ describe('test Home', () => {
         actionLabel: 'Se connecter à l\'outil de gestion',
         actionUrl: mockedEnvVars.VITE_GESTION_MEG,
         downloadLabel: '',
-        imageName: 'iconpulse-color',
+        imageName: 'brand-color',
         imageType: 'logos',
         subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
         title: 'Mon outil de gestion',

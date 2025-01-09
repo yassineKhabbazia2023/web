@@ -44,7 +44,7 @@ const offerCardData: POfferCardProps[] = reactive([
     disabled: false,
   },
   {
-    pLogo: 'iconpulse-color',
+    pLogo: 'brand-color',
     pTitle: 'Ma Banque',
     pDescription: 'Visualisation des données bancaires',
     pSelected: true,

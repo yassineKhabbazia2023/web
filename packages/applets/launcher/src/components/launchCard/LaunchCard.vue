@@ -101,6 +101,7 @@ const sanitizedActionUrl = computed(() => {
 
   &__image {
     height: 6rem;
+    max-width: 100px;
   }
 }
 </style>
