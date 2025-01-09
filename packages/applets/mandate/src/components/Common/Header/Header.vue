@@ -1,15 +1,25 @@
 <template>
   <div>
     <div class="header flex-row-gap--2">
-      <div class="header__title">
-        {{ t('bank-mandates') }}
+      <div>
+        <div
+          class="
+            margin-bottom--2
+            font-semibold
+            font-small
+            text-color--neutral-gray-500
+          "
+          data-testid="mandate-header-title"
+        >
+          {{ t('bank-mandates') }}
+        </div>
+        <PFilterGroupNumber
+          v-model="activeFilters"
+          class="flex--grow-1"
+          :pFilters="filters"
+          @update:model-value="onClickFilter($event)"
+        />
       </div>
-      <PFilterGroupNumber
-        v-model="activeFilters"
-        class="flex--grow-1"
-        :pFilters="filters"
-        @update:model-value="onClickFilter($event)"
-      />
       <PButton
         class="header__create-mandate-button font-semibold"
         pType="primary"
@@ -127,13 +137,6 @@ const filters: FilterOption<number>[] = [
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-
-  &__title {
-    color: var(--el-color-neutral-gray-800);
-    font-size: 1.2rem;
-    flex-basis: 100%;
-    margin-top: 9px;
-  }
 
   &__create-mandate-button {
     font-style: normal;

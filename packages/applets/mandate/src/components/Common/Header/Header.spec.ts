@@ -27,7 +27,7 @@ function getDrawerOpenButton(wrapper: VueWrapper) {
 describe('header.vue', () => {
   const wrapper = createWrapper()
   it('renders translations correctly', () => {
-    expect(wrapper.find('.header__title').text()).toBe('Collection Status')
+    expect(wrapper.find('[data-testid="mandate-header-title"]').text()).toBe('Collection Status')
     expect(wrapper.find('.header__create-mandate-button').text()).toContain('New mandate')
   })
 
