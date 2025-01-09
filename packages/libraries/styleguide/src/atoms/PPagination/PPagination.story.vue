@@ -8,7 +8,7 @@
         pPageSizeSelectorGroupLabel="Some text"
         pPageSizeSelectorSuffix="documents"
         pShowTotalPageCounter
-        :pTotal="1000"
+        :pTotal="2000000"
       >
         <p>1-25 sur 157</p>
       </PPagination>
