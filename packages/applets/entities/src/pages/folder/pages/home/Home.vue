@@ -40,7 +40,19 @@
               :pLg="12"
               :pMd="20"
             >
-              <p>{{ t('introductionText') }}</p>
+              <i18n-t
+                keypath="introductionText"
+                tag="p"
+              >
+                <template #aboutUrl>
+                  <a
+                    class="text-underline"
+                    :href="ABOUT_URL"
+                  >
+                    {{ t('about') }}
+                  </a>
+                </template>
+              </i18n-t>
             </PCol>
           </PRow>
 
@@ -294,9 +306,10 @@ import { AppColors } from '@pulse/styleguide'
 import { commonStore } from '@pulse/common'
 import EntityHeader from '@entities/common/components/EntityHeader'
 import {
-  OFFICIAL_WEBSITE_URL,
-  HOST_NAME,
+  ABOUT_URL,
+  APP_URL,
   CLIENT_HELP_URL,
+  HOST_NAME,
   MOBILE_APPLICATION_DOCUMENTATION_URL } from '@pulse/core'
 const { t } = useI18n({
   inheritLocale: true,
@@ -305,7 +318,7 @@ const { t } = useI18n({
 
 const { defaultEntity } = storeToRefs(commonStore())
 
-const loginUrl = `${OFFICIAL_WEBSITE_URL}/login`
+const loginUrl = `${APP_URL}login`
 const loginDisplayUrl = `${HOST_NAME}/login`
 
 </script>
@@ -355,7 +368,8 @@ const loginDisplayUrl = `${HOST_NAME}/login`
     entityWelcomeTitle: 'A compter du 13 janvier 2025, KPMG Pulse devient'
     brandName: 'RYDGE Conseil'
     welcome: 'Bienvenu sur votre nouvelle interface'
-    introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page A propos'
+    introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page {aboutUrl}'
+    about: 'à propos'
     secondSection:
       title: 'Ce que cela change pour vous :'
       listItems:
@@ -380,7 +394,8 @@ const loginDisplayUrl = `${HOST_NAME}/login`
     entityWelcomeTitle: 'A compter du 13 janvier 2025, KPMG Pulse devient'
     brandName: 'RYDGE Conseil'
     welcome: 'Bienvenu sur votre nouvelle interface'
-    introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page A propos'
+    introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page {aboutUrl}'
+    about: 'à propos'
     secondSection:
       title: 'Ce que cela change pour vous :'
       listItems:
