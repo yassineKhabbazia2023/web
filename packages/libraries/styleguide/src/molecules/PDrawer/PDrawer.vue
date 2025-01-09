@@ -40,7 +40,7 @@
             >
               <PIcon pName="arrowLeft" />
             </PButton>
-            <h3 v-if="pTitle && pTitle.length > 0" class="p-drawer__title">
+            <h3 v-if="pTitle && pTitle.length > 0" class="p-drawer__title white-space--wrap">
               <PIcon
                 pName="pulse"
                 :pColor="AppColors.PRIMARY"
