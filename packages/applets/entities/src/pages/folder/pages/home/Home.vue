@@ -20,7 +20,12 @@
           "
         >
           <PRow :pGutter="0">
-            <PCol :pSpan="12">
+            <PCol
+              :pSpan="12"
+              :pXs="24"
+              :pSm="24"
+              :pLg="12"
+            >
               <h1 class="home-folder__title font-semibold">
                 {{ t('entityWelcomeTitle') }}
                 <span class="text-color--base-persian">{{ t('brandName') }}</span>
@@ -48,6 +53,7 @@
                   <a
                     class="text-underline"
                     :href="ABOUT_URL"
+                    target="_blank"
                   >
                     {{ t('about') }}
                   </a>
@@ -79,6 +85,7 @@
                       <a
                         class="text-color--base-persian text-underline"
                         :href="loginUrl"
+                        target="_blank"
                       >
                         {{ loginDisplayUrl }}
                       </a>
@@ -394,7 +401,7 @@ const loginDisplayUrl = `${HOST_NAME}/login`
     entityWelcomeTitle: 'A compter du 13 janvier 2025, KPMG Pulse devient'
     brandName: 'RYDGE Conseil'
     welcome: 'Bienvenu sur votre nouvelle interface'
-    introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page {aboutUrl}'
+    introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page {aboutUrl}.'
     about: 'à propos'
     secondSection:
       title: 'Ce que cela change pour vous :'
