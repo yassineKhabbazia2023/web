@@ -16,6 +16,23 @@ $date-editor: (
   'datetimerange-width': 400px,
 );
 
+
+div.el-range-editor {
+  border-bottom: 2px solid var(--el-color-persian-200);
+  &:hover {
+    box-shadow: none;
+    border-bottom: 2px solid var(--el-color-base-persian)
+  }
+  &.is-active {
+    &:hover {
+      box-shadow: none;
+    }
+    box-shadow: none;
+    border-bottom: 2px solid var(--el-color-persian-900);
+  }
+}
+
+
 table.el-date-table,
 table.el-month-table,
 table.el-year-table {
