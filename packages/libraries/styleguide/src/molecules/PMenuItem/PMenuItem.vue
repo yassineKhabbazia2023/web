@@ -11,9 +11,6 @@
         :pName="pIconLeftName"
         class="p-menu-item__left-icon"
       />
-      <PIcon v-else-if="pLeftIcon" class="p-menu-item__left-icon">
-        <component :is="iconResolver(pLeftIcon)" />
-      </PIcon>
       <span class="p-menu-item__title margin-left--2">
         <slot name="title" />
       </span>
@@ -22,9 +19,6 @@
         :pName="pIconRightName"
         class="p-menu-item__right-icon"
       />
-      <PIcon v-if="pRightIcon" class="p-menu-item__right-icon">
-        <component :is="iconResolver(pRightIcon)" />
-      </PIcon>
     </template>
     <slot />
   </ElMenuItem>

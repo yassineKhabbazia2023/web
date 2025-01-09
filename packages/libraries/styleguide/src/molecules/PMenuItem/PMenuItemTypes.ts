@@ -6,8 +6,6 @@ export interface PMenuItemProps {
   pIndex?: string | undefined
   pRoute?: RouteLocationRaw
   pDisabled?: boolean
-  pLeftIcon?: Component | string
-  pRightIcon?: Component | string
   pIconLeftName?: IconName
   pIconRightName?: IconName
 }
