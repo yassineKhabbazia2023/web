@@ -196,7 +196,7 @@ onMounted(async () => {
     submit: 'Valider'
     statusInvite: 'Invité'
     statusConnect: 'Connecté'
-    statusDeclared: 'Declaré'
+    statusDeclared: 'Déclaré'
     clientCompany: 'Société cliente'
     selectClientUsers: 'Sélectionnez des utilisateurs clients'
     resendTheActivationEmail: "Relancer le mail d'activation"
