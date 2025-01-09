@@ -112,7 +112,7 @@ router.beforeEach(async (to: any, _from) => {
 async function entityClientOrHomeRedirections(store: Store, to: any, isCollab: boolean) {
   const entities = await fetchEntities()
   if (to.name === 'home') {
-    if (!isCollab && entities.totalItems > 1) {
+    if (!isCollab && entities.totalItems >= 1) {
       return { name: 'entity-client' }
     } else if (isCollab) {
       return { name: 'wallet' }

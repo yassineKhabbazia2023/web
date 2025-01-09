@@ -125,7 +125,7 @@ describe('app with navigation guard', () => {
     await vi.dynamicImportSettled()
 
     const pageTitle = getPageTitle(wrapper)
-    expect(pageTitle).toBe(PAGES_TITLE.HOME)
+    expect(pageTitle).toBe(PAGES_TITLE.FOLDER)
 
     expect(wrapper.find('.common-layout').exists()).toBeTruthy()
     expect(wrapper.find('.header-container').exists()).toBeTruthy()
