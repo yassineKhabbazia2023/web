@@ -12,8 +12,9 @@
     >
       <PLoader pType="primary" pSize="50" />
     </div>
+    <!--I used v-show instead of v-if to preserve the imported file when the spinner is displayed-->
     <PForm
-      v-else
+      v-show="!isUploading && !isUploaded"
       pRequireAsteriskPosition="right"
       pLabelPosition="top"
     >
@@ -55,7 +56,7 @@
           pType="primary"
           pSize="default"
           class="margin-left--4"
-          :pDisabled="isValidationButtonDisabled"
+          :pDisabled="isReportFormIncomplete || isReportSubmissionDisabled"
           data-testid="powerbi-validation-button"
           @click="handleUploadBIReport"
         >
@@ -77,12 +78,12 @@ import {
   PRow,
   PLoader,
 } from '@pulse/styleguide/components'
-import { PNotification } from '@pulse/styleguide'
 import UploadBIReport from './components/UploadBIReport'
 import BIReportSubmitted from './components/BIReportSubmitted'
 import BIReportInformation from './components/BIReportInformation'
 import { fetchBIReportTypes, uploadBIreport } from '@entities/services/reporting'
 import type { ReportInfo } from './SubmitBIReportTypes'
+import { displayNotification } from '@entities/common/utils'
 import type { ReportType } from '@entities/pages/power-bi/pages/bi-reports/BIReportsTypes'
 
 const { t } = useI18n({
@@ -98,6 +99,7 @@ const uploadBIReport = ref()
 const reportFile = ref<File>()
 const reportTypes = ref<ReportType[]>([])
 const reportUploadInfo = ref<ReportInfo>({})
+const isReportSubmissionDisabled = ref(false)
 
 const reportTypesDropdownValues = computed(() =>
   reportTypes.value.map((reportType: ReportType) => ({
@@ -105,7 +107,7 @@ const reportTypesDropdownValues = computed(() =>
     pLabel: `${reportType.collaboratorLabel} (${reportType.customerLabel})`,
   })),
 )
-const isValidationButtonDisabled = computed(() => {
+const isReportFormIncomplete = computed(() => {
   const { accountId, reportTypeId, reportLabel } = reportUploadInfo.value
 
   return !reportFile.value || !accountId || !reportTypeId || !reportLabel
@@ -142,14 +144,12 @@ const handleUploadBIReport = async () => {
       isUploaded.value = true
     }
   } catch (error) {
-    handleResetUploadInfo()
-    PNotification({
-      message: t('reportUploadFailed'),
-      iconName: 'x',
-      showClose: true,
-      customClass: 'error',
-      position: 'bottom-right',
-    })
+    isReportSubmissionDisabled.value = true
+    displayNotification('error', t('reportUploadFailed'))
+    //I've added a setTimeout to prevent bombarding the API by validating multiple times in quick succession
+    setTimeout(() => {
+      isReportSubmissionDisabled.value = false
+    }, 2000)
     logger.error('Unable to upload BI report: ', error)
   } finally {
     isUploading.value = false
@@ -171,11 +171,9 @@ onMounted(async () => {
 en-US:
   reset: 'Reset'
   validate: 'Validate the deposit'
-  reportUploadFailed: >
-    A problem occurred when submitting your report. Please try again or contact the support
+  reportUploadFailed: 'A problem occurred when submitting your report. Please try again or contact the support'
 fr-FR:
   reset: 'Réinitialiser'
   validate: 'Valider le depôt'
-  reportUploadFailed: >
-    Un problème est survenu lors du dépôt de votre rapport. Veuillez réessayer ou contacter le support
+  reportUploadFailed: 'Un problème est survenu lors du dépôt de votre rapport. Veuillez réessayer ou contacter le support'
 </i18n>

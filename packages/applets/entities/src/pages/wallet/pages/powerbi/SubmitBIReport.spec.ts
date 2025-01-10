@@ -1,6 +1,7 @@
 import { it, describe, vi, expect, beforeEach, type MockInstance } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import * as ReportService from '@entities/services/reporting'
+import * as helpers from '@entities/common/utils'
 import {
   getMockedBIReportTypes,
   getMockedReportUploadInfo,
@@ -35,6 +36,7 @@ const createWrapper = () => mount(SubmitBIReport)
 describe('submitBIReport', () => {
   let wrapper: VueWrapper<any>
   beforeEach(() => {
+    vi.useFakeTimers()
     wrapper = createWrapper()
   })
   describe('display', () => {
@@ -108,7 +110,7 @@ describe('submitBIReport', () => {
       )
       const uploadBIReport = wrapper.findComponent({ name: 'UploadBIReport' })
       uploadBIReport.vm.$emit('upload-report', mockedPowerBIReport)
-      wrapper.vm.isValidationButtonDisabled = false
+      wrapper.vm.isReportFormIncomplete = false
       await nextTick()
       const validationButton = wrapper.findComponent(
         '[data-testid=powerbi-validation-button]',
@@ -147,7 +149,7 @@ describe('submitBIReport', () => {
       )
       const uploadBIReport = wrapper.findComponent({ name: 'UploadBIReport' })
       uploadBIReport.vm.$emit('upload-report', mockedPowerBIReport)
-      wrapper.vm.isValidationButtonDisabled = false
+      wrapper.vm.isReportFormIncomplete = true
       await nextTick()
 
       const validationButton = wrapper.findComponent(
@@ -160,6 +162,41 @@ describe('submitBIReport', () => {
       expect(loggerErrorSpy).toHaveBeenCalledWith(
         'Unable to upload BI report: ',
         expectedErrorMessage,
+      )
+    })
+    it('should display an error notification when the upload of a new report fails', async () => {
+      const expectedErrorMessage = 'API Error: 503 Service Unavailable'
+      vi.spyOn(ReportService, 'uploadBIreport').mockRejectedValue(
+        expectedErrorMessage,
+      )
+      const displayNotificationSpy = vi.spyOn(helpers, 'displayNotification')
+      wrapper = createWrapper()
+      await flushPromises()
+      const biReportInformation = wrapper.findComponent({
+        name: 'BIReportInformation',
+      })
+      biReportInformation.vm.$emit(
+        'update:reportUploadInfo',
+        mockedReportUploadInfo,
+      )
+      const uploadBIReport = wrapper.findComponent({ name: 'UploadBIReport' })
+      uploadBIReport.vm.$emit('upload-report', mockedPowerBIReport)
+      wrapper.vm.isReportFormIncomplete = true
+      await nextTick()
+
+      const validationButton = wrapper.findComponent(
+        '[data-testid=powerbi-validation-button]',
+      ) as VueWrapper
+      await validationButton.trigger('click')
+      await flushPromises()
+
+      expect(wrapper.vm.isReportSubmissionDisabled).toBeTruthy()
+      vi.advanceTimersByTime(2000) // 2 seconds
+      expect(wrapper.vm.isReportSubmissionDisabled).toBeFalsy()
+      expect(displayNotificationSpy).toHaveBeenCalledOnce()
+      expect(displayNotificationSpy).toHaveBeenCalledWith(
+        'error',
+        'A problem occurred when submitting your report. Please try again or contact the support',
       )
     })
     it('should invoke the reporting API to fetch report types', async () => {
