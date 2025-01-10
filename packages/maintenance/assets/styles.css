@@ -132,6 +132,10 @@ a:hover {
   font-size: 4.6rem;
 }
 
+.maintenance-page__title span {
+  color: #1AAB8E;
+}
+
 @media only screen and (width < 768px) {
   .maintenance-page__title {
     font-size: 4.0rem;
@@ -140,7 +144,7 @@ a:hover {
 
 @media only screen and (width < 480px) {
   .maintenance-page__title {
-    font-size: 3.2rem;
+    font-size: 3.1rem;
   }
 }
 
