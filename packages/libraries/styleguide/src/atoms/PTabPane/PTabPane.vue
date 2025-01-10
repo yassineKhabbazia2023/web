@@ -35,8 +35,7 @@
 
 <script lang="ts" setup>
 import { ElTabPane } from 'element-plus'
-import { useSlots, computed } from 'vue'
-import { iconResolver } from '../../utils/iconResolver'
+import { useSlots } from 'vue'
 import PTooltip from '../../atoms/PTooltip'
 import PIcon from '../../atoms/PIcon'
 import type { PTabPaneProps } from './PTabPaneTypes'
