@@ -26,12 +26,17 @@ const createWrapper = (defaultProps = props, hasSlots = false) => {
         PTag: {
           name: 'PTag',
           template: '<div>{{ pContent }}</div>',
-          props: ['pContent'],
+          props: ['pContent', 'pIconLeftName'],
         },
         PTooltip: {
           name: 'PTooltip',
           template: '<div><slot /></div>',
           props: ['pContent', 'disabled'],
+        },
+        PIcon: {
+          name: 'PIcon',
+          template: '<div><slot /></div>',
+          props: ['pName'],
         },
       },
     },
@@ -55,7 +60,9 @@ describe('pHistoryCard', () => {
       expect(wrapper.find('[data-testid="history-card-type"]').text()).toContain('Délégation')
       const entity = wrapper.find('[data-testid="history-card-entity"]')
       expect(entity.text()).toContain('Entity')
-      expect(entity.findComponent({ name: 'PIShop' as string })).toBeTruthy()
+      const pTag = entity.findComponent({ name: 'PTag' })
+      expect(pTag.exists()).toBeTruthy()
+      expect(pTag.props('pIconLeftName')).toBe('shop')
     })
     it('should display Tooltip content if content is set', async () => {
       const pTooltipEntityContent = 'Test'
