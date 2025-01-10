@@ -29,20 +29,26 @@ describe('pFileAndFolderLineCheck', () => {
         pState: 'loading',
         expectedClassBinding: `${componenRootCSSClass}--loading`,
         expectedComponentToExistSelector: `.${componenRootCSSClass}__loader`,
+        expectedIconCount: 1,
+        expectedIconName: 'filetypePdf',
       },
       {
         pState: 'error',
         expectedClassBinding: `${componenRootCSSClass}--error`,
         expectedComponentToExistSelector: `.${componenRootCSSClass}__icon`,
+        expectedIconCount: 2,
+        expectedIconName: 'exclamationTriangle',
       },
       {
         pState: 'success',
         expectedClassBinding: `${componenRootCSSClass}--success`,
         expectedComponentToExistSelector: `.${componenRootCSSClass}__icon`,
+        expectedIconCount: 2,
+        expectedIconName: 'checkCircle',
       },
     ])(
       'should always bind class based on current state $pState',
-      ({ pState, expectedClassBinding, expectedComponentToExistSelector }) => {
+      ({ pState, expectedClassBinding, expectedComponentToExistSelector, expectedIconCount, expectedIconName }) => {
         const wrapper = createWrapper({
           ...defaultProps,
           pState: pState as PFileAndFolderLineCheckState,
@@ -50,6 +56,11 @@ describe('pFileAndFolderLineCheck', () => {
         expect(wrapper.classes()).toContain(expectedClassBinding)
         const elToExist = wrapper.find(expectedComponentToExistSelector)
         expect(elToExist.exists()).toBeTruthy()
+
+        const pIcons = wrapper.findAllComponents({ name: 'PIcon' })
+        const pIcon = pIcons.at(0)
+        expect(pIcons).toHaveLength(expectedIconCount)
+        expect(pIcon?.props('pName')).toBe(expectedIconName)
       },
     )
   })
@@ -79,6 +90,10 @@ describe('pFileAndFolderLineCheck', () => {
 
       expect(wrapper.vm.modelValue).toBeTruthy()
       expect(wrapper.classes()).toContain(`${componenRootCSSClass}--selected`)
+
+      const pIcon = wrapper.findComponent({ name: 'PIcon' })
+      expect(pIcon.exists()).toBeTruthy()
+      expect(pIcon.props('pName')).toBe('fileText')
     })
   })
 })

@@ -16,22 +16,20 @@
       pSize="14"
     />
     <PIcon
-      v-if="!isDefaultState && !isLoadingState"
+      v-if="stateIconName !== undefined"
       size="14"
       class="p-file-and-folder-line-check__icon"
-    >
-      <PICheckCircle
-        v-if="isSuccessState"
-        class="p-file-and-folder-line-check__icon--success"
-      />
-      <PIExclamationTriangle
-        v-else-if="isErrorState"
-        class="p-file-and-folder-line-check__icon--error"
-      />
-    </PIcon>
-    <PIcon size="16" class="p-file-and-folder-line-check__file-icon">
-      <component :is="fileIconComponent" />
-    </PIcon>
+      :class="{
+        'p-file-and-folder-line-check__icon--success': isSuccessState,
+        'p-file-and-folder-line-check__icon--error': isErrorState,
+      }"
+      :pName="stateIconName"
+    />
+    <PIcon
+      size="16"
+      class="p-file-and-folder-line-check__file-icon"
+      :pName="fileExtensionIconName"
+    />
     <div class="p-file-and-folder-line-check__details">
       <div class="ellipsed-text">
         {{ pFileName }}
@@ -48,13 +46,12 @@
 
 <script setup lang="ts">
 import { computed, watch } from 'vue'
-import { getIconComponent } from '../../utils/iconHelper'
 import { getFileExtension } from '@pulse/core'
 import PCheckbox from '../../atoms/PCheckbox'
 import PIcon from '../../atoms/PIcon'
 import PLoader from '../../atoms/PLoader'
 import type { PFileAndFolderLineCheckProps } from './PFileAndFolderLineCheckTypes'
-import { PICheckCircle, PIExclamationTriangle } from '../../atoms/PIcon/components'
+import type { IconName } from '../../types/IconName.types'
 
 const props = withDefaults(defineProps<PFileAndFolderLineCheckProps>(), {
   pState: 'default',
@@ -95,14 +92,20 @@ watch(isDefaultState, () => {
 
 const isCheckboxDisplayed = computed(() => isDefaultState.value)
 
-const fileIconComponent = computed(() => {
-  switch (getFileExtension(props.pFileName)) {
-  case 'pdf':
-    return getIconComponent('filetypePdf')
+const fileExtensionIconName = computed<IconName>(() => {
+  const extension = getFileExtension(props.pFileName)
 
-  default:
-    return getIconComponent('fileText')
+  return extension === 'pdf' ? 'filetypePdf' : 'fileText'
+})
+
+const stateIconName = computed<IconName | undefined>(() => {
+  if (isSuccessState.value) {
+    return 'checkCircle'
   }
+  if (isErrorState.value) {
+    return 'exclamationTriangle'
+  }
+  return undefined
 })
 </script>
 
