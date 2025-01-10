@@ -80,7 +80,7 @@ import { onMounted, ref, reactive } from 'vue'
 import type { FormRules } from 'element-plus'
 import { PButton, PCheckbox, PForm, PFormItem, PTooltip } from '@pulse/styleguide/components'
 import { type ValidationCGUProps } from './ValidationCGUTypes.ts'
-import { fetchUrlTerms } from '@pulse/common'
+import { fetchUrlTerms, commonStore as useStore } from '@pulse/common'
 import { updateTermsByCurrentUser } from '@login/services/cgu'
 import { useRouter } from 'vue-router'
 
@@ -120,7 +120,11 @@ const acceptNewCgu = async (termsId: string) => {
   }
 }
 
-const back = () => router.back()
+const back = () => {
+  const store = useStore()
+  store.logout(store.$state)
+  router.push({ name: 'loginClient' })
+}
 </script>
 
 <style lang="scss" scoped>

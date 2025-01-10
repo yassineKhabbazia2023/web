@@ -1,9 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import validationCGU from './'
+import { createTestingPinia } from '@pinia/testing'
+import { commonStore as useStore } from '@pulse/common'
 
+const pinia = createTestingPinia()
+const store = useStore()
 const mockRouterPush = vi.fn()
-const mockRouterBack = vi.fn()
 
 const loggerDebugSpy = vi.hoisted(() => vi.fn())
 const loggerWarnSpy = vi.hoisted(() => vi.fn())
@@ -20,13 +23,16 @@ vi.mock('@pulse/core', () => ({
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush,
-    back: mockRouterBack,
   }),
 }))
 
-vi.mock('@pulse/common', () => ({
-  fetchUrlTerms: vi.fn(),
-}))
+vi.mock('@pulse/common', async () => {
+  const actual = await vi.importActual('@pulse/common')
+  return {
+    ...actual,
+    fetchUrlTerms: vi.fn(),
+  }
+})
 
 const updateTermsByCurrentUserMocked = vi.hoisted(() => vi.fn())
 vi.mock('@login/services/cgu', () => ({
@@ -37,6 +43,9 @@ const createWrapper = () =>
   mount(validationCGU, {
     props: {
       termsId: '123456789',
+    },
+    global: {
+      plugins: [pinia],
     },
   })
 
@@ -51,11 +60,13 @@ describe('cgu validation', () => {
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
   })
 
-  it('should back to previous page', async () => {
+  it('should back to login page and logout', async () => {
+    const spyStoreLogoutAction = vi.spyOn(store, 'logout')
     const wrapper = createWrapper()
     const backButton = wrapper.find('[data-testid="cgu-button-back"]')
     await backButton.trigger('click')
-    expect(mockRouterBack).toHaveBeenCalledWith()
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'loginClient' })
+    expect(spyStoreLogoutAction).toHaveBeenCalled()
   })
 
   it('should emit console error when updateTermsByCurrentUser throws an error', async () => {
