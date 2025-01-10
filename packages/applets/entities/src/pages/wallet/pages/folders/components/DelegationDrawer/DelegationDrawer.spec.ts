@@ -13,6 +13,18 @@ import DelegationPreviewList from './components/DelegationPreviewList'
 import DelegationDrawer from '.'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 const USER_ID = 'a custom user id'
 const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
 const FIRST_SELECTED_FOLDER = {

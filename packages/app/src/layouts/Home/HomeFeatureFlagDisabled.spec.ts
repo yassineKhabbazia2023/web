@@ -5,13 +5,16 @@ import {
 } from '@app/schedule/tests/mocks/commonViMock'
 import { describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import router from '@app/plugins/router'
 import { nextTick } from 'vue'
 import mockedEntities from '@app/mocks/entities.mock.json'
 import Home from '.'
+import helpers from '@app/tests/utils/helpers'
+
 const pinia = createTestingPinia()
+
+const { router } = helpers()
 
 const mock = vi.hoisted(() => {
   return {
@@ -71,7 +74,7 @@ window.HubSpotConversations = {
 } as any
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(Home, {
+  shallowMount(Home, {
     attachTo: document.body,
     global: {
       plugins: [pinia, router],

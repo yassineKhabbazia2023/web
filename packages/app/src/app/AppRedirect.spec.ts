@@ -62,6 +62,7 @@ const createWrapper = () =>
       })],
       stubs: {
         PButton: { template: '<button><slot /></button>' },
+        Suspense: { template: '<div><slot /></div>' },
       },
     },
   })

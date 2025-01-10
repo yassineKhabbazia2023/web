@@ -84,6 +84,9 @@ const getPageTitle = (wrapper: VueWrapper) => wrapper.find('.pageTitle').text()
 const createWrapper = (userStore = {}) =>
   mount(App, {
     global: {
+      stubs: {
+        Suspense: { template: '<div><slot /></div>' },
+      },
       plugins: [
         router,
         createTestingPinia({
