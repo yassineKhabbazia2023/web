@@ -98,11 +98,17 @@ const currentAccount = ref<Account | undefined>(undefined)
 const originalAccount = ref<Account | undefined>(undefined)
 const informationFormStructure = ref<FormSection[]>()
 
-const addressSectionTitle = computed(() =>
-  currentAccount.value?.address?.[0].addressType === 'billing'
+const addressSectionTitle = computed(() => {
+  const currentAccountAddress = currentAccount.value?.address
+  const hasAddress = currentAccountAddress && currentAccountAddress.length > 0
+
+  if(!hasAddress) {
+    return t('addressFallback')
+  }
+  return currentAccountAddress[0].addressType === 'billing'
     ? t('billing')
-    : t('delivery'),
-)
+    : t('delivery')
+})
 
 const canEdit = ref(false)
 const isSaving = ref(false)
@@ -156,6 +162,7 @@ onMounted(async () => {
 en-US:
   billing: 'Company billing address'
   delivery: 'Company delivery address'
+  addressFallback: 'Company address'
   save: 'Save modifications'
   save-succeeded: 'Save succeeded'
   save-failed: 'Save failed'
@@ -163,6 +170,7 @@ en-US:
 fr-FR:
   billing: "Adresse de facturation de l'entreprise"
   delivery: "Adresse de livraison de l'entreprise"
+  addressFallback: "Adresse de l'entreprise"
   save: 'Enregistrer les modifications'
   save-succeeded: 'Enregistrement des modifications avec succès'
   save-failed: "L'enregistrement des modifications a échoué"
