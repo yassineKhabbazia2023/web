@@ -22,7 +22,7 @@ resources:
   - repository: Pulse
     name: 'Pulse.Operations.Pipelines'
     type: git
-    ref: 'refs/heads/features/change-naming'
+    ref: 'refs/heads/release/abigail'
 
 extends:
   template: pipelines/templates/platform.front.Assets.yaml@Pulse
