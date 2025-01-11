@@ -99,7 +99,7 @@ const exampleOffer4 = reactive<PUserActionProps>({
   pShowDelete: true,
   pShowOptions: true,
   pOptions: getMockedOptions(),
-  pOptionsPlaceholder: 'Rôle IBS',
+  pOptionsPlaceholder: 'Rôle Akuiteo',
   pOptionsValue: '',
 })
 

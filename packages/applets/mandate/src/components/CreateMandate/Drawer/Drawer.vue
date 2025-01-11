@@ -347,7 +347,7 @@ defineExpose({
     infos: 'Infos'
     banking-data: 'Banking data'
     bank-identity-statement: 'Bank identity statement'
-    tooltip: 'The IBS number entered must be part of your
+    tooltip: 'The customer code entered must be part of your
       portfolio and have an active commitment.'
     close-button: 'Close page'
     title-popup: 'Exit mandate creation ?'
@@ -365,7 +365,7 @@ defineExpose({
     infos: 'Infos'
     banking-data: 'Données bancaires'
     bank-identity-statement: "Relevé d’identité bancaire"
-    tooltip: "Le numéro d’IBS saisi doit faire parti de
+    tooltip: "Le code client saisi doit faire parti de
       votre portefeuille et avoir un engagement actif."
     close-button: 'Fermer la page'
     title-popup: 'Quitter la création de mandat ?'

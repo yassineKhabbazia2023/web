@@ -43,8 +43,8 @@ defineProps<SelectedFoldersListProps>()
 <i18n lang="yaml">
   en-US:
     folderName: 'Folder'
-    IBSCode: 'IBS Code'
+    IBSCode: 'Customer Code'
   fr-FR:
     folderName: 'Dossier'
-    IBSCode: 'Code IBS'
+    IBSCode: 'Code Client'
 </i18n>

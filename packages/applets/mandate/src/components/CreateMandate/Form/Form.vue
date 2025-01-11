@@ -811,7 +811,7 @@ defineExpose({
 <i18n lang="json">
   {
     "en-US": {
-    "ibs-number": "IBS Number",
+    "ibs-number": "Customer code",
     "company-name": "Company name",
     "siret-number": "SIRET",
     "title": "Civility",
@@ -848,16 +848,16 @@ defineExpose({
         "frFmMandat": "FR-FM-MesMandats",
         "correctEmail": "Please input correct email address",
         "validNumber": "Please input a valid number",
-        "ibsNotFound": "IBS number not found.",
-        "ibsFormatIssue": "The format of the IBS number entered is not recognized",
-        "outWalletIBS": "The IBS must be part of your portfolio and have active engagement.",
+        "ibsNotFound": "Customer code not found.",
+        "ibsFormatIssue": "The format of the customer code entered is not recognized",
+        "outWalletIBS": "The customer code must be part of your portfolio and have active engagement.",
         "nonScrappable": "This bank is not scrappable.",
         "serverError": "An error has occurred."
       }
     }
   },
   "fr-FR": {
-    "ibs-number": "Numéro IBS",
+    "ibs-number": "Code Client",
     "company-name": "Raison sociale",
     "siret-number": "N° SIRET",
     "title": "Civilité",
@@ -894,9 +894,9 @@ defineExpose({
         "frFmMandat": "FR-FM-MesMandats",
         "correctEmail": "Veuillez entrer une adresse e-mail valide",
         "validNumber": "Veuillez entrer un nombre valide",
-        "ibsNotFound": "Le numéro IBS saisi n'est pas reconnu.",
-        "ibsFormatIssue": "Le format du numéro IBS saisi n'est pas reconnu.",
-        "outWalletIBS": "Le numéro d'IBS saisi doit faire partie de votre portefeuille et avoir un engagement actif.",
+        "ibsNotFound": "Le code client saisi n'est pas reconnu.",
+        "ibsFormatIssue": "Le format du code client saisi n'est pas reconnu.",
+        "outWalletIBS": "Le code client saisi doit faire partie de votre portefeuille et avoir un engagement actif.",
         "nonScrappable": "Cette banque n'est pas scrappable.",
         "serverError": "Une erreur est survenue."
       }

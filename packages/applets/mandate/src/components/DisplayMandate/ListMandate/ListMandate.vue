@@ -424,7 +424,7 @@ const downloadAndSaveMandate = async (downloadFunction: any, id: string, mandate
 
 <i18n lang="yaml">
     en-US:
-        ibs-code: 'IBS code'
+        ibs-code: 'Customer code'
         company-name: 'Company name'
         account-number: 'Account number'
         bank: 'Bank'

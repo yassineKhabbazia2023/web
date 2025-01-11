@@ -207,7 +207,7 @@ en-US:
   informationsAboutCollaborator: 'Collaborator information'
   youCanModify: >
     As an {administrator}, you can modify the name,
-    first name and email of your colleague directly in IBS.
+    first name and email of your colleague directly in Akuiteo.
   administrator: 'administrator'
   lastName: 'Last name'
   firstName: 'First name'
@@ -223,7 +223,7 @@ fr-FR:
   informationsAboutCollaborator: 'Informations du collaborateur'
   youCanModify: >
     En tant qu'{administrator}, vous pouvez modifier le nom,
-    le prénom et le mail de votre collaborateur directement dans IBS.
+    le prénom et le mail de votre collaborateur directement dans Akuiteo.
   administrator: 'administrateur'
   lastName: 'Nom'
   firstName: 'Prénom'

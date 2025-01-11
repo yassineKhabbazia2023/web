@@ -159,7 +159,7 @@ en-US:
   labelTypeReport: 'Report type'
   placeholderTypeReport: 'Select a report type'
   labelDestinationFolder: 'Destination folder'
-  placeholderDestinationFolder: 'Search by: name, IBS'
+  placeholderDestinationFolder: 'Search by: name, customer code'
   labelNameReport: 'Name of the report'
   placeholderNameReport: 'Select or enter a name to be displayed on the client side'
   fieldRequired: '* Fields required'
@@ -168,7 +168,7 @@ fr-FR:
   labelTypeReport: 'Type de rapport'
   placeholderTypeReport: 'Sélectionnez un type de rapport'
   labelDestinationFolder: 'Dossier de destination'
-  placeholderDestinationFolder: 'Rechercher par : nom, IBS'
+  placeholderDestinationFolder: 'Rechercher par : nom, code client'
   labelNameReport: 'Nom du rapport'
   placeholderNameReport: "Choisir ou saisir un nom qui s'affichera coté client"
   fieldRequired: '* Champs obligatoires'
