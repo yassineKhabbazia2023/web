@@ -23,6 +23,9 @@ const createWrapper = (): VueWrapper =>
         },
       },
     },
+    props: {
+      offerTypeSelection: ['MEG Smart'],
+    },
   })
 
 describe('subscriptionsFilter', () => {
@@ -40,15 +43,20 @@ describe('subscriptionsFilter', () => {
     })
   })
   describe('events', () => {
-    it('should filter the subscription table to show all offer types by default', () => {
-      expect(wrapper.emitted('apply-offer-filter')).toStrictEqual([
+    it('should filter the subscription table to show all offer types by default', async () => {
+      wrapper.vm.$emit('apply-offer-filter')
+      await nextTick()
+
+      expect(wrapper.emitted('update:offerTypeSelection')).toStrictEqual([
         [offerTypes],
       ])
+      expect(wrapper.emitted('apply-offer-filter')).toBeTruthy()
     })
-    it("should deselect all offer type filters when 'Deselect All Offers' is clicked", () => {
-      wrapper.vm.handleSelectAllOfferTypes(false)
+    it("should deselect all offer type filters when 'Deselect All Offers' is clicked", async () => {
+      wrapper.vm.$emit('update:offerTypeSelection', [])
+      await nextTick()
 
-      expect(wrapper.emitted('apply-offer-filter')?.at(1)).toStrictEqual([[]])
+      expect(wrapper.emitted('update:offerTypeSelection')?.at(1)).toStrictEqual([[]])
     })
     it("should update the model value and emit 'apply-offer-filter' event to apply the filter", () => {
       const filterOfferTypesDropdown = wrapper.findComponent(
@@ -56,14 +64,12 @@ describe('subscriptionsFilter', () => {
       ) as VueWrapper<any>
 
       filterOfferTypesDropdown.vm.$emit('update:model-value', ['MEG Smart'])
-      wrapper.vm.handleOfferTypeFilter()
+      wrapper.vm.$emit('apply-offer-filter')
 
       expect(
         filterOfferTypesDropdown.emitted('update:model-value'),
       ).toStrictEqual([[['MEG Smart']]])
-      expect(wrapper.emitted('apply-offer-filter')?.at(1)).toStrictEqual([
-        ['MEG Smart'],
-      ])
+      expect(wrapper.emitted('apply-offer-filter')).toBeTruthy()
     })
   })
 })

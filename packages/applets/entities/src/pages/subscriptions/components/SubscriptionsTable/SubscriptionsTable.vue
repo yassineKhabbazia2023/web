@@ -6,7 +6,10 @@
     <PLoader pType="primary" pSize="50" />
   </div>
   <div v-else>
-    <SubscriptionsFilter @apply-offer-filter="handleOfferFiltered" />
+    <SubscriptionsFilter
+      v-model:offerTypeSelection="offerTypeSelection"
+      @apply-offer-filter="handleOfferFiltered"
+    />
     <PTable
       pStripe
       :pData="filteredSubscriptions"
@@ -155,6 +158,7 @@ const isActionInProgress = ref(false)
 const clickedRow = ref<number>()
 const userStore = commonStore()
 const { user } = storeToRefs(userStore)
+const offerTypeSelection = ref<string[]>([])
 const subscriptions = ref<SubscriptionRequest[]>([])
 const filteredSubscriptions = ref<SubscriptionRequest[]>([])
 const requestMenu: PToolboxItemProps[] = [
@@ -197,6 +201,7 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
     })
     displayNotification('success', t('offerActivated'))
     await fetchSubscriptions()
+    handleOfferFiltered()
   } catch {
     amplitudeService.track('Subscription Completed', {
       subscription_complete_offer_name: offer.offerCode,
@@ -230,9 +235,9 @@ const title = (clients: Contact[]) =>
 
 const content = (clients: Contact[]) => clients[0]?.email
 
-const handleOfferFiltered = (offerTypes: string[]) => {
+const handleOfferFiltered = () => {
   filteredSubscriptions.value = subscriptions.value.filter((subscription) =>
-    offerTypes.includes(subscription.offer.offerCode),
+    offerTypeSelection.value.includes(subscription.offer.offerCode),
   )
 }
 
@@ -249,6 +254,7 @@ onMounted(async () => {
 defineExpose({
   onClickToolboxItem,
   handleOfferFiltered,
+  offerTypeSelection,
 })
 </script>
 
