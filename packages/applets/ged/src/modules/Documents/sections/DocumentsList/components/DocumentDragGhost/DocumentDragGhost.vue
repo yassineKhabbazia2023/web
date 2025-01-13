@@ -14,9 +14,7 @@
         padding-x--4
       "
     >
-      <PIcon>
-        <component :is="iconComponent" />
-      </PIcon>
+      <PIcon :pName="iconName" />
       <div class="document-drag-ghost__filename padding-left--4">
         {{ displayedName }}
       </div>
@@ -38,7 +36,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PIcon } from '@pulse/styleguide/components'
-import { getFileIcon } from '@ged/modules/Documents/helpers/filesExtensions'
+import { getIconFileName } from '@pulse/styleguide'
+import { getFileExtension } from '@pulse/core'
 import type { DocumentDragGhostProps } from './DocumentDragGhostTypes'
 
 const props = withDefaults(
@@ -49,8 +48,11 @@ const props = withDefaults(
 )
 
 const isMultiple = computed(() => props.numberOfDocuments > 1)
-const iconComponent = computed(() => getFileIcon(props.displayedName))
+const iconName = computed(() => {
+  const extension = getFileExtension(props.displayedName)
 
+  return getIconFileName(extension, 'fileText')
+})
 </script>
 
 <style lang="scss" scoped>
