@@ -53,7 +53,7 @@ const createWrapper = (
         PDocumentDisplay: {
           name: 'PDocumentDisplay',
           template: '<div />',
-          props: ['pIsLoading', 'pDocumentExtension'],
+          props: ['pIsLoading', 'pDocumentExtension', 'errorMsgText'],
         },
       },
     },
@@ -124,7 +124,7 @@ describe('documentPreview', () => {
       const wrapper = createWrapper({ ...defaultProps, document })
       await flushPromises()
 
-      const pDocumentDisplayWrapper = wrapper.findComponent(PDocumentDisplay)
+      const pDocumentDisplayWrapper = wrapper.findComponent({ name: 'PDocumentDisplay' })
       expect(pDocumentDisplayWrapper.props('errorMsgText')).toBe('Le format de document n\'est pas supporté')
     })
 
@@ -134,7 +134,7 @@ describe('documentPreview', () => {
 
       const wrapper = createWrapper({ ...defaultProps, document: documentWithEmptyName })
       await flushPromises()
-      const pDocumentDisplayWrapper = wrapper.findComponent(PDocumentDisplay)
+      const pDocumentDisplayWrapper = wrapper.findComponent({ name: 'PDocumentDisplay' })
 
       expect(pDocumentDisplayWrapper.props('errorMsgText')).toBe('La prévisualisation du document n\'est pas disponible pour le moment')
     })
