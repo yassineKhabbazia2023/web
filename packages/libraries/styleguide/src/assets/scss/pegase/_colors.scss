@@ -1,3 +1,4 @@
+@use "sass:color";
 @use 'sass:map';
 @use 'sass:list';
 @use 'element-plus/theme-chalk/src/mixins/_var.scss' as *;
@@ -98,16 +99,16 @@ $typePulse: ();
     @if $variant  == base {
       @include set-css-var-value(
       ('color', $type, 'rgb'),
-      #{red($color),
-        green($color),
-        blue($color)}
+      #{color.channel($color, "red", $space: rgb),
+        color.channel($color, "green", $space: rgb),
+        color.channel($color, "blue", $space: rgb)}
     );
     } @else {
       @include set-css-var-value(
         ('color', $type, $variant, 'rgb'),
-        #{red($color),
-          green($color),
-          blue($color)}
+        #{color.channel($color, "red", $space: rgb),
+          color.channel($color, "green", $space: rgb),
+          color.channel($color, "blue", $space: rgb)}
       );
     }
   }

@@ -102,12 +102,12 @@ onBeforeUnmount(() => {
 }
 
 .card {
+  background: var(--el-color-base-white);
+
   @media (min-width: 992px) {
     max-width: 920px;
     margin: 0 auto;
   }
-  background: var(--el-color-base-white);
-
   .content {
     @media (min-width: 992px) {
       padding: 4.8rem 4.8rem 0 4.8rem;
@@ -117,10 +117,10 @@ onBeforeUnmount(() => {
     }
 
     .brand-logo-content {
+      max-width: 140px;
       @media (min-width: 992px) {
         max-width: 129px;
       }
-      max-width: 140px;
     }
   }
 }

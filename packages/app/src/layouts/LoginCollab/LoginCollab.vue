@@ -100,12 +100,12 @@ onBeforeUnmount(() => {
 }
 
 .card {
+  background: var(--el-color-base-white);
+
   @media (min-width: 992px) {
     max-width: 920px;
     margin: 0 auto;
   }
-
-  background: var(--el-color-base-white);
 
   .content {
     @media (min-width: 992px) {
@@ -116,12 +116,12 @@ onBeforeUnmount(() => {
     }
 
     .brand-logo-content {
+      margin-bottom: 24px;
+      max-width: 140px;
       @media (min-width: 992px) {
         margin-bottom: 38px;
         max-width: 129px;
       }
-      margin-bottom: 24px;
-      max-width: 140px;
     }
   }
 

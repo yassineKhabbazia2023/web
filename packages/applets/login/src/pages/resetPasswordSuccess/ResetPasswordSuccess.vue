@@ -55,16 +55,17 @@ const email = route.query.email
   display: block;
   flex-direction: column;
   height: 100%;
+  text-align: left;
+  justify-content: space-evenly;
+  gap: 24px;
+  word-wrap: break-word;
+
   @media (min-width: 992px) {
     padding: 48px 0 0 0;
     align-items: center;
     justify-content: center;
     gap: 12px;
   }
-  text-align: left;
-  justify-content: space-evenly;
-  gap: 24px;
-  word-wrap: break-word;
 
   &__circle {
     width: 80px;

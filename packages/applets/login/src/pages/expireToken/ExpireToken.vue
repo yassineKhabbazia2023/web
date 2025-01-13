@@ -54,12 +54,12 @@ const resendLink = async () => {
   margin: auto;
   height: 100%;
   padding-bottom: 12px;
+  text-align: left;
 
   @media (min-width: 992px) {
     padding: 48px 0 0 0;
     text-align: center;
   }
-  text-align: left;
 
   .expireMsg {
     font-weight: 600;

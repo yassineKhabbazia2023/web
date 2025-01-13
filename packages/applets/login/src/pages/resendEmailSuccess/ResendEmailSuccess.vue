@@ -32,14 +32,14 @@ const router = useRouter()
 <style lang="scss" scoped>
 .page-content {
   height: 100%;
+  text-align: left;
+  justify-content: center;
+  gap: 24px;
 
   @media (min-width: 992px) {
     padding: 48px 0 0 0;
     text-align: center;
   }
-  text-align: left;
-  justify-content: center;
-  gap: 24px;
 
   .badge-email {
     max-width: 140px;
