@@ -32,7 +32,6 @@ export const store = defineStore('common', {
       const isCollab = state.user?.isCollab
       const gigyaUserId = state.user?.gigyaUserId
       try {
-        tokenService.setToken('')
         if (isCollab) {
           msalInstance.logout()
         } else if (gigyaUserId) {
@@ -42,10 +41,12 @@ export const store = defineStore('common', {
           }
           await api().gateway.post(urlLogout, data)
         }
-        state.user = null
-        state.permissions = []
       } catch (e) {
         logger.warn(e)
+      } finally {
+        tokenService.setToken('')
+        state.user = null
+        state.permissions = []
       }
     },
     async fetchUserPermissions() {
