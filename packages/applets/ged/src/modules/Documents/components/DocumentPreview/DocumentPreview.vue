@@ -18,9 +18,7 @@
     @previous-document-button-click="handlePreviousButtonClick"
   >
     <template #iconDocument>
-      <PIcon>
-        <component :is="getFileIcon(document.name)" />
-      </PIcon>
+      <PIcon :pName="iconName" />
     </template>
     <template #media>
       <PDocumentDisplay
@@ -47,7 +45,7 @@ import { PDocumentViewer, PIcon, PDocumentDisplay } from '@pulse/styleguide/comp
 import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
 import type { DocumentPreviewResponse } from '@ged/services/Documents'
 import { downloadDocument, previewDocument } from '@ged/services/Documents'
-import { getFileIcon } from '../../helpers/filesExtensions'
+import { getIconFileName } from '@pulse/styleguide'
 import { getFileExtension, isImageDocument } from '@pulse/core'
 import DocumentsTabs from '@ged/modules/Documents/sections/DocumentsList/components/DocumentTabs'
 import { useI18n } from 'vue-i18n'
@@ -131,6 +129,8 @@ watch(
 const handleClose = () => {
   emit('close-drawer')
 }
+
+const iconName = computed(() => getIconFileName(documentExtension.value, 'fileText'))
 </script>
 
 <style lang="scss" scoped>

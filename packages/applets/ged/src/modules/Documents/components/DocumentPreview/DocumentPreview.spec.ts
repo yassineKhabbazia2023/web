@@ -7,6 +7,12 @@ import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
 import { documentMock } from '../../mocks/documentMock'
 import { downloadDocument, previewDocument } from '@ged/services/Documents'
 import DocumentPreview from '.'
+import { type IconName } from '@pulse/styleguide/types'
+
+const getIconFileNameMock = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/styleguide', () => ({
+  getIconFileName: getIconFileNameMock,
+}))
 
 const defaultProps: DocumentsPreviewProps = {
   document: documentMock,
@@ -48,6 +54,7 @@ const createWrapper = (
         PIcon: {
           name: 'PIcon',
           template: '<div><slot /></div>',
+          props: ['pName'],
         },
         DocumentsTabs: true,
         PDocumentDisplay: {
@@ -75,6 +82,8 @@ vi.mock('@ged/services/Documents', () => ({
 describe('documentPreview', () => {
   describe('props', () => {
     it('should render PDocumentViewer properly binded', async () => {
+      const mockedIconName: IconName = 'filetypePdf'
+      getIconFileNameMock.mockReturnValueOnce(mockedIconName)
       const wrapper = createWrapper()
       const expectedProps = {
         'pActiveDocument': 1,
@@ -95,9 +104,10 @@ describe('documentPreview', () => {
       expect(pDocumentViewer.props()).toStrictEqual(expectedProps)
 
       const pIcon = wrapper.findComponent({ name: 'PIcon' })
+      expect(getIconFileNameMock).toHaveBeenCalledOnce()
+      expect(getIconFileNameMock).toHaveBeenNthCalledWith(1, 'pdf', 'fileText')
       expect(pIcon.exists()).toBeTruthy()
-      const pIFiletypePdf = pIcon.findComponent({ name: 'PIFiletypePdf' })
-      expect(pIFiletypePdf.exists()).toBeTruthy()
+      expect(pIcon.props('pName')).toBe(mockedIconName)
       pDocumentViewer.vm.$emit(
         'next-document-button-click',
       )
