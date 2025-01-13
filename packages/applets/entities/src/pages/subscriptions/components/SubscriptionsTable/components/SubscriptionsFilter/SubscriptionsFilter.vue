@@ -1,34 +1,34 @@
 <template>
   <div class="subscription-filter-options margin-y--6">
     <PDropdown
-      v-model="offerTypeSelection"
+      v-model="selectedOfferType"
       :pPlaceholder="t('chooseAnOffer')"
       :pCheckAllLabel="t('allOffers')"
       :pOptions="offerTypeDropdown"
       pFilterable
       pMultiple
       data-testid="subscription-filter-offers-dropdown"
-      @change="handleOfferTypeFilter"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { ref, watch, onMounted } from 'vue'
+import { watch, onMounted, computed } from 'vue'
 import { PDropdown } from '@pulse/styleguide/components'
+import type { SubscriptionsFilterProps } from './SubscriptionsFilterTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
+const props = defineProps<SubscriptionsFilterProps>()
 const emit = defineEmits<{
-  'apply-offer-filter': [string[]]
+  'apply-offer-filter': [void],
+  'update:offerTypeSelection': [string[]]
 }>()
 
-const offerTypeSelection = ref<string[]>([])
-const selectAllOfferTypes = ref(true)
 const offerTypeDropdown = [
   {
     pValue: 'MEG Smart',
@@ -52,26 +52,23 @@ const offerTypeDropdown = [
   },
 ]
 
-const handleSelectAllOfferTypes = (isChecked: boolean) => {
-  if (isChecked) {
-    offerTypeSelection.value = offerTypeDropdown.map(
-      ({ pValue }: { pValue: string }) => pValue,
-    )
-  } else {
-    offerTypeSelection.value = []
-  }
-  handleOfferTypeFilter()
-}
-const handleOfferTypeFilter = () => {
-  emit('apply-offer-filter', offerTypeSelection.value)
-}
+const selectedOfferType = computed({
+  get() {
+    return props.offerTypeSelection
+  },
+  set(value: string[]) {
+    emit('update:offerTypeSelection', value)
+  },
+})
 
-watch(offerTypeSelection, (val) => {
-  selectAllOfferTypes.value = val.length === offerTypeDropdown.length
+watch(selectedOfferType, () => {
+  emit('apply-offer-filter')
 })
 
 onMounted(() => {
-  handleSelectAllOfferTypes(true)
+  selectedOfferType.value = offerTypeDropdown.map(
+    ({ pValue }: { pValue: string }) => pValue,
+  )
 })
 </script>
 

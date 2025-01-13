@@ -93,7 +93,8 @@ describe('subscriptionsTable', () => {
   })
 
   it('should display the subscriptions table filtered by offer type', async () => {
-    wrapper.vm.handleOfferFiltered(['MEG Smart'])
+    wrapper.vm.offerTypeSelection = ['MEG Smart']
+    wrapper.vm.handleOfferFiltered()
     await nextTick()
     const subscriptionsTable = wrapper.findComponent('[data-testid="subscriptions-table"]') as VueWrapper
     const subscriptionRows = subscriptionsTable.findAll('tr.el-table__row')
