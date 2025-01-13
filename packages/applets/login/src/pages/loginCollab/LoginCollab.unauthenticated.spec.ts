@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import { nextTick } from 'vue'
 import LoginCollab from '.'
 
 vi.mock('env-vars', () => ({

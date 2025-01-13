@@ -5,7 +5,7 @@ import { getOnboardingFilters, getUserConnexionFilters } from './FiltersUtils'
 describe('test FiltersUtils', () => {
   describe('getOnboardingFilters', () => {
     it('should return proper filter list', () => {
-      const mockedFilterLabels = getMockedFilterLabels() 
+      const mockedFilterLabels = getMockedFilterLabels()
       const entitiesStatistics = getMockedEntitiesStatistics()
 
       const filters = getOnboardingFilters(mockedFilterLabels, entitiesStatistics)

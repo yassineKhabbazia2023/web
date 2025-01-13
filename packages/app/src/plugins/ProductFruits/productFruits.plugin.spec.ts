@@ -253,7 +253,6 @@ describe('test productFruits plugin', () => {
     })
 
     it('should display an error when initProductFruits is called twice', () => {
-      const expectedError = 'productFruit is already initialized'
       const params = {
         lang,
         key: mockedProductFruitsKey,
