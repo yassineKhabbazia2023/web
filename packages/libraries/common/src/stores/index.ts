@@ -28,21 +28,25 @@ export const store = defineStore('common', {
     userAccountPermissions: (state: commonStateType) => state.user?.entities?.default?.permissions,
   },
   actions: {
-    logout: async (state: any) => {
+    logout: async (state: commonStateType) => {
+      const isCollab = state.user?.isCollab
+      const gigyaUserId = state.user?.gigyaUserId
       try {
-        tokenService.setToken('')
-        if (state.user?.isCollab) {
+        if (isCollab) {
           msalInstance.logout()
-        } else {
+        } else if (gigyaUserId) {
           const urlLogout = 'authentication/api/logout'
           const data = {
-            gigyaUserId: state?.user?.gigyaUserId,
+            gigyaUserId,
           }
           await api().gateway.post(urlLogout, data)
         }
-        state.user = null
       } catch (e) {
         logger.warn(e)
+      } finally {
+        tokenService.setToken('')
+        state.user = null
+        state.permissions = []
       }
     },
     async fetchUserPermissions() {
