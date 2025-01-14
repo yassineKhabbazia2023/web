@@ -23,6 +23,7 @@
       >
         <FormSearch
           class="user-clients__search-bar margin-right--4 max-width-500"
+          :placeholder="t('searchUsers')"
           @search-value-submitted="handleSearchValueSubmitted"
         />
         <PButton
@@ -291,8 +292,10 @@ async function loadPrincipalContacts() {
 <i18n lang="yaml">
 en-US:
   addCustomer: "Add a customer"
+  searchUsers: 'Search by name, first name, email'
   on: 'on'
 fr-FR:
   addCustomer: "Ajouter un utilisateur"
+  searchUsers: 'Rechercher par nom, prénom, e-mail'
   on: 'sur'
 </i18n>

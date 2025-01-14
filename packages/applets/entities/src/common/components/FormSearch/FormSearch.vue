@@ -37,7 +37,7 @@ const { t } = useI18n({
 })
 
 const props = withDefaults(defineProps<Props>(), {
-  placeholder: 'Rechercher', // should not use i18n in default props. Better not to give any default value
+  placeholder: '',
   forcedValue: '',
 })
 

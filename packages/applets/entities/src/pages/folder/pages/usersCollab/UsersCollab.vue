@@ -17,6 +17,7 @@
     >
       <FormSearch
         class="user-collabs__search-bar margin-right--4 max-width-500"
+        :placeholder="t('searchUsers')"
         @search-value-submitted="handleSearchValueSubmitted"
       />
       <PButton
@@ -555,11 +556,12 @@ en-US:
   removeSignatory: 'Revoke signatory status'
   modifyRights: 'Change the rights'
   removeUser: 'Remove user'
+  searchUsers: 'Search by name, first name, email, status'
   statusConnect: 'Connected'
   statusInvite: 'Invited'
   statusDeclared: 'Declared'
   on: 'on'
-  signatoryAdded: "User {userFullName} has been successfuly designated as a signatory of the entity"
+  signatoryAdded: "User {userFullName} has been successfully designated as a signatory of the entity"
   signatoryRemoved: "The user {userFullName} is no longer a signatory on the account."
   deleteSignatoryTooltip: 'A folder should have at least one signatory'
   technicalError: 'The operation failed due to a technical error. Please try again later.'
@@ -574,6 +576,7 @@ fr-FR:
   removeSignatory: 'Retirer le statut de signataire'
   modifyRights: 'Modifier les droits'
   removeUser: 'Retirer l’utilisateur'
+  searchUsers: 'Rechercher par nom, prénom, e-mail, statut'
   statusConnect: 'Connecté'
   statusInvite: 'Invité'
   statusDeclared: 'Déclaré'

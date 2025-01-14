@@ -23,6 +23,7 @@
     >
       <FormSearch
         class="user-collabs__search-bar margin-right--4 max-width-500"
+        :placeholder="t('searchCollaborator')"
         @search-value-submitted="handleSearchValueSubmitted"
       />
       <PButton
@@ -491,6 +492,7 @@ en-US:
   on: 'on'
   addCollaborator: 'Add collaborator'
   removeCollaborator: 'Remove collaborator'
+  searchCollaborator: 'Search by name, email, function, etc...'
   collaboratorInformation: 'Collaborator information'
   collaboratorHasBeenRemoved: 'The collaborator has been removed from the entity'
   collaboratorWasNotRemoved: 'The collaborator was not removed from the entity due to a technical error'
@@ -503,6 +505,7 @@ fr-FR:
   on: 'sur'
   addCollaborator: 'Ajouter un collaborateur'
   removeCollaborator: 'Retirer le collaborateur'
+  searchCollaborator: 'Recherche par nom, prénom, e-mail, fonction, bureau'
   collaboratorInformation: 'Informations du collaborateur'
   collaboratorHasBeenRemoved: "Le collaborateur a bien été retiré de l'entité"
   collaboratorWasNotRemoved: "Le collaborateur n'a pas été retiré de l'entité a cause d'une erreur technique"
