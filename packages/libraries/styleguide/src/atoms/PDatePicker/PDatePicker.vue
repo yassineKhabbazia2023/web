@@ -1,7 +1,7 @@
 <template>
   <ElDatePicker
     v-model="datepickerModel"
-    :prefixIcon="PICalendarEvent"
+    :prefixIcon="prefixIcon"
     :popperClass="popperClassComputed"
     :class="{ 'p-date-picker__input--hidden': pCalendarLite }"
     :type="pType"
@@ -42,7 +42,7 @@
 <script setup lang="ts" generic="T extends PDatePickerModelValue">
 import { computed, watch, ref } from 'vue'
 import { ElDatePicker } from 'element-plus'
-import { PICalendarEvent } from '../../atoms/PIcon/components'
+import { getIconComponent } from '../../utils/iconHelper'
 import type { PDatePickerProps, PDatePickerModelValue, calendarEvent } from './PDatePickerTypes'
 import { getCurrentDate, getWeekCount } from './PDatePickerUtils'
 
@@ -152,6 +152,8 @@ const isLastWeekHidden = computed(() => {
 
   return weekCount < 6
 })
+
+const prefixIcon = computed(() => getIconComponent('calendarEvent'))
 </script>
 <style lang="scss">
 .p-date-picker {

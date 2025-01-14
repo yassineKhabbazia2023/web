@@ -6,8 +6,8 @@
     :popperOffset="pPopperOffset"
     :showTimeout="pShowTimeout"
     :hideTimeout="pHideTimeout"
-    :expandCloseIcon="PICaretDown"
-    :expandOpenIcon="PICaretUp"
+    :expandCloseIcon="expandCloseIcon"
+    :expandOpenIcon="expandOpenIcon"
     class="p-submenu"
   >
     <template #title>
@@ -25,8 +25,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { ElSubMenu } from 'element-plus'
-import { PICaretDown, PICaretUp } from '../../atoms/PIcon/components'
+import { getIconComponent } from '../../utils/iconHelper'
 import type { PSubMenuProps } from './PSubMenuTypes'
 import PIcon from '../../atoms/PIcon'
 
@@ -37,4 +38,7 @@ withDefaults(defineProps<PSubMenuProps>(), {
   pHideTimeout: undefined,
   pDisabled: false,
 })
+
+const expandCloseIcon = computed(() => getIconComponent('caretDown'))
+const expandOpenIcon = computed(() => getIconComponent('caretUp'))
 </script>
