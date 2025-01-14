@@ -61,7 +61,7 @@ watch(
 )
 
 onMounted(() => {
-  if (window.navigator.doNotTrack !== '1' && VITE_AMPLITUDE_API_KEY) {
+  if (VITE_AMPLITUDE_API_KEY) {
     amplitudeService.init(VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL || undefined)
   }
   HTMLService.setDocumentTitle()
