@@ -104,7 +104,6 @@
 import { ref } from 'vue'
 import PCollapseItem from '../../atoms/PCollapseItem'
 import { logEvent } from 'histoire/client'
-import { PIExclamationTriangle } from '../../atoms/PIcon/components'
 import PAlert from './'
 import PCollapse from '../../molecules/PCollapse'
 

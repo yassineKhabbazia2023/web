@@ -1,7 +1,6 @@
 // Import necessary modules
 import { shallowMount } from '@vue/test-utils'
 import PText from './'
-import { PIPerson } from '../PIcon/components'
 import { describe, it, expect } from 'vitest'
 import { markRaw } from 'vue'
 

@@ -3,23 +3,6 @@ import {
   getIconFileName,
   getIconName,
 } from '../utils/fileExtension'
-import {
-  PIFiletypeJpg,
-  PIFiletypeTxt,
-  PIFiletypeNone,
-  PIFiletypeBmp,
-  PIFiletypeCsv,
-  PIFiletypeDoc,
-  PIFiletypeDocx,
-  PIFiletypeGif,
-  PIFiletypePdf,
-  PIFiletypePng,
-  PIFiletypePpt,
-  PIFiletypeRaw,
-  PIFiletypeSvg,
-  PIFiletypeXls,
-  PIFiletypeXlsx,
-} from '../atoms/PIcon/components'
 
 const filename1 = 'something.abc.txt'
 const filename2 = 'file_without_extension'

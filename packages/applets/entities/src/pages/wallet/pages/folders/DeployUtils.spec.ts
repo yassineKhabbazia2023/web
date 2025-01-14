@@ -8,7 +8,6 @@ import {
   getMockedMappedAccount,
   getMockedSearchCriteria,
 } from './DeployUtilsMock'
-import { PIArrowUpCircle } from '@pulse/styleguide/components'
 import type { DeploymentStatus, SearchCriteria } from '../../types'
 import * as accountService from '@entities/services/account'
 import {

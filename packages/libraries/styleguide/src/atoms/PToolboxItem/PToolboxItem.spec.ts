@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import PToolboxItem from '../../atoms/PToolboxItem'
-import { PIAdd } from '../../atoms/PIcon/components'
 import type { PToolboxItemProps } from './PToolboxItemTypes'
 import type { IconName } from '../../types/IconName.types'
 

@@ -5,11 +5,6 @@ import type { NotificationMessagesByType } from './NotificationHelperTypes'
 import { type IconName } from '@pulse/styleguide/types'
 
 const PNotificationMocked = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/styleguide/components', () => ({
-  PICheck: 'PICheck',
-  PILoader: 'PILoader',
-  PIExclamationTriangle: 'PIExclamationTriangle',
-}))
 
 vi.mock('@pulse/styleguide', () => ({
   PNotification: PNotificationMocked,

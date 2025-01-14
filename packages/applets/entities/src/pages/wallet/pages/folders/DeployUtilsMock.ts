@@ -1,4 +1,3 @@
-import { PIArrowUpCircle } from '@pulse/styleguide/components'
 import type { DeploymentStatus, State, WalletData, SearchCriteria } from '../../types'
 import type { QueryResult } from '@entities/common/types'
 

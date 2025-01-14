@@ -94,9 +94,6 @@ import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
 import {
-  PIArrowRepeat,
-  PICheckCircle,
-  PIArrowUpCircle,
   PLoader,
   PButton,
   PPagination,

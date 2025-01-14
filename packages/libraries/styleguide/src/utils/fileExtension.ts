@@ -1,54 +1,8 @@
 import type { FileExtension } from '@pulse/core/types'
-import { type Component } from 'vue'
-import {
-  PIFiletypeNone,
-  PIFiletypeBmp,
-  PIFiletypeCsv,
-  PIFiletypeDoc,
-  PIFiletypeDocx,
-  PIFiletypeGif,
-  PIFiletypeHeic,
-  PIFiletypeJpg,
-  PIFiletypeMd,
-  PIFiletypePdf,
-  PIFiletypePng,
-  PIFiletypePpt,
-  PIFiletypePptx,
-  PIFiletypeRaw,
-  PIFiletypeSvg,
-  PIFiletypeTiff,
-  PIFiletypeTxt,
-  PIFiletypeXls,
-  PIFiletypeXlsx,
-  PIFiletypeXml,
-} from '../atoms/PIcon/components'
 import {
   getFileExtension,
 } from '@pulse/core'
 import type { IconName } from '../types/IconName.types'
-
-const iconComponentByIconFileName = new Map<IconName, Component>([
-  ['filetypeNone', PIFiletypeNone],
-  ['filetypeBmp', PIFiletypeBmp],
-  ['filetypeCsv', PIFiletypeCsv],
-  ['filetypeDoc', PIFiletypeDoc],
-  ['filetypeDocx', PIFiletypeDocx],
-  ['filetypeGif', PIFiletypeGif],
-  ['filetypeHeic', PIFiletypeHeic],
-  ['filetypeJpg', PIFiletypeJpg],
-  ['filetypeMd', PIFiletypeMd],
-  ['filetypePdf', PIFiletypePdf],
-  ['filetypePng', PIFiletypePng],
-  ['filetypePpt', PIFiletypePpt],
-  ['filetypePptx', PIFiletypePptx],
-  ['filetypeRaw', PIFiletypeRaw],
-  ['filetypeSvg', PIFiletypeSvg],
-  ['filetypeTiff', PIFiletypeTiff],
-  ['filetypeTxt', PIFiletypeTxt],
-  ['filetypeXls', PIFiletypeXls],
-  ['filetypeXlsx', PIFiletypeXlsx],
-  ['filetypeXml', PIFiletypeXml],
-])
 
 const fileNameByExtension = new Map<FileExtension, IconName>([
   ['bmp', 'filetypeBmp'],

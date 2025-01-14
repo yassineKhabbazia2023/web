@@ -28,7 +28,6 @@
 
 <script setup lang="ts">
 import PButton from '../../atoms/PButton'
-import { PICheck, PIExclamationTriangle, PILoader } from '../../atoms/PIcon/components'
 import { PNotification } from '../../utils/PNotification/PNotification'
 
 const openSuccess = () => {

@@ -58,9 +58,6 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { computed, onMounted, ref, watch } from 'vue'
 import {
-  PIArrowRepeat,
-  PICheckCircle,
-  PIArrowUpCircle,
   PLoader,
   PPagination,
 } from '@pulse/styleguide/components'
