@@ -81,6 +81,8 @@ $button-padding-horizontal: (
       --el-button-size: 32px;
 
       height: 32px;
+      padding-left: 12px;
+      padding-right: 12px;
 
       #{$self}__icon {
         &--left {
