@@ -30,7 +30,7 @@ vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: vi.fn().mockImplementation((url) => {
-        if (url === `${API_PREFIXES.REPORTING}/reports`) {
+        if (url === `${API_PREFIXES.REPORTING}/reports/currentuser`) {
           return Promise.resolve({
             data: mockedBIReports,
           })
