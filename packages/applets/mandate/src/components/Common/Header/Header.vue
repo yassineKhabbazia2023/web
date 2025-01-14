@@ -135,7 +135,7 @@ const filters: FilterOption<number>[] = [
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   flex-wrap: wrap;
 
   &__create-mandate-button {
