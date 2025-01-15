@@ -84,7 +84,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onBeforeMount } from 'vue'
+import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { commonStore, getInitials } from '@pulse/common'
 import { FeatureFlagManager } from '@pulse/core'
@@ -108,6 +109,13 @@ const emit = defineEmits<{
   'update:showFeedCenter': [boolean]
   'showUserProfileDrawer': []
 }>()
+
+onBeforeMount(() => {
+  const route = useRoute()
+  if(route.redirectedFrom?.path === '/portefeuille') {
+    window.location.reload()
+  }
+})
 
 const userInitials = computed(() =>
   getInitials(user.value?.firstName, user.value?.lastName),
