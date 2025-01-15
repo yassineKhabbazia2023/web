@@ -23,7 +23,8 @@ window.EnvVars = envVars
 
 ## Liste des env-vars et leur effet
 
-| variable d'environnement | description |
+[//]: # (SCRAP BELOW)
+| variables d'environnement Front | description |
 |---|---|
 | VITE_ACCOUNTING_HUB_URL | URL de Connexion au hub signalR pour la synchronisation PIA sur la GED  |
 | VITE_AMPLITUDE_API_KEY | Clé d'API Amplitude (outil de tracking) |
