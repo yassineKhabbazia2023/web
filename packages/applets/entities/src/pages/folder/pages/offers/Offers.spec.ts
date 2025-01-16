@@ -1,11 +1,8 @@
-import { describe, it, expect, beforeEach, vi, type MockInstance } from 'vitest'
-import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { type VueWrapper, shallowMount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import { setActivePinia } from 'pinia'
-import { commonPinia as pinia, commonStore } from '@pulse/common'
 import * as SubscriptionServices from '@entities/services/subscription'
-import { nextTick } from 'vue'
-import { mockHasPermission } from '@entities/../vitest.setup'
+import { ref, nextTick } from 'vue'
 import { getActiveOffersMocked } from './OffersMocks'
 import Offers from '.'
 
@@ -23,6 +20,27 @@ vi.mock('@pulse/core', () => ({
   },
 }))
 
+const isCollabMock = ref(true)
+const hasPermissionMock = vi.hoisted(() => vi.fn())
+const commonStoreMock = vi.hoisted(() => vi.fn(() => ({
+  isCollab: isCollabMock,
+  defaultEntity: ref({
+    accountId: 1,
+    accountNumber: '3669209950',
+    legalName: 'Restaurant Le Grand Bleu',
+    color: 'orange',
+  }),
+  user: ref({}),
+})))
+const userPermissionsMock = vi.hoisted(() => vi.fn(() => ({
+  hasPermission: hasPermissionMock,
+})))
+
+vi.mock('@pulse/common', () => ({
+  commonStore: commonStoreMock,
+  userPermissions: userPermissionsMock,
+}))
+
 vi.mock('@entities/services/subscription', () => ({
   fetchAccountSubscriptions: vi.fn(() => Promise.resolve(activeOffersMocked)),
 }))
@@ -34,12 +52,46 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-const createWrapper = (): VueWrapper =>
-  mount(Offers, { plugins: [createTestingPinia()] })
+const createWrapper = (isCollab = true, hasPermission = true): VueWrapper => {
+  isCollabMock.value = isCollab
+  hasPermissionMock.mockImplementation(() => hasPermission)
 
+  return shallowMount(Offers, {
+    global: {
+      plugins: [createTestingPinia({
+        initialState: {
+          common: {
+            user: {},
+          },
+        },
+      })],
+      stubs: {
+        PBlockHeader: {
+          name: 'PBlockHeader',
+          template: '<div><slot /></div>',
+          props: [
+            'pTitle',
+            'pDescription',
+          ],
+        },
+        PButton: {
+          template: '<div><slot /></div>',
+        },
+        PTable: {
+          name: 'PTable',
+          template: '<div><slot /></div>',
+          props: [
+            'pData',
+          ],
+        },
+        PTableColumn: true,
+        OffersDrawer: true,
+      },
+    },
+  })
+}
 describe('offers', () => {
   let wrapper: VueWrapper
-  setActivePinia(pinia)
   beforeEach(() => {
     wrapper = createWrapper()
   })
@@ -48,7 +100,8 @@ describe('offers', () => {
     it('display the table containing the list of offers', () => {
       const offersDrawer = wrapper.findComponent({ name: 'OffersDrawer' })
       const columns = wrapper.findAllComponents({ name: 'PTableColumn' })
-      const rows = wrapper.findAll('tr.el-table__row')
+      const pTable = wrapper.findComponent({ name: 'PTable' })
+      const rows = pTable.props('pData')
 
       expect(columns).toHaveLength(2)
       expect(rows).toHaveLength(activeOffersMocked.length)
@@ -56,9 +109,7 @@ describe('offers', () => {
     })
 
     it('should not display the activate offers button if the user does not have permission', async () => {
-      mockHasPermission.mockImplementation(() => false)
-      wrapper = createWrapper()
-      await flushPromises()
+      const wrapper = createWrapper(true, false)
       const activateOffersButton = wrapper.find(
         '[data-testid=folder-offer-activate-offers-button]',
       )
@@ -74,10 +125,7 @@ describe('offers', () => {
     })
 
     it('should display the correct header title and subtitle for the client', async () => {
-      const store = commonStore()
-      // @ts-expect-error: Getter is read only
-      store.isCollab = false
-      await nextTick()
+      const wrapper = createWrapper(false)
       const pBlockHeader = wrapper.findComponent({ name: 'PBlockHeader' })
 
       expect(pBlockHeader.props('pTitle')).toBe('Activated offers')
@@ -110,12 +158,11 @@ describe('offers', () => {
     })
 
     it('should catch the error and use logger.error when the API call fails', async () => {
-
       vi.spyOn(
         SubscriptionServices,
         'fetchAccountSubscriptions',
       ).mockRejectedValueOnce('Fetch API ERROR')
-      wrapper = createWrapper()
+      const wrapper = createWrapper()
       await flushPromises()
 
       expect(loggerErrorSpy).toHaveBeenCalledOnce()
