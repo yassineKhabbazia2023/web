@@ -56,7 +56,7 @@ const iconName = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-$ghostWidth: 276px;
+$ghostWidth: 185px;
 $ghostHeight: 56px;
 .document-drag-ghost {
   $self: &;
