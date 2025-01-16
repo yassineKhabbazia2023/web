@@ -371,35 +371,42 @@ const loginDisplayUrl = `${HOST_NAME}/login`
 
 <i18n lang="yaml">
   en-US:
-    entityWelcomeTitle: 'A compter du 13 janvier 2025, KPMG Pulse devient'
+    entityWelcomeTitle: 'As of January 13, 2025, KPMG Pulse becomes'
     brandName: 'RYDGE Conseil'
-    welcome: 'Bienvenu sur votre nouvelle interface'
-    introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page {aboutUrl}'
-    about: 'à propos'
+    welcome: 'Welcome to your new interface'
+    introductionText: 'From January 2025, KPMG Pulse becomes RYDGE Conseil. To learn more about this change, we invite you to visit our {aboutUrl} page.'
+    about: 'about'
     secondSection:
-      title: 'Ce que cela change pour vous :'
+      title: 'What this means for you:'
       listItems:
-        first: 'Une nouvelle apparence pour la même navigation'
-        connexionGuide: 'guide de connexion'
-        second: 'Une nouvelle adresse de connexion : votre plateforme est accessible à l’adresse {loginUrl} ({connexionGuide})'
+        first: 'A new look with the same navigation'
+        connexionGuide: 'login guide'
+        second: 'A new login address: your platform is accessible at {loginUrl} ({connexionGuide})'
         loginUrl: 'app.rydge.fr/login'
     thirdSection:
-      title: 'Ce qui reste inchangé :'
+      title: 'What remains unchanged:'
       listItems:
-        first: 'Le soin que nous prenons de vos données'
-        second: "L'historique de vos documents"
-        third: "L'engagement de nos 4500 collaborateurs à vos côtés, partout en France"
-        fourth: 'Notre appui solide pour construire votre réussite durablement'
+        first: 'The care we take with your data'
+        second: 'The history of your documents'
+        third: 'The commitment of our 4500 employees at your side, all over France'
+        fourth: 'Our solid support to build your success sustainably'
     greetings:
-      message: 'Nous restons à votre disposition et à bientôt.'
-      signature: "L'équipe RYDGE Conseil"
-    mobileApp: 'Application mobile'
-    titleMobileApp: "L'app mobile KPMG Pulse devient RYDGE Conseil"
-    downloadTutorial: 'Comment télécharger votre nouvelle application mobile ?'
+      message: 'We remain at your disposal and see you soon.'
+      signature: 'The RYDGE Conseil team'
+    mobileApp: 'Mobile application'
+    titleMobileApp: 'The KPMG Pulse mobile app becomes RYDGE Conseil'
+    downloadTutorial: 'How to download your new mobile application?'
+    ios: 'IOS'
+    android: 'Android'
+    mobileListItems:
+      first: 'Access your data with our secure authentication'
+      second: 'Take photos of your receipts and send them to your expert'
+      third: 'View the history of your documents'
+      fourth: 'Track your company’s performance'
   fr-FR:
-    entityWelcomeTitle: 'A compter du 13 janvier 2025, KPMG Pulse devient'
+    entityWelcomeTitle: 'À compter du 13 janvier 2025, KPMG Pulse devient'
     brandName: 'RYDGE Conseil'
-    welcome: 'Bienvenu sur votre nouvelle interface'
+    welcome: 'Bienvenue sur votre nouvelle interface'
     introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page {aboutUrl}.'
     about: 'à propos'
     secondSection:
@@ -425,7 +432,7 @@ const loginDisplayUrl = `${HOST_NAME}/login`
     ios: 'IOS'
     android: 'Android'
     mobileListItems:
-      first: 'Accèder à vos données avec notre authentification sécurisée'
+      first: 'Accédez à vos données avec notre authentification sécurisée'
       second: 'Prenez en photo vos justificatifs et envoyez-les à votre expert'
       third: "Consultez l’historique de vos documents"
       fourth: 'Suivez les performances de votre entreprise'
