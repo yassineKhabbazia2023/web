@@ -4,7 +4,7 @@
       {{ t('hello') }} {{ user?.firstName }}
     </h3>
 
-    <PTabs v-model="activeTab" @tab-click="handleTabClick">
+    <PTabs :modelValue="activeTab" @tab-click="handleTabClick">
       <template v-for="tab in tabs" :key="tab.name">
         <PTabPane
           v-if="tab.display"

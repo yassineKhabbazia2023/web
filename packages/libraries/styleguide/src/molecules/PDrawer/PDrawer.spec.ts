@@ -1,21 +1,41 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import PDrawer from '.'
-import { ElDrawer } from 'element-plus'
+import type { PDrawerProps } from './PDrawerTypes'
 
 const rootWrapperClass = 'p-drawer'
 
-const createWrapper = (props: any = {}, slots: any = {}) =>
-  mount(PDrawer, {
+const defaultProps: PDrawerProps = {
+  modelValue: false,
+}
+
+const createWrapper = (overriddenProps: Partial<PDrawerProps> = {}, slots: any = {}) => {
+  const props = {
+    ...defaultProps,
+    ...overriddenProps,
+  }
+
+  return shallowMount(PDrawer, {
     props,
     slots,
     global: {
       stubs: {
-        ElDrawer,
+        ElDrawer: {
+          name: 'ElDrawer',
+          template: '<div><slot name="header" /><slot /></div>',
+          props: [
+            'direction',
+            'showClose',
+            'size',
+            'modalClass',
+            'withHeader',
+          ],
+        },
       },
     },
   })
+}
 
 describe('drawer', () => {
   it('should renders the drawer component header in stepper mode', () => {
@@ -25,7 +45,7 @@ describe('drawer', () => {
       pShowPreviousStep: true,
       pSize: '50%',
     })
-    expect(wrapper.find('header').text()).toContain('Drawer title')
+    expect(wrapper.find('.p-drawer__title').text()).toContain('Drawer title')
     expect(wrapper.find('.p-drawer__close-button')).toBeDefined()
     expect(wrapper.find('.p-drawer__step-back-button')).toBeDefined()
   })
@@ -35,7 +55,7 @@ describe('drawer', () => {
       modelValue: true,
       pTitle: 'Drawer title',
     })
-    expect(wrapper.find('header').text()).toContain('Drawer title')
+    expect(wrapper.find('.p-drawer__title').text()).toContain('Drawer title')
     expect(wrapper.find('.p-drawer__close-button')).toBeDefined()
     expect(wrapper.find('.p-drawer__step-back-button').exists()).toBeFalsy()
   })
@@ -51,7 +71,7 @@ describe('drawer', () => {
     const wrapper: VueWrapper<any> = createWrapper({
       pWithHeader: true,
     })
-    expect(wrapper.find('.el-drawer__header').exists()).toBeTruthy()
+    expect(wrapper.find('.p-drawer__header').exists()).toBeTruthy()
   })
 
   it('should emit drawer-previous-button-click event', async () => {
@@ -77,7 +97,10 @@ describe('drawer', () => {
     expect(emittedModelValue).toBeTruthy()
   })
 
-  it.each([
+  const tests: {
+    pType: PDrawerProps['pType']
+    expectedClass: string
+  }[] = [
     {
       pType: 'mini',
       expectedClass: `${rootWrapperClass}--mini`,
@@ -86,12 +109,13 @@ describe('drawer', () => {
       pType: 'fullscreen',
       expectedClass: `${rootWrapperClass}--fullscreen`,
     },
-  ])(
+  ]
+  it.each(tests)(
     'should bind appropriate modifier based on state',
     ({ pType, expectedClass }) => {
       const wrapper = createWrapper({ pDirection: 'ttb', pType })
-      const drawer = wrapper.find(`.${expectedClass}`)
-      expect(drawer.exists()).toBeTruthy()
+      const drawer = wrapper.findComponent({ name: 'ElDrawer'})
+      expect(drawer.props('modalClass')).toBe(expectedClass)
     },
   )
 

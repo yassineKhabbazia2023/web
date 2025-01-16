@@ -81,7 +81,15 @@ const pinia = createTestingPinia()
 const createWrapper = () =>
   mount(PopupRenewToken, {
     global: {
-      plugins: [router, pinia],
+      stubs: {
+        PDialog: {
+          name: 'PDialog',
+          template: '<div v-if="modelValue"><slot name="footer" /><slot /></div>',
+          props: ['modelValue'],
+        },
+        PImage: true,
+        PButton: true,
+      },
     },
   })
 
@@ -146,6 +154,7 @@ describe('popup renew token', () => {
     vi.advanceTimersByTime(fiftyFiveMinutesInMiliseconds)
     const tokenRenewalDialog = getTokenRenewalDialog(wrapper)
     await nextTick()
+
     const button = tokenRenewalDialog.find('[data-testid=renew-token-button]')
     await button.trigger('click')
 

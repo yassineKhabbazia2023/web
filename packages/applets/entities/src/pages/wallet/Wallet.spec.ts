@@ -15,7 +15,9 @@ vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush,
   }),
-  useRoute: () => ({}),
+  useRoute: () => ({
+    name: '',
+  }),
 }))
 
 vi.mock('@pulse/common', () => ({
@@ -42,6 +44,9 @@ const createWrapper = (): VueWrapper<any> =>
     attachTo: document.body,
     global: {
       plugins: [pinia],
+      stubs: {
+        'router-view': true,
+      },
     },
   })
 const collaboratorsTabs = ['Wallet', 'Mandate', 'Upload a BI report', 'MOD requests', 'Collaborators']
