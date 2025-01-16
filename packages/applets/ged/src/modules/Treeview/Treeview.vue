@@ -132,6 +132,7 @@ import type { Document } from '@ged/models/Document'
 import { moveDocuments } from '@ged/services/Documents'
 import { useI18n } from 'vue-i18n'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
+import { logger } from '@pulse/core'
 
 const props = defineProps<TreeviewProps>()
 const emit = defineEmits([
@@ -176,8 +177,14 @@ watch(
     if (props.isLoading === true) {
       return
     }
-    defaultFolder.value = props.servicesFolders[0][0].children[0]
-    emit('selected-folder-change', defaultFolder.value)
+    try {
+      if(props.servicesFolders.length) {
+        defaultFolder.value = props.servicesFolders[0][0].children[0]
+        emit('selected-folder-change', defaultFolder.value)
+      }
+    } catch (error) {
+      logger.error(error)
+    }
   },
 )
 

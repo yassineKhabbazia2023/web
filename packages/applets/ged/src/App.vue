@@ -67,6 +67,7 @@ import {
 import { PCol, PRow } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import { commonStore } from '@pulse/common'
+import { logger } from '@pulse/core'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -78,22 +79,27 @@ const currentFolder = ref<null | Folder>(null)
 const servicesFolders = ref<Folder[][]>([])
 
 const fetchGedFoldersAndServices = async () => {
-  entityServices.value = await fetchUserEntityServices(
-    selectedEntity.value,
-  )
+  try {
+    entityServices.value = await fetchUserEntityServices(
+      selectedEntity.value,
+    )
 
-  const { foldersByService, unavailableServices } = await fetchServicesFolders(
-    entityServices.value,
-    selectedEntity.value,
-  )
+    const { foldersByService, unavailableServices } = await fetchServicesFolders(
+      entityServices.value,
+      selectedEntity.value,
+    )
 
-  displayUnavailableServicesNotification(unavailableServices)
+    displayUnavailableServicesNotification(unavailableServices)
+    servicesFolders.value = foldersByService
 
-  servicesFolders.value = foldersByService
-  // Using the first folder serviceId by default
-  currentService.value = servicesFolders.value[0][0].serviceId
-  currentServiceName.value = findServiceNameFromId(currentService.value)
-  isLoadingServicesOrFolders.value = false
+    // Using the first folder serviceId by default
+    currentService.value = servicesFolders.value[0][0].serviceId
+    currentServiceName.value = findServiceNameFromId(currentService.value)
+  } catch (error) {
+    logger.error(error)
+  } finally {
+    isLoadingServicesOrFolders.value = false
+  }
 }
 
 // Entities and services scope

@@ -114,7 +114,7 @@ describe('drawer', () => {
     'should bind appropriate modifier based on state',
     ({ pType, expectedClass }) => {
       const wrapper = createWrapper({ pDirection: 'ttb', pType })
-      const drawer = wrapper.findComponent({ name: 'ElDrawer'})
+      const drawer = wrapper.findComponent({ name: 'ElDrawer' })
       expect(drawer.props('modalClass')).toBe(expectedClass)
     },
   )
