@@ -23,6 +23,7 @@ declare let window: {
       }
     }
   }
+  $productFruits: any
 } & Window
 
 const productFruitConfig: ProductFruitConfig = {
@@ -48,14 +49,23 @@ export function stopProductFruits() {
     onProductFruitsButtonExtWidgetInit,
   )
   productFruitStatus.isInitialized = false
+  delete window.$productFruits
 }
 
 export function showProductFruits() {
-  window.productFruits.api.inAppCenter.show()
+  try {
+    window.productFruits.api.inAppCenter.show()
+  } catch (error) {
+    logger.error(error)
+  }
 }
 
 export function hideProductFruits() {
-  window.productFruits.api.inAppCenter.close()
+  try {
+    window.productFruits.api.inAppCenter.close()
+  } catch (error) {
+    logger.error(error)
+  }
 }
 
 export function getProductFruitsRole(user: ProductFruitUser): ProductFruitsRole {
