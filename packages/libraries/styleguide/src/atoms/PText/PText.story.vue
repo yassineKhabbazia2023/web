@@ -7,7 +7,7 @@
     <Variant title="PText">
       <PText
         :pContent="PTextBasicData.content"
-        :pIcon="PIPerson"
+        :pIcon="icon"
         :pBold="PTextBasicData.bold"
         :pType="PTextBasicData.type"
         :disabled="PTextBasicData.disabled"
@@ -29,10 +29,11 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { PIPerson } from '../../atoms/PIcon/components'
 import type { PTextProps } from './PTextTypes'
 import PText from './'
+import { getIconComponent } from '../../utils/iconHelper'
 
 const PTextBasicData = reactive({
   content: 'Lorem ipsum dolor sit amet, consectetur adpiscipiline',
@@ -47,6 +48,8 @@ const typeOptions = [
   'secondary',
   'drag',
 ]
+
+const icon = computed(() => getIconComponent('person'))
 </script>
 
 <docs lang="md">

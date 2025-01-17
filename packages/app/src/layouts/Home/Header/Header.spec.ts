@@ -7,6 +7,7 @@ import { createTestingPinia } from '@pinia/testing'
 import helpers from '@app/tests/utils/helpers'
 import Header from './'
 import type { HeaderProps } from './HeaderTypes'
+
 const { router, pinia, fetchUserData } = helpers()
 
 vi.mock('@pulse/common', () => ({
@@ -96,7 +97,9 @@ describe('header', () => {
 
     expect(calendarBtn.classes()).toContain('p-button--white')
     expect(calendarBtn.classes()).toContain('p-button--is-active')
-    expect(calendarBtn.findComponent({ name: 'PIArrowBarUp' })).toBeTruthy()
+
+    const pIcon = calendarBtn.findComponent({ name: 'PIcon' })
+    expect(pIcon.props('pName')).toBe('x')
   })
 
   it('should display accordingly to opened state', async () => {
