@@ -11,6 +11,14 @@ const createWrapper = (): VueWrapper =>
           name: 'PError',
           template:
             '<div><slot name="title"></slot></div><div><slot name="footer"></slot></div>',
+          props: [
+            'pDescription',
+            'pButtonText',
+            'pErrorName',
+            'pErrorText',
+            'pIllustrationName',
+            'pTitle',
+          ],
           emits: ['handle-click'],
         },
       },

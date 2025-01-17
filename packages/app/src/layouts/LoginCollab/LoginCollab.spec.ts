@@ -17,6 +17,7 @@ vi.mock('@app/plugins/ProductFruits/productFruits.plugin')
 const createWrapper = () => shallowMount(LoginCollab, {
   global: {
     stubs: {
+      'router-view': true,
       'PRow': {
         name: 'PRow',
         template: '<div><slot /></div>',
