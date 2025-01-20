@@ -1,4 +1,4 @@
-
+/* eslint-disable @typescript-eslint/no-duplicate-enum-values */
 // Temporary file, to clean up after rebranding
 export enum AppColors {
   PRIMARY = '#1AAB8E',
