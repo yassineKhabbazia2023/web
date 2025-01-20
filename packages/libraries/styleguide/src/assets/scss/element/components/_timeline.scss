@@ -4,7 +4,7 @@
 $timeline: (
   'node-size-normal': 10px,
   'node-size-large': 30px,
-  'node-color': getCssVar('border-color-lighter'),
+  'node-color': var(--el-border-color-lighter),
 );
 
 .p-timeline-item {

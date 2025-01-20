@@ -6,7 +6,7 @@ $alert: () !default;
 $alert: map.merge(
   (
     'padding': 12px 16px,
-    'border-radius-base': getCssVar('border-radius-base'),
+    'border-radius-base': var(--el-border-radius-base),
     'description-font-size': 1.4rem,
     'icon-size': 16px,
   ),

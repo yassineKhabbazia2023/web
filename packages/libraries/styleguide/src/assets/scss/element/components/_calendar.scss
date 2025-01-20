@@ -4,10 +4,10 @@
 $calendar: (
   'border':
     var(
-      #{getCssVarName('table-border')},
-      1px solid #{getCssVar('border-color-lighter')}
+      --el-table-border,
+      1px solid #{var(--el-border-color-lighter)}
     ),
-  'header-border-bottom': getCssVar('calendar-border'),
-  'selected-bg-color': getCssVar('color', 'white'),
+  'header-border-bottom': var(--el-calendar-border),
+  'selected-bg-color': var(--el-color-white),
   'cell-width': calc(100% / 7),
 );

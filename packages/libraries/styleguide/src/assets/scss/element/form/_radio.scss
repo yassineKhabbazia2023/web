@@ -5,22 +5,22 @@ $radio: (
   'font-weight': 400,
   'input-height': 14px,
   'input-width': 14px,
-  'input-border-color': getCssVar('color', 'neutral-gray-200'),
+  'input-border-color': var(--el-color-neutral-gray-200),
 );
 
 $radio-disabled: (
-  'input-border-color': getCssVar('color', 'persian-200'),
-  'input-fill': getCssVar('fill', 'blank'),
-  'icon-color': getCssVar('fill', 'blank'),
-  'checked-input-border-color': getCssVar('color', 'persian-200'),
-  'checked-input-fill': getCssVar('fill', 'blank'),
-  'checked-icon-color': getCssVar('fill', 'blank'),
+  'input-border-color': var(--el-color-persian-200),
+  'input-fill': var(--el-fill-blank),
+  'icon-color': var(--el-fill-blank),
+  'checked-input-border-color': var(--el-color-persian-200),
+  'checked-input-fill': var(--el-fill-blank),
+  'checked-icon-color': var(--el-fill-blank),
 );
 
 $radio-checked: (
-  'text-color': getCssVar('text-color-regular'),
-  'input-border-color': getCssVar('color-primary'),
-  'icon-color': getCssVar('fill', 'blank'),
+  'text-color': var(--el-text-color-regular),
+  'input-border-color': var(--el-color-primary),
+  'icon-color': var(--el-fill-blank),
 );
 
 $radio-bordered-input-height: (
@@ -53,14 +53,14 @@ $radio-bordered-input-width: (
 
       &.is-disabled {
         #{$self}__inner:after {
-          background: getCssVar('color', 'persian-200');
+          background: var(--el-color-persian-200);
         }
       }
     }
 
     &.is-disabled {
       + span#{$self}__label {
-        color: getCssVar('color', 'neutral-gray-500');
+        color: var(--el-color-neutral-gray-500);
       }
     }
 
@@ -74,7 +74,7 @@ $radio-bordered-input-width: (
         display: block;
         width: 6px;
         height: 6px;
-        background: getCssVar('color-primary');
+        background: var(--el-color-primary);
         transform: scale(0);
       }
     }

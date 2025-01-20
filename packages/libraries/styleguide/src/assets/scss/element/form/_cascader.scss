@@ -2,17 +2,17 @@
 $cascader: () !default;
 $cascader: map.merge(
   (
-    'menu-text-color': getCssVar('text-color-regular'),
-    'menu-selected-text-color': getCssVar('color-primary'),
-    'menu-fill': getCssVar('bg-color', 'overlay'),
-    'menu-font-size': getCssVar('font-size-base'),
-    'menu-radius': getCssVar('border-radius-base'),
-    'menu-border': solid 1px getCssVar('border-color-light'),
-    'menu-shadow': getCssVar('box-shadow-light'),
-    'node-background-hover': getCssVar('fill-color', 'light'),
-    'node-color-disabled': getCssVar('text-color-placeholder'),
-    'color-empty': getCssVar('text-color-placeholder'),
-    'tag-background': getCssVar('fill-color'),
+    'menu-text-color': var(--el-text-color-regular),
+    'menu-selected-text-color': var(--el-color-primary),
+    'menu-fill': var(--el-bg-color-overlay),
+    'menu-font-size': var(--el-font-size-base),
+    'menu-radius': var(--el-border-radius-base),
+    'menu-border': solid 1px var(--el-border-color-light),
+    'menu-shadow': var(--el-box-shadow-light),
+    'node-background-hover': var(--el-fill-color-light),
+    'node-color-disabled': var(--el-text-color-placeholder),
+    'color-empty': var(--el-text-color-placeholder),
+    'tag-background': var(--el-fill-color),
   ),
   $cascader
 );

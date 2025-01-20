@@ -4,11 +4,11 @@
 $dialog: (
   'width': 50%,
   'margin-top': 15vh,
-  'bg-color': getCssVar('bg-color'),
-  'box-shadow': getCssVar('box-shadow'),
+  'bg-color': var(--el-bg-color),
+  'box-shadow': var(--el-box-shadow),
   'title-font-size': 2.4rem,
   'content-font-size': 1.4rem,
-  'font-line-height': getCssVar('font-line-height-primary'),
+  'font-line-height': var(--el-font-line-height-primary),
   'padding-primary': 20px,
   'background': var(--el-color-base-white)
 );

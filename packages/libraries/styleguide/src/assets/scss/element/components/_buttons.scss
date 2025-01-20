@@ -3,30 +3,30 @@
 
 // css3 var in packages/theme-chalk/src/button.scss
 $button: (
-  'border-color': getCssVar('color', 'neutral-gray-100'),
-  'text-color': getCssVar('color', 'neutral-gray-500'),
-  'disabled-text-color': getCssVar('color', 'neutral-gray-100'),
-  'disabled-border-color': getCssVar('color', 'neutral-gray-100'),
+  'border-color': var(--el-color-neutral-gray-100),
+  'text-color': var(--el-color-neutral-gray-500),
+  'disabled-text-color': var(--el-color-neutral-gray-100),
+  'disabled-border-color': var(--el-color-neutral-gray-100),
   'divide-border-color': rgba($color-white, 0.5),
-  'hover-text-color': getCssVar('color', 'neutral-gray-500'),
-  'hover-bg-color': getCssVar('fill-color', 'blank'),
-  'hover-border-color': getCssVar('color', 'neutral-gray-300'),
-  'active-text-color': getCssVar('color', 'neutral-gray-500'),
-  'active-border-color':getCssVar('color', 'neutral-gray-500'),
-  'active-bg-color': getCssVar('fill-color', 'blank'),
+  'hover-text-color': var(--el-color-neutral-gray-500),
+  'hover-bg-color': var(--el-fill-color-blank),
+  'hover-border-color': var(--el-color-neutral-gray-300),
+  'active-text-color': var(--el-color-neutral-gray-500),
+  'active-border-color':var(--el-color-neutral-gray-500),
+  'active-bg-color': var(--el-fill-color-blank),
   'outline-color': var(--el-color-base-blue-pulse),
-  'hover-link-text-color': getCssVar('color-info'),
-  'active-color': getCssVar('text-color', 'primary'),
+  'hover-link-text-color': var(--el-color-info),
+  'active-color': var(--el-text-color-primary),
 );
 
 $button-font-size: (
-  'large': getCssVar('font-size', 'base'),
-  'default': getCssVar('font-size', 'base'),
+  'large': var(--el-font-size-base),
+  'default': var(--el-font-size-base),
   'small': 12px,
 );
 
 $button-border-radius: (
-  'small': getCssVar('border-radius', 'base'),
+  'small': var(--el-border-radius-base),
 );
 
 $button-padding-vertical: (

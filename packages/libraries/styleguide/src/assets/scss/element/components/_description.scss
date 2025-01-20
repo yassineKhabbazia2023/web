@@ -2,8 +2,8 @@
 $descriptions: () !default;
 $descriptions: map.merge(
   (
-    'table-border': 1px solid getCssVar('border-color-lighter'),
-    'item-bordered-label-background': getCssVar('fill-color', 'light'),
+    'table-border': 1px solid var(--el-border-color-lighter),
+    'item-bordered-label-background': var(--el-fill-color-light),
   ),
   $descriptions
 );

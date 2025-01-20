@@ -48,7 +48,7 @@ div.el-step {
           width: 100%;
           height: 1px;
           margin-left: 12px;
-          background: getCssVar('color', 'neutral-gray-300');
+          background: var(--el-color-neutral-gray-300);
         }
       }
     }
@@ -60,7 +60,7 @@ div.el-step {
       left: 50%;
       width: 1px;
       height: calc(100% - 48px);
-      background: getCssVar('color', 'neutral-gray-300');
+      background: var(--el-color-neutral-gray-300);
       transform: translate(-50%, -50%);
 
       .el-step__line-inner {
@@ -73,9 +73,9 @@ div.el-step {
     &__head {
       &.is-process {
         .el-step__icon {
-          background: getCssVar(color-primary);
-          border-color: getCssVar(color-primary);
-          color: getCssVar(color-white);
+          background: var(--el-color-primary);
+          border-color: var(--el-color-primary);
+          color: var(--el-color-white);
         }
       }
 
@@ -90,7 +90,7 @@ div.el-step {
 
       &.is-error {
         .el-step__icon {
-          background: getCssVar('color', 'functionnal-red-bg');
+          background: var(--el-color-functionnal-red-bg);
         }
       }
 
@@ -131,11 +131,11 @@ div.el-step {
 
       &.is-success,
       &.is-finish {
-        color: getCssVar('color', 'neutral-gray-900');
+        color: var(--el-color-neutral-gray-900);
       }
 
       &.is-error {
-        color: getCssVar('color', 'functionnal-red-txt');
+        color: var(--el-color-functionnal-red-txt);
       }
 
       &.is-wait {

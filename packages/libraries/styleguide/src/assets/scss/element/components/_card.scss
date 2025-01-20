@@ -1,10 +1,10 @@
 $card: () !default;
 $card: map.merge(
   (
-    'border-color': getCssVar('border-color', 'light'),
-    'border-radius': getCssVar('border-radius', 'small'),
+    'border-color': var(--el-border-color-light),
+    'border-radius': var(--el-border-radius-small),
     'padding': 20px,
-    'bg-color': getCssVar('fill-color', 'blank'),
+    'bg-color': var(--el-fill-color-blank),
   ),
   $card
 );

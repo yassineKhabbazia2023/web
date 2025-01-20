@@ -1,4 +1,4 @@
 $skeleton: (
-  'color': getCssVar('fill-color'),
-  'to-color': getCssVar('fill-color', 'darker'),
+  'color': var(--el-fill-color),
+  'to-color': var(--el-fill-color-darker),
 );

@@ -2,11 +2,11 @@
 $link: () !default;
 $link: map.merge(
   (
-    'font-size': getCssVar('font-size-base'),
-    'font-weight': getCssVar('font-weight-primary'),
-    'text-color': getCssVar('text-color-regular'),
-    'hover-text-color': getCssVar('color-primary'),
-    'disabled-text-color': getCssVar('text-color-placeholder'),
+    'font-size': var(--el-font-size-base),
+    'font-weight': var(--el-font-weight-primary),
+    'text-color': var(--el-text-color-regular),
+    'hover-text-color': var(--el-color-primary),
+    'disabled-text-color': var(--el-text-color-placeholder),
   ),
   $link
 );

@@ -1,30 +1,30 @@
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 $select: (
-  'close-hover-color': getCssVar('color-primary'),
-  'multiple-input-color': getCssVar('text-color-regular'),
+  'close-hover-color': var(--el-color-primary),
+  'multiple-input-color': var(--el-text-color-regular),
   'input-focus-border-color': var(--el-color-white),
-  'input-font-size': getCssVar('font-size-base'),
+  'input-font-size': var(--el-font-size-base),
   'width': 100%,
   'border-color-hover': var(--el-color-white)
 );
 
 $select-option: (
-  'text-color': getCssVar('text-color-regular'),
-  'disabled-color': getCssVar('text-color-placeholder'),
+  'text-color': var(--el-text-color-regular),
+  'disabled-color': var(--el-text-color-placeholder),
   'height': 32px,
   'hover-background':  var(--el-color-base-hover),
   'selected-text-color': var(--el-color-base-blue-pulse),
 );
 
 $select-group: (
-  'text-color': getCssVar('text-color-placeholder'),
+  'text-color': var(--el-text-color-placeholder),
   'height': 30px,
   'font-size': 12px,
 );
 
 $select-dropdown: (
-  'empty-color': getCssVar('text-color-regular'),
+  'empty-color': var(--el-text-color-regular),
   'max-height': 274px,
   'padding': 12px 0,
   'empty-padding': 10px 0
@@ -45,7 +45,7 @@ $select-tags-prefix-padding: (
   .el-input {
     .el-select__caret.el-icon {
       &.is-reverse {
-        color: getCssVar('color-primary');
+        color: var(--el-color-primary);
       }
     }
     &.is-disabled.el-input--suffix {
@@ -95,7 +95,7 @@ $select-tags-prefix-padding: (
       }
 
       &.is-disabled.selected {
-        color: getCssVar('text-color-placeholder');
+        color: var(--el-text-color-placeholder);
       }
     }
   }

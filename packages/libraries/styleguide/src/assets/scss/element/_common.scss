@@ -2,9 +2,9 @@
 
 // Disable default
 $disabled: (
-  'bg-color': getCssVar('color', 'neutral-gray-50'),
-  'text-color': getCssVar('text-color', 'disabled'),
-  'border-color': getCssVar('color', 'neutral-gray-100'),
+  'bg-color': var(--el-color-neutral-gray-50),
+  'text-color': var(--el-text-color-disabled),
+  'border-color': var(--el-color-neutral-gray-100),
 );
 
 $common-component-size: ( 

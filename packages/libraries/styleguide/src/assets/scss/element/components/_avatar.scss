@@ -2,11 +2,11 @@
 
 // css3 var in packages/theme-chalk/src/avatar.scss
 $avatar: (
-  'text-color': getCssVar('color-white'),
-  'bg-color': getCssVar('text-color', 'disabled'),
+  'text-color': var(--el-color-white),
+  'bg-color': var(--el-text-color-disabled),
   'text-size': 14px,
   'icon-size': 18px,
-  'border-radius': getCssVar('border-radius-base'),
+  'border-radius': var(--el-border-radius-base),
 );
 
 $avatar-size: (
@@ -71,7 +71,7 @@ $avatar-size: (
     &--color-persian-gradient {
       border: none;
       background: var(--persian-gradient);
-      color: getCssVar('color-white');
+      color: var(--el-color-white);
     }
 
     &--color-orange {

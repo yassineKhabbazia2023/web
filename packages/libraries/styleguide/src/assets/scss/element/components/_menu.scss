@@ -3,15 +3,15 @@
 $menu: (
   'active-color': var(--el-color-base-blue-pulse),
   'text-color': var(--el-color-base-blue-pulse),
-  'hover-text-color': getCssVar('color-primary'),
+  'hover-text-color': var(--el-color-primary),
   'bg-color': transparent,
   'hover-bg-color': var(--el-color-persian-50),
   'item-height': 36px,
   'horizontal-height': 52px,
-  'sub-item-height': getCssVar('menu-item-height'),
+  'sub-item-height': var(--el-menu-item-height),
   'horizontal-sub-item-height': 32px,
-  'item-font-size': getCssVar('font-size-small'),
-  'item-hover-fill': getCssVar('color-primary-light-9'),
+  'item-font-size': var(--el-font-size-small),
+  'item-hover-fill': var(--el-color-primary-light-9),
   'border-color': transparent,
   'base-level-padding': 0,
   'level-padding': 10px,
@@ -112,7 +112,7 @@ $menu: (
     }
 
     .el-divider--horizontal {
-      border-color: getCssVar('color', 'neutral-gray-500');
+      border-color: var(--el-color-neutral-gray-500);
     }
 
     .el-menu-item {
@@ -226,7 +226,7 @@ $menu: (
       width: 30px;
       height: 30px;
       margin-left: 3px;
-      background: getCssVar('color', 'neutral-gray-500');
+      background: var(--el-color-neutral-gray-500);
 
       &::before {
         content: '';
@@ -237,7 +237,7 @@ $menu: (
         display: block;
         width: 27px;
         height: 27px;
-        background: getCssVar('color', 'neutral-gray-700');
+        background: var(--el-color-neutral-gray-700);
         z-index: 0;
       }
 
@@ -257,7 +257,7 @@ $menu: (
     display: flex;
     border-bottom: none;
     padding: 0 16px;
-    background-color: getCssVar('fill-color', 'blank');
+    background-color: var(--el-fill-color-blank);
 
     &__link {
       flex-grow: 0;
@@ -285,7 +285,7 @@ $menu: (
       &.menu-item:not(.is-disabled) {
         &:hover,
         &:focus {
-          background: getCssVar('color-white');
+          background: var(--el-color-white);
         }
       }
     }
@@ -314,7 +314,7 @@ $menu: (
         &[color="persian-gradient"] {
           &:hover,
           &[aria-expanded="true"] {
-            background: getCssVar('color', 'persian-800');
+            background: var(--el-color-persian-800);
           }
         }
       }
@@ -329,7 +329,7 @@ $menu: (
 
       &[aria-expanded="true"] {
         .el-sub-menu__title {
-          color: getCssVar('color-primary');
+          color: var(--el-color-primary);
         }
       }
 

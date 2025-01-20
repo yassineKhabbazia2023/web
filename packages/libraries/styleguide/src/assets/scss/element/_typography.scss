@@ -14,5 +14,5 @@ $font-size: (
 );
 
 $text-font-size: (
-  'small': getCssVar('font-size', 'small'),
+  'small': var(--el-font-size-small),
 );

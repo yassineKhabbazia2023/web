@@ -25,26 +25,26 @@ $colors: (
 
 $text-color: (
   'primary': #303133,
-  'regular': getCssVar('color', 'neutral-gray-900'),
+  'regular': var(--el-color-neutral-gray-900),
   'secondary': #909399,
-  'placeholder': getCssVar('color', 'neutral-gray-300'),
-  'disabled': getCssVar('color', 'neutral-gray-500'),
+  'placeholder': var(--el-color-neutral-gray-300),
+  'disabled': var(--el-color-neutral-gray-500),
 );
 
 $border-color: (
-  '': getCssVar('color', 'neutral-gray-200'),
-  'light': getCssVar('color', 'neutral-gray-50'),
-  'lighter': getCssVar('color', 'neutral-gray-100'),
+  '': var(--el-color-neutral-gray-200),
+  'light': var(--el-color-neutral-gray-50),
+  'lighter': var(--el-color-neutral-gray-100),
   'extra-light': #f2f6fc,
   'dark': #d4d7de,
   'darker': #cdd0d6,
 );
 
-$border-color-hover: getCssVar('color', 'persian-700');
+$border-color-hover: var(--el-color-persian-700);
 
 $fill-color: (
   '': var(--el-color-neutral-gray-300),
-  'light': getCssVar('color', 'persian-50'),
+  'light': var(--el-color-persian-50),
   'lighter': var(--el-color-neutral-gray-50),
   'extra-light': var(--el-color-neutral-gray-50),
   'dark': var(--el-color-neutral-gray-500),

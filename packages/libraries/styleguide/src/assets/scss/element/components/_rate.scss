@@ -1,13 +1,13 @@
 $rate: map.merge(
   (
     'height': 20px,
-    'font-size': getCssVar('font-size-base'),
+    'font-size': var(--el-font-size-base),
     'icon-size': 18px,
     'icon-margin': 6px,
-    'void-color': getCssVar('border-color', 'darker'),
+    'void-color': var(--el-border-color-darker),
     'fill-color': #f7ba2a,
-    'disabled-void-color': getCssVar('fill-color'),
-    'text-color': getCssVar('text-color', 'primary'),
+    'disabled-void-color': var(--el-fill-color),
+    'text-color': var(--el-text-color-primary),
   ),
   $rate
 );

@@ -4,12 +4,12 @@
 
 // css3 var in packages/theme-chalk/src/collapse.scss
 $collapse: (
-  'border-color': getCssVar('border-color-lighter'),
+  'border-color': var(--el-border-color-lighter),
   'header-height': 49px,
-  'header-text-color': getCssVar('color', 'neutral-gray-900'),
+  'header-text-color': var(--el-color-neutral-gray-900),
   'header-font-size': 1.4rem,
   'content-font-size': 1.4rem,
-  'content-text-color': getCssVar('color', 'neutral-gray-900'),
+  'content-text-color': var(--el-color-neutral-gray-900),
 );
 
 div.el-collapse {
@@ -34,7 +34,7 @@ div.el-collapse {
     .el-collapse-item__header,
     .el-collapse-item__arrow,
     .el-collapse-item__header.is-active .el-collapse-item__arrow {
-      color: getCssVar('color', 'neutral-gray-300');
+      color: var(--el-color-neutral-gray-300);
     }
   }
 
@@ -61,7 +61,7 @@ div.el-collapse {
     &.is-disabled {
       .el-collapse-item__wrap,
       .el-collapse-item__header {
-        background: getCssVar('color', 'neutral-gray-50');
+        background: var(--el-color-neutral-gray-50);
       }
       
       .el-collapse-item__header.is-active,
@@ -70,24 +70,24 @@ div.el-collapse {
       .el-collapse-item__arrow,
       .el-collapse-item__header.is-active .el-collapse-item__arrow {
         font-weight: 600;
-        color: getCssVar('color', 'neutral-gray-300');
+        color: var(--el-color-neutral-gray-300);
       }
     }
 
     .el-collapse-item__wrap,
     .el-collapse-item__header {
       border: none;
-      background: getCssVar('color', 'functionnal-orange-bg');
+      background: var(--el-color-functionnal-orange-bg);
     }
 
     .el-collapse-item__header,
     .el-collapse-item__header.is-active,
     .el-collapse-item__header:hover {
-      color: getCssVar('color', 'functionnal-orange-txt');
+      color: var(--el-color-functionnal-orange-txt);
 
       &.is-active {
         .el-collapse-item__arrow {
-          color: getCssVar('color', 'persian-500');
+          color: var(--el-color-persian-500);
         }
       }
     }
@@ -100,7 +100,7 @@ div.el-collapse {
     &.is-disabled {
       .el-collapse-item__wrap,
       .el-collapse-item__header {
-        background: getCssVar('color', 'neutral-gray-50');
+        background: var(--el-color-neutral-gray-50);
       }
       
       .el-collapse-item__header.is-active,
@@ -108,25 +108,25 @@ div.el-collapse {
       .el-collapse-item__header:hover,
       .el-collapse-item__arrow,
       .el-collapse-item__header.is-active .el-collapse-item__arrow {
-        color: getCssVar('color', 'neutral-gray-300');
+        color: var(--el-color-neutral-gray-300);
       }
     }
 
     .el-collapse-item__wrap,
     .el-collapse-item__header {
       border: none;
-      background: getCssVar('color', 'neutral-gray-50');
+      background: var(--el-color-neutral-gray-50);
     }
 
     .el-collapse-item__header,
     .el-collapse-item__header.is-active,
     .el-collapse-item__header:hover {
       font-weight: 600;
-      color: getCssVar('color', 'neutral-gray-900');
+      color: var(--el-color-neutral-gray-900);
 
       &.is-active {
         .el-collapse-item__arrow {
-          color: getCssVar('color', 'persian-500');
+          color: var(--el-color-persian-500);
         }
       }
     }
@@ -140,7 +140,7 @@ div.el-collapse {
 
       &:hover,
       &.is-active .el-collapse-item__arrow {
-        color: getCssVar('color', 'persian-500');
+        color: var(--el-color-persian-500);
       }
     }
 

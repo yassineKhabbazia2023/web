@@ -4,13 +4,13 @@
 $carousel: (
   'arrow-font-size': 12px,
   'arrow-size': 36px,
-  'arrow-background': getCssVar('color-white'),
-  'arrow-hover-background': getCssVar('color-white'),
+  'arrow-background': var(--el-color-white),
+  'arrow-hover-background': var(--el-color-white),
   'indicator-width': 6px,
   'indicator-height': 6px,
   'indicator-padding-horizontal': 4px,
   'indicator-padding-vertical': 58px,
-  'indicator-out-color': getCssVar('border-color-hover'),
+  'indicator-out-color': var(--el-border-color-hover),
 );
 
 //custom css override
@@ -18,14 +18,14 @@ $carousel: (
   background: var(--persian-light-gradient);
 
   &__arrow {
-    border: 1px solid getCssVar('color', 'persian-200');
-    color: getCssVar('color', 'persian-200');
+    border: 1px solid var(--el-color-persian-200);
+    color: var(--el-color-persian-200);
 
     &:active,
     &:hover,
     &:focus {
-      border: 1px solid getCssVar('color', 'base-persian');
-      color: getCssVar('color', 'base-persian');
+      border: 1px solid var(--el-color-base-persian);
+      color: var(--el-color-base-persian);
     }
   }
 
@@ -34,7 +34,7 @@ $carousel: (
       &.is-active {
         .el-carousel__button {
           width: 20px;
-          background: getCssVar('color', 'white');
+          background: var(--el-color-white);
         }
       }
     }
@@ -63,7 +63,7 @@ $carousel: (
   &__text {
     padding: 16px 12px;
     font-size: 16px;
-    color: getCssVar('color', 'white');
+    color: var(--el-color-white);
     text-align: center;
   }
 

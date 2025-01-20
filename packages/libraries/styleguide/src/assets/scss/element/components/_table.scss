@@ -2,22 +2,22 @@
 
 $table: (
   'border-color': 0,
-  'border': 1px solid getCssVar('color-neutral-gray-100'),
-  'text-color': getCssVar('fill-color', 'darker'),
-  'header-text-color': getCssVar('fill-color', ''),
-  'row-hover-bg-color': getCssVar('color', 'base-hover'),
-  'current-row-bg-color': getCssVar('color', 'persian-50'),
-  'header-bg-color': getCssVar('bg-color'),
-  'fixed-box-shadow': getCssVar('box-shadow', 'light'),
-  'bg-color': getCssVar('fill-color', 'blank'),
-  'tr-bg-color': getCssVar('fill-color', 'blank'),
-  'expanded-cell-bg-color': getCssVar('fill-color', 'blank'),
+  'border': 1px solid var(--el-color-neutral-gray-100),
+  'text-color': var(--el-fill-color-darker),
+  'header-text-color': var(--el-fill-color),
+  'row-hover-bg-color': var(--el-color-base-hover),
+  'current-row-bg-color': var(--el-color-persian-50),
+  'header-bg-color': var(--el-bg-color),
+  'fixed-box-shadow': var(--el-box-shadow-light),
+  'bg-color': var(--el-fill-color-blank),
+  'tr-bg-color': var(--el-fill-color-blank),
+  'expanded-cell-bg-color': var(--el-fill-color-blank),
   'fixed-left-column': inset 10px 0 10px -10px rgb(0 0 0 / 0.15),
   'fixed-right-column': inset -10px 0 10px -10px rgb(0 0 0 / 0.15),
 );
 
 $table-font-size: (
-  'large': getCssVar('font-size', 'base'),
+  'large': var(--el-font-size-base),
   'default': 1.4rem,
   'small': 1.2rem,
 );
