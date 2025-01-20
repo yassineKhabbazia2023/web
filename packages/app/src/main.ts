@@ -10,6 +10,7 @@ import mandateApplet from '@pulse/mandate'
 import commonLibrary from '@pulse/common'
 import styleguideLibrary from '@pulse/styleguide'
 import axeptioPlugin from '@app/plugins/Axeptio/axeptio.plugin'
+import gigyaPlugin from '@app/plugins/Gigya/gigya.plugin'
 import productFruitsPlugin from '@app/plugins/ProductFruits/productFruits.plugin'
 import hubspotPlugin from '@app/plugins/Hubspot/hubspot.plugin'
 
@@ -28,6 +29,7 @@ const isProd = import.meta.env.PROD
 
 const app = createApp(App)
   // install plugins
+  .use(gigyaPlugin)
   .use(axeptioPlugin)
   .use(productFruitsPlugin, {
     isActive: isProd,

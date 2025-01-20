@@ -86,11 +86,16 @@ import { computed, onMounted, reactive, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { logger } from '@pulse/core'
 import { amplitudeService, commonApi, tokenService } from '@pulse/common'
 import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/components'
 import useInitUserAuth from '@login/composable/useInitUserAuth'
 import useNavigation from '@login/composable/useNavigation'
 import { getTermsByCurrentUser } from '@login/services/cgu'
+
+declare let window: {
+  gigya: any
+} & Window
 
 const { initAuthClient, setStoreGigyaUserId } = useInitUserAuth()
 const { navigateToCustomerWallet } = useNavigation()
@@ -178,6 +183,16 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     // Set currentuser data
     await initAuthClient()
     setStoreGigyaUserId(userId)
+
+    // Activate Gigya SSO
+    try {
+      window.gigya.accounts.login({
+        loginID: formValues.email,
+        password: formValues.password,
+      })
+    } catch (error) {
+      logger.error('Something wrong occurred: ', error)
+    }
 
     // Get currentuser terms
     const { isCurrent, terms } = await getTermsByCurrentUser()

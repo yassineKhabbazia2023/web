@@ -11,6 +11,15 @@ const USER_ID = 'customUserId'
 const GIGYA_USER_ID = 'customGigyaUserId'
 const WEB_TOKEN = 'customToken'
 
+declare let window: {
+  gigya: {
+    accounts: {
+      login: () => void,
+    }
+  }
+} & Window
+
+const mockGigyaAccountsLogin = vi.fn()
 const mockStorePatch = vi.fn()
 const mockRouterPush = vi.fn()
 const mockAuthPost = vi.fn((_url, { _email }) => {
@@ -22,6 +31,12 @@ const mockAuthPost = vi.fn((_url, { _email }) => {
     },
   })
 })
+
+window.gigya = {
+  accounts: {
+    login: mockGigyaAccountsLogin,
+  },
+}
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -137,6 +152,11 @@ describe('login', () => {
         id: USER_ID,
         isCollab: false,
       },
+    })
+    expect(mockGigyaAccountsLogin).toHaveBeenCalledOnce()
+    expect(mockGigyaAccountsLogin).toHaveBeenCalledWith({
+      loginID: INPUT_EMAIL_VALUE,
+      password: INPUT_PASSWORD_VALUE,
     })
     expect(mockStorePatch).toHaveBeenCalledWith({
       user: {
