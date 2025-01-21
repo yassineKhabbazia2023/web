@@ -1,9 +1,8 @@
 import { logger } from '@pulse/core'
 import { defineStore } from 'pinia'
-import { msalInstance } from '../msal'
 import type { UserInfo } from './types'
 import api from '../api'
-import { tokenService } from '../main.mts'
+import { logoutCollaborator, logoutGigyaSSO, logoutClient, tokenService } from '../main.mts'
 
 const AUTH_API = 'authorization/api'
 
@@ -31,23 +30,15 @@ export const store = defineStore('common', {
     logout: async (state: commonStateType) => {
       const isCollab = state.user?.isCollab
       const gigyaUserId = state.user?.gigyaUserId
-      try {
-        if (isCollab) {
-          msalInstance.logout()
-        } else if (gigyaUserId) {
-          const urlLogout = 'authentication/api/logout'
-          const data = {
-            gigyaUserId,
-          }
-          await api().gateway.post(urlLogout, data)
-        }
-      } catch (e) {
-        logger.warn(e)
-      } finally {
-        tokenService.setToken('')
-        state.user = null
-        state.permissions = []
+      if (isCollab) {
+        logoutCollaborator()
+      } else if (gigyaUserId) {
+        logoutGigyaSSO()
+        logoutClient(gigyaUserId)
       }
+      tokenService.setToken('')
+      state.user = null
+      state.permissions = []
     },
     async fetchUserPermissions() {
       try {

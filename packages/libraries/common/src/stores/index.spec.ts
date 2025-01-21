@@ -2,10 +2,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { setActivePinia, storeToRefs } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { getMockedEntities, getMockedUserPermissions } from '../mocks'
-import commonStore from './index'
+import * as utils from '../utils'
+import commonStore from '.'
 import { tokenService } from '../main.mts'
 
 const mockedEntities = getMockedEntities()
+const mockedGigyaUserId = 'gigya-user-id-value'
 const mockedPermissions = getMockedUserPermissions()
 
 const pinia = createTestingPinia({
@@ -106,16 +108,27 @@ describe('commonStore', () => {
     async (isCollabCondition) => {
       const setTokenSpy = vi.spyOn(tokenService, 'setToken')
       const store = commonStore(pinia)
-
       const spyLogout = vi.spyOn(store, 'logout')
+      const logoutClientSpy = vi.spyOn(utils, 'logoutClient')
+      const logoutGigyaSSOSpy = vi.spyOn(utils, 'logoutGigyaSSO')
+      const logoutCollaboratorSpy = vi.spyOn(utils, 'logoutCollaborator')
+
       store.$patch({
         user: {
           isCollab: isCollabCondition,
+          gigyaUserId: isCollabCondition ? undefined : mockedGigyaUserId,
         },
       })
       await store.logout(store.$state)
 
-      expect(spyLogout).toHaveBeenCalledTimes(1)
+      if (isCollabCondition) {
+        expect(logoutCollaboratorSpy).toHaveBeenCalledOnce()
+      } else {
+        expect(logoutClientSpy).toHaveBeenCalledOnce()
+        expect(logoutGigyaSSOSpy).toHaveBeenCalledOnce()
+        expect(logoutClientSpy).toHaveBeenCalledWith(mockedGigyaUserId)
+      }
+      expect(spyLogout).toHaveBeenCalledOnce()
       expect(setTokenSpy).toHaveBeenNthCalledWith(1, '')
     },
   )
