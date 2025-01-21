@@ -136,7 +136,7 @@ describe('collabRightsDrawer', () => {
       const nextPreviousButtons = wrapper.findComponent({
         name: 'NextPreviousButtons',
       })
-      nextPreviousButtons.vm.$emit('clickPrevious')
+      nextPreviousButtons.vm.$emit('click-previous')
       await nextTick()
       collabRoles = wrapper.findComponent({ name: 'CollabRoles' })
 
@@ -161,7 +161,7 @@ describe('collabRightsDrawer', () => {
       const nextPreviousButtons = wrapper.findComponent({
         name: 'NextPreviousButtons',
       })
-      nextPreviousButtons.vm.$emit('clickNext')
+      nextPreviousButtons.vm.$emit('click-next')
 
       expect(mockUpdateUserPermission).toHaveBeenCalledOnce()
       expect(mockUpdateUserPermission).toHaveBeenCalledWith(
@@ -183,7 +183,7 @@ describe('collabRightsDrawer', () => {
       const nextPreviousButtons = wrapper.findComponent({
         name: 'NextPreviousButtons',
       })
-      nextPreviousButtons.vm.$emit('clickNext')
+      nextPreviousButtons.vm.$emit('click-next')
       await flushPromises()
 
       expect(loggerErrorSpy).toHaveBeenCalledOnce()
@@ -204,7 +204,7 @@ describe('collabRightsDrawer', () => {
       const nextPreviousButtons = wrapper.findComponent({
         name: 'NextPreviousButtons',
       })
-      nextPreviousButtons.vm.$emit('clickNext')
+      nextPreviousButtons.vm.$emit('click-next')
 
       expect(spyUpdateCollaborator).toHaveBeenCalledOnce()
       expect(spyUpdateCollaborator).toHaveBeenCalledWith(1, {

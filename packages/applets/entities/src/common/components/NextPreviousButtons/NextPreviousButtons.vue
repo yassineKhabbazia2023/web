@@ -4,7 +4,7 @@
       pType="secondary"
       class="margin-right--4 previous-button"
       data-testid="previousButton"
-      @click="emit('clickPrevious')"
+      @click="emit('click-previous')"
     >
       {{ previousLabel }}
     </PButton>
@@ -13,7 +13,7 @@
       data-testid="nextButton"
       :pDisabled="props.isNextButtonDisabled"
       :pLoading="props.isNextButtonLoading"
-      @click="emit('clickNext')"
+      @click="emit('click-next')"
     >
       {{ nextLabel }}
     </PButton>
@@ -30,8 +30,8 @@ const props = withDefaults(defineProps<NextPreviousButtonsProps>(), {
 })
 
 const emit = defineEmits<{
-  clickPrevious: []
-  clickNext: []
+  'click-previous': []
+  'click-next': []
 }>()
 </script>
 

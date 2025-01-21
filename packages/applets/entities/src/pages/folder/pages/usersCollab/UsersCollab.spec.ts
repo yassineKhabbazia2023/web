@@ -410,7 +410,7 @@ describe('usersCollab', () => {
       const removeUserDialogAfter = wrapper.findComponent({ name: 'RemoveUserDialog' })
 
       removeUserDialogAfter.vm.$emit('user-removed')
-      removeUserDialogAfter.vm.$emit('update:model-value', false)
+      removeUserDialogAfter.vm.$emit('update:modelValue', false)
       await nextTick()
 
       const removeUserDialogWhenClosed = wrapper.findComponent({ name: 'RemoveUserDialog' })

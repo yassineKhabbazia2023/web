@@ -54,24 +54,6 @@ vi.mock('@app/schedule/services', () => ({
 const mockedToday = new Date(TEST_DATE)
 const newSearchTerm = 'search term'
 
-const ActionBarStub = {
-  name: 'ActionBar',
-  template: '<div />',
-  props: [
-    'modelValue',
-    'activeDate',
-    'isCollab',
-    'isSearchState',
-    'searchTerm',
-    'activeFilters',
-  ],
-  emits: ['create-schedule'],
-}
-const OccurrenceDrawerStub = {
-  name: 'OccurrenceDrawer',
-  template: '<div />',
-}
-
 function createWrapper(override: Partial<ScheduleProps> = {}) {
   const defaultProps: ScheduleProps = {}
   const props = {
@@ -81,34 +63,6 @@ function createWrapper(override: Partial<ScheduleProps> = {}) {
 
   return shallowMount(Schedule, {
     props,
-    global: {
-      stubs: {
-        DeadlineList: {
-          name: 'DeadlineList',
-          template: '<div />',
-          props: ['modelValue', 'deadlinesByDate', 'activeDate'],
-        },
-        OccurrenceDrawer: OccurrenceDrawerStub,
-        ScheduleDrawer: {
-          name: 'ScheduleDrawer',
-          template: '<div />',
-          emits: ['update:model-value'],
-        },
-        ActionBar: ActionBarStub,
-        Calendar: {
-          name: 'Calendar',
-          template: '<div />',
-          props: ['modelValue', 'deadlinesByDate', 'pRange'],
-          emits: ['update:model-value'],
-        },
-        PDatePicker: {
-          name: 'PDatePicker',
-          template: '<div />',
-          props: ['pSchedulesCollection'],
-          emits: ['panel-change'],
-        },
-      },
-    },
   })
 }
 

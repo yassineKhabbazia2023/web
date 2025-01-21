@@ -28,17 +28,17 @@ describe('formSearch', () => {
     'abc',
   ]
   it.each(SEARCH_VALUES)(
-    'emits an event searchValueSubmitted with the search value depending of form rules',
+    'emits an event search-value-submitted with the search value depending of form rules',
     async (searchValue) => {
-      expect(wrapper.emitted('searchValueSubmitted')).toBeFalsy()
+      expect(wrapper.emitted('search-value-submitted')).toBeFalsy()
 
       await getInputSearch().setValue(searchValue)
       await getInputSearch().trigger('keyup')
       await flushPromises()
 
       searchValue.length < 3
-        ? expect(wrapper.emitted('searchValueSubmitted')).toBeFalsy()
-        : expect(wrapper.emitted('searchValueSubmitted')).toStrictEqual([[searchValue]])
+        ? expect(wrapper.emitted('search-value-submitted')).toBeFalsy()
+        : expect(wrapper.emitted('search-value-submitted')).toStrictEqual([[searchValue]])
     },
   )
 

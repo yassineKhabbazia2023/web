@@ -120,7 +120,7 @@ describe('addCustomerDrawer', () => {
     it('should close the drawer when the previous button is clicked', async () => {
       const addCustomerDrawer = wrapper.findComponent({ name: 'PDrawer' })
       const nextPreviousButtonsWrapper = findNextPreviousButton()
-      nextPreviousButtonsWrapper.vm.$emit('clickPrevious')
+      nextPreviousButtonsWrapper.vm.$emit('click-previous')
       await nextTick()
 
       expect(addCustomerDrawer.isVisible()).toBeFalsy()
@@ -131,7 +131,7 @@ describe('addCustomerDrawer', () => {
       vi.advanceTimersByTime(600)
 
       const nextPreviousButtonsWrapper = findNextPreviousButton()
-      await nextPreviousButtonsWrapper.vm.$emit('clickNext')
+      await nextPreviousButtonsWrapper.vm.$emit('click-next')
       await flushPromises()
 
       const addCustomerDrawer = wrapper.findComponent({ name: 'PDrawer' })
@@ -179,7 +179,7 @@ describe('addCustomerDrawer', () => {
       vi.advanceTimersByTime(600)
 
       const nextPreviousButtonsWrapper = findNextPreviousButton()
-      await nextPreviousButtonsWrapper.vm.$emit('clickNext')
+      await nextPreviousButtonsWrapper.vm.$emit('click-next')
       await flushPromises()
       const addCustomerFeedbackWrapper = wrapper.findComponent({
         name: 'AddCustomerFeedback',
@@ -203,7 +203,7 @@ describe('addCustomerDrawer', () => {
       vi.advanceTimersByTime(600)
 
       const nextPreviousButtonsWrapper = findNextPreviousButton()
-      await nextPreviousButtonsWrapper.vm.$emit('clickNext')
+      await nextPreviousButtonsWrapper.vm.$emit('click-next')
       await flushPromises()
 
       expect(trackAmplitudeSpy).toHaveBeenCalledOnce()
@@ -225,7 +225,7 @@ describe('addCustomerDrawer', () => {
       vi.advanceTimersByTime(600)
 
       const nextPreviousButtonsWrapper = findNextPreviousButton()
-      nextPreviousButtonsWrapper.vm.$emit('clickNext')
+      nextPreviousButtonsWrapper.vm.$emit('click-next')
       await flushPromises()
 
       expect(trackAmplitudeSpy).toHaveBeenCalledOnce()
@@ -251,7 +251,7 @@ describe('addCustomerDrawer', () => {
       vi.advanceTimersByTime(600)
 
       const nextPreviousButtonsWrapper = findNextPreviousButton()
-      nextPreviousButtonsWrapper.vm.$emit('clickNext')
+      nextPreviousButtonsWrapper.vm.$emit('click-next')
       await flushPromises()
 
       expect(addContactToEntitySpy).toHaveBeenCalledOnce()
@@ -282,7 +282,7 @@ describe('addCustomerDrawer', () => {
       vi.advanceTimersByTime(600)
 
       const nextPreviousButtonsWrapper = findNextPreviousButton()
-      nextPreviousButtonsWrapper.vm.$emit('clickNext')
+      nextPreviousButtonsWrapper.vm.$emit('click-next')
       await flushPromises()
 
       expect(trackAmplitudeSpy).toHaveBeenCalledOnce()

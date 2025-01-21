@@ -42,7 +42,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  searchValueSubmitted: [string]
+  'search-value-submitted': [string]
 }>()
 
 const formRef = ref<FormInstance>()
@@ -60,14 +60,14 @@ const rules = reactive<FormRules<typeof formValues>>({
 const handleSearchSubmit = () => {
   formRef.value?.validate((isValid) => {
     if (isValid) {
-      emit('searchValueSubmitted', formValues.search)
+      emit('search-value-submitted', formValues.search)
     }
   })
 }
 
 watch(() => props.forcedValue, (value) => {
   formValues.search = value
-  emit('searchValueSubmitted', formValues.search)
+  emit('search-value-submitted', formValues.search)
 })
 
 const clearSearch = () => {

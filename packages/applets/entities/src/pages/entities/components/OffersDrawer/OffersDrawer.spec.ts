@@ -198,7 +198,7 @@ describe('offersDrawer', () => {
 
       const nextPreviousButtons = findNextPreviousButtons(wrapper)
 
-      nextPreviousButtons.vm.$emit('clickPrevious')
+      nextPreviousButtons.vm.$emit('click-previous')
       await nextTick()
 
       const offers = findOffers(wrapper)
@@ -423,7 +423,7 @@ describe('offersDrawer', () => {
             const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
             manageCollaboratorsComponent.vm.$emit('update:collaborators', mockedCollaborators)
           }
-          nextPreviousButtons.vm.$emit('clickNext')
+          nextPreviousButtons.vm.$emit('click-next')
           await nextTick()
         }
 
@@ -520,14 +520,14 @@ describe('offersDrawer', () => {
 
       const nextPreviousButtons = findNextPreviousButtons(wrapper)
 
-      await asyncEmit(nextPreviousButtons, 'clickNext')
+      await asyncEmit(nextPreviousButtons, 'click-next')
       const customersStep = wrapper.find('[data-testid=customers-step]')
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
       expect(customersNoteStep.props()).toStrictEqual({ disabled: false, modelValue: notes[1] })
       expect(customersStep.exists()).toBeTruthy()
 
-      await asyncEmit(nextPreviousButtons, 'clickNext')
+      await asyncEmit(nextPreviousButtons, 'click-next')
       const collaboratorsStep = wrapper.find('[data-testid=collaborators-step]')
       expect(collaboratorsStep.exists()).toBeTruthy()
     })
@@ -539,21 +539,21 @@ describe('offersDrawer', () => {
 
       const nextPreviousButtons = findNextPreviousButtons(wrapper)
 
-      await asyncEmit(nextPreviousButtons, 'clickNext')
+      await asyncEmit(nextPreviousButtons, 'click-next')
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
-      await asyncEmit(nextPreviousButtons, 'clickNext')
+      await asyncEmit(nextPreviousButtons, 'click-next')
 
       const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
       manageCollaboratorsComponent.vm.$emit('update:collaborators', mockedCollaborators)
 
-      await asyncEmit(nextPreviousButtons, 'clickNext')
+      await asyncEmit(nextPreviousButtons, 'click-next')
       const informationStep = wrapper.find('[data-testid=information-step]')
       expect(informationStep.exists()).toBeTruthy()
 
-      nextPreviousButtons.vm.$emit('clickPrevious')
-      nextPreviousButtons.vm.$emit('clickPrevious')
+      nextPreviousButtons.vm.$emit('click-previous')
+      nextPreviousButtons.vm.$emit('click-previous')
       await nextTick()
 
       const customersStep2 = wrapper.find('[data-testid=customers-step]')
@@ -561,13 +561,13 @@ describe('offersDrawer', () => {
       expect(customersNoteStep2.props('modelValue')).toStrictEqual(notes[1])
       expect(customersStep2.exists()).toBeTruthy()
 
-      nextPreviousButtons.vm.$emit('clickPrevious')
+      nextPreviousButtons.vm.$emit('click-previous')
       await nextTick()
 
       const offer = findOfferSubscription(wrapper)
       expect(offer.exists()).toBeTruthy()
 
-      nextPreviousButtons.vm.$emit('clickPrevious')
+      nextPreviousButtons.vm.$emit('click-previous')
       await nextTick()
       const secondOffer = findSecondOffer(wrapper)
       await secondOffer.trigger('click')
@@ -581,12 +581,12 @@ describe('offersDrawer', () => {
 
       const nextPreviousButtons = findNextPreviousButtons(wrapper) as VueWrapper<any>
 
-      await asyncEmit(nextPreviousButtons, 'clickNext')
+      await asyncEmit(nextPreviousButtons, 'click-next')
 
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
-      await asyncEmit(nextPreviousButtons, 'clickNext')
+      await asyncEmit(nextPreviousButtons, 'click-next')
 
       expect(nextPreviousButtons.props('isNextButtonDisabled')).toBeTruthy()
     })

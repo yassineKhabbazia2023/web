@@ -28,17 +28,17 @@ describe('nextPreviousButtons', () => {
     })
   })
   describe('interactions', () => {
-    it("should emit 'clickPrevious' when click on previousButton", async () => {
+    it("should emit 'click-previous' when click on previousButton", async () => {
       const wrapper = getWrapper()
       const previousButton = wrapper.find('[data-testid=previousButton]')
       await previousButton.trigger('click')
-      expect(wrapper.emitted('clickPrevious')).toBeTruthy()
+      expect(wrapper.emitted('click-previous')).toBeTruthy()
     })
-    it("should emit 'clickNext' when click on nextButton", async () => {
+    it("should emit 'click-next' when click on nextButton", async () => {
       const wrapper = getWrapper()
       const previousButton = wrapper.find('[data-testid=nextButton]')
       await previousButton.trigger('click')
-      expect(wrapper.emitted('clickNext')).toBeTruthy()
+      expect(wrapper.emitted('click-next')).toBeTruthy()
     })
   })
 })
