@@ -1,6 +1,4 @@
-trigger:
-  - develop
-  - release/*
+trigger: none
 
 pool:
   vmImage: 'windows-latest'

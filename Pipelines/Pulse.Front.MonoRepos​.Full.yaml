@@ -1,6 +1,4 @@
-trigger:
-  - develop
-  - release/*
+trigger: none
 
 parameters:
 - name: devIndex

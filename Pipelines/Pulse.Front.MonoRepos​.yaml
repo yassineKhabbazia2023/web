@@ -1,8 +1,5 @@
 trigger:
   - main
-  - feature/*
-  - bugfix/*
-  - hotfix/* 
 
 pool:
   vmImage: 'windows-latest'
@@ -11,13 +8,6 @@ parameters:
 - name: devIndex
   type: number
   default: 0
-- name: disableSonar
-  displayName: "Désactiver Sonar"
-  type: boolean
-  default: false
-  values:
-    - true
-    - false
 - name: deployType
   displayName: "Technical parameter : don t modify it !"
   type: string
