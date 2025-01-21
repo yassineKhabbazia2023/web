@@ -24,7 +24,7 @@ const hubConnectionBuilderMocked = {
 const HubConnectionBuilderMocked = vi.hoisted(() => vi.fn(() => (hubConnectionBuilderMocked)))
 
 vi.mock('@microsoft/signalr', async () => {
-  const signalr = await vi.importActual('@microsoft/signalr') as {}
+  const signalr = await vi.importActual('@microsoft/signalr') as object
 
   return {
     ...signalr,

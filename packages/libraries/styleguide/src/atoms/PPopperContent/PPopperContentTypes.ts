@@ -7,6 +7,6 @@ export interface PPopperContentProps {
   pGpuAcceleration?: boolean
   pOffset?: number
   pPlacement?: PlacementOptions
-  pPopperOptions?: {}
+  pPopperOptions?: object
   pStrategy?: 'fixed' | 'absolute'
 }

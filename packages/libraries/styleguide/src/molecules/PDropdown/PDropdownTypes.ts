@@ -35,7 +35,7 @@ export interface PSelectProps {
   pValidateEvent?: boolean
   pPlacement?: PlacementOptions
   pMaxCollapseTags?: number
-  pPopperOptions?: {}
+  pPopperOptions?: object
   pAriaLabel?: string
 }
 
