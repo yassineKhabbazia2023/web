@@ -1,3 +1,5 @@
+import type { Component } from 'vue'
+
 export interface PButtonProps {
   pType?: 'default'
     | 'primary'
@@ -13,4 +15,5 @@ export interface PButtonProps {
   pSize?: 'default' | 'small'
   pIconOnly?: boolean
   pIsActive?: boolean
+  pTag?: string | Component
 }

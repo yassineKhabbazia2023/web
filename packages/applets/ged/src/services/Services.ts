@@ -9,3 +9,20 @@ export const fetchUserEntityServices = async (
 
   return response?.data
 }
+
+export async function fetchServicesMailToGedInformation(
+  entityId: Service['ServiceId'],
+) {
+  return Promise.resolve(
+    [
+      {
+        'label': 'Comptabilité - Dépôt',
+        'emailAddress': '2025546345-1600-DP@rec.gedkpmg.fr',
+      },
+      {
+        'label': 'Gestion sociale - Dépôt',
+        'emailAddress': '2025546345-1600-GS@rec.gedkpmg.fr',
+      },
+    ],
+  )
+}

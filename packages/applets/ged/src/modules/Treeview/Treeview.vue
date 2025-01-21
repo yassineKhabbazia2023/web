@@ -104,6 +104,10 @@
           </PTree>
         </PScrollbar>
       </div>
+      <MailToGedCard
+        v-if="FeatureFlagManager.isMailToGedActivated()"
+        :selectedEntity="selectedEntity"
+      />
     </div>
   </div>
 </template>
@@ -132,7 +136,8 @@ import type { Document } from '@ged/models/Document'
 import { moveDocuments } from '@ged/services/Documents'
 import { useI18n } from 'vue-i18n'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
-import { logger } from '@pulse/core'
+import { logger, FeatureFlagManager } from '@pulse/core'
+import MailToGedCard from './components/mail-to-ged-card'
 
 const props = defineProps<TreeviewProps>()
 const emit = defineEmits([
@@ -568,7 +573,7 @@ defineExpose({
   }
 
   &__trees {
-    height: 100%;
+    height: 90%;
     max-height: 100%;
     width: 100%;
     overflow-y: auto;

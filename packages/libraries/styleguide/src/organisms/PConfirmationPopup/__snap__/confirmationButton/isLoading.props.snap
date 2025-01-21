@@ -6,5 +6,6 @@
   "pLoading": true,
   "pRound": false,
   "pSize": "small",
+  "pTag": "button",
   "pType": "primary",
 }
