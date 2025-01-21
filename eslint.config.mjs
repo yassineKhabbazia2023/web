@@ -37,14 +37,8 @@ export default [
       '@typescript-eslint/triple-slash-reference': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
-      '@typescript-eslint/no-this-alias': 'off',
-      'import/extensions': 'off',
-      'no-undef': 'off',
-      'max-params': 'off',
       'max-len': 'off',
       'vue/multi-word-component-names': 'off',
-      'vitest/require-hook': 'off',
-      'vitest/expect-expect': 'off',
       'vue/attribute-hyphenation': 'off',
       // actual legit rules
       // '@typescript-eslint/no-unused-vars': [  // TODO: uncomment after eslint migration
