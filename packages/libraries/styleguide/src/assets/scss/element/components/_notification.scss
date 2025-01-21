@@ -17,6 +17,7 @@ $notification: (
 
 .el-notification {
   $self: &;
+  cursor: pointer;
 
   &[role="alert"] {
     background-color: var(--el-color-neutral-gray-900);

@@ -11,6 +11,8 @@ export function PNotification(props: PNotificationProps) {
     customClass,
     position,
     duration,
+    onClose,
+    onClick,
   } = props
 
   const iconComponent = iconName
@@ -25,5 +27,7 @@ export function PNotification(props: PNotificationProps) {
     customClass,
     position,
     duration,
+    onClose,
+    onClick,
   })
 }
