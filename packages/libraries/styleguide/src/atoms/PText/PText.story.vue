@@ -30,7 +30,6 @@
 
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
-import { PIPerson } from '../../atoms/PIcon/components'
 import type { PTextProps } from './PTextTypes'
 import PText from './'
 import { getIconComponent } from '../../utils/iconHelper'

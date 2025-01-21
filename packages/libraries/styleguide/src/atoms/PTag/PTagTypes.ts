@@ -19,8 +19,6 @@ export interface PTagProps {
   pEffect: 'dark' | 'light' | 'plain'
   pSize?: 'large' | 'default' | 'small' | ''
   pContent?: string
-  pIconLeft?: Component | string // @deprecated, TODO replace pIconLeft by pIconLeftName
-  pIconRight?: Component | string // @deprecated, TODO replace pIconRight by pIconRightName
   pIconLeftName?: IconName
   pIconRightName?: IconName
   pRound?: boolean
