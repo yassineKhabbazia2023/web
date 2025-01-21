@@ -30,19 +30,22 @@ vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       get: vi.fn().mockImplementation((url) => {
-        if (url === `${API_PREFIXES.REPORTING}/reports/currentuser`) {
+        const prefix = API_PREFIXES.REPORTING
+        const { embededReportId, accountId } = mockedDefaultReport
+
+        if (url === `${prefix}/reports/currentuser`) {
           return Promise.resolve({
             data: mockedBIReports,
           })
-        } else if (url === `${API_PREFIXES.REPORTING}/reports/${mockedDefaultReport.embededReportId}/embedToken`) {
+        } else if (url === `${prefix}/reports/${embededReportId}/embedToken?accountId=${accountId}`) {
           return Promise.resolve({
             data: mockedBIToken,
           })
-        } else if (url === `${API_PREFIXES.REPORTING}/reportType`) {
+        } else if (url === `${prefix}/reportType`) {
           return Promise.resolve({
             data: mockedBIReportTypes,
           })
-        } else if (url === `${API_PREFIXES.REPORTING}/account/`) {
+        } else if (url === `${prefix}/account/`) {
           return Promise.resolve({
             data: mockedAccount,
           })
@@ -70,7 +73,9 @@ describe('reportingServices', () => {
   })
   describe('fetchBIToken', () => {
     it('should return the BI token', async () => {
-      const biToken = await fetchBIToken(mockedDefaultReport.embededReportId)
+      const { embededReportId, accountId } = mockedDefaultReport
+
+      const biToken = await fetchBIToken(embededReportId, accountId)
 
       expect(biToken).toStrictEqual(mockedBIToken)
     })

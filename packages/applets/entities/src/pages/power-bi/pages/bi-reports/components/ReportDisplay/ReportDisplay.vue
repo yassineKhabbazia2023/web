@@ -64,7 +64,8 @@ const loadPowerBIReport = async () => {
   const powerbiContainer = powerbiSection.value as HTMLElement
   window.powerbi.reset(powerbiContainer)
   try {
-    reportToken.value = await fetchBIToken(selectedReport.value.embededReportId)
+    const { embededReportId, accountId } = selectedReport.value
+    reportToken.value = await fetchBIToken(embededReportId, accountId)
     window.powerbi.embed(powerbiContainer, powerBIConfig.value)
   } catch {
     displayNotification('error', t('biReportLoadingError'))
