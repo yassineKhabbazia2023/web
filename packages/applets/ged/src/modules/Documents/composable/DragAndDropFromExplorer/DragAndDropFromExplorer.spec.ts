@@ -115,10 +115,12 @@ describe('drag and drop from explorer composable', () => {
     const mockEvent = {
       dataTransfer: {
         dropEffect: '',
+        types: ['Files'],
       },
       preventDefault: vi.fn(),
       stopPropagation: vi.fn(),
     } as unknown as DragEvent
+
     handleDragOverFromExplorer(mockEvent)
     expect(isDropZoneVisible.value).toBeTruthy()
   })
@@ -309,5 +311,30 @@ describe('drag and drop from explorer composable', () => {
       position: 'bottom-right',
       duration: 6000,
     }))
+  })
+
+  it('should not display the drop zone if the data type isn\'t "Files"', () => {
+    const { handleDragOverFromExplorer, isDropZoneVisible } = useDragAndDropFromExplorer(
+      currentService,
+      currentServiceName,
+      selectedEntity,
+      selectedFolder,
+      refreshDocumentsList,
+    )
+
+    const mockFile = new File(['content'], 'example.txt', { type: 'text/plain' })
+    const dataTransfer = new MockDataTransfer()
+    dataTransfer.items.push(mockFile)
+    dataTransfer.types.push('image')
+
+    const event = {
+      dataTransfer,
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+    }
+
+    handleDragOverFromExplorer(event as unknown as DragEvent)
+
+    expect(isDropZoneVisible.value).toBe(false)
   })
 })

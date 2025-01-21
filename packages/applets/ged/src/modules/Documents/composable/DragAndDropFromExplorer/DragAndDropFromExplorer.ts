@@ -7,6 +7,7 @@ import type { DocumentsProps } from '../../DocumentsTypes'
 import { Permissions } from '@ged/models/Permissions'
 import { MAX_FILE_SIZE_BYTES } from '@ged/modules/common/constants/files'
 import { trackDepositedDocument } from '@ged/services/tracking/tracking.service'
+import { hasDragType } from '@ged/modules/common/helpers/drag-and-drop.helper'
 
 export function useDragAndDropFromExplorer(
   currentService: Ref<DocumentsProps['currentService']>,
@@ -229,9 +230,13 @@ export function useDragAndDropFromExplorer(
   })
 
   function handleDragOverFromExplorer(event: DragEvent) {
+    if (!hasDragType(event, 'Files')) {
+      return
+    }
     if (!isAllowedDropZone.value && event.dataTransfer) {
       event.dataTransfer.dropEffect = 'none'
     }
+
     isDropZoneVisible.value = true
     clearTimeout(dragOverTimeout)
     dragOverTimeout = setTimeout(() => {
