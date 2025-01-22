@@ -46,7 +46,7 @@ export async function fetchWalletData(
 export function getMappedAccount(
   deploymentStatuses: DeploymentStatus[],
   account: AccountRow,
-  index: number,
+  _index: number,
 ): WalletData {
   const {
     accountGlobalUniqueId: id,

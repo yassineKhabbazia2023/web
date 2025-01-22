@@ -1,5 +1,3 @@
-import type { EpPropMergeType } from 'element-plus/es/utils'
-
 export const typeOptions = [
   {
     label: 'default',

@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import { commonApi } from '@pulse/common'
 import type { Service } from '@ged/models/Service'
 import type { Folder } from '@ged/models/Folder'
@@ -11,6 +12,7 @@ export const fetchServiceFolders = async (
     const response = await commonApi().ds.get(fetchFolderUrl)
     return response?.data
   } catch (error) {
+    logger.error(error)
     // We return the serviceId that failed in order to handle errors in a specific way
     // as "Comptabilité" service might work but "Gestion Sociale" might fail
     return Promise.reject(service)

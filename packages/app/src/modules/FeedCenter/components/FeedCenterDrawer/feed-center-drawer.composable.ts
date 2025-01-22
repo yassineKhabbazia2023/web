@@ -33,7 +33,7 @@ export function useFeedCenterDrawer(
       const { notifications: fetchedNotification } = await fetchNotifications()
       notifications.value = fetchedNotification
     } catch (error) {
-      logger.error('Notifications fetch failed')
+      logger.error('Notifications fetch failed', error)
     } finally {
       stopLoadingNotifications()
     }

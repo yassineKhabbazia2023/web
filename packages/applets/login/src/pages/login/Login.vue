@@ -165,7 +165,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   if (formEl.validate) {
     try {
       await formEl.validate()
-    } catch (error) {
+    } catch {
       return false
     }
   }

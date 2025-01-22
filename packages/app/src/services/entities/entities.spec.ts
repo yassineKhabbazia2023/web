@@ -7,7 +7,6 @@ import type { Entity } from '@pulse/common/types'
 let throwError = false
 const testEntities: Entity[] = getMockedFavoriteEntities()
 
-const spyPNotification = vi.hoisted(() => vi.fn())
 const loggerDebugSpy = vi.hoisted(() => vi.fn())
 const loggerWarnSpy = vi.hoisted(() => vi.fn())
 const loggerErrorSpy = vi.hoisted(() => vi.fn())

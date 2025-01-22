@@ -61,7 +61,7 @@ ROUTES_USING_LOGIN_LAYOUT.forEach((route) => {
 })
 
 export default {
-  install(app: App, options: any) {
+  install(_app: App, options: any) {
     // Accept an array of routes that can be registered along
     // with the plugin
     const { router } = options

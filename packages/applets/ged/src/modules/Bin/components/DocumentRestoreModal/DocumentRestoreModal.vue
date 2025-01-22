@@ -14,7 +14,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref, inject } from 'vue'
+import { logger } from '@pulse/core'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { restoreDocuments } from '@ged/services/BinDocuments'
 import ConfirmationPopup from
@@ -87,7 +88,8 @@ const handleConfirm = async () => {
       docs[0].folderId,
       props.document.path[props.document.path.length - 1])
     isRestoreInProgress.value = false
-  } catch (err: any) {
+  } catch (error) {
+    logger.error(error)
     triggerErrorNotification()
     isRestoreInProgress.value = false
   }

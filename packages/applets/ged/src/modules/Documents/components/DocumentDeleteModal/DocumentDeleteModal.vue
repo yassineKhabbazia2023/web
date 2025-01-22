@@ -14,7 +14,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref, inject } from 'vue'
+import { logger } from '@pulse/core'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { deleteDocuments } from '@ged/services/Documents'
 
@@ -86,7 +87,8 @@ const handleConfirmDeleteFolder = async () => {
     triggerSuccessNotification()
     isDeleteInProgress.value = false
     trackDocumentDelete({ isDeleteSuccessful: true })
-  } catch (err: any) {
+  } catch (error) {
+    logger.error(error)
     triggerErrorNotification()
     isDeleteInProgress.value = false
     trackDocumentDelete({ isDeleteSuccessful: false })

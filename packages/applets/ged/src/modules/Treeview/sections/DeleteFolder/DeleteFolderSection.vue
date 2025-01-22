@@ -12,7 +12,8 @@
   />
 </template>
 <script setup lang="ts">
-import { ref, inject, toRef, watch } from 'vue'
+import { logger } from '@pulse/core'
+import { ref, toRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DeleteFolderConfirmationPopup
   from '@ged/modules/Treeview/components/popups/Delete'
@@ -65,7 +66,8 @@ const handleConfirmDeleteFolder = async () => {
     emit('on-delete-folder-completed', props.selectedFolder)
     triggerSuccessNotification()
     isDeleteInProgress.value = false
-  } catch (err: any) {
+  } catch (error) {
+    logger.error(error)
     triggerErrorNotification()
     isDeleteInProgress.value = false
   }

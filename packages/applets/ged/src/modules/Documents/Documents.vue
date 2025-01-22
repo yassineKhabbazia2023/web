@@ -198,7 +198,6 @@
 <script setup lang="ts">
 import type { ComputedRef } from 'vue'
 import { ref, toRefs, watch, computed } from 'vue'
-import { useI18n } from 'vue-i18n'
 import {
   fetchFolderDocuments,
   fetchDocumentsByKeyWord,
@@ -256,11 +255,6 @@ import {
   trackBreadcrumbUsage,
 } from '@ged/services/tracking/tracking.service'
 import { TriggerSource } from '@ged/services/tracking/tracking.types'
-
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-})
 
 /* The more features we add the more this component becomes bloated.
 We created a refactor task, which, unfortunately has been placed far back in the backlog.

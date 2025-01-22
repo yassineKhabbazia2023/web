@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
@@ -41,6 +42,7 @@ onMounted(async () => {
     // We always select the first report by default
     selectedReport.value = reports.value[0]
   } catch (error) {
+    logger.error(error)
     displayNotification('error', t('biReportsUnavailable'))
   } finally {
     isLoading.value = false

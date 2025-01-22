@@ -470,6 +470,7 @@ async function handleConfirmDocumentDrop() {
     trackDocumentMove({ isMoveSuccessful: true })
     emit('refresh-documents-list', true)
   } catch (error) {
+    logger.error(error)
     displayErrorNotification(formattedMoveDocumentsRequest.ids.length)
     trackDocumentMove({ isMoveSuccessful: false })
   } finally {

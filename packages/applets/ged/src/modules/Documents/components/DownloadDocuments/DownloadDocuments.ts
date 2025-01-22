@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import type { ComputedRef } from 'vue'
 import { ref } from 'vue'
 import { PNotification } from '@pulse/styleguide'
@@ -64,7 +65,8 @@ export function useDownloadDocuments(
         inProgressNotification.value?.close()
         triggerSuccessNotification()
       }
-    } catch (err) {
+    } catch (error) {
+      logger.error(error)
       triggerFailureNotification()
     }
   }

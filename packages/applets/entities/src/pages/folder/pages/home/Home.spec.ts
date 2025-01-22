@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { mount, type VueWrapper } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { mockedEntity } from '../../../wallet/components/TableData/mockData'

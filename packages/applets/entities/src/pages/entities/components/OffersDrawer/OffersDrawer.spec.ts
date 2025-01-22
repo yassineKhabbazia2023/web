@@ -1,4 +1,4 @@
-import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
+import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import OffersDrawer from '.'

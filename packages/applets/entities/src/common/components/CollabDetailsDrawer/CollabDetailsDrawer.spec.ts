@@ -1,11 +1,10 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   getMockedCollaborators,
   getFormattedMockedCollaborators,
 } from '@entities/common/mocks/mockedCollaborators'
 import * as walletServices from '@entities/services/wallet'
-import * as styleguide from '@pulse/styleguide/components'
 import { nextTick } from 'vue'
 import CollabDetailsDrawer from '.'
 

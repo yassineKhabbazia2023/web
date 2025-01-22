@@ -161,6 +161,7 @@ const handleFormSubmit = async (formEl: FormInstance | undefined) => {
         position: 'bottom-right',
       })
     } catch (error) {
+      logger.error(error)
       PNotification({
         message: t('notificationError'),
         iconName: 'exclamationTriangle',

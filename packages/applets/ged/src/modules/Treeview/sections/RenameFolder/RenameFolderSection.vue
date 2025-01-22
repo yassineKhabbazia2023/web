@@ -16,6 +16,7 @@
   />
 </template>
 <script setup lang="ts">
+import { logger } from '@pulse/core'
 import { ref, toRef, watch } from 'vue'
 import { RenameFolder } from '@ged/services/Folder'
 import type { Folder } from '@ged/models/Folder'
@@ -51,7 +52,8 @@ const handleRenameFolder = async (newfolderName: string) => {
     emit('update-folder-name', updatedFolder)
     triggerSuccessNotification()
     closeRenameFolderModal()
-  } catch (err: any) {
+  } catch (error) {
+    logger.error(error)
     triggerErrorNotification()
     isConfirmButtonLoading.value = false
   }

@@ -1,4 +1,4 @@
-import type { CSSProperties, Component } from 'vue'
+import type { CSSProperties } from 'vue'
 import type { IconName } from '../../types/IconName.types'
 
 export interface PInputProps {

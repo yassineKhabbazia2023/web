@@ -32,12 +32,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { amplitudeService, commonStore } from '@pulse/common'
-import {
-  PTabs,
-  PTabPane,
-  PAvatar,
-  PIcon,
-} from '@pulse/styleguide/components'
+import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import Home from './pages/home'
 import { getTabAuthorisations, getTabs } from './FolderHelper'
 import type { TabName, Tab } from './FolderTypes'

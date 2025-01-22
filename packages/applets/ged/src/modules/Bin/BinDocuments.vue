@@ -45,7 +45,6 @@
 
 <script setup lang="ts">
 import { ref, watch, computed, onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
 import type { BinDocumentProps } from './BinDocumentsTypes'
 import type {
   BinDocumentsWithTableStructure,
@@ -56,11 +55,6 @@ import { fetchBinDocuments } from '@ged/services/BinDocuments'
 import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'
 
 import { PBreadcrumb, PLoader, PPagination } from '@pulse/styleguide/components'
-
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-})
 
 const emit = defineEmits<{
   'navigate-to-folder': [number]

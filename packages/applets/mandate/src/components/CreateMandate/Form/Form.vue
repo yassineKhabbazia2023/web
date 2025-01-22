@@ -682,6 +682,7 @@ watch(() => props.step, async (newValue) => {
         }
       }
     } catch (error) {
+      logger.error(error)
       emit('enable-disable-next', false)
     }
   }

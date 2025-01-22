@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import DocumentModalExplorer from '../DocumentsExplorerModal'
 import type { DocumentUploadProps, ExplorerUploadDocument } from './DocumentsUploadTypes'
 import type { Folder } from '@ged/models/Folder'

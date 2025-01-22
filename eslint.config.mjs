@@ -33,24 +33,23 @@ export default [
       // TODO: temporary rules to delete after eslint migration
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
       'vue/multi-word-component-names': 'off',
       'vue/attribute-hyphenation': 'off',
       // actual legit rules
-      // '@typescript-eslint/no-unused-vars': [  // TODO: uncomment after eslint migration
-      //   'error',
-      //   {
-      //     'args': 'all',
-      //     'argsIgnorePattern': '^_',
-      //     'caughtErrors': 'all',
-      //     'caughtErrorsIgnorePattern': '^_',
-      //     'destructuredArrayIgnorePattern': '^_',
-      //     'varsIgnorePattern': '^_',
-      //     'ignoreRestSiblings': true,
-      //   },
-      // ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          'args': 'all',
+          'argsIgnorePattern': '^_',
+          'caughtErrors': 'all',
+          'caughtErrorsIgnorePattern': '^_',
+          'destructuredArrayIgnorePattern': '^_',
+          'varsIgnorePattern': '^_',
+          'ignoreRestSiblings': true,
+        },
+      ],
       'curly': 'error',
       // 'max-params': ['error', 3], // TODO: uncomment after eslint migration
       // Format rules

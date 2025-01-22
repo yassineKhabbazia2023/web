@@ -4,11 +4,6 @@ import PError from '.'
 import type { PErrorBlockProps } from './PErrorTypes'
 import { setAssetsBaseUrl } from '../../utils/imageResolverInit'
 
-const description = 'test description'
-const button = 'test button'
-const errorName = 'test error name'
-const errorText = 'test error text'
-
 const defaultProps: PErrorBlockProps = {
   pButtonText: 'Look at that button text',
   pDescription: 'There is something wrong in here',

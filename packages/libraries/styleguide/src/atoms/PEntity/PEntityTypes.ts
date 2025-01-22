@@ -1,5 +1,4 @@
 import type { PAvatarProps } from '../PAvatar/PAvatarTypes'
-import type { Component } from 'vue'
 import type { IconName } from '../../types/IconName.types'
 
 export interface PEntityProps {

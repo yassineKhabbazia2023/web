@@ -8,7 +8,11 @@ const [givenPort] = process.argv.slice(2)
 const DEFAULT_PORT = 9003
 const DIRECTORY_NAME = './src/assets/'
 
-const types = {
+type MimeTypes = {
+  [key: string]: string;
+};
+
+const types: MimeTypes = {
   html: 'text/html',
   css: 'text/css',
   js: 'application/javascript',
@@ -43,7 +47,8 @@ const server = createServer((req: any, res: any) => {
     try {
       fileName = `${ req.url }.html`
       accessSync(join(root, fileName), constants.F_OK)
-    } catch (e) {
+    } catch (error) {
+      logger.error(error)
       fileName = join(req.url, 'index.html')
     }
   }

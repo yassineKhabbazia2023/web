@@ -9,7 +9,7 @@ vi.mock('../../utils/iconHelper', () => ({
 
 describe('p icon', () => {
   it('renders a component when pName is given', () => {
-    const wrapper = shallowMount(PIcon, {
+    shallowMount(PIcon, {
       props: {
         pName: 'arrowBarLeft',
       },

@@ -1,4 +1,3 @@
-import type { Component } from 'vue'
 import { type UploadFile, type UploadRawFile, type UploadStatus } from 'element-plus'
 import type { IconName } from '../../types/IconName.types'
 

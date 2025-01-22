@@ -2,7 +2,6 @@
 import { shallowMount } from '@vue/test-utils'
 import PText from './'
 import { describe, it, expect } from 'vitest'
-import { markRaw } from 'vue'
 
 const pContent = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
 

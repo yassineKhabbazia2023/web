@@ -90,8 +90,6 @@ const createWrapper = (): VueWrapper<any> =>
     },
   })
 
-const getMenu = () => document.querySelector('.el-popper') as HTMLElement
-
 const toolBoxElementsWithoutPermissions: PToolboxItemProps[] = [
   {
     pIconName: 'person',

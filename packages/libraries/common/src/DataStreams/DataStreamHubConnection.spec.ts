@@ -1,5 +1,5 @@
 
-import { describe, it, expect, vi, beforeEach, type MockInstance } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { DataStreamHubConnection } from './DataStreamHubConnection'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'

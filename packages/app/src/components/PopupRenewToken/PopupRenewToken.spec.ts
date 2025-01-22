@@ -76,7 +76,7 @@ vi.mock('jwt-decode', () => ({
 const fiftyFiveMinutesInMiliseconds = 3300000
 const oneHourInMiliseconds = 3600000
 
-const pinia = createTestingPinia()
+createTestingPinia()
 
 const createWrapper = () =>
   mount(PopupRenewToken, {

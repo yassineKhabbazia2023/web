@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import type { ComputedRef } from 'vue'
 import {
   transmitDocuments,
@@ -27,6 +28,7 @@ export function useTransmitDocuments(
       )
       trackDocumentTransmit({ isTransmitSuccessful: true })
     } catch (error) {
+      logger.error(error)
       trackDocumentTransmit({ isTransmitSuccessful: false })
     }
   }

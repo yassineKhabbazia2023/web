@@ -15,7 +15,7 @@ const folderLauncherRoute = {
 }
 
 export default {
-  install(app: App, options: any) {
+  install(_app: App, options: any) {
     const { router } = options
 
     if (router.hasRoute('wallet')) {

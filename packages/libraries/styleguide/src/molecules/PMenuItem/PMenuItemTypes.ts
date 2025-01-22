@@ -1,4 +1,3 @@
-import type { Component } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import { IconName } from '../../types/IconName.types'
 

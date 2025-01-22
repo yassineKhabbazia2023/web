@@ -1,4 +1,3 @@
-import type { MockInstance } from 'vitest'
 import { vi, it, describe, expect, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
 import { mount, type VueWrapper } from '@vue/test-utils'

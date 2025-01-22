@@ -1,4 +1,4 @@
-import { it, describe, vi, expect, beforeEach, type MockInstance } from 'vitest'
+import { it, describe, vi, expect, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import * as ReportService from '@entities/services/reporting'
 import * as helpers from '@entities/common/utils'

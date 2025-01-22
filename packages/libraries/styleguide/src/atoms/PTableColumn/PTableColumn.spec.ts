@@ -1,6 +1,6 @@
-import { describe, beforeEach, it, expect } from 'vitest'
+import { describe, it, expect } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { shallowMount, flushPromises } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import type { PTableColumnProps } from './PTableColumnTypes'
 import PTableColumn from '.'
 
@@ -52,12 +52,6 @@ function createWrapper(
     },
   })
 }
-
-const pData = [
-  { id: 1, name: 'John Doe', age: 30 },
-  { id: 22, name: 'Jane Smith', age: 25 },
-  { id: 357, name: 'Paul Simon', age: 84 },
-]
 
 const columns: (Partial<PTableColumnProps> & {
   reason: string

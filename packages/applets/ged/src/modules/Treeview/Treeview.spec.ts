@@ -221,7 +221,6 @@ describe('treeview', () => {
 
         it('should update selected folder in the tree', async () => {
           const baseSelectedNodeKey = foldersData[0][0].children[0].id
-          const newSelectedNodeKey = foldersData[0][0].children[1].id
 
           await wrapper.setProps({ isLoading: false })
 

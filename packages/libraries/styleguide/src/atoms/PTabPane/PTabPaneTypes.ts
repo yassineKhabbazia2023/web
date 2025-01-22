@@ -1,4 +1,3 @@
-import type { Component } from 'vue'
 import type { PTooltipProps } from '../../atoms/PTooltip/PTooltipTypes'
 import type { IconName } from '../../types/IconName.types'
 

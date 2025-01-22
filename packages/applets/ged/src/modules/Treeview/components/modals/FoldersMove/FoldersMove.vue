@@ -34,7 +34,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch, inject } from 'vue'
+import { logger } from '@pulse/core'
+import { computed, ref, watch } from 'vue'
 import DocumentModalExplorer from '@ged/modules/Documents/components/DocumentsExplorerModal'
 import type { FoldersMoveProps, ExplorerMoveFolder } from './FoldersMoveTypes'
 import type { Folder } from '@ged/models/Folder'
@@ -185,6 +186,7 @@ const moveFolder = async () => {
 
     triggerSuccessNotification(props.folderToMove.name, currentExplorerFolder.value.name)
   } catch (error) {
+    logger.error(error)
     explorerDocuments.value[0].givenActionState = 'FAILED'
 
     handleClose()

@@ -29,7 +29,8 @@
   />
 </template>
 <script setup lang="ts">
-import { ref, inject, watch, toRef, computed } from 'vue'
+import { logger } from '@pulse/core'
+import { ref, watch, toRef, computed } from 'vue'
 import type { Folder } from '@ged/models/Folder'
 import { CreateFolder } from '@ged/services/Folder'
 import { useI18n } from 'vue-i18n'
@@ -84,7 +85,8 @@ const handleCreateFolder = async (folderName: string) => {
     emit('update-source-folders', createdFolder)
     triggerSuccessNotification()
     closeCreateFoldersModal()
-  } catch (err: any) {
+  } catch (error) {
+    logger.error(error)
     triggerErrorNotification()
     isConfirmButtonLoading.value = false
   }

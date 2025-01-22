@@ -167,7 +167,7 @@ async function trackMandateStatus() {
       resetInterval()
     }
   } catch (error) {
-    logger.error('Mandate status tracking is not available')
+    logger.error('Mandate status tracking is not available', error)
   }
 }
 

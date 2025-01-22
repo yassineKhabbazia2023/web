@@ -107,7 +107,7 @@ const stylesMetaProperties = computed(
 )
 
 const globalStore = store()
-const { defaultEntity, isCollab } = storeToRefs(globalStore)
+const { defaultEntity } = storeToRefs(globalStore)
 
 function openChat() {
   hideProductFruits()

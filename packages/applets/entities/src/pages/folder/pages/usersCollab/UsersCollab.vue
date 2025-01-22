@@ -183,7 +183,7 @@ import {
 // TODO should move this component to a common folder
 import RemoveUserDialog from '../usersClient/components/RemoveUserDialog'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { AppColors, PNotification } from '@pulse/styleguide'
+import { PNotification } from '@pulse/styleguide'
 import { amplitudeService, commonStore, getInitials, userPermissions } from '@pulse/common'
 import {
   PAGE_SIZES,
@@ -405,6 +405,7 @@ async function handleAddSignatory(contactId: User['contactId'], contactFullName:
     showAddSignatorySuccess(contactFullName)
     setAccountSignatories()
   } catch (error) {
+    logger.error(error)
     showTechnicalError()
   }
 }
@@ -418,6 +419,7 @@ async function handleRemoveSignatory(contactId: User['contactId'], contactFullNa
     showSuccessNotification('signatoryRemoved', contactFullName)
     setAccountSignatories()
   } catch (error) {
+    logger.error(error)
     showTechnicalError()
   }
 }

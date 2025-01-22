@@ -40,8 +40,10 @@ import PTooltip from '../../atoms/PTooltip'
 import PIcon from '../../atoms/PIcon'
 import type { PTabPaneProps } from './PTabPaneTypes'
 
+// @ts-ignore
 const slots = useSlots()
-const props = withDefaults(defineProps<PTabPaneProps>(), {
+
+withDefaults(defineProps<PTabPaneProps>(), {
   pLabel: undefined,
   pDisabled: false,
   pName: undefined,

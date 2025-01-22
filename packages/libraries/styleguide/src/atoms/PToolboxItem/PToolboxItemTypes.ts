@@ -1,4 +1,3 @@
-import type { Component } from 'vue'
 import type { PlacementOptions } from '../../constants/placementOptions'
 import type { IconName } from '../../types/IconName.types'
 

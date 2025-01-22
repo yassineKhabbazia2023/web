@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, inject } from 'vue'
+import { computed, ref } from 'vue'
 import type { DocumentRenameProps } from './DocumentRenameTypes.ts'
 import DocumentRenameModal from './components/DocumentRenameModal.vue'
 import { renameDocument } from '@ged/services/Documents'

@@ -5,8 +5,6 @@ import { nextTick } from 'vue'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { generateContactsMock } from '@entities/../tests/mocks/contactsDataMock'
-import { getInitials } from '@entities/helper'
-import type { ExtendedUser } from './UsersClientTypes.ts'
 import { noResult } from '@entities/../tests'
 import FormSearch from '@entities/common/components/FormSearch'
 import type { PatchContactPayload } from '@entities/services/contact/contactTypes'
@@ -94,11 +92,6 @@ function createWrapper(entityId?: number) {
   })
 }
 
-const data = contactsList
-
-const items = data.items
-const totalPages = data.totalPages
-
 let wrapper: VueWrapper<any>
 
 const getPaginationComponent = () => wrapper.findComponent({ name: 'PPagination' })
@@ -144,8 +137,6 @@ describe('usersClient', () => {
     })
 
     it('has a pagination', () => {
-      const pages = wrapper.findAll('.el-pager li')
-
       const paginationComponent = getPaginationComponent()
       expect(paginationComponent.exists()).toBeTruthy()
     })

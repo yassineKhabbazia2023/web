@@ -1,6 +1,5 @@
 import type { QueryResult } from '@entities/common/types'
 import type { PaginationData } from '@entities/helper/helperTypes'
-import type { Component } from 'vue'
 
 export interface DeploymentStatus {
   text: string

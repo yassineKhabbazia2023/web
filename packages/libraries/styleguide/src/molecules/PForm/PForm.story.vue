@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject, reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 // the following types are exported in the styleguide as PFormInstance & PFormRules
 import type { FormInstance, FormRules } from 'element-plus'
 import PFormItem from '../../atoms/PFormItem'
@@ -93,7 +93,7 @@ const validateHandler = (propName: string, isValid: boolean) => {
   formValidity[propName] = isValid
 }
 
-const validateAge = (rule: any, value: any, callback: any) => {
+const validateAge = (_rule: any, value: any, callback: any) => {
   if (!value) {
     return callback(new Error('Please enter the age'))
   }
@@ -112,7 +112,7 @@ const validateAge = (rule: any, value: any, callback: any) => {
   }, 1000)
 }
 
-const validateCheckConfirmPass = (rule: any, value: any, callback: any) => {
+const validateCheckConfirmPass = (_rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please enter the password again'))
   } else if (value !== formValues.pass) {
@@ -122,7 +122,7 @@ const validateCheckConfirmPass = (rule: any, value: any, callback: any) => {
   }
 }
 
-const validateCheckPass = (rule: any, value: any, callback: any) => {
+const validateCheckPass = (_rule: any, value: any, callback: any) => {
   if (value === '') {
     callback(new Error('Please enter the password'))
   } else if (value.length < 3) {

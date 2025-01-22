@@ -1,4 +1,3 @@
-import type { MockInstance } from 'vitest'
 import { expect, describe, it, vi } from 'vitest'
 import { showNotification } from './notification'
 import type { NotificationType } from './notificationTypes'

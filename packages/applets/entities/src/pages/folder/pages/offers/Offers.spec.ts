@@ -162,7 +162,7 @@ describe('offers', () => {
         SubscriptionServices,
         'fetchAccountSubscriptions',
       ).mockRejectedValueOnce('Fetch API ERROR')
-      const wrapper = createWrapper()
+      createWrapper()
       await flushPromises()
 
       expect(loggerErrorSpy).toHaveBeenCalledOnce()
