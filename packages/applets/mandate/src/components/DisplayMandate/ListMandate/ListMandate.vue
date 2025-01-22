@@ -46,11 +46,12 @@
         >
           <template #default="scope">
             <PTooltip
+              v-if="scope.row.statusCode"
               :disabled="!scope.row.jdcStatusDescription"
               :pContent="scope.row.jdcStatusDescription"
               :hideAfter="0"
             >
-              <Tag v-if="scope.row.statusCode" :status="scope.row.statusCode" />
+              <Tag :status="scope.row.statusCode" />
             </PTooltip>
           </template>
         </PTableColumn>
