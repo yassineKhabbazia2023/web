@@ -18,6 +18,18 @@ import {
 const fetchedFolder = 'fetched'
 const patchedFolder = 'patched'
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 describe('folder service', () => {
   beforeEach(() => {
     mockDsGet.mockResolvedValue({

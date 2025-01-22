@@ -18,6 +18,11 @@ import type { ComponentWrapper } from '@ged/utils/testHelpers'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
 import { documentMock } from '@ged/modules/Documents/mocks/documentMock'
 
+const createObjectURLMock = vi.hoisted(() => vi.fn())
+const url = 'https://fakeUrl'
+createObjectURLMock.mockImplementation((_: Blob | MediaSource) => url)
+window.URL.createObjectURL = createObjectURLMock
+
 type TreeviewWrapper = ComponentWrapper<InstanceType<typeof Treeview>>
 
 const pinia = createPinia()

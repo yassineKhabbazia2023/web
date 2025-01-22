@@ -12,6 +12,18 @@ import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
 vi.mock('@pulse/styleguide')
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 const pinia = createPinia()
 
 const child = getMockedFolder(1, 2, 'TheFolder', {
