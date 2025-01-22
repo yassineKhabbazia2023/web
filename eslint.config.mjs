@@ -93,10 +93,7 @@ export default [
     plugins: { vitest },
     rules: {
       ...vitest.configs.recommended.rules,
-      // TODO: temporary rules to delete after eslint migration
-      'vitest/require-hook': 'off',
-      'vitest/expect-expect': 'off',
-      // actual legit rules
+      // specific rules for our usage
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       'max-len': ['warn', {

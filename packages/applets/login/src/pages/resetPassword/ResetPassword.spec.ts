@@ -122,10 +122,8 @@ describe('reset password', () => {
     submitButton.trigger('click')
     await flushPromises()
 
-    /* FIXME : skipped while integrating SG in monorepo
     const input = wrapper.find('.el-input')
     expect(input.classes()).toContain('error')
-    */
   })
 
   it('should NOT display error when mockAuthPost throws an error without message', async () => {
