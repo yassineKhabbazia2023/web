@@ -37,6 +37,7 @@
     :maxCollapseTags="pMaxCollapseTags"
     :popperOptions="pPopperOptions"
     :ariaLabel="pAriaLabel"
+    @change="emit('change', $event)"
   >
     <template
       v-if="pCheckAllLabel"
@@ -124,6 +125,7 @@ const props = withDefaults(defineProps<PDropdownProps>(), {
 
 const emit = defineEmits<{
   'update:modelValue': [PDropdownProps['modelValue']]
+  'change': [any]
 }>()
 
 const groups = computed(() => getDropdownGroups(props.pOptions))

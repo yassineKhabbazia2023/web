@@ -45,7 +45,10 @@ const dialogModel = computed({
   },
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits([
+  'update:modelValue',
+  'close',
+])
 
 const handleClose = () => {
   emit('update:modelValue', false)

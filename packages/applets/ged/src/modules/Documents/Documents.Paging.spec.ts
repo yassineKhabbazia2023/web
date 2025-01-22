@@ -7,7 +7,6 @@ import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import type { DocumentsProps } from './DocumentsTypes'
 import {
-
   fetchFolderDocuments,
 } from '@ged/services/Documents'
 import {
@@ -17,7 +16,6 @@ import type { Document, DocumentsWithTableStructure } from '@ged/models/Document
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { Entity } from '@pulse/common/types'
-import { PPagination } from '@pulse/styleguide/components'
 
  type DocumentsSetup = {
    documents: DocumentsWithTableStructure
@@ -104,7 +102,7 @@ describe('documents', () => {
         props: defaultProps,
         global: {
           stubs: {
-            PPagination,
+            PPagination: true,
             PToolbox: {
               template: '<span />',
             },
@@ -116,7 +114,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = responseNoDoc
       await nextTick()
-      const pagination = wrapper.findComponent(PPagination)
+      const pagination = wrapper.findComponent({ name: 'PPagination' })
       expect(pagination.exists()).toBeFalsy()
     })
   })
@@ -126,7 +124,7 @@ describe('documents', () => {
         props: defaultProps,
         global: {
           stubs: {
-            PPagination,
+            PPagination: true,
             PToolbox: {
               template: '<span />',
             },
@@ -139,7 +137,7 @@ describe('documents', () => {
       componentInstance.documents = documentsResponsePayloadTwoPages
 
       await nextTick()
-      const pagination = wrapper.findComponent(PPagination)
+      const pagination = wrapper.findComponent({ name: 'PPagination' })
 
       pagination.vm.$emit('on-page-range-changed', 100)
       await nextTick()
@@ -161,7 +159,7 @@ describe('documents', () => {
         props: defaultProps,
         global: {
           stubs: {
-            PPagination,
+            PPagination: true,
             PToolbox: {
               template: '<span />',
             },
@@ -174,7 +172,7 @@ describe('documents', () => {
       componentInstance.documents = documentsResponsePayloadTwoPages
 
       await nextTick()
-      const pagination = wrapper.findComponent(PPagination)
+      const pagination = wrapper.findComponent({ name: 'PPagination' })
 
       pagination.vm.$emit('update:current-page', 2)
       await nextTick()
@@ -195,7 +193,7 @@ describe('documents', () => {
         props: defaultProps,
         global: {
           stubs: {
-            PPagination,
+            PPagination: true,
             PToolbox: {
               template: '<span />',
             },
@@ -208,7 +206,7 @@ describe('documents', () => {
       componentInstance.documents = documentsResponsePayloadTwoPages
 
       await nextTick()
-      const pagination = wrapper.findComponent(PPagination)
+      const pagination = wrapper.findComponent({ name: 'PPagination' })
 
       pagination.vm.$emit('update:page-size', 25)
       await nextTick()

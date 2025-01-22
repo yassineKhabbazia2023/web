@@ -5,8 +5,6 @@ import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
 import PExpandableSearch from './'
 import { nextTick } from 'vue'
-import PButton from '../PButton'
-import PInput from '../PInput'
 
 const pPlaceholder = 'write your text in here'
 const defaultProps: PExpandableSearchProps = {
@@ -16,11 +14,11 @@ const defaultProps: PExpandableSearchProps = {
 }
 
 const findPbutton = (wrapper: VueWrapper) => {
-  return wrapper.findComponent(PButton)
+  return wrapper.findComponent({ name: 'PButton' })
 }
 
 const findPinput = (wrapper: VueWrapper) => {
-  return wrapper.findComponent(PInput)
+  return wrapper.findComponent({ name: 'PInput' })
 }
 
 const findInput = (wrapper: VueWrapper) => {
@@ -51,7 +49,10 @@ const createWrapper = (props = defaultProps) =>
             'modelValue',
             'pPlaceholder',
           ],
-          emits: ['update:modelValue'],
+          emits: [
+            'update:modelValue',
+            'clear',
+          ],
         },
       },
     },

@@ -13,6 +13,6 @@ export type FormSection = {
 }
 
 export interface CompanyInformationProps {
-  modelValue: Account
+  modelValue?: Account
   providerName?: ProviderName
 }

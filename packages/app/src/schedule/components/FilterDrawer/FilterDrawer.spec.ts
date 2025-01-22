@@ -37,7 +37,10 @@ async function createWrapper(override: Partial<FilterDrawerProps> = {}) {
         PDrawer: {
           name: 'PDrawer',
           template: '<div><slot /><slot name="footer" /></div>',
-          emits: ['open'],
+          emits: [
+            'open',
+            'close-drawer-button',
+          ],
         },
         PForm: {
           name: 'PForm',

@@ -31,6 +31,14 @@ const createWrapper = () => {
     },
     global: {
       stubs: {
+        PDropdown: {
+          name: 'PDropdown',
+          template: '<div />',
+          emits: [
+            'update:modelValue',
+            'change',
+          ],
+        },
         PAutocomplete: {
           name: 'PAutocomplete',
           methods: {
@@ -98,7 +106,7 @@ describe('biReportInformation', () => {
       wrapper = createWrapper()
 
       const reportTypesDropdown = wrapper.findComponent({ name: 'PDropdown' })
-      reportTypesDropdown.vm.$emit('update:model-value', mockedReportTypeId)
+      reportTypesDropdown.vm.$emit('update:modelValue', mockedReportTypeId)
 
       const accountSearchAutocomplete = wrapper.findComponent({
         name: 'PAutocomplete',

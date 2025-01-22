@@ -84,7 +84,7 @@ describe('manageRightsDrawer', () => {
   describe('events', () => {
     it("should emit 'update:modelValue' event when the drawer is closed", async () => {
       const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
-      pDrawer.vm.$emit('update:model-value', false)
+      pDrawer.vm.$emit('update:modelValue', false)
       await nextTick()
 
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])

@@ -4,7 +4,6 @@ import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type SingleInputModalProps } from '@ged/modules/common/templates/modals/SingleInputModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import { PDialog } from '@pulse/styleguide/components'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 
@@ -151,7 +150,7 @@ describe('singleInputModal', () => {
       const wrapper = createWrapper(updatedProps)
       await nextTick()
 
-      const pdialog = wrapper.findComponent(PDialog)
+      const pdialog = wrapper.findComponent({ name: 'PDialog' })
 
       await pdialog.vm.$emit('close')
       await nextTick()
