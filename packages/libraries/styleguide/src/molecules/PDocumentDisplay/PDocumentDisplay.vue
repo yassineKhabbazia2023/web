@@ -44,7 +44,9 @@ const props = defineProps<PDocumentDisplayProps>()
 
 const isSourceDefined = computed(() => !!props.pSrc)
 const shouldDisplayPreview = computed(() => isSourceDefined.value && isImage.value && !isLoadingDocument.value)
-const shouldDisplayErrorMessage = computed(() => !isSourceDefined.value || (!isProvidedExtensionSupported.value && !isLoadingDocument.value))
+const shouldDisplayErrorMessage = computed(() =>
+  !isSourceDefined.value || (!isProvidedExtensionSupported.value && !isLoadingDocument.value),
+)
 
 const isLoadingDocument = computed(() => props.pIsLoading)
 const isImage = computed(() => {

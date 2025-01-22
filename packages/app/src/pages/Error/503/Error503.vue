@@ -37,7 +37,8 @@ en-US:
   errorText: 'Service unavailable'
 fr-FR:
   title: 'Il semble que nous ayons un problème'
-  description: 'Cela peut être dû à une surcharge du serveur ou à une maintenance temporaire, veuillez réessayer ultérieurement.'
+  description: >
+    Cela peut être dû à une surcharge du serveur ou à une maintenance temporaire, veuillez réessayer ultérieurement.
   textButton: "Retour à la page d'accueil"
   errorName: '503'
   errorText: 'Service indisponible'

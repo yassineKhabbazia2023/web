@@ -174,6 +174,8 @@ en-US:
   reportUploadFailed: 'A problem occurred when submitting your report. Please try again or contact the support'
 fr-FR:
   reset: 'Réinitialiser'
-  validate: 'Valider le depôt'
-  reportUploadFailed: 'Un problème est survenu lors du dépôt de votre rapport. Veuillez réessayer ou contacter le support'
+  validate: 'Valider le dépôt'
+  reportUploadFailed: >
+    Un problème est survenu lors du dépôt de votre rapport.
+    Veuillez réessayer ou contacter le support
 </i18n>

@@ -56,7 +56,6 @@
   </div>
 </template>
 
-<!-- eslint-disable max-len -->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { reactive, computed, ref, toRaw } from 'vue'

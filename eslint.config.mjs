@@ -37,7 +37,6 @@ export default [
       '@typescript-eslint/triple-slash-reference': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-unused-expressions': 'off',
-      'max-len': 'off',
       'vue/multi-word-component-names': 'off',
       'vue/attribute-hyphenation': 'off',
       // actual legit rules
@@ -61,16 +60,16 @@ export default [
       'func-call-spacing': ['error', 'never'],
       'indent': ['error', 2],
       'key-spacing': ['error', { beforeColon: false }],
-      // 'max-len': ['warn', {  // TODO: uncomment after eslint migration
-      //   code: 120,
-      //   ignoreComments: true,
-      //   ignoreTrailingComments: true,
-      //   ignoreUrls: true,
-      //   ignoreStrings: true,
-      //   ignoreTemplateLiterals: true,
-      //   ignoreRegExpLiterals: true,
-      //   ignorePattern: '^\\s*<path',
-      // }],
+      'max-len': ['warn', {
+        code: 120,
+        ignoreComments: true,
+        ignoreTrailingComments: true,
+        ignoreUrls: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreRegExpLiterals: true,
+        ignorePattern: '^\\s*<path',
+      }],
       'import/no-duplicates': 'error',
       'no-empty': 'error',
       'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
@@ -114,6 +113,13 @@ export default [
     rules: {
       '@typescript-eslint/no-require-imports': 'off', // allow require
       'no-undef': 'off', // allow module.exports
+    },
+  },
+  {
+    // specific rulesets for Story files (above rules apply as well)
+    files: ['**/*.story.vue'],
+    rules: {
+      'max-len': 'off', // we don't enforce line length in stories files
     },
   },
 ]

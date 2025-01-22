@@ -183,7 +183,8 @@ onMounted(async () => {
   }
 
   &__main-menu {
-    // Same margin as left sidebar section - left section gap - left section first item height  - left section item margin-top
+    // Same margin as left sidebar
+    // section - left section gap - left section first item height  - left section item margin-top
     margin-top: calc(56px + 50px);
   }
 

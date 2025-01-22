@@ -67,7 +67,6 @@
     </template>
   </PDialog>
 </template>
-<!-- eslint-disable max-len -->
 
 <script setup lang="ts">
 import { computed, ref, watch, onMounted } from 'vue'

@@ -133,7 +133,11 @@ function updateFeedCenterDisplay() {
 .header-section {
   z-index: 21;
   position: fixed;
-  box-shadow: 0px 0px 2px 0px rgba(32, 32, 32, 0.10), 0px 1px 2px 0px rgba(32, 32, 32, 0.05), 0px 2px 4px 0px rgba(32, 32, 32, 0.08), 0px 3px 4px 0px rgba(32, 32, 32, 0.10);
+  box-shadow:
+    0px 0px 2px 0px rgba(32, 32, 32, 0.10),
+    0px 1px 2px 0px rgba(32, 32, 32, 0.05),
+    0px 2px 4px 0px rgba(32, 32, 32, 0.08),
+    0px 3px 4px 0px rgba(32, 32, 32, 0.10);
   height: 56px;
   width: 100vw;
   background-color: var(--el-color-base-white);

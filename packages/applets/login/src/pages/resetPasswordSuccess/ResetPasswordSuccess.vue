@@ -32,7 +32,6 @@
   </div>
 </template>
 
-<!-- eslint-disable max-len -->
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
@@ -120,5 +119,6 @@ const email = route.query.email
     backToLogin: 'Revenir à la connexion'
     verifyMailTitle: 'Vérifiez votre boite mail.'
     sendEmailDescription: 'Si l''adresse '
-    associatedAccount: ' est bien associée à votre compte, vous recevrez un lien par e-mail pour réinitialiser votre mot de passe.'
+    associatedAccount: >
+      est bien associée à votre compte, vous recevrez un lien par e-mail pour réinitialiser votre mot de passe.
 </i18n>

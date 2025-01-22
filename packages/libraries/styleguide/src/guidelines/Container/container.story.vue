@@ -75,7 +75,6 @@ const asideWidth = ref('20%')
   }
 </style>
 
-<!-- eslint-disable max-len -->
 <docs lang="md">
 ## Container Attributes
 

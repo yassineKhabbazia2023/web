@@ -374,7 +374,9 @@ const loginDisplayUrl = `${HOST_NAME}/login`
     entityWelcomeTitle: 'As of January 13, 2025, KPMG Pulse becomes'
     brandName: 'RYDGE Conseil'
     welcome: 'Welcome to your new interface'
-    introductionText: 'From January 2025, KPMG Pulse becomes RYDGE Conseil. To learn more about this change, we invite you to visit our {aboutUrl} page.'
+    introductionText: >
+      From January 2025, KPMG Pulse becomes RYDGE Conseil.
+      To learn more about this change, we invite you to visit our {aboutUrl} page.
     about: 'about'
     secondSection:
       title: 'What this means for you:'
@@ -407,14 +409,17 @@ const loginDisplayUrl = `${HOST_NAME}/login`
     entityWelcomeTitle: 'À compter du 13 janvier 2025, KPMG Pulse devient'
     brandName: 'RYDGE Conseil'
     welcome: 'Bienvenue sur votre nouvelle interface'
-    introductionText: 'Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page {aboutUrl}.'
+    introductionText: >
+      Dès janvier 2025, KPMG Pulse devient RYDGE Conseil.
+      Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page {aboutUrl}.
     about: 'à propos'
     secondSection:
       title: 'Ce que cela change pour vous :'
       listItems:
         first: 'Une nouvelle apparence pour la même navigation'
         connexionGuide: 'guide de connexion'
-        second: 'Une nouvelle adresse de connexion : votre plateforme est accessible à l’adresse {loginUrl} ({connexionGuide})'
+        second: >
+          Une nouvelle adresse de connexion : votre plateforme est accessible à l’adresse {loginUrl} ({connexionGuide})
         loginUrl: 'app.rydge.fr/login'
     thirdSection:
       title: 'Ce qui reste inchangé :'

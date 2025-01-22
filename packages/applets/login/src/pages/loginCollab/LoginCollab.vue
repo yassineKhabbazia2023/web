@@ -86,6 +86,7 @@ p {
 }
 </style>
 
+<!-- eslint-disable max-len -->
 <i18n lang="json">
 {
   "en-US": {
