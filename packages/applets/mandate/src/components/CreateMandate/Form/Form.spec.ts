@@ -83,7 +83,7 @@ describe('form.vue', () => {
   ]
 
   // FIXME : skipped while integrating SG in monorepo
-  it.skip.each(step1TestCases)('drawer step 1 and erpId %s, name %s and siret %s',
+  it.each(step1TestCases)('drawer step 1 and erpId %s, name %s and siret %s',
     async ({ initial: { erpId, name, siretNumber } }) => {
       const wrapper = createWrapper({ step: 1 })
       const ibsInputElement = wrapper
@@ -254,8 +254,7 @@ describe('form.vue', () => {
     ['', '750081'],
   ]
 
-  // FIXME : skipped while integrating SG in monorepo
-  it.skip.each(testCases)('when step value is 2 (email: %s, zipCode: %s invalid)',
+  it.each(testCases)('when step value is 2 (email: %s, zipCode: %s invalid)',
     async (email, zipCode) => {
       const wrapper = createWrapper({ step: 2 })
       const emailInput = wrapper.find('input[data-testid="email-test"]')
