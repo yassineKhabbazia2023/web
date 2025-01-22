@@ -1,4 +1,3 @@
-/// <reference types="histoire" />
 import path from 'path'
 import { fileURLToPath, URL } from 'node:url'
 import type { UserConfigExport } from 'vite'
@@ -102,7 +101,7 @@ if (process.env.HISTOIRE) {
         name: '@pulse/styleguide',
         entry: path.resolve(__dirname, 'src/main.mts'),
         formats: ['es'],
-        fileName: (format) => `lib/styleguide.pegase.${format}.min.js`,
+        fileName: (format: string) => `lib/styleguide.pegase.${format}.min.js`,
       },
       rollupOptions: {
         input: 'src/main.mts',
