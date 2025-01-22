@@ -38,6 +38,10 @@ window.gigya = {
   },
 }
 
+vi.mock('env-vars', () => ({
+  VITE_GIGYA_SSO_ACTIVATED: 'true',
+}))
+
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush,

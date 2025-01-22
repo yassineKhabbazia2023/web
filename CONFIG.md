@@ -41,10 +41,12 @@ window.EnvVars = envVars
 | VITE_ASSETS_BASE_URL | URL des assets Front (images, fonts) |
 | VITE_CONFIG_OFFERS_BOOK | URL d'un site web à partager aux utilisateurs |
 | VITE_FEED_CENTER_ACTIVATED | Feature-flag du Feed Center |
+| VITE_GIGYA_SSO_ACTIVATED | Feature-flag du GIGYA SSO |
 | VITE_GESTION_MEG | URL de connexion SSO MEG |
 | VITE_IDLE_DURATION | Temps de non-utilisation de l'app avant une proposition de déconnexion automatique |
 | VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |
 | VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
+| VITE_GIGYA_KEY | Clé d'API Gigya (SSO) |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY | Clé du workspace ProductFruit Collab anonyme (login collab) |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT | Clé du workspace ProductFruit Client anonyme (login client et maintenance) |
 | VITE_PRODUCT_FRUITS_KEY | Clé du workspace ProductFruit Collab connecté |

@@ -27,6 +27,15 @@ const loggerDebugSpy = vi.hoisted(() => vi.fn())
 const loggerWarnSpy = vi.hoisted(() => vi.fn())
 const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
+vi.mock('env-vars', () => ({
+  VITE_API_MSAL_CLIENT_ID: '',
+  VITE_API_MSAL_TENANT: '',
+  VITE_API_MSAL_AUTHORITY: undefined,
+  VITE_API_MSAL_REDIRECT_URI: '',
+  VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI: '',
+  VITE_GIGYA_SSO_ACTIVATED: 'true',
+}))
+
 vi.mock('@pulse/core', () => ({
   logger: {
     debug: loggerDebugSpy,

@@ -2,6 +2,7 @@ import { logger } from '@pulse/core'
 import { defineStore } from 'pinia'
 import type { UserInfo } from './types'
 import api from '../api'
+import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { logoutCollaborator, logoutGigyaSSO, logoutClient, tokenService } from '../main.mts'
 
 const AUTH_API = 'authorization/api'
@@ -33,7 +34,9 @@ export const store = defineStore('common', {
       if (isCollab) {
         logoutCollaborator()
       } else if (gigyaUserId) {
-        logoutGigyaSSO()
+        if(VITE_GIGYA_SSO_ACTIVATED === 'true'){
+          logoutGigyaSSO()
+        }
         logoutClient(gigyaUserId)
       }
       tokenService.setToken('')

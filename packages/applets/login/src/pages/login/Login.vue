@@ -84,6 +84,7 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
+import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { logger } from '@pulse/core'
@@ -185,13 +186,15 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     setStoreGigyaUserId(userId)
 
     // Activate Gigya SSO
-    try {
-      window.gigya.accounts.login({
-        loginID: formValues.email,
-        password: formValues.password,
-      })
-    } catch (error) {
-      logger.error('Something wrong occurred: ', error)
+    if(VITE_GIGYA_SSO_ACTIVATED === 'true'){
+      try {
+        window.gigya.accounts.login({
+          loginID: formValues.email,
+          password: formValues.password,
+        })
+      } catch (error) {
+        logger.error('Error during Gigya SSO login: ', error)
+      }
     }
 
     // Get currentuser terms
