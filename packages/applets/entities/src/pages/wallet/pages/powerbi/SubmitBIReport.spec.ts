@@ -26,9 +26,10 @@ vi.mock('@pulse/core', () => ({
   },
 }))
 
+const uploadBIreportMock = vi.hoisted(() => vi.fn())
 vi.mock('@entities/services/reporting', () => ({
   fetchBIReportTypes: vi.fn(() => Promise.resolve(mockedBIReportTypes)),
-  uploadBIreport: vi.fn(),
+  uploadBIreport: uploadBIreportMock,
 }))
 
 const createWrapper = () => mount(SubmitBIReport)
@@ -66,7 +67,7 @@ describe('submitBIReport', () => {
     it('should reset all entered data and remove any uploaded reports when the reset button is clicked', async () => {
       const resetButton = wrapper.findComponent(
         '[data-testid=powerbi-reset-button]',
-      ) as VueWrapper
+      )
       await resetButton.trigger('click')
 
       expect(wrapper.vm.reportFile).toBeUndefined()
@@ -110,11 +111,10 @@ describe('submitBIReport', () => {
       )
       const uploadBIReport = wrapper.findComponent({ name: 'UploadBIReport' })
       uploadBIReport.vm.$emit('upload-report', mockedPowerBIReport)
-      wrapper.vm.isReportFormIncomplete = false
       await nextTick()
       const validationButton = wrapper.findComponent(
         '[data-testid=powerbi-validation-button]',
-      ) as VueWrapper
+      )
       await validationButton.trigger('click')
       const {
         accountId,
@@ -134,6 +134,7 @@ describe('submitBIReport', () => {
       )
     })
     it('should display a console error when the upload of a new report fails', async () => {
+      uploadBIreportMock.mockReturnValueOnce('Error')
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(ReportService, 'uploadBIreport').mockRejectedValue(
         expectedErrorMessage,
@@ -149,12 +150,11 @@ describe('submitBIReport', () => {
       )
       const uploadBIReport = wrapper.findComponent({ name: 'UploadBIReport' })
       uploadBIReport.vm.$emit('upload-report', mockedPowerBIReport)
-      wrapper.vm.isReportFormIncomplete = true
       await nextTick()
 
       const validationButton = wrapper.findComponent(
         '[data-testid=powerbi-validation-button]',
-      ) as VueWrapper
+      )
       await validationButton.trigger('click')
       await flushPromises()
 
@@ -181,12 +181,11 @@ describe('submitBIReport', () => {
       )
       const uploadBIReport = wrapper.findComponent({ name: 'UploadBIReport' })
       uploadBIReport.vm.$emit('upload-report', mockedPowerBIReport)
-      wrapper.vm.isReportFormIncomplete = true
       await nextTick()
 
       const validationButton = wrapper.findComponent(
         '[data-testid=powerbi-validation-button]',
-      ) as VueWrapper
+      )
       await validationButton.trigger('click')
       await flushPromises()
 

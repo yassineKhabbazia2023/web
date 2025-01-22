@@ -231,7 +231,7 @@ describe('documents', () => {
 
       const documentUploadWrapper = findDocumentUpload(wrapper)
       await documentUploadWrapper.vm.$emit(
-        'close-upload-documents-modal ',
+        'close-upload-documents-modal',
       )
       await nextTick()
 

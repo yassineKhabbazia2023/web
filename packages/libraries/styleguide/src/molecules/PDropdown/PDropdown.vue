@@ -123,7 +123,7 @@ const props = withDefaults(defineProps<PDropdownProps>(), {
 })
 
 const emit = defineEmits<{
-  'update:model-value': [PDropdownProps['modelValue']]
+  'update:modelValue': [PDropdownProps['modelValue']]
 }>()
 
 const groups = computed(() => getDropdownGroups(props.pOptions))
@@ -138,7 +138,7 @@ const internalIsCheckAll = computed({
 const internalModelValue = computed({
   get: () => props.modelValue,
   set: (modelValue: PDropdownProps['modelValue']) => {
-    emit('update:model-value', modelValue)
+    emit('update:modelValue', modelValue)
   },
 })
 </script>

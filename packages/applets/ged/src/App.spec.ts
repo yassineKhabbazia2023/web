@@ -25,6 +25,25 @@ import BinDocuments from '@ged/modules/Bin'
 
 const pinia = createPinia()
 
+const debounceMock = vi.fn((callback: Function) => callback)
+const commonStoreMock = vi.hoisted(() => vi.fn(() => ({
+  $delete: vi.fn(),
+  $patch: vi.fn(),
+  $get: vi.fn(),
+  $post: vi.fn(),
+  defaultEntity: {
+    name: 'JEAN LÉVAGE',
+    idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
+    accountNumber: 'ent',
+    color: 'orange',
+  },
+})))
+
+vi.mock('@pulse/common', () => ({
+  debounce: (callback: Function) => debounceMock(callback),
+  commonStore: commonStoreMock,
+}))
+
 const apiMocks = vi.hoisted(() => ({
   fetchServicesFoldersSuccess: vi.fn(() => ({
     foldersByService: foldersData,
@@ -346,10 +365,21 @@ describe('ged', () => {
   describe('bin', () => {
     describe('props', () => {
       it('should display bin component when currentBinService is set', async () => {
+        commonStoreMock.mockReturnValueOnce({
+          $delete: vi.fn(),
+          $patch: vi.fn(),
+          $get: vi.fn(),
+          $post: vi.fn(),
+          defaultEntity: {
+            name: 'JEAN LÉVAGE',
+            idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
+            accountNumber: '256',
+            color: 'orange',
+          },
+        })
         const wrapper = createWrapper()
         const componentInstance = wrapper.vm
         componentInstance.currentBinService = foldersData[0][0].serviceId
-        componentInstance.selectedEntity = 'ent'
         componentInstance.currentBinServiceName = foldersData[0][0].name
         await nextTick()
         const bin = wrapper.findComponent(BinDocuments)
@@ -365,7 +395,6 @@ describe('ged', () => {
         const wrapper = createWrapper()
         const componentInstance = wrapper.vm
         componentInstance.currentBinService = foldersData[0][0].serviceId
-        componentInstance.selectedEntity = 'ent'
         componentInstance.currentBinServiceName = foldersData[0][0].name
         await nextTick()
         const tree = wrapper.findComponent(Treeview)

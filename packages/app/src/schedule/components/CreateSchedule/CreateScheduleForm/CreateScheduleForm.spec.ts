@@ -2,10 +2,6 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import CreateScheduleForm from '.'
-import {
-  PAlert,
-  PUpload,
-} from '@pulse/styleguide/components'
 import type { FormProps } from './CreateScheduleFormTypes'
 import { accountsCollection, recipientsIdCollection } from '@app/schedule/tests/mocks/Account'
 import { accountsDataTransformer } from '@app/schedule/helpers/utils'
@@ -119,11 +115,9 @@ describe('test CreateScheduleForm', () => {
     const frequencyComponent = wrapper.findAllComponents({ name: 'PDropdown' })[2]
     await frequencyComponent.setValue('Monthly')
     const PDatePickerComponent = wrapper.findComponent({ name: 'PDatePicker' })
-    PDatePickerComponent.vm.$emit('update:modelValue',
-      new Date('April 29, 2024'))
+    PDatePickerComponent.vm.$emit('update:modelValue', new Date('April 29, 2024'))
     await nextTick()
-    expect(wrapper.findComponent(PAlert).text())
-
+    expect(wrapper.findComponent({ name: 'PAlert' }).text())
       .toContain("Certains mois contiennent moins de 29 jours. Pour ces mois, l'occurrence sera créée le dernier jour du mois.")
   })
   it('should add attachment', () => {
@@ -133,7 +127,7 @@ describe('test CreateScheduleForm', () => {
         frequenciesCollection: frequenciesMock,
       })
     const mockFile = new File(['file content'], 'example.pdf', { type: 'application/pdf' })
-    const PUploadComponent = wrapper.findComponent(PUpload)
+    const PUploadComponent = wrapper.findComponent({ name: 'PUpload' })
     PUploadComponent.vm.$emit('delete-file')
     PUploadComponent.vm.$emit('files-selected',
       [mockFile])

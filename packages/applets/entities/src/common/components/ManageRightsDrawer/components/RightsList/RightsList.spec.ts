@@ -46,13 +46,13 @@ const createWrapper = (overrideProps?: RightsListProps): VueWrapper<any> => {
           name: 'PSwitch',
           template: '<button></button>',
           props: ['modelValue'],
-          emits: ['update:model-value'],
+          emits: ['update:modelValue'],
         },
         PCheckboxGroup: {
           name: 'PCheckboxGroup',
           template: '<div><slot /></div>',
           props: ['modelValue'],
-          emits: ['update:model-value'],
+          emits: ['update:modelValue'],
         },
         PCheckbox: {
           name: 'PCheckbox',

@@ -192,13 +192,13 @@ describe('test PDropdown', () => {
       const pCheckbox = component.findComponent({ name: 'PCheckbox' })
       const expected = ['a', 'b', 'c']
 
-      pCheckbox.vm.$emit('update:model-value', true)
+      pCheckbox.vm.$emit('update:modelValue', true)
       await nextTick()
 
-      pCheckbox.vm.$emit('update:model-value', false)
+      pCheckbox.vm.$emit('update:modelValue', false)
       await nextTick()
 
-      const emittedModelValue = wrapper.emitted('update:model-value')
+      const emittedModelValue = wrapper.emitted('update:modelValue')
       const emittedModelValueFirst = emittedModelValue?.at(0)
       const emittedModelValueSecond = emittedModelValue?.at(1)
 
