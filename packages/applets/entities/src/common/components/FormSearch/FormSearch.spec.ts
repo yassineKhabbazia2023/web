@@ -36,9 +36,11 @@ describe('formSearch', () => {
       await getInputSearch().trigger('keyup')
       await flushPromises()
 
-      searchValue.length < 3
-        ? expect(wrapper.emitted('search-value-submitted')).toBeFalsy()
-        : expect(wrapper.emitted('search-value-submitted')).toStrictEqual([[searchValue]])
+      if (searchValue.length < 3) {
+        expect(wrapper.emitted('search-value-submitted')).toBeFalsy()
+      } else {
+        expect(wrapper.emitted('search-value-submitted')).toStrictEqual([[searchValue]])
+      }
     },
   )
 

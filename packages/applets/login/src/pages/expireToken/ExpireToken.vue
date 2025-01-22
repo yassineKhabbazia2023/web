@@ -34,13 +34,15 @@ const route = useRoute()
 const router = useRouter()
 const isLoading = ref()
 const resendLink = async () => {
-  let { contactId, contactEmail, accountNumber } = route.query
+  const { contactId, contactEmail, accountNumber } = route.query
   try {
     isLoading.value = true
-    contactEmail && (contactEmail = contactEmail.toString().trim().replace(' ', '+'))
-    contactEmail
-      ? await commonApi().gateway.post('authentication/api/sendResetPasswordLink', { email: contactEmail })
-      : await commonApi().gateway.post(`account/api/customers/invite/${contactId}`, null, { params: { accountNumber } })
+    if (contactEmail) {
+      const email = contactEmail.toString().trim().replace(' ', '+')
+      await commonApi().gateway.post('authentication/api/sendResetPasswordLink', { email })
+    } else {
+      await commonApi().gateway.post(`account/api/customers/invite/${contactId}`, null, { params: { accountNumber } })
+    }
     isLoading.value = false
     router.push({ path: '/resendEmailSuccess' })
   } catch (error) {
