@@ -14,6 +14,9 @@ export const fetchTrashDocuments = async (
   const response = await commonApi()
     .ds
     .get(fetchTrashDocumentsUrl, {
+      headers: {
+        'Account-Id': entityId,
+      },
       params: {
         skip,
         limit,

@@ -58,6 +58,9 @@ describe('documents service', () => {
     expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123/currentuser', {
+        headers: {
+          'Account-Id': accountId,
+        },
         params: {
           createdEnd: null,
           createdStart: null,
@@ -81,6 +84,9 @@ describe('documents service', () => {
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123/currentuser',
       {
+        headers: {
+          'Account-Id': accountId,
+        },
         params: {
           limit: 10,
           skip: 0,
@@ -120,6 +126,9 @@ describe('documents service', () => {
     expect(mockDsGet).toHaveBeenCalledTimes(1)
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123/currentuser', {
+        headers: {
+          'Account-Id': accountId,
+        },
         params: {
           limit: 10,
           skip: 0,
@@ -143,6 +152,9 @@ describe('documents service', () => {
       expect(mockDsGet).toHaveBeenCalledWith(
         'service-1/my-account-id/documents/1234/content',
         {
+          headers: {
+            'Account-Id': accountId,
+          },
           responseType: 'blob',
         },
       )
@@ -160,6 +172,9 @@ describe('documents service', () => {
       'service-1/my-account-id/archive',
       { ids: ['1234', '4567'] },
       {
+        headers: {
+          'Account-Id': accountId,
+        },
         responseType: 'blob',
       },
     )
@@ -180,7 +195,12 @@ describe('documents service', () => {
 
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
     expect(mockDsDelete).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents', { data: { ids: documentIds } },
+      'service-1/my-account-id/documents', {
+        headers: {
+          'Account-Id': accountId,
+        },
+        data: { ids: documentIds },
+      },
     )
   })
 
@@ -206,6 +226,11 @@ describe('documents service', () => {
         path: '/name',
         value: 'my-new-doc',
       }],
+      {
+        headers: {
+          'Account-Id': accountId,
+        },
+      },
     )
   })
 
@@ -233,6 +258,7 @@ describe('documents service', () => {
       {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Account-Id': accountId,
         },
       },
     )
@@ -261,6 +287,7 @@ describe('documents service', () => {
       {
         headers: {
           'Content-Type': 'application/json',
+          'Account-Id': accountId,
         },
       },
     )
@@ -281,6 +308,7 @@ describe('documents service', () => {
       {
         headers: {
           'Content-Type': 'application/json',
+          'Account-Id': accountId,
         },
       },
     )
@@ -297,6 +325,9 @@ describe('documents service', () => {
       'service-1/my-account-id/documents/1234/preview',
       {
         responseType: 'arraybuffer',
+        headers: {
+          'Account-Id': accountId,
+        },
       },
     )
     expect(data).toStrictEqual({

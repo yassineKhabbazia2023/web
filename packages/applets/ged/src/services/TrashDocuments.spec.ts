@@ -27,6 +27,9 @@ describe('trash documents service', () => {
           skip: 0,
           sort: '-deleted',
         },
+        headers: {
+          'Account-Id': accountId,
+        },
       },
     )
     expect(trashed).toBe(trashedDocumentValue)
