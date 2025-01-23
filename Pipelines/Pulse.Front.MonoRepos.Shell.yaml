@@ -10,7 +10,7 @@ parameters:
 - name: deployType
   displayName: "Technical parameter : don t modify it !"
   type: string
-  default: 'standard'
+  default: 'onlyDev'
   values:
     - standard
     - onlyDev
