@@ -73,5 +73,5 @@ onMounted(async () => {
 en-US:
   sendDocumentsByMail: 'Would you like to send your documents by email?'
 fr-FR:
-  sendDocumentsByMail: 'Vous souhaitez envoyer vos documents par e-mail ?'
+  sendDocumentsByMail: 'Vous souhaitez envoyer vos documents par e‑mail ?'
 </i18n>
