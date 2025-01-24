@@ -1,6 +1,11 @@
 <template>
   <div class="wrapper">
-    <main class="card margin-bottom--6">
+    <main
+      class="card margin-bottom--6"
+      :class="{
+        'card--collab': isCollabPage,
+      }"
+    >
       <PRow>
         <PCol
           :pXs="24"
@@ -31,19 +36,24 @@
         >
           <PImage
             class="login-page-image hidden-sm-and-down"
-            pName="login-page-collab"
+            :pName="imageName"
             pFit="cover"
           />
         </PCol>
       </PRow>
     </main>
 
-    <footer class="footer" data-testid="login-collab-footer">
+    <footer class="footer" data-testid="login-footer">
       <div class="footer__legal-links margin-bottom--4">
         <LegalLinks dark />
       </div>
       <div class="footer__support">
-        <SupportInfoCollab />
+        <SupportInfoCollab
+          v-if="isCollabPage"
+        />
+        <SupportInfo
+          v-else
+        />
       </div>
 
       <PImage
@@ -57,21 +67,31 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount } from 'vue'
-import { PCol, PRow, PImage } from '@pulse/styleguide/components'
+import { PCol, PImage, PRow } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
-import SupportInfoCollab from '@app/components/SupportInfoCollab'
+import SupportInfo from '@app/components/SupportInfo'
+import { onMounted, onBeforeUnmount, computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { logger, OFFICIAL_WEBSITE_URL } from '@pulse/core'
 import { initProductFruits, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
-import { VITE_PRODUCT_FRUITS_ANONYMOUS_KEY } from 'env-vars'
+import { VITE_PRODUCT_FRUITS_ANONYMOUS_KEY, VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT } from 'env-vars'
+
+import SupportInfoCollab from '@app/components/SupportInfoCollab'
+
+const route = useRoute()
+const isCollabPage = computed(() => route.name === 'login')
+const imageName = computed(() => isCollabPage.value ? 'login-page-collab' : 'login-page-client')
 
 onMounted(() => {
   localStorage.removeItem('selected-entity')
 
   try {
+    const productFruitsKey = isCollabPage.value
+      ? VITE_PRODUCT_FRUITS_ANONYMOUS_KEY
+      : VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT
     initProductFruits({
       lang: 'fr',
-      key: VITE_PRODUCT_FRUITS_ANONYMOUS_KEY,
+      key: productFruitsKey,
     })
   } catch (error) {
     logger.error('Something wrong occurred: ', error)
@@ -106,33 +126,28 @@ onBeforeUnmount(() => {
     max-width: 920px;
     margin: 0 auto;
   }
-
   .content {
     @media (min-width: 992px) {
-      padding: 48px 48px 0;
+      padding: 4.8rem 4.8rem 0 4.8rem;
     }
     @media (max-width: 991px) {
       padding: 2.4rem 1.6rem 0 1.6rem;
     }
 
     .brand-logo-content {
-      margin-bottom: 24px;
       max-width: 140px;
       @media (min-width: 992px) {
-        margin-bottom: 38px;
         max-width: 129px;
       }
     }
   }
 
-  .illustration-wrapper {
-    text-align: left;
-
-    .illustration {
-      position: relative;
-      top: 50%;
-      left: -4%;
-      transform: translateY(-50%);
+  &--collab {
+    .brand-logo-content {
+      margin-bottom: 24px;
+      @media (min-width: 992px) {
+        margin-bottom: 38px;
+      }
     }
   }
 }
@@ -141,8 +156,8 @@ $footer-margin: 24px;
 .footer {
   position: relative;
   color: var(--el-color-white);
-
-  &__legal-links {
+  &__legal-links,
+  &__support {
     text-align: center;
   }
 }

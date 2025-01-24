@@ -1,7 +1,6 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { Entity } from '@pulse/common/types'
 import router from '../plugins/router'
@@ -20,6 +19,7 @@ vi.mock('env-vars', () => ({
   VITE_AMPLITUDE_API_KEY: 'VITE_AMPLITUDE_API_KEY',
   VITE_AMPLITUDE_SERVER_URL: 'VITE_AMPLITUDE_SERVER_URL',
   VITE_PRODUCT_FRUITS_KEY: 'product fruits collab key',
+  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY: 'product fruits anonymous key',
   VITE_PRODUCT_FRUITS_KEY_CLIENT: 'product fruits client key',
   VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT: 'product fruits anonymous client key',
 }))
@@ -87,11 +87,12 @@ describe('app with navigation guard', () => {
   it('should redirect to the right login page if user has no token', async () => {
     mockUserOrigin.mockResolvedValueOnce({ data: 'COLLAB' })
 
-    const wrapper: VueWrapper<any> = createWrapper()
+    const wrapper = createWrapper()
     router.push({ name: 'home' })
     await vi.dynamicImportSettled()
 
-    const getPageTitle = () => wrapper.find('.pageTitle').text()
-    expect(getPageTitle()).toBe(PAGES_TITLE.COLLAB)
+    const pageTitle = wrapper.find('.pageTitle')
+    expect(pageTitle.exists()).toBe(true)
+    expect(pageTitle.text()).toBe(PAGES_TITLE.COLLAB)
   })
 })

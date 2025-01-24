@@ -1,5 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 
+export const LOGIN_LAYOUT = 'LoginLayout'
+
 export const PAGES_TITLE = {
   CLIENT: 'Login Client Page',
   COLLAB: 'Login Collab Page',
@@ -25,7 +27,7 @@ export const ROUTES: RouteRecordRaw[] = [
       template: `<p class="pageTitle">${PAGES_TITLE.COLLAB}</p>`,
     },
     meta: {
-      layout: 'Login',
+      layout: LOGIN_LAYOUT,
     },
   },
   {
@@ -35,7 +37,7 @@ export const ROUTES: RouteRecordRaw[] = [
       template: `<p class="pageTitle">${PAGES_TITLE.CLIENT}</p>`,
     },
     meta: {
-      layout: 'Login',
+      layout: LOGIN_LAYOUT,
     },
   },
   {

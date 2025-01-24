@@ -1,0 +1,23 @@
+<div data-v-5b858a49="" class="wrapper">
+  <main data-v-5b858a49="" class="card margin-bottom--6 card--collab">
+    <div data-v-5b858a49="">
+      <div data-v-5b858a49="" pxs="24" psm="24" pmd="12" class="content"><a data-v-5b858a49="" href="https://www.rydge.fr/" rel="noopener" target="_blank" data-testid="login-brand-link">
+          <p-image-stub data-v-5b858a49="" pname="brand-color" pfit="fill" ptype="logos" class="brand-logo-content" alt="Brand logo"></p-image-stub>
+        </a>
+        <router-view-stub data-v-5b858a49=""></router-view-stub>
+      </div>
+      <div data-v-5b858a49="" pxs="0" pxm="0" pmd="12">
+        <p-image-stub data-v-5b858a49="" pname="login-page-collab" pfit="cover" class="login-page-image hidden-sm-and-down"></p-image-stub>
+      </div>
+    </div>
+  </main>
+  <footer data-v-5b858a49="" class="footer" data-testid="login-footer">
+    <div data-v-5b858a49="" class="footer__legal-links margin-bottom--4">
+      <legal-links-stub data-v-5b858a49="" dark="true"></legal-links-stub>
+    </div>
+    <div data-v-5b858a49="" class="footer__support">
+      <support-info-collab-stub data-v-5b858a49=""></support-info-collab-stub>
+    </div>
+    <p-image-stub data-v-5b858a49="" pname="brand-white" pfit="fill" ptype="logos" class="logo-footer hidden-sm-and-down" alt="Brand logo"></p-image-stub>
+  </footer>
+</div>

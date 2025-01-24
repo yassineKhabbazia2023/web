@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 
-const LOGIN_LAYOUT = 'Login'
+export const LOGIN_LAYOUT = 'LoginLayout'
 
 const routes = [] as RouteRecordRaw[]
 
@@ -29,7 +29,7 @@ routes.push({
   name: 'login',
   component: () => import('@login/pages/loginCollab'),
   meta: {
-    layout: 'LoginCollab',
+    layout: LOGIN_LAYOUT,
   },
 } as RouteRecordRaw)
 
