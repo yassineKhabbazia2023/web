@@ -10,10 +10,8 @@ export const fetchBIReports = async (
   accountId: number,
   reportTypeId?: number,
 ): Promise<GetReportsRequest> => {
-  const basePath = `${API_PREFIXES.REPORTING}/reports`
-  const path = reportTypeId ? basePath : `${basePath}/currentuser`
   const { data } = await commonApi().gateway.get(
-    path,
+    `${API_PREFIXES.REPORTING}/reports`,
     {
       params: {
         accountId,
@@ -43,9 +41,9 @@ export const fetchBIReportTypes = async (): Promise<ReportType[]> => {
   return data
 }
 
-export const fetchBIToken = async (reportId: string, accountId: number): Promise<string> => {
+export const fetchBIToken = async (reportId: string): Promise<string> => {
   const { data } = await commonApi().gateway.get(
-    `${API_PREFIXES.REPORTING}/reports/${reportId}/embedToken?accountId=${accountId}`,
+    `${API_PREFIXES.REPORTING}/reports/${reportId}/embedToken`,
   )
 
   return data

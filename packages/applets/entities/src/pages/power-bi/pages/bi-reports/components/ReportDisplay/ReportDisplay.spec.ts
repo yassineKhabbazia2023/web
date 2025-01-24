@@ -42,7 +42,7 @@ describe('reportDisplay', () => {
       createWrapper()
 
       expect(fetchBITokenSpy).toHaveBeenCalledOnce()
-      expect(fetchBITokenSpy).toHaveBeenCalledWith(mockedSelectedReport.embededReportId, mockedSelectedReport.accountId)
+      expect(fetchBITokenSpy).toHaveBeenCalledWith(mockedSelectedReport.embededReportId)
     })
     it('should display an error notification if the request to fetch the BI reports fails', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
