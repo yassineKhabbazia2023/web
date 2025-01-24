@@ -11,9 +11,6 @@ export const fetchBinDocuments = async (
 ): Promise<BinDocumentsWithTableStructure> => {
   const fetchBinDocumentsUrl = `${serviceId}/${entityId}/trash/mapped/currentuser`
   const response = await commonApi().ds.get(fetchBinDocumentsUrl, {
-    headers: {
-      'Account-Id': entityId,
-    },
     params: {
       skip,
       limit,
@@ -32,10 +29,6 @@ export const restoreDocuments = async (
   const fetchBinDocumentsUrl = `${serviceId}/${entityId}/trash/restore`
   const response = await commonApi().ds.post(fetchBinDocumentsUrl, {
     ids: docIds,
-  }, {
-    headers: {
-      'Account-Id': entityId,
-    },
   })
 
   return response.data

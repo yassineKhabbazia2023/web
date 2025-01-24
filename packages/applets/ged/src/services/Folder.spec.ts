@@ -81,11 +81,6 @@ describe('folder service', () => {
     expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders/currentuser',
-      {
-        headers: {
-          'Account-Id': entityId,
-        },
-      },
     )
     expect(data).toStrictEqual({
       folders: fetchedFolder,
@@ -112,11 +107,6 @@ describe('folder service', () => {
         name: 'newFolderName',
         parentId: 1,
       },
-      {
-        headers: {
-          'Account-Id': entityId,
-        },
-      },
     )
     expect(data).toStrictEqual({
       folders: createdFolder,
@@ -134,11 +124,6 @@ describe('folder service', () => {
     expect(mockDsPatch).toHaveBeenCalledWith(
       'some-entity-id/some-service-id/folders/1/currentuser',
       [{ op: 'replace', path: '/name', value: folderName }],
-      {
-        headers: {
-          'Account-Id': serviceId,
-        },
-      },
     )
     expect(data).toStrictEqual({
       folders: patchedFolder,
@@ -154,11 +139,6 @@ describe('folder service', () => {
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
     expect(mockDsDelete).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders/currentuser/1?keepFolder=false',
-      {
-        headers: {
-          'Account-Id': entityId,
-        },
-      },
     )
   })
 
@@ -174,9 +154,6 @@ describe('folder service', () => {
       'service-1/my-account-id/folders/1/archive',
       {
         responseType: 'blob',
-        headers: {
-          'Account-Id': accountId,
-        },
       },
     )
   })

@@ -9,9 +9,7 @@ export const fetchServiceFolders = async (
 ): Promise<Folder[]> => {
   const fetchFolderUrl = `${service.ServiceId}/${entityId}/folders/currentuser`
   try {
-    const response = await commonApi().ds.get(fetchFolderUrl, { headers: {
-      'Account-Id': entityId,
-    } })
+    const response = await commonApi().ds.get(fetchFolderUrl)
     return response?.data
   } catch (error) {
     logger.error(error)
@@ -59,10 +57,6 @@ export const CreateFolder = async (
   const response = await commonApi().ds.post(createFolderUrl, {
     parentId: parentFolderId,
     name: folderName,
-  }, {
-    headers: {
-      'Account-Id': entityId,
-    },
   })
 
   return response?.data
@@ -76,9 +70,7 @@ export const RenameFolder = async (
   const renameFolderUrl = `${serviceId}/${entityId}/folders/${folderId}/currentuser`
   const response = await commonApi().ds.patch(renameFolderUrl, [
     { op: 'replace', path: '/name', value: folderName },
-  ], { headers: {
-    'Account-Id': entityId,
-  } })
+  ])
 
   return response.data
 }
@@ -91,9 +83,7 @@ export const deleteFolder = async (
 ) => {
   const deleteFolderUrl = `${serviceId}/${entityId}/folders/currentuser/${folderId}?keepFolder=${keepFolder}`
 
-  await commonApi().ds.delete(deleteFolderUrl, { headers: {
-    'Account-Id': entityId,
-  } })
+  await commonApi().ds.delete(deleteFolderUrl)
 }
 
 export const downloadFolder = async (
@@ -105,9 +95,6 @@ export const downloadFolder = async (
   const response = await commonApi().ds.get(
     downloadFolderUrl,
     {
-      headers: {
-        'Account-Id': entityId,
-      },
       responseType: 'blob',
     },
   )
@@ -126,8 +113,6 @@ export const moveFolderAsync = async (
   return (
     await apiObject.patch(moveFolderUrl, [
       { op: 'replace', path: '/parent/id', value: destinationFolderId.toString() },
-    ], { headers: {
-      'Account-Id': entityId,
-    } })
+    ])
   ).data
 }

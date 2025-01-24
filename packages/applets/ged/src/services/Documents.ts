@@ -21,9 +21,6 @@ export const fetchFolderDocuments = async (
 
   return (
     await apiObject.get(fetchFolderDocumentsUrl, {
-      headers: {
-        'Account-Id': entityId,
-      },
       params: {
         skip,
         limit,
@@ -45,9 +42,6 @@ export const downloadDocument = async (
 
   return (await apiObject.get(downloadDocumentUrl, {
     responseType: 'blob',
-    headers: {
-      'Account-Id': accountId,
-    },
   })).data
 }
 
@@ -63,9 +57,6 @@ export const downloadDocuments = async (
     downloadDocumentsUrl,
     { ids: documentsIds },
     {
-      headers: {
-        'Account-Id': accountId,
-      },
       responseType: 'blob',
     },
   )).data
@@ -83,11 +74,7 @@ export const renameDocument = async (
     path: '/name',
     value: newDocumentName,
   }]
-  return await api().ds.patch(renameDocumentUrl, requestBody, {
-    headers: {
-      'Account-Id': entityId,
-    },
-  })
+  return await api().ds.patch(renameDocumentUrl, requestBody)
 }
 
 export const deleteDocuments = async (
@@ -97,9 +84,7 @@ export const deleteDocuments = async (
 ) => {
   const deleteFolderUrl = `${serviceId}/${entityId}/documents`
   const apiObject = api().ds
-  await apiObject.delete(deleteFolderUrl, { headers: {
-    'Account-Id': entityId,
-  }, data: { ids: documentIds } })
+  await apiObject.delete(deleteFolderUrl, { data: { ids: documentIds } })
 }
 
 export const uploadDocument = async (
@@ -117,7 +102,6 @@ export const uploadDocument = async (
     formData,
     {
       headers: {
-        'Account-Id': entityId,
         'Content-Type': 'multipart/form-data',
       },
     },
@@ -135,13 +119,11 @@ export const moveDocuments = async (
     JSON.stringify(fileMove),
     {
       headers: {
-        'Account-Id': entityId,
         'Content-Type': 'application/json',
       },
     },
   )
 }
-
 
 export const transmitDocuments = async (
   serviceId: Service['ServiceId'],
@@ -154,7 +136,6 @@ export const transmitDocuments = async (
     { ids: documentsIds },
     {
       headers: {
-        'Account-Id': entityId,
         'Content-Type': 'application/json',
       },
     },
@@ -174,9 +155,6 @@ export const previewDocument = async (
   const response: AxiosResponse<ArrayBuffer> = await apiObject.get(
     `${serviceId}/${entityId}/documents/${documentId}/preview`,
     {
-      headers: {
-        'Account-Id': entityId,
-      },
       responseType: 'arraybuffer',
     },
   )
@@ -208,9 +186,6 @@ export const fetchDocumentsByKeyWord = async (
 
   return (
     await apiObject.get(fetchFolderDocumentsUrl, {
-      headers: {
-        'Account-Id': entityId,
-      },
       params: {
         skip,
         limit,

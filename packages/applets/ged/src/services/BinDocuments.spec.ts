@@ -35,9 +35,6 @@ describe('bin documents service', () => {
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/trash/mapped/currentuser',
       {
-        headers: {
-          'Account-Id': accountId,
-        },
         params: {
           limit: 10,
           skip: 0,
@@ -60,11 +57,6 @@ describe('bin documents service', () => {
       'service-1/my-account-id/trash/restore',
       {
         ids: ['doc-id'],
-      },
-      {
-        headers: {
-          'Account-Id': accountId,
-        },
       },
     )
   })
