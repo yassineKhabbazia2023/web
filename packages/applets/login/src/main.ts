@@ -8,7 +8,7 @@ const routes = [] as RouteRecordRaw[]
 routes.push({
   path: '/login',
   name: 'loginClient',
-  component: () => import('@login/pages/login'),
+  component: () => import('@login/pages/loginClient'),
   meta: {
     layout: LOGIN_LAYOUT,
   },
