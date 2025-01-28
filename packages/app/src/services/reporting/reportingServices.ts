@@ -6,8 +6,10 @@ export const fetchBIReports = async (
   accountId: number,
   reportTypeId?: number,
 ): Promise<GetReportsRequest> => {
+  const basePath = `${API_PREFIXES.REPORTING}/reports`
+  const path = reportTypeId ? basePath : `${basePath}/currentuser`
   const { data } = await commonApi().gateway.get(
-    `${API_PREFIXES.REPORTING}/reports`,
+    path,
     {
       params: {
         accountId,
