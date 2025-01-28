@@ -12,6 +12,18 @@ import { nextTick } from 'vue'
 import { getMockedFolder } from '../../helpers/testHelper'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@pulse/styleguide')
 
 const pinia = createPinia()
@@ -41,7 +53,7 @@ const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
 }
 
 vi.mock('@ged/services/Folder', () => ({
-  DeleteFolder: () => {
+  deleteFolder: () => {
     throw new Error('Something uncool')
   },
 }))

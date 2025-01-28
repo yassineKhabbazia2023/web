@@ -9,6 +9,19 @@ import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
 import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  getFileExtension: vi.fn(() => 'jpg'),
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 vi.mock('@ged/services/Folder', () => ({
   moveFolderAsync: () => {
     throw new Error('Something uncool')

@@ -7,7 +7,18 @@ import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
 import BIReports from '.'
 
-// Mocks
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 const mockedAccountId = 602
 const mockedBIReports = getMockedBIReports()
 

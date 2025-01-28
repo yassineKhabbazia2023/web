@@ -13,6 +13,18 @@ import { createI18n } from 'vue-i18n'
 import { trackDocumentDelete } from '@ged/services/tracking/tracking.service'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
+}))
+
 const defaultProps: DocumentDeleteModalTypesProps = {
   isVisible: false,
   documentIds: [],
@@ -226,7 +238,5 @@ describe('deleteFolderConfirmationPopup', () => {
 
       expect(trackDocumentDelete).toHaveBeenCalledWith({ isDeleteSuccessful: false })
     })
-
-
   })
 })
