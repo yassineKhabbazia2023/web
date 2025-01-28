@@ -17,6 +17,7 @@ import { PConfigProvider } from '@pulse/styleguide/components'
 import PopupRenewToken from '@app/components/PopupRenewToken'
 import { storeToRefs } from 'pinia'
 import { HTMLService } from '@pulse/core'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const route = useRoute()
 const router = useRouter()
@@ -42,7 +43,7 @@ watch(
 
 const handleLogout = async () => {
   await store.logout(store.$state)
-  router.push({ name: 'login' })
+  router.push({ name: LoginRouteName.LOGIN_COLLAB })
 }
 
 watch(

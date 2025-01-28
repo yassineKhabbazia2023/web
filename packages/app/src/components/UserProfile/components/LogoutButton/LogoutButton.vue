@@ -13,6 +13,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { amplitudeService, commonStore as useStore } from '@pulse/common'
 import { PButton } from '@pulse/styleguide/components'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const store = useStore()
 const router = useRouter()
@@ -35,7 +36,8 @@ const handleLogout = async () => {
     })
   }
   localStorage.removeItem('selected-entity')
-  router.push({ name: isCollab ? 'login' : 'loginClient' })
+  const name = isCollab ? LoginRouteName.LOGIN_COLLAB : LoginRouteName.LOGIN_CLIENT
+  router.push({ name })
 }
 </script>
 

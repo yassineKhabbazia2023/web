@@ -6,6 +6,7 @@ import {
 } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ResetPasswordSuccess from './'
+import { LoginRouteName } from '@pulse/common/constants'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -37,7 +38,7 @@ describe('reset password success', () => {
 
     await backToLoginBtn.trigger('click')
     expect(mockRouterPush).toHaveBeenCalledWith({
-      name: 'loginClient',
+      name: LoginRouteName.LOGIN_CLIENT,
     })
   })
 })

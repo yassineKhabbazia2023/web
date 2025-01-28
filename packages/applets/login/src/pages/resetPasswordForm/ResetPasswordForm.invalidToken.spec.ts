@@ -2,6 +2,7 @@ import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { getMockedRouter, getWrapper } from '@login/tests/testHelper'
 import ResetPasswordForm from './'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const router = getMockedRouter(
   'resetPasswordForm',
@@ -41,7 +42,7 @@ describe('page reset password form', () => {
     await flushPromises()
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith({
-      name: 'expireToken',
+      name: LoginRouteName.EXPIRE_TOKEN,
       query: { contactEmail: 'contactEmail' },
     })
   })

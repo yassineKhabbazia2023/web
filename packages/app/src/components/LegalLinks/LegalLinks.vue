@@ -14,7 +14,7 @@
       </a>
     </li>
     <li
-      v-if="!isCollab && route.name !== 'login'"
+      v-if="!isCollab && route.name !== LoginRouteName.LOGIN_COLLAB"
       class="legal-links__item flex flex--align-items-center"
       data-testid="legal-links-cgu"
     >
@@ -47,6 +47,7 @@ import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { commonStore, fetchUrlTerms } from '@pulse/common'
 import { LEGAL_NOTICE_URL, PRIVACY_POLICY_URL } from '@pulse/core'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,

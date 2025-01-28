@@ -4,6 +4,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { amplitudeService, commonStore, commonStore as useStore } from '@pulse/common'
 import { createTestingPinia } from '@pinia/testing'
+import { LoginRouteName } from '@pulse/common/constants'
 import LogoutButton from './'
 
 const pinia = createTestingPinia()
@@ -53,11 +54,11 @@ describe('logoutButton', () => {
   const isCollabToRouteNameToRedirect = [
     {
       isCollab: true,
-      routeNameToRedirect: 'login',
+      routeNameToRedirect: LoginRouteName.LOGIN_COLLAB,
     },
     {
       isCollab: false,
-      routeNameToRedirect: 'loginClient',
+      routeNameToRedirect: LoginRouteName.LOGIN_CLIENT,
     },
   ]
 

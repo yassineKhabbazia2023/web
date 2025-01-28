@@ -5,6 +5,7 @@ import {
   initProductFruits as initProductFruitsMock,
   stopProductFruits as stopProductFruitsMock,
 } from '@app/plugins/ProductFruits/productFruits.plugin'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const mockRoute = vi.hoisted(() => vi.fn(() => ({
   name: 'mocked route name',
@@ -39,11 +40,11 @@ const createWrapper = () => shallowMount(LoginLayout, {
 describe('test LoginLayout', () => {
   const tests = [{
     key: 'collab',
-    routeName: 'login',
+    routeName: LoginRouteName.LOGIN_COLLAB,
     expectedKey: 'anonymous key collab',
   }, {
     key: 'client',
-    routeName: 'loginClient',
+    routeName: LoginRouteName.LOGIN_CLIENT,
     expectedKey: 'anonymous key client',
   }]
   it.each(tests)('should correctly display the login page when route name is $routeName', ({

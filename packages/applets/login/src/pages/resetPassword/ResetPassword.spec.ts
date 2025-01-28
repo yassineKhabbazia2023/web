@@ -11,6 +11,7 @@ import type { FormInstance } from 'element-plus'
 import { flushPromises, mount } from '@vue/test-utils'
 import ResetPassword from './'
 import { nextTick } from 'vue'
+import { LoginRouteName } from '@pulse/common/constants'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -104,7 +105,7 @@ describe('reset password', () => {
     await submitButton.trigger('click')
     expect(mockAuthPost).not.toHaveBeenCalled()
     expect(mockRouterPush).toHaveBeenNthCalledWith(1, {
-      name: 'loginClient',
+      name: LoginRouteName.LOGIN_CLIENT,
     })
   })
 

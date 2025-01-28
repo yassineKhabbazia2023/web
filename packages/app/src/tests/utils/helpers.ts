@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { createPinia } from 'pinia'
 import type { UserInfo } from '@pulse/common/types'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const menu = [
   {
@@ -34,7 +35,7 @@ const helpers = () => {
         },
       },
       {
-        name: 'login',
+        name: LoginRouteName.LOGIN_COLLAB,
         path: '/login',
         component: {
           template: '<div />',

@@ -83,6 +83,7 @@ import { type ValidationCGUProps } from './ValidationCGUTypes.ts'
 import { fetchUrlTerms, commonStore as useStore } from '@pulse/common'
 import { updateTermsByCurrentUser } from '@login/services/cgu'
 import { useRouter } from 'vue-router'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -123,7 +124,7 @@ const acceptNewCgu = async (termsId: string) => {
 const back = () => {
   const store = useStore()
   store.logout(store.$state)
-  router.push({ name: 'loginClient' })
+  router.push({ name: LoginRouteName.LOGIN_CLIENT })
 }
 </script>
 

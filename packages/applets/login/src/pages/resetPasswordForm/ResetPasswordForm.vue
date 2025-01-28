@@ -75,6 +75,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
 import { commonApi } from '@pulse/common'
+import { LoginRouteName } from '@pulse/common/constants'
 import {
   onBeforeMount,
   reactive,
@@ -167,7 +168,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         const urlUpdatePassword = 'authentication/api/createNewPassword'
         try {
           await commonApi().gateway.post(urlUpdatePassword, data)
-          router.push({ name: 'loginClient' })
+          router.push({ name: LoginRouteName.LOGIN_CLIENT })
         } catch (error: any) {
           logger.error(error)
           const { status, data } = error?.response ?? {}
@@ -193,7 +194,7 @@ const isValidToken = async (): Promise<any> => {
 onBeforeMount(async () => {
   const isValid = await isValidToken()
   if (!isValid) {
-    router.push({ name: 'expireToken', query: { contactEmail } })
+    router.push({ name: LoginRouteName.EXPIRE_TOKEN, query: { contactEmail } })
   }
 })
 defineExpose({ submitForm })

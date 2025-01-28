@@ -98,7 +98,14 @@ import { logger } from '@pulse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
-import { commonApi, commonStore as store, fetchUrlTerms, tokenService, amplitudeService } from '@pulse/common'
+import {
+  commonApi,
+  commonStore as store,
+  fetchUrlTerms,
+  tokenService,
+  amplitudeService,
+} from '@pulse/common'
+import { LoginRouteName } from '@pulse/common/constants'
 import {
   onBeforeMount,
   reactive,
@@ -256,7 +263,7 @@ const isValidToken = async (): Promise<any> => {
 onBeforeMount(async () => {
   const isValid = await isValidToken()
   if (!isValid) {
-    router.push({ name: 'expireToken', query: { contactId, accountNumber } })
+    router.push({ name: LoginRouteName.EXPIRE_TOKEN, query: { contactId, accountNumber } })
   }
 })
 onMounted(async () => {

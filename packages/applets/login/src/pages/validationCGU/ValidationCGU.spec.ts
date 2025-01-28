@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils'
 import validationCGU from './'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore as useStore } from '@pulse/common'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const pinia = createTestingPinia()
 const store = useStore()
@@ -65,7 +66,7 @@ describe('cgu validation', () => {
     const wrapper = createWrapper()
     const backButton = wrapper.find('[data-testid="cgu-button-back"]')
     await backButton.trigger('click')
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'loginClient' })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: LoginRouteName.LOGIN_CLIENT })
     expect(spyStoreLogoutAction).toHaveBeenCalled()
   })
 

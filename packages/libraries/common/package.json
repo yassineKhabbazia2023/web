@@ -7,6 +7,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./constants": "./src/constants.mts",
     "./types": "./src/types.mts",
     ".": "./src/main.mts"
   },

@@ -5,6 +5,7 @@ import { routes as errorRoutes } from '@app/pages/Error/router'
 import { commonStore as useStore, commonApi, dataProvider } from '@pulse/common'
 import { fetchEntities } from '@app/services/entities'
 import { logger } from '@pulse/core'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const isFirstTime = ref(true)
 
@@ -82,7 +83,7 @@ router.beforeEach(async (to: any, _from) => {
   const isHomeLayoutWithCustomStyles = !!to.meta?.styles
   if (!isAuthenticated.value && (isHomeLayoutWithoutCustomStyles || isHomeLayoutWithCustomStyles)) {
     return {
-      name: (await isUserOriginCollab()) ? 'login' : 'loginClient',
+      name: (await isUserOriginCollab()) ? LoginRouteName.LOGIN_COLLAB : LoginRouteName.LOGIN_CLIENT,
     }
   }
 
@@ -94,7 +95,11 @@ router.beforeEach(async (to: any, _from) => {
    * If the user is already authenticated and tries to go to the login page
    * they should be redirected to the homepage.
    */
-  if (['login', 'loginClient'].includes(to.name)) {
+  const loginPageNames = [
+    LoginRouteName.LOGIN_COLLAB,
+    LoginRouteName.LOGIN_CLIENT,
+  ]
+  if (loginPageNames.includes(to.name)) {
     if (isAuthenticated.value) {
       if (isCollab.value) {
         return { name: 'wallet' }

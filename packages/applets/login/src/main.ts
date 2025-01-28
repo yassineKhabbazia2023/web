@@ -1,5 +1,6 @@
 import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
+import { LoginRouteName } from '@pulse/common/constants'
 
 export const LOGIN_LAYOUT = 'LoginLayout'
 
@@ -7,7 +8,7 @@ const routes = [] as RouteRecordRaw[]
 
 routes.push({
   path: '/login',
-  name: 'loginClient',
+  name: LoginRouteName.LOGIN_CLIENT,
   component: () => import('@login/pages/loginClient'),
   meta: {
     layout: LOGIN_LAYOUT,
@@ -16,7 +17,7 @@ routes.push({
 
 routes.push({
   path: '/validation-cgu/:termsId',
-  name: 'validationCGU',
+  name: LoginRouteName.CGU_VALIDATION,
   component: () => import('@login/pages/validationCGU'),
   props: true,
   meta: {
@@ -26,7 +27,7 @@ routes.push({
 
 routes.push({
   path: '/collaborateur',
-  name: 'login',
+  name: LoginRouteName.LOGIN_COLLAB,
   component: () => import('@login/pages/loginCollab'),
   meta: {
     layout: LOGIN_LAYOUT,
@@ -35,16 +36,16 @@ routes.push({
 
 routes.push({
   path: '/login-client',
-  redirect: { name: 'loginClient' },
+  redirect: { name: LoginRouteName.LOGIN_CLIENT },
 } as RouteRecordRaw)
 
 const ROUTES_USING_LOGIN_LAYOUT = [
-  'expireToken',
-  'createPassword',
-  'resendEmailSuccess',
-  'resetPassword',
-  'resetPasswordSuccess',
-  'resetPasswordForm',
+  LoginRouteName.EXPIRE_TOKEN,
+  LoginRouteName.CREATE_PASSWORD,
+  LoginRouteName.RESEND_EMAIL_SUCCESS,
+  LoginRouteName.RESET_PASSWORD,
+  LoginRouteName.RESET_PASSWORD_SUCCESS,
+  LoginRouteName.RESET_PASSWORD_FORM,
 ]
 
 ROUTES_USING_LOGIN_LAYOUT.forEach((route) => {

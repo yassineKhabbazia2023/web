@@ -11,6 +11,7 @@ import type { Entity } from '@pulse/common/types'
 import { nextTick } from 'vue'
 import * as mockedEnvVar from 'env-vars'
 import App from '.'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
 
@@ -139,7 +140,7 @@ describe('app with navigation guard', () => {
     store.isCollab = true
     await nextTick()
     const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
-    router.push({ name: 'login' })
+    router.push({ name: LoginRouteName.LOGIN_COLLAB })
     await vi.dynamicImportSettled()
     await flushPromises()
 
@@ -177,7 +178,7 @@ describe('app with navigation guard', () => {
     expect(spyPush).toHaveBeenCalledTimes(0)
     vi.advanceTimersByTime(180000) // 3 minutes
     await flushPromises()
-    expect(spyPush).toHaveBeenCalledWith({ name: 'login' })
+    expect(spyPush).toHaveBeenCalledWith({ name: LoginRouteName.LOGIN_COLLAB })
   })
 
   it('should redirect the client to the folder page if they have only one entity', async () => {

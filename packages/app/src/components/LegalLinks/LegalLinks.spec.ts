@@ -6,6 +6,7 @@ import { mount, flushPromises } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import { useRoute } from 'vue-router'
 import LegalLinks from '.'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const mockedUseRoute = useRoute as Mock
 vi.mock('vue-router')
@@ -23,7 +24,7 @@ describe('legalLinks', () => {
 
   beforeEach(async () => {
     mockedUseRoute.mockReturnValue({
-      name: 'login',
+      name: LoginRouteName.LOGIN_COLLAB,
     })
     wrapper = createWrapper()
     await flushPromises()
@@ -52,7 +53,7 @@ describe('legalLinks', () => {
     // @ts-expect-error: Getter is read only
     store.isCollab = true
     mockedUseRoute.mockReturnValue({
-      name: 'login',
+      name: LoginRouteName.LOGIN_COLLAB,
     })
 
     wrapper = createWrapper()

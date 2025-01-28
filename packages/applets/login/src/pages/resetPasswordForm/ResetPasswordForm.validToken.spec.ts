@@ -2,6 +2,7 @@ import { flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { getMockedRouter, getWrapper } from '@login/tests/testHelper'
 import ResetPasswordForm from './'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
 
@@ -112,7 +113,7 @@ describe('page reset password form', () => {
     expect(postMock).toHaveBeenCalledWith(postLink, data)
 
     expect(routerPushSpy).toHaveBeenCalledTimes(1)
-    expect(routerPushSpy).toHaveBeenLastCalledWith({ name: 'loginClient' })
+    expect(routerPushSpy).toHaveBeenLastCalledWith({ name: LoginRouteName.LOGIN_CLIENT })
   })
 
   it('displays an error if the password is already used', async () => {

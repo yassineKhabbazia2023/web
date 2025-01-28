@@ -2,6 +2,7 @@ import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import CreatePassword from './'
 import { getMockedRouter, getWrapper } from '@login/tests/testHelper'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const router = getMockedRouter(
   'createPassword',
@@ -46,7 +47,7 @@ describe('page creation password', () => {
     await flushPromises()
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith({
-      name: 'expireToken',
+      name: LoginRouteName.EXPIRE_TOKEN,
       query: { accountNumber: 'accountNumber', contactId: 'contactId' },
     })
   })

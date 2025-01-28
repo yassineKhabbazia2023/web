@@ -47,7 +47,7 @@
           pType="white"
           class="back-to-login-button"
           data-testid="reset-password-back-to-login-button"
-          @click="router.push({ name: 'loginClient' })"
+          @click="router.push({ name: LoginRouteName.LOGIN_CLIENT })"
         >
           {{ t('backToLogin') }}
         </PButton>
@@ -63,6 +63,7 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { commonApi } from '@pulse/common'
 import { PForm, PFormItem, PInput, PButton } from '@pulse/styleguide/components'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,

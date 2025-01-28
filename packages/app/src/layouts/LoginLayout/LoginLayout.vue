@@ -73,13 +73,14 @@ import SupportInfo from '@app/components/SupportInfo'
 import { onMounted, onBeforeUnmount, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { logger, OFFICIAL_WEBSITE_URL } from '@pulse/core'
+import { LoginRouteName } from '@pulse/common/constants'
 import { initProductFruits, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { VITE_PRODUCT_FRUITS_ANONYMOUS_KEY, VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT } from 'env-vars'
 
 import SupportInfoCollab from '@app/components/SupportInfoCollab'
 
 const route = useRoute()
-const isCollabPage = computed(() => route.name === 'login')
+const isCollabPage = computed(() => route.name === LoginRouteName.LOGIN_COLLAB)
 const imageName = computed(() => isCollabPage.value ? 'login-page-collab' : 'login-page-client')
 
 onMounted(() => {

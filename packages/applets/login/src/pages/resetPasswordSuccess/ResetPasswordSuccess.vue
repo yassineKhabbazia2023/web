@@ -25,7 +25,7 @@
     <PButton
       pType="white"
       class="back-to-login-button margin-bottom--4"
-      @click="router.push({ name: 'loginClient' })"
+      @click="router.push({ name: LoginRouteName.LOGIN_CLIENT })"
     >
       {{ t('backToLogin') }}
     </PButton>
@@ -36,6 +36,7 @@
 import { useI18n } from 'vue-i18n'
 import { useRouter, useRoute } from 'vue-router'
 import { PButton, PImage } from '@pulse/styleguide/components'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
