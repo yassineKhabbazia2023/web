@@ -14,11 +14,15 @@
         {{ defaultEntity?.legalName }}
       </h4>
     </div>
-    <div class="report-display__container margin-top--6">
+    <div class="report-display__container flex margin-top--6 padding--4">
       <section
         ref="powerbiSection"
-        class="report-display__iframe margin-x--auto"
+        class="report-display__iframe"
         data-testid="report-display-iframe"
+      />
+      <ReportActions
+        :reportLabel="selectedReport.reportLabel"
+        :powerBIConfig="powerBIConfig"
       />
     </div>
   </div>
@@ -35,6 +39,7 @@ import { commonStore } from '@pulse/common'
 import type { ReportDisplayProps } from './ReportDisplayTypes'
 import { fetchBIToken } from '@entities/services/reporting'
 import { displayNotification } from '@entities/common/utils'
+import ReportActions from './components/ReportActions'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -86,9 +91,13 @@ onMounted(() => {
 .report-display {
   width: calc(100% - 351px);
 
+  &__header {
+    border-bottom: 1px solid var(--el-border-color);
+  }
+
   &__iframe {
     height: 80vh;
-    width: 90%;
+    width: 100%;
   }
 }
 </style>

@@ -54,10 +54,10 @@
       </div>
     </template>
     <div class="p-document-viewer__content">
-      <div class="p-document-viewer__content-left">
+      <div class="p-document-viewer__content-left" :class="{ 'width--100': !$slots.content }">
         <slot name="media" />
       </div>
-      <div class="p-document-viewer__content-right padding--6">
+      <div v-if="$slots.content" class="p-document-viewer__content-right padding--6">
         <slot name="content" />
       </div>
     </div>
@@ -81,7 +81,7 @@ const SLASH = '/'
 const props = withDefaults(defineProps<PDocumentViewerProps>(), {
   pDirection: 'rtl',
   pSize: '100%',
-  destroyOnClose: true,
+  pDestroyOnClose: true,
   pShowClose: false,
   pHasIcon: true,
   pHasPagination: true,

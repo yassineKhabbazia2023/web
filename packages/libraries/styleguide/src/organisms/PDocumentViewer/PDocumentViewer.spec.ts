@@ -176,6 +176,16 @@ describe('pDocumentViewer', () => {
       expect(emittedDocumentViewerPreviousButton).toBeTruthy()
     })
 
+    it('should display the content only when the slot exists', async () => {
+      const wrapper = createWrapper()
+
+      const pDocumentViewerLeftContent = wrapper.find('.p-document-viewer__content-left')
+      const pDocumentViewerRightContent = wrapper.find('.p-document-viewer__content-right')
+
+      expect(pDocumentViewerLeftContent.classes()).toContain('width--100')
+      expect(pDocumentViewerRightContent.exists()).toBeFalsy()
+    })
+
     it('should emit next-document-button-click event', async () => {
       const wrapper = createWrapper()
 

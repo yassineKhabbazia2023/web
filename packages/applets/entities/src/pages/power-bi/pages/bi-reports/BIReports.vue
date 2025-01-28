@@ -52,7 +52,7 @@ onMounted(async () => {
 
 <style scoped lang="scss">
 .bi-reports {
-  height: calc(100vh - 56px);
+  height: calc(100vh - 59px);
 }
 </style>
 
