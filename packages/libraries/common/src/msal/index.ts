@@ -14,6 +14,7 @@ const msalConfig = {
     authority: VITE_API_MSAL_AUTHORITY,
     redirectUri: VITE_API_MSAL_REDIRECT_URI,
     postLogoutRedirectUri: VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI,
+    response_mode: 'query',
   },
 }
 

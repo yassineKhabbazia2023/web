@@ -11,6 +11,7 @@ import { useDataProvider } from './composables/useDataProvider'
 import { useUserPermissions } from './composables/useUserPermissions'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
 import { fetchUrlTerms } from './services'
+import { msalInstance } from './msal'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import debounce from 'lodash.debounce'
 
@@ -32,6 +33,7 @@ export { DataStreamHubConnection }
 export { debounce }
 export { fetchUrlTerms }
 export { sanitizeUrl }
+export { msalInstance }
 
 export default {
   install(app: App, { locale }: CommonAppOptions) {

@@ -1,15 +1,10 @@
 import { type MockInstance, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import { amplitudeService } from '@pulse/common'
-import { msalInstance } from '@login/services/msal'
+import { amplitudeService, msalInstance } from '@pulse/common'
 import LoginCollab from '.'
 
 const navigateToWalletMock = vi.fn()
-vi.mock('@login/services/msal', () => ({
-  msalInstance: {
-    loginRedirect: vi.fn(),
-  },
-}))
+vi.mock('@pulse/common')
 
 vi.mock('@login/composable/useInitUserAuth.js', () => ({
   default: () => {

@@ -22,9 +22,8 @@
 import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PSkewedButton } from '@pulse/styleguide/components'
-import { msalInstance } from '@login/services/msal'
+import { msalInstance, amplitudeService } from '@pulse/common'
 import useInitAuth from '@login/composable/useInitUserAuth'
-import { amplitudeService } from '@pulse/common'
 import useNavigation from '@login/composable/useNavigation'
 
 const { initAuthCollab, isTokenRetrieve } = useInitAuth()

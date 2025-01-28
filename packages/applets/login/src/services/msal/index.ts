@@ -1,25 +1,6 @@
 import { logger } from '@pulse/core'
-import {
-  VITE_API_MSAL_CLIENT_ID,
-  VITE_API_MSAL_TENANT,
-  VITE_API_MSAL_AUTHORITY,
-  VITE_API_MSAL_REDIRECT_URI,
-  VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI,
-  VITE_API_MSAL_SCOPE,
-} from 'env-vars'
-import { amplitudeService, tokenService } from '@pulse/common'
-import { UserAgentApplication } from 'msal'
-
-const msalConfig = {
-  auth: {
-    clientId: VITE_API_MSAL_CLIENT_ID,
-    tenant: VITE_API_MSAL_TENANT,
-    authority: VITE_API_MSAL_AUTHORITY,
-    redirectUri: VITE_API_MSAL_REDIRECT_URI,
-    postLogoutRedirectUri: VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI,
-  },
-}
-export const msalInstance = new UserAgentApplication(msalConfig)
+import { VITE_API_MSAL_SCOPE } from 'env-vars'
+import { amplitudeService, tokenService, msalInstance } from '@pulse/common'
 
 export const getToken = async () => {
   if (msalInstance.getAccount()) {

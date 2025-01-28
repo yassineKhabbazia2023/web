@@ -6,9 +6,12 @@ vi.mock('env-vars', () => ({
   VITE_PRODUCT_FRUITS_ANONYMOUS_KEY: 'TEST_KEY',
 }))
 
-vi.mock('@login/services/msal', () => ({
+vi.mock('@pulse/common', () => ({
   msalInstance: {
     loginRedirect: vi.fn(),
+  },
+  amplitudeService: {
+    reset: vi.fn(),
   },
 }))
 

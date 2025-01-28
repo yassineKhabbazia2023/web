@@ -7,6 +7,18 @@ const loggerDebugSpy = vi.hoisted(() => vi.fn())
 const loggerWarnSpy = vi.hoisted(() => vi.fn())
 const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
+const getAccountMock = vi.hoisted(() => vi.fn())
+const loginRedirectMocked = vi.hoisted(() => vi.fn())
+const acquireTokenPopupMocked = vi.hoisted(() => vi.fn())
+const acquireTokenSilentMocked = vi.hoisted(() => vi.fn())
+
+const msalInstanceMock = vi.hoisted(() => ({
+  getAccount: getAccountMock,
+  loginRedirect: loginRedirectMocked,
+  acquireTokenPopup: acquireTokenPopupMocked,
+  acquireTokenSilent: acquireTokenSilentMocked,
+}))
+
 vi.mock('@pulse/core', () => ({
   logger: {
     debug: loggerDebugSpy,
@@ -25,6 +37,7 @@ vi.mock('@pulse/common', () => ({
     getToken: vi.fn(),
     setToken: setTokenMocked,
   },
+  msalInstance: msalInstanceMock,
 }))
 
 vi.mock('env-vars', () => ({
@@ -34,17 +47,6 @@ vi.mock('env-vars', () => ({
   VITE_API_MSAL_REDIRECT_URI: '',
   VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI: '',
   VITE_API_MSAL_SCOPE: '',
-}))
-const getAccountMock = vi.hoisted(() => vi.fn())
-const loginRedirectMocked = vi.hoisted(() => vi.fn())
-const acquireTokenPopupMocked = vi.hoisted(() => vi.fn())
-const acquireTokenSilentMocked = vi.hoisted(() => vi.fn())
-
-const msalInstanceMock = vi.hoisted(() => ({
-  getAccount: getAccountMock,
-  loginRedirect: loginRedirectMocked,
-  acquireTokenPopup: acquireTokenPopupMocked,
-  acquireTokenSilent: acquireTokenSilentMocked,
 }))
 
 const UserAgentApplicationMock = vi.hoisted(() => vi.fn(() => (msalInstanceMock)))
