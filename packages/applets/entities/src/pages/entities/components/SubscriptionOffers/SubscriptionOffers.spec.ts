@@ -40,17 +40,12 @@ describe('subscriptionOffers', () => {
   describe('interactions', () => {
     describe('when user clicks on second subscription offer', () => {
       it('should emit onSelectOffer', async () => {
-        const mockMethods = {
-          onSelectOffer: vi.fn(),
-        }
-
         const wrapper = mount(Subscription, {
           props: {
             modelValue: true,
             subscriptionOffers,
             activeOffers: [],
           },
-          methods: mockMethods,
         })
         wrapper
           .find(

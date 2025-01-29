@@ -6,7 +6,7 @@ const createWrapper = (props:any) =>
   wrapperFactory(SearchBar, { props })
 
 describe('serach bar mandate', () => {
-  const wrapper = createWrapper({ modelValue: null })
+  const wrapper = createWrapper({ modelValue: '' })
   it('should emit the value just once', async () => {
     const inputValue = 'BNP Paribas'
     const ibsInputElement = wrapper
@@ -14,8 +14,8 @@ describe('serach bar mandate', () => {
     await ibsInputElement
       .setValue(inputValue)
     await ibsInputElement.trigger('change')
-    const modelValueEvent: any = wrapper.emitted('update:modelValue')
+    const modelValueEvent = wrapper.emitted('update:modelValue')
 
-    expect(modelValueEvent[0]).toStrictEqual([inputValue])
+    expect(modelValueEvent?.at(0)).toStrictEqual([inputValue])
   })
 })

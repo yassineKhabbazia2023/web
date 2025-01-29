@@ -54,8 +54,8 @@ describe('confirmationModal', () => {
   })
   describe('events', () => {
     it("should emit 'update:modelValue' when the model value is changed", async () => {
-      const pDialog = wrapper.findComponent({ name: 'pDialog' })
-      pDialog.vm.$emit('update:model-value', false)
+      const pDialog = wrapper.findComponent({ name: 'PDialog' })
+      pDialog.vm.$emit('update:modelValue', false)
       await nextTick()
 
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
