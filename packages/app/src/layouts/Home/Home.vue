@@ -118,7 +118,7 @@ onMounted(async () => {
   try {
     const user = await fetchUserData()
     const entities = await fetchEntities()
-    const selectedEntity = getDefaultEntity(entities.items[0])
+    const selectedEntity = getDefaultEntity(entities?.items?.at(0))
 
     globalStore.$patch({
       user: {

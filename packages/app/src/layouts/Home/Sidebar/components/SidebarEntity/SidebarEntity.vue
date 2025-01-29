@@ -221,7 +221,7 @@ const onEntitySelected = (entity: Entity) => {
 }
 
 onMounted(() => {
-  selectedEntity.value = getDefaultEntity(props.entities[0])
+  selectedEntity.value = getDefaultEntity(props.entities?.at(0))
   patchDefaultEntity(selectedEntity.value as Entity)
 })
 </script>

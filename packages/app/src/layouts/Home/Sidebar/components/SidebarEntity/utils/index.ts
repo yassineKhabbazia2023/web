@@ -1,14 +1,24 @@
 import { getRandomColor } from '@app/helper'
 import type { Entity } from '@pulse/common/types'
 
-export const getDefaultEntity = (firstEntity: Entity): Entity => {
+const DEFAULT_ENTITY: Entity = {
+  accountId: 0,
+  accountNumber: '',
+  legalName: '',
+  color: 'orange',
+}
+
+export const getDefaultEntity = (firstEntity?: Entity): Entity => {
   const storedSelectedEntity = localStorage.getItem('selected-entity')
-  const defaultEntity: Entity = storedSelectedEntity
-    ? JSON.parse(storedSelectedEntity)
-    : {
+  if (storedSelectedEntity) {
+    return JSON.parse(storedSelectedEntity)
+  }
+  if (firstEntity) {
+    return {
       ...firstEntity,
       color: getRandomColor(firstEntity.accountId),
     }
+  }
 
-  return defaultEntity
+  return DEFAULT_ENTITY
 }

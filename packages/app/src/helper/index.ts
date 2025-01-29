@@ -1,4 +1,6 @@
-const COLORS = [
+import type { EntityColor } from '@pulse/common/types'
+
+const COLORS: EntityColor[] = [
   'persian',
   'orange',
   'cyan',

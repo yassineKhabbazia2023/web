@@ -1,16 +1,18 @@
+export type EntityColor =
+'orange' |
+'persian' |
+'cyan' |
+'amethyste' |
+'teal' |
+'green' |
+'fuschia' |
+'gray'
+
 export interface Entity {
   accountId: number
   accountNumber: string
   legalName: string
-  color?:
-    | 'orange'
-    | 'persian'
-    | 'cyan'
-    | 'amethyste'
-    | 'teal'
-    | 'green'
-    | 'fuschia'
-    | 'gray'
+  color?: EntityColor
 }
 
 export interface SelectedEntity extends Entity {

@@ -10,9 +10,7 @@ export const fetchEntities = async (): Promise<any> => {
       `${API_PREFIXES.ACCOUNT}/accounts/currentuser`,
     )
 
-    if (response?.data) {
-      return response.data
-    }
+    return response.data
   } catch (error) {
     logger.error('Error fetching entities :', error)
   }
