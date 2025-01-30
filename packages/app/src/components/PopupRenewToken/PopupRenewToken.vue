@@ -1,6 +1,6 @@
 <template>
   <PDialog
-    v-model="isVisibleDialog"
+    v-model="isVisibleInternal"
     pWidth="480px"
     pModal
     class="dialog-renew-token"
@@ -43,24 +43,39 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useI18n } from 'vue-i18n'
 import jwtDecode from 'jwt-decode'
 import type { JwtPayload } from 'jwt-decode'
 import { PDialog, PButton, PImage } from '@pulse/styleguide/components'
 import { useRedirection } from '@app/composables/useRedirection'
 import { commonApi, tokenService } from '@pulse/common'
+import type { PopupRenewTokenProps } from './PopupRenewToken.types'
+
+const ON_TOKEN_CHANGE_EVENT = 'on-token-change'
+const FIVE_MINUTES_MS = 5 * 60 * 1000 // 5 minutes in milliseconds
+
+const props = defineProps<PopupRenewTokenProps>()
+
+const emit = defineEmits<{
+  'update:isVisible': [boolean]
+}>()
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-let exp: number | undefined
-let sub: string | undefined
-let timer: any
-let redirectTimer: any
-const isVisibleDialog = ref(false)
+const exp = ref<number>()
+const sub = ref<string>()
+const openPopupTimer = ref<ReturnType<typeof setTimeout>>()
+const closePopupTimer = ref<ReturnType<typeof setTimeout>>()
+
+const isVisibleInternal = computed({
+  get: () => props.isVisible,
+  set: (isVisible: boolean) => emit('update:isVisible', isVisible),
+})
+
 const { logoutAndRedirectToLogin } = useRedirection()
 
 function onTokenChanges(token: string) {
@@ -69,50 +84,75 @@ function onTokenChanges(token: string) {
   }
 
   const decodedToken = jwtDecode<JwtPayload>(token)
-  exp = decodedToken?.exp
-  sub = decodedToken?.sub
-  if (exp && sub) {
-    tokenHandle(exp)
-    handleRedirectAfterExpiration(exp)
+  exp.value = decodedToken?.exp
+  sub.value = decodedToken?.sub
+  setTimers(exp.value)
+}
+
+function setTimers(exp?: number) {
+  clearTimersIfExist()
+  if (!exp) {
+    return
+  }
+  const nowTimeStamp = new Date().getTime()
+  const expireTimeStamp = exp * 1000
+
+  // will close when expires
+  const closePopupDelay = expireTimeStamp - nowTimeStamp
+
+  // will open 5 minutes before it expires
+  const openPopupDelay = closePopupDelay - FIVE_MINUTES_MS
+
+  if (closePopupDelay <= 0) {
+    return
+  }
+  // closes the popup when token has expired
+  closePopupTimer.value = setTimeout(() => {
+    isVisibleInternal.value = false
+    logoutAndRedirectToLogin()
+  }, closePopupDelay)
+
+  if (openPopupDelay <= 0) {
+    return
+  }
+  // opens the popup 5 minutes before token expires
+  openPopupTimer.value = setTimeout(() => {
+    isVisibleInternal.value = true
+  }, openPopupDelay)
+}
+
+function clearTimersIfExist() {
+  if (closePopupTimer.value) {
+    clearTimeout(closePopupTimer.value)
+    closePopupTimer.value = undefined
+  }
+  if (openPopupTimer.value) {
+    clearTimeout(openPopupTimer.value)
+    openPopupTimer.value = undefined
   }
 }
 
 const handleTokenRenewal = async () => {
-  const baseUrl = `authentication/api/refreshToken?userId=${sub}`
+  const baseUrl = `authentication/api/refreshToken?userId=${sub.value}`
+  isVisibleInternal.value = false
+
   const { data: token } = await commonApi().gateway.post(baseUrl)
+
   tokenService.setToken(token)
-  isVisibleDialog.value = false
-  clearTimeout(timer)
-  clearTimeout(redirectTimer)
 }
 
 const handleLogout = async () => {
+  isVisibleInternal.value = false
   await logoutAndRedirectToLogin()
-  isVisibleDialog.value = false
-}
-
-const tokenHandle = (exp: number) => {
-  const delay = exp * 1000 - 300000 - Date.now()
-  timer = setTimeout(() => {
-    isVisibleDialog.value = true
-  }, delay) // Will display the popup 5 minutes before the token expires
-}
-
-function handleRedirectAfterExpiration(exp: number) {
-  const delay = exp * 1000 - Date.now()
-
-  redirectTimer = setTimeout(() => {
-    isVisibleDialog.value = false
-    logoutAndRedirectToLogin()
-  }, delay)
 }
 
 onMounted(() => {
-  tokenService.registerOnChange('popupcb', onTokenChanges)
+  tokenService.registerOnChange(ON_TOKEN_CHANGE_EVENT, onTokenChanges)
 })
 
 onBeforeUnmount(() => {
-  tokenService.unregisterOnChange('popupcb')
+  tokenService.unregisterOnChange(ON_TOKEN_CHANGE_EVENT)
+  clearTimersIfExist()
 })
 </script>
 

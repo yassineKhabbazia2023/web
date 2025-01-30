@@ -2,7 +2,9 @@
   <Suspense>
     <PConfigProvider>
       <component :is="getLayout" />
-      <PopupRenewToken />
+      <PopupRenewToken
+        v-model:isVisible="popupRenewTokenIsVisible"
+      />
     </PConfigProvider>
   </Suspense>
 </template>
@@ -26,6 +28,7 @@ const { user } = storeToRefs(useStore())
 const getLayout = ref()
 let previousLayout: string = ''
 const illustration = ref()
+const popupRenewTokenIsVisible = ref(false)
 
 watch(
   () => route.name,
