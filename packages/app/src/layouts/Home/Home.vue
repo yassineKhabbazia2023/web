@@ -5,7 +5,7 @@
       v-model="showCalendar"
     />
     <FeedCenterDrawer
-      v-if="VITE_FEED_CENTER_ACTIVATED === 'true'"
+      v-if="FeatureFlagManager.isFeedCenterActivated()"
       v-model="showFeedCenter"
       :unreadNotificationsCount="unreadNotificationsCount"
     />
@@ -52,7 +52,6 @@ import { useRouter } from 'vue-router'
 import {
   VITE_PRODUCT_FRUITS_KEY,
   VITE_PRODUCT_FRUITS_KEY_CLIENT,
-  VITE_FEED_CENTER_ACTIVATED,
 } from 'env-vars'
 import { commonStore as store, dataProvider } from '@pulse/common'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
@@ -148,7 +147,7 @@ onMounted(async () => {
 })
 
 async function setNotificationsCount() {
-  if (VITE_FEED_CENTER_ACTIVATED !== 'true') {
+  if (!FeatureFlagManager.isFeedCenterActivated()) {
     return
   }
 

@@ -51,6 +51,10 @@ vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
 vi.mock('@app/plugins/ProductFruits/productFruits.plugin')
 vi.mock('@app/plugins/Hubspot/hubspot.plugin')
 
+const feedCenterActivatedFlag = vi.hoisted(() => ({
+  value: 'true',
+}))
+
 vi.mock('@pulse/core', async () => {
   const actual = await vi.importActual('@pulse/core')
   return {
@@ -62,6 +66,7 @@ vi.mock('@pulse/core', async () => {
     },
     FeatureFlagManager: {
       isScheduleActivated: () => true,
+      isFeedCenterActivated: () => feedCenterActivatedFlag.value,
     },
   }
 })
@@ -77,10 +82,6 @@ vi.mock('@app/services/entities', async () => {
     })),
   }
 })
-
-const feedCenterActivatedFlag = vi.hoisted(() => ({
-  value: 'true',
-}))
 
 vi.mock('env-vars', () => ({
   ...envVarsValues,
@@ -131,6 +132,7 @@ describe('home', () => {
   })
 
   it('should call retrieve entities when created', async () => {
+    await flushPromises()
     expect(entitiesServices.fetchEntities).toHaveBeenCalledOnce()
   })
 

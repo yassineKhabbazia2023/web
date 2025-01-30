@@ -36,6 +36,7 @@ vi.mock('@pulse/core', async () => {
     ...actual,
     FeatureFlagManager: {
       isScheduleActivated: () => true,
+      isFeedCenterActivated: () => true,
     },
   }
 })

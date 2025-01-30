@@ -39,19 +39,20 @@ vi.mock('@pulse/common', () => commonMock)
 vi.mock('@app/plugins/ProductFruits/productFruits.plugin')
 vi.mock('@app/plugins/Hubspot/hubspot.plugin')
 
+const feedCenterActivatedFlag = vi.hoisted(() => ({
+  value: false,
+}))
+
 vi.mock('@pulse/core', async () => {
   const actual = await vi.importActual('@pulse/core')
   return {
     ...actual,
     FeatureFlagManager: {
       isScheduleActivated: () => false,
+      isFeedCenterActivated: () => feedCenterActivatedFlag.value,
     },
   }
 })
-
-const feedCenterActivatedFlag = vi.hoisted(() => ({
-  value: 'false',
-}))
 
 vi.mock('env-vars', () => ({
   ...envVarsValues,

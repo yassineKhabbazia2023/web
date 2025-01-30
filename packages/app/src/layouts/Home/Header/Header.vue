@@ -34,7 +34,7 @@
       </div>
 
       <div
-        v-if="VITE_FEED_CENTER_ACTIVATED === 'true'"
+        v-if="FeatureFlagManager.isFeedCenterActivated()"
         class="position--relative padding-left--2"
       >
         <PButton
@@ -96,7 +96,6 @@ import {
   PImage,
   PPastille,
 } from '@pulse/styleguide/components'
-import { VITE_FEED_CENTER_ACTIVATED } from 'env-vars'
 import type { HeaderProps } from './HeaderTypes'
 
 const props = defineProps<HeaderProps>()
