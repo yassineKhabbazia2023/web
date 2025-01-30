@@ -29,7 +29,11 @@ export class TokenService {
 
   getToken(): string {
     if (!this.token) {
-      this.token = localStorage.getItem('token') ?? ''
+      const token = localStorage.getItem('token') ?? ''
+      if (token) {
+        this.token = token
+        this.onChange(token)
+      }
     }
 
     return this.token
