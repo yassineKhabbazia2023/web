@@ -5,4 +5,5 @@ export interface DownloadDocumentsComposableProps {
   selectedDocuments: Document[]
   currentService: Service['ServiceId']
   selectedEntity: string
+  accountId: number
 }

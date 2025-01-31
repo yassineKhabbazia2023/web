@@ -25,6 +25,7 @@ const secondValidDestination: Folder = foldersData[0][0].children[0].children[0]
 const currentServiceFolder: Folder[] = foldersData[0]
 const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
 const selectedEntity = 'my-selected-entity'
+const accountId = 1234
 const explorerAuthorizedGivenAction: GivenActionAuthorization = {
   actionName: 'my-action',
   isActionAuthorized: true,
@@ -71,6 +72,7 @@ const defaultProps: DocumentsModalExplorerProps = {
   ExplorerAuthorizedGivenAction: explorerAuthorizedGivenAction,
   currentService: curentService,
   selectedEntity,
+  accountId,
   explorerUnauthorizedGivenActionMessage: 'you are not authorized',
   foldersListEmptyFolderLabel: '',
   documentsSelectorEmptyDocumentsListLabel: '',

@@ -22,6 +22,7 @@ const defaultProps: BinDocumentProps = {
   currentBinService: 'serv',
   selectedEntity: 'ent',
   selectedServiceName: 'compta',
+  accountId: 1234,
 }
 
 type BinDocumentsSetup = {
@@ -86,6 +87,7 @@ describe('binDocuments', () => {
         expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
+          defaultProps.accountId,
           0,
           10,
           '-deleted',
@@ -139,6 +141,7 @@ describe('binDocuments', () => {
         expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
+          defaultProps.accountId,
           0,
           10,
           '+name',
@@ -171,6 +174,7 @@ describe('binDocuments', () => {
         expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
+          defaultProps.accountId,
           0,
           50,
           '-deleted',
@@ -194,6 +198,7 @@ describe('binDocuments', () => {
         expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
           defaultProps.selectedEntity,
+          defaultProps.accountId,
           0,
           10,
           '-deleted',

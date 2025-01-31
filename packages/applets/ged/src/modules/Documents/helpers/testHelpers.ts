@@ -14,6 +14,7 @@ const currentServiceFolder: Folder[] = foldersData[0]
 const currentServiceName = 'A service name'
 const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
 const selectedEntity = 'my-selected-entity'
+const accountId = 1234
 
 export function generateTestFiles(
   numberOfFiles: number,
@@ -43,6 +44,7 @@ export const defaultProps: DocumentUploadProps = {
   currentService: curentService,
   selectedEntity,
   files: validFiles,
+  accountId,
 }
 
 export type DocumentUploadSetup = {

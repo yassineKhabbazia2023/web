@@ -6,4 +6,5 @@ export interface DownloadFolderComposableProps {
   selectedFolderId: Folder['id']
   currentService: Service['ServiceId']
   selectedEntity: string
+  accountId: number
 }

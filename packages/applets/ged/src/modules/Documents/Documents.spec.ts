@@ -53,6 +53,7 @@ const defaultProps: DocumentsProps = {
   currentService: foldersData[0][0].children[0].serviceId,
   currentServiceName: 'cool service name',
   selectedEntity: 'my-entity',
+  accountId: 1234,
   selectedEntityAvatarColor: 'persian' as Entity['color'],
   selectedEntityName: 'This is a legal name',
   selectedFolder: foldersData[0][0].children[0],
@@ -269,6 +270,7 @@ describe('documents', () => {
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
+        defaultProps.accountId,
         0,
         10,
         '-created',
@@ -296,6 +298,7 @@ describe('documents', () => {
           foldersData[0][0].children[0].serviceId,
           foldersData[0][0].children[0].id,
           'my-entity',
+          defaultProps.accountId,
           0,
           10,
           '+name',
@@ -325,6 +328,7 @@ describe('documents', () => {
         defaultProps.currentService,
         defaultProps.selectedEntity,
         documentsResponsePayload.documentsPage.items[0].id,
+        defaultProps.accountId,
       )
     },
     )
@@ -353,6 +357,7 @@ describe('documents', () => {
         documentsResponsePayloadMoreThanOneDoc.documentsPage.items.map(
           (x) => x.id,
         ),
+        defaultProps.accountId,
       )
     })
 
@@ -412,6 +417,7 @@ describe('documents', () => {
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
+        defaultProps.accountId,
         0,
         10,
         '-created',
@@ -441,6 +447,7 @@ describe('documents', () => {
           foldersData[0][0].children[0].serviceId,
           foldersData[0][0].children[0].id,
           'my-entity',
+          defaultProps.accountId,
           0,
           10,
           '-created',
@@ -533,6 +540,7 @@ describe('documents', () => {
         defaultProps.currentService,
         defaultProps.selectedEntity,
         [documentsResponsePayload.documentsPage.items[0].id],
+        defaultProps.accountId,
       )
     })
 
@@ -579,6 +587,7 @@ describe('documents', () => {
         defaultProps.currentService,
         defaultProps.selectedEntity,
         [documentsResponsePayload.documentsPage.items[0].id],
+        defaultProps.accountId,
       )
     })
 
@@ -605,6 +614,7 @@ describe('documents', () => {
         defaultProps.currentService,
         defaultProps.selectedFolder?.id,
         'my-entity',
+        defaultProps.accountId,
         0,
         10,
         '-created',
@@ -638,6 +648,7 @@ describe('documents', () => {
           defaultProps.currentService,
           defaultProps.selectedFolder?.id,
           'my-entity',
+          defaultProps.accountId,
           0,
           10,
           '-created',
@@ -672,6 +683,7 @@ describe('documents', () => {
           foldersData[0][0].children[0].serviceId,
           foldersData[0][0].children[0].id,
           'my-entity',
+          defaultProps.accountId,
           0,
           10,
           '-created',
@@ -812,6 +824,7 @@ describe('documents', () => {
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
+        defaultProps.accountId,
         0,
         10,
         '-created',
@@ -1010,6 +1023,7 @@ describe('documents', () => {
         defaultProps.currentService,
         defaultProps.selectedFolder?.id,
         'my-entity',
+        defaultProps.accountId,
         0,
         10,
         '-created',
@@ -1038,6 +1052,7 @@ describe('documents', () => {
         foldersData[0][0].children[0].serviceId,
         foldersData[0][0].children[0].id,
         'my-entity',
+        defaultProps.accountId,
         0,
         10,
         '-created',

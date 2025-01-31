@@ -4,4 +4,5 @@ export interface TransmitDocumentsComposableProps {
   selectedDocumentsIds: string[]
   currentService: Service['ServiceId']
   selectedEntity: string
+  accountId: number
 }

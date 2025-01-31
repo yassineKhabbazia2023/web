@@ -6,6 +6,7 @@
     :ExplorerAuthorizedGivenAction="isUploadAuthorized"
     :currentService="currentService"
     :selectedEntity="selectedEntity"
+    :accountId="accountId"
     :documentsSelectorEmptyDocumentsListLabel="t('documentsList.noDeposableDocumentsLabel')"
     :explorerUnauthorizedGivenActionMessage="t('folderList.explorerUnauthorizedGivenActionMessage')"
     :foldersListEmptyFolderLabel="t('folderList.foldersListEmptyFolderLabel')"
@@ -162,6 +163,7 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
             props.selectedEntity,
             document.file,
             currentExplorerFolder.value.id,
+            props.accountId,
           )
         if (uploadResult) {
           document.givenActionState = 'DONE'

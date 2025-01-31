@@ -81,6 +81,7 @@ const handleConfirmDeleteFolder = async () => {
       props.serviceId,
       props.entityId,
       props.documentIds,
+      props.accountId,
     )
 
     emit('confirm-delete-document')

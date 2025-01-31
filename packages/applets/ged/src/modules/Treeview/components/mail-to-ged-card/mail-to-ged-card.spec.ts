@@ -6,8 +6,10 @@ import { fetchServicesMailToGedInformation } from '@ged/services/Services'
 vi.mock('@ged/services/Services')
 
 const entity = '12345'
+const accountId = 1234
 const defaultProps = {
   selectedEntity: entity,
+  accountId,
 }
 
 const createWrapper = (props: any = defaultProps) =>
@@ -21,7 +23,7 @@ describe('mail to ged card', () => {
       createWrapper()
       await flushPromises()
 
-      expect(fetchServicesMailToGedInformation).toHaveBeenCalledWith(entity)
+      expect(fetchServicesMailToGedInformation).toHaveBeenCalledWith()
     })
   })
 })

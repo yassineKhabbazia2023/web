@@ -47,6 +47,7 @@
               :explorerAuthorizedGivenAction="ExplorerAuthorizedGivenAction.isActionAuthorized"
               :currentService="currentService"
               :selectedEntity="selectedEntity"
+              :accountId="accountId"
               :isCreateFolderModalVisible="isCreateFolderModalVisible"
               :explorerUnauthorizedGivenActionMessage="explorerUnauthorizedGivenActionMessage"
               :foldersListEmptyFolderLabel="foldersListEmptyFolderLabel"

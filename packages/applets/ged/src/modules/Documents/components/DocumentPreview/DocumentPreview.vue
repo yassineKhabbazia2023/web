@@ -33,6 +33,7 @@
       <DocumentsTabs
         :document="document"
         :selectedEntity="entityId"
+        :accountId="accountId"
         :currentService="serviceId"
       />
     </template>
@@ -84,6 +85,7 @@ const fetchPreview = async () => {
           props.serviceId,
           props.entityId,
           props.document.id,
+          props.accountId,
         )
         if (response) {
           previewImage.value = response
@@ -94,6 +96,7 @@ const fetchPreview = async () => {
           props.serviceId,
           props.entityId,
           props.document.id,
+          props.accountId,
         )
         if (responseBlob) {
           previewImage.value = responseBlob

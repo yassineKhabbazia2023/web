@@ -6,6 +6,7 @@
     :ExplorerAuthorizedGivenAction="isMoveAuthorized"
     :currentService="currentService"
     :selectedEntity="selectedEntity"
+    :accountId="accountId"
     :documentsSelectorEmptyDocumentsListLabel="
       t('documentsList.noMovableDocumentsLabel')
     "
@@ -177,6 +178,7 @@ const moveFolder = async () => {
       props.selectedEntity,
       props.folderToMove.id,
       currentExplorerFolder.value.id,
+      props.accountId,
     )
 
     explorerDocuments.value[0].givenActionState = 'DONE'

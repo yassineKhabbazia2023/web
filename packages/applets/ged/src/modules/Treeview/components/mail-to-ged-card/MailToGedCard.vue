@@ -37,15 +37,12 @@ import { AppColors } from '@pulse/styleguide'
 import { PIcon } from '@pulse/styleguide/components'
 import EmailByServiceModal from './email-by-service-modal'
 import { fetchServicesMailToGedInformation } from '@ged/services/Services'
-import { MailToGedProps } from './mail-to-ged-card.types'
 import { ServiceMailToGedInformation } from '@ged/models/Service'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
-const props = defineProps<MailToGedProps>()
 
 const isMailToGedModenOpened = ref(false)
 function openMailToGedModal() {
@@ -54,7 +51,7 @@ function openMailToGedModal() {
 
 const mailToGedInformation = ref<ServiceMailToGedInformation[]>()
 onMounted(async () => {
-  mailToGedInformation.value = await fetchServicesMailToGedInformation(props.selectedEntity)
+  mailToGedInformation.value = await fetchServicesMailToGedInformation()
 })
 </script>
 

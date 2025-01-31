@@ -9,6 +9,7 @@ export interface FoldersMoveProps {
   currentService: Service['ServiceId']
   selectedEntity: string
   folderToMove: Folder
+  accountId: number
 }
 
 export interface ExplorerMoveFolder extends ExplorerDocument {

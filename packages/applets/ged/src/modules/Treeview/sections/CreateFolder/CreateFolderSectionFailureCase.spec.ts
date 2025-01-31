@@ -39,6 +39,7 @@ const selectedFolder = getMockedFolder(0, 1, 'A', {
 const defaultProps: CreateFolderSectionProps = {
   serviceId: 'service-id',
   entityId: 'entity-id',
+  accountId: 1234,
   isCreateFolderModalCentered: false,
   hasCreateFolderButton: true,
   selectedFolder,

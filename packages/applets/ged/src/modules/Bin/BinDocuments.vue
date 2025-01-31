@@ -36,6 +36,7 @@
     :serviceId="currentBinService"
     :entityId="selectedEntity"
     :isVisible="isRestoring"
+    :accountId="accountId"
     :document="documentToRestore"
     @confirm-restore-document="handleConfirmRestoreDocument"
     @cancel-restore-document="handleCancelRestoreDocument"
@@ -111,6 +112,7 @@ const fetchBin = async () => {
   binDocuments.value = await fetchBinDocuments(
     props.currentBinService,
     props.selectedEntity,
+    props.accountId,
     skip.value,
     currentPageSize.value,
     componentSortQueryField.value,

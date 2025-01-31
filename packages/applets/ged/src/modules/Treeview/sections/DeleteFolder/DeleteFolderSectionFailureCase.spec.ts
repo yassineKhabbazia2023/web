@@ -41,6 +41,7 @@ const defaultProps: DeleteFolderSectionProps = {
   entityId: 'entity-id',
   selectedFolder,
   isDeleteFolderPopupVisible: false,
+  accountId: 1234,
 }
 
 const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {

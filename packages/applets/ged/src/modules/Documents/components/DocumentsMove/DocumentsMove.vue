@@ -6,6 +6,7 @@
     :ExplorerAuthorizedGivenAction="isMoveAuthorized"
     :currentService="currentService"
     :selectedEntity="selectedEntity"
+    :accountId="accountId"
     :documentsSelectorEmptyDocumentsListLabel="
       t('documentsList.noMovableDocumentsLabel')
     "
@@ -180,6 +181,7 @@ async function proceedMoveDocuments(documents: ExplorerMoveDocument[]) {
       props.currentService,
       props.selectedEntity,
       moveDocumentRequest,
+      props.accountId,
     )
     documents.forEach((d) => {
       d.givenActionState = 'DONE'

@@ -60,6 +60,7 @@ export function useDownloadFolder(
       downloadFolderProps.currentService,
       downloadFolderProps.selectedEntity,
       downloadFolderProps.selectedFolderId,
+      downloadFolderProps.accountId,
     )
     const fileName =
     `${downloadFolderProps.selectedFolderName}_${formatDate(new Date(), '_')}.zip`

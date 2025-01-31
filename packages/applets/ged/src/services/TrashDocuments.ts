@@ -5,6 +5,7 @@ import type { Service } from '@ged/models/Service'
 export const fetchTrashDocuments = async (
   serviceId: Service['ServiceId'],
   entityId: string,
+  accountId: number,
   skip = 0,
   limit = 10,
   sort = '-deleted',
@@ -14,6 +15,7 @@ export const fetchTrashDocuments = async (
   const response = await commonApi()
     .ds
     .get(fetchTrashDocumentsUrl, {
+      headers: { 'Account-Id': accountId },
       params: {
         skip,
         limit,

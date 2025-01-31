@@ -14,6 +14,7 @@ const folderToMove: Folder = foldersData[0][0].children[0].children[0].children[
 const currentServiceFolder: Folder[] = foldersData[0]
 const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
 const selectedEntity = 'my-selected-entity'
+const accountId = 1234
 
 export const defaultProps: FoldersMoveProps = {
   folder: validDestination,
@@ -22,6 +23,7 @@ export const defaultProps: FoldersMoveProps = {
   currentService: curentService,
   selectedEntity,
   folderToMove,
+  accountId,
 }
 
 export type FoldersMoveSetup = {

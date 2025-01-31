@@ -10,6 +10,7 @@ export interface DocumentMoveProps {
   currentService: Service['ServiceId']
   selectedEntity: string
   selectedDocuments: Document[]
+  accountId: number
 }
 
 export interface ExplorerMoveDocument extends ExplorerDocument {

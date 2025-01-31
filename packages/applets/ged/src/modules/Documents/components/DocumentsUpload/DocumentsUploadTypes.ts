@@ -10,6 +10,7 @@ export interface DocumentUploadProps {
   currentServiceName: Service['ServiceName']
   selectedEntity: string
   files: File[]
+  accountId: number
 }
 
 export interface ExplorerUploadDocument extends ExplorerDocument {

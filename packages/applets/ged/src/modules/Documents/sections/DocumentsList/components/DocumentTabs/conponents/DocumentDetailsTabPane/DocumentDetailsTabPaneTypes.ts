@@ -10,5 +10,6 @@ export interface PiaStatusTag {
 export interface DocumentDetailsTabPaneProps {
   document: Document
   selectedEntity: string
+  accountId: number
   currentService: Service['ServiceId']
 }

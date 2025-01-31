@@ -80,6 +80,7 @@ const handleCreateFolder = async (folderName: string) => {
       props.entityId,
       props.selectedFolder.id,
       folderName,
+      props.accountId,
     ))
     isConfirmButtonLoading.value = false
     emit('update-source-folders', createdFolder)

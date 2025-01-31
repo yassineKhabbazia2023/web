@@ -7,6 +7,7 @@ import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 let currentServiceName: Ref<DocumentsProps['currentServiceName']>
 let currentService: Ref<DocumentsProps['currentService']>
 let selectedEntity: Ref<DocumentsProps['selectedEntity']>
+let accountId: Ref<DocumentsProps['accountId']>
 let selectedFolder: Ref<DocumentsProps['selectedFolder']>
 let refreshDocumentsList: () => void
 
@@ -80,6 +81,7 @@ describe('drag and drop from explorer composable', () => {
     currentService = ref('a really cool service')
     currentServiceName = ref('a service name')
     selectedEntity = ref('An Entity')
+    accountId = ref(1234)
     selectedFolder = ref(depositFolder)
     refreshDocumentsList = vi.fn()
   })
@@ -93,6 +95,7 @@ describe('drag and drop from explorer composable', () => {
       currentService,
       currentServiceName,
       selectedEntity,
+      accountId,
       selectedFolder,
       refreshDocumentsList,
     )
@@ -107,6 +110,7 @@ describe('drag and drop from explorer composable', () => {
       currentService,
       currentServiceName,
       selectedEntity,
+      accountId,
       selectedFolder,
       refreshDocumentsList,
     )
@@ -130,6 +134,7 @@ describe('drag and drop from explorer composable', () => {
       currentService,
       currentServiceName,
       selectedEntity,
+      accountId,
       selectedFolder,
       refreshDocumentsList,
     )
@@ -148,6 +153,7 @@ describe('drag and drop from explorer composable', () => {
       currentService,
       currentServiceName,
       selectedEntity,
+      accountId,
       selectedFolder,
       refreshDocumentsList,
     )
@@ -174,6 +180,7 @@ describe('drag and drop from explorer composable', () => {
       currentService,
       currentServiceName,
       selectedEntity,
+      accountId,
       selectedFolder,
       refreshDocumentsList,
     )
@@ -199,6 +206,7 @@ describe('drag and drop from explorer composable', () => {
       currentService,
       currentServiceName,
       selectedEntity,
+      accountId,
       selectedFolder,
       refreshDocumentsList,
     )
@@ -231,6 +239,7 @@ describe('drag and drop from explorer composable', () => {
       currentService,
       currentServiceName,
       selectedEntity,
+      accountId,
       selectedFolder,
       refreshDocumentsList,
     )
@@ -263,6 +272,7 @@ describe('drag and drop from explorer composable', () => {
       currentService,
       currentServiceName,
       selectedEntity,
+      accountId,
       selectedFolder,
       refreshDocumentsList,
     )
@@ -318,6 +328,7 @@ describe('drag and drop from explorer composable', () => {
       currentService,
       currentServiceName,
       selectedEntity,
+      accountId,
       selectedFolder,
       refreshDocumentsList,
     )

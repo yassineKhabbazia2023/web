@@ -6,6 +6,7 @@
         :currentService="currentService ?? ''"
         :currentServiceName="currentServiceName"
         :selectedEntity="selectedEntity"
+        :accountId="selectedAccountId"
         :isLoading="isLoadingServicesOrFolders"
         :servicesFolders="servicesFolders"
         :selectedFolder="currentFolder"
@@ -28,6 +29,7 @@
         :currentService="currentService"
         :currentServiceName="currentServiceName"
         :selectedEntity="selectedEntity"
+        :accountId="selectedAccountId"
         :selectedEntityAvatarColor="selectedEntityAvatarColor"
         :selectedEntityName="selectedEntityName"
         :selectedFolder="currentFolder"
@@ -40,6 +42,7 @@
       <BinDocuments
         :currentBinService="currentBinService"
         :selectedEntity="selectedEntity"
+        :accountId="selectedAccountId"
         :selectedServiceName="currentBinServiceName"
         @navigate-to-folder="handleTreeRefreshAndRedirectToFolder"
       />
@@ -82,11 +85,13 @@ const fetchGedFoldersAndServices = async () => {
   try {
     entityServices.value = await fetchUserEntityServices(
       selectedEntity.value,
+      selectedAccountId.value,
     )
 
     const { foldersByService, unavailableServices } = await fetchServicesFolders(
       entityServices.value,
       selectedEntity.value,
+      selectedAccountId.value,
     )
 
     displayUnavailableServicesNotification(unavailableServices)
@@ -106,6 +111,7 @@ const fetchGedFoldersAndServices = async () => {
 const userStore = commonStore()
 
 const selectedEntity = computed(() => userStore?.defaultEntity?.accountNumber.toString() ?? '')
+const selectedAccountId = computed(() => userStore?.defaultEntity?.accountId ?? 0)
 const selectedEntityAvatarColor = computed(() => userStore.defaultEntity?.color)
 const selectedEntityName = computed(() => userStore.defaultEntity?.legalName ?? '')
 const entityServices = ref<Service[]>([])

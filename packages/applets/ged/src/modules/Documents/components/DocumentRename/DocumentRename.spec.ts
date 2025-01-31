@@ -29,6 +29,7 @@ vi.mock('@ged/services/tracking/tracking.service')
 const defaultProps: DocumentRenameProps = {
   modelValue: false,
   selectedEntity: 'a1b2',
+  accountId: 1234,
   currentService: 'accounting',
   document: documentMock,
 }
@@ -55,6 +56,7 @@ describe('interactions', () => {
       defaultProps.selectedEntity,
       defaultProps.document.id,
       'abcd',
+      defaultProps.accountId,
     )
 
     await nextTick()

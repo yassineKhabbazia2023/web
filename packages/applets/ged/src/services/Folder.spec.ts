@@ -17,6 +17,7 @@ import {
 
 const fetchedFolder = 'fetched'
 const patchedFolder = 'patched'
+const accountId = 1234
 
 const loggerDebugSpy = vi.hoisted(() => vi.fn())
 const loggerWarnSpy = vi.hoisted(() => vi.fn())
@@ -50,7 +51,7 @@ describe('folder service', () => {
     ] as Service[]
     const entityId = 'my-entity'
 
-    await fetchServicesFolders(services, entityId)
+    await fetchServicesFolders(services, entityId, accountId)
 
     expect(mockDsGet).toHaveBeenCalledTimes(2)
   })
@@ -62,7 +63,7 @@ describe('folder service', () => {
     ] as Service[]
     const entityId = 'my-entity'
     mockDsGet.mockRejectedValue(services[0].ServiceId)
-    const data = await fetchServicesFolders(services, entityId)
+    const data = await fetchServicesFolders(services, entityId, accountId)
 
     expect(mockDsGet).toHaveBeenCalledTimes(2)
     expect(data).toStrictEqual({
@@ -77,10 +78,15 @@ describe('folder service', () => {
     }
     const entityId = 'some-entity-id'
 
-    const data = await fetchServiceFolders(service, entityId)
+    const data = await fetchServiceFolders(service, entityId, accountId)
     expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders/currentuser',
+      {
+        headers: {
+          'Account-Id': accountId,
+        },
+      },
     )
     expect(data).toStrictEqual({
       folders: fetchedFolder,
@@ -100,12 +106,14 @@ describe('folder service', () => {
       },
     })
 
-    const data = await CreateFolder(serviceId, entityId, parentFolderId, folderName)
+    const data = await CreateFolder(serviceId, entityId, parentFolderId, folderName, accountId)
     expect(mockDsPost).toHaveBeenCalledTimes(1)
     expect(mockDsPost).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders/currentuser', {
         name: 'newFolderName',
         parentId: 1,
+      }, {
+        headers: { 'Account-Id': accountId },
       },
     )
     expect(data).toStrictEqual({
@@ -119,11 +127,14 @@ describe('folder service', () => {
     const entityId = 'some-entity-id'
     const folderName = 'newFolderName'
 
-    const data = await RenameFolder(folderId, folderName, serviceId, entityId)
+    const data = await RenameFolder(folderId, folderName, serviceId, accountId, entityId)
     expect(mockDsPatch).toHaveBeenCalledTimes(1)
     expect(mockDsPatch).toHaveBeenCalledWith(
       'some-entity-id/some-service-id/folders/1/currentuser',
       [{ op: 'replace', path: '/name', value: folderName }],
+      {
+        headers: { 'Account-Id': accountId },
+      },
     )
     expect(data).toStrictEqual({
       folders: patchedFolder,
@@ -135,24 +146,28 @@ describe('folder service', () => {
     const serviceId = 'some-service-id'
     const entityId = 'some-entity-id'
 
-    await deleteFolder(serviceId, entityId, folderId, false)
+    await deleteFolder(serviceId, entityId, folderId, false, accountId)
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
     expect(mockDsDelete).toHaveBeenCalledWith(
       'some-service-id/some-entity-id/folders/currentuser/1?keepFolder=false',
+      {
+        headers: { 'Account-Id': accountId },
+      },
     )
   })
 
   it('should download the folder  when downloadFolder method is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
     const folderId = 1
-    const accountId = 'my-account-id'
+    const entityId = 'my-entity'
 
-    await downloadFolder(service.ServiceId, accountId, folderId)
+    await downloadFolder(service.ServiceId, entityId, folderId, accountId)
 
     expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
-      'service-1/my-account-id/folders/1/archive',
+      'service-1/my-entity/folders/1/archive',
       {
+        headers: { 'Account-Id': accountId },
         responseType: 'blob',
       },
     )

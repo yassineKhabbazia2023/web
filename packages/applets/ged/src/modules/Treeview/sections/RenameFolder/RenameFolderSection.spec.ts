@@ -17,6 +17,7 @@ const pinia = createPinia()
 const defaultProps: RenameFolderSectionProps = {
   serviceId: 'service-id',
   entityId: 'entity-id',
+  accountId: 1234,
   parentFolder: {
     id: 1,
     children: [
@@ -134,6 +135,7 @@ describe('renameFolderSection', () => {
           defaultProps.folderId,
           'theNewFolderName',
           defaultProps.entityId,
+          defaultProps.accountId,
           defaultProps.serviceId,
         )
       },

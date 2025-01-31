@@ -60,6 +60,7 @@ const handleConfirmDeleteFolder = async () => {
       props.entityId,
       props.selectedFolder.id,
       false,
+      props.accountId,
     )
 
     closeDeletePopup()

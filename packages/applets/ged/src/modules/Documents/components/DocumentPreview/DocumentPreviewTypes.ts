@@ -5,6 +5,7 @@ export interface DocumentsPreviewProps {
   document: Document
   serviceId: Service['ServiceId']
   entityId: string
+  accountId: number
   selectedDocumentIndex: number
   totalDocumentsCount: number
 }

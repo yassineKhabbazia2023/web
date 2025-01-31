@@ -33,6 +33,7 @@ const defaultProps: DeleteFolderSectionProps = {
   entityId: 'entity-id',
   selectedFolder,
   isDeleteFolderPopupVisible: false,
+  accountId: 1234,
 }
 
 const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
@@ -121,6 +122,7 @@ describe('deleteFolderSection', () => {
           'entity-id',
           1,
           false,
+          1234,
         )
       })
 

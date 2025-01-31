@@ -81,6 +81,7 @@ const handleConfirm = async () => {
       props.serviceId,
       props.entityId,
       [props.document.id],
+      props.accountId,
     )
 
     emit('confirm-restore-document')

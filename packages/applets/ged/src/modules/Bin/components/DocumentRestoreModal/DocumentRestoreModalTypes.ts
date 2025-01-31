@@ -6,4 +6,5 @@ export interface DocumentRestoreModalTypesProps {
   document: BinDocument | null
   serviceId: Service['ServiceId']
   entityId: string
+  accountId: number
 }

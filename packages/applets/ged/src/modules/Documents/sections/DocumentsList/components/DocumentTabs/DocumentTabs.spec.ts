@@ -13,6 +13,7 @@ import { nextTick } from 'vue'
 const defaultProps: DocumentTabsProps = {
   document: documentMock,
   selectedEntity: '',
+  accountId: 1234,
   currentService: '',
 }
 

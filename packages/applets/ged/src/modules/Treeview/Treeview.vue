@@ -8,6 +8,7 @@
       <div class="padding-left--2">
         <CreateFolderSection
           :entityId="selectedEntity"
+          :accountId="accountId"
           :isCreateFolderModalVisible="isCreateFolderModalVisible"
           :isInBinContext="isInBinContext"
           :selectedFolder="selectedFolder"
@@ -20,6 +21,7 @@
 
       <DeleteFolderSection
         :entityId="selectedEntity"
+        :accountId="accountId"
         :isDeleteFolderPopupVisible="isDeleteFolderPopupVisible"
         :serviceId="currentService"
         :selectedFolder="selectedFolder"
@@ -35,6 +37,7 @@
         :folderToMove="toolBoxSelectedFolder"
         :isMoveModalOpened="isMoveFolderModalOpened"
         :selectedEntity="selectedEntity"
+        :accountId="accountId"
         @close-move-folder-modal="handleCloseMoveFolderModal"
         @refresh-tree="propagateRefreshTree"
         @update-source-folders="handleOnTreeContentRefresh"
@@ -43,6 +46,7 @@
       <RenameFolderSection
         v-if="parentNodeOfSelectedFolderTreeNodeAction"
         :entityId="selectedEntity"
+        :accountId="accountId"
         :folderId="currentFolderId"
         :folderName="currentFolderName"
         :isRenameFolderModalVisible="isRenameFolderModalVisible"
@@ -78,6 +82,7 @@
               <TreeNode
                 :serviceId="currentService"
                 :entityId="selectedEntity"
+                :accountId="accountId"
                 :node="node"
                 :data="data"
                 :selectedFolder="
@@ -107,6 +112,7 @@
       <MailToGedCard
         v-if="FeatureFlagManager.isMailToGedActivated()"
         :selectedEntity="selectedEntity"
+        :accountId="accountId"
       />
     </div>
   </div>
@@ -163,6 +169,7 @@ const downloadFolderProps: ComputedRef<DownloadFolderComposableProps> =
       selectedFolderId: currentFolderId.value,
       currentService: props.currentService,
       selectedEntity: props.selectedEntity,
+      accountId: props.accountId,
     }
   })
 
@@ -464,6 +471,7 @@ async function handleConfirmDocumentDrop() {
       props.currentService,
       props.selectedEntity,
       formattedMoveDocumentsRequest,
+      props.accountId,
     )
 
     displaySuccessNotification(formattedMoveDocumentsRequest.ids.length)

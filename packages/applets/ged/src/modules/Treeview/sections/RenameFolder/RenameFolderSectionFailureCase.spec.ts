@@ -37,6 +37,7 @@ const parentFolder = getMockedFolder(0, 1, 'A', {
 const defaultProps: RenameFolderSectionProps = {
   serviceId: 'service-id',
   entityId: 'entity-id',
+  accountId: 1234,
   parentFolder,
   isRenameFolderModalVisible: false,
   folderName: 'newFolderName',

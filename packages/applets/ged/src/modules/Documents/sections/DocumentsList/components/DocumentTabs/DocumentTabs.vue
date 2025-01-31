@@ -10,6 +10,7 @@
       <DocumentDetailsTabPane
         :document="document"
         :selectedEntity="selectedEntity"
+        :accountId="accountId"
         :currentService="currentService"
       />
     </PTabPane>

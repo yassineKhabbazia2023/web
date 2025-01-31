@@ -23,6 +23,9 @@ import {
   commonApiDsPatchSpy as mockDsPatch,
 } from '@ged/../vitest.setup'
 
+const accountNumber = 'my-account-id'
+const accountId = 1234
+
 describe('documents service', () => {
   beforeEach(() => {
     mockDsGet.mockImplementation((url: string) => {
@@ -47,17 +50,18 @@ describe('documents service', () => {
       { ServiceId: 'service-1', ServiceName: 'A' }
 
     const folderId = 123
-    const accountId = 'my-account-id'
 
     await fetchFolderDocuments(
       service.ServiceId,
       folderId,
+      accountNumber,
       accountId,
     )
 
     expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123/currentuser', {
+        headers: { 'Account-Id': accountId },
         params: {
           createdEnd: null,
           createdStart: null,
@@ -73,14 +77,14 @@ describe('documents service', () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const folderId = 123
-    const accountId = 'my-account-id'
 
-    await fetchDocumentsByKeyWord(service.ServiceId, folderId, accountId, 0, 10, '-created', 'test')
+    await fetchDocumentsByKeyWord(service.ServiceId, folderId, accountNumber, accountId, 0, 10, '-created', 'test')
 
     expect(mockDsGet).toHaveBeenCalledOnce()
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123/currentuser',
       {
+        headers: { 'Account-Id': accountId },
         params: {
           limit: 10,
           skip: 0,
@@ -97,7 +101,6 @@ describe('documents service', () => {
       { ServiceId: 'service-1', ServiceName: 'A' }
 
     const folderId = 123
-    const accountId = 'my-account-id'
 
     const startDate = new Date()
     const endDate = new Date()
@@ -105,6 +108,7 @@ describe('documents service', () => {
     await fetchFolderDocuments(
       service.ServiceId,
       folderId,
+      accountNumber,
       accountId,
       0,
       10,
@@ -120,6 +124,7 @@ describe('documents service', () => {
     expect(mockDsGet).toHaveBeenCalledTimes(1)
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123/currentuser', {
+        headers: { 'Account-Id': accountId },
         params: {
           limit: 10,
           skip: 0,
@@ -135,14 +140,13 @@ describe('documents service', () => {
     async () => {
       const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
-      const accountId = 'my-account-id'
-
-      await downloadDocument(service.ServiceId, accountId, '1234')
+      await downloadDocument(service.ServiceId, accountNumber, '1234', accountId)
 
       expect(mockDsGet).toHaveBeenCalledTimes(1)
       expect(mockDsGet).toHaveBeenCalledWith(
         'service-1/my-account-id/documents/1234/content',
         {
+          headers: { 'Account-Id': accountId },
           responseType: 'blob',
         },
       )
@@ -151,15 +155,14 @@ describe('documents service', () => {
   it('should download documents  when downloadDocuments method is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
-    const accountId = 'my-account-id'
-
-    await downloadDocuments(service.ServiceId, accountId, ['1234', '4567'])
+    await downloadDocuments(service.ServiceId, accountNumber, ['1234', '4567'], accountId)
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
     expect(mockDsPost).toHaveBeenCalledWith(
       'service-1/my-account-id/archive',
       { ids: ['1234', '4567'] },
       {
+        headers: { 'Account-Id': accountId },
         responseType: 'blob',
       },
     )
@@ -170,17 +173,19 @@ describe('documents service', () => {
       { ServiceId: 'service-1', ServiceName: 'A' }
 
     const documentIds = ['123']
-    const accountId = 'my-account-id'
 
     await deleteDocuments(
       service.ServiceId,
-      accountId,
+      accountNumber,
       documentIds,
+      accountId,
     )
 
     expect(mockDsDelete).toHaveBeenCalledTimes(1)
     expect(mockDsDelete).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents', { data: { ids: documentIds } },
+      'service-1/my-account-id/documents', {
+        headers: { 'Account-Id': accountId },
+        data: { ids: documentIds } },
     )
   })
 
@@ -188,14 +193,14 @@ describe('documents service', () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const documentId: Document['id'] = '1234'
-    const accountId = 'my-account-id'
 
     const newDocumentName = 'my-new-doc'
     await renameDocument(
       service.ServiceId,
-      accountId,
+      accountNumber,
       documentId,
       newDocumentName,
+      accountId,
     )
 
     expect(mockDsPatch).toHaveBeenCalledTimes(1)
@@ -206,6 +211,9 @@ describe('documents service', () => {
         path: '/name',
         value: 'my-new-doc',
       }],
+      {
+        headers: { 'Account-Id': accountId },
+      },
     )
   })
 
@@ -218,10 +226,9 @@ describe('documents service', () => {
       type: 'text/plain',
     })
 
-    const accountId = 'my-account-id'
     const folderId: Folder['id'] = 1234
 
-    await uploadDocument(service.ServiceId, accountId, file, folderId)
+    await uploadDocument(service.ServiceId, accountNumber, file, folderId, accountId)
 
     const expectedPayload = new FormData()
     expectedPayload.append('file', file)
@@ -233,6 +240,7 @@ describe('documents service', () => {
       {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Account-Id': accountId,
         },
       },
     )
@@ -241,7 +249,6 @@ describe('documents service', () => {
   it('should call the right api  when moveDocuments is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
-    const accountId = 'my-account-id'
     const fileMove: MoveDocumentsRequest = {
       ids: ['1', '2'],
       sourceFolderId: 123,
@@ -252,7 +259,7 @@ describe('documents service', () => {
 
     const expectedPayload = JSON.stringify(fileMove)
 
-    await moveDocuments(service.ServiceId, accountId, fileMove)
+    await moveDocuments(service.ServiceId, accountNumber, fileMove, accountId)
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
     expect(mockDsPost).toHaveBeenCalledWith(
@@ -260,6 +267,7 @@ describe('documents service', () => {
       expectedPayload,
       {
         headers: {
+          'Account-Id': accountId,
           'Content-Type': 'application/json',
         },
       },
@@ -270,9 +278,8 @@ describe('documents service', () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const documentIds = ['123']
-    const accountId = 'my-account-id'
 
-    await transmitDocuments(service.ServiceId, accountId, documentIds)
+    await transmitDocuments(service.ServiceId, accountNumber, documentIds, accountId)
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
     expect(mockDsPost).toHaveBeenCalledWith(
@@ -280,6 +287,7 @@ describe('documents service', () => {
       { ids: documentIds },
       {
         headers: {
+          'Account-Id': accountId,
           'Content-Type': 'application/json',
         },
       },
@@ -288,15 +296,17 @@ describe('documents service', () => {
 
   it('should call api  when previewDocument is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
-    const accountId = 'my-account-id'
 
-    const data = await previewDocument(service.ServiceId, accountId, '1234')
+    const data = await previewDocument(service.ServiceId, accountNumber, '1234', accountId)
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/1234/preview',
       {
         responseType: 'arraybuffer',
+        headers: {
+          'Account-Id': accountId,
+        },
       },
     )
     expect(data).toStrictEqual({

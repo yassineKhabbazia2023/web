@@ -40,6 +40,7 @@ const defaultProps: TreeviewProps = {
   selectedEntity: 'my-entity-id',
   selectedFolder: foldersData[0][0].children[0],
   currentServiceFolder: undefined,
+  accountId: 1234,
 }
 
 vi.mock('@ged/services/Folder', () => ({
@@ -341,6 +342,7 @@ describe('treeview', () => {
                 defaultProps.currentService,
                 defaultProps.selectedEntity,
                 componentInstance.currentFolderId,
+                defaultProps.accountId,
               )
             })
         })

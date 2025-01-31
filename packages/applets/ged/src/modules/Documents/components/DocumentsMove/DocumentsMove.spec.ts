@@ -30,6 +30,7 @@ const secondValidDestination: Folder = foldersData[0][0].children[0].children[0]
 const currentServiceFolder: Folder[] = foldersData[0]
 const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
 const selectedEntity = 'my-selected-entity'
+const accountId = 1234
 
 const defaultProps: DocumentMoveProps = {
   folder: validDestination,
@@ -38,7 +39,7 @@ const defaultProps: DocumentMoveProps = {
   currentService: curentService,
   selectedEntity,
   selectedDocuments: documentsMock,
-
+  accountId,
 }
 
 type DocumentMoveSetup = {
@@ -303,7 +304,7 @@ describe('documents Move', () => {
             moveAll: false,
             serviceId: selectedEntity,
           }
-          expect(moveDocuments).toHaveBeenCalledWith(curentService, selectedEntity, expectedDocumentRequest)
+          expect(moveDocuments).toHaveBeenCalledWith(curentService, selectedEntity, expectedDocumentRequest, accountId)
 
         })
       })

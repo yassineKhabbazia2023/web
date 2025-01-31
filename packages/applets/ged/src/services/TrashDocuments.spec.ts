@@ -14,14 +14,16 @@ describe('trash documents service', () => {
     commonApiDsGetSpy.mockResolvedValueOnce({
       data: trashedDocumentValue,
     })
-    const accountId = 'my-account-id'
+    const accountNumber = 'my-account-id'
+    const accountId = 1234
 
-    const trashed = await fetchTrashDocuments(service.ServiceId, accountId)
+    const trashed = await fetchTrashDocuments(service.ServiceId, accountNumber, accountId)
 
     expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
     expect(commonApiDsGetSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/trash/mapped/currentuser',
       {
+        headers: { 'Account-Id': accountId },
         params: {
           limit: 10,
           skip: 0,

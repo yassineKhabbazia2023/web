@@ -5,4 +5,5 @@ export interface DocumentDeleteModalTypesProps {
   documentIds: string[]
   serviceId: Service['ServiceId'] | null
   entityId: string
+  accountId: number
 }

@@ -11,6 +11,7 @@ export const fetchFolderDocuments = async (
   serviceId: Service['ServiceId'],
   folderId: Folder['id'],
   entityId: string,
+  accountId: number,
   skip = 0,
   limit = 10,
   sort = '-created',
@@ -21,6 +22,7 @@ export const fetchFolderDocuments = async (
 
   return (
     await apiObject.get(fetchFolderDocumentsUrl, {
+      headers: { 'Account-Id': accountId },
       params: {
         skip,
         limit,
@@ -34,29 +36,33 @@ export const fetchFolderDocuments = async (
 
 export const downloadDocument = async (
   serviceId: Service['ServiceId'],
-  accountId: string,
+  accountNumber: string,
   documentId: Document['id'],
+  accountId: number,
 ): Promise<Blob> => {
-  const downloadDocumentUrl = `${serviceId}/${accountId}/documents/${documentId}/content`
+  const downloadDocumentUrl = `${serviceId}/${accountNumber}/documents/${documentId}/content`
   const apiObject = api().ds
 
   return (await apiObject.get(downloadDocumentUrl, {
+    headers: { 'Account-Id': accountId },
     responseType: 'blob',
   })).data
 }
 
 export const downloadDocuments = async (
   serviceId: Service['ServiceId'],
-  accountId: string,
+  accountNumber: string,
   documentsIds: Document['id'][],
+  accountId: number,
 ): Promise<void> => {
-  const downloadDocumentsUrl = `${serviceId}/${accountId}/archive`
+  const downloadDocumentsUrl = `${serviceId}/${accountNumber}/archive`
   const apiObject = api().ds
 
   return (await apiObject.post(
     downloadDocumentsUrl,
     { ids: documentsIds },
     {
+      headers: { 'Account-Id': accountId },
       responseType: 'blob',
     },
   )).data
@@ -67,6 +73,7 @@ export const renameDocument = async (
   entityId: string,
   documentId: Document['id'],
   newDocumentName: string,
+  accountId: number,
 ): Promise<void> => {
   const renameDocumentUrl = `${serviceId}/${entityId}/documents/${documentId}`
   const requestBody = [{
@@ -74,17 +81,22 @@ export const renameDocument = async (
     path: '/name',
     value: newDocumentName,
   }]
-  return await api().ds.patch(renameDocumentUrl, requestBody)
+  return await api().ds.patch(renameDocumentUrl, requestBody, {
+    headers: { 'Account-Id': accountId },
+  })
 }
 
 export const deleteDocuments = async (
   serviceId: Service['ServiceId'] | null,
   entityId: string,
   documentIds: string[],
+  accountId: number,
 ) => {
   const deleteFolderUrl = `${serviceId}/${entityId}/documents`
   const apiObject = api().ds
-  await apiObject.delete(deleteFolderUrl, { data: { ids: documentIds } })
+  await apiObject.delete(deleteFolderUrl, {
+    headers: { 'Account-Id': accountId },
+    data: { ids: documentIds } })
 }
 
 export const uploadDocument = async (
@@ -92,6 +104,7 @@ export const uploadDocument = async (
   entityId: string,
   file: File,
   folderId: number,
+  accountId: number,
 ): Promise<Document> => {
   const formData = new FormData()
   formData.append('file', file)
@@ -102,6 +115,7 @@ export const uploadDocument = async (
     formData,
     {
       headers: {
+        'Account-Id': accountId,
         'Content-Type': 'multipart/form-data',
       },
     },
@@ -112,6 +126,7 @@ export const moveDocuments = async (
   serviceId: Service['ServiceId'] | null,
   entityId: string,
   fileMove: MoveDocumentsRequest,
+  accountId: number,
 ): Promise<void> => {
   const apiObject = api().ds
   return await apiObject.post(
@@ -119,6 +134,7 @@ export const moveDocuments = async (
     JSON.stringify(fileMove),
     {
       headers: {
+        'Account-Id': accountId,
         'Content-Type': 'application/json',
       },
     },
@@ -129,6 +145,7 @@ export const transmitDocuments = async (
   serviceId: Service['ServiceId'],
   entityId: string,
   documentsIds: string[],
+  accountId: number,
 ): Promise<void> => {
   const apiObject = api().ds
   return await apiObject.post(
@@ -136,6 +153,7 @@ export const transmitDocuments = async (
     { ids: documentsIds },
     {
       headers: {
+        'Account-Id': accountId,
         'Content-Type': 'application/json',
       },
     },
@@ -150,12 +168,14 @@ export const previewDocument = async (
   serviceId: Service['ServiceId'],
   entityId: string,
   documentId: Document['id'],
+  accountId: number,
 ): Promise<DocumentPreviewResponse> => {
   const apiObject = api().ds
   const response: AxiosResponse<ArrayBuffer> = await apiObject.get(
     `${serviceId}/${entityId}/documents/${documentId}/preview`,
     {
       responseType: 'arraybuffer',
+      headers: { 'Account-Id': accountId },
     },
   )
   const headers: { [key: string]: string } = {}
@@ -175,6 +195,7 @@ export const fetchDocumentsByKeyWord = async (
   serviceId: Service['ServiceId'],
   folderId: Folder['id'],
   entityId: string,
+  accountId: number,
   skip: number,
   limit: number,
   sort: string,
@@ -186,6 +207,7 @@ export const fetchDocumentsByKeyWord = async (
 
   return (
     await apiObject.get(fetchFolderDocumentsUrl, {
+      headers: { 'Account-Id': accountId },
       params: {
         skip,
         limit,

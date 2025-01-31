@@ -81,6 +81,7 @@ export function useDownloadDocuments(
         downloadDocumentsProps.currentService,
         downloadDocumentsProps.selectedEntity,
         downloadDocumentsProps.selectedDocuments[0].id,
+        downloadDocumentsProps.accountId,
       )
       downloadFile(documentBlob, downloadDocumentsProps.selectedDocuments[0].name)
       trackDocumentDownload({ isDownloadSuccessful: true })
@@ -97,6 +98,7 @@ export function useDownloadDocuments(
         downloadDocumentsProps.currentService,
         downloadDocumentsProps.selectedEntity,
         downloadDocumentsProps.selectedDocuments.map((x) => x.id),
+        downloadDocumentsProps.accountId,
       )
 
       downloadFile(documentsArchiveBlob, 'archive.zip')

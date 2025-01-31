@@ -16,6 +16,7 @@ export interface TreeviewProps {
   selectedFolder: null | Folder
   currentServiceFolder: Folder[] | undefined
   isInBinContext?: boolean
+  accountId: number
 }
 
 // To update with real type when it will be availaible from the Stylguide

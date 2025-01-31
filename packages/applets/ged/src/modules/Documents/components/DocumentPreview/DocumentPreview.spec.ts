@@ -18,6 +18,7 @@ const defaultProps: DocumentsPreviewProps = {
   document: documentMock,
   serviceId: 'serviceId',
   entityId: 'entityId',
+  accountId: 1234,
   openDrawer: true,
   selectedDocumentIndex: 1,
   totalDocumentsCount: 10,

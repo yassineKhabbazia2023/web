@@ -25,6 +25,7 @@ export function useTransmitDocuments(
         transmitDocumentsProps.value.currentService,
         transmitDocumentsProps.value.selectedEntity,
         transmitDocumentsProps.value.selectedDocumentsIds,
+        transmitDocumentsProps.value.accountId,
       )
       trackDocumentTransmit({ isTransmitSuccessful: true })
     } catch (error) {

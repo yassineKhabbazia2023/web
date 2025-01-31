@@ -23,6 +23,7 @@ const defaultProps: DocumentRestoreModalTypesProps = {
   },
   serviceId: 'serv',
   entityId: 'ent',
+  accountId: 1234,
 }
 const i18n = createI18n({
   locale: 'fr-FR',
@@ -101,6 +102,7 @@ describe('documentRestoreModal', () => {
           'serv',
           'ent',
           ['d595982f-d90f-4374-8ecb-fea0b4202c6d'],
+          defaultProps.accountId,
         )
         await nextTick()
         expect(wrapper.emitted('confirm-restore-document')).toBeTruthy()

@@ -16,6 +16,7 @@ const defaultProps: FoldersListProps = {
   explorerAuthorizedGivenAction: true,
   currentService: 'service-id-compta',
   selectedEntity: 'entity',
+  accountId: 1234,
   isCreateFolderModalVisible: true,
   explorerUnauthorizedGivenActionMessage: 'msg',
   foldersListEmptyFolderLabel: 'lab',

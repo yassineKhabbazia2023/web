@@ -9,4 +9,5 @@ export interface TreeNodeProps {
   selectedFolder?: Folder
   serviceId?: Service['ServiceId'] | null
   entityId?: string
+  accountId?: number
 }

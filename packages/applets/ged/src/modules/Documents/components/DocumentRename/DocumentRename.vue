@@ -43,6 +43,7 @@ const handleDocumentRename = async (documentName: string) => {
       props.selectedEntity,
       props.document.id,
       documentName,
+      props.accountId,
     )
     isRenameDocumentModalOpened.value = false
 

@@ -127,6 +127,7 @@ const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = com
     selectedDocuments: [props.document],
     currentService: props.currentService,
     selectedEntity: props.selectedEntity,
+    accountId: props.accountId,
   }
 })
 

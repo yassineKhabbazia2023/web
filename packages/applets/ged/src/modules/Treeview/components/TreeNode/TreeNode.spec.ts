@@ -47,6 +47,7 @@ const defaultProps: TreeNodeProps = {
   data: fold,
   serviceId: 'string',
   entityId: 'string',
+  accountId: 1234,
   selectedFolder: {} as Folder,
 }
 

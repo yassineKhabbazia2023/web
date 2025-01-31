@@ -13,6 +13,7 @@ const defaultProps: DocumentDetailsTabPaneProps = {
   document: documentMock,
   selectedEntity: '',
   currentService: '',
+  accountId: 1234,
 }
 
 function getMockedUpdatedDocument(status: string, labelFr: string|null, path: string[]) {
@@ -72,6 +73,7 @@ describe('documentDetailsTabPane', () => {
       defaultProps.currentService,
       defaultProps.selectedEntity,
       documentMock.id,
+      defaultProps.accountId,
     )
   })
 

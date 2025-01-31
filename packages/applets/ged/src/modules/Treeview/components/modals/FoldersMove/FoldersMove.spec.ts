@@ -199,6 +199,7 @@ describe('test FoldersMove', () => {
             'my-selected-entity',
             11111111,
             135393637,
+            1234,
           )
         })
 

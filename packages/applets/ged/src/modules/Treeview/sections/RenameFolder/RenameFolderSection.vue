@@ -46,6 +46,7 @@ const handleRenameFolder = async (newfolderName: string) => {
       props.folderId,
       newfolderName,
       props.entityId,
+      props.accountId,
       props.serviceId,
     ))
     isConfirmButtonLoading.value = false

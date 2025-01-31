@@ -10,6 +10,9 @@ import {
   commonApiDsPostSpy as mockDsPost,
 } from '@ged/../vitest.setup'
 
+const accountId = 1234
+const accountNumber = 'my-account-id'
+
 describe('bin documents service', () => {
   beforeEach(() => {
     mockDsGet.mockResolvedValue({
@@ -27,14 +30,13 @@ describe('bin documents service', () => {
     expect.hasAssertions()
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
-    const accountId = 'my-account-id'
-
-    await fetchBinDocuments(service.ServiceId, accountId)
+    await fetchBinDocuments(service.ServiceId, accountNumber, accountId)
 
     expect(mockDsGet).toHaveBeenCalledTimes(1)
     expect(mockDsGet).toHaveBeenCalledWith(
       'service-1/my-account-id/trash/mapped/currentuser',
       {
+        headers: { 'Account-Id': accountId },
         params: {
           limit: 10,
           skip: 0,
@@ -48,15 +50,16 @@ describe('bin documents service', () => {
     expect.hasAssertions()
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
-    const accountId = 'my-account-id'
-
-    await restoreDocuments(service.ServiceId, accountId, ['doc-id'])
+    await restoreDocuments(service.ServiceId, accountNumber, ['doc-id'], accountId)
 
     expect(mockDsPost).toHaveBeenCalledTimes(1)
     expect(mockDsPost).toHaveBeenCalledWith(
       'service-1/my-account-id/trash/restore',
       {
         ids: ['doc-id'],
+      },
+      {
+        headers: { 'Account-Id': accountId },
       },
     )
   })

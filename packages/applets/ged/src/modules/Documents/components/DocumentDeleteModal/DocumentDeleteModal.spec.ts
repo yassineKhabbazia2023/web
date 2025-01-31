@@ -30,6 +30,7 @@ const defaultProps: DocumentDeleteModalTypesProps = {
   documentIds: [],
   serviceId: 'serv',
   entityId: 'ent',
+  accountId: 1234,
 }
 const i18n = createI18n({
   locale: 'fr-FR',
@@ -144,6 +145,7 @@ describe('deleteFolderConfirmationPopup', () => {
           'serv',
           'ent',
           ['1'],
+          1234,
         )
 
         expect(PNotificationMock).toHaveBeenCalledTimes(1)
@@ -171,6 +173,7 @@ describe('deleteFolderConfirmationPopup', () => {
           'serv',
           'ent',
           ['1', '2'],
+          1234,
         )
 
         expect(PNotificationMock).toHaveBeenCalledTimes(1)

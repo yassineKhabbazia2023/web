@@ -17,6 +17,7 @@ const pinia = createPinia()
 const defaultProps: CreateFolderSectionProps = {
   serviceId: 'service-id',
   entityId: 'entity-id',
+  accountId: 1234,
   hasCreateFolderButton: true,
   isCreateFolderModalCentered: false,
   selectedFolder: {
@@ -201,6 +202,7 @@ describe('createFolderSection', () => {
           'entity-id',
           1,
           'theNewFolder',
+          1234,
         )
       })
     it('should close modal when api call is completed', async () => {

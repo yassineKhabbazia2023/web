@@ -13,6 +13,7 @@ export function useDragAndDropFromExplorer(
   currentService: Ref<DocumentsProps['currentService']>,
   currentServiceName: Ref<DocumentsProps['currentServiceName']>,
   selectedEntity: Ref<DocumentsProps['selectedEntity']>,
+  accountId: Ref<DocumentsProps['accountId']>,
   selectedFolder: Ref<DocumentsProps['selectedFolder']>,
   refreshDocumentsList: Function,
 ) {
@@ -99,6 +100,7 @@ export function useDragAndDropFromExplorer(
       selectedEntity.value,
       file,
       folder.id,
+      accountId.value,
     ))
 
     try {

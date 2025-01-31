@@ -16,6 +16,7 @@ export interface DocumentsModalExplorerProps {
   ExplorerAuthorizedGivenAction: GivenActionAuthorization
   currentService: Service['ServiceId']
   selectedEntity: string
+  accountId: number
   explorerUnauthorizedGivenActionMessage: string
   foldersListEmptyFolderLabel: string
   documentsSelectorEmptyDocumentsListLabel: string
