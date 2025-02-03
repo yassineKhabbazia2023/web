@@ -92,7 +92,7 @@ describe('offerProviderProducts', () => {
       const pExtendedService = getMockedService(isSelected)
       const { productConfigurationId } = pExtendedService
 
-      offerServicesCard.vm.$emit('change-service-status', pExtendedService)
+      offerServicesCard.vm.$emit('changeServiceStatus', pExtendedService)
 
       expect(wrapper.emitted('deselect-product')).toStrictEqual([[offerId, productConfigurationId]])
     })

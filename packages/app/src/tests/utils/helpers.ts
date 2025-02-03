@@ -7,6 +7,9 @@ const menu = [
   {
     name: 'wallet',
     path: '/portefeuille',
+    component: {
+      template: '<div />',
+    },
   },
 ]
 const fakeUser: Partial<UserInfo> = {

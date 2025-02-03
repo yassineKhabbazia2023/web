@@ -76,7 +76,7 @@ describe('deploy', () => {
       const wrapper = createWrapper()
       await flushPromises()
       const pagination = wrapper.findComponent({ name: 'PPagination' })
-      pagination.vm.$emit('update:p-current-page', 3)
+      pagination.vm.$emit('update:pCurrentPage', 3)
       await flushPromises()
 
       expect(wrapper.vm.searchCriteria.currentPage).toBe(3)

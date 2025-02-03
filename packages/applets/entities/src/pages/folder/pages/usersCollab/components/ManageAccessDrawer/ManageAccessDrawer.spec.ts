@@ -60,7 +60,7 @@ describe('manageAccessDrawer Component - Drawer containing a table of pending op
   describe('events', () => {
     it("should emit 'update:modelValue' event when the drawer is closed", async () => {
       const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
-      pDrawer.vm.$emit('update:model-value', false)
+      pDrawer.vm.$emit('update:modelValue', false)
       await nextTick()
 
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
@@ -72,6 +72,7 @@ describe('manageAccessDrawer Component - Drawer containing a table of pending op
       pendingOperationsTable.vm.$emit('update-operation-table')
       await nextTick()
 
+      expect(wrapper.emitted('update-operation-table')).toBeTruthy()
       expect(wrapper.emitted('update-operation-table')).toBeTruthy()
     })
     it('should close manage access drawer when clicking on close buton', async () => {
