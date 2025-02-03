@@ -10,7 +10,6 @@ export interface PDatePickerProps<T extends PDatePickerModelValue = PDatePickerM
   modelValue: T
   pCalendarLite?: boolean
   pSchedulesCollection?: string[]
-  pMonth?: calendarEvent
   pReadonly?: boolean
   pDisabled?: boolean
   pSize?: '' | 'large' | 'default' | 'small'

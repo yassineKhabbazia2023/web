@@ -1,6 +1,5 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
-import { nextTick } from 'vue'
 import PDatePicker from '.'
 import type { PDatePickerProps } from './PDatePickerTypes'
 
@@ -35,17 +34,11 @@ function createWrapper(overriddenProps: Partial<PDatePickerProps> = {}) {
 describe('calendar lite', () => {
   it('renders the calendar lite component', async () => {
     const testDate = '2024-01-15'
+    const day = '2024-01-01'
     const date = new Date(testDate)
     const wrapper = createWrapper()
     const elDatePicker = wrapper.findComponent({ name: 'ElDatePicker' })
     const secondTableCell = document.body.querySelectorAll('[data-testid="date-picker-table-cell"]')[1] as HTMLElement
-
-    await wrapper.setProps({ pMonth: 'next-month' })
-    await nextTick()
-    await wrapper.setProps({ pMonth: 'today' })
-    await nextTick()
-    const expectedModelValue = (new Date()).toISOString().split('T')[0]
-    expect(wrapper.emitted('update:modelValue')?.at(0)).toStrictEqual([expectedModelValue])
 
     elDatePicker.vm.$emit('change', date)
     wrapper.vm.$emit('calendar-change', [date, date])

@@ -48,7 +48,6 @@ import { getCurrentDate, getWeekCount } from './PDatePickerUtils'
 
 const props = withDefaults(defineProps<PDatePickerProps<T>>(), {
   pCalendarLite: false,
-  pMonth: '',
   pReadonly: false,
   pDisabled: false,
   pClearable: true,
@@ -77,12 +76,6 @@ const datepickerModel = computed({
   },
 })
 const panelDate = ref<PDatePickerModelValue>()
-
-watch(() => props.pMonth, (value: calendarEvent) => {
-  if (value) {
-    actOnDatepicker(value)
-  }
-})
 
 watch(() => props.modelValue, () => {
   panelDate.value = undefined
@@ -115,18 +108,6 @@ const scheduleDateStyle = (type: string) => {
   return Object.assign(commonClass, {
     'cell__schedule--active': true,
   })
-}
-
-const actOnDatepicker = (value: calendarEvent) => {
-  if (value === 'next-month' || value === 'prev-month') {
-    const classMapper = {
-      'next-month': 'el-picker-panel__icon-btn arrow-right',
-      'prev-month': 'el-picker-panel__icon-btn arrow-left',
-    }
-    const element: HTMLElement = document.getElementsByClassName(classMapper[value])[0] as HTMLElement
-    return element.click()
-  }
-  datepickerModel.value = (new Date()).toISOString().split('T')[0] as T
 }
 
 function calendarChange(val: [Date, Date]) {
