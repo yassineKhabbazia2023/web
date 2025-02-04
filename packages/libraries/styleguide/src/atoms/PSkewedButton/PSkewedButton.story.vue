@@ -4,15 +4,40 @@
       <PSkewedButton
         :pContent="basicButton.pContent"
         :pDisabled="basicButton.pDisabled"
-        @click="logEvent('click', { log: 'Skewed button clciked' })"
+        :pHasLoader="basicButton.pHasLoader"
+        @click="logEvent('click', { log: 'Skewed button clicked' })"
       />
+      <template #controls>
+        <HstText v-model="basicButton.pContent" title="pContent" />
+        <HstCheckbox v-model="basicButton.pDisabled" title="pDisabled" />
+        <HstCheckbox v-model="basicButton.pHasLoader" title="pHasLoader" />
+      </template>
     </Variant>
     <Variant title="Disabled">
       <PSkewedButton
         :pContent="disabledButton.pContent"
         :pDisabled="disabledButton.pDisabled"
+        :pHasLoader="disabledButton.pHasLoader"
         @click="logEvent('click', { log: 'Should not log anything as it\'s disabled' })"
       />
+      <template #controls>
+        <HstText v-model="disabledButton.pContent" title="pContent" />
+        <HstCheckbox v-model="disabledButton.pDisabled" title="pDisabled" />
+        <HstCheckbox v-model="disabledButton.pHasLoader" title="pHasLoader" />
+      </template>
+    </Variant>
+    <Variant title="With loader">
+      <PSkewedButton
+        :pContent="buttonWithLoader.pContent"
+        :pDisabled="buttonWithLoader.pDisabled"
+        :pHasLoader="buttonWithLoader.pHasLoader"
+        @click="logEvent('click', { log: 'Skewed button clicked' })"
+      />
+      <template #controls>
+        <HstText v-model="buttonWithLoader.pContent" title="pContent" />
+        <HstCheckbox v-model="buttonWithLoader.pDisabled" title="pDisabled" />
+        <HstCheckbox v-model="buttonWithLoader.pHasLoader" title="pHasLoader" />
+      </template>
     </Variant>
   </Story>
 </template>
@@ -26,11 +51,19 @@ import type { PSkewedButtonProps } from './PSkewedButton.types'
 const basicButton = ref<PSkewedButtonProps>({
   pContent: 'Skewed Button',
   pDisabled: false,
+  pHasLoader: false,
 })
 
 const disabledButton = ref<PSkewedButtonProps>({
   pContent: 'Skewed Button',
   pDisabled: true,
+  pHasLoader: false,
+})
+
+const buttonWithLoader = ref<PSkewedButtonProps>({
+  pContent: 'Skewed Button',
+  pDisabled: false,
+  pHasLoader: true,
 })
 </script>
 

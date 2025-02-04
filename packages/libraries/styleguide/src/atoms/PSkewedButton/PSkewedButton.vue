@@ -7,42 +7,40 @@
       cursor-pointer
       padding-x--6
     "
-    :class="[
-      baseComponentClass,
-      buttonTypeModifier,
-      disabledClass
-    ]"
+    :class="{
+      'p-skewed-button--primary': props.pType === 'primary',
+      'p-skewed-button--secondary': props.pType === 'secondary',
+      'p-skewed-button--disabled': props.pDisabled,
+    }"
     @click="handleClick"
   >
     <button
-      class="p-skewed-button__button"
+      class="
+        p-skewed-button__button
+        flex
+        flex--align-items-center
+      "
       :disabled="pDisabled"
     >
+      <PLoader
+        v-if="pHasLoader"
+        pSize="16"
+        pType="no-color"
+        class="margin-right--3"
+      />
       {{ pContent }}
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import PLoader from '../../atoms/PLoader'
 import type { PSkewedButtonProps } from './PSkewedButton.types'
 
 const props = withDefaults(defineProps<PSkewedButtonProps>(), {
   pType: 'primary',
   pDisabled: false,
 })
-
-const baseComponentClass = 'p-skewed-button'
-const buttonTypeModifier = computed(() => {
-  switch (props.pType) {
-  case 'secondary':
-    return `${baseComponentClass}--secondary`
-
-  default:
-    return `${baseComponentClass}--primary`
-  }
-})
-const disabledClass = computed(() => ({ [`${baseComponentClass}--disabled`]: props.pDisabled }))
 
 function handleClick(event: MouseEvent) {
   if (props.pDisabled) {
@@ -117,6 +115,7 @@ function handleClick(event: MouseEvent) {
   &--disabled {
     cursor: not-allowed;
     background: var(--el-color-neutral-gray-100);
+    color: var(--el-color-neutral-gray-500);
 
     button {
       cursor: not-allowed;
