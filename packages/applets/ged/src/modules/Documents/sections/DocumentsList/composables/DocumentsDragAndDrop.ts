@@ -1,7 +1,7 @@
-import { computed, watch, onBeforeUnmount } from 'vue'
+import { computed, ref, watch, onBeforeUnmount } from 'vue'
 import type { Ref } from 'vue'
 import type { Document } from '@ged/models/Document'
-import type { DocumentsListProps } from '../DocumentsListTypes'
+import type { DocumentsListProps } from '../documents-list.types'
 import { trackDocumentMoveFlowStart } from '@ged/services/tracking/tracking.service'
 import { TriggerSource } from '@ged/services/tracking/tracking.types'
 
@@ -15,10 +15,6 @@ export function useDocumentsDragAndDrop(
   }
 
   function bindDragProperties() {
-    // Reason of no-undef disabling :
-
-    // https://github.com/typescript-eslint/typescript-eslint/blob/1cf9243/docs/getting-started/linting/FAQ.md#i-get-errors-from-the-no-undef-rule-about-global-variables-not-being-defined-even-though-there-are-no-typescript-errors
-
     const documentRowElements = getDocumentsRowElements() as HTMLCollectionOf<HTMLElement>
     Array.from(documentRowElements).forEach((element: HTMLElement) => {
       element.addEventListener('dragstart', handleDragStart)
@@ -27,8 +23,6 @@ export function useDocumentsDragAndDrop(
   }
 
   onBeforeUnmount(() => {
-    // Read above for the no-undef disabling reason
-
     const documentRowElements = getDocumentsRowElements() as HTMLCollectionOf<HTMLElement>
     Array.from(documentRowElements).forEach((element) => {
       element.removeEventListener('dragstart', handleDragStart)
@@ -44,11 +38,15 @@ export function useDocumentsDragAndDrop(
 
   // If you're searching for the handling of the drop event,
   // check in the Treeview folder as this is where documents are dropped
+
+  const isDragging = ref(false)
+
   function handleDragStart(event: DragEvent): void {
     if (!event.dataTransfer) {
       return
     }
 
+    isDragging.value = true
     draggedDocuments.value = documentsToMove.value
 
     const ghost = document.getElementsByClassName('document-drag-ghost').item(0)
@@ -129,6 +127,7 @@ export function useDocumentsDragAndDrop(
   }
 
   function handleDragEnd() {
+    isDragging.value = false
     draggedDocuments.value = []
     document.body.classList.remove('grabbing')
   }
@@ -139,5 +138,9 @@ export function useDocumentsDragAndDrop(
   // multiple drag events instead of just one.
   function hasLengthDifferenceMoreThanOne(firstArray: any[], secondArray: any[]) {
     return Math.abs(firstArray.length - secondArray.length) > 1
+  }
+
+  return {
+    isDragging,
   }
 }

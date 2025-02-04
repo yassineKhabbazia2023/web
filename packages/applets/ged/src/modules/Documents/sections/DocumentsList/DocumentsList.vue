@@ -56,18 +56,17 @@
 </template>
 
 <script setup lang="ts">
-import type { DocumentsListProps } from './DocumentsListTypes'
+import { ref, watch, computed } from 'vue'
+import type { DocumentsListProps } from './documents-list.types'
 import { PTable, PTableColumn } from '@pulse/styleguide/components'
 import TableElement from './components/TableElement'
 import { returnSortQueryField } from '@ged/modules/Documents/helpers/sortHelper'
 import type { ElTable } from 'element-plus'
 import type { Document, TableRowDocument } from '@ged/models/Document'
-import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDocumentsDragAndDrop } from './composables/DocumentsDragAndDrop'
 import DocumentDragGhost from './components/DocumentDragGhost'
-import { getRowAlignmentClass } from './documents-list.manager'
-
+import { getRowAlignmentClass, getRowClasses } from './documents-list.manager'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
@@ -104,7 +103,7 @@ watch(
 const draggedDocuments = ref<Document[]>([])
 const draggedFilenameToUse = computed(() => selectedDocuments.value.at(0)?.name ?? '')
 const currentService = computed(() => props.currentService)
-useDocumentsDragAndDrop(
+const { isDragging } = useDocumentsDragAndDrop(
   selectedDocuments,
   currentService,
   draggedDocuments,
@@ -127,11 +126,11 @@ const tableRowClassName = ({
 }: {
   row: Document
 }) => {
-  return `
-    document-row
-    ${row.id}
-    cursor-pointer
-    `
+  return getRowClasses({
+    document: row,
+    draggedDocuments: draggedDocuments.value,
+    isDragging: isDragging.value,
+  })
 }
 
 const selectRow = (documentRow: TableRowDocument, column:any) => {
