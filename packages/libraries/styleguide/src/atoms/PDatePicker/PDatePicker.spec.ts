@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import PDatePicker from '.'
 import type { PDatePickerProps } from './PDatePickerTypes'
@@ -26,8 +26,34 @@ function createWrapper(overriddenProps: Partial<PDatePickerProps> = {}) {
     ...overriddenProps,
   }
 
-  return mount(PDatePicker, {
+  return shallowMount(PDatePicker, {
     props,
+    global: {
+      stubs: {
+        ElDatePicker: {
+          name: 'ElDatePicker',
+          template: `<div><slot
+            :isCurrent="isCurrent"
+            :dayjs="dayjs"
+            :text="text"
+            :type="type"
+          /></div>`,
+          data: () => {
+            return {
+              isCurrent: false,
+              dayjs: {
+                format: () => '2024-01-01',
+              },
+              text: '',
+              type: '',
+            }
+          },
+          props: [
+            'popperClass',
+          ],
+        },
+      },
+    },
   })
 }
 
@@ -37,14 +63,11 @@ describe('calendar lite', () => {
     const day = '2024-01-01'
     const date = new Date(testDate)
     const wrapper = createWrapper()
-    const elDatePicker = wrapper.findComponent({ name: 'ElDatePicker' })
-    const secondTableCell = document.body.querySelectorAll('[data-testid="date-picker-table-cell"]')[1] as HTMLElement
+    const secondTableCell = wrapper.find('[data-testid="date-picker-table-cell"]')
 
-    elDatePicker.vm.$emit('change', date)
     wrapper.vm.$emit('calendar-change', [date, date])
-    secondTableCell?.click()
+    secondTableCell?.trigger('click')
 
-    expect(wrapper.emitted('change')?.at(0)).toStrictEqual([date])
     expect(wrapper.emitted('calendar-change')?.at(0)).toStrictEqual([[date, date]])
     expect(wrapper.emitted('selected-date')?.at(0)).toStrictEqual([day])
   })

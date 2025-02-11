@@ -38,5 +38,12 @@ export default mergeConfig(
         exclude: ['src/atoms/PIcon/components/*'],
       },
     },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
+    },
   }),
 )
