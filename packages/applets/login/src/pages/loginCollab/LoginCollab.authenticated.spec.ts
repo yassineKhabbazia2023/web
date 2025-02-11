@@ -41,8 +41,8 @@ describe('loginCollab', () => {
       expect(navigateToWalletMock).toHaveBeenCalledTimes(1)
     })
     it('should track an Amplitude event when the login button is clicked', async () => {
-      const loginButton = wrapper.find('[data-testid=login-collab-button]')
-      await loginButton.trigger('click')
+      const loginButton = wrapper.findComponent({ name: 'PSkewedButton' })
+      await loginButton.vm.$emit('click')
 
       expect(spyMsalLoginRedirect).toHaveBeenCalledOnce()
     })

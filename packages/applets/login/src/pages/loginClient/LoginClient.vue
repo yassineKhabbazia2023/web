@@ -39,6 +39,7 @@
           v-model="formValues.email"
           :class="{ 'error': hasCustomError }"
           :pPlaceholder="t('emailPlaceholder')"
+          :pDisabled="isLoading"
           pType="email"
           pName="email"
           pAutocomplete="on"
@@ -56,6 +57,7 @@
           v-model="formValues.password"
           :class="{ 'error': hasCustomError }"
           :pPlaceholder="t('passwordPlaceholder')"
+          :pDisabled="isLoading"
           pType="password"
           pShowPassword
           data-testid="login-input-password"
@@ -71,8 +73,9 @@
       <PFormItem>
         <div class="margin-x--auto margin-top--6">
           <PSkewedButton
-            :pContent="t('login')"
-            :pDisabled="!isFormValid"
+            :pContent="submitButtonContent"
+            :pDisabled="!isSubmitButtonEnabled"
+            :pHasLoader="isLoading"
             data-testid="login-submit-button"
             @click="handleSubmit(formRef)"
           />
@@ -93,6 +96,7 @@ import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/compo
 import useInitUserAuth from '@login/composable/useInitUserAuth'
 import useNavigation from '@login/composable/useNavigation'
 import { getTermsByCurrentUser } from '@login/services/cgu'
+import { LoginRouteName } from '@pulse/common/constants'
 
 declare let window: {
   gigya: any
@@ -109,6 +113,8 @@ const { t } = useI18n({
 const router = useRouter()
 const formRef = ref<FormInstance>()
 
+const isLoading = ref(false)
+
 const formValues = reactive({
   email: '',
   password: '',
@@ -119,9 +125,14 @@ const formValidity: any = reactive({
   password: false,
 })
 
-const isFormValid = computed(() =>
-  formValidity.email && formValidity.password,
-)
+const isSubmitButtonEnabled = computed(() => {
+  if (isLoading.value) {
+    return false
+  }
+  return formValidity.email && formValidity.password
+})
+
+const submitButtonContent = computed(() => isLoading.value ? t('loading') : t('login'))
 
 const customErrorMessage = ref('')
 const hasCustomError = computed(() => customErrorMessage.value !== '')
@@ -170,6 +181,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
       return false
     }
   }
+  isLoading.value = true
 
   try {
     // Authentication
@@ -208,8 +220,9 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     if (isCurrent) {
       return navigateToCustomerWallet()
     }
-    router.push({ name: 'validationCGU', params: { termsId: terms.termsId } })
+    router.push({ name: LoginRouteName.CGU_VALIDATION, params: { termsId: terms.termsId } })
   } catch (error: any) {
+    isLoading.value = false
     const hasEmailOrPasswordInvalid = error.status === 404 || error.response?.data?.errorCode === '403042'
     customErrorMessage.value = hasEmailOrPasswordInvalid
       ? t('emailOrPasswordError')
@@ -274,6 +287,7 @@ function onInput() {
     password: 'Password'
     passwordPlaceholder: 'Enter your password'
     login: 'Log in'
+    loading: 'Loading...'
     emailOrPasswordError: 'The email and password combination is incorrect.'
     technicalError: 'A technical error occurred.'
     forgotPassword: 'Forgot your password?'
@@ -289,6 +303,7 @@ function onInput() {
     password: 'Mot de passe'
     passwordPlaceholder: 'Saisissez votre mot de passe'
     login: 'Me connecter'
+    loading: 'Chargement en cours'
     emailOrPasswordError: 'La combinaison email et mot de passe est incorrecte.'
     technicalError: 'Une erreur technique est survenue.'
     forgotPassword: 'Mot de passe oublié ?'

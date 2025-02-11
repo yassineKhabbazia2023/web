@@ -6,6 +6,7 @@ import Login from './'
 import { amplitudeService, tokenService } from '@pulse/common'
 import { getTermsByCurrentUser } from '@login/services/cgu'
 import type { FormInstance } from 'element-plus'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const USER_ID = 'customUserId'
 const GIGYA_USER_ID = 'customGigyaUserId'
@@ -311,7 +312,7 @@ describe('login', () => {
     await flushPromises()
 
     expect(mockRouterPush).toHaveBeenCalledWith({
-      name: 'validationCGU',
+      name: LoginRouteName.CGU_VALIDATION,
       params: { termsId: 123456 },
     })
   })

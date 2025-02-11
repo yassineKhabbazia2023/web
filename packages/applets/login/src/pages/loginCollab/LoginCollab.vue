@@ -9,7 +9,9 @@
     </p>
     <div class="flex flex--justify-content-center">
       <PSkewedButton
-        :pContent="t('login')"
+        :pContent="submitButtonContent"
+        :pDisabled="isLoading"
+        :pHasLoader="isLoading"
         pType="primary"
         data-testid="login-collab-button"
         @click="handleLoginCollab"
@@ -19,10 +21,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PSkewedButton } from '@pulse/styleguide/components'
 import { msalInstance, amplitudeService } from '@pulse/common'
+import { logger } from '@pulse/core'
 import useInitAuth from '@login/composable/useInitUserAuth'
 import useNavigation from '@login/composable/useNavigation'
 
@@ -34,15 +37,28 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
+const isLoading = ref(false)
+const submitButtonContent = computed(() => isLoading.value ? t('loading') : t('login'))
+
 const handleLoginCollab = () => {
+  isLoading.value = true
   msalInstance.loginRedirect()
 }
 
 onMounted(async () => {
-  amplitudeService.reset()
-  await initAuthCollab()
-  if (isTokenRetrieve.value) {
-    navigateToWallet()
+  isLoading.value = true
+  try {
+    amplitudeService.reset()
+    await initAuthCollab()
+    if (isTokenRetrieve.value) {
+      navigateToWallet()
+
+      return
+    }
+  } catch(e) {
+    logger.error(e)
+  } finally {
+    isLoading.value = false
   }
 })
 </script>
@@ -92,12 +108,14 @@ p {
     "welcomeTo": "Welcome to your",
     "collaboratorSpace": "your collaborator space !",
     "login": "Login",
+    "loading": "Loading...",
     "formTitle": "Welcome to your RYDGE Conseil platform.\n Please log in to access to all your services."
   },
   "fr-FR": {
     "welcomeTo": "Bienvenue sur votre",
     "collaboratorSpace": "espace collaborateur !",
     "login": "Se connecter",
+    "loading": "Chargement en cours",
     "formTitle": "Bienvenue sur votre plateforme RYDGE Conseil.\n Veuillez vous connecter pour accéder à tous vos\u202Fservices."
   }
 }
