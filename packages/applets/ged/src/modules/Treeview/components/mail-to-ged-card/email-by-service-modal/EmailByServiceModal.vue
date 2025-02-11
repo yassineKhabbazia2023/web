@@ -1,7 +1,8 @@
 <template>
   <PDialog
-    v-model="isModalOpened"
+    v-model="isModalOpenedInternal"
     :pTitle="t('sendDocumentsFromMailInbox')"
+    @close="closeModal"
   >
     <p class="margin-bottom--3">
       {{ t('sendToExpertsWithEmail') }}
@@ -32,13 +33,17 @@ const { t } = useI18n({
 
 const props = defineProps<EmailByServiceProps>()
 const emit = defineEmits<{
-  'update:modelValue': []
+  'update:isOpened': [boolean]
 }>()
 
-const isModalOpened = computed({
-  get: () => props.modelValue,
-  set: () => emit('update:modelValue'),
+const isModalOpenedInternal = computed({
+  get: () => props.isOpened,
+  set: (value: boolean) => emit('update:isOpened', value),
 })
+
+function closeModal() {
+  isModalOpenedInternal.value = false
+}
 </script>
 
 <i18n lang="yaml">

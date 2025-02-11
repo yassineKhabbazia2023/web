@@ -25,7 +25,7 @@
 
   <EmailByServiceModal
     v-if="mailToGedInformation"
-    v-model="isMailToGedModenOpened"
+    v-model:isOpened="isMailToGedModalOpened"
     :mailToGedInformation="mailToGedInformation"
   />
 </template>
@@ -38,20 +38,33 @@ import { PIcon } from '@pulse/styleguide/components'
 import EmailByServiceModal from './email-by-service-modal'
 import { fetchServicesMailToGedInformation } from '@ged/services/Services'
 import { ServiceMailToGedInformation } from '@ged/models/Service'
+import type { MailToGedProps } from './mail-to-ged-card.types.ts'
+import { logger } from '@pulse/core'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const isMailToGedModenOpened = ref(false)
+const props = defineProps<MailToGedProps>()
+
+const isMailToGedModalOpened = ref(false)
 function openMailToGedModal() {
-  isMailToGedModenOpened.value = true
+  isMailToGedModalOpened.value = true
 }
 
 const mailToGedInformation = ref<ServiceMailToGedInformation[]>()
 onMounted(async () => {
-  mailToGedInformation.value = await fetchServicesMailToGedInformation()
+  try {
+    mailToGedInformation.value = await fetchServicesMailToGedInformation(
+      props.selectedEntity,
+      props.entityServices,
+      props.accountId,
+    )
+  } catch (error) {
+    logger.error('Failed to retrieves services information', error)
+  }
+
 })
 </script>
 

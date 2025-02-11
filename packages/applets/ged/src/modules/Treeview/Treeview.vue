@@ -113,6 +113,7 @@
         v-if="FeatureFlagManager.isMailToGedActivated()"
         :selectedEntity="selectedEntity"
         :accountId="accountId"
+        :entityServices="entityServices"
       />
     </div>
   </div>

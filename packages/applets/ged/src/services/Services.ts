@@ -1,5 +1,6 @@
 import { commonApi } from '@pulse/common'
-import type { Service } from '@ged/models/Service'
+import type { AxiosResponse } from 'axios'
+import type { Service, ServiceMailToGedInformation } from '@ged/models/Service'
 
 export const fetchUserEntityServices = async (
   entityId: Service['ServiceId'], accountId: number,
@@ -12,17 +13,32 @@ export const fetchUserEntityServices = async (
   return response?.data
 }
 
-export async function fetchServicesMailToGedInformation() {
-  return Promise.resolve(
-    [
-      {
-        'label': 'Comptabilité - Dépôt',
-        'emailAddress': '2025546345-1600-DP@rec.gedkpmg.fr',
-      },
-      {
-        'label': 'Gestion sociale - Dépôt',
-        'emailAddress': '2025546345-1600-GS@rec.gedkpmg.fr',
-      },
-    ],
-  )
+export async function fetchServiceMailToGedInformation(
+  entityId: Service['ServiceId'],
+  service: Service,
+  accountId: number,
+): Promise<AxiosResponse<ServiceMailToGedInformation>> {
+  return await commonApi().gateway.get(`/ged/api/${service.ServiceId}/${entityId}/mail2ged/informations`, {
+    headers: { 'Account-Id': accountId },
+  })
+}
+export async function fetchServicesMailToGedInformation(
+  entityId: Service['ServiceId'],
+  entityServices: Service[],
+  accountId: number,
+) {
+  const mailToGedCallsByUniverse = entityServices.map((service) => {
+    return fetchServiceMailToGedInformation(entityId, service, accountId)
+  })
+
+  const promisesResult = await Promise.allSettled(mailToGedCallsByUniverse)
+  const result: ServiceMailToGedInformation[] = []
+
+  promisesResult.forEach(promise => {
+    if (promise.status === 'fulfilled') {
+      result.push(promise.value.data)
+    }
+  })
+
+  return result
 }
