@@ -11,6 +11,7 @@
         :pWidth="pDialogControl.dialogWidth"
         :pModal="pDialogControl.dialogModal"
         :pCenter="pDialogControl.dialogCenter"
+        pCloseIconName="x"
         :pBeforeClose="closeDialog"
       >
         <!-- Dialog content goes here -->

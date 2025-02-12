@@ -10,6 +10,8 @@
   "unlock-success": "badges/unlock-success.svg",
   "warning": "badges/warning.svg",
   "x": "badges/x.svg",
+  "hourglass-duotone": "duotone/hourglass-duotone.svg",
+  "power-duotone": "duotone/power-duotone.svg",
   "error-page-1": "error-pages/error-page-1.png",
   "error-page-2": "error-pages/error-page-2.png",
   "error-page-3": "error-pages/error-page-3.png",

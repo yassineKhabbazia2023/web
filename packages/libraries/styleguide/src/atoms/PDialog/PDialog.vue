@@ -10,6 +10,7 @@
     :alignCenter="pAlignCenter"
     :showClose="pShowClose"
     :destroyOnClose="pDestroyOnClose"
+    :closeIcon="closeIcon"
     @close="handleClose"
   >
     <slot />
@@ -23,6 +24,7 @@
 import { ElDialog } from 'element-plus'
 import { computed } from 'vue'
 import type { PDialogProps } from './PDialogTypes'
+import { getIconComponent } from '../../utils/iconHelper'
 
 const props = withDefaults(defineProps<PDialogProps>(), {
   pLockScroll: false,
@@ -44,6 +46,8 @@ const dialogModel = computed({
     emit('update:modelValue', value)
   },
 })
+
+const closeIcon = computed(() => props.pCloseIconName ? getIconComponent(props.pCloseIconName) : undefined)
 
 const emit = defineEmits([
   'update:modelValue',

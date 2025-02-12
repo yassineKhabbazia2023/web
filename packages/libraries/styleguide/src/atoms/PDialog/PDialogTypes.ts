@@ -1,3 +1,4 @@
+import type { IconName } from '@pulse/styleguide/types'
 export interface PDialogProps {
   modelValue: boolean
   pLockScroll?: boolean
@@ -9,4 +10,5 @@ export interface PDialogProps {
   pAlignCenter?: boolean
   pShowClose?: boolean
   pDestroyOnClose?: boolean
+  pCloseIconName?: IconName
 }
