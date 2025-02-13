@@ -63,7 +63,8 @@ import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { commonApi } from '@pulse/common'
 import { PForm, PFormItem, PInput, PButton } from '@pulse/styleguide/components'
-import { LoginRouteName } from '@pulse/common/constants'
+import { PNotification } from '@pulse/styleguide'
+import { LoginRouteName, HTTP_ERRORS } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -122,19 +123,34 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   try {
     isLoading.value = true
     await commonApi().gateway.post('authentication/api/sendResetPasswordLink', toRaw(formValues))
-  } catch (error: any) {
-    const invalidResponse = error.message
-    if (invalidResponse) {
-      hasCustomerError.value = true
-    }
-  } finally {
-    isLoading.value = false
     router.push({
-      path: '/resetPasswordSuccess',
+      path: `/${LoginRouteName.RESET_PASSWORD_SUCCESS}`,
       query: {
         email: formValues.email || '',
       },
     })
+  } catch (error: any) {
+    if(error.status === HTTP_ERRORS.TOO_MANY_REQUESTS) {
+      router.push({
+        path: `/${LoginRouteName.RESET_PASSWORD_FAILED}`,
+        query: {
+          maxAttempts: error.response.data.maxAttempts,
+        },
+      })
+    } else {
+      PNotification({
+        message: t('technicalError'),
+        iconName: 'exclamationTriangle',
+        showClose: true,
+        customClass: 'error',
+        position: 'bottom-right',
+      })
+      if (error.message) {
+        hasCustomerError.value = true
+      }
+    }
+  } finally {
+    isLoading.value = false
   }
 }
 
@@ -195,6 +211,7 @@ defineExpose({ handleSubmit })
     backToLogin: 'Back to login'
     alertMailRequired: 'Please enter your mail'
     alertMailInvalid: 'Please enter a valid mail'
+    technicalError: 'The operation failed due to a technical error. Please try again later.'
   fr-FR:
     email: 'Email'
     submitBtn: 'Réinitialiser mon mot de passe'
@@ -204,4 +221,5 @@ defineExpose({ handleSubmit })
     backToLogin: 'Revenir à la connexion'
     alertMailRequired: 'Veuillez saisir votre email'
     alertMailInvalid: 'Veuillez saisir un email valide'
+    technicalError: 'L’opération a échoué suite à une erreur technique. Veuillez réessayer plus tard.'
 </i18n>

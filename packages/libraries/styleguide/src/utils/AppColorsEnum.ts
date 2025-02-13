@@ -7,6 +7,8 @@ export enum AppColors {
   RED = '#FF0000',
   TEAL = '#00CFDE',
   WHITE = '#FFFFFF',
+  // TEXT
+  RED_TXT = '#B10303',
   // SPECIAL
   BLUE_PULSE = '#0E0F30',
   BASE_HOVER = '#E4FCF7',

@@ -7,5 +7,6 @@ export enum LoginRouteName {
   RESEND_EMAIL_SUCCESS = 'resendEmailSuccess',
   RESET_PASSWORD = 'resetPassword',
   RESET_PASSWORD_SUCCESS = 'resetPasswordSuccess',
+  RESET_PASSWORD_FAILED = 'resetPasswordFailed',
   RESET_PASSWORD_FORM = 'resetPasswordForm',
 }

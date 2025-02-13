@@ -1,11 +1,4 @@
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vi,
-} from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { ComponentWrapper } from '@login/tests/testHelper/testHelperTypes'
 import type { FormInstance } from 'element-plus'
 import { flushPromises, mount } from '@vue/test-utils'
@@ -22,6 +15,11 @@ vi.mock('vue-router', () => ({
 const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const mockRouterPush = vi.fn()
 const mockAuthPost = vi.hoisted(() => vi.fn())
+const PNotificationMocked = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/styleguide', () => ({
+  PNotification: PNotificationMocked,
+}))
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
@@ -31,10 +29,9 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 
-let wrapper: ComponentWrapper<InstanceType <typeof ResetPassword>>
+let wrapper: ComponentWrapper<InstanceType<typeof ResetPassword>>
 
-const createWrapper = () =>
-  mount(ResetPassword)
+const createWrapper = () => mount(ResetPassword)
 
 describe('reset password', () => {
   beforeEach(() => {
@@ -60,12 +57,9 @@ describe('reset password', () => {
     await flushPromises()
 
     expect(mockAuthPost).toHaveBeenCalledTimes(1)
-    expect(mockAuthPost).toHaveBeenCalledWith(
-      'authentication/api/sendResetPasswordLink',
-      {
-        email: INPUT_EMAIL_VALUE,
-      },
-    )
+    expect(mockAuthPost).toHaveBeenCalledWith('authentication/api/sendResetPasswordLink', {
+      email: INPUT_EMAIL_VALUE,
+    })
 
     expect(mockRouterPush).toHaveBeenCalledWith({
       path: '/resetPasswordSuccess',
@@ -73,6 +67,38 @@ describe('reset password', () => {
         email: 'customEmail@aol.com',
       },
     })
+  })
+
+  it('should redirect to the failed page when status is 429', async () => {
+    mockAuthPost.mockRejectedValueOnce({ status: 429, response: { data: { maxAttempts: 5 } } })
+
+    const input = wrapper.find('[data-testid="reset-password-input-email"]')
+    await input.setValue(INPUT_EMAIL_VALUE)
+    await input.trigger('blur')
+
+    const submitButton = wrapper.find('[data-testid="reset-password-submit-button"]')
+    await submitButton.trigger('click')
+    await flushPromises()
+
+    expect(mockRouterPush).toHaveBeenCalledWith({
+      path: '/resetPasswordFailed',
+      query: {
+        maxAttempts: 5,
+      },
+    })
+  })
+
+  it('should display a notification when the request fails', async () => {
+    mockAuthPost.mockRejectedValueOnce(new Error('Technical Error'))
+
+    const input = wrapper.find('[data-testid="reset-password-input-email"]')
+    await input.setValue(INPUT_EMAIL_VALUE)
+
+    const submitButton = wrapper.find('[data-testid="reset-password-submit-button"]')
+    await submitButton.trigger('click')
+    await flushPromises()
+
+    expect(PNotificationMocked).toHaveBeenCalledOnce()
   })
 
   it('do not call mockAuthPost when handleSubmit is called without form', async () => {
