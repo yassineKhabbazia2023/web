@@ -155,14 +155,17 @@ const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
   {
     text: t('toDeploy'),
     color: ENTITY_STATUS_COLOR[EntityStatus.TO_DEPLOY],
+    iconName: 'arrowUpCircle',
   },
   {
     text: t('inProgress'),
     color: ENTITY_STATUS_COLOR[EntityStatus.IN_PROGRESS],
+    iconName: 'arrowRepeat',
   },
   {
     text: t('connected'),
     color: ENTITY_STATUS_COLOR[EntityStatus.CONNECTED],
+    iconName: 'checkCircle',
   },
 ] as const
 

@@ -23,6 +23,7 @@ export const mockTableData: WalletData[] = [
     deploymentStatus: {
       text: 'To Deploy',
       color: 'warning',
+      iconName: 'arrowUpCircle',
     },
     id: '5f85e793-57c0-4da6-b821-3b2888567256',
     accountId: 1,
@@ -44,6 +45,7 @@ export const mockTableData: WalletData[] = [
     deploymentStatus: {
       text: 'In progress',
       color: 'warning',
+      iconName: 'arrowRepeat',
     },
     id: '5f85e793-57c0-4da6-b821-3b2888567255',
     accountNumber: 'V900000546',

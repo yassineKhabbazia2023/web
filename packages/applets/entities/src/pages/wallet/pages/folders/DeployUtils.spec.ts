@@ -21,6 +21,7 @@ const deploymentStatuses: DeploymentStatus[] = [
   {
     text: 'toDeploy',
     color: ENTITY_STATUS_COLOR[EntityStatus.TO_DEPLOY],
+    iconName: 'arrowUpCircle',
   },
 ]
 

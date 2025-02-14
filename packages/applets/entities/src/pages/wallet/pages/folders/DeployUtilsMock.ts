@@ -37,6 +37,7 @@ export function getMockedDeploymentStatus(override: Partial<DeploymentStatus> = 
   const defaultMappedAccount: DeploymentStatus = {
     text: 'To Deploy',
     color: 'warning',
+    iconName: 'arrowUpCircle',
   }
 
   return {

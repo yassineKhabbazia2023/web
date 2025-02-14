@@ -1,9 +1,11 @@
 import type { QueryResult } from '@entities/common/types'
 import type { PaginationData } from '@entities/helper/helperTypes'
+import type { IconName } from '@pulse/styleguide/types'
 
 export interface DeploymentStatus {
   text: string
   color: string
+  iconName: IconName
 }
 
 export interface WalletData {
