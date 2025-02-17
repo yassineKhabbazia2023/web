@@ -50,6 +50,18 @@ export const unreadNotificationsMock = [
   },
 ]
 
+export const gedNotificationMock: FeedCenterNotification = {
+  id: 4,
+  message: 'Some document have been dropped',
+  createdAt: '2024-10-05T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.GED,
+  accounts: [
+    accountsMock[5],
+  ],
+  isRead: false,
+
+}
+
 export const notificationsMock: FeedCenterNotification[] = [
   ...readNotificationsMock,
   ...unreadNotificationsMock,

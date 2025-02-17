@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { logger, FeatureFlagManager } from '@pulse/core'
-import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   VITE_PRODUCT_FRUITS_KEY,
@@ -143,6 +143,14 @@ onMounted(async () => {
     logger.error('Something wrong occurred: ', error)
   } finally {
     isLoading.value = false
+  }
+})
+
+watch(isFeedCenterOpened, async (value) => {
+  if (!value) {
+    setTimeout(async () => {
+      await setNotificationsCount()
+    }, 500)
   }
 })
 

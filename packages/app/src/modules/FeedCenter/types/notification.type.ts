@@ -2,7 +2,8 @@ import type { NotificationAccount } from '@app/modules/FeedCenter/types/notifica
 
 
 export enum NotificationKindEnum {
-  Delegation = 'Delegation-AddDelegation'
+  Delegation = 'Delegation-AddDelegation',
+  GED = 'Ged-DocumentUploaded'
   // More notificationKind to come in the future #StayTuned
 }
 

@@ -14,6 +14,7 @@ import * as entitiesServices from '@app/services/entities'
 import mockedEntities from '@app/mocks/entities.mock.json'
 import Home from '.'
 import { initProductFruits as initProductFruitsMock } from '@app/plugins/ProductFruits/productFruits.plugin'
+import * as notificationService from '@app/modules/FeedCenter/services/notifications.service'
 
 declare let window: {
   embedded_svc: {
@@ -288,5 +289,23 @@ describe('home', () => {
     const feedCenterWrapper = wrapper.findComponent({ name: 'FeedCenterDrawer' })
 
     expect(feedCenterWrapper.exists()).toBe(shouldExist)
+  })
+
+  it('should fetch unread notification count 500ms after closing the feed center drawer', async () => {
+    vi.useFakeTimers()
+    feedCenterActivatedFlag.value = 'true'
+    createWrapper()
+    await flushPromises()
+
+    const header = wrapper.findComponent({ name: 'Header' })
+
+    wrapper.vm.isLoading = false
+    wrapper.vm.defaultEntity = true
+
+    await header.vm.$emit('update:show-feed-center', true)
+    await header.vm.$emit('update:show-feed-center', false)
+    vi.advanceTimersByTime(500)
+    // onMounted call + the one from the watcher that i want to test
+    expect(notificationService.fetchUnreadNotificationsCount).toHaveBeenCalledTimes(2)
   })
 })

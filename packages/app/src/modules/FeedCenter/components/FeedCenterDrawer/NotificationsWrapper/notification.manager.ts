@@ -74,6 +74,12 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
       query: { accountNumbers },
     })
   },
+  [NotificationKindEnum.GED]: (
+    _accountNumbers: NotificationAccount['accountNumber'],
+    _router: Router,
+  ) => {
+    // Coming in next PR
+  },
 }
 
 export function getNotificationAccountNames(notification: FeedCenterNotification) {

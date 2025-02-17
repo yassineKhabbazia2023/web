@@ -5,6 +5,7 @@ import {
   notificationsMock,
   readNotificationsMock,
   unreadNotificationsMock,
+  gedNotificationMock,
 } from '@app/mocks/FeedCenter/notifications.mock'
 import { accountsMock } from '@app/mocks/Account/accounts.mock'
 import {
@@ -140,6 +141,16 @@ describe('handleNotificationAction', () => {
       name: 'wallet',
       query: { accountNumbers: [notificationsMock[0].accounts[0].accountNumber] },
     })
+  })
+
+  // This is meant to change in the next PR
+  it('should do nothing on ged notification click', () => {
+    handleNotificationAction({
+      notification: gedNotificationMock,
+      router: mockRouter,
+    })
+
+    expect(mockRouter.push).not.toHaveBeenCalled()
   })
 })
 
