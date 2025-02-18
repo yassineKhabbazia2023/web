@@ -25,8 +25,8 @@ declare let window: {
   }
 } & Window
 
-const MockedBrowerName = 'mocked brower name'
-const MockedRandomString = 'mocked random string'
+const MockedBrowserName = 'mocked browser name'
+const MockedAnonymous = 'anonymous'
 
 const mockedProductFruitsServicesDestroy = vi.fn(() => {})
 const mockedProductFruitsApiInAppCenterShow = vi.fn(() => {})
@@ -45,7 +45,7 @@ window.productFruits = {
 }
 
 vi.mock('@app/helper', () => ({
-  getBrowserName: vi.fn(() => MockedBrowerName),
+  getBrowserName: vi.fn(() => MockedBrowserName),
 }))
 
 const mockedProductFruitsInit = vi.hoisted(() => vi.fn())
@@ -65,7 +65,6 @@ vi.mock('@pulse/core', () => ({
     warn: loggerWarnSpy,
     error: loggerErrorSpy,
   },
-  getRandomString: vi.fn(() => MockedRandomString),
 }))
 
 const mockedProductFruitsKey = 'mocked product fruits key'
@@ -156,7 +155,7 @@ describe('test productFruits plugin', () => {
     const tests = [{
       user: undefined,
       expectedProductFruitsOptions: {
-        username: MockedRandomString,
+        username: MockedAnonymous,
       },
       reason: 'user is undefined',
     }, {
@@ -168,7 +167,7 @@ describe('test productFruits plugin', () => {
         email: clientUser.email,
         role: 'Client',
         props: {
-          browser: MockedBrowerName,
+          browser: MockedBrowserName,
         },
       },
       reason: 'user is client',
@@ -210,7 +209,7 @@ describe('test productFruits plugin', () => {
           email: clientUser.email,
           role: 'Client',
           props: {
-            browser: MockedBrowerName,
+            browser: MockedBrowserName,
           },
         },
       ]

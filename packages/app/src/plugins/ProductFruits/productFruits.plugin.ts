@@ -1,5 +1,5 @@
 import { type App } from 'vue'
-import { getRandomString, logger } from '@pulse/core'
+import { logger } from '@pulse/core'
 import { getBrowserName } from '@app/helper'
 import { productFruits } from 'product-fruits'
 import type {
@@ -84,7 +84,12 @@ export function getProductFruitsOptions(user?: ProductFruitUser | null) {
       browser: getBrowserName(),
     },
   } : {
-    username: getRandomString(8),
+    // as discussed with Product Fruit directly, we should not differentiate anonymous users
+    // that way we are not billed on thousands of hits on the anonymous pages (login and others)
+    // this username: 'anonymous' will make Product Fruit operate on a limited functionalities
+    // such as no dismissed banners and no tours
+    // but we still are able to display banners (undismissable) and articles
+    username: 'anonymous',
   }
 }
 
