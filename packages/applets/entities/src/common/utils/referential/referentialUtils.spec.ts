@@ -249,7 +249,7 @@ describe('referentialUtils', () => {
         )
 
         const snapShotName = `./snapshots/getFormStructure.${formType}.forceDisabled.${forceDisabled}.snap`
-        expect(formStructure).toMatchFileSnapshot(snapShotName)
+        await expect(formStructure).toMatchFileSnapshot(snapShotName)
       },
     )
 

@@ -6,11 +6,11 @@ const createWrapper = (): VueWrapper => shallowMount(WorkInProgress)
 
 describe('workInProgress', () => {
   describe('display', () => {
-    it('should display correctly the work in progress page', () => {
+    it('should display correctly the work in progress page', async () => {
       const wrapper = createWrapper()
       const pError = wrapper.findComponent({ name: 'PError' })
 
-      expect(pError.props()).toMatchFileSnapshot('__snap__/pError.props.snap')
+      await expect(pError.props()).toMatchFileSnapshot('__snap__/pError.props.snap')
     })
   })
 })

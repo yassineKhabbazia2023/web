@@ -15,11 +15,11 @@ describe('pFieldSetUtils', () => {
     }, {
       pReadonly: true,
     }]
-    it.each(tests)('should return mapped fields', ({ pReadonly }) => {
+    it.each(tests)('should return mapped fields', async ({ pReadonly }) => {
       const fields = getMockedFields('companyIdentification', pReadonly)
       const internalFields = getInternalFields(fields, model, pReadonly)
 
-      expect(internalFields).toMatchFileSnapshot(`__snapshots__/getInternalFields/readonly-${pReadonly}.snap`)
+      await expect(internalFields).toMatchFileSnapshot(`__snapshots__/getInternalFields/readonly-${pReadonly}.snap`)
     })
   })
 })

@@ -12,9 +12,10 @@ describe('testing PFieldSetMock', () => {
     }, {
       fieldCase: 'accountingAndTaxInformation',
     }]
-    it.each(tests)('expect to receive proper fields when fieldCase is $fieldCase', ({ fieldCase }) => {
+    it.each(tests)('expect to receive proper fields when fieldCase is $fieldCase', async ({ fieldCase }) => {
       const fields = getMockedFields(fieldCase)
-      expect(fields).toMatchFileSnapshot(`__snapshots__/PFieldSetMock/${fieldCase}.snap`)
+
+      await expect(fields).toMatchFileSnapshot(`__snapshots__/PFieldSetMock/${fieldCase}.snap`)
     })
   })
 })

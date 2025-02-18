@@ -119,7 +119,7 @@ describe('usersClient', () => {
       const data = tableData.props('data')
       const isInAnEntityPage = tableData.props('isInAnEntityPage')
 
-      expect(data).toMatchFileSnapshot('__snap__/UserClient.tableData.snap')
+      await expect(data).toMatchFileSnapshot('__snap__/UserClient.tableData.snap')
       expect(isInAnEntityPage).toBeFalsy()
     })
 

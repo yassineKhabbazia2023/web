@@ -51,26 +51,26 @@ function createWrapper(
 
 describe('confirmationPopup', () => {
   describe('props', () => {
-    it('should call PDialog with proper props when pIsVisible is TRUE', () => {
+    it('should call PDialog with proper props when pIsVisible is TRUE', async () => {
       const wrapper = createWrapper()
       const pDialog = wrapper.findComponent({ name: 'PDialog' })
 
       expect(pDialog.exists()).toBeTruthy()
-      expect(pDialog.props()).toMatchFileSnapshot('__snap__/pDialog/isVisible.props.snap')
+      await expect(pDialog.props()).toMatchFileSnapshot('__snap__/pDialog/isVisible.props.snap')
     })
 
-    it('should call PDialog with proper props when pIsVisible is FALSE', () => {
+    it('should call PDialog with proper props when pIsVisible is FALSE', async () => {
       const wrapper = createWrapper({
         pIsVisible: false,
       })
       const pDialog = wrapper.findComponent({ name: 'PDialog' })
 
       expect(pDialog.exists()).toBeTruthy()
-      expect(pDialog.props()).toMatchFileSnapshot('__snap__/pDialog/isNotVisible.props.snap')
+      await expect(pDialog.props()).toMatchFileSnapshot('__snap__/pDialog/isNotVisible.props.snap')
     })
 
     it('should set the confirmation button in loading state when loading prop is true',
-      () => {
+      async () => {
         const wrapper = createWrapper({
           pConfirmButtonIsLoading: true,
         })
@@ -78,7 +78,7 @@ describe('confirmationPopup', () => {
         const confirmationButton = buttons.at(1)
 
         expect(buttons).toHaveLength(2)
-        expect(confirmationButton?.props()).toMatchFileSnapshot('__snap__/confirmationButton/isLoading.props.snap')
+        await expect(confirmationButton?.props()).toMatchFileSnapshot('__snap__/confirmationButton/isLoading.props.snap')
       })
   })
 

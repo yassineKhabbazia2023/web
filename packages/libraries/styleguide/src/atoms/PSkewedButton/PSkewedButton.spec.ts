@@ -21,18 +21,18 @@ function createWrapper(overriddenProps: Partial<PSkewedButtonProps> = {}) {
 }
 
 describe('PSkewedButton', () => {
-  it('should render properly primary case', () => {
+  it('should render properly primary case', async () => {
     const wrapper = createWrapper()
 
-    expect(wrapper.html()).toMatchFileSnapshot('__snap__/PSkewedButton/primary.snap')
+    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/PSkewedButton/primary.snap')
   })
-  it('should render properly secondary case', () => {
+  it('should render properly secondary case', async () => {
     const wrapper = createWrapper({
       pType: 'secondary',
       pDisabled: true,
       pHasLoader: true,
     })
 
-    expect(wrapper.html()).toMatchFileSnapshot('__snap__/PSkewedButton/second.snap')
+    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/PSkewedButton/second.snap')
   })
 })

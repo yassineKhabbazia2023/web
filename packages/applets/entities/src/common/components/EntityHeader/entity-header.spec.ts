@@ -20,7 +20,7 @@ const wrapper = shallowMount(EntityHeader, {
 })
 
 describe('entity header', () => {
-  it('should renders correctly', () => {
-    expect(wrapper.html()).toMatchFileSnapshot('__snap__/EntityHeader.snap')
+  it('should renders correctly', async () => {
+    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/EntityHeader.snap')
   })
 })

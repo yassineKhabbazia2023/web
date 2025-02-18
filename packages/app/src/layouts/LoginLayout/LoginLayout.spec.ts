@@ -47,17 +47,15 @@ describe('test LoginLayout', () => {
     routeName: LoginRouteName.LOGIN_CLIENT,
     expectedKey: 'anonymous key client',
   }]
-  it.each(tests)('should correctly display the login page when route name is $routeName', ({
-    key,
-    routeName,
-  }) => {
-    mockRoute.mockReturnValueOnce({
-      name: routeName,
-    })
-    const wrapper = createWrapper()
+  it.each(tests)('should correctly display the login page when route name is $routeName',
+    async ({ key, routeName }) => {
+      mockRoute.mockReturnValueOnce({
+        name: routeName,
+      })
+      const wrapper = createWrapper()
 
-    expect(wrapper.html()).toMatchFileSnapshot(`__snap__/LoginLayout.${key}.snap`)
-  })
+      await expect(wrapper.html()).toMatchFileSnapshot(`__snap__/LoginLayout.${key}.snap`)
+    })
 
   it.each(tests)('should call initProductFruits on mounted', ({
     routeName,

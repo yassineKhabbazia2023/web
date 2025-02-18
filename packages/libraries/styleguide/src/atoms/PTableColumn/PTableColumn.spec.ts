@@ -69,7 +69,7 @@ const columns: (Partial<PTableColumnProps> & {
 }]
 
 describe('test PTableColumn', () => {
-  it.each(columns)('should call ElColumn with proper props', ({
+  it.each(columns)('should call ElColumn with proper props', async ({
     reason,
     pType,
     pLabel,
@@ -82,6 +82,6 @@ describe('test PTableColumn', () => {
     })
     const elTableColumn = wrapper.findComponent({ name: 'ElTableColumn' })
 
-    expect(elTableColumn.props()).toMatchFileSnapshot(`__snap__/elTableColumn.${ reason }.snap`)
+    await expect(elTableColumn.props()).toMatchFileSnapshot(`__snap__/elTableColumn.${ reason }.snap`)
   })
 })

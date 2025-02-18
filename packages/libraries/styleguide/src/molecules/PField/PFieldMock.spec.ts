@@ -8,9 +8,9 @@ describe('testing PFieldSetMock', () => {
     }, {
       ruleType: 'phone',
     }]
-    it.each(tests)('expect to receive proper rules when ruleType is $ruleType', ({ ruleType }) => {
+    it.each(tests)('expect to receive proper rules when ruleType is $ruleType', async ({ ruleType }) => {
       const rules = getMockedRule(ruleType)
-      expect(rules).toMatchFileSnapshot(`__snapshots__/getMockedRule/${ruleType}.snap`)
+      await expect(rules).toMatchFileSnapshot(`__snapshots__/getMockedRule/${ruleType}.snap`)
     })
   })
 })

@@ -5,10 +5,10 @@ import type { DropdownGroup } from './PDropdownTypes'
 
 describe('test PDropdownUtils', () => {
   describe('getDropdownGroups()', () => {
-    it('should return options regrouped by label', () => {
+    it('should return options regrouped by label', async () => {
       const options = getMockedDropdownOptions(true)
       const groups = getDropdownGroups(options)
-      expect(groups).toMatchFileSnapshot('__snapshots__/PDropdownUtils/getDropdownGroups.snap')
+      await expect(groups).toMatchFileSnapshot('__snapshots__/PDropdownUtils/getDropdownGroups.snap')
     })
   })
   describe('getHasGroups()', () => {

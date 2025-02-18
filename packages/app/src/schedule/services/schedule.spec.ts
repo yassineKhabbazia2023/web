@@ -97,13 +97,13 @@ describe('getScheduleModels', () => {
     'long',
     'both',
   ]
-  it.each(labelTypes)('should return proper list when labelType = \'%i\'', (labelType) => {
+  it.each(labelTypes)('should return proper list when labelType = \'%i\'', async (labelType) => {
     const data = getScheduleModels(labelType)
-    expect(data).toMatchFileSnapshot(`__snap__/getScheduleModels/${labelType}.snap`)
+    await expect(data).toMatchFileSnapshot(`__snap__/getScheduleModels/${labelType}.snap`)
   })
-  it.each(labelTypes)('should return proper list when labelType = \'%i\' and includes autre', (labelType) => {
+  it.each(labelTypes)('should return proper list when labelType = \'%i\' and includes autre', async (labelType) => {
     const data = getScheduleModels(labelType, true)
-    expect(data).toMatchFileSnapshot(`__snap__/getScheduleModels/${labelType}.withOthers.snap`)
+    await expect(data).toMatchFileSnapshot(`__snap__/getScheduleModels/${labelType}.withOthers.snap`)
   })
 })
 
@@ -113,9 +113,9 @@ describe('getScheduleModelsByKey', () => {
     'long',
     'both',
   ]
-  it.each(labelTypes)('should return proper list when labelType = \'%i\'', (labelType) => {
+  it.each(labelTypes)('should return proper list when labelType = \'%i\'', async (labelType) => {
     const data = getScheduleModelsByKey(labelType)
-    expect(data).toMatchFileSnapshot(`__snap__/getScheduleModelsByKey/${labelType}.snap`)
+    await expect(data).toMatchFileSnapshot(`__snap__/getScheduleModelsByKey/${labelType}.snap`)
   })
 })
 

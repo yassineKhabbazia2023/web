@@ -63,7 +63,7 @@ describe('test HomeUtils', () => {
   })
 
   describe('getLaunchCards', () => {
-    it('should return proper launchCards', () => {
+    it('should return proper launchCards', async () => {
       const downloadSilaeLabel = 'Télécharger'
       const authorizedKeys: LauncherKey[] = [
         LauncherKey.MEG,
@@ -72,7 +72,7 @@ describe('test HomeUtils', () => {
       ]
       const launchCards = getLaunchCards(downloadSilaeLabel, authorizedKeys)
 
-      expect(launchCards).toMatchFileSnapshot('__snaps__/HomeUtils/getLaunchCards/launchCards.snap')
+      await expect(launchCards).toMatchFileSnapshot('__snaps__/HomeUtils/getLaunchCards/launchCards.snap')
     })
 
     it('should return filtered launchCards', () => {
