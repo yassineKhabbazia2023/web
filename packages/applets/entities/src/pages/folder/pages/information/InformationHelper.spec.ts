@@ -119,10 +119,9 @@ describe('test InformationHelper', () => {
     it('should call logger.error and return false when patchAccount throws an error', async () => {
       const errorMessage = 'error'
       mockedPatchAccount.mockRejectedValueOnce(new Error(errorMessage))
-      const expectedErrorMessage = ''
 
       await expect(async () => await savePatchedAccount(ACCOUNT_ID, mockedPatchValues))
-        .rejects.toThrow(expectedErrorMessage)
+        .rejects.toThrow(errorMessage)
     })
   })
 })
