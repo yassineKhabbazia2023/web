@@ -121,6 +121,17 @@ async function getWrapper(isOpened: boolean) {
     global: {
       stubs: {
         PInput: true,
+        ConfirmationModal: true,
+        PIcon: true,
+        PLoader: true,
+        PSteps: true,
+        PStep: true,
+        CustomersDetails: true,
+        OfferSubscription: true,
+        ManageCollaborators: true,
+        CompanyInformation: true,
+        StepNote: true,
+        NextPreviousButtons: true,
       },
     },
   })
@@ -162,7 +173,7 @@ describe('offersDrawer', () => {
 
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
     })
-    it('should close offers drawer when clicking on close buton', async () => {
+    it('should close offers drawer when clicking on close button', async () => {
       const wrapper = await getWrapper(true)
       const offers = findOffers(wrapper)
 

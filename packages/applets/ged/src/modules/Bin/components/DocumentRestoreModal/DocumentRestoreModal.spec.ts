@@ -6,7 +6,6 @@ import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
 import { type DocumentRestoreModalTypesProps }
   from '@ged/modules/Bin/components/DocumentRestoreModal/DocumentRestoreModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
@@ -53,7 +52,7 @@ vi.mock('@ged/services/BinDocuments', () => ({
   }),
 }))
 
-const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent(ConfirmationPopup)
+const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent({ name: 'ConfirmationPopup' })
 
 describe('documentRestoreModal', () => {
   beforeEach(() => {

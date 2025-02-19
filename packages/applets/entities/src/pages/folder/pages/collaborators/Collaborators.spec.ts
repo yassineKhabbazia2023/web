@@ -77,11 +77,14 @@ const createWrapper = (): ComponentWrapper<
     global: {
       plugins: [pinia],
       stubs: {
-        AddCollaboratorsDrawer: {
-          name: 'AddCollaboratorsDrawer',
-          template: '<div />',
-          props: ['entityId'],
-        },
+        AddCollaboratorsDrawer: true,
+        FormSearch: true,
+        PButton: true,
+        PIcon: true,
+        PLoader: true,
+        PAvatar: true,
+        PToolbox: true,
+        NoResult: true,
       },
     },
   })

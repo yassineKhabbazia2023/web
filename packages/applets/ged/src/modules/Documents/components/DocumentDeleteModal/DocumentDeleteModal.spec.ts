@@ -6,7 +6,6 @@ import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
 import { type DocumentDeleteModalTypesProps }
   from '@ged/modules/Documents/components/DocumentDeleteModal/DocumentDeleteModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import { nextTick } from 'vue'
 import { deleteDocuments } from '@ged/services/Documents'
 import { createI18n } from 'vue-i18n'
@@ -57,7 +56,7 @@ vi.mock('@ged/services/Documents', () => ({
 vi.mock('@ged/services/tracking/tracking.service')
 vi.mock('@pulse/styleguide')
 
-const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent(ConfirmationPopup)
+const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent({ name: 'ConfirmationPopup' })
 
 describe('deleteFolderConfirmationPopup', () => {
   beforeEach(() => {

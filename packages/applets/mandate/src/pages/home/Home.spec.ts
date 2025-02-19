@@ -36,6 +36,13 @@ vi.mock('@pulse/common', () => ({
 const createWrapper = (props: any) =>
   wrapperFactory(Home, {
     props,
+    global: {
+      stubs: {
+        Header: true,
+        PLoader: true,
+        ListMandate: true,
+      },
+    },
   })
 
 const baseParams: SearchMandateParams = {
@@ -128,7 +135,7 @@ describe('test Home.vue', () => {
     expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith(expected)
   })
 
-  it('should call logger.error when mockedGetMandatesCollection throws an error since begining', async () => {
+  it('should call logger.error when mockedGetMandatesCollection throws an error since beginning', async () => {
     const error = 'thrown-error'
     mockedGetMandatesCollection.mockRejectedValueOnce(error)
 

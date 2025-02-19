@@ -5,9 +5,7 @@ import { mount } from '@vue/test-utils'
 
 import type { BinDocumentsListProps } from '@ged/modules/Bin/sections/BinDocumentsList/BinDocumentsListTypes'
 import { binDocumentsMock } from '../../mocks/binDocumentMock'
-import { PTableColumn, PTable } from '@pulse/styleguide/components'
 import { nextTick } from 'vue'
-import BinTableElement from './components/BinTableElement'
 
 const defaultProps: BinDocumentsListProps = {
   binDocuments: binDocumentsMock,
@@ -38,10 +36,10 @@ describe('documentList', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const columns = wrapper.findAllComponents(PTableColumn)
+      const columns = wrapper.findAllComponents({ name: 'PTableColumn' })
       expect(columns).toHaveLength(3)
 
-      const elements = wrapper.findAllComponents(BinTableElement)
+      const elements = wrapper.findAllComponents({ name: 'BinTableElement' })
       await nextTick()
       expect(elements).toHaveLength(3)
     })
@@ -58,7 +56,7 @@ describe('documentList', () => {
       wrapper.find('.el-table__cell')
       await nextTick()
 
-      const table = await wrapper.findComponent(PTable)
+      const table = wrapper.findComponent({ name: 'PTable' })
       await nextTick()
       await table.vm.$emit('sort-change', JSON.parse(emitPayload))
       await nextTick()
@@ -72,7 +70,7 @@ describe('documentList', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const tableElements = wrapper.findAllComponents(BinTableElement)
+      const tableElements = wrapper.findAllComponents({ name: 'BinTableElement' })
 
       await tableElements[0].vm.$emit(
         'restore-document-action',

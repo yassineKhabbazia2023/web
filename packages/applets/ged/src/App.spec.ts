@@ -11,7 +11,6 @@ import { nextTick } from 'vue'
 import type { Folder, FolderProperties } from './models/Folder'
 import { foldersData } from './modules/Treeview/mocks/treeFoldersMock'
 import { servicesData } from './modules/Treeview/mocks/servicesDataMock'
-import Treeview from './modules/Treeview'
 import type { Service } from './models/Service'
 import {
   appendChildFolder,
@@ -20,8 +19,6 @@ import {
   renameFolder,
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
-import Documents from '@ged/modules/Documents'
-import BinDocuments from '@ged/modules/Bin'
 
 const pinia = createPinia()
 
@@ -126,6 +123,9 @@ const createWrapper = (): AppWrapper => {
   return mount(Ged, {
     global: {
       plugins: [pinia],
+      stubs: {
+        BinDocuments: true,
+      },
     },
   }) as AppWrapper
 }
@@ -183,7 +183,7 @@ describe('ged', () => {
         await nextTick()
         await flushPromises()
 
-        const tree = wrapper.findComponent(Treeview)
+        const tree = wrapper.findComponent({ name: 'Treeview' })
         await tree.vm.$emit('selected-folder-change', folder)
         await nextTick()
 
@@ -198,7 +198,7 @@ describe('ged', () => {
         await nextTick()
         await flushPromises()
 
-        const tree = wrapper.findComponent(Treeview)
+        const tree = wrapper.findComponent({ name: 'Treeview' })
         await nextTick()
         await tree.vm.$emit(
           'selected-folder-change',
@@ -206,7 +206,7 @@ describe('ged', () => {
         )
         await nextTick()
 
-        const bin = wrapper.findComponent(BinDocuments)
+        const bin = wrapper.findComponent({ name: 'BinDocuments' })
         await nextTick()
         expect(bin.exists()).toBeFalsy()
         expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
@@ -222,7 +222,7 @@ describe('ged', () => {
         await nextTick()
         await flushPromises()
 
-        const tree = wrapper.findComponent(Treeview)
+        const tree = wrapper.findComponent({ name: 'Treeview' })
         await nextTick()
 
         await tree.vm.$emit(
@@ -237,7 +237,7 @@ describe('ged', () => {
           servicesData[0].ServiceId,
         )
 
-        const bin = wrapper.findComponent(BinDocuments)
+        const bin = wrapper.findComponent({ name: 'BinDocuments' })
         await nextTick()
         expect(bin.exists()).toBeTruthy()
         expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
@@ -250,7 +250,7 @@ describe('ged', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const tree = wrapper.findComponent(Treeview)
+        const tree = wrapper.findComponent({ name: 'Treeview' })
         await tree.vm.$emit('open-create-folder-modal')
         await nextTick()
 
@@ -263,7 +263,7 @@ describe('ged', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const tree = wrapper.findComponent(Treeview)
+        const tree = wrapper.findComponent({ name: 'Treeview' })
         await nextTick()
 
         await tree.vm.$emit(
@@ -281,7 +281,7 @@ describe('ged', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const tree = wrapper.findComponent(Treeview)
+        const tree = wrapper.findComponent({ name: 'Treeview' })
         await nextTick()
 
         await tree.vm.$emit(
@@ -298,7 +298,7 @@ describe('ged', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const tree = wrapper.findComponent(Treeview)
+        const tree = wrapper.findComponent({ name: 'Treeview' })
         await nextTick()
 
         await tree.vm.$emit('update-folder-name', foldersData[0][0].children[0])
@@ -324,7 +324,7 @@ describe('ged', () => {
       it('should display documents component when currentService is set', async () => {
         const wrapper = createWrapper()
         await flushPromises()
-        const documentComponent = wrapper.findComponent(Documents)
+        const documentComponent = wrapper.findComponent({ name: 'Documents' })
         await nextTick()
         expect(documentComponent.exists()).toBeTruthy()
       })
@@ -333,7 +333,7 @@ describe('ged', () => {
         const componentInstance = wrapper.vm
         componentInstance.currentBinService = 'bin-service-id'
         await nextTick()
-        const document = wrapper.findComponent(Documents)
+        const document = wrapper.findComponent({ name: 'Documents' })
         await nextTick()
         expect(document.exists()).toBeFalsy()
       })
@@ -344,7 +344,7 @@ describe('ged', () => {
         await nextTick()
         await flushPromises()
 
-        const documentComponent = wrapper.findComponent(Documents)
+        const documentComponent = wrapper.findComponent({ name: 'Documents' })
         await nextTick()
         await documentComponent.vm.$emit(
           'change-selected-folder',
@@ -382,7 +382,7 @@ describe('ged', () => {
         componentInstance.currentBinService = foldersData[0][0].serviceId
         componentInstance.currentBinServiceName = foldersData[0][0].name
         await nextTick()
-        const bin = wrapper.findComponent(BinDocuments)
+        const bin = wrapper.findComponent({ name: 'BinDocuments' })
         await nextTick()
         expect(bin.exists()).toBeTruthy()
         expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
@@ -397,7 +397,7 @@ describe('ged', () => {
         componentInstance.currentBinService = foldersData[0][0].serviceId
         componentInstance.currentBinServiceName = foldersData[0][0].name
         await nextTick()
-        const tree = wrapper.findComponent(Treeview)
+        const tree = wrapper.findComponent({ name: 'Treeview' })
 
         expect(tree.props('isInBinContext')).toBeTruthy()
       })
@@ -405,7 +405,7 @@ describe('ged', () => {
       it('should hide bin component when currentBinService is not set', async () => {
         const wrapper = createWrapper()
         await nextTick()
-        const bin = wrapper.findComponent(BinDocuments)
+        const bin = wrapper.findComponent({ name: 'BinDocuments' })
         await nextTick()
         expect(bin.exists()).toBeFalsy()
       })
@@ -417,7 +417,7 @@ describe('ged', () => {
         const componentInstance = wrapper.vm
         componentInstance.currentBinService = foldersData[0][0].serviceId
         await nextTick()
-        const bin = wrapper.findComponent(BinDocuments)
+        const bin = wrapper.findComponent({ name: 'BinDocuments' })
 
         bin.vm.$emit('navigate-to-folder', foldersData[0][0].children[0])
         await nextTick()
@@ -425,7 +425,7 @@ describe('ged', () => {
         expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
         expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
 
-        const treeview = wrapper.findComponent(Treeview)
+        const treeview = wrapper.findComponent({ name: 'Treeview' })
         await nextTick()
         expect(treeview.props('currentService')).toBe(
           foldersData[0][0].serviceId,

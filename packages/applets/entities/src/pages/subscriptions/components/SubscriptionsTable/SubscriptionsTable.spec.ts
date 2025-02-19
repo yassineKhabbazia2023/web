@@ -55,7 +55,17 @@ const pTableColumnsLabel: { [key: number]: string } = {
 describe('subscriptionsTable', () => {
   let wrapper: ComponentWrapper<InstanceType<typeof SubscriptionsTable>>
   beforeEach(async () => {
-    wrapper = mount(SubscriptionsTable)
+    wrapper = mount(SubscriptionsTable, {
+      global: {
+        stubs: {
+          PLoader: true,
+          SubscriptionsFilter: true,
+          PToolbox: true,
+          PButton: true,
+          PIcon: true,
+        },
+      },
+    })
     await flushPromises()
   })
   it('should render the subscription table correctly', () => {

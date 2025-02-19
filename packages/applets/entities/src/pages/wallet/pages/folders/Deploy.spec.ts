@@ -105,7 +105,15 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
     attachTo: document.body,
     plugins: [createTestingPinia()],
     global: {
-      stubs: ['Filters'],
+      stubs: {
+        Filters: true,
+        DelegationDrawer: true,
+        PLoader: true,
+        NoResult: true,
+        PPagination: true,
+        ResendActivationEmailDrawer: true,
+        OffersDrawer: true,
+      },
     },
   })
 

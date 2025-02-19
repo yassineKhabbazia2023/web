@@ -18,18 +18,10 @@ import {
 } from '@ged/modules/Documents/mocks/documentsWithTableStructureDataMock'
 import type { TableRowDocument } from '@ged/models/Document'
 import { nextTick } from 'vue'
-import DocumentDeleteModal
-  from '@ged/modules/Documents/components/DocumentDeleteModal'
-import DocumentsActionsBar from '@ged/modules/Documents/sections/DocumentsActions'
-import DocumentRename from './components/DocumentRename'
 import DocumentUpload from '@ged/modules/Documents/components/DocumentsUpload'
 import DocumentMove from './components/DocumentsMove'
 import type { Folder } from '@ged/models/Folder'
-import { PBreadcrumb, PPagination } from '@pulse/styleguide/components'
-import DocumentPreview from './components/DocumentPreview'
 import { documentMock } from './mocks/documentMock'
-import DocumentsSearchAlert from './components/DocumentsSearchAlert'
-import DocumentSearchFilter from './components/DocumentSearchFilter'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import { generateTestFiles } from './helpers/testHelpers'
 import type { Entity } from '@pulse/common/types'
@@ -66,16 +58,9 @@ const createWrapper = (
   props: DocumentsProps = defaultProps,
 ): DocumentsWrapper => {
   return mount(Documents, {
+    shallow: true,
     props,
     global: {
-      stubs: {
-        PToolbox: {
-          template: '<span />',
-        },
-        PButton: {
-          template: '<div />',
-        },
-      },
       plugins: [pinia],
     },
   })
@@ -142,8 +127,8 @@ const generateTestString = (stringLength: number) => {
   return str
 }
 describe('documents', () => {
-  const findDcumentActionBar = (wrapper: DocumentsWrapper) =>
-    wrapper.findComponent(DocumentsActionsBar)
+  const findDocumentActionBar = (wrapper: DocumentsWrapper) =>
+    wrapper.findComponent({ name: 'DocumentsActionsBar' })
 
   const findDocumentUpload = (wrapper: DocumentsWrapper) =>
     wrapper.findComponent(DocumentUpload)
@@ -152,25 +137,25 @@ describe('documents', () => {
     wrapper.findComponent(DocumentMove)
 
   const findDocumentsList = (wrapper: DocumentsWrapper) =>
-    wrapper.findComponent(DocumentsList)
+    wrapper.findComponent({ name: 'DocumentsList' })
 
-  const findPBreadCrumb = (wrapper: DocumentsWrapper) => wrapper.findComponent(PBreadcrumb)
+  const findPBreadCrumb = (wrapper: DocumentsWrapper) => wrapper.findComponent({ name: 'PBreadcrumb' })
 
-  const findPPagination = (wrapper: DocumentsWrapper) => wrapper.findComponent(PPagination)
+  const findPPagination = (wrapper: DocumentsWrapper) => wrapper.findComponent({ name: 'PPagination' })
 
   const findDocumentsSearchAlert = (wrapper: DocumentsWrapper) =>
-    wrapper.findComponent(DocumentsSearchAlert)
+    wrapper.findComponent({ name: 'DocumentsSearchAlert' })
   beforeEach(() => {
     setActivePinia(pinia)
     flushPromises()
     vi.useFakeTimers()
   })
   describe('events', () => {
-    it('should set selected fikes on p-upload-files-selected', async () => {
+    it('should set selected files on p-upload-files-selected', async () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const documentActionBarWrapper = findDcumentActionBar(wrapper)
+      const documentActionBarWrapper = findDocumentActionBar(wrapper)
 
       const files = generateTestFiles(2, 'VALID')
       await documentActionBarWrapper.vm.$emit('p-upload-files-selected', files)
@@ -196,7 +181,7 @@ describe('documents', () => {
       expect(wrapper.emitted('update-source-folders')).toStrictEqual([[validDestination]])
     })
 
-    it('should open move modal oppon documentslist toolbox-action-triggered event', async () => {
+    it('should open move modal upon documents list toolbox-action-triggered event', async () => {
       const wrapper = createWrapper()
       await nextTick()
 
@@ -213,7 +198,7 @@ describe('documents', () => {
       expect(documentMoveWrapper.props('isMoveModalOpened')).toBeTruthy()
     })
 
-    it('should close move modal oppon DocumentMove close-move-documents-modal event', async () => {
+    it('should close move modal upon DocumentMove close-move-documents-modal event', async () => {
       const wrapper = createWrapper()
       await nextTick()
 
@@ -226,7 +211,7 @@ describe('documents', () => {
       expect(documentMoveWrapper.props('isMoveModalOpened')).toBeFalsy()
     })
 
-    it('should close modal oppon DocumentUpload close-upload-documents-modal event', async () => {
+    it('should close modal upon DocumentUpload close-upload-documents-modal event', async () => {
       const wrapper = createWrapper()
       await nextTick()
 
@@ -239,7 +224,7 @@ describe('documents', () => {
       expect(documentUploadWrapper.props('isUploadModalOpened')).toBeFalsy()
     })
 
-    it('should navigate to folder oppon PBreadcrumb p-breadcrumb-item-click event', async () => {
+    it('should navigate to folder upon PBreadcrumb p-breadcrumb-item-click event', async () => {
       const wrapper = createWrapper()
       await nextTick()
 
@@ -260,7 +245,7 @@ describe('documents', () => {
       componentInstance.isSearchExpanded = false
 
       await nextTick()
-      const documents = wrapper.findComponent(DocumentsList)
+      const documents = wrapper.findComponent({ name: 'DocumentsList' })
       await nextTick()
 
       await documents.vm.$emit('on-sort-change', '-created')
@@ -289,7 +274,7 @@ describe('documents', () => {
         componentInstance.searchContent = 'Hello'
         await nextTick()
 
-        const documents = wrapper.findComponent(DocumentsList)
+        const documents = wrapper.findComponent({ name: 'DocumentsList' })
 
         await documents.vm.$emit('on-sort-change', '+name')
         await nextTick()
@@ -306,7 +291,7 @@ describe('documents', () => {
         )
       })
 
-    it('should call download document composable oppon  toolbox-action-triggered', async () => {
+    it('should call download document composable upon  toolbox-action-triggered', async () => {
       const wrapper = createWrapper()
       await nextTick()
       const componentInstance = wrapper.vm
@@ -315,7 +300,7 @@ describe('documents', () => {
           documentsResponsePayload.documentsPage.items
       await nextTick()
 
-      const documentsList = wrapper.findComponent(DocumentsList)
+      const documentsList = wrapper.findComponent({ name: 'DocumentsList' })
       await nextTick()
 
       await documentsList.vm.$emit(
@@ -343,7 +328,7 @@ describe('documents', () => {
 
       await nextTick()
 
-      const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+      const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
       await nextTick()
 
       await documentActionBar.vm.$emit(
@@ -368,7 +353,7 @@ describe('documents', () => {
       componentInstance.documents = documentsResponsePayload
       await nextTick()
 
-      const documentRename = wrapper.findComponent(DocumentRename)
+      const documentRename = wrapper.findComponent({ name: 'DocumentRename' })
 
       await nextTick()
 
@@ -386,13 +371,13 @@ describe('documents', () => {
       componentInstance.selectedDocuments =
               [documentsResponsePayload.documentsPage.items[0]]
       await nextTick()
-      const documents = wrapper.findComponent(DocumentsList)
+      const documents = wrapper.findComponent({ name: 'DocumentsList' })
       await nextTick()
 
       await documents.vm.$emit('toolbox-action-triggered', 'delete-document')
       await nextTick()
 
-      const deleteModal = wrapper.findComponent(DocumentDeleteModal)
+      const deleteModal = wrapper.findComponent({ name: 'DocumentDeleteModal' })
 
       expect(deleteModal.props('isVisible')).toBeTruthy()
       expect(deleteModal.props('documentIds'))
@@ -405,7 +390,7 @@ describe('documents', () => {
       componentInstance.documents = documentsResponsePayload
       componentInstance.isSearchExpanded = false
       await nextTick()
-      const deleteModal = wrapper.findComponent(DocumentDeleteModal)
+      const deleteModal = wrapper.findComponent({ name: 'DocumentDeleteModal' })
       await nextTick()
 
       await deleteModal.vm.$emit('confirm-delete-document')
@@ -435,7 +420,7 @@ describe('documents', () => {
         componentInstance.searchContent = 'Hello'
 
         await nextTick()
-        const deleteModal = wrapper.findComponent(DocumentDeleteModal)
+        const deleteModal = wrapper.findComponent({ name: 'DocumentDeleteModal' })
         await nextTick()
 
         await deleteModal.vm.$emit('confirm-delete-document')
@@ -460,7 +445,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       await nextTick()
-      const deleteModal = wrapper.findComponent(DocumentDeleteModal)
+      const deleteModal = wrapper.findComponent({ name: 'DocumentDeleteModal' })
       await nextTick()
 
       await deleteModal.vm.$emit('cancel-delete-document')
@@ -477,7 +462,7 @@ describe('documents', () => {
               [documentsResponsePayload.documentsPage.items[0]]
       await nextTick()
 
-      const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+      const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
       await nextTick()
 
       await documentActionBar.vm.$emit(
@@ -486,7 +471,7 @@ describe('documents', () => {
       )
 
       await nextTick()
-      const deleteModal = wrapper.findComponent(DocumentDeleteModal)
+      const deleteModal = wrapper.findComponent({ name: 'DocumentDeleteModal' })
       await nextTick()
 
       expect(deleteModal.props('isVisible')).toBeTruthy()
@@ -502,7 +487,7 @@ describe('documents', () => {
               [documentsResponsePayload.documentsPage.items[0]]
       await nextTick()
 
-      const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+      const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
       await nextTick()
 
       await documentActionBar.vm.$emit(
@@ -511,14 +496,14 @@ describe('documents', () => {
       )
 
       await nextTick()
-      const renameModal = wrapper.findComponent(DocumentRename)
+      const renameModal = wrapper.findComponent({ name: 'DocumentRename' })
       await nextTick()
 
       expect(renameModal.props('modelValue')).toBeTruthy()
     })
 
 
-    it('should call transmit document composable oppon  toolbox-action-triggered', async () => {
+    it('should call transmit document composable upon  toolbox-action-triggered', async () => {
       const wrapper = createWrapper()
       await nextTick()
       const componentInstance = wrapper.vm
@@ -527,7 +512,7 @@ describe('documents', () => {
             documentsResponsePayload.documentsPage.items
       await nextTick()
 
-      const documentsList = wrapper.findComponent(DocumentsList)
+      const documentsList = wrapper.findComponent({ name: 'DocumentsList' })
       await nextTick()
 
       await documentsList.vm.$emit(
@@ -545,7 +530,7 @@ describe('documents', () => {
     })
 
 
-    it('should not call transmit document composable oppon  toolbox-action-triggered whe no selected documents', async () => {
+    it('should not call transmit document composable upon  toolbox-action-triggered whe no selected documents', async () => {
       const wrapper = createWrapper()
       await nextTick()
       const componentInstance = wrapper.vm
@@ -553,7 +538,7 @@ describe('documents', () => {
 
       await nextTick()
 
-      const documentsList = wrapper.findComponent(DocumentsList)
+      const documentsList = wrapper.findComponent({ name: 'DocumentsList' })
       await nextTick()
 
       await documentsList.vm.$emit(
@@ -565,7 +550,7 @@ describe('documents', () => {
       expect(vi.mocked(transmitDocuments)).toHaveBeenCalledTimes(0)
     })
 
-    it('should call transmit document composable oppon click on action bar transmit button', async () => {
+    it('should call transmit document composable upon click on action bar transmit button', async () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
@@ -574,7 +559,7 @@ describe('documents', () => {
       ]
       await nextTick()
 
-      const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+      const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
       await nextTick()
 
       await documentActionBar.vm.$emit(
@@ -591,7 +576,7 @@ describe('documents', () => {
       )
     })
 
-    it('should call fetch documents oppon transmit documents event', async () => {
+    it('should call fetch documents upon transmit documents event', async () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
@@ -600,7 +585,7 @@ describe('documents', () => {
       ]
       await nextTick()
 
-      const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+      const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
       await nextTick()
 
       await documentActionBar.vm.$emit(
@@ -622,7 +607,7 @@ describe('documents', () => {
       )
     })
 
-    it('should call fetch documents oppon transmit documents event triggered from toolbox',
+    it('should call fetch documents upon transmit documents event triggered from toolbox',
       async () => {
         const wrapper = createWrapper()
         await nextTick()
@@ -634,7 +619,7 @@ describe('documents', () => {
 
         await nextTick()
 
-        const documentsList = wrapper.findComponent(DocumentsList)
+        const documentsList = wrapper.findComponent({ name: 'DocumentsList' })
         await nextTick()
 
         await documentsList.vm.$emit(
@@ -656,7 +641,7 @@ describe('documents', () => {
         )
       })
 
-    it('should call search documents oppon transmit documents event triggered from toolbox',
+    it('should call search documents upon transmit documents event triggered from toolbox',
       async () => {
         const wrapper = createWrapper()
         await nextTick()
@@ -669,7 +654,7 @@ describe('documents', () => {
         componentInstance.searchContent = 'Hello'
 
         await nextTick()
-        const documentsList = wrapper.findComponent(DocumentsList)
+        const documentsList = wrapper.findComponent({ name: 'DocumentsList' })
 
         await documentsList.vm.$emit(
           'toolbox-action-triggered',
@@ -699,7 +684,7 @@ describe('documents', () => {
       componentInstance.selectedDocuments =
                 [documentsResponsePayload.documentsPage.items[0]]
       await nextTick()
-      const documents = wrapper.findComponent(DocumentsList)
+      const documents = wrapper.findComponent({ name: 'DocumentsList' })
       await nextTick()
 
       const tableRowDocument: TableRowDocument = {
@@ -709,7 +694,7 @@ describe('documents', () => {
       await documents.vm.$emit('table-row-clicked', tableRowDocument)
       await nextTick()
 
-      const documentPreview = wrapper.findComponent(DocumentPreview)
+      const documentPreview = wrapper.findComponent({ name: 'DocumentPreview' })
 
       expect(documentPreview.props('openDrawer')).toBeTruthy()
       expect(documentPreview.props('document'))
@@ -719,7 +704,7 @@ describe('documents', () => {
         })
     })
 
-    it('should close drawer oppon close-drawer event', async () => {
+    it('should close drawer upon close-drawer event', async () => {
       const wrapper = createWrapper()
       await nextTick()
       const componentInstance = wrapper.vm
@@ -739,7 +724,7 @@ describe('documents', () => {
       await documents.vm.$emit('table-row-clicked', tableRowDocument)
       await nextTick()
 
-      const documentPreview = wrapper.findComponent(DocumentPreview)
+      const documentPreview = wrapper.findComponent({ name: 'DocumentPreview' })
 
       await documentPreview.vm.$emit('close-drawer')
       await nextTick()
@@ -747,7 +732,7 @@ describe('documents', () => {
     })
 
 
-    it('should set selectedDocumentsForMove oppon document-selection-change event with valid payload'
+    it('should set selectedDocumentsForMove upon document-selection-change event with valid payload'
       , async () => {
         const wrapper = createWrapper()
         await nextTick()
@@ -776,7 +761,7 @@ describe('documents', () => {
         expect(documentMoveWrapper.props('selectedDocuments')).toHaveLength(1)
       })
 
-    it('should set current page saize oppon on-page-range-changed event', async () => {
+    it('should set current page size upon on-page-range-changed event', async () => {
       const wrapper = createWrapper()
       await nextTick()
 
@@ -792,7 +777,7 @@ describe('documents', () => {
       expect(pPaginationWrapper.props('pPageSize')).toBe(50)
     })
 
-    it('should open rename document modal oppon rename-document event', async () => {
+    it('should open rename document modal upon rename-document event', async () => {
       const wrapper = createWrapper()
       await nextTick()
 
@@ -815,7 +800,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
 
-      const documentsActionBarWrapper = findDcumentActionBar(wrapper)
+      const documentsActionBarWrapper = findDocumentActionBar(wrapper)
 
       await documentsActionBarWrapper.vm.$emit('p-search-input', 'Hello')
       await nextTick()
@@ -837,7 +822,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
 
-      const documentsActionBarWrapper = findDcumentActionBar(wrapper)
+      const documentsActionBarWrapper = findDocumentActionBar(wrapper)
 
       documentsActionBarWrapper.vm.$emit('p-search-input', 'Hello')
       await nextTick()
@@ -852,7 +837,7 @@ describe('documents', () => {
         const componentInstance = wrapper.vm
         componentInstance.documents = documentsResponsePayload
 
-        const documentsActionBarWrapper = findDcumentActionBar(wrapper)
+        const documentsActionBarWrapper = findDocumentActionBar(wrapper)
 
         const keyWord = generateTestString(1000)
         await documentsActionBarWrapper.vm.$emit('p-search-input', keyWord)
@@ -867,7 +852,7 @@ describe('documents', () => {
         const componentInstance = wrapper.vm
         componentInstance.documents = documentsResponsePayload
 
-        const documentsActionBarWrapper = findDcumentActionBar(wrapper)
+        const documentsActionBarWrapper = findDocumentActionBar(wrapper)
 
         const keyWord = ''
         await documentsActionBarWrapper.vm.$emit('p-search-input', keyWord)
@@ -876,7 +861,7 @@ describe('documents', () => {
         expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledTimes(0)
       })
 
-    describe('should display the serach results alerts upon meeting the right conditions',
+    describe('should display the search results alerts upon meeting the right conditions',
       () => {
         const cases = [
           {
@@ -916,8 +901,7 @@ describe('documents', () => {
             componentInstance.isSearchExpanded = params.isSearchExpanded
             componentInstance.isSearchLoading = params.isSearchLoading
 
-            const documentsActionBarWrapper =
-                      findDcumentActionBar(wrapper)
+            const documentsActionBarWrapper = findDocumentActionBar(wrapper)
 
             await documentsActionBarWrapper.vm.$emit(
               'p-search-input',
@@ -944,12 +928,12 @@ describe('documents', () => {
       )
       await nextTick()
 
-      const actionBarWrapper = findDcumentActionBar(wrapper)
+      const actionBarWrapper = findDocumentActionBar(wrapper)
 
       actionBarWrapper.vm.$emit('search-expand-change', true)
       await nextTick()
 
-      const documentsList = wrapper.findComponent(DocumentsList)
+      const documentsList = wrapper.findComponent({ name: 'DocumentsList' })
 
       await documentsList.vm.$emit(
         'toolbox-action-triggered',
@@ -970,13 +954,13 @@ describe('documents', () => {
       componentInstance.isFiltersDrawerOpened = true
       await nextTick()
 
-      const drawer = wrapper.findComponent(DocumentSearchFilter)
+      const drawer = wrapper.findComponent({ name: 'DocumentSearchFilter' })
       await drawer.vm.$emit(
         'close-filters-drawer',
       )
       await nextTick()
 
-      const drawerAfter = wrapper.findComponent(DocumentSearchFilter)
+      const drawerAfter = wrapper.findComponent({ name: 'DocumentSearchFilter' })
       expect(drawerAfter.exists()).toBeFalsy()
     })
 
@@ -985,14 +969,14 @@ describe('documents', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+      const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
 
       await documentActionBar.vm.$emit(
         'p-action-bar-button-clicked',
         'actionbar-filter-action-click',
       )
       await nextTick()
-      const drawer = wrapper.findComponent(DocumentSearchFilter)
+      const drawer = wrapper.findComponent({ name: 'DocumentSearchFilter' })
       await nextTick()
 
       expect(drawer.exists()).toBeTruthy()
@@ -1013,7 +997,7 @@ describe('documents', () => {
         endDate: new Date(1998, 11, 19),
       }
 
-      const drawer = wrapper.findComponent(DocumentSearchFilter)
+      const drawer = wrapper.findComponent({ name: 'DocumentSearchFilter' })
       await drawer.vm.$emit(
         'apply-filters-drawer', res,
       )
@@ -1036,7 +1020,7 @@ describe('documents', () => {
     it('should handle filters reset', async () => {
       expect.hasAssertions()
       const wrapper = createWrapper()
-      const actionBar = wrapper.findComponent(DocumentsActionsBar)
+      const actionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
 
       await actionBar.vm.$emit(
         'p-action-bar-button-clicked',
@@ -1044,7 +1028,7 @@ describe('documents', () => {
       )
 
       await nextTick()
-      const documentSearchFiltersWrapper = wrapper.findComponent(DocumentSearchFilter)
+      const documentSearchFiltersWrapper = wrapper.findComponent({ name: 'DocumentSearchFilter' })
       documentSearchFiltersWrapper.vm.$emit('reset-filters-drawer')
       await nextTick()
 
@@ -1095,7 +1079,7 @@ describe('tracking', () => {
       componentInstance.documents = documentsResponsePayload
       await nextTick()
 
-      const documentsListWrapper = wrapper.findComponent(DocumentsList)
+      const documentsListWrapper = wrapper.findComponent({ name: 'DocumentsList' })
       await documentsListWrapper.vm.$emit('toolbox-action-triggered', toolboxEventName)
       await nextTick()
 
@@ -1136,7 +1120,7 @@ describe('tracking', () => {
 
       await nextTick()
 
-      const documentActionBar = wrapper.findComponent(DocumentsActionsBar)
+      const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
       await nextTick()
 
       await documentActionBar.vm.$emit(

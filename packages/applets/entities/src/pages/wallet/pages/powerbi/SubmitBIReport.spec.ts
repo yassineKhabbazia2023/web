@@ -32,7 +32,16 @@ vi.mock('@entities/services/reporting', () => ({
   uploadBIreport: uploadBIreportMock,
 }))
 
-const createWrapper = () => mount(SubmitBIReport)
+const createWrapper = () => mount(SubmitBIReport, {
+  global: {
+    stubs: {
+      BIReportSubmitted: true,
+      PLoader: true,
+      BIReportInformation: true,
+      PButton: true,
+    },
+  },
+})
 
 describe('submitBIReport', () => {
   let wrapper: VueWrapper<any>

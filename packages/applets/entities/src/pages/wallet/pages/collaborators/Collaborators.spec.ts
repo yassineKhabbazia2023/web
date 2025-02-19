@@ -4,7 +4,6 @@ import { noResult } from '@entities/../tests'
 import mock from './mockCollaborators.json'
 import * as walletServices from '@entities/services/wallet'
 import { nextTick } from 'vue'
-import TableData from './components/TableData/TableData.vue'
 import Collaborators from '.'
 
 const mockGatewayGet = vi.fn(() => {
@@ -39,7 +38,15 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 const createWrapper = (): VueWrapper<any> =>
-  mount(Collaborators)
+  mount(Collaborators, {
+    global: {
+      stubs: {
+        PLoader: true,
+        NoResult: true,
+        FormSearch: true,
+      },
+    },
+  })
 
 const { items, totalPages } = mock
 let wrapper: VueWrapper<any>
@@ -105,7 +112,7 @@ describe('collaborators', () => {
   })
 
   it('update collaborators details when event is emitted', () => {
-    const tableData = wrapper.findComponent(TableData)
+    const tableData = wrapper.findComponent({ name: 'TableData' })
     expect(tableData.exists()).toBeTruthy()
     tableData.vm.$emit('update-collaborator-details', mock.items[0])
     const collaboratorIndex = wrapper.vm.state.data.findIndex((c: { id: number }) => c.id === mock.items[0].id)
@@ -114,7 +121,7 @@ describe('collaborators', () => {
   })
 
   it('update collaborators role when event is emitted', () => {
-    const tableData = wrapper.findComponent(TableData)
+    const tableData = wrapper.findComponent({ name: 'TableData' })
     expect(tableData.exists()).toBeTruthy()
     tableData.vm.$emit('update-collaborator-role', mock.items[0])
     const collaboratorIndex = wrapper.vm.state.data.findIndex((c: { id: number }) => c.id === mock.items[0].id)
@@ -123,7 +130,7 @@ describe('collaborators', () => {
   })
 
   it('should fetch documents upon sort change', async () => {
-    const tableWrapper = wrapper.findComponent(TableData)
+    const tableWrapper = wrapper.findComponent({ name: 'TableData' })
 
     await tableWrapper.vm.$emit('on-sort-change', '+email')
 

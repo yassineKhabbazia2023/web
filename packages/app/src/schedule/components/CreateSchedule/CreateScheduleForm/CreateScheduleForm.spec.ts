@@ -15,7 +15,16 @@ const createScheduleMock = getMockSchedule(mockedReminders)
 const createScheduleMockWithTypeLong = getMonthlyMockSchedule(mockedReminders)
 
 const createWrapper = (props: FormProps) =>
-  mount(CreateScheduleForm, { props })
+  mount(CreateScheduleForm, {
+    props,
+    global: {
+      stubs: {
+        PDropdown: true,
+        PDatePicker: true,
+        PInput: true,
+        PUpload: true,
+      },
+    } })
 
 vi.mock('@app/schedule/services', () => {
   return {

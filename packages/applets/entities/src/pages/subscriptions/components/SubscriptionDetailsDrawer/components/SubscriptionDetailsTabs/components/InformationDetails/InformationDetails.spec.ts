@@ -59,6 +59,12 @@ const createWrapper = (
     props: {
       ...overriddenProps,
     },
+    global: {
+      stubs: {
+        PLoader: true,
+        PFieldSet: true,
+      },
+    },
   })
 }
 

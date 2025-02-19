@@ -5,7 +5,6 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { type ConfirmationPopupProps } from
   '@ged/modules/common/templates/popups/ConfirmationPopupTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import { PDialog } from '@pulse/styleguide/components'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 
@@ -61,7 +60,7 @@ describe('confirmationPopup', () => {
       }
 
       const wrapper = createWrapper(updatedProps)
-      const dialog = wrapper.findComponent(PDialog)
+      const dialog = wrapper.findComponent({ name: 'PDialog' })
       expect(dialog.exists()).toBeTruthy()
     })
 
@@ -116,7 +115,7 @@ describe('confirmationPopup', () => {
         isPopupVisible: true,
       }
       const wrapper = createWrapper(updatedProps)
-      const pdialog = wrapper.findComponent(PDialog)
+      const pdialog = wrapper.findComponent({ name: 'PDialog' })
 
       await pdialog.vm.$emit('close')
       await nextTick()

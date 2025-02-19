@@ -48,6 +48,11 @@ const createWrapper = (account: any, providerName: any) => {
 
   return mount(CompanyInformation, {
     props,
+    global: {
+      stubs: {
+        PLoader: true,
+      },
+    },
   })
 }
 

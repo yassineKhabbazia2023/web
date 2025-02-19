@@ -1,5 +1,4 @@
 import DocumentRenameModal from './DocumentRenameModal.vue'
-import SingleInputModal from '@ged/modules/common/templates/modals'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import type { DocumentRenameModalProps } from './DocumentRenameModalTypes'
@@ -26,7 +25,7 @@ const createWrapper = (
 }
 
 const findSingleInputModalWrapper = (wrapper: VueWrapper<any>) =>
-  wrapper.findComponent(SingleInputModal)
+  wrapper.findComponent({ name: 'SingleInputModal' })
 describe('props', () => {
   beforeEach(() => {
     setActivePinia(pinia)

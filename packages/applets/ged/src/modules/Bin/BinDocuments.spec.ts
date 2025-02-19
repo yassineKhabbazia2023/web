@@ -5,15 +5,12 @@ import BinDocuments from './BinDocuments.vue'
 import { createPinia, setActivePinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import BinDocumentsList from './sections/BinDocumentsList'
 import type { BinDocumentProps } from './BinDocumentsTypes'
 import {
   fetchBinDocuments,
 } from '@ged/services/BinDocuments'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'
-import { PBreadcrumb, PPagination, PLoader } from '@pulse/styleguide/components'
 import type { BinDocument, BinDocumentsWithTableStructure } from '@ged/models/Document'
 
 vi.mock('@pulse/styleguide')
@@ -45,6 +42,12 @@ const createWrapper = (
     props,
     global: {
       plugins: [pinia],
+      stubs: {
+        PBreadcrumb: true,
+        BinDocumentsList: true,
+        PLoader: true,
+        DocumentRestoreModal: true,
+      },
     },
   }) as unknown as BinDocumentsWrapper
 }
@@ -75,7 +78,7 @@ describe('binDocuments', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const breadcrumb = wrapper.findComponent(PBreadcrumb)
+        const breadcrumb = wrapper.findComponent({ name: 'PBreadcrumb' })
         expect(breadcrumb.exists()).toBeTruthy()
         expect(breadcrumb.props('pElements')).toStrictEqual(items)
       })
@@ -93,10 +96,10 @@ describe('binDocuments', () => {
           '-deleted',
         )
         await nextTick()
-        const binList = wrapper.findComponent(BinDocumentsList)
+        const binList = wrapper.findComponent({ name: 'BinDocumentsList' })
         expect(binList.exists()).toBeTruthy()
         expect(binList.props('binDocuments')).toStrictEqual(binDocumentsMock)
-        const pagination = wrapper.findComponent(PPagination)
+        const pagination = wrapper.findComponent({ name: 'PPagination' })
         expect(pagination.exists()).toBeTruthy()
         expect(pagination.props('pCurrentPage')).toBe(1)
         expect(pagination.props('pPageSize')).toBe(10)
@@ -108,7 +111,7 @@ describe('binDocuments', () => {
         const wrapper = createWrapper()
         await nextTick()
 
-        const restoreModal = wrapper.findComponent(DocumentRestoreModal)
+        const restoreModal = wrapper.findComponent({ name: 'DocumentRestoreModal' })
         expect(restoreModal.exists()).toBeTruthy()
         expect(restoreModal.props('isVisible')).toBeFalsy()
         expect(restoreModal.props('serviceId')).toBe(defaultProps.currentBinService)
@@ -120,11 +123,11 @@ describe('binDocuments', () => {
         const componentInstance = wrapper.vm
         componentInstance.isLoading = true
         await nextTick()
-        const loader = wrapper.findComponent(PLoader)
+        const loader = wrapper.findComponent({ name: 'PLoader' })
         expect(loader.exists()).toBeTruthy()
-        const binList = wrapper.findComponent(BinDocumentsList)
+        const binList = wrapper.findComponent({ name: 'BinDocumentsList' })
         expect(binList.exists()).toBeFalsy()
-        const pagination = wrapper.findComponent(PPagination)
+        const pagination = wrapper.findComponent({ name: 'PPagination' })
         expect(pagination.exists()).toBeFalsy()
       })
     })
@@ -135,7 +138,7 @@ describe('binDocuments', () => {
         const componentInstance = wrapper.vm
         componentInstance.binDocuments = binDocumentsMock
         await nextTick()
-        const documents = wrapper.findComponent(BinDocumentsList)
+        const documents = wrapper.findComponent({ name: 'BinDocumentsList' })
         await documents.vm.$emit('on-sort-change', '+name')
         await nextTick()
         expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
@@ -153,10 +156,10 @@ describe('binDocuments', () => {
         const componentInstance = wrapper.vm
         componentInstance.binDocuments = binDocumentsMock
         await nextTick()
-        const documents = wrapper.findComponent(BinDocumentsList)
+        const documents = wrapper.findComponent({ name: 'BinDocumentsList' })
         await documents.vm.$emit('restore-document-action', binDocumentsMock.documentsPage.items[0])
         await nextTick()
-        const restoreModal = wrapper.findComponent(DocumentRestoreModal)
+        const restoreModal = wrapper.findComponent({ name: 'DocumentRestoreModal' })
         expect(restoreModal.props('isVisible')).toBeTruthy()
         expect(restoreModal.props('document'))
           .toStrictEqual(binDocumentsMock.documentsPage.items[0])
@@ -167,7 +170,7 @@ describe('binDocuments', () => {
         const componentInstance = wrapper.vm
         componentInstance.binDocuments = binDocumentsMock
         await nextTick()
-        const pagination = wrapper.findComponent(PPagination)
+        const pagination = wrapper.findComponent({ name: 'PPagination' })
         await pagination.vm.$emit('on-page-range-changed', 50)
         await nextTick()
         expect(pagination.props('pPageSize')).toBe(50)
@@ -187,7 +190,7 @@ describe('binDocuments', () => {
         componentInstance.documentToRestore = binDocumentsMock.documentsPage.items[0]
         componentInstance.isRestoring = true
         await nextTick()
-        const restoreModal = wrapper.findComponent(DocumentRestoreModal)
+        const restoreModal = wrapper.findComponent({ name: 'DocumentRestoreModal' })
         await nextTick()
 
         await restoreModal.vm.$emit('confirm-restore-document')
@@ -211,7 +214,7 @@ describe('binDocuments', () => {
         componentInstance.documentToRestore = binDocumentsMock.documentsPage.items[0]
         componentInstance.isRestoring = true
         await nextTick()
-        const restoreModal = wrapper.findComponent(DocumentRestoreModal)
+        const restoreModal = wrapper.findComponent({ name: 'DocumentRestoreModal' })
         await nextTick()
 
         await restoreModal.vm.$emit('cancel-restore-document')
@@ -227,7 +230,7 @@ describe('binDocuments', () => {
         componentInstance.documentToRestore = binDocumentsMock.documentsPage.items[0]
         componentInstance.isRestoring = true
         await nextTick()
-        const restoreModal = wrapper.findComponent(DocumentRestoreModal)
+        const restoreModal = wrapper.findComponent({ name: 'DocumentRestoreModal' })
         await nextTick()
 
         await restoreModal.vm.$emit('navigate-to-folder', 123)

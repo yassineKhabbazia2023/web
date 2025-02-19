@@ -73,13 +73,12 @@ describe('documentList', () => {
       wrapper.find('.el-table__cell')
       await nextTick()
 
-      const columns = wrapper.findAllComponents(PTableColumn)
+      const columns = wrapper.findAllComponents({ name: 'PTableColumn' })
       await nextTick()
       expect(columns).toHaveLength(7)
     }, 30000)
   })
   describe('events', () => {
-    // Pas sreussi a récupéré table element
     it('should emit on-sort-change when sort-change', async () => {
       const emitPayload =
 
@@ -90,7 +89,7 @@ describe('documentList', () => {
       wrapper.find('.el-table__cell')
       await nextTick()
 
-      const table = await wrapper.findComponent(PTable)
+      const table = wrapper.findComponent({ name: 'PTable' })
       await nextTick()
       table.vm.$emit('sort-change', JSON.parse(emitPayload))
       await nextTick()
@@ -99,13 +98,12 @@ describe('documentList', () => {
       expect(wrapper.emitted('on-sort-change')).toStrictEqual([['+name']])
     }, 30000)
 
-    // Pas sreussi a récupéré table element
-    it('should emit document-selection-change oppon ptable selection-change event', async () => {
+    it('should emit document-selection-change upon ptable selection-change event', async () => {
       const wrapper = createWrapper()
       wrapper.find('.el-table__cell')
       await nextTick()
 
-      const table = wrapper.findComponent(PTable)
+      const table = wrapper.findComponent({ name: 'PTable' })
       await nextTick()
 
       table.vm.$emit(
@@ -201,11 +199,11 @@ describe('documentList', () => {
         documentsListWithTableStructure: payloadWithZeroItems,
       })
 
-      const table = await wrapper.findComponent(PTable)
-      const elTableStubEptyTextValue = table.find('el-table-stub').attributes('emptytext')
+      const table = wrapper.findComponent({ name: 'PTable' })
+      const elTableStubEmptyTextValue = table.find('el-table-stub').attributes('emptytext')
       await nextTick()
 
-      expect(elTableStubEptyTextValue).toBe('Aucun résultat')
+      expect(elTableStubEmptyTextValue).toBe('Aucun résultat')
     })
   })
 })

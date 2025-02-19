@@ -79,7 +79,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await wrapper.findComponent(CreateFolderModal)
+      const modal = wrapper.findComponent(CreateFolderModal)
 
       await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()

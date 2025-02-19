@@ -7,7 +7,6 @@ import type { DocumentRenameProps } from './DocumentRenameTypes'
 
 import { renameDocument } from '@ged/services/Documents'
 import DocumentRename from './'
-import DocumentRenameModal from './components/DocumentRenameModal.vue'
 import { trackDocumentRename } from '@ged/services/tracking/tracking.service'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
@@ -48,7 +47,7 @@ const createWrapper = (
 describe('interactions', () => {
   it('should call rename API on rename-confirmed and close modal and toast', async () => {
     const wrapper = createWrapper({ ...defaultProps, modelValue: true })
-    const renameModalWrapper = wrapper.findComponent(DocumentRenameModal)
+    const renameModalWrapper = wrapper.findComponent({ name: 'DocumentRenameModal' })
     await renameModalWrapper.vm.$emit('rename-confirmed', 'abcd')
     await nextTick()
     expect(vi.mocked(renameDocument)).toHaveBeenCalledWith(
@@ -70,7 +69,7 @@ describe('interactions', () => {
     })
 
     const wrapper = createWrapper({ ...defaultProps, modelValue: true })
-    const renameModalWrapper = wrapper.findComponent(DocumentRenameModal)
+    const renameModalWrapper = wrapper.findComponent({ name: 'DocumentRenameModal' })
     await renameModalWrapper.vm.$emit('rename-confirmed', 'abcd')
 
     await nextTick()
@@ -81,7 +80,7 @@ describe('interactions', () => {
 
   it('should close rename modal upon close-rename-modal event', async () => {
     const wrapper = createWrapper({ ...defaultProps, modelValue: true })
-    const renameModalWrapper = wrapper.findComponent(DocumentRenameModal)
+    const renameModalWrapper = wrapper.findComponent({ name: 'DocumentRenameModal' })
     await renameModalWrapper.vm.$emit('close-rename-modal')
     await nextTick()
 

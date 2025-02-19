@@ -104,6 +104,18 @@ const createWrapper = (): VueWrapper<any> =>
   mount(UsersCollab, {
     global: {
       plugins: [pinia],
+      stubs: {
+        FormSearch: true,
+        ManageAccessDrawer: true,
+        ManageRightsDrawer: true,
+        NoResult: true,
+        PAvatar: true,
+        PIcon: true,
+        PLoader: true,
+        PNotification: true,
+        PToolbox: true,
+        RemoveUserDialog: true,
+      },
     },
   })
 

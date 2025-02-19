@@ -4,7 +4,6 @@ import { describe, it, expect } from 'vitest'
 import DocumentsDropModal from '.'
 import type { DocumentsDropModalProps } from './DocumentsDropModalTypes'
 import { type ComponentPublicInstance } from 'vue'
-import ConfirmationPopup from '@ged/modules/common/templates/popups'
 
 const folderName = 'Something'
 const defaultProps: DocumentsDropModalProps = {
@@ -25,20 +24,20 @@ DocumentsDropModalWrapper => {
 
 // component finders
 const findDocumentsDropModal = (wrapper: DocumentsDropModalWrapper) =>
-  wrapper.findComponent(ConfirmationPopup)
+  wrapper.findComponent({ name: 'ConfirmationPopup' })
 
 const wrapper = createWrapper()
 
 describe('documents drop modal', () => {
   describe('props', () => {
-    it('should display the corrrect folder name', () => {
+    it('should display the correct folder name', () => {
       const confirmationPopupWrapper = findDocumentsDropModal(wrapper)
       expect(confirmationPopupWrapper.props('message')).toBe(
         `Document is being uploaded to the "${folderName}" folder`,
       )
     })
 
-    it('should display the corrrect title', () => {
+    it('should display the correct title', () => {
       const confirmationPopupWrapper = findDocumentsDropModal(wrapper)
       expect(confirmationPopupWrapper.props('title')).toBe(
         'One moment...',

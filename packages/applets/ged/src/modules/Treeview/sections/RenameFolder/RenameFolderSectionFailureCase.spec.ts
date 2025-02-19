@@ -77,7 +77,7 @@ describe('renameFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = await wrapper.findComponent(RenameFolderModal)
+      const modal = wrapper.findComponent(RenameFolderModal)
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()
