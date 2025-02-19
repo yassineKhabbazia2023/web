@@ -4,9 +4,9 @@ import type { PDatePickerProps } from '../../atoms/PDatePicker/PDatePickerTypes'
 
 export interface PFieldPropsBase<T> {
   modelValue?: T
-  pFieldType: 'input' | 'dropdown' | 'date' | 'radio'
+  pFieldType: 'input' | 'dropdown' | 'date' | 'radio' | 'email-input' | 'checkbox'
   pFieldKey: string
-  pLabel: string
+  pLabel?: string
   pPlaceholder?: string
   pReadonly?: boolean
   pDisabled?: boolean
@@ -48,4 +48,17 @@ export interface PFieldPropsRadio<T> extends PFieldPropsBase<T> {
   pOptions?: PFieldRadioOptions[]
 }
 
-export type PFieldProps<T> = PFieldPropsInput<T> & PFieldPropsDropdown<T> & PFieldPropsDate<T> & PFieldPropsRadio<T>
+export interface PFieldPropsEmailInput<T> extends PFieldPropsBase<T> {
+  pDefaultDomainPart?: string
+  pLocalPartPlaceholder?: string
+  pDomainPartPlaceholder?: string
+  pLocalPartDisabled?: boolean
+  pDomainPartDisabled?: boolean
+}
+
+
+export type PFieldProps<T> = PFieldPropsInput<T> &
+  PFieldPropsDropdown<T> &
+  PFieldPropsDate<T> &
+  PFieldPropsRadio<T> &
+  PFieldPropsEmailInput<T>

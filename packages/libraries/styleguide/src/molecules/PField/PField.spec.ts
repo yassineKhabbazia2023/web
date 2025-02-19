@@ -4,7 +4,7 @@ import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import PBankCard from '.'
 import type { PFieldProps } from './PFieldTypes'
-import { getMockedInputField, getDropdownField, getDateField, getRadioField } from './PFieldMock'
+import { getMockedInputField, getDropdownField, getDateField, getRadioField, getMockedEmailInputField, getMockedCheckbox } from './PFieldMock'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 
 function createWrapper<T>(props: PFieldProps<T>) {
@@ -23,6 +23,7 @@ function createWrapper<T>(props: PFieldProps<T>) {
         PFormItem: {
           name: 'PFormItem',
           template: '<div><slot /></div>',
+          props: ['pLabel'],
         },
         PInput: {
           name: 'PInput',
@@ -34,6 +35,10 @@ function createWrapper<T>(props: PFieldProps<T>) {
         },
         PCheckbox: {
           name: 'PCheckbox',
+          template: '<div><slot /></div>',
+        },
+        PEmailInputField: {
+          name: 'PEmailInputField',
           template: '<div><slot /></div>',
         },
       },
@@ -74,6 +79,33 @@ describe('test PField', () => {
       const otherValue = 'Henry'
 
       pInput.vm.$emit('update:model-value', otherValue)
+
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
+    })
+  })
+  describe('with email input field', () => {
+    const props = getMockedEmailInputField(
+      pFieldKey,
+      'test.com',
+      'Local Part Placeholder',
+      'Domain Part Placeholder',
+      false,
+      false,
+      50,
+      ruleTypes,
+    )
+    let pEmailInputField: VueWrapper
+    beforeEach(() => {
+      wrapper = createWrapper<string>(props)
+      pEmailInputField = wrapper.findComponent({ name: 'PEmailInputField' })
+    })
+    it('should render PEmailInputField', () => {
+      expect(pEmailInputField.exists()).toBeTruthy()
+    })
+    it('should emit update:model-value when enter value', () => {
+      const otherValue = 'test@test.com'
+
+      pEmailInputField.vm.$emit('update:model-value', otherValue)
 
       expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
     })
@@ -151,6 +183,29 @@ describe('test PField', () => {
       pDatePicker.vm.$emit('update:model-value', otherDate)
 
       expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherDateIso]])
+    })
+  })
+  describe('with checkbox field', () => {
+    const props = getMockedCheckbox(pFieldKey, pLabel, 50)
+    let pCheckbox: VueWrapper
+    beforeEach(() => {
+      wrapper = createWrapper<boolean>(props)
+      pCheckbox = wrapper.findComponent({ name: 'PCheckbox' })
+    })
+    it('should render PCheckbox', () => {
+      expect(pCheckbox.exists()).toBeTruthy()
+    })
+    it('should not show the label', () => {
+      const pFormItem = wrapper.findComponent({ name: 'PFormItem' })
+
+      expect(pFormItem.props('pLabel')).toBe('')
+    })
+    it('should emit update:model-value when enter value', () => {
+      const otherValue = true
+
+      pCheckbox.vm.$emit('change', otherValue)
+
+      expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
     })
   })
   describe('with radio field', () => {

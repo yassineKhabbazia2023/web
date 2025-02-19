@@ -1,11 +1,27 @@
 <template>
   <PFormItem
     :pProp="pFieldKey"
-    :pLabel="pLabel"
+    :pLabel="formItemLabel"
     :pRules="pRules"
     :class="pCssClass"
     class="flex"
   >
+    <PEmailInputField
+      v-if="pFieldType === 'email-input'"
+      v-model="internalEmail"
+      :pDefaultDomainPart="pDefaultDomainPart"
+      :pLocalPartPlaceholder="pLocalPartPlaceholder"
+      :pDomainPartPlaceholder="pDomainPartPlaceholder"
+      :pLocalPartDisabled="pLocalPartDisabled"
+      :pDomainPartDisabled="pDomainPartDisabled"
+      :data-testid="pTestId"
+    />
+    <PCheckbox
+      v-if="pFieldType === 'checkbox'"
+      @change="onCheckboxToggle"
+    >
+      {{ pLabel }}
+    </PCheckbox>
     <PInput
       v-if="pFieldType === 'input'"
       v-model="internalValue"
@@ -91,12 +107,10 @@ import PFormItem from '../../atoms/PFormItem'
 import PInput from '../../atoms/PInput'
 import PRadio from '../../atoms/PRadio'
 import PCheckbox from '../../atoms/PCheckbox'
+import PEmailInputField from '../../atoms/PEmailInputField'
 import dayjs from 'dayjs'
 import type { PFieldProps } from './PFieldTypes'
-import {
-  getInternalCheckboxOptions,
-  getModelValueOnCheckboxChange,
-} from './PFieldHelper'
+import { getInternalCheckboxOptions, getModelValueOnCheckboxChange } from './PFieldHelper'
 
 const props = withDefaults(defineProps<PFieldProps<T>>(), {
   modelValue: undefined,
@@ -115,6 +129,10 @@ const emit = defineEmits<{
   'update:p-is-check-all': [boolean]
 }>()
 
+const formItemLabel = computed(() => {
+  return props.pFieldType != 'checkbox' ? props.pLabel : ''
+})
+
 const internalValue = computed({
   get() {
     return props.modelValue as T
@@ -124,32 +142,37 @@ const internalValue = computed({
   },
 })
 
-const internalCheckboxOptions = computed(() => getInternalCheckboxOptions(
-  props.modelValue,
-  props.pOptions ?? [],
-))
+const internalCheckboxOptions = computed(() => getInternalCheckboxOptions(props.modelValue, props.pOptions ?? []))
 
 const internalDate = computed({
   get() {
     return props.modelValue as string
   },
-  set(value: Date|string) {
+  set(value: Date | string) {
     const isoValue = value instanceof Date ? dayjs(value).format(props.pValueFormat) : value
     emit('update:model-value', isoValue as T)
   },
 })
 
 function onCheckboxChange(optionIndex: number, isChecked: boolean) {
-  const modelValue = getModelValueOnCheckboxChange<T>(
-    props.modelValue,
-    props.pOptions ?? [],
-    optionIndex,
-    isChecked,
-  )
+  const modelValue = getModelValueOnCheckboxChange<T>(props.modelValue, props.pOptions ?? [], optionIndex, isChecked)
   if (modelValue) {
     internalValue.value = modelValue as T // "as T" is a temporary trick
   }
 }
+
+const onCheckboxToggle = (value: boolean) => {
+  emit('update:model-value', value as T)
+}
+
+const internalEmail = computed({
+  get() {
+    return props.modelValue as string
+  },
+  set(value: string) {
+    emit('update:model-value', value as T)
+  },
+})
 </script>
 
 <style lang="scss" scoped>

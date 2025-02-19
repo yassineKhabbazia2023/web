@@ -1,6 +1,12 @@
 import { type FormItemRule } from 'element-plus'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
-import type { PFieldPropsInput, PFieldPropsDropdown, PFieldPropsDate, PFieldPropsRadio } from './PFieldTypes'
+import type {
+  PFieldPropsInput,
+  PFieldPropsDropdown,
+  PFieldPropsDate,
+  PFieldPropsRadio,
+  PFieldPropsEmailInput,
+} from './PFieldTypes'
 import type { PDatePickerProps } from '../../atoms/PDatePicker/PDatePickerTypes'
 
 export function getMockedRule(ruleType: string): FormItemRule | undefined {
@@ -44,6 +50,58 @@ export function getMockedInputField(
     pFieldType: 'input',
     pPlaceholder,
     pDisabled,
+    pCssClass,
+    pRules,
+    pTestId,
+  }
+}
+
+export function getMockedCheckbox(
+  pFieldKey: string,
+  pLabel: string,
+  flexBasis: number,
+  ruleTypes?: string[],
+  pTestId?: string,
+): PFieldPropsInput<boolean> {
+  const pRules = (ruleTypes ?? []).map((ruleType) => getMockedRule(ruleType)).filter(Boolean) as FormItemRule[]
+
+  const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
+
+  return {
+    modelValue: false,
+    pFieldKey,
+    pLabel,
+    pFieldType: 'checkbox',
+    pCssClass,
+    pRules,
+    pTestId,
+  }
+}
+
+export function getMockedEmailInputField(
+  pFieldKey: string,
+  pDefaultDomainPart: string,
+  pLocalPartPlaceholder: string,
+  pDomainPartPlaceholder: string,
+  pLocalPartDisabled: boolean,
+  pDomainPartDisabled: boolean,
+  flexBasis: number,
+  ruleTypes?: string[],
+  pTestId?: string,
+): PFieldPropsEmailInput<string> {
+  const pRules = (ruleTypes ?? []).map((ruleType) => getMockedRule(ruleType)).filter(Boolean) as FormItemRule[]
+
+  const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
+
+  return {
+    modelValue: '',
+    pFieldKey,
+    pLocalPartPlaceholder,
+    pDomainPartPlaceholder,
+    pFieldType: 'email-input',
+    pDefaultDomainPart,
+    pLocalPartDisabled,
+    pDomainPartDisabled,
     pCssClass,
     pRules,
     pTestId,
@@ -117,13 +175,16 @@ export function getRadioField({
   pBorder,
   pFlexColumn,
   pMultiple = false,
-  pOptions = [{
-    pValue: 'a',
-    pLabel: 'A',
-  }, {
-    pValue: 'b',
-    pLabel: 'B',
-  }],
+  pOptions = [
+    {
+      pValue: 'a',
+      pLabel: 'A',
+    },
+    {
+      pValue: 'b',
+      pLabel: 'B',
+    },
+  ],
 }: {
   modelValue?: string | string[]
   pFieldKey?: string
