@@ -1,7 +1,7 @@
 <template>
   <ElDropdown
     ref="dropdownRef"
-    popperClass="p-toolbox shadow--3"
+    :popperClass="`p-toolbox shadow--3 ${props.pPopperClass}`"
     :placement="pPlacement"
   >
     <slot />
@@ -34,9 +34,10 @@ import { ref } from 'vue'
 import PToolboxItem from '../../atoms/PToolboxItem'
 import type { PToolboxProps } from './PToolboxTypes'
 
-withDefaults(defineProps<PToolboxProps>(), {
+const props = withDefaults(defineProps<PToolboxProps>(), {
   pElements: () => [],
   pPlacement: 'bottom-start',
+  pPopperClass: '',
 })
 
 defineEmits(['p-toolbox-item-clicked'])

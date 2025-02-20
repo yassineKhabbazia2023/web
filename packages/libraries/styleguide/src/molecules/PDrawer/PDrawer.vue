@@ -1,9 +1,11 @@
 <template>
   <ElDrawer
+    ref="drawerRef"
     v-model="drawerModel"
     :direction="pDirection"
     :showClose="pShowClose"
     class="p-drawer"
+    :class="componentUniqueId"
     :size="pSize"
     :modalClass="pModalClass"
     :withHeader="pWithHeader"
@@ -18,6 +20,7 @@
         <div class="p-drawer__header-prefix">
           <slot name="header-prefix" />
           <PButton
+            v-if="!pHeaderToolbox"
             pPlain
             pIconOnly
             class="p-drawer__close-button"
@@ -25,6 +28,18 @@
           >
             <PIcon pName="x" />
           </PButton>
+          <PToolbox
+            v-if="pHeaderToolbox"
+            v-bind="pHeaderToolboxProps"
+            @p-toolbox-item-clicked="handleToolboxItemClicked"
+          >
+            <div class="p-drawer__toolbox-gear">
+              <PIcon
+                pName="gear"
+                pSize="14"
+              />
+            </div>
+          </PToolbox>
         </div>
         <div
           class="p-drawer__header-suffix"
@@ -69,18 +84,23 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, useSlots } from 'vue'
+import { computed, ref, useSlots } from 'vue'
 import { ElDrawer } from 'element-plus'
 import PBreadcrumb from '../../molecules/PBreadcrumb'
 import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
-import type { PDrawerProps } from './PDrawerTypes'
+import PToolbox from '../PToolbox/PToolbox.vue'
+import type { PDrawerProps, ElDrawerInstanceType } from './PDrawerTypes'
 import { AppColors } from '../../utils/AppColorsEnum'
+import { usePDrawer } from './p-drawer.composable'
+import type { PToolboxProps } from '@styleguide/molecules/PToolbox/PToolboxTypes'
+
 
 const emit = defineEmits([
   'drawer-previous-button-click',
   'update:modelValue',
   'close-drawer-button',
+  'p-toolbox-item-clicked',
 ])
 
 const slots = useSlots()
@@ -95,6 +115,9 @@ const props = withDefaults(defineProps<PDrawerProps>(), {
   pSuffixUnderTitle: false,
 })
 
+
+const drawerRef = ref<ElDrawerInstanceType | null>(null)
+
 const drawerModel = computed({
   get() {
     return props.modelValue
@@ -103,6 +126,16 @@ const drawerModel = computed({
     emit('update:modelValue', value)
   },
 })
+
+function handleToolboxItemClicked(itemName: string) {
+  emit('p-toolbox-item-clicked', itemName)
+}
+const { componentUniqueId } = usePDrawer(drawerRef, drawerModel)
+
+const pHeaderToolboxProps = {
+  ...props.pHeaderToolbox,
+  pPopperClass: componentUniqueId,
+} as PToolboxProps
 
 const pModalClass = computed(() => {
   if (props.pDirection === 'ttb') {
@@ -113,3 +146,17 @@ const pModalClass = computed(() => {
   return ''
 })
 </script>
+
+<style scoped lang="scss">
+.p-drawer {
+  &__toolbox-gear {
+    width: 14px;
+    height: 14px;
+    transition: transform 200ms ease-in-out;
+
+    &:hover {
+      transform: rotate(45deg);
+    }
+  }
+}
+</style>

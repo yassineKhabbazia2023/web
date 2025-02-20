@@ -7,7 +7,9 @@
     modal
     pDirection="ttb"
     destroyOnClose
+    :pHeaderToolbox="toolboxParams"
     @close-drawer-button="closeNotificationsDrawer"
+    @p-toolbox-item-clicked="handleToolboxItemClick"
   >
     <PTabs v-model="activeTab">
       <PTabPane :label="t('tabs.all-notifications')" name="all-notifications">
@@ -57,6 +59,9 @@ import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notifica
 import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'
 import NotificationsWrapper from './NotificationsWrapper'
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
+import { PDrawerProps } from '@pulse/styleguide/types'
+import { commonStore } from '@pulse/common'
+import { patchAllNotificationsAsReadStatus } from './feed-center.manager'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -70,12 +75,31 @@ const emit = defineEmits<{
 const props = defineProps<FeedCenterDrawerProps>()
 const { unreadNotificationsCount } = toRefs(props)
 
+const userStore = commonStore()
+const userId = computed(() => userStore.user?.id)
+
 const isDrawerOpened = computed({
   get: () => props.modelValue,
   set: (value: boolean) => {
     emit('update:model-value', value)
   },
 })
+
+const toolboxParams: PDrawerProps['pHeaderToolbox'] = {
+  pElements: [
+    {
+      pValue: t('mark-all-as-read'),
+      pIconName: 'checkCircle',
+      pActionName: 'markAllAsRead',
+    },
+  ],
+}
+
+async function handleToolboxItemClick() {
+  if (userId.value) {
+    await patchAllNotificationsAsReadStatus(userId.value)
+  }
+}
 
 const {
   closeNotificationsDrawer,
@@ -90,11 +114,13 @@ const {
 <i18n lang="yaml">
 en-US:
   title: 'Notifications'
+  mark-all-as-read: 'Mark all as read'
   tabs:
     all-notifications: 'All'
     unread-notifications: 'Unread'
 fr-FR:
   title: 'Notifications'
+  mark-all-as-read: 'Tout marquer comme lu'
   tabs:
     all-notifications: 'Tout'
     unread-notifications: 'Non lu'

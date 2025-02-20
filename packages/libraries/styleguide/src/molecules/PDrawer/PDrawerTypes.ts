@@ -1,4 +1,6 @@
 import type { BreadcrumbItems } from '../../molecules/PBreadcrumb/PBreadcrumbTypes'
+import type { PToolboxProps } from '@styleguide/molecules/PToolbox/PToolboxTypes'
+import { ElDrawer } from 'element-plus'
 
 export interface PDrawerProps {
   modelValue: boolean
@@ -11,4 +13,7 @@ export interface PDrawerProps {
   pWithHeader?: boolean
   pType?: 'mini' | 'fullscreen'
   pSuffixUnderTitle?: boolean
+  pHeaderToolbox?: PToolboxProps
 }
+
+export type ElDrawerInstanceType = InstanceType<typeof ElDrawer>

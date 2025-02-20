@@ -1,14 +1,34 @@
 import { describe, it, expect, beforeEach } from 'vitest'
+import { defineStore } from 'pinia'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import FeedCenterDrawer from '.'
 import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'
 import { fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
 import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
+import { createTestingPinia } from '@pinia/testing'
+import { patchAllNotificationsAsReadStatus } from './feed-center.manager'
+const pinia = createTestingPinia()
+
+vi.mock('@pulse/common', () => ({
+  commonStore: defineStore('common', {
+    state: () => ({
+      user: {
+        id: 13,
+      },
+    }),
+  }) }))
+
+vi.mock('./feed-center.manager', async () => {
+  return {
+    patchAllNotificationsAsReadStatus: vi.fn(),
+  }
+})
 
 function createWrapper(props: FeedCenterDrawerProps = FeedCenterDrawerBaseProps) {
   return shallowMount(FeedCenterDrawer, {
     props,
     global: {
+      plugins: [pinia],
       stubs: {
         PDrawer: {
           name: 'PDrawer',
@@ -90,6 +110,12 @@ describe('feed center drawer', () => {
       notificationWrapper.vm.$emit('notification-clicked')
 
       expect(wrapper.emitted('update:model-value')).toStrictEqual([[expectedEmitModelValue]])
+    })
+
+    it('should call patchAllNotificationAsRead when p-toolbox-item-clicked event is fired', async () => {
+      const notificationDrawer = wrapper.findComponent({ name: 'PDrawer' })
+      notificationDrawer.vm.$emit('p-toolbox-item-clicked')
+      expect(patchAllNotificationsAsReadStatus).toHaveBeenCalledOnce()
     })
   })
 
