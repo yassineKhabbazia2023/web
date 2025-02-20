@@ -24,6 +24,13 @@ function createWrapper(override: Partial<ScheduleDrawerProps> = {}) {
 
   return mount(ScheduleDrawer, {
     props,
+    global: {
+      stubs: {
+        PLoader: true,
+        CreateScheduleForm: true,
+        PButton: true,
+      },
+    },
   })
 }
 

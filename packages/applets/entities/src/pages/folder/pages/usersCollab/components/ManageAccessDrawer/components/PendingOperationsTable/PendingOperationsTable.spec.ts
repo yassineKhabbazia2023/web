@@ -29,6 +29,9 @@ const createWrapper = () => {
           emits: ['confirm-action', 'update:modelValue'],
           props: ['modelValue'],
         },
+        PDoubleText: true,
+        PButton: true,
+        PIcon: true,
       },
     },
   })

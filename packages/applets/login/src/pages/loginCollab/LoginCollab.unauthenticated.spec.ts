@@ -34,7 +34,9 @@ vi.mock('@login/composable/useNavigation', () => ({
   },
 }))
 
-const createWrapper = () => mount(LoginCollab)
+const createWrapper = () => mount(LoginCollab, {
+  shallow: true,
+})
 
 describe('loginCollab', () => {
   beforeEach(async () => {

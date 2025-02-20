@@ -37,8 +37,7 @@ const router = getMockedRouter(
 )
 
 function createWrapper() {
-  const stubs: string[] = []
-  return getWrapper(ResetPasswordForm, router, stubs)
+  return getWrapper(ResetPasswordForm, router)
 }
 
 describe('page reset password form', () => {

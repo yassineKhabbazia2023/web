@@ -36,6 +36,13 @@ const createWrapper = (): VueWrapper<any> =>
   mount(DelegationsHistory, {
     global: {
       plugins: [pinia],
+      stubs: {
+        PLoader: true,
+        PScrollbar: { template: '<div><slot /></div>' },
+        PTimeline: { template: '<div><slot /></div>' },
+        PTooltip: { template: '<div><slot /></div>' },
+        NoResult: true,
+      },
     },
     attachTo: document.body,
   })

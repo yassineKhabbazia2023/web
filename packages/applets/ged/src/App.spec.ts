@@ -125,6 +125,8 @@ const createWrapper = (): AppWrapper => {
       plugins: [pinia],
       stubs: {
         BinDocuments: true,
+        PRow: { template: '<div><slot /></div>' },
+        PCol: { template: '<div><slot /></div>' },
       },
     },
   }) as AppWrapper

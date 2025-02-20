@@ -74,6 +74,8 @@ const createWrapper = () =>
       stubs: {
         PButton: { template: '<button><slot /></button>' },
         Suspense: { template: '<div><slot /></div>' },
+        PConfigProvider: { template: '<div><slot /></div>' },
+        PopupRenewToken: true,
       },
     },
   })

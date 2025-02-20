@@ -90,11 +90,15 @@ const createWrapper = (
       provide: {
         i18n,
       },
-      stubs: [
-        'AddDelegatesStep',
-        'DelegationPreviewList',
-        'CollaboratorsSearchAutocomplete',
-      ],
+      stubs: {
+        PIcon: true,
+        PSteps: true,
+        PStep: true,
+        CollapsableFoldersList: true,
+        SelectedFoldersList: true,
+        AddDelegatesStep: true,
+        DelegationPreviewList: true,
+      },
     },
   })
 }

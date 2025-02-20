@@ -42,14 +42,7 @@ vi.mock('@launcher/services/launcherServices', () => ({
 const mockedSilaeDownloadLabel = 'silae download label'
 
 function getWrapper() {
-  return shallowMount(Home, {
-    global: {
-      stubs: {
-        PBreadcrumb: true,
-        LaunchCard: true,
-      },
-    },
-  })
+  return shallowMount(Home)
 }
 
 const CARDS_LENGTH = 3

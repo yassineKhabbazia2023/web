@@ -87,6 +87,9 @@ const createWrapper = (userStore = {}) =>
     global: {
       stubs: {
         Suspense: { template: '<div><slot /></div>' },
+        PConfigProvider: { template: '<div><slot /></div>' },
+        PopupRenewToken: true,
+        LoginLayout: true,
       },
       plugins: [
         router,

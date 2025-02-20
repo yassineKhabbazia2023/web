@@ -17,6 +17,12 @@ const createWrapper = async (editMode: boolean = false): Promise<VueWrapper<any>
       userId: mockUser.id,
       editMode,
     },
+    global: {
+      stubs: {
+        PFormItem: { template: '<div><slot /></div>' },
+        PButton: true,
+      },
+    },
   })
   await flushPromises()
   return wrapper

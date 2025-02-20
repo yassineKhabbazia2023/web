@@ -20,7 +20,7 @@ const pinia = createTestingPinia()
 const TEST_DATE = '2024-08-14'
 const SAME_MONTH_DATE = '2024-08-18'
 const OTHER_MONTH_DATE = '2024-11-03'
-const OccurenceId = 1234567890
+const OccurrenceId = 1234567890
 
 vi.mock('@pulse/common', () => commonMock)
 const commonStore = useCommonStore(pinia)
@@ -67,14 +67,14 @@ function createWrapper(override: Partial<ScheduleProps> = {}) {
 }
 
 const mockedDeadLinesA = getMockedDeadlines()
-const currentMounthDeadlines: DeadlinesByDate[] = [{
+const currentMonthDeadlines: DeadlinesByDate[] = [{
   date: TEST_DATE,
   deadlines: mockedDeadLinesA,
 }, {
   date: SAME_MONTH_DATE,
   deadlines: [],
 }]
-const nextMounthDeadlines: DeadlinesByDate[] = [{
+const nextMonthDeadlines: DeadlinesByDate[] = [{
   date: OTHER_MONTH_DATE,
   deadlines: mockedDeadLinesA,
 }]
@@ -138,11 +138,11 @@ describe('home page', () => {
       vi
         .spyOn(ScheduleServices, 'getSchedulesCollection')
         .mockResolvedValueOnce([
-          ...currentMounthDeadlines,
-          ...nextMounthDeadlines,
+          ...currentMonthDeadlines,
+          ...nextMonthDeadlines,
         ])
 
-      const expectedDeadlinesByDate = [...currentMounthDeadlines]
+      const expectedDeadlinesByDate = [...currentMonthDeadlines]
 
       const wrapper = createWrapper()
 
@@ -398,7 +398,7 @@ describe('home page', () => {
         const occurrenceDrawerBefore = wrapper.findComponent({ name: 'OccurrenceDrawer' })
         expect(occurrenceDrawerBefore.exists()).toBeFalsy()
 
-        wrapper.findComponent({ name: 'WidgetActiveDay' }).vm.$emit('select-deadline', OccurenceId)
+        wrapper.findComponent({ name: 'WidgetActiveDay' }).vm.$emit('select-deadline', OccurrenceId)
         await nextTick()
 
         const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
@@ -409,7 +409,7 @@ describe('home page', () => {
         const occurrenceDrawerBefore = wrapper.findComponent({ name: 'Calendar' })
         expect(occurrenceDrawerBefore.exists()).toBeFalsy()
 
-        wrapper.findComponent({ name: 'WidgetActiveDay' }).vm.$emit('select-deadline', OccurenceId)
+        wrapper.findComponent({ name: 'WidgetActiveDay' }).vm.$emit('select-deadline', OccurrenceId)
         await nextTick()
 
         const occurrenceDrawerAfter = wrapper.findComponent({ name: 'OccurrenceDrawer' })
@@ -446,10 +446,10 @@ describe('home page', () => {
           .mockReturnValue(mockedSearchParams)
         const getSchedulesCollectionSpy = vi
           .spyOn(ScheduleServices, 'getSchedulesCollection')
-          .mockResolvedValue(currentMounthDeadlines)
+          .mockResolvedValue(currentMonthDeadlines)
           .mockResolvedValueOnce([
-            ...currentMounthDeadlines,
-            ...nextMounthDeadlines,
+            ...currentMonthDeadlines,
+            ...nextMonthDeadlines,
           ])
         const wrapper = createWrapper()
         const today = new Date(TEST_DATE)
@@ -513,10 +513,10 @@ describe('home page', () => {
           .spyOn(ScheduleUtils, 'getAdvancedSearchParams')
         const getSchedulesCollectionSpy = vi
           .spyOn(ScheduleServices, 'getSchedulesCollection')
-          .mockResolvedValue(currentMounthDeadlines)
+          .mockResolvedValue(currentMonthDeadlines)
           .mockResolvedValueOnce([
-            ...currentMounthDeadlines,
-            ...nextMounthDeadlines,
+            ...currentMonthDeadlines,
+            ...nextMonthDeadlines,
           ])
         const wrapper = createWrapper()
 

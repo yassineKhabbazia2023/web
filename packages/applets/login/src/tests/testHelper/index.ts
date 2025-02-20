@@ -59,7 +59,7 @@ export function getMockedRouter(
 export function getWrapper(
   component: Component,
   router: ReturnType<typeof getMockedRouter>,
-  stubs: string[],
+  stubs?: string[] | Record<string, boolean>,
 ) {
   return mount(component, {
     global: {

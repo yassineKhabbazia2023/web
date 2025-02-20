@@ -78,6 +78,7 @@ const createWrapper = (): ComponentWrapper<
       plugins: [pinia],
       stubs: {
         AddCollaboratorsDrawer: true,
+        CollabDetailsDrawer: true,
         FormSearch: true,
         PButton: true,
         PIcon: true,

@@ -35,7 +35,16 @@ vi.mock('@entities/services/reporting', () => ({
 }))
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(BIReports, { plugins: [createTestingPinia()] })
+  mount(BIReports, {
+    plugins: [createTestingPinia()] ,
+    global: {
+      stubs: {
+        PLoader: true,
+        ReportsList: true,
+        ReportDisplay: true,
+      },
+    },
+  })
 
 describe('biReports', () => {
   let wrapper: VueWrapper<any>

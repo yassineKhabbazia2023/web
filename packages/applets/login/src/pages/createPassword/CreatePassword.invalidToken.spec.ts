@@ -11,13 +11,13 @@ const router = getMockedRouter(
 )
 
 function createWrapper() {
-  const stubs = [
-    'PForm',
-    'PFormItem',
-    'PInput',
-    'PCheckbox',
-    'PButton',
-  ]
+  const stubs = {
+    PForm: true,
+    PFormItem: true,
+    PInput: true,
+    PButton: true,
+    PopoverPasswordStrength: true,
+  }
   return getWrapper(CreatePassword, router, stubs)
 }
 

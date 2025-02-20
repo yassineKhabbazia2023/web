@@ -19,6 +19,12 @@ vi.mock('@pulse/common', () => ({
 const createWrapper = (): VueWrapper<any> => mount(Home, {
   global: {
     plugins: [pinia],
+    stubs: {
+      EntityHeader: true,
+      PRow: true,
+      PCol: true,
+      PImage: true,
+    },
   },
 })
 

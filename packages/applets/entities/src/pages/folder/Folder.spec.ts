@@ -81,6 +81,8 @@ const createWrapper = () =>
       plugins: [pinia],
       stubs: {
         RouterView: true,
+        EntityHeader: true,
+        Home: true,
       },
     },
   })

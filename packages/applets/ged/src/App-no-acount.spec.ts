@@ -40,6 +40,7 @@ vi.mock('@ged/services/Services', () => ({
 
 const createWrapper = (): VueWrapper => {
   return mount(Ged, {
+    shallow: true,
     global: {
       plugins: [piniaStore],
     },
