@@ -186,7 +186,7 @@ describe('test PField', () => {
     })
   })
   describe('with checkbox field', () => {
-    const props = getMockedCheckbox(pFieldKey, pLabel, 50)
+    const props = getMockedCheckbox(pFieldKey, pLabel, false, false, 50)
     let pCheckbox: VueWrapper
     beforeEach(() => {
       wrapper = createWrapper<boolean>(props)

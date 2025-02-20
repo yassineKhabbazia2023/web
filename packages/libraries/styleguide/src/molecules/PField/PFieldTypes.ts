@@ -56,9 +56,14 @@ export interface PFieldPropsEmailInput<T> extends PFieldPropsBase<T> {
   pDomainPartDisabled?: boolean
 }
 
+export interface PFieldPropsCheckbox<T> extends PFieldPropsBase<T> {
+  pChecked?: boolean
+  pRounded?: boolean
+}
 
 export type PFieldProps<T> = PFieldPropsInput<T> &
   PFieldPropsDropdown<T> &
   PFieldPropsDate<T> &
   PFieldPropsRadio<T> &
-  PFieldPropsEmailInput<T>
+  PFieldPropsEmailInput<T> &
+  PFieldPropsCheckbox<T>

@@ -5,6 +5,7 @@
       'p-checkbox--rounded': pRounded
     }"
     :label="pLabel"
+    :checked="pChecked"
   >
     <template v-if="$slots.default">
       <slot />
@@ -18,5 +19,6 @@ import type { PCheckboxProps } from './PCheckboxTypes'
 
 withDefaults(defineProps<PCheckboxProps>(), {
   pRounded: false,
+  pChecked: false,
 })
 </script>

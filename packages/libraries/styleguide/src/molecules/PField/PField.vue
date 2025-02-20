@@ -18,6 +18,9 @@
     />
     <PCheckbox
       v-if="pFieldType === 'checkbox'"
+      :pChecked="pChecked"
+      :pRounded="pRounded"
+      :data-testid="pTestId"
       @change="onCheckboxToggle"
     >
       {{ pLabel }}

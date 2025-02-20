@@ -34,6 +34,7 @@ describe('documentsCheckAll', () => {
       const expectedProps = {
         pLabel: false,
         pRounded: false,
+        pChecked: false,
       }
 
       const check = wrapper.findComponent(PCheckbox)

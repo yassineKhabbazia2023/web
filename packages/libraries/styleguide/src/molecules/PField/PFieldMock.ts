@@ -6,6 +6,7 @@ import type {
   PFieldPropsDate,
   PFieldPropsRadio,
   PFieldPropsEmailInput,
+  PFieldPropsCheckbox,
 } from './PFieldTypes'
 import type { PDatePickerProps } from '../../atoms/PDatePicker/PDatePickerTypes'
 
@@ -59,10 +60,12 @@ export function getMockedInputField(
 export function getMockedCheckbox(
   pFieldKey: string,
   pLabel: string,
+  pChecked: boolean,
+  pRounded: boolean,
   flexBasis: number,
   ruleTypes?: string[],
   pTestId?: string,
-): PFieldPropsInput<boolean> {
+): PFieldPropsCheckbox<boolean> {
   const pRules = (ruleTypes ?? []).map((ruleType) => getMockedRule(ruleType)).filter(Boolean) as FormItemRule[]
 
   const pCssClass = `flex--grow-1 min-width--4 flex--basis-${flexBasis}`
@@ -71,6 +74,8 @@ export function getMockedCheckbox(
     modelValue: false,
     pFieldKey,
     pLabel,
+    pChecked,
+    pRounded,
     pFieldType: 'checkbox',
     pCssClass,
     pRules,

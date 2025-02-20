@@ -1,4 +1,5 @@
 export interface PCheckboxProps {
-  pRounded?: boolean
   pLabel?: string | number | boolean | object
+  pRounded?: boolean
+  pChecked?: boolean
 }
