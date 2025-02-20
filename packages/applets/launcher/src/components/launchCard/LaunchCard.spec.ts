@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
-import LaunchCard from '.'
+import { LauncherFeature, LauncherTitle } from './LaunchCardTypes'
 import type { LaunchCardProps } from './LaunchCardTypes'
+import LaunchCard from '.'
 
 const defaultProps: LaunchCardProps = {
   title: 'Title',
@@ -12,6 +13,13 @@ const defaultProps: LaunchCardProps = {
   actionUrl: 'action-url',
   downloadLabel: 'Download',
 }
+
+const mockTrackAmplitude = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/common', () => ({
+  amplitudeService: {
+    track: mockTrackAmplitude,
+  },
+}))
 
 function getWrapper(override: Partial<LaunchCardProps> = {}) {
   const props = {
@@ -100,7 +108,7 @@ describe('test LaunchCard', () => {
   })
 
   describe('when click on download button', () => {
-    const wrapper = getWrapper()
+    const wrapper = getWrapper({ ...defaultProps, title: LauncherTitle.SILAE })
 
     it('emits click-download', async () => {
       const action = wrapper.findComponent('[data-testid="launch-card-download"]')
@@ -108,16 +116,37 @@ describe('test LaunchCard', () => {
       await action.trigger('click')
       expect(wrapper.emitted('click-download')).toStrictEqual([[]])
     })
+
+    it('should track Amplitude event when an action is triggered on the launcher card', async () => {
+      const action = wrapper.findComponent('[data-testid="launch-card-download"]')
+
+      await action.trigger('click')
+
+      expect(mockTrackAmplitude).toHaveBeenCalledOnce()
+      expect(mockTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
+        feature_name: LauncherFeature.SILAE_DOWNLOAD,
+      })
+    })
   })
 
   describe('when click on action button', () => {
-    const wrapper = getWrapper()
+    const wrapper = getWrapper({ ...defaultProps, title: LauncherTitle.PENNYLANE })
 
     it('emits click-action', async () => {
       const action = wrapper.findComponent('[data-testid="launch-card-action"]')
 
       await action.trigger('click')
       expect(wrapper.emitted('click-action')).toStrictEqual([[]])
+    })
+    it('should track Amplitude event when an action is triggered on the launcher card', async () => {
+      const action = wrapper.findComponent('[data-testid="launch-card-action"]')
+
+      await action.trigger('click')
+
+      expect(mockTrackAmplitude).toHaveBeenCalledOnce()
+      expect(mockTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
+        feature_name: LauncherFeature.SSO_PENNYLANE,
+      })
     })
   })
 })

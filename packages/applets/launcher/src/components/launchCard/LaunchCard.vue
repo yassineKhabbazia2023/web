@@ -41,7 +41,7 @@
         pType="default"
         pSize="small"
         data-testid="launch-card-download"
-        @click="emit('click-download')"
+        @click="onDownloadAction"
       >
         {{ downloadLabel }}
       </PButton>
@@ -54,7 +54,7 @@
         data-testid="launch-card-action"
         tag="a"
         target="_blank"
-        @click="emit('click-action')"
+        @click="onSSOConnection"
       >
         {{ actionLabel }}
         <PIcon
@@ -70,6 +70,8 @@
 import { computed } from 'vue'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { PImage, PIcon, PButton } from '@pulse/styleguide/components'
+import { amplitudeService } from '@pulse/common'
+import { LauncherFeature, LauncherTitle } from './LaunchCardTypes'
 import type { LaunchCardProps } from './LaunchCardTypes'
 
 const emit = defineEmits<{
@@ -80,10 +82,30 @@ const emit = defineEmits<{
 const props = defineProps<LaunchCardProps>()
 
 const sanitizedActionUrl = computed(() => {
-  return props.actionUrl
-    ? sanitizeUrl(props.actionUrl)
-    : undefined
+  return props.actionUrl ? sanitizeUrl(props.actionUrl) : undefined
 })
+
+const logAmplitudeEvent = (featureName: string) => {
+  amplitudeService.track('Feature Consulted', {
+    feature_name: featureName,
+  })
+}
+
+const onDownloadAction = () => {
+  logAmplitudeEvent(LauncherFeature.SILAE_DOWNLOAD)
+  emit('click-download')
+}
+
+const onSSOConnection = () => {
+  if (props.title === LauncherTitle.SILAE) {
+    logAmplitudeEvent(LauncherFeature.SSO_SILAE)
+  } else if (props.title === LauncherTitle.PENNYLANE) {
+    logAmplitudeEvent(LauncherFeature.SSO_PENNYLANE)
+  } else {
+    logAmplitudeEvent(LauncherFeature.SSO_MEG)
+  }
+  emit('click-action')
+}
 </script>
 
 <style lang="scss" scoped>
