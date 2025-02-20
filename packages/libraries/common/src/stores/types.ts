@@ -33,4 +33,6 @@ export interface UserInfo {
   entities: Entities
   isCollab: boolean
   gigyaUserId: string
+  officeMobile?: string
+  oldId?: string
 }

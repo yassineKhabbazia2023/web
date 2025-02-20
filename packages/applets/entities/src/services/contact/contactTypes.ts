@@ -22,6 +22,7 @@ export interface Contact {
   office?: string
   persona?: Persona
   createdAt?: string
+  oldId?: string
 }
 
 export interface PatchContactPayload {

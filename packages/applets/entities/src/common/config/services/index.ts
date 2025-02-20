@@ -7,4 +7,5 @@ export const API_PREFIXES = {
   WALLET: 'wallet/api',
   REGISTRY: 'registry/api',
   REPORTING: 'reporting/api',
+  ENTITY_CREATOR: 'entitycreator/api',
 }

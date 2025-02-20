@@ -30,6 +30,7 @@ import PInput from '../../atoms/PInput'
 import type { PEmailInputFieldProps, EmailPartsType } from './p-email-input-field.types'
 
 const props = withDefaults(defineProps<PEmailInputFieldProps>(), {
+  modelValue: '',
   pDefaultDomainPart: '',
   pLocalPartDisabled: false,
   pDomainPartDisabled: false,

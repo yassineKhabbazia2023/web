@@ -9,6 +9,8 @@ export const getMockedUser = (): UserInfo => {
     occupation: 'Consultant Advisory',
     isCollab: true,
     gigyaUserId: 'test',
+    officeMobile: 'johnd-mobile-phone',
+    oldId: 'johnd-guid',
     entities: {
       favorites: [],
       default: undefined,

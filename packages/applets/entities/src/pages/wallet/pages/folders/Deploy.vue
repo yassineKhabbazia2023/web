@@ -17,13 +17,30 @@
         @filter-by-status="handleFilterByDeploymentStatus"
         @remove-filter="handleRemoveFilter"
       />
-      <PButton
-        pType="primary"
-        pSize="small"
-        @click="isDelegationDrawerOpened = true"
-      >
-        {{ t('delegation', selectedFolders.length) }}
-      </PButton>
+      <div>
+        <PButton
+          v-if="hasEntityCreatorPermission"
+          pType="secondary"
+          pSize="small"
+          @click="onEntityCreatorDrawerOpen"
+        >
+          <PIcon class="el-button__icon--left" pName="plusLg" />
+          {{ t('createTestAccount') }}
+        </PButton>
+        <PButton
+          class="margin-left--2"
+          pType="primary"
+          pSize="small"
+          @click="isDelegationDrawerOpened = true"
+        >
+          {{ t('delegation', selectedFolders.length) }}
+        </PButton>
+      </div>
+      <EntityCreatorDrawer
+        v-if="isEntityCreatorDrawerOpen && user"
+        v-model="isEntityCreatorDrawerOpen"
+        :currentUser="user"
+      />
       <DelegationDrawer
         v-if="isDelegationDrawerOpened"
         v-model="isDelegationDrawerOpened"
@@ -97,9 +114,10 @@ import {
   PLoader,
   PButton,
   PPagination,
+  PIcon,
 } from '@pulse/styleguide/components'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
-import { commonStore } from '@pulse/common'
+import { commonStore, userPermissions } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -107,7 +125,7 @@ import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
 import { getPaginationLabel } from '@entities/helper'
-import { ENTITY_STATUS_COLOR, PAGE_SIZES } from '@entities/constants'
+import { ENTITY_STATUS_COLOR, PAGE_SIZES, PERMISSION_CODES } from '@entities/constants'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import { fetchWalletData } from './DeployUtils'
 import type {
@@ -118,6 +136,7 @@ import type {
 import Filters from '../../components/Filters'
 import TableData from '../../components/TableData'
 import DelegationDrawer from './components/DelegationDrawer'
+import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import ResendActivationEmailDrawer from '@entities/common/components/ResendActivationEmailDrawer'
 import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 import type { AccountRow } from '@entities/common/types'
@@ -168,6 +187,15 @@ const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
     iconName: 'checkCircle',
   },
 ] as const
+
+// #region entity creator drawer
+const { hasPermission } = userPermissions()
+
+const isEntityCreatorDrawerOpen = ref(false)
+const hasEntityCreatorPermission = hasPermission(PERMISSION_CODES.ENTITY_CREATOR)
+
+const onEntityCreatorDrawerOpen = () => isEntityCreatorDrawerOpen.value = true
+// #endregion
 
 const searchCriteria = ref<SearchCriteria>({
   currentPage: 0,
@@ -324,6 +352,7 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
     connected: 'Connected'
     on: 'on'
     delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
+    createTestAccount: 'Create a test account'
   fr-FR:
     search: 'Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant'
     toDeploy: 'A déployer'
@@ -331,4 +360,5 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
     connected: 'Connecté'
     on: 'sur'
     delegation: 'Déléguer mon portefeuille | Déléguer le dossier | Déléguer les dossiers'
+    createTestAccount: 'Créer un compte de test'
 </i18n>

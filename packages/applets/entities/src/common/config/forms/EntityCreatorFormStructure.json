@@ -1,0 +1,90 @@
+[
+  {
+    "title": "Entité",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-100",
+        "pDisabled": false,
+        "pFieldKey": "accountLegalName",
+        "pFieldType": "input",
+        "pPlaceholder": "Saisissez une raison sociale",
+        "pLabel": "Raison sociale",
+        "pTestId": "entity-creator-legal-name-input",
+        "pRules": [{ "required": true, "message": "Veuillez saisir une raison sociale", "trigger": "blur" }]
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-100",
+        "pDisabled": false,
+        "pFieldKey": "accountNumber",
+        "pFieldType": "input",
+        "pPlaceholder": "Saisissez un ID Dossier",
+        "pLabel": "ID Dossier",
+        "pTestId": "entity-creator-account-number-input",
+        "pRules": [{ "required": true, "message": "Veuillez saisir un ID Dossier", "trigger": "blur" }]
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-100",
+        "pDisabled": true,
+        "pFieldKey": "siret",
+        "pFieldType": "input",
+        "pPlaceholder": "Saisissez un numéro SIRET",
+        "pTestId": "entity-creator-siret-input",
+        "pLabel": "Numéro SIRET"
+      }
+    ]
+  },
+  {
+    "title": "Utilisateur client",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-100",
+        "pFieldKey": "email",
+        "pFieldType": "email-input",
+        "pDefaultDomainPart": "conseilescgs.onmicrosoft.com",
+        "pLocalPartPlaceholder": "Saisissez une adresse e-mail",
+        "pLabel": "Adresse e-mail",
+        "pTestId": "entity-creator-email-input",
+        "pRules": [
+          { "required": true, "message": "Veuillez saisir une adresse e-mail", "trigger": "blur" },
+          { "type": "email", "message": "Veuillez saisir une adresse e-mail valide", "trigger": "blur" }
+        ]
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": false,
+        "pFieldKey": "contactFirstName",
+        "pFieldType": "input",
+        "pPlaceholder": "Saisissez un nom",
+        "pLabel": "Nom",
+        "pTestId": "entity-creator-firstname-input",
+        "pRules": [{ "required": true, "message": "Veuillez choisir le nom du client", "trigger": "blur" }]
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": false,
+        "pFieldKey": "contactLastMame",
+        "pFieldType": "input",
+        "pPlaceholder": "Saisissez un prénom",
+        "pLabel": "Prénom",
+        "pTestId": "entity-creator-lastname-input",
+        "pRules": [{ "required": true, "message": "Veuillez choisir le prenom du client", "trigger": "blur" }]
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-100 margin-bottom--0",
+        "pDisabled": false,
+        "pFieldKey": "signatory",
+        "pFieldType": "checkbox",
+        "pLabel": "Définir comme signataire",
+        "pChecked": true,
+        "pTestId": "entity-creator-signatory-input"
+      }
+    ]
+  }
+]

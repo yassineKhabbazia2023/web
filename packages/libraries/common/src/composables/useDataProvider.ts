@@ -10,14 +10,16 @@ export const useDataProvider = () => {
     if (isAuthenticated.value) {
       await commonStore.fetchUserPermissions()
       const {
-        data: { firstName, lastName, id, email, isCustomer },
+        data: { firstName, lastName, id, email, officeMobile, isCustomer, oldId },
       } = await api().gateway.get('contact/me')
       const user = {
         id,
         firstName,
         lastName,
         email,
+        officeMobile,
         isCollab: !isCustomer,
+        oldId,
       }
       return user
     }

@@ -16,6 +16,7 @@ import type {
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
+import EntityCreatorFormStructure from '@entities/common/config/forms/EntityCreatorFormStructure.json'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import type { FormStructureName } from './referentialUtilsTypes'
 
@@ -115,6 +116,8 @@ export const getFormSections = (formStructureName: FormStructureName) => {
     return LOOPOfferFormStructure as FormSection[]
   case 'CompanyProfile':
     return InformationFormStructure as FormSection[]
+  case 'EntityCreator':
+    return EntityCreatorFormStructure as FormSection[]
   default:
     return []
   }
