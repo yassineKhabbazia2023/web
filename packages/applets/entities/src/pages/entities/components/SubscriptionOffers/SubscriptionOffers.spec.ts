@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import Subscription from '.'
 import { getMockedSubscriptionOffers } from './SubscriptionOffersMocks'
 import { mount } from '@vue/test-utils'

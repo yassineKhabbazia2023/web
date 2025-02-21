@@ -43,7 +43,7 @@
 import { computed, watch, ref } from 'vue'
 import { ElDatePicker } from 'element-plus'
 import { getIconComponent } from '../../utils/iconHelper'
-import type { PDatePickerProps, PDatePickerModelValue, calendarEvent } from './PDatePickerTypes'
+import type { PDatePickerProps, PDatePickerModelValue } from './PDatePickerTypes'
 import { getCurrentDate, getWeekCount } from './PDatePickerUtils'
 
 const props = withDefaults(defineProps<PDatePickerProps<T>>(), {

@@ -119,4 +119,43 @@ export default [
       'max-len': 'off', // we don't enforce line length in stories files
     },
   },
+  {
+    // specific rulesets for App & Applets (above rules apply as well)
+    files: ['packages/app/**/*', 'packages/applets/**/*'],
+    rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          'paths': [
+            {
+              name: '@common',
+              message: 'Please use @pulse/common instead',
+            },
+            {
+              name: '@core',
+              message: 'Please use @pulse/core instead',
+            },
+            {
+              name: '@styleguide',
+              message: 'Please use @pulse/styleguide instead',
+            },
+          ],
+          'patterns': [
+            {
+              group: ['@common'],
+              message: 'Please use @pulse/common instead',
+            },
+            {
+              group: ['@core'],
+              message: 'Please use @pulse/core instead',
+            },
+            {
+              group: ['@styleguide'],
+              message: 'Please use @pulse/styleguide instead',
+            },
+          ],
+        },
+      ],
+    },
+  },
 ]
