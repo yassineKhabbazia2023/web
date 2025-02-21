@@ -128,7 +128,6 @@ const clearModalInputValue = () => {
       color: var(--el-color-neutral-gray-900);
       font-size: 24px;
       font-weight: 400;
-      line-height: 120%;
     }
 
     &__body {

@@ -36,6 +36,7 @@ const props = withDefaults(defineProps<PDialogProps>(), {
   pShowClose: true,
   pAlignCenter: false,
   pDestroyOnClose: false,
+  pCloseIconName: 'x',
 })
 
 const dialogModel = computed({
@@ -47,7 +48,7 @@ const dialogModel = computed({
   },
 })
 
-const closeIcon = computed(() => props.pCloseIconName ? getIconComponent(props.pCloseIconName) : undefined)
+const closeIcon = computed(() => getIconComponent(props.pCloseIconName))
 
 const emit = defineEmits([
   'update:modelValue',
