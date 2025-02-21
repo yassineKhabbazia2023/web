@@ -6,6 +6,7 @@ import {
   readNotificationsMock,
   unreadNotificationsMock,
   gedNotificationMock,
+  mandateNotificationMock,
 } from '@app/mocks/FeedCenter/notifications.mock'
 import { accountsMock } from '@app/mocks/Account/accounts.mock'
 import {
@@ -108,7 +109,7 @@ describe('getIsNotificationRead', () => {
 })
 
 describe('handleNotificationAction', () => {
-  const mockRouter = {
+  const routerMock = {
     push: vi.fn(),
   } as unknown as Router
 
@@ -116,7 +117,7 @@ describe('handleNotificationAction', () => {
     const notification = unreadNotificationsMock[0]
     handleNotificationAction({
       notification,
-      router: mockRouter,
+      router: routerMock,
     })
 
     expect(patchNotificationReadStatusMock).toHaveBeenCalledWith(notification.id)
@@ -125,7 +126,7 @@ describe('handleNotificationAction', () => {
   it('should NOT call patchUnreadNotification with unread notifiation', () => {
     handleNotificationAction({
       notification: readNotificationsMock[0],
-      router: mockRouter,
+      router: routerMock,
     })
 
     expect(patchNotificationReadStatusMock).not.toHaveBeenCalled()
@@ -134,12 +135,24 @@ describe('handleNotificationAction', () => {
   it('should call the corresponding action in notificationActionsMapping', () => {
     handleNotificationAction({
       notification: notificationsMock[0],
-      router: mockRouter,
+      router: routerMock,
     })
 
-    expect(mockRouter.push).toHaveBeenCalledWith({
+    expect(routerMock.push).toHaveBeenCalledWith({
       name: 'wallet',
       query: { accountNumbers: [notificationsMock[0].accounts[0].accountNumber] },
+    })
+  })
+
+  it('should call the router with the appropriate query on mandate notification type', () => {
+    handleNotificationAction({
+      notification: mandateNotificationMock,
+      router: routerMock,
+    })
+
+    expect(routerMock.push).toHaveBeenCalledWith({
+      name: 'mandate',
+      query: { bankAccountNumbers: mandateNotificationMock.redirectLink },
     })
   })
 
@@ -147,10 +160,10 @@ describe('handleNotificationAction', () => {
   it('should do nothing on ged notification click', () => {
     handleNotificationAction({
       notification: gedNotificationMock,
-      router: mockRouter,
+      router: routerMock,
     })
 
-    expect(mockRouter.push).not.toHaveBeenCalled()
+    expect(routerMock.push).not.toHaveBeenCalled()
   })
 })
 

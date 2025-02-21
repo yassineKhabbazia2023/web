@@ -3,7 +3,8 @@ import type { NotificationAccount } from '@app/modules/FeedCenter/types/notifica
 
 export enum NotificationKindEnum {
   Delegation = 'Delegation-AddDelegation',
-  GED = 'Ged-DocumentUploaded'
+  GED = 'Ged-DocumentUploaded',
+  Mandate = 'Mandate-MandateStatusChanged'
   // More notificationKind to come in the future #StayTuned
 }
 
@@ -13,7 +14,8 @@ export interface FeedCenterNotification {
   createdAt: string
   notificationType: NotificationKindEnum
   accounts: NotificationAccount[]
-  isRead: boolean
+  isRead: boolean,
+  redirectLink?: string
 }
 
 export interface UnreadNotificationCountResponse {

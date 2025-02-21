@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { logger } from '@pulse/core'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { getMandatesCollection } from '@mandate/services/mandate'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 import Header from '@mandate/components/Common/Header'
@@ -47,6 +47,7 @@ import type { MandateCollection } from './Models'
 import { PAGE_SIZES } from '@mandate/constants'
 import { amplitudeService } from '@pulse/common'
 import { PLoader } from '@pulse/styleguide/components'
+import { useRoute } from 'vue-router'
 
 const mandatesCollection = ref<MandateCollection>({
   counters: {
@@ -71,6 +72,15 @@ const searchParams = ref<SearchMandateParams>({
   creationDateEnd: '',
   modificationDateStart: '',
   modificationDateEnd: '',
+})
+const route = useRoute()
+watch(route, (value) => {
+  if (value.name === 'mandate') {
+    // Backend will always return a simple string in this case
+    searchParams.value.searchTerm = value.query.bankAccountNumber as string
+  }
+}, {
+  immediate: true,
 })
 
 const isLoading = ref(false)

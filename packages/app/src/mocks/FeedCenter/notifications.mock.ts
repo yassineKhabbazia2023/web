@@ -59,7 +59,18 @@ export const gedNotificationMock: FeedCenterNotification = {
     accountsMock[5],
   ],
   isRead: false,
+}
 
+export const mandateNotificationMock: FeedCenterNotification = {
+  id: 5,
+  message: 'A new mandate has been created',
+  createdAt: '2024-10-05T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.Mandate,
+  accounts: [
+    accountsMock[5],
+  ],
+  isRead: false,
+  redirectLink: '0123456',
 }
 
 export const notificationsMock: FeedCenterNotification[] = [

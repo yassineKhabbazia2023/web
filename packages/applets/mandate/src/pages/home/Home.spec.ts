@@ -6,14 +6,24 @@ import Home from '@mandate/pages/home'
 import * as mandateService from '@mandate/services/mandate'
 import { getMockedMandatesList } from '@mandate/../tests/mocks/mandateMock'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
-import { nextTick } from 'vue'
+import { nextTick, reactive } from 'vue'
 import type { AxiosResponse } from 'axios'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
-
 const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 const loggerDebugSpy = vi.hoisted(() => vi.fn())
 const loggerWarnSpy = vi.hoisted(() => vi.fn())
 const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+const routerQuery = vi.hoisted(() => vi.fn(() => ''))
+vi.mock('vue-router', () => ({
+  useRoute: () =>
+    reactive({
+      name: 'mandate',
+      query: {
+        bankAccountNumber: routerQuery(),
+      },
+    }),
+}))
 
 vi.mock('@pulse/core', () => ({
   logger: {
@@ -147,5 +157,16 @@ describe('test Home.vue', () => {
     expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, `Error while refresh data ${error}`)
   })
 
-  it.todo('should the handle the filters')
+  it('should apply the bank account number from query if available', async () => {
+    const mockQueryValue = '12345'
+    routerQuery.mockReturnValueOnce(mockQueryValue)
+    const baseParamsWithQuery: SearchMandateParams = {
+      ...baseParams,
+      currentPage: 1,
+      searchTerm: mockQueryValue,
+    }
+    createWrapper({})
+    await flushPromises()
+    expect(mockedGetMandatesCollection).toHaveBeenCalledWith(baseParamsWithQuery)
+  })
 })

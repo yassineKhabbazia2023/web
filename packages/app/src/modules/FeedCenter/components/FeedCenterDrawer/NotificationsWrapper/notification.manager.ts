@@ -61,12 +61,17 @@ export function handleNotificationAction({
 }: HandleNotificationActionParams) {
   patchUnreadNotification(notification)
   const accountNumbers = getNotificationAccountNumbers(notification)
-  notificationActionsMapping[notification.notificationType](accountNumbers, router)
+  notificationActionsMapping[notification.notificationType](
+    accountNumbers,
+    notification,
+    router,
+  )
 }
 
 const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
   [NotificationKindEnum.Delegation]: (
     accountNumbers: NotificationAccount['accountNumber'],
+    _notification: FeedCenterNotification,
     router: Router,
   ) => {
     router.push({
@@ -79,6 +84,16 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
     _router: Router,
   ) => {
     // Coming in next PR
+  },
+  [NotificationKindEnum.Mandate]: (
+    _accountNumbers: NotificationAccount['accountNumber'],
+    notification: FeedCenterNotification,
+    router: Router,
+  ) => {
+    router.push({
+      name: 'mandate',
+      query: { bankAccountNumbers: notification.redirectLink },
+    })
   },
 }
 
