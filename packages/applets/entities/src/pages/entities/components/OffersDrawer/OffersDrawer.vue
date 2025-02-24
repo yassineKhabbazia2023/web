@@ -87,7 +87,7 @@
             data-testid="customers-step"
           />
           <ManageCollaborators
-            v-if="activeStep === offerStepperStep.COLLABORATORS"
+            v-if="activeStep === offerStepperStep.COLLABORATORS && currentUser"
             v-model:collaborators="collaborators"
             :defaultCollaborator="currentUser"
             data-testid="collaborators-step"
@@ -246,7 +246,16 @@ const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
     currentSubscriptionOffer.value = undefined
   } else {
     currentSubscriptionOffer.value = await getOffer(selectedOfferId)
-    collaborators.value = []
+    const { id, firstName, lastName, email, oldId, persona, officeMobile } = props.currentUser
+    collaborators.value = [{
+      id,
+      firstName,
+      lastName,
+      email,
+      mobilePhone: officeMobile || '',
+      persona,
+      oldId,
+    }]
     amplitudeService.track('Subscription Initiated', {
       subscription_initiate_offer_name: currentSubscriptionOffer.value?.offerCode,
     })

@@ -28,6 +28,7 @@ const expectedDefaultAuthenticatedUser = {
   email: mockUser.email,
   mobilePhone: mockUser.officeMobile,
   oldId: mockUser.oldId,
+  persona: mockUser.persona,
 }
 
 const loggerErrorSpy = vi.hoisted(() => vi.fn())

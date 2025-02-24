@@ -13,5 +13,5 @@ export interface OffersDrawerProps {
   selectedCompanyName: string
   accountNumber: string
   accountId: number
-  currentUser: UserInfo | null
+  currentUser: UserInfo
 }

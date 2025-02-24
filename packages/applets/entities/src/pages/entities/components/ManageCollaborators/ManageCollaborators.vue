@@ -8,7 +8,7 @@
       pSize="big"
       :pImage="{
         pFit: 'fill',
-        pName: 'user-add-duotone'
+        pName: 'user-add-duotone',
       }"
     >
       <template #suffix>
@@ -41,7 +41,7 @@
         "
         :pTitle="getContactFullName(selectedCollaborator)"
         :pDescription="selectedCollaborator.email"
-        :pRole="selectedCollaborator.office"
+        :pRole="selectedCollaborator?.persona?.name"
         :pShowDelete="canDelete"
         :data-testid="`offer-selected-collaborator-${selectedCollaborator.email}`"
         @click-delete="onClickDelete(index)"

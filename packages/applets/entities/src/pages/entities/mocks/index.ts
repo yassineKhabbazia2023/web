@@ -15,6 +15,10 @@ export const getMockedUser = (): UserInfo => {
       favorites: [],
       default: undefined,
     },
+    persona: {
+      id: 1,
+      name: 'Director',
+    },
   }
 
   return user

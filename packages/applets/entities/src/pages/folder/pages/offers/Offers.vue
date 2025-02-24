@@ -60,7 +60,7 @@
     </PTable>
   </div>
   <OffersDrawer
-    v-if="isOffersDrawerOpened && defaultEntity"
+    v-if="isOffersDrawerOpened && defaultEntity && user"
     v-model="isOffersDrawerOpened"
     :selectedCompanyName="defaultEntity.legalName"
     :accountNumber="defaultEntity.accountNumber"

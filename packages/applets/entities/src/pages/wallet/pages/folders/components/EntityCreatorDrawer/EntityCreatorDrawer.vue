@@ -201,7 +201,7 @@ onMounted(async () => {
   isLoading.value = true
   try {
     // Set the current user as the default collaborator
-    const { id, firstName, lastName, email, oldId, officeMobile } = props.currentUser
+    const { id, firstName, lastName, email, oldId, persona, officeMobile } = props.currentUser
     selectedCollaborators.value.push({
       id,
       firstName,
@@ -209,6 +209,7 @@ onMounted(async () => {
       email,
       mobilePhone: officeMobile ?? '',
       oldId,
+      persona,
     })
     entityCreatorFormStructure.value = await getFormStructure('EntityCreator')
   } catch (error) {

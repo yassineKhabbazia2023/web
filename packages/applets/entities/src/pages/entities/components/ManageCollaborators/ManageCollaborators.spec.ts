@@ -3,7 +3,12 @@ import { nextTick } from 'vue'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
 import { getInitials } from '@entities/helper'
+import type { ComponentWrapper } from '@entities/common/types'
+import { getMockedUser } from '@entities/pages/entities/mocks'
+import type { UserInfo } from '@pulse/common/types'
 import ManageCollaborators from '.'
+
+const mockCurrentUser: UserInfo = getMockedUser()
 
 const loggerDebugSpy = vi.hoisted(() => vi.fn())
 const loggerWarnSpy = vi.hoisted(() => vi.fn())
@@ -37,7 +42,7 @@ function getExpectedUserActionProps(pShowDelete: boolean) {
     ),
     pTitle: `${defaultCollaborator.firstName} ${defaultCollaborator.lastName}`,
     pDescription: defaultCollaborator.email,
-    pRole: defaultCollaborator.office,
+    pRole: defaultCollaborator.persona?.name,
     pShowDelete,
   }
 }
@@ -49,6 +54,7 @@ async function createWrapper(allCollaborators = false) {
   const wrapper = mount(ManageCollaborators, {
     props: {
       collaborators,
+      defaultCollaborator: mockCurrentUser,
     },
     global: {
       stubs: {
@@ -78,7 +84,7 @@ function getComponentsInWrapper(wrapper: VueWrapper) {
 }
 
 describe('manageCollaborators', () => {
-  let wrapper: VueWrapper
+  let wrapper: ComponentWrapper<InstanceType<typeof ManageCollaborators>>
   beforeEach(async () => {
     wrapper = await createWrapper()
   })

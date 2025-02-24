@@ -24,6 +24,12 @@ type Entities = {
   default: SelectedEntity | undefined
 }
 
+export interface Persona {
+  id: number
+  name: string
+  description?: string
+}
+
 export interface UserInfo {
   id: number
   firstName: string
@@ -35,6 +41,7 @@ export interface UserInfo {
   gigyaUserId: string
   officeMobile?: string
   oldId?: string
+  persona?: Persona
 }
 
 export interface AccountRow {

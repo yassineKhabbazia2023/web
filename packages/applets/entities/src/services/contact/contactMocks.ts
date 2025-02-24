@@ -1,4 +1,5 @@
-import type { Contact, Persona } from './contactTypes'
+import type { Contact } from './contactTypes'
+import type { Persona } from '@pulse/common/types'
 
 export function getMockedCollaborators(): Contact[] {
   return [

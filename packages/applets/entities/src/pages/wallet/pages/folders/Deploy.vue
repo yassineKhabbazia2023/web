@@ -94,7 +94,7 @@
         :selectedAccount="selectedAccount"
       />
       <OffersDrawer
-        v-if="openOffersDrawer && selectedAccountId"
+        v-if="openOffersDrawer && selectedAccountId && user"
         v-model="openOffersDrawer"
         :selectedCompanyName="selectedCompanyName"
         :accountNumber="selectedAccountNumber"

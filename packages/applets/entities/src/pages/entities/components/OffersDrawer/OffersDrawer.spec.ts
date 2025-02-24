@@ -28,6 +28,7 @@ import type { UserInfo } from '@pulse/common/types'
 import type { Note, PostSubscriptionRequest } from '@entities/services/subscription'
 import type { PatchValue } from '@entities/services/PatchRecordService'
 import type { Contact } from '@entities/services/contact/contactTypes'
+import type { ComponentWrapper } from '@entities/common/types'
 import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
 
 const principalContacts: ClientContact[] = getMockedPrincipalContacts()
@@ -42,6 +43,16 @@ const offersBookTestLink = 'offers-book-test-link'
 const mockedAccount = getMockedAccount()
 const mockedPatchOperations = getMockedPatchOperations()
 const mockedCollaborators = getMockedCollaborators()
+
+const expectedDefaultAuthenticatedUser = {
+  id: currentUser.id,
+  firstName: currentUser.firstName,
+  lastName: currentUser.lastName,
+  email: currentUser.email,
+  mobilePhone: currentUser.officeMobile,
+  oldId: currentUser.oldId,
+  persona: currentUser.persona,
+}
 
 function getMockedSanitized(url: string) {
   return `sanitized-${url}`
@@ -110,7 +121,7 @@ const accountNumber = 'account-number'
 const accountId = 5
 
 async function getWrapper(isOpened: boolean) {
-  const wrapper = mount(OffersDrawer, {
+  const wrapper: ComponentWrapper<InstanceType<typeof OffersDrawer>> = mount(OffersDrawer, {
     props: {
       modelValue: isOpened,
       selectedCompanyName: companyTestName,
@@ -257,7 +268,7 @@ describe('offersDrawer', () => {
       const expectedArgument: PostSubscriptionRequest = {
         accountId,
         applicant: 'john@example.com',
-        contacts: [1, 2],
+        contacts: [1, 2, currentUser.id],
         offerId: 1,
         notes,
         productConfigurations: [1, 2, 3, 4],
@@ -265,7 +276,7 @@ describe('offersDrawer', () => {
       const expectedArgumentWithoutValidation: PostSubscriptionRequest = {
         accountId,
         applicant: 'john@example.com',
-        contacts: [1, 2],
+        contacts: [1, 2, currentUser.id],
         offerId: 2,
         notes: [],
         productConfigurations: [5],
@@ -582,7 +593,28 @@ describe('offersDrawer', () => {
       await nextTick()
       const secondOffer = findSecondOffer(wrapper)
       await secondOffer.trigger('click')
-      expect((wrapper.vm as any).collaborators).toStrictEqual([])
+
+      expect(manageCollaboratorsComponent.props('collaborators')).toStrictEqual([expectedDefaultAuthenticatedUser])
+    })
+    it('should render the Manage Collaborators form with the default collaborator set to the authenticated user', async () => {
+      const wrapper = await getWrapper(true)
+      const firstOffer = findFirstOffer(wrapper)
+      await firstOffer.trigger('click')
+      await flushPromises()
+
+      const nextPreviousButtons = findNextPreviousButtons(wrapper) as VueWrapper<any>
+
+      await asyncEmit(nextPreviousButtons, 'click-next')
+
+      const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
+      await customersNoteStep.vm.$emit('update:modelValue', notes[1])
+
+      await asyncEmit(nextPreviousButtons, 'click-next')
+
+      const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
+
+      expect(manageCollaboratorsComponent.props('collaborators')).toHaveLength(1)
+      expect(manageCollaboratorsComponent.props('collaborators')).toStrictEqual([expectedDefaultAuthenticatedUser])
     })
     it('should disable the next button when no collaborator is selected', async () => {
       const wrapper = await getWrapper(true)
@@ -598,6 +630,10 @@ describe('offersDrawer', () => {
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
       await asyncEmit(nextPreviousButtons, 'click-next')
+
+      const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
+      manageCollaboratorsComponent.vm.$emit('update:collaborators', [])
+      await nextTick()
 
       expect(nextPreviousButtons.props('isNextButtonDisabled')).toBeTruthy()
     })

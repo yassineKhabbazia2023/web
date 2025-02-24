@@ -18,6 +18,7 @@
       <PMenuItem
         :pIndex="`/dossier/${props.selectedEntityId}`"
         pIconLeftName="house"
+        data-testid="menu-item"
       >
         <template #title>
           {{ t('home') }}
@@ -27,6 +28,7 @@
         v-if="folderOrEntityMenuItem"
         :pIndex="folderOrEntityMenuItem.index"
         :pIconLeftName="folderOrEntityMenuItem.iconLeftName"
+        data-testid="menu-item"
         :class="{ 'sidenav-entity-menu__item-menu': isEntityOrFolderPath }"
       >
         <template #title>

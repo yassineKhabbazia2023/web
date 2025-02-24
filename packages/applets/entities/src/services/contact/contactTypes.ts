@@ -1,14 +1,8 @@
+import type { Persona } from '@pulse/common/types'
 
 export enum ContactType {
   Collaborator = 'Collaborator',
   Customer = 'Customer'
-}
-
-
-export interface Persona {
-  id: number
-  name: string
-  description: string
 }
 
 export interface Contact {

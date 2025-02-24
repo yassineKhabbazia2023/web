@@ -128,7 +128,7 @@ describe('sidebarEntityMenu', () => {
     })
     it('should track amplitude event when a menu item is clicked', async () => {
       wrapper = createWrapper()
-      const sidebarEntityMenuItem = wrapper.find('[data-testid=menu-item]')
+      const sidebarEntityMenuItem = wrapper.findAll('[data-testid=menu-item]')[2]
       await sidebarEntityMenuItem.trigger('click')
 
       expect(spyTrackAmplitude).toHaveBeenCalledOnce()
