@@ -1,6 +1,6 @@
 import { logger } from '@pulse/core'
 import { defineStore } from 'pinia'
-import type { UserInfo } from './types'
+import type { UserInfo, Entity } from './types'
 import api from '../api'
 import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { logoutCollaborator, logoutGigyaSSO, logoutClient, tokenService } from '../main.mts'
@@ -66,6 +66,12 @@ export const store = defineStore('common', {
           'Unable to retrieve permissions for this account: ',
           error,
         )
+      }
+    },
+
+    setDefaultEntity(entity: Entity) {
+      if (this.user?.entities) {
+        this.user.entities.default = entity
       }
     },
   },

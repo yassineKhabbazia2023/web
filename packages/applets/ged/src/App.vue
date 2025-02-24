@@ -26,6 +26,7 @@
     <PCol v-if="currentService && currentServiceName && currentServiceFolder && !currentBinService" :span="18">
       <Documents
         ref="documentsRef"
+        :key="$router.currentRoute.value.fullPath"
         :currentService="currentService"
         :currentServiceName="currentServiceName"
         :selectedEntity="selectedEntity"
@@ -51,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Treeview from '@ged/modules/Treeview'
 import Documents from '@ged/modules/Documents'
@@ -81,6 +82,8 @@ const isLoadingServicesOrFolders = ref(true)
 const currentFolder = ref<null | Folder>(null)
 const servicesFolders = ref<Folder[][]>([])
 
+const userStore = commonStore()
+
 const fetchGedFoldersAndServices = async () => {
   try {
     entityServices.value = await fetchUserEntityServices(
@@ -106,11 +109,17 @@ const fetchGedFoldersAndServices = async () => {
     isLoadingServicesOrFolders.value = false
   }
 }
-
 // Entities and services scope
-const userStore = commonStore()
 
 const selectedEntity = computed(() => userStore?.defaultEntity?.accountNumber.toString() ?? '')
+watch(selectedEntity, async (selectedEntityValue) => {
+  if (selectedEntityValue) {
+    isLoadingServicesOrFolders.value = true
+    await fetchGedFoldersAndServices()
+    isLoadingServicesOrFolders.value = false
+  }
+})
+
 const selectedAccountId = computed(() => userStore?.defaultEntity?.accountId ?? 0)
 const selectedEntityAvatarColor = computed(() => userStore.defaultEntity?.color)
 const selectedEntityName = computed(() => userStore.defaultEntity?.legalName ?? '')
@@ -253,6 +262,7 @@ const documentsRef = ref()
 function refreshDocumentsList() {
   documentsRef.value.refreshDocumentsList()
 }
+
 // Main component actions
 onMounted(async () => {
   if (selectedEntity.value) {

@@ -9,6 +9,7 @@
   "exports": {
     "./constants": "./src/constants.mts",
     "./types": "./src/types.mts",
+    "./mocks": "./src/mocks.mts",
     ".": "./src/main.mts"
   },
   "scripts": {

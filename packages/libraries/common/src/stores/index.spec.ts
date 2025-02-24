@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { setActivePinia, storeToRefs } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import { getMockedEntities, getMockedUserPermissions } from '../mocks'
+import { getMockedEntities, getMockedUserPermissions } from '../__mocks__'
 import * as utils from '../utils'
 import commonStore from '.'
 import { tokenService } from '../main.mts'
@@ -217,5 +217,32 @@ describe('commonStore', () => {
       'Unable to retrieve permissions for this account: ',
       expectedErrorMessage,
     )
+  })
+
+  it('should set the default entity when user exists and entities is defined', () => {
+    const testEntity = mockedEntities[0]
+    const store = commonStore(pinia)
+
+    store.$patch({
+      user: {
+        entities: {},
+      },
+    })
+
+    store.setDefaultEntity(testEntity)
+
+    expect(store.user?.entities?.default).toEqual(testEntity)
+  })
+
+  it('should not change default entity if user or entities is not defined', () => {
+    const testEntity = mockedEntities[0]
+    const store = commonStore(pinia)
+    store.$patch({
+      user: null,
+    })
+
+    store.setDefaultEntity(testEntity)
+
+    expect(store.user).toBeNull()
   })
 })

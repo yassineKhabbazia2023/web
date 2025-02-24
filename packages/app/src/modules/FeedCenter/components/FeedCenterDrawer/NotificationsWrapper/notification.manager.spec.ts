@@ -1,6 +1,9 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { Router } from 'vue-router'
 import { patchNotificationReadStatusMock } from '@app/../vitest.setup'
+import { setActivePinia } from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
+import { commonStore } from '@pulse/common'
 import {
   notificationsMock,
   readNotificationsMock,
@@ -9,6 +12,7 @@ import {
   mandateNotificationMock,
 } from '@app/mocks/FeedCenter/notifications.mock'
 import { accountsMock } from '@app/mocks/Account/accounts.mock'
+import { accountsRowMock, entitiesFromAccountsRow } from '@pulse/common/mocks'
 import {
   patchUnreadNotification,
   getIsNotificationRead,
@@ -18,6 +22,9 @@ import {
   getNotificationAccountNames,
 } from './notification.manager'
 import type { GetTimeSinceCreationParams } from './NotificationsWrapper.types'
+import * as NotificationService from './notifications-wrapper.service'
+import { flushPromises } from '@vue/test-utils'
+
 
 describe('patchUnreadNotification', () => {
   it('should call the patch API when the notification is unread', () => {
@@ -65,6 +72,7 @@ describe('getTimeSinceCreation', () => {
     vi.useRealTimers()
   })
 
+
   it('should return time in minutes if the elapsed time is less than a hour', () => {
     const elapsedTime = getTimeSinceCreation(formatParameters(fiftynineMinutesAgo))
     expect(elapsedTime).toBe('59min')
@@ -109,7 +117,12 @@ describe('getIsNotificationRead', () => {
 })
 
 describe('handleNotificationAction', () => {
-  const routerMock = {
+  beforeEach(() => {
+    setActivePinia(createTestingPinia({ stubActions: false }))
+    vi.clearAllMocks()
+  })
+
+  const mockRouter = {
     push: vi.fn(),
   } as unknown as Router
 
@@ -117,7 +130,7 @@ describe('handleNotificationAction', () => {
     const notification = unreadNotificationsMock[0]
     handleNotificationAction({
       notification,
-      router: routerMock,
+      router: mockRouter,
     })
 
     expect(patchNotificationReadStatusMock).toHaveBeenCalledWith(notification.id)
@@ -126,7 +139,7 @@ describe('handleNotificationAction', () => {
   it('should NOT call patchUnreadNotification with unread notifiation', () => {
     handleNotificationAction({
       notification: readNotificationsMock[0],
-      router: routerMock,
+      router: mockRouter,
     })
 
     expect(patchNotificationReadStatusMock).not.toHaveBeenCalled()
@@ -135,10 +148,10 @@ describe('handleNotificationAction', () => {
   it('should call the corresponding action in notificationActionsMapping', () => {
     handleNotificationAction({
       notification: notificationsMock[0],
-      router: routerMock,
+      router: mockRouter,
     })
 
-    expect(routerMock.push).toHaveBeenCalledWith({
+    expect(mockRouter.push).toHaveBeenCalledWith({
       name: 'wallet',
       query: { accountNumbers: [notificationsMock[0].accounts[0].accountNumber] },
     })
@@ -147,23 +160,61 @@ describe('handleNotificationAction', () => {
   it('should call the router with the appropriate query on mandate notification type', () => {
     handleNotificationAction({
       notification: mandateNotificationMock,
-      router: routerMock,
+      router: mockRouter,
     })
 
-    expect(routerMock.push).toHaveBeenCalledWith({
+    expect(mockRouter.push).toHaveBeenCalledWith({
       name: 'mandate',
       query: { bankAccountNumbers: mandateNotificationMock.redirectLink },
     })
   })
 
-  // This is meant to change in the next PR
-  it('should do nothing on ged notification click', () => {
+  it.each([
+    {
+      currentSelectedEntity: entitiesFromAccountsRow[0],
+      notificationEntity: entitiesFromAccountsRow[1],
+      shouldSetItemInStorage: true,
+    },
+    {
+      currentSelectedEntity: entitiesFromAccountsRow[0],
+      notificationEntity: entitiesFromAccountsRow[0],
+      shouldSetItemInStorage: false,
+    },
+  ])('should redirect to ged route and switch entity if not the current one', async (
+    { currentSelectedEntity,
+      notificationEntity,
+      shouldSetItemInStorage,
+    },
+  ) => {
+    const fetchUserEntities = vi.spyOn(NotificationService, 'fetchUserEntities')
+    fetchUserEntities.mockResolvedValueOnce(accountsRowMock)
+    const localStorageSpy = vi.spyOn(Storage.prototype, 'setItem')
+    const storeInstance = commonStore()
+    storeInstance.fetchUserAccountPermissions = vi.fn().mockResolvedValue({})
+    storeInstance.setDefaultEntity = vi.fn()
+    // Expecting error here as i'm forcing the assignemnt for testing purpose as you can see in Pinia doc
+    // @ts-expect-error
+    storeInstance.defaultEntity = currentSelectedEntity
+    expect(true).toBeTruthy()
     handleNotificationAction({
-      notification: gedNotificationMock,
-      router: routerMock,
+      notification: {
+        ...gedNotificationMock,
+        accounts: [
+          {
+            id: notificationEntity.accountId,
+            name: notificationEntity.legalName,
+            accountNumber: Number(notificationEntity.accountNumber),
+          },
+        ],
+      },
+      router: mockRouter,
     })
-
-    expect(routerMock.push).not.toHaveBeenCalled()
+    await flushPromises()
+    if(shouldSetItemInStorage) {
+      expect(localStorageSpy).toHaveBeenCalled()
+    } else {
+      expect(localStorageSpy).not.toHaveBeenCalled()
+    }
   })
 })
 

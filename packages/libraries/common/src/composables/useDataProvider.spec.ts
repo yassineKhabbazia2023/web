@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
-import { getMockedUser } from '../mocks'
+import { getMockedUser } from '../__mocks__'
 import store from '../stores'
 import { useDataProvider } from './useDataProvider'
 

@@ -14,7 +14,7 @@ export interface FeedCenterNotification {
   createdAt: string
   notificationType: NotificationKindEnum
   accounts: NotificationAccount[]
-  isRead: boolean,
+  isRead: boolean
   redirectLink?: string
 }
 

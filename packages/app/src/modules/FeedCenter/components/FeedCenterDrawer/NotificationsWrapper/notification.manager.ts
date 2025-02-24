@@ -5,7 +5,9 @@ import type { Router } from 'vue-router'
 import { patchNotificationReadStatus } from '@app/modules/FeedCenter/services/notifications.service'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-
+import { commonStore } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
+import { fetchUserEntities } from './notifications-wrapper.service'
 dayjs.extend(relativeTime)
 
 export function patchUnreadNotification(notification: FeedCenterNotification) {
@@ -61,34 +63,54 @@ export function handleNotificationAction({
 }: HandleNotificationActionParams) {
   patchUnreadNotification(notification)
   const accountNumbers = getNotificationAccountNumbers(notification)
-  notificationActionsMapping[notification.notificationType](
-    accountNumbers,
-    notification,
-    router,
-  )
+  notificationActionsMapping[notification.notificationType](accountNumbers, router, notification)
 }
 
 const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
   [NotificationKindEnum.Delegation]: (
     accountNumbers: NotificationAccount['accountNumber'],
-    _notification: FeedCenterNotification,
     router: Router,
+    _notification: FeedCenterNotification,
   ) => {
     router.push({
       name: 'wallet',
       query: { accountNumbers },
     })
   },
-  [NotificationKindEnum.GED]: (
-    _accountNumbers: NotificationAccount['accountNumber'],
-    _router: Router,
+  [NotificationKindEnum.GED]: async (
+    accountNumbers: NotificationAccount['accountNumber'][],
+    router: Router,
+    notification: FeedCenterNotification,
   ) => {
-    // Coming in next PR
+    const store = commonStore()
+    if (store.defaultEntity?.accountId !== notification.accounts[0].id) {
+      const data = await fetchUserEntities()
+      const foundEntity = data.find(entity => entity.accountId === notification.accounts[0].id)
+      if (!foundEntity) {
+        return
+      }
+
+      await store.fetchUserAccountPermissions()
+      const formattedEntityData: Entity = {
+        accountId: foundEntity.accountId,
+        accountNumber: foundEntity.accountNumber,
+        legalName: foundEntity.legalName,
+      }
+      store.setDefaultEntity(formattedEntityData)
+      localStorage.setItem('selected-entity', JSON.stringify(formattedEntityData))
+
+      // only pushing to GED if user has access to the folder
+      router.push({
+        name: 'ged',
+        params: { folderId: accountNumbers[0] },
+        query: { folderId: notification.redirectLink },
+      })
+    }
   },
   [NotificationKindEnum.Mandate]: (
     _accountNumbers: NotificationAccount['accountNumber'],
-    notification: FeedCenterNotification,
     router: Router,
+    notification: FeedCenterNotification,
   ) => {
     router.push({
       name: 'mandate',

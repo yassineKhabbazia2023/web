@@ -24,7 +24,7 @@ import { getIconComponent } from '../../utils/iconHelper'
 
 const treeLineIcon = getIconComponent('caretRightFill')
 
-withDefaults(defineProps<PTreeProps>(), {
+const props = withDefaults(defineProps<PTreeProps>(), {
   pCurrentNodeKey: undefined,
   pHasCustomNodes: false,
   pDefaultExpandedKeys: () => [],
@@ -34,5 +34,9 @@ const emit = defineEmits(['p-tree-node-clicked'])
 const handleNodeClicked = (node: any) => {
   emit('p-tree-node-clicked', node)
 }
+
+defineExpose({
+  props,
+})
 
 </script>

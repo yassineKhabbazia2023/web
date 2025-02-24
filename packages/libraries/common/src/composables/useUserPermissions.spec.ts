@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, setActivePinia } from 'pinia'
-import { getMockedSelectedEntity, getMockedUserPermissions } from '../mocks'
+import { getMockedSelectedEntity, getMockedUserPermissions } from '../__mocks__'
 import { useUserPermissions } from './useUserPermissions'
 
 const mockedUserPermissions = getMockedUserPermissions()

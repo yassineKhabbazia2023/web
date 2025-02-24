@@ -24,6 +24,8 @@ type TreeviewWrapper = ComponentWrapper<InstanceType<typeof Treeview>>
 const pinia = createPinia()
 
 const folderWithRenameRight = foldersData[0][0].children[0].children[0]
+const nestedFolder = foldersData[0][0].children[0].children[0].children[0]
+
 const defaultProps: TreeviewProps = {
   entityServices: [
     { ServiceId: 'service-id-compta', ServiceName: 'Comptabilité' } as Service,
@@ -46,6 +48,16 @@ vi.mock('@ged/services/Folder', () => ({
 vi.mock('@ged/services/tracking/tracking.service')
 
 vi.mock('@pulse/styleguide')
+
+const routerQuery = vi.hoisted(() => vi.fn(() => ''))
+vi.mock('vue-router', () => ({
+  useRoute: () => ({
+    query: {
+      folderId: routerQuery(),
+    },
+  }),
+}))
+
 
 const createWrapper = (props: TreeviewProps = defaultProps) : TreeviewWrapper => {
   return mount(Treeview, {
@@ -426,6 +438,18 @@ describe('treeview', () => {
 
         expect(trackDocumentMove).toHaveBeenCalled()
       })
+    })
+  })
+  describe('routing', () => {
+    it('should target the appropriate folder ID if an ID is specified in the route query', async () => {
+      routerQuery.mockReturnValueOnce(`service-id-compta/${nestedFolder.id}`)
+      const wrapper = createWrapper()
+      await wrapper.setProps({ isLoading: false })
+      await flushPromises()
+
+      const emit = wrapper.emitted('selected-folder-change')
+      expect(emit).toHaveLength(2)
+      expect(emit![1]).toEqual([nestedFolder])
     })
   })
 })

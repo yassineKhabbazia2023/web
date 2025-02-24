@@ -19,6 +19,7 @@ import {
   renameFolder,
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
+import { createMemoryHistory, createRouter } from 'vue-router'
 
 const pinia = createPinia()
 
@@ -119,15 +120,17 @@ type AppSetup = {
 
 export type AppWrapper = VueWrapper<ComponentPublicInstance<AppSetup>>
 
+
+const router = createRouter({ history: createMemoryHistory(), routes: [{ path: '/mon-chemin', name: 'TestRoute', component: Ged }] })
 const createWrapper = (): AppWrapper => {
   return mount(Ged, {
     global: {
-      plugins: [pinia],
       stubs: {
         BinDocuments: true,
         PRow: { template: '<div><slot /></div>' },
         PCol: { template: '<div><slot /></div>' },
       },
+      plugins: [pinia, router],
     },
   }) as AppWrapper
 }
@@ -161,6 +164,24 @@ describe('ged', () => {
   it('renders correctly', () => {
     const wrapper = createWrapper()
     expect(wrapper.exists()).toBeTruthy()
+  })
+
+  it('call fetch services folders on entity change', async () => {
+    createWrapper()
+    commonStoreMock.mockReturnValueOnce({
+      $delete: vi.fn(),
+      $patch: vi.fn(),
+      $get: vi.fn(),
+      $post: vi.fn(),
+      defaultEntity: {
+        name: 'JEAN LÉVAGE',
+        idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
+        accountNumber: '234',
+        color: 'orange',
+      },
+    })
+    await flushPromises()
+    expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(1)
   })
   describe('treeview', () => {
     describe('interactions', () => {

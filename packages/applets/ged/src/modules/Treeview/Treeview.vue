@@ -132,7 +132,7 @@ import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 import { PScrollbar, PTree, PLoader } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
-import { findFolderDeepById } from './helpers/folderArrayHelper'
+import { findFolderDeepById, findCurrentServiceFolder } from './helpers/folderArrayHelper'
 import type { DownloadFolderComposableProps } from './sections/DownloadFolder/DownloadFolderTypes'
 import { useDownloadFolder } from './sections/DownloadFolder/DownloadFolderSection'
 import FoldersMove from './components/modals/FoldersMove'
@@ -145,6 +145,8 @@ import { useI18n } from 'vue-i18n'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
 import { logger, FeatureFlagManager } from '@pulse/core'
 import MailToGedCard from './components/mail-to-ged-card'
+import { useRoute } from 'vue-router'
+import { getContentBeforeAndAfterSeparator } from '@ged/modules/common/helpers/string.helper'
 
 const props = defineProps<TreeviewProps>()
 const emit = defineEmits([
@@ -184,9 +186,11 @@ const initialSelectedNodeId = computed(() => {
   return defaultFolder.value.id
 })
 
+const route = useRoute()
+
 watch(
   () => props.isLoading,
-  () => {
+  async () => {
     if (props.isLoading === true) {
       return
     }
@@ -194,6 +198,21 @@ watch(
       if(props.servicesFolders.length) {
         defaultFolder.value = props.servicesFolders[0][0].children[0]
         emit('selected-folder-change', defaultFolder.value)
+
+        if (route.query.folderId) {
+          const [serviceId, folderId] = getContentBeforeAndAfterSeparator(String(route.query.folderId))
+          const servicesFolder = findCurrentServiceFolder(props.servicesFolders, serviceId)
+          if (!servicesFolder) {
+            return
+          }
+          const folder = findFolderDeepById(servicesFolder, Number(folderId))
+          if (!folder) {
+            return
+          }
+          await nextTick()
+          emit('selected-folder-change', folder)
+          return folder.id
+        }
       }
     } catch (error) {
       logger.error(error)
@@ -225,7 +244,6 @@ watch(
     if (selectedFolder === treeNodeSelectedFolder.value) {
       return
     }
-
     const tree = retrieveCurrentlyUsedSourceTree()
     if (!tree) {
       return
@@ -307,13 +325,15 @@ const handleBinNodeClick = (e: Bin) => {
 const treesRefs = ref<TreeType[]>([])
 const retrieveUnusedTrees = (): TreeType[] => {
   return treesRefs.value.filter(
-    (tree) => tree.pData?.at(0).serviceId !== props.currentService,
+    (tree) => tree.props.pData?.at(0).serviceId !== props.currentService,
   )
 }
 
 const retrieveCurrentlyUsedSourceTree = (): TreeType => {
   const usedTree = treesRefs.value.filter(
-    (tree) => tree.pData?.at(0).serviceId === props.currentService,
+    (tree) => {
+      return tree.props.pData?.at(0).serviceId === props.currentService
+    },
   )
 
   return retrieveSourceTrees(usedTree)[0]
