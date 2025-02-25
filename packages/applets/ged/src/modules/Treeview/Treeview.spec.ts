@@ -8,7 +8,7 @@ import { type TreeviewProps } from '@ged/modules/Treeview/TreeviewTypes'
 import { createPinia, setActivePinia } from 'pinia'
 import type { Service } from '@ged/models/Service'
 import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
-import { nextTick } from 'vue'
+import { nextTick, reactive } from 'vue'
 import { downloadFolder } from '@ged/services/Folder'
 import type { ComponentWrapper } from '@ged/utils/testHelpers'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
@@ -49,13 +49,14 @@ vi.mock('@ged/services/tracking/tracking.service')
 
 vi.mock('@pulse/styleguide')
 
-const routerQuery = vi.hoisted(() => vi.fn(() => ''))
+const routerDataMock = reactive({
+  name: 'ged',
+  query: {
+    folderId: '',
+  },
+})
 vi.mock('vue-router', () => ({
-  useRoute: () => ({
-    query: {
-      folderId: routerQuery(),
-    },
-  }),
+  useRoute: () => (routerDataMock),
 }))
 
 
@@ -442,7 +443,8 @@ describe('treeview', () => {
   })
   describe('routing', () => {
     it('should target the appropriate folder ID if an ID is specified in the route query', async () => {
-      routerQuery.mockReturnValueOnce(`service-id-compta/${nestedFolder.id}`)
+      routerDataMock.query.folderId = `service-id-compta/${nestedFolder.id}`
+
       const wrapper = createWrapper()
       await wrapper.setProps({ isLoading: false })
       await flushPromises()
@@ -450,6 +452,20 @@ describe('treeview', () => {
       const emit = wrapper.emitted('selected-folder-change')
       expect(emit).toHaveLength(2)
       expect(emit![1]).toEqual([nestedFolder])
+    })
+
+    it('should target the folder spicified in the url params even when we\'re already on the page', async () => {
+      routerDataMock.query.folderId = `service-id-compta/${folderWithRenameRight.id}`
+      const wrapper = createWrapper()
+      await wrapper.setProps({ isLoading: false })
+      await flushPromises()
+
+      routerDataMock.query.folderId = `service-id-compta/${nestedFolder.id}`
+      await flushPromises()
+
+      const emit = wrapper.emitted('selected-folder-change')
+      expect(emit).toHaveLength(3)
+      expect(emit![2]).toEqual([nestedFolder])
     })
   })
 })

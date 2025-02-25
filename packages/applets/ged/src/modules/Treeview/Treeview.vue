@@ -188,6 +188,26 @@ const initialSelectedNodeId = computed(() => {
 
 const route = useRoute()
 
+const folderServiceAndIdQueryParam = computed(() => route.query.folderId)
+async function handleFolderTargetingFromQuery() {
+  const [serviceId, folderId] = getContentBeforeAndAfterSeparator(String(route.query.folderId))
+  const servicesFolder = findCurrentServiceFolder(props.servicesFolders, serviceId)
+  if (!servicesFolder) {
+    return
+  }
+  const folder = findFolderDeepById(servicesFolder, Number(folderId))
+  if (!folder) {
+    return
+  }
+  await nextTick()
+  emit('selected-folder-change', folder)
+  return folder.id
+}
+
+watch(folderServiceAndIdQueryParam, async () => {
+  await handleFolderTargetingFromQuery()
+})
+
 watch(
   () => props.isLoading,
   async () => {
@@ -199,19 +219,8 @@ watch(
         defaultFolder.value = props.servicesFolders[0][0].children[0]
         emit('selected-folder-change', defaultFolder.value)
 
-        if (route.query.folderId) {
-          const [serviceId, folderId] = getContentBeforeAndAfterSeparator(String(route.query.folderId))
-          const servicesFolder = findCurrentServiceFolder(props.servicesFolders, serviceId)
-          if (!servicesFolder) {
-            return
-          }
-          const folder = findFolderDeepById(servicesFolder, Number(folderId))
-          if (!folder) {
-            return
-          }
-          await nextTick()
-          emit('selected-folder-change', folder)
-          return folder.id
+        if (folderServiceAndIdQueryParam.value) {
+          handleFolderTargetingFromQuery()
         }
       }
     } catch (error) {

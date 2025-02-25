@@ -99,13 +99,13 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
       store.setDefaultEntity(formattedEntityData)
       localStorage.setItem('selected-entity', JSON.stringify(formattedEntityData))
 
-      // only pushing to GED if user has access to the folder
-      router.push({
-        name: 'ged',
-        params: { folderId: accountNumbers[0] },
-        query: { folderId: notification.redirectLink },
-      })
     }
+    // only pushing to GED if user has access to the folder
+    router.push({
+      name: 'ged',
+      params: { folderId: accountNumbers[0] },
+      query: { folderId: notification.redirectLink },
+    })
   },
   [NotificationKindEnum.Mandate]: (
     _accountNumbers: NotificationAccount['accountNumber'],
