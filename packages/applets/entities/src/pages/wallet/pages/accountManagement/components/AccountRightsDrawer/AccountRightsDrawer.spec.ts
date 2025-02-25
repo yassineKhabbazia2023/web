@@ -1,31 +1,18 @@
 import { nextTick } from 'vue'
+import '@entities/__mocks__/common.import.mocks'
+import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks'
+import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
+import { mockedAccount, mockedAccountType } from '@entities/__mocks__/account.mocks'
 import { expect, beforeEach, describe, it, vi } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import * as authorizationServices from '@entities/services/authorization'
-import type { AccountRow } from '@entities/common/types'
 import { ContactType } from '@entities/services/contact/contactTypes'
 import AccountRightsDrawer from '.'
 
 // Mocks
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
-
+vi.mock('@entities/services/authorization', () => authorizationServiceMock)
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('vue-router')
-const mockedAccountType = 'Client Company'
-const mockedAccount: AccountRow = {
-  accountId: 1,
-  name: 'Pizza Planet',
-  accountNumber: '70006400886',
-}
 
 const createWrapper = (): VueWrapper<any> => {
   return mount(AccountRightsDrawer, {

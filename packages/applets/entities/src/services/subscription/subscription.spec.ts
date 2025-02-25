@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { subscriptionRequestMock } from '@entities/pages/subscriptions/mocks/SubscriptionRequestMock'
-import { subscriptionDemandMock } from '@entities/pages/subscriptions/mocks/SubscriptionDemandMock'
+import { subscriptionRequestMock, subscriptionDemandMock } from '@entities/__mocks__/subscription.mocks'
 import {
   fetchSubscriptionRequests,
   validateSubscriptionRequest,

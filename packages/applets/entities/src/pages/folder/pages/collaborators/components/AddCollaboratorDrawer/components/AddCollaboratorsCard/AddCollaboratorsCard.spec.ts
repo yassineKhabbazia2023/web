@@ -5,11 +5,11 @@ import { createI18n } from 'vue-i18n'
 import { PUserAction } from '@pulse/styleguide/components'
 import AddDelegatesStep from '.'
 import AddCollaboratorsAutocomplete from '../AddCollaboratorsAutocomplete'
-import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+import { getMockedCollaborators2 } from '@entities/__mocks__/collaborators.mocks'
 import { getInitials } from '@entities/helper/helper'
 import { getFullName } from '@entities/common/utils/helpers/helpers'
 
-const mockedCollaborators = getMockedCollaborators()
+const mockedCollaborators = getMockedCollaborators2()
 
 vi.mock('@entities/services/account', () => ({
   fetchContactsFromSameHub: vi.fn(() => Promise.resolve(mockedCollaborators)),

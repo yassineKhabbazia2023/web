@@ -1,4 +1,5 @@
-import type { Report } from './BIReportsTypes'
+import type { ReportType , Report } from '@entities/common/types/BIReportsTypes'
+import type { PDropdownOption } from '@pulse/styleguide/types'
 
 export const getMockedBIReports = (): Report[] => {
   return [
@@ -40,3 +41,59 @@ export const getMockedBIReports = (): Report[] => {
     },
   ]
 }
+
+export const getMockedReportTypesDropdown = (): PDropdownOption[] => [
+  {
+    pLabel: 'TBD Financier',
+    pValue: 1,
+  },
+  {
+    pLabel: 'TBD RH',
+    pValue: 2,
+  },
+  {
+    pLabel: 'TBD Conso',
+    pValue: 3,
+  },
+]
+
+export const getMockedReportUploadInfo = () => {
+  return {
+    reportId: 4,
+    reportLabel: 'TBD Financier',
+    reportTypeId: 5,
+    accountId: 602,
+    accountLabel: 'Boulangerie Bel Epi',
+  }
+}
+
+export const getMockedPowerBIReport = () => {
+  return new File(['Test Report'], 'my-report.pbx')
+}
+
+export const getMockedBIReportTypes = (): ReportType[] => [
+  {
+    reportTypeId: 1,
+    name: 'loop',
+    collaboratorLabel: 'Rapport Loop',
+    customerLabel: 'TBD Financier',
+  },
+  {
+    reportTypeId: 2,
+    name: 'silae',
+    collaboratorLabel: 'Rapport Silae',
+    customerLabel: 'TBD RH',
+  },
+  {
+    reportTypeId: 3,
+    name: 'forms',
+    collaboratorLabel: 'Rapport Forms',
+    customerLabel: 'TBD Conso',
+  },
+  {
+    reportTypeId: 4,
+    name: 'payfit',
+    collaboratorLabel: 'Rapport Payfit',
+    customerLabel: 'TBD RH',
+  },
+]

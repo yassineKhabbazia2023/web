@@ -1,28 +1,18 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { noResult } from '@entities/../tests'
-import mock from './mockCollaborators.json'
+import { mockedCollaboratorsList2 } from '@entities/__mocks__/collaborators.mocks'
+import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks'
+import { noResult } from '@entities/__mocks__/no-result.mocks'
 import * as walletServices from '@entities/services/wallet'
-import { nextTick } from 'vue'
 import Collaborators from '.'
 
 const mockGatewayGet = vi.fn(() => {
   return Promise.resolve({
-    data: mock,
+    data: mockedCollaboratorsList2,
   })
 })
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
@@ -37,6 +27,7 @@ vi.mock('@pulse/common', () => ({
     hasPermission: () => vi.fn(),
   }),
 }))
+
 const createWrapper = (): VueWrapper<any> =>
   mount(Collaborators, {
     global: {
@@ -48,7 +39,7 @@ const createWrapper = (): VueWrapper<any> =>
     },
   })
 
-const { items, totalPages } = mock
+const { items, totalPages } = mockedCollaboratorsList2
 let wrapper: VueWrapper<any>
 
 const getTableBody = () => wrapper.find('table tbody')
@@ -73,13 +64,12 @@ const checkRowContent = (rowIndex: number) => {
 describe('collaborators', () => {
   beforeEach(async () => {
     wrapper = createWrapper()
-    await flushPromises()
   })
 
   noResult(createWrapper())
 
   it('should display data in a table', async () => {
-    await nextTick()
+    await flushPromises()
     expect(getTableBody().findAll('tr')).toHaveLength(items.length)
 
     checkRowContent(0)
@@ -114,19 +104,19 @@ describe('collaborators', () => {
   it('update collaborators details when event is emitted', () => {
     const tableData = wrapper.findComponent({ name: 'TableData' })
     expect(tableData.exists()).toBeTruthy()
-    tableData.vm.$emit('update-collaborator-details', mock.items[0])
-    const collaboratorIndex = wrapper.vm.state.data.findIndex((c: { id: number }) => c.id === mock.items[0].id)
+    tableData.vm.$emit('update-collaborator-details', mockedCollaboratorsList2.items[0])
+    const collaboratorIndex = wrapper.vm.state.data.findIndex((c: { id: number }) => c.id === mockedCollaboratorsList2.items[0].id)
     expect(collaboratorIndex).not.toBe(-1)
-    expect(wrapper.vm.state.data[collaboratorIndex].mobilePhone).toBe(mock.items[0].mobilePhone)
+    expect(wrapper.vm.state.data[collaboratorIndex].mobilePhone).toBe(mockedCollaboratorsList2.items[0].mobilePhone)
   })
 
   it('update collaborators role when event is emitted', () => {
     const tableData = wrapper.findComponent({ name: 'TableData' })
     expect(tableData.exists()).toBeTruthy()
-    tableData.vm.$emit('update-collaborator-role', mock.items[0])
-    const collaboratorIndex = wrapper.vm.state.data.findIndex((c: { id: number }) => c.id === mock.items[0].id)
+    tableData.vm.$emit('update-collaborator-role', mockedCollaboratorsList2.items[0])
+    const collaboratorIndex = wrapper.vm.state.data.findIndex((c: { id: number }) => c.id === mockedCollaboratorsList2.items[0].id)
     expect(collaboratorIndex).not.toBe(-1)
-    expect(wrapper.vm.state.data[collaboratorIndex].role).toBe(mock.items[0].persona.name)
+    expect(wrapper.vm.state.data[collaboratorIndex].role).toBe(mockedCollaboratorsList2.items[0].persona.name)
   })
 
   it('should fetch documents upon sort change', async () => {

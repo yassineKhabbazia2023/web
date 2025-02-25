@@ -1,6 +1,6 @@
 import { it, expect, describe, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { getMockedBIReports } from '../../BIReportsMocks'
+import { getMockedBIReports } from '@entities/__mocks__/bi-report.mocks'
 import ReportsList from '.'
 
 // Mocks

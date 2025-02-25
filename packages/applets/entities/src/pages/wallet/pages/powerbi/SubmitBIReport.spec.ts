@@ -4,9 +4,9 @@ import * as ReportService from '@entities/services/reporting'
 import * as helpers from '@entities/common/utils'
 import {
   getMockedBIReportTypes,
-  getMockedReportUploadInfo,
   getMockedPowerBIReport,
-} from './SubmitBIReportMocks'
+  getMockedReportUploadInfo,
+} from '@entities/__mocks__/bi-report.mocks'
 import { nextTick } from 'vue'
 import SubmitBIReport from '.'
 

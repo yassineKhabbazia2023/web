@@ -1,9 +1,8 @@
 import { it, vi, expect, describe, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import * as ReportingService from '@entities/services/reporting'
-import { getMockedBIReports } from '@entities/pages/power-bi/pages/bi-reports/BIReportsMocks'
-import { getMockedReportTypesDropdown } from '../../SubmitBIReportMocks'
-import { entitiesMock } from '@entities/../tests/mocks/EntitiesMocks'
+import { getMockedBIReports , getMockedReportTypesDropdown } from '@entities/__mocks__/bi-report.mocks'
+import { entitiesMock } from '@entities/__mocks__/entities.mocks'
 import BIReportInformation from '.'
 
 // Mocks

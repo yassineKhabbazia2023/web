@@ -2,10 +2,9 @@ import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import OffersDrawer from '.'
-import { getMockedSubscriptionOffers } from '../SubscriptionOffers/SubscriptionOffersMocks'
-import { getMockedSubscriptionOffersServices } from '../OfferSubscription/OfferSubscriptionMocks'
-import { getMockedPrincipalContacts } from '../PrincipalContact/PrincipalContactMocks'
-import { getMockedUser } from '@entities/pages/entities/mocks'
+import { getMockedSubscriptionOffers , getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
+import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
+import { getMockedStepNotes } from '@entities/__mocks__/step-notes.mocks'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
@@ -21,15 +20,15 @@ import {
   getMockedAccountReferential,
   getMockedPatchOperations,
   getMockedReferentialHubs,
-} from '@entities/services/account/accountMock'
-import { getMockedStepNotes } from '@entities/common/components/StepNote/StepNotesMock'
+} from '@entities/__mocks__/account-row.mocks'
 import { amplitudeService } from '@pulse/common'
 import type { UserInfo } from '@pulse/common/types'
 import type { Note, PostSubscriptionRequest } from '@entities/services/subscription'
 import type { PatchValue } from '@entities/services/PatchRecordService'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ComponentWrapper } from '@entities/common/types'
-import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
+import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 
 const principalContacts: ClientContact[] = getMockedPrincipalContacts()
 const collaborators: Contact[] = getMockedCollaborators()

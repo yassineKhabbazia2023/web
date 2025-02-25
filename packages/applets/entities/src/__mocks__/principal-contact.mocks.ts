@@ -1,4 +1,4 @@
-import type { ClientContact } from './PrincipalContactTypes'
+import { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 
 export function getMockedPrincipalContacts(): ClientContact[] {
   const principalContact: ClientContact[] = [

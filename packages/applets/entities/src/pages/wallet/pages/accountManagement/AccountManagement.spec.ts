@@ -1,4 +1,5 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import '@entities/__mocks__/common.import.mocks'
 import { nextTick } from 'vue'
 import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import * as DeployUtils from '../folders/DeployUtils'
@@ -29,9 +30,6 @@ vi.mock('@pulse/core', () => ({
   },
 }))
 
-vi.mock('./DeployUtils', async () => {
-  return await vi.importActual('./DeployUtils')
-})
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush,

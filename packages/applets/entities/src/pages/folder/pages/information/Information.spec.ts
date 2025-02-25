@@ -1,4 +1,5 @@
 import { nextTick } from 'vue'
+import '@entities/__mocks__/common.import.mocks'
 import { expect, describe, it, beforeEach, vi } from 'vitest'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { setActivePinia } from 'pinia'
@@ -7,7 +8,7 @@ import {
   getMockedAccount,
   getMockedAccountReferential,
   getMockedReferentialHubs,
-} from '@entities/services/account/accountMock'
+} from '@entities/__mocks__/account-row.mocks'
 import { commonStore } from '@pulse/common'
 import * as accountServices from '@entities/services/account'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'

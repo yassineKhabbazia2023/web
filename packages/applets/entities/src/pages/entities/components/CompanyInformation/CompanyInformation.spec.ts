@@ -9,7 +9,7 @@ import {
   getMockedAccount,
   getMockedAccountReferential,
   getMockedReferentialHubs,
-} from '@entities/services/account/accountMock'
+} from '@entities/__mocks__/account-row.mocks'
 import CompanyInformation from '.'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 

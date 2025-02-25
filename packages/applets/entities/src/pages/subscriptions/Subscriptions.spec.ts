@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { subscriptionRequestMock } from './mocks/SubscriptionRequestMock'
+import { subscriptionRequestMock } from '@entities/__mocks__/subscription.mocks'
 import { nextTick } from 'vue'
 import Subscriptions from '.'
 

@@ -1,7 +1,11 @@
 import { nextTick } from 'vue'
+import '@entities/__mocks__/common.import.mocks'
+import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
+import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks'
+import { walletServiceMock } from '@entities/__mocks__/wallet.service.mocks'
+import { mockedAccount, mockedAccountType, mockedUserClientAccount } from '@entities/__mocks__/account.mocks'
 import { expect, beforeEach, describe, it, vi } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
-import type { AccountRow } from '@entities/common/types'
 import TableData from '@entities/pages/folder/pages/usersClient/components/TableData'
 import * as walletServices from '@entities/services/wallet'
 import * as contactServices from '@entities/services/contact'
@@ -10,40 +14,10 @@ import { amplitudeService } from '@pulse/common'
 import ResendActivationEmailDrawer from '.'
 
 // Mocks
-const mockedAccountType = 'Client Company'
-const mockedAccount: AccountRow = {
-  accountId: 1,
-  name: 'Pizza Planet',
-  accountNumber: '70006400886',
-}
-const mockedUserClientAccount = {
-  contactId: 68,
-  contactGlobalUniqueId: 'c65ab52a-89a4-4eb7-93e5-5e3bb2d54676',
-  firstName: 'Hugo',
-  lastName: 'Lopez',
-  email: 'hugo.lopez@example.com',
-  status: 'Declared',
-  personaName: 'ADMIN/Dirigeant',
-  creationDate: '2024-04-29T09:33:07.8366667',
-}
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
-
+vi.mock('@entities/services/authorization', () => authorizationServiceMock)
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('vue-router')
-vi.mock('@entities/services/wallet', () => ({
-  fetchAccountContacts: vi.fn(() =>
-    Promise.resolve({ items: [mockedUserClientAccount] }),
-  ),
-}))
+vi.mock('@entities/services/wallet', () => walletServiceMock)
 
 const createWrapper = (): VueWrapper<any> => {
   return mount(ResendActivationEmailDrawer, {

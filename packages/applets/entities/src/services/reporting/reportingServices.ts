@@ -4,7 +4,7 @@ import type {
   GetReportsRequest,
   GetReportAccountsRequest,
 } from './reportingTypes'
-import type { ReportType } from '@entities/pages/power-bi/pages/bi-reports/BIReportsTypes'
+import type { ReportType } from '@entities/common/types/BIReportsTypes'
 
 export const fetchBIReports = async (
   accountId: number,

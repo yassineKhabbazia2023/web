@@ -1,9 +1,9 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
+import { mockedCollaboratorsList2 } from '@entities/__mocks__/collaborators.mocks'
 import { MENU_ACTIONS_NAME } from './constants'
 import TableData from './'
-import mock from '../../mockCollaborators.json'
 import { getInitials } from '@entities/helper'
 import { PTable } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
@@ -13,7 +13,7 @@ let wrapper: VueWrapper<any>
 const mockHasPermission = vi.fn((_code: string) => true)
 const mockGatewayGet = vi.fn(() => {
   return Promise.resolve({
-    data: mock,
+    data: mockedCollaboratorsList2,
   })
 })
 
@@ -34,7 +34,7 @@ vi.mock('@pulse/common', () => ({
 const createWrapper = (): VueWrapper<any> =>
   shallowMount(TableData, {
     props: {
-      data: mock.items.map(({
+      data: mockedCollaboratorsList2.items.map(({
         firstName,
         lastName,
         office,
@@ -117,7 +117,7 @@ describe('tableData', () => {
       const getDrawer = () => wrapper.find('.p-drawer')
 
       expect(getDrawer().exists()).toBeFalsy()
-      wrapper.vm.handleToolboxItemClick(actionName, mock.items[0])
+      wrapper.vm.handleToolboxItemClick(actionName, mockedCollaboratorsList2.items[0])
       await nextTick()
 
       expect(getDrawer().exists()).toBeTruthy()
@@ -134,26 +134,26 @@ describe('tableData', () => {
   })
 
   it('emits event update collaborators details when event is emitted', async () => {
-    wrapper.vm.handleToolboxItemClick('collaboratorInformation', mock.items[0])
+    wrapper.vm.handleToolboxItemClick('collaboratorInformation', mockedCollaboratorsList2.items[0])
     await nextTick()
     const getCollabDetailsDrawer = () => wrapper.findComponent({ name: 'CollabDetailsDrawer' })
 
     expect(getCollabDetailsDrawer().exists()).toBeTruthy()
 
-    getCollabDetailsDrawer().vm.$emit('update-collaborator-details', mock.items[0])
+    getCollabDetailsDrawer().vm.$emit('update-collaborator-details', mockedCollaboratorsList2.items[0])
 
     expect(wrapper.emitted('update-collaborator-details')).toHaveLength(1)
-    expect(wrapper.emitted('update-collaborator-details')).toStrictEqual([[mock.items[0]]])
+    expect(wrapper.emitted('update-collaborator-details')).toStrictEqual([[mockedCollaboratorsList2.items[0]]])
   })
 
   it('emits event update collaborators role when event is emitted', async () => {
-    wrapper.vm.handleToolboxItemClick('manageAccessRights', mock.items[0])
+    wrapper.vm.handleToolboxItemClick('manageAccessRights', mockedCollaboratorsList2.items[0])
     await nextTick()
     const collabRightsDrawer = wrapper.findComponent({ name: 'CollabRightsDrawer' })
     expect(collabRightsDrawer.exists()).toBeTruthy()
-    collabRightsDrawer.vm.$emit('update-collaborator-role', mock.items[0])
+    collabRightsDrawer.vm.$emit('update-collaborator-role', mockedCollaboratorsList2.items[0])
     expect(wrapper.emitted('update-collaborator-role')).toHaveLength(1)
-    expect(wrapper.emitted('update-collaborator-role')).toStrictEqual([[mock.items[0]]])
+    expect(wrapper.emitted('update-collaborator-role')).toStrictEqual([[mockedCollaboratorsList2.items[0]]])
   })
 
   it('should emit on-sort-change upon sort change event', async () => {

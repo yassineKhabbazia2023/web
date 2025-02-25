@@ -1,11 +1,9 @@
 import type { ExtendedCollab } from './../../types'
 
-
 export enum CollabRightsDrawerSteps {
   ROLES,
   MANAGE_RIGHTS,
 }
-
 
 export interface Role {
   id: number

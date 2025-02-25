@@ -1,7 +1,7 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { mockedUsersClient } from '@entities/__mocks__/users-client.mocks'
 import { getInitials } from '@entities/helper'
-import mock from './../../mock.json'
 import TableData from './'
 import { userActions } from './types'
 import { nextTick } from 'vue'
@@ -31,7 +31,7 @@ const toolBoxElementsWithoutPermissions = [
 const createWrapper = (): VueWrapper<any> =>
   shallowMount(TableData, {
     props: {
-      data: mock.data.items.map(({ firstName, lastName, ...rest }) => ({
+      data: mockedUsersClient.data.items.map(({ firstName, lastName, ...rest }) => ({
         initials: getInitials(firstName, lastName),
         fullName: `${firstName} ${lastName}`,
         firstName,

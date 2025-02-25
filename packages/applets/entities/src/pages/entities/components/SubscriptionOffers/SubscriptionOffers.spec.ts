@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import Subscription from '.'
-import { getMockedSubscriptionOffers } from './SubscriptionOffersMocks'
+import { getMockedSubscriptionOffers } from '@entities/__mocks__/offer-subscription.mocks'
 import { mount } from '@vue/test-utils'
 import type { SubscriptionOffer } from './SubscriptionOffersTypes'
 import { nextTick } from 'vue'

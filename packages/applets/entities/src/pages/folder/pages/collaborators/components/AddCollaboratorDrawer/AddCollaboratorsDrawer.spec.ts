@@ -4,7 +4,7 @@ import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createI18n } from 'vue-i18n'
 import type { AddCollaboratorsDrawerProps } from './AddCollaboratorsDrawerTypes'
-import { entityMock } from '@entities/../tests/mocks/EntitiesMocks'
+import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddCollaboratorsDrawer from '.'
 import AddCollaboratorsCard from './components/AddCollaboratorsCard'
@@ -26,7 +26,7 @@ vi.mock('@pulse/styleguide')
 
 const defaultProps: AddCollaboratorsDrawerProps = {
   modelValue: true,
-  entityId: entityMock.accountId,
+  entityId: mockedEntity.accountId,
 }
 
 const i18n = createI18n({

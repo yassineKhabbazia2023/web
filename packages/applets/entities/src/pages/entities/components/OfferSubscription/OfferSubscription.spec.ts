@@ -1,7 +1,7 @@
 import { beforeEach, describe, it, expect } from 'vitest'
 import OfferSubscription from '.'
 import { type VueWrapper, mount } from '@vue/test-utils'
-import { getMockedSubscriptionOffersServices } from './OfferSubscriptionMocks'
+import { getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 
 function getProviderCardComponent(wrapper: VueWrapper) {
   return wrapper.findComponent('[data-testid="provider-card"]') as VueWrapper

@@ -1,33 +1,24 @@
 import type { MockInstance } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
+import { mockedEntity } from '@entities/__mocks__/entities.mocks.ts'
+import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks.ts'
+import { walletServiceMock } from '@entities/__mocks__/wallet.service.mocks.ts'
+import { mockUser } from '@entities/__mocks__/users-client.mocks'
 import { nextTick } from 'vue'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { generateContactsMock } from '@entities/../tests/mocks/contactsDataMock'
-import { noResult } from '@entities/../tests'
+import { generateContactsMock } from '@entities/__mocks__/contact.mocks.ts'
+import { noResult } from '@entities/__mocks__/no-result.mocks'
 import FormSearch from '@entities/common/components/FormSearch'
 import type { PatchContactPayload } from '@entities/services/contact/contactTypes'
-import { mockUser } from './components/DrawerUserDetails/mockData.ts'
 import * as OfferServices from '@entities/services/offer'
 import * as WalletServices from '@entities/services/wallet'
 import type { Contact } from '@entities/common/types'
-import { mockedEntity } from '@entities/pages/wallet/components/TableData/mockData'
 import type { UsersClientProps } from './UsersClientTypes'
 import UsersClient from '.'
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
-
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('@entities/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
   patchContact: vi.fn((_: number, contact: PatchContactPayload) => Promise.resolve(contact)),
@@ -50,10 +41,7 @@ const contactsList = generateContactsMock({
   currentPage: 1,
 }).data
 
-vi.mock('@entities/services/wallet', () => ({
-  fetchAccountContacts: vi.fn(),
-  fetchCustomers: vi.fn(),
-}))
+vi.mock('@entities/services/wallet', () => walletServiceMock)
 
 vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {

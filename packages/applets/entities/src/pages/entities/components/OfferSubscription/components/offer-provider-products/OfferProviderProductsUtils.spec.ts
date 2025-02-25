@@ -6,7 +6,7 @@ import {
 
 import type { SelectedProduct } from '@entities/common/types'
 
-import { getMockedSubscriptionOfferProduct } from '../../../SubscriptionOffers/SubscriptionOffersMocks'
+import { getMockedSubscriptionOfferProduct } from '@entities/__mocks__/offer-subscription.mocks'
 
 const ProviderCategoryTitles: Record<string, string> = {
   pulse: 'Les services de la plateforme',

@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest'
+import { getMockedStepNotes } from '@entities/__mocks__/step-notes.mocks'
 import {
   addSelectedProduct,
   removeSelectedProduct,
@@ -7,11 +8,10 @@ import {
   getFirstDayOfYear,
 } from './OffersDrawerUtils'
 import type { SelectedProduct } from '@entities/common/types'
-import { getMockedSubscriptionOffersServices } from '../../OfferSubscription/OfferSubscriptionMocks'
-import { getMockedStepNotes } from '@entities/common/components/StepNote/StepNotesMock'
 import type { PostSubscriptionRequest } from '@entities/services/subscription'
-import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
-import { getMockedPrincipalContacts } from '../../PrincipalContact/PrincipalContactMocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
+import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
+import { getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 
 const notes = getMockedStepNotes()
 describe('offersDrawerUtils', () => {

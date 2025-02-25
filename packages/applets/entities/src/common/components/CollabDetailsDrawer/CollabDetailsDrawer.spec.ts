@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   getMockedCollaborators,
   getFormattedMockedCollaborators,
-} from '@entities/common/mocks/mockedCollaborators'
+} from '@entities/__mocks__/collaborators.mocks'
 import * as walletServices from '@entities/services/wallet'
 import { nextTick } from 'vue'
 import CollabDetailsDrawer from '.'

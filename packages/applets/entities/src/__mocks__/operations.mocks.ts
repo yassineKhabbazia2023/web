@@ -1,4 +1,4 @@
-import type { Operation } from '../types/OperationTypes'
+import { Operation } from '@entities/common/types/OperationTypes'
 
 export const getMockedOperations = (): Operation[] => {
   return [

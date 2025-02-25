@@ -5,7 +5,7 @@ import { PAutocomplete } from '@pulse/styleguide/components'
 import { nextTick } from 'vue'
 import CollaboratorsSearchAutocomplete from '.'
 import type { AddCollaboratorsAutocompleteProps } from './AddCollaboratorsAutocompleteTypes'
-import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 
 vi.mock('@entities/services/account', () => ({
   fetchContactsFromSameHub: vi.fn(() => Promise.resolve(mockedContacts)),
@@ -75,7 +75,7 @@ describe('add collaborator autocomplete', () => {
       autocompleteWrapper.vm.$emit('update:modelValue', 'search value')
       await flushPromises()
       await nextTick()
-      // @ts-expect-error
+      // @ts-ignore
       expect(autocompleteWrapper.props('modelValue')).toBe('search value')
     })
   })

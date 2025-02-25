@@ -6,18 +6,15 @@ import {
   getPrincipalContacts,
   fetchCollaborators,
 } from '.'
-import { getMockedSubscriptionOffers } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersMocks'
-import {
-  getMockedSubscriptionOffersServices,
-} from '@entities/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
-import { getMockedPrincipalContacts } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactMocks'
+import { getMockedSubscriptionOffers , getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
+import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { API_PREFIXES } from '@entities/common/config/services'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
 } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
-import { getMockedCollaborators } from '../contact/contactMocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 
 const mockedCollaborators = getMockedCollaborators()
 const mockedPrincipalContacts: ClientContact[] = getMockedPrincipalContacts()

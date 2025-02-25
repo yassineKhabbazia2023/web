@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from 'vitest'
-import delegationsHistoryMock from './__mock__/delegationsHistory.json'
+import delegationsHistoryMock from '@entities/__mocks__/json/delegationsHistory.json'
 import {
   fetchAccount,
   fetchAccounts,
@@ -25,8 +25,8 @@ import {
   getMockedPatchOperations,
   getMockedAccountReferential,
   getMockedReferentialHubs,
-} from './accountMock'
-import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+} from '@entities/__mocks__/account-row.mocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { API_PREFIXES } from '@entities/common/config/services'
 
 const accountId = 5

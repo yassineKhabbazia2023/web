@@ -4,7 +4,7 @@ import { createI18n } from 'vue-i18n'
 import { PTable } from '@pulse/styleguide/components'
 import CollapsableFoldersList from '.'
 import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
-import { entitiesMock } from '@entities/../tests/mocks/EntitiesMocks'
+import { entitiesMock } from '@entities/__mocks__/entities.mocks'
 import type { Entity } from '@pulse/common/types'
 
 const i18n = createI18n({

@@ -1,33 +1,26 @@
 import { nextTick } from 'vue'
+import '@entities/__mocks__/common.import.mocks'
+import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
+import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks'
 import { expect, beforeEach, describe, it, vi, type Mock } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
-import { dataFromApi } from '@entities/pages/folder/pages/usersCollab/mockData'
 import type { User } from '@entities/pages/folder/pages/usersCollab/types'
 import { useRoute, useRouter } from 'vue-router'
 import * as authorizationServices from '@entities/services/authorization'
 import ManageRightsDrawer from '.'
+import { mockedAccountId } from '@entities/__mocks__/account.mocks'
+import { dataFromApi } from '@entities/__mocks__/api.mocks'
 
 // Mocks
 const mockedUseRoute = useRoute as Mock
 const mockedUseRouter = useRouter as Mock
-const mockedAccountId = 602
 const mockedUser = {
   fullName: "Johnny's Pizza",
   initials: 'JP',
   ...dataFromApi.data.items[0],
 }
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
-
+vi.mock('@entities/services/authorization', () => authorizationServiceMock)
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('vue-router')
 
 const createWrapper = (selectedUser: User = mockedUser): VueWrapper<any> => {

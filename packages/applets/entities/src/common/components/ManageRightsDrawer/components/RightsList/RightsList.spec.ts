@@ -1,6 +1,11 @@
 import { vi, it, describe, expect, beforeEach, type Mock } from 'vitest'
+import '@entities/__mocks__/common.import.mocks'
+import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
+import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks'
+import { mockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mock'
+import { mockedAccountId } from '@entities/__mocks__/account.mocks'
+import { mockedContactId } from '@entities/__mocks__/contact.mocks'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { getMockedAuthorizationsConfig } from './RightsListMocks'
 import type { RightsListProps } from './RightsListTypes'
 import * as authorizationServices from '@entities/services/authorization'
 import { useRoute } from 'vue-router'
@@ -8,25 +13,13 @@ import RightsList from '.'
 import { ContactType } from '@entities/services/contact/contactTypes'
 
 // Mocks
-const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
 const mockedActionsCount = mockedAuthorizationsConfig
   .map(({ actions }) => actions)
   .reduce((accum, actions) => accum + actions.length, 0)
-const mockedAccountId = 602
-const mockedContactId = 25
 const mockedUseRoute = useRoute as Mock
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
-
+vi.mock('@entities/services/authorization', () => authorizationServiceMock)
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('vue-router')
 
 // Expectations

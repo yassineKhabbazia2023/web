@@ -3,7 +3,7 @@ import { type VueWrapper, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import {
   getMockedSubscriptionOffersServices,
-} from '@entities/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
+} from '@entities/__mocks__/offer-subscription.mocks'
 import type {
   SubscriptionOfferProvider,
 } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'

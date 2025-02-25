@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
+import '@entities/__mocks__/common.import.mocks'
 import { getTabAuthorisations, getTabs } from './FolderHelper'
-import { mockHasPermission } from '@entities/../vitest.setup'
+import { mockHasPermission } from '@entities/__mocks__/permissions.mock'
 import type { TabName, Tab } from './FolderTypes'
 
 describe('test FolderHelper', () => {

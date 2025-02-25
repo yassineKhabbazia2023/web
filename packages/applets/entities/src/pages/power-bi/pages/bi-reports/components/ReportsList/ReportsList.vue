@@ -34,7 +34,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PScrollbar } from '@pulse/styleguide/components'
 import type { ReportsListProps } from './ReportsListTypes'
-import type { Report } from '../../BIReportsTypes'
+import type { Report } from '@entities/common/types/BIReportsTypes'
 import ReportCard from './components/index'
 
 const { t } = useI18n({

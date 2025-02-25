@@ -1,4 +1,5 @@
 import { nextTick } from 'vue'
+import '@entities/__mocks__/common.import.mocks'
 import { createTestingPinia } from '@pinia/testing'
 import { expect, beforeEach, describe, it } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'

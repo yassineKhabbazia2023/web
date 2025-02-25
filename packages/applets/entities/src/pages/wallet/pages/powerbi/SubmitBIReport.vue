@@ -84,7 +84,7 @@ import BIReportInformation from './components/BIReportInformation'
 import { fetchBIReportTypes, uploadBIreport } from '@entities/services/reporting'
 import type { ReportInfo } from './SubmitBIReportTypes'
 import { displayNotification } from '@entities/common/utils'
-import type { ReportType } from '@entities/pages/power-bi/pages/bi-reports/BIReportsTypes'
+import type { ReportType } from '@entities/common/types/BIReportsTypes'
 
 const { t } = useI18n({
   inheritLocale: true,

@@ -7,7 +7,7 @@ import {
 } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
-import { entityMock } from '@entities/../tests/mocks/EntitiesMocks'
+import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 import * as accountServices from '@entities/services/account'
 import { amplitudeService } from '@pulse/common'
 import AddCustomerDrawer from '.'
@@ -18,9 +18,9 @@ const formDataMock = {
 }
 const defaultProps = {
   modelValue: true,
-  targetEntityId: entityMock.accountId,
-  targetEntityName: entityMock.legalName,
-  targetEntityNumber: entityMock.accountNumber,
+  targetEntityId: mockedEntity.accountId,
+  targetEntityName: mockedEntity.legalName,
+  targetEntityNumber: mockedEntity.accountNumber,
 }
 export const debounceMock = vi.fn((callback: Function) => callback)
 vi.mock('@pulse/common', () => ({
@@ -191,8 +191,8 @@ describe('addCustomerDrawer', () => {
         lastName: 'Utilisateur',
         mobilePhone: '',
         email: formDataMock.email,
-        accountNumber: entityMock.accountNumber,
-      }, entityMock.accountId)
+        accountNumber: mockedEntity.accountNumber,
+      }, mockedEntity.accountId)
       expect(addCustomerFeedbackWrapper.exists()).toBeTruthy()
       expect(addCustomerFeedbackWrapper.props('hasError')).toBeFalsy()
     })
@@ -256,7 +256,7 @@ describe('addCustomerDrawer', () => {
 
       expect(addContactToEntitySpy).toHaveBeenCalledOnce()
       expect(addContactToEntitySpy).toHaveBeenCalledWith(
-        entityMock.accountId,
+        mockedEntity.accountId,
         0,
         formDataMock.email,
       )

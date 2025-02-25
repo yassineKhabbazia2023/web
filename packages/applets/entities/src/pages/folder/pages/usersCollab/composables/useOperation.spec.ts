@@ -1,5 +1,5 @@
 import { expect, describe, it } from 'vitest'
-import { getMockedOperations } from '@entities/common/mocks/mockedOperations'
+import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
 import { useOperation } from './useOperation'
 import { type Operation, OperationStatus } from '@entities/common/types/OperationTypes'
 

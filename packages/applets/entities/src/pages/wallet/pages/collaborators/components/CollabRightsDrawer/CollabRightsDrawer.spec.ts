@@ -1,45 +1,36 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import '@entities/__mocks__/common.import.mocks'
+import { mockedPermissionCodes, mockUpdateUserPermission } from '@entities/__mocks__/permissions.mock'
+import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks'
+import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
+import { mockedAccountId } from '@entities/__mocks__/account.mocks'
+import { walletServiceMock } from '@entities/__mocks__/wallet.service.mocks'
+import { rightDrawerUtilsMocks } from '@entities/__mocks__/utils.mocks'
+import { mockedCollaboratorsList1 } from '@entities/__mocks__/collaborators.mocks'
+import { getMockedCollabRoles } from '@entities/__mocks__/collab-roles.mocks'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import mockRowData from './../../mock.json'
 import * as walletServices from '@entities/services/wallet'
-import { getMockedCollabRoles } from './components/CollabRoles/CollabRolesMocks'
 import type { CollabRightsDrawerProps } from './CollabRightsDrawerTypes'
-import { mockUpdateUserPermission } from '@entities/../vitest.setup'
 import CollabRightsDrawer from '.'
 
 // Mocks
-const mockedAccountId = 602
 const mockedCollabRoles = getMockedCollabRoles()
-const mockedPermissionCodes = ['CLUSER001', 'CLUSER002']
-const { firstName, lastName } = mockRowData.data.items[0]
+const { firstName, lastName } = mockedCollaboratorsList1.data.items[0]
 const rowData = {
-  ...mockRowData.data.items[0],
+  ...mockedCollaboratorsList1.data.items[0],
   fullName: `${firstName} ${lastName}`,
   initials: `${firstName[0].toUpperCase()}${lastName[0].toUpperCase()}`,
 }
 const mockedSelectedRoleId = mockedCollabRoles.find(
   (r) => r.name === rowData.role,
 )?.id
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@entities/services/authorization', () => authorizationServiceMock)
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@entities/services/wallet', () => walletServiceMock)
+vi.mock('@entities/common/components/ManageRightsDrawer/utils', () => rightDrawerUtilsMocks)
 
-vi.mock('@entities/common/components/ManageRightsDrawer/utils', () => ({
-  getPermissionCodes: vi.fn(() => mockedPermissionCodes),
-}))
-vi.mock('@entities/services/wallet', () => ({
-  fetchContactRoles: vi.fn(() => Promise.resolve(mockedCollabRoles)),
-  updateCollaborator: vi.fn(),
-}))
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {

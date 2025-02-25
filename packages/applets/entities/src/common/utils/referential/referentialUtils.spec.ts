@@ -12,11 +12,9 @@ import type { PDropdownOption } from '@pulse/styleguide/types'
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
-import { getMockedAccountReferential, getMockedReferentialHubs } from '@entities/services/account/accountMock'
-import { getMockedFormField, getMockedFormSection }
-  from '@entities/pages/entities/components/CompanyInformation/CompanyInformationMock'
-import type { FormField, FormSection }
-  from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
+import { getMockedAccountReferential, getMockedReferentialHubs } from '@entities/__mocks__/account-row.mocks'
+import { getMockedFormField, getMockedFormSection } from '@entities/__mocks__/company-information.mock'
+import type { FormField, FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import type { FormStructureName } from './referentialUtilsTypes'
 

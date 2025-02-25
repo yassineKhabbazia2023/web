@@ -5,7 +5,7 @@ import { PAutocomplete } from '@pulse/styleguide/components'
 import { nextTick } from 'vue'
 import CollaboratorsSearchAutocomplete from '.'
 import type { CollaboratorsSearchAutocompleteProps } from './CollaboratorsSearchAutocompleteTypes'
-import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 
 vi.mock('@entities/services/wallet', () => ({
   getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators)),

@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { getMockedAuthorizationState, getPermissionCodes } from '.'
+import { getPermissionCodes } from '.'
+import { getMockedAuthorizationState } from '@entities/__mocks__/permissions.mock'
 
 // Mocks
 const mockedAuthorizationState = getMockedAuthorizationState()

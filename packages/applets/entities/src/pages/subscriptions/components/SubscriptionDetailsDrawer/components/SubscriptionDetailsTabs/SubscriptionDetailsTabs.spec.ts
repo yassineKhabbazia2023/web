@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach, vi } from 'vitest'
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { getMockedSubscriptionDetails } from '@entities/pages/subscriptions/mocks/SubscriptionDetailsMock'
+import { getMockedSubscriptionDetails } from '@entities/__mocks__/subscription.mocks'
 import SubscriptionDetailsTabs from '.'
 
 const mockedSubscriptionOfferDetails = getMockedSubscriptionDetails()

@@ -1,33 +1,18 @@
 import { vi, it, describe, expect, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
+import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
+import { loggerMock, loggerWarnSpy } from '@entities/__mocks__/logger.mocks'
 import { getInitials } from '@entities/helper'
 import type { ComponentWrapper } from '@entities/common/types'
-import { getMockedUser } from '@entities/pages/entities/mocks'
 import type { UserInfo } from '@pulse/common/types'
 import ManageCollaborators from '.'
 
 const mockCurrentUser: UserInfo = getMockedUser()
-
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
-
-vi.mock('@entities/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve([])),
-}))
-
 const mockedCollaborators = getMockedCollaborators()
 
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('@entities/services/contact', () => ({
   getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators)),
 }))

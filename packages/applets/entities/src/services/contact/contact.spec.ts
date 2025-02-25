@@ -1,9 +1,9 @@
 import { describe, it, vi, expect } from 'vitest'
 import { API_PREFIXES } from '@entities/common/config/services'
 import { omit } from 'lodash-es'
-import { getMockedCustomer } from './contactMocks'
+import { getMockedCustomer } from '@entities/__mocks__/customer.mocks'
 import type { PatchContactPayload } from './contactTypes'
-import { getMockedOperations } from '@entities/common/mocks/mockedOperations'
+import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
 import { OperationStatus } from '@entities/common/types/OperationTypes'
 import {
   fetchAccountOperations,

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { subscriptionRequestMock } from '../../mocks/SubscriptionRequestMock'
+import { subscriptionRequestMock } from '@entities/__mocks__/subscription.mocks'
 import * as helpers from '@entities/common/utils/helpers'
 import { amplitudeService } from '@pulse/common'
 import type { ComponentWrapper } from '@entities/common/types'

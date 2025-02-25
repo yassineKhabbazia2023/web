@@ -2,13 +2,16 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import { dataFromApi, getMockedCustomersCollab } from './mockData'
+import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
+import { contactServiceMock } from '@entities/__mocks__/contact.service.mocks'
+import { walletServiceMock } from '@entities/__mocks__/wallet.service.mocks'
+import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
+import { dataFromApi } from '@entities/__mocks__/api.mocks'
 import { fetchAccountCustomers } from '@entities/services/wallet'
 import { getAccountSignatories, updateSignatoryStatus } from '@entities/services/account'
 import UsersCollab from '.'
-import { getMockedAccount } from '@entities/services/account/accountMock'
+import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import { nextTick, ref } from 'vue'
-import { getMockedOperations } from '@entities/common/mocks/mockedOperations'
 import { userActions } from './types'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 
@@ -26,19 +29,8 @@ const mockedAccount = getMockedAccount()
 
 const mockHasPermission = vi.hoisted(() => vi.fn())
 
-vi.mock('@entities/services/contact', () => {
-  return {
-    fetchAccountOperations: vi.fn(() => Promise.resolve(() => getMockedOperations())),
-  }
-})
-vi.mock('@entities/services/wallet', () => ({
-  fetchAccountCustomers: vi.fn(() => Promise.resolve({
-    items: mockedCustomersCollab,
-    totalItems: mockedCustomersCollab.length,
-    currentPage: DEFAULT_CURRENT_PAGE,
-  })),
-}))
-
+vi.mock('@entities/services/contact', () => contactServiceMock)
+vi.mock('@entities/services/wallet', () => walletServiceMock)
 vi.mock('@entities/pages/folder/pages/usersCollab/composables/useOperation', () => ({
   useOperation: () => {
     return {

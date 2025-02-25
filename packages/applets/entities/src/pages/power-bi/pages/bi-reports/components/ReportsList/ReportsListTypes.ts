@@ -1,4 +1,4 @@
-import type { Report } from '../../BIReportsTypes'
+import type { Report } from '@entities/common/types/BIReportsTypes'
 
 export interface ReportsListProps {
   reports: Report[]

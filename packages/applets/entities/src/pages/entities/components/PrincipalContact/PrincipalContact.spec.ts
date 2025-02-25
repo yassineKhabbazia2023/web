@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import PrincipalContact from '.'
-import { getMockedPrincipalContacts } from './PrincipalContactMocks'
+import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 
 const principalContact = getMockedPrincipalContacts()[0]
 const contactDescription =

@@ -6,9 +6,9 @@ import { PAlert, PUserAction } from '@pulse/styleguide/components'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
 import AddDelegatesStep from '.'
 import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
-import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+import { getMockedCollaborators2 } from '@entities/__mocks__/collaborators.mocks'
 
-const mockedCollaborators = getMockedCollaborators()
+const mockedCollaborators = getMockedCollaborators2()
 vi.mock('@entities/services/wallet', () => ({
   getCollaborators: vi.fn(() => Promise.resolve({
     items: mockedCollaborators,

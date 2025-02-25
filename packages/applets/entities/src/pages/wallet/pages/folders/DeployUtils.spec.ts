@@ -13,7 +13,7 @@ import * as accountService from '@entities/services/account'
 import {
   getMockedAccountQueryResult,
   getMockedAccountRow,
-} from '@entities/services/account/accountMock'
+} from '@entities/__mocks__/account-row.mocks'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 

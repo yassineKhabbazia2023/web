@@ -1,10 +1,11 @@
 import { expect, beforeEach, describe, it } from 'vitest'
+import '@entities/__mocks__/common.import.mocks'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
-import { getMockedOperations } from '@entities/common/mocks/mockedOperations'
+import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
 import { nextTick } from 'vue'
-import { mockSelectedEntity } from '@entities/../vitest.setup'
+import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 import type { ConfirmActionModalProps } from './ConfirmActionModalTypes'
 import ConfirmActionModal from '.'
 
@@ -44,8 +45,8 @@ describe('confirmActionModal Component - Displays pending operations with approv
         '[data-testid=account-number-confirmation-modal]',
       )
 
-      expect(legalName.text()).toBe(mockSelectedEntity.legalName)
-      expect(accountNumber.text()).toBe(mockSelectedEntity.accountNumber)
+      expect(legalName.text()).toBe(mockedEntity.legalName)
+      expect(accountNumber.text()).toBe(mockedEntity.accountNumber)
     })
   })
   describe('events', () => {

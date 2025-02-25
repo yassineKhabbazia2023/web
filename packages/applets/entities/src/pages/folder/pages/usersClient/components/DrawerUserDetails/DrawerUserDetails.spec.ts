@@ -1,7 +1,7 @@
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { mockUser } from '@entities/__mocks__/users-client.mocks'
 import DrawerUserDetails from './DrawerUserDetails.vue'
-import { mockUser } from './mockData'
 import type { Contact, PatchContactPayload } from '@entities/services/contact/contactTypes'
 import { nextTick } from 'vue'
 

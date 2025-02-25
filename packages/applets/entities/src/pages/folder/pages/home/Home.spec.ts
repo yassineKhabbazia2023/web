@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
-import { mockedEntity } from '../../../wallet/components/TableData/mockData'
 import Home from '.'
+import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 
 const pinia = createTestingPinia()
 vi.mock('@pulse/common', () => ({

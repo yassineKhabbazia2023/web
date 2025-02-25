@@ -29,3 +29,10 @@ export interface UserStatus {
     | 'gray-900'
   iconName: IconName
 }
+
+export type contactsRequest = {
+  numberOfContactsToReturn: number
+  contactsTotalCount: number
+  numberOfPages: number
+  currentPage: number
+}

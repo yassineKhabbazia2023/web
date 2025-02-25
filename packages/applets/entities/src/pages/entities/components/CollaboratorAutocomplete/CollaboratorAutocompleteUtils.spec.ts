@@ -1,5 +1,5 @@
 import { expect, describe, it, vi, type MockInstance, beforeEach } from 'vitest'
-import { getMockedCollaborators } from '@entities/services/contact/contactMocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import * as OfferService from '@entities/services/offer'
 
 import { getAutocompleteContacts } from './CollaboratorAutocompleteUtils'

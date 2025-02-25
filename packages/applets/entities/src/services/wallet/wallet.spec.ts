@@ -12,15 +12,13 @@ import {
   fetchCustomers,
 } from '.'
 import { ContactType } from '../contact/contactTypes'
+import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
+import { getMockedCollabRoles } from '@entities/__mocks__/collab-roles.mocks'
 import { getMockedEntitiesStatistics } from '@entities/pages/wallet/components/Filters/FiltersMocks'
 import { mockCollabsData } from '@entities/pages/folder/pages/collaborators/mockData'
 import type { Entity } from '@pulse/common/types'
 import * as Common from '@pulse/common'
-import { getMockedCustomersCollab } from '@entities/pages/folder/pages/usersCollab/mockData'
-import { getMockedCollaborators } from '@entities/common/mocks/mockedCollaborators'
-import {
-  getMockedCollabRoles,
-} from '@entities/pages/wallet/pages/collaborators/components/CollabRightsDrawer/components/CollabRoles/CollabRolesMocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 
 const accountId = 5
 const mockedEntitiesStatistics = getMockedEntitiesStatistics()

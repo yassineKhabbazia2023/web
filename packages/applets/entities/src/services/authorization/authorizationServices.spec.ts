@@ -1,9 +1,9 @@
 import { describe, it, expect } from 'vitest'
-import { mockUpdateUserPermission, mockUpdateAccountPermission } from '@entities/../vitest.setup'
-import {
-  getMockedAuthorizationsConfig,
-} from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListMocks'
-import { ContactType } from '../contact/contactTypes'
+import '@entities/__mocks__/common.import.mocks'
+import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
+import { mockedContactId, mockedContactType } from '@entities/__mocks__/contact.mocks'
+import { mockedAccountId } from '@entities/__mocks__/account.mocks'
+import { mockUpdateAccountPermission, mockUpdateUserPermission, mockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mock'
 import {
   fetchAuthorizationsConfig,
   updateUserPermissions,
@@ -11,10 +11,7 @@ import {
   updateAccountPermissions,
 } from '.'
 
-const mockedContactId = 25
-const mockedAccountId = 602
-const mockedContactType = ContactType.Collaborator
-const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
+vi.mock('@entities/services/authorization', () => authorizationServiceMock)
 
 describe('subscriptionService', () => {
   describe('fetchAuthorizationsConfig', () => {

@@ -12,7 +12,7 @@ import {
   getMockedWalletQueryResult,
   getMockedSearchCriteria,
 } from './DeployUtilsMock'
-import { getMockedAccount } from '@entities/services/account/accountMock'
+import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/common/types'
 
 const mockedAccount = getMockedAccount()

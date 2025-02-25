@@ -6,10 +6,9 @@ import {
   fetchReportAccounts,
   uploadBIreport,
 } from '.'
-import { getMockedBIReports } from '@entities/pages/power-bi/pages/bi-reports/BIReportsMocks'
+import { getMockedBIReports , getMockedBIReportTypes } from '@entities/__mocks__/bi-report.mocks'
+import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import { API_PREFIXES } from '@entities/common/config/services'
-import { getMockedBIReportTypes } from '@entities/pages/wallet/pages/powerbi/SubmitBIReportMocks'
-import { getMockedAccount } from '../account/accountMock'
 
 const mockedAccountId = 602
 const mockedBIToken = 'tokenTest'

@@ -1,6 +1,6 @@
 import { expect, describe, it, beforeEach } from 'vitest'
+import { getMockedStepNotes } from '@entities/__mocks__/step-notes.mocks'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { getMockedStepNotes } from './StepNotesMock'
 import StepNote from '.'
 
 const notes = getMockedStepNotes()

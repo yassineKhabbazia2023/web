@@ -1,4 +1,4 @@
-import type { Report } from '@entities/pages/power-bi/pages/bi-reports/BIReportsTypes'
+import type { Report } from '@entities/common/types/BIReportsTypes'
 import type { Entity } from '@pulse/common/types'
 
 export interface GetReportsRequest {

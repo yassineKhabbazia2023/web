@@ -1,4 +1,4 @@
-import type { FormSection, FormField } from './CompanyInformationTypes'
+import { FormField, FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 
 export function getMockedFormField(override: Partial<FormField> = {}): FormField {
   const defaultFormField: FormField = {

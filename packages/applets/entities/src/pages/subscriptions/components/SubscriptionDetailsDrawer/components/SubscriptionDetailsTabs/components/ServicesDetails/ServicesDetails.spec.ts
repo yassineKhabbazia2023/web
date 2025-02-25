@@ -1,6 +1,6 @@
 import { beforeEach, describe, it, expect } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { getMockedSubscriptionDetails } from '@entities/pages/subscriptions/mocks/SubscriptionDetailsMock'
+import { getMockedSubscriptionDetails } from '@entities/__mocks__/subscription.mocks'
 import ServicesDetails from '.'
 
 const mockedSubscriptionOfferDetails = getMockedSubscriptionDetails()

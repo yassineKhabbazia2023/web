@@ -2,12 +2,12 @@ import { defineStore } from 'pinia'
 import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import { mockedEntity } from '../wallet/components/TableData/mockData'
 import type { Tab } from './FolderTypes'
 import * as FolderHelper from './FolderHelper'
 import { amplitudeService } from '@pulse/common'
 import type { ComponentWrapper } from '@entities/common/types'
 import Folder from '.'
+import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 
 const pinia = createTestingPinia()
 

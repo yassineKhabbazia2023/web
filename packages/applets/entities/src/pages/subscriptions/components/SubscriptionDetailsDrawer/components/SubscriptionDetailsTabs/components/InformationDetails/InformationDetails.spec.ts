@@ -4,13 +4,11 @@ import {
   getMockedAccount,
   getMockedAccountReferential,
   getMockedReferentialHubs,
-} from '@entities/services/account/accountMock'
+} from '@entities/__mocks__/account-row.mocks'
 import * as accountServices from '@entities/services/account'
 import LOOPOfferForm from '@entities/common/config/forms/LOOPOfferFormStructure.json'
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
-import {
-  getMockedSubscriptionOffersServices,
-} from '@entities/pages/entities/components/OfferSubscription/OfferSubscriptionMocks'
+import { getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
 import InformationDetails from '.'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
