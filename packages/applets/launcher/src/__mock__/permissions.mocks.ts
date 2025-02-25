@@ -1,0 +1,1 @@
+export const mockHasPermission = vi.fn((_: string[]) => true)

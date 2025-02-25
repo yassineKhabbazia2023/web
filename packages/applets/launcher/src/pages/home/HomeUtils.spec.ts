@@ -1,4 +1,8 @@
 import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
+import { loggerErrorSpy, loggerMock } from '@launcher/__mock__/logger.mocks'
+import { launcherServicesMocks, mockedSilaeUrl } from '@launcher/__mock__/launcher.service.mocks'
+import { mockedEnvVars } from '@launcher/__mock__/env-vars.mocks'
+import '@launcher/__mock__/common.import.mocks'
 import {
   getSilaeDownloadLabel,
   getLaunchCards,
@@ -10,25 +14,9 @@ import { LauncherKey } from './HomeTypes'
 import * as launcherServices from '@launcher/services/launcherServices'
 import type { AxiosResponse } from 'axios'
 
-const mockedSilaeUrl = 'https://mocked.silae.url'
-
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
-
-vi.mock('@launcher/services/launcherServices', () => ({
-  getSsoSilaeUrl: vi.fn(() => mockedSilaeUrl),
-  downloadApplication: vi.fn(() => mockedSilaeUrl),
-  saveApplication: vi.fn(() => mockedSilaeUrl),
-}))
+vi.mock('env-vars', () => mockedEnvVars)
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@launcher/services/launcherServices', () => launcherServicesMocks)
 
 function getMockedResponse(disposition = '') {
   return {

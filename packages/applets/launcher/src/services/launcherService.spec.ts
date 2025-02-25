@@ -1,12 +1,14 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { AxiosResponse } from 'axios'
-import { commonApiGatewayGetSpy, commonApiGatewayPostSpy } from '@launcher/../vitest.setup'
+import { commonApiGatewayGetSpy, commonApiGatewayPostSpy } from '@launcher/__mock__/api.mocks'
+import { mockedEnvVars } from '@launcher/__mock__/env-vars.mocks'
+import '@launcher/__mock__/common.import.mocks'
 import { DEFAULT_APPLICATION_FILENAME, ApiRoutes } from './launcherServiceConsts'
 import * as FileSaver from 'file-saver'
-import { downloadApplication, getFileName, saveApplication, getSsoSilaeUrl }
-  from './launcherServices'
+import { downloadApplication, getFileName, saveApplication, getSsoSilaeUrl } from './launcherServices'
 import { flushPromises } from '@vue/test-utils'
 
+vi.mock('env-vars', () => mockedEnvVars)
 vi.mock('file-saver', () => ({
   saveAs: vi.fn(),
 }))

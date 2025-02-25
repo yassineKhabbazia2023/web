@@ -1,23 +1,18 @@
 import { nextTick } from 'vue'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { mockedEntity, mockedEnvVars, mockHasPermission } from '@launcher/../vitest.setup'
+import mockedLaunchCards from '@launcher/__mock__/mockedLaunchCards.json'
+import { launcherServicesMocks } from '@launcher/__mock__/launcher.service.mocks'
+import { mockedEntity } from '@launcher/__mock__/entity.mocks'
+import { getLaunchCardsMock, getSilaeDownloadLabelMock, handleClickActionMock, handleDownloadMock, homeUtilsMocks, mockedPercent } from '@launcher/__mock__/home-utils.mocks'
+import '@launcher/__mock__/common.import.mocks'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
 import { LauncherKey } from './HomeTypes'
 import Home from '.'
-import mockedLaunchCards from './__mock__/mockedLaunchCards.json'
 import * as VueRouter from 'vue-router'
-
-const mockedPercent = 47
-const getLaunchCardsMock = vi.hoisted(() => vi.fn())
-const handleClickActionMock = vi.hoisted(() => vi.fn())
-const handleDownloadMock = vi.hoisted(() => vi.fn((_key: LauncherKey, onSilaeDownloadProgress: (_: number) => void) => {
-  onSilaeDownloadProgress(mockedPercent)
-
-  return Promise.resolve()
-}))
-const getSilaeDownloadLabelMock = vi.hoisted(() => vi.fn())
+import { mockHasPermission } from '@launcher/__mock__/permissions.mocks'
+import { mockedEnvVars } from '@launcher/__mock__/env-vars.mocks'
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -25,19 +20,8 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('./HomeUtils', () => ({
-  getLaunchCards: getLaunchCardsMock,
-  handleClickAction: handleClickActionMock,
-  handleDownload: handleDownloadMock,
-  getSilaeDownloadLabel: getSilaeDownloadLabelMock,
-}))
-
-const mockedSilaeUrl = 'https://mocked.silae.url'
-vi.mock('@launcher/services/launcherServices', () => ({
-  getSsoSilaeUrl: vi.fn(() => mockedSilaeUrl),
-  downloadApplication: vi.fn(() => mockedSilaeUrl),
-  saveApplication: vi.fn(() => mockedSilaeUrl),
-}))
+vi.mock('./HomeUtils', () => homeUtilsMocks)
+vi.mock('@launcher/services/launcherServices', () => launcherServicesMocks)
 
 const mockedSilaeDownloadLabel = 'silae download label'
 
@@ -215,7 +199,7 @@ describe('test Home', () => {
     })
   })
 
-  describe('when click downlad on Silae LaunchCard', () => {
+  describe('when click download on Silae LaunchCard', () => {
     const launcherKey = LauncherKey.SILAE
 
     let silaeLaunchCard: VueWrapper
