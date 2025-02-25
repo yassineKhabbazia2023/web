@@ -10,4 +10,10 @@ export interface PToolboxProps {
     | 'bottom-end'
   pElementsTestId?: string
   pPopperClass?: string
+  pCoordinates?: Coordinates
+}
+
+export interface Coordinates {
+  x: number
+  y: number
 }

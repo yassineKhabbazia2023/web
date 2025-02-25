@@ -31,3 +31,8 @@ $dropdown: (
     display: none;
   }
 }
+
+.p-toolbox--floating {
+  height: fit-content;
+  position: absolute;
+}

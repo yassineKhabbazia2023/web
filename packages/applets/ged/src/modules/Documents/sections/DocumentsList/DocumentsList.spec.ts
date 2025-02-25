@@ -5,7 +5,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount, shallowMount } from '@vue/test-utils'
 import type { DocumentsListProps } from './documents-list.types'
 import { documentsResponsePayload } from '../../mocks/documentsWithTableStructureDataMock'
-import { PTableColumn, PTable } from '@pulse/styleguide/components'
+import { PTableColumn, PTable, PToolbox } from '@pulse/styleguide/components'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { Document } from '@ged/models/Document'
@@ -204,6 +204,44 @@ describe('documentList', () => {
       await nextTick()
 
       expect(elTableStubEmptyTextValue).toBe('Aucun résultat')
+    })
+
+    describe('DocumentsList - Right-click a row should open toolbox', () => {
+      it('should trigger toolbox action when right-clicking on a row', async () => {
+        const wrapper = createWrapper()
+        const table = wrapper.findComponent({ name: 'PTable' })
+        const mockedRow = { permissions: [] }
+        const mockedEvent = { preventDefault: vi.fn(), clientX: 100, clientY: 100 }
+
+        table.vm.$emit('row-contextmenu', mockedRow, null, mockedEvent)
+        await wrapper.vm.$nextTick()
+
+        expect(mockedEvent.preventDefault).toHaveBeenCalled()
+        expect(wrapper.findComponent(PToolbox).exists()).toBe(true)
+      })
+
+      it('should correctly set toolbox style on right-click', async () => {
+        const wrapper = createWrapper()
+        const table = wrapper.findComponent({ name: 'PTable' })
+        const mockedRow = { permissions: [] }
+        const mockedEvent = { preventDefault: vi.fn(), clientX: 100, clientY: 100 }
+
+        vi.spyOn(document, 'querySelector').mockReturnValue({
+          getBoundingClientRect: () => ({
+            left: 50,
+            top: 50,
+            width: 500,
+            height: 300,
+          }),
+        } as HTMLElement)
+
+        table.vm.$emit('row-contextmenu', mockedRow, null, mockedEvent)
+        await wrapper.vm.$nextTick()
+        await new Promise(resolve => setTimeout(resolve, 50))
+
+        expect((wrapper.vm as any).toolboxCoordinates.x).toBeGreaterThanOrEqual(10)
+        expect((wrapper.vm as any).toolboxCoordinates.y).toBeGreaterThanOrEqual(100)
+      })
     })
   })
 })

@@ -103,3 +103,8 @@ export interface DocumentStatusUpdateResponse {
   newStatus: PiaStatus
   permissions: string[]
 }
+
+export interface Coordinate {
+  x: number
+  y: number
+}

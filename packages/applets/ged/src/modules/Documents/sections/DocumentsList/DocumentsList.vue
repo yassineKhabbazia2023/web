@@ -14,6 +14,7 @@
       @sort-change="handleSortChange"
       @row-click="selectRow"
       @selection-change="handleSelectionChange"
+      @row-contextmenu="contextMenuTrigger"
     >
       <!-- Align selection column and header -->
       <PTableColumn width="4" label="" />
@@ -42,6 +43,16 @@
     </PTable>
 
     <div class="blur-fade" />
+    <PToolbox
+      ref="tableToolbox"
+      trigger="contextmenu"
+      :pElements="toolboxBasicData"
+      :pCoordinates="toolboxCoordinates"
+      :teleported="false"
+      @p-toolbox-item-clicked="contextMenuHandleToolboxActionTriggered"
+    >
+      <div />
+    </PToolbox>
   </section>
 
   <!-- This is necessary because of how the dragImage is working in the drag and drop API
@@ -56,21 +67,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from 'vue'
-import type { DocumentsListProps } from './documents-list.types'
-import { PTable, PTableColumn } from '@pulse/styleguide/components'
+import { PTable, PTableColumn, PToolbox } from '@pulse/styleguide/components'
 import TableElement from './components/TableElement'
 import { returnSortQueryField } from '@ged/modules/Documents/helpers/sortHelper'
-import type { ElTable } from 'element-plus'
-import type { Document, TableRowDocument } from '@ged/models/Document'
+import { generateToolboxBasicData } from '@ged/modules/common/helpers/toolboxHelper'
+import type { ElDropdown, ElTable } from 'element-plus'
+import type { Coordinate, Document, TableRowDocument } from '@ged/models/Document'
+import { ref, watch, computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDocumentsDragAndDrop } from './composables/DocumentsDragAndDrop'
 import DocumentDragGhost from './components/DocumentDragGhost'
 import { getRowAlignmentClass, getRowClasses } from './documents-list.manager'
+import { DocumentsListProps } from './documents-list.types'
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+const tableToolbox = useTemplateRef('tableToolbox')
+const toolboxCoordinates = ref<Coordinate>({
+  x: 0,
+  y: 0,
+})
+const toolboxBasicData = ref()
+const contextmenuRow = ref<TableRowDocument>()
 
 const emit = defineEmits([
   'on-sort-change',
@@ -121,6 +141,16 @@ const handleToolboxActionTriggered = (action: string) => {
   emit('toolbox-action-triggered', action)
 }
 
+const contextMenuHandleToolboxActionTriggered = (action: string) => {
+  if (contextmenuRow.value) {
+    if (!selectedDocuments.value.includes(contextmenuRow.value)) {
+      selectRow(contextmenuRow.value, { label: t('actions') })
+    }
+    handleToolboxActionTriggered(action)
+  }
+}
+
+
 const tableRowClassName = ({
   row,
 }: {
@@ -167,6 +197,39 @@ const handleSelectionChange = (documentsSelection:Document[]) => {
   if (documentsSelection.length === 0) {
     documentsListTableInstance?.setCurrentRow(undefined)
   }
+}
+
+const getToolboxBasicData = (permissions: string[], isInSearchScope: boolean) => {
+  if (permissions) {
+    return generateToolboxBasicData('Documents', permissions, isInSearchScope)
+  } else {
+    return []
+  }
+}
+
+const contextMenuTrigger = (row: TableRowDocument, _: any, event: MouseEvent) => {
+  event.preventDefault()
+  setToolboxStyle(event.clientX, event.clientY)
+  toolboxBasicData.value = getToolboxBasicData(row.permissions, props.isInSearchScope)
+  contextmenuRow.value = row
+  // Cast to avoid the build error : Property 'handleOpen' does not exist
+  const dropdownInstance = tableToolbox.value?.$refs?.dropdownRef as InstanceType<typeof ElDropdown> | undefined
+  if (dropdownInstance) {
+    dropdownInstance.handleOpen()
+  }
+}
+
+const setToolboxStyle = (clientX: number, clientY: number) => {
+  const tableBody = document.querySelector('.el-table__body')
+  if (!tableBody) {
+    return
+  }
+  const buffer = 60
+  const tableRect = tableBody.getBoundingClientRect()
+  const offsetX = clientX - tableRect.left
+  const offsetY = clientY - tableRect.top + buffer
+  toolboxCoordinates.value.x = offsetX
+  toolboxCoordinates.value.y = offsetY
 }
 </script>
 

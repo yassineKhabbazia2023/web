@@ -1,8 +1,11 @@
 <template>
   <ElDropdown
     ref="dropdownRef"
-    :popperClass="`p-toolbox shadow--3 ${props.pPopperClass}`"
+
+    :class="{ 'p-toolbox--floating': pCoordinates }"
+    :popperClass="`p-toolbox shadow--3 ${pPopperClass}`"
     :placement="pPlacement"
+    :style="computedStyle"
   >
     <slot />
     <template #dropdown>
@@ -30,17 +33,43 @@
 
 <script setup lang="ts">
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import PToolboxItem from '../../atoms/PToolboxItem'
 import type { PToolboxProps } from './PToolboxTypes'
 
 const props = withDefaults(defineProps<PToolboxProps>(), {
   pElements: () => [],
   pPlacement: 'bottom-start',
+  pCoordinates: undefined,
   pPopperClass: '',
 })
 
 defineEmits(['p-toolbox-item-clicked'])
 
 const dropdownRef = ref()
+const dropdownHtmlWrapper = ref<HTMLElement | null>(null)
+const xAxisOffset = ref(0)
+
+const computedStyle = computed(() => ({
+  top: `${props.pCoordinates?.y}px`,
+  left: `${xAxisOffset.value}px`,
+}))
+
+const updateXAxisOffset = (x: number) => {
+  if (dropdownHtmlWrapper.value) {
+    xAxisOffset.value = x - dropdownHtmlWrapper.value.getBoundingClientRect().width / 2
+  }
+}
+
+// We need this watcher because ElementPlus doesnt update visible-change when the user do multiple right click.
+watch(() => props.pCoordinates?.x, () => {
+  setTimeout(() => {
+    dropdownHtmlWrapper.value = document.querySelector('.p-toolbox--floating .el-popper') as HTMLElement
+    if (dropdownHtmlWrapper.value) {
+      if (props.pCoordinates?.x) {
+        updateXAxisOffset(props.pCoordinates.x)
+      }
+    }
+  }, 10)
+})
 </script>
