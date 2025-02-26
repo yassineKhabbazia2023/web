@@ -1,5 +1,5 @@
 import CreateMandateForm from '.'
-import wrapperFactory from '../../../../tests/utils/wrapperFactory'
+import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { expect, describe, it, vi } from 'vitest'
 
 function mockMandateService(

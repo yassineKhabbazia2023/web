@@ -1,22 +1,17 @@
-import { defineStore } from 'pinia'
-import wrapperFactory from '../../../../tests/utils/wrapperFactory'
-import CreateMandateDrawer from '.'
+import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
+import { amplitudeServiceMock, amplitudeTrackMock } from '@mandate/__mocks__/amplitude.mocks'
+import { commonStoreMock } from '@mandate/__mocks__/common.mocks'
 import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { createMandate } from '@mandate/services/mandate'
+import CreateMandateDrawer from '.'
 
 const createWrapper = (props: any = {}, slots: any = {}) =>
   wrapperFactory(CreateMandateDrawer, { props, slots })
 
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
-
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({}),
-  }),
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
+  commonStore: commonStoreMock,
+  amplitudeService: amplitudeServiceMock,
 }))
 
 vi.mock('@mandate/services/mandate', () => ({

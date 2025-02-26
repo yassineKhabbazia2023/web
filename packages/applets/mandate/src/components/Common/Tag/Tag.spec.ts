@@ -1,5 +1,5 @@
 import Tag from '.'
-import wrapperFactory from '../../../../tests/utils/wrapperFactory'
+import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { expect, describe, it } from 'vitest'
 
 const createWrapper = (statusCode: string) =>

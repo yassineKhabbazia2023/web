@@ -1,10 +1,13 @@
-import wrapperFactory from '../../../../tests/utils/wrapperFactory'
-import Table from '.'
 import { expect, describe, it, vi } from 'vitest'
+import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
+import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
+import { getMockedMandatesData } from '@mandate/__mocks__/mandate.mock'
+import { amplitudeServiceMock, amplitudeTrackMock } from '@mandate/__mocks__/amplitude.mocks'
+import { mockedNotification, notificationHelperMock, showNotificationMock } from '@mandate/__mocks__/notification.helper.mocks'
 import * as mandateService from '@mandate/services/mandate'
 import { nextTick } from 'vue'
-import { getMockedMandatesData } from '@mandate/../tests/mocks/mandateMock'
 import { flushPromises } from '@vue/test-utils'
+import Table from '.'
 
 interface Window {
   showSaveFilePicker: any
@@ -15,14 +18,12 @@ declare let document: any
 
 const currentPage = 1
 
-const mockedNotification = {
-  close: vi.fn(),
-}
-const showNotificationMock = vi.hoisted(() => vi.fn(() => mockedNotification))
-
-vi.mock('@mandate/helpers/NotificationHelper', () => ({
-  showNotification: showNotificationMock,
+vi.mock('@mandate/helpers/NotificationHelper', () => notificationHelperMock)
+vi.mock('@mandate/helpers/utils', () => utilsMocks)
+vi.mock('@pulse/common', () => ({
+  amplitudeService: amplitudeServiceMock,
 }))
+
 
 vi.mock('@mandate/services/mandate', () => {
   return {
@@ -44,22 +45,6 @@ vi.mock('@mandate/services/mandate', () => {
     }),
   }
 })
-
-vi.mock('@mandate/helpers/utils', () => {
-  return {
-    dateFormatter: vi.fn(),
-    debounce: vi.fn(),
-    downloadFile: vi.fn(),
-    saveFileAs: vi.fn(),
-  }
-})
-
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
-}))
 
 const mockShowSaveFilePicker = (withShowSaveFilePicker: boolean = true) => {
   if (withShowSaveFilePicker) {

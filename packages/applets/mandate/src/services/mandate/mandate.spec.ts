@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
+import { getMockedBban } from '@mandate/__mocks__/mandate.mock'
 import {
   getBankDetail,
   getMandatesCollection,
@@ -12,7 +13,6 @@ import {
   parseParams,
   getMandateAvailability,
 } from '.'
-import { getMockedBban } from '@mandate/../tests/mocks/mandateMock'
 import type { SearchMandateParams } from './ServiceMandateTypes'
 
 const bban = getMockedBban()

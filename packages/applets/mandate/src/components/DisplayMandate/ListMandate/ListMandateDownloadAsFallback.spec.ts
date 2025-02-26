@@ -1,8 +1,11 @@
-import wrapperFactory from '../../../../tests/utils/wrapperFactory'
-import Table from '.'
 import { expect, describe, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
+import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
+import { notificationHelperMock } from '@mandate/__mocks__/notification.helper.mocks'
+import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
+import { amplitudeServiceMock } from '@mandate/__mocks__/amplitude.mocks'
 import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
+import Table from '.'
 
 interface Window {
   showSaveFilePicker: any
@@ -13,14 +16,12 @@ declare let window: Window
 
 const currentPage = 1
 
-const mockedNotification = {
-  close: vi.fn(),
-}
-const showNotificationMock = vi.hoisted(() => vi.fn(() => mockedNotification))
-
-vi.mock('@mandate/helpers/NotificationHelper', () => ({
-  showNotification: showNotificationMock,
+vi.mock('@mandate/helpers/NotificationHelper', () => notificationHelperMock)
+vi.mock('@mandate/helpers/utils', () => utilsMocks)
+vi.mock('@pulse/common', () => ({
+  amplitudeService: amplitudeServiceMock,
 }))
+
 
 vi.mock('@mandate/services/mandate', () => {
   return {
@@ -28,21 +29,6 @@ vi.mock('@mandate/services/mandate', () => {
       // Mock implementation or return value for downloadUnsignedMandate
       return Promise.resolve(Promise.resolve({ data: 'pdf-data' }))
     }),
-  }
-})
-
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
-}))
-
-vi.mock('@mandate/helpers/utils', () => {
-  return {
-    dateFormatter: vi.fn(),
-    downloadFile: vi.fn(),
-    saveFileAs: vi.fn(),
   }
 })
 

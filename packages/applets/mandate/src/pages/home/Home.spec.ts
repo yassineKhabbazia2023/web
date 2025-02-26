@@ -1,18 +1,18 @@
-import { defineStore } from 'pinia'
 import type { MockInstance } from 'vitest'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import wrapperFactory from '../../../tests/utils/wrapperFactory'
-import Home from '@mandate/pages/home'
-import * as mandateService from '@mandate/services/mandate'
-import { getMockedMandatesList } from '@mandate/../tests/mocks/mandateMock'
+import { loggerErrorSpy, loggerMock } from '@mandate/__mocks__/logger.mocks'
+import { getMockedMandatesList } from '@mandate/__mocks__/mandate.mock'
+import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
+import { amplitudeServiceMock, amplitudeTrackMock } from '@mandate/__mocks__/amplitude.mocks'
+import { commonStoreMock } from '@mandate/__mocks__/common.mocks'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import { nextTick, reactive } from 'vue'
 import type { AxiosResponse } from 'axios'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
+import * as mandateService from '@mandate/services/mandate'
+import Home from '@mandate/pages/home'
+
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 const routerQuery = vi.hoisted(() => vi.fn(() => ''))
 vi.mock('vue-router', () => ({
@@ -25,22 +25,10 @@ vi.mock('vue-router', () => ({
     }),
 }))
 
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
-
 vi.mock('@mandate/services/mandate')
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ([]),
-  }),
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
+  commonStore: commonStoreMock,
+  amplitudeService: amplitudeServiceMock,
 }))
 
 const createWrapper = (props: any) =>

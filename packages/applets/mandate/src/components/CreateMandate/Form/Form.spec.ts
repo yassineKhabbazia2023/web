@@ -1,7 +1,8 @@
-import CreateMandateForm from '.'
-import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi } from 'vitest'
+import { loggerMock } from '@mandate/__mocks__/logger.mocks'
+import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { getCompany } from '@mandate/services/mandate'
+import CreateMandateForm from '.'
 
 function mockMandateService(
   createMandateData: any,
@@ -15,17 +16,7 @@ function mockMandateService(
   }
 }
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@mandate/services/mandate', () => {
   return mockMandateService(

@@ -1,23 +1,18 @@
-import { defineStore } from 'pinia'
-import wrapperFactory from '../../../../tests/utils/wrapperFactory'
-import Header from '.'
+import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
+import { amplitudeServiceMock, amplitudeTrackMock } from '@mandate/__mocks__/amplitude.mocks'
+import { commonStoreMock } from '@mandate/__mocks__/common.mocks'
 import { expect, describe, it, vi } from 'vitest'
 import Drawer from '@mandate/components/CreateMandate/Drawer'
 import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
+import Header from '.'
 
 const createWrapper = () =>
   wrapperFactory(Header)
 
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
-
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ([]),
-  }),
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
+  commonStore: commonStoreMock,
+  amplitudeService: amplitudeServiceMock,
 }))
 
 function getDrawerOpenButton(wrapper: VueWrapper) {

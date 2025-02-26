@@ -1,12 +1,15 @@
 
-import Download from '.'
-import type { DownloadProps } from './DownloadTypes'
-import wrapperFactory from '../../../../tests/utils/wrapperFactory'
 import { expect, describe, it, vi, beforeEach } from 'vitest'
+import { loggerErrorSpy, loggerMock } from '@mandate/__mocks__/logger.mocks'
+import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
+import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
+import { PNotificationMocked } from '@mandate/__mocks__/styleguide.mocks'
+import type { DownloadProps } from './DownloadTypes'
 import { downloadUnsignedMandate, getMandateAvailability } from '@mandate/services/mandate'
 import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import { mandateAvailabilityCheckStatuses } from '@mandate/constants/mandateStatuses'
+import Download from '.'
 
 interface Window {
   showSaveFilePicker: any
@@ -17,36 +20,22 @@ declare let window: Window
 const data = 'pdf-data'
 
 const apiMocks = vi.hoisted(() => ({
-  availaibleMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.AVAILABLE)),
-  unavailaibleMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.NOT_AVAILABLE)),
+  availableMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.AVAILABLE)),
+  unavailableMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.NOT_AVAILABLE)),
   erroredMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.ERRORED)),
 }))
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@mandate/services/mandate', () => ({
   downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data })),
-  getMandateAvailability: apiMocks.availaibleMandate,
+  getMandateAvailability: apiMocks.availableMandate,
 }))
 
-vi.mock('@mandate/helpers/utils', () => ({
-  saveFileAs: vi.fn(),
-  downloadFile: vi.fn(),
-}))
+vi.mock('@mandate/helpers/utils', () => utilsMocks)
 
-const notificationSpy = vi.hoisted(() => vi.fn(() => ({ close: vi.fn() })))
 vi.mock('@pulse/styleguide', async () => ({
-  PNotification: notificationSpy,
+  PNotification: PNotificationMocked,
 }))
 
 const mandateId = '1243-4546-35323-43'
@@ -123,7 +112,7 @@ describe('download mandate prefilled', () => {
 
 describe('mandate not yet available', () => {
   beforeEach(() => {
-    vi.mocked(getMandateAvailability).mockReturnValue(apiMocks.unavailaibleMandate())
+    vi.mocked(getMandateAvailability).mockReturnValue(apiMocks.unavailableMandate())
   })
 
   it('should NOT show the download option', () => {
@@ -162,6 +151,6 @@ describe('mandate is errored', () => {
     await flushPromises()
 
     expect(wrapper.emitted()).toHaveProperty('close-drawer')
-    expect(notificationSpy).toHaveBeenCalledOnce()
+    expect(PNotificationMocked).toHaveBeenCalledOnce()
   })
 })
