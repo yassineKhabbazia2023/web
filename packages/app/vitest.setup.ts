@@ -38,13 +38,13 @@ vi.mock('@pulse/common', () => ({
 export const fetchUnreadNotificationsCountMock = vi.fn(() => 5)
 export const fetchNotificationsMock = vi.fn(() => ({ notifications: notificationsMock }))
 export const patchNotificationReadStatusMock = vi.fn()
-export const patchAllNotificationsAsReadStatusMock = vi.fn()
+export const patchAllNotificationsAsReadMock = vi.fn()
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
   fetchUnreadNotificationsCount: fetchUnreadNotificationsCountMock,
   fetchNotifications: fetchNotificationsMock,
   patchNotificationReadStatus: patchNotificationReadStatusMock,
-  patchAllNotificationsReadStatus: patchAllNotificationsAsReadStatusMock,
+  patchAllNotificationsReadStatus: patchAllNotificationsAsReadMock,
 }))
 
 export const envVarsValues = {

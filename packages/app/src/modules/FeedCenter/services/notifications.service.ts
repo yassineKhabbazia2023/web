@@ -34,10 +34,10 @@ export async function patchNotificationReadStatus(notificationId: FeedCenterNoti
   }
   await api().gateway.put(`${NOTIFICATION_API_PREFIX}/read/currentUser`, requestBody)
 }
-export async function patchAllNotificationsReadStatus(userId: number) {
+export function patchAllNotificationsReadStatus(userId: number) {
   const requestBody = {
     notificationReceiverId: userId,
     deviceType: 'desktop',
   }
-  await api().gateway.put(`${NOTIFICATION_API_PREFIX}/read/currentUser`, requestBody)
+  return api().gateway.put(`${NOTIFICATION_API_PREFIX}/read/currentUser`, requestBody)
 }

@@ -61,7 +61,7 @@ import NotificationsWrapper from './NotificationsWrapper'
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 import { PDrawerProps } from '@pulse/styleguide/types'
 import { commonStore } from '@pulse/common'
-import { patchAllNotificationsAsReadStatus } from './feed-center.manager'
+import { patchAllNotificationsAsRead } from './feed-center.manager'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -96,9 +96,7 @@ const toolboxParams: PDrawerProps['pHeaderToolbox'] = {
 }
 
 async function handleToolboxItemClick() {
-  if (userId.value) {
-    await patchAllNotificationsAsReadStatus(userId.value)
-  }
+  notifications.value = await patchAllNotificationsAsRead(userId.value)
 }
 
 const {
