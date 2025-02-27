@@ -10,6 +10,8 @@ export type ImageName =
 'unlock-success' |
 'warning' |
 'x' |
+'bell-slash-duotone' |
+'brand-monogram' |
 'building-duotone' |
 'hourglass-duotone' |
 'power-duotone' |

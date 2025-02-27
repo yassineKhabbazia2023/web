@@ -9,6 +9,9 @@
       flex--justify-content-center
     "
   >
+    <div class="no-notification-placeholder__image margin-bottom--7">
+      <PImage pName="bell-slash-duotone" />
+    </div>
     <p class="text-center font-small font-semibold text-color--neutral-gray-500">
       {{ t('empty') }}
     </p>
@@ -28,6 +31,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { PImage } from '@pulse/styleguide/components'
 import type { NoNotificationsPlaceholderProps } from './NoNotificationsPlaceholderTypes'
 
 const { t } = useI18n({
@@ -37,6 +41,15 @@ const { t } = useI18n({
 
 defineProps<NoNotificationsPlaceholderProps>()
 </script>
+
+<style lang="scss" scoped>
+.no-notification-placeholder {
+  &__image {
+    width: 28px;
+    height: 28px;
+  }
+}
+</style>
 
 <i18n lang="yaml">
 en-US:

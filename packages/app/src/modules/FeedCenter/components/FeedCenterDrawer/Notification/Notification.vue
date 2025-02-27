@@ -1,5 +1,5 @@
 <template>
-  <div class="notification padding-bottom--2">
+  <div class="notification padding-bottom--1">
     <PNotificationCard
       :pIsNew="!isRead"
       :pTime="elapsedTime"
@@ -8,18 +8,20 @@
         <PAvatar
           pShape="circle"
           pType="default"
-          pColor="bordered-persian"
+          pColor="white"
           :pSelected="false"
         >
-          <PIcon pName="pulse" />
+          <div class="padding--2">
+            <PImage pName="brand-monogram" />
+          </div>
         </PAvatar>
       </template>
 
       <template #text>
-        <div class="notification__title font-xsmall text-color--persian-500">
+        <div class="notification__title font-xsmall text-color--persian-700">
           {{ notificationTitle }}
         </div>
-        <p class="margin-top--1">
+        <p class="margin-top--1 text-color--persian-900">
           {{ message }}
         </p>
       </template>
@@ -29,7 +31,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PNotificationCard, PAvatar, PIcon } from '@pulse/styleguide/components'
+import { PNotificationCard, PAvatar, PImage } from '@pulse/styleguide/components'
 import type { NotificationProps } from './NotificationTypes'
 
 const { t } = useI18n({

@@ -9,22 +9,17 @@
     <button
       class="
         p-notification-card__button
-        padding--2
+        padding-left--2
+        padding-right--3
+        padding-y--3
         flex--grow-1
       "
       @click="$emit('action-notification-click')"
     >
-      <span class="p-notification-card__notif padding-right--1" aria-hidden="true">
-        <PIcon
-          class="p-notification-card__icon"
-          size="16"
-          pName="dot"
-        />
-      </span>
-      <span class="p-notification-card__avatar padding-right--2">
+      <span class="p-notification-card__avatar">
         <slot name="avatar" />
       </span>
-      <span class="p-notification-card__text">
+      <span class="p-notification-card__text padding-x--3 flex--grow-1">
         <slot name="text" />
       </span>
       <span class="p-notification-card__time font-small padding-left--2 padding-bottom--2">
@@ -39,7 +34,6 @@
 
 <script setup lang="ts">
 import type { PNotificationCardProps } from './PNotificationCardTypes'
-import PIcon from '../PIcon'
 
 defineEmits(['action-notification-click'])
 
@@ -54,45 +48,39 @@ withDefaults(defineProps<PNotificationCardProps>(), {
   position: relative;
   background: var(--el-color-white);
   transition: all 0.1s ease;
+  border-left: 4px solid transparent;
 
   &--new {
-    background: var(--el-color-persian-100);
-
-    #{$self}__icon {
-      color: var(--el-color-persian-500);
-    }
+    background: var(--el-color-black-rock-100);
+    border-color: var(--el-color-secondary-amethyste);
   }
 
   &:hover,
   &:focus {
-    background: var(--el-color-persian-200);
+    background: var(--el-color-secondary-cyan-bg);
   }
 
   &__button {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     background: transparent;
     appearance: none;
     cursor: pointer;
     border: none;
   }
 
-  &__icon {
-    color: transparent;
-  }
-
   &__text {
     width: calc(100% - 110px);
-    padding: 0 8px;
     text-align: left;
+    word-break: break-word;
   }
 
   &__time {
     align-self: flex-start;
     width: 42px;
     text-align: center;
-    color: var(--el-color-neutral-gray-700);
+    color: var(--el-color-neutral-gray-900);
   }
 
   &__actions {

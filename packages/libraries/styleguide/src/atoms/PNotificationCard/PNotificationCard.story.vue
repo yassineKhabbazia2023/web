@@ -36,6 +36,39 @@
         <HstCheckbox v-model="PNotificationCardData.pIsNew" title="New notif" />
       </template>
     </Variant>
+
+    <Variant title="New Notification Card">
+      <PNotificationCard
+        :pTime="newNotificationCardData.pTime"
+        :pIsNew="newNotificationCardData.pIsNew"
+      >
+        <template #avatar>
+          <PAvatar
+            :pShape="currentShape"
+            :pType="currentType"
+            :pColor="currentColor"
+          >
+            AB
+          </PAvatar>
+        </template>
+        <template #text>
+          <span class="font-bold">Alexandre De Lavandia</span> filed you a document <span class="font-bold">liasse-fiscale.pdf</span> inside the folder Publications.
+        </template>
+        <template #actions>
+          <PToolbox :pElements="toolboxBasicData">
+            <PButton
+              class="el-button--icon"
+              pSize="small"
+            >
+              <PIcon pName="threeDots" />
+            </PButton>
+          </PToolbox>
+        </template>
+      </PNotificationCard>
+      <template #controls>
+        <HstCheckbox v-model="PNotificationCardData.pIsNew" title="New notif" />
+      </template>
+    </Variant>
   </Story>
 </template>
 
@@ -83,6 +116,11 @@ const toolboxBasicData: PToolboxItemProps[] = [
 const PNotificationCardData = reactive({
   pIsNew: false,
   pTime: '1sem',
+})
+
+const newNotificationCardData = reactive({
+  pIsNew: true,
+  pTime: '1 min',
 })
 </script>
 
