@@ -3,7 +3,7 @@
     <PConfigProvider>
       <component :is="currentLayout" />
       <PopupRenewToken
-        :isVisible="hasMainLayout && popupRenewTokenIsVisible"
+        :isVisible="canDisplayRenewTokenModal && popupRenewTokenIsVisible"
         :isTokenExpired="isTokenExpired"
         :isCollab="isCollab"
         @update:is-visible="popupRenewTokenIsVisible = $event"
@@ -46,13 +46,21 @@ const { logoutAndRedirectToLogin } = useRedirection()
 const { user, isCollab } = storeToRefs(useStore())
 
 const MAIN_LAYOUT = 'Home'
+const LOGIN_LAYOUT = 'LoginLayout'
+const ERROR_LAYOUT = 'Error'
+const NO_POPUP_RENEW_TOKEN_LAYOUTS = [
+  LOGIN_LAYOUT,
+  ERROR_LAYOUT,
+]
 
 const currentLayout = ref()
 const currentLayoutName = ref('')
 const previousLayoutName = ref('')
 const popupRenewTokenIsVisible = ref(false)
 const isTokenExpired = ref(false)
-const hasMainLayout = computed(() => currentLayoutName.value === MAIN_LAYOUT)
+const canDisplayRenewTokenModal = computed(() =>
+  !NO_POPUP_RENEW_TOKEN_LAYOUTS.includes(currentLayoutName.value),
+)
 
 function initCurrentLayout() {
   currentLayoutName.value = route.meta?.layout?.toString() || MAIN_LAYOUT
@@ -92,7 +100,7 @@ async function unauthorizedCallback() {
   tokenService.setToken('')
   isTokenExpired.value = true
 
-  if (hasMainLayout.value) {
+  if (canDisplayRenewTokenModal.value) {
     if (!user.value) {
       logoutAndRedirectToLogin()
 
