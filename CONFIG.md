@@ -44,6 +44,7 @@ window.EnvVars = envVars
 | VITE_GIGYA_SSO_ACTIVATED | Feature-flag du GIGYA SSO |
 | VITE_GESTION_MEG | URL de connexion SSO MEG |
 | VITE_IDLE_DURATION | Temps de non-utilisation de l'app avant une proposition de déconnexion automatique |
+| VITE_MAIL_TO_GED_ACTIVATED | Feature flag de la fonctionnalité Mail2GED |
 | VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |
 | VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
 | VITE_GIGYA_KEY | Clé d'API Gigya (SSO) |
