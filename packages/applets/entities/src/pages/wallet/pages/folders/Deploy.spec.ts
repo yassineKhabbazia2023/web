@@ -7,7 +7,7 @@ import TableData from '../../components/TableData'
 import Deploy from '.'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import * as DeployUtils from './DeployUtils'
-import { nextTick } from 'vue'
+import { nextTick, reactive } from 'vue'
 import {
   getMockedWalletQueryResult,
   getMockedSearchCriteria,
@@ -80,18 +80,29 @@ vi.mock('@pulse/common', () => ({
 }))
 
 const mockRouterPush = vi.fn()
+const mockRouterReplace = vi.fn()
 const onBeforeRouteUpdateMock = vi.hoisted(() => vi.fn())
-let queryAccountNumbers: string | string[] | undefined = ''
+
+interface RouterMockData {
+  name: string,
+  query: {
+    accountNumbers: string | string[] | undefined
+  }
+}
+const routeMockData: RouterMockData = reactive({
+  name: 'folders',
+  query: {
+    accountNumbers: '',
+  },
+})
+
 vi.mock('vue-router', async () => {
   return {
     useRouter: () => ({
       push: mockRouterPush,
+      replace: mockRouterReplace,
     }),
-    useRoute: () => ({
-      query: {
-        accountNumbers: queryAccountNumbers,
-      },
-    }),
+    useRoute: () => (routeMockData),
     onBeforeRouteUpdate: onBeforeRouteUpdateMock,
   }
 })
@@ -300,13 +311,14 @@ describe('deploy', () => {
     const tags = wrapper.findComponent('[data-testid=filters]') as VueWrapper
     tags.vm.$emit('filterByStatus', EntityStatus.TO_DEPLOY)
     await nextTick()
+    await flushPromises()
 
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 0,
       filterByDeploymentStatus: '1',
       limit: 15,
     })
-
+    // base call + filter call
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
     expect(mockFetchWalletData).toHaveBeenNthCalledWith(
       2,
@@ -317,10 +329,13 @@ describe('deploy', () => {
 
   it('should call api without filter when removeFilter event is triggered', async () => {
     const wrapper = createWrapper()
+    await nextTick()
+
     await flushPromises()
     const tags = wrapper.findComponent('[data-testid=filters]') as VueWrapper
     tags.vm.$emit('removeFilter')
-    await nextTick()
+    await flushPromises()
+
 
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 0,
@@ -358,9 +373,10 @@ describe('deploy', () => {
       accountNumber: '100',
       expectedSearchValue: '100',
     },
-  ])('should fetch entities when route has accountNumbers query', async ({ accountNumber, expectedSearchValue }) => {
-    queryAccountNumbers = accountNumber
+  ])('should fetch entities when route has $accountNumber accountNumbers query', async ({ accountNumber, expectedSearchValue }) => {
+    routeMockData.query.accountNumbers = accountNumber
     createWrapper()
+    await nextTick()
     await flushPromises()
 
     const expectedSearchCriteria = getMockedSearchCriteria({
@@ -369,17 +385,16 @@ describe('deploy', () => {
       limit: 15,
       search: expectedSearchValue,
     })
-
-    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(1)
     expect(mockFetchWalletData).toHaveBeenNthCalledWith(
-      2,
+      1,
       expect.anything(),
       expectedSearchCriteria,
     )
   })
 
   it('should NOT fetch entities when route has an unappropriate accountNumbers query', async () => {
-    queryAccountNumbers = undefined
+    routeMockData.query.accountNumbers = undefined
     createWrapper()
     await flushPromises()
 

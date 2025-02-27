@@ -109,7 +109,7 @@
 <script lang='ts' setup>
 import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
-import { computed, onBeforeMount, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import {
   PLoader,
   PButton,
@@ -213,6 +213,10 @@ const searchResult = ref<SearchResult>({
 
 function retrieveAndBindAccountsQuery() {
   const { accountNumbers } = route.query
+  if (!accountNumbers) {
+    return
+  }
+
   if (Array.isArray(accountNumbers)) {
     searchCriteria.value.search = accountNumbers.at(0) ?? undefined
   } else {
@@ -220,8 +224,16 @@ function retrieveAndBindAccountsQuery() {
   }
 }
 
-onBeforeMount(() => {
-  retrieveAndBindAccountsQuery()
+const routeQuery = computed(() => route.query)
+watch(routeQuery, () => {
+  if(route.name === 'folders'){
+    retrieveAndBindAccountsQuery()
+    router.replace({
+      query: {},
+    })
+  }
+}, {
+  immediate: true,
 })
 
 onBeforeRouteUpdate((to, from) => {
