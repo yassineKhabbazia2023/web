@@ -1,7 +1,12 @@
-import api, { requestInterceptor, responseInterceptorSuccess, responseInterceptorError } from './index'
+import api, {
+  requestInterceptor,
+  responseInterceptorSuccess,
+  responseInterceptorError,
+} from './index'
 import { vi } from 'vitest'
 import { logger } from '@pulse/core'
-
+import type { AxiosError } from 'axios'
+ 
 vi.mock('env-vars', () => ({
   VITE_API_GATEWAY: 'https://placeholder.test/gtw',
   VITE_API_DS: 'https://placeholder.test/ds',
@@ -9,10 +14,13 @@ vi.mock('env-vars', () => ({
 }))
 vi.mock('axios')
 
-const token = vi.hoisted(() => {
-  return 'abcdef-123456'
-})
-const getTokenMocked = vi.hoisted(() => vi.fn(() => (token)))
+const getUnauthorizedCallbackMock = vi.hoisted(() => vi.fn())
+
+vi.mock('@common/unauthorized-callback', () => ({
+  getUnauthorizedCallback: getUnauthorizedCallbackMock,
+}))
+
+const getTokenMocked = vi.hoisted(() => vi.fn(() => ('abcdef-123456')))
 
 vi.mock('../main', () => ({
   tokenService: {
@@ -27,6 +35,7 @@ describe('api axios instances with env-vars', () => {
   })
 
   it('each axios REST methods should have the user\'s token in request headers', async () => {
+    const expectedAuthorization = 'Bearer abcdef-123456'
     const instance = api().gateway
 
     await instance.get('foo/bar')
@@ -34,7 +43,7 @@ describe('api axios instances with env-vars', () => {
     await instance.put('foo/bar')
     await instance.delete('foo/bar')
 
-    expect(instance.defaults.headers.Authorization).toBe(`Bearer ${token}`)
+    expect(instance.defaults.headers.Authorization).toBe(expectedAuthorization)
   })
 
   it('should emit reject on response error', async () => {
@@ -87,11 +96,34 @@ describe('responseInterceptorSuccess', () => {
 describe('responseInterceptorError', () => {
   it('should call Promise.reject', async () => {
     const promiseRejectSpy = vi.spyOn(Promise, 'reject')
-    const error = new Error('fake error')
+    const error: AxiosError = {
+      name: 'fatal error',
+      message: 'fatal error message',
+      status: 500,
+      isAxiosError: true,
+      toJSON: () => ({}),
+    }
 
-    await expect(responseInterceptorError(error)).rejects.toThrow(error)
+    await expect(responseInterceptorError(error)).rejects.toStrictEqual(error)
 
     expect(promiseRejectSpy).toHaveBeenCalledOnce()
     expect(promiseRejectSpy).toHaveBeenCalledWith(error)
+  })
+
+  it('should call unauthorizedCallback twice when 401 occurs twice', async () => {
+    const unauthorizedCallbackMock = vi.fn()
+    getUnauthorizedCallbackMock.mockReturnValue(unauthorizedCallbackMock)
+    const error: AxiosError = {
+      name: 'error',
+      message: 'error message',
+      status: 401,
+      isAxiosError: true,
+      toJSON: () => ({}),
+    }
+
+    await expect(responseInterceptorError(error)).rejects.toStrictEqual(error)
+    await expect(responseInterceptorError(error)).rejects.toStrictEqual(error)
+
+    expect(unauthorizedCallbackMock).toHaveBeenCalledTimes(2)
   })
 })

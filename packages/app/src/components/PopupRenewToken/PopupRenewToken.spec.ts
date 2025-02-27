@@ -1,85 +1,17 @@
-import { createTestingPinia } from '@pinia/testing'
-import { defineStore } from 'pinia'
-import { beforeEach, describe, expect, it, type MockInstance, vi } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, shallowMount } from '@vue/test-utils'
-import router from '../../plugins/router'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { shallowMount } from '@vue/test-utils'
 import PopupRenewToken from '.'
-import { ROUTES } from '../../app/mock'
-import { tokenService } from '@pulse/common'
-import type { JwtPayload } from 'jwt-decode'
-import jwtDecode from 'jwt-decode'
-import { nextTick } from 'vue'
+import type { PopupRenewTokenProps } from './PopupRenewToken.types'
 
-const authPostMock = vi.fn(() => ({ data: '' }))
-
-const mock = vi.hoisted(() => {
-  return {
-    logoutAndRedirectToLogin: vi.fn(),
-  }
-})
-vi.mock('@app/composables/useRedirection', () => ({
-  useRedirection: () => {
-    return {
-      logoutAndRedirectToLogin: mock.logoutAndRedirectToLogin,
-    }
-  },
-}))
-
-vi.mock('@pulse/common', () => ({
-  hasTokenExpired: (token: string) => !token,
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        token: 'token',
-      },
-    }),
-    getters: {
-      isAuthenticated: () => true,
-    },
-    actions: {
-      logout: () => vi.fn(),
-    },
-  }),
-  commonApi: () => ({
-    user_origin: {
-      get: vi.fn().mockResolvedValue({ data: 'CLIENT' }),
-    },
-    gateway: {
-      post: authPostMock,
-    },
-  }),
-  routes: {
-    value: [],
-  },
-  tokenService: {
-    setToken: vi.fn(),
-    getToken: vi.fn(),
-    registerOnChange: vi.fn(),
-    unregisterOnChange: vi.fn(),
-  },
-  dataProvider: () => {
-    return {
-      fetchUserData: vi.fn(),
-    }
-  },
-}))
-
-vi.mock('jwt-decode', () => ({
-  default: () => ({
-    exp: Date.now() / 1000 + 3600, // expires in 1 hour.
-    sub: 'something',
-  }),
-}))
-
-const fiftyFiveMinutesInMiliseconds = 3300000
-const oneHourInMiliseconds = 3600000
-
-createTestingPinia()
-
-const createWrapper = (isVisible = true) => {
+const defaultProps: PopupRenewTokenProps = {
+  isVisible: true,
+  isTokenExpired: false,
+  isCollab: false,
+}
+const createWrapper = (overrittenProps: Partial<PopupRenewTokenProps> = {}) => {
   const props = {
-    isVisible,
+    ...defaultProps,
+    ...overrittenProps,
   }
 
   return shallowMount(PopupRenewToken, {
@@ -98,88 +30,91 @@ const createWrapper = (isVisible = true) => {
   })
 }
 
-const TOKEN = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJFUTBNVVE1TjBOQ1JUSkVNemszTTBVMVJrTkRRMFUwUTBNMVJFRkJSamhETWpkRU5VRkJRZyJ9.eyJpc3MiOiJodHRwczovL2ZpZG0uZ2lneWEuY29tL2p3dC8zX2pXbXpmSjI5elFib1FQS0MzNDNrR0szMk1xQWU3MEQ3M3NxM3o0QmxYOGpjTU9kSnZ6U256NUFzUGRobkNlOVAvIiwiYXBpS2V5IjoiM19qV216ZkoyOXpRYm9RUEtDMzQza0dLMzJNcUFlNzBENzNzcTN6NEJsWDhqY01PZEp2elNuejVBc1BkaG5DZTlQIiwiaWF0IjoxNjk3NzIxMzE2LCJleHAiOjE2OTc3MjQ5MTYsInN1YiI6ImEyNTY2YzQ0ODBlZDRmNDBiMGQyMTM3ZTRiYWEwY2VhIn0.W0AhBctUYQSLgE09ugMb3fa0vE9YViM4nfAj59mN5tPpj70qn_RML1IhFHHy-HE70HBrC6AbR3VWOWgwWW139OASD2TpfqCkCFaGZIag_4BuGPoLbvQmORcte-Y6vq9cwkacOplM--mYc45FwZdAk0L8a_Xie-Ez8Q8Y8PvQcM7SlDPdzDlX69AMYU2YOcA9czfZRlONkf1zUIBgXwQQuWRKkKk9c10HbkuMVEqHDMeAaTIvMRU5EBycxWah19yIJaanbfD1sW-C1-KtzhA6agpKkRSxE2gUR8VNaiJwnJgj5F5s7f_9ZMEA7lo7giZR9fq8r5tQ62O60HCA_hmqMA'
-const { sub } = jwtDecode<JwtPayload>(TOKEN)
-
 describe('popup renew token', () => {
-  let wrapper: VueWrapper<any>
-  let spyUnregisterOnChange: MockInstance
+  let wrapper: ReturnType<typeof createWrapper>
   beforeEach(() => {
-    vi.clearAllTimers()
-    vi.useFakeTimers()
-    vi.spyOn(tokenService, 'registerOnChange').mockImplementation(
-      (_key: string, cb: Function) => {
-        cb(TOKEN)
-      },
-    )
-    spyUnregisterOnChange = vi.spyOn(tokenService, 'unregisterOnChange')
     wrapper = createWrapper()
-    ROUTES.forEach((route) => router.addRoute(route))
   })
 
-  it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
+  it("should emit the 'update:modelValue' event when the v-model is updated", () => {
     const dialog = wrapper.findComponent({ name: 'PDialog' })
     dialog.vm.$emit('update:modelValue', false)
-    await nextTick()
 
     expect(dialog.emitted('update:modelValue')).toStrictEqual([[false]])
   })
 
-  it('emit update:isVisible=true after 5 minutes before expiration', async () => {
-    const expectedEmit = [[true]]
+  it('close modal and logout when CLIENT clicks on logout button', () => {
+    const tokenRenewalDialog = wrapper.findComponent({ name: 'PDialog' })
+    const logoutButton = tokenRenewalDialog.find('[data-testid="logout-button"]')
+    logoutButton.trigger('click')
 
-    expect(wrapper.emitted('update:isVisible')).toBeUndefined()
-
-    vi.advanceTimersByTime(fiftyFiveMinutesInMiliseconds)
-    await nextTick()
-    expect(wrapper.emitted('update:isVisible')).toStrictEqual(expectedEmit)
+    expect(wrapper.emitted('logout')).toStrictEqual([[]])
+    expect(wrapper.emitted('update:isVisible')).toStrictEqual([[false]])
   })
 
-  it('logout when user click on logout button', async () => {
-    vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
-
-    await flushPromises()
-    vi.advanceTimersByTime(fiftyFiveMinutesInMiliseconds)
+  it('close modal when COLLAB clicks on logout button', () => {
+    const wrapper = createWrapper({
+      isCollab: true,
+    })
     const tokenRenewalDialog = wrapper.findComponent({ name: 'PDialog' })
-    await nextTick()
-    const button = tokenRenewalDialog.find('[data-testid="logout-button"]')
-    await button.trigger('click')
+    const logoutButton = tokenRenewalDialog.find('[data-testid="logout-button"]')
+    logoutButton.trigger('click')
 
-    expect(mock.logoutAndRedirectToLogin).toHaveBeenCalledOnce()
+    expect(wrapper.emitted('logout')).toBeUndefined()
+    expect(wrapper.emitted('update:isVisible')).toStrictEqual([[false]])
   })
 
-  it('renew when user click on stay button', async () => {
-    vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
+  const tests = [{
+    isTokenExpired: false,
+    isCollab: false,
+    expectedLogoutEmit: undefined,
+    expectedRenewTokenEmit: [[]],
+  }, {
+    isTokenExpired: true,
+    isCollab: false,
+    expectedLogoutEmit: [[]],
+    expectedRenewTokenEmit: undefined,
+  }, {
+    isTokenExpired: false,
+    isCollab: true,
+    expectedLogoutEmit: [[]],
+    expectedRenewTokenEmit: undefined,
+  }, {
+    isTokenExpired: true,
+    isCollab: true,
+    expectedLogoutEmit: [[]],
+    expectedRenewTokenEmit: undefined,
+  }]
+  it.each(tests)('should display properly when isTokenExpired is $isTokenExpired and isCollab is $isCollab', ({
+    isTokenExpired,
+    isCollab,
+  }) => {
+    const wrapper = createWrapper({
+      isTokenExpired,
+      isCollab,
+    })
 
-    await flushPromises()
-    vi.advanceTimersByTime(fiftyFiveMinutesInMiliseconds)
-    const tokenRenewalDialog = wrapper.findComponent({ name: 'PDialog' })
-    await nextTick()
-
-    const button = tokenRenewalDialog.find('[data-testid="renew-token-button"]')
-    await button.trigger('click')
-
-    expect(authPostMock).toHaveBeenCalledTimes(1)
-    expect(authPostMock).toHaveBeenCalledWith(
-      `authentication/api/refreshToken?userId=${sub}`,
+    expect(wrapper.html()).toMatchFileSnapshot(
+      `__snap__/PopupRenewToken/wrapper.${isTokenExpired ? 'isTokenExpired' : 'tokenIsNotExpired'}.${isCollab ? 'isCollab' : 'isNotCollab'}.snap`,
     )
   })
 
-  it('should logout and redirect to login after token expiration', async () => {
-    const expectedEmit = [[true], [false]]
-    vi.spyOn(tokenService, 'getToken').mockReturnValueOnce(TOKEN)
-    vi.advanceTimersByTime(oneHourInMiliseconds)
-    await nextTick()
+  it.each(tests)('should emit properly when click on renew-token-button isTokenExpired is $isTokenExpired and isCollab is $isCollab', ({
+    isTokenExpired,
+    isCollab,
+    expectedLogoutEmit,
+    expectedRenewTokenEmit,
+  }) => {
+    const wrapper = createWrapper({
+      isTokenExpired,
+      isCollab,
+    })
 
-    expect(wrapper.emitted('update:isVisible')).toStrictEqual(expectedEmit)
-    expect(mock.logoutAndRedirectToLogin).toHaveBeenCalledOnce()
-  })
+    const tokenRenewalDialog = wrapper.findComponent({ name: 'PDialog' })
+    const renewTokenButton = tokenRenewalDialog.find('[data-testid="renew-token-button"]')
+    renewTokenButton.trigger('click')
 
-  it('should call mock', async () => {
-    wrapper.unmount()
-
-    await nextTick()
-
-    expect(spyUnregisterOnChange).toHaveBeenCalledOnce()
+    expect(wrapper.emitted('logout')).toStrictEqual(expectedLogoutEmit)
+    expect(wrapper.emitted('renew-token')).toStrictEqual(expectedRenewTokenEmit)
   })
 })

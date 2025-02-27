@@ -1,6 +1,8 @@
-import axios from 'axios'
+import axios, { type AxiosError } from 'axios'
 import { VITE_API_GATEWAY, VITE_API_DS, VITE_API_SCHEDULE } from 'env-vars'
 import { tokenService } from '../main.mts'
+import { getUnauthorizedCallback } from '../unauthorized-callback'
+import { HTTP_ERRORS } from '@pulse/common/constants'
 
 const domainToBaseUrl = (domain: string | undefined) => {
   if (domain && domain.endsWith('/')) {
@@ -18,8 +20,16 @@ export const requestInterceptor = (config: any) => {
   return config
 }
 
-export const responseInterceptorSuccess = (res: any) => res
-export const responseInterceptorError = (err: Error) => {
+export const responseInterceptorSuccess = (res: any) => {
+  return res
+}
+
+export const responseInterceptorError = (err: AxiosError) => {
+  if (err?.status === HTTP_ERRORS.UNAUTHORIZED) {
+    const unauthorizedCallback = getUnauthorizedCallback()
+
+    unauthorizedCallback?.()
+  }
   return Promise.reject(err)
 }
 

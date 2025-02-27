@@ -32,8 +32,8 @@ export default class AmplitudeService {
     amplitude.track(eventInput, eventProperties)
   }
 
-  public setUserId(userId: number) {
-    amplitude.setUserId(userId.toString())
+  public setUserId(userId?: number) {
+    amplitude.setUserId(userId?.toString() ?? '')
   }
 
   public setNewUserProperty(key: string, value: string | number) {

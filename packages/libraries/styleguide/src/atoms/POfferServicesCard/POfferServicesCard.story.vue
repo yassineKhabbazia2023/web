@@ -14,7 +14,7 @@
           :pLogo="offer.pLogo"
           :pTitle="offer.pTitle"
           :pServices="offer.pServices"
-          @changeServiceStatus="logEvent('switch', $event)"
+          @change-service-status="logEvent('switch', $event)"
         />
       </div>
     </Variant>

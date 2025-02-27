@@ -1,21 +1,25 @@
 import type { JwtPayload } from 'jwt-decode'
 import jwtDecode from 'jwt-decode'
+import { logger } from '@pulse/core'
+
 interface RegisteredCallback {
   key: string
   callback: (_token: string) => void
 }
 
-export const isTokenExpired = (token: string): boolean => {
-  const { exp } = jwtDecode<JwtPayload>(token)
-  return !!exp && exp * 1000 < Date.now()
+export const isTokenExpired = (tokenExp: number|undefined): boolean => {
+  const nowInSeconds = Date.now() / 1000
+
+  return (tokenExp ?? 0) < nowInSeconds
 }
 
 export class TokenService {
 
   private static instance: TokenService
   private token: string = ''
+  private tokenExp: number|undefined = undefined
+  private tokenSub: string|undefined = undefined
   private registeredCallbacks: RegisteredCallback[] = []
-
 
   private constructor() {}
 
@@ -39,6 +43,14 @@ export class TokenService {
     return this.token
   }
 
+  getTokenExp() {
+    return this.tokenExp
+  }
+
+  getTokenSub() {
+    return this.tokenSub
+  }
+
   setToken(token: string) {
     this.token = token
     if (token) {
@@ -54,7 +66,7 @@ export class TokenService {
   }
 
   hasValidAccessToken(): boolean {
-    return !!this.getToken() && !isTokenExpired(this.token)
+    return !isTokenExpired(this.tokenExp)
   }
 
   registerOnChange(key: string, callback: RegisteredCallback['callback']) {
@@ -72,7 +84,22 @@ export class TokenService {
     }
   }
 
-  onChange(token: string) {
+  private onChange(token: string) {
+    try {
+      const { exp, sub } = token ? jwtDecode<JwtPayload>(token) : {
+        exp: undefined,
+        sub: undefined,
+      }
+
+      this.tokenExp = exp
+      this.tokenSub = sub
+    } catch(error) {
+      this.tokenExp = undefined
+      this.tokenSub = undefined
+
+      logger.error(error)
+    }
+
     this.registeredCallbacks.forEach(({ callback }) => callback(token))
   }
 }

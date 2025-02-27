@@ -69,7 +69,16 @@ router.beforeEach(async (to: any, _from) => {
   const store = useStore()
   const { isAuthenticated, isCollab } = storeToRefs(store)
 
-  if (isAuthenticated.value && isFirstTime.value) {
+  return routerBeforeEach(to, store, isAuthenticated.value, isCollab.value)
+})
+
+export async function routerBeforeEach(
+  to: any,
+  store: any,
+  isAuthenticated: boolean,
+  isCollab: boolean,
+) {
+  if (isAuthenticated && isFirstTime.value) {
     const { fetchUserData } = dataProvider()
     const user = await fetchUserData()
     store.$patch({
@@ -81,14 +90,16 @@ router.beforeEach(async (to: any, _from) => {
 
   const isHomeLayoutWithoutCustomStyles = isObjectEmpty(to.meta)
   const isHomeLayoutWithCustomStyles = !!to.meta?.styles
-  if (!isAuthenticated.value && (isHomeLayoutWithoutCustomStyles || isHomeLayoutWithCustomStyles)) {
+  if (!isAuthenticated && (isHomeLayoutWithoutCustomStyles || isHomeLayoutWithCustomStyles)) {
+    const _isUserOriginCollab = await isUserOriginCollab()
+
     return {
-      name: (await isUserOriginCollab()) ? LoginRouteName.LOGIN_COLLAB : LoginRouteName.LOGIN_CLIENT,
+      name: _isUserOriginCollab ? LoginRouteName.LOGIN_COLLAB : LoginRouteName.LOGIN_CLIENT,
     }
   }
 
   if (['entity-client', 'home'].includes(to.name)) {
-    return entityClientOrHomeRedirections(store, to, isCollab.value)
+    return entityClientOrHomeRedirections(store, to, isCollab)
   }
 
   /**
@@ -100,8 +111,8 @@ router.beforeEach(async (to: any, _from) => {
     LoginRouteName.LOGIN_CLIENT,
   ]
   if (loginPageNames.includes(to.name)) {
-    if (isAuthenticated.value) {
-      if (isCollab.value) {
+    if (isAuthenticated) {
+      if (isCollab) {
         return { name: 'wallet' }
       } else {
         return { name: 'entity-client' }
@@ -109,10 +120,10 @@ router.beforeEach(async (to: any, _from) => {
     }
   }
 
-  if ((to.name === 'mandats' || to.name === 'folderMandats') && !isCollab.value) {
+  if ((to.name === 'mandats' || to.name === 'folderMandats') && !isCollab) {
     return { name: 'entity-client' }
   }
-})
+}
 
 async function entityClientOrHomeRedirections(store: Store, to: any, isCollab: boolean) {
   const entities = await fetchEntities()

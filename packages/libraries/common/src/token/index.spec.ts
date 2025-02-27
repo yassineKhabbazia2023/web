@@ -2,15 +2,33 @@ import { describe, expect, it, vi, type MockInstance } from 'vitest'
 import { TokenService } from '.'
 
 const now = new Date()
+const mockedExp = now.setHours(now.getHours() + 1) / 1000
+const mockedSub = 'mocked-sub'
+
+const mockedJwtDecode = vi.hoisted(() => vi.fn())
 vi.mock('jwt-decode', () => ({
-  default: () => ({
-    exp: now.setHours(now.getHours() + 1),
-  }),
+  default: mockedJwtDecode,
+}))
+
+const loggerDebugSpy = vi.hoisted(() => vi.fn())
+const loggerWarnSpy = vi.hoisted(() => vi.fn())
+const loggerErrorSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/core', () => ({
+  logger: {
+    debug: loggerDebugSpy,
+    warn: loggerWarnSpy,
+    error: loggerErrorSpy,
+  },
 }))
 
 describe('test token', () => {
   let tokenService: TokenService
   beforeEach(() => {
+    mockedJwtDecode.mockReturnValue({
+      exp: mockedExp,
+      sub: mockedSub,
+    })
     tokenService = TokenService.getInstance()
   })
 
@@ -61,17 +79,44 @@ describe('test token', () => {
   })
 
   describe('hasValidAccessToken', () => {
-    it("should 'hasValidAccessToken' return true if token is set", () => {
-      tokenService.setToken('token')
+    it("should 'hasValidAccessToken' return true with proper exp and sub if token is set", () => {
+      const mockedToken = 'mocked-token'
+      tokenService.setToken(mockedToken)
       const isValidToken = tokenService.hasValidAccessToken()
 
       expect(isValidToken).toBeTruthy()
+      expect(tokenService.getTokenExp()).toBe(mockedExp)
+      expect(tokenService.getTokenSub()).toBe(mockedSub)
     })
+
     it("should 'hasValidAccessToken' return false if token is empty", () => {
       tokenService.setToken('')
       const isValidToken = tokenService.hasValidAccessToken()
 
       expect(isValidToken).toBeFalsy()
+      expect(tokenService.getTokenExp()).toBeUndefined()
+      expect(tokenService.getTokenSub()).toBeUndefined()
+    })
+
+    it('should call logger when jwtDecode throws an error', () => {
+      const mockedToken1 = 'mocked-token-1'
+      const mockedToken2 = 'mocked-token-2'
+      const mockedError = new Error('jwt-decode-failed')
+      mockedJwtDecode
+        .mockReturnValueOnce({
+          exp: mockedExp,
+          sub: mockedSub,
+        })
+        .mockImplementationOnce(() => {
+          throw mockedError
+        })
+      tokenService.setToken(mockedToken1)
+      tokenService.setToken(mockedToken2)
+
+      expect(loggerErrorSpy).toHaveBeenCalledOnce()
+      expect(loggerErrorSpy).toHaveBeenCalledWith(mockedError)
+      expect(tokenService.getTokenExp()).toBeUndefined()
+      expect(tokenService.getTokenSub()).toBeUndefined()
     })
   })
 

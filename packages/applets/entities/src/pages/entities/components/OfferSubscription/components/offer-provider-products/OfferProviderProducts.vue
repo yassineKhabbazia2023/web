@@ -5,7 +5,7 @@
       :pLogo="offerProvider.logoName"
       :pTitle="title"
       :pServices="services"
-      @changeServiceStatus="onChangeServiceStatus"
+      @change-service-status="onChangeServiceStatus"
     />
   </div>
 </template>

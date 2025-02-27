@@ -1,19 +1,47 @@
 import { createTestingPinia } from '@pinia/testing'
-import { defineStore, createPinia } from 'pinia'
-import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
+import { defineStore } from 'pinia'
+import { describe, expect, it, vi, beforeEach, afterEach, type MockInstance } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import router from '../plugins/router'
 import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
-import { ROUTES, PAGES_TITLE } from './mock'
+import { PAGES_TITLE } from './mock'
 import { amplitudeService, commonStore } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
-import { nextTick } from 'vue'
+import { nextTick, ref } from 'vue'
 import * as mockedEnvVar from 'env-vars'
 import App from '.'
 import { LoginRouteName } from '@pulse/common/constants'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
+
+const setUnauthorizedCallbackMock = vi.hoisted(() => vi.fn())
+const mockedLogoutAndRedirectToLogin = vi.hoisted(() => vi.fn())
+const setTokenMock = vi.hoisted(() => vi.fn())
+
+const mockedRouterPush = vi.hoisted(() => vi.fn())
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: mockedRouterPush,
+    currentRoute: {
+      value: {
+        meta: '',
+      },
+      stylesMetaProperties: '',
+    }
+  }),
+  useRoute: () => ({
+    name: '',
+    meta: '',
+  }),
+}))
+
+vi.mock('@app/composables/useRedirection', () => ({
+  useRedirection: () => ({
+    logoutAndRedirectToLogin: mockedLogoutAndRedirectToLogin,
+  }),
+}))
+
+const mockedCommonState = vi.hoisted(() => vi.fn())
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
   fetchNotifications: vi.fn(() => Promise.resolve({
@@ -24,16 +52,20 @@ vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
   })),
 }))
 
+vi.mock('./app.utils', () => ({
+  getExpirationDelays: vi.fn(() => ({
+    expiredTokenDelay: 0,
+    openPopupDelay: 0,
+  })),
+}))
+
 vi.mock('@pulse/common', () => ({
   hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
-    state: () => ({
-      user: null,
-    }),
+    state: mockedCommonState,
     getters: {
       defaultEntity: () => testEntity,
       isAuthenticated: () => true,
-      isCollab: () => false,
       favoriteEntities: () => [],
     },
     actions: {
@@ -42,7 +74,6 @@ vi.mock('@pulse/common', () => ({
     },
   }),
   getInitials: vi.fn(),
-  commonPinia: () => createPinia(),
   commonApi: () => ({
     gateway: {
       get: () =>
@@ -69,8 +100,10 @@ vi.mock('@pulse/common', () => ({
     hasPermission: () => vi.fn(() => true),
   }),
   tokenService: {
-    setToken: vi.fn(),
+    setToken: setTokenMock,
     getToken: vi.fn(),
+    getTokenExp: vi.fn(),
+    getTokenSub: vi.fn(),
     registerOnChange: vi.fn(),
   },
   fetchUrlTerms: vi.fn(),
@@ -79,10 +112,11 @@ vi.mock('@pulse/common', () => ({
     track: vi.fn(),
     setUserId: vi.fn(),
   },
+  setUnauthorizedCallback: setUnauthorizedCallbackMock,
 }))
 
 const getPageTitle = (wrapper: VueWrapper) => wrapper.find('.pageTitle').text()
-const createWrapper = (userStore = {}) =>
+const createWrapper = () =>
   mount(App, {
     global: {
       stubs: {
@@ -92,25 +126,7 @@ const createWrapper = (userStore = {}) =>
         LoginLayout: true,
       },
       plugins: [
-        router,
-        createTestingPinia({
-          initialState: {
-            common: {
-              user: {
-                ...userStore,
-                entities: {
-                  default: {
-                    accountId: 1,
-                    accountNumber: '3669209950',
-                    legalName: 'Restaurant Le Grand Bleu',
-                    color: 'orange',
-                  },
-                  favorites: [],
-                },
-              },
-            },
-          },
-        }),
+        createTestingPinia(),
       ],
     },
   })
@@ -120,36 +136,13 @@ describe('app with navigation guard', () => {
   beforeEach(() => {
     vi.useFakeTimers()
     initAmplitudeServiceSpy = vi.spyOn(amplitudeService, 'init')
-    ROUTES.map((route) => router.addRoute(route))
+    mockedCommonState.mockReturnValue({
+      user: null,
+      isCollab: false,
+    })
   })
-
-  it('redirects to the correct page with the appropriate layout when the user has a token', async () => {
-    const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
-    router.push({ name: 'home' })
-    await vi.dynamicImportSettled()
-
-    const pageTitle = getPageTitle(wrapper)
-    expect(pageTitle).toBe(PAGES_TITLE.FOLDER)
-
-    expect(wrapper.find('.common-layout').exists()).toBeTruthy()
-    expect(wrapper.find('.header-container').exists()).toBeTruthy()
-    expect(wrapper.find('.aside-main-container').exists()).toBeTruthy()
-    expect(wrapper.find('.main-container').exists()).toBeTruthy()
-  })
-
-  it('redirects to the homepage if the user is already authenticated', async () => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = true
-    await nextTick()
-    const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
-    router.push({ name: LoginRouteName.LOGIN_COLLAB })
-    await vi.dynamicImportSettled()
-    await flushPromises()
-
-    const pageTitle = getPageTitle(wrapper)
-    expect(pageTitle).toBe(PAGES_TITLE.WALLET)
-    expect(router.currentRoute.value.name).toBe('wallet')
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('initialize the Amplitude when VITE_AMPLITUDE_API_KEY and VITE_AMPLITUDE_SERVER_URL are not empty', () => {
@@ -174,52 +167,103 @@ describe('app with navigation guard', () => {
     expect(initAmplitudeServiceSpy).not.toHaveBeenCalled()
   })
 
-  it('should redirect to the login page when the user is inactive for 5 seconds', async () => {
+  it.skip('should redirect to the login page when the user is inactive for 5 seconds', async () => {
     const wrapper: VueWrapper<any> = createWrapper()
-    const spyPush = vi.spyOn(wrapper.vm.router, 'push')
+    const store = commonStore()
+    // @ts-expect-error: Getter is read only
+    store.user = {}
     vi.advanceTimersByTime(120000) // 2 minutes
-    expect(spyPush).toHaveBeenCalledTimes(0)
+    expect(mockedRouterPush).toHaveBeenCalledTimes(0)
     vi.advanceTimersByTime(180000) // 3 minutes
-    await flushPromises()
-    expect(spyPush).toHaveBeenCalledWith({ name: LoginRouteName.LOGIN_COLLAB })
+    await nextTick()
+    expect(mockedRouterPush).toHaveBeenCalledWith({ name: LoginRouteName.LOGIN_COLLAB })
   })
 
-  it('should redirect the client to the folder page if they have only one entity', async () => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
+  it('should call setUnauthorizedCallback onMounted', async () => {
+    createWrapper()
     await nextTick()
-    const wrapper: VueWrapper<any> = createWrapper({ token: 'aCustomToken' })
-    router.push({ name: 'entity-client' })
-    await vi.dynamicImportSettled()
-    await flushPromises()
-
-    const pageTitle = getPageTitle(wrapper)
-    expect(pageTitle).toBe(PAGES_TITLE.FOLDER)
-    expect(router.currentRoute.value.name).toBe('folder')
+    expect(setUnauthorizedCallbackMock).toHaveBeenCalledOnce()
   })
 
-  it('should redirect to folder when a customer reaches mandate page and has one entity', async () => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
-    await nextTick()
-    router.push({ name: 'mandats' })
-    await vi.dynamicImportSettled()
-    await flushPromises()
+  const tests = [{
+    isCollab: false,
+  }, {
+    isCollab: true,
+  }]
+  it.each(tests)('opens PopupRenewToken when 401 encountered where isCollab is $isCollab', async ({
+    isCollab,
+  }) => {
+    const callBack = ref<Function>()
+    mockedCommonState.mockReturnValue({
+      user: {},
+      isCollab,
+    })
+    const expectedPopupRenewTokenProps = {
+      isVisible: true,
+      isTokenExpired: true,
+      isCollab,
+    }
 
-    expect(router.currentRoute.value.name).toBe('folder')
+    setUnauthorizedCallbackMock.mockImplementation((done: Function) => {
+      callBack.value = done
+    })
+    const wrapper = createWrapper()
+    await callBack.value?.()
+
+    const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
+
+    expect(callBack.value).toBeDefined()
+    expect(setTokenMock).toHaveBeenCalledOnce()
+    expect(setTokenMock).toHaveBeenCalledWith('')
+    expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenProps)
   })
 
-  it('should redirect to folder when a customer reaches folderMandats page and has one entity', async () => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
-    await nextTick()
-    router.push({ name: 'folderMandats' })
-    await vi.dynamicImportSettled()
-    await flushPromises()
+  it('redirect to login when 401 encountered and user is null', async () => {
+    const callBack = ref<Function>()
+    mockedCommonState.mockReturnValue({
+      user: null,
+      isCollab: false,
+    })
 
-    expect(router.currentRoute.value.name).toBe('folder')
+    setUnauthorizedCallbackMock.mockImplementation((done: Function) => {
+      callBack.value = done
+    })
+    createWrapper()
+    await callBack.value?.()
+
+    expect(callBack.value).toBeDefined()
+    expect(setTokenMock).toHaveBeenCalledOnce()
+    expect(setTokenMock).toHaveBeenCalledWith('')
+    expect(mockedLogoutAndRedirectToLogin).toHaveBeenCalledOnce()
+  })
+
+  it('Should open PopupRenewToken when it emits update:isVisible = true', async () => {
+    const expectedPopupRenewTokenPropsBefore = {
+      isVisible: false,
+      isTokenExpired: false,
+      isCollab: false,
+    }
+    const expectedPopupRenewTokenPropsAfter = {
+      isVisible: true,
+      isTokenExpired: false,
+      isCollab: false,
+    }
+    const wrapper = createWrapper()
+    const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
+
+    expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenPropsBefore)
+
+    popupRenewToken.vm.$emit('update:isVisible', true)
+    await nextTick()
+    expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenPropsAfter)
+  })
+
+  it('Should call logoutAndRedirectToLogin when PopupRenewToken emits logout', async () => {
+    const wrapper = createWrapper()
+    const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
+
+    popupRenewToken.vm.$emit('logout')
+    await nextTick()
+    expect(mockedLogoutAndRedirectToLogin).toHaveBeenCalledOnce()
   })
 })

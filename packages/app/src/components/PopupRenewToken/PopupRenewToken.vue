@@ -1,64 +1,63 @@
 <template>
   <PDialog
     v-model="isVisibleInternal"
-    pWidth="480px"
+    pWidth="420px"
     pModal
     class="dialog-renew-token"
     :pCenter="false"
-    :pTitle="t('title')"
+    :pShowClose="false"
     data-testid="renew-token-dialog"
   >
-    <div class="dialog-renew-token__popup-img-wrapper">
+    <div class="flex flex--justify-content-center">
       <PImage
         pType="portrait"
-        pName="loader-duotone"
+        :pName="isTokenExpired ? 'power-duotone' : 'hourglass-duotone'"
         class="dialog-renew-token__popup-img"
       />
     </div>
-    <p class="p-dialog__text">
-      {{ t('content') }}
+    <div class="h3 text-center margin-y--4">
+      {{ t(`${statusKey}.title`) }}
+    </div>
+    <p class="p-dialog__text margin-bottom--3">
+      {{ t(`${statusKey}.content`) }}
     </p>
     <template #footer>
       <PButton
+        v-if="!isTokenExpired"
         pPlain
         pType="secondary"
         pSize="small"
         :pRound="false"
         data-testid="logout-button"
-        @click="handleLogout"
+        @click="onClickFirstButton"
       >
-        {{ t('logout') }}
+        {{ t(`${statusKey}.logout.${isCollab ? 'collab' : 'client'}`) }}
       </PButton>
       <PButton
         pType="primary"
         pSize="small"
         :pRound="false"
         data-testid="renew-token-button"
-        @click="handleTokenRenewal"
+        @click="onClickSecondButton"
       >
-        {{ t('renew') }}
+        {{ t(`${statusKey}.renew.${isCollab ? 'collab' : 'client'}`) }}
       </PButton>
     </template>
   </PDialog>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import jwtDecode from 'jwt-decode'
-import type { JwtPayload } from 'jwt-decode'
 import { PDialog, PButton, PImage } from '@pulse/styleguide/components'
-import { useRedirection } from '@app/composables/useRedirection'
-import { commonApi, tokenService } from '@pulse/common'
 import type { PopupRenewTokenProps } from './PopupRenewToken.types'
-
-const ON_TOKEN_CHANGE_EVENT = 'on-token-change'
-const FIVE_MINUTES_MS = 5 * 60 * 1000 // 5 minutes in milliseconds
 
 const props = defineProps<PopupRenewTokenProps>()
 
 const emit = defineEmits<{
   'update:isVisible': [boolean]
+  'logout': []
+  'renew-token': []
 }>()
 
 const { t } = useI18n({
@@ -66,94 +65,36 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const exp = ref<number>()
-const sub = ref<string>()
-const openPopupTimer = ref<ReturnType<typeof setTimeout>>()
-const closePopupTimer = ref<ReturnType<typeof setTimeout>>()
-
 const isVisibleInternal = computed({
   get: () => props.isVisible,
   set: (isVisible: boolean) => emit('update:isVisible', isVisible),
 })
 
-const { logoutAndRedirectToLogin } = useRedirection()
-
-function onTokenChanges(token: string) {
-  if (!token) {
-    return
-  }
-
-  const decodedToken = jwtDecode<JwtPayload>(token)
-  exp.value = decodedToken?.exp
-  sub.value = decodedToken?.sub
-  setTimers(exp.value)
-}
-
-function setTimers(exp?: number) {
-  clearTimersIfExist()
-  if (!exp) {
-    return
-  }
-  const nowTimeStamp = new Date().getTime()
-  const expireTimeStamp = exp * 1000
-
-  // will close when expires
-  const closePopupDelay = expireTimeStamp - nowTimeStamp
-
-  // will open 5 minutes before it expires
-  const openPopupDelay = closePopupDelay - FIVE_MINUTES_MS
-
-  if (closePopupDelay <= 0) {
-    return
-  }
-  // closes the popup when token has expired
-  closePopupTimer.value = setTimeout(() => {
+const onClickFirstButton = () => {
+  if (props.isCollab) {
     isVisibleInternal.value = false
-    logoutAndRedirectToLogin()
-  }, closePopupDelay)
-
-  if (openPopupDelay <= 0) {
-    return
-  }
-  // opens the popup 5 minutes before token expires
-  openPopupTimer.value = setTimeout(() => {
-    isVisibleInternal.value = true
-  }, openPopupDelay)
-}
-
-function clearTimersIfExist() {
-  if (closePopupTimer.value) {
-    clearTimeout(closePopupTimer.value)
-    closePopupTimer.value = undefined
-  }
-  if (openPopupTimer.value) {
-    clearTimeout(openPopupTimer.value)
-    openPopupTimer.value = undefined
+  } else {
+    handleLogout()
   }
 }
 
-const handleTokenRenewal = async () => {
-  const baseUrl = `authentication/api/refreshToken?userId=${sub.value}`
+const onClickSecondButton = () => {
+  if (props.isTokenExpired || props.isCollab) {
+    handleLogout()
+  } else {
+    emit('renew-token')
+  }
+}
+
+const handleLogout = () => {
   isVisibleInternal.value = false
-
-  const { data: token } = await commonApi().gateway.post(baseUrl)
-
-  tokenService.setToken(token)
+  emit('logout')
 }
 
-const handleLogout = async () => {
-  isVisibleInternal.value = false
-  await logoutAndRedirectToLogin()
-}
-
-onMounted(() => {
-  tokenService.registerOnChange(ON_TOKEN_CHANGE_EVENT, onTokenChanges)
-})
-
-onBeforeUnmount(() => {
-  tokenService.unregisterOnChange(ON_TOKEN_CHANGE_EVENT)
-  clearTimersIfExist()
-})
+const statusKey = computed(() => props.isTokenExpired
+  ? 'disconnected'
+  : 'connected',
+)
 </script>
 
 <style lang="scss" scoped>
@@ -166,25 +107,54 @@ onBeforeUnmount(() => {
   }
   &__popup-img {
       display: block;
-      width: 39px;
+      width: 24px;
     }
 }
 </style>
 
 <i18n lang="yaml">
   en-US:
-    title: 'Your session will expire'
-    renew: 'Stay connect'
-    logout: 'Disconnect'
-    content: >-
-      Privacy is essential, and you've been away for a while.
-      We will log you out in a few minutes unless you confirm that you are still on RYDGE Conseil.
+    connected:
+      title: 'Your session will expire soon'
+      renew:
+        client: 'Stay connect'
+        collab: 'Reconnect'
+      content: >-
+        You will be automatically logged out of the session in 5 minutes.
+        We advise you to save your progress before logging back in.
+      logout:
+        client: 'Disconnect'
+        collab: 'Continue'
+    disconnected:
+      title: 'Your session has expired'
+      renew:
+        client: 'Reconnect'
+        collab: 'Reconnect'
+      content: >-
+        Please log in again to access the platform.
+      logout:
+        client: 'Disconnect'
+        collab: 'Continue'
   fr-FR:
-    title: 'Votre session va expirer'
-    renew: 'Rester connecté'
-    logout: 'Déconnexion'
-    content: >-
-      La confidentialité est essentielle, et vous êtes absent depuis un moment.
-      Nous allons vous déconnecter dans quelques minutes sauf
-      si vous confirmez que vous êtes toujours sur RYDGE Conseil.
+    connected:
+      title: 'Votre session va bientôt expirer'
+      renew:
+        client: 'Rester connecté'
+        collab: 'Se reconnecter'
+      content: >-
+        Vous serez automatiquement déconnecté de la session dans 5 minutes.
+        Nous vous conseillons de sauvegarder votre progression avant de vous reconnecter.
+      logout:
+        client: 'Déconnexion'
+        collab: 'Continuer'
+    disconnected:
+      title: 'Votre session a expiré'
+      renew:
+        client: 'Se reconnecter'
+        collab: 'Se reconnecter'
+      content: >-
+        Veuillez vous reconnecter pour accéder à la plateforme.
+      logout:
+        client: 'Déconnexion'
+        collab: 'Continuer'
 </i18n>
