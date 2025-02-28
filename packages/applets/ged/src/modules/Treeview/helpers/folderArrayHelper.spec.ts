@@ -22,17 +22,27 @@ describe('folderArrayHelper.spec', () => {
     expect(folder?.id).toStrictEqual(folderId)
   })
 
-  it('should return a folder based on its service id when findCurrentServiceFolder is called',
-    () => {
+  it.each([
+    {
+      serviceId: 'service-id-compta',
+      expectedFolder: foldersData[0],
+    },
+    {
+      serviceId: 'service-id-gs',
+      expectedFolder: foldersData[1],
+    },
+    {
+      serviceId: 'random striiiiiing',
+      expectedFolder: undefined,
+    },
+  ])('should return a folder based on its service id when findCurrentServiceFolder is called',
+    ({ serviceId, expectedFolder }) => {
       const data = JSON.parse(JSON.stringify(foldersData))
-      const serviceId = 'service-id-compta'
 
 
-      const folder = findCurrentServiceFolder(data, serviceId) ?? []
+      const folder = findCurrentServiceFolder(data, serviceId)
 
-      expect(folder).toHaveLength(1)
-
-      expect(folder[0].name).toBe('Comptabilité')
+      expect(folder).toStrictEqual(expectedFolder)
     })
 
   it('should add a new folder when appendChildFolder is called', () => {

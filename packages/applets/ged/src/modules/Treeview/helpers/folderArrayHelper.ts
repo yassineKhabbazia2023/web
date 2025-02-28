@@ -43,12 +43,7 @@ export const findCurrentServiceFolder = (
   array: Folder[][],
   serviceId: string,
 ): Folder[] | undefined => {
-  return array.find((innerArry) => {
-    if (innerArry.some((x) => x.serviceId === serviceId)) {
-      return innerArry
-    }
-    return [] as Folder[]
-  })
+  return array.find((innerArray) => innerArray.some((x) => x.serviceId === serviceId))
 }
 
 export const appendChildFolder = (
