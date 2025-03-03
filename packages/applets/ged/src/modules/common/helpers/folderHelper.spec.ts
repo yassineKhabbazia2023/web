@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { getBreadcrumbItems }
-  from '@ged/modules/common/helpers/folderHelper'
+import folderHelperMock from '@ged/__mocks__/json/folder-helper.json'
 import type { Folder } from '@ged/models/Folder'
-import mock from './folderHelper.mock.json'
 
-const folders = mock.folders as unknown as Folder[]
+import { getBreadcrumbItems } from '@ged/modules/common/helpers/folderHelper'
+
+const folders = folderHelperMock.folders as unknown as Folder[]
 
 describe('folderHelper', () => {
   it('should return the breadcrumb items', () => {

@@ -2,12 +2,10 @@ import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { PFileAndFolderLineCheck, PImage } from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '@ged/modules/Documents/DocumentsTypes'
-import DocumentsList
-  from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsList'
-import { type DocumentsListProps }
-  from './DocumentsListTypes'
+import { type DocumentsListProps } from './DocumentsListTypes'
+
+import DocumentsList from './DocumentsList.vue'
 
 const docs:Array<ExplorerDocument> = [
   {
@@ -55,7 +53,7 @@ describe('documentsList', () => {
 
       await nextTick()
 
-      const fflcs = wrapper.findAllComponents(PFileAndFolderLineCheck)
+      const fflcs = wrapper.findAllComponents({ name: 'PFileAndFolderLineCheck' })
       expect(fflcs).toHaveLength(2)
       expect(fflcs[0].props('pFileName')).toBe('kyaaaa.pdf')
       expect(fflcs[1].props('pFileName')).toBe('test.pdf')
@@ -64,7 +62,7 @@ describe('documentsList', () => {
       expect(fflcs[0].props('modelValue')).toBeTruthy()
       expect(fflcs[1].props('modelValue')).toBeFalsy()
 
-      const img = wrapper.findComponent(PImage)
+      const img = wrapper.findComponent({ name: 'PImage' })
       expect(img.exists()).toBeFalsy()
 
       const div = wrapper.find('.documents-list--no-valid-document')
@@ -87,7 +85,7 @@ describe('documentsList', () => {
       const wrapper = createWrapper(props)
       await nextTick()
 
-      const fflcs = wrapper.findAllComponents(PFileAndFolderLineCheck)
+      const fflcs = wrapper.findAllComponents({ name: 'PFileAndFolderLineCheck' })
       expect(fflcs).toHaveLength(0)
 
       const label = wrapper.find('.no-documents-label')

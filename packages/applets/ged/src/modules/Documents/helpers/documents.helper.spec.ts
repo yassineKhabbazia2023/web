@@ -1,6 +1,7 @@
 import { it, describe } from 'vitest'
+import { certifiedDocument, notCertifiedDocument } from '@ged/__mocks__/documents.mock'
+
 import { getIsDocumentCertified } from './documents.helper'
-import { certifiedDocument, notCertifiedDocument } from '@ged/modules/Documents/mocks/documentMock'
 
 describe('documents helper', () => {
   it.each([

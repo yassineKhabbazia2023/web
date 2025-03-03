@@ -1,28 +1,19 @@
-import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
-import { mount } from '@vue/test-utils'
+
 import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
-import { type CreateFolderSectionProps }
-  from '@ged/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
-import type { Folder } from '@ged/models/Folder'
+import { mount } from '@vue/test-utils'
+import { loggerMock } from '@ged/__mocks__/logger.mocks'
+import { getMockedFolder } from '@ged/__mocks__/treeview.mocks'
+import { createFolderFailMock, tokenValueMock } from '@ged/__mocks__/folder.service.mocks'
 import { createPinia, setActivePinia } from 'pinia'
-import CreateFolderModal from '@ged/modules/Treeview/components/modals/Create'
 import { nextTick } from 'vue'
-import { getMockedFolder } from '../../helpers/testHelper'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
+import type { Folder } from '@ged/models/Folder'
+import { type CreateFolderSectionProps } from './CreateFolderSectionTypes'
+
+import CreateFolderSection from './CreateFolderSection.vue'
 
 vi.mock('@pulse/styleguide')
-
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 const pinia = createPinia()
 
@@ -56,10 +47,8 @@ const createWrapper = (props: CreateFolderSectionProps = defaultProps) => {
 }
 
 vi.mock('@ged/services/Folder', () => ({
-  tokenValue: 'mocked token',
-  CreateFolder: () => {
-    throw new Error('Something uncool')
-  },
+  tokenValue: tokenValueMock,
+  CreateFolder: createFolderFailMock,
 }))
 
 describe('createFolderSection', () => {
@@ -79,7 +68,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = wrapper.findComponent(CreateFolderModal)
+      const modal = wrapper.findComponent({ name: 'CreateFolderModal' })
 
       await modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()

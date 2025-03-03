@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import DocumentsDropConfirmationPopup from './DocumentsDropConfirmationPopup.vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { DocumentsDropConfirmationPopupProps } from './DocumentsDropConfirmationPopupTypes'
 import { nextTick, type ComponentPublicInstance } from 'vue'
-import ConfirmationPopup from '@ged/modules/common/templates/popups'
+
+import DocumentsDropConfirmationPopup from './DocumentsDropConfirmationPopup.vue'
 
 const defaultProps: DocumentsDropConfirmationPopupProps = {
   modelValue: false,
@@ -25,7 +25,7 @@ const createWrapper = (props: DocumentsDropConfirmationPopupProps = defaultProps
 
 // component finders
 const findConfirmationPopup = (wrapper:DocumentsDropConfirmationPopupWrapper) =>
-  wrapper.findComponent(ConfirmationPopup)
+  wrapper.findComponent({ name: 'ConfirmationPopup' })
 
 let wrapper = createWrapper()
 

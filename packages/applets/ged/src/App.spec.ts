@@ -1,16 +1,18 @@
 
 import type { VueWrapper } from '@vue/test-utils'
 import { mount, flushPromises } from '@vue/test-utils'
-import Ged from './'
-import { createPinia, setActivePinia } from 'pinia'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
+import { defaultEntityMock } from '@ged/__mocks__/common.import.mocks'
+import { fetchServicesFoldersFailMock, fetchServicesFoldersSuccessMock } from './__mocks__/folder.service.mocks'
+import { accountingHubConnectionServiceMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
+import { servicesDataMock } from '@ged/__mocks__/services.mocks'
+import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
+import { documentsServiceMock } from './__mocks__/documents.service.mocks'
 import { fetchUserEntityServices } from '@ged/services/Services'
 import { fetchServicesFolders } from '@ged/services/Folder'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { Folder, FolderProperties } from './models/Folder'
-import { foldersData } from './modules/Treeview/mocks/treeFoldersMock'
-import { servicesData } from './modules/Treeview/mocks/servicesDataMock'
 import type { Service } from './models/Service'
 import {
   appendChildFolder,
@@ -21,47 +23,10 @@ import {
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import { createMemoryHistory, createRouter } from 'vue-router'
 
-const pinia = createPinia()
+import Ged from './'
 
-const debounceMock = vi.fn((callback: Function) => callback)
-const commonStoreMock = vi.hoisted(() => vi.fn(() => ({
-  $delete: vi.fn(),
-  $patch: vi.fn(),
-  $get: vi.fn(),
-  $post: vi.fn(),
-  defaultEntity: {
-    name: 'JEAN LÉVAGE',
-    idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
-    accountNumber: 'ent',
-    color: 'orange',
-  },
-})))
 
-vi.mock('@pulse/common', () => ({
-  debounce: (callback: Function) => debounceMock(callback),
-  commonStore: commonStoreMock,
-}))
-
-const apiMocks = vi.hoisted(() => ({
-  fetchServicesFoldersSuccess: vi.fn(() => ({
-    foldersByService: foldersData,
-    unavailableServices: [] as Service[],
-  })),
-  fetchServicesFoldersFail: vi.fn(() => ({
-    foldersByService: foldersData,
-    unavailableServices: [servicesData[0]],
-  })),
-}))
-
-vi.mock('@ged/models/AccountingHubConnection', () => ({
-  initializedAccountingDataStreamInstance: Promise.resolve({
-    OnConnectedAsync: vi.fn(),
-    OnDisconnectedAsync: vi.fn(),
-    getConnection: vi.fn(() => ({
-      on: vi.fn(),
-    })),
-  }),
-}))
+vi.mock('@ged/models/AccountingHubConnection', () => accountingHubConnectionServiceMock)
 
 const spyPNotification = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/styleguide', () => ({
@@ -74,27 +39,23 @@ vi.mock('@pulse/styleguide', () => ({
 }))
 
 vi.mock('@ged/services/Folder', () => ({
-  fetchServicesFolders: apiMocks.fetchServicesFoldersSuccess,
+  fetchServicesFolders: fetchServicesFoldersSuccessMock,
 }))
 
 vi.mock('@ged/services/Services', () => ({
   fetchUserEntityServices: vi.fn(() => {
-    return servicesData
+    return servicesDataMock
   }),
 }))
 
-vi.mock('@ged/services/Documents', () => ({
-  fetchFolderDocuments: vi.fn(),
-}))
+vi.mock('@ged/services/Documents', () => documentsServiceMock)
 
 vi.mock('@ged/services/BinDocuments', () => ({
   fetchBinDocuments: vi.fn(),
 }))
 
-vi.mock('@ged/modules/Treeview/helpers/folderArrayHelper', async () => {
-  const actual = await vi.importActual(
-    '@ged/modules/Treeview/helpers/folderArrayHelper',
-  )
+vi.mock('@ged/modules/Treeview/helpers/folderArrayHelper', async (importActual) => {
+  const actual = await importActual()
   return {
     // @ts-ignore
     ...actual,
@@ -130,7 +91,7 @@ const createWrapper = (): AppWrapper => {
         PRow: { template: '<div><slot /></div>' },
         PCol: { template: '<div><slot /></div>' },
       },
-      plugins: [pinia, router],
+      plugins: [router],
     },
   }) as AppWrapper
 }
@@ -157,10 +118,6 @@ const folder = {
 } as Folder
 
 describe('ged', () => {
-
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
   it('renders correctly', () => {
     const wrapper = createWrapper()
     expect(wrapper.exists()).toBeTruthy()
@@ -168,18 +125,6 @@ describe('ged', () => {
 
   it('call fetch services folders on entity change', async () => {
     createWrapper()
-    commonStoreMock.mockReturnValueOnce({
-      $delete: vi.fn(),
-      $patch: vi.fn(),
-      $get: vi.fn(),
-      $post: vi.fn(),
-      defaultEntity: {
-        name: 'JEAN LÉVAGE',
-        idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
-        accountNumber: '234',
-        color: 'orange',
-      },
-    })
     await flushPromises()
     expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(1)
   })
@@ -250,14 +195,14 @@ describe('ged', () => {
 
         await tree.vm.$emit(
           'selected-bin-service-change',
-          servicesData[0].ServiceId,
+          servicesDataMock[0].ServiceId,
         )
         await nextTick()
 
         const componentInstance = wrapper.vm
 
         expect(componentInstance.currentBinService).toStrictEqual(
-          servicesData[0].ServiceId,
+          servicesDataMock[0].ServiceId,
         )
 
         const bin = wrapper.findComponent({ name: 'BinDocuments' })
@@ -265,7 +210,7 @@ describe('ged', () => {
         expect(bin.exists()).toBeTruthy()
         expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
         expect(bin.props('selectedServiceName')).toBe(
-          servicesData[0].ServiceName,
+          servicesDataMock[0].ServiceName,
         )
       })
 
@@ -337,7 +282,7 @@ describe('ged', () => {
   describe('documents', () => {
     describe('rendering', () => {
       it("should display notification if service didn't load correctly", async () => {
-        apiMocks.fetchServicesFoldersSuccess.mockReturnValue(apiMocks.fetchServicesFoldersFail())
+        fetchServicesFoldersSuccessMock.mockReturnValue(fetchServicesFoldersFailMock())
         createWrapper()
         await flushPromises()
         expect(spyPNotification).toHaveBeenCalledOnce()
@@ -388,18 +333,6 @@ describe('ged', () => {
   describe('bin', () => {
     describe('props', () => {
       it('should display bin component when currentBinService is set', async () => {
-        commonStoreMock.mockReturnValueOnce({
-          $delete: vi.fn(),
-          $patch: vi.fn(),
-          $get: vi.fn(),
-          $post: vi.fn(),
-          defaultEntity: {
-            name: 'JEAN LÉVAGE',
-            idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
-            accountNumber: '256',
-            color: 'orange',
-          },
-        })
         const wrapper = createWrapper()
         const componentInstance = wrapper.vm
         componentInstance.currentBinService = foldersData[0][0].serviceId
@@ -410,8 +343,7 @@ describe('ged', () => {
         expect(bin.exists()).toBeTruthy()
         expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
         expect(bin.props('selectedServiceName')).toBe(foldersData[0][0].name)
-        // Value comes from store mock in vitest setup
-        expect(bin.props('selectedEntity')).toBe('256')
+        expect(bin.props('selectedEntity')).toBe(defaultEntityMock.accountNumber)
       })
 
       it('should set the prop that will disable the create folder button when currentBinService is set', async () => {
@@ -456,10 +388,6 @@ describe('ged', () => {
         expect(treeview.props('selectedFolder')).toStrictEqual(
           foldersData[0][0].children[0],
         )
-        await nextTick()
-
-        // FIXME : skipped while integrating SG in monorepo
-        // expect(bin.exists()).toBeFalsy()
       })
     })
   })

@@ -2,27 +2,20 @@ import { createPinia } from 'pinia'
 import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import { vi, describe, it, expect } from 'vitest'
 import { nextTick } from 'vue'
-import { documentMock } from '@ged/modules/Documents/mocks/documentMock'
+import { documentMock } from '@ged/__mocks__/documents.mock'
+import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import type { DocumentRenameProps } from './DocumentRenameTypes'
-
 import { renameDocument } from '@ged/services/Documents'
-import DocumentRename from './'
 import { trackDocumentRename } from '@ged/services/tracking/tracking.service'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
-const pinia = createPinia()
+import DocumentRename from './'
 
-const mocks = vi.hoisted(() => {
-  return {
-    patch: vi.fn(),
-  }
-})
+const pinia = createPinia()
 
 vi.mock('@pulse/styleguide')
 
-vi.mock('@ged/services/Documents', () => ({
-  renameDocument: mocks.patch,
-}))
+vi.mock('@ged/services/Documents', () => documentsServiceMock)
 
 vi.mock('@ged/services/tracking/tracking.service')
 const defaultProps: DocumentRenameProps = {

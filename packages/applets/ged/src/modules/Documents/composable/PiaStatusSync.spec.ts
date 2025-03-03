@@ -1,20 +1,21 @@
+import { defineComponent, ref, nextTick } from 'vue'
+import type { Ref, PropType } from 'vue'
 import { describe, it, vi, expect } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
+import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
+import { documentsResponsePayload } from '@ged/__mocks__/documents.mock'
+import { onConnectedAsyncMock, onDisconnectedAsyncMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
 import type { DocumentStatusUpdateResponse, DocumentsWithTableStructure } from '@ged/models/Document'
 import type { Folder } from '@ged/models/Folder'
-import { usePiaStatusSync } from './PiaStatusSync'
-import type { Ref, PropType } from 'vue'
-import { defineComponent, ref, nextTick } from 'vue'
-import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
-import { documentsResponsePayload } from '../mocks/documentsWithTableStructureDataMock'
 
-const OnConnectedAsyncMock = vi.hoisted(() => vi.fn())
-const OnDisconnectedAsyncMock = vi.hoisted(() => vi.fn())
+import { usePiaStatusSync } from './PiaStatusSync'
+
+const getConnectionOnMocked = vi.hoisted(() => vi.fn())
 
 vi.mock('@ged/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
-    OnConnectedAsync: OnConnectedAsyncMock,
-    OnDisconnectedAsync: OnDisconnectedAsyncMock,
+    OnConnectedAsync: onConnectedAsyncMock,
+    OnDisconnectedAsync: onDisconnectedAsyncMock,
     getConnection: vi.fn(() => ({
       on: getConnectionOnMocked,
     })),
@@ -52,7 +53,6 @@ function getWrapper(
 
 const DOCUMENT_ID = '1234567890'
 
-const getConnectionOnMocked = vi.hoisted(() => vi.fn())
 describe('usePiaStatusSync', () => {
   it('should not update the pia status and permissions of the document when the pia status does NOT change', () => {
     const selectedFolder = ref<Folder | null>(foldersData[1][1])
@@ -105,8 +105,8 @@ describe('usePiaStatusSync', () => {
     await nextTick()
     await flushPromises()
     const folderId = documentsResponsePayload.documentsPage.items.at(0)?.folder.id
-    expect(OnDisconnectedAsyncMock).toHaveBeenCalledOnce()
-    expect(OnDisconnectedAsyncMock).toHaveBeenNthCalledWith(1, folderId)
+    expect(onDisconnectedAsyncMock).toHaveBeenCalledOnce()
+    expect(onDisconnectedAsyncMock).toHaveBeenNthCalledWith(1, folderId)
   })
 
   it('should not use OnConnectedAsync on null folder change', async () => {
@@ -118,6 +118,6 @@ describe('usePiaStatusSync', () => {
     fakeFolder.value = null
     await nextTick()
 
-    expect(OnConnectedAsyncMock).not.toHaveBeenCalled()
+    expect(onConnectedAsyncMock).not.toHaveBeenCalled()
   })
 })

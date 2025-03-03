@@ -9,7 +9,7 @@ export const formatBinData = (entityServices: Service[]) => {
     iconName: 'binIcon',
   }))
 
-  // Returns a "parent" tree folder with all the services bins inside as childre
+  // Returns a "parent" tree folder with all the services bins inside as children
   // so it is usable by the tree
   return [
     {

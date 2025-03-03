@@ -1,13 +1,15 @@
 
+import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import DocumentDetailsTabPane from '.'
-import type { DocumentDetailsTabPaneProps } from './DocumentDetailsTabPaneTypes'
 import { vi, describe, it, expect } from 'vitest'
 import { createPinia } from 'pinia'
+import { documentMock } from '@ged/__mocks__/documents.mock'
+import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
+import type { DocumentDetailsTabPaneProps } from './DocumentDetailsTabPaneTypes'
 import { downloadDocument } from '@ged/services/Documents'
-import { documentMock } from '@ged/modules/Documents/mocks/documentMock'
-import { nextTick } from 'vue'
+
+import DocumentDetailsTabPane from '.'
 
 const defaultProps: DocumentDetailsTabPaneProps = {
   document: documentMock,
@@ -37,9 +39,7 @@ function getMockedUpdatedDocument(status: string, labelFr: string|null, path: st
 
 vi.mock('@pulse/styleguide')
 
-vi.mock('@ged/services/Documents', () => ({
-  downloadDocument: vi.fn(),
-}))
+vi.mock('@ged/services/Documents', () => documentsServiceMock)
 
 const pinia = createPinia()
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import { mailToGedServicesLines } from '@ged/modules/Treeview/mocks/mail-to-ged.mock'
+import { mailToGedServicesLines } from '@ged/__mocks__/mail-to-ged.mocks'
+
 import EmailByServiceModal from '.'
 
 function createWrapper(isOpened = true, mailToGedInformation = mailToGedServicesLines) {

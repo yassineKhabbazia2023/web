@@ -1,28 +1,21 @@
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import MailToGedCard from '.'
+import { loggerErrorSpy, loggerMock } from '@ged/__mocks__/logger.mocks'
+import { servicesDataMock } from '@ged/__mocks__/services.mocks'
+import { accountId, selectedEntity } from '@ged/__mocks__/files.mocks'
+import { mailToGedServicesLines } from '@ged/__mocks__/mail-to-ged.mocks'
 import { fetchServicesMailToGedInformation } from '@ged/services/Services'
-import { servicesData } from '@ged/modules/Treeview/mocks/servicesDataMock'
-import { mailToGedServicesLines } from '@ged/modules/Treeview/mocks/mail-to-ged.mock'
 
+import MailToGedCard from '.'
 
 vi.mock('@ged/services/Services')
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    error: loggerErrorSpy,
-  },
-}))
-
-const selectedEntity = '12345'
-const accountId = 1234
 const defaultProps = {
   selectedEntity,
   accountId,
-  entityServices: servicesData,
+  entityServices: servicesDataMock,
 }
 
 const createWrapper = (props: any = defaultProps) =>
@@ -42,7 +35,7 @@ describe('mail to ged card', () => {
       await flushPromises()
 
       const mailToGedCardWrapper = findMailToGedCardWrapper(wrapper)
-      expect(fetchServicesMailToGedInformation).toHaveBeenCalledWith(selectedEntity, servicesData, accountId)
+      expect(fetchServicesMailToGedInformation).toHaveBeenCalledWith(selectedEntity, servicesDataMock, accountId)
       expect(mailToGedCardWrapper.exists()).toBeTruthy()
     })
   })

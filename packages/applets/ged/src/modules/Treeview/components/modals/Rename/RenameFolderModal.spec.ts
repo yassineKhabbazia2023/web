@@ -1,16 +1,16 @@
 
-import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
-import SingleInputModal from '@ged/modules/common/templates/modals'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
+import { nextTick } from 'vue'
+import { getMockedButtonTest, getMockedFolder } from '@ged/__mocks__/treeview.mocks'
 import { type RenameFolderModalProps }
   from '@ged/modules/Treeview/components/modals/Rename/RenameFolderModalTypes'
 import type { Folder } from '@ged/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
-import { nextTick } from 'vue'
-import { getMockedButtonTest, getMockedFolder } from '@ged/modules/Treeview/helpers/testHelper'
+
+import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
 
 const defaultProps: RenameFolderModalProps = {
   isRenameFolderModalVisible: false,
@@ -71,7 +71,7 @@ describe('props', () => {
 
         const wrapper = createWrapper(props)
 
-        const dialog = wrapper.findComponent(SingleInputModal)
+        const dialog = wrapper.findComponent({ name: 'SingleInputModal' })
 
         const componentInstance = wrapper.vm
         componentInstance.inputContent = typedValue
@@ -105,7 +105,7 @@ describe('props', () => {
 
         const wrapper = createWrapper(props)
 
-        const dialog = wrapper.findComponent(SingleInputModal)
+        const dialog = wrapper.findComponent({ name: 'SingleInputModal' })
 
         const componentInstance = wrapper.vm
         componentInstance.inputContent = typedValue
@@ -165,7 +165,7 @@ describe('interactions', () => {
 
     const wrapper = createWrapper(props)
 
-    const dialog = wrapper.findComponent(SingleInputModal)
+    const dialog = wrapper.findComponent({ name: 'SingleInputModal' })
 
     const componentInstance = wrapper.vm
     componentInstance.inputContent = 'TheFolder'
@@ -200,7 +200,7 @@ describe('interactions', () => {
 
     const wrapper = createWrapper(props)
 
-    const dialog = wrapper.findComponent(SingleInputModal)
+    const dialog = wrapper.findComponent({ name: 'SingleInputModal' })
 
     const componentInstance = wrapper.vm
     componentInstance.inputContent = 'TheFolder'
@@ -222,7 +222,7 @@ describe('interactions', () => {
 
     const wrapper = createWrapper(props)
 
-    const dialog = wrapper.findComponent(SingleInputModal)
+    const dialog = wrapper.findComponent({ name: 'SingleInputModal' })
     await nextTick()
 
     const cancelButton = dialog.find('.cancel-action-button')
@@ -240,7 +240,7 @@ describe('interactions', () => {
 
     const wrapper = createWrapper(props)
 
-    const dialog = wrapper.findComponent(SingleInputModal)
+    const dialog = wrapper.findComponent({ name: 'SingleInputModal' })
 
     dialog.vm.$emit('on-close-modal')
     await nextTick()

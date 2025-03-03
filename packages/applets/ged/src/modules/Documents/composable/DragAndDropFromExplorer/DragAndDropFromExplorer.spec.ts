@@ -1,8 +1,11 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { ref, type Ref } from 'vue'
-import { useDragAndDropFromExplorer } from '.'
+import '@ged/__mocks__/i18n.import.mocks'
+import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import type { DocumentsProps } from '@ged/modules/Documents/DocumentsTypes'
-import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
+import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
+
+import { useDragAndDropFromExplorer } from '.'
 
 let currentServiceName: Ref<DocumentsProps['currentServiceName']>
 let currentService: Ref<DocumentsProps['currentService']>
@@ -51,14 +54,7 @@ class MockDataTransfer {
   }
 }
 
-vi.mock('@ged/services/Documents', () => ({
-  uploadDocument: vi.fn((_service, _entity, file, _folderId) => {
-    if (file.name === 'fail.txt') {
-      return Promise.reject(new Error('Upload failed'))
-    }
-    return Promise.resolve('Upload succeeded')
-  }),
-}))
+vi.mock('@ged/services/Documents', () => documentsServiceMock)
 
 const spyPNotification = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/styleguide', () => ({
@@ -68,12 +64,6 @@ vi.mock('@pulse/styleguide', () => ({
     PRIMARY: 'PRIMARY',
     GREY_300: 'GREY_300',
   },
-}))
-
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({
-    t: (key: string, ..._args: any[]) => key,
-  }),
 }))
 
 describe('drag and drop from explorer composable', () => {
@@ -115,7 +105,7 @@ describe('drag and drop from explorer composable', () => {
       refreshDocumentsList,
     )
 
-    // Drag Event doesn't exist in test environement
+    // Drag Event doesn't exist in test environment
     const mockEvent = {
       dataTransfer: {
         dropEffect: '',

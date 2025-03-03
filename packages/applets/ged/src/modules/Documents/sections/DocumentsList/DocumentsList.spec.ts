@@ -1,15 +1,15 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
-import DocumentsList from './DocumentsList.vue'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount, shallowMount } from '@vue/test-utils'
-import type { DocumentsListProps } from './documents-list.types'
-import { documentsResponsePayload } from '../../mocks/documentsWithTableStructureDataMock'
-import { PTableColumn, PTable, PToolbox } from '@pulse/styleguide/components'
-import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
+import { describe, it, expect, beforeEach } from 'vitest'
+import { mount, shallowMount } from '@vue/test-utils'
+import type { VueWrapper } from '@vue/test-utils'
+import { createPinia, setActivePinia } from 'pinia'
+import { documentsResponsePayload } from '@ged/__mocks__/documents.mock'
+import type { ComponentPublicInstance } from 'vue'
 import type { Document } from '@ged/models/Document'
+import type { DocumentsListProps } from './documents-list.types'
+
 import TableElement from './components/TableElement'
+import DocumentsList from './DocumentsList.vue'
 
 type DocumentsListSetup = {
   selectedDocuments: Document[]
@@ -29,7 +29,7 @@ const payloadWithZeroItems = {
   startIndex: 1,
 }
 
-export type DocumentsListWrapper = VueWrapper<
+type DocumentsListWrapper = VueWrapper<
   ComponentPublicInstance<DocumentsListSetup, DocumentsListProps>
 >
 const createWrapper = (props: DocumentsListProps = defaultProps): DocumentsListWrapper => {
@@ -37,12 +37,7 @@ const createWrapper = (props: DocumentsListProps = defaultProps): DocumentsListW
     props,
     global: {
       stubs: {
-        PTable,
-        PTableColumn,
-        TableElement,
-        PToolbox: {
-          template: '<span />',
-        },
+        PTable: false,
       },
       plugins: [pinia],
     },
@@ -217,7 +212,7 @@ describe('documentList', () => {
         await wrapper.vm.$nextTick()
 
         expect(mockedEvent.preventDefault).toHaveBeenCalled()
-        expect(wrapper.findComponent(PToolbox).exists()).toBe(true)
+        expect(wrapper.findComponent({ name: 'PToolbox' }).exists()).toBe(true)
       })
 
       it('should correctly set toolbox style on right-click', async () => {

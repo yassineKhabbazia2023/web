@@ -1,13 +1,13 @@
-import DeleteFolderConfirmationPopup from '@ged/modules/Treeview/components/popups/Delete'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { type DeleteFolderConfirmationPopupProps }
   from '@ged/modules/Treeview/components/popups/Delete/DeleteFolderConfirmationPopupTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
+
+import DeleteFolderConfirmationPopup from '@ged/modules/Treeview/components/popups/Delete'
 
 const defaultProps: DeleteFolderConfirmationPopupProps = {
   isDeleteFolderPopupVisible: false,
@@ -56,7 +56,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = wrapper.findComponent(ConfirmationPopup)
+      const popup = wrapper.findComponent({ name: 'ConfirmationPopup' })
       await nextTick()
       expect(popup.exists()).toBeTruthy()
     })
@@ -73,7 +73,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = wrapper.findComponent(ConfirmationPopup)
+      const popup = wrapper.findComponent({ name: 'ConfirmationPopup' })
 
       const popupMessage = popup.props('message').trim()
       expect(popupMessage).toStrictEqual(confirmationMessage.trim())
@@ -89,7 +89,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = wrapper.findComponent(ConfirmationPopup)
+      const popup = wrapper.findComponent({ name: 'ConfirmationPopup' })
       await popup.vm.$emit('on-confirm-button-click')
       await nextTick()
       expect(wrapper.emitted('confirm-delete-folder')).toBeTruthy()
@@ -103,7 +103,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = wrapper.findComponent(ConfirmationPopup)
+      const popup = wrapper.findComponent({ name: 'ConfirmationPopup' })
       await popup.vm.$emit('on-cancel-button-click')
       await nextTick()
       expect(wrapper.emitted('cancel-delete-folder')).toBeTruthy()
@@ -117,7 +117,7 @@ describe('deleteFolderConfirmationPopup', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const popup = wrapper.findComponent(ConfirmationPopup)
+      const popup = wrapper.findComponent({ name: 'ConfirmationPopup' })
       await popup.vm.$emit('on-close-popup')
       await nextTick()
       expect(wrapper.emitted('cancel-delete-folder')).toBeTruthy()

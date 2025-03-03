@@ -1,5 +1,5 @@
-import type { Document } from '@ged/models/Document'
-import mock from './mock.json'
+import type { Document, DocumentsWithTableStructure } from '@ged/models/Document'
+import mock from './json/documents.json'
 
 export const documentMock: Document = mock.documentMock
 export const documentsMock : Document[] = mock.documentsMock
@@ -8,3 +8,12 @@ export const documentsMockWithOneCertified : Document[] = mock.documentsMockWith
 export const documentsMockWithError : Document[] = mock.documentsMockWithError
 export const certifiedDocument: Document = documentsMockWithOneCertified[1]
 export const notCertifiedDocument: Document = documentsMock[0]
+
+export const documentsResponsePayload: DocumentsWithTableStructure =
+  mock.documentsResponsePayload
+
+export const documentsResponsePayloadMoreThanOneDoc: DocumentsWithTableStructure =
+  mock.documentsResponsePayloadMoreThanOneDoc
+
+export const documentsResponsePayloadTwoPages: DocumentsWithTableStructure =
+  mock.documentsResponsePayloadTwoPages

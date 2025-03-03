@@ -1,24 +1,19 @@
 
 import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import type { FoldersMoveProps } from './FoldersMoveTypes'
-import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
-import type { Folder } from '@ged/models/Folder'
+import { secondValidDestination, unValidDestination, validDestination } from '@ged/__mocks__/files.mocks'
+import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
+import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import FoldersMove from '.'
 import { moveFolderAsync } from '@ged/services/Folder'
-import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
-import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
+import type { FoldersMoveProps } from './FoldersMoveTypes'
+import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
 
-const unValidDestination: Folder = foldersData[0][0] // id: 135393636
-const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
-const secondValidDestination: Folder = foldersData[0][0].children[0].children[0] // id: 135393649
+import FoldersMove from '.'
 
-vi.mock('@ged/services/Folder', () => ({
-  moveFolderAsync: vi.fn(),
-}))
+vi.mock('@ged/services/Folder', () => folderServiceMock)
 
 vi.mock('@pulse/styleguide')
 

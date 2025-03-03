@@ -1,11 +1,11 @@
-import BinDocumentsList from './BinDocumentsList.vue'
+import { nextTick } from 'vue'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
+import { binDocumentsMock } from '@ged/__mocks__/bin-documents.mocks'
 import { mount } from '@vue/test-utils'
-
 import type { BinDocumentsListProps } from '@ged/modules/Bin/sections/BinDocumentsList/BinDocumentsListTypes'
-import { binDocumentsMock } from '../../mocks/binDocumentMock'
-import { nextTick } from 'vue'
+
+import BinDocumentsList from './BinDocumentsList.vue'
 
 const defaultProps: BinDocumentsListProps = {
   binDocuments: binDocumentsMock,

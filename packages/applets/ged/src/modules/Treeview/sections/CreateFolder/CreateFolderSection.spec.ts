@@ -1,16 +1,17 @@
-import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
+import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type CreateFolderSectionProps }
   from '@ged/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
 import type { Folder, FolderProperties } from '@ged/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import { CreateFolder } from '@ged/services/Folder'
-import CreateFolderModal from '@ged/modules/Treeview/components/modals/Create'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
+
+import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
 
 const pinia = createPinia()
 
@@ -65,9 +66,7 @@ const createWrapper = (
   }) as unknown as CreateFolderSectionWrapper
 }
 
-vi.mock('@ged/services/Folder', () => ({
-  CreateFolder: vi.fn(),
-}))
+vi.mock('@ged/services/Folder', () => folderServiceMock)
 
 describe('createFolderSection', () => {
 
@@ -164,9 +163,7 @@ describe('createFolderSection', () => {
         }
         const wrapper = createWrapper(updatedProps)
 
-        const createFolderModalWrapper = wrapper.findComponent(
-          CreateFolderModal,
-        )
+        const createFolderModalWrapper = wrapper.findComponent({ name: 'CreateFolderModal' })
 
         expect(createFolderModalWrapper.props()).toStrictEqual(expectedProps)
       })
@@ -192,7 +189,7 @@ describe('createFolderSection', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const modal = wrapper.findComponent(CreateFolderModal)
+        const modal = wrapper.findComponent({ name: 'CreateFolderModal' })
 
         modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
         await nextTick()
@@ -213,9 +210,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = wrapper.findComponent(
-        CreateFolderModal,
-      )
+      const modal = wrapper.findComponent({ name: 'CreateFolderModal' })
 
       modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
@@ -230,7 +225,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = wrapper.findComponent(CreateFolderModal)
+      const modal = wrapper.findComponent({ name: 'CreateFolderModal' })
 
       modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
@@ -245,7 +240,7 @@ describe('createFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = wrapper.findComponent(CreateFolderModal)
+      const modal = wrapper.findComponent({ name: 'CreateFolderModal' })
 
       modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
       await nextTick()
@@ -292,9 +287,7 @@ describe('createFolderSection', () => {
           }
           const wrapper = createWrapper(updatedProps)
 
-          const modal = wrapper.findComponent(
-            CreateFolderModal,
-          )
+          const modal = wrapper.findComponent({ name: 'CreateFolderModal' })
 
           modal.vm.$emit(action)
           await nextTick()

@@ -1,11 +1,12 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import DocumentsActionsBar from './DocumentsActionsBar.vue'
 import { describe, expect, it, vi } from 'vitest'
 import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
-import { PActionBar } from '@pulse/styleguide/components'
 import type { DocumentActionsBarProps } from './DocumentActionsBarTypes'
+
+import DocumentsActionsBar from './DocumentsActionsBar.vue'
+
 const pinia = createPinia()
 
 const createWrapper = (props: DocumentActionsBarProps) =>
@@ -27,7 +28,7 @@ const findActionBarRight = (wrapper: any) => {
 }
 
 const findPactionBar = (wrapper: VueWrapper) => {
-  return wrapper.findComponent(PActionBar)
+  return wrapper.findComponent({ name: 'PActionBar' })
 }
 
 describe('documentsActions component', () => {

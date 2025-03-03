@@ -1,21 +1,20 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { foldersData } from '../Treeview/mocks/treeFoldersMock'
-import Documents from './Documents.vue'
-import { createPinia, setActivePinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
+import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
+import { documentsResponsePayloadTwoPages } from '@ged/__mocks__/documents.mock'
+import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
+import { getConnectionDocumentPiaStatusChangedMock, onConnectedAsyncMock, onDisconnectedAsyncMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
+import { createPinia, setActivePinia } from 'pinia'
 import type { DocumentsProps } from './DocumentsTypes'
-import {
-  fetchFolderDocuments,
-} from '@ged/services/Documents'
-import {
-  documentsResponsePayloadTwoPages,
-} from '@ged/modules/Documents/mocks/documentsWithTableStructureDataMock'
-import type { Document, DocumentsWithTableStructure } from '@ged/models/Document'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { Entity } from '@pulse/common/types'
+import { fetchFolderDocuments } from '@ged/services/Documents'
+import type { Document, DocumentsWithTableStructure } from '@ged/models/Document'
+
+import Documents from './Documents.vue'
 
  type DocumentsSetup = {
    documents: DocumentsWithTableStructure
@@ -51,44 +50,19 @@ const responseNoDoc: DocumentsWithTableStructure = {
   documentHeaders: [],
 }
 
-vi.mock('@ged/services/Documents', () => ({
-  fetchFolderDocuments: vi.fn(),
-  downloadDocuments: vi.fn(),
-  downloadDocument: vi.fn(),
-}))
+
+vi.mock('@ged/services/Documents', () => documentsServiceMock)
 
 vi.mock('@ged/modules/common/helpers/downloadFilesHelper', () => ({
   downloadFile: vi.fn(),
 }))
 
-const DocumentPiaStatusChangedResponseMock = {
-  folderId: 45454,
-  documentId: 'myID',
-  newStatus: {
-    technicalName: 'Duplicate',
-    labelFr: 'Transmis',
-    labelEn: 'Transmitted',
-    date: null,
-  },
-  permissions: ['CAN_MOVE_DOCUMENT'],
-}
 
 vi.mock('@ged/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
-    OnConnectedAsync: vi.fn(),
-    OnDisconnectedAsync: vi.fn(),
-    getConnection: vi.fn(() => ({
-      on: vi.fn()
-        .mockImplementation(
-          (eventName: string, newMethod: (_res: string) => void) => {
-            if (eventName === 'DocumentPiaStatusChanged') {
-              newMethod(
-                JSON.stringify(DocumentPiaStatusChangedResponseMock),
-              )
-            }
-          },
-        ),
-    })),
+    OnConnectedAsync: onConnectedAsyncMock,
+    OnDisconnectedAsync: onDisconnectedAsyncMock,
+    getConnection: getConnectionDocumentPiaStatusChangedMock,
   }),
 }))
 

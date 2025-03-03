@@ -3,11 +3,10 @@ import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { PCheckbox } from '@pulse/styleguide/components'
-import DocumentsCheckAll
-  from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsSelector/DocumentsCheckAll'
 import type { DocumentsCheckAllProps } from './DocumentsCheckAllTypes'
-import type { ComponentWrapper } from '@ged/utils/testHelpers'
+import type { ComponentWrapper } from '@ged/__mocks__/component.wrapper'
+
+import DocumentsCheckAll from './DocumentsCheckAll.vue'
 
 type DocumentsCheckAllWrapper = ComponentWrapper<InstanceType<typeof DocumentsCheckAll>>
 
@@ -37,7 +36,7 @@ describe('documentsCheckAll', () => {
         pChecked: false,
       }
 
-      const check = wrapper.findComponent(PCheckbox)
+      const check = wrapper.findComponent({ name: 'PCheckbox' })
       expect(check.exists()).toBeTruthy()
       expect(check.props()).toStrictEqual(expectedProps)
     })
@@ -46,7 +45,7 @@ describe('documentsCheckAll', () => {
     it('should emit check-all-documents when change event is triggered', async () => {
       const wrapper = createWrapper()
       await nextTick()
-      const check = wrapper.findComponent(PCheckbox)
+      const check = wrapper.findComponent({ name: 'PCheckbox' })
       check.vm.$emit('change', true)
       await nextTick()
       expect(wrapper.emitted('check-all-documents')).toBeTruthy()

@@ -3,22 +3,15 @@ import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it, beforeEach } from 'vitest'
-import
-{
-  PTooltip,
-  PCollapse,
-  PFileAndFolderLineCheck,
-  PCollapseItem,
-} from '@pulse/styleguide/components'
 import type { ExplorerDocument } from '@ged/modules/Documents/DocumentsTypes'
-import DocumentsExplorerHeader
-  from '@ged/modules/Documents/components/DocumentsExplorerModal/components/DocumentsExplorerHeader'
 import { type DocumentsExplorerHeaderProps }
   from './DocumentsExplorerHeaderTypes'
 import {
   getFileErrorMessage,
   getFileErrorDescription,
 } from '@ged/modules/common/helpers/documentCodeErrorHelper'
+
+import DocumentsExplorerHeader from './DocumentsExplorerHeader.vue'
 
 const defaultProps: DocumentsExplorerHeaderProps = {
   documents: [],
@@ -48,7 +41,7 @@ describe('documentsExplorerHeader', () => {
 
       await nextTick()
 
-      const collapse = wrapper.findComponent(PCollapse)
+      const collapse = wrapper.findComponent({ name: 'PCollapse' })
       await nextTick()
 
       expect(collapse.exists()).toBeFalsy()
@@ -76,10 +69,10 @@ describe('documentsExplorerHeader', () => {
       const wrapper = createWrapper(props)
       await nextTick()
 
-      const collapse = wrapper.findComponent(PCollapse)
-      const collapseItem = wrapper.findComponent(PCollapseItem)
-      const lines = wrapper.findAllComponents(PFileAndFolderLineCheck)
-      const toolTips = wrapper.findAllComponents(PTooltip)
+      const collapse = wrapper.findComponent({ name: 'PCollapse' })
+      const collapseItem = wrapper.findComponent({ name: 'PCollapseItem' })
+      const lines = wrapper.findAllComponents({ name: 'PFileAndFolderLineCheck' })
+      const toolTips = wrapper.findAllComponents({ name: 'PTooltip' })
       await nextTick()
 
       expect(collapse.exists()).toBeTruthy()

@@ -1,9 +1,9 @@
-import { documentsMock, documentsMockWithError } from '../mocks/documentMock'
+import { describe, it, expect } from 'vitest'
+import { documentsMock, documentsMockWithError } from '@ged/__mocks__/documents.mock'
 import {
   mapExplorerDocumentFromDocuments,
   mapExplorerDocumentFromFiles,
 } from './documentExplorerMapper'
-import { describe, it, expect } from 'vitest'
 
 describe('mapping functions', () => {
   describe('mapExplorerDocumentFromFiles', () => {

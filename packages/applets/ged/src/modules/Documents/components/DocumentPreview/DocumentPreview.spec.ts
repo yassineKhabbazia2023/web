@@ -3,8 +3,9 @@ import { createPinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
+import { documentMock } from '@ged/__mocks__/documents.mock'
+import { documentsServiceMock, previewDocumentMock } from '@ged/__mocks__/documents.service.mocks'
 import type { DocumentsPreviewProps } from './DocumentPreviewTypes'
-import { documentMock } from '../../mocks/documentMock'
 import { downloadDocument, previewDocument } from '@ged/services/Documents'
 import DocumentPreview from '.'
 import { type IconName } from '@pulse/styleguide/types'
@@ -68,16 +69,9 @@ const createWrapper = (
   })
 }
 
-const previewDocumentMock = vi.hoisted(() => vi.fn(() => {
-  return Promise.resolve({
-    data: new ArrayBuffer(1),
-    headers: { 'content-type': 'image/jpeg' },
-  })
-}))
-
 vi.mock('@ged/services/Documents', () => ({
+  ...documentsServiceMock,
   previewDocument: previewDocumentMock,
-  downloadDocument: vi.fn(),
 }))
 
 describe('documentPreview', () => {

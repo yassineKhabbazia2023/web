@@ -1,26 +1,22 @@
 
 import { it, expect, beforeEach, describe } from 'vitest'
+import { commonApiDsGetSpy, commonApiDsPostSpy } from '@ged/__mocks__/common.import.mocks'
+import { accountId, accountNumber } from '@ged/__mocks__/files.mocks'
+import type { Service } from '@ged/models/Service'
+
 import {
   fetchBinDocuments,
   restoreDocuments,
 } from './BinDocuments'
-import type { Service } from '@ged/models/Service'
-import {
-  commonApiDsGetSpy as mockDsGet,
-  commonApiDsPostSpy as mockDsPost,
-} from '@ged/../vitest.setup'
-
-const accountId = 1234
-const accountNumber = 'my-account-id'
 
 describe('bin documents service', () => {
   beforeEach(() => {
-    mockDsGet.mockResolvedValue({
+    commonApiDsGetSpy.mockResolvedValue({
       data: {
         documents: 'fetched',
       },
     })
-    mockDsPost.mockResolvedValue(() => ({
+    commonApiDsPostSpy.mockResolvedValue(() => ({
       data: {
         documents: 'posted',
       },
@@ -32,8 +28,8 @@ describe('bin documents service', () => {
 
     await fetchBinDocuments(service.ServiceId, accountNumber, accountId)
 
-    expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(commonApiDsGetSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/trash/mapped/currentuser',
       {
         headers: { 'Account-Id': accountId },
@@ -52,8 +48,8 @@ describe('bin documents service', () => {
 
     await restoreDocuments(service.ServiceId, accountNumber, ['doc-id'], accountId)
 
-    expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWith(
+    expect(commonApiDsPostSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiDsPostSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/trash/restore',
       {
         ids: ['doc-id'],

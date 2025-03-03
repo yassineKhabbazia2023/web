@@ -1,9 +1,9 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import DocumentsSearchAlert from '.'
 import type { DocumentsSearchAlertProps } from './DocumentsSearchAlertTypes'
 import { describe, it, expect } from 'vitest'
-import { PAlert } from '@pulse/styleguide/components'
+
+import DocumentsSearchAlert from './DocumentsSearchAlert.vue'
 
 const defaultProps: DocumentsSearchAlertProps = {
   documentsCount: 10,
@@ -19,7 +19,7 @@ const createWrapper = (
 
 // finders
 
-const findPalert = (wrapper: VueWrapper): VueWrapper => wrapper.findComponent(PAlert)
+const findPalert = (wrapper: VueWrapper): VueWrapper => wrapper.findComponent({ name: 'PAlert' })
 
 describe('documentsSearchAlert', () => {
   describe('binding', () => {

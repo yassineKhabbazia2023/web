@@ -1,42 +1,26 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
-import type { Folder } from '@ged/models/Folder'
-import type { Service } from '@ged/models/Service'
-import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import type { GivenActionAuthorization } from
-  '@ged/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
+import { documentsMock, documentsMockWithOneCertified } from '@ged/__mocks__/documents.mock'
+import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
+import { validDestination, currentServiceFolder, unValidDestination, secondValidDestination, currentService, selectedEntity, accountId } from '@ged/__mocks__/files.mocks'
+import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
+import type { Folder } from '@ged/models/Folder'
+import type { VueWrapper } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
+import type { GivenActionAuthorization } from '@ged/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
 import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
-import { moveDocuments } from '@ged/services/Documents'
-import DocumentsModalActionsFooter from
-  '../DocumentsExplorerModal/components/DocumentsModalActionsFooter'
-import { PButton } from '@pulse/styleguide/components'
 import type { DocumentMoveProps, ExplorerMoveDocument } from './DocumentsMoveTypes'
+import { moveDocuments } from '@ged/services/Documents'
+
 import DocumentsMove from '.'
-import { documentsMock, documentsMockWithOneCertified } from '../../mocks/documentMock'
-import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
-
-// id: 135393636 without permission 'CAN_MOVE_INTO_FOLDER'
-const unValidDestination: Folder = foldersData[0][0]
-
-// id: 135393636 with permission 'CAN_MOVE_INTO_FOLDER'
-const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
-
-const secondValidDestination: Folder = foldersData[0][0].children[0].children[0] // id: 135393649
-
-const currentServiceFolder: Folder[] = foldersData[0]
-const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
-const selectedEntity = 'my-selected-entity'
-const accountId = 1234
 
 const defaultProps: DocumentMoveProps = {
   folder: validDestination,
   isMoveModalOpened: false,
   currentServiceFolder,
-  currentService: curentService,
+  currentService: currentService,
   selectedEntity,
   selectedDocuments: documentsMock,
   accountId,
@@ -57,9 +41,7 @@ export type DocumentsMoveWrapper = VueWrapper<
 
 vi.mock('@pulse/styleguide')
 
-vi.mock('@ged/services/Documents', () => ({
-  moveDocuments: vi.fn(),
-}))
+vi.mock('@ged/services/Documents', () => documentsServiceMock)
 
 const createWrapper = (
   props: DocumentMoveProps = defaultProps,
@@ -75,11 +57,9 @@ const createWrapper = (
 const pinia = createPinia()
 
 describe('documents Move', () => {
-  const findModalFooter = (wrapper: any) =>
-    wrapper.findComponent(DocumentsModalActionsFooter)
+  const findModalFooter = (wrapper: any) => wrapper.findComponent({ name: 'DocumentsModalActionsFooter' })
 
-  const findConfirmButton = (wrapper: DocumentsMoveWrapper) =>
-    wrapper.findAllComponents(PButton)[1]
+  const findConfirmButton = (wrapper: DocumentsMoveWrapper) => wrapper.findAllComponents({ name: 'PButton' })[1]
 
   beforeEach(() => {
     setActivePinia(pinia)
@@ -304,7 +284,7 @@ describe('documents Move', () => {
             moveAll: false,
             serviceId: selectedEntity,
           }
-          expect(moveDocuments).toHaveBeenCalledWith(curentService, selectedEntity, expectedDocumentRequest, accountId)
+          expect(moveDocuments).toHaveBeenCalledWith(currentService, selectedEntity, expectedDocumentRequest, accountId)
 
         })
       })

@@ -1,14 +1,15 @@
-import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
+import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type RenameFolderSectionProps }
   from '@ged/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
 import type { Folder, FolderProperties } from '@ged/models/Folder'
 import { createPinia, setActivePinia } from 'pinia'
 import { RenameFolder } from '@ged/services/Folder'
-import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
+
+import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
 
 vi.mock('@pulse/styleguide')
 
@@ -51,9 +52,7 @@ const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
   })
 }
 
-vi.mock('@ged/services/Folder', () => ({
-  RenameFolder: vi.fn(),
-}))
+vi.mock('@ged/services/Folder', () => folderServiceMock)
 
 describe('renameFolderSection', () => {
   beforeEach(() => {
@@ -107,7 +106,7 @@ describe('renameFolderSection', () => {
           }
           const wrapper = createWrapper(updatedProps)
 
-          const renameFolderModalWrapper = wrapper.findComponent(RenameFolderModal)
+          const renameFolderModalWrapper = wrapper.findComponent({ name: 'RenameFolderModal' })
 
           expect(renameFolderModalWrapper.props()).toStrictEqual(expectedProps)
         },
@@ -126,7 +125,7 @@ describe('renameFolderSection', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const modal = wrapper.findComponent(RenameFolderModal)
+        const modal = wrapper.findComponent({ name: 'RenameFolderModal' })
 
         await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
         await nextTick()
@@ -149,7 +148,7 @@ describe('renameFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = wrapper.findComponent(RenameFolderModal)
+      const modal = wrapper.findComponent({ name: 'RenameFolderModal' })
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()
@@ -165,7 +164,7 @@ describe('renameFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = wrapper.findComponent(RenameFolderModal)
+      const modal = wrapper.findComponent({ name: 'RenameFolderModal' })
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()
@@ -181,7 +180,7 @@ describe('renameFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = wrapper.findComponent(RenameFolderModal)
+      const modal = wrapper.findComponent({ name: 'RenameFolderModal' })
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()
@@ -215,8 +214,7 @@ describe('renameFolderSection', () => {
           }
           const wrapper = createWrapper(updatedProps)
 
-          const renameFolderModalWrapper =
-                  wrapper.findComponent(RenameFolderModal)
+          const renameFolderModalWrapper = wrapper.findComponent({ name: 'RenameFolderModal' })
           await renameFolderModalWrapper.vm.$emit(action)
           await nextTick()
 

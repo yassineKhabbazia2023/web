@@ -2,79 +2,24 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { DocumentUploadProps } from './DocumentsUploadTypes'
-import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
-import type { Folder } from '@ged/models/Folder'
+import { generateTestFiles, secondValidDestination, unValidDestination, validDestination, validFiles } from '@ged/__mocks__/files.mocks'
+import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
+import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import { uploadDocument } from '@ged/services/Documents'
-import DocumentsUpload from '.'
-import DocumentsModalActionsFooter from '../DocumentsExplorerModal/components/DocumentsModalActionsFooter'
-import { PButton } from '@pulse/styleguide/components'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
-import { generateTestFiles, defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
-import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
+import { defaultProps, type DocumentUploadSetup } from '../../helpers/testHelpers'
 
-const unValidDestination: Folder = foldersData[0][0] // id: 135393636
-const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
-const validFiles: File[] = generateTestFiles(3, 'VALID')
-const secondValidDestination: Folder = foldersData[0][0].children[0].children[0] // id: 135393649
-
-const uploadDocumentsResponse = {
-  id: '10274210-f1e6-4e3c-8965-0e2f5f33e1eb',
-  name: 'Final (3) (12).jpg',
-  content: {
-    href: '12',
-  },
-  preview: {
-    href: '12',
-  },
-  updatedBy: 'obenamor@test.fr',
-  updated: '2023-12-12T09:08:45.148+00:00',
-  type: '.jpg',
-  size: 27819,
-  comments: null,
-  isUploadedInGedLoop: null,
-  folder: {
-    id: 135393637,
-    path: ['Comptabilité', 'Dépôt'],
-  },
-  created: '2023-12-12T09:08:45.147+00:00',
-  createdBy: 'obenamor@test.fr',
-  account: {
-    id: '93012cc8-77b9-4161-8dbd-61915d935e21',
-    name: 'JEAN LÉVAGE',
-  },
-  properties: {},
-  lifecycleStatus: '1',
-  paymentStatus: null,
-  source: {
-    id: 0,
-    code: 'User',
-    libelle: 'Web',
-  },
-  piaStatus: null,
-  permissions: [
-    'CAN_RENAME_DOCUMENT',
-    'CAN_DELETE_DOCUMENT',
-    'CAN_TRANSMIT_DOCUMENT',
-    'CAN_REPLACE_DOCUMENT',
-    'CAN_MOVE_DOCUMENT',
-    'CAN_RESTORE_DOCUMENT',
-  ],
-  isNew: null,
-}
+import DocumentsUpload from './DocumentsUpload.vue'
 
 export type DocumentsUploadWrapper = VueWrapper<
   ComponentPublicInstance<DocumentUploadProps, DocumentUploadSetup>
 >
 
-vi.mock('@ged/services/Documents', () => ({
-  uploadDocument: vi.fn(() => {
-    return uploadDocumentsResponse
-  }),
-}))
+vi.mock('@ged/services/Documents', () => documentsServiceMock)
 
 vi.mock('@pulse/styleguide')
 
@@ -92,11 +37,9 @@ const createWrapper = (
 const pinia = createPinia()
 
 describe('test DocumentsUpload', () => {
-  const findModalFooter = (wrapper: any) =>
-    wrapper.findComponent(DocumentsModalActionsFooter)
+  const findModalFooter = (wrapper: any) => wrapper.findComponent({ name: 'DocumentsModalActionsFooter' })
 
-  const findConfirmButton = (wrapper: DocumentsUploadWrapper) =>
-    wrapper.findAllComponents(PButton)[1]
+  const findConfirmButton = (wrapper: DocumentsUploadWrapper) => wrapper.findAllComponents({ name: 'PButton' })[1]
 
   beforeEach(() => {
     setActivePinia(pinia)
@@ -246,8 +189,8 @@ describe('test DocumentsUpload', () => {
       const wrapper = createWrapper(updatedProps)
       wrapper.setProps({ isUploadModalOpened: true })
       await nextTick()
-      const documentsExporerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
-      const footerWrapper = findModalFooter(documentsExporerModalWrapper)
+      const documentsExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
+      const footerWrapper = findModalFooter(documentsExplorerModalWrapper)
 
       const confirmBtn = findConfirmButton(footerWrapper)
 

@@ -1,12 +1,10 @@
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
-import FoldersList
-  from '@ged/modules/Documents/components/DocumentsExplorerModal/components/FoldersNavigator/FoldersList'
-import { type FoldersListProps }
-  from './FoldersListTypes'
-import { foldersData, newFolderData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
-import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
+import { foldersData, newFolderData } from '@ged/__mocks__/tree-folders.mocks'
+import { type FoldersListProps } from './FoldersListTypes'
+
+import FoldersList from './FoldersList.vue'
 
 vi.mock('@pulse/styleguide')
 
@@ -104,7 +102,7 @@ describe('foldersList', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const section = wrapper.findComponent(CreateFolderSection)
+      const section = wrapper.findComponent({ name: 'CreateFolderSection' })
       await section.vm.$emit('update-source-folders', newFolderData)
       await nextTick()
 
@@ -133,7 +131,7 @@ describe('foldersList', () => {
       const wrapper = createWrapper()
       await nextTick()
 
-      const section = wrapper.findComponent(CreateFolderSection)
+      const section = wrapper.findComponent({ name: 'CreateFolderSection' })
       await section.vm.$emit('on-close-create-folder')
       await nextTick()
 

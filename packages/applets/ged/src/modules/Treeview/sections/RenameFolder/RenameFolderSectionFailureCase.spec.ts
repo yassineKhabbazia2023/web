@@ -1,27 +1,19 @@
-import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
+
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
-import { type RenameFolderSectionProps }
-  from '@ged/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
 import { nextTick } from 'vue'
-import { getMockedFolder } from '../../helpers/testHelper'
+import { loggerMock } from '@ged/__mocks__/logger.mocks'
+import { getMockedFolder } from '@ged/__mocks__/treeview.mocks'
+import { renameFolderFailMock, tokenValueMock } from '@ged/__mocks__/folder.service.mocks'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
+import type { RenameFolderSectionProps } from './RenameFolderSectionTypes'
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+import RenameFolderSection from './RenameFolderSection.vue'
 
 vi.mock('@pulse/styleguide')
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+
 
 const pinia = createPinia()
 
@@ -54,10 +46,8 @@ const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
 }
 
 vi.mock('@ged/services/Folder', () => ({
-  tokenValue: 'mocked token',
-  RenameFolder: () => {
-    throw new Error('Something uncool')
-  },
+  tokenValue: tokenValueMock,
+  RenameFolder: renameFolderFailMock,
 }))
 
 describe('renameFolderSection', () => {
@@ -77,7 +67,7 @@ describe('renameFolderSection', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const modal = wrapper.findComponent(RenameFolderModal)
+      const modal = wrapper.findComponent({ name: 'RenameFolderModal' })
 
       await modal.vm.$emit('on-confirm-rename-folder', 'theNewFolderName')
       await nextTick()

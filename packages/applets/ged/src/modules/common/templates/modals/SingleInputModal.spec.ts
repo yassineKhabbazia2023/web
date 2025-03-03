@@ -1,11 +1,12 @@
-import SingleInputModal from '@ged/modules/common/templates/modals'
-import type { VueWrapper } from '@vue/test-utils'
+import { nextTick } from 'vue'
+import { createPinia, setActivePinia } from 'pinia'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
-import { type SingleInputModalProps } from '@ged/modules/common/templates/modals/SingleInputModalTypes'
-import { createPinia, setActivePinia } from 'pinia'
+import type { VueWrapper } from '@vue/test-utils'
+import type { SingleInputModalProps } from './SingleInputModalTypes'
 import type { ComponentPublicInstance } from 'vue'
-import { nextTick } from 'vue'
+
+import SingleInputModal from './SingleInputModal.vue'
 
 const defaultProps: SingleInputModalProps = {
   modalTitle: 'string',
@@ -64,8 +65,8 @@ describe('singleInputModal', () => {
 
       const wrapper = createWrapper(updatedProps)
       await nextTick()
-      const unvalidInput = wrapper.findComponent('.unValid')
-      expect(unvalidInput.exists()).toBeTruthy()
+      const invalidInput = wrapper.findComponent('.unValid')
+      expect(invalidInput.exists()).toBeTruthy()
     })
 
     it('should display error message section when showErrorMsg is true', async () => {
@@ -85,7 +86,7 @@ describe('singleInputModal', () => {
       ).toBeTruthy()
     })
 
-    it('shoud display suffix if it is defined', async () => {
+    it('should display suffix if it is defined', async () => {
       const wrapper = createWrapper({
         ...defaultProps,
         isDialogVisible: true,
@@ -93,11 +94,11 @@ describe('singleInputModal', () => {
       })
 
       await nextTick()
-      const unvalidInput = wrapper.find(
+      const invalidInput = wrapper.find(
         '.single-input-modal__suffix',
       )
 
-      expect(unvalidInput.exists()).toBeTruthy()
+      expect(invalidInput.exists()).toBeTruthy()
     })
   })
 

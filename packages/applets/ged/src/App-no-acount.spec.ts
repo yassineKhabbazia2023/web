@@ -1,38 +1,21 @@
 
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import Ged from './'
-import { createPinia, setActivePinia } from 'pinia'
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
+import { accountingHubConnectionServiceMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
+import { folderServiceMock } from './__mocks__/folder.service.mocks'
 import { fetchUserEntityServices } from '@ged/services/Services'
 import { fetchServicesFolders } from '@ged/services/Folder'
 import { nextTick } from 'vue'
 
+import Ged from './'
+
 const piniaStore = createPinia()
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
-    ds: vi.fn(),
-  }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-  }),
-}))
+vi.mock('@ged/models/AccountingHubConnection', () => accountingHubConnectionServiceMock)
 
-vi.mock('@ged/models/AccountingHubConnection', () => ({
-  initializedAccountingDataStreamInstance: Promise.resolve({
-    getConnection: vi.fn(() => ({
-      on: vi.fn(),
-    })),
-  }),
-}))
-
-vi.mock('@ged/services/Folder', () => ({
-  fetchServicesFolders: vi.fn(),
-}))
+vi.mock('@ged/services/Folder', () => folderServiceMock)
 
 vi.mock('@ged/services/Services', () => ({
   fetchUserEntityServices: vi.fn(),

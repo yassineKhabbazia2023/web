@@ -1,21 +1,21 @@
 
 import { it, expect, describe } from 'vitest'
-import { commonApiDsGetSpy } from '@ged/../vitest.setup'
+import { commonApiDsGetSpy } from '@ged/__mocks__/common.import.mocks'
+import { accountId, accountNumber } from '@ged/__mocks__/files.mocks'
+import type { Service } from '@ged/models/Service'
+
 import {
   fetchTrashDocuments,
 } from './TrashDocuments'
-import type { Service } from '@ged/models/Service'
 
 describe('trash documents service', () => {
-  it('should fetsh trash documents when fetchTrashDocuments is called', async () => {
+  it('should fetch trash documents when fetchTrashDocuments is called', async () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
     const trashedDocumentValue = 'trashed-document'
 
     commonApiDsGetSpy.mockResolvedValueOnce({
       data: trashedDocumentValue,
     })
-    const accountNumber = 'my-account-id'
-    const accountId = 1234
 
     const trashed = await fetchTrashDocuments(service.ServiceId, accountNumber, accountId)
 

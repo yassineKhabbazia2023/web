@@ -3,32 +3,25 @@ import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { FoldersMoveProps } from './FoldersMoveTypes'
 import { mount } from '@vue/test-utils'
+import { loggerMock } from '@ged/__mocks__/logger.mocks'
+import { moveFolderAsyncFailMock } from '@ged/__mocks__/folder.service.mocks'
+import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
 import { nextTick } from 'vue'
-import FoldersMove from '.'
 import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
-import { findComponentByNameInWrapper } from '@ged/modules/Documents/helpers/testHelpers'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
+import FoldersMove from '.'
 
+vi.mock('@pulse/styleguide')
 vi.mock('@pulse/core', () => ({
   getFileExtension: vi.fn(() => 'jpg'),
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
+  logger: loggerMock,
 }))
 
 vi.mock('@ged/services/Folder', () => ({
-  moveFolderAsync: () => {
-    throw new Error('Something uncool')
-  },
+  moveFolderAsync: moveFolderAsyncFailMock,
 }))
 
-vi.mock('@pulse/styleguide')
 
 const createWrapper = (
   props: FoldersMoveProps = defaultProps,

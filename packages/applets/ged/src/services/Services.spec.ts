@@ -1,15 +1,15 @@
+import { describe, it, expect } from 'vitest'
+import { commonApiGatewayGetSpy } from '@ged/__mocks__/common.import.mocks'
+import { accountId, accountNumber, entityId } from '@ged/__mocks__/files.mocks'
+
 import {
   fetchUserEntityServices,
   fetchServiceMailToGedInformation,
   fetchServicesMailToGedInformation,
 } from './Services'
-import { describe, it, expect } from 'vitest'
-import { commonApiGatewayGetSpy } from '@ged/../vitest.setup'
 
 describe('services service', () => {
   it('should return folder object', async () => {
-    const accountNumber = '1234'
-    const accountId = 5678
     await fetchUserEntityServices(accountNumber, accountId)
 
     expect(commonApiGatewayGetSpy).toHaveBeenCalledOnce()
@@ -22,8 +22,6 @@ describe('services service', () => {
   })
 
   it('should call the fetchServiceMailToGedInformation with appropriate url and parameters', async () => {
-    const entityId = '1234'
-    const accountId = 5678
     const service = {
       ServiceId: '0001',
       ServiceName: 'Au5',
@@ -41,8 +39,6 @@ describe('services service', () => {
       .mockResolvedValueOnce({ data: {} })
       .mockResolvedValueOnce({ data: {} })
 
-    const entityId = '1234'
-    const accountId = 5678
     const services = [
       {
         ServiceId: '0001',

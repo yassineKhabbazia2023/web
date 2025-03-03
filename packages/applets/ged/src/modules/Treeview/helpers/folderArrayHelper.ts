@@ -1,8 +1,6 @@
-
 import type { Folder } from '@ged/models/Folder'
 
 // move to module
-
 const findParentAndOperate = (
   folders: Folder[],
   operation: (folder: Folder) => boolean,
@@ -65,6 +63,7 @@ export const appendChildFolder = (
     return false
   })
 }
+
 export const renameFolder = (
   servicesFolders: Folder[][],
   serviceId: string,
@@ -83,6 +82,7 @@ export const renameFolder = (
     return false
   })
 }
+
 export const sortFolderByName = (
   array: Folder[][],
   serviceId: string,

@@ -1,7 +1,6 @@
 
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { binDocumentsMock } from './mocks/binDocumentMock'
-import BinDocuments from './BinDocuments.vue'
+import { binDocumentsMock } from '@ged/__mocks__/bin-documents.mocks'
 import { createPinia, setActivePinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
@@ -12,6 +11,8 @@ import {
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { BinDocument, BinDocumentsWithTableStructure } from '@ged/models/Document'
+
+import BinDocuments from './BinDocuments.vue'
 
 vi.mock('@pulse/styleguide')
 

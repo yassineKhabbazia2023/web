@@ -1,5 +1,3 @@
-
-import TreeNodeActions from '@ged/modules/Treeview/components/TreeNodeActions'
 import { type TreeNodeActionsProps }
   from '@ged/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
 import type { VueWrapper } from '@vue/test-utils'
@@ -8,7 +6,8 @@ import { vi, describe, it, expect } from 'vitest'
 import { createPinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import TreeNodeActionsToolbox from './TreeNodeActionsToolbox'
+
+import TreeNodeActions from '@ged/modules/Treeview/components/TreeNodeActions'
 
 const defaultProps: TreeNodeActionsProps = {
   permissions: [],
@@ -44,7 +43,7 @@ describe('treeNodeActions', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const toolbox = wrapper.findComponent(TreeNodeActionsToolbox)
+      const toolbox = wrapper.findComponent({ name: 'TreeNodeActionsToolbox' })
 
       await toolbox.vm.$emit('p-toolbox-dropdown-visibility-change', true)
       await nextTick()
@@ -63,7 +62,7 @@ describe('treeNodeActions', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const toolbox = wrapper.findComponent(TreeNodeActionsToolbox)
+      const toolbox = wrapper.findComponent({ name: 'TreeNodeActionsToolbox' })
 
       await toolbox.vm.$emit('p-toolbox-item-clicked', 'test')
       await nextTick()

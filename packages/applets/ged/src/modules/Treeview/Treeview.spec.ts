@@ -1,18 +1,20 @@
-import Treeview from '@ged/modules/Treeview'
+
+import { nextTick, reactive } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
-
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
+import '@ged/__mocks__/common.import.mocks'
+import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
+import { documentMock } from '@ged/__mocks__/documents.mock'
+import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type TreeviewProps } from '@ged/modules/Treeview/TreeviewTypes'
-
 import { createPinia, setActivePinia } from 'pinia'
 import type { Service } from '@ged/models/Service'
-import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
-import { nextTick, reactive } from 'vue'
 import { downloadFolder } from '@ged/services/Folder'
-import type { ComponentWrapper } from '@ged/utils/testHelpers'
+import type { ComponentWrapper } from '@ged/__mocks__/component.wrapper'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
-import { documentMock } from '@ged/modules/Documents/mocks/documentMock'
+
+import Treeview from '@ged/modules/Treeview'
 
 const createObjectURLMock = vi.hoisted(() => vi.fn())
 const url = 'https://fakeUrl'
@@ -41,9 +43,7 @@ const defaultProps: TreeviewProps = {
   accountId: 1234,
 }
 
-vi.mock('@ged/services/Folder', () => ({
-  downloadFolder: vi.fn(),
-}))
+vi.mock('@ged/services/Folder', () => folderServiceMock)
 
 vi.mock('@ged/services/tracking/tracking.service')
 

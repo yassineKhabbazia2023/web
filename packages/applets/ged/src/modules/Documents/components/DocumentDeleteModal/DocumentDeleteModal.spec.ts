@@ -1,28 +1,19 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import DocumentDeleteModal
-  from '@ged/modules/Documents/components/DocumentDeleteModal'
 import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
-import { type DocumentDeleteModalTypesProps }
-  from '@ged/modules/Documents/components/DocumentDeleteModal/DocumentDeleteModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
+import { loggerMock } from '@ged/__mocks__/logger.mocks'
+import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import { deleteDocuments } from '@ged/services/Documents'
 import { createI18n } from 'vue-i18n'
 import { trackDocumentDelete } from '@ged/services/tracking/tracking.service'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
+import { type DocumentDeleteModalTypesProps } from './DocumentDeleteModalTypes'
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
+import DocumentDeleteModal from './DocumentDeleteModal.vue'
 
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 const defaultProps: DocumentDeleteModalTypesProps = {
   isVisible: false,
@@ -50,9 +41,8 @@ const createWrapper = (
   })
 }
 
-vi.mock('@ged/services/Documents', () => ({
-  deleteDocuments: vi.fn(),
-}))
+vi.mock('@ged/services/Documents', () => documentsServiceMock)
+
 vi.mock('@ged/services/tracking/tracking.service')
 vi.mock('@pulse/styleguide')
 

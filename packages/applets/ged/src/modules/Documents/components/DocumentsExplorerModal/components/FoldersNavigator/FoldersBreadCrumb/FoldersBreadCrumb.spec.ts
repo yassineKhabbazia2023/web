@@ -1,17 +1,13 @@
-import type { Folder } from '@ged/models/Folder'
-import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
 import { describe, it, expect } from 'vitest'
-import type { FoldersBreadCrumbProps } from './FoldersBreadCrumbTypes'
-import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import FoldersBreadCrumb from '.'
+import { validDestination, currentServiceFolder } from '@ged/__mocks__/files.mocks'
+import type { VueWrapper } from '@vue/test-utils'
+import type { ComponentPublicInstance } from 'vue'
+import type { FoldersBreadCrumbProps } from './FoldersBreadCrumbTypes'
 import type { BreadcrumbItems } from '@pulse/styleguide/types'
-import { PBreadcrumb, PIcon } from '@pulse/styleguide/components'
 
-const currentServiceFolder: Folder[] = foldersData[0]
-const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
+import FoldersBreadCrumb from '.'
 
 const defaultProps: FoldersBreadCrumbProps = {
   currentFolder: validDestination,
@@ -35,11 +31,10 @@ const createWrapper = (
 }
 
 describe('foldersBreadCrumb', () => {
-  const findPBreadcrumb = (wrapper: FoldersBreadCrumbWrapper) =>
-    wrapper.findComponent(PBreadcrumb)
+  const findPBreadcrumb = (wrapper: FoldersBreadCrumbWrapper) => wrapper.findComponent({ name: 'PBreadcrumb' })
 
   const findCreateFolderButton = (wrapper: FoldersBreadCrumbWrapper) =>
-    wrapper.find('.folders-breadcrumb__create-folder').findComponent(PIcon)
+    wrapper.find('.folders-breadcrumb__create-folder').findComponent({ name: 'PIcon' })
 
   describe('props', () => {
     it('should generate breadcrumb correctly', async () => {

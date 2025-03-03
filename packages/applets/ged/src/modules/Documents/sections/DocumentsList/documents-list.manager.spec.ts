@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import * as documentsHelper from '@ged/modules/Documents/helpers/documents.helper'
+import { documentsMockWithOneCertified } from '@ged/__mocks__/documents.mock'
+import { Document } from '@ged/models/Document'
 import {
   getRowAlignmentClass,
   getIsDraggedDocument,
@@ -7,9 +8,9 @@ import {
   getTextClass,
   getRowClasses,
 } from './documents-list.manager'
+
 import * as documentsListManager from './documents-list.manager'
-import { documentsMockWithOneCertified } from '@ged/modules/Documents/mocks/documentMock'
-import { Document } from '@ged/models/Document'
+import * as documentsHelper from '@ged/modules/Documents/helpers/documents.helper'
 
 describe('documents list manager', () => {
 

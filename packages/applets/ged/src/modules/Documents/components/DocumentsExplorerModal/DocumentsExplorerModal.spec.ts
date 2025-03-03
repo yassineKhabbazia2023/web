@@ -1,9 +1,7 @@
 
 import { describe, it, expect } from 'vitest'
 import type { DocumentsModalExplorerProps, GivenActionAuthorization } from './DocumentsExplorerModalTypes'
-import type { Folder } from '@ged/models/Folder'
-import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
-import type { Service } from '@ged/models/Service'
+import { currentService, secondValidDestination, validDestination, currentServiceFolder, selectedEntity, accountId } from '@ged/__mocks__/files.mocks'
 import type { GivenActionState, ExplorerDocument } from '../../DocumentsTypes'
 import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 import { modalButtonsUpload } from '../DocumentsUpload/helpers/ModalUploadActionsHelpers'
@@ -12,20 +10,10 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import DocumentsExplorerModal from '.'
 import { createPinia } from 'pinia'
-import DocumentsExplorerHeader from './components/DocumentsExplorerHeader'
-import DocumentsCheckAll from './components/DocumentsSelector/DocumentsCheckAll'
-import FoldersBreadCrumb from './components/FoldersNavigator/FoldersBreadCrumb'
-import FoldersList from './components/FoldersNavigator/FoldersList'
-import DocumentsModalActionsFooter from './components/DocumentsModalActionsFooter'
 
-const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
-const secondValidDestination: Folder = foldersData[0][0].children[0].children[0] // id: 135393649
-const currentServiceFolder: Folder[] = foldersData[0]
-const curentService: Service['ServiceId'] = foldersData[0][0].serviceId
-const selectedEntity = 'my-selected-entity'
-const accountId = 1234
+import DocumentsExplorerModal from '.'
+
 const explorerAuthorizedGivenAction: GivenActionAuthorization = {
   actionName: 'my-action',
   isActionAuthorized: true,
@@ -70,7 +58,7 @@ const defaultProps: DocumentsModalExplorerProps = {
   currentServiceFolder,
   documents: generateExplorerDocuments(2, 'TO_DO'),
   ExplorerAuthorizedGivenAction: explorerAuthorizedGivenAction,
-  currentService: curentService,
+  currentService: currentService,
   selectedEntity,
   accountId,
   explorerUnauthorizedGivenActionMessage: 'you are not authorized',
@@ -101,19 +89,19 @@ const pinia = createPinia()
 describe('documentsExplorerModal', () => {
   const findDocumentsExplorerHeader = (
     wrapper: DocumentsExplorerModalWrapper,
-  ) => wrapper.findComponent(DocumentsExplorerHeader)
+  ) => wrapper.findComponent({ name: 'DocumentsExplorerHeader' })
 
-  const findDocumentsCheckAll = (wrapper: DocumentsExplorerModalWrapper) => wrapper.findComponent(DocumentsCheckAll)
+  const findDocumentsCheckAll = (wrapper: DocumentsExplorerModalWrapper) => wrapper.findComponent({ name: 'DocumentsCheckAll' })
 
   const findFoldersBreadCrumb = (wrapper: DocumentsExplorerModalWrapper) =>
-    wrapper.findComponent(FoldersBreadCrumb)
+    wrapper.findComponent({ name: 'FoldersBreadCrumb' })
 
   const findFoldersList = (wrapper: DocumentsExplorerModalWrapper) =>
-    wrapper.findComponent(FoldersList)
+    wrapper.findComponent({ name: 'FoldersList' })
 
   const findDocumentsModalActionsFooter = (
     wrapper: DocumentsExplorerModalWrapper,
-  ) => wrapper.findComponent(DocumentsModalActionsFooter)
+  ) => wrapper.findComponent({ name: 'DocumentsModalActionsFooter' })
 
   const findDocumentsExplorerModalByClassName = (
     wrapper: DocumentsExplorerModalWrapper,

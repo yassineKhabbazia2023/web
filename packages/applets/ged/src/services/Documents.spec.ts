@@ -1,6 +1,18 @@
 
 import { it, expect, describe, beforeEach } from 'vitest'
 import {
+  commonApiDsGetSpy,
+  commonApiDsPostSpy,
+  commonApiDsDeleteSpy,
+  commonApiDsPatchSpy,
+} from '@ged/__mocks__/common.import.mocks'
+import { accountId, accountNumber } from '@ged/__mocks__/files.mocks'
+import type { Service } from '@ged/models/Service'
+import type { Document } from '@ged/models/Document'
+import type { Folder } from '@ged/models/Folder'
+import type { MoveDocumentsRequest } from '@ged/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
+
+import {
   downloadDocument,
   downloadDocuments,
   fetchFolderDocuments,
@@ -12,23 +24,10 @@ import {
   previewDocument,
   fetchDocumentsByKeyWord,
 } from './Documents'
-import type { Service } from '@ged/models/Service'
-import type { Document } from '@ged/models/Document'
-import type { Folder } from '@ged/models/Folder'
-import type { MoveDocumentsRequest } from '@ged/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
-import {
-  commonApiDsGetSpy as mockDsGet,
-  commonApiDsPostSpy as mockDsPost,
-  commonApiDsDeleteSpy as mockDsDelete,
-  commonApiDsPatchSpy as mockDsPatch,
-} from '@ged/../vitest.setup'
-
-const accountNumber = 'my-account-id'
-const accountId = 1234
 
 describe('documents service', () => {
   beforeEach(() => {
-    mockDsGet.mockImplementation((url: string) => {
+    commonApiDsGetSpy.mockImplementation((url: string) => {
       const returnValue = url.includes('preview')
         ? {
           data: new ArrayBuffer(1),
@@ -39,7 +38,7 @@ describe('documents service', () => {
         }
       return Promise.resolve(returnValue)
     })
-    mockDsPost.mockImplementation(() => ({
+    commonApiDsPostSpy.mockImplementation(() => ({
       data: {
         documents: 'posted',
       },
@@ -58,8 +57,8 @@ describe('documents service', () => {
       accountId,
     )
 
-    expect(mockDsGet).toHaveBeenCalledOnce()
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
+    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123/currentuser', {
         headers: { 'Account-Id': accountId },
         params: {
@@ -80,8 +79,8 @@ describe('documents service', () => {
 
     await fetchDocumentsByKeyWord(service.ServiceId, folderId, accountNumber, accountId, 0, 10, '-created', 'test')
 
-    expect(mockDsGet).toHaveBeenCalledOnce()
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
+    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123/currentuser',
       {
         headers: { 'Account-Id': accountId },
@@ -121,8 +120,8 @@ describe('documents service', () => {
 
     )
 
-    expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(commonApiDsGetSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/folder/123/currentuser', {
         headers: { 'Account-Id': accountId },
         params: {
@@ -142,8 +141,8 @@ describe('documents service', () => {
 
       await downloadDocument(service.ServiceId, accountNumber, '1234', accountId)
 
-      expect(mockDsGet).toHaveBeenCalledTimes(1)
-      expect(mockDsGet).toHaveBeenCalledWith(
+      expect(commonApiDsGetSpy).toHaveBeenCalledTimes(1)
+      expect(commonApiDsGetSpy).toHaveBeenCalledWith(
         'service-1/my-account-id/documents/1234/content',
         {
           headers: { 'Account-Id': accountId },
@@ -157,8 +156,8 @@ describe('documents service', () => {
 
     await downloadDocuments(service.ServiceId, accountNumber, ['1234', '4567'], accountId)
 
-    expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWith(
+    expect(commonApiDsPostSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiDsPostSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/archive',
       { ids: ['1234', '4567'] },
       {
@@ -181,8 +180,8 @@ describe('documents service', () => {
       accountId,
     )
 
-    expect(mockDsDelete).toHaveBeenCalledTimes(1)
-    expect(mockDsDelete).toHaveBeenCalledWith(
+    expect(commonApiDsDeleteSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiDsDeleteSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/documents', {
         headers: { 'Account-Id': accountId },
         data: { ids: documentIds } },
@@ -203,8 +202,8 @@ describe('documents service', () => {
       accountId,
     )
 
-    expect(mockDsPatch).toHaveBeenCalledTimes(1)
-    expect(mockDsPatch).toHaveBeenCalledWith(
+    expect(commonApiDsPatchSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiDsPatchSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/1234',
       [{
         op: 'replace',
@@ -233,8 +232,8 @@ describe('documents service', () => {
     const expectedPayload = new FormData()
     expectedPayload.append('file', file)
 
-    expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWith(
+    expect(commonApiDsPostSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiDsPostSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/folders/1234/currentuser/documents?notify=true&source=User',
       expectedPayload,
       {
@@ -261,8 +260,8 @@ describe('documents service', () => {
 
     await moveDocuments(service.ServiceId, accountNumber, fileMove, accountId)
 
-    expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWith(
+    expect(commonApiDsPostSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiDsPostSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/move',
       expectedPayload,
       {
@@ -281,8 +280,8 @@ describe('documents service', () => {
 
     await transmitDocuments(service.ServiceId, accountNumber, documentIds, accountId)
 
-    expect(mockDsPost).toHaveBeenCalledTimes(1)
-    expect(mockDsPost).toHaveBeenCalledWith(
+    expect(commonApiDsPostSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiDsPostSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/pia-speedup-transfer',
       { ids: documentIds },
       {
@@ -299,8 +298,8 @@ describe('documents service', () => {
 
     const data = await previewDocument(service.ServiceId, accountNumber, '1234', accountId)
 
-    expect(mockDsGet).toHaveBeenCalledTimes(1)
-    expect(mockDsGet).toHaveBeenCalledWith(
+    expect(commonApiDsGetSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
       'service-1/my-account-id/documents/1234/preview',
       {
         responseType: 'arraybuffer',

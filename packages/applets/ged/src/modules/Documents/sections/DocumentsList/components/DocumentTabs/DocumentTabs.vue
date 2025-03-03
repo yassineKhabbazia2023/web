@@ -22,7 +22,7 @@ import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import { reactive, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { DocumentTabsProps } from './DocumentTabsTypes'
-import DocumentDetailsTabPane from './conponents/DocumentDetailsTabPane'
+import DocumentDetailsTabPane from './components/DocumentDetailsTabPane'
 
 defineProps<DocumentTabsProps>()
 

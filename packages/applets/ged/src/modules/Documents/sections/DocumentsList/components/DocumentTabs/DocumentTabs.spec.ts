@@ -1,14 +1,12 @@
 
-import DocumentTabs from './DocumentTabs.vue'
-import { type DocumentTabsProps } from './DocumentTabsTypes'
+import { nextTick } from 'vue'
+import { beforeEach, describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { documentMock } from '@ged/__mocks__/documents.mock'
+import { type DocumentTabsProps } from './DocumentTabsTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import { PTabs, PTabPane } from '@pulse/styleguide/components'
-import DocumentDetailsTabPane from './conponents/DocumentDetailsTabPane'
-import { documentMock } from '../../../../mocks/documentMock'
-import { nextTick } from 'vue'
+import DocumentTabs from './DocumentTabs.vue'
 
 const defaultProps: DocumentTabsProps = {
   document: documentMock,
@@ -39,15 +37,15 @@ describe('documentTabs', () => {
     it('should render according to the provided props', async () => {
       const wrapper = createWrapper()
 
-      const tabs = wrapper.findComponent(PTabs)
+      const tabs = wrapper.findComponent({ name: 'PTabs' })
       await nextTick()
       expect(tabs.props('modelValue')).toBe('1')
       expect(tabs.exists()).toBeTruthy()
 
-      const tabPane = wrapper.findComponent(PTabPane)
+      const tabPane = wrapper.findComponent({ name: 'PTabPane' })
       expect(tabPane.exists()).toBeTruthy()
 
-      const details = wrapper.findComponent(DocumentDetailsTabPane)
+      const details = wrapper.findComponent({ name: 'DocumentDetailsTabPane' })
       expect(details.exists()).toBeTruthy()
 
       wrapper.vm.tabSettingsActiveName = '2'

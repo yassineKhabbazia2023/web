@@ -1,7 +1,21 @@
 import { describe } from 'vitest'
-import { amplitudeTrackSpy } from '@ged/../vitest.setup'
-import { trackDepositedDocument, trackDocumentDelete, trackDocumentDeleteFlowStart, trackDocumentDownload, trackDocumentDownloadFlowStart, trackDocumentMove, trackDocumentMoveFlowStart, trackDocumentRename, trackDocumentRenameFlowStart, trackDocumentSearch, trackDocumentTransmit, trackDocumentTransmitFlowStart } from '@ged/services/tracking/tracking.service'
+import { amplitudeTrackSpy } from '@ged/__mocks__/common.import.mocks'
 import { TriggerSource } from './tracking.types'
+
+import {
+  trackDepositedDocument,
+  trackDocumentDelete,
+  trackDocumentDeleteFlowStart,
+  trackDocumentDownload,
+  trackDocumentDownloadFlowStart,
+  trackDocumentMove,
+  trackDocumentMoveFlowStart,
+  trackDocumentRename,
+  trackDocumentRenameFlowStart,
+  trackDocumentSearch,
+  trackDocumentTransmit,
+  trackDocumentTransmitFlowStart,
+} from '@ged/services/tracking/tracking.service'
 
 const successValue = 'succeeded'
 const failValue = 'failed'

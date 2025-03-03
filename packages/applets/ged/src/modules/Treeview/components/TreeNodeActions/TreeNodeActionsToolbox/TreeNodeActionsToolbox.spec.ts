@@ -1,12 +1,11 @@
-
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { PToolbox } from '@pulse/styleguide/components'
 import type { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
+
 import TreeNodeActionsToolbox from '.'
 
 const defaultProps: TreeNodeActionsToolboxProps = {
@@ -36,11 +35,6 @@ const createWrapper = (props: TreeNodeActionsToolboxProps = defaultProps)
       default: '<button class="custom-button">Custom Button Content</button>',
     },
     global: {
-      stubs: {
-        PToolbox: {
-          template: '<span ref="pToolboxRef" />',
-        },
-      },
       plugins: [pinia],
     },
   })as unknown as TreeNodeActionsWrapper
@@ -144,7 +138,7 @@ describe('treeNodeActions', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const toolbox = wrapper.findComponent(PToolbox)
+      const toolbox = wrapper.findComponent({ name: 'PToolbox' })
 
       await toolbox.vm.$emit('visible-change', true)
       await nextTick()
@@ -162,7 +156,7 @@ describe('treeNodeActions', () => {
 
       const wrapper = createWrapper(updatedProps)
 
-      const toolbox = wrapper.findComponent(PToolbox)
+      const toolbox = wrapper.findComponent({ name: 'PToolbox' })
 
       await toolbox.vm.$emit('p-toolbox-item-clicked', 'test')
       await nextTick()

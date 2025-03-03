@@ -1,13 +1,12 @@
-
-import DocumentActions from './DocumentActions.vue'
-import { type DocumentActionsProps } from './DocumentActionsTypes'
-import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
-import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { PToolbox } from '@pulse/styleguide/components'
+import type { ComponentPublicInstance } from 'vue'
+import type { DocumentActionsProps } from './DocumentActionsTypes'
+import type { VueWrapper } from '@vue/test-utils'
+
+import DocumentActions from './DocumentActions.vue'
 
 vi.mock('@pulse/styleguide', () => ({
   AppColors: {
@@ -36,11 +35,6 @@ const createWrapper = (
   return mount(DocumentActions, {
     props,
     global: {
-      stubs: {
-        PToolbox: {
-          template: '<span />',
-        },
-      },
       plugins: [pinia],
     },
   }) as unknown as DocumentActionsWrapper
@@ -105,7 +99,7 @@ describe('documentActions', () => {
 
         const wrapper = createWrapper(updatedProps)
 
-        const toolbox = wrapper.findComponent(PToolbox)
+        const toolbox = wrapper.findComponent({ name: 'PToolbox' })
 
         await toolbox.vm.$emit('visible-change', true)
         await nextTick()

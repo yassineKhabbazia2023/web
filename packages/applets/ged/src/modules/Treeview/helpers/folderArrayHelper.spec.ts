@@ -1,4 +1,8 @@
+import { describe, it, expect } from 'vitest'
+import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
+import { getMockedFolder } from '@ged/__mocks__/treeview.mocks'
 import type { Folder } from '@ged/models/Folder'
+
 import {
   findFolderDeepById,
   findCurrentServiceFolder,
@@ -7,9 +11,6 @@ import {
   sortFolderByName,
   deleteFolder,
 } from './folderArrayHelper'
-import { foldersData } from '@ged/modules/Treeview/mocks/treeFoldersMock'
-import { describe, it, expect } from 'vitest'
-import { getMockedFolder } from './testHelper'
 
 describe('folderArrayHelper.spec', () => {
   it('should get the folder from the data source when findFolderDeepById is called', () => {

@@ -1,9 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { foldersData } from '../Treeview/mocks/treeFoldersMock'
-import Documents from './Documents.vue'
+import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
+import { documentMock , documentsResponsePayload, documentsResponsePayloadMoreThanOneDoc } from '@ged/__mocks__/documents.mock'
+import { generateTestFiles, validDestination } from '@ged/__mocks__/files.mocks'
+import { documentsServiceMock, fetchDocumentsByKeyWordMock, previewDocumentMock } from '@ged/__mocks__/documents.service.mocks'
+import { getConnectionDocumentPiaStatusChangedMock, onConnectedAsyncMock, onDisconnectedAsyncMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
+import type { ComponentWrapper } from '@ged/__mocks__/component.wrapper'
 import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises, mount } from '@vue/test-utils'
-import DocumentsList from './sections/DocumentsList'
 import type { DocumentsProps } from './DocumentsTypes'
 import {
   downloadDocument,
@@ -12,20 +15,10 @@ import {
   transmitDocuments,
   fetchDocumentsByKeyWord,
 } from '@ged/services/Documents'
-import {
-  documentsResponsePayload,
-  documentsResponsePayloadMoreThanOneDoc,
-} from '@ged/modules/Documents/mocks/documentsWithTableStructureDataMock'
 import type { TableRowDocument } from '@ged/models/Document'
 import { nextTick } from 'vue'
-import DocumentUpload from '@ged/modules/Documents/components/DocumentsUpload'
-import DocumentMove from './components/DocumentsMove'
-import type { Folder } from '@ged/models/Folder'
-import { documentMock } from './mocks/documentMock'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
-import { generateTestFiles } from './helpers/testHelpers'
 import type { Entity } from '@pulse/common/types'
-import type { ComponentWrapper } from '@ged/utils/testHelpers'
 import {
   trackDocumentDeleteFlowStart,
   trackDocumentMoveFlowStart,
@@ -36,6 +29,8 @@ import {
   trackBreadcrumbUsage,
 } from '@ged/services/tracking/tracking.service'
 import { TriggerSource } from '@ged/services/tracking/tracking.types'
+
+import Documents from './Documents.vue'
 
 type DocumentsWrapper = ComponentWrapper<InstanceType<typeof Documents>>
 
@@ -67,57 +62,22 @@ const createWrapper = (
 }
 
 vi.mock('@ged/services/Documents', () => ({
-  fetchFolderDocuments: vi.fn(),
-  downloadDocuments: vi.fn(),
-  downloadDocument: vi.fn(),
-  transmitDocuments: vi.fn(),
-  fetchDocumentsByKeyWord: vi.fn(() => {
-    return documentsResponsePayload
-  }),
-  previewDocument: vi.fn(() => {
-    return Promise.resolve({
-      data: new ArrayBuffer(1),
-      headers: { 'content-type': 'image/jpeg' },
-    })
-  }),
+  ...documentsServiceMock,
+  fetchDocumentsByKeyWord: fetchDocumentsByKeyWordMock,
+  previewDocument: previewDocumentMock,
 }))
 
 vi.mock('@ged/modules/common/downloadFilesHelper', () => ({
   downloadFile: vi.fn(),
 }))
 
-const DocumentPiaStatusChangedResponseMock = {
-  folderId: 45454,
-  documentId: 'myID',
-  newStatus: {
-    technicalName: 'Duplicate',
-    labelFr: 'Transmis',
-    labelEn: 'Transmitted',
-    date: null,
-  },
-  permissions: ['CAN_MOVE_DOCUMENT'],
-}
-
 vi.mock('@ged/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({
-    OnConnectedAsync: vi.fn(),
-    OnDisconnectedAsync: vi.fn(),
-    getConnection: vi.fn(() => ({
-      on: vi.fn()
-        .mockImplementation(
-          (eventName: string, newMethod: (res: string) => void) => {
-            if (eventName === 'DocumentPiaStatusChanged') {
-              newMethod(
-                JSON.stringify(DocumentPiaStatusChangedResponseMock),
-              )
-            }
-          },
-        ),
-    })),
+    OnConnectedAsync: onConnectedAsyncMock,
+    OnDisconnectedAsync: onDisconnectedAsyncMock,
+    getConnection: getConnectionDocumentPiaStatusChangedMock,
   }),
 }))
-
-const validDestination: Folder = foldersData[0][0].children[0] // id: 135393637
 
 const generateTestString = (stringLength: number) => {
   let str = ''
@@ -127,20 +87,11 @@ const generateTestString = (stringLength: number) => {
   return str
 }
 describe('documents', () => {
-  const findDocumentActionBar = (wrapper: DocumentsWrapper) =>
-    wrapper.findComponent({ name: 'DocumentsActionsBar' })
-
-  const findDocumentUpload = (wrapper: DocumentsWrapper) =>
-    wrapper.findComponent(DocumentUpload)
-
-  const findDocumentMove = (wrapper: DocumentsWrapper) =>
-    wrapper.findComponent(DocumentMove)
-
-  const findDocumentsList = (wrapper: DocumentsWrapper) =>
-    wrapper.findComponent({ name: 'DocumentsList' })
-
+  const findDocumentActionBar = (wrapper: DocumentsWrapper) => wrapper.findComponent({ name: 'DocumentsActionsBar' })
+  const findDocumentUpload = (wrapper: DocumentsWrapper) => wrapper.findComponent({ name: 'DocumentsUpload' })
+  const findDocumentMove = (wrapper: DocumentsWrapper) => wrapper.findComponent({ name: 'DocumentsMove' })
+  const findDocumentsList = (wrapper: DocumentsWrapper) => wrapper.findComponent({ name: 'DocumentsList' })
   const findPBreadCrumb = (wrapper: DocumentsWrapper) => wrapper.findComponent({ name: 'PBreadcrumb' })
-
   const findPPagination = (wrapper: DocumentsWrapper) => wrapper.findComponent({ name: 'PPagination' })
 
   const findDocumentsSearchAlert = (wrapper: DocumentsWrapper) =>
@@ -713,7 +664,7 @@ describe('documents', () => {
         documentsResponsePayload.documentsPage.items[0],
       ]
       await nextTick()
-      const documents = wrapper.findComponent(DocumentsList)
+      const documents = wrapper.findComponent({ name: 'DocumentsList' })
       await nextTick()
 
       const tableRowDocument: TableRowDocument = {
