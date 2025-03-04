@@ -88,6 +88,7 @@ vi.mock('@pulse/common', () => ({
   tokenService: {
     setToken: setTokenMock,
     getToken: vi.fn(),
+    initToken: vi.fn(),
     hasValidAccessToken: mockedHasValidAccessToken,
     registerOnChange: mockedRegisterOnChange,
     unregisterOnChange: mockedUnregisterOnChange,

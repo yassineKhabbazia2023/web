@@ -159,6 +159,7 @@ function onTokenChanges() {
 
 onMounted(() => {
   tokenService.registerOnChange(ON_TOKEN_CHANGE_EVENT, onTokenChanges)
+  tokenService.initToken() // force to load token if defined in localstorage
   setUnauthorizedCallback(unauthorizedCallback)
   if (VITE_AMPLITUDE_API_KEY) {
     amplitudeService.init(VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL || undefined)

@@ -17,6 +17,7 @@ const testEntity: Entity = getMockedFavoriteEntities()[0]
 const setUnauthorizedCallbackMock = vi.hoisted(() => vi.fn())
 const mockedLogoutAndRedirectToLogin = vi.hoisted(() => vi.fn())
 const setTokenMock = vi.hoisted(() => vi.fn())
+const initTokenMock = vi.hoisted(() => vi.fn())
 
 const mockedRouterPush = vi.hoisted(() => vi.fn())
 vi.mock('vue-router', () => ({
@@ -102,6 +103,7 @@ vi.mock('@pulse/common', () => ({
   tokenService: {
     setToken: setTokenMock,
     getToken: vi.fn(),
+    initToken: initTokenMock,
     getTokenExp: vi.fn(),
     getTokenSub: vi.fn(),
     registerOnChange: vi.fn(),
@@ -179,9 +181,10 @@ describe('app with navigation guard', () => {
     expect(mockedRouterPush).toHaveBeenCalledWith({ name: LoginRouteName.LOGIN_COLLAB })
   })
 
-  it('should call setUnauthorizedCallback onMounted', async () => {
+  it('should call initToken and setUnauthorizedCallback onMounted', async () => {
     createWrapper()
     await nextTick()
+    expect(initTokenMock).toHaveBeenCalledOnce()
     expect(setUnauthorizedCallbackMock).toHaveBeenCalledOnce()
   })
 

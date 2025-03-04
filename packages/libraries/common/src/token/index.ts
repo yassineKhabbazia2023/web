@@ -32,15 +32,15 @@ export class TokenService {
   }
 
   getToken(): string {
-    if (!this.token) {
-      const token = localStorage.getItem('token') ?? ''
-      if (token) {
-        this.token = token
-        this.onChange(token)
-      }
-    }
-
     return this.token
+  }
+
+  initToken() {
+    const token = localStorage.getItem('token') ?? ''
+    if (token) {
+      this.token = token
+      this.onChange(token)
+    }
   }
 
   getTokenExp() {

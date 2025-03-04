@@ -39,11 +39,23 @@ describe('test token', () => {
       localStorageGetItemSpy = vi.spyOn(Object.getPrototypeOf(localStorage), 'getItem')
     })
 
-    it('return localStored value and call registerOnChange if token is not set in state', () => {
+    it('getToken() returns empty value if token is not set in state', () => {
       localStorageGetItemSpy.mockReturnValueOnce(localStoredToken)
 
       const onChange = vi.fn()
       tokenService.registerOnChange('changeToken', onChange)
+      const token = tokenService.getToken()
+      expect(token).toBe('')
+      expect(localStorageGetItemSpy).not.toHaveBeenCalled()
+      expect(onChange).not.toHaveBeenCalled()
+    })
+
+    it('getToken() return localStored value and call registerOnChange if initToken() is called before', () => {
+      localStorageGetItemSpy.mockReturnValueOnce(localStoredToken)
+
+      const onChange = vi.fn()
+      tokenService.registerOnChange('changeToken', onChange)
+      tokenService.initToken()
       const token = tokenService.getToken()
       expect(token).toBe(localStoredToken)
       expect(localStorageGetItemSpy).toHaveBeenCalledWith('token')
@@ -55,7 +67,7 @@ describe('test token', () => {
       tokenService.setToken('')
 
       const token = tokenService.getToken()
-      expect(localStorageGetItemSpy).toHaveBeenCalledWith('token')
+      expect(localStorageGetItemSpy).not.toHaveBeenCalled()
       expect(token).toBe('')
     })
   })
