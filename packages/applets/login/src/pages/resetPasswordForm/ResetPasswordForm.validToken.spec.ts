@@ -1,22 +1,14 @@
 import { flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { getMockedRouter, getWrapper } from '@login/tests/testHelper'
-import ResetPasswordForm from './'
+import { getMockedRouter, getWrapper } from '@login/__mocks__/component.wrapper'
+import { loggerMock } from '@login/__mocks__/logger.mocks'
 import { LoginRouteName } from '@pulse/common/constants'
+
+import ResetPasswordForm from './'
 
 const postMock = vi.fn(() => ({ data: { webToken: 'token' } }))
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({

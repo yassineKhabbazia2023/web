@@ -1,10 +1,14 @@
 import { flushPromises } from '@vue/test-utils'
 import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
-import { getMockedRouter, getWrapper } from '@login/tests/testHelper'
+import { getMockedRouter, getWrapper } from '@login/__mocks__/component.wrapper'
+import { cguServiceMock } from '@login/__mocks__/cgu.service.mocks'
+import { loggerMock } from '@login/__mocks__/logger.mocks'
+import { navigateToCustomerWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { amplitudeService, tokenService } from '@pulse/common'
-import CreatePassword from './'
 import { getLatestTerms, updateTermsByCurrentUser } from '@login/services/cgu'
 import type { FormInstance } from 'element-plus'
+
+import CreatePassword from './'
 
 const mockToken = 'token'
 const VALID_PASSWORD = 'aaAA11@@'
@@ -13,30 +17,11 @@ const patchMock = vi.fn()
 const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
 const CGU_URL = 'https://custom-CGU.com'
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
-
-vi.mock('@login/services/cgu', () => ({
-  updateTermsByCurrentUser: vi.fn(),
-  getLatestTerms: vi.fn(() => Promise.resolve({ data: { termsId: 1 } })),
-}))
-
-const navigateToCustomerWalletMock = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@login/services/cgu', () => cguServiceMock)
 vi.mock('@login/composable/useNavigation', () => ({
-  default: () => {
-    return {
-      navigateToCustomerWallet: navigateToCustomerWalletMock,
-    }
-  },
+  default: () => useNavigationMock,
 }))
 
 const mockStorePatch = vi.fn()

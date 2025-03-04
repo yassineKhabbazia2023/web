@@ -1,27 +1,18 @@
 import { type MockInstance, beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { amplitudeService, msalInstance } from '@pulse/common'
+import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
+import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
+
 import LoginCollab from '.'
 
-const navigateToWalletMock = vi.fn()
 vi.mock('@pulse/common')
 
-vi.mock('@login/composable/useInitUserAuth.js', () => ({
-  default: () => {
-    return {
-      initAuthCollab: vi.fn(),
-      isTokenRetrieve: {
-        value: true,
-      },
-    }
-  },
+vi.mock('@login/composable/useInitUserAuth', () => ({
+  default: () => useInitUserAuthMock,
 }))
 vi.mock('@login/composable/useNavigation', () => ({
-  default: () => {
-    return {
-      navigateToWallet: navigateToWalletMock,
-    }
-  },
+  default: () => useNavigationMock,
 }))
 
 const createWrapper = () => mount(LoginCollab, {

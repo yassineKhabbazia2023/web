@@ -1,11 +1,11 @@
 import { vi, describe, it, expect } from 'vitest'
+import { loggerMock, loggerWarnSpy } from '@login/__mocks__/logger.mocks'
+import { envVarsMock } from '@login/__mocks__/env-vars.mocks'
+
 import { getToken } from '.'
 
 const amplitudeServiceTrackMocked = vi.hoisted(() => vi.fn())
 const setTokenMocked = vi.hoisted(() => vi.fn())
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
 const getAccountMock = vi.hoisted(() => vi.fn())
 const loginRedirectMocked = vi.hoisted(() => vi.fn())
@@ -19,13 +19,7 @@ const msalInstanceMock = vi.hoisted(() => ({
   acquireTokenSilent: acquireTokenSilentMocked,
 }))
 
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/common', () => ({
   amplitudeService: {
@@ -40,14 +34,7 @@ vi.mock('@pulse/common', () => ({
   msalInstance: msalInstanceMock,
 }))
 
-vi.mock('env-vars', () => ({
-  VITE_API_MSAL_CLIENT_ID: '',
-  VITE_API_MSAL_TENANT: '',
-  VITE_API_MSAL_AUTHORITY: 'given-token',
-  VITE_API_MSAL_REDIRECT_URI: '',
-  VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI: '',
-  VITE_API_MSAL_SCOPE: '',
-}))
+vi.mock('env-vars', () => envVarsMock)
 
 const UserAgentApplicationMock = vi.hoisted(() => vi.fn(() => (msalInstanceMock)))
 

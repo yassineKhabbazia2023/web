@@ -1,6 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
 import { nextTick } from 'vue'
-import type { ComponentWrapper } from '@login/tests/testHelper/testHelperTypes'
+import { envVarsMock } from '@login/__mocks__/env-vars.mocks'
+import { cguServiceMock } from '@login/__mocks__/cgu.service.mocks'
+import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
+import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import { flushPromises, mount } from '@vue/test-utils'
 import Login from './'
 import { amplitudeService, tokenService } from '@pulse/common'
@@ -39,9 +42,7 @@ window.gigya = {
   },
 }
 
-vi.mock('env-vars', () => ({
-  VITE_GIGYA_SSO_ACTIVATED: 'true',
-}))
+vi.mock('env-vars', () => envVarsMock)
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -76,29 +77,23 @@ const initAuthClientMocked = vi.hoisted(() => vi.fn(() => {
   })
   return { id: USER_ID }
 }))
+const setStoreGigyaUserIdMocked = vi.hoisted(() => vi.fn(() => {
+  mockStorePatch({
+    user: {
+      gigyaUserId: GIGYA_USER_ID,
+    },
+  })
+}))
 
 vi.mock('@login/composable/useInitUserAuth', () => ({
   default: () => ({
+    ...useInitUserAuthMock,
     initAuthClient: initAuthClientMocked,
-    setStoreGigyaUserId: vi.fn(() => {
-      mockStorePatch({
-        user: {
-          gigyaUserId: GIGYA_USER_ID,
-        },
-      })
-    }),
+    setStoreGigyaUserId: setStoreGigyaUserIdMocked,
   }),
 }))
 
-vi.mock('@login/services/cgu', () => ({
-  getTermsByCurrentUser: vi
-    .fn(() => Promise.resolve({
-      isCurrent: true,
-      terms: {
-        termsId: '123456',
-      },
-    })),
-}))
+vi.mock('@login/services/cgu', () => cguServiceMock)
 
 const createWrapper = (): ComponentWrapper<InstanceType <typeof Login>> =>
   mount(Login, {

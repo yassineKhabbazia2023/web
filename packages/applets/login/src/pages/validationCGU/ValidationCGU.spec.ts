@@ -1,25 +1,18 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import validationCGU from './'
+import { loggerErrorSpy, loggerMock } from '@login/__mocks__/logger.mocks'
+import { cguServiceMock, updateTermsByCurrentUserMock } from '@login/__mocks__/cgu.service.mocks'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore as useStore } from '@pulse/common'
 import { LoginRouteName } from '@pulse/common/constants'
+
+import validationCGU from './'
 
 const pinia = createTestingPinia()
 const store = useStore()
 const mockRouterPush = vi.fn()
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -35,10 +28,7 @@ vi.mock('@pulse/common', async () => {
   }
 })
 
-const updateTermsByCurrentUserMocked = vi.hoisted(() => vi.fn())
-vi.mock('@login/services/cgu', () => ({
-  updateTermsByCurrentUser: updateTermsByCurrentUserMocked,
-}))
+vi.mock('@login/services/cgu', () => cguServiceMock)
 
 const createWrapper = () =>
   mount(validationCGU, {
@@ -72,7 +62,7 @@ describe('cgu validation', () => {
 
   it('should emit console error when updateTermsByCurrentUser throws an error', async () => {
     const errorMessage = 'error-message'
-    updateTermsByCurrentUserMocked.mockRejectedValueOnce(new Error(errorMessage))
+    updateTermsByCurrentUserMock.mockRejectedValueOnce(new Error(errorMessage))
 
 
     const wrapper = createWrapper()

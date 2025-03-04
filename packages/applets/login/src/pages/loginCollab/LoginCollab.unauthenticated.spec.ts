@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { envVarsMock } from '@login/__mocks__/env-vars.mocks'
+import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
+import { isTokenRetrieveFalseMock, useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
 import { flushPromises, mount } from '@vue/test-utils'
+
 import LoginCollab from '.'
 
-vi.mock('env-vars', () => ({
-  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY: 'TEST_KEY',
-}))
+vi.mock('env-vars', () => envVarsMock)
 
 vi.mock('@pulse/common', () => ({
   msalInstance: {
@@ -15,23 +17,14 @@ vi.mock('@pulse/common', () => ({
   },
 }))
 
-vi.mock('@login/composable/useInitUserAuth.js', () => ({
-  default: () => {
-    return {
-      initAuthCollab: vi.fn(),
-      isTokenRetrieve: {
-        value: false,
-      },
-    }
-  },
+vi.mock('@login/composable/useInitUserAuth', () => ({
+  default: () => ({
+    ...useInitUserAuthMock,
+    isTokenRetrieve: isTokenRetrieveFalseMock,
+  }),
 }))
-const navigateToWalletMock = vi.fn()
 vi.mock('@login/composable/useNavigation', () => ({
-  default: () => {
-    return {
-      navigateToWallet: navigateToWalletMock,
-    }
-  },
+  default: () => useNavigationMock,
 }))
 
 const createWrapper = () => mount(LoginCollab, {

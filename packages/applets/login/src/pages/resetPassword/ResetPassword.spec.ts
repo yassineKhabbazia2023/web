@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { ComponentWrapper } from '@login/tests/testHelper/testHelperTypes'
+import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import type { FormInstance } from 'element-plus'
 import { flushPromises, mount } from '@vue/test-utils'
 import ResetPassword from './'
