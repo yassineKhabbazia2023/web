@@ -9,8 +9,9 @@ import { flushPromises, shallowMount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
 import mockedEntities from '@app/mocks/entities.mock.json'
-import Home from '.'
 import helpers from '@app/tests/utils/helpers'
+
+import Home from '.'
 
 const pinia = createTestingPinia()
 
@@ -24,7 +25,6 @@ declare let window: {
 
 const { router } = helpers()
 
-vi.mock('@pulse/core')
 vi.mock('@app/schedule/services', () => ScheduleServicesMock)
 vi.mock('@app/services/entities', async () => {
   const actual = await vi.importActual('@app/services/entities') as Record<string, any>
@@ -43,16 +43,12 @@ const feedCenterActivatedFlag = vi.hoisted(() => ({
   value: false,
 }))
 
-vi.mock('@pulse/core', async () => {
-  const actual = await vi.importActual('@pulse/core')
-  return {
-    ...actual,
-    FeatureFlagManager: {
-      isScheduleActivated: () => false,
-      isFeedCenterActivated: () => feedCenterActivatedFlag.value,
-    },
-  }
-})
+vi.mock('@pulse/core', async () => ({
+  FeatureFlagManager: {
+    isScheduleActivated: () => false,
+    isFeedCenterActivated: () => feedCenterActivatedFlag.value,
+  },
+}))
 
 vi.mock('env-vars', () => ({
   ...envVarsValues,

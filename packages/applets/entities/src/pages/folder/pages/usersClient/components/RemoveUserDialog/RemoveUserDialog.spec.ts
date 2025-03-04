@@ -1,5 +1,6 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { deleteContactFromAccount } from '@entities/services/account'
 import * as accountServices from '@entities/services/account'
 import { nextTick } from 'vue'
@@ -15,17 +16,7 @@ const USER_TO_REMOVE: RemoveUserDialogProps['userToRemove'] = {
 }
 
 const spyPNotification = vi.hoisted(() => vi.fn())
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/styleguide', () => ({
   PNotification: spyPNotification,

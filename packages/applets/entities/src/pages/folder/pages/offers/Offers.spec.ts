@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { type VueWrapper, shallowMount, flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import * as SubscriptionServices from '@entities/services/subscription'
@@ -8,17 +9,7 @@ import Offers from '.'
 
 // Mocks
 const activeOffersMocked = getActiveOffersMocked()
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 const isCollabMock = ref(true)
 const hasPermissionMock = vi.hoisted(() => vi.fn())

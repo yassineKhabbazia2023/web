@@ -1,7 +1,7 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockedCollaboratorsList2 } from '@entities/__mocks__/collaborators.mocks'
-import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { noResult } from '@entities/__mocks__/no-result.mocks'
 import * as walletServices from '@entities/services/wallet'
 import Collaborators from '.'

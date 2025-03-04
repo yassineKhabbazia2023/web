@@ -8,6 +8,7 @@
   "type": "module",
   "exports": {
     "./types": "./src/types.mts",
+    "./mocks": "./src/mocks.mts",
     ".": "./src/main.mts"
   },
   "scripts": {

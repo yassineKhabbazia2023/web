@@ -3,6 +3,7 @@ import {
   ScheduleServicesMock,
   commonMock,
 } from '@app/schedule/tests/mocks/commonViMock'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
@@ -12,9 +13,10 @@ import helpers from '@app/tests/utils/helpers'
 import { nextTick } from 'vue'
 import * as entitiesServices from '@app/services/entities'
 import mockedEntities from '@app/mocks/entities.mock.json'
-import Home from '.'
 import { initProductFruits as initProductFruitsMock } from '@app/plugins/ProductFruits/productFruits.plugin'
 import * as notificationService from '@app/modules/FeedCenter/services/notifications.service'
+
+import Home from '.'
 
 declare let window: {
   embedded_svc: {
@@ -26,10 +28,6 @@ declare let window: {
 
 const pinia = createTestingPinia()
 const { fakeUser, router } = helpers()
-
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
   fetchNotifications: vi.fn(() => Promise.resolve({
@@ -60,11 +58,7 @@ vi.mock('@pulse/core', async () => {
   const actual = await vi.importActual('@pulse/core')
   return {
     ...actual,
-    logger: {
-      debug: loggerDebugSpy,
-      warn: loggerWarnSpy,
-      error: loggerErrorSpy,
-    },
+    logger: loggerMock,
     FeatureFlagManager: {
       isScheduleActivated: () => true,
       isFeedCenterActivated: () => feedCenterActivatedFlag.value,

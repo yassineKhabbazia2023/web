@@ -1,6 +1,7 @@
 import { createTestingPinia } from '@pinia/testing'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { nextTick } from 'vue'
 import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
@@ -11,18 +12,7 @@ import type { ComponentWrapper } from '@entities/common/types'
 import Collaborators from '.'
 
 const ENTITY_ID = 42
-
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({

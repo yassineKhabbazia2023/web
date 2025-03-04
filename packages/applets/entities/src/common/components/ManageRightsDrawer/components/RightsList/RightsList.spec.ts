@@ -1,7 +1,7 @@
 import { vi, it, describe, expect, beforeEach, type Mock } from 'vitest'
 import '@entities/__mocks__/common.import.mocks'
 import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
-import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { mockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mock'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
 import { mockedContactId } from '@entities/__mocks__/contact.mocks'

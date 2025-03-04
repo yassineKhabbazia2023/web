@@ -1,22 +1,13 @@
 
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { DataStreamHubConnection } from './DataStreamHubConnection'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
 import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
 import type { HubConnection } from '@microsoft/signalr'
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@microsoft/signalr')
 vi.mock('./DataStreamHubConnectionHelper', () => {

@@ -30,16 +30,12 @@ vi.mock('@pulse/common', () => ({
   },
 }))
 
-vi.mock('@pulse/core', async () => {
-  const actual = await vi.importActual('@pulse/core')
-  return {
-    ...actual,
-    FeatureFlagManager: {
-      isScheduleActivated: () => true,
-      isFeedCenterActivated: () => true,
-    },
-  }
-})
+vi.mock('@pulse/core', async () => ({
+  FeatureFlagManager: {
+    isScheduleActivated: () => true,
+    isFeedCenterActivated: () => true,
+  },
+}))
 
 const createWrapper = (
   showCalendar: HeaderProps['showCalendar'],

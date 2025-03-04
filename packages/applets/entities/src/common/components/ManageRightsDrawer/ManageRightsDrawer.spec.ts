@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import '@entities/__mocks__/common.import.mocks'
 import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
-import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { expect, beforeEach, describe, it, vi, type Mock } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import type { User } from '@entities/pages/folder/pages/usersCollab/types'

@@ -1,8 +1,11 @@
 import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@launcher/__mock__/logger.mocks'
+import { loggerErrorSpy, loggerMock , envVarsMock } from '@pulse/core/mocks'
 import { launcherServicesMocks, mockedSilaeUrl } from '@launcher/__mock__/launcher.service.mocks'
-import { mockedEnvVars } from '@launcher/__mock__/env-vars.mocks'
 import '@launcher/__mock__/common.import.mocks'
+import { LauncherKey } from './HomeTypes'
+import * as launcherServices from '@launcher/services/launcherServices'
+import type { AxiosResponse } from 'axios'
+
 import {
   getSilaeDownloadLabel,
   getLaunchCards,
@@ -10,11 +13,8 @@ import {
   handleClickAction,
   handleDownload,
 } from './HomeUtils'
-import { LauncherKey } from './HomeTypes'
-import * as launcherServices from '@launcher/services/launcherServices'
-import type { AxiosResponse } from 'axios'
 
-vi.mock('env-vars', () => mockedEnvVars)
+vi.mock('env-vars', () => envVarsMock)
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('@launcher/services/launcherServices', () => launcherServicesMocks)
 

@@ -2,8 +2,10 @@ import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { nextTick } from 'vue'
 import { flushPromises, mount } from '@vue/test-utils'
+
 import MyInformation from '.'
 
 const pinia = createTestingPinia()
@@ -33,17 +35,8 @@ const mockPatch = vi.fn()
 const mockGet = vi.fn(() => Promise.resolve({ data: CONTACT_RESPONSE }))
 
 const spyPNotification = vi.hoisted(() => vi.fn())
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/styleguide', () => ({
   PNotification: spyPNotification,

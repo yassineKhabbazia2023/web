@@ -1,5 +1,6 @@
 import { type App } from 'vue'
 import { describe, it, expect, vi, type MockInstance } from 'vitest'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import productFruitsPlugin, {
   onProductFruitsButtonExtWidgetInit,
   stopProductFruits,
@@ -55,17 +56,7 @@ vi.mock('product-fruits', () => ({
   },
 }))
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 const mockedProductFruitsKey = 'mocked product fruits key'
 const lang = 'fr'

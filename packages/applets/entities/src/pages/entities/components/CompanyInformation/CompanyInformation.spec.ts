@@ -1,5 +1,6 @@
 import { vi, expect, describe, it, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { nextTick } from 'vue'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
 import type { ComponentWrapper } from '@entities/common/types'
@@ -19,17 +20,7 @@ const formInstructionText =
   'Please provide the following necessary information for activation :'
 
 const mockedAccount = getMockedAccount()
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@entities/services/account', () => ({
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),

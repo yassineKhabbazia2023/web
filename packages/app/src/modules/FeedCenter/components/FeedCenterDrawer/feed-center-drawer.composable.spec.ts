@@ -1,8 +1,10 @@
 import { vi, describe, it, expect } from 'vitest'
 import { computed, nextTick, ref } from 'vue'
 import { flushPromises } from '@vue/test-utils'
-import { useFeedCenterDrawer } from './feed-center-drawer.composable'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { fetchNotificationsMock } from '@app/../vitest.setup'
+
+import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 
 function initializeTestState(initialDrawervalue = false) {
   const unreadNotificationsCount = ref(0)
@@ -17,17 +19,7 @@ function initializeTestState(initialDrawervalue = false) {
   return { unreadNotificationsCount, isDrawerOpened, drawerOpenedValue }
 }
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 describe('feed center drawer composable', () => {
   it('should fetch notifications when drawer is being opened', async () => {

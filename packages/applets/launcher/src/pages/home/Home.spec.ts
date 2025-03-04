@@ -1,18 +1,19 @@
 import { nextTick } from 'vue'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import mockedLaunchCards from '@launcher/__mock__/mockedLaunchCards.json'
+import { launchCardsMock } from '@launcher/__mock__/launch-cards.mocks'
 import { launcherServicesMocks } from '@launcher/__mock__/launcher.service.mocks'
 import { mockedEntity } from '@launcher/__mock__/entity.mocks'
 import { getLaunchCardsMock, getSilaeDownloadLabelMock, handleClickActionMock, handleDownloadMock, homeUtilsMocks, mockedPercent } from '@launcher/__mock__/home-utils.mocks'
+import { mockHasPermission } from '@launcher/__mock__/permissions.mocks'
+import { envVarsMock } from '@pulse/core/mocks'
 import '@launcher/__mock__/common.import.mocks'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
 import { LauncherKey } from './HomeTypes'
-import Home from '.'
 import * as VueRouter from 'vue-router'
-import { mockHasPermission } from '@launcher/__mock__/permissions.mocks'
-import { mockedEnvVars } from '@launcher/__mock__/env-vars.mocks'
+
+import Home from '.'
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -44,7 +45,7 @@ function getLaunchCardComponents(wrapper: VueWrapper) {
 describe('test Home', () => {
   let wrapper: VueWrapper
   beforeEach(() => {
-    getLaunchCardsMock.mockReturnValue(mockedLaunchCards)
+    getLaunchCardsMock.mockReturnValue(launchCardsMock)
     getSilaeDownloadLabelMock.mockReturnValue(mockedSilaeDownloadLabel)
     wrapper = getWrapper()
   })
@@ -71,7 +72,7 @@ describe('test Home', () => {
     })
 
     it('should display filtered cards', async () => {
-      const mockedFiltersLaunchCards = [mockedLaunchCards.at(0)]
+      const mockedFiltersLaunchCards = [launchCardsMock.at(0)]
       getLaunchCardsMock.mockReturnValue(mockedFiltersLaunchCards)
       mockHasPermission.mockImplementation((permissions: string[]) =>
         permissions.includes(
@@ -103,7 +104,7 @@ describe('test Home', () => {
       const megLaunchCard = getLaunchCardComponent(wrapper, LauncherKey.MEG)
       const expectedAttributes = {
         actionLabel: 'Se connecter à l\'outil de gestion',
-        actionUrl: mockedEnvVars.VITE_GESTION_MEG,
+        actionUrl: envVarsMock.VITE_GESTION_MEG,
         downloadLabel: '',
         imageName: 'brand-color',
         imageType: 'logos',
@@ -141,9 +142,9 @@ describe('test Home', () => {
         })
 
       const expectedActionUrls = [
-        mockedEnvVars.VITE_GESTION_MEG,
+        envVarsMock.VITE_GESTION_MEG,
         '',
-        mockedEnvVars.VITE_PENNYLANE_SSO_URL,
+        envVarsMock.VITE_PENNYLANE_SSO_URL,
       ]
 
       expect(actionUrls).toMatchObject(expectedActionUrls)

@@ -1,7 +1,7 @@
 
 import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { loggerMock } from '@ged/__mocks__/logger.mocks'
+import { loggerMock } from '@pulse/core/mocks'
 import { getMockedFolder } from '@ged/__mocks__/treeview.mocks'
 import { createFolderFailMock, tokenValueMock } from '@ged/__mocks__/folder.service.mocks'
 import { createPinia, setActivePinia } from 'pinia'

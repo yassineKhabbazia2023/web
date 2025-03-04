@@ -1,5 +1,6 @@
 import { it, describe, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { loggerMock } from '@pulse/core/mocks'
 import * as reportingServices from '@entities/services/reporting'
 import * as commonUtils from '@entities/common/utils'
 import { getMockedBIReports } from '@entities/__mocks__/bi-report.mocks'
@@ -7,17 +8,7 @@ import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
 import BIReports from '.'
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 const mockedAccountId = 602
 const mockedBIReports = getMockedBIReports()

@@ -1,7 +1,7 @@
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@ged/__mocks__/logger.mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { servicesDataMock } from '@ged/__mocks__/services.mocks'
 import { accountId, selectedEntity } from '@ged/__mocks__/files.mocks'
 import { mailToGedServicesLines } from '@ged/__mocks__/mail-to-ged.mocks'

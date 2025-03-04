@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, type MockInstance } from 'vitest'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { TokenService } from '.'
 
 const now = new Date()
@@ -10,17 +11,7 @@ vi.mock('jwt-decode', () => ({
   default: mockedJwtDecode,
 }))
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 describe('test token', () => {
   let tokenService: TokenService

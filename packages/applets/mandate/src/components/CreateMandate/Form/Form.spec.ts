@@ -1,5 +1,5 @@
 import { expect, describe, it, vi } from 'vitest'
-import { loggerMock } from '@mandate/__mocks__/logger.mocks'
+import { loggerMock } from '@pulse/core/mocks'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { getCompany } from '@mandate/services/mandate'
 import CreateMandateForm from '.'

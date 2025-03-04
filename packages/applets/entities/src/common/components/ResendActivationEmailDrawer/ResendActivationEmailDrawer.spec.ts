@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import '@entities/__mocks__/common.import.mocks'
 import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
-import { loggerErrorSpy, loggerMock } from '@entities/__mocks__/logger.mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { walletServiceMock } from '@entities/__mocks__/wallet.service.mocks'
 import { mockedAccount, mockedAccountType, mockedUserClientAccount } from '@entities/__mocks__/account.mocks'
 import { expect, beforeEach, describe, it, vi } from 'vitest'

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { envVarsMock } from '@login/__mocks__/env-vars.mocks'
+import { envVarsMock } from '@pulse/core/mocks'
 import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { isTokenRetrieveFalseMock, useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
 import { flushPromises, mount } from '@vue/test-utils'

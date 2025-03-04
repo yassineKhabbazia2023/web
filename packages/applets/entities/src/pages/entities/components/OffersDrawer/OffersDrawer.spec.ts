@@ -1,6 +1,7 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import OffersDrawer from '.'
 import { getMockedSubscriptionOffers , getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
@@ -60,18 +61,7 @@ async function asyncEmit(component: VueWrapper, eventName: string) {
   component.vm.$emit(eventName)
   await nextTick()
 }
-
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@entities/services/offer', () => ({
   getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),

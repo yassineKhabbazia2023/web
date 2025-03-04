@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
 import { nextTick } from 'vue'
-import { envVarsMock } from '@login/__mocks__/env-vars.mocks'
 import { cguServiceMock } from '@login/__mocks__/cgu.service.mocks'
+import { envVarsMock } from '@pulse/core/mocks'
 import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
 import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import { flushPromises, mount } from '@vue/test-utils'

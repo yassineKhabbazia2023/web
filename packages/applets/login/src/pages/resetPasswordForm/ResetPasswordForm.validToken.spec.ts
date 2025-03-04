@@ -1,7 +1,7 @@
 import { flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { getMockedRouter, getWrapper } from '@login/__mocks__/component.wrapper'
-import { loggerMock } from '@login/__mocks__/logger.mocks'
+import { loggerMock } from '@pulse/core/mocks'
 import { LoginRouteName } from '@pulse/common/constants'
 
 import ResetPasswordForm from './'

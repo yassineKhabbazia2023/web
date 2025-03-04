@@ -1,5 +1,6 @@
 import { nextTick } from 'vue'
 import '@entities/__mocks__/common.import.mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { expect, describe, it, beforeEach, vi } from 'vitest'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { setActivePinia } from 'pinia'
@@ -22,17 +23,7 @@ const expectedAlertInstruction =
 
 // Mocks
 const mockedGetFormStructure = vi.hoisted(() => vi.fn(() => InformationFormStructure))
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@entities/common/utils/referential', () => ({
   getFormStructure: mockedGetFormStructure,

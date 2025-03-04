@@ -6,7 +6,7 @@ import {
   commonApiDsPatchSpy,
 } from '@ged/__mocks__/common.import.mocks'
 import { accountId } from '@ged/__mocks__/files.mocks'
-import { loggerMock } from '@ged/__mocks__/logger.mocks'
+import { loggerMock } from '@pulse/core/mocks'
 import type { Service } from '@ged/models/Service'
 
 import {

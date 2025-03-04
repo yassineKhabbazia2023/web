@@ -1,4 +1,5 @@
 import { vi, it, expect, describe } from 'vitest'
+import { loggerMock, loggerWarnSpy } from '@pulse/core/mocks'
 import {
   referentialOptionsToPDropdownOption,
   getReferentialDropdownOptions,
@@ -22,17 +23,7 @@ const mockedReferential = getMockedAccountReferential()
 const mockedReferentialHubs = getMockedReferentialHubs().slice(0, 2)
 const mockedFormSection = getMockedFormSection()
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@entities/services/account', () => ({
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),

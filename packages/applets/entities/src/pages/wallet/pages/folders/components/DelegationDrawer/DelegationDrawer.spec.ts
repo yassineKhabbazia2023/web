@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
+import { loggerMock } from '@pulse/core/mocks'
 import { PDrawer, PSteps } from '@pulse/styleguide/components'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -10,20 +11,11 @@ import { entitiesMock } from '@entities/__mocks__/entities.mocks'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddDelegatesStep from './components/AddDelegatesStep'
 import DelegationPreviewList from './components/DelegationPreviewList'
-import DelegationDrawer from '.'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
+import DelegationDrawer from '.'
 
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 const USER_ID = 'a custom user id'
 const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]

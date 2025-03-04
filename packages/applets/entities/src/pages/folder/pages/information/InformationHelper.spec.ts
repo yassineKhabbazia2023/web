@@ -1,20 +1,11 @@
 import { expect, describe, it, vi, afterEach } from 'vitest'
 import { PERMISSION_CODES } from '@entities/constants'
+import { loggerMock } from '@pulse/core/mocks'
 import { getCanEdit, savePatchedAccount } from './InformationHelper'
 import type { PatchOperation, PatchValue } from '@entities/services/PatchRecordService'
 
 const mockHasPermission = vi.hoisted(() => vi.fn())
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/common', () => ({
   userPermissions: () => ({

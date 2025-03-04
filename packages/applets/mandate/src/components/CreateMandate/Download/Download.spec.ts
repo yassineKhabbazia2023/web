@@ -1,6 +1,6 @@
 
 import { expect, describe, it, vi, beforeEach } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@mandate/__mocks__/logger.mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { PNotificationMocked } from '@mandate/__mocks__/styleguide.mocks'

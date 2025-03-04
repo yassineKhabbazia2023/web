@@ -1,5 +1,6 @@
 import { it, expect, describe, vi } from 'vitest'
 import { type VueWrapper, flushPromises, mount } from '@vue/test-utils'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import type { SubscriptionAccount } from '@entities/services/subscription'
 import * as SubscriptionService from '@entities/services/subscription/subscriptionService'
 import { getMockedSubscriptionDetails } from '@entities/__mocks__/subscription.mocks'
@@ -7,17 +8,7 @@ import SubscriptionDetailsDrawer from '.'
 
 const mockedSubscriptionDetails = getMockedSubscriptionDetails()
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(),

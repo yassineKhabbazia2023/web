@@ -8,6 +8,7 @@ import {
 import * as accountServices from '@entities/services/account'
 import LOOPOfferForm from '@entities/common/config/forms/LOOPOfferFormStructure.json'
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
 import InformationDetails from '.'
@@ -20,17 +21,8 @@ const mockedSubscriptionMEGOfferDetails =
 const mockedSubscriptionLoopOfferDetails =
   getMockedSubscriptionOffersServices()[2]
 const mockedGetFormStructure = vi.hoisted(() => vi.fn(() => MEGOffersFormStructure))
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@entities/common/utils/referential', () => ({
   getFormStructure: mockedGetFormStructure,

@@ -1,17 +1,15 @@
+import { envVarsMock } from '@pulse/core/mocks'
+import { vi } from 'vitest'
+import { logger } from '@pulse/core'
+import type { AxiosError } from 'axios'
+
 import api, {
   requestInterceptor,
   responseInterceptorSuccess,
   responseInterceptorError,
 } from './index'
-import { vi } from 'vitest'
-import { logger } from '@pulse/core'
-import type { AxiosError } from 'axios'
- 
-vi.mock('env-vars', () => ({
-  VITE_API_GATEWAY: 'https://placeholder.test/gtw',
-  VITE_API_DS: 'https://placeholder.test/ds',
-  VITE_API_SCHEDULE: 'https://placeholder.test/ds',
-}))
+
+vi.mock('env-vars', () => envVarsMock)
 vi.mock('axios')
 
 const getUnauthorizedCallbackMock = vi.hoisted(() => vi.fn())

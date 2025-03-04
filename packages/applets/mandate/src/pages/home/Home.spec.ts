@@ -1,6 +1,6 @@
 import type { MockInstance } from 'vitest'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@mandate/__mocks__/logger.mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { getMockedMandatesList } from '@mandate/__mocks__/mandate.mock'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { amplitudeServiceMock, amplitudeTrackMock } from '@mandate/__mocks__/amplitude.mocks'

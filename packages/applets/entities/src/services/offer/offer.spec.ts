@@ -1,4 +1,15 @@
 import { describe, it, vi, expect } from 'vitest'
+import { getMockedSubscriptionOffers , getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
+import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
+import { envVarsMock } from '@pulse/core/mocks'
+import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+import { API_PREFIXES } from '@entities/common/config/services'
+import type {
+  SubscriptionOffer,
+  SubscriptionOfferServices,
+} from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+
 import {
   getAllOffers,
   getOffer,
@@ -6,15 +17,6 @@ import {
   getPrincipalContacts,
   fetchCollaborators,
 } from '.'
-import { getMockedSubscriptionOffers , getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
-import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
-import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
-import { API_PREFIXES } from '@entities/common/config/services'
-import type {
-  SubscriptionOffer,
-  SubscriptionOfferServices,
-} from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
-import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 
 const mockedCollaborators = getMockedCollaborators()
 const mockedPrincipalContacts: ClientContact[] = getMockedPrincipalContacts()
@@ -26,9 +28,7 @@ vi.mock('@entities/helper/helper', () => ({
   handleRequestError: vi.fn(),
 }))
 
-vi.mock('env-vars', () => ({
-  VITE_CONFIG_OFFERS_BOOK: 'offers-book-test-link',
-}))
+vi.mock('env-vars', () => envVarsMock)
 
 vi.mock('@pulse/common', () => {
   return {
@@ -121,7 +121,7 @@ describe('getOffersBookLink', () => {
   it('should return offers book link', async () => {
     const offersBookLink = await getOffersBookLink()
 
-    expect(offersBookLink).toBe('offers-book-test-link')
+    expect(offersBookLink).toBe(envVarsMock.VITE_CONFIG_OFFERS_BOOK)
   })
 })
 

@@ -1,5 +1,6 @@
 import { nextTick } from 'vue'
 import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import OccurrenceDrawer from '.'
 import { expect, describe, it, vi } from 'vitest'
 import { accountsCollection } from '@app/schedule/tests/mocks/Account'
@@ -27,20 +28,12 @@ interface Window {
 }
 declare let window: Window
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', async () => {
-  const actual = await vi.importActual('@pulse/core')
-
+vi.mock('@pulse/core', async (importActual) => {
+  const actual = await importActual()
   return {
+    // @ts-ignore
     ...actual,
-    logger: {
-      debug: loggerDebugSpy,
-      warn: loggerWarnSpy,
-      error: loggerErrorSpy,
-    },
+    logger: loggerMock,
   }
 })
 

@@ -1,20 +1,11 @@
 import { describe, it, expect } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
+import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { msalInstance } from '../msal'
 import api from '../api'
 import { getInitials, logoutClient, logoutCollaborator, logoutGigyaSSO } from '.'
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 declare let window: {
   gigya: any

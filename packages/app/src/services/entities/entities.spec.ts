@@ -1,4 +1,5 @@
 import { describe, it, vi, expect, beforeEach } from 'vitest'
+import { loggerMock } from '@pulse/core/mocks'
 import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { fetchFavoriteEntities, fetchEntities } from '.'
 import { API_PREFIXES } from '../config'
@@ -7,17 +8,7 @@ import type { Entity } from '@pulse/common/types'
 let throwError = false
 const testEntities: Entity[] = getMockedFavoriteEntities()
 
-const loggerDebugSpy = vi.hoisted(() => vi.fn())
-const loggerWarnSpy = vi.hoisted(() => vi.fn())
-const loggerErrorSpy = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/core', () => ({
-  logger: {
-    debug: loggerDebugSpy,
-    warn: loggerWarnSpy,
-    error: loggerErrorSpy,
-  },
-}))
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/common', () => {
   return {
