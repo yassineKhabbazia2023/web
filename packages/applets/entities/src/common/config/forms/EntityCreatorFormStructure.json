@@ -68,7 +68,7 @@
         "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
         "pDisabled": false,
-        "pFieldKey": "contactLastMame",
+        "pFieldKey": "contactLastName",
         "pFieldType": "input",
         "pPlaceholder": "Saisissez un prénom",
         "pLabel": "Prénom",

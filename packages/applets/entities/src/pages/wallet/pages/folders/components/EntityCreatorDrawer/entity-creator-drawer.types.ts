@@ -5,7 +5,7 @@ export interface OnboardingDetails {
   accountLegalName: string
   email: string
   contactFirstName: string
-  contactLastMame: string
+  contactLastName: string
   signatory: boolean
   collaboratorGuids: string[]
 }
