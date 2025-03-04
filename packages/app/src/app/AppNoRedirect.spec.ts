@@ -206,6 +206,10 @@ describe('app with navigation guard', () => {
       isTokenExpired: true,
       isCollab,
     }
+    const expectedPopupRenewTokenPropsAfter = {
+      ...expectedPopupRenewTokenProps,
+      isVisible: false,
+    }
 
     setUnauthorizedCallbackMock.mockImplementation((done: Function) => {
       callBack.value = done
@@ -219,6 +223,10 @@ describe('app with navigation guard', () => {
     expect(setTokenMock).toHaveBeenCalledOnce()
     expect(setTokenMock).toHaveBeenCalledWith('')
     expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenProps)
+
+    popupRenewToken.vm.$emit('close')
+    await nextTick()
+    expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenPropsAfter)
   })
 
   it('redirect to login when 401 encountered and user is null', async () => {
@@ -238,27 +246,6 @@ describe('app with navigation guard', () => {
     expect(setTokenMock).toHaveBeenCalledOnce()
     expect(setTokenMock).toHaveBeenCalledWith('')
     expect(mockedLogoutAndRedirectToLogin).toHaveBeenCalledOnce()
-  })
-
-  it('Should open PopupRenewToken when it emits update:isVisible = true', async () => {
-    const expectedPopupRenewTokenPropsBefore = {
-      isVisible: false,
-      isTokenExpired: false,
-      isCollab: false,
-    }
-    const expectedPopupRenewTokenPropsAfter = {
-      isVisible: true,
-      isTokenExpired: false,
-      isCollab: false,
-    }
-    const wrapper = createWrapper()
-    const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
-
-    expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenPropsBefore)
-
-    popupRenewToken.vm.$emit('update:isVisible', true)
-    await nextTick()
-    expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenPropsAfter)
   })
 
   it('Should call logoutAndRedirectToLogin when PopupRenewToken emits logout', async () => {

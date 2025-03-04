@@ -6,7 +6,7 @@
         :isVisible="canDisplayRenewTokenModal && popupRenewTokenIsVisible"
         :isTokenExpired="isTokenExpired"
         :isCollab="isCollab"
-        @update:is-visible="popupRenewTokenIsVisible = $event"
+        @close="onClosePopupRenewToken"
         @logout="onLogout"
         @renew-token="onRenewToken"
       />
@@ -110,7 +110,12 @@ async function unauthorizedCallback() {
   }
 }
 
+async function onClosePopupRenewToken() {
+  popupRenewTokenIsVisible.value = false
+}
+
 async function onLogout() {
+  popupRenewTokenIsVisible.value = false
   await logoutAndRedirectToLogin()
 }
 

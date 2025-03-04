@@ -21,7 +21,7 @@ const createWrapper = (overrittenProps: Partial<PopupRenewTokenProps> = {}) => {
         PDialog: {
           name: 'PDialog',
           template: '<div v-if="modelValue"><slot name="footer" /><slot /></div>',
-          props: ['modelValue'],
+          props: ['modelValue', 'beforeClose'],
         },
         PImage: true,
         PButton: true,
@@ -49,7 +49,7 @@ describe('popup renew token', () => {
     logoutButton.trigger('click')
 
     expect(wrapper.emitted('logout')).toStrictEqual([[]])
-    expect(wrapper.emitted('update:isVisible')).toStrictEqual([[false]])
+    expect(wrapper.emitted('close')).toBeUndefined()
   })
 
   it('close modal when COLLAB clicks on logout button', () => {
@@ -61,7 +61,7 @@ describe('popup renew token', () => {
     logoutButton.trigger('click')
 
     expect(wrapper.emitted('logout')).toBeUndefined()
-    expect(wrapper.emitted('update:isVisible')).toStrictEqual([[false]])
+    expect(wrapper.emitted('close')).toStrictEqual([[]])
   })
 
   const tests = [{

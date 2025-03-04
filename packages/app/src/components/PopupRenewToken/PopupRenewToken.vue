@@ -1,12 +1,13 @@
 <template>
   <PDialog
-    v-model="isVisibleInternal"
+    :modelValue="isVisible"
     pWidth="420px"
     pModal
     class="dialog-renew-token"
     :pCenter="false"
     :pShowClose="false"
     data-testid="renew-token-dialog"
+    :beforeClose="beforeCloseModalNoop"
   >
     <div class="flex flex--justify-content-center">
       <PImage
@@ -55,7 +56,7 @@ import type { PopupRenewTokenProps } from './PopupRenewToken.types'
 const props = defineProps<PopupRenewTokenProps>()
 
 const emit = defineEmits<{
-  'update:isVisible': [boolean]
+  'close': []
   'logout': []
   'renew-token': []
 }>()
@@ -65,14 +66,9 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const isVisibleInternal = computed({
-  get: () => props.isVisible,
-  set: (isVisible: boolean) => emit('update:isVisible', isVisible),
-})
-
 const onClickFirstButton = () => {
   if (props.isCollab) {
-    isVisibleInternal.value = false
+    emit('close')
   } else {
     handleLogout()
   }
@@ -87,7 +83,6 @@ const onClickSecondButton = () => {
 }
 
 const handleLogout = () => {
-  isVisibleInternal.value = false
   emit('logout')
 }
 
@@ -95,6 +90,10 @@ const statusKey = computed(() => props.isTokenExpired
   ? 'disconnected'
   : 'connected',
 )
+
+function beforeCloseModalNoop() {
+  // keep this code to prevent from closing dialog internaly
+}
 </script>
 
 <style lang="scss" scoped>
