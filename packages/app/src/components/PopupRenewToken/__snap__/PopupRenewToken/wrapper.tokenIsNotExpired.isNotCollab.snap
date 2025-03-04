@@ -5,5 +5,5 @@
     <p-image-stub data-v-7a0be8a8="" pname="hourglass-duotone" pfit="fill" ptype="portrait" class="dialog-renew-token__popup-img"></p-image-stub>
   </div>
   <div data-v-7a0be8a8="" class="h3 text-center margin-y--4">Your session will expire soon</div>
-  <p data-v-7a0be8a8="" class="p-dialog__text margin-bottom--3">You will be automatically logged out of the session in 5 minutes. We advise you to save your progress before logging back in.</p>
+  <p data-v-7a0be8a8="" class="p-dialog__text margin-bottom--3">Privacy is important and you have been logged in for a while. We will log you out in a few minutes, unless you confirm that you are still on RYDGE Conseil.</p>
 </div>

@@ -19,7 +19,7 @@
       {{ t(`${statusKey}.title`) }}
     </div>
     <p class="p-dialog__text margin-bottom--3">
-      {{ t(`${statusKey}.content`) }}
+      {{ t(`${statusKey}.content.${isCollab ? 'collab' : 'client'}`) }}
     </p>
     <template #footer>
       <PButton
@@ -119,9 +119,14 @@ const statusKey = computed(() => props.isTokenExpired
       renew:
         client: 'Stay connect'
         collab: 'Reconnect'
-      content: >-
-        You will be automatically logged out of the session in 5 minutes.
-        We advise you to save your progress before logging back in.
+      content:
+        client: >-
+            Privacy is important and you have been logged in for a while.
+            We will log you out in a few minutes,
+            unless you confirm that you are still on RYDGE Conseil.
+        collab: >-
+          You will be automatically logged out of the session in 5 minutes.
+          We advise you to save your progress before logging back in.
       logout:
         client: 'Disconnect'
         collab: 'Continue'
@@ -130,8 +135,9 @@ const statusKey = computed(() => props.isTokenExpired
       renew:
         client: 'Reconnect'
         collab: 'Reconnect'
-      content: >-
-        Please log in again to access the platform.
+      content:
+        client: 'Please log in again to access the platform.'
+        collab: 'Please log in again to access the platform.'
       logout:
         client: 'Disconnect'
         collab: 'Continue'
@@ -141,9 +147,14 @@ const statusKey = computed(() => props.isTokenExpired
       renew:
         client: 'Rester connecté'
         collab: 'Se reconnecter'
-      content: >-
-        Vous serez automatiquement déconnecté de la session dans 5 minutes.
-        Nous vous conseillons de sauvegarder votre progression avant de vous reconnecter.
+      content:
+        client: >-
+          La confidentialité est essentielle et vous êtes connecté(e) depuis un moment.
+          Nous allons vous déconnecter dans quelques minutes,
+          sauf si vous confirmez que vous êtes toujours sur APP RYDGE Conseil.
+        collab: >-
+          Vous serez automatiquement déconnecté de la session dans 5 minutes.
+          Nous vous conseillons de sauvegarder votre progression avant de vous reconnecter.
       logout:
         client: 'Déconnexion'
         collab: 'Continuer'
@@ -152,8 +163,9 @@ const statusKey = computed(() => props.isTokenExpired
       renew:
         client: 'Se reconnecter'
         collab: 'Se reconnecter'
-      content: >-
-        Veuillez vous reconnecter pour accéder à la plateforme.
+      content:
+        client: 'Veuillez vous reconnecter pour accéder à la plateforme.'
+        collab: 'Veuillez vous reconnecter pour accéder à la plateforme.'
       logout:
         client: 'Déconnexion'
         collab: 'Continuer'
