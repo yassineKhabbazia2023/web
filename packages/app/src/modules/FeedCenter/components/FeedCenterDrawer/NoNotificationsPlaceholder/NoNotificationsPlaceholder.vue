@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PImage } from '@pulse/styleguide/components'
-import type { NoNotificationsPlaceholderProps } from './NoNotificationsPlaceholderTypes'
+import type { NoNotificationsPlaceholderProps } from './no-notifications-placeholder.types'
 
 const { t } = useI18n({
   inheritLocale: true,

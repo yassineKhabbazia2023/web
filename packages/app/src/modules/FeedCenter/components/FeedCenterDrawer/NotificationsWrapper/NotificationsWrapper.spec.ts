@@ -2,9 +2,9 @@ import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import NotificationsWrapper from '.'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
-import type { NotificationsWrapperProps } from './NotificationsWrapper.types'
+import type { NotificationsWrapperProps } from './notifications-wrapper.types'
 import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
-import { handleNotificationAction } from './notification.manager'
+import { handleNotificationAction } from './notifications-wrapper.manager'
 
 function createWrapper(props: NotificationsWrapperProps = NoNotificationsPlaceholderBaseProps) {
   return mount(NotificationsWrapper, {
@@ -20,8 +20,8 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('./notification.manager', async () => {
-  const actual = await vi.importActual('./notification.manager')
+vi.mock('./notifications-wrapper.manager', async () => {
+  const actual = await vi.importActual('./notifications-wrapper.manager')
   return {
     ...(actual as object),
     getNotificationAccountNames: vi.fn(() => []),

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import NoNotificationsPlaceholder from '.'
-import type { NoNotificationsPlaceholderProps } from './NoNotificationsPlaceholderTypes'
+import type { NoNotificationsPlaceholderProps } from './no-notifications-placeholder.types'
 
 function createWrapper(props: NoNotificationsPlaceholderProps = NoNotificationsPlaceholderBaseProps) {
   return mount(NoNotificationsPlaceholder, {

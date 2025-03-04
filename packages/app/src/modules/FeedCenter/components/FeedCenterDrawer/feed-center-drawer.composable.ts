@@ -9,7 +9,7 @@ import {
 } from 'vue'
 import { type FeedCenterNotification, SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import { fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
-import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'
+import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 
 export function useFeedCenterDrawer(
   isDrawerOpened: WritableComputedRef<FeedCenterDrawerProps['modelValue']>,

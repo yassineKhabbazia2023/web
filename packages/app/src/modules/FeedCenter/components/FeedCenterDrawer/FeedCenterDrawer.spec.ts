@@ -3,10 +3,10 @@ import { defineStore } from 'pinia'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { fetchNotificationsMock } from '@app/../vitest.setup'
 import FeedCenterDrawer from '.'
-import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'
+import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
 import { createTestingPinia } from '@pinia/testing'
-import { patchAllNotificationsAsRead } from './feed-center.manager'
+import { patchAllNotificationsAsRead } from './feed-center-drawer.manager'
 const pinia = createTestingPinia()
 vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
@@ -17,7 +17,7 @@ vi.mock('@pulse/common', () => ({
     }),
   }) }))
 
-vi.mock('./feed-center.manager', async () => {
+vi.mock('./feed-center-drawer.manager', async () => {
   return {
     patchAllNotificationsAsRead: vi.fn(() => notificationsMock),
     fetchNotificationsWithTimeout: vi.fn(),

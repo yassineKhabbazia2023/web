@@ -46,13 +46,13 @@ import { useI18n } from 'vue-i18n'
 import { PLoader } from '@pulse/styleguide/components'
 import type { FeedCenterNotification } from '@app/modules/FeedCenter/types/notification.type'
 import NoNotificationsPlaceholder from '../NoNotificationsPlaceholder'
-import type { NotificationsWrapperProps } from './NotificationsWrapper.types'
+import type { NotificationsWrapperProps } from './notifications-wrapper.types'
 import Notification from '../Notification'
 import {
   handleNotificationAction,
   getNotificationAccountNames,
   getTimeSinceCreation,
-} from './notification.manager'
+} from './notifications-wrapper.manager'
 
 const emit = defineEmits<{
   'notification-clicked': [void]

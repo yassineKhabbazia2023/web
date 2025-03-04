@@ -32,7 +32,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PNotificationCard, PAvatar, PImage } from '@pulse/styleguide/components'
-import type { NotificationProps } from './NotificationTypes'
+import type { NotificationProps } from './notification.types'
 
 const { t } = useI18n({
   inheritLocale: true,

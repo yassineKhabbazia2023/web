@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { patchAllNotificationsAsRead, fetchNotificationsWithTimeout } from './feed-center.manager'
+import { patchAllNotificationsAsRead, fetchNotificationsWithTimeout } from './feed-center-drawer.manager'
 import { patchAllNotificationsAsReadMock, fetchNotificationsMock } from '@app/../vitest.setup'
 import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
 

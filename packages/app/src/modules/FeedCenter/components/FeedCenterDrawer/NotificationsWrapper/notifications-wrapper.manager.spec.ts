@@ -20,8 +20,8 @@ import {
   getTimeSinceCreation,
   getNotificationAccountNumbers,
   getNotificationAccountNames,
-} from './notification.manager'
-import type { GetTimeSinceCreationParams } from './NotificationsWrapper.types'
+} from './notifications-wrapper.manager'
+import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
 import * as NotificationService from './notifications-wrapper.service'
 import { flushPromises } from '@vue/test-utils'
 

@@ -56,12 +56,12 @@ import {
   PTabPane,
 } from '@pulse/styleguide/components'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
-import type { FeedCenterDrawerProps } from './FeedCenterDrawerTypes'
+import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import NotificationsWrapper from './NotificationsWrapper'
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 import { PDrawerProps } from '@pulse/styleguide/types'
 import { commonStore } from '@pulse/common'
-import { patchAllNotificationsAsRead } from './feed-center.manager'
+import { patchAllNotificationsAsRead } from './feed-center-drawer.manager'
 
 const { t } = useI18n({
   inheritLocale: true,

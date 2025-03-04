@@ -1,5 +1,5 @@
 import { type FeedCenterNotification, NotificationKindEnum } from '@app/modules/FeedCenter/types/notification.type'
-import type { HandleNotificationActionParams, GetTimeSinceCreationParams } from './NotificationsWrapper.types'
+import type { HandleNotificationActionParams, GetTimeSinceCreationParams } from './notifications-wrapper.types'
 import type { NotificationAccount } from '@app/modules/FeedCenter/types/notification-account.type'
 import type { Router } from 'vue-router'
 import { patchNotificationReadStatus } from '@app/modules/FeedCenter/services/notifications.service'

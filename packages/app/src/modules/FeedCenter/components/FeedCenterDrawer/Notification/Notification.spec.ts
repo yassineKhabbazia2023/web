@@ -1,7 +1,7 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import Notifications from '.'
-import type { NotificationProps } from './NotificationTypes'
+import type { NotificationProps } from './notification.types'
 import { accountsMock } from '@app/mocks/Account/accounts.mock'
 import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
 
