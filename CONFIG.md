@@ -53,3 +53,4 @@ window.EnvVars = envVars
 | VITE_PRODUCT_FRUITS_KEY | Clé du workspace ProductFruit Collab connecté |
 | VITE_PRODUCT_FRUITS_KEY_CLIENT | Clé du workspace ProductFruit Client connecté |
 | VITE_SCHEDULE_ACTIVATED | Feature-flag du Calendrier |
+| VITE_PASSWORD_RESET_MAX_ATTEMPTS | Nombre maximal de tentatives de réinitialisation du mot de passe |

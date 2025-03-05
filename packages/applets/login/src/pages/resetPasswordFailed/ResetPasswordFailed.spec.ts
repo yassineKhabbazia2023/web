@@ -13,18 +13,13 @@ vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush,
   }),
-  useRoute: () => ({
-    query: {
-      maxAttempts: 5,
-    },
-  }),
 }))
 
 const createWrapper = () => mount(ResetPasswordFailed)
 
 describe('reset password failed', () => {
   describe('display', () => {
-    it('should correctly display the reset password failed page', async () => {
+    it('should correctly display the reset password failed page', () => {
       const wrapper = createWrapper()
       const backToLoginBtn = wrapper.find('[data-testid=back-to-login-button]')
       const passwordChangeDeniedPara = wrapper.find('[data-testid=password-change-denied-para]')

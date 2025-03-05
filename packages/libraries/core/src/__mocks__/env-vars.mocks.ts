@@ -19,6 +19,7 @@ export const envVarsMock = {
   VITE_GIGYA_SSO_ACTIVATED: 'true',
   VITE_HUBSPOT_ACTIVATED: 'true',
   VITE_IDLE_DURATION: '90',
+  VITE_PASSWORD_RESET_MAX_ATTEMPTS: '5',
   VITE_MAIL_TO_GED_ACTIVATED: 'true',
   VITE_PENNYLANE_SSO_URL: 'https://pennylane-sso-url',
   VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT: 'pulse-product-fruits-anonymous-key-client',

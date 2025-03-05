@@ -33,11 +33,13 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { AppColors } from '@pulse/styleguide'
 import { PButton, PIcon } from '@pulse/styleguide/components'
 import { LoginRouteName } from '@pulse/common/constants'
+import { VITE_PASSWORD_RESET_MAX_ATTEMPTS } from 'env-vars'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -45,9 +47,8 @@ const { t } = useI18n({
 })
 
 const router = useRouter()
-const route = useRoute()
 
-const maxAttempts = route.query.maxAttempts
+const maxAttempts = computed(() => VITE_PASSWORD_RESET_MAX_ATTEMPTS || 5)
 </script>
 
 <style lang="scss" scoped>
