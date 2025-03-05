@@ -31,10 +31,8 @@ import { useI18n } from 'vue-i18n'
 import { PDrawer, PLoader } from '@pulse/styleguide/components'
 import type { SubscriptionDetailsDrawerProps } from './SubscriptionDetailsDrawerTypes'
 import SubscriptionDetailsTabs from './components/SubscriptionDetailsTabs'
-import {
-  fetchSubscriptionDetails,
-  type SubscriptionDetails,
-} from '@entities/services/subscription'
+import { fetchSubscriptionDetails } from '@entities/services/subscription'
+import type { SubscriptionDetails } from '@entities/services/subscription/subscriptionTypes'
 
 const { t } = useI18n({
   inheritLocale: true,

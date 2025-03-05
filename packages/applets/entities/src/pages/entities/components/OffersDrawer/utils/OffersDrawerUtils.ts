@@ -1,7 +1,7 @@
 import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type { SelectedProduct } from '@entities/common/types'
 import type { SubscriptionOfferServices } from '../../SubscriptionOffers/SubscriptionOffersTypes'
-import type { Note, PostSubscriptionRequest } from '@entities/services/subscription'
+import type { Note, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ClientContact } from '../../PrincipalContact/PrincipalContactTypes'
 

@@ -27,7 +27,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PForm, PFormItem, PInput } from '@pulse/styleguide/components'
 import type { StepNoteProps } from './StepNoteTypes'
-import type { Note } from '@entities/services/subscription'
+import type { Note } from '@entities/services/subscription/subscriptionTypes'
 
 const { t } = useI18n({
   inheritLocale: true,

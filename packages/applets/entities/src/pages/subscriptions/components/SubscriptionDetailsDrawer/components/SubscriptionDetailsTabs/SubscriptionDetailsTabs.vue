@@ -38,7 +38,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import { RecapTabs } from './SubscriptionDetailsTabsTypes'
-import type { Note } from '@entities/services/subscription'
+import type { Note } from '@entities/services/subscription/subscriptionTypes'
 import type {
   SubscriptionDetailsTabsProps,
   SubscriptionDetailsTab,

@@ -1,9 +1,9 @@
 import {
-  PostSubscriptionRequest,
-  SubscriptionDetails ,
-  SubscriptionRequest,
+  type PostSubscriptionRequest,
+  type SubscriptionDetails ,
+  type SubscriptionRequest,
   SubscriptionStatusCode,
-} from '@entities/services/subscription'
+} from '@entities/services/subscription/subscriptionTypes'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import { ContactType } from '@entities/services/contact/contactTypes'

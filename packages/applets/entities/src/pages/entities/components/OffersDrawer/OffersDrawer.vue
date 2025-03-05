@@ -170,7 +170,8 @@ import type {
   SubscriptionOfferServices,
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
-import { type Note, createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
+import type { Note } from '@entities/services/subscription/subscriptionTypes'
+import { createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { amplitudeService } from '@pulse/common'
 

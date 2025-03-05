@@ -129,12 +129,8 @@ import {
 } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { commonStore, amplitudeService } from '@pulse/common'
-import {
-  type SubscriptionRequest,
-  fetchSubscriptionRequests,
-  validateSubscriptionRequest,
-  SubscriptionStatusCode,
-} from '@entities/services/subscription'
+import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
+import { fetchSubscriptionRequests, validateSubscriptionRequest } from '@entities/services/subscription'
 import { getInitials } from '@entities/helper'
 import { displayNotification } from '@entities/common/utils/helpers'
 import SubscriptionsFilter from './components/SubscriptionsFilter'

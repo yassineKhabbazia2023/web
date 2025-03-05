@@ -8,7 +8,7 @@ import {
   getFirstDayOfYear,
 } from './OffersDrawerUtils'
 import type { SelectedProduct } from '@entities/common/types'
-import type { PostSubscriptionRequest } from '@entities/services/subscription'
+import type { PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 import { getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'

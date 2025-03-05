@@ -24,7 +24,7 @@ import {
 } from '@entities/__mocks__/account-row.mocks'
 import { amplitudeService } from '@pulse/common'
 import type { UserInfo } from '@pulse/common/types'
-import type { Note, PostSubscriptionRequest } from '@entities/services/subscription'
+import type { Note, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
 import type { PatchValue } from '@entities/services/PatchRecordService'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ComponentWrapper } from '@entities/common/types'

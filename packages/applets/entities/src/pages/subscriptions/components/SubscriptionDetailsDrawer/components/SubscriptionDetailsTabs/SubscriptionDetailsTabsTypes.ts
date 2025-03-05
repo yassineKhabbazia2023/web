@@ -1,4 +1,4 @@
-import type { SubscriptionDetails } from '@entities/services/subscription'
+import type { SubscriptionDetails } from '@entities/services/subscription/subscriptionTypes'
 
 
 export enum RecapTabs {

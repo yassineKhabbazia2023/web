@@ -15,6 +15,7 @@ const expectedSubscriptionProducts = [
     offerId: 1,
   },
 ]
+
 describe('servicesDetailsUtils', () => {
   describe('getSubscriptionProducts', () => {
     it('should return the correct array of subscription products', () => {

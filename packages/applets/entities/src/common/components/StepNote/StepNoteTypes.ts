@@ -1,4 +1,4 @@
-import type { Note } from '@entities/services/subscription'
+import type { Note } from '@entities/services/subscription/subscriptionTypes'
 
 export interface StepNoteProps {
   modelValue: Note

@@ -1,6 +1,6 @@
 import { commonApi } from '@pulse/common'
 import { handleRequestError } from '@entities/helper'
-import type { SubscriptionRequest, PostSubscriptionRequest, SubscriptionDetails } from '.'
+import type { SubscriptionRequest, PostSubscriptionRequest, SubscriptionDetails } from './subscriptionTypes'
 import { API_PREFIXES } from '@entities/common/config/services'
 
 export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]> {

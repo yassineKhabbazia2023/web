@@ -87,10 +87,8 @@ import {
   PImage,
 } from '@pulse/styleguide/components'
 import OfferActivationStatus from './components/OfferActivationStatus'
-import {
-  type SubscriptionRequest,
-  fetchAccountSubscriptions,
-} from '@entities/services/subscription'
+import type { SubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
+import { fetchAccountSubscriptions } from '@entities/services/subscription'
 import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
 import { PERMISSION_CODES } from '@entities/constants'
 

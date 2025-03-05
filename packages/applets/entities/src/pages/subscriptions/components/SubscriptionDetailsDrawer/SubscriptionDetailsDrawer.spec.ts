@@ -1,7 +1,7 @@
 import { it, expect, describe, vi } from 'vitest'
 import { type VueWrapper, flushPromises, mount } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
-import type { SubscriptionAccount } from '@entities/services/subscription'
+import type { SubscriptionAccount } from '@entities/services/subscription/subscriptionTypes'
 import * as SubscriptionService from '@entities/services/subscription/subscriptionService'
 import { getMockedSubscriptionDetails } from '@entities/__mocks__/subscription.mocks'
 import SubscriptionDetailsDrawer from '.'
