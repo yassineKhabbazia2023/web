@@ -1,7 +1,6 @@
 
 export { ElRadioGroup as PRadioGroup } from 'element-plus'
 
-export * from './atoms/PIcon/components/index.ts'
 export { default as PActionBar } from './molecules/PActionBar/index.ts'
 export { default as PActivityCard } from './atoms/PActivityCard/index.ts'
 export { default as PAlert } from './atoms/PAlert/index.ts'
