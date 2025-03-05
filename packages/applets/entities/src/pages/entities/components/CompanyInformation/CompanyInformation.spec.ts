@@ -1,5 +1,5 @@
 import { vi, expect, describe, it, beforeEach } from 'vitest'
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { nextTick } from 'vue'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
@@ -37,11 +37,21 @@ const createWrapper = (account: any, providerName: any) => {
     providerName,
   }
 
-  return mount(CompanyInformation, {
+  return shallowMount(CompanyInformation, {
     props,
     global: {
       stubs: {
         PLoader: true,
+        PFieldSetAccount: true,
+        PAlert: {
+          name: 'PAlert',
+          template: '<div><slot /></div>',
+        },
+        PForm: {
+          name: 'PForm',
+          template: '<div><slot /></div>',
+          props: ['pModel'],
+        },
       },
     },
   })
@@ -100,13 +110,15 @@ describe('companyInformation', () => {
       expect(spyReferentialUtils).not.toHaveBeenCalled()
     })
     it('should update the form model when any form item is updated', () => {
-      const formField = wrapper
-        .findAllComponents({ name: 'PField' })
-        .at(2) as VueWrapper
-      formField.vm.$emit('update:model-value', 'Test Value')
+      const fieldKey = 'legal.siret'
+      const newValue = 'Test Value'
+      const pFieldSet = wrapper.findComponent({ name: 'PFieldSetAccount' })
 
-      expect(formField.emitted('update:model-value')).toStrictEqual([
-        ['Test Value'],
+      expect(pFieldSet.exists()).toBeTruthy()
+      pFieldSet.vm.$emit('update:pModel', fieldKey, newValue)
+
+      expect(wrapper.emitted('input')).toStrictEqual([
+        [fieldKey, newValue],
       ])
     })
   })

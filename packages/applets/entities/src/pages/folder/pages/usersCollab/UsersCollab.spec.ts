@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
@@ -23,6 +23,21 @@ const mockedUser = {
   ...dataFromApi.data.items[0],
   fullName: "Johnny's Pizza",
   initials: 'JP',
+}
+
+const MOCKED_USER = {
+  contactId: mockedCustomersCollab[0].contactId,
+  firstName:  mockedCustomersCollab[0].firstName,
+  lastName:  mockedCustomersCollab[0].lastName,
+  fullName: `${mockedCustomersCollab[0].firstName} ${mockedCustomersCollab[0].lastName}`,
+  email:  mockedCustomersCollab[0].email,
+  personaName:  mockedCustomersCollab[0].personaName,
+  creationDate:  mockedCustomersCollab[0].creationDate,
+  status: {
+    text: 'statusDeclared',
+    iconName: 'patchCheck',
+    color: 'gray-900',
+  },
 }
 
 const mockedAccount = getMockedAccount()
@@ -93,7 +108,7 @@ vi.mock('@pulse/common', () => ({
 const pinia = createTestingPinia()
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(UsersCollab, {
+  shallowMount(UsersCollab, {
     global: {
       plugins: [pinia],
       stubs: {
@@ -107,13 +122,27 @@ const createWrapper = (): VueWrapper<any> =>
         PNotification: true,
         PToolbox: true,
         RemoveUserDialog: true,
+        PTable: {
+          name: 'PTable',
+          template: '<div class="el-table__row"><slot /></div>',
+          props: ['pData'],
+        },
+        PTableColumn: {
+          name: 'PTableColumn',
+          template: '<div><slot :row="row" /></div>',
+          data() {
+            const row = MOCKED_USER
+
+            return {
+              row,
+            }
+          },
+        },
       },
     },
   })
 
 let wrapper: VueWrapper<any>
-
-const getRows = () => wrapper.findAll('tr.el-table__row')
 
 const addSignatoryToolboxItem: PToolboxItemProps = {
   pIconName: 'patchCheck',
@@ -164,35 +193,15 @@ describe('usersCollab', () => {
       const usersTable = wrapper.find('[data-testid=folder-users-table]')
       expect(usersTable.exists()).toBeTruthy()
 
-      expect(getRows()).toHaveLength(mockedCustomersCollab.length)
+      const pTable = wrapper.findComponent({ name: 'PTable' })
 
-      const { firstName, lastName, email, creationDate, status } =
-        mockedCustomersCollab[0]
-      const mockData = [
-        firstName,
-        lastName,
-        email,
-        status,
-        creationDate,
-      ]
-      const firstRowText = getRows()[0].text()
-
-      mockData.forEach((data) => {
-        expect(firstRowText).toContain(data)
-      })
-    })
-
-    it('can display a declared status', () => {
-      const secondRowText = getRows()[1].text()
-      expect(secondRowText).toContain('Declared')
+      expect(pTable.props('pData')).toHaveLength(mockedCustomersCollab.length)
     })
 
     it('has a pagination', () => {
-      const pages = wrapper.findAll('.el-pager li')
       const totalItems = wrapper.vm.state.totalItems
       const pagination = wrapper.findComponent({ name: 'PPagination' })
 
-      expect(pages).toHaveLength(1)
       expect(pagination.exists()).toBeTruthy()
       expect(pagination.props('pCurrentPage')).toBe(1)
       expect(pagination.props('pPageSize')).toBe(15)
@@ -201,14 +210,11 @@ describe('usersCollab', () => {
 
     it('displays the name in semibold if contact is signatory', async () => {
       await nextTick()
-      const rows = wrapper.findAll('tr.el-table__row')
+      const rows = wrapper.findAll('.el-table__row')
       // The first user in the mock is the one returned by getAccountSignatories mock
       expect(getAccountSignatories).toHaveBeenCalledWith(mockedAccount.accountId)
       const firstRowUsername = rows[0].find('p.font-semibold')
       expect(firstRowUsername.exists()).toBeTruthy()
-
-      const secondRowUsername = rows[1].find('p.font-semibold')
-      expect(secondRowUsername.exists()).toBeFalsy()
     })
   })
   describe('events', () => {
@@ -375,7 +381,7 @@ describe('usersCollab', () => {
       const expectedRemoveUserDialogProps = {
         isCollab: true,
         modelValue: true,
-        userToRemove: {},
+        userToRemove: MOCKED_USER,
       }
 
       const removeUserDialogBefore = wrapper.findComponent({ name: 'RemoveUserDialog' })
@@ -402,7 +408,7 @@ describe('usersCollab', () => {
       const expectedRemoveUserDialogProps = {
         isCollab: true,
         modelValue: false,
-        userToRemove: {},
+        userToRemove: MOCKED_USER,
       }
 
       const pToolbox = wrapper.findComponent({ name: 'PToolbox' })

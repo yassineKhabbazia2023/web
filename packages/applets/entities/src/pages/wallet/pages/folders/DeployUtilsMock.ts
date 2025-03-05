@@ -82,7 +82,7 @@ export function getMockedWalletQueryResult(
     currentPage: 0,
     items: [
       getMockedMappedAccount(),
-      getMockedMappedAccount({ accountId: 2, accountNumber: '10102' }),
+      getMockedMappedAccount({ id: 'account-global-unique-id-2', accountId: 2, accountNumber: '10102' }),
     ],
     totalItems: 2,
     totalPage: 1,

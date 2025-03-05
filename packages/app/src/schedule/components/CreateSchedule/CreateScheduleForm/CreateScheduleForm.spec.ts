@@ -1,4 +1,4 @@
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import CreateScheduleForm from '.'
@@ -14,15 +14,41 @@ const mockedReminders = [2]
 const createScheduleMock = getMockSchedule(mockedReminders)
 const createScheduleMockWithTypeLong = getMonthlyMockSchedule(mockedReminders)
 
+const mockedGetIsValid = vi.hoisted(() => vi.fn())
 const createWrapper = (props: FormProps) =>
-  mount(CreateScheduleForm, {
+  shallowMount(CreateScheduleForm, {
     props,
     global: {
       stubs: {
         PDropdown: true,
         PDatePicker: true,
         PInput: true,
-        PUpload: true,
+        PAlert: {
+          name: 'PAlert',
+          template: '<div><slot /></div>',
+        },
+        PFormItem: {
+          name: 'PFormItem',
+          template: '<div><slot /></div>',
+          props: ['pLabel'],
+        },
+        PForm: {
+          name: 'PForm',
+          template: '<div><slot /></div>',
+          props: ['pModel'],
+          methods: {
+            validate: vi.fn((cb: Function) => cb(true)),
+          }
+        },
+        CreateScheduleReminders: {
+          name: 'CreateScheduleReminders',
+          template: '<div />',
+          methods: {
+            getIsValid: mockedGetIsValid,
+          }
+        },
+        PRow: { template: '<div><slot /></div>' },
+        PCol: { template: '<div><slot /></div>' },
       },
     } })
 
@@ -43,12 +69,13 @@ describe('test CreateScheduleForm', () => {
       expected: createScheduleMock,
       frequency: 'None',
     }, {
-      type: TEMPLATE_TYPE_SHORT_OTHER,
+    type: TEMPLATE_TYPE_SHORT_OTHER,
       typeShort: 'IS',
       expected: createScheduleMockWithTypeLong,
       frequency: 'Monthly',
     },
   ])('emits the schedule model with reminder as $type', async ({ typeShort, expected, frequency }) => {
+    mockedGetIsValid.mockReturnValue(true)
     const wrapper = createWrapper(
       {
         recipientsCollection: accountsDataTransformer(accountsCollection),
@@ -69,13 +96,15 @@ describe('test CreateScheduleForm', () => {
     const createScheduleReminders = wrapper.findComponent({ name: 'CreateScheduleReminders' })
     createScheduleReminders.vm.$emit('update:model-value', mockedReminders)
 
-    await wrapper.setProps({ checkValidity: true })
     const frequencyComponent = wrapper.findAllComponents({ name: 'PDropdown' })[2]
-    await frequencyComponent.setValue(frequency)
-    await flushPromises()
+    frequencyComponent.vm.$emit('update:modelValue', frequency)
+
+    wrapper.setProps({ checkValidity: true })
+    await nextTick()
+
     const emittedScheduleModel = wrapper.emitted('update-schedule-model')
-    expect(emittedScheduleModel?.[0]).toStrictEqual([
-      expected,
+    expect(emittedScheduleModel).toStrictEqual([
+      [expected],
     ])
   })
 

@@ -1,12 +1,10 @@
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
 import { commonStore, commonPinia as pinia } from '@pulse/common'
-import TableData from '../../components/TableData'
 import Deploy from '.'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
-import * as DeployUtils from './DeployUtils'
 import { nextTick, reactive } from 'vue'
 import {
   getMockedWalletQueryResult,
@@ -107,12 +105,13 @@ vi.mock('vue-router', async () => {
   }
 })
 
-vi.mock('./DeployUtils', async () => {
-  return await vi.importActual('./DeployUtils')
-})
+const mockFetchWalletData = vi.hoisted(() => vi.fn())
+vi.mock('./DeployUtils', async () => ({
+  fetchWalletData: mockFetchWalletData
+}))
 
 const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
-  mount(Deploy, {
+  shallowMount(Deploy, {
     attachTo: document.body,
     plugins: [createTestingPinia()],
     global: {
@@ -124,6 +123,18 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
         PPagination: true,
         ResendActivationEmailDrawer: true,
         OffersDrawer: true,
+        TableData: true,
+        PButton: {
+          name: 'PButton',
+          template: '<div><slot /></div>',
+        },
+        FormSearch: {
+          name: 'FormSearch',
+          template: '<div><slot /></div>',
+          methods: {
+            clearSearch: vi.fn(),
+          },
+        }
       },
     },
   })
@@ -134,11 +145,9 @@ const findSubscriptionDrawer = (wrapper: VueWrapper) =>
 setActivePinia(pinia)
 
 describe('deploy', () => {
-  let mockFetchWalletData: MockInstance
   beforeEach(() => {
     mockedGatewayGet.mockResolvedValue(mockedAccount)
-    mockFetchWalletData = vi
-      .spyOn(DeployUtils, 'fetchWalletData')
+    mockFetchWalletData
       .mockResolvedValue(mockedQueryResult)
   })
 
@@ -146,13 +155,19 @@ describe('deploy', () => {
     const wrapper = createWrapper()
     await flushPromises()
 
-    const button = wrapper.find('.el-button')
+    const button = wrapper.findComponent({ name: 'PButton' })
+    const tableData = wrapper.findComponent({ name: 'tableData' })
+
     expect(button.text()).toBe('Delegate my wallet')
-    const checkbox = wrapper.findAllComponents({ name: 'ElCheckbox' })[0]
-    await checkbox.trigger('click')
+
+    tableData.vm.$emit('selected-folder', mockedQueryResult.items.at(0))
+    await nextTick()
+
     expect(button.text()).toBe('Delegate my folder')
-    const checkbox1 = wrapper.findAllComponents({ name: 'ElCheckbox' })[1]
-    await checkbox1.trigger('click')
+
+    tableData.vm.$emit('selected-folder', mockedQueryResult.items.at(1))
+    await nextTick()
+
     expect(button.text()).toBe('Delegate my folders')
   })
 
@@ -161,7 +176,7 @@ describe('deploy', () => {
     await flushPromises()
 
     expect(mockFetchWalletData).toHaveBeenCalledOnce()
-    expect(wrapper.findComponent(TableData).exists()).toBeTruthy()
+    expect(wrapper.findComponent({ name: 'TableData' }).exists()).toBeTruthy()
   })
 
   it("should send a request to manage favorite entities when 'handleAddFavorite' is called", async () => {
@@ -191,9 +206,9 @@ describe('deploy', () => {
     const wrapper = createWrapper()
     const SEARCH_VALUE = 'customSearchValue'
 
-    await wrapper.find('input[type="search"]').setValue(SEARCH_VALUE)
-    await wrapper.find('input[type="search"]').trigger('keyup')
-    await flushPromises()
+    const formSearch = wrapper.findComponent({ name: 'FormSearch' })
+    formSearch.vm.$emit('search-value-submitted', SEARCH_VALUE)
+    await nextTick()
 
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 1,
@@ -210,14 +225,12 @@ describe('deploy', () => {
     )
   })
 
-  // FIXME : skipped while integrating SG in monorepo
   it('should not call api when user search with less than 3 characters', async () => {
     const wrapper = createWrapper()
+    const formSearch = wrapper.findComponent({ name: 'FormSearch' })
 
-    await wrapper.find('input[type="search"]').setValue('az')
-    await wrapper.find('input[type="search"]').trigger('keyup')
-    await flushPromises()
-
+    formSearch.vm.$emit('search-value-submitted', 'az')
+    
     expect(mockFetchWalletData).toHaveBeenCalledOnce()
     expect(mockFetchWalletData).not.toHaveBeenCalledTimes(2)
   })

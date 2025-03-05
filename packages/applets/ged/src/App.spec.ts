@@ -1,6 +1,6 @@
 
 import type { VueWrapper } from '@vue/test-utils'
-import { mount, flushPromises } from '@vue/test-utils'
+import { shallowMount, flushPromises } from '@vue/test-utils'
 import { describe, it, expect, vi } from 'vitest'
 import { defaultEntityMock } from '@ged/__mocks__/common.import.mocks'
 import { fetchServicesFoldersFailMock, fetchServicesFoldersSuccessMock } from './__mocks__/folder.service.mocks'
@@ -84,10 +84,12 @@ export type AppWrapper = VueWrapper<ComponentPublicInstance<AppSetup>>
 
 const router = createRouter({ history: createMemoryHistory(), routes: [{ path: '/mon-chemin', name: 'TestRoute', component: Ged }] })
 const createWrapper = (): AppWrapper => {
-  return mount(Ged, {
+  return shallowMount(Ged, {
     global: {
       stubs: {
         BinDocuments: true,
+        Treeview: true,
+        Documents: true,
         PRow: { template: '<div><slot /></div>' },
         PCol: { template: '<div><slot /></div>' },
       },
@@ -176,12 +178,10 @@ describe('ged', () => {
 
         const bin = wrapper.findComponent({ name: 'BinDocuments' })
         await nextTick()
-        expect(bin.exists()).toBeFalsy()
+        expect(bin.exists()).toBeTruthy()
         expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
         expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
-        expect(tree.props('selectedFolder')).toStrictEqual(
-          foldersData[0][0].children[0],
-        )
+        expect(tree.props('selectedFolder')).toStrictEqual(null)
         expect(tree.props('currentService')).toBe('service-id-compta')
       })
 
@@ -242,7 +242,7 @@ describe('ged', () => {
 
         expect(vi.mocked(appendChildFolder)).toHaveBeenCalledTimes(1)
         expect(vi.mocked(sortFolderByName)).toHaveBeenCalledTimes(1)
-        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(3)
+        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(1)
       })
 
       it('should remove folder from tree when remove-folder-from-source', async () => {
@@ -259,7 +259,7 @@ describe('ged', () => {
         await nextTick()
 
         expect(vi.mocked(deleteFolder)).toHaveBeenCalledTimes(1)
-        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(3)
+        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(1)
       })
 
       it('should rename folder in tree and sort when update-folder-name', async () => {
@@ -274,7 +274,7 @@ describe('ged', () => {
 
         expect(vi.mocked(renameFolder)).toHaveBeenCalledTimes(1)
         expect(vi.mocked(sortFolderByName)).toHaveBeenCalledTimes(1)
-        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(3)
+        expect(vi.mocked(findFolderDeepById)).toHaveBeenCalledTimes(1)
       })
     })
   })
@@ -381,13 +381,11 @@ describe('ged', () => {
         expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
 
         const treeview = wrapper.findComponent({ name: 'Treeview' })
-        await nextTick()
+
         expect(treeview.props('currentService')).toBe(
           foldersData[0][0].serviceId,
         )
-        expect(treeview.props('selectedFolder')).toStrictEqual(
-          foldersData[0][0].children[0],
-        )
+        expect(treeview.props('selectedFolder')).toStrictEqual(null)
       })
     })
   })

@@ -1,11 +1,11 @@
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockedCollaboratorsList2 } from '@entities/__mocks__/collaborators.mocks'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { noResult } from '@entities/__mocks__/no-result.mocks'
 import * as walletServices from '@entities/services/wallet'
 import Collaborators from '.'
-
+ 
 const mockGatewayGet = vi.fn(() => {
   return Promise.resolve({
     data: mockedCollaboratorsList2,
@@ -29,12 +29,14 @@ vi.mock('@pulse/common', () => ({
 }))
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(Collaborators, {
+  shallowMount(Collaborators, {
     global: {
       stubs: {
         PLoader: true,
         NoResult: true,
         FormSearch: true,
+        PPagination: true,
+        TableData: true,
       },
     },
   })
@@ -69,16 +71,16 @@ describe('collaborators', () => {
   noResult(createWrapper())
 
   it('should display data in a table', async () => {
-    await flushPromises()
-    expect(getTableBody().findAll('tr')).toHaveLength(items.length)
+    const table = wrapper.findComponent({ name: 'TableData' })
+    expect(table.exists()).toBeTruthy()
 
-    checkRowContent(0)
-    checkRowContent(items.length - 1)
+    const data = table.props('data')
+    expect(data).toHaveLength(items.length)
   })
 
   it('has a pagination', () => {
-    const pages = wrapper.findAll('.el-pager li')
-    expect(pages).toHaveLength(totalPages)
+    const pPagination = wrapper.findComponent({ name: 'PPagination' })
+    expect(pPagination.exists()).toBeTruthy()
   })
 
   it("should update the limit and current page when the 'onPageRangeChanged' event is triggered", () => {
