@@ -31,9 +31,6 @@ export type ImageName =
 'default-offer-color' |
 'icon-pulse-bg' |
 'iconpulse-color' |
-'kpmg-black' |
-'kpmg-color' |
-'kpmg-white' |
 'loop-color' |
 'meg' |
 'microsoft-power-bi' |

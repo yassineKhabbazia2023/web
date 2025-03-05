@@ -87,7 +87,7 @@ const getIconMapping = (iconName: string | undefined): IconName => {
     return 'personVcard'
   case 'deposit':
     return 'inbox'
-  case 'reservedKpmg':
+  case 'reservedKpmg': // waiting for API changes
     return 'shieldLock'
   case 'binIcon':
     return 'trash'

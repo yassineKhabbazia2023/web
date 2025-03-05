@@ -126,7 +126,6 @@ export type IconName =
 'infoCircle' |
 'inputCursorText' |
 'journalBookmarkFill' |
-'kpmg' |
 'link45deg' |
 'loader' |
 'loaderGradient' |

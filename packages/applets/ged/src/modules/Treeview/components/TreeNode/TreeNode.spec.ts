@@ -88,7 +88,7 @@ describe('props', () => {
         expectedIcon: 'inbox',
       },
       {
-        folderIconName: 'reservedKpmg',
+        folderIconName: 'reservedKpmg', // waiting for API changes
         expectedIcon: 'shieldLock',
       },
       {

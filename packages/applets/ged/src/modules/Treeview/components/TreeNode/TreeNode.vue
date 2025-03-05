@@ -84,7 +84,7 @@ const ICON_NAMES: Record<string, IconName> = {
   accountingRoot: 'calculatorEuro',
   socialRoot: 'personVcard',
   deposit: 'inbox',
-  reservedKpmg: 'shieldLock',
+  reservedKpmg: 'shieldLock', // waiting for API changes
   binIcon: 'trash',
 }
 const iconName = computed(() => ICON_NAMES[props.data.iconName ?? ''] ?? 'folder')

@@ -1094,12 +1094,6 @@ export const pulseGeneratedIcons: {
     category: 'Navigation',
   },
   {
-    name: 'kpmg',
-    componentName: 'PIKpmg',
-    fileName: 'kpmg.svg',
-    category: 'Others',
-  },
-  {
     name: 'payfit',
     componentName: 'PIPayfit',
     fileName: 'payfit.svg',
