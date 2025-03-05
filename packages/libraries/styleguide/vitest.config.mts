@@ -1,12 +1,12 @@
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
-import { mergeConfig } from 'vite'
+import { mergeConfig, UserConfig } from 'vite'
 import { configDefaults, defineConfig } from 'vitest/config'
 
 import viteConfig from './vite.config.mts'
 
 export default mergeConfig(
-  viteConfig,
+  viteConfig as UserConfig,
   defineConfig({
     test: {
       clearMocks: true,
@@ -28,6 +28,7 @@ export default mergeConfig(
       deps: {
         optimizer: {
           web: {
+            enabled: true,
             include: ['element-plus'],
           },
         },

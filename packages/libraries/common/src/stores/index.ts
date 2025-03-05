@@ -3,7 +3,8 @@ import { defineStore } from 'pinia'
 import type { UserInfo, Entity } from './types'
 import api from '../api'
 import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
-import { logoutCollaborator, logoutGigyaSSO, logoutClient, tokenService } from '../main.mts'
+import { logoutClient, logoutCollaborator, logoutGigyaSSO } from '../utils'
+import { tokenService } from '../main.mts'
 
 const AUTH_API = 'authorization/api'
 

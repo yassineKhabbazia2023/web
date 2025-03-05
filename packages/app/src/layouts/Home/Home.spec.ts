@@ -292,6 +292,7 @@ describe('home', () => {
   })
 
   it('should fetch unread notification count 500ms after closing the feed center drawer', async () => {
+    vi.restoreAllMocks() // restore mocks to be sure they are not called before this test
     vi.useFakeTimers()
     feedCenterActivatedFlag.value = 'true'
     createWrapper()

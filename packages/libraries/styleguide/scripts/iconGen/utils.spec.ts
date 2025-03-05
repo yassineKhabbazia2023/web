@@ -53,7 +53,7 @@ describe('pulseIconGenUtils', () => {
     let mockedWriteComponentIndex: MockInstance
     let mockedWriteComponentConstants: MockInstance
 
-    beforeEach(() => {
+    beforeEach(async () => {
       mockedGetIcons = vi
         .spyOn(pulseIconGenLib, 'getIcons')
         .mockReturnValue(icons)
@@ -67,7 +67,7 @@ describe('pulseIconGenUtils', () => {
         .spyOn(pulseIconGenLib, 'writeComponentConstants')
         .mockReturnValue()
 
-      generateIcons(iconsFolderPath, outputPath)
+      await generateIcons(iconsFolderPath, outputPath, 'svg')
     })
 
     it('should call mockedGetIcons with proper arguments', () => {

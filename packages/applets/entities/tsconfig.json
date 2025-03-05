@@ -6,7 +6,8 @@
     "tests/**/*",
     "__mocks__",
     "./vitest.setup.ts",
-    "src/**/*.json"
+    "src/**/*.json",
+    "./package.json"
   ],
   "exclude": [
     "node_modules"

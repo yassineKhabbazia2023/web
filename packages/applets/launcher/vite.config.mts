@@ -13,13 +13,7 @@ export default ({ mode }: any) =>
   defineConfig(
     mergeConfig(viteConfigBase({ mode }), {
       plugins: [
-        vue({
-          template: {
-            compilerOptions: {
-              isCustomElement: (tag) => tag.startsWith('el-'),
-            },
-          },
-        }),
+        vue(),
         VueI18nPlugin({
           include: [path.resolve(__dirname, './src/**/locales/**')],
         }),
@@ -60,7 +54,9 @@ export default ({ mode }: any) =>
         deps: {
           optimizer: {
             web: {
-              include: ['element-plus', '@pulse/styleguide'],
+              enabled: true,
+              include: ['element-plus'],
+              exclude: ['@pulse/styleguide'],
             },
           },
         },

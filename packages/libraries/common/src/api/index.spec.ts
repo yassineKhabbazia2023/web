@@ -1,5 +1,5 @@
-import { envVarsMock } from '@pulse/core/mocks'
 import { vi } from 'vitest'
+import { envVarsMock } from '@pulse/core/mocks'
 import { logger } from '@pulse/core'
 import type { AxiosError } from 'axios'
 

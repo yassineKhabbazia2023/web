@@ -10,7 +10,7 @@ import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 
-let consolidatedConfig
+let consolidatedConfig: UserConfigExport
 const basicConfig = {
   histoire: {},
   define: {

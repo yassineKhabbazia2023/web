@@ -11,6 +11,19 @@ const mockedEntities = getMockedEntities()
 const mockedGigyaUserId = 'gigya-user-id-value'
 const mockedPermissions = getMockedUserPermissions()
 
+vi.mock('../main.mts', async (importActual) => {
+  const actual = await importActual()
+  return {
+    // @ts-ignore
+    ...actual,
+    tokenService: {
+      setToken: vi.fn(),
+      getToken: vi.fn(() => 'aCustomToken'),
+      hasValidAccessToken: vi.fn(() => true),
+    },
+  }
+})
+
 const pinia = createTestingPinia({
   initialState: {
     user: null,
@@ -60,8 +73,6 @@ describe('commonStore', () => {
     const store = commonStore(pinia)
     const { isAuthenticated, isCollab } = storeToRefs(store)
 
-    vi.spyOn(tokenService, 'getToken').mockReturnValueOnce('aCustomToken')
-    vi.spyOn(tokenService, 'hasValidAccessToken').mockReturnValueOnce(true)
     store.$patch({
       user: {
         isCollab: true,

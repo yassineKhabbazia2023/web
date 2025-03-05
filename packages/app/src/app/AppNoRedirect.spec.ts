@@ -1,10 +1,8 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { describe, expect, it, vi, beforeEach, afterEach, type MockInstance } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
-import { PAGES_TITLE } from './mock'
 import { amplitudeService, commonStore } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
 import { nextTick, ref } from 'vue'
@@ -28,7 +26,7 @@ vi.mock('vue-router', () => ({
         meta: '',
       },
       stylesMetaProperties: '',
-    }
+    },
   }),
   useRoute: () => ({
     name: '',
@@ -117,7 +115,6 @@ vi.mock('@pulse/common', () => ({
   setUnauthorizedCallback: setUnauthorizedCallbackMock,
 }))
 
-const getPageTitle = (wrapper: VueWrapper) => wrapper.find('.pageTitle').text()
 const createWrapper = () =>
   mount(App, {
     global: {
@@ -170,7 +167,6 @@ describe('app with navigation guard', () => {
   })
 
   it.skip('should redirect to the login page when the user is inactive for 5 seconds', async () => {
-    const wrapper: VueWrapper<any> = createWrapper()
     const store = commonStore()
     // @ts-expect-error: Getter is read only
     store.user = {}

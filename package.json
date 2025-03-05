@@ -26,7 +26,7 @@
     "styleguide:story:dev": "npm run story:dev --workspace=@pulse/styleguide",
     "styleguide:story:build": "npm run story:build --workspace=@pulse/styleguide",
     "test": "npm run test --workspaces --if-present",
-    "test:coverage": "vitest --no-file-parallelism --bail 1",
+    "test:coverage": "vitest --bail 1",
     "build": "npm run build:types --workspaces --if-present && npm run build --workspace=@pulse/app",
     "build:all": "npm run build --workspaces --if-present",
     "build:types": "npm run build:types --workspaces --if-present",
@@ -92,8 +92,8 @@
     "@types/lodash-es": "^4.17.12",
     "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20.16.10",
-    "@vitejs/plugin-vue": "^4.6.2",
-    "@vitest/coverage-istanbul": "^2.1.3",
+    "@vitejs/plugin-vue": "^5.0.0",
+    "@vitest/coverage-istanbul": "^3.0.0",
     "@vitest/eslint-plugin": "^1.1.7",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.4.0",
@@ -116,7 +116,7 @@
     "typescript-eslint": "^8.13.0",
     "vite": "^5.4.8",
     "vite-plugin-externals": "^0.6.2",
-    "vitest": "^2.1.3",
+    "vitest": "^3.0.0",
     "vue-tsc": "^2.1.6"
   }
 }
