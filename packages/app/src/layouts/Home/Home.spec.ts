@@ -15,6 +15,9 @@ import * as entitiesServices from '@app/services/entities'
 import mockedEntities from '@app/mocks/entities.mock.json'
 import { initProductFruits as initProductFruitsMock } from '@app/plugins/ProductFruits/productFruits.plugin'
 import * as notificationService from '@app/modules/FeedCenter/services/notifications.service'
+import {
+  trackFeedcenterOpened,
+} from '@app/modules/FeedCenter/services/tracking/tracking.service'
 
 import Home from '.'
 
@@ -84,6 +87,9 @@ vi.mock('env-vars', () => ({
   VITE_PRODUCT_FRUITS_KEY: 'product fruits collab key',
   VITE_PRODUCT_FRUITS_KEY_CLIENT: 'product fruits client key',
 }))
+
+vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service')
+
 
 import.meta.env.PROD = true
 
@@ -301,5 +307,13 @@ describe('home', () => {
     vi.advanceTimersByTime(500)
     // onMounted call + the one from the watcher that i want to test
     expect(notificationService.fetchUnreadNotificationsCount).toHaveBeenCalledTimes(2)
+  })
+
+  it('should track feedcenter opened' , async () => {
+    feedCenterActivatedFlag.value = 'true'
+    createWrapper()
+    wrapper.vm.isFeedCenterOpened = true
+    await nextTick()
+    expect(trackFeedcenterOpened).toHaveBeenCalledOnce()
   })
 })

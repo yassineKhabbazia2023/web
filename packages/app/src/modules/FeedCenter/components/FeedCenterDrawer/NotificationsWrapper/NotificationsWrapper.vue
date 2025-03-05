@@ -53,6 +53,12 @@ import {
   getNotificationAccountNames,
   getTimeSinceCreation,
 } from './notifications-wrapper.manager'
+import {
+  trackNotificationsConsulted,
+  trackNotificationMarkAsRead,
+} from '@app/modules/FeedCenter/services/tracking/tracking.service'
+import { NotificationTrackingReadType } from '@app/modules/FeedCenter/services/tracking/tracking.types'
+
 
 const emit = defineEmits<{
   'notification-clicked': [void]
@@ -69,10 +75,12 @@ const { t } = useI18n({
 const shouldContentBeCentered = computed(() => props.notifications.length === 0 || props.isLoading)
 
 function handleNotificationClick(notification: FeedCenterNotification) {
+  trackNotificationsConsulted(notification.notificationType)
   handleNotificationAction({
     notification,
     router,
   })
+  trackNotificationMarkAsRead(NotificationTrackingReadType.SINGLE_READ)
   emit('notification-clicked')
 }
 </script>

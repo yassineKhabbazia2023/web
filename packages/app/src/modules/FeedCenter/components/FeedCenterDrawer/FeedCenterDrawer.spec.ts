@@ -7,6 +7,11 @@ import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
 import { createTestingPinia } from '@pinia/testing'
 import { patchAllNotificationsAsRead } from './feed-center-drawer.manager'
+import {
+  trackNotificationMarkAsRead,
+} from '@app/modules/FeedCenter/services/tracking/tracking.service'
+import { NotificationTrackingReadType } from '@app/modules/FeedCenter/services/tracking/tracking.types'
+
 const pinia = createTestingPinia()
 vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
@@ -23,6 +28,8 @@ vi.mock('./feed-center-drawer.manager', async () => {
     fetchNotificationsWithTimeout: vi.fn(),
   }
 })
+vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service')
+
 
 function createWrapper(props: FeedCenterDrawerProps = FeedCenterDrawerBaseProps) {
   return shallowMount(FeedCenterDrawer, {
@@ -129,6 +136,16 @@ describe('feed center drawer', () => {
       await flushPromises()
       // Casting as any because type resolution can't know that unreadNotifications is exposed to the template
       expect((wrapper.vm as any).unreadNotifications).toMatchObject(unreadNotificationsMock)
+    })
+  })
+
+  describe('tracking feedcenter', () => {
+    it('should track NotificationMarkAsRead with type ALL_READ when p-toolbox-item-clicked event is fired', async () => {
+      const notificationDrawer = findFeedCenterDrawer(wrapper)
+      await notificationDrawer.vm.$emit('p-toolbox-item-clicked')
+      expect(trackNotificationMarkAsRead).toHaveBeenCalledWith(
+        NotificationTrackingReadType.ALL_READ,
+      )
     })
   })
 })

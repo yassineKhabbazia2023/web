@@ -10,6 +10,7 @@ import {
 import { type FeedCenterNotification, SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import { fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
+import { trackFeedCenterTabConsultation } from '@app/modules/FeedCenter/services/tracking/tracking.service'
 
 export function useFeedCenterDrawer(
   isDrawerOpened: WritableComputedRef<FeedCenterDrawerProps['modelValue']>,
@@ -65,6 +66,10 @@ export function useFeedCenterDrawer(
   }
 
   const activeTab = ref<SelectedNotificationEnum>(SelectedNotificationEnum.ALL)
+
+  watch(activeTab, (value: SelectedNotificationEnum) => {
+    trackFeedCenterTabConsultation(value)
+  })
 
   const shortenedCount = computed(
     () => unreadNotificationsCount.value > 99

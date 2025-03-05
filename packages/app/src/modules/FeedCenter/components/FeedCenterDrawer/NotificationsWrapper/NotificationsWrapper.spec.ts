@@ -5,6 +5,12 @@ import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notifica
 import type { NotificationsWrapperProps } from './notifications-wrapper.types'
 import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
 import { handleNotificationAction } from './notifications-wrapper.manager'
+import {
+  trackNotificationsConsulted,
+  trackNotificationMarkAsRead,
+} from '@app/modules/FeedCenter/services/tracking/tracking.service'
+import { NotificationTrackingReadType } from '@app/modules/FeedCenter/services/tracking/tracking.types'
+
 
 function createWrapper(props: NotificationsWrapperProps = NoNotificationsPlaceholderBaseProps) {
   return mount(NotificationsWrapper, {
@@ -29,6 +35,8 @@ vi.mock('./notifications-wrapper.manager', async () => {
     handleNotificationAction: vi.fn(),
   }
 })
+
+vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service')
 
 const NoNotificationsPlaceholderBaseProps: NotificationsWrapperProps = {
   isLoading: false,
@@ -75,6 +83,19 @@ describe('notifications wrapper', () => {
       await notification.trigger('click')
       expect(handleNotificationAction).toHaveBeenCalledOnce()
       expect(wrapper.emitted('notification-clicked')).toHaveLength(1)
+    })
+  })
+
+  describe('tracking', () => {
+    it('should track notification consultation when click on notification', async () => {
+      const notification = findFirstNotifications(wrapper)
+      await notification.trigger('click')
+      expect(trackNotificationsConsulted).toHaveBeenCalledOnce()
+    })
+    it('should track NotificationMarkAsRead with type SINGLE_READ when click on notification', async () => {
+      const notification = findFirstNotifications(wrapper)
+      await notification.trigger('click')
+      expect(trackNotificationMarkAsRead).toHaveBeenCalledWith(NotificationTrackingReadType.SINGLE_READ)
     })
   })
 })

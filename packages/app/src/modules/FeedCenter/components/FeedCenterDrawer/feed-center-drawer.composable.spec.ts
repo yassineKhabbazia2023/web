@@ -3,6 +3,10 @@ import { computed, nextTick, ref } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { fetchNotificationsMock } from '@app/../vitest.setup'
+import {
+  trackFeedCenterTabConsultation,
+} from '@app/modules/FeedCenter/services/tracking/tracking.service'
+import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 
@@ -20,6 +24,8 @@ function initializeTestState(initialDrawervalue = false) {
 }
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+
+vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service')
 
 describe('feed center drawer composable', () => {
   it('should fetch notifications when drawer is being opened', async () => {
@@ -61,5 +67,15 @@ describe('feed center drawer composable', () => {
     await flushPromises()
     await nextTick()
     expect(fetchNotificationsMock).toHaveBeenCalledOnce()
+  })
+
+  it('should track tab consultation when activeTabs change', async () => {
+    const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
+
+    const { activeTab } = useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount)
+    activeTab.value = SelectedNotificationEnum.UNREAD
+    await flushPromises()
+    await nextTick()
+    expect(trackFeedCenterTabConsultation).toHaveBeenCalledWith(SelectedNotificationEnum.UNREAD)
   })
 })

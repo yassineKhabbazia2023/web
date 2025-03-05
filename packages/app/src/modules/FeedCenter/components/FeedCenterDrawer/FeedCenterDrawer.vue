@@ -62,6 +62,10 @@ import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 import { PDrawerProps } from '@pulse/styleguide/types'
 import { commonStore } from '@pulse/common'
 import { patchAllNotificationsAsRead } from './feed-center-drawer.manager'
+import {
+  trackNotificationMarkAsRead,
+} from '@app/modules/FeedCenter/services/tracking/tracking.service'
+import { NotificationTrackingReadType } from '@app/modules/FeedCenter/services/tracking/tracking.types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -97,6 +101,7 @@ const toolboxParams: PDrawerProps['pHeaderToolbox'] = {
 
 async function handleToolboxItemClick() {
   notifications.value = await patchAllNotificationsAsRead(userId.value)
+  trackNotificationMarkAsRead(NotificationTrackingReadType.ALL_READ)
 }
 
 const {
