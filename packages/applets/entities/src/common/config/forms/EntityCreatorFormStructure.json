@@ -27,7 +27,7 @@
       {
         "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-100",
-        "pDisabled": true,
+        "pDisabled": false,
         "pFieldKey": "siret",
         "pFieldType": "input",
         "pPlaceholder": "Saisissez un numéro SIRET",

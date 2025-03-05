@@ -4,6 +4,7 @@ export interface OnboardingDetails {
   accountNumber: string
   accountLegalName: string
   email: string
+  siret: string
   contactFirstName: string
   contactLastName: string
   signatory: boolean

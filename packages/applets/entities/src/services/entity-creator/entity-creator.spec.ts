@@ -9,6 +9,7 @@ export const mockOnboardingDetails: OnboardingDetails = {
   email: 'test@test.com',
   contactFirstName: 'Alice',
   contactLastName: 'Bob',
+  siret: '1111222233334444',
   signatory: true,
   collaboratorGuids: ['guid-1', 'guid-2', 'guid-3'],
 }
