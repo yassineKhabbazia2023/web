@@ -2,12 +2,13 @@ import { amplitudeService } from '@pulse/common'
 import type {
   TrackDepositedDocumentParams,
   TriggerSource,
-  trackDocumentMoveParams,
-  trackDocumentRenameParams,
-  trackDocumentDeleteParams,
-  trackDocumentDownloadParams,
-  trackDocumentTransmitParams,
+  TrackDocumentMoveParams,
+  TrackDocumentRenameParams,
+  TrackDocumentDeleteParams,
+  TrackDocumentDownloadParams,
+  TrackDocumentTransmitParams,
 } from './tracking.types'
+import { DocumentConsultationSource } from './tracking.types'
 
 export function trackDepositedDocument({
   serviceName,
@@ -17,14 +18,21 @@ export function trackDepositedDocument({
   destinationFolder,
 }: TrackDepositedDocumentParams) {
   amplitudeService.track('Deposit Document Completed', {
-    document_deposit_category: serviceName,
+    // tracker is expecting a lowercased service name
+    document_deposit_category: serviceName.toLowerCase(),
     document_deposit_count: depositedDocumentsCount,
-    document_deposit_succedded: successfulDepositsCount,
+    document_deposit_succeeded: successfulDepositsCount,
     document_deposit_failed: failedDepositsCount,
     document_deposit_folder: destinationFolder,
   })
 }
 
+export function trackDocumentConsulted() {
+  amplitudeService.track('Document Consulted', {
+    // Fixed value for now as document history doesn't exist yet
+    document_consultation_localisation: DocumentConsultationSource.GED,
+  })
+}
 
 export function trackDocumentMoveFlowStart(triggerSource: TriggerSource) {
   amplitudeService.track('Document Moved Started', {
@@ -32,7 +40,7 @@ export function trackDocumentMoveFlowStart(triggerSource: TriggerSource) {
   })
 }
 
-export function trackDocumentMove({ isMoveSuccessful }: trackDocumentMoveParams) {
+export function trackDocumentMove({ isMoveSuccessful }: TrackDocumentMoveParams) {
   amplitudeService.track('Document Moved Completed', {
     document_move_result: isMoveSuccessful ? 'succeeded' : 'failed',
   })
@@ -44,8 +52,8 @@ export function trackDocumentRenameFlowStart(triggerSource: TriggerSource) {
   })
 }
 
-export function trackDocumentRename({ isRenameSuccessful }: trackDocumentRenameParams) {
-  amplitudeService.track('Document Rename', {
+export function trackDocumentRename({ isRenameSuccessful }: TrackDocumentRenameParams) {
+  amplitudeService.track('Document Renamed', {
     document_rename: isRenameSuccessful ? 'succeeded' : 'failed',
   })
 }
@@ -56,8 +64,8 @@ export function trackDocumentDeleteFlowStart(triggerSource: TriggerSource) {
   })
 }
 
-export function trackDocumentDelete({ isDeleteSuccessful }: trackDocumentDeleteParams) {
-  amplitudeService.track('Document Delete', {
+export function trackDocumentDelete({ isDeleteSuccessful }: TrackDocumentDeleteParams) {
+  amplitudeService.track('Document Deleted', {
     document_delete: isDeleteSuccessful ? 'succeeded' : 'failed',
   })
 }
@@ -68,8 +76,8 @@ export function trackDocumentDownloadFlowStart(triggerSource: TriggerSource) {
   })
 }
 
-export function trackDocumentDownload({ isDownloadSuccessful }: trackDocumentDownloadParams) {
-  amplitudeService.track('Document Download', {
+export function trackDocumentDownload({ isDownloadSuccessful }: TrackDocumentDownloadParams) {
+  amplitudeService.track('Document Downloaded', {
     document_download: isDownloadSuccessful ? 'succeeded' : 'failed',
   })
 }
@@ -80,7 +88,7 @@ export function trackDocumentTransmitFlowStart(triggerSource: TriggerSource) {
   })
 }
 
-export function trackDocumentTransmit({ isTransmitSuccessful }: trackDocumentTransmitParams) {
+export function trackDocumentTransmit({ isTransmitSuccessful }: TrackDocumentTransmitParams) {
   amplitudeService.track('Document Transmitted', {
     document_transmission: isTransmitSuccessful ? 'succeeded' : 'failed',
   })

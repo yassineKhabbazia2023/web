@@ -20,6 +20,7 @@ import { nextTick } from 'vue'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 import type { Entity } from '@pulse/common/types'
 import {
+  trackDocumentConsulted,
   trackDocumentDeleteFlowStart,
   trackDocumentMoveFlowStart,
   trackDocumentRenameFlowStart,
@@ -653,6 +654,7 @@ describe('documents', () => {
           _rowIndex: 0,
           ...componentInstance.selectedDocuments[0],
         })
+      expect(trackDocumentConsulted).toHaveBeenCalled()
     })
 
     it('should close drawer upon close-drawer event', async () => {

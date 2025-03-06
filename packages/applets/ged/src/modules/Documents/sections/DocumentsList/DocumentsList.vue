@@ -177,7 +177,7 @@ const selectRow = (documentRow: TableRowDocument, column:any) => {
   if (shouldOpenDrawer) {
     emit('table-row-clicked', documentRow)
   } else {
-    // Need to cast as we Vue / TS deosn't infer the $refs value
+    // Need to cast as we Vue / TS doesn't infer the $refs value
     const documentsListTableInstance =
     documentsListTable.value
       ?.$refs.table as InstanceType<typeof ElTable>

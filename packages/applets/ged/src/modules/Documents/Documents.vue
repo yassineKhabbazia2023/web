@@ -251,6 +251,7 @@ import DocumentsDropModal from './components/DocumentsDropModal'
 import { Permissions } from '@ged/models/Permissions'
 import AccountInformation from './components/AccountInformation'
 import {
+  trackDocumentConsulted,
   trackDocumentMoveFlowStart,
   trackDocumentRenameFlowStart,
   trackDocumentDeleteFlowStart,
@@ -422,6 +423,7 @@ const handleOnRowTableDocumentsClicked = (document: TableRowDocument) => {
 
     totalDocumentsCount.value = currentPageSize.value
   }
+  trackDocumentConsulted()
 }
 
 const { handleDownloadDocumentsEvent } =
