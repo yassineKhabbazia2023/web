@@ -57,22 +57,22 @@
         "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
         "pDisabled": false,
-        "pFieldKey": "contactFirstName",
+        "pFieldKey": "contactLastName",
         "pFieldType": "input",
         "pPlaceholder": "Saisissez un nom",
         "pLabel": "Nom",
-        "pTestId": "entity-creator-firstname-input",
+        "pTestId": "entity-creator-lastname-input",
         "pRules": [{ "required": true, "message": "Veuillez choisir le nom du client", "trigger": "blur" }]
       },
       {
         "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
         "pDisabled": false,
-        "pFieldKey": "contactLastName",
+        "pFieldKey": "contactFirstName",
         "pFieldType": "input",
         "pPlaceholder": "Saisissez un prénom",
         "pLabel": "Prénom",
-        "pTestId": "entity-creator-lastname-input",
+        "pTestId": "entity-creator-firstname-input",
         "pRules": [{ "required": true, "message": "Veuillez choisir le prenom du client", "trigger": "blur" }]
       },
       {
