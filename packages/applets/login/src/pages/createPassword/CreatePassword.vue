@@ -126,7 +126,7 @@ import {
   levelPasswordStrength,
 } from './PopoverPasswordStrength/passwordStrength'
 import useNavigation from '@login/composable/useNavigation'
-import { getLatestTerms, updateTermsByCurrentUser } from '@login/services/cgu'
+import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 
 const { t } = useI18n({
   inheritLocale: true,

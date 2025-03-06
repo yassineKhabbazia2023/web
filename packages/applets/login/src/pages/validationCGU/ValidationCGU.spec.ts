@@ -28,7 +28,7 @@ vi.mock('@pulse/common', async () => {
   }
 })
 
-vi.mock('@login/services/cgu', () => cguServiceMock)
+vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
 
 const createWrapper = () =>
   mount(validationCGU, {

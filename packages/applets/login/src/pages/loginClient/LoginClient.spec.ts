@@ -7,7 +7,7 @@ import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import { flushPromises, mount } from '@vue/test-utils'
 import Login from './'
 import { amplitudeService, tokenService } from '@pulse/common'
-import { getTermsByCurrentUser } from '@login/services/cgu'
+import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import type { FormInstance } from 'element-plus'
 import { LoginRouteName } from '@pulse/common/constants'
 
@@ -93,7 +93,7 @@ vi.mock('@login/composable/useInitUserAuth', () => ({
   }),
 }))
 
-vi.mock('@login/services/cgu', () => cguServiceMock)
+vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
 
 const createWrapper = (): ComponentWrapper<InstanceType <typeof Login>> =>
   mount(Login, {

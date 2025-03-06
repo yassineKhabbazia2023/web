@@ -3,7 +3,7 @@ import {
   getTermsByCurrentUser,
   updateTermsByCurrentUser,
   getLatestTerms,
-} from '.'
+} from './cgu.service'
 
 const cguMock = {
   isCurrent: true,

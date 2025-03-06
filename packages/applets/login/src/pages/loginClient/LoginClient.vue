@@ -95,7 +95,7 @@ import { amplitudeService, commonApi, tokenService } from '@pulse/common'
 import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/components'
 import useInitUserAuth from '@login/composable/useInitUserAuth'
 import useNavigation from '@login/composable/useNavigation'
-import { getTermsByCurrentUser } from '@login/services/cgu'
+import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { LoginRouteName } from '@pulse/common/constants'
 
 declare let window: {

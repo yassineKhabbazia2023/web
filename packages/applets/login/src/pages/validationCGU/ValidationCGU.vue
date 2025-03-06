@@ -81,7 +81,7 @@ import type { FormRules } from 'element-plus'
 import { PButton, PCheckbox, PForm, PFormItem, PTooltip } from '@pulse/styleguide/components'
 import { type ValidationCGUProps } from './ValidationCGUTypes.ts'
 import { fetchUrlTerms, commonStore as useStore } from '@pulse/common'
-import { updateTermsByCurrentUser } from '@login/services/cgu'
+import { updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { useRouter } from 'vue-router'
 import { LoginRouteName } from '@pulse/common/constants'
 

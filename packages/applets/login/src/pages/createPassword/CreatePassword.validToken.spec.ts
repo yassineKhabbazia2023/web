@@ -5,7 +5,7 @@ import { cguServiceMock } from '@login/__mocks__/cgu.service.mocks'
 import { loggerMock } from '@pulse/core/mocks'
 import { navigateToCustomerWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { amplitudeService, tokenService } from '@pulse/common'
-import { getLatestTerms, updateTermsByCurrentUser } from '@login/services/cgu'
+import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 import type { FormInstance } from 'element-plus'
 
 import CreatePassword from './'
@@ -19,7 +19,7 @@ const CGU_URL = 'https://custom-CGU.com'
 
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
-vi.mock('@login/services/cgu', () => cguServiceMock)
+vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
 vi.mock('@login/composable/useNavigation', () => ({
   default: () => useNavigationMock,
 }))
