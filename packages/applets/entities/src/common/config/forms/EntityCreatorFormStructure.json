@@ -79,7 +79,7 @@
         "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-100 margin-bottom--0",
         "pDisabled": false,
-        "pFieldKey": "signatory",
+        "pFieldKey": "isSignatory",
         "pFieldType": "checkbox",
         "pLabel": "Définir comme signataire",
         "pChecked": true,
