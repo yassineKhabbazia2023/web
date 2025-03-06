@@ -1,8 +1,8 @@
 import { vi, describe, it, expect } from 'vitest'
+import { setTokenMock, tokenServiceMock } from '@common/__mocks__/token.service.mocks'
 import { refreshClientToken } from './authentication.service'
 
-const gatewayPostMock = vi.hoisted(() => vi.fn())
-const setTokenMock = vi.hoisted(() => vi.fn())
+const gatewayPostMock = vi.fn()
 
 vi.mock('../api', () => ({
   default: () => ({
@@ -12,13 +12,7 @@ vi.mock('../api', () => ({
   }),
 }))
 
-vi.mock('../token', () => ({
-  TokenService: {
-    getInstance: () => ({
-      setToken: setTokenMock,
-    }),
-  },
-}))
+vi.mock('../token', () => tokenServiceMock)
 
 describe('test authentication.service', () => {
   it('should call gateway properly', async () => {

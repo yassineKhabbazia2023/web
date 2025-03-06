@@ -10,7 +10,7 @@
     "./constants": "./src/constants.mts",
     "./services/cgu": "./src/services/cgu/index.mts",
     "./types": "./src/types.mts",
-    "./mocks": "./src/mocks.mts",
+    "./mocks": "./src/__mocks__/index.ts",
     ".": "./src/main.mts"
   },
   "scripts": {

@@ -8,8 +8,6 @@ import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
 import type { HubConnection } from '@microsoft/signalr'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
-
-vi.mock('@microsoft/signalr')
 vi.mock('./DataStreamHubConnectionHelper', () => {
   return {
     getNewHubConnection: () => ({

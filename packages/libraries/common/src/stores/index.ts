@@ -4,7 +4,7 @@ import type { UserInfo, Entity } from './types'
 import api from '../api'
 import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { logoutClient, logoutCollaborator, logoutGigyaSSO } from '../utils'
-import { tokenService } from '../main.mts'
+import { TokenService } from '../token'
 
 const AUTH_API = 'authorization/api'
 
@@ -12,6 +12,8 @@ type commonStateType = {
   user: UserInfo | null
   permissions: string[]
 }
+
+const tokenService = TokenService.getInstance()
 
 export const store = defineStore('common', {
   state: (): commonStateType => ({

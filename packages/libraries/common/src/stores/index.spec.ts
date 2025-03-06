@@ -3,26 +3,14 @@ import { setActivePinia, storeToRefs } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
 import { loggerErrorSpy, loggerMock , envVarsMock } from '@pulse/core/mocks'
 import { getMockedEntities, getMockedUserPermissions } from '../__mocks__'
+import { setTokenMock, tokenServiceMock } from '@common/__mocks__/token.service.mocks'
 import * as utils from '../utils'
 import commonStore from '.'
-import { tokenService } from '../main.mts'
 
 const mockedEntities = getMockedEntities()
 const mockedGigyaUserId = 'gigya-user-id-value'
 const mockedPermissions = getMockedUserPermissions()
 
-vi.mock('../main.mts', async (importActual) => {
-  const actual = await importActual()
-  return {
-    // @ts-ignore
-    ...actual,
-    tokenService: {
-      setToken: vi.fn(),
-      getToken: vi.fn(() => 'aCustomToken'),
-      hasValidAccessToken: vi.fn(() => true),
-    },
-  }
-})
 
 const pinia = createTestingPinia({
   initialState: {
@@ -31,16 +19,11 @@ const pinia = createTestingPinia({
   stubActions: false,
 })
 
-const mockGetPermissions = vi.fn((_url) => {
-  return Promise.resolve({
-    data: mockedPermissions,
-  })
-})
-
-vi.mock('env-vars', () => envVarsMock)
+const mockGetPermissions = vi.fn(() => ({ data: mockedPermissions }))
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
-
+vi.mock('env-vars', () => envVarsMock)
+vi.mock('../token', () => tokenServiceMock)
 vi.mock('../api', () => ({
   default: () => ({
     gateway: {
@@ -110,7 +93,6 @@ describe('commonStore', () => {
   it.each(IS_COLLAB)(
     'should call logout function',
     async (isCollabCondition) => {
-      const setTokenSpy = vi.spyOn(tokenService, 'setToken')
       const store = commonStore(pinia)
       const spyLogout = vi.spyOn(store, 'logout')
       const logoutClientSpy = vi.spyOn(utils, 'logoutClient')
@@ -133,7 +115,7 @@ describe('commonStore', () => {
         expect(logoutClientSpy).toHaveBeenCalledWith(mockedGigyaUserId)
       }
       expect(spyLogout).toHaveBeenCalledOnce()
-      expect(setTokenSpy).toHaveBeenNthCalledWith(1, '')
+      expect(setTokenMock).toHaveBeenNthCalledWith(1, '')
     },
   )
   it('should obtain user permissions, ensuring that the getter returns the accurate permissions', async () => {

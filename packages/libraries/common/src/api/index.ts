@@ -1,8 +1,8 @@
-import axios, { type AxiosError } from 'axios'
+import axios from 'axios'
 import { VITE_API_GATEWAY, VITE_API_DS, VITE_API_SCHEDULE } from 'env-vars'
-import { tokenService } from '../main.mts'
-import { getUnauthorizedCallback } from '../unauthorized-callback'
-import { HTTP_ERRORS } from '@pulse/common/constants'
+import { requestTokenInterceptor } from './interceptors/request-token.interceptor'
+import { responseInterceptorSuccess } from './interceptors/response-success.interceptor'
+import { responseInterceptorError } from './interceptors/response-error.interceptor'
 
 const domainToBaseUrl = (domain: string | undefined) => {
   if (domain && domain.endsWith('/')) {
@@ -12,38 +12,14 @@ const domainToBaseUrl = (domain: string | undefined) => {
   }
 }
 
-export const requestInterceptor = (config: any) => {
-  const token = tokenService.getToken()
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-  return config
-}
-
-export const responseInterceptorSuccess = (res: any) => {
-  return res
-}
-
-export const responseInterceptorError = (err: AxiosError) => {
-  if (err?.status === HTTP_ERRORS.UNAUTHORIZED) {
-    const unauthorizedCallback = getUnauthorizedCallback()
-
-    unauthorizedCallback?.()
-  }
-  return Promise.reject(err)
-}
-
 const createAxiosInstance = (domain: string) => {
   const instance = axios.create({
     baseURL: domainToBaseUrl(domain),
     headers: { 'Content-type': 'application/json' },
   })
 
-  instance.interceptors.request.use(requestInterceptor)
-  instance.interceptors.response.use(
-    responseInterceptorSuccess,
-    responseInterceptorError,
-  )
+  instance.interceptors.request.use(requestTokenInterceptor)
+  instance.interceptors.response.use(responseInterceptorSuccess, responseInterceptorError)
 
   return instance
 }

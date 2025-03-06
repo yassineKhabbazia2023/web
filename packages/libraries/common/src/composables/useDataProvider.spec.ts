@@ -6,11 +6,7 @@ import store from '../stores'
 import { useDataProvider } from './useDataProvider'
 
 const fakeUser = getMockedUser()
-const mockGetMe = vi.fn((_url) => {
-  return Promise.resolve({
-    data: fakeUser,
-  })
-})
+const mockGetMe = vi.fn(() => ({ data: fakeUser }))
 
 vi.mock('../api', () => ({
   default: () => ({
@@ -18,8 +14,7 @@ vi.mock('../api', () => ({
       get: mockGetMe,
     },
   }),
-}),
-)
+}))
 
 describe('useDataProvider', () => {
   beforeEach(() => {

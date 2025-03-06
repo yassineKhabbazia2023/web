@@ -57,6 +57,7 @@ describe('logoutGigyaSSO', () => {
 describe('logoutClient', () => {
   it('should call the API with the correct endpoint and payload to logout the client', () => {
     const gatewayPostSpy = vi.spyOn(api().gateway, 'post')
+
     logoutClient(mockedGigyaUserId)
 
     expect(gatewayPostSpy).toHaveBeenCalledOnce()
@@ -64,8 +65,9 @@ describe('logoutClient', () => {
   })
   it('should log an error when the API call fails to logout the user', async () => {
     const expectedErrorMessage = 'API Error: 503 Service Unavailable'
+    const gatewayPostSpy = vi.spyOn(api().gateway, 'post')
+    gatewayPostSpy.mockRejectedValue(expectedErrorMessage)
 
-    vi.spyOn(api().gateway, 'post').mockRejectedValue(expectedErrorMessage)
     logoutClient(mockedGigyaUserId)
     await flushPromises()
 
