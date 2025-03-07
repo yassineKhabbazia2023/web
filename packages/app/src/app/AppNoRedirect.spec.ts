@@ -18,16 +18,20 @@ const setTokenMock = vi.hoisted(() => vi.fn())
 const initTokenMock = vi.hoisted(() => vi.fn())
 
 const mockedRouterPush = vi.hoisted(() => vi.fn())
-vi.mock('vue-router', () => ({
-  useRouter: () => ({
-    push: mockedRouterPush,
-    currentRoute: {
-      value: {
-        meta: '',
-      },
-      stylesMetaProperties: '',
+const mockedUseRouter = vi.hoisted(() => vi.fn(() => ({
+  push: mockedRouterPush,
+  currentRoute: {
+    value: {
+      meta: {
+        layout: 'home',
+      }
     },
-  }),
+    stylesMetaProperties: '',
+  },
+})))
+
+vi.mock('vue-router', () => ({
+  useRouter: mockedUseRouter,
   useRoute: () => ({
     name: '',
     meta: '',

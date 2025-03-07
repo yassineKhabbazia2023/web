@@ -3,7 +3,7 @@
     <PConfigProvider>
       <component :is="currentLayout" />
       <PopupRenewToken
-        :isVisible="canDisplayRenewTokenModal && popupRenewTokenIsVisible"
+        :isVisible="popupRenewTokenIsVisible"
         :isTokenExpired="isTokenExpired"
         :isCollab="isCollab"
         @close="onClosePopupRenewToken"
@@ -58,12 +58,22 @@ const currentLayoutName = ref('')
 const previousLayoutName = ref('')
 const popupRenewTokenIsVisible = ref(false)
 const isTokenExpired = ref(false)
-const canDisplayRenewTokenModal = computed(() =>
-  !NO_POPUP_RENEW_TOKEN_LAYOUTS.includes(currentLayoutName.value),
-)
 
-function initCurrentLayout() {
+function getCanShowPopupRenewToken() {
+  return !NO_POPUP_RENEW_TOKEN_LAYOUTS.includes(currentLayoutName.value)
+}
+
+function showPopupRenewToken() {
+  if (getCanShowPopupRenewToken()) {
+    popupRenewTokenIsVisible.value = true
+  }
+}
+
+function onRouteChange() {
   currentLayoutName.value = route.meta?.layout?.toString() || MAIN_LAYOUT
+  if (popupRenewTokenIsVisible.value && !getCanShowPopupRenewToken()) {
+    popupRenewTokenIsVisible.value = false 
+  }
   if (previousLayoutName.value !== currentLayoutName.value) {
     currentLayout.value = markRaw(defineAsyncComponent(
       () => import(`@app/layouts/${currentLayoutName.value}/index.ts`),
@@ -73,7 +83,7 @@ function initCurrentLayout() {
 }
 watch(
   () => route.name,
-  () => initCurrentLayout(),
+  () => onRouteChange(),
 )
 
 const handleLogout = async () => {
@@ -100,14 +110,12 @@ async function unauthorizedCallback() {
   tokenService.setToken('')
   isTokenExpired.value = true
 
-  if (canDisplayRenewTokenModal.value) {
-    if (!user.value) {
-      logoutAndRedirectToLogin()
+  if (!user.value) {
+    logoutAndRedirectToLogin()
 
-      return
-    }
-    popupRenewTokenIsVisible.value = true
+    return
   }
+  showPopupRenewToken()
 }
 
 async function onClosePopupRenewToken() {
@@ -135,13 +143,13 @@ function setTimers(exp?: number) {
   if (expiredTokenDelay > 0) {
     openPopupWhenHasExpiredTimer = setTimeout(() => {
       isTokenExpired.value = true
-      popupRenewTokenIsVisible.value = true
+      showPopupRenewToken()
     }, expiredTokenDelay)
   }
 
   if (openPopupDelay > 0) {
     openPopup5MinBeforeExpiredTimer = setTimeout(() => {
-      popupRenewTokenIsVisible.value = true
+      showPopupRenewToken()
     }, openPopupDelay)
   }
 }
@@ -158,8 +166,16 @@ function clearTimersIfExist() {
 }
 
 function onTokenChanges() {
-  isTokenExpired.value = !tokenService.hasValidAccessToken()
-  setTimers(tokenService.getTokenExp())
+  const hasValidAccessToken = tokenService.hasValidAccessToken()
+  if (hasValidAccessToken) {
+    popupRenewTokenIsVisible.value = false
+  }
+  isTokenExpired.value = !hasValidAccessToken
+  if (hasValidAccessToken) {
+    setTimers(tokenService.getTokenExp())
+  } else {
+    clearTimersIfExist()
+  }
 }
 
 onMounted(() => {
@@ -170,7 +186,7 @@ onMounted(() => {
     amplitudeService.init(VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL || undefined)
   }
   HTMLService.setDocumentTitle()
-  initCurrentLayout()
+  onRouteChange()
 })
 
 onBeforeUnmount(() => {

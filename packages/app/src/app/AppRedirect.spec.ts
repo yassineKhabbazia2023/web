@@ -4,8 +4,9 @@ import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import type { Entity } from '@pulse/common/types'
 import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
-import { nextTick } from 'vue'
+import { nextTick, reactive } from 'vue'
 import App from './'
+import { LoginRouteName } from '@pulse/common/constants'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
 
@@ -23,13 +24,17 @@ const mockedgetExpirationDelays = vi.hoisted(() => vi.fn(() => ({
 })))
 
 const mockedRouterPush = vi.hoisted(() => vi.fn())
+const mockedUseRouter = vi.hoisted(() => vi.fn(() => reactive({
+  name: 'route-name',
+  meta: {
+    layout: 'Home',
+  },
+})))
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockedRouterPush,
   }),
-  useRoute: () => ({
-    fullPath: '/portefeuille',
-  }),
+  useRoute: mockedUseRouter,
 }))
 
 vi.mock('./app.utils', () => ({
@@ -151,6 +156,7 @@ describe('app with navigation guard', () => {
 
   it('should open PopupRenewToken 5 minutes before it expires AND when it has expired', async () => {
     const mockedToken = 'mocked-token'
+    const mockedToken2 = 'mocked-token-2'
     const expectedPropsBefore = {
       isCollab: false,
       isTokenExpired: false,
@@ -172,11 +178,15 @@ describe('app with navigation guard', () => {
     })
     const cbFunctions: Function[] = []
 
-    mockedHasValidAccessToken.mockReturnValueOnce(true)
+    mockedHasValidAccessToken
+      .mockReturnValueOnce(true)
+      .mockReturnValueOnce(false)
     mockedRegisterOnChange.mockImplementation((_key: string, cb: Function) => {
       cbFunctions.push(cb)
     })
     const wrapper = createWrapper()
+    const vm = wrapper.vm as any
+
     cbFunctions.at(0)?.(mockedToken)
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
@@ -191,6 +201,59 @@ describe('app with navigation guard', () => {
     await nextTick()
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterExpired)
+    expect(vm.openPopupWhenHasExpiredTimer).not.toBeUndefined()
+    expect(vm.openPopup5MinBeforeExpiredTimer).not.toBeUndefined()
+
+    cbFunctions.at(0)?.(mockedToken2)
+    await nextTick()
+
+    expect(vm.openPopupWhenHasExpiredTimer).toBeUndefined()
+    expect(vm.openPopup5MinBeforeExpiredTimer).toBeUndefined()
+  })
+
+  it('should hide PopupRenewToken on route change to Login', async () => {
+    const mockedToken = 'mocked-token'
+    const expectedPropsAfterFiveMinutes = {
+      isCollab: false,
+      isTokenExpired: false,
+      isVisible: true,
+    }
+    const expectedPropsAfterRouteChange = {
+      isCollab: false,
+      isTokenExpired: false,
+      isVisible: false,
+    }
+    const mockedRoute = reactive({
+      name: '/',
+      meta: {
+        layout: 'Home',
+      },
+    })
+    mockedUseRouter.mockReturnValueOnce(mockedRoute)
+    mockedgetExpirationDelays.mockReturnValueOnce({
+      expiredTokenDelay: 2 * fiftyMinutesInMiliseconds,
+      openPopupDelay: fiftyMinutesInMiliseconds - 1000,
+    })
+    const cbFunctions: Function[] = []
+
+    mockedHasValidAccessToken.mockReturnValueOnce(true)
+    mockedRegisterOnChange.mockImplementation((_key: string, cb: Function) => {
+      cbFunctions.push(cb)
+    })
+    const wrapper = createWrapper()
+    cbFunctions.at(0)?.(mockedToken)
+    const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
+
+    vi.advanceTimersByTime(fiftyMinutesInMiliseconds)
+    await nextTick()
+
+    expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterFiveMinutes)
+
+    mockedRoute.meta.layout = 'LoginLayout'
+    mockedRoute.name = LoginRouteName.LOGIN_CLIENT
+    await nextTick()
+
+    expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterRouteChange)
   })
 
   it('should NOT open PopupRenewToken when delay is zero', async () => {
