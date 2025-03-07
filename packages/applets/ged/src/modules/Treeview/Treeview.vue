@@ -423,10 +423,16 @@ const folderMovingDestination = computed(() => {
 const handleToolboxItemChecked = async (action: string, folder: Folder) => {
   if (action === 'toolbox-delete-action-click') {
     treeNodeSelectedFolder.value = folder
+    // Required to hide and reset the popup to allow reopening it multiple times without issues.
+    isDeleteFolderPopupVisible.value = false
+    // Need a nextTick to force the re-render of the popup
+    await nextTick()
     isDeleteFolderPopupVisible.value = true
   } else if (action === 'toolbox-rename-action-click') {
     treeNodeSelectedFolder.value = folder
     setParentNodeOfSelectedFolderTreeNodeAction()
+    // Required to hide and reset the popup to allow reopening it multiple times without issues.
+    isRenameFolderModalVisible.value = false
     // Required otherwise the dialog doesn't exist yet and never opens
     await nextTick()
     currentFolderName.value = folder?.name
@@ -438,9 +444,17 @@ const handleToolboxItemChecked = async (action: string, folder: Folder) => {
     handleDownloadFolderEvent()
   } else if (action === 'move-folder') {
     toolBoxSelectedFolder.value = folder
+    // Required to hide and reset the popup to allow reopening it multiple times without issues.
+    isMoveFolderModalOpened.value = false
+    // Need a nextTick to force the re-render of the popup
+    await nextTick()
     isMoveFolderModalOpened.value = true
   } else {
     treeNodeSelectedFolder.value = folder
+    // Required to hide and reset the popup to allow reopening it multiple times without issues.
+    isCreateFolderModalVisible.value = false
+    // Need a nextTick to force the re-render of the popup
+    await nextTick()
     isCreateFolderModalVisible.value = true
   }
 }

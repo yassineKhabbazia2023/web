@@ -283,7 +283,7 @@ describe('treeview', () => {
                 'p-toolbox-item-clicked',
                 'toolbox-delete-action-click',
               )
-              await nextTick()
+              await flushPromises()
 
               const deleteFolderSectionWrapper = wrapper.findComponent({ name: 'DeleteFolderSection' })
 
@@ -325,7 +325,7 @@ describe('treeview', () => {
               'p-toolbox-item-clicked',
               '',
             )
-            await nextTick()
+            await flushPromises()
 
             const createFolderSectionWrapper = wrapper.findComponent({ name: 'CreateFolderSection' })
 

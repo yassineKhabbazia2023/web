@@ -116,8 +116,11 @@ watch(inputContent, () => {
   hasUserAlreadyTyped.value ||= true
 })
 
-watch(isDialogVisible, () => {
-  isDialogVisible.value ||= hasUserAlreadyTyped.value = false
+watch(isDialogVisible, (value) => {
+  if (!value) {
+    inputContent.value = ''
+  }
+  hasUserAlreadyTyped.value = false
 })
 
 const folderNameExists = ref(false)
