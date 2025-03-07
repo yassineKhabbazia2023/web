@@ -10,7 +10,7 @@ export const mockOnboardingDetails: OnboardingDetails = {
   contactFirstName: 'Alice',
   contactLastName: 'Bob',
   siret: '1111222233334444',
-  signatory: true,
+  isSignatory: true,
   collaboratorGuids: ['guid-1', 'guid-2', 'guid-3'],
 }
 

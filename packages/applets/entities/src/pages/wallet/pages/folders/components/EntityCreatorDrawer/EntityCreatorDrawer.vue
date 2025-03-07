@@ -145,7 +145,7 @@ const isTestAccountCreating = ref(false)
 const entityCreatorForm = ref<FormInstance>()
 const selectedCollaborators = ref<Contact[]>([])
 const entityCreatorFormStructure = ref<FormSection[]>()
-const newTestAccount = ref<OnboardingDetails>({ signatory: true } as OnboardingDetails)
+const newTestAccount = ref<OnboardingDetails>({ isSignatory: true } as OnboardingDetails)
 
 const canDelete = computed(() => selectedCollaborators.value.length >= 1)
 const isEntityCreatorDrawerVisible = computed({

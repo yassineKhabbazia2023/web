@@ -7,7 +7,7 @@ export interface OnboardingDetails {
   siret: string
   contactFirstName: string
   contactLastName: string
-  signatory: boolean
+  isSignatory: boolean
   collaboratorGuids: string[]
 }
 
