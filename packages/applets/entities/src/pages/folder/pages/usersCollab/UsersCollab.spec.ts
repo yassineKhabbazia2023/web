@@ -27,12 +27,12 @@ const mockedUser = {
 
 const MOCKED_USER = {
   contactId: mockedCustomersCollab[0].contactId,
-  firstName:  mockedCustomersCollab[0].firstName,
-  lastName:  mockedCustomersCollab[0].lastName,
+  firstName: mockedCustomersCollab[0].firstName,
+  lastName: mockedCustomersCollab[0].lastName,
   fullName: `${mockedCustomersCollab[0].firstName} ${mockedCustomersCollab[0].lastName}`,
-  email:  mockedCustomersCollab[0].email,
-  personaName:  mockedCustomersCollab[0].personaName,
-  creationDate:  mockedCustomersCollab[0].creationDate,
+  email: mockedCustomersCollab[0].email,
+  personaName: mockedCustomersCollab[0].personaName,
+  creationDate: mockedCustomersCollab[0].creationDate,
   status: {
     text: 'statusDeclared',
     iconName: 'patchCheck',

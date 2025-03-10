@@ -38,14 +38,14 @@ const createWrapper = (props: FormProps) =>
           props: ['pModel'],
           methods: {
             validate: vi.fn((cb: Function) => cb(true)),
-          }
+          },
         },
         CreateScheduleReminders: {
           name: 'CreateScheduleReminders',
           template: '<div />',
           methods: {
             getIsValid: mockedGetIsValid,
-          }
+          },
         },
         PRow: { template: '<div><slot /></div>' },
         PCol: { template: '<div><slot /></div>' },
@@ -69,7 +69,7 @@ describe('test CreateScheduleForm', () => {
       expected: createScheduleMock,
       frequency: 'None',
     }, {
-    type: TEMPLATE_TYPE_SHORT_OTHER,
+      type: TEMPLATE_TYPE_SHORT_OTHER,
       typeShort: 'IS',
       expected: createScheduleMockWithTypeLong,
       frequency: 'Monthly',

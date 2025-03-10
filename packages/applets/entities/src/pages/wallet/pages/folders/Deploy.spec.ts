@@ -107,7 +107,7 @@ vi.mock('vue-router', async () => {
 
 const mockFetchWalletData = vi.hoisted(() => vi.fn())
 vi.mock('./DeployUtils', async () => ({
-  fetchWalletData: mockFetchWalletData
+  fetchWalletData: mockFetchWalletData,
 }))
 
 const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
@@ -134,7 +134,7 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
           methods: {
             clearSearch: vi.fn(),
           },
-        }
+        },
       },
     },
   })
@@ -230,7 +230,7 @@ describe('deploy', () => {
     const formSearch = wrapper.findComponent({ name: 'FormSearch' })
 
     formSearch.vm.$emit('search-value-submitted', 'az')
-    
+
     expect(mockFetchWalletData).toHaveBeenCalledOnce()
     expect(mockFetchWalletData).not.toHaveBeenCalledTimes(2)
   })

@@ -24,7 +24,7 @@ const mockedUseRouter = vi.hoisted(() => vi.fn(() => ({
     value: {
       meta: {
         layout: 'home',
-      }
+      },
     },
     stylesMetaProperties: '',
   },

@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineAsyncComponent, markRaw, ref, watch, onMounted, onBeforeUnmount, computed } from 'vue'
+import { defineAsyncComponent, markRaw, ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { Idle } from 'idlejs'
 import { VITE_IDLE_DURATION, VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
 import {
@@ -72,7 +72,7 @@ function showPopupRenewToken() {
 function onRouteChange() {
   currentLayoutName.value = route.meta?.layout?.toString() || MAIN_LAYOUT
   if (popupRenewTokenIsVisible.value && !getCanShowPopupRenewToken()) {
-    popupRenewTokenIsVisible.value = false 
+    popupRenewTokenIsVisible.value = false
   }
   if (previousLayoutName.value !== currentLayoutName.value) {
     currentLayout.value = markRaw(defineAsyncComponent(

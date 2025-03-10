@@ -5,7 +5,7 @@ import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { noResult } from '@entities/__mocks__/no-result.mocks'
 import * as walletServices from '@entities/services/wallet'
 import Collaborators from '.'
- 
+
 const mockGatewayGet = vi.fn(() => {
   return Promise.resolve({
     data: mockedCollaboratorsList2,
