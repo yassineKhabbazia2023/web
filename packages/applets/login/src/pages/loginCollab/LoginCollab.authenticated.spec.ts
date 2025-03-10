@@ -1,12 +1,21 @@
-import { type MockInstance, beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import { amplitudeService, msalInstance } from '@pulse/common'
 import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
+import { mockedAmplitudeServiceReset, mockedAmplitudeService } from '@pulse/common/mocks'
 
 import LoginCollab from '.'
 
-vi.mock('@pulse/common')
+const spyMsalLoginRedirect = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/common', async () => {
+  return {
+    amplitudeService: mockedAmplitudeService,
+    msalInstance: {
+      loginRedirect: spyMsalLoginRedirect,
+    },
+  }
+})
 
 vi.mock('@login/composable/useInitUserAuth', () => ({
   default: () => useInitUserAuthMock,
@@ -21,11 +30,7 @@ const createWrapper = () => mount(LoginCollab, {
 
 describe('loginCollab', () => {
   let wrapper: ReturnType<typeof createWrapper>
-  let spyResetAmplitude: MockInstance
-  let spyMsalLoginRedirect: MockInstance
   beforeEach(async () => {
-    spyResetAmplitude = vi.spyOn(amplitudeService, 'reset')
-    spyMsalLoginRedirect = vi.spyOn(msalInstance, 'loginRedirect')
     wrapper = createWrapper()
     await flushPromises()
   })
@@ -40,7 +45,7 @@ describe('loginCollab', () => {
       expect(spyMsalLoginRedirect).toHaveBeenCalledOnce()
     })
     it('should reset Amplitude on page load', () => {
-      expect(spyResetAmplitude).toHaveBeenCalledOnce()
+      expect(mockedAmplitudeServiceReset).toHaveBeenCalledOnce()
     })
   })
 })

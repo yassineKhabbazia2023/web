@@ -2,7 +2,6 @@ import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
-import OffersDrawer from '.'
 import { getMockedSubscriptionOffers , getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
 import { getMockedStepNotes } from '@entities/__mocks__/step-notes.mocks'
@@ -22,14 +21,19 @@ import {
   getMockedPatchOperations,
   getMockedReferentialHubs,
 } from '@entities/__mocks__/account-row.mocks'
-import { amplitudeService } from '@pulse/common'
 import type { UserInfo } from '@pulse/common/types'
 import type { Note, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
 import type { PatchValue } from '@entities/services/PatchRecordService'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ComponentWrapper } from '@entities/common/types'
+import { mockedAmplitudeServiceTrack, mockedAmplitudeService } from '@pulse/common/mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
+import OffersDrawer from '.'
+
+vi.mock('@pulse/common', () => ({
+  amplitudeService: mockedAmplitudeService,
+}))
 
 const principalContacts: ClientContact[] = getMockedPrincipalContacts()
 const collaborators: Contact[] = getMockedCollaborators()
@@ -185,14 +189,13 @@ describe('offersDrawer', () => {
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
     })
     it('should display current offer when an offer is selected', async () => {
-      const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
       const wrapper = await getWrapper(true)
       const secondOffer = findSecondOffer(wrapper)
       await secondOffer.trigger('click')
       await flushPromises()
 
-      expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-      expect(spyTrackAmplitude).toHaveBeenCalledWith('Subscription Initiated', {
+      expect(mockedAmplitudeServiceTrack).toHaveBeenCalledOnce()
+      expect(mockedAmplitudeServiceTrack).toHaveBeenCalledWith('Subscription Initiated', {
         subscription_initiate_offer_name: subscriptionOffersServices.at(1)?.offerCode,
       })
       const offers = findOffers(wrapper)
@@ -288,7 +291,6 @@ describe('offersDrawer', () => {
         expect(createSubscriptionRequestSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
       it('should track Amplitude event when saving for offers without validation', async () => {
-        const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
         const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
 
@@ -301,20 +303,20 @@ describe('offersDrawer', () => {
 
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
-        expect(spyTrackAmplitude).toHaveBeenCalledTimes(4)
-        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(1, 'Subscription Initiated', {
+        expect(mockedAmplitudeServiceTrack).toHaveBeenCalledTimes(4)
+        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(1, 'Subscription Initiated', {
           subscription_initiate_offer_name: subscriptionOffersServices.at(1)?.offerCode,
         })
-        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Subscription Started', {
+        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(2, 'Subscription Started', {
           subscription_start_offer_name: subscriptionOffersServices.at(1)?.offerCode,
           subscription_start_result: 'succeeded',
         })
-        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
+        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
           subscription_complete_offer_name: subscriptionOffersServices.at(1)?.offerCode,
           subscription_complete_localisation: 'offer activation screen',
           subscription_complete_result: 'succeeded',
         })
-        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(4, 'Onboarding Started', {
+        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(4, 'Onboarding Started', {
           onboarding_start_localisation: 'Offer activation',
           onboarding_start_result: 'succeeded',
         })
@@ -383,7 +385,6 @@ describe('offersDrawer', () => {
         expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
       })
       it('should console error and track Amplitude event when saving fails for offers without validation', async () => {
-        const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
         const errorMessage = 'save rejected'
         vi
           .spyOn(subscriptionService, 'createSubscriptionRequest')
@@ -400,17 +401,17 @@ describe('offersDrawer', () => {
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
 
-        expect(spyTrackAmplitude).toHaveBeenCalledTimes(4)
-        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Subscription Started', {
+        expect(mockedAmplitudeServiceTrack).toHaveBeenCalledTimes(4)
+        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(2, 'Subscription Started', {
           subscription_start_offer_name: subscriptionOffersServices.at(1)?.offerCode,
           subscription_start_result: 'failed',
         })
-        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
+        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
           subscription_complete_offer_name: subscriptionOffersServices.at(1)?.offerCode,
           subscription_complete_localisation: 'offer activation screen',
           subscription_complete_result: 'failed',
         })
-        expect(spyTrackAmplitude).toHaveBeenNthCalledWith(4, 'Onboarding Started', {
+        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(4, 'Onboarding Started', {
           onboarding_start_localisation: 'Offer activation',
           onboarding_start_result: 'failed',
         })

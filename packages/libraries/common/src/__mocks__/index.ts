@@ -1,4 +1,5 @@
 export * from './accounts-row.mocks'
+export * from './amplitude.service.mocks'
 export * from './axios.mocks'
 export * from './entities.mocks'
 export * from './token.service.mocks'
