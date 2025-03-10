@@ -59,7 +59,6 @@ describe('usePiaStatusSync', () => {
     const documents = ref<DocumentsWithTableStructure | null>(documentsResponsePayload)
     getWrapper(selectedFolder, documents)
 
-    usePiaStatusSync(selectedFolder, documents)
     const documentToNotify = documents.value?.documentsPage.items.find(d => d.id === DOCUMENT_ID)
     expect(documentToNotify?.piaStatus.labelFr).equals('Actif')
     expect(documentToNotify?.permissions).toStrictEqual(['READ', 'WRITE', 'CAN_DELETE_DOCUMENT'])
@@ -86,7 +85,6 @@ describe('usePiaStatusSync', () => {
     getWrapper(selectedFolder, documents)
     await flushPromises()
 
-    usePiaStatusSync(selectedFolder, documents)
     const documentToNotify = documents.value?.documentsPage.items.find(d => d.id === DOCUMENT_ID)
 
     expect(documentToNotify?.piaStatus.labelFr).equals('Transmis')

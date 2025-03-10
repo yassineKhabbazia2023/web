@@ -82,7 +82,22 @@ type AppSetup = {
 export type AppWrapper = VueWrapper<ComponentPublicInstance<AppSetup>>
 
 
-const router = createRouter({ history: createMemoryHistory(), routes: [{ path: '/mon-chemin', name: 'TestRoute', component: Ged }] })
+const router = createRouter(
+  {
+    history: createMemoryHistory(),
+    routes:
+    [
+      { path: '/mon-chemin',
+        name: 'TestRoute',
+        component: Ged,
+      },
+      { path: '',
+        name: 'home',
+        component: Ged,
+      },
+    ],
+  },
+)
 const createWrapper = (): AppWrapper => {
   return shallowMount(Ged, {
     global: {

@@ -1,11 +1,14 @@
 import { describe, it, expect } from 'vitest'
-import { patchAllNotificationsAsRead, fetchNotificationsWithTimeout } from './feed-center-drawer.manager'
-import { patchAllNotificationsAsReadMock, fetchNotificationsMock } from '@app/../vitest.setup'
+import { loggerMock } from '@pulse/core/mocks'
 import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
+import { patchAllNotificationsAsReadMock, fetchNotificationsMock } from '@app/../vitest.setup'
 
+import { patchAllNotificationsAsRead, fetchNotificationsWithTimeout } from './feed-center-drawer.manager'
+
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 describe('patch all notifications as read', () => {
-  it('should do nothing if user is undefiend', async () => {
+  it('should do nothing if user is undefined', async () => {
     await patchAllNotificationsAsRead(undefined)
 
     expect(patchAllNotificationsAsReadMock).not.toHaveBeenCalledWith()

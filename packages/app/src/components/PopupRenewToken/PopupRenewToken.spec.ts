@@ -85,7 +85,7 @@ describe('popup renew token', () => {
     expectedLogoutEmit: [[]],
     expectedRenewTokenEmit: undefined,
   }]
-  it.each(tests)('should display properly when isTokenExpired is $isTokenExpired and isCollab is $isCollab', ({
+  it.each(tests)('should display properly when isTokenExpired is $isTokenExpired and isCollab is $isCollab', async ({
     isTokenExpired,
     isCollab,
   }) => {
@@ -94,7 +94,7 @@ describe('popup renew token', () => {
       isCollab,
     })
 
-    expect(wrapper.html()).toMatchFileSnapshot(
+    await expect(wrapper.html()).toMatchFileSnapshot(
       `__snap__/PopupRenewToken/wrapper.${isTokenExpired ? 'isTokenExpired' : 'tokenIsNotExpired'}.${isCollab ? 'isCollab' : 'isNotCollab'}.snap`,
     )
   })

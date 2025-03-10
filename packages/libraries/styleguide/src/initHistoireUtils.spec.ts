@@ -1,9 +1,12 @@
 import axios from 'axios'
+import { loggerMock } from '@pulse/core/mocks'
 import * as imageResolverInit from './utils/imageResolverInit'
 import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
 import { getAssetsBaseUrl, setCachedAssetsBaseUrl, getCachedAssetsBaseUrl, initHistoire } from './initHistoireUtils'
 
 vi.mock('axios')
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+
 const VITE_ASSETS_BASE_URL = 'https://test.test'
 
 describe('initHistoirePlugin', () => {
