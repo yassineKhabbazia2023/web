@@ -160,6 +160,8 @@ const setCurrentFolderAndService = async (folder: Folder) => {
       return
     }
     currentService.value = folder.serviceId
+    currentServiceName.value = findServiceNameFromId(currentService.value)
+
   }
 }
 
