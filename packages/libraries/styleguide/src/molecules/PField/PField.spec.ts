@@ -2,13 +2,13 @@ import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
-import PBankCard from '.'
 import type { PFieldProps } from './PFieldTypes'
 import { getMockedInputField, getDropdownField, getDateField, getRadioField, getMockedEmailInputField, getMockedCheckbox } from './PFieldMock'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
+import PField from '.'
 
 function createWrapper<T>(props: PFieldProps<T>) {
-  return shallowMount(PBankCard, {
+  return shallowMount(PField, {
     props,
     global: {
       stubs: {

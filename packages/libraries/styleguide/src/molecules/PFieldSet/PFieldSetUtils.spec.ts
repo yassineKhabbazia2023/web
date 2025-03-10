@@ -12,14 +12,25 @@ describe('pFieldSetUtils', () => {
     }
     const tests = [{
       pReadonly: false,
+      disabledFieldKeys: [],
     }, {
       pReadonly: true,
+      disabledFieldKeys: [],
+    }, {
+      pReadonly: false,
+      disabledFieldKeys: ['person.lastname'],
+    }, {
+      pReadonly: true,
+      disabledFieldKeys: ['person.lastname'],
     }]
-    it.each(tests)('should return mapped fields', async ({ pReadonly }) => {
+    it.each(tests)('should return mapped fields %s', async ({ pReadonly, disabledFieldKeys }) => {
       const fields = getMockedFields('companyIdentification', pReadonly)
-      const internalFields = getInternalFields(fields, model, pReadonly)
+      const internalFields = getInternalFields(fields, model, pReadonly, disabledFieldKeys)
 
-      await expect(internalFields).toMatchFileSnapshot(`__snapshots__/getInternalFields/readonly-${pReadonly}.snap`)
+      const snapSuffix = disabledFieldKeys.length > 0
+        ? `-${disabledFieldKeys.join('-')}`
+        : ''
+      await expect(internalFields).toMatchFileSnapshot(`__snapshots__/getInternalFields/readonly-${pReadonly}${snapSuffix}.snap`)
     })
   })
 })
