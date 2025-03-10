@@ -9,6 +9,7 @@ import { nextTick, ref } from 'vue'
 import * as mockedEnvVar from 'env-vars'
 import App from '.'
 import { LoginRouteName } from '@pulse/common/constants'
+import { LAYOUTS } from '@app/constants/constants'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
 
@@ -23,19 +24,20 @@ const mockedUseRouter = vi.hoisted(() => vi.fn(() => ({
   currentRoute: {
     value: {
       meta: {
-        layout: 'home',
+        layout: LAYOUTS.MAIN,
       },
     },
     stylesMetaProperties: '',
   },
 })))
+const mockedUseRoute = vi.hoisted(() => vi.fn(() => ({
+  name: 'route-name',
+  meta: {},
+})))
 
 vi.mock('vue-router', () => ({
   useRouter: mockedUseRouter,
-  useRoute: () => ({
-    name: '',
-    meta: '',
-  }),
+  useRoute: mockedUseRoute,
 }))
 
 vi.mock('@app/composables/useRedirection', () => ({
@@ -246,6 +248,40 @@ describe('app with navigation guard', () => {
     expect(setTokenMock).toHaveBeenCalledOnce()
     expect(setTokenMock).toHaveBeenCalledWith('')
     expect(mockedLogoutAndRedirectToLogin).toHaveBeenCalledOnce()
+  })
+
+  it('do NOT redirect to login when login layout and 401 encountered and user is null', async () => {
+    const callBack = ref<Function>()
+    const mockedRoute = {
+      name: '/',
+      meta: {
+        layout: LAYOUTS.LOGIN,
+      },
+    }
+    mockedUseRoute.mockReturnValueOnce(mockedRoute)
+
+    mockedCommonState.mockReturnValue({
+      user: null,
+      isCollab: false,
+    })
+    const expectedProps = {
+      isCollab: false,
+      isTokenExpired: true,
+      isVisible: false,
+    }
+
+    setUnauthorizedCallbackMock.mockImplementation((done: Function) => {
+      callBack.value = done
+    })
+    const wrapper = createWrapper()
+    await callBack.value?.()
+    const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
+
+    expect(callBack.value).toBeDefined()
+    expect(setTokenMock).toHaveBeenCalledOnce()
+    expect(setTokenMock).toHaveBeenCalledWith('')
+    expect(mockedLogoutAndRedirectToLogin).not.toHaveBeenCalledOnce()
+    expect(popupRenewToken.props()).toStrictEqual(expectedProps)
   })
 
   it('Should call logoutAndRedirectToLogin when PopupRenewToken emits logout', async () => {

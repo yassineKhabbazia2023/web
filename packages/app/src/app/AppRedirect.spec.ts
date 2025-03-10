@@ -7,6 +7,7 @@ import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/
 import { nextTick, reactive } from 'vue'
 import App from './'
 import { LoginRouteName } from '@pulse/common/constants'
+import { LAYOUTS } from '@app/constants/constants'
 
 const testEntity: Entity = getMockedFavoriteEntities()[0]
 
@@ -24,17 +25,17 @@ const mockedgetExpirationDelays = vi.hoisted(() => vi.fn(() => ({
 })))
 
 const mockedRouterPush = vi.hoisted(() => vi.fn())
-const mockedUseRouter = vi.hoisted(() => vi.fn(() => reactive({
+const mockedUseRoute = vi.hoisted(() => vi.fn(() => reactive({
   name: 'route-name',
   meta: {
-    layout: 'Home',
+    layout: LAYOUTS.MAIN,
   },
 })))
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockedRouterPush,
   }),
-  useRoute: mockedUseRouter,
+  useRoute: mockedUseRoute,
 }))
 
 vi.mock('./app.utils', () => ({
@@ -226,10 +227,10 @@ describe('app with navigation guard', () => {
     const mockedRoute = reactive({
       name: '/',
       meta: {
-        layout: 'Home',
+        layout: LAYOUTS.MAIN,
       },
     })
-    mockedUseRouter.mockReturnValueOnce(mockedRoute)
+    mockedUseRoute.mockReturnValueOnce(mockedRoute)
     mockedgetExpirationDelays.mockReturnValueOnce({
       expiredTokenDelay: 2 * fiftyMinutesInMiliseconds,
       openPopupDelay: fiftyMinutesInMiliseconds - 1000,
@@ -249,7 +250,7 @@ describe('app with navigation guard', () => {
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterFiveMinutes)
 
-    mockedRoute.meta.layout = 'LoginLayout'
+    mockedRoute.meta.layout = LAYOUTS.LOGIN
     mockedRoute.name = LoginRouteName.LOGIN_CLIENT
     await nextTick()
 

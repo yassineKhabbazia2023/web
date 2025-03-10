@@ -33,6 +33,7 @@ import { HTMLService } from '@pulse/core'
 import { LoginRouteName } from '@pulse/common/constants'
 import { useRedirection } from '@app/composables/useRedirection'
 import { getExpirationDelays } from './app.utils'
+import { LAYOUTS } from '@app/constants/constants'
 
 const ON_TOKEN_CHANGE_EVENT = 'on-token-change'
 
@@ -45,12 +46,9 @@ const store = useStore()
 const { logoutAndRedirectToLogin } = useRedirection()
 const { user, isCollab } = storeToRefs(useStore())
 
-const MAIN_LAYOUT = 'Home'
-const LOGIN_LAYOUT = 'LoginLayout'
-const ERROR_LAYOUT = 'Error'
 const NO_POPUP_RENEW_TOKEN_LAYOUTS = [
-  LOGIN_LAYOUT,
-  ERROR_LAYOUT,
+  LAYOUTS.LOGIN,
+  LAYOUTS.ERROR,
 ]
 
 const currentLayout = ref()
@@ -70,7 +68,7 @@ function showPopupRenewToken() {
 }
 
 function onRouteChange() {
-  currentLayoutName.value = route.meta?.layout?.toString() || MAIN_LAYOUT
+  currentLayoutName.value = route.meta?.layout?.toString() || LAYOUTS.MAIN
   if (popupRenewTokenIsVisible.value && !getCanShowPopupRenewToken()) {
     popupRenewTokenIsVisible.value = false
   }
@@ -109,6 +107,10 @@ watch(
 async function unauthorizedCallback() {
   tokenService.setToken('')
   isTokenExpired.value = true
+
+  if (currentLayoutName.value === LAYOUTS.LOGIN) {
+    return
+  }
 
   if (!user.value) {
     logoutAndRedirectToLogin()

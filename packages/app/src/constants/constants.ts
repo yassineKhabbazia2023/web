@@ -12,3 +12,9 @@ export const PERMISSION_CODES = {
 }
 
 export const UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL = 60 * 1000
+
+export const LAYOUTS = {
+  MAIN: 'Home',
+  LOGIN: 'LoginLayout',
+  ERROR: 'Error',
+}
