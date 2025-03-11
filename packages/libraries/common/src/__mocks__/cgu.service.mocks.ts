@@ -1,7 +1,13 @@
-export const getTermsByCurrentUserMock = vi.fn(() => Promise.resolve({
+import type { CguTerms } from '@common/services/cgu/cgu.service.types'
+
+export const getTermsByCurrentUserMock = vi.fn(() => Promise.resolve<CguTerms>({
   isCurrent: true,
+  hasAcceptedBefore: false,
   terms: {
-    termsId: '123456',
+    termsId: 123456,
+    linkFr: 'link-fr',
+    linkEn: 'link-en',
+    uploadDate: '2024-06-19T14:37:18',
   },
 }))
 export const updateTermsByCurrentUserMock = vi.fn()

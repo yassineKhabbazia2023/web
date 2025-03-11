@@ -2,10 +2,11 @@ import { ref } from 'vue'
 import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
 import { type Store, storeToRefs } from 'pinia'
 import { routes as errorRoutes } from '@app/pages/Error/router'
-import { commonStore as useStore, commonApi, dataProvider } from '@pulse/common'
+import { commonStore as useStore, commonApi } from '@pulse/common'
 import { fetchEntities } from '@app/services/entities'
 import { logger } from '@pulse/core'
 import { LoginRouteName } from '@pulse/common/constants'
+import { loadUserContext } from './router.utils'
 
 const isFirstTime = ref(true)
 
@@ -98,11 +99,7 @@ export async function routerBeforeEach({
   isFirstTime: boolean,
 }) {
   if (isAuthenticated && isFirstTime) {
-    const { fetchUserData } = dataProvider()
-    const user = await fetchUserData()
-    store.$patch({
-      user,
-    })
+    await loadUserContext(store)
   }
 
   const isHomeLayoutWithoutCustomStyles = isObjectEmpty(to.meta)

@@ -17,6 +17,12 @@ const userMock = getMockedUser()
 const mockFechUserDataProvider = vi.fn(() => {
   return Promise.resolve(userMock)
 })
+
+const loadUserContextMock = vi.hoisted(() => vi.fn())
+vi.mock('./router.utils', () => ({
+  loadUserContext: loadUserContextMock,
+}))
+
 vi.mock('@pulse/common', () => ({
   commonStore: vi.fn(),
   commonApi: () => ({
@@ -106,13 +112,13 @@ describe('router', () => {
       meta: {},
       name: toName,
     }
-    const store = {}
+    const storeMock = {}
     mockedGatewayGet.mockResolvedValue({
       data: userOrigin,
     })
     const response = await routerBeforeEach({
       to,
-      store,
+      store: storeMock,
       isAuthenticated,
       isCollab,
       isFirstTime: false,
@@ -130,15 +136,12 @@ describe('router', () => {
     const isAuthenticated = true
     const isCollab = true
     const isFirstTime = true
-    const expectedParameters = {
-      user: userMock,
-    }
 
     const to = {
       meta: {},
       name: toName,
     }
-    const store = {
+    const storeMock = {
       $patch: vi.fn(),
     }
     mockedGatewayGet.mockResolvedValue({
@@ -146,13 +149,13 @@ describe('router', () => {
     })
     const response = await routerBeforeEach({
       to,
-      store,
+      store: storeMock,
       isAuthenticated,
       isCollab,
       isFirstTime,
     })
     expect(response).toBeUndefined()
-    expect(store.$patch).toHaveBeenCalledOnce()
-    expect(store.$patch).toHaveBeenCalledWith(expectedParameters)
+    expect(loadUserContextMock).toHaveBeenCalledOnce()
+    expect(loadUserContextMock).toHaveBeenCalledWith(storeMock)
   })
 })
