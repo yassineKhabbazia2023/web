@@ -1,6 +1,7 @@
 export * from './accounts-row.mocks'
 export * from './amplitude.service.mocks'
 export * from './axios.mocks'
+export * from './cgu.service.mocks'
 export * from './entities.mocks'
 export * from './token.service.mocks'
 export * from './unauthorized-callback.mocks'

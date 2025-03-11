@@ -1,7 +1,7 @@
 import { flushPromises } from '@vue/test-utils'
 import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
 import { getMockedRouter, getWrapper } from '@login/__mocks__/component.wrapper'
-import { cguServiceMock } from '@login/__mocks__/cgu.service.mocks'
+import { cguServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/core/mocks'
 import { navigateToCustomerWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { amplitudeService, tokenService } from '@pulse/common'

@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
-import { cguServiceMock, updateTermsByCurrentUserMock } from '@login/__mocks__/cgu.service.mocks'
+import { cguServiceMock, updateTermsByCurrentUserMock } from '@pulse/common/mocks'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore as useStore } from '@pulse/common'
 import { LoginRouteName } from '@pulse/common/constants'
