@@ -69,11 +69,18 @@ router.beforeEach(async (to: any, _from) => {
   const store = useStore()
   const { isAuthenticated, isCollab } = storeToRefs(store)
 
+  const isFirstTimeCurrent = isFirstTime.value
+
+  if (isFirstTimeCurrent) {
+    isFirstTime.value = false
+  }
+
   return routerBeforeEach({
     to,
     store,
     isAuthenticated: isAuthenticated.value,
     isCollab: isCollab.value,
+    isFirstTime: isFirstTimeCurrent,
   })
 })
 
@@ -82,21 +89,21 @@ export async function routerBeforeEach({
   store,
   isAuthenticated,
   isCollab,
+  isFirstTime,
 }: {
   to: any,
   store: any,
   isAuthenticated: boolean,
   isCollab: boolean,
+  isFirstTime: boolean,
 }) {
-  if (isAuthenticated && isFirstTime.value) {
+  if (isAuthenticated && isFirstTime) {
     const { fetchUserData } = dataProvider()
     const user = await fetchUserData()
     store.$patch({
       user,
     })
   }
-
-  isFirstTime.value = false
 
   const isHomeLayoutWithoutCustomStyles = isObjectEmpty(to.meta)
   const isHomeLayoutWithCustomStyles = !!to.meta?.styles

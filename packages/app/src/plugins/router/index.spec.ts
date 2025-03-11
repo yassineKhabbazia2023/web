@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { routerBeforeEach } from './index'
 import { LoginRouteName } from '@pulse/common/constants'
+import { getMockedUser } from '@pulse/common/mocks'
 
 const mockedGatewayGet = vi.hoisted(() => vi.fn())
 
@@ -11,6 +12,11 @@ vi.mock('vue-router', () => ({
     beforeEach: vi.fn(),
   }),
 }))
+const userMock = getMockedUser()
+
+const mockFechUserDataProvider = vi.fn(() => {
+  return Promise.resolve(userMock)
+})
 vi.mock('@pulse/common', () => ({
   commonStore: vi.fn(),
   commonApi: () => ({
@@ -18,7 +24,9 @@ vi.mock('@pulse/common', () => ({
       get: mockedGatewayGet,
     },
   }),
-  dataProvider: vi.fn(),
+  dataProvider: () => ({
+    fetchUserData: mockFechUserDataProvider,
+  }),
 }))
 
 describe('router', () => {
@@ -107,11 +115,44 @@ describe('router', () => {
       store,
       isAuthenticated,
       isCollab,
+      isFirstTime: false,
     })
     if (expectedResponse) {
       expect(response).toStrictEqual(expectedResponse)
     } else {
       expect(response).toBeUndefined()
     }
+  })
+
+  it('should call store.$patch when is firstTime is true', async () => {
+    const toName = 'folderMandats'
+    const userOrigin = 'CLIENT'
+    const isAuthenticated = true
+    const isCollab = true
+    const isFirstTime = true
+    const expectedParameters = {
+      user: userMock,
+    }
+
+    const to = {
+      meta: {},
+      name: toName,
+    }
+    const store = {
+      $patch: vi.fn(),
+    }
+    mockedGatewayGet.mockResolvedValue({
+      data: userOrigin,
+    })
+    const response = await routerBeforeEach({
+      to,
+      store,
+      isAuthenticated,
+      isCollab,
+      isFirstTime,
+    })
+    expect(response).toBeUndefined()
+    expect(store.$patch).toHaveBeenCalledOnce()
+    expect(store.$patch).toHaveBeenCalledWith(expectedParameters)
   })
 })
