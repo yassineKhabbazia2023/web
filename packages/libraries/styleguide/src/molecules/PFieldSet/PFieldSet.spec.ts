@@ -46,7 +46,7 @@ describe('test PFieldSet', () => {
     const fieldKey = pFields.at(0)?.pFieldKey as string
     const pFieldComponent = pFieldComponents.at(0) as VueWrapper
 
-    wrapper.vm.toggleField(fieldKey)
+    wrapper.vm.disableField(fieldKey)
     await nextTick()
 
     expect(pFieldComponent.props()).toMatchObject({ pDisabled: true })
@@ -55,12 +55,12 @@ describe('test PFieldSet', () => {
     const fieldKey = pFields.at(0)?.pFieldKey as string
     const pFieldComponent = pFieldComponents.at(0) as VueWrapper
 
-    wrapper.vm.toggleField(fieldKey)
+    wrapper.vm.disableField(fieldKey)
     await nextTick()
 
     expect(pFieldComponent.props()).toMatchObject({ pDisabled: true })
 
-    wrapper.vm.toggleField(fieldKey)
+    wrapper.vm.enableField(fieldKey)
     await nextTick()
 
     expect(pFieldComponent.props()).toMatchObject({ pDisabled: false })

@@ -40,11 +40,18 @@
         class="entity-creator__form-section padding-bottom--1"
       >
         <p class="entity-creator__form-section-title font-bold padding-top--4 margin-bottom--3">
-          <span>
+          <span class="flex flex--align-items-center">
             {{ section.title }}
+            <PLoader
+              v-if="section.sectionKey === 'contactInfo' && isLookingForExistingUser"
+              class="margin-left--1"
+              pType="primary"
+              pSize="12"
+            />
           </span>
         </p>
         <PFieldSet
+          ref="entityCreatorFormFieldSet"
           :pModel="newTestAccount"
           :pFields="section.fields"
           class="entity-creator__form-section-fields"
@@ -110,7 +117,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { setWith } from 'lodash-es'
 import { logger } from '@pulse/core'
-import { getInitials } from '@pulse/common'
+import { getInitials, debounce } from '@pulse/common'
 import type { FormInstance } from '@pulse/styleguide/types'
 import {
   PDrawer,
@@ -128,6 +135,7 @@ import type { Contact } from '@entities/services/contact/contactTypes'
 import CollaboratorAutocomplete from '@entities/pages/entities/components/CollaboratorAutocomplete'
 import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 import type { EntityCreatorDrawerProps, OnboardingDetails } from './entity-creator-drawer.types'
+import { getAccountUserByEmail } from '@entities/services/account'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -141,8 +149,10 @@ const emit = defineEmits<{
 
 const isLoading = ref(false)
 const isTestAccountCreating = ref(false)
+const isLookingForExistingUser = ref(false)
 
 const entityCreatorForm = ref<FormInstance>()
+const entityCreatorFormFieldSet = ref()
 const selectedCollaborators = ref<Contact[]>([])
 const entityCreatorFormStructure = ref<FormSection[]>()
 const newTestAccount = ref<OnboardingDetails>({ isSignatory: true } as OnboardingDetails)
@@ -169,6 +179,14 @@ const onClickDelete = (index: number) => {
 }
 const onInputAccount = (fieldKey: string, value: any) => {
   setWith(newTestAccount.value, fieldKey, value, Object)
+  if (fieldKey === 'email') {
+    if (newTestAccount.value.existingContactGuid){
+      validateContactFields()
+      clearContactFields()
+      enableContactFields()
+    }
+    searchContactByEmail(value)
+  }
 }
 const onAddCollaborator = (contact: Contact) => {
   selectedCollaborators.value.push(contact)
@@ -196,6 +214,41 @@ const onCreateClick = async () => {
     isTestAccountCreating.value = false
   }
 }
+
+const disableContactFields = () => {
+  entityCreatorFormFieldSet.value[1].disableField('contactLastName')
+  entityCreatorFormFieldSet.value[1].disableField('contactFirstName')
+}
+
+const enableContactFields = () => {
+  entityCreatorFormFieldSet.value[1].enableField('contactLastName')
+  entityCreatorFormFieldSet.value[1].enableField('contactFirstName')
+}
+
+const validateContactFields = () => {
+  entityCreatorForm.value?.validateField('contactLastName')
+  entityCreatorForm.value?.validateField('contactFirstName')
+}
+
+const clearContactFields = () => {
+  newTestAccount.value.contactLastName = ''
+  newTestAccount.value.contactFirstName = ''
+  newTestAccount.value.existingContactGuid = ''
+}
+
+const searchContactByEmail = debounce(async (contactEmail: string) => {
+  isLookingForExistingUser.value = true
+  const contactSearchResult = await getAccountUserByEmail(contactEmail)
+  if (contactSearchResult) {
+    const { firstName, lastName, oldId } = contactSearchResult
+    newTestAccount.value.contactFirstName = firstName
+    newTestAccount.value.contactLastName = lastName
+    newTestAccount.value.existingContactGuid = oldId
+    validateContactFields()
+    disableContactFields()
+  }
+  isLookingForExistingUser.value = false
+}, 600)
 
 onMounted(async () => {
   isLoading.value = true

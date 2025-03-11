@@ -8,6 +8,7 @@ export interface OnboardingDetails {
   contactFirstName: string
   contactLastName: string
   isSignatory: boolean
+  existingContactGuid?: string
   collaboratorGuids: string[]
 }
 

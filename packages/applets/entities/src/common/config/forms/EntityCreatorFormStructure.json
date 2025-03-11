@@ -38,6 +38,7 @@
   },
   {
     "title": "Utilisateur client",
+    "sectionKey": "contactInfo",
     "fields": [
       {
         "modelValue": "",

@@ -40,16 +40,22 @@ function registerFieldRef(fieldRef: any, field: PFieldProps<T>) {
   fieldRefs.value[field.pFieldKey] = fieldRef
 }
 
-function toggleField(fieldKey: string) {
+function enableField(fieldKey: string) {
   const disabledFieldIndex = disabledFields.value.indexOf(fieldKey)
   if (disabledFieldIndex !== -1) {
     disabledFields.value.splice(disabledFieldIndex, 1)
-    return
   }
-  disabledFields.value.push(fieldKey)
+}
+
+function disableField(fieldKey: string) {
+  const disabledFieldIndex = disabledFields.value.indexOf(fieldKey)
+  if (disabledFieldIndex === -1) {
+    disabledFields.value.push(fieldKey)
+  }
 }
 
 defineExpose({
-  toggleField,
+  enableField,
+  disableField,
 })
 </script>
