@@ -102,12 +102,12 @@ describe('router', () => {
     mockedGatewayGet.mockResolvedValue({
       data: userOrigin,
     })
-    const response = await routerBeforeEach(
+    const response = await routerBeforeEach({
       to,
       store,
       isAuthenticated,
       isCollab,
-    )
+    })
     if (expectedResponse) {
       expect(response).toStrictEqual(expectedResponse)
     } else {

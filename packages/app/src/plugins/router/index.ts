@@ -69,15 +69,25 @@ router.beforeEach(async (to: any, _from) => {
   const store = useStore()
   const { isAuthenticated, isCollab } = storeToRefs(store)
 
-  return routerBeforeEach(to, store, isAuthenticated.value, isCollab.value)
+  return routerBeforeEach({
+    to,
+    store,
+    isAuthenticated: isAuthenticated.value,
+    isCollab: isCollab.value,
+  })
 })
 
-export async function routerBeforeEach(
+export async function routerBeforeEach({
+  to,
+  store,
+  isAuthenticated,
+  isCollab,
+}: {
   to: any,
   store: any,
   isAuthenticated: boolean,
   isCollab: boolean,
-) {
+}) {
   if (isAuthenticated && isFirstTime.value) {
     const { fetchUserData } = dataProvider()
     const user = await fetchUserData()
