@@ -295,8 +295,12 @@ describe('login', () => {
   it('should route to cgu validation page', async () => {
     vi.mocked(getTermsByCurrentUser).mockResolvedValueOnce({
       isCurrent: false,
+      hasAcceptedBefore: false,
       terms: {
         termsId: 123456,
+        linkFr: 'link-fr',
+        linkEn: 'link-en',
+        uploadDate: '2024-06-19T14:37:18',
       },
     })
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
