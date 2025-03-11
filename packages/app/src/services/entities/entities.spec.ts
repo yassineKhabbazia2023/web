@@ -1,9 +1,10 @@
 import { describe, it, vi, expect, beforeEach } from 'vitest'
 import { loggerMock } from '@pulse/core/mocks'
-import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
-import { fetchFavoriteEntities, fetchEntities } from '.'
+import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import { API_PREFIXES } from '../config'
 import type { Entity } from '@pulse/common/types'
+
+import { fetchFavoriteEntities, fetchEntities } from '.'
 
 let throwError = false
 const testEntities: Entity[] = getMockedFavoriteEntities()

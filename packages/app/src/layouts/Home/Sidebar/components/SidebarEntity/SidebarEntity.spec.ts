@@ -5,7 +5,8 @@ import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
 import { commonPinia as pinia, commonStore } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
-import { getMockedFavoriteEntities } from './MockedFavoriteEntities'
+import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
+
 import SidebarEntity from '.'
 
 vi.mock('vue-router', () => ({

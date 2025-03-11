@@ -1,15 +1,13 @@
 import { describe, it, expect, vi } from 'vitest'
-
-import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
+import wrapperFactory from '@app/__mocks__/wrapper.factory'
+import { getMockedDeadlines } from '@app/__mocks__/deadline.mocks'
+import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import type { WidgetDeadlinesProps } from './WidgetDeadlinesTypes'
-import WidgetDeadlines from '.'
-import { mockedGetScheduleModelsByKey } from '@app/schedule/tests/mocks/commonViMock'
-import { getMockedDeadlines } from '@app/schedule/tests/mocks/Deadline'
 import { nextTick } from 'vue'
 
-vi.mock('@app/schedule/services', () => ({
-  getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
-}))
+import WidgetDeadlines from '.'
+
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
 const defaultProps: WidgetDeadlinesProps = {
   deadlines: [],

@@ -1,7 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { getMockedFavoriteEntities } from '../../MockedFavoriteEntities'
+import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import type { Entity } from '@pulse/common/types'
+
 import EntityAvatar from '.'
 
 vi.mock('vue-router', () => ({

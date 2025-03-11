@@ -1,16 +1,19 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { defineStore } from 'pinia'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { fetchNotificationsMock } from '@app/../vitest.setup'
-import FeedCenterDrawer from '.'
-import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
-import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
 import { createTestingPinia } from '@pinia/testing'
-import { patchAllNotificationsAsRead } from './feed-center-drawer.manager'
-import {
-  trackNotificationMarkAsRead,
-} from '@app/modules/FeedCenter/services/tracking/tracking.service'
+import { fetchNotificationsMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
+import { trackingServiceMock, trackNotificationMarkAsReadMock } from '@app/__mocks__/tracking.service.mocks'
+import { feedCenterDrawerManagerMock, patchAllNotificationsAsReadMock } from '@app/__mocks__/feed-center-drawer.manager.mocks'
 import { NotificationTrackingReadType } from '@app/modules/FeedCenter/services/tracking/tracking.types'
+import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
+
+import { notificationsMock } from '@app/__mocks__/notifications.mocks'
+import FeedCenterDrawer from '.'
+
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
+vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
+vi.mock('./feed-center-drawer.manager', () => feedCenterDrawerManagerMock)
 
 const pinia = createTestingPinia()
 vi.mock('@pulse/common', () => ({
@@ -21,15 +24,6 @@ vi.mock('@pulse/common', () => ({
       },
     }),
   }) }))
-
-vi.mock('./feed-center-drawer.manager', async () => {
-  return {
-    patchAllNotificationsAsRead: vi.fn(() => notificationsMock),
-    fetchNotificationsWithTimeout: vi.fn(),
-  }
-})
-vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service')
-
 
 function createWrapper(props: FeedCenterDrawerProps = FeedCenterDrawerBaseProps) {
   return shallowMount(FeedCenterDrawer, {
@@ -122,7 +116,7 @@ describe('feed center drawer', () => {
     it('should call patchAllNotificationAsRead when p-toolbox-item-clicked event is fired', async () => {
       const notificationDrawer = wrapper.findComponent({ name: 'PDrawer' })
       notificationDrawer.vm.$emit('p-toolbox-item-clicked')
-      expect(patchAllNotificationsAsRead).toHaveBeenCalledOnce()
+      expect(patchAllNotificationsAsReadMock).toHaveBeenCalledOnce()
     })
   })
 
@@ -143,9 +137,7 @@ describe('feed center drawer', () => {
     it('should track NotificationMarkAsRead with type ALL_READ when p-toolbox-item-clicked event is fired', async () => {
       const notificationDrawer = findFeedCenterDrawer(wrapper)
       await notificationDrawer.vm.$emit('p-toolbox-item-clicked')
-      expect(trackNotificationMarkAsRead).toHaveBeenCalledWith(
-        NotificationTrackingReadType.ALL_READ,
-      )
+      expect(trackNotificationMarkAsReadMock).toHaveBeenCalledWith(NotificationTrackingReadType.ALL_READ)
     })
   })
 })

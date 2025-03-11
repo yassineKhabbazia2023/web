@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
-import { ScheduleServicesMock, commonMock } from '@app/schedule/tests/mocks/commonViMock'
 import { nextTick } from 'vue'
+import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
+
 import HomeScheduleDrawer from '.'
 
-vi.mock('@app/schedule/services', () => ScheduleServicesMock)
-vi.mock('@pulse/common', () => commonMock)
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
 function createWrapper(modelValue: boolean): VueWrapper<any> {
   const props = {

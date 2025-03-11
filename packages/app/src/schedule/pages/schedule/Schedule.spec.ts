@@ -1,19 +1,20 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { commonMock } from '@app/schedule/tests/mocks/commonViMock'
 import { nextTick } from 'vue'
 import { flushPromises, type VueWrapper, shallowMount } from '@vue/test-utils'
-import Schedule from '@app/schedule/pages/schedule'
-import type { ScheduleProps } from './ScheduleTypes'
-import { accountsCollection } from '@app/schedule/tests/mocks/Account'
+import { commonMock } from '@app/__mocks__/common.mock'
+import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
+import { getMockedDeadlines } from '@app/__mocks__/deadline.mocks'
 import * as ScheduleServices from '@app/schedule/services'
 import * as ScheduleUtils from './ScheduleUtils'
 import { dateISOFormatter } from '@app/schedule/helpers/utils'
-import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
-import { getMockedDeadlines } from '@app/schedule/tests/mocks/Deadline'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore as useCommonStore } from '@pulse/common'
+import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
 import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
 import type { ScheduleApiQueryParams } from '@app/schedule/services/scheduleServiceTypes'
+import type { ScheduleProps } from './ScheduleTypes'
+
+import Schedule from './'
 
 const pinia = createTestingPinia()
 
@@ -23,33 +24,11 @@ const OTHER_MONTH_DATE = '2024-11-03'
 const OccurrenceId = 1234567890
 
 vi.mock('@pulse/common', () => commonMock)
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 const commonStore = useCommonStore(pinia)
 // @ts-expect-error: Getter is read only
 commonStore.isCollab = false
 
-vi.mock('./ScheduleUtils', async () => {
-  return await vi.importActual('./ScheduleUtils')
-})
-
-vi.mock('@app/schedule/services', () => ({
-  getScheduleModels: () => [{
-    key: 'TVA',
-    label: 'TVA au 21',
-  }],
-  getScheduleModelsByKey: () => ({
-    TVA: 'TVA au 21',
-  }),
-  getAdvancedSearchParams: vi.fn(),
-  getSchedulesCollection: () => Promise.resolve([{
-    date: TEST_DATE,
-    deadlines: getMockedDeadlines(),
-  }]),
-  getAccountsCollection: () => Promise.resolve({
-    status: 'fulfilled',
-    value: accountsCollection,
-  }),
-}),
-)
 
 const mockedToday = new Date(TEST_DATE)
 const newSearchTerm = 'search term'

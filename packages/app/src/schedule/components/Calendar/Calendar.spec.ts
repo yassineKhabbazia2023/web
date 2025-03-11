@@ -1,21 +1,23 @@
 import { nextTick } from 'vue'
-
 import { vi, expect, describe, it } from 'vitest'
-
 import { defineStore } from 'pinia'
+import { flushPromises } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
 import { commonStore } from '@pulse/common'
-import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
-import type { CalendarProps } from './CalendarTypes'
+import wrapperFactory from '@app/__mocks__/wrapper.factory'
+import { collabUserMock } from '@app/__mocks__/users.mocks'
+import { getNotCompletelyDoneDeadlinesByDateMock } from '@app/__mocks__/deadline.mocks'
+import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
+import { tvaLabelMock } from '@app/__mocks__/schedule.mocks'
 import { PCalendar } from '@pulse/styleguide/components'
-import { getNotCompletelyDoneDeadlinesByDateMock } from '@app/schedule/tests/mocks/Deadline'
-import { collabUser } from '@app/schedule/tests/mocks/User'
-import { flushPromises } from '@vue/test-utils'
-import { TvaLabel, mockedGetScheduleModelsByKey } from '@app/schedule/tests/mocks/commonViMock'
+import type { CalendarProps } from './CalendarTypes'
+
 import Calendar from '.'
 
 const notCompletelyDoneDeadlinesByDateMock = getNotCompletelyDoneDeadlinesByDateMock()
 const amplitudeTrackMock = vi.hoisted(() => vi.fn())
+
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
 const pinia = createTestingPinia()
 vi.mock('@pulse/common', () => ({
@@ -25,7 +27,7 @@ vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
-        ...collabUser,
+        ...collabUserMock,
       },
     }),
     getters: {
@@ -39,9 +41,6 @@ vi.mock('@pulse/common', () => ({
   },
 }))
 
-vi.mock('@app/schedule/services', () => ({
-  getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
-}))
 
 const FIXED_DATE = new Date(2024, 3, 1)
 
@@ -76,13 +75,13 @@ describe('calendar component', () => {
   it.each([
     {
       userType: 'collab',
-      firstDeadlineExpectedTitle: TvaLabel,
-      secondDeadlineExpectedTitle: TvaLabel,
+      firstDeadlineExpectedTitle: tvaLabelMock,
+      secondDeadlineExpectedTitle: tvaLabelMock,
     },
     {
       userType: 'collab',
-      firstDeadlineExpectedTitle: TvaLabel,
-      secondDeadlineExpectedTitle: TvaLabel,
+      firstDeadlineExpectedTitle: tvaLabelMock,
+      secondDeadlineExpectedTitle: tvaLabelMock,
     },
   ])(
     'formats deadlines appropriately',

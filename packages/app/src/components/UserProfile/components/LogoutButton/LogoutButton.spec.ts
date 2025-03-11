@@ -1,4 +1,4 @@
-import { defineStore, setActivePinia } from 'pinia'
+import { setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
@@ -15,25 +15,6 @@ vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush,
   }),
-}))
-
-vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    actions: {
-      logout: vi.fn(),
-    },
-    getters: {
-      isCollab: () => true,
-    },
-  }),
-  amplitudeService: {
-    track: vi.fn(),
-  },
-  dataProvider: () => {
-    return {
-      fetchUserData: vi.fn(),
-    }
-  },
 }))
 
 const createWrapper = (): VueWrapper<any> =>

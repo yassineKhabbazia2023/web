@@ -1,13 +1,17 @@
-import { TvaLabel, mockedGetScheduleModelsByKey } from '@app/schedule/tests/mocks/commonViMock'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import Deadlines from '.'
-import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
-import type { Deadline } from '@app/schedule/models/Deadline'
-import { expect, describe, it, vi } from 'vitest'
-import { collabUser } from '@app/schedule/tests/mocks/User'
 import { flushPromises } from '@vue/test-utils'
-import { getSmartMockedDeadline } from '@app/schedule/tests/mocks/Deadline'
+import { expect, describe, it, vi } from 'vitest'
+import wrapperFactory from '@app/__mocks__/wrapper.factory'
+import { getSmartMockedDeadline } from '@app/__mocks__/deadline.mocks'
+import { tvaLabelMock } from '@app/__mocks__/schedule.mocks'
+import { scheduleServicesMock, getScheduleModelsByKeyMock } from '@app/__mocks__/schedule.service.mocks'
+import { collabUserMock } from '@app/__mocks__/users.mocks'
+import type { Deadline } from '@app/schedule/models/Deadline'
+
+import Deadlines from '.'
+
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
 const pinia = createTestingPinia()
 const amplitudeTrackMock = vi.hoisted(() => vi.fn())
@@ -19,7 +23,7 @@ vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
-        ...collabUser,
+        ...collabUserMock,
       },
     }),
     getters: {
@@ -31,10 +35,6 @@ vi.mock('@pulse/common', () => ({
       fetchUserData: vi.fn(),
     }
   },
-}))
-
-vi.mock('@app/schedule/services', () => ({
-  getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))
 
 const deadlineData: Deadline[] = [getSmartMockedDeadline()]
@@ -51,15 +51,15 @@ describe('deadline component', () => {
   it('should call getScheduleModelsByKey with proper arguments', async () => {
     createWrapper(deadlineData)
     await flushPromises()
-    expect(mockedGetScheduleModelsByKey).toHaveBeenCalledOnce()
-    expect(mockedGetScheduleModelsByKey).toHaveBeenNthCalledWith(1, 'both')
+    expect(getScheduleModelsByKeyMock).toHaveBeenCalledOnce()
+    expect(getScheduleModelsByKeyMock).toHaveBeenNthCalledWith(1, 'both')
   })
 
   it('renders deadline information with folders progression', async () => {
     const wrapper = createWrapper(deadlineData)
     await flushPromises()
     const TvaLabelText = wrapper.find('.p-schedule-deadline__content-label').text()
-    expect(TvaLabelText).toBe(TvaLabel)
+    expect(TvaLabelText).toBe(tvaLabelMock)
     const completed = deadlineData[0].accountList
       .filter(account => account.status === 'Done').length
     const total = deadlineData[0].accountList.length

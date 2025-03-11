@@ -1,10 +1,15 @@
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
+import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
+import { envVarsMock } from '@pulse/core/mocks'
+import { getTokenSubMock, hasValidAccessTokenMock, registerOnChangeMock, tokenServiceMock, unregisterOnChangeMock } from '@pulse/common/mocks'
+import { logoutAndRedirectToLoginMock, useRedirectionMock } from '@app/__mocks__/useRedirection.composable.mocks'
+import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
+import { getExpirationDelaysMock } from '@app/__mocks__/app.utils.mocks'
 import type { Entity } from '@pulse/common/types'
-import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
 import { nextTick, reactive } from 'vue'
+
 import App from './'
 import { LoginRouteName } from '@pulse/common/constants'
 import { LAYOUTS } from '@app/constants/constants'
@@ -14,18 +19,10 @@ const testEntity: Entity = getMockedFavoriteEntities()[0]
 const mockUserOrigin = vi.fn(() => ({ data: 'CLIENT' }))
 
 const setUnauthorizedCallbackMock = vi.hoisted(() => vi.fn())
-const redirectToHomeMock = vi.hoisted(() => vi.fn())
-const mockedLogoutAndRedirectToLogin = vi.hoisted(() => vi.fn())
-const setTokenMock = vi.hoisted(() => vi.fn())
-const fiftyMinutesInMiliseconds = 3000000
+const FIFTY_MINUTES_IN_MILLISECONDS = 3000000
 
-const mockedgetExpirationDelays = vi.hoisted(() => vi.fn(() => ({
-  expiredTokenDelay: 0,
-  openPopupDelay: 0,
-})))
-
-const mockedRouterPush = vi.hoisted(() => vi.fn())
-const mockedUseRoute = vi.hoisted(() => vi.fn(() => reactive({
+const routerPushMock = vi.hoisted(() => vi.fn())
+const useRouterMock = vi.hoisted(() => vi.fn(() => reactive({
   name: 'route-name',
   meta: {
     layout: LAYOUTS.MAIN,
@@ -33,51 +30,30 @@ const mockedUseRoute = vi.hoisted(() => vi.fn(() => reactive({
 })))
 vi.mock('vue-router', () => ({
   useRouter: () => ({
-    push: mockedRouterPush,
+    push: routerPushMock,
   }),
-  useRoute: mockedUseRoute,
+  useRoute: useRouterMock,
 }))
 
 vi.mock('./app.utils', () => ({
-  getExpirationDelays: mockedgetExpirationDelays,
+  getExpirationDelays: getExpirationDelaysMock,
 }))
 
-vi.mock('@app/composables/useRedirection', () => ({
-  useRedirection: () => ({
-    redirectToHome: redirectToHomeMock,
-    logoutAndRedirectToLogin: mockedLogoutAndRedirectToLogin,
-  }),
-}))
-
+vi.mock('@app/composables/useRedirection', () => useRedirectionMock)
+vi.mock('env-vars', () => envVarsMock)
 vi.mock('@app/plugins/ProductFruits/productFruits.plugin')
 
-vi.mock('env-vars', () => ({
-  VITE_IDLE_DURATION: 1000,
-  VITE_AMPLITUDE_API_KEY: 'VITE_AMPLITUDE_API_KEY',
-  VITE_AMPLITUDE_SERVER_URL: 'VITE_AMPLITUDE_SERVER_URL',
-  VITE_PRODUCT_FRUITS_KEY: 'product fruits collab key',
-  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY: 'product fruits anonymous key',
-  VITE_PRODUCT_FRUITS_KEY_CLIENT: 'product fruits client key',
-  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT: 'product fruits anonymous client key',
-}))
-
-const mockedCommonState = vi.hoisted(() => vi.fn(() => ({
+const commonStateMock = vi.hoisted(() => vi.fn(() => ({
   user: null,
   isCollab: false,
 })))
 
 const mockedRefreshClientToken = vi.hoisted(() => vi.fn())
-const mockedHasValidAccessToken = vi.hoisted(() => vi.fn())
-const mockedRegisterOnChange = vi.hoisted(() => vi.fn())
-const mockedUnregisterOnChange = vi.hoisted(() => vi.fn())
-const mockedSetTokenExp = vi.hoisted(() => vi.fn())
-const mockedSetTokenSub = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/common', () => ({
   refreshClientToken: mockedRefreshClientToken,
-  hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
-    state: mockedCommonState,
+    state: commonStateMock,
     getters: {
       defaultEntity: () => testEntity,
       isAuthenticated: () => false,
@@ -91,16 +67,7 @@ vi.mock('@pulse/common', () => ({
   routes: {
     value: [],
   },
-  tokenService: {
-    setToken: setTokenMock,
-    getToken: vi.fn(),
-    initToken: vi.fn(),
-    hasValidAccessToken: mockedHasValidAccessToken,
-    registerOnChange: mockedRegisterOnChange,
-    unregisterOnChange: mockedUnregisterOnChange,
-    getTokenExp: mockedSetTokenExp,
-    getTokenSub: mockedSetTokenSub,
-  },
+  tokenService: tokenServiceMock.TokenService.getInstance(),
   amplitudeService: {
     init: vi.fn(),
     track: vi.fn(),
@@ -141,12 +108,12 @@ describe('app with navigation guard', () => {
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     popupRenewToken.vm.$emit('logout')
-    expect(mockedLogoutAndRedirectToLogin).toHaveBeenCalledOnce()
+    expect(logoutAndRedirectToLoginMock).toHaveBeenCalledOnce()
   })
 
   it('should call refreshClientToken when PopupRenewToken emits renew-token', () => {
     const mockedSub = 'mocked-sub'
-    mockedSetTokenSub.mockReturnValueOnce(mockedSub)
+    getTokenSubMock.mockReturnValueOnce(mockedSub)
     const wrapper = createWrapper()
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
@@ -173,16 +140,16 @@ describe('app with navigation guard', () => {
       isTokenExpired: true,
       isVisible: true,
     }
-    mockedgetExpirationDelays.mockReturnValueOnce({
-      expiredTokenDelay: 2 * fiftyMinutesInMiliseconds,
-      openPopupDelay: fiftyMinutesInMiliseconds - 1000,
+    getExpirationDelaysMock.mockReturnValueOnce({
+      expiredTokenDelay: 2 * FIFTY_MINUTES_IN_MILLISECONDS,
+      openPopupDelay: FIFTY_MINUTES_IN_MILLISECONDS - 1000,
     })
     const cbFunctions: Function[] = []
 
-    mockedHasValidAccessToken
+    hasValidAccessTokenMock
       .mockReturnValueOnce(true)
       .mockReturnValueOnce(false)
-    mockedRegisterOnChange.mockImplementation((_key: string, cb: Function) => {
+    registerOnChangeMock.mockImplementation((_key: string, cb: Function) => {
       cbFunctions.push(cb)
     })
     const wrapper = createWrapper()
@@ -193,12 +160,12 @@ describe('app with navigation guard', () => {
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsBefore)
 
-    vi.advanceTimersByTime(fiftyMinutesInMiliseconds)
+    vi.advanceTimersByTime(FIFTY_MINUTES_IN_MILLISECONDS)
     await nextTick()
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterFiveMinutes)
 
-    vi.advanceTimersByTime(fiftyMinutesInMiliseconds)
+    vi.advanceTimersByTime(FIFTY_MINUTES_IN_MILLISECONDS)
     await nextTick()
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterExpired)
@@ -230,22 +197,22 @@ describe('app with navigation guard', () => {
         layout: LAYOUTS.MAIN,
       },
     })
-    mockedUseRoute.mockReturnValueOnce(mockedRoute)
-    mockedgetExpirationDelays.mockReturnValueOnce({
-      expiredTokenDelay: 2 * fiftyMinutesInMiliseconds,
-      openPopupDelay: fiftyMinutesInMiliseconds - 1000,
+    useRouterMock.mockReturnValueOnce(mockedRoute)
+    getExpirationDelaysMock.mockReturnValueOnce({
+      expiredTokenDelay: 2 * FIFTY_MINUTES_IN_MILLISECONDS,
+      openPopupDelay: FIFTY_MINUTES_IN_MILLISECONDS - 1000,
     })
     const cbFunctions: Function[] = []
 
-    mockedHasValidAccessToken.mockReturnValueOnce(true)
-    mockedRegisterOnChange.mockImplementation((_key: string, cb: Function) => {
+    hasValidAccessTokenMock.mockReturnValueOnce(true)
+    registerOnChangeMock.mockImplementation((_key: string, cb: Function) => {
       cbFunctions.push(cb)
     })
     const wrapper = createWrapper()
     cbFunctions.at(0)?.(mockedToken)
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
-    vi.advanceTimersByTime(fiftyMinutesInMiliseconds)
+    vi.advanceTimersByTime(FIFTY_MINUTES_IN_MILLISECONDS)
     await nextTick()
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterFiveMinutes)
@@ -264,14 +231,14 @@ describe('app with navigation guard', () => {
       isTokenExpired: false,
       isVisible: false,
     }
-    mockedgetExpirationDelays.mockReturnValueOnce({
+    getExpirationDelaysMock.mockReturnValueOnce({
       expiredTokenDelay: 0,
       openPopupDelay: 0,
     })
     const cbFunctions: Function[] = []
 
-    mockedHasValidAccessToken.mockReturnValueOnce(true)
-    mockedRegisterOnChange.mockImplementation((_key: string, cb: Function) => {
+    hasValidAccessTokenMock.mockReturnValueOnce(true)
+    registerOnChangeMock.mockImplementation((_key: string, cb: Function) => {
       cbFunctions.push(cb)
     })
     const wrapper = createWrapper()
@@ -280,12 +247,12 @@ describe('app with navigation guard', () => {
 
     expect(popupRenewToken.props()).toStrictEqual(expectedProps)
 
-    vi.advanceTimersByTime(fiftyMinutesInMiliseconds)
+    vi.advanceTimersByTime(FIFTY_MINUTES_IN_MILLISECONDS)
     await nextTick()
 
     expect(popupRenewToken.props()).toStrictEqual(expectedProps)
 
-    vi.advanceTimersByTime(fiftyMinutesInMiliseconds)
+    vi.advanceTimersByTime(FIFTY_MINUTES_IN_MILLISECONDS)
     await nextTick()
 
     expect(popupRenewToken.props()).toStrictEqual(expectedProps)
@@ -295,6 +262,6 @@ describe('app with navigation guard', () => {
     const wrapper = createWrapper()
     wrapper.unmount()
 
-    expect(mockedUnregisterOnChange).toHaveBeenCalledOnce()
+    expect(unregisterOnChangeMock).toHaveBeenCalledOnce()
   })
 })

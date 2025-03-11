@@ -1,19 +1,20 @@
 import { nextTick } from 'vue'
-import { TvaLabel, mockedGetScheduleModelsByKey } from '@app/schedule/tests/mocks/commonViMock'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
-import { commonStore } from '@pulse/common'
-import ListItem from '.'
-import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
-import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
 import { expect, describe, it, vi } from 'vitest'
-import { dateToLocaleFormat } from '@app/schedule/helpers/utils'
-import {
-  getNotCompletelyDoneDeadlinesByDateMock,
-  getDoneDeadlinesByDateMock,
-} from '@app/schedule/tests/mocks/Deadline'
-import { collabUser } from '@app/schedule/tests/mocks/User'
 import { flushPromises } from '@vue/test-utils'
+import { commonStore } from '@pulse/common'
+import { tvaLabelMock } from '@app/__mocks__/schedule.mocks'
+import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
+import wrapperFactory from '@app/__mocks__/wrapper.factory'
+import { collabUserMock } from '@app/__mocks__/users.mocks'
+import { getNotCompletelyDoneDeadlinesByDateMock, getDoneDeadlinesByDateMock } from '@app/__mocks__/deadline.mocks'
+import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
+import { dateToLocaleFormat } from '@app/schedule/helpers/utils'
+
+import ListItem from '.'
+
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
 const pinia = createTestingPinia()
 
@@ -21,7 +22,7 @@ vi.mock('@pulse/common', () => ({
   commonStore: defineStore('common', {
     state: () => ({
       user: {
-        ...collabUser,
+        ...collabUserMock,
       },
     }),
     getters: {
@@ -33,10 +34,6 @@ vi.mock('@pulse/common', () => ({
       fetchUserData: vi.fn(),
     }
   },
-}))
-
-vi.mock('@app/schedule/services', () => ({
-  getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
 }))
 
 const createWrapper = (deadlinesByDate: DeadlinesByDate, isActiveDate = false) =>
@@ -62,7 +59,7 @@ describe('schedule item', () => {
     expect(wrapper.find('[data-testid="schedule-list-item-date"').text())
       .toBe(dateToLocaleFormat(deadlinesByDate.date))
 
-    const expectedText = TvaLabel
+    const expectedText = tvaLabelMock
     const deadLineContentLabel = wrapper.find('.p-schedule-deadline__content-label').text()
     expect(deadLineContentLabel).toBe(expectedText)
 
@@ -79,7 +76,7 @@ describe('schedule item', () => {
     expect(wrapper.find('[data-testid="schedule-list-item-date"').text())
       .toBe(dateToLocaleFormat(deadlinesByDate.date))
 
-    const expectedText = TvaLabel
+    const expectedText = tvaLabelMock
     const deadLineContentLabel = wrapper.find('.p-schedule-deadline__content-label').text()
     expect(deadLineContentLabel).toBe(expectedText)
 

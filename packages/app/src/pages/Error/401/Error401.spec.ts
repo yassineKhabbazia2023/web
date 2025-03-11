@@ -1,7 +1,11 @@
 import { it, describe, expect, vi } from 'vitest'
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
-import Error401 from '.'
 import { nextTick } from 'vue'
+import { redirectToHomeMock, useRedirectionMock } from '@app/__mocks__/useRedirection.composable.mocks'
+
+import Error401 from '.'
+
+vi.mock('@app/composables/useRedirection', () => useRedirectionMock)
 
 const createWrapper = (): VueWrapper =>
   shallowMount(Error401, {
@@ -24,13 +28,6 @@ const createWrapper = (): VueWrapper =>
       },
     },
   })
-const mockRedirectToHome = vi.fn()
-
-vi.mock('@app/composables/useRedirection', () => ({
-  useRedirection: () => ({
-    redirectToHome: mockRedirectToHome,
-  }),
-}))
 
 describe('401', () => {
   describe('events', () => {
@@ -40,7 +37,7 @@ describe('401', () => {
       await nextTick()
       pError.vm.$emit('handle-click')
 
-      expect(mockRedirectToHome).toHaveBeenCalledOnce()
+      expect(redirectToHomeMock).toHaveBeenCalledOnce()
     })
   })
 })

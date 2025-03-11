@@ -1,21 +1,8 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
 import UserProfile from './'
 import { nextTick } from 'vue'
-
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
-    gateway: {
-      get: () => Promise.resolve({ data: {} }),
-    },
-  }),
-  dataProvider: () => {
-    return {
-      fetchUserData: vi.fn(),
-    }
-  },
-}))
 
 const MY_INFORMATION_CONTENT = 'custom content'
 

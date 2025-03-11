@@ -1,13 +1,14 @@
 import { flushPromises, mount } from '@vue/test-utils'
-import ScheduleDrawer from '.'
 import { expect, describe, it, vi } from 'vitest'
-import * as scheduleService from '@app/schedule/services'
-import { accountsCollection } from '@app/schedule/tests/mocks/Account'
-import { getMonthlyMockSchedule, frequenciesMock } from '@app/schedule/tests/mocks/Schedule'
+import { postScheduleMock, scheduleServicesMock, TEST_DATE } from '@app/__mocks__/schedule.service.mocks'
+import { getMonthlyMockSchedule } from '@app/__mocks__/schedule.mocks'
 import type { ScheduleDrawerProps } from './ScheduleDrawerTypes'
 import { nextTick } from 'vue'
 
-const TEST_DATE = '2024-08-14'
+import ScheduleDrawer from '.'
+
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
+
 const mockedToday = new Date(TEST_DATE)
 const createScheduleMockWithTypeLong = getMonthlyMockSchedule()
 const amplitudeTrackMock = vi.hoisted(() => vi.fn())
@@ -34,17 +35,6 @@ function createWrapper(override: Partial<ScheduleDrawerProps> = {}) {
   })
 }
 
-vi.mock('@app/schedule/services', () => {
-  return {
-    postSchedule: vi.fn(),
-    getAccountsCollection: vi.fn(() => Promise.resolve(accountsCollection)),
-    getScheduleModels: () => [{
-      key: 'TVA',
-      label: 'TVA au 21',
-    }],
-    getFrequenciesCollection: vi.fn(() => Promise.resolve(frequenciesMock)),
-  }
-})
 
 vi.mock('@pulse/common', () => ({
   amplitudeService: {
@@ -52,7 +42,7 @@ vi.mock('@pulse/common', () => ({
   },
 }))
 
-describe('drawer.vue', () => {
+describe('test ScheduleDrawer', () => {
   it('renders the component when modelValue is true', () => {
     const wrapper = createWrapper({ modelValue: true })
     expect(wrapper.html()).toContain('New schedule')
@@ -78,7 +68,7 @@ describe('drawer.vue', () => {
     scheduleForm.vm.$emit('update-schedule-model', createScheduleMockWithTypeLong)
     await nextTick()
     // Assert
-    expect(scheduleService.postSchedule).toHaveBeenCalledWith(createScheduleMockWithTypeLong)
+    expect(postScheduleMock).toHaveBeenCalledWith(createScheduleMockWithTypeLong)
     expect(amplitudeTrackMock).toHaveBeenCalledOnce()
   })
 })

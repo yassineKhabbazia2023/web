@@ -2,13 +2,14 @@ import { describe, it, expect, vi, type MockInstance, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import * as ReportService from '@app/services/reporting'
-import { getMockedFavoriteEntities } from '../../MockedFavoriteEntities'
+import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
+import { getMockedBIReports } from '@app/__mocks__/bi-reports.mocks'
 import { createTestingPinia } from '@pinia/testing'
 import { createPinia, defineStore, setActivePinia } from 'pinia'
 import { commonPinia as pinia, amplitudeService } from '@pulse/common'
 import { PERMISSION_CODES } from '@app/constants'
+
 import SidebarEntityMenu from '.'
-import { getMockedBIReports } from './SidebarEntityMenuMocks'
 
 const mockedBIReports = getMockedBIReports()
 const favoriteEntityId: number = getMockedFavoriteEntities()[0].accountId

@@ -1,14 +1,15 @@
 import { nextTick } from 'vue'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { ScheduleServicesMock } from '@app/schedule/tests/mocks/commonViMock'
-import FilterDrawer from '.'
 import { expect, describe, it, vi } from 'vitest'
+import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import type { FilterDrawerProps, Filters } from './FilterDrawerTypes'
 import type { Status } from '@app/schedule/models/Deadline'
 
+import FilterDrawer from '.'
+
 const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@app/schedule/services', () => ScheduleServicesMock)
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
 vi.mock('@pulse/common', () => ({
   amplitudeService: {

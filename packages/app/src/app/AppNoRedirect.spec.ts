@@ -2,25 +2,27 @@ import { createTestingPinia } from '@pinia/testing'
 import { defineStore } from 'pinia'
 import { describe, expect, it, vi, beforeEach, afterEach, type MockInstance } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { getMockedFavoriteEntities } from '@app/layouts/Home/Sidebar/components/SidebarEntity/MockedFavoriteEntities'
+import { envVarsMock } from '@pulse/core/mocks'
+import { logoutAndRedirectToLoginMock, useRedirectionMock } from '@app/__mocks__/useRedirection.composable.mocks'
+import { notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
+import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
+import { initTokenMock, setTokenMock, tokenServiceMock } from '@pulse/common/mocks'
 import { amplitudeService, commonStore } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
 import { nextTick, ref } from 'vue'
 import * as mockedEnvVar from 'env-vars'
-import App from '.'
 import { LoginRouteName } from '@pulse/common/constants'
 import { LAYOUTS } from '@app/constants/constants'
 
-const testEntity: Entity = getMockedFavoriteEntities()[0]
+import App from '.'
+
+const entityMock: Entity = getMockedFavoriteEntities()[0]
 
 const setUnauthorizedCallbackMock = vi.hoisted(() => vi.fn())
-const mockedLogoutAndRedirectToLogin = vi.hoisted(() => vi.fn())
-const setTokenMock = vi.hoisted(() => vi.fn())
-const initTokenMock = vi.hoisted(() => vi.fn())
 
-const mockedRouterPush = vi.hoisted(() => vi.fn())
-const mockedUseRouter = vi.hoisted(() => vi.fn(() => ({
-  push: mockedRouterPush,
+const routerPushMock = vi.hoisted(() => vi.fn())
+const useRouterMock = vi.hoisted(() => vi.fn(() => ({
+  push: routerPushMock,
   currentRoute: {
     value: {
       meta: {
@@ -30,46 +32,26 @@ const mockedUseRouter = vi.hoisted(() => vi.fn(() => ({
     stylesMetaProperties: '',
   },
 })))
-const mockedUseRoute = vi.hoisted(() => vi.fn(() => ({
+const useRouteMock = vi.hoisted(() => vi.fn(() => ({
   name: 'route-name',
   meta: {},
 })))
 
 vi.mock('vue-router', () => ({
-  useRouter: mockedUseRouter,
-  useRoute: mockedUseRoute,
+  useRouter: useRouterMock,
+  useRoute: useRouteMock,
 }))
 
-vi.mock('@app/composables/useRedirection', () => ({
-  useRedirection: () => ({
-    logoutAndRedirectToLogin: mockedLogoutAndRedirectToLogin,
-  }),
-}))
+vi.mock('env-vars', () => envVarsMock)
+vi.mock('@app/composables/useRedirection', () => useRedirectionMock)
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 
 const mockedCommonState = vi.hoisted(() => vi.fn())
-
-vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
-  fetchNotifications: vi.fn(() => Promise.resolve({
-    notifications: [],
-  })),
-  fetchUnreadNotificationsCount: vi.fn(() => Promise.resolve({
-    count: 1,
-  })),
-}))
-
-vi.mock('./app.utils', () => ({
-  getExpirationDelays: vi.fn(() => ({
-    expiredTokenDelay: 0,
-    openPopupDelay: 0,
-  })),
-}))
-
 vi.mock('@pulse/common', () => ({
-  hasTokenExpired: (token: string) => !token,
   commonStore: defineStore('common', {
     state: mockedCommonState,
     getters: {
-      defaultEntity: () => testEntity,
+      defaultEntity: () => entityMock,
       isAuthenticated: () => true,
       favoriteEntities: () => [],
     },
@@ -84,7 +66,7 @@ vi.mock('@pulse/common', () => ({
       get: () =>
         Promise.resolve({
           data: {
-            items: [{ accountId: testEntity.accountId }],
+            items: [{ accountId: entityMock.accountId }],
             totalItems: 1,
           },
         }),
@@ -104,14 +86,7 @@ vi.mock('@pulse/common', () => ({
   userPermissions: () => ({
     hasPermission: () => vi.fn(() => true),
   }),
-  tokenService: {
-    setToken: setTokenMock,
-    getToken: vi.fn(),
-    initToken: initTokenMock,
-    getTokenExp: vi.fn(),
-    getTokenSub: vi.fn(),
-    registerOnChange: vi.fn(),
-  },
+  tokenService: tokenServiceMock.TokenService.getInstance(),
   fetchUrlTerms: vi.fn(),
   amplitudeService: {
     init: vi.fn(),
@@ -177,10 +152,10 @@ describe('app with navigation guard', () => {
     // @ts-expect-error: Getter is read only
     store.user = {}
     vi.advanceTimersByTime(120000) // 2 minutes
-    expect(mockedRouterPush).toHaveBeenCalledTimes(0)
+    expect(routerPushMock).toHaveBeenCalledTimes(0)
     vi.advanceTimersByTime(180000) // 3 minutes
     await nextTick()
-    expect(mockedRouterPush).toHaveBeenCalledWith({ name: LoginRouteName.LOGIN_COLLAB })
+    expect(routerPushMock).toHaveBeenCalledWith({ name: LoginRouteName.LOGIN_COLLAB })
   })
 
   it('should call initToken and setUnauthorizedCallback onMounted', async () => {
@@ -247,7 +222,7 @@ describe('app with navigation guard', () => {
     expect(callBack.value).toBeDefined()
     expect(setTokenMock).toHaveBeenCalledOnce()
     expect(setTokenMock).toHaveBeenCalledWith('')
-    expect(mockedLogoutAndRedirectToLogin).toHaveBeenCalledOnce()
+    expect(logoutAndRedirectToLoginMock).toHaveBeenCalledOnce()
   })
 
   it('do NOT redirect to login when login layout and 401 encountered and user is null', async () => {
@@ -258,7 +233,7 @@ describe('app with navigation guard', () => {
         layout: LAYOUTS.LOGIN,
       },
     }
-    mockedUseRoute.mockReturnValueOnce(mockedRoute)
+    useRouteMock.mockReturnValueOnce(mockedRoute)
 
     mockedCommonState.mockReturnValue({
       user: null,
@@ -280,7 +255,7 @@ describe('app with navigation guard', () => {
     expect(callBack.value).toBeDefined()
     expect(setTokenMock).toHaveBeenCalledOnce()
     expect(setTokenMock).toHaveBeenCalledWith('')
-    expect(mockedLogoutAndRedirectToLogin).not.toHaveBeenCalledOnce()
+    expect(logoutAndRedirectToLoginMock).not.toHaveBeenCalledOnce()
     expect(popupRenewToken.props()).toStrictEqual(expectedProps)
   })
 
@@ -290,6 +265,6 @@ describe('app with navigation guard', () => {
 
     popupRenewToken.vm.$emit('logout')
     await nextTick()
-    expect(mockedLogoutAndRedirectToLogin).toHaveBeenCalledOnce()
+    expect(logoutAndRedirectToLoginMock).toHaveBeenCalledOnce()
   })
 })

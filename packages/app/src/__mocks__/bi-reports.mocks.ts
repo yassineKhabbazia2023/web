@@ -1,4 +1,4 @@
-import type { Report } from './SidebarEntityMenuTypes'
+import type { Report } from '@app/types/bi-reports.types'
 
 export const getMockedBIReports = (): Report[] => {
   return [

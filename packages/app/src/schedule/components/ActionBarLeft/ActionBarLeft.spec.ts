@@ -1,8 +1,9 @@
 import { mount } from '@vue/test-utils'
 import dayjs from 'dayjs'
-import ActionBarLeft from '.'
 import { expect, describe, it, vi } from 'vitest'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
+
+import ActionBarLeft from '.'
 
 const TEST_DATE = '2024-04-10'
 const amplitudeTrackMock = vi.hoisted(() => vi.fn())

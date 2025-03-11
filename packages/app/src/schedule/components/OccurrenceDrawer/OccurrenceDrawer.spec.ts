@@ -1,16 +1,15 @@
 import { nextTick } from 'vue'
-import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
+import wrapperFactory from '@app/__mocks__/wrapper.factory'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
-import OccurrenceDrawer from '.'
 import { expect, describe, it, vi } from 'vitest'
-import { accountsCollection } from '@app/schedule/tests/mocks/Account'
-import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
-import { frequenciesMock } from '@app/schedule/tests/mocks/Schedule'
 import { flushPromises } from '@vue/test-utils'
-import { getMockedOccurrence, getMockedScheduleOccurrence } from '@app/schedule/tests/mocks/Occurrence'
-import { mockedGetScheduleModelsByKey } from '@app/schedule/tests/mocks/commonViMock'
+import type { OccurrenceDrawerProps } from './OccurrenceDrawerTypes'
+import { getOccurrenceAttachmentMock, getOccurrenceMock, scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
+import { getMockedOccurrence, getMockedScheduleOccurrence } from '@app/__mocks__/occurrence.mocks'
 import * as scheduleServices from '@app/schedule/services'
 import { downloadFile, saveFileAs } from '@app/schedule/helpers/utils'
+
+import OccurrenceDrawer from '.'
 
 const mockedOccurrence = getMockedOccurrence({
   schedule: getMockedScheduleOccurrence({
@@ -18,6 +17,8 @@ const mockedOccurrence = getMockedOccurrence({
     description: 'Description',
   }),
 })
+const fileName = 'declaration_tva_mai_2024.pdf'
+const attachmentContent = 'schedule attachment data'
 
 const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
@@ -29,35 +30,20 @@ interface Window {
 declare let window: Window
 
 vi.mock('@pulse/core', async (importActual) => {
-  const actual = await importActual()
+  const actual = await importActual() as Record<string, any>
   return {
-    // @ts-ignore
     ...actual,
     logger: loggerMock,
   }
 })
 
-vi.mock('@app/schedule/services', () => {
-  return {
-    postSchedule: vi.fn(),
-    getAccountsCollection: vi.fn(() => Promise.resolve(accountsCollection)),
-    getScheduleModels: () => [{
-      key: 'TVA',
-      label: 'TVA au 21',
-    }],
-    getFrequenciesCollection: vi.fn(() => Promise.resolve(frequenciesMock)),
-    getOccurrence: vi.fn(() => Promise.resolve(mockedOccurrence)),
-    getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
-    postDeadlineAccountStatus: vi.fn(),
-    getOccurrenceAttachment: vi.fn(() => Promise.resolve({ data: attachmentContent })),
-  }
-})
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
-vi.mock('./OccurrenceDrawerHelper', async () => {
-  const actual = await vi.importActual('./OccurrenceDrawerHelper')
+vi.mock('./OccurrenceDrawerHelper', async (importActual) => {
+  const actual = await importActual() as Record<string, any>
 
   return {
-    ...actual as object,
+    ...actual,
     getFrequencyLabel: vi.fn(() => 'Frequency label'),
     getCreatedByLabel: vi.fn(() => 'createdby label'),
     getShortLabel: vi.fn(() => 'short label'),
@@ -95,10 +81,11 @@ const createWrapper = (override: Partial<OccurrenceDrawerProps> = {}) => {
   })
 }
 
-const fileName = 'declaration_tva_mai_2024.pdf'
-const attachmentContent = 'schedule attachment data'
+describe('test OccurrenceDrawer', () => {
+  beforeEach(() => {
+    getOccurrenceMock.mockReturnValueOnce(mockedOccurrence)
+  })
 
-describe('drawer.vue', () => {
   it('should display loader until data are loaded', async () => {
     const wrapper = createWrapper({ modelValue: true })
     await nextTick()
@@ -250,53 +237,62 @@ describe('drawer.vue', () => {
     expect(deadlineReminders.exists()).toBeFalsy()
   })
 
-  it('should use showSaveFilePicker when available', async () => {
 
-    window.atob = vi.fn(() => 'abcdef')
-    const wrapper = createWrapper()
-    await flushPromises()
+  describe('download feature', () => {
+    beforeEach(() => {
+      getOccurrenceMock.mockReturnValueOnce(mockedOccurrence)
+      getOccurrenceAttachmentMock.mockReturnValueOnce({ data: attachmentContent })
+    })
 
-    window.showSaveFilePicker = vi.fn(() => Promise.resolve({
-      createWritable: vi.fn(() => Promise.resolve({
-        write: vi.fn(),
-        close: vi.fn(),
-      })),
-    }))
-    await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
-    expect(saveFileAs).toHaveBeenCalledWith(fileName, attachmentContent)
-  })
+    it('should use showSaveFilePicker when available', async () => {
 
-  it('should use traditional download method when showSaveFilePicker is not available', async () => {
+      window.atob = vi.fn(() => 'abcdef')
+      const wrapper = createWrapper()
+      await flushPromises()
 
-    window.atob = vi.fn(() => 'abcdef')
-    const wrapper = createWrapper()
-    await flushPromises()
-    delete window.showSaveFilePicker
-    await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
-    expect(downloadFile).toHaveBeenCalledWith(fileName, attachmentContent)
-  })
+      window.showSaveFilePicker = vi.fn(() => Promise.resolve({
+        createWritable: vi.fn(() => Promise.resolve({
+          write: vi.fn(),
+          close: vi.fn(),
+        })),
+      }))
+      await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
+      expect(saveFileAs).toHaveBeenCalledWith(fileName, attachmentContent)
+    })
 
-  it('should use download fallback when showSaveFilePicker is available but failed in runtime', async () => {
-    const wrapper = createWrapper()
-    await flushPromises()
+    it('should use traditional download method when showSaveFilePicker is not available', async () => {
 
-    window.showSaveFilePicker = vi.fn(() => Promise.resolve({
-      createWritable: vi.fn(() => Promise.resolve({
-        write: vi.fn(),
-        close: vi.fn(),
-      })),
-    }))
-    vi.mocked(saveFileAs).mockRejectedValueOnce(new Error('Failed to execute  showSaveFilePicker on Window'))
-    await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
-    await flushPromises()
-    expect(downloadFile).toHaveBeenCalledWith(fileName, attachmentContent)
-    expect(true).toBeTruthy()
-  })
-  it('should throw and not call downloadFile', async () => {
-    const wrapper = createWrapper()
-    await flushPromises()
-    vi.mocked(scheduleServices.getOccurrenceAttachment).mockRejectedValueOnce(new Error('Failed to execute schedule'))
-    await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
-    expect(downloadFile).not.toHaveBeenCalledWith(fileName, attachmentContent)
+      window.atob = vi.fn(() => 'abcdef')
+      const wrapper = createWrapper()
+      await flushPromises()
+      delete window.showSaveFilePicker
+      await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
+      expect(downloadFile).toHaveBeenCalledWith(fileName, attachmentContent)
+    })
+
+    it('should use download fallback when showSaveFilePicker is available but failed in runtime', async () => {
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      window.showSaveFilePicker = vi.fn(() => Promise.resolve({
+        createWritable: vi.fn(() => Promise.resolve({
+          write: vi.fn(),
+          close: vi.fn(),
+        })),
+      }))
+      vi.mocked(saveFileAs).mockRejectedValueOnce(new Error('Failed to execute  showSaveFilePicker on Window'))
+      await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
+      await flushPromises()
+      expect(downloadFile).toHaveBeenCalledWith(fileName, attachmentContent)
+      expect(true).toBeTruthy()
+    })
+
+    it('should throw and not call downloadFile', async () => {
+      const wrapper = createWrapper()
+      await flushPromises()
+      vi.mocked(scheduleServices.getOccurrenceAttachment).mockRejectedValueOnce(new Error('Failed to execute schedule'))
+      await wrapper.find('[data-testid="occurrence-drawer-attachment-download"]').trigger('click')
+      expect(downloadFile).not.toHaveBeenCalledWith(fileName, attachmentContent)
+    })
   })
 })

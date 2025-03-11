@@ -1,11 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { getMockedFavoriteEntities } from '../MockedFavoriteEntities'
-import { getDefaultEntity } from '.'
+import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import type { Entity } from '@pulse/common/types'
 
-vi.mock('@app/helper', () => ({
-  getRandomColor: vi.fn(() => 'orange'),
-}))
+import { getDefaultEntity } from '.'
 
 const mockedFavoriteEntities = getMockedFavoriteEntities()
 const firstEntity = mockedFavoriteEntities[0]

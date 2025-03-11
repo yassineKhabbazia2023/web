@@ -1,6 +1,7 @@
-import Tag from '.'
-import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
+import wrapperFactory from '@app/__mocks__/wrapper.factory'
 import { expect, describe, it } from 'vitest'
+
+import Tag from '.'
 
 const createWrapper = (statusCode: string) =>
   wrapperFactory(Tag, { props: { status: statusCode } })

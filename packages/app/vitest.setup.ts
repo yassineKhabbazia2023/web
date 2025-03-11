@@ -1,6 +1,3 @@
-import { vi } from 'vitest'
-import { defineStore } from 'pinia'
-import { notificationsMock } from './src/mocks/FeedCenter/notifications.mock'
 import styleguideLibrary from '@pulse/styleguide'
 import { createI18n } from 'vue-i18n'
 import { config } from '@vue/test-utils'
@@ -19,42 +16,3 @@ config.global.plugins = [
   i18n,
   [styleguideLibrary, styleguideParameters],
 ]
-
-const CGU_URL = 'https://custom-CGU.com'
-export const spyAddEventListener = vi.spyOn(window, 'addEventListener')
-
-vi.mock('@pulse/common', () => ({
-  fetchUrlTerms: vi.fn(() => CGU_URL),
-  commonStore: defineStore('common', {
-    getters: {
-      isCollab: () => true,
-    },
-    actions: {
-      logout: () => vi.fn(),
-    },
-  }),
-}))
-
-export const fetchUnreadNotificationsCountMock = vi.fn(() => 5)
-export const fetchNotificationsMock = vi.fn(() => ({ notifications: notificationsMock }))
-export const patchNotificationReadStatusMock = vi.fn()
-export const patchAllNotificationsAsReadMock = vi.fn()
-
-vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
-  fetchUnreadNotificationsCount: fetchUnreadNotificationsCountMock,
-  fetchNotifications: fetchNotificationsMock,
-  patchNotificationReadStatus: patchNotificationReadStatusMock,
-  patchAllNotificationsReadStatus: patchAllNotificationsAsReadMock,
-}))
-
-export const envVarsValues = {
-  VITE_AMPLITUDE_API_KEY: 'mocked-amplitude-api-key',
-  VITE_AMPLITUDE_SERVER_URL: 'mocked-amplitude-server-url',
-  VITE_FEED_CENTER_ACTIVATED: 'true',
-  VITE_IDLE_DURATION: 5,
-  VITE_PRODUCT_FRUITS_KEY: 'TEST_KEY',
-  VITE_PRODUCT_FRUITS_KEY_CLIENT: 'TEST_KEY',
-  VITE_SCHEDULE_ACTIVATED: 'true',
-}
-
-vi.mock('env-vars', () => (envVarsValues))

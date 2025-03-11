@@ -1,15 +1,15 @@
 import { describe, it, expect, vi } from 'vitest'
-import wrapperFactory from '@app/schedule/tests/utils/wrapperFactory'
+import wrapperFactory from '@app/__mocks__/wrapper.factory'
 import type { WidgetActiveDayProps } from './WidgetActiveDayTypes'
-import WidgetActiveDay from '.'
-import { getMockedDeadlines } from '@app/schedule/tests/mocks/Deadline'
+import { getMockedDeadlines } from '@app/__mocks__/deadline.mocks'
 import type { VueWrapper } from '@vue/test-utils'
-import { mockedGetScheduleModelsByKey } from '@app/schedule/tests/mocks/commonViMock'
+import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import WidgetDeadlines from '@app/schedule/components/WidgetDeadlines'
 
-vi.mock('@app/schedule/services', () => ({
-  getScheduleModelsByKey: (_: string) => mockedGetScheduleModelsByKey(_),
-}))
+import WidgetActiveDay from '.'
+
+
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
 const activeDate = new Date(2024, 4, 29)
 const defaultProps: WidgetActiveDayProps = {

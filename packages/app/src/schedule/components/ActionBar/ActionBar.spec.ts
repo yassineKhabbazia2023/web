@@ -1,9 +1,10 @@
 import { describe, it, expect, vi } from 'vitest'
+import { TEST_DATE } from '@app/__mocks__/schedule.service.mocks'
 import { shallowMount } from '@vue/test-utils'
-import ActionBar from '.'
 import type { ActionBarProps } from './ActionBarTypes'
 
-const TEST_DATE = '2024-04-10'
+import ActionBar from '.'
+
 const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/common', () => ({
   amplitudeService: {

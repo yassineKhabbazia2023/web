@@ -1,7 +1,8 @@
-import { getDeadlineCompletionSummary, getProgressText } from '@app/schedule/helpers/deadlineHelper'
 import { expect, describe, it } from 'vitest'
+import { getNotCompletelyDoneDeadlinesByDateMock } from '@app/__mocks__/deadline.mocks'
 import type { DeadlineAccount, Status } from '@app/schedule/models/Deadline'
-import { getNotCompletelyDoneDeadlinesByDateMock } from '@app/schedule/tests/mocks/Deadline'
+
+import { getDeadlineCompletionSummary, getProgressText } from '@app/schedule/helpers/deadlineHelper'
 
 function getMockedAccount(id: number, status: Status): DeadlineAccount {
   return {

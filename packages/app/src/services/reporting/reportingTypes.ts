@@ -1,6 +1,4 @@
-import type {
-  Report,
-} from '@app/layouts/Home/Sidebar/components/SidebarEntity/components/SidebarEntityMenu/SidebarEntityMenuTypes'
+import type { Report } from '@app/types/bi-reports.types'
 
 export interface GetReportsRequest {
   items: Report[]

@@ -1,5 +1,11 @@
 import type { Deadline } from '../models/Deadline'
 import { loggerMock } from '@pulse/core/mocks'
+import { expect, describe, it, vi } from 'vitest'
+import { accountsCollectionForSelectFormat, accountsCollection } from '@app/__mocks__/accounts.mocks'
+import { TEST_DATE } from '@app/__mocks__/schedule.service.mocks'
+import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
+import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
+
 import {
   dateToLocaleFormat,
   accountsDataTransformer,
@@ -15,12 +21,6 @@ import {
   getDefaultFilters,
   getAppliedFilterCount,
 } from './utils'
-import { expect, describe, it, vi } from 'vitest'
-import { accountsCollectionForSelectFormat, accountsCollection } from '@app/schedule/tests/mocks/Account'
-import { TEMPLATE_TYPE_SHORT_OTHER } from './scheduleConsts'
-import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
-
-const TEST_DATE = '2024-08-14'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 

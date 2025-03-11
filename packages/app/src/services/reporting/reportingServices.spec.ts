@@ -1,8 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
+import { getMockedBIReports } from '@app/__mocks__/bi-reports.mocks'
+
 import { fetchBIReports } from '.'
-import {
-  getMockedBIReports,
-} from '@app/layouts/Home/Sidebar/components/SidebarEntity/components/SidebarEntityMenu/SidebarEntityMenuMocks'
 
 const mockedAccountId = 602
 const mockedBIReports = getMockedBIReports()

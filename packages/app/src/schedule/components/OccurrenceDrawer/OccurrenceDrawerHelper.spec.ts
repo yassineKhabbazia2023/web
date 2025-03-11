@@ -1,5 +1,11 @@
 import { expect, describe, it } from 'vitest'
+import {
+  getMockedOccurrence,
+  getMockedScheduleOccurrence,
+  getMockedTemplateOccurrence,
+} from '@app/__mocks__/occurrence.mocks'
 import type { Status } from '@app/schedule/models/Deadline'
+
 import {
   getFrequencyLabel,
   getCreatedByLabel,
@@ -7,11 +13,6 @@ import {
   getLongLabel,
   getNewStatus,
 } from './OccurrenceDrawerHelper'
-import {
-  getMockedOccurrence,
-  getMockedScheduleOccurrence,
-  getMockedTemplateOccurrence,
-} from '@app/schedule/tests/mocks/Occurrence'
 
 const frequencyLabels: Record<string, string> = {
   Monthly: 'Tous les mois',

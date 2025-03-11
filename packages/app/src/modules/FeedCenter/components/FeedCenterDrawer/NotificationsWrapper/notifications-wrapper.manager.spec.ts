@@ -1,18 +1,22 @@
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { Router } from 'vue-router'
-import { patchNotificationReadStatusMock } from '@app/../vitest.setup'
-import { setActivePinia } from 'pinia'
-import { createTestingPinia } from '@pinia/testing'
-import { commonStore } from '@pulse/common'
+import { notificationsServiceMock, patchNotificationReadStatusMock } from '@app/__mocks__/notification.service.mocks'
 import {
   notificationsMock,
   readNotificationsMock,
   unreadNotificationsMock,
   gedNotificationMock,
   mandateNotificationMock,
-} from '@app/mocks/FeedCenter/notifications.mock'
-import { accountsMock } from '@app/mocks/Account/accounts.mock'
+} from '@app/__mocks__/notifications.mocks'
+import { accountsMock } from '@app/__mocks__/accounts.mocks'
+import { setActivePinia } from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
+import { commonStore } from '@pulse/common'
 import { accountsRowMock, entitiesFromAccountsRow } from '@pulse/common/mocks'
+import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
+import * as NotificationService from './notifications-wrapper.service'
+import { flushPromises } from '@vue/test-utils'
+
 import {
   patchUnreadNotification,
   getIsNotificationRead,
@@ -21,10 +25,8 @@ import {
   getNotificationAccountNumbers,
   getNotificationAccountNames,
 } from './notifications-wrapper.manager'
-import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
-import * as NotificationService from './notifications-wrapper.service'
-import { flushPromises } from '@vue/test-utils'
 
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 
 describe('patchUnreadNotification', () => {
   it('should call the patch API when the notification is unread', () => {

@@ -1,9 +1,10 @@
-import DeadlineAccounts from '.'
 import { expect, describe, it, beforeEach, beforeAll } from 'vitest'
-import type { DeadlineAccountsProps } from './DeadlineAccountsTypes'
 import { shallowMount, type DOMWrapper, type VueWrapper } from '@vue/test-utils'
-import { getMockedDeadlineAccount } from '@app/schedule/tests/mocks/Deadline'
 import { nextTick } from 'vue'
+import { getMockedDeadlineAccount } from '@app/__mocks__/deadline.mocks'
+import type { DeadlineAccountsProps } from './DeadlineAccountsTypes'
+
+import DeadlineAccounts from '.'
 
 const title = 'Destinataires'
 const mockedMockedDeadlineAccountDONE = getMockedDeadlineAccount(1, 'Done')

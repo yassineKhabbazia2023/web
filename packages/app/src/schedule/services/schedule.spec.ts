@@ -1,4 +1,10 @@
 import { describe, it, expect, vi } from 'vitest'
+import { accountsCollection } from '@app/__mocks__/accounts.mocks'
+import { getMockSchedule, frequenciesMock } from '@app/__mocks__/schedule.mocks'
+import { getMockedOccurrence } from '@app/__mocks__/occurrence.mocks'
+import { getDoneDeadlinesByDateMock } from '@app/__mocks__/deadline.mocks'
+import type { ScheduleModelLabelType } from './scheduleServiceTypes'
+
 import {
   getSchedulesCollection,
   getAccountsCollection,
@@ -10,11 +16,6 @@ import {
   postDeadlineAccountStatus,
   getOccurrenceAttachment,
 } from '.'
-import { accountsCollection } from '@app/schedule/tests/mocks/Account'
-import { getMockSchedule, frequenciesMock } from '@app/schedule/tests/mocks/Schedule'
-import type { ScheduleModelLabelType } from './scheduleServiceTypes'
-import { getMockedOccurrence } from '../tests/mocks/Occurrence'
-import { getDoneDeadlinesByDateMock } from '../tests/mocks/Deadline'
 
 const scheduleId = '1234-332-32121-212'
 const mockedOccurrence = getMockedOccurrence()

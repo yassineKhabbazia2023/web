@@ -1,5 +1,5 @@
+import { accountsMock } from '@app/__mocks__/accounts.mocks'
 import { type FeedCenterNotification, NotificationKindEnum } from '@app/modules/FeedCenter/types/notification.type'
-import { accountsMock } from '@app/mocks/Account/accounts.mock'
 
 export const readNotificationsMock = [
   {

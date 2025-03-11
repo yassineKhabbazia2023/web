@@ -1,18 +1,20 @@
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import CreateScheduleForm from '.'
 import type { FormProps } from './CreateScheduleFormTypes'
-import { accountsCollection, recipientsIdCollection } from '@app/schedule/tests/mocks/Account'
+import { accountsCollection, recipientsIdCollection } from '@app/__mocks__/accounts.mocks'
+import { getMockSchedule, getMonthlyMockSchedule, frequenciesMock } from '@app/__mocks__/schedule.mocks'
+import { scheduleServicesMock, TEST_DATE } from '@app/__mocks__/schedule.service.mocks'
 import { accountsDataTransformer } from '@app/schedule/helpers/utils'
-import { getMockSchedule, getMonthlyMockSchedule, frequenciesMock }
-  from '@app/schedule/tests/mocks/Schedule'
 import { TEMPLATE_TYPE_SHORT_OTHER } from '@app/schedule/helpers/scheduleConsts'
-import { TEST_DATE } from '@app/schedule/tests/mocks/commonViMock'
+
+import CreateScheduleForm from '.'
 
 const mockedReminders = [2]
 const createScheduleMock = getMockSchedule(mockedReminders)
 const createScheduleMockWithTypeLong = getMonthlyMockSchedule(mockedReminders)
+
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
 const mockedGetIsValid = vi.hoisted(() => vi.fn())
 const createWrapper = (props: FormProps) =>
@@ -51,15 +53,6 @@ const createWrapper = (props: FormProps) =>
         PCol: { template: '<div><slot /></div>' },
       },
     } })
-
-vi.mock('@app/schedule/services', () => {
-  return {
-    getScheduleModels: (longLabels: boolean) => [{
-      key: 'TVA',
-      label: longLabels ? 'TVA au 21' : 'TVA',
-    }],
-  }
-})
 
 describe('test CreateScheduleForm', () => {
   it.each([

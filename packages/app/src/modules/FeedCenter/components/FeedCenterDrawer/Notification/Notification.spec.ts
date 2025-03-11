@@ -1,14 +1,10 @@
-import { vi, describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import Notifications from '.'
 import type { NotificationProps } from './notification.types'
-import { accountsMock } from '@app/mocks/Account/accounts.mock'
-import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
+import { accountsMock } from '@app/__mocks__/accounts.mocks'
+import { notificationsMock } from '@app/__mocks__/notifications.mocks'
 
-vi.mock('@pulse/common', async () => {
-  const actual = await vi.importActual('@pulse/common')
-  return actual
-})
+import Notifications from '.'
 
 const notificationMock = notificationsMock[0]
 const FeedCenterDrawerBaseProps: NotificationProps = {

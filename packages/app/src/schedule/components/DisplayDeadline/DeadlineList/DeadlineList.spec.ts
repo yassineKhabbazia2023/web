@@ -1,9 +1,13 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
 import { expect, describe, beforeEach, it, vi } from 'vitest'
-import { getNotCompletelyDoneDeadlinesByDateMock } from '@app/schedule/tests/mocks/Deadline'
+import { getNotCompletelyDoneDeadlinesByDateMock } from '@app/__mocks__/deadline.mocks'
+import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import type { DeadlineListProps } from './DeadlineListTypes'
+
 import DeadlineList from '.'
+
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
 const notCompletelyDoneDeadlinesByDateMock = getNotCompletelyDoneDeadlinesByDateMock()
 
@@ -33,12 +37,6 @@ function createWrapper(override: Partial<DeadlineListProps> = {}) {
     },
   })
 }
-
-vi.mock('@app/schedule/services', () => ({
-  getScheduleModelsByKey: () => ({
-    TVA: 'TVA au 21 (Taxe sur la valeur ajoutée)',
-  }),
-}))
 
 describe('test DeadlineList', () => {
   describe('when list is NOT empty', () => {

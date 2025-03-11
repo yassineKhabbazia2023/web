@@ -1,17 +1,14 @@
 import { expect, describe, it } from 'vitest'
+import { getDoneDeadlinesByDateMock, getNotCompletelyDoneDeadlinesByDateMock } from '@app/__mocks__/deadline.mocks'
+import { TEST_DATE } from '@app/__mocks__/schedule.service.mocks'
+import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
+
 import {
   getDates,
   getMonthInterval,
   getAdvancedSearchParams,
   getSearchParams,
 } from './ScheduleUtils'
-import {
-  getDoneDeadlinesByDateMock,
-  getNotCompletelyDoneDeadlinesByDateMock,
-} from '@app/schedule/tests/mocks/Deadline'
-import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
-
-const TEST_DATE = '2024-08-14'
 
 describe('test ScheduleUtils', () => {
   describe('getMonthInterval', () => {

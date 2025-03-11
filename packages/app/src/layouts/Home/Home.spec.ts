@@ -1,23 +1,19 @@
-import { envVarsValues } from '@app/../vitest.setup'
-import {
-  ScheduleServicesMock,
-  commonMock,
-} from '@app/schedule/tests/mocks/commonViMock'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
+import { envVarsMock , featureFlagManagerMock, isFeedCenterActivatedMock, isScheduleActivatedMock, loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { commonMock } from '@app/__mocks__/common.mock'
+import mockedEntities from '@app/__mocks__/entities.mocks.json'
+import { fetchUnreadNotificationsCountMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
+import { trackFeedcenterOpenedMock, trackingServiceMock } from '@app/__mocks__/tracking.service.mocks'
+import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
+import { customerUserMock } from '@app/__mocks__/users.mocks'
+import { entitiesServiceMock } from '@app/__mocks__/entities.service.mocks'
 import { commonStore as store } from '@pulse/common'
 import { createTestingPinia } from '@pinia/testing'
-import helpers from '@app/tests/utils/helpers'
 import { nextTick } from 'vue'
 import * as entitiesServices from '@app/services/entities'
-import mockedEntities from '@app/mocks/entities.mock.json'
 import { initProductFruits as initProductFruitsMock } from '@app/plugins/ProductFruits/productFruits.plugin'
-import * as notificationService from '@app/modules/FeedCenter/services/notifications.service'
-import {
-  trackFeedcenterOpened,
-} from '@app/modules/FeedCenter/services/tracking/tracking.service'
 
 import Home from '.'
 
@@ -30,66 +26,35 @@ declare let window: {
 } & Window
 
 const pinia = createTestingPinia()
-const { fakeUser, router } = helpers()
 
-vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
-  fetchNotifications: vi.fn(() => Promise.resolve({
-    notifications: [],
-  })),
-  fetchUnreadNotificationsCount: vi.fn(() => Promise.resolve({
-    count: 1,
-  })),
-}))
-
-vi.mock('@app/modules/FeedCenter/services/notifications.service', () => ({
-  fetchNotifications: vi.fn(() => Promise.resolve({
-    notifications: [],
-  })),
-  fetchUnreadNotificationsCount: vi.fn(() => Promise.resolve({
-    count: 1,
-  })),
-}))
-
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
+vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
+vi.mock('env-vars', () => envVarsMock)
 vi.mock('@app/plugins/ProductFruits/productFruits.plugin')
 vi.mock('@app/plugins/Hubspot/hubspot.plugin')
 
-const feedCenterActivatedFlag = vi.hoisted(() => ({
-  value: 'true',
+vi.mock('@pulse/core', async () => ({
+  logger: loggerMock,
+  FeatureFlagManager: featureFlagManagerMock,
 }))
 
-vi.mock('@pulse/core', async () => {
-  const actual = await vi.importActual('@pulse/core')
-  return {
-    ...actual,
-    logger: loggerMock,
-    FeatureFlagManager: {
-      isScheduleActivated: () => true,
-      isFeedCenterActivated: () => feedCenterActivatedFlag.value,
-    },
-  }
-})
-
-vi.mock('@app/schedule/services', () => ScheduleServicesMock)
+vi.mock('@app/schedule/services', () => scheduleServicesMock)
 vi.mock('@pulse/common', () => commonMock)
-vi.mock('@app/services/entities', async () => {
-  const actual = await vi.importActual('@app/services/entities') as Record<string, any>
-  return {
-    ...actual,
-    fetchEntities: vi.fn(() => Promise.resolve({
-      items: mockedEntities,
-    })),
-  }
-})
+vi.mock('@app/services/entities', () => entitiesServiceMock)
 
-vi.mock('env-vars', () => ({
-  ...envVarsValues,
-  VITE_FEED_CENTER_ACTIVATED: feedCenterActivatedFlag.value,
-  VITE_PRODUCT_FRUITS_KEY: 'product fruits collab key',
-  VITE_PRODUCT_FRUITS_KEY_CLIENT: 'product fruits client key',
+const useRouterMock = vi.hoisted(() => vi.fn(() => ({
+  currentRoute: {
+    value: {
+      meta: {
+        style: '',
+      },
+    },
+  },
+})))
+
+vi.mock('vue-router', () => ({
+  useRouter: useRouterMock,
 }))
-
-vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service')
-
 
 import.meta.env.PROD = true
 
@@ -103,7 +68,7 @@ const createWrapper = (): VueWrapper<any> =>
   shallowMount(Home, {
     attachTo: document.body,
     global: {
-      plugins: [pinia, router],
+      plugins: [pinia],
       stubs: {
         Schedule: { template: '<div data-testid="schedule-stub" />' },
         MyInformation: { template: '<div />' },
@@ -139,16 +104,10 @@ describe('home', () => {
 
   it('should call initProductFruits on mount', async () => {
     const expectedArguments = {
-      key: 'product fruits client key',
+      key: envVarsMock.VITE_PRODUCT_FRUITS_KEY_CLIENT,
       lang: 'fr',
       openChat: expect.anything(),
-      user: {
-        id: 123,
-        email: 'john@example.com',
-        firstName: 'John',
-        lastName: 'Doe',
-        isCollab: false,
-      },
+      user: customerUserMock,
     }
 
     expect(initProductFruitsMock).toHaveBeenCalledOnce()
@@ -199,11 +158,7 @@ describe('home', () => {
     expect(myStore.$patch).toHaveBeenCalledOnce()
     expect(myStore.$patch).toHaveBeenCalledWith({
       user: {
-        id: fakeUser?.id,
-        firstName: fakeUser?.firstName,
-        lastName: fakeUser?.lastName,
-        email: fakeUser?.email,
-        isCollab: fakeUser?.isCollab,
+        ...customerUserMock,
         entities: {
           default: mockedEntities[0],
           favorites: [],
@@ -221,6 +176,7 @@ describe('home', () => {
   })
 
   it('should show calendar drawer when header emits show-user-profile-drawer', async () => {
+    isScheduleActivatedMock.mockReturnValue(true)
     wrapper.vm.isLoading = false
     wrapper.vm.defaultEntity = true
 
@@ -240,6 +196,7 @@ describe('home', () => {
   })
 
   it('should still show calendar drawer when header emits show-user-profile-drawer and close it after', async () => {
+    isScheduleActivatedMock.mockReturnValue(true)
     wrapper.vm.isLoading = false
     wrapper.vm.defaultEntity = true
     await nextTick()
@@ -259,7 +216,7 @@ describe('home', () => {
   })
 
   it('should still show feed center drawer when header emits show-user-profile-drawer and close it after', async () => {
-    feedCenterActivatedFlag.value = 'true'
+    isFeedCenterActivatedMock.mockReturnValue(true)
     wrapper.vm.isLoading = false
     wrapper.vm.defaultEntity = true
     await nextTick()
@@ -282,7 +239,7 @@ describe('home', () => {
       shouldExist: true,
     },
   ])('should show feedcenter depending of feature flag', async ({ flagValue, shouldExist }) => {
-    feedCenterActivatedFlag.value = flagValue
+    isFeedCenterActivatedMock.mockReturnValue(flagValue === 'true')
     const wrapper = createWrapper()
     await flushPromises()
     await nextTick()
@@ -294,7 +251,7 @@ describe('home', () => {
   it('should fetch unread notification count 500ms after closing the feed center drawer', async () => {
     vi.restoreAllMocks() // restore mocks to be sure they are not called before this test
     vi.useFakeTimers()
-    feedCenterActivatedFlag.value = 'true'
+    isFeedCenterActivatedMock.mockReturnValue(true)
     createWrapper()
     await flushPromises()
 
@@ -307,14 +264,14 @@ describe('home', () => {
     await header.vm.$emit('update:show-feed-center', false)
     vi.advanceTimersByTime(500)
     // onMounted call + the one from the watcher that i want to test
-    expect(notificationService.fetchUnreadNotificationsCount).toHaveBeenCalledTimes(2)
+    expect(fetchUnreadNotificationsCountMock).toHaveBeenCalledTimes(2)
   })
 
   it('should track feedcenter opened' , async () => {
-    feedCenterActivatedFlag.value = 'true'
+    isFeedCenterActivatedMock.mockReturnValue(true)
     createWrapper()
     wrapper.vm.isFeedCenterOpened = true
     await nextTick()
-    expect(trackFeedcenterOpened).toHaveBeenCalledOnce()
+    expect(trackFeedcenterOpenedMock).toHaveBeenCalledOnce()
   })
 })

@@ -1,34 +1,35 @@
 import { describe, it, expect } from 'vitest'
+import { notificationsMock } from '@app/__mocks__/notifications.mocks'
 import { loggerMock } from '@pulse/core/mocks'
-import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
-import { patchAllNotificationsAsReadMock, fetchNotificationsMock } from '@app/../vitest.setup'
+import { patchAllNotificationsReadStatusMock, fetchNotificationsMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 
 import { patchAllNotificationsAsRead, fetchNotificationsWithTimeout } from './feed-center-drawer.manager'
 
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+
+const userIdMock = 12
 
 describe('patch all notifications as read', () => {
   it('should do nothing if user is undefined', async () => {
     await patchAllNotificationsAsRead(undefined)
 
-    expect(patchAllNotificationsAsReadMock).not.toHaveBeenCalledWith()
+    expect(patchAllNotificationsReadStatusMock).not.toHaveBeenCalledWith()
     expect(fetchNotificationsMock).not.toHaveBeenCalled()
   })
 
   it('should call the patch API with the provided userId and then fetch notifications', async () => {
-    fetchNotificationsMock.mockResolvedValueOnce({ notifications: notificationsMock })
 
-    const userId = 12
-    const result = await patchAllNotificationsAsRead(userId)
-    expect(patchAllNotificationsAsReadMock).toHaveBeenCalledWith(userId)
+    const result = await patchAllNotificationsAsRead(userIdMock)
+    expect(patchAllNotificationsReadStatusMock).toHaveBeenCalledWith(userIdMock)
 
     expect(fetchNotificationsMock).toHaveBeenCalled()
     expect(result).toEqual(notificationsMock)
   })
 
   it('should return an empty array if the function fails for any reason', async () => {
-    patchAllNotificationsAsReadMock.mockRejectedValueOnce({})
-    const result = await patchAllNotificationsAsRead(12)
+    patchAllNotificationsReadStatusMock.mockRejectedValueOnce({})
+    const result = await patchAllNotificationsAsRead(userIdMock)
     expect(result).toEqual([])
   })
 })

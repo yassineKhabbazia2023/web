@@ -1,7 +1,6 @@
+import { recipientsIdCollection } from '@app/__mocks__/accounts.mocks'
 import { TEMPLATE_TYPE_SHORT_OTHER } from '@app/schedule/helpers/scheduleConsts'
-import type { Schedule, Scheduling, Template }
-  from '@app/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
-import { recipientsIdCollection } from './Account'
+import type { Schedule, Scheduling, Template } from '@app/schedule/components/CreateSchedule/CreateScheduleForm/CreateScheduleFormModel'
 
 const date = '2024-03-20'
 const time = ''
@@ -80,3 +79,5 @@ export function getMockedSchedule(override: Partial<Schedule> = {}) {
 }
 
 export const frequenciesMock: string[] = ['Monthly', 'Quarterly', 'Yearly', 'None']
+
+export const tvaLabelMock = 'TVA (Taxe sur la valeur ajoutée)'

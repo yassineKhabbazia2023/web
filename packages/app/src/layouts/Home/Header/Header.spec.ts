@@ -1,14 +1,15 @@
-import { debounceMock } from '@app/schedule/tests/mocks/commonViMock'
-import { defineStore, setActivePinia } from 'pinia'
+import { defineStore } from 'pinia'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { createTestingPinia } from '@pinia/testing'
-import helpers from '@app/tests/utils/helpers'
-import Header from './'
+import { isScheduleActivatedMock, isFeedCenterActivatedMock, loggerMock, featureFlagManagerMock } from '@pulse/core/mocks'
+import { debounceMock } from '@app/__mocks__/common.mock'
+import { customerUserMock } from '@app/__mocks__/users.mocks'
+import { routerMock } from '@app/__mocks__/router.mocks'
 import type { HeaderProps } from './HeaderTypes'
 
-const { router, pinia, fetchUserData } = helpers()
+import Header from './'
 
 vi.mock('@pulse/common', () => ({
   debounce: (callback: Function) => debounceMock(callback),
@@ -24,18 +25,17 @@ vi.mock('@pulse/common', () => ({
       logout: () => vi.fn(),
     },
   }),
-  commonPinia: () => pinia,
-  dataProvider: () => {
-    return { fetchUserData }
-  },
+  dataProvider: () => ({
+    fetchUserData: vi.fn(() => Promise.resolve(customerUserMock)),
+  }),
 }))
 
-vi.mock('@pulse/core', async () => ({
-  FeatureFlagManager: {
-    isScheduleActivated: () => true,
-    isFeedCenterActivated: () => true,
-  },
+
+vi.mock('@pulse/core', () => ({
+  logger: loggerMock,
+  FeatureFlagManager: featureFlagManagerMock,
 }))
+
 
 const createWrapper = (
   showCalendar: HeaderProps['showCalendar'],
@@ -49,19 +49,20 @@ const createWrapper = (
       unreadNotificationsCount,
     },
     global: {
-      plugins: [router, createTestingPinia()],
+      plugins: [routerMock, createTestingPinia()],
     },
   })
 
 describe('header', () => {
   let wrapper: VueWrapper<any>
   beforeEach(() => {
-    setActivePinia(pinia)
+    isScheduleActivatedMock.mockReturnValue(true)
+    isFeedCenterActivatedMock.mockReturnValue(true)
+
     wrapper = createWrapper(false)
   })
 
   it('should display the header section correctly', () => {
-    router.push({ name: 'wallet' })
     const header = wrapper.find('.header-section')
     const logo = wrapper.find('.header-section__logo')
 

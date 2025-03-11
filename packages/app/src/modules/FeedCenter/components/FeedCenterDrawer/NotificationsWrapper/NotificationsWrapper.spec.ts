@@ -1,16 +1,15 @@
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import NotificationsWrapper from '.'
-import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import type { NotificationsWrapperProps } from './notifications-wrapper.types'
-import { notificationsMock } from '@app/mocks/FeedCenter/notifications.mock'
+import { trackingServiceMock, trackNotificationMarkAsReadMock, trackNotificationsConsultedMock } from '@app/__mocks__/tracking.service.mocks'
+import { notificationsMock } from '@app/__mocks__/notifications.mocks'
 import { handleNotificationAction } from './notifications-wrapper.manager'
-import {
-  trackNotificationsConsulted,
-  trackNotificationMarkAsRead,
-} from '@app/modules/FeedCenter/services/tracking/tracking.service'
+import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import { NotificationTrackingReadType } from '@app/modules/FeedCenter/services/tracking/tracking.types'
 
+import NotificationsWrapper from '.'
+
+vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
 
 function createWrapper(props: NotificationsWrapperProps = NoNotificationsPlaceholderBaseProps) {
   return mount(NotificationsWrapper, {
@@ -26,17 +25,15 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('./notifications-wrapper.manager', async () => {
-  const actual = await vi.importActual('./notifications-wrapper.manager')
+vi.mock('./notifications-wrapper.manager', async (importActual) => {
+  const actual = await importActual() as Record<string, any>
   return {
-    ...(actual as object),
+    ...actual,
     getNotificationAccountNames: vi.fn(() => []),
     getTimeSinceCreation: vi.fn(() => ''),
     handleNotificationAction: vi.fn(),
   }
 })
-
-vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service')
 
 const NoNotificationsPlaceholderBaseProps: NotificationsWrapperProps = {
   isLoading: false,
@@ -90,12 +87,12 @@ describe('notifications wrapper', () => {
     it('should track notification consultation when click on notification', async () => {
       const notification = findFirstNotifications(wrapper)
       await notification.trigger('click')
-      expect(trackNotificationsConsulted).toHaveBeenCalledOnce()
+      expect(trackNotificationsConsultedMock).toHaveBeenCalledOnce()
     })
     it('should track NotificationMarkAsRead with type SINGLE_READ when click on notification', async () => {
       const notification = findFirstNotifications(wrapper)
       await notification.trigger('click')
-      expect(trackNotificationMarkAsRead).toHaveBeenCalledWith(NotificationTrackingReadType.SINGLE_READ)
+      expect(trackNotificationMarkAsReadMock).toHaveBeenCalledWith(NotificationTrackingReadType.SINGLE_READ)
     })
   })
 })
