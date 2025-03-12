@@ -5,3 +5,9 @@ import type { OnboardingDetails } from '@entities/pages/wallet/pages/folders/com
 export const createTestAccount = (onboardingDetails: OnboardingDetails) => {
   return commonApi().gateway.post(`${API_PREFIXES.ENTITY_CREATOR}/Onboarding`, onboardingDetails)
 }
+
+export const generateAccountNumber = async (): Promise<string | undefined> => {
+  const { data } = await commonApi().gateway.get(`${API_PREFIXES.ENTITY_CREATOR}/AccountInjector/generate-account-number`)
+
+  return data
+}

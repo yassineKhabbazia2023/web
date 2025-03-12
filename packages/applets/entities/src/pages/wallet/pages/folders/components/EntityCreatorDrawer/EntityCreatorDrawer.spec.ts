@@ -12,8 +12,8 @@ import * as helpers from '@entities/common/utils'
 import EntityCreatorDrawer from '.'
 
 // Mocks
-const mockUser: UserInfo = getMockedUser()
-const mockEntityCreatorCollaborator = {
+const userMock: UserInfo = getMockedUser()
+const entityCreatorCollaboratorMock = {
   id: 8,
   firstName: 'Alice',
   lastName: 'Dupont',
@@ -30,20 +30,21 @@ const expectedExistingClient = {
   existingContactGuid: '111122223333',
 }
 const expectedDefaultAuthenticatedUser = {
-  id: mockUser.id,
-  firstName: mockUser.firstName,
-  lastName: mockUser.lastName,
-  email: mockUser.email,
-  mobilePhone: mockUser.officeMobile,
-  oldId: mockUser.oldId,
-  persona: mockUser.persona,
+  id: userMock.id,
+  firstName: userMock.firstName,
+  lastName: userMock.lastName,
+  email: userMock.email,
+  mobilePhone: userMock.officeMobile,
+  oldId: userMock.oldId,
+  persona: userMock.persona,
 }
 
-const mockEnableField = vi.hoisted(() => vi.fn())
-const mockDisableField = vi.hoisted(() => vi.fn())
-const mockValidateField = vi.hoisted(() => vi.fn())
-const mockCreateTestAccount = vi.hoisted(() => vi.fn())
-const mockGetAccountUserByEmail = vi.hoisted(() =>
+const enableFieldMock = vi.hoisted(() => vi.fn())
+const disableFieldMock = vi.hoisted(() => vi.fn())
+const validateFieldMock = vi.hoisted(() => vi.fn())
+const createTestAccountMock = vi.hoisted(() => vi.fn())
+const generateAccountNumberMock = vi.hoisted(() => vi.fn())
+const getAccountUserByEmailMock = vi.hoisted(() =>
   vi.fn(
     (): Promise<Partial<Contact> | null> =>
       Promise.resolve({
@@ -53,8 +54,8 @@ const mockGetAccountUserByEmail = vi.hoisted(() =>
       }),
   ),
 )
-const mockEntityCreatorFormValidate = vi.hoisted(() => vi.fn(() => Promise.resolve(true)))
-const mockEntityCreatorFormStructure = vi.hoisted(() => vi.fn(() => Promise.resolve(EntityCreatorFormStructure)))
+const entityCreatorFormValidateMock = vi.hoisted(() => vi.fn(() => Promise.resolve(true)))
+const entityCreatorFormStructureMock = vi.hoisted(() => vi.fn(() => Promise.resolve(EntityCreatorFormStructure)))
 
 vi.mock('@pulse/common', () => ({
   debounce: (callback: Function) => callback,
@@ -62,18 +63,19 @@ vi.mock('@pulse/common', () => ({
 }))
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('@entities/services/entity-creator', () => ({
-  createTestAccount: mockCreateTestAccount,
+  createTestAccount: createTestAccountMock,
+  generateAccountNumber: generateAccountNumberMock,
 }))
 vi.mock('@entities/common/utils/referential', () => ({
-  getFormStructure: mockEntityCreatorFormStructure,
+  getFormStructure: entityCreatorFormStructureMock,
 }))
 vi.mock('@entities/services/account', () => ({
-  getAccountUserByEmail: mockGetAccountUserByEmail,
+  getAccountUserByEmail: getAccountUserByEmailMock,
 }))
 
 const defaultProps: EntityCreatorDrawerProps = {
   modelValue: true,
-  currentUser: mockUser,
+  currentUser: userMock,
 }
 
 const getCreateTestAccountButton = (wrapper: VueWrapper) =>
@@ -110,15 +112,15 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
     wrapper = createWrapper()
     await flushPromises()
     if (wrapper.vm.entityCreatorForm) {
-      wrapper.vm.entityCreatorForm.validateField = mockValidateField
-      wrapper.vm.entityCreatorForm.validate = mockEntityCreatorFormValidate
+      wrapper.vm.entityCreatorForm.validateField = validateFieldMock
+      wrapper.vm.entityCreatorForm.validate = entityCreatorFormValidateMock
     }
     // If 'any' is not used, it would be necessary to expose the 'entityCreatorFormFieldSet' ref from the EntityCreatorDrawer component to access it.
     const wrapperVm = wrapper.vm as any
-    wrapperVm.$refs.entityCreatorFormFieldSet[1].enableField = mockEnableField
-    wrapperVm.$refs.entityCreatorFormFieldSet[1].disableField = mockDisableField
-    wrapperVm.$refs.entityCreatorFormFieldSet[0].enableField = mockEnableField
-    wrapperVm.$refs.entityCreatorFormFieldSet[0].disableField = mockDisableField
+    wrapperVm.$refs.entityCreatorFormFieldSet[1].enableField = enableFieldMock
+    wrapperVm.$refs.entityCreatorFormFieldSet[1].disableField = disableFieldMock
+    wrapperVm.$refs.entityCreatorFormFieldSet[0].enableField = enableFieldMock
+    wrapperVm.$refs.entityCreatorFormFieldSet[0].disableField = disableFieldMock
   })
   describe('display', () => {
     it('should correctly render the Entity Creator Drawer with its main components', () => {
@@ -141,6 +143,10 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
     })
   })
   describe('events', () => {
+    it('should call the API on mount to retrieve the generated AccountNumber', async () => {
+      expect(generateAccountNumberMock).toHaveBeenCalledOnce()
+    })
+
     it("Should emit 'update:modelValue' when the drawer visibility changes", async () => {
       const entityCreatorDrawer = wrapper.findComponent({ name: 'PDrawer' })
       await entityCreatorDrawer.vm.$emit('close-drawer-button')
@@ -150,7 +156,7 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
 
     it('should log an error when the Entity Creator form structure fails to load', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      mockEntityCreatorFormStructure.mockRejectedValue(expectedErrorMessage)
+      entityCreatorFormStructureMock.mockRejectedValue(expectedErrorMessage)
 
       wrapper = createWrapper()
       await flushPromises()
@@ -161,10 +167,10 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
 
     it("should add a collaborator when the component emits the 'add-contact' event", async () => {
       const collaboratorAutocomplete = wrapper.findComponent({ name: 'CollaboratorAutocomplete' })
-      await collaboratorAutocomplete.vm.$emit('add-contact', mockEntityCreatorCollaborator)
+      await collaboratorAutocomplete.vm.$emit('add-contact', entityCreatorCollaboratorMock)
 
       expect(wrapper.vm.selectedCollaborators).toHaveLength(2)
-      expect(wrapper.vm.selectedCollaborators.at(1)).toStrictEqual(mockEntityCreatorCollaborator)
+      expect(wrapper.vm.selectedCollaborators.at(1)).toStrictEqual(entityCreatorCollaboratorMock)
     })
 
     it("should emit the 'update:modelValue' event when the cancel button is clicked", async () => {
@@ -192,7 +198,7 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
       await createButton.trigger('click')
       await flushPromises()
 
-      expect(mockCreateTestAccount).toHaveBeenCalledOnce()
+      expect(createTestAccountMock).toHaveBeenCalledOnce()
       expect(spyDisplayNotification).toHaveBeenCalledOnce()
       expect(spyDisplayNotification).toHaveBeenCalledWith('success', 'The test account has been successfully created.')
     })
@@ -201,12 +207,12 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       const spyDisplayNotification = vi.spyOn(helpers, 'displayNotification')
       const createButton = getCreateTestAccountButton(wrapper)
-      mockCreateTestAccount.mockRejectedValue(expectedErrorMessage)
+      createTestAccountMock.mockRejectedValue(expectedErrorMessage)
 
       await createButton.trigger('click')
       await flushPromises()
 
-      expect(mockCreateTestAccount).toHaveBeenCalledOnce()
+      expect(createTestAccountMock).toHaveBeenCalledOnce()
       expect(spyDisplayNotification).toHaveBeenCalledOnce()
       expect(spyDisplayNotification).toHaveBeenCalledWith('error', 'Test account creation failed. Please try again.')
     })
@@ -218,8 +224,8 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
       await pFieldSet.vm.$emit('update:pModel', 'email', emailSuffix)
       await flushPromises()
 
-      expect(mockGetAccountUserByEmail).toHaveBeenCalledOnce()
-      expect(mockGetAccountUserByEmail).toHaveBeenCalledWith(emailSuffix)
+      expect(getAccountUserByEmailMock).toHaveBeenCalledOnce()
+      expect(getAccountUserByEmailMock).toHaveBeenCalledWith(emailSuffix)
     })
 
     it('should populate form data when search contact API returns a response', async () => {
@@ -238,8 +244,8 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
       await pFieldSet.vm.$emit('update:pModel', 'email', expectedExistingClient.email)
       await flushPromises()
 
-      expect(mockDisableField).toHaveBeenCalledTimes(2)
-      expect(mockValidateField).toHaveBeenCalledTimes(2)
+      expect(disableFieldMock).toHaveBeenCalledTimes(2)
+      expect(validateFieldMock).toHaveBeenCalledTimes(2)
     })
 
     it('should clear contact data before making another API call', async () => {
@@ -250,11 +256,11 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
       await flushPromises()
       expect(pForm.props('pModel')).toMatchObject(expectedExistingClient)
 
-      mockGetAccountUserByEmail.mockResolvedValue(null)
+      getAccountUserByEmailMock.mockResolvedValue(null)
       await pFieldSet.vm.$emit('update:pModel', 'email', 'ljack')
       await flushPromises()
 
-      expect(mockEnableField).toHaveBeenCalledTimes(2)
+      expect(enableFieldMock).toHaveBeenCalledTimes(2)
       expect(pForm.props('pModel')).toMatchObject({
         contactFirstName: '',
         contactLastName: '',

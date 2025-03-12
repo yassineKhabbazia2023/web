@@ -130,7 +130,7 @@ import {
   PLoader,
 } from '@pulse/styleguide/components'
 import { displayNotification, getFormStructure, getFullName } from '@entities/common/utils'
-import { createTestAccount } from '@entities/services/entity-creator'
+import { createTestAccount, generateAccountNumber } from '@entities/services/entity-creator'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import CollaboratorAutocomplete from '@entities/pages/entities/components/CollaboratorAutocomplete'
 import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
@@ -265,6 +265,7 @@ onMounted(async () => {
       persona,
     })
     entityCreatorFormStructure.value = await getFormStructure('EntityCreator')
+    newTestAccount.value.accountNumber = await generateAccountNumber() ?? ''
   } catch (error) {
     logger.error('Error fetching form structure :', error)
   } finally {

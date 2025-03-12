@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from 'vitest'
 import { API_PREFIXES } from '@entities/common/config/services'
 import type { OnboardingDetails } from '@entities/pages/wallet/pages/folders/components/EntityCreatorDrawer/entity-creator-drawer.types'
-import { createTestAccount } from '.'
+import { createTestAccount, generateAccountNumber } from '.'
 
-export const mockOnboardingDetails: OnboardingDetails = {
+export const onboardingDetailsMock: OnboardingDetails = {
   accountNumber: '1111111',
   accountLegalName: 'Test Account 1',
   email: 'test@test.com',
@@ -14,11 +14,14 @@ export const mockOnboardingDetails: OnboardingDetails = {
   collaboratorGuids: ['guid-1', 'guid-2', 'guid-3'],
 }
 
+const entityCreatorGetMock = vi.hoisted(() => vi.fn(() => Promise.resolve({ data: onboardingDetailsMock.accountNumber })))
 const entityCreatorPostMock = vi.fn()
+
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
       post: entityCreatorPostMock,
+      get: entityCreatorGetMock,
     },
   }),
 }))
@@ -26,11 +29,21 @@ vi.mock('@pulse/common', () => ({
 describe('entity-creator service', () => {
   describe('createTestAccount', () => {
     it('should make an API call to the correct endpoint', async () => {
-      await createTestAccount(mockOnboardingDetails)
+      await createTestAccount(onboardingDetailsMock)
 
       expect(entityCreatorPostMock).toHaveBeenCalledWith(
         `${API_PREFIXES.ENTITY_CREATOR}/Onboarding`,
-        mockOnboardingDetails,
+        onboardingDetailsMock,
+      )
+    })
+  })
+  describe('generateAccountNumber', () => {
+    it('should make an API call to retrieve the generated account number', async () => {
+      const data = await generateAccountNumber()
+
+      expect(data).toStrictEqual(onboardingDetailsMock.accountNumber)
+      expect(entityCreatorGetMock).toHaveBeenCalledWith(
+        `${API_PREFIXES.ENTITY_CREATOR}/AccountInjector/generate-account-number`,
       )
     })
   })
