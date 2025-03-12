@@ -1,10 +1,9 @@
 import { vi, describe, it, expect } from 'vitest'
+import { getIconComponentMock, iconHelperMock } from '@styleguide/__mocks__/icon.helper.mocks'
+
 import { PNotification } from './PNotification'
 
-const getIconComponentMock = vi.hoisted(() => vi.fn())
-vi.mock('../../utils/iconHelper', () => ({
-  getIconComponent: getIconComponentMock,
-}))
+vi.mock('../../utils/iconHelper', () => iconHelperMock)
 
 const ElNotificationMock = vi.hoisted(() => vi.fn())
 vi.mock('element-plus', () => ({

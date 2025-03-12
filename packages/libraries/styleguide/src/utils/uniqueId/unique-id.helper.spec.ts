@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { genereateUniqueId } from './unique-id.helper'
+import { generateUniqueId } from './unique-id.helper'
 
 describe('unique id helper', () => {
   it('should return a unique identifier using Date.now() and Math.random()', () => {
@@ -13,7 +13,7 @@ describe('unique id helper', () => {
     const expectedRandomPart = fakeRandom.toString(36).substring(2, 9)
     const expectedId = `${expectedTimePart}-${expectedRandomPart}`
 
-    expect(genereateUniqueId()).toBe(expectedId)
+    expect(generateUniqueId()).toBe(expectedId)
 
     vi.restoreAllMocks()
   })

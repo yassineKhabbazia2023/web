@@ -1,11 +1,10 @@
 import { vi, describe, it, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
+import { getIconComponentMock, iconHelperMock } from '@styleguide/__mocks__/icon.helper.mocks'
+
 import PIcon from '.'
 
-const getIconComponentMock = vi.hoisted(() => vi.fn())
-vi.mock('../../utils/iconHelper', () => ({
-  getIconComponent: getIconComponentMock,
-}))
+vi.mock('../../utils/iconHelper', () => iconHelperMock)
 
 describe('p icon', () => {
   it('renders a component when pName is given', () => {

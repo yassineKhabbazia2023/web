@@ -1,22 +1,15 @@
 import { vi, describe, it, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
+import { vueuseCoreMock } from '@styleguide/__mocks__/vueuse.mocks'
 import type { VueWrapper } from '@vue/test-utils'
-import PCalendarDateCell from '.'
 import type { PCalendarDateCellProps } from './PCalendarDateCellTypes'
 import PCalendarCellNumber from '../../atoms/PCalendarCellNumber'
 import { itemsGroupedByDate } from '../../atoms/PCalendar/PCalendarMocks'
-import { BREAKPOINT_SIZES } from '../../guidelines/Layout/constants'
 import PTaskItem from '../../atoms/PTaskItem'
 
-import { ref } from 'vue'
-vi.mock('@vueuse/core', () => {
-  return {
-    useWindowSize: vi.fn(() => ({
-      width: ref(BREAKPOINT_SIZES.xl),
-      height: ref(768),
-    })),
-  }
-})
+import PCalendarDateCell from '.'
+
+vi.mock('@vueuse/core', () => vueuseCoreMock)
 
 const defaultProps: PCalendarDateCellProps = {
   pActiveDate: '2024-03-01',
