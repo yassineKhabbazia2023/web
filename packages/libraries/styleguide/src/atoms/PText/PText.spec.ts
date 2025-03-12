@@ -1,19 +1,22 @@
 // Import necessary modules
+import { describe, it, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import PText from './'
-import { describe, it, expect } from 'vitest'
+import type { PTextProps } from './PTextTypes'
+import { nextTick } from 'vue'
 
 const pContent = 'Lorem ipsum sillopi cardovil pirutis, advem porac lacoci'
+const baseProps: PTextProps = {
+  pContent,
+  pType: 'primary',
+  disabled: false,
+  selected: false,
+}
 
 describe('tests for p-text', () => {
   it('renders the content', () => {
     const wrapper = shallowMount(PText, {
-      props: {
-        pContent,
-        pType: 'primary',
-        disabled: false,
-        selected: false,
-      },
+      props: baseProps,
     })
 
     // Check if the cell renders correctly
@@ -29,11 +32,8 @@ describe('tests for p-text', () => {
   it('renders with an icon', () => {
     const wrapper = shallowMount(PText, {
       props: {
+        ...baseProps,
         pIconName: 'person',
-        pContent,
-        pType: 'primary',
-        disabled: false,
-        selected: false,
       },
     })
 
@@ -41,5 +41,28 @@ describe('tests for p-text', () => {
     const iconElement = wrapper.findComponent({ name: 'PIcon' })
 
     expect(iconElement.exists()).toBeTruthy()
+  })
+
+  it('binds the appropriate modifier when pUnderlinedOnHover is true', async () => {
+    const wrapper = shallowMount(PText, {
+      props: {
+        ...baseProps,
+        pIsUnderlinedOnHover: true,
+      },
+    })
+    await nextTick()
+
+    expect(wrapper.classes()).toContain('p-text--is-underlined-on-hover')
+  })
+
+  it('emits p-text-content-clicked when the content is clicked', async () => {
+    const wrapper = shallowMount(PText, {
+      props: baseProps,
+    })
+
+    const contentWrapper = wrapper.find('.p-text__content')
+    await contentWrapper.trigger('click')
+
+    expect(wrapper.emitted('p-text-content-clicked')).toHaveLength(1)
   })
 })

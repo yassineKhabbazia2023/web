@@ -1,6 +1,8 @@
-import type { Document } from '@ged/models/Document'
+import type { Document, DocumentsTableStructure } from '@ged/models/Document'
 import { getIsDocumentCertified } from '@ged/modules/Documents/helpers/documents.helper'
 import { GetRowClassNameParameters } from './documents-list.types'
+import type { DocumentListTableColumn } from './documents-list.types'
+import { documentListColumnNames } from '@ged/modules/Documents/constants/documents-list.const'
 
 export function getRowAlignmentClass(index: number, referenceTable: Array<any>) {
   return index + 1 === referenceTable.length ? 'right' : 'default'
@@ -42,4 +44,19 @@ export function getRowClasses({ document, draggedDocuments, isDragging }: GetRow
     ${textClass}
     cursor-pointer
     `
+}
+
+export function getShouldOpenDrawer(
+  documentHeaders: DocumentsTableStructure[],
+  column: DocumentListTableColumn,
+) {
+  if (!column) {
+    return false
+  }
+  const hasLabelHeader = documentHeaders.some(h => h.columnName === column.label)
+  return hasLabelHeader && column.label !== documentListColumnNames.ACTIONS_DROPDOWN
+}
+
+export function getDocumentIndex(document: Document, documents: Document[]) {
+  return documents.indexOf(document)
 }

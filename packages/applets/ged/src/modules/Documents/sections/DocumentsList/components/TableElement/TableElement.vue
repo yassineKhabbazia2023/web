@@ -16,6 +16,8 @@
     :disabled="false"
     :pIconName="getIconName(data.name, 'fileText')"
     :pBold="false"
+    pIsUnderlinedOnHover
+    @p-text-content-clicked="handlePTextContentClicked"
   />
 
   <PDoubleText
@@ -74,11 +76,17 @@ import DocumentActions from '@ged/modules/Documents/sections/DocumentsList/compo
 import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
 import { getIconName } from '@pulse/styleguide'
 import { type IconName } from '@pulse/styleguide/types'
+import type { TableRowDocument } from '@ged/models/Document'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
 import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'
 
+
 const props = defineProps<TableElementPops>()
-const emit = defineEmits(['actions-dropdown-opened', 'toolbox-action-triggered'])
+const emit = defineEmits<{
+  'actions-dropdown-opened': [TableRowDocument, { label: string }],
+  'document-name-clicked': [TableRowDocument, { label: string }],
+  'toolbox-action-triggered': [action: string],
+}>()
 
 const tagIconByState: Record<string, IconName> = {
   default: 'stars',
@@ -126,6 +134,10 @@ const isCertified = computed(() => {
 
 const handleActionsDropdownOpening = () => {
   emit('actions-dropdown-opened', props.data, { label: props.fieldName })
+}
+
+const handlePTextContentClicked = () => {
+  emit('document-name-clicked', props.data, { label: props.fieldName })
 }
 const emitClickedAction = (action: string) => {
   emit('toolbox-action-triggered', action)

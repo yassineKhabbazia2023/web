@@ -74,7 +74,8 @@
           @on-sort-change="handleSortChange"
           @toolbox-action-triggered="handleToolboxActionTriggered"
           @document-selection-change="handleOnDocumentsSelectionChange"
-          @table-row-clicked="handleOnRowTableDocumentsClicked"
+          @table-row-double-clicked="handleDocumentPreview"
+          @document-name-clicked="handleDocumentPreview"
         />
       </div>
       <PPagination
@@ -415,7 +416,7 @@ const handleOnDocumentsSelectionChange = (documentsSelection:Document[]) => {
   }
 }
 
-const handleOnRowTableDocumentsClicked = (document: TableRowDocument) => {
+const handleDocumentPreview = (document: TableRowDocument) => {
   isPreviewDrawerOpened.value = true
   documentToPreview.value = document
   if (documents.value) {

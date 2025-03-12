@@ -1,10 +1,10 @@
-import type { Document, DocumentsTableStructure } from '@ged/models/Document'
+import type { TableRowDocument, DocumentsTableStructure } from '@ged/models/Document'
 import type { IconName, PTagProps } from '@pulse/styleguide/types'
 
 export interface TableElementPops {
   fieldType: DocumentsTableStructure['fieldType']
   fieldName: DocumentsTableStructure['columnName']
-  data: Document
+  data: TableRowDocument
   isInSearchScope?: boolean
 }
 

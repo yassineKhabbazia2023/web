@@ -3,7 +3,8 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { mount, shallowMount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import { createPinia, setActivePinia } from 'pinia'
-import { documentsResponsePayload } from '@ged/__mocks__/documents.mock'
+import { documentsResponsePayload } from '@ged/__mocks__/documents.mocks'
+import { getDocumentTableRow } from '@ged/__mocks__/documents-table-row.mocks'
 import type { ComponentPublicInstance } from 'vue'
 import type { Document } from '@ged/models/Document'
 import type { DocumentsListProps } from './documents-list.types'
@@ -130,6 +131,7 @@ describe('documentList', () => {
 
         await nextTick()
       })
+
       it('should select row oppon TableElement actions-dropdown-opened', async () => {
         const tableElements = wrapper.findAllComponents(TableElement)
         tableElements[0].vm.$emit('actions-dropdown-opened',
@@ -142,7 +144,8 @@ describe('documentList', () => {
           componentInstance.selectedDocuments,
         ).toStrictEqual(documentsResponsePayload.documentsPage.items)
       })
-      it('should select and open preview drawer', async () => {
+
+      it('should not open the drawer when actions-dropdown-opened is emitted and select it', async () => {
         const tableElements = wrapper.findAllComponents(TableElement)
         tableElements[0].vm.$emit('actions-dropdown-opened',
           documentsResponsePayload.documentsPage.items[0],
@@ -150,17 +153,79 @@ describe('documentList', () => {
         )
         await nextTick()
         const componentInstance = wrapper.vm
-        expect(wrapper.emitted('table-row-clicked')).toBeTruthy()
-        expect(wrapper.emitted('table-row-clicked')).toStrictEqual([
-          [documentsResponsePayload.documentsPage.items[0]],
-        ])
+        expect(wrapper.emitted('table-row-clicked')).toBeFalsy()
 
-        // we don't select the row if preview
         expect(
           componentInstance.selectedDocuments,
-        ).toStrictEqual([])
+        ).toStrictEqual([documentsResponsePayload.documentsPage.items[0]])
       })
     })
+
+    it('should emit table-row-double-clicked when double clicking a document row', async () => {
+      const wrapper = createWrapper()
+      const table = wrapper.findComponent({ name: 'PTable' })
+      const fakeRow = getDocumentTableRow()
+      const fakeLabel = { label: documentsResponsePayload.documentHeaders[0].columnName }
+      await table.vm.$emit('row-dblclick', fakeRow, fakeLabel)
+
+      await nextTick()
+
+      expect(wrapper.emitted('table-row-double-clicked')).toHaveLength(1)
+    })
+
+    it('should NOT emit table-row-double-clicked when double clicking a document row', async () => {
+      const wrapper = createWrapper()
+      const table = wrapper.findComponent({ name: 'PTable' })
+      const fakeRow = getDocumentTableRow()
+      const fakeLabel = { label: 'unknown column label' }
+      await table.vm.$emit('row-dblclick', fakeRow, fakeLabel)
+
+      await nextTick()
+
+      expect(wrapper.emitted('table-row-double-clicked')).toBeUndefined()
+    })
+
+    describe('table element document name click', () => {
+      let wrapper: DocumentsListWrapper
+      beforeEach(() => {
+        wrapper = mount(DocumentsList, {
+          props: defaultProps,
+          global: {
+            stubs: {
+              PToolbox: {
+                template: '<span />',
+              },
+            },
+            plugins: [pinia],
+          },
+        }) as unknown as DocumentsListWrapper
+      })
+
+      it('should emit document-name-clicked when doucment name is clicked', async () => {
+        const fakeRow = getDocumentTableRow()
+        const fakeLabel = { label: documentsResponsePayload.documentHeaders[0].columnName }
+
+        const tableElements = wrapper.findAllComponents(TableElement)
+        tableElements[0].vm.$emit('document-name-clicked', fakeRow, fakeLabel)
+
+        await nextTick()
+
+        expect(wrapper.emitted('document-name-clicked')).toHaveLength(1)
+      })
+
+      it('should NOT emit document-name-clicked when doucment name is clicked', async () => {
+        const fakeRow = getDocumentTableRow()
+        const fakeLabel = { label: 'unknown column label' }
+
+        const tableElements = wrapper.findAllComponents(TableElement)
+        tableElements[0].vm.$emit('document-name-clicked', fakeRow, fakeLabel)
+
+        await nextTick()
+
+        expect(wrapper.emitted('document-name-clicked')).toBeUndefined()
+      })
+    })
+
     it('should propagate toolbox-action-triggered of tableElement', async () => {
       const wrapper: DocumentsListWrapper = mount(DocumentsList, {
         props: defaultProps,

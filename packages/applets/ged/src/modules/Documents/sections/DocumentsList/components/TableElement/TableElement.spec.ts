@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import TableElement from './TableElement.vue'
 import { type TableElementPops } from './TableElementTypes'
-import type { Document } from '@ged/models/Document'
+import type { TableRowDocument } from '@ged/models/Document'
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
@@ -9,7 +9,7 @@ import { nextTick } from 'vue'
 import { createPinia, setActivePinia } from 'pinia'
 import { formatDateStr } from '@ged/modules/common/helpers/dateFormatHelper'
 
-const document: Document = {
+const document: TableRowDocument = {
   id: '1',
   name: 'My Document',
   content: {
@@ -53,6 +53,7 @@ const document: Document = {
   },
   permissions: ['CAN_RENAME_DOCUMENT'],
   isNew: false,
+  _rowIndex: 1,
 }
 
 const defaultProps: TableElementPops = {

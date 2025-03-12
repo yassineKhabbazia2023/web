@@ -1,4 +1,4 @@
-import { documentsResponsePayload } from './documents.mock'
+import { documentsResponsePayload } from './documents.mocks'
 
 export const previewDocumentMock = vi.fn(() => {
   return Promise.resolve({

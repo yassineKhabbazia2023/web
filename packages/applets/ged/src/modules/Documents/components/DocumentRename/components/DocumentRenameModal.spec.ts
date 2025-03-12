@@ -3,7 +3,7 @@ import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import type { DocumentRenameModalProps } from './DocumentRenameModalTypes'
 import { createPinia, setActivePinia } from 'pinia'
-import { documentMock } from '@ged/__mocks__/documents.mock'
+import { documentMock } from '@ged/__mocks__/documents.mocks'
 
 const defaultProps: DocumentRenameModalProps = {
   document: documentMock,

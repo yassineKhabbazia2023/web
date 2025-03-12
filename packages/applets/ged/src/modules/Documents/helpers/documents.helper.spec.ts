@@ -1,5 +1,5 @@
 import { it, describe } from 'vitest'
-import { certifiedDocument, notCertifiedDocument } from '@ged/__mocks__/documents.mock'
+import { certifiedDocument, notCertifiedDocument } from '@ged/__mocks__/documents.mocks'
 
 import { getIsDocumentCertified } from './documents.helper'
 

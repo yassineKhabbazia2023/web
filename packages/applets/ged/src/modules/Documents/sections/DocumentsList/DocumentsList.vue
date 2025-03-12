@@ -13,6 +13,7 @@
       class="ged-documents-list"
       @sort-change="handleSortChange"
       @row-click="selectRow"
+      @row-dblclick="handleRowDoubleClick"
       @selection-change="handleSelectionChange"
       @row-contextmenu="contextMenuTrigger"
     >
@@ -35,8 +36,9 @@
             :fieldType="column.fieldType"
             :fieldName="column.columnName"
             :data="scope.row"
-            @toolbox-action-triggered="handleToolboxActionTriggered"
             @actions-dropdown-opened="selectRow"
+            @document-name-clicked="handleDocumentNameClick"
+            @toolbox-action-triggered="handleToolboxActionTriggered"
           />
         </template>
       </PTableColumn>
@@ -77,8 +79,8 @@ import { ref, watch, computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useDocumentsDragAndDrop } from './composables/DocumentsDragAndDrop'
 import DocumentDragGhost from './components/DocumentDragGhost'
-import { getRowAlignmentClass, getRowClasses } from './documents-list.manager'
-import { DocumentsListProps } from './documents-list.types'
+import { getRowAlignmentClass, getRowClasses, getDocumentIndex, getShouldOpenDrawer } from './documents-list.manager'
+import { DocumentsListProps, DocumentListTableColumn } from './documents-list.types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -99,6 +101,8 @@ const emit = defineEmits([
   'document-selection-change',
   'on-selection-change',
   'table-row-clicked',
+  'document-name-clicked',
+  'table-row-double-clicked',
 ])
 
 const props = defineProps<DocumentsListProps>()
@@ -163,26 +167,29 @@ const tableRowClassName = ({
   })
 }
 
-const selectRow = (documentRow: TableRowDocument, column:any) => {
-  const shouldOpenDrawer =
-     column &&
-     props.documentsListWithTableStructure.documentHeaders
-       .filter(h => h.columnName === column.label).length > 0 &&
-    column.label !== 'Actions'
-
-  const index = props.documentsListWithTableStructure.documentsPage.items.indexOf(documentRow)
-  if (!documentRow._rowIndex) {
-    documentRow._rowIndex = index
-  }
-  if (shouldOpenDrawer) {
-    emit('table-row-clicked', documentRow)
-  } else {
-    // Need to cast as we Vue / TS doesn't infer the $refs value
-    const documentsListTableInstance =
+const selectRow = (documentRow: TableRowDocument, _column: DocumentListTableColumn) => {
+  // Need to cast as we Vue / TS doesn't infer the $refs value
+  const documentsListTableInstance =
     documentsListTable.value
       ?.$refs.table as InstanceType<typeof ElTable>
-    documentsListTableInstance?.clearSelection()
-    documentsListTableInstance?.toggleRowSelection(documentRow, true)
+  documentsListTableInstance?.clearSelection()
+  documentsListTableInstance?.toggleRowSelection(documentRow, true)
+}
+
+function handleDocumentNameClick(document: TableRowDocument, column:any) {
+  const shouldOpenDrawer = getShouldOpenDrawer(props.documentsListWithTableStructure.documentHeaders, column)
+  document._rowIndex = getDocumentIndex(document, props.documentsListWithTableStructure.documentsPage.items)
+  if (shouldOpenDrawer) {
+    emit('document-name-clicked', document)
+  }
+}
+
+function handleRowDoubleClick(document: TableRowDocument, column:any) {
+  const shouldOpenDrawer = getShouldOpenDrawer(props.documentsListWithTableStructure.documentHeaders, column)
+  document._rowIndex = getDocumentIndex(document, props.documentsListWithTableStructure.documentsPage.items)
+
+  if (shouldOpenDrawer) {
+    emit('table-row-double-clicked', document)
   }
 }
 

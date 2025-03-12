@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
-import { documentMock , documentsResponsePayload, documentsResponsePayloadMoreThanOneDoc } from '@ged/__mocks__/documents.mock'
+import { documentMock , documentsResponsePayload, documentsResponsePayloadMoreThanOneDoc } from '@ged/__mocks__/documents.mocks'
 import { generateTestFiles, validDestination } from '@ged/__mocks__/files.mocks'
 import { documentsServiceMock, fetchDocumentsByKeyWordMock, previewDocumentMock } from '@ged/__mocks__/documents.service.mocks'
 import { getConnectionDocumentPiaStatusChangedMock, onConnectedAsyncMock, onDisconnectedAsyncMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
@@ -643,7 +643,7 @@ describe('documents', () => {
         ...componentInstance.selectedDocuments[0],
         _rowIndex: 0,
       }
-      await documents.vm.$emit('table-row-clicked', tableRowDocument)
+      await documents.vm.$emit('table-row-double-clicked', tableRowDocument)
       await nextTick()
 
       const documentPreview = wrapper.findComponent({ name: 'DocumentPreview' })
@@ -674,7 +674,7 @@ describe('documents', () => {
         _rowIndex: 0,
       }
 
-      await documents.vm.$emit('table-row-clicked', tableRowDocument)
+      await documents.vm.$emit('table-row-double-clicked', tableRowDocument)
       await nextTick()
 
       const documentPreview = wrapper.findComponent({ name: 'DocumentPreview' })

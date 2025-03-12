@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { documentsMock, documentsMockWithOneCertified } from '@ged/__mocks__/documents.mock'
+import { documentsMock, documentsMockWithOneCertified } from '@ged/__mocks__/documents.mocks'
 import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import { validDestination, currentServiceFolder, unValidDestination, secondValidDestination, currentService, selectedEntity, accountId } from '@ged/__mocks__/files.mocks'
 import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
@@ -80,7 +80,7 @@ describe('documents Move', () => {
       const wrapper = createWrapper(updatedProps)
       const documentExplorerModalWrapper = findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
       expect(documentExplorerModalWrapper.props('modalTitle')).toBe(
-        `Déplacer ${defaultProps.selectedDocuments.length} document dans ${validDestination.name}`,
+        `Déplacer ${defaultProps.selectedDocuments.length} documents dans ${validDestination.name}`,
       )
     })
 
@@ -126,7 +126,7 @@ describe('documents Move', () => {
       })
 
       await nextTick()
-      expect(wrapper.vm.explorerDocuments).toHaveLength(1)
+      expect(wrapper.vm.explorerDocuments).toHaveLength(documentsMock.length)
       expect(wrapper.vm.explorerDocuments[0].givenActionState).toBe('TO_DO')
     })
   })

@@ -6,4 +6,5 @@ export interface PTextProps {
   pType: 'primary' | 'secondary' | 'drag'
   selected?: boolean
   disabled?: boolean
+  pIsUnderlinedOnHover?: boolean
 }

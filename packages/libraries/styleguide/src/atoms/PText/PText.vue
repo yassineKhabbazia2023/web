@@ -11,7 +11,10 @@
         :pName="pIconName"
       />
     </div>
-    <div :class="['p-text__content', { 'font-bold': pBold }]">
+    <div
+      :class="['p-text__content', { 'font-bold': pBold }]"
+      @click="$emit('p-text-content-clicked')"
+    >
       {{ pContent ?? '' }}
     </div>
   </div>
@@ -26,10 +29,16 @@ const props = withDefaults(defineProps<PTextProps>(), {
   pBold: false,
   selected: false,
   disabled: false,
+  pIsUnderlinedOnHover: false,
 })
+
+defineEmits<{
+  'p-text-content-clicked': [void],
+}>()
 
 const pClassMapper = computed(() => ({
   [`p-text--type-${props.pType}`]: true,
+  ['p-text--is-underlined-on-hover']: props.pIsUnderlinedOnHover,
 }))
 </script>
 
@@ -66,6 +75,12 @@ const pClassMapper = computed(() => ({
   &[selected='true'] {
     background-color: var(--el-color-persian-200);
     color:  var(--el-text-color-primary);
+  }
+
+  &--is-underlined-on-hover {
+    .p-text__content:hover {
+      text-decoration: underline;
+    }
   }
 
   &__icon {

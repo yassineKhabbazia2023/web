@@ -1,13 +1,18 @@
 import { describe, expect, it } from 'vitest'
-import { documentsMockWithOneCertified } from '@ged/__mocks__/documents.mock'
+import { documentsMock, documentsMockWithOneCertified } from '@ged/__mocks__/documents.mocks'
+import { getDocumentsTableStructureMock } from '@ged/__mocks__/documents-table-structure.mocks'
 import { Document } from '@ged/models/Document'
+import { documentListColumnNames } from '@ged/modules/Documents/constants/documents-list.const'
 import {
   getRowAlignmentClass,
   getIsDraggedDocument,
   getStateClassWhenDragged,
   getTextClass,
   getRowClasses,
+  getShouldOpenDrawer,
+  getDocumentIndex,
 } from './documents-list.manager'
+import type { DocumentListTableColumn } from './documents-list.types'
 
 import * as documentsListManager from './documents-list.manager'
 import * as documentsHelper from '@ged/modules/Documents/helpers/documents.helper'
@@ -181,5 +186,57 @@ describe('documents list manager', () => {
         vi.restoreAllMocks()
       },
     )
+  })
+
+  describe('get should open drawer', () => {
+    it.each([
+      {
+        testCaseName: 'should return false when header don\'t have an existing column',
+        tableStructureMock: getDocumentsTableStructureMock(),
+        column: { label: 'not a column label from table structure' },
+        expectedResult: false,
+      },
+      {
+        testCaseName: 'should return false when header label is "Actions"',
+        tableStructureMock: getDocumentsTableStructureMock(),
+        column: { label: documentListColumnNames.ACTIONS_DROPDOWN },
+        expectedResult: false,
+      },
+      {
+        testCaseName: 'should return false when column has a falsy value',
+        tableStructureMock: getDocumentsTableStructureMock(),
+        column: null,
+        expectedResult: false,
+      },
+      {
+        testCaseName: 'should return true label exists in headers and is not "Actions"',
+        tableStructureMock: getDocumentsTableStructureMock(),
+        column: { label: getDocumentsTableStructureMock()[0].columnName },
+        expectedResult: true,
+      },
+    ])('$testCaseName', ({ tableStructureMock, column, expectedResult }) => {
+      const result = getShouldOpenDrawer(tableStructureMock, column as DocumentListTableColumn)
+      expect(result).toBe(expectedResult)
+    })
+  })
+
+  describe('get document index', () => {
+    it.each([
+      {
+        document: documentsMock[0],
+        expectedIndex: 0,
+      },
+      {
+        document: documentsMock[1],
+        expectedIndex: 1,
+      },
+      {
+        document: documentsMock[100],
+        expectedIndex: -1,
+      },
+    ])('returns the index of a document', ({ document, expectedIndex }) => {
+      const result = getDocumentIndex(document, documentsMock)
+      expect(result).toBe(expectedIndex)
+    })
   })
 })

@@ -12,3 +12,7 @@ export interface GetRowClassNameParameters {
   draggedDocuments: Document[]
   isDragging: boolean
 }
+
+export interface DocumentListTableColumn {
+  label: string
+}
