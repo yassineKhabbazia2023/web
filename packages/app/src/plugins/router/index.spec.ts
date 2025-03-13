@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import { routerBeforeEach } from './index'
 import { LoginRouteName } from '@pulse/common/constants'
 import { getMockedUser } from '@pulse/common/mocks'
+import { routerBeforeEach } from '.'
 
 const mockedGatewayGet = vi.hoisted(() => vi.fn())
 
@@ -12,15 +12,16 @@ vi.mock('vue-router', () => ({
     beforeEach: vi.fn(),
   }),
 }))
+
 const userMock = getMockedUser()
 
 const mockFechUserDataProvider = vi.fn(() => {
   return Promise.resolve(userMock)
 })
 
-const loadUserContextMock = vi.hoisted(() => vi.fn())
+const checkAuthenticatedUserMock = vi.hoisted(() => vi.fn())
 vi.mock('./router.utils', () => ({
-  loadUserContext: loadUserContextMock,
+  checkAuthenticatedUser: checkAuthenticatedUserMock,
 }))
 
 vi.mock('@pulse/common', () => ({
@@ -155,7 +156,7 @@ describe('router', () => {
       isFirstTime,
     })
     expect(response).toBeUndefined()
-    expect(loadUserContextMock).toHaveBeenCalledOnce()
-    expect(loadUserContextMock).toHaveBeenCalledWith(storeMock)
+    expect(checkAuthenticatedUserMock).toHaveBeenCalledOnce()
+    expect(checkAuthenticatedUserMock).toHaveBeenCalledWith(storeMock)
   })
 })

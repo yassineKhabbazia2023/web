@@ -6,7 +6,7 @@ import { commonStore as useStore, commonApi } from '@pulse/common'
 import { fetchEntities } from '@app/services/entities'
 import { logger } from '@pulse/core'
 import { LoginRouteName } from '@pulse/common/constants'
-import { loadUserContext } from './router.utils'
+import { checkAuthenticatedUser } from './router.utils'
 
 const isFirstTime = ref(true)
 
@@ -99,7 +99,11 @@ export async function routerBeforeEach({
   isFirstTime: boolean,
 }) {
   if (isAuthenticated && isFirstTime) {
-    await loadUserContext(store)
+    const redirection = await checkAuthenticatedUser(store)
+
+    if (redirection) {
+      return redirection
+    }
   }
 
   const isHomeLayoutWithoutCustomStyles = isObjectEmpty(to.meta)
