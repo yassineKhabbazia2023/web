@@ -79,6 +79,8 @@ const createWrapper = (): VueWrapper<any> =>
         Header: true,
         HomeScheduleDrawer: true,
         FeedCenterDrawer: true,
+        'router-link': true,
+        'router-view': true,
       },
     },
   })
