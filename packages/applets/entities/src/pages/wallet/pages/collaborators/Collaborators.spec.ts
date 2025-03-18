@@ -41,27 +41,8 @@ const createWrapper = (): VueWrapper<any> =>
     },
   })
 
-const { items, totalPages } = mockedCollaboratorsList2
+const { items } = mockedCollaboratorsList2
 let wrapper: VueWrapper<any>
-
-const getTableBody = () => wrapper.find('table tbody')
-
-const checkRowContent = (rowIndex: number) => {
-  const row = getTableBody().findAll('tr')[rowIndex]
-  const rowContent = row.text()
-  const [, ...rest] = Object.values(items[rowIndex])
-  const itemValues = rest
-  const itemValuesWithoutMobilePhone = itemValues.filter((_value, index) => index !== 4 &&
-   index !== 5 && index !== 7 && index !== 8)
-  itemValuesWithoutMobilePhone.forEach(value => {
-    if (typeof value === 'boolean') {
-      const inputSwitch = getTableBody().find(`tr:nth-child(${rowIndex + 1}) input`)
-      expect(inputSwitch.attributes('aria-checked')).toBe((value as boolean).toString())
-    } else {
-      expect(rowContent).toContain(value)
-    }
-  })
-}
 
 describe('collaborators', () => {
   beforeEach(async () => {
