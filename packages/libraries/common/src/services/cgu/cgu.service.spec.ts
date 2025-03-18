@@ -19,39 +19,55 @@ const termsMock = {
 
 const cguMessageDone = { message: 'Done !' }
 
-vi.mock('@pulse/common', () => {
-  return {
-    commonApi: () => ({
-      gateway: {
-        get: vi.fn((url) => {
-          if (url.includes('contacts/currentuser')) {
-            return Promise.resolve({ data: cguMock })
-          }
-          return Promise.resolve({ data: termsMock })
-        }),
-        patch: vi.fn(() => Promise.resolve({ data: cguMessageDone })),
-      },
-    }),
-  }
-})
+const apiGatewayGetMock = vi.hoisted(() => vi.fn())
+const apiGatewayPatchMock = vi.hoisted(() => vi.fn())
+vi.mock('../../api', () => ({
+  default: () => ({
+    gateway: {
+      get: apiGatewayGetMock,
+      patch: apiGatewayPatchMock,
+    },
+  }),
+}))
 
 describe('getTermsByCurrentUser', () => {
   it('should return cgu accepted by user', async () => {
+    const expectedUrl = 'contact/api/contacts/currentuser/terms'
+    apiGatewayGetMock.mockResolvedValueOnce({
+      data: cguMock
+    })
     const data = await getTermsByCurrentUser()
+
+    expect(apiGatewayGetMock).toHaveBeenCalledOnce()
+    expect(apiGatewayGetMock).toHaveBeenNthCalledWith(1, expectedUrl)
     expect(data).toStrictEqual(cguMock)
   })
 })
 
 describe('getLatestTerms', () => {
   it('should return latest terms active', async () => {
+    const expectedUrl = 'contact/api/terms/latest'
+    apiGatewayGetMock.mockResolvedValueOnce({
+      data: termsMock
+    })
     const data = await getLatestTerms()
+
+    expect(apiGatewayGetMock).toHaveBeenCalledOnce()
+    expect(apiGatewayGetMock).toHaveBeenNthCalledWith(1, expectedUrl)
     expect(data).toStrictEqual(termsMock)
   })
 })
 
 describe('updateTermsByCurrentUser', () => {
   it('should return a message note', async () => {
-    const response = await updateTermsByCurrentUser(123311)
-    expect(response.data).toStrictEqual(cguMessageDone)
+    const expectedUrl = 'contact/api/contacts/currentuser/terms?termsId=123311'
+    apiGatewayPatchMock.mockResolvedValueOnce({
+      data: cguMessageDone
+    })
+    const { data } = await updateTermsByCurrentUser(123311)
+
+    expect(apiGatewayPatchMock).toHaveBeenCalledOnce()
+    expect(apiGatewayPatchMock).toHaveBeenNthCalledWith(1, expectedUrl)
+    expect(data).toStrictEqual(cguMessageDone)
   })
 })
