@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRefs } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PDrawer,
@@ -73,11 +73,12 @@ const { t } = useI18n({
 })
 
 const emit = defineEmits<{
-  'update:model-value': [boolean]
+  'update:model-value': [boolean],
+  'notifications-updated': []
 }>()
 
 const props = defineProps<FeedCenterDrawerProps>()
-const { unreadNotificationsCount } = toRefs(props)
+const unreadNotificationsCount = ref(props.unreadNotificationsCount)
 
 const userStore = commonStore()
 const userId = computed(() => userStore.user?.id)
@@ -101,7 +102,10 @@ const toolboxParams: PDrawerProps['pHeaderToolbox'] = {
 
 async function handleToolboxItemClick() {
   notifications.value = await patchAllNotificationsAsRead(userId.value)
+  // Reset the unread notifications count to avoid an unnecessary call to fetchUnreadNotificationsCount
+  unreadNotificationsCount.value = 0
   trackNotificationMarkAsRead(NotificationTrackingReadType.ALL_READ)
+  emit('notifications-updated')
 }
 
 const {

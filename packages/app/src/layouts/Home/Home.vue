@@ -8,6 +8,7 @@
       v-if="FeatureFlagManager.isFeedCenterActivated()"
       v-model="showFeedCenter"
       :unreadNotificationsCount="unreadNotificationsCount"
+      @notifications-updated="setNotificationsCount"
     />
     <PContainer pDirection="vertical">
       <PCHeader
