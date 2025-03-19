@@ -1,11 +1,11 @@
-# Introduction 
+# Introduction
 
-The `@pulse/common` project is a TypeScript library (with some Vue elements) that provides developers with various helpers, services, and common functionalities shared between the app and the plugins.
+Le projet `@pulse/common` est une bibliothèque TypeScript (avec quelques éléments Vue) qui fournit aux développeurs divers assistants, services et fonctionnalités communes partagées entre l'application et les plugins.
 
-# Getting Started
+# Pour Commencer
 
-The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../../README.md) for instructions on installing all dependencies and getting started.
+Le processus d'initialisation est géré à la racine du monorepo en utilisant la fonctionnalité `workspaces` de npm. Veuillez vous référer au [README racine](../../../README.md) pour les instructions sur l'installation de toutes les dépendances.
 
-As this is a library and not a standalone application, it cannot be run independently. However, you can build and test it.
+Comme il s'agit d'une bibliothèque et non d'une application autonome, elle ne peut pas être exécutée indépendamment. Cependant, vous pouvez la build et la tester.
 
-Refer to the [package.json](./package.json) for the scripts you can execute on this package.
+Référez-vous au [package.json](./package.json) pour les scripts que vous pouvez exécuter sur ce package.

@@ -1,9 +1,9 @@
 # Introduction 
 
-The `@pulse/app` project is a Vue 3 Single Page Application (SPA) that organizes the libraries, applets, and external packages of the Pulse Front.
+Le projet `@pulse/app` est une application Single-Page (SPA) Vue 3 qui organise les bibliothèques, applets et packages externes du Front Pulse.
 
-# Getting Started
+# Pour Commencer
 
-The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../README.md) for instructions on installing all dependencies and getting started.
+Le processus d'initialisation est géré à la racine du monorepo en utilisant la fonctionnalité `workspaces` de npm. Veuillez vous référer au [README racine](../../README.md) pour les instructions sur l'installation de toutes les dépendances.
 
-Refer to the [package.json](./package.json) for the scripts you can execute on this package.
+Référez-vous au [package.json](./package.json) pour les scripts que vous pouvez exécuter sur ce package.

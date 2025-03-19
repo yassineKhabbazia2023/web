@@ -1,11 +1,11 @@
 # Introduction 
 
-The `@pulse/entities` project is a Vue 3 Plugin that facilitates switching between entities within the application.
+Le projet `@pulse/entities` est un plugin Vue 3 qui facilite la gestion des entités au sein de l'application.
 
-# Getting Started
+# Pour Commencer
 
-The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../../README.md) for instructions on installing all dependencies and getting started.
+Le processus d'initialisation est géré à la racine du monorepo en utilisant la fonctionnalité `workspaces` de npm. Veuillez vous référer au [README racine](../../../README.md) pour les instructions sur l'installation de toutes les dépendances.
 
-As this is a plugin and not a standalone application, it cannot be run independently. However, you can build and test it.
+Comme il s'agit d'un plugin et non d'une application autonome, il ne peut pas être exécuté indépendamment. Cependant, vous pouvez le build et le tester.
 
-Refer to the [package.json](./package.json) for the scripts you can execute on this package.
+Référez-vous au [package.json](./package.json) pour les scripts que vous pouvez exécuter sur ce package.

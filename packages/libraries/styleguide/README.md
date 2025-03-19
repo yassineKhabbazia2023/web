@@ -1,25 +1,31 @@
 # Introduction 
 
-The `@pulse/styleguide` project is a Vue Components library. It contains the Design System of Pulse.
+Le projet `@pulse/styleguide` est une bibliothèque de composants Vue. Il définit le Design System de Pulse.
 
-# Getting Started
+# Pour Commencer
 
-The initialization process is managed at the root of the monorepo using npm’s `workspaces` feature. Please refer to the [root README](../../../README.md) for instructions on installing all dependencies and getting started.
+Le processus d'initialisation est géré à la racine du monorepo en utilisant la fonctionnalité `workspaces` de npm. Veuillez vous référer au [README racine](../../../README.md) pour les instructions sur l'installation de toutes les dépendances.
 
-You can see the components in action in a separate build of the library :
+# Histoire
+
+Vous pouvez voir les composants en action dans [Histoire](https://histoire.dev/).
+Histoire est une bibliothèque qui permet de visualiser et de documenter les composants Vue dans un environnement interactif que vous pouvez builder de la sorte :
 
 ```
 npm run story:dev
 ```
 
-# Adding new pictures or icons
+Ouvrez ensuite votre navigateur sur http://localhost:6006 pour naviguer dans le Design System.
 
-After adding pictures (in `packages\libraries\styleguide\src\assets\images-origin`) or icons (in `packages\libraries\styleguide\src\assets\icons`) you need to generate them with the following script:
+
+# Ajouter des images ou des icônes
+
+Après avoir ajouté des images (dans `packages\libraries\styleguide\src\assets\images-origin`) ou des icônes (dans `packages\libraries\styleguide\src\assets\icons`), vous devez les générer avec le script suivant :
 
 ```
 npm run generate
 ```
 
-# Other scripts
+# Autres scripts
 
-Refer to the [package.json](./package.json) for the scripts you can execute on this package.
+Référez-vous au [package.json](./package.json) pour les scripts que vous pouvez exécuter sur ce package.
