@@ -2,8 +2,13 @@ import { flushPromises } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { getMockedRouter, getWrapper } from '@login/__mocks__/component.wrapper'
 import { LoginRouteName } from '@pulse/common/constants'
+import { loggerMock } from '@pulse/core/mocks'
 
 import CreatePassword from './'
+
+vi.mock('@pulse/core', () => ({
+  logger: loggerMock,
+}))
 
 const router = getMockedRouter(
   'createPassword',

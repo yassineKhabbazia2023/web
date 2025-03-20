@@ -9,6 +9,7 @@
   "exports": {
     "./types": "./src/types.mts",
     "./mocks": "./src/mocks.mts",
+    "./utils/test": "./src/utils/test.utils.ts",
     ".": "./src/main.mts"
   },
   "scripts": {

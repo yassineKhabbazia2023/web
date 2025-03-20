@@ -6,6 +6,7 @@
     :popperClass="`p-toolbox shadow--3 ${pPopperClass}`"
     :placement="pPlacement"
     :style="computedStyle"
+    @visible-change="$emit('visible-change', $event)"
   >
     <slot />
     <template #dropdown>
@@ -44,7 +45,7 @@ const props = withDefaults(defineProps<PToolboxProps>(), {
   pPopperClass: '',
 })
 
-defineEmits(['p-toolbox-item-clicked'])
+defineEmits(['p-toolbox-item-clicked', 'visible-change'])
 
 const dropdownRef = ref()
 const dropdownHtmlWrapper = ref<HTMLElement | null>(null)
