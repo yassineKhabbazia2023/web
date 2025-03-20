@@ -1,23 +1,30 @@
-import { logger } from '@pulse/core'
 import {
   computed,
   onMounted,
   ref,
-  type Ref,
   watch,
-  type WritableComputedRef,
 } from 'vue'
+import type { Ref, WritableComputedRef } from 'vue'
+import { logger } from '@pulse/core'
+import { commonStore } from '@pulse/common'
+import type { Entity } from '@pulse/common/types'
 import { type FeedCenterNotification, SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import { fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
-import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import { trackFeedCenterTabConsultation } from '@app/modules/FeedCenter/services/tracking/tracking.service'
+import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
+import { getIdsFromEntities } from './feed-center-drawer.manager'
 
 export function useFeedCenterDrawer(
   isDrawerOpened: WritableComputedRef<FeedCenterDrawerProps['modelValue']>,
   unreadNotificationsCount: Ref<FeedCenterDrawerProps['unreadNotificationsCount']>,
 ) {
+  const store = commonStore()
+
   const notifications = ref<FeedCenterNotification[]>([])
-  const unreadNotifications = computed(() => notifications.value.filter(notification => notification.isRead === false))
+
+  const unreadNotifications = computed(
+    () => notifications.value.filter(notification => !notification.isRead),
+  )
 
   const areNotificationsLoading = ref(false)
   function startLoadingNotifications() {
@@ -28,10 +35,10 @@ export function useFeedCenterDrawer(
     areNotificationsLoading.value = false
   }
 
-  async function fetchNotificationsWithHandler() {
+  async function fetchNotificationsWithHandler(entityIds: Entity['accountId'][]) {
     startLoadingNotifications()
     try {
-      const { notifications: fetchedNotification } = await fetchNotifications()
+      const { notifications: fetchedNotification } = await fetchNotifications(entityIds)
       notifications.value = fetchedNotification
     } catch (error) {
       logger.error('Notifications fetch failed', error)
@@ -40,11 +47,25 @@ export function useFeedCenterDrawer(
     }
   }
 
+  async function fetchNotificationsWithOrWithoutFavourites() {
+    const entityIds = isFavouritesFilterEnabled.value
+      ? favouritesEntitiyIds.value
+      : []
+    await fetchNotificationsWithHandler(entityIds)
+  }
+
+  const isFavouritesFilterEnabled = ref(true)
+  const favouritesEntitiyIds = computed(() => getIdsFromEntities(store.favoriteEntities))
+
+  watch(isFavouritesFilterEnabled, () => {
+    fetchNotificationsWithOrWithoutFavourites()
+  })
+
   watch(isDrawerOpened, (value) => {
     if (!value) {
       return
     }
-    fetchNotificationsWithHandler()
+    fetchNotificationsWithOrWithoutFavourites()
   })
 
   watch(unreadNotificationsCount, async () => {
@@ -58,7 +79,7 @@ export function useFeedCenterDrawer(
   })
 
   onMounted(async () => {
-    await fetchNotificationsWithHandler()
+    await fetchNotificationsWithOrWithoutFavourites()
   })
 
   function closeNotificationsDrawer() {
@@ -83,6 +104,7 @@ export function useFeedCenterDrawer(
     notifications,
     areNotificationsLoading,
     shortenedCount,
+    isFavouritesFilterEnabled,
     unreadNotifications,
   }
 }

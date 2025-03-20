@@ -1,13 +1,23 @@
 import { vi, describe, it, expect } from 'vitest'
 import { computed, nextTick, ref } from 'vue'
+import { setActivePinia } from 'pinia'
+import { createTestingPinia } from '@pinia/testing'
 import { flushPromises } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { withSetup } from '@pulse/core/utils/test'
 import { fetchNotificationsMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
+import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import { trackFeedCenterTabConsultationMock, trackingServiceMock } from '@app/__mocks__/tracking.service.mocks'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
+import { commonStore } from '@pulse/common'
 
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
+
+setActivePinia(createTestingPinia())
+const store = commonStore()
+const favouriteEntities = getMockedFavoriteEntities()
+// @ts-ignore needed in order to override the mocked store
+store.favoriteEntities = [favouriteEntities[0], favouriteEntities[1]]
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 
@@ -77,5 +87,32 @@ describe('feed center drawer composable', () => {
     await flushPromises()
     await nextTick()
     expect(trackFeedCenterTabConsultationMock).toHaveBeenCalledWith(SelectedNotificationEnum.UNREAD)
+  })
+
+  it('should give the favourite entities to the notification service when the "favourite" switch is turned on', async () => {
+    const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
+
+    withSetup(() => useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount))
+
+    await flushPromises()
+    await nextTick()
+    expect(fetchNotificationsMock).toHaveBeenCalledOnce()
+    expect(fetchNotificationsMock).toHaveBeenCalledWith([favouriteEntities[0].accountId, favouriteEntities[1].accountId])
+  })
+
+  it('should not give any specific entities to the get notification service if the favourite switch if turned off', async () => {
+    const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
+
+    const [result] = withSetup(() => useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount))
+    const { isFavouritesFilterEnabled } = result
+    isFavouritesFilterEnabled.value = false
+
+    await flushPromises()
+    await nextTick()
+    const fetchNotificationsMockCalls = fetchNotificationsMock.mock.calls
+    // first one is the onMounted Hook, the second one is the PSwitch switched off
+    expect(fetchNotificationsMock).toHaveBeenCalledTimes(2)
+    // the base value is an empty array
+    expect(fetchNotificationsMockCalls[1]).toEqual([[]])
   })
 })
