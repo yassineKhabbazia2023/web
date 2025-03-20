@@ -4,11 +4,13 @@ import type { Entity } from '@pulse/common/types'
 import { API_PREFIXES } from '../config'
 import { getRandomColor } from '@app/helper'
 
-export const fetchEntities = async (): Promise<any> => {
+export const fetchEntities = async (pageSize?: number): Promise<any> => {
   try {
-    const response = await commonApi().gateway.get(
-      `${API_PREFIXES.ACCOUNT}/accounts/currentuser`,
-    )
+    const response = await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/accounts/currentuser`, {
+      params: {
+        pageSize,
+      },
+    })
 
     return response.data
   } catch (error) {

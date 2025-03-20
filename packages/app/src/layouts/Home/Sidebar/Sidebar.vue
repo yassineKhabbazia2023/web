@@ -15,7 +15,7 @@ const entities = ref<Entity[]>([])
 
 onMounted(async () => {
   await fetchFavoriteEntities()
-  const { items } = await fetchEntities()
+  const { items } = await fetchEntities(2)
   entities.value = items
   isEntitiesLoaded.value = true
 })
