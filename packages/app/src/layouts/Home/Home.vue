@@ -154,6 +154,7 @@ watch(isFeedCenterOpened, async (value) => {
       await setNotificationsCount()
     }, 500)
   } else {
+    await setNotificationsCount()
     trackFeedcenterOpened()
   }
 })

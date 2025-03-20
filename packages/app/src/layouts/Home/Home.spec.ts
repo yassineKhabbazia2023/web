@@ -265,15 +265,15 @@ describe('home', () => {
     await header.vm.$emit('update:show-feed-center', true)
     await header.vm.$emit('update:show-feed-center', false)
     vi.advanceTimersByTime(500)
-    // onMounted call + the one from the watcher that i want to test
-    expect(fetchUnreadNotificationsCountMock).toHaveBeenCalledTimes(2)
+    // called 3 times : 1x onMounted, 1x drawer open, 1x drawer close
+    expect(fetchUnreadNotificationsCountMock).toHaveBeenCalledTimes(3)
   })
 
   it('should track feedcenter opened' , async () => {
     isFeedCenterActivatedMock.mockReturnValue(true)
     createWrapper()
     wrapper.vm.isFeedCenterOpened = true
-    await nextTick()
+    await flushPromises()
     expect(trackFeedcenterOpenedMock).toHaveBeenCalledOnce()
   })
 })

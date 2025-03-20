@@ -29,7 +29,7 @@
             <p class="margin-right--1">
               {{ t('tabs.unread-notifications') }}
             </p>
-            <PPastille v-if="unreadNotificationsCount" pSize="small">
+            <PPastille v-if="unreadNotificationsCountRef" pSize="small">
               {{ shortenedCount }}
             </PPastille>
           </div>
@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, toRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PDrawer,
@@ -78,7 +78,8 @@ const emit = defineEmits<{
 }>()
 
 const props = defineProps<FeedCenterDrawerProps>()
-const unreadNotificationsCount = ref(props.unreadNotificationsCount)
+// Keeps reactivity for prop changes, ensuring the count stays updated from the parent.
+const unreadNotificationsCountRef = toRef(props, 'unreadNotificationsCount')
 
 const userStore = commonStore()
 const userId = computed(() => userStore.user?.id)
@@ -102,8 +103,6 @@ const toolboxParams: PDrawerProps['pHeaderToolbox'] = {
 
 async function handleToolboxItemClick() {
   notifications.value = await patchAllNotificationsAsRead(userId.value)
-  // Reset the unread notifications count to avoid an unnecessary call to fetchUnreadNotificationsCount
-  unreadNotificationsCount.value = 0
   trackNotificationMarkAsRead(NotificationTrackingReadType.ALL_READ)
   emit('notifications-updated')
 }
@@ -115,7 +114,7 @@ const {
   areNotificationsLoading,
   shortenedCount,
   unreadNotifications,
-} = useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount)
+} = useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCountRef)
 </script>
 
 <i18n lang="yaml">
