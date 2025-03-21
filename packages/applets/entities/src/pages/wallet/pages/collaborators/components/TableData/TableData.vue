@@ -16,7 +16,7 @@
           <div class="flex flex--align-items-center">
             <PAvatar
               class="margin-right--2"
-              pColor="blue-pulse"
+              :pRole="AvatarRoles.COLLAB"
               pType="xsmall"
             >
               {{ scope.row.initials }}
@@ -110,6 +110,7 @@ import {
   PTableColumn,
   PToolbox,
 } from '@pulse/styleguide/components'
+import { AvatarRoles } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { reactive, computed } from 'vue'
 import type { Props } from './types'

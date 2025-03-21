@@ -1,7 +1,7 @@
 import { PAvatarProps } from '../atoms/PAvatar/PAvatarTypes'
 
 export const AVATAR_COLORS: PAvatarProps['pColor'][] = [
-  'amethyste', 'fuschia', 'persian-light', 'persian-600', 'persian-400',
+  'amethyste', 'persian-light', 'persian-400',
 ]
 
 const hashString = (str: string): number => {
@@ -15,7 +15,11 @@ const hashString = (str: string): number => {
   return Math.abs(hash)
 }
 
-export const getAvatarColorFromKey = (key: string): PAvatarProps['pColor'] => {
+export const getAvatarColorFromKey = (key: string = ''): PAvatarProps['pColor'] => {
+  if(!key) {
+    return AVATAR_COLORS[0]
+  }
+
   const index = hashString(key) % AVATAR_COLORS.length
   return AVATAR_COLORS[index]
 }

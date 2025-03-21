@@ -71,7 +71,7 @@
             <div class="flex flex--align-items-center">
               <PAvatar
                 class="margin-right--2"
-                pColor="blue-pulse"
+                :pRole="AvatarRoles.COLLAB"
                 pType="small"
               >
                 {{ getInitials(scope.row.firstName, scope.row.lastName) }}
@@ -169,8 +169,8 @@ import {
   PTableColumn,
   PToolbox,
 } from '@pulse/styleguide/components'
+import { AvatarRoles , PNotification } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { PNotification } from '@pulse/styleguide'
 import {
   computed,
   onMounted,

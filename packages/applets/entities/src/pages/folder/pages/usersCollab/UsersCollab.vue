@@ -65,7 +65,7 @@
               <div class="flex flex--align-items-center">
                 <div class="margin-right--2">
                   <PAvatar
-                    pColor="blue-pulse"
+                    :pRole="AvatarRoles.CLIENT"
                     pType="small"
                   >
                     {{ scope.row.initials }}
@@ -183,7 +183,7 @@ import {
 // TODO should move this component to a common folder
 import RemoveUserDialog from '../usersClient/components/RemoveUserDialog'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { PNotification } from '@pulse/styleguide'
+import { AvatarRoles , PNotification } from '@pulse/styleguide'
 import { amplitudeService, commonStore, getInitials, userPermissions } from '@pulse/common'
 import {
   PAGE_SIZES,

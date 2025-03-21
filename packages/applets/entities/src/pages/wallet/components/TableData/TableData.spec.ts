@@ -19,6 +19,7 @@ const testEntity = {
 
 vi.mock('@pulse/styleguide', () => ({
   PNotification: vi.fn(),
+  AvatarRoles: vi.fn(),
 }))
 
 vi.mock('@pulse/common', () => ({

@@ -16,7 +16,7 @@
           <div class="flex flex--align-items-center">
             <div class="margin-right--2">
               <PAvatar
-                pColor="blue-pulse"
+                :pRole="AvatarRoles.CLIENT"
                 pType="small"
               >
                 {{ scope.row.initials }}
@@ -110,6 +110,7 @@ import {
   PToolbox,
   PTag,
 } from '@pulse/styleguide/components'
+import { AvatarRoles } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { computed, reactive } from 'vue'
 import { userPermissions } from '@pulse/common'

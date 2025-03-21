@@ -1,5 +1,5 @@
 <div class="entity-header flex flex--align-items-center padding-bottom--6">
-  <div pshape="circle" ptype="small" pcolor="fuschia">
+  <div pshape="circle" ptype="small" pcolor="amethyste">
     <p-icon-stub pname="pulse"></p-icon-stub>
   </div><span class="entity-header__legal-name font-semibold margin-left--3" data-testid="entity-header-name">Au5</span>
   <div class="entity-header__separator margin-x--3 bg--neutral-gray-100"></div>

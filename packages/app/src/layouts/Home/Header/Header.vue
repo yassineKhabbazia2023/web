@@ -74,7 +74,7 @@
         <PAvatar
           pShape="circle"
           pType="small"
-          pColor="blue-pulse"
+          :pRole="userRole"
           data-ut="user-initials"
         >
           {{ userInitials }}
@@ -96,6 +96,7 @@ import {
   PImage,
   PPastille,
 } from '@pulse/styleguide/components'
+import { AvatarRoles } from '@pulse/styleguide'
 import type { HeaderProps } from './HeaderTypes'
 
 const props = defineProps<HeaderProps>()
@@ -111,6 +112,11 @@ const emit = defineEmits<{
 const userInitials = computed(() =>
   getInitials(user.value?.firstName, user.value?.lastName),
 )
+
+const userRole = computed(() => {
+  const isCollab = user.value?.isCollab
+  return isCollab ? AvatarRoles.COLLAB : AvatarRoles.CLIENT
+})
 
 const feedCenterIconName = computed(() =>
   props.showFeedCenter ? 'x' : 'bell',

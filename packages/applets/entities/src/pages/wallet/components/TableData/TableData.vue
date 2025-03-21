@@ -75,7 +75,7 @@
           <PAvatar
             v-if="scope.row.owner.initials"
             class="margin-right--2"
-            pColor="blue-pulse"
+            :pRole="AvatarRoles.CLIENT"
             pType="xsmall"
           >
             {{ scope.row.owner.initials }}
@@ -188,6 +188,7 @@ import { storeToRefs } from 'pinia'
 import { commonStore, userPermissions } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
 import type { TableDataProps } from './types'
+import { AvatarRoles } from '@pulse/styleguide'
 import type { AccessibleMenuItem, AccountRow } from '@entities/common/types'
 import { filterAccessibleMenuItems } from '@entities/common/utils'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
