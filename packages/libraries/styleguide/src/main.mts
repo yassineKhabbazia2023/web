@@ -10,6 +10,7 @@ import { setAssetsBaseUrl } from './utils/imageResolverInit'
 export { default as fr } from 'element-plus/es/locale/lang/fr'
 export { PNotification } from './utils/PNotification/PNotification'
 export { AppColors } from './utils/AppColorsEnum'
+export { AvatarRoles } from './utils/avatar.roles'
 export * from './utils/avatar-colors.helper'
 export * from './utils/fileExtension'
 

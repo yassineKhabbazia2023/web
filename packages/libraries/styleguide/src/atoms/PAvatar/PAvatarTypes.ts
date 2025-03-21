@@ -1,3 +1,5 @@
+import { AvatarRoles } from '../../utils/avatar.roles'
+
 export interface PAvatarProps {
   pType?: '' | 'default' | 'small' | 'large' | 'xsmall' | 'xlarge'
   pColor?: ''
@@ -20,4 +22,5 @@ export interface PAvatarProps {
   pSrc?: string
   pShape? : 'circle' | 'square'
   pSelected?: boolean
+  pRole?: AvatarRoles
 }

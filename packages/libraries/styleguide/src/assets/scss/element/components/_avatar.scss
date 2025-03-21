@@ -101,7 +101,7 @@ $avatar-size: (
     &--color-persian-600 {
       border-color: var(--el-color-persian-600);
       background: var(--el-color-persian-600);
-      color: var(--el-color-base-persian-light);
+      color: var(--el-color-white);
     }
 
     &--color-teal {
@@ -117,9 +117,9 @@ $avatar-size: (
     }
 
     &--color-fuschia {
-      border-color: var(--el-color-secondary-fuschia-bg);
-      background: var(--el-color-secondary-fuschia-bg);
-      color: var(--el-color-secondary-fuschia);
+      border-color: var(--el-color-secondary-fuschia);
+      background: var(--el-color-secondary-fuschia);
+      color: var(--el-color-white);
     }
 
     &--color-gray {

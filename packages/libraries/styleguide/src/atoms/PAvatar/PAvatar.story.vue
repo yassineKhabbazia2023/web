@@ -151,14 +151,76 @@
         />
       </template>
     </Variant>
+    <Variant title="With icon (selected + small)">
+      <div class="demo-type">
+        <PAvatar
+          pType="small"
+          :pSelected="true"
+        >
+          <PIcon pName="pulse" />
+        </PAvatar>
+      </div>
+    </Variant>
+    <Variant title="With roles">
+      <div class="demo-type">
+        <div class="flex flex--direction-column flex--align-items-center flex--justify-content-center">
+          <p class="margin-bottom--2">
+            John Collaborator
+          </p>
+          <PAvatar
+            :pRole="AvatarRoles.COLLAB"
+          >
+            JC
+          </PAvatar>
+        </div>
+        <div class="flex flex--direction-column flex--align-items-center flex--justify-content-center">
+          <p class="margin-bottom--2">
+            Mike Client
+          </p>
+          <PAvatar
+            :pRole="AvatarRoles.CLIENT"
+          >
+            MC
+          </PAvatar>
+        </div>
+      </div>
+    </Variant>
+    <Variant title="With roles but force color">
+      <div class="demo-type">
+        <div class="flex flex--direction-column flex--align-items-center flex--justify-content-center">
+          <p class="margin-bottom--2">
+            John Collaborator
+          </p>
+          <PAvatar
+            :pRole="AvatarRoles.COLLAB"
+            p-color="orange"
+          >
+            JC
+          </PAvatar>
+        </div>
+        <div class="flex flex--direction-column flex--align-items-center flex--justify-content-center">
+          <p class="margin-bottom--2">
+            Mike Client
+          </p>
+          <PAvatar
+            :pRole="AvatarRoles.CLIENT"
+            p-color="teal"
+          >
+            MC
+          </PAvatar>
+        </div>
+      </div>
+    </Variant>
   </Story>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { PAvatarProps } from './PAvatarTypes'
-import PAvatar from './'
+import { AvatarRoles } from '../../utils/avatar.roles'
 import PIcon from '../../atoms/PIcon'
+
+import PAvatar from './'
 
 const url = ref('https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png')
 const avatarShapeList: { label: string, value: PAvatarProps['pShape'] }[] = [

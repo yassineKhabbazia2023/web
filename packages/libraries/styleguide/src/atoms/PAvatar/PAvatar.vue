@@ -27,22 +27,43 @@ import PIcon from '../PIcon'
 import { ElAvatar } from 'element-plus'
 import { computed } from 'vue'
 import type { PAvatarProps } from './PAvatarTypes'
+import { AvatarRoles } from '../../utils/avatar.roles'
 import { AppColors } from '../../utils/AppColorsEnum'
+
+const DEFAULT_AVATAR_COLOR = 'persian-gradient'
 
 const props = withDefaults(defineProps<PAvatarProps>(), {
   pType: 'default',
   pFit: 'cover',
-  pColor: 'persian-gradient',
-  pSrc: '',
   pShape: 'circle',
   pSelected: false,
 })
 
-const pClassMapper = computed(() => ({
-  [`p-avatar--color-${props.pColor}`]: true,
-  [`p-avatar--type-${props.pType}`]: true,
-  'p-avatar--selected': props.pSelected && props.pType === 'small',
-}))
+const pClassMapper = computed(() => {
+  const avatarColor = getAvatarColor()
+
+  return {
+    [`p-avatar--color-${avatarColor}`]: true,
+    [`p-avatar--type-${props.pType}`]: true,
+    'p-avatar--selected': props.pSelected && props.pType === 'small',
+  }
+})
+
+
+const AVATAR_ROLES_COLORS: Record<AvatarRoles, PAvatarProps['pColor']> = {
+  [AvatarRoles.COLLAB]: 'fuschia',
+  [AvatarRoles.CLIENT]: 'persian-600',
+}
+
+const getAvatarColor = () => {
+  // we allow to force the color
+  if(props.pColor) {
+    return props.pColor
+  }
+  // if we have a role, we use the role color
+  // otherwise we use the default color
+  return props.pRole ? AVATAR_ROLES_COLORS[props.pRole] : DEFAULT_AVATAR_COLOR
+}
 
 </script>
 <style lang="scss" scoped>
