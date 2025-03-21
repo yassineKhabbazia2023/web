@@ -99,11 +99,13 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
 import {
-  commonApi,
   commonStore as store,
   fetchUrlTerms,
   tokenService,
   amplitudeService,
+  createNewPassword,
+  login,
+  isInvitationTokenValid,
 } from '@pulse/common'
 import { LoginRouteName } from '@pulse/common/constants'
 import {
@@ -134,9 +136,15 @@ const { t } = useI18n({
 })
 const route = useRoute()
 const router = useRouter()
-const { contactId, accountNumber } = route.query
-const email = route.query.email?.toString().trim().replace(' ', '+')
-const resetPasswordToken = route.query.token
+const { contactId, accountNumber, resetPasswordToken, token, email: emailQuery } = route.query as {
+  contactId: string
+  accountNumber: string
+  resetPasswordToken: string
+  token: string
+  email: string
+}
+
+const email = emailQuery?.toString().trim().replace(' ', '+')
 const formRef = ref<FormInstance>()
 const urlTerms = ref('')
 const termsId = ref<null | number>(null)
@@ -215,16 +223,18 @@ const submitForm = (formEl: FormInstance | undefined) => {
           newPassword: formValue.password,
           resetPasswordToken,
         }
-        const urlUpdatePassword = 'authentication/api/createNewPassword'
         try {
-          await commonApi().gateway.post(urlUpdatePassword, data)
-          const urlLogin = 'authentication/api/login'
+          await createNewPassword(data)
+          const loginPayload = {
+            email: email ?? '',
+            password: formValue.password,
+          }
+
           const {
-            data: {
-              userId: id,
-              webToken: token,
-            },
-          } = await commonApi().gateway.post(urlLogin, { email, password: formValue.password })
+            userId: id,
+            webToken: token,
+          } = await login(loginPayload)
+
           tokenService.setToken(token)
           await updateTermsByCurrentUser(termsId.value as number)
           amplitudeService.track('Onboarding Completed', {
@@ -249,12 +259,12 @@ const submitForm = (formEl: FormInstance | undefined) => {
   })
 }
 
-const isValidToken = async (): Promise<any> => {
-  const token = route.query.token
+const isValidToken = async () => {
   const urlValidToken = `authentication/api/IsInvitationTokenValid?invitationToken=${token}`
   try {
-    const { data: value } = await commonApi().gateway.get(urlValidToken)
-    return value
+    const isValid = await isInvitationTokenValid(urlValidToken)
+
+    return isValid
   } catch (error) {
     logger.error(error)
   }

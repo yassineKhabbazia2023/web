@@ -10,41 +10,44 @@
       {{ t('defPassword') }}
     </p>
     <PForm
-      ref="formRef"
       class="form-password"
       pLabelPosition="top"
       pHideRequiredAsterisk
-      :pRules="rules"
-      :pModel="formValue"
     >
       <PFormItem
         :pLabel="t('labelPassword')"
-        pProp="password"
-        pRequired
+        :pError="passwordError"
+        :pShowMessage="isPasswordMessageVisible"
       >
-        <PopoverPasswordStrength
-          :password="formValue.password"
-        >
-          <PInput
-            v-model="formValue.password"
-            :pPlaceholder="t('placeholderPassword')"
-            pType="password"
-            pShowPassword
-            data-testid="reset-password-form-first-password"
-          />
-        </PopoverPasswordStrength>
+        <PInput
+          v-model="password"
+          :pPlaceholder="t('placeholderPassword')"
+          pType="password"
+          pShowPassword
+          data-testid="reset-password-form-first-password"
+          @update:model-value="checkPassword"
+          @blur="checkPassword"
+        />
+        <PStrength
+          v-if="password"
+          class="margin-top--3 min-width--full"
+          :modelValue="passwordStrength"
+          :labels="strengthLabels"
+        />
       </PFormItem>
       <PFormItem
         :pLabel="t('labelConfirmPassword')"
-        pProp="confirmPassword"
-        pRequired
+        :pError="confirmPasswordError"
+        :pShowMessage="isConfirmPasswordMessageVisible"
       >
         <PInput
-          v-model="formValue.confirmPassword"
+          v-model="confirmPassword"
           :pPlaceholder="t('placeholderConfirmPassword')"
           pType="password"
           pShowPassword
           data-testid="reset-password-form-second-password"
+          @update:model-value="checkConfirmPassword"
+          @blur="checkConfirmPassword"
         />
       </PFormItem>
       <PFormItem>
@@ -53,17 +56,10 @@
           :pDisabled="!isValidForm"
           pSize="default"
           class="btn-submit"
-          @click="submitForm(formRef)"
+          @click="submitForm"
         >
           {{ t('btnSubmit') }}
         </PButton>
-        <p
-          v-if="isPasswordAlreadyUsed"
-          class="el-form-item__error el-form-item__error--inline"
-          data-testid="error-password-already-used"
-        >
-          {{ t('isPasswordAlreadyUsed') }}
-        </p>
       </PFormItem>
     </PForm>
   </div>
@@ -73,12 +69,10 @@
 import { logger } from '@pulse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import type { FormRules, FormInstance } from 'element-plus'
-import { commonApi } from '@pulse/common'
-import { LoginRouteName } from '@pulse/common/constants'
+import { createNewPassword, isInvitationTokenValid } from '@pulse/common'
+import { LoginRouteName, BackEndErrors } from '@pulse/common/constants'
 import {
   onBeforeMount,
-  reactive,
   ref,
   computed,
 } from 'vue'
@@ -87,12 +81,11 @@ import {
   PFormItem,
   PInput,
   PButton,
+  PStrength,
 } from '@pulse/styleguide/components'
-import PopoverPasswordStrength from '../createPassword/PopoverPasswordStrength'
-import {
-  PASSWORD_STRENGTH,
-  levelPasswordStrength,
-} from '../createPassword/PopoverPasswordStrength/passwordStrength'
+import type { PStrengthLevel } from '@pulse/styleguide/types'
+import { getPasswordError, getConfirmPasswordError, getApiErrorMessage } from './ResetPasswordForm.utils'
+import { getPasswordStrength } from '../../utils/passwordStrength/passwordStrength.utils'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -100,92 +93,110 @@ const { t } = useI18n({
 })
 const route = useRoute()
 const router = useRouter()
-const { contactId, contactEmail, token } = route.query
-const formRef = ref<FormInstance>()
-const formValidity = reactive({
-  password: false,
-  confirmPassword: false,
-})
-const formValue = reactive({
-  password: '',
-  confirmPassword: '',
-})
-const isPasswordAlreadyUsed = ref()
-
-const isValidForm = computed(() => {
-  return formValidity.password &&
-    formValidity.confirmPassword &&
-    levelPasswordStrength(formValue.password) === PASSWORD_STRENGTH.STRONG
-})
-
-const validatePassword = (_rule: any, value: any, callback: any) => {
-  if (!value) {
-    formValidity.password = false
-    callback(new Error(t('alertPasswordRequired')))
-  } else {
-    if (levelPasswordStrength(value) !== PASSWORD_STRENGTH.STRONG) {
-      formValidity.password = false
-      callback(new Error(t('alertPasswordLevelLow')))
-    } else {
-      formRef.value?.validateField('confirmPassword', () => null)
-      callback()
-    }
-    formValidity.password = true
-  }
+const { contactId, contactEmail, token } = route.query as {
+  contactId: string
+  contactEmail: string
+  token: string
 }
 
-const validateCheckPass = (_rule: any, value: any, callback: any) => {
-  if (!value) {
-    formValidity.confirmPassword = false
-    callback(new Error(t('alertConfirmPass')))
-  } else if (!!formValue.password && value !== formValue.password) {
-    formValidity.confirmPassword = false
-    callback(new Error(t('alertPasswordNotMatch')))
-  } else {
-    formValidity.confirmPassword = true
-    callback()
-  }
+const password = ref('')
+const confirmPassword = ref('')
+
+const passwordError = ref('')
+const isPasswordMessageVisible = ref(true)
+const confirmPasswordError = ref('')
+const isConfirmPasswordMessageVisible = ref(true)
+
+const strengthLabels: Record<PStrengthLevel, string> = {
+  0: t('passwordStrengthLabels.level-0'),
+  1: t('passwordStrengthLabels.level-1'),
+  2: t('passwordStrengthLabels.level-2'),
+  3: t('passwordStrengthLabels.level-3'),
+  4: t('passwordStrengthLabels.level-4'),
 }
 
-const rules = reactive<FormRules<typeof formValue>>({
-  password: [{ trigger: ['change', 'blur'], validator: validatePassword }],
-  confirmPassword: [{ trigger: ['change', 'blur'], validator: validateCheckPass }],
-})
-
-const submitForm = (formEl: FormInstance | undefined) => {
-  if (!formEl) {
-    return
-  }
-  formEl.validate((valid) => {
-    (async () => {
-      if (valid) {
-        const data = {
-          contactId,
-          newPassword: formValue.password,
-          resetPasswordToken: token,
-          isCreatePasswordAction: false,
-        }
-        const urlUpdatePassword = 'authentication/api/createNewPassword'
-        try {
-          await commonApi().gateway.post(urlUpdatePassword, data)
-          router.push({ name: LoginRouteName.LOGIN_CLIENT })
-        } catch (error: any) {
-          logger.error(error)
-          const { status, data } = error?.response ?? {}
-          isPasswordAlreadyUsed.value = status === 400 && data.includes('401030')
-        }
-      } else {
-        return false
-      }
-    })()
-  })
+function setPasswordError(message: string, showMessage = true) {
+  passwordError.value = message
+  isPasswordMessageVisible.value = showMessage
 }
 
-const isValidToken = async (): Promise<any> => {
-  const urlValidToken = `authentication/api/IsInvitationTokenValid?invitationToken=${token}`
+function setConfirmPasswordError(message: string, showMessage = true) {
+  confirmPasswordError.value = message
+  isConfirmPasswordMessageVisible.value = showMessage
+}
+
+function getIsValidForm() {
+  return passwordError.value === '' && confirmPasswordError.value === ''
+}
+const isValidForm = computed(() => getIsValidForm())
+const passwordStrength = ref<PStrengthLevel>(0)
+
+function checkPassword() {
+  passwordStrength.value = getPasswordStrength(password.value)
+  const passwordErrorMessage = getPasswordError(
+    password.value,
+    passwordStrength.value,
+    t('alertPasswordRequired'),
+    t('alertPasswordLevelLow'),
+  )
+  const showMessage = password.value === '' // show message only if password is empty
+  setPasswordError(passwordErrorMessage, showMessage)
+}
+
+function checkConfirmPassword() {
+  const confirmPasswordErrorMessage = getConfirmPasswordError(
+    confirmPassword.value,
+    password.value,
+    t('alertConfirmPass'),
+    t('alertPasswordNotMatch'),
+  )
+  setConfirmPasswordError(confirmPasswordErrorMessage)
+}
+
+function checkValidity() {
+  checkPassword()
+  checkConfirmPassword()
+
+  return getIsValidForm()
+}
+
+const apiErrorMessages: Record<BackEndErrors, string> = {
+  [BackEndErrors.ALREADY_USED_PASSWORD]: t('isPasswordAlreadyUsed'),
+  [BackEndErrors.other]: t('technicalError'),
+}
+
+const submitForm = async () => {
+  const isValid = checkValidity()
+  if (!isValid) {
+    return false
+  }
+
+  const data = {
+    contactId,
+    newPassword: password.value,
+    resetPasswordToken: token,
+    isCreatePasswordAction: false,
+  }
   try {
-    const { data: value } = await commonApi().gateway.get(urlValidToken)
-    return value
+    await createNewPassword(data)
+    router.push({ name: LoginRouteName.LOGIN_CLIENT })
+  } catch (error: any) {
+    logger.error(error)
+    const { data } = error?.response ?? {}
+    const errorMessage = getApiErrorMessage(
+      data,
+      apiErrorMessages,
+    )
+    setPasswordError(errorMessage, false)
+    setConfirmPasswordError(errorMessage)
+  }
+}
+
+const isValidToken = async () => {
+  try {
+    const isValid = await isInvitationTokenValid(`${token}`)
+
+    return isValid
   } catch (error) {
     logger.error(error)
   }
@@ -227,32 +238,42 @@ defineExpose({ submitForm })
     createAccount: 'Your '
     1step: 'new password.'
     defPassword: 'Please enter and confirm your new password'
-    labelPassword: 'Your new password'
-    labelConfirmPassword: 'Confirm your new password'
+    labelPassword: 'New password'
+    labelConfirmPassword: 'Password confirmation'
     placeholderPassword: 'Enter your new password'
-    placeholderConfirmPassword: 'Confirm your new password'
+    placeholderConfirmPassword: 'Enter your new password'
     alertConfirmPass: 'Please confirm the password'
-    alertPasswordNotMatch: "Passwords don't match!"
+    alertPasswordNotMatch: "The passwords are different"
     alertPasswordRequired: 'Please enter the password'
     alertPasswordLevelLow: 'Your password is not valid'
     btnSubmit: 'Submit'
-    isPasswordAlreadyUsed: >-
-      The password provided has already been used by this account.
-      Please choose another password.
+    isPasswordAlreadyUsed: You have already used this password before.
+    technicalError: A technical error occurred
+    passwordStrengthLabels:
+      level-0: ''
+      level-1: 'Weak'
+      level-2: 'Poor'
+      level-3: 'Medium'
+      level-4: 'Strong'
   fr-FR:
     createAccount: 'Votre '
     1step: 'nouveau mot de passe.'
     defPassword: 'Veuillez définir votre mot de passe et le confirmer.'
-    labelPassword: 'Définissez votre mot de passe'
-    labelConfirmPassword: 'Confirmer votre mot de passe'
-    placeholderPassword: 'Saisir votre mot de passe'
-    placeholderConfirmPassword: 'Confirmer votre mot de passe'
-    alertConfirmPass: 'Veuillez confirmer votre mot de passe'
-    alertPasswordNotMatch: 'Les mots de passe ne correspondent pas!'
-    alertPasswordRequired: 'Veuillez rentrer votre mot de passe'
+    labelPassword: 'Nouveau mot de passe'
+    labelConfirmPassword: 'Confirmation du mot de passe'
+    placeholderPassword: 'Saisissez votre nouveau mot de passe'
+    placeholderConfirmPassword: 'Saisissez votre nouveau mot de passe'
+    alertConfirmPass: 'Veuillez confirmer votre nouveau mot de passe'
+    alertPasswordNotMatch: 'Les mots de passe sont différents'
+    alertPasswordRequired: 'Veuillez saisir votre nouveau mot de passe'
     alertPasswordLevelLow: "Votre mot de passe n'est pas valide"
     btnSubmit: 'Valider'
-    isPasswordAlreadyUsed: >-
-      Le mot de passe fourni a déjà été utilisé par ce compte.
-      Veuillez choisir un autre mot de passe.
+    isPasswordAlreadyUsed: Vous avez déjà utilisé ce mot de passé précédemment.
+    technicalError: Une erreur technique est survenue
+    passwordStrengthLabels:
+      level-0: ''
+      level-1: 'Faible'
+      level-2: 'Insuffisant'
+      level-3: 'Moyen'
+      level-4: 'Fort'
 </i18n>

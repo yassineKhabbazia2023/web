@@ -50,7 +50,7 @@ $spacing-unit: 0.4rem;
   .min-width--#{$i} {
     min-width: $spacing-unit * 10 * $i;
   }
-
+  
   .margin {
     &--#{$i} {
       margin: $spacing-unit * $i !important;
@@ -83,6 +83,14 @@ $spacing-unit: 0.4rem;
     }
   }
 
+  .flex-gap--half {
+    gap: $spacing-unit / 2;
+  }
+
+  .min-width--full {
+    min-width: 100%;
+  }
+  
   .margin-negative {
     &-top--#{$i} {
       margin-top: -($spacing-unit * $i) !important;

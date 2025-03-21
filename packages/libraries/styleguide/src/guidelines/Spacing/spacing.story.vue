@@ -139,6 +139,10 @@
             <td>.min-width--{token}</td>
             <td>min-width: {token} * 0.25;</td>
           </tr>
+          <tr>
+            <td>min-width--full</td>
+            <td>min-width: 100%;</td>
+          </tr>
         </tbody>
       </table>
     </Variant>

@@ -27,14 +27,12 @@ function createWrapper() {
   return getWrapper(CreatePassword, router, stubs)
 }
 
+const createNewPasswordMock = vi.hoisted(() => vi.fn())
+const isInvitationTokenValidMock = vi.hoisted(() => vi.fn())
+
 vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
-    gateway: {
-      get: () => ({
-        data: false,
-      }),
-    },
-  }),
+  createNewPassword: createNewPasswordMock,
+  isInvitationTokenValid: isInvitationTokenValidMock,
   fetchUrlTerms: vi.fn(),
   amplitudeService: {
     track: vi.fn(),

@@ -13,7 +13,7 @@ import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
 import { fetchUrlTerms } from './services'
 import { msalInstance } from './msal'
 import { sanitizeUrl } from '@braintree/sanitize-url'
-import { refreshClientToken } from './services/authentication.service'
+import { refreshClientToken, createNewPassword, isInvitationTokenValid, login } from './services/authentication.service'
 import debounce from 'lodash.debounce'
 
 export * from './unauthorized-callback'
@@ -36,7 +36,7 @@ export { debounce }
 export { fetchUrlTerms }
 export { sanitizeUrl }
 export { msalInstance }
-export { refreshClientToken }
+export { refreshClientToken, createNewPassword, isInvitationTokenValid, login }
 
 export default {
   install(app: App, { locale }: CommonAppOptions) {

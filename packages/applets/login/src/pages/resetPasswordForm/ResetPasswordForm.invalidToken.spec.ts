@@ -24,13 +24,8 @@ function createWrapper() {
 }
 
 vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
-    gateway: {
-      get: () => ({
-        data: false,
-      }),
-    },
-  }),
+  createNewPassword: vi.fn(),
+  isInvitationTokenValid: vi.fn(),
 }))
 
 describe('page reset password form', () => {

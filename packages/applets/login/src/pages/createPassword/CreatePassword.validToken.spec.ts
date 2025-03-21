@@ -1,6 +1,5 @@
-import { flushPromises } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
-import { getMockedRouter, getWrapper } from '@login/__mocks__/component.wrapper'
 import { cguServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/core/mocks'
 import { navigateToCustomerWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
@@ -13,7 +12,6 @@ import CreatePassword from './'
 const mockToken = 'token'
 const VALID_PASSWORD = 'aaAA11@@'
 
-const patchMock = vi.fn()
 const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
 const CGU_URL = 'https://custom-CGU.com'
 
@@ -25,19 +23,15 @@ vi.mock('@login/composable/useNavigation', () => ({
 }))
 
 const mockStorePatch = vi.fn()
+const createNewPasswordMock = vi.hoisted(() => vi.fn())
+const loginMock = vi.hoisted(() => vi.fn())
+const isInvitationTokenValidMock = vi.hoisted(() => vi.fn())
+
 vi.mock('@pulse/common', () => ({
+  createNewPassword: createNewPasswordMock,
+  login: loginMock,
+  isInvitationTokenValid: isInvitationTokenValidMock,
   fetchUrlTerms: vi.fn(() => CGU_URL),
-  commonApi: () => ({
-    onboarding: {
-      patch: patchMock,
-    },
-    gateway: {
-      get: () => ({
-        data: true,
-      }),
-      post: postMock,
-    },
-  }),
   tokenService: {
     getToken: vi.fn(),
     setToken: vi.fn(),
@@ -51,15 +45,30 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 
-const router = getMockedRouter(
-  'createPassword',
-  'CreatePassword',
-  'email',
-)
+const routerPushMock = vi.hoisted(() => vi.fn())
+const useRouterMock = vi.hoisted(() => vi.fn(() => ({
+  push: routerPushMock,
+})))
+
+const useRouteMock = vi.hoisted(() => vi.fn(() => ({
+  name: 'route-name',
+  meta: {},
+  query: {
+    contactId: 'contactId' ,
+    accountNumber: 'accountNumber' ,
+    email: 'email',
+    resetPasswordToken: 'resetPasswordToken',
+    token: 'token',
+  },
+})))
+
+vi.mock('vue-router', () => ({
+  useRouter: useRouterMock,
+  useRoute: useRouteMock,
+}))
 
 function createWrapper() {
-  const stubs: string[] = []
-  return getWrapper(CreatePassword, router, stubs)
+  return mount(CreatePassword)
 }
 
 describe('page creation password', () => {
@@ -164,6 +173,11 @@ describe('page creation password', () => {
 
 
   it('should call API when the button is clicked and track an Amplitude when the login succeeds', async () => {
+    const loginDataMock = {
+      userId: 'user-id',
+      webToken: mockToken,
+    }
+    loginMock.mockResolvedValue(loginDataMock)
     wrapper.findAll('.el-input__inner')[0].setValue(VALID_PASSWORD)
     wrapper.findAll('.el-input__inner')[1].setValue(VALID_PASSWORD)
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -172,12 +186,10 @@ describe('page creation password', () => {
     const setTokenSpy = vi.spyOn(tokenService, 'setToken')
     vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
     await flushPromises()
-    const postLink = 'authentication/api/createNewPassword'
-    const loginLink = 'authentication/api/login'
     const data = {
       contactId: 'contactId',
       newPassword: VALID_PASSWORD,
-      resetPasswordToken: 'token',
+      resetPasswordToken: 'resetPasswordToken',
     }
     const dataLogin = {
       email: 'email',
@@ -187,9 +199,12 @@ describe('page creation password', () => {
       onboarding_result: 'succeeded',
     })
     expect(updateTermsByCurrentUser).toHaveBeenCalledTimes(1)
-    expect(postMock).toHaveBeenCalledTimes(2)
-    expect(postMock).toHaveBeenNthCalledWith(1, postLink, data)
-    expect(postMock).toHaveBeenNthCalledWith(2, loginLink, dataLogin)
+    expect(createNewPasswordMock).toHaveBeenCalledOnce()
+    expect(createNewPasswordMock).toHaveBeenCalledWith(data)
+
+    expect(loginMock).toHaveBeenCalledOnce()
+    expect(loginMock).toHaveBeenCalledWith(dataLogin)
+
     expect(setTokenSpy).toHaveBeenCalledWith(mockToken)
     expect(navigateToCustomerWalletMock).toHaveBeenCalledOnce()
   })
