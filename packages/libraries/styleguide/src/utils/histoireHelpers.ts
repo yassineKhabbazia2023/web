@@ -7,11 +7,11 @@ export function stringToClassList(prefix: string, suffixes: string) {
     .map(suffix => `${prefix}${suffix.trim()}`)
 }
 
-export function numbersToClassList(prefix: string, lastIndex: number) {
-  const suffixes = Array.from(Array(lastIndex + 1).keys())
+export function numbersToClassList(prefix: string, lastIndex: number, firstIndex = 0) {
+  const suffixes = Array.from(Array(lastIndex + 1 - firstIndex).keys())
 
   return suffixes
-    .map(suffix => `${prefix}${suffix}`)
+    .map(suffix => `${prefix}${suffix + firstIndex}`)
 }
 
 export function onClickCssClass(source1: string, source2: string = '') {

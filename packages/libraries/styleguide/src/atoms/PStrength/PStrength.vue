@@ -14,7 +14,7 @@
         :class="index <= modelValue ? activeCssClassName : neutralCssClassName"
         class="
           flex--grow-1
-          strengthLevel
+          height--1
         "
       />
     </ul>
@@ -43,9 +43,3 @@ const rangeCount = Object.keys(PStrengthLevelColor).length - 1
 
 const label = computed(() => props.labels[props.modelValue])
 </script>
-
-<style lang="scss" scoped>
-.strengthLevel {
-  height: 4px;
-}
-</style>

@@ -48,7 +48,11 @@ $spacing-unit: 0.4rem;
   }
 
   .min-width--#{$i} {
-    min-width: $spacing-unit * 10 * $i;
+    min-width: $spacing-unit * $i;
+  }
+
+  .height--#{$i} {
+    height: $spacing-unit * $i;
   }
   
   .margin {
@@ -81,14 +85,6 @@ $spacing-unit: 0.4rem;
       margin-top: $spacing-unit * $i !important;
       margin-bottom: $spacing-unit * $i !important;
     }
-  }
-
-  .flex-gap--half {
-    gap: $spacing-unit / 2;
-  }
-
-  .min-width--full {
-    min-width: 100%;
   }
   
   .margin-negative {
@@ -150,4 +146,12 @@ $spacing-unit: 0.4rem;
       padding-bottom: $spacing-unit * $i !important;
     }
   }
+}
+
+.flex-gap--half {
+  gap: $spacing-unit / 2;
+}
+
+.min-width--full {
+  min-width: 100%;
 }

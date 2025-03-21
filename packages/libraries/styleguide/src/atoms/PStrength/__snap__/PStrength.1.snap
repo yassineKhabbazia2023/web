@@ -1,9 +1,9 @@
-<div data-v-1ce69d19="">
-  <ul data-v-1ce69d19="" class="flex flex--justify-content-space-between list-style-none flex-gap--half">
-    <li data-v-1ce69d19="" class="bg--functionnal-red flex--grow-1 strengthLevel"></li>
-    <li data-v-1ce69d19="" class="bg--neutral-gray-200 flex--grow-1 strengthLevel"></li>
-    <li data-v-1ce69d19="" class="bg--neutral-gray-200 flex--grow-1 strengthLevel"></li>
-    <li data-v-1ce69d19="" class="bg--neutral-gray-200 flex--grow-1 strengthLevel"></li>
+<div>
+  <ul class="flex flex--justify-content-space-between list-style-none flex-gap--half">
+    <li class="bg--functionnal-red flex--grow-1 height--1"></li>
+    <li class="bg--neutral-gray-200 flex--grow-1 height--1"></li>
+    <li class="bg--neutral-gray-200 flex--grow-1 height--1"></li>
+    <li class="bg--neutral-gray-200 flex--grow-1 height--1"></li>
   </ul>
-  <div data-v-1ce69d19="" class="font-semibold text-color--functionnal-red">Faible</div>
+  <div class="font-semibold text-color--functionnal-red">Faible</div>
 </div>

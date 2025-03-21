@@ -81,7 +81,11 @@ const alignAttributes = 'flex-start, flex-end, stretch, center, end, start'
 
 const justifyContent = stringToClassList('flex--justify-content-', justifyContentAttributes)
 const alignItems = stringToClassList('flex--align-items-', alignAttributes)
-const gaps = numbersToClassList('flex-gap--', 12)
+const gaps = [
+...numbersToClassList('flex-gap--', 0),
+...stringToClassList('flex-gap--', 'half'),
+  ...numbersToClassList('flex-gap--', 12, 1),
+]
 const alignSelves = stringToClassList('flex--align-self-', alignAttributes)
 const flexGrows = numbersToClassList('flex--grow-', 6)
 const flexShrinks = numbersToClassList('flex--shrink-', 6)

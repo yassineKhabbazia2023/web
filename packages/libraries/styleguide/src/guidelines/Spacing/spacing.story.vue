@@ -53,7 +53,11 @@
           </tr>
           <tr>
             <td>.flex-gap--{token}</td>
-            <td>gap: 0.4rem * {token};</td>
+            <td>gap: 0.4rem * {token};  (token * 4px)</td>
+          </tr>
+          <tr>
+            <td>.flex-gap--half</td>
+            <td>gap: 0.2rem; (2px)</td>
           </tr>
         </tbody>
       </table>
@@ -140,7 +144,7 @@
             <td>min-width: {token} * 0.25;</td>
           </tr>
           <tr>
-            <td>min-width--full</td>
+            <td>.min-width--full</td>
             <td>min-width: 100%;</td>
           </tr>
         </tbody>
@@ -200,11 +204,13 @@ import { stringToClassList, numbersToClassList, onClickCssClass } from '../../ut
 const subListOneItem = ['40'].map((size) => `height-${size} width-${size}`)
 const subListTwoItems = ['40', '40'].map((size) => `height-${size} width-${size}`)
 const subListNoSize = ['40'].map((size) => `height-${size}`)
+const subListNoHeight = ['40'].map((size) => `width-${size}`)
 
 const autoAttributes = '--auto,-top--auto,-bottom--auto,-right--auto,-left--auto,-x--auto,-y--auto'
 
 const marginAuto = stringToClassList('margin', autoAttributes)
 const minWidth = numbersToClassList('min-width--', 12)
+const height = numbersToClassList('height--', 12)
 
 const margin = numbersToClassList('margin--', 12)
 const marginTop = numbersToClassList('margin-top--', 12)
@@ -245,6 +251,11 @@ const groups: Group[] = [{
   name: 'minWidth',
   cssClasses: minWidth,
   subList: subListNoSize,
+  applyToChild: 0,
+}, {
+  name: 'height',
+  cssClasses: height,
+  subList: subListNoHeight,
   applyToChild: 0,
 }, {
   name: 'margin',
