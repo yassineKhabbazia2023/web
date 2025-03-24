@@ -1,12 +1,10 @@
 <template>
   <div>
     <PLoader v-if="isLoading" />
-
     <div v-if="!isLoading">
       <p class="h4 margin-bottom--6">
         {{ user.firstName }} <span class="text-uppercase">{{ user.lastName }}</span>
       </p>
-
       <PForm
         ref="formRef"
         :pModel="formValues"
@@ -76,6 +74,7 @@
             <PButton
               pType="primary"
               :pDisabled="!formValues.mobilePhone"
+              :pLoading="isUpdateInProgress"
               @click="handleFormSubmit(formRef)"
             >
               {{ t('saveChanges') }}
@@ -88,19 +87,13 @@
 </template>
 
 <script lang="ts" setup>
-import { logger } from '@pulse/core'
+import { reactive, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { onMounted, reactive, ref } from 'vue'
-import { commonApi } from '@pulse/common'
-import {
-  PButton,
-  PForm,
-  PFormItem,
-  PInput,
-  PLoader,
-} from '@pulse/styleguide/components'
+import { logger } from '@pulse/core'
+import { commonApi, dataProvider } from '@pulse/common'
 import { PNotification } from '@pulse/styleguide'
 import type { FormInstance } from '@pulse/styleguide/types'
+import { PButton, PForm, PFormItem, PInput, PLoader } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
 import type { FormValues, User } from './MyInformationTypes'
 import LogoutButton from '../LogoutButton'
@@ -110,26 +103,31 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const user: User = reactive({
-  firstName: undefined,
-  lastName: undefined,
-})
+const { fetchUserData } = dataProvider()
 
 const isLoading = ref(false)
-
+const isUpdateInProgress = ref(false)
 const formRef = ref<FormInstance>()
-const formValues: FormValues = reactive({
-  personaName: undefined,
-  email: undefined,
-  mobilePhone: undefined,
+
+const user = reactive<User>({
+  firstName: '',
+  lastName: '',
+})
+
+const formValues = reactive<FormValues>({
+  email: '',
+  personaName: '',
+  mobilePhone: '',
 })
 
 const rules = reactive({
-  mobilePhone: [{
-    required: true,
-    trigger: 'blur',
-    message: t('mobilePhoneError'),
-  }],
+  mobilePhone: [
+    {
+      required: true,
+      trigger: 'blur',
+      message: t('mobilePhoneError'),
+    },
+  ],
 })
 
 const CONTACT_API_ENDPOINT = 'contact/api/contacts/currentuser'
@@ -140,18 +138,24 @@ const handleFormSubmit = async (formEl: FormInstance | undefined) => {
   }
 
   if (formEl.validate) {
+    isUpdateInProgress.value = true
     try {
       await formEl.validate()
-      await commonApi().gateway.patch(CONTACT_API_ENDPOINT, [{
-        op: 'replace',
-        path: '/MobilePhone',
-        value: formValues.mobilePhone,
-      }],
-      {
-        headers: {
-          'Content-Type': 'application/json-patch+json',
+      await commonApi().gateway.patch(
+        CONTACT_API_ENDPOINT,
+        [
+          {
+            op: 'replace',
+            path: '/MobilePhone',
+            value: formValues.mobilePhone,
+          },
+        ],
+        {
+          headers: {
+            'Content-Type': 'application/json-patch+json',
+          },
         },
-      })
+      )
 
       PNotification({
         message: t('notificationSuccess'),
@@ -171,37 +175,21 @@ const handleFormSubmit = async (formEl: FormInstance | undefined) => {
       })
 
       return false
+    } finally {
+      isUpdateInProgress.value = false
     }
   }
 }
 
-const fetchUserInfo = async () => {
-  isLoading.value = true
-
-  try {
-    const {
-      data: {
-        firstName,
-        lastName,
-        persona,
-        email,
-        mobilePhone,
-      },
-    } = await commonApi().gateway.get(CONTACT_API_ENDPOINT)
-    user.firstName = firstName
-    user.lastName = lastName
-    formValues.personaName = persona?.name
-    formValues.email = email
-    formValues.mobilePhone = mobilePhone
-  } catch (error) {
-    logger.error(error)
-  }
-
-  isLoading.value = false
-}
-
 onMounted(async () => {
-  await fetchUserInfo()
+  const me = await fetchUserData()
+  if (me) {
+    user.lastName = me.lastName
+    user.firstName = me.firstName
+    formValues.email = me.email
+    formValues.personaName = me.persona.name
+    formValues.mobilePhone = me.officeMobile
+  }
 })
 </script>
 
@@ -232,10 +220,10 @@ en-US:
 fr-FR:
   role: 'Rôle'
   email: 'Adresse mail'
-  mobilePhone: "Téléphone mobile"
+  mobilePhone: 'Téléphone mobile'
   saveChanges: 'Enregistrer les modifications'
-  mobilePhoneError: "Le téléphone mobile est requis"
+  mobilePhoneError: 'Le téléphone mobile est requis'
   requiredFields: '* Champs obligatoires'
   notificationSuccess: 'Vos informations ont bien été mises à jour.'
-  notificationError: "Un problème est survenu"
+  notificationError: 'Un problème est survenu'
 </i18n>

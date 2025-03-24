@@ -4,6 +4,10 @@ export const getMockedUser = () => {
     firstName: 'John',
     lastName: 'Doe',
     email: 'john@example.com',
+    persona: {
+      name: 'Collaborator GS',
+    },
+    officeMobile: '11223344',
     isCustomer: false,
   }
 }
