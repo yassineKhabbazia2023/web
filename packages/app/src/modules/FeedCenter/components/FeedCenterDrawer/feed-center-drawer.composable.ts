@@ -12,7 +12,7 @@ import { type FeedCenterNotification, SelectedNotificationEnum } from '@app/modu
 import { fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
 import { trackFeedCenterTabConsultation } from '@app/modules/FeedCenter/services/tracking/tracking.service'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
-import { getIdsFromEntities } from './feed-center-drawer.manager'
+import { getIdsFromEntities, hasFavouriteEntities } from './feed-center-drawer.manager'
 
 export function useFeedCenterDrawer(
   isDrawerOpened: WritableComputedRef<FeedCenterDrawerProps['modelValue']>,
@@ -48,10 +48,18 @@ export function useFeedCenterDrawer(
   }
 
   async function fetchNotificationsWithOrWithoutFavourites() {
-    const entityIds = isFavouritesFilterEnabled.value
-      ? favouritesEntitiyIds.value
-      : []
-    await fetchNotificationsWithHandler(entityIds)
+    if (
+      hasFavouriteEntities(favouritesEntitiyIds.value) === false &&
+      isFavouritesFilterEnabled.value
+    ) {
+      notifications.value = []
+    } else {
+      const entityIds = isFavouritesFilterEnabled.value
+        ? favouritesEntitiyIds.value
+        : []
+
+      await fetchNotificationsWithHandler(entityIds)
+    }
   }
 
   const isFavouritesFilterEnabled = ref(true)

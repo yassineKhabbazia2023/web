@@ -16,8 +16,6 @@ import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 setActivePinia(createTestingPinia())
 const store = commonStore()
 const favouriteEntities = getMockedFavoriteEntities()
-// @ts-ignore needed in order to override the mocked store
-store.favoriteEntities = [favouriteEntities[0], favouriteEntities[1]]
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 
@@ -38,6 +36,11 @@ vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
 
 describe('feed center drawer composable', () => {
+  beforeEach(() => {
+    // @ts-ignore needed in order to override the mocked store
+    store.favoriteEntities = [favouriteEntities[0], favouriteEntities[1]]
+  })
+
   it('should fetch notifications on mounted and when drawer is being opened', async () => {
     const { unreadNotificationsCount, isDrawerOpened } = initializeTestState()
 
@@ -114,5 +117,21 @@ describe('feed center drawer composable', () => {
     expect(fetchNotificationsMock).toHaveBeenCalledTimes(2)
     // the base value is an empty array
     expect(fetchNotificationsMockCalls[1]).toEqual([[]])
+  })
+
+  it('should clear the notifications and not call the get notifications API if user has no favourite entity', async () => {
+    // @ts-ignore needed in order to override the mocked store
+    store.favoriteEntities = []
+
+    const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
+
+    const [result] = withSetup(() => useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount))
+    const { notifications } = result
+
+    await flushPromises()
+    await nextTick()
+
+    expect(fetchNotificationsMock).not.toHaveBeenCalled()
+    expect(notifications.value).toStrictEqual([])
   })
 })

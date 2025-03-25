@@ -8,6 +8,7 @@ import {
   patchAllNotificationsAsRead,
   fetchNotificationsWithTimeout,
   getIdsFromEntities,
+  hasFavouriteEntities,
 } from './feed-center-drawer.manager'
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
@@ -79,8 +80,28 @@ describe('get ids from entities', () => {
       entities: [],
       expectedResult: [],
     },
-  ])('return the ids of given entities', ({ entities, expectedResult }) => {
+  ])('returns the ids of given entities', ({ entities, expectedResult }) => {
     const result = getIdsFromEntities(entities)
+    expect(result).toStrictEqual(expectedResult)
+  })
+})
+
+describe('has favourite entities', () => {
+  it.each([
+    {
+      entityIds: [],
+      expectedResult: false,
+    },
+    {
+      entityIds: [1],
+      expectedResult: true,
+    },
+    {
+      entityIds: [1, 2, 3],
+      expectedResult: true,
+    },
+  ])('returns true if at least one entity id is provided', ({ entityIds, expectedResult }) => {
+    const result = hasFavouriteEntities(entityIds)
     expect(result).toStrictEqual(expectedResult)
   })
 })

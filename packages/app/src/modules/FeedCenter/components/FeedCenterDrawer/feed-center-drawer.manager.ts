@@ -41,3 +41,7 @@ export async function fetchNotificationsWithTimeout(): Promise<FeedCenterNotific
 export function getIdsFromEntities(entities: Entity[]) {
   return entities.map(entity => entity.accountId)
 }
+
+export function hasFavouriteEntities(entityIds: Entity['accountId'][]) {
+  return entityIds.length > 0
+}
