@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
-import { mockedAmplitudeServiceReset, mockedAmplitudeService } from '@pulse/common/mocks'
+import { amplitudeServiceResetMock, amplitudeServiceMock } from '@pulse/common/mocks'
 
 import LoginCollab from '.'
 
@@ -10,7 +10,7 @@ const spyMsalLoginRedirect = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/common', async () => {
   return {
-    amplitudeService: mockedAmplitudeService,
+    amplitudeService: amplitudeServiceMock,
     msalInstance: {
       loginRedirect: spyMsalLoginRedirect,
     },
@@ -45,7 +45,7 @@ describe('loginCollab', () => {
       expect(spyMsalLoginRedirect).toHaveBeenCalledOnce()
     })
     it('should reset Amplitude on page load', () => {
-      expect(mockedAmplitudeServiceReset).toHaveBeenCalledOnce()
+      expect(amplitudeServiceResetMock).toHaveBeenCalledOnce()
     })
   })
 })

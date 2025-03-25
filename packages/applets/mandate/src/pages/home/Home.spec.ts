@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { getMockedMandatesList } from '@mandate/__mocks__/mandate.mock'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
-import { amplitudeServiceMock, amplitudeTrackMock } from '@mandate/__mocks__/amplitude.mocks'
+import { amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
 import { commonStoreMock } from '@mandate/__mocks__/common.mocks'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import { nextTick, reactive } from 'vue'
@@ -127,7 +127,7 @@ describe('test Home.vue', () => {
       currentPage: 1,
     }
 
-    expect(amplitudeTrackMock).toHaveBeenCalledWith('Bank Mandate Searched', {
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Bank Mandate Searched', {
       bank_mandate_search: inputValue,
     })
     expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith(expected)

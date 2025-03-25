@@ -3,7 +3,7 @@ import { loggerMock, loggerWarnSpy , envVarsMock } from '@pulse/core/mocks'
 
 import { getToken } from '.'
 
-const amplitudeServiceTrackMocked = vi.hoisted(() => vi.fn())
+const amplitudeServiceTrackMock = vi.hoisted(() => vi.fn())
 const setTokenMocked = vi.hoisted(() => vi.fn())
 
 const getAccountMock = vi.hoisted(() => vi.fn())
@@ -22,7 +22,7 @@ vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/common', () => ({
   amplitudeService: {
-    track: amplitudeServiceTrackMocked,
+    track: amplitudeServiceTrackMock,
     reset: vi.fn(),
     setNewUserProperty: vi.fn(),
   },
@@ -57,8 +57,8 @@ describe('msalService', () => {
       const token = await getToken()
 
       expect(token).toBe(expectedToken)
-      expect(amplitudeServiceTrackMocked).toHaveBeenCalledOnce()
-      expect(amplitudeServiceTrackMocked).toHaveBeenNthCalledWith(1,
+      expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
+      expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(1,
         'Sign In Completed', {
           sign_in_method: 'SSO',
           sign_in_result: 'succeeded',
@@ -85,8 +85,8 @@ describe('msalService', () => {
       expect(loggerWarnSpy).toHaveBeenCalledOnce()
       expect(loggerWarnSpy).toHaveBeenNthCalledWith(1, error)
 
-      expect(amplitudeServiceTrackMocked).toHaveBeenCalledOnce()
-      expect(amplitudeServiceTrackMocked).toHaveBeenNthCalledWith(1,
+      expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
+      expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(1,
         'Sign In Completed', {
           sign_in_method: 'SSO',
           sign_in_result: 'failed',
@@ -105,7 +105,7 @@ describe('msalService', () => {
       expect(token).toBeNull()
       expect(loggerWarnSpy).not.toHaveBeenCalled()
 
-      expect(amplitudeServiceTrackMocked).not.toHaveBeenCalled()
+      expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
       expect(setTokenMocked).not.toHaveBeenCalled()
 
       expect(loginRedirectMocked).not.toHaveBeenCalled()

@@ -1,13 +1,13 @@
-export const mockedAmplitudeServiceInit = vi.fn()
-export const mockedAmplitudeServiceReset = vi.fn()
-export const mockedAmplitudeServiceTrack = vi.fn()
-export const mockedAmplitudeServiceSetUserId = vi.fn()
-export const mockedAmplitudeServiceSetNewUserProperty = vi.fn()
+export const amplitudeServiceInitMock = vi.fn()
+export const amplitudeServiceResetMock = vi.fn()
+export const amplitudeServiceTrackMock = vi.fn()
+export const amplitudeServiceSetUserIdMock = vi.fn()
+export const amplitudeServiceSetNewUserPropertyMock = vi.fn()
 
-export const mockedAmplitudeService = {
-  init: mockedAmplitudeServiceInit,
-  reset: mockedAmplitudeServiceReset,
-  track: mockedAmplitudeServiceTrack,
-  setUserId: mockedAmplitudeServiceSetUserId,
-  setNewUserProperty: mockedAmplitudeServiceSetNewUserProperty,
+export const amplitudeServiceMock = {
+  init: amplitudeServiceInitMock,
+  reset: amplitudeServiceResetMock,
+  track: amplitudeServiceTrackMock,
+  setUserId: amplitudeServiceSetUserIdMock,
+  setNewUserProperty: amplitudeServiceSetNewUserPropertyMock,
 }

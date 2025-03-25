@@ -26,13 +26,13 @@ import type { Note, PostSubscriptionRequest } from '@entities/services/subscript
 import type { PatchValue } from '@entities/services/PatchRecordService'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ComponentWrapper } from '@entities/common/types'
-import { mockedAmplitudeServiceTrack, mockedAmplitudeService } from '@pulse/common/mocks'
+import { amplitudeServiceTrackMock, amplitudeServiceMock } from '@pulse/common/mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 import OffersDrawer from '.'
 
 vi.mock('@pulse/common', () => ({
-  amplitudeService: mockedAmplitudeService,
+  amplitudeService: amplitudeServiceMock,
 }))
 
 const principalContacts: ClientContact[] = getMockedPrincipalContacts()
@@ -194,8 +194,8 @@ describe('offersDrawer', () => {
       await secondOffer.trigger('click')
       await flushPromises()
 
-      expect(mockedAmplitudeServiceTrack).toHaveBeenCalledOnce()
-      expect(mockedAmplitudeServiceTrack).toHaveBeenCalledWith('Subscription Initiated', {
+      expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
+      expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Subscription Initiated', {
         subscription_initiate_offer_name: subscriptionOffersServices.at(1)?.offerCode,
       })
       const offers = findOffers(wrapper)
@@ -303,20 +303,20 @@ describe('offersDrawer', () => {
 
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
-        expect(mockedAmplitudeServiceTrack).toHaveBeenCalledTimes(4)
-        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(1, 'Subscription Initiated', {
+        expect(amplitudeServiceTrackMock).toHaveBeenCalledTimes(4)
+        expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(1, 'Subscription Initiated', {
           subscription_initiate_offer_name: subscriptionOffersServices.at(1)?.offerCode,
         })
-        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(2, 'Subscription Started', {
+        expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(2, 'Subscription Started', {
           subscription_start_offer_name: subscriptionOffersServices.at(1)?.offerCode,
           subscription_start_result: 'succeeded',
         })
-        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
+        expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
           subscription_complete_offer_name: subscriptionOffersServices.at(1)?.offerCode,
           subscription_complete_localisation: 'offer activation screen',
           subscription_complete_result: 'succeeded',
         })
-        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(4, 'Onboarding Started', {
+        expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(4, 'Onboarding Started', {
           onboarding_start_localisation: 'Offer activation',
           onboarding_start_result: 'succeeded',
         })
@@ -401,17 +401,17 @@ describe('offersDrawer', () => {
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
 
-        expect(mockedAmplitudeServiceTrack).toHaveBeenCalledTimes(4)
-        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(2, 'Subscription Started', {
+        expect(amplitudeServiceTrackMock).toHaveBeenCalledTimes(4)
+        expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(2, 'Subscription Started', {
           subscription_start_offer_name: subscriptionOffersServices.at(1)?.offerCode,
           subscription_start_result: 'failed',
         })
-        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
+        expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(3, 'Subscription Completed', {
           subscription_complete_offer_name: subscriptionOffersServices.at(1)?.offerCode,
           subscription_complete_localisation: 'offer activation screen',
           subscription_complete_result: 'failed',
         })
-        expect(mockedAmplitudeServiceTrack).toHaveBeenNthCalledWith(4, 'Onboarding Started', {
+        expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(4, 'Onboarding Started', {
           onboarding_start_localisation: 'Offer activation',
           onboarding_start_result: 'failed',
         })

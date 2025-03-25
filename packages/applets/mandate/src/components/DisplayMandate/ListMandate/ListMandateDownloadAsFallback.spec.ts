@@ -3,7 +3,7 @@ import { flushPromises } from '@vue/test-utils'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { notificationHelperMock } from '@mandate/__mocks__/notification.helper.mocks'
 import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
-import { amplitudeServiceMock } from '@mandate/__mocks__/amplitude.mocks'
+import { amplitudeServiceMock } from '@pulse/common/mocks'
 import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import Table from '.'
 

@@ -1,5 +1,5 @@
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
-import { amplitudeServiceMock, amplitudeTrackMock } from '@mandate/__mocks__/amplitude.mocks'
+import { amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
 import { commonStoreMock } from '@mandate/__mocks__/common.mocks'
 import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
@@ -100,7 +100,7 @@ describe('createMandateDrawer.vue', () => {
     await nextTick()
     await wrapper.find('button[data-testid="validate-step-test"]').trigger('click')
     expect(createMandate).toHaveBeenCalled()
-    expect(amplitudeTrackMock).toHaveBeenCalledWith('Bank Mandate Creation Completed', {
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Bank Mandate Creation Completed', {
       bank_mandate_creation_result: 'failed',
     })
   })

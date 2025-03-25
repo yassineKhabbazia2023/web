@@ -2,7 +2,7 @@ import { expect, describe, it, vi } from 'vitest'
 import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { getMockedMandatesData } from '@mandate/__mocks__/mandate.mock'
-import { amplitudeServiceMock, amplitudeTrackMock } from '@mandate/__mocks__/amplitude.mocks'
+import { amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
 import { mockedNotification, notificationHelperMock, showNotificationMock } from '@mandate/__mocks__/notification.helper.mocks'
 import * as mandateService from '@mandate/services/mandate'
 import { nextTick } from 'vue'
@@ -197,8 +197,8 @@ describe('mandate collection', () => {
       }
       return originalCreateElement(tagName)
     })
-    vi.spyOn(document.body, 'appendChild').mockImplementation(() => {})
-    vi.spyOn(document.body, 'removeChild').mockImplementation(() => {})
+    vi.spyOn(document.body, 'appendChild').mockImplementation(() => { })
+    vi.spyOn(document.body, 'removeChild').mockImplementation(() => { })
     await wrapper.vm.actionClicked('submit-signed-mandate',
       { id: '123', accountNumber: 'accountNumber', companyName: 'companyName' })
     await nextTick()
@@ -251,7 +251,7 @@ describe('mandate collection', () => {
     await wrapper.vm.actionClicked('cancel-telecollection',
       { id: '123', accountNumber: '123', companyName: '123' })
 
-    expect(amplitudeTrackMock).toHaveBeenCalledWith('Bank Mandate Deleted', {
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Bank Mandate Deleted', {
       bank_mandate_delete: '',
     })
   })
@@ -265,7 +265,7 @@ describe('mandate collection', () => {
     await wrapper.vm.actionClicked('download-pre-filled-mandate',
       { id: '123', accountNumber: '123', companyName: '123' })
 
-    expect(amplitudeTrackMock).toHaveBeenCalledWith('Blank Bank Mandate Downloaded', {
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Blank Bank Mandate Downloaded', {
       blank_bank_mandate_download: '',
     })
   })
