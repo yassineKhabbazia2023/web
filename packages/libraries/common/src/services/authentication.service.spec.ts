@@ -90,7 +90,7 @@ describe('test authentication.service', () => {
       }
       const expectedUrl = 'authentication/api/login'
       const loginResponseMock: LoginData = {
-        userId: 123456,
+        userId: '123456',
         webToken: 'webToken',
       }
       const gatewayResponseMock = {

@@ -1,15 +1,14 @@
-import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { cguServiceMock } from '@pulse/common/mocks'
+import { cguServiceMock , mockedAmplitudeServiceTrack, mockedAmplitudeServiceSetNewUserProperty, mockedAmplitudeService , setTokenMock, tokenServiceMock } from '@pulse/common/mocks'
 import { envVarsMock } from '@pulse/core/mocks'
 import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
 import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import { flushPromises, mount } from '@vue/test-utils'
-import Login from './'
-import { amplitudeService, tokenService } from '@pulse/common'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import type { FormInstance } from 'element-plus'
-import { LoginRouteName } from '@pulse/common/constants'
+import { LoginRouteName, BackEndErrors } from '@pulse/common/constants'
+
+import Login from './'
 
 const USER_ID = 'customUserId'
 const GIGYA_USER_ID = 'customGigyaUserId'
@@ -26,15 +25,7 @@ declare let window: {
 const mockGigyaAccountsLogin = vi.fn()
 const mockStorePatch = vi.fn()
 const mockRouterPush = vi.fn()
-const mockAuthPost = vi.fn((_url, { _email }) => {
-  return Promise.resolve({
-    data: {
-      userId: USER_ID,
-      webToken: WEB_TOKEN,
-      email: _email,
-    },
-  })
-})
+const loginMock = vi.hoisted(() => vi.fn())
 
 window.gigya = {
   accounts: {
@@ -51,22 +42,12 @@ vi.mock('vue-router', () => ({
 }))
 
 vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
-    gateway: {
-      post: mockAuthPost,
-    },
-  }),
+  login: loginMock,
   commonStore: () => ({
     $patch: mockStorePatch,
   }),
-  tokenService: {
-    setToken: vi.fn(),
-  },
-  amplitudeService: {
-    track: vi.fn(),
-    reset: vi.fn(),
-    setNewUserProperty: vi.fn(),
-  },
+  tokenService: tokenServiceMock.TokenService.getInstance(),
+  amplitudeService: mockedAmplitudeService,
 }))
 const initAuthClientMocked = vi.hoisted(() => vi.fn(() => {
   mockStorePatch({
@@ -115,11 +96,12 @@ const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const INPUT_PASSWORD_VALUE = 'customPassword'
 
 describe('login', () => {
-  let spyTrackAmplitude: MockInstance
-  let spySetNewUserPropertyAmplitude: MockInstance
   beforeEach(() => {
-    spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
-    spySetNewUserPropertyAmplitude = vi.spyOn(amplitudeService, 'setNewUserProperty')
+    loginMock.mockResolvedValue({
+      userId: USER_ID,
+      webToken: WEB_TOKEN,
+      email: 'email-mock',
+    })
     wrapper = createWrapper()
   })
 
@@ -128,23 +110,22 @@ describe('login', () => {
   })
 
   it('fill the login page and has a redirection to the home page', async () => {
-    const setTokenSpy = vi.spyOn(tokenService, 'setToken')
-
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
     const submitButton = wrapper.find('[data-testid="login-submit-button"]')
     await submitButton.trigger('click')
     await flushPromises()
+    const expectedPayload = {
+      email: INPUT_EMAIL_VALUE,
+      password: INPUT_PASSWORD_VALUE,
+    }
 
     const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
     expect(loginErrorMessage.exists()).toBeFalsy()
 
-    expect(mockAuthPost).toHaveBeenCalledTimes(1)
-    expect(mockAuthPost).toHaveBeenCalledWith('authentication/api/login', {
-      email: INPUT_EMAIL_VALUE,
-      password: INPUT_PASSWORD_VALUE,
-    })
+    expect(loginMock).toHaveBeenCalledTimes(1)
+    expect(loginMock).toHaveBeenCalledWith(expectedPayload)
 
     expect(mockStorePatch).toHaveBeenCalledTimes(2)
     expect(mockStorePatch).toHaveBeenCalledWith({
@@ -163,25 +144,64 @@ describe('login', () => {
         gigyaUserId: GIGYA_USER_ID,
       },
     })
-    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledOnce()
-    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledWith('user_type', 'Client')
-    expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-    expect(spyTrackAmplitude).toHaveBeenCalledWith('Sign In Completed', {
+    expect(mockedAmplitudeServiceSetNewUserProperty).toHaveBeenCalledOnce()
+    expect(mockedAmplitudeServiceSetNewUserProperty).toHaveBeenCalledWith('user_type', 'Client')
+    expect(mockedAmplitudeServiceTrack).toHaveBeenCalledOnce()
+    expect(mockedAmplitudeServiceTrack).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'succeeded',
     })
-    expect(setTokenSpy).toHaveBeenNthCalledWith(1, WEB_TOKEN)
+    expect(setTokenMock).toHaveBeenNthCalledWith(1, WEB_TOKEN)
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
   })
 
-  it('does not redirect to the home page if the api return a 403042 error', async () => {
-    mockAuthPost.mockRejectedValueOnce({
+  it('does not redirect to the home page if the api return a WRONG_LOGIN_PASSWORD error', async () => {
+    loginMock.mockRejectedValueOnce({
       response: {
         data: {
-          errorCode: '403042',
+          errorCode: BackEndErrors.WRONG_LOGIN_PASSWORD,
         },
       },
     })
+    const expectedErrorMessage = 'The e-mail address and password combination is incorrect'
+
+    await getInputEmail().setValue(INPUT_EMAIL_VALUE)
+    await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
+
+    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    await submitButton.trigger('click')
+    await flushPromises()
+    await nextTick()
+
+    const pFormItems = wrapper.findAllComponents({ name: 'PFormItem' })
+    const firstFormItemProps = pFormItems.at(0)!.props()
+    const secondFormItemProps = pFormItems.at(1)!.props()
+
+    expect(firstFormItemProps['pError']).toBe(expectedErrorMessage)
+    expect(firstFormItemProps['pShowMessage']).toBe(false)
+
+    expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
+    expect(secondFormItemProps['pShowMessage']).toBe(true)
+
+    expect(mockedAmplitudeServiceSetNewUserProperty).toHaveBeenCalledOnce()
+    expect(mockedAmplitudeServiceSetNewUserProperty).toHaveBeenCalledWith('user_type', 'Client')
+    expect(mockedAmplitudeServiceTrack).toHaveBeenCalledOnce()
+    expect(mockedAmplitudeServiceTrack).toHaveBeenCalledWith('Sign In Completed', {
+      sign_in_method: 'email',
+      sign_in_result: 'failed',
+    })
+    expect(mockRouterPush).not.toHaveBeenCalled()
+
+    const pInput = wrapper.findComponent({ name: 'PInput' })
+    pInput.vm.$emit('input')
+    await nextTick()
+
+    const loginErrorMessageAfter = wrapper.find('[data-testid="login-error-message"]')
+    expect(loginErrorMessageAfter.exists()).toBeFalsy()
+  })
+
+  it('does not redirect to the home page if the api return empty response', async () => {
+    loginMock.mockResolvedValueOnce({})
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
 
@@ -189,13 +209,22 @@ describe('login', () => {
     await submitButton.trigger('click')
     await flushPromises()
 
-    const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
-    const expectedErrorMessage = 'The email and password combination is incorrect.'
-    expect(loginErrorMessage.text()).toBe(expectedErrorMessage)
-    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledOnce()
-    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledWith('user_type', 'Client')
-    expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-    expect(spyTrackAmplitude).toHaveBeenCalledWith('Sign In Completed', {
+    const expectedErrorMessage = 'A technical error occurred.'
+
+    const pFormItems = wrapper.findAllComponents({ name: 'PFormItem' })
+    const firstFormItemProps = pFormItems.at(0)!.props()
+    const secondFormItemProps = pFormItems.at(1)!.props()
+
+    expect(firstFormItemProps['pError']).toBe(expectedErrorMessage)
+    expect(firstFormItemProps['pShowMessage']).toBe(false)
+
+    expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
+    expect(secondFormItemProps['pShowMessage']).toBe(true)
+
+    expect(mockedAmplitudeServiceSetNewUserProperty).toHaveBeenCalledOnce()
+    expect(mockedAmplitudeServiceSetNewUserProperty).toHaveBeenCalledWith('user_type', 'Client')
+    expect(mockedAmplitudeServiceTrack).toHaveBeenCalledOnce()
+    expect(mockedAmplitudeServiceTrack).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })
@@ -210,13 +239,15 @@ describe('login', () => {
   })
 
   it('does display error message if the api return an unkown error', async () => {
-    mockAuthPost.mockRejectedValueOnce({
+    loginMock.mockRejectedValueOnce({
       response: {
         data: {
           errorCode: 'unkown',
         },
       },
     })
+    const expectedErrorMessage = 'A technical error occurred.'
+
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
 
@@ -224,14 +255,20 @@ describe('login', () => {
     await submitButton.trigger('click')
     await flushPromises()
 
-    const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
-    expect(loginErrorMessage.exists()).toBeTruthy()
-    expect(loginErrorMessage.text()).toBe('A technical error occurred.')
+    const pFormItems = wrapper.findAllComponents({ name: 'PFormItem' })
+    const firstFormItemProps = pFormItems.at(0)!.props()
+    const secondFormItemProps = pFormItems.at(1)!.props()
 
-    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledOnce()
-    expect(spySetNewUserPropertyAmplitude).toHaveBeenCalledWith('user_type', 'Client')
-    expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-    expect(spyTrackAmplitude).toHaveBeenCalledWith('Sign In Completed', {
+    expect(firstFormItemProps['pError']).toBe(expectedErrorMessage)
+    expect(firstFormItemProps['pShowMessage']).toBe(false)
+
+    expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
+    expect(secondFormItemProps['pShowMessage']).toBe(true)
+
+    expect(mockedAmplitudeServiceSetNewUserProperty).toHaveBeenCalledOnce()
+    expect(mockedAmplitudeServiceSetNewUserProperty).toHaveBeenCalledWith('user_type', 'Client')
+    expect(mockedAmplitudeServiceTrack).toHaveBeenCalledOnce()
+    expect(mockedAmplitudeServiceTrack).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })
@@ -263,8 +300,8 @@ describe('login', () => {
     const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
     expect(loginErrorMessage.exists()).toBeFalsy()
-    expect(spySetNewUserPropertyAmplitude).not.toHaveBeenCalled()
-    expect(spyTrackAmplitude).not.toHaveBeenCalled()
+    expect(mockedAmplitudeServiceSetNewUserProperty).not.toHaveBeenCalled()
+    expect(mockedAmplitudeServiceTrack).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
@@ -282,8 +319,8 @@ describe('login', () => {
     const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
     expect(loginErrorMessage.exists()).toBeFalsy()
-    expect(spySetNewUserPropertyAmplitude).not.toHaveBeenCalled()
-    expect(spyTrackAmplitude).not.toHaveBeenCalled()
+    expect(mockedAmplitudeServiceSetNewUserProperty).not.toHaveBeenCalled()
+    expect(mockedAmplitudeServiceTrack).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
@@ -316,62 +353,51 @@ describe('login', () => {
     })
   })
 
-  it('does not call mockAuthPost when handleSubmit is called without form', async () => {
+  it('does not call login() when handleSubmit is called without form', async () => {
     const submitButton = wrapper.find('[data-testid="login-submit-button"]')
     await submitButton.trigger('click')
     await flushPromises()
-    expect(mockAuthPost).not.toHaveBeenCalled()
+    expect(loginMock).not.toHaveBeenCalled()
   })
 
-  it('does not call mockAuthPost when form throws an exception', async () => {
-    const mockedForm = {
-      validate: () => {
-        throw new Error('')
-      },
-    } as unknown as FormInstance
-    await wrapper.vm.handleSubmit(mockedForm)
-    expect(mockAuthPost).not.toHaveBeenCalled()
+  it('does not call login() when form throws an exception', async () => {
+    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    pSkewedButton.vm.$emit('click')
+
+    expect(loginMock).not.toHaveBeenCalled()
   })
 
-  it('does not call mockAuthPost when initAuthClient returns a 403042 error', async () => {
-    const mockedForm = {
-      validate: () => {
-        throw new Error('')
-      },
-    } as unknown as FormInstance
+  it('does not call login() when initAuthClient returns a 403042 error', async () => {
+    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    pSkewedButton.vm.$emit('click')
 
-    await wrapper.vm.handleSubmit(mockedForm)
-    expect(mockAuthPost).not.toHaveBeenCalled()
+    expect(loginMock).not.toHaveBeenCalled()
   })
 
-  it('does not call mockAuthPost when initAuthClient returns an unknown error', async () => {
-    mockAuthPost.mockRejectedValueOnce({
+  it('does not call login() when initAuthClient returns an unknown error', async () => {
+    loginMock.mockRejectedValueOnce({
       error: {
         code: 'unknown',
       },
     })
-    const mockedForm = {
-      validate: () => {
-        throw new Error('')
-      },
-    } as unknown as FormInstance
-    await wrapper.vm.handleSubmit(mockedForm)
-    expect(mockAuthPost).not.toHaveBeenCalled()
+    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    pSkewedButton.vm.$emit('click')
+
+    expect(loginMock).not.toHaveBeenCalled()
   })
 
-  it('does not call mockAuthPost when not form given to handleSubmit', async () => {
-    await wrapper.vm.handleSubmit(undefined)
-    expect(mockAuthPost).not.toHaveBeenCalled()
+  it('does not call login() when not form given to handleSubmit', async () => {
+    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    pSkewedButton.vm.$emit('click')
+
+    expect(loginMock).not.toHaveBeenCalled()
   })
 
-  it('does not call mockAuthPost when empty object given to handleSubmit', async () => {
-    await wrapper.vm.handleSubmit({} as any)
-    const expectedUrl = 'authentication/api/login'
-    const expectedPayload = {
-      email: '',
-      password: '',
-    }
-    expect(mockAuthPost).toHaveBeenCalledOnce() // NB: it should not be the case
-    expect(mockAuthPost).toHaveBeenNthCalledWith(1, expectedUrl, expectedPayload)
+  it('does not call login() when empty object given to handleSubmit', async () => {
+    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    pSkewedButton.vm.$emit('click')
+    await nextTick()
+
+    expect(loginMock).not.toHaveBeenCalledOnce()
   })
 })

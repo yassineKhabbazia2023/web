@@ -11,7 +11,7 @@ export interface LoginPayload {
 }
 
 export interface LoginData {
-  userId: number
+  userId: string
   webToken: string
 }
 

@@ -233,7 +233,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           const {
             userId: id,
             webToken: token,
-          } = await login(loginPayload)
+          } = await login(loginPayload) as any // this is temporary, we need to fix the type when refact store
 
           tokenService.setToken(token)
           await updateTermsByCurrentUser(termsId.value as number)
