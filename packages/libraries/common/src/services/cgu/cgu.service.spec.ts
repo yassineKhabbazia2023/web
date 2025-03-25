@@ -34,7 +34,7 @@ describe('getTermsByCurrentUser', () => {
   it('should return cgu accepted by user', async () => {
     const expectedUrl = 'contact/api/contacts/currentuser/terms'
     apiGatewayGetMock.mockResolvedValueOnce({
-      data: cguMock
+      data: cguMock,
     })
     const data = await getTermsByCurrentUser()
 
@@ -48,7 +48,7 @@ describe('getLatestTerms', () => {
   it('should return latest terms active', async () => {
     const expectedUrl = 'contact/api/terms/latest'
     apiGatewayGetMock.mockResolvedValueOnce({
-      data: termsMock
+      data: termsMock,
     })
     const data = await getLatestTerms()
 
@@ -62,7 +62,7 @@ describe('updateTermsByCurrentUser', () => {
   it('should return a message note', async () => {
     const expectedUrl = 'contact/api/contacts/currentuser/terms?termsId=123311'
     apiGatewayPatchMock.mockResolvedValueOnce({
-      data: cguMessageDone
+      data: cguMessageDone,
     })
     const { data } = await updateTermsByCurrentUser(123311)
 
