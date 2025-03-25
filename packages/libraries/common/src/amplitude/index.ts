@@ -4,9 +4,11 @@ import type { BaseEvent } from '@amplitude/analytics-types'
 
 export default class AmplitudeService {
   private isInitiated: boolean
+  private currentUserId: string
 
   constructor() {
     this.isInitiated = false
+    this.currentUserId = ''
   }
 
   public init(apiKey: string, serverUrl?: string) {
@@ -32,8 +34,12 @@ export default class AmplitudeService {
     amplitude.track(eventInput, eventProperties)
   }
 
-  public setUserId(userId?: number) {
-    amplitude.setUserId(userId?.toString() ?? '')
+  public setUserId(userId: string) {
+    // we ensure we only set the userId once per user
+    if(this.currentUserId !== userId) {
+      this.currentUserId = userId
+      amplitude.setUserId(userId)
+    }
   }
 
   public setNewUserProperty(key: string, value: string | number) {

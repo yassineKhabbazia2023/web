@@ -68,6 +68,10 @@ function showPopupRenewToken() {
 }
 
 function onRouteChange() {
+  // brute force way of getting sure we have a userId defined in Amplitude
+  if(user.value && user.value.id !== undefined) {
+    amplitudeService.setUserId(user.value.id.toString())
+  }
   currentLayoutName.value = route.meta?.layout?.toString() || LAYOUTS.MAIN
   if (popupRenewTokenIsVisible.value && !getCanShowPopupRenewToken()) {
     popupRenewTokenIsVisible.value = false
@@ -92,7 +96,11 @@ const handleLogout = async () => {
 watch(
   user, () => {
     if (user.value) {
-      amplitudeService.setUserId(user.value.id)
+      if(user.value.id !== undefined) {
+        // if the userId is not defined, we don't want to set it in Amplitude
+        // we will set it later when we have a valid userId
+        amplitudeService.setUserId(user.value.id.toString())
+      }
       new Idle()
         .whenNotInteractive()
         .within(VITE_IDLE_DURATION)

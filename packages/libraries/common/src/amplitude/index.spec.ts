@@ -76,22 +76,15 @@ describe('amplitude', () => {
     expect(trackSpy).toHaveBeenCalledWith(CUSTOM_EVENT)
   })
 
-  it('call setUserId with empty string when userId is undefined', () => {
-    amplitudeService.setUserId()
-
-    expect(setUserIdSpy).toHaveBeenCalledOnce()
-    expect(setUserIdSpy).toHaveBeenCalledWith('')
-  })
-
   it('can set a user id', () => {
-    const CUSTOM_USER_ID = 123
+    const CUSTOM_USER_ID = '123'
 
     expect(setUserIdSpy).toHaveBeenCalledTimes(0)
 
     amplitudeService.setUserId(CUSTOM_USER_ID)
 
     expect(setUserIdSpy).toHaveBeenCalledOnce()
-    expect(setUserIdSpy).toHaveBeenCalledWith(CUSTOM_USER_ID.toString())
+    expect(setUserIdSpy).toHaveBeenCalledWith(CUSTOM_USER_ID)
   })
 
   it('can set new user property', () => {
