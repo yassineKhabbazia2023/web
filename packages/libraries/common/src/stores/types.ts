@@ -44,6 +44,18 @@ export interface UserInfo {
   persona?: Persona
 }
 
+export interface UserInfoApi {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+  officePhone: string
+  officeMobile: string
+  isCustomer: boolean
+  oldId: string
+  persona: Persona
+}
+
 export interface AccountRow {
   accountId: number
   accountGlobalUniqueId: string

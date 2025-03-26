@@ -1,11 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { setActivePinia } from 'pinia'
-import { getMockedUser } from '../__mocks__'
+import { getMockedUserApi } from '../__mocks__'
 import store from '../stores'
 import { useDataProvider } from './useDataProvider'
 
-const fakeUser = getMockedUser()
+const fakeUser = getMockedUserApi()
 const mockGetMe = vi.fn(() => ({ data: fakeUser }))
 
 vi.mock('../api', () => ({

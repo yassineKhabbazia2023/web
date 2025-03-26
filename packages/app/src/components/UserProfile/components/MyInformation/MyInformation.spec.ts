@@ -73,7 +73,7 @@ describe('myInformation', () => {
       const fullNameWrapper = wrapper.find('p.h4')
 
       expect(fullNameWrapper.text()).toContain(`${firstName} ${lastName}`)
-      expect((getAllInputs()[0].element as HTMLInputElement).value).toBe(persona.name)
+      expect((getAllInputs()[0].element as HTMLInputElement).value).toBe(persona!.name)
       expect((getAllInputs()[1].element as HTMLInputElement).value).toBe(officeMobile)
       expect((getAllInputs()[2].element as HTMLInputElement).value).toBe(email)
     })

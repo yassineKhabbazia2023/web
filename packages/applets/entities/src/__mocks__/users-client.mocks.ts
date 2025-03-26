@@ -1,4 +1,4 @@
-import type { UserInfo , Persona } from '@pulse/common/types'
+import type { UserInfo, Persona } from '@pulse/common/types'
 import type { Contact } from '@entities/services/contact/contactTypes'
 
 export const getMockedUser = (): UserInfo => {
