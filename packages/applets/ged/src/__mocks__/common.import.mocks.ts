@@ -1,3 +1,4 @@
+import type { Entity } from '@pulse/common/types'
 
 export const commonApiDsGetSpy = vi.fn()
 export const commonApiDsPostSpy = vi.fn().mockResolvedValue({
@@ -17,9 +18,9 @@ export const commonApiGatewayGetSpy = vi.fn().mockResolvedValue({
 })
 export const amplitudeTrackSpy = vi.fn()
 
-export const defaultEntityMock = {
-  name: 'JEAN LÉVAGE',
-  idAccount: '93012cc8-77b9-4161-8dbd-61915d935e21',
+export const defaultEntityMock: Entity = {
+  legalName: 'JEAN LÉVAGE',
+  accountId: 93012,
   accountNumber: '256',
   color: 'orange',
 }

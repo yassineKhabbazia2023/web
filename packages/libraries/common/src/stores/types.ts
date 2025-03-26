@@ -1,12 +1,12 @@
 export type EntityColor =
-'orange' |
-'persian' |
-'cyan' |
-'amethyste' |
-'teal' |
-'green' |
-'fuschia' |
-'gray'
+  'orange' |
+  'persian' |
+  'cyan' |
+  'amethyste' |
+  'teal' |
+  'green' |
+  'fuschia' |
+  'gray'
 
 export interface Entity {
   accountId: number

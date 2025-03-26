@@ -1,11 +1,11 @@
 <template>
-  <PRow v-if="selectedEntity">
+  <PRow v-if="accountNumber">
     <PCol :span="6">
       <Treeview
         :entityServices="entityServices"
         :currentService="currentService ?? ''"
         :currentServiceName="currentServiceName"
-        :selectedEntity="selectedEntity"
+        :selectedEntity="accountNumber"
         :accountId="selectedAccountId"
         :isLoading="isLoadingServicesOrFolders"
         :servicesFolders="servicesFolders"
@@ -29,7 +29,7 @@
         :key="$router.currentRoute.value.fullPath"
         :currentService="currentService"
         :currentServiceName="currentServiceName"
-        :selectedEntity="selectedEntity"
+        :selectedEntity="accountNumber"
         :accountId="selectedAccountId"
         :selectedEntityAvatarColor="selectedEntityAvatarColor"
         :selectedEntityName="selectedEntityName"
@@ -42,7 +42,7 @@
     <PCol v-else-if="currentBinService" :span="18">
       <BinDocuments
         :currentBinService="currentBinService"
-        :selectedEntity="selectedEntity"
+        :selectedEntity="accountNumber"
         :accountId="selectedAccountId"
         :selectedServiceName="currentBinServiceName"
         @navigate-to-folder="handleTreeRefreshAndRedirectToFolder"
@@ -87,13 +87,13 @@ const userStore = commonStore()
 const fetchGedFoldersAndServices = async () => {
   try {
     entityServices.value = await fetchUserEntityServices(
-      selectedEntity.value,
+      accountNumber.value,
       selectedAccountId.value,
     )
 
     const { foldersByService, unavailableServices } = await fetchServicesFolders(
       entityServices.value,
-      selectedEntity.value,
+      accountNumber.value,
       selectedAccountId.value,
     )
 
@@ -111,8 +111,8 @@ const fetchGedFoldersAndServices = async () => {
 }
 // Entities and services scope
 
-const selectedEntity = computed(() => userStore?.defaultEntity?.accountNumber.toString() ?? '')
-watch(selectedEntity, async (selectedEntityValue) => {
+const accountNumber = computed(() => userStore?.defaultEntity?.accountNumber.toString() ?? '')
+watch(accountNumber, async (selectedEntityValue) => {
   if (selectedEntityValue) {
     isLoadingServicesOrFolders.value = true
     await fetchGedFoldersAndServices()
@@ -267,7 +267,7 @@ function refreshDocumentsList() {
 
 // Main component actions
 onMounted(async () => {
-  if (selectedEntity.value) {
+  if (accountNumber.value) {
     await fetchGedFoldersAndServices()
   }
 })
