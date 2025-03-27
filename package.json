@@ -34,6 +34,8 @@
     "lint:fix": "npm run lint:fix --workspaces --if-present",
     "lint:staged": "lint-staged",
     "depcruise": "depcruise packages",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
     "syncpack:list": "syncpack list-mismatches",
     "syncpack:fix": "syncpack fix-mismatches",
     "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; BlueOak-1.0.0; Unlicense\" --production --excludePrivatePackages --unknown ",
@@ -97,6 +99,9 @@
     "@vitest/eslint-plugin": "^1.1.7",
     "@vue/test-utils": "^2.4.6",
     "@vue/tsconfig": "^0.4.0",
+    "@vuepress/bundler-vite": "^2.0.0-rc.20",
+    "@vuepress/plugin-search": "^2.0.0-rc.87",
+    "@vuepress/theme-default": "^2.0.0-rc.87",
     "dependency-cruiser": "^16.4.2",
     "eslint": "^9.11.1",
     "eslint-plugin-vue": "^9.30.0",
@@ -117,6 +122,7 @@
     "vite": "^5.4.8",
     "vite-plugin-externals": "^0.6.2",
     "vitest": "^3.0.0",
-    "vue-tsc": "^2.1.6"
+    "vue-tsc": "^2.1.6",
+    "vuepress": "^2.0.0-rc.20"
   }
 }
