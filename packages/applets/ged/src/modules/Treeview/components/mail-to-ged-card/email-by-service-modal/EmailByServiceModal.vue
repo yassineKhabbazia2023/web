@@ -16,9 +16,6 @@
         :email="information.emailAddress"
       />
     </template>
-    <p class="margin-top--5">
-      {{ t('informationText') }}
-    </p>
   </PDialog>
 </template>
 
@@ -53,13 +50,7 @@ function closeModal() {
 en-US:
   sendDocumentsFromMailInbox: 'Upload your documents from your email inbox'
   sendToExpertsWithEmail: 'Send your documents directly by email to your experts at the following addresses:'
-  informationText: >
-    The Mail2GED addresses in the {'@kpmg'} format will be maintained until 03/31/2025.
-    After this date, the {'@conseilescgs'} addresses will take over and will be available in this same section.
 fr-FR:
   sendDocumentsFromMailInbox: 'Déposez vos documents depuis votre boite mail'
   sendToExpertsWithEmail: 'Envoyez directement vos documents par e-mail à vos experts aux adresses suivantes :'
-  informationText: >
-    Les adresses Mail2GED sous le format {'@kpmg'} sont maintenues jusqu'au 31/03/2025.
-    Passée cette date, les adresses {'@conseilescgs'} prendront le relais et seront disponibles sur ce même encart.
 </i18n>
