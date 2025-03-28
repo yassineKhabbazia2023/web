@@ -115,7 +115,7 @@ import { AppColors } from '@pulse/styleguide'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddCustomerFeedback from './components/addCustomerFeedback'
-import { createCustomer, checkContactHasRoleOnAccount, addContactToEntity } from '@entities/services/account'
+import { createCustomer, hasContactRoleOnCommonAccount, addContactToEntity } from '@entities/services/account'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -163,7 +163,7 @@ const checkContactRole = async () => {
     try {
       await addCustomerFormRef.value.validate()
       // Check if the contact to be added exists in the database or has a role on the current account
-      hasRoleOnAccount.value = await checkContactHasRoleOnAccount(newContact.email, props.targetEntityId)
+      hasRoleOnAccount.value = await hasContactRoleOnCommonAccount(newContact.email)
       isNextButtonDisabled.value = hasRoleOnAccount.value
     } catch {
       isNextButtonDisabled.value = true
@@ -201,7 +201,7 @@ async function handleAddContactFormSubmission() {
   } catch (error: any) {
     if (error.response.status === 409) {
       try {
-        await addContactToEntity(props.targetEntityId, 0, newContact.email)
+        await addContactToEntity(props.targetEntityId, newContact.email)
         onboardingSucceeded()
       } catch {
         onboardingFailed()

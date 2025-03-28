@@ -58,7 +58,7 @@ describe('addCustomerDrawer', () => {
     vi.useFakeTimers()
 
     // 🕵️ Spies
-    vi.spyOn(accountServices, 'checkContactHasRoleOnAccount').mockResolvedValue(
+    vi.spyOn(accountServices, 'hasContactRoleOnCommonAccount').mockResolvedValue(
       false,
     )
     vi.spyOn(accountServices, 'createCustomer').mockResolvedValue(
@@ -156,7 +156,7 @@ describe('addCustomerDrawer', () => {
     it('should display a danger alert if the contact already has a role on the current account', async () => {
       vi.spyOn(
         accountServices,
-        'checkContactHasRoleOnAccount',
+        'hasContactRoleOnCommonAccount',
       ).mockResolvedValue(true)
 
       fillEmailField()
@@ -257,7 +257,6 @@ describe('addCustomerDrawer', () => {
       expect(addContactToEntitySpy).toHaveBeenCalledOnce()
       expect(addContactToEntitySpy).toHaveBeenCalledWith(
         mockedEntity.accountId,
-        0,
         formDataMock.email,
       )
       expect(trackAmplitudeSpy).toHaveBeenCalledOnce()

@@ -11,7 +11,7 @@ import AddCollaboratorsCard from './components/AddCollaboratorsCard'
 import { API_PREFIXES } from '@entities/common/config/services'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
-const SELECTED_CONTACTS = [{ id: 1 }, { id: 2 }]
+const SELECTED_CONTACTS = [{ id: 1, email: 'test1@example.com' }, { id: 2, email: 'test2@example.com' }]
 
 const gatewayPostMock = vi.fn().mockResolvedValue({})
 vi.mock('@pulse/common', () => ({
@@ -119,8 +119,7 @@ describe('add collaborators drawer', () => {
           1,
           `${API_PREFIXES.ACCOUNT}/roles`,
           {
-            accountId: defaultProps.entityId,
-            contactId: 1,
+            email: SELECTED_CONTACTS[0].email,
             isSignatory: false,
             isFavorite: false,
             isDelegation: false,
@@ -129,14 +128,16 @@ describe('add collaborators drawer', () => {
             headers: {
               'Account-Id': 1,
             },
+            params: {
+              accountId: defaultProps.entityId,
+            },
           },
         )
         expect(gatewayPostMock).toHaveBeenNthCalledWith(
           2,
           `${API_PREFIXES.ACCOUNT}/roles`,
           {
-            accountId: defaultProps.entityId,
-            contactId: 2,
+            email: SELECTED_CONTACTS[1].email,
             isSignatory: false,
             isFavorite: false,
             isDelegation: false,
@@ -144,6 +145,9 @@ describe('add collaborators drawer', () => {
           {
             headers: {
               'Account-Id': 1,
+            },
+            params: {
+              accountId: defaultProps.entityId,
             },
           },
         )

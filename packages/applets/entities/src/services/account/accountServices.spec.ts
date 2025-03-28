@@ -17,7 +17,7 @@ import {
   fetchGatewayApi,
   type Hub,
   deleteContactFromAccount,
-  checkContactHasRoleOnAccount,
+  hasContactRoleOnCommonAccount,
 } from '.'
 import {
   getMockedAccount,
@@ -88,7 +88,7 @@ vi.mock('@pulse/common', () => {
               data: mockedCollaborators,
             })
           }
-          if (url === `${API_PREFIXES.ACCOUNT}/roles/check/currentuser`) {
+          if (url === `${API_PREFIXES.ACCOUNT}/roles/check`) {
             return Promise.resolve({
               data: true,
             })
@@ -214,12 +214,11 @@ describe('test accountServices', () => {
 
   describe('roles', () => {
     it('should post addContactToEntity', async () => {
-      await addContactToEntity(1, 1000)
+      await addContactToEntity(1, 'test@example.fr')
       expect(postSpy).toHaveBeenCalledWith(
         'account/api/roles',
         {
-          accountId: 1,
-          contactId: 1000,
+          email: 'test@example.fr',
           isSignatory: false,
           isFavorite: false,
           isDelegation: false,
@@ -227,6 +226,9 @@ describe('test accountServices', () => {
         {
           headers: {
             'Account-Id': 1,
+          },
+          params: {
+            accountId: 1,
           },
         },
       )
@@ -305,10 +307,9 @@ describe('test accountServices', () => {
     })
 
     it('should check if contact has role on account', async () => {
-      const accountId = mockedAccount.accountId
       const email = 'test@test.fr'
 
-      const hasRoleOnAccount = await checkContactHasRoleOnAccount(email, accountId)
+      const hasRoleOnAccount = await hasContactRoleOnCommonAccount(email)
       expect(hasRoleOnAccount).toBeTruthy()
     })
   })

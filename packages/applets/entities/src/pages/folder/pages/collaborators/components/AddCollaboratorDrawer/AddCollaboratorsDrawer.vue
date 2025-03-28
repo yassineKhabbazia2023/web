@@ -77,7 +77,7 @@ const handleSubmit = async () => {
   isNextButtonLoading.value = true
   // This endpoint in its current state does not allow us to send a list
   const addContactPromises: Promise<any>[] = selectedCollaborators.value
-    .map(({ id }) => addContactToEntity(props.entityId, id))
+    .map(({ email }) => addContactToEntity(props.entityId, email))
 
   const results = await Promise.allSettled(addContactPromises)
   const successfulResults: Promise<any>[] = []
