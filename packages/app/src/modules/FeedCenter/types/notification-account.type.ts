@@ -1,5 +1,5 @@
 export interface NotificationAccount {
   id: number
   name: string
-  accountNumber: string
+  accountNumber: number
 }

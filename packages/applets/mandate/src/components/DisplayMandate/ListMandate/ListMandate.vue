@@ -222,7 +222,7 @@ const tableHead = [
     sortable: true,
     width: '105',
   },
-  { label: `${t('status')}`, prop: 'statusCode', sortable: true, width: '204' },
+  { label: `${t('status')}`, prop: 'statusCode', sortable: true, width: '115' },
   { label: 'Actions', sortable: false, width: '72' },
 ]
 const actionsBuilder = (

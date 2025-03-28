@@ -37,8 +37,7 @@ interface StatusMap {
 
 const statusMap = new Map<number, StatusMap>([
   [99, { color: 'cyan', iconName: 'hourglass', content: t('creating') }],
-  [98, { color: 'danger', iconName: 'exclamationTriangle', content: t('technical-incident') }],
-  [10, { color: 'danger', iconName: 'exclamationTriangle', content: t('business-incident') }],
+  [10, { color: 'danger', iconName: 'exclamationTriangle', content: t('incident') }],
   [20, { color: 'warning', iconName: 'arrowUpCircle', content: t('to-do') }],
   [30, { color: 'fuschia', iconName: 'arrowRepeat', content: t('in-progress') }],
   [40, { color: 'success', iconName: 'checkCircle', content: t('active') }],
@@ -52,8 +51,6 @@ const tagProperties = computed(() => statusMap.get(Number(props.status)))
   en-US:
     creating: 'Creating'
     incident: 'Incident'
-    technical-incident: 'Technical Incident'
-    business-incident: 'Business Incident'
     to-do: 'To do'
     in-progress: 'In progress'
     active: 'Active'
@@ -61,8 +58,6 @@ const tagProperties = computed(() => statusMap.get(Number(props.status)))
   fr-FR:
     creating: 'En création'
     incident: 'Incident'
-    technical-incident: 'Incident technique'
-    business-incident: 'Incident métier'
     to-do: 'À déposer'
     in-progress: 'En cours'
     active: 'Actif'
