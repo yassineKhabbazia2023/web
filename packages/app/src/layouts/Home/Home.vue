@@ -131,13 +131,17 @@ onMounted(async () => {
       },
     })
 
-    const key = user?.isCollab ? VITE_PRODUCT_FRUITS_KEY : VITE_PRODUCT_FRUITS_KEY_CLIENT
-    initProductFruits({
-      lang: 'fr',
-      key,
-      user,
-      openChat,
-    })
+    if (user) {
+      // QUICK FIX: do not initialise Product Fruits if the use is not authenticated
+      const productFruitsKey = user.isCollab ? VITE_PRODUCT_FRUITS_KEY : VITE_PRODUCT_FRUITS_KEY_CLIENT
+
+      initProductFruits({
+        lang: 'fr',
+        key: productFruitsKey,
+        user,
+        openChat,
+      })
+    }
     initHubspot({
       onHubspotClose: () => showProductFruits(),
     })
