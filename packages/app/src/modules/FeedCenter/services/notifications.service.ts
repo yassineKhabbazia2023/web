@@ -13,10 +13,18 @@ const NOTIFICATION_API_PARAMS = {
   },
 }
 
-export async function fetchUnreadNotificationsCount(): Promise<UnreadNotificationCountResponse> {
+export async function fetchUnreadNotificationsCount(accountIdsFilter: Entity['accountId'][] = []): Promise<UnreadNotificationCountResponse> {
   const { data } = await api().gateway.get(
     `${NOTIFICATION_API_PREFIX}/currentuser/unread/count`,
-    NOTIFICATION_API_PARAMS,
+    {
+      params: {
+        ...NOTIFICATION_API_PARAMS.params,
+        accountIds: accountIdsFilter,
+      },
+      paramsSerializer: {
+        indexes: null,
+      },
+    },
   )
   return { count: data }
 }

@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRef } from 'vue'
+import { computed, toRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PDrawer,
@@ -80,7 +80,8 @@ const { t } = useI18n({
 
 const emit = defineEmits<{
   'update:model-value': [boolean],
-  'notifications-updated': []
+  'notifications-updated': [],
+  'favourites-filter-updated': [boolean]
 }>()
 
 const props = defineProps<FeedCenterDrawerProps>()
@@ -122,6 +123,12 @@ const {
   unreadNotifications,
   isFavouritesFilterEnabled,
 } = useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCountRef)
+
+watch(isFavouritesFilterEnabled, () => {
+  emit('favourites-filter-updated', isFavouritesFilterEnabled.value)
+  localStorage.setItem('favoriteEnabled', isFavouritesFilterEnabled.value.toString())
+})
+
 </script>
 
 <i18n lang="yaml">

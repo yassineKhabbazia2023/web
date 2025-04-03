@@ -9,6 +9,7 @@
       v-model="showFeedCenter"
       :unreadNotificationsCount="unreadNotificationsCount"
       @notifications-updated="setNotificationsCount"
+      @favourites-filter-updated="onFavoriteFilterUpdated"
     />
     <PContainer pDirection="vertical">
       <PCHeader
@@ -48,7 +49,7 @@
 
 <script setup lang="ts">
 import { logger, FeatureFlagManager } from '@pulse/core'
-import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, watch, type Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   VITE_PRODUCT_FRUITS_KEY,
@@ -77,7 +78,8 @@ const { fetchUserData } = dataProvider()
 const isLoading = ref<boolean>(true)
 const calendarIsOpened = ref(false)
 const calendarHasBeenOpened = ref(false)
-
+const isFavoriteFromLocalStorage = localStorage.getItem('favoriteEnabled')
+const isFavoriteEnabled: Ref<boolean> = ref(isFavoriteFromLocalStorage === 'true')
 const showCalendar = computed({
   get: () => calendarIsOpened.value,
   set: (value: boolean) => {
@@ -101,6 +103,11 @@ const hasUserProfileDrawerOpened = ref(false)
 
 const handleClick = () => {
   hasUserProfileDrawerOpened.value = true
+}
+
+function onFavoriteFilterUpdated(isEnabled: boolean) {
+  isFavoriteEnabled.value = isEnabled
+  setNotificationsCount()
 }
 
 // Computed
@@ -148,6 +155,9 @@ onMounted(async () => {
     initHubspot({
       onHubspotClose: () => showProductFruits(),
     })
+
+    setNotificationsCount()
+
   } catch (error) {
     logger.error('Something wrong occurred: ', error)
   } finally {
@@ -172,7 +182,11 @@ async function setNotificationsCount() {
   }
 
   try {
-    const { count } = await fetchUnreadNotificationsCount()
+    const accountIds = isFavoriteEnabled.value
+      ? globalStore.favoriteEntities.map(e => e.accountId)
+      : []
+
+    const { count } = await fetchUnreadNotificationsCount(accountIds)
     unreadNotificationsCount.value = count
   } catch (error) {
     logger.error('Notifications count fetch failed.', error)
@@ -183,10 +197,6 @@ const unreadNotificationsCount = ref(0)
 const notificationsCountIntervalId = setInterval(async () => {
   await setNotificationsCount()
 }, UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL)
-
-onMounted(() => {
-  setNotificationsCount()
-})
 
 onBeforeUnmount(() => {
   clearInterval(notificationsCountIntervalId)

@@ -39,6 +39,8 @@ describe('feed center drawer composable', () => {
   beforeEach(() => {
     // @ts-ignore needed in order to override the mocked store
     store.favoriteEntities = [favouriteEntities[0], favouriteEntities[1]]
+    localStorage.setItem('favoriteEnabled', 'true')
+
   })
 
   it('should fetch notifications on mounted and when drawer is being opened', async () => {
@@ -140,7 +142,7 @@ describe('feed center drawer composable', () => {
 
     const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
 
-    const [result] = withSetup(() => useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount))
+    const [result, app] = withSetup(() => useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount))
     const { notifications } = result
 
     await flushPromises()
@@ -148,5 +150,45 @@ describe('feed center drawer composable', () => {
 
     expect(fetchNotificationsMock).not.toHaveBeenCalled()
     expect(notifications.value).toStrictEqual([])
+
+    app.unmount()
+  })
+
+  it.each([
+    {
+      localStorageValue: 'true',
+      favouriteEntities: [favouriteEntities[0], favouriteEntities[1]],
+      expectedToggleState: true,
+    },
+    {
+      localStorageValue: 'true',
+      favouriteEntities: [],
+      expectedToggleState: false,
+    },
+    {
+      localStorageValue: 'false',
+      favouriteEntities: [],
+      expectedToggleState: false,
+    },
+    {
+      localStorageValue: 'false',
+      favouriteEntities: [favouriteEntities[0], favouriteEntities[1]],
+      expectedToggleState: false,
+    },
+  ])('should set the favorite switch based on local storage value but should be off anyway if no favourite entities exists', async ({ localStorageValue, favouriteEntities, expectedToggleState }) => {
+    localStorage.setItem('favoriteEnabled', localStorageValue)
+
+    const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
+    const [result, app] = withSetup(() => useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount))
+    // @ts-ignore needed in order to override the mocked store
+    store.favoriteEntities = favouriteEntities
+
+    const { isFavouritesFilterEnabled } = result
+
+    await flushPromises()
+    await nextTick()
+
+    expect(isFavouritesFilterEnabled.value).toStrictEqual(expectedToggleState)
+    app.unmount()
   })
 })

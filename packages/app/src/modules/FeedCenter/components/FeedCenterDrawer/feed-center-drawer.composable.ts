@@ -62,13 +62,17 @@ export function useFeedCenterDrawer(
     }
   }
 
-  const isFavouritesFilterEnabled = ref(true)
+  const isFavoriteFromLocalStorage = localStorage.getItem('favoriteEnabled')
+  const isFavouritesFilterEnabled = ref(isFavoriteFromLocalStorage === 'true')
   const favouritesEntitiyIds = computed(() => getIdsFromEntities(store.favoriteEntities))
 
   watch(favouritesEntitiyIds, () => {
     // This is above any other possible rule
     // If the user doesn't have any favourite entitiy, we want to disable the filter
-    isFavouritesFilterEnabled.value = hasFavouriteEntities(favouritesEntitiyIds.value)
+    const hasFavourites = hasFavouriteEntities(favouritesEntitiyIds.value)
+    if (!hasFavourites) {
+      isFavouritesFilterEnabled.value = false
+    }
   })
 
   watch(isFavouritesFilterEnabled, () => {
@@ -86,10 +90,7 @@ export function useFeedCenterDrawer(
     if (isDrawerOpened.value !== true) {
       return
     }
-    // As the drawer is opened in that case there is no need to display any loader
-    // we just want the notificaiton to pop out
-    const { notifications: fetchedNotification } = await fetchNotifications()
-    notifications.value = fetchedNotification
+    fetchNotificationsWithOrWithoutFavourites()
   })
 
   onMounted(async () => {

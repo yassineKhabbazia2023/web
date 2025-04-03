@@ -256,16 +256,15 @@ describe('home', () => {
     vi.restoreAllMocks() // restore mocks to be sure they are not called before this test
     vi.useFakeTimers()
     isFeedCenterActivatedMock.mockReturnValue(true)
-    createWrapper()
+
     await flushPromises()
+    await nextTick()
 
     const header = wrapper.findComponent({ name: 'Header' })
 
-    wrapper.vm.isLoading = false
-    wrapper.vm.defaultEntity = true
-
     await header.vm.$emit('update:show-feed-center', true)
     await header.vm.$emit('update:show-feed-center', false)
+
     vi.advanceTimersByTime(500)
     // called 3 times : 1x onMounted, 1x drawer open, 1x drawer close
     expect(fetchUnreadNotificationsCountMock).toHaveBeenCalledTimes(3)
