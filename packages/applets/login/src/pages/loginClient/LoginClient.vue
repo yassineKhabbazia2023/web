@@ -205,7 +205,11 @@ async function onSubmit() {
     router.push({ name: LoginRouteName.CGU_VALIDATION, params: { termsId: terms.termsId } })
   } catch (error: any) {
     isLoading.value = false
-    const hasEmailOrPasswordInvalid = error.response?.data?.errorCode === BackEndErrors.WRONG_LOGIN_PASSWORD
+    const invalidLoginErrorCodes = [
+      BackEndErrors.WRONG_LOGIN_PASSWORD,
+      BackEndErrors.INVALID_LOGIN_CREDENTIALS,
+    ]
+    const hasEmailOrPasswordInvalid = invalidLoginErrorCodes.includes(error.response?.data?.errorCode)
     const errorMessage = hasEmailOrPasswordInvalid
       ? t('emailOrPasswordError')
       : t('technicalError')

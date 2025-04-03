@@ -163,6 +163,7 @@ function checkValidity() {
 const apiErrorMessages: Record<BackEndErrors, string> = {
   [BackEndErrors.ALREADY_USED_PASSWORD]: t('isPasswordAlreadyUsed'),
   [BackEndErrors.WRONG_LOGIN_PASSWORD]: '', // should centralize error messages
+  [BackEndErrors.INVALID_LOGIN_CREDENTIALS]: '',
   [BackEndErrors.other]: t('technicalError'),
 }
 

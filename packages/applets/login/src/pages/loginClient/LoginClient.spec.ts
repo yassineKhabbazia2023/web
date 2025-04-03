@@ -121,9 +121,6 @@ describe('login', () => {
       password: INPUT_PASSWORD_VALUE,
     }
 
-    const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
-    expect(loginErrorMessage.exists()).toBeFalsy()
-
     expect(loginMock).toHaveBeenCalledTimes(1)
     expect(loginMock).toHaveBeenCalledWith(expectedPayload)
 
@@ -191,13 +188,44 @@ describe('login', () => {
       sign_in_result: 'failed',
     })
     expect(mockRouterPush).not.toHaveBeenCalled()
+  })
 
-    const pInput = wrapper.findComponent({ name: 'PInput' })
-    pInput.vm.$emit('input')
+  it('does not redirect to the home page if the api return a INVALID_LOGIN_CREDENTIALS error', async () => {
+    loginMock.mockRejectedValueOnce({
+      response: {
+        data: {
+          errorCode: BackEndErrors.INVALID_LOGIN_CREDENTIALS,
+        },
+      },
+    })
+    const expectedErrorMessage = 'The e-mail address and password combination is incorrect'
+
+    await getInputEmail().setValue(INPUT_EMAIL_VALUE)
+    await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
+
+    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    await submitButton.trigger('click')
+    await flushPromises()
     await nextTick()
 
-    const loginErrorMessageAfter = wrapper.find('[data-testid="login-error-message"]')
-    expect(loginErrorMessageAfter.exists()).toBeFalsy()
+    const pFormItems = wrapper.findAllComponents({ name: 'PFormItem' })
+    const firstFormItemProps = pFormItems.at(0)!.props()
+    const secondFormItemProps = pFormItems.at(1)!.props()
+
+    expect(firstFormItemProps['pError']).toBe(expectedErrorMessage)
+    expect(firstFormItemProps['pShowMessage']).toBe(false)
+
+    expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
+    expect(secondFormItemProps['pShowMessage']).toBe(true)
+
+    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledOnce()
+    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledWith('user_type', 'Client')
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
+      sign_in_method: 'email',
+      sign_in_result: 'failed',
+    })
+    expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
   it('does not redirect to the home page if the api return empty response', async () => {
@@ -229,13 +257,6 @@ describe('login', () => {
       sign_in_result: 'failed',
     })
     expect(mockRouterPush).not.toHaveBeenCalled()
-
-    const pInput = wrapper.findComponent({ name: 'PInput' })
-    pInput.vm.$emit('input')
-    await nextTick()
-
-    const loginErrorMessageAfter = wrapper.find('[data-testid="login-error-message"]')
-    expect(loginErrorMessageAfter.exists()).toBeFalsy()
   })
 
   it('does display error message if the api return an unkown error', async () => {
@@ -273,13 +294,6 @@ describe('login', () => {
       sign_in_result: 'failed',
     })
     expect(mockRouterPush).not.toHaveBeenCalled()
-
-    const pInput = wrapper.findComponent({ name: 'PInput' })
-    pInput.vm.$emit('input')
-    await nextTick()
-
-    const loginErrorMessageAfter = wrapper.find('[data-testid="login-error-message"]')
-    expect(loginErrorMessageAfter.exists()).toBeFalsy()
   })
 
   it('give empty values in form', async () => {
@@ -296,10 +310,8 @@ describe('login', () => {
     await submitButton.trigger('click')
     await flushPromises()
 
-    const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
     const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
-    expect(loginErrorMessage.exists()).toBeFalsy()
     expect(amplitudeServiceSetNewUserPropertyMock).not.toHaveBeenCalled()
     expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
@@ -315,10 +327,8 @@ describe('login', () => {
     await submitButton.trigger('click')
     await flushPromises()
 
-    const loginErrorMessage = wrapper.find('[data-testid="login-error-message"]')
     const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
-    expect(loginErrorMessage.exists()).toBeFalsy()
     expect(amplitudeServiceSetNewUserPropertyMock).not.toHaveBeenCalled()
     expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
