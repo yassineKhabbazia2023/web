@@ -112,6 +112,8 @@ describe('home', () => {
       user: customerUserMock,
     }
 
+    await flushPromises()
+
     expect(initProductFruitsMock).toHaveBeenCalledOnce()
     expect(initProductFruitsMock).toHaveBeenNthCalledWith(1, expectedArguments)
   })

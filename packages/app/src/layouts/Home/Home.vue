@@ -61,7 +61,7 @@ import HomeScheduleDrawer from '@app/components/HomeScheduleDrawer'
 import Header from './Header'
 import Sidebar from './Sidebar'
 import { storeToRefs } from 'pinia'
-import { fetchEntities } from '@app/services/entities'
+import { fetchEntities, fetchFavoriteEntities } from '@app/services/entities'
 import { getDefaultEntity } from './Sidebar/components/SidebarEntity/utils'
 import FeedCenterDrawer from '@app/modules/FeedCenter/components/FeedCenterDrawer'
 import { fetchUnreadNotificationsCount } from '@app/modules/FeedCenter/services/notifications.service'
@@ -69,6 +69,7 @@ import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
 import { initProductFruits, showProductFruits, stopProductFruits, hideProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { initHubspot, openHubspot } from '@app/plugins/Hubspot/hubspot.plugin'
 import { trackFeedcenterOpened } from '@app/modules/FeedCenter/services/tracking/tracking.service'
+
 
 // Variables
 const router = useRouter()
@@ -130,6 +131,8 @@ onMounted(async () => {
         },
       },
     })
+
+    await fetchFavoriteEntities()
 
     if (user) {
       // QUICK FIX: do not initialise Product Fruits if the use is not authenticated

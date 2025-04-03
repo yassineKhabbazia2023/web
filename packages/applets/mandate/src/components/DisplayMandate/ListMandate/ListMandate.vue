@@ -222,8 +222,8 @@ const tableHead = [
     sortable: true,
     width: '105',
   },
-  { label: `${t('status')}`, prop: 'statusCode', sortable: true, width: '115' },
-  { label: 'Actions', sortable: false, width: '72' },
+  { label: t('status'), prop: 'statusCode', sortable: true, width: '204' },
+  { label: t('actions'), sortable: false, width: '72' },
 ]
 const actionsBuilder = (
   jdcPartnership: string | number,
@@ -432,6 +432,7 @@ const downloadAndSaveMandate = async (downloadFunction: any, id: string, mandate
         created-on: 'Created on'
         modified-on: 'Modified on'
         status: 'Status'
+        actions: 'Actions'
         download-signed-mandate: 'Download signed mandate'
         download-pre-filled-mandate: 'Download pre-filled mandate'
         submit-signed-mandate: 'Submit the signed mandate'
@@ -461,6 +462,7 @@ const downloadAndSaveMandate = async (downloadFunction: any, id: string, mandate
         created-on: 'Créé le'
         modified-on: 'Modifié le'
         status: 'Statut'
+        actions: 'Actions'
         download-signed-mandate: 'Télécharger le mandat signé'
         download-pre-filled-mandate: 'Télécharger le mandat pré-rempli'
         submit-signed-mandate: 'Déposer le mandat signé'

@@ -1,4 +1,5 @@
 import { logger } from '@pulse/core'
+import type { Entity } from '@pulse/common/types'
 import { type FeedCenterNotification } from '@app/modules/FeedCenter/types/notification.type'
 import { patchAllNotificationsReadStatus, fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
 
@@ -35,4 +36,12 @@ export async function fetchNotificationsWithTimeout(): Promise<FeedCenterNotific
     logger.error(error)
     return []
   }
+}
+
+export function getIdsFromEntities(entities: Entity[]) {
+  return entities.map(entity => entity.accountId)
+}
+
+export function hasFavouriteEntities(entityIds: Entity['accountId'][]) {
+  return entityIds.length > 0
 }

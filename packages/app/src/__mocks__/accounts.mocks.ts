@@ -3,7 +3,7 @@ import type { NotificationAccount } from '@app/modules/FeedCenter/types/notifica
 export const accountMock: NotificationAccount = {
   id: 1,
   name: 'Au5',
-  accountNumber: 100,
+  accountNumber: '100',
 }
 
 export const accountsMock: NotificationAccount[] = [
@@ -13,27 +13,27 @@ export const accountsMock: NotificationAccount[] = [
   {
     id: 2,
     name: 'Monstercat',
-    accountNumber: 200,
+    accountNumber: '200',
   },
   {
     id: 3,
     name: 'Virtual Riot',
-    accountNumber: 300,
+    accountNumber: '300',
   },
   {
     id: 4,
     name: 'Haywyre',
-    accountNumber: 400,
+    accountNumber: '400',
   },
   {
     id: 5,
     name: 'Porter Robinson',
-    accountNumber: 500,
+    accountNumber: '500',
   },
   {
     id: 6,
     name: 'KOAN Sound',
-    accountNumber: 600,
+    accountNumber: '600',
   },
 ]
 

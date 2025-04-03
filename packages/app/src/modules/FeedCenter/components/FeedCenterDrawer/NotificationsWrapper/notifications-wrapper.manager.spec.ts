@@ -205,7 +205,7 @@ describe('handleNotificationAction', () => {
           {
             id: notificationEntity.accountId,
             name: notificationEntity.legalName,
-            accountNumber: Number(notificationEntity.accountNumber),
+            accountNumber: notificationEntity.accountNumber,
           },
         ],
       },

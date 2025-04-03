@@ -11,6 +11,11 @@
     @close-drawer-button="closeNotificationsDrawer"
     @p-toolbox-item-clicked="handleToolboxItemClick"
   >
+    <div class="padding-y--3">
+      <PSwitch v-model="isFavouritesFilterEnabled" />
+      <span class="padding-left--2">{{ t('favorites') }}</span>
+    </div>
+
     <PTabs v-model="activeTab">
       <PTabPane :label="t('tabs.all-notifications')" name="all-notifications">
         <NotificationsWrapper
@@ -54,6 +59,7 @@ import {
   PPastille,
   PTabs,
   PTabPane,
+  PSwitch,
 } from '@pulse/styleguide/components'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
@@ -114,6 +120,7 @@ const {
   areNotificationsLoading,
   shortenedCount,
   unreadNotifications,
+  isFavouritesFilterEnabled,
 } = useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCountRef)
 </script>
 
@@ -124,10 +131,12 @@ en-US:
   tabs:
     all-notifications: 'All'
     unread-notifications: 'Unread'
+  favorites: 'Favorites'
 fr-FR:
   title: 'Notifications'
   mark-all-as-read: 'Tout marquer comme lu'
   tabs:
     all-notifications: 'Tout'
     unread-notifications: 'Non lu'
+  favorites: 'Favoris'
 </i18n>

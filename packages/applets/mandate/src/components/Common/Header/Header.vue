@@ -99,7 +99,13 @@ function onClickFilter(activeFilterCodes: number[]) {
 
 const filters: FilterOption<number>[] = [
   {
-    pContent: t('incident'),
+    pContent: t('technical-incident'),
+    pCode: 98,
+    pColor: 'danger',
+    pIconName: 'exclamationTriangle',
+  },
+  {
+    pContent: t('business-incident'),
     pCode: 10,
     pColor: 'danger',
     pIconName: 'exclamationTriangle',
@@ -152,7 +158,8 @@ const filters: FilterOption<number>[] = [
   en-US:
     bank-mandates: 'Collection Status'
     new-mandate: 'New mandate'
-    incident: 'Incident'
+    technical-incident: 'Technical Incident'
+    business-incident: 'Business Incident'
     to-do: 'To do'
     in-progress: 'In progress'
     active: 'Active'
@@ -160,7 +167,8 @@ const filters: FilterOption<number>[] = [
   fr-FR:
     bank-mandates: 'Statut des collectes'
     new-mandate: 'Nouveau mandat'
-    incident: 'Incident'
+    technical-incident: 'Incident Technique'
+    business-incident: 'Incident Métier'
     to-do: 'À déposer'
     in-progress: 'En cours'
     active: 'Actif'

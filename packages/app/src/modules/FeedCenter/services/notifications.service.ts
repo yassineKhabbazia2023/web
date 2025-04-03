@@ -4,6 +4,7 @@ import type {
   UnreadNotificationCountResponse,
   FetchNotificationsResponse,
 } from '@app/modules/FeedCenter/types/notification.type'
+import type { Entity } from '@pulse/common/types'
 
 const NOTIFICATION_API_PREFIX = 'feedcenter/api/notifications'
 const NOTIFICATION_API_PARAMS = {
@@ -20,10 +21,18 @@ export async function fetchUnreadNotificationsCount(): Promise<UnreadNotificatio
   return { count: data }
 }
 
-export async function fetchNotifications(): Promise<FetchNotificationsResponse> {
+export async function fetchNotifications(accountIdsFilter: Entity['accountId'][] = []): Promise<FetchNotificationsResponse> {
   const { data } = await api().gateway.get(
     `${NOTIFICATION_API_PREFIX}/currentuser`,
-    NOTIFICATION_API_PARAMS,
+    {
+      params: {
+        ...NOTIFICATION_API_PARAMS.params,
+        accountIds: accountIdsFilter,
+      },
+      paramsSerializer: {
+        indexes: null,
+      },
+    },
   )
   return { notifications: data }
 }
