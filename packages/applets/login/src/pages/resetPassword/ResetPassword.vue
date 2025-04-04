@@ -64,7 +64,7 @@ import { useRouter } from 'vue-router'
 import { commonApi } from '@pulse/common'
 import { PForm, PFormItem, PInput, PButton } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
-import { LoginRouteName, HTTP_ERRORS } from '@pulse/common/constants'
+import { LoginRouteName, HTTP_RESPONSES } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -130,7 +130,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
       },
     })
   } catch (error: any) {
-    if(error.status === HTTP_ERRORS.TOO_MANY_REQUESTS) {
+    if(error.status === HTTP_RESPONSES.TOO_MANY_REQUESTS) {
       router.push({
         path: `/${LoginRouteName.RESET_PASSWORD_FAILED}`,
         query: {
