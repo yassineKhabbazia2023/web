@@ -15,7 +15,15 @@ parameters:
   values:
     - standard
     - onlyDev
-
+- name: squad
+  type: string
+  default: 'none'
+  values:
+    - none
+    - transverse
+    - hades
+    - hermes
+    - orion
 
 resources:
   repositories:
@@ -29,5 +37,6 @@ extends:
   parameters:
     deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
+    squad: ${{ parameters.squad }}
     sonarExclusions: '**/Mock.js,**/mocks/**,src/main.ts,src/main.mts,stryker/**.*, vitest.setup.ts'
 

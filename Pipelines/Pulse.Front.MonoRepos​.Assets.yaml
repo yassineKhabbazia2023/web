@@ -14,6 +14,15 @@ parameters:
   values:
     - standard
     - onlyDev
+- name: squad
+  type: string
+  default: 'none'
+  values:
+    - none
+    - transverse
+    - hades
+    - hermes
+    - orion
 
 resources:
   repositories:
@@ -27,5 +36,6 @@ extends:
   parameters:
     deployType: ${{ parameters.deployType }}
     devIndex: ${{ parameters.devIndex }}
+    squad: ${{ parameters.squad }}
     styleGuideFolder: 'packages/libraries/styleguide'
 
