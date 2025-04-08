@@ -189,7 +189,7 @@ describe('page creation password', () => {
     const data = {
       contactId: 'contactId',
       newPassword: VALID_PASSWORD,
-      resetPasswordToken: 'resetPasswordToken',
+      resetPasswordToken: mockToken,
     }
     const dataLogin = {
       email: 'email',

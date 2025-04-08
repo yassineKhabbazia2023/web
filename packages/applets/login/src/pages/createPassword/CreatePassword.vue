@@ -136,10 +136,9 @@ const { t } = useI18n({
 })
 const route = useRoute()
 const router = useRouter()
-const { contactId, accountNumber, resetPasswordToken, token, email: emailQuery } = route.query as {
+const { contactId, accountNumber, token, email: emailQuery } = route.query as {
   contactId: string
   accountNumber: string
-  resetPasswordToken: string
   token: string
   email: string
 }
@@ -221,7 +220,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         const data = {
           contactId,
           newPassword: formValue.password,
-          resetPasswordToken,
+          resetPasswordToken: token,
         }
         try {
           await createNewPassword(data)
@@ -260,9 +259,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
 }
 
 const isValidToken = async () => {
-  const urlValidToken = `authentication/api/IsInvitationTokenValid?invitationToken=${token}`
   try {
-    const isValid = await isInvitationTokenValid(urlValidToken)
+    const isValid = await isInvitationTokenValid(token)
 
     return isValid
   } catch (error) {

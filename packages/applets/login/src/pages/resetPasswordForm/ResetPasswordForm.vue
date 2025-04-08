@@ -196,7 +196,7 @@ const submitForm = async () => {
 
 const isValidToken = async () => {
   try {
-    const isValid = await isInvitationTokenValid(`${token}`)
+    const isValid = await isInvitationTokenValid(token)
 
     return isValid
   } catch (error) {
