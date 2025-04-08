@@ -35,6 +35,28 @@
         >
           {{ t('delegation', selectedFolders.length) }}
         </PButton>
+        <PButton
+          v-if="hasManageAccessButton"
+          :pDisabled="isManageAccessButtonDisabled"
+          class="margin-left--2"
+          pType="primary"
+          pSize="small"
+          data-testid="manage-access-button"
+          @click="onManageAccessButtonClick"
+        >
+          <span>
+            {{ t('manageAccess') }}
+          </span>
+          <PPastille
+            v-if="manageAccessCount !== undefined"
+            pType="white"
+            pSize="small"
+            class="margin-left--3 text-color--base-blue-pulse"
+            data-testid="manage-access-count"
+          >
+            {{ manageAccessCount }}
+          </PPastille>
+        </PButton>
       </div>
       <EntityCreatorDrawer
         v-if="isEntityCreatorDrawerOpen && user"
@@ -107,17 +129,18 @@
 </template>
 
 <script lang='ts' setup>
-import { logger } from '@pulse/core'
+import { logger, FeatureFlagManager } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, ref, watch } from 'vue'
 import {
   PLoader,
   PButton,
+  PPastille,
   PPagination,
   PIcon,
 } from '@pulse/styleguide/components'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
-import { commonStore, userPermissions } from '@pulse/common'
+import { commonStore, userPermissions, amplitudeService } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -140,6 +163,7 @@ import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import ResendActivationEmailDrawer from '@entities/common/components/ResendActivationEmailDrawer'
 import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 import type { AccountRow } from '@entities/common/types'
+import { fetchOperationsByAccount } from '@entities/services/contact'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -154,6 +178,7 @@ const { isCollab, user } = storeToRefs(userStore)
 const searchBar = ref()
 const isLoading = ref(true)
 const selectedCompanyName = ref('')
+const manageAccessCount = ref<number>()
 
 // #region ResendActivationEmail
 const selectedAccount = ref<AccountRow>()
@@ -193,6 +218,11 @@ const { hasPermission } = userPermissions()
 
 const isEntityCreatorDrawerOpen = ref(false)
 const hasEntityCreatorPermission = hasPermission(PERMISSION_CODES.ENTITY_CREATOR)
+const hasManageAccessButton = computed(() =>
+  FeatureFlagManager.isAccessManagementGlobalActivated()
+  && hasPermission(PERMISSION_CODES.MANAGE_ACCESS),
+)
+const isManageAccessButtonDisabled = computed(() => (manageAccessCount.value ?? 0) < 1)
 
 const onEntityCreatorDrawerOpen = () => isEntityCreatorDrawerOpen.value = true
 // #endregion
@@ -288,6 +318,14 @@ async function fetchAccountList() {
   isLoading.value = false
 }
 
+function onManageAccessButtonClick() {
+  if (hasManageAccessButton.value && (manageAccessCount.value ?? 0) > 0) {
+    amplitudeService.track('Registry Validation Initiated', {
+      registry_validation_initialisation_localisation: 'portefeuille',
+    })
+  }
+}
+
 const fetchTableDataAndFavorites = async () => {
   const [, data] = await Promise.all([
     fetchAccountList(),
@@ -305,7 +343,17 @@ function onUpdateCurrentPage(currentPage: number) {
   searchCriteria.value.currentPage = currentPage
 }
 
+async function loadManageAccessCount() {
+  if (!hasManageAccessButton.value) {
+    return
+  }
+  const { totalItems } = await fetchOperationsByAccount(1, 1)
+
+  manageAccessCount.value = totalItems
+}
+
 onMounted(async () => {
+  loadManageAccessCount()
   await fetchTableDataAndFavorites()
 })
 
@@ -365,6 +413,7 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
     on: 'on'
     delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
     createTestAccount: 'Create a test account'
+    manageAccess: 'Manage access'
   fr-FR:
     search: 'Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant'
     toDeploy: 'A déployer'
@@ -373,4 +422,5 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
     on: 'sur'
     delegation: 'Déléguer mon portefeuille | Déléguer le dossier | Déléguer les dossiers'
     createTestAccount: 'Créer un compte de test'
+    manageAccess: 'Gérer les accès'
 </i18n>

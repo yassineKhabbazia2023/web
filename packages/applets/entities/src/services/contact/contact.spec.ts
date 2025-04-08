@@ -2,8 +2,9 @@ import { describe, it, vi, expect } from 'vitest'
 import { API_PREFIXES } from '@entities/common/config/services'
 import { omit } from 'lodash-es'
 import { getMockedCustomer } from '@entities/__mocks__/customer.mocks'
-import type { PatchContactPayload } from './contactTypes'
-import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
+import type { PatchContactPayload, OperationsByAccount } from './contactTypes'
+import { getMockedOperations, getOperationsByAccountsMock } from '@entities/__mocks__/operations.mocks'
+import { getPaginationMock } from '@pulse/common/mocks'
 import { OperationStatus } from '@entities/common/types/OperationTypes'
 import {
   fetchAccountOperations,
@@ -12,6 +13,7 @@ import {
   inviteCustomers,
   patchContact,
   patchOperationStatus,
+  fetchOperationsByAccount,
 } from '.'
 
 // Mocks
@@ -39,7 +41,7 @@ vi.mock('@pulse/common', () => {
   }
 })
 
-const handlePatchApiMock = (url: string, _:object, __:object) => {
+const handlePatchApiMock = (url: string, _: object, __: object) => {
   if (url === `${API_PREFIXES.CUSTOMER_WALLET}/contacts/${mockedContact[0].id}`) {
     return Promise.resolve({
       data: mockedContact[0],
@@ -75,6 +77,31 @@ describe('contact', () => {
         'registry/api/operations',
         { params: { accountId: mockedAccountId } },
       )
+    })
+  })
+
+  describe('fetchOperationsByAccount', () => {
+    it('should return the list of operations', async () => {
+      const page = 1
+      const pageSize = 3
+      const expectedUrl = 'registry/api/currentuser/operations'
+      const params = {
+        page,
+        pageSize,
+      }
+      const expectedArgument = { params }
+      const mockedResponse = getPaginationMock<OperationsByAccount>({
+        items: getOperationsByAccountsMock(),
+      })
+
+      mocks.get.mockResolvedValueOnce({
+        data: mockedResponse,
+      })
+
+      const operations = await fetchOperationsByAccount(page, pageSize)
+
+      expect(mocks.get).toHaveBeenCalledWith(expectedUrl, expectedArgument)
+      expect(operations).toStrictEqual(mockedResponse)
     })
   })
   describe('patchOperationStatus - To update the status of a specific operation', () => {

@@ -18,6 +18,14 @@
       </PPastille>
     </Variant>
 
+    <Variant title="White usage">
+      <div class="bg--neutral-gray-300">
+        <PPastille pType="white">
+          1
+        </PPastille>
+      </div>
+    </Variant>
+
     <Variant title="Disabled usage">
       <PPastille pDisabled>
         1

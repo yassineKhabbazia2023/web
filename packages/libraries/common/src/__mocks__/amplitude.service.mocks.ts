@@ -1,3 +1,5 @@
+import { vi } from 'vitest'
+
 export const amplitudeServiceInitMock = vi.fn()
 export const amplitudeServiceResetMock = vi.fn()
 export const amplitudeServiceTrackMock = vi.fn()

@@ -1,4 +1,4 @@
-import type { QueryResult } from '@entities/common/types'
+import type { QueryResult } from '@pulse/common/types'
 import type { PaginationData } from '@entities/helper/helperTypes'
 import type { IconName } from '@pulse/styleguide/types'
 

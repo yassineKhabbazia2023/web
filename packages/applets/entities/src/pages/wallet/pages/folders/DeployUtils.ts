@@ -2,7 +2,7 @@ import type { WalletData, SearchCriteria, DeploymentStatus } from '../../types'
 import type { AccountRow } from '@entities/services/account'
 import { fetchAccounts } from '@entities/services/account'
 import { getInitials, removeFalsyValues } from '@entities/helper'
-import type { QueryResult } from '@entities/common/types'
+import type { QueryResult } from '@pulse/common/types'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 export function getQueryParams(searchCriteria: SearchCriteria) {

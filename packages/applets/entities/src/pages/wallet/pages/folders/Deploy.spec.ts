@@ -1,19 +1,28 @@
+import { getPaginationMock, amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { createTestingPinia } from '@pinia/testing'
 import { defineStore, createPinia, setActivePinia } from 'pinia'
 import { commonStore, commonPinia as pinia } from '@pulse/common'
-import Deploy from '.'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import { nextTick, reactive } from 'vue'
-import {
-  getMockedWalletQueryResult,
-  getMockedSearchCriteria,
-} from './DeployUtilsMock'
+import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtilsMock'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/common/types'
+import { isAccessManagementGlobalActivatedMock, featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'
+import { contactServiceMock, fetchOperationsByAccountMock } from '@entities/__mocks__/contact.service.mocks'
+import { OperationsByAccount } from '@entities/services/contact/contactTypes'
+
+import Deploy from '.'
 
 const mockedAccount = getMockedAccount()
+
+vi.mock('@pulse/core', () => ({
+  logger: loggerMock,
+  FeatureFlagManager: featureFlagManagerMock,
+}))
+
+vi.mock('@entities/services/contact', () => contactServiceMock)
 
 const putFavoriteMock = vi.fn()
 const mockedQueryResult = getMockedWalletQueryResult()
@@ -45,6 +54,11 @@ vi.mock('@entities/services/wallet', () => ({
   manageFavoriteEntities: manageFavoriteEntitiesMock,
 }))
 
+const hasPermissionMock = vi.hoisted(() => vi.fn())
+const userPermissionsMock = vi.hoisted(() => vi.fn(() => ({
+  hasPermission: hasPermissionMock,
+})))
+
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     wallet: {
@@ -72,9 +86,8 @@ vi.mock('@pulse/common', () => ({
       isCollab: () => true,
     },
   }),
-  userPermissions: () => ({
-    hasPermission: vi.fn(),
-  }),
+  userPermissions: userPermissionsMock,
+  amplitudeService: amplitudeServiceMock,
 }))
 
 const mockRouterPush = vi.fn()
@@ -126,6 +139,11 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
         TableData: true,
         PButton: {
           name: 'PButton',
+          template: '<div><slot /></div>',
+          props: ['pDisabled'],
+        },
+        PPastille: {
+          name: 'PPastille',
           template: '<div><slot /></div>',
         },
         FormSearch: {
@@ -412,5 +430,113 @@ describe('deploy', () => {
     await flushPromises()
 
     expect(mockFetchWalletData).toHaveBeenCalledTimes(1)
+  })
+
+  describe('manageAccessButton', () => {
+    const tests = [{
+      isAccessManagementGlobalActivated: false,
+      hasManageAccessAuthorisation: false,
+      expected: false,
+      should: 'NOT display',
+      description: 'feature flag is NOT activated and user does NOT have manage access authorisation',
+    }, {
+      isAccessManagementGlobalActivated: true,
+      hasManageAccessAuthorisation: false,
+      expected: false,
+      should: 'NOT display',
+      description: 'feature flag is activated but user does NOT have manage access authorisation',
+    }, {
+      isAccessManagementGlobalActivated: false,
+      hasManageAccessAuthorisation: true,
+      expected: false,
+      should: 'NOT display',
+      description: 'user has manage access authorisation but feature flag is NOT activated',
+    }, {
+      isAccessManagementGlobalActivated: true,
+      hasManageAccessAuthorisation: true,
+      expected: true,
+      should: 'display',
+      description: 'feature flag is activated and user has manage access authorisation',
+    }]
+    it.each(tests)('should $should when $description', async ({
+      isAccessManagementGlobalActivated,
+      hasManageAccessAuthorisation,
+      expected,
+    }) => {
+      hasPermissionMock
+        .mockReturnValueOnce(true)
+        .mockReturnValueOnce(hasManageAccessAuthorisation)
+      isAccessManagementGlobalActivatedMock.mockReturnValue(isAccessManagementGlobalActivated)
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const manageAccessButton = wrapper.find('[data-testid="manage-access-button"]')
+      const manageAccessCount = wrapper.find('[data-testid="manage-access-count"]')
+
+      expect(manageAccessButton.exists()).toBe(expected)
+      expect(manageAccessCount.exists()).toBe(expected)
+      if (expected) {
+        expect(fetchOperationsByAccountMock).toHaveBeenCalledOnce()
+      } else {
+        expect(fetchOperationsByAccountMock).not.toHaveBeenCalled()
+      }
+    })
+
+    const manageButtonStateTests = [{
+      totalItemsMock: undefined,
+      expectedDisabled: true,
+      descriptions: 'count is undefined',
+    }, {
+      totalItemsMock: 0,
+      expectedDisabled: true,
+      descriptions: 'count is zero',
+    }, {
+      totalItemsMock: 1,
+      expectedDisabled: false,
+      descriptions: 'count is 1',
+    }, {
+      totalItemsMock: 13,
+      expectedDisabled: false,
+      descriptions: 'count is 13',
+    }]
+    it.each(manageButtonStateTests)('should display manageAccessCount properly when $descriptions', async ({
+      totalItemsMock,
+      expectedDisabled,
+    }) => {
+      const accountOperationMock = getPaginationMock<OperationsByAccount>({
+        totalItems: totalItemsMock,
+      })
+      const expectedManageAccessCount = `${totalItemsMock}`
+
+      hasPermissionMock.mockReturnValue(true)
+      isAccessManagementGlobalActivatedMock.mockReturnValue(true)
+      fetchOperationsByAccountMock.mockResolvedValue(accountOperationMock)
+
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const buttons = wrapper.findAllComponents({ name: 'PButton' })
+      const manageAccessButton = buttons[2]
+      const manageAccessCount = wrapper.find('[data-testid="manage-access-count"]')
+      const expectedAmplitudeEventName = 'Registry Validation Initiated'
+      const expectedAmplitudeParams = {
+        registry_validation_initialisation_localisation: 'portefeuille',
+      }
+
+      manageAccessButton.vm.$emit('click')
+
+      expect(manageAccessButton.props('pDisabled')).toBe(expectedDisabled)
+      if (totalItemsMock === undefined) {
+        expect(manageAccessCount.exists()).toBe(false)
+      } else {
+        expect(manageAccessCount.text()).toBe(expectedManageAccessCount)
+      }
+      if (totalItemsMock === undefined || totalItemsMock === 0) {
+        expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
+      } else {
+        expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
+        expect(amplitudeServiceTrackMock).toHaveBeenCalledWith(expectedAmplitudeEventName, expectedAmplitudeParams)
+      }
+    })
   })
 })

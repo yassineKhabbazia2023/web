@@ -3,6 +3,7 @@ declare let window: {
     VITE_SCHEDULE_ACTIVATED: 'true' | 'false'
     VITE_MAIL_TO_GED_ACTIVATED: 'true' | 'false'
     VITE_FEED_CENTER_ACTIVATED: 'true' | 'false'
+    VITE_ACCESS_MANAGEMENT_GLOBAL?: 'true' | 'false'
   }
 } & Window
 
@@ -17,5 +18,9 @@ export class FeatureFlagManager {
 
   static isFeedCenterActivated() {
     return window.EnvVars?.VITE_FEED_CENTER_ACTIVATED === 'true'
+  }
+
+  static isAccessManagementGlobalActivated() {
+    return window.EnvVars?.VITE_ACCESS_MANAGEMENT_GLOBAL === 'true'
   }
 }

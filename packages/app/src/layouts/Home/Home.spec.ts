@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { envVarsMock , featureFlagManagerMock, isFeedCenterActivatedMock, isScheduleActivatedMock, loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { envVarsMock, featureFlagManagerMock, isFeedCenterActivatedMock, isScheduleActivatedMock, loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { commonMock } from '@app/__mocks__/common.mock'
 import mockedEntities from '@app/__mocks__/entities.mocks.json'
 import { fetchUnreadNotificationsCountMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
@@ -270,7 +270,7 @@ describe('home', () => {
     expect(fetchUnreadNotificationsCountMock).toHaveBeenCalledTimes(3)
   })
 
-  it('should track feedcenter opened' , async () => {
+  it('should track feedcenter opened', async () => {
     isFeedCenterActivatedMock.mockReturnValue(true)
     createWrapper()
     wrapper.vm.isFeedCenterOpened = true

@@ -1,4 +1,5 @@
 import type { Persona } from '@pulse/common/types'
+import type { Operation } from '@entities/common/types/OperationTypes'
 
 export enum ContactType {
   Collaborator = 'Collaborator',
@@ -24,4 +25,10 @@ export interface PatchContactPayload {
   lastName?: string
   mobilePhone?: string
   landPhone?: string
+}
+
+export interface OperationsByAccount {
+  accountNumber: string,
+  accountName: string,
+  operations: Operation[],
 }

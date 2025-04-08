@@ -1,4 +1,5 @@
 import { Operation } from '@entities/common/types/OperationTypes'
+import { OperationsByAccount } from '@entities/services/contact/contactTypes'
 
 export const getMockedOperations = (): Operation[] => {
   return [
@@ -64,3 +65,9 @@ export const getMockedOperations = (): Operation[] => {
     },
   ]
 }
+
+export const getOperationsByAccountsMock = (): OperationsByAccount[] => [{
+  accountNumber: '123',
+  accountName: 'Account-operation',
+  operations: getMockedOperations(),
+}]
