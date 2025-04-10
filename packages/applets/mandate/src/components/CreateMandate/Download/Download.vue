@@ -102,7 +102,7 @@ import { downloadUnsignedMandate, getMandateAvailability } from '@mandate/servic
 import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import { showNotification } from '@mandate/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@mandate/helpers/NotificationHelperTypes'
-import type { DownloadProps, TrackedMandate } from './DownloadTypes'
+import type { DownloadProps } from './DownloadTypes'
 import { mandateAvailabilityCheckStatuses } from '@mandate/constants/mandateStatuses'
 
 const props = defineProps<DownloadProps>()
@@ -111,22 +111,20 @@ const emit = defineEmits<{
 }>()
 
 /* #region Mandate status tracking */
-const trackedMandateState = ref<TrackedMandate>({
-  status: mandateAvailabilityCheckStatuses.NOT_AVAILABLE,
-  errorMessage: undefined,
-})
-const availabilityTrackerIntervalId = ref<ReturnType<typeof setInterval> | undefined>()
+const trackedMandateState = ref(mandateAvailabilityCheckStatuses.NOT_AVAILABLE)
+
+const availabilityTrackerIntervalId = ref<ReturnType<typeof setInterval>>()
 
 const isTrackedMandateAvailable = computed(
-  () => trackedMandateState.value && trackedMandateState.value.status === mandateAvailabilityCheckStatuses.AVAILABLE,
+  () => trackedMandateState.value === mandateAvailabilityCheckStatuses.AVAILABLE,
 )
 
 const isTrackedMandateNotAvailable = computed(
-  () => trackedMandateState.value && trackedMandateState.value.status === mandateAvailabilityCheckStatuses.NOT_AVAILABLE,
+  () => trackedMandateState.value === mandateAvailabilityCheckStatuses.NOT_AVAILABLE,
 )
 
 const isTrackedMandateErrored = computed(
-  () => trackedMandateState.value && trackedMandateState.value.status === mandateAvailabilityCheckStatuses.ERRORED,
+  () => trackedMandateState.value === mandateAvailabilityCheckStatuses.ERRORED,
 )
 
 onBeforeMount(async () => {
@@ -145,7 +143,7 @@ onBeforeMount(async () => {
     }, 10000)
   }
   if (isTrackedMandateErrored.value) {
-    handleErroredMandate(trackedMandateState.value.errorMessage)
+    handleErroredMandate()
   }
 })
 
@@ -159,25 +157,28 @@ function resetInterval() {
 }
 
 async function trackMandateStatus() {
-  trackedMandateState.value = await getMandateAvailability(props.mandateId)
-  if (isTrackedMandateAvailable.value) {
-    resetInterval()
-  }
-
-  if (isTrackedMandateErrored.value) {
-    handleErroredMandate(trackedMandateState.value.errorMessage)
-    resetInterval()
+  try {
+    trackedMandateState.value = await getMandateAvailability(props.mandateId)
+    if (isTrackedMandateAvailable.value) {
+      resetInterval()
+    }
+    if (isTrackedMandateErrored.value) {
+      handleErroredMandate()
+      resetInterval()
+    }
+  } catch (error) {
+    logger.error('Mandate status tracking is not available', error)
   }
 }
 
-function handleErroredMandate(errorMessage?: string) {
-  displayErrorStatusNotification(errorMessage)
+function handleErroredMandate() {
+  displayErrorStatusNotification()
   emit('close-drawer')
 }
 
-function displayErrorStatusNotification(message?: string) {
+function displayErrorStatusNotification() {
   PNotification({
-    message: message ?? t('notification.technical-error'),
+    message: t('notification.technical-error'),
     iconName: 'exclamationTriangle',
     showClose: true,
     customClass: 'error',

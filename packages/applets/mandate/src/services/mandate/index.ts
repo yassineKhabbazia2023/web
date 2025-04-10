@@ -3,7 +3,6 @@ import { commonApi as api } from '@pulse/common'
 import type { BbanModel, CreateMandateModel } from '@mandate/components/CreateMandate/Form/FormModels'
 import type { SearchMandateParams } from './ServiceMandateTypes'
 import { mandateAvailabilityCheckStatuses } from '@mandate/constants/mandateStatuses'
-import { HTTP_RESPONSES } from '@pulse/common/constants'
 
 export const getCompany = ({
   ibsNumber,
@@ -81,25 +80,15 @@ export function getMandatesCollection(searchParams: SearchMandateParams) {
   })
 }
 
-export async function getMandateAvailability(mandateId: Mandate['id']): Promise<{ status: number; errorMessage?: string }> {
-  try {
-    const { data, status } = await api().gateway.get(`mandate/api/mandate/${mandateId}/check/status`)
+export async function getMandateAvailability(mandateId: Mandate['id']): Promise<number> {
+  const { data, status } = await api().gateway.get(`mandate/api/mandate/${mandateId}/check/status`)
 
-    if (status === HTTP_RESPONSES.NO_CONTENT) {
-      return { status: mandateAvailabilityCheckStatuses.NOT_AVAILABLE }
-    }
-
-    if (status === HTTP_RESPONSES.OK) {
-      return data.created === true
-        ? { status: mandateAvailabilityCheckStatuses.AVAILABLE }
-        : { status: mandateAvailabilityCheckStatuses.ERRORED, errorMessage: data.errorMessage }
-    }
-
-    return { status: mandateAvailabilityCheckStatuses.ERRORED }
-  } catch (error: any) {
-    const errorMessage = error.response?.data?.message || 'Unexpected error occurred'
-    return { status: mandateAvailabilityCheckStatuses.ERRORED, errorMessage }
+  if (status === 204) {
+    return mandateAvailabilityCheckStatuses.NOT_AVAILABLE
   }
+  return data.created === true
+    ? mandateAvailabilityCheckStatuses.AVAILABLE
+    : mandateAvailabilityCheckStatuses.ERRORED
 }
 
 export const createMandate = async ({

@@ -1,3 +1,3 @@
 export { LoginRouteName } from './constants/LoginRouteName'
 export { BackEndErrors } from './constants/back-end-errors'
-export { HTTP_RESPONSES } from './constants/http-responses-status'
+export { HTTP_ERRORS } from './constants/http-errors-status'

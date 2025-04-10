@@ -20,15 +20,9 @@ declare let window: Window
 const data = 'pdf-data'
 
 const apiMocks = vi.hoisted(() => ({
-  availableMandate: vi.fn(() =>
-    Promise.resolve({ status: mandateAvailabilityCheckStatuses.AVAILABLE }),
-  ),
-  unavailableMandate: vi.fn(() =>
-    Promise.resolve({ status: mandateAvailabilityCheckStatuses.NOT_AVAILABLE }),
-  ),
-  erroredMandate: vi.fn(() =>
-    Promise.resolve({ status: mandateAvailabilityCheckStatuses.ERRORED, errorMessage: 'Some error occurred' }),
-  ),
+  availableMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.AVAILABLE)),
+  unavailableMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.NOT_AVAILABLE)),
+  erroredMandate: vi.fn(() => Promise.resolve(mandateAvailabilityCheckStatuses.ERRORED)),
 }))
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
