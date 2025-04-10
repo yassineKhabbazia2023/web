@@ -42,7 +42,6 @@ describe('test authentication.service', () => {
       const payload: CreateNewPasswordPayload = {
         contactId: 'contact-id',
         newPassword: 'new-password',
-        resetPasswordToken: 'token',
         isCreatePasswordAction: false,
       }
       const expectedUrl = 'authentication/api/createNewPassword'

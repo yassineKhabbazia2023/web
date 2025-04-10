@@ -80,7 +80,8 @@
       <PFormItem>
         <PButton
           pType="primary"
-          :pDisabled="!isValidForm"
+          :pDisabled="!isValidForm || isLoading"
+          :pLoading="isLoading"
           pSize="default"
           class="btn-submit"
           data-testid="create-password-submit-button"
@@ -146,6 +147,7 @@ const { contactId, accountNumber, token, email: emailQuery } = route.query as {
 const email = emailQuery?.toString().trim().replace(' ', '+')
 const formRef = ref<FormInstance>()
 const urlTerms = ref('')
+const isLoading = ref(false)
 const termsId = ref<null | number>(null)
 const formValidity = reactive({
   password: false,
@@ -220,9 +222,9 @@ const submitForm = (formEl: FormInstance | undefined) => {
         const data = {
           contactId,
           newPassword: formValue.password,
-          resetPasswordToken: token,
         }
         try {
+          isLoading.value = true
           await createNewPassword(data)
           const loginPayload = {
             email: email ?? '',
@@ -250,6 +252,8 @@ const submitForm = (formEl: FormInstance | undefined) => {
           amplitudeService.track('Onboarding Completed', {
             onboarding_result: 'failed',
           })
+        } finally {
+          isLoading.value = false
         }
       } else {
         return false

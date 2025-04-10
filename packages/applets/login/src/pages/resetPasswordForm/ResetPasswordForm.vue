@@ -53,7 +53,8 @@
       <PFormItem>
         <PButton
           pType="primary"
-          :pDisabled="!isValidForm"
+          :pDisabled="!isValidForm || isLoading"
+          :pLoading="isLoading"
           pSize="default"
           class="btn-submit"
           @click="submitForm"
@@ -106,6 +107,7 @@ const passwordError = ref('')
 const isPasswordMessageVisible = ref(true)
 const confirmPasswordError = ref('')
 const isConfirmPasswordMessageVisible = ref(true)
+const isLoading = ref(false)
 
 const strengthLabels: Record<PStrengthLevel, string> = {
   0: t('passwordStrengthLabels.level-0'),
@@ -176,10 +178,10 @@ const submitForm = async () => {
   const data = {
     contactId,
     newPassword: password.value,
-    resetPasswordToken: token,
     isCreatePasswordAction: false,
   }
   try {
+    isLoading.value = true
     await createNewPassword(data)
     router.push({ name: LoginRouteName.LOGIN_CLIENT })
   } catch (error: any) {
@@ -191,6 +193,8 @@ const submitForm = async () => {
     )
     setPasswordError(errorMessage, false)
     setConfirmPasswordError(errorMessage)
+  } finally {
+    isLoading.value = false
   }
 }
 

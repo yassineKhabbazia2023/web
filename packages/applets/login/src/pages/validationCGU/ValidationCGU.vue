@@ -54,6 +54,7 @@
         v-else
         pType="primary"
         class="width-100 margin-bottom--2"
+        :pDisabled="loading"
         :pLoading="loading"
         data-testid="cgu-button-confirm"
         @click="acceptNewCgu(termsId)"
@@ -63,7 +64,6 @@
       <PButton
         pType="white"
         class="width-100"
-        :pLoading="loading"
         data-testid="cgu-button-back"
         @click="back()"
       >

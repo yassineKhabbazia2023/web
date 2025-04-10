@@ -33,7 +33,7 @@
       <PFormItem>
         <PButton
           pType="primary"
-          :pDisabled="!isFormValid"
+          :pDisabled="!isFormValid || isLoading"
           :pLoading="isLoading"
           class="reset-submit-button"
           data-testid="reset-password-submit-button"

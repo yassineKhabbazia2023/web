@@ -57,7 +57,6 @@ const useRouteMock = vi.hoisted(() => vi.fn(() => ({
     contactId: 'contactId' ,
     accountNumber: 'accountNumber' ,
     email: 'email',
-    resetPasswordToken: 'resetPasswordToken',
     token: 'token',
   },
 })))
@@ -189,7 +188,6 @@ describe('page creation password', () => {
     const data = {
       contactId: 'contactId',
       newPassword: VALID_PASSWORD,
-      resetPasswordToken: mockToken,
     }
     const dataLogin = {
       email: 'email',
