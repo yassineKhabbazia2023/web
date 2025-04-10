@@ -37,8 +37,7 @@ interface StatusMap {
 
 const statusMap = new Map<number, StatusMap>([
   [99, { color: 'cyan', iconName: 'hourglass', content: t('creating') }],
-  [98, { color: 'danger', iconName: 'exclamationTriangle', content: t('technical-incident') }],
-  [10, { color: 'danger', iconName: 'exclamationTriangle', content: t('business-incident') }],
+  [10, { color: 'danger', iconName: 'exclamationTriangle', content: t('incident') }],
   [20, { color: 'warning', iconName: 'arrowUpCircle', content: t('to-do') }],
   [30, { color: 'fuschia', iconName: 'arrowRepeat', content: t('in-progress') }],
   [40, { color: 'success', iconName: 'checkCircle', content: t('active') }],
@@ -51,16 +50,14 @@ const tagProperties = computed(() => statusMap.get(Number(props.status)))
 <i18n lang="yaml">
   en-US:
     creating: 'Creating'
-    technical-incident: 'Technical Incident'
-    business-incident: 'Business Incident'
+    incident: 'Incident'
     to-do: 'To do'
     in-progress: 'In progress'
     active: 'Active'
     inactive: 'Inactive'
   fr-FR:
     creating: 'En création'
-    technical-incident: 'Incident technique'
-    business-incident: 'Incident métier'
+    incident: 'Incident'
     to-do: 'À déposer'
     in-progress: 'En cours'
     active: 'Actif'
