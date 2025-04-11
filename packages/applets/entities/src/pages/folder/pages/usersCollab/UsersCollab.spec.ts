@@ -1,4 +1,3 @@
-import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { defineStore } from 'pinia'
 import { createTestingPinia } from '@pinia/testing'
@@ -11,9 +10,11 @@ import { fetchAccountCustomers } from '@entities/services/wallet'
 import { getAccountSignatories, updateSignatoryStatus } from '@entities/services/account'
 import UsersCollab from '.'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
-import { nextTick, ref } from 'vue'
+import { nextTick } from 'vue'
 import { userActions } from './types'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
+import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
+import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 
 const DEFAULT_CURRENT_PAGE = 1
 const DEFAULT_ROUTE_PARAMS_ID = 5
@@ -46,14 +47,6 @@ const mockHasPermission = vi.hoisted(() => vi.fn())
 
 vi.mock('@entities/services/contact', () => contactServiceMock)
 vi.mock('@entities/services/wallet', () => walletServiceMock)
-vi.mock('@entities/pages/folder/pages/usersCollab/composables/useOperation', () => ({
-  useOperation: () => {
-    return {
-      availableOperations: ref(getMockedOperations()),
-      operations: ref(getMockedOperations()),
-    }
-  },
-}))
 
 const apiMocks = vi.hoisted(() => ({
   singleAccountSignatory: vi.fn(() => Promise.resolve([
@@ -279,15 +272,47 @@ describe('usersCollab', () => {
 
     it("should display the 'Manage Access' drawer when the 'Manage Access' button is clicked", async () => {
       mockHasPermission.mockReturnValue(true)
+      const operationsMock = getMockedOperations()
+      contactServiceMock.fetchOperationsForAccount.mockResolvedValue(operationsMock)
+
+      const expectedPendingOperations = getPendingOperations(operationsMock)
+      const accountNumber = expectedPendingOperations?.at(0)?.accountNumber
+      const accountOperationsListMock = [{
+        accountName: '',
+        accountNumber,
+        operations: expectedPendingOperations,
+      }]
+
+      const expectedPropsBefore = {
+        currentPage: undefined,
+        trackingLocalisation: TrackingLocalisation.FOLDER,
+        modelValue: false,
+        accountOperationsList: accountOperationsListMock,
+        pageCount: 1,
+        pageSize: undefined,
+        showAccountName: false,
+        showPagination: false,
+      }
+      const expectedPropsAfter = {
+        ...expectedPropsBefore,
+        modelValue: true,
+        accountOperationsList: accountOperationsListMock,
+      }
+
       const wrapper = createWrapper()
       await flushPromises()
+      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
       const manageAccessButton = wrapper.find('[data-testid="manage-access-button"]')
 
+      expect(manageAccessDrawer.props()).toStrictEqual(expectedPropsBefore)
       await manageAccessButton.trigger('click')
       await nextTick()
-      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
 
-      expect(manageAccessDrawer.props('modelValue')).toBeTruthy()
+      expect(manageAccessDrawer.props()).toStrictEqual(expectedPropsAfter)
+      const accountOperationsList = manageAccessDrawer.props('accountOperationsList')
+      expect(manageAccessDrawer.props('modelValue')).toBe(true)
+      expect(accountOperationsList.at(0).operations)
+        .toHaveLength(expectedPendingOperations.length)
     })
 
     it("should add user as account signatory when the 'Designate as signatory action is clicked", async () => {

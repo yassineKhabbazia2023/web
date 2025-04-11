@@ -25,7 +25,7 @@
         pType="primary"
         pSize="small"
         :loading="isLoadingOperations"
-        :disabled="availableOperations.length === 0"
+        :disabled="isAccessButtonDisabled"
         pPlain
         data-testid="manage-access-button"
         @click="handleOpenAccessDrawer"
@@ -159,7 +159,9 @@
   />
   <ManageAccessDrawer
     v-model="isManageAccessDrawerOpened"
-    @update-operation-table="handleOperationTableUpdate"
+    :accountOperationsList="accountOperationsList"
+    :trackingLocalisation="TrackingLocalisation.FOLDER"
+    @update-operation-table="loadOperations"
   />
 </template>
 
@@ -199,11 +201,13 @@ import type { StateUser, User } from './types'
 import type { UserStatus } from '@entities/common/types'
 import { userActions } from './types'
 import ManageRightsDrawer from '@entities/common/components/ManageRightsDrawer'
-import ManageAccessDrawer from './components/ManageAccessDrawer'
+import ManageAccessDrawer from '@entities/pages/subscriptions/components/ManageAccessDrawer'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
-import { useOperation } from './composables/useOperation'
-import { fetchAccountOperations } from '@entities/services/contact'
+import { fetchOperationsForAccount } from '@entities/services/contact'
+import type { AccountOperations } from '@entities/services/contact/contactTypes'
+import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
+import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -219,17 +223,39 @@ const { user } = storeToRefs(commonStore())
 // #region manage access
 const { hasPermission } = userPermissions()
 const isManageAccessDrawerOpened = ref(false)
-const isLoadingOperations = ref(true)
-const { operations, availableOperations } = useOperation()
+const isLoadingOperations = ref(false)
+const accountOperationsList = ref<AccountOperations[]>([])
 
 const handleOpenAccessDrawer = () => {
   isManageAccessDrawerOpened.value = true
   amplitudeService.track('Registry Validation Initiated')
 }
 
-const handleOperationTableUpdate = async () => {
-  operations.value = await fetchAccountOperations(currentEntity.value?.accountId as number)
+async function loadOperations() {
+  isLoadingOperations.value = true
+  try {
+    const operations = await fetchOperationsForAccount(currentEntity.value?.accountId ?? 0)
+    const pendingOperations = getPendingOperations(operations)
+    const firstOperation = pendingOperations.at(0)
+    const accountNumber = firstOperation?.accountNumber ?? ''
+    accountOperationsList.value = [{
+      operations: pendingOperations,
+      accountNumber,
+      accountName: '',
+    }]
+  } catch (error) {
+    logger.error('Unable to fetch operations: ', error)
+  } finally {
+    isLoadingOperations.value = false
+  }
 }
+const isAccessButtonDisabled = computed(() => {
+  const firstAccount = accountOperationsList.value?.at(0)
+  const operationsLength = firstAccount?.operations?.length ?? 0
+
+  return operationsLength === 0
+})
+
 // #endregion
 
 const state: StateUser = reactive({
@@ -511,19 +537,10 @@ watch(() => [
 })
 
 onMounted(async () => {
-  operations.value = []
   await formatAndFillUsersCollabTable()
   await setAccountSignatories()
   if (currentEntity.value?.accountId) {
-    try {
-      operations.value = await fetchAccountOperations(currentEntity.value.accountId)
-    } catch (error) {
-      logger.error('Unable to fetch operations: ', error)
-    } finally {
-      isLoadingOperations.value = false
-    }
-  } else {
-    isLoadingOperations.value = false
+    await loadOperations()
   }
 })
 

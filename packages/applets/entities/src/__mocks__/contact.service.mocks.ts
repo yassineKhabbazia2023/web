@@ -1,8 +1,8 @@
 import { getPaginationMock } from '@pulse/common/mocks'
-import { getOperationsByAccountsMock, getMockedOperations } from './operations.mocks'
+import { getAccountOperationsListMock, getMockedOperations } from './operations.mocks'
 
 export const fetchOperationsByAccountMock = vi.fn(() => {
-  const accountOperationMock = getOperationsByAccountsMock()
+  const accountOperationMock = getAccountOperationsListMock()
 
   return getPaginationMock({
     items: accountOperationMock,
@@ -12,7 +12,8 @@ export const fetchOperationsByAccountMock = vi.fn(() => {
   })
 })
 
+const fetchOperationsForAccountMock = vi.fn(() => getMockedOperations())
 export const contactServiceMock = {
-  fetchAccountOperations: vi.fn(() => Promise.resolve(() => getMockedOperations())),
-  fetchOperationsByAccount: fetchOperationsByAccountMock,
+  fetchOperationsForAccount: fetchOperationsForAccountMock,
+  fetchAccountOperations: fetchOperationsByAccountMock,
 }

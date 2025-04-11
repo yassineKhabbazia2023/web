@@ -9,9 +9,9 @@
     >
       <slot name="header" />
       <PIcon
-        :size="20"
+        :size="24"
         :pName="iconName"
-        class="margin--3"
+        class="margin--4"
       />
     </div>
     <div

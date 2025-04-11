@@ -2,18 +2,18 @@ import { describe, it, vi, expect } from 'vitest'
 import { API_PREFIXES } from '@entities/common/config/services'
 import { omit } from 'lodash-es'
 import { getMockedCustomer } from '@entities/__mocks__/customer.mocks'
-import type { PatchContactPayload, OperationsByAccount } from './contactTypes'
-import { getMockedOperations, getOperationsByAccountsMock } from '@entities/__mocks__/operations.mocks'
+import type { PatchContactPayload, AccountOperations } from './contactTypes'
+import { getMockedOperations, getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { getPaginationMock } from '@pulse/common/mocks'
 import { OperationStatus } from '@entities/common/types/OperationTypes'
 import {
-  fetchAccountOperations,
+  fetchOperationsForAccount,
   getCollaborators,
   getContactById,
   inviteCustomers,
   patchContact,
   patchOperationStatus,
-  fetchOperationsByAccount,
+  fetchAccountOperations,
 } from '.'
 
 // Mocks
@@ -69,9 +69,9 @@ describe('contact', () => {
       )
     })
   })
-  describe('fetchAccountOperations - Fetch the list of operations by passing the AccountId as a parameter', () => {
+  describe('fetchOperationsForAccount - Fetch the list of operations by passing the AccountId as a parameter', () => {
     it('should return the list of operations associated with an account', async () => {
-      await fetchAccountOperations(mockedAccountId)
+      await fetchOperationsForAccount(mockedAccountId)
 
       expect(mocks.get).toHaveBeenCalledWith(
         'registry/api/operations',
@@ -80,7 +80,7 @@ describe('contact', () => {
     })
   })
 
-  describe('fetchOperationsByAccount', () => {
+  describe('fetchAccountOperations', () => {
     it('should return the list of operations', async () => {
       const page = 1
       const pageSize = 3
@@ -90,15 +90,15 @@ describe('contact', () => {
         pageSize,
       }
       const expectedArgument = { params }
-      const mockedResponse = getPaginationMock<OperationsByAccount>({
-        items: getOperationsByAccountsMock(),
+      const mockedResponse = getPaginationMock<AccountOperations>({
+        items: getAccountOperationsListMock(),
       })
 
       mocks.get.mockResolvedValueOnce({
         data: mockedResponse,
       })
 
-      const operations = await fetchOperationsByAccount(page, pageSize)
+      const operations = await fetchAccountOperations(page, pageSize)
 
       expect(mocks.get).toHaveBeenCalledWith(expectedUrl, expectedArgument)
       expect(operations).toStrictEqual(mockedResponse)

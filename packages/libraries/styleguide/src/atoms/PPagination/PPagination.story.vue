@@ -7,11 +7,18 @@
         :pPageSizes="pageSizes"
         pPageSizeSelectorGroupLabel="Some text"
         pPageSizeSelectorSuffix="documents"
-        pShowTotalPageCounter
+        :pShowTotalPageCounter="pShowTotalPageCounter"
+        :pHidePageSize="pHidePageSize"
         :pTotal="2000000"
       >
         <p>1-25 sur 157</p>
       </PPagination>
+      <template #controls>
+        <HstNumber v-model="currentPage" title="currentPage" />
+        <HstNumber v-model="pageSize" title="pageSize" />
+        <HstCheckbox v-model="pShowTotalPageCounter" title="pShowTotalPageCounter" />
+        <HstCheckbox v-model="pHidePageSize" title="pHidePageSize" />
+      </template>
     </Variant>
   </Story>
 </template>
@@ -22,6 +29,9 @@ import PPagination from './'
 const currentPage = ref(1)
 const pageSizes = ref([100, 200, 300, 400])
 const pageSize = ref(pageSizes.value[0])
+
+const pShowTotalPageCounter = ref(true)
+const pHidePageSize = ref(false)
 </script>
 
 <docs lang="md">

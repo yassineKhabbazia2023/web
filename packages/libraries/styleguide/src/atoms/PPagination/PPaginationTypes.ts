@@ -3,6 +3,7 @@ export interface PaginationProps {
   pPageSizeSelectorGroupLabel?: string
   pPageSizeSelectorSuffix?: string
   pShowTotalPageCounter?: boolean
+  pHidePageSize?: boolean
   pTotal: number
   // named v-model
   pCurrentPage?: number

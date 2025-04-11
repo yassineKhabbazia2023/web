@@ -11,11 +11,15 @@ import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/common/types'
 import { isAccessManagementGlobalActivatedMock, featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'
 import { contactServiceMock, fetchOperationsByAccountMock } from '@entities/__mocks__/contact.service.mocks'
-import { OperationsByAccount } from '@entities/services/contact/contactTypes'
+import { AccountOperations } from '@entities/services/contact/contactTypes'
+import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
+import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 
 import Deploy from '.'
 
 const mockedAccount = getMockedAccount()
+
+const accountOperationsListMock = getAccountOperationsListMock()
 
 vi.mock('@pulse/core', () => ({
   logger: loggerMock,
@@ -136,6 +140,23 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
         PPagination: true,
         ResendActivationEmailDrawer: true,
         OffersDrawer: true,
+        ManageAccessDrawer: {
+          name: 'ManageAccessDrawer',
+          template: '<div />',
+          props: {
+            currentPage: [Number],
+            modelValue: [Boolean],
+            accountOperationsList: [Array],
+            pageCount: [Number],
+            pageSize: [Number],
+            showAccountName: [Boolean],
+            showPagination: [Boolean],
+            trackingLocalisation: [TrackingLocalisation],
+          },
+          methods: {
+            resetOpenedAccordions: () => {},
+          },
+        },
         TableData: true,
         PButton: {
           name: 'PButton',
@@ -503,7 +524,7 @@ describe('deploy', () => {
       totalItemsMock,
       expectedDisabled,
     }) => {
-      const accountOperationMock = getPaginationMock<OperationsByAccount>({
+      const accountOperationMock = getPaginationMock<AccountOperations>({
         totalItems: totalItemsMock,
       })
       const expectedManageAccessCount = `${totalItemsMock}`
@@ -537,6 +558,113 @@ describe('deploy', () => {
         expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
         expect(amplitudeServiceTrackMock).toHaveBeenCalledWith(expectedAmplitudeEventName, expectedAmplitudeParams)
       }
+    })
+  })
+
+  describe('ManageAccessDrawer', () => {
+    const totalItemsMock = 1
+    const accountOperationMock = getPaginationMock<AccountOperations>({
+      items: accountOperationsListMock,
+      totalItems: totalItemsMock,
+    })
+
+    beforeEach(() => {
+      hasPermissionMock.mockReturnValue(true)
+      isAccessManagementGlobalActivatedMock.mockReturnValue(true)
+      fetchOperationsByAccountMock.mockResolvedValue(accountOperationMock)
+    })
+
+    it('should display ManageAccessDrawer with proper props', async () => {
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const expectedPropsBefore = {
+        currentPage: 1,
+        trackingLocalisation: TrackingLocalisation.WALLET,
+        modelValue: false,
+        accountOperationsList: [],
+        pageCount: 1,
+        pageSize: 5,
+        showAccountName: true,
+        showPagination: false,
+      }
+      const expectedPropsAfter = {
+        ...expectedPropsBefore,
+        modelValue: true,
+        accountOperationsList: accountOperationsListMock,
+      }
+      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
+      const manageAccessButton = wrapper.find('[data-testid="manage-access-button"]')
+      const expectedPage = 1
+      const expectedPageSize = 5
+      const expectedParameters = [expectedPage, expectedPageSize]
+
+      expect(manageAccessDrawer.props()).toStrictEqual(expectedPropsBefore)
+
+      manageAccessButton.trigger('click')
+      await flushPromises()
+      await nextTick()
+
+      expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
+      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(2, ...expectedParameters)
+      expect(manageAccessDrawer.props()).toStrictEqual(expectedPropsAfter)
+    })
+
+    it('should call loadManageAccessCount when user closes ManageAccessDrawer', async () => {
+      const wrapper = createWrapper()
+
+      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
+      expect(manageAccessDrawer.exists()).toBe(true)
+
+      expect(fetchOperationsByAccountMock).toHaveBeenCalledOnce()
+
+      manageAccessDrawer.vm.$emit('update:model-value', true)
+      await flushPromises()
+      expect(fetchOperationsByAccountMock).toHaveBeenCalledOnce()
+
+      manageAccessDrawer.vm.$emit('update:model-value', false)
+      await flushPromises()
+
+      expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
+    })
+
+
+    it('should call loadManageAccessCount when ManageAccessDrawer emits update-operation-table', async () => {
+      const wrapper = createWrapper()
+
+      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
+      expect(manageAccessDrawer.exists()).toBe(true)
+
+      expect(fetchOperationsByAccountMock).toHaveBeenCalledOnce()
+
+      manageAccessDrawer.vm.$emit('update-operation-table')
+      await flushPromises()
+
+      expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
+    })
+
+    it('ManageAccessDrawer pagination', async () => {
+      const totalItemsMock = 15
+      const accountOperationMock = getPaginationMock<AccountOperations>({
+        items: accountOperationsListMock,
+        totalItems: totalItemsMock,
+      })
+      const newPage = 13
+      const expectedPage = newPage
+      const expectedPageSize = 5
+
+      hasPermissionMock.mockReturnValue(true)
+      isAccessManagementGlobalActivatedMock.mockReturnValue(true)
+      fetchOperationsByAccountMock.mockResolvedValue(accountOperationMock)
+
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
+      manageAccessDrawer.vm.$emit('update:current-page', newPage)
+
+      expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
+      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(2, expectedPage, expectedPageSize)
     })
   })
 })

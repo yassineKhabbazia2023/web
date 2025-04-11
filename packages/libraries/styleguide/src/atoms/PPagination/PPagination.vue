@@ -1,6 +1,7 @@
 <template>
   <div class="p-pagination">
     <PDropdown
+      v-if="!pHidePageSize"
       v-model="modelPageSize"
       :pOptions="pageSizeOptions"
       pPlacement="top"

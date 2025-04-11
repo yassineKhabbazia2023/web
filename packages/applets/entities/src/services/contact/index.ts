@@ -1,7 +1,7 @@
 import { commonApi } from '@pulse/common'
 import { handleRequestError } from '@entities/helper'
 import { API_PREFIXES } from '@entities/common/config/services'
-import type { Contact, PatchContactPayload, OperationsByAccount } from './contactTypes'
+import type { Contact, PatchContactPayload, AccountOperations } from './contactTypes'
 import type { PaginationResponse } from '@pulse/common/types'
 import type { OperationStatus } from '@entities/common/types/OperationTypes'
 
@@ -68,7 +68,7 @@ export const inviteCustomers = async (
   return response?.data
 }
 
-export const fetchAccountOperations = async (accountId: number) => {
+export const fetchOperationsForAccount = async (accountId: number) => {
   const response = await commonApi().gateway.get(
     `${API_PREFIXES.REGISTRY}/operations`,
     {
@@ -81,8 +81,8 @@ export const fetchAccountOperations = async (accountId: number) => {
   return response?.data
 }
 
-export async function fetchOperationsByAccount(page: number, pageSize: number) {
-  const response = await commonApi().gateway.get<PaginationResponse<OperationsByAccount>>(
+export async function fetchAccountOperations(page: number, pageSize: number) {
+  const response = await commonApi().gateway.get<PaginationResponse<AccountOperations>>(
     `${API_PREFIXES.REGISTRY}/currentuser/operations`,
     {
       params: {
