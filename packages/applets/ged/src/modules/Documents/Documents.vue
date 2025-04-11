@@ -10,7 +10,6 @@
   >
     <div>
       <AccountInformation
-        :accountAvatarColor="selectedEntityAvatarColor"
         :accountName="selectedEntityName"
         :accountNumber="selectedEntity"
       />

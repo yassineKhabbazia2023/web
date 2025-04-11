@@ -6,7 +6,7 @@
       <PAvatar
         pShape="circle"
         pType="small"
-        pColor="orange"
+        :pColor="entityAvatarColor"
       >
         <PIcon pName="pulse" />
       </PAvatar>
@@ -40,6 +40,7 @@ import type { ReportDisplayProps } from './ReportDisplayTypes'
 import { fetchBIToken } from '@entities/services/reporting'
 import { displayNotification } from '@entities/common/utils'
 import ReportActions from './components/ReportActions'
+import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -76,6 +77,8 @@ const loadPowerBIReport = async () => {
     displayNotification('error', t('biReportLoadingError'))
   }
 }
+
+const entityAvatarColor = computed(() => getAvatarColorFromKey(defaultEntity.value?.accountNumber))
 
 // If a different report is selected, the new report should be loaded again
 watch(selectedReport, () => {

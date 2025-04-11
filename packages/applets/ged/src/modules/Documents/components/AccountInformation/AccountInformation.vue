@@ -6,7 +6,7 @@
       padding-top--4 padding-left--4
   "
   >
-    <PAvatar pType="small" :pColor="accountAvatarColor">
+    <PAvatar pType="small" :pColor="entityAvatarColor">
       <PIcon pName="pulse" />
     </PAvatar>
     <h4 class="margin-left--3">
@@ -29,10 +29,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import type { AccountInformationProps } from './AccountInformationTypes'
+import { getAvatarColorFromKey } from '@pulse/styleguide'
 
-defineProps<AccountInformationProps>()
+const props = defineProps<AccountInformationProps>()
+
+const entityAvatarColor = computed(() => getAvatarColorFromKey(props.accountNumber))
 </script>
 
 <style lang="scss" scoped>

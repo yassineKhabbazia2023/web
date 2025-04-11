@@ -4,7 +4,6 @@ import AccountInformation from '.'
 import type { AccountInformationProps } from './AccountInformationTypes'
 
 const defaultProps: AccountInformationProps = {
-  accountAvatarColor: 'orange',
   accountName: 'A cool entity',
   accountNumber: 'accountNumber',
 
