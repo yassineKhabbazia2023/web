@@ -11,6 +11,8 @@ import type {
   ProductFruitsRole,
 } from './productFruits.plugin.types'
 
+import './productFruits.plugin.scss'
+
 declare let window: {
   productFruits: {
     services: {
