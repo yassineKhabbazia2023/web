@@ -111,10 +111,14 @@ describe('sidebarEntity', () => {
       const selectedEntity2 = findSelectedEntity(wrapper)
       const entityName = selectedEntity2.find('.entity-wrapper__details-name')
       const entityIbs = selectedEntity2.find('.entity-wrapper__details-ibs')
+      // entities are sorted now
+      const sortedEntities = [...entities].sort((a, b) =>
+        a.legalName.localeCompare(b.legalName),
+      )
 
       expect(selectedEntity2.exists()).toBeTruthy()
-      expect(entityName.text()).toBe(entities[0].legalName)
-      expect(entityIbs.text()).toBe(entities[0].accountNumber)
+      expect(entityName.text()).toBe(sortedEntities[0].legalName)
+      expect(entityIbs.text()).toBe(sortedEntities[0].accountNumber)
     })
   })
   describe('events', () => {

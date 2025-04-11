@@ -91,11 +91,11 @@
         </div>
         <!-- Favorite Entities -->
         <ul
-          v-if="favoriteEntities.length"
+          v-if="favoriteEntitiesSorted.length"
           class="sidenav-entity__favorites flex flex--direction-column"
           data-testid="favorite-entities"
         >
-          <li v-for="(favoriteEntity, index) in favoriteEntities" :key="index">
+          <li v-for="(favoriteEntity, index) in favoriteEntitiesSorted" :key="index">
             <EntityAvatar
               data-testid="favorite-entity"
               :entity="favoriteEntity"
@@ -142,6 +142,9 @@ const { t } = useI18n({
 const props = defineProps<SidebarEntityProps>()
 
 const { favoriteEntities, isCollab } = storeToRefs(userStore)
+const favoriteEntitiesSorted = computed(() => {
+  return [...favoriteEntities.value].sort((a, b) => a.legalName.localeCompare(b.legalName))
+})
 const isSidebarOpened = ref(false)
 const isToggleTooltipDisabled = ref(false)
 const selectedEntity = ref<Entity | undefined>(undefined)
