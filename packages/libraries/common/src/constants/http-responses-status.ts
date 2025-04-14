@@ -1,0 +1,8 @@
+export const HTTP_RESPONSES = {
+  // 200
+  OK: 200,
+  NO_CONTENT: 204,
+  // 400
+  TOO_MANY_REQUESTS: 429,
+  UNAUTHORIZED: 401,
+}

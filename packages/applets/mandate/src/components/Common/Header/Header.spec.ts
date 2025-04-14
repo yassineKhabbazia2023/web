@@ -52,7 +52,13 @@ describe('header.vue', () => {
       const activeFilters = [20]
       const expectedFilters = [
         {
-          pContent: 'Incident',
+          pContent: 'Technical Incident',
+          pCode: 98,
+          pColor: 'danger',
+          pIconName: 'exclamationTriangle',
+        },
+        {
+          pContent: 'Business Incident',
           pCode: 10,
           pColor: 'danger',
           pIconName: 'exclamationTriangle',
