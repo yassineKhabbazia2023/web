@@ -25,6 +25,7 @@
         :pOptionsPlaceholder="data.pOptionsPlaceholder"
         :pOptionsValue="data.pOptionsValue"
         :pWarningContent="data.pWarningContent"
+        :pAvatarRole="AvatarRoles.COLLAB"
         @click-delete="logEvent('click-delete', $event)"
         @update:p-input-value="logEvent('update:pInputValue', $event)"
         @update:p-options-value="onUpdateOptionsValue"
@@ -51,6 +52,7 @@ import type { PUserActionProps, POptionsValue } from './PUserActionTypes'
 import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
 import { getMockedOptions } from './PUserActionMocks'
+import { AvatarRoles } from '../../utils/avatar.roles'
 
 const exampleOffer1 = reactive<PUserActionProps>({
   pProfile: 'SL',

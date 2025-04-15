@@ -16,7 +16,8 @@
       <PAvatar
         :pShape="pIconShape"
         :pType="pIconType"
-        :pColor="pIconColor"
+        :pColor="pAvatarRole ? '' : pIconColor"
+        :pRole="pAvatarRole"
       >
         {{ pProfile }}
       </PAvatar>

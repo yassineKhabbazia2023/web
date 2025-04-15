@@ -14,6 +14,7 @@
           :pTitle="getFullName(firstName, lastName, true)"
           :pDescription="email"
           :data-testid="`subscription-details-collaborator-${email}`"
+          :pAvatarRole="AvatarRoles.COLLAB"
         />
       </li>
     </ul>
@@ -23,6 +24,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PUserAction } from '@pulse/styleguide/components'
+import { AvatarRoles } from '@pulse/styleguide'
 import { getInitials } from '@pulse/common'
 import { getFullName } from '@entities/common/utils'
 import type { CollaboratorsDetailsProps } from './CollaboratorsDetailsTypes'

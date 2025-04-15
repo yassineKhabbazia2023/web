@@ -36,6 +36,7 @@
             scope.row.delegate.firstName + ' ' + scope.row.delegate.lastName
           "
           :pContent="scope.row.delegate.email"
+          :pAvatarRole="AvatarRoles.COLLAB"
         />
       </template>
     </PTableColumn>
@@ -74,6 +75,7 @@ import {
   PDoubleText,
   PCheckbox,
 } from '@pulse/styleguide/components'
+import { AvatarRoles } from '@pulse/styleguide'
 import { getInitials } from '@entities/helper'
 
 // Definitions

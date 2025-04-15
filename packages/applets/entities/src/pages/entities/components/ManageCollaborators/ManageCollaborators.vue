@@ -44,6 +44,7 @@
         :pRole="selectedCollaborator?.persona?.name"
         :pShowDelete="canDelete"
         :data-testid="`offer-selected-collaborator-${selectedCollaborator.email}`"
+        :pAvatarRole="AvatarRoles.COLLAB"
         @click-delete="onClickDelete(index)"
       />
     </div>
@@ -60,6 +61,7 @@ import {
   PForm,
   PFormItem,
 } from '@pulse/styleguide/components'
+import { AvatarRoles } from '@pulse/styleguide'
 import { getInitials } from '@entities/helper'
 import type { ManageCollaboratorsProps } from './ManageCollaboratorsTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'

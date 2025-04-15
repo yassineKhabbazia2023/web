@@ -16,7 +16,8 @@
         data-testid="p-user-action-profile"
         pShape="circle"
         pType="small"
-        pColor="blue-pulse"
+        :pColor="pAvatarRole ? '' : 'blue-pulse'"
+        :pRole="pAvatarRole"
       >
         {{ pProfile }}
       </PAvatar>

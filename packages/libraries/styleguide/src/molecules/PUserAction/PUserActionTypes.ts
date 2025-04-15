@@ -1,4 +1,5 @@
 import type { PDropdownOption } from '../../molecules/PDropdown/PDropdownTypes'
+import { AvatarRoles } from '../../utils/avatar.roles'
 
 export type POptionsValue = undefined | string | number | string[] | number[]
 
@@ -17,4 +18,5 @@ export interface PUserActionProps {
   pOptions?: PDropdownOption[]
   pOptionsValue?: POptionsValue
   pWarningContent?: string
+  pAvatarRole?: AvatarRoles
 }

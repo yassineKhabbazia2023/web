@@ -33,6 +33,7 @@
             :pTitle="fullName"
             :pDescription="email"
             :pRole="persona?.name"
+            :pAvatarRole="AvatarRoles.COLLAB"
             pShowDelete
             @click-delete="removeSelectedCollaborator(id)"
           />
@@ -45,6 +46,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { PBlockHeader, PUserAction } from '@pulse/styleguide/components'
+import { AvatarRoles } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import AddCollaboratorsAutocomplete from '../AddCollaboratorsAutocomplete'
 import { fetchContactsFromSameHub } from '@entities/services/account'

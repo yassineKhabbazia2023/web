@@ -1,5 +1,6 @@
 import type { PAvatarProps } from '../../atoms/PAvatar/PAvatarTypes'
 import type { IconName } from '../../types/IconName.types'
+import { AvatarRoles } from '../../utils/avatar.roles'
 
 export interface PDoubleTextProps {
   pIconName?: IconName
@@ -13,4 +14,5 @@ export interface PDoubleTextProps {
   pSelected?: boolean
   pDisabled?: boolean
   pBold?: boolean
+  pAvatarRole?: AvatarRoles
 }

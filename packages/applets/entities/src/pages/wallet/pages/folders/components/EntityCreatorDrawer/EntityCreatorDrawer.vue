@@ -84,6 +84,7 @@
           :pRole="selectedCollaborator?.persona?.name"
           :pShowDelete="canDelete"
           :data-testid="`entity-collaborator-selected-collaborator-${selectedCollaborator.email}`"
+          :pAvatarRole="AvatarRoles.COLLAB"
           @click-delete="onClickDelete(index)"
         />
       </div>
@@ -119,6 +120,7 @@ import { setWith } from 'lodash-es'
 import { logger } from '@pulse/core'
 import { getInitials, debounce } from '@pulse/common'
 import type { FormInstance } from '@pulse/styleguide/types'
+import { AvatarRoles } from '@pulse/styleguide'
 import {
   PDrawer,
   PUserCard,

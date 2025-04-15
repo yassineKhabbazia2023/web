@@ -74,6 +74,7 @@
             :pDisabled="false"
             :pSelected="false"
             :pProfile="profile(scope.row.clients)"
+            :pAvatarRole="AvatarRoles.CLIENT"
           />
         </template>
       </PTableColumn>
@@ -127,6 +128,7 @@ import {
   PText,
   PLoader,
 } from '@pulse/styleguide/components'
+import { AvatarRoles } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { commonStore, amplitudeService } from '@pulse/common'
 import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'

@@ -48,6 +48,7 @@
             :pTitle="getFullName(firstName, lastName, true)"
             :pDescription="email"
             :pRole="persona?.name"
+            :pAvatarRole="AvatarRoles.COLLAB"
             pShowDelete
             @click-delete="removeSelectedCollaborator(id)"
           />
@@ -67,6 +68,7 @@ import { getCollaborators } from '@entities/services/wallet'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { getInitials } from '@entities/helper/helper'
 import { getFullName } from '@entities/common/utils/helpers'
+import { AvatarRoles } from '@pulse/styleguide'
 
 defineProps<DelegatorsAddStepProps>()
 const emit = defineEmits<{

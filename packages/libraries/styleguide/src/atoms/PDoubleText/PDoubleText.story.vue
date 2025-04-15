@@ -44,6 +44,20 @@
         <HstCheckbox v-model="pBold" title="pBold" />
       </template>
     </Variant>
+    <Variant title="Avatar Role Usage">
+      <PDoubleText
+        :pAvatarRole="AvatarRoles.CLIENT"
+        :pProfile="pProfile"
+        pTitle="Client"
+        :pType="pType"
+      />
+      <PDoubleText
+        :pAvatarRole="AvatarRoles.COLLAB"
+        :pProfile="pProfile"
+        pTitle="Collaborator"
+        :pType="pType"
+      />
+    </Variant>
   </Story>
 </template>
 
@@ -51,6 +65,7 @@
 import PDoubleText from '.'
 import { ref } from 'vue'
 import type { PDoubleTextProps } from './PDoubleTextTypes'
+import { AvatarRoles } from '../../utils/avatar.roles'
 
 const pIconName = ref<PDoubleTextProps['pIconName']>('filetypePdf')
 const pProfile = ref<PDoubleTextProps['pProfile']>('FL')
