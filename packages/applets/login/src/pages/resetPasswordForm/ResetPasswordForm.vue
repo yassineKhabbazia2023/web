@@ -1,68 +1,74 @@
 <template>
-  <div class="page-content">
-    <p class="txt-create-account">
-      {{ t('createAccount') }}
-      <span class="purple-text">
-        {{ t('1step') }}
-      </span>
-    </p>
-    <p>
-      {{ t('defPassword') }}
-    </p>
-    <PForm
-      class="form-password"
-      pLabelPosition="top"
-      pHideRequiredAsterisk
-    >
-      <PFormItem
-        :pLabel="t('labelPassword')"
-        :pError="passwordError"
-        :pShowMessage="isPasswordMessageVisible"
+  <div
+    class="page-content flex flex--direction-column flex--align-items-center margin-y--4"
+    :class="{'center': isTokenValidationLoading}"
+  >
+    <TokenValidationLoader v-if="isTokenValidationLoading" />
+    <div v-else>
+      <p class="txt-create-account">
+        {{ t('createAccount') }}
+        <span class="purple-text">
+          {{ t('1step') }}
+        </span>
+      </p>
+      <p>
+        {{ t('defPassword') }}
+      </p>
+      <PForm
+        class="form-password"
+        pLabelPosition="top"
+        pHideRequiredAsterisk
       >
-        <PInput
-          v-model="password"
-          :pPlaceholder="t('placeholderPassword')"
-          pType="password"
-          pShowPassword
-          data-testid="reset-password-form-first-password"
-          @update:model-value="checkPassword"
-          @blur="checkPassword"
-        />
-        <PStrength
-          v-if="password"
-          class="margin-top--3 min-width--full"
-          :modelValue="passwordStrength"
-          :labels="strengthLabels"
-        />
-      </PFormItem>
-      <PFormItem
-        :pLabel="t('labelConfirmPassword')"
-        :pError="confirmPasswordError"
-        :pShowMessage="isConfirmPasswordMessageVisible"
-      >
-        <PInput
-          v-model="confirmPassword"
-          :pPlaceholder="t('placeholderConfirmPassword')"
-          pType="password"
-          pShowPassword
-          data-testid="reset-password-form-second-password"
-          @update:model-value="checkConfirmPassword"
-          @blur="checkConfirmPassword"
-        />
-      </PFormItem>
-      <PFormItem>
-        <PButton
-          pType="primary"
-          :pDisabled="!isValidForm || isLoading"
-          :pLoading="isLoading"
-          pSize="default"
-          class="btn-submit"
-          @click="submitForm"
+        <PFormItem
+          :pLabel="t('labelPassword')"
+          :pError="passwordError"
+          :pShowMessage="isPasswordMessageVisible"
         >
-          {{ t('btnSubmit') }}
-        </PButton>
-      </PFormItem>
-    </PForm>
+          <PInput
+            v-model="password"
+            :pPlaceholder="t('placeholderPassword')"
+            pType="password"
+            pShowPassword
+            data-testid="reset-password-form-first-password"
+            @update:model-value="checkPassword"
+            @blur="checkPassword"
+          />
+          <PStrength
+            v-if="password"
+            class="margin-top--3 min-width--full"
+            :modelValue="passwordStrength"
+            :labels="strengthLabels"
+          />
+        </PFormItem>
+        <PFormItem
+          :pLabel="t('labelConfirmPassword')"
+          :pError="confirmPasswordError"
+          :pShowMessage="isConfirmPasswordMessageVisible"
+        >
+          <PInput
+            v-model="confirmPassword"
+            :pPlaceholder="t('placeholderConfirmPassword')"
+            pType="password"
+            pShowPassword
+            data-testid="reset-password-form-second-password"
+            @update:model-value="checkConfirmPassword"
+            @blur="checkConfirmPassword"
+          />
+        </PFormItem>
+        <PFormItem>
+          <PButton
+            pType="primary"
+            :pDisabled="!isValidForm || isLoading"
+            :pLoading="isLoading"
+            pSize="default"
+            class="btn-submit"
+            @click="submitForm"
+          >
+            {{ t('btnSubmit') }}
+          </PButton>
+        </PFormItem>
+      </PForm>
+    </div>
   </div>
 </template>
 
@@ -84,6 +90,7 @@ import {
   PButton,
   PStrength,
 } from '@pulse/styleguide/components'
+import TokenValidationLoader from '@login/common/components/TokenValidationLoader'
 import type { PStrengthLevel } from '@pulse/styleguide/types'
 import { getPasswordError, getConfirmPasswordError, getApiErrorMessage } from './ResetPasswordForm.utils'
 import { getPasswordStrength } from '../../utils/passwordStrength/passwordStrength.utils'
@@ -103,6 +110,7 @@ const { contactId, contactEmail, token } = route.query as {
 const password = ref('')
 const confirmPassword = ref('')
 
+const isTokenValidationLoading = ref(false)
 const passwordError = ref('')
 const isPasswordMessageVisible = ref(true)
 const confirmPasswordError = ref('')
@@ -199,12 +207,15 @@ const submitForm = async () => {
 }
 
 const isValidToken = async () => {
+  isTokenValidationLoading.value = true
   try {
     const isValid = await isInvitationTokenValid(token)
 
     return isValid
   } catch (error) {
     logger.error(error)
+  } finally {
+    isTokenValidationLoading.value = false
   }
 }
 
@@ -219,7 +230,12 @@ defineExpose({ submitForm })
 
 <style lang="scss" scoped>
 .page-content {
+  $self: &;
   text-align: start;
+  &.center {
+    height: calc(100% - 180px);
+    justify-content: center;
+  }
   .txt-create-account {
     font-size: 21px;
     font-weight: 600;

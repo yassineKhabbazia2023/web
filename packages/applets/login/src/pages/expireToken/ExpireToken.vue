@@ -25,6 +25,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { logger } from '@pulse/core'
 import { commonApi } from '@pulse/common'
 import { PButton } from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -43,10 +44,18 @@ const resendLink = async () => {
     } else {
       await commonApi().gateway.post(`account/api/customers/invite/${contactId}`, null, { params: { accountNumber } })
     }
-    isLoading.value = false
     router.push({ path: '/resendEmailSuccess' })
   } catch (error) {
     logger.error(error)
+    PNotification({
+      message: t('technicalErrorMessage'),
+      iconName: 'x',
+      showClose: true,
+      customClass: 'error',
+      position: 'bottom-right',
+    })
+  } finally {
+    isLoading.value = false
   }
 }
 </script>
@@ -97,8 +106,10 @@ const resendLink = async () => {
     expireMsg: 'Unfortunately, your link expired...'
     helpMsg: 'Please click here to receive a new link by mail.'
     btnReceiveLink: 'Receive my link'
+    technicalErrorMessage: 'A technical error has occurred. Please try again in a few moments.'
   fr-FR:
     expireMsg: 'Malheureusement, votre lien a expiré...'
     helpMsg: 'Cliquez ici afin de recevoir un nouveau lien par mail.'
     btnReceiveLink: 'Recevoir mon lien'
+    technicalErrorMessage: 'Une erreur technique est survenue. Veuillez réessayer dans quelques instants.'
 </i18n>

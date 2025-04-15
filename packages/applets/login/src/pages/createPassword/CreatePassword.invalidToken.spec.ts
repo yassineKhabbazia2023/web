@@ -44,6 +44,16 @@ describe('page creation password', () => {
   beforeEach(() => {
     vi.useFakeTimers()
   })
+  it('displays the token loader before navigating to the next page', async () => {
+    const wrapper = createWrapper()
+
+    const loader = wrapper.findComponent({ name: 'TokenValidationLoader' })
+    expect(loader.exists()).toBe(true)
+
+    await flushPromises()
+
+    expect(loader.exists()).toBe(false)
+  })
   it('should redirect to page expired link when token is expired', async () => {
     createWrapper()
     const spy = vi.spyOn(router, 'push')

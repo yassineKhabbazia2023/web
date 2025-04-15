@@ -77,6 +77,18 @@ describe('page creation password', () => {
     spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
     wrapper = createWrapper()
   })
+
+  it('displays the token loader before navigating to the next page', async () => {
+    wrapper = createWrapper()
+
+    const loader = wrapper.findComponent({ name: 'TokenValidationLoader' })
+    expect(loader.exists()).toBe(true)
+
+    await flushPromises()
+
+    expect(loader.exists()).toBe(false)
+  })
+
   it(
     'should track amplitude event when create password page displayed', () => {
       expect(spyTrackAmplitude).toHaveBeenCalledOnce()
@@ -210,8 +222,8 @@ describe('page creation password', () => {
   it('should throw error', async () => {
     vi.mocked(getLatestTerms).mockRejectedValue('Async error')
     wrapper = createWrapper()
-    wrapper.findAll('.el-input__inner')[0].setValue(VALID_PASSWORD)
     await flushPromises()
+    wrapper.findAll('.el-input__inner')[0].setValue(VALID_PASSWORD)
     await expect(getLatestTerms).rejects.toThrow('Async error')
   })
 

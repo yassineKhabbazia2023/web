@@ -1,96 +1,104 @@
 <template>
-  <div class="page-content">
-    <p class="txt-create-account">
-      {{ t('createAccount') }}
-      <span class="purple-text">
-        {{ t('1step') }}
-      </span>
-    </p>
-    <p>
-      {{ t('defPassword') }}
-    </p>
-    <PForm
-      ref="formRef"
-      class="form-password"
-      pLabelPosition="top"
-      pHideRequiredAsterisk
-      :pRules="rules"
-      :pModel="formValue"
-    >
-      <PFormItem
-        :pLabel="t('labelPassword')"
-        pProp="password"
-        pRequired
+  <div
+    class="page-content flex flex--direction-column flex--align-items-center margin-y--4"
+    :class="{'center': isTokenValidationLoading}"
+  >
+    <TokenValidationLoader
+      v-if="isTokenValidationLoading"
+    />
+    <div v-else>
+      <p class="txt-create-account">
+        {{ t('createAccount') }}
+        <span class="purple-text">
+          {{ t('1step') }}
+        </span>
+      </p>
+      <p>
+        {{ t('defPassword') }}
+      </p>
+      <PForm
+        ref="formRef"
+        class="form-password"
+        pLabelPosition="top"
+        pHideRequiredAsterisk
+        :pRules="rules"
+        :pModel="formValue"
       >
-        <PopoverPasswordStrength
-          :password="formValue.password"
+        <PFormItem
+          :pLabel="t('labelPassword')"
+          pProp="password"
+          pRequired
+        >
+          <PopoverPasswordStrength
+            :password="formValue.password"
+          >
+            <PInput
+              v-model="formValue.password"
+              :pPlaceholder="t('placeholderPassword')"
+              pType="password"
+              pShowPassword
+              data-testid="create-password-first-password"
+            />
+          </PopoverPasswordStrength>
+        </PFormItem>
+        <PFormItem
+          :pLabel="t('labelConfirmPassword')"
+          pProp="confirmPassword"
+          pRequired
         >
           <PInput
-            v-model="formValue.password"
-            :pPlaceholder="t('placeholderPassword')"
+            v-model="formValue.confirmPassword"
+            :pPlaceholder="t('placeholderConfirmPassword')"
             pType="password"
             pShowPassword
-            data-testid="create-password-first-password"
+            data-testid="create-password-second-password"
           />
-        </PopoverPasswordStrength>
-      </PFormItem>
-      <PFormItem
-        :pLabel="t('labelConfirmPassword')"
-        pProp="confirmPassword"
-        pRequired
-      >
-        <PInput
-          v-model="formValue.confirmPassword"
-          :pPlaceholder="t('placeholderConfirmPassword')"
-          pType="password"
-          pShowPassword
-          data-testid="create-password-second-password"
-        />
-      </PFormItem>
-      <p>
-        {{ t('validCgu') }}
-      </p>
-      <PFormItem
-        pProp="terms"
-        pRequired
-      >
-        <PCheckbox
-          ref="checkbox"
-          v-model="formValue.terms"
-          class="
-            cgu-checkbox
-            font-base
-            font-normal
-            padding--3
-            bg--neutral-gray-50
-          "
-          data-testid="create-password-terms-checkbox"
+        </PFormItem>
+        <p>
+          {{ t('validCgu') }}
+        </p>
+        <PFormItem
+          pProp="terms"
+          pRequired
         >
-          {{ t('cguMessagePartOne') }}
-          <a
-            :href="urlTerms"
-            target="_blank"
-            class="cgu-link font-bold text-color--persian-500"
+          <PCheckbox
+            ref="checkbox"
+            v-model="formValue.terms"
+            class="
+              cgu-checkbox
+              font-base
+              font-normal
+              padding--3
+              bg--neutral-gray-50
+            "
+            data-testid="create-password-terms-checkbox"
           >
-            {{ t('cguLink') }}
-          </a>
-          {{ t('cguMessagePartTwo') }}
-        </PCheckbox>
-      </PFormItem>
-      <PFormItem>
-        <PButton
-          pType="primary"
-          :pDisabled="!isValidForm || isLoading"
-          :pLoading="isLoading"
-          pSize="default"
-          class="btn-submit"
-          data-testid="create-password-submit-button"
-          @click="submitForm(formRef)"
-        >
-          {{ t('btnSubmit') }}
-        </PButton>
-      </PFormItem>
-    </PForm>
+            {{ t('cguMessagePartOne') }}
+            <a
+              :href="urlTerms"
+              target="_blank"
+              class="cgu-link font-bold text-color--persian-500"
+            >
+              {{ t('cguLink') }}
+            </a>
+            {{ t('cguMessagePartTwo') }}
+          </PCheckbox>
+        </PFormItem>
+        <PFormItem>
+          <PButton
+            pType="primary"
+            :pDisabled="!isValidForm || isLoading"
+            :pLoading="isLoading"
+            pSize="default"
+            class="btn-submit"
+            data-testid="create-password-submit-button"
+            @click="submitForm(formRef)"
+          >
+            {{ t('btnSubmit') }}
+          </PButton>
+        </PFormItem>
+      </PForm>
+    </div>
   </div>
 </template>
 
@@ -129,6 +137,7 @@ import {
   levelPasswordStrength,
 } from './PopoverPasswordStrength/passwordStrength'
 import useNavigation from '@login/composable/useNavigation'
+import TokenValidationLoader from '@login/common/components/TokenValidationLoader'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 
 const { t } = useI18n({
@@ -144,6 +153,7 @@ const { contactId, accountNumber, token, email: emailQuery } = route.query as {
   email: string
 }
 
+const isTokenValidationLoading = ref(false)
 const email = emailQuery?.toString().trim().replace(' ', '+')
 const formRef = ref<FormInstance>()
 const urlTerms = ref('')
@@ -263,12 +273,15 @@ const submitForm = (formEl: FormInstance | undefined) => {
 }
 
 const isValidToken = async () => {
+  isTokenValidationLoading.value = true
   try {
     const isValid = await isInvitationTokenValid(token)
 
     return isValid
   } catch (error) {
     logger.error(error)
+  } finally {
+    isTokenValidationLoading.value = false
   }
 }
 
@@ -297,7 +310,12 @@ defineExpose({ submitForm })
 
 <style lang="scss" scoped>
 .page-content {
+  $self: &;
   text-align: start;
+  &.center {
+    height: calc(100% - 180px);
+    justify-content: center;
+  }
   .txt-create-account {
     font-size: 21px;
     font-weight: 600;

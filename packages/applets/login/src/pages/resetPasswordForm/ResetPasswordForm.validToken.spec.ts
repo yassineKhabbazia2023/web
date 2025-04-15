@@ -49,6 +49,17 @@ describe('page reset password form', () => {
     wrapper = createWrapper()
   })
 
+  it('displays the token loader before navigating to the next page', async () => {
+    wrapper = createWrapper()
+
+    const loader = wrapper.findComponent({ name: 'TokenValidationLoader' })
+    expect(loader.exists()).toBe(true)
+
+    await flushPromises()
+
+    expect(loader.exists()).toBe(false)
+  })
+
   it('should show error when user dont enter password and button submit is disabled', async () => {
     const pInputs = wrapper.findAllComponents({ name: 'PInput' })
     const pButton = wrapper.findComponent({ name: 'PButton' })

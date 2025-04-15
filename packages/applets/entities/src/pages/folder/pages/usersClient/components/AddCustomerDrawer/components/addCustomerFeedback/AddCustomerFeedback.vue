@@ -11,7 +11,7 @@
     </PAlert>
     <div
       v-else
-      class="text-center"
+      class="text-center margin-top--6"
       data-testid="valid-add-customer-request-text"
     >
       <h3 class="font-semibold margin-bottom--2">
