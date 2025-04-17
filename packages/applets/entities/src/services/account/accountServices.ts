@@ -4,7 +4,7 @@ import { commonApi } from '@pulse/common'
 import type { Entity, QueryResult } from '@pulse/common/types'
 import { API_PREFIXES } from '@entities/common/config/services'
 import type { PatchOperation } from '@entities/services/PatchRecordService'
-import type { AccountRow, ReferentialStructure, Hub } from './accountTypes'
+import type { AccountRow, ReferentialStructure, Hub, Office } from './accountTypes'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/currentuser`
@@ -28,6 +28,16 @@ export async function fetchReferentialHubs() {
   const url = `${API_PREFIXES.OFFER}/referentials/hubs`
 
   return await fetchGatewayApi<Hub[]>(url)
+}
+
+export async function fetchReferentialOffices(){
+  const url = `${API_PREFIXES.OFFER}/referentials/offices`
+
+  const offices = await fetchGatewayApi<Office[]>(url)
+
+  const sortedOfficesByName = offices?.sort((a, b) => a.name.localeCompare(b.name))
+
+  return sortedOfficesByName
 }
 
 export async function fetchAccountReferential() {

@@ -33,6 +33,7 @@
       :pDisabled="pDisabled"
       :pPlaceholder="pPlaceholder"
       :pAutosize="pAutosize"
+      :pSuffixIconName="pSuffixIconName"
       :data-testid="pTestId"
     />
     <PDropdown

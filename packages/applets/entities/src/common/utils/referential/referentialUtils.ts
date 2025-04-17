@@ -7,11 +7,13 @@ import type {
 import {
   fetchAccountReferential,
   fetchReferentialHubs,
+  fetchReferentialOffices,
 } from '@entities/services/account'
 import type {
   ReferentialStructure,
   ReferentialOptions,
   Hub,
+  Office,
 } from '@entities/services/account'
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
@@ -40,6 +42,7 @@ export function referentialOptionsToPDropdownOption(
 export function getReferentialDropdownOptions(
   referential: ReferentialStructure,
   referentialHubs: Hub[],
+  referntialOffices: Office[],
   referentialKey: string | undefined,
 ): PDropdownOption[] | undefined {
   if (referentialKey === undefined) {
@@ -51,6 +54,12 @@ export function getReferentialDropdownOptions(
       pLabel: hubName,
     }))
   }
+  if (referentialKey === 'officeName') {
+    return referntialOffices.map<PDropdownOption>(({ officeId, name }) => ({
+      pValue: officeId,
+      pLabel: name,
+    }))
+  }
   const referentialItem = referential[referentialKey]
 
   return referentialOptionsToPDropdownOption(referentialItem)
@@ -59,6 +68,7 @@ export function getReferentialDropdownOptions(
 export function getEnrichedField(
   referential: ReferentialStructure,
   referentialHubs: Hub[],
+  referentialOffices: Office[],
   field: FormField,
   forceDisabled = false,
 ): FormField {
@@ -77,6 +87,7 @@ export function getEnrichedField(
   const pDropdownOptions = getReferentialDropdownOptions(
     referential,
     referentialHubs,
+    referentialOffices,
     referentialKey,
   )
   if (!pDropdownOptions) {
@@ -94,11 +105,12 @@ export function getEnrichedField(
 export function getEnrichedFormSection(
   referential: ReferentialStructure,
   referentialHubs: Hub[],
+  refentialOffices: Office[],
   formSection: FormSection,
   forceDisabled = false,
 ): FormSection {
   const fields = formSection.fields.map((field) =>
-    getEnrichedField(referential, referentialHubs, field, forceDisabled),
+    getEnrichedField(referential, referentialHubs, refentialOffices, field, forceDisabled),
   )
 
   return {
@@ -130,9 +142,10 @@ export async function getFormStructure(formStructureName?: FormStructureName, fo
   const formSections = getFormSections(formStructureName)
   const accountReferential = await fetchAccountReferential()
   const referentialHubs = await fetchReferentialHubs()
+  const referentialOffices = await fetchReferentialOffices()
 
   const enrichedFormSections: FormSection[] = formSections.map((formSection) =>
-    getEnrichedFormSection(accountReferential, referentialHubs, formSection, forceDisabled),
+    getEnrichedFormSection(accountReferential, referentialHubs, referentialOffices, formSection, forceDisabled),
   )
 
   return enrichedFormSections

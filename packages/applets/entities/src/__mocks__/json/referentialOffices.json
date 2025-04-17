@@ -1,0 +1,40 @@
+[
+    {
+        "officeId": 1,
+        "name": "Fake Office A",
+        "phoneNumber": "00 00 00 00",
+        "addressId": 1111,
+        "address": {
+            "addressId": 1111,
+            "addressLine1": "Téléport 7",
+            "addressLine2": "Zone Tertiaire Pyrène Aéropole (voie du Pape)",
+            "addressLine3": "",
+            "state": "",
+            "zipCode": "65290",
+            "country": "France",
+            "city": "Juillan",
+            "addressType": "delivery",
+            "latitude": 43.187820,
+            "longitude": 0.007980
+        }
+    },
+    {
+        "officeId": 2,
+        "name": "Fake Office B",
+        "phoneNumber": "00 00 00 00",
+        "addressId": 2222,
+        "address": {
+            "addressId": 2222,
+            "addressLine1": "Téléport 7",
+            "addressLine2": "Zone Tertiaire Pyrène Aéropole (voie du Pape)",
+            "addressLine3": "",
+            "state": "",
+            "zipCode": "65290",
+            "country": "France",
+            "city": "Juillan",
+            "addressType": "delivery",
+            "latitude": 43.187820,
+            "longitude": 0.007980
+        }
+    }
+]

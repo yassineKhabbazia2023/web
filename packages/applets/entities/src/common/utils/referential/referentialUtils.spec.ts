@@ -8,12 +8,12 @@ import {
   getFormSections,
   getFormStructure,
 } from './referentialUtils'
-import type { ReferentialOptions } from '@entities/services/account'
+import { type ReferentialOptions } from '@entities/services/account'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
-import { getMockedAccountReferential, getMockedReferentialHubs } from '@entities/__mocks__/account-row.mocks'
+import { getMockedAccountReferential, getMockedReferentialHubs, getMockedReferentialOffices } from '@entities/__mocks__/account-row.mocks'
 import { getMockedFormField, getMockedFormSection } from '@entities/__mocks__/company-information.mock'
 import type { FormField, FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
@@ -22,13 +22,19 @@ import type { FormStructureName } from './referentialUtilsTypes'
 const mockedReferential = getMockedAccountReferential()
 const mockedReferentialHubs = getMockedReferentialHubs().slice(0, 2)
 const mockedFormSection = getMockedFormSection()
+const mockedReferentialOffices = getMockedReferentialOffices()
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
-vi.mock('@entities/services/account', () => ({
-  fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
-  fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
-}))
+vi.mock('@entities/services/account', async () => {
+  const actual = await vi.importActual('@entities/services/account')
+  return {
+    ...actual,
+    fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
+    fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
+    fetchReferentialOffices: vi.fn(() => getMockedReferentialOffices()),
+  }
+})
 
 describe('referentialUtils', () => {
   describe('referentialOptionsToPDropdownOption', () => {
@@ -61,6 +67,7 @@ describe('referentialUtils', () => {
       const referentialDropdownOptions = getReferentialDropdownOptions(
         mockedReferential,
         mockedReferentialHubs,
+        mockedReferentialOffices,
         referentialKey,
       )
       const expected = [{
@@ -78,6 +85,7 @@ describe('referentialUtils', () => {
       const referentialDropdownOptions = getReferentialDropdownOptions(
         mockedReferential,
         mockedReferentialHubs,
+        mockedReferentialOffices,
         referentialKey,
       )
       const expected = [{
@@ -95,6 +103,7 @@ describe('referentialUtils', () => {
       const referentialDropdownOptions = getReferentialDropdownOptions(
         mockedReferential,
         mockedReferentialHubs,
+        mockedReferentialOffices,
         referentialKey,
       )
       expect(referentialDropdownOptions).toBeUndefined()
@@ -110,6 +119,7 @@ describe('referentialUtils', () => {
       const referentialDropdownOptions = getEnrichedField(
         mockedReferential,
         mockedReferentialHubs,
+        mockedReferentialOffices,
         field,
       )
       const expected = {
@@ -137,6 +147,7 @@ describe('referentialUtils', () => {
       const referentialDropdownOptions = getEnrichedField(
         mockedReferential,
         mockedReferentialHubs,
+        mockedReferentialOffices,
         field,
       )
       const expected = {
@@ -156,6 +167,7 @@ describe('referentialUtils', () => {
       const referentialDropdownOptions = getEnrichedFormSection(
         mockedReferential,
         mockedReferentialHubs,
+        mockedReferentialOffices,
         mockedFormSection,
       )
       const expected: FormSection = {

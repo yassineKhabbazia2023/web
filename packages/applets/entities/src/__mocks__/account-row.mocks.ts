@@ -1,8 +1,9 @@
 import type { PatchOperation } from '@entities/services/PatchRecordService'
-import type { Account, AccountRow, Address, Signatory, Deployment, ReferentialStructure, Hub } from '@entities/services/account'
+import { Account, AccountRow, Address, Signatory, Deployment, ReferentialStructure, Hub, Office, AddressType } from '@entities/services/account'
 import type { QueryResult } from '@pulse/common/types'
 import accountReferentialInformation from '@entities/__mocks__/json/accountReferentialInformation.json'
 import referentialHubs from '@entities/__mocks__/json/referentialHubs.json'
+import referentialOffices from '@entities/__mocks__/json/referentialOffices.json'
 
 export function getMockedAddress(override: Partial<Address> = {}): Address {
   const defaultAddress: Address = {
@@ -170,4 +171,20 @@ export function getMockedAccountReferential(): ReferentialStructure {
 
 export function getMockedReferentialHubs(): Hub[] {
   return referentialHubs
+}
+
+function getValidAddressType(addressType: string): AddressType | undefined {
+  if (addressType === AddressType.DELIVERY || addressType === AddressType.BILLING) {
+    return addressType
+  };
+}
+
+export function getMockedReferentialOffices(): Office[] {
+  return referentialOffices.map(office => ({
+    ...office,
+    address: {
+      ...office.address,
+      addressType: getValidAddressType(office.address.addressType),
+    },
+  }))
 }

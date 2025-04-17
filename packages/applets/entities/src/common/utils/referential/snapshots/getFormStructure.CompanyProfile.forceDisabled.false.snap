@@ -101,6 +101,14 @@
       },
       {
         "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "legal.siren",
+        "pFieldType": "input",
+        "pLabel": "SIREN",
+      },
+      {
+        "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-50",
         "pDisabled": true,
         "pFieldKey": "legal.legalForm",
@@ -123,7 +131,7 @@
         "pLabel": "Code NAF",
       },
       {
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-55",
         "pDisabled": false,
         "pDropdownOptions": [
           {
@@ -158,7 +166,18 @@
         "referentialKey": "staffSizeRange",
       },
       {
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-55",
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": false,
+        "pFieldKey": "turnover",
+        "pFieldType": "input",
+        "pLabel": "Chiffre d'affaires de l'année précédente",
+        "pPlaceholder": "À renseigner",
+        "pSuffixIconName": "currencyEuro",
+        "pType": "number",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
         "pDisabled": false,
         "pDropdownOptions": [
           {
@@ -319,6 +338,34 @@
         "pLabel": "Hub RYDGE rattaché",
         "pTestId": "offer-hub-name-list",
         "referentialKey": "hubName",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": false,
+        "pDropdownOptions": [
+          {
+            "pLabel": "Fake Office A",
+            "pValue": 1,
+          },
+          {
+            "pLabel": "Fake Office B",
+            "pValue": 2,
+          },
+        ],
+        "pFieldKey": "officeId",
+        "pFieldType": "dropdown",
+        "pLabel": "Bureau RYDGE de rattachement",
+        "pTestId": "offer-office-name-list",
+        "referentialKey": "officeName",
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pDisabled": false,
+        "pFieldKey": "missionType",
+        "pFieldType": "dropdown",
+        "pLabel": "Type de mission",
+        "pTestId": "mission-type-list",
+        "referentialKey": "missionType",
       },
     ],
     "sectionKey": undefined,

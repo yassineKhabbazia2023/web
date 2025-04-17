@@ -41,6 +41,14 @@ export interface Hub {
   hubName?: string
 }
 
+export interface Office {
+  officeId: number;
+  name: string;
+  phoneNumber: string;
+  addressId: number;
+  address?: Address;
+}
+
 export interface Address {
   addressId: number
   addressLine1?: string

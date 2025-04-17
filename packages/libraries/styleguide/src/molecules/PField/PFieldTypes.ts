@@ -1,6 +1,7 @@
 import type { FormItemRule } from 'element-plus'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
 import type { PDatePickerProps } from '../../atoms/PDatePicker/PDatePickerTypes'
+import { IconName } from '@styleguide/types/IconName.types'
 
 export interface PFieldPropsBase<T> {
   modelValue?: T
@@ -13,6 +14,7 @@ export interface PFieldPropsBase<T> {
   pCssClass?: string
   pTestId?: string
   pRules?: FormItemRule[]
+  pSuffixIconName?: IconName
 }
 
 export interface PFieldPropsInput<T> extends PFieldPropsBase<T> {

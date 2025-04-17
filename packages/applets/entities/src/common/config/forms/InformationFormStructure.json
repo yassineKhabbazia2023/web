@@ -100,6 +100,14 @@
       },
       {
         "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": true,
+        "pFieldKey": "legal.siren",
+        "pFieldType": "input",
+        "pLabel": "SIREN"
+      },
+      {
+        "modelValue": "",
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-50",
         "pDisabled": true,
         "pFieldKey": "legal.legalForm",
@@ -122,7 +130,7 @@
         "pLabel": "Code NAF"
       },
       {
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-55",
         "pDisabled": false,
         "pFieldKey": "legal.staffSizeRange",
         "pFieldType": "dropdown",
@@ -131,13 +139,42 @@
         "referentialKey": "staffSizeRange"
       },
       {
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-55",
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": false,
+        "pFieldType": "input",
+        "pType":"number",
+        "pLabel": "Chiffre d'affaires de l'année précédente",
+        "pSuffixIconName":"currencyEuro",
+        "pPlaceholder": "À renseigner",
+        "pFieldKey":"turnover"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
         "pDisabled": false,
         "pFieldKey": "hub.hubId",
         "pFieldType": "dropdown",
         "pLabel": "Hub RYDGE rattaché",
         "pTestId": "offer-hub-name-list",
         "referentialKey": "hubName"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pDisabled": false,
+        "pFieldKey": "officeId",
+        "pFieldType": "dropdown",
+        "pLabel": "Bureau RYDGE de rattachement",
+        "pTestId": "offer-office-name-list",
+        "referentialKey": "officeName"
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
+        "pDisabled": false,
+        "pFieldType": "dropdown",
+        "pFieldKey": "missionType",
+        "pLabel": "Type de mission",
+        "pTestId": "mission-type-list",
+        "referentialKey": "missionType"
       }
     ]
   },

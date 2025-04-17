@@ -10,6 +10,7 @@
             :pLabel="pControlStringInput.pLabel"
             :pPlaceholder="pControlStringInput.pPlaceholder"
             :pDisabled="pControlStringInput.pDisabled"
+            :pSuffixIconName="pControlStringInput.pSuffixIconName"
             @update:model-value="logEvent('update:model-value', $event)"
           />
         </PForm>
@@ -22,6 +23,10 @@
           <HstText
             v-model="pControlStringInput.pPlaceholder"
             title="Placeholder"
+          />
+          <HstText
+            v-model="pControlStringInput.pSuffixIconName"
+            title="Suffix icon name"
           />
           <HstCheckbox
             v-model="pControlStringInput.pDisabled"

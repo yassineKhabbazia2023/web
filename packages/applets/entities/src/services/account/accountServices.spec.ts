@@ -15,6 +15,7 @@ import {
   updateSignatoryStatus,
   getAccountSignatories,
   fetchGatewayApi,
+  fetchReferentialOffices,
   type Hub,
   deleteContactFromAccount,
   hasContactRoleOnCommonAccount,
@@ -25,6 +26,7 @@ import {
   getMockedPatchOperations,
   getMockedAccountReferential,
   getMockedReferentialHubs,
+  getMockedReferentialOffices,
 } from '@entities/__mocks__/account-row.mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { API_PREFIXES } from '@entities/common/config/services'
@@ -39,6 +41,7 @@ const rejectedErrorMessage = 'rejected'
 const mockedAccount = getMockedAccount()
 const mockedAccountReferential = getMockedAccountReferential()
 const mockedReferentialHubs = getMockedReferentialHubs()
+const mockedReferentialOffices = getMockedReferentialOffices()
 const mockedAccountRow = getMockedAccountRow()
 const mockedPatchOperations = getMockedPatchOperations()
 const mockedAccountApiPatch = vi.fn()
@@ -58,6 +61,11 @@ vi.mock('@pulse/common', () => {
           if (url === 'offer/api/referentials/hubs') {
             return Promise.resolve({
               data: mockedReferentialHubs,
+            })
+          }
+          if (url === `${API_PREFIXES.OFFER}/referentials/offices`) {
+            return Promise.resolve({
+              data: mockedReferentialOffices,
             })
           }
           if (url === `account/api/accounts/${accountId}/currentuser`) {
@@ -182,6 +190,13 @@ describe('test accountServices', () => {
     })
   })
 
+  describe('fetchReferentialOffices', () => {
+    it('should return proper object', async () => {
+      const referentialOffices = await fetchReferentialOffices()
+
+      expect(referentialOffices).toMatchObject(mockedReferentialOffices)
+    })
+  })
   describe('fetchGatewayApi', () => {
     it('should send the request to the correct endpoint and return the expected response', async () => {
       const url = `${API_PREFIXES.OFFER}/referentials/hubs`
