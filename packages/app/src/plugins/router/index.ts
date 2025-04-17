@@ -8,6 +8,7 @@ import { logger } from '@pulse/core'
 import { LoginRouteName } from '@pulse/common/constants'
 import { checkAuthenticatedUser } from './router.utils'
 import { type Entity } from '@pulse/common/types'
+import { SQUAD_ROUTE_PATHS } from '@app/constants'
 
 const isFirstTime = ref(true)
 
@@ -22,6 +23,18 @@ const routes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@app/pages/Error/404'),
+    beforeEnter: (to: any, next: any) => {
+      const { HERMES, HADES, ORION, TRANSVERSE } = SQUAD_ROUTE_PATHS
+
+      const subRoutes = [HERMES, HADES, ORION, TRANSVERSE]
+      const matches = subRoutes.some(route => to.path.startsWith(route))
+
+      if (matches) {
+        next({ path: to.path })
+      } else {
+        next()
+      }
+    },
     meta: {
       layout: 'Error',
     },
@@ -49,7 +62,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [],
 })
 

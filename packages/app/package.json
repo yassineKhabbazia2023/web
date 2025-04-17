@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:vite",
+    "build": "npm run build:vite --",
     "preview": "vite preview",
     "build:vite": "vite build --emptyOutDir",
     "build:types": "vue-tsc --build --force",

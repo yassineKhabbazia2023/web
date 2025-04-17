@@ -18,3 +18,10 @@ export const LAYOUTS = {
   LOGIN: 'LoginLayout',
   ERROR: 'Error',
 }
+
+export const SQUAD_ROUTE_PATHS = {
+  HERMES: '/hermes',
+  HADES: '/hades',
+  ORION: '/orion',
+  TRANSVERSE: '/transverse',
+}
