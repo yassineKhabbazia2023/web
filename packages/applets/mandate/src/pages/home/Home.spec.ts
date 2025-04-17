@@ -1,12 +1,11 @@
+import { nextTick, reactive } from 'vue'
 import type { MockInstance } from 'vitest'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { getMockedMandatesList } from '@mandate/__mocks__/mandate.mock'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
-import { commonStoreMock } from '@mandate/__mocks__/common.mocks'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
-import { nextTick, reactive } from 'vue'
 import type { AxiosResponse } from 'axios'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 import * as mandateService from '@mandate/services/mandate'
@@ -27,7 +26,6 @@ vi.mock('vue-router', () => ({
 
 vi.mock('@mandate/services/mandate')
 vi.mock('@pulse/common', () => ({
-  commonStore: commonStoreMock,
   amplitudeService: amplitudeServiceMock,
 }))
 

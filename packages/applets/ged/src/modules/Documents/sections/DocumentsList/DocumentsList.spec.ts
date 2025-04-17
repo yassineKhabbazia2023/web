@@ -1,8 +1,6 @@
 import { nextTick } from 'vue'
-import { describe, it, expect, beforeEach } from 'vitest'
 import { mount, shallowMount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
-import { createPinia, setActivePinia } from 'pinia'
 import { documentsResponsePayload } from '@ged/__mocks__/documents.mocks'
 import { getDocumentTableRow } from '@ged/__mocks__/documents-table-row.mocks'
 import type { ComponentPublicInstance } from 'vue'
@@ -40,18 +38,11 @@ const createWrapper = (props: DocumentsListProps = defaultProps): DocumentsListW
       stubs: {
         PTable: false,
       },
-      plugins: [pinia],
     },
   }) as unknown as DocumentsListWrapper
 }
 
-const pinia = createPinia()
-
 describe('documentList', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('props', () => {
     it('should render columns based on provided documentHeaders', async () => {
       const wrapper: DocumentsListWrapper = mount(DocumentsList, {
@@ -62,7 +53,6 @@ describe('documentList', () => {
               template: '<span />',
             },
           },
-          plugins: [pinia],
         },
       }) as unknown as DocumentsListWrapper
 
@@ -125,7 +115,6 @@ describe('documentList', () => {
                 template: '<span />',
               },
             },
-            plugins: [pinia],
           },
         }) as unknown as DocumentsListWrapper
 
@@ -196,7 +185,6 @@ describe('documentList', () => {
                 template: '<span />',
               },
             },
-            plugins: [pinia],
           },
         }) as unknown as DocumentsListWrapper
       })
@@ -235,7 +223,6 @@ describe('documentList', () => {
               template: '<span />',
             },
           },
-          plugins: [pinia],
         },
       }) as unknown as DocumentsListWrapper
 

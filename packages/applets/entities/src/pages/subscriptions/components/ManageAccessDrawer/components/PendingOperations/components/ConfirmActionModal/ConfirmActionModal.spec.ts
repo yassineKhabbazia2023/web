@@ -1,13 +1,16 @@
 import { expect, beforeEach, describe, it } from 'vitest'
 import '@entities/__mocks__/common.import.mocks'
 import { shallowMount } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
-import { setActivePinia } from 'pinia'
 import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
 import { nextTick } from 'vue'
 import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 import type { ConfirmActionModalProps } from './ConfirmActionModalTypes'
+import { getStoreMock } from '@pulse/common/mocks'
+import { useSelectedEntityStore } from '@pulse/common/stores'
+
 import ConfirmActionModal from '.'
+
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 
 const createWrapper = (overriddenProps?: Partial<ConfirmActionModalProps>) => {
   const props = {
@@ -47,7 +50,7 @@ const createWrapper = (overriddenProps?: Partial<ConfirmActionModalProps>) => {
 
 describe('confirmActionModal Component - Displays pending operations with approve and reject actions', () => {
   beforeEach(async () => {
-    setActivePinia(createTestingPinia())
+    selectedEntityStoreMock.selectedEntity = mockedEntity
   })
   describe('display', () => {
     const tests = [{

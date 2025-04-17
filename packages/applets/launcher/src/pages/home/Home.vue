@@ -16,7 +16,7 @@
       </h2>
     </template>
     <PAlert
-      v-if="commonStore.userAccountPermissions && launchCards.length === 0"
+      v-if="selectedEntityPermissions && launchCards.length === 0"
       pType="danger"
       class="margin-top--3"
       data-testid="home-no-launcher"
@@ -45,13 +45,15 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { commonStore as useStore, userPermissions } from '@pulse/common'
+import { CurrentUserManager } from '@pulse/common/managers'
 import { PBreadcrumb, PAlert } from '@pulse/styleguide/components'
 import LaunchCard from '@launcher/components/launchCard'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LauncherKey, ExtendedLaunchCard } from './HomeTypes'
+import { useSelectedEntityStore, usePermissionsStore } from '@pulse/common/stores'
 import {
   getLaunchCards,
   handleClickAction,
@@ -65,9 +67,6 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
-const commonStore = useStore()
-const { hasPermission } = userPermissions()
 
 const isDownloading = ref(false)
 const silaeDownloadPercent = ref<number | undefined>()
@@ -91,19 +90,25 @@ async function onClickAction(key: LauncherKey) {
 }
 
 const isClient = computed(() => route.name === 'launcher')
-const breadcrumbElements = [
+const selectedEntityStore = useSelectedEntityStore()
+const permissionsStore = usePermissionsStore()
+
+const { selectedEntity } = storeToRefs(selectedEntityStore)
+const { selectedEntityPermissions } = storeToRefs(permissionsStore)
+
+const breadcrumbElements = computed(() => ([
   {
     pId: -1,
-    pText: commonStore.defaultEntity?.legalName ?? '',
+    pText: selectedEntity.value?.legalName ?? '',
   },
   {
     pId: -1,
     pText: t('title'),
   },
-]
+]))
 
 const authorizedKeys = computed<LauncherKey[]>(() =>
-  LAUNCHER_AUTHORIZATIONS.filter(({ authorizationCodes }) => hasPermission(authorizationCodes)).map<LauncherKey>(
+  LAUNCHER_AUTHORIZATIONS.filter(({ authorizationCodes }) => CurrentUserManager.hasPermission(authorizationCodes)).map<LauncherKey>(
     ({ key }) => key,
   ),
 )

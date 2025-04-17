@@ -1,5 +1,3 @@
-
-import { createPinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
@@ -25,15 +23,12 @@ const defaultProps: DocumentsPreviewProps = {
   totalDocumentsCount: 10,
 }
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: DocumentsPreviewProps = defaultProps,
 ): VueWrapper<any> => {
   return shallowMount(DocumentPreview, {
     props,
     global: {
-      plugins: [pinia],
       stubs: {
         PDocumentViewer: {
           name: 'PDocumentViewer',

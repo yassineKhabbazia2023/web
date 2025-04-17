@@ -1,6 +1,4 @@
 import BinTableElement from '@ged/modules/Bin/sections/BinDocumentsList/components/BinTableElement'
-import { describe, it, expect, beforeEach } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { type BinTableElementProps } from './BinTableElementTypes'
@@ -15,24 +13,15 @@ const defaultProps: BinTableElementProps = {
   },
 }
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: BinTableElementProps = defaultProps,
 ) => {
   return mount(BinTableElement, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 
 describe('binTableElement', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('props', () => {
     it('should map PDoubleText component correctly based on fieldType', async () => {
       expect.hasAssertions()

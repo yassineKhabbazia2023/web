@@ -1,5 +1,6 @@
 import { logger } from '@pulse/core'
-import { commonApi, commonStore as store } from '@pulse/common'
+import { commonApi } from '@pulse/common'
+import { useFavoriteEntitiesStore } from '@pulse/common/stores'
 import type { Entity } from '@pulse/common/types'
 import { API_PREFIXES } from '../config'
 import { getRandomColor } from '@app/helper'
@@ -33,13 +34,8 @@ export const fetchFavoriteEntities = async (): Promise<Entity[]> => {
           color: getRandomColor(item.accountId),
         }),
       )
-      store().$patch({
-        user: {
-          entities: {
-            favorites: favoriteEntities,
-          },
-        },
-      })
+      const favoriteEntitiesStore = useFavoriteEntitiesStore()
+      favoriteEntitiesStore.setFavoriteEntities(favoriteEntities) // TODO should leave this code in a service
 
       return response.data
     }

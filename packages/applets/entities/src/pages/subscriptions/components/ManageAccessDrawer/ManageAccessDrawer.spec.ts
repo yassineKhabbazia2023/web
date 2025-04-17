@@ -1,23 +1,24 @@
 import { nextTick } from 'vue'
 import '@entities/__mocks__/common.import.mocks'
-import { createTestingPinia } from '@pinia/testing'
 import { shallowMount, flushPromises } from '@vue/test-utils'
-import { commonStore } from '@pulse/common'
-import { setActivePinia } from 'pinia'
 import type { ManageAccessDrawerProps } from './ManageAccessDrawerTypes'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
+import { getMockedEntity, getStoreMock } from '@pulse/common/mocks'
+import { useSelectedEntityStore } from '@pulse/common/stores'
 
 import ManageAccessDrawer from '.'
 
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+
 // Mocks
 const trackingLocalisationMock = TrackingLocalisation.WALLET
-const mockedAccount = {
+const mockedAccount = getMockedEntity({
   accountId: 1,
   legalName: 'Entity Test',
   accountNumber: 'IBS544G45F345F',
   color: 'orange',
-}
+})
 
 const accountOperationsListMock = getAccountOperationsListMock()
 const defaultProps: ManageAccessDrawerProps = {
@@ -50,7 +51,7 @@ const createWrapper = (overrideProps: Partial<ManageAccessDrawerProps> = {}) => 
 describe('manageAccessDrawer Component - Drawer containing a table of pending operations', () => {
   let wrapper: ReturnType<typeof createWrapper>
   beforeEach(async () => {
-    setActivePinia(createTestingPinia())
+    selectedEntityStoreMock.selectedEntity = mockedAccount
     wrapper = createWrapper()
     await flushPromises()
   })
@@ -69,12 +70,11 @@ describe('manageAccessDrawer Component - Drawer containing a table of pending op
       expect(userCard.props()).toMatchObject(expectedUserCardProps)
       expect(pagination.exists()).toBe(false)
     })
+
     it('should not display the user card component if defaultEntity is empty', async () => {
       await flushPromises()
-      const store = commonStore()
-      // We should implement the pinia store correctly to avoid this @ts-expect-error
-      // @ts-expect-error: Getter is read only
-      store.defaultEntity = {}
+
+      selectedEntityStoreMock.selectedEntity = undefined
       await flushPromises()
       const userCard = wrapper.findComponent({ name: 'PUserCard' })
 

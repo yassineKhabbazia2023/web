@@ -1,15 +1,15 @@
 import api from '../api'
-import { TokenService } from '../token'
+import { useTokenStore } from '../stores/token/token.store'
 import { API_PREFIXES } from '../constants/api-prefixes'
 import type { CreateNewPasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
 
 export async function refreshClientToken(sub: string) {
-  const tokenService = TokenService.getInstance()
+  const tokenStore = useTokenStore()
   const baseUrl = `${API_PREFIXES.AUTHENTICATION}/refreshToken?userId=${sub}`
 
   const { data: token } = await api().gateway.post(baseUrl)
 
-  tokenService.setToken(token)
+  tokenStore.setToken(token)
 }
 
 export async function createNewPassword(payload: CreateNewPasswordPayload) {

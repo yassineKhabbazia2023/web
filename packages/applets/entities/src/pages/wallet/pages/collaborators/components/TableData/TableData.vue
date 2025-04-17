@@ -119,7 +119,7 @@ import CollabDetailsDrawer from '@entities/common/components/CollabDetailsDrawer
 import CollabRightsDrawer from './../CollabRightsDrawer'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { returnSortQueryField } from '@entities/helper'
-import { userPermissions } from '@pulse/common'
+import { CurrentUserManager } from '@pulse/common/managers'
 import { PERMISSION_CODES } from '@entities/constants'
 
 const { t } = useI18n({
@@ -133,7 +133,6 @@ const emit = defineEmits<{
   'on-sort-change': [string]
 }>()
 const props = defineProps<Props>()
-const { hasPermission } = userPermissions()
 
 const { collaboratorInformation, manageAccessRights } = MENU_ACTIONS_NAME
 const menuElements = computed<PToolboxItemProps[]>(() =>
@@ -157,7 +156,7 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue: t('manageAccessRights'),
       pActionName: manageAccessRights,
       pState: 'default',
-      display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_COLLAB),
+      display: CurrentUserManager.hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_COLLAB),
     },
   ]
     .filter(({ display }) => display)

@@ -10,6 +10,7 @@
     "./types": "./src/types.mts",
     "./mocks": "./src/mocks.mts",
     "./utils/array": "./src/utils/array/array.utils.ts",
+    "./utils/idle": "./src/utils/idle/idle.utils.ts",
     "./utils/validator": "./src/utils/validators/validators.utils.ts",
     "./utils/test": "./src/utils/test.utils.ts",
     ".": "./src/main.mts"

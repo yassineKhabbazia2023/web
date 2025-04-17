@@ -1,9 +1,8 @@
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
+import { type Mock } from 'vitest'
 import { loggerMock } from '@pulse/core/mocks'
 import { getMockedFolder } from '@ged/__mocks__/treeview.mocks'
 import { deleteFolderFailMock } from '@ged/__mocks__/folder.service.mocks'
-import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 import type { FolderProperties } from '@ged/models/Folder'
@@ -13,8 +12,6 @@ import DeleteFolderSection from './DeleteFolderSection.vue'
 
 vi.mock('@pulse/styleguide')
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
-
-const pinia = createPinia()
 
 const selectedFolder = getMockedFolder(0, 1, 'A', {
   children: [
@@ -35,9 +32,6 @@ const defaultProps: DeleteFolderSectionProps = {
 const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
   return mount(DeleteFolderSection, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 
@@ -46,13 +40,6 @@ vi.mock('@ged/services/Folder', () => ({
 }))
 
 describe('deleteFolderSection', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   describe('interactions', () => {
     it('should display error notification correctly on fail delete', async () => {
       const updatedProps: DeleteFolderSectionProps = {

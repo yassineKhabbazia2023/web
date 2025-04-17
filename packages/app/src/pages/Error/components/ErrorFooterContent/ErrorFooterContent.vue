@@ -10,9 +10,8 @@
 </template>
 
 <script lang="ts" setup>
-import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { commonStore } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import { APP_COPYRIGHT, SUPPORT_PHONE_CLIENT, SUPPORT_PHONE_COLLAB } from '@pulse/core'
 
 const { t } = useI18n({
@@ -20,8 +19,9 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const { isCollab } = storeToRefs(commonStore())
-const supportPhoneNumber = isCollab.value ? SUPPORT_PHONE_COLLAB : SUPPORT_PHONE_CLIENT
+const userStore = useUserStore()
+
+const supportPhoneNumber = userStore.isCollab ? SUPPORT_PHONE_COLLAB : SUPPORT_PHONE_CLIENT
 </script>
 
 

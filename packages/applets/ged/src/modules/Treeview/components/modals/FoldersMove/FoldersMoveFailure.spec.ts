@@ -1,6 +1,4 @@
 
-import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import type { FoldersMoveProps } from './FoldersMoveTypes'
 import { mount } from '@vue/test-utils'
 import { loggerMock } from '@pulse/core/mocks'
@@ -28,19 +26,10 @@ const createWrapper = (
 ): FoldersMoveWrapper => {
   return mount(FoldersMove, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   }) as unknown as FoldersMoveWrapper
 }
 
-const pinia = createPinia()
-
 describe('test FoldersMove failure', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('interactions', () => {
     describe('move', () => {
       describe('confirm', () => {
@@ -62,7 +51,7 @@ describe('test FoldersMove failure', () => {
 
           await nextTick()
           expect(PNotificationMock).toHaveBeenCalledTimes(1)
-          const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
+          const callArguments = (PNotificationMock as any).mock.calls[0][0]
           expect(callArguments.message).toBe('Connexion au serveur interrompue')
           expect(callArguments.customClass).toBe('error')
         })

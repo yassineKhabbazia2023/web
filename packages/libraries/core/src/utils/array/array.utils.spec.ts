@@ -1,4 +1,4 @@
-import { addIfNotExists, removeIfExists } from './array.utils'
+import { addIfNotExists, removeIfExists, arrayIncludes } from './array.utils'
 
 describe('test array.utils', () => {
   describe('addIfNotExists', () => {
@@ -26,6 +26,32 @@ describe('test array.utils', () => {
       const arr = [1, 2, 3]
       const result = removeIfExists(arr, 4)
       expect(result).toEqual([1, 2, 3])
+    })
+  })
+
+  describe('arrayIncludes', () => {
+    it('should return true if the array includes the single value', () => {
+      const array = [1, 2, 3]
+      const value = 2
+      expect(arrayIncludes(array, value)).toBe(true)
+    })
+
+    it('should return false if the array does not include the single value', () => {
+      const array = [1, 2, 3]
+      const value = 4
+      expect(arrayIncludes(array, value)).toBe(false)
+    })
+
+    it('should return true if the array includes all values in the array of values', () => {
+      const array = [1, 2, 3, 4]
+      const value = [2, 3]
+      expect(arrayIncludes(array, value)).toBe(true)
+    })
+
+    it('should return false if the array does not include all values in the array of values', () => {
+      const array = [1, 2, 3, 4]
+      const value = [0, 5]
+      expect(arrayIncludes(array, value)).toBe(false)
     })
   })
 })

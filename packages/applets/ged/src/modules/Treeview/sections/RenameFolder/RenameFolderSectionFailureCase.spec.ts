@@ -1,7 +1,5 @@
 
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import { loggerMock } from '@pulse/core/mocks'
 import { getMockedFolder } from '@ged/__mocks__/treeview.mocks'
@@ -13,9 +11,6 @@ import RenameFolderSection from './RenameFolderSection.vue'
 
 vi.mock('@pulse/styleguide')
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
-
-
-const pinia = createPinia()
 
 const children = [
   getMockedFolder(1, 2, 'TheFolder', { serviceId: 'some-service' }),
@@ -39,9 +34,6 @@ const defaultProps: RenameFolderSectionProps = {
 const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
   return mount(RenameFolderSection, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 
@@ -51,13 +43,6 @@ vi.mock('@ged/services/Folder', () => ({
 }))
 
 describe('renameFolderSection', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   describe('interactions', () => {
     it('should display error notification correctly on fail rename', async () => {
       const updatedProps: RenameFolderSectionProps = {
@@ -73,7 +58,7 @@ describe('renameFolderSection', () => {
       await nextTick()
 
       expect(PNotificationMock).toHaveBeenCalledTimes(1)
-      const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
+      const callArguments = (PNotificationMock as any).mock.calls[0][0]
       expect(callArguments.message).toBe('Connexion au serveur interrompue.')
       expect(callArguments.customClass).toBe('error')
     })

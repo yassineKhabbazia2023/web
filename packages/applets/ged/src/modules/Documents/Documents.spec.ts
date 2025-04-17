@@ -1,11 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
-import { documentMock , documentsResponsePayload, documentsResponsePayloadMoreThanOneDoc } from '@ged/__mocks__/documents.mocks'
+import { documentMock, documentsResponsePayload, documentsResponsePayloadMoreThanOneDoc } from '@ged/__mocks__/documents.mocks'
 import { generateTestFiles, validDestination } from '@ged/__mocks__/files.mocks'
 import { documentsServiceMock, fetchDocumentsByKeyWordMock, previewDocumentMock } from '@ged/__mocks__/documents.service.mocks'
 import { getConnectionDocumentPiaStatusChangedMock, onConnectedAsyncMock, onDisconnectedAsyncMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
 import type { ComponentWrapper } from '@ged/__mocks__/component.wrapper'
-import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises, mount } from '@vue/test-utils'
 import type { DocumentsProps } from './DocumentsTypes'
 import {
@@ -35,8 +33,6 @@ import Documents from './Documents.vue'
 
 type DocumentsWrapper = ComponentWrapper<InstanceType<typeof Documents>>
 
-const pinia = createPinia()
-
 const defaultProps: DocumentsProps = {
   currentService: foldersData[0][0].children[0].serviceId,
   currentServiceName: 'cool service name',
@@ -57,7 +53,6 @@ const createWrapper = (
     shallow: true,
     props,
     global: {
-      plugins: [pinia],
     },
   })
 }
@@ -98,7 +93,6 @@ describe('documents', () => {
   const findDocumentsSearchAlert = (wrapper: DocumentsWrapper) =>
     wrapper.findComponent({ name: 'DocumentsSearchAlert' })
   beforeEach(() => {
-    setActivePinia(pinia)
     flushPromises()
     vi.useFakeTimers()
   })
@@ -249,7 +243,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments =
-          documentsResponsePayload.documentsPage.items
+        documentsResponsePayload.documentsPage.items
       await nextTick()
 
       const documentsList = wrapper.findComponent({ name: 'DocumentsList' })
@@ -271,12 +265,12 @@ describe('documents', () => {
     )
 
     it('should use download as archive when number of ' +
-    'selected documents is more than 1', async () => {
+      'selected documents is more than 1', async () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayloadMoreThanOneDoc
       componentInstance.selectedDocuments =
-        documentsResponsePayloadMoreThanOneDoc.documentsPage.items
+          documentsResponsePayloadMoreThanOneDoc.documentsPage.items
 
       await nextTick()
 
@@ -321,7 +315,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments =
-              [documentsResponsePayload.documentsPage.items[0]]
+        [documentsResponsePayload.documentsPage.items[0]]
       await nextTick()
       const documents = wrapper.findComponent({ name: 'DocumentsList' })
       await nextTick()
@@ -411,7 +405,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments =
-              [documentsResponsePayload.documentsPage.items[0]]
+        [documentsResponsePayload.documentsPage.items[0]]
       await nextTick()
 
       const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
@@ -436,7 +430,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments =
-              [documentsResponsePayload.documentsPage.items[0]]
+        [documentsResponsePayload.documentsPage.items[0]]
       await nextTick()
 
       const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
@@ -461,7 +455,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments =
-            documentsResponsePayload.documentsPage.items
+        documentsResponsePayload.documentsPage.items
       await nextTick()
 
       const documentsList = wrapper.findComponent({ name: 'DocumentsList' })
@@ -566,7 +560,7 @@ describe('documents', () => {
         const componentInstance = wrapper.vm
         componentInstance.documents = documentsResponsePayload
         componentInstance.selectedDocuments =
-        documentsResponsePayload.documentsPage.items
+          documentsResponsePayload.documentsPage.items
         componentInstance.isSearchExpanded = false
 
         await nextTick()
@@ -601,7 +595,7 @@ describe('documents', () => {
         const componentInstance = wrapper.vm
         componentInstance.documents = documentsResponsePayload
         componentInstance.selectedDocuments =
-            documentsResponsePayload.documentsPage.items
+          documentsResponsePayload.documentsPage.items
         componentInstance.isSearchExpanded = true
         componentInstance.searchContent = 'Hello'
 
@@ -634,7 +628,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.selectedDocuments =
-                [documentsResponsePayload.documentsPage.items[0]]
+        [documentsResponsePayload.documentsPage.items[0]]
       await nextTick()
       const documents = wrapper.findComponent({ name: 'DocumentsList' })
       await nextTick()
@@ -944,7 +938,7 @@ describe('documents', () => {
       componentInstance.isFiltersDrawerOpened = true
       await nextTick()
 
-      const res:DocumentSearchFilters = {
+      const res: DocumentSearchFilters = {
         selectedPeriod: 'DAY',
         startDate: new Date(1998, 11, 19),
         endDate: new Date(1998, 11, 19),

@@ -70,8 +70,9 @@ import {
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import { PCol, PRow } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
-import { commonStore } from '@pulse/common'
 import { logger } from '@pulse/core'
+import { useSelectedEntityStore } from '@pulse/common/stores'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -82,7 +83,8 @@ const isLoadingServicesOrFolders = ref(true)
 const currentFolder = ref<null | Folder>(null)
 const servicesFolders = ref<Folder[][]>([])
 
-const userStore = commonStore()
+const selectedEntityStore = useSelectedEntityStore()
+const { selectedEntity } = storeToRefs(selectedEntityStore)
 
 const fetchGedFoldersAndServices = async () => {
   try {
@@ -111,7 +113,7 @@ const fetchGedFoldersAndServices = async () => {
 }
 // Entities and services scope
 
-const accountNumber = computed(() => userStore?.defaultEntity?.accountNumber.toString() ?? '')
+const accountNumber = computed(() => selectedEntity?.value?.accountNumber?.toString() ?? '')
 watch(accountNumber, async (selectedEntityValue) => {
   if (selectedEntityValue) {
     isLoadingServicesOrFolders.value = true
@@ -120,9 +122,9 @@ watch(accountNumber, async (selectedEntityValue) => {
   }
 })
 
-const selectedAccountId = computed(() => userStore?.defaultEntity?.accountId ?? 0)
-const selectedEntityAvatarColor = computed(() => userStore.defaultEntity?.color)
-const selectedEntityName = computed(() => userStore.defaultEntity?.legalName ?? '')
+const selectedAccountId = computed(() => selectedEntity?.value?.accountId ?? 0)
+const selectedEntityAvatarColor = computed(() => selectedEntity?.value?.color)
+const selectedEntityName = computed(() => selectedEntity?.value?.legalName ?? '')
 const entityServices = ref<Service[]>([])
 const currentService = ref<null | Service['ServiceId']>(null)
 const currentServiceName = ref<null | Service['ServiceName']>(null)

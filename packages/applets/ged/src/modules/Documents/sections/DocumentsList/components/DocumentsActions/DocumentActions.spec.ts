@@ -1,6 +1,4 @@
 import { mount } from '@vue/test-utils'
-import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
 import type { DocumentActionsProps } from './DocumentActionsTypes'
@@ -27,25 +25,16 @@ export type DocumentActionsWrapper = VueWrapper<ComponentPublicInstance<
   DocumentActionsSetup>
 >
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: DocumentActionsProps = defaultProps,
 ): DocumentActionsWrapper => {
   return mount(DocumentActions, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   }) as unknown as DocumentActionsWrapper
 }
 
 describe('documentActions', () => {
   describe('props', () => {
-    beforeEach(() => {
-      setActivePinia(pinia)
-    })
-
     it('should render PToolbox according to the provided permissions', () => {
       const updatedProps: DocumentActionsProps = {
         ...defaultProps,

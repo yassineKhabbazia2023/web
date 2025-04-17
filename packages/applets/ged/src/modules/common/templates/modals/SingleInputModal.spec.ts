@@ -1,7 +1,5 @@
 import { nextTick } from 'vue'
-import { createPinia, setActivePinia } from 'pinia'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import type { SingleInputModalProps } from './SingleInputModalTypes'
 import type { ComponentPublicInstance } from 'vue'
@@ -33,16 +31,11 @@ export type SingleInputModalWrapper = VueWrapper<
   ComponentPublicInstance<SingleInputModalProps, SingleInputModalSetup>
 >
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: SingleInputModalProps = defaultProps,
 ): SingleInputModalWrapper => {
   return mount(SingleInputModal, {
     props,
-    global: {
-      plugins: [pinia],
-    },
     attrs: {
       inputContent: String,
     },
@@ -50,11 +43,6 @@ const createWrapper = (
 }
 
 describe('singleInputModal', () => {
-
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('props', () => {
     it('should set unValid class to the modal input when not valid', async () => {
       const updatedProps: SingleInputModalProps = {

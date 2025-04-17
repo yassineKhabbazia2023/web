@@ -1,24 +1,14 @@
-import { defineStore } from 'pinia'
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { describe, it, expect, vi } from 'vitest'
-import { createTestingPinia } from '@pinia/testing'
-import Home from '.'
+import { getStoreMock } from '@pulse/common/mocks'
+import { useSelectedEntityStore } from '@pulse/common/stores'
 import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 
-const pinia = createTestingPinia()
-vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    getters: {
-      isCollab: () => true,
-      defaultEntity: () => mockedEntity,
-    },
-  }),
-  sanitizeUrl: vi.fn(),
-}))
+import Home from '.'
+
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 
 const createWrapper = (): VueWrapper<any> => mount(Home, {
   global: {
-    plugins: [pinia],
     stubs: {
       EntityHeader: true,
       PRow: true,
@@ -30,6 +20,10 @@ const createWrapper = (): VueWrapper<any> => mount(Home, {
 
 describe('clientHome', () => {
   const wrapper = createWrapper()
+  beforeEach(async () => {
+    selectedEntityStoreMock.selectedEntity = mockedEntity
+  })
+
   it('should render the the component', () => {
     expect(wrapper.find('.home-folder').exists()).toBeTruthy()
   })

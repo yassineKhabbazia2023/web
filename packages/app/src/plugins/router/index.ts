@@ -1,12 +1,13 @@
 import { ref } from 'vue'
 import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
-import { type Store, storeToRefs } from 'pinia'
 import { routes as errorRoutes } from '@app/pages/Error/router'
-import { commonStore as useStore, commonApi } from '@pulse/common'
+import { commonApi } from '@pulse/common'
+import { useUserStore, useTokenStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { fetchEntities } from '@app/services/entities'
 import { logger } from '@pulse/core'
 import { LoginRouteName } from '@pulse/common/constants'
 import { checkAuthenticatedUser } from './router.utils'
+import { type Entity } from '@pulse/common/types'
 
 const isFirstTime = ref(true)
 
@@ -67,8 +68,11 @@ const isUserOriginCollab = async () => {
 const isObjectEmpty = (obj: object) => Object.keys(obj).length === 0
 
 router.beforeEach(async (to: any, _from) => {
-  const store = useStore()
-  const { isAuthenticated, isCollab } = storeToRefs(store)
+  const userStore = useUserStore()
+  const tokenStore = useTokenStore()
+
+  const { isCollab } = userStore
+  const { isAuthenticated } = tokenStore
 
   const isFirstTimeCurrent = isFirstTime.value
 
@@ -78,28 +82,25 @@ router.beforeEach(async (to: any, _from) => {
 
   return routerBeforeEach({
     to,
-    store,
-    isAuthenticated: isAuthenticated.value,
-    isCollab: isCollab.value,
+    isAuthenticated,
+    isCollab,
     isFirstTime: isFirstTimeCurrent,
   })
 })
 
 export async function routerBeforeEach({
   to,
-  store,
   isAuthenticated,
   isCollab,
   isFirstTime,
 }: {
   to: any,
-  store: any,
   isAuthenticated: boolean,
-  isCollab: boolean,
+  isCollab?: boolean,
   isFirstTime: boolean,
 }) {
   if (isAuthenticated && isFirstTime) {
-    const redirection = await checkAuthenticatedUser(store)
+    const redirection = await checkAuthenticatedUser()
 
     if (redirection) {
       return redirection
@@ -116,8 +117,10 @@ export async function routerBeforeEach({
     }
   }
 
-  if (['entity-client', 'home'].includes(to.name)) {
-    return entityClientOrHomeRedirections(store, to, isCollab)
+  const { name: toName } = to
+
+  if (['entity-client', 'home'].includes(toName)) {
+    return entityClientOrHomeRedirections(toName, isCollab)
   }
 
   /**
@@ -143,30 +146,26 @@ export async function routerBeforeEach({
   }
 }
 
-async function entityClientOrHomeRedirections(store: Store, to: any, isCollab: boolean) {
-  const entities = await fetchEntities()
-  if (to.name === 'home') {
-    if (!isCollab && entities.totalItems >= 1) {
+export async function entityClientOrHomeRedirections(toName: string, isCollab?: boolean) {
+  const selectedEntityStore = useSelectedEntityStore()
+
+  const entitiesPagination = await fetchEntities()
+  if (toName === 'home') {
+    if (!isCollab && entitiesPagination.totalItems >= 1) {
       return { name: 'entity-client' }
     } else if (isCollab) {
       return { name: 'wallet' }
     }
-  } else if (to.name === 'entity-client' && !isCollab) {
-    if (entities.totalItems === 1) {
-      const firstEntity = entities.items[0]
-      // color is temporarily hard-coded
-      store.$patch({
-        user: {
-          entities: {
-            default: {
-              accountId: firstEntity.accountId,
-              legalName: firstEntity.legalName,
-              color: 'persian',
-              accountNumber: firstEntity.accountNumber,
-            },
-          },
-        },
-      })
+  } else if (toName === 'entity-client' && !isCollab) {
+    if (entitiesPagination.totalItems === 1) {
+      const firstEntity = entitiesPagination.items[0]
+      const selectedEntity: Entity = {
+        accountId: firstEntity.accountId,
+        legalName: firstEntity.legalName,
+        color: 'persian',
+        accountNumber: firstEntity.accountNumber,
+      }
+      selectedEntityStore.setSelectedEntity(selectedEntity)
 
       return { name: 'folder', params: { id: firstEntity.accountId } }
     }

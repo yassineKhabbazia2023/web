@@ -1,11 +1,7 @@
 import { nextTick } from 'vue'
 import { vi, expect, describe, it } from 'vitest'
-import { defineStore } from 'pinia'
 import { flushPromises } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
-import { commonStore } from '@pulse/common'
 import wrapperFactory from '@app/__mocks__/wrapper.factory'
-import { collabUserMock } from '@app/__mocks__/users.mocks'
 import { getNotCompletelyDoneDeadlinesByDateMock } from '@app/__mocks__/deadline.mocks'
 import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import { tvaLabelMock } from '@app/__mocks__/schedule.mocks'
@@ -19,21 +15,10 @@ const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
-const pinia = createTestingPinia()
 vi.mock('@pulse/common', () => ({
   amplitudeService: {
     track: amplitudeTrackMock,
   },
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        ...collabUserMock,
-      },
-    }),
-    getters: {
-      isCollab: () => true,
-    },
-  }),
   dataProvider: () => {
     return {
       fetchUserData: vi.fn(),
@@ -54,11 +39,8 @@ const createWrapper = () =>
   wrapperFactory(Calendar, {
     props,
     global: {
-      plugins: [pinia],
     },
   })
-
-const store = commonStore(pinia)
 
 const firstDeadlineMock =
   notCompletelyDoneDeadlinesByDateMock[0].deadlines[0]
@@ -74,20 +56,16 @@ describe('calendar component', () => {
 
   it.each([
     {
-      userType: 'collab',
       firstDeadlineExpectedTitle: tvaLabelMock,
       secondDeadlineExpectedTitle: tvaLabelMock,
     },
     {
-      userType: 'collab',
       firstDeadlineExpectedTitle: tvaLabelMock,
       secondDeadlineExpectedTitle: tvaLabelMock,
     },
   ])(
     'formats deadlines appropriately',
-    async ({ userType, firstDeadlineExpectedTitle, secondDeadlineExpectedTitle }) => {
-      // @ts-expect-error: Getter is read only
-      store.isCollab = userType === 'collab'
+    async ({ firstDeadlineExpectedTitle, secondDeadlineExpectedTitle }) => {
       const wrapper = createWrapper()
       await flushPromises()
       const calendarWrapper = wrapper.findComponent(PCalendar)

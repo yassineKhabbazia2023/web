@@ -187,7 +187,7 @@ onMounted(async () => {
     user.lastName = me.lastName
     user.firstName = me.firstName
     formValues.email = me.email
-    formValues.personaName = me.persona.name
+    formValues.personaName = me.persona?.name
     formValues.mobilePhone = me.officeMobile
   }
 })

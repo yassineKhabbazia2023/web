@@ -113,7 +113,7 @@ import {
 import { AvatarRoles } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { computed, reactive } from 'vue'
-import { userPermissions } from '@pulse/common'
+import { CurrentUserManager } from '@pulse/common/managers'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import { PERMISSION_CODES, DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
@@ -127,7 +127,6 @@ const { d, t } = useI18n({
 })
 
 const props = defineProps<Props>()
-const { hasPermission } = userPermissions()
 const emit = defineEmits<{
   'click-view-information': [number]
   'display-manage-rights': [number]
@@ -154,14 +153,14 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue: t('modifyRights'),
       pActionName: modifyRights,
       pState: 'default',
-      display: hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER) && props.isInAnEntityPage,
+      display: CurrentUserManager.hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER) && props.isInAnEntityPage,
     },
     {
       pIconName: 'personRemove',
       pValue: t('removeUser'),
       pActionName: removeUser,
       pState: 'default',
-      display: hasPermission(PERMISSION_CODES.DELETE_USER) && props.isInAnEntityPage,
+      display: CurrentUserManager.hasPermission(PERMISSION_CODES.DELETE_USER) && props.isInAnEntityPage,
     },
   ]
     .filter(({ display }) => display)

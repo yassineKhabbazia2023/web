@@ -1,4 +1,3 @@
-import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
@@ -36,16 +35,11 @@ const defaultProps: ModalActionsProps = {
   modalActionsButtons: btnActions,
 }
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: ModalActionsProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentsModalActionsFooter, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 describe('documentsModalActionsFooter', () => {

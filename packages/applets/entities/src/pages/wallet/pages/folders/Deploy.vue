@@ -154,7 +154,8 @@ import {
   PIcon,
 } from '@pulse/styleguide/components'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
-import { commonStore, userPermissions, amplitudeService } from '@pulse/common'
+import { amplitudeService } from '@pulse/common'
+import { CurrentUserManager } from '@pulse/common/managers'
 import type { Entity } from '@pulse/common/types'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -181,6 +182,7 @@ import { fetchAccountOperations } from '@entities/services/contact'
 import ManageAccessDrawer from '@entities/pages/subscriptions/components/ManageAccessDrawer'
 import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
+import { useFavoriteEntitiesStore, useUserStore } from '@pulse/common/stores'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -189,7 +191,7 @@ const { t } = useI18n({
 
 const router = useRouter()
 const route = useRoute()
-const userStore = commonStore()
+const userStore = useUserStore()
 const { isCollab, user } = storeToRefs(userStore)
 
 const PAGE_SIZE_ACCESS_ON_MOUNT = 1
@@ -238,14 +240,12 @@ const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
 ] as const
 
 // #region entity creator drawer
-const { hasPermission } = userPermissions()
-
 const isEntityCreatorDrawerOpen = ref(false)
-const hasEntityCreatorPermission = hasPermission(PERMISSION_CODES.ENTITY_CREATOR)
+const hasEntityCreatorPermission = computed(() => CurrentUserManager.hasPermission(PERMISSION_CODES.ENTITY_CREATOR))
 
 const hasManageAccessButton = computed(() =>
   FeatureFlagManager.isAccessManagementGlobalActivated()
-  && hasPermission(PERMISSION_CODES.MANAGE_ACCESS),
+  && CurrentUserManager.hasPermission(PERMISSION_CODES.MANAGE_ACCESS),
 )
 const isManageAccessButtonDisabled = computed(() => (manageAccessCount.value ?? 0) < 1)
 
@@ -320,13 +320,8 @@ const putEntitiesInCommonFavorite = (data: Entity[] | undefined) => {
     color: 'persian',
   })) as Entity[]
 
-  userStore.$patch({
-    user: {
-      entities: {
-        favorites: entitiesInFavorite,
-      },
-    },
-  })
+  const favoriteEntitiesStore = useFavoriteEntitiesStore()
+  favoriteEntitiesStore.setFavoriteEntities(entitiesInFavorite)
 }
 
 async function fetchAccountList() {

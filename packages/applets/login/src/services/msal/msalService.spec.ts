@@ -1,10 +1,13 @@
 import { vi, describe, it, expect } from 'vitest'
 import { loggerMock, loggerWarnSpy , envVarsMock } from '@pulse/core/mocks'
+import { getStoreMock } from '@pulse/common/mocks'
+import { useTokenStore } from '@pulse/common/stores'
 
 import { getToken } from '.'
 
+const tokenStoreMock = getStoreMock(useTokenStore)
+
 const amplitudeServiceTrackMock = vi.hoisted(() => vi.fn())
-const setTokenMocked = vi.hoisted(() => vi.fn())
 
 const getAccountMock = vi.hoisted(() => vi.fn())
 const loginRedirectMocked = vi.hoisted(() => vi.fn())
@@ -25,10 +28,6 @@ vi.mock('@pulse/common', () => ({
     track: amplitudeServiceTrackMock,
     reset: vi.fn(),
     setNewUserProperty: vi.fn(),
-  },
-  tokenService: {
-    getToken: vi.fn(),
-    setToken: setTokenMocked,
   },
   msalInstance: msalInstanceMock,
 }))
@@ -64,8 +63,8 @@ describe('msalService', () => {
           sign_in_result: 'succeeded',
         })
 
-      expect(setTokenMocked).toHaveBeenCalledOnce()
-      expect(setTokenMocked).toHaveBeenNthCalledWith(1, expectedToken)
+      expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.setToken).toHaveBeenNthCalledWith(1, expectedToken)
 
       expect(loginRedirectMocked).not.toHaveBeenCalled()
     })
@@ -92,7 +91,7 @@ describe('msalService', () => {
           sign_in_result: 'failed',
         })
 
-      expect(setTokenMocked).not.toHaveBeenCalled()
+      expect(tokenStoreMock.setToken).not.toHaveBeenCalled()
 
       expect(loginRedirectMocked).toHaveBeenCalledOnce()
       expect(loginRedirectMocked).toHaveBeenCalledWith(/* nothing */)
@@ -106,7 +105,7 @@ describe('msalService', () => {
       expect(loggerWarnSpy).not.toHaveBeenCalled()
 
       expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
-      expect(setTokenMocked).not.toHaveBeenCalled()
+      expect(tokenStoreMock.setToken).not.toHaveBeenCalled()
 
       expect(loginRedirectMocked).not.toHaveBeenCalled()
     })

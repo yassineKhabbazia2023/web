@@ -1,9 +1,17 @@
-import { getPaginationMock, amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
+import {
+  amplitudeServiceMock,
+  amplitudeServiceTrackMock,
+  getPaginationMock,
+  getMockedUserInfo,
+  getMockedEntities,
+  defineSelectedEntityMock,
+  hasPermissionMock,
+  CurrentUserManagerMock,
+  getStoreMock,
+} from '@pulse/common/mocks'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { createTestingPinia } from '@pinia/testing'
-import { defineStore, createPinia, setActivePinia } from 'pinia'
-import { commonStore, commonPinia as pinia } from '@pulse/common'
+import { defineStore, createPinia } from 'pinia'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import { nextTick, reactive } from 'vue'
 import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtilsMock'
@@ -14,12 +22,15 @@ import { contactServiceMock, fetchOperationsByAccountMock } from '@entities/__mo
 import { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
+import type { Entity } from '@pulse/common/types'
+import { useFavoriteEntitiesStore, useUserStore } from '@pulse/common/stores'
 
 import Deploy from '.'
 
-const mockedAccount = getMockedAccount()
+const userStoreMock = getStoreMock(useUserStore)
+const favoriteEntitiesStoreMock = getStoreMock(useFavoriteEntitiesStore)
 
-const accountOperationsListMock = getAccountOperationsListMock()
+const mockedAccount = getMockedAccount()
 
 vi.mock('@pulse/core', () => ({
   logger: loggerMock,
@@ -29,18 +40,18 @@ vi.mock('@pulse/core', () => ({
 vi.mock('@entities/services/contact', () => contactServiceMock)
 
 const putFavoriteMock = vi.fn()
+const getFavoritesMock = vi.fn()
+const accountOperationsListMock = getAccountOperationsListMock()
+
+vi.mock('@pulse/core', () => ({
+  logger: loggerMock,
+  FeatureFlagManager: featureFlagManagerMock,
+}))
+
+vi.mock('@entities/services/contact', () => contactServiceMock)
+
 const mockedQueryResult = getMockedWalletQueryResult()
 
-const getFavoritesMock = vi.fn(() =>
-  Promise.resolve({
-    data: [
-      {
-        id: 'customId',
-        name: 'customName',
-      },
-    ],
-  }),
-)
 const mockedGatewayGet = vi.hoisted(() => vi.fn())
 vi.mock('@entities/services/subscription', () => ({
   fetchAccountSubscriptions: vi.fn(() => ([])),
@@ -57,11 +68,6 @@ vi.mock('@entities/services/wallet', () => ({
   fetchAccountContacts: fetchAccountContactsMock,
   manageFavoriteEntities: manageFavoriteEntitiesMock,
 }))
-
-const hasPermissionMock = vi.hoisted(() => vi.fn())
-const userPermissionsMock = vi.hoisted(() => vi.fn(() => ({
-  hasPermission: hasPermissionMock,
-})))
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
@@ -90,7 +96,6 @@ vi.mock('@pulse/common', () => ({
       isCollab: () => true,
     },
   }),
-  userPermissions: userPermissionsMock,
   amplitudeService: amplitudeServiceMock,
 }))
 
@@ -127,10 +132,14 @@ vi.mock('./DeployUtils', async () => ({
   fetchWalletData: mockFetchWalletData,
 }))
 
+vi.mock('@pulse/common/managers', () => ({
+  defineSelectedEntity: defineSelectedEntityMock,
+  CurrentUserManager: CurrentUserManagerMock,
+}))
+
 const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
   shallowMount(Deploy, {
     attachTo: document.body,
-    plugins: [createTestingPinia()],
     global: {
       stubs: {
         Filters: true,
@@ -179,15 +188,32 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
   })
 
 const findSubscriptionDrawer = (wrapper: VueWrapper) =>
-  wrapper.findComponent('[data-testid=offers-drawer]') as VueWrapper
-
-setActivePinia(pinia)
+  wrapper.findComponent('[data-testid="offers-drawer"]') as VueWrapper
 
 describe('deploy', () => {
   beforeEach(() => {
+    const userMock = getMockedUserInfo()
+    userStoreMock.user = userMock
+    userStoreMock.isCollab = true
+    hasPermissionMock.mockReturnValue(false)
     mockedGatewayGet.mockResolvedValue(mockedAccount)
     mockFetchWalletData
       .mockResolvedValue(mockedQueryResult)
+  })
+
+  it('should call setFavoriteEntities', async () => {
+    const mockedEntites = getMockedEntities()
+    fetchFavoriteEntitiesMock.mockResolvedValueOnce(mockedEntites)
+    const expectedArguements = mockedEntites.map((item: Entity) => ({
+      ...item,
+      color: 'persian',
+    })) as Entity[]
+
+    createWrapper()
+    await flushPromises()
+
+    expect(favoriteEntitiesStoreMock.setFavoriteEntities).toHaveBeenCalledOnce()
+    expect(favoriteEntitiesStoreMock.setFavoriteEntities).toHaveBeenNthCalledWith(1, expectedArguements)
   })
 
   it('should display correct button by number of selected ibs', async () => {
@@ -290,7 +316,7 @@ describe('deploy', () => {
     const wrapper = createWrapper()
     await flushPromises()
 
-    const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    const table = wrapper.findComponent({ name: 'TableData' })
     table.vm.$emit('click-deploy', 1, 'a', 'b')
     await nextTick()
 
@@ -384,10 +410,10 @@ describe('deploy', () => {
     await nextTick()
 
     await flushPromises()
-    const tags = wrapper.findComponent('[data-testid=filters]') as VueWrapper
+
+    const tags = wrapper.findComponent('[data-testid="filters"]') as VueWrapper
     tags.vm.$emit('removeFilter')
     await flushPromises()
-
 
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 0,
@@ -403,10 +429,9 @@ describe('deploy', () => {
   })
 
   it('should not displayed the filters component if the user is client', async () => {
+    userStoreMock.isCollab = false
     const wrapper = createWrapper()
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
+
     await flushPromises()
     const filters = wrapper.findComponent('[data-testid=filters]') as VueWrapper
     expect(filters.exists()).toBeFalsy()

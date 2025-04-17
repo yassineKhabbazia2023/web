@@ -20,7 +20,6 @@ export interface SelectedEntity extends Entity {
 }
 
 type Entities = {
-  favorites: Entity[] | undefined
   default: SelectedEntity | undefined
 }
 

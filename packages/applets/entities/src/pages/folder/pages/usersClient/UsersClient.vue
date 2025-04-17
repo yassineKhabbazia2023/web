@@ -104,7 +104,7 @@ import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon } from '@pulse/styleguide/components'
-import { commonStore, userPermissions } from '@pulse/common'
+import { CurrentUserManager } from '@pulse/common/managers'
 import { removeFalsyValues } from '@entities/helper'
 import { PAGE_SIZES, PERMISSION_CODES } from '@entities/constants'
 import NoResult from '@entities/common/components/NoResult'
@@ -120,6 +120,8 @@ import type { UsersClientProps, State } from './UsersClientTypes'
 import { getPrincipalContacts } from '@entities/services/offer'
 import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { fetchAccountContacts, fetchCustomers } from '@entities/services/wallet'
+import { storeToRefs } from 'pinia'
+import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -127,7 +129,7 @@ const { t } = useI18n({
 })
 
 const route = useRoute()
-const userStore = commonStore()
+const userStore = useUserStore()
 
 const state: State = reactive({
   data: [],
@@ -146,8 +148,7 @@ const state: State = reactive({
 
 const isMounted = ref(false)
 
-const { hasPermission } = userPermissions()
-const canAddUser = computed(() => hasPermission(PERMISSION_CODES.ADD_USERS))
+const canAddUser = computed(() => CurrentUserManager.hasPermission(PERMISSION_CODES.ADD_USERS))
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
   state.currentPage = 1
@@ -170,7 +171,7 @@ const shouldShowPagination = computed(
   () => !state.isLoading && state.totalItems,
 )
 
-const canEdit = computed(() => hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER))
+const canEdit = computed(() => CurrentUserManager.hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER))
 
 const getUserInfo = computed(() => {
   const userInfo = state.data.find(
@@ -208,7 +209,7 @@ async function fetchUsers() {
 
     const { items, currentPage, totalPages, totalItems } = data
 
-    state.data = formatItemsFromApi(items, userStore.$state.user?.id, principalContacts.value)
+    state.data = formatItemsFromApi(items, userStore.user?.id, principalContacts.value)
     state.currentPage = currentPage
     state.totalPages = totalPages
     state.totalItems = totalItems
@@ -237,10 +238,13 @@ const handleRemoveUser = (row: any) => {
   state.isRemoveUserDialogOpened = true
 }
 
-const defaultEntity = computed(() => userStore.defaultEntity)
-const currentEntityId = computed(() => defaultEntity.value?.accountId)
-const currentEntityName = computed(() => defaultEntity.value?.legalName)
-const currentEntityNumber = computed(() => defaultEntity.value?.accountNumber)
+const selectedEntityStore = useSelectedEntityStore()
+const { selectedEntity } = storeToRefs(selectedEntityStore)
+
+const currentEntityId = computed(() => selectedEntity.value?.accountId)
+const currentEntityName = computed(() => selectedEntity.value?.legalName)
+const currentEntityNumber = computed(() => selectedEntity.value?.accountNumber)
+
 const isAddCustomerDrawerOpened = ref(false)
 const principalContacts = ref<ClientContact[]>([])
 

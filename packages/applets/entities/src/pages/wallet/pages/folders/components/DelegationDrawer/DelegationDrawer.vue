@@ -78,7 +78,8 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PSteps, PStep, PIcon } from '@pulse/styleguide/components'
 import { AppColors, PNotification } from '@pulse/styleguide'
-import { commonApi, commonStore } from '@pulse/common'
+import { commonApi } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import { DelegationFlowType } from './DelegationDrawerTypes'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 
@@ -129,8 +130,8 @@ function handlePreviousClick() {
   }
 }
 
-const userStore = commonStore()
-const currentUserId = userStore.$state.user?.id
+const userStore = useUserStore()
+const currentUserId = userStore.user?.id
 
 const isNextButtonLoading = ref<boolean>(false)
 

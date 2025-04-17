@@ -1,6 +1,3 @@
-
-import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import { secondValidDestination, unValidDestination, validDestination } from '@ged/__mocks__/files.mocks'
 import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
 import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
@@ -22,17 +19,11 @@ const createWrapper = (
 ): FoldersMoveWrapper => {
   return mount(FoldersMove, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   }) as unknown as FoldersMoveWrapper
 }
 
-const pinia = createPinia()
-
 describe('test FoldersMove', () => {
   beforeEach(() => {
-    setActivePinia(pinia)
     vi.useFakeTimers()
   })
 
@@ -279,7 +270,7 @@ describe('test FoldersMove', () => {
 
           await nextTick()
           expect(PNotificationMock).toHaveBeenCalledTimes(1)
-          const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
+          const callArguments = (PNotificationMock as any).mock.calls[0][0]
           expect(callArguments.message).toBe(
             `Le dossier ${defaultProps.folderToMove.name} a été déplacé dans le dossier ${defaultProps.folder.name}`,
           )

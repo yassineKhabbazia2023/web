@@ -1,4 +1,3 @@
-import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest'
 import type { Router } from 'vue-router'
 import { notificationsServiceMock, patchNotificationReadStatusMock } from '@app/__mocks__/notification.service.mocks'
 import {
@@ -9,10 +8,14 @@ import {
   mandateNotificationMock,
 } from '@app/__mocks__/notifications.mocks'
 import { accountsMock } from '@app/__mocks__/accounts.mocks'
-import { setActivePinia } from 'pinia'
-import { createTestingPinia } from '@pinia/testing'
-import { commonStore } from '@pulse/common'
-import { accountsRowMock, entitiesFromAccountsRow } from '@pulse/common/mocks'
+import {
+  accountsRowMock,
+  entitiesFromAccountsRow,
+  SelectedEntityManagerMock,
+  defineSelectedEntityMock,
+  getStoreMock,
+} from '@pulse/common/mocks'
+import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
 import * as NotificationService from './notifications-wrapper.service'
 import { flushPromises } from '@vue/test-utils'
@@ -26,7 +29,13 @@ import {
   getNotificationAccountNames,
 } from './notifications-wrapper.manager'
 
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
+
+vi.mock('@pulse/common/managers', () => ({
+  SelectedEntityManager: SelectedEntityManagerMock,
+}))
 
 describe('patchUnreadNotification', () => {
   it('should call the patch API when the notification is unread', () => {
@@ -120,7 +129,6 @@ describe('getIsNotificationRead', () => {
 
 describe('handleNotificationAction', () => {
   beforeEach(() => {
-    setActivePinia(createTestingPinia({ stubActions: false }))
     vi.clearAllMocks()
   })
 
@@ -188,16 +196,10 @@ describe('handleNotificationAction', () => {
       shouldSetItemInStorage,
     },
   ) => {
+    selectedEntityStoreMock.selectedEntity = currentSelectedEntity
     const fetchUserEntities = vi.spyOn(NotificationService, 'fetchUserEntities')
     fetchUserEntities.mockResolvedValueOnce(accountsRowMock)
-    const localStorageSpy = vi.spyOn(Storage.prototype, 'setItem')
-    const storeInstance = commonStore()
-    storeInstance.fetchUserAccountPermissions = vi.fn().mockResolvedValue({})
-    storeInstance.setDefaultEntity = vi.fn()
-    // Expecting error here as i'm forcing the assignemnt for testing purpose as you can see in Pinia doc
-    // @ts-expect-error
-    storeInstance.defaultEntity = currentSelectedEntity
-    expect(true).toBeTruthy()
+
     handleNotificationAction({
       notification: {
         ...gedNotificationMock,
@@ -212,10 +214,15 @@ describe('handleNotificationAction', () => {
       router: mockRouter,
     })
     await flushPromises()
-    if(shouldSetItemInStorage) {
-      expect(localStorageSpy).toHaveBeenCalled()
+    if (shouldSetItemInStorage) {
+      const { accountId, legalName, accountNumber } = notificationEntity
+
+      const expectedEntity = { accountId, legalName, accountNumber }
+
+      expect(defineSelectedEntityMock).toHaveBeenCalledOnce()
+      expect(defineSelectedEntityMock).toHaveBeenCalledWith(expectedEntity)
     } else {
-      expect(localStorageSpy).not.toHaveBeenCalled()
+      expect(defineSelectedEntityMock).not.toHaveBeenCalled()
     }
   })
 })

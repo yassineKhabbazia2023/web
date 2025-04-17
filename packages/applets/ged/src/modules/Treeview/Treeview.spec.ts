@@ -2,13 +2,11 @@
 import { nextTick, reactive } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest'
 import '@ged/__mocks__/common.import.mocks'
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
 import { documentMock } from '@ged/__mocks__/documents.mocks'
 import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type TreeviewProps } from '@ged/modules/Treeview/TreeviewTypes'
-import { createPinia, setActivePinia } from 'pinia'
 import type { Service } from '@ged/models/Service'
 import { downloadFolder } from '@ged/services/Folder'
 import type { ComponentWrapper } from '@ged/__mocks__/component.wrapper'
@@ -22,8 +20,6 @@ createObjectURLMock.mockImplementation((_: Blob | MediaSource) => url)
 window.URL.createObjectURL = createObjectURLMock
 
 type TreeviewWrapper = ComponentWrapper<InstanceType<typeof Treeview>>
-
-const pinia = createPinia()
 
 const folderWithRenameRight = foldersData[0][0].children[0].children[0]
 const nestedFolder = foldersData[0][0].children[0].children[0].children[0]
@@ -60,11 +56,10 @@ vi.mock('vue-router', () => ({
 }))
 
 
-const createWrapper = (props: TreeviewProps = defaultProps) : TreeviewWrapper => {
+const createWrapper = (props: TreeviewProps = defaultProps): TreeviewWrapper => {
   return mount(Treeview, {
     props,
     global: {
-      plugins: [pinia],
       stubs: {
         PButton: true,
         PLoader: true,
@@ -99,7 +94,6 @@ describe('treeview', () => {
 
 
   beforeEach(() => {
-    setActivePinia(pinia)
     wrapper = createWrapper()
     flushPromises()
   })
@@ -145,7 +139,7 @@ describe('treeview', () => {
       it('should  hide create folder modal oppon on-close-create-folder', async () => {
         await wrapper.setProps({ isLoading: false })
         const createFolderSectionWrapper =
-              wrapper.findComponent({ name: 'CreateFolderSection' })
+          wrapper.findComponent({ name: 'CreateFolderSection' })
 
         createFolderSectionWrapper.vm.$emit('on-close-create-folder')
         await nextTick()

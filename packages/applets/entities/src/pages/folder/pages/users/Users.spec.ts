@@ -1,18 +1,14 @@
-import { createTestingPinia } from '@pinia/testing'
-import { commonStore } from '@pulse/common'
 import { shallowMount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
 import * as VueRouter from 'vue-router'
+import { useUserStore } from '@pulse/common/stores'
+import { getStoreMock } from '@pulse/common/mocks'
+
 import Users from './'
 
-const pinia = createTestingPinia()
+const userStoreMock = getStoreMock(useUserStore)
 
 function createWrapper() {
-  return shallowMount(Users, {
-    global: {
-      plugins: [pinia],
-    },
-  })
+  return shallowMount(Users)
 }
 
 vi.mock('vue-router', () => ({
@@ -36,9 +32,7 @@ describe('test User', () => {
     shouldExist,
     shouldNotExist,
   }) => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = isCollab
+    userStoreMock.isCollab = isCollab
     const wrapper = createWrapper()
 
     expect(wrapper.findComponent({ name: shouldExist }).exists()).toBeTruthy()

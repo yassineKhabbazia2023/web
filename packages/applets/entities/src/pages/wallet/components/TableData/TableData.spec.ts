@@ -1,16 +1,25 @@
-import { createTestingPinia } from '@pinia/testing'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { defineStore } from 'pinia'
 import { mockTableData } from './mockData'
-import { commonStore } from '@pulse/common'
+import {
+  amplitudeServiceMock,
+  SelectedEntityManagerMock,
+  defineSelectedEntityMock,
+  getStoreMock,
+  getMockedUserInfo,
+  CurrentUserManagerMock,
+} from '@pulse/common/mocks'
 import type { Entity } from '@pulse/common/types'
+import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+
 import TableData from '.'
+
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const userStoreMock = getStoreMock(useUserStore)
 
 const handleFavorites = vi.fn()
 const postMock = vi.fn()
-const contactId = '565cf560-8a2a-494f-9f85-73a031ed258e'
 const testEntity = {
   accountId: mockTableData[0].accountId,
   legalName: mockTableData[0].name,
@@ -28,26 +37,13 @@ vi.mock('@pulse/common', () => ({
       post: postMock,
     },
   }),
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        id: contactId,
-      },
-      isCollab: true,
-    }),
-    getters: {
-      defaultEntity: () => testEntity,
-    },
-  }),
-  userPermissions: () => ({
-    hasPermission: vi.fn(),
-  }),
-  amplitudeService: {
-    track: vi.fn(),
-  },
+  amplitudeService: amplitudeServiceMock,
 }))
 
-const pinia = createTestingPinia()
+vi.mock('@pulse/common/managers', () => ({
+  SelectedEntityManager: SelectedEntityManagerMock,
+  CurrentUserManager: CurrentUserManagerMock,
+}))
 
 const createWrapper = (isAccountManagement: boolean = false): VueWrapper<any> =>
   mount(TableData, {
@@ -57,7 +53,6 @@ const createWrapper = (isAccountManagement: boolean = false): VueWrapper<any> =>
       isAccountManagement,
     },
     global: {
-      plugins: [pinia],
       stubs: {
         PToolbox: {
           name: 'PToolbox',
@@ -89,17 +84,17 @@ const clientsColumnLabels = [
   'City',
 ]
 
+const userMock = getMockedUserInfo()
+
 describe('tableData', () => {
   let wrapper: VueWrapper<any>
-  let store: any
 
   beforeEach(async () => {
     vi.useFakeTimers()
+    selectedEntityStoreMock.selectedEntity = testEntity
+    userStoreMock.user = userMock
+    userStoreMock.isCollab = true
     wrapper = createWrapper()
-    store = commonStore(pinia)
-    store.$patch({
-      user: {},
-    })
 
     await flushPromises()
   })
@@ -215,7 +210,6 @@ describe('tableData', () => {
   })
   it('should change ibs selected and emit access', () => {
     const ibsLink = wrapper.find('[data-testid=account-access-link]')
-    const setItemSpy = vi.spyOn(Storage.prototype, 'setItem')
     const formattedEntity: Entity = {
       legalName: testEntity.legalName,
       accountId: testEntity.accountId,
@@ -224,18 +218,8 @@ describe('tableData', () => {
     }
     ibsLink.trigger('click')
 
-    expect(setItemSpy).toHaveBeenCalledWith(
-      'selected-entity',
-      JSON.stringify(formattedEntity),
-    )
+    expect(defineSelectedEntityMock).toHaveBeenCalledWith(formattedEntity)
     expect(wrapper.emitted('access')).toStrictEqual([[testEntity.accountId]])
-    expect(store.$patch).toHaveBeenCalledWith({
-      user: {
-        entities: {
-          default: formattedEntity,
-        },
-      },
-    })
   })
 
   it('should display the correct columns when the user is a collaborator', () => {
@@ -279,9 +263,7 @@ describe('tableData', () => {
   })
 
   it('should display the correct columns when the user is a client', async () => {
-    store.$patch({
-      isCollab: false,
-    })
+    userStoreMock.isCollab = false
     await nextTick()
     const pTableColumns = wrapper.findAllComponents({ name: 'ElTableColumn' })
     clientsColumnLabels.forEach((columnLabel, index) => {

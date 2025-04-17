@@ -2,8 +2,8 @@
 import type { UserInfo, UserInfoApi } from '../stores/types'
 
 
-export const getMockedUser = () => {
-  const user: UserInfo = {
+export const getMockedUser = (override: Partial<UserInfo> = {}) => {
+  const defaultUser: UserInfo = {
     id: 123,
     firstName: 'John',
     lastName: 'Doe',
@@ -14,7 +14,6 @@ export const getMockedUser = () => {
     officeMobile: 'johnd-mobile-phone',
     oldId: 'johnd-guid',
     entities: {
-      favorites: [],
       default: undefined,
     },
     persona: {
@@ -22,6 +21,10 @@ export const getMockedUser = () => {
       name: 'Collaborator GS',
       description: '',
     },
+  }
+  const user = {
+    ...defaultUser,
+    ...override,
   }
 
   return user

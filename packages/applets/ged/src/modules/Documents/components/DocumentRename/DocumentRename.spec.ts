@@ -1,4 +1,3 @@
-import { createPinia } from 'pinia'
 import { type VueWrapper, shallowMount } from '@vue/test-utils'
 import { vi, describe, it, expect } from 'vitest'
 import { nextTick } from 'vue'
@@ -10,8 +9,6 @@ import { trackDocumentRename } from '@ged/services/tracking/tracking.service'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
 import DocumentRename from './'
-
-const pinia = createPinia()
 
 vi.mock('@pulse/styleguide')
 
@@ -31,9 +28,6 @@ const createWrapper = (
 ): VueWrapper<any> => {
   return shallowMount(DocumentRename, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 

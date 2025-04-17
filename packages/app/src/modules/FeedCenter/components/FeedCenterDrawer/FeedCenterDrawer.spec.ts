@@ -1,35 +1,33 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { defineStore } from 'pinia'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
 import { fetchNotificationsMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 import { trackingServiceMock, trackNotificationMarkAsReadMock } from '@app/__mocks__/tracking.service.mocks'
 import { feedCenterDrawerManagerMock, patchAllNotificationsAsReadMock } from '@app/__mocks__/feed-center-drawer.manager.mocks'
 import { NotificationTrackingReadType } from '@app/modules/FeedCenter/services/tracking/tracking.types'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
-
+import { useUserStore } from '@pulse/common/stores'
+import { getStoreMock } from '@pulse/common/mocks'
 import { notificationsMock } from '@app/__mocks__/notifications.mocks'
+
 import FeedCenterDrawer from '.'
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
 vi.mock('./feed-center-drawer.manager', () => feedCenterDrawerManagerMock)
 
-const pinia = createTestingPinia()
+getStoreMock(useUserStore)
+
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        id: 13,
-      },
-    }),
-  }) }))
+  commonApi: () => ({
+    gateway: {
+      get: () => vi.fn(),
+    },
+  }),
+}))
 
 function createWrapper(props: FeedCenterDrawerProps = FeedCenterDrawerBaseProps) {
   return shallowMount(FeedCenterDrawer, {
     props,
     global: {
-      plugins: [pinia],
       stubs: {
         PDrawer: {
           name: 'PDrawer',

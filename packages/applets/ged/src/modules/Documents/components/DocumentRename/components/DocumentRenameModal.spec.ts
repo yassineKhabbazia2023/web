@@ -1,8 +1,6 @@
 import DocumentRenameModal from './DocumentRenameModal.vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
 import type { DocumentRenameModalProps } from './DocumentRenameModalTypes'
-import { createPinia, setActivePinia } from 'pinia'
 import { documentMock } from '@ged/__mocks__/documents.mocks'
 
 const defaultProps: DocumentRenameModalProps = {
@@ -11,25 +9,17 @@ const defaultProps: DocumentRenameModalProps = {
   isRenameModalOpened: true,
 }
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: DocumentRenameModalProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentRenameModal, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 
 const findSingleInputModalWrapper = (wrapper: VueWrapper<any>) =>
   wrapper.findComponent({ name: 'SingleInputModal' })
 describe('props', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
   it('should have appropriate base name', () => {
     const wrapper = createWrapper({ ...defaultProps, isRenameModalOpened: true })
 

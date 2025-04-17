@@ -1,5 +1,9 @@
 <template>
-  <div v-if="!isLoading && defaultEntity" class="common-layout">
+  <div
+    v-if="!isLoading"
+    class="common-layout"
+    data-testid="common-layout"
+  >
     <HomeScheduleDrawer
       v-if="FeatureFlagManager.isScheduleActivated() && calendarHasBeenOpened"
       v-model="showCalendar"
@@ -55,13 +59,12 @@ import {
   VITE_PRODUCT_FRUITS_KEY,
   VITE_PRODUCT_FRUITS_KEY_CLIENT,
 } from 'env-vars'
-import { commonStore as store, dataProvider } from '@pulse/common'
+import { dataProvider } from '@pulse/common'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import UserProfile from '@app/components/UserProfile'
 import HomeScheduleDrawer from '@app/components/HomeScheduleDrawer'
 import Header from './Header'
 import Sidebar from './Sidebar'
-import { storeToRefs } from 'pinia'
 import { fetchEntities, fetchFavoriteEntities } from '@app/services/entities'
 import { getDefaultEntity } from './Sidebar/components/SidebarEntity/utils'
 import FeedCenterDrawer from '@app/modules/FeedCenter/components/FeedCenterDrawer'
@@ -70,6 +73,8 @@ import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
 import { initProductFruits, showProductFruits, stopProductFruits, hideProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { initHubspot, openHubspot } from '@app/plugins/Hubspot/hubspot.plugin'
 import { trackFeedcenterOpened } from '@app/modules/FeedCenter/services/tracking/tracking.service'
+import { useFavoriteEntitiesStore } from '@pulse/common/stores'
+import { SelectedEntityManager } from '@pulse/common/managers'
 
 
 // Variables
@@ -115,8 +120,7 @@ const stylesMetaProperties = computed(
   () => router.currentRoute.value.meta.styles,
 )
 
-const globalStore = store()
-const { defaultEntity } = storeToRefs(globalStore)
+const favoriteEntitiesStore = useFavoriteEntitiesStore()
 
 function openChat() {
   hideProductFruits()
@@ -127,28 +131,25 @@ onMounted(async () => {
   try {
     const user = await fetchUserData()
     const entities = await fetchEntities()
-    const selectedEntity = getDefaultEntity(entities?.items?.at(0))
-
-    globalStore.$patch({
-      user: {
-        ...user,
-        entities: {
-          default: selectedEntity,
-          favorites: [],
-        },
-      },
-    })
+    if (entities.items.length > 0) {
+      const selectedEntity = getDefaultEntity(entities.items.at(0))
+      SelectedEntityManager.defineSelectedEntity(selectedEntity)
+    }
 
     await fetchFavoriteEntities()
 
     if (user) {
-      // QUICK FIX: do not initialise Product Fruits if the use is not authenticated
+      // QUICK FIX: do not initialise Product Fruits if the user is not authenticated
       const productFruitsKey = user.isCollab ? VITE_PRODUCT_FRUITS_KEY : VITE_PRODUCT_FRUITS_KEY_CLIENT
+      const productFruitUser = {
+        ...user,
+        id: user.id.toString(),
+      }
 
       initProductFruits({
         lang: 'fr',
         key: productFruitsKey,
-        user,
+        user: productFruitUser,
         openChat,
       })
     }
@@ -183,7 +184,7 @@ async function setNotificationsCount() {
 
   try {
     const accountIds = isFavoriteEnabled.value
-      ? globalStore.favoriteEntities.map(e => e.accountId)
+      ? favoriteEntitiesStore.favoriteEntities.map(e => e.accountId)
       : []
 
     const { count } = await fetchUnreadNotificationsCount(accountIds)

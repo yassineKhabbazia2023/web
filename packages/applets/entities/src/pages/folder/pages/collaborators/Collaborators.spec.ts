@@ -1,15 +1,17 @@
-import { createTestingPinia } from '@pinia/testing'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { nextTick } from 'vue'
-import { defineStore } from 'pinia'
 import { mockCollabsData } from './mockData'
 import * as walletServices from '@entities/services/wallet'
 import * as contactServices from '@entities/services/contact'
-import { commonStore } from '@pulse/common'
 import type { ComponentWrapper } from '@entities/common/types'
+import { CurrentUserManagerMock, getStoreMock } from '@pulse/common/mocks'
+import { useUserStore } from '@pulse/common/stores'
+
 import Collaborators from '.'
+
+const userStoreMock = getStoreMock(useUserStore)
 
 const ENTITY_ID = 42
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
@@ -23,18 +25,11 @@ vi.mock('vue-router', () => ({
 }))
 
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {},
-    }),
-    getters: {
-      isCollab: () => true,
-    },
-  }),
   debounce: (callback: Function) => callback,
-  userPermissions: () => ({
-    hasPermission: () => true,
-  }),
+}))
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
 }))
 
 vi.mock('@entities/services/account', () => ({
@@ -57,15 +52,12 @@ vi.mock('@entities/services/wallet', () => ({
   ),
 }))
 
-const pinia = createTestingPinia()
-
 const createWrapper = (): ComponentWrapper<
   InstanceType<typeof Collaborators>
 > =>
   mount(Collaborators, {
     attachTo: document.body,
     global: {
-      plugins: [pinia],
       stubs: {
         AddCollaboratorsDrawer: true,
         CollabDetailsDrawer: true,
@@ -94,7 +86,7 @@ describe('collaborators', () => {
     wrapper.findComponent('[data-testid=toolbox-action]') as VueWrapper
 
   beforeEach(() => {
-
+    userStoreMock.isCollab = true
     vi.spyOn(contactServices, 'getContactById').mockRejectedValue(
       expectedErrorMessage,
     )
@@ -202,9 +194,7 @@ describe('collaborators', () => {
   })
 
   it('should not display actions when is NOT Collab', async () => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
+    userStoreMock.isCollab = false
     await nextTick()
 
     const collaboratorsAction = wrapper.find(

@@ -1,20 +1,22 @@
-import { createTestingPinia } from '@pinia/testing'
-import { defineStore } from 'pinia'
 import { mount } from '@vue/test-utils'
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest'
 import { envVarsMock } from '@pulse/core/mocks'
-import { getTokenSubMock, hasValidAccessTokenMock, registerOnChangeMock, tokenServiceMock, unregisterOnChangeMock } from '@pulse/common/mocks'
+import {
+  amplitudeServiceMock,
+  getStoreMock,
+  CurrentUserManagerMock,
+} from '@pulse/common/mocks'
 import { logoutAndRedirectToLoginMock, useRedirectionMock } from '@app/__mocks__/useRedirection.composable.mocks'
-import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import { getExpirationDelaysMock } from '@app/__mocks__/app.utils.mocks'
-import type { Entity } from '@pulse/common/types'
 import { nextTick, reactive } from 'vue'
+import { useUserStore, useTokenStore } from '@pulse/common/stores'
 
-import App from './'
 import { LoginRouteName } from '@pulse/common/constants'
 import { LAYOUTS } from '@app/constants/constants'
 
-const testEntity: Entity = getMockedFavoriteEntities()[0]
+import App from './'
+
+getStoreMock(useUserStore)
+const tokenStoreMock = getStoreMock(useTokenStore)
 
 const mockUserOrigin = vi.fn(() => ({ data: 'CLIENT' }))
 
@@ -35,6 +37,10 @@ vi.mock('vue-router', () => ({
   useRoute: useRouterMock,
 }))
 
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
+}))
+
 vi.mock('./app.utils', () => ({
   getExpirationDelays: getExpirationDelaysMock,
 }))
@@ -42,23 +48,12 @@ vi.mock('./app.utils', () => ({
 vi.mock('@app/composables/useRedirection', () => useRedirectionMock)
 vi.mock('env-vars', () => envVarsMock)
 vi.mock('@app/plugins/ProductFruits/productFruits.plugin')
-
-const commonStateMock = vi.hoisted(() => vi.fn(() => ({
-  user: null,
-  isCollab: false,
-})))
+vi.mock('@pulse/core/utils/idle')
 
 const mockedRefreshClientToken = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/common', () => ({
   refreshClientToken: mockedRefreshClientToken,
-  commonStore: defineStore('common', {
-    state: commonStateMock,
-    getters: {
-      defaultEntity: () => testEntity,
-      isAuthenticated: () => false,
-    },
-  }),
   commonApi: () => ({
     gateway: {
       get: mockUserOrigin,
@@ -67,12 +62,7 @@ vi.mock('@pulse/common', () => ({
   routes: {
     value: [],
   },
-  tokenService: tokenServiceMock.TokenService.getInstance(),
-  amplitudeService: {
-    init: vi.fn(),
-    track: vi.fn(),
-    setUserId: vi.fn(),
-  },
+  amplitudeService: amplitudeServiceMock,
   dataProvider: () => {
     return {
       fetchUserData: vi.fn(),
@@ -85,7 +75,6 @@ vi.mock('@pulse/common', () => ({
 const createWrapper = () =>
   mount(App, {
     global: {
-      plugins: [createTestingPinia()],
       stubs: {
         PButton: { template: '<button><slot /></button>' },
         Suspense: { template: '<div><slot /></div>' },
@@ -113,7 +102,7 @@ describe('app with navigation guard', () => {
 
   it('should call refreshClientToken when PopupRenewToken emits renew-token', () => {
     const mockedSub = 'mocked-sub'
-    getTokenSubMock.mockReturnValueOnce(mockedSub)
+    tokenStoreMock.tokenSub = mockedSub
     const wrapper = createWrapper()
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
@@ -140,22 +129,23 @@ describe('app with navigation guard', () => {
       isTokenExpired: true,
       isVisible: true,
     }
-    getExpirationDelaysMock.mockReturnValueOnce({
+    getExpirationDelaysMock.mockReturnValue({
       expiredTokenDelay: 2 * FIFTY_MINUTES_IN_MILLISECONDS,
       openPopupDelay: FIFTY_MINUTES_IN_MILLISECONDS - 1000,
     })
-    const cbFunctions: Function[] = []
 
-    hasValidAccessTokenMock
-      .mockReturnValueOnce(true)
-      .mockReturnValueOnce(false)
-    registerOnChangeMock.mockImplementation((_key: string, cb: Function) => {
-      cbFunctions.push(cb)
-    })
+    tokenStoreMock.getIsTokenExpired.mockReturnValue(true)
     const wrapper = createWrapper()
     const vm = wrapper.vm as any
 
-    cbFunctions.at(0)?.(mockedToken)
+    tokenStoreMock.token = mockedToken
+    tokenStoreMock.getIsTokenExpired
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(false)
+      .mockReturnValueOnce(true)
+    await nextTick()
+
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsBefore)
@@ -172,7 +162,7 @@ describe('app with navigation guard', () => {
     expect(vm.openPopupWhenHasExpiredTimer).not.toBeUndefined()
     expect(vm.openPopup5MinBeforeExpiredTimer).not.toBeUndefined()
 
-    cbFunctions.at(0)?.(mockedToken2)
+    tokenStoreMock.token = mockedToken2
     await nextTick()
 
     expect(vm.openPopupWhenHasExpiredTimer).toBeUndefined()
@@ -180,7 +170,7 @@ describe('app with navigation guard', () => {
   })
 
   it('should hide PopupRenewToken on route change to Login', async () => {
-    const mockedToken = 'mocked-token'
+    const mockedToken = 'mocked-token-1'
     const expectedPropsAfterFiveMinutes = {
       isCollab: false,
       isTokenExpired: false,
@@ -198,18 +188,18 @@ describe('app with navigation guard', () => {
       },
     })
     useRouterMock.mockReturnValueOnce(mockedRoute)
-    getExpirationDelaysMock.mockReturnValueOnce({
+    getExpirationDelaysMock.mockReturnValue({
       expiredTokenDelay: 2 * FIFTY_MINUTES_IN_MILLISECONDS,
       openPopupDelay: FIFTY_MINUTES_IN_MILLISECONDS - 1000,
     })
-    const cbFunctions: Function[] = []
 
-    hasValidAccessTokenMock.mockReturnValueOnce(true)
-    registerOnChangeMock.mockImplementation((_key: string, cb: Function) => {
-      cbFunctions.push(cb)
-    })
+    tokenStoreMock.getIsTokenExpired.mockReturnValue(false)
+
     const wrapper = createWrapper()
-    cbFunctions.at(0)?.(mockedToken)
+
+    tokenStoreMock.token = mockedToken
+    await nextTick()
+
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     vi.advanceTimersByTime(FIFTY_MINUTES_IN_MILLISECONDS)
@@ -225,7 +215,6 @@ describe('app with navigation guard', () => {
   })
 
   it('should NOT open PopupRenewToken when delay is zero', async () => {
-    const mockedToken = 'mocked-token'
     const expectedProps = {
       isCollab: false,
       isTokenExpired: false,
@@ -235,14 +224,9 @@ describe('app with navigation guard', () => {
       expiredTokenDelay: 0,
       openPopupDelay: 0,
     })
-    const cbFunctions: Function[] = []
 
-    hasValidAccessTokenMock.mockReturnValueOnce(true)
-    registerOnChangeMock.mockImplementation((_key: string, cb: Function) => {
-      cbFunctions.push(cb)
-    })
+    tokenStoreMock.getIsTokenExpired.mockReturnValueOnce(false)
     const wrapper = createWrapper()
-    cbFunctions.at(0)?.(mockedToken)
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     expect(popupRenewToken.props()).toStrictEqual(expectedProps)
@@ -256,12 +240,5 @@ describe('app with navigation guard', () => {
     await nextTick()
 
     expect(popupRenewToken.props()).toStrictEqual(expectedProps)
-  })
-
-  it('should call unregisterOnChange when unmount', () => {
-    const wrapper = createWrapper()
-    wrapper.unmount()
-
-    expect(unregisterOnChangeMock).toHaveBeenCalledOnce()
   })
 })

@@ -1,36 +1,29 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { type VueWrapper, shallowMount, flushPromises } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
 import * as SubscriptionServices from '@entities/services/subscription'
-import { ref, nextTick } from 'vue'
+import { nextTick } from 'vue'
 import { getActiveOffersMocked } from './OffersMocks'
+import {
+  getMockedEntity,
+  CurrentUserManagerMock,
+  hasPermissionMock,
+  getStoreMock,
+  getMockedUser,
+} from '@pulse/common/mocks'
+import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+
 import Offers from '.'
 
 // Mocks
 const activeOffersMocked = getActiveOffersMocked()
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
-const isCollabMock = ref(true)
-const hasPermissionMock = vi.hoisted(() => vi.fn())
-const commonStoreMock = vi.hoisted(() => vi.fn(() => ({
-  isCollab: isCollabMock,
-  defaultEntity: ref({
-    accountId: 1,
-    accountNumber: '3669209950',
-    legalName: 'Restaurant Le Grand Bleu',
-    color: 'orange',
-  }),
-  user: ref({}),
-})))
-const userPermissionsMock = vi.hoisted(() => vi.fn(() => ({
-  hasPermission: hasPermissionMock,
-})))
-
-vi.mock('@pulse/common', () => ({
-  commonStore: commonStoreMock,
-  userPermissions: userPermissionsMock,
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
 }))
+
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const userStoreMock = getStoreMock(useUserStore)
 
 vi.mock('@entities/services/subscription', () => ({
   fetchAccountSubscriptions: vi.fn(() => Promise.resolve(activeOffersMocked)),
@@ -43,19 +36,20 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
+const mockedEntity = getMockedEntity({
+  accountId: 1,
+  accountNumber: '3669209950',
+  legalName: 'Restaurant Le Grand Bleu',
+  color: 'orange',
+})
+const userMock = getMockedUser()
+
 const createWrapper = (isCollab = true, hasPermission = true): VueWrapper => {
-  isCollabMock.value = isCollab
-  hasPermissionMock.mockImplementation(() => hasPermission)
+  userStoreMock.isCollab = isCollab
+  hasPermissionMock.mockImplementation((_: string | string[]) => hasPermission)
 
   return shallowMount(Offers, {
     global: {
-      plugins: [createTestingPinia({
-        initialState: {
-          common: {
-            user: {},
-          },
-        },
-      })],
       stubs: {
         PBlockHeader: {
           name: 'PBlockHeader',
@@ -84,6 +78,9 @@ const createWrapper = (isCollab = true, hasPermission = true): VueWrapper => {
 describe('offers', () => {
   let wrapper: VueWrapper
   beforeEach(() => {
+    userStoreMock.user = userMock
+    selectedEntityStoreMock.selectedEntity = mockedEntity
+
     wrapper = createWrapper()
   })
 

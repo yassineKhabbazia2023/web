@@ -1,16 +1,14 @@
-import { expect, describe, it, vi, afterEach } from 'vitest'
 import { PERMISSION_CODES } from '@entities/constants'
 import { loggerMock } from '@pulse/core/mocks'
-import { getCanEdit, savePatchedAccount } from './InformationHelper'
 import type { PatchOperation, PatchValue } from '@entities/services/PatchRecordService'
+import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks'
 
-const mockHasPermission = vi.hoisted(() => vi.fn())
+import { getCanEdit, savePatchedAccount } from './InformationHelper'
+
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
-vi.mock('@pulse/common', () => ({
-  userPermissions: () => ({
-    hasPermission: mockHasPermission,
-  }),
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
 }))
 
 const mockedGetPatchOperations = vi.hoisted(() => vi.fn(() => (mockedPatchOperations)))
@@ -37,7 +35,7 @@ const mockedPatchOperations: PatchOperation[] = [{
 
 describe('test InformationHelper', () => {
   afterEach(() => {
-    mockHasPermission.mockReset()
+    hasPermissionMock.mockReset()
   })
 
   describe('getCanEdit', () => {
@@ -72,12 +70,12 @@ describe('test InformationHelper', () => {
       expectedCalledTimes,
       expectedCanEdit,
     }) => {
-      mockHasPermission.mockReturnValue(hasPermission)
+      hasPermissionMock.mockReturnValue(hasPermission)
       const canEdit = getCanEdit(isCollab)
       expect(canEdit).toBe(expectedCanEdit)
-      expect(mockHasPermission).toHaveBeenCalledTimes(expectedCalledTimes)
+      expect(hasPermissionMock).toHaveBeenCalledTimes(expectedCalledTimes)
       if (expectedCalledTimes > 0) {
-        expect(mockHasPermission).toHaveBeenNthCalledWith(expectedCalledTimes, PERMISSION_CODES.EDIT_COMPANY_DATA)
+        expect(hasPermissionMock).toHaveBeenNthCalledWith(expectedCalledTimes, PERMISSION_CODES.EDIT_COMPANY_DATA)
       }
     })
   })

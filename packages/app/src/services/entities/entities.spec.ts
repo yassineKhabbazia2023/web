@@ -3,8 +3,12 @@ import { loggerMock } from '@pulse/core/mocks'
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import { API_PREFIXES } from '../config'
 import type { Entity } from '@pulse/common/types'
+import { getStoreMock } from '@pulse/common/mocks'
+import { useFavoriteEntitiesStore } from '@pulse/common/stores'
 
 import { fetchFavoriteEntities, fetchEntities } from '.'
+
+const favoriteEntitiesStoreMock = getStoreMock(useFavoriteEntitiesStore)
 
 let throwError = false
 const testEntities: Entity[] = getMockedFavoriteEntities()
@@ -24,9 +28,6 @@ vi.mock('@pulse/common', () => {
           }
         }),
       },
-    }),
-    commonStore: () => ({
-      $patch: vi.fn(),
     }),
     dataProvider: () => {
       return {
@@ -51,7 +52,47 @@ describe('entities', () => {
   })
   it('should return the favorite entities of the current user', async () => {
     const favoriteEntities = await fetchFavoriteEntities()
+    const mappedFavoriteEntites = [
+      {
+        accountId: 1,
+        accountNumber: '3669209950',
+        color: 'orange',
+        legalName: 'Restaurant Le Grand Bleu',
+      },
+      {
+        accountId: 2,
+        accountNumber: '4811247468',
+        color: 'cyan',
+        legalName: 'Restaurant Bistro Kitchen',
+      },
+      {
+        accountId: 3,
+        accountNumber: '3590284870',
+        color: 'amethyste',
+        legalName: 'Fleuriste de la mairie',
+      },
+      {
+        accountId: 4,
+        accountNumber: '4377393628',
+        color: 'teal',
+        legalName: 'La Maison Blanche',
+      },
+      {
+        accountId: 5,
+        accountNumber: '4193754384',
+        color: 'green',
+        legalName: 'La Terrasse Rouge',
+      },
+      {
+        accountId: 6,
+        accountNumber: '4644722294',
+        color: 'fuschia',
+        legalName: 'Restaurant Maison de Pierre',
+      },
+    ]
 
+    expect(favoriteEntitiesStoreMock.setFavoriteEntities).toHaveBeenCalledOnce()
+    expect(favoriteEntitiesStoreMock.setFavoriteEntities).toHaveBeenNthCalledWith(1, mappedFavoriteEntites)
     expect(favoriteEntities).toStrictEqual(testEntities)
   })
 

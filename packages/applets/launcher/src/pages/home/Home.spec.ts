@@ -5,15 +5,24 @@ import { launchCardsMock } from '@launcher/__mocks__/launch-cards.mocks'
 import { launcherServicesMocks } from '@launcher/__mocks__/launcher.service.mocks'
 import { mockedEntity } from '@launcher/__mocks__/entity.mocks'
 import { getLaunchCardsMock, getSilaeDownloadLabelMock, handleClickActionMock, handleDownloadMock, homeUtilsMocks, mockedPercent } from '@launcher/__mocks__/home-utils.mocks'
-import { mockHasPermission } from '@launcher/__mocks__/permissions.mocks'
 import { envVarsMock } from '@pulse/core/mocks'
 import '@launcher/__mocks__/common.import.mocks'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
 import { LauncherKey } from './HomeTypes'
 import * as VueRouter from 'vue-router'
+import {
+  getMockedEntity,
+  hasPermissionMock,
+  getHasPermissionMocked,
+  getStoreMock,
+} from '@pulse/common/mocks'
+import { useSelectedEntityStore, usePermissionsStore } from '@pulse/common/stores'
 
 import Home from '.'
+
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const permissionsStoreMock = getStoreMock(usePermissionsStore)
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -42,9 +51,17 @@ function getLaunchCardComponents(wrapper: VueWrapper) {
     .findAllComponents('[data-testid^="launch-card-"]')
 }
 
+const entityMock = getMockedEntity({
+  legalName: 'Entity Test',
+})
+const selectedEntityPermissionsMock = ['abc']
+
 describe('test Home', () => {
   let wrapper: VueWrapper
   beforeEach(() => {
+    selectedEntityStoreMock.selectedEntity = entityMock
+    permissionsStoreMock.selectedEntityPermissions = selectedEntityPermissionsMock
+
     getLaunchCardsMock.mockReturnValue(launchCardsMock)
     getSilaeDownloadLabelMock.mockReturnValue(mockedSilaeDownloadLabel)
     wrapper = getWrapper()
@@ -74,11 +91,7 @@ describe('test Home', () => {
     it('should display filtered cards', async () => {
       const mockedFiltersLaunchCards = [launchCardsMock.at(0)]
       getLaunchCardsMock.mockReturnValue(mockedFiltersLaunchCards)
-      mockHasPermission.mockImplementation((permissions: string[]) =>
-        permissions.includes(
-          LAUNCHER_AUTHORIZATIONS[2].authorizationCodes[0],
-        ),
-      )
+      hasPermissionMock.mockImplementation(getHasPermissionMocked([LAUNCHER_AUTHORIZATIONS[2].authorizationCodes[0]]))
 
       const wrapper = getWrapper()
       await flushPromises()
@@ -175,7 +188,7 @@ describe('test Home', () => {
   describe('when no launcher app to display', () => {
     it('should display filtered cards', async () => {
       getLaunchCardsMock.mockReturnValue([])
-      mockHasPermission.mockImplementation(() => false)
+      hasPermissionMock.mockImplementation(() => false)
       const wrapper = getWrapper()
       await flushPromises()
       const launchCards = getLaunchCardComponents(wrapper)

@@ -1,6 +1,3 @@
-
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import type { DocumentUploadProps } from './DocumentsUploadTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
@@ -30,17 +27,11 @@ const createWrapper = (
 ): DocumentsUploadWrapper => {
   return mount(DocumentsUpload, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   }) as unknown as DocumentsUploadWrapper
 }
 
-const pinia = createPinia()
-
 describe('test DocumentsUpload failure', () => {
   beforeEach(() => {
-    setActivePinia(pinia)
     vi.useFakeTimers()
   })
 
@@ -53,7 +44,7 @@ describe('test DocumentsUpload failure', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',

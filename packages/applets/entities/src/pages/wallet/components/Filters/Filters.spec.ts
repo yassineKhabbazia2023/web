@@ -1,11 +1,9 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import { getMockedEntitiesStatistics } from './FiltersMocks'
 import { EntityStatus } from './FiltersTypes'
 import Filters from '.'
 
-const pinia = createPinia()
 const statistics = getMockedEntitiesStatistics()
 
 vi.mock('@pulse/common', () => ({
@@ -23,7 +21,6 @@ describe('filter', () => {
 
   beforeEach(async () => {
     wrapper = mount(Filters)
-    setActivePinia(pinia)
     await flushPromises()
   })
 

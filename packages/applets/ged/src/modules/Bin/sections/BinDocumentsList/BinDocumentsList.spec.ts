@@ -1,6 +1,4 @@
 import { nextTick } from 'vue'
-import { describe, it, expect, beforeEach } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import { binDocumentsMock } from '@ged/__mocks__/bin-documents.mocks'
 import { mount } from '@vue/test-utils'
 import type { BinDocumentsListProps } from '@ged/modules/Bin/sections/BinDocumentsList/BinDocumentsListTypes'
@@ -16,19 +14,10 @@ const createWrapper = (
 ) => {
   return mount(BinDocumentsList, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 
-const pinia = createPinia()
-
 describe('documentList', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('props', () => {
     it('should render columns based on provided documentHeaders', async () => {
       expect.hasAssertions()

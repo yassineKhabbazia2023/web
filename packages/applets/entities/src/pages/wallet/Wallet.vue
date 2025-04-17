@@ -24,7 +24,9 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
-import { amplitudeService, commonStore, userPermissions } from '@pulse/common'
+import { amplitudeService } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
+import { CurrentUserManager } from '@pulse/common/managers'
 import { PERMISSION_CODES } from '@entities/constants'
 
 const { t } = useI18n({
@@ -34,11 +36,12 @@ const { t } = useI18n({
 
 const route = useRoute()
 const router = useRouter()
-const { hasPermission } = userPermissions()
-const { user, isCollab } = storeToRefs(commonStore())
+const userStore = useUserStore()
+
+const { user, isCollab } = storeToRefs(userStore)
 
 const activeTab = computed(() => route.name as string)
-const collaboratorsTabs = [
+const getCollaboratorsTabs = () => [
   {
     name: 'folders',
     title: t('wallet'),
@@ -47,32 +50,32 @@ const collaboratorsTabs = [
   {
     name: 'folderMandats',
     title: t('mandate'),
-    display: hasPermission(PERMISSION_CODES.MANDATE),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.MANDATE),
   },
   {
     name: 'powerbi',
     title: t('uploadPowerBIReport'),
-    display: hasPermission(PERMISSION_CODES.POWERBI_REPORT),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.POWERBI_REPORT),
   },
   {
     name: 'subscriptions',
     title: t('subscriptions'),
-    display: hasPermission(PERMISSION_CODES.SUBSCRIPTIONS),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.SUBSCRIPTIONS),
   },
   {
     name: 'collaborators',
     title: t('collaborators'),
-    display: hasPermission(PERMISSION_CODES.COLLABORATORS),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.COLLABORATORS),
   },
   {
     name: 'folderLauncher',
     title: t('launcher'),
-    display: hasPermission(PERMISSION_CODES.LAUNCHER),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.LAUNCHER),
   },
   {
     name: 'accountManagement',
     title: t('accountManagement'),
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_MANAGEMENT),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_MANAGEMENT),
   },
 ]
 
@@ -85,11 +88,11 @@ const clientTabs = [
   {
     name: 'allUsers',
     title: t('allUsers'),
-    display: hasPermission(PERMISSION_CODES.USERS),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.USERS),
   },
 ]
 
-const tabs = computed(() => (isCollab.value ? collaboratorsTabs : clientTabs))
+const tabs = computed(() => (isCollab.value ? getCollaboratorsTabs() : clientTabs))
 
 const handleTabClick = (tab: any) => {
   amplitudeService.track('Feature Consulted', {

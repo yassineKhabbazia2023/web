@@ -3,14 +3,15 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { mockedCollaboratorsList2 } from '@entities/__mocks__/collaborators.mocks'
 import { MENU_ACTIONS_NAME } from './constants'
-import TableData from './'
+import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks'
 import { getInitials } from '@entities/helper'
 import { PTable } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 
+import TableData from './'
+
 let wrapper: VueWrapper<any>
 
-const mockHasPermission = vi.fn((_code: string) => true)
 const mockGatewayGet = vi.fn(() => {
   return Promise.resolve({
     data: mockedCollaboratorsList2,
@@ -23,14 +24,13 @@ vi.mock('@pulse/common', () => ({
       get: mockGatewayGet,
     },
   }),
-  commonStore: () => ({
-    $patch: vi.fn(),
-  }),
   debounce: (callback: Function) => callback,
-  userPermissions: () => ({
-    hasPermission: mockHasPermission,
-  }),
 }))
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
+}))
+
 const createWrapper = (): VueWrapper<any> =>
   shallowMount(TableData, {
     props: {
@@ -125,7 +125,7 @@ describe('tableData', () => {
   )
 
   it('should display only the actions that the user has permission to perform', () => {
-    mockHasPermission.mockReturnValue(false)
+    hasPermissionMock.mockReturnValue(false)
     wrapper = createWrapper()
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 
@@ -160,7 +160,7 @@ describe('tableData', () => {
     const wrapper = createWrapper()
     const sortPayload =
 
-        '{"column":{"order":"ascending","id":"el-table_18_column_100","type":"default","property":"email","align":"is-left","headerAlign":"is-left","showOverflowTooltip":true,"filteredValue":[],"filterPlacement":"","isColumnGroup":false,"isSubColumn":false,"filterOpened":false,"sortable":true,"rawColumnKey":null,"label":"E-Mail","resizable":true,"sortOrders":["ascending","descending",null],"reserveSelection":false,"filterMultiple":true,"minWidth":80,"realWidth":423,"no":1,"level":1,"colSpan":1,"rowSpan":1},"prop":"email","order":"ascending"}'
+      '{"column":{"order":"ascending","id":"el-table_18_column_100","type":"default","property":"email","align":"is-left","headerAlign":"is-left","showOverflowTooltip":true,"filteredValue":[],"filterPlacement":"","isColumnGroup":false,"isSubColumn":false,"filterOpened":false,"sortable":true,"rawColumnKey":null,"label":"E-Mail","resizable":true,"sortOrders":["ascending","descending",null],"reserveSelection":false,"filterMultiple":true,"minWidth":80,"realWidth":423,"no":1,"level":1,"colSpan":1,"rowSpan":1},"prop":"email","order":"ascending"}'
     const table = wrapper.findComponent(PTable)
     await nextTick()
 

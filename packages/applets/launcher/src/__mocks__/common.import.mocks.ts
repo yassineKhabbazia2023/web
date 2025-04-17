@@ -1,6 +1,5 @@
 import { commonApiDsDeleteSpy, commonApiDsGetSpy, commonApiDsPatchSpy, commonApiDsPostSpy, commonApiGatewayGetSpy, commonApiGatewayPostSpy, commonApiPortalGetSpy } from './api.mocks'
-import { mockedEntity } from './entity.mocks'
-import { mockHasPermission } from './permissions.mocks'
+import { CurrentUserManagerMock } from '@pulse/common/mocks'
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
@@ -18,17 +17,6 @@ vi.mock('@pulse/common', () => ({
       get: commonApiPortalGetSpy,
     },
   }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-    defaultEntity: mockedEntity,
-    userAccountPermissions: [],
-  }),
-  userPermissions: () => ({
-    hasPermission: mockHasPermission,
-  }),
   DataStreamHubConnection: vi.fn(() => ({
     startConnection: vi.fn(() => {
       return Promise.resolve()
@@ -43,4 +31,8 @@ vi.mock('@pulse/common', () => ({
     destroyConnection: vi.fn(),
   })),
   debounce: vi.fn((fn) => fn),
+}))
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
 }))

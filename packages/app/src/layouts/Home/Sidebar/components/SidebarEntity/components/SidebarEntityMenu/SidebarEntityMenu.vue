@@ -54,9 +54,9 @@
 <script setup lang="ts">
 import { ref, watchEffect, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
-import { amplitudeService, userPermissions, commonStore } from '@pulse/common'
+import { amplitudeService } from '@pulse/common'
+import { CurrentUserManager } from '@pulse/common/managers'
 import { fetchBIReports } from '@app/services/reporting'
 import { PMenuItem, PMenu } from '@pulse/styleguide/components'
 import { PERMISSION_CODES } from '@app/constants'
@@ -70,8 +70,6 @@ const { t } = useI18n({
 })
 
 const props = defineProps<SidebarEntityMenuProps>()
-const { hasPermission } = userPermissions()
-const { isCollab } = storeToRefs(commonStore())
 
 const hasBIReports = ref(false)
 const isMenuCollapsed = ref(true)
@@ -86,27 +84,27 @@ interface MenuItem {
 }
 
 const folderOrEntityMenuItem = computed<MenuItem | null>(() => {
-  const title = isCollab.value ? t('folder') : t('entity')
+  const title = props.isCollab ? t('folder') : t('entity')
   const menuItem = [
     {
       index: `/dossier/${props.selectedEntityId}/gestion-utilisateurs`,
-      display: hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
+      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
     },
     {
       index: `/dossier/${props.selectedEntityId}/collaborateurs`,
-      display: isCollab.value && hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
+      display: props.isCollab && CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
     },
     {
       index: `/dossier/${props.selectedEntityId}/offres`,
-      display: hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
+      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
     },
     {
       index: `/dossier/${props.selectedEntityId}/informations`,
-      display: hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
+      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
     },
     {
       index: `/dossier/${props.selectedEntityId}/historique-delegations`,
-      display: isCollab.value && hasPermission(PERMISSION_CODES.HISTORY),
+      display: props.isCollab && CurrentUserManager.hasPermission(PERMISSION_CODES.HISTORY),
     },
   ].find((item) => item.display)
   return menuItem ? { index: menuItem.index,
@@ -125,25 +123,25 @@ const menuItems = computed<MenuItem[]>(() => {
       index: `/dossier/${props.selectedEntityId}/ged`,
       title: t('documents'),
       iconLeftName: 'folder',
-      display: hasPermission(PERMISSION_CODES.ACCOUNT_GED),
+      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_GED),
     },
     {
       index: `/dossier/${props.selectedEntityId}/banque`,
       title: t('bank'),
       iconLeftName: 'piggyBank',
-      display: hasPermission(PERMISSION_CODES.ACCOUNT_BANK),
+      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_BANK),
     },
     {
       index: `/dossier/${props.selectedEntityId}/indicateurs`,
       title: t('indicators'),
       iconLeftName: 'speedometer2',
-      display: hasPermission(PERMISSION_CODES.ACCOUNT_INDICATORS),
+      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_INDICATORS),
     },
     {
       index: `/dossier/${props.selectedEntityId}/launcher`,
       title: t('apps'),
       iconLeftName: 'grid',
-      display: !isCollab.value && hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
+      display: !props.isCollab && CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
     },
   ]
   return list.filter(({ display }) => display)

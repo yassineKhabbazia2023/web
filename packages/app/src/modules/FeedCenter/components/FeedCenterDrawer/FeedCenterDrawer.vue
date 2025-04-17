@@ -66,7 +66,7 @@ import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import NotificationsWrapper from './NotificationsWrapper'
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 import { PDrawerProps } from '@pulse/styleguide/types'
-import { commonStore } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import { patchAllNotificationsAsRead } from './feed-center-drawer.manager'
 import {
   trackNotificationMarkAsRead,
@@ -88,7 +88,7 @@ const props = defineProps<FeedCenterDrawerProps>()
 // Keeps reactivity for prop changes, ensuring the count stays updated from the parent.
 const unreadNotificationsCountRef = toRef(props, 'unreadNotificationsCount')
 
-const userStore = commonStore()
+const userStore = useUserStore()
 const userId = computed(() => userStore.user?.id)
 
 const isDrawerOpened = computed({

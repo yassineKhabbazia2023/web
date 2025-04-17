@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
-import type { Entity } from '@pulse/common/types'
 
 import { getDefaultEntity } from '.'
 
@@ -30,21 +29,6 @@ describe('utils', () => {
       expect(getItemSpy).toHaveBeenCalledOnce()
       expect(getItemSpy).toHaveBeenNthCalledWith(1, 'selected-entity')
       expect(activeEntity).toStrictEqual(firstEntity)
-    })
-
-    it("should return an empty entity if there's no entity", () => {
-      vi
-        .spyOn(Storage.prototype, 'getItem')
-        .mockReturnValue(null)
-      const expectedEntity: Entity = {
-        accountId: 0,
-        accountNumber: '',
-        legalName: '',
-        color: 'orange',
-      }
-      const activeEntity = getDefaultEntity()
-
-      expect(activeEntity).toStrictEqual(expectedEntity)
     })
   })
 })

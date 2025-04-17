@@ -1,9 +1,18 @@
 import { describe, it, expect, vi } from 'vitest'
-import { createTestingPinia } from '@pinia/testing'
-import { setActivePinia } from 'pinia'
-import { getMockedUserApi } from '../__mocks__'
-import store from '../stores'
+import {
+  getMockedUserApi,
+  getMockedUserPermissions,
+  getStoreMock,
+} from '../__mocks__'
+import { permissionServiceMock } from '../__mocks__/permissions.service.mocks'
+import { useTokenStore } from '../stores/token/token.store'
+import { usePermissionsStore } from '../stores/permissions/permissions.store'
 import { useDataProvider } from './useDataProvider'
+
+const tokenStoreMock = getStoreMock(useTokenStore)
+const permissionsStoreMock = getStoreMock(usePermissionsStore)
+
+vi.mock('../../services/permissions/permissions.service', () => permissionServiceMock)
 
 const fakeUser = getMockedUserApi()
 const mockGetMe = vi.fn(() => ({ data: fakeUser }))
@@ -16,15 +25,20 @@ vi.mock('../api', () => ({
   }),
 }))
 
+const fetchUserPermissionsMock = vi.hoisted(() => vi.fn())
+vi.mock('../services/permissions/permissions.service', () => ({
+  fetchUserPermissions: fetchUserPermissionsMock,
+}))
+
+const mockedUserPermissions = getMockedUserPermissions()
 describe('useDataProvider', () => {
   beforeEach(() => {
-    setActivePinia(createTestingPinia())
+    fetchUserPermissionsMock.mockResolvedValue(mockedUserPermissions)
   })
 
   it('fetches user data when authenticated', async () => {
-    const myStore = store()
-    // @ts-expect-error: Getter is read only
-    myStore.isAuthenticated = true
+    tokenStoreMock.isAuthenticated = true
+
     const { fetchUserData } = useDataProvider()
     const user = await fetchUserData()
     const expectedResult = {
@@ -35,14 +49,15 @@ describe('useDataProvider', () => {
       isCollab: true,
     }
     expect(user).toMatchObject(expectedResult)
+    expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledOnce()
+    expect(permissionsStoreMock.setUserPermissions).toHaveBeenNthCalledWith(1, mockedUserPermissions)
   })
 
   it('returns null when not authenticated', async () => {
-    const myStore = store()
-    // @ts-expect-error: Getter is read only
-    myStore.isAuthenticated = false
+    tokenStoreMock.isAuthenticated = false
+
     const { fetchUserData } = useDataProvider()
     const user = await fetchUserData()
-    expect(user).toBeNull()
+    expect(user).toBeUndefined()
   })
 })

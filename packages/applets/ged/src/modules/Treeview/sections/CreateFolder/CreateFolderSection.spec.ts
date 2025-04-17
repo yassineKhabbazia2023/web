@@ -1,19 +1,16 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
+import { type Mock } from 'vitest'
 import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type CreateFolderSectionProps }
   from '@ged/modules/Treeview/sections/CreateFolder/CreateFolderSectionTypes'
 import type { Folder, FolderProperties } from '@ged/models/Folder'
-import { createPinia, setActivePinia } from 'pinia'
 import { CreateFolder } from '@ged/services/Folder'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 
 import CreateFolderSection from '@ged/modules/Treeview/sections/CreateFolder'
-
-const pinia = createPinia()
 
 const defaultProps: CreateFolderSectionProps = {
   serviceId: 'service-id',
@@ -60,24 +57,12 @@ const createWrapper = (
 ): CreateFolderSectionWrapper => {
   return mount(CreateFolderSection, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   }) as unknown as CreateFolderSectionWrapper
 }
 
 vi.mock('@ged/services/Folder', () => folderServiceMock)
 
 describe('createFolderSection', () => {
-
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   describe('props', () => {
     it('should disable main create folder button when permission is not available', () => {
       const updatedSelectedFolder = {

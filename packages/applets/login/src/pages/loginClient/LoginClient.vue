@@ -71,13 +71,14 @@ import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { logger } from '@pulse/core'
-import { amplitudeService, tokenService, login } from '@pulse/common'
+import { amplitudeService, login } from '@pulse/common'
 import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/components'
 import useInitUserAuth from '@login/composable/useInitUserAuth'
 import useNavigation from '@login/composable/useNavigation'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { LoginRouteName, BackEndErrors } from '@pulse/common/constants'
 import { getEmailError, getPasswordError } from './LoginClient.utils'
+import { CurrentUserManager } from '@pulse/common/managers'
 
 declare let window: {
   gigya: any
@@ -173,7 +174,8 @@ async function onSubmit() {
     if (!token) {
       throw new Error('No token received')
     }
-    tokenService.setToken(token)
+
+    CurrentUserManager.persistToken(token)
 
     // Set currentuser data
     await initAuthClient()

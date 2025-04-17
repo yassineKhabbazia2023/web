@@ -1,11 +1,15 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { subscriptionRequestMock } from '@entities/__mocks__/subscription.mocks'
 import * as helpers from '@entities/common/utils/helpers'
 import { amplitudeService } from '@pulse/common'
 import type { ComponentWrapper } from '@entities/common/types'
 import { nextTick } from 'vue'
+import { getMockedUserInfo, getStoreMock } from '@pulse/common/mocks'
+import { useUserStore } from '@pulse/common/stores'
+
 import SubscriptionsTable from '.'
+
+const userStoreMock = getStoreMock(useUserStore)
 
 const { subscriptionId, offer } = subscriptionRequestMock[0]
 const { mockValidateSubscriptionRequest, mockFetchSubscriptionRequests } = vi.hoisted(() => ({
@@ -21,7 +25,6 @@ vi.mock('@entities/services/subscription', async () => {
   }
 })
 vi.mock('@pulse/common', () => ({
-  commonStore: () => ({}),
   amplitudeService: {
     track: vi.fn(),
   },
@@ -52,9 +55,14 @@ const pTableColumnsLabel: { [key: number]: string } = {
   6: 'Status',
 }
 
+const emailMock = 'email-mock'
+
 describe('subscriptionsTable', () => {
   let wrapper: ComponentWrapper<InstanceType<typeof SubscriptionsTable>>
   beforeEach(async () => {
+    userStoreMock.user = getMockedUserInfo({
+      email: emailMock,
+    })
     wrapper = mount(SubscriptionsTable, {
       global: {
         stubs: {

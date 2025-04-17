@@ -1,13 +1,9 @@
 import { nextTick } from 'vue'
-import { defineStore } from 'pinia'
-import { createTestingPinia } from '@pinia/testing'
 import { expect, describe, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
-import { commonStore } from '@pulse/common'
 import { tvaLabelMock } from '@app/__mocks__/schedule.mocks'
 import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import wrapperFactory from '@app/__mocks__/wrapper.factory'
-import { collabUserMock } from '@app/__mocks__/users.mocks'
 import { getNotCompletelyDoneDeadlinesByDateMock, getDoneDeadlinesByDateMock } from '@app/__mocks__/deadline.mocks'
 import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
 import { dateToLocaleFormat } from '@app/schedule/helpers/utils'
@@ -16,19 +12,7 @@ import ListItem from '.'
 
 vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
-const pinia = createTestingPinia()
-
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        ...collabUserMock,
-      },
-    }),
-    getters: {
-      isCollab: () => true,
-    },
-  }),
   dataProvider: () => {
     return {
       fetchUserData: vi.fn(),
@@ -40,11 +24,8 @@ const createWrapper = (deadlinesByDate: DeadlinesByDate, isActiveDate = false) =
   wrapperFactory(ListItem, {
     props: { deadlinesByDate, isActiveDate },
     global: {
-      plugins: [pinia],
     },
   })
-
-commonStore(pinia)
 
 const doneDeadlinesByDateMock = getDoneDeadlinesByDateMock()
 const deadlinesByDate: DeadlinesByDate = doneDeadlinesByDateMock[0]

@@ -45,7 +45,8 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
-import { commonStore, fetchUrlTerms } from '@pulse/common'
+import { fetchUrlTerms } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import { LEGAL_NOTICE_URL, PRIVACY_POLICY_URL } from '@pulse/core'
 import { LoginRouteName } from '@pulse/common/constants'
 
@@ -57,8 +58,9 @@ const { t } = useI18n({
 defineProps({
   dark: Boolean,
 })
+const userStore = useUserStore()
 
-const { isCollab } = storeToRefs(commonStore())
+const { isCollab } = storeToRefs(userStore)
 const route = useRoute()
 
 const urlTerms = ref()

@@ -1,15 +1,11 @@
-import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
-import { defineStore } from 'pinia'
-import { amplitudeService, commonStore } from '@pulse/common'
+import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { PERMISSION_CODES } from '@entities/constants'
+import { amplitudeServiceMock, amplitudeServiceTrackMock, CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked, getMockedUser, getStoreMock } from '@pulse/common/mocks'
+import { useUserStore } from '@pulse/common/stores'
+
 import Wallet from './'
 
-const pinia = createTestingPinia()
-
 const mockRouterPush = vi.fn()
-const mockHasPermission = vi.fn((_code: string) => true)
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -20,32 +16,28 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
+const userStoreMock = getStoreMock(useUserStore)
+const userMock = getMockedUser({ firstName: 'Jack' })
+
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        firstName: 'Jack',
-      },
-    }),
-    getters: {
-      isCollab: () => true,
-    },
-  }),
-  userPermissions: () => ({
-    hasPermission: mockHasPermission,
-  }),
-  amplitudeService: {
-    track: vi.fn(),
-  },
+  amplitudeService: amplitudeServiceMock,
+}))
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
 }))
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(Wallet, {
+  shallowMount(Wallet, {
     attachTo: document.body,
     global: {
-      plugins: [pinia],
       stubs: {
         'router-view': true,
+        PTabs: {
+          name: 'PTabs',
+          template: '<div><slot /></div>',
+        },
+        PTabPane: true,
       },
     },
   })
@@ -53,11 +45,11 @@ const collaboratorsTabs = ['Wallet', 'Mandate', 'Upload a BI report', 'MOD reque
 const clientTabs = ['All entities', 'All users']
 
 describe('dossier', () => {
-  let wrapper: VueWrapper<any>
-  let spyTrackAmplitude: MockInstance
+  let wrapper: ReturnType<typeof createWrapper>
 
   beforeEach(async () => {
-    spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+    userStoreMock.user = userMock
+    userStoreMock.isCollab = true
     wrapper = createWrapper()
     vi.useFakeTimers()
 
@@ -67,40 +59,38 @@ describe('dossier', () => {
   it('displays correctly the table', () => {
     expect(wrapper.find('.wallet__title').text()).toBe('Hello Jack')
   })
-  const Tabs = [
-    ['wallet', 'tab-folders'],
-    ['mod requests', 'tab-subscriptions'],
-    ['collaborators', 'tab-collaborators'],
-    ['mandate', 'tab-folderMandats'],
-    ['applications', 'tab-folderLauncher'],
-  ]
-  it.each(Tabs)('should track amplitude event when %s is clicked', (tabName, tabId) => {
-    document.getElementById(tabId)?.click()
 
-    expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-    expect(spyTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
-      feature_name: tabName,
-    })
-  })
-  const PARAMS = [
-    ['folders', 'tab-folders'],
-    ['subscriptions', 'tab-subscriptions'],
-    ['collaborators', 'tab-collaborators'],
-    ['folderMandats', 'tab-folderMandats'],
-    ['folderLauncher', 'tab-folderLauncher'],
+  const tabs = [
+    ['folders'],
+    ['subscriptions'],
+    ['collaborators'],
+    ['folderMandats'],
+    ['folderLauncher'],
   ]
-  it.each(PARAMS)('should redirect when click on %s', (tabs, tabsName) => {
-    document.getElementById(tabsName)?.click()
+  it.each(tabs)('should redirect when click on %s', (tabName) => {
+    const pTabs = wrapper.findComponent({ name: 'PTabs' })
+    const tab = {
+      paneName: tabName,
+      props: {
+        label: tabName,
+      },
+    }
+
+    pTabs.vm.$emit('tab-click', tab)
+
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Feature Consulted', {
+      feature_name: tabName.toLowerCase(),
+    })
+
     expect(mockRouterPush).toHaveBeenCalledTimes(1)
     expect(mockRouterPush).toHaveBeenCalledWith({
-      name: tabs,
+      name: tabName,
     })
   })
 
   it('should not display Launcher when user does not have authorization', async () => {
-    mockHasPermission.mockImplementation((code: string) =>
-      ![PERMISSION_CODES.LAUNCHER].includes(code),
-    )
+    hasPermissionMock.mockImplementation(getHasPermissionMocked([]))
     wrapper = createWrapper()
 
     await flushPromises()
@@ -110,9 +100,7 @@ describe('dossier', () => {
   })
 
   it('should only display tabs to which the user has permission to access', () => {
-    mockHasPermission.mockImplementation((code: string) =>
-      [PERMISSION_CODES.COLLABORATORS].includes(code),
-    )
+    hasPermissionMock.mockImplementation(getHasPermissionMocked([PERMISSION_CODES.COLLABORATORS]))
     wrapper = createWrapper()
     const collaboratorsTabsAccess = ['Wallet', 'Collaborators']
     const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })
@@ -124,22 +112,21 @@ describe('dossier', () => {
   })
 
   it('should display the correct tab when user is collab', () => {
-    const tabsPane = wrapper.findAllComponents({ name: 'ElTabPane' })
-    collaboratorsTabs.forEach((tabPane, index) => {
-      const label = tabsPane.at(index)?.props('label')
-      expect(label).toBe(tabPane)
+    const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })
+    collaboratorsTabs.forEach((expectedLabel, index) => {
+      const label = tabsPane.at(index)?.props('pLabel')
+      expect(label).toBe(expectedLabel)
     })
   })
 
   it('should display the correct tab when user is client', () => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
+    userStoreMock.isCollab = false
     wrapper = createWrapper()
-    const tabsPane = wrapper.findAllComponents({ name: 'ElTabPane' })
-    clientTabs.forEach((tabPane, index) => {
-      const label = tabsPane.at(index)?.props('label')
-      expect(label).toBe(tabPane)
+    const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })
+    clientTabs.forEach((expectedLabel, index) => {
+      const tabPane = tabsPane.at(index)
+      const label = tabPane?.props('pLabel')
+      expect(label).toBe(expectedLabel)
     })
   })
 })

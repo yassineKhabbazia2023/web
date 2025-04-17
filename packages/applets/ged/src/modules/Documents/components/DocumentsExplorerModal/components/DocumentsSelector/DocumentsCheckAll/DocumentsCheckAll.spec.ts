@@ -1,5 +1,3 @@
-
-import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
@@ -14,15 +12,11 @@ const defaultProps: DocumentsCheckAllProps = {
   disabled: false,
   checked: false,
 }
-const pinia = createPinia()
 const createWrapper = (
   props: DocumentsCheckAllProps = defaultProps,
 ): DocumentsCheckAllWrapper => {
   return mount(DocumentsCheckAll, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 describe('documentsCheckAll', () => {

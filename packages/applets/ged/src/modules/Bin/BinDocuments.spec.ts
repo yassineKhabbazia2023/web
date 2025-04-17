@@ -1,7 +1,5 @@
 
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { binDocumentsMock } from '@ged/__mocks__/bin-documents.mocks'
-import { createPinia, setActivePinia } from 'pinia'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { BinDocumentProps } from './BinDocumentsTypes'
@@ -34,15 +32,12 @@ export type BinDocumentsWrapper = VueWrapper<
   ComponentPublicInstance<BinDocumentsSetup, BinDocumentProps>
 >
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: BinDocumentProps = defaultProps,
 ): BinDocumentsWrapper => {
   return mount(BinDocuments, {
     props,
     global: {
-      plugins: [pinia],
       stubs: {
         PBreadcrumb: true,
         BinDocumentsList: true,
@@ -61,9 +56,6 @@ vi.mock('@ged/services/BinDocuments', () => ({
 }))
 
 describe('binDocuments', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
   describe('events', () => {
     describe('props', () => {
       it('should render PBreadcrumb when currentBinService is set', async () => {

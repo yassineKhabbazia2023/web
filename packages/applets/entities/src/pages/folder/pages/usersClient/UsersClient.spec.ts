@@ -1,13 +1,10 @@
 import type { MockInstance } from 'vitest'
-import { createTestingPinia } from '@pinia/testing'
-import { defineStore } from 'pinia'
 import { mockedEntity } from '@entities/__mocks__/entities.mocks.ts'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { walletServiceMock } from '@entities/__mocks__/wallet.service.mocks.ts'
 import { mockUser } from '@entities/__mocks__/users-client.mocks'
 import { nextTick } from 'vue'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { generateContactsMock } from '@entities/__mocks__/contact.mocks.ts'
 import { noResult } from '@entities/__mocks__/no-result.mocks'
 import FormSearch from '@entities/common/components/FormSearch'
@@ -16,6 +13,13 @@ import * as OfferServices from '@entities/services/offer'
 import * as WalletServices from '@entities/services/wallet'
 import type { Contact } from '@entities/common/types'
 import type { UsersClientProps } from './UsersClientTypes'
+import {
+  CurrentUserManagerMock,
+  getStoreMock,
+  getMockedUser,
+} from '@pulse/common/mocks'
+import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+
 import UsersClient from '.'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
@@ -34,6 +38,10 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const userStoreMock = getStoreMock(useUserStore)
+const userMock = getMockedUser({ id: 2 })
+
 const contactsList = generateContactsMock({
   numberOfContactsToReturn: 15,
   contactsTotalCount: 16,
@@ -43,23 +51,9 @@ const contactsList = generateContactsMock({
 
 vi.mock('@entities/services/wallet', () => walletServiceMock)
 
-vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        id: 2,
-      },
-    }),
-    getters: {
-      defaultEntity: () => mockedEntity,
-    },
-  }),
-  userPermissions: () => ({
-    hasPermission: vi.fn(() => true),
-  }),
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
 }))
-
-const pinia = createTestingPinia()
 
 function createWrapper(entityId?: number) {
   const props: UsersClientProps = {
@@ -69,7 +63,6 @@ function createWrapper(entityId?: number) {
   return shallowMount(UsersClient, {
     props,
     global: {
-      plugins: [pinia],
       stubs: [
         'RemoveUserDialog',
         'ManageRightsDrawer',
@@ -85,10 +78,12 @@ let wrapper: VueWrapper<any>
 const getPaginationComponent = () => wrapper.findComponent({ name: 'PPagination' })
 const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
 
-describe('usersClient', () => {
+describe('test UsersClient', () => {
   let getPrincipalContactsSpy: MockInstance
   let mockGatewayGet: MockInstance
   beforeEach(async () => {
+    selectedEntityStoreMock.selectedEntity = mockedEntity
+    userStoreMock.user = userMock
     getPrincipalContactsSpy = vi
       .spyOn(OfferServices, 'getPrincipalContacts')
     mockGatewayGet = vi
@@ -96,7 +91,6 @@ describe('usersClient', () => {
       .mockResolvedValue(contactsList)
     wrapper = createWrapper()
     await nextTick()
-
   })
 
   describe('rendering', () => {

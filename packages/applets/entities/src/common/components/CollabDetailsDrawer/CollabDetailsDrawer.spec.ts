@@ -40,9 +40,6 @@ vi.mock('@pulse/common', () => ({
       patch: mockedPatchGateway,
     },
   }),
-  commonStore: () => ({
-    $patch: vi.fn(),
-  }),
   debounce: (callback: Function) => callback,
 }))
 

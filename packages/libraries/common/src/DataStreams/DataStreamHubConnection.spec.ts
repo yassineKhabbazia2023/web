@@ -1,11 +1,14 @@
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
-import { DataStreamHubConnection } from './DataStreamHubConnection'
-import { createTestingPinia } from '@pinia/testing'
-import { setActivePinia } from 'pinia'
+import { useTokenStore } from '../stores/token/token.store'
+import { getStoreMock } from '../__mocks__/store.mocks'
 import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
 import type { HubConnection } from '@microsoft/signalr'
+
+import { DataStreamHubConnection } from './DataStreamHubConnection'
+
+const tokenStoreMock = getStoreMock(useTokenStore)
+const tokenMock = 'Token mock'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('./DataStreamHubConnectionHelper', () => {
@@ -23,7 +26,7 @@ describe('dataStreamHubConnection', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    setActivePinia(createTestingPinia())
+    tokenStoreMock.token = tokenMock
     dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
   })
 

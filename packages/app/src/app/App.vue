@@ -5,7 +5,7 @@
       <PopupRenewToken
         :isVisible="popupRenewTokenIsVisible"
         :isTokenExpired="isTokenExpired"
-        :isCollab="isCollab"
+        :isCollab="isCollab ?? false"
         @close="onClosePopupRenewToken"
         @logout="onLogout"
         @renew-token="onRenewToken"
@@ -16,35 +16,33 @@
 
 <script setup lang="ts">
 import { defineAsyncComponent, markRaw, ref, watch, onMounted, onBeforeUnmount } from 'vue'
-import { Idle } from 'idlejs'
+import { setIdle } from '@pulse/core/utils/idle'
 import { VITE_IDLE_DURATION, VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
 import {
-  commonStore as useStore,
   amplitudeService,
-  tokenService,
   setUnauthorizedCallback,
   refreshClientToken,
 } from '@pulse/common'
-import { useRoute, useRouter } from 'vue-router'
+import { useUserStore, useTokenStore } from '@pulse/common/stores'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { useRoute } from 'vue-router'
 import { PConfigProvider } from '@pulse/styleguide/components'
 import PopupRenewToken from '@app/components/PopupRenewToken'
 import { storeToRefs } from 'pinia'
 import { HTMLService } from '@pulse/core'
-import { LoginRouteName } from '@pulse/common/constants'
 import { useRedirection } from '@app/composables/useRedirection'
 import { getExpirationDelays } from './app.utils'
 import { LAYOUTS } from '@app/constants/constants'
 
-const ON_TOKEN_CHANGE_EVENT = 'on-token-change'
-
 let openPopup5MinBeforeExpiredTimer: undefined | ReturnType<typeof setTimeout>
 let openPopupWhenHasExpiredTimer: undefined | ReturnType<typeof setTimeout>
 
+const tokenStore = useTokenStore()
 const route = useRoute()
-const router = useRouter()
-const store = useStore()
+const userStore = useUserStore()
+
 const { logoutAndRedirectToLogin } = useRedirection()
-const { user, isCollab } = storeToRefs(useStore())
+const { user, isCollab } = storeToRefs(userStore)
 
 const NO_POPUP_RENEW_TOKEN_LAYOUTS = [
   LAYOUTS.LOGIN,
@@ -88,11 +86,6 @@ watch(
   () => onRouteChange(),
 )
 
-const handleLogout = async () => {
-  await store.logout(store.$state)
-  router.push({ name: LoginRouteName.LOGIN_COLLAB })
-}
-
 watch(
   user, () => {
     if (user.value) {
@@ -101,19 +94,13 @@ watch(
         // we will set it later when we have a valid userId
         amplitudeService.setUserId(user.value.id.toString())
       }
-      new Idle()
-        .whenNotInteractive()
-        .within(VITE_IDLE_DURATION)
-        .do(() => {
-          handleLogout()
-        })
-        .start()
+      setIdle(VITE_IDLE_DURATION, logoutAndRedirectToLogin)
     }
   },
 )
 
 async function unauthorizedCallback() {
-  tokenService.setToken('')
+  tokenStore.setToken('')
   isTokenExpired.value = true
 
   if (currentLayoutName.value === LAYOUTS.LOGIN) {
@@ -139,7 +126,7 @@ async function onLogout() {
 
 async function onRenewToken() {
   popupRenewTokenIsVisible.value = false
-  const sub = tokenService.getTokenSub() ?? ''
+  const sub = tokenStore.tokenSub ?? ''
   await refreshClientToken(sub)
 }
 
@@ -176,21 +163,24 @@ function clearTimersIfExist() {
 }
 
 function onTokenChanges() {
-  const hasValidAccessToken = tokenService.hasValidAccessToken()
+  const isExpired = tokenStore.getIsTokenExpired()
+  isTokenExpired.value = isExpired
+  const hasValidAccessToken = !isExpired
+
   if (hasValidAccessToken) {
     popupRenewTokenIsVisible.value = false
   }
-  isTokenExpired.value = !hasValidAccessToken
   if (hasValidAccessToken) {
-    setTimers(tokenService.getTokenExp())
+    setTimers(tokenStore.tokenExp)
   } else {
     clearTimersIfExist()
   }
 }
 
+watch(() => tokenStore.token, () => onTokenChanges())
+
 onMounted(() => {
-  tokenService.registerOnChange(ON_TOKEN_CHANGE_EVENT, onTokenChanges)
-  tokenService.initToken() // force to load token if defined in localstorage
+  CurrentUserManager.initToken() // force to load token if defined in localstorage
   setUnauthorizedCallback(unauthorizedCallback)
   if (VITE_AMPLITUDE_API_KEY) {
     amplitudeService.init(VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL || undefined)
@@ -200,7 +190,6 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  tokenService.unregisterOnChange(ON_TOKEN_CHANGE_EVENT)
   clearTimersIfExist()
 })
 </script>

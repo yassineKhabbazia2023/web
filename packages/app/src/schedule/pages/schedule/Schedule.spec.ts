@@ -7,16 +7,16 @@ import { getMockedDeadlines } from '@app/__mocks__/deadline.mocks'
 import * as ScheduleServices from '@app/schedule/services'
 import * as ScheduleUtils from './ScheduleUtils'
 import { dateISOFormatter } from '@app/schedule/helpers/utils'
-import { createTestingPinia } from '@pinia/testing'
-import { commonStore as useCommonStore } from '@pulse/common'
 import type { DeadlinesByDate } from '@app/schedule/models/Deadline'
 import type { Filters } from '@app/schedule/components/FilterDrawer/FilterDrawerTypes'
 import type { ScheduleApiQueryParams } from '@app/schedule/services/scheduleServiceTypes'
 import type { ScheduleProps } from './ScheduleTypes'
+import { useUserStore } from '@pulse/common/stores'
+import { getStoreMock } from '@pulse/common/mocks'
 
 import Schedule from './'
 
-const pinia = createTestingPinia()
+const userStoreMock = getStoreMock(useUserStore)
 
 const TEST_DATE = '2024-08-14'
 const SAME_MONTH_DATE = '2024-08-18'
@@ -25,10 +25,6 @@ const OccurrenceId = 1234567890
 
 vi.mock('@pulse/common', () => commonMock)
 vi.mock('@app/schedule/services', () => scheduleServicesMock)
-const commonStore = useCommonStore(pinia)
-// @ts-expect-error: Getter is read only
-commonStore.isCollab = false
-
 
 const mockedToday = new Date(TEST_DATE)
 const newSearchTerm = 'search term'
@@ -60,6 +56,8 @@ const nextMonthDeadlines: DeadlinesByDate[] = [{
 
 describe('home page', () => {
   beforeEach(() => {
+    userStoreMock.isCollab = false
+
     vi.useFakeTimers()
     vi.setSystemTime(mockedToday)
   })

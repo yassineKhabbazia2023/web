@@ -86,7 +86,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
-import { commonStore, getInitials } from '@pulse/common'
+import { getInitials } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import { FeatureFlagManager } from '@pulse/core'
 import {
   PAvatar,
@@ -99,9 +100,11 @@ import {
 import { AvatarRoles } from '@pulse/styleguide'
 import type { HeaderProps } from './HeaderTypes'
 
+const userStore = useUserStore()
+
 const props = defineProps<HeaderProps>()
 
-const { user } = storeToRefs(commonStore())
+const { user } = storeToRefs(userStore)
 
 const emit = defineEmits<{
   'update:showCalendar': [boolean]
@@ -114,7 +117,7 @@ const userInitials = computed(() =>
 )
 
 const userRole = computed(() => {
-  const isCollab = user.value?.isCollab
+  const isCollab = userStore.isCollab
   return isCollab ? AvatarRoles.COLLAB : AvatarRoles.CLIENT
 })
 

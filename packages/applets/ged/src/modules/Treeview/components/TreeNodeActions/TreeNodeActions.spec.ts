@@ -2,8 +2,6 @@ import { type TreeNodeActionsProps }
   from '@ged/modules/Treeview/components/TreeNodeActions/TreeNodeActionsTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { vi, describe, it, expect } from 'vitest'
-import { createPinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 
@@ -18,7 +16,6 @@ export type TreeNodeActionsWrapper = VueWrapper<
   ComponentPublicInstance<TreeNodeActionsProps>
 >
 
-const pinia = createPinia()
 const createWrapper = (props: TreeNodeActionsProps = defaultProps): TreeNodeActionsWrapper => {
   return mount(TreeNodeActions, {
     props,
@@ -28,9 +25,8 @@ const createWrapper = (props: TreeNodeActionsProps = defaultProps): TreeNodeActi
           template: '<span />',
         },
       },
-      plugins: [pinia],
     },
-  })as unknown as TreeNodeActionsWrapper
+  }) as unknown as TreeNodeActionsWrapper
 }
 
 describe('treeNodeActions', () => {
@@ -54,7 +50,7 @@ describe('treeNodeActions', () => {
     })
 
     it('should emit p-toolbox-dropdown-visibility-change when ' +
-            'p-toolbox-dropdown-visibility-change is emitted', async () => {
+      'p-toolbox-dropdown-visibility-change is emitted', async () => {
       const updatedProps: TreeNodeActionsProps = {
         ...defaultProps,
         permissions: ['CAN_DELETE_FOLDER'],

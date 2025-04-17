@@ -1,6 +1,7 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockedCollaboratorsList2 } from '@entities/__mocks__/collaborators.mocks'
+import { CurrentUserManagerMock } from '@pulse/common/mocks'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { noResult } from '@entities/__mocks__/no-result.mocks'
 import * as walletServices from '@entities/services/wallet'
@@ -20,12 +21,10 @@ vi.mock('@pulse/common', () => ({
       get: mockGatewayGet,
     },
   }),
-  commonStore: () => ({
-    $patch: vi.fn(),
-  }),
-  userPermissions: () => ({
-    hasPermission: () => vi.fn(),
-  }),
+}))
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
 }))
 
 const createWrapper = (): VueWrapper<any> =>

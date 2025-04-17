@@ -1,6 +1,4 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { defineStore } from 'pinia'
-import { createTestingPinia } from '@pinia/testing'
 import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
 import { contactServiceMock } from '@entities/__mocks__/contact.service.mocks'
 import { walletServiceMock } from '@entities/__mocks__/wallet.service.mocks'
@@ -8,11 +6,17 @@ import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
 import { fetchAccountCustomers } from '@entities/services/wallet'
 import { getAccountSignatories, updateSignatoryStatus } from '@entities/services/account'
-import UsersCollab from '.'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import { nextTick } from 'vue'
 import { userActions } from './types'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
+import { CurrentUserManagerMock, hasPermissionMock, getStoreMock, getMockedEntity, getMockedUser } from '@pulse/common/mocks'
+import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+
+import UsersCollab from '.'
+
+const userStoreMock = getStoreMock(useUserStore)
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 
@@ -42,8 +46,6 @@ const MOCKED_USER = {
 }
 
 const mockedAccount = getMockedAccount()
-
-const mockHasPermission = vi.hoisted(() => vi.fn())
 
 vi.mock('@entities/services/contact', () => contactServiceMock)
 vi.mock('@entities/services/wallet', () => walletServiceMock)
@@ -76,34 +78,23 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
+const userMock = getMockedUser({ id: 2 })
+const selectedEntityMock = getMockedEntity({ accountId: mockedAccount.accountId })
+
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        id: 2,
-        entities: {
-          default: {
-            accountId: mockedAccount.accountId,
-          },
-        },
-      },
-    }),
-  }),
   getInitials: vi.fn(),
-  userPermissions: () => ({
-    hasPermission: mockHasPermission,
-  }),
   amplitudeService: {
     track: vi.fn(),
   },
 }))
 
-const pinia = createTestingPinia()
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
+}))
 
 const createWrapper = (): VueWrapper<any> =>
   shallowMount(UsersCollab, {
     global: {
-      plugins: [pinia],
       stubs: {
         FormSearch: true,
         ManageAccessDrawer: true,
@@ -178,6 +169,9 @@ const removeUserToolboxItem: PToolboxItemProps = {
 
 describe('usersCollab', () => {
   beforeEach(async () => {
+    userStoreMock.user = userMock
+    selectedEntityStoreMock.selectedEntity = selectedEntityMock
+    hasPermissionMock.mockReturnValue(false)
     wrapper = createWrapper()
     await flushPromises()
   })
@@ -271,7 +265,7 @@ describe('usersCollab', () => {
     })
 
     it("should display the 'Manage Access' drawer when the 'Manage Access' button is clicked", async () => {
-      mockHasPermission.mockReturnValue(true)
+      hasPermissionMock.mockReturnValue(true)
       const operationsMock = getMockedOperations()
       contactServiceMock.fetchOperationsForAccount.mockResolvedValue(operationsMock)
 
@@ -361,7 +355,7 @@ describe('usersCollab', () => {
       hasRemoveUserPermission,
       expectedItems,
     }) => {
-      mockHasPermission.mockReturnValue(hasRemoveUserPermission)
+      hasPermissionMock.mockReturnValue(hasRemoveUserPermission)
       const wrapper = createWrapper()
       await flushPromises()
       wrapper.vm.handleToolboxClick(userThatCanBeAdded)
@@ -399,7 +393,7 @@ describe('usersCollab', () => {
       })
 
     it('when click on REMOVE_USER action', async () => {
-      mockHasPermission.mockReturnValue(true)
+      hasPermissionMock.mockReturnValue(true)
       const wrapper = createWrapper()
       await flushPromises()
 
@@ -426,7 +420,7 @@ describe('usersCollab', () => {
     })
 
     it('when click on REMOVE_USER action and close RemoveUserDialog after removed user', async () => {
-      mockHasPermission.mockReturnValue(true)
+      hasPermissionMock.mockReturnValue(true)
       const wrapper = createWrapper()
       await flushPromises()
 

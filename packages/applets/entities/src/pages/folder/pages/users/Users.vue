@@ -10,11 +10,12 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import UsersCollab from '@entities/pages/folder/pages/usersCollab'
 import UsersClient from '@entities/pages/folder/pages/usersClient'
 
-const { isCollab } = storeToRefs(commonStore())
+const userStore = useUserStore()
+const { isCollab } = storeToRefs(userStore)
 const route = useRoute()
 
 const entityId = computed(() => {

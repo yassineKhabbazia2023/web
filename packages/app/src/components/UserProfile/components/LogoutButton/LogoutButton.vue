@@ -11,11 +11,13 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { amplitudeService, commonStore as useStore } from '@pulse/common'
+import { amplitudeService } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import { PButton } from '@pulse/styleguide/components'
 import { LoginRouteName } from '@pulse/common/constants'
+import { CurrentUserManager } from '@pulse/common/managers'
 
-const store = useStore()
+const userStore = useUserStore()
 const router = useRouter()
 
 const { t } = useI18n({
@@ -24,9 +26,9 @@ const { t } = useI18n({
 })
 
 const handleLogout = async () => {
-  const isCollab = store.isCollab
+  const isCollab = userStore.isCollab
   try {
-    await store.logout(store.$state)
+    await CurrentUserManager.logout()
     amplitudeService.track('Sign Out Completed', {
       sign_out_result: 'succeeded',
     })

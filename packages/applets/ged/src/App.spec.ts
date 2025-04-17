@@ -22,9 +22,12 @@ import {
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import { createMemoryHistory, createRouter } from 'vue-router'
+import { getStoreMock } from '@pulse/common/mocks'
+import { useSelectedEntityStore } from '@pulse/common/stores'
 
 import Ged from './'
 
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 
 vi.mock('@ged/models/AccountingHubConnection', () => accountingHubConnectionServiceMock)
 
@@ -86,16 +89,18 @@ const router = createRouter(
   {
     history: createMemoryHistory(),
     routes:
-    [
-      { path: '/mon-chemin',
-        name: 'TestRoute',
-        component: Ged,
-      },
-      { path: '',
-        name: 'home',
-        component: Ged,
-      },
-    ],
+      [
+        {
+          path: '/mon-chemin',
+          name: 'TestRoute',
+          component: Ged,
+        },
+        {
+          path: '',
+          name: 'home',
+          component: Ged,
+        },
+      ],
   },
 )
 const createWrapper = (): AppWrapper => {
@@ -135,6 +140,9 @@ const folder = {
 } as Folder
 
 describe('ged', () => {
+  beforeEach(() => {
+    selectedEntityStoreMock.selectedEntity = defaultEntityMock
+  })
   it('renders correctly', () => {
     const wrapper = createWrapper()
     expect(wrapper.exists()).toBeTruthy()

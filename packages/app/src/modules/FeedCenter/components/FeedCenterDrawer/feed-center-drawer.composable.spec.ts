@@ -1,7 +1,4 @@
-import { vi, describe, it, expect } from 'vitest'
 import { computed, nextTick, ref } from 'vue'
-import { setActivePinia } from 'pinia'
-import { createTestingPinia } from '@pinia/testing'
 import { flushPromises } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { withSetup } from '@pulse/core/utils/test'
@@ -9,15 +6,18 @@ import { fetchNotificationsMock, notificationsServiceMock } from '@app/__mocks__
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import { trackFeedCenterTabConsultationMock, trackingServiceMock } from '@app/__mocks__/tracking.service.mocks'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
-import { commonStore } from '@pulse/common'
-
+import { useFavoriteEntitiesStore } from '@pulse/common/stores'
+import { getStoreMock } from '@pulse/common/mocks'
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 
-setActivePinia(createTestingPinia())
-const store = commonStore()
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
+
+const favoriteEntitiesStoreMock = getStoreMock(useFavoriteEntitiesStore)
+
 const favouriteEntities = getMockedFavoriteEntities()
 
-vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 
 function initializeTestState(initialDrawervalue = false) {
   const unreadNotificationsCount = ref(0)
@@ -32,15 +32,10 @@ function initializeTestState(initialDrawervalue = false) {
   return { unreadNotificationsCount, isDrawerOpened, drawerOpenedValue }
 }
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
-vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
-
 describe('feed center drawer composable', () => {
   beforeEach(() => {
-    // @ts-ignore needed in order to override the mocked store
-    store.favoriteEntities = [favouriteEntities[0], favouriteEntities[1]]
+    favoriteEntitiesStoreMock.favoriteEntities = [favouriteEntities[0], favouriteEntities[1]]
     localStorage.setItem('favoriteEnabled', 'true')
-
   })
 
   it('should fetch notifications on mounted and when drawer is being opened', async () => {
@@ -137,8 +132,7 @@ describe('feed center drawer composable', () => {
   })
 
   it('should clear the notifications and not call the get notifications API if user has no favourite entity', async () => {
-    // @ts-ignore needed in order to override the mocked store
-    store.favoriteEntities = []
+    favoriteEntitiesStoreMock.favoriteEntities = []
 
     const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
 
@@ -175,20 +169,26 @@ describe('feed center drawer composable', () => {
       favouriteEntities: [favouriteEntities[0], favouriteEntities[1]],
       expectedToggleState: false,
     },
-  ])('should set the favorite switch based on local storage value but should be off anyway if no favourite entities exists', async ({ localStorageValue, favouriteEntities, expectedToggleState }) => {
-    localStorage.setItem('favoriteEnabled', localStorageValue)
+  ])(
+    'should set the favorite switch based on local storage value but should be off anyway if no favourite entities exists when localStorageValue is $localStorageValue',
+    async ({
+      localStorageValue,
+      favouriteEntities,
+      expectedToggleState,
+    }) => {
+      localStorage.setItem('favoriteEnabled', localStorageValue)
 
-    const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
-    const [result, app] = withSetup(() => useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount))
-    // @ts-ignore needed in order to override the mocked store
-    store.favoriteEntities = favouriteEntities
+      const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
+      const [result, app] = withSetup(() => useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount))
+      favoriteEntitiesStoreMock.favoriteEntities = favouriteEntities
 
-    const { isFavouritesFilterEnabled } = result
+      const { isFavouritesFilterEnabled } = result
 
-    await flushPromises()
-    await nextTick()
 
-    expect(isFavouritesFilterEnabled.value).toStrictEqual(expectedToggleState)
-    app.unmount()
-  })
+      await flushPromises()
+      await nextTick()
+
+      expect(isFavouritesFilterEnabled.value).toStrictEqual(expectedToggleState)
+      app.unmount()
+    })
 })

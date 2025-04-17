@@ -3,9 +3,7 @@ import { type TreeNodeProps }
   from '@ged/modules/Treeview/components/TreeNode/TreeNodeTypes'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
 import type { Folder, FolderProperties } from '@ged/models/Folder'
-import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 
@@ -55,24 +53,15 @@ export type TreeNodeWrapper = VueWrapper<
   ComponentPublicInstance<TreeNodeProps, TreeNodeSetup>
 >
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: TreeNodeProps = defaultProps,
 ): TreeNodeWrapper => {
   return mount(TreeNode, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   }) as unknown as TreeNodeWrapper
 }
 
 describe('props', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('should map the correct icon based on iconName prop', () => {
     const iconMappingCases = [
       {
@@ -203,10 +192,6 @@ describe('props', () => {
 })
 
 describe('interactions', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   it('should set isOpen when div emit click', async () => {
     const wrapper = createWrapper()
 

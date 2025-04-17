@@ -1,7 +1,6 @@
-import { describe, it, expect, vi } from 'vitest'
-import { createTestingPinia } from '@pinia/testing'
+import { CurrentUserManager } from '@pulse/common/managers'
+
 import { useRedirection } from './useRedirection'
-import { setActivePinia } from 'pinia'
 
 const mockRouterPush = vi.fn()
 vi.mock('vue-router', () => ({
@@ -9,19 +8,26 @@ vi.mock('vue-router', () => ({
     push: mockRouterPush,
   }),
 }))
-setActivePinia(createTestingPinia())
+
+vi.mock('@pulse/common/managers')
+
 describe('useRedirection', () => {
   it('should redirect to home page', () => {
     const { redirectToHome } = useRedirection()
+
     redirectToHome()
 
     expect(mockRouterPush).toHaveBeenCalledOnce()
     expect(mockRouterPush).toHaveBeenCalledWith('/')
   })
+
   it('should logout and redirect to login', async () => {
+    const CurrentUserManagerLogoutMock = vi.mocked(CurrentUserManager.logout)
     const { logoutAndRedirectToLogin } = useRedirection()
+
     await logoutAndRedirectToLogin()
 
+    expect(CurrentUserManagerLogoutMock).toHaveBeenCalledOnce()
     expect(mockRouterPush).toHaveBeenCalledOnce()
     expect(mockRouterPush).toHaveBeenCalledWith('/')
   })

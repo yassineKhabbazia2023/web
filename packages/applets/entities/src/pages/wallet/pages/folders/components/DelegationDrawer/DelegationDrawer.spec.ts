@@ -1,5 +1,3 @@
-import { defineStore } from 'pinia'
-import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
 import { loggerMock } from '@pulse/core/mocks'
 import { PDrawer, PSteps } from '@pulse/styleguide/components'
@@ -12,12 +10,15 @@ import NextPreviousButtons from '@entities/common/components/NextPreviousButtons
 import AddDelegatesStep from './components/AddDelegatesStep'
 import DelegationPreviewList from './components/DelegationPreviewList'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
-
+import { useUserStore } from '@pulse/common/stores'
+import { getMockedUserInfo, getStoreMock } from '@pulse/common/mocks'
 import DelegationDrawer from '.'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
-const USER_ID = 'a custom user id'
+const userStoreMock = getStoreMock(useUserStore)
+
+const USER_ID = 1324
 const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
 const FIRST_SELECTED_FOLDER = {
   id: 1,
@@ -32,24 +33,12 @@ const SECOND_SELECTED_FOLDER = {
 
 let gatewayPostMock = vi.fn().mockResolvedValue({})
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        id: USER_ID,
-      },
-    }),
-    getters: {
-      isAuthenticated: () => true,
-    },
-  }),
   commonApi: () => ({
     gateway: {
       post: gatewayPostMock,
     },
   }),
 }))
-
-const pinia = createTestingPinia()
 
 const defaultProps: DelegationDrawerProps = {
   modelValue: true,
@@ -78,7 +67,6 @@ const createWrapper = (
   return mount(DelegationDrawer, {
     props,
     global: {
-      plugins: [pinia],
       provide: {
         i18n,
       },
@@ -106,9 +94,13 @@ const findNextPreviousButton = (wrapper: VueWrapper) =>
 const findAddDelegatesStepWrapper = (wrapper: VueWrapper) => wrapper.findComponent(AddDelegatesStep)
 const findPStepsWrapper = (wrapper: VueWrapper) => wrapper.findComponent(PSteps)
 let wrapper: VueWrapper
+const userMock = getMockedUserInfo({
+  id: USER_ID,
+})
 
 describe('delegationDrawer', () => {
   beforeEach(() => {
+    userStoreMock.user = userMock
     wrapper = createWrapper()
   })
 

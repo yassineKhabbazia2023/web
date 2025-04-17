@@ -1,7 +1,8 @@
-import { getTokenMock, tokenServiceMock } from '@common/__mocks__/token.service.mocks'
 import { requestTokenInterceptor } from './request-token.interceptor'
+import { useTokenStore } from '../../stores/token/token.store'
+import { getStoreMock } from '../../__mocks__/store.mocks'
 
-vi.mock('../../token', () => tokenServiceMock)
+const tokenStoreMock = getStoreMock(useTokenStore)
 
 describe('requestTokenInterceptor', () => {
   beforeEach(() => {
@@ -12,24 +13,20 @@ describe('requestTokenInterceptor', () => {
     const mockToken = 'test-token'
     const mockConfig = { headers: {} }
 
-    // Mock token service to return a token
-    getTokenMock.mockReturnValue(mockToken)
+    tokenStoreMock.token = mockToken
 
     const result = requestTokenInterceptor(mockConfig)
 
     expect(result.headers.Authorization).toBe(`Bearer ${mockToken}`)
-    expect(getTokenMock).toHaveBeenCalledTimes(1)
   })
 
   it('should not add Authorization header when token does not exist', () => {
     const mockConfig = { headers: {} }
 
-    // Mock token service to return no token
-    getTokenMock.mockReturnValue('')
+    tokenStoreMock.token = ''
 
     const result = requestTokenInterceptor(mockConfig)
 
     expect(result.headers.Authorization).toBeUndefined()
-    expect(getTokenMock).toHaveBeenCalledTimes(1)
   })
 })

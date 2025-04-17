@@ -11,7 +11,7 @@
         v-model="scheduleViewType"
         v-model:searchTerm="searchTerm"
         :activeDate="activeDate"
-        :isCollab="isCollab"
+        :isCollab="isCollab ?? false"
         :isSearchState="isSearchState"
         :activeFilters="appliedFilterCount"
         @create-schedule="isDrawerVisible = true"
@@ -72,7 +72,7 @@
     :modelValue="occurrenceId !== undefined"
     :occurrenceId="occurrenceId"
     :defaultCreateDate="activeDate"
-    :isCollab="isCollab"
+    :isCollab="isCollab ?? false"
     appendToBody
     @update:model-value="onCloseOccurrenceDrawer"
   />
@@ -90,7 +90,7 @@
     :templates="filters.templates"
     :status="filters.status"
     :mineOnly="filters.mineOnly"
-    :isCollab="isCollab"
+    :isCollab="isCollab ?? false"
     appendToBody
     @apply="onApplyFilters"
   />
@@ -101,7 +101,8 @@ import { logger } from '@pulse/core'
 import { onMounted, ref, computed } from 'vue'
 import { PLoader, PDatePicker } from '@pulse/styleguide/components'
 import type { PDatePickerModelValue } from '@pulse/styleguide/types'
-import { debounce, commonStore as useCommonStore } from '@pulse/common'
+import { debounce } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import { getSchedulesCollection } from '@app/schedule/services'
 import DeadlineList from '@app/schedule/components/DisplayDeadline/DeadlineList'
 import WidgetActiveDay from '@app/schedule/components/WidgetActiveDay'
@@ -118,11 +119,12 @@ import type { ScheduleProps } from './ScheduleTypes'
 import { storeToRefs } from 'pinia'
 import type { ViewType } from '@app/schedule/models/commonTypes'
 
-const { isCollab } = storeToRefs(useCommonStore())
+const userStore = useUserStore()
+const { isCollab } = storeToRefs(userStore)
 
 const scheduleViewType = ref<ViewType>('calendar')
 const previousScheduleViewType = ref<ViewType>(scheduleViewType.value)
-const defaultFilters = getDefaultFilters(isCollab.value)
+const defaultFilters = getDefaultFilters(isCollab.value ?? false)
 const deadlineItems = ref<DeadlinesByDate[]>([])
 const advancedSearchDeadlineItems = ref<DeadlinesByDate[]>([])
 const calendarWidgetDates = ref<string[]>([])

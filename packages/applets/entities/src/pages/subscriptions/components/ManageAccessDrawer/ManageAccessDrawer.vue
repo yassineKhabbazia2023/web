@@ -8,11 +8,11 @@
     @close-drawer-button="handleCloseDrawer"
   >
     <PUserCard
-      v-if="!showAccountName && defaultEntity?.legalName"
+      v-if="!showAccountName && selectedEntity?.legalName"
       pColor="persian"
       pImageName="folder-open-duotone"
-      :pTitle="defaultEntity?.legalName"
-      :pSubtitle="defaultEntity?.accountNumber"
+      :pTitle="selectedEntity?.legalName"
+      :pSubtitle="selectedEntity?.accountNumber"
       class="margin-bottom--6"
       data-testid="manage-access-user-card"
     />
@@ -54,10 +54,10 @@
 import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@pulse/common'
 import { PDrawer, PButton, PUserCard, PPagination } from '@pulse/styleguide/components'
 import type { ManageAccessDrawerProps } from './ManageAccessDrawerTypes'
 import PendingOperations from './components/PendingOperations'
+import { useSelectedEntityStore } from '@pulse/common/stores'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -77,7 +77,8 @@ const emit = defineEmits<{
 
 const pendingOperationsRef = useTemplateRef('pendingOperations')
 
-const { defaultEntity } = storeToRefs(commonStore())
+const selectedEntityStore = useSelectedEntityStore()
+const { selectedEntity } = storeToRefs(selectedEntityStore)
 
 // #region drawer values and events
 const isManageAccessDrawerVisible = computed({

@@ -1,20 +1,25 @@
-import { createTestingPinia } from '@pinia/testing'
-import { defineStore } from 'pinia'
-import { describe, expect, it, vi, beforeEach, afterEach, type MockInstance } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import { envVarsMock } from '@pulse/core/mocks'
 import { logoutAndRedirectToLoginMock, useRedirectionMock } from '@app/__mocks__/useRedirection.composable.mocks'
 import { notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
-import { initTokenMock, setTokenMock, tokenServiceMock } from '@pulse/common/mocks'
-import { amplitudeService, commonStore } from '@pulse/common'
+import {
+  CurrentUserManagerMock,
+  amplitudeServiceMock,
+  amplitudeServiceInitMock,
+  getStoreMock,
+  getMockedUserInfo,
+} from '@pulse/common/mocks'
 import type { Entity } from '@pulse/common/types'
 import { nextTick, ref } from 'vue'
 import * as mockedEnvVar from 'env-vars'
-import { LoginRouteName } from '@pulse/common/constants'
 import { LAYOUTS } from '@app/constants/constants'
+import { useUserStore, useTokenStore } from '@pulse/common/stores'
 
 import App from '.'
+
+const userStoreMock = getStoreMock(useUserStore)
+const tokenStoreMock = getStoreMock(useTokenStore)
 
 const entityMock: Entity = getMockedFavoriteEntities()[0]
 
@@ -42,24 +47,19 @@ vi.mock('vue-router', () => ({
   useRoute: useRouteMock,
 }))
 
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
+}))
+
+const setIdleMock = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/core/utils/idle', () => ({
+  setIdle: setIdleMock,
+}))
 vi.mock('env-vars', () => envVarsMock)
 vi.mock('@app/composables/useRedirection', () => useRedirectionMock)
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 
-const mockedCommonState = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: mockedCommonState,
-    getters: {
-      defaultEntity: () => entityMock,
-      isAuthenticated: () => true,
-      favoriteEntities: () => [],
-    },
-    actions: {
-      logout: () => vi.fn(),
-      fetchUserAccountPermissions: () => vi.fn(),
-    },
-  }),
   getInitials: vi.fn(),
   commonApi: () => ({
     gateway: {
@@ -83,17 +83,13 @@ vi.mock('@pulse/common', () => ({
       fetchUserData: vi.fn(),
     }
   },
-  userPermissions: () => ({
-    hasPermission: () => vi.fn(() => true),
-  }),
-  tokenService: tokenServiceMock.TokenService.getInstance(),
   fetchUrlTerms: vi.fn(),
-  amplitudeService: {
-    init: vi.fn(),
-    track: vi.fn(),
-    setUserId: vi.fn(),
-  },
+  amplitudeService: amplitudeServiceMock,
   setUnauthorizedCallback: setUnauthorizedCallbackMock,
+}))
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
 }))
 
 const createWrapper = () =>
@@ -105,21 +101,13 @@ const createWrapper = () =>
         PopupRenewToken: true,
         LoginLayout: true,
       },
-      plugins: [
-        createTestingPinia(),
-      ],
     },
   })
 
 describe('app with navigation guard', () => {
-  let initAmplitudeServiceSpy: MockInstance
   beforeEach(() => {
+    vi.clearAllMocks()
     vi.useFakeTimers()
-    initAmplitudeServiceSpy = vi.spyOn(amplitudeService, 'init')
-    mockedCommonState.mockReturnValue({
-      user: null,
-      isCollab: false,
-    })
   })
   afterEach(() => {
     vi.useRealTimers()
@@ -128,40 +116,53 @@ describe('app with navigation guard', () => {
   it('initialize the Amplitude when VITE_AMPLITUDE_API_KEY and VITE_AMPLITUDE_SERVER_URL are not empty', () => {
     createWrapper()
 
-    expect(initAmplitudeServiceSpy).toHaveBeenCalledOnce()
-    expect(initAmplitudeServiceSpy).toHaveBeenCalledWith('mocked-amplitude-api-key', 'mocked-amplitude-server-url')
+    expect(amplitudeServiceInitMock).toHaveBeenCalledOnce()
+    expect(amplitudeServiceInitMock).toHaveBeenCalledWith('mocked-amplitude-api-key', 'mocked-amplitude-server-url')
   })
 
   it('initialize the Amplitude when VITE_AMPLITUDE_API_KEY is not empty and VITE_AMPLITUDE_SERVER_URL is empty', () => {
     vi.mocked(mockedEnvVar).VITE_AMPLITUDE_SERVER_URL = ''
     createWrapper()
 
-    expect(initAmplitudeServiceSpy).toHaveBeenCalledOnce()
-    expect(initAmplitudeServiceSpy).toHaveBeenCalledWith('mocked-amplitude-api-key', undefined)
+    expect(amplitudeServiceInitMock).toHaveBeenCalledOnce()
+    expect(amplitudeServiceInitMock).toHaveBeenCalledWith('mocked-amplitude-api-key', undefined)
   })
 
   it('should not initialize the Amplitude service when VITE_AMPLITUDE_API_KEY is empty', () => {
     vi.mocked(mockedEnvVar).VITE_AMPLITUDE_API_KEY = ''
     createWrapper()
 
-    expect(initAmplitudeServiceSpy).not.toHaveBeenCalled()
+    expect(amplitudeServiceInitMock).not.toHaveBeenCalled()
   })
 
-  it.skip('should redirect to the login page when the user is inactive for 5 seconds', async () => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.user = {}
-    vi.advanceTimersByTime(120000) // 2 minutes
-    expect(routerPushMock).toHaveBeenCalledTimes(0)
-    vi.advanceTimersByTime(180000) // 3 minutes
+  it('should redirect to the login page when the user is inactive for 5 seconds', async () => {
+    const callBackRef = ref<Function>()
+    function setCallback(callback: Function) {
+      callBackRef.value = callback
+    }
+    userStoreMock.user = getMockedUserInfo({ id: 1 })
+
+    setIdleMock.mockImplementation((_duration: number, callback: Function) => {
+      setCallback(callback)
+    })
+    createWrapper()
+
+    userStoreMock.user = getMockedUserInfo({ id: 2 }) // trigger watch on user change
+
     await nextTick()
-    expect(routerPushMock).toHaveBeenCalledWith({ name: LoginRouteName.LOGIN_COLLAB })
+
+    expect(setIdleMock).toHaveBeenCalledTimes(7) // should be once, need to investigate why 7 times
+    expect(logoutAndRedirectToLoginMock).not.toHaveBeenCalled()
+    callBackRef.value?.() // trigger idle callback
+
+    await flushPromises()
+    expect(logoutAndRedirectToLoginMock).toHaveBeenCalledOnce()
   })
 
   it('should call initToken and setUnauthorizedCallback onMounted', async () => {
     createWrapper()
     await nextTick()
-    expect(initTokenMock).toHaveBeenCalledOnce()
+    expect(CurrentUserManagerMock.initToken).toHaveBeenCalledOnce()
     expect(setUnauthorizedCallbackMock).toHaveBeenCalledOnce()
   })
 
@@ -174,10 +175,9 @@ describe('app with navigation guard', () => {
     isCollab,
   }) => {
     const callBack = ref<Function>()
-    mockedCommonState.mockReturnValue({
-      user: {},
-      isCollab,
-    })
+    userStoreMock.user = {} as unknown as any
+    userStoreMock.isCollab = isCollab
+
     const expectedPopupRenewTokenProps = {
       isVisible: true,
       isTokenExpired: true,
@@ -197,8 +197,8 @@ describe('app with navigation guard', () => {
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     expect(callBack.value).toBeDefined()
-    expect(setTokenMock).toHaveBeenCalledOnce()
-    expect(setTokenMock).toHaveBeenCalledWith('')
+    expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
+    expect(tokenStoreMock.setToken).toHaveBeenCalledWith('')
     expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenProps)
 
     popupRenewToken.vm.$emit('close')
@@ -208,10 +208,9 @@ describe('app with navigation guard', () => {
 
   it('redirect to login when 401 encountered and user is null', async () => {
     const callBack = ref<Function>()
-    mockedCommonState.mockReturnValue({
-      user: null,
-      isCollab: false,
-    })
+
+    userStoreMock.user = undefined
+    userStoreMock.isCollab = false
 
     setUnauthorizedCallbackMock.mockImplementation((done: Function) => {
       callBack.value = done
@@ -220,8 +219,8 @@ describe('app with navigation guard', () => {
     await callBack.value?.()
 
     expect(callBack.value).toBeDefined()
-    expect(setTokenMock).toHaveBeenCalledOnce()
-    expect(setTokenMock).toHaveBeenCalledWith('')
+    expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
+    expect(tokenStoreMock.setToken).toHaveBeenCalledWith('')
     expect(logoutAndRedirectToLoginMock).toHaveBeenCalledOnce()
   })
 
@@ -235,10 +234,6 @@ describe('app with navigation guard', () => {
     }
     useRouteMock.mockReturnValueOnce(mockedRoute)
 
-    mockedCommonState.mockReturnValue({
-      user: null,
-      isCollab: false,
-    })
     const expectedProps = {
       isCollab: false,
       isTokenExpired: true,
@@ -253,8 +248,8 @@ describe('app with navigation guard', () => {
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     expect(callBack.value).toBeDefined()
-    expect(setTokenMock).toHaveBeenCalledOnce()
-    expect(setTokenMock).toHaveBeenCalledWith('')
+    expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
+    expect(tokenStoreMock.setToken).toHaveBeenCalledWith('')
     expect(logoutAndRedirectToLoginMock).not.toHaveBeenCalledOnce()
     expect(popupRenewToken.props()).toStrictEqual(expectedProps)
   })

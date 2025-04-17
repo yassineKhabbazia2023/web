@@ -1,13 +1,11 @@
 
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
 import { getMockedButtonTest, getMockedFolder } from '@ged/__mocks__/treeview.mocks'
 import { type RenameFolderModalProps }
   from '@ged/modules/Treeview/components/modals/Rename/RenameFolderModalTypes'
 import type { Folder } from '@ged/models/Folder'
-import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 
 import RenameFolderModal from '@ged/modules/Treeview/components/modals/Rename'
@@ -28,14 +26,12 @@ const defaultProps: RenameFolderModalProps = {
 type RenameFolderModalSetup = {
   inputContent: string
   folderNameExists: boolean
-  isDialogRenameVisible:boolean
+  isDialogRenameVisible: boolean
 }
 
 export type RenameFolderModalWrapper = VueWrapper<
   ComponentPublicInstance<RenameFolderModalProps, RenameFolderModalSetup>
 >
-
-const pinia = createPinia()
 
 const createWrapper = (
   props: RenameFolderModalProps = defaultProps,
@@ -43,16 +39,11 @@ const createWrapper = (
   return mount(RenameFolderModal, {
     props,
     global: {
-      plugins: [pinia],
     },
   }) as RenameFolderModalWrapper
 }
 
 describe('props', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('confirm button validations', () => {
     const folderName = `Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
       consectetur, adipisci velit Neque porro quisquam est qui dolorem
@@ -120,7 +111,7 @@ describe('props', () => {
       {
         typedValue: 'Test Content*',
         expectedValue:
-            'Enter a name that does not contain any of the following characters: “ * : < > ? / \\ |',
+          'Enter a name that does not contain any of the following characters: “ * : < > ? / \\ |',
         isFolderNameExits: false,
       },
       {
@@ -154,9 +145,6 @@ describe('props', () => {
 })
 
 describe('interactions', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
   it('should emit on-confirm-rename-folder when confirm btn click', async () => {
     const props: RenameFolderModalProps = {
       ...defaultProps,

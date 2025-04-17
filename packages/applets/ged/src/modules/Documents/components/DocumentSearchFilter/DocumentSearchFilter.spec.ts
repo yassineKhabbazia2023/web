@@ -1,5 +1,3 @@
-
-import { createPinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
@@ -16,14 +14,12 @@ const defaultProps: DocumentSearchFilterProps = {
 
 type DocumentSearchFilterSetup = {
   selectedPeriod: string
-  dateRange: [Date, Date ] | ''
+  dateRange: [Date, Date] | ''
 }
 
 export type DocumentSearchFilterWrapper = VueWrapper<
   ComponentPublicInstance<DocumentSearchFilterSetup, DocumentSearchFilterProps>
 >
-
-const pinia = createPinia()
 
 const createWrapper = (
   props: DocumentSearchFilterProps = defaultProps,
@@ -31,7 +27,6 @@ const createWrapper = (
   return mount(DocumentSearchFilter, {
     props,
     global: {
-      plugins: [pinia],
     },
   }) as unknown as DocumentSearchFilterWrapper
 }
@@ -144,7 +139,7 @@ describe('documentSearchFiltrer', () => {
       await pButtons[2].trigger('click')
       await nextTick()
 
-      const res:DocumentSearchFilters = {
+      const res: DocumentSearchFilters = {
         selectedPeriod: 'DAY',
         startDate: date,
         endDate: date,

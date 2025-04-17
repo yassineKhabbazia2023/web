@@ -2,8 +2,6 @@
 import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { vi, describe, it, expect } from 'vitest'
-import { createPinia } from 'pinia'
 import { documentMock } from '@ged/__mocks__/documents.mocks'
 import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import type { DocumentDetailsTabPaneProps } from './DocumentDetailsTabPaneTypes'
@@ -18,7 +16,7 @@ const defaultProps: DocumentDetailsTabPaneProps = {
   accountId: 1234,
 }
 
-function getMockedUpdatedDocument(status: string, labelFr: string|null, path: string[]) {
+function getMockedUpdatedDocument(status: string, labelFr: string | null, path: string[]) {
   const updatedDocument = {
     ...documentMock,
     piaStatus: {
@@ -41,16 +39,11 @@ vi.mock('@pulse/styleguide')
 
 vi.mock('@ged/services/Documents', () => documentsServiceMock)
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: DocumentDetailsTabPaneProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentDetailsTabPane, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 

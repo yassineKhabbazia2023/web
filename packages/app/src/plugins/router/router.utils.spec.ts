@@ -1,8 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { cguServiceMock, getTermsMock } from '@pulse/common/mocks'
+import { cguServiceMock, getTermsMock, getStoreMock } from '@pulse/common/mocks'
 import { loadUserData, checkAuthenticatedUser, checkCgu } from './router.utils'
 import { LoginRouteName } from '@pulse/common/constants'
+import { useUserStore } from '@pulse/common/stores'
 
+const userStoreMock = getStoreMock(useUserStore)
 const mockFechUserDataProvider = vi.fn()
 vi.mock('@pulse/common', () => ({
   dataProvider: () => ({
@@ -21,9 +23,6 @@ const termMockIsNotCurrent = getTermsMock({
 
 describe('test router.utils', () => {
   describe('loadUserData', () => {
-    const store = {
-      $patch: vi.fn(),
-    }
     const tests = [{
       isCollab: false,
     }, {
@@ -39,9 +38,9 @@ describe('test router.utils', () => {
         isCollab,
       }
       mockFechUserDataProvider.mockResolvedValueOnce(userMock)
-      const isCollabResult = await loadUserData(store)
+      const userData = await loadUserData()
 
-      expect(isCollabResult).toBe(isCollab)
+      expect(userData).toBe(userMock)
     })
   })
 
@@ -75,9 +74,6 @@ describe('test router.utils', () => {
   })
 
   describe('checkAuthenticatedUser', () => {
-    const store = {
-      $patch: vi.fn(),
-    }
     const basicUserMock = {
       id: 571,
       firstName: 'FirstName562',
@@ -89,16 +85,13 @@ describe('test router.utils', () => {
         ...basicUserMock,
         isCollab: true,
       }
-      const expectedParams = {
-        user: userMock,
-      }
 
       mockFechUserDataProvider.mockResolvedValueOnce(userMock)
-      const redirection = await checkAuthenticatedUser(store)
+      const redirection = await checkAuthenticatedUser()
 
       expect(redirection).toBeUndefined()
-      expect(store.$patch).toHaveBeenCalledOnce()
-      expect(store.$patch).toHaveBeenCalledWith(expectedParams)
+      expect(userStoreMock.setUser).toHaveBeenCalledOnce()
+      expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock)
       expect(cguServiceMock.getTermsByCurrentUser).not.toHaveBeenCalledOnce()
     })
 
@@ -106,9 +99,6 @@ describe('test router.utils', () => {
       const userMock = {
         ...basicUserMock,
         isCollab: false,
-      }
-      const expectedParams = {
-        user: userMock,
       }
       const expectedRedirection = {
         name: LoginRouteName.CGU_VALIDATION,
@@ -120,11 +110,11 @@ describe('test router.utils', () => {
       mockFechUserDataProvider.mockResolvedValueOnce(userMock)
       cguServiceMock.getTermsByCurrentUser.mockResolvedValueOnce(termMockIsNotCurrent)
 
-      const redirection = await checkAuthenticatedUser(store)
+      const redirection = await checkAuthenticatedUser()
 
       expect(redirection).toStrictEqual(expectedRedirection)
-      expect(store.$patch).toHaveBeenCalledOnce()
-      expect(store.$patch).toHaveBeenCalledWith(expectedParams)
+      expect(userStoreMock.setUser).toHaveBeenCalledOnce()
+      expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock)
       expect(cguServiceMock.getTermsByCurrentUser).toHaveBeenCalledOnce()
     })
   })

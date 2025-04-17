@@ -1,15 +1,20 @@
-import { defineStore } from 'pinia'
-import { beforeEach, describe, it, expect, vi, type MockInstance } from 'vitest'
+import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
 import type { Tab } from './FolderTypes'
 import * as FolderHelper from './FolderHelper'
-import { amplitudeService } from '@pulse/common'
+import {
+  amplitudeServiceMock,
+  amplitudeServiceTrackMock,
+  getStoreMock,
+} from '@pulse/common/mocks'
 import type { ComponentWrapper } from '@entities/common/types'
-import Folder from '.'
 import { mockedEntity } from '@entities/__mocks__/entities.mocks'
+import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 
-const pinia = createTestingPinia()
+import Folder from '.'
+
+const userStoreMock = getStoreMock(useUserStore)
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 
 const mockedTabs: Tab[] = [
   {
@@ -31,26 +36,14 @@ const mockedTabs: Tab[] = [
 ]
 
 vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        entities: {
-          default: mockedEntity,
-        },
-      },
-    }),
-    getters: {
-      isCollab: () => true,
-      defaultEntity: () => mockedEntity,
-    },
-    actions: {
-      fetchUserAccountPermissions: () => vi.fn(),
-    },
-  }),
-  amplitudeService: {
-    track: vi.fn(),
-  },
+  amplitudeService: amplitudeServiceMock,
   sanitizeUrl: vi.fn(),
+}))
+
+
+const fetchUserAccountPermissionsMock = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/common/services/permissions', () => ({
+  fetchUserAccountPermissions: fetchUserAccountPermissionsMock,
 }))
 
 vi.mock('./FolderHelper', () => {
@@ -78,7 +71,6 @@ const createWrapper = () =>
   mount(Folder, {
     attachTo: document.body,
     global: {
-      plugins: [pinia],
       stubs: {
         RouterView: true,
         EntityHeader: true,
@@ -88,12 +80,12 @@ const createWrapper = () =>
   })
 
 describe('folder', () => {
-  let spyTrackAmplitude: MockInstance
   let wrapper: ComponentWrapper<InstanceType<typeof Folder>>
 
   beforeEach(async () => {
     vi.useFakeTimers()
-    spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+    userStoreMock.isCollab = true
+    selectedEntityStoreMock.selectedEntity = mockedEntity
 
     wrapper = createWrapper()
     await flushPromises()
@@ -116,6 +108,7 @@ describe('folder', () => {
 
     it('renders the entity header', () => {
       const entityHeaderWrapper = wrapper.findComponent({ name: 'EntityHeader' })
+
       expect(entityHeaderWrapper.exists()).toBeTruthy()
     })
 
@@ -127,8 +120,8 @@ describe('folder', () => {
     ])('should track amplitude event when %s is clicked', (tabName, tabId) => {
       document.getElementById(tabId)?.click()
 
-      expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-      expect(spyTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
+      expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
+      expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Feature Consulted', {
         feature_name: tabName,
       })
     })

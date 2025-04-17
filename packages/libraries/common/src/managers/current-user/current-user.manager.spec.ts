@@ -1,0 +1,143 @@
+import { describe, it, expect, vi } from 'vitest'
+import { envVarsMock } from '@pulse/core/mocks'
+import { getMockedUserInfo } from '@common/__mocks__/user-client.mocks'
+import { utilsMock, logoutCollaboratorMock, logoutGigyaSSOMock, logoutClientMock } from '@common/__mocks__/utils.mocks'
+import { getMockedSelectedEntity, getMockedUserPermissions, getStoreMock } from '../../__mocks__'
+import { useUserStore } from '../../stores/user/user.store'
+import { usePermissionsStore } from '../../stores/permissions/permissions.store'
+import { useTokenStore } from '../../stores/token/token.store'
+
+import { CurrentUserManager } from './current-user.manager'
+
+const userStoreMock = getStoreMock(useUserStore)
+const permissionsStoreMock = getStoreMock(usePermissionsStore)
+const tokenStoreMock = getStoreMock(useTokenStore)
+
+const userPermissionsMock = getMockedUserPermissions()
+const selectedEntityMock = getMockedSelectedEntity()
+
+const gigyaUserIdMock = 'gigya-user-id'
+
+vi.mock('env-vars', () => envVarsMock)
+
+vi.mock('../../utils', () => utilsMock)
+
+const fetchCurrentUserMock = vi.hoisted((() => vi.fn()))
+vi.mock('../../services/current-user/current-user.service', () => ({
+  fetchCurrentUser: fetchCurrentUserMock,
+}))
+
+describe('test current-user.manager', () => {
+  beforeEach(() => {
+    envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
+  })
+  describe('initializeCurrentUser', () => {
+    it('should intialize current user', async () => {
+      const currentUserMock = getMockedUserInfo()
+      fetchCurrentUserMock.mockResolvedValue(currentUserMock)
+      await CurrentUserManager.initializeCurrentUser()
+
+      expect(userStoreMock.setUser).toHaveBeenCalledOnce()
+      expect(userStoreMock.setUser).toHaveBeenNthCalledWith(1, currentUserMock)
+
+      expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledOnce()
+      expect(permissionsStoreMock.setUserPermissions).toHaveBeenNthCalledWith(1, [])
+
+      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenCalledOnce()
+      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenNthCalledWith(1, [])
+    })
+  })
+
+  describe('logout', () => {
+    it('should process logout properly', async () => {
+      await CurrentUserManager.logout()
+
+      expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.setToken).toHaveBeenNthCalledWith(1, '')
+
+      expect(userStoreMock.setUser).toHaveBeenCalledOnce()
+      expect(userStoreMock.setUser).toHaveBeenNthCalledWith(1, undefined)
+
+      expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledOnce()
+      expect(permissionsStoreMock.setUserPermissions).toHaveBeenNthCalledWith(1, [])
+
+      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenCalledOnce()
+      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenNthCalledWith(1, [])
+
+      expect(logoutCollaboratorMock).not.toHaveBeenCalledOnce()
+      expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
+      expect(logoutClientMock).not.toHaveBeenCalled()
+    })
+
+    it('should call logoutCollaborator() when isCollab is true', async () => {
+      userStoreMock.isCollab = true
+      await CurrentUserManager.logout()
+
+      expect(logoutCollaboratorMock).toHaveBeenCalledOnce()
+      expect(logoutCollaboratorMock).toHaveBeenCalledWith()
+
+      expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
+      expect(logoutClientMock).not.toHaveBeenCalled()
+    })
+
+    it('should call logoutCollaborator() when isCollab is false but gigyaUserId is not empty', async () => {
+      userStoreMock.isCollab = false
+      userStoreMock.gigyaUserId = gigyaUserIdMock
+      await CurrentUserManager.logout()
+
+      expect(logoutCollaboratorMock).not.toHaveBeenCalled()
+      expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
+      expect(logoutClientMock).toHaveBeenCalled()
+      expect(logoutClientMock).toHaveBeenNthCalledWith(1, gigyaUserIdMock)
+    })
+
+    it('should call logoutCollaborator() when isCollab is false but gigyaUserId is not empty and VITE_GIGYA_SSO_ACTIVATED is true', async () => {
+      userStoreMock.isCollab = false
+      envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'true'
+      userStoreMock.gigyaUserId = gigyaUserIdMock
+      await CurrentUserManager.logout()
+
+      expect(logoutCollaboratorMock).not.toHaveBeenCalled()
+      expect(logoutGigyaSSOMock).toHaveBeenCalled()
+      expect(logoutGigyaSSOMock).toHaveBeenCalledWith()
+
+      expect(logoutClientMock).toHaveBeenCalled()
+      expect(logoutClientMock).toHaveBeenNthCalledWith(1, gigyaUserIdMock)
+    })
+  })
+
+  describe('hasPermission', () => {
+    beforeEach(() => {
+      permissionsStoreMock.userPermissions = userPermissionsMock
+      permissionsStoreMock.selectedEntityPermissions = selectedEntityMock.permissions ?? []
+    })
+
+    it.each([
+      ['COADMI001', true], // Permission code exists
+      ['COZDA0001', false], // Permission code does not exist
+      [['COEMB001', 'COEVPO01', 'COADMI001'], true], // All permission codes exist
+      [['COEMB001', 'COZZPO01', 'COADMI001'], true], // All permission codes exist except for one
+      [['COWSA0001', 'COZRA0001', 'COQSA0001'], false], // Not all permission codes exist
+    ])(
+      'returns whether the user has permission (%s, %s) => %s',
+      (permissions, expected) => {
+        const checkPermission = CurrentUserManager.hasPermission(permissions)
+
+        expect(checkPermission).toBe(expected)
+      },
+    )
+  })
+
+  describe('save token to store and local storage', () => {
+    it('both set the token in the store and saves it to the local storage', () => {
+      const token = '1234'
+      CurrentUserManager.persistToken(token)
+
+      expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.setToken).toHaveBeenCalledWith(token)
+
+      const localToken = localStorage.getItem('token')
+      expect(localToken).toStrictEqual(token)
+    })
+  })
+})

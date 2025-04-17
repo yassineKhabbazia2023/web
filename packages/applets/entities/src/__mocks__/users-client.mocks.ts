@@ -13,7 +13,6 @@ export const getMockedUser = (): UserInfo => {
     officeMobile: 'johnd-mobile-phone',
     oldId: 'johnd-guid',
     entities: {
-      favorites: [],
       default: undefined,
     },
   }

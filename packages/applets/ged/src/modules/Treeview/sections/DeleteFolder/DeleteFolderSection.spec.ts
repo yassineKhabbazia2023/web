@@ -1,12 +1,11 @@
 
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
+import { type Mock } from 'vitest'
 import { getMockedFolder } from '@ged/__mocks__/treeview.mocks'
 import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type DeleteFolderSectionProps }
   from '@ged/modules/Treeview/sections/DeleteFolder/DeleteFolderSectionTypes'
 import type { Folder } from '@ged/models/Folder'
-import { createPinia, setActivePinia } from 'pinia'
 import { deleteFolder } from '@ged/services/Folder'
 import { nextTick } from 'vue'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
@@ -14,8 +13,6 @@ import { PNotification as PNotificationMock } from '@pulse/styleguide'
 import DeleteFolderSection from '@ged/modules/Treeview/sections/DeleteFolder'
 
 vi.mock('@pulse/styleguide')
-
-const pinia = createPinia()
 
 const child = getMockedFolder(1, 2, 'TheFolder', {
   children: [{} as Folder],
@@ -40,22 +37,12 @@ const defaultProps: DeleteFolderSectionProps = {
 const createWrapper = (props: DeleteFolderSectionProps = defaultProps) => {
   return mount(DeleteFolderSection, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 
 vi.mock('@ged/services/Folder', () => folderServiceMock)
 
 describe('deleteFolderSection', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   describe('props', () => {
     it('should set the correct popup title', () => {
       const updatedProps: DeleteFolderSectionProps = {

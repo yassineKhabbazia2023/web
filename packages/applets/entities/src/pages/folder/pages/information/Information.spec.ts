@@ -1,20 +1,20 @@
 import { nextTick } from 'vue'
-import '@entities/__mocks__/common.import.mocks'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
-import { expect, describe, it, beforeEach, vi } from 'vitest'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { setActivePinia } from 'pinia'
-import { createTestingPinia } from '@pinia/testing'
 import {
   getMockedAccount,
   getMockedAccountReferential,
   getMockedReferentialHubs,
 } from '@entities/__mocks__/account-row.mocks'
-import { commonStore } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import * as accountServices from '@entities/services/account'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
-import Information from '.'
 import * as CommonHelpers from '@entities/common/utils/helpers'
+import { getStoreMock } from '@pulse/common/mocks'
+
+import Information from '.'
+
+const userStoreMock = getStoreMock(useUserStore)
 
 // Expected Display Results
 const expectedAddressSection = 'Company billing address'
@@ -74,15 +74,13 @@ const getWrapper = () => shallowMount(Information, {
 // Unit Tests
 describe('information', () => {
   let wrapper: ReturnType<typeof getWrapper>
-  beforeEach(() => {
-    setActivePinia(createTestingPinia())
-  })
   describe('display', () => {
     beforeEach(() => {
       wrapper = getWrapper()
     })
     it('should correctly display the folder information', async () => {
-      await flushPromises()
+      userStoreMock.isCollab = true
+      await nextTick()
       const alertInstruction = wrapper.find(
         '[data-testid="folder-information-alert"]',
       )
@@ -94,11 +92,8 @@ describe('information', () => {
       expect(alertInstruction.text()).toBe(expectedAlertInstruction)
     })
     it('should not display the alert if the user is a client', async () => {
-      await flushPromises()
-      const store = commonStore()
-      // @ts-expect-error: Getter is read only
-      store.isCollab = false
-      await flushPromises()
+      userStoreMock.isCollab = false
+      await nextTick()
       const alertInstruction = wrapper.find(
         '[data-testid="folder-information-alert"]',
       )
@@ -106,7 +101,7 @@ describe('information', () => {
       expect(alertInstruction.exists()).toBeFalsy()
     })
     it('should display all form sections', async () => {
-      await flushPromises()
+      await nextTick()
       const formSections = wrapper.findAll('.folder-information__form-section')
 
       expect(formSections).toHaveLength(InformationFormStructure.length)
@@ -128,7 +123,7 @@ describe('information', () => {
       expect(informationFormAfter.exists()).toBeTruthy()
     })
     it('should display the accurate type of address', async () => {
-      await flushPromises()
+      await nextTick()
       const folderFormAddress = wrapper.find(
         '[data-testid="folder-information-form-address-section"]',
       )
@@ -138,8 +133,6 @@ describe('information', () => {
       expect(folderFormAddress.text()).toBe(expectedAddressSection)
     })
     it('should use logger.error if the API fails to fetch the information', async () => {
-      await flushPromises()
-
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
 
       vi.spyOn(accountServices, 'fetchAccount').mockRejectedValue(expectedErrorMessage)
@@ -175,9 +168,7 @@ describe('information', () => {
         expectedHasInformationSaveButton,
       }) => {
         const expectedForceDisabled = !mockedCanEdit
-        const store = commonStore()
-        // @ts-expect-error: Getter is read only
-        store.isCollab = isCollab
+        userStoreMock.isCollab = isCollab
 
         mockedGetCanEdit.mockReturnValue(mockedCanEdit)
 

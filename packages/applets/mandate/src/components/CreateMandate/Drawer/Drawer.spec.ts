@@ -1,6 +1,5 @@
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
-import { commonStoreMock } from '@mandate/__mocks__/common.mocks'
 import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { createMandate } from '@mandate/services/mandate'
@@ -10,7 +9,6 @@ const createWrapper = (props: any = {}, slots: any = {}) =>
   wrapperFactory(CreateMandateDrawer, { props, slots })
 
 vi.mock('@pulse/common', () => ({
-  commonStore: commonStoreMock,
   amplitudeService: amplitudeServiceMock,
 }))
 

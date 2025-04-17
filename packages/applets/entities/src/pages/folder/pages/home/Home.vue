@@ -1,9 +1,9 @@
 <template>
   <div class="home-folder">
     <EntityHeader
-      v-if="defaultEntity"
-      :legalName="defaultEntity.legalName"
-      :accountNumber="defaultEntity.accountNumber"
+      v-if="selectedEntity"
+      :legalName="selectedEntity.legalName"
+      :accountNumber="selectedEntity.accountNumber"
     />
     <PRow :pGutter="24" class="flex-row-gap--4">
       <PCol
@@ -309,7 +309,7 @@ import {
   PRow,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
-import { commonStore } from '@pulse/common'
+import { useSelectedEntityStore } from '@pulse/common/stores'
 import EntityHeader from '@entities/common/components/EntityHeader'
 import {
   ABOUT_URL,
@@ -322,7 +322,8 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const { defaultEntity } = storeToRefs(commonStore())
+const selectedEntityStore = useSelectedEntityStore()
+const { selectedEntity } = storeToRefs(selectedEntityStore)
 
 const loginUrl = `${APP_URL}login`
 const loginDisplayUrl = `${HOST_NAME}/login`

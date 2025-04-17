@@ -1,9 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
 import { type DeleteFolderConfirmationPopupProps }
   from '@ged/modules/Treeview/components/popups/Delete/DeleteFolderConfirmationPopupTypes'
-import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 
@@ -29,24 +27,15 @@ export type DeleteFolderConfirmationPopupWrapper = VueWrapper<
   >
 >
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: DeleteFolderConfirmationPopupProps = defaultProps,
 ): DeleteFolderConfirmationPopupWrapper => {
   return mount(DeleteFolderConfirmationPopup, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   }) as unknown as DeleteFolderConfirmationPopupWrapper
 }
 
 describe('deleteFolderConfirmationPopup', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('props', () => {
     it('should display confirmation popup when isDeleteFolderPopupVisible is true', async () => {
       const updatedProps: DeleteFolderConfirmationPopupProps = {

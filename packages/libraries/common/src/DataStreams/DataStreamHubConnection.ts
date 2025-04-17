@@ -1,7 +1,6 @@
 import { logger } from '@pulse/core'
 import type { HubConnection } from '@microsoft/signalr'
-import { storeToRefs } from 'pinia'
-import commonStore from '../stores'
+import { useTokenStore } from '../stores/token/token.store'
 import { getNewHubConnection } from './DataStreamHubConnectionHelper'
 
 /* As we have a hub URL for each domain, this class is meant to be extended.
@@ -19,9 +18,10 @@ export class DataStreamHubConnection {
   private userToken: string
 
   constructor(hubUrl: string) {
+    const tokenStore = useTokenStore()
     this.isConnected = false
     this.hubUrl = hubUrl
-    this.userToken = storeToRefs(commonStore()).token.value
+    this.userToken = tokenStore.token
     this.connection = getNewHubConnection(this.hubUrl, this.userToken)
   }
 

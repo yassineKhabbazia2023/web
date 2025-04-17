@@ -185,7 +185,6 @@ import {
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import { commonStore, userPermissions } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
 import type { TableDataProps } from './types'
 import { AvatarRoles } from '@pulse/styleguide'
@@ -193,6 +192,8 @@ import type { AccessibleMenuItem, AccountRow } from '@entities/common/types'
 import { filterAccessibleMenuItems } from '@entities/common/utils'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
 import { PERMISSION_CODES } from '@entities/constants'
+import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+import { SelectedEntityManager, CurrentUserManager } from '@pulse/common/managers'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -210,8 +211,6 @@ const callHandleAddFavorite = (accountId: number, isFavorite: boolean) => {
   }
 }
 
-const { hasPermission } = userPermissions()
-
 const defaultMenuElements : AccessibleMenuItem[] = [
   {
     pIconName: 'folder',
@@ -225,7 +224,7 @@ const defaultMenuElements : AccessibleMenuItem[] = [
     pValue: t('resendActivationEmail'),
     pActionName: 'retryMassActivationEmail',
     pState: 'default',
-    display: hasPermission(PERMISSION_CODES.ACTIVATE_OFFER),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACTIVATE_OFFER),
   },
 ]
 
@@ -246,14 +245,14 @@ const accountManagementMenu : AccessibleMenuItem[] = [
     pValue: t('manageAccountRights'),
     pActionName: 'manageAccountRights',
     pState: 'default',
-    display: hasPermission(PERMISSION_CODES.MODIFY_ACCOUNT_RIGHTS),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.MODIFY_ACCOUNT_RIGHTS),
   },
   {
     pIconName: 'send',
     pValue: t('resendActivationEmail'),
     pActionName: 'retryMassActivationEmail',
     pState: 'default',
-    display: hasPermission(PERMISSION_CODES.ACCOUNT_MANAGEMENT),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_MANAGEMENT),
   },
 ]
 
@@ -266,8 +265,10 @@ const menuElementsCollaborator = (status: string) => {
     : filterAccessibleMenuItems(defaultMenuElements)
 }
 
-const userStore = commonStore()
-const { defaultEntity } = storeToRefs(userStore)
+const selectedEntityStore = useSelectedEntityStore()
+const { selectedEntity } = storeToRefs(selectedEntityStore)
+
+const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
 
 const selectedRow = ref<InstanceType<typeof ElTable>>()
@@ -288,22 +289,15 @@ const handleRowSelectedChange = (row: any) => {
   const rowValues = toRaw(row)
   if (rowValues) {
     const { name, accountId, accountNumber }: AccountRow = rowValues
-    // color is temporarily hard-coded
-    const defaultEntity: Entity = {
+
+    const selectedEntity: Entity = {
       legalName: name,
       accountId,
-      color: 'persian',
+      color: 'persian', // color is temporarily hard-coded
       accountNumber,
     }
 
-    localStorage.setItem('selected-entity', JSON.stringify(defaultEntity))
-    userStore.$patch({
-      user: {
-        entities: {
-          default: defaultEntity,
-        },
-      },
-    })
+    SelectedEntityManager.defineSelectedEntity(selectedEntity)
   }
 }
 
@@ -322,7 +316,7 @@ onMounted(() => {
 
 watch(() => props.data, () => {
   const rowToSelect = props.data
-    .find(({ accountId }: AccountRow) => accountId === defaultEntity.value?.accountId)
+    .find(({ accountId }: AccountRow) => accountId === selectedEntity.value?.accountId)
   selectRowWhenTableFullyLoaded(rowToSelect)
 })
 

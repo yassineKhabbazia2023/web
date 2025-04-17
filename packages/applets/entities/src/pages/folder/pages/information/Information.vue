@@ -75,7 +75,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import { PButton, PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
@@ -91,9 +91,11 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
+const userStore = useUserStore()
+const { isCollab } = storeToRefs(userStore)
+
 const route = useRoute()
 const isLoading = ref<boolean>(true)
-const { isCollab } = storeToRefs(commonStore())
 const currentAccount = ref<Account | undefined>(undefined)
 const originalAccount = ref<Account | undefined>(undefined)
 const informationFormStructure = ref<FormSection[]>()
@@ -138,7 +140,7 @@ async function onClickSave() {
 
 onMounted(async () => {
   try {
-    canEdit.value = getCanEdit(isCollab.value)
+    canEdit.value = getCanEdit(isCollab.value ?? false)
     const forceDisabled = !canEdit.value
     informationFormStructure.value = await getFormStructure('CompanyProfile', forceDisabled)
     currentAccount.value = await fetchAccount(accountId)

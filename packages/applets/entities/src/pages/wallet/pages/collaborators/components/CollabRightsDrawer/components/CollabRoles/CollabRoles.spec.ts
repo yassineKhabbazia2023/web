@@ -1,5 +1,4 @@
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { getMockedCollabRoles } from '@entities/__mocks__/collab-roles.mocks'
 import { PRadioGroup } from '@pulse/styleguide/components'
@@ -8,11 +7,6 @@ import CollabRoles from '.'
 // Mocks
 const mockedCollabRoles = getMockedCollabRoles()
 const selectedRoleId = mockedCollabRoles[0].id
-vi.mock('@pulse/common', () => ({
-  commonStore: () => ({
-    $patch: vi.fn(),
-  }),
-}))
 
 const createWrapper = (): VueWrapper<any> =>
   mount(CollabRoles, {

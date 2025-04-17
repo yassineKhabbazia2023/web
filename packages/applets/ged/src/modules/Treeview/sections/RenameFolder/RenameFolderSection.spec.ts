@@ -1,10 +1,9 @@
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
+import { type Mock } from 'vitest'
 import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type RenameFolderSectionProps }
   from '@ged/modules/Treeview/sections/RenameFolder/RenameFolderSectionTypes'
 import type { Folder, FolderProperties } from '@ged/models/Folder'
-import { createPinia, setActivePinia } from 'pinia'
 import { RenameFolder } from '@ged/services/Folder'
 import { nextTick } from 'vue'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
@@ -12,8 +11,6 @@ import { PNotification as PNotificationMock } from '@pulse/styleguide'
 import RenameFolderSection from '@ged/modules/Treeview/sections/RenameFolder'
 
 vi.mock('@pulse/styleguide')
-
-const pinia = createPinia()
 
 const defaultProps: RenameFolderSectionProps = {
   serviceId: 'service-id',
@@ -46,22 +43,12 @@ const defaultProps: RenameFolderSectionProps = {
 const createWrapper = (props: RenameFolderSectionProps = defaultProps) => {
   return mount(RenameFolderSection, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 
 vi.mock('@ged/services/Folder', () => folderServiceMock)
 
 describe('renameFolderSection', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   describe('props', () => {
     describe('binding with create folder modal', () => {
       it('should contain propser props',

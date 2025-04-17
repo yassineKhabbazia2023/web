@@ -2,10 +2,8 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import DocumentRestoreModal from '@ged/modules/Bin/components/DocumentRestoreModal'
 import { restoreDocuments } from '@ged/services/BinDocuments'
-import { describe, it, expect, beforeEach, vi, type Mock } from 'vitest'
 import { type DocumentRestoreModalTypesProps }
   from '@ged/modules/Bin/components/DocumentRestoreModal/DocumentRestoreModalTypes'
-import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
@@ -27,7 +25,6 @@ const defaultProps: DocumentRestoreModalTypesProps = {
 const i18n = createI18n({
   locale: 'fr-FR',
 })
-const pinia = createPinia()
 
 const createWrapper = (
   props: DocumentRestoreModalTypesProps = defaultProps,
@@ -35,7 +32,6 @@ const createWrapper = (
   return mount(DocumentRestoreModal, {
     props,
     global: {
-      plugins: [pinia],
       provide: {
         i18n,
       },
@@ -55,10 +51,6 @@ vi.mock('@ged/services/BinDocuments', () => ({
 const findConfirmationPopup = (wrapper: VueWrapper) => wrapper.findComponent({ name: 'ConfirmationPopup' })
 
 describe('documentRestoreModal', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('props', () => {
     it('should display confirmation popup when isVisible is true', async () => {
       expect.hasAssertions()
@@ -106,7 +98,7 @@ describe('documentRestoreModal', () => {
         await nextTick()
         expect(wrapper.emitted('confirm-restore-document')).toBeTruthy()
         expect(PNotificationMock).toHaveBeenCalledTimes(1)
-        const callArguments = (PNotificationMock as Mock).mock.calls[0][0]
+        const callArguments = (PNotificationMock as any).mock.calls[0][0]
         expect(callArguments.message)
           .toBe('1 document restauré dans le dossier Test - Voir le document')
         expect(callArguments.customClass).toBe('success')

@@ -1,6 +1,4 @@
 
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import type { DocumentUploadProps } from './DocumentsUploadTypes'
 import { generateTestFiles, secondValidDestination, unValidDestination, validDestination, validFiles } from '@ged/__mocks__/files.mocks'
 import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
@@ -28,13 +26,8 @@ const createWrapper = (
 ): DocumentsUploadWrapper => {
   return mount(DocumentsUpload, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   }) as unknown as DocumentsUploadWrapper
 }
-
-const pinia = createPinia()
 
 describe('test DocumentsUpload', () => {
   const findModalFooter = (wrapper: any) => wrapper.findComponent({ name: 'DocumentsModalActionsFooter' })
@@ -42,7 +35,6 @@ describe('test DocumentsUpload', () => {
   const findConfirmButton = (wrapper: DocumentsUploadWrapper) => wrapper.findAllComponents({ name: 'PButton' })[1]
 
   beforeEach(() => {
-    setActivePinia(pinia)
     vi.useFakeTimers()
   })
 
@@ -205,7 +197,7 @@ describe('test DocumentsUpload', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -223,7 +215,7 @@ describe('test DocumentsUpload', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -245,7 +237,7 @@ describe('test DocumentsUpload', () => {
           const wrapper = createWrapper(updatedProps)
 
           const documentExplorerModalWrapper =
-                findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',
@@ -270,7 +262,7 @@ describe('test DocumentsUpload', () => {
           await nextTick()
 
           const documentExplorerModalWrapper =
-                  findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
+            findComponentByNameInWrapper(wrapper, 'DocumentsExplorerModal')
 
           await documentExplorerModalWrapper.vm.$emit(
             'modal-action-clicked',

@@ -1,21 +1,18 @@
 import { vi, describe, it, expect } from 'vitest'
-import { setTokenMock, tokenServiceMock } from '@common/__mocks__/token.service.mocks'
+import { apiGatewayMock, apiGatewayPostMock, apiGatewayGetMock } from '../__mocks__/api-gateway.mocks'
 import { refreshClientToken, createNewPassword, isInvitationTokenValid, login } from './authentication.service'
+import { useTokenStore } from '../stores/token/token.store'
+import { getStoreMock } from '../__mocks__/store.mocks'
+
 import type { CreateNewPasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
 
-const gatewayPostMock = vi.fn()
-const gatewayGetMock = vi.fn()
+const tokenStoreMock = getStoreMock(useTokenStore)
 
 vi.mock('../api', () => ({
   default: () => ({
-    gateway: {
-      post: gatewayPostMock,
-      get: gatewayGetMock,
-    },
+    gateway: apiGatewayMock,
   }),
 }))
-
-vi.mock('../token', () => tokenServiceMock)
 
 describe('test authentication.service', () => {
   describe('refreshClientToken', () => {
@@ -24,16 +21,16 @@ describe('test authentication.service', () => {
       const mockedSub = 'mocked-sub'
       const expectedGatewayPostArgument = `authentication/api/refreshToken?userId=${mockedSub}`
 
-      gatewayPostMock.mockResolvedValue({
+      apiGatewayPostMock.mockResolvedValue({
         data: mockedToken,
       })
       await refreshClientToken(mockedSub)
 
-      expect(gatewayPostMock).toHaveBeenCalledOnce()
-      expect(gatewayPostMock).toHaveBeenCalledWith(expectedGatewayPostArgument)
+      expect(apiGatewayPostMock).toHaveBeenCalledOnce()
+      expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedGatewayPostArgument)
 
-      expect(setTokenMock).toHaveBeenCalledOnce()
-      expect(setTokenMock).toHaveBeenCalledWith(mockedToken)
+      expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.setToken).toHaveBeenCalledWith(mockedToken)
     })
   })
 
@@ -47,13 +44,13 @@ describe('test authentication.service', () => {
       const expectedUrl = 'authentication/api/createNewPassword'
       const gatewayResponseMock = {}
 
-      gatewayPostMock.mockResolvedValue(gatewayResponseMock)
+      apiGatewayPostMock.mockResolvedValue(gatewayResponseMock)
 
       const response = await createNewPassword(payload)
 
       expect(response).toStrictEqual(gatewayResponseMock)
-      expect(gatewayPostMock).toHaveBeenCalledOnce()
-      expect(gatewayPostMock).toHaveBeenCalledWith(expectedUrl, payload)
+      expect(apiGatewayPostMock).toHaveBeenCalledOnce()
+      expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedUrl, payload)
     })
   })
 
@@ -71,13 +68,13 @@ describe('test authentication.service', () => {
         data: isValidMock,
       }
 
-      gatewayGetMock.mockResolvedValue(gatewayResponseMock)
+      apiGatewayGetMock.mockResolvedValue(gatewayResponseMock)
 
       const response = await isInvitationTokenValid(invitationToken)
 
       expect(response).toStrictEqual(isValidMock)
-      expect(gatewayGetMock).toHaveBeenCalledOnce()
-      expect(gatewayGetMock).toHaveBeenCalledWith(expectedUrl, expectedQueryParams)
+      expect(apiGatewayGetMock).toHaveBeenCalledOnce()
+      expect(apiGatewayGetMock).toHaveBeenCalledWith(expectedUrl, expectedQueryParams)
     })
   })
 
@@ -96,13 +93,13 @@ describe('test authentication.service', () => {
         data: loginResponseMock,
       }
 
-      gatewayPostMock.mockResolvedValue(gatewayResponseMock)
+      apiGatewayPostMock.mockResolvedValue(gatewayResponseMock)
 
       const response = await login(loginPayload)
 
       expect(response).toStrictEqual(loginResponseMock)
-      expect(gatewayPostMock).toHaveBeenCalledOnce()
-      expect(gatewayPostMock).toHaveBeenCalledWith(expectedUrl, loginPayload)
+      expect(apiGatewayPostMock).toHaveBeenCalledOnce()
+      expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedUrl, loginPayload)
     })
   })
 })

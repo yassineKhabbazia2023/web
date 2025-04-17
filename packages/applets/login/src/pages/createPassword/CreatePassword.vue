@@ -108,14 +108,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
 import {
-  commonStore as store,
   fetchUrlTerms,
-  tokenService,
   amplitudeService,
   createNewPassword,
   login,
   isInvitationTokenValid,
 } from '@pulse/common'
+import { useUserStore, useTokenStore } from '@pulse/common/stores'
+import { type UserInfo } from '@pulse/common/types'
 import { LoginRouteName } from '@pulse/common/constants'
 import {
   onBeforeMount,
@@ -144,6 +144,8 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+const tokenStore = useTokenStore()
 const route = useRoute()
 const router = useRouter()
 const { contactId, accountNumber, token, email: emailQuery } = route.query as {
@@ -152,6 +154,8 @@ const { contactId, accountNumber, token, email: emailQuery } = route.query as {
   token: string
   email: string
 }
+
+const userStore = useUserStore()
 
 const isTokenValidationLoading = ref(false)
 const email = emailQuery?.toString().trim().replace(' ', '+')
@@ -244,19 +248,26 @@ const submitForm = (formEl: FormInstance | undefined) => {
           const {
             userId: id,
             webToken: token,
-          } = await login(loginPayload) as any // this is temporary, we need to fix the type when refact store
+          } = await login(loginPayload) as any // this is temporary, we need to fix the type when refact userStore
 
-          tokenService.setToken(token)
+          tokenStore.setToken(token)
           await updateTermsByCurrentUser(termsId.value as number)
           amplitudeService.track('Onboarding Completed', {
             onboarding_result: 'succeeded',
           })
-          store().$patch({
-            user: {
-              id,
-              isCollab: false,
+          const user: UserInfo = {
+            id,
+            firstName: '',
+            lastName: '',
+            occupation: '',
+            email: '',
+            entities: {
+              default: undefined,
             },
-          })
+            isCollab: false,
+            gigyaUserId: '',
+          }
+          userStore.setUser(user)
           navigateToCustomerWallet()
         } catch {
           amplitudeService.track('Onboarding Completed', {

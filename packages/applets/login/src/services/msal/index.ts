@@ -1,8 +1,10 @@
 import { logger } from '@pulse/core'
 import { VITE_API_MSAL_SCOPE } from 'env-vars'
-import { amplitudeService, tokenService, msalInstance } from '@pulse/common'
+import { amplitudeService, msalInstance } from '@pulse/common'
+import { useTokenStore } from '@pulse/common/stores'
 
 export const getToken = async () => {
+  const tokenStore = useTokenStore()
   if (msalInstance.getAccount()) {
     amplitudeService.setNewUserProperty('user_type', 'Collaborateur')
     return await msalInstance
@@ -12,7 +14,8 @@ export const getToken = async () => {
       })
       .then((response: any) => {
         const token = response.accessToken
-        tokenService.setToken(token)
+
+        tokenStore.setToken(token)
         amplitudeService.track('Sign In Completed', {
           sign_in_method: 'SSO',
           sign_in_result: 'succeeded',

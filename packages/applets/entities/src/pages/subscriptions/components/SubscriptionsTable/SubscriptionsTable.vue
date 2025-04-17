@@ -130,7 +130,8 @@ import {
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { commonStore, amplitudeService } from '@pulse/common'
+import { amplitudeService } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
 import { fetchSubscriptionRequests, validateSubscriptionRequest } from '@entities/services/subscription'
 import { getInitials } from '@entities/helper'
@@ -154,7 +155,7 @@ const emit = defineEmits<{
 const isLoading = ref(true)
 const isActionInProgress = ref(false)
 const clickedRow = ref<number>()
-const userStore = commonStore()
+const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 const offerTypeSelection = ref<string[]>([])
 const subscriptions = ref<SubscriptionRequest[]>([])

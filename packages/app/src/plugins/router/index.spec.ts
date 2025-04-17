@@ -1,9 +1,20 @@
 import { describe, expect, it, vi } from 'vitest'
 import { LoginRouteName } from '@pulse/common/constants'
-import { getMockedUser } from '@pulse/common/mocks'
-import { routerBeforeEach } from '.'
+import { getStoreMock, getMockedUser, getMockedEntities } from '@pulse/common/mocks'
+import { useUserStore, useTokenStore, useSelectedEntityStore } from '@pulse/common/stores'
+
+import { routerBeforeEach, entityClientOrHomeRedirections } from '.'
+
+getStoreMock(useUserStore)
+getStoreMock(useTokenStore)
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 
 const mockedGatewayGet = vi.hoisted(() => vi.fn())
+
+const fetchEntitiesMock = vi.hoisted(() => vi.fn())
+vi.mock('@app/services/entities', () => ({
+  fetchEntities: fetchEntitiesMock,
+}))
 
 vi.mock('vue-router', () => ({
   createWebHistory: vi.fn(),
@@ -25,7 +36,6 @@ vi.mock('./router.utils', () => ({
 }))
 
 vi.mock('@pulse/common', () => ({
-  commonStore: vi.fn(),
   commonApi: () => ({
     gateway: {
       get: mockedGatewayGet,
@@ -113,13 +123,11 @@ describe('router', () => {
       meta: {},
       name: toName,
     }
-    const storeMock = {}
     mockedGatewayGet.mockResolvedValue({
       data: userOrigin,
     })
     const response = await routerBeforeEach({
       to,
-      store: storeMock,
       isAuthenticated,
       isCollab,
       isFirstTime: false,
@@ -142,21 +150,125 @@ describe('router', () => {
       meta: {},
       name: toName,
     }
-    const storeMock = {
-      $patch: vi.fn(),
-    }
     mockedGatewayGet.mockResolvedValue({
       data: userOrigin,
     })
     const response = await routerBeforeEach({
       to,
-      store: storeMock,
       isAuthenticated,
       isCollab,
       isFirstTime,
     })
     expect(response).toBeUndefined()
     expect(checkAuthenticatedUserMock).toHaveBeenCalledOnce()
-    expect(checkAuthenticatedUserMock).toHaveBeenCalledWith(storeMock)
+    expect(checkAuthenticatedUserMock).toHaveBeenCalledWith(/* no argument expected */)
+  })
+
+  describe('entityClientOrHomeRedirections', () => {
+    const entitiesMock = getMockedEntities()
+    describe('when isCollab is false', () => {
+      const isCollab = false
+      const tests = [{
+        toName: '',
+        totalItems: 1,
+        expectedRedirection: undefined,
+        expectedSetSelectedEntityCalledTimes: 0,
+      }, {
+        toName: 'home',
+        totalItems: 0,
+        expectedRedirection: undefined,
+        expectedSetSelectedEntityCalledTimes: 0,
+      }, {
+        toName: 'home',
+        totalItems: 1,
+        expectedRedirection: {
+          name: 'entity-client',
+        },
+        expectedSetSelectedEntityCalledTimes: 0,
+      }, {
+        toName: 'entity-client',
+        totalItems: 1,
+        expectedRedirection: {
+          name: 'folder',
+          params: {
+            id: 1,
+          },
+        },
+        expectedSetSelectedEntityCalledTimes: 1,
+      }, {
+        toName: 'entity-client',
+        totalItems: 2,
+        expectedRedirection: undefined,
+        expectedSetSelectedEntityCalledTimes: 0,
+      }]
+      it.each(tests)('should return $expectedRedirection when toName equals $toName and totalItems equals $totalItems', async ({
+        toName,
+        totalItems,
+        expectedRedirection,
+        expectedSetSelectedEntityCalledTimes,
+      }) => {
+        const entitiesPaginationMock = {
+          items: entitiesMock,
+          totalItems,
+        }
+
+        fetchEntitiesMock.mockResolvedValue(entitiesPaginationMock)
+        const redirection = await entityClientOrHomeRedirections(toName, isCollab)
+
+        expect(redirection).toStrictEqual(expectedRedirection)
+        expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledTimes(expectedSetSelectedEntityCalledTimes)
+        if (expectedSetSelectedEntityCalledTimes) {
+          const expectedSelectedEntity = {
+            ...entitiesMock.at(0),
+            color: 'persian',
+          }
+          expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledWith(expectedSelectedEntity)
+        }
+      })
+    })
+    describe('when isCollab is true', () => {
+      const isCollab = true
+      const tests = [{
+        toName: '',
+        totalItems: 1,
+        expectedRedirection: undefined,
+      }, {
+        toName: 'home',
+        totalItems: 0,
+        expectedRedirection: {
+          name: 'wallet',
+        },
+      }, {
+        toName: 'home',
+        totalItems: 1,
+        expectedRedirection: {
+          name: 'wallet',
+        },
+      }, {
+        toName: 'entity-client',
+        totalItems: 1,
+        expectedRedirection: undefined,
+      }, {
+        toName: 'entity-client',
+        totalItems: 2,
+        expectedRedirection: undefined,
+      }]
+      it.each(tests)('should return $expectedRedirection when toName equals $toName and totalItems equals $totalItems', async ({
+        toName,
+        totalItems,
+        expectedRedirection,
+      }) => {
+        const entitiesPaginationMock = {
+          items: entitiesMock,
+          totalItems,
+        }
+
+        fetchEntitiesMock.mockResolvedValue(entitiesPaginationMock)
+        const redirection = await entityClientOrHomeRedirections(toName, isCollab)
+
+        expect(redirection).toStrictEqual(expectedRedirection)
+        expect(selectedEntityStoreMock.setSelectedEntity).not.toHaveBeenCalled()
+      })
+    })
   })
 })

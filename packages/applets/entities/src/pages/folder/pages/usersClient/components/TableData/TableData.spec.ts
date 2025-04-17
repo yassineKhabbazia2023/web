@@ -2,15 +2,14 @@ import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockedUsersClient } from '@entities/__mocks__/users-client.mocks'
 import { getInitials } from '@entities/helper'
-import TableData from './'
+import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks'
 import { userActions } from './types'
 import { nextTick } from 'vue'
 
-const mockHasPermission = vi.fn((_code: string) => true)
-vi.mock('@pulse/common', () => ({
-  userPermissions: () => ({
-    hasPermission: mockHasPermission,
-  }),
+import TableData from './'
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
 }))
 
 vi.mock('vue-router', () => ({
@@ -124,7 +123,7 @@ describe('tableData', () => {
   )
 
   it('should display only the actions that the user has permission to perform', () => {
-    mockHasPermission.mockReturnValue(false)
+    hasPermissionMock.mockReturnValue(false)
     wrapper = createWrapper()
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 

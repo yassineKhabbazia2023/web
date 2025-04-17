@@ -1,4 +1,3 @@
-
 import { describe, it, expect } from 'vitest'
 import type { DocumentsModalExplorerProps, GivenActionAuthorization } from './DocumentsExplorerModalTypes'
 import { currentService, secondValidDestination, validDestination, currentServiceFolder, selectedEntity, accountId } from '@ged/__mocks__/files.mocks'
@@ -10,7 +9,6 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
-import { createPinia } from 'pinia'
 
 import DocumentsExplorerModal from '.'
 
@@ -27,7 +25,7 @@ const generateExplorerDocuments = (
   const explorerDocuments: ExplorerDocument[] = []
 
   for (let i = 0; i < numberOfDocuments; i++) {
-    const doc:ExplorerDocument = {
+    const doc: ExplorerDocument = {
       givenActionState: state,
       isSelected: false,
       content: {
@@ -79,12 +77,9 @@ const createWrapper = (
   return mount(DocumentsExplorerModal, {
     props,
     global: {
-      plugins: [pinia],
     },
   }) as unknown as DocumentsExplorerModalWrapper
 }
-
-const pinia = createPinia()
 
 describe('documentsExplorerModal', () => {
   const findDocumentsExplorerHeader = (

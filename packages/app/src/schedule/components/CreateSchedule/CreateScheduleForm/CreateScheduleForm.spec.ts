@@ -52,7 +52,8 @@ const createWrapper = (props: FormProps) =>
         PRow: { template: '<div><slot /></div>' },
         PCol: { template: '<div><slot /></div>' },
       },
-    } })
+    },
+  })
 
 describe('test CreateScheduleForm', () => {
   it.each([

@@ -11,7 +11,7 @@
         <PIcon pName="pulse" />
       </PAvatar>
       <h4 class="h4 margin-left--2" data-testid="report-display-account-name">
-        {{ defaultEntity?.legalName }}
+        {{ selectedEntity?.legalName }}
       </h4>
     </div>
     <div class="report-display__container flex margin-top--6 padding--4">
@@ -35,7 +35,7 @@ import { useI18n } from 'vue-i18n'
 import { watch, toRefs, computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { PAvatar, PIcon } from '@pulse/styleguide/components'
-import { commonStore } from '@pulse/common'
+import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { ReportDisplayProps } from './ReportDisplayTypes'
 import { fetchBIToken } from '@entities/services/reporting'
 import { displayNotification } from '@entities/common/utils'
@@ -52,7 +52,9 @@ const props = defineProps<ReportDisplayProps>()
 const reportToken = ref<string>('')
 const powerbiSection = ref<HTMLElement>()
 const { selectedReport } = toRefs(props)
-const { defaultEntity } = storeToRefs(commonStore())
+
+const selectedEntityStore = useSelectedEntityStore()
+const { selectedEntity } = storeToRefs(selectedEntityStore)
 
 const powerBIConfig = computed(() => ({
   type: 'report',
@@ -78,7 +80,7 @@ const loadPowerBIReport = async () => {
   }
 }
 
-const entityAvatarColor = computed(() => getAvatarColorFromKey(defaultEntity.value?.accountNumber))
+const entityAvatarColor = computed(() => getAvatarColorFromKey(selectedEntity.value?.accountNumber))
 
 // If a different report is selected, the new report should be loaded again
 watch(selectedReport, () => {

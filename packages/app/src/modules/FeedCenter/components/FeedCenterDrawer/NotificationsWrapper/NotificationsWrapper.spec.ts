@@ -25,15 +25,11 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('./notifications-wrapper.manager', async (importActual) => {
-  const actual = await importActual() as Record<string, any>
-  return {
-    ...actual,
-    getNotificationAccountNames: vi.fn(() => []),
-    getTimeSinceCreation: vi.fn(() => ''),
-    handleNotificationAction: vi.fn(),
-  }
-})
+vi.mock('./notifications-wrapper.manager', () => ({
+  getNotificationAccountNames: vi.fn(() => []),
+  getTimeSinceCreation: vi.fn(() => ''),
+  handleNotificationAction: vi.fn(),
+}))
 
 const NoNotificationsPlaceholderBaseProps: NotificationsWrapperProps = {
   isLoading: false,

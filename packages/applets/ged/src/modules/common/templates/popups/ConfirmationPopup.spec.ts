@@ -1,10 +1,8 @@
 import ConfirmationPopup from '@ged/modules/common/templates/popups'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
 import { type ConfirmationPopupProps } from
   '@ged/modules/common/templates/popups/ConfirmationPopupTypes'
-import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 
@@ -27,26 +25,16 @@ export type ConfirmationPopupWrapper = VueWrapper<
   ComponentPublicInstance<ConfirmationPopupProps, ConfirmationPopupSetup>
 >
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: ConfirmationPopupProps = defaultProps,
 ): ConfirmationPopupWrapper =>
   mount(ConfirmationPopup, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   }) as unknown as ConfirmationPopupWrapper
 
 const getPopupConfirmationButton = (wrapper: VueWrapper) =>
   wrapper.find('.confirmation-popup__confirm-button')
 describe('confirmationPopup', () => {
-
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('props', () => {
     it('should display popup when isPopupVisible is true', () => {
       const wrapper = createWrapper()

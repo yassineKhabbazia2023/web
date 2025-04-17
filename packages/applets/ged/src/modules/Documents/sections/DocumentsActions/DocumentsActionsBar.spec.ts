@@ -1,20 +1,13 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, expect, it, vi } from 'vitest'
-import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import type { DocumentActionsBarProps } from './DocumentActionsBarTypes'
 
 import DocumentsActionsBar from './DocumentsActionsBar.vue'
 
-const pinia = createPinia()
-
 const createWrapper = (props: DocumentActionsBarProps) =>
   mount(DocumentsActionsBar, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 
 const findActionBarLeft = (wrapper: any) => {

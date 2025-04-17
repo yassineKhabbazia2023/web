@@ -1,12 +1,10 @@
 
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
 import { documentsResponsePayloadTwoPages } from '@ged/__mocks__/documents.mocks'
 import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import { getConnectionDocumentPiaStatusChangedMock, onConnectedAsyncMock, onDisconnectedAsyncMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
-import { createPinia, setActivePinia } from 'pinia'
 import type { DocumentsProps } from './DocumentsTypes'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
@@ -16,18 +14,16 @@ import type { Document, DocumentsWithTableStructure } from '@ged/models/Document
 
 import Documents from './Documents.vue'
 
- type DocumentsSetup = {
-   documents: DocumentsWithTableStructure
-   selectedDocument: Document
-   selectedDocuments: Document[]
-   isLoading:false
- }
+type DocumentsSetup = {
+  documents: DocumentsWithTableStructure
+  selectedDocument: Document
+  selectedDocuments: Document[]
+  isLoading: false
+}
 
 export type DocumentsWrapper = VueWrapper<
-   ComponentPublicInstance<DocumentsSetup, DocumentsProps>
- >
-
-const pinia = createPinia()
+  ComponentPublicInstance<DocumentsSetup, DocumentsProps>
+>
 
 const defaultProps = {
   currentService: foldersData[0][0].children[0].serviceId,
@@ -67,10 +63,6 @@ vi.mock('@ged/models/AccountingHubConnection', () => ({
 }))
 
 describe('documents', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-    flushPromises()
-  })
   describe('props', () => {
     it('should not render pagination when there is no document', async () => {
       const wrapper = shallowMount(Documents, {
@@ -82,7 +74,6 @@ describe('documents', () => {
               template: '<span />',
             },
           },
-          plugins: [pinia],
         },
       }) as unknown as DocumentsWrapper
       await flushPromises()
@@ -104,7 +95,6 @@ describe('documents', () => {
               template: '<span />',
             },
           },
-          plugins: [pinia],
         },
       }) as unknown as DocumentsWrapper
       await flushPromises()
@@ -140,7 +130,6 @@ describe('documents', () => {
               template: '<span />',
             },
           },
-          plugins: [pinia],
         },
       }) as unknown as DocumentsWrapper
       await flushPromises()
@@ -175,7 +164,6 @@ describe('documents', () => {
               template: '<span />',
             },
           },
-          plugins: [pinia],
         },
       }) as unknown as DocumentsWrapper
       await flushPromises()

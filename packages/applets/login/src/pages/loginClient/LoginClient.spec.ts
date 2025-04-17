@@ -1,14 +1,23 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { cguServiceMock, amplitudeServiceTrackMock, amplitudeServiceSetNewUserPropertyMock, amplitudeServiceMock, setTokenMock, tokenServiceMock } from '@pulse/common/mocks'
+import {
+  cguServiceMock,
+  amplitudeServiceTrackMock,
+  amplitudeServiceSetNewUserPropertyMock,
+  amplitudeServiceMock,
+  getStoreMock,
+} from '@pulse/common/mocks'
 import { envVarsMock } from '@pulse/core/mocks'
 import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
 import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import { flushPromises, mount } from '@vue/test-utils'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { LoginRouteName, BackEndErrors } from '@pulse/common/constants'
+import { useTokenStore } from '@pulse/common/stores'
 
 import Login from './'
+
+const tokenStoreMock = getStoreMock(useTokenStore)
 
 const USER_ID = 'customUserId'
 const GIGYA_USER_ID = 'customGigyaUserId'
@@ -43,10 +52,6 @@ vi.mock('vue-router', () => ({
 
 vi.mock('@pulse/common', () => ({
   login: loginMock,
-  commonStore: () => ({
-    $patch: mockStorePatch,
-  }),
-  tokenService: tokenServiceMock.TokenService.getInstance(),
   amplitudeService: amplitudeServiceMock,
 }))
 const initAuthClientMocked = vi.hoisted(() => vi.fn(() => {
@@ -97,6 +102,7 @@ const INPUT_PASSWORD_VALUE = 'customPassword'
 
 describe('login', () => {
   beforeEach(() => {
+    tokenStoreMock.token = 'abcdef-123456'
     loginMock.mockResolvedValue({
       userId: USER_ID,
       webToken: WEB_TOKEN,
@@ -148,7 +154,7 @@ describe('login', () => {
       sign_in_method: 'email',
       sign_in_result: 'succeeded',
     })
-    expect(setTokenMock).toHaveBeenNthCalledWith(1, WEB_TOKEN)
+    expect(tokenStoreMock.setToken).toHaveBeenNthCalledWith(1, WEB_TOKEN)
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
   })
 

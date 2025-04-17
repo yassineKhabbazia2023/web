@@ -1,14 +1,17 @@
-import { setActivePinia } from 'pinia'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
-import { amplitudeService, commonStore, commonStore as useStore } from '@pulse/common'
-import { createTestingPinia } from '@pinia/testing'
+import { shallowMount } from '@vue/test-utils'
+import {
+  amplitudeServiceMock,
+  amplitudeServiceTrackMock,
+  getStoreMock,
+} from '@pulse/common/mocks'
 import { LoginRouteName } from '@pulse/common/constants'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { useUserStore } from '@pulse/common/stores'
+
 import LogoutButton from './'
 
-const pinia = createTestingPinia()
-const store = useStore()
+const userStoreMock = getStoreMock(useUserStore)
+
 const mockRouterPush = vi.fn()
 
 vi.mock('vue-router', () => ({
@@ -17,21 +20,16 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-const createWrapper = (): VueWrapper<any> =>
-  mount(LogoutButton, {
-    global: {
-      plugins: [pinia],
-    },
-  })
+const createWrapper = () => shallowMount(LogoutButton)
 
-let wrapper: VueWrapper<any>
+vi.mock('@pulse/common', () => ({
+  amplitudeService: amplitudeServiceMock,
+}))
+
+vi.mock('@pulse/common/managers')
+const CurrentUserManagerLogoutMock = vi.mocked(CurrentUserManager.logout)
 
 describe('logoutButton', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-    wrapper = createWrapper()
-  })
-
   const isCollabToRouteNameToRedirect = [
     {
       isCollab: true,
@@ -46,29 +44,27 @@ describe('logoutButton', () => {
   it.each(isCollabToRouteNameToRedirect)(
     'can disconnect user when clicking on the logout button and redirect to $routeNameToRedirect',
     async ({ isCollab, routeNameToRedirect }) => {
-      // @ts-expect-error: Getter is read only
-      store.isCollab = isCollab
+      userStoreMock.isCollab = isCollab
+      const wrapper = createWrapper()
 
       expect(mockRouterPush).not.toHaveBeenCalled()
 
-      await wrapper.find('button').trigger('click')
+      await wrapper.findComponent({ name: 'PButton' }).trigger('click')
 
       expect(mockRouterPush).toHaveBeenCalledOnce()
       expect(mockRouterPush).toHaveBeenCalledWith({ name: routeNameToRedirect })
 
-      expect(store.logout).toHaveBeenCalledOnce()
+      expect(CurrentUserManagerLogoutMock).toHaveBeenCalledOnce()
     },
   )
-  it('should throw eror and amplitude', async () => {
-    const store = commonStore()
-    const spyStoreLogoutAction = vi.spyOn(store, 'logout')
-    const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
-    spyStoreLogoutAction.mockRejectedValue('ERROR Logout')
+  it('should throw error and amplitude', async () => {
+    const wrapper = createWrapper()
+    CurrentUserManagerLogoutMock.mockRejectedValue('ERROR Logout')
 
-    await wrapper.find('button').trigger('click')
+    await wrapper.findComponent({ name: 'PButton' }).trigger('click')
 
-    expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-    expect(spyTrackAmplitude).toHaveBeenCalledWith('Sign Out Completed', {
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign Out Completed', {
       sign_out_result: 'failed',
     })
   })

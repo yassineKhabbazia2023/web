@@ -5,12 +5,11 @@
     data-testid="folder-tabs-wrapper"
   >
     <EntityHeader
-      v-if="defaultEntity"
-      :legalName="defaultEntity.legalName"
-      :accountNumber="defaultEntity.accountNumber"
+      v-if="selectedEntity"
+      :legalName="selectedEntity.legalName"
+      :accountNumber="selectedEntity.accountNumber"
     />
     <PTabs
-      v-if="!isLoading"
       :modelValue="activeTab"
       @tab-click="handleTabClick"
     >
@@ -27,11 +26,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
-import { amplitudeService, commonStore } from '@pulse/common'
+import { amplitudeService } from '@pulse/common'
+import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import Home from './pages/home'
 import { getTabAuthorisations, getTabs } from './FolderHelper'
@@ -46,10 +46,12 @@ const { t } = useI18n({
 // Variables
 const route = useRoute()
 const router = useRouter()
-const isLoading = ref(false)
-const userStore = commonStore()
+const userStore = useUserStore()
+const selectedEntityStore = useSelectedEntityStore()
 const activeTab = computed(() => route.name as string)
-const { defaultEntity, isCollab } = storeToRefs(userStore)
+
+const { selectedEntity } = storeToRefs(selectedEntityStore)
+const { isCollab } = storeToRefs(userStore)
 
 // Computed
 const tabTitles: Record<TabName, string> = {
@@ -59,7 +61,7 @@ const tabTitles: Record<TabName, string> = {
   collab: t('collab'),
   delegationsHistory: t('delegationsHistory'),
 }
-const tabAuthorisations = computed(() => getTabAuthorisations(isCollab.value))
+const tabAuthorisations = computed(() => getTabAuthorisations(isCollab.value ?? false))
 
 const tabsList = computed<Tab[]>(() => getTabs(tabAuthorisations.value, tabTitles))
 
@@ -78,13 +80,6 @@ const handleTabClick = (tab: any) => {
     name: tab.paneName,
   })
 }
-
-// Hooks
-onMounted(async () => {
-  isLoading.value = true
-  await userStore.fetchUserAccountPermissions()
-  isLoading.value = false
-})
 </script>
 
 <style lang="scss" scoped>

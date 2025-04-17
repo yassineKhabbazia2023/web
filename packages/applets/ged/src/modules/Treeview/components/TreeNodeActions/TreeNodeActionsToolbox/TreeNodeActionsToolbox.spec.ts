@@ -1,7 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
-import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { TreeNodeActionsToolboxProps } from './TreeNodeActionsToolboxTypes'
@@ -25,27 +23,18 @@ export type TreeNodeActionsWrapper = VueWrapper<
   ComponentPublicInstance<TreeNodeActionsToolboxProps, TreeNodeActionsSetup>
 >
 
-const pinia = createPinia()
-
 const createWrapper = (props: TreeNodeActionsToolboxProps = defaultProps)
-: TreeNodeActionsWrapper => {
+  : TreeNodeActionsWrapper => {
   return mount(TreeNodeActionsToolbox, {
     props,
     slots: {
       default: '<button class="custom-button">Custom Button Content</button>',
     },
-    global: {
-      plugins: [pinia],
-    },
-  })as unknown as TreeNodeActionsWrapper
+  }) as unknown as TreeNodeActionsWrapper
 }
 
 describe('treeNodeActions', () => {
   describe('props', () => {
-    beforeEach(() => {
-      setActivePinia(pinia)
-    })
-
     it('should render PToolbox when permissions and selectedOrHovered', () => {
       const updatedProps: TreeNodeActionsToolboxProps = {
         ...defaultProps,

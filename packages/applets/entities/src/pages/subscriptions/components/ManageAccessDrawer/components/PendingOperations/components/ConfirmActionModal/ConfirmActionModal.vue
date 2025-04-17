@@ -27,12 +27,12 @@
             class="font-semibold"
             data-testid="legal-name-confirmation-modal"
           >
-            {{ defaultEntity?.legalName }}
+            {{ selectedEntity?.legalName }}
           </span>
         </template>
         <template #accountNumber>
           <span data-testid="account-number-confirmation-modal">
-            {{ defaultEntity?.accountNumber }}
+            {{ selectedEntity?.accountNumber }}
           </span>
         </template>
       </i18n-t>
@@ -69,12 +69,12 @@
         </template>
         <template #accountName>
           <span class="font-semibold">
-            {{ defaultEntity?.legalName }}
+            {{ selectedEntity?.legalName }}
           </span>
         </template>
         <template #accountNumber>
           <span>
-            {{ defaultEntity?.accountNumber }}
+            {{ selectedEntity?.accountNumber }}
           </span>
         </template>
       </i18n-t>
@@ -92,10 +92,10 @@ import {
   PFormItem,
 } from '@pulse/styleguide/components'
 import type { FormRules } from '@pulse/styleguide/types'
-import { commonStore } from '@pulse/common'
 import { getFullName } from '@entities/common/utils'
 import type { ConfirmActionModalProps } from './ConfirmActionModalTypes'
 import ConfirmationModal from '@entities/common/components/ConfirmationModal'
+import { useSelectedEntityStore } from '@pulse/common/stores'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -108,8 +108,9 @@ const emit = defineEmits<{
   'confirm-action': [string?]
 }>()
 
-// #region confirmation modal
-const { defaultEntity } = storeToRefs(commonStore())
+const selectedEntityStore = useSelectedEntityStore()
+const { selectedEntity } = storeToRefs(selectedEntityStore)
+
 const isOperationExecuting = ref(false)
 
 const confirmationModalTitle = computed(() =>

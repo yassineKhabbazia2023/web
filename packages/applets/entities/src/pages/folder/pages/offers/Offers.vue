@@ -60,11 +60,11 @@
     </PTable>
   </div>
   <OffersDrawer
-    v-if="isOffersDrawerOpened && defaultEntity && user"
+    v-if="isOffersDrawerOpened && selectedEntity && user"
     v-model="isOffersDrawerOpened"
-    :selectedCompanyName="defaultEntity.legalName"
-    :accountNumber="defaultEntity.accountNumber"
-    :accountId="defaultEntity.accountId"
+    :selectedCompanyName="selectedEntity.legalName"
+    :accountNumber="selectedEntity.accountNumber"
+    :accountId="selectedEntity.accountId"
     :currentUser="user"
     data-testid="offers-drawer"
   />
@@ -76,7 +76,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { commonStore, userPermissions } from '@pulse/common'
+import { CurrentUserManager } from '@pulse/common/managers'
 import {
   PBlockHeader,
   PButton,
@@ -91,8 +91,12 @@ import type { SubscriptionRequest } from '@entities/services/subscription/subscr
 import { fetchAccountSubscriptions } from '@entities/services/subscription'
 import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
 import { PERMISSION_CODES } from '@entities/constants'
+import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 
 const route = useRoute()
+const userStore = useUserStore()
+const selectedEntityStore = useSelectedEntityStore()
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
@@ -104,9 +108,10 @@ defineEmits<{
 
 const isLoading = ref(true)
 const isOffersDrawerOpened = ref(false)
-const { hasPermission } = userPermissions()
 const activeOffers = ref<SubscriptionRequest[]>([])
-const { isCollab, defaultEntity, user } = storeToRefs(commonStore())
+
+const { isCollab, user } = storeToRefs(userStore)
+const { selectedEntity } = storeToRefs(selectedEntityStore)
 
 const headerTitle = computed(() =>
   isCollab.value ? t('collabHeaderTitle') : t('clientHeaderTitle'),
@@ -115,7 +120,7 @@ const headerSubtitle = computed(() =>
   isCollab.value ? t('collabHeaderSubtitle') : t('clientHeaderSubtitle'),
 )
 const isActivateOffersButtonVisible = computed(
-  () => isCollab.value && hasPermission(PERMISSION_CODES.ACTIVATE_OFFER),
+  () => isCollab.value && CurrentUserManager.hasPermission(PERMISSION_CODES.ACTIVATE_OFFER),
 )
 
 const handleActivateOffersClick = () => {

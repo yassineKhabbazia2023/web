@@ -7,8 +7,14 @@ import {
   getMockedWalletQueryResult,
   getMockedSearchCriteria,
 } from '../folders/DeployUtilsMock'
-import AccountManagement from '.'
 import type { AccountRow } from '@entities/common/types'
+import { defineSelectedEntityMock } from '@pulse/common/mocks'
+
+import AccountManagement from '.'
+
+vi.mock('@pulse/common/managers', () => ({
+  defineSelectedEntity: defineSelectedEntityMock,
+}))
 
 const mockRouterPush = vi.fn()
 const mockedAccount: AccountRow = {

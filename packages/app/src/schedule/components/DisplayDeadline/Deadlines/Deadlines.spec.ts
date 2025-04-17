@@ -1,35 +1,20 @@
-import { defineStore } from 'pinia'
-import { createTestingPinia } from '@pinia/testing'
 import { flushPromises } from '@vue/test-utils'
-import { expect, describe, it, vi } from 'vitest'
 import wrapperFactory from '@app/__mocks__/wrapper.factory'
 import { getSmartMockedDeadline } from '@app/__mocks__/deadline.mocks'
 import { tvaLabelMock } from '@app/__mocks__/schedule.mocks'
 import { scheduleServicesMock, getScheduleModelsByKeyMock } from '@app/__mocks__/schedule.service.mocks'
-import { collabUserMock } from '@app/__mocks__/users.mocks'
 import type { Deadline } from '@app/schedule/models/Deadline'
 
 import Deadlines from '.'
 
 vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
-const pinia = createTestingPinia()
 const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/common', () => ({
   amplitudeService: {
     track: amplitudeTrackMock,
   },
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        ...collabUserMock,
-      },
-    }),
-    getters: {
-      isCollab: () => true,
-    },
-  }),
   dataProvider: () => {
     return {
       fetchUserData: vi.fn(),
@@ -43,7 +28,6 @@ const createWrapper = (deadlines: Deadline[]) =>
   wrapperFactory(Deadlines, {
     props: { deadlines },
     global: {
-      plugins: [pinia],
     },
   })
 

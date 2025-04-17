@@ -1,4 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
+import { apiGatewayMock, apiGatewayGetMock, apiGatewayPatchMock } from '../../__mocks__/api-gateway.mocks'
 import {
   getTermsByCurrentUser,
   updateTermsByCurrentUser,
@@ -19,14 +20,9 @@ const termsMock = {
 
 const cguMessageDone = { message: 'Done !' }
 
-const apiGatewayGetMock = vi.hoisted(() => vi.fn())
-const apiGatewayPatchMock = vi.hoisted(() => vi.fn())
 vi.mock('../../api', () => ({
   default: () => ({
-    gateway: {
-      get: apiGatewayGetMock,
-      patch: apiGatewayPatchMock,
-    },
+    gateway: apiGatewayMock,
   }),
 }))
 

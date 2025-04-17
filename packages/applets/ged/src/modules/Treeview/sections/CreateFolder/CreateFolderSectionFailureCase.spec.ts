@@ -1,10 +1,9 @@
 
-import { describe, it, expect, beforeEach, vi, afterEach, type Mock } from 'vitest'
+import { type Mock } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { loggerMock } from '@pulse/core/mocks'
 import { getMockedFolder } from '@ged/__mocks__/treeview.mocks'
 import { createFolderFailMock, tokenValueMock } from '@ged/__mocks__/folder.service.mocks'
-import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 import type { Folder } from '@ged/models/Folder'
@@ -14,8 +13,6 @@ import CreateFolderSection from './CreateFolderSection.vue'
 
 vi.mock('@pulse/styleguide')
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
-
-const pinia = createPinia()
 
 const child = getMockedFolder(1, 2, 'TheFolder', {
   children: [{} as Folder],
@@ -40,9 +37,6 @@ const defaultProps: CreateFolderSectionProps = {
 const createWrapper = (props: CreateFolderSectionProps = defaultProps) => {
   return mount(CreateFolderSection, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 
@@ -52,13 +46,6 @@ vi.mock('@ged/services/Folder', () => ({
 }))
 
 describe('createFolderSection', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-  afterEach(() => {
-    vi.restoreAllMocks()
-  })
-
   describe('interactions', () => {
     it('should display success notification correctly on success create', async () => {
       const updatedProps: CreateFolderSectionProps = {

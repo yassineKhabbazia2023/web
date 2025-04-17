@@ -1,15 +1,13 @@
 import { dataProvider } from '@pulse/common'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { LoginRouteName } from '@pulse/common/constants'
+import { useUserStore } from '@pulse/common/stores'
 
-export async function loadUserData(store: any) {
+export async function loadUserData() {
   const { fetchUserData } = dataProvider()
   const user = await fetchUserData()
-  store.$patch({
-    user,
-  })
 
-  return user?.isCollab ?? false
+  return user
 }
 
 export async function checkCgu() {
@@ -25,8 +23,11 @@ export async function checkCgu() {
   }
 }
 
-export async function checkAuthenticatedUser(store: any) {
-  const isCollab = await loadUserData(store)
+export async function checkAuthenticatedUser() {
+  const userStore = useUserStore()
+  const user = await loadUserData()
+  userStore.setUser(user)
+  const { isCollab } = user ?? {}
 
   const redirection = isCollab ? undefined : await checkCgu()
 

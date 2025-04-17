@@ -5,9 +5,12 @@ import type { Router } from 'vue-router'
 import { patchNotificationReadStatus } from '@app/modules/FeedCenter/services/notifications.service'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { commonStore } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
 import { fetchUserEntities } from './notifications-wrapper.service'
+import { useSelectedEntityStore } from '@pulse/common/stores'
+import { SelectedEntityManager } from '@pulse/common/managers'
+import { storeToRefs } from 'pinia'
+
 dayjs.extend(relativeTime)
 
 export function patchUnreadNotification(notification: FeedCenterNotification) {
@@ -82,23 +85,21 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
     router: Router,
     notification: FeedCenterNotification,
   ) => {
-    const store = commonStore()
-    if (store.defaultEntity?.accountId !== notification.accounts[0].id) {
+    const selectedEntityStore = useSelectedEntityStore()
+    const { selectedEntity } = storeToRefs(selectedEntityStore)
+    if (selectedEntity?.value?.accountId !== notification.accounts[0].id) {
       const data = await fetchUserEntities()
       const foundEntity = data.find(entity => entity.accountId === notification.accounts[0].id)
       if (!foundEntity) {
         return
       }
 
-      await store.fetchUserAccountPermissions()
       const formattedEntityData: Entity = {
         accountId: foundEntity.accountId,
         accountNumber: foundEntity.accountNumber,
         legalName: foundEntity.legalName,
       }
-      store.setDefaultEntity(formattedEntityData)
-      localStorage.setItem('selected-entity', JSON.stringify(formattedEntityData))
-
+      await SelectedEntityManager.defineSelectedEntity(formattedEntityData)
     }
     // only pushing to GED if user has access to the folder
     router.push({

@@ -1,11 +1,9 @@
 
 import { nextTick } from 'vue'
-import { beforeEach, describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { documentMock } from '@ged/__mocks__/documents.mocks'
 import { type DocumentTabsProps } from './DocumentTabsTypes'
-import { createPinia, setActivePinia } from 'pinia'
 import DocumentTabs from './DocumentTabs.vue'
 
 const defaultProps: DocumentTabsProps = {
@@ -15,25 +13,16 @@ const defaultProps: DocumentTabsProps = {
   currentService: '',
 }
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: DocumentTabsProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentTabs, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 
 describe('documentTabs', () => {
   describe('props', () => {
-    beforeEach(() => {
-      setActivePinia(pinia)
-    })
-
     it('should render according to the provided props', async () => {
       const wrapper = createWrapper()
 

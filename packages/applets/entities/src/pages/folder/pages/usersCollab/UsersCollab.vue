@@ -21,7 +21,7 @@
         @search-value-submitted="handleSearchValueSubmitted"
       />
       <PButton
-        v-if="hasPermission(PERMISSION_CODES.MANAGE_ACCESS)"
+        v-if="CurrentUserManager.hasPermission(PERMISSION_CODES.MANAGE_ACCESS)"
         pType="primary"
         pSize="small"
         :loading="isLoadingOperations"
@@ -186,7 +186,9 @@ import {
 import RemoveUserDialog from '../usersClient/components/RemoveUserDialog'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { AvatarRoles , PNotification } from '@pulse/styleguide'
-import { amplitudeService, commonStore, getInitials, userPermissions } from '@pulse/common'
+import { amplitudeService, getInitials } from '@pulse/common'
+import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { CurrentUserManager } from '@pulse/common/managers'
 import {
   PAGE_SIZES,
   PERMISSION_CODES,
@@ -215,13 +217,15 @@ const { d, t } = useI18n({
   datetimeFormats,
 })
 
+const userStore = useUserStore()
+const selectedEntityStore = useSelectedEntityStore()
+
 const route = useRoute()
 const selectedRow = ref(undefined)
 const isManageRightsDrawerOpened = ref(false)
-const { user } = storeToRefs(commonStore())
+const { user } = storeToRefs(userStore)
 
 // #region manage access
-const { hasPermission } = userPermissions()
 const isManageAccessDrawerOpened = ref(false)
 const isLoadingOperations = ref(false)
 const accountOperationsList = ref<AccountOperations[]>([])
@@ -234,7 +238,7 @@ const handleOpenAccessDrawer = () => {
 async function loadOperations() {
   isLoadingOperations.value = true
   try {
-    const operations = await fetchOperationsForAccount(currentEntity.value?.accountId ?? 0)
+    const operations = await fetchOperationsForAccount(selectedEntity.value?.accountId ?? 0)
     const pendingOperations = getPendingOperations(operations)
     const firstOperation = pendingOperations.at(0)
     const accountNumber = firstOperation?.accountNumber ?? ''
@@ -281,7 +285,7 @@ function handleToolboxClick(userRow: any) {
       pState: 'default',
     },
   ]
-  if (hasPermission(PERMISSION_CODES.COLLAB_REMOVE_USER)) {
+  if (CurrentUserManager.hasPermission(PERMISSION_CODES.COLLAB_REMOVE_USER)) {
     items.push({
       pIconName: 'personRemove',
       pValue: t('removeUser'),
@@ -419,15 +423,15 @@ const handleUserAction = (action: string, row: any) => {
 }
 
 // Signatory addition scope
-const currentEntity = computed(() => user.value?.entities.default)
+const { selectedEntity } = storeToRefs(selectedEntityStore)
 
 async function handleAddSignatory(contactId: User['contactId'], contactFullName: string) {
-  if (!currentEntity.value) {
+  if (!selectedEntity.value) {
     return
   }
 
   try {
-    await updateSignatoryStatus(currentEntity.value.accountId, contactId)
+    await updateSignatoryStatus(selectedEntity.value.accountId, contactId)
     showAddSignatorySuccess(contactFullName)
     setAccountSignatories()
   } catch (error) {
@@ -437,11 +441,11 @@ async function handleAddSignatory(contactId: User['contactId'], contactFullName:
 }
 
 async function handleRemoveSignatory(contactId: User['contactId'], contactFullName: string) {
-  if (!currentEntity.value) {
+  if (!selectedEntity.value) {
     return
   }
   try {
-    await updateSignatoryStatus(currentEntity.value.accountId, contactId, false)
+    await updateSignatoryStatus(selectedEntity.value.accountId, contactId, false)
     showSuccessNotification('signatoryRemoved', contactFullName)
     setAccountSignatories()
   } catch (error) {
@@ -473,12 +477,12 @@ function hasMultipleSignatories() {
 }
 
 async function setAccountSignatories() {
-  if (!currentEntity.value) {
+  if (!selectedEntity.value) {
     return
   }
   state.isLoading = true
   try {
-    const signatories = await getAccountSignatories(currentEntity.value.accountId)
+    const signatories = await getAccountSignatories(selectedEntity.value.accountId)
     accountSignatories.value.length = 0
     accountSignatories.value.push(...signatories)
   } catch (error) {
@@ -539,7 +543,7 @@ watch(() => [
 onMounted(async () => {
   await formatAndFillUsersCollabTable()
   await setAccountSignatories()
-  if (currentEntity.value?.accountId) {
+  if (selectedEntity.value?.accountId) {
     await loadOperations()
   }
 })

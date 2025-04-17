@@ -1,23 +1,20 @@
-import { commonStore } from '@pulse/common'
-import { createTestingPinia } from '@pinia/testing'
-import { setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import { useRoute } from 'vue-router'
-import LegalLinks from '.'
 import { LoginRouteName } from '@pulse/common/constants'
+import { getStoreMock } from '@pulse/common/mocks'
+import { useUserStore } from '@pulse/common/stores'
+
+import LegalLinks from '.'
 
 const mockedUseRoute = useRoute as Mock
+
 vi.mock('vue-router')
 
-const createWrapper = (): VueWrapper<any> => mount(LegalLinks, {
-  global: {
-    plugins: [pinia],
-  },
-})
+const userStoreMock = getStoreMock(useUserStore)
 
-const pinia = createTestingPinia()
+const createWrapper = (): VueWrapper<any> => mount(LegalLinks)
 
 describe('legalLinks', () => {
   let wrapper: VueWrapper<any>
@@ -28,16 +25,13 @@ describe('legalLinks', () => {
     })
     wrapper = createWrapper()
     await flushPromises()
-    setActivePinia(pinia)
   })
 
   it('has links in the footer', () => {
     expect(wrapper.find('.legal-links').exists()).toBeTruthy()
   })
   it('should display the CGU link user is a client or if the page is login-client', async () => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = false
+    userStoreMock.isCollab = false
 
     mockedUseRoute.mockReturnValue({
       name: 'login-client',
@@ -49,9 +43,7 @@ describe('legalLinks', () => {
     expect(linkCGU.exists()).toBeTruthy()
   })
   it('should not display the CGU link user is a client or if the page is login-client', async () => {
-    const store = commonStore()
-    // @ts-expect-error: Getter is read only
-    store.isCollab = true
+    userStoreMock.isCollab = true
     mockedUseRoute.mockReturnValue({
       name: LoginRouteName.LOGIN_COLLAB,
     })

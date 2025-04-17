@@ -4,7 +4,6 @@ import { loggerMock } from '@pulse/core/mocks'
 import * as reportingServices from '@entities/services/reporting'
 import * as commonUtils from '@entities/common/utils'
 import { getMockedBIReports } from '@entities/__mocks__/bi-report.mocks'
-import { createTestingPinia } from '@pinia/testing'
 import { nextTick } from 'vue'
 import BIReports from '.'
 
@@ -27,7 +26,6 @@ vi.mock('@entities/services/reporting', () => ({
 
 const createWrapper = (): VueWrapper<any> =>
   mount(BIReports, {
-    plugins: [createTestingPinia()] ,
     global: {
       stubs: {
         PLoader: true,

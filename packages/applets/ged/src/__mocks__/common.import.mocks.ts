@@ -40,13 +40,6 @@ vi.mock('@pulse/common', () => ({
       get: commonApiGatewayGetSpy,
     },
   }),
-  commonStore: () => ({
-    $delete: vi.fn(),
-    $patch: vi.fn(),
-    $get: vi.fn(),
-    $post: vi.fn(),
-    defaultEntity: defaultEntityMock,
-  }),
   DataStreamHubConnection: vi.fn(() => ({
     startConnection: vi.fn(() => {
       return Promise.resolve()

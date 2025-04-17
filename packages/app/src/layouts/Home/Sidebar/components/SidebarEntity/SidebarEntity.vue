@@ -110,30 +110,34 @@
     </nav>
     <SidebarEntityMenu
       v-if="isSelectedEntityActive && selectedEntity"
+      :isCollab="isCollab"
       :selectedEntityId="selectedEntity.accountId"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import { commonStore } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
+import { useFavoriteEntitiesStore, useUserStore } from '@pulse/common/stores'
+import { SelectedEntityManager } from '@pulse/common/managers'
 import { PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
 import type { SidebarEntityProps } from './SidebarEntityTypes'
-import { getDefaultEntity } from './utils'
 import SidebarEntityItem from './components/SidebarEntityItem'
 import SidebarEntityMenu from './components/SidebarEntityMenu'
 import EntityAvatar from './components/EntityAvatar'
 import AppVersion from './components/AppVersion'
 
 const route = useRoute()
-const userStore = commonStore()
+
+const userStore = useUserStore()
+const favoriteEntitiesStore = useFavoriteEntitiesStore()
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
@@ -141,13 +145,15 @@ const { t } = useI18n({
 
 const props = defineProps<SidebarEntityProps>()
 
-const { favoriteEntities, isCollab } = storeToRefs(userStore)
+const { favoriteEntities } = storeToRefs(favoriteEntitiesStore)
+const { isCollab } = storeToRefs(userStore)
+
 const favoriteEntitiesSorted = computed(() => {
   return [...favoriteEntities.value].sort((a, b) => a.legalName.localeCompare(b.legalName))
 })
+
 const isSidebarOpened = ref(false)
 const isToggleTooltipDisabled = ref(false)
-const selectedEntity = ref<Entity | undefined>(undefined)
 
 const walletItem = computed((): SidebarEntityItemProps => {
   return {
@@ -158,12 +164,12 @@ const walletItem = computed((): SidebarEntityItemProps => {
 })
 
 const isSelectedEntityActive = computed(() => {
-  if (!selectedEntity.value?.accountId) {
+  if (!props.selectedEntity.accountId) {
     return false
   }
 
   const params = {
-    id: selectedEntity.value.accountId,
+    id: props.selectedEntity.accountId,
   }
 
   const isUnitaryViewVisible = [
@@ -206,27 +212,9 @@ const getActiveWallet = computed(() => {
   return ''
 })
 
-const patchDefaultEntity = (entity: Entity) => {
-  userStore.$patch({
-    user: {
-      entities: {
-        default: entity,
-      },
-    },
-  })
-  userStore.fetchUserAccountPermissions()
-}
-
 const onEntitySelected = (entity: Entity) => {
-  selectedEntity.value = entity
-  patchDefaultEntity(entity)
-  localStorage.setItem('selected-entity', JSON.stringify(entity))
+  SelectedEntityManager.defineSelectedEntity(entity)
 }
-
-onMounted(() => {
-  selectedEntity.value = getDefaultEntity(props.entities?.at(0))
-  patchDefaultEntity(selectedEntity.value as Entity)
-})
 </script>
 
 <style scoped lang="scss">

@@ -1,19 +1,23 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
 import { envVarsMock, featureFlagManagerMock, isFeedCenterActivatedMock, isScheduleActivatedMock, loggerMock } from '@pulse/core/mocks'
 import { entitiesServiceMock } from '@app/__mocks__/entities.service.mocks'
 import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import { fetchUnreadNotificationsCountMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 import { routerMock } from '@app/__mocks__/router.mocks'
+import { getMockedUserInfo } from '@pulse/common/mocks'
 import { nextTick } from 'vue'
 
 import Home from '.'
 
-vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
+const userMock = getMockedUserInfo()
+const dataProviderMock = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/common', () => ({
+  dataProvider: dataProviderMock,
+}))
 
-const pinia = createTestingPinia()
+vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 
 declare let window: {
   embedded_svc: {
@@ -47,7 +51,7 @@ const createWrapper = (): VueWrapper<any> =>
   shallowMount(Home, {
     attachTo: document.body,
     global: {
-      plugins: [pinia, routerMock],
+      plugins: [routerMock],
       stubs: {
         Schedule: { template: '<div data-testid="schedule-stub" />' },
         MyInformation: { template: '<div />' },
@@ -63,11 +67,16 @@ const createWrapper = (): VueWrapper<any> =>
   })
 
 describe('home', () => {
+  beforeEach(() => {
+    dataProviderMock.mockReturnValue({
+      fetchUserData: () => userMock,
+    })
+  })
+
   it('should not call any feedcenter API if feature is disabled', async () => {
     isFeedCenterActivatedMock.mockReturnValue(false)
     const wrapper = createWrapper()
     wrapper.vm.isLoading = false
-    wrapper.vm.defaultEntity = true
     await nextTick()
 
     expect(fetchUnreadNotificationsCountMock).not.toHaveBeenCalled()
@@ -77,7 +86,6 @@ describe('home', () => {
     isScheduleActivatedMock.mockReturnValue(false)
     const wrapper = createWrapper()
     wrapper.vm.isLoading = false
-    wrapper.vm.defaultEntity = true
     wrapper.vm.calendarHasBeenOpened = true
     await nextTick()
 

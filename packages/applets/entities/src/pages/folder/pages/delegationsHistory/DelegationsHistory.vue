@@ -101,7 +101,7 @@ import {
 } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import type { Entity } from '@pulse/common/types'
-import { commonStore } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
 import { removeFalsyValues } from '@entities/helper'
@@ -115,7 +115,8 @@ const { d, t } = useI18n({
   datetimeFormats,
 })
 
-const { user } = storeToRefs(commonStore())
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
 const userId = computed(() => user.value?.id)
 
 const isLoading = ref<boolean>(false)

@@ -50,6 +50,7 @@ onMounted(async () => {
   try {
     amplitudeService.reset()
     await initAuthCollab()
+
     if (isTokenRetrieve.value) {
       navigateToWallet()
 

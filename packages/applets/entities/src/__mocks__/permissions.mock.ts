@@ -1,4 +1,3 @@
-
 import { AuthorizationConfig } from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListTypes'
 import { AuthorizationState } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
 
@@ -94,7 +93,6 @@ export const getMockedAuthorizationsConfig = (): AuthorizationConfig[] => {
 export const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
 export const mockedPermissionCodes = ['CLUSER001', 'CLUSER002']
 
-export const mockHasPermission = vi.fn((_code: string) => true)
 export const mockUpdateUserPermission = vi.fn()
 export const mockUpdateAccountPermission = vi.fn()
 export const mockFetchAuthorizationsConfig = vi.fn(() => Promise.resolve(mockedAuthorizationsConfig))

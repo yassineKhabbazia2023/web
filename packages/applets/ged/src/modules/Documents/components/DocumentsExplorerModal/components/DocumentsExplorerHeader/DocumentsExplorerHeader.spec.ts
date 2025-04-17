@@ -1,8 +1,5 @@
-
-import { createPinia, setActivePinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
-import { describe, expect, it, beforeEach } from 'vitest'
 import type { ExplorerDocument } from '@ged/modules/Documents/DocumentsTypes'
 import { type DocumentsExplorerHeaderProps }
   from './DocumentsExplorerHeaderTypes'
@@ -18,22 +15,14 @@ const defaultProps: DocumentsExplorerHeaderProps = {
   headerTitle: 'header',
 }
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: DocumentsExplorerHeaderProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentsExplorerHeader, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   })
 }
 describe('documentsExplorerHeader', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
   describe('props', () => {
     it('should not render PCollapse when no failed document', async () => {
       const wrapper = createWrapper()
@@ -48,7 +37,7 @@ describe('documentsExplorerHeader', () => {
     })
 
     it('should render PCollapse when failed document', async () => {
-      const docs:Array<ExplorerDocument> = [
+      const docs: Array<ExplorerDocument> = [
         {
           givenActionState: 'ERROR',
           content: { name: 'test.pdf' },

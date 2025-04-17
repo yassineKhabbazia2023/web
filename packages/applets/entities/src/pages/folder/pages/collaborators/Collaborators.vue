@@ -182,7 +182,8 @@ import {
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
-import { commonStore, userPermissions } from '@pulse/common'
+import { useUserStore } from '@pulse/common/stores'
+import { CurrentUserManager } from '@pulse/common/managers'
 import { PAGE_SIZES, PERMISSION_CODES } from '@entities/constants'
 import type { Collab } from './types'
 import type { Account } from '@entities/services/account/accountTypes'
@@ -201,9 +202,8 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const userStore = commonStore()
+const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
-const { hasPermission } = userPermissions()
 
 const isLoading = ref(false)
 const isMounted = ref(false)
@@ -358,7 +358,7 @@ const toolboxItems = computed(
         pValue: t('removeCollaborator'),
         pActionName: 'removeCollaborator',
         pState: 'default',
-        display: isCollab.value && hasPermission(PERMISSION_CODES.DELETE_ACCOUNT_COLLAB),
+        display: isCollab.value && CurrentUserManager.hasPermission(PERMISSION_CODES.DELETE_ACCOUNT_COLLAB),
       },
     ]
       .filter(({ display }) => display)

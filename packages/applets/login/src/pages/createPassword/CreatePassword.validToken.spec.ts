@@ -1,13 +1,15 @@
 import { mount, flushPromises } from '@vue/test-utils'
-import { type MockInstance, describe, expect, it, vi, beforeEach } from 'vitest'
-import { cguServiceMock } from '@pulse/common/mocks'
+import { getStoreMock, cguServiceMock, amplitudeServiceTrackMock, amplitudeServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/core/mocks'
 import { navigateToCustomerWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
-import { amplitudeService, tokenService } from '@pulse/common'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 import type { FormInstance } from 'element-plus'
+import { useUserStore, useTokenStore } from '@pulse/common/stores'
 
 import CreatePassword from './'
+
+getStoreMock(useUserStore)
+const tokenStoreMock = getStoreMock(useTokenStore)
 
 const mockToken = 'token'
 const VALID_PASSWORD = 'aaAA11@@'
@@ -22,7 +24,6 @@ vi.mock('@login/composable/useNavigation', () => ({
   default: () => useNavigationMock,
 }))
 
-const mockStorePatch = vi.fn()
 const createNewPasswordMock = vi.hoisted(() => vi.fn())
 const loginMock = vi.hoisted(() => vi.fn())
 const isInvitationTokenValidMock = vi.hoisted(() => vi.fn())
@@ -32,17 +33,7 @@ vi.mock('@pulse/common', () => ({
   login: loginMock,
   isInvitationTokenValid: isInvitationTokenValidMock,
   fetchUrlTerms: vi.fn(() => CGU_URL),
-  tokenService: {
-    getToken: vi.fn(),
-    setToken: vi.fn(),
-  },
-  amplitudeService: {
-    track: vi.fn(),
-    reset: vi.fn(),
-  },
-  commonStore: () => ({
-    $patch: mockStorePatch,
-  }),
+  amplitudeService: amplitudeServiceMock,
 }))
 
 const routerPushMock = vi.hoisted(() => vi.fn())
@@ -54,8 +45,8 @@ const useRouteMock = vi.hoisted(() => vi.fn(() => ({
   name: 'route-name',
   meta: {},
   query: {
-    contactId: 'contactId' ,
-    accountNumber: 'accountNumber' ,
+    contactId: 'contactId',
+    accountNumber: 'accountNumber',
     email: 'email',
     token: 'token',
   },
@@ -72,9 +63,7 @@ function createWrapper() {
 
 describe('page creation password', () => {
   let wrapper: ReturnType<typeof createWrapper>
-  let spyTrackAmplitude: MockInstance
   beforeEach(() => {
-    spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
     wrapper = createWrapper()
   })
 
@@ -91,8 +80,8 @@ describe('page creation password', () => {
 
   it(
     'should track amplitude event when create password page displayed', () => {
-      expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-      expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Email Accepted', {
+      expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
+      expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Onboarding Email Accepted', {
         onboarding_email_click: '',
       })
     },
@@ -177,7 +166,7 @@ describe('page creation password', () => {
     await flushPromises()
     wrapper.find('button').trigger('click')
     await flushPromises()
-    expect(spyTrackAmplitude).toHaveBeenCalledWith('Onboarding Completed', {
+    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Onboarding Completed', {
       onboarding_result: 'failed',
     })
   })
@@ -194,8 +183,6 @@ describe('page creation password', () => {
     wrapper.find('.el-checkbox__original').setValue('true')
     await flushPromises()
     wrapper.find('button').trigger('click')
-    const setTokenSpy = vi.spyOn(tokenService, 'setToken')
-    vi.spyOn(tokenService, 'getToken').mockReturnValue(mockToken)
     await flushPromises()
     const data = {
       contactId: 'contactId',
@@ -205,7 +192,7 @@ describe('page creation password', () => {
       email: 'email',
       password: VALID_PASSWORD,
     }
-    expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Completed', {
+    expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(2, 'Onboarding Completed', {
       onboarding_result: 'succeeded',
     })
     expect(updateTermsByCurrentUser).toHaveBeenCalledTimes(1)
@@ -215,7 +202,7 @@ describe('page creation password', () => {
     expect(loginMock).toHaveBeenCalledOnce()
     expect(loginMock).toHaveBeenCalledWith(dataLogin)
 
-    expect(setTokenSpy).toHaveBeenCalledWith(mockToken)
+    expect(tokenStoreMock.setToken).toHaveBeenCalledWith(mockToken)
     expect(navigateToCustomerWalletMock).toHaveBeenCalledOnce()
   })
 

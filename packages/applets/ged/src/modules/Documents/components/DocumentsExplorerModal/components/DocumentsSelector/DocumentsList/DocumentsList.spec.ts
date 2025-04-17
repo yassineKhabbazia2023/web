@@ -1,4 +1,3 @@
-import { createPinia } from 'pinia'
 import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
@@ -7,7 +6,7 @@ import { type DocumentsListProps } from './DocumentsListTypes'
 
 import DocumentsList from './DocumentsList.vue'
 
-const docs:Array<ExplorerDocument> = [
+const docs: Array<ExplorerDocument> = [
   {
     givenActionState: 'DONE',
     content: { name: 'test.pdf' },
@@ -33,15 +32,12 @@ const defaultProps: DocumentsListProps = {
   isFolderLine: false,
 }
 
-const pinia = createPinia()
-
 const createWrapper = (
   props: DocumentsListProps = defaultProps,
 ): VueWrapper<any> => {
   return mount(DocumentsList, {
     props,
     global: {
-      plugins: [pinia],
     },
   })
 }
@@ -70,7 +66,7 @@ describe('documentsList', () => {
     })
 
     it('should not render PFileAndFolderLineCheck when only Error documents', async () => {
-      const docs:Array<ExplorerDocument> = [
+      const docs: Array<ExplorerDocument> = [
         {
           givenActionState: 'ERROR',
           content: { name: 'test.pdf' },

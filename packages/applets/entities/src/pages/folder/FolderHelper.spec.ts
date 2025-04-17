@@ -1,8 +1,13 @@
 import { describe, it, expect } from 'vitest'
 import '@entities/__mocks__/common.import.mocks'
-import { getTabAuthorisations, getTabs } from './FolderHelper'
-import { mockHasPermission } from '@entities/__mocks__/permissions.mock'
+import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks'
 import type { TabName, Tab } from './FolderTypes'
+
+import { getTabAuthorisations, getTabs } from './FolderHelper'
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
+}))
 
 describe('test FolderHelper', () => {
   describe('getTabAuthorisations', () => {
@@ -54,7 +59,7 @@ describe('test FolderHelper', () => {
         hasPermission,
         expectedAuthorisations,
       }) => {
-        mockHasPermission.mockReturnValue(hasPermission)
+        hasPermissionMock.mockReturnValue(hasPermission)
         const tabAuthorisations = getTabAuthorisations(isCollab)
 
         expect(tabAuthorisations).toStrictEqual(expectedAuthorisations)

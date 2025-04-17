@@ -1,23 +1,15 @@
-import { defineStore } from 'pinia'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { mount, type VueWrapper } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import delegationsHistoryMock from '@entities/__mocks__/json/delegationsHistory.json'
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'
+import { useUserStore } from '@pulse/common/stores'
+import { getMockedUser, getStoreMock } from '@pulse/common/mocks'
+
 import DelegationsHistory from './'
 
 const CURRENT_ACCOUNT_ID = '602'
+const userMock = getMockedUser({ id: 7 })
 
-const pinia = createTestingPinia()
-vi.mock('@pulse/common', () => ({
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        id: 7,
-      },
-    }),
-  }),
-}))
+const userStoreMock = getStoreMock(useUserStore)
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -33,15 +25,33 @@ vi.mock('@entities/services/account/accountServices', () => ({
 }))
 
 const createWrapper = (): VueWrapper<any> =>
-  mount(DelegationsHistory, {
+  shallowMount(DelegationsHistory, {
     global: {
-      plugins: [pinia],
       stubs: {
         PLoader: true,
         PScrollbar: { template: '<div><slot /></div>' },
         PTimeline: { template: '<div><slot /></div>' },
+        PTimelineItem: {
+          name: 'PTimelineItem',
+          template: '<div><slot /></div>',
+        },
+        PHistoryCard: {
+          name: 'PHistoryCard',
+          template: '<div><slot name="text" /><slot name="action" /></div>',
+          props: [
+            'pDate',
+            'pEntity',
+          ],
+        },
+        FormSearch: {
+          name: 'FormSearch',
+          template: '<div><slot /></div>',
+          emits: ['search-value-submitted'],
+        },
+        'i18n-t': { template: '<div><slot name="delegator" /> delegated the folder<slot name="delegatee" />.</div>' },
         PTooltip: { template: '<div><slot /></div>' },
         NoResult: true,
+        PButton: true,
       },
     },
     attachTo: document.body,
@@ -54,6 +64,7 @@ describe('delegationsHistory', () => {
   const getPHistoryCard = (index: number) => getTimeLineItems()[index].findComponent({ name: 'PHistoryCard' })
 
   beforeEach(() => {
+    userStoreMock.user = userMock
     wrapper = createWrapper()
   })
 
@@ -68,18 +79,19 @@ describe('delegationsHistory', () => {
     expect(getPHistoryCard(0).props('pDate')).toBe('4/25/2024')
     expect(getPHistoryCard(0).props('pEntity')).toBe('Boulangerie Bel Epi')
 
-    const geFirstHistoryCardText = getPHistoryCard(0).find('.p-history-card__text').text()
+    const pHistoryCard = getPHistoryCard(0)
+    const geFirstHistoryCardText = pHistoryCard.text()
     expect(geFirstHistoryCardText).toContain('Sutton York  delegated the folder to  Jade Fournier.')
 
-    const getFirstButtonDelete = getPHistoryCard(0).find('button')
-    expect(getFirstButtonDelete.attributes('disabled')).toBeDefined()
+    const getFirstButtonDelete = getPHistoryCard(0).findComponent({ name: 'PButton' })
+    expect(getFirstButtonDelete.attributes('pdisabled')).toBeDefined()
 
-    const getLastButtonDelete = getPHistoryCard(delegationsHistoryMock.items.length - 1).find('button')
-    expect(getLastButtonDelete.attributes('disabled')).toBeUndefined()
+    const getLastButtonDelete = getPHistoryCard(delegationsHistoryMock.items.length - 1).findComponent({ name: 'PButton' })
+    expect(getLastButtonDelete.attributes('pdisabled')).toBe('false')
 
-    const geLastHistoryCardText = getPHistoryCard(delegationsHistoryMock.items.length - 1)
-      .find('.p-history-card__text').text()
-    expect(geLastHistoryCardText).toContain('you  delegated the folder to  Gamble Riley.')
+    const lastHistoryCard = getPHistoryCard(delegationsHistoryMock.items.length - 1)
+    const lastHistoryCardText = lastHistoryCard.text()
+    expect(lastHistoryCardText).toContain('you  delegated the folder to  Gamble Riley.')
   })
 
   it('can make a search', async () => {
@@ -105,7 +117,8 @@ describe('delegationsHistory', () => {
     expect(deleteAccountDelegation).not.toHaveBeenCalled()
     expect(fetchAccountDelegationsHistory).toHaveBeenCalledOnce()
 
-    const getLastButtonDelete = getPHistoryCard(delegationsHistoryMock.items.length - 1).find('button')
+    const pHistoryCard = getPHistoryCard(delegationsHistoryMock.items.length - 1)
+    const getLastButtonDelete = pHistoryCard.findComponent({ name: 'PButton' })
     await getLastButtonDelete.trigger('click')
 
     expect(deleteAccountDelegation).toHaveBeenCalledOnce()

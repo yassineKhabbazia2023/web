@@ -1,15 +1,19 @@
 
 import '@entities/__mocks__/common.import.mocks'
-import { it, describe, beforeEach, expect } from 'vitest'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { createTestingPinia } from '@pinia/testing'
 import * as reportingServices from '@entities/services/reporting'
 import * as commonUtils from '@entities/common/utils'
 import { getMockedBIReports } from '@entities/__mocks__/bi-report.mocks'
+import { getStoreMock } from '@pulse/common/mocks'
+import { useSelectedEntityStore } from '@pulse/common/stores'
+import { mockedEntity } from '@entities/__mocks__/entities.mocks'
+
 import ReportDisplay from '.'
 
 // Mocks
 const mockedSelectedReport = getMockedBIReports()[0]
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+
 // @ts-ignore
 window.powerbi = {
   reset: () => vi.fn(),
@@ -25,13 +29,13 @@ const createWrapper = (): VueWrapper => {
       selectedReport: mockedSelectedReport,
       token: 'tokenTest',
     },
-    plugins: [createTestingPinia()],
   })
 }
 
 describe('reportDisplay', () => {
   let wrapper: VueWrapper
   beforeEach(async () => {
+    selectedEntityStoreMock.selectedEntity = mockedEntity
     wrapper = createWrapper()
     await flushPromises()
   })

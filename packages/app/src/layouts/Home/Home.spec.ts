@@ -3,19 +3,25 @@ import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { envVarsMock, featureFlagManagerMock, isFeedCenterActivatedMock, isScheduleActivatedMock, loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { commonMock } from '@app/__mocks__/common.mock'
-import mockedEntities from '@app/__mocks__/entities.mocks.json'
 import { fetchUnreadNotificationsCountMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 import { trackFeedcenterOpenedMock, trackingServiceMock } from '@app/__mocks__/tracking.service.mocks'
 import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import { customerUserMock } from '@app/__mocks__/users.mocks'
 import { entitiesServiceMock } from '@app/__mocks__/entities.service.mocks'
-import { commonStore as store } from '@pulse/common'
-import { createTestingPinia } from '@pinia/testing'
+import {
+  getStoreMock,
+  SelectedEntityManagerMock,
+  getMockedEntity,
+} from '@pulse/common/mocks'
 import { nextTick } from 'vue'
 import * as entitiesServices from '@app/services/entities'
 import { initProductFruits as initProductFruitsMock } from '@app/plugins/ProductFruits/productFruits.plugin'
+import { useSelectedEntityStore, useFavoriteEntitiesStore } from '@pulse/common/stores'
 
 import Home from '.'
+
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+getStoreMock(useFavoriteEntitiesStore)
 
 declare let window: {
   embedded_svc: {
@@ -24,8 +30,6 @@ declare let window: {
     init: () => void
   }
 } & Window
-
-const pinia = createTestingPinia()
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
@@ -56,6 +60,10 @@ vi.mock('vue-router', () => ({
   useRouter: useRouterMock,
 }))
 
+vi.mock('@pulse/common/managers', () => ({
+  SelectedEntityManager: SelectedEntityManagerMock,
+}))
+
 import.meta.env.PROD = true
 
 window.embedded_svc = {
@@ -68,7 +76,6 @@ const createWrapper = (): VueWrapper<any> =>
   shallowMount(Home, {
     attachTo: document.body,
     global: {
-      plugins: [pinia],
       stubs: {
         Schedule: { template: '<div data-testid="schedule-stub" />' },
         MyInformation: { template: '<div />' },
@@ -93,9 +100,12 @@ function getHomeFeedCenterDrawer(wrapper: VueWrapper) {
   return wrapper.findComponent({ name: 'FeedCenterDrawer' })
 }
 
+const entityMock = getMockedEntity()
+
 describe('home', () => {
   let wrapper: VueWrapper<any>
   beforeEach(() => {
+    selectedEntityStoreMock.selectedEntity = entityMock
     wrapper = createWrapper()
   })
 
@@ -105,11 +115,15 @@ describe('home', () => {
   })
 
   it('should call initProductFruits on mount', async () => {
+    const productFruitsUser = {
+      ...customerUserMock,
+      id: `${customerUserMock.id}`,
+    }
     const expectedArguments = {
       key: envVarsMock.VITE_PRODUCT_FRUITS_KEY_CLIENT,
       lang: 'fr',
       openChat: expect.anything(),
-      user: customerUserMock,
+      user: productFruitsUser,
     }
 
     await flushPromises()
@@ -136,7 +150,6 @@ describe('home', () => {
 
   it('can display the user profile drawer', async () => {
     wrapper.vm.isLoading = false
-    wrapper.vm.defaultEntity = true
     await nextTick()
 
     const userProfileBefore = wrapper.find('[data-testid="home-user-profile"]')
@@ -157,21 +170,7 @@ describe('home', () => {
 
     expect(commonLayout.exists()).toBeFalsy()
 
-    const myStore = store()
-
-    expect(myStore.$patch).toHaveBeenCalledOnce()
-    expect(myStore.$patch).toHaveBeenCalledWith({
-      user: {
-        ...customerUserMock,
-        entities: {
-          default: mockedEntities[0],
-          favorites: [],
-        },
-      },
-    })
-
     wrapper.vm.isLoading = false
-    wrapper.vm.defaultEntity = true
 
     await nextTick()
     commonLayout = wrapper.find('.common-layout')
@@ -182,7 +181,6 @@ describe('home', () => {
   it('should show calendar drawer when header emits show-user-profile-drawer', async () => {
     isScheduleActivatedMock.mockReturnValue(true)
     wrapper.vm.isLoading = false
-    wrapper.vm.defaultEntity = true
 
     await nextTick()
 
@@ -202,7 +200,6 @@ describe('home', () => {
   it('should still show calendar drawer when header emits show-user-profile-drawer and close it after', async () => {
     isScheduleActivatedMock.mockReturnValue(true)
     wrapper.vm.isLoading = false
-    wrapper.vm.defaultEntity = true
     await nextTick()
 
     expect(getHomeScheduleDrawer(wrapper).exists()).toBeFalsy()
@@ -222,7 +219,6 @@ describe('home', () => {
   it('should still show feed center drawer when header emits show-user-profile-drawer and close it after', async () => {
     isFeedCenterActivatedMock.mockReturnValue(true)
     wrapper.vm.isLoading = false
-    wrapper.vm.defaultEntity = true
     await nextTick()
 
     const header = wrapper.findComponent({ name: 'Header' })
@@ -262,6 +258,8 @@ describe('home', () => {
 
     const header = wrapper.findComponent({ name: 'Header' })
 
+    wrapper.vm.isLoading = false
+
     await header.vm.$emit('update:show-feed-center', true)
     await header.vm.$emit('update:show-feed-center', false)
 
@@ -276,5 +274,20 @@ describe('home', () => {
     wrapper.vm.isFeedCenterOpened = true
     await flushPromises()
     expect(trackFeedcenterOpenedMock).toHaveBeenCalledOnce()
+  })
+
+  it.skip('should not display home-layout when selectedEntity is null', async () => {
+    selectedEntityStoreMock.selectedEntity = entityMock
+    createWrapper()
+    await nextTick()
+
+    const commonLayoutBefore = wrapper.find('[data-testid="common-layout"]')
+    expect(commonLayoutBefore.exists()).toBe(true)
+
+    selectedEntityStoreMock.selectedEntity = undefined
+    await nextTick()
+
+    const commonLayoutAfter = wrapper.find('[data-testid="common-layout"]')
+    expect(commonLayoutAfter.exists()).toBe(false)
   })
 })

@@ -2,9 +2,7 @@
 import { nextTick } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
-import { describe, it, expect, beforeEach } from 'vitest'
 import { getMockedButtonTest } from '@ged/__mocks__/treeview.mocks'
-import { createPinia, setActivePinia } from 'pinia'
 import type { ComponentPublicInstance } from 'vue'
 import type { Folder, FolderProperties } from '@ged/models/Folder'
 import type { CreateFolderModalProps } from './CreateFolderModalTypes'
@@ -31,24 +29,16 @@ type CreateFolderModalSetup = {
 export type CreateFolderModalWrapper = VueWrapper<
   ComponentPublicInstance<CreateFolderModalProps, CreateFolderModalSetup>
 >
-const pinia = createPinia()
 
 const createWrapper = (
   props: CreateFolderModalProps = defaultProps,
 ): CreateFolderModalWrapper => {
   return mount(CreateFolderModal, {
     props,
-    global: {
-      plugins: [pinia],
-    },
   }) as unknown as CreateFolderModalWrapper
 }
 
 describe('props', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
-
   describe('confirm button validations', () => {
     const folderName = `Neque porro quisquam est qui dolorem ipsum quia dolor sit amet,
       consectetur, adipisci velit Neque porro quisquam est qui dolorem
@@ -150,9 +140,6 @@ describe('props', () => {
 })
 
 describe('interactions', () => {
-  beforeEach(() => {
-    setActivePinia(pinia)
-  })
   it('should emit on-confirm-create-folder when confirm btn click', async () => {
     const props: CreateFolderModalProps = {
       ...defaultProps,
