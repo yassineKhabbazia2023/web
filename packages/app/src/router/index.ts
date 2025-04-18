@@ -41,7 +41,7 @@ const specificRoutes = [
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: () => import('@app/pages/Error/404'),
-    beforeEnter: (to: any, next: any) => {
+    beforeEnter: (to: any, _from: any, next: any) => {
       const { HERMES, HADES, ORION, TRANSVERSE } = SQUAD_ROUTE_PATHS
 
       const subRoutes = [HERMES, HADES, ORION, TRANSVERSE]
