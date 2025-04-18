@@ -1,24 +1,42 @@
 import { ref } from 'vue'
-import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router'
 import { routes as errorRoutes } from '@app/pages/Error/router'
 import { commonApi } from '@pulse/common'
 import { useUserStore, useTokenStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { fetchEntities } from '@app/services/entities'
 import { logger } from '@pulse/core'
-import { LoginRouteName } from '@pulse/common/constants'
+import { LoginRouteName, APP_ROUTES } from '@pulse/common/constants'
 import { checkAuthenticatedUser } from './router.utils'
 import { type Entity } from '@pulse/common/types'
-import { SQUAD_ROUTE_PATHS } from '@app/constants'
+import { SQUAD_ROUTE_PATHS , LAYOUTS } from '@app/constants'
+
+import RootPage from '@app/pages/Root.vue'
 
 const isFirstTime = ref(true)
 
-const routes = [
-  ...errorRoutes,
+const specificRoutes = [
   {
-    path: '/',
-    name: 'home',
-    component: { template: '<h1>Login Page</h1>' },
-  } as RouteRecordRaw,
+    path: '/dossier/:id/banque',
+    name: 'bank',
+    component: () => import('@app/pages/WorkInProgress'),
+    meta: {
+      layout: LAYOUTS.MAIN,
+      styles: {
+        hasPaddings: false,
+      },
+    },
+  },
+  {
+    path: '/dossier/:id/indicateurs',
+    name: 'indicators',
+    component: () => import('@app/pages/WorkInProgress'),
+    meta: {
+      layout: LAYOUTS.MAIN,
+      styles: {
+        hasPaddings: false,
+      },
+    },
+  },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
@@ -39,25 +57,31 @@ const routes = [
       layout: 'Error',
     },
   },
+]
+
+const parentsRoutes = [
   {
-    path: '/dossier/:id/banque',
-    name: 'bank',
-    component: () => import('@app/pages/WorkInProgress'),
-    meta: {
-      styles: {
-        hasPaddings: false,
+    path: APP_ROUTES.root.path,
+    name: APP_ROUTES.root.name,
+    component: RootPage,
+    children: [
+      {
+        path: APP_ROUTES.anonymous.path,
+        name: APP_ROUTES.anonymous.name,
+        component: () => import('@app/pages/Anonymous.vue'),
+        meta: {
+          layout: LAYOUTS.LOGIN,
+        },
       },
-    },
-  },
-  {
-    path: '/dossier/:id/indicateurs',
-    name: 'indicators',
-    component: () => import('@app/pages/WorkInProgress'),
-    meta: {
-      styles: {
-        hasPaddings: false,
+      {
+        path: APP_ROUTES.authenticated.path,
+        name: APP_ROUTES.authenticated.name,
+        component: () => import('@app/pages/Authenticated.vue'),
+        meta: {
+          layout: LAYOUTS.MAIN,
+        },
       },
-    },
+    ],
   },
 ]
 
@@ -66,7 +90,9 @@ const router = createRouter({
   routes: [],
 })
 
-routes.map((route) => router.addRoute(route))
+parentsRoutes.forEach((route) => router.addRoute(route))
+errorRoutes.forEach((route) => router.addRoute(route))
+specificRoutes.forEach((route) => router.addRoute(route))
 
 const isUserOriginCollab = async () => {
   const USER_ORIGIN_URL = 'userorigin'
@@ -132,8 +158,8 @@ export async function routerBeforeEach({
 
   const { name: toName } = to
 
-  if (['entity-client', 'home'].includes(toName)) {
-    return entityClientOrHomeRedirections(toName, isCollab)
+  if (['entity-client', APP_ROUTES.root.name].includes(toName)) {
+    return entityClientOrRootRedirections(toName, isCollab)
   }
 
   /**
@@ -159,11 +185,11 @@ export async function routerBeforeEach({
   }
 }
 
-export async function entityClientOrHomeRedirections(toName: string, isCollab?: boolean) {
+export async function entityClientOrRootRedirections(toName: string, isCollab?: boolean) {
   const selectedEntityStore = useSelectedEntityStore()
 
   const entitiesPagination = await fetchEntities()
-  if (toName === 'home') {
+  if (toName === APP_ROUTES.root.name) {
     if (!isCollab && entitiesPagination.totalItems >= 1) {
       return { name: 'entity-client' }
     } else if (isCollab) {

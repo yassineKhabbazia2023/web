@@ -109,7 +109,7 @@
       <AppVersion v-if="isSidebarOpened" />
     </nav>
     <SidebarEntityMenu
-      v-if="isSelectedEntityActive && selectedEntity"
+      v-if="shouldShowSidebarMenu"
       :isCollab="isCollab"
       :selectedEntityId="selectedEntity.accountId"
     />
@@ -124,6 +124,7 @@ import { storeToRefs } from 'pinia'
 import type { Entity } from '@pulse/common/types'
 import { useFavoriteEntitiesStore, useUserStore } from '@pulse/common/stores'
 import { SelectedEntityManager } from '@pulse/common/managers'
+import { RouterHelpers } from '@pulse/common/helpers'
 import { PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
@@ -163,28 +164,30 @@ const walletItem = computed((): SidebarEntityItemProps => {
   }
 })
 
+const shouldShowSidebarMenu = computed(() => {
+  return isSelectedEntityActive.value && props.selectedEntity
+})
+
 const isSelectedEntityActive = computed(() => {
   if (!props.selectedEntity.accountId) {
     return false
   }
 
-  const params = {
-    id: props.selectedEntity.accountId,
-  }
+  let isUnitaryViewVisible = false
 
-  const isUnitaryViewVisible = [
+
+  const routesWithSidebarMenu = [
     'folder',
     'ged',
     'launcher',
     'reports',
     'bank',
     'indicators',
-  ].some((route) =>
-    activeItem({
-      name: route,
-      params,
-    }),
-  )
+  ]
+
+  if(RouterHelpers.isRouteOrAncestorActive({ route, routesToMatch: routesWithSidebarMenu })) {
+    isUnitaryViewVisible = true
+  }
 
   return isUnitaryViewVisible ? 'sidenav-entity__actions-active' : ''
 })
@@ -199,16 +202,12 @@ const onToggleSidebar = () => {
   }, 100)
 }
 
-const activeItem = (itemRoute: any) => {
-  const routeName = route.matched?.at(0)?.name ?? route.name
-  return itemRoute && itemRoute.name === routeName
-}
-
 const getActiveWallet = computed(() => {
-  const routeName = route.matched?.at(0)?.name ?? route.name
-  if (['wallet', 'wallet-client'].includes(routeName as string)) {
+  const routesWithActiveWallet = ['wallet', 'wallet-client']
+  if(RouterHelpers.isRouteOrAncestorActive({ route, routesToMatch: routesWithActiveWallet })) {
     return 'sidenav-entity__actions-active'
   }
+
   return ''
 })
 

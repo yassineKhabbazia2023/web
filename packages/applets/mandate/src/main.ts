@@ -1,5 +1,6 @@
 import type { App } from 'vue'
 import { routes, folderMandateRoute } from './router'
+import { RoutesManager } from '@pulse/common/managers'
 
 export default {
   install(_app: App, options: any) {
@@ -10,8 +11,6 @@ export default {
       router.addRoute('wallet', folderMandateRoute)
     }
 
-    routes.forEach((route) => {
-      router.addRoute(route)
-    })
+    RoutesManager.addRoutesToAuthenticated(router, routes)
   },
 }

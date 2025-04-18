@@ -15,7 +15,7 @@ import productFruitsPlugin from '@app/plugins/ProductFruits/productFruits.plugin
 import hubspotPlugin from '@app/plugins/Hubspot/hubspot.plugin'
 
 import App from './app/App.vue'
-import router from './plugins/router'
+import router from './router'
 
 const locale = 'fr-FR'
 

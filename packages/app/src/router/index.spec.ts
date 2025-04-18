@@ -3,7 +3,7 @@ import { LoginRouteName } from '@pulse/common/constants'
 import { getStoreMock, getMockedUser, getMockedEntities } from '@pulse/common/mocks'
 import { useUserStore, useTokenStore, useSelectedEntityStore } from '@pulse/common/stores'
 
-import { routerBeforeEach, entityClientOrHomeRedirections } from '.'
+import { routerBeforeEach, entityClientOrRootRedirections } from '.'
 
 getStoreMock(useUserStore)
 getStoreMock(useTokenStore)
@@ -164,7 +164,7 @@ describe('router', () => {
     expect(checkAuthenticatedUserMock).toHaveBeenCalledWith(/* no argument expected */)
   })
 
-  describe('entityClientOrHomeRedirections', () => {
+  describe('entityClientOrRootRedirections', () => {
     const entitiesMock = getMockedEntities()
     describe('when isCollab is false', () => {
       const isCollab = false
@@ -174,12 +174,12 @@ describe('router', () => {
         expectedRedirection: undefined,
         expectedSetSelectedEntityCalledTimes: 0,
       }, {
-        toName: 'home',
+        toName: 'root',
         totalItems: 0,
         expectedRedirection: undefined,
         expectedSetSelectedEntityCalledTimes: 0,
       }, {
-        toName: 'home',
+        toName: 'root',
         totalItems: 1,
         expectedRedirection: {
           name: 'entity-client',
@@ -213,7 +213,7 @@ describe('router', () => {
         }
 
         fetchEntitiesMock.mockResolvedValue(entitiesPaginationMock)
-        const redirection = await entityClientOrHomeRedirections(toName, isCollab)
+        const redirection = await entityClientOrRootRedirections(toName, isCollab)
 
         expect(redirection).toStrictEqual(expectedRedirection)
         expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledTimes(expectedSetSelectedEntityCalledTimes)
@@ -233,13 +233,13 @@ describe('router', () => {
         totalItems: 1,
         expectedRedirection: undefined,
       }, {
-        toName: 'home',
+        toName: 'root',
         totalItems: 0,
         expectedRedirection: {
           name: 'wallet',
         },
       }, {
-        toName: 'home',
+        toName: 'root',
         totalItems: 1,
         expectedRedirection: {
           name: 'wallet',
@@ -264,7 +264,7 @@ describe('router', () => {
         }
 
         fetchEntitiesMock.mockResolvedValue(entitiesPaginationMock)
-        const redirection = await entityClientOrHomeRedirections(toName, isCollab)
+        const redirection = await entityClientOrRootRedirections(toName, isCollab)
 
         expect(redirection).toStrictEqual(expectedRedirection)
         expect(selectedEntityStoreMock.setSelectedEntity).not.toHaveBeenCalled()

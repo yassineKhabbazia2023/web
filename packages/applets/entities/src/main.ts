@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
+import { RoutesManager } from '@pulse/common/managers'
 
 const routes = [] as RouteRecordRaw[]
 
@@ -144,8 +145,6 @@ export default {
   install(_app: App, options: any) {
     const { router } = options
 
-    routes.forEach((route) => {
-      router.addRoute(route)
-    })
+    RoutesManager.addRoutesToAuthenticated(router, routes)
   },
 }

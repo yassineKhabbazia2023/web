@@ -1,17 +1,18 @@
 import type { App } from 'vue'
+import { RoutesManager } from '@pulse/common/managers'
 
 const routes = [
   {
     path: '/dossier/:id/launcher',
     name: 'launcher',
-    component: () => import('@launcher/pages/home'),
+    component: () => import('@launcher/pages/launcher'),
   },
 ]
 
 const folderLauncherRoute = {
   name: 'folderLauncher',
   path: 'launcher',
-  component: () => import('@launcher/pages/home'),
+  component: () => import('@launcher/pages/launcher'),
 }
 
 export default {
@@ -23,8 +24,6 @@ export default {
       router.addRoute('wallet', folderLauncherRoute)
     }
 
-    routes.forEach((route) => {
-      router.addRoute(route)
-    })
+    RoutesManager.addRoutesToAuthenticated(router, routes)
   },
 }

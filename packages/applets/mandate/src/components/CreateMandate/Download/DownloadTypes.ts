@@ -1,4 +1,4 @@
-import type { Mandate } from '@mandate/pages/home/Models'
+import type { Mandate } from '@mandate/pages/mandate/Models'
 
 export interface DownloadProps {
   mandateId: Mandate['id']

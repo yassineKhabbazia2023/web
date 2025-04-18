@@ -2,7 +2,7 @@ import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
 import { loggerErrorSpy, loggerMock , envVarsMock } from '@pulse/core/mocks'
 import { launcherServicesMocks, mockedSilaeUrl } from '@launcher/__mocks__/launcher.service.mocks'
 import '@launcher/__mocks__/common.import.mocks'
-import { LauncherKey } from './HomeTypes'
+import { LauncherKey } from './LauncherTypes'
 import * as launcherServices from '@launcher/services/launcherServices'
 import type { AxiosResponse } from 'axios'
 
@@ -12,7 +12,7 @@ import {
   openSilaeUrl,
   handleClickAction,
   handleDownload,
-} from './HomeUtils'
+} from './LauncherUtils'
 
 vi.mock('env-vars', () => envVarsMock)
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
@@ -27,7 +27,7 @@ function getMockedResponse(disposition = '') {
   } as unknown as AxiosResponse
 }
 
-describe('test HomeUtils', () => {
+describe('test LauncherUtils', () => {
   describe('getSilaeDownloadLabel', () => {
     const tests = [{
       silaeDownloadPercent: undefined,
@@ -60,7 +60,7 @@ describe('test HomeUtils', () => {
       ]
       const launchCards = getLaunchCards(downloadSilaeLabel, authorizedKeys)
 
-      await expect(launchCards).toMatchFileSnapshot('__snaps__/HomeUtils/getLaunchCards/launchCards.snap')
+      await expect(launchCards).toMatchFileSnapshot('__snaps__/LauncherUtils/getLaunchCards/launchCards.snap')
     })
 
     it('should return filtered launchCards', () => {

@@ -141,7 +141,7 @@ import {
 import { AppColors } from '@pulse/styleguide'
 import Tag from '@mandate/components/Common/Tag'
 import { dateFormatter, downloadFile, saveFileAs } from '@mandate/helpers/utils'
-import { type Mandate, MandateActions } from '@mandate/pages/home/Models'
+import { type Mandate, MandateActions } from '@mandate/pages/mandate/Models'
 import type { ActionEvent, ListMandateProps } from './ListMandateTypes'
 import {
   downloadSignedMandate,

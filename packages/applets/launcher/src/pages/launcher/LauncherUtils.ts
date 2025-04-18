@@ -1,7 +1,7 @@
 import { logger } from '@pulse/core'
 import { VITE_GESTION_MEG, VITE_PENNYLANE_SSO_URL } from 'env-vars'
 import { getSsoSilaeUrl, downloadApplication, saveApplication } from '@launcher/services/launcherServices'
-import { type ExtendedLaunchCard, LauncherKey } from './HomeTypes'
+import { type ExtendedLaunchCard, LauncherKey } from './LauncherTypes'
 
 export function getLaunchCards(downloadSilaeLabel: string, authorizedKeys: LauncherKey[]): ExtendedLaunchCard[] {
   const launchCards: ExtendedLaunchCard[] = [

@@ -1,4 +1,4 @@
-import { LauncherKey } from '@launcher/pages/home/HomeTypes'
+import { LauncherKey } from '@launcher/pages/launcher/LauncherTypes'
 
 enum PermissionCodes {
   MEG = 'CLMEG001',

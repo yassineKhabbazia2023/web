@@ -9,7 +9,7 @@ import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import type { AxiosResponse } from 'axios'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 import * as mandateService from '@mandate/services/mandate'
-import Home from '@mandate/pages/home'
+import Home from '@mandate/pages/mandate'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
@@ -54,7 +54,7 @@ const baseParams: SearchMandateParams = {
   modificationDateEnd: '',
 }
 
-describe('test Home.vue', () => {
+describe('test Mandate.vue', () => {
   let wrapper: VueWrapper
   let mockedGetMandatesCollection: MockInstance
   beforeEach(() => {

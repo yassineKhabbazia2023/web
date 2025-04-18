@@ -17,6 +17,7 @@ export const LAYOUTS = {
   MAIN: 'Home',
   LOGIN: 'LoginLayout',
   ERROR: 'Error',
+  EMPTY: 'Empty',
 }
 
 export const SQUAD_ROUTE_PATHS = {

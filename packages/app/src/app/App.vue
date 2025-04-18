@@ -25,7 +25,7 @@ import {
 } from '@pulse/common'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { useRoute } from 'vue-router'
+import { useRoute, type RouteLocationNormalized } from 'vue-router'
 import { PConfigProvider } from '@pulse/styleguide/components'
 import PopupRenewToken from '@app/components/PopupRenewToken'
 import { storeToRefs } from 'pinia'
@@ -33,6 +33,7 @@ import { HTMLService } from '@pulse/core'
 import { useRedirection } from '@app/composables/useRedirection'
 import { getExpirationDelays } from './app.utils'
 import { LAYOUTS } from '@app/constants/constants'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 let openPopup5MinBeforeExpiredTimer: undefined | ReturnType<typeof setTimeout>
 let openPopupWhenHasExpiredTimer: undefined | ReturnType<typeof setTimeout>
@@ -65,12 +66,18 @@ function showPopupRenewToken() {
   }
 }
 
+function getLayout(route: RouteLocationNormalized) {
+  return RouterHelpers.getMetaFromKey({ route, metaKey: 'layout', includeAncestor: true }) ?? LAYOUTS.EMPTY
+}
+
 function onRouteChange() {
   // brute force way of getting sure we have a userId defined in Amplitude
   if(user.value && user.value.id !== undefined) {
     amplitudeService.setUserId(user.value.id.toString())
   }
-  currentLayoutName.value = route.meta?.layout?.toString() || LAYOUTS.MAIN
+
+  currentLayoutName.value = getLayout(route)
+
   if (popupRenewTokenIsVisible.value && !getCanShowPopupRenewToken()) {
     popupRenewTokenIsVisible.value = false
   }

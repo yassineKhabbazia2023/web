@@ -1,4 +1,5 @@
 import type { App } from 'vue'
+import { RoutesManager } from '@pulse/common/managers'
 
 const routes = [
   {
@@ -9,7 +10,7 @@ const routes = [
         hasPaddings: false,
       },
     },
-    component: () => import('@ged/App.vue'),
+    component: () => import('@ged/Ged.vue'),
   },
 ]
 
@@ -19,8 +20,6 @@ export default {
     // with the plugin
     const { router } = options
 
-    routes.forEach((route) => {
-      router.addRoute(route)
-    })
+    RoutesManager.addRoutesToAuthenticated(router, routes)
   },
 }

@@ -1,6 +1,7 @@
 import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { LoginRouteName } from '@pulse/common/constants'
+import { RoutesManager } from '@pulse/common/managers'
 
 export const LOGIN_LAYOUT = 'LoginLayout'
 
@@ -64,12 +65,8 @@ ROUTES_USING_LOGIN_LAYOUT.forEach((route) => {
 
 export default {
   install(_app: App, options: any) {
-    // Accept an array of routes that can be registered along
-    // with the plugin
     const { router } = options
 
-    routes.forEach((route) => {
-      router.addRoute(route)
-    })
+    RoutesManager.addRoutesToAnonymous(router, routes)
   },
 }

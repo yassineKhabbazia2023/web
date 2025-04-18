@@ -1,4 +1,4 @@
-import { LauncherKey } from '@launcher/pages/home/HomeTypes'
+import { LauncherKey } from '@launcher/pages/launcher/LauncherTypes'
 
 export const mockedPercent = 47
 export const getLaunchCardsMock = vi.fn()
@@ -10,7 +10,7 @@ export const handleDownloadMock =vi.fn((_key: LauncherKey, onSilaeDownloadProgre
 export const getSilaeDownloadLabelMock = vi.fn()
 
 
-export const homeUtilsMocks = {
+export const LauncherUtilsMocks = {
   getLaunchCards: getLaunchCardsMock,
   handleClickAction: handleClickActionMock,
   handleDownload: handleDownloadMock,

@@ -4,12 +4,12 @@ import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { launchCardsMock } from '@launcher/__mocks__/launch-cards.mocks'
 import { launcherServicesMocks } from '@launcher/__mocks__/launcher.service.mocks'
 import { mockedEntity } from '@launcher/__mocks__/entity.mocks'
-import { getLaunchCardsMock, getSilaeDownloadLabelMock, handleClickActionMock, handleDownloadMock, homeUtilsMocks, mockedPercent } from '@launcher/__mocks__/home-utils.mocks'
+import { getLaunchCardsMock, getSilaeDownloadLabelMock, handleClickActionMock, handleDownloadMock, LauncherUtilsMocks, mockedPercent } from '@launcher/__mocks__/home-utils.mocks'
 import { envVarsMock } from '@pulse/core/mocks'
 import '@launcher/__mocks__/common.import.mocks'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
-import { LauncherKey } from './HomeTypes'
+import { LauncherKey } from './LauncherTypes'
 import * as VueRouter from 'vue-router'
 import {
   getMockedEntity,
@@ -30,7 +30,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('./HomeUtils', () => homeUtilsMocks)
+vi.mock('./LauncherUtils', () => LauncherUtilsMocks)
 vi.mock('@launcher/services/launcherServices', () => launcherServicesMocks)
 
 const mockedSilaeDownloadLabel = 'silae download label'

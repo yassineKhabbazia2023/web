@@ -97,7 +97,7 @@ describe('folder', () => {
       wrapper = createWrapper()
 
       await flushPromises()
-      const homeComponent = wrapper.findComponent({ name: 'Home' })
+      const homeComponent = wrapper.findComponent({ name: 'WalletLandingPage' })
       const folderTabsWrapper = wrapper.find(
         '[data-testid=folder-tabs-wrapper]',
       )
