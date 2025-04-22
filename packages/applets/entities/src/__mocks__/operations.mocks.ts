@@ -12,6 +12,7 @@ export const getMockedOperations = (): Operation[] => {
       email: 'email382@example.com',
       status: 'APPROVED',
       creationDate: '2024-03-21T11:18:23.9366667',
+      legalName: 'Entity Test',
     },
     {
       operationId: 2,
@@ -22,6 +23,7 @@ export const getMockedOperations = (): Operation[] => {
       email: 'email383@example.com',
       status: 'PENDING',
       creationDate: '2024-01-26T11:18:23.9366667',
+      legalName: 'Entity Test',
     },
     {
       operationId: 3,
@@ -32,6 +34,7 @@ export const getMockedOperations = (): Operation[] => {
       email: 'email384@example.com',
       status: 'REJECTED',
       creationDate: '2024-05-26T11:18:23.9366667',
+      legalName: 'account1',
     },
     {
       operationId: 4,
@@ -42,6 +45,7 @@ export const getMockedOperations = (): Operation[] => {
       email: 'email385@example.com',
       status: 'REJECTED',
       creationDate: '2024-06-26T11:18:23.9366667',
+      legalName: 'account1',
     },
     {
       operationId: 5,
@@ -52,6 +56,7 @@ export const getMockedOperations = (): Operation[] => {
       email: 'email386@example.com',
       status: 'PENDING',
       creationDate: '2024-04-11T11:18:23.9366667',
+      legalName: 'account1',
     },
     {
       operationId: 6,
@@ -62,6 +67,7 @@ export const getMockedOperations = (): Operation[] => {
       email: 'email387@example.com',
       status: 'APPROVED',
       creationDate: '2024-03-20T11:18:23.9366667',
+      legalName: 'account1',
     },
   ]
 }

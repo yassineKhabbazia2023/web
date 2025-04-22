@@ -5,4 +5,5 @@ export interface PendingOperationProps {
   showAccountName: boolean
   trackingLocalisation: TrackingLocalisation
   accountOperationsList: AccountOperations[]
+  selectedEntityLegalName?: string
 }

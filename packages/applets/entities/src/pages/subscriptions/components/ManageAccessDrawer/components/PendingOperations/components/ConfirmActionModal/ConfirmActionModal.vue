@@ -27,12 +27,12 @@
             class="font-semibold"
             data-testid="legal-name-confirmation-modal"
           >
-            {{ selectedEntity?.legalName }}
+            {{ legalName }}
           </span>
         </template>
         <template #accountNumber>
           <span data-testid="account-number-confirmation-modal">
-            {{ selectedEntity?.accountNumber }}
+            {{ selectedOperation.accountNumber }}
           </span>
         </template>
       </i18n-t>
@@ -69,12 +69,12 @@
         </template>
         <template #accountName>
           <span class="font-semibold">
-            {{ selectedEntity?.legalName }}
+            {{ legalName }}
           </span>
         </template>
         <template #accountNumber>
           <span>
-            {{ selectedEntity?.accountNumber }}
+            {{ selectedOperation.accountNumber }}
           </span>
         </template>
       </i18n-t>
@@ -85,7 +85,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { storeToRefs } from 'pinia'
 import {
   PForm,
   PInput,
@@ -95,7 +94,6 @@ import type { FormRules } from '@pulse/styleguide/types'
 import { getFullName } from '@entities/common/utils'
 import type { ConfirmActionModalProps } from './ConfirmActionModalTypes'
 import ConfirmationModal from '@entities/common/components/ConfirmationModal'
-import { useSelectedEntityStore } from '@pulse/common/stores'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -107,9 +105,6 @@ const emit = defineEmits<{
   'update:modelValue': [boolean]
   'confirm-action': [string?]
 }>()
-
-const selectedEntityStore = useSelectedEntityStore()
-const { selectedEntity } = storeToRefs(selectedEntityStore)
 
 const isOperationExecuting = ref(false)
 

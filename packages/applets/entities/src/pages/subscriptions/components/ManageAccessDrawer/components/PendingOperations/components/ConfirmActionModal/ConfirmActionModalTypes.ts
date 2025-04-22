@@ -4,4 +4,5 @@ export interface ConfirmActionModalProps {
   modelValue: boolean
   selectedOperation: Operation
   isOperationPendingRefusal: boolean
+  legalName: string
 }

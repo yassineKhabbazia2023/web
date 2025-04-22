@@ -21,6 +21,7 @@
       :showAccountName="showAccountName"
       :trackingLocalisation="trackingLocalisation"
       :accountOperationsList="accountOperationsList"
+      :selectedEntityLegalName="selectedEntity?.legalName"
       @update-operation-table="handleOperationTableUpdate"
     />
     <template #footer>

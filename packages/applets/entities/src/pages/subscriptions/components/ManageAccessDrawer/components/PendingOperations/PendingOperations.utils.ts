@@ -1,4 +1,5 @@
 import { AmplitudeOperationStatus, TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
+import type { Operation } from '@entities/common/types/OperationTypes'
 
 export function getTrackStartedEventProperty(
   trackingLocalisation: TrackingLocalisation,
@@ -27,4 +28,11 @@ export function getTrackCompletedEventProperty(
     registry_validation_start_localisation: trackingLocalisation,
     registry_validation_start_result: AmplitudeOperationStatus.ACCEPTED,
   }
+}
+
+export function getLegalName(
+  selectedOperation?: Operation,
+  selectedEntityLegalName?: string,
+) {
+  return selectedOperation?.legalName ?? selectedEntityLegalName ?? ''
 }

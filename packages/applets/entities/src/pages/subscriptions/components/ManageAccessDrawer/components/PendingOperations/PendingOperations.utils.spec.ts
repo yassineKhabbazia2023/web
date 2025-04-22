@@ -1,4 +1,5 @@
-import { getTrackStartedEventProperty, getTrackCompletedEventProperty } from './PendingOperations.utils'
+import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
+import { getTrackStartedEventProperty, getTrackCompletedEventProperty, getLegalName } from './PendingOperations.utils'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 
 const trackingLocalisationMock = TrackingLocalisation.FOLDER
@@ -64,4 +65,42 @@ describe('test PendingOperations.utils', () => {
       expect(result).toEqual(expected)
     })
   })
+})
+
+describe('getLegalName', () => {
+  const operationMock = getMockedOperations()[0]
+  const operationMockWithoutLegalName = {
+    ...operationMock,
+    legalName: undefined,
+  }
+  const selectedEntityLegalNameMock = 'selectedEntity legal name'
+
+  const tests = [{
+    selectedOperation: operationMock,
+    selectedEntityLegalName: selectedEntityLegalNameMock,
+    expected: operationMock.legalName,
+    reason: 'selectedOperation has a legalName',
+  }, {
+    selectedOperation: operationMockWithoutLegalName,
+    selectedEntityLegalName: selectedEntityLegalNameMock,
+    expected: selectedEntityLegalNameMock,
+    reason: 'selectedOperation has NO legalName',
+  }, {
+    selectedOperation: undefined,
+    selectedEntityLegalName: selectedEntityLegalNameMock,
+    expected: selectedEntityLegalNameMock,
+    reason: 'selectedOperation is undefined',
+  }, {
+    selectedOperation: undefined,
+    selectedEntityLegalName: undefined,
+    expected: '',
+    reason: 'selectedEntityLegalName is undefined',
+  }]
+  it.each(tests)(
+    'should return $expected when $reason',
+    ({ selectedOperation, selectedEntityLegalName, expected }) => {
+      const result = getLegalName(selectedOperation, selectedEntityLegalName)
+      expect(result).toEqual(expected)
+    },
+  )
 })

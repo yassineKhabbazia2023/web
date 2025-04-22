@@ -17,4 +17,5 @@ export interface Operation {
   firstName?: string
   lastName?: string
   accountNumber: string
+  legalName?: string
 }

@@ -12,11 +12,14 @@ import ConfirmActionModal from '.'
 
 const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 
+const legalNameMock = 'Entity Test'
+
 const createWrapper = (overriddenProps?: Partial<ConfirmActionModalProps>) => {
   const props = {
     modelValue: true,
     selectedOperation: getMockedOperations()[0],
     isOperationPendingRefusal: false,
+    legalName: legalNameMock,
     ...overriddenProps,
   }
   return shallowMount(ConfirmActionModal, {
@@ -72,6 +75,7 @@ describe('confirmActionModal Component - Displays pending operations with approv
     it('should present the accurate note if the modal is in a state of refusal', async () => {
       const wrapper = createWrapper({
         isOperationPendingRefusal: true,
+        selectedOperation: { ...getMockedOperations()[0] , legalName: '' },
       })
       await nextTick()
 
@@ -85,8 +89,27 @@ describe('confirmActionModal Component - Displays pending operations with approv
         '[data-testid=account-number-confirmation-modal]',
       )
 
-      expect(legalName.text()).toBe(mockedEntity.legalName)
-      expect(accountNumber.text()).toBe(mockedEntity.accountNumber)
+      expect(legalName.text()).toBe(legalNameMock)
+      expect(accountNumber.text()).toBe(getMockedOperations()[0].accountNumber)
+    })
+    it('should present the accurate note if the modal is in a state of refusal in the main access management page', async () => {
+      const wrapper = createWrapper({
+        isOperationPendingRefusal: true,
+      })
+      await nextTick()
+
+      const confirmationModal = wrapper.findComponent({
+        name: 'ConfirmationModal',
+      })
+      const legalName = confirmationModal.find(
+        '[data-testid=legal-name-confirmation-modal]',
+      )
+      const accountNumber = confirmationModal.find(
+        '[data-testid=account-number-confirmation-modal]',
+      )
+
+      expect(legalName.text()).toBe(legalNameMock)
+      expect(accountNumber.text()).toBe(getMockedOperations()[0].accountNumber)
     })
   })
   describe('events', () => {

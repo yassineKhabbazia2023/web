@@ -4,6 +4,7 @@
     v-model="isConfirmationModalVisible"
     :selectedOperation="selectedOperation"
     :isOperationPendingRefusal="isOperationPendingRefusal"
+    :legalName="legalName"
     @confirm-action="handleConfirmAction"
   />
   <div class="margin-bottom--4">
@@ -44,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { addIfNotExists, removeIfExists } from '@pulse/core/utils/array'
 import { PAccordion } from '@pulse/styleguide/components'
@@ -57,7 +58,11 @@ import PendingOperationsTable from './components/PendingOperationsTable'
 import AccountHeader from './components/AccountHeader'
 import { patchOperationStatus } from '@entities/services/contact'
 import { PendingOperationProps } from './PendingOperations.types'
-import { getTrackStartedEventProperty, getTrackCompletedEventProperty } from './PendingOperations.utils'
+import {
+  getTrackStartedEventProperty,
+  getTrackCompletedEventProperty,
+  getLegalName,
+} from './PendingOperations.utils'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -73,6 +78,8 @@ const emit = defineEmits<{
 }>()
 
 const selectedOperation = ref<Operation>()
+
+const legalName = computed(() => getLegalName(selectedOperation.value, props.selectedEntityLegalName))
 
 // #region handle actions
 const isOperationPendingRefusal = ref(false)

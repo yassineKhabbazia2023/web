@@ -42,7 +42,7 @@ const createWrapper = (overrideProps: Partial<PendingOperationProps> = {}) => {
           name: 'ConfirmActionModal',
           template: '<div></div>',
           emits: ['confirm-action', 'update:modelValue'],
-          props: ['modelValue'],
+          props: ['modelValue', 'legalName'],
         },
         PDoubleText: true,
         PButton: true,
