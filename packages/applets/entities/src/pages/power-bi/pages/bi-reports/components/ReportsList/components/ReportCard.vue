@@ -63,7 +63,7 @@ const internalIsSelected = computed({
   },
 })
 const updatedOn = computed(
-  () => `${t('updatedOn')} ${d(new Date(props.updatedDate), 'short')}`,
+  () => props.updatedDate ? `${t('updatedOn')} ${d(new Date(props.updatedDate), 'short')}` : '',
 )
 
 const handleReportSelection = () => {

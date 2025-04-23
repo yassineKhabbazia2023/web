@@ -16,5 +16,6 @@ export interface Report {
   createdBy: string
   creationDate: string
   type: ReportType
-  updateDate: string
+  updateDate?: string
+  dataUpdateDate?: string
 }

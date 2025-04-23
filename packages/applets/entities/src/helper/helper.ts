@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { logger } from '@pulse/core'
 import type { PaginationData } from './helperTypes'
 
@@ -87,4 +88,28 @@ export const returnSortQueryField = (columnProp: string, order: string | null) =
   }
 
   return `${sortPrefix}${sortValue}`
+}
+
+/**
+ * Compares two date strings and returns the more recent one.
+ * - If both dates are valid, returns the most recent.
+ * - If only one is valid, returns the valid one.
+ * - If neither date is valid, returns undefined.
+ */
+export function getMostRecentDate(dateStr1?: string, dateStr2?: string): string | undefined {
+  const isValidDate1 = dateStr1 && dayjs(dateStr1).isValid()
+  const isValidDate2 = dateStr2 && dayjs(dateStr2).isValid()
+
+  if (!isValidDate1 && !isValidDate2) {
+    return
+  }
+
+  if (!isValidDate1) {
+    return dateStr2
+  }
+  if (!isValidDate2) {
+    return dateStr1
+  }
+
+  return dayjs(dateStr1).isAfter(dayjs(dateStr2)) ? dateStr1 : dateStr2
 }

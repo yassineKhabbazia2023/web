@@ -1,6 +1,6 @@
 export interface ReportCardProps {
   name: string
-  updatedDate: string
+  updatedDate?: string
   type: string
   isSelected?: boolean
 }

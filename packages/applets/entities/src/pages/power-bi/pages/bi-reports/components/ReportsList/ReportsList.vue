@@ -12,12 +12,12 @@
     >
       <ul class="list-style-none">
         <li
-          v-for="{ reportId, type, updateDate, reportLabel } in reports"
+          v-for="{ reportId, type, updateDate, dataUpdateDate, reportLabel } in reports"
           :key="reportId"
         >
           <ReportCard
             :name="reportLabel"
-            :updatedDate="updateDate"
+            :updatedDate="getMostRecentDate(updateDate, dataUpdateDate)"
             :type="type.customerLabel"
             :isSelected="internalSelectedReport.reportId === reportId"
             class="margin-bottom--3"
@@ -35,6 +35,7 @@ import { useI18n } from 'vue-i18n'
 import { PScrollbar } from '@pulse/styleguide/components'
 import type { ReportsListProps } from './ReportsListTypes'
 import type { Report } from '@entities/common/types/BIReportsTypes'
+import { getMostRecentDate } from '@entities/helper'
 import ReportCard from './components/index'
 
 const { t } = useI18n({
