@@ -20,9 +20,9 @@ function createWrapper(overrideProps: Partial<AccountHeaderProps> = {}) {
   })
 }
 describe('test AccountHeader', () => {
-  it('should return proper html', () => {
+  it('should return proper html', async () => {
     const wrapper = createWrapper()
 
-    expect(wrapper.html()).toMatchFileSnapshot('__snap__/AccountHeader.html')
+    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/AccountHeader.html')
   })
 })

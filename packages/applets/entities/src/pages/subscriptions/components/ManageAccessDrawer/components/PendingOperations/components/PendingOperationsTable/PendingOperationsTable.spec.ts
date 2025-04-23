@@ -36,7 +36,7 @@ function createWrapper(operation: Operation) {
 }
 
 describe('test PendingOperationsTable', () => {
-  it('when operation is PENDING', () => {
+  it('when operation is PENDING', async () => {
     const operationStatus = OperationStatus.PENDING
 
     const operationMock = operationsMock[0]
@@ -56,12 +56,12 @@ describe('test PendingOperationsTable', () => {
     expect(rejectAccessButton.props('pDisabled')).toBe(false)
     expect(approveAccessButton.props('pDisabled')).toBe(false)
 
-    expect(wrapper.html()).toMatchFileSnapshot(snapfilePath)
+    await expect(wrapper.html()).toMatchFileSnapshot(snapfilePath)
     expect(wrapper.emitted('approve-operation')).toStrictEqual([[operationMock]])
     expect(wrapper.emitted('reject-operation')).toStrictEqual([[operationMock]])
   })
 
-  it('when operation is APPROVED', () => {
+  it('when operation is APPROVED', async () => {
     const operationStatus = OperationStatus.APPROVED
 
     const operationMock = operationsMock[0]
@@ -81,6 +81,6 @@ describe('test PendingOperationsTable', () => {
     expect(rejectAccessButton.exists()).toBe(false)
     expect(approveAccessButton.props('pDisabled')).toBe(true)
     expect(approveAccessButton.attributes('data-testid')).toBe('approve-access-button')
-    expect(wrapper.html()).toMatchFileSnapshot(snapfilePath)
+    await expect(wrapper.html()).toMatchFileSnapshot(snapfilePath)
   })
 })

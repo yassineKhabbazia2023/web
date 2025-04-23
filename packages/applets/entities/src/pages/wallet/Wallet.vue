@@ -58,6 +58,11 @@ const getCollaboratorsTabs = () => [
     display: CurrentUserManager.hasPermission(PERMISSION_CODES.POWERBI_REPORT),
   },
   {
+    name: 'biReportsList',
+    title: t('biReportsList'),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.MODIFY_ACCOUNT_RIGHTS),
+  },
+  {
     name: 'subscriptions',
     title: t('subscriptions'),
     display: CurrentUserManager.hasPermission(PERMISSION_CODES.SUBSCRIPTIONS),
@@ -114,6 +119,7 @@ en-US:
   allUsers: 'All users'
   accountManagement: 'Folder administration'
   uploadPowerBIReport: 'Upload a BI report'
+  biReportsList: 'BI Reports'
 fr-FR:
   wallet: 'Portefeuille'
   hello: 'Bonjour'
@@ -125,4 +131,5 @@ fr-FR:
   allUsers: 'Tous les utilisateurs'
   accountManagement: 'Administration dossiers'
   uploadPowerBIReport: 'Déposer un rapport BI'
+  biReportsList: 'Rapports BI'
 </i18n>
