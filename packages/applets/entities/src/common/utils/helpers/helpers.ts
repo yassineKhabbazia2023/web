@@ -18,10 +18,9 @@ export const getFullName = (
   lastName: string | undefined,
   lastNameToUpper: boolean = false,
 ) => {
-  const fullName = `${firstName ?? ''} ${lastName ?? ''}`.trim()
   return lastNameToUpper && lastName
     ? `${firstName ?? ''} ${lastName.toUpperCase()}`.trim()
-    : fullName
+    : `${firstName ?? ''} ${lastName ?? ''}`.trim()
 }
 
 /**

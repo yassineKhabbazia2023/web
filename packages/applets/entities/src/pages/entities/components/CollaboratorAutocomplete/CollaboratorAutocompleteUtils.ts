@@ -1,16 +1,14 @@
-import type { Contact } from '@entities/services/contact/contactTypes'
 import { fetchCollaborators } from '@entities/services/offer'
 
 export async function getAutocompleteContacts(
-  selectedCollaborators: Contact[],
+  selectedCollaboratorIds: number[],
   queryString: string,
 ) {
   if (!queryString) {
     return []
   }
-  const selectedCollaboratorsIds = selectedCollaborators.map(({ id }) => id)
   const autocompleteCollaborators = await fetchCollaborators(queryString) ?? []
-  const collaborators = autocompleteCollaborators?.filter(({ id }) => selectedCollaboratorsIds.indexOf(id) < 0)
+  const collaborators = autocompleteCollaborators?.filter(({ id }) => selectedCollaboratorIds.indexOf(id) < 0)
 
   return collaborators
 }

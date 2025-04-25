@@ -2,7 +2,6 @@ import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
-import { PUserAction } from '@pulse/styleguide/components'
 import AddDelegatesStep from '.'
 import AddCollaboratorsAutocomplete from '../AddCollaboratorsAutocomplete'
 import { getMockedCollaborators2 } from '@entities/__mocks__/collaborators.mocks'
@@ -33,7 +32,7 @@ const findAddCollaboratorsAutocomplete = (wrapper: VueWrapper) =>
   wrapper.findComponent(AddCollaboratorsAutocomplete)
 
 const findUserAction = (wrapper: VueWrapper) =>
-  wrapper.findComponent(PUserAction)
+  wrapper.findComponent({ name: 'PUserAction' })
 
 let wrapper = createWrapper()
 let addCollaboratorsAutocomplete =

@@ -69,7 +69,7 @@
           class="margin-bottom--0"
         >
           <CollaboratorAutocomplete
-            :selectedCollaborators="selectedCollaborators"
+            :selectedCollaboratorIds="selectedCollaboratorIds"
             @add-contact="onAddCollaborator"
           />
         </PFormItem>
@@ -168,6 +168,7 @@ const isEntityCreatorDrawerVisible = computed({
     emit('update:modelValue', val)
   },
 })
+const selectedCollaboratorIds = computed(() => selectedCollaborators.value.map(({ id }) => id))
 
 const onCloseDrawer = () => {
   isEntityCreatorDrawerVisible.value = false

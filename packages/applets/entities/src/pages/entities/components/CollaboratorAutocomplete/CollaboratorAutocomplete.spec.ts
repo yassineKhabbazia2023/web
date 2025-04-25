@@ -13,7 +13,7 @@ vi.mock('./CollaboratorAutocompleteUtils', () => ({
 
 const createWrapper = () => {
   const props: CollaboratorAutocompleteProps = {
-    selectedCollaborators: [],
+    selectedCollaboratorIds: [],
   }
 
   return mount(CollaboratorAutocomplete, {

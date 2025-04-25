@@ -77,6 +77,8 @@
         class="flex--grow-1 p-user-action__dropdown"
         :pPlaceholder="pOptionsPlaceholder"
         :pOptions="pOptions"
+        :pMultiple="pOptionsMultiple"
+        :pNoDataText="pOptionsNoDataText"
         data-testid="p-user-action-options"
       />
 
@@ -101,7 +103,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" generic="TOptionsValue">
 import { computed } from 'vue'
 import PAlert from '../../atoms/PAlert'
 import PAvatar from '../../atoms/PAvatar'
@@ -110,15 +112,15 @@ import PDropdown from '../../molecules/PDropdown'
 import PIcon from '../../atoms/PIcon'
 import PInput from '../../atoms/PInput'
 import PTag from '../../atoms/PTag'
-import type { PUserActionProps, POptionsValue } from './PUserActionTypes'
+import type { PUserActionProps } from './PUserActionTypes'
 
 const emit = defineEmits<{
   'click-delete': []
   'update:pInputValue': [string]
-  'update:pOptionsValue': [POptionsValue]
+  'update:pOptionsValue': [TOptionsValue]
 }>()
 
-const props = withDefaults(defineProps<PUserActionProps>(), {
+const props = withDefaults(defineProps<PUserActionProps<TOptionsValue>>(), {
   pRole: '',
   pShowDelete: false,
   pTagContent: '',
@@ -142,7 +144,7 @@ const internalDropdownValue = computed({
   get() {
     return props.pOptionsValue
   },
-  set(value: POptionsValue) {
+  set(value: TOptionsValue) {
     emit('update:pOptionsValue', value)
   },
 })

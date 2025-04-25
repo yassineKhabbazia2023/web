@@ -6,7 +6,7 @@ import {
 } from '@entities/services/subscription/subscriptionTypes'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
-import { ContactType } from '@entities/services/contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 
 export const subscriptionRequestMock: SubscriptionRequest[] = [
   {
@@ -126,20 +126,21 @@ export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
         ],
       },
     ],
+    functions: [],
   },
   clients: [
     {
       contactId: 56,
       firstName: 'Alice',
       lastName: 'Durand',
-      type: ContactType.Customer,
+      type: ContactType.CUSTOMER,
       email: 'alice.durand@test.fr',
     },
     {
       contactId: 25,
       firstName: 'Jannelle',
       lastName: 'Boyd',
-      type: ContactType.Customer,
+      type: ContactType.CUSTOMER,
       email: 'janelle.boyd@test.fr',
     },
   ],
@@ -148,7 +149,7 @@ export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
       contactId: 22,
       firstName: 'Jerry',
       lastName: 'Nantenaina',
-      type: ContactType.Collaborator,
+      type: ContactType.COLLABORATOR,
       email: 'jnantenaina@test.fr',
     },
   ],

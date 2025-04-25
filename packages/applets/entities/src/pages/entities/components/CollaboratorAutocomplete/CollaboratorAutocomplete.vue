@@ -55,7 +55,7 @@ const emits = defineEmits<{
 }>()
 
 async function handleSearchCollaborator(queryString: string, callback: any) {
-  const results = await getAutocompleteContacts(props.selectedCollaborators, queryString)
+  const results = await getAutocompleteContacts(props.selectedCollaboratorIds, queryString)
 
   callback(results)
 }

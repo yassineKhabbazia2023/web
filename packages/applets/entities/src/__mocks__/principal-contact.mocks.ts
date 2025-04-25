@@ -1,13 +1,23 @@
 import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 
+export function getClientContactMock(override: Partial<ClientContact> = {}) {
+  const defaultClientContact: ClientContact = {
+    contactId: 1,
+    firstName: 'Corabel',
+    lastName: 'Greenall',
+    email: 'test_loscos@yopmail.com',
+  }
+
+  return {
+    ...defaultClientContact,
+    ...override,
+  }
+}
+
 export function getMockedPrincipalContacts(): ClientContact[] {
+  const clientContactMock = getClientContactMock()
   const principalContact: ClientContact[] = [
-    {
-      contactId: 1,
-      firstName: 'Corabel',
-      lastName: 'Greenall',
-      email: 'test_loscos@yopmail.com',
-    },
+    clientContactMock,
     {
       contactId: 2,
       firstName: 'Jean',

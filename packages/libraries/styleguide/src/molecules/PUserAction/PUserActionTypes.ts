@@ -3,7 +3,7 @@ import { AvatarRoles } from '../../utils/avatar.roles'
 
 export type POptionsValue = undefined | string | number | string[] | number[]
 
-export interface PUserActionProps {
+export interface PUserActionProps<T = POptionsValue> {
   pProfile: string
   pTitle: string
   pDescription: string
@@ -15,8 +15,10 @@ export interface PUserActionProps {
   pShowDelete?: boolean
   pShowOptions?: boolean
   pOptionsPlaceholder?: string
+  pOptionsNoDataText?: string
   pOptions?: PDropdownOption[]
-  pOptionsValue?: POptionsValue
+  pOptionsMultiple?: boolean
+  pOptionsValue?: T
   pWarningContent?: string
   pAvatarRole?: AvatarRoles
 }

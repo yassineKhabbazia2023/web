@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { SERVER_ZONE } from './constants'
 import { Identify } from '@amplitude/analytics-browser'
 import AmplitudeService from '.'
+import { ContactType } from '@pulse/common/enums'
 
 const initSpy = vi.fn()
 const resetSpy = vi.fn()
@@ -89,11 +90,11 @@ describe('amplitude', () => {
 
   it('can set new user property', () => {
     const identifyEvent = new Identify()
-    identifyEvent.set('user_type', 'Collaborator')
+    identifyEvent.set('user_type', ContactType.COLLABORATOR)
 
     expect(identifySpy).toHaveBeenCalledTimes(0)
 
-    amplitudeService.setNewUserProperty('user_type', 'Collaborator')
+    amplitudeService.setNewUserProperty('user_type', ContactType.COLLABORATOR)
 
     expect(identifySpy).toHaveBeenCalledOnce()
     expect(identifySpy).toHaveBeenCalledWith(identifyEvent)

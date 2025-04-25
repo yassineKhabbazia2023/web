@@ -1,15 +1,14 @@
 import { vi, it, describe, expect, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
-import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
 import { loggerMock, loggerWarnSpy } from '@pulse/core/mocks'
 import { getInitials } from '@entities/helper'
 import type { ComponentWrapper } from '@entities/common/types'
-import type { UserInfo } from '@pulse/common/types'
+import { getCollaboratorRoleMock } from '@entities/__mocks__/offer-subscription.mocks'
+
 import ManageCollaborators from '.'
 
-const mockCurrentUser: UserInfo = getMockedUser()
 const mockedCollaborators = getMockedCollaborators()
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
@@ -29,21 +28,60 @@ function getExpectedUserActionProps(pShowDelete: boolean) {
     pDescription: defaultCollaborator.email,
     pRole: defaultCollaborator.persona?.name,
     pShowDelete,
+    pOptions: [],
   }
 }
-async function createWrapper(allCollaborators = false) {
+const collaboratorRoleMock = getCollaboratorRoleMock()
+const collaboratorRolesMock = [
+  collaboratorRoleMock,
+]
+
+async function createWrapper(allCollaborators = false, hasCollaboratorRoles = false) {
   const collaborators = allCollaborators
     ? mockedCollaborators
     : mockedCollaborators.slice(0, 1)
+  const selectedCollaboratorsWithRoles = collaborators.map(({ id }) => ({
+    contactId: id,
+    roleIds: [],
+  }))
+  const collaboratorRoles = hasCollaboratorRoles
+    ? collaboratorRolesMock
+    : []
 
-  const wrapper = mount(ManageCollaborators, {
+  const wrapper = shallowMount(ManageCollaborators, {
     props: {
-      collaborators,
-      defaultCollaborator: mockCurrentUser,
+      knownCollaborators: collaborators,
+      selectedCollaboratorsWithRoles,
+      collaboratorRoles,
     },
     global: {
       stubs: {
         CollaboratorAutocomplete: true,
+        PBlockHeader: {
+          name: 'PBlockHeader',
+          template: '<div><slot /><slot name="subtitle"><slot name="suffix"></div>',
+        },
+        PForm: {
+          name: 'PForm',
+          template: '<div><slot /></div>',
+        },
+        PFormItem: {
+          name: 'PFormItem',
+          template: '<div><slot /></div>',
+          props: ['pLabel'],
+        },
+        PUserActionWithOptionsNumbers: {
+          name: 'PUserActionWithOptionsNumbers',
+          template: '<div />',
+          props: [
+            'pProfile',
+            'pTitle',
+            'pDescription',
+            'pRole',
+            'pShowDelete',
+            'pOptions',
+          ],
+        },
       },
     },
   })
@@ -56,7 +94,7 @@ function getComponentsInWrapper(wrapper: VueWrapper) {
   const pFormItem = wrapper.findComponent({ name: 'PFormItem' })
   const blockHeader = wrapper.findComponent({ name: 'PBlockHeader' })
   const userActions = wrapper.findAllComponents({
-    name: 'PUserAction',
+    name: 'PUserActionWithOptionsNumbers',
   })
   const userAction = userActions[0]
 
@@ -70,10 +108,10 @@ function getComponentsInWrapper(wrapper: VueWrapper) {
 
 describe('manageCollaborators', () => {
   let wrapper: ComponentWrapper<InstanceType<typeof ManageCollaborators>>
-  beforeEach(async () => {
-    wrapper = await createWrapper()
-  })
   describe('display', () => {
+    beforeEach(async () => {
+      wrapper = await createWrapper()
+    })
     it('should display properly, WITHOUT delete button, when only one collaborator is selected', () => {
       const pShowDelete = false
       const expectedUserActionProps = getExpectedUserActionProps(pShowDelete)
@@ -84,9 +122,9 @@ describe('manageCollaborators', () => {
         userAction,
       } = getComponentsInWrapper(wrapper)
 
-      expect(pFormItem.text()).toBe(expectedSearchText)
+      expect(pFormItem.props('pLabel')).toBe(expectedSearchText)
       expect(userActions).toHaveLength(1)
-      expect(userAction.props()).toMatchObject(expectedUserActionProps)
+      expect(userAction.props()).toStrictEqual(expectedUserActionProps)
       expect(blockHeader.exists()).toBeTruthy()
     })
 
@@ -101,30 +139,38 @@ describe('manageCollaborators', () => {
         userAction,
       } = getComponentsInWrapper(wrapper)
 
-      expect(pFormItem.text()).toBe(expectedSearchText)
+      expect(pFormItem.props('pLabel')).toBe(expectedSearchText)
       expect(userActions).toHaveLength(mockedCollaborators.length)
-      expect(userAction.props()).toMatchObject(expectedUserActionProps)
+      expect(userAction.props()).toStrictEqual(expectedUserActionProps)
       expect(blockHeader.exists()).toBeTruthy()
     })
   })
 
   describe('event', () => {
+    beforeEach(async () => {
+      wrapper = await createWrapper()
+    })
     it('should add collaborator when emits add-contact', async () => {
-      const pUserActionBefore = wrapper.findAllComponents({ name: 'PUserAction' })
-      const countBefore = pUserActionBefore.length
+      const collaborator = mockedCollaborators.at(-1)!
+      const expectedKnownCollaborators = [
+        mockedCollaborators.at(0)!,
+        collaborator,
+      ]
 
       const collaboratorAutocomplete = wrapper.findComponent({ name: 'CollaboratorAutocomplete' })
-      const collaborator = mockedCollaborators.at(-1)
+
+      const expectedCollaboratorIds = expectedKnownCollaborators.map(({ id: contactId }) => ({
+        contactId,
+        roleIds: [],
+      }))
+
       collaboratorAutocomplete.vm.$emit('add-contact', collaborator)
       await nextTick()
-      const pUserActionAfter = wrapper.findAllComponents({ name: 'PUserAction' })
 
-      expect(pUserActionAfter).toHaveLength(countBefore + 1)
+      expect(wrapper.emitted('update:knownCollaborators')).toStrictEqual([[expectedKnownCollaborators]])
+      expect(wrapper.emitted('update:selectedCollaboratorsWithRoles')).toStrictEqual([[expectedCollaboratorIds]])
     })
     describe('when click on delete', () => {
-      beforeEach(() => {
-
-      })
       it('should not emit update:collaborators when only one collaborator', () => {
         const { userAction } = getComponentsInWrapper(wrapper)
         userAction.vm.$emit('click-delete', 0)
@@ -137,10 +183,40 @@ describe('manageCollaborators', () => {
         const { userAction } = getComponentsInWrapper(wrapper)
         userAction.vm.$emit('click-delete', 0)
         const otherCollaborators = mockedCollaborators.splice(1)
+        const otherCollaboratorIds = otherCollaborators.map(({ id: contactId }) => ({
+          contactId,
+          roleIds: [],
+        }))
 
         expect(loggerWarnSpy).not.toHaveBeenCalled()
-        expect(wrapper.emitted('update:collaborators')).toStrictEqual([[otherCollaborators]])
+        expect(wrapper.emitted('update:selectedCollaboratorsWithRoles')).toStrictEqual([[otherCollaboratorIds]])
       })
+    })
+  })
+
+  describe('show display', () => {
+    const tests = [{
+      allCollaborators: false,
+      hasCollaboratorRoles: false,
+    }, {
+      allCollaborators: true,
+      hasCollaboratorRoles: false,
+    }, {
+      allCollaborators: false,
+      hasCollaboratorRoles: true,
+    }, {
+      allCollaborators: true,
+      hasCollaboratorRoles: true,
+    }]
+    it.each(tests)('should render correctly when allCollaborators is $allCollaborators and  hasCollaboratorRoles is $hasCollaboratorRoles', async ({
+      allCollaborators,
+      hasCollaboratorRoles,
+    }) => {
+      const wrapper = await createWrapper(allCollaborators, hasCollaboratorRoles)
+      const snapFilepath =
+        `__snap__/ManageCollaborators.allCollaborators.${allCollaborators ? 'true' : 'false'}.hasCollaboratorRoles.${hasCollaboratorRoles ? 'true' : 'false'}.html`
+
+      await expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
     })
   })
 })

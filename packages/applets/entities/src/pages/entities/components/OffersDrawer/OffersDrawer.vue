@@ -53,7 +53,7 @@
         <div v-if="!!currentSubscriptionOffer">
           <PSteps
             v-if="currentSubscriptionOffer?.approvalRequired"
-            :pActive="activeStep"
+            :pActive="currentStepIndex"
             :pDirection="offerStepperConfig.direction"
             :pProcessStatus="offerStepperConfig.processStatus"
             :pFinishStatus="offerStepperConfig.finishStatus"
@@ -71,7 +71,7 @@
             data-testid="customers-step"
           />
           <OfferSubscription
-            v-if="activeStep === offerStepperStep.SERVICES"
+            v-if="currentStep === OffersDrawerStep.SERVICES"
             data-testid="offer"
             :accountId="props.accountId"
             :subscriptionOffer="currentSubscriptionOffer"
@@ -81,19 +81,20 @@
           />
           <CustomersDetails
             v-if="
-              activeStep === offerStepperStep.CUSTOMERS
+              currentStep === OffersDrawerStep.CUSTOMERS
             "
             :principalContacts="principalContacts"
             data-testid="customers-step"
           />
           <ManageCollaborators
-            v-if="activeStep === offerStepperStep.COLLABORATORS && currentUser"
-            v-model:collaborators="collaborators"
-            :defaultCollaborator="currentUser"
+            v-if="currentStep === OffersDrawerStep.COLLABORATORS && currentUser"
+            v-model:selectedCollaboratorsWithRoles="selectedCollaboratorsWithRoles"
+            v-model:knownCollaborators="knownCollaborators"
+            :collaboratorRoles="collaboratorRoles"
             data-testid="collaborators-step"
           />
           <CompanyInformation
-            v-if="account && activeStep === offerStepperStep.INFORMATION"
+            v-if="account && currentStep === OffersDrawerStep.INFORMATION"
             :modelValue="account"
             :providerName="providerName"
             data-testid="information-step"
@@ -101,8 +102,8 @@
           />
           <StepNote
             v-if="currentSubscriptionOffer?.approvalRequired"
-            :key="activeStep"
-            v-model="notes[activeStep]"
+            :key="currentStep"
+            v-model="notes[currentStepIndex]"
             class="margin-top--6"
           />
         </div>
@@ -154,7 +155,8 @@ import {
 } from '@entities/services/offer'
 import { addPathValue, getPatchOperations } from '@entities/services/PatchRecordService/PatchRecordService'
 import { type PatchValue } from '@entities/services/PatchRecordService'
-import { offerStepperStep } from './OffersDrawerTypes'
+import { OffersDrawerStep } from './OffersDrawer.enums'
+import { OFFERS_DRAWER_STEPS } from './OffersDrawer.const'
 import type { OffersDrawerProps } from './OffersDrawerTypes'
 import type { SelectedProduct } from '@entities/common/types'
 import { fetchAccount, patchAccount, type Account } from '@entities/services/account'
@@ -172,15 +174,19 @@ import type {
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import type { Note } from '@entities/services/subscription/subscriptionTypes'
 import { createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
-import type { Contact } from '@entities/services/contact/contactTypes'
+import { type Contact } from '@entities/services/contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 import { amplitudeService } from '@pulse/common'
+import type { ContactWithRoles } from '../ManageCollaborators/ManageCollaboratorsTypes'
+import { getIsNextButtonDisabled } from './OffersDrawer.utils'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-const activeStep = ref<number>(0)
+const currentStepIndex = ref(0)
+const currentStep = computed(() => OFFERS_DRAWER_STEPS[currentStepIndex.value])
 
 const offerStepperConfig: any = {
   direction: 'horizontal',
@@ -197,22 +203,18 @@ const offerStepTitles = {
 
 const isSubmitButton = computed((): boolean => {
   return (
-    activeStep.value === offerStepperStep.INFORMATION ||
+    currentStep.value === OffersDrawerStep.INFORMATION ||
     !currentSubscriptionOffer.value?.approvalRequired
   )
 })
 
-const isNoCollaboratorSelected = computed(() => {
-  return activeStep.value === offerStepperStep.COLLABORATORS && collaborators.value.length === 0
-})
-
-const hasNoSignatory = computed(() => {
-  return (activeStep.value === offerStepperStep.CUSTOMERS || !currentSubscriptionOffer?.value?.approvalRequired) &&
-  principalContacts.value.length === 0
-})
-
 const isNextButtonDisabled = computed(() => {
-  return hasNoSignatory.value || isNoCollaboratorSelected.value
+  return getIsNextButtonDisabled({
+    currentSubscriptionOffer: currentSubscriptionOffer.value,
+    currentStep: currentStep.value,
+    selectedCollaboratorsWithRoles: selectedCollaboratorsWithRoles.value,
+    principalContacts: principalContacts.value,
+  })
 })
 
 const emit = defineEmits<{
@@ -226,7 +228,8 @@ const activeOfferCodes = ref<string[]>([])
 const patchValues: PatchValue[] = []
 const selectedProducts = ref<SelectedProduct[]>([])
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
-const collaborators = ref<Contact[]>([])
+const knownCollaborators = ref<Contact[]>([])
+const selectedCollaboratorsWithRoles = ref<ContactWithRoles[]>([])
 const principalContacts = ref<ClientContact[]>([])
 const account = ref<Account | undefined>()
 const notes = ref<Note[]>([])
@@ -242,20 +245,39 @@ const internalIsOpened = computed({
   },
 })
 
+const collaboratorRoles = computed(() => currentSubscriptionOffer.value?.functions ?? [])
+
 const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
   if (selectedOfferId === undefined) {
     currentSubscriptionOffer.value = undefined
   } else {
     currentSubscriptionOffer.value = await getOffer(selectedOfferId)
-    const { id, firstName, lastName, email, oldId, persona, officeMobile } = props.currentUser
-    collaborators.value = [{
+    const {
       id,
       firstName,
       lastName,
       email,
-      mobilePhone: officeMobile || '',
-      persona,
       oldId,
+      persona,
+    } = props.currentUser
+
+    const contact: Contact = {
+      id,
+      firstName,
+      lastName,
+      email,
+      landPhone: '',
+      mobilePhone: '',
+      type: ContactType.COLLABORATOR,
+      office: '',
+      persona,
+      createdAt: '',
+      oldId,
+    }
+    knownCollaborators.value = [contact]
+    selectedCollaboratorsWithRoles.value = [{
+      contactId: contact.id,
+      roleIds: [],
     }]
     amplitudeService.track('Subscription Initiated', {
       subscription_initiate_offer_name: currentSubscriptionOffer.value?.offerCode,
@@ -325,10 +347,10 @@ function onInputAccount(fieldKey: string, value: any) {
 }
 
 function onClickPrevious() {
-  if (activeStep.value === offerStepperStep.SERVICES) {
+  if (currentStep.value === OffersDrawerStep.SERVICES) {
     setSelectedOffer()
   } else {
-    --activeStep.value
+    --currentStepIndex.value
   }
 }
 
@@ -341,15 +363,15 @@ function onDeselectProduct(offerId: number, productId: number) {
 }
 
 async function saveOffer() {
-  const postSubscriptionRequest = getPostSubscriptionRequest(
-    props.accountId,
-    props.currentUser?.email,
-    collaborators.value,
-    principalContacts.value,
-    currentSubscriptionOffer.value,
-    selectedProducts.value,
-    notes.value,
-  )
+  const postSubscriptionRequest = getPostSubscriptionRequest({
+    accountId: props.accountId,
+    userEmail: props.currentUser?.email,
+    collaboratorsWithRoles: selectedCollaboratorsWithRoles.value,
+    clients: principalContacts.value,
+    currentSubscriptionOffer: currentSubscriptionOffer.value,
+    selectedProducts: selectedProducts.value,
+    notes: notes.value,
+  })
   if (postSubscriptionRequest) {
     await createSubscriptionRequest(postSubscriptionRequest)
   }
@@ -430,7 +452,7 @@ function onClickNext() {
     confirmationModalVisible.value = true
     return
   }
-  ++activeStep.value
+  ++currentStepIndex.value
 }
 
 function onSelectOffer(offerId: number) {

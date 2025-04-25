@@ -122,7 +122,8 @@ const isTrackedMandateAvailable = computed(
 )
 
 const isTrackedMandateNotAvailable = computed(
-  () => trackedMandateState.value && trackedMandateState.value.status === mandateAvailabilityCheckStatuses.NOT_AVAILABLE,
+  () => trackedMandateState.value &&
+    trackedMandateState.value.status === mandateAvailabilityCheckStatuses.NOT_AVAILABLE,
 )
 
 const isTrackedMandateErrored = computed(

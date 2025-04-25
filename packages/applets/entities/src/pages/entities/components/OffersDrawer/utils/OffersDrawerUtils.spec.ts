@@ -1,17 +1,20 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { getMockedStepNotes } from '@entities/__mocks__/step-notes.mocks'
+import type { SelectedProduct } from '@entities/common/types'
+import type { ContactFunction, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
+import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
+import { getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
+import type { ContactWithRoles } from '../../ManageCollaborators/ManageCollaboratorsTypes'
+
 import {
   addSelectedProduct,
   removeSelectedProduct,
   getInitialSelectedProducts,
   getPostSubscriptionRequest,
   getFirstDayOfYear,
+  getFormattedContactFunctions,
 } from './OffersDrawerUtils'
-import type { SelectedProduct } from '@entities/common/types'
-import type { PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
-import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
-import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
-import { getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 
 const notes = getMockedStepNotes()
 describe('offersDrawerUtils', () => {
@@ -90,9 +93,15 @@ describe('offersDrawerUtils', () => {
   })
 
   describe('getPostSubscriptionRequest', () => {
+    const roleIdMock = 13
     const accountId = 5
     const userEmail = 'user@email.com'
     const collaborators = getMockedCollaborators()
+    const selectedCollaboratorIds = collaborators.map(({ id }) => ({
+      contactId: id,
+      roleIds: [roleIdMock],
+    }))
+
     const clients = getMockedPrincipalContacts()
     const currentSubscriptionOffer = getMockedSubscriptionOffersServices().at(0)
     const selectedProducts = getInitialSelectedProducts(
@@ -100,15 +109,19 @@ describe('offersDrawerUtils', () => {
     )
 
     it('should return not optional and free product list', () => {
-      const postSubscriptionRequest = getPostSubscriptionRequest(
+      const currentSubscriptionOfferWithoutCollaboratorRoles = {
+        ...getMockedSubscriptionOffersServices().at(0)!,
+        functions: [],
+      }
+      const postSubscriptionRequest = getPostSubscriptionRequest({
         accountId,
         userEmail,
-        collaborators,
+        collaboratorsWithRoles: selectedCollaboratorIds,
         clients,
-        currentSubscriptionOffer,
+        currentSubscriptionOffer: currentSubscriptionOfferWithoutCollaboratorRoles,
         selectedProducts,
         notes,
-      )
+      })
       const collaboratorsIds = collaborators.map(({ id }) => id)
       const clientsIds = clients.map(({ contactId }) => contactId)
       const contacts = [...clientsIds, ...collaboratorsIds]
@@ -120,21 +133,55 @@ describe('offersDrawerUtils', () => {
         contacts,
         notes,
         applicant: 'user@email.com',
+        contactFunctions: undefined,
       }
       expect(postSubscriptionRequest).toStrictEqual(
         expectedPostSubscriptionRequest,
       )
     })
-    it('should return empty undefined if currentSubscriptionOffer in undefined', () => {
-      const postSubscriptionRequest = getPostSubscriptionRequest(
+
+    it('should not return contactFunctions when there is NOT ANY collaborator roles', () => {
+      const postSubscriptionRequest = getPostSubscriptionRequest({
         accountId,
         userEmail,
-        collaborators,
+        collaboratorsWithRoles: selectedCollaboratorIds,
         clients,
-        undefined,
+        currentSubscriptionOffer,
         selectedProducts,
         notes,
+      })
+      const collaboratorsIds = collaborators.map(({ id }) => id)
+      const clientsIds = clients.map(({ contactId }) => contactId)
+      const contacts = [...clientsIds, ...collaboratorsIds]
+      const contactFunctions = selectedCollaboratorIds.map(({ contactId }) => ({
+        contactId,
+        functionId: roleIdMock,
+      }))
+
+      const expectedPostSubscriptionRequest: PostSubscriptionRequest = {
+        accountId,
+        offerId: 1,
+        productConfigurations: [1, 2, 3, 4],
+        contacts,
+        notes,
+        applicant: 'user@email.com',
+        contactFunctions,
+      }
+      expect(postSubscriptionRequest).toStrictEqual(
+        expectedPostSubscriptionRequest,
       )
+    })
+
+    it('should return empty undefined if currentSubscriptionOffer in undefined', () => {
+      const postSubscriptionRequest = getPostSubscriptionRequest({
+        accountId,
+        userEmail,
+        collaboratorsWithRoles: selectedCollaboratorIds,
+        clients,
+        currentSubscriptionOffer: undefined,
+        selectedProducts,
+        notes,
+      })
       expect(postSubscriptionRequest).toBeUndefined()
     })
   })
@@ -143,6 +190,33 @@ describe('offersDrawerUtils', () => {
     it('should return the first day of the current year', () => {
       const expectedDay = new Date(new Date().getFullYear(), 0, 1).toISOString()
       expect(expectedDay).toStrictEqual(getFirstDayOfYear())
+    })
+  })
+
+  describe('getFormattedContactFunctions', () => {
+    it('should return formatted data', () => {
+      const collaboratorsWithRoles: ContactWithRoles[] = [{
+        contactId: 1,
+        roleIds: [2, 3],
+      }, {
+        contactId: 4,
+        roleIds: [5],
+      }, {
+        contactId: 6,
+        roleIds: [],
+      }]
+      const expectedFormattedContactsWithRole: ContactFunction[] = [{
+        contactId: 1,
+        functionId: 2,
+      }, {
+        contactId: 1,
+        functionId: 3,
+      }, {
+        contactId: 4,
+        functionId: 5,
+      }]
+      const contactFunctions = getFormattedContactFunctions(collaboratorsWithRoles)
+      expect(contactFunctions).toStrictEqual(expectedFormattedContactsWithRole)
     })
   })
 })

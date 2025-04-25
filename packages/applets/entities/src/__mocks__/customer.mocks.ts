@@ -1,5 +1,6 @@
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { Persona } from '@pulse/common/types'
+import { ContactType } from '@pulse/common/enums'
 
 export function getMockedCustomer(): Contact[] {
   return [
@@ -10,7 +11,7 @@ export function getMockedCustomer(): Contact[] {
       email: 'yve@test.fr',
       landPhone: '0674589003',
       mobilePhone: '0785667003',
-      type: 'Customer',
+      type: ContactType.CUSTOMER,
       office: undefined,
       persona: {
         id: 2,
@@ -25,7 +26,7 @@ export function getMockedCustomer(): Contact[] {
       email: 'bernard@test.fr',
       landPhone: '0674589003',
       mobilePhone: '0785667003',
-      type: 'Customer',
+      type: ContactType.CUSTOMER,
       office: undefined,
       persona: {
         id: 2,

@@ -14,6 +14,7 @@
         <p class="p-block-header__title">
           {{ pTitle }}
         </p>
+        <slot name="subtitle" />
         <p class="p-block-header__description">
           {{ pDescription }}
         </p>

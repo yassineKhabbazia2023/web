@@ -1,6 +1,7 @@
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { Collab } from '@entities/pages/wallet/pages/collaborators/types'
 import type { Persona } from '@pulse/common/types'
+import { ContactType } from '@pulse/common/enums'
 
 export const getMockedCollaborators = (): Contact[] => {
   return [
@@ -11,7 +12,7 @@ export const getMockedCollaborators = (): Contact[] => {
       email: 'email383@example.com',
       landPhone: '123-456-7890',
       mobilePhone: '987-654-3210',
-      type: 'Collaborator',
+      type: ContactType.COLLABORATOR,
       office: 'Chalon sur Saône',
       persona: {
         id: 15,
@@ -27,7 +28,7 @@ export const getMockedCollaborators = (): Contact[] => {
       email: 'email248@example.com',
       landPhone: '123-456-7890',
       mobilePhone: '987-654-3210',
-      type: 'Collaborator',
+      type: ContactType.COLLABORATOR,
       office: 'Besançon',
       persona: {
         id: 10,
@@ -43,7 +44,7 @@ export const getMockedCollaborators = (): Contact[] => {
       email: 'email787@example.com',
       landPhone: '123-456-7890',
       mobilePhone: '987-654-3210',
-      type: 'Collaborator',
+      type: ContactType.COLLABORATOR,
       office: 'Pontarlier',
       persona: {
         id: 15,
@@ -59,7 +60,7 @@ export const getMockedCollaborators = (): Contact[] => {
       email: 'email40@example.com',
       landPhone: '123-456-7890',
       mobilePhone: '987-654-3210',
-      type: 'Collaborator',
+      type: ContactType.COLLABORATOR,
       office: 'Grenoble',
       persona: {
         id: 15,
@@ -133,7 +134,7 @@ export function getMockedCollaborators2(): Contact[] {
       email: 'jvellutini@test.fr',
       landPhone: '0674589002',
       mobilePhone: '0785667002',
-      type: 'Collaborator',
+      type: ContactType.COLLABORATOR,
       office: 'RYDGE Paris – Liège',
       persona: {
         id: 2,
@@ -148,7 +149,7 @@ export function getMockedCollaborators2(): Contact[] {
       email: 'sortega@test.fr',
       landPhone: '0674589005',
       mobilePhone: '0785667005',
-      type: 'Collaborator',
+      type: ContactType.COLLABORATOR,
       office: 'RYDGE Paris – Liège',
       persona: {
         id: 4,
@@ -163,7 +164,7 @@ export function getMockedCollaborators2(): Contact[] {
       email: 'pmathis@test.fr',
       landPhone: '0674589011',
       mobilePhone: '0785667020',
-      type: 'Collaborator',
+      type: ContactType.COLLABORATOR,
       office: 'RYDGE Paris – Liège',
       persona: {
         id: 4,
@@ -359,7 +360,7 @@ export const mockedCollaboratorsList2 = {
       'email': 'email383@example.com',
       'landPhone': '123-456-7890',
       'mobilePhone': '987-654-3210',
-      'type': 'Collaborator',
+      'type': ContactType.COLLABORATOR,
       'office': 'Chalon sur Saône',
       'persona': {
         'id': 15,
@@ -375,7 +376,7 @@ export const mockedCollaboratorsList2 = {
       'email': 'email248@example.com',
       'landPhone': '123-456-7890',
       'mobilePhone': '987-654-3210',
-      'type': 'Collaborator',
+      'type': ContactType.COLLABORATOR,
       'office': 'Besançon',
       'persona': {
         'id': 10,
@@ -391,7 +392,7 @@ export const mockedCollaboratorsList2 = {
       'email': 'email787@example.com',
       'landPhone': '123-456-7890',
       'mobilePhone': '987-654-3210',
-      'type': 'Collaborator',
+      'type': ContactType.COLLABORATOR,
       'office': 'Pontarlier',
       'persona': {
         'id': 15,
@@ -407,7 +408,7 @@ export const mockedCollaboratorsList2 = {
       'email': 'email40@example.com',
       'landPhone': '123-456-7890',
       'mobilePhone': '987-654-3210',
-      'type': 'Collaborator',
+      'type': ContactType.COLLABORATOR,
       'office': 'Grenoble',
       'persona': {
         'id': 15,
@@ -423,7 +424,7 @@ export const mockedCollaboratorsList2 = {
       'email': 'email343@example.com',
       'landPhone': '123-456-7890',
       'mobilePhone': '987-654-3210',
-      'type': 'Collaborator',
+      'type': ContactType.COLLABORATOR,
       'office': 'Pontarlier',
       'persona': {
         'id': 7,
@@ -439,7 +440,7 @@ export const mockedCollaboratorsList2 = {
       'email': 'email855@example.com',
       'landPhone': '123-456-7890',
       'mobilePhone': '987-654-3210',
-      'type': 'Collaborator',
+      'type': ContactType.COLLABORATOR,
       'office': 'Lyon',
       'persona': {
         'id': 10,
@@ -455,7 +456,7 @@ export const mockedCollaboratorsList2 = {
       'email': 'email464@example.com',
       'landPhone': '123-456-7890',
       'mobilePhone': '987-654-3210',
-      'type': 'Collaborator',
+      'type': ContactType.COLLABORATOR,
       'office': 'Grenoble',
       'persona': {
         'id': 11,
@@ -471,7 +472,7 @@ export const mockedCollaboratorsList2 = {
       'email': 'email434@example.com',
       'landPhone': '123-456-7890',
       'mobilePhone': '987-654-3210',
-      'type': 'Collaborator',
+      'type': ContactType.COLLABORATOR,
       'office': 'Grenoble',
       'persona': {
         'id': 13,
@@ -487,7 +488,7 @@ export const mockedCollaboratorsList2 = {
       'email': 'email729@example.com',
       'landPhone': '123-456-7890',
       'mobilePhone': '987-654-3210',
-      'type': 'Collaborator',
+      'type': ContactType.COLLABORATOR,
       'office': 'Pontarlier',
       'persona': {
         'id': 9,
@@ -503,7 +504,7 @@ export const mockedCollaboratorsList2 = {
       'email': 'email913@example.com',
       'landPhone': '123-456-7890',
       'mobilePhone': '987-654-3210',
-      'type': 'Collaborator',
+      'type': ContactType.COLLABORATOR,
       'office': 'Besançon',
       'persona': {
         'id': 16,

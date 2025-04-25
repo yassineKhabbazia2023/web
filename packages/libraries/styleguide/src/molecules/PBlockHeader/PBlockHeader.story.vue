@@ -70,6 +70,24 @@
         </template>
       </PBlockHeader>
     </Variant>
+    <Variant title="Block header with subtitle">
+      <PBlockHeader
+        :pTitle="data.pTitle"
+        :pDescription="data.pDescription"
+        :pColor="data.pColor"
+        pSize="big"
+        :pImage="data.pImage"
+        pHasButton
+      >
+        <template #subtitle>
+          <ul class="list-style-none">
+            <li>a</li>
+            <li>B</li>
+            <li>C</li>
+          </ul>
+        </template>
+      </PBlockHeader>
+    </Variant>
   </Story>
 </template>
 

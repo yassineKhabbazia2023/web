@@ -10,7 +10,7 @@ import type { RightsListProps } from './RightsListTypes'
 import * as authorizationServices from '@entities/services/authorization'
 import { useRoute } from 'vue-router'
 import RightsList from '.'
-import { ContactType } from '@entities/services/contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 
 // Mocks
 const mockedActionsCount = mockedAuthorizationsConfig
@@ -228,13 +228,13 @@ describe('rightsList', () => {
         isAccountRights: true,
         modelValue: {},
         accountId: mockedAccountId,
-        contactType: ContactType.Collaborator,
+        contactType: ContactType.COLLABORATOR,
       })
 
       expect(spyFetchAccountAuthorizationsConfig).toHaveBeenCalledOnce()
       expect(spyFetchAccountAuthorizationsConfig).toHaveBeenCalledWith(
         mockedAccountId,
-        ContactType.Collaborator,
+        ContactType.COLLABORATOR,
       )
     })
     it('should call the auth API with accountID set to null if there is no accountId in the route parameters', () => {

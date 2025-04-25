@@ -1,6 +1,6 @@
 import type { SubscriptionOfferServices } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
-import type { Contact, ContactType } from '@entities/services/contact/contactTypes'
-
+import type { Contact } from '@entities/services/contact/contactTypes'
+import type { ContactType } from '@pulse/common/enums'
 
 export enum SubscriptionStatusCode {
   PENDING = 'pending',
@@ -49,6 +49,11 @@ export interface Note {
   stepNote: string
 }
 
+export interface ContactFunction {
+  contactId: number
+  functionId: number
+}
+
 export interface PostSubscriptionRequest {
   accountId: number
   offerId: number
@@ -56,6 +61,7 @@ export interface PostSubscriptionRequest {
   contacts: number[]
   notes: Note[]
   applicant: string
+  contactFunctions?: ContactFunction[]
 }
 
 export interface SubscriptionContact {

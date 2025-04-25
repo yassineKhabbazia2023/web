@@ -83,6 +83,7 @@ import NoResult from '@entities/common/components/NoResult'
 import { amplitudeService } from '@pulse/common'
 import type { ExtendedUser } from '@entities/pages/folder/pages/usersClient/UsersClientTypes'
 import type { UserStatus } from '@entities/common/types'
+import { ContactType } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -166,7 +167,7 @@ onMounted(async () => {
   try {
     const searchParams = new URLSearchParams({
       pageSize: '100',
-      Type: 'Customer',
+      Type: ContactType.CUSTOMER,
     })
     const { items } = await fetchAccountContacts(props.selectedAccount.accountId, searchParams)
     usersClientAccount.value = formatItemsFromApi(items).map(

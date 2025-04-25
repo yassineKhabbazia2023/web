@@ -19,6 +19,7 @@ import {
   getMockedUser,
 } from '@pulse/common/mocks'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { ContactType } from '@pulse/common/enums'
 
 import UsersClient from '.'
 
@@ -252,7 +253,7 @@ describe('test UsersClient', () => {
       const urlSearchParams = new URLSearchParams({
         pageNumber: '1',
         pageSize: '15',
-        Type: 'Customer',
+        Type: ContactType.CUSTOMER,
       })
 
       expect(fetchAccountContactsSpy).toHaveBeenCalledOnce()

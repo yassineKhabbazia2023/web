@@ -108,9 +108,10 @@ const breadcrumbElements = computed(() => ([
 ]))
 
 const authorizedKeys = computed<LauncherKey[]>(() =>
-  LAUNCHER_AUTHORIZATIONS.filter(({ authorizationCodes }) => CurrentUserManager.hasPermission(authorizationCodes)).map<LauncherKey>(
-    ({ key }) => key,
-  ),
+  LAUNCHER_AUTHORIZATIONS
+    .filter(({ authorizationCodes }) => CurrentUserManager.hasPermission(authorizationCodes)).map<LauncherKey>(
+      ({ key }) => key,
+    ),
 )
 
 const launchCards = computed<ExtendedLaunchCard[]>(() => {

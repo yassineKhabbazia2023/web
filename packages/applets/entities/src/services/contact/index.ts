@@ -4,6 +4,7 @@ import { API_PREFIXES } from '@entities/common/config/services'
 import type { Contact, PatchContactPayload, AccountOperations } from './contactTypes'
 import type { PaginationResponse } from '@pulse/common/types'
 import type { OperationStatus } from '@entities/common/types/OperationTypes'
+import { ContactType } from '@pulse/common/enums'
 
 export const getCollaborators = async (
   search: string | null = null,
@@ -14,7 +15,7 @@ export const getCollaborators = async (
       `${API_PREFIXES.CONTACT}/contacts`,
       {
         params: {
-          Type: 'Collaborator',
+          Type: ContactType.COLLABORATOR,
           search,
           pageSize,
         },

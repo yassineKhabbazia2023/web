@@ -1,12 +1,12 @@
 import { describe, it, vi, expect } from 'vitest'
-import { ContactType } from '../contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 import { API_PREFIXES } from '@entities/common/config/services'
 import {
   fetchContactRoles,
   getCollaborators,
 } from '.'
 
-const collaboratorType = ContactType.Collaborator
+const collaboratorType = ContactType.COLLABORATOR
 const errorMessage = 'API Error: 503 Service Unavailable'
 
 vi.mock('@entities/helper/helper', () => ({

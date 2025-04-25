@@ -1,4 +1,4 @@
-import type { ContactType } from '@entities/services/contact/contactTypes'
+import type { ContactType } from '@pulse/common/enums'
 import type { AuthorizationState } from '../../ManageRightsTypes'
 
 interface Category {

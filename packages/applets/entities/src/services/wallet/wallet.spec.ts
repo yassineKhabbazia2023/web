@@ -11,7 +11,7 @@ import {
   fetchAccountContacts,
   fetchCustomers,
 } from '.'
-import { ContactType } from '../contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
 import { getMockedCollabRoles } from '@entities/__mocks__/collab-roles.mocks'
 import { getMockedEntitiesStatistics } from '@entities/pages/wallet/components/Filters/FiltersMocks'
@@ -143,7 +143,7 @@ describe('collaborateurs/admin', () => {
           },
         } as any)
       const params = {
-        Type: 'Customer',
+        Type: ContactType.CUSTOMER,
         limit: '50',
       }
       const searchParams = new URLSearchParams(params)
@@ -214,7 +214,7 @@ describe('collaborateurs/admin', () => {
     })
 
     it('should return list of roles', async () => {
-      const roles = await fetchContactRoles(ContactType.Collaborator)
+      const roles = await fetchContactRoles(ContactType.COLLABORATOR)
 
       expect(roles).toStrictEqual(mockedCollabRoles)
     })

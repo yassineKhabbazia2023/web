@@ -12,6 +12,7 @@
     >
       <PUserAction
         v-model:pInputValue="data.pInputValue"
+        v-model:pOptionsValue="data.pOptionsValue"
         :pProfile="data.pProfile"
         :pTitle="data.pTitle"
         :pDescription="data.pDescription"
@@ -23,7 +24,7 @@
         :pShowOptions="data.pShowOptions"
         :pOptions="data.pOptions"
         :pOptionsPlaceholder="data.pOptionsPlaceholder"
-        :pOptionsValue="data.pOptionsValue"
+        :pOptionsMultiple="data.pOptionsMultiple"
         :pWarningContent="data.pWarningContent"
         :pAvatarRole="AvatarRoles.COLLAB"
         @click-delete="logEvent('click-delete', $event)"
@@ -41,6 +42,7 @@
         <HstText v-model="data.pInputPlaceholder" title="pInputPlaceholder" />
         <HstText v-model="data.pOptionsPlaceholder" title="pOptionsPlaceholder" />
         <HstCheckbox v-model="data.pShowDelete" title="Show delete button" />
+        <HstCheckbox v-model="data.pOptionsMultiple" title="pOptionsMultiple" />
       </template>
     </Variant>
   </Story>
@@ -100,6 +102,7 @@ const exampleOffer4 = reactive<PUserActionProps>({
   pInputPlaceholder: 'Entrez la fonction du collaborateur',
   pShowDelete: true,
   pShowOptions: true,
+  pOptionsMultiple: false,
   pOptions: getMockedOptions(),
   pOptionsPlaceholder: 'Rôle Akuiteo',
   pOptionsValue: '',
@@ -111,24 +114,44 @@ const exampleOffer5 = reactive<PUserActionProps>({
   pDescription: 'suliman.lescot@test.fr',
   pTagContent: '',
   pRole: '',
+  pShowInput: false,
+  pInputValue: '',
+  pInputPlaceholder: 'Entrez les fonctions du collaborateur',
+  pShowDelete: true,
+  pShowOptions: true,
+  pOptionsMultiple: true,
+  pOptions: getMockedOptions(),
+  pOptionsPlaceholder: 'Rôles Akuiteo',
+  pOptionsValue: [],
+})
+
+const exampleOffer6 = reactive<PUserActionProps>({
+  pProfile: 'SL',
+  pTitle: 'Suliman Lescot',
+  pDescription: 'suliman.lescot@test.fr',
+  pTagContent: '',
+  pRole: '',
   pWarningContent: 'Vous avez déjà délégué votre portefeuille à ce collaborateur.',
 })
 
 const variants = [{
-  title: 'User action - Offer 1/5',
+  title: 'User action - Offer 1/6',
   data: exampleOffer1,
 }, {
-  title: 'User action - Offer 2/5',
+  title: 'User action - Offer 2/6',
   data: exampleOffer2,
 }, {
-  title: 'User action - Offer 3/5',
+  title: 'User action - Offer 3/6',
   data: exampleOffer3,
 }, {
-  title: 'User action - Offer 4/5',
+  title: 'User action - Offer 4/6',
   data: exampleOffer4,
 }, {
-  title: 'User action - Offer 5/5',
+  title: 'User action - Offer 5/6',
   data: exampleOffer5,
+}, {
+  title: 'User action - Offer 6/6',
+  data: exampleOffer6,
 }]
 
 const source = `
@@ -149,7 +172,6 @@ import { PUserAction } from '@pulse/styleguide'
 `
 
 function onUpdateOptionsValue(value: POptionsValue) {
-  exampleOffer4.pOptionsValue = value
   logEvent('update:pOptionsValue', value)
 }
 </script>

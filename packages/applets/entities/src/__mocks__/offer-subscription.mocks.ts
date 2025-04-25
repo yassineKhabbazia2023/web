@@ -1,77 +1,98 @@
 import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
-import { SubscriptionOfferServices, SubscriptionOffer, SubscriptionOfferProduct } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import type { CollaboratorRole, SubscriptionOfferServices, SubscriptionOffer, SubscriptionOfferProduct } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+
+export function getCollaboratorRoleMock(override: Partial<CollaboratorRole> = {}): CollaboratorRole {
+  return {
+    functionId: 1,
+    functionName: 'Expert comptable',
+    ...override,
+  }
+}
+
+export function getSubscriptionOffersServiceMock(override: Partial<SubscriptionOfferServices> = {}) {
+  const defaultSubscription: SubscriptionOfferServices = {
+    offerId: 1,
+    offerName: 'Gestion Smart',
+    offerLabel:
+        'Mon Expert en Gestion (MEG) en version start (inclus dans RYDGE)',
+    offerPrice: 0,
+    offerCode: 'MEG Smart',
+    offerPriceType: SubscriptionPriceType.free,
+    logoName: 'meg',
+    approvalRequired: true,
+    offersBookLink: 'test link',
+    offerDescription: 'test description',
+    intranetLink: 'test-link',
+    functions: [
+      getCollaboratorRoleMock(),
+    ],
+    providers: [
+      {
+        providerName: ProviderName.RYDGE,
+        providerEditor: 'RYDGE',
+        providerCategory: 'RYDGE',
+        logoName: 'brand-color',
+        products: [
+          {
+            productName: 'GED Compta',
+            productLabel: 'GED Comptabilité',
+            enabled: true,
+            isOptionnal: false,
+            price: 0.0,
+            priceType: SubscriptionPriceType.free,
+            productConfigurationId: 1,
+          },
+        ],
+      },
+      {
+        providerName: ProviderName.MEG,
+        providerEditor: 'RCA',
+        providerCategory: 'external',
+        logoName: 'meg',
+        products: [
+          {
+            productName: 'Accès MEG',
+            productLabel: "Accès à l'outil MEG",
+            enabled: true,
+            isOptionnal: false,
+            price: 0.0,
+            priceType: SubscriptionPriceType.free,
+            productConfigurationId: 2,
+          },
+          {
+            productName: 'Module caisse',
+            productLabel: 'Module caisse de MEG',
+            enabled: true,
+            isOptionnal: true,
+            price: 0.0,
+            priceType: SubscriptionPriceType.free,
+            productConfigurationId: 3,
+          },
+          {
+            productName: 'Module facturation',
+            productLabel: 'Module facturation de MEG',
+            enabled: true,
+            isOptionnal: true,
+            price: 0.0,
+            priceType: SubscriptionPriceType.free,
+            productConfigurationId: 4,
+          },
+        ],
+      },
+    ],
+  }
+
+  return {
+    ...defaultSubscription,
+    ...override,
+  }
+}
 
 export function getMockedSubscriptionOffersServices() {
+  const subscriptionOffersServiceMock0 = getSubscriptionOffersServiceMock()
   const Subscription: SubscriptionOfferServices[] = [
-    {
-      offerId: 1,
-      offerName: 'Gestion Smart',
-      offerLabel:
-        'Mon Expert en Gestion (MEG) en version start (inclus dans RYDGE)',
-      offerPrice: 0,
-      offerCode: 'MEG Smart',
-      offerPriceType: SubscriptionPriceType.free,
-      logoName: 'meg',
-      approvalRequired: true,
-      offersBookLink: 'test link',
-      offerDescription: 'test description',
-      intranetLink: 'test-link',
-      providers: [
-        {
-          providerName: ProviderName.RYDGE,
-          providerEditor: 'RYDGE',
-          providerCategory: 'RYDGE',
-          logoName: 'brand-color',
-          products: [
-            {
-              productName: 'GED Compta',
-              productLabel: 'GED Comptabilité',
-              enabled: true,
-              isOptionnal: false,
-              price: 0.0,
-              priceType: SubscriptionPriceType.free,
-              productConfigurationId: 1,
-            },
-          ],
-        },
-        {
-          providerName: ProviderName.MEG,
-          providerEditor: 'RCA',
-          providerCategory: 'external',
-          logoName: 'meg',
-          products: [
-            {
-              productName: 'Accès MEG',
-              productLabel: "Accès à l'outil MEG",
-              enabled: true,
-              isOptionnal: false,
-              price: 0.0,
-              priceType: SubscriptionPriceType.free,
-              productConfigurationId: 2,
-            },
-            {
-              productName: 'Module caisse',
-              productLabel: 'Module caisse de MEG',
-              enabled: true,
-              isOptionnal: true,
-              price: 0.0,
-              priceType: SubscriptionPriceType.free,
-              productConfigurationId: 3,
-            },
-            {
-              productName: 'Module facturation',
-              productLabel: 'Module facturation de MEG',
-              enabled: true,
-              isOptionnal: true,
-              price: 0.0,
-              priceType: SubscriptionPriceType.free,
-              productConfigurationId: 4,
-            },
-          ],
-        },
-      ],
-    },
+    subscriptionOffersServiceMock0,
     {
       offerId: 2,
       offerName: 'Gestion Premium',
@@ -84,6 +105,7 @@ export function getMockedSubscriptionOffersServices() {
       offersBookLink: 'test link',
       offerDescription: 'test description',
       intranetLink: 'test-link',
+      functions: [],
       providers: [
         {
           providerName: ProviderName.RYDGE,
@@ -116,6 +138,7 @@ export function getMockedSubscriptionOffersServices() {
       offersBookLink: 'test link',
       offerDescription: 'test description',
       intranetLink: 'test-link',
+      functions: [],
       providers: [
         {
           providerName: ProviderName.RYDGE,
@@ -148,6 +171,7 @@ export function getMockedSubscriptionOffersServices() {
       offersBookLink: 'test link',
       offerDescription: 'test description',
       intranetLink: 'test-link',
+      functions: [],
       providers: [
         {
           providerName: ProviderName.RYDGE,

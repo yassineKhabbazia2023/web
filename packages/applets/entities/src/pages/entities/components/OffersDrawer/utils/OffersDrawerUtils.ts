@@ -1,9 +1,9 @@
 import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import type { SelectedProduct } from '@entities/common/types'
 import type { SubscriptionOfferServices } from '../../SubscriptionOffers/SubscriptionOffersTypes'
-import type { Note, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
-import type { Contact } from '@entities/services/contact/contactTypes'
+import type { ContactFunction, Note, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
 import type { ClientContact } from '../../PrincipalContact/PrincipalContactTypes'
+import type { ContactWithRoles } from '../../ManageCollaborators/ManageCollaboratorsTypes'
 
 export function getSelectedProductIndex(
   selectedProducts: SelectedProduct[],
@@ -80,31 +80,56 @@ export function getInitialSelectedProducts(
   return selectedProducts
 }
 
-export function getPostSubscriptionRequest(
-  accountId: number,
-  userEmail: string | undefined,
-  collaborators: Contact[],
-  clients: ClientContact[] | undefined,
-  currentSubscriptionOffer: SubscriptionOfferServices | undefined,
-  selectedProducts: SelectedProduct[],
-  notes: Note[],
-): PostSubscriptionRequest | undefined {
+interface GetPostSubscriptionRequestParams {
+  accountId: number
+  userEmail: string | undefined
+  collaboratorsWithRoles: ContactWithRoles[]
+  clients: ClientContact[] | undefined
+  currentSubscriptionOffer: SubscriptionOfferServices | undefined
+  selectedProducts: SelectedProduct[]
+  notes: Note[]
+}
+
+export function getFormattedContactFunctions(collaboratorsWithRoles: ContactWithRoles[]) {
+  return collaboratorsWithRoles
+    .flatMap(({ contactId, roleIds }) => roleIds
+      .map<ContactFunction>((functionId) => ({
+        contactId,
+        functionId,
+      })))
+}
+
+export function getPostSubscriptionRequest({
+  accountId,
+  userEmail,
+  collaboratorsWithRoles,
+  clients,
+  currentSubscriptionOffer,
+  selectedProducts,
+  notes,
+}: GetPostSubscriptionRequestParams): PostSubscriptionRequest | undefined {
   if (currentSubscriptionOffer === undefined) {
     return
   }
-  const { offerId } = currentSubscriptionOffer
+  const { offerId, functions: collaboratorRoles } = currentSubscriptionOffer
   const productConfigurations = selectedProducts.map(
     ({ productConfigurationId }) => productConfigurationId,
   )
-  const collaboratorsIds = collaborators.map(({ id }) => id)
   const clientsIds = clients?.map(({ contactId }) => contactId) ?? []
-  const contacts = [...clientsIds, ...collaboratorsIds]
+  const ids = collaboratorsWithRoles.map(({ contactId }) => contactId)
+  const contacts = [...clientsIds, ...ids]
+
+  const hasCollaboratorRoles = collaboratorRoles?.length > 0
+  const contactFunctions = hasCollaboratorRoles
+    ? getFormattedContactFunctions(collaboratorsWithRoles)
+    : undefined
 
   return {
     accountId,
     offerId,
     productConfigurations,
     contacts,
+    contactFunctions,
     applicant: userEmail ?? '',
     notes,
   }

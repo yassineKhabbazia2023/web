@@ -5,6 +5,7 @@ import { getInitials } from '@entities/helper'
 import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks'
 import { userActions } from './types'
 import { nextTick } from 'vue'
+import { ContactType } from '@pulse/common/enums'
 
 import TableData from './'
 
@@ -38,7 +39,7 @@ const createWrapper = (): VueWrapper<any> =>
         isSignatory: false,
         isOwner: false,
         isLoggedUser: false,
-        type: 'Customer',
+        type: ContactType.CUSTOMER,
         status: 'Declared',
         globalContactId: '1bb50d07-f5de-424d-88be-75a5d4b570ed',
         ...rest,

@@ -75,7 +75,7 @@ import { updateCollaborator, fetchContactRoles } from '@entities/services/wallet
 import type { AuthorizationState } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
 import { updateUserPermissions } from '@entities/services/authorization'
 import { getPermissionCodes } from '@entities/common/components/ManageRightsDrawer/utils'
-import { ContactType } from '@entities/services/contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 import {
   CollabRightsDrawerSteps,
   type Role,
@@ -203,7 +203,7 @@ const handleUpdateRole = async () => {
 
 onMounted(async () => {
   try {
-    roles.value = await fetchContactRoles(ContactType.Collaborator)
+    roles.value = await fetchContactRoles(ContactType.COLLABORATOR)
     selectedRoleId.value = roles.value.find(
       (role) => role.name === props.rowData.role,
     )?.id

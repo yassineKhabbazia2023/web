@@ -1,7 +1,8 @@
 import type { UserInfo, Persona } from '@pulse/common/types'
 import type { Contact } from '@entities/services/contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 
-export const getMockedUser = (): UserInfo => {
+export const getMockedUser = (override: Partial<UserInfo> = {}): UserInfo => {
   const user: UserInfo = {
     id: 123,
     firstName: 'John',
@@ -17,7 +18,10 @@ export const getMockedUser = (): UserInfo => {
     },
   }
 
-  return user
+  return {
+    ...user,
+    ...override,
+  }
 }
 
 export const mockUser: Contact = {
@@ -27,7 +31,7 @@ export const mockUser: Contact = {
   email: 'email330@example.com',
   landPhone: '123-456-7890',
   mobilePhone: '987-654-3210',
-  type: 'Customer',
+  type: ContactType.CUSTOMER,
   office: 'Chalon sur Saône',
   persona: {
     id: 21,

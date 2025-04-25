@@ -47,16 +47,7 @@ const offersBookTestLink = 'offers-book-test-link'
 const mockedAccount = getMockedAccount()
 const mockedPatchOperations = getMockedPatchOperations()
 const mockedCollaborators = getMockedCollaborators()
-
-const expectedDefaultAuthenticatedUser = {
-  id: currentUser.id,
-  firstName: currentUser.firstName,
-  lastName: currentUser.lastName,
-  email: currentUser.email,
-  mobilePhone: currentUser.officeMobile,
-  oldId: currentUser.oldId,
-  persona: currentUser.persona,
-}
+const mockedCollaboratorIds = mockedCollaborators.map(({ id }) => id)
 
 function getMockedSanitized(url: string) {
   return `sanitized-${url}`
@@ -264,6 +255,7 @@ describe('offersDrawer', () => {
         offerId: 1,
         notes,
         productConfigurations: [1, 2, 3, 4],
+        contactFunctions: [],
       }
       const expectedArgumentWithoutValidation: PostSubscriptionRequest = {
         accountId,
@@ -433,7 +425,7 @@ describe('offersDrawer', () => {
         for (let i = 0; i < STEP_TO_REACH; i++) {
           if (i === STEP_TO_REACH - 1) {
             const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
-            manageCollaboratorsComponent.vm.$emit('update:collaborators', mockedCollaborators)
+            manageCollaboratorsComponent.vm.$emit('update:selectedCollaboratorsWithRoles', mockedCollaboratorIds)
           }
           nextPreviousButtons.vm.$emit('click-next')
           await nextTick()
@@ -558,7 +550,7 @@ describe('offersDrawer', () => {
       await asyncEmit(nextPreviousButtons, 'click-next')
 
       const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
-      manageCollaboratorsComponent.vm.$emit('update:collaborators', mockedCollaborators)
+      manageCollaboratorsComponent.vm.$emit('update:selectedCollaboratorsWithRoles', mockedCollaboratorIds)
 
       await asyncEmit(nextPreviousButtons, 'click-next')
       const informationStep = wrapper.find('[data-testid=information-step]')
@@ -583,12 +575,23 @@ describe('offersDrawer', () => {
       await nextTick()
       const secondOffer = findSecondOffer(wrapper)
       await secondOffer.trigger('click')
+      const expectedCollaboratorIds = [{
+        contactId: currentUser.id,
+        roleIds: [],
+      }]
 
-      expect(manageCollaboratorsComponent.props('collaborators')).toStrictEqual([expectedDefaultAuthenticatedUser])
+      expect(manageCollaboratorsComponent.props('selectedCollaboratorsWithRoles')).toStrictEqual(expectedCollaboratorIds)
     })
     it('should render the Manage Collaborators form with the default collaborator set to the authenticated user', async () => {
+      const expectedCollaboratorRoles = subscriptionOffersServices.at(0)!.functions
+
       const wrapper = await getWrapper(true)
       const firstOffer = findFirstOffer(wrapper)
+      const expectedCollaboratorIds = [{
+        contactId: currentUser.id,
+        roleIds: [],
+      }]
+
       await firstOffer.trigger('click')
       await flushPromises()
 
@@ -603,8 +606,9 @@ describe('offersDrawer', () => {
 
       const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
 
-      expect(manageCollaboratorsComponent.props('collaborators')).toHaveLength(1)
-      expect(manageCollaboratorsComponent.props('collaborators')).toStrictEqual([expectedDefaultAuthenticatedUser])
+      expect(manageCollaboratorsComponent.props('selectedCollaboratorsWithRoles')).toHaveLength(1)
+      expect(manageCollaboratorsComponent.props('selectedCollaboratorsWithRoles')).toStrictEqual(expectedCollaboratorIds)
+      expect(manageCollaboratorsComponent.props('collaboratorRoles')).toStrictEqual(expectedCollaboratorRoles)
     })
     it('should disable the next button when no collaborator is selected', async () => {
       const wrapper = await getWrapper(true)
@@ -622,7 +626,7 @@ describe('offersDrawer', () => {
       await asyncEmit(nextPreviousButtons, 'click-next')
 
       const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
-      manageCollaboratorsComponent.vm.$emit('update:collaborators', [])
+      manageCollaboratorsComponent.vm.$emit('update:selectedCollaboratorsWithRoles', [])
       await nextTick()
 
       expect(nextPreviousButtons.props('isNextButtonDisabled')).toBeTruthy()

@@ -5,6 +5,7 @@ import type { Entity, QueryResult } from '@pulse/common/types'
 import { API_PREFIXES } from '@entities/common/config/services'
 import type { PatchOperation } from '@entities/services/PatchRecordService'
 import type { AccountRow, ReferentialStructure, Hub, Office } from './accountTypes'
+import { ContactType } from '@pulse/common/enums'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/currentuser`
@@ -163,7 +164,7 @@ export async function getAccountUserByEmail(email: string): Promise<Contact | nu
     {
       params: {
         email,
-        type: 'Customer',
+        type: ContactType.CUSTOMER,
       },
     })
   return status === 204 ? null : data.items[0]

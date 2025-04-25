@@ -6,7 +6,7 @@ import { mockedAccount, mockedAccountType } from '@entities/__mocks__/account.mo
 import { expect, beforeEach, describe, it, vi } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import * as authorizationServices from '@entities/services/authorization'
-import { ContactType } from '@entities/services/contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 import AccountRightsDrawer from '.'
 
 // Mocks
@@ -76,7 +76,7 @@ describe('accountRightsDrawer', () => {
       expect(spyAuthServices).toHaveBeenCalledOnce()
       expect(spyAuthServices).toHaveBeenCalledWith(
         mockedAccount.accountId,
-        ContactType.Customer,
+        ContactType.CUSTOMER,
         ['CLUSER001', 'CLUSER002', 'COADMI001'],
       )
     })
@@ -98,7 +98,7 @@ describe('accountRightsDrawer', () => {
       expect(spyAuthServices).toHaveBeenCalledOnce()
       expect(spyAuthServices).toHaveBeenCalledWith(
         mockedAccount.accountId,
-        ContactType.Collaborator,
+        ContactType.COLLABORATOR,
         ['CLUSER001', 'CLUSER002', 'COADMI001'],
       )
     })

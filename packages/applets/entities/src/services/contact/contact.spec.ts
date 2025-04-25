@@ -15,6 +15,7 @@ import {
   patchOperationStatus,
   fetchAccountOperations,
 } from '.'
+import { ContactType } from '@pulse/common/enums'
 
 // Mocks
 const mockedAccountId = 125
@@ -56,7 +57,7 @@ describe('contact', () => {
 
       expect(mocks.get).toHaveBeenCalledWith(
         'contact/api/contacts',
-        { params: { Type: 'Collaborator', search: null, pageSize: undefined } },
+        { params: { Type: ContactType.COLLABORATOR, search: null, pageSize: undefined } },
       )
     })
   })

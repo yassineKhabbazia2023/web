@@ -1,8 +1,8 @@
-import { ContactType } from '@entities/services/contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 import type { Contact, contactsRequest } from '@entities/common/types'
 
 export const mockedContactId = 25
-export const mockedContactType = ContactType.Collaborator
+export const mockedContactType = ContactType.COLLABORATOR
 
 export const getMockedCustomersCollab = () => {
   return [
@@ -39,7 +39,7 @@ export const generateContactsMock = (
     firstName: 'firstName',
     lastName: 'lastName',
     email: 'email@testemail.com',
-    type: 'Customer',
+    type: ContactType.CUSTOMER,
     status: 'Declared',
     personaName: 'Customer',
     creationDate: '2024-03-07',

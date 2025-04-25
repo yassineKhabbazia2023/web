@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { formatItemsFromApi } from './UsersClientHelper'
 import { generateContactsMock } from '@entities/__mocks__/contact.mocks.ts'
 import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+import { ContactType } from '@pulse/common/enums'
 
 const expectedItems = [{
   contactId: 1,
@@ -16,7 +17,7 @@ const expectedItems = [{
   isSignatory: false,
   lastName: 'lastname',
   personaName: 'Customer',
-  type: 'Customer',
+  type: ContactType.CUSTOMER,
   status: 'Declared',
 }, {
   globalContactId: '1bb50d07-f5de-424d-88be-75a5d4b570ed',
@@ -31,7 +32,7 @@ const expectedItems = [{
   isSignatory: true,
   lastName: 'lastname',
   personaName: 'Customer',
-  type: 'Customer',
+  type: ContactType.CUSTOMER,
   status: 'Declared',
 }, {
   globalContactId: '1bb50d07-f5de-424d-88be-75a5d4b570ed',
@@ -46,7 +47,7 @@ const expectedItems = [{
   isSignatory: false,
   lastName: 'lastname',
   personaName: 'Customer',
-  type: 'Customer',
+  type: ContactType.CUSTOMER,
   status: 'Declared',
 }]
 

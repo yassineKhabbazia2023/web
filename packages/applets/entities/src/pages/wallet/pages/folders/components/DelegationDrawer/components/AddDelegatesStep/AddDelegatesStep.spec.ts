@@ -2,7 +2,6 @@ import { vi, describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { createI18n } from 'vue-i18n'
-import { PAlert, PUserAction } from '@pulse/styleguide/components'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
 import AddDelegatesStep from '.'
 import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
@@ -41,7 +40,7 @@ const findCollaboratorSearchAutocomplete = (wrapper: VueWrapper) =>
   wrapper.findComponent(CollaboratorsSearchAutocomplete)
 
 const findUserAction = (wrapper: VueWrapper) =>
-  wrapper.findComponent(PUserAction)
+  wrapper.findComponent({ name: 'PUserAction' })
 
 let wrapper = createWrapper()
 let collaboratorsSearchAutocompleteWrapper =
@@ -55,7 +54,7 @@ describe('addDelegatesStep', () => {
 
   describe('props', () => {
     it('should correctly pass the number of folders in portfolio', () => {
-      const alertWrapper = wrapper.findComponent(PAlert)
+      const alertWrapper = wrapper.findComponent({ name: 'PAlert' })
       // 5 comes from the base props
       expect(alertWrapper.html()).toContain('5')
     })

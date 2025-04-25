@@ -8,6 +8,7 @@ import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
 import { API_PREFIXES } from '@entities/common/config/services'
 import { handleRequestError } from '@entities/helper/helper'
 import type { Contact } from '../contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 
 export const getAllOffers = async (): Promise<SubscriptionOffer[]> => {
   try {
@@ -60,7 +61,7 @@ export const fetchCollaborators = async (
       `${API_PREFIXES.OFFER}/contacts`,
       {
         params: {
-          Type: 'Collaborator',
+          Type: ContactType.COLLABORATOR,
           search,
           pageSize,
         },

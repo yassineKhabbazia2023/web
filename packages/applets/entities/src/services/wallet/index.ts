@@ -8,6 +8,7 @@ import type { Contact } from '../contact/contactTypes'
 import type { Contact as userContact } from '@entities/common/types'
 import type { Role } from '@entities/pages/wallet/pages/collaborators/components/CollabRightsDrawer/CollabRightsDrawerTypes'
 import { EntitiesStatistics } from './serviceWalletTypes'
+import { ContactType } from '@pulse/common/enums'
 
 const defaultValue = { items: [], currentPage: 1, totalPages: 1, totalItems: 0 }
 export interface GenericPageResponse<T> {
@@ -108,7 +109,7 @@ export const getCollaborators = async (
       `${API_PREFIXES.WALLET}/contacts`,
       {
         params: {
-          type: 'Collaborator',
+          type: ContactType.COLLABORATOR,
           pageNumber,
           pageSize,
           email,

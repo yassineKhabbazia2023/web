@@ -31,12 +31,18 @@ export interface SubscriptionOffer {
   logoName: PImageProps['pName']
 }
 
+export interface CollaboratorRole {
+  functionId: number
+  functionName: string
+}
+
 export interface SubscriptionOfferServices extends SubscriptionOffer {
   offerDescription?: string
   offersBookLink?: string
   approvalRequired?: boolean
   intranetLink?: string
   providers: SubscriptionOfferProvider[]
+  functions: CollaboratorRole[]
 }
 
 export interface SubscriptionOffersProps {

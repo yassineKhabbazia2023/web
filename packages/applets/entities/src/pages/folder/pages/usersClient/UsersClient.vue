@@ -122,6 +122,7 @@ import type { ClientContact } from '@entities/pages/entities/components/Principa
 import { fetchAccountContacts, fetchCustomers } from '@entities/services/wallet'
 import { storeToRefs } from 'pinia'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { ContactType } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -199,7 +200,7 @@ async function fetchUsers() {
   state.isLoading = true
 
   try {
-    const type = props.entityId ? 'Customer' : undefined
+    const type = props.entityId ? ContactType.CUSTOMER : undefined
     const queryParams = getQueryParams(type)
     const queryParamsWithoutUndefined = removeFalsyValues(queryParams)
     const searchParams = new URLSearchParams(queryParamsWithoutUndefined)

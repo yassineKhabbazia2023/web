@@ -1,10 +1,6 @@
 import type { Persona } from '@pulse/common/types'
 import type { Operation } from '@entities/common/types/OperationTypes'
-
-export enum ContactType {
-  Collaborator = 'Collaborator',
-  Customer = 'Customer'
-}
+import { ContactType } from '@pulse/common/enums'
 
 export interface Contact {
   id: number
@@ -13,7 +9,7 @@ export interface Contact {
   email: string
   landPhone?: string
   mobilePhone: string
-  type?: 'Collaborator' | 'Customer'
+  type?: ContactType
   office?: string
   persona?: Persona
   createdAt?: string

@@ -52,9 +52,15 @@ describe('subscriptionService', () => {
   })
   describe('createSubscriptionRequest', () => {
     it('should call subscription.post()', async () => {
+      const expectedUrl = 'offer/api/subscription'
+      const expectedParams = [
+        expectedUrl,
+        subscriptionDemandMock,
+      ]
       await createSubscriptionRequest(subscriptionDemandMock)
 
       expect(subscriptionPostMock).toHaveBeenCalledOnce()
+      expect(subscriptionPostMock).toHaveBeenCalledWith(...expectedParams)
     })
   })
 })

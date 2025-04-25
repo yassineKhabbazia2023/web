@@ -42,14 +42,14 @@
           v-if="activeTab === 'clientPermissions'"
           v-model="authorizationsState"
           :accountId="selectedAccount.accountId"
-          :contactType="ContactType.Customer"
+          :contactType="ContactType.CUSTOMER"
           isAccountRights
         />
         <RightsList
           v-if="activeTab === 'collabPermissions'"
           v-model="authorizationsState"
           :accountId="selectedAccount.accountId"
-          :contactType="ContactType.Collaborator"
+          :contactType="ContactType.COLLABORATOR"
           isAccountRights
         />
       </template>
@@ -86,7 +86,7 @@ import type {
   AuthorizationState,
 } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
 import type { AccountRightsDrawerProps, PermissionTypeTab } from './AccountRightsDrawerTypes'
-import { ContactType } from '@entities/services/contact/contactTypes'
+import { ContactType } from '@pulse/common/enums'
 import { updateAccountPermissions } from '@entities/services/authorization'
 import { getPermissionCodes } from '@entities/common/components/ManageRightsDrawer/utils'
 import RightsList from '@entities/common/components/ManageRightsDrawer/components/RightsList'
@@ -119,7 +119,7 @@ const permissionTypesTabs: PermissionTypeTab[] = [
 ]
 
 const contactAccountType = computed(() =>
-  activeTab.value === 'collabPermissions' ? ContactType.Collaborator : ContactType.Customer,
+  activeTab.value === 'collabPermissions' ? ContactType.COLLABORATOR : ContactType.CUSTOMER,
 )
 const isAccountRightsDrawerVisible = computed({
   get() {
@@ -150,7 +150,7 @@ const handleUpdateAccountPermissions = async () => {
     PNotification({
       message: t('rightsModificationSucceeded', {
         accountName: props.selectedAccount.name,
-        contactType: contactAccountType.value === ContactType.Collaborator ? t('collaborators') : t('clients'),
+        contactType: contactAccountType.value === ContactType.COLLABORATOR ? t('collaborators') : t('clients'),
       }),
       iconName: 'check',
       showClose: true,
