@@ -160,7 +160,7 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
             pageSize: [Number],
             showAccountName: [Boolean],
             showPagination: [Boolean],
-            trackingLocalisation: [TrackingLocalisation],
+            trackingLocalisation: [String],
           },
           methods: {
             resetOpenedAccordions: () => {},

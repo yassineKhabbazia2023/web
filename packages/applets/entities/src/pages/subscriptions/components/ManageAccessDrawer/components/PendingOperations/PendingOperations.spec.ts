@@ -64,13 +64,13 @@ describe('pendingOperationsTable Component - Displays pending operations with ap
     }, {
       showAccountName: true,
     }]
-    it.each(tests)('should display properly when showAccountName equals $showAccountName', ({
+    it.each(tests)('should display properly when showAccountName equals $showAccountName', async ({
       showAccountName,
     }) => {
       const wrapper = createWrapper({ showAccountName })
 
       const snapFilepath = `__snap__/PendingOperations.showAccountName.${showAccountName ? 'true' : 'false'}.html`
-      expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
+      await expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
     })
 
     it("should emit the 'update:modelValue' event when the v-model is updated", async () => {

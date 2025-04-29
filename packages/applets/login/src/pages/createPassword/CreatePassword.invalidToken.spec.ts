@@ -2,12 +2,14 @@ import { flushPromises } from '@vue/test-utils'
 import { getMockedRouter, getWrapper } from '@login/__mocks__/component.wrapper'
 import { LoginRouteName } from '@pulse/common/constants'
 import { loggerMock } from '@pulse/core/mocks'
-import { getStoreMock } from '@pulse/common/mocks'
+import { cguServiceMock, getStoreMock } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
 
 import CreatePassword from './'
 
 getStoreMock(useUserStore)
+
+vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
 
 vi.mock('@pulse/core', () => ({
   logger: loggerMock,

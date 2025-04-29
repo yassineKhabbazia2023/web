@@ -46,7 +46,7 @@ describe('test PAccordion', () => {
     ...testsWithoutHeader,
   ]
 
-  it.each(tests)('should return proper html when pIsOpen equals $pIsOpen and pHasHeader equals $pHasHeader', ({
+  it.each(tests)('should return proper html when pIsOpen equals $pIsOpen and pHasHeader equals $pHasHeader', async ({
     pIsOpen,
     pHasHeader,
     pHeaderCssClass,
@@ -58,7 +58,7 @@ describe('test PAccordion', () => {
     })
 
     const snapFilepath = `__snap__/PAccordion.pIsOpen.${pIsOpen ? 'true' : 'false'}.pHasHeader.${pHasHeader ? 'true' : 'false'}.${pHeaderCssClass ?? ''}.html`
-    expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
+    await expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
   })
 
   it.each(testsWithHeader)('should emit properly when click on header and pIsOpen equals $pIsOpen', ({

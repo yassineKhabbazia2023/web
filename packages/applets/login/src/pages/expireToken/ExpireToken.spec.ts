@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
+import { loggerMock } from '@pulse/core/mocks'
+
 import ExpireToken from './ExpireToken.vue'
 
 const mockRouterPush = vi.hoisted(() => vi.fn())
@@ -11,6 +13,8 @@ vi.mock('vue-router', () => ({
   }),
   useRoute: mockUseRoute,
 }))
+
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 const createWrapper = () => mount(ExpireToken)
 

@@ -70,7 +70,7 @@ describe('confirmActionModal Component - Displays pending operations with approv
       await nextTick()
 
       const snapFilepath = `__snap__/ConfirmatActionModal.${isRefused ? 'refused' : 'accepted'}.html`
-      expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
+      await expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
     })
     it('should present the accurate note if the modal is in a state of refusal', async () => {
       const wrapper = createWrapper({

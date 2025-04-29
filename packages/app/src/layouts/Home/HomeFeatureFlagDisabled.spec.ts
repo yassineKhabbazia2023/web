@@ -6,7 +6,7 @@ import { entitiesServiceMock } from '@app/__mocks__/entities.service.mocks'
 import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import { fetchUnreadNotificationsCountMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 import { routerMock } from '@app/__mocks__/router.mocks'
-import { getMockedUserInfo } from '@pulse/common/mocks'
+import { CurrentUserManagerMock, getMockedUserInfo } from '@pulse/common/mocks'
 import { nextTick } from 'vue'
 
 import Home from '.'
@@ -31,6 +31,10 @@ vi.mock('@app/schedule/services', () => scheduleServicesMock)
 vi.mock('@app/services/entities', () => entitiesServiceMock)
 vi.mock('@app/plugins/ProductFruits/productFruits.plugin')
 vi.mock('@app/plugins/Hubspot/hubspot.plugin')
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
+}))
 
 vi.mock('@pulse/core', () => ({
   logger: loggerMock,

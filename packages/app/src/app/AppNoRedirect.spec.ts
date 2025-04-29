@@ -100,6 +100,7 @@ const createWrapper = () =>
         PConfigProvider: { template: '<div><slot /></div>' },
         PopupRenewToken: true,
         LoginLayout: true,
+        'router-view': true,
       },
     },
   })

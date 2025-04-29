@@ -86,11 +86,12 @@ describe('manageAccessDrawer Component - Drawer containing a table of pending op
     }, {
       showAccountName: true,
     }]
-    it.each(tests)('should display properly when showAccountName equals $showAccountName', ({
+    it.each(tests)('should display properly when showAccountName equals $showAccountName', async ({
       showAccountName,
     }) => {
       const snapFilepath = `__snap__/manageAccessDrawer.showAccountName.${showAccountName ? 'true' : 'false'}.html`
-      expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
+
+      await expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
     })
   })
   describe('events', () => {

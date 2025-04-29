@@ -80,6 +80,7 @@ const createWrapper = () =>
         Suspense: { template: '<div><slot /></div>' },
         PConfigProvider: { template: '<div><slot /></div>' },
         PopupRenewToken: true,
+        'router-view': true,
       },
     },
   })

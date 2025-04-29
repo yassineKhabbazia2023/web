@@ -27,11 +27,11 @@ describe('test PStrength', () => {
     3,
     4,
   ]
-  it.each(tests)('should display properly', (modelValue) => {
+  it.each(tests)('should display properly', async (modelValue) => {
     const wrapper = createWrapper({
       modelValue,
     })
 
-    expect(wrapper.html()).toMatchFileSnapshot(`__snap__/PStrength.${modelValue}.snap`)
+    await expect(wrapper.html()).toMatchFileSnapshot(`__snap__/PStrength.${modelValue}.snap`)
   })
 })

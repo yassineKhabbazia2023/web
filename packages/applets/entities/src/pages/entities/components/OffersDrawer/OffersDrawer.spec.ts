@@ -101,6 +101,8 @@ vi.mock('./OffersDrawerUtils', async () => {
   return OffersDrawerUtils
 })
 
+vi.mock('@entities/common/utils/helpers')
+
 const accountNumber = 'account-number'
 const accountId = 5
 

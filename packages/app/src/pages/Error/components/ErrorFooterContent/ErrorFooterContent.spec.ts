@@ -11,7 +11,7 @@ describe('test ErrorFooter', () => {
   }, {
     isCollab: true,
   }]
-  it.each(tests)('should display proper Html', ({
+  it.each(tests)('should display proper Html', async ({
     isCollab,
   }) => {
     userStoreMock.isCollab = isCollab
@@ -19,6 +19,6 @@ describe('test ErrorFooter', () => {
     const wrapper = shallowMount(ErrorFooterContent)
     const snapPath = `__snaps__/wrapper.${isCollab ? 'collab' : 'client'}.snap`
 
-    expect(wrapper.html()).toMatchFileSnapshot(snapPath)
+    await expect(wrapper.html()).toMatchFileSnapshot(snapPath)
   })
 })
