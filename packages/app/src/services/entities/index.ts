@@ -1,11 +1,9 @@
 import { logger } from '@pulse/core'
 import { commonApi } from '@pulse/common'
-import { useFavoriteEntitiesStore } from '@pulse/common/stores'
-import type { Entity } from '@pulse/common/types'
+import type { Entity, QueryResult } from '@pulse/common/types'
 import { API_PREFIXES } from '../config'
-import { getRandomColor } from '@app/helper'
 
-export const fetchEntities = async (pageSize?: number): Promise<any> => {
+export const fetchEntities = async (pageSize?: number): Promise<QueryResult<Entity>> => {
   try {
     const response = await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/accounts/currentuser`, {
       params: {
@@ -16,9 +14,14 @@ export const fetchEntities = async (pageSize?: number): Promise<any> => {
     return response.data
   } catch (error) {
     logger.error('Error fetching entities :', error)
+    // return default result to avoid breaking the app
+    return {
+      items: [],
+      currentPage: 0,
+      totalPage: 0,
+      totalItems: 0,
+    }
   }
-
-  return []
 }
 
 export const fetchFavoriteEntities = async (): Promise<Entity[]> => {
@@ -27,21 +30,10 @@ export const fetchFavoriteEntities = async (): Promise<Entity[]> => {
       `${API_PREFIXES.WALLET}/favorites/currentuser`,
     )
 
-    if (response?.data?.length) {
-      const favoriteEntities = response.data.map(
-        (item: Entity) => ({
-          ...item,
-          color: getRandomColor(item.accountId),
-        }),
-      )
-      const favoriteEntitiesStore = useFavoriteEntitiesStore()
-      favoriteEntitiesStore.setFavoriteEntities(favoriteEntities) // TODO should leave this code in a service
-
-      return response.data
-    }
+    return response.data
   } catch (error) {
-    logger.error('Error fetching favorites entities :', error)
+    logger.error('Error fetching favorite entities:', error)
+    // return default result to avoid breaking the app
+    return []
   }
-
-  return []
 }

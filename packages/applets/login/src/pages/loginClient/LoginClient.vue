@@ -66,7 +66,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -76,7 +76,7 @@ import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/compo
 import useInitUserAuth from '@login/composable/useInitUserAuth'
 import useNavigation from '@login/composable/useNavigation'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { LoginRouteName, BackEndErrors } from '@pulse/common/constants'
+import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
 import { getEmailError, getPasswordError } from './LoginClient.utils'
 import { CurrentUserManager } from '@pulse/common/managers'
 
@@ -160,8 +160,6 @@ async function onSubmit() {
   isLoading.value = true
 
   try {
-    amplitudeService.setNewUserProperty('user_type', 'Client')
-
     // Authentication
     const payload = {
       email: email.value,
@@ -196,15 +194,10 @@ async function onSubmit() {
     // Get currentuser terms
     const { isCurrent, terms } = await getTermsByCurrentUser()
 
-    amplitudeService.track('Sign In Completed', {
-      sign_in_method: 'email',
-      sign_in_result: 'succeeded',
-    })
-
     if (isCurrent) {
       return navigateToCustomerWallet()
     }
-    router.push({ name: LoginRouteName.CGU_VALIDATION, params: { termsId: terms.termsId } })
+    router.push({ name: APP_ROUTES.login.cguValidation.name, params: { termsId: terms.termsId } })
   } catch (error: any) {
     isLoading.value = false
     const invalidLoginErrorCodes = [
@@ -225,10 +218,6 @@ async function onSubmit() {
     return false
   }
 }
-
-onMounted(() => {
-  amplitudeService.reset()
-})
 </script>
 
 <style lang="scss" scoped>

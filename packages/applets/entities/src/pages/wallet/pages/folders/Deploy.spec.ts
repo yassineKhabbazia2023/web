@@ -23,13 +23,11 @@ import { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 import type { Entity } from '@pulse/common/types'
-import { useFavoriteEntitiesStore, useUserStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 
 import Deploy from '.'
 
 const userStoreMock = getStoreMock(useUserStore)
-const favoriteEntitiesStoreMock = getStoreMock(useFavoriteEntitiesStore)
-
 const mockedAccount = getMockedAccount()
 
 vi.mock('@pulse/core', () => ({
@@ -212,8 +210,8 @@ describe('deploy', () => {
     createWrapper()
     await flushPromises()
 
-    expect(favoriteEntitiesStoreMock.setFavoriteEntities).toHaveBeenCalledOnce()
-    expect(favoriteEntitiesStoreMock.setFavoriteEntities).toHaveBeenNthCalledWith(1, expectedArguements)
+    expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledOnce()
+    expect(userStoreMock.setFavoriteEntities).toHaveBeenNthCalledWith(1, expectedArguements)
   })
 
   it('should display correct button by number of selected ibs', async () => {

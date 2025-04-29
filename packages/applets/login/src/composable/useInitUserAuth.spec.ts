@@ -9,7 +9,7 @@ const mockedMsalToken = 'msal-token'
 const msalGetTokenSpy = vi.hoisted(() => vi.fn(() => mockedMsalToken))
 
 vi.mock('@login/services/msal', () => ({
-  getToken: msalGetTokenSpy,
+  getMSALToken: msalGetTokenSpy,
 }))
 
 const userMock = {
@@ -48,7 +48,6 @@ describe('useInitUserAuth', () => {
 
   it('should init auth when the user is collab', async () => {
     // Setup
-    tokenStoreMock.token = mockToken
     const { initAuthCollab, isTokenRetrieve } = useInitUserAuth()
 
     // Act
@@ -57,7 +56,7 @@ describe('useInitUserAuth', () => {
     // Assert
     expect(msalGetTokenSpy).toHaveBeenCalledWith(/* nothing */)
     expect(isTokenRetrieve.value).toBeTruthy()
-    expect(tokenStoreMock.setToken).toHaveBeenCalledWith(mockedMsalToken)
+    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith(mockedMsalToken)
     expect(userStoreMock.setUser).toHaveBeenCalledOnce()
   })
 
@@ -72,7 +71,7 @@ describe('useInitUserAuth', () => {
     // Assert
     expect(msalGetTokenSpy).toHaveBeenCalledWith(/* nothing */)
     expect(isTokenRetrieve.value).toBeFalsy()
-    expect(tokenStoreMock.setToken).not.toHaveBeenCalled()
+    expect(tokenStoreMock.setTokenExpiration).not.toHaveBeenCalled()
     expect(userStoreMock.setUser).not.toHaveBeenCalled()
   })
 
@@ -87,14 +86,13 @@ describe('useInitUserAuth', () => {
     // Assert
     expect(msalGetTokenSpy).not.toHaveBeenCalled()
     expect(isTokenRetrieve.value).toBeTruthy()
-    expect(tokenStoreMock.setToken).toHaveBeenCalledWith(mockToken)
+    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith(mockToken)
     expect(userStoreMock.setUser).toHaveBeenCalledOnce()
     expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock)
   })
 
   it('should not update state if the token is not present', async () => {
     // Setup
-    tokenStoreMock.token = ''
     const { initAuthClient, isTokenRetrieve } = useInitUserAuth()
 
     // Act
@@ -107,7 +105,6 @@ describe('useInitUserAuth', () => {
 
   it('should not set gigyaUserId given that the token is not available', () => {
     // Setup
-    tokenStoreMock.token = ''
     const mockGigyaUserId = 'gigya-user-id'
 
     const { setStoreGigyaUserId } = useInitUserAuth()
@@ -121,7 +118,6 @@ describe('useInitUserAuth', () => {
 
   it('should set gigyaUserId given that the token is available', () => {
     // Setup
-    tokenStoreMock.token = mockToken
     const mockGigyaUserId = 'gigya-user-id'
 
     const { setStoreGigyaUserId } = useInitUserAuth()

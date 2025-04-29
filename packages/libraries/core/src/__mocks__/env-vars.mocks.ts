@@ -28,4 +28,5 @@ export const envVarsMock = {
   VITE_PRODUCT_FRUITS_KEY_CLIENT: 'pulse-product-fruits-key-client',
   VITE_PRODUCT_FRUITS_KEY: 'pulse-product-fruits-key',
   VITE_SCHEDULE_ACTIVATED: 'true',
+  VITE_LOGGER_LEVEL: '5',
 }

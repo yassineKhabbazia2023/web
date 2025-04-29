@@ -24,6 +24,7 @@ import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { logger } from '@pulse/core'
 import { commonApi } from '@pulse/common'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { PButton } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 
@@ -44,7 +45,7 @@ const resendLink = async () => {
     } else {
       await commonApi().gateway.post(`account/api/customers/invite/${contactId}`, null, { params: { accountNumber } })
     }
-    router.push({ path: '/resendEmailSuccess' })
+    router.push({ name: APP_ROUTES.login.resendEmailSuccess.name })
   } catch (error) {
     logger.error(error)
     PNotification({

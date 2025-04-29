@@ -6,6 +6,7 @@ import { getMockedSelectedEntity, getMockedUserPermissions, getStoreMock } from 
 import { useUserStore } from '../../stores/user/user.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
+import { LOCAL_STORAGE_TOKEN_KEY } from '../token/token.manager'
 
 import { CurrentUserManager } from './current-user.manager'
 
@@ -32,7 +33,7 @@ describe('test current-user.manager', () => {
     envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
   })
   describe('initializeCurrentUser', () => {
-    it('should intialize current user', async () => {
+    it('should initialize current user', async () => {
       const currentUserMock = getMockedUserInfo()
       fetchCurrentUserMock.mockResolvedValue(currentUserMock)
       await CurrentUserManager.initializeCurrentUser()
@@ -52,8 +53,8 @@ describe('test current-user.manager', () => {
     it('should process logout properly', async () => {
       await CurrentUserManager.logout()
 
-      expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
-      expect(tokenStoreMock.setToken).toHaveBeenNthCalledWith(1, '')
+      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.setTokenExpiration).toHaveBeenNthCalledWith(1, '')
 
       expect(userStoreMock.setUser).toHaveBeenCalledOnce()
       expect(userStoreMock.setUser).toHaveBeenNthCalledWith(1, undefined)
@@ -133,10 +134,10 @@ describe('test current-user.manager', () => {
       const token = '1234'
       CurrentUserManager.persistToken(token)
 
-      expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
-      expect(tokenStoreMock.setToken).toHaveBeenCalledWith(token)
+      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith(token)
 
-      const localToken = localStorage.getItem('token')
+      const localToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)
       expect(localToken).toStrictEqual(token)
     })
   })

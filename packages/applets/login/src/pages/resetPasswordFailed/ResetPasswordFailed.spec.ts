@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { LoginRouteName } from '@pulse/common/constants'
-import ResetPasswordFailed from '.'
+import { APP_ROUTES } from '@pulse/common/constants'
+import ResetPasswordFailed from './ResetPasswordFailed.vue'
 
 // Expectations
 const expectedPasswordChangeDenied = 'Password change denied'
@@ -38,7 +38,7 @@ describe('reset password failed', () => {
 
       await backToLoginBtn.trigger('click')
       expect(mockRouterPush).toHaveBeenCalledWith({
-        name: LoginRouteName.LOGIN_CLIENT,
+        name: APP_ROUTES.login.client.name,
       })
     })
   })

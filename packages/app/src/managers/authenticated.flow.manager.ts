@@ -1,0 +1,192 @@
+import { APP_ROUTES } from '@pulse/common/constants'
+import {
+  usePermissionsStore,
+  useUserStore,
+  useSelectedEntityStore,
+} from '@pulse/common/stores'
+import { amplitudeService } from '@pulse/common'
+import { fetchEntities, fetchFavoriteEntities } from '@app/services/entities'
+import { fetchUserPermissions } from '@pulse/common/services/permissions'
+import { fetchCurrentUser } from '@pulse/common/services/current-user'
+import {
+  initProductFruitsAuthenticatedCustomer,
+  initProductFruitsAuthenticatedCollab,
+  getProductFruitsUser,
+  stopProductFruits,
+} from '@app/plugins/ProductFruits/productFruits.plugin'
+import { logger } from '@pulse/core'
+import { SelectedEntityManager } from '@pulse/common/managers'
+import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
+import type { RouteLocationNamedRaw } from 'vue-router'
+
+export class AuthenticatedFlowManager {
+  static async enterAuthenticatedFlow() {
+    await this.initUser()
+    this.initAuthenticatedThirdParties()
+    await this.initEntities()
+  }
+
+  // #region setup
+  static async initUser() {
+    try {
+      // TODO passer par CurrentUserManager ? // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47387
+      const user = await fetchCurrentUser()
+      const userStore = useUserStore()
+      userStore.setUser(user)
+
+      const permissions = await fetchUserPermissions()
+      const permissionsStore = usePermissionsStore()
+      permissionsStore.setUserPermissions(permissions)
+
+    } catch (error) {
+      logger.error('unable to fetch user information nor its permissions', error)
+    }
+  }
+
+  static async initEntities() {
+    const userStore = useUserStore()
+    try {
+      const { items: entities } = await fetchEntities(2)
+
+      if (entities.length === 0) {
+        logger.warn('No entities found for the user.')
+        return
+      }
+
+      const isSingleEntity = entities.length === 1
+      userStore.setIsSingleEntity(isSingleEntity)
+
+      const selectedEntityStore = useSelectedEntityStore()
+      const storedEntity = SelectedEntityManager.getSelectedEntity()
+      selectedEntityStore.setSelectedEntity(storedEntity ?? entities[0])
+      SelectedEntityManager.persistSelectedEntity(storedEntity ?? entities[0])
+
+      const favoriteEntities = await fetchFavoriteEntities()
+      userStore.setFavoriteEntities(favoriteEntities)
+
+    } catch (error) {
+      logger.error('unable to fetch and set entities', error)
+    }
+  }
+
+  static initAuthenticatedThirdParties() {
+    const userStore = useUserStore()
+    const userId = userStore.getUserId()
+    const isCollab = userStore.isCollab
+    const user = userStore.getUser()
+
+    if (!user || !userId) {
+      logger.error('User is not defined or userId is not defined')
+      return
+    }
+
+    try {
+      const productFruitsUser = getProductFruitsUser(user)
+
+      if(isCollab) {
+        initProductFruitsAuthenticatedCollab(productFruitsUser)
+        amplitudeService.identifyCollaborator()
+      } else {
+        initProductFruitsAuthenticatedCustomer(productFruitsUser)
+        amplitudeService.identifyCustomer()
+      }
+      amplitudeService.setUserId(userId.toString())
+    } catch (error) {
+      logger.error('Anonymous - initAuthenticatedThirdParties - error: ', error)
+      // errors are silent, we don't want to throw and crash the app if third parties fail
+    }
+  }
+
+  static exitAuthenticatedFlow() {
+    try {
+      // we stop the ProductFruits plugin but we will start it again
+      // within the anonymous workspace
+      stopProductFruits()
+    } catch (error) {
+      logger.error('Authenticated - exitAuthenticatedFlow - error: ', error)
+      // errors are silent, we don't want to throw and crash the app if third parties fail
+    }
+  }
+  // #endregion
+
+  // #region redirections
+  static isNavigatingToAuthenticatedRoot(routeName: string) {
+    return routeName === APP_ROUTES.authenticated.name
+  }
+
+  static isNavigatingToCustomerWallet(routeName: string) {
+    const walletRoutes = [
+      APP_ROUTES.wallet.client.root.name,
+      APP_ROUTES.wallet.client.landing.name,
+    ]
+    return walletRoutes.includes(routeName)
+  }
+
+  static async getCGURedirection() {
+    const userStore = useUserStore()
+    const isCollab = userStore.isCollab
+
+    if (isCollab) {
+      return null
+    } else {
+      if (this.hasUserAcceptedCGUStored() === true) {
+        return null
+      }
+      // if it is set to false in the store it is better to refetch the information to make sure it is really up to date
+      const { isCurrent: hasUserAcceptedCgu, terms } = await getTermsByCurrentUser()
+      if(hasUserAcceptedCgu === false && terms) {
+        const cguRedirection = {
+          name: APP_ROUTES.login.cguValidation.name, // TODO déplacer cette route en dehors de login // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47375
+          params: {
+            termsId: terms.termsId,
+          },
+        }
+        return cguRedirection
+      } else if (hasUserAcceptedCgu === true) {
+        userStore.setHasAcceptedCGU(true)
+      }
+    }
+
+    return null
+  }
+
+  static hasUserAcceptedCGUStored() {
+    const userStore = useUserStore()
+    return userStore.getHasAcceptedCGU()
+  }
+  // #endregion redirections
+
+  // #region landing pages
+  static getLandingPage() {
+    const userStore = useUserStore()
+
+    if (userStore.isCollab) {
+      return this.getCollabLandingPage()
+    }
+
+    if (userStore.isCustomer) {
+      return this.getCustomerLandingPage()
+    }
+  }
+
+  static getCustomerLandingPage(){
+    const userStore = useUserStore()
+    const isSingleEntity = userStore.getIsSingleEntity()
+
+    if (isSingleEntity) {
+      const selectedEntityStore = useSelectedEntityStore()
+      const entityAccountId = selectedEntityStore.selectedEntity?.accountId
+      const entityLandingPage = { name: APP_ROUTES.wallet.client.folder.name, params: { id: entityAccountId } }
+
+      return entityLandingPage
+    }
+
+    const walletLandingPage = { name: APP_ROUTES.wallet.client.landing.name }
+    return walletLandingPage
+  }
+
+  static getCollabLandingPage(): RouteLocationNamedRaw {
+    return { name: APP_ROUTES.wallet.collab.landing.name }
+  }
+  // #endregion landing pages
+}

@@ -16,12 +16,12 @@ import {
 import { nextTick } from 'vue'
 import * as entitiesServices from '@app/services/entities'
 import { initProductFruits as initProductFruitsMock } from '@app/plugins/ProductFruits/productFruits.plugin'
-import { useSelectedEntityStore, useFavoriteEntitiesStore } from '@pulse/common/stores'
+import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 
 import Home from '.'
 
 const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
-getStoreMock(useFavoriteEntitiesStore)
+getStoreMock(useUserStore)
 
 declare let window: {
   embedded_svc: {

@@ -24,7 +24,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PSkewedButton } from '@pulse/styleguide/components'
-import { msalInstance, amplitudeService } from '@pulse/common'
+import { msalInstance } from '@pulse/common'
 import { logger } from '@pulse/core'
 import useInitAuth from '@login/composable/useInitUserAuth'
 import useNavigation from '@login/composable/useNavigation'
@@ -48,7 +48,6 @@ const handleLoginCollab = () => {
 onMounted(async () => {
   isLoading.value = true
   try {
-    amplitudeService.reset()
     await initAuthCollab()
 
     if (isTokenRetrieve.value) {

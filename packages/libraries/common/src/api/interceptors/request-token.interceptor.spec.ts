@@ -1,8 +1,5 @@
 import { requestTokenInterceptor } from './request-token.interceptor'
-import { useTokenStore } from '../../stores/token/token.store'
-import { getStoreMock } from '../../__mocks__/store.mocks'
-
-const tokenStoreMock = getStoreMock(useTokenStore)
+import { TokenManager } from '../../managers/token/token.manager'
 
 describe('requestTokenInterceptor', () => {
   beforeEach(() => {
@@ -11,9 +8,8 @@ describe('requestTokenInterceptor', () => {
 
   it('should add Authorization header when token exists', () => {
     const mockToken = 'test-token'
+    vi.spyOn(TokenManager, 'getToken').mockReturnValue(mockToken)
     const mockConfig = { headers: {} }
-
-    tokenStoreMock.token = mockToken
 
     const result = requestTokenInterceptor(mockConfig)
 
@@ -22,8 +18,6 @@ describe('requestTokenInterceptor', () => {
 
   it('should not add Authorization header when token does not exist', () => {
     const mockConfig = { headers: {} }
-
-    tokenStoreMock.token = ''
 
     const result = requestTokenInterceptor(mockConfig)
 

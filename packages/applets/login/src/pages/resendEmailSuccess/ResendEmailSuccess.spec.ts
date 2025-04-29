@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
-import ResendEmailSuccess from '.'
+import ResendEmailSuccess from './ResendEmailSuccess.vue'
 
 vi.mock('vue-router')
 

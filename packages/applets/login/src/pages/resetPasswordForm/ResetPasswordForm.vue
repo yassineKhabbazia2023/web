@@ -77,7 +77,7 @@ import { logger } from '@pulse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { createNewPassword, isInvitationTokenValid } from '@pulse/common'
-import { LoginRouteName, BackEndErrors } from '@pulse/common/constants'
+import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
 import {
   onBeforeMount,
   ref,
@@ -191,7 +191,7 @@ const submitForm = async () => {
   try {
     isLoading.value = true
     await createNewPassword(data)
-    router.push({ name: LoginRouteName.LOGIN_CLIENT })
+    router.push({ name: APP_ROUTES.login.client.name })
   } catch (error: any) {
     logger.error(error)
     const { data } = error?.response ?? {}
@@ -222,7 +222,7 @@ const isValidToken = async () => {
 onBeforeMount(async () => {
   const isValid = await isValidToken()
   if (!isValid) {
-    router.push({ name: LoginRouteName.EXPIRE_TOKEN, query: { contactEmail } })
+    router.push({ name: APP_ROUTES.login.expireToken.name, query: { contactEmail } })
   }
 })
 defineExpose({ submitForm })

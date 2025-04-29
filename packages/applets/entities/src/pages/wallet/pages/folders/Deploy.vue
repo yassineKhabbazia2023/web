@@ -182,7 +182,7 @@ import { fetchAccountOperations } from '@entities/services/contact'
 import ManageAccessDrawer from '@entities/pages/subscriptions/components/ManageAccessDrawer'
 import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
-import { useFavoriteEntitiesStore, useUserStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -315,13 +315,13 @@ const paginationLabel = computed(() => getPaginationLabel(t('on'), {
 }))
 
 const putEntitiesInCommonFavorite = (data: Entity[] | undefined) => {
+  // map from updated store
   const entitiesInFavorite = data?.map((item: Entity) => ({
     ...item,
     color: 'persian',
   })) as Entity[]
 
-  const favoriteEntitiesStore = useFavoriteEntitiesStore()
-  favoriteEntitiesStore.setFavoriteEntities(entitiesInFavorite)
+  userStore.setFavoriteEntities(entitiesInFavorite)
 }
 
 async function fetchAccountList() {

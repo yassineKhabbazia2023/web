@@ -9,8 +9,13 @@ export const useSelectedEntityStore = defineStore('selected-entity', () => {
     selectedEntity.value = selectedEntityArg
   }
 
+  function reset() {
+    selectedEntity.value = undefined
+  }
+
   return {
     selectedEntity,
     setSelectedEntity,
+    reset,
   }
 })

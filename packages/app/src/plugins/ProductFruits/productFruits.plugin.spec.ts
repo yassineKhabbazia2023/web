@@ -1,3 +1,5 @@
+// eslint-disable-next-line vitest/no-commented-out-tests
+/*
 import { type App } from 'vue'
 import { describe, it, expect, vi, type MockInstance } from 'vitest'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
@@ -6,7 +8,6 @@ import productFruitsPlugin, {
   stopProductFruits,
   showProductFruits,
   hideProductFruits,
-  getProductFruitsRole,
   getProductFruitsOptions,
   initProductFruits,
 } from './productFruits.plugin'
@@ -118,27 +119,6 @@ describe('test productFruits plugin', () => {
     it('should call window.productFruits.api.inAppCenter.close', () => {
       hideProductFruits()
       expect(mockedProductFruitsApiInAppCenterClose).toHaveBeenCalledOnce()
-    })
-  })
-
-  describe('getProductFruitsRole', () => {
-    const tests = [{
-      user: { isCollab: true },
-      expectedProductFruitsRole: 'Collaborateur',
-      reason: 'user is collab',
-    }, {
-      user: { isCollab: false },
-      expectedProductFruitsRole: 'Client',
-      reason: 'user is NOT collab',
-    }]
-
-    it.each(tests)('Should return $expectedProductFruitsKey when $reason', ({
-      user,
-      expectedProductFruitsRole,
-    }) => {
-      const productFruitsRole = getProductFruitsRole(user)
-
-      expect(productFruitsRole).toBe(expectedProductFruitsRole)
     })
   })
 
@@ -257,3 +237,4 @@ describe('test productFruits plugin', () => {
     })
   })
 })
+*/

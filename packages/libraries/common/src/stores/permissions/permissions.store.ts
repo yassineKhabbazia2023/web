@@ -13,10 +13,16 @@ export const usePermissionsStore = defineStore('permissions', () => {
     selectedEntityPermissions.value = selectedEntityPermissionsArg
   }
 
+  function reset() {
+    userPermissions.value = []
+    selectedEntityPermissions.value = []
+  }
+
   return {
     userPermissions,
     selectedEntityPermissions,
     setUserPermissions,
     setSelectedEntityPermissions,
+    reset,
   }
 })

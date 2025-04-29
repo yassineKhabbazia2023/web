@@ -1,0 +1,114 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+  
+parameters:
+- name: subdirectory
+  displayName: "subdirectory"
+  type: string
+  default: root
+  values:
+    - root
+    - hades
+    - hermes
+    - orion
+    - transverse
+
+variables:
+  nodeVersion: '20.x'
+  buildOutputFolder: 'dist'
+  azureSubscription: 'Rydge-rec'
+  storageAccountName: 'sacegpulsefrontrec0101'
+  containerName: '$web'
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildAndTest
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '$(nodeVersion)'
+      displayName: 'Install Node.js'
+      
+    - task: Cache@2
+      inputs:
+        key: 'npm | "$(Agent.OS)" | package-lock.json'
+        restoreKeys: |
+          npm | "$(Agent.OS)"
+        path: $(Agent.HomeDirectory)/.npm
+      displayName: 'Cache npm packages'
+      
+    - script: npm ci --cache=$(Agent.HomeDirectory)/.npm
+      displayName: 'Install dependencies'
+      
+    - ${{ if ne(parameters.subdirectory, 'root') }}:
+      - script: |
+          npm run app:build -- --base='/${{ parameters.subdirectory }}/'
+        displayName: 'Build application with base'
+
+    - ${{ else }}:
+      - script: |
+          npm run app:build
+        displayName: 'Build application (root)'
+           
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: '$(buildOutputFolder)'
+        contents: '**'
+        targetFolder: '$(Build.ArtifactStagingDirectory)/${{ parameters.subdirectory }}'
+      displayName: 'Copy build output'
+      
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'drop'
+      displayName: 'Publish artifacts'
+
+- stage: Deploy
+  dependsOn: Build
+  condition: succeeded()
+  pool: Pulse-rec
+  jobs:
+  - deployment: DeployToStorage
+    workspace:
+      clean: all
+    environment: 'REC01'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+            
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: '$(azureSubscription)'
+              scriptType: 'pscore'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                # 1. Nettoyage du container ou sous-répertoire
+                if ('${{ parameters.subdirectory }}' -eq 'root') {
+                  # Nettoyage de tout le contenu du container $web
+                  Write-Host "Nettoyage du container $web..."
+                  az storage blob delete-batch --account-name $(storageAccountName) --auth-mode login --source '$(containerName)' --pattern "*" --delete-snapshots include
+                } else {
+                  # Nettoyage uniquement du sous-répertoire spécifié
+                  Write-Host "Nettoyage du sous-répertoire ${{ parameters.subdirectory }}..."
+                  az storage blob delete-batch --account-name $(storageAccountName) --auth-mode login --source '$(containerName)' --pattern "${{ parameters.subdirectory }}/*" --delete-snapshots include
+                }
+                
+                # 2. Déploiement des nouveaux fichiers
+                if ('${{ parameters.subdirectory }}' -eq 'root') {
+                  Write-Host "Copie des fichiers dans root..."
+                  az storage blob upload-batch --account-name $(storageAccountName) --auth-mode login --destination '$(containerName)' --source $(Pipeline.Workspace)/drop/${{ parameters.subdirectory }} --overwrite True
+                } else {
+                  Write-Host "Copie des fichiers dans le sous-répertoire ${{ parameters.subdirectory }}..."
+                  az storage blob upload-batch --account-name $(storageAccountName) --auth-mode login --destination '$(containerName)/${{ parameters.subdirectory }}' --source $(Pipeline.Workspace)/drop/${{ parameters.subdirectory }} --overwrite True
+                }
+            displayName: 'Deploy to Storage Account'

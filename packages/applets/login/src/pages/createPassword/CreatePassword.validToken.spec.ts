@@ -6,7 +6,7 @@ import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services
 import type { FormInstance } from 'element-plus'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
 
-import CreatePassword from './'
+import CreatePassword from './CreatePassword.vue'
 
 getStoreMock(useUserStore)
 const tokenStoreMock = getStoreMock(useTokenStore)
@@ -202,7 +202,7 @@ describe('page creation password', () => {
     expect(loginMock).toHaveBeenCalledOnce()
     expect(loginMock).toHaveBeenCalledWith(dataLogin)
 
-    expect(tokenStoreMock.setToken).toHaveBeenCalledWith(mockToken)
+    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith(mockToken)
     expect(navigateToCustomerWalletMock).toHaveBeenCalledOnce()
   })
 

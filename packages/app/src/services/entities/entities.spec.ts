@@ -4,11 +4,11 @@ import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import { API_PREFIXES } from '../config'
 import type { Entity } from '@pulse/common/types'
 import { getStoreMock } from '@pulse/common/mocks'
-import { useFavoriteEntitiesStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 
 import { fetchFavoriteEntities, fetchEntities } from '.'
 
-const favoriteEntitiesStoreMock = getStoreMock(useFavoriteEntitiesStore)
+const userStore = getStoreMock(useUserStore)
 
 let throwError = false
 const testEntities: Entity[] = getMockedFavoriteEntities()
@@ -91,8 +91,8 @@ describe('entities', () => {
       },
     ]
 
-    expect(favoriteEntitiesStoreMock.setFavoriteEntities).toHaveBeenCalledOnce()
-    expect(favoriteEntitiesStoreMock.setFavoriteEntities).toHaveBeenNthCalledWith(1, mappedFavoriteEntites)
+    expect(userStore.setFavoriteEntities).toHaveBeenCalledOnce()
+    expect(userStore.setFavoriteEntities).toHaveBeenNthCalledWith(1, mappedFavoriteEntites)
     expect(favoriteEntities).toStrictEqual(testEntities)
   })
 

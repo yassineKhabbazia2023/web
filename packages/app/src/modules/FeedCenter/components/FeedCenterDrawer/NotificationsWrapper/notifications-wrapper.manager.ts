@@ -99,7 +99,7 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
         accountNumber: foundEntity.accountNumber,
         legalName: foundEntity.legalName,
       }
-      await SelectedEntityManager.defineSelectedEntity(formattedEntityData)
+      await SelectedEntityManager.persistSelectedEntity(formattedEntityData)
     }
     // only pushing to GED if user has access to the folder
     router.push({

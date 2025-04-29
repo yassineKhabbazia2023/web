@@ -12,10 +12,10 @@ import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable
 import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import { flushPromises, mount } from '@vue/test-utils'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { LoginRouteName, BackEndErrors } from '@pulse/common/constants'
+import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
 import { useTokenStore } from '@pulse/common/stores'
 
-import Login from './'
+import LoginClient from './LoginClient.vue'
 
 const tokenStoreMock = getStoreMock(useTokenStore)
 
@@ -81,8 +81,8 @@ vi.mock('@login/composable/useInitUserAuth', () => ({
 
 vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
 
-const createWrapper = (): ComponentWrapper<InstanceType<typeof Login>> =>
-  mount(Login, {
+const createWrapper = (): ComponentWrapper<InstanceType<typeof LoginClient>> =>
+  mount(LoginClient, {
     global: {
       stubs: {
         'router-link': {
@@ -100,9 +100,8 @@ const getInputPassword = () => wrapper.find('[data-testid="login-input-password"
 const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const INPUT_PASSWORD_VALUE = 'customPassword'
 
-describe('login', () => {
+describe('LoginClient', () => {
   beforeEach(() => {
-    tokenStoreMock.token = 'abcdef-123456'
     loginMock.mockResolvedValue({
       userId: USER_ID,
       webToken: WEB_TOKEN,
@@ -154,7 +153,7 @@ describe('login', () => {
       sign_in_method: 'email',
       sign_in_result: 'succeeded',
     })
-    expect(tokenStoreMock.setToken).toHaveBeenNthCalledWith(1, WEB_TOKEN)
+    expect(tokenStoreMock.setTokenExpiration).toHaveBeenNthCalledWith(1, WEB_TOKEN)
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
   })
 
@@ -364,7 +363,7 @@ describe('login', () => {
     await flushPromises()
 
     expect(mockRouterPush).toHaveBeenCalledWith({
-      name: LoginRouteName.CGU_VALIDATION,
+      name: APP_ROUTES.login.cguValidation.name,
       params: { termsId: 123456 },
     })
   })

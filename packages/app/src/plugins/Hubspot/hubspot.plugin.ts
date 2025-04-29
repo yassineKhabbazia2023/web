@@ -1,4 +1,4 @@
-import { type App } from 'vue'
+import type { App } from 'vue'
 import { logger } from '@pulse/core'
 import type { InitHubspotParams, HubSpotState, InstallHubSpotParams } from './hubspot.plugin.types'
 
@@ -19,15 +19,17 @@ const hubSpotStatus: HubSpotState = {
 }
 export const openHubspot = () => {
   if (!hubSpotStatus.isInitialized) {
-    logger.error('hubSpot is not initialized')
+    logger.error('Hubspot Plugin - Hubspot is not initialized')
     return
   }
   window.HubSpotConversations.widget.load({ widgetOpen: true })
   window.HubSpotConversations.widget.open()
+  logger.trace('Hubspot Plugin - chat opened')
 }
 
 export const closeHubspot = () => {
   window.HubSpotConversations.widget.remove()
+  logger.trace('Hubspot Plugin - chat closed')
 }
 
 export function initHubspot({ onHubspotClose }: InitHubspotParams) {
@@ -35,14 +37,20 @@ export function initHubspot({ onHubspotClose }: InitHubspotParams) {
     return
   }
   if (!window.HubSpotConversations) {
-    logger.error('window.HubSpotConversations does not exist')
+    logger.error('Hubspot Plugin - window.HubSpotConversations does not exist')
     return
   }
+  if (hubSpotStatus.isInitialized) {
+    logger.warn('Hubspot is already initialized')
+    return
+  }
+
   window.HubSpotConversations.on('widgetClosed', () => {
     closeHubspot()
     onHubspotClose()
   })
   hubSpotStatus.isInitialized = true
+  logger.trace('Hubspot Plugin - initialized')
 }
 
 export default {

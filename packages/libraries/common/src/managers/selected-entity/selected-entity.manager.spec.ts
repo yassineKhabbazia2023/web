@@ -26,7 +26,7 @@ describe('test selected-entity.manager', () => {
         'selected-entity',
         JSON.stringify(entityMock),
       ]
-      await SelectedEntityManager.defineSelectedEntity(entityMock)
+      await SelectedEntityManager.persistSelectedEntity(entityMock)
 
       expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledOnce()
       expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledWith(entityMock)

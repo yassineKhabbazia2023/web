@@ -1,15 +1,15 @@
 import api from '../api'
-import { useTokenStore } from '../stores/token/token.store'
 import { API_PREFIXES } from '../constants/api-prefixes'
+import { CurrentUserManager } from '@pulse/common/managers'
 import type { CreateNewPasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
 
 export async function refreshClientToken(sub: string) {
-  const tokenStore = useTokenStore()
   const baseUrl = `${API_PREFIXES.AUTHENTICATION}/refreshToken?userId=${sub}`
 
   const { data: token } = await api().gateway.post(baseUrl)
 
-  tokenStore.setToken(token)
+  // TODO : Bouger cette action en dehors du service qui n'a pas à réaliser ce type d'opérations // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47385
+  CurrentUserManager.persistToken(token)
 }
 
 export async function createNewPassword(payload: CreateNewPasswordPayload) {

@@ -6,7 +6,7 @@ import {
 } from 'vue'
 import type { Ref, WritableComputedRef } from 'vue'
 import { logger } from '@pulse/core'
-import { useFavoriteEntitiesStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 import type { Entity } from '@pulse/common/types'
 import { type FeedCenterNotification, SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import { fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
@@ -18,7 +18,7 @@ export function useFeedCenterDrawer(
   isDrawerOpened: WritableComputedRef<FeedCenterDrawerProps['modelValue']>,
   unreadNotificationsCount: Ref<FeedCenterDrawerProps['unreadNotificationsCount']>,
 ) {
-  const favoriteEntitiesStore = useFavoriteEntitiesStore()
+  const userStore = useUserStore()
 
   const notifications = ref<FeedCenterNotification[]>([])
 
@@ -65,7 +65,7 @@ export function useFeedCenterDrawer(
   const isFavoriteFromLocalStorage = localStorage.getItem('favoriteEnabled')
   const isFavouritesFilterEnabled = ref(isFavoriteFromLocalStorage === 'true')
 
-  const favouritesEntitiyIds = computed(() => getIdsFromEntities(favoriteEntitiesStore.favoriteEntities))
+  const favouritesEntitiyIds = computed(() => getIdsFromEntities(userStore.favoriteEntities))
 
   watch(favouritesEntitiyIds, () => {
     // This is above any other possible rule

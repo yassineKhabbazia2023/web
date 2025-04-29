@@ -1,11 +1,11 @@
 import { flushPromises } from '@vue/test-utils'
 import { getMockedRouter, getWrapper } from '@login/__mocks__/component.wrapper'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { loggerMock } from '@pulse/core/mocks'
 import { cguServiceMock, getStoreMock } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
 
-import CreatePassword from './'
+import CreatePassword from './CreatePassword.vue'
 
 getStoreMock(useUserStore)
 
@@ -66,7 +66,7 @@ describe('page creation password', () => {
     await flushPromises()
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith({
-      name: LoginRouteName.EXPIRE_TOKEN,
+      name: APP_ROUTES.login.expireToken.name,
       query: { accountNumber: 'accountNumber', contactId: 'contactId' },
     })
   })

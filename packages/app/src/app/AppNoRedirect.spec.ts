@@ -198,8 +198,8 @@ describe('app with navigation guard', () => {
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     expect(callBack.value).toBeDefined()
-    expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
-    expect(tokenStoreMock.setToken).toHaveBeenCalledWith('')
+    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
+    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith('')
     expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenProps)
 
     popupRenewToken.vm.$emit('close')
@@ -220,8 +220,8 @@ describe('app with navigation guard', () => {
     await callBack.value?.()
 
     expect(callBack.value).toBeDefined()
-    expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
-    expect(tokenStoreMock.setToken).toHaveBeenCalledWith('')
+    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
+    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith('')
     expect(logoutAndRedirectToLoginMock).toHaveBeenCalledOnce()
   })
 
@@ -249,8 +249,8 @@ describe('app with navigation guard', () => {
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     expect(callBack.value).toBeDefined()
-    expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
-    expect(tokenStoreMock.setToken).toHaveBeenCalledWith('')
+    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
+    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith('')
     expect(logoutAndRedirectToLoginMock).not.toHaveBeenCalledOnce()
     expect(popupRenewToken.props()).toStrictEqual(expectedProps)
   })

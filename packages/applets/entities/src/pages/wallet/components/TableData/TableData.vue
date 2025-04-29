@@ -297,7 +297,7 @@ const handleRowSelectedChange = (row: any) => {
       accountNumber,
     }
 
-    SelectedEntityManager.defineSelectedEntity(selectedEntity)
+    SelectedEntityManager.persistSelectedEntity(selectedEntity)
   }
 }
 

@@ -55,31 +55,21 @@
 import { logger, FeatureFlagManager } from '@pulse/core'
 import { computed, ref, onMounted, onBeforeUnmount, watch, type Ref } from 'vue'
 import { useRouter } from 'vue-router'
-import {
-  VITE_PRODUCT_FRUITS_KEY,
-  VITE_PRODUCT_FRUITS_KEY_CLIENT,
-} from 'env-vars'
-import { dataProvider } from '@pulse/common'
+import { storeToRefs } from 'pinia'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import UserProfile from '@app/components/UserProfile'
 import HomeScheduleDrawer from '@app/components/HomeScheduleDrawer'
 import Header from './Header'
 import Sidebar from './Sidebar'
-import { fetchEntities, fetchFavoriteEntities } from '@app/services/entities'
-import { getDefaultEntity } from './Sidebar/components/SidebarEntity/utils'
 import FeedCenterDrawer from '@app/modules/FeedCenter/components/FeedCenterDrawer'
 import { fetchUnreadNotificationsCount } from '@app/modules/FeedCenter/services/notifications.service'
 import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
-import { initProductFruits, showProductFruits, stopProductFruits, hideProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
-import { initHubspot, openHubspot } from '@app/plugins/Hubspot/hubspot.plugin'
 import { trackFeedcenterOpened } from '@app/modules/FeedCenter/services/tracking/tracking.service'
-import { useFavoriteEntitiesStore } from '@pulse/common/stores'
-import { SelectedEntityManager } from '@pulse/common/managers'
+import { useUserStore } from '@pulse/common/stores'
 
 
 // Variables
 const router = useRouter()
-const { fetchUserData } = dataProvider()
 const isLoading = ref<boolean>(true)
 const calendarIsOpened = ref(false)
 const calendarHasBeenOpened = ref(false)
@@ -120,43 +110,11 @@ const stylesMetaProperties = computed(
   () => router.currentRoute.value.meta.styles,
 )
 
-const favoriteEntitiesStore = useFavoriteEntitiesStore()
+const userStore = useUserStore()
 
-function openChat() {
-  hideProductFruits()
-  openHubspot()
-}
 // Hooks
 onMounted(async () => {
   try {
-    const user = await fetchUserData()
-    const entities = await fetchEntities()
-    if (entities.items.length > 0) {
-      const selectedEntity = getDefaultEntity(entities.items.at(0))
-      SelectedEntityManager.defineSelectedEntity(selectedEntity)
-    }
-
-    await fetchFavoriteEntities()
-
-    if (user) {
-      // QUICK FIX: do not initialise Product Fruits if the user is not authenticated
-      const productFruitsKey = user.isCollab ? VITE_PRODUCT_FRUITS_KEY : VITE_PRODUCT_FRUITS_KEY_CLIENT
-      const productFruitUser = {
-        ...user,
-        id: user.id.toString(),
-      }
-
-      initProductFruits({
-        lang: 'fr',
-        key: productFruitsKey,
-        user: productFruitUser,
-        openChat,
-      })
-    }
-    initHubspot({
-      onHubspotClose: () => showProductFruits(),
-    })
-
     setNotificationsCount()
 
   } catch (error) {
@@ -183,8 +141,9 @@ async function setNotificationsCount() {
   }
 
   try {
+    const { favoriteEntities } = storeToRefs(userStore)
     const accountIds = isFavoriteEnabled.value
-      ? favoriteEntitiesStore.favoriteEntities.map(e => e.accountId)
+      ? favoriteEntities.value.map(e => e.accountId)
       : []
 
     const { count } = await fetchUnreadNotificationsCount(accountIds)
@@ -201,7 +160,6 @@ const notificationsCountIntervalId = setInterval(async () => {
 
 onBeforeUnmount(() => {
   clearInterval(notificationsCountIntervalId)
-  stopProductFruits()
 })
 </script>
 

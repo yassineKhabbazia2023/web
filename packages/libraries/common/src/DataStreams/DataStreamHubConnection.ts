@@ -1,7 +1,7 @@
 import { logger } from '@pulse/core'
 import type { HubConnection } from '@microsoft/signalr'
-import { useTokenStore } from '../stores/token/token.store'
 import { getNewHubConnection } from './DataStreamHubConnectionHelper'
+import { TokenManager } from '@pulse/common/managers'
 
 /* As we have a hub URL for each domain, this class is meant to be extended.
 That way, we can have a NotificationHubConnection for each domain.
@@ -18,10 +18,9 @@ export class DataStreamHubConnection {
   private userToken: string
 
   constructor(hubUrl: string) {
-    const tokenStore = useTokenStore()
     this.isConnected = false
     this.hubUrl = hubUrl
-    this.userToken = tokenStore.token
+    this.userToken = TokenManager.getToken()
     this.connection = getNewHubConnection(this.hubUrl, this.userToken)
   }
 

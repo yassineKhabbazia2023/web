@@ -2,9 +2,9 @@ import { nextTick } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { loggerMock } from '@pulse/core/mocks'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 
-import ResetPasswordForm from './'
+import ResetPasswordForm from './ResetPasswordForm.vue'
 
 const emptyPasswordMock = ''
 const validPasswordMock = 'aaAA11@@'
@@ -140,7 +140,7 @@ describe('page reset password form', () => {
     expect(createNewPasswordMock).toHaveBeenCalledWith(data)
 
     expect(routerPushMock).toHaveBeenCalledTimes(2)
-    expect(routerPushMock).toHaveBeenLastCalledWith({ name: LoginRouteName.LOGIN_CLIENT })
+    expect(routerPushMock).toHaveBeenLastCalledWith({ name: APP_ROUTES.login.client.name })
   })
 
   it('displays an error if the password is already used', async () => {

@@ -4,7 +4,7 @@ import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNav
 import { isTokenRetrieveFalseMock, useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
 import { flushPromises, mount } from '@vue/test-utils'
 
-import LoginCollab from '.'
+import LoginCollab from './LoginCollab.vue'
 
 vi.mock('env-vars', () => envVarsMock)
 

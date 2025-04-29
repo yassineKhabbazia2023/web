@@ -4,7 +4,7 @@ import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNav
 import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
 import { amplitudeServiceResetMock, amplitudeServiceMock } from '@pulse/common/mocks'
 
-import LoginCollab from '.'
+import LoginCollab from './LoginCollab.vue'
 
 const spyMsalLoginRedirect = vi.hoisted(() => vi.fn())
 

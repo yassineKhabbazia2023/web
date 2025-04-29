@@ -70,38 +70,16 @@
 import { PCol, PImage, PRow } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
-import { onMounted, onBeforeUnmount, computed } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { logger, OFFICIAL_WEBSITE_URL } from '@pulse/core'
-import { LoginRouteName } from '@pulse/common/constants'
-import { initProductFruits, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
-import { VITE_PRODUCT_FRUITS_ANONYMOUS_KEY, VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT } from 'env-vars'
+import { OFFICIAL_WEBSITE_URL } from '@pulse/core'
+import { APP_ROUTES } from '@pulse/common/constants'
 
 import SupportInfoCollab from '@app/components/SupportInfoCollab'
 
 const route = useRoute()
-const isCollabPage = computed(() => route.name === LoginRouteName.LOGIN_COLLAB)
+const isCollabPage = computed(() => route.name === APP_ROUTES.login.collab.name)
 const imageName = computed(() => isCollabPage.value ? 'login-page-collab' : 'login-page-client')
-
-onMounted(() => {
-  localStorage.removeItem('selected-entity')
-
-  try {
-    const productFruitsKey = isCollabPage.value
-      ? VITE_PRODUCT_FRUITS_ANONYMOUS_KEY
-      : VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT
-    initProductFruits({
-      lang: 'fr',
-      key: productFruitsKey,
-    })
-  } catch (error) {
-    logger.error('Something wrong occurred: ', error)
-  }
-})
-
-onBeforeUnmount(() => {
-  stopProductFruits()
-})
 </script>
 
 <style lang="scss" scoped>

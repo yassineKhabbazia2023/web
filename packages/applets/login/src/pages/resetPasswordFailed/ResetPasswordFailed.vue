@@ -25,7 +25,7 @@
       pType="white"
       class="reset-password-failed__back-to-login-button margin-y--10"
       data-testid="back-to-login-button"
-      @click="router.push({ name: LoginRouteName.LOGIN_CLIENT })"
+      @click="router.push({ name: APP_ROUTES.login.client.name })"
     >
       {{ t('backToLogin') }}
     </PButton>
@@ -38,7 +38,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { AppColors } from '@pulse/styleguide'
 import { PButton, PIcon } from '@pulse/styleguide/components'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { VITE_PASSWORD_RESET_MAX_ATTEMPTS } from 'env-vars'
 
 const { t } = useI18n({

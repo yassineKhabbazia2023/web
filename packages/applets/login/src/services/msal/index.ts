@@ -1,12 +1,9 @@
 import { logger } from '@pulse/core'
 import { VITE_API_MSAL_SCOPE } from 'env-vars'
-import { amplitudeService, msalInstance } from '@pulse/common'
-import { useTokenStore } from '@pulse/common/stores'
+import { msalInstance } from '@pulse/common'
 
-export const getToken = async () => {
-  const tokenStore = useTokenStore()
+export const getMSALToken = async () => {
   if (msalInstance.getAccount()) {
-    amplitudeService.setNewUserProperty('user_type', 'Collaborateur')
     return await msalInstance
       .acquireTokenSilent({
         loginHint: msalInstance.getAccount().userName,
@@ -14,20 +11,16 @@ export const getToken = async () => {
       })
       .then((response: any) => {
         const token = response.accessToken
-
-        tokenStore.setToken(token)
-        amplitudeService.track('Sign In Completed', {
-          sign_in_method: 'SSO',
-          sign_in_result: 'succeeded',
-        })
         return token
       })
       .catch((e) => {
         logger.warn(e)
-        amplitudeService.track('Sign In Completed', {
-          sign_in_method: 'SSO',
-          sign_in_result: 'failed',
-        })
+        // we (temporarily?) don't track the sign in failure
+        // we want to see if this reduce the Amplitude billing
+        // amplitudeService.track('Sign In Completed', {
+        // sign_in_method: 'SSO',
+        // sign_in_result: 'failed',
+        // })
         msalInstance.loginRedirect()
       })
   }

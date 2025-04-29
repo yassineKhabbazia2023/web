@@ -17,9 +17,8 @@
 <script setup lang="ts">
 import { defineAsyncComponent, markRaw, ref, watch, onMounted, onBeforeUnmount } from 'vue'
 import { setIdle } from '@pulse/core/utils/idle'
-import { VITE_IDLE_DURATION, VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
+import { VITE_IDLE_DURATION } from 'env-vars'
 import {
-  amplitudeService,
   setUnauthorizedCallback,
   refreshClientToken,
 } from '@pulse/common'
@@ -71,11 +70,6 @@ function getLayout(route: RouteLocationNormalized) {
 }
 
 function onRouteChange() {
-  // brute force way of getting sure we have a userId defined in Amplitude
-  if(user.value && user.value.id !== undefined) {
-    amplitudeService.setUserId(user.value.id.toString())
-  }
-
   currentLayoutName.value = getLayout(route)
 
   if (popupRenewTokenIsVisible.value && !getCanShowPopupRenewToken()) {
@@ -96,18 +90,13 @@ watch(
 watch(
   user, () => {
     if (user.value) {
-      if(user.value.id !== undefined) {
-        // if the userId is not defined, we don't want to set it in Amplitude
-        // we will set it later when we have a valid userId
-        amplitudeService.setUserId(user.value.id.toString())
-      }
       setIdle(VITE_IDLE_DURATION, logoutAndRedirectToLogin)
     }
   },
 )
 
 async function unauthorizedCallback() {
-  tokenStore.setToken('')
+  CurrentUserManager.persistToken('')
   isTokenExpired.value = true
 
   if (currentLayoutName.value === LAYOUTS.LOGIN) {
@@ -184,14 +173,12 @@ function onTokenChanges() {
   }
 }
 
-watch(() => tokenStore.token, () => onTokenChanges())
+watch(() => tokenStore.tokenExp, () => onTokenChanges())
 
 onMounted(() => {
-  CurrentUserManager.initToken() // force to load token if defined in localstorage
+  CurrentUserManager.initToken()
   setUnauthorizedCallback(unauthorizedCallback)
-  if (VITE_AMPLITUDE_API_KEY) {
-    amplitudeService.init(VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL || undefined)
-  }
+
   HTMLService.setDocumentTitle()
   onRouteChange()
 })

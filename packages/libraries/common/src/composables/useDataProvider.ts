@@ -1,17 +1,14 @@
 import api from '../api'
-import { useTokenStore } from '../stores/token/token.store'
-import { storeToRefs } from 'pinia'
 import { usePermissionsStore } from '../stores/permissions/permissions.store'
 import { fetchUserPermissions } from '../services/permissions/permissions.service'
 import { UserInfo } from '../stores/types'
+import { CurrentUserManager } from '@pulse/common/managers'
 
 export const useDataProvider = () => {
   const permissionsStore = usePermissionsStore()
-  const tokenStore = useTokenStore()
-  const { isAuthenticated } = storeToRefs(tokenStore)
 
   const fetchUserData = async () => {
-    if (isAuthenticated.value) {
+    if (CurrentUserManager.isAuthenticated()) {
       const userPermissions = await fetchUserPermissions()
       permissionsStore.setUserPermissions(userPermissions)
       const {

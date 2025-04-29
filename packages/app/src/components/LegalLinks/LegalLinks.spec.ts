@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import { useRoute } from 'vue-router'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { getStoreMock } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
 
@@ -21,7 +21,7 @@ describe('legalLinks', () => {
 
   beforeEach(async () => {
     mockedUseRoute.mockReturnValue({
-      name: LoginRouteName.LOGIN_COLLAB,
+      name: APP_ROUTES.login.collab.name,
     })
     wrapper = createWrapper()
     await flushPromises()
@@ -45,7 +45,7 @@ describe('legalLinks', () => {
   it('should not display the CGU link user is a client or if the page is login-client', async () => {
     userStoreMock.isCollab = true
     mockedUseRoute.mockReturnValue({
-      name: LoginRouteName.LOGIN_COLLAB,
+      name: APP_ROUTES.login.collab.name,
     })
 
     wrapper = createWrapper()

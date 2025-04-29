@@ -114,9 +114,10 @@ import {
   login,
   isInvitationTokenValid,
 } from '@pulse/common'
-import { useUserStore, useTokenStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 import { type UserInfo } from '@pulse/common/types'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
+import { CurrentUserManager } from '@pulse/common/managers'
 import {
   onBeforeMount,
   reactive,
@@ -145,7 +146,6 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const tokenStore = useTokenStore()
 const route = useRoute()
 const router = useRouter()
 const { contactId, accountNumber, token, email: emailQuery } = route.query as {
@@ -250,7 +250,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
             webToken: token,
           } = await login(loginPayload) as any // this is temporary, we need to fix the type when refact userStore
 
-          tokenStore.setToken(token)
+          CurrentUserManager.persistToken(token)
           await updateTermsByCurrentUser(termsId.value as number)
           amplitudeService.track('Onboarding Completed', {
             onboarding_result: 'succeeded',
@@ -299,9 +299,10 @@ const isValidToken = async () => {
 onBeforeMount(async () => {
   const isValid = await isValidToken()
   if (!isValid) {
-    router.push({ name: LoginRouteName.EXPIRE_TOKEN, query: { contactId, accountNumber } })
+    router.push({ name: APP_ROUTES.login.expireToken.name, query: { contactId, accountNumber } })
   }
 })
+
 onMounted(async () => {
   amplitudeService.reset()
   amplitudeService.track('Onboarding Email Accepted', {

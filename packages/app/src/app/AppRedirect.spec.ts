@@ -10,7 +10,7 @@ import { getExpirationDelaysMock } from '@app/__mocks__/app.utils.mocks'
 import { nextTick, reactive } from 'vue'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
 
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { LAYOUTS } from '@app/constants/constants'
 
 import App from './'
@@ -113,8 +113,6 @@ describe('app with navigation guard', () => {
   })
 
   it('should open PopupRenewToken 5 minutes before it expires AND when it has expired', async () => {
-    const mockedToken = 'mocked-token'
-    const mockedToken2 = 'mocked-token-2'
     const expectedPropsBefore = {
       isCollab: false,
       isTokenExpired: false,
@@ -139,7 +137,6 @@ describe('app with navigation guard', () => {
     const wrapper = createWrapper()
     const vm = wrapper.vm as any
 
-    tokenStoreMock.token = mockedToken
     tokenStoreMock.getIsTokenExpired
       .mockReturnValueOnce(false)
       .mockReturnValueOnce(false)
@@ -163,7 +160,6 @@ describe('app with navigation guard', () => {
     expect(vm.openPopupWhenHasExpiredTimer).not.toBeUndefined()
     expect(vm.openPopup5MinBeforeExpiredTimer).not.toBeUndefined()
 
-    tokenStoreMock.token = mockedToken2
     await nextTick()
 
     expect(vm.openPopupWhenHasExpiredTimer).toBeUndefined()
@@ -171,7 +167,6 @@ describe('app with navigation guard', () => {
   })
 
   it('should hide PopupRenewToken on route change to Login', async () => {
-    const mockedToken = 'mocked-token-1'
     const expectedPropsAfterFiveMinutes = {
       isCollab: false,
       isTokenExpired: false,
@@ -198,7 +193,6 @@ describe('app with navigation guard', () => {
 
     const wrapper = createWrapper()
 
-    tokenStoreMock.token = mockedToken
     await nextTick()
 
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
@@ -209,7 +203,7 @@ describe('app with navigation guard', () => {
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterFiveMinutes)
 
     mockedRoute.meta.layout = LAYOUTS.LOGIN
-    mockedRoute.name = LoginRouteName.LOGIN_CLIENT
+    mockedRoute.name = APP_ROUTES.login.client.name
     await nextTick()
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterRouteChange)

@@ -1,8 +1,7 @@
-import { useTokenStore } from '../../stores/token/token.store'
+import { TokenManager } from '../../managers/token/token.manager'
 
 export const requestTokenInterceptor = (config: any) => {
-  const tokenStore = useTokenStore()
-  const token = tokenStore.token
+  const token = TokenManager.getToken()
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }

@@ -21,21 +21,12 @@ describe('test tokenStore', () => {
     tokenStore = useTokenStore()
   })
 
-  it('should set token properly when setToken() is called', () => {
-    tokenStore.setToken(tokenMock)
+  it('should set token properly when setTokenExpiration() is called', () => {
+    tokenStore.setTokenExpiration(tokenMock)
 
-    expect(tokenStore.token).toBe(tokenMock)
     expect(tokenStore.tokenSub).toBe(tokenSubMock)
     expect(tokenStore.tokenExp).toBe(tokenExpMock)
     expect(getTokenExpSubMock).toHaveBeenCalledOnce()
     expect(getTokenExpSubMock).toHaveBeenCalledWith(tokenMock)
-  })
-
-  it('should set isAuthenticated when setIsAuthenticated() is called', () => {
-    tokenStore.setIsAuthenticated(true)
-    expect(tokenStore.isAuthenticated).toBe(true)
-
-    tokenStore.setIsAuthenticated(false)
-    expect(tokenStore.isAuthenticated).toBe(false)
   })
 })

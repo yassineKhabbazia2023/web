@@ -7,6 +7,8 @@ import { fetchCurrentUser } from '../../services/current-user/current-user.servi
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
 import { storeToRefs } from 'pinia'
+import { TokenManager } from '../token/token.manager'
+import { SelectedEntityManager } from '../selected-entity/selected-entity.manager'
 
 export class CurrentUserManager {
   static async setCurrentUser(user?: UserInfo) {
@@ -24,8 +26,6 @@ export class CurrentUserManager {
   }
 
   static async logout() {
-
-    this.persistToken('')
     const userStore = useUserStore()
 
     const isCollab = userStore.isCollab
@@ -35,7 +35,6 @@ export class CurrentUserManager {
 
     if (isCollab) {
       logoutCollaborator()
-      return
     }
     if (gigyaUserId) {
       if (VITE_GIGYA_SSO_ACTIVATED === 'true') {
@@ -43,6 +42,9 @@ export class CurrentUserManager {
       }
       logoutClient(gigyaUserId)
     }
+    // clean localstorage
+    this.persistToken('')
+    SelectedEntityManager.clearSelectedEntity()
   }
 
   static readonly hasPermission = (
@@ -57,28 +59,32 @@ export class CurrentUserManager {
   }
 
   static persistToken(token: string) {
+    this.saveToken(token)
     const tokenStore = useTokenStore()
-    tokenStore.setToken(token)
-    this.saveTokenLocally(token)
+    tokenStore.setTokenExpiration(token)
   }
 
-  static saveTokenLocally(token: string) {
+  static saveToken(token: string) {
     if (token) {
-      localStorage.setItem('token', token)
+      TokenManager.setToken(token)
     } else {
-      localStorage.removeItem('token')
+      TokenManager.removeToken()
     }
   }
 
-  static getTokenLocally() {
-    return localStorage.getItem('token')
+  static getToken() {
+    return TokenManager.getToken()
   }
 
   static initToken() {
-    const tokenStore = useTokenStore()
-    const storedToken = this.getTokenLocally()
+    const storedToken = this.getToken()
     if (storedToken) {
-      tokenStore.setToken(storedToken)
+      const tokenStore = useTokenStore()
+      tokenStore.setTokenExpiration(storedToken)
     }
+  }
+
+  static isAuthenticated() {
+    return TokenManager.getToken() !== ''
   }
 }

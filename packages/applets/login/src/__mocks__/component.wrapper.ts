@@ -3,7 +3,7 @@ import type { Component , ComponentPublicInstance } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 
 import { createRouter, createWebHistory, type RouteLocationNamedRaw } from 'vue-router'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 
 function getTemplate(text: string) {
   return `<p class="page-title">${text}</p>`
@@ -13,7 +13,7 @@ export function getMockedRoutes(path: string, name: string, text: string) {
   const routes = [
     {
       path: '/expireToken',
-      name: LoginRouteName.EXPIRE_TOKEN,
+      name: APP_ROUTES.login.expireToken.name,
       component: {
         template: getTemplate('ExpireToken'),
       },

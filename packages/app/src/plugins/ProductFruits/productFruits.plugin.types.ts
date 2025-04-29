@@ -2,26 +2,24 @@ export interface ProductFruitConfig {
   openChat?: () => void
 }
 
-export type ProductFruitsRole = 'Client' | 'Collaborateur'
-
 export interface ProductFruitStatus {
   isActive: boolean
   isInitialized: boolean
 }
 
 export interface ProductFruitUser {
-  id?: string
-  email?: string
-  firstName?: string
-  lastName?: string
-  isCollab?: boolean
+  username: string
+  email: string
+  firstname: string
+  lastname: string
+  role: string
 }
 
 export interface InitProductFruitsParams {
   lang: string
   key: string
   user?: ProductFruitUser | null
-  openChat?: () => void
+  openChatCallback?: () => void
 }
 
 export interface InstallProductFruitsParams {

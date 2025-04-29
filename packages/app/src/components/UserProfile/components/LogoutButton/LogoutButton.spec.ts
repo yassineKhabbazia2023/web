@@ -4,7 +4,7 @@ import {
   amplitudeServiceTrackMock,
   getStoreMock,
 } from '@pulse/common/mocks'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { useUserStore } from '@pulse/common/stores'
 
@@ -33,11 +33,11 @@ describe('logoutButton', () => {
   const isCollabToRouteNameToRedirect = [
     {
       isCollab: true,
-      routeNameToRedirect: LoginRouteName.LOGIN_COLLAB,
+      routeNameToRedirect: APP_ROUTES.login.collab.name,
     },
     {
       isCollab: false,
-      routeNameToRedirect: LoginRouteName.LOGIN_CLIENT,
+      routeNameToRedirect: APP_ROUTES.login.client.name,
     },
   ]
 

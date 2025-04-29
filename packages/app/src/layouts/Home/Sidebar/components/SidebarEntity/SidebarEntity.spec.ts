@@ -8,7 +8,7 @@ import {
   defineSelectedEntityMock,
   getMockedEntity,
 } from '@pulse/common/mocks'
-import { useFavoriteEntitiesStore, useUserStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 
 import SidebarEntity from '.'
 
@@ -23,14 +23,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-const favoriteEntitiesStoreMock = getStoreMock(useFavoriteEntitiesStore)
 const userStoreMock = getStoreMock(useUserStore)
-
-const getDefaultEntityMock = vi.hoisted(() => vi.fn())
-vi.mock('./utils', () => ({
-  getDefaultEntity: getDefaultEntityMock,
-}))
-
 const entities: Entity[] = getMockedFavoriteEntities()
 
 vi.mock('@pulse/common', () => ({
@@ -66,8 +59,7 @@ describe('sidebarEntity', () => {
   let wrapper: ReturnType<typeof createWrapper>
   beforeEach(() => {
     userStoreMock.isCollab = true
-    favoriteEntitiesStoreMock.favoriteEntities = entities
-    getDefaultEntityMock.mockReturnValue(defaultEntityMock)
+    userStoreMock.favoriteEntities = entities
     wrapper = createWrapper()
   })
 

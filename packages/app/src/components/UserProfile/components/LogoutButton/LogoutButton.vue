@@ -11,10 +11,10 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { amplitudeService } from '@pulse/common'
 import { useUserStore } from '@pulse/common/stores'
 import { PButton } from '@pulse/styleguide/components'
-import { LoginRouteName } from '@pulse/common/constants'
 import { CurrentUserManager } from '@pulse/common/managers'
 
 const userStore = useUserStore()
@@ -37,8 +37,7 @@ const handleLogout = async () => {
       sign_out_result: 'failed',
     })
   }
-  localStorage.removeItem('selected-entity')
-  const name = isCollab ? LoginRouteName.LOGIN_COLLAB : LoginRouteName.LOGIN_CLIENT
+  const name = isCollab ? APP_ROUTES.login.collab.name : APP_ROUTES.login.client.name
   router.push({ name })
 }
 </script>

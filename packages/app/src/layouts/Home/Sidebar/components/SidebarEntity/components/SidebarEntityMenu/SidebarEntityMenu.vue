@@ -4,6 +4,7 @@
       'sidenav-entity-menu',
       { 'sidenav-entity-menu--collapsed': isMenuCollapsed },
       { 'sidenav-entity-menu--is-collab': isCollab },
+      { 'sidenav-entity-menu--is-single-entity': userStore.getIsSingleEntity() },
     ]"
     @mouseover="isMenuCollapsed = false"
     @mouseleave="isMenuCollapsed = true"
@@ -62,6 +63,7 @@ import { PMenuItem, PMenu } from '@pulse/styleguide/components'
 import { PERMISSION_CODES } from '@app/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 import type { IconName } from '@pulse/styleguide/types'
+import { useUserStore } from '@pulse/common/stores'
 
 const route = useRoute()
 const { t } = useI18n({
@@ -70,6 +72,7 @@ const { t } = useI18n({
 })
 
 const props = defineProps<SidebarEntityMenuProps>()
+const userStore = useUserStore()
 
 const hasBIReports = ref(false)
 const isMenuCollapsed = ref(true)
@@ -171,7 +174,7 @@ onMounted(async () => {
 
   z-index: 8;
   position: absolute;
-  left: calc(100% - 52px);
+  left: 50px;
   top: 0;
   width: 200px;
   height: 100%;
@@ -193,8 +196,8 @@ onMounted(async () => {
     border-color: var(--el-color-secondary-fuschia) !important;
   }
 
-  @media only screen and (max-width: 991px) {
-    left: 52px;
+  &--is-single-entity {
+    left: 0;
   }
 }
 </style>

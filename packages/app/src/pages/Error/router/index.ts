@@ -1,3 +1,4 @@
+import { APP_ROUTES } from '@pulse/common/constants'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes = [] as RouteRecordRaw[]
@@ -24,8 +25,8 @@ const ERROR_PATH = [
     page: '404',
   },
   {
-    path: '/500',
-    name: 'Error500',
+    path: APP_ROUTES.error.internalError.path,
+    name: APP_ROUTES.error.internalError.name,
     page: '500',
   },
   {

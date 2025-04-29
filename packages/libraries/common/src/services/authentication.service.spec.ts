@@ -29,8 +29,8 @@ describe('test authentication.service', () => {
       expect(apiGatewayPostMock).toHaveBeenCalledOnce()
       expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedGatewayPostArgument)
 
-      expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
-      expect(tokenStoreMock.setToken).toHaveBeenCalledWith(mockedToken)
+      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith(mockedToken)
     })
   })
 

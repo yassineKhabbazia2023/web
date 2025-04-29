@@ -1,14 +1,9 @@
 
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
-import { useTokenStore } from '../stores/token/token.store'
-import { getStoreMock } from '../__mocks__/store.mocks'
 import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
 import type { HubConnection } from '@microsoft/signalr'
 
 import { DataStreamHubConnection } from './DataStreamHubConnection'
-
-const tokenStoreMock = getStoreMock(useTokenStore)
-const tokenMock = 'Token mock'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('./DataStreamHubConnectionHelper', () => {
@@ -26,7 +21,6 @@ describe('dataStreamHubConnection', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    tokenStoreMock.token = tokenMock
     dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
   })
 

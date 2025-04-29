@@ -8,8 +8,15 @@ import type {
   InitProductFruitsParams,
   ProductFruitUser,
   InstallProductFruitsParams,
-  ProductFruitsRole,
 } from './productFruits.plugin.types'
+import { initHubspot, openHubspot } from '@app/plugins/Hubspot/hubspot.plugin'
+import {
+  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY,
+  VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT,
+  VITE_PRODUCT_FRUITS_KEY,
+  VITE_PRODUCT_FRUITS_KEY_CLIENT,
+} from 'env-vars'
+import { UserInfo } from '@pulse/common/types'
 
 import './productFruits.plugin.scss'
 
@@ -37,51 +44,62 @@ const productFruitStatus: ProductFruitStatus = {
   isInitialized: false,
 }
 
-export function onProductFruitsButtonExtWidgetInit() {
-  productFruitConfig.openChat?.()
+enum ProductFruitsUserRoles {
+  CLIENT = 'Client',
+  COLLAB = 'Collaborateur',
 }
 
-export function stopProductFruits() {
-  if (!productFruitStatus.isInitialized) {
+// #region Product Fruits initialization
+export function initProductFruits({ lang, key, user, openChatCallback }: InitProductFruitsParams) {
+  if (!productFruitStatus.isActive) {
+    logger.trace('Product Fruit is inactive')
     return
   }
-  window.productFruits.services.destroy()
-  window.removeEventListener(
-    'productfruits_button_ext_widget_init',
-    onProductFruitsButtonExtWidgetInit,
-  )
-  productFruitStatus.isInitialized = false
-  delete window.$productFruits
-}
-
-export function showProductFruits() {
-  try {
-    window.productFruits.api.inAppCenter.show()
-  } catch (error) {
-    logger.error(error)
+  if (productFruitStatus.isInitialized) {
+    logger.warn('productFruit is already initialized')
+    return
   }
-}
 
-export function hideProductFruits() {
-  try {
-    window.productFruits.api.inAppCenter.close()
-  } catch (error) {
-    logger.error(error)
+  const productFruitsOptions = getProductFruitsOptions(user)
+  if(typeof openChatCallback === 'function') {
+    setupChat(openChatCallback)
+    // hubspot exists only if there's a need for a chat
+    initHubspotWithProductFruits()
   }
+
+  productFruits.init(key, lang, productFruitsOptions)
+  productFruitStatus.isInitialized = true
+  logger.trace('Product Fruits Plugin - initialized')
 }
 
-export function getProductFruitsRole(user: ProductFruitUser): ProductFruitsRole {
-  const { isCollab } = user
-  return isCollab ? 'Collaborateur' : 'Client'
+export function initProductFruitsAnonymousCustomer() {
+  logger.trace('Product Fruits Plugin - initializing for anonymous customer')
+  initProductFruits({ lang: 'fr', key: VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT })
+}
+export function initProductFruitsAnonymousCollab() {
+  logger.trace('Product Fruits Plugin - initializing for anonymous collaborator')
+  initProductFruits({ lang: 'fr', key: VITE_PRODUCT_FRUITS_ANONYMOUS_KEY })
 }
 
-export function getProductFruitsOptions(user?: ProductFruitUser | null) {
+export function initProductFruitsAuthenticatedCustomer(user: ProductFruitUser | undefined) {
+  if (!user) {
+    logger.error('No user given')
+    return
+  }
+  logger.trace('Product Fruits Plugin - initializing for authenticated customer - username:', user.username)
+  initProductFruits({ lang: 'fr', key: VITE_PRODUCT_FRUITS_KEY_CLIENT, user, openChatCallback: openHubspotChat })
+}
+export function initProductFruitsAuthenticatedCollab(user: ProductFruitUser | undefined) {
+  if (!user) {
+    return
+  }
+  logger.trace('Product Fruits Plugin - initializing for authenticated collaborator - username:', user.username)
+  initProductFruits({ lang: 'fr', key: VITE_PRODUCT_FRUITS_KEY, user, openChatCallback: openHubspotChat })
+}
+
+function getProductFruitsOptions(user?: ProductFruitUser | null) {
   return user ? {
-    username: user.id ?? '',
-    email: user.email ?? '',
-    firstname: user.firstName ?? '',
-    lastname: user.lastName ?? '',
-    role: getProductFruitsRole(user),
+    ...user,
     props: {
       browser: getBrowserName(),
     },
@@ -95,33 +113,83 @@ export function getProductFruitsOptions(user?: ProductFruitUser | null) {
   }
 }
 
-export function initProductFruits({
-  lang,
-  key,
-  user,
-  openChat,
-}: InitProductFruitsParams) {
-  if (!productFruitStatus.isActive) {
+export function getProductFruitsUser(user: UserInfo): ProductFruitUser | undefined {
+  if (!user) {
+    logger.error('No user given')
     return
   }
-  if (productFruitStatus.isInitialized) {
-    logger.error('productFruit is already initialized')
-    return
+  return {
+    username: user.id.toString(),
+    email: user.email,
+    firstname: user.firstName,
+    lastname: user.lastName,
+    role: user.isCollab ? ProductFruitsUserRoles.COLLAB : ProductFruitsUserRoles.CLIENT,
   }
+}
+// #endregion Product Fruits initialization
 
-  const productFruitsOptions = getProductFruitsOptions(user)
-  productFruitConfig.openChat = openChat
+// #region Product Fruits x Hubspot
+function initHubspotWithProductFruits() {
+  initHubspot({
+    // hubspot and Product Fruits don't exist at the same time so when we close hubspot chat, we show Product Fruits again
+    onHubspotClose: () => showProductFruits(),
+  })
+}
 
-  productFruits.init(
-    key,
-    lang,
-    productFruitsOptions,
-  )
+function openHubspotChat() {
+  logger.trace('Product Fruits Plugin - open Hubspot chat')
+  // hubspot and Product Fruits don't exist at the same time so when we open hubspot chat, we hide Product Fruits
+  hideProductFruits()
+  openHubspot()
+}
+
+function setupChat(openChatCallback: () => void) {
+  productFruitConfig.openChat = openChatCallback
+
   window.addEventListener(
     'productfruits_button_ext_widget_init',
     onProductFruitsButtonExtWidgetInit,
   )
-  productFruitStatus.isInitialized = true
+}
+
+function onProductFruitsButtonExtWidgetInit() {
+  logger.trace('Product Fruits Plugin - openChat')
+  productFruitConfig.openChat?.()
+}
+// #endregion Product Fruits x Hubspot
+
+export function stopProductFruits() {
+  if (!productFruitStatus.isInitialized) {
+    return
+  }
+  window.productFruits.services.destroy()
+
+  window.removeEventListener(
+    'productfruits_button_ext_widget_init',
+    onProductFruitsButtonExtWidgetInit,
+  )
+  productFruitStatus.isInitialized = false
+  productFruitConfig.openChat = undefined
+  delete window.$productFruits
+  logger.trace('Product Fruits Plugin - stopped')
+}
+
+export function showProductFruits() {
+  try {
+    logger.trace('Product Fruits Plugin - show Product Fruits')
+    window.productFruits.api.inAppCenter.show()
+  } catch (error) {
+    logger.error(error)
+  }
+}
+
+export function hideProductFruits() {
+  try {
+    logger.trace('Product Fruits Plugin - hide Product Fruits')
+    window.productFruits.api.inAppCenter.close()
+  } catch (error) {
+    logger.error(error)
+  }
 }
 
 export default {

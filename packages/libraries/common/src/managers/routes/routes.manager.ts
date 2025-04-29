@@ -1,6 +1,7 @@
 import type { Router, RouteRecordRaw } from 'vue-router'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { logger } from '@pulse/core'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 export class RoutesManager {
 
@@ -20,6 +21,12 @@ export class RoutesManager {
     )
   }
 
+  // TODO rename hasAnonymousAncestor // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47383
+  static isFromAnonymous(route: any) {
+    const anonymousRoute = APP_ROUTES.anonymous.name
+    return RouterHelpers.hasProvidedAncestor({ route, ancestorName: anonymousRoute })
+  }
+
   /**
    * Add the given routes to the router's authenticated routes.
    *
@@ -34,6 +41,13 @@ export class RoutesManager {
     routesToAdd.forEach(routeToAdd =>
       router.addRoute(APP_ROUTES.authenticated.name, routeToAdd),
     )
+  }
+
+
+  // TODO rename hasAuthenticatedAncestor // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47383
+  static isFromAuthenticated(route: any) {
+    const authenticatedRoute = APP_ROUTES.authenticated.name
+    return RouterHelpers.hasProvidedAncestor({ route, ancestorName: authenticatedRoute })
   }
 
   /**

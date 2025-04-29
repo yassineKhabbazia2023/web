@@ -6,7 +6,7 @@ import { fetchNotificationsMock, notificationsServiceMock } from '@app/__mocks__
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import { trackFeedCenterTabConsultationMock, trackingServiceMock } from '@app/__mocks__/tracking.service.mocks'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
-import { useFavoriteEntitiesStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks'
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 
@@ -14,7 +14,7 @@ vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notifica
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
 
-const favoriteEntitiesStoreMock = getStoreMock(useFavoriteEntitiesStore)
+const userStore = getStoreMock(useUserStore)
 
 const favouriteEntities = getMockedFavoriteEntities()
 
@@ -34,7 +34,7 @@ function initializeTestState(initialDrawervalue = false) {
 
 describe('feed center drawer composable', () => {
   beforeEach(() => {
-    favoriteEntitiesStoreMock.favoriteEntities = [favouriteEntities[0], favouriteEntities[1]]
+    userStore.favoriteEntities = [favouriteEntities[0], favouriteEntities[1]]
     localStorage.setItem('favoriteEnabled', 'true')
   })
 
@@ -132,7 +132,7 @@ describe('feed center drawer composable', () => {
   })
 
   it('should clear the notifications and not call the get notifications API if user has no favourite entity', async () => {
-    favoriteEntitiesStoreMock.favoriteEntities = []
+    userStore.favoriteEntities = []
 
     const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
 
@@ -173,14 +173,14 @@ describe('feed center drawer composable', () => {
     'should set the favorite switch based on local storage value but should be off anyway if no favourite entities exists when localStorageValue is $localStorageValue',
     async ({
       localStorageValue,
-      favouriteEntities,
+      // favouriteEntities,
       expectedToggleState,
     }) => {
       localStorage.setItem('favoriteEnabled', localStorageValue)
 
       const { unreadNotificationsCount, isDrawerOpened } = initializeTestState(true)
       const [result, app] = withSetup(() => useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCount))
-      favoriteEntitiesStoreMock.favoriteEntities = favouriteEntities
+      userStore.favoriteEntities = favouriteEntities
 
       const { isFavouritesFilterEnabled } = result
 

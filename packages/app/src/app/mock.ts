@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 
 export const LOGIN_LAYOUT = 'LoginLayout'
 
@@ -23,7 +23,7 @@ export const ROUTES: RouteRecordRaw[] = [
   },
   {
     path: '/login',
-    name: LoginRouteName.LOGIN_COLLAB,
+    name: APP_ROUTES.login.collab.name,
     component: {
       template: `<p class="pageTitle">${PAGES_TITLE.COLLAB}</p>`,
     },
@@ -33,7 +33,7 @@ export const ROUTES: RouteRecordRaw[] = [
   },
   {
     path: '/login-client',
-    name: LoginRouteName.LOGIN_CLIENT,
+    name: APP_ROUTES.login.client.name,
     component: {
       template: `<p class="pageTitle">${PAGES_TITLE.CLIENT}</p>`,
     },

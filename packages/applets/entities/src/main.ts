@@ -1,6 +1,10 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
+import { LAYOUT_META, STYLES_META } from '@pulse/common/constants'
+
+// TODO create layout constant in common // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47378
+export const MAIN_LAYOUT = 'Home'
 
 const routes = [] as RouteRecordRaw[]
 
@@ -144,6 +148,30 @@ routes.push({
   name: 'folder',
   component: () => import('@entities/pages/folder'),
   children: folderPatchChildren(FOLDER_CHILDREN_PATH),
+})
+
+routes.push({
+  path: '/dossier/:id/banque',
+  name: 'bank',
+  component: () => import('@entities/pages/WorkInProgress'),
+  meta: {
+    [LAYOUT_META]: MAIN_LAYOUT,
+    [STYLES_META]: {
+      hasPaddings: false,
+    },
+  },
+})
+
+routes.push({
+  path: '/dossier/:id/indicateurs',
+  name: 'indicators',
+  component: () => import('@entities/pages/WorkInProgress'),
+  meta: {
+    [LAYOUT_META]: MAIN_LAYOUT,
+    [STYLES_META]: {
+      hasPaddings: false,
+    },
+  },
 })
 
 export default {

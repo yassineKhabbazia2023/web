@@ -1,7 +1,7 @@
 <template>
   <div :class="{ 'padding-right--0': !isSelectedEntityActive }">
     <nav
-      v-if="(!isCollab && entities.length > 1) || isCollab"
+      v-if="shouldDisplaySidebar"
       :class="[
         'sidenav-entity flex flex--direction-column',
         { 'sidenav-entity--opened': isSidebarOpened },
@@ -122,8 +122,9 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import type { Entity } from '@pulse/common/types'
-import { useFavoriteEntitiesStore, useUserStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 import { SelectedEntityManager } from '@pulse/common/managers'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
@@ -137,7 +138,6 @@ import AppVersion from './components/AppVersion'
 const route = useRoute()
 
 const userStore = useUserStore()
-const favoriteEntitiesStore = useFavoriteEntitiesStore()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -146,8 +146,8 @@ const { t } = useI18n({
 
 const props = defineProps<SidebarEntityProps>()
 
-const { favoriteEntities } = storeToRefs(favoriteEntitiesStore)
-const { isCollab } = storeToRefs(userStore)
+const { favoriteEntities } = storeToRefs(userStore)
+const { isCollab, isCustomer } = storeToRefs(userStore)
 
 const favoriteEntitiesSorted = computed(() => {
   return [...favoriteEntities.value].sort((a, b) => a.legalName.localeCompare(b.legalName))
@@ -155,12 +155,20 @@ const favoriteEntitiesSorted = computed(() => {
 
 const isSidebarOpened = ref(false)
 const isToggleTooltipDisabled = ref(false)
+const shouldDisplaySidebar = computed(() => {
+  // sidebar should alway display for a collab user
+  return isCollab.value === true
+    // sidebar shouldn't display for a single entity customer user
+    || (isCustomer.value === true && userStore.getIsSingleEntity() === false)
+})
 
 const walletItem = computed((): SidebarEntityItemProps => {
+  const collabWalletRouteName = APP_ROUTES.wallet.collab.root.name
+  const customerWalletRouteName = APP_ROUTES.wallet.client.root.name
   return {
     tooltipContent: t('globalView'),
     tooltipDisabled: isSidebarOpened.value,
-    route: { name: isCollab.value ? 'wallet' : 'wallet-client' },
+    route: { name: isCollab.value === true ? collabWalletRouteName : customerWalletRouteName },
   }
 })
 
@@ -212,7 +220,7 @@ const getActiveWallet = computed(() => {
 })
 
 const onEntitySelected = (entity: Entity) => {
-  SelectedEntityManager.defineSelectedEntity(entity)
+  SelectedEntityManager.persistSelectedEntity(entity)
 }
 </script>
 

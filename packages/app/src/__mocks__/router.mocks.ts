@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -19,7 +19,7 @@ const router = createRouter({
       },
     },
     {
-      name: LoginRouteName.LOGIN_COLLAB,
+      name: APP_ROUTES.login.collab.name,
       path: '/login',
       component: {
         template: '<div />',

@@ -74,17 +74,18 @@
 </template>
 
 <script lang="ts" setup>
-import { logger } from '@pulse/core'
-import { useI18n } from 'vue-i18n'
 import { onMounted, ref, reactive } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import { logger } from '@pulse/core'
 import type { FormRules } from 'element-plus'
 import { PButton, PCheckbox, PForm, PFormItem, PTooltip } from '@pulse/styleguide/components'
 import { type ValidationCGUProps } from './ValidationCGUTypes.ts'
 import { fetchUrlTerms } from '@pulse/common'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { updateTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { useRouter } from 'vue-router'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
+import { useUserStore } from '@pulse/common/stores'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -92,6 +93,7 @@ const { t } = useI18n({
 })
 
 const router = useRouter()
+const userStore = useUserStore()
 
 defineProps<ValidationCGUProps>()
 
@@ -114,8 +116,10 @@ const acceptNewCgu = async (termsId: string) => {
   try {
     loading.value = true
     await updateTermsByCurrentUser(parseInt(termsId))
-    router.push({ name: 'wallet-client' })
+    userStore.setHasAcceptedCGU(true)
+    router.push({ name: APP_ROUTES.wallet.client.root.name })
   } catch (error) {
+    userStore.setHasAcceptedCGU(false)
     logger.error(error)
   } finally {
     loading.value = false
@@ -124,7 +128,7 @@ const acceptNewCgu = async (termsId: string) => {
 
 const back = async () => {
   await CurrentUserManager.logout()
-  router.push({ name: LoginRouteName.LOGIN_CLIENT })
+  router.push({ name: APP_ROUTES.login.client.name })
 }
 </script>
 

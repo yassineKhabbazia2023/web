@@ -2,10 +2,10 @@ import { describe, expect, it, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { cguServiceMock, updateTermsByCurrentUserMock } from '@pulse/common/mocks'
-import { LoginRouteName } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { CurrentUserManager } from '@pulse/common/managers'
 
-import validationCGU from './'
+import validationCGU from './ValidationCGU.vue'
 
 const mockRouterPush = vi.fn()
 
@@ -69,7 +69,7 @@ describe('cgu validation', () => {
     const wrapper = createWrapper()
     const backButton = wrapper.find('[data-testid="cgu-button-back"]')
     await backButton.trigger('click')
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: LoginRouteName.LOGIN_CLIENT })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: APP_ROUTES.login.client.name })
     expect(CurrentUserManagerLogoutMock).toHaveBeenCalled()
   })
 

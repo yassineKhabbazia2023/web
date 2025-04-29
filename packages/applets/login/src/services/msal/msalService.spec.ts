@@ -3,7 +3,7 @@ import { loggerMock, loggerWarnSpy , envVarsMock } from '@pulse/core/mocks'
 import { getStoreMock } from '@pulse/common/mocks'
 import { useTokenStore } from '@pulse/common/stores'
 
-import { getToken } from '.'
+import { getMSALToken } from '.'
 
 const tokenStoreMock = getStoreMock(useTokenStore)
 
@@ -41,7 +41,7 @@ vi.mock('msal', () => ({
 }))
 
 describe('msalService', () => {
-  describe('getToken', () => {
+  describe('getMSALToken', () => {
     it('should return proper token msalInstance has no error', async () => {
       const userNameMocked = 'userName mocked'
       const accessTokenMocked = 'accessToken mocked'
@@ -53,7 +53,7 @@ describe('msalService', () => {
       })
       const expectedToken = accessTokenMocked
 
-      const token = await getToken()
+      const token = await getMSALToken()
 
       expect(token).toBe(expectedToken)
       expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
@@ -63,8 +63,8 @@ describe('msalService', () => {
           sign_in_result: 'succeeded',
         })
 
-      expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
-      expect(tokenStoreMock.setToken).toHaveBeenNthCalledWith(1, expectedToken)
+      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.setTokenExpiration).toHaveBeenNthCalledWith(1, expectedToken)
 
       expect(loginRedirectMocked).not.toHaveBeenCalled()
     })
@@ -78,34 +78,27 @@ describe('msalService', () => {
       const error = new Error(errorMessage)
       acquireTokenSilentMocked.mockRejectedValue(error)
 
-      const token = await getToken()
+      const token = await getMSALToken()
 
       expect(token).toBeUndefined()
       expect(loggerWarnSpy).toHaveBeenCalledOnce()
       expect(loggerWarnSpy).toHaveBeenNthCalledWith(1, error)
 
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-      expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(1,
-        'Sign In Completed', {
-          sign_in_method: 'SSO',
-          sign_in_result: 'failed',
-        })
-
-      expect(tokenStoreMock.setToken).not.toHaveBeenCalled()
+      expect(tokenStoreMock.setTokenExpiration).not.toHaveBeenCalled()
 
       expect(loginRedirectMocked).toHaveBeenCalledOnce()
       expect(loginRedirectMocked).toHaveBeenCalledWith(/* nothing */)
     })
 
-    it('should return null when msalInstance has not account', async () => {
+    it('should return null when msalInstance has no account', async () => {
       getAccountMock.mockReturnValue(undefined)
-      const token = await getToken()
+      const token = await getMSALToken()
 
       expect(token).toBeNull()
       expect(loggerWarnSpy).not.toHaveBeenCalled()
 
       expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
-      expect(tokenStoreMock.setToken).not.toHaveBeenCalled()
+      expect(tokenStoreMock.setTokenExpiration).not.toHaveBeenCalled()
 
       expect(loginRedirectMocked).not.toHaveBeenCalled()
     })
