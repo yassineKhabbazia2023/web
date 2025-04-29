@@ -81,6 +81,7 @@ export default [
       'vue/attributes-order': 'error',
       'vue/max-attributes-per-line': ['error', { singleline: 2 }],
       '@stylistic/brace-style': ['error', '1tbs', { 'allowSingleLine': false }],
+      '@stylistic/eol-last': ['error', 'always'],
     },
   },
   {
