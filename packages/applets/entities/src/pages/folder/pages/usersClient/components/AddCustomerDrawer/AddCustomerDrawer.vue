@@ -163,7 +163,7 @@ const checkContactRole = async () => {
     try {
       await addCustomerFormRef.value.validate()
       // Check if the contact to be added exists in the database or has a role on the current account
-      hasRoleOnAccount.value = await hasContactRoleOnCommonAccount(newContact.email)
+      hasRoleOnAccount.value = await hasContactRoleOnCommonAccount(newContact.email, props.targetEntityId)
       isNextButtonDisabled.value = hasRoleOnAccount.value
     } catch {
       isNextButtonDisabled.value = true

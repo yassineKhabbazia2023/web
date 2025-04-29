@@ -322,9 +322,11 @@ describe('test accountServices', () => {
     })
 
     it('should check if contact has role on account', async () => {
+      const accountId = mockedAccount.accountId
+
       const email = 'test@test.fr'
 
-      const hasRoleOnAccount = await hasContactRoleOnCommonAccount(email)
+      const hasRoleOnAccount = await hasContactRoleOnCommonAccount(email, accountId)
       expect(hasRoleOnAccount).toBeTruthy()
     })
   })

@@ -170,10 +170,11 @@ export async function getAccountUserByEmail(email: string): Promise<Contact | nu
   return status === 204 ? null : data.items[0]
 }
 
-export async function hasContactRoleOnCommonAccount(email: string) : Promise<boolean> {
+export async function hasContactRoleOnCommonAccount(email: string, accountId?: number) : Promise<boolean> {
   const { data } = await commonApi().gateway.get(
     `${API_PREFIXES.ACCOUNT}/roles/check`, {
       params: {
+        accountId, // Optional: If not provided, we'll check the role across all accounts of the current user
         email,
       },
     },

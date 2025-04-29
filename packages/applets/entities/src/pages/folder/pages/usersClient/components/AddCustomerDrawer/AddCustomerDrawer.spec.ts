@@ -154,7 +154,7 @@ describe('addCustomerDrawer', () => {
       expect(findInputValidationError().exists()).toBeTruthy()
     })
     it('should display a danger alert if the contact already has a role on the current account', async () => {
-      vi.spyOn(
+      const mockHasContactRoleOnCommonAccount = vi.spyOn(
         accountServices,
         'hasContactRoleOnCommonAccount',
       ).mockResolvedValue(true)
@@ -167,6 +167,7 @@ describe('addCustomerDrawer', () => {
       await flushPromises()
       const alertContactExists = wrapper.findComponent({ name: 'PAlert' })
 
+      expect(mockHasContactRoleOnCommonAccount).toHaveBeenCalledWith(formDataMock.email, mockedEntity.accountId)
       expect(alertContactExists.exists()).toBeTruthy()
       expect(
         nextPreviousButtonsWrapper.props('isNextButtonDisabled'),
