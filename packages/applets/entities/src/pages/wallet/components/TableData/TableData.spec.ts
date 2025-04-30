@@ -5,7 +5,7 @@ import { mockTableData } from './mockData'
 import {
   amplitudeServiceMock,
   SelectedEntityManagerMock,
-  defineSelectedEntityMock,
+  persistSelectedEntityMock,
   getStoreMock,
   getMockedUserInfo,
   CurrentUserManagerMock,
@@ -218,7 +218,7 @@ describe('tableData', () => {
     }
     ibsLink.trigger('click')
 
-    expect(defineSelectedEntityMock).toHaveBeenCalledWith(formattedEntity)
+    expect(persistSelectedEntityMock).toHaveBeenCalledWith(formattedEntity)
     expect(wrapper.emitted('access')).toStrictEqual([[testEntity.accountId]])
   })
 

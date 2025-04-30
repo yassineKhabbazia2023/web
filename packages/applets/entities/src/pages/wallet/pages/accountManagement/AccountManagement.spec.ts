@@ -8,12 +8,12 @@ import {
   getMockedSearchCriteria,
 } from '../folders/DeployUtilsMock'
 import type { AccountRow } from '@entities/common/types'
-import { defineSelectedEntityMock } from '@pulse/common/mocks'
+import { SelectedEntityManagerMock } from '@pulse/common/mocks'
 
 import AccountManagement from '.'
 
 vi.mock('@pulse/common/managers', () => ({
-  defineSelectedEntity: defineSelectedEntityMock,
+  SelectedEntityManager: SelectedEntityManagerMock,
 }))
 
 const mockRouterPush = vi.fn()

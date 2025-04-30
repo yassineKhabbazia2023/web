@@ -12,7 +12,7 @@ import {
   accountsRowMock,
   entitiesFromAccountsRow,
   SelectedEntityManagerMock,
-  defineSelectedEntityMock,
+  persistSelectedEntityMock,
   getStoreMock,
 } from '@pulse/common/mocks'
 import { useSelectedEntityStore } from '@pulse/common/stores'
@@ -219,10 +219,10 @@ describe('handleNotificationAction', () => {
 
       const expectedEntity = { accountId, legalName, accountNumber }
 
-      expect(defineSelectedEntityMock).toHaveBeenCalledOnce()
-      expect(defineSelectedEntityMock).toHaveBeenCalledWith(expectedEntity)
+      expect(persistSelectedEntityMock).toHaveBeenCalledOnce()
+      expect(persistSelectedEntityMock).toHaveBeenCalledWith(expectedEntity)
     } else {
-      expect(defineSelectedEntityMock).not.toHaveBeenCalled()
+      expect(persistSelectedEntityMock).not.toHaveBeenCalled()
     }
   })
 })

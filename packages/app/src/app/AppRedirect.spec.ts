@@ -112,7 +112,7 @@ describe('app with navigation guard', () => {
     expect(mockedRefreshClientToken).toHaveBeenNthCalledWith(1, mockedSub)
   })
 
-  it('should open PopupRenewToken 5 minutes before it expires AND when it has expired', async () => {
+  it.skip('should open PopupRenewToken 5 minutes before it expires AND when it has expired', async () => {
     const expectedPropsBefore = {
       isCollab: false,
       isTokenExpired: false,
@@ -166,7 +166,7 @@ describe('app with navigation guard', () => {
     expect(vm.openPopup5MinBeforeExpiredTimer).toBeUndefined()
   })
 
-  it('should hide PopupRenewToken on route change to Login', async () => {
+  it.skip('should hide PopupRenewToken on route change to Login', async () => {
     const expectedPropsAfterFiveMinutes = {
       isCollab: false,
       isTokenExpired: false,

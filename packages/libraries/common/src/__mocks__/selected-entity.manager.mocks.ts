@@ -1,5 +1,9 @@
-export const defineSelectedEntityMock = vi.fn()
+export const persistSelectedEntityMock = vi.fn()
+export const getSelectedEntityMock = vi.fn()
+export const clearSelectedEntityMock = vi.fn()
 
 export const SelectedEntityManagerMock = {
-  defineSelectedEntity: defineSelectedEntityMock,
+  persistSelectedEntity: persistSelectedEntityMock,
+  getSelectedEntity: getSelectedEntityMock,
+  clearSelectedEntity: clearSelectedEntityMock,
 }

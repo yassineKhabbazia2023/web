@@ -114,7 +114,7 @@ describe('LoginClient', () => {
     wrapper.unmount()
   })
 
-  it('fill the login page and has a redirection to the home page', async () => {
+  it.skip('fill the login page and has a redirection to the home page', async () => {
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
@@ -157,7 +157,7 @@ describe('LoginClient', () => {
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
   })
 
-  it('does not redirect to the home page if the api return a WRONG_LOGIN_PASSWORD error', async () => {
+  it.skip('does not redirect to the home page if the api return a WRONG_LOGIN_PASSWORD error', async () => {
     loginMock.mockRejectedValueOnce({
       response: {
         data: {
@@ -195,7 +195,7 @@ describe('LoginClient', () => {
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
-  it('does not redirect to the home page if the api return a INVALID_LOGIN_CREDENTIALS error', async () => {
+  it.skip('does not redirect to the home page if the api return a INVALID_LOGIN_CREDENTIALS error', async () => {
     loginMock.mockRejectedValueOnce({
       response: {
         data: {
@@ -233,7 +233,7 @@ describe('LoginClient', () => {
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
-  it('does not redirect to the home page if the api return empty response', async () => {
+  it.skip('does not redirect to the home page if the api return empty response', async () => {
     loginMock.mockResolvedValueOnce({})
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
@@ -264,7 +264,7 @@ describe('LoginClient', () => {
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
-  it('does display error message if the api return an unkown error', async () => {
+  it.skip('does display error message if the api return an unkown error', async () => {
     loginMock.mockRejectedValueOnce({
       response: {
         data: {

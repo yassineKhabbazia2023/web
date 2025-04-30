@@ -5,7 +5,7 @@ import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import {
   getStoreMock,
   SelectedEntityManagerMock,
-  defineSelectedEntityMock,
+  persistSelectedEntityMock,
   getMockedEntity,
 } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
@@ -81,8 +81,8 @@ describe('sidebarEntity', () => {
     })
 
     it.skip('should call SelectedEntityManager on mounted', () => {
-      expect(defineSelectedEntityMock).toHaveBeenCalledOnce()
-      expect(defineSelectedEntityMock).toHaveBeenNthCalledWith(1, defaultEntityMock)
+      expect(persistSelectedEntityMock).toHaveBeenCalledOnce()
+      expect(persistSelectedEntityMock).toHaveBeenNthCalledWith(1, defaultEntityMock)
     })
 
     it.skip('should call SelectedEntityManager when click on EntityAvatar', () => {
@@ -92,8 +92,8 @@ describe('sidebarEntity', () => {
       const entity = entities.at(1)
       secondEntityAvatar.vm.$emit('entity-selected', entity)
 
-      expect(defineSelectedEntityMock).toHaveBeenCalledTimes(2)
-      expect(defineSelectedEntityMock).toHaveBeenNthCalledWith(2, entity)
+      expect(persistSelectedEntityMock).toHaveBeenCalledTimes(2)
+      expect(persistSelectedEntityMock).toHaveBeenNthCalledWith(2, entity)
     })
 
     it.skip('should display the sidebar with the appropriate background color', async () => {

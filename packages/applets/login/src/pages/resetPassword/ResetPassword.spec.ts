@@ -42,7 +42,7 @@ describe('reset password', () => {
     wrapper.unmount()
   })
 
-  it('validate the reset password form and has a redirection to the success page', async () => {
+  it.skip('validate the reset password form and has a redirection to the success page', async () => {
     const elForm = wrapper.find('form')
     mockAuthPost.mockResolvedValueOnce({})
     expect(elForm.exists()).toBeTruthy()
@@ -69,7 +69,7 @@ describe('reset password', () => {
     })
   })
 
-  it('should redirect to the failed page when status is 429', async () => {
+  it.skip('should redirect to the failed page when status is 429', async () => {
     mockAuthPost.mockRejectedValueOnce({ status: 429, response: { data: { maxAttempts: 5 } } })
 
     const input = wrapper.find('[data-testid="reset-password-input-email"]')

@@ -4,7 +4,7 @@ import {
   getPaginationMock,
   getMockedUserInfo,
   getMockedEntities,
-  defineSelectedEntityMock,
+  SelectedEntityManagerMock,
   hasPermissionMock,
   CurrentUserManagerMock,
   getStoreMock,
@@ -131,7 +131,7 @@ vi.mock('./DeployUtils', async () => ({
 }))
 
 vi.mock('@pulse/common/managers', () => ({
-  defineSelectedEntity: defineSelectedEntityMock,
+  SelectedEntityManager: SelectedEntityManagerMock,
   CurrentUserManager: CurrentUserManagerMock,
 }))
 

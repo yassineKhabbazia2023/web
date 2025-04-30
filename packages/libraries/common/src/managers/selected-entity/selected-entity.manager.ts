@@ -19,7 +19,6 @@ export class SelectedEntityManager {
   }
 
   static getSelectedEntity() {
-
     const selectedEntityInLocalStorage = localStorage.getItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY)
     const selectedEntityStore = useSelectedEntityStore()
     const storedSelectedEntity = selectedEntityStore.selectedEntity

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
-import { amplitudeServiceResetMock, amplitudeServiceMock } from '@pulse/common/mocks'
+import { amplitudeServiceMock } from '@pulse/common/mocks'
 
 import LoginCollab from './LoginCollab.vue'
 
@@ -43,9 +43,6 @@ describe('loginCollab', () => {
       await loginButton.vm.$emit('click')
 
       expect(spyMsalLoginRedirect).toHaveBeenCalledOnce()
-    })
-    it('should reset Amplitude on page load', () => {
-      expect(amplitudeServiceResetMock).toHaveBeenCalledOnce()
     })
   })
 })

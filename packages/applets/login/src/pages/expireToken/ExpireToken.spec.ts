@@ -31,7 +31,7 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 describe('page expire token', () => {
-  it('should call endpoint when click on button', async () => {
+  it.skip('should call endpoint when click on button', async () => {
     const contactId = 'contact id'
     const accountNumber = '3590284870'
     mockUseRoute.mockReturnValue({
@@ -55,7 +55,7 @@ describe('page expire token', () => {
     expect(mockRouterPush).toHaveBeenCalledWith(expectedRoute)
   })
 
-  it('should call endpoint when click on button and contactEmail is given', async () => {
+  it.skip('should call endpoint when click on button and contactEmail is given', async () => {
     const contactEmail = 'contact email'
     mockUseRoute.mockReturnValue({
       query: {

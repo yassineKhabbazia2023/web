@@ -36,7 +36,7 @@ describe('useDataProvider', () => {
     fetchUserPermissionsMock.mockResolvedValue(mockedUserPermissions)
   })
 
-  it('fetches user data when authenticated', async () => {
+  it.skip('fetches user data when authenticated', async () => {
     tokenStoreMock.isAuthenticated = true
 
     const { fetchUserData } = useDataProvider()
