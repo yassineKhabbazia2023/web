@@ -59,7 +59,7 @@ async function createWrapper(allCollaborators = false, hasCollaboratorRoles = fa
         CollaboratorAutocomplete: true,
         PBlockHeader: {
           name: 'PBlockHeader',
-          template: '<div><slot /><slot name="subtitle"><slot name="suffix"></div>',
+          template: '<div><slot /><slot name="subtitle" /><slot name="suffix" /></div>',
         },
         PForm: {
           name: 'PForm',
