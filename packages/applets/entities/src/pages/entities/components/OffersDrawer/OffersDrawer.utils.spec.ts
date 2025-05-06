@@ -3,6 +3,8 @@ import { OffersDrawerStep } from './OffersDrawer.enums'
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 import { ClientContact } from '../PrincipalContact/PrincipalContactTypes'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
+import { type PatchValue } from '@entities/services/PatchRecordService'
+import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 
 import {
   getHasNoSignatory,
@@ -10,7 +12,13 @@ import {
   getIsAllCollaboratorRoleSelected,
   getIsMissingCollaboratorRole,
   getIsNextButtonDisabled,
+  updateAccountOnInput,
 } from './OffersDrawer.utils'
+
+const addPathValueMock = vi.hoisted(() => vi.fn())
+vi.mock('@entities/services/PatchRecordService/PatchRecordService', () => ({
+  addPathValue: addPathValueMock,
+}))
 
 const roleIdMock = 17
 const mockedCollaborators = getMockedCollaborators()
@@ -281,6 +289,38 @@ describe('test OffersDrawer.utils', () => {
         principalContacts,
       })
       expect(isNextButtonDisabled).toBe(expected)
+    })
+  })
+
+  describe('updateAccountOnInput', () => {
+    it('should update account.value and call addPathValue properly', () => {
+      const accountMock = getMockedAccount()
+
+      const fieldKey: string = 'commercialName'
+      const fieldValue: any = 'My Company'
+      const account = accountMock
+      const patchValues: PatchValue[] = []
+
+      const expectedParams = [
+        patchValues,
+        fieldKey,
+        accountMock.commercialName,
+        fieldValue,
+      ]
+      const expectedAccount = {
+        ...accountMock,
+        commercialName: fieldValue,
+      }
+
+      const updatedAccount = updateAccountOnInput(
+        fieldKey,
+        fieldValue,
+        patchValues,
+        account,
+      )
+      expect(addPathValueMock).toHaveBeenCalledOnce()
+      expect(addPathValueMock).toHaveBeenCalledWith(...expectedParams)
+      expect(updatedAccount).toStrictEqual(expectedAccount)
     })
   })
 })

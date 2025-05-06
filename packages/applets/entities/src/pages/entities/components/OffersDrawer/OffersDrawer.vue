@@ -95,6 +95,7 @@
           />
           <CompanyInformation
             v-if="account && currentStep === OffersDrawerStep.INFORMATION"
+            ref="companyInformation"
             :modelValue="account"
             :providerName="providerName"
             data-testid="information-step"
@@ -132,10 +133,9 @@
 
 <script setup lang="ts">
 import { logger } from '@pulse/core'
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
-import { get } from 'lodash-es'
 import { PDrawer, PSteps, PStep, PIcon, PLoader } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
@@ -153,7 +153,7 @@ import {
   getOffersBookLink,
   getPrincipalContacts,
 } from '@entities/services/offer'
-import { addPathValue, getPatchOperations } from '@entities/services/PatchRecordService/PatchRecordService'
+import { getPatchOperations } from '@entities/services/PatchRecordService/PatchRecordService'
 import { type PatchValue } from '@entities/services/PatchRecordService'
 import { OffersDrawerStep } from './OffersDrawer.enums'
 import { OFFERS_DRAWER_STEPS } from './OffersDrawer.const'
@@ -178,7 +178,7 @@ import { type Contact } from '@entities/services/contact/contactTypes'
 import { ContactType } from '@pulse/common/enums'
 import { amplitudeService } from '@pulse/common'
 import type { ContactWithRoles } from '../ManageCollaborators/ManageCollaboratorsTypes'
-import { getIsNextButtonDisabled } from './OffersDrawer.utils'
+import { getIsNextButtonDisabled, updateAccountOnInput } from './OffersDrawer.utils'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -209,12 +209,14 @@ const isSubmitButton = computed((): boolean => {
 })
 
 const isNextButtonDisabled = computed(() => {
-  return getIsNextButtonDisabled({
+  const isDisabled = getIsNextButtonDisabled({
     currentSubscriptionOffer: currentSubscriptionOffer.value,
     currentStep: currentStep.value,
     selectedCollaboratorsWithRoles: selectedCollaboratorsWithRoles.value,
     principalContacts: principalContacts.value,
   })
+
+  return isDisabled
 })
 
 const emit = defineEmits<{
@@ -235,6 +237,7 @@ const account = ref<Account | undefined>()
 const notes = ref<Note[]>([])
 const isLoading = ref<boolean>(true)
 const confirmationModalVisible = ref<boolean>(false)
+const companyInformationRef = useTemplateRef('companyInformation')
 
 const internalIsOpened = computed({
   get() {
@@ -342,8 +345,7 @@ const sanitizedOffersDrawerLink = computed(
 )
 
 function onInputAccount(fieldKey: string, value: any) {
-  const previousValue = get(account.value, fieldKey)
-  addPathValue(patchValues, fieldKey, previousValue, value)
+  account.value = updateAccountOnInput(fieldKey, value, patchValues, account.value)
 }
 
 function onClickPrevious() {
@@ -447,7 +449,14 @@ const handleConfirm = async () => {
   }, 600)
 }
 
-function onClickNext() {
+async function onClickNext() {
+  if (currentStep.value === OffersDrawerStep.INFORMATION) {
+    const formIsValid = await companyInformationRef.value?.isValid?.()
+
+    if (!formIsValid) {
+      return
+    }
+  }
   if (isSubmitButton.value) {
     confirmationModalVisible.value = true
     return

@@ -20,6 +20,7 @@
     </div>
     <PForm
       v-if="providerName && internalAccount && !isLoading"
+      ref="companyForm"
       :pModel="internalAccount"
       pLabelPosition="top"
       class="company-information__form"
@@ -54,7 +55,7 @@
 
 <script setup lang="ts">
 import { logger } from '@pulse/core'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith } from 'lodash-es'
 import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
@@ -80,6 +81,7 @@ const emit = defineEmits<{
 const formStructure = ref<FormSection[]>()
 const internalAccount = ref<Account | undefined>()
 const isLoading = ref<boolean>(true)
+const companyFormRef = useTemplateRef('companyForm')
 
 const handleUpdateAccountModel = (fieldKey: string, fieldValue: any) => {
   if (internalAccount.value === undefined) {
@@ -102,8 +104,12 @@ onMounted(async () => {
   }
 })
 
+function isValid() {
+  return companyFormRef.value?.validate() ?? false
+}
+
 defineExpose({
-  handleUpdateAccountModel,
+  isValid,
 })
 </script>
 

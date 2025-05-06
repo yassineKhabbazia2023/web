@@ -1,0 +1,118 @@
+[
+  {
+    "title": "Identifiants de l'entreprise",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "accountNumber",
+        "pFieldType": "input",
+        "pLabel": "Identifiant"
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-60",
+        "pDisabled": true,
+        "pFieldKey": "legal.legalName",
+        "pFieldType": "input",
+        "pLabel": "Raison sociale"
+      }
+    ]
+  },
+  {
+    "title": "Informations générales de l’entreprise",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "min-width--4 flex--basis-30",
+        "pDisabled": true,
+        "pFieldKey": "legal.siren",
+        "pFieldType": "input",
+        "pLabel": "SIREN"
+      }
+    ]
+  },
+  {
+    "title": "",
+    "fields": [
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": false,
+        "pFieldKey": "turnover",
+        "pFieldType": "input",
+        "pType":"number",
+        "pSuffixIconName":"currencyEuro",
+        "pLabel": "Chiffre d’affaires de l’année précédente",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
+      },
+      {
+        "modelValue": "",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": false,
+        "pFieldKey": "legal.staffSizeRange",
+        "pFieldType": "dropdown",
+        "pLabel": "Effectifs",
+        "pTestId": "offer-staff-size-range",
+        "referentialKey": "staffSizeRange",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": false,
+        "pFieldType": "dropdown",
+        "pFieldKey": "missionType",
+        "pLabel": "Type de mission",
+        "pTestId": "mission-type-list",
+        "referentialKey": "missionType",
+        "pRules": [{
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
+      },
+      {
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pDisabled": false,
+        "pFieldKey": "officeId",
+        "pFieldType": "dropdown",
+        "pLabel": "Bureau RYDGE de rattachement",
+        "pTestId": "offer-office-name-list",
+        "referentialKey": "officeName",
+        "pRules": [{
+          "required": true,
+          "message": "Veuillez saisir une valeur",
+          "trigger": "change"
+        }]
+      }
+    ]
+  },
+  {
+    "title": "Informations comptables et fiscales de l’entreprise",
+    "fields": [
+      {
+        "pCssClass": "min-width--4 flex--basis-50",
+        "pDisabled": false,
+        "pFieldKey": "accounting.accountingType",
+        "pFieldType": "dropdown",
+        "pLabel": "Type de comptabilité",
+        "pTestId": "offer-accounting-types",
+        "referentialKey": "accountingType",
+        "pRules": [{
+            "required": true,
+            "message": "Veuillez saisir une valeur",
+            "trigger": "change"
+          }]
+      }
+    ]
+  }
+]

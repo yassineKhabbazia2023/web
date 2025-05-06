@@ -17,6 +17,7 @@ import type {
 } from '@entities/services/account'
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
+import PennylaneOfferFormStructure from '@entities/common/config/forms/PennylaneOfferFormStructure.json'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
 import EntityCreatorFormStructure from '@entities/common/config/forms/EntityCreatorFormStructure.json'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
@@ -126,6 +127,8 @@ export const getFormSections = (formStructureName: FormStructureName) => {
     return MEGOffersFormStructure as FormSection[]
   case ProviderName.LOOP:
     return LOOPOfferFormStructure as FormSection[]
+  case ProviderName.PENNYLANE:
+    return PennylaneOfferFormStructure as FormSection[]
   case 'CompanyProfile':
     return InformationFormStructure as FormSection[]
   case 'EntityCreator':

@@ -2,6 +2,10 @@ import { ContactWithRoles } from '../ManageCollaborators/ManageCollaboratorsType
 import { ClientContact } from '../PrincipalContact/PrincipalContactTypes'
 import { SubscriptionOfferServices } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import { OffersDrawerStep } from './OffersDrawer.enums'
+import { get, setWith } from 'lodash-es'
+import { addPathValue } from '@entities/services/PatchRecordService/PatchRecordService'
+import { type Account } from '@entities/services/account'
+import { type PatchValue } from '@entities/services/PatchRecordService'
 
 export function getHasNoSignatory(
   currentStep: OffersDrawerStep,
@@ -94,4 +98,18 @@ export function getIsNextButtonDisabled({
   }
 
   return false
+}
+
+export function updateAccountOnInput(
+  fieldKey: string,
+  fieldValue: any,
+  patchValues: PatchValue[],
+  account?: Account,
+) {
+  const previousValue = get(account, fieldKey)
+  addPathValue(patchValues, fieldKey, previousValue, fieldValue)
+  if (account !== undefined) {
+    setWith(account, fieldKey, fieldValue, Object)
+  }
+  return account
 }

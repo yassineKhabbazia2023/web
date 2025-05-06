@@ -14,7 +14,6 @@ import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
 import * as ServicesAccount from '@entities/services/account'
 import * as subscriptionService from '@entities/services/subscription/subscriptionService'
 import * as offerService from '@entities/services/offer/index'
-import * as PatchRecordService from '@entities/services/PatchRecordService/PatchRecordService'
 import {
   getMockedAccount,
   getMockedAccountReferential,
@@ -33,6 +32,21 @@ import OffersDrawer from '.'
 
 vi.mock('@pulse/common', () => ({
   amplitudeService: amplitudeServiceMock,
+}))
+
+const getHasNoSignatoryMock = vi.hoisted(() => vi.fn())
+const getIsNoCollaboratorSelectedMock = vi.hoisted(() => vi.fn())
+const getIsAllCollaboratorRoleSelectedMock = vi.hoisted(() => vi.fn())
+const getIsMissingCollaboratorRoleMock = vi.hoisted(() => vi.fn())
+const getIsNextButtonDisabledMock = vi.hoisted(() => vi.fn())
+const updateAccountOnInputMock = vi.hoisted(() => vi.fn())
+vi.mock('./OffersDrawer.utils', () => ({
+  getHasNoSignatory: getHasNoSignatoryMock,
+  getIsNoCollaboratorSelected: getIsNoCollaboratorSelectedMock,
+  getIsAllCollaboratorRoleSelected: getIsAllCollaboratorRoleSelectedMock,
+  getIsMissingCollaboratorRole: getIsMissingCollaboratorRoleMock,
+  getIsNextButtonDisabled: getIsNextButtonDisabledMock,
+  updateAccountOnInput: updateAccountOnInputMock,
 }))
 
 const principalContacts: ClientContact[] = getMockedPrincipalContacts()
@@ -85,9 +99,11 @@ vi.mock('@braintree/sanitize-url', () => ({
   sanitizeUrl: getMockedSanitized,
 }))
 
+const addPathValueMock = vi.hoisted(() => vi.fn())
+const getPatchOperationsMock = vi.hoisted(() => vi.fn())
 vi.mock('@entities/services/PatchRecordService/PatchRecordService', () => ({
-  addPathValue: vi.fn(),
-  getPatchOperations: vi.fn(() => mockedPatchOperations),
+  addPathValue: addPathValueMock,
+  getPatchOperations: getPatchOperationsMock,
 }))
 
 vi.mock('@entities/services/subscription/subscriptionService', () => ({
@@ -153,6 +169,9 @@ const findNextPreviousButtons = (wrapper: VueWrapper) =>
   wrapper.findComponent('[data-testid=next-previous-buttons]') as VueWrapper
 
 describe('offersDrawer', () => {
+  beforeEach(() => {
+    getPatchOperationsMock.mockReturnValue(mockedPatchOperations)
+  })
   describe('interactions', () => {
     it("should emit the 'update:modelValue' event when the v-model of confirmation modal is updated", async () => {
       const wrapper = await getWrapper(true)
@@ -318,9 +337,7 @@ describe('offersDrawer', () => {
         expect(createSubscriptionRequestSpy).toHaveBeenNthCalledWith(1, expectedArgumentWithoutValidation)
       })
       it('should not patch the account when no account diff', async () => {
-        vi
-          .spyOn(PatchRecordService, 'getPatchOperations')
-          .mockReturnValueOnce([])
+        getPatchOperationsMock.mockReturnValueOnce([])
 
         const wrapper = await getWrapper(true)
         const firstOffer = findFirstOffer(wrapper)
@@ -415,8 +432,6 @@ describe('offersDrawer', () => {
     })
     describe('when input CompanyInformation data', () => {
       it('should call addPathValue with proper arguments', async () => {
-        const addPathValueSpy = vi.spyOn(PatchRecordService, 'addPathValue')
-
         const wrapper = await getWrapper(true)
         const firstOffer = findFirstOffer(wrapper)
         await firstOffer.trigger('click')
@@ -435,19 +450,18 @@ describe('offersDrawer', () => {
 
         const component = wrapper.findComponent({ name: 'CompanyInformation' })
         const fieldKey = 'accounting.fiscalExerciseDuration'
-        const currentValue = mockedAccount?.accounting?.fiscalExerciseDuration
         const newValue = 10
         component.vm.$emit('input', fieldKey, newValue)
         const patchValues: PatchValue[] = []
         const expectedArguments = [
-          patchValues,
           fieldKey,
-          currentValue,
           newValue,
+          patchValues,
+          mockedAccount,
         ]
 
-        expect(addPathValueSpy).toHaveBeenCalledOnce()
-        expect(addPathValueSpy).toHaveBeenNthCalledWith(1, ...expectedArguments)
+        expect(updateAccountOnInputMock).toHaveBeenCalledOnce()
+        expect(updateAccountOnInputMock).toHaveBeenNthCalledWith(1, ...expectedArguments)
       })
     })
   })
@@ -613,6 +627,8 @@ describe('offersDrawer', () => {
       expect(manageCollaboratorsComponent.props('collaboratorRoles')).toStrictEqual(expectedCollaboratorRoles)
     })
     it('should disable the next button when no collaborator is selected', async () => {
+      getIsNextButtonDisabledMock.mockReturnValue(true)
+
       const wrapper = await getWrapper(true)
       const firstOffer = findFirstOffer(wrapper)
       await firstOffer.trigger('click')
