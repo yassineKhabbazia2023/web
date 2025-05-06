@@ -170,6 +170,7 @@ import type {
   SearchCriteria,
   SearchResult,
   DeploymentStatus,
+  WalletData,
 } from '../../types'
 import Filters from '../../components/Filters'
 import TableData from '../../components/TableData'
@@ -259,7 +260,7 @@ const searchCriteria = ref<SearchCriteria>({
   filterByDeploymentStatus: '',
 })
 
-const searchResult = ref<SearchResult>({
+const searchResult = ref<SearchResult<WalletData>>({
   currentPage: 0,
   items: [],
   totalPage: 0,

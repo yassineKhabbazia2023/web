@@ -1,11 +1,11 @@
-import type { WalletData, SearchCriteria, DeploymentStatus } from '../../types'
+import type { WalletData, SearchCriteria, DeploymentStatus, FilterQueryParams } from '../../types'
 import type { AccountRow } from '@entities/services/account'
 import { fetchAccounts } from '@entities/services/account'
 import { getInitials, removeFalsyValues } from '@entities/helper'
 import type { QueryResult } from '@pulse/common/types'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 
-export function getQueryParams(searchCriteria: SearchCriteria) {
+export function getQueryParams(searchCriteria: SearchCriteria): FilterQueryParams {
   return {
     pageNumber: searchCriteria.currentPage,
     pageSize: searchCriteria.limit,

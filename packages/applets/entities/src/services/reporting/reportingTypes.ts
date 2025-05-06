@@ -1,16 +1,6 @@
 import type { Report } from '@entities/common/types/BIReportsTypes'
-import type { Entity } from '@pulse/common/types'
+import type { Entity, QueryResult } from '@pulse/common/types'
 
-export interface GetReportsRequest {
-  items: Report[]
-  currentPage: number
-  totalItems: number
-  totalPage: number
-}
+export type GetReportsRequest = QueryResult<Report>
 
-export interface GetReportAccountsRequest {
-  items: Entity[]
-  currentPage: number
-  totalItems: number
-  totalPage: number
-}
+export type GetReportAccountsRequest = QueryResult<Entity>

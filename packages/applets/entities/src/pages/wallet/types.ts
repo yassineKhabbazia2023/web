@@ -41,6 +41,13 @@ export interface SearchCriteria {
   filterByDeploymentStatus?: string
 }
 
+export interface FilterQueryParams {
+  pageNumber: number,
+  pageSize: number,
+  search?: string,
+  accountNumber?: string,
+  deploymentStatus?: string,
+}
+
 // we want to use SearchResult as an alias for QueryResult<WalletData>
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SearchResult extends QueryResult<WalletData> {}
+export type SearchResult<T> = QueryResult<T>

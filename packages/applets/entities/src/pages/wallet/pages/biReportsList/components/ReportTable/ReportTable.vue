@@ -61,7 +61,7 @@
       pSortable
     >
       <template #default="scope">
-        <p>{{ getReportFormattedDate(scope.row.updateDate) }}</p>
+        <p>{{ getReportFormattedDate(scope.row.dataUpdateDate) }}</p>
       </template>
     </PTableColumn>
     <PTableColumn

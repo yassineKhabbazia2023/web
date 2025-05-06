@@ -60,7 +60,7 @@ const getCollaboratorsTabs = () => [
   {
     name: 'biReportsList',
     title: t('biReportsList'),
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.MODIFY_ACCOUNT_RIGHTS),
+    display: CurrentUserManager.hasPermission(PERMISSION_CODES.POWERBI_REPORT),
   },
   {
     name: 'subscriptions',

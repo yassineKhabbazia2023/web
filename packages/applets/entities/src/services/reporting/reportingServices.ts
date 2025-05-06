@@ -4,12 +4,11 @@ import type {
   GetReportsRequest,
   GetReportAccountsRequest,
 } from './reportingTypes'
-import type { ReportType } from '@entities/common/types/BIReportsTypes'
+import type { ReportTableRow, ReportType } from '@entities/common/types/BIReportsTypes'
+import type { FilterQueryParams } from '@entities/pages/wallet/types'
+import type { QueryResult } from '@pulse/common/types'
 
-export const fetchBIReports = async (
-  accountId: number,
-  reportTypeId?: number,
-): Promise<GetReportsRequest> => {
+export const fetchBIReports = async (accountId: number, reportTypeId?: number): Promise<GetReportsRequest> => {
   const basePath = `${API_PREFIXES.REPORTING}/reports`
   const path = reportTypeId ? basePath : `${basePath}/currentuser`
   const { data } = await commonApi().gateway.get(
@@ -25,20 +24,15 @@ export const fetchBIReports = async (
   return data
 }
 
-export const fetchReportAccounts = async (
-  searchParams: string,
-): Promise<GetReportAccountsRequest> => {
-  const { data } = await commonApi().gateway.get(
-    `${API_PREFIXES.REPORTING}/account/${searchParams}`,
-  )
+export const fetchReportAccounts = async (searchParams: string): Promise<GetReportAccountsRequest> => {
+  const pathSuffix = searchParams ? `/${searchParams}` : ''
+  const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/account${pathSuffix}`)
 
   return data
 }
 
 export const fetchBIReportTypes = async (): Promise<ReportType[]> => {
-  const { data } = await commonApi().gateway.get(
-    `${API_PREFIXES.REPORTING}/reportType`,
-  )
+  const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/reportType`)
 
   return data
 }
@@ -60,19 +54,23 @@ export const uploadBIreport = async (
 ) => {
   const formData = new FormData()
   formData.append('report', reportFile)
-  await commonApi().gateway.post(
-    `${API_PREFIXES.REPORTING}/reports/currentuser`,
-    formData,
-    {
-      params: {
-        accountId,
-        reportTypeId,
-        reportName,
-        reportId,
-      },
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
+  await commonApi().gateway.post(`${API_PREFIXES.REPORTING}/reports/currentuser`, formData, {
+    params: {
+      accountId,
+      reportTypeId,
+      reportName,
+      reportId,
     },
-  )
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  })
+}
+
+export const fetchAvailableReports = async (queryParams: FilterQueryParams): Promise<QueryResult<ReportTableRow>> => {
+  const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/reports/available`, {
+    params: queryParams,
+  })
+
+  return data
 }

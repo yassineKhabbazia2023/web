@@ -74,6 +74,7 @@ import type {
   SearchCriteria,
   SearchResult,
   DeploymentStatus,
+  WalletData,
 } from '../../types'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 
@@ -113,7 +114,7 @@ const searchCriteria = ref<SearchCriteria>({
   search: '',
   filterByDeploymentStatus: '',
 })
-const searchResult = ref<SearchResult>({
+const searchResult = ref<SearchResult<WalletData>>({
   currentPage: 0,
   items: [],
   totalPage: 0,
