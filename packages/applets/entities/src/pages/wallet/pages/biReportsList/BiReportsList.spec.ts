@@ -1,9 +1,10 @@
-import { flushPromises, shallowMount, VueWrapper } from '@vue/test-utils'
-import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { nextTick } from 'vue'
-
-import { getFormattedMockReports } from '@entities/__mocks__/bi-report.mocks'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { flushPromises, shallowMount, VueWrapper } from '@vue/test-utils'
 import { PAGE_SIZES } from '@entities/constants'
+import { getFormattedMockReports } from '@entities/__mocks__/bi-report.mocks'
+import { ReportStatus } from '@entities/common/types/BIReports.enums'
+
 import BiReportsList from '.'
 
 const mockReports = getFormattedMockReports()
@@ -13,17 +14,31 @@ const mockApiResponse = {
   totalItems: mockReports.length,
 }
 
+const displayNotificationMock = vi.hoisted(() => vi.fn())
+const updateReportStatusMock = vi.hoisted(() => vi.fn(() => Promise.resolve()))
 const fetchReportsMock = vi.hoisted(() => vi.fn(() => Promise.resolve(mockApiResponse)))
 
 vi.mock('@entities/services/reporting', () => ({
   fetchAvailableReports: fetchReportsMock,
+  updateReportStatus: updateReportStatusMock,
+}))
+
+vi.mock('@entities/common/utils', () => ({
+  displayNotification: displayNotificationMock,
 }))
 
 const createWrapper = (options = {}) =>
   shallowMount(BiReportsList, {
     global: {
       stubs: {
-        ReportTable: true,
+        PLoader: {
+          template: '<div data-testid="loader">Loading...</div>',
+        },
+        ReportTable: {
+          name: 'ReportTable',
+          template: '<div />',
+          emits: ['update-report-status'],
+        },
         PPagination: {
           name: 'PPagination',
           template: '<div class="p-pagination"><slot /></div>',
@@ -58,6 +73,40 @@ describe('BiReportsList', () => {
 
     it('displays the pagination label', () => {
       expect(wrapper.text()).toContain('on')
+    })
+  })
+
+  describe('Status Update Events', () => {
+    it('handles update-report-status and calls updateReportStatus service', async () => {
+      const report = mockReports[0]
+      const table = wrapper.findComponent({ name: 'ReportTable' })
+
+      await table.vm.$emit('update-report-status', report.accountId, report.reportId, report.name, ReportStatus.OFFLINE)
+      await flushPromises()
+
+      expect(updateReportStatusMock).toHaveBeenCalledWith(report.accountId, report.reportId, ReportStatus.OFFLINE)
+      expect(displayNotificationMock).toHaveBeenCalledWith('success', expect.stringContaining(report.name))
+    })
+
+    it('displays error notification when updateReportStatus fails', async () => {
+      updateReportStatusMock.mockRejectedValueOnce(new Error('fail'))
+
+      const report = mockReports[0]
+      const table = wrapper.findComponent({ name: 'ReportTable' })
+
+      await table.vm.$emit('update-report-status', report.accountId, report.reportId, report.name, ReportStatus.ONLINE)
+      await flushPromises()
+
+      expect(displayNotificationMock).toHaveBeenCalledWith('error', expect.stringContaining('activating'))
+    })
+
+    it('displays error notification when fetchAvailableReports fails', async () => {
+      fetchReportsMock.mockRejectedValueOnce(new Error('fail'))
+
+      wrapper = createWrapper()
+      await flushPromises()
+
+      expect(displayNotificationMock).toHaveBeenCalledWith('error', expect.stringContaining("couldn't load"))
     })
   })
 

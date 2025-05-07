@@ -13,18 +13,17 @@
         pSize="50"
       />
     </div>
-    <div
-      v-else
-    >
+    <div v-else>
       <ReportTable
         :reports="searchResult.items"
         data-testid="bi-reports-list-table"
+        @update-report-status="handleUpdateReportStatus"
       />
     </div>
   </div>
   <PPagination
     v-model:p-page-size="searchCriteria.limit"
-    class=" margin-top--6"
+    class="margin-top--6"
     :pCurrentPage="searchCriteria.currentPage"
     :pTotal="searchResult.totalItems"
     :pPageSizes="PAGE_SIZES"
@@ -49,7 +48,7 @@ import { getPaginationLabel } from '@entities/helper'
 import ReportTable from './components/ReportTable'
 import { getMappedReport, getReportsQueryParams } from './utils'
 import { SearchCriteria, SearchResult } from '../../types'
-import { fetchAvailableReports } from '@entities/services/reporting'
+import { fetchAvailableReports, updateReportStatus } from '@entities/services/reporting'
 import { displayNotification } from '@entities/common/utils'
 
 const { t } = useI18n({
@@ -59,13 +58,33 @@ const { t } = useI18n({
 
 const isLoading = ref(false)
 
-// Report Statuses
+// #region manage report status
 const REPORT_STATUSES: Record<ReportStatus, ReportStatusTag> = {
-  [ReportStatus.ONLINE]: { text: t('online'), color: 'success', iconName: 'checkCircle' },
-  [ReportStatus.OFFLINE]: { text: t('offline'), color: 'gray-900', iconName: 'eyeSlash' },
-  [ReportStatus.INITIALIZED]: { text: t('initialized'), color: 'info', iconName: 'stars' },
-  [ReportStatus.FAILED]: { text: t('failed'), color: 'danger', iconName: 'exclamationTriangle' },
+  [ReportStatus.ONLINE]: { type: ReportStatus.ONLINE, text: t('online'), color: 'success', iconName: 'checkCircle' },
+  [ReportStatus.OFFLINE]: { type: ReportStatus.OFFLINE, text: t('offline'), color: 'gray-900', iconName: 'eyeSlash' },
+  [ReportStatus.INITIALIZED]: { type: ReportStatus.INITIALIZED,text: t('initialized'), color: 'info', iconName: 'stars' },
+  [ReportStatus.FAILED]: { type: ReportStatus.FAILED, text: t('failed'), color: 'danger', iconName: 'exclamationTriangle' },
 }
+
+const handleUpdateReportStatus = async (
+  accountId: number,
+  reportId: number,
+  reportName: string,
+  status: ReportStatus,
+) => {
+  try {
+    await updateReportStatus(accountId, reportId, status)
+    fetchReportsData()
+    const action = status === ReportStatus.ONLINE ? t('activated') : t('deactivated')
+    displayNotification('success', t('statusChange', { reportName, action }))
+  } catch {
+    displayNotification(
+      'error',
+      status === ReportStatus.ONLINE ? t('errors.reportActivation') : t('errors.reportDeactivation'),
+    )
+  }
+}
+// #endregion
 
 // #region pagination
 const searchCriteria = reactive<SearchCriteria>({
@@ -120,7 +139,7 @@ const fetchReportsData = async () => {
     const { items, totalItems, totalPage, currentPage } = await fetchAvailableReports(reportsQueryParams)
     updatePaginationDetails(getMappedReport(items, REPORT_STATUSES), currentPage, totalPage, totalItems)
   } catch {
-    displayNotification('error', t('failedFetch'))
+    displayNotification('error', t('errors.reportFetch'))
   } finally {
     isLoading.value = false
   }
@@ -149,14 +168,35 @@ en-US:
   offline: 'Offline'
   initialized: 'Initialized'
   failed: 'Failure'
-  failedFetch: 'Failed to fetch reports.'
+  activated: "activated"
+  deactivated: "deactivated"
   manualUpload: 'Upload Manually'
+  statusChange: 'The report {reportName} has been successfully {action}.'
+  errors:
+    reportActivation: >
+      An error occurred while activating the report. Please try again or contact support if the issue
+      continues.
+    reportDeactivation: >
+      An error occurred while deactivating the report. Please try again later or contact our support team.
+    reportFetch: >
+      We couldn't load the reports. Please check your connection or try again shortly.
 fr-FR:
   on: 'sur'
   online: 'En ligne'
   offline: 'Hors ligne'
   initialized: 'Initialisé'
   failed: 'Incident'
-  failedFetch: 'Échec du chargement des rapports.'
+  activated: "activé"
+  deactivated: "désactivé"
   manualUpload: 'Déposer manuellement'
+  statusChange: 'Le rapport {reportName} a été {action} avec succès.'
+  errors:
+    reportActivation: >
+      Une erreur est survenue lors de l'activation du rapport. Veuillez réessayer ou contacter le support
+      si le problème persiste.
+    reportDeactivation: >
+      Une erreur est survenue lors de la désactivation du rapport. Merci de réessayer ultérieurement ou de
+      contacter notre équipe d'assistance.
+    reportFetch: >
+      Nous n'avons pas pu charger les rapports. Vérifiez votre connexion ou réessayez dans quelques instants.
 </i18n>

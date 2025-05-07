@@ -20,7 +20,7 @@
   <div plabel="Status" pwidth="150" pprop="status" psortable="">
     <p-tag-stub pcontent="Online" pcolor="success" piconleftname="checkCircle" peffect="light" pround="true" pdisabletransitions="false" pclosable="false" style="width: 70%;"></p-tag-stub>
   </div>
-  <div plabel="Actions" pwidth="100" pprop="actions">
-    <p-button-stub ptype="default" pround="false" pcircle="false" pdisabled="false" ploading="false" psize="small" picononly="false" pisactive="false" ptag="button"></p-button-stub>
-  </div>
+  <div plabel="Actions" pwidth="100" pprop="actions"><button trigger="click">
+      <p-button-stub ptype="default" pround="false" pcircle="false" pdisabled="false" ploading="false" psize="small" picononly="false" pisactive="false" ptag="button"></p-button-stub>
+    </button></div>
 </div>

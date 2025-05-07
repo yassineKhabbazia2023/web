@@ -19,9 +19,7 @@
           >
             <PIcon pName="pulse" />
           </PAvatar>
-          <p
-            class="font-semibold margin-left--2"
-          >
+          <p class="font-semibold margin-left--2">
             {{ scope.row.name }}
           </p>
         </div>
@@ -86,10 +84,16 @@
       :pWidth="100"
       pProp="actions"
     >
-      <template #default="">
-        <PButton pSize="small">
-          <PIcon pName="threeDots" />
-        </PButton>
+      <template #default="scope">
+        <PToolbox
+          trigger="click"
+          :pElements="getReportActions(scope.row.status.type)"
+          @p-toolbox-item-clicked="(event) => handleToolboxItemClick(event, scope.row)"
+        >
+          <PButton pSize="small">
+            <PIcon pName="threeDots" />
+          </PButton>
+        </PToolbox>
       </template>
     </PTableColumn>
   </PTable>
@@ -98,8 +102,10 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
-import { PTable, PTableColumn, PTag, PAvatar, PButton, PIcon, PTooltip } from '@pulse/styleguide/components'
+import { PTable, PTableColumn, PTag, PAvatar, PButton, PIcon, PTooltip, PToolbox } from '@pulse/styleguide/components'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { ReportTableProps } from './report-table.types'
+import { ReportStatus } from '@entities/common/types/BIReports.enums'
 
 const { t, d } = useI18n({
   inheritLocale: true,
@@ -108,6 +114,51 @@ const { t, d } = useI18n({
 })
 
 defineProps<ReportTableProps>()
+
+const emit = defineEmits<{
+  'update-report-status': [number, number, string, ReportStatus]
+}>()
+
+const REPORT_ACTIONS = {
+  ACTIVATE_REPORT: 'ActivateReport',
+  DEACTIVATE_REPORT: 'DeactivateReport',
+}
+
+const handleToolboxItemClick = (action: string, row: any) => {
+  const { accountId, reportId, name } = row
+
+  if (action === REPORT_ACTIONS.ACTIVATE_REPORT) {
+    emit('update-report-status', accountId, reportId, name, ReportStatus.ONLINE)
+  } else {
+    emit('update-report-status', accountId, reportId, name, ReportStatus.OFFLINE)
+  }
+}
+
+const getReportActions = (status: ReportStatus): PToolboxItemProps[] => {
+  return [
+    {
+      pIconName: 'checkCircle',
+      pValue: t('activateReport'),
+      pActionName: REPORT_ACTIONS.ACTIVATE_REPORT,
+      pState: 'default',
+      display: [ReportStatus.OFFLINE, ReportStatus.INITIALIZED].includes(status),
+    },
+    {
+      pIconName: 'xCircle',
+      pValue: t('deactivateReport'),
+      pActionName: REPORT_ACTIONS.DEACTIVATE_REPORT,
+      pState: 'default',
+      display: status === ReportStatus.ONLINE,
+    },
+  ]
+    .filter(({ display }) => display)
+    .map(({ pIconName, pValue, pActionName, pState }) => ({
+      pIconName,
+      pValue,
+      pActionName,
+      pState,
+    })) as PToolboxItemProps[]
+}
 
 const getReportFormattedDate = (dateString: string) => {
   return dateString ? d(new Date(dateString), 'short') : '-'
@@ -125,6 +176,8 @@ en-US:
   customerLabel: 'Customer label:'
   initializedOn: 'Initialized on'
   manualUpload: 'Upload Manually'
+  activateReport: 'Activate Report'
+  deactivateReport: 'Deactivate Report'
 fr-FR:
   status: 'Statut'
   actions: 'Actions'
@@ -135,4 +188,6 @@ fr-FR:
   customerLabel: 'Libellé client:'
   initializedOn: 'Initialisé le'
   manualUpload: 'Déposer manuellement'
+  activateReport: 'Activer le rapport'
+  deactivateReport: 'Désactiver le rapport'
 </i18n>

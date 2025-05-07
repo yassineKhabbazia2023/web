@@ -3,6 +3,7 @@ import { ReportStatus } from './BIReports.enums'
 
 export interface ReportStatusTag {
   text: string
+  type: ReportStatus
   color: PTagProps['pColor']
   iconName: PTagProps['pIconLeftName']
 }
@@ -29,7 +30,7 @@ export interface Report {
   dataUpdateDate?: string
 }
 
-type BaseReportExcludes = 'accountId' | 'reportId' | 'documentName' | 'embededReportId' | 'embededReportUrl';
+type BaseReportExcludes = 'documentName' | 'embededReportId' | 'embededReportUrl';
 
 export interface ReportTableRow extends Omit<Report, BaseReportExcludes> {
   embedReportId: string

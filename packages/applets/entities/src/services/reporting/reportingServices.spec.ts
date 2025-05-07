@@ -10,8 +10,11 @@ import {
   fetchReportAccounts,
   uploadBIreport,
   fetchAvailableReports,
+  updateReportStatus,
 } from '.'
+import { ReportStatus } from '@entities/common/types/BIReports.enums'
 
+const mockReportId = 15
 const mockAccountId = 602
 const mockReportTypeId = 1
 const mockBIReports = getMockedBIReports()
@@ -25,6 +28,7 @@ const mockReportUploadInfo = {
 }
 
 const mockPostBIReport = vi.hoisted(() => vi.fn())
+const mockPatchBIReport = vi.hoisted(() => vi.fn())
 const mockGetBIReport = vi.hoisted(() => vi.fn(() => Promise.resolve({ data: {} })))
 
 vi.mock('@pulse/common', () => ({
@@ -32,6 +36,7 @@ vi.mock('@pulse/common', () => ({
     gateway: {
       get: mockGetBIReport,
       post: mockPostBIReport,
+      patch: mockPatchBIReport,
     },
   }),
 }))
@@ -108,6 +113,27 @@ describe('BI Reporting Services', () => {
       expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports/available`, {
         params: queryParams,
       })
+    })
+  })
+
+  describe('updateReportStatus()', () => {
+    it('should send a PATCH request to the correct endpoint with the appropriate payload and query parameters', async () => {
+      const expectedPayload = [{ path: '/status', op: 'replace', value: ReportStatus.ONLINE }]
+
+      const expectedParams = {
+        params: {
+          accountId: mockAccountId,
+          reportId: mockReportId,
+        },
+      }
+
+      await updateReportStatus(mockAccountId, mockReportId, ReportStatus.ONLINE)
+
+      expect(mockPatchBIReport).toHaveBeenCalledWith(
+        `${API_PREFIXES.REPORTING}/reports`,
+        expectedPayload,
+        expectedParams,
+      )
     })
   })
 })

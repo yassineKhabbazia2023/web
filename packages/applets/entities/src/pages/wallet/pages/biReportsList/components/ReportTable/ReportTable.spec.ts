@@ -1,11 +1,13 @@
+import { nextTick } from 'vue'
 import { shallowMount } from '@vue/test-utils'
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeEach } from 'vitest'
 import { ReportTableProps } from './report-table.types'
+import { ReportStatus } from '@entities/common/types/BIReports.enums'
 import { getFormattedMockReports } from '@entities/__mocks__/bi-report.mocks'
 
 import ReportTable from '.'
 
-const mockFirstFormattedReport = getFormattedMockReports().at(0)
+const mockReport = getFormattedMockReports()[0]!
 
 const createWrapper = (propsData: ReportTableProps) => {
   return shallowMount(ReportTable, {
@@ -20,12 +22,18 @@ const createWrapper = (propsData: ReportTableProps) => {
           name: 'PTooltip',
           template: '<div><slot /></div>',
         },
+        PToolbox: {
+          name: 'PToolbox',
+          template: '<button><slot /></button>',
+          emits: ['p-toolbox-item-clicked'],
+          props: ['pElements'],
+        },
         PTableColumn: {
           name: 'PTableColumn',
           template: '<div><slot :row="row" /></div>',
           data() {
             return {
-              row: mockFirstFormattedReport,
+              row: mockReport,
             }
           },
         },
@@ -35,9 +43,42 @@ const createWrapper = (propsData: ReportTableProps) => {
 }
 
 describe('ReportTable', () => {
-  it('should match the snapshot', async () => {
-    const wrapper = createWrapper({ reports: getFormattedMockReports() })
+  let wrapper: ReturnType<typeof createWrapper>
 
-    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/ReportTable.snap')
+  beforeEach(() => {
+    wrapper = createWrapper({
+      reports: getFormattedMockReports(),
+    })
+  })
+
+  describe('Rendering', () => {
+    it('matches the snapshot', async () => {
+      await expect(wrapper.html()).toMatchFileSnapshot('__snap__/ReportTable.snap')
+    })
+  })
+
+  describe('Event Handling', () => {
+    it('emits update-report-status when toolbox item is clicked', async () => {
+      const toolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+      // Simulate click on "Deactivate Report" if the status is ONLINE
+      await toolbox.vm.$emit('p-toolbox-item-clicked', 'DeactivateReport')
+      await nextTick()
+
+      expect(wrapper.emitted('update-report-status')).toStrictEqual([
+        [mockReport.accountId, mockReport.reportId, mockReport.name, ReportStatus.OFFLINE],
+      ])
+    })
+
+    it('emits update-report-status with ONLINE when activating', async () => {
+      const toolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+      await toolbox.vm.$emit('p-toolbox-item-clicked', 'ActivateReport')
+      await nextTick()
+
+      expect(wrapper.emitted('update-report-status')).toStrictEqual([
+        [mockReport.accountId, mockReport.reportId, mockReport.name, ReportStatus.ONLINE],
+      ])
+    })
   })
 })

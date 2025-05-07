@@ -15,10 +15,10 @@ describe('getMappedReport', () => {
     const reports: ReportTableRow[] = getMockReportTable()?.splice(0, 2)
 
     const reportStatus: Record<ReportStatus, ReportStatusTag> = {
-      [ReportStatus.ONLINE]: { text: 'Online', color: 'success', iconName: 'checkCircle' },
-      [ReportStatus.OFFLINE]: { text: 'Offline', color: 'gray-900', iconName: 'eyeSlash' },
-      [ReportStatus.INITIALIZED]: { text: 'Initialized', color: 'info', iconName: 'stars' },
-      [ReportStatus.FAILED]: { text: 'Failure', color: 'danger', iconName: 'exclamationTriangle' },
+      [ReportStatus.ONLINE]: { type: ReportStatus.ONLINE, text: 'Online', color: 'success', iconName: 'checkCircle' },
+      [ReportStatus.OFFLINE]: { type: ReportStatus.OFFLINE, text: 'Offline', color: 'gray-900', iconName: 'eyeSlash' },
+      [ReportStatus.INITIALIZED]: { type: ReportStatus.INITIALIZED, text: 'Initialized', color: 'info', iconName: 'stars' },
+      [ReportStatus.FAILED]: { type: ReportStatus.FAILED, text: 'Failure', color: 'danger', iconName: 'exclamationTriangle' },
     }
 
     const result = getMappedReport(reports, reportStatus)

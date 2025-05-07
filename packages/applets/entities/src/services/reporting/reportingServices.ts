@@ -11,15 +11,12 @@ import type { QueryResult } from '@pulse/common/types'
 export const fetchBIReports = async (accountId: number, reportTypeId?: number): Promise<GetReportsRequest> => {
   const basePath = `${API_PREFIXES.REPORTING}/reports`
   const path = reportTypeId ? basePath : `${basePath}/currentuser`
-  const { data } = await commonApi().gateway.get(
-    path,
-    {
-      params: {
-        accountId,
-        reportTypeId,
-      },
+  const { data } = await commonApi().gateway.get(path, {
+    params: {
+      accountId,
+      reportTypeId,
     },
-  )
+  })
 
   return data
 }
@@ -73,4 +70,23 @@ export const fetchAvailableReports = async (queryParams: FilterQueryParams): Pro
   })
 
   return data
+}
+
+export const updateReportStatus = async (accountId: number, reportId: number, status: string): Promise<void> => {
+  return await commonApi().gateway.patch(
+    `${API_PREFIXES.REPORTING}/reports`,
+    [
+      {
+        path: '/status',
+        op: 'replace',
+        value: status,
+      },
+    ],
+    {
+      params: {
+        accountId,
+        reportId,
+      },
+    },
+  )
 }
