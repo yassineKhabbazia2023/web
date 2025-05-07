@@ -1,37 +1,55 @@
 import { expect, it, describe, vi } from 'vitest'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import type { SubscriptionContact } from '@entities/services/subscription/subscriptionTypes'
 import { getMockedSubscriptionDetails } from '@entities/__mocks__/subscription.mocks'
+import type { CollaboratorRole } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import { getCollaboratorRoleMock, getSubscriptionContactMock } from '@entities/__mocks__/offer-subscription.mocks'
+
 import CollaboratorsDetails from '.'
 
-const mockedSubscriptionCollaborators =
-  getMockedSubscriptionDetails().collaborators
+const mockedSubscriptionCollaborators = getMockedSubscriptionDetails().collaborators
 
 vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(() => ''),
 }))
 
-const createWrapper = (
+function createWrapper(
   collaborators: SubscriptionContact[],
-): VueWrapper<any> => {
-  return mount(CollaboratorsDetails, {
+  collaboratorRoles: CollaboratorRole[],
+) {
+  return shallowMount(CollaboratorsDetails, {
     props: {
       collaborators,
+      collaboratorRoles,
     },
   })
 }
 
 describe('collaboratorsDetails', () => {
   describe('display', () => {
-    it('should correctly display the exact collaborators', () => {
-      const wrapper = createWrapper(mockedSubscriptionCollaborators)
-      const collaboratorsCards = wrapper.findAllComponents({
-        name: 'PUserAction',
-      })
+    it('should correctly display when no collaboratorRoles', () => {
+      const wrapper = createWrapper(mockedSubscriptionCollaborators, [])
 
-      expect(collaboratorsCards).toHaveLength(
-        mockedSubscriptionCollaborators.length,
-      )
+      expect(wrapper.html()).toMatchFileSnapshot('__snap__/CollaboratorsDetails.noCollaboratorRoles.html')
+    })
+
+    it('should correctly display when some collaboratorRoles', () => {
+      const collaboratorRoleMock = getCollaboratorRoleMock()
+      const collaboratorRolesMock = [collaboratorRoleMock]
+      const functionId = collaboratorRoleMock.functionId
+      const subscriptionContactMock1 = getSubscriptionContactMock({ functionId })
+      const subscriptionContactMock2 = getSubscriptionContactMock({
+        firstName: 'John',
+        lastName: 'Doe',
+        contactId: subscriptionContactMock1.contactId + 1,
+      })
+      const subscriptionContactMocks = [
+        subscriptionContactMock1,
+        subscriptionContactMock2,
+      ]
+      const wrapper = createWrapper(subscriptionContactMocks, collaboratorRolesMock)
+
+      expect(wrapper.html()).toMatchFileSnapshot('__snap__/CollaboratorsDetails.withCollaboratorRoles.html')
     })
   })
 })

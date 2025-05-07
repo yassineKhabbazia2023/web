@@ -5,7 +5,7 @@
     </p>
     <ul class="list-style-none">
       <li
-        v-for="{ contactId, firstName, lastName, email } in collaborators"
+        v-for="{ contactId, firstName, lastName, email, functionIds } in formattedCollaborators"
         :key="contactId"
         class="collaborator-details"
       >
@@ -15,6 +15,11 @@
           :pDescription="email"
           :data-testid="`subscription-details-collaborator-${email}`"
           :pAvatarRole="AvatarRoles.COLLAB"
+          :pShowOptions="hasCollaboratorRole && functionIds.length > 0"
+          :pOptions="formattedCollaboratorRoles"
+          :pOptionsValue="functionIds"
+          pOptionsMultiple
+          pOptionsDisabled
         />
       </li>
     </ul>
@@ -23,18 +28,24 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 import { PUserAction } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import { getInitials } from '@pulse/common'
 import { getFullName } from '@entities/common/utils'
 import type { CollaboratorsDetailsProps } from './CollaboratorsDetailsTypes'
+import { getFormattedCollaborators, getFormattedCollaboratorRoles } from './CollaboratorsDetails.utils'
 
-defineProps<CollaboratorsDetailsProps>()
+const props = defineProps<CollaboratorsDetailsProps>()
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+const hasCollaboratorRole = computed(() => props.collaboratorRoles.length > 0)
+const formattedCollaboratorRoles = computed(() => getFormattedCollaboratorRoles(props.collaboratorRoles))
+const formattedCollaborators = computed(() => getFormattedCollaborators(props.collaborators))
 </script>
 
 <style scoped lang="scss">

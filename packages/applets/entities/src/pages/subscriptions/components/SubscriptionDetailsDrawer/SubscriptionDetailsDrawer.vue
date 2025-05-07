@@ -19,6 +19,7 @@
     <SubscriptionDetailsTabs
       v-else
       :subscriptionDetails="subscriptionDetails"
+      :currentSubscriptionOffer="currentSubscriptionOffer"
       data-testid="subscription-recap-drawer-tabs"
     />
   </PDrawer>
@@ -33,6 +34,8 @@ import type { SubscriptionDetailsDrawerProps } from './SubscriptionDetailsDrawer
 import SubscriptionDetailsTabs from './components/SubscriptionDetailsTabs'
 import { fetchSubscriptionDetails } from '@entities/services/subscription'
 import type { SubscriptionDetails } from '@entities/services/subscription/subscriptionTypes'
+import { getOffer } from '@entities/services/offer'
+import { SubscriptionOfferServices } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -46,6 +49,7 @@ const emit = defineEmits<{
 
 const isLoading = ref<boolean>(true)
 const subscriptionDetails = ref<SubscriptionDetails | undefined>(undefined)
+const currentSubscriptionOffer = ref<SubscriptionOfferServices>()
 
 const internalIsOpened = computed({
   get() {
@@ -71,9 +75,10 @@ const handleCloseDrawer = () => {
 
 onMounted(async () => {
   try {
-    subscriptionDetails.value = await fetchSubscriptionDetails(
-      props.selectedSubscriptionId,
-    )
+    subscriptionDetails.value = await fetchSubscriptionDetails(props.selectedSubscriptionId)
+    const { offer } = subscriptionDetails.value ?? {}
+    const { offerId } = offer ?? {}
+    currentSubscriptionOffer.value = offerId ? await getOffer(offerId) : undefined
   } catch (error) {
     logger.error('Unable to retrieve subscription summary :', error)
   } finally {

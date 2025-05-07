@@ -7,8 +7,7 @@ export enum SubscriptionStatusCode {
   VALIDATED = 'validated',
 }
 
-
-interface Account {
+export interface Account {
   accountId: number
   accountNumber: string
   accountLegalName?: string
@@ -70,6 +69,7 @@ export interface SubscriptionContact {
   lastName: string
   email: string
   type: ContactType
+  functionId?: number
 }
 
 export interface SubscriptionDetails {

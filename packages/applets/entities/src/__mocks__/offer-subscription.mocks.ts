@@ -1,3 +1,5 @@
+import type { SubscriptionContact } from '@entities/services/subscription/subscriptionTypes'
+import { ContactType } from '@pulse/common/enums'
 import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import type { CollaboratorRole, SubscriptionOfferServices, SubscriptionOffer, SubscriptionOfferProduct } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
@@ -6,6 +8,21 @@ export function getCollaboratorRoleMock(override: Partial<CollaboratorRole> = {}
   return {
     functionId: 1,
     functionName: 'Expert comptable',
+    ...override,
+  }
+}
+
+export function getSubscriptionContactMock(override: Partial<SubscriptionContact> = {}) {
+  const defaultSubscriptionContact: SubscriptionContact = {
+    contactId: 543,
+    firstName: 'Leonard',
+    lastName: 'Striga',
+    email: 'leo@mail.test',
+    type: ContactType.COLLABORATOR,
+  }
+
+  return {
+    ...defaultSubscriptionContact,
     ...override,
   }
 }

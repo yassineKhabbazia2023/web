@@ -1,3 +1,4 @@
+import { SubscriptionOfferServices } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { SubscriptionDetails } from '@entities/services/subscription/subscriptionTypes'
 
 
@@ -14,5 +15,6 @@ export interface SubscriptionDetailsTab {
   label: string
 }
 export interface SubscriptionDetailsTabsProps {
-  subscriptionDetails: SubscriptionDetails | undefined
+  subscriptionDetails?: SubscriptionDetails
+  currentSubscriptionOffer?: SubscriptionOfferServices
 }

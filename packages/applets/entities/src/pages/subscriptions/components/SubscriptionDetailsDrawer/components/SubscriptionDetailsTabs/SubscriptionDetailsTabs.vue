@@ -18,6 +18,7 @@
       <CollaboratorsDetails
         v-if="activeTab === RecapTabs.COLLABORATORS"
         :collaborators="subscriptionDetails?.collaborators"
+        :collaboratorRoles="collaboratorRoles"
       />
       <InformationDetails
         v-if="activeTab === RecapTabs.INFORMATION"
@@ -25,7 +26,8 @@
         :accountId="subscriptionDetails.account.accountId"
       />
       <StepNote
-        v-model="notes[noteIndex]"
+        v-if="hasNote"
+        :modelValue="notes[noteIndex]"
         class="margin-top--6"
         disabled
       />
@@ -62,6 +64,11 @@ const activeTab = ref<SubscriptionDetailsTab['name']>('services')
 const noteIndex = computed(() =>
   Object.values(RecapTabs).indexOf(activeTab.value as RecapTabs),
 )
+const hasNote = computed(() => {
+  const note = notes.value?.[noteIndex.value]?.stepNote ?? ''
+
+  return note.trim() !== ''
+})
 
 const subscriptionDetailsTabsList: SubscriptionDetailsTab[] = [
   {
@@ -85,6 +92,8 @@ const subscriptionDetailsTabsList: SubscriptionDetailsTab[] = [
     label: t('information'),
   },
 ]
+
+const collaboratorRoles = computed(() => props.currentSubscriptionOffer?.functions ?? [])
 </script>
 
 <i18n lang="yaml">

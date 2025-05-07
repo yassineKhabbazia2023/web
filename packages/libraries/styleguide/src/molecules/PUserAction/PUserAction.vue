@@ -79,6 +79,7 @@
         :pOptions="pOptions"
         :pMultiple="pOptionsMultiple"
         :pNoDataText="pOptionsNoDataText"
+        :pDisabled="pOptionsDisabled"
         data-testid="p-user-action-options"
       />
 

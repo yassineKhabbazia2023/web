@@ -18,6 +18,7 @@ export interface PUserActionProps<T = POptionsValue> {
   pOptionsNoDataText?: string
   pOptions?: PDropdownOption[]
   pOptionsMultiple?: boolean
+  pOptionsDisabled?: boolean
   pOptionsValue?: T
   pWarningContent?: string
   pAvatarRole?: AvatarRoles

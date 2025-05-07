@@ -63,115 +63,122 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
   },
 ]
 
-export const getMockedSubscriptionDetails = (): SubscriptionDetails => ({
-  subscriptionId: 12,
-  account: {
-    accountId: 62,
-    accountNumber: '2024705285',
-    accountLegalName: 'Armani Conway',
-  },
-  offer: {
-    offerId: 1,
-    offerName: 'Mes modules de gestion : RCA MEG Smart',
-    offerLabel: 'Modules MEG : facturation et caisse',
-    offerPrice: 0,
-    offerCode: 'MEG Smart',
-    offerPriceType: SubscriptionPriceType.free,
-    logoName: 'meg',
-    providers: [
+export function getMockedSubscriptionDetails(override: Partial<SubscriptionDetails> = {}) {
+  const defaultSubscriptionDetails: SubscriptionDetails = {
+    subscriptionId: 12,
+    account: {
+      accountId: 62,
+      accountNumber: '2024705285',
+      accountLegalName: 'Armani Conway',
+    },
+    offer: {
+      offerId: 1,
+      offerName: 'Mes modules de gestion : RCA MEG Smart',
+      offerLabel: 'Modules MEG : facturation et caisse',
+      offerPrice: 0,
+      offerCode: 'MEG Smart',
+      offerPriceType: SubscriptionPriceType.free,
+      logoName: 'meg',
+      providers: [
+        {
+          providerName: ProviderName.RYDGE,
+          providerEditor: 'RYDGE',
+          providerCategory: 'RYDGE',
+          logoName: 'brand-color',
+          products: [
+            {
+              productConfigurationId: 1,
+              productName: 'GED Compta',
+              productLabel: 'GED Comptabilité',
+              enabled: true,
+              isOptionnal: false,
+              price: 0,
+              priceType: SubscriptionPriceType.free,
+              isSelected: true,
+            },
+          ],
+        },
+        {
+          providerName: ProviderName.MEG,
+          providerEditor: 'RCA',
+          providerCategory: 'external',
+          logoName: 'meg',
+          products: [
+            {
+              productConfigurationId: 2,
+              productName: 'Accès MEG',
+              productLabel: "Accès à l'outil MEG",
+              enabled: true,
+              isOptionnal: false,
+              price: 0,
+              priceType: SubscriptionPriceType.free,
+              isSelected: true,
+            },
+            {
+              productConfigurationId: 3,
+              productName: 'Module caisse',
+              productLabel: 'Module caisse de MEG',
+              enabled: true,
+              isOptionnal: true,
+              price: 0,
+              priceType: SubscriptionPriceType.free,
+              isSelected: false,
+            },
+          ],
+        },
+      ],
+      functions: [],
+    },
+    clients: [
       {
-        providerName: ProviderName.RYDGE,
-        providerEditor: 'RYDGE',
-        providerCategory: 'RYDGE',
-        logoName: 'brand-color',
-        products: [
-          {
-            productConfigurationId: 1,
-            productName: 'GED Compta',
-            productLabel: 'GED Comptabilité',
-            enabled: true,
-            isOptionnal: false,
-            price: 0,
-            priceType: SubscriptionPriceType.free,
-            isSelected: true,
-          },
-        ],
+        contactId: 56,
+        firstName: 'Alice',
+        lastName: 'Durand',
+        type: ContactType.CUSTOMER,
+        email: 'alice.durand@test.fr',
       },
       {
-        providerName: ProviderName.MEG,
-        providerEditor: 'RCA',
-        providerCategory: 'external',
-        logoName: 'meg',
-        products: [
-          {
-            productConfigurationId: 2,
-            productName: 'Accès MEG',
-            productLabel: "Accès à l'outil MEG",
-            enabled: true,
-            isOptionnal: false,
-            price: 0,
-            priceType: SubscriptionPriceType.free,
-            isSelected: true,
-          },
-          {
-            productConfigurationId: 3,
-            productName: 'Module caisse',
-            productLabel: 'Module caisse de MEG',
-            enabled: true,
-            isOptionnal: true,
-            price: 0,
-            priceType: SubscriptionPriceType.free,
-            isSelected: false,
-          },
-        ],
+        contactId: 25,
+        firstName: 'Jannelle',
+        lastName: 'Boyd',
+        type: ContactType.CUSTOMER,
+        email: 'janelle.boyd@test.fr',
       },
     ],
-    functions: [],
-  },
-  clients: [
-    {
-      contactId: 56,
-      firstName: 'Alice',
-      lastName: 'Durand',
-      type: ContactType.CUSTOMER,
-      email: 'alice.durand@test.fr',
-    },
-    {
-      contactId: 25,
-      firstName: 'Jannelle',
-      lastName: 'Boyd',
-      type: ContactType.CUSTOMER,
-      email: 'janelle.boyd@test.fr',
-    },
-  ],
-  collaborators: [
-    {
-      contactId: 22,
-      firstName: 'Jerry',
-      lastName: 'Nantenaina',
-      type: ContactType.COLLABORATOR,
-      email: 'jnantenaina@test.fr',
-    },
-  ],
-  notes: [
-    {
-      stepName: 'services',
-      stepNote: 'Services Note Test',
-    },
-    {
-      stepName: 'customers',
-      stepNote: 'Customers Note Test',
-    },
-    {
-      stepName: 'collaborators',
-      stepNote: 'Collaborators Note Test',
-    },
-    {
-      stepName: 'information',
-      stepNote: 'Information Note Test',
-    },
-  ],
-})
+    collaborators: [
+      {
+        contactId: 22,
+        firstName: 'Jerry',
+        lastName: 'Nantenaina',
+        type: ContactType.COLLABORATOR,
+        email: 'jnantenaina@test.fr',
+      },
+    ],
+    notes: [
+      {
+        stepName: 'services',
+        stepNote: 'Services Note Test',
+      },
+      {
+        stepName: 'customers',
+        stepNote: 'Customers Note Test',
+      },
+      {
+        stepName: 'collaborators',
+        stepNote: 'Collaborators Note Test',
+      },
+      {
+        stepName: 'information',
+        stepNote: 'Information Note Test',
+      },
+    ],
+  }
+
+  return {
+    ...defaultSubscriptionDetails,
+    ...override,
+  }
+}
 
 export const subscriptionDemandMock: PostSubscriptionRequest = {
   accountId: 1,
