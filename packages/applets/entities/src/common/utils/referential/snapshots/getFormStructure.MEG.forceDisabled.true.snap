@@ -57,6 +57,13 @@
         "pFieldKey": "legal.staffSizeRange",
         "pFieldType": "dropdown",
         "pLabel": "Effectifs",
+        "pRules": [
+          {
+            "message": "Veuillez saisir une valeur",
+            "required": true,
+            "trigger": "change",
+          },
+        ],
         "pTestId": "offer-staff-size-range",
         "referentialKey": "staffSizeRange",
       },
@@ -220,6 +227,13 @@
         "pFieldKey": "hub.hubId",
         "pFieldType": "dropdown",
         "pLabel": "Hub RYDGE rattaché",
+        "pRules": [
+          {
+            "message": "Veuillez saisir une valeur",
+            "required": true,
+            "trigger": "change",
+          },
+        ],
         "pTestId": "offer-hub-name-list",
         "referentialKey": "hubName",
       },
@@ -236,6 +250,13 @@
         "pFieldKey": "accounting.fiscalExerciseStartDate",
         "pFieldType": "date",
         "pLabel": "Début de l'exercice",
+        "pRules": [
+          {
+            "message": "Veuillez saisir une valeur",
+            "required": true,
+            "trigger": "change",
+          },
+        ],
       },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
@@ -341,6 +362,13 @@
         "pFieldKey": "accounting.fiscalExerciseDuration",
         "pFieldType": "dropdown",
         "pLabel": "Durée de l'exercice en mois",
+        "pRules": [
+          {
+            "message": "Veuillez saisir une valeur",
+            "required": true,
+            "trigger": "change",
+          },
+        ],
         "pTestId": "offer-fiscal-exercise-duration",
         "referentialKey": "fiscalExerciseDuration",
       },
@@ -360,6 +388,13 @@
         "pFieldKey": "accounting.accountingType",
         "pFieldType": "dropdown",
         "pLabel": "Type de comptabilité",
+        "pRules": [
+          {
+            "message": "Veuillez saisir une valeur",
+            "required": true,
+            "trigger": "change",
+          },
+        ],
         "pTestId": "offer-accounting-types",
         "referentialKey": "accountingType",
       },
@@ -387,6 +422,13 @@
         "pFieldKey": "accounting.fiscalSystem",
         "pFieldType": "dropdown",
         "pLabel": "Régime fiscal",
+        "pRules": [
+          {
+            "message": "Veuillez saisir une valeur",
+            "required": true,
+            "trigger": "change",
+          },
+        ],
         "pTestId": "offer-fiscal-system-list",
         "referentialKey": "fiscalSystem",
       },
@@ -406,6 +448,13 @@
         "pFieldKey": "accounting.taxationSystem",
         "pFieldType": "dropdown",
         "pLabel": "Régime d'imposition",
+        "pRules": [
+          {
+            "message": "Veuillez saisir une valeur",
+            "required": true,
+            "trigger": "change",
+          },
+        ],
         "pTestId": "offer-taxation-system-list",
         "referentialKey": "taxationSystem",
       },
@@ -425,6 +474,13 @@
         "pFieldKey": "accounting.activityType",
         "pFieldType": "dropdown",
         "pLabel": "Type d'activité",
+        "pRules": [
+          {
+            "message": "Veuillez saisir une valeur",
+            "required": true,
+            "trigger": "change",
+          },
+        ],
         "pTestId": "offer-activity-types",
         "referentialKey": "activityType",
       },
@@ -458,6 +514,13 @@
         "pFieldKey": "vat.system",
         "pFieldType": "dropdown",
         "pLabel": "Régime de la TVA",
+        "pRules": [
+          {
+            "message": "Veuillez saisir une valeur",
+            "required": true,
+            "trigger": "change",
+          },
+        ],
         "pTestId": "offer-vat-system-list",
         "referentialKey": "vatSystem",
       },
@@ -484,6 +547,13 @@
         "pFieldKey": "vat.type",
         "pFieldType": "dropdown",
         "pLabel": "Type de TVA",
+        "pRules": [
+          {
+            "message": "Veuillez saisir une valeur",
+            "required": true,
+            "trigger": "change",
+          },
+        ],
         "pTestId": "offer-vat-types",
         "referentialKey": "vatType",
       },

@@ -33,7 +33,12 @@
         "pFieldType": "dropdown",
         "pLabel": "Effectifs",
         "pTestId": "offer-staff-size-range",
-        "referentialKey": "staffSizeRange"
+        "referentialKey": "staffSizeRange",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
       },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-55",
@@ -42,7 +47,12 @@
         "pFieldType": "dropdown",
         "pLabel": "Hub RYDGE rattaché",
         "pTestId": "offer-hub-name-list",
-        "referentialKey": "hubName"
+        "referentialKey": "hubName",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
       }
     ]
   },
@@ -55,7 +65,12 @@
         "pDisabled": false,
         "pFieldKey": "accounting.fiscalExerciseStartDate",
         "pFieldType": "date",
-        "pLabel": "Début de l'exercice"
+        "pLabel": "Début de l'exercice",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
       },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
@@ -64,7 +79,12 @@
         "pFieldType": "dropdown",
         "pLabel": "Durée de l'exercice en mois",
         "pTestId": "offer-fiscal-exercise-duration",
-        "referentialKey": "fiscalExerciseDuration"
+        "referentialKey": "fiscalExerciseDuration",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
       },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
@@ -73,7 +93,12 @@
         "pFieldType": "dropdown",
         "pLabel": "Type de comptabilité",
         "pTestId": "offer-accounting-types",
-        "referentialKey": "accountingType"
+        "referentialKey": "accountingType",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
       },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-90",
@@ -82,7 +107,12 @@
         "pFieldType": "dropdown",
         "pLabel": "Régime fiscal",
         "pTestId": "offer-fiscal-system-list",
-        "referentialKey": "fiscalSystem"
+        "referentialKey": "fiscalSystem",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
       },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
@@ -91,7 +121,12 @@
         "pFieldType": "dropdown",
         "pLabel": "Régime d'imposition",
         "pTestId": "offer-taxation-system-list",
-        "referentialKey": "taxationSystem"
+        "referentialKey": "taxationSystem",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
       },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
@@ -100,7 +135,12 @@
         "pFieldType": "dropdown",
         "pLabel": "Type d'activité",
         "pTestId": "offer-activity-types",
-        "referentialKey": "activityType"
+        "referentialKey": "activityType",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
       }
     ]
   },
@@ -114,7 +154,12 @@
         "pFieldType": "dropdown",
         "pLabel": "Régime de la TVA",
         "pTestId": "offer-vat-system-list",
-        "referentialKey": "vatSystem"
+        "referentialKey": "vatSystem",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
       },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
@@ -130,7 +175,12 @@
         "pFieldType": "dropdown",
         "pLabel": "Type de TVA",
         "pTestId": "offer-vat-types",
-        "referentialKey": "vatType"
+        "referentialKey": "vatType",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
+          "trigger": "change"
+        }]
       }
     ]
   }
