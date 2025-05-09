@@ -180,7 +180,7 @@ onBeforeUnmount(() => {
 
   .aside-container .sidebar-container {
     height: 100vh;
-    padding-right: 52px;
+    padding-right: 50px;
     @media only screen and (min-width: 992px) {
       position: relative;
       z-index: 10;

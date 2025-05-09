@@ -174,7 +174,9 @@ onMounted(async () => {
 
   z-index: 8;
   position: absolute;
-  left: 50px;
+  // 100% is the left part of the menu container
+  // That way it always sticks to the right part of the menu
+  left: calc(100% - 50px);
   top: 0;
   width: 200px;
   height: 100%;
