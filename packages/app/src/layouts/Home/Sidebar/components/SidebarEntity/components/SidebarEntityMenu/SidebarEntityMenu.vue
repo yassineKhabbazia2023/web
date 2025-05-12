@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, computed, onMounted } from 'vue'
+import { ref, watchEffect, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { amplitudeService } from '@pulse/common'
@@ -161,7 +161,7 @@ watchEffect(() => {
   isEntityOrFolderPath.value = ['gestion-utilisateurs', 'collaborateurs', 'offres', 'informations', 'historique-delegations'].some((path) => route.fullPath.includes(path))
 })
 
-onMounted(async () => {
+watchEffect(async () => {
   const { totalItems } = await fetchBIReports(props.selectedEntityId)
   hasBIReports.value = totalItems > 0
 })

@@ -2,12 +2,12 @@
   <div :class="{ 'padding-right--0': !isSelectedEntityActive }">
     <nav
       v-if="shouldDisplaySidebar"
-      :class="[
-        'sidenav-entity flex flex--direction-column',
-        { 'sidenav-entity--opened': isSidebarOpened },
-        { 'sidenav-entity--is-collab': isCollab },
-        { 'sidenav-entity--no-entity-selected': !isSelectedEntityActive },
-      ]"
+      class="sidenav-entity flex flex--direction-column"
+      :class="{
+        'sidenav-entity--opened': isSidebarOpened,
+        'sidenav-entity--is-collab': isCollab,
+        'sidenav-entity--no-entity-selected': !isSelectedEntityActive,
+      }"
       data-testid="sidenav-entity"
     >
       <!-- Sidebar items -->
@@ -21,9 +21,10 @@
           <SidebarEntityItem
             :tooltipContent="isSidebarOpened ? t('close') : t('open')"
             :tooltipDisabled="isToggleTooltipDisabled"
-            :class="`sidenav-entity__actions-toggle--${
-              isSidebarOpened ? 'open' : 'close'
-            }`"
+            :class="{
+              'sidenav-entity__actions-toggle--open': isSidebarOpened,
+              'sidenav-entity__actions-toggle--close': !isSidebarOpened,
+            }"
             data-testid="sidebar-toggle"
             @item-clicked="onToggleSidebar"
           >
@@ -55,7 +56,9 @@
         </li>
         <li
           v-if="selectedEntity"
-          :class="isSelectedEntityActive"
+          :class="{
+            'sidenav-entity__actions-active': isSelectedEntityActive
+          }"
           class="flex flex--align-items-center is-entity"
           data-testid="selected-entity"
         >
@@ -100,7 +103,7 @@
               data-testid="favorite-entity"
               :entity="favoriteEntity"
               :hideTooltip="isSidebarOpened"
-              :selected="favoriteEntity.accountId === selectedEntity?.accountId"
+              :selected="favoriteEntity.accountId === currentAccountId"
               @entity-selected="onEntitySelected"
             />
           </li>
@@ -109,9 +112,9 @@
       <AppVersion v-if="isSidebarOpened" />
     </nav>
     <SidebarEntityMenu
-      v-if="shouldShowSidebarMenu"
+      v-if="isSelectedEntityActive && currentAccountId"
       :isCollab="isCollab"
-      :selectedEntityId="selectedEntity.accountId"
+      :selectedEntityId="currentAccountId"
     />
   </div>
 </template>
@@ -144,7 +147,7 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const props = defineProps<SidebarEntityProps>()
+defineProps<SidebarEntityProps>()
 
 const { favoriteEntities } = storeToRefs(userStore)
 const { isCollab, isCustomer } = storeToRefs(userStore)
@@ -172,12 +175,14 @@ const walletItem = computed((): SidebarEntityItemProps => {
   }
 })
 
-const shouldShowSidebarMenu = computed(() => {
-  return isSelectedEntityActive.value && props.selectedEntity
+const currentAccountId = computed(() => {
+  const idParam = parseInt(`${route.params.id}`)
+
+  return isNaN(idParam) ? undefined : idParam
 })
 
 const isSelectedEntityActive = computed(() => {
-  if (!props.selectedEntity.accountId) {
+  if (!currentAccountId.value) {
     return false
   }
 
@@ -197,7 +202,7 @@ const isSelectedEntityActive = computed(() => {
     isUnitaryViewVisible = true
   }
 
-  return isUnitaryViewVisible ? 'sidenav-entity__actions-active' : ''
+  return isUnitaryViewVisible
 })
 
 const onToggleSidebar = () => {

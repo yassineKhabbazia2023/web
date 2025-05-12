@@ -1,5 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { flushPromises, mount } from '@vue/test-utils'
+import { nextTick } from 'vue'
+import { mount } from '@vue/test-utils'
 import type { Entity } from '@pulse/common/types'
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import {
@@ -12,7 +13,7 @@ import { useUserStore } from '@pulse/common/stores'
 
 import SidebarEntity from '.'
 
-const defaultEntityMock = getMockedEntity()
+const accountIdMock = 12314
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -20,6 +21,9 @@ vi.mock('vue-router', () => ({
   }),
   useRoute: () => ({
     fullPath: '/portefeuille',
+    params: {
+      id: accountIdMock,
+    },
   }),
 }))
 
@@ -64,7 +68,7 @@ describe('sidebarEntity', () => {
   })
 
   describe('display', () => {
-    it.skip('should display the sidebar correctly with actions and entities', () => {
+    it('should display the sidebar correctly with actions and entities', () => {
       const sidebarToggle = findSidebarToggle(wrapper)
       const walletItem = wrapper.find('[data-testid=wallet-item]')
       const selectedEntity = findSelectedEntity(wrapper)
@@ -80,39 +84,47 @@ describe('sidebarEntity', () => {
       expect(EntityAvatars).toHaveLength(entities.length)
     })
 
-    it.skip('should call SelectedEntityManager on mounted', () => {
-      expect(persistSelectedEntityMock).toHaveBeenCalledOnce()
-      expect(persistSelectedEntityMock).toHaveBeenNthCalledWith(1, defaultEntityMock)
+    it('should not call SelectedEntityManager on mounted', () => {
+      expect(persistSelectedEntityMock).not.toHaveBeenCalled()
     })
 
-    it.skip('should call SelectedEntityManager when click on EntityAvatar', () => {
+    it('should call SelectedEntityManager when click on EntityAvatar', () => {
       const favoriteEntities = wrapper.find('[data-testid=favorite-entities]')
       const EntityAvatars = favoriteEntities.findAllComponents({ name: 'EntityAvatar' })
       const secondEntityAvatar = EntityAvatars.at(1)
       const entity = entities.at(1)
       secondEntityAvatar.vm.$emit('entity-selected', entity)
 
-      expect(persistSelectedEntityMock).toHaveBeenCalledTimes(2)
-      expect(persistSelectedEntityMock).toHaveBeenNthCalledWith(2, entity)
+      expect(persistSelectedEntityMock).toHaveBeenCalledOnce()
+      expect(persistSelectedEntityMock).toHaveBeenCalledWith(entity)
     })
 
-    it.skip('should display the sidebar with the appropriate background color', async () => {
-      const sidenavEntity = wrapper.find('[data-testid="sidenav-entity"]')
+    it('should display the sidebar with the appropriate background color', async () => {
+      const sidenavEntityBefore = wrapper.find('[data-testid="sidenav-entity"]')
 
-      expect(sidenavEntity.classes()).includes('sidenav-entity--is-collab')
+      expect(sidenavEntityBefore.exists()).toBe(true)
+      expect(sidenavEntityBefore.classes()).includes('sidenav-entity--is-collab')
 
       userStoreMock.isCollab = false
-      await flushPromises()
+      userStoreMock.isCustomer = true
+      userStoreMock.getIsSingleEntity.mockReturnValue(false)
+      await nextTick()
 
-      expect(sidenavEntity.classes()).not.includes('sidenav-entity--is-collab')
+      const sidenavEntityAfter = wrapper.find('[data-testid="sidenav-entity"]')
+
+      expect(sidenavEntityAfter.exists()).toBe(true)
+      expect(sidenavEntityAfter.classes()).not.includes('sidenav-entity--is-collab')
     })
-    it.skip('should display all favorite entities correctly', () => {
+
+    it('should display all favorite entities correctly', () => {
       const favoriteEntities = wrapper.findAll(
         '[data-testid=favorite-entity]',
       )
 
       expect(favoriteEntities).toHaveLength(entities.length)
     })
+
+    // TODO unskip to UT
     it.skip('should display the selected entity correctly after clicking on a random entity avatar', async () => {
       const firstFavoriteEntity = wrapper.find(
         '[data-testid=favorite-entity] button',
@@ -137,7 +149,7 @@ describe('sidebarEntity', () => {
     })
   })
   describe('events', () => {
-    it.skip('should open the sidebar when clicking on the toggle button', async () => {
+    it('should open the sidebar when clicking on the toggle button', async () => {
       const sidenavEntity = wrapper.find('[data-testid="sidenav-entity"]')
       const sidebarToggle = findSidebarToggle(wrapper)
       const pIcon = wrapper.findComponent({ name: 'PIcon' })
@@ -149,14 +161,14 @@ describe('sidebarEntity', () => {
       expect(pIcon.props('pName')).toBe('arrowBarLeft')
       expect(sidenavEntity.classes()).includes('sidenav-entity--opened')
     })
-    it.skip('should not display appVersion when sidebar is closed', async () => {
+    it('should not display appVersion when sidebar is closed', async () => {
       const sidenavEntity = wrapper.find('[data-testid="sidenav-entity"]')
       const appVersion = wrapper.find('[data-testid=app-version]')
 
       expect(sidenavEntity.classes()).not.includes('sidenav-entity--opened')
       expect(appVersion.exists()).not.toBeTruthy()
     })
-    it.skip('should display appVersion when sidebar is opened', async () => {
+    it('should display appVersion when sidebar is opened', async () => {
       const sidenavEntity = wrapper.find('[data-testid="sidenav-entity"]')
       const sidebarToggle = findSidebarToggle(wrapper)
 
