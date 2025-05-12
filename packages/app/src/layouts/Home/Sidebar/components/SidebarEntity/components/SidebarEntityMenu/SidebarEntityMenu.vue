@@ -168,23 +168,26 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+$sidenav-collapsed-width: 50px;
+$sidenav-opened-width: 200px;
+
 .sidenav-entity-menu {
   $self: &;
   --smooth-transition: 0.3s ease;
 
   z-index: 8;
   position: absolute;
-  // 100% is the left part of the menu container
-  // That way it always sticks to the right part of the menu
-  left: calc(100% - 50px);
+  // 100% is the full width of .sidebar-container
+  // That way the sidenav always sticks to the right part of the nav menu
+  left: calc(100% - #{$sidenav-collapsed-width});
   top: 0;
-  width: 200px;
+  width: $sidenav-opened-width;
   height: 100%;
   background-color: var(--el-color-base-persian-light);
   transition: width var(--smooth-transition);
 
   &--collapsed {
-    width: 50px;
+    width: $sidenav-collapsed-width;
   }
 
   &__main-menu {
