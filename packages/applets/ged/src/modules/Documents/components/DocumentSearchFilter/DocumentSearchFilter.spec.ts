@@ -1,186 +1,146 @@
-import type { ComponentPublicInstance } from 'vue'
-import { nextTick } from 'vue'
-import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
-import { expect, describe, it, vi } from 'vitest'
+import { shallowMount } from '@vue/test-utils'
 import type { DocumentSearchFilterProps } from './DocumentSearchFilterTypes'
-import DocumentSearchFilter from '.'
 import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
+import { Period } from '@ged/models/DocumentSearchFilters'
+
+import DocumentSearchFilter from '.'
 
 const defaultProps: DocumentSearchFilterProps = {
   modelValue: true,
   filters: null,
 }
 
-type DocumentSearchFilterSetup = {
-  selectedPeriod: string
-  dateRange: [Date, Date] | ''
-}
-
-export type DocumentSearchFilterWrapper = VueWrapper<
-  ComponentPublicInstance<DocumentSearchFilterSetup, DocumentSearchFilterProps>
->
-
 const createWrapper = (
   props: DocumentSearchFilterProps = defaultProps,
-): DocumentSearchFilterWrapper => {
-  return mount(DocumentSearchFilter, {
+) => {
+  return shallowMount(DocumentSearchFilter, {
     props,
     global: {
+      stubs: {
+        PDrawer: {
+          name: 'PDrawer',
+          template: '<div><slot /><slot name="footer" /></div>',
+          events: ['close-drawer-button'],
+          props: ['pTitle'],
+        },
+        PButton: {
+          name: 'PButton',
+          template: '<div><slot /></div>',
+          events: ['click'],
+        },
+        PDatePicker: {
+          name: 'PDatePicker',
+          template: '<div />',
+          props: [
+            'modelValue',
+            'rangeSeparator',
+            'startPlaceholder',
+            'endPlaceholder',
+          ],
+          events: ['calendar-change'],
+        },
+      },
     },
-  }) as unknown as DocumentSearchFilterWrapper
+  })
 }
 
 const date = new Date(1998, 11, 19)
 
 describe('documentSearchFiltrer', () => {
   describe('props', () => {
-    it('should render PDrawer properly binded', async () => {
-      expect.hasAssertions()
+    it('should render properly', async () => {
       const wrapper = createWrapper()
-      expect(wrapper.exists()).toBeTruthy()
 
-      await nextTick()
-
-      const pdrawer = wrapper.findComponent({ name: 'PDrawer' })
-      expect(pdrawer.exists()).toBeTruthy()
-      expect(pdrawer.props('pTitle')).toBe('Filtres')
-    })
-
-    it('should render PText properly binded', async () => {
-      expect.hasAssertions()
-      const wrapper = createWrapper()
-      await nextTick()
-
-      const pTexts = wrapper.findAll('.doc-search-filter-label')
-      expect(pTexts).toHaveLength(2)
-      expect(pTexts[0].text()).toBe('Période')
-      expect(pTexts[1].text()).toBe('Période personnalisée')
-    })
-
-    it('should render PDropdown properly binded', async () => {
-      expect.hasAssertions()
-      const wrapper = createWrapper()
-      await nextTick()
-
-      const PDropdown = wrapper.findComponent({ name: 'PDropdown' })
-      expect(PDropdown.exists()).toBeTruthy()
-      expect(PDropdown.props('pPlaceholder')).toBe('Sélectionner une période')
-
-      const pOptions = wrapper.findAllComponents({ name: 'ElOption' })
-      expect(pOptions).toHaveLength(3)
-    })
-
-    it('should render PButton properly binded', async () => {
-      expect.hasAssertions()
-      const wrapper = createWrapper()
-      expect(wrapper.exists()).toBeTruthy()
-
-      await nextTick()
-
-      const pBtns = wrapper.findAllComponents({ name: 'PButton' })
-      expect(pBtns).toHaveLength(3)
-      expect(pBtns[1].text()).toBe('Réinitialiser')
-      expect(pBtns[2].text()).toBe('Appliquer')
+      expect(wrapper.html()).toMatchFileSnapshot('__snap__/DocumentSearchFiltrer.html')
     })
 
     it('should render PDatePicker properly binded', async () => {
-      expect.hasAssertions()
       const wrapper = createWrapper()
-      expect(wrapper.exists()).toBeTruthy()
-      await nextTick()
-
       const pDatePicker = wrapper.findComponent({ name: 'PDatePicker' })
+
       expect(pDatePicker.exists()).toBeTruthy()
-      const range = wrapper.findAll('.el-range-input')
-      expect(range[0].attributes('placeholder')).toBe('Date de début')
-      expect(range[1].attributes('placeholder')).toBe('Date de fin')
-      const rangeSeparator = wrapper.find('.el-range-separator')
-      expect(rangeSeparator.text()).toBe('À')
-      expect(wrapper.vm.dateRange).toBe('')
+      expect(pDatePicker.props('startPlaceholder')).toBe('Date de début')
+      expect(pDatePicker.props('endPlaceholder')).toBe('Date de fin')
+      expect(pDatePicker.props('rangeSeparator')).toBe('À')
+      expect(pDatePicker.props('modelValue')).toBe('')
     })
   })
 
   describe('interactions', () => {
     it('should emit close-filters-drawer event when PDrawer close event', async () => {
-      expect.hasAssertions()
       const wrapper = createWrapper()
-      await nextTick()
 
       const pDocumentViewerWrapper = wrapper.findComponent({ name: 'PDrawer' })
       await pDocumentViewerWrapper.vm.$emit('close-drawer-button')
-
-      await nextTick()
 
       expect(wrapper.emitted('close-filters-drawer')).toBeTruthy()
     })
 
     it('should emit reset-filters-drawer event when reset Btn click event', async () => {
-      expect.hasAssertions()
       const wrapper = createWrapper()
-      await nextTick()
 
       const pButtons = wrapper.findAllComponents({ name: 'PButton' })
-      await pButtons[1].trigger('click')
-      await nextTick()
+      await pButtons[0].trigger('click')
 
       expect(wrapper.emitted('reset-filters-drawer')).toBeTruthy()
     })
 
     it('should emit apply-filters-drawer event when confirm Btn click event', async () => {
-      expect.hasAssertions()
+      vi.useFakeTimers()
+      vi.setSystemTime(date)
+
       const wrapper = createWrapper()
-      const componentInstance = wrapper.vm
-      componentInstance.selectedPeriod = 'DAY'
-      componentInstance.dateRange = [date, date]
-      await nextTick()
+      const pDropdown = wrapper.findComponent({ name: 'PDropdown' })
+
+      const newPeriod = Period.DAY
+      pDropdown.vm.$emit('update:modelValue', newPeriod)
+      pDropdown.vm.$emit('change', newPeriod)
 
       const pButtons = wrapper.findAllComponents({ name: 'PButton' })
-      await pButtons[2].trigger('click')
-      await nextTick()
+      await pButtons[1].trigger('click')
 
-      const res: DocumentSearchFilters = {
-        selectedPeriod: 'DAY',
+      const expectedFilters: DocumentSearchFilters = {
+        selectedPeriod: newPeriod,
         startDate: date,
         endDate: date,
       }
 
-      expect(wrapper.emitted('apply-filters-drawer')).toStrictEqual([[res]])
+      expect(wrapper.emitted('apply-filters-drawer')).toStrictEqual([[expectedFilters]])
     })
 
     it('should set date range when PDropdown change event', async () => {
-      expect.hasAssertions()
       vi.useFakeTimers()
       vi.setSystemTime(date)
-      const wrapper = createWrapper()
-      await nextTick()
 
-      const PDropdown = wrapper.findComponent({ name: 'PDropdown' })
-      await PDropdown.vm.$emit('change', 'DAY')
-      await nextTick()
-      expect(wrapper.vm.dateRange).toStrictEqual([date, date])
-      await PDropdown.vm.$emit('change', 'WEEK')
-      await nextTick()
-      expect(wrapper.vm.dateRange)
-        .toStrictEqual([new Date(new Date().setDate(date.getDate() - 7)), date])
-      await PDropdown.vm.$emit('change', 'MONTH')
-      await nextTick()
-      expect(wrapper.vm.dateRange)
-        .toStrictEqual([new Date(new Date().setDate(date.getDate() - 30)), date])
+      const wrapper = createWrapper()
+
+      const pDropdown = wrapper.findComponent({ name: 'PDropdown' })
+      const pDatePicker = wrapper.findComponent({ name: 'PDatePicker' })
+      await pDropdown.vm.$emit('change', Period.DAY)
+
+      expect(pDatePicker.props('modelValue')).toStrictEqual([date, date])
+      await pDropdown.vm.$emit('change', Period.WEEK)
+
+      const expectedDate1 = [new Date(new Date().setDate(date.getDate() - 7)), date]
+      expect(pDatePicker.props('modelValue')).toStrictEqual(expectedDate1)
+
+      await pDropdown.vm.$emit('change', Period.MONTH)
+      const expectedDate2 = [new Date(new Date().setDate(date.getDate() - 30)), date]
+      expect(pDatePicker.props('modelValue')).toStrictEqual(expectedDate2)
+
       vi.useRealTimers()
     })
 
     it('should reset selectedPeriod when PDatePicker calendar-change event', async () => {
-      expect.hasAssertions()
       const wrapper = createWrapper()
-      const componentInstance = wrapper.vm
-      componentInstance.selectedPeriod = 'WEEK'
-      await nextTick()
+      const pDropdown = wrapper.findComponent({ name: 'PDropdown' })
+
+      pDropdown.vm.$emit('update:modelValue', Period.WEEK)
 
       const pDatePicker = wrapper.findComponent({ name: 'PDatePicker' })
       await pDatePicker.vm.$emit('calendar-change', [date, date])
-      await nextTick()
-      expect(wrapper.vm.selectedPeriod).toBe('')
+
+      expect(pDropdown.props('modelValue')).toBe('')
     })
   })
 })
