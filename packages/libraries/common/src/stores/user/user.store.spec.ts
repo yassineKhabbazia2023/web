@@ -33,4 +33,14 @@ describe('test userStore', () => {
     expect(userStore.isCollab).toBe(isCollab)
     expect(userStore.gigyaUserId).toBe(gigyaUserId)
   })
+
+  it('should set isAuthenticated properly when call setIsAuthenticated()', () => {
+    expect(userStore.isAuthenticated).toBe(false)
+
+    userStore.setIsAuthenticated(true)
+    expect(userStore.isAuthenticated).toBe(true)
+
+    userStore.setIsAuthenticated(false)
+    expect(userStore.isAuthenticated).toBe(false)
+  })
 })

@@ -65,26 +65,22 @@ export class CurrentUserManager {
   }
 
   static saveToken(token: string) {
+    const userStore = useUserStore()
+
     if (token) {
+      userStore.setIsAuthenticated(true)
       TokenManager.setToken(token)
     } else {
+      userStore.setIsAuthenticated(false)
       TokenManager.removeToken()
     }
   }
 
-  static getToken() {
-    return TokenManager.getToken()
-  }
-
   static initToken() {
-    const storedToken = this.getToken()
+    const storedToken = TokenManager.getToken()
     if (storedToken) {
       const tokenStore = useTokenStore()
       tokenStore.setTokenExpiration(storedToken)
     }
-  }
-
-  static isAuthenticated() {
-    return TokenManager.getToken() !== ''
   }
 }

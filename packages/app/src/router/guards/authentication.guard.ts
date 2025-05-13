@@ -1,12 +1,14 @@
 import { logger } from '@pulse/core'
 import type { NavigationGuard } from 'vue-router'
-import { CurrentUserManager, RoutesManager } from '@pulse/common/managers'
+import { RoutesManager } from '@pulse/common/managers'
 import { BootManager } from '@app/managers/boot.manager'
+import { useUserStore } from '@pulse/common/stores'
 
 // TODO rendre ce code évolutif en permettant une route enfant de authenticated d'autoriser des anonymes (par exemple error) // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47377
 export const authenticationGuard: NavigationGuard = (to, _from, next) => {
-  const isAuthenticated = CurrentUserManager.isAuthenticated()
   const toName = to.name as string
+  const userStore = useUserStore()
+  const isAuthenticated = userStore.isAuthenticated === true
 
   if(
     isAuthenticated === true

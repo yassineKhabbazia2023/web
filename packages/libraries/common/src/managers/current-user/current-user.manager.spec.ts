@@ -130,15 +130,30 @@ describe('test current-user.manager', () => {
   })
 
   describe('save token to store and local storage', () => {
-    it('both set the token in the store and saves it to the local storage', () => {
-      const token = '1234'
+    const tests = [{
+      token: '1234',
+      expectedIsAuthenticated: true,
+      expectedStoredToken: '1234',
+    }, {
+      token: '',
+      expectedIsAuthenticated: false,
+      expectedStoredToken: null,
+    }]
+    it.each(tests)('both set the token in the store and saves it to the local storage when token is $token', ({
+      token,
+      expectedIsAuthenticated,
+      expectedStoredToken,
+    }) => {
       CurrentUserManager.persistToken(token)
 
       expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
       expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith(token)
 
+      expect(userStoreMock.setIsAuthenticated).toHaveBeenCalledOnce()
+      expect(userStoreMock.setIsAuthenticated).toHaveBeenCalledWith(expectedIsAuthenticated)
+
       const localToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)
-      expect(localToken).toStrictEqual(token)
+      expect(localToken).toStrictEqual(expectedStoredToken)
     })
   })
 })

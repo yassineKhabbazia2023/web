@@ -5,11 +5,11 @@ import {
   getStoreMock,
 } from '../__mocks__'
 import { permissionServiceMock } from '../__mocks__/permissions.service.mocks'
-import { useTokenStore } from '../stores/token/token.store'
+import { useUserStore } from '../stores/user/user.store'
 import { usePermissionsStore } from '../stores/permissions/permissions.store'
 import { useDataProvider } from './useDataProvider'
 
-const tokenStoreMock = getStoreMock(useTokenStore)
+const userStoreMock = getStoreMock(useUserStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
 
 vi.mock('../../services/permissions/permissions.service', () => permissionServiceMock)
@@ -36,8 +36,8 @@ describe('useDataProvider', () => {
     fetchUserPermissionsMock.mockResolvedValue(mockedUserPermissions)
   })
 
-  it.skip('fetches user data when authenticated', async () => {
-    tokenStoreMock.isAuthenticated = true
+  it('fetches user data when authenticated', async () => {
+    userStoreMock.isAuthenticated = true
 
     const { fetchUserData } = useDataProvider()
     const user = await fetchUserData()
@@ -54,7 +54,7 @@ describe('useDataProvider', () => {
   })
 
   it('returns null when not authenticated', async () => {
-    tokenStoreMock.isAuthenticated = false
+    userStoreMock.isAuthenticated = false
 
     const { fetchUserData } = useDataProvider()
     const user = await fetchUserData()

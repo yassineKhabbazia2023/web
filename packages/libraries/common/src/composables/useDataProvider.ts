@@ -2,13 +2,14 @@ import api from '../api'
 import { usePermissionsStore } from '../stores/permissions/permissions.store'
 import { fetchUserPermissions } from '../services/permissions/permissions.service'
 import { UserInfo } from '../stores/types'
-import { CurrentUserManager } from '@pulse/common/managers'
+import { useUserStore } from '@pulse/common/stores'
 
 export const useDataProvider = () => {
   const permissionsStore = usePermissionsStore()
+  const userStore = useUserStore()
 
   const fetchUserData = async () => {
-    if (CurrentUserManager.isAuthenticated()) {
+    if (userStore.isAuthenticated) {
       const userPermissions = await fetchUserPermissions()
       permissionsStore.setUserPermissions(userPermissions)
       const {

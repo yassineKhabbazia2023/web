@@ -28,7 +28,16 @@ export const useUserStore = defineStore('user', () => {
     gigyaUserId.value = gigyaUserIdArg
   }
 
-  /* #region curent entity */
+  // #region authentication
+  const _isAuthenticated = ref(false)
+  const isAuthenticated = computed(() => _isAuthenticated.value === true)
+
+  function setIsAuthenticated(isAuthenticatedArg: boolean) {
+    _isAuthenticated.value = isAuthenticatedArg
+  }
+  // #endregion
+
+  // #region current entity
   const isSingleEntity = ref(false)
 
   function setIsSingleEntity(newIsSingleEntity: boolean) {
@@ -38,17 +47,17 @@ export const useUserStore = defineStore('user', () => {
   function getIsSingleEntity() {
     return isSingleEntity.value
   }
-  /* #endregion */
+  // #endregion
 
-  /* #region favorite entities */
+  // #region favorite entities
   const favoriteEntities = ref<Entity[]>([])
 
   function setFavoriteEntities(newFavoriteEntities: Entity[]) {
     favoriteEntities.value = newFavoriteEntities
   }
-  /* #endregion */
+  // #endregion
 
-  /* #region cgu */
+  // #region cgu
   const hasAcceptedCGU = ref(false)
   function getHasAcceptedCGU() {
     return hasAcceptedCGU.value
@@ -57,14 +66,15 @@ export const useUserStore = defineStore('user', () => {
   function setHasAcceptedCGU(newHasAcceptedCGU: boolean) {
     hasAcceptedCGU.value = newHasAcceptedCGU
   }
-  /* #endregion */
+  // #endregion
 
   function reset() {
     user.value = undefined
     gigyaUserId.value = undefined
-    hasAcceptedCGU.value = false
+    _isAuthenticated.value = false
     isSingleEntity.value = false
     favoriteEntities.value = []
+    hasAcceptedCGU.value = false
   }
 
   return {
@@ -76,12 +86,14 @@ export const useUserStore = defineStore('user', () => {
     getUser,
     getUserId,
     setGigyaUserId,
-    reset,
+    isAuthenticated,
+    setIsAuthenticated,
     setIsSingleEntity,
     getIsSingleEntity,
     favoriteEntities,
     setFavoriteEntities,
     getHasAcceptedCGU,
     setHasAcceptedCGU,
+    reset,
   }
 })

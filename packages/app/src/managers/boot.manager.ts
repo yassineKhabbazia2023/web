@@ -1,5 +1,5 @@
-import { CurrentUserManager, SelectedEntityManager, TokenManager } from '@pulse/common/managers'
-import { resetAllStores } from '@pulse/common/stores'
+import { SelectedEntityManager, TokenManager } from '@pulse/common/managers'
+import { resetAllStores, useUserStore } from '@pulse/common/stores'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { amplitudeService } from '@pulse/common'
 import { VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
@@ -7,7 +7,8 @@ import { logger } from '@pulse/core'
 
 export class BootManager {
   static getDefaultRedirection() {
-    if(CurrentUserManager.isAuthenticated()) {
+    const userStore = useUserStore()
+    if(userStore.isAuthenticated) {
       return BootManager.getDefaultAuthenticatedRoute()
     } else {
       return BootManager.getDefaultAnonymousRoute()
