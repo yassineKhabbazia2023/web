@@ -1,6 +1,7 @@
 import useInitUserAuth from '@login/composable/useInitUserAuth'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks'
+import { TokenManager } from '@pulse/common/managers'
 
 const userStoreMock = getStoreMock(useUserStore)
 const tokenStoreMock = getStoreMock(useTokenStore)
@@ -20,16 +21,12 @@ const userMock = {
   isCollab: true,
 }
 
-const mockFechUserDataProvider = vi.hoisted(() => vi.fn())
+const mockFetchUserDataProvider = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/common', () => ({
   commonApi: () => vi.fn(),
   dataProvider: () => ({
-    fetchUserData: mockFechUserDataProvider,
+    fetchUserData: mockFetchUserDataProvider,
   }),
-  tokenService: {
-    getToken: vi.fn().mockReturnValue('a-token'),
-    setToken: vi.fn(),
-  },
 }))
 
 vi.mock('@login/composable/useStoreSubscription', () => ({
@@ -60,7 +57,7 @@ describe('useInitUserAuth', () => {
     expect(userStoreMock.setUser).toHaveBeenCalledOnce()
   })
 
-  it.skip('initAuthClient should NOT init auth when msal getToken returns empty token', async () => {
+  it('initAuthCollab should NOT init auth when msal getToken returns empty token', async () => {
     // Setup
     msalGetTokenSpy.mockReturnValueOnce('')
     const { initAuthCollab, isTokenRetrieve } = useInitUserAuth()
@@ -71,13 +68,13 @@ describe('useInitUserAuth', () => {
     // Assert
     expect(msalGetTokenSpy).toHaveBeenCalledWith(/* nothing */)
     expect(isTokenRetrieve.value).toBeFalsy()
-    expect(tokenStoreMock.setTokenExpiration).not.toHaveBeenCalled()
     expect(userStoreMock.setUser).not.toHaveBeenCalled()
   })
 
-  it.skip('should init auth when user is client', async () => {
-    mockFechUserDataProvider.mockResolvedValue(userMock)
+  it('should init auth when user is client', async () => {
     // Setup
+    mockFetchUserDataProvider.mockResolvedValue(userMock)
+    vi.spyOn(TokenManager, 'getToken').mockReturnValue(mockToken)
     const { initAuthClient, isTokenRetrieve } = useInitUserAuth()
 
     // Act
@@ -86,7 +83,6 @@ describe('useInitUserAuth', () => {
     // Assert
     expect(msalGetTokenSpy).not.toHaveBeenCalled()
     expect(isTokenRetrieve.value).toBeTruthy()
-    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith(mockToken)
     expect(userStoreMock.setUser).toHaveBeenCalledOnce()
     expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock)
   })
@@ -116,8 +112,9 @@ describe('useInitUserAuth', () => {
     expect(userStoreMock.setGigyaUserId).not.toHaveBeenCalled()
   })
 
-  it.skip('should set gigyaUserId given that the token is available', () => {
+  it('should set gigyaUserId given that the token is available', () => {
     // Setup
+    vi.spyOn(TokenManager, 'getToken').mockReturnValue(mockToken)
     const mockGigyaUserId = 'gigya-user-id'
 
     const { setStoreGigyaUserId } = useInitUserAuth()

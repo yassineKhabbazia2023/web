@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import { loggerMock } from '@pulse/core/mocks'
+import { APP_ROUTES } from '@pulse/common/constants'
 
 import ExpireToken from './ExpireToken.vue'
 
@@ -31,7 +32,7 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 describe('page expire token', () => {
-  it.skip('should call endpoint when click on button', async () => {
+  it('should call endpoint when click on button', async () => {
     const contactId = 'contact id'
     const accountNumber = '3590284870'
     mockUseRoute.mockReturnValue({
@@ -43,7 +44,7 @@ describe('page expire token', () => {
     const wrapper = createWrapper()
     const expectedUrl = `account/api/customers/invite/${contactId}`
     const expectedRoute = {
-      path: '/resendEmailSuccess',
+      name: APP_ROUTES.login.resendEmailSuccess.name,
     }
 
     wrapper.find('.btn-link').trigger('click')
@@ -55,7 +56,7 @@ describe('page expire token', () => {
     expect(mockRouterPush).toHaveBeenCalledWith(expectedRoute)
   })
 
-  it.skip('should call endpoint when click on button and contactEmail is given', async () => {
+  it('should call endpoint when click on button and contactEmail is given', async () => {
     const contactEmail = 'contact email'
     mockUseRoute.mockReturnValue({
       query: {
@@ -68,7 +69,7 @@ describe('page expire token', () => {
       email: 'contact+email',
     }
     const expectedRoute = {
-      path: '/resendEmailSuccess',
+      name: APP_ROUTES.login.resendEmailSuccess.name,
     }
 
     wrapper.find('.btn-link').trigger('click')

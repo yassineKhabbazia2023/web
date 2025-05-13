@@ -42,7 +42,7 @@ describe('reset password', () => {
     wrapper.unmount()
   })
 
-  it.skip('validate the reset password form and has a redirection to the success page', async () => {
+  it('validate the reset password form and has a redirection to the success page', async () => {
     const elForm = wrapper.find('form')
     mockAuthPost.mockResolvedValueOnce({})
     expect(elForm.exists()).toBeTruthy()
@@ -62,15 +62,16 @@ describe('reset password', () => {
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith({
-      path: '/resetPasswordSuccess',
+      name: APP_ROUTES.login.resetPasswordSuccess.name,
       query: {
-        email: 'customEmail@aol.com',
+        email: INPUT_EMAIL_VALUE,
       },
     })
   })
 
-  it.skip('should redirect to the failed page when status is 429', async () => {
-    mockAuthPost.mockRejectedValueOnce({ status: 429, response: { data: { maxAttempts: 5 } } })
+  it('should redirect to the failed page when status is 429', async () => {
+    const MAX_ATTEMPTS = 5
+    mockAuthPost.mockRejectedValueOnce({ status: 429, response: { data: { maxAttempts: MAX_ATTEMPTS } } })
 
     const input = wrapper.find('[data-testid="reset-password-input-email"]')
     await input.setValue(INPUT_EMAIL_VALUE)
@@ -81,9 +82,9 @@ describe('reset password', () => {
     await flushPromises()
 
     expect(mockRouterPush).toHaveBeenCalledWith({
-      path: '/resetPasswordFailed',
+      name: APP_ROUTES.login.resetPasswordFailed.name,
       query: {
-        maxAttempts: 5,
+        maxAttempts: MAX_ATTEMPTS,
       },
     })
   })

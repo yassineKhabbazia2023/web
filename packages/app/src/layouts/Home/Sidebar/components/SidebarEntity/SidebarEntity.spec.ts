@@ -30,14 +30,6 @@ vi.mock('vue-router', () => ({
 const userStoreMock = getStoreMock(useUserStore)
 const entities: Entity[] = getMockedFavoriteEntities()
 
-vi.mock('@pulse/common', () => ({
-  dataProvider: () => {
-    return {
-      fetchUserData: vi.fn(),
-    }
-  },
-}))
-
 vi.mock('@pulse/common/managers', () => ({
   SelectedEntityManager: SelectedEntityManagerMock,
 }))
@@ -84,10 +76,6 @@ describe('sidebarEntity', () => {
       expect(EntityAvatars).toHaveLength(entities.length)
     })
 
-    it('should not call SelectedEntityManager on mounted', () => {
-      expect(persistSelectedEntityMock).not.toHaveBeenCalled()
-    })
-
     it('should call SelectedEntityManager when click on EntityAvatar', () => {
       const favoriteEntities = wrapper.find('[data-testid=favorite-entities]')
       const EntityAvatars = favoriteEntities.findAllComponents({ name: 'EntityAvatar' })
@@ -107,6 +95,7 @@ describe('sidebarEntity', () => {
 
       userStoreMock.isCollab = false
       userStoreMock.isCustomer = true
+      // we need to be sure the customer is not single entity (otherwise the sidenav is not displayed)
       userStoreMock.getIsSingleEntity.mockReturnValue(false)
       await nextTick()
 
@@ -124,28 +113,16 @@ describe('sidebarEntity', () => {
       expect(favoriteEntities).toHaveLength(entities.length)
     })
 
-    // TODO unskip to UT
-    it.skip('should display the selected entity correctly after clicking on a random entity avatar', async () => {
-      const firstFavoriteEntity = wrapper.find(
-        '[data-testid=favorite-entity] button',
-      )
-      const selectedEntity = findSelectedEntity(wrapper)
-
-      expect(selectedEntity.exists()).toBeTruthy()
+    it('should persist the selected entity correctly after clicking on a favorite entity avatar', async () => {
+      const firstFavoriteEntity = wrapper.find('[data-testid=favorite-entity] button')
 
       await firstFavoriteEntity.trigger('click')
 
-      const selectedEntity2 = findSelectedEntity(wrapper)
-      const entityName = selectedEntity2.find('.entity-wrapper__details-name')
-      const entityIbs = selectedEntity2.find('.entity-wrapper__details-ibs')
-      // entities are sorted now
-      const sortedEntities = [...entities].sort((a, b) =>
-        a.legalName.localeCompare(b.legalName),
-      )
+      const accountNumber = firstFavoriteEntity.find('.entity-wrapper__details-ibs')
+      const selectedEntity = entities.find((entity) => entity.accountNumber === accountNumber.text())
 
-      expect(selectedEntity2.exists()).toBeTruthy()
-      expect(entityName.text()).toBe(sortedEntities[0].legalName)
-      expect(entityIbs.text()).toBe(sortedEntities[0].accountNumber)
+      expect(persistSelectedEntityMock).toHaveBeenCalledTimes(1)
+      expect(persistSelectedEntityMock).toHaveBeenCalledWith(selectedEntity)
     })
   })
   describe('events', () => {

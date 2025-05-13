@@ -148,7 +148,7 @@ describe('feed center drawer composable', () => {
     app.unmount()
   })
 
-  it.skip.each([
+  it.each([
     {
       localStorageValue: 'true',
       favouriteEntities: [favouriteEntities[0], favouriteEntities[1]],
@@ -173,7 +173,7 @@ describe('feed center drawer composable', () => {
     'should set the favorite switch based on local storage value but should be off anyway if no favourite entities exists when localStorageValue is $localStorageValue',
     async ({
       localStorageValue,
-      // favouriteEntities,
+      favouriteEntities,
       expectedToggleState,
     }) => {
       localStorage.setItem('favoriteEnabled', localStorageValue)

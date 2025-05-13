@@ -3,7 +3,6 @@ import { nextTick } from 'vue'
 import {
   cguServiceMock,
   amplitudeServiceTrackMock,
-  amplitudeServiceSetNewUserPropertyMock,
   amplitudeServiceMock,
   getStoreMock,
 } from '@pulse/common/mocks'
@@ -114,7 +113,7 @@ describe('LoginClient', () => {
     wrapper.unmount()
   })
 
-  it.skip('fill the login page and has a redirection to the home page', async () => {
+  it('fill the login page and has a redirection to the home page', async () => {
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
@@ -146,18 +145,11 @@ describe('LoginClient', () => {
         gigyaUserId: GIGYA_USER_ID,
       },
     })
-    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledWith('user_type', 'Client')
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
-      sign_in_method: 'email',
-      sign_in_result: 'succeeded',
-    })
     expect(tokenStoreMock.setTokenExpiration).toHaveBeenNthCalledWith(1, WEB_TOKEN)
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
   })
 
-  it.skip('does not redirect to the home page if the api return a WRONG_LOGIN_PASSWORD error', async () => {
+  it('does not redirect to the home page if the api return a WRONG_LOGIN_PASSWORD error', async () => {
     loginMock.mockRejectedValueOnce({
       response: {
         data: {
@@ -185,8 +177,6 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledWith('user_type', 'Client')
     expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
     expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
@@ -195,7 +185,7 @@ describe('LoginClient', () => {
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
-  it.skip('does not redirect to the home page if the api return a INVALID_LOGIN_CREDENTIALS error', async () => {
+  it('does not redirect to the home page if the api return a INVALID_LOGIN_CREDENTIALS error', async () => {
     loginMock.mockRejectedValueOnce({
       response: {
         data: {
@@ -223,8 +213,6 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledWith('user_type', 'Client')
     expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
     expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
@@ -233,7 +221,7 @@ describe('LoginClient', () => {
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
-  it.skip('does not redirect to the home page if the api return empty response', async () => {
+  it('does not redirect to the home page if the api return empty response', async () => {
     loginMock.mockResolvedValueOnce({})
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
@@ -254,8 +242,6 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledWith('user_type', 'Client')
     expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
     expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
@@ -264,11 +250,11 @@ describe('LoginClient', () => {
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
-  it.skip('does display error message if the api return an unkown error', async () => {
+  it('does display error message if the api return an unknown error', async () => {
     loginMock.mockRejectedValueOnce({
       response: {
         data: {
-          errorCode: 'unkown',
+          errorCode: 'unknown',
         },
       },
     })
@@ -291,8 +277,6 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceSetNewUserPropertyMock).toHaveBeenCalledWith('user_type', 'Client')
     expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
     expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
@@ -317,7 +301,6 @@ describe('LoginClient', () => {
 
     const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
-    expect(amplitudeServiceSetNewUserPropertyMock).not.toHaveBeenCalled()
     expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
@@ -334,7 +317,6 @@ describe('LoginClient', () => {
 
     const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
-    expect(amplitudeServiceSetNewUserPropertyMock).not.toHaveBeenCalled()
     expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
   })

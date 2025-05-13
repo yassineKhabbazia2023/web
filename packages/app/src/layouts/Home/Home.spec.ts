@@ -1,48 +1,22 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { envVarsMock, featureFlagManagerMock, isFeedCenterActivatedMock, isScheduleActivatedMock, loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
-import { commonMock } from '@app/__mocks__/common.mock'
+import { envVarsMock, featureFlagManagerMock, isFeedCenterActivatedMock, isScheduleActivatedMock } from '@pulse/core/mocks'
 import { fetchUnreadNotificationsCountMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 import { trackFeedcenterOpenedMock, trackingServiceMock } from '@app/__mocks__/tracking.service.mocks'
-import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
-import { entitiesServiceMock } from '@app/__mocks__/entities.service.mocks'
-import {
-  getStoreMock,
-  SelectedEntityManagerMock,
-  getMockedEntity,
-} from '@pulse/common/mocks'
 import { nextTick } from 'vue'
-import * as entitiesServices from '@app/services/entities'
-import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+import { createTestingPinia } from '@pinia/testing'
+
+createTestingPinia()
 
 import Home from '.'
-
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
-getStoreMock(useUserStore)
-
-declare let window: {
-  embedded_svc: {
-    addEventHandler: () => void
-    settings: () => void
-    init: () => void
-  }
-} & Window
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
 vi.mock('env-vars', () => envVarsMock)
-vi.mock('@app/plugins/ProductFruits/productFruits.plugin')
-vi.mock('@app/plugins/Hubspot/hubspot.plugin')
 
 vi.mock('@pulse/core', async () => ({
-  logger: loggerMock,
   FeatureFlagManager: featureFlagManagerMock,
 }))
-
-vi.mock('@app/schedule/services', () => scheduleServicesMock)
-vi.mock('@pulse/common', () => commonMock)
-vi.mock('@app/services/entities', () => entitiesServiceMock)
 
 const useRouterMock = vi.hoisted(() => vi.fn(() => ({
   currentRoute: {
@@ -57,18 +31,6 @@ const useRouterMock = vi.hoisted(() => vi.fn(() => ({
 vi.mock('vue-router', () => ({
   useRouter: useRouterMock,
 }))
-
-vi.mock('@pulse/common/managers', () => ({
-  SelectedEntityManager: SelectedEntityManagerMock,
-}))
-
-import.meta.env.PROD = true
-
-window.embedded_svc = {
-  addEventHandler: vi.fn(),
-  settings: vi.fn(),
-  init: vi.fn(),
-}
 
 const createWrapper = (): VueWrapper<any> =>
   shallowMount(Home, {
@@ -98,32 +60,9 @@ function getHomeFeedCenterDrawer(wrapper: VueWrapper) {
   return wrapper.findComponent({ name: 'FeedCenterDrawer' })
 }
 
-const entityMock = getMockedEntity()
-
 describe('home', () => {
-  let wrapper: VueWrapper<any>
-  beforeEach(() => {
-    selectedEntityStoreMock.selectedEntity = entityMock
-    wrapper = createWrapper()
-  })
-
-  it.skip('should log a logger.error message when the request fails', async () => {
-    const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-
-    vi.spyOn(entitiesServices, 'fetchEntities').mockRejectedValue(
-      expectedErrorMessage,
-    )
-    wrapper = createWrapper()
-    await flushPromises()
-
-    expect(loggerErrorSpy).toHaveBeenCalledOnce()
-    expect(loggerErrorSpy).toHaveBeenCalledWith(
-      'Something wrong occurred: ',
-      expectedErrorMessage,
-    )
-  })
-
   it('can display the user profile drawer', async () => {
+    const wrapper = createWrapper()
     wrapper.vm.isLoading = false
     await nextTick()
 
@@ -139,6 +78,7 @@ describe('home', () => {
   })
 
   it('should display the app after retrieving all current user data', async () => {
+    const wrapper = createWrapper()
     wrapper.vm.isLoading = true
     await nextTick()
     let commonLayout = wrapper.find('.common-layout')
@@ -153,8 +93,9 @@ describe('home', () => {
     expect(commonLayout.exists()).toBeTruthy()
   })
 
-  it.skip('should show calendar drawer when header emits show-user-profile-drawer', async () => {
+  it('should show calendar drawer when header emits show-user-profile-drawer', async () => {
     isScheduleActivatedMock.mockReturnValue(true)
+    const wrapper = createWrapper()
     wrapper.vm.isLoading = false
 
     await nextTick()
@@ -172,8 +113,9 @@ describe('home', () => {
     })
   })
 
-  it.skip('should still show calendar drawer when header emits show-user-profile-drawer and close it after', async () => {
+  it('should still show calendar drawer when header emits show-user-profile-drawer and close it after', async () => {
     isScheduleActivatedMock.mockReturnValue(true)
+    const wrapper = createWrapper()
     wrapper.vm.isLoading = false
     await nextTick()
 
@@ -191,8 +133,9 @@ describe('home', () => {
     })
   })
 
-  it.skip('should still show feed center drawer when header emits show-user-profile-drawer and close it after', async () => {
+  it('should still show feed center drawer when header emits show-user-profile-drawer and close it after', async () => {
     isFeedCenterActivatedMock.mockReturnValue(true)
+    const wrapper = createWrapper()
     wrapper.vm.isLoading = false
     await nextTick()
 
@@ -223,10 +166,11 @@ describe('home', () => {
     expect(feedCenterWrapper.exists()).toBe(shouldExist)
   })
 
-  it.skip('should fetch unread notification count 500ms after closing the feed center drawer', async () => {
+  it('should fetch unread notification count 500ms after closing the feed center drawer', async () => {
     vi.restoreAllMocks() // restore mocks to be sure they are not called before this test
     vi.useFakeTimers()
     isFeedCenterActivatedMock.mockReturnValue(true)
+    const wrapper = createWrapper()
 
     await flushPromises()
     await nextTick()
@@ -239,30 +183,15 @@ describe('home', () => {
     await header.vm.$emit('update:show-feed-center', false)
 
     vi.advanceTimersByTime(500)
-    // called 2 times : 1x onMounted, 1x drawer open, 1x drawer close
+    // called 3 times : 1x onMounted, 1x drawer open, 1x drawer close
     expect(fetchUnreadNotificationsCountMock).toHaveBeenCalledTimes(3)
   })
 
   it('should track feedcenter opened', async () => {
     isFeedCenterActivatedMock.mockReturnValue(true)
-    createWrapper()
+    const wrapper = createWrapper()
     wrapper.vm.isFeedCenterOpened = true
     await flushPromises()
     expect(trackFeedcenterOpenedMock).toHaveBeenCalledOnce()
-  })
-
-  it.skip('should not display home-layout when selectedEntity is null', async () => {
-    selectedEntityStoreMock.selectedEntity = entityMock
-    createWrapper()
-    await nextTick()
-
-    const commonLayoutBefore = wrapper.find('[data-testid="common-layout"]')
-    expect(commonLayoutBefore.exists()).toBe(true)
-
-    selectedEntityStoreMock.selectedEntity = undefined
-    await nextTick()
-
-    const commonLayoutAfter = wrapper.find('[data-testid="common-layout"]')
-    expect(commonLayoutAfter.exists()).toBe(false)
   })
 })
