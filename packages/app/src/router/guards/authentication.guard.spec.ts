@@ -1,10 +1,7 @@
 import { APP_ROUTES } from '@pulse/common/constants'
 import { loggerMock } from '@pulse/core/mocks'
+import { CurrentUserManager } from '@pulse/common/managers'
 import { authenticationGuard } from './authentication.guard'
-import { useUserStore } from '@pulse/common/stores'
-import { getStoreMock } from '@pulse/common/mocks'
-
-const userStoreMock = getStoreMock(useUserStore)
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
@@ -15,7 +12,7 @@ const authenticatedRouteMock: any = { name: 'home', matched: [{ name: APP_ROUTES
 describe('authenticationGuard', () => {
   describe('anonymous user', () => {
     beforeEach(() => {
-      userStoreMock.isAuthenticated = false
+      vi.spyOn(CurrentUserManager, 'isAuthenticated').mockReturnValue(false) // user is not authenticated
     })
 
     it('should redirect anonymous user from authenticated route to anonymous route', () => {
@@ -36,7 +33,7 @@ describe('authenticationGuard', () => {
 
   describe('authenticated user', () => {
     beforeEach(() => {
-      userStoreMock.isAuthenticated = true
+      vi.spyOn(CurrentUserManager, 'isAuthenticated').mockReturnValue(true)  // user is authenticated
     })
 
     it('should redirect authenticated user from anonymous route to authenticated route', () => {

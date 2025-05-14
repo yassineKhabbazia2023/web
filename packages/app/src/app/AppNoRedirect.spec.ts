@@ -86,6 +86,10 @@ vi.mock('@pulse/common', () => ({
   setUnauthorizedCallback: setUnauthorizedCallbackMock,
 }))
 
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
+}))
+
 const createWrapper = () =>
   mount(App, {
     global: {
