@@ -1,12 +1,12 @@
-import { expect, describe, it, vi } from 'vitest'
 import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
-import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { getMockedMandatesData } from '@mandate/__mocks__/mandate.mock'
 import { amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
 import { mockedNotification, notificationHelperMock, showNotificationMock } from '@mandate/__mocks__/notification.helper.mocks'
 import * as mandateService from '@mandate/services/mandate'
 import { nextTick } from 'vue'
-import { flushPromises } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
+import type { ListMandateProps } from './ListMandateTypes'
+
 import Table from '.'
 
 interface Window {
@@ -16,7 +16,8 @@ interface Window {
 declare let window: Window
 declare let document: any
 
-const currentPage = 1
+const currentPageMock = 1
+const idMock = 'id-mock'
 
 vi.mock('@mandate/helpers/NotificationHelper', () => notificationHelperMock)
 vi.mock('@mandate/helpers/utils', () => utilsMocks)
@@ -67,106 +68,148 @@ const mockShowSaveFilePicker = (withShowSaveFilePicker: boolean = true) => {
   }
 }
 
-const createWrapper = (props: any = {}) =>
-  wrapperFactory(Table, {
+const defaultProps: ListMandateProps = {
+  currentPage: currentPageMock,
+  data: [],
+}
+
+function createWrapper(override: Partial<ListMandateProps> = {}) {
+  const props = {
+    ...defaultProps,
+    ...override,
+  }
+
+  return shallowMount(Table, {
     props,
     global: {
-      mocks: {
-        t: (key: any) => `mocked-${key}`,
+      stubs: {
+        PTable: {
+          name: 'PTable',
+          template: '<div><slot /></div>',
+        },
+        PTableColumn: {
+          name: 'PTableColumn',
+          template: '<div><slot :row="row" /><slot name="header" /></div>',
+          data() {
+            const row = {
+              id: idMock,
+              accountNumber: 'account-number',
+              companyName: 'company-name',
+            }
+
+            return {
+              row,
+            }
+          },
+        },
+        PToolbox: {
+          name: 'PToolbox',
+          template: '<div><slot /></div>',
+          props: ['pElements'],
+        },
+        PDialog: {
+          name: 'PDialog',
+          template: '<div><slot/><slot name="footer"/></div>',
+          events: ['update:model-value'],
+          props: [
+            'modelValue',
+            'pWidth',
+            'pModal',
+            'pCenter',
+            'pBeforeClose',
+            'PDialog',
+            'dialogCloseOnClickModal',
+            'dialogCloseOnPressEscape',
+            'pTitle',
+          ],
+        },
       },
     },
   })
+}
 
 describe('mandate collection', () => {
   it('renders the mandate table and click on dropdown', async () => {
     const wrapper = createWrapper({
       data: getMockedMandatesData(),
-      currentPage,
     })
 
-    await vi.dynamicImportSettled()
-    const firstDropdown = wrapper.find('.el-dropdown')
     const toolbox = wrapper.findComponent({ name: 'PToolbox' })
-    const button = firstDropdown.find('.el-button')
-    await button.trigger('click')
+    await toolbox.vm.$emit('p-toolbox-item-clicked', 'download-pre-filled-mandate')
 
     expect(toolbox.attributes('data-testid')).toBe('mandate-actions-toolbox')
-    expect(wrapper.exists()).toBeTruthy()
+    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/mandate-table.html')
   })
 
   it('renders the mandate table click on download signed mandate', async () => {
-    const wrapper = createWrapper({
-      data: [],
-      currentPage,
-    })
-
-    const mandate = { id: '123' }
+    const wrapper = createWrapper()
 
     // Trigger the action
-    await wrapper.vm.actionClicked('download-signed-mandate', mandate)
+    const toolbox = wrapper.findComponent({ name: 'PToolbox' })
+    await toolbox.vm.$emit('p-toolbox-item-clicked', 'download-signed-mandate')
 
     // Assert that the correct service function was called
     expect(wrapper.exists()).toBeTruthy()
-    expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(mandate.id)
+    expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(idMock)
   })
 
   it('emits actionClicked', async () => {
     const wrapper = createWrapper({
       data: getMockedMandatesData(),
-      currentPage,
     })
     await flushPromises()
 
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
-    pToolbox.vm.$emit('p-toolbox-item-clicked', 'cancel-telecollection')
-    const id = 567
-    await wrapper.vm.terminateMandateAction(id)
+    const pButtons = wrapper.findAllComponents({ name: 'PButton' })
 
-    expect(mandateService.terminateMandate).toHaveBeenCalledWith(id)
+    await pToolbox.vm.$emit('p-toolbox-item-clicked', 'cancel-telecollection')
+    await pButtons[2].vm.$emit('click')
+
+    expect(mandateService.terminateMandate).toHaveBeenCalledWith(idMock)
   })
 
   it('renders the mandate table click on terminate mandate', async () => {
-    const wrapper = createWrapper({
-      data: [],
-      currentPage,
-    })
-
-    const mandate = { id: '123' }
+    const wrapper = createWrapper()
 
     // Trigger the action
-    await wrapper.vm.actionClicked('cancel-telecollection',
-      { id: '123', accountNumber: '123', companyName: '123' })
-    await wrapper.vm.terminateMandateAction(mandate.id)
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+    const pButtons = wrapper.findAllComponents({ name: 'PButton' })
+
+    await pToolbox.vm.$emit('p-toolbox-item-clicked', 'cancel-telecollection')
+    pButtons[2].vm.$emit('click')
 
     // Assert that the correct service function was called
-    expect(mandateService.terminateMandate).toHaveBeenCalledWith('123')
+    expect(mandateService.terminateMandate).toHaveBeenCalledWith(idMock)
   })
 
   it('renders the mandate table click on download signed mandate without showSaveFilePicker',
     async () => {
-      const wrapper = createWrapper({
-        data: [],
-        currentPage,
-      })
-
-      const mandate = { id: '123' }
+      const wrapper = createWrapper()
 
       // Trigger the action
-      await wrapper.vm.actionClicked('download-signed-mandate', mandate)
+      const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+      await pToolbox.vm.$emit('p-toolbox-item-clicked', 'download-signed-mandate')
 
       // Assert that the correct service function was called
-      expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(mandate.id)
+      expect(mandateService.downloadSignedMandate).toHaveBeenCalledWith(idMock)
     })
 
   it('should sort the table data', async () => {
-    const wrapper = createWrapper({
-      data: [],
-      currentPage,
-    })
-    wrapper.vm.handleFileUpload({ target: { files: [{ name: 'mandate.pdf' }] } })
+    const wrapper = createWrapper()
+    const pTable = wrapper.findComponent({ name: 'PTable' })
+
+    const file = new File(['mandate content'], 'mandate.pdf', { type: 'application/pdf' })
+    const event = {
+      target: {
+        files: [file],
+      },
+    }
+    wrapper.vm.handleFileUpload(event, idMock)
     await flushPromises()
-    await wrapper.vm.sortColumnChange({ order: 'ascending', prop: 'erpId' })
-    await wrapper.vm.sortColumnChange({ order: 'descending', prop: '' })
+
+    await pTable.vm.$emit('sort-change', { order: 'ascending', prop: 'erpId' })
+    await pTable.vm.$emit('sort-change', { order: 'descending', prop: '' })
 
     const emittedEvents = wrapper.emitted('refresh-mandate-collection')
     expect(emittedEvents?.at(0)).toStrictEqual([{
@@ -181,13 +224,13 @@ describe('mandate collection', () => {
       sortOrder: 'Descending',
     }])
   })
+
   it('submit the signed mandate', async () => {
     const currentPage = 2
     const wrapper = createWrapper({
       currentPage,
-      data: [],
     })
-    vi.spyOn(wrapper.vm, 'handleFileUpload')
+
     let fileInput: any
     const originalCreateElement = document.createElement.bind(document)
     vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
@@ -199,8 +242,10 @@ describe('mandate collection', () => {
     })
     vi.spyOn(document.body, 'appendChild').mockImplementation(() => { })
     vi.spyOn(document.body, 'removeChild').mockImplementation(() => { })
-    await wrapper.vm.actionClicked('submit-signed-mandate',
-      { id: '123', accountNumber: 'accountNumber', companyName: 'companyName' })
+
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+    await pToolbox.vm.$emit('p-toolbox-item-clicked', 'submit-signed-mandate')
     await nextTick()
 
     const file = new File(['mandate content'], 'mandate.pdf', { type: 'application/pdf' })
@@ -219,7 +264,7 @@ describe('mandate collection', () => {
       success: 'The signed mandate has been submitted!',
     }
 
-    expect(mandateService.uploadSignedMandate).toHaveBeenCalledWith({ mandateId: '123', file })
+    expect(mandateService.uploadSignedMandate).toHaveBeenCalledWith({ mandateId: idMock, file })
     expect(showNotificationMock).toHaveBeenCalledTimes(2)
     expect(showNotificationMock).toHaveBeenNthCalledWith(1, notificationMessages, 'loading', false)
     expect(showNotificationMock)
@@ -230,26 +275,22 @@ describe('mandate collection', () => {
     }]])
   })
   it('renders the mandate table click on download unsigned mandate', async () => {
-    const wrapper = createWrapper({
-      data: [],
-      currentPage,
-    })
+    const wrapper = createWrapper()
     mockShowSaveFilePicker()
-    const mandate = { id: '123' }
+
     // Trigger the action
-    await wrapper.vm.actionClicked('download-pre-filled-mandate', mandate)
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+    await pToolbox.vm.$emit('p-toolbox-item-clicked', 'download-pre-filled-mandate')
+
     // Assert that the correct service function was called
-    expect(mandateService.downloadUnsignedMandate).toHaveBeenCalledWith(mandate.id)
+    expect(mandateService.downloadUnsignedMandate).toHaveBeenCalledWith(idMock)
   })
 
   it('should track telecollection cancellation', async () => {
-    const wrapper = createWrapper({
-      data: [],
-      currentPage,
-    })
+    const wrapper = createWrapper()
 
-    await wrapper.vm.actionClicked('cancel-telecollection',
-      { id: '123', accountNumber: '123', companyName: '123' })
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+    await pToolbox.vm.$emit('p-toolbox-item-clicked', 'cancel-telecollection')
 
     expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Bank Mandate Deleted', {
       bank_mandate_delete: '',
@@ -257,13 +298,10 @@ describe('mandate collection', () => {
   })
 
   it('should track pre filled mandate download', async () => {
-    const wrapper = createWrapper({
-      data: [],
-      currentPage,
-    })
+    const wrapper = createWrapper()
 
-    await wrapper.vm.actionClicked('download-pre-filled-mandate',
-      { id: '123', accountNumber: '123', companyName: '123' })
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+    await pToolbox.vm.$emit('p-toolbox-item-clicked', 'download-pre-filled-mandate')
 
     expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Blank Bank Mandate Downloaded', {
       blank_bank_mandate_download: '',

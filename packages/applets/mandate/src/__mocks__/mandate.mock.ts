@@ -1,4 +1,5 @@
 import type { BbanModel } from '@mandate/components/CreateMandate/Form/FormModels'
+import { MandateActions, type Mandate } from '@mandate/pages/mandate/Models'
 
 export function getMockedMandatesList(override = {}) {
   const defaultMandateList = {
@@ -20,7 +21,7 @@ export function getMockedMandatesList(override = {}) {
 }
 
 export function getMockedMandatesData() {
-  const data = [
+  const data: Mandate[] = [
     {
       id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
       erpId: '1000265308',
@@ -34,10 +35,10 @@ export function getMockedMandatesData() {
       jdcStatusCode: '99',
       jdcStatusDescription: 'A status description',
       permittedActions: [
-        'CAN_DOWNLOAD_PREFILLED_MANDATE',
-        'CAN_UPLOAD_SIGNED_MANDATE',
-        'CAN_DOWNLOAD_SIGNED_MANDATE',
-        'CAN_TERMINATE_TELECOLLECT',
+        MandateActions.CAN_DOWNLOAD_PREFILLED_MANDATE,
+        MandateActions.CAN_UPLOAD_SIGNED_MANDATE,
+        MandateActions.CAN_DOWNLOAD_SIGNED_MANDATE,
+        MandateActions.CAN_TERMINATE_TELECOLLECT,
       ],
     },
     {
@@ -53,10 +54,10 @@ export function getMockedMandatesData() {
       jdcStatusCode: '99',
       jdcStatusDescription: 'A status description',
       permittedActions: [
-        'CAN_DOWNLOAD_PREFILLED_MANDATE',
-        'CAN_UPLOAD_SIGNED_MANDATE',
-        'CAN_DOWNLOAD_SIGNED_MANDATE',
-        'CAN_TERMINATE_TELECOLLECT',
+        MandateActions.CAN_DOWNLOAD_PREFILLED_MANDATE,
+        MandateActions.CAN_UPLOAD_SIGNED_MANDATE,
+        MandateActions.CAN_DOWNLOAD_SIGNED_MANDATE,
+        MandateActions.CAN_TERMINATE_TELECOLLECT,
       ],
     },
     {
@@ -72,10 +73,10 @@ export function getMockedMandatesData() {
       jdcStatusCode: '99',
       jdcStatusDescription: 'A status description',
       permittedActions: [
-        'CAN_DOWNLOAD_PREFILLED_MANDATE',
-        'CAN_UPLOAD_SIGNED_MANDATE',
-        'CAN_DOWNLOAD_SIGNED_MANDATE',
-        'CAN_TERMINATE_TELECOLLECT',
+        MandateActions.CAN_DOWNLOAD_PREFILLED_MANDATE,
+        MandateActions.CAN_UPLOAD_SIGNED_MANDATE,
+        MandateActions.CAN_DOWNLOAD_SIGNED_MANDATE,
+        MandateActions.CAN_TERMINATE_TELECOLLECT,
       ],
     },
   ]

@@ -421,6 +421,10 @@ const downloadAndSaveMandate = async (downloadFunction: any, id: string, mandate
     notification.close()
   }
 }
+
+defineExpose({
+  handleFileUpload,
+})
 </script>
 
 <i18n lang="yaml">
