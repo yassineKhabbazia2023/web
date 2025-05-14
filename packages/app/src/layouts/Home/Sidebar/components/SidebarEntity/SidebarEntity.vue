@@ -176,6 +176,11 @@ const walletItem = computed((): SidebarEntityItemProps => {
 })
 
 const currentAccountId = computed(() => {
+  const folderIdParam = route.params.folderId ? parseInt(`${route.params.folderId}`) : undefined
+
+  if (folderIdParam && !isNaN(folderIdParam)) {
+    return folderIdParam
+  }
   const idParam = parseInt(`${route.params.id}`)
 
   return isNaN(idParam) ? undefined : idParam
