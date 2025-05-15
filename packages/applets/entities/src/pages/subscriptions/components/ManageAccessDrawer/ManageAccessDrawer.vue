@@ -7,23 +7,38 @@
     data-testid="manage-access-drawer"
     @close-drawer-button="handleCloseDrawer"
   >
-    <PUserCard
-      v-if="!showAccountName && selectedEntity?.legalName"
-      pColor="persian"
-      pImageName="folder-open-duotone"
-      :pTitle="selectedEntity?.legalName"
-      :pSubtitle="selectedEntity?.accountNumber"
-      class="margin-bottom--6"
-      data-testid="manage-access-user-card"
-    />
-    <PendingOperations
-      ref="pendingOperations"
-      :showAccountName="showAccountName"
-      :trackingLocalisation="trackingLocalisation"
-      :accountOperationsList="accountOperationsList"
-      :selectedEntityLegalName="selectedEntity?.legalName"
-      @update-operation-table="handleOperationTableUpdate"
-    />
+    <div
+      class="
+        flex
+        flex--direction-column
+        height--100
+      "
+    >
+      <PUserCard
+        v-if="!showAccountName && selectedEntity?.legalName"
+        pColor="persian"
+        pImageName="folder-open-duotone"
+        :pTitle="selectedEntity?.legalName"
+        :pSubtitle="selectedEntity?.accountNumber"
+        class="margin-bottom--6 width--100"
+        data-testid="manage-access-user-card"
+      />
+      <NoOperation
+        v-if="accountOperationsList.length === 0"
+        class="width--100"
+      />
+      <PendingOperations
+        v-if="accountOperationsList.length > 0"
+        ref="pendingOperations"
+        class="width--100"
+        :showAccountName="showAccountName"
+        :trackingLocalisation="trackingLocalisation"
+        :accountOperationsList="accountOperationsList"
+        :selectedEntityLegalName="selectedEntity?.legalName"
+        @update-operation-table="handleOperationTableUpdate"
+      />
+    </div>
+
     <template #footer>
       <div class="flex flex--justify-content-flex-end">
         <div
@@ -33,7 +48,7 @@
           <PPagination
             :pCurrentPage="currentPage"
             :pPageSize="pageSize"
-            :pTotal="pageCount"
+            :pTotal="accountCount"
             pHidePageSize
             @update:p-current-page="onUpdateCurrentPage"
           />
@@ -59,6 +74,7 @@ import { PDrawer, PButton, PUserCard, PPagination } from '@pulse/styleguide/comp
 import type { ManageAccessDrawerProps } from './ManageAccessDrawerTypes'
 import PendingOperations from './components/PendingOperations'
 import { useSelectedEntityStore } from '@pulse/common/stores'
+import NoOperation from './components/NoOperation'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -67,7 +83,7 @@ const { t } = useI18n({
 
 const props = withDefaults(defineProps<ManageAccessDrawerProps>(), {
   showAccountName: false,
-  pageCount: 1,
+  accountCount: 0,
 })
 
 const emit = defineEmits<{

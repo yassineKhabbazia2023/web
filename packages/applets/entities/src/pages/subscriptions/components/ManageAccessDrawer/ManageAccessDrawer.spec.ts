@@ -55,6 +55,7 @@ describe('manageAccessDrawer Component - Drawer containing a table of pending op
     wrapper = createWrapper()
     await flushPromises()
   })
+
   describe('display', () => {
     it('should display the drawer header with account information and the pending operations table correctly', () => {
       const userCard = wrapper.findComponent({ name: 'PUserCard' })
@@ -94,6 +95,7 @@ describe('manageAccessDrawer Component - Drawer containing a table of pending op
       await expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
     })
   })
+
   describe('events', () => {
     it("should emit 'update:modelValue' event when the drawer is closed", async () => {
       const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
@@ -124,7 +126,7 @@ describe('manageAccessDrawer Component - Drawer containing a table of pending op
         showPagination: true,
         currentPage: 2,
         pageSize: 5,
-        pageCount: 10,
+        accountCount: 10,
       })
     })
     it('should display properly the pagination component', () => {
@@ -152,6 +154,24 @@ describe('manageAccessDrawer Component - Drawer containing a table of pending op
       pagination.vm.$emit('update:p-current-page', newCurrentPage)
 
       expect(wrapper.emitted('update:current-page')).toStrictEqual([[newCurrentPage]])
+    })
+  })
+
+  describe('when noOperation', () => {
+    beforeEach(() => {
+      wrapper = createWrapper({
+        accountOperationsList: [],
+      })
+    })
+
+    it('should display properly the pagination component', () => {
+      const noOperation = wrapper.findComponent({ name: 'NoOperation' })
+      const pagination = wrapper.findComponent({ name: 'PPagination' })
+      const pendingOperations = wrapper.findComponent({ name: 'PendingOperations' })
+
+      expect(noOperation.exists()).toBe(true)
+      expect(pagination.exists()).toBe(false)
+      expect(pendingOperations.exists()).toBe(false)
     })
   })
 })

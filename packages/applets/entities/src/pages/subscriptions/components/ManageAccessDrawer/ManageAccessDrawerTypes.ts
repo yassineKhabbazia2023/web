@@ -9,5 +9,5 @@ export interface ManageAccessDrawerProps {
   showPagination?: boolean
   currentPage?: number
   pageSize?: number
-  pageCount?: number
+  accountCount?: number
 }

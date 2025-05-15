@@ -132,8 +132,8 @@
       :showPagination="showPagination"
       :accountOperationsList="accountOperationsList"
       :currentPage="manageAccessPage"
-      :pageSize="PAGE_SIZE_ACCESS_ON_SHOW"
-      :pageCount="manageAccessCount"
+      :pageSize="MANAGE_ACCESS_PAGE_SIZE"
+      :accountCount="manageAccessCount"
       :trackingLocalisation="TrackingLocalisation.WALLET"
       @update:model-value="onUpdateManageAccessDrawerOpened"
       @update-operation-table="onOperationTableUpdate"
@@ -179,9 +179,8 @@ import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import ResendActivationEmailDrawer from '@entities/common/components/ResendActivationEmailDrawer'
 import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 import type { AccountRow } from '@entities/common/types'
-import { fetchAccountOperations } from '@entities/services/contact'
 import ManageAccessDrawer from '@entities/pages/subscriptions/components/ManageAccessDrawer'
-import type { AccountOperations } from '@entities/services/contact/contactTypes'
+import { useManageAccessOperations } from './composables/manageAccessOperations.composable'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 import { useUserStore } from '@pulse/common/stores'
 
@@ -195,14 +194,11 @@ const route = useRoute()
 const userStore = useUserStore()
 const { isCollab, user } = storeToRefs(userStore)
 
-const PAGE_SIZE_ACCESS_ON_MOUNT = 1
-const PAGE_SIZE_ACCESS_ON_SHOW = 5
+const MANAGE_ACCESS_PAGE_SIZE = 5
 
 const searchBar = ref()
 const isLoading = ref(true)
 const selectedCompanyName = ref('')
-const manageAccessCount = ref<number>()
-const manageAccessPage = ref(1)
 const manageAccessDrawerRef = useTemplateRef('manageAccessDrawer')
 
 const isManageAccessDrawerOpened = ref(false)
@@ -344,8 +340,9 @@ async function onManageAccessButtonClick() {
     amplitudeService.track('Registry Validation Initiated', {
       registry_validation_initialisation_localisation: 'portefeuille',
     })
-    manageAccessPage.value = 1
-    await refreshManageAccessOperations()
+    await refreshManageAccessOperations({
+      currentPage: 1,
+    })
     isManageAccessDrawerOpened.value = true
   }
 }
@@ -371,22 +368,17 @@ async function loadManageAccessCount() {
   if (!hasManageAccessButton.value) {
     return
   }
-  const { totalItems } = await fetchAccountOperations(1, PAGE_SIZE_ACCESS_ON_MOUNT)
-
-  manageAccessCount.value = totalItems
+  await refreshPageCount()
 }
 
-async function refreshManageAccessOperations() {
-  await loadOperations(manageAccessPage.value, PAGE_SIZE_ACCESS_ON_SHOW)
-}
-
-function onOperationTableUpdate() {
-  refreshManageAccessOperations()
+async function onOperationTableUpdate() {
+  await refreshManageAccessOperations()
 }
 
 async function onUpdateManageAccessCurrentPage(currentPage: number) {
-  manageAccessPage.value = currentPage
-  await refreshManageAccessOperations()
+  await refreshManageAccessOperations({
+    currentPage,
+  })
   manageAccessDrawerRef.value?.resetOpenedAccordions()
 }
 
@@ -396,21 +388,15 @@ async function onUpdateManageAccessDrawerOpened(isOpened: boolean) {
   }
 }
 
-const isLoadingOperations = ref(false)
-const accountOperationsList = ref<AccountOperations[]>([])
-const showPagination = computed(() => (manageAccessCount.value ?? 0) > PAGE_SIZE_ACCESS_ON_SHOW)
+const showPagination = computed(() => (manageAccessCount.value ?? 0) > MANAGE_ACCESS_PAGE_SIZE)
 
-async function loadOperations(page: number, pageSize: number) {
-  isLoadingOperations.value = true
-  try {
-    const { items } = await fetchAccountOperations(page, pageSize)
-    accountOperationsList.value = items
-  } catch (error) {
-    logger.error('Unable to fetch operations: ', error)
-  } finally {
-    isLoadingOperations.value = false
-  }
-}
+const {
+  manageAccessPage,
+  manageAccessCount,
+  accountOperationsList,
+  refreshPageCount,
+  refreshManageAccessOperations,
+} = useManageAccessOperations(MANAGE_ACCESS_PAGE_SIZE)
 
 onMounted(async () => {
   loadManageAccessCount()

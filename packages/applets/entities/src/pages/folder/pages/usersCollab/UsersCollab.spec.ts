@@ -282,7 +282,7 @@ describe('usersCollab', () => {
         trackingLocalisation: TrackingLocalisation.FOLDER,
         modelValue: false,
         accountOperationsList: accountOperationsListMock,
-        pageCount: 1,
+        accountCount: 0,
         pageSize: undefined,
         showAccountName: false,
         showPagination: false,

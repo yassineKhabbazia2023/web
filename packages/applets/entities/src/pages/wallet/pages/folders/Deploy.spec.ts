@@ -10,8 +10,6 @@ import {
   getStoreMock,
 } from '@pulse/common/mocks'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { describe, expect, it, vi, beforeEach } from 'vitest'
-import { defineStore, createPinia } from 'pinia'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import { nextTick, reactive } from 'vue'
 import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtilsMock'
@@ -19,7 +17,7 @@ import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/common/types'
 import { isAccessManagementGlobalActivatedMock, featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'
 import { contactServiceMock, fetchOperationsByAccountMock } from '@entities/__mocks__/contact.service.mocks'
-import { AccountOperations } from '@entities/services/contact/contactTypes'
+import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 import type { Entity } from '@pulse/common/types'
@@ -29,6 +27,7 @@ import Deploy from '.'
 
 const userStoreMock = getStoreMock(useUserStore)
 const mockedAccount = getMockedAccount()
+const totalPagesMock = 5
 
 vi.mock('@pulse/core', () => ({
   logger: loggerMock,
@@ -75,23 +74,6 @@ vi.mock('@pulse/common', () => ({
     },
     gateway: {
       get: mockedGatewayGet,
-    },
-  }),
-  commonPinia: () => createPinia(),
-  commonStore: defineStore('common', {
-    state: () => ({
-      user: {
-        token: 'token',
-        entities: {
-          default: {
-            name: 'Tesla',
-          },
-        },
-      },
-    }),
-    getters: {
-      isAuthenticated: () => true,
-      isCollab: () => true,
     },
   }),
   amplitudeService: amplitudeServiceMock,
@@ -154,7 +136,7 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
             currentPage: [Number],
             modelValue: [Boolean],
             accountOperationsList: [Array],
-            pageCount: [Number],
+            accountCount: [Number],
             pageSize: [Number],
             showAccountName: [Boolean],
             showPagination: [Boolean],
@@ -589,6 +571,7 @@ describe('deploy', () => {
     const accountOperationMock = getPaginationMock<AccountOperations>({
       items: accountOperationsListMock,
       totalItems: totalItemsMock,
+      totalPages: totalPagesMock,
     })
 
     beforeEach(() => {
@@ -606,7 +589,7 @@ describe('deploy', () => {
         trackingLocalisation: TrackingLocalisation.WALLET,
         modelValue: false,
         accountOperationsList: [],
-        pageCount: 1,
+        accountCount: 1,
         pageSize: 5,
         showAccountName: true,
         showPagination: false,
@@ -651,7 +634,6 @@ describe('deploy', () => {
       expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
     })
 
-
     it('should call loadManageAccessCount when ManageAccessDrawer emits update-operation-table', async () => {
       const wrapper = createWrapper()
 
@@ -663,7 +645,12 @@ describe('deploy', () => {
       manageAccessDrawer.vm.$emit('update-operation-table')
       await flushPromises()
 
+      const expected1 = [1, 1]
+      const expected2 = [1, 5]
+
       expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
+      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(1, ...expected1)
+      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(2, ...expected2)
     })
 
     it('ManageAccessDrawer pagination', async () => {
@@ -671,6 +658,7 @@ describe('deploy', () => {
       const accountOperationMock = getPaginationMock<AccountOperations>({
         items: accountOperationsListMock,
         totalItems: totalItemsMock,
+        totalPages: totalPagesMock,
       })
       const newPage = 13
       const expectedPage = newPage
@@ -688,6 +676,31 @@ describe('deploy', () => {
 
       expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
       expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(2, expectedPage, expectedPageSize)
+    })
+
+    it('should call fetchOperations properly when current page is bigger than page count', async () => {
+      const wrapper = createWrapper()
+      const newPage = 13
+
+      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
+      expect(manageAccessDrawer.exists()).toBe(true)
+
+      expect(fetchOperationsByAccountMock).toHaveBeenCalledOnce()
+
+      manageAccessDrawer.vm.$emit('update:current-page', newPage)
+      manageAccessDrawer.vm.$emit('update-operation-table')
+      await flushPromises()
+
+      const expected1 = [1, 1]
+      const expected2 = [13, 5]
+      const expected3 = [13, 5]
+      const expected4 = [13, 5]
+
+      expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(4)
+      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(1, ...expected1)
+      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(2, ...expected2)
+      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(3, ...expected3)
+      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(3, ...expected4)
     })
   })
 })

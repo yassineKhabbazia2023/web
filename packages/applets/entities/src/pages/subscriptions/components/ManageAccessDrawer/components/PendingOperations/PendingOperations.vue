@@ -20,7 +20,7 @@
     v-for="(accountOperations, index) in accountOperationsList"
     :key="index"
     :pIsOpen="openedAccountNumbers.includes(accountOperations.accountNumber)"
-    class="margin-bottom--4"
+    class="margin-bottom--4 width--100"
     pHeaderCssClass="bg--persian-50 margin-bottom--1"
     :pHasHeader="showAccountName"
     @open="addIfNotExists(openedAccountNumbers, accountOperations.accountNumber)"

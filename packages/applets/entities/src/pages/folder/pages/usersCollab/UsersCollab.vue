@@ -242,11 +242,13 @@ async function loadOperations() {
     const pendingOperations = getPendingOperations(operations)
     const firstOperation = pendingOperations.at(0)
     const accountNumber = firstOperation?.accountNumber ?? ''
-    accountOperationsList.value = [{
-      operations: pendingOperations,
-      accountNumber,
-      accountName: '',
-    }]
+    accountOperationsList.value = pendingOperations.length > 0
+      ? [{
+        operations: pendingOperations,
+        accountNumber,
+        accountName: '',
+      }]
+      : []
   } catch (error) {
     logger.error('Unable to fetch operations: ', error)
   } finally {
