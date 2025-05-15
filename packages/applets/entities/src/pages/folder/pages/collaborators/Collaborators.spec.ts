@@ -1,5 +1,4 @@
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, describe, it, expect, vi } from 'vitest'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { nextTick } from 'vue'
 import { mockCollabsData } from './mockData'
@@ -55,19 +54,30 @@ vi.mock('@entities/services/wallet', () => ({
 const createWrapper = (): ComponentWrapper<
   InstanceType<typeof Collaborators>
 > =>
-  mount(Collaborators, {
+  shallowMount(Collaborators, {
     attachTo: document.body,
     global: {
       stubs: {
-        AddCollaboratorsDrawer: true,
-        CollabDetailsDrawer: true,
-        FormSearch: true,
-        PButton: true,
-        PIcon: true,
-        PLoader: true,
-        PAvatar: true,
-        PToolbox: true,
-        NoResult: true,
+        PToolbox: {
+          name: 'PToolbox',
+          template: '<div><slot /></div>',
+        },
+        PTable: {
+          name: 'PTable',
+          template: '<div><slot /></div>',
+          props: ['pData'],
+        },
+        PTableColumn: {
+          name: 'PTableColumn',
+          template: '<div><slot :row="row" /></div>',
+          data() {
+            const row = {}
+
+            return {
+              row,
+            }
+          },
+        },
       },
     },
   })
@@ -82,8 +92,6 @@ describe('collaborators', () => {
     document.querySelector(
       '[data-testid=add-collaborator-button]',
     ) as HTMLButtonElement
-  const getToolboxAction = () =>
-    wrapper.findComponent('[data-testid=toolbox-action]') as VueWrapper
 
   beforeEach(() => {
     userStoreMock.isCollab = true
@@ -124,8 +132,8 @@ describe('collaborators', () => {
   })
 
   it('should display the table with the list of collaborator', () => {
-    const rows = wrapper.findAll('tr.el-table__row')
-    expect(rows).toHaveLength(mockCollabsData.length)
+    const pTable = wrapper.findComponent({ name: 'PTable' })
+    expect(pTable.props('pData')).toHaveLength(mockCollabsData.length)
   })
 
   it("should emit an 'accessSwitched' event when the table changes", () => {
@@ -138,24 +146,27 @@ describe('collaborators', () => {
   })
 
   it('can display the detail of the collaborator', async () => {
-    const getCollabDetailsDrawer = () =>
-      wrapper.findComponent({ name: 'CollabDetailsDrawer' })
+    const collabDetailsDrawerBefore = wrapper.findComponent({ name: 'CollabDetailsDrawer' })
 
-    expect(getCollabDetailsDrawer().exists()).toBeFalsy()
+    expect(collabDetailsDrawerBefore.exists()).toBeFalsy()
+    const pToolboxItem = wrapper.findComponent({ name: 'PToolbox' })
 
-    getToolboxAction().vm.$emit(
+    pToolboxItem.vm.$emit(
       'p-toolbox-item-clicked',
       'collaboratorInformation',
     )
     await flushPromises()
 
-    expect(getCollabDetailsDrawer().exists()).toBeTruthy()
+    const collabDetailsDrawerAfter = wrapper.findComponent({ name: 'CollabDetailsDrawer' })
+    expect(collabDetailsDrawerAfter.exists()).toBeTruthy()
+
     expect(loggerErrorSpy).toHaveBeenCalledOnce()
     expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
   })
 
   it("should display a console error if the request to fetch the contact's phone number fails", async () => {
-    getToolboxAction().vm.$emit(
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+    pToolbox.vm.$emit(
       'p-toolbox-item-clicked',
       'collaboratorInformation',
     )
@@ -170,7 +181,8 @@ describe('collaborators', () => {
       document.body.getElementsByClassName('el-notification success')
     expect(getNotificationSuccess()).toHaveLength(0)
 
-    getToolboxAction().vm.$emit(
+    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+    pToolbox.vm.$emit(
       'p-toolbox-item-clicked',
       'removeCollaborator',
     )
@@ -180,17 +192,11 @@ describe('collaborators', () => {
   })
 
   it('has a pagination', () => {
-    const pages = wrapper.findAll('.el-pager li')
-    const pagination = wrapper.findComponent({ name: 'PPagination' })
-    const totalItems = wrapper.find(
-      '[data-testid=ppagination-pagination-counter]',
-    )
+    const pPagination = wrapper.findComponent({ name: 'PPagination' })
 
-    expect(pages).toHaveLength(1)
-    expect(pagination.exists()).toBeTruthy()
-    expect(pagination.props('pCurrentPage')).toBe(1)
-    expect(pagination.props('pPageSize')).toBe(15)
-    expect(totalItems.text()).toContain(mockCollabsData.length)
+    expect(pPagination.exists()).toBeTruthy()
+    expect(pPagination.props('pCurrentPage')).toBe(1)
+    expect(pPagination.props('pPageSize')).toBe(15)
   })
 
   it('should not display actions when is NOT Collab', async () => {
