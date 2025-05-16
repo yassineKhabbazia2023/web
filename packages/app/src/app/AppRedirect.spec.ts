@@ -10,8 +10,8 @@ import { getExpirationDelaysMock } from '@app/__mocks__/app.utils.mocks'
 import { nextTick, reactive } from 'vue'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
 
-import { APP_ROUTES } from '@pulse/common/constants'
-import { LAYOUTS } from '@app/constants/constants'
+import { APP_ROUTES, LAYOUT_META } from '@pulse/common/constants'
+import { Layout } from '@pulse/common/enums'
 
 import App from './'
 
@@ -27,7 +27,7 @@ const routerPushMock = vi.hoisted(() => vi.fn())
 const useRouterMock = vi.hoisted(() => vi.fn(() => reactive({
   name: 'route-name',
   meta: {
-    layout: LAYOUTS.MAIN,
+    [LAYOUT_META]: Layout.MAIN,
   },
 })))
 vi.mock('vue-router', () => ({
@@ -180,7 +180,7 @@ describe('app with navigation guard', () => {
     const mockedRoute = reactive({
       name: '/',
       meta: {
-        layout: LAYOUTS.MAIN,
+        [LAYOUT_META]: Layout.MAIN,
       },
     })
     useRouterMock.mockReturnValueOnce(mockedRoute)
@@ -202,7 +202,7 @@ describe('app with navigation guard', () => {
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterFiveMinutes)
 
-    mockedRoute.meta.layout = LAYOUTS.LOGIN
+    mockedRoute.meta.layout = Layout.LOGIN
     mockedRoute.name = APP_ROUTES.login.client.name
     await nextTick()
 

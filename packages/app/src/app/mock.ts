@@ -1,7 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { APP_ROUTES } from '@pulse/common/constants'
-
-export const LOGIN_LAYOUT = 'LoginLayout'
+import { APP_ROUTES, LAYOUT_META } from '@pulse/common/constants'
+import { Layout } from '@pulse/common/enums'
 
 export const PAGES_TITLE = {
   CLIENT: 'Login Client Page',
@@ -28,7 +27,7 @@ export const ROUTES: RouteRecordRaw[] = [
       template: `<p class="pageTitle">${PAGES_TITLE.COLLAB}</p>`,
     },
     meta: {
-      layout: LOGIN_LAYOUT,
+      [LAYOUT_META]: Layout.LOGIN,
     },
   },
   {
@@ -38,7 +37,7 @@ export const ROUTES: RouteRecordRaw[] = [
       template: `<p class="pageTitle">${PAGES_TITLE.CLIENT}</p>`,
     },
     meta: {
-      layout: LOGIN_LAYOUT,
+      [LAYOUT_META]: Layout.LOGIN,
     },
   },
   {

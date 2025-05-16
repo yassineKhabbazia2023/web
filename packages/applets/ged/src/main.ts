@@ -1,14 +1,13 @@
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
+import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 
 const routes = [
   {
     path: '/dossier/:folderId/ged',
     name: 'ged',
     meta: {
-      styles: {
-        hasPaddings: false,
-      },
+      [LAYOUT_NO_PADDING_META]: true,
     },
     component: () => import('@ged/Ged.vue'),
   },

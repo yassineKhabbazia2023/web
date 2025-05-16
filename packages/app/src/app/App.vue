@@ -24,15 +24,15 @@ import {
 } from '@pulse/common'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { useRoute, type RouteLocationNormalized } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { PConfigProvider } from '@pulse/styleguide/components'
 import PopupRenewToken from '@app/components/PopupRenewToken'
 import { storeToRefs } from 'pinia'
 import { HTMLService } from '@pulse/core'
 import { useRedirection } from '@app/composables/useRedirection'
 import { getExpirationDelays } from './app.utils'
-import { LAYOUTS } from '@app/constants/constants'
-import { RouterHelpers } from '@pulse/common/helpers'
+import { LAYOUT_META } from '@pulse/common/constants'
+import { Layout } from '@pulse/common/enums'
 
 let openPopup5MinBeforeExpiredTimer: undefined | ReturnType<typeof setTimeout>
 let openPopupWhenHasExpiredTimer: undefined | ReturnType<typeof setTimeout>
@@ -45,13 +45,13 @@ const { logoutAndRedirectToLogin } = useRedirection()
 const { user, isCollab } = storeToRefs(userStore)
 
 const NO_POPUP_RENEW_TOKEN_LAYOUTS = [
-  LAYOUTS.LOGIN,
-  LAYOUTS.ERROR,
+  Layout.LOGIN,
+  Layout.ERROR,
 ]
 
 const currentLayout = ref()
-const currentLayoutName = ref('')
-const previousLayoutName = ref('')
+const currentLayoutName = ref<Layout>(Layout.EMPTY)
+const previousLayoutName = ref<Layout>(Layout.EMPTY)
 const popupRenewTokenIsVisible = ref(false)
 const isTokenExpired = ref(false)
 
@@ -65,12 +65,9 @@ function showPopupRenewToken() {
   }
 }
 
-function getLayout(route: RouteLocationNormalized) {
-  return RouterHelpers.getMetaFromKey({ route, metaKey: 'layout', includeAncestor: true }) ?? LAYOUTS.EMPTY
-}
-
 function onRouteChange() {
-  currentLayoutName.value = getLayout(route)
+  const routeLayoutName = route.meta[LAYOUT_META] as Layout
+  currentLayoutName.value = routeLayoutName || Layout.EMPTY
 
   if (popupRenewTokenIsVisible.value && !getCanShowPopupRenewToken()) {
     popupRenewTokenIsVisible.value = false
@@ -99,7 +96,7 @@ async function unauthorizedCallback() {
   CurrentUserManager.persistToken('')
   isTokenExpired.value = true
 
-  if (currentLayoutName.value === LAYOUTS.LOGIN) {
+  if (currentLayoutName.value === Layout.LOGIN) {
     return
   }
 

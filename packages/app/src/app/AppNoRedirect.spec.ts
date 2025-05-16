@@ -11,8 +11,9 @@ import {
 } from '@pulse/common/mocks'
 import type { Entity } from '@pulse/common/types'
 import { nextTick, ref } from 'vue'
-import { LAYOUTS } from '@app/constants/constants'
+import { LAYOUT_META } from '@pulse/common/constants'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
+import { Layout } from '@pulse/common/enums'
 
 import App from '.'
 
@@ -29,7 +30,7 @@ const useRouterMock = vi.hoisted(() => vi.fn(() => ({
   currentRoute: {
     value: {
       meta: {
-        layout: LAYOUTS.MAIN,
+        [LAYOUT_META]: Layout.MAIN,
       },
     },
     stylesMetaProperties: '',
@@ -206,7 +207,7 @@ describe('app with navigation guard', () => {
     const mockedRoute = {
       name: '/',
       meta: {
-        layout: LAYOUTS.LOGIN,
+        [LAYOUT_META]: Layout.LOGIN,
       },
     }
     useRouteMock.mockReturnValueOnce(mockedRoute)

@@ -7,7 +7,6 @@ import { onBeforeMount, onBeforeUnmount } from 'vue'
 import { AnonymousFlowManager } from '@app/managers/anonymous.flow.manager'
 import { useRoute , useRouter , onBeforeRouteUpdate } from 'vue-router'
 import { ROUTE_IS_COLLAB_META, APP_ROUTES } from '@pulse/common/constants'
-import { RouterHelpers } from '@pulse/common/helpers'
 
 const router = useRouter()
 const route = useRoute()
@@ -20,8 +19,7 @@ const checkRedirections = (currentRoute: any) => { // TODO type // https://dev.a
 }
 
 onBeforeMount(async () => {
-  const routeIsCollab =
-    RouterHelpers.getMetaFromKey({ route, metaKey: ROUTE_IS_COLLAB_META, includeAncestor: true }) === true
+  const routeIsCollab = route.meta[ROUTE_IS_COLLAB_META] === true
   AnonymousFlowManager.enterAnonymousFlow({ routeIsCollab })
 
   // check if we should redirect on first mount

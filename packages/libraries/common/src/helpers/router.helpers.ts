@@ -1,27 +1,6 @@
-import { GetMetaFromKeyParams, IsRouteOrAncestorActiveParams } from './helpers.types'
+import { IsRouteOrAncestorActiveParams } from './helpers.types'
 
 export class RouterHelpers {
-  /**
-   * Retrieves vue-router meta from a route based on the provided meta key.
-   * Will return the metadata from the route itself if it exists.
-   * Otherwise it will check the matched ancestor routes and return the first one found by order of closest to farthest.
-   * Meaning the closest you are to the route ancestry (or the route itself), the more important the meta are
-   *
-   * @param route The route object to retrieve metadata from.
-   * @param metaKey The key of the metadata to retrieve.
-   * @param includeAncestor Whether to include ancestor routes in the search for metadata.
-   * @returns The metadata associated with the given key or undefined if not found.
-   */
-  static getMetaFromKey({ route, metaKey, includeAncestor }: GetMetaFromKeyParams): any {
-    if(route.meta?.[metaKey]) {
-      return route.meta?.[metaKey]
-    }
-    if (includeAncestor) {
-      return route.matched?.find((ancestor: any) => ancestor.meta?.[metaKey])?.meta?.[metaKey]
-    }
-    return undefined
-  }
-
   /**
    * Checks whether the specified route has an ancestor with the given name.
    * This method inspects the route's matched array to determine if any ancestor route

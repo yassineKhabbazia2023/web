@@ -2,7 +2,8 @@ import { createWebHistory, createRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { routes as errorRoutes } from '@app/pages/Error/router'
 import { APP_ROUTES, LAYOUT_META } from '@pulse/common/constants'
-import { SQUAD_ROUTE_PATHS , LAYOUTS } from '@app/constants'
+import { Layout } from '@pulse/common/enums'
+import { SQUAD_ROUTE_PATHS } from '@app/constants'
 import { BootManager } from '@app/managers/boot.manager'
 import { authenticationGuard } from './guards/authentication.guard'
 import { seoGuard } from './guards/seo.guard'
@@ -25,7 +26,7 @@ const appRoutes: RouteRecordRaw[] = [
         name: APP_ROUTES.anonymous.name,
         component: () => import('@app/pages/Anonymous.root.vue'),
         meta: {
-          [LAYOUT_META]: LAYOUTS.LOGIN,
+          [LAYOUT_META]: Layout.LOGIN,
         },
         children: [/* To be defined in applets */],
       },
@@ -34,7 +35,7 @@ const appRoutes: RouteRecordRaw[] = [
         name: APP_ROUTES.authenticated.name,
         component: () => import('@app/pages/Authenticated.root.vue'),
         meta: {
-          [LAYOUT_META]: LAYOUTS.MAIN,
+          [LAYOUT_META]: Layout.MAIN,
         },
         children: [
           ...errorRoutes,
@@ -55,7 +56,7 @@ const appRoutes: RouteRecordRaw[] = [
               }
             },
             meta: {
-              [LAYOUT_META]: 'Error',
+              [LAYOUT_META]: Layout.ERROR,
             },
           },
         ],

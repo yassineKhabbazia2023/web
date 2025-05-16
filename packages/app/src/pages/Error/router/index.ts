@@ -1,4 +1,4 @@
-import { APP_ROUTES } from '@pulse/common/constants'
+import { APP_ROUTES, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes = [] as RouteRecordRaw[]
@@ -46,9 +46,7 @@ ERROR_PATH.forEach((path) => {
     path: path.path,
     name: path.name,
     meta: {
-      styles: {
-        hasPaddings: false,
-      },
+      [LAYOUT_NO_PADDING_META]: true,
     },
     component: () => import(`@app/pages/Error/${path.page}/index.ts`),
   } as RouteRecordRaw)

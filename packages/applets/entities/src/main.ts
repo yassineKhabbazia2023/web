@@ -1,10 +1,8 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
-import { LAYOUT_META, STYLES_META } from '@pulse/common/constants'
-
-// TODO create layout constant in common // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47378
-export const MAIN_LAYOUT = 'Home'
+import { LAYOUT_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
+import { Layout } from '@pulse/common/enums'
 
 const routes = [] as RouteRecordRaw[]
 
@@ -118,9 +116,7 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
     name: 'reports',
     component: () => import('@entities/pages/power-bi/pages/bi-reports'),
     meta: {
-      styles: {
-        hasPaddings: false,
-      },
+      [LAYOUT_NO_PADDING_META]: true,
     },
   } as RouteRecordRaw)
   return res
@@ -155,10 +151,8 @@ routes.push({
   name: 'bank',
   component: () => import('@entities/pages/WorkInProgress'),
   meta: {
-    [LAYOUT_META]: MAIN_LAYOUT,
-    [STYLES_META]: {
-      hasPaddings: false,
-    },
+    [LAYOUT_META]: Layout.MAIN,
+    [LAYOUT_NO_PADDING_META]: true,
   },
 })
 
@@ -167,10 +161,8 @@ routes.push({
   name: 'indicators',
   component: () => import('@entities/pages/WorkInProgress'),
   meta: {
-    [LAYOUT_META]: MAIN_LAYOUT,
-    [STYLES_META]: {
-      hasPaddings: false,
-    },
+    [LAYOUT_META]: Layout.MAIN,
+    [LAYOUT_NO_PADDING_META]: true,
   },
 })
 

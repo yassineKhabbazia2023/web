@@ -19,13 +19,7 @@ vi.mock('@pulse/core', async () => ({
 }))
 
 const useRouterMock = vi.hoisted(() => vi.fn(() => ({
-  currentRoute: {
-    value: {
-      meta: {
-        style: '',
-      },
-    },
-  },
+  currentRoute: {},
 })))
 
 vi.mock('vue-router', () => ({

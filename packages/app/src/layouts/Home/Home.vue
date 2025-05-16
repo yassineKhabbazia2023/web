@@ -34,8 +34,7 @@
         <PContainer
           class="main-container"
           :class="{
-            'main-container--no-paddings':
-              stylesMetaProperties?.hasPaddings === false
+            'main-container--no-paddings': shouldRemovePadding,
           }"
         >
           <UserProfile
@@ -59,14 +58,15 @@ import { storeToRefs } from 'pinia'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import UserProfile from '@app/components/UserProfile'
 import HomeScheduleDrawer from '@app/components/HomeScheduleDrawer'
-import Header from './Header'
-import Sidebar from './Sidebar'
 import FeedCenterDrawer from '@app/modules/FeedCenter/components/FeedCenterDrawer'
 import { fetchUnreadNotificationsCount } from '@app/modules/FeedCenter/services/notifications.service'
 import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
 import { trackFeedcenterOpened } from '@app/modules/FeedCenter/services/tracking/tracking.service'
 import { useUserStore } from '@pulse/common/stores'
+import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 
+import Header from './Header'
+import Sidebar from './Sidebar'
 
 // Variables
 const router = useRouter()
@@ -105,10 +105,10 @@ function onFavoriteFilterUpdated(isEnabled: boolean) {
   setNotificationsCount()
 }
 
-// Computed
-const stylesMetaProperties = computed(
-  () => router.currentRoute.value.meta.styles,
-)
+const shouldRemovePadding = computed(() => {
+  const removePadding = router.currentRoute.value?.meta[LAYOUT_NO_PADDING_META] === true
+  return removePadding
+})
 
 const userStore = useUserStore()
 
