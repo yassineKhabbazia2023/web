@@ -8,14 +8,16 @@ import { CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked } fro
 import { amplitudeService } from '@pulse/common'
 import { PERMISSION_CODES } from '@app/constants'
 
+import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 import SidebarEntityMenu from '.'
 
 const mockedBIReports = getMockedBIReports()
 const favoriteEntityId: number = getMockedFavoriteEntities()[0].accountId
 
-const defaultProps = {
+const defaultProps: SidebarEntityMenuProps = {
   selectedEntityId: favoriteEntityId,
   isCollab: false,
+  isSingleEntity: false,
 }
 
 vi.mock('@app/services/reporting', () => ({
@@ -99,6 +101,46 @@ describe('sidebarEntityMenu', () => {
         .map((item) => item.text())
 
       expect(sidebarEntityMenuItems).toContain('BI reports')
+    })
+  })
+  describe('classes behavior', () => {
+    describe('user is a collab', () => {
+      it('should display the collab classes for collab user', () => {
+        const props = {
+          ...defaultProps,
+          isCollab: true,
+        }
+        wrapper = createWrapper(props)
+        expect(wrapper.classes()).toContain('sidenav-entity-menu--is-collab')
+      })
+      it('should NOT display as a single-entity navbar when the collab user is single entity', () => {
+        const props = {
+          ...defaultProps,
+          isCollab: true,
+          isSingleEntity: true,
+        }
+        wrapper = createWrapper(props)
+        expect(wrapper.classes()).not.toContain('sidenav-entity-menu--is-single-entity')
+      })
+    })
+    describe('user is NOT a collab', () => {
+      it('should NOT display the collab classes for customer', () => {
+        const props = {
+          ...defaultProps,
+          isCollab: false,
+        }
+        wrapper = createWrapper(props)
+        expect(wrapper.classes()).not.toContain('sidenav-entity-menu--is-collab')
+      })
+      it('should display as a single-entity navbar when the customer user is single entity', () => {
+        const props = {
+          ...defaultProps,
+          isCollab: false,
+          isSingleEntity: true,
+        }
+        wrapper = createWrapper(props)
+        expect(wrapper.classes()).toContain('sidenav-entity-menu--is-single-entity')
+      })
     })
   })
   describe('events', () => {

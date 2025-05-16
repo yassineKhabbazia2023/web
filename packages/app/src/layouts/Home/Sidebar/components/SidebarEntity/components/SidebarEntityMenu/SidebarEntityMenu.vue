@@ -4,7 +4,7 @@
       'sidenav-entity-menu',
       { 'sidenav-entity-menu--collapsed': isMenuCollapsed },
       { 'sidenav-entity-menu--is-collab': isCollab },
-      { 'sidenav-entity-menu--is-single-entity': userStore.getIsSingleEntity() },
+      { 'sidenav-entity-menu--is-single-entity': canBeConsideredSingleEntity },
     ]"
     @mouseover="isMenuCollapsed = false"
     @mouseleave="isMenuCollapsed = true"
@@ -63,7 +63,6 @@ import { PMenuItem, PMenu } from '@pulse/styleguide/components'
 import { PERMISSION_CODES } from '@app/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 import type { IconName } from '@pulse/styleguide/types'
-import { useUserStore } from '@pulse/common/stores'
 
 const route = useRoute()
 const { t } = useI18n({
@@ -72,12 +71,17 @@ const { t } = useI18n({
 })
 
 const props = defineProps<SidebarEntityMenuProps>()
-const userStore = useUserStore()
 
 const hasBIReports = ref(false)
 const isMenuCollapsed = ref(true)
 const activeMenuItem = ref<string>(route.fullPath)
 const isEntityOrFolderPath = ref(false)
+
+const canBeConsideredSingleEntity = computed(() => {
+  return props.isSingleEntity === true
+  // collab can't be considered single entity users, even if they have only one entity
+  && props.isCollab === false
+})
 
 interface MenuItem {
   index: string

@@ -114,6 +114,7 @@
     <SidebarEntityMenu
       v-if="isSelectedEntityActive && currentAccountId"
       :isCollab="isCollab"
+      :isSingleEntity="isSingleEntity"
       :selectedEntityId="currentAccountId"
     />
   </div>
@@ -151,6 +152,7 @@ defineProps<SidebarEntityProps>()
 
 const { favoriteEntities } = storeToRefs(userStore)
 const { isCollab, isCustomer } = storeToRefs(userStore)
+const isSingleEntity = computed(() => userStore.getIsSingleEntity())
 
 const favoriteEntitiesSorted = computed(() => {
   return [...favoriteEntities.value].sort((a, b) => a.legalName.localeCompare(b.legalName))
@@ -162,7 +164,7 @@ const shouldDisplaySidebar = computed(() => {
   // sidebar should alway display for a collab user
   return isCollab.value === true
     // sidebar shouldn't display for a single entity customer user
-    || (isCustomer.value === true && userStore.getIsSingleEntity() === false)
+    || (isCustomer.value === true && isSingleEntity.value === false)
 })
 
 const walletItem = computed((): SidebarEntityItemProps => {
