@@ -27,9 +27,12 @@ export async function fetchServicesMailToGedInformation(
   entityServices: Service[],
   accountId: number,
 ) {
-  const mailToGedCallsByUniverse = entityServices.map((service) => {
-    return fetchServiceMailToGedInformation(entityId, service, accountId)
-  })
+  const mailToGedCallsByUniverse =
+    entityServices
+      .filter(service => service.IsReadOnly === false)
+      .map((service) => {
+        return fetchServiceMailToGedInformation(entityId, service, accountId)
+      })
 
   const promisesResult = await Promise.allSettled(mailToGedCallsByUniverse)
   const result: ServiceMailToGedInformation[] = []

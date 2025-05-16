@@ -10,7 +10,7 @@ import {
 
 describe('trash documents service', () => {
   it('should fetch trash documents when fetchTrashDocuments is called', async () => {
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
     const trashedDocumentValue = 'trashed-document'
 
     commonApiDsGetSpy.mockResolvedValueOnce({

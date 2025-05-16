@@ -4,9 +4,11 @@ export const servicesDataMock: Service[] = [
   {
     ServiceName: 'service-id-compta',
     ServiceId: 'service-id-compta',
+    IsReadOnly: false,
   },
   {
     ServiceName: 'service-id-gs',
     ServiceId: 'service-id-gs',
+    IsReadOnly: false,
   },
 ]

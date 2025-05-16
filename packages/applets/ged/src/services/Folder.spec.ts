@@ -67,6 +67,7 @@ describe('folder service', () => {
     const service = {
       ServiceId: 'some-service-id',
       ServiceName: 'some service name',
+      IsReadOnly: false,
     }
     const entityId = 'some-entity-id'
 
@@ -149,7 +150,7 @@ describe('folder service', () => {
   })
 
   it('should download the folder  when downloadFolder method is called', async () => {
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
     const folderId = 1
     const entityId = 'my-entity'
 
