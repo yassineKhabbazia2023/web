@@ -2,7 +2,10 @@ import { APP_NAME } from '../constants/pulse.constants'
 
 export class HTMLService {
   static setDocumentTitle(title: string = ''): void {
-    const separator = title.length > 0 ? ' - ' : ''
-    document.title = `${APP_NAME}` + separator + title
+    document.title = title.length > 0 ? title : APP_NAME
+  }
+
+  static resetDocumentTitle(): void {
+    document.title = APP_NAME
   }
 }

@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { APP_ROUTES, LAYOUT_META, ROUTE_IS_COLLAB_META } from '@pulse/common/constants'
+import { APP_ROUTES, HTML_TITLE_META, LAYOUT_META, ROUTE_IS_COLLAB_META } from '@pulse/common/constants'
+import { APP_TITLE_CUSTOMER, APP_TITLE_COLLABORATOR } from '@pulse/core'
 
 // TODO create layout constant in common // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47378
 export const LOGIN_LAYOUT = 'LoginLayout'
@@ -11,7 +12,14 @@ export const anonymousLoginRoutes: RouteRecordRaw[] = [
     component: () => import('@login/pages/loginClient/LoginClient.vue'),
     meta: {
       [LAYOUT_META]: LOGIN_LAYOUT,
+      [HTML_TITLE_META]: APP_TITLE_CUSTOMER,
     },
+  },
+  // for SEO reasons, we need to redirect /login/ to /login
+  {
+    path: `${APP_ROUTES.login.client.path}/`,
+    name: `${APP_ROUTES.login.client.name}-redirect`,
+    redirect: APP_ROUTES.login.client.name,
   },
   {
     path: APP_ROUTES.login.collab.path,
@@ -20,6 +28,7 @@ export const anonymousLoginRoutes: RouteRecordRaw[] = [
     meta: {
       [LAYOUT_META]: LOGIN_LAYOUT,
       [ROUTE_IS_COLLAB_META]: true,
+      [HTML_TITLE_META]: APP_TITLE_COLLABORATOR,
     },
   },
   {
@@ -28,6 +37,7 @@ export const anonymousLoginRoutes: RouteRecordRaw[] = [
     component: () => import('@login/pages/expireToken/ExpireToken.vue'),
     meta: {
       [LAYOUT_META]: LOGIN_LAYOUT,
+      [HTML_TITLE_META]: APP_TITLE_CUSTOMER,
     },
   },
   {
@@ -36,6 +46,7 @@ export const anonymousLoginRoutes: RouteRecordRaw[] = [
     component: () => import('@login/pages/createPassword/CreatePassword.vue'),
     meta: {
       [LAYOUT_META]: LOGIN_LAYOUT,
+      [HTML_TITLE_META]: APP_TITLE_CUSTOMER,
     },
   },
   {
@@ -44,6 +55,7 @@ export const anonymousLoginRoutes: RouteRecordRaw[] = [
     component: () => import('@login/pages/resendEmailSuccess/ResendEmailSuccess.vue'),
     meta: {
       [LAYOUT_META]: LOGIN_LAYOUT,
+      [HTML_TITLE_META]: APP_TITLE_CUSTOMER,
     },
   },
   {
@@ -52,6 +64,7 @@ export const anonymousLoginRoutes: RouteRecordRaw[] = [
     component: () => import('@login/pages/resetPassword/ResetPassword.vue'),
     meta: {
       [LAYOUT_META]: LOGIN_LAYOUT,
+      [HTML_TITLE_META]: APP_TITLE_CUSTOMER,
     },
   },
   {
@@ -60,6 +73,7 @@ export const anonymousLoginRoutes: RouteRecordRaw[] = [
     component: () => import('@login/pages/resetPasswordSuccess/ResetPasswordSuccess.vue'),
     meta: {
       [LAYOUT_META]: LOGIN_LAYOUT,
+      [HTML_TITLE_META]: APP_TITLE_CUSTOMER,
     },
   },
   {
@@ -68,6 +82,7 @@ export const anonymousLoginRoutes: RouteRecordRaw[] = [
     component: () => import('@login/pages/resetPasswordFailed/ResetPasswordFailed.vue'),
     meta: {
       [LAYOUT_META]: LOGIN_LAYOUT,
+      [HTML_TITLE_META]: APP_TITLE_CUSTOMER,
     },
   },
   {
@@ -76,6 +91,7 @@ export const anonymousLoginRoutes: RouteRecordRaw[] = [
     component: () => import('@login/pages/resetPasswordForm/ResetPasswordForm.vue'),
     meta: {
       [LAYOUT_META]: LOGIN_LAYOUT,
+      [HTML_TITLE_META]: APP_TITLE_CUSTOMER,
     },
   },
 ]
@@ -88,6 +104,7 @@ export const authenticatedLoginRoutes: RouteRecordRaw[] = [
     props: true,
     meta: {
       [LAYOUT_META]: LOGIN_LAYOUT,
+      [HTML_TITLE_META]: APP_TITLE_CUSTOMER,
     },
   },
 ]

@@ -1,7 +1,7 @@
 <div data-v-5b858a49="" class="wrapper">
   <main data-v-5b858a49="" class="card margin-bottom--6">
     <div data-v-5b858a49="">
-      <div data-v-5b858a49="" pxs="24" psm="24" pmd="12" class="content"><a data-v-5b858a49="" href="https://www.rydge.fr/" rel="noopener" target="_blank" data-testid="login-brand-link">
+      <div data-v-5b858a49="" pxs="24" psm="24" pmd="12" class="content"><a data-v-5b858a49="" href="https://www.rydge.fr" rel="noopener" target="_blank" data-testid="login-brand-link">
           <p-image-stub data-v-5b858a49="" pname="brand-color" pfit="fill" ptype="logos" class="brand-logo-content" alt="Brand logo"></p-image-stub>
         </a>
         <router-view-stub data-v-5b858a49=""></router-view-stub>
