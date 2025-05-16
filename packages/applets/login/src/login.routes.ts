@@ -17,7 +17,7 @@ export const anonymousLoginRoutes: RouteRecordRaw[] = [
   {
     path: `${APP_ROUTES.login.client.path}/`,
     name: `${APP_ROUTES.login.client.name}-redirect`,
-    redirect: APP_ROUTES.login.client.name,
+    redirect: { name: APP_ROUTES.login.client.name },
   },
   {
     path: APP_ROUTES.login.collab.path,
