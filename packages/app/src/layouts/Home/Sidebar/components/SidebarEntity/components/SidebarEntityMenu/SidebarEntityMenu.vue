@@ -74,7 +74,7 @@ const props = defineProps<SidebarEntityMenuProps>()
 
 const hasBIReports = ref(false)
 const isMenuCollapsed = ref(true)
-const activeMenuItem = ref<string>(route.fullPath)
+const activeMenuItem = ref<string>(route.path)
 const isEntityOrFolderPath = ref(false)
 
 const canBeConsideredSingleEntity = computed(() => {
@@ -161,7 +161,7 @@ const logAmplitudeEvent = (featureName: string) => {
 }
 
 watchEffect(() => {
-  activeMenuItem.value = route.fullPath
+  activeMenuItem.value = route.path
   isEntityOrFolderPath.value = ['gestion-utilisateurs', 'collaborateurs', 'offres', 'informations', 'historique-delegations'].some((path) => route.fullPath.includes(path))
 })
 
@@ -201,8 +201,10 @@ $sidenav-opened-width: 200px;
   }
 
   &__item-menu {
-    background-color: rgba(var(--el-color-secondary-fuschia-rgb), 0.2);
-    border-color: var(--el-color-secondary-fuschia) !important;
+    // customer colors (collab have their own class .sidenav-entity-menu--is-collab below)
+    background-color: var(--el-color-persian-100);
+    // we need to override the default border color with !important
+    border-color: var(--el-color-base-persian) !important;
   }
 
   &--is-single-entity {
@@ -224,9 +226,12 @@ $sidenav-opened-width: 200px;
         background-color: #F2F2FF;
       }
 
-      &.is-active {
+      &.is-active,
+      &.sidenav-entity-menu__item-menu
+       {
         background-color: rgba(var(--el-color-secondary-fuschia-rgb), 0.2);
-        border-color: var(--el-color-secondary-fuschia);
+        // we need to override the default and customer border color with !important
+        border-color: var(--el-color-secondary-fuschia) !important;
       }
     }
   }
