@@ -3,7 +3,8 @@ declare let window: {
     VITE_SCHEDULE_ACTIVATED: 'true' | 'false'
     VITE_MAIL_TO_GED_ACTIVATED: 'true' | 'false'
     VITE_FEED_CENTER_ACTIVATED: 'true' | 'false'
-    VITE_ACCESS_MANAGEMENT_GLOBAL?: 'true' | 'false'
+    VITE_ACCESS_MANAGEMENT_GLOBAL: 'true' | 'false'
+    VITE_HOMEPAGE_WIDGETS_ACTIVATED: 'true' | 'false'
   }
 } & Window
 
@@ -22,5 +23,9 @@ export class FeatureFlagManager {
 
   static isAccessManagementGlobalActivated() {
     return window.EnvVars?.VITE_ACCESS_MANAGEMENT_GLOBAL === 'true'
+  }
+
+  static isHomepageWidgetsActivated() {
+    return window.EnvVars?.VITE_HOMEPAGE_WIDGETS_ACTIVATED === 'true'
   }
 }

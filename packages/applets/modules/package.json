@@ -1,0 +1,27 @@
+{
+  "name": "@pulse/modules",
+  "version": "1.0.0",
+  "author": "Pulse Team",
+  "description": "App's Modules",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./managers": "./src/managers/index.mts",
+    "./widgets/widget-test": "./src/widgets/widget-test/index.mts",
+    "./widgets/widget-deux": "./src/widgets/widget-deux/index.mts"
+  },
+  "scripts": {
+    "build": "npm run build:types && npm run build:vite",
+    "build:types": "vue-tsc --build --force",
+    "build:vite": "vite build",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@pulse/common": "1.0.0",
+    "@pulse/styleguide": "3.1.0"
+  }
+}
