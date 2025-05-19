@@ -21,18 +21,20 @@ export function clearFolder(outputPath: string) {
   mkdirSync(outputPath)
 }
 
-export function getSvgoConfig(hasRemoveXmlnsPlugin: boolean): Config {
+export function getSvgoConfig(hasRemoveXmlnsPlugin: boolean, isMonochrome: boolean): Config {
   const convertColors = {
     name: 'convertColors',
     params: {
       currentColor: true,
     },
   }
-  const plugins = [
+  const plugins: any[] = [
     'removeDimensions',
     pluginPresetDefault,
-    convertColors,
   ]
+  if (isMonochrome) {
+    plugins.push(convertColors)
+  }
 
   if (hasRemoveXmlnsPlugin) {
     plugins.push('removeXMLNS')

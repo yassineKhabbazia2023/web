@@ -4,4 +4,5 @@ export type Icon = {
   fileName: string
   filePath: string
   category: string
+  isPolychrome: boolean
 }

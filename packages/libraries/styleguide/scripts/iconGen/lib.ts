@@ -4,6 +4,8 @@ import { writeFileSync, readdirSync, readFileSync, statSync, existsSync, mkdirSy
 import type { Icon } from './types'
 import { logger } from '@pulse/core'
 
+const POLYCHOME_CATEGORY = 'Polychrome'
+
 export function capitalizeFirstLetter(text: string) {
   if (text.includes('-')) {
     const words = text.split('-')
@@ -34,6 +36,7 @@ export function getPathIcons(fileName: string, folder: string, category: string)
     const iconName = path.basename(fileName, '.svg')
     const componentName = `PI${capitalizeFirstLetter(iconName)}`
     const name = toCamelCase(iconName)
+    const isPolychrome = category === POLYCHOME_CATEGORY
 
     const icon: Icon = {
       name,
@@ -41,6 +44,7 @@ export function getPathIcons(fileName: string, folder: string, category: string)
       fileName,
       filePath,
       category,
+      isPolychrome,
     }
     return [icon]
   }
@@ -139,6 +143,8 @@ export function getComponentConstantsContent(icons: Icon[]) {
 
   return `
 import type { IconName } from '../../../types/IconName.types'
+
+export const POLYCHOME_CATEGORY = '${POLYCHOME_CATEGORY}'
 
 export const pulseGeneratedIcons: {
   name: IconName

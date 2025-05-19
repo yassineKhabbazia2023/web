@@ -132,6 +132,8 @@ export type IconName =
 'locationDot' |
 'locationDotSlash' |
 'lock' |
+'loopColor' |
+'megColor' |
 'megaphone' |
 'menu' |
 'moon' |
@@ -141,6 +143,7 @@ export type IconName =
 'payfit' |
 'pencilSquare' |
 'pennylane' |
+'pennylaneColor' |
 'people' |
 'person' |
 'personAdd' |
@@ -169,6 +172,7 @@ export type IconName =
 'shield' |
 'shieldLock' |
 'shop' |
+'silaeColor' |
 'slashCircle' |
 'sliders' |
 'speedometer2' |

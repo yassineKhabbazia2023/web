@@ -24,7 +24,7 @@
           >
             <span class="demo-svg-icon" @click="copyClipboard(item)">
               <PIcon
-                :color="AppColors.PRIMARY"
+                :color="getColor(group.category)"
                 size="20px"
                 :pName="item.name"
               />
@@ -39,10 +39,11 @@
 
 <script setup lang="ts">
 import { onBeforeMount, defineAsyncComponent, shallowRef } from 'vue'
-import { pulseGeneratedIcons } from './components/constants'
+import { pulseGeneratedIcons, POLYCHOME_CATEGORY } from './components/constants'
 import { manageClick } from '../../utils/mouse'
 import { useCopyClipboard } from '../../utils/clipboard'
 import { AppColors } from '../../utils/AppColorsEnum'
+
 import PIcon from '.'
 
 const iconsData = shallowRef([] as any[])
@@ -81,6 +82,9 @@ const copyClipboard = (icon: any) => {
   manageClick(onSingleClick, onDoubleClick)
 }
 
+function getColor(category: string) {
+  return category === POLYCHOME_CATEGORY ? undefined : AppColors.PRIMARY
+}
 </script>
 
 <style scoped lang="scss">

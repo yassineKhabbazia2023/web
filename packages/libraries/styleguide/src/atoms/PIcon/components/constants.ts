@@ -1,6 +1,8 @@
 
 import type { IconName } from '../../../types/IconName.types'
 
+export const POLYCHOME_CATEGORY = 'Polychrome'
+
 export const pulseGeneratedIcons: {
   name: IconName
   componentName: string
@@ -1110,6 +1112,30 @@ export const pulseGeneratedIcons: {
     componentName: 'PIPulse',
     fileName: 'pulse.svg',
     category: 'Others',
+  },
+  {
+    name: 'loopColor',
+    componentName: 'PILoopColor',
+    fileName: 'loop-color.svg',
+    category: 'Polychrome',
+  },
+  {
+    name: 'megColor',
+    componentName: 'PIMegColor',
+    fileName: 'meg-color.svg',
+    category: 'Polychrome',
+  },
+  {
+    name: 'pennylaneColor',
+    componentName: 'PIPennylaneColor',
+    fileName: 'pennylane-color.svg',
+    category: 'Polychrome',
+  },
+  {
+    name: 'silaeColor',
+    componentName: 'PISilaeColor',
+    fileName: 'silae-color.svg',
+    category: 'Polychrome',
   },
   {
     name: 'calendarEvent',
