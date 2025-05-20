@@ -6,6 +6,7 @@ export interface PButtonActionBarProps {
   pButtonName: string
   pButtonIconName: IconName
   pButtonActionName: string
+  pTooltipContent?: string
 }
 
 type ComponentType = 'UPLOAD' | 'SEARCH'

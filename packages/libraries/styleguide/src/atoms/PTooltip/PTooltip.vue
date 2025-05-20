@@ -2,7 +2,7 @@
   <ElTooltip
     popperClass="p-tooltip shadow--4"
     :content="pContent ?? ''"
-    :disabled="disabled"
+    :disabled="isEnabled === false"
     :placement="pPlacement"
   >
     <slot />
@@ -10,12 +10,19 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { ElTooltip } from 'element-plus'
 import type { PTooltipProps } from './PTooltipTypes'
 
-withDefaults(defineProps<PTooltipProps>(), {
+const props = withDefaults(defineProps<PTooltipProps>(), {
   disabled: false,
   pPlacement: 'top',
+})
+
+const isEnabled = computed(() => {
+  return props.disabled === false &&
+    props.pContent !== undefined &&
+    props.pContent.length > 0
 })
 </script>
 

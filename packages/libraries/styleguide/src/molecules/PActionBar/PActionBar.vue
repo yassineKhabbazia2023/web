@@ -12,24 +12,29 @@
           pShouldClearPreviousFilesListOnUpload
           @files-selected="handleFilesSelected"
         >
-          <PButton
-            :pType="item.pButton.pType"
-            :pCircle="item.pButtonName === '' ? true : false"
-            :pLoading="item.pButton.pLoading"
-            :pDisabled="item.pButton.pDisabled"
-            :pSize="item.pButton.pSize"
-            :class="[
-              'p-action-bar__left-btn',
-              'margin-right--2',
-              item.pButtonName === '' ? 'el-button--icon' : ''
-            ]"
+          <PTooltip
+            :disabled="item.pButton.pDisabled === false"
+            :pContent="item.pTooltipContent"
           >
-            <PIcon
-              :pName="item.pButtonIconName"
-              class="el-button__icon--left"
-            />
-            <p>{{ item.pButtonName }}</p>
-          </PButton>
+            <PButton
+              :pType="item.pButton.pType"
+              :pCircle="item.pButtonName === '' ? true : false"
+              :pLoading="item.pButton.pLoading"
+              :pDisabled="item.pButton.pDisabled"
+              :pSize="item.pButton.pSize"
+              :class="[
+                'p-action-bar__left-btn',
+                'margin-right--2',
+                item.pButtonName === '' ? 'el-button--icon' : ''
+              ]"
+            >
+              <PIcon
+                :pName="item.pButtonIconName"
+                class="el-button__icon--left"
+              />
+              <p>{{ item.pButtonName }}</p>
+            </PButton>
+          </PTooltip>
         </PUpload>
 
         <PButton
@@ -98,6 +103,7 @@ import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
 import PExpandableSearch from '../../atoms/PExpandableSearch'
 import PUpload from '../../atoms/PUpload'
+import PTooltip from '../../atoms/PTooltip'
 import type { PActionBarProps } from './PActionBarTypes'
 const props = withDefaults(defineProps<PActionBarProps>(), {
   pSearchMaxLength: 255,

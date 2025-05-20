@@ -140,6 +140,37 @@ describe('pActionBar', () => {
       const pSearchWrapper = wrapper.findComponent({ name: 'PExpandableSearch' })
       expect(pSearchWrapper.exists()).toBeTruthy()
     })
+
+    it.each([
+      {
+        testName: 'it should show the tooltip when upload button is disabled',
+        isButtonDisabled: true,
+        shouldTooltipBeDisabled: false,
+      },
+      {
+        testName: 'it should hide the tooltip when upload button is enabled',
+        isButtonDisabled: false,
+        shouldTooltipBeDisabled: true,
+      },
+    ])('$testName', ({ isButtonDisabled, shouldTooltipBeDisabled }) => {
+      const disabledUploadButton = defaultButtons[0]
+      disabledUploadButton.pButton.pDisabled = isButtonDisabled
+      const pUploadButton: ComponentDefinitionProps = {
+        ...disabledUploadButton,
+        pComponentType: 'UPLOAD',
+        pTooltipContent: 'this is a tooltip',
+      }
+
+      const wrapper = createWrapper({
+        pLeftSideButtons: [pUploadButton],
+        pRightSideButtons: defaultProps.pRightSideButtons,
+      })
+
+      const pUploadWrapper = wrapper.findComponent({ name: 'PUpload' })
+      const pTooltipWrapper = pUploadWrapper.findComponent({ name: 'PTooltip' })
+
+      expect(pTooltipWrapper.props('disabled')).toBe(shouldTooltipBeDisabled)
+    })
   })
 
   describe('right side', () => {
