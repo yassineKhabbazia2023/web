@@ -6,12 +6,10 @@ const entryData: Service[] = [
   {
     ServiceId: '1',
     ServiceName: 'abc',
-    IsReadOnly: false,
   },
   {
     ServiceId: '2',
     ServiceName: 'def',
-    IsReadOnly: false,
   },
 ]
 

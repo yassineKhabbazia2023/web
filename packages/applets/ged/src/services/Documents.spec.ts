@@ -46,7 +46,7 @@ describe('documents service', () => {
   })
   it('should fetch documents when fetchFolderDocuments is called', async () => {
     const service: Service =
-      { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+      { ServiceId: 'service-1', ServiceName: 'A' }
 
     const folderId = 123
 
@@ -73,7 +73,7 @@ describe('documents service', () => {
   })
 
   it('should fetsh documents with the keyword  when fetchDocumentsByKeyWord is called', async () => {
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const folderId = 123
 
@@ -97,7 +97,7 @@ describe('documents service', () => {
 
   it('should fetch documents with appropriate parameters when specified', async () => {
     const service: Service =
-      { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+      { ServiceId: 'service-1', ServiceName: 'A' }
 
     const folderId = 123
 
@@ -137,7 +137,7 @@ describe('documents service', () => {
 
   it('should download document when downloadDocument method is called',
     async () => {
-      const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+      const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
       await downloadDocument(service.ServiceId, accountNumber, '1234', accountId)
 
@@ -152,7 +152,7 @@ describe('documents service', () => {
     })
 
   it('should download documents  when downloadDocuments method is called', async () => {
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     await downloadDocuments(service.ServiceId, accountNumber, ['1234', '4567'], accountId)
 
@@ -169,7 +169,7 @@ describe('documents service', () => {
 
   it('should call api  when deleteDocuments is called', async () => {
     const service: Service =
-      { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+      { ServiceId: 'service-1', ServiceName: 'A' }
 
     const documentIds = ['123']
 
@@ -189,7 +189,7 @@ describe('documents service', () => {
   })
 
   it('should call the right api  when renameDocument is called', async () => {
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const documentId: Document['id'] = '1234'
 
@@ -217,7 +217,7 @@ describe('documents service', () => {
   })
 
   it('should call the right api  when uploadDocument is called', async () => {
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const blob = new Blob(['Hello'], { type: 'text/plain' })
     const fileContent = blob.slice(0, 10)
@@ -246,7 +246,7 @@ describe('documents service', () => {
   })
 
   it('should call the right api  when moveDocuments is called', async () => {
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const fileMove: MoveDocumentsRequest = {
       ids: ['1', '2'],
@@ -274,7 +274,7 @@ describe('documents service', () => {
   })
 
   it('should call api  when transmitDocuments is called', async () => {
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const documentIds = ['123']
 
@@ -294,7 +294,7 @@ describe('documents service', () => {
   })
 
   it('should call api  when previewDocument is called', async () => {
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     const data = await previewDocument(service.ServiceId, accountNumber, '1234', accountId)
 

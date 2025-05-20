@@ -24,7 +24,7 @@ describe('bin documents service', () => {
   })
   it('should fetsh bin documents when fetchBinDocuments is called', async () => {
     expect.hasAssertions()
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     await fetchBinDocuments(service.ServiceId, accountNumber, accountId)
 
@@ -44,7 +44,7 @@ describe('bin documents service', () => {
 
   it('should call the right endpoint when restoreDocuments is called', async () => {
     expect.hasAssertions()
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
 
     await restoreDocuments(service.ServiceId, accountNumber, ['doc-id'], accountId)
 

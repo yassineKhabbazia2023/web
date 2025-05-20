@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="mailToGedInformation.length > 0"
+    v-if="mailToGedInformation"
     class="
       mail-to-ged
       flex
@@ -24,7 +24,7 @@
   </div>
 
   <EmailByServiceModal
-    v-if="mailToGedInformation.length > 0"
+    v-if="mailToGedInformation"
     v-model:isOpened="isMailToGedModalOpened"
     :mailToGedInformation="mailToGedInformation"
   />
@@ -53,7 +53,7 @@ function openMailToGedModal() {
   isMailToGedModalOpened.value = true
 }
 
-const mailToGedInformation = ref<ServiceMailToGedInformation[]>([])
+const mailToGedInformation = ref<ServiceMailToGedInformation[]>()
 onMounted(async () => {
   try {
     mailToGedInformation.value = await fetchServicesMailToGedInformation(

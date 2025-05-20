@@ -25,7 +25,6 @@ describe('services service', () => {
     const service = {
       ServiceId: '0001',
       ServiceName: 'Au5',
-      IsReadOnly: false,
     }
 
     await fetchServiceMailToGedInformation(entityId, service, accountId)
@@ -33,17 +32,6 @@ describe('services service', () => {
       headers: { 'Account-Id': accountId },
     })
 
-  })
-
-  it('should not call the fetchServiceMailToGedInformation when the service is read only', async () => {
-    const services = [{
-      ServiceId: '0001',
-      ServiceName: 'Au5',
-      IsReadOnly: true,
-    }]
-
-    await fetchServicesMailToGedInformation(entityId, services, accountId)
-    expect(commonApiGatewayGetSpy).not.toHaveBeenCalled()
   })
 
   it('should call the fetchServiceMailToGedInformation with appropriate url and parameters for each given service', async () => {
@@ -55,12 +43,10 @@ describe('services service', () => {
       {
         ServiceId: '0001',
         ServiceName: 'Au5',
-        IsReadOnly: false,
       },
       {
         ServiceId: '0002',
         ServiceName: 'Nuphory',
-        IsReadOnly: false,
       },
     ]
 
