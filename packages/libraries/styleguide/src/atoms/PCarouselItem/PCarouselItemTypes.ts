@@ -1,4 +1,4 @@
-import type { ImageName } from '../../types/ImageName.types'
+import type { ImageName } from '../../atoms/PImage/ImageNameTypes'
 
 export interface PCarouselItemProps {
   pText: string

@@ -14,7 +14,6 @@
       />
     </div>
     <div v-else>
-      <ReportHeaderBar />
       <ReportTable
         :reports="searchResult.items"
         data-testid="bi-reports-list-table"
@@ -41,11 +40,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { reactive, onMounted, computed, ref } from 'vue'
-import {
-  PPagination,
-  PLoader,
-} from '@pulse/styleguide/components'
-import ReportHeaderBar from './components/ReportHeaderBar/ReportHeaderBar.vue'
+import { PPagination, PLoader } from '@pulse/styleguide/components'
 import { PAGE_SIZES } from '@entities/constants'
 import type { ReportStatusTag, MappedReportRow } from '@entities/common/types/BIReportsTypes'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
@@ -137,7 +132,6 @@ const handleCurrentPageUpdate = (value: number) => {
 }
 // #endregion
 
-// #region fetch data
 const fetchReportsData = async () => {
   isLoading.value = true
   try {
@@ -186,7 +180,6 @@ en-US:
       An error occurred while deactivating the report. Please try again later or contact our support team.
     reportFetch: >
       We couldn't load the reports. Please check your connection or try again shortly.
-  viewError: 'Show errors'
 fr-FR:
   on: 'sur'
   online: 'En ligne'
@@ -206,5 +199,4 @@ fr-FR:
       contacter notre équipe d'assistance.
     reportFetch: >
       Nous n'avons pas pu charger les rapports. Vérifiez votre connexion ou réessayez dans quelques instants.
-  viewError: 'Voir anomalies'
 </i18n>

@@ -1,13 +1,11 @@
 import {
   ReportStatus,
-  ReportTypeEnum,
 } from '@entities/common/types/BIReports.enums.ts'
 import type {
   ReportType,
   Report,
   ReportTableRow,
   MappedReportRow,
-  ReportErrorDetail,
 } from '@entities/common/types/BIReportsTypes'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 
@@ -204,18 +202,6 @@ export const getFormattedMockReports = (): MappedReportRow[] => {
       status: { type: ReportStatus.OFFLINE, text: 'Offline', color: 'gray-900', iconName: 'eyeSlash' },
       avatarColor: 'color-gray-900',
       dataUpdateDate: '2025-03-30T16:00:00.000Z',
-    },
-  ]
-}
-
-export const getMockReportErrors = (): ReportErrorDetail[] => {
-  return [
-    {
-      embedReportId: '123123',
-      reportName: 'reportName',
-      reportType: ReportTypeEnum.LOOP,
-      messages: ['error message'],
-      detectionDate: '1/1/2025 15:23',
     },
   ]
 }

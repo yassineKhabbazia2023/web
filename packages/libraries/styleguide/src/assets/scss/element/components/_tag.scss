@@ -275,27 +275,11 @@ $tag-padding: (
     }
   }
 
-  .el-image {
-    &.el-tag__image--left,
-    &.el-tag__image--right {
-      width: 14px;
-    }
-  }
-
   &__icon {
     &--left {
       margin-right: 6px;
     }
 
-    &--right {
-      margin-left: 6px;
-    }
-  }
-
-  &__image {
-    &--left {
-      margin-right: 6px;
-    }
     &--right {
       margin-left: 6px;
     }

@@ -24,10 +24,6 @@ const createWrapper = (overridenProps: Partial<PTagProps> = {}) => {
           name: 'PIcon',
           template: '<div><slot /></div>',
         },
-        PImage: {
-          name: 'PImage',
-          template: '<img/>',
-        },
       },
     },
   })
@@ -35,23 +31,20 @@ const createWrapper = (overridenProps: Partial<PTagProps> = {}) => {
 
 describe('pTag', () => {
   describe('props', () => {
-    const iconLeftTests: {
+    const leftTests: {
       pIconLeftName?: IconName
       shouldHaveIconLeftClass: boolean
       text: string
-    }[] = [
-      {
-        pIconLeftName: 'pulse',
-        shouldHaveIconLeftClass: true,
-        text: 'show',
-      },
-      {
-        pIconLeftName: undefined,
-        shouldHaveIconLeftClass: false,
-        text: 'hide',
-      },
-    ]
-    it.each(iconLeftTests)(
+    }[] = [{
+      pIconLeftName: 'pulse',
+      shouldHaveIconLeftClass: true,
+      text: 'show',
+    }, {
+      pIconLeftName: undefined,
+      shouldHaveIconLeftClass: false,
+      text: 'hide',
+    }]
+    it.each(leftTests)(
       'should $text icon zone when pIconLeftName is $shouldHaveIconLeftClass',
       async ({ pIconLeftName, shouldHaveIconLeftClass }) => {
         const wrapper = createWrapper({
@@ -65,23 +58,20 @@ describe('pTag', () => {
       },
     )
 
-    const iconRightTests: {
+    const rightTests: {
       pIconRightName?: IconName
       shouldHaveIconRightClass: boolean
       text: string
-    }[] = [
-      {
-        pIconRightName: 'pulse',
-        shouldHaveIconRightClass: true,
-        text: 'show',
-      },
-      {
-        pIconRightName: undefined,
-        shouldHaveIconRightClass: false,
-        text: 'hide',
-      },
-    ]
-    it.each(iconRightTests)(
+    }[] = [{
+      pIconRightName: 'pulse',
+      shouldHaveIconRightClass: true,
+      text: 'show',
+    }, {
+      pIconRightName: undefined,
+      shouldHaveIconRightClass: false,
+      text: 'hide',
+    }]
+    it.each(rightTests)(
       'should $text icon zone when pIconRightName is $shouldHaveIconRightClass',
       async ({ pIconRightName, shouldHaveIconRightClass }) => {
         const wrapper = createWrapper({
@@ -100,24 +90,6 @@ describe('pTag', () => {
       })
 
       expect(wrapper.find('.el-tag').text()).toContain('Validated')
-    })
-
-    it('should prefer icon over image when both are present (left)', async () => {
-      const wrapper = createWrapper({
-        pIconLeftName: 'check',
-      })
-      await flushPromises()
-
-      expect(wrapper.find('.el-tag__icon--left').exists()).toBe(true)
-    })
-
-    it('should prefer icon over image when both are present (right)', async () => {
-      const wrapper = createWrapper({
-        pIconRightName: 'check',
-      })
-      await flushPromises()
-
-      expect(wrapper.find('.el-tag__icon--right').exists()).toBe(true)
     })
   })
 })

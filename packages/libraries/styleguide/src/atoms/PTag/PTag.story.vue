@@ -7,20 +7,14 @@
     icon="mdi:tag-text-outline"
   >
     <Variant title="Basic usage">
-      <!-- Tag with Icons -->
-      <div class="flex flex-gap--8">
-        <div class="flex flex--direction-column flex-gap--2">
-          <span>Simple tag using icons</span>
-          <PTag
-            :pColor="color"
-            :pSize="currentSize"
-            :pEffect="currentTheme"
-            :pIconLeftName="pIconLeftName"
-            :pIconRightName="pIconRightName"
-            :pContent="pContent"
-          />
-        </div>
-      </div>
+      <PTag
+        :pColor="color"
+        :pSize="currentSize"
+        :pEffect="currentTheme"
+        :pIconLeftName="pIconLeftName"
+        :pIconRightName="pIconRightName"
+        :pContent="pContent"
+      />
       <template #controls>
         <HstRadio
           v-model="color"

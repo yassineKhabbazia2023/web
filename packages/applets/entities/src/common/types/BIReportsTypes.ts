@@ -1,5 +1,5 @@
 import type { PTagProps } from '@pulse/styleguide/types'
-import { ReportStatus, ReportTypeEnum } from './BIReports.enums'
+import { ReportStatus } from './BIReports.enums'
 
 export interface ReportStatusTag {
   text: string
@@ -28,14 +28,6 @@ export interface Report {
   type: ReportType
   updateDate?: string
   dataUpdateDate?: string
-}
-
-export interface ReportErrorDetail {
-  embedReportId: string
-  reportName: string
-  reportType: ReportTypeEnum
-  messages: string[]
-  detectionDate: string
 }
 
 type BaseReportExcludes = 'documentName' | 'embededReportId' | 'embededReportUrl';

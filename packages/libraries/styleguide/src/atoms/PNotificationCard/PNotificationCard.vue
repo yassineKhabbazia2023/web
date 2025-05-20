@@ -22,17 +22,9 @@
       <span class="p-notification-card__text padding-x--3 flex--grow-1">
         <slot name="text" />
       </span>
-      <div class="p-notification-card__rightCol">
-        <span class="p-notification-card__time font-small padding-left--2 padding-bottom--2">
-          {{ pTime }}
-        </span>
-        <div
-          v-if="$slots.tag"
-          class="p-notification-card__tag font-small padding-left--2 padding-bottom--2"
-        >
-          <slot name="tag" />
-        </div>
-      </div>
+      <span class="p-notification-card__time font-small padding-left--2 padding-bottom--2">
+        {{ pTime }}
+      </span>
     </button>
     <div class="p-notification-card__actions">
       <slot name="actions" />
@@ -84,22 +76,11 @@ withDefaults(defineProps<PNotificationCardProps>(), {
     word-break: break-word;
   }
 
-  &__rightCol {
-    display: flex;
-    flex-direction: column;
-    text-align: right;
-
-    &__time {
-      width: 42px;
-      text-align: center;
-      color: var(--el-color-neutral-gray-900);
-    }
-
-    &__tag {
-      width: 42px;
-      text-align: center;
-      color: var(--el-color-neutral-gray-900);
-    }
+  &__time {
+    align-self: flex-start;
+    width: 42px;
+    text-align: center;
+    color: var(--el-color-neutral-gray-900);
   }
 
   &__actions {

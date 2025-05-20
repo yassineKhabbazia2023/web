@@ -1,4 +1,5 @@
 import type { IconName } from '../../types/IconName.types'
+
 export interface PTagProps {
   pColor: ''
     | 'success'
