@@ -3,6 +3,7 @@ import { commonApi } from '@pulse/common'
 import type {
   GetReportsRequest,
   GetReportAccountsRequest,
+  GetReportErrorsRequest,
 } from './reportingTypes'
 import type { ReportTableRow, ReportType } from '@entities/common/types/BIReportsTypes'
 import type { FilterQueryParams } from '@entities/pages/wallet/types'
@@ -24,6 +25,12 @@ export const fetchBIReports = async (accountId: number, reportTypeId?: number): 
 export const fetchReportAccounts = async (searchParams: string): Promise<GetReportAccountsRequest> => {
   const pathSuffix = searchParams ? `/${searchParams}` : ''
   const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/account${pathSuffix}`)
+
+  return data
+}
+
+export const fetchReportErrors = async (): Promise<GetReportErrorsRequest> => {
+  const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/report-errors`)
 
   return data
 }

@@ -42,7 +42,7 @@ import { ref } from 'vue'
 import PImage from '.'
 import imagesList from './imagesList.json'
 import type { PImageProps } from './PImageTypes'
-import type { ImageName } from './ImageNameTypes'
+import type { ImageName } from '../../types/ImageName.types'
 
 function getNames(imagesList: Record<string, string>) {
   const imageNames: ImageName[] = Object.keys(imagesList) as ImageName[]

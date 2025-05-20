@@ -1,0 +1,8 @@
+<div data-v-deadef9e="" class="error padding-bottom--1">
+  <div data-v-deadef9e="" class="notification">
+    <div data-v-deadef9e="" class="error__name font-base font-semibold text-color--persian-600">Broken Widget Report</div>
+    <div data-v-deadef9e="" class="error__embedId font-base text-color--persian-400 margin-y--1">RPT-123</div>
+    <div data-v-deadef9e="" class="error__description font-large font-normal text-color--neutral-gray-900">Error 1
+      Error 2</div>
+  </div>
+</div>

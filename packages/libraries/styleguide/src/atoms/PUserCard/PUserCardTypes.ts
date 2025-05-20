@@ -1,5 +1,5 @@
 import type { PTagProps } from '../../atoms/PTag/PTagTypes'
-import type { ImageName } from '../../atoms/PImage/ImageNameTypes'
+import type { ImageName } from '../../types/ImageName.types'
 
 export interface PUserCardProps {
   pTitle?: string

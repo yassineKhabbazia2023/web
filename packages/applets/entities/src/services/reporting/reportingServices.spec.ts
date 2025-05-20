@@ -11,6 +11,7 @@ import {
   uploadBIreport,
   fetchAvailableReports,
   updateReportStatus,
+  fetchReportErrors,
 } from '.'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
 
@@ -71,6 +72,14 @@ describe('BI Reporting Services', () => {
       await fetchReportAccounts('currentUser?search=test')
 
       expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/account/currentUser?search=test`)
+    })
+  })
+
+  describe('fetchReportErrors()', () => {
+    it('should fetch all report errors', async () => {
+      await fetchReportErrors()
+
+      expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/report-errors`)
     })
   })
 

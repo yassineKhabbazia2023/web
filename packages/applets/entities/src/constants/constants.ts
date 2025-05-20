@@ -9,12 +9,26 @@ export const DATE_TIME_FORMATS = {
       month: 'numeric',
       day: 'numeric',
     },
+    long: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    },
   },
   'fr-FR': {
     short: {
       year: 'numeric',
       month: 'numeric',
       day: 'numeric',
+    },
+    long: {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
     },
   },
 } as Record<string, DefineDateTimeFormat>

@@ -11,16 +11,16 @@
   >
     <PIcon
       v-if="pIconLeftName"
-      class="el-tag__icon--left"
       :pName="pIconLeftName"
+      class="el-tag__icon--left"
     />
     <template v-if="pContent">
       {{ pContent }}
     </template>
     <PIcon
       v-if="pIconRightName"
-      class="el-tag__icon--right"
       :pName="pIconRightName"
+      class="el-tag__icon--right"
     />
   </ElTag>
 </template>

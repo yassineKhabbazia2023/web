@@ -1,4 +1,4 @@
-import type { ImageName } from '../PImage/ImageNameTypes'
+import type { ImageName } from '../../types/ImageName.types'
 
 export interface POfferCardProps {
   pLogo: ImageName

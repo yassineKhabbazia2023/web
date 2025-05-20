@@ -1,4 +1,4 @@
-import type { ImageName } from '../../atoms/PImage/ImageNameTypes'
+import type { ImageName } from '../../types/ImageName.types'
 
 export interface PErrorBlockProps {
   pButtonText?: string
