@@ -30,8 +30,20 @@ const formattedStatus = computed((): ActivationStatus => {
     return { text: t('validated'), color: 'success', iconName: 'checkCircle' }
   case OfferActivationStatus.REJECTED:
     return { text: t('rejected'), color: 'danger', iconName: 'xCircle' }
+  case OfferActivationStatus.PENDING_MIGRATION:
+    return pendingMigrationStatus.value
   default:
     return { text: t('pending'), color: 'warning', iconName: 'infoCircle' }
+  }
+})
+
+const pendingMigrationStatus = computed((): ActivationStatus => {
+  const textKey = props.currentUser.isCollab ? 'pendingMigrationCollab' : 'pendingMigrationClient'
+
+  return {
+    text: t(textKey),
+    color: 'warning',
+    iconName: 'infoCircle',
   }
 })
 </script>
@@ -41,8 +53,13 @@ en-US:
   validated: 'Validated'
   rejected: 'Rejected'
   pending: 'Pending'
+  pendingMigrationClient: 'In the process of activation'
+  pendingMigrationCollab: 'In the process of validation'
+
 fr-FR:
   validated: 'Validée'
   rejected: 'Rejetée'
   pending: 'En attente'
+  pendingMigrationClient: 'En cours d’activation'
+  pendingMigrationCollab: 'En cours de validation'
 </i18n>

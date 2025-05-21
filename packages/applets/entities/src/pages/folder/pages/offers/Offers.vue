@@ -54,7 +54,11 @@
       </PTableColumn>
       <PTableColumn :pLabel="t('status')" pSortable>
         <template #default="{ row: { status: offerActivationStatus } }">
-          <OfferActivationStatus :status="offerActivationStatus" />
+          <OfferActivationStatus
+            v-if="user"
+            :currentUser="user"
+            :status="offerActivationStatus"
+          />
         </template>
       </PTableColumn>
     </PTable>
