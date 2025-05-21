@@ -70,6 +70,7 @@ export default [
       'import/no-duplicates': 'error',
       'no-empty': 'error',
       'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
+      'comma-spacing': ['error', { 'before': false, 'after': true }],
       'no-multiple-empty-lines': ['error', { 'max': 2, 'maxBOF': 1, 'maxEOF': 0 }],
       'no-trailing-spaces': 'error',
       'no-whitespace-before-property': 'error',

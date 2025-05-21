@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import type { Component , ComponentPublicInstance } from 'vue'
+import type { Component, ComponentPublicInstance } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 
 import { createRouter, createWebHistory, type RouteLocationNamedRaw } from 'vue-router'

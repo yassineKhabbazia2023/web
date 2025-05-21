@@ -1,5 +1,5 @@
 import { vi, describe, it, expect } from 'vitest'
-import { loggerMock, loggerWarnSpy , envVarsMock } from '@pulse/core/mocks'
+import { loggerMock, loggerWarnSpy, envVarsMock } from '@pulse/core/mocks'
 import { getStoreMock } from '@pulse/common/mocks'
 import { useTokenStore } from '@pulse/common/stores'
 

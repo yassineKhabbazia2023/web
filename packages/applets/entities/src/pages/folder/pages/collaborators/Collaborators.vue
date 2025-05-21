@@ -169,7 +169,7 @@ import {
   PTableColumn,
   PToolbox,
 } from '@pulse/styleguide/components'
-import { AvatarRoles , PNotification } from '@pulse/styleguide'
+import { AvatarRoles, PNotification } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import {
   computed,

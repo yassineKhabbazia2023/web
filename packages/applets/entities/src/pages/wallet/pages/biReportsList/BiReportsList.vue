@@ -67,7 +67,7 @@ const isLoading = ref(false)
 const REPORT_STATUSES: Record<ReportStatus, ReportStatusTag> = {
   [ReportStatus.ONLINE]: { type: ReportStatus.ONLINE, text: t('online'), color: 'success', iconName: 'checkCircle' },
   [ReportStatus.OFFLINE]: { type: ReportStatus.OFFLINE, text: t('offline'), color: 'gray-900', iconName: 'eyeSlash' },
-  [ReportStatus.INITIALIZED]: { type: ReportStatus.INITIALIZED,text: t('initialized'), color: 'info', iconName: 'stars' },
+  [ReportStatus.INITIALIZED]: { type: ReportStatus.INITIALIZED, text: t('initialized'), color: 'info', iconName: 'stars' },
   [ReportStatus.FAILED]: { type: ReportStatus.FAILED, text: t('failed'), color: 'danger', iconName: 'exclamationTriangle' },
 }
 

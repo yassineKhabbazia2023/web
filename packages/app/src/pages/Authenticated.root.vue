@@ -7,7 +7,7 @@
 import { ref, onBeforeMount, onBeforeUnmount } from 'vue'
 import { logger } from '@pulse/core'
 import { AuthenticatedFlowManager } from '@app/managers/authenticated.flow.manager'
-import { useRouter , useRoute , onBeforeRouteUpdate } from 'vue-router'
+import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import FullPageLoader from '@app/components/FullPageLoader/FullPageLoader.vue'
 
 const isLoading = ref(true)

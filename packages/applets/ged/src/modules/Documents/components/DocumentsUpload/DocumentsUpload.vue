@@ -254,7 +254,7 @@ const triggerSuccessNotification = (documentsCount: number, folderName : string)
 }
 const triggerErrorNotification = (failedCount : number, errorDetails : string) => {
   PNotification({
-    message: t('notifications.errorMsg', { failedCount , errorDetails }, failedCount),
+    message: t('notifications.errorMsg', { failedCount, errorDetails }, failedCount),
     iconName: 'check',
     showClose: true,
     customClass: 'error',

@@ -5,7 +5,7 @@
 <script lang="ts" setup>
 import { onBeforeMount, onBeforeUnmount } from 'vue'
 import { AnonymousFlowManager } from '@app/managers/anonymous.flow.manager'
-import { useRoute , useRouter , onBeforeRouteUpdate } from 'vue-router'
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 import { ROUTE_IS_COLLAB_META, APP_ROUTES } from '@pulse/common/constants'
 
 const router = useRouter()

@@ -1,6 +1,6 @@
 import {
   type PostSubscriptionRequest,
-  type SubscriptionDetails ,
+  type SubscriptionDetails,
   type SubscriptionRequest,
   SubscriptionStatusCode,
 } from '@entities/services/subscription/subscriptionTypes'

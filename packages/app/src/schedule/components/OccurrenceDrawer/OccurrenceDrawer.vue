@@ -185,7 +185,7 @@ import Tag from '@app/schedule/components/Common/Tag'
 import DeadlineAccounts from '@app/schedule/components/DeadlineAccounts'
 import DeadlineReminders from '@app/schedule/components/DeadlineReminders'
 import { downloadFile, saveFileAs, fileSizeHumanFormatter } from '@app/schedule/helpers/utils'
-import { getFileExtension , logger } from '@pulse/core'
+import { getFileExtension, logger } from '@pulse/core'
 import {
   getFrequencyLabel,
   getCreatedByLabel,

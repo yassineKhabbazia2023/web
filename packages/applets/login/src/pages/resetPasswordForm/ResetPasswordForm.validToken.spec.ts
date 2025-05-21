@@ -28,7 +28,7 @@ const useRouteMock = vi.hoisted(() => vi.fn(() => ({
   name: 'route-name',
   meta: {},
   query: {
-    contactId: 'contactId' ,
+    contactId: 'contactId',
     contactEmail: 'contactEmail',
     token: 'token',
   },

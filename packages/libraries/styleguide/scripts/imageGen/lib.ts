@@ -114,5 +114,5 @@ export function writeImageNameFile(imageNamePath: string, images: Record<string,
     .join(' |\n')
   const content = `export type ImageName =\n${imageNames}\n`
 
-  writeFileSync(imageNamePath , content, 'utf8')
+  writeFileSync(imageNamePath, content, 'utf8')
 }

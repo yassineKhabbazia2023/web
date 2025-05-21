@@ -1,7 +1,7 @@
 import type { Folder } from '@ged/models/Folder'
 import type { VueWrapper } from '@vue/test-utils'
 import type { ComponentPublicInstance } from 'vue'
-import { validDestination,currentServiceFolder, currentService, folderToMove, selectedEntity, accountId } from '@ged/__mocks__/files.mocks'
+import { validDestination, currentServiceFolder, currentService, folderToMove, selectedEntity, accountId } from '@ged/__mocks__/files.mocks'
 import type { GivenActionAuthorization }
   from '@ged/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
 import type { ExplorerMoveFolder, FoldersMoveProps } from '../FoldersMoveTypes'

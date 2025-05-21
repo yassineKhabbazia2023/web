@@ -185,7 +185,7 @@ import {
 // TODO should move this component to a common folder
 import RemoveUserDialog from '../usersClient/components/RemoveUserDialog'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { AvatarRoles , PNotification } from '@pulse/styleguide'
+import { AvatarRoles, PNotification } from '@pulse/styleguide'
 import { amplitudeService, getInitials } from '@pulse/common'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'

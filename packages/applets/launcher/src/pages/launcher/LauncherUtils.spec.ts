@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
-import { loggerErrorSpy, loggerMock , envVarsMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock, envVarsMock } from '@pulse/core/mocks'
 import { launcherServicesMocks, mockedSilaeUrl } from '@launcher/__mocks__/launcher.service.mocks'
 import '@launcher/__mocks__/common.import.mocks'
 import { LauncherKey } from './LauncherTypes'

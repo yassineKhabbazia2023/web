@@ -75,7 +75,7 @@ describe('confirmActionModal Component - Displays pending operations with approv
     it('should present the accurate note if the modal is in a state of refusal', async () => {
       const wrapper = createWrapper({
         isOperationPendingRefusal: true,
-        selectedOperation: { ...getMockedOperations()[0] , legalName: '' },
+        selectedOperation: { ...getMockedOperations()[0], legalName: '' },
       })
       await nextTick()
 

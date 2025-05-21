@@ -1,6 +1,6 @@
 import { describe } from 'vitest'
 import { NotificationKindEnum, SelectedNotificationEnum } from '../../types/notification.type'
-import { NotificationTrackingType,NotificationTrackingReadType, NotificationTrackingTab } from './tracking.types'
+import { NotificationTrackingType, NotificationTrackingReadType, NotificationTrackingTab } from './tracking.types'
 
 import {
   trackFeedcenterOpened,
@@ -30,15 +30,15 @@ describe('feedcenter notification consultation tracking', () => {
   it.each([
     {
       notificationKind: NotificationKindEnum.GED,
-      expectedTrackingValue: NotificationTrackingType.GED ,
+      expectedTrackingValue: NotificationTrackingType.GED,
     },
     {
       notificationKind: NotificationKindEnum.Mandate,
-      expectedTrackingValue: NotificationTrackingType.MANDATE ,
+      expectedTrackingValue: NotificationTrackingType.MANDATE,
     },
     {
       notificationKind: NotificationKindEnum.Delegation,
-      expectedTrackingValue: NotificationTrackingType.DELEGATION ,
+      expectedTrackingValue: NotificationTrackingType.DELEGATION,
     },
   ])('tracks notification consulted $notificationKind with tracking value $expectedTrackingValue', ({ notificationKind, expectedTrackingValue }) => {
     trackNotificationsConsulted(notificationKind)
@@ -71,11 +71,11 @@ describe('feedcenter tabs selection', () => {
   it.each([
     {
       selectedTab: SelectedNotificationEnum.ALL,
-      expectedTrackingValue: NotificationTrackingTab.ALL ,
+      expectedTrackingValue: NotificationTrackingTab.ALL,
     },
     {
       selectedTab: SelectedNotificationEnum.UNREAD,
-      expectedTrackingValue: NotificationTrackingTab.UNREAD ,
+      expectedTrackingValue: NotificationTrackingTab.UNREAD,
     },
   ])('tracks $selectedTab tab consultation', ({ selectedTab, expectedTrackingValue }) => {
     trackFeedCenterTabConsultation(selectedTab)

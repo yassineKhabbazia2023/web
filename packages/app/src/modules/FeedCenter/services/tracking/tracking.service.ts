@@ -11,7 +11,7 @@ const mappingNotificationTrackingType: Record<NotificationKindEnum, Notification
   [NotificationKindEnum.Delegation]: NotificationTrackingType.DELEGATION,
   [NotificationKindEnum.Mandate]: NotificationTrackingType.MANDATE,
 }
-const mappingNotificationTrackingTabs : Record<SelectedNotificationEnum,NotificationTrackingTab> = {
+const mappingNotificationTrackingTabs : Record<SelectedNotificationEnum, NotificationTrackingTab> = {
   [SelectedNotificationEnum.ALL]: NotificationTrackingTab.ALL,
   [SelectedNotificationEnum.UNREAD]: NotificationTrackingTab.UNREAD,
 }
