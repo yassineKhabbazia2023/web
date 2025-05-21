@@ -1,11 +1,10 @@
-import {
-  ReportStatus,
-} from '@entities/common/types/BIReports.enums.ts'
+import { ReportStatus, ReportTypeEnum } from '@entities/common/types/BIReports.enums.ts'
 import type {
   ReportType,
   Report,
   ReportTableRow,
   MappedReportRow,
+  ReportError,
 } from '@entities/common/types/BIReportsTypes'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 
@@ -202,6 +201,25 @@ export const getFormattedMockReports = (): MappedReportRow[] => {
       status: { type: ReportStatus.OFFLINE, text: 'Offline', color: 'gray-900', iconName: 'eyeSlash' },
       avatarColor: 'color-gray-900',
       dataUpdateDate: '2025-03-30T16:00:00.000Z',
+    },
+  ]
+}
+
+export const getMockReportErrors = (): ReportError[] => {
+  return [
+    {
+      embedReportId: '123123',
+      reportName: 'Error Report 1',
+      reportType: ReportTypeEnum.LOOP,
+      messages: ['System resource overload detected.', 'Loop detected in processing sequence.'],
+      detectionDate: '2025-01-01T15:23:00Z',
+    },
+    {
+      embedReportId: '456456',
+      reportName: 'Error Report 2',
+      reportType: ReportTypeEnum.FORMS,
+      messages: ['Network timeout occurred while accessing external API.'],
+      detectionDate: '2025-02-15T08:45:00Z',
     },
   ]
 }

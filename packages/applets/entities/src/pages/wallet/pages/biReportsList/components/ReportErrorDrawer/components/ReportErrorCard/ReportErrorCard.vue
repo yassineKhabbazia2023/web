@@ -1,0 +1,68 @@
+<template>
+  <div class="report-error-card padding-bottom--1">
+    <PNotificationCard :pTime="formatDate(detectionDate)">
+      <template #text>
+        <div class="report-error-card__title font-base font-semibold text-color--persian-600">
+          {{ reportName }}
+        </div>
+        <div class="report-error-card__id font-base text-color--persian-400 margin-y--1">
+          {{ embedReportId }}
+        </div>
+        <div class="report-error-card__message font-large font-normal text-color--neutral-gray-900">
+          {{ messages.join('\n') }}
+        </div>
+      </template>
+
+      <template #tag>
+        <PTag
+          class="report-error-card__type font-xsmall text-color--persian-400"
+          :pContent="reportTypeTag.text"
+          :pIconLeftName="reportTypeTag.iconName"
+          pColor="amethyste"
+          pEffect="light"
+          pRound
+          data-testid="report-error-tag"
+        />
+      </template>
+    </PNotificationCard>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+import { PNotificationCard, PTag } from '@pulse/styleguide/components'
+import { DATE_TIME_FORMATS, REPORT_TYPES } from '@entities/constants'
+import type { ReportErrorCardProps } from './report-error-card.type'
+import { getReportTypeTag } from './utils'
+
+const props = defineProps<ReportErrorCardProps>()
+
+const { d } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+  datetimeFormats: DATE_TIME_FORMATS,
+})
+
+// Get tag info based on report type
+const reportTypeTag = getReportTypeTag(REPORT_TYPES, props.reportType)
+
+const formatDate = (date: string): string => d(date, 'long')
+</script>
+
+<style lang="scss" scoped>
+::v-deep .p-notification-card {
+  pointer-events: none;
+
+  &__time {
+    width: auto !important;
+  }
+
+  &:hover {
+    background: none;
+  }
+}
+
+.report-error-card__message {
+  white-space: pre-line;
+}
+</style>

@@ -1,5 +1,5 @@
 import type { PTagProps } from '@pulse/styleguide/types'
-import { ReportStatus } from './BIReports.enums'
+import type { ReportStatus, ReportTypeEnum } from './BIReports.enums'
 
 export interface ReportStatusTag {
   text: string
@@ -44,4 +44,17 @@ export interface ReportTableRow extends Omit<Report, BaseReportExcludes> {
 export interface MappedReportRow extends Omit<ReportTableRow, 'status'> {
   status: ReportStatusTag,
   avatarColor: string
+}
+
+export interface ReportError {
+  embedReportId: string
+  reportName: string
+  reportType: ReportTypeEnum
+  messages: string[]
+  detectionDate: string
+}
+
+export interface ReportErrorData {
+  errors: ReportError[]
+  totalItems: number
 }

@@ -4,7 +4,7 @@ import type {
   GetReportsRequest,
   GetReportAccountsRequest,
 } from './reportingTypes'
-import type { ReportTableRow, ReportType } from '@entities/common/types/BIReportsTypes'
+import type { ReportError, ReportTableRow, ReportType } from '@entities/common/types/BIReportsTypes'
 import type { FilterQueryParams } from '@entities/pages/wallet/types'
 import type { QueryResult } from '@pulse/common/types'
 
@@ -24,6 +24,12 @@ export const fetchBIReports = async (accountId: number, reportTypeId?: number): 
 export const fetchReportAccounts = async (searchParams: string): Promise<GetReportAccountsRequest> => {
   const pathSuffix = searchParams ? `/${searchParams}` : ''
   const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/account${pathSuffix}`)
+
+  return data
+}
+
+export const fetchReportErrors = async (): Promise<QueryResult<ReportError>> => {
+  const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/report-errors`)
 
   return data
 }
