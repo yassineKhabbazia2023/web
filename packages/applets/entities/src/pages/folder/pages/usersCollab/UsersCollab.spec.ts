@@ -12,13 +12,13 @@ import { userActions } from './types'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { CurrentUserManagerMock, hasPermissionMock, getStoreMock, getMockedEntity, getMockedUser } from '@pulse/common/mocks'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
+import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 
 import UsersCollab from '.'
 
 const userStoreMock = getStoreMock(useUserStore)
 const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
-import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
-import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 
 const DEFAULT_CURRENT_PAGE = 1
 const DEFAULT_ROUTE_PARAMS_ID = 5
@@ -97,7 +97,7 @@ const createWrapper = (): VueWrapper<any> =>
     global: {
       stubs: {
         FormSearch: true,
-        ManageAccessDrawer: true,
+        ManageAccessDrawerUnitary: true,
         ManageRightsDrawer: true,
         NoResult: true,
         PAvatar: true,
@@ -278,14 +278,10 @@ describe('usersCollab', () => {
       }]
 
       const expectedPropsBefore = {
-        currentPage: undefined,
         trackingLocalisation: TrackingLocalisation.FOLDER,
         modelValue: false,
         accountOperationsList: accountOperationsListMock,
-        accountCount: 0,
-        pageSize: undefined,
-        showAccountName: false,
-        showPagination: false,
+        currentEntity: selectedEntityMock,
       }
       const expectedPropsAfter = {
         ...expectedPropsBefore,
@@ -295,16 +291,16 @@ describe('usersCollab', () => {
 
       const wrapper = createWrapper()
       await flushPromises()
-      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
+      const manageAccessDrawerUnitary = wrapper.findComponent({ name: 'ManageAccessDrawerUnitary' })
       const manageAccessButton = wrapper.find('[data-testid="manage-access-button"]')
 
-      expect(manageAccessDrawer.props()).toStrictEqual(expectedPropsBefore)
+      expect(manageAccessDrawerUnitary.props()).toStrictEqual(expectedPropsBefore)
       await manageAccessButton.trigger('click')
       await nextTick()
 
-      expect(manageAccessDrawer.props()).toStrictEqual(expectedPropsAfter)
-      const accountOperationsList = manageAccessDrawer.props('accountOperationsList')
-      expect(manageAccessDrawer.props('modelValue')).toBe(true)
+      expect(manageAccessDrawerUnitary.props()).toStrictEqual(expectedPropsAfter)
+      const accountOperationsList = manageAccessDrawerUnitary.props('accountOperationsList')
+      expect(manageAccessDrawerUnitary.props('modelValue')).toBe(true)
       expect(accountOperationsList.at(0).operations)
         .toHaveLength(expectedPendingOperations.length)
     })

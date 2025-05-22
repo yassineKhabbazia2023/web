@@ -16,7 +16,7 @@ import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUti
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/common/types'
 import { isAccessManagementGlobalActivatedMock, featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'
-import { contactServiceMock, fetchOperationsByAccountMock } from '@entities/__mocks__/contact.service.mocks'
+import { contactServiceMock, fetchAccountOperationsMock } from '@entities/__mocks__/contact.service.mocks'
 import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
@@ -122,31 +122,6 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
     attachTo: document.body,
     global: {
       stubs: {
-        Filters: true,
-        DelegationDrawer: true,
-        PLoader: true,
-        NoResult: true,
-        PPagination: true,
-        ResendActivationEmailDrawer: true,
-        OffersDrawer: true,
-        ManageAccessDrawer: {
-          name: 'ManageAccessDrawer',
-          template: '<div />',
-          props: {
-            currentPage: [Number],
-            modelValue: [Boolean],
-            accountOperationsList: [Array],
-            accountCount: [Number],
-            pageSize: [Number],
-            showAccountName: [Boolean],
-            showPagination: [Boolean],
-            trackingLocalisation: [String],
-          },
-          methods: {
-            resetOpenedAccordions: () => {},
-          },
-        },
-        TableData: true,
         PButton: {
           name: 'PButton',
           template: '<div><slot /></div>',
@@ -502,9 +477,9 @@ describe('deploy', () => {
       expect(manageAccessButton.exists()).toBe(expected)
       expect(manageAccessCount.exists()).toBe(expected)
       if (expected) {
-        expect(fetchOperationsByAccountMock).toHaveBeenCalledOnce()
+        expect(fetchAccountOperationsMock).toHaveBeenCalledOnce()
       } else {
-        expect(fetchOperationsByAccountMock).not.toHaveBeenCalled()
+        expect(fetchAccountOperationsMock).not.toHaveBeenCalled()
       }
     })
 
@@ -536,7 +511,7 @@ describe('deploy', () => {
 
       hasPermissionMock.mockReturnValue(true)
       isAccessManagementGlobalActivatedMock.mockReturnValue(true)
-      fetchOperationsByAccountMock.mockResolvedValue(accountOperationMock)
+      fetchAccountOperationsMock.mockResolvedValue(accountOperationMock)
 
       const wrapper = createWrapper()
       await flushPromises()
@@ -566,7 +541,7 @@ describe('deploy', () => {
     })
   })
 
-  describe('ManageAccessDrawer', () => {
+  describe('ManageAccessDrawerGlobal', () => {
     const totalItemsMock = 1
     const accountOperationMock = getPaginationMock<AccountOperations>({
       items: accountOperationsListMock,
@@ -577,33 +552,23 @@ describe('deploy', () => {
     beforeEach(() => {
       hasPermissionMock.mockReturnValue(true)
       isAccessManagementGlobalActivatedMock.mockReturnValue(true)
-      fetchOperationsByAccountMock.mockResolvedValue(accountOperationMock)
+      fetchAccountOperationsMock.mockResolvedValue(accountOperationMock)
     })
 
-    it('should display ManageAccessDrawer with proper props', async () => {
+    it('should display ManageAccessDrawerGlobal with proper props', async () => {
       const wrapper = createWrapper()
       await flushPromises()
 
       const expectedPropsBefore = {
-        currentPage: 1,
         trackingLocalisation: TrackingLocalisation.WALLET,
         modelValue: false,
-        accountOperationsList: [],
-        accountCount: 1,
-        pageSize: 5,
-        showAccountName: true,
-        showPagination: false,
       }
       const expectedPropsAfter = {
         ...expectedPropsBefore,
         modelValue: true,
-        accountOperationsList: accountOperationsListMock,
       }
-      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
+      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawerGlobal' })
       const manageAccessButton = wrapper.find('[data-testid="manage-access-button"]')
-      const expectedPage = 1
-      const expectedPageSize = 5
-      const expectedParameters = [expectedPage, expectedPageSize]
 
       expect(manageAccessDrawer.props()).toStrictEqual(expectedPropsBefore)
 
@@ -611,96 +576,46 @@ describe('deploy', () => {
       await flushPromises()
       await nextTick()
 
-      expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
-      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(2, ...expectedParameters)
       expect(manageAccessDrawer.props()).toStrictEqual(expectedPropsAfter)
     })
 
-    it('should call loadManageAccessCount when user closes ManageAccessDrawer', async () => {
+    it('should call loadManageAccessCount when user closes ManageAccessDrawerGlobal', async () => {
       const wrapper = createWrapper()
 
-      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
+      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawerGlobal' })
       expect(manageAccessDrawer.exists()).toBe(true)
 
-      expect(fetchOperationsByAccountMock).toHaveBeenCalledOnce()
+      expect(fetchAccountOperationsMock).toHaveBeenCalledOnce()
 
       manageAccessDrawer.vm.$emit('update:model-value', true)
       await flushPromises()
-      expect(fetchOperationsByAccountMock).toHaveBeenCalledOnce()
+      expect(fetchAccountOperationsMock).toHaveBeenCalledOnce()
 
       manageAccessDrawer.vm.$emit('update:model-value', false)
       await flushPromises()
 
-      expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
-    })
-
-    it('should call loadManageAccessCount when ManageAccessDrawer emits update-operation-table', async () => {
-      const wrapper = createWrapper()
-
-      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
-      expect(manageAccessDrawer.exists()).toBe(true)
-
-      expect(fetchOperationsByAccountMock).toHaveBeenCalledOnce()
-
-      manageAccessDrawer.vm.$emit('update-operation-table')
-      await flushPromises()
-
-      const expected1 = [1, 1]
-      const expected2 = [1, 5]
-
-      expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
-      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(1, ...expected1)
-      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(2, ...expected2)
-    })
-
-    it('ManageAccessDrawer pagination', async () => {
-      const totalItemsMock = 15
-      const accountOperationMock = getPaginationMock<AccountOperations>({
-        items: accountOperationsListMock,
-        totalItems: totalItemsMock,
-        totalPages: totalPagesMock,
-      })
-      const newPage = 13
-      const expectedPage = newPage
-      const expectedPageSize = 5
-
-      hasPermissionMock.mockReturnValue(true)
-      isAccessManagementGlobalActivatedMock.mockReturnValue(true)
-      fetchOperationsByAccountMock.mockResolvedValue(accountOperationMock)
-
-      const wrapper = createWrapper()
-      await flushPromises()
-
-      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
-      manageAccessDrawer.vm.$emit('update:current-page', newPage)
-
-      expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(2)
-      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(2, expectedPage, expectedPageSize)
+      expect(fetchAccountOperationsMock).toHaveBeenCalledTimes(2)
     })
 
     it('should call fetchOperations properly when current page is bigger than page count', async () => {
       const wrapper = createWrapper()
       const newPage = 13
 
-      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawer' })
+      const manageAccessDrawer = wrapper.findComponent({ name: 'ManageAccessDrawerGlobal' })
       expect(manageAccessDrawer.exists()).toBe(true)
 
-      expect(fetchOperationsByAccountMock).toHaveBeenCalledOnce()
+      expect(fetchAccountOperationsMock).toHaveBeenCalledOnce()
 
       manageAccessDrawer.vm.$emit('update:current-page', newPage)
       manageAccessDrawer.vm.$emit('update-operation-table')
       await flushPromises()
 
-      const expected1 = [1, 1]
-      const expected2 = [13, 5]
-      const expected3 = [13, 5]
-      const expected4 = [13, 5]
+      const expectedPage = 1
+      const expectedPageSize = 1
+      const expectedParameters = [expectedPage, expectedPageSize]
 
-      expect(fetchOperationsByAccountMock).toHaveBeenCalledTimes(4)
-      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(1, ...expected1)
-      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(2, ...expected2)
-      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(3, ...expected3)
-      expect(fetchOperationsByAccountMock).toHaveBeenNthCalledWith(3, ...expected4)
+      expect(fetchAccountOperationsMock).toHaveBeenCalledOnce()
+      expect(fetchAccountOperationsMock).toHaveBeenCalledWith(...expectedParameters)
     })
   })
 })

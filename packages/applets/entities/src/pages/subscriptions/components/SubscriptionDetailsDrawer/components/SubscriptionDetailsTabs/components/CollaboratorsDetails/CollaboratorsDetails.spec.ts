@@ -27,10 +27,10 @@ function createWrapper(
 
 describe('collaboratorsDetails', () => {
   describe('display', () => {
-    it('should correctly display when no collaboratorRoles', () => {
+    it('should correctly display when no collaboratorRoles', async () => {
       const wrapper = createWrapper(mockedSubscriptionCollaborators, [])
 
-      expect(wrapper.html()).toMatchFileSnapshot('__snap__/CollaboratorsDetails.noCollaboratorRoles.html')
+      await expect(wrapper.html()).toMatchFileSnapshot('__snap__/CollaboratorsDetails.noCollaboratorRoles.html')
     })
 
     it('should correctly display when some collaboratorRoles', () => {

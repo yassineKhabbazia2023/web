@@ -125,19 +125,10 @@
         data-testid="offers-drawer"
       />
     </div>
-    <ManageAccessDrawer
-      ref="manageAccessDrawer"
+    <ManageAccessDrawerGlobal
       v-model="isManageAccessDrawerOpened"
-      showAccountName
-      :showPagination="showPagination"
-      :accountOperationsList="accountOperationsList"
-      :currentPage="manageAccessPage"
-      :pageSize="MANAGE_ACCESS_PAGE_SIZE"
-      :accountCount="manageAccessCount"
       :trackingLocalisation="TrackingLocalisation.WALLET"
       @update:model-value="onUpdateManageAccessDrawerOpened"
-      @update-operation-table="onOperationTableUpdate"
-      @update:current-page="onUpdateManageAccessCurrentPage"
     />
   </div>
 </template>
@@ -145,7 +136,7 @@
 <script lang='ts' setup>
 import { logger, FeatureFlagManager } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, ref, watch, useTemplateRef } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import {
   PLoader,
   PButton,
@@ -179,10 +170,10 @@ import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import ResendActivationEmailDrawer from '@entities/common/components/ResendActivationEmailDrawer'
 import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 import type { AccountRow } from '@entities/common/types'
-import ManageAccessDrawer from '@entities/pages/subscriptions/components/ManageAccessDrawer'
-import { useManageAccessOperations } from './composables/manageAccessOperations.composable'
+import ManageAccessDrawerGlobal from '@entities/common/components/ManageAccessDrawer/ManageAccessDrawerGlobal'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 import { useUserStore } from '@pulse/common/stores'
+import { fetchAccountOperations } from '@entities/services/contact'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -194,12 +185,9 @@ const route = useRoute()
 const userStore = useUserStore()
 const { isCollab, user } = storeToRefs(userStore)
 
-const MANAGE_ACCESS_PAGE_SIZE = 5
-
 const searchBar = ref()
 const isLoading = ref(true)
 const selectedCompanyName = ref('')
-const manageAccessDrawerRef = useTemplateRef('manageAccessDrawer')
 
 const isManageAccessDrawerOpened = ref(false)
 
@@ -340,9 +328,6 @@ async function onManageAccessButtonClick() {
     amplitudeService.track('Registry Validation Initiated', {
       registry_validation_initialisation_localisation: 'portefeuille',
     })
-    await refreshManageAccessOperations({
-      currentPage: 1,
-    })
     isManageAccessDrawerOpened.value = true
   }
 }
@@ -364,6 +349,14 @@ function onUpdateCurrentPage(currentPage: number) {
   searchCriteria.value.currentPage = currentPage
 }
 
+const manageAccessCount = ref<number>()
+async function refreshPageCount() {
+  // we just want the totalItems from the api
+  const { totalItems } = await fetchAccountOperations(1, 1)
+
+  manageAccessCount.value = totalItems
+}
+
 async function loadManageAccessCount() {
   if (!hasManageAccessButton.value) {
     return
@@ -371,32 +364,11 @@ async function loadManageAccessCount() {
   await refreshPageCount()
 }
 
-async function onOperationTableUpdate() {
-  await refreshManageAccessOperations()
-}
-
-async function onUpdateManageAccessCurrentPage(currentPage: number) {
-  await refreshManageAccessOperations({
-    currentPage,
-  })
-  manageAccessDrawerRef.value?.resetOpenedAccordions()
-}
-
 async function onUpdateManageAccessDrawerOpened(isOpened: boolean) {
   if (!isOpened) {
     await loadManageAccessCount()
   }
 }
-
-const showPagination = computed(() => (manageAccessCount.value ?? 0) > MANAGE_ACCESS_PAGE_SIZE)
-
-const {
-  manageAccessPage,
-  manageAccessCount,
-  accountOperationsList,
-  refreshPageCount,
-  refreshManageAccessOperations,
-} = useManageAccessOperations(MANAGE_ACCESS_PAGE_SIZE)
 
 onMounted(async () => {
   loadManageAccessCount()

@@ -82,12 +82,13 @@ export const fetchOperationsForAccount = async (accountId: number) => {
   return response?.data
 }
 
-export async function fetchAccountOperations(page: number, pageSize: number) {
+export async function fetchAccountOperations(page: number, pageSize: number, search?: string) {
   const response = await commonApi().gateway.get<PaginationResponse<AccountOperations>>(
     `${API_PREFIXES.REGISTRY}/currentuser/operations`,
     {
       params: {
         page,
+        search,
         pageSize,
       },
     },

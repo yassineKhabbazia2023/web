@@ -157,10 +157,11 @@
     v-model="isManageRightsDrawerOpened"
     :selectedUser="selectedRow"
   />
-  <ManageAccessDrawer
+  <ManageAccessDrawerUnitary
     v-model="isManageAccessDrawerOpened"
     :accountOperationsList="accountOperationsList"
     :trackingLocalisation="TrackingLocalisation.FOLDER"
+    :currentEntity="selectedEntity"
     @update-operation-table="loadOperations"
   />
 </template>
@@ -203,13 +204,14 @@ import type { StateUser, User } from './types'
 import type { UserStatus } from '@entities/common/types'
 import { userActions } from './types'
 import ManageRightsDrawer from '@entities/common/components/ManageRightsDrawer'
-import ManageAccessDrawer from '@entities/pages/subscriptions/components/ManageAccessDrawer'
+import ManageAccessDrawerUnitary from '@entities/common/components/ManageAccessDrawer/ManageAccessDrawerUnitary'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import { fetchOperationsForAccount } from '@entities/services/contact'
 import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
+import { getOperationsWithLegalName, getAccountOperationsList } from './UsersCollab.utils'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -240,15 +242,9 @@ async function loadOperations() {
   try {
     const operations = await fetchOperationsForAccount(selectedEntity.value?.accountId ?? 0)
     const pendingOperations = getPendingOperations(operations)
-    const firstOperation = pendingOperations.at(0)
-    const accountNumber = firstOperation?.accountNumber ?? ''
-    accountOperationsList.value = pendingOperations.length > 0
-      ? [{
-        operations: pendingOperations,
-        accountNumber,
-        accountName: '',
-      }]
-      : []
+    const defaultLegalName = selectedEntity.value?.legalName ?? ''
+    const pendingOperationsWithLegalName = getOperationsWithLegalName(pendingOperations, defaultLegalName)
+    accountOperationsList.value = getAccountOperationsList(pendingOperationsWithLegalName)
   } catch (error) {
     logger.error('Unable to fetch operations: ', error)
   } finally {

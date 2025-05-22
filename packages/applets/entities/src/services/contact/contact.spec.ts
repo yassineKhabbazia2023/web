@@ -85,10 +85,12 @@ describe('contact', () => {
     it('should return the list of operations', async () => {
       const page = 1
       const pageSize = 3
+      const search = 'search terms'
       const expectedUrl = 'registry/api/currentuser/operations'
       const params = {
         page,
         pageSize,
+        search,
       }
       const expectedArgument = { params }
       const mockedResponse = getPaginationMock<AccountOperations>({
@@ -99,7 +101,7 @@ describe('contact', () => {
         data: mockedResponse,
       })
 
-      const operations = await fetchAccountOperations(page, pageSize)
+      const operations = await fetchAccountOperations(page, pageSize, search)
 
       expect(mocks.get).toHaveBeenCalledWith(expectedUrl, expectedArgument)
       expect(operations).toStrictEqual(mockedResponse)
