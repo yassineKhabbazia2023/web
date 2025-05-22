@@ -3,10 +3,14 @@
     class="
       flex
       flex--align-items-center
-      flex--justify-content-flex-end
-      margin-bottom--6
-      "
+      flex--justify-content-space-between
+      margin-bottom--6"
   >
+    <FormSearch
+      class="width--100 margin-right--4 max-width-500"
+      :placeholder="t('searchBy')"
+      @search-value-submitted="handleSearchValueSubmitted"
+    />
     <PButton
       pType="secondary"
       pSize="small"
@@ -38,6 +42,7 @@ import {
 } from '@pulse/styleguide/components'
 import { ReportErrorData } from '@entities/common/types/BIReportsTypes'
 import ReportErrorDrawer from '../../components/ReportErrorDrawer'
+import FormSearch from '@entities/common/components/FormSearch'
 import { fetchReportErrors } from '@entities/services/reporting/reportingServices'
 import { displayNotification } from '@entities/common/utils'
 
@@ -46,11 +51,19 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
+const emit = defineEmits<{
+  'search-report': [string]
+}>()
+
 const isErrorDrawerOpened = ref(false)
 const reportErrorsData = reactive<ReportErrorData>({
   errors: [],
   totalItems: 0,
 })
+
+const handleSearchValueSubmitted = (search: string) => {
+  emit('search-report', search)
+}
 
 const handleOpenErrorDrawer = () => {
   isErrorDrawerOpened.value = true
@@ -73,11 +86,13 @@ onMounted(() => {
 <i18n lang="yaml">
   en-US:
     showErrors: 'Show errors'
+    searchBy: 'Search by company name, customer code...'
     errors:
       reportErrorsFetch: >
         We couldn't load the report errors. Please check your connection or try again shortly.
   fr-FR:
     showErrors: 'Voir anomalies'
+    searchBy: 'Rechercher par raison sociale, code client...'
     errors:
       reportErrorsFetch: >
         Nous n'avons pas pu charger les erreurs de rapport.

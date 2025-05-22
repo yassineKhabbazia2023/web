@@ -1,4 +1,5 @@
 <template>
+  <ReportToolbar @search-report="handleSearchReport" />
   <div
     class="bi-reports-list"
     :class="{ 'bi-reports-list--loading': isLoading }"
@@ -14,7 +15,6 @@
       />
     </div>
     <div v-else>
-      <ReportToolbar />
       <ReportTable
         :reports="searchResult.items"
         data-testid="bi-reports-list-table"
@@ -93,9 +93,20 @@ const handleUpdateReportStatus = async (
 
 // #region pagination
 const searchCriteria = reactive<SearchCriteria>({
+  search: '',
   currentPage: 1,
   limit: PAGE_SIZES[0],
 })
+
+// #region search report
+const handleSearchReport = (term: string) => {
+  if (searchCriteria.search !== term) {
+    searchCriteria.currentPage = 1
+    searchCriteria.search = term
+    fetchReportsData()
+  }
+}
+//#endregion
 
 const searchResult = reactive<SearchResult<MappedReportRow>>({
   currentPage: 1,
@@ -175,8 +186,8 @@ en-US:
   offline: 'Offline'
   initialized: 'Initialized'
   failed: 'Failure'
-  activated: "activated"
-  deactivated: "deactivated"
+  activated: 'activated'
+  deactivated: 'deactivated'
   manualUpload: 'Upload Manually'
   statusChange: 'The report {reportName} has been successfully {action}.'
   errors:
@@ -193,8 +204,8 @@ fr-FR:
   offline: 'Hors ligne'
   initialized: 'Initialisé'
   failed: 'Incident'
-  activated: "activé"
-  deactivated: "désactivé"
+  activated: 'activé'
+  deactivated: 'désactivé'
   manualUpload: 'Déposer manuellement'
   statusChange: 'Le rapport {reportName} a été {action} avec succès.'
   errors:

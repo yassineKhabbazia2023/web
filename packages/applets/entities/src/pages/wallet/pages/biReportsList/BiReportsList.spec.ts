@@ -39,6 +39,11 @@ const createWrapper = (options = {}) =>
           template: '<div />',
           emits: ['update-report-status'],
         },
+        ReportToolbar: {
+          name: 'ReportToolbar',
+          template: '<div />',
+          emits: ['search-report'],
+        },
         PPagination: {
           name: 'PPagination',
           template: '<div class="p-pagination"><slot /></div>',
@@ -139,4 +144,35 @@ describe('BiReportsList', () => {
       })
     })
   })
+
+  describe('Search Integration', () => {
+    it("triggers data fetch with search term when 'search-report' is emitted", async () => {
+      // Arrange
+      const searchedReport = 'Test Report'
+      const reportHeader = wrapper.findComponent({ name: 'ReportToolbar' })
+
+      // Act
+      reportHeader.vm.$emit('search-report', searchedReport)
+
+      // Assert
+      expect(fetchReportsMock).toHaveBeenCalledTimes(2) // onMounted and search emit = 2
+      expect(fetchReportsMock).toHaveBeenLastCalledWith({
+        pageNumber: 1,
+        search: searchedReport,
+        pageSize: PAGE_SIZES[0],
+      })
+    })
+    it('does not trigger data fetch if search input is empty or unchanged', async () => {
+      // Arrange
+      const emptySearch = ''
+      const reportHeader = wrapper.findComponent({ name: 'ReportToolbar' })
+
+      // Act
+      reportHeader.vm.$emit('search-report', emptySearch)
+
+      // Assert
+      expect(fetchReportsMock).toHaveBeenCalledTimes(1) // Only initial fetch (onMounted)
+    })
+  })
+
 })

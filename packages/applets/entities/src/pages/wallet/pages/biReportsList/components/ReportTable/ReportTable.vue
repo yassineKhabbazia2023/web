@@ -19,9 +19,14 @@
           >
             <PIcon pName="pulse" />
           </PAvatar>
-          <p class="font-semibold margin-left--2">
-            {{ scope.row.name }}
-          </p>
+          <PTooltip
+            :pContent="scope.row.name"
+            pPlacement="top"
+          >
+            <p class="font-semibold margin-left--2">
+              {{ scope.row.legalName }}
+            </p>
+          </PTooltip>
         </div>
       </template>
     </PTableColumn>

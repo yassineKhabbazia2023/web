@@ -7,9 +7,9 @@ function createWrapper() {
 }
 
 describe('test NoOperation', () => {
-  it('should render NoOperation', () => {
+  it('should render NoOperation', async () => {
     const wrapper = createWrapper()
 
-    expect(wrapper.html()).toMatchFileSnapshot('__snap__/NoOperation.html')
+    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/NoOperation.html')
   })
 })

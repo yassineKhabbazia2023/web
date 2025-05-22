@@ -1,4 +1,4 @@
-import { flushPromises, shallowMount, VueWrapper } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { getMockReportErrors } from '@entities/__mocks__/bi-report.mocks'
 
 import ReportToolbar from '.'
@@ -39,7 +39,7 @@ const createWrapper = () =>
   })
 
 describe('ReportToolbar', () => {
-  let wrapper: VueWrapper
+  let wrapper: ReturnType<typeof createWrapper>
 
   beforeEach(async () => {
     wrapper = createWrapper()
@@ -88,6 +88,22 @@ describe('ReportToolbar', () => {
       // Assert
       expect(drawerInitialState).toBe(false)
       expect(drawerStateAfterClick).toBe(true)
+    })
+  })
+
+  describe('Search report', () => {
+    it("emits 'search-report' with correct payload when search is submitted", async () => {
+      // Arrange
+      const searchedReport = 'Test Report'
+      const searchBar = wrapper.findComponent({ name: 'FormSearch' })
+
+      // Act
+      searchBar.vm.$emit('search-value-submitted', searchedReport)
+      await flushPromises()
+
+      // Assert
+      const emittedEvents = wrapper.emitted('search-report')
+      expect(emittedEvents).toStrictEqual([[searchedReport]])
     })
   })
 })

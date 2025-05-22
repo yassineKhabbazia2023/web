@@ -2,7 +2,9 @@
   <div plabel="Company name" pprop="name" psortable="" pminwidth="120px">
     <div class="flex flex--align-items-center overflow-hidden">
       <p-avatar-stub pcolor="amethyste" ptype="xsmall" pfit="cover" pshape="circle" pselected="false"></p-avatar-stub>
-      <p class="font-semibold margin-left--2">EC23696400_SLS 4_loop</p>
+      <div pcontent="EC23696400_SLS 4_loop" pplacement="top">
+        <p class="font-semibold margin-left--2">Test Report</p>
+      </div>
     </div>
   </div>
   <div plabel="Client code" pprop="accountNumber" psortable=""></div>
