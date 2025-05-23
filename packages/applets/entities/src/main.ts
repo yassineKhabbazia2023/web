@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
 import { LAYOUT_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
-import { Layout } from '@pulse/common/enums'
+import { Layout, RouteName } from '@pulse/common/enums'
 import { widgetTest } from '@pulse/modules/widgets/widget-test'
 import { widgetDeux } from '@pulse/modules/widgets/widget-deux'
 
@@ -11,22 +11,22 @@ const routes = [] as RouteRecordRaw[]
 const BASE_WALLET_ROUTES = [
   {
     path: 'collaborateurs',
-    name: 'collaborators',
+    name: RouteName.COLLABORATORS,
     page: 'collaborators',
   },
   {
     path: 'administration-dossiers',
-    name: 'accountManagement',
+    name: RouteName.ACCOUNT_MANAGEMENT,
     page: 'accountManagement',
   },
   {
     path: 'rapports-bi',
-    name: 'biReportsList',
+    name: RouteName.BI_REPORTS_LIST,
     page: 'biReportsList',
   },
   {
     path: 'deposer-rapport-bi',
-    name: 'powerbi',
+    name: RouteName.POWER_BI,
     page: 'powerbi',
   },
 ]
@@ -34,7 +34,7 @@ const BASE_WALLET_ROUTES = [
 const WALLET_CHILDREN_ROUTES = [
   {
     path: 'dossiers',
-    name: 'folders',
+    name: RouteName.FOLDERS,
     page: 'folders',
   },
   ...BASE_WALLET_ROUTES,
@@ -43,7 +43,7 @@ const WALLET_CHILDREN_ROUTES = [
 const CUSTOMER_WALLET_CHILDREN_ROUTES = [
   {
     path: 'mes-entites',
-    name: 'entity-client',
+    name: RouteName.ENTITY_CLIENT,
     page: 'folders',
   },
   ...BASE_WALLET_ROUTES,
@@ -52,27 +52,27 @@ const CUSTOMER_WALLET_CHILDREN_ROUTES = [
 const FOLDER_CHILDREN_PATH = [
   {
     path: 'gestion-utilisateurs',
-    name: 'users',
+    name: RouteName.USERS,
     page: 'users',
   },
   {
     path: 'collaborateurs',
-    name: 'collab',
+    name: RouteName.COLLAB,
     page: 'collaborators',
   },
   {
     path: 'offres',
-    name: 'offers',
+    name: RouteName.OFFERS,
     page: 'offers',
   },
   {
     path: 'informations',
-    name: 'info',
+    name: RouteName.INFO,
     page: 'information',
   },
   {
     path: 'historique-delegations',
-    name: 'delegationsHistory',
+    name: RouteName.DELEGATIONS_HISTORY,
     page: 'delegationsHistory',
   },
 ]
@@ -88,12 +88,12 @@ const walletPatchChildren = (paths: { path: string, name: string, page: string }
   })
   res.push({
     path: 'gestion-utilisateurs',
-    name: 'allUsers',
+    name: RouteName.ALL_USERS,
     component: () => import('@entities/pages/folder/pages/users'),
   } as RouteRecordRaw)
   res.push({
     path: 'demandes-mod',
-    name: 'subscriptions',
+    name: RouteName.SUBSCRIPTIONS,
     component: () => import('@entities/pages/subscriptions'),
   } as RouteRecordRaw)
   return res
@@ -110,12 +110,12 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
   })
   res.push({
     path: 'gestion-utilisateurs',
-    name: 'users',
+    name: RouteName.USERS,
     component: () => import('@entities/pages/folder/pages/users'),
   } as RouteRecordRaw)
   res.push({
     path: 'rapports-bi',
-    name: 'reports',
+    name: RouteName.REPORTS,
     component: () => import('@entities/pages/power-bi/pages/bi-reports'),
     meta: {
       [LAYOUT_NO_PADDING_META]: true,
@@ -127,30 +127,30 @@ const folderPatchChildren = (paths: { path: string, name: string, page: string }
 // It's not done properly; we should separate the client and collaboration
 routes.push({
   path: '/portefeuille',
-  name: 'wallet',
-  redirect: { name: 'folders' },
+  name: RouteName.WALLET,
+  redirect: { name: RouteName.FOLDERS },
   component: () => import('@entities/pages/wallet'),
   children: walletPatchChildren(WALLET_CHILDREN_ROUTES),
 } as RouteRecordRaw)
 
 routes.push({
   path: '/portefeuille',
-  name: 'wallet-client',
-  redirect: { name: 'entity-client' },
+  name: RouteName.WALLET_CLIENT,
+  redirect: { name: RouteName.ENTITY_CLIENT },
   component: () => import('@entities/pages/wallet'),
   children: walletPatchChildren(CUSTOMER_WALLET_CHILDREN_ROUTES),
 } as RouteRecordRaw)
 
 routes.push({
   path: '/dossier/:id',
-  name: 'folder',
+  name: RouteName.FOLDER,
   component: () => import('@entities/pages/folder'),
   children: folderPatchChildren(FOLDER_CHILDREN_PATH),
 })
 
 routes.push({
   path: '/dossier/:id/banque',
-  name: 'bank',
+  name: RouteName.BANK,
   component: () => import('@entities/pages/WorkInProgress'),
   meta: {
     [LAYOUT_META]: Layout.MAIN,
@@ -160,7 +160,7 @@ routes.push({
 
 routes.push({
   path: '/dossier/:id/indicateurs',
-  name: 'indicators',
+  name: RouteName.INDICATORS,
   component: () => import('@entities/pages/WorkInProgress'),
   meta: {
     [LAYOUT_META]: Layout.MAIN,

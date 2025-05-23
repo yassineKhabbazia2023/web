@@ -1,11 +1,12 @@
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
 import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 
 const routes = [
   {
     path: '/dossier/:folderId/ged',
-    name: 'ged',
+    name: RouteName.GED,
     meta: {
       [LAYOUT_NO_PADDING_META]: true,
     },

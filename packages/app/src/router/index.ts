@@ -2,7 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { routes as errorRoutes } from '@app/pages/Error/router'
 import { APP_ROUTES, LAYOUT_META } from '@pulse/common/constants'
-import { Layout } from '@pulse/common/enums'
+import { Layout, RouteName } from '@pulse/common/enums'
 import { SQUAD_ROUTE_PATHS } from '@app/constants'
 import { BootManager } from '@app/managers/boot.manager'
 import { authenticationGuard } from './guards/authentication.guard'
@@ -41,7 +41,7 @@ const appRoutes: RouteRecordRaw[] = [
           ...errorRoutes,
           {
             path: '/:pathMatch(.*)*',
-            name: 'NotFound',
+            name: RouteName.NOT_FOUND,
             component: () => import('@app/pages/Error/404'),
             beforeEnter: (to, _from, next) => {
               const { HERMES, HADES, ORION, TRANSVERSE } = SQUAD_ROUTE_PATHS

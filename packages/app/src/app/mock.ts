@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { APP_ROUTES, LAYOUT_META } from '@pulse/common/constants'
-import { Layout } from '@pulse/common/enums'
+import { Layout, RouteName } from '@pulse/common/enums'
 
 export const PAGES_TITLE = {
   CLIENT: 'Login Client Page',
@@ -15,7 +15,7 @@ export const PAGES_TITLE = {
 export const ROUTES: RouteRecordRaw[] = [
   {
     path: '/',
-    name: 'home',
+    name: RouteName.HOME,
     component: {
       template: `<p class="pageTitle">${PAGES_TITLE.HOME}</p>`,
     },
@@ -42,35 +42,35 @@ export const ROUTES: RouteRecordRaw[] = [
   },
   {
     path: '/mes-entites',
-    name: 'entity-client',
+    name: RouteName.ENTITY_CLIENT,
     component: {
       template: `<p class="pageTitle">${PAGES_TITLE.MY_ENTITIES}</p>`,
     },
   },
   {
     path: '/portefeuille/dossiers',
-    name: 'wallet',
+    name: RouteName.WALLET,
     component: {
       template: `<p class="pageTitle">${PAGES_TITLE.WALLET}</p>`,
     },
   },
   {
     path: '/dossier/:id',
-    name: 'folder',
+    name: RouteName.FOLDER,
     component: {
       template: `<p class="pageTitle">${PAGES_TITLE.FOLDER}</p>`,
     },
   },
   {
     path: '/mandats',
-    name: 'mandats',
+    name: RouteName.MANDATES,
     component: {
       template: `<p class="pageTitle">${PAGES_TITLE.MANDATES}</p>`,
     },
   },
   {
     path: '/portefeuille/mandats',
-    name: 'folderMandats',
+    name: RouteName.FOLDER_MANDATES,
     component: {
       template: `<p class="pageTitle">${PAGES_TITLE.MANDATES}</p>`,
     },

@@ -10,6 +10,7 @@ import { fetchUserEntities } from './notifications-wrapper.service'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import { SelectedEntityManager } from '@pulse/common/managers'
 import { storeToRefs } from 'pinia'
+import { RouteName } from '@pulse/common/enums'
 
 dayjs.extend(relativeTime)
 
@@ -76,7 +77,7 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
     _notification: FeedCenterNotification,
   ) => {
     router.push({
-      name: 'wallet',
+      name: RouteName.WALLET,
       query: { accountNumbers },
     })
   },
@@ -103,7 +104,7 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
     }
     // only pushing to GED if user has access to the folder
     router.push({
-      name: 'ged',
+      name: RouteName.GED,
       params: { folderId: accountNumbers[0] },
       query: { folderId: notification.redirectLink },
     })
@@ -114,7 +115,7 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
     notification: FeedCenterNotification,
   ) => {
     router.push({
-      name: 'mandate',
+      name: RouteName.MANDATE,
       query: { bankAccountNumbers: notification.redirectLink },
     })
   },

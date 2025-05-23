@@ -1,31 +1,33 @@
+import { RouteName } from '../enums/route-name.enums'
+
 export const APP_ROUTES = {
-  root: { path: '/', name: 'root' },
-  anonymous: { path: '', name: 'anonymous' },
-  authenticated: { path: '', name: 'authenticated' },
+  root: { path: '/', name: RouteName.ROOT },
+  anonymous: { path: '', name: RouteName.ANONYMOUS },
+  authenticated: { path: '', name: RouteName.AUTHENTICATED },
   login: {
-    client: { path: 'login', name: 'loginClient' },
-    collab: { path: 'collaborateur', name: 'loginCollab' },
-    cguValidation: { path: 'validation-cgu/:termsId', name: 'validationCGU' },
-    expireToken: { path: 'expireToken', name: 'expireToken' },
-    createPassword: { path: 'createPassword', name: 'createPassword' },
-    resendEmailSuccess: { path: 'resendEmailSuccess', name: 'resendEmailSuccess' },
-    resetPassword: { path: 'resetPassword', name: 'resetPassword' },
-    resetPasswordSuccess: { path: 'resetPasswordSuccess', name: 'resetPasswordSuccess' },
-    resetPasswordFailed: { path: 'resetPasswordFailed', name: 'resetPasswordFailed' },
-    resetPasswordForm: { path: 'resetPasswordForm', name: 'resetPasswordForm' },
+    client: { path: 'login', name: RouteName.LOGIN_CLIENT },
+    collab: { path: 'collaborateur', name: RouteName.LOGIN_COLLAB },
+    cguValidation: { path: 'validation-cgu/:termsId', name: RouteName.VALIDATION_CGU },
+    expireToken: { path: 'expireToken', name: RouteName.EXPIRE_TOKEN },
+    createPassword: { path: 'createPassword', name: RouteName.CREATE_PASSWORD },
+    resendEmailSuccess: { path: 'resendEmailSuccess', name: RouteName.RESEND_EMAIL_SUCCESS },
+    resetPassword: { path: 'resetPassword', name: RouteName.RESET_PASSWORD },
+    resetPasswordSuccess: { path: 'resetPasswordSuccess', name: RouteName.RESET_PASSWORD_SUCCESS },
+    resetPasswordFailed: { path: 'resetPasswordFailed', name: RouteName.RESET_PASSWORD_FAILED },
+    resetPasswordForm: { path: 'resetPasswordForm', name: RouteName.RESET_PASSWORD_FORM },
   },
   wallet: {
     client: {
       root: { path: 'portefeuille', name: 'wallet-client' },
       landing: { path: 'mes-entites', name: 'entity-client' },
-      folder: { path: 'dossier/:id', name: 'folder' },
+      folder: { path: 'dossier/:id', name: RouteName.FOLDER },
     },
     collab: {
-      root: { path: 'portefeuille', name: 'wallet' },
-      landing: { path: 'dossiers', name: 'folders' },
+      root: { path: 'portefeuille', name: RouteName.WALLET },
+      landing: { path: 'dossiers', name: RouteName.FOLDERS },
     },
   },
   error: {
-    internalError: { path: '500', name: 'internalError' },
+    internalError: { path: '500', name: RouteName.INTERNAL_ERROR },
   },
 }

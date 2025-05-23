@@ -11,13 +11,14 @@ import { createI18n } from 'vue-i18n'
 import { defineSetupVue3 } from '@histoire/plugin-vue'
 import { menu } from './constants/routesSamples'
 import { initHistoire } from './initHistoireUtils'
+import { RouteName } from '@pulse/common/enums'
 
 const i18n = createI18n({ locale: Intl.DateTimeFormat().resolvedOptions().locale })
 dayjs.Ls.en.weekStart = 1
 
 const router = createRouter({
   history: createMemoryHistory(),
-  routes: [{ path: '/', name: 'home', component: { render: () => null } }],
+  routes: [{ path: '/', name: RouteName.HOME, component: { render: () => null } }],
 })
 menu.forEach(route => router.addRoute(route))
 

@@ -19,6 +19,7 @@ import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
 import * as NotificationService from './notifications-wrapper.service'
 import { flushPromises } from '@vue/test-utils'
+import { RouteName } from '@pulse/common/enums'
 
 import {
   patchUnreadNotification,
@@ -162,7 +163,7 @@ describe('handleNotificationAction', () => {
     })
 
     expect(mockRouter.push).toHaveBeenCalledWith({
-      name: 'wallet',
+      name: RouteName.WALLET,
       query: { accountNumbers: [notificationsMock[0].accounts[0].accountNumber] },
     })
   })
@@ -174,7 +175,7 @@ describe('handleNotificationAction', () => {
     })
 
     expect(mockRouter.push).toHaveBeenCalledWith({
-      name: 'mandate',
+      name: RouteName.MANDATE,
       query: { bankAccountNumbers: mandateNotificationMock.redirectLink },
     })
   })

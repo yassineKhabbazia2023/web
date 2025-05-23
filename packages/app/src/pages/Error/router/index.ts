@@ -1,4 +1,5 @@
 import { APP_ROUTES, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 import type { RouteRecordRaw } from 'vue-router'
 
 const routes = [] as RouteRecordRaw[]
@@ -6,22 +7,22 @@ const routes = [] as RouteRecordRaw[]
 const ERROR_PATH = [
   {
     path: '/400',
-    name: 'Error400',
+    name: RouteName.ERROR400,
     page: '400',
   },
   {
     path: '/401',
-    name: 'Error401',
+    name: RouteName.ERROR401,
     page: '401',
   },
   {
     path: '/403',
-    name: 'Error403',
+    name: RouteName.ERROR403,
     page: '403',
   },
   {
     path: '/404',
-    name: 'Error404',
+    name: RouteName.ERROR404,
     page: '404',
   },
   {
@@ -31,12 +32,12 @@ const ERROR_PATH = [
   },
   {
     path: '/503',
-    name: 'Error503',
+    name: RouteName.ERROR503,
     page: '503',
   },
   {
     path: '/feature-not-available',
-    name: 'FeatureNotAvailable',
+    name: RouteName.FEATURE_NOT_AVAILABLE,
     page: 'FeatureNotAvailable',
   },
 ]

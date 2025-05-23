@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { getStoreMock } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
+import { RouteName } from '@pulse/common/enums'
 
 import LegalLinks from '.'
 
@@ -34,7 +35,7 @@ describe('legalLinks', () => {
     userStoreMock.isCollab = false
 
     mockedUseRoute.mockReturnValue({
-      name: 'login-client',
+      name: RouteName.LOGIN_CLIENT,
     })
 
     wrapper = createWrapper()

@@ -70,6 +70,7 @@ import { fetchWalletData } from '../folders/DeployUtils'
 import { getPaginationLabel } from '@entities/helper'
 import { ENTITY_STATUS_COLOR, PAGE_SIZES } from '@entities/constants'
 import type { AccountRow } from '@entities/common/types'
+import { RouteName } from '@pulse/common/enums'
 import type {
   SearchCriteria,
   SearchResult,
@@ -161,7 +162,7 @@ const handlePageChange = (currentPage: number) => {
   searchCriteria.value.currentPage = currentPage
 }
 const handleOpenFolder = (id: string) => {
-  router.push({ name: 'folder', params: { id } })
+  router.push({ name: RouteName.FOLDER, params: { id } })
 }
 
 onMounted(async () => {

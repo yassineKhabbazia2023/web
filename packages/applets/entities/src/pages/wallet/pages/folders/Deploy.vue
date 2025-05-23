@@ -173,6 +173,7 @@ import type { AccountRow } from '@entities/common/types'
 import ManageAccessDrawerGlobal from '@entities/common/components/ManageAccessDrawer/ManageAccessDrawerGlobal'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 import { useUserStore } from '@pulse/common/stores'
+import { RouteName } from '@pulse/common/enums'
 import { fetchAccountOperations } from '@entities/services/contact'
 
 const { t } = useI18n({
@@ -390,7 +391,7 @@ const onClickDeploy = (accountId: number, accountNumber: string, companyName: st
   selectedCompanyName.value = companyName
 }
 const onClickFolder = (id: string) => {
-  router.push({ name: 'folder', params: { id } })
+  router.push({ name: RouteName.FOLDER, params: { id } })
 }
 const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
   searchCriteria.value = {

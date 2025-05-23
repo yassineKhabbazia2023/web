@@ -1,18 +1,19 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      name: 'home',
+      name: RouteName.HOME,
       path: '/',
       component: {
         template: '<div />',
       },
     },
     {
-      name: 'wallet',
+      name: RouteName.WALLET,
       path: '/wallet',
       component: {
         template: '<div />',

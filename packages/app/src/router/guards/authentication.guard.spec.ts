@@ -2,12 +2,13 @@ import { APP_ROUTES } from '@pulse/common/constants'
 import { loggerMock } from '@pulse/core/mocks'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { authenticationGuard } from './authentication.guard'
+import { RouteName } from '@pulse/common/enums'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
-const fromRouteMock: any = { name: 'from' }
-const anonymousRouteMock: any = { name: 'login', matched: [{ name: APP_ROUTES.anonymous.name }] }
-const authenticatedRouteMock: any = { name: 'home', matched: [{ name: APP_ROUTES.authenticated.name }] }
+const fromRouteMock: any = { name: RouteName.ERROR400 }
+const anonymousRouteMock: any = { name: RouteName.LOGIN_CLIENT, matched: [{ name: APP_ROUTES.anonymous.name }] }
+const authenticatedRouteMock: any = { name: RouteName.HOME, matched: [{ name: APP_ROUTES.authenticated.name }] }
 
 describe('authenticationGuard', () => {
   describe('anonymous user', () => {
