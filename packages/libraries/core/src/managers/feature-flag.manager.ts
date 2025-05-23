@@ -1,31 +1,35 @@
+import { Feature } from '../enums/feature.enums'
+
+export type EnvVars = Record<Feature, 'true' | 'false'>
+
 declare let window: {
-  EnvVars: {
-    VITE_SCHEDULE_ACTIVATED: 'true' | 'false'
-    VITE_MAIL_TO_GED_ACTIVATED: 'true' | 'false'
-    VITE_FEED_CENTER_ACTIVATED: 'true' | 'false'
-    VITE_ACCESS_MANAGEMENT_GLOBAL: 'true' | 'false'
-    VITE_HOMEPAGE_WIDGETS_ACTIVATED: 'true' | 'false'
-  }
+  EnvVars: EnvVars
 } & Window
 
 export class FeatureFlagManager {
   static isScheduleActivated() {
-    return window.EnvVars?.VITE_SCHEDULE_ACTIVATED === 'true'
+    return FeatureFlagManager.isFeatureActivated(Feature.SCHEDULE)
   }
 
   static isMailToGedActivated() {
-    return window.EnvVars?.VITE_MAIL_TO_GED_ACTIVATED === 'true'
+    return FeatureFlagManager.isFeatureActivated(Feature.MAIL_TO_GED)
   }
 
   static isFeedCenterActivated() {
-    return window.EnvVars?.VITE_FEED_CENTER_ACTIVATED === 'true'
+    return FeatureFlagManager.isFeatureActivated(Feature.FEED_CENTER)
   }
 
   static isAccessManagementGlobalActivated() {
-    return window.EnvVars?.VITE_ACCESS_MANAGEMENT_GLOBAL === 'true'
+    return FeatureFlagManager.isFeatureActivated(Feature.ACCESS_MANAGEMENT_GLOBAL)
   }
 
   static isHomepageWidgetsActivated() {
-    return window.EnvVars?.VITE_HOMEPAGE_WIDGETS_ACTIVATED === 'true'
+    return FeatureFlagManager.isFeatureActivated(Feature.HOMEPAGE_WIDGETS)
+  }
+
+  static isFeatureActivated(feature: Feature) {
+    const value = window.EnvVars?.[feature]
+
+    return value === 'true'
   }
 }

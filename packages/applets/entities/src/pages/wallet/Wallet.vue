@@ -4,15 +4,17 @@
       {{ t('hello') }} {{ user?.firstName }}
     </h3>
 
-    <PTabs :modelValue="activeTab" @tab-click="handleTabClick">
-      <template v-for="tab in tabs" :key="tab.name">
-        <PTabPane
-          v-if="tab.display"
-          :pLabel="tab.title"
-          :name="tab.name"
-          class="margin-bottom--6"
-        />
-      </template>
+    <PTabs
+      :modelValue="activeTab"
+      @tab-click="handleTabClick"
+    >
+      <PTabPane
+        v-for="tab in tabs"
+        :key="tab.name"
+        :pLabel="tab.title"
+        :name="tab.name"
+        class="margin-bottom--6"
+      />
       <router-view />
     </PTabs>
   </div>
@@ -26,8 +28,10 @@ import { useRouter, useRoute } from 'vue-router'
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import { amplitudeService } from '@pulse/common'
 import { useUserStore } from '@pulse/common/stores'
-import { CurrentUserManager } from '@pulse/common/managers'
-import { PERMISSION_CODES } from '@entities/constants'
+import { getTabs } from './Wallet.utils'
+import { WalletTab } from './Wallet.enums'
+import { WALLET_TAB_ROUTES } from './Wallet.const'
+import type { TabsPaneContext } from '@pulse/styleguide/types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -41,69 +45,33 @@ const userStore = useUserStore()
 const { user, isCollab } = storeToRefs(userStore)
 
 const activeTab = computed(() => route.name as string)
-const getCollaboratorsTabs = () => [
-  {
-    name: 'folders',
-    title: t('wallet'),
-    display: true,
-  },
-  {
-    name: 'folderMandats',
-    title: t('mandate'),
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.MANDATE),
-  },
-  {
-    name: 'powerbi',
-    title: t('uploadPowerBIReport'),
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.POWERBI_REPORT),
-  },
-  {
-    name: 'biReportsList',
-    title: t('biReportsList'),
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.POWERBI_REPORT),
-  },
-  {
-    name: 'subscriptions',
-    title: t('subscriptions'),
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.SUBSCRIPTIONS),
-  },
-  {
-    name: 'collaborators',
-    title: t('collaborators'),
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.COLLABORATORS),
-  },
-  {
-    name: 'folderLauncher',
-    title: t('launcher'),
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.LAUNCHER),
-  },
-  {
-    name: 'accountManagement',
-    title: t('accountManagement'),
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_MANAGEMENT),
-  },
-]
 
-const clientTabs = [
-  {
-    name: 'entity-client',
-    title: t('allEntities'),
-    display: true,
-  },
-  {
-    name: 'allUsers',
-    title: t('allUsers'),
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.USERS),
-  },
-]
+const tabLabels: Record<WalletTab, string> = {
+  [WalletTab.ACCOUNT_MANAGEMENT]: t('accountManagement'),
+  [WalletTab.ALL_USERS]: t('allUsers'),
+  [WalletTab.BI_REPORTS_LIST]: t('biReportsList'),
+  [WalletTab.COLLABORATORS]: t('collaborators'),
+  [WalletTab.ENTITY_CLIENT]: t('allEntities'),
+  [WalletTab.FOLDER_LAUNCHER]: t('launcher'),
+  [WalletTab.FOLDER_MANDATES]: t('mandate'),
+  [WalletTab.FOLDERS]: t('wallet'),
+  [WalletTab.OFFERS_CATALOG]: t('offers-catalog'),
+  [WalletTab.POWER_BI]: t('uploadPowerBIReport'),
+  [WalletTab.SUBSCRIPTIONS]: t('subscriptions'),
+}
 
-const tabs = computed(() => (isCollab.value ? getCollaboratorsTabs() : clientTabs))
+const tabs = computed(() => getTabs(tabLabels, isCollab.value ?? false))
 
-const handleTabClick = (tab: any) => {
-  amplitudeService.track('Feature Consulted', {
-    feature_name: tab.props.label.toLowerCase(),
-  })
-  router.push({ name: tab.paneName })
+const handleTabClick = (tab: TabsPaneContext) => {
+  const walletTab = tab.paneName as WalletTab
+  const name = WALLET_TAB_ROUTES[walletTab]
+
+  if (name !== undefined) {
+    amplitudeService.track('Feature Consulted', {
+      feature_name: tab.props.label.toLowerCase(),
+    })
+    router.push({ name })
+  }
 }
 </script>
 
@@ -120,6 +88,7 @@ en-US:
   accountManagement: 'Folder administration'
   uploadPowerBIReport: 'Upload a BI report'
   biReportsList: 'BI Reports'
+  offers-catalog: 'Offers catalog'
 fr-FR:
   wallet: 'Portefeuille'
   hello: 'Bonjour'
@@ -132,4 +101,5 @@ fr-FR:
   accountManagement: 'Administration dossiers'
   uploadPowerBIReport: 'Déposer un rapport BI'
   biReportsList: 'Rapports BI'
+  offers-catalog: 'Catalogue des offres'
 </i18n>

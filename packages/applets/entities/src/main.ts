@@ -1,10 +1,11 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
-import { LAYOUT_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
+import { LAYOUT_META, LAYOUT_NO_PADDING_META, FEATURE_FLAG_META } from '@pulse/common/constants'
 import { Layout, RouteName } from '@pulse/common/enums'
 import { widgetTest } from '@pulse/modules/widgets/widget-test'
 import { widgetDeux } from '@pulse/modules/widgets/widget-deux'
+import { Feature } from '@pulse/core/enums'
 
 const routes = [] as RouteRecordRaw[]
 
@@ -28,6 +29,14 @@ const BASE_WALLET_ROUTES = [
     path: 'deposer-rapport-bi',
     name: RouteName.POWER_BI,
     page: 'powerbi',
+  },
+  {
+    path: 'catalogue-des-offres',
+    name: RouteName.OFFERS_CATALOG,
+    page: 'offers-catalog',
+    meta: {
+      [FEATURE_FLAG_META]: Feature.COLLAB_OFFERS_CATALOG,
+    },
   },
 ]
 
@@ -77,12 +86,13 @@ const FOLDER_CHILDREN_PATH = [
   },
 ]
 
-const walletPatchChildren = (paths: { path: string, name: string, page: string }[]) => {
+const walletPatchChildren = (paths: { path: string, name: string, page: string, meta?: any }[]) => {
   const res: RouteRecordRaw[] = []
   paths.forEach((path) => {
     res.push({
       path: path.path,
       name: path.name,
+      meta: path.meta,
       component: () => import(`@entities/pages/wallet/pages/${path.page}/index.ts`),
     } as RouteRecordRaw)
   })

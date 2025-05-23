@@ -6,6 +6,7 @@ import { Layout, RouteName } from '@pulse/common/enums'
 import { SQUAD_ROUTE_PATHS } from '@app/constants'
 import { BootManager } from '@app/managers/boot.manager'
 import { authenticationGuard } from './guards/authentication.guard'
+import { featureFlagGuard } from './guards/feature-flag.guard'
 import { seoGuard } from './guards/seo.guard'
 
 const appRoutes: RouteRecordRaw[] = [
@@ -72,6 +73,7 @@ const router = createRouter({
 
 // Inject the guards
 router.beforeEach(authenticationGuard)
+router.beforeEach(featureFlagGuard)
 router.afterEach(seoGuard)
 
 export default router
