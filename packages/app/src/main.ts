@@ -21,9 +21,13 @@ const locale = 'fr-FR'
 
 declare let window: {
   version: string
+  commit: string
+  branch: string
 } & Window
 
 window.version = AppVersionManager.getMonorepoVersion()
+window.commit = AppVersionManager.getShortCommitId()
+window.branch = AppVersionManager.getBranchName()
 
 const isProd = import.meta.env.PROD
 
