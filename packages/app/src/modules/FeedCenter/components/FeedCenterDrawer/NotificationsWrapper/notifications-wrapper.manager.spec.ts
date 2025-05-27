@@ -26,6 +26,7 @@ import {
   getIsNotificationRead,
   handleNotificationAction,
   getTimeSinceCreation,
+  getNotificationAccountIds,
   getNotificationAccountNumbers,
   getNotificationAccountNames,
 } from './notifications-wrapper.manager'
@@ -246,6 +247,28 @@ describe('getNotificationAccountNumbers', () => {
     },
   ])('should return all the account numbers of a notification', ({ notification, expectedResult }) => {
     const numbers = getNotificationAccountNumbers(notification)
+    expect(numbers).toStrictEqual(expectedResult)
+  })
+})
+
+describe('getNotificationAccountIds', () => {
+  it.each([
+    {
+      // this mock contains 1 account
+      notification: notificationsMock[0],
+      expectedResult: [accountsMock[0].id],
+    },
+    {
+      // this mock contains 3 accounts
+      notification: notificationsMock[1],
+      expectedResult: [
+        accountsMock[1].id,
+        accountsMock[2].id,
+        accountsMock[3].id,
+      ],
+    },
+  ])('should return all the account ids of a notification', ({ notification, expectedResult }) => {
+    const numbers = getNotificationAccountIds(notification)
     expect(numbers).toStrictEqual(expectedResult)
   })
 })
