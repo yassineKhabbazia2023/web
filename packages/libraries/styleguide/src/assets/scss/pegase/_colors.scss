@@ -2,92 +2,8 @@
 @use 'sass:map';
 @use 'sass:list';
 @use 'element-plus/theme-chalk/src/mixins/_var.scss' as *;
-@use './common-vars' as *;
+@use 'color.variables.scss' as color-variables;
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
-
-$colors: (
-  'base': (
-    'blue-pulse': #0E0F30,
-    'persian': $primary-color,
-    'persian-light': #E7FFFF,
-    'hover': #E4FCF7,
-    'white': $color-white,
-  ),
-  'persian': (
-    '50': #D6F0EB,
-    '100': #ADE1D6,
-    '200': #88D3C4,
-    '300': #51BFA9,
-    '400': $primary-color,
-    '500': $primary-color,
-    '600': #0E6151,
-    '700': #0C4F41,
-    '800': #093C32,
-    '900': #062A23,
-  ),
-  'secondary': (
-    'fuschia': #3438C5,
-    'fuschia-txt': #0E0F30,
-    'fuschia-bg': #E7E8FF,
-    'amethyste': #1AAB8E,
-    'amethyste-txt': #093C32,
-    'amethyste-bg': #E4FCF7,
-    'cyan': #B5F0EF,
-    'cyan-txt': #0D4D5A,
-    'cyan-bg': #E7FFFF,
-  ),
-  'neutral': (
-    'gray-50': #F8F9FA,
-    'gray-100': #DEE2E6,
-    'gray-200': #CDD1D4,
-    'gray-300': #ADB5BD,
-    'gray-500': #6C757D,
-    'gray-700': #495057,
-    'gray-800': #3A3C3F,
-    'gray-900': #15171A,
-  ),
-  'functionnal': (
-    'red': $red,
-    'red-txt': #B10303,
-    'red-bg': #FFDDDD,
-    'orange': $orange,
-    'orange-txt': #BB5502,
-    'orange-bg': #FFFCEA,
-    'yellow': #FFD600,
-    'yellow-txt': #946F00,
-    'yellow-bg': #FEFEE2,
-    'green': $green,
-    'green-txt': #0A710B,
-    'green-bg': #D8FFD7,
-    'teal': $teal,
-    'teal-txt': #126778,
-    'teal-bg': #E3F2FD,
-  ),
-  'polar': (
-    '50': #E4FCF7,
-    '100': #D1FAF0,
-    '200': #A7F3E4,
-    '300': #6FE6D6,
-    '400': #35D2C2,
-    '500': #11B8AD,
-    '600': #06958F,
-    '700': #075E5D,
-    '800': #064E4E,
-    '900': #022B2C,
-  ),
-  'black-rock': (
-    '50': #EDF3FF,
-    '100': #DDE9FF,
-    '200': #C2D5FF,
-    '300': #9EB8FF,
-    '400': #7791FF,
-    '500': #676AFD,
-    '600': #3940F2,
-    '700': #2C2FD6,
-    '800': #272C88,
-    '900': #0E0F30,
-  ),
-);
 
 :root {
   --persian-gradient: linear-gradient(90deg, var(--el-color-secondary-amethyste) 0%, var(--el-color-primary) 100%);
@@ -97,7 +13,7 @@ $colors: (
 
 $typePulse: ();
 
-@each $type, $content in $colors {
+@each $type, $content in color-variables.$colors {
   @each $variant, $hexCode in $content {
     $name: #{$type}-#{$variant};
     $typePulse: append($typePulse, $name);
@@ -105,7 +21,7 @@ $typePulse: ();
 }
 
 @mixin set-css-color-rgb-pulse($type, $variant) {
-  $color: map.get($colors, $type, $variant);
+  $color: map.get(color-variables.$colors, $type, $variant);
 
   @if $color != null {
     @if $variant  == base {
@@ -127,7 +43,7 @@ $typePulse: ();
 }
 
 @mixin set-css-color-type-pulse($type, $variant) {
-  $color: map.get($colors, $type, $variant);
+  $color: map.get(color-variables.$colors, $type, $variant);
 
   @if $color != null {
     @if $variant  == base {
@@ -143,7 +59,7 @@ $typePulse: ();
   }
 }
 
-@each $palette, $colorsMap in $colors {
+@each $palette, $colorsMap in color-variables.$colors {
   @each $colorName, $colorValue in $colorsMap {
     .bg--#{$palette}-#{$colorName},
     .hover-bg--#{$palette}-#{$colorName}:hover {
