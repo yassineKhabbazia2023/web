@@ -1,25 +1,22 @@
 <template>
-  <div class="widget-test">
-    <h4>Widget Test One</h4>
-    <button @click="increment">
-      Increment: {{ count }}
+  <!-- Temporary HTML/CSS for demonstration purpose -->
+  <!-- TO BE DELETED -->
+  <div class="widget-sso">
+    <button>
+      Connexion Pennylane
     </button>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
-
-const count = ref(0)
-const increment = () => {
-  count.value++
-}
-</script>
-
 <style lang="scss" scoped>
-.widget-test {
+.widget-sso {
+  height: 75px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
   button {
-    background-color: #4CAF50; /* Green */
+    background-color: black;
     border: none;
     color: white;
     padding: 15px 32px;

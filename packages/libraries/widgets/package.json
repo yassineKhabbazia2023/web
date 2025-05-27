@@ -1,15 +1,17 @@
 {
-  "name": "@pulse/modules",
+  "name": "@pulse/widgets",
   "version": "1.0.0",
   "author": "Pulse Team",
-  "description": "App's Modules",
+  "description": "App's Widgets",
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
   "exports": {
-    "./managers": "./src/managers/index.mts",
-    "./widgets/widget-test": "./src/widgets/widget-test/index.mts",
-    "./widgets/widget-deux": "./src/widgets/widget-deux/index.mts"
+    ".": "./src/main.mts",
+    "./enums": "./src/enums.mts",
+    "./managers": "./src/managers.mts",
+    "./types": "./src/types.mts",
+    "./install": "./src/install.mts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

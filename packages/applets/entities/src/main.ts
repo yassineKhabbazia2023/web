@@ -3,8 +3,7 @@ import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
 import { LAYOUT_META, LAYOUT_NO_PADDING_META, FEATURE_FLAG_META } from '@pulse/common/constants'
 import { Layout, RouteName } from '@pulse/common/enums'
-import { widgetTest } from '@pulse/modules/widgets/widget-test'
-import { widgetDeux } from '@pulse/modules/widgets/widget-deux'
+import widgetsLibrary from '@pulse/widgets'
 import { Feature } from '@pulse/core/enums'
 
 const routes = [] as RouteRecordRaw[]
@@ -182,9 +181,8 @@ export default {
   install(app: App, options: any) {
     const { router } = options
 
-    // register widgets for homepage
-    app.use(widgetTest, {})
-    app.use(widgetDeux, {})
     RoutesManager.addRoutesToAuthenticated(router, routes)
+    // install widgets
+    app.use(widgetsLibrary, {})
   },
 }
