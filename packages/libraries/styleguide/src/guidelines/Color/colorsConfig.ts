@@ -4,7 +4,7 @@ export const colorsConfig: Record<string, Record<string, string>> = {
     persian: 'primary-color',
     'persian-light': '#E7FFFF',
     'hover': '#E4FCF7',
-    white: '#FFFFFF',
+    white: 'color-white',
   },
   persian: {
     50: '#D6F0EB',
@@ -32,10 +32,11 @@ export const colorsConfig: Record<string, Record<string, string>> = {
   neutral: {
     'gray-50': '#F8F9FA',
     'gray-100': '#DEE2E6',
-    'gray-200': '#C2C2C2',
+    'gray-200': '#CDD1D4', // ou bien '#C2C2C2' ?
     'gray-300': '#ADB5BD',
     'gray-500': '#6C757D',
     'gray-700': '#495057',
+    'gray-800': '#3A3C3F',
     'gray-900': '#15171A',
   },
   functionnal: {
@@ -50,9 +51,33 @@ export const colorsConfig: Record<string, Record<string, string>> = {
     'yellow-bg': '#FEFEE2',
     green: 'green',
     'green-txt': '#0A710B',
-    'green-bg': '#F4FDD9',
+    'green-bg': '#D8FFD7', // ou bien '#F4FDD9' ?
     teal: 'teal',
     'teal-txt': '#126778',
     'teal-bg': '#E3F2FD',
+  },
+  polar: {
+    '50': '#E4FCF7',
+    '100': '#D1FAF0',
+    '200': '#A7F3E4',
+    '300': '#6FE6D6',
+    '400': '#35D2C2',
+    '500': '#11B8AD',
+    '600': '#06958F',
+    '700': '#075E5D',
+    '800': '#064E4E',
+    '900': '#022B2C',
+  },
+  'black-rock': {
+    '50': '#EDF3FF',
+    '100': '#DDE9FF',
+    '200': '#C2D5FF',
+    '300': '#9EB8FF',
+    '400': '#7791FF',
+    '500': '#676AFD',
+    '600': '#3940F2',
+    '700': '#2C2FD6',
+    '800': '#272C88',
+    '900': '#0E0F30',
   },
 }

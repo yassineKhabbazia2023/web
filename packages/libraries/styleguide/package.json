@@ -22,9 +22,10 @@
     "test:update": "npx vitest -u",
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
-    "generate": "npm run generate:icons && npm run generate:images",
+    "generate": "npm run generate:icons && npm run generate:images && npm run generate:colors",
     "generate:icons": "tsx ./scripts/pulseIconGen.ts ./src/assets/icons ./src/atoms/PIcon/components ./src/types/IconName.types.ts && eslint ./src/atoms/PIcon/components/* --fix",
     "generate:images": "tsx ./scripts/generateImages.ts ./src/assets/images-origin ./src/assets/images ./src/atoms/PImage/imagesList.json ./src/atoms/PImage/ImageNameTypes.ts && eslint ./src/atoms/PImage/* --fix",
+    "generate:colors": "tsx ./scripts/generate-colors.ts ./src/types/color-name.ts ./src/assets/scss/pegase/color.variables.scss",
     "serve:assets": "tsx ./scripts/assets"
   },
   "devDependencies": {
