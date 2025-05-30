@@ -48,6 +48,7 @@ window.EnvVars = envVars
 | VITE_IDLE_DURATION | Temps de non-utilisation de l'app avant une proposition de déconnexion automatique |
 | VITE_MAIL_TO_GED_ACTIVATED | Feature flag de la fonctionnalité Mail2GED |
 | VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |
+| VITE_PENNYLANE_COLLAB_SSO_URL | URL de connexion SSO Pennylane pour les collaborateurs |
 | VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
 | VITE_GIGYA_KEY | Clé d'API Gigya (SSO) |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY | Clé du workspace ProductFruit Collab anonyme (login collab) |

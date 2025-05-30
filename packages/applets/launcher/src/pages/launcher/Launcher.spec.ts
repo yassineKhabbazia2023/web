@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { launchCardsMock } from '@launcher/__mocks__/launch-cards.mocks'
+import { launchCardsMock, collabLaunchCardsMock } from '@launcher/__mocks__/launch-cards.mocks'
 import { launcherServicesMocks } from '@launcher/__mocks__/launcher.service.mocks'
 import { mockedEntity } from '@launcher/__mocks__/entity.mocks'
 import { getLaunchCardsMock, getSilaeDownloadLabelMock, handleClickActionMock, handleDownloadMock, LauncherUtilsMocks, mockedPercent } from '@launcher/__mocks__/home-utils.mocks'
@@ -16,13 +16,15 @@ import {
   hasPermissionMock,
   getHasPermissionMocked,
   getStoreMock,
+  getMockedUserInfo,
 } from '@pulse/common/mocks'
-import { useSelectedEntityStore, usePermissionsStore } from '@pulse/common/stores'
+import { useSelectedEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
 
-import Home from '.'
+import Launcher from '.'
 
 const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
+const userStoreMock = getStoreMock(useUserStore)
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -36,7 +38,7 @@ vi.mock('@launcher/services/launcherServices', () => launcherServicesMocks)
 const mockedSilaeDownloadLabel = 'silae download label'
 
 function getWrapper() {
-  return shallowMount(Home)
+  return shallowMount(Launcher)
 }
 
 const CARDS_LENGTH = 3
@@ -61,6 +63,7 @@ describe('test Home', () => {
   beforeEach(() => {
     selectedEntityStoreMock.selectedEntity = entityMock
     permissionsStoreMock.selectedEntityPermissions = selectedEntityPermissionsMock
+    userStoreMock.user = getMockedUserInfo()
 
     getLaunchCardsMock.mockReturnValue(launchCardsMock)
     getSilaeDownloadLabelMock.mockReturnValue(mockedSilaeDownloadLabel)
@@ -107,8 +110,8 @@ describe('test Home', () => {
       ]
 
       expect(getLaunchCardsMock).toHaveBeenCalledTimes(2)
-      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(1, mockedSilaeDownloadLabel, expectedParams1stCall)
-      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(2, mockedSilaeDownloadLabel, expectedParams2thCall)
+      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(1, mockedSilaeDownloadLabel, expectedParams1stCall, false)
+      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(2, mockedSilaeDownloadLabel, expectedParams2thCall, false)
       expect(noLauncher.exists()).toBeFalsy()
       expect(launchCards).toHaveLength(1)
     })
@@ -162,6 +165,26 @@ describe('test Home', () => {
 
       expect(actionUrls).toMatchObject(expectedActionUrls)
     })
+
+    it('includes correct actionUrls for collab users', async () => {
+      // Arrange
+      userStoreMock.user = getMockedUserInfo({ isCollab: true })
+      getLaunchCardsMock.mockReturnValue(collabLaunchCardsMock)
+
+      await flushPromises()
+
+      // Act
+      const launchCards = getLaunchCardComponents(wrapper)
+      const actionUrls = launchCards.map((launchCard) => {
+        const { actionUrl } = (launchCard as VueWrapper).props() as LaunchCardProps
+        return actionUrl
+      })
+
+      // Assert
+      expect(actionUrls).toEqual([
+        envVarsMock.VITE_PENNYLANE_COLLAB_SSO_URL,
+      ])
+    })
   })
 
   describe('when route is launcher-collab', () => {
@@ -195,7 +218,7 @@ describe('test Home', () => {
       const noLauncher = wrapper.find('[data-testid="home-no-launcher"]')
 
       expect(getLaunchCardsMock).toHaveBeenCalledTimes(2)
-      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(2, mockedSilaeDownloadLabel, [])
+      expect(getLaunchCardsMock).toHaveBeenNthCalledWith(2, mockedSilaeDownloadLabel, [], false)
       expect(noLauncher.exists()).toBeTruthy()
       expect(launchCards).toHaveLength(0)
     })

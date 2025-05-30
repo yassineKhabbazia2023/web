@@ -1,9 +1,13 @@
 import { logger } from '@pulse/core'
-import { VITE_GESTION_MEG, VITE_PENNYLANE_SSO_URL } from 'env-vars'
+import { VITE_GESTION_MEG, VITE_PENNYLANE_SSO_URL, VITE_PENNYLANE_COLLAB_SSO_URL } from 'env-vars'
 import { getSsoSilaeUrl, downloadApplication, saveApplication } from '@launcher/services/launcherServices'
 import { type ExtendedLaunchCard, LauncherKey } from './LauncherTypes'
 
-export function getLaunchCards(downloadSilaeLabel: string, authorizedKeys: LauncherKey[]): ExtendedLaunchCard[] {
+export function getLaunchCards(
+  downloadSilaeLabel: string,
+  authorizedKeys: LauncherKey[],
+  isCollab?: boolean,
+): ExtendedLaunchCard[] {
   const launchCards: ExtendedLaunchCard[] = [
     {
       key: LauncherKey.MEG,
@@ -11,7 +15,7 @@ export function getLaunchCards(downloadSilaeLabel: string, authorizedKeys: Launc
       subtitle: 'Accéder à votre outil de gestion afin de piloter votre entreprise',
       imageType: 'logos',
       imageName: 'brand-color',
-      actionLabel: 'Se connecter à l\'outil de gestion',
+      actionLabel: "Se connecter à l'outil de gestion",
       actionUrl: VITE_GESTION_MEG,
       downloadLabel: '',
     },
@@ -32,7 +36,7 @@ export function getLaunchCards(downloadSilaeLabel: string, authorizedKeys: Launc
       imageType: 'logos',
       imageName: 'pennylane-color',
       actionLabel: 'Se connecter à Pennylane',
-      actionUrl: VITE_PENNYLANE_SSO_URL,
+      actionUrl: isCollab ? VITE_PENNYLANE_COLLAB_SSO_URL : VITE_PENNYLANE_SSO_URL,
       downloadLabel: '',
     },
   ]

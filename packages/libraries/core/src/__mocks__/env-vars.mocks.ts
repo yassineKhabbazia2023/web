@@ -23,6 +23,7 @@ export const envVarsMock = {
   VITE_MAIL_TO_GED_ACTIVATED: 'true',
   VITE_PASSWORD_RESET_MAX_ATTEMPTS: '5',
   VITE_PENNYLANE_SSO_URL: 'https://pennylane-sso-url',
+  VITE_PENNYLANE_COLLAB_SSO_URL: 'https://pennylane-collab-sso-url',
   VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT: 'pulse-product-fruits-anonymous-key-client',
   VITE_PRODUCT_FRUITS_ANONYMOUS_KEY: 'pulse-product-fruits-anonymous-key',
   VITE_PRODUCT_FRUITS_KEY_CLIENT: 'pulse-product-fruits-key-client',

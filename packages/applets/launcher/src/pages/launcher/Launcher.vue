@@ -53,7 +53,7 @@ import { PBreadcrumb, PAlert } from '@pulse/styleguide/components'
 import LaunchCard from '@launcher/components/launchCard'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LauncherKey, ExtendedLaunchCard } from './LauncherTypes'
-import { useSelectedEntityStore, usePermissionsStore } from '@pulse/common/stores'
+import { useSelectedEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
 import {
   getLaunchCards,
   handleClickAction,
@@ -62,6 +62,7 @@ import {
 } from './LauncherUtils'
 
 const route = useRoute()
+const userStore = useUserStore()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -117,7 +118,7 @@ const authorizedKeys = computed<LauncherKey[]>(() =>
 const launchCards = computed<ExtendedLaunchCard[]>(() => {
   const downloadLabel = getSilaeDownloadLabel(silaeDownloadPercent.value)
 
-  return getLaunchCards(downloadLabel, authorizedKeys.value)
+  return getLaunchCards(downloadLabel, authorizedKeys.value, userStore.isCollab)
 })
 
 </script>

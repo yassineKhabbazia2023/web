@@ -5,6 +5,7 @@ enum PermissionCodes {
   SILAE = 'CLSILA001',
   SILAE_COLLAB = 'COSILA001',
   PENNYLANE = 'CLPEN001',
+  PENNYLANE_COLLAB = 'COPEN001',
 }
 
 export const LAUNCHER_AUTHORIZATIONS = [
@@ -18,6 +19,6 @@ export const LAUNCHER_AUTHORIZATIONS = [
   },
   {
     key: LauncherKey.PENNYLANE,
-    authorizationCodes: [PermissionCodes.PENNYLANE],
+    authorizationCodes: [PermissionCodes.PENNYLANE, PermissionCodes.PENNYLANE_COLLAB],
   },
 ]

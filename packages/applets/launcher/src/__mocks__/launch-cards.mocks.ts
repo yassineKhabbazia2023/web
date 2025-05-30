@@ -32,3 +32,17 @@ export const launchCardsMock = [
     'title': 'Pennylane',
   },
 ]
+
+
+export const collabLaunchCardsMock = [
+  {
+    'actionLabel': 'Se connecter à Pennylane',
+    'actionUrl': envVarsMock.VITE_PENNYLANE_COLLAB_SSO_URL,
+    'downloadLabel': '',
+    'imageName': 'pennylane-color',
+    'imageType': 'logos',
+    'key': 'PENNYLANE',
+    'subtitle': 'Accéder à votre outil Pennylane pour votre gestion au quotidien',
+    'title': 'Pennylane',
+  },
+]
