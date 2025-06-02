@@ -22,6 +22,7 @@ export const mockTableData: WalletData[] = [
     accountNumber: 'V900000547',
     name: 'NOM1',
     isFavorite: false,
+    isCustomerRelation: false,
   },
   {
     owner: {
@@ -44,5 +45,6 @@ export const mockTableData: WalletData[] = [
     accountId: 2,
     name: 'NOM2',
     isFavorite: true,
+    isCustomerRelation: false,
   },
 ]

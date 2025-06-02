@@ -226,6 +226,13 @@ const defaultMenuElements : AccessibleMenuItem[] = [
     pState: 'default',
     display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACTIVATE_OFFER),
   },
+  {
+    pIconName: 'personCheck',
+    pValue: t('declareCustomerRelation'),
+    pActionName: 'declareCustomerRelation',
+    pState: 'default',
+    display: true,
+  },
 ]
 
 const menuToDeployElements : AccessibleMenuItem[] = [
@@ -279,6 +286,7 @@ const emit = defineEmits<{
   selectedFolder: [SelectedFolder]
   displayAccountRightsDrawer: [AccountRow]
   displayResendActivationEmailDrawer: [AccountRow]
+  displayDeclareCustomerRelationDrawer: [AccountRow]
 }>()
 
 const isToolboxDisabled = computed(() => {
@@ -321,7 +329,7 @@ watch(() => props.data, () => {
 })
 
 const onToolboxItemClicked = (action: string, row: any) => {
-  const { accountId, name, accountNumber } = row
+  const { accountId, name, accountNumber, isCustomerRelation } = row
 
   if (action === 'deploy') {
     emit('click-deploy', accountId ?? 5, accountNumber, name)
@@ -332,6 +340,8 @@ const onToolboxItemClicked = (action: string, row: any) => {
     emit('displayAccountRightsDrawer', { accountId, name, accountNumber })
   } else if (action === 'retryMassActivationEmail') {
     emit('displayResendActivationEmailDrawer', { accountId, name, accountNumber })
+  } else if (action === 'declareCustomerRelation') {
+    emit('displayDeclareCustomerRelationDrawer', { accountId, name, accountNumber, isCustomerRelation })
   }
 }
 
@@ -368,6 +378,7 @@ en-US:
   resendActivationEmail: 'Resend activation email'
   toDeploy: 'To Deploy'
   manageAccountRights: 'Manage folder permissions'
+  declareCustomerRelation: 'Declare customer relationship'
 fr-FR:
   companyName: 'Raison sociale'
   customerCode: 'Code client'
@@ -381,4 +392,5 @@ fr-FR:
   resendActivationEmail: "Relancer le mail d'activation"
   toDeploy: 'A déployer'
   manageAccountRights: 'Gérer les droits du dossier'
+  declareCustomerRelation: 'Se déclarer en relation client'
 </i18n>

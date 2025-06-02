@@ -182,3 +182,13 @@ export async function hasContactRoleOnCommonAccount(email: string, accountId?: n
 
   return data
 }
+
+export const updateCustomerRelation = async (accountId: number, contactId: number, isCustomerRelation: boolean) => {
+  await commonApi().gateway.patch(`${API_PREFIXES.ACCOUNT}/roles/customer-relation`, null, {
+    params: {
+      accountId,
+      contactId,
+      isCustomerRelation,
+    },
+  })
+}

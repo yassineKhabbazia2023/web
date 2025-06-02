@@ -104,6 +104,7 @@ export interface AccountRow {
   hub: Hub
   signatory: Signatory
   deployment: Deployment
+  isCustomerRelation: boolean
 }
 
 export type ReferentialOptions = Record<string, string>

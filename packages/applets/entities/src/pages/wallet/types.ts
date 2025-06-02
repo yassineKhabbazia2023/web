@@ -25,6 +25,7 @@ export interface WalletData {
   accountNumber: string
   name: string
   isFavorite: boolean
+  isCustomerRelation: boolean
 }
 export interface State extends PaginationData<WalletData> {
   totalPage: number | undefined

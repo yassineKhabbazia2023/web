@@ -90,6 +90,7 @@ export function getMockedAccountRow(override: Partial<AccountRow> = {}): Account
     address: getMockedAddress(),
     signatory: getMockedSignatory(),
     deployment: getMockedDeployment(),
+    isCustomerRelation: false,
   }
 
   return {

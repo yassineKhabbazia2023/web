@@ -19,6 +19,7 @@ import {
   type Hub,
   deleteContactFromAccount,
   hasContactRoleOnCommonAccount,
+  updateCustomerRelation,
 } from '.'
 import {
   getMockedAccount,
@@ -34,6 +35,7 @@ import { API_PREFIXES } from '@entities/common/config/services'
 const accountId = 5
 const contactId = 25
 const accountIdRejected = 8
+const isCustomerRelation = true
 const SEARCH_CURRENT_USER = 'currentuser'
 const SEARCH_THROWS_ERROR = 'throw-error'
 const rejectedErrorMessage = 'rejected'
@@ -211,6 +213,18 @@ describe('test accountServices', () => {
       const response = await deleteContactFromAccount(accountId, contactId)
 
       expect(response).toStrictEqual({ status: 200, data: { accountId, contactId } })
+    })
+  })
+
+  describe('updateCustomerRelation', () => {
+    it('sends a PATCH request to the correct endpoint with the expected parameters', async () => {
+      await updateCustomerRelation(accountId, contactId, isCustomerRelation)
+      const expectedUrl = `${API_PREFIXES.ACCOUNT}/roles/customer-relation`
+
+      expect(mockedAccountApiPatch).toHaveBeenCalledOnce()
+      expect(mockedAccountApiPatch).toHaveBeenNthCalledWith(1, expectedUrl, null, {
+        params: { accountId, contactId, isCustomerRelation },
+      })
     })
   })
 

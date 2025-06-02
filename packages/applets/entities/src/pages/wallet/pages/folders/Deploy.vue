@@ -96,6 +96,7 @@
         @access="onClickFolder"
         @selected-folder="onSelectedFolder"
         @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
+        @display-declare-customer-relation-drawer="handleDeclareCustomerRelationDrawer"
       />
       <PPagination
         v-model:p-page-size="searchCriteria.limit"
@@ -110,6 +111,13 @@
       >
         <p>{{ paginationLabel }}</p>
       </PPagination>
+      <DeclareCustomerRelationDrawer
+        v-if="isDeclareCustomerRelationDrawerVisible && selectedAccount"
+        v-model="isDeclareCustomerRelationDrawerVisible"
+        :selectedAccount="selectedAccount"
+        :isCustomerRelation="selectedAccount.isCustomerRelation"
+        @update-account-table="handleUpdateCustomerRelationship"
+      />
       <ResendActivationEmailDrawer
         v-if="isResendActivationEmailDrawerVisible && selectedAccount"
         v-model="isResendActivationEmailDrawerVisible"
@@ -168,6 +176,7 @@ import TableData from '../../components/TableData'
 import DelegationDrawer from './components/DelegationDrawer'
 import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import ResendActivationEmailDrawer from '@entities/common/components/ResendActivationEmailDrawer'
+import DeclareCustomerRelationDrawer from './components/DeclareCustomerRelationDrawer'
 import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 import type { AccountRow } from '@entities/common/types'
 import ManageAccessDrawerGlobal from '@entities/common/components/ManageAccessDrawer/ManageAccessDrawerGlobal'
@@ -191,6 +200,28 @@ const isLoading = ref(true)
 const selectedCompanyName = ref('')
 
 const isManageAccessDrawerOpened = ref(false)
+
+// #region DeclareCustomerRelationDrawer
+const isDeclareCustomerRelationDrawerVisible = ref(false)
+
+const openDeclareCustomerRelationDrawer = () => {
+  isDeclareCustomerRelationDrawerVisible.value = true
+}
+
+const closeDeclareCustomerRelationDrawer = () => {
+  isDeclareCustomerRelationDrawerVisible.value = false
+}
+
+const handleDeclareCustomerRelationDrawer = (account: AccountRow) => {
+  selectedAccount.value = account
+  openDeclareCustomerRelationDrawer()
+}
+
+const handleUpdateCustomerRelationship = () => {
+  fetchAccountList()
+  closeDeclareCustomerRelationDrawer()
+}
+// #endregion
 
 // #region ResendActivationEmail
 const selectedAccount = ref<AccountRow>()

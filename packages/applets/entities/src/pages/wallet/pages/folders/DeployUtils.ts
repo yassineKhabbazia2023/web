@@ -58,6 +58,7 @@ export function getMappedAccount(
     hub,
     deployment,
     isFavorite,
+    isCustomerRelation,
   } = account
 
   const { contactId, firstName, lastName, email } = signatory ?? {}
@@ -84,6 +85,7 @@ export function getMappedAccount(
     accountNumber: `${accountNumber}`,
     name,
     isFavorite,
+    isCustomerRelation,
   }
 
   return mappedAccount

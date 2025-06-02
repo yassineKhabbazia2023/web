@@ -58,6 +58,7 @@ export function getMockedMappedAccount(
     hub: 'Hub Aquitaine Nord',
     id: 'account-global-unique-id',
     isFavorite: false,
+    isCustomerRelation: false,
     name: 'Legal Name',
     owner: {
       contactId: 22,
