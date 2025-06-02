@@ -75,7 +75,7 @@ const fetchReportErrorsData = async () => {
     reportErrorsData.errors = items
     reportErrorsData.totalItems = totalItems
   } catch {
-    displayNotification('error', t('errors.reportFetch'))
+    displayNotification('error', t('errors.reportErrorsFetch'))
   }
 }
 

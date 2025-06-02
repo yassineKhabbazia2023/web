@@ -6,6 +6,7 @@ export interface Collab {
   personaName : string
   office : string
   hasAccess : boolean
+  isCustomerRelation : boolean
 }
 
 export interface ListCollabProps {

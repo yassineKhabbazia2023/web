@@ -8,6 +8,7 @@ export const mockCollabsData: Collab[] = [
     personaName: 'collaborateur ESC',
     office: 'Paris',
     hasAccess: false,
+    isCustomerRelation: true,
   },
   {
     globalContactId: '2',
@@ -17,6 +18,7 @@ export const mockCollabsData: Collab[] = [
     personaName: 'Collaborateur GS',
     office: 'Paris',
     hasAccess: true,
+    isCustomerRelation: false,
   },
   {
     globalContactId: '3',
@@ -26,5 +28,6 @@ export const mockCollabsData: Collab[] = [
     personaName: 'Collaborateur CLP',
     office: 'Paris',
     hasAccess: true,
+    isCustomerRelation: false,
   },
 ]

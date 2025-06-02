@@ -62,6 +62,10 @@ const createWrapper = (): ComponentWrapper<
           name: 'PToolbox',
           template: '<div><slot /></div>',
         },
+        PTooltip: {
+          name: 'PTooltip',
+          template: '<div><slot /></div>',
+        },
         PTable: {
           name: 'PTable',
           template: '<div><slot /></div>',
@@ -71,7 +75,7 @@ const createWrapper = (): ComponentWrapper<
           name: 'PTableColumn',
           template: '<div><slot :row="row" /></div>',
           data() {
-            const row = {}
+            const row = mockCollabsData[0]
 
             return {
               row,
@@ -93,13 +97,14 @@ describe('collaborators', () => {
       '[data-testid=add-collaborator-button]',
     ) as HTMLButtonElement
 
-  beforeEach(() => {
+  beforeEach(async () => {
     userStoreMock.isCollab = true
     vi.spyOn(contactServices, 'getContactById').mockRejectedValue(
       expectedErrorMessage,
     )
 
     wrapper = createWrapper()
+    await flushPromises()
   })
 
   it('can display the add-collaborator drawer', async () => {
@@ -211,5 +216,10 @@ describe('collaborators', () => {
 
     expect(collaboratorsAction.exists()).toBeFalsy()
     expect(addCollaboratorButton).toBeFalsy()
+  })
+
+  it('display tag when user is customer relation', () => {
+    const tooltip = wrapper.findComponent({ name: 'PTooltip' })
+    expect(tooltip.exists()).toBe(true)
   })
 })

@@ -82,6 +82,17 @@
                   <span class="text-uppercase"> {{ scope.row.lastName }}</span>
                 </p>
               </div>
+              <PTooltip
+                v-if="scope.row.isCustomerRelation"
+                :pContent="t('customerRelationship')"
+                pPlacement="top"
+              >
+                <PPastille
+                  pIconName="people"
+                  class="margin-left--2"
+                  pDisabled
+                />
+              </PTooltip>
             </div>
           </template>
         </PTableColumn>
@@ -160,6 +171,7 @@
 import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import {
+  PTooltip,
   PAvatar,
   PButton,
   PIcon,
@@ -168,6 +180,7 @@ import {
   PTable,
   PTableColumn,
   PToolbox,
+  PPastille,
 } from '@pulse/styleguide/components'
 import { AvatarRoles, PNotification } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
@@ -496,6 +509,7 @@ en-US:
   collaboratorInformation: 'Collaborator information'
   collaboratorHasBeenRemoved: 'The collaborator has been removed from the entity'
   collaboratorWasNotRemoved: 'The collaborator was not removed from the entity due to a technical error'
+  customerRelationship: 'Customer relationship'
 fr-FR:
   actions: 'Actions'
   collaboratorName: 'Collaborateur'
@@ -509,4 +523,5 @@ fr-FR:
   collaboratorInformation: 'Informations du collaborateur'
   collaboratorHasBeenRemoved: "Le collaborateur a bien été retiré de l'entité"
   collaboratorWasNotRemoved: "Le collaborateur n'a pas été retiré de l'entité a cause d'une erreur technique"
+  customerRelationship: 'Relation client'
 </i18n>
