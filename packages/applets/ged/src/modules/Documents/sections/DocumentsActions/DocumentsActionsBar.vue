@@ -35,6 +35,7 @@ const leftSideButtons = computed(() =>
     props.isSearchShrinkable,
     props.isSearchOpen,
     props.hasFiltersEnabled,
+    props.isCurrentServiceReadOnly,
   ),
 )
 

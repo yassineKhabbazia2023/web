@@ -27,6 +27,7 @@ export interface ExplorerDocument {
 export interface DocumentsProps {
   currentService: Service['ServiceId']
   currentServiceName: Service['ServiceName']
+  isCurrentServiceReadOnly: Service['IsReadOnly']
   // selected entity corresponds to accountNumber, this will be changed
   selectedEntity: string
   accountId: number

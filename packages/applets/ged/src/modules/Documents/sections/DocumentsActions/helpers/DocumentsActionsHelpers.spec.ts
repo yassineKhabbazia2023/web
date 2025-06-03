@@ -4,12 +4,11 @@ import {
   generateActionBarRightSideButtons,
   generateActionBarLeftSideButtons,
 } from './DocumentsActionsHelpers'
-import { getData, getData2 } from './getData'
+import { getData, getData2, getLeftSideActionWithDisabledUpload } from './getData'
 
 describe('documentsActionsHelpers', () => {
   describe('generateActionBarRightSideButtons', () => {
     it('should return mapped permission actions', () => {
-      expect.hasAssertions()
       const permissions = ['CAN_MOVE_DOCUMENT']
       const isDocumentSelected = true
       const res = generateActionBarRightSideButtons(permissions, isDocumentSelected)
@@ -19,7 +18,6 @@ describe('documentsActionsHelpers', () => {
     })
 
     it('should set loading state to the right permission button', () => {
-      expect.hasAssertions()
       const permissions = ['CAN_MOVE_DOCUMENT']
       const isDocumentSelected = true
       const res = generateActionBarRightSideButtons(
@@ -35,7 +33,6 @@ describe('documentsActionsHelpers', () => {
       expect(res).toStrictEqual(data) // TODO would be more usual to use toMatchFileSnapshot()
     })
     it('should return empty when no document selected', () => {
-      expect.hasAssertions()
       const permissions = ['']
       const isDocumentSelected = false
       const res = generateActionBarRightSideButtons(permissions, isDocumentSelected)
@@ -45,14 +42,16 @@ describe('documentsActionsHelpers', () => {
 
   describe('generateActionBarLeftSideButtons', () => {
     it('should return mapped permission actions when hasFiltersEnabled is false', () => {
-      expect.hasAssertions()
       const permissions = ['CAN_MOVE_DOCUMENT']
       const hasFiltersEnabled = false
+      const isCurrentServiceReadOnly = false
+
       const res = generateActionBarLeftSideButtons(
         permissions,
         false,
         false,
         hasFiltersEnabled,
+        isCurrentServiceReadOnly,
       )
 
       const data = getData2('Filtrer')
@@ -60,18 +59,36 @@ describe('documentsActionsHelpers', () => {
     })
 
     it('should return mapped permission actions when hasFiltersEnabled is true', () => {
-      expect.hasAssertions()
       const permissions = ['CAN_MOVE_DOCUMENT']
       const hasFiltersEnabled = true
+      const isCurrentServiceReadOnly = false
+
       const res = generateActionBarLeftSideButtons(
         permissions,
         false,
         false,
         hasFiltersEnabled,
+        isCurrentServiceReadOnly,
       )
 
       const data = getData2('Filtrer (1)')
       expect(res).toStrictEqual(data) // TODO would be more usual to use toMatchFileSnapshot()
+    })
+
+    it('should return a disabled upload button if the current service is readonly', () => {
+      const permissions = ['CAN_MOVE_DOCUMENT']
+      const hasFiltersEnabled = false
+      const isCurrentServiceReadOnly = true
+
+      const result = generateActionBarLeftSideButtons(
+        permissions,
+        false,
+        false,
+        hasFiltersEnabled,
+        isCurrentServiceReadOnly,
+      )
+
+      expect(result).toStrictEqual(getLeftSideActionWithDisabledUpload())
     })
   })
 })

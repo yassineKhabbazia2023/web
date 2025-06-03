@@ -77,3 +77,53 @@ export function getData2(pButtonName: string) {
     },
   ]
 }
+
+export function getLeftSideActionWithDisabledUpload() {
+  return [
+    {
+      pButtonName: 'Déposer un document',
+      pButton: {
+        pType: 'primary',
+        pRound: false,
+        pCircle: false,
+        pLoading: false,
+        pDisabled: true,
+        pSize: 'small',
+      },
+      pTooltipContent: 'Vous n\'êtes pas autorisé à déposer dans ce dossier',
+      pButtonIconName: 'upload',
+      pButtonActionName: 'actionbar-add-document-action-click',
+      pComponentType: 'UPLOAD',
+      pMultiple: true,
+    },
+    {
+      pButtonName: 'Filtrer',
+      pButton: {
+        pType: 'default',
+        pRound: false,
+        pCircle: false,
+        pLoading: false,
+        pDisabled: false,
+        pSize: 'small',
+      },
+      pButtonIconName: 'funnel',
+      pButtonActionName: 'actionbar-filter-action-click',
+    },
+    {
+      pButtonName: '',
+      pButton: {
+        pType: 'white',
+        pRound: false,
+        pCircle: true,
+        pLoading: false,
+        pDisabled: false,
+        pSize: 'small',
+      },
+      pButtonIconName: 'search',
+      pButtonActionName: 'actionbar-search-action-click',
+      pComponentType: 'SEARCH',
+      pIsSearchOpen: false,
+      pIsSearchShrinkable: false,
+    },
+  ]
+}

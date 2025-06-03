@@ -28,6 +28,7 @@ export type DocumentsWrapper = VueWrapper<
 const defaultProps = {
   currentService: foldersData[0][0].children[0].serviceId,
   currentServiceName: 'a service name',
+  isCurrentServiceReadOnly: false,
   selectedEntity: 'my-entity',
   accountId: 1234,
   selectedEntityAvatarColor: 'persian' as Entity['color'],

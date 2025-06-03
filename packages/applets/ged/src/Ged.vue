@@ -23,12 +23,21 @@
       />
     </PCol>
 
-    <PCol v-if="currentService && currentServiceName && currentServiceFolder && !currentBinService" :span="18">
+    <!-- This is not a computed because of typescript type narrowing with possibly null value and props binding -->
+    <PCol
+      v-if="currentService !== null &&
+        currentServiceName !== null &&
+        isCurrentServiceReadOnly !== null &&
+        currentServiceFolder !== undefined &&
+        !currentBinService"
+      :span="18"
+    >
       <Documents
         ref="documentsRef"
         :key="$router.currentRoute.value.fullPath"
         :currentService="currentService"
         :currentServiceName="currentServiceName"
+        :isCurrentServiceReadOnly="isCurrentServiceReadOnly"
         :selectedEntity="accountNumber"
         :accountId="selectedAccountId"
         :selectedEntityAvatarColor="selectedEntityAvatarColor"
@@ -54,6 +63,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 import Treeview from '@ged/modules/Treeview'
 import Documents from '@ged/modules/Documents'
 import BinDocuments from '@ged/modules/Bin'
@@ -72,7 +82,7 @@ import { PCol, PRow } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import { logger } from '@pulse/core'
 import { useSelectedEntityStore } from '@pulse/common/stores'
-import { storeToRefs } from 'pinia'
+import { GedManager } from '@ged/ged.manager'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -105,6 +115,7 @@ const fetchGedFoldersAndServices = async () => {
     // Using the first folder serviceId by default
     currentService.value = servicesFolders.value[0][0].serviceId
     currentServiceName.value = findServiceNameFromId(currentService.value)
+    isCurrentServiceReadOnly.value = GedManager.findIsServiceReadOnly(entityServices.value, currentService.value)
   } catch (error) {
     logger.error(error)
   } finally {
@@ -128,6 +139,7 @@ const selectedEntityName = computed(() => selectedEntity?.value?.legalName ?? ''
 const entityServices = ref<Service[]>([])
 const currentService = ref<null | Service['ServiceId']>(null)
 const currentServiceName = ref<null | Service['ServiceName']>(null)
+const isCurrentServiceReadOnly = ref<null | Service['IsReadOnly']>(null)
 const currentServiceFolder = computed<Folder[] | undefined>(() => {
   return servicesFolders.value
     .filter((folder:Folder[]) => folder[0].serviceId === currentService.value)[0]
@@ -150,6 +162,7 @@ const setCurrentFolderAndService = async (folder: Folder) => {
     await fetchGedFoldersAndServices()
     currentService.value = folder.serviceId
     currentServiceName.value = findServiceNameFromId(currentService.value)
+    isCurrentServiceReadOnly.value = GedManager.findIsServiceReadOnly(entityServices.value, currentService.value)
     setCurrentBinService(null)
     setCurrentFolder(folder.id)
   } else {
@@ -163,6 +176,7 @@ const setCurrentFolderAndService = async (folder: Folder) => {
     }
     currentService.value = folder.serviceId
     currentServiceName.value = findServiceNameFromId(currentService.value)
+    isCurrentServiceReadOnly.value = GedManager.findIsServiceReadOnly(entityServices.value, currentService.value)
 
   }
 }

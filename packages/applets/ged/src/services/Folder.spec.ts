@@ -50,8 +50,8 @@ describe('folder service', () => {
 
   it('should return array of services when fetchServicesFolder has error', async () => {
     const services = [
-      { ServiceId: 'service-1', ServiceName: 'A' },
-      { ServiceId: 'service-2', ServiceName: 'B' },
+      { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false },
+      { ServiceId: 'service-2', ServiceName: 'B', IsReadOnly: false },
     ] as Service[]
     const entityId = 'my-entity'
     commonApiDsGetSpy.mockRejectedValue(services[0].ServiceId)
@@ -67,6 +67,7 @@ describe('folder service', () => {
     const service = {
       ServiceId: 'some-service-id',
       ServiceName: 'some service name',
+      IsReadOnly: false,
     }
     const entityId = 'some-entity-id'
 
@@ -149,7 +150,7 @@ describe('folder service', () => {
   })
 
   it('should download the folder  when downloadFolder method is called', async () => {
-    const service: Service = { ServiceId: 'service-1', ServiceName: 'A' }
+    const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
     const folderId = 1
     const entityId = 'my-entity'
 

@@ -1,5 +1,5 @@
 import type { ComponentDefinitionProps } from '@pulse/styleguide/types'
-
+import { ActionBarComponentTypes } from '@pulse/styleguide/types'
 interface ActionBarButtonWithOrder {
   actionbarButton: ComponentDefinitionProps
   order: number
@@ -22,6 +22,25 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
         pDisabled: false,
         pSize: 'small',
       },
+      pButtonIconName: 'upload',
+      pButtonActionName: 'actionbar-add-document-action-click',
+      pComponentType: ActionBarComponentTypes.UPLOAD,
+      pMultiple: true,
+    },
+    order: 1,
+  },
+  CAN_ADD_DOCUMENT_DISABLED: {
+    actionbarButton: {
+      pButtonName: 'Déposer un document',
+      pButton: {
+        pType: 'primary',
+        pRound: false,
+        pCircle: false,
+        pLoading: false,
+        pDisabled: true,
+        pSize: 'small',
+      },
+      pTooltipContent: 'Vous n\'êtes pas autorisé à déposer dans ce dossier',
       pButtonIconName: 'upload',
       pButtonActionName: 'actionbar-add-document-action-click',
       pComponentType: 'UPLOAD',
@@ -57,7 +76,7 @@ const leftSideButtons: Record<string, ActionBarButtonWithOrder> = {
         pSize: 'small',
       },
       pButtonIconName: 'search',
-      pComponentType: 'SEARCH',
+      pComponentType: ActionBarComponentTypes.SEARCH,
       pButtonActionName: 'actionbar-search-action-click',
       pIsSearchShrinkable: true,
     },
@@ -153,6 +172,7 @@ export function generateActionBarLeftSideButtons(
   isSearchShrinkable: boolean,
   isSearchOpen: boolean,
   hasFiltersEnabled: boolean,
+  isCurrentServiceReadOnly: boolean,
 ): ComponentDefinitionProps[] {
   const toolboxBasicData: ActionBarButtonWithOrder[] = []
   for (const permission of permissions) {
@@ -160,7 +180,11 @@ export function generateActionBarLeftSideButtons(
       toolboxBasicData.push(leftSideButtons[permission])
     }
   }
-  toolboxBasicData.push(leftSideButtons.CAN_ADD_DOCUMENT)
+  if (isCurrentServiceReadOnly === true) {
+    toolboxBasicData.push(leftSideButtons.CAN_ADD_DOCUMENT_DISABLED)
+  } else {
+    toolboxBasicData.push(leftSideButtons.CAN_ADD_DOCUMENT)
+  }
 
   if (hasFiltersEnabled) {
     leftSideButtons.CAN_FILTER_FOLDER.actionbarButton.pButtonName = 'Filtrer (1)'

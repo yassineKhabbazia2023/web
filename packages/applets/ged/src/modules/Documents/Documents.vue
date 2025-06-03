@@ -24,6 +24,7 @@
     <DocumentsActionsBar
       :hasFiltersEnabled="docSearchFilters != null"
       :isAnyDocumentSelected="selectedDocuments.length > 0"
+      :isCurrentServiceReadOnly="isCurrentServiceReadOnly"
       :isSearchShrinkable="isSearchShrinkable"
       :isSearchOpen="isSearchExpanded"
       :isTransmitDocumentsLoading="isTransmitDocumentsLoading"

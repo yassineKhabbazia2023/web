@@ -25,6 +25,7 @@ describe('services service', () => {
     const service = {
       ServiceId: '0001',
       ServiceName: 'Au5',
+      IsReadOnly: false,
     }
 
     await fetchServiceMailToGedInformation(entityId, service, accountId)
@@ -43,10 +44,12 @@ describe('services service', () => {
       {
         ServiceId: '0001',
         ServiceName: 'Au5',
+        IsReadOnly: false,
       },
       {
         ServiceId: '0002',
         ServiceName: 'Nuphory',
+        IsReadOnly: false,
       },
     ]
 

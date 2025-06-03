@@ -23,3 +23,8 @@ export interface PActionBarProps {
   pLeftSideButtons: ComponentDefinitionProps[]
   pSearchMaxLength?: number
 }
+
+export enum ActionBarComponentTypes {
+  UPLOAD = 'UPLOAD',
+  SEARCH = 'SEARCH'
+}
