@@ -1,0 +1,233 @@
+{
+  "offers": [
+    {
+      "id": 1,
+      "title": "Création",
+      "shortDescription": "Un accompagnement 360° pour soutenir le client dans ses premiers pas d'entrepreneur.",
+      "imageUrl": "",
+      "pdfUrl": "p.8.pdf",
+      "subCategoryId": 1,
+      "isBestOffer": false,
+      "akuiteoProduct": "",
+      "searchKeywords": "création d'entreprise; accompagnement création d'entreprise; lancement entreprise; projet de création; création société; création start-up; accompagnement entrepreneur; statut juridique; choix du statut juridique; financement création entreprise; recherche de financement; business plan; aide au business plan; rédaction statuts; formalités juridiques; formalités administratives",
+      "internalLink": "https://conseilescgs.sharepoint.com/sites/IFR-Offres/SitePages/creation.aspx",
+      "subCategory": {
+        "subCategoryId": 1,
+        "name": "Créer son entreprise A",
+        "category": {
+          "categoryId": 1,
+          "name": "Gérer"
+        }
+      },
+      "tags": [
+        "Gérer",
+        "Transverse"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Comptabilité",
+      "shortDescription": "Gestion de la comptabilité, qui optimise l’acquisition de données et inclus des outils connectés de gestion.",
+      "imageUrl": "",
+      "pdfUrl": "p.10.pdf",
+      "subCategoryId": 2,
+      "isBestOffer": true,
+      "akuiteoProduct": "Comptabilité",
+      "searchKeywords": "gestion comptable; comptabilité digitale; suivi d’activité; comptabilité connectée; outils de gestion; acquisition de données financières; sécurisation données financières; digitalisation comptabilité; optimisation comptabilité; suivi financier",
+      "internalLink": "https://conseilescgs.sharepoint.com/sites/IFR-Offres/SitePages/Comptabilit%C3%A9.aspx",
+      "subCategory": {
+        "subCategoryId": 2,
+        "name": "Gérer sa comptabilité",
+        "category": {
+          "categoryId": 1,
+          "name": "Gérer"
+        }
+      },
+      "tags": [
+        "Gérer",
+        "ESC"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Consolisation FORMS",
+      "shortDescription": "Production des comptes consolidés et des reportings de gestion du groupe.",
+      "imageUrl": "",
+      "pdfUrl": "p.11.pdf",
+      "subCategoryId": 2,
+      "isBestOffer": false,
+      "akuiteoProduct": "Consolidation FORMS",
+      "searchKeywords": "",
+      "internalLink": "https://conseilescgs.sharepoint.com/sites/IFR-Offres/SitePages/Consolidation%20-.aspx",
+      "subCategory": {
+        "subCategoryId": 2,
+        "name": "Gérer sa comptabilité",
+        "category": {
+          "categoryId": 1,
+          "name": "Gérer"
+        }
+      },
+      "tags": [
+        "ESC",
+        "Gérer",
+        "Conseil"
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "categoryId": 1,
+      "name": "Gérer"
+    },
+    {
+      "categoryId": 2,
+      "name": "Développer"
+    },
+    {
+      "categoryId": 3,
+      "name": "Céder ou transmettre"
+    },
+    {
+      "categoryId": 4,
+      "name": "Organiser sa gestion privée"
+    }
+  ],
+  "subCategories": [
+    {
+      "subCategoryId": 1,
+      "name": "Créer son entreprise A",
+      "category": {
+        "categoryId": 1,
+        "name": "Gérer"
+      }
+    },
+    {
+      "subCategoryId": 2,
+      "name": "Gérer sa comptabilité",
+      "category": {
+        "categoryId": 1,
+        "name": "Gérer"
+      }
+    },
+    {
+      "subCategoryId": 3,
+      "name": "Gérer ses paies et l’administration de son personnel",
+      "category": {
+        "categoryId": 1,
+        "name": "Gérer"
+      }
+    },
+    {
+      "subCategoryId": 4,
+      "name": "Respecter ses obligations juridiques et fiscales",
+      "category": {
+        "categoryId": 1,
+        "name": "Gérer"
+      }
+    },
+    {
+      "subCategoryId": 5,
+      "name": "Simplifier ses obligations règlementaires",
+      "category": {
+        "categoryId": 1,
+        "name": "Gérer"
+      }
+    },
+    {
+      "subCategoryId": 6,
+      "name": "Consolider ou réorganiser son service comptable et RH",
+      "category": {
+        "categoryId": 1,
+        "name": "Gérer"
+      }
+    },
+    {
+      "subCategoryId": 7,
+      "name": "Prévenir et agir en cas de contrôles",
+      "category": {
+        "categoryId": 1,
+        "name": "Gérer"
+      }
+    },
+    {
+      "subCategoryId": 8,
+      "name": "Anticiper et agir en cas de difficultés",
+      "category": {
+        "categoryId": 1,
+        "name": "Gérer"
+      }
+    },
+    {
+      "subCategoryId": 9,
+      "name": "Piloter son entreprise",
+      "category": {
+        "categoryId": 2,
+        "name": "Développer"
+      }
+    },
+    {
+      "subCategoryId": 10,
+      "name": "Bénéficier de conseils RH",
+      "category": {
+        "categoryId": 2,
+        "name": "Développer"
+      }
+    },
+    {
+      "subCategoryId": 11,
+      "name": "Se former et former ses salariés",
+      "category": {
+        "categoryId": 2,
+        "name": "Développer"
+      }
+    },
+    {
+      "subCategoryId": 12,
+      "name": "Acquérir une entreprise",
+      "category": {
+        "categoryId": 2,
+        "name": "Développer"
+      }
+    },
+    {
+      "subCategoryId": 13,
+      "name": "Mettre en place une stratégie RSE",
+      "category": {
+        "categoryId": 2,
+        "name": "Développer"
+      }
+    },
+    {
+      "subCategoryId": 14,
+      "name": "Financer son développement",
+      "category": {
+        "categoryId": 2,
+        "name": "Développer"
+      }
+    },
+    {
+      "subCategoryId": 15,
+      "name": "Céder ou transmettre son entreprise",
+      "category": {
+        "categoryId": 3,
+        "name": "Céder ou transmettre"
+      }
+    },
+    {
+      "subCategoryId": 16,
+      "name": "Bénéficier de conseils patrimoniaux",
+      "category": {
+        "categoryId": 4,
+        "name": "Organiser sa gestion privée"
+      }
+    },
+    {
+      "subCategoryId": 17,
+      "name": "Être conseillé dans ses investissements et sa prévoyance",
+      "category": {
+        "categoryId": 4,
+        "name": "Organiser sa gestion privée"
+      }
+    }
+  ]
+}

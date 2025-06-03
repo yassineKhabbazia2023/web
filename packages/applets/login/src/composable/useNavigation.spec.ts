@@ -1,4 +1,6 @@
 import { describe, it, expect, vi, afterEach } from 'vitest'
+import { RouteName } from '@pulse/common/enums'
+
 import useNavigation from '@login/composable/useNavigation'
 
 const mockRouterPush = vi.fn()
@@ -17,12 +19,12 @@ describe('useNavigation', () => {
     const { navigateToWallet } = useNavigation()
     navigateToWallet()
 
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet' })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: RouteName.WALLET })
   })
   it('should navigate to wallet-client', () => {
     const { navigateToCustomerWallet } = useNavigation()
     navigateToCustomerWallet()
 
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: RouteName.WALLET_CLIENT })
   })
 })

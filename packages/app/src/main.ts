@@ -7,6 +7,7 @@ import gedApplet from '@pulse/ged'
 import launcherApplet from '@pulse/launcher'
 import loginApplet from '@pulse/login'
 import mandateApplet from '@pulse/mandate'
+import offersCatalogApplet from '@pulse/offers-catalog'
 import commonLibrary from '@pulse/common'
 import styleguideLibrary from '@pulse/styleguide'
 import axeptioPlugin from '@app/plugins/Axeptio/axeptio.plugin'
@@ -48,6 +49,8 @@ const app = createApp(App)
   .use(launcherApplet, { router })
   .use(loginApplet, { router })
   .use(mandateApplet, { router })
+  .use(offersCatalogApplet, { router })
+  // install library
   .use(styleguideLibrary, {
     assetsBaseUrl: VITE_ASSETS_BASE_URL,
   })

@@ -1,0 +1,25 @@
+$flow_attrs: column, row;
+
+.grid {
+  display: grid;
+
+  @each $attr in $flow_attrs {
+    &-flow--#{$attr} {
+      grid-auto-flow: $attr;
+    }
+  }
+
+  @for $i from 0 through 12 {
+    &-cols--#{$i} {
+      grid-template-columns: repeat($i, minmax(0, 1fr));
+    }
+
+    &-col-span--#{$i} {
+      grid-column: span $i / span $i;
+    }
+
+    &-row-span--#{$i} {
+      grid-row: span $i / span $i;
+    }
+  }
+}

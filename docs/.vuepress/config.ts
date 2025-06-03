@@ -86,6 +86,10 @@ export default defineUserConfig({
                     text: 'Mandate',
                     link: '/monorepo/applets/mandate',
                   },
+                  {
+                    text: 'Offers-catalog',
+                    link: '/monorepo/applets/offers-catalog',
+                  },
                 ],
               },
               {

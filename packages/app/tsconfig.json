@@ -43,6 +43,9 @@
       ],
       "@mandate/*": [
         "../applets/mandate/src/*"
+      ],
+      "@offers-catalog/*": [
+        "../applets/offers-catalog/src/*"
       ]
     },
     "types": [

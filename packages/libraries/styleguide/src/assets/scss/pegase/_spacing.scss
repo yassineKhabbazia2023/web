@@ -84,6 +84,10 @@ $spacing-unit: 0.4rem;
     gap: $spacing-unit * $i;
   }
 
+  .grid-gap--#{$i} {
+    gap: $spacing-unit * $i;
+  }
+
   .flex-row-gap--#{$i} {
     row-gap: $spacing-unit * $i;
   }

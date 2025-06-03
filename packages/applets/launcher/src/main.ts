@@ -20,9 +20,9 @@ export default {
   install(_app: App, options: any) {
     const { router } = options
 
-    if (router.hasRoute('wallet')) {
+    if (router.hasRoute(RouteName.WALLET)) {
       // Register the launcher route inside wallet if it exists
-      router.addRoute('wallet', folderLauncherRoute)
+      router.addRoute(RouteName.WALLET, folderLauncherRoute)
     }
 
     RoutesManager.addRoutesToAuthenticated(router, routes)
