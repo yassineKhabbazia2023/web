@@ -8,4 +8,4 @@ Le processus d'initialisation est géré à la racine du monorepo en utilisant l
 
 Référez-vous au `package.json` pour les scripts que vous pouvez exécuter sur ce package.
 
-@[code{8-18} json:no-line-numbers title="./packages/app/package.json"](@root/packages/app/package.json)
+<<< @/../packages/app/package.json

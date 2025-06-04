@@ -79,4 +79,4 @@ Et ouvrir votre navigateur sur [http://localhost:9000](http://localhost:9000).
 Pour plus d'informations et de scripts, référez-vous au `package.json` à la racine, ou consultez les fichiers `package.json` dans chaque application, applets et libraries.  
 Ce monorepo utilise la fonctionnalité `workspaces` de npm (voir la [documentation officielle](https://docs.npmjs.com/cli/v10/using-npm/workspaces)).
 
-@[code json:no-line-numbers title="./package.json"](@root/package.json)
+<<< @/../package.json 

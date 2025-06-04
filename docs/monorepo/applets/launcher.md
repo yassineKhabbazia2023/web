@@ -10,4 +10,4 @@ Comme il s'agit d'un plugin et non d'une application autonome, il ne peut pas ê
 
 Référez-vous au `package.json` pour les scripts que vous pouvez exécuter sur ce package.
 
-@[code{10-18} json:no-line-numbers title="./packages/applets/launcher/package.json"](@root/packages/applets/launcher/package.json)
+<<< @/../packages/applets/launcher/package.json

@@ -16,4 +16,4 @@ npm run generate
 
 Référez-vous au `package.json` pour les scripts que vous pouvez exécuter sur ce package.
 
-@[code{13-29} json:no-line-numbers title="./packages/libraries/styleguide/package.json"](@root/packages/libraries/styleguide/package.json)
+packages/libraries/styleguide/package.json

@@ -1,23 +1,23 @@
 # Documentation
 
-La présente documentation est propulsée par [VuePress](https://vuepress.vuejs.org/).
+La présente documentation est propulsée par [VitePress](https://vitepress.dev/).
 
 ## Rédiger une page de documentation
 
 Pour écrire de la doc, soit on trouve la page qu'on a envie d'éditer et on l'édite directement. 
-Soit on créé une nouvelle page auquel cas il faut l'ajouter dans le fichier `docs/.vuepress/config.ts`.
+Soit on créé une nouvelle page auquel cas il faut l'ajouter dans le fichier `docs/.vitepress/config.mts`.
 
 On a deux endroits possibles :
 
-1. **La navbar (le header de la page)**
+1. **La nav (le header de la page)**
 
 ```ts
-navbar: [
+nav: [
   {
     text: 'Mon-titre-affiché',
     link: '/lien-vers-ma-page/',
     // si c'est le nom d'un .md il sera compris (on n'ajoute pas le .md)
-    // si c'est le nom d'un dossier il prendra le README.md
+    // si c'est le nom d'un dossier il prendra le index.md
   },
   ...
 ]
@@ -31,12 +31,12 @@ navbar: [
     {
       text: 'Mon-titre-affiché',
       link: '/lien-vers-ma-page/', // nécessaire si on veut rendre le titre cliquable 
-      children: [
+      items: [
         {
           text: 'Sous-titre-affiché',
           link: '/lien-vers-mon-dossier/nom-de-ma-page',
         }
-        // si on ne met pas d'enfants, la sidebar affichera les titres markdown de la page à la place
+        // si on ne met pas d'items enfants, la sidebar affichera les titres markdown de la page à la place
         // (ceux qui commence par #)
       ],
     },
@@ -47,7 +47,7 @@ navbar: [
 
 ## Markdown
 
-VuePress gère le [Markdown](https://commonmark.org/help/) classique mais le thème que l'on a choisi permet des [trucs rigolos](https://ecosystem.vuejs.press/themes/default/markdown.html).
+VuePress gère le [Markdown](https://commonmark.org/help/) classique mais le thème que l'on a choisi permet des [trucs rigolos](https://vitepress.dev/guide/markdown#markdown-extensions).
 
 #### Exemple de widgets markdown
 
@@ -66,14 +66,6 @@ This is a dangerous warning
 
 ::: info
 This is an information.
-:::
-
-::: important
-This is an important message
-:::
-
-::: note
-This is a note
 :::
 
 ::: details
@@ -95,14 +87,6 @@ This is a dangerous warning
 
 ::: info
 This is an information.
-:::
-
-::: important
-This is an important message
-:::
-
-::: note
-This is a note
 :::
 
 ::: details

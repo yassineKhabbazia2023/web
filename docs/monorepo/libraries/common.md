@@ -10,4 +10,4 @@ Comme il s'agit d'une bibliothèque et non d'une application autonome, elle ne p
 
 Référez-vous au `package.json` pour les scripts que vous pouvez exécuter sur ce package.
 
-@[code{16-24} json:no-line-numbers title="./packages/libraries/common/package.json"](@root/packages/libraries/common/package.json)
+<<< @/../packages/libraries/common/package.json

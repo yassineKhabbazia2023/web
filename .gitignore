@@ -90,8 +90,6 @@ dist
 # https://nextjs.org/blog/next-9-1#public-directory-support
 # public
 
-# vuepress build output
-.vuepress/dist
 
 # Serverless directories
 .serverless/
@@ -141,3 +139,9 @@ docs/.vuepress/.temp
 docs/.vuepress/.cache
 # VuePress default build output directory
 docs/.vuepress/dist
+# docs build output
+.vuepress/dist
+docs/.vitepress/dist
+docs/.vitepress/cache
+.vitepress/dist
+.vitepress/cache

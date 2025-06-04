@@ -1,0 +1,10 @@
+:root {
+    --vp-c-brand-1: #1AAB8E;
+    --vp-c-brand-2: #106f5c;
+    --vp-c-brand-3: #1AAB8E;
+
+    .image-src {
+        width: 100%;
+        height: auto;
+    }
+}
