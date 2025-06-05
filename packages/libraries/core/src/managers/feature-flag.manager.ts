@@ -27,6 +27,10 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.HOMEPAGE_WIDGETS)
   }
 
+  static isMaintenanceModeActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.MAINTENANCE_MODE)
+  }
+
   static isFeatureActivated(feature: Feature) {
     const value = window.EnvVars?.[feature]
 

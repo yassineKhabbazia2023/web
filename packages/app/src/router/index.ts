@@ -11,11 +11,33 @@ import { seoGuard } from './guards/seo.guard'
 
 const appRoutes: RouteRecordRaw[] = [
   {
+    path: APP_ROUTES.maintenance.path,
+    name: APP_ROUTES.maintenance.name,
+    component: () => import('@app/pages/Maintenance/Maintenance.page.vue'),
+    meta: {
+      [LAYOUT_META]: Layout.ERROR,
+    },
+    beforeEnter: (_to, _from, next) => {
+      const isMaintenanceMode = BootManager.checkMaintenanceMode()
+      if(isMaintenanceMode) {
+        next()
+      } else {
+        // If not in maintenance mode, redirect to root
+        next({ name: APP_ROUTES.root.name })
+      }
+    },
+  },
+  {
     path: APP_ROUTES.root.path,
     name: APP_ROUTES.root.name,
     beforeEnter: (_to, _from, next) => {
-      BootManager.initAmplitude()
-      next()
+      const isMaintenanceMode = BootManager.checkMaintenanceMode()
+      if(isMaintenanceMode) {
+        next({ name: APP_ROUTES.maintenance.name })
+      } else {
+        BootManager.initAmplitude()
+        next()
+      }
     },
     redirect: () => {
       const destination = BootManager.getDefaultRedirection()

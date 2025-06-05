@@ -3,9 +3,18 @@ import { resetAllStores } from '@pulse/common/stores'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { amplitudeService } from '@pulse/common'
 import { VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
-import { logger } from '@pulse/core'
+import { FeatureFlagManager, logger } from '@pulse/core'
 
 export class BootManager {
+
+  static checkMaintenanceMode() {
+    if(FeatureFlagManager.isMaintenanceModeActivated()) {
+      logger.info('Maintenance mode is activated')
+      return true
+    }
+    return false
+  }
+
   static getDefaultRedirection() {
     if(CurrentUserManager.isAuthenticated()) {
       return BootManager.getDefaultAuthenticatedRoute()

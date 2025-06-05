@@ -2,6 +2,7 @@ import { RouteName } from '../enums/route-name.enums'
 
 export const APP_ROUTES = {
   root: { path: '/', name: RouteName.ROOT },
+  maintenance: { path: '/maintenance', name: RouteName.MAINTENANCE },
   anonymous: { path: '', name: RouteName.ANONYMOUS },
   authenticated: { path: '', name: RouteName.AUTHENTICATED },
   login: {

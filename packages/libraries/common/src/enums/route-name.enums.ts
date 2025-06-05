@@ -32,6 +32,7 @@ export enum RouteName {
   MANDATE = 'mandate',
   NOT_FOUND = 'NotFound', // some to ERROR404 ?
   MANDATES = 'mandats',
+  MAINTENANCE = 'maintenance',
   OFFERS = 'offers',
   OFFERS_CATALOG = 'offers-catalog',
   POWER_BI = 'powerbi',
