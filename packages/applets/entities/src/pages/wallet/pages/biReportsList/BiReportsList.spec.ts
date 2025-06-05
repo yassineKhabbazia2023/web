@@ -7,20 +7,24 @@ import { ReportStatus } from '@entities/common/types/BIReports.enums'
 
 import BiReportsList from '.'
 
-const mockReports = getFormattedMockReports()
-const mockApiResponse = {
-  items: mockReports,
+const reportsMock = getFormattedMockReports()
+const firstReportMock = reportsMock[0]
+const tokenMock = 'fake-token'
+const apiResponseMock = {
+  items: reportsMock,
   currentPage: 1,
-  totalItems: mockReports.length,
+  totalItems: reportsMock.length,
 }
 
 const displayNotificationMock = vi.hoisted(() => vi.fn())
 const updateReportStatusMock = vi.hoisted(() => vi.fn(() => Promise.resolve()))
-const fetchReportsMock = vi.hoisted(() => vi.fn(() => Promise.resolve(mockApiResponse)))
+const fetchBITokenMock = vi.hoisted(() => vi.fn(() => Promise.resolve(tokenMock)))
+const fetchReportsMock = vi.hoisted(() => vi.fn(() => Promise.resolve(apiResponseMock)))
 
 vi.mock('@entities/services/reporting', () => ({
   fetchAvailableReports: fetchReportsMock,
   updateReportStatus: updateReportStatusMock,
+  fetchBIToken: fetchBITokenMock,
 }))
 
 vi.mock('@entities/common/utils', () => ({
@@ -37,7 +41,7 @@ const createWrapper = (options = {}) =>
         ReportTable: {
           name: 'ReportTable',
           template: '<div />',
-          emits: ['update-report-status'],
+          emits: ['update-report-status', 'view-report-fullscreen'],
         },
         ReportToolbar: {
           name: 'ReportToolbar',
@@ -72,8 +76,8 @@ describe('BiReportsList', () => {
       const pagination = wrapper.findComponent({ name: 'PPagination' })
 
       expect(pagination.exists()).toBe(true)
-      expect(pagination.props('pCurrentPage')).toBe(mockApiResponse.currentPage)
-      expect(pagination.props('pTotal')).toBe(mockApiResponse.totalItems)
+      expect(pagination.props('pCurrentPage')).toBe(apiResponseMock.currentPage)
+      expect(pagination.props('pTotal')).toBe(apiResponseMock.totalItems)
     })
 
     it('displays the pagination label', () => {
@@ -83,23 +87,37 @@ describe('BiReportsList', () => {
 
   describe('Status Update Events', () => {
     it('handles update-report-status and calls updateReportStatus service', async () => {
-      const report = mockReports[0]
       const table = wrapper.findComponent({ name: 'ReportTable' })
 
-      await table.vm.$emit('update-report-status', report.accountId, report.reportId, report.name, ReportStatus.OFFLINE)
+      await table.vm.$emit(
+        'update-report-status',
+        firstReportMock.accountId,
+        firstReportMock.reportId,
+        firstReportMock.name,
+        ReportStatus.OFFLINE,
+      )
       await flushPromises()
 
-      expect(updateReportStatusMock).toHaveBeenCalledWith(report.accountId, report.reportId, ReportStatus.OFFLINE)
-      expect(displayNotificationMock).toHaveBeenCalledWith('success', expect.stringContaining(report.name))
+      expect(updateReportStatusMock).toHaveBeenCalledWith(
+        firstReportMock.accountId,
+        firstReportMock.reportId,
+        ReportStatus.OFFLINE,
+      )
+      expect(displayNotificationMock).toHaveBeenCalledWith('success', expect.stringContaining(firstReportMock.name))
     })
 
     it('displays error notification when updateReportStatus fails', async () => {
       updateReportStatusMock.mockRejectedValueOnce(new Error('fail'))
 
-      const report = mockReports[0]
       const table = wrapper.findComponent({ name: 'ReportTable' })
 
-      await table.vm.$emit('update-report-status', report.accountId, report.reportId, report.name, ReportStatus.ONLINE)
+      await table.vm.$emit(
+        'update-report-status',
+        firstReportMock.accountId,
+        firstReportMock.reportId,
+        firstReportMock.name,
+        ReportStatus.ONLINE,
+      )
       await flushPromises()
 
       expect(displayNotificationMock).toHaveBeenCalledWith('error', expect.stringContaining('activating'))
@@ -145,6 +163,47 @@ describe('BiReportsList', () => {
     })
   })
 
+  describe('View Report', () => {
+    it('opens fullscreen when view-report-fullscreen event is emitted', async () => {
+      const reportTable = wrapper.findComponent({ name: 'ReportTable' })
+      await reportTable.vm.$emit(
+        'view-report-fullscreen',
+        firstReportMock.accountId,
+        firstReportMock.name,
+        firstReportMock.embedReportId,
+        firstReportMock.embedReportUrl,
+      )
+
+      await flushPromises()
+
+      const powerBIViewer = wrapper.findComponent({ name: 'PowerBIReportViewer' })
+
+      expect(powerBIViewer.props('modelValue')).toBe(true)
+      expect(powerBIViewer.props('reportLabel')).toBe(firstReportMock.name)
+      expect(powerBIViewer.props('powerBIConfig')).toMatchObject({
+        uniqueId: firstReportMock.embedReportId,
+        embedUrl: firstReportMock.embedReportUrl,
+        accessToken: tokenMock,
+      })
+    })
+
+    it('calls fetchBIToken with correct params on view-report-fullscreen', async () => {
+      const reportTable = wrapper.findComponent({ name: 'ReportTable' })
+      await reportTable.vm.$emit(
+        'view-report-fullscreen',
+        firstReportMock.accountId,
+        firstReportMock.name,
+        firstReportMock.embedReportId,
+        firstReportMock.embedReportUrl,
+      )
+
+      await flushPromises()
+
+      expect(fetchBITokenMock).toHaveBeenCalledTimes(1)
+      expect(fetchBITokenMock).toHaveBeenCalledWith(firstReportMock.embedReportId, firstReportMock.accountId)
+    })
+  })
+
   describe('Search Integration', () => {
     it("triggers data fetch with search term when 'search-report' is emitted", async () => {
       // Arrange
@@ -174,5 +233,4 @@ describe('BiReportsList', () => {
       expect(fetchReportsMock).toHaveBeenCalledTimes(1) // Only initial fetch (onMounted)
     })
   })
-
 })

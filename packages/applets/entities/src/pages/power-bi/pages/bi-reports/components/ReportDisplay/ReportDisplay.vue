@@ -60,7 +60,7 @@ const powerBIConfig = computed(() => ({
   type: 'report',
   accessToken: reportToken.value,
   embedUrl: selectedReport.value.embededReportUrl,
-  id: selectedReport.value.embededReportId,
+  uniqueId: selectedReport.value.embededReportId,
   settings: {
     filterPaneEnabled: false,
     navContentPaneEnabled: true,

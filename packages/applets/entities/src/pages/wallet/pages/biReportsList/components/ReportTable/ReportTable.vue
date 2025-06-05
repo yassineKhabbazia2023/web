@@ -122,25 +122,36 @@ defineProps<ReportTableProps>()
 
 const emit = defineEmits<{
   'update-report-status': [number, number, string, ReportStatus]
+  'view-report-fullscreen': [number, string, string, string]
 }>()
 
 const REPORT_ACTIONS = {
   ACTIVATE_REPORT: 'ActivateReport',
   DEACTIVATE_REPORT: 'DeactivateReport',
+  VIEW_REPORT: 'ViewReport',
 }
 
 const handleToolboxItemClick = (action: string, row: any) => {
-  const { accountId, reportId, name } = row
+  const { accountId, reportId, name, embedReportId, embedReportUrl } = row
 
   if (action === REPORT_ACTIONS.ACTIVATE_REPORT) {
     emit('update-report-status', accountId, reportId, name, ReportStatus.ONLINE)
-  } else {
+  } else if (action === REPORT_ACTIONS.DEACTIVATE_REPORT) {
     emit('update-report-status', accountId, reportId, name, ReportStatus.OFFLINE)
+  } else if (action === REPORT_ACTIONS.VIEW_REPORT) {
+    emit('view-report-fullscreen', accountId, name, embedReportId, embedReportUrl)
   }
 }
 
 const getReportActions = (status: ReportStatus): PToolboxItemProps[] => {
   return [
+    {
+      pIconName: 'eye',
+      pValue: t('viewReport'),
+      pActionName: REPORT_ACTIONS.VIEW_REPORT,
+      pState: 'default',
+      display: true,
+    },
     {
       pIconName: 'checkCircle',
       pValue: t('activateReport'),
@@ -177,6 +188,7 @@ en-US:
   updatedOn: 'Updated on'
   clientCode: 'Client code'
   reportType: 'Report type'
+  viewReport: 'View Report'
   companyName: 'Company name'
   customerLabel: 'Customer label:'
   initializedOn: 'Initialized on'
@@ -189,6 +201,7 @@ fr-FR:
   updatedOn: 'Mis à jour le'
   clientCode: 'Code client'
   reportType: 'Type de rapport'
+  viewReport: 'Voir le rapport'
   companyName: 'Raison sociale'
   customerLabel: 'Libellé client:'
   initializedOn: 'Initialisé le'

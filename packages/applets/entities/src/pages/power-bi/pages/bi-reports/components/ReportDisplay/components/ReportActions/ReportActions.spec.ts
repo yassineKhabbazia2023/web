@@ -1,26 +1,34 @@
-import { expect, describe } from 'vitest'
-import { nextTick } from 'vue'
 import { shallowMount } from '@vue/test-utils'
-import type { ComponentWrapper } from '@entities/common/types'
+import { describe, it, expect, beforeEach } from 'vitest'
+import { ReportActionsProps } from './report-actions.type'
+
 import ReportActions from '.'
+
+const props: ReportActionsProps = {
+  reportLabel: 'Test Report',
+  powerBIConfig: {
+    uniqueId: 'mocked-id',
+    type: 'mocked-type',
+    accessToken: 'mocked-token',
+    embedUrl: 'mocked-url',
+  },
+}
 
 const createWrapper = () => {
   return shallowMount(ReportActions, {
-    props: {
-      reportLabel: 'Test Report',
-      powerBIConfig: {
-        id: 'mocked-id',
-        type: 'mocked-report',
-        accessToken: 'mocked-access-token',
-        embedUrl: 'mocked-embed-url',
-      },
-    },
+    props,
     global: {
       stubs: {
-        PDocumentViewer: {
-          name: 'PDocumentViewer',
-          template: '<div><slot name="media" /><slot name="iconDocument" /></div>',
-          props: ['modelValue'],
+        PButton: {
+          name: 'PButton',
+          template: '<button><slot /></button>',
+        },
+        PIcon: true,
+        PowerBIReportViewer: {
+          name: 'PowerBIReportViewer',
+          template: '<div data-testid="powerbi-viewer" />',
+          props: ['modelValue', 'reportLabel', 'powerBIConfig'],
+          emits: ['update:modelValue'],
         },
       },
     },
@@ -28,42 +36,30 @@ const createWrapper = () => {
 }
 
 describe('ReportActions component', () => {
-  let wrapper: ComponentWrapper<InstanceType<typeof ReportActions>>
+  let wrapper: ReturnType<typeof createWrapper>
 
   beforeEach(() => {
     wrapper = createWrapper()
   })
 
-  describe('display functionality', () => {
-    it('should display the fullscreen button', () => {
-      const fullscreenButton = wrapper.findComponent({ name: 'PButton' })
+  it('renders the fullscreen button with the correct icon', () => {
+    const fullscreenButton = wrapper.findComponent({ name: 'PButton' })
+    expect(fullscreenButton.exists()).toBe(true)
 
-      expect(fullscreenButton.exists()).toBeTruthy()
-    })
-
-    it('should display the document viewer when the fullscreen button is clicked', async () => {
-      const fullscreenButton = wrapper.findComponent({ name: 'PButton' })
-      const reportIcon = wrapper.findComponent({ name: 'PIcon' })
-
-      fullscreenButton.trigger('click')
-      await nextTick()
-
-      const powerbiIframe = wrapper.find('[data-testid="fullscreen-report-iframe"]')
-
-      expect(reportIcon.exists()).toBeTruthy()
-      expect(reportIcon.props('pName')).toBe('filetypePbx')
-      expect(powerbiIframe.exists()).toBeTruthy()
-    })
+    const pIcon = wrapper.findComponent({ name: 'PIcon' })
+    expect(pIcon.exists()).toBe(true)
   })
 
-  describe('event handling', () => {
-    it('should display the document viewer when the fullscreen button is clicked', async () => {
-      const fullscreenButton = wrapper.findComponent({ name: 'PButton' })
+  it('opens the PowerBIReportViewer on fullscreen button click', async () => {
+    const fullscreenButton = wrapper.findComponent({ name: 'PButton' })
+    const reportViewer = wrapper.findComponent({ name: 'PowerBIReportViewer' })
+    const expectedProps = {
+      modelValue: true,
+      reportLabel: props.reportLabel,
+      powerBIConfig: props.powerBIConfig,
+    }
+    await fullscreenButton.trigger('click')
 
-      await fullscreenButton.trigger('click')
-
-      const reportViewer = wrapper.findComponent({ name: 'PDocumentViewer' })
-      expect(reportViewer.props('modelValue')).toBeTruthy()
-    })
+    expect(reportViewer.props()).toStrictEqual(expectedProps)
   })
 })

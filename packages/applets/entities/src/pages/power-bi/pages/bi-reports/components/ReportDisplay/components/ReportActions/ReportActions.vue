@@ -4,7 +4,7 @@
       <PButton
         pSize="default"
         pIconOnly
-        @click="handleFullscreenReportDisplay"
+        @click="handleReportFullscreenDisplay"
       >
         <PIcon
           pName="arrowsAngleExpand"
@@ -13,47 +13,26 @@
         />
       </PButton>
     </div>
-    <PDocumentViewer
+    <PowerBIReportViewer
       v-model="isReportViewerVisible"
-      pSize="100%"
-      :pHasPagination="false"
-      :pTitleDocument="reportLabel"
-      :pActiveDocument="1"
-      :pTotalDocuments="1"
-      @opened="loadBIReportFullscreen"
-    >
-      <template #iconDocument>
-        <PIcon pName="filetypePbx" />
-      </template>
-      <template #media>
-        <section
-          ref="powerbiSection"
-          class="report-fullscreen__iframe"
-          data-testid="fullscreen-report-iframe"
-        />
-      </template>
-    </PDocumentViewer>
+      :reportLabel="reportLabel"
+      :powerBIConfig="powerBIConfig"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { AppColors } from '@pulse/styleguide'
-import { PIcon, PButton, PDocumentViewer } from '@pulse/styleguide/components'
+import { PIcon, PButton } from '@pulse/styleguide/components'
+import PowerBIReportViewer from '@entities/common/components/PowerBIReportViewer'
 import type { ReportActionsProps } from './report-actions.type'
 
-const props = defineProps<ReportActionsProps>()
+defineProps<ReportActionsProps>()
 
-const isReportViewerVisible = ref(false)
-const powerbiSection = ref<HTMLElement>()
+const isReportViewerVisible = defineModel<boolean>({ default: false })
 
-const handleFullscreenReportDisplay = () => {
+const handleReportFullscreenDisplay = () => {
   isReportViewerVisible.value = true
-}
-
-const loadBIReportFullscreen = () => {
-  const powerbiContainer = powerbiSection.value as HTMLElement
-  window.powerbi.embed(powerbiContainer, props.powerBIConfig)
 }
 </script>
 
@@ -61,14 +40,6 @@ const loadBIReportFullscreen = () => {
 .report-actions {
   &__panel {
     height: calc(80vh - 35px);
-  }
-}
-.report-fullscreen {
-  width: calc(100% - 351px);
-
-  &__iframe {
-    height: calc(100vh - 52px);
-    overflow: hidden;
   }
 }
 </style>

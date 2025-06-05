@@ -37,6 +37,6 @@ describe('ReportErrorCard.vue', () => {
   })
 
   it('should render correctly with default props', async () => {
-    expect(wrapper.html()).toMatchFileSnapshot('__snap__/ReportErrorCard.snap')
+    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/ReportErrorCard.snap')
   })
 })

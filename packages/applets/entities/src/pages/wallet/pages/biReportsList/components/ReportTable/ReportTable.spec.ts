@@ -70,6 +70,18 @@ describe('ReportTable', () => {
       ])
     })
 
+    it('emits view-report-fullscreen when toolbox item is clicked', async () => {
+      const toolbox = wrapper.findComponent({ name: 'PToolbox' })
+
+      // Simulate click on "View Report"
+      await toolbox.vm.$emit('p-toolbox-item-clicked', 'ViewReport')
+      await nextTick()
+
+      expect(wrapper.emitted('view-report-fullscreen')).toStrictEqual([
+        [mockReport.accountId, mockReport.name, mockReport.embedReportId, mockReport.embedReportUrl],
+      ])
+    })
+
     it('emits update-report-status with ONLINE when activating', async () => {
       const toolbox = wrapper.findComponent({ name: 'PToolbox' })
 

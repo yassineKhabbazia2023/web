@@ -19,6 +19,12 @@
         :reports="searchResult.items"
         data-testid="bi-reports-list-table"
         @update-report-status="handleUpdateReportStatus"
+        @view-report-fullscreen="handleViewReportFullscreen"
+      />
+      <PowerBIReportViewer
+        v-model="isReportFullscreenVisible"
+        :reportLabel="selectedReportLabel"
+        :powerBIConfig="powerBIConfig"
       />
     </div>
   </div>
@@ -40,11 +46,10 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { logger } from '@pulse/core'
+import { models } from 'powerbi-client'
 import { reactive, onMounted, computed, ref } from 'vue'
-import {
-  PPagination,
-  PLoader,
-} from '@pulse/styleguide/components'
+import { PPagination, PLoader } from '@pulse/styleguide/components'
 import ReportToolbar from './components/ReportToolbar'
 import { PAGE_SIZES } from '@entities/constants'
 import type { ReportStatusTag, MappedReportRow } from '@entities/common/types/BIReportsTypes'
@@ -53,8 +58,9 @@ import { getPaginationLabel } from '@entities/helper'
 import ReportTable from './components/ReportTable'
 import { getMappedReport, getReportsQueryParams } from './utils'
 import { SearchCriteria, SearchResult } from '../../types'
-import { fetchAvailableReports, updateReportStatus } from '@entities/services/reporting'
+import { fetchAvailableReports, fetchBIToken, updateReportStatus } from '@entities/services/reporting'
 import { displayNotification } from '@entities/common/utils'
+import PowerBIReportViewer from '@entities/common/components/PowerBIReportViewer'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -163,6 +169,46 @@ const fetchReportsData = async () => {
 }
 //#endregion
 
+// #region Fullscreen Report View Display
+const selectedReportLabel = ref('')
+const isReportFullscreenVisible = ref(false)
+
+const openReportFullscreen = () => {
+  isReportFullscreenVisible.value = true
+}
+
+const powerBIConfig = ref({
+  type: 'report',
+  accessToken: '',
+  embedUrl: '',
+  uniqueId: '',
+  settings: {
+    filterPaneEnabled: false,
+    navContentPaneEnabled: true,
+  },
+  tokenType: models.TokenType.Embed,
+})
+
+const handleViewReportFullscreen = async (
+  accountId: number,
+  reportLabel: string,
+  embeddedReportId: string,
+  embeddedReportUrl: string,
+) => {
+  try {
+    selectedReportLabel.value = reportLabel
+    powerBIConfig.value.uniqueId = embeddedReportId
+    powerBIConfig.value.embedUrl = embeddedReportUrl
+    powerBIConfig.value.accessToken = await fetchBIToken(embeddedReportId, accountId)
+
+    openReportFullscreen()
+  } catch {
+    logger.trace('Report Fullscreen - BI report loading failed. Please try again later.')
+    displayNotification('error', t('biReportLoadingError'))
+  }
+}
+// #endregion
+
 onMounted(() => {
   fetchReportsData()
 })
@@ -190,6 +236,7 @@ en-US:
   deactivated: 'deactivated'
   manualUpload: 'Upload Manually'
   statusChange: 'The report {reportName} has been successfully {action}.'
+  biReportLoadingError: "The BI report can't be loaded at the moment. Please try again later."
   errors:
     reportActivation: >
       An error occurred while activating the report. Please try again or contact support if the issue
@@ -208,6 +255,7 @@ fr-FR:
   deactivated: 'désactivé'
   manualUpload: 'Déposer manuellement'
   statusChange: 'Le rapport {reportName} a été {action} avec succès.'
+  biReportLoadingError: 'Le rapport BI ne peut pas être chargé pour le moment. Merci de réessayer plus tard.'
   errors:
     reportActivation: >
       Une erreur est survenue lors de l'activation du rapport. Veuillez réessayer ou contacter le support
