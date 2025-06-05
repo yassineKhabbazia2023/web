@@ -90,6 +90,7 @@
                 <PPastille
                   pIconName="people"
                   class="margin-left--2"
+                  data-testid="customer-relation-status"
                   pDisabled
                 />
               </PTooltip>
