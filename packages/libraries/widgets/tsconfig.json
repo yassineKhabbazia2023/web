@@ -15,12 +15,20 @@
     "baseUrl": ".",
     "declarationDir": "./dist/types",
     "outDir": "./dist/types",
+    "paths": {
+      "@common/*": [
+        "../common/src/*"
+      ],
+      "@styleguide/*": [
+        "../styleguide/src/*"
+      ],
+    },
     "types": [
       "@pinia/testing",
       "vitest/globals",
       "vitest/importMeta",
       "vite/client",
       "node"
-    ]
+    ],
   }
 }

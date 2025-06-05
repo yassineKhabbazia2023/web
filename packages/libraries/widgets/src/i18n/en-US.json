@@ -1,0 +1,9 @@
+{
+  "widgets": {
+    "rssNews": {
+      "title": "News",
+      "seeMore": "See more",
+      "noNews": "No news available at the moment."
+    }
+  }
+}
