@@ -4,6 +4,13 @@
       "title": "Actualités",
       "seeMore": "Voir plus",
       "noNews": "Aucune actualité disponible pour le moment."
+    },
+    "powerBi": {
+      "title": "Allez plus loin dans l'{emphasis} de votre entreprise",
+      "titleEmphasis": "analyse des performances",
+      "description": "Grâce à nos {emphasis} approfondissez l'analyse de vos performances et maximisez l'impact de chaque décision stratégique.",
+      "descriptionEmphasis": "solutions de Business Intelligence",
+      "seeMore": "Découvrir l'offre Power BI"
     }
   }
 }

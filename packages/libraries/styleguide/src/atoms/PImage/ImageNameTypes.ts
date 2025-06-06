@@ -57,6 +57,7 @@ export type ImageName =
 'bank-mandate' |
 'calendar' |
 'camera' |
+'chart' |
 'connection-default' |
 'document-authentification' |
 'document-depository' |
