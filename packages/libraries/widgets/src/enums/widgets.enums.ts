@@ -6,11 +6,6 @@ export enum WidgetName {
   POWERBI_INTRO = 'PowerBIIntro',
 }
 
-export enum WidgetSections {
-  TOP = 'top',
-  MAIN = 'main',
-}
-
 /**
  * Enum representing the size of a widget in terms of grid spans
  * - ONE_CELL: 1 grid cell

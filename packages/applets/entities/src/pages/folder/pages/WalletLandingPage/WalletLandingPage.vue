@@ -6,9 +6,9 @@
       :accountNumber="selectedEntity.accountNumber"
     />
     <div v-if="FeatureFlagManager.isHomepageWidgetsActivated() === true">
+      <TopBar />
       <WidgetsHome />
     </div>
-
     <div v-else-if="FeatureFlagManager.isHomepageWidgetsActivated() === false">
       <LegacyHome />
     </div>
@@ -22,6 +22,7 @@ import { useSelectedEntityStore } from '@pulse/common/stores'
 import { FeatureFlagManager } from '@pulse/core'
 
 import EntityHeader from '@entities/common/components/EntityHeader'
+import TopBar from './TopBar/top-bar.vue'
 import WidgetsHome from './WidgetsHome.vue'
 import LegacyHome from './LegacyHome.vue'
 

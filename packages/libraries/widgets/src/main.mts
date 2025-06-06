@@ -2,7 +2,6 @@ import type { App } from 'vue'
 import { commoni18n } from '@pulse/common'
 import digilabWidget from './widgets/digilab/digilab.widget.mts'
 import pennylaneIntroWidget from './widgets/pennylane-intro/pennylane-intro.widget.mts'
-import SSOWidget from './widgets/sso/sso.widget.mts'
 import powerBIIntroWidget from './widgets/power-bi-intro/power-bi-intro.widget.mts'
 import rssNewsWidget from './widgets/rss-news/rss-news.widget.mts'
 import frFR from './i18n/fr-FR.json'
@@ -19,7 +18,6 @@ export default {
     // Consumers will pick the widgets they want to use through the widget manager
     app.use(digilabWidget, {})
     app.use(pennylaneIntroWidget, {})
-    app.use(SSOWidget, {})
     app.use(powerBIIntroWidget, {})
     app.use(rssNewsWidget, {})
   },

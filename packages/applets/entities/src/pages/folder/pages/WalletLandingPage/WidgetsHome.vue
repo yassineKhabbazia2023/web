@@ -1,32 +1,8 @@
 <template>
   <div class="widgets-home">
-    <!-- Temporary way of switching templates -->
-    <!-- TODO delete -->
-    <section>
-      <button class="margin-right--4" @click="setWidgetConfigurationListPennylane">
-        Avec Pennylane
-      </button>
-      <button @click="setWidgetConfigurationListDefault">
-        Sans Pennylane
-      </button>
-    </section>
-    <div class="widgets-home__top-section">
-      <div
-        v-for="(widget, index) in topSectionWidgets"
-        :key="index"
-        class="widgets-home__grid-item"
-        :class="{
-          'widgets-home__grid-item--span-1': widget.size === 1,
-          'widgets-home__grid-item--span-2': widget.size === 2,
-          'widgets-home__grid-item--span-3': widget.size === 3,
-        }"
-      >
-        <component :is="widget.name" />
-      </div>
-    </div>
     <div class="widgets-home__main-section">
       <div
-        v-for="(widget, index) in mainSectionWidgets"
+        v-for="(widget, index) in widgets"
         :key="index"
         class="widgets-home__grid-item"
         :class="{
@@ -42,63 +18,14 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue'
-import type { WidgetConfiguration } from '@pulse/widgets/types'
-import { WidgetName, WidgetSections } from '@pulse/widgets/enums'
-import { WidgetsManager } from '@pulse/widgets/managers'
-import { logger } from '@pulse/core'
+import { onMounted, ref } from 'vue'
+import type { WidgetDefinition } from '@pulse/widgets/types'
+import { WidgetsHomeManager } from './widgets-home.manager'
 
-const widgetConfigurationList = ref<WidgetConfiguration[]>([])
-const topSectionWidgets = computed(() => {
-  return widgetConfigurationList.value.filter((widget) => widget.section === WidgetSections.TOP)
-})
-const mainSectionWidgets = computed(() => {
-  return widgetConfigurationList.value.filter((widget) => widget.section === WidgetSections.MAIN)
-})
-
-// TODO Logic to be moved in a manager in the future
-const setWidgetConfigurationList = (widgets: WidgetConfiguration[]) => {
-  widgetConfigurationList.value = []
-  // ensure the widgets are sorted by order before adding them
-  widgets.sort((a, b) => a.order - b.order)
-  widgets.forEach((widget) => {
-    // Retrieve the widget definition from WidgetsManager
-    const widgetDefinition = WidgetsManager.getWidgetDefinition(widget.name)
-
-    if (widgetDefinition) {
-      // if the definition exists, the widget is valid so add it to the list
-      widgetConfigurationList.value.push({
-        ...widgetDefinition,
-        order: widget.order,
-        section: widget.section,
-      })
-    } else {
-      logger.warn(`Widget ${widget.name} not found in WidgetsManager. It will not be displayed.`)
-    }
-  })
-}
-
-const setWidgetConfigurationListPennylane = () => {
-  const widgetsToAdd: WidgetConfiguration[] = [
-    { name: WidgetName.SSO, order: 0, section: WidgetSections.TOP },
-    { name: WidgetName.PENNYLANE_INTRO, order: 1, section: WidgetSections.MAIN },
-    { name: WidgetName.DIGILAB, order: 2, section: WidgetSections.MAIN },
-    { name: WidgetName.RSS_NEWS, order: 3, section: WidgetSections.MAIN },
-    { name: WidgetName.POWERBI_INTRO, order: 4, section: WidgetSections.MAIN },
-  ]
-  setWidgetConfigurationList(widgetsToAdd)
-}
-
-const setWidgetConfigurationListDefault = () => {
-  const widgetsToAdd = [
-    { name: WidgetName.RSS_NEWS, order: 1, section: WidgetSections.MAIN },
-    { name: WidgetName.DIGILAB, order: 2, section: WidgetSections.MAIN },
-  ]
-  setWidgetConfigurationList(widgetsToAdd)
-}
+const widgets = ref<WidgetDefinition[]>([])
 
 onMounted(() => {
-  setWidgetConfigurationListPennylane()
+  widgets.value = WidgetsHomeManager.getWidgetsLayout()
 })
 </script>
 

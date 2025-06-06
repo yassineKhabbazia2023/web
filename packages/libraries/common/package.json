@@ -8,6 +8,7 @@
   "type": "module",
   "exports": {
     "./constants": "./src/constants.mts",
+    "./components": "./src/components/components.mts",
     "./enums": "./src/enums.mts",
     "./managers": "./src/managers/index.mts",
     "./helpers": "./src/helpers/index.mts",
