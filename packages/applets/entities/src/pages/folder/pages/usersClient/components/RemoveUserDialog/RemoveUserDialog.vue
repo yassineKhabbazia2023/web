@@ -55,6 +55,8 @@ import {
 import { PNotification } from '@pulse/styleguide'
 import { deleteContactFromAccount } from '@entities/services/account'
 import type { RemoveUserDialogProps } from './RemoveUserDialogTypes'
+import { RouteParam } from '@pulse/common/enums'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -62,7 +64,7 @@ const { t } = useI18n({
 })
 
 const route = useRoute()
-const currentEntityId = Number(route.params.id)
+const currentEntityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
 
 const emits = defineEmits<{
   'update:modelValue': [boolean]
@@ -111,7 +113,8 @@ const displayErrorNotificationRemovedCollaborator = () => {
 
 const handleRemoveUser = async () => {
   try {
-    await deleteContactFromAccount(currentEntityId, props.userToRemove?.contactId ?? 0)
+    // currentEntityId can't be null here, so we use non-null assertion
+    await deleteContactFromAccount(currentEntityId!, props.userToRemove?.contactId ?? 0)
     displaySuccessNotificationRemovedCollaborator()
     emits('user-removed')
   } catch (error) {

@@ -14,6 +14,7 @@ import { CurrentUserManagerMock, hasPermissionMock, getStoreMock, getMockedEntit
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
+import { RouteParam } from '@pulse/common/enums'
 
 import UsersCollab from '.'
 
@@ -70,7 +71,7 @@ vi.mock('@entities/services/account', () => {
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
-      id: DEFAULT_ROUTE_PARAMS_ID,
+      [RouteParam.ENTITY_ID]: DEFAULT_ROUTE_PARAMS_ID,
     },
   }),
   useRouter: () => ({

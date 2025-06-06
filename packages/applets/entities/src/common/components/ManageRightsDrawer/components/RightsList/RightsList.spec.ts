@@ -10,7 +10,7 @@ import type { RightsListProps } from './RightsListTypes'
 import * as authorizationServices from '@entities/services/authorization'
 import { useRoute } from 'vue-router'
 import RightsList from '.'
-import { ContactType } from '@pulse/common/enums'
+import { ContactType, RouteParam } from '@pulse/common/enums'
 
 // Mocks
 const mockedActionsCount = mockedAuthorizationsConfig
@@ -78,7 +78,7 @@ describe('rightsList', () => {
   beforeEach(async () => {
     mockedUseRoute.mockReturnValue({
       params: {
-        id: mockedAccountId,
+        [RouteParam.ENTITY_ID]: mockedAccountId,
       },
     })
     wrapper = createWrapper()
@@ -244,7 +244,7 @@ describe('rightsList', () => {
       )
       mockedUseRoute.mockReturnValue({
         params: {
-          id: undefined,
+          [RouteParam.ENTITY_ID]: undefined,
         },
       })
       createWrapper()

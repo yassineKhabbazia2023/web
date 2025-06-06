@@ -179,13 +179,11 @@ import {
 import {
   onMounted,
   ref,
-  toRaw,
   watch,
   computed,
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import type { Entity } from '@pulse/common/types'
 import type { TableDataProps } from './types'
 import { AvatarRoles } from '@pulse/styleguide'
 import type { AccessibleMenuItem, AccountRow } from '@entities/common/types'
@@ -193,7 +191,7 @@ import { filterAccessibleMenuItems } from '@entities/common/utils'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
 import { PERMISSION_CODES } from '@entities/constants'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
-import { SelectedEntityManager, CurrentUserManager } from '@pulse/common/managers'
+import { CurrentUserManager } from '@pulse/common/managers'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -293,22 +291,6 @@ const isToolboxDisabled = computed(() => {
   return props.isAccountManagement && accountManagementMenu.length === 0
 })
 
-const handleRowSelectedChange = (row: any) => {
-  const rowValues = toRaw(row)
-  if (rowValues) {
-    const { name, accountId, accountNumber }: AccountRow = rowValues
-
-    const selectedEntity: Entity = {
-      legalName: name,
-      accountId,
-      color: 'persian', // color is temporarily hard-coded
-      accountNumber,
-    }
-
-    SelectedEntityManager.persistSelectedEntity(selectedEntity)
-  }
-}
-
 const selectRowWhenTableFullyLoaded = (row: any) => {
   setTimeout(() => {
     const tableInstance =
@@ -334,7 +316,6 @@ const onToolboxItemClicked = (action: string, row: any) => {
   if (action === 'deploy') {
     emit('click-deploy', accountId ?? 5, accountNumber, name)
   } else if (action === 'access') {
-    handleRowSelectedChange(row)
     emit('access', accountId)
   } else if (action === 'manageAccountRights') {
     emit('displayAccountRightsDrawer', { accountId, name, accountNumber })

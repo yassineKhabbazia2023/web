@@ -5,6 +5,8 @@ import * as reportingServices from '@entities/services/reporting'
 import * as commonUtils from '@entities/common/utils'
 import { getMockedBIReports } from '@entities/__mocks__/bi-report.mocks'
 import { nextTick } from 'vue'
+import { RouteParam } from '@pulse/common/enums'
+
 import BIReports from '.'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
@@ -15,7 +17,7 @@ const mockedBIReports = getMockedBIReports()
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
-      id: mockedAccountId,
+      [RouteParam.ENTITY_ID]: mockedAccountId,
     },
   }),
 }))

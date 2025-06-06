@@ -24,9 +24,9 @@ describe('test selected-entity.manager', () => {
 
       const expectedSetItemArguments = [
         'selected-entity',
-        JSON.stringify(entityMock),
+        JSON.stringify(expectedAccountId),
       ]
-      await SelectedEntityManager.persistSelectedEntity(entityMock)
+      await SelectedEntityManager.initializeSelectedEntity(entityMock)
 
       expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledOnce()
       expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledWith(entityMock)

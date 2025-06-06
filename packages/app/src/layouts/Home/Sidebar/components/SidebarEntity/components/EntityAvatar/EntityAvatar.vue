@@ -4,7 +4,7 @@
       :tooltipContent="entityTooltipContent"
       :tooltipDisabled="hideTooltip"
       :class="{ 'entity-wrapper--selected': selected }"
-      :route="{ name: RouteName.FOLDER, params: { id: entity.accountId } }"
+      :route="{ name: RouteName.FOLDER, params: { [RouteParam.ENTITY_ID]: entity.accountId } }"
       @item-clicked="$emit('entity-selected', entity)"
     >
       <PAvatar
@@ -38,7 +38,7 @@ import { computed } from 'vue'
 import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import type { EntityAvatarProps } from './EntityAvatarTypes'
 import type { Entity } from '@pulse/common/types'
-import { RouteName } from '@pulse/common/enums'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 import SidebarEntityItem from '../SidebarEntityItem'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 

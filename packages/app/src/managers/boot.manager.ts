@@ -51,7 +51,7 @@ export class BootManager {
   }
 
   static clearAppStorage() {
-    // clean localstorage
+    // clean localStorage
     TokenManager.removeToken()
     SelectedEntityManager.clearSelectedEntity()
   }

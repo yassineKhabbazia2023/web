@@ -5,12 +5,10 @@ import { mockTableData } from './mockData'
 import {
   amplitudeServiceMock,
   SelectedEntityManagerMock,
-  persistSelectedEntityMock,
   getStoreMock,
   getMockedUserInfo,
   CurrentUserManagerMock,
 } from '@pulse/common/mocks'
-import type { Entity } from '@pulse/common/types'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 
 import TableData from '.'
@@ -210,23 +208,16 @@ describe('tableData', () => {
   })
   it('should change ibs selected and emit access', () => {
     const ibsLink = wrapper.find('[data-testid=account-access-link]')
-    const formattedEntity: Entity = {
-      legalName: testEntity.legalName,
-      accountId: testEntity.accountId,
-      color: 'persian',
-      accountNumber: testEntity.accountNumber,
-    }
     ibsLink.trigger('click')
 
-    expect(persistSelectedEntityMock).toHaveBeenCalledWith(formattedEntity)
     expect(wrapper.emitted('access')).toStrictEqual([[testEntity.accountId]])
   })
 
   it('should display the correct columns when the user is a collaborator', () => {
     const pTableColumns = wrapper.findAllComponents({ name: 'ElTableColumn' })
     collaboratorsColumnLabels.forEach((columnLabel, index) => {
-      const indexSkiped = index + 1 // skip the first column
-      const label = pTableColumns.at(indexSkiped)?.props('label')
+      const indexSkipped = index + 1 // skip the first column
+      const label = pTableColumns.at(indexSkipped)?.props('label')
 
       expect(label).toBe(columnLabel)
     })
@@ -267,8 +258,8 @@ describe('tableData', () => {
     await nextTick()
     const pTableColumns = wrapper.findAllComponents({ name: 'ElTableColumn' })
     clientsColumnLabels.forEach((columnLabel, index) => {
-      const indexSkiped = index + 1 // skip the first column
-      const label = pTableColumns.at(indexSkiped)?.props('label')
+      const indexSkipped = index + 1 // skip the first column
+      const label = pTableColumns.at(indexSkipped)?.props('label')
 
       expect(label).toBe(columnLabel)
     })

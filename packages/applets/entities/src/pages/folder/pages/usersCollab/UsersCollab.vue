@@ -212,6 +212,8 @@ import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 import { getOperationsWithLegalName, getAccountOperationsList } from './UsersCollab.utils'
+import { RouteParam } from '@pulse/common/enums'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -324,6 +326,7 @@ const paginationLabel = computed(() => getPaginationLabel<User>(t('on'), state))
 
 const formatAndFillUsersCollabTable = async () => {
   const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
+  const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
 
   state.isLoading = true
 
@@ -333,7 +336,8 @@ const formatAndFillUsersCollabTable = async () => {
       items,
       totalItems,
       totalPage,
-    } = await fetchAccountCustomers(+route.params.id, queryParamsWithoutUndefined)
+      // entityId can't be null here, so we use non-null assertion
+    } = await fetchAccountCustomers(entityId!, queryParamsWithoutUndefined)
 
     /**
      * 🛠️ TODO: Need to create a function format inside utils folder

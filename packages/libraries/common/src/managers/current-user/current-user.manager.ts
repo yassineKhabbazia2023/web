@@ -42,7 +42,7 @@ export class CurrentUserManager {
       }
       logoutClient(gigyaUserId)
     }
-    // clean localstorage
+    // clean localStorage
     this.persistToken('')
     SelectedEntityManager.clearSelectedEntity()
   }

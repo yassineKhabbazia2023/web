@@ -206,10 +206,12 @@ import { getContactById } from '@entities/services/contact'
 import { getCollaboratorsByIdEntity } from '@entities/services/wallet'
 import { deleteContactFromAccount } from '@entities/services/account'
 import { getInitials, removeFalsyValues } from '@entities/helper'
+import { RouteParam } from '@pulse/common/enums'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import CollabDetailsDrawer from '@entities/common/components/CollabDetailsDrawer'
 import AddCollaboratorsDrawer from './components/AddCollaboratorDrawer'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -227,7 +229,7 @@ const isAddCollaboratorsDrawerOpened = ref(false)
 const isCollabDetailsDrawerOpened = ref(false)
 
 const route = useRoute()
-const currentEntityId = Number(route.params.id)
+const currentEntityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
 
 const selectedRow = ref<InstanceType<typeof ElTable>>()
 

@@ -22,6 +22,7 @@ import { getAccountOperationsListMock } from '@entities/__mocks__/operations.moc
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 import type { Entity } from '@pulse/common/types'
 import { useUserStore } from '@pulse/common/stores'
+import { RouteParam } from '@pulse/common/enums'
 
 import Deploy from '.'
 
@@ -294,7 +295,7 @@ describe('deploy', () => {
     expect(mockRouterPush).toHaveBeenCalledTimes(1)
     expect(mockRouterPush).toHaveBeenCalledWith({
       name: 'folder',
-      params: { id: '8126f51d-c834-4fda-82ea-00d51ee11983' },
+      params: { [RouteParam.ENTITY_ID]: '8126f51d-c834-4fda-82ea-00d51ee11983' },
     })
   })
 

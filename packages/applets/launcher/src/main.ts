@@ -1,10 +1,10 @@
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
-import { RouteName } from '@pulse/common/enums'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 
 const routes = [
   {
-    path: '/dossier/:id/launcher',
+    path: `/dossier/:${RouteParam.ENTITY_ID}/launcher`,
     name: RouteName.LAUNCHER,
     component: () => import('@launcher/pages/launcher'),
   },

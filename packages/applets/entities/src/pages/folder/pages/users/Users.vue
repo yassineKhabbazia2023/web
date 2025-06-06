@@ -11,8 +11,11 @@ import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@pulse/common/stores'
+import { RouteParam } from '@pulse/common/enums'
+import { RouterHelpers } from '@pulse/common/helpers'
 import UsersCollab from '@entities/pages/folder/pages/usersCollab'
 import UsersClient from '@entities/pages/folder/pages/usersClient'
+
 
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
@@ -23,8 +26,8 @@ const entityId = computed(() => {
   if (!isChildFolder) {
     return undefined
   }
-  const parsedEntityId = parseInt(`${route.params.id}`)
+  const parsedEntityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
 
-  return Number.isNaN(parsedEntityId) ? undefined : parsedEntityId
+  return parsedEntityId !== null ? parsedEntityId : undefined
 })
 </script>

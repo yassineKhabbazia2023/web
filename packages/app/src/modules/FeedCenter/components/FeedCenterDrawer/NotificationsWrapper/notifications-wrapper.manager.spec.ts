@@ -12,7 +12,6 @@ import {
   accountsRowMock,
   entitiesFromAccountsRow,
   SelectedEntityManagerMock,
-  persistSelectedEntityMock,
   getStoreMock,
 } from '@pulse/common/mocks'
 import { useSelectedEntityStore } from '@pulse/common/stores'
@@ -185,22 +184,20 @@ describe('handleNotificationAction', () => {
     {
       currentSelectedEntity: entitiesFromAccountsRow[0],
       notificationEntity: entitiesFromAccountsRow[1],
-      shouldSetItemInStorage: true,
     },
     {
       currentSelectedEntity: entitiesFromAccountsRow[0],
       notificationEntity: entitiesFromAccountsRow[0],
-      shouldSetItemInStorage: false,
     },
-  ])('should redirect to ged route and switch entity if not the current one', async (
+  ])('should redirect to ged route with appropriate param', async (
     { currentSelectedEntity,
       notificationEntity,
-      shouldSetItemInStorage,
     },
   ) => {
     selectedEntityStoreMock.selectedEntity = currentSelectedEntity
     const fetchUserEntities = vi.spyOn(NotificationService, 'fetchUserEntities')
     fetchUserEntities.mockResolvedValueOnce(accountsRowMock)
+    const testSpy = vi.spyOn(mockRouter, 'push')
 
     handleNotificationAction({
       notification: {
@@ -216,16 +213,7 @@ describe('handleNotificationAction', () => {
       router: mockRouter,
     })
     await flushPromises()
-    if (shouldSetItemInStorage) {
-      const { accountId, legalName, accountNumber } = notificationEntity
-
-      const expectedEntity = { accountId, legalName, accountNumber }
-
-      expect(persistSelectedEntityMock).toHaveBeenCalledOnce()
-      expect(persistSelectedEntityMock).toHaveBeenCalledWith(expectedEntity)
-    } else {
-      expect(persistSelectedEntityMock).not.toHaveBeenCalled()
-    }
+    expect(testSpy).toHaveBeenCalled()
   })
 })
 

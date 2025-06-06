@@ -72,3 +72,18 @@ export const entitiesFromAccountsRow: Entity[] = [
     color: 'orange',
   },
 ]
+
+export const entitiesNotInAccountsRow: Entity[] = [
+  {
+    accountId: 3000,
+    accountNumber: '03000',
+    legalName: 'Mick Gordon',
+    color: 'gray',
+  },
+  {
+    accountId: 4000,
+    accountNumber: '04000',
+    legalName: 'Polyphia',
+    color: 'amethyste',
+  },
+]

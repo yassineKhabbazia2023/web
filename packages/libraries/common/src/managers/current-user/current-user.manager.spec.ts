@@ -62,7 +62,7 @@ describe('test current-user.manager', () => {
       expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledOnce()
       expect(permissionsStoreMock.setUserPermissions).toHaveBeenNthCalledWith(1, [])
 
-      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenCalledOnce()
+      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenCalledTimes(2) // called once in CurrentUserManager.setCurrentUser and once in SelectedEntityManager.clearSelectedEntity
       expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenNthCalledWith(1, [])
 
       expect(logoutCollaboratorMock).not.toHaveBeenCalledOnce()

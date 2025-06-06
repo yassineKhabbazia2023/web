@@ -11,6 +11,7 @@ import * as accountServices from '@entities/services/account'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
 import * as CommonHelpers from '@entities/common/utils/helpers'
 import { getStoreMock } from '@pulse/common/mocks'
+import { RouteParam } from '@pulse/common/enums'
 
 import Information from '.'
 
@@ -47,7 +48,7 @@ const ACCOUNT_ID = 5
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
-      id: ACCOUNT_ID,
+      [RouteParam.ENTITY_ID]: ACCOUNT_ID,
     },
   }),
 }))

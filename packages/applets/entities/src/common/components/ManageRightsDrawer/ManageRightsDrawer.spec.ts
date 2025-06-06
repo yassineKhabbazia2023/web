@@ -10,6 +10,7 @@ import * as authorizationServices from '@entities/services/authorization'
 import ManageRightsDrawer from '.'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
+import { RouteParam } from '@pulse/common/enums'
 
 // Mocks
 const mockedUseRoute = useRoute as Mock
@@ -41,7 +42,7 @@ describe('manageRightsDrawer', () => {
     })
     mockedUseRoute.mockReturnValue({
       params: {
-        id: mockedAccountId,
+        [RouteParam.ENTITY_ID]: mockedAccountId,
       },
     })
     wrapper = createWrapper()
@@ -96,7 +97,7 @@ describe('manageRightsDrawer', () => {
       )
       mockedUseRoute.mockReturnValue({
         params: {
-          id: undefined,
+          [RouteParam.ENTITY_ID]: undefined,
         },
       })
       wrapper = createWrapper()

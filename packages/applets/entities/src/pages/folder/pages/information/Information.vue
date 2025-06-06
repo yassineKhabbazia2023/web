@@ -85,6 +85,7 @@ import { cloneDeep, get, setWith } from 'lodash-es'
 import { addPathValue } from '@entities/services/PatchRecordService/PatchRecordService'
 import { type PatchValue } from '@entities/services/PatchRecordService'
 import { displayNotification } from '@entities/common/utils/helpers'
+import { RouteParam } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -115,7 +116,7 @@ const addressSectionTitle = computed(() => {
 const canEdit = ref(false)
 const isSaving = ref(false)
 const patchValues = ref<PatchValue[]>([])
-const accountId = parseInt(`${route.params.id}`)
+const accountId = parseInt(`${route.params[RouteParam.ENTITY_ID]}`)
 
 function onInputAccount(fieldKey: string, value: any) {
   const previousValue = get(originalAccount.value, fieldKey)

@@ -15,6 +15,7 @@
     "./services/cgu": "./src/services/cgu/index.mts",
     "./services/current-user": "./src/services/current-user/index.mts",
     "./services/permissions": "./src/services/permissions/index.mts",
+    "./services/entities": "./src/services/entities/index.mts",
     "./types": "./src/types.mts",
     "./stores": "./src/stores/main.mts",
     "./mocks": "./src/__mocks__/index.ts",

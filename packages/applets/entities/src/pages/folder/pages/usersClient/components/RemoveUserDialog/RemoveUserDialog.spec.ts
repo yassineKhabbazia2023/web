@@ -5,6 +5,8 @@ import { deleteContactFromAccount } from '@entities/services/account'
 import * as accountServices from '@entities/services/account'
 import { nextTick } from 'vue'
 import { RemoveUserDialogProps } from './RemoveUserDialogTypes'
+import { RouteParam } from '@pulse/common/enums'
+
 import RemoveUserDialog from '.'
 
 const ACCOUNT_ID = '42'
@@ -29,7 +31,7 @@ vi.mock('@entities/services/account', () => ({
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
-      id: ACCOUNT_ID,
+      [RouteParam.ENTITY_ID]: ACCOUNT_ID,
     },
   }),
 }))

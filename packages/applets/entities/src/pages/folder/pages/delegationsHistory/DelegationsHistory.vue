@@ -100,14 +100,15 @@ import {
   PTooltip,
 } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
-import type { Entity } from '@pulse/common/types'
 import { useUserStore } from '@pulse/common/stores'
+import { RouteParam } from '@pulse/common/enums'
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
 import { removeFalsyValues } from '@entities/helper'
 import FormSearch from '@entities/common/components/FormSearch'
 import NoResult from '@entities/common/components/NoResult'
 import type { Delegation } from './DelegationsHistoryTypes'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -139,7 +140,7 @@ const handleSearchValueSubmitted = (newSearchValue: string) => {
 }
 
 const route = useRoute()
-const currentAccountId: Entity['accountId'] = Number(route.params.id)
+const currentAccountId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
 
 const formatDelegations = (delegations: any) =>
   delegations.map(({
@@ -187,7 +188,8 @@ const fetchDelegationsHistory = async () => {
   isLoading.value = true
 
   try {
-    const { items }: any = await fetchAccountDelegationsHistory(currentAccountId, searchParams)
+    // currentAccountId can't be null here, so we use non-null assertion
+    const { items }: any = await fetchAccountDelegationsHistory(currentAccountId!, searchParams)
     const formattedDelegations = formatDelegations(items)
     delegations.value = formattedDelegations
   } catch (error) {

@@ -104,7 +104,6 @@
               :entity="favoriteEntity"
               :hideTooltip="isSidebarOpened"
               :selected="favoriteEntity.accountId === currentAccountId"
-              @entity-selected="onEntitySelected"
             />
           </li>
         </ul>
@@ -125,9 +124,7 @@ import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
-import type { Entity } from '@pulse/common/types'
-import { useUserStore } from '@pulse/common/stores'
-import { SelectedEntityManager } from '@pulse/common/managers'
+import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { PIcon } from '@pulse/styleguide/components'
@@ -142,6 +139,7 @@ import AppVersion from './components/AppVersion'
 const route = useRoute()
 
 const userStore = useUserStore()
+const selectedEntityStore = useSelectedEntityStore()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -178,14 +176,7 @@ const walletItem = computed((): SidebarEntityItemProps => {
 })
 
 const currentAccountId = computed(() => {
-  const folderIdParam = route.params.folderId ? parseInt(`${route.params.folderId}`) : undefined
-
-  if (folderIdParam && !isNaN(folderIdParam)) {
-    return folderIdParam
-  }
-  const idParam = parseInt(`${route.params.id}`)
-
-  return isNaN(idParam) ? undefined : idParam
+  return selectedEntityStore.selectedEntityId
 })
 
 const isSelectedEntityActive = computed(() => {
@@ -194,7 +185,6 @@ const isSelectedEntityActive = computed(() => {
   }
 
   let isUnitaryViewVisible = false
-
 
   const routesWithSidebarMenu = [
     'folder',
@@ -230,10 +220,6 @@ const getActiveWallet = computed(() => {
 
   return ''
 })
-
-const onEntitySelected = (entity: Entity) => {
-  SelectedEntityManager.persistSelectedEntity(entity)
-}
 </script>
 
 <style scoped lang="scss">

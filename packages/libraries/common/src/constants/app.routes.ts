@@ -1,4 +1,5 @@
 import { RouteName } from '../enums/route-name.enums'
+import { RouteParam } from '../enums/route-param.enums'
 
 export const APP_ROUTES = {
   root: { path: '/', name: RouteName.ROOT },
@@ -21,7 +22,7 @@ export const APP_ROUTES = {
     client: {
       root: { path: 'portefeuille', name: 'wallet-client' },
       landing: { path: 'mes-entites', name: 'entity-client' },
-      folder: { path: 'dossier/:id', name: RouteName.FOLDER },
+      folder: { path: `dossier/:${RouteParam.ENTITY_ID}`, name: RouteName.FOLDER },
     },
     collab: {
       root: { path: 'portefeuille', name: RouteName.WALLET },

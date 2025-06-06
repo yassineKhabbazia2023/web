@@ -68,6 +68,8 @@ import type {
 import { updateUserPermissions } from '@entities/services/authorization'
 import { getPermissionCodes } from './utils'
 import RightsList from './components/RightsList'
+import { RouteParam } from '@pulse/common/enums'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -106,10 +108,11 @@ const handleUpdateUserPermissions = async () => {
      * exp: ['CODE1', 'CODE2', 'CODE3']
      */
     const permissionsCodes = getPermissionCodes(authorizationsState.value)
-    // If it's a collab, there's no need to specify the account ID (Global View)
+    // If it's a collab, the entityId will be null and that's fine
+    const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
     await updateUserPermissions(
       props.selectedUser.contactId,
-      route.params.id ? +route.params.id : null,
+      entityId,
       permissionsCodes,
     )
     // I added a setTimeout to enhance the user experience (UX)

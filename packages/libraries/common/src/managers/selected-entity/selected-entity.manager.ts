@@ -6,7 +6,7 @@ import { fetchUserAccountPermissions } from '../../services/permissions/permissi
 export const LOCAL_STORAGE_SELECTED_ENTITY_KEY = 'selected-entity'
 
 export class SelectedEntityManager {
-  static async persistSelectedEntity(entity: Entity) {
+  static async initializeSelectedEntity(entity: Entity) {
     const { accountId } = entity
 
     const permissionsStore = usePermissionsStore()
@@ -15,26 +15,34 @@ export class SelectedEntityManager {
 
     const selectedEntityStore = useSelectedEntityStore()
     selectedEntityStore.setSelectedEntity(entity)
-    localStorage.setItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY, JSON.stringify(entity))
+    SelectedEntityManager.setLocalStorageEntityId(accountId)
   }
 
-  static getSelectedEntity() {
-    const selectedEntityInLocalStorage = localStorage.getItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY)
-    const selectedEntityStore = useSelectedEntityStore()
-    const storedSelectedEntity = selectedEntityStore.selectedEntity
-
-    if (selectedEntityInLocalStorage) {
-      return JSON.parse(selectedEntityInLocalStorage) as Entity
-    } else if (storedSelectedEntity) {
-      return storedSelectedEntity
+  static setLocalStorageEntityId(entityId: number | null | undefined) {
+    if(entityId === null || entityId === undefined) {
+      SelectedEntityManager.clearLocalStorageEntityId()
     } else {
-      return undefined
+      localStorage.setItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY, JSON.stringify(entityId))
     }
   }
 
+  static getLocalStorageEntityId() {
+    const localStorageEntityId = Number(localStorage.getItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY))
+    return isNaN(localStorageEntityId) ? undefined : localStorageEntityId
+  }
+
+  static clearLocalStorageEntityId() {
+    localStorage.removeItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY)
+  }
+
   static clearSelectedEntity() {
+    // remove selected entity from the store
     const selectedEntityStore = useSelectedEntityStore()
     selectedEntityStore.setSelectedEntity()
-    localStorage.removeItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY)
+    // remove selected entity permissions from the store
+    const permissionsStore = usePermissionsStore()
+    permissionsStore.setSelectedEntityPermissions([])
+    // clear local storage
+    SelectedEntityManager.clearLocalStorageEntityId()
   }
 }

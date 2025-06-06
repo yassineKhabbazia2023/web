@@ -9,6 +9,7 @@ import {
 } from '../folders/DeployUtilsMock'
 import type { AccountRow } from '@entities/common/types'
 import { SelectedEntityManagerMock } from '@pulse/common/mocks'
+import { RouteParam } from '@pulse/common/enums'
 
 import AccountManagement from '.'
 
@@ -109,7 +110,7 @@ describe('deploy', () => {
       expect(mockRouterPush).toHaveBeenCalledTimes(1)
       expect(mockRouterPush).toHaveBeenCalledWith({
         name: 'folder',
-        params: { id: '8126f51d-c834-4fda-82ea-00d51ee11983' },
+        params: { [RouteParam.ENTITY_ID]: '8126f51d-c834-4fda-82ea-00d51ee11983' },
       })
     })
     it("should open the account rights drawer when the 'Manage Account Rights' button is clicked", async () => {
@@ -205,7 +206,6 @@ describe('deploy', () => {
       )
     })
 
-    // FIXME : skipped while integrating SG in monorepo
     it('should not call the API when the user searches with fewer than 3 characters', async () => {
       const wrapper = createWrapper()
 

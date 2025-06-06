@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
 import { LAYOUT_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
-import { Layout, RouteName } from '@pulse/common/enums'
+import { Layout, RouteName, RouteParam } from '@pulse/common/enums'
 import widgetsLibrary from '@pulse/widgets'
 
 const routes = [] as RouteRecordRaw[]
@@ -142,14 +142,14 @@ routes.push({
 } as RouteRecordRaw)
 
 routes.push({
-  path: '/dossier/:id',
+  path: `/dossier/:${RouteParam.ENTITY_ID}`,
   name: RouteName.FOLDER,
   component: () => import('@entities/pages/folder'),
   children: folderPatchChildren(FOLDER_CHILDREN_PATH),
 })
 
 routes.push({
-  path: '/dossier/:id/banque',
+  path: `/dossier/:${RouteParam.ENTITY_ID}/banque`,
   name: RouteName.BANK,
   component: () => import('@entities/pages/WorkInProgress'),
   meta: {
@@ -159,7 +159,7 @@ routes.push({
 })
 
 routes.push({
-  path: '/dossier/:id/indicateurs',
+  path: `/dossier/:${RouteParam.ENTITY_ID}/indicateurs`,
   name: RouteName.INDICATORS,
   component: () => import('@entities/pages/WorkInProgress'),
   meta: {

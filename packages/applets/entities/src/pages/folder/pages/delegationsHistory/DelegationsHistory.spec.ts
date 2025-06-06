@@ -3,6 +3,7 @@ import delegationsHistoryMock from '@entities/__mocks__/json/delegationsHistory.
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'
 import { useUserStore } from '@pulse/common/stores'
 import { getMockedUser, getStoreMock } from '@pulse/common/mocks'
+import { RouteParam } from '@pulse/common/enums'
 
 import DelegationsHistory from './'
 
@@ -14,7 +15,7 @@ const userStoreMock = getStoreMock(useUserStore)
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
-      id: CURRENT_ACCOUNT_ID,
+      [RouteParam.ENTITY_ID]: CURRENT_ACCOUNT_ID,
     },
   }),
 }))

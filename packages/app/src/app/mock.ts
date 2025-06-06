@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { APP_ROUTES, LAYOUT_META } from '@pulse/common/constants'
-import { Layout, RouteName } from '@pulse/common/enums'
+import { Layout, RouteName, RouteParam } from '@pulse/common/enums'
 
 export const PAGES_TITLE = {
   CLIENT: 'Login Client Page',
@@ -55,7 +55,7 @@ export const ROUTES: RouteRecordRaw[] = [
     },
   },
   {
-    path: '/dossier/:id',
+    path: `/dossier/:${RouteParam.ENTITY_ID}`,
     name: RouteName.FOLDER,
     component: {
       template: `<p class="pageTitle">${PAGES_TITLE.FOLDER}</p>`,

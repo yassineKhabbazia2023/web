@@ -6,7 +6,6 @@ import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import {
   getStoreMock,
   SelectedEntityManagerMock,
-  persistSelectedEntityMock,
   getMockedEntity,
 } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
@@ -76,17 +75,6 @@ describe('sidebarEntity', () => {
       expect(EntityAvatars).toHaveLength(entities.length)
     })
 
-    it('should call SelectedEntityManager when click on EntityAvatar', () => {
-      const favoriteEntities = wrapper.find('[data-testid=favorite-entities]')
-      const EntityAvatars = favoriteEntities.findAllComponents({ name: 'EntityAvatar' })
-      const secondEntityAvatar = EntityAvatars.at(1)
-      const entity = entities.at(1)
-      secondEntityAvatar.vm.$emit('entity-selected', entity)
-
-      expect(persistSelectedEntityMock).toHaveBeenCalledOnce()
-      expect(persistSelectedEntityMock).toHaveBeenCalledWith(entity)
-    })
-
     it('should display the sidebar with the appropriate background color', async () => {
       const sidenavEntityBefore = wrapper.find('[data-testid="sidenav-entity"]')
 
@@ -111,18 +99,6 @@ describe('sidebarEntity', () => {
       )
 
       expect(favoriteEntities).toHaveLength(entities.length)
-    })
-
-    it('should persist the selected entity correctly after clicking on a favorite entity avatar', async () => {
-      const firstFavoriteEntity = wrapper.find('[data-testid=favorite-entity] button')
-
-      await firstFavoriteEntity.trigger('click')
-
-      const accountNumber = firstFavoriteEntity.find('.entity-wrapper__details-ibs')
-      const selectedEntity = entities.find((entity) => entity.accountNumber === accountNumber.text())
-
-      expect(persistSelectedEntityMock).toHaveBeenCalledTimes(1)
-      expect(persistSelectedEntityMock).toHaveBeenCalledWith(selectedEntity)
     })
   })
   describe('events', () => {

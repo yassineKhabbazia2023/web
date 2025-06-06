@@ -7,12 +7,7 @@ import type {
 import { patchNotificationReadStatus } from '@app/modules/FeedCenter/services/notifications.service'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import type { Entity } from '@pulse/common/types'
-import { fetchUserEntities } from './notifications-wrapper.service'
-import { useSelectedEntityStore } from '@pulse/common/stores'
-import { SelectedEntityManager } from '@pulse/common/managers'
-import { storeToRefs } from 'pinia'
-import { RouteName } from '@pulse/common/enums'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 
 dayjs.extend(relativeTime)
 
@@ -89,27 +84,9 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
   },
   [NotificationKindEnum.GED]: async (params: NotificationActionsMappingParams) => {
     const { accountIds, notification, router } = params
-
-    const selectedEntityStore = useSelectedEntityStore()
-    const { selectedEntity } = storeToRefs(selectedEntityStore)
-    if (selectedEntity?.value?.accountId !== notification.accounts[0].id) {
-      const data = await fetchUserEntities()
-      const foundEntity = data.find(entity => entity.accountId === notification.accounts[0].id)
-      if (!foundEntity) {
-        return
-      }
-
-      const formattedEntityData: Entity = {
-        accountId: foundEntity.accountId,
-        accountNumber: foundEntity.accountNumber,
-        legalName: foundEntity.legalName,
-      }
-      await SelectedEntityManager.persistSelectedEntity(formattedEntityData)
-    }
-    // only pushing to GED if user has access to the folder
     router.push({
       name: RouteName.GED,
-      params: { folderId: accountIds[0] },
+      params: { [RouteParam.ENTITY_ID]: accountIds[0] },
       query: { folderId: notification.redirectLink },
     })
   },

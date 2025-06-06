@@ -2,6 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import * as VueRouter from 'vue-router'
 import { useUserStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks'
+import { RouteParam } from '@pulse/common/enums'
 
 import Users from './'
 
@@ -72,7 +73,7 @@ describe('test User', () => {
               name: 'users',
             }],
             params: {
-              id: mockedAccountId,
+              [RouteParam.ENTITY_ID]: mockedAccountId,
             },
           } as any
         })

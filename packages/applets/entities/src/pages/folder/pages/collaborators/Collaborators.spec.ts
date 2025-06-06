@@ -7,6 +7,7 @@ import * as contactServices from '@entities/services/contact'
 import type { ComponentWrapper } from '@entities/common/types'
 import { CurrentUserManagerMock, getStoreMock } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
+import { RouteParam } from '@pulse/common/enums'
 
 import Collaborators from '.'
 
@@ -18,7 +19,7 @@ vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     params: {
-      id: ENTITY_ID,
+      [RouteParam.ENTITY_ID]: ENTITY_ID,
     },
   }),
 }))

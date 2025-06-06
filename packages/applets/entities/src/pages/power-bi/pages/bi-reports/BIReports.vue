@@ -23,6 +23,8 @@ import type { Report } from '@entities/common/types/BIReportsTypes'
 import ReportsList from './components/ReportsList'
 import ReportDisplay from './components/ReportDisplay'
 import { displayNotification } from '@entities/common/utils'
+import { RouteParam } from '@pulse/common/enums'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -36,8 +38,9 @@ const selectedReport = ref<Report>()
 
 onMounted(async () => {
   try {
-    const accountId = +route.params.id
-    const { items } = await fetchBIReports(accountId)
+    const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
+    // entityId can't be null here, so we use non-null assertion
+    const { items } = await fetchBIReports(entityId!)
     reports.value = items
     // We always select the first report by default
     selectedReport.value = reports.value[0]

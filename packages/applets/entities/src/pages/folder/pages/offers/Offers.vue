@@ -96,6 +96,8 @@ import { fetchAccountSubscriptions } from '@entities/services/subscription'
 import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
 import { PERMISSION_CODES } from '@entities/constants'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+import { RouteParam } from '@pulse/common/enums'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 const route = useRoute()
 const userStore = useUserStore()
@@ -133,7 +135,9 @@ const handleActivateOffersClick = () => {
 
 onMounted(async () => {
   try {
-    activeOffers.value = await fetchAccountSubscriptions(+route.params.id)
+    const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
+    // entityId can't be null here, so we use non-null assertion
+    activeOffers.value = await fetchAccountSubscriptions(entityId!)
   } catch (error) {
     logger.error('fetching account subscriptions', error)
   } finally {

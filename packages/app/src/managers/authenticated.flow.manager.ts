@@ -18,6 +18,9 @@ import { logger } from '@pulse/core'
 import { SelectedEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import type { RouteLocationNamedRaw } from 'vue-router'
+import { RouteParam } from '@pulse/common/enums'
+import { fetchEntityById } from '@pulse/common/services/entities'
+import { Entity } from '@pulse/common/types'
 
 export class AuthenticatedFlowManager {
   static async enterAuthenticatedFlow() {
@@ -44,7 +47,6 @@ export class AuthenticatedFlowManager {
   }
 
   static async initEntities() {
-    const userStore = useUserStore()
     try {
       const { items: entities } = await fetchEntities(2)
 
@@ -53,21 +55,48 @@ export class AuthenticatedFlowManager {
         return
       }
 
-      const isSingleEntity = entities.length === 1
-      userStore.setIsSingleEntity(isSingleEntity)
-
-      const selectedEntityStore = useSelectedEntityStore()
-      const storedEntity = SelectedEntityManager.getSelectedEntity()
-      selectedEntityStore.setSelectedEntity(storedEntity ?? entities[0])
-      SelectedEntityManager.persistSelectedEntity(storedEntity ?? entities[0])
-
-      const favoriteEntities = await fetchFavoriteEntities()
-      userStore.setFavoriteEntities(favoriteEntities)
+      AuthenticatedFlowManager.setUserIsSingleEntity(entities)
+      await AuthenticatedFlowManager.setUserSelectedEntity(entities[0])
+      await AuthenticatedFlowManager.setUserFavoriteEntities()
 
     } catch (error) {
       logger.error('unable to fetch and set entities', error)
     }
   }
+
+  private static setUserIsSingleEntity(entities: Entity[]) {
+    const userStore = useUserStore()
+
+    const isSingleEntity = entities.length === 1
+    userStore.setIsSingleEntity(isSingleEntity)
+  }
+
+  private static async setUserSelectedEntity(defaultEntity: Entity) {
+    const selectedEntityStore = useSelectedEntityStore()
+    // if no entity is selected, we try to fetch the one stored in local storage
+    // or set the default entity provided
+    if(selectedEntityStore.selectedEntityId === undefined) {
+      let storedEntity
+
+      const localStorageEntityId = SelectedEntityManager.getLocalStorageEntityId()
+      if (localStorageEntityId) {
+        storedEntity = await fetchEntityById(localStorageEntityId)
+      }
+      // If the entity is not found in local storage or the user doesn't have permissions on it anymore,
+      // we default to the one provided
+      const entityToPersist = storedEntity || defaultEntity
+
+      return SelectedEntityManager.initializeSelectedEntity(entityToPersist)
+    }
+  }
+
+  private static async setUserFavoriteEntities() {
+    const userStore = useUserStore()
+
+    const favoriteEntities = await fetchFavoriteEntities()
+    userStore.setFavoriteEntities(favoriteEntities)
+  }
+
 
   static initAuthenticatedThirdParties() {
     const userStore = useUserStore()
@@ -176,7 +205,10 @@ export class AuthenticatedFlowManager {
     if (isSingleEntity) {
       const selectedEntityStore = useSelectedEntityStore()
       const entityAccountId = selectedEntityStore.selectedEntity?.accountId
-      const entityLandingPage = { name: APP_ROUTES.wallet.client.folder.name, params: { id: entityAccountId } }
+      const entityLandingPage = {
+        name: APP_ROUTES.wallet.client.folder.name,
+        params: { [RouteParam.ENTITY_ID]: entityAccountId },
+      }
 
       return entityLandingPage
     }

@@ -61,12 +61,14 @@ import { useRoute } from 'vue-router'
 import { PSwitch, PCheckbox, PCheckboxGroup, PLoader } from '@pulse/styleguide/components'
 import { fetchAuthorizationsConfig, fetchAccountAuthorizationsConfig } from '@entities/services/authorization'
 import { getAuthorizationsConfigMapped, getAuthorizationState } from './utils'
+import { RouteParam } from '@pulse/common/enums'
 import type { AuthorizationState } from '../../ManageRightsTypes'
 import type {
   AuthorizationConfig,
   AuthorizationConfigMapped,
   RightsListProps,
 } from './RightsListTypes'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -144,9 +146,10 @@ onMounted(async () => {
         props.contactType,
       )
     } else if (props.contactId) {
+      const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
       rightsConfigList = await fetchAuthorizationsConfig(
         props.contactId,
-        route.params.id ? +route.params.id : null,
+        entityId,
       )
     }
     // We need to map the data in order to obtain the category label
