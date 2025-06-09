@@ -3,7 +3,7 @@ import { WalletTab } from './Wallet.enums'
 
 export type WalletTabConfiguration = {
   name: WalletTab,
-  permissionCode?: string,
+  permissionCode?: string | string[],
   featureFlag?: Feature,
 }
 
