@@ -1,8 +1,10 @@
 <div data-v-deadef9e="" class="report-error-card padding-bottom--1">
   <div data-v-deadef9e="" class="notification">
-    <div data-v-deadef9e="" class="report-error-card__title font-base font-semibold text-color--persian-600">Error Report 1</div>
-    <div data-v-deadef9e="" class="report-error-card__id font-base text-color--persian-400 margin-y--1">123123</div>
-    <div data-v-deadef9e="" class="report-error-card__message font-large font-normal text-color--neutral-gray-900">System resource overload detected.
-      Loop detected in processing sequence.</div>
+    <p data-v-deadef9e="" class="report-error-card__title font-base font-semibold text-color--persian-600">Error Report 1</p>
+    <p data-v-deadef9e="" class="report-error-card__id font-base text-color--persian-400 margin-y--1">123123</p>
+    <ul data-v-deadef9e="" class="report-error-card__message">
+      <li data-v-deadef9e=""><span data-v-deadef9e="" class="font-large font-normal text-color--neutral-gray-900" data-testid="report-error-message">System resource overload detected.</span></li>
+      <li data-v-deadef9e=""><span data-v-deadef9e="" class="font-large font-normal text-color--neutral-gray-900" data-testid="report-error-message">Loop detected in processing sequence.</span></li>
+    </ul>
   </div>
 </div>

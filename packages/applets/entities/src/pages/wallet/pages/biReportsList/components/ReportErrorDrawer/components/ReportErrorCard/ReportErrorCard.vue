@@ -2,15 +2,25 @@
   <div class="report-error-card padding-bottom--1">
     <PNotificationCard :pTime="formatDate(detectionDate)">
       <template #text>
-        <div class="report-error-card__title font-base font-semibold text-color--persian-600">
+        <p class="report-error-card__title font-base font-semibold text-color--persian-600">
           {{ reportName }}
-        </div>
-        <div class="report-error-card__id font-base text-color--persian-400 margin-y--1">
+        </p>
+        <p class="report-error-card__id font-base text-color--persian-400 margin-y--1">
           {{ embedReportId }}
-        </div>
-        <div class="report-error-card__message font-large font-normal text-color--neutral-gray-900">
-          {{ messages.join('\n') }}
-        </div>
+        </p>
+        <ul class="report-error-card__message">
+          <li
+            v-for="(errorMessage, index) in messages"
+            :key="index"
+          >
+            <span
+              class="font-large font-normal text-color--neutral-gray-900"
+              data-testid="report-error-message"
+            >
+              {{ errorMessage }}
+            </span>
+          </li>
+        </ul>
       </template>
 
       <template #tag>
@@ -63,6 +73,6 @@ const formatDate = (date: string): string => d(date, 'long')
 }
 
 .report-error-card__message {
-  white-space: pre-line;
+  list-style: none;
 }
 </style>
