@@ -23,7 +23,7 @@
             :pContent="scope.row.name"
             pPlacement="top"
           >
-            <p class="font-semibold margin-left--2">
+            <p class="font-semibold margin-left--2" :data-testid="scope.row.name">
               {{ scope.row.legalName }}
             </p>
           </PTooltip>
