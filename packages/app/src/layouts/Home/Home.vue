@@ -155,7 +155,11 @@ async function setNotificationsCount() {
 
 const unreadNotificationsCount = ref(0)
 const notificationsCountIntervalId = setInterval(async () => {
-  await setNotificationsCount()
+  const isPageVisible = document.visibilityState === 'visible'
+
+  if (isPageVisible === true) {
+    await setNotificationsCount()
+  }
 }, UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL)
 
 onBeforeUnmount(() => {

@@ -5,6 +5,7 @@ import { fetchUnreadNotificationsCountMock, notificationsServiceMock } from '@ap
 import { trackFeedcenterOpenedMock, trackingServiceMock } from '@app/__mocks__/tracking.service.mocks'
 import { nextTick } from 'vue'
 import { createTestingPinia } from '@pinia/testing'
+import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
 
 createTestingPinia()
 
@@ -55,6 +56,13 @@ function getHomeFeedCenterDrawer(wrapper: VueWrapper) {
 }
 
 describe('home', () => {
+  afterEach(() => {
+    // The component uses setInterval
+    // We're clearing the timers to avoid overlap between tests
+    vi.clearAllTimers()
+    fetchUnreadNotificationsCountMock.mockReset()
+  })
+
   it('can display the user profile drawer', async () => {
     const wrapper = createWrapper()
     wrapper.vm.isLoading = false
@@ -187,5 +195,31 @@ describe('home', () => {
     wrapper.vm.isFeedCenterOpened = true
     await flushPromises()
     expect(trackFeedcenterOpenedMock).toHaveBeenCalledOnce()
+  })
+
+  it.each([
+    {
+      isDocumentVisibleMock: 'visible',
+      intervalCount: 2,
+      // one call in onMounted and two for intervalCount
+      expectedNumberOfCall: 3,
+    },
+    {
+      isDocumentVisibleMock: 'hidden',
+      intervalCount: 2,
+      // one call in onMounted and none for intervalCount as document is hidden
+      expectedNumberOfCall: 1,
+    },
+  ])('should not fetch in interval when document doesn\'t have focus', async ({ isDocumentVisibleMock, intervalCount, expectedNumberOfCall }) => {
+    isFeedCenterActivatedMock.mockReturnValue(true)
+    vi.spyOn(document, 'visibilityState', 'get').mockReturnValue(isDocumentVisibleMock as DocumentVisibilityState)
+    vi.useFakeTimers()
+    createWrapper()
+    await flushPromises()
+    vi.advanceTimersByTime(intervalCount * UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL)
+    await flushPromises()
+
+    expect(fetchUnreadNotificationsCountMock).toHaveBeenCalledTimes(expectedNumberOfCall)
+    vi.useRealTimers()
   })
 })
