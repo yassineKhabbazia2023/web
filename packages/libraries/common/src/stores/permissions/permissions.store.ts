@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { UserEntityPermissions } from '@pulse/common/enums'
 
 export const usePermissionsStore = defineStore('permissions', () => {
   const userPermissions = ref<string[]>([])
@@ -18,11 +19,18 @@ export const usePermissionsStore = defineStore('permissions', () => {
     selectedEntityPermissions.value = []
   }
 
+  function getHasPennylanePermission() {
+    return selectedEntityPermissions.value.some((entityPermission) =>
+      UserEntityPermissions.PENNYLANE.includes(entityPermission),
+    )
+  }
+
   return {
     userPermissions,
     selectedEntityPermissions,
     setUserPermissions,
     setSelectedEntityPermissions,
     reset,
+    getHasPennylanePermission,
   }
 })

@@ -11,7 +11,8 @@
     "./enums": "./src/enums.mts",
     "./managers": "./src/managers.mts",
     "./types": "./src/types.mts",
-    "./install": "./src/install.mts"
+    "./install": "./src/install.mts",
+    "./gridless": "./src/gridless.mts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

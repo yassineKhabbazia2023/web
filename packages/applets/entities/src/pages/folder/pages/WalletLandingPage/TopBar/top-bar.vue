@@ -2,16 +2,26 @@
   <div
     class="
       home-top-bar
-      margin-y--4
       flex
       flex-gap--4
     "
   >
-    <PennylaneSSO v-if="TopBarManager.isPennylaneSSODisplayed()" />
+    <template v-if="isPennylaneSSODisplayed === true">
+      <PennylaneSSOCustomer v-if="TopBarManager.shouldDisplayCustomerSSO() === true" />
+      <PennylaneSSOCollab v-if="TopBarManager.shouldDisplayCustomerSSO() === false" />
+    </template>
   </div>
 </template>
 
-<script setup>
-import { PennylaneSSO } from '@pulse/common/components'
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue'
 import { TopBarManager } from './top-bar.manager'
+import { PennylaneSSOCustomer, PennylaneSSOCollab } from '@pulse/widgets/gridless'
+
+const isPennylaneSSODisplayed = ref(false)
+
+onMounted(() => {
+  isPennylaneSSODisplayed.value = TopBarManager.isPennylaneSSODisplayed()
+})
+
 </script>

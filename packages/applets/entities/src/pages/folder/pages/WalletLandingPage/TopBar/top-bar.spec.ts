@@ -2,28 +2,66 @@ import { describe, it, expect, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { TopBarManager } from './top-bar.manager'
 import TopBar from './top-bar.vue'
+import { getStoreMock } from '@pulse/common/mocks'
+import { usePermissionsStore } from '@pulse/common/stores'
+import { nextTick } from 'vue'
+// Mock setup
+vi.mock('./top-bar.manager', () => ({
+  TopBarManager: {
+    shouldDisplayCustomerSSO: vi.fn(),
+    isPennylaneSSODisplayed: vi.fn(),
+  },
+}))
 
-vi.mock('./top-bar.manager')
+getStoreMock(usePermissionsStore)
 
 describe('TopBar', () => {
-  it.each([
-    {
-      testName: 'should display PennylaneSSO when isPennylaneSSODisplayed returns true',
-      isPennylaneSSODisplayed: true,
-      shouldExist: true,
-    },
-    {
-      testName: 'should not display PennylaneSSO when isPennylaneSSODisplayed returns false',
-      isPennylaneSSODisplayed: false,
-      shouldExist: false,
-    },
-  ])('$testName', async ({ isPennylaneSSODisplayed, shouldExist }) => {
-    vi.mocked(TopBarManager.isPennylaneSSODisplayed).mockReturnValue(isPennylaneSSODisplayed)
+  beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(TopBarManager.isPennylaneSSODisplayed).mockReturnValue(true)
+  })
 
-    const wrapper = shallowMount(TopBar)
+  describe('PennylaneSSO display', async () => {
+    it.each([
+      {
+        testName: 'should display PennylaneSSOCustomer when user is customer',
+        shouldDisplayCustomerSSO: true,
+        component: 'pennylane-sso-customer',
+      },
+      {
+        testName: 'should display PennylaneSSOCollab when user is collab',
+        shouldDisplayCustomerSSO: false,
+        component: 'pennylane-sso-collab',
+      },
+    ])('$testName', async ({ shouldDisplayCustomerSSO, component }) => {
+      vi.mocked(TopBarManager.shouldDisplayCustomerSSO).mockReturnValue(shouldDisplayCustomerSSO)
 
-    const pennylaneSSO = wrapper.findComponent({ name: 'PennylaneSSO' })
-    expect(TopBarManager.isPennylaneSSODisplayed()).toBe(isPennylaneSSODisplayed)
-    expect(pennylaneSSO.exists()).toBe(shouldExist)
+      const wrapper = shallowMount(TopBar)
+      await nextTick()
+      const ssoComponent = wrapper.findComponent({ name: component })
+      expect(ssoComponent.exists()).toBe(true)
+    })
+
+    it('should not display any PennylaneSSO component when isPennylaneSSODisplayed is false', () => {
+      vi.mocked(TopBarManager.isPennylaneSSODisplayed).mockReturnValue(false)
+
+      const wrapper = shallowMount(TopBar)
+
+      const customerComponent = wrapper.findComponent({ name: 'pennylane-sso-customer' })
+      const collabComponent = wrapper.findComponent({ name: 'pennylane-sso-collab' })
+      expect(customerComponent.exists()).toBe(false)
+      expect(collabComponent.exists()).toBe(false)
+    })
+
+    it('should initialize isPennylaneSSODisplayed on mount', () => {
+      // Arrange
+      vi.mocked(TopBarManager.isPennylaneSSODisplayed).mockReturnValue(true)
+
+      // Act
+      shallowMount(TopBar)
+
+      // Assert
+      expect(TopBarManager.isPennylaneSSODisplayed).toHaveBeenCalledTimes(1)
+    })
   })
 })

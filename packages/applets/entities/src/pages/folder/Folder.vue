@@ -21,7 +21,11 @@
       />
     </PTabs>
   </div>
-  <Home v-else-if="isHomeDisplayed" />
+  <!-- This makes sure that the home component is being re-rendered each time we're changing entity -->
+  <Home
+    v-else-if="isHomeDisplayed && selectedEntity"
+    :key="selectedEntity.accountId"
+  />
   <router-view />
 </template>
 

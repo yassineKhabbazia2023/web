@@ -1,9 +1,9 @@
 import type { App } from 'vue'
 import { commoni18n } from '@pulse/common'
-import digilabWidget from './widgets/digilab/digilab.widget.mts'
-import pennylaneIntroWidget from './widgets/pennylane-intro/pennylane-intro.widget.mts'
-import powerBIIntroWidget from './widgets/power-bi-intro/power-bi-intro.widget.mts'
-import rssNewsWidget from './widgets/rss-news/rss-news.widget.mts'
+import digilabWidget from './widgets/grid/digilab/digilab.widget.mts'
+import pennylaneIntroWidget from './widgets/grid/pennylane-intro/pennylane-intro.widget.mts'
+import powerBIIntroWidget from './widgets/grid/power-bi-intro/power-bi-intro.widget.mts'
+import rssNewsWidget from './widgets/grid/rss-news/rss-news.widget.mts'
 import frFR from './i18n/fr-FR.json'
 import enUS from './i18n/en-US.json'
 
