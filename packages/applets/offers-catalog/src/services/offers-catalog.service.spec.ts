@@ -2,7 +2,7 @@ import { getOffersCatalogResponseMock } from '../mocks/offers-catalog.service.mo
 import { apiGatewayMock } from '@pulse/common/mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 
-import { getOffersCatalog } from './offers-catalog.service'
+import { getOffersCatalog, getOfferCatalogPdf } from './offers-catalog.service'
 
 const offersCatalogMock = getOffersCatalogResponseMock()
 
@@ -13,18 +13,40 @@ vi.mock('@pulse/common', () => ({
 }))
 
 describe('offers-catalog.service', () => {
-  beforeEach(() => {
-    apiGatewayMock.get.mockResolvedValue({
-      data: offersCatalogMock,
+  describe('getOffersCatalog', () => {
+    it('should call api properly', async () => {
+      apiGatewayMock.get.mockResolvedValue({
+        data: offersCatalogMock,
+      })
+
+      const offersCatalog = await getOffersCatalog()
+      const expectedParameters = `${API_PREFIXES.OFFER}/catalog/offers`
+
+      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
+      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedParameters)
+      expect(offersCatalog).toStrictEqual(offersCatalogMock)
     })
   })
 
-  it('should call api properly', async () => {
-    const offersCatalog = await getOffersCatalog()
-    const expectedParameters = `${API_PREFIXES.OFFER}/catalog/offers`
+  describe('getOfferCatalogPdf', () => {
+    it('should call api properly', async () => {
+      const offerCatalogPdfMock = new ArrayBuffer(8) // Mocking an ArrayBuffer for the PDF response
+      apiGatewayMock.get.mockResolvedValue({
+        data: offerCatalogPdfMock,
+      })
 
-    expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-    expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedParameters)
-    expect(offersCatalog).toStrictEqual(offersCatalogMock)
+      const fileNameMock = 'file name mock'
+      const offersCatalogPdf = await getOfferCatalogPdf(fileNameMock)
+      const expectedParameters = [
+        `${API_PREFIXES.OFFER}/catalog/${fileNameMock}`,
+        {
+          responseType: 'arraybuffer',
+        },
+      ]
+
+      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
+      expect(apiGatewayMock.get).toHaveBeenCalledWith(...expectedParameters)
+      expect(offersCatalogPdf).toStrictEqual(offerCatalogPdfMock)
+    })
   })
 })

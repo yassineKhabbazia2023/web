@@ -53,7 +53,7 @@ const internalTags = computed(() => {
   }))
 })
 
-const internalSubtitle = computed(() => (props.subtitle?.length ?? 0) > MAX_SUBTITLE_LENGTH
+const internalSubtitle = computed(() => props.subtitle.length > MAX_SUBTITLE_LENGTH
   ? `${props.subtitle.slice(0, MAX_SUBTITLE_LENGTH).trim()}${ELLIPSIS}`
   : props.subtitle)
 </script>

@@ -7,21 +7,47 @@
       grid-gap--8
     "
   >
+    <POverlay
+      v-if="loadingStatus === APICallStatus.LOADING"
+      class="position--absolute"
+    >
+      <div
+        class="margin-y--12"
+      >
+        <PLoader
+          pType="primary"
+          pSize="50"
+        />
+      </div>
+    </POverlay>
+
     <CatalogCard
-      v-for="({ title , shortDescription, tags }, index) in offers"
+      v-for="({ id, title , shortDescription, tags }, index) in offers"
       :key="index"
       :title="title"
       :subtitle="shortDescription"
       :tags="tags"
+      class="cursor-pointer"
+      @click="onCardClick(id)"
     />
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { CatalogCardListProps } from './catalog-card-list.types'
+import { PLoader, POverlay } from '@pulse/styleguide/components'
+import { APICallStatus } from '@pulse/common/enums'
+
 import CatalogCard from '../../components/catalog-card/catalog-card.vue'
 
 defineProps<CatalogCardListProps>()
+const emit = defineEmits<{
+  'select-offer': [number]
+}>()
+
+function onCardClick(id: number) {
+  emit('select-offer', id)
+}
 </script>
 
 <style lang="scss" scoped>

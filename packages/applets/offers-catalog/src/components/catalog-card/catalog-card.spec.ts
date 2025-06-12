@@ -5,6 +5,10 @@ import { getCatalogCardMock } from '../../mocks/catalog-card.mock'
 import CatalogCardList from './catalog-card.vue'
 
 const cardMock = getCatalogCardMock()
+const cardMockWithLongDescrition = getCatalogCardMock({
+  title: 'Pack confort : gestion comptable, sociale, juridique et fiscale',
+  subtitle: 'Une offre des services cœur de métier pour sécuriser les obligations règlementaires et libérer le dirigeant.',
+})
 
 const defaultProps: CatalogCardProps = {
   ...cardMock,
@@ -26,5 +30,13 @@ describe('catalog-card', () => {
     const wrapper = createWrapper()
 
     expect(wrapper.html()).toMatchFileSnapshot('__snap__/catalog-card.html')
+  })
+
+  it('should display with ellipsis when description is long', async () => {
+    const wrapper = createWrapper({
+      ...cardMockWithLongDescrition,
+    })
+
+    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/catalog-card.with-ellispsis.html')
   })
 })
