@@ -15,6 +15,7 @@
       pType="secondary"
       pSize="small"
       pPlain
+      :pDisabled="reportErrorsData.totalItems === 0"
       @click="handleOpenErrorDrawer"
     >
       <span>{{ t('showErrors') }}</span>

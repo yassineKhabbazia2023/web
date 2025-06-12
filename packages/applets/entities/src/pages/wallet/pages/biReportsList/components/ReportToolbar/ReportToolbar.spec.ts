@@ -3,11 +3,11 @@ import { getMockReportErrors } from '@entities/__mocks__/bi-report.mocks'
 
 import ReportToolbar from '.'
 
-const mockReportErrors = getMockReportErrors()[0]
+const mockReportErrors = getMockReportErrors()
 const mockReportErrorResponse = {
   items: mockReportErrors,
   currentPage: 1,
-  totalItem: 1,
+  totalItems: 1,
 }
 
 const fetchReportErrorsMock = vi.hoisted(() => vi.fn(() => Promise.resolve(mockReportErrorResponse)))
@@ -23,16 +23,22 @@ const createWrapper = () =>
       stubs: {
         PButton: {
           name: 'PButton',
-          template: '<div class="p-button"><slot /><PPastille/></div>',
+          template: '<button class="p-button"><slot /><PPastille/></button>',
+          props: ['pDisabled'],
         },
         PPastille: {
           name: 'PPastille',
-          template: `<div>${mockReportErrorResponse.totalItem}</div>`,
+          template: `<div>${mockReportErrorResponse.totalItems}</div>`,
         },
         ReportErrorDrawer: {
           name: 'ReportErrorDrawer',
           template: '<div />',
           props: ['modelValue'],
+        },
+        FormSearch: {
+          name: 'FormSearch',
+          template: '<div><slot /></div>',
+          emits: ['search-value-submitted'],
         },
       },
     },
@@ -60,6 +66,21 @@ describe('ReportToolbar', () => {
       expect(buttonText).toContain('Show errors')
     })
 
+    it('disables the show errors button when there are no report errors', () => {
+      // Arrange
+      fetchReportErrorsMock.mockResolvedValue({
+        items: [],
+        currentPage: 1,
+        totalItems: 0,
+      })
+
+      const button = wrapper.findComponent({ name: 'PButton' })
+
+      // Assert
+      expect(button.exists()).toBe(true)
+      expect(button.props('pDisabled')).toBe(true)
+    })
+
     it('displays the pastille when there are errors', () => {
       // Arrange
       const pastille = wrapper.findComponent({ name: 'PPastille' })
@@ -70,7 +91,7 @@ describe('ReportToolbar', () => {
 
       // Assert
       expect(pastilleExists).toBe(true)
-      expect(pastilleText).toBe(String(mockReportErrorResponse.totalItem))
+      expect(pastilleText).toBe(String(mockReportErrorResponse.totalItems))
     })
   })
 
