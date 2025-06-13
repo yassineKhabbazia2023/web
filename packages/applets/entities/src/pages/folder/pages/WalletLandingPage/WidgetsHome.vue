@@ -1,6 +1,12 @@
 <template>
   <div class="widgets-home">
-    <div class="widgets-home__main-section">
+    <div
+      class="
+        widgets-home__main-section
+        grid
+        grid-gap--10
+      "
+    >
       <div
         v-for="(widget, index) in widgets"
         :key="index"
@@ -31,12 +37,10 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .widgets-home {
-  &__top-section,
   &__main-section {
     margin: 16px 0;
-    display: grid;
     grid-template-columns: repeat(3, minmax(250px, 1fr));
-    grid-gap: 16px;
+    min-height: 340px;
   }
 
   &__grid-item {
@@ -53,20 +57,8 @@ onMounted(() => {
     }
   }
 
-  &__top-section {
-    .widgets-home__grid-item {
-      min-height: 75px;
-    }
-  }
 
-  &__main-section {
-    .widgets-home__grid-item {
-      min-height: 340px;
-    }
-  }
-
-  @media (max-width: 992px) {
-    &__top-section,
+  @media (max-width: 1260px) {
     &__main-section {
       grid-template-columns: repeat(2, minmax(250px, 1fr));
 
@@ -83,7 +75,6 @@ onMounted(() => {
   }
 
   @media (max-width: 767px) {
-    &__top-section,
     &__main-section {
       grid-template-columns: 1fr;
 

@@ -7,6 +7,8 @@ export enum AppColors {
   RED = '#FF0000',
   TEAL = '#00CFDE',
   WHITE = '#FFFFFF',
+  // PENNYLANE
+  PENNYLANE_DARK_GREEN = '#0F5757',
   // TEXT
   RED_TXT = '#B10303',
   // SPECIAL

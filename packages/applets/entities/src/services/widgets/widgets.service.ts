@@ -1,4 +1,5 @@
 import { WidgetName } from '@pulse/widgets/enums'
+import { usePermissionsStore } from '@pulse/common/stores'
 
 export enum HomeWidgetNames {
   USER_WITH_PENNYLANE_OFFER = 'userWithPennylaneOffer',
@@ -20,15 +21,15 @@ const userWithoutPennylaneOfferWidgetNames = [
 // Done this way until we have a full experience layer / BackForFront work flow
 export class WidgetsService {
   static getHomeWidgetNames() {
-    if (this.hasPennylaneOffer()) {
+    if (this.hasPennylane() === true) {
       return userWithPennylaneOfferWidgetNames
     } else {
       return userWithoutPennylaneOfferWidgetNames
     }
   }
 
-  static hasPennylaneOffer() {
-    // Expecting to receive an endpoint for that
-    return true
+  static hasPennylane() {
+    const permissionsStore = usePermissionsStore()
+    return permissionsStore.getHasPennylanePermission()
   }
 }

@@ -124,6 +124,7 @@ export type IconName =
 'inbox' |
 'incognito' |
 'infoCircle' |
+'infoCircleFilled' |
 'inputCursorText' |
 'journalBookmarkFill' |
 'link45deg' |

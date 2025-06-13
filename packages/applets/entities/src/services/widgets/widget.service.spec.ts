@@ -1,11 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { WidgetsService } from './widgets.service'
 import { WidgetName } from '@pulse/widgets/enums'
+import { usePermissionsStore } from '@pulse/common/stores'
+import { getStoreMock } from '@pulse/common/mocks'
 
 describe('WidgetsService', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
+
+  getStoreMock(usePermissionsStore)
+
 
   describe('getHomeWidgetNames', () => {
     it.each([
@@ -28,20 +33,36 @@ describe('WidgetsService', () => {
         ],
       },
     ])('$testName', ({ hasPennylaneOffer, expectedWidgets }) => {
-      vi.spyOn(WidgetsService, 'hasPennylaneOffer').mockReturnValue(hasPennylaneOffer)
+      vi.spyOn(WidgetsService, 'hasPennylane').mockReturnValue(hasPennylaneOffer)
 
       const homeWidgetNames = WidgetsService.getHomeWidgetNames()
 
       expect(homeWidgetNames).toEqual(expectedWidgets)
-      expect(WidgetsService.hasPennylaneOffer).toHaveBeenCalledOnce()
+      expect(WidgetsService.hasPennylane).toHaveBeenCalledOnce()
     })
   })
 
-  describe('hasPennylaneOffer', () => { // will be updated in upcoming task
-    it('should return true by default', () => {
-      const result = WidgetsService.hasPennylaneOffer()
+  describe('hasPennylane', () => {
+    const permissionsStore = getStoreMock(usePermissionsStore)
 
-      expect(result).toBe(true)
+    it.each([
+      {
+        testName: 'should return true when user has Pennylane permission',
+        hasPennylanePermission: true,
+        expected: true,
+      },
+      {
+        testName: 'should return false when user does not have Pennylane permission',
+        hasPennylanePermission: false,
+        expected: false,
+      },
+    ])('$testName', ({ hasPennylanePermission, expected }) => {
+      permissionsStore.getHasPennylanePermission.mockReturnValue(hasPennylanePermission)
+
+      const result = WidgetsService.hasPennylane()
+
+      expect(result).toBe(expected)
+      expect(permissionsStore.getHasPennylanePermission).toHaveBeenCalledTimes(1)
     })
   })
 })

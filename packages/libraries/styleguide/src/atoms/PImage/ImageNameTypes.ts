@@ -132,6 +132,7 @@ export type ImageName =
 'pulse_person_man_office_3x' |
 'pulse_person_man_office_4x' |
 'road_with_brand_shape' |
+'rydge-x-pennylane-transparent' |
 'three-persons-in-meeting' |
 'worker-with-brand-shape' |
 'activation' |

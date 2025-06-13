@@ -19,3 +19,7 @@ export const POWER_BI_INTRODUCTION = 'https://help.clients.app.rydge.fr/fr/artic
 export const RSS_NEWS_FEED_URL = 'https://www.rydge.fr/articles-analyses/rss.xml'
 export const RSS_NEWS_SITE_URL = 'https://www.rydge.fr/articles-analyses'
 export const DIGILAB_JOIN_FORM_URL = 'https://share-eu1.hsforms.com/1hgbsxO-kRPyh9Eb7TLu5jg2dpyhn'
+export const PENNYLANE_ACIVATION_AND_CONNECTION_HELP_URL = 'https://help.clients.app.rydge.fr/fr/article/pennylane-activation-et-connexion'
+export const PENNYLANE_IMPORT_INVOICE_HELP_URL = 'https://help.pennylane.com/fr/articles/185113-importer-une-facture-depuis-l-ordinateur-ou-le-mobile'
+export const PENNYLANE_MOBILE_APP_URL = 'https://www.pennylane.com/fr/application-mobile'
+export const PENNLANE_GETTING_STARTED_URL = 'https://help.pennylane.com/fr/collections/4143-debuter-sur-pennylane'
