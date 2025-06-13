@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import { ref, useTemplateRef } from 'vue'
 import type { FormRules } from 'element-plus'
-import { debounce } from 'lodash-es'
+import { useDebounce } from '@pulse/core'
 
 import PFormItem from '../../atoms/PFormItem/PFormItem.vue'
 import PInput from '../../atoms/PInput/PInput.vue'
@@ -65,7 +65,7 @@ const rules: FormRules = {
 function emitUpdateSearch(value: string) {
   emit('update:pSearch', value)
 }
-const emitUpdateSearchDebounced = debounce(emitUpdateSearch, props.pDebounceDelay)
+const emitUpdateSearchDebounced = useDebounce(emitUpdateSearch, props.pDebounceDelay)
 function setSearchValue(value: string) {
   formValues.value.search = value
 }

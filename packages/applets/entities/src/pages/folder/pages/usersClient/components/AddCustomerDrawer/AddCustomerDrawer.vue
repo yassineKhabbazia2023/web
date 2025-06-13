@@ -99,7 +99,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref, watch } from 'vue'
-import { amplitudeService, debounce } from '@pulse/common'
+import { useDebounce } from '@pulse/core'
+import { amplitudeService } from '@pulse/common'
 import {
   PDrawer,
   PForm,
@@ -173,7 +174,7 @@ const checkContactRole = async () => {
   }
   isNextButtonLoading.value = false
 }
-watch(newContact, debounce(() => checkContactRole(), 600))
+watch(newContact, useDebounce(() => checkContactRole(), 600))
 // #endregion
 
 // #region Handle Add Contact Form Submission

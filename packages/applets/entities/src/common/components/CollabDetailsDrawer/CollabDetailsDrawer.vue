@@ -105,6 +105,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref, watch } from 'vue'
+import { useDebounce } from '@pulse/core'
 import {
   PButton,
   PDrawer,
@@ -116,7 +117,6 @@ import {
   PLoader,
 } from '@pulse/styleguide/components'
 import type { FormInstance, FormRules } from '@pulse/styleguide/types'
-import { debounce } from '@pulse/common'
 import type CollabDetailsDrawerProps from './CollabDetailsDrawerTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { validPhoneNumberPattern } from '@entities/common/utils/helpers/forms'
@@ -196,7 +196,7 @@ async function shouldSubmitButtonBeDisabled() {
   }
 }
 function debouncedShouldSubmitButtonBeDisabled() {
-  return debounce(() => shouldSubmitButtonBeDisabled(), 600)
+  return useDebounce(() => shouldSubmitButtonBeDisabled(), 600)
 }
 
 watch(formValues, debouncedShouldSubmitButtonBeDisabled())

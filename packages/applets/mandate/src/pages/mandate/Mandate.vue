@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger, useDebounce } from '@pulse/core'
 import { ref, onMounted, watch } from 'vue'
 import { getMandatesCollection } from '@mandate/services/mandate'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
@@ -42,7 +42,6 @@ import Header from '@mandate/components/Common/Header'
 import ListMandate from '@mandate/components/DisplayMandate/ListMandate'
 import Pagination from '@mandate/components/DisplayMandate/Pagination'
 import SearchBar from '@mandate/components/Common/SearchBar'
-import { debounce } from '@mandate/helpers/utils'
 import type { MandateCollection } from './Models'
 import { PAGE_SIZES } from '@mandate/constants'
 import { amplitudeService } from '@pulse/common'
@@ -107,10 +106,10 @@ async function onUpdateSearchParams(override: Partial<SearchMandateParams>) {
   await refreshData()
 }
 
-const debouncedRefreshData = debounce(() => {
+const debouncedRefreshData = useDebounce(() => {
   refreshData()
   trackMandateSearch(searchParams.value.searchTerm)
-})
+}, 500)
 
 onMounted(() => {
   refreshData()

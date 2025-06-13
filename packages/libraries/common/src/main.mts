@@ -11,7 +11,6 @@ import { fetchUrlTerms } from './services'
 import { msalInstance } from './msal'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { refreshClientToken, createNewPassword, isInvitationTokenValid, login } from './services/authentication.service'
-import debounce from 'lodash.debounce'
 
 export * from './unauthorized-callback'
 export * from './utils'
@@ -25,7 +24,6 @@ export const amplitudeService = new AmplitudeService()
 import { type CommonAppOptions } from './types/CommonAppTypes'
 
 export { DataStreamHubConnection }
-export { debounce }
 export { fetchUrlTerms }
 export { sanitizeUrl }
 export { msalInstance }

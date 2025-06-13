@@ -43,6 +43,10 @@ vi.mock('@pulse/common', () => ({
   debounce: (callback: Function) => callback,
 }))
 
+vi.mock('@pulse/core', () => ({
+  useDebounce: (fn: any) => fn,
+}))
+
 const createWrapper = (): VueWrapper =>
   mount(CollabDetailsDrawer, {
     props: {

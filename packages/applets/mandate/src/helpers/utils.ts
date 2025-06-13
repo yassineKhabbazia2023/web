@@ -8,16 +8,6 @@ declare let window: {
 export const dateFormatter = (date: string, locale = 'fr') =>
   new Intl.DateTimeFormat(locale).format(new Date(date))
 
-export const debounce = (callback: any, timer = 500) => {
-  let timeoutId: undefined | ReturnType<typeof setTimeout>
-  return (...args: any) => {
-    clearTimeout(timeoutId)
-    timeoutId = setTimeout(() => {
-      callback.apply(this, args)
-    }, timer)
-  }
-}
-
 export const downloadFile = (filename: string, data: any, window: any) => {
   const url = window.URL.createObjectURL(new Blob([data]))
   let link: HTMLAnchorElement | null = document.createElement('a')

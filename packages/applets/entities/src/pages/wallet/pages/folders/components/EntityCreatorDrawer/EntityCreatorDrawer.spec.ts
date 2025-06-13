@@ -61,7 +61,7 @@ vi.mock('@pulse/common', () => ({
   debounce: (callback: Function) => callback,
   getInitials: vi.fn(() => 'AD'),
 }))
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/core', () => ({ logger: loggerMock, useDebounce: (fn: any) => fn }))
 vi.mock('@entities/services/entity-creator', () => ({
   createTestAccount: createTestAccountMock,
   generateAccountNumber: generateAccountNumberMock,

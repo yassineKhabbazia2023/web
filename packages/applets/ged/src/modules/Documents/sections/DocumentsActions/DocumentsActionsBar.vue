@@ -16,6 +16,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useDebounce } from '@pulse/core'
 import type { ActionBarLoadingButtonsState } from './helpers/DocumentsActionsHelpers'
 import {
   generateActionBarLeftSideButtons,
@@ -23,7 +24,6 @@ import {
 } from './helpers/DocumentsActionsHelpers'
 import { PActionBar } from '@pulse/styleguide/components'
 import type { DocumentActionsBarProps } from './DocumentActionsBarTypes'
-import { debounce } from '@pulse/common'
 
 const props = defineProps<DocumentActionsBarProps>()
 const emit = defineEmits(['p-action-bar-button-clicked', 'p-upload-files-selected',
@@ -60,7 +60,7 @@ const handleUploadFilesSelected = (files:File[]) => {
   emit('p-upload-files-selected', files)
 }
 
-const debounceFunction = debounce((value: string) => {
+const debounceFunction = useDebounce((value: string) => {
   emit('p-search-input', value)
 }, 1000)
 

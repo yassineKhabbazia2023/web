@@ -11,7 +11,7 @@ import type { SearchMandateParams } from '@mandate/services/mandate/ServiceManda
 import * as mandateService from '@mandate/services/mandate'
 import Home from '@mandate/pages/mandate'
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/core', () => ({ logger: loggerMock, useDebounce: (fn: any) => fn }))
 
 const routerQuery = vi.hoisted(() => vi.fn(() => ''))
 vi.mock('vue-router', () => ({

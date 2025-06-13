@@ -25,6 +25,9 @@ const OccurrenceId = 1234567890
 
 vi.mock('@pulse/common', () => commonMock)
 vi.mock('@app/schedule/services', () => scheduleServicesMock)
+vi.mock('@pulse/core', () => ({
+  useDebounce: (fn: any) => fn,
+}))
 
 const mockedToday = new Date(TEST_DATE)
 const newSearchTerm = 'search term'

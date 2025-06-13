@@ -29,6 +29,9 @@ vi.mock('@pulse/common', () => ({
     track: vi.fn(),
   },
 }))
+vi.mock('@pulse/core', () => ({
+  useDebounce: (fn: any) => fn,
+}))
 
 const createWrapper = (
   props: AddCustomerDrawerProps = defaultProps,

@@ -97,11 +97,10 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger, useDebounce } from '@pulse/core'
 import { onMounted, ref, computed } from 'vue'
 import { PLoader, PDatePicker } from '@pulse/styleguide/components'
 import type { PDatePickerModelValue } from '@pulse/styleguide/types'
-import { debounce } from '@pulse/common'
 import { useUserStore } from '@pulse/common/stores'
 import { getSchedulesCollection } from '@app/schedule/services'
 import DeadlineList from '@app/schedule/components/DisplayDeadline/DeadlineList'
@@ -147,11 +146,11 @@ function refreshAppliedFilterCount() {
   appliedFilterCount.value = getAppliedFilterCount(defaultFilters, filters.value)
 }
 
-const debounceRefreshData = debounce(() => {
+const debounceRefreshData = useDebounce(() => {
   refreshData()
 }, REFRESH_DATA_DELAY)
 
-const debounceRefreshCalendarWidgetData = debounce(() => {
+const debounceRefreshCalendarWidgetData = useDebounce(() => {
   refreshCalendarWidgetData()
 }, REFRESH_DATA_DELAY)
 

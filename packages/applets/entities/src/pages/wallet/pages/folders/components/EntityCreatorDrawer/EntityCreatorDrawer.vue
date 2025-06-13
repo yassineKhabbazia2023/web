@@ -117,8 +117,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { setWith } from 'lodash-es'
-import { logger } from '@pulse/core'
-import { getInitials, debounce } from '@pulse/common'
+import { logger, useDebounce } from '@pulse/core'
+import { getInitials } from '@pulse/common'
 import type { FormInstance } from '@pulse/styleguide/types'
 import { AvatarRoles } from '@pulse/styleguide'
 import {
@@ -239,7 +239,7 @@ const clearContactFields = () => {
   newTestAccount.value.existingContactGuid = ''
 }
 
-const searchContactByEmail = debounce(async (contactEmail: string) => {
+const searchContactByEmail = useDebounce(async (contactEmail: string) => {
   isLookingForExistingUser.value = true
   const contactSearchResult = await getAccountUserByEmail(contactEmail)
   if (contactSearchResult) {
