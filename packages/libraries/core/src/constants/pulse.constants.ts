@@ -18,3 +18,4 @@ export const MOBILE_APPLICATION_DOCUMENTATION_URL = 'https://assistance.clients.
 export const POWER_BI_INTRODUCTION = 'https://help.clients.app.rydge.fr/fr/article/offre-power-bi-accessibilite-et-consultation-des-rapports'
 export const RSS_NEWS_FEED_URL = 'https://www.rydge.fr/articles-analyses/rss.xml'
 export const RSS_NEWS_SITE_URL = 'https://www.rydge.fr/articles-analyses'
+export const DIGILAB_JOIN_FORM_URL = 'https://share-eu1.hsforms.com/1hgbsxO-kRPyh9Eb7TLu5jg2dpyhn'

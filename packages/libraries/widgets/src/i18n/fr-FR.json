@@ -5,12 +5,22 @@
       "seeMore": "Voir plus",
       "noNews": "Aucune actualité disponible pour le moment."
     },
+
     "powerBi": {
       "title": "Allez plus loin dans l'{emphasis} de votre entreprise",
       "titleEmphasis": "analyse des performances",
       "description": "Grâce à nos {emphasis} approfondissez l'analyse de vos performances et maximisez l'impact de chaque décision stratégique.",
       "descriptionEmphasis": "solutions de Business Intelligence",
       "seeMore": "Découvrir l'offre Power BI"
+    },
+
+    "digilab": {
+      "join": "Rejoignez le {brandName}",
+      "brandNameLeftPart": "DiGi",
+      "brandNameRightPart": "LAB'",
+      "contribute": "Contribuez à l'amélioration de la plateforme {brandName} en participant à des tests utilisateurs, des ateliers et des échanges individuels ou en groupe.",
+      "brandName": "RYDGE Conseil",
+      "joinAction": "Rejoindre le DiGiLAB"
     }
   }
 }
