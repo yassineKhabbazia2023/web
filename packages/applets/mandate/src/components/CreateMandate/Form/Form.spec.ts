@@ -73,7 +73,6 @@ describe('form.vue', () => {
     },
   ]
 
-  // FIXME : skipped while integrating SG in monorepo
   it.each(step1TestCases)('drawer step 1 and erpId %s, name %s and siret %s',
     async ({ initial: { erpId, name, siretNumber } }) => {
       const wrapper = createWrapper({ step: 1 })

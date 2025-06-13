@@ -253,13 +253,12 @@ describe('treeview', () => {
           wrapper.setProps({ selectedFolder: foldersData[0][0].children[1] })
           await nextTick()
 
-          /* FIXME : skipped while integrating SG in monorepo
+          const newSelectedNodeKey = foldersData[0][0].children[1].id
           const newSelectedNode = tree.find(
             `[data-key="${newSelectedNodeKey}"]`,
           )
 
           expect(newSelectedNode.classes().includes('is-current')).toBeTruthy()
-          */
         })
       })
       describe('treeNode', () => {
@@ -397,8 +396,7 @@ describe('treeview', () => {
         await getTreeNode().vm.$emit('expand-or-collapse-node', TREE_NODE_TO_BE_EXPANDED)
         await flushPromises()
 
-        // FIXME : skipped while integrating SG in monorepo
-        // expect(getExpandedNode().exists()).toBeTruthy()
+        expect(getExpandedNode().exists()).toBeTruthy()
       })
 
       it('should behave upon dragLeave event on TreeNode', async () => {

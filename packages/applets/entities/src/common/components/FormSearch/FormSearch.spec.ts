@@ -24,7 +24,7 @@ describe('formSearch', () => {
   })
 
   const SEARCH_VALUES = [
-    // 'ab', FIXME : skipped while integrating SG in monorepo
+    'ab',
     'abc',
   ]
   it.each(SEARCH_VALUES)(

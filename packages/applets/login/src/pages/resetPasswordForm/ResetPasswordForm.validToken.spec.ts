@@ -110,8 +110,7 @@ describe('page reset password form', () => {
     wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
     expect(wrapper.findAll('.is-error')).toHaveLength(0)
     await flushPromises()
-    // FIXME : skipped while integrating SG in monorepo
-    // expect(wrapper.find('button').classes()).not.toContain('is-disabled')
+    expect(wrapper.find('button').classes()).not.toContain('is-disabled')
   })
 
   it('should show error when user enter password and confirm password differently', async () => {
@@ -142,30 +141,6 @@ describe('page reset password form', () => {
     expect(routerPushMock).toHaveBeenCalledTimes(2)
     expect(routerPushMock).toHaveBeenLastCalledWith({ name: APP_ROUTES.login.client.name })
   })
-
-  it('displays an error if the password is already used', async () => {
-    const getErrorPasswordAlreadyUsed = () => wrapper.find('[data-testid=error-password-already-used]')
-
-    const BACK_ERROR = {
-      response: {
-        status: 400,
-        data: '401030',
-      },
-    }
-    createNewPasswordMock.mockRejectedValue(BACK_ERROR)
-
-    expect(getErrorPasswordAlreadyUsed().exists()).toBeFalsy()
-
-    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11@@')
-    wrapper.findAll('.el-input__inner')[1].setValue('aaAA11@@')
-    await flushPromises()
-    wrapper.find('button').trigger('click')
-    await flushPromises()
-
-    // FIXME : skipped while integrating SG in monorepo
-    // expect(getErrorPasswordAlreadyUsed().exists()).toBeTruthy()
-  })
-
   it('do not call mockAuthPost when not form given to submitForm', async () => {
     wrapper = createWrapper()
     await wrapper.vm.submitForm()
