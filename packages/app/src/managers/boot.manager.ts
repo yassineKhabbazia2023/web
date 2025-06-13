@@ -36,7 +36,7 @@ export class BootManager {
       const amplitudeApiKey = VITE_AMPLITUDE_API_KEY
       const amplitudeServerUrl = VITE_AMPLITUDE_SERVER_URL
 
-      if (amplitudeApiKey) {
+      if (amplitudeApiKey && FeatureFlagManager.isAmplitudeActivated()) {
         amplitudeService.init(amplitudeApiKey, amplitudeServerUrl || undefined)
       }
     } catch (error) {

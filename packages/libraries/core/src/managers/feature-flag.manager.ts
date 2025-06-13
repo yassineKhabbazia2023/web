@@ -31,6 +31,10 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.MAINTENANCE_MODE)
   }
 
+  static isAmplitudeActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.AMPLITUDE)
+  }
+
   static isFeatureActivated(feature: Feature) {
     const value = window.EnvVars?.[feature]
 

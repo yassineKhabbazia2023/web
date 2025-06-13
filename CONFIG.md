@@ -28,6 +28,7 @@ window.EnvVars = envVars
 |---|---|
 | VITE_ACCESS_MANAGEMENT_GLOBAL | Feature-flag de gestion des accès globale |
 | VITE_ACCOUNTING_HUB_URL | URL de Connexion au hub signalR pour la synchronisation PIA sur la GED  |
+| VITE_AMPLITUDE_ACTIVATED | Feature-flag pour Amplitude |
 | VITE_AMPLITUDE_API_KEY | Clé d'API Amplitude (outil de tracking) |
 | VITE_AMPLITUDE_SERVER_URL | URL de proxy Amplitude |
 | VITE_API_DS | Alias API Gateway pour la GED |

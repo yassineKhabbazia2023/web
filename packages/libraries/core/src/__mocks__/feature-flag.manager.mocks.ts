@@ -5,12 +5,14 @@ import type { Feature } from '../enums/feature.enums'
 export const isScheduleActivatedMock = vi.fn(() => false)
 export const isFeedCenterActivatedMock = vi.fn(() => false)
 export const isMailToGedActivatedMock = vi.fn(() => false)
+export const isAmplitudeActivatedMock = vi.fn(() => false)
 export const isAccessManagementGlobalActivatedMock = vi.fn(() => false)
 
 export const featureFlagManagerMock = {
   isScheduleActivated: isScheduleActivatedMock,
   isFeedCenterActivated: isFeedCenterActivatedMock,
   isMailToGedActivated: isMailToGedActivatedMock,
+  isAmplitudeActivated: isAmplitudeActivatedMock,
   isAccessManagementGlobalActivated: isAccessManagementGlobalActivatedMock,
   isFeatureActivated: vi.fn((_featureFlag: Feature) => false),
 }
