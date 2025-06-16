@@ -79,7 +79,7 @@
             <template #pennylaneFromRydge>
               <a
                 class="text-underline text-color--secondary-amethyste"
-                :href="PENNYLANE_ACIVATION_AND_CONNECTION_HELP_URL"
+                :href="PENNYLANE_ACTIVATION_AND_CONNECTION_HELP_URL"
                 target="_blank"
               >
                 {{ t('description.links.pennylaneFromRydge') }}
@@ -122,7 +122,7 @@
         "
       >
         <PButton
-          :href="PENNLANE_GETTING_STARTED_URL"
+          :href="PENNYLANE_GETTING_STARTED_URL"
           pTag="a"
           pType="primary"
           target="_blank"
@@ -151,10 +151,10 @@
 import { PButton, PImage, PTag } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import {
-  PENNYLANE_ACIVATION_AND_CONNECTION_HELP_URL,
+  PENNYLANE_ACTIVATION_AND_CONNECTION_HELP_URL,
   PENNYLANE_IMPORT_INVOICE_HELP_URL,
   PENNYLANE_MOBILE_APP_URL,
-  PENNLANE_GETTING_STARTED_URL,
+  PENNYLANE_GETTING_STARTED_URL,
 } from '@pulse/core'
 const { t } = useI18n({
   inheritLocale: true,
