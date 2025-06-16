@@ -1,14 +1,14 @@
 import { it, describe, expect, vi } from 'vitest'
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
-import { nextTick } from 'vue'
 import { redirectToHomeMock, useRedirectionMock } from '@app/__mocks__/useRedirection.composable.mocks'
+import { nextTick } from 'vue'
 
-import Error503 from '.'
+import Error403 from './Error403.page.vue'
 
 vi.mock('@app/composables/useRedirection', () => useRedirectionMock)
 
 const createWrapper = (): VueWrapper =>
-  shallowMount(Error503, {
+  shallowMount(Error403, {
     global: {
       stubs: {
         PError: {
@@ -29,7 +29,7 @@ const createWrapper = (): VueWrapper =>
     },
   })
 
-describe('503', () => {
+describe('403', () => {
   describe('events', () => {
     it('should redirect to home when click button', async () => {
       const wrapper = createWrapper()

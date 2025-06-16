@@ -3,12 +3,12 @@ import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { redirectToHomeMock, useRedirectionMock } from '@app/__mocks__/useRedirection.composable.mocks'
 
-import Error401 from '.'
+import Error404 from './Error404.page.vue'
 
 vi.mock('@app/composables/useRedirection', () => useRedirectionMock)
 
 const createWrapper = (): VueWrapper =>
-  shallowMount(Error401, {
+  shallowMount(Error404, {
     global: {
       stubs: {
         PError: {
@@ -29,7 +29,7 @@ const createWrapper = (): VueWrapper =>
     },
   })
 
-describe('401', () => {
+describe('404', () => {
   describe('events', () => {
     it('should redirect to home when click button', async () => {
       const wrapper = createWrapper()

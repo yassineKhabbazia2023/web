@@ -3,7 +3,7 @@ import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { redirectToHomeMock, useRedirectionMock } from '@app/__mocks__/useRedirection.composable.mocks'
 import { nextTick } from 'vue'
 
-import Error500 from '.'
+import Error500 from './Error500.page.vue'
 
 vi.mock('@app/composables/useRedirection', () => useRedirectionMock)
 

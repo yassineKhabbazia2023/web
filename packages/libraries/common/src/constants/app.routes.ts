@@ -30,6 +30,9 @@ export const APP_ROUTES = {
     },
   },
   error: {
-    internalError: { path: '500', name: RouteName.INTERNAL_ERROR },
+    root: { path: '/error', name: RouteName.ERROR_ROOT },
+    error403: { path: '403', name: RouteName.ERROR403 },
+    error404: { path: '404', name: RouteName.ERROR404 },
+    error500: { path: '500', name: RouteName.ERROR500 },
   },
 }

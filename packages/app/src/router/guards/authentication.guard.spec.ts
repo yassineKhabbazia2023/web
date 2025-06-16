@@ -50,7 +50,7 @@ describe('authenticationGuard', () => {
     })
 
     it('should default redirect to authenticated if no specific access is defined', () => {
-      const toRouteMock = { name: RouteName.ERROR400 } as any
+      const toRouteMock = { name: RouteName.ERROR500 } as any
       const nextMock = vi.fn()
 
       authenticationGuard(toRouteMock, fromRouteMock, nextMock)
@@ -85,7 +85,7 @@ describe('authenticationGuard', () => {
     })
 
     it('should default redirect to anonymous if no specific access is defined', () => {
-      const toRouteMock = { name: RouteName.ERROR400 } as any
+      const toRouteMock = { name: RouteName.ERROR500 } as any
       const nextMock = vi.fn()
 
       authenticationGuard(toRouteMock, fromRouteMock, nextMock)

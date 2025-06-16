@@ -1,8 +1,8 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
-import { routes as errorRoutes } from '@app/pages/Error/router'
+import { errorRoutes } from '@app/pages/Error/error.routes'
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META, APP_ROUTES, LAYOUT_META } from '@pulse/common/constants'
-import { Layout, RouteName } from '@pulse/common/enums'
+import { Layout } from '@pulse/common/enums'
 import { SQUAD_ROUTE_PATHS } from '@app/constants'
 import { BootManager } from '@app/managers/boot.manager'
 import { authenticationGuard } from './guards/authentication.guard'
@@ -25,7 +25,7 @@ const appRoutes: RouteRecordRaw[] = [
       if(isMaintenanceMode) {
         next()
       } else {
-        // If not in maintenance mode, redirect to root
+        // if not in maintenance mode, redirect to root
         next({ name: APP_ROUTES.root.name })
       }
     },
@@ -65,29 +65,37 @@ const appRoutes: RouteRecordRaw[] = [
           [LAYOUT_META]: Layout.MAIN,
           [ALLOW_AUTHENTICATED_META]: true,
         },
-        children: [
-          ...errorRoutes,
-          {
-            path: '/:pathMatch(.*)*',
-            name: RouteName.NOT_FOUND,
-            component: () => import('@app/pages/Error/404'),
-            beforeEnter: (to, _from, next) => {
-              const { HERMES, HADES, ORION, TRANSVERSE } = SQUAD_ROUTE_PATHS
+        children: [/* To be defined in applets */],
+      },
+      // import the error routes
+      errorRoutes,
+      // 404 should be the last route
+      // it will catch all unmatched routes
+      // and redirect to the 404 page
+      {
+        path: '/:pathMatch(.*)*', // specific catch all
+        name: APP_ROUTES.error.error404.name,
+        component: () => import('@app/pages/Error/404/Error404.page.vue'),
+        beforeEnter: (to, _from, next) => {
+          const { HERMES, HADES, ORION, TRANSVERSE } = SQUAD_ROUTE_PATHS
 
-              const subRoutes = [HERMES, HADES, ORION, TRANSVERSE]
-              const matches = subRoutes.some(route => to.path.startsWith(route))
+          const subRoutes = [HERMES, HADES, ORION, TRANSVERSE]
+          const matches = subRoutes.some(route => to.path.startsWith(route))
 
-              if (matches) {
-                next({ path: to.path })
-              } else {
-                next()
-              }
-            },
-            meta: {
-              [LAYOUT_META]: Layout.ERROR,
-            },
-          },
-        ],
+          if (matches) {
+            next({ path: to.path })
+          } else {
+            next()
+          }
+        },
+        meta: {
+          [LAYOUT_META]: Layout.ERROR,
+          // 404 is not accessible by anonymous users
+          // we want to redirect them to the login page
+          [ALLOW_ANONYMOUS_META]: false,
+          // we allow authenticated users to access the 404 page
+          [ALLOW_AUTHENTICATED_META]: true,
+        },
       },
     ],
   },
