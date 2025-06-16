@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { routes as errorRoutes } from '@app/pages/Error/router'
-import { APP_ROUTES, LAYOUT_META } from '@pulse/common/constants'
+import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META, APP_ROUTES, LAYOUT_META } from '@pulse/common/constants'
 import { Layout, RouteName } from '@pulse/common/enums'
 import { SQUAD_ROUTE_PATHS } from '@app/constants'
 import { BootManager } from '@app/managers/boot.manager'
@@ -17,6 +17,8 @@ const appRoutes: RouteRecordRaw[] = [
     component: () => import('@app/pages/Maintenance/Maintenance.page.vue'),
     meta: {
       [LAYOUT_META]: Layout.ERROR,
+      [ALLOW_ANONYMOUS_META]: true,
+      [ALLOW_AUTHENTICATED_META]: true,
     },
     beforeEnter: (_to, _from, next) => {
       const isMaintenanceMode = BootManager.checkMaintenanceMode()
@@ -51,6 +53,7 @@ const appRoutes: RouteRecordRaw[] = [
         component: () => import('@app/pages/Anonymous.root.vue'),
         meta: {
           [LAYOUT_META]: Layout.LOGIN,
+          [ALLOW_ANONYMOUS_META]: true,
         },
         children: [/* To be defined in applets */],
       },
@@ -60,6 +63,7 @@ const appRoutes: RouteRecordRaw[] = [
         component: () => import('@app/pages/Authenticated.root.vue'),
         meta: {
           [LAYOUT_META]: Layout.MAIN,
+          [ALLOW_AUTHENTICATED_META]: true,
         },
         children: [
           ...errorRoutes,

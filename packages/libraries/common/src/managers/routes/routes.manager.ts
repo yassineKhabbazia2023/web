@@ -1,10 +1,8 @@
 import type { Router, RouteRecordRaw } from 'vue-router'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { logger } from '@pulse/core'
-import { RouterHelpers } from '@pulse/common/helpers'
 
 export class RoutesManager {
-
   /**
    * Add the given routes to the router's anonymous routes.
    *
@@ -19,12 +17,6 @@ export class RoutesManager {
     routesToAdd.forEach(routeToAdd =>
       router.addRoute(APP_ROUTES.anonymous.name, routeToAdd),
     )
-  }
-
-  // TODO rename hasAnonymousAncestor // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47383
-  static isFromAnonymous(route: any) {
-    const anonymousRoute = APP_ROUTES.anonymous.name
-    return RouterHelpers.hasProvidedAncestor({ route, ancestorName: anonymousRoute })
   }
 
   /**
@@ -43,13 +35,6 @@ export class RoutesManager {
     )
   }
 
-
-  // TODO rename hasAuthenticatedAncestor // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47383
-  static isFromAuthenticated(route: any) {
-    const authenticatedRoute = APP_ROUTES.authenticated.name
-    return RouterHelpers.hasProvidedAncestor({ route, ancestorName: authenticatedRoute })
-  }
-
   /**
    * Check if the given route is available in the router.
    *
@@ -62,7 +47,7 @@ export class RoutesManager {
       return true
     }
 
-    logger.error(`can't add routes to empty route object: ${routeName} doesn't exist`)
+    logger.error(`Route '${routeName}' doesn't exist`)
     return false
   }
 }
