@@ -58,7 +58,6 @@ const entityCreatorFormValidateMock = vi.hoisted(() => vi.fn(() => Promise.resol
 const entityCreatorFormStructureMock = vi.hoisted(() => vi.fn(() => Promise.resolve(EntityCreatorFormStructure)))
 
 vi.mock('@pulse/common', () => ({
-  debounce: (callback: Function) => callback,
   getInitials: vi.fn(() => 'AD'),
 }))
 vi.mock('@pulse/core', () => ({ logger: loggerMock, useDebounce: (fn: any) => fn }))

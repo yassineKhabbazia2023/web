@@ -1,7 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { isScheduleActivatedMock, isFeedCenterActivatedMock, loggerMock, featureFlagManagerMock } from '@pulse/core/mocks'
-import { debounceMock } from '@app/__mocks__/common.mock'
 import { customerUserMock } from '@app/__mocks__/users.mocks'
 import { routerMock } from '@app/__mocks__/router.mocks'
 import type { HeaderProps } from './HeaderTypes'
@@ -15,7 +14,6 @@ const userStoreMock = getStoreMock(useUserStore)
 
 const getInitialsMock = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/common', () => ({
-  debounce: (callback: Function) => debounceMock(callback),
   getInitials: getInitialsMock,
   dataProvider: () => ({
     fetchUserData: vi.fn(() => Promise.resolve(customerUserMock)),

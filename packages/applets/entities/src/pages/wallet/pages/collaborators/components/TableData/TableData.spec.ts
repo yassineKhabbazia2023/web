@@ -24,7 +24,6 @@ vi.mock('@pulse/common', () => ({
       get: mockGatewayGet,
     },
   }),
-  debounce: (callback: Function) => callback,
 }))
 
 vi.mock('@pulse/common/managers', () => ({

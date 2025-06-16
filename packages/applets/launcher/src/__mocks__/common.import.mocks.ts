@@ -30,7 +30,6 @@ vi.mock('@pulse/common', () => ({
     }),
     destroyConnection: vi.fn(),
   })),
-  debounce: vi.fn((fn) => fn),
 }))
 
 vi.mock('@pulse/common/managers', () => ({

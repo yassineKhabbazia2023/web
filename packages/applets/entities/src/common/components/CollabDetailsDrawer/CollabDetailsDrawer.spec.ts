@@ -40,7 +40,6 @@ vi.mock('@pulse/common', () => ({
       patch: mockedPatchGateway,
     },
   }),
-  debounce: (callback: Function) => callback,
 }))
 
 vi.mock('@pulse/core', () => ({

@@ -53,7 +53,6 @@ vi.mock('@pulse/common', () => ({
     }),
     destroyConnection: vi.fn(),
   })),
-  debounce: vi.fn((callback: Function) => callback),
   amplitudeService: {
     track: amplitudeTrackSpy,
   },

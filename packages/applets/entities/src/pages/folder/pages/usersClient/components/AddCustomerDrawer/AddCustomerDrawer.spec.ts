@@ -22,9 +22,7 @@ const defaultProps = {
   targetEntityName: mockedEntity.legalName,
   targetEntityNumber: mockedEntity.accountNumber,
 }
-export const debounceMock = vi.fn((callback: Function) => callback)
 vi.mock('@pulse/common', () => ({
-  debounce: (callback: Function) => debounceMock(callback),
   amplitudeService: {
     track: vi.fn(),
   },

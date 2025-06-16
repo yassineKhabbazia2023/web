@@ -24,10 +24,6 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@pulse/common', () => ({
-  debounce: (callback: Function) => callback,
-}))
-
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
 }))
