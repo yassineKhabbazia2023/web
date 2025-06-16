@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { getOffersCatalogResponseMock } from '../../mocks/offers-catalog.service.mock'
+import { getOffersCatalogResponseMock } from '../../mocks/offers-catalog.service.mocks'
 import { APICallStatus } from '@pulse/common/enums'
 import { amplitudeServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/core/mocks'
@@ -34,6 +34,7 @@ const offersMock = offersCatalogResponseMock.offers
 const offerMock = offersCatalogResponseMock.offers[0]
 
 const loadOffersCatalogMock = vi.hoisted(() => vi.fn())
+const filterOffersCatalogMock = vi.hoisted(() => vi.fn())
 const setSelectedOfferMock = vi.hoisted(() => vi.fn())
 const loadOfferPdfMock = vi.hoisted(() => vi.fn())
 
@@ -89,12 +90,14 @@ describe('offers-catalog', () => {
     description,
   }) => {
     useOffersCatalogMock.mockReturnValue({
-      offers: ref(offersMock),
+      searchTerm: ref(''),
+      filteredOffers: ref(offersMock),
       offer: ref(offer),
       offerPdf: ref(offerPdf),
       catalogDrawerIsOpened: ref(catalogDrawerIsOpened),
       catalogDocumentViewerIsOpened: ref(catalogDocumentViewerIsOpened),
       loadOffersCatalog: loadOffersCatalogMock,
+      filterOffersCatalog: filterOffersCatalogMock,
       setSelectedOffer: setSelectedOfferMock,
       loadOfferPdf: loadOfferPdfMock,
     })
@@ -105,18 +108,23 @@ describe('offers-catalog', () => {
 
     expect(loadOffersCatalogMock).toHaveBeenCalledOnce()
     expect(loadOffersCatalogMock).toHaveBeenCalledWith(/* no parameters */)
+
+    expect(filterOffersCatalogMock).toHaveBeenCalledOnce()
+    expect(filterOffersCatalogMock).toHaveBeenCalledWith(/* no parameters */)
   })
 
   it('should select offer when CatalogCard emits selectOffer', async () => {
     const catalogDrawerIsOpenedMock = false
     useOffersCatalogMock.mockReturnValue({
-      offers: ref(offersMock),
+      searchTerm: ref(''),
+      filteredOffers: ref(offersMock),
       offer: ref(offerMock),
       offerPdf: ref(offerPdfMock),
       catalogDrawerIsOpened: ref(catalogDrawerIsOpenedMock),
       pdfLoadingStatus: ref(APICallStatus.IDLE),
       catalogLoadingStatus: ref(APICallStatus.IDLE),
       loadOffersCatalog: loadOffersCatalogMock,
+      filterOffersCatalog: filterOffersCatalogMock,
       setSelectedOffer: setSelectedOfferMock,
       loadOfferPdf: loadOfferPdfMock,
     })
@@ -148,13 +156,14 @@ describe('offers-catalog', () => {
   it('should call logger.error when select unkown offer', async () => {
     const catalogDrawerIsOpenedMock = false
     useOffersCatalogMock.mockReturnValue({
-      offers: ref(offersMock),
+      filteredOffers: ref(offersMock),
       offer: ref(offerMock),
       offerPdf: ref(offerPdfMock),
       catalogDrawerIsOpened: ref(catalogDrawerIsOpenedMock),
       pdfLoadingStatus: ref(APICallStatus.IDLE),
       catalogLoadingStatus: ref(APICallStatus.IDLE),
       loadOffersCatalog: loadOffersCatalogMock,
+      filterOffersCatalog: filterOffersCatalogMock,
       setSelectedOffer: setSelectedOfferMock,
       loadOfferPdf: loadOfferPdfMock,
     })
@@ -174,6 +183,9 @@ describe('offers-catalog', () => {
     expect(loadOfferPdfMock).toHaveBeenCalledOnce()
     expect(loadOfferPdfMock).toHaveBeenCalledWith(/* no parameters */)
 
+    expect(filterOffersCatalogMock).toHaveBeenCalledOnce()
+    expect(filterOffersCatalogMock).toHaveBeenCalledWith(/* no parameters */)
+
     expect(amplitudeServiceMock.track).not.toHaveBeenCalled()
 
     expect(loggerMock.error).toHaveBeenCalledOnce()
@@ -186,7 +198,7 @@ describe('offers-catalog', () => {
     beforeEach(() => {
       catalogDocumentViewerIsOpenedMock.value = false
       useOffersCatalogMock.mockReturnValue({
-        offers: ref(offersMock),
+        filteredOffers: ref(offersMock),
         offer: ref(offerMock),
         offerPdf: ref(offerPdfMock),
         catalogDrawerIsOpened: catalogDrawerIsOpenedMock,
@@ -194,6 +206,7 @@ describe('offers-catalog', () => {
         pdfLoadingStatus: ref(APICallStatus.IDLE),
         catalogLoadingStatus: ref(APICallStatus.IDLE),
         loadOffersCatalog: loadOffersCatalogMock,
+        filterOffersCatalog: filterOffersCatalogMock,
         setSelectedOffer: setSelectedOfferMock,
         loadOfferPdf: loadOfferPdfMock,
       })

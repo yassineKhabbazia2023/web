@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import type { CatalogCardListProps } from './catalog-card-list.types'
-import { getOffersMock } from '../../mocks/offers-catalog.service.mock'
+import { getOffersMock } from '../../mocks/offers-catalog.service.mocks'
 import { APICallStatus } from '@pulse/common/enums'
 
 import CatalogCardList from './catalog-card-list.vue'

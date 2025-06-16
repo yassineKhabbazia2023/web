@@ -1,4 +1,4 @@
-import { addIfNotExists, removeIfExists, arrayIncludes } from './array.utils'
+import { addIfNotExists, removeIfExists, arrayIncludes, filterRecordByKeyCallback, stringContainsAllValues } from './array.utils'
 
 describe('test array.utils', () => {
   describe('addIfNotExists', () => {
@@ -52,6 +52,80 @@ describe('test array.utils', () => {
       const array = [1, 2, 3, 4]
       const value = [0, 5]
       expect(arrayIncludes(array, value)).toBe(false)
+    })
+
+    describe('stringContainsAllValues', () => {
+      const testCases = [{
+        text: 'hello world',
+        values: ['hello', 'world'],
+        expectedResult: true,
+        description: 'text contains all values',
+      }, {
+        text: 'hello world',
+        values: ['hello', 'planet'],
+        expectedResult: false,
+        description: 'text does not contain all values',
+      }, {
+        text: 'hello world',
+        values: [],
+        expectedResult: true,
+        description: 'values array is empty',
+      }, {
+        text: '',
+        values: ['hello'],
+        expectedResult: false,
+        description: 'text is empty and values are not empty',
+      }, {
+        text: '',
+        values: [],
+        expectedResult: true,
+        description: 'both text and values are empty',
+      }]
+      it.each(testCases)(
+        'should return $expectedResult when $description',
+        ({ text, values, expectedResult }) => {
+          const result = stringContainsAllValues(text, values)
+
+          expect(result).toBe(expectedResult)
+        })
+    })
+  })
+
+  describe('filterRecordByKeyCallback', () => {
+    const key = 'name'
+    const record = {
+      name: 'John Doe',
+      age: '30',
+      city: 'New York',
+    }
+    const tests = [{
+      value: record.name,
+      expectedResult: true,
+      description: 'value matches the record name',
+    }, {
+      value: 'Do',
+      expectedResult: true,
+      description: 'value matches the record name partially',
+    }, {
+      value: '',
+      expectedResult: true,
+      description: 'value is empty',
+    }, {
+      value: 'JOHN',
+      expectedResult: false,
+      description: 'value does not match the record name (case-sensitive)',
+    }, {
+      value: 'York',
+      expectedResult: false,
+      description: 'value does not match the record name',
+    }]
+    it.each(tests)('should return $expectedResult when $description', ({
+      value,
+      expectedResult,
+    }) => {
+      const result = filterRecordByKeyCallback(record, key, value)
+
+      expect(result).toBe(expectedResult)
     })
   })
 })

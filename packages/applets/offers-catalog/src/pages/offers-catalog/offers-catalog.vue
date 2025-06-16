@@ -14,10 +14,12 @@
     @open-pdf="onOpenPdf"
   />
   <OffersCatalogHeader
+    :searchTerm="searchTerm"
     class="margin-bottom--10"
+    @update:search-term="onUpdateSeachTerm"
   />
   <CatalogCardList
-    :offers="offers"
+    :offers="filteredOffers"
     :loadingStatus="catalogLoadingStatus"
     @select-offer="onSelectOffer"
   />
@@ -34,7 +36,8 @@ import { amplitudeService } from '@pulse/common'
 import { logger } from '@pulse/core'
 
 const {
-  offers,
+  searchTerm,
+  filteredOffers,
   offer,
   offerPdf,
   catalogDrawerIsOpened,
@@ -44,14 +47,16 @@ const {
   loadOffersCatalog,
   setSelectedOffer,
   loadOfferPdf,
+  filterOffersCatalog,
 } = useOffersCatalog()
 
-onMounted(() => {
-  loadOffersCatalog()
+onMounted(async () => {
+  await loadOffersCatalog()
+  filterOffersCatalog()
 })
 
 function onSelectOffer(offerId: number) {
-  const selectedOffer = offers.value?.find(({ id }) => id === offerId)
+  const selectedOffer = filteredOffers.value?.find(({ id }) => id === offerId)
   setSelectedOffer(selectedOffer)
   loadOfferPdf()
   if (selectedOffer === undefined) {
@@ -65,5 +70,10 @@ function onSelectOffer(offerId: number) {
 
 function onOpenPdf() {
   catalogDocumentViewerIsOpened.value = true
+}
+
+function onUpdateSeachTerm(newSearchTerm: string) {
+  searchTerm.value = newSearchTerm
+  filterOffersCatalog()
 }
 </script>

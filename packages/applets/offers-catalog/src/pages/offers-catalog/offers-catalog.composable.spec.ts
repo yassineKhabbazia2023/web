@@ -1,7 +1,8 @@
 import type { OfferDescription } from '../../types/offers-catalog.types'
-import { getOffersCatalogResponseMock } from '../../mocks/offers-catalog.service.mock'
+import { getOffersCatalogResponseMock } from '../../mocks/offers-catalog.service.mocks'
 import { loggerMock } from '@pulse/core/mocks'
 import { APICallStatus } from '@pulse/common/enums'
+import { getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
 
 import { useOffersCatalog } from './offers-catalog.composable'
 
@@ -42,7 +43,7 @@ describe('offers-catalog.composable', () => {
   describe('loadOffersCatalog', () => {
     it('should load offersCatalog properly', async () => {
       getOffersCatalogMock.mockResolvedValue(offersCatalogResponseMock)
-      const expectedCards: OfferDescription[] = offersCatalogResponseMock.offers
+      const expectedCards: OfferDescription[] = getOffersWithSearchTerms(offersCatalogResponseMock.offers)
 
       const {
         offers,

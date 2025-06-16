@@ -1,4 +1,4 @@
-import { getOffersCatalogResponseMock } from '../mocks/offers-catalog.service.mock'
+import { getOffersCatalogResponseMock } from '../mocks/offers-catalog.service.mocks'
 import { apiGatewayMock } from '@pulse/common/mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 

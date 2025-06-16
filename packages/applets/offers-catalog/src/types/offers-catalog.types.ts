@@ -19,9 +19,14 @@ export interface OfferDescription {
     isBestOffer: boolean,
     akuiteoProduct: string
     searchKeywords: string
+    priorityTargets: string[]
     internalLink: string
     subCategory: OfferSubCategory,
     tags: string[]
+}
+
+export interface OfferWithSearchTerms extends OfferDescription {
+  searchTerms: string
 }
 
 export interface OffersCatalogResponse {

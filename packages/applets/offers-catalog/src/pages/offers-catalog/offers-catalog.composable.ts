@@ -1,11 +1,15 @@
 import { ref } from 'vue'
-import type { OfferDescription } from '../../types/offers-catalog.types'
+import type { OfferDescription, OfferWithSearchTerms } from '../../types/offers-catalog.types'
 import { getOffersCatalog, getOfferCatalogPdf } from '../../services/offers-catalog.service'
+import { normalizeSearchTerm, getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
 import { logger } from '@pulse/core'
+import { filterRecordByKeyCallback } from '@pulse/core/utils/array'
 import { APICallStatus } from '@pulse/common/enums'
 
 export function useOffersCatalog() {
-  const offers = ref<OfferDescription[]>([])
+  const searchTerm = ref('')
+  const offers = ref<OfferWithSearchTerms[]>([])
+  const filteredOffers = ref<OfferWithSearchTerms[]>([])
   const offer = ref<OfferDescription>()
   const catalogDrawerIsOpened = ref(false)
   const pdfLoadingStatus = ref<APICallStatus>(APICallStatus.IDLE)
@@ -17,11 +21,21 @@ export function useOffersCatalog() {
     catalogLoadingStatus.value = APICallStatus.LOADING
     try {
       const offersCatalog = await getOffersCatalog()
-      offers.value = offersCatalog.offers
+      offers.value = getOffersWithSearchTerms(offersCatalog.offers)
       catalogLoadingStatus.value = APICallStatus.SUCCESS
     } catch (e) {
       logger.error('Error while loading offersCatalog', e)
       catalogLoadingStatus.value = APICallStatus.ERROR
+    }
+  }
+
+  function filterOffersCatalog() {
+    const normalizedSearchTerm = normalizeSearchTerm(searchTerm.value)
+    if (normalizedSearchTerm === '') {
+      filteredOffers.value = offers.value
+    } else {
+      filteredOffers.value = offers.value
+        .filter((offer) => filterRecordByKeyCallback(offer, 'searchTerms', normalizedSearchTerm))
     }
   }
 
@@ -52,7 +66,9 @@ export function useOffersCatalog() {
   }
 
   return {
+    searchTerm,
     offers,
+    filteredOffers,
     offer,
     offerPdf,
     catalogDrawerIsOpened,
@@ -62,5 +78,6 @@ export function useOffersCatalog() {
     loadOffersCatalog,
     setSelectedOffer,
     loadOfferPdf,
+    filterOffersCatalog,
   }
 }

@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import type { CatalogDrawerProps } from './catalog-drawer.types'
-import { getOffersMock } from '../../mocks/offers-catalog.service.mock'
+import { getOffersMock } from '../../mocks/offers-catalog.service.mocks'
 import { APICallStatus } from '@pulse/common/enums'
 
 import CatalogDrawerList from './catalog-drawer.vue'

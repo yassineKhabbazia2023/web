@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import type { CatalogDocumentViewerProps } from './catalog-document-viewer.types'
-import { getOffersMock } from '../../mocks/offers-catalog.service.mock'
+import { getOffersMock } from '../../mocks/offers-catalog.service.mocks'
 
 import CatalogDocumentViewerList from './catalog-document-viewer.vue'
 

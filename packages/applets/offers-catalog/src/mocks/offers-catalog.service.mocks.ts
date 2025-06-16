@@ -1,5 +1,39 @@
-import offersCatalogResponseMock from './offers-catalog.service.mock.json'
+import offersCatalogResponseMock from './offers-catalog.service.mocks.json'
 import type { OfferDescription, OfferCategory, OfferSubCategory, OffersCatalogResponse } from '../types/offers-catalog.types'
+
+export function getOfferMock(
+  override: Partial<OfferDescription> = {},
+  subCategoryName = '',
+  categoryName = '',
+): OfferDescription {
+  const emptyOffer: OfferDescription = {
+    id: 13,
+    title: '',
+    shortDescription: '',
+    imageUrl: '',
+    pdfUrl: '',
+    subCategoryId: 17,
+    isBestOffer: false,
+    akuiteoProduct: '',
+    searchKeywords: '',
+    internalLink: '',
+    priorityTargets: [],
+    subCategory: {
+      subCategoryId: 17,
+      name: subCategoryName,
+      category: {
+        categoryId: 19,
+        name: categoryName,
+      },
+    },
+    tags: [],
+  }
+
+  return {
+    ...emptyOffer,
+    ...override,
+  }
+}
 
 export function getOffersMock(): OfferDescription[] {
   const offers = offersCatalogResponseMock.offers

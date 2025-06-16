@@ -11,6 +11,7 @@
       "akuiteoProduct": "",
       "searchKeywords": "création d'entreprise; accompagnement création d'entreprise; lancement entreprise; projet de création; création société; création start-up; accompagnement entrepreneur; statut juridique; choix du statut juridique; financement création entreprise; recherche de financement; business plan; aide au business plan; rédaction statuts; formalités juridiques; formalités administratives",
       "internalLink": "https://conseilescgs.sharepoint.com/sites/IFR-Offres/SitePages/creation.aspx",
+      "priorityTargets": ["Créateur"],
       "subCategory": {
         "subCategoryId": 1,
         "name": "Créer son entreprise A",
@@ -35,6 +36,7 @@
       "akuiteoProduct": "Comptabilité",
       "searchKeywords": "gestion comptable; comptabilité digitale; suivi d’activité; comptabilité connectée; outils de gestion; acquisition de données financières; sécurisation données financières; digitalisation comptabilité; optimisation comptabilité; suivi financier",
       "internalLink": "https://conseilescgs.sharepoint.com/sites/IFR-Offres/SitePages/Comptabilit%C3%A9.aspx",
+      "priorityTargets": ["TTPE", "TPE", "PE"],
       "subCategory": {
         "subCategoryId": 2,
         "name": "Gérer sa comptabilité",
@@ -59,6 +61,7 @@
       "akuiteoProduct": "Consolidation FORMS",
       "searchKeywords": "",
       "internalLink": "https://conseilescgs.sharepoint.com/sites/IFR-Offres/SitePages/Consolidation%20-.aspx",
+      "priorityTargets": ["PE", "TPE", "TTPE"],
       "subCategory": {
         "subCategoryId": 2,
         "name": "Gérer sa comptabilité",
