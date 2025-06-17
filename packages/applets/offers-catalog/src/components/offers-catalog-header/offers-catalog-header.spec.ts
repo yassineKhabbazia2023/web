@@ -7,6 +7,8 @@ const defaultProps: OffersCatalogHeaderProps = {
   searchTerm: '',
 }
 
+const clearSearchMock = vi.fn()
+
 function createWrapper(override: Partial<OffersCatalogHeaderProps> = {}) {
   const props = {
     ...defaultProps,
@@ -19,6 +21,13 @@ function createWrapper(override: Partial<OffersCatalogHeaderProps> = {}) {
         PIcon: true,
         'i18n-t': {
           template: '<div>Got a customer <slot name="need" /> Find <slot name="theOffer" />!</div>',
+        },
+        PFormSearch: {
+          name: 'PFormSearch',
+          template: '<div />',
+          methods: {
+            clearSearch: clearSearchMock,
+          },
         },
       },
     },
@@ -42,5 +51,14 @@ describe('offers-catalog-header', () => {
     const pFormSearch = wrapper.findComponent({ name: 'PFormSearch' })
     pFormSearch.vm.$emit('update:p-search', searchTermMock)
     expect(wrapper.emitted('update:search-term')).toStrictEqual([[expectedEmittedSearchTerm]])
+  })
+
+  it('should call PFormSearch clearSearch when receives clearSearch() is called', () => {
+    const wrapper = createWrapper()
+
+    wrapper.vm.clearSearch()
+
+    expect(clearSearchMock).toHaveBeenCalledOnce()
+    expect(clearSearchMock).toHaveBeenCalledWith(/* no parameters */)
   })
 })

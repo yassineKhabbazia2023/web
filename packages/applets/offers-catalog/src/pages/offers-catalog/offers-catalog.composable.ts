@@ -9,7 +9,7 @@ import { APICallStatus } from '@pulse/common/enums'
 export function useOffersCatalog() {
   const searchTerm = ref('')
   const offers = ref<OfferWithSearchTerms[]>([])
-  const filteredOffers = ref<OfferWithSearchTerms[]>([])
+  const filteredOffers = ref<OfferDescription[]>([])
   const offer = ref<OfferDescription>()
   const catalogDrawerIsOpened = ref(false)
   const pdfLoadingStatus = ref<APICallStatus>(APICallStatus.IDLE)
@@ -67,7 +67,6 @@ export function useOffersCatalog() {
 
   return {
     searchTerm,
-    offers,
     filteredOffers,
     offer,
     offerPdf,

@@ -61,6 +61,15 @@ describe('PFormSearch', () => {
 
       await expect(wrapper.html()).toMatchFileSnapshot('__snap__/PFormSearch.html')
     })
+
+    it('should display properly with pClearable and pSize', async () => {
+      const wrapper = createWrapper({
+        pSize: 'large',
+        pClearable: true,
+      })
+
+      await expect(wrapper.html()).toMatchFileSnapshot('__snap__/PFormSearch.large.clearable.html')
+    })
   })
   describe('props', () => {
     it('should clear search when call exposed clearSearch()', async () => {

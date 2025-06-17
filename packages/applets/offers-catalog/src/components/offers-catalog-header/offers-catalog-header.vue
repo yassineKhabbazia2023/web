@@ -33,6 +33,7 @@
     >
       <span class="flex--grow-1 flex--shrink-1 flex--basis-0" />
       <PFormSearch
+        ref="pFormSearch"
         :pSearch="searchTerm"
         :pMinLength="0"
         :pSearchInvalidMessage="t('invalidSearch')"
@@ -43,6 +44,7 @@
           flex--basis-300px
           margin-top--6
         "
+        pClearable
         @update:p-search="onUpdateSearchTerm"
       />
       <span class="flex--grow-1 flex--shrink-1 flex--basis-0" />
@@ -51,6 +53,7 @@
 </template>
 
 <script lang="ts" setup>
+import { useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PFormSearch } from '@pulse/styleguide/components'
 import type { OffersCatalogHeaderProps } from './offers-catalog-header.types'
@@ -59,6 +62,8 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+const pFormSearchRef = useTemplateRef('pFormSearch')
 
 defineProps<OffersCatalogHeaderProps>()
 
@@ -69,6 +74,14 @@ const emit = defineEmits<{
 function onUpdateSearchTerm(searchTerm: string) {
   emit('update:search-term', searchTerm)
 }
+
+function clearSearch() {
+  pFormSearchRef.value?.clearSearch()
+}
+
+defineExpose({
+  clearSearch,
+})
 </script>
 
 <style lang="scss" scoped>

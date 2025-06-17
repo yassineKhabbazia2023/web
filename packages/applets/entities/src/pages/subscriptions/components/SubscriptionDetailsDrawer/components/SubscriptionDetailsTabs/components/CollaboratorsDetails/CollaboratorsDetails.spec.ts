@@ -33,7 +33,7 @@ describe('collaboratorsDetails', () => {
       await expect(wrapper.html()).toMatchFileSnapshot('__snap__/CollaboratorsDetails.noCollaboratorRoles.html')
     })
 
-    it('should correctly display when some collaboratorRoles', () => {
+    it('should correctly display when some collaboratorRoles', async () => {
       const collaboratorRoleMock = getCollaboratorRoleMock()
       const collaboratorRolesMock = [collaboratorRoleMock]
       const functionId = collaboratorRoleMock.functionId
@@ -49,7 +49,7 @@ describe('collaboratorsDetails', () => {
       ]
       const wrapper = createWrapper(subscriptionContactMocks, collaboratorRolesMock)
 
-      expect(wrapper.html()).toMatchFileSnapshot('__snap__/CollaboratorsDetails.withCollaboratorRoles.html')
+      await expect(wrapper.html()).toMatchFileSnapshot('__snap__/CollaboratorsDetails.withCollaboratorRoles.html')
     })
   })
 })

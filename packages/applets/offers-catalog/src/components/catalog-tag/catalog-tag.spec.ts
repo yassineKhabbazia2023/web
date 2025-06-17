@@ -16,9 +16,9 @@ function createWrapper(overrideProps: Partial<CatalogTagProps> = {}) {
 }
 
 describe('offers-catalog', () => {
-  it('should display properly', () => {
+  it('should display properly', async () => {
     const wrapper = createWrapper()
 
-    expect(wrapper.html()).toMatchFileSnapshot('__snap__/catalog-tag.html')
+    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/catalog-tag.html')
   })
 })

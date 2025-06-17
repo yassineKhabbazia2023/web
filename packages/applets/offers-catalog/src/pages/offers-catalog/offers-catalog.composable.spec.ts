@@ -29,12 +29,12 @@ describe('offers-catalog.composable', () => {
       const expectedCatalogDrawerIsOpened = false
 
       const {
-        offers,
+        filteredOffers,
         offer,
         catalogDrawerIsOpened,
       } = useOffersCatalog()
 
-      expect(offers.value).toStrictEqual(expectedCards)
+      expect(filteredOffers.value).toStrictEqual(expectedCards)
       expect(offer.value).toStrictEqual(expectedOffer)
       expect(catalogDrawerIsOpened.value).toStrictEqual(expectedCatalogDrawerIsOpened)
     })
@@ -46,13 +46,15 @@ describe('offers-catalog.composable', () => {
       const expectedCards: OfferDescription[] = getOffersWithSearchTerms(offersCatalogResponseMock.offers)
 
       const {
-        offers,
+        filteredOffers,
         loadOffersCatalog,
+        filterOffersCatalog,
       } = useOffersCatalog()
 
       await loadOffersCatalog()
+      filterOffersCatalog()
 
-      expect(offers.value).toStrictEqual(expectedCards)
+      expect(filteredOffers.value).toStrictEqual(expectedCards)
       expect(loggerMock.error).not.toHaveBeenCalled()
     })
 
@@ -66,13 +68,13 @@ describe('offers-catalog.composable', () => {
       const expectedCards: OfferDescription[] = []
 
       const {
-        offers,
+        filteredOffers,
         loadOffersCatalog,
       } = useOffersCatalog()
 
       await loadOffersCatalog()
 
-      expect(offers.value).toStrictEqual(expectedCards)
+      expect(filteredOffers.value).toStrictEqual(expectedCards)
       expect(loggerMock.error).toHaveBeenCalledOnce()
       expect(loggerMock.error).toHaveBeenCalledWith(...expectedParameters)
     })

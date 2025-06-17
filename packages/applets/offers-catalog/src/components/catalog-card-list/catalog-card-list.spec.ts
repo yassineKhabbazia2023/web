@@ -29,7 +29,7 @@ describe('catalog-card-list', () => {
   }, {
     loadingStatus: APICallStatus.LOADING,
   }]
-  it.each(tests)('should display properly when loadingStatus equals $loadingStatus', ({
+  it.each(tests)('should display properly when loadingStatus equals $loadingStatus', async ({
     loadingStatus,
   }) => {
     const wrapper = createWrapper({
@@ -37,7 +37,7 @@ describe('catalog-card-list', () => {
     })
 
     const snapFilePath = `__snap__/catalog-card-list.${loadingStatus}.html`
-    expect(wrapper.html()).toMatchFileSnapshot(snapFilePath)
+    await expect(wrapper.html()).toMatchFileSnapshot(snapFilePath)
   })
 
   it('should emit select-offer on click', () => {

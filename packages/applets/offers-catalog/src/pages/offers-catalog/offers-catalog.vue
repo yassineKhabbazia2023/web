@@ -14,9 +14,16 @@
     @open-pdf="onOpenPdf"
   />
   <OffersCatalogHeader
+    ref="offersCatalogHeader"
     :searchTerm="searchTerm"
     class="margin-bottom--10"
     @update:search-term="onUpdateSeachTerm"
+  />
+  <CatalogResultCount
+    :searchTerm="searchTerm"
+    :resultCount="filteredOffers.length"
+    class="margin-bottom--10"
+    @clear-search="onClearSearch"
   />
   <CatalogCardList
     :offers="filteredOffers"
@@ -26,11 +33,12 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue'
+import { onMounted, useTemplateRef } from 'vue'
 import CatalogCardList from '../../components/catalog-card-list/catalog-card-list.vue'
 import CatalogDrawer from '../../components/catalog-drawer/catalog-drawer.vue'
 import OffersCatalogHeader from '../../components/offers-catalog-header/offers-catalog-header.vue'
 import CatalogDocumentViewer from '../../components/catalog-document-viewer/catalog-document-viewer.vue'
+import CatalogResultCount from '../../components/catalog-result-count/catalog-result-count.vue'
 import { useOffersCatalog } from './offers-catalog.composable'
 import { amplitudeService } from '@pulse/common'
 import { logger } from '@pulse/core'
@@ -49,6 +57,8 @@ const {
   loadOfferPdf,
   filterOffersCatalog,
 } = useOffersCatalog()
+
+const offersCatalogHeaderRef = useTemplateRef('offersCatalogHeader')
 
 onMounted(async () => {
   await loadOffersCatalog()
@@ -75,5 +85,10 @@ function onOpenPdf() {
 function onUpdateSeachTerm(newSearchTerm: string) {
   searchTerm.value = newSearchTerm
   filterOffersCatalog()
+}
+
+function onClearSearch() {
+  offersCatalogHeaderRef.value?.clearSearch()
+  onUpdateSeachTerm('')
 }
 </script>

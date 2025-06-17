@@ -51,7 +51,7 @@ describe('documentSearchFiltrer', () => {
     it('should render properly', async () => {
       const wrapper = createWrapper()
 
-      expect(wrapper.html()).toMatchFileSnapshot('__snap__/DocumentSearchFiltrer.html')
+      await expect(wrapper.html()).toMatchFileSnapshot('__snap__/DocumentSearchFiltrer.html')
     })
 
     it('should render PDatePicker properly binded', async () => {

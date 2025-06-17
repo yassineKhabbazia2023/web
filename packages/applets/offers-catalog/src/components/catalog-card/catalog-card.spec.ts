@@ -26,10 +26,10 @@ function createWrapper(override: Partial<CatalogCardProps> = {}) {
 }
 
 describe('catalog-card', () => {
-  it('should display properly', () => {
+  it('should display properly', async () => {
     const wrapper = createWrapper()
 
-    expect(wrapper.html()).toMatchFileSnapshot('__snap__/catalog-card.html')
+    await expect(wrapper.html()).toMatchFileSnapshot('__snap__/catalog-card.html')
   })
 
   it('should display with ellipsis when description is long', async () => {

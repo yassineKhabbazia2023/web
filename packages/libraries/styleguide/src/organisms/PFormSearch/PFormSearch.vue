@@ -11,12 +11,13 @@
     >
       <PInput
         :modelValue="formValues.search"
+        :pAutofocus="pAutofocus"
         :pPlaceholder="pPlaceholder"
+        :pClearable="pClearable"
+        :pSize="pSize"
         pPrefixIconName="search"
         pName="search"
-        pSize="small"
         pType="search"
-        :pAutofocus="pAutofocus"
         @input="onInput"
       />
     </PFormItem>

@@ -18,6 +18,7 @@
       :pSearch="searchTerm"
       :pSearchInvalidMessage="t('invalidSearch')"
       :pPlaceholder="t('searchPlaceholder')"
+      pSize="small"
       class="margin-top--2 max-width-300"
       @update:p-search="onUpdateSearchTerm"
     />
