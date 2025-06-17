@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { nextTick } from 'vue'
 import { flushPromises, type VueWrapper, shallowMount } from '@vue/test-utils'
-import { commonMock } from '@app/__mocks__/common.mock'
+import { commonMock } from '@app/__mocks__/common.mocks'
 import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import { getMockedDeadlines } from '@app/__mocks__/deadline.mocks'
 import * as ScheduleServices from '@app/schedule/services'

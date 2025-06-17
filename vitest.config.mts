@@ -12,7 +12,15 @@ export default defineConfig({
       provider: 'istanbul',
       reporter: ['lcov', 'json', 'html'],
       include: ['packages/**/src/**/*'],
-      exclude: ['node_modules', 'dist', 'build', 'coverage', '.turbo', 'stats.html'],
+      exclude: [
+        'node_modules',
+        'dist',
+        'build',
+        'coverage',
+        '.turbo',
+        'stats.html',
+        'packages/**/*/*.mocks.ts',
+      ],
     },
   },
 })

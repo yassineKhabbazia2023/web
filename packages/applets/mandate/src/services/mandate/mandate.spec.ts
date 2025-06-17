@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { getMockedBban } from '@mandate/__mocks__/mandate.mock'
+import { getMockedBban } from '@mandate/__mocks__/mandate.mocks'
 import {
   getBankDetail,
   getMandatesCollection,

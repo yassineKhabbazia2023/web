@@ -14,7 +14,7 @@ import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormS
 import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
 import InformationFormStructure from '@entities/common/config/forms/InformationFormStructure.json'
 import { getMockedAccountReferential, getMockedReferentialHubs, getMockedReferentialOffices } from '@entities/__mocks__/account-row.mocks'
-import { getMockedFormField, getMockedFormSection } from '@entities/__mocks__/company-information.mock'
+import { getMockedFormField, getMockedFormSection } from '@entities/__mocks__/company-information.mocks'
 import type { FormField, FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import type { FormStructureName } from './referentialUtilsTypes'

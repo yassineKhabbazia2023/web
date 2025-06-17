@@ -1,5 +1,5 @@
 import { it, expect, describe } from 'vitest'
-import { getMockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mock'
+import { getMockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mocks'
 import { getAuthorizationsConfigMapped, getAuthorizationState } from '.'
 
 // Mocks

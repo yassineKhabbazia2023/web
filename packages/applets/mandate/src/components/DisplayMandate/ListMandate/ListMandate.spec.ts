@@ -1,5 +1,5 @@
 import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
-import { getMockedMandatesData } from '@mandate/__mocks__/mandate.mock'
+import { getMockedMandatesData } from '@mandate/__mocks__/mandate.mocks'
 import { amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
 import { mockedNotification, notificationHelperMock, showNotificationMock } from '@mandate/__mocks__/notification.helper.mocks'
 import * as mandateService from '@mandate/services/mandate'

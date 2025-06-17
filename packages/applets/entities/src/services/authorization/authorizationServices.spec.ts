@@ -3,7 +3,7 @@ import '@entities/__mocks__/common.import.mocks'
 import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
 import { mockedContactId, mockedContactType } from '@entities/__mocks__/contact.mocks'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
-import { mockUpdateAccountPermission, mockUpdateUserPermission, mockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mock'
+import { mockUpdateAccountPermission, mockUpdateUserPermission, mockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mocks'
 import {
   fetchAuthorizationsConfig,
   updateUserPermissions,

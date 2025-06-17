@@ -1,4 +1,4 @@
-import { mockFetchAuthorizationsConfig, mockUpdateAccountPermission, mockUpdateUserPermission } from './permissions.mock'
+import { mockFetchAuthorizationsConfig, mockUpdateAccountPermission, mockUpdateUserPermission } from './permissions.mocks'
 
 export const authorizationServiceMock = {
   fetchAuthorizationsConfig: mockFetchAuthorizationsConfig,

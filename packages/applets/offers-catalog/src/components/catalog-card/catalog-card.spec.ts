@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import type { CatalogCardProps } from './catalog-card.types'
-import { getCatalogCardMock } from '../../mocks/catalog-card.mock'
+import { getCatalogCardMock } from '../../mocks/catalog-card.mocks'
 
 import CatalogCardList from './catalog-card.vue'
 
