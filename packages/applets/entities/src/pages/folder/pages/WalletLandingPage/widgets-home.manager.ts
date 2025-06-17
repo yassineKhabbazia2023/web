@@ -1,27 +1,27 @@
 import { logger } from '@pulse/core'
-import { WidgetsManager } from '@pulse/widgets/managers'
-import type { WidgetDefinition } from '@pulse/widgets/types'
+import { WidgetsGridManager } from '@pulse/widgets/managers'
+import type { WidgetGridDefinition } from '@pulse/widgets/types'
 import { WidgetName } from '@pulse/widgets/enums'
 import { WidgetsService } from '@entities/services/widgets/widgets.service'
 
 export class WidgetsHomeManager {
   static getWidgetsLayout() {
     const widgets = WidgetsService.getHomeWidgetNames()
-    return this.getWidgetDefinitions(widgets)
+    return this.getWidgetGridDefinitions(widgets)
   }
 
-  static getWidgetDefinitions(widgetNames: WidgetName[]): WidgetDefinition[] {
+  static getWidgetGridDefinitions(widgetNames: WidgetName[]): WidgetGridDefinition[] {
     return widgetNames
       .map((widgetName) => {
-        const widgetDefinition = WidgetsManager.getWidgetDefinition(widgetName)
+        const widgetGridDefinition = WidgetsGridManager.getWidgetGridDefinition(widgetName)
 
-        if (widgetDefinition) {
-          return widgetDefinition
+        if (widgetGridDefinition) {
+          return widgetGridDefinition
         } else {
-          logger.warn(`Widget ${widgetName} not found in WidgetsManager. It will not be displayed.`)
+          logger.warn(`Widget ${widgetName} not found in WidgetsGridManager. It will not be displayed.`)
           return undefined
         }
       })
-      .filter((widgetDefinition) => widgetDefinition !== undefined)
+      .filter((widgetGridDefinition) => widgetGridDefinition !== undefined)
   }
 }

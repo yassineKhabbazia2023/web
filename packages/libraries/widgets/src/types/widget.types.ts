@@ -1,6 +1,6 @@
 import { WidgetName, WidgetSize } from '../enums/widgets.enums'
 
-export type WidgetDefinition = {
+export type WidgetGridDefinition = {
   name: WidgetName
   size?: WidgetSize
 }

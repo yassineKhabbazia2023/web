@@ -1,1 +1,1 @@
-export * from './managers/widgets.manager'
+export * from './managers/widgets-grid.manager'

@@ -1,5 +1,5 @@
 import { WidgetName } from '@pulse/widgets/enums'
-import type { WidgetDefinition } from '@pulse/widgets/types'
+import type { WidgetGridDefinition } from '@pulse/widgets/types'
 
 export const validWidgetNames = {
   sso: WidgetName.SSO,
@@ -15,7 +15,7 @@ export const invalidWidgetNames = {
   invalidWidget: 'INVALID_WIDGET' as WidgetName,
 }
 
-export const mockWidgetDefinitions: Record<WidgetName, WidgetDefinition> = {
+export const mockWidgetGridDefinitions: Record<WidgetName, WidgetGridDefinition> = {
   [WidgetName.SSO]: { name: WidgetName.SSO },
   [WidgetName.DIGILAB]: { name: WidgetName.DIGILAB },
   [WidgetName.PENNYLANE_INTRO]: { name: WidgetName.PENNYLANE_INTRO },

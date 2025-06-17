@@ -1,17 +1,17 @@
 import { WidgetName, WidgetSize } from '../../../enums/widgets.enums'
-import { WidgetsManager } from '../../../managers/widgets.manager'
-import type { WidgetDefinition } from '../../../types/widget.types'
+import { WidgetsGridManager } from '../../../managers/widgets-grid.manager'
+import type { WidgetGridDefinition } from '../../../types/widget.types'
 import { defineAsyncComponent, type App } from 'vue'
 
 export default {
   install(app: App, _options: any) {
-    const widgetDefinition: WidgetDefinition = {
+    const widgetGridDefinition: WidgetGridDefinition = {
       name: WidgetName.DIGILAB,
       size: WidgetSize.ONE_CELL,
     }
     // add the widget as a component to the Vue app
-    app.component(widgetDefinition.name, defineAsyncComponent(() => import('./Digilab.widget.vue')))
-    // register the widget in the WidgetsManager
-    WidgetsManager.registerWidget(widgetDefinition)
+    app.component(widgetGridDefinition.name, defineAsyncComponent(() => import('./Digilab.widget.vue')))
+    // register the widget in the WidgetsGridManager
+    WidgetsGridManager.registerWidget(widgetGridDefinition)
   },
 }

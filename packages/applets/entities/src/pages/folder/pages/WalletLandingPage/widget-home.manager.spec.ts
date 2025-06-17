@@ -1,13 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { WidgetsHomeManager } from './widgets-home.manager'
 import { WidgetsService } from '@entities/services/widgets/widgets.service'
-import { WidgetsManager } from '@pulse/widgets/managers'
+import { WidgetsGridManager } from '@pulse/widgets/managers'
 import { WidgetName } from '@pulse/widgets/enums'
 import { logger } from '@pulse/core'
 import {
   validWidgetNames,
   invalidWidgetNames,
-  mockWidgetDefinitions,
+  mockWidgetGridDefinitions,
 } from '@entities/__mocks__/widgets-home.mocks'
 
 vi.mock('@entities/services/widgets/widgets.service')
@@ -23,12 +23,12 @@ describe('WidgetsHomeManager', () => {
     it('should return widget definitions for available widgets', () => {
       const mockWidgets = [validWidgetNames.digilab, validWidgetNames.pennylaneIntro]
       const expectedDefinitions = [
-        mockWidgetDefinitions[validWidgetNames.digilab],
-        mockWidgetDefinitions[validWidgetNames.pennylaneIntro],
+        mockWidgetGridDefinitions[validWidgetNames.digilab],
+        mockWidgetGridDefinitions[validWidgetNames.pennylaneIntro],
       ]
 
       vi.mocked(WidgetsService.getHomeWidgetNames).mockReturnValue(mockWidgets)
-      vi.mocked(WidgetsManager.getWidgetDefinition)
+      vi.mocked(WidgetsGridManager.getWidgetGridDefinition)
         .mockReturnValueOnce(expectedDefinitions[0])
         .mockReturnValueOnce(expectedDefinitions[1])
 
@@ -39,26 +39,26 @@ describe('WidgetsHomeManager', () => {
     })
   })
 
-  describe('getWidgetDefinitions', () => {
+  describe('getWidgetGridDefinitions', () => {
     it('should filter out undefined widget definitions and log warnings', () => {
       const mockWidgets = [validWidgetNames.digilab, invalidWidgetNames.invalidWidget]
 
-      vi.mocked(WidgetsManager.getWidgetDefinition)
-        .mockReturnValueOnce(mockWidgetDefinitions[validWidgetNames.digilab])
+      vi.mocked(WidgetsGridManager.getWidgetGridDefinition)
+        .mockReturnValueOnce(mockWidgetGridDefinitions[validWidgetNames.digilab])
         .mockReturnValueOnce(undefined)
 
-      const result = WidgetsHomeManager.getWidgetDefinitions(mockWidgets)
+      const result = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets)
 
-      expect(result).toEqual([mockWidgetDefinitions[validWidgetNames.digilab]])
+      expect(result).toEqual([mockWidgetGridDefinitions[validWidgetNames.digilab]])
       expect(logger.warn).toHaveBeenCalled()
     })
 
     it('should return empty array when no valid widgets are found', () => {
       const mockWidgets = ['INVALID_1' as WidgetName, 'INVALID_2' as WidgetName]
 
-      vi.mocked(WidgetsManager.getWidgetDefinition).mockReturnValue(undefined)
+      vi.mocked(WidgetsGridManager.getWidgetGridDefinition).mockReturnValue(undefined)
 
-      const result = WidgetsHomeManager.getWidgetDefinitions(mockWidgets)
+      const result = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets)
 
       expect(result).toEqual([])
       expect(logger.warn).toHaveBeenCalledTimes(2)
@@ -71,10 +71,10 @@ describe('WidgetsHomeManager', () => {
         { name: WidgetName.RSS_NEWS },
       ]
 
-      vi.mocked(WidgetsManager.getWidgetDefinition)
+      vi.mocked(WidgetsGridManager.getWidgetGridDefinition)
         .mockImplementation((name) => mockDefinitions.find(d => d.name === name))
 
-      const result = WidgetsHomeManager.getWidgetDefinitions(mockWidgets)
+      const result = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets)
 
       expect(result).toEqual(mockDefinitions)
       expect(logger.warn).not.toHaveBeenCalled()

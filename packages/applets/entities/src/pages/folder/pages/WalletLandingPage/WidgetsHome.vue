@@ -25,10 +25,10 @@
 
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
-import type { WidgetDefinition } from '@pulse/widgets/types'
+import type { WidgetGridDefinition } from '@pulse/widgets/types'
 import { WidgetsHomeManager } from './widgets-home.manager'
 
-const widgets = ref<WidgetDefinition[]>([])
+const widgets = ref<WidgetGridDefinition[]>([])
 
 onMounted(() => {
   widgets.value = WidgetsHomeManager.getWidgetsLayout()
