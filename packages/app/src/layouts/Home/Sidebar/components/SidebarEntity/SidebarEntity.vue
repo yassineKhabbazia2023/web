@@ -57,7 +57,7 @@
         <li
           v-if="selectedEntity"
           :class="{
-            'sidenav-entity__actions-active': isSelectedEntityActive
+            'sidenav-entity__actions-active': isSelectedEntityActive,
           }"
           class="flex flex--align-items-center is-entity"
           data-testid="selected-entity"
@@ -125,7 +125,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { APP_ROUTES, IS_UNITARY_VIEW_META } from '@pulse/common/constants'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
@@ -184,22 +184,7 @@ const isSelectedEntityActive = computed(() => {
     return false
   }
 
-  let isUnitaryViewVisible = false
-
-  const routesWithSidebarMenu = [
-    'folder',
-    'ged',
-    'launcher',
-    'reports',
-    'bank',
-    'indicators',
-  ]
-
-  if(RouterHelpers.isRouteOrAncestorActive({ route, routesToMatch: routesWithSidebarMenu })) {
-    isUnitaryViewVisible = true
-  }
-
-  return isUnitaryViewVisible
+  return !!route.meta?.[IS_UNITARY_VIEW_META]
 })
 
 const onToggleSidebar = () => {

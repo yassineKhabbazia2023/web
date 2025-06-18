@@ -1,13 +1,14 @@
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
+import { IS_UNITARY_VIEW_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 import { RouteName, RouteParam } from '@pulse/common/enums'
-import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 
 const routes = [
   {
     path: `/dossier/:${RouteParam.ENTITY_ID}/ged`,
     name: RouteName.GED,
     meta: {
+      [IS_UNITARY_VIEW_META]: true,
       [LAYOUT_NO_PADDING_META]: true,
     },
     component: () => import('@ged/Ged.vue'),

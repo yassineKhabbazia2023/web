@@ -1,11 +1,15 @@
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
+import { IS_UNITARY_VIEW_META } from '@pulse/common/constants'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 
 const routes = [
   {
     path: `/dossier/:${RouteParam.ENTITY_ID}/launcher`,
     name: RouteName.LAUNCHER,
+    meta: {
+      [IS_UNITARY_VIEW_META]: true,
+    },
     component: () => import('@launcher/pages/launcher'),
   },
 ]

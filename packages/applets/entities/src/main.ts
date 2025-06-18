@@ -1,7 +1,7 @@
 import type { RouteRecordRaw } from 'vue-router'
 import type { App } from 'vue'
 import { RoutesManager } from '@pulse/common/managers'
-import { LAYOUT_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
+import { LAYOUT_META, LAYOUT_NO_PADDING_META, IS_UNITARY_VIEW_META } from '@pulse/common/constants'
 import { Layout, RouteName, RouteParam } from '@pulse/common/enums'
 import widgetsLibrary from '@pulse/widgets'
 
@@ -144,6 +144,9 @@ routes.push({
 routes.push({
   path: `/dossier/:${RouteParam.ENTITY_ID}`,
   name: RouteName.FOLDER,
+  meta: {
+    [IS_UNITARY_VIEW_META]: true,
+  },
   component: () => import('@entities/pages/folder'),
   children: folderPatchChildren(FOLDER_CHILDREN_PATH),
 })
@@ -153,6 +156,7 @@ routes.push({
   name: RouteName.BANK,
   component: () => import('@entities/pages/WorkInProgress'),
   meta: {
+    [IS_UNITARY_VIEW_META]: true,
     [LAYOUT_META]: Layout.MAIN,
     [LAYOUT_NO_PADDING_META]: true,
   },
@@ -163,6 +167,7 @@ routes.push({
   name: RouteName.INDICATORS,
   component: () => import('@entities/pages/WorkInProgress'),
   meta: {
+    [IS_UNITARY_VIEW_META]: true,
     [LAYOUT_META]: Layout.MAIN,
     [LAYOUT_NO_PADDING_META]: true,
   },
