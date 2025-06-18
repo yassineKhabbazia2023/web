@@ -61,7 +61,6 @@ const { t } = useI18n()
 
 <style lang="scss" scoped>
 .widget-power-bi-intro {
-  max-width: 350px;
 
   .widget-power-bi-intro__title {
     font-size: 16px;

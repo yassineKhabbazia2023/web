@@ -4,7 +4,7 @@
       widget-digilab height--100
       flex
       flex--direction-column
-      flex--justify-content-space-between
+      flex-gap--6
     "
   >
     <div>
