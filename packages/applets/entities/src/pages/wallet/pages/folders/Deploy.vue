@@ -36,7 +36,7 @@
           {{ t('delegation', selectedFolders.length) }}
         </PButton>
         <PButton
-          v-if="hasManageAccessButton"
+          v-if="hasManageAccess"
           :pDisabled="isManageAccessButtonDisabled"
           class="margin-left--2"
           pType="primary"
@@ -134,8 +134,10 @@
       />
     </div>
     <ManageAccessDrawerGlobal
+      v-if="hasManageAccess"
       v-model="isManageAccessDrawerOpened"
       :trackingLocalisation="TrackingLocalisation.WALLET"
+      data-testid="manage-access-drawer-global"
       @update:model-value="onUpdateManageAccessDrawerOpened"
     />
   </div>
@@ -260,10 +262,11 @@ const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
 const isEntityCreatorDrawerOpen = ref(false)
 const hasEntityCreatorPermission = computed(() => CurrentUserManager.hasPermission(PERMISSION_CODES.ENTITY_CREATOR))
 
-const hasManageAccessButton = computed(() =>
+const hasManageAccess = computed(() =>
   FeatureFlagManager.isAccessManagementGlobalActivated()
   && CurrentUserManager.hasPermission(PERMISSION_CODES.MANAGE_ACCESS),
 )
+
 const isManageAccessButtonDisabled = computed(() => (manageAccessCount.value ?? 0) < 1)
 
 const onEntityCreatorDrawerOpen = () => isEntityCreatorDrawerOpen.value = true
@@ -356,7 +359,7 @@ async function fetchAccountList() {
 }
 
 async function onManageAccessButtonClick() {
-  if (hasManageAccessButton.value && (manageAccessCount.value ?? 0) > 0) {
+  if (hasManageAccess.value && (manageAccessCount.value ?? 0) > 0) {
     amplitudeService.track('Registry Validation Initiated', {
       registry_validation_initialisation_localisation: 'portefeuille',
     })
@@ -390,7 +393,7 @@ async function refreshPageCount() {
 }
 
 async function loadManageAccessCount() {
-  if (!hasManageAccessButton.value) {
+  if (!hasManageAccess.value) {
     return
   }
   await refreshPageCount()

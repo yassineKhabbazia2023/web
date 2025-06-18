@@ -474,8 +474,10 @@ describe('deploy', () => {
 
       const manageAccessButton = wrapper.find('[data-testid="manage-access-button"]')
       const manageAccessCount = wrapper.find('[data-testid="manage-access-count"]')
+      const manageAccessDrawer = wrapper.find('[data-testid="manage-access-drawer-global"]')
 
       expect(manageAccessButton.exists()).toBe(expected)
+      expect(manageAccessDrawer.exists()).toBe(expected)
       expect(manageAccessCount.exists()).toBe(expected)
       if (expected) {
         expect(fetchAccountOperationsMock).toHaveBeenCalledOnce()
