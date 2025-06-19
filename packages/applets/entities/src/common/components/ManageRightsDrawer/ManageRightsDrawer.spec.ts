@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import '@entities/__mocks__/common.import.mocks'
 import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock, featureFlagManagerMock } from '@pulse/core/mocks'
 import { expect, beforeEach, describe, it, vi, type Mock } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import type { User } from '@entities/pages/folder/pages/usersCollab/types'
@@ -21,7 +21,10 @@ const mockedUser = {
   ...dataFromApi.data.items[0],
 }
 vi.mock('@entities/services/authorization', () => authorizationServiceMock)
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/core', () => ({
+  logger: loggerMock,
+  FeatureFlagManager: featureFlagManagerMock,
+}))
 vi.mock('vue-router')
 
 const createWrapper = (selectedUser: User = mockedUser): VueWrapper<any> => {

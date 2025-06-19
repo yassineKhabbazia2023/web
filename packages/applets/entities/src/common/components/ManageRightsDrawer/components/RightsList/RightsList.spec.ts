@@ -1,7 +1,7 @@
 import { vi, it, describe, expect, beforeEach, type Mock } from 'vitest'
 import '@entities/__mocks__/common.import.mocks'
 import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock, featureFlagManagerMock } from '@pulse/core/mocks'
 import { mockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mocks'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
 import { mockedContactId } from '@entities/__mocks__/contact.mocks'
@@ -19,7 +19,10 @@ const mockedActionsCount = mockedAuthorizationsConfig
 const mockedUseRoute = useRoute as Mock
 
 vi.mock('@entities/services/authorization', () => authorizationServiceMock)
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/core', () => ({
+  logger: loggerMock,
+  FeatureFlagManager: featureFlagManagerMock,
+}))
 vi.mock('vue-router')
 
 // Expectations
@@ -51,6 +54,16 @@ const createWrapper = (overrideProps?: RightsListProps): VueWrapper<any> => {
           name: 'PCheckbox',
           template: '<div><slot /></div>',
         },
+        PTooltip: {
+          name: 'PTooltip',
+          template: '<div><slot /></div>',
+          props: ['pContent', 'pPlacement', 'disabled'],
+        },
+        PIcon: {
+          name: 'PIcon',
+          template: '<svg/>',
+          props: ['pName', 'class'],
+        },
       },
     },
   })
@@ -72,6 +85,7 @@ const getNthAuthorizationActionsGroup = (
   wrapper.findAllComponents({
     name: 'PCheckboxGroup',
   })[position]
+
 
 describe('rightsList', () => {
   let wrapper: VueWrapper<any>
@@ -270,6 +284,49 @@ describe('rightsList', () => {
         'Unable to fetch authorizations config: ',
         expectedErrorMessage,
       )
+    })
+
+    describe('additional infos tooltip', () => {
+      const extraPennylaneCategory = {
+        category: 'CLTESC',
+        actions: [
+          {
+            actionId: 21,
+            code: 'CLPEN001',
+            name: 'Access Pennylane',
+            label: 'Accéder à l’outil Pennylane',
+            enabled: true,
+          },
+        ],
+      }
+      it('should render a tooltip icon for actions with additional infos when feature flag is enabled', async () => {
+        // Override fetch to include extra category
+        const fetchMock = vi.spyOn(authorizationServices, 'fetchAuthorizationsConfig')
+        fetchMock.mockResolvedValue([
+          ...mockedAuthorizationsConfig,
+          extraPennylaneCategory,
+        ])
+        // Enable feature flag
+        featureFlagManagerMock.isPennylaneActionAdditionalInfoActivated.mockReturnValue(true)
+        wrapper = createWrapper()
+        await flushPromises()
+        const tooltip = wrapper.findComponent({ name: 'PTooltip' })
+        expect(tooltip.exists()).toBe(true)
+      })
+
+      it('should not render any tooltip when feature flag is disabled', async () => {
+        const fetchMock = vi.spyOn(authorizationServices, 'fetchAuthorizationsConfig')
+        fetchMock.mockResolvedValue([
+          ...mockedAuthorizationsConfig,
+          extraPennylaneCategory,
+        ])
+        featureFlagManagerMock.isPennylaneActionAdditionalInfoActivated.mockReturnValue(false)
+        wrapper = createWrapper()
+        await flushPromises()
+
+        const tooltips = wrapper.findAllComponents({ name: 'PTooltip' })
+        expect(tooltips).toHaveLength(0)
+      })
     })
   })
 })

@@ -35,6 +35,10 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.AMPLITUDE)
   }
 
+  static isPennylaneActionAdditionalInfoActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_RIGHT_INFOS)
+  }
+
   static isFeatureActivated(feature: Feature) {
     const value = window.EnvVars?.[feature]
 

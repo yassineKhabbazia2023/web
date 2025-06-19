@@ -7,6 +7,7 @@ export const isFeedCenterActivatedMock = vi.fn(() => false)
 export const isMailToGedActivatedMock = vi.fn(() => false)
 export const isAmplitudeActivatedMock = vi.fn(() => false)
 export const isAccessManagementGlobalActivatedMock = vi.fn(() => false)
+export const isPennylaneActionAdditionalInfoActivated = vi.fn(() => false)
 
 export const featureFlagManagerMock = {
   isScheduleActivated: isScheduleActivatedMock,
@@ -14,5 +15,6 @@ export const featureFlagManagerMock = {
   isMailToGedActivated: isMailToGedActivatedMock,
   isAmplitudeActivated: isAmplitudeActivatedMock,
   isAccessManagementGlobalActivated: isAccessManagementGlobalActivatedMock,
+  isPennylaneActionAdditionalInfoActivated: isPennylaneActionAdditionalInfoActivated,
   isFeatureActivated: vi.fn((_featureFlag: Feature) => false),
 }

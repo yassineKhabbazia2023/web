@@ -14,10 +14,14 @@ export interface Action {
   enabled: boolean
 }
 
+export interface EnrichedAction extends Action {
+  tooltip: string
+}
+
 // Model used to display rights in the drawer (includes category name)
 export interface AuthorizationConfigMapped {
   category: Category
-  actions: Action[]
+  actions: EnrichedAction[]
 }
 
 // Model returned by the API
@@ -32,4 +36,9 @@ export interface RightsListProps {
   modelValue: Record<string, AuthorizationState>
   isAccountRights?: boolean
   contactType?: ContactType
+}
+
+export interface ActionAdditionalInfo {
+  actionCode:string
+  content: string
 }

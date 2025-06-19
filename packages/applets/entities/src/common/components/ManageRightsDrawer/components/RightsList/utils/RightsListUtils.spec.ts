@@ -1,6 +1,7 @@
 import { it, expect, describe } from 'vitest'
 import { getMockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mocks'
-import { getAuthorizationsConfigMapped, getAuthorizationState } from '.'
+import { getAuthorizationsConfigMapped, getAuthorizationState, getEnrichedActions } from '.'
+import type { Action, EnrichedAction } from '../RightsListTypes'
 
 // Mocks
 const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
@@ -11,7 +12,7 @@ const mockedRightCategories = {
   COLMIRROIR: 'Customer mirror view',
 }
 
-const mockedActions = [
+const mockedActions: Action[] = [
   {
     actionId: 21,
     code: 'COLUSER001',
@@ -42,6 +43,12 @@ const mockedActions = [
   },
 ]
 
+const additionalInfoMock = 'additional info mock'
+const tooltipByActionCode: Record<Action['code'], string> = {
+  [mockedActions[0].code]: additionalInfoMock,
+}
+
+
 // Expectations
 const expectedAuthorizationState = {
   actions: ['COLUSER001', 'COLUSER002'],
@@ -53,21 +60,21 @@ const expectedAuthorizationsConfigMapped = [
       code: 'CLTGESTION',
       label: 'File management',
     },
-    actions: mockedAuthorizationsConfig[0].actions,
+    actions: getEnrichedActions(mockedAuthorizationsConfig[0].actions, tooltipByActionCode),
   },
   {
     category: {
       code: 'COLADMIN',
       label: 'Administration',
     },
-    actions: mockedAuthorizationsConfig[1].actions,
+    actions: getEnrichedActions(mockedAuthorizationsConfig[1].actions, tooltipByActionCode),
   },
   {
     category: {
       code: 'COLMIRROIR',
       label: 'Customer mirror view',
     },
-    actions: mockedAuthorizationsConfig[2].actions,
+    actions: getEnrichedActions(mockedAuthorizationsConfig[2].actions, tooltipByActionCode),
   },
 ]
 
@@ -77,6 +84,7 @@ describe('rightsListUtils', () => {
       const authorizationsConfigMapped = getAuthorizationsConfigMapped(
         mockedAuthorizationsConfig,
         mockedRightCategories,
+        tooltipByActionCode,
       )
 
       expect(authorizationsConfigMapped).toStrictEqual(
@@ -89,6 +97,26 @@ describe('rightsListUtils', () => {
       const authorizationState = getAuthorizationState(mockedActions)
 
       expect(authorizationState).toStrictEqual(expectedAuthorizationState)
+    })
+  })
+  describe('getEnrichedActions', () => {
+    it('should return a list enriched actions', () => {
+      const expectedEnrichedActions: EnrichedAction[] = [{
+        ...mockedActions[0],
+        tooltip: additionalInfoMock,
+      }, {
+        ...mockedActions[1],
+        tooltip: '',
+      }, {
+        ...mockedActions[2],
+        tooltip: '',
+      }, {
+        ...mockedActions[3],
+        tooltip: '',
+      }]
+      const enrichedActions = getEnrichedActions(mockedActions, tooltipByActionCode)
+
+      expect(enrichedActions).toStrictEqual(expectedEnrichedActions)
     })
   })
 })

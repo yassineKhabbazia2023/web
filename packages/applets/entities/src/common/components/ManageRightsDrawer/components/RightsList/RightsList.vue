@@ -45,6 +45,17 @@
           >
             <PCheckbox :pLabel="authorizationAction.code">
               {{ authorizationAction.label }}
+              <PTooltip
+                v-if="authorizationAction.tooltip !== ''"
+                :pContent="authorizationAction.tooltip"
+                pPlacement="top"
+              >
+                <PIcon
+                  class="additional-infos-icon"
+                  pName="infoCircle"
+                  @click="handleInfoIconClick"
+                />
+              </PTooltip>
             </PCheckbox>
           </li>
         </ul>
@@ -54,11 +65,11 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger, FeatureFlagManager } from '@pulse/core'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { PSwitch, PCheckbox, PCheckboxGroup, PLoader } from '@pulse/styleguide/components'
+import { PSwitch, PCheckbox, PCheckboxGroup, PLoader, PIcon, PTooltip } from '@pulse/styleguide/components'
 import { fetchAuthorizationsConfig, fetchAccountAuthorizationsConfig } from '@entities/services/authorization'
 import { getAuthorizationsConfigMapped, getAuthorizationState } from './utils'
 import { RouteParam } from '@pulse/common/enums'
@@ -69,6 +80,7 @@ import type {
   RightsListProps,
 } from './RightsListTypes'
 import { RouterHelpers } from '@pulse/common/helpers'
+import { PERMISSION_CODES } from '@entities/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -152,11 +164,17 @@ onMounted(async () => {
         entityId,
       )
     }
+    const tooltipByActionCode = FeatureFlagManager.isPennylaneActionAdditionalInfoActivated()
+      ? {
+        [PERMISSION_CODES.ACCESS_PENNYLANE]: t('PennylaneAdditionalInfos'),
+      } : {}
     // We need to map the data in order to obtain the category label
     authorizationsConfig.value = getAuthorizationsConfigMapped(
       rightsConfigList,
       RIGHT_CATEGORIES,
+      tooltipByActionCode,
     )
+
     // To display the action checkboxes and the category switch with the correct values
     authorizationsConfig.value.forEach(
       (authConfig: AuthorizationConfigMapped) => {
@@ -170,6 +188,10 @@ onMounted(async () => {
     isLoading.value = false
   }
 })
+
+const handleInfoIconClick = (event: MouseEvent) => {
+  event.preventDefault()
+}
 </script>
 
 <style lang="scss" scoped>
@@ -190,11 +212,23 @@ onMounted(async () => {
     margin-top: 1.2rem;
     border-top: 1px solid var(--el-color-neutral-gray-100);
   }
+  .additional-infos-icon{
+    vertical-align: bottom;
+  }
 }
 </style>
 
+
+<!-- Note : désactivation uniquement dans la section YAML afin de permettre un contenu formaté -->
+<!-- avec des retours à la ligne -->
+<!-- eslint-disable no-trailing-spaces -->
 <i18n lang="yaml">
 en-US:
+  PennylaneAdditionalInfos: |
+    ● By checking this box and confirming, a Pennylane account will be created for the user,
+      who will be able to access it via the "Applications" tab on the RYDGE Conseil platform.
+
+    ● By unchecking, access to Pennylane will be blocked for the user on this company.
   management: 'Pilotage'
   accountingManagement: 'Accounting management production'
   socialManagement: 'Social management production'
@@ -210,6 +244,14 @@ en-US:
   thisUser: 'this user'
   rightsNote: 'Activate or deactivate the features you want to give for {rightsType}.'
 fr-FR:
+  PennylaneAdditionalInfos: |
+    ● En cochant cette case et en validant, un compte
+      Pennylane sera créé pour l’utilisateur, qui pourra y
+      accéder via l'onglet "Applications" sur la plateforme
+      RYDGE Conseil.
+
+    ● En décochant, l’accès à Pennylane sera bloqué sur cette
+      entreprise pour l'utilisateur.
   management: 'Pilotage'
   accountingManagement: 'Production gestion comptable'
   socialManagement: 'Production gestion sociale'

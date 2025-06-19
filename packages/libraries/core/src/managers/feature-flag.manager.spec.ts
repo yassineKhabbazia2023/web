@@ -93,4 +93,16 @@ describe('FeatureFlagManager', () => {
       expect(FeatureFlagManager.isFeatureActivated(Feature.HOMEPAGE_WIDGETS)).toBe(false)
     })
   })
+
+  describe.each(tests)(
+    'isPennylaneActionAdditionalInfoActivated',
+    ({
+      value,
+      expected,
+    }) => {
+      it('should return $expected when value is $value', () => {
+        window.EnvVars[Feature.PENNYLANE_RIGHT_INFOS] = value
+        expect(FeatureFlagManager.isPennylaneActionAdditionalInfoActivated()).toBe(expected)
+      })
+    })
 })

@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
 import '@entities/__mocks__/common.import.mocks'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock, featureFlagManagerMock } from '@pulse/core/mocks'
 import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
 import { mockedAccount, mockedAccountType } from '@entities/__mocks__/account.mocks'
 import { expect, beforeEach, describe, it, vi } from 'vitest'
@@ -11,7 +11,10 @@ import AccountRightsDrawer from '.'
 
 // Mocks
 vi.mock('@entities/services/authorization', () => authorizationServiceMock)
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/core', () => ({
+  logger: loggerMock,
+  FeatureFlagManager: featureFlagManagerMock,
+}))
 vi.mock('vue-router')
 
 const createWrapper = (): VueWrapper<any> => {

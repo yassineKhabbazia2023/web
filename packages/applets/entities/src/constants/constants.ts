@@ -67,6 +67,7 @@ export const PERMISSION_CODES = {
   COLLAB_REMOVE_USER: 'COUSER003',
   ACTIVATE_OFFER: 'COOFF001',
   EDIT_COMPANY_DATA: 'COINFO002',
+  ACCESS_PENNYLANE: 'CLPEN001',
 }
 
 export const ENTITY_STATUS_COLOR: Record<EntityStatus, PFilterOptionProps['pColor']> = {
