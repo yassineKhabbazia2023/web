@@ -6,6 +6,7 @@ export enum OfferActivationStatus {
   REJECTED = 'rejected',
   PENDING = 'pending',
   PENDING_MIGRATION = 'pending-migration',
+  FAILED_MIGRATION = 'failed-migration',
 }
 
 
@@ -16,6 +17,6 @@ export interface ActivationStatus {
 }
 
 export interface OfferActivationStatusProps {
-  status: 'validated' | 'rejected' | 'pending' | 'pending-migration' | undefined
+  status: 'validated' | 'rejected' | 'pending' | 'pending-migration' | 'failed-migration' | undefined
   currentUser: UserInfo
 }

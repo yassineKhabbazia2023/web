@@ -12,7 +12,3 @@ resources:
 
 extends:
   template: pipelines/pull-request/web.yaml@Pulse
-  parameters:
-    buildType: 'PullRequest Validation'
-    buildName: 'Pulse_Web_PR'
-    buildDescription: 'Build and deploy Pulse Web for PRs'

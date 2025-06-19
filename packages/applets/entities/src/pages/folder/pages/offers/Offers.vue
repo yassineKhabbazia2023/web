@@ -59,6 +59,16 @@
             :currentUser="user"
             :status="offerActivationStatus"
           />
+          <PTooltip
+            v-if="offerActivationStatus == OfferActivationStatusEnum.FAILED_MIGRATION"
+            :pContent="t('failedMigrationAdditionalInfos')"
+            pPlacement="bottom"
+          >
+            <PIcon
+              class="margin-left--3 cursor-pointer"
+              pName="infoCircle"
+            />
+          </PTooltip>
         </template>
       </PTableColumn>
     </PTable>
@@ -89,6 +99,7 @@ import {
   PTable,
   PTableColumn,
   PImage,
+  PTooltip,
 } from '@pulse/styleguide/components'
 import OfferActivationStatus from './components/OfferActivationStatus'
 import type { SubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
@@ -97,6 +108,7 @@ import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
 import { PERMISSION_CODES } from '@entities/constants'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
+import { OfferActivationStatus as OfferActivationStatusEnum } from './components/OfferActivationStatus/OfferActivationStatusTypes'
 import { RouterHelpers } from '@pulse/common/helpers'
 
 const route = useRoute()
@@ -163,6 +175,11 @@ en-US:
   activateOffers: 'Activate offers'
   offer: 'Offer'
   status: 'Status'
+  failedMigrationAdditionalInfos: |
+    ● Nos équipes travaillent activement à résoudre la situation. Vous serez informé(e) par email dès que la migration
+      sera terminée avec succès.
+    ● En attendant la réussite de la migration, vous pouvez redéposer des documents dans l’espace documentaire
+      de la plateforme RYDGE Conseil.
 fr-FR:
   collabHeaderTitle: "Activation d'offres"
   clientHeaderTitle: 'Offres activées'
@@ -171,4 +188,9 @@ fr-FR:
   activateOffers: 'Activer les offres'
   offer: 'Offre'
   status: 'Statut'
+  failedMigrationAdditionalInfos: |
+    ● Nos équipes travaillent activement à résoudre la situation. Vous serez informé(e) par email dès que la migration
+      sera terminée avec succès.
+    ● En attendant la réussite de la migration, vous pouvez redéposer des documents dans l’espace documentaire
+      de la plateforme RYDGE Conseil.
 </i18n>

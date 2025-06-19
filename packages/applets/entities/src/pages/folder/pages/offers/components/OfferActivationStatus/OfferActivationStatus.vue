@@ -32,6 +32,8 @@ const formattedStatus = computed((): ActivationStatus => {
     return { text: t('rejected'), color: 'danger', iconName: 'xCircle' }
   case OfferActivationStatus.PENDING_MIGRATION:
     return pendingMigrationStatus.value
+  case OfferActivationStatus.FAILED_MIGRATION:
+    return { text: t('failedMigration'), color: 'danger', iconName: 'exclamationTriangle' }
   default:
     return { text: t('pending'), color: 'warning', iconName: 'infoCircle' }
   }
@@ -55,6 +57,7 @@ en-US:
   pending: 'Pending'
   pendingMigrationClient: 'In the process of activation'
   pendingMigrationCollab: 'In the process of validation'
+  failedMigration: 'Failed migration'
 
 fr-FR:
   validated: 'Validée'
@@ -62,4 +65,5 @@ fr-FR:
   pending: 'En attente'
   pendingMigrationClient: 'En cours d’activation'
   pendingMigrationCollab: 'En cours de validation'
+  failedMigration: 'Migration échouée'
 </i18n>

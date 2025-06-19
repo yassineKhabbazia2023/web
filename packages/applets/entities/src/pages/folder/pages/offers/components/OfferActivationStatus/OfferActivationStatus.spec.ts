@@ -74,6 +74,14 @@ describe('offerActivationStatus', () => {
           pIconLeftName: 'infoCircle',
         },
       },
+      {
+        status: 'failed-migration',
+        expectedValue: {
+          pContent: 'Failed migration',
+          pColor: 'danger',
+          pIconLeftName: 'exclamationTriangle',
+        },
+      },
     ])(
       'should display the correct tag for $status',
       ({ status, currentUser, expectedValue }) => {
