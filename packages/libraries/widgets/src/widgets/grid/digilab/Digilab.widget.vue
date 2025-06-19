@@ -6,6 +6,7 @@
       flex--direction-column
       flex-gap--6
     "
+    data-testid="widget-digilab"
   >
     <div>
       <PImage pName="three-persons-in-meeting" />

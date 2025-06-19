@@ -1,5 +1,8 @@
 <template>
-  <div class="widget-power-bi-intro height--100">
+  <div
+    class="widget-power-bi-intro height--100"
+    data-testid="widget-power-bi-intro"
+  >
     <PImage
       pType="paupulse"
       pName="chart"

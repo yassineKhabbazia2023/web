@@ -9,6 +9,7 @@
       position--relative
       overflow-hidden
     "
+    data-testid="widget-pennylane-intro"
   >
     <div
       class="

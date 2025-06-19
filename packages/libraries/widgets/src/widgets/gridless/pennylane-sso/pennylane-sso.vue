@@ -1,5 +1,8 @@
 <template>
-  <div class="widget-sso">
+  <div
+    class="widget-sso"
+    data-testid="widget-pennylane-sso"
+  >
     <PButton
       pTag="a"
       :href="sanitizeUrl(SSOUrl)"
