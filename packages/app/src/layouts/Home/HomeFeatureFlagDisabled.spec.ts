@@ -1,7 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
-import { envVarsMock, featureFlagManagerMock, isFeedCenterActivatedMock, isScheduleActivatedMock, loggerMock } from '@pulse/core/mocks'
+import {
+  envVarsMock,
+  featureFlagManagerMock,
+  isFeedCenterActivatedMock,
+  isScheduleActivatedMock,
+  loggerMock,
+} from '@pulse/core/mocks'
 import { entitiesServiceMock } from '@app/__mocks__/entities.service.mocks'
 import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import { fetchUnreadNotificationsCountMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'

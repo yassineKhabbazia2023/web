@@ -21,6 +21,7 @@ export const envVarsMock = {
   VITE_HUBSPOT_ACTIVATED: 'true',
   VITE_IDLE_DURATION: '90',
   VITE_MAIL_TO_GED_ACTIVATED: 'true',
+  VITE_NOTIFICATION_SETTINGS_DRAWER_ACTIVATED: 'true',
   VITE_PASSWORD_RESET_MAX_ATTEMPTS: '5',
   VITE_PENNYLANE_SSO_URL: 'https://pennylane-sso-url',
   VITE_PENNYLANE_COLLAB_SSO_URL: 'https://pennylane-collab-sso-url',

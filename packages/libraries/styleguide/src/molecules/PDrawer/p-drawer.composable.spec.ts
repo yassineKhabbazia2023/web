@@ -15,13 +15,15 @@ const drawerModel = computed({
     isDrawerOpened.value = value
   },
 })
+const drawerTypeMini = 'mini'
+const drawerTypeFullscreen = 'fullscreen'
 
 
 describe('p drawer composable', () => {
   it('should call trackOutsideClickMiniDrawer 50ms after opening the drawer', async () => {
     vi.useFakeTimers()
     const trackOutsideClickSpy = vi.spyOn(drawerManager, 'trackOutsideClickMiniDrawer')
-    usePDrawer(drawerTemplateRef, drawerModel)
+    usePDrawer(drawerTemplateRef, drawerModel, drawerTypeMini)
 
     expect(trackOutsideClickSpy).not.toHaveBeenCalled()
     drawerModel.value = true
@@ -32,10 +34,24 @@ describe('p drawer composable', () => {
     vi.useRealTimers()
   })
 
+  it('should not trackOutsideClickMiniDrawer if drawer type is NOT mini', async () => {
+    vi.useFakeTimers()
+    const trackOutsideClickSpy = vi.spyOn(drawerManager, 'trackOutsideClickMiniDrawer')
+    usePDrawer(drawerTemplateRef, drawerModel, drawerTypeFullscreen)
+
+    expect(trackOutsideClickSpy).not.toHaveBeenCalled()
+    drawerModel.value = true
+    await nextTick()
+
+    vi.advanceTimersByTime(50)
+    expect(trackOutsideClickSpy).not.toHaveBeenCalled()
+    vi.useRealTimers()
+  })
+
   it('should call killTrackOutsideClick after closing the drawer', async () => {
     const killTrackOutsideSpy = vi.spyOn(drawerManager, 'killTrackOutsideClick')
     drawerModel.value = true
-    usePDrawer(drawerTemplateRef, drawerModel)
+    usePDrawer(drawerTemplateRef, drawerModel, drawerTypeMini)
 
     expect(killTrackOutsideSpy).not.toHaveBeenCalled()
     drawerModel.value = false

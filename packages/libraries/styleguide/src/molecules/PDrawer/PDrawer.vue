@@ -130,7 +130,7 @@ const drawerModel = computed({
 function handleToolboxItemClicked(itemName: string) {
   emit('p-toolbox-item-clicked', itemName)
 }
-const { componentUniqueId } = usePDrawer(drawerRef, drawerModel)
+const { componentUniqueId } = usePDrawer(drawerRef, drawerModel, props.pType)
 
 const pHeaderToolboxProps = {
   ...props.pHeaderToolbox,

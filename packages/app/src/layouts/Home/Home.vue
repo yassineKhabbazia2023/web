@@ -14,7 +14,14 @@
       :unreadNotificationsCount="unreadNotificationsCount"
       @notifications-updated="setNotificationsCount"
       @favourites-filter-updated="onFavoriteFilterUpdated"
+      @open-notification-settings-drawer="openNotificationSettingsDrawer"
     />
+
+    <NotificationSettings
+      v-if="FeatureFlagManager.isNotificationSettingsDrawerActivated()"
+      v-model="isNotificationSettingsDrawerOpened"
+    />
+
     <PContainer pDirection="vertical">
       <PCHeader
         class="header-container"
@@ -64,7 +71,7 @@ import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
 import { trackFeedcenterOpened } from '@app/modules/FeedCenter/services/tracking/tracking.service'
 import { useUserStore } from '@pulse/common/stores'
 import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
-
+import NotificationSettings from '@app/modules/FeedCenter/components/NotificationSettings/notification-settings.vue'
 import Header from './Header'
 import Sidebar from './Sidebar'
 
@@ -165,6 +172,11 @@ const notificationsCountIntervalId = setInterval(async () => {
 onBeforeUnmount(() => {
   clearInterval(notificationsCountIntervalId)
 })
+
+const isNotificationSettingsDrawerOpened = ref(false)
+function openNotificationSettingsDrawer() {
+  isNotificationSettingsDrawerOpened.value = true
+}
 </script>
 
 <style lang="scss" scoped>

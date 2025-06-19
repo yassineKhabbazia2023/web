@@ -39,6 +39,10 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_RIGHT_INFOS)
   }
 
+  static isNotificationSettingsDrawerActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.NOTIFICATION_SETTINGS_DRAWER)
+  }
+
   static isFeatureActivated(feature: Feature) {
     const value = window.EnvVars?.[feature]
 

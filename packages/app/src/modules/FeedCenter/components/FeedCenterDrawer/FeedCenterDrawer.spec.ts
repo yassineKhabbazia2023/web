@@ -1,4 +1,5 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
+import { FeatureFlagManager } from '@pulse/core'
 import { fetchNotificationsMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 import { trackingServiceMock, trackNotificationMarkAsReadMock } from '@app/__mocks__/tracking.service.mocks'
 import { feedCenterDrawerManagerMock, patchAllNotificationsAsReadMock } from '@app/__mocks__/feed-center-drawer.manager.mocks'
@@ -7,6 +8,8 @@ import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import { useUserStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks'
 import { notificationsMock } from '@app/__mocks__/notifications.mocks'
+import { FeedCenterActions } from '@app/modules/FeedCenter/feed-center.enum'
+
 
 import FeedCenterDrawer from '.'
 
@@ -22,6 +25,12 @@ vi.mock('@pulse/common', () => ({
       get: () => vi.fn(),
     },
   }),
+}))
+
+vi.mock('@pulse/core', () => ({
+  FeatureFlagManager: {
+    isNotificationSettingsDrawerActivated: vi.fn(),
+  },
 }))
 
 function createWrapper(props: FeedCenterDrawerProps = FeedCenterDrawerBaseProps) {
@@ -113,8 +122,18 @@ describe('feed center drawer', () => {
 
     it('should call patchAllNotificationAsRead when p-toolbox-item-clicked event is fired', async () => {
       const notificationDrawer = wrapper.findComponent({ name: 'PDrawer' })
-      notificationDrawer.vm.$emit('p-toolbox-item-clicked')
+      notificationDrawer.vm.$emit('p-toolbox-item-clicked', FeedCenterActions.MARK_ALL_AS_READ)
       expect(patchAllNotificationsAsReadMock).toHaveBeenCalledOnce()
+    })
+
+    it('should emit open-notification-settings-drawer when settings option is clicked', async () => {
+      vi.mocked(FeatureFlagManager.isNotificationSettingsDrawerActivated).mockReturnValue(true)
+      wrapper = createWrapper()
+      const notificationDrawer = findFeedCenterDrawer(wrapper)
+
+      await notificationDrawer.vm.$emit('p-toolbox-item-clicked', FeedCenterActions.OPEN_SETTINGS_DRAWER)
+
+      expect(wrapper.emitted('open-notification-settings-drawer')).toBeTruthy()
     })
   })
 
@@ -134,7 +153,7 @@ describe('feed center drawer', () => {
   describe('tracking feedcenter', () => {
     it('should track NotificationMarkAsRead with type ALL_READ when p-toolbox-item-clicked event is fired', async () => {
       const notificationDrawer = findFeedCenterDrawer(wrapper)
-      await notificationDrawer.vm.$emit('p-toolbox-item-clicked')
+      await notificationDrawer.vm.$emit('p-toolbox-item-clicked', FeedCenterActions.MARK_ALL_AS_READ)
       expect(trackNotificationMarkAsReadMock).toHaveBeenCalledWith(NotificationTrackingReadType.ALL_READ)
     })
   })

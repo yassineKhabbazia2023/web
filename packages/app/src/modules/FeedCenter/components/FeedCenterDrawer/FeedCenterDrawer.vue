@@ -7,7 +7,7 @@
     modal
     pDirection="ttb"
     destroyOnClose
-    :pHeaderToolbox="toolboxParams"
+    :pHeaderToolbox="toolboxParams()"
     @close-drawer-button="closeNotificationsDrawer"
     @p-toolbox-item-clicked="handleToolboxItemClick"
   >
@@ -61,6 +61,7 @@ import {
   PTabPane,
   PSwitch,
 } from '@pulse/styleguide/components'
+import { FeatureFlagManager } from '@pulse/core'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import NotificationsWrapper from './NotificationsWrapper'
@@ -72,6 +73,7 @@ import {
   trackNotificationMarkAsRead,
 } from '@app/modules/FeedCenter/services/tracking/tracking.service'
 import { NotificationTrackingReadType } from '@app/modules/FeedCenter/services/tracking/tracking.types'
+import { FeedCenterActions } from '@app/modules/FeedCenter/feed-center.enum'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -82,6 +84,7 @@ const emit = defineEmits<{
   'update:model-value': [boolean],
   'notifications-updated': [],
   'favourites-filter-updated': [boolean]
+  'open-notification-settings-drawer': []
 }>()
 
 const props = defineProps<FeedCenterDrawerProps>()
@@ -98,20 +101,39 @@ const isDrawerOpened = computed({
   },
 })
 
-const toolboxParams: PDrawerProps['pHeaderToolbox'] = {
-  pElements: [
-    {
-      pValue: t('mark-all-as-read'),
-      pIconName: 'checkCircle',
-      pActionName: 'markAllAsRead',
-    },
-  ],
+const toolboxParams = (): PDrawerProps['pHeaderToolbox'] => {
+  const elements: PDrawerProps['pHeaderToolbox'] = {
+    pElements: [
+      {
+        pValue: t('mark-all-as-read'),
+        pIconName: 'checkCircle',
+        pActionName: FeedCenterActions.MARK_ALL_AS_READ,
+      },
+    ],
+  }
+
+  if (FeatureFlagManager.isNotificationSettingsDrawerActivated() === true) {
+    elements.pElements.push({
+      pValue: t('notification-settings'),
+      pIconName: 'gear',
+      pActionName: FeedCenterActions.OPEN_SETTINGS_DRAWER,
+    })
+  }
+
+  return elements
 }
 
-async function handleToolboxItemClick() {
-  notifications.value = await patchAllNotificationsAsRead(userId.value)
-  trackNotificationMarkAsRead(NotificationTrackingReadType.ALL_READ)
-  emit('notifications-updated')
+async function handleToolboxItemClick(actionName: string) {
+  switch (actionName) {
+  case FeedCenterActions.MARK_ALL_AS_READ:
+    notifications.value = await patchAllNotificationsAsRead(userId.value)
+    trackNotificationMarkAsRead(NotificationTrackingReadType.ALL_READ)
+    emit('notifications-updated')
+    break
+  case FeedCenterActions.OPEN_SETTINGS_DRAWER:
+    emit('open-notification-settings-drawer')
+    break
+  }
 }
 
 const {
@@ -135,6 +157,7 @@ watch(isFavouritesFilterEnabled, () => {
 en-US:
   title: 'Notifications'
   mark-all-as-read: 'Mark all as read'
+  notification-settings: 'Access notifications settings'
   tabs:
     all-notifications: 'All'
     unread-notifications: 'Unread'
@@ -142,6 +165,7 @@ en-US:
 fr-FR:
   title: 'Notifications'
   mark-all-as-read: 'Tout marquer comme lu'
+  notification-settings: 'Accéder aux paramètres des notifications'
   tabs:
     all-notifications: 'Tout'
     unread-notifications: 'Non lu'
