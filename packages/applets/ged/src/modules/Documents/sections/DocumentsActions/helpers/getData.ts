@@ -90,7 +90,7 @@ export function getLeftSideActionWithDisabledUpload() {
         pDisabled: true,
         pSize: 'small',
       },
-      pTooltipContent: "Vous n'êtes pas autorisé à déposer un document en raison du changement d'outil de production comptable",
+      pTooltipContent: "Le dépôt de documents est désactivé en raison du changement d'outil de production comptable vers Pennylane",
       pButtonIconName: 'upload',
       pButtonActionName: 'actionbar-add-document-action-click',
       pComponentType: 'UPLOAD',
