@@ -2,7 +2,6 @@ import { vi } from 'vitest'
 
 export const commonMock = {
   getInitials: vi.fn(),
-  commoni18n: vi.fn(),
   commonApi: () => ({
     gateway: {
       get: () => Promise.resolve({ data: {} }),

@@ -24,12 +24,8 @@ const basicConfig = {
     },
   },
   plugins: [
-    vue({
-      reactivityTransform: true,
-    }),
-    VueI18nPlugin({
-      include: [path.resolve(__dirname, './src/**/locales/**')],
-    }),
+    vue(),
+    VueI18nPlugin({}),
     visualizer(),
   ],
 }

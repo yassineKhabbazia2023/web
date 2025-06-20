@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import type { App, Component, DefineComponent } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import api from './api'
-import i18n from './i18n'
+import { i18n } from './i18n/i18n.setup'
 import AmplitudeService from './amplitude'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
 import { fetchUrlTerms } from './services'
@@ -14,12 +14,10 @@ import { refreshClientToken, createNewPassword, isInvitationTokenValid, login } 
 export * from './unauthorized-callback'
 export * from './utils'
 export const commonApi = api
-export const commoni18n = shallowRef(i18n)
 export const commonPinia = createPinia()
 export const widgets = shallowRef([] as Component[] | DefineComponent[])
 export const routes: RouteRecordRaw[] = []
 export const amplitudeService = new AmplitudeService()
-import { type CommonAppOptions } from './types/CommonAppTypes'
 
 export { DataStreamHubConnection }
 export { fetchUrlTerms }
@@ -28,11 +26,9 @@ export { msalInstance }
 export { refreshClientToken, createNewPassword, isInvitationTokenValid, login }
 
 export default {
-  install(app: App, { locale }: CommonAppOptions) {
-    commoni18n.value.global.locale.value = locale
-
+  install(app: App) {
     app
-      .use(commoni18n.value)
+      .use(i18n)
       .use(commonPinia)
   },
 }

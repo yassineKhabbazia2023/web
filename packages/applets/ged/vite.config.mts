@@ -14,9 +14,7 @@ export default ({ mode }: any) =>
     mergeConfig(viteConfigBase({ mode }), {
       plugins: [
         vue(),
-        VueI18nPlugin({
-          include: [path.resolve(__dirname, './src/**/locales/**')],
-        }),
+        VueI18nPlugin({}),
       ],
       resolve: {
         alias: {

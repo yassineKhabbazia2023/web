@@ -4,23 +4,21 @@
       "title": "News",
       "seeMore": "See more",
       "noNews": "No news available at the moment."
+    },
+    "powerBi": {
+      "title": "Take your business {emphasis} further",
+      "titleEmphasis": "performance analysis",
+      "description": "With our {emphasis} delve deeper into your performance analysis and maximize the impact of every strategic decision.",
+      "descriptionEmphasis": "Business Intelligence solutions",
+      "seeMore": "Discover the Power BI offer"
+    },
+    "digilab": {
+      "join": "Join {brandName}",
+      "brandNameLeftPart": "DiGi",
+      "brandNameRightPart": "LAB'",
+      "contribute": "Help improve the {brandName} platform by taking part in user testing, workshops, and one-on-one or group discussions.",
+      "brandName": "RYDGE Conseil",
+      "joinAction": "Join the DiGiLAB"
     }
-  },
-
-  "powerBi": {
-    "title": "Take your business {emphasis} further",
-    "titleEmphasis": "performance analysis",
-    "description": "With our {emphasis} delve deeper into your performance analysis and maximize the impact of every strategic decision.",
-    "descriptionEmphasis": "Business Intelligence solutions",
-    "seeMore": "Discover the Power BI offer"
-  },
-
-  "digilab": {
-    "join": "Join {brandName}",
-    "brandNameLeftPart": "DiGi",
-    "brandNameRightPart": "LAB'",
-    "contribute": "Help improve the {brandName} platform by taking part in user testing, workshops, and one-on-one or group discussions.",
-    "brandName": "RYDGE Conseil",
-    "joinAction": "Join the DiGiLAB"
   }
 }

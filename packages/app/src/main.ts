@@ -1,14 +1,14 @@
 import { createApp } from 'vue'
 import { VITE_ASSETS_BASE_URL } from 'env-vars'
 import { AppVersionManager } from '@pulse/core'
-
 import entitiesApplet from '@pulse/entities'
 import gedApplet from '@pulse/ged'
 import launcherApplet from '@pulse/launcher'
 import loginApplet from '@pulse/login'
 import mandateApplet from '@pulse/mandate'
 import offersCatalogApplet from '@pulse/offers-catalog'
-import commonLibrary, { commoni18n } from '@pulse/common'
+import commonLibrary from '@pulse/common'
+import { i18n } from '@pulse/common/i18n'
 import styleguideLibrary from '@pulse/styleguide'
 import axeptioPlugin from '@app/plugins/Axeptio/axeptio.plugin'
 import gigyaPlugin from '@app/plugins/Gigya/gigya.plugin'
@@ -20,10 +20,9 @@ import router from './router'
 
 import frFR from './i18n/fr-FR.json'
 import enUS from './i18n/en-US.json'
-const locale = 'fr-FR'
 
-commoni18n.value.global.mergeLocaleMessage('fr-FR', frFR)
-commoni18n.value.global.mergeLocaleMessage('en-US', enUS)
+i18n.global.mergeLocaleMessage('fr-FR', frFR)
+i18n.global.mergeLocaleMessage('en-US', enUS)
 
 declare let window: {
   version: string
@@ -47,7 +46,7 @@ const app = createApp(App)
   .use(hubspotPlugin, {
     isActive: isProd,
   })
-  .use(commonLibrary, { locale })
+  .use(commonLibrary)
   // install applets
   .use(entitiesApplet, { router })
   .use(gedApplet, { router })
