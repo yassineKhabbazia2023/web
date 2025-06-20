@@ -3,7 +3,7 @@ import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useUserStore } from '../../stores/user/user.store'
 import { arrayIncludes } from '@pulse/core/utils/array'
 import { logoutCollaborator, logoutGigyaSSO, logoutClient } from '../../utils'
-import { fetchCurrentUser } from '../../services/current-user/current-user.service'
+import { CurrentUserService } from '../../services/current-user/current-user.service'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
 import { storeToRefs } from 'pinia'
@@ -11,18 +11,18 @@ import { TokenManager } from '../token/token.manager'
 import { SelectedEntityManager } from '../selected-entity/selected-entity.manager'
 
 export class CurrentUserManager {
-  static async setCurrentUser(user?: UserInfo) {
+  static async setCurrentUser(currentUser?: UserInfo) {
     const permissionsStore = usePermissionsStore()
     const userStore = useUserStore()
 
-    userStore.setUser(user)
+    userStore.setUser(currentUser)
     permissionsStore.setUserPermissions([])
     permissionsStore.setSelectedEntityPermissions([])
   }
 
   static async initializeCurrentUser() {
-    const user = await fetchCurrentUser()
-    this.setCurrentUser(user)
+    const currentUser = await CurrentUserService.getCurrentUser()
+    this.setCurrentUser(currentUser)
   }
 
   static async logout() {

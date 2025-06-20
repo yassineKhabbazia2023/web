@@ -1,5 +1,4 @@
 import { vi } from 'vitest'
-import { customerUserMock } from '@app/__mocks__/users.mocks'
 
 export const commonMock = {
   getInitials: vi.fn(),
@@ -12,9 +11,6 @@ export const commonMock = {
   routes: {
     value: [],
   },
-  dataProvider: () => ({
-    fetchUserData: vi.fn(() => Promise.resolve(customerUserMock)),
-  }),
   amplitudeService: {
     init: vi.fn(),
     track: vi.fn(),

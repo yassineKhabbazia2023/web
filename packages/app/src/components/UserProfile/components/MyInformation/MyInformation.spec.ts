@@ -5,15 +5,16 @@ import { flushPromises, shallowMount } from '@vue/test-utils'
 
 import MyInformation from '.'
 
-const currentUserMock = getMockedUser()
 
 const patchMock = vi.hoisted(() => vi.fn())
 const pNotificationMock = vi.hoisted(() => vi.fn())
-const fetchUserDataMock = vi.hoisted(() =>
-  vi.fn(() => {
-    return Promise.resolve(currentUserMock)
-  }),
-)
+const currentUserMock = getMockedUser()
+const getCurrentUserMock = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/common/services/current-user', () => ({
+  CurrentUserService: {
+    getCurrentUser: getCurrentUserMock,
+  },
+}))
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('@pulse/styleguide', () => ({
@@ -25,11 +26,6 @@ vi.mock('@pulse/common', () => ({
       patch: patchMock,
     },
   }),
-  dataProvider: () => {
-    return {
-      fetchUserData: fetchUserDataMock,
-    }
-  },
 }))
 
 const validateMock = vi.fn()
@@ -80,15 +76,15 @@ describe('MyInformation', () => {
       isCollab,
       description,
     }) => {
-      fetchUserDataMock.mockResolvedValue({
+      getCurrentUserMock.mockImplementation(() => Promise.resolve({
         ...currentUserMock,
         isCollab,
-      })
+      }))
       const wrapper = createWrapper()
       await flushPromises()
 
       const snapFilepath = `__snap__/MyInformation.${description}.html`
-      expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
+      await expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
     })
 
     it('should display an error notification when the request fails', async () => {
@@ -111,9 +107,11 @@ describe('MyInformation', () => {
     let wrapper: ReturnType<typeof createWrapper>
 
     beforeEach(async () => {
+      getCurrentUserMock.mockResolvedValue(currentUserMock)
       wrapper = createWrapper()
       await flushPromises()
     })
+
     it('has a logout button', () => {
       const logoutButton = wrapper.findComponent({ name: 'LogoutButton' })
       expect(logoutButton.exists()).toBe(true)
@@ -148,8 +146,8 @@ describe('MyInformation', () => {
       await flushPromises()
     })
 
-    it('should call fetchUserData() to populate the default values', () => {
-      expect(fetchUserDataMock).toHaveBeenCalledOnce()
+    it('should call CurrentUserService.getCurrentUser() to populate the default values', () => {
+      expect(getCurrentUserMock).toHaveBeenCalledTimes(1)
     })
 
     it('can update the user information and display a toaster', async () => {

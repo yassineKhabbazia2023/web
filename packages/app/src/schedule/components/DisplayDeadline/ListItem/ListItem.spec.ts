@@ -12,14 +12,6 @@ import ListItem from '.'
 
 vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
-vi.mock('@pulse/common', () => ({
-  dataProvider: () => {
-    return {
-      fetchUserData: vi.fn(),
-    }
-  },
-}))
-
 const createWrapper = (deadlinesByDate: DeadlinesByDate, isActiveDate = false) =>
   wrapperFactory(ListItem, {
     props: { deadlinesByDate, isActiveDate },

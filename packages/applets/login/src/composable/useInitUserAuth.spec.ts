@@ -1,7 +1,8 @@
 import useInitUserAuth from '@login/composable/useInitUserAuth'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock, getMockedUser } from '@pulse/common/mocks'
 import { TokenManager } from '@pulse/common/managers'
+import { CurrentUserService } from '@pulse/common/services/current-user'
 
 const userStoreMock = getStoreMock(useUserStore)
 const tokenStoreMock = getStoreMock(useTokenStore)
@@ -13,20 +14,10 @@ vi.mock('@login/services/msal', () => ({
   getMSALToken: msalGetTokenSpy,
 }))
 
-const userMock = {
-  id: '123',
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'john@example.com',
-  isCollab: true,
-}
+const userMock = getMockedUser()
 
-const mockFetchUserDataProvider = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/common', () => ({
   commonApi: () => vi.fn(),
-  dataProvider: () => ({
-    fetchUserData: mockFetchUserDataProvider,
-  }),
 }))
 
 vi.mock('@login/composable/useStoreSubscription', () => ({
@@ -73,7 +64,7 @@ describe('useInitUserAuth', () => {
 
   it('should init auth when user is client', async () => {
     // Setup
-    mockFetchUserDataProvider.mockResolvedValue(userMock)
+    vi.spyOn(CurrentUserService, 'getCurrentUser').mockResolvedValue(userMock)
     vi.spyOn(TokenManager, 'getToken').mockReturnValue(mockToken)
     const { initAuthClient, isTokenRetrieve } = useInitUserAuth()
 

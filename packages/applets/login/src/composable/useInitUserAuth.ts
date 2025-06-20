@@ -1,14 +1,14 @@
 
-import { amplitudeService, dataProvider } from '@pulse/common'
+import { amplitudeService } from '@pulse/common'
 import { CurrentUserManager, TokenManager } from '@pulse/common/managers'
 import { useUserStore } from '@pulse/common/stores'
+import { CurrentUserService } from '@pulse/common/services/current-user'
 import { getMSALToken } from '@login/services/msal'
 import { ref } from 'vue'
 
 export default function useInitUserAuth() {
   const userStore = useUserStore()
   const isTokenRetrieve = ref(false)
-  const { fetchUserData } = dataProvider()
 
   const setStoreGigyaUserId = (gigyaUserId: string) => {
     const token = TokenManager.getToken()
@@ -22,7 +22,7 @@ export default function useInitUserAuth() {
     const token = TokenManager.getToken()
     isTokenRetrieve.value = !!token
     if (token) {
-      await updateUserState()
+      await fetchAndStoreCurrentUser()
       const userId = userStore.getUserId()
       if(userId) {
         amplitudeService.identifyCustomer()
@@ -36,12 +36,13 @@ export default function useInitUserAuth() {
       }
     }
   }
+
   const initAuthCollab = async () => {
     const token = await getMSALToken()
     CurrentUserManager.persistToken(token)
     isTokenRetrieve.value = !!token
     if (token) {
-      await updateUserState()
+      await fetchAndStoreCurrentUser()
       const userId = userStore.getUserId()
       if(userId) {
         amplitudeService.identifyCollaborator()
@@ -55,11 +56,10 @@ export default function useInitUserAuth() {
       }
     }
   }
-  const updateUserState = async () => {
-    const data = await fetchUserData()
-    userStore.setUser(data)
 
-    return data
+  const fetchAndStoreCurrentUser = async () => {
+    const currentUser = await CurrentUserService.getCurrentUser()
+    userStore.setUser(currentUser)
   }
 
   return { initAuthCollab, initAuthClient, isTokenRetrieve, setStoreGigyaUserId }

@@ -3,7 +3,8 @@ import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/api-gateway.mocks'
 import { getMockedUser } from '../../__mocks__'
 import type { UserInfo } from '../../stores/types'
-import { fetchCurrentUser } from './current-user.service'
+
+import { CurrentUserService } from './current-user.service'
 
 vi.mock('../../api', () => ({
   default: () => ({
@@ -40,7 +41,7 @@ describe('test current-user.service', () => {
       apiGatewayGetMock.mockResolvedValueOnce({
         data: userMock,
       })
-      const currentUser = await fetchCurrentUser()
+      const currentUser = await CurrentUserService.getCurrentUser()
 
       expect(apiGatewayGetMock).toHaveBeenCalledOnce()
       expect(apiGatewayGetMock).toHaveBeenNthCalledWith(1, expectedUrl)
@@ -51,7 +52,7 @@ describe('test current-user.service', () => {
       const errorMock = 'error mock'
       const expectedErrorMessage = 'Unable to retrieve current-user'
       apiGatewayGetMock.mockRejectedValueOnce(errorMock)
-      const currentUser = await fetchCurrentUser()
+      const currentUser = await CurrentUserService.getCurrentUser()
 
       expect(currentUser).toBeUndefined()
       expect(loggerErrorSpy).toHaveBeenCalledOnce()

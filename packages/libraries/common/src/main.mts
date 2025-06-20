@@ -5,7 +5,6 @@ import type { RouteRecordRaw } from 'vue-router'
 import api from './api'
 import i18n from './i18n'
 import AmplitudeService from './amplitude'
-import { useDataProvider } from './composables/useDataProvider'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
 import { fetchUrlTerms } from './services'
 import { msalInstance } from './msal'
@@ -19,7 +18,6 @@ export const commoni18n = shallowRef(i18n)
 export const commonPinia = createPinia()
 export const widgets = shallowRef([] as Component[] | DefineComponent[])
 export const routes: RouteRecordRaw[] = []
-export const dataProvider = useDataProvider
 export const amplitudeService = new AmplitudeService()
 import { type CommonAppOptions } from './types/CommonAppTypes'
 

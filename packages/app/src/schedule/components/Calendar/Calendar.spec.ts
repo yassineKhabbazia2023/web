@@ -19,11 +19,6 @@ vi.mock('@pulse/common', () => ({
   amplitudeService: {
     track: amplitudeTrackMock,
   },
-  dataProvider: () => {
-    return {
-      fetchUserData: vi.fn(),
-    }
-  },
 }))
 
 

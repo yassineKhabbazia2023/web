@@ -7,7 +7,7 @@ import {
 import { amplitudeService } from '@pulse/common'
 import { fetchEntities, fetchFavoriteEntities } from '@app/services/entities'
 import { fetchUserPermissions } from '@pulse/common/services/permissions'
-import { fetchCurrentUser } from '@pulse/common/services/current-user'
+import { CurrentUserService } from '@pulse/common/services/current-user'
 import {
   initProductFruitsAuthenticatedCustomer,
   initProductFruitsAuthenticatedCollab,
@@ -24,18 +24,17 @@ import { Entity } from '@pulse/common/types'
 
 export class AuthenticatedFlowManager {
   static async enterAuthenticatedFlow() {
-    await this.initUser()
+    await this.initCurrentUser()
     this.initAuthenticatedThirdParties()
     await this.initEntities()
   }
 
   // #region setup
-  static async initUser() {
+  static async initCurrentUser() {
     try {
-      // TODO passer par CurrentUserManager ? // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47387
-      const user = await fetchCurrentUser()
+      const currentUser = await CurrentUserService.getCurrentUser()
       const userStore = useUserStore()
-      userStore.setUser(user)
+      userStore.setUser(currentUser)
 
       const permissions = await fetchUserPermissions()
       const permissionsStore = usePermissionsStore()

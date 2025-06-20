@@ -77,11 +77,6 @@ vi.mock('@pulse/common', () => ({
   routes: {
     value: [],
   },
-  dataProvider: () => {
-    return {
-      fetchUserData: vi.fn(),
-    }
-  },
   fetchUrlTerms: vi.fn(),
   amplitudeService: amplitudeServiceMock,
   setUnauthorizedCallback: setUnauthorizedCallbackMock,

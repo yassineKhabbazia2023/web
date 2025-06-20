@@ -12,16 +12,10 @@ import { entitiesServiceMock } from '@app/__mocks__/entities.service.mocks'
 import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import { fetchUnreadNotificationsCountMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 import { routerMock } from '@app/__mocks__/router.mocks'
-import { CurrentUserManagerMock, getMockedUserInfo } from '@pulse/common/mocks'
+import { CurrentUserManagerMock } from '@pulse/common/mocks'
 import { nextTick } from 'vue'
 
 import Home from '.'
-
-const userMock = getMockedUserInfo()
-const dataProviderMock = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/common', () => ({
-  dataProvider: dataProviderMock,
-}))
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
 
@@ -77,12 +71,6 @@ const createWrapper = (): VueWrapper<any> =>
   })
 
 describe('home', () => {
-  beforeEach(() => {
-    dataProviderMock.mockReturnValue({
-      fetchUserData: () => userMock,
-    })
-  })
-
   it('should not call any feedcenter API if feature is disabled', async () => {
     isFeedCenterActivatedMock.mockReturnValue(false)
     const wrapper = createWrapper()

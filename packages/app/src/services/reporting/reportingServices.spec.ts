@@ -16,11 +16,6 @@ vi.mock('@pulse/common', () => ({
       ),
     },
   }),
-  dataProvider: () => {
-    return {
-      fetchUserData: vi.fn(),
-    }
-  },
 }))
 
 describe('reportingServices', () => {

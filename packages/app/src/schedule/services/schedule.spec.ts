@@ -32,11 +32,6 @@ vi.mock('@pulse/common', () => {
         post: commonApiPostSpy,
       },
     }),
-    dataProvider: () => {
-      return {
-        fetchUserData: vi.fn(),
-      }
-    },
   }
 })
 

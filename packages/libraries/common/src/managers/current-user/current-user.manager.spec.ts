@@ -23,9 +23,11 @@ vi.mock('env-vars', () => envVarsMock)
 
 vi.mock('../../utils', () => utilsMock)
 
-const fetchCurrentUserMock = vi.hoisted((() => vi.fn()))
+const getCurrentUserMock = vi.hoisted((() => vi.fn()))
 vi.mock('../../services/current-user/current-user.service', () => ({
-  fetchCurrentUser: fetchCurrentUserMock,
+  CurrentUserService: {
+    getCurrentUser: getCurrentUserMock,
+  },
 }))
 
 describe('test current-user.manager', () => {
@@ -35,7 +37,7 @@ describe('test current-user.manager', () => {
   describe('initializeCurrentUser', () => {
     it('should initialize current user', async () => {
       const currentUserMock = getMockedUserInfo()
-      fetchCurrentUserMock.mockResolvedValue(currentUserMock)
+      getCurrentUserMock.mockResolvedValue(currentUserMock)
       await CurrentUserManager.initializeCurrentUser()
 
       expect(userStoreMock.setUser).toHaveBeenCalledOnce()

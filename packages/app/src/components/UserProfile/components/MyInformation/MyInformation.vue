@@ -93,7 +93,8 @@
 import { reactive, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/core'
-import { commonApi, dataProvider } from '@pulse/common'
+import { commonApi } from '@pulse/common'
+import { CurrentUserService } from '@pulse/common/services/current-user'
 import { PNotification } from '@pulse/styleguide'
 import type { FormInstance } from '@pulse/styleguide/types'
 import { PButton, PForm, PFormItem, PInput, PLoader } from '@pulse/styleguide/components'
@@ -105,8 +106,6 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
-const { fetchUserData } = dataProvider()
 
 const isLoading = ref(false)
 const isUpdateInProgress = ref(false)
@@ -186,7 +185,7 @@ const handleFormSubmit = async (formEl: FormInstance | undefined) => {
 }
 
 onMounted(async () => {
-  const me = await fetchUserData()
+  const me = await CurrentUserService.getCurrentUser()
   if (me) {
     user.lastName = me.lastName
     user.firstName = me.firstName
