@@ -1,0 +1,41 @@
+trigger: none
+
+parameters:
+- name: squad
+  type: string
+  values:
+    - transverse
+    - hades
+    - hermes
+    - orion
+- name: deployToDev
+  displayName: 'Déployer sur DEV'
+  type: boolean
+  default: true
+- name: deployToItg
+  displayName: 'Déployer sur ITG'
+  type: boolean
+  default: false
+- name: deployToRec
+  displayName: 'Déployer sur REC'
+  type: boolean
+  default: false
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+
+resources:
+  repositories:
+  - repository: Pulse
+    name: 'Pulse.Operations.Pipelines'
+    type: git
+    ref: 'Release/v4.0'
+
+extends:
+  template: pipelines/quick-build/web.yaml@Pulse
+  parameters:
+    squad: ${{ parameters.squad }}
+    deployToDev: ${{ parameters.deployToDev }}
+    deployToItg: ${{ parameters.deployToItg }}
+    deployToRec: ${{ parameters.deployToRec }}
