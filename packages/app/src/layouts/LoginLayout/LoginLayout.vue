@@ -45,7 +45,11 @@
 
     <footer class="footer" data-testid="login-footer">
       <div class="footer__legal-links margin-bottom--4">
-        <LegalLinks dark />
+        <LegalLinks
+          :hasCgu="legalLinksHasCgu"
+          class="margin-top--4 font-small"
+          dark
+        />
       </div>
       <div class="footer__support">
         <SupportInfoCollab
@@ -80,6 +84,10 @@ import SupportInfoCollab from '@app/components/SupportInfoCollab'
 const route = useRoute()
 const isCollabPage = computed(() => route.name === APP_ROUTES.login.collab.name)
 const imageName = computed(() => isCollabPage.value ? 'login-page-collab' : 'login-page-client')
+
+const legalLinksHasCgu = computed(() => {
+  return route.name !== APP_ROUTES.login.collab.name
+})
 </script>
 
 <style lang="scss" scoped>

@@ -1,58 +1,51 @@
-import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest'
-import { mount, flushPromises } from '@vue/test-utils'
-import type { VueWrapper } from '@vue/test-utils'
-import { useRoute } from 'vue-router'
-import { APP_ROUTES } from '@pulse/common/constants'
-import { getStoreMock } from '@pulse/common/mocks'
-import { useUserStore } from '@pulse/common/stores'
-import { RouteName } from '@pulse/common/enums'
+import { shallowMount, flushPromises } from '@vue/test-utils'
+import type { LegalLinksProps } from './LegalLinks.types'
 
 import LegalLinks from '.'
 
-const mockedUseRoute = useRoute as Mock
-
 vi.mock('vue-router')
 
-const userStoreMock = getStoreMock(useUserStore)
+const defaultProps: LegalLinksProps = {
+  dark: false,
+  hasCgu: false,
+}
 
-const createWrapper = (): VueWrapper<any> => mount(LegalLinks)
+async function createWrapper(override: Partial<LegalLinksProps> = {}) {
+  const props = {
+    ...defaultProps,
+    ...override,
+  }
+
+  const wrapper = shallowMount(LegalLinks, {
+    props,
+  })
+  await flushPromises()
+
+  return wrapper
+}
 
 describe('legalLinks', () => {
-  let wrapper: VueWrapper<any>
-
-  beforeEach(async () => {
-    mockedUseRoute.mockReturnValue({
-      name: APP_ROUTES.login.collab.name,
+  const tests = [{
+    dark: false,
+    hasCgu: false,
+    description: 'NOT-dark',
+  }, {
+    dark: true,
+    hasCgu: false,
+    description: 'dark',
+  }, {
+    dark: false,
+    hasCgu: true,
+    description: 'with-cgu',
+  }]
+  it.each(tests)('should render properly when $description', async ({
+    dark,
+    description,
+  }) => {
+    const wrapper = await createWrapper({
+      dark,
     })
-    wrapper = createWrapper()
-    await flushPromises()
-  })
-
-  it('has links in the footer', () => {
-    expect(wrapper.find('.legal-links').exists()).toBeTruthy()
-  })
-  it('should display the CGU link user is a client or if the page is login-client', async () => {
-    userStoreMock.isCollab = false
-
-    mockedUseRoute.mockReturnValue({
-      name: RouteName.LOGIN_CLIENT,
-    })
-
-    wrapper = createWrapper()
-    await flushPromises()
-    const linkCGU = wrapper.find('[data-testid=legal-links-cgu]')
-    expect(linkCGU.exists()).toBeTruthy()
-  })
-  it('should not display the CGU link user is a client or if the page is login-client', async () => {
-    userStoreMock.isCollab = true
-    mockedUseRoute.mockReturnValue({
-      name: APP_ROUTES.login.collab.name,
-    })
-
-    wrapper = createWrapper()
-    await flushPromises()
-
-    const linkCGU = wrapper.find('[data-testid=legal-links-cgu]')
-    expect(linkCGU.exists()).toBeFalsy()
+    const snapFilePath = `__snap__/LegalLink.${description}.html`
+    await expect(wrapper.html()).toMatchFileSnapshot(snapFilePath)
   })
 })

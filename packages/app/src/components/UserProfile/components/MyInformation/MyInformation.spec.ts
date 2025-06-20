@@ -1,9 +1,7 @@
 import { nextTick } from 'vue'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import type { VueWrapper } from '@vue/test-utils'
 import { loggerMock } from '@pulse/core/mocks'
 import { getMockedUser } from '@pulse/common/mocks'
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 
 import MyInformation from '.'
 
@@ -34,72 +32,138 @@ vi.mock('@pulse/common', () => ({
   },
 }))
 
-const createWrapper = (): VueWrapper<any> =>
-  mount(MyInformation, {
-    attachTo: document.body,
+const validateMock = vi.fn()
+
+const createWrapper = () =>
+  shallowMount(MyInformation, {
     global: {
-      stubs: [
-        'LogoutButton',
-        'LegalLinks',
-      ],
+      stubs: {
+        Teleport: {
+          name: 'Teleport',
+          template: '<div><slot /></div>',
+        },
+        PFormItem: {
+          name: 'PFormItem',
+          template: '<div><slot /></div>',
+          props: ['pLabel'],
+        },
+        PForm: {
+          name: 'PForm',
+          template: '<div><slot /></div>',
+          props: ['pModel'],
+          methods: {
+            validate: validateMock,
+          },
+        },
+        PInput: {
+          name: 'PInput',
+          template: '<div />',
+          props: [
+            'modelValue',
+            'pDisabled',
+          ],
+        },
+      },
     },
   })
 
-let wrapper: VueWrapper<any>
-
-const getAllInputs = () => wrapper.findAll('input')
-
-describe('myInformation', () => {
-  beforeEach(async () => {
-    const drawerFooter = document.createElement('div')
-    drawerFooter.id = 'my-information__footer-drawer'
-    document.body.appendChild(drawerFooter)
-
-    wrapper = createWrapper()
-    await flushPromises()
-  })
-
-  afterEach(() => {
-    document.body.outerHTML = ''
-  })
+describe('MyInformation', () => {
   describe('display', () => {
-    it('has a logout button', () => {
-      const logoutButton = document.querySelector('logout-button-stub')
-      expect(logoutButton).toBeTruthy()
+    const tests = [{
+      isCollab: false,
+      description: 'customer',
+    }, {
+      isCollab: true,
+      description: 'collab',
+    }]
+    it.each(tests)('should display properly when $description', async ({
+      isCollab,
+      description,
+    }) => {
+      fetchUserDataMock.mockResolvedValue({
+        ...currentUserMock,
+        isCollab,
+      })
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const snapFilepath = `__snap__/MyInformation.${description}.html`
+      expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
     })
 
-    it('prefill the form', () => {
+    it('should display an error notification when the request fails', async () => {
+      const expectedErrorMessage = 'API Error: 503 Service Unavailable'
+      patchMock.mockRejectedValue(expectedErrorMessage)
+      const wrapper = createWrapper()
+
+      const [_personaNameInput, mobilePhoneInput] = wrapper.findAllComponents({ name: 'PInput' })
+      mobilePhoneInput.setValue('123')
+
+      const pButton = wrapper.findComponent({ name: 'PButton' })
+      pButton.trigger('click')
+      await flushPromises()
+
+      expect(pNotificationMock).toHaveBeenCalledOnce()
+    })
+  })
+
+  describe('other tests', () => {
+    let wrapper: ReturnType<typeof createWrapper>
+
+    beforeEach(async () => {
+      wrapper = createWrapper()
+      await flushPromises()
+    })
+    it('has a logout button', () => {
+      const logoutButton = wrapper.findComponent({ name: 'LogoutButton' })
+      expect(logoutButton.exists()).toBe(true)
+    })
+
+    it('prefill the form', async () => {
+      await nextTick()
       const { firstName, lastName, persona, officeMobile, email } = currentUserMock
       const fullNameWrapper = wrapper.find('p.h4')
 
       expect(fullNameWrapper.text()).toContain(`${firstName} ${lastName}`)
-      expect((getAllInputs()[0].element as HTMLInputElement).value).toBe(persona!.name)
-      expect((getAllInputs()[1].element as HTMLInputElement).value).toBe(officeMobile)
-      expect((getAllInputs()[2].element as HTMLInputElement).value).toBe(email)
+      const [personaNameInput, mobilePhoneInput, emailInput] = wrapper.findAllComponents({ name: 'PInput' })
+
+      expect(personaNameInput.props('modelValue')).toBe(persona!.name)
+      expect(mobilePhoneInput.props('modelValue')).toBe(officeMobile)
+      expect(emailInput.props('modelValue')).toBe(email)
     })
 
     it('has all fields as read only except for mobile', () => {
-      expect(getAllInputs()[0].attributes().disabled).toBeDefined()
-      expect(getAllInputs()[1].attributes().disabled).toBeUndefined()
-      expect(getAllInputs()[2].attributes().disabled).toBeDefined()
+      const [personaNameInput, mobilePhoneInput, emailInput] = wrapper.findAllComponents({ name: 'PInput' })
+
+      expect(personaNameInput.props('pDisabled')).toBe('')
+      expect(mobilePhoneInput.props('pDisabled')).toBeUndefined()
+      expect(emailInput.props('pDisabled')).toBe('')
     })
   })
   describe('events', () => {
+    let wrapper: ReturnType<typeof createWrapper>
+
+    beforeEach(async () => {
+      wrapper = createWrapper()
+      await flushPromises()
+    })
+
     it('should call fetchUserData() to populate the default values', () => {
       expect(fetchUserDataMock).toHaveBeenCalledOnce()
     })
 
     it('can update the user information and display a toaster', async () => {
+      validateMock.mockReturnValue(true)
       const NEW_VALUE = '123'
 
-      const mobilePhoneInput = wrapper.find('[name=mobilePhone]')
+      const [_personaNameInput, mobilePhoneInput] = wrapper.findAllComponents({ name: 'PInput' })
       mobilePhoneInput.setValue(NEW_VALUE)
 
       expect(patchMock).not.toHaveBeenCalled()
       expect(pNotificationMock).not.toHaveBeenCalled()
 
-      const inputSubmit = document.querySelector('button') as HTMLButtonElement
-      inputSubmit.click()
+      const pButton = wrapper.findComponent({ name: 'PButton' })
+      pButton.trigger('click')
       await flushPromises()
 
       expect(pNotificationMock).toHaveBeenCalledOnce()
@@ -119,24 +183,9 @@ describe('myInformation', () => {
       )
     })
 
-    it('should display an error notification when the request fails', async () => {
-      const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      patchMock.mockRejectedValue(expectedErrorMessage)
-      wrapper = createWrapper()
-
-      const mobilePhoneInput = wrapper.find('[name=mobilePhone]')
-      mobilePhoneInput.setValue('123')
-
-      const inputSubmit = document.querySelector('button') as HTMLButtonElement
-      inputSubmit.click()
-      await flushPromises()
-
-      expect(pNotificationMock).toHaveBeenCalledOnce()
-    })
-
     it('should trigger the submit event when the form is submitted',
       async () => {
-        const mobilePhoneInput = wrapper.find('[name=mobilePhone]')
+        const [_personaNameInput, mobilePhoneInput] = wrapper.findAllComponents({ name: 'PInput' })
         await mobilePhoneInput.setValue('0787')
         const pForm = wrapper.findComponent({ name: 'PForm' })
         await pForm.trigger('submit.prevent')
@@ -149,7 +198,7 @@ describe('myInformation', () => {
     it("should send the 'update:modelValue' event when the persona name field value changed",
       async () => {
         await nextTick()
-        const personaNameField = wrapper.findComponent({ name: 'PInput' }) as VueWrapper
+        const personaNameField = wrapper.findComponent({ name: 'PInput' })
         await personaNameField.setValue('sy')
         await flushPromises()
 
@@ -160,11 +209,11 @@ describe('myInformation', () => {
     it("should send the 'update:modelValue' event when the email field value changed",
       async () => {
         await nextTick()
-        const emailField = wrapper.findAllComponents({ name: 'PInput' })[2] as VueWrapper
-        await emailField.setValue('sy')
+        const [_personaNameInput, mobilePhoneInput] = wrapper.findAllComponents({ name: 'PInput' })
+        await mobilePhoneInput.setValue('sy')
         await flushPromises()
 
-        expect(emailField.emitted('update:modelValue')).toBeTruthy()
+        expect(mobilePhoneInput.emitted('update:modelValue')).toBeTruthy()
       },
     )
   })

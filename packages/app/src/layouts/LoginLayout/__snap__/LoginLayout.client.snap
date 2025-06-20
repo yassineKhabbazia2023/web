@@ -13,7 +13,7 @@
   </main>
   <footer data-v-5b858a49="" class="footer" data-testid="login-footer">
     <div data-v-5b858a49="" class="footer__legal-links margin-bottom--4">
-      <legal-links-stub data-v-5b858a49="" dark="true"></legal-links-stub>
+      <legal-links-stub data-v-5b858a49="" hascgu="true" dark="true" class="margin-top--4 font-small"></legal-links-stub>
     </div>
     <div data-v-5b858a49="" class="footer__support">
       <support-info-stub data-v-5b858a49=""></support-info-stub>

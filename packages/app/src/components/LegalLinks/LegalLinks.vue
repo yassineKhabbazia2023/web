@@ -1,7 +1,7 @@
 <template>
   <ul
-    class="legal-links list-style-none flex--align-items-center flex--wrap margin-top--4"
-    :class="{'legal-links--dark': dark}"
+    class="legal-links list-style-none flex--align-items-center flex--wrap"
+    :class="{'legal-links--dark': dark === true}"
   >
     <li class="legal-links__item flex flex--align-items-center">
       <a
@@ -14,7 +14,7 @@
       </a>
     </li>
     <li
-      v-if="!isCollab && route.name !== APP_ROUTES.login.collab.name"
+      v-if="hasCgu === true"
       class="legal-links__item flex flex--align-items-center"
       data-testid="legal-links-cgu"
     >
@@ -42,26 +42,17 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { storeToRefs } from 'pinia'
-import { useRoute } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import { fetchUrlTerms } from '@pulse/common'
-import { useUserStore } from '@pulse/common/stores'
 import { LEGAL_NOTICE_URL, PRIVACY_POLICY_URL } from '@pulse/core'
-import { APP_ROUTES } from '@pulse/common/constants'
+import type { LegalLinksProps } from './LegalLinks.types'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
-defineProps({
-  dark: Boolean,
-})
-const userStore = useUserStore()
-
-const { isCollab } = storeToRefs(userStore)
-const route = useRoute()
+defineProps<LegalLinksProps>()
 
 const urlTerms = ref()
 onMounted(async () => {
@@ -85,14 +76,12 @@ onMounted(async () => {
         content: '•';
         display: inline-block;
         margin-right: 0.4rem;
-        font-size: 1.2rem;
       }
     }
   }
   &__link,
   #ot-sdk-btn.ot-sdk-show-settings,
   #ot-sdk-btn.optanon-show-settings {
-    font-size: 1.2rem;
     background: none;
     appearance: none;
     border: none;

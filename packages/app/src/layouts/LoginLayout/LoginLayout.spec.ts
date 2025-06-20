@@ -3,7 +3,6 @@ import { shallowMount } from '@vue/test-utils'
 import { envVarsMock } from '@pulse/core/mocks'
 import { APP_ROUTES } from '@pulse/common/constants'
 
-
 import LoginLayout from './'
 
 const mockRoute = vi.hoisted(() => vi.fn(() => ({

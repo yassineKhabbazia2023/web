@@ -64,7 +64,10 @@
           {{ t('requiredFields') }}
         </p>
         <div class="margin-top--6">
-          <LegalLinks />
+          <LegalLinks
+            :hasCgu="isCollab === false"
+            class="margin-top--4 font-small"
+          />
         </div>
 
         <Teleport to="#my-information__footer-drawer">
@@ -108,6 +111,7 @@ const { fetchUserData } = dataProvider()
 const isLoading = ref(false)
 const isUpdateInProgress = ref(false)
 const formRef = ref<FormInstance>()
+const isCollab = ref(false)
 
 const user = reactive<User>({
   firstName: '',
@@ -186,6 +190,7 @@ onMounted(async () => {
   if (me) {
     user.lastName = me.lastName
     user.firstName = me.firstName
+    isCollab.value = me.isCollab === true
     formValues.email = me.email
     formValues.personaName = me.persona?.name
     formValues.mobilePhone = me.officeMobile
