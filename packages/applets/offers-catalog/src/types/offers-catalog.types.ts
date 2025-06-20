@@ -35,6 +35,17 @@ export interface OffersCatalogResponse {
   subCategories: OfferSubCategory[]
 }
 
+export interface OfferCatalogReferent {
+  firstName: string
+  lastName: string
+  email: string
+  hub: string
+}
+
+export interface OfferCatalogDetailsResponse extends OfferDescription {
+  referents: OfferCatalogReferent[]
+}
+
 export interface CatalogCard {
   title: string
   subtitle: string

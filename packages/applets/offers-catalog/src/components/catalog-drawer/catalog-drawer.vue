@@ -10,57 +10,30 @@
         {{ offer.title }}
       </div>
     </template>
-    <div
-      class="position--relative"
+
+    <PTabs
+      v-model:modelValue="currentTab"
     >
-      <POverlay
-        v-if="loadingStatus === APICallStatus.SUCCESS"
-        pHasOverEffect
-        pBackgroundColor="neutral-gray-500"
-        class="position--absolute"
+      <PTabPane
+        v-for="tab in tabs"
+        :key="tab.name"
+        :pLabel="tab.label"
+        :pName="tab.name"
       >
-        <div
-          class="margin-y--12"
-        >
-          <PButton
-            pType="primary"
-            data-testid="open-pdf-button"
-            @click="onClickOpenPdf"
-          >
-            {{ t('openPdf') }}
-          </PButton>
-        </div>
-      </POverlay>
-
-      <POverlay
-        v-if="loadingStatus === APICallStatus.LOADING"
-        class="position--absolute"
-      >
-        <div
-          class="margin-y--12"
-        >
-          <PLoader
-            pType="primary"
-            pSize="50"
-          />
-        </div>
-      </POverlay>
-
-      <CatalogStatusError
-        v-if="loadingStatus === APICallStatus.ERROR"
-        class="margin-y--12"
-      />
-
-      <PDocumentDisplay
-        v-if="loadingStatus !== APICallStatus.ERROR"
-        :pSrc="offerPdf"
-        :pIsLoading="loadingStatus === APICallStatus.LOADING"
-        class="height--100vh"
-        pDocumentExtension="pdf"
-        :errorMsgTitle="t('errorMsgTitle')"
-        :errorMsgText="t('errorMsgText')"
-      />
-    </div>
+        <CatalogDrawerContentPdf
+          v-if="tab.name === CatalogDrawerTabs.PDF"
+          :offer="offer"
+          :offerPdf="offerPdf"
+          :apiCallStatus="pdfApiCallStatus"
+          @open-pdf="onOpenPdf"
+        />
+        <CatalogDrawerContentReferents
+          v-if="tab.name === CatalogDrawerTabs.CONTACTS"
+          :offerReferents="offerReferents"
+          :apiCallStatus="offerReferentsApiCallStatus"
+        />
+      </PTabPane>
+    </PTabs>
 
     <template #footer>
       <div class="flex flex--justify-content-flex-end">
@@ -79,11 +52,12 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { CatalogDrawerTabs } from './catalog-drawer.enums'
 import { CatalogDrawerProps } from './catalog-drawer.types'
-import { PDrawer, PButton, PDocumentDisplay, PLoader, POverlay } from '@pulse/styleguide/components'
-import { APICallStatus } from '@pulse/common/enums'
-import CatalogStatusError from '../catalog-status-error/catalog-status-error.vue'
+import { PDrawer, PButton, PTabs, PTabPane } from '@pulse/styleguide/components'
+import CatalogDrawerContentPdf from '../catalog-drawer-content-pdf/catalog-drawer-content-pdf.vue'
+import CatalogDrawerContentReferents from '../catalog-drawer-content-referents/catalog-drawer-content-referents.vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -100,6 +74,15 @@ function closeDrawer() {
   internalIsOpened.value = false
 }
 
+const tabs = [{
+  name: CatalogDrawerTabs.PDF,
+  label: t('tabs.pdf'),
+}, {
+  name: CatalogDrawerTabs.CONTACTS,
+  label: t('tabs.contacts'),
+}]
+const currentTab = ref<CatalogDrawerTabs>(CatalogDrawerTabs.PDF)
+
 const internalIsOpened = computed({
   get() {
     return props.isOpened
@@ -109,22 +92,28 @@ const internalIsOpened = computed({
   },
 })
 
-function onClickOpenPdf() {
+function onOpenPdf() {
   emit('open-pdf')
 }
+
+function openFirstTab() {
+  currentTab.value = tabs[0].name
+}
+
+defineExpose({
+  openFirstTab,
+})
 </script>
 
 <i18n lang="yaml">
   en-US:
     close: 'Close'
-    openPdf: 'Show'
-    errorMsgTitle: 'Preview unavailable'
-    errorMsgText: "The document format is not supported"
-    loadingStatusError: 'Something went wrong'
+    tabs:
+      pdf: 'Offer Sheet'
+      contacts: 'Reference Contacts'
   fr-FR:
     close: 'Fermer'
-    openPdf: 'Agrandir'
-    errorMsgTitle: 'Aperçu indisponible'
-    errorMsgText: "Le format de document n'est pas supporté"
-    loadingStatusError: 'Une erreur est survenue'
+    tabs:
+      pdf: "Fiche de l'offre"
+      contacts: 'Contacts référents'
 </i18n>

@@ -3,5 +3,5 @@ import { APICallStatus } from '@pulse/common/enums'
 
 export interface CatalogCardListProps {
   offers: OfferDescription[]
-  loadingStatus: APICallStatus
+  apiCallStatus: APICallStatus
 }

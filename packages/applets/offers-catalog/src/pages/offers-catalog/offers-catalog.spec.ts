@@ -1,10 +1,10 @@
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { getOffersCatalogResponseMock } from '../../mocks/offers-catalog.service.mocks'
+import { getOfferCatalogReferentListMock, getOffersCatalogResponseMock } from '../../mocks/offers-catalog.service.mocks'
 import { APICallStatus } from '@pulse/common/enums'
 import { amplitudeServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/core/mocks'
-import { useOffersCatalog } from './offers-catalog.composable'
+import type { OfferDescription, OfferCatalogReferent } from '@offers-catalog/types/offers-catalog.types'
 
 import OffersCatalog from './offers-catalog.vue'
 
@@ -23,22 +23,22 @@ vi.mock('@pulse/core', () => ({
   logger: loggerMock,
 }))
 
-const clearSearchMock = vi.fn()
-
+const openFirstTabMock = vi.hoisted(() => vi.fn())
 async function createWrapper() {
   const wrapper = shallowMount(OffersCatalog, {
     global: {
       stubs: {
-        OffersCatalogHeader: {
-          name: 'OffersCatalogHeader',
-          template: '<div />',
+        CatalogDrawer: {
+          name: 'CatalogDrawer',
+          template: '<div><slot /></div>',
           methods: {
-            clearSearch: clearSearchMock,
+            openFirstTab: openFirstTabMock,
           },
         },
       },
     },
-  })
+  },
+  )
   await flushPromises()
 
   return wrapper
@@ -47,11 +47,46 @@ async function createWrapper() {
 const offerPdfMock = 'offer pdf mock'
 const offersMock = offersCatalogResponseMock.offers
 const offerMock = offersCatalogResponseMock.offers[0]
+const offerReferentsMock = getOfferCatalogReferentListMock()
 
 const loadOffersCatalogMock = vi.hoisted(() => vi.fn())
 const filterOffersCatalogMock = vi.hoisted(() => vi.fn())
 const setSelectedOfferMock = vi.hoisted(() => vi.fn())
 const loadOfferPdfMock = vi.hoisted(() => vi.fn())
+const loadOfferReferentsMock = vi.hoisted(() => vi.fn())
+
+function getUseOffersCatalogMock(overiddenOptions: Partial<{
+  searchTerm: Ref<string>
+  catalogDrawerIsOpened: Ref<boolean>
+  catalogDocumentViewerIsOpened: Ref<boolean>
+  offer: Ref<OfferDescription | undefined>,
+  filteredOffers: Ref<OfferDescription[]>,
+  offerPdf: Ref<string>,
+  offerReferents: Ref<OfferCatalogReferent[]>,
+  pdfApiCallStatus: Ref<APICallStatus>,
+  catalogApiCallStatus: Ref<APICallStatus>,
+}> = {}) {
+  const defaultOptions = {
+    searchTerm: ref(''),
+    catalogDrawerIsOpened: ref(false),
+    catalogDocumentViewerIsOpened: ref(false),
+    offer: ref(offerMock),
+    offerReferents: ref(offerReferentsMock),
+    filteredOffers: ref(offersMock),
+    offerPdf: ref(offerPdfMock),
+    pdfApiCallStatus: ref(APICallStatus.IDLE),
+    catalogApiCallStatus: ref(APICallStatus.IDLE),
+  }
+  return {
+    ...defaultOptions,
+    ...overiddenOptions,
+    loadOffersCatalog: loadOffersCatalogMock,
+    filterOffersCatalog: filterOffersCatalogMock,
+    setSelectedOffer: setSelectedOfferMock,
+    loadOfferPdf: loadOfferPdfMock,
+    loadOfferReferents: loadOfferReferentsMock,
+  }
+}
 
 describe('offers-catalog', () => {
   const tests = [{
@@ -59,42 +94,42 @@ describe('offers-catalog', () => {
     offerPdf: '',
     catalogDrawerIsOpened: false,
     catalogDocumentViewerIsOpened: false,
-    catalogLoadingStatus: APICallStatus.IDLE,
+    catalogApiCallStatus: APICallStatus.IDLE,
     description: 'drawerIsClosedWithoutOffer',
   }, {
     offer: undefined,
     offerPdf: '',
     catalogDrawerIsOpened: false,
     catalogDocumentViewerIsOpened: false,
-    catalogLoadingStatus: APICallStatus.LOADING,
+    catalogApiCallStatus: APICallStatus.LOADING,
     description: 'catalogLoadingDrawerIsClosedWithoutOffer',
   }, {
     offer: offerMock,
     offerPdf: '',
     catalogDrawerIsOpened: false,
     catalogDocumentViewerIsOpened: false,
-    catalogLoadingStatus: APICallStatus.SUCCESS,
+    catalogApiCallStatus: APICallStatus.SUCCESS,
     description: 'drawerIsClosedWithOffer',
   }, {
     offer: offerMock,
     offerPdf: '',
     catalogDrawerIsOpened: true,
     catalogDocumentViewerIsOpened: false,
-    catalogLoadingStatus: APICallStatus.SUCCESS,
+    catalogApiCallStatus: APICallStatus.SUCCESS,
     description: 'drawerIsOpenedWithoutPdf',
   }, {
     offer: offerMock,
     offerPdf: offerPdfMock,
     catalogDrawerIsOpened: true,
     catalogDocumentViewerIsOpened: false,
-    catalogLoadingStatus: APICallStatus.SUCCESS,
+    catalogApiCallStatus: APICallStatus.SUCCESS,
     description: 'drawerIsOpenedWithPdf',
   }, {
     offer: offerMock,
     offerPdf: offerPdfMock,
     catalogDrawerIsOpened: true,
     catalogDocumentViewerIsOpened: true,
-    catalogLoadingStatus: APICallStatus.SUCCESS,
+    catalogApiCallStatus: APICallStatus.SUCCESS,
     description: 'drawerIsOpenedWithPdfAndWithDocumentViewerOpened',
   }]
   it.each(tests)('should display properly when $description', async ({
@@ -104,22 +139,12 @@ describe('offers-catalog', () => {
     catalogDocumentViewerIsOpened,
     description,
   }) => {
-    const useOffersCatalogReturnValueMock: ReturnType<typeof useOffersCatalog> = {
-      searchTerm: ref(''),
-      filteredOffers: ref(offersMock),
+    useOffersCatalogMock.mockReturnValue(getUseOffersCatalogMock({
       offer: ref(offer),
       offerPdf: ref(offerPdf),
       catalogDrawerIsOpened: ref(catalogDrawerIsOpened),
       catalogDocumentViewerIsOpened: ref(catalogDocumentViewerIsOpened),
-      pdfLoadingStatus: ref(APICallStatus.IDLE),
-      catalogLoadingStatus: ref(APICallStatus.IDLE),
-      loadOffersCatalog: loadOffersCatalogMock,
-      filterOffersCatalog: filterOffersCatalogMock,
-      setSelectedOffer: setSelectedOfferMock,
-      loadOfferPdf: loadOfferPdfMock,
-    }
-
-    useOffersCatalogMock.mockReturnValue(useOffersCatalogReturnValueMock)
+    }))
     const wrapper = await createWrapper()
 
     const snapFilePath = `__snap__/offers-catalog.${description}.html`
@@ -133,23 +158,7 @@ describe('offers-catalog', () => {
   })
 
   it('should select offer when CatalogCard emits selectOffer', async () => {
-    const catalogDrawerIsOpenedMock = false
-    const useOffersCatalogReturnValueMock: ReturnType<typeof useOffersCatalog> = {
-      searchTerm: ref(''),
-      filteredOffers: ref(offersMock),
-      offer: ref(offerMock),
-      offerPdf: ref(offerPdfMock),
-      catalogDrawerIsOpened: ref(catalogDrawerIsOpenedMock),
-      catalogDocumentViewerIsOpened: ref(false),
-      pdfLoadingStatus: ref(APICallStatus.IDLE),
-      catalogLoadingStatus: ref(APICallStatus.IDLE),
-      loadOffersCatalog: loadOffersCatalogMock,
-      filterOffersCatalog: filterOffersCatalogMock,
-      setSelectedOffer: setSelectedOfferMock,
-      loadOfferPdf: loadOfferPdfMock,
-    }
-
-    useOffersCatalogMock.mockReturnValue(useOffersCatalogReturnValueMock)
+    useOffersCatalogMock.mockReturnValue(getUseOffersCatalogMock())
 
     const selectedOfferMock = offersMock[1]
     const offerIdMock = selectedOfferMock.id
@@ -171,28 +180,18 @@ describe('offers-catalog', () => {
     expect(loadOfferPdfMock).toHaveBeenCalledOnce()
     expect(loadOfferPdfMock).toHaveBeenCalledWith(/* no parameters */)
 
+    expect(loadOfferReferentsMock).toHaveBeenCalledOnce()
+    expect(loadOfferReferentsMock).toHaveBeenCalledWith(/* no parameters */)
+
+    expect(openFirstTabMock).toHaveBeenCalledOnce()
+    expect(openFirstTabMock).toHaveBeenCalledWith(/* no parameters */)
+
     expect(amplitudeServiceMock.track).toHaveBeenCalledOnce()
     expect(amplitudeServiceMock.track).toHaveBeenCalledWith(...expectedAmplitudeParameters)
   })
 
   it('should call logger.error when select unkown offer', async () => {
-    const catalogDrawerIsOpenedMock = false
-    const useOffersCatalogReturnValueMock: ReturnType<typeof useOffersCatalog> = {
-      filteredOffers: ref(offersMock),
-      offer: ref(offerMock),
-      offerPdf: ref(offerPdfMock),
-      catalogDrawerIsOpened: ref(catalogDrawerIsOpenedMock),
-      pdfLoadingStatus: ref(APICallStatus.IDLE),
-      catalogLoadingStatus: ref(APICallStatus.IDLE),
-      loadOffersCatalog: loadOffersCatalogMock,
-      filterOffersCatalog: filterOffersCatalogMock,
-      setSelectedOffer: setSelectedOfferMock,
-      loadOfferPdf: loadOfferPdfMock,
-      searchTerm: ref(''),
-      catalogDocumentViewerIsOpened: ref(false),
-    }
-
-    useOffersCatalogMock.mockReturnValue(useOffersCatalogReturnValueMock)
+    useOffersCatalogMock.mockReturnValue(getUseOffersCatalogMock())
 
     const offerIdMock = 777 // an unknown offer ID
     const expectedParameters = [undefined]
@@ -209,6 +208,9 @@ describe('offers-catalog', () => {
     expect(loadOfferPdfMock).toHaveBeenCalledOnce()
     expect(loadOfferPdfMock).toHaveBeenCalledWith(/* no parameters */)
 
+    expect(loadOfferReferentsMock).toHaveBeenCalledOnce()
+    expect(loadOfferReferentsMock).toHaveBeenCalledWith(/* no parameters */)
+
     expect(filterOffersCatalogMock).toHaveBeenCalledOnce()
     expect(filterOffersCatalogMock).toHaveBeenCalledWith(/* no parameters */)
 
@@ -219,26 +221,14 @@ describe('offers-catalog', () => {
   })
 
   describe('interactions', () => {
-    const searchTermMock = ref('')
     const catalogDrawerIsOpenedMock = ref(false)
     const catalogDocumentViewerIsOpenedMock = ref(false)
     beforeEach(() => {
       catalogDocumentViewerIsOpenedMock.value = false
-      const useOffersCatalogReturnValueMock: ReturnType<typeof useOffersCatalog> = {
-        searchTerm: searchTermMock,
-        filteredOffers: ref(offersMock),
-        offer: ref(offerMock),
-        offerPdf: ref(offerPdfMock),
+      useOffersCatalogMock.mockReturnValue(getUseOffersCatalogMock({
         catalogDrawerIsOpened: catalogDrawerIsOpenedMock,
         catalogDocumentViewerIsOpened: catalogDocumentViewerIsOpenedMock,
-        pdfLoadingStatus: ref(APICallStatus.IDLE),
-        catalogLoadingStatus: ref(APICallStatus.IDLE),
-        loadOffersCatalog: loadOffersCatalogMock,
-        filterOffersCatalog: filterOffersCatalogMock,
-        setSelectedOffer: setSelectedOfferMock,
-        loadOfferPdf: loadOfferPdfMock,
-      }
-      useOffersCatalogMock.mockReturnValue(useOffersCatalogReturnValueMock)
+      }))
     })
 
     it('should toggle catalogDocumentViewerIsOpened when CatalogDocumentViewer emit update:is-opened', async () => {
@@ -267,26 +257,9 @@ describe('offers-catalog', () => {
       const wrapper = await createWrapper()
       const catalogDrawer = wrapper.findComponent({ name: 'CatalogDrawer' })
 
+      expect(catalogDocumentViewerIsOpenedMock.value).toBe(false)
       catalogDrawer.vm.$emit('open-pdf')
       expect(catalogDocumentViewerIsOpenedMock.value).toBe(true)
-    })
-
-    describe('when CatalogResultCount emits clear-search', () => {
-      it('should clear search terms and refresh filteredlist', async () => {
-        searchTermMock.value = 'search terms'
-        const wrapper = await createWrapper()
-        const catalogResultCount = wrapper.findComponent({ name: 'CatalogResultCount' })
-
-        expect(filterOffersCatalogMock).toHaveBeenCalledOnce()
-        expect(filterOffersCatalogMock).toHaveBeenCalledWith(/* no parameters */)
-
-        catalogResultCount.vm.$emit('clear-search')
-        expect(searchTermMock.value).toBe('')
-
-        expect(filterOffersCatalogMock).toHaveBeenCalledTimes(2)
-        expect(clearSearchMock).toHaveBeenCalledOnce()
-        expect(clearSearchMock).toHaveBeenCalledWith(/* no parameters */)
-      })
     })
   })
 })

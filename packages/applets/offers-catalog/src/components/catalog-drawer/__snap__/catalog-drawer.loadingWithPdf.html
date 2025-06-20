@@ -1,14 +1,14 @@
 <div modelvalue="true">
   <div class="font-large">Création</div>
-  <div class="position--relative">
-    <!--v-if-->
-    <div class="position--absolute">
-      <div class="margin-y--12">
-        <p-loader-stub ptype="primary" psize="50"></p-loader-stub>
-      </div>
+  <div modelvalue="PDF">
+    <div plabel="Offer Sheet" pname="PDF">
+      <catalog-drawer-content-pdf-stub offer="[object Object]" offerpdf="https://example.com/path/to/pdf" apicallstatus="loading"></catalog-drawer-content-pdf-stub>
+      <!--v-if-->
     </div>
-    <!--v-if-->
-    <p-document-display-stub psrc="https://example.com/path/to/pdf" pdocumentextension="pdf" errormsgtitle="Preview unavailable" errormsgtext="The document format is not supported" pisloading="true" class="height--100vh"></p-document-display-stub>
+    <div plabel="Reference Contacts" pname="CONTACTS">
+      <!--v-if-->
+      <catalog-drawer-content-referents-stub apicallstatus="loading"></catalog-drawer-content-referents-stub>
+    </div>
   </div>
   <div class="flex flex--justify-content-flex-end">
     <div ptype="primary" pplain="" data-testid="catalog-drawer-close-button">Close</div>

@@ -49,7 +49,7 @@
               v-if="scope.row.statusCode"
               :disabled="!scope.row.jdcStatusDescription"
               :pContent="scope.row.jdcStatusDescription"
-              :hideAfter="0"
+              :pHideAfter="0"
             >
               <Tag :status="scope.row.statusCode" />
             </PTooltip>

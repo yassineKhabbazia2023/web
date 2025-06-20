@@ -1,8 +1,8 @@
-import { getOffersCatalogResponseMock } from '../mocks/offers-catalog.service.mocks'
+import { getOffersCatalogResponseMock, getOfferMock, getOfferCatalogReferentListMock } from '../mocks/offers-catalog.service.mocks'
 import { apiGatewayMock } from '@pulse/common/mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 
-import { getOffersCatalog, getOfferCatalogPdf } from './offers-catalog.service'
+import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails } from './offers-catalog.service'
 
 const offersCatalogMock = getOffersCatalogResponseMock()
 
@@ -47,6 +47,30 @@ describe('offers-catalog.service', () => {
       expect(apiGatewayMock.get).toHaveBeenCalledOnce()
       expect(apiGatewayMock.get).toHaveBeenCalledWith(...expectedParameters)
       expect(offersCatalogPdf).toStrictEqual(offerCatalogPdfMock)
+    })
+  })
+
+  describe('getOfferCatalogDetails', () => {
+    it('should call api properly', async () => {
+      const offerCatalogMock = getOfferMock()
+      const referentsMock = getOfferCatalogReferentListMock()
+      const offersCatalogDetailsMock = {
+        ...offerCatalogMock,
+        referents: referentsMock,
+      }
+      apiGatewayMock.get.mockResolvedValue({
+        data: offersCatalogDetailsMock,
+      })
+      const offerIdMock = offersCatalogDetailsMock.id
+
+      const offersCatalogDetails = await getOfferCatalogDetails(offerIdMock)
+      const expectedParameters = [
+        `${API_PREFIXES.OFFER}/catalog/offers/${offerIdMock}`,
+      ]
+
+      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
+      expect(apiGatewayMock.get).toHaveBeenCalledWith(...expectedParameters)
+      expect(offersCatalogDetails).toStrictEqual(offersCatalogDetailsMock)
     })
   })
 })

@@ -119,7 +119,7 @@ describe('offers-catalog.composable', () => {
 
       const {
         offerPdf,
-        pdfLoadingStatus,
+        pdfApiCallStatus,
         setSelectedOffer,
         loadOfferPdf,
       } = useOffersCatalog()
@@ -132,7 +132,7 @@ describe('offers-catalog.composable', () => {
       expect(getOfferCatalogPdfMock).toHaveBeenCalledOnce()
       expect(getOfferCatalogPdfMock).toHaveBeenCalledWith(...expectedParameters)
       expect(loggerMock.error).not.toHaveBeenCalled()
-      expect(pdfLoadingStatus.value).toBe(APICallStatus.SUCCESS)
+      expect(pdfApiCallStatus.value).toBe(APICallStatus.SUCCESS)
     })
 
     it('should not load pdf when pdfUrl is empty', async () => {
@@ -143,7 +143,7 @@ describe('offers-catalog.composable', () => {
 
       const {
         offerPdf,
-        pdfLoadingStatus,
+        pdfApiCallStatus,
         setSelectedOffer,
         loadOfferPdf,
       } = useOffersCatalog()
@@ -159,7 +159,7 @@ describe('offers-catalog.composable', () => {
       expect(getOfferCatalogPdfMock).not.toHaveBeenCalled()
       expect(loggerMock.warn).toHaveBeenCalledOnce()
       expect(loggerMock.warn).toHaveBeenCalledWith(expectedLoggerWarnMessage)
-      expect(pdfLoadingStatus.value).toBe(APICallStatus.IDLE)
+      expect(pdfApiCallStatus.value).toBe(APICallStatus.IDLE)
     })
 
     it('should call logger.error when api call fails', async () => {

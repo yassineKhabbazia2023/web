@@ -1,5 +1,5 @@
 import offersCatalogResponseMock from './offers-catalog.service.mocks.json'
-import type { OfferDescription, OfferCategory, OfferSubCategory, OffersCatalogResponse } from '../types/offers-catalog.types'
+import type { OfferDescription, OfferCategory, OfferSubCategory, OffersCatalogResponse, OfferCatalogReferent } from '../types/offers-catalog.types'
 
 export function getOfferMock(
   override: Partial<OfferDescription> = {},
@@ -65,4 +65,39 @@ export function getOffersCatalogResponseMock(): OffersCatalogResponse {
   }
 
   return offersCatalogResponseMock
+}
+
+export function getOfferCatalogReferentMock(override: Partial<OfferCatalogReferent> = {}): OfferCatalogReferent {
+  const defaultMock: OfferCatalogReferent = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    hub: '',
+  }
+
+  return {
+    ...defaultMock,
+    ...override,
+  }
+}
+
+export function getOfferCatalogReferentListMock() {
+  const list: OfferCatalogReferent[] = [{
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@example.com',
+    hub: 'North Hub',
+  }, {
+    firstName: 'Jane',
+    lastName: 'Smith',
+    email: 'jane.smith@example.com',
+    hub: 'South Hub',
+  }, {
+    firstName: 'Alice',
+    lastName: 'Johnson',
+    email: 'alice.johnson@example.com',
+    hub: 'East Hub',
+  }]
+
+  return list
 }

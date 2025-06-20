@@ -8,7 +8,7 @@
     "
   >
     <POverlay
-      v-if="loadingStatus === APICallStatus.LOADING"
+      v-if="apiCallStatus === APICallStatus.LOADING"
       class="position--absolute"
     >
       <div

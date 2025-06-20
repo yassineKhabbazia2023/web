@@ -4,6 +4,8 @@
     :content="pContent ?? ''"
     :disabled="isEnabled === false"
     :placement="pPlacement"
+    :showAfter="pShowAfter"
+    :hideAfter="pHideAfter"
   >
     <slot />
   </ElTooltip>

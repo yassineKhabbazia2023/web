@@ -1,0 +1,20 @@
+[
+  {
+    "email": "john.doe@example.com",
+    "hub": "North Hub",
+    "initials": "JD",
+    "name": "John Doe",
+  },
+  {
+    "email": "jane.smith@example.com",
+    "hub": "South Hub",
+    "initials": "JS",
+    "name": "Jane Smith",
+  },
+  {
+    "email": "alice.johnson@example.com",
+    "hub": "East Hub",
+    "initials": "AJ",
+    "name": "Alice Johnson",
+  },
+]

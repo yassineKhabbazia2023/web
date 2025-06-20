@@ -2,6 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import type { CatalogDrawerProps } from './catalog-drawer.types'
 import { getOffersMock } from '../../mocks/offers-catalog.service.mocks'
 import { APICallStatus } from '@pulse/common/enums'
+import { CatalogDrawerTabs } from './catalog-drawer.enums'
 
 import CatalogDrawerList from './catalog-drawer.vue'
 
@@ -10,7 +11,8 @@ const offerMock = offersMock[0]
 
 const defaultProps: CatalogDrawerProps = {
   offer: offerMock,
-  loadingStatus: APICallStatus.IDLE,
+  pdfApiCallStatus: APICallStatus.IDLE,
+  offerReferentsApiCallStatus: APICallStatus.IDLE,
   isOpened: true,
   offerPdf: '',
 }
@@ -32,13 +34,18 @@ function createWrapper(override: Partial<CatalogDrawerProps> = {}) {
             'close-drawer-button',
           ],
         },
-        POverlay: {
-          name: 'POverlay',
-          template: '<div><slot /></div>',
-        },
         PButton: {
           name: 'PButton',
           template: '<div><slot /></div>',
+        },
+        PTabs: {
+          name: 'PTabs',
+          template: '<div :modelValue="modelValue"><slot /></div>',
+          props: ['modelValue'],
+        },
+        PTabPane: {
+          name: 'PTabPane',
+          template: '<div><slot /><slot name="label" /></div>',
         },
       },
     },
@@ -48,33 +55,40 @@ function createWrapper(override: Partial<CatalogDrawerProps> = {}) {
 const offerPdfMock = 'https://example.com/path/to/pdf'
 describe('catalog-drawer', () => {
   const tests = [{
-    loadingStatus: APICallStatus.IDLE,
+    pdfApiCallStatus: APICallStatus.IDLE,
+    offerReferentsApiCallStatus: APICallStatus.IDLE,
     offerPdf: '',
     description: 'idleEmptyPdf',
   }, {
-    loadingStatus: APICallStatus.LOADING,
+    pdfApiCallStatus: APICallStatus.LOADING,
+    offerReferentsApiCallStatus: APICallStatus.LOADING,
     offerPdf: '',
     description: 'loadingEmptyPdf',
   }, {
-    loadingStatus: APICallStatus.LOADING,
+    pdfApiCallStatus: APICallStatus.LOADING,
+    offerReferentsApiCallStatus: APICallStatus.LOADING,
     offerPdf: offerPdfMock,
     description: 'loadingWithPdf',
   }, {
-    loadingStatus: APICallStatus.SUCCESS,
+    pdfApiCallStatus: APICallStatus.SUCCESS,
+    offerReferentsApiCallStatus: APICallStatus.SUCCESS,
     offerPdf: offerPdfMock,
     description: 'successWithPdf',
   }, {
-    loadingStatus: APICallStatus.ERROR,
+    pdfApiCallStatus: APICallStatus.ERROR,
+    offerReferentsApiCallStatus: APICallStatus.ERROR,
     offerPdf: offerPdfMock,
     description: 'errorWithPdf',
   }]
   it.each(tests)('should display properly when $description', async ({
-    loadingStatus,
+    pdfApiCallStatus,
+    offerReferentsApiCallStatus,
     offerPdf,
     description,
   }) => {
     const wrapper = createWrapper({
-      loadingStatus,
+      pdfApiCallStatus,
+      offerReferentsApiCallStatus,
       offerPdf,
     })
 
@@ -82,15 +96,15 @@ describe('catalog-drawer', () => {
     await expect(wrapper.html()).toMatchFileSnapshot(snapFilePath)
   })
 
-  it('should', async () => {
+  it('should emit "open-pdf" when CatalogDrawerContentPdf emits "open-pdf"', async () => {
     const expectedEmitted: void[] = []
     const wrapper = createWrapper({
-      loadingStatus: APICallStatus.SUCCESS,
+      pdfApiCallStatus: APICallStatus.SUCCESS,
       offerPdf: offerPdfMock,
     })
-    const openPdfButton = wrapper.findComponent('[data-testid="open-pdf-button"]')
+    const catalogDrawerContentPdf = wrapper.findComponent({ name: 'CatalogDrawerContentPdf' })
 
-    openPdfButton.trigger('click')
+    catalogDrawerContentPdf.vm.$emit('open-pdf')
     expect(wrapper.emitted('open-pdf')).toStrictEqual([expectedEmitted])
   })
 
@@ -108,5 +122,17 @@ describe('catalog-drawer', () => {
     await pDrawer.vm.$emit('update:modelValue', false)
 
     expect(wrapper.emitted('update:is-opened')).toStrictEqual(expectedEmitted)
+  })
+
+  it('should change current tab', async () => {
+    const wrapper = createWrapper()
+    const pTabs = wrapper.findComponent({ name: 'PTabs' })
+
+    expect(pTabs.props('modelValue')).toBe(CatalogDrawerTabs.PDF)
+    await pTabs.vm.$emit('update:modelValue', CatalogDrawerTabs.CONTACTS)
+    expect(pTabs.props('modelValue')).toBe(CatalogDrawerTabs.CONTACTS)
+
+    await wrapper.vm.openFirstTab()
+    expect(pTabs.props('modelValue')).toBe(CatalogDrawerTabs.PDF)
   })
 })

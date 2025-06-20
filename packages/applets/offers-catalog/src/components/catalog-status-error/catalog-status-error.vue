@@ -1,33 +1,19 @@
 <template>
-  <div
-    class="flex
-      flex--direction-column
-      flex--align-items-center
-      padding-top--12
-      text-color--base-blue-pulse
-    "
+  <CatalogStatusMessage
+    :message="t('theDocumentDidNotLoad')"
+    iconName="exclamationTriangle"
   >
-    <PIcon
-      pName="exclamationTriangle"
-      pSize="24"
-      class="margin-bottom--4"
-    />
-    <p
-      class="font-bold text-center"
-    >
-      {{ t('theDocumentDidNotLoad') }}
-    </p>
     <p
       class="text-center"
     >
       {{ t('pleaseRefresh') }}
     </p>
-  </div>
+  </CatalogStatusMessage>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { PIcon } from '@pulse/styleguide/components'
+import CatalogStatusMessage from '../catalog-status-message/catalog-status-message.vue'
 
 const { t } = useI18n({
   inheritLocale: true,

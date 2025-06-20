@@ -1,0 +1,14 @@
+[
+  {
+    "columnLabel": "Prénom Nom",
+    "columnProp": "name",
+  },
+  {
+    "columnLabel": "Hub",
+    "columnProp": "hub",
+  },
+  {
+    "columnLabel": "e-mail",
+    "columnProp": "email",
+  },
+]

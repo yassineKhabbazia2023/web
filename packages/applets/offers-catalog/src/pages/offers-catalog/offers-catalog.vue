@@ -7,10 +7,13 @@
   />
   <CatalogDrawer
     v-if="offer !== undefined"
+    ref="catalogDrawer"
     v-model:isOpened="catalogDrawerIsOpened"
     :offer="offer"
     :offerPdf="offerPdf"
-    :loadingStatus="pdfLoadingStatus"
+    :offerReferents="offerReferents"
+    :pdfApiCallStatus="pdfApiCallStatus"
+    :offerReferentsApiCallStatus="offerReferentsApiCallStatus"
     @open-pdf="onOpenPdf"
   />
   <OffersCatalogHeader
@@ -27,7 +30,7 @@
   />
   <CatalogCardList
     :offers="filteredOffers"
-    :loadingStatus="catalogLoadingStatus"
+    :apiCallStatus="catalogApiCallStatus"
     @select-offer="onSelectOffer"
   />
 </template>
@@ -48,13 +51,16 @@ const {
   filteredOffers,
   offer,
   offerPdf,
+  offerReferents,
   catalogDrawerIsOpened,
-  pdfLoadingStatus,
-  catalogLoadingStatus,
+  pdfApiCallStatus,
+  offerReferentsApiCallStatus,
+  catalogApiCallStatus,
   catalogDocumentViewerIsOpened,
   loadOffersCatalog,
   setSelectedOffer,
   loadOfferPdf,
+  loadOfferReferents,
   filterOffersCatalog,
 } = useOffersCatalog()
 
@@ -65,10 +71,14 @@ onMounted(async () => {
   filterOffersCatalog()
 })
 
+const catalogDrawerRef = useTemplateRef('catalogDrawer')
+
 function onSelectOffer(offerId: number) {
   const selectedOffer = filteredOffers.value?.find(({ id }) => id === offerId)
   setSelectedOffer(selectedOffer)
+  catalogDrawerRef.value?.openFirstTab()
   loadOfferPdf()
+  loadOfferReferents()
   if (selectedOffer === undefined) {
     logger.error(`Offer not found ${offerId}`)
     return

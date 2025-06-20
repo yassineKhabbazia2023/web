@@ -9,7 +9,7 @@ const offersMock = getOffersMock()
 
 const defaultProps: CatalogCardListProps = {
   offers: offersMock,
-  loadingStatus: APICallStatus.IDLE,
+  apiCallStatus: APICallStatus.IDLE,
 }
 
 function createWrapper(override: Partial<CatalogCardListProps> = {}) {
@@ -25,18 +25,18 @@ function createWrapper(override: Partial<CatalogCardListProps> = {}) {
 
 describe('catalog-card-list', () => {
   const tests = [{
-    loadingStatus: APICallStatus.SUCCESS,
+    apiCallStatus: APICallStatus.SUCCESS,
   }, {
-    loadingStatus: APICallStatus.LOADING,
+    apiCallStatus: APICallStatus.LOADING,
   }]
-  it.each(tests)('should display properly when loadingStatus equals $loadingStatus', async ({
-    loadingStatus,
+  it.each(tests)('should display properly when apiCallStatus equals $apiCallStatus', async ({
+    apiCallStatus,
   }) => {
     const wrapper = createWrapper({
-      loadingStatus,
+      apiCallStatus,
     })
 
-    const snapFilePath = `__snap__/catalog-card-list.${loadingStatus}.html`
+    const snapFilePath = `__snap__/catalog-card-list.${apiCallStatus}.html`
     await expect(wrapper.html()).toMatchFileSnapshot(snapFilePath)
   })
 

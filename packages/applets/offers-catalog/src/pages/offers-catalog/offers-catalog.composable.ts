@@ -1,6 +1,6 @@
 import { ref } from 'vue'
-import type { OfferDescription, OfferWithSearchTerms } from '../../types/offers-catalog.types'
-import { getOffersCatalog, getOfferCatalogPdf } from '../../services/offers-catalog.service'
+import type { OfferDescription, OfferCatalogReferent, OfferWithSearchTerms } from '../../types/offers-catalog.types'
+import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails } from '../../services/offers-catalog.service'
 import { normalizeSearchTerm, getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
 import { logger } from '@pulse/core'
 import { filterRecordByKeyCallback } from '@pulse/core/utils/array'
@@ -11,21 +11,23 @@ export function useOffersCatalog() {
   const offers = ref<OfferWithSearchTerms[]>([])
   const filteredOffers = ref<OfferDescription[]>([])
   const offer = ref<OfferDescription>()
+  const offerReferents = ref<OfferCatalogReferent[]>()
   const catalogDrawerIsOpened = ref(false)
-  const pdfLoadingStatus = ref<APICallStatus>(APICallStatus.IDLE)
-  const catalogLoadingStatus = ref<APICallStatus>(APICallStatus.IDLE)
+  const pdfApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
+  const offerReferentsApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
+  const catalogApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
   const catalogDocumentViewerIsOpened = ref(false)
   const offerPdf = ref<Blob|string>('')
 
   async function loadOffersCatalog() {
-    catalogLoadingStatus.value = APICallStatus.LOADING
+    catalogApiCallStatus.value = APICallStatus.LOADING
     try {
       const offersCatalog = await getOffersCatalog()
       offers.value = getOffersWithSearchTerms(offersCatalog.offers)
-      catalogLoadingStatus.value = APICallStatus.SUCCESS
+      catalogApiCallStatus.value = APICallStatus.SUCCESS
     } catch (e) {
       logger.error('Error while loading offersCatalog', e)
-      catalogLoadingStatus.value = APICallStatus.ERROR
+      catalogApiCallStatus.value = APICallStatus.ERROR
     }
   }
 
@@ -42,26 +44,44 @@ export function useOffersCatalog() {
   function setSelectedOffer(selectedOffer?: OfferDescription) {
     offer.value = selectedOffer
     catalogDrawerIsOpened.value = selectedOffer !== undefined
+    offerPdf.value = ''
+    offerReferents.value = undefined
   }
 
   async function loadOfferPdf() {
-    pdfLoadingStatus.value = APICallStatus.LOADING
+    pdfApiCallStatus.value = APICallStatus.LOADING
     offerPdf.value = ''
     try {
       const pdfUrl = offer.value?.pdfUrl ?? ''
       if (pdfUrl === '') {
         logger.warn('pdfUrl is empty')
-        pdfLoadingStatus.value = APICallStatus.IDLE
+        pdfApiCallStatus.value = APICallStatus.IDLE
         return
       }
       const pdf = await getOfferCatalogPdf(pdfUrl)
       offerPdf.value = new Blob([pdf], {
         type: 'application/pdf',
       })
-      pdfLoadingStatus.value = APICallStatus.SUCCESS
+      pdfApiCallStatus.value = APICallStatus.SUCCESS
     } catch (e) {
       logger.error('Error while loading offerPdf', e)
-      pdfLoadingStatus.value = APICallStatus.ERROR
+      pdfApiCallStatus.value = APICallStatus.ERROR
+    }
+  }
+
+  async function loadOfferReferents() {
+    offerReferentsApiCallStatus.value = APICallStatus.LOADING
+    offerReferents.value = []
+    try {
+      if (offer.value?.id === undefined) {
+        throw new Error('Unmanaged case, offer.id is undefined')
+      }
+      const offerDetails = await getOfferCatalogDetails(offer.value?.id)
+      offerReferents.value = offerDetails.referents
+      offerReferentsApiCallStatus.value = APICallStatus.SUCCESS
+    } catch (e) {
+      logger.error('Error while loading OfferCatalogDetails', e)
+      offerReferentsApiCallStatus.value = APICallStatus.ERROR
     }
   }
 
@@ -70,13 +90,16 @@ export function useOffersCatalog() {
     filteredOffers,
     offer,
     offerPdf,
+    offerReferents,
     catalogDrawerIsOpened,
-    pdfLoadingStatus,
-    catalogLoadingStatus,
+    pdfApiCallStatus,
+    offerReferentsApiCallStatus,
+    catalogApiCallStatus,
     catalogDocumentViewerIsOpened,
     loadOffersCatalog,
     setSelectedOffer,
     loadOfferPdf,
+    loadOfferReferents,
     filterOffersCatalog,
   }
 }
