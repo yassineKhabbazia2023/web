@@ -28,6 +28,7 @@
     "styleguide:story:build": "npm run story:build --workspace=@pulse/styleguide",
     "test": "npm run test --workspaces --if-present",
     "test:coverage": "vitest --bail 1 --reporter=default --reporter=junit --outputFile=coverage/junit.xml",
+    "test:changed": "vitest --changed origin/main --bail 1 --reporter=default --reporter=junit --outputFile=coverage/junit.xml",
     "build": "npm run build:types --workspaces --if-present && npm run build --workspace=@pulse/app --",
     "build:all": "npm run build --workspaces --if-present",
     "build:types": "npm run build:types --workspaces --if-present",
