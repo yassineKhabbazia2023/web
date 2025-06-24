@@ -1,4 +1,3 @@
-
 import { amplitudeService } from '@pulse/common'
 import { CurrentUserManager, TokenManager } from '@pulse/common/managers'
 import { useUserStore } from '@pulse/common/stores'

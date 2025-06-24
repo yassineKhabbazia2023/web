@@ -1,4 +1,3 @@
-
 export enum ProviderName {
   MEG = 'MEG',
   LOOP = 'LOOP',

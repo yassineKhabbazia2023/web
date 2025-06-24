@@ -1,4 +1,3 @@
-
 import { binDocumentsMock } from '@ged/__mocks__/bin-documents.mocks'
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'

@@ -1,4 +1,3 @@
-
 import { dateFormatter, downloadFile, saveFileAs } from './utils'
 import { expect, describe, it, vi } from 'vitest'
 interface Window {

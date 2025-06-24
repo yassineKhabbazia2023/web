@@ -1,4 +1,3 @@
-
 import { logger } from '@pulse/core'
 
 const context = {

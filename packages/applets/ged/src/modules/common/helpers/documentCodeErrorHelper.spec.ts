@@ -1,4 +1,3 @@
-
 import { getFileErrorMessage, getFileErrorDescription }
   from '@ged/modules/common/helpers/documentCodeErrorHelper'
 import { describe, it, expect } from 'vitest'

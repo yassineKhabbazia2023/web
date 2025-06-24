@@ -1,4 +1,3 @@
-
 import { describe, it, expect, vi } from 'vitest'
 import type { PExpandableSearchProps } from './PExpandableSearchTypes'
 import type { VueWrapper } from '@vue/test-utils'

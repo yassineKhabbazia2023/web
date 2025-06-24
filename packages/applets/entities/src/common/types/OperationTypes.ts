@@ -1,4 +1,3 @@
-
 export enum OperationStatus {
   PENDING = 'PENDING',
   APPROVED = 'APPROVED',

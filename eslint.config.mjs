@@ -71,7 +71,7 @@ export default [
       'no-empty': 'error',
       'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
       'comma-spacing': ['error', { 'before': false, 'after': true }],
-      'no-multiple-empty-lines': ['error', { 'max': 2, 'maxBOF': 1, 'maxEOF': 0 }],
+      'no-multiple-empty-lines': ['error', { 'max': 2, 'maxBOF': 0, 'maxEOF': 1 }],
       'no-trailing-spaces': 'error',
       'no-whitespace-before-property': 'error',
       'object-curly-spacing': ['error', 'always', { 'arraysInObjects': true }],

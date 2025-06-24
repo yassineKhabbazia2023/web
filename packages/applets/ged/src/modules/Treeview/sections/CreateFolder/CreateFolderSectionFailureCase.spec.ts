@@ -1,4 +1,3 @@
-
 import { type Mock } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { loggerMock } from '@pulse/core/mocks'

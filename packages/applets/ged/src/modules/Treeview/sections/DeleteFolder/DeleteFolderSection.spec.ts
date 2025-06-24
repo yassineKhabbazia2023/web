@@ -1,4 +1,3 @@
-
 import { mount } from '@vue/test-utils'
 import { type Mock } from 'vitest'
 import { getMockedFolder } from '@ged/__mocks__/treeview.mocks'

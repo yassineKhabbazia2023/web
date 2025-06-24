@@ -1,4 +1,3 @@
-
 import type { IconName } from '../../../types/IconName.types'
 
 export const POLYCHOME_CATEGORY = 'Polychrome'

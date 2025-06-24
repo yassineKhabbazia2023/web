@@ -1,4 +1,3 @@
-
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { loggerMock } from '@pulse/core/mocks'

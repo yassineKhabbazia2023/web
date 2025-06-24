@@ -1,4 +1,3 @@
-
 import type { FoldersMoveProps } from './FoldersMoveTypes'
 import { mount } from '@vue/test-utils'
 import { loggerMock } from '@pulse/core/mocks'

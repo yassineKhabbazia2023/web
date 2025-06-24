@@ -1,4 +1,3 @@
-
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'

@@ -1,4 +1,3 @@
-
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { AccountHeaderProps } from './AccountHeader.types'
 import { shallowMount } from '@vue/test-utils'

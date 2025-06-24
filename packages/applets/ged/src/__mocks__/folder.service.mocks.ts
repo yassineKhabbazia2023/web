@@ -1,4 +1,3 @@
-
 import { foldersData } from './tree-folders.mocks'
 import { servicesDataMock } from './services.mocks'
 import { Service } from '@ged/models/Service'

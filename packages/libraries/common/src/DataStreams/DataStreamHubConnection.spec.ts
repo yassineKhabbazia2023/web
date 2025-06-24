@@ -1,4 +1,3 @@
-
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
 import type { HubConnection } from '@microsoft/signalr'

@@ -1,4 +1,3 @@
-
 export interface SingleInputModalProps {
   modalTitle: string
   isDialogVisible: boolean

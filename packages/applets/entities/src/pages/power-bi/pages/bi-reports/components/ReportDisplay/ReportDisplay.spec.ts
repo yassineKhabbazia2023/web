@@ -1,4 +1,3 @@
-
 import '@entities/__mocks__/common.import.mocks'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import * as reportingServices from '@entities/services/reporting'

@@ -1,4 +1,3 @@
-
 import type { DocumentUploadProps } from './DocumentsUploadTypes'
 import { generateTestFiles, secondValidDestination, unValidDestination, validDestination, validFiles } from '@ged/__mocks__/files.mocks'
 import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'

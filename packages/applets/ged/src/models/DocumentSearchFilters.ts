@@ -1,4 +1,3 @@
-
 export enum Period {
   DAY = 'DAY',
   WEEK = 'WEEK',

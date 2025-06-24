@@ -1,4 +1,3 @@
-
 import type { Service } from '@ged/models/Service'
 
 export interface BinDocumentProps {
