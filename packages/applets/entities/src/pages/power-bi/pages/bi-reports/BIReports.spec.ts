@@ -11,18 +11,24 @@ import BIReports from '.'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
-const mockedAccountId = 602
-const mockedBIReports = getMockedBIReports()
+const accountIdMock = 602
+const reportsMock = getMockedBIReports()
+const routerReplaceMock = vi.fn()
+const routeQueryMock = vi.hoisted(() => vi.fn(() => ({ query: { reportId: reportsMock[0].reportId } })))
 
 vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    replace: routerReplaceMock,
+  }),
   useRoute: () => ({
     params: {
-      [RouteParam.ENTITY_ID]: mockedAccountId,
+      [RouteParam.ENTITY_ID]: accountIdMock,
     },
+    query: routeQueryMock,
   }),
 }))
 vi.mock('@entities/services/reporting', () => ({
-  fetchBIReports: vi.fn(() => Promise.resolve({ items: mockedBIReports })),
+  fetchBIReports: vi.fn(() => Promise.resolve({ items: reportsMock })),
   fetchBIToken: vi.fn(() => 'tokenTest'),
 }))
 
@@ -50,31 +56,55 @@ describe('biReports', () => {
 
       expect(reportsList.exists()).toBeTruthy()
       expect(reportDisplay.exists()).toBeTruthy()
-      expect(reportsList.props('selectedReport')).toStrictEqual(
-        mockedBIReports[0],
-      )
+      expect(reportsList.props('selectedReport')).toStrictEqual(reportsMock[0])
+    })
+  })
+  describe('routing', () => {
+    it('clears router query when selecting an invalid report', async () => {
+      // select invalid report ID
+      const reportList = wrapper.findComponent({ name: 'ReportsList' })
+      reportList.vm.$emit('select-report', 999)
+      await nextTick()
+
+      expect(routerReplaceMock).toHaveBeenCalledWith({ query: {} })
+      expect(loggerMock.warn).toHaveBeenCalledOnce()
+      expect(loggerMock.warn).toHaveBeenCalledWith('Invalid reportId provided. Resetting to the first available report.')
+    })
+    it('updates the reportId in the query when a different report is selected', async () => {
+      // Arrange
+      const reportList = wrapper.findComponent({ name: 'ReportsList' })
+
+      // Act: simulate user selecting the second report
+      reportList.vm.$emit('select-report', reportsMock[1].reportId)
+      await nextTick()
+
+      // Assert: router should be called with updated reportId
+      expect(routerReplaceMock).toHaveBeenNthCalledWith(2, {
+        // First call on mounted, second call on report selection
+        query: { reportId: reportsMock[1].reportId },
+      })
     })
   })
   describe('events', () => {
-    it("should update 'selectedReports' when ReportsList emits 'update:selectedReport'", async () => {
+    it("should update 'selectedReports' when ReportsList emits 'select-report'", async () => {
       const reportsList = wrapper.findComponent({ name: 'ReportsList' })
-      reportsList.vm.$emit('update:selectedReport', mockedBIReports[1])
+      reportsList.vm.$emit('select-report', reportsMock[1].reportId)
       await nextTick()
       const selectedReport = wrapper.vm.selectedReport
 
-      expect(selectedReport).toStrictEqual(mockedBIReports[1])
+      expect(selectedReport).toStrictEqual(reportsMock[1])
     })
     it('should select the first report by default', () => {
       const selectedReport = wrapper.vm.selectedReport
 
-      expect(selectedReport).toStrictEqual(mockedBIReports[0])
+      expect(selectedReport).toStrictEqual(reportsMock[0])
     })
     it('should call the reporting API with the correct parameters to fetch the reports related to an account', () => {
       const spyFetchBIReports = vi.spyOn(reportingServices, 'fetchBIReports')
       createWrapper()
 
       expect(spyFetchBIReports).toHaveBeenCalledOnce()
-      expect(spyFetchBIReports).toHaveBeenCalledWith(mockedAccountId)
+      expect(spyFetchBIReports).toHaveBeenCalledWith(accountIdMock)
     })
     it('should display an error notification if the request to fetch the BI reports fails', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'

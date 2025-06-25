@@ -4,10 +4,20 @@
     class="loader flex flex--justify-content-center flex--align-items-center"
     data-testid="bi-reports-loader"
   >
-    <PLoader pType="primary" pSize="50" />
+    <PLoader
+      pType="primary"
+      pSize="50"
+    />
   </div>
-  <div v-else-if="!isLoading && selectedReport" class="bi-reports flex">
-    <ReportsList v-model:selectedReport="selectedReport" :reports="reports" />
+  <div
+    v-else-if="!isLoading && selectedReport"
+    class="bi-reports flex"
+  >
+    <ReportsList
+      :selectedReport="selectedReport"
+      :reports="reports"
+      @select-report="handleReportSelection"
+    />
     <ReportDisplay :selectedReport="selectedReport" />
   </div>
 </template>
@@ -16,7 +26,7 @@
 import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { PLoader } from '@pulse/styleguide/components'
 import { fetchBIReports } from '@entities/services/reporting'
 import type { Report } from '@entities/common/types/BIReportsTypes'
@@ -31,10 +41,34 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const route = useRoute()
 const isLoading = ref(true)
 const reports = ref<Report[]>([])
 const selectedReport = ref<Report>()
+
+// #region manage reportId query
+const route = useRoute()
+const router = useRouter()
+
+const selectReportById = (reportId: number): Report | undefined =>
+  reports.value.find((report) => report.reportId === reportId)
+
+const setQueryReportId = (reportId?: number) => {
+  const query = { reportId }
+  router.replace({ query })
+}
+
+const handleReportSelection = (reportId: number) => {
+  const report = selectReportById(reportId)
+
+  if (!report) {
+    setQueryReportId()
+    return
+  }
+
+  selectedReport.value = report
+  setQueryReportId(reportId)
+}
+// #endregion
 
 onMounted(async () => {
   try {
@@ -42,8 +76,21 @@ onMounted(async () => {
     // entityId can't be null here, so we use non-null assertion
     const { items } = await fetchBIReports(entityId!)
     reports.value = items
-    // We always select the first report by default
-    selectedReport.value = reports.value[0]
+
+    // Extract the reportId from the route's query parameters (handle both string and array cases)
+    const rawReportId = Array.isArray(route.query.reportId) ? route.query.reportId[0] : route.query.reportId
+    const reportId = Number(rawReportId)
+
+    // If the reportId is not a valid number, reset the query and select the first available report
+    if (!reportId || Number.isNaN(reportId)) {
+      setQueryReportId()
+      selectedReport.value = reports.value[0]
+      logger.warn('Invalid reportId provided. Resetting to the first available report.')
+      return
+    }
+
+    // If reportId is valid, proceed to handle report selection
+    handleReportSelection(reportId)
   } catch (error) {
     logger.error(error)
     displayNotification('error', t('biReportsUnavailable'))
@@ -60,8 +107,8 @@ onMounted(async () => {
 </style>
 
 <i18n lang="yaml">
-  en-US:
-    biReportsUnavailable: "There's a technical issue with fetching BI reports. Please check back later."
-  fr-FR:
-    biReportsUnavailable: "Un problème technique empêche la récupération des rapports BI. Merci de vérifier plus tard."
+en-US:
+  biReportsUnavailable: "There's a technical issue with fetching BI reports. Please check back later."
+fr-FR:
+  biReportsUnavailable: 'Un problème technique empêche la récupération des rapports BI. Merci de vérifier plus tard.'
 </i18n>

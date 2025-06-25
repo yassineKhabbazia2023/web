@@ -10,6 +10,8 @@ const mappingNotificationTrackingType: Record<NotificationKindEnum, Notification
   [NotificationKindEnum.GED]: NotificationTrackingType.GED,
   [NotificationKindEnum.Delegation]: NotificationTrackingType.DELEGATION,
   [NotificationKindEnum.Mandate]: NotificationTrackingType.MANDATE,
+  [NotificationKindEnum.ReportingCreated]: NotificationTrackingType.REPORTING,
+  [NotificationKindEnum.ReportingUpdated]: NotificationTrackingType.REPORTING,
 }
 const mappingNotificationTrackingTabs : Record<SelectedNotificationEnum, NotificationTrackingTab> = {
   [SelectedNotificationEnum.ALL]: NotificationTrackingTab.ALL,

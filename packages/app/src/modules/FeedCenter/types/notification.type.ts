@@ -4,7 +4,9 @@ import type { NotificationAccount } from '@app/modules/FeedCenter/types/notifica
 export enum NotificationKindEnum {
   Delegation = 'Delegation-AddDelegation',
   GED = 'Ged-DocumentUploaded',
-  Mandate = 'Mandate-MandateStatusChanged'
+  Mandate = 'Mandate-MandateStatusChanged',
+  ReportingCreated = 'Reporting-ReportCreated',
+  ReportingUpdated = 'Reporting-ReportUpdated'
   // More notificationKind to come in the future #StayTuned
 }
 

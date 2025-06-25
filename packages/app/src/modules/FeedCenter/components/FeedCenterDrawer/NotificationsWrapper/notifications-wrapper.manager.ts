@@ -97,6 +97,22 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
       query: { bankAccountNumbers: notification.redirectLink },
     })
   },
+  [NotificationKindEnum.ReportingCreated]: (params: NotificationActionsMappingParams) => {
+    const { accountIds, notification, router } = params
+    router.push({
+      name: RouteName.REPORTS,
+      params: { [RouteParam.ENTITY_ID]: accountIds[0] },
+      query: { reportId: notification.redirectLink },
+    })
+  },
+  [NotificationKindEnum.ReportingUpdated]: (params: NotificationActionsMappingParams) => {
+    const { accountIds, notification, router } = params
+    router.push({
+      name: RouteName.REPORTS,
+      params: { [RouteParam.ENTITY_ID]: accountIds[0] },
+      query: { reportId: notification.redirectLink },
+    })
+  },
 }
 
 export function getNotificationAccountNames(notification: FeedCenterNotification) {

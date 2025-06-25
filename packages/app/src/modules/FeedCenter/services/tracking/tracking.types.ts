@@ -1,7 +1,8 @@
 export enum NotificationTrackingType {
     GED = 'GED',
     MANDATE = 'Mandat',
-    DELEGATION = 'Délégation'
+    DELEGATION = 'Délégation',
+    REPORTING = 'Rapport BI'
 }
 
 export enum NotificationTrackingReadType {

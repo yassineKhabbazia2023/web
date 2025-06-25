@@ -18,7 +18,7 @@
           <ReportCard
             :updatedDate="getMostRecentDate(updateDate, dataUpdateDate)"
             :type="type.customerLabel"
-            :isSelected="internalSelectedReport.reportId === reportId"
+            :isSelected="selectedReport.reportId === reportId"
             class="margin-bottom--3"
             @select-report="handleReportSelection(reportId)"
           />
@@ -29,11 +29,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PScrollbar } from '@pulse/styleguide/components'
 import type { ReportsListProps } from './ReportsListTypes'
-import type { Report } from '@entities/common/types/BIReportsTypes'
 import { getMostRecentDate } from '@entities/helper'
 import ReportCard from './components/index'
 
@@ -42,24 +40,13 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const props = defineProps<ReportsListProps>()
+defineProps<ReportsListProps>()
 const emit = defineEmits<{
-  'update:selectedReport': [Report]
+  'select-report': [number]
 }>()
 
-const internalSelectedReport = computed({
-  get() {
-    return props.selectedReport
-  },
-  set(report) {
-    emit('update:selectedReport', report)
-  },
-})
-
 const handleReportSelection = (reportId: number) => {
-  internalSelectedReport.value = props.reports.find(
-    (report) => report.reportId === reportId,
-  ) as Report
+  emit('select-report', reportId)
 }
 </script>
 

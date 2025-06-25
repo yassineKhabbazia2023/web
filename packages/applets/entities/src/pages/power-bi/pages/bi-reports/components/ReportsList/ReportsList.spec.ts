@@ -1,25 +1,46 @@
 import { it, expect, describe, beforeEach } from 'vitest'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { getMockedBIReports } from '@entities/__mocks__/bi-report.mocks'
+import type { ReportsListProps } from './ReportsListTypes'
+
 import ReportsList from '.'
 
 // Mocks
-const mockedReports = getMockedBIReports()
+const reportsMock = getMockedBIReports()
 
 // Expectations
 const expectedReportsTitle = 'BI reports deposited'
 
-const createWrapper = (): VueWrapper<any> => {
-  return mount(ReportsList, {
+const defaultProps: ReportsListProps = {
+  reports: reportsMock,
+  selectedReport: reportsMock[0],
+}
+
+const createWrapper = (overridenProps: Partial<ReportsListProps> = {}) => {
+  return shallowMount(ReportsList, {
     props: {
-      reports: mockedReports,
-      selectedReport: mockedReports[0],
+      ...defaultProps,
+      ...overridenProps,
+    },
+    global: {
+      stubs: {
+        PScrollbar: {
+          name: 'PScrollbar',
+          template: '<div><slot/></div>',
+        },
+        ReportCard: {
+          name: 'ReportCard',
+          template: '<div></div>',
+          props: ['name', 'updatedDate', 'type', 'isSelected'],
+          emits: ['select-report'],
+        },
+      },
     },
   })
 }
 
 describe('reportsList', () => {
-  let wrapper: VueWrapper
+  let wrapper: ReturnType<typeof createWrapper>
   beforeEach(() => {
     wrapper = createWrapper()
   })
@@ -29,17 +50,19 @@ describe('reportsList', () => {
       const reportCards = wrapper.findAllComponents({ name: 'ReportCard' })
 
       expect(reportsTitle.text()).toBe(expectedReportsTitle)
-      expect(reportCards).toHaveLength(mockedReports.length)
+      expect(reportCards).toHaveLength(reportsMock.length)
     })
   })
   describe('events', () => {
-    it("should emit 'update:selectedReport' when a report is selected", () => {
+    it("should emit 'select-report' when a report is selected", () => {
+      // Arrange
       const firstReportCard = wrapper.findComponent({ name: 'ReportCard' })
+
+      // Act
       firstReportCard.vm.$emit('select-report')
 
-      expect(wrapper.emitted('update:selectedReport')).toStrictEqual([
-        [mockedReports[0]],
-      ])
+      // Assert
+      expect(wrapper.emitted('select-report')).toStrictEqual([[reportsMock[0].reportId]])
     })
   })
 })
