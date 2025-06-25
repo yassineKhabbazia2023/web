@@ -20,9 +20,6 @@
       data-testid="report-card-type"
     />
     <div class="report-card__details flex flex--direction-column">
-      <p class="report-card__name" data-testid="report-card-name">
-        {{ name }}
-      </p>
       <p
         class="font-small text-color--neutral-gray-500 margin-top--1"
         data-testid="report-card-updated-on"

@@ -12,11 +12,10 @@
     >
       <ul class="list-style-none">
         <li
-          v-for="{ reportId, type, updateDate, dataUpdateDate, reportLabel } in reports"
+          v-for="{ reportId, type, updateDate, dataUpdateDate } in reports"
           :key="reportId"
         >
           <ReportCard
-            :name="reportLabel"
             :updatedDate="getMostRecentDate(updateDate, dataUpdateDate)"
             :type="type.customerLabel"
             :isSelected="internalSelectedReport.reportId === reportId"
