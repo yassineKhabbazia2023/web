@@ -145,3 +145,6 @@ docs/.vitepress/dist
 docs/.vitepress/cache
 .vitepress/dist
 .vitepress/cache
+
+# IDE
+.idea
