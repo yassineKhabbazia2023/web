@@ -280,7 +280,7 @@ const { t } = useI18n({
   fr-FR:
     header:
       new: 'Nouveau'
-      toolChange: 'Changement d’outil de {accountingTool}'
+      toolChange: "Changement d'outil de {accountingTool}"
       accounting: 'production comptable'
     title:
       pennylane: 'Pennylane'
@@ -296,6 +296,6 @@ const { t } = useI18n({
         invoiceDeposit: 'Déposer ses factures depuis {pennylanePlatform}'
         pennylanePlatform: 'la plateforme Pennylane'
         discover: 'Découvrir {pennylaneAppDiscovery}'
-        pennylaneAppDiscovery: 'l’application mobile Pennylane'
+        pennylaneAppDiscovery: "l'application mobile Pennylane"
         pennylaneGettingStarted: 'Bien débuter sur Pennylane'
 </i18n>
