@@ -1,5 +1,5 @@
 import type { Router, RouteRecordRaw } from 'vue-router'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { APP_ROUTES } from '../../constants/app.routes'
 import { logger } from '@pulse/core'
 
 export class RoutesManager {

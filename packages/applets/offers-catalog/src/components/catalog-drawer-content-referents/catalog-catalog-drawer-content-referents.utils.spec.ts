@@ -23,7 +23,7 @@ vi.mock('@pulse/core', () => ({
 
 describe('catalog-drawer-content-referents.utils', () => {
   describe('getTableReferentsColumns', () => {
-    it('should return tableReferentsColumns', () => {
+    it('should return tableReferentsColumns', async () => {
       const columnLabels: Record<string, string> = {
         name: 'Prénom Nom',
         hub: 'Hub',
@@ -31,15 +31,15 @@ describe('catalog-drawer-content-referents.utils', () => {
       }
       const tableReferentsColumns = getTableReferentsColumns(columnLabels)
 
-      expect(tableReferentsColumns).toMatchFileSnapshot('__snap__/catalog-drawer-content-referents.utils.tableReferentsColumns.snap')
+      await expect(tableReferentsColumns).toMatchFileSnapshot('__snap__/catalog-drawer-content-referents.utils.tableReferentsColumns.snap')
     })
   })
 
   describe('getFormattedReferents', () => {
-    it('should return formattedReferents', () => {
+    it('should return formattedReferents', async () => {
       const formattedReferents = getFormattedReferents(offerReferentsMock)
 
-      expect(formattedReferents).toMatchFileSnapshot('__snap__/catalog-drawer-content-referents.utils.formattedReferents.snap')
+      await expect(formattedReferents).toMatchFileSnapshot('__snap__/catalog-drawer-content-referents.utils.formattedReferents.snap')
     })
 
     it('should return empty list when referents is undefined', () => {

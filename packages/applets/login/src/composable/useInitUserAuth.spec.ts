@@ -37,6 +37,7 @@ describe('useInitUserAuth', () => {
   it('should init auth when the user is collab', async () => {
     // Setup
     const { initAuthCollab, isTokenRetrieve } = useInitUserAuth()
+    vi.spyOn(CurrentUserService, 'getCurrentUser').mockResolvedValue(userMock)
 
     // Act
     await initAuthCollab()

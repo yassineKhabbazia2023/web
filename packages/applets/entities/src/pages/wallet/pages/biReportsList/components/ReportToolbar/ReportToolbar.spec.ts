@@ -12,7 +12,7 @@ const mockReportErrorResponse = {
 
 const fetchReportErrorsMock = vi.hoisted(() => vi.fn(() => Promise.resolve(mockReportErrorResponse)))
 
-vi.mock('@entities/services/reporting', () => ({
+vi.mock('@entities/services/reporting/reportingServices', () => ({
   fetchReportErrors: fetchReportErrorsMock,
 }))
 
@@ -73,6 +73,7 @@ describe('ReportToolbar', () => {
         currentPage: 1,
         totalItems: 0,
       })
+      wrapper = createWrapper()
 
       const button = wrapper.findComponent({ name: 'PButton' })
 

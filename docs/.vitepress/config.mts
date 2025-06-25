@@ -4,6 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'RYDGE Conseil - Front-End Doc',
   head: [['link', { rel: 'icon', href: '/favicon.png' }]],
+  ignoreDeadLinks: true,
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: {

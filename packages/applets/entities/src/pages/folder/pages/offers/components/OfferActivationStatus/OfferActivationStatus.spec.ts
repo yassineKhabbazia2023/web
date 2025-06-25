@@ -34,6 +34,7 @@ describe('offerActivationStatus', () => {
     it.each([
       {
         status: 'validated',
+        currentUser,
         expectedValue: {
           pContent: 'Validated',
           pColor: 'success',
@@ -42,6 +43,7 @@ describe('offerActivationStatus', () => {
       },
       {
         status: 'rejected',
+        currentUser,
         expectedValue: {
           pContent: 'Rejected',
           pColor: 'danger',
@@ -50,6 +52,7 @@ describe('offerActivationStatus', () => {
       },
       {
         status: 'pending',
+        currentUser,
         expectedValue: {
           pContent: 'Pending',
           pColor: 'warning',
@@ -76,6 +79,7 @@ describe('offerActivationStatus', () => {
       },
       {
         status: 'failed-migration',
+        currentUser,
         expectedValue: {
           pContent: 'Failed migration',
           pColor: 'danger',
