@@ -21,7 +21,7 @@
         @search-value-submitted="handleSearchValueSubmitted"
       />
       <PButton
-        v-if="CurrentUserManager.hasPermission(PERMISSION_CODES.MANAGE_ACCESS)"
+        v-if="CurrentUserManager.hasPermission(PERMISSION_ACTION.MANAGE_ACCESS)"
         pType="primary"
         pSize="small"
         :loading="isLoadingOperations"
@@ -192,9 +192,9 @@ import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
 import {
   PAGE_SIZES,
-  PERMISSION_CODES,
   DATE_TIME_FORMATS as datetimeFormats,
 } from '@entities/constants'
+import { PERMISSION_ACTION } from '@pulse/common/constants'
 import { getFullName } from '@entities/common/utils'
 import { fetchAccountCustomers } from '@entities/services/wallet'
 import { getPaginationLabel, removeFalsyValues } from '@entities/helper'
@@ -285,7 +285,7 @@ function handleToolboxClick(userRow: any) {
       pState: 'default',
     },
   ]
-  if (CurrentUserManager.hasPermission(PERMISSION_CODES.COLLAB_REMOVE_USER)) {
+  if (CurrentUserManager.hasPermission(PERMISSION_ACTION.COLLAB_REMOVE_USER)) {
     items.push({
       pIconName: 'personRemove',
       pValue: t('removeUser'),

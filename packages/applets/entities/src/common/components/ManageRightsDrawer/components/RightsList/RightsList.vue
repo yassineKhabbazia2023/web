@@ -80,7 +80,7 @@ import type {
   RightsListProps,
 } from './RightsListTypes'
 import { RouterHelpers } from '@pulse/common/helpers'
-import { PERMISSION_CODES } from '@entities/constants'
+import { PERMISSION_ACTION } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -166,7 +166,7 @@ onMounted(async () => {
     }
     const tooltipByActionCode = FeatureFlagManager.isPennylaneActionAdditionalInfoActivated()
       ? {
-        [PERMISSION_CODES.ACCESS_PENNYLANE]: t('PennylaneAdditionalInfos'),
+        [PERMISSION_ACTION.ACCESS_PENNYLANE]: t('PennylaneAdditionalInfos'),
       } : {}
     // We need to map the data in order to obtain the category label
     authorizationsConfig.value = getAuthorizationsConfigMapped(

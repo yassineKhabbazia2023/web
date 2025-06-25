@@ -164,7 +164,8 @@ import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
 import { getPaginationLabel } from '@entities/helper'
-import { ENTITY_STATUS_COLOR, PAGE_SIZES, PERMISSION_CODES } from '@entities/constants'
+import { ENTITY_STATUS_COLOR, PAGE_SIZES } from '@entities/constants'
+import { PERMISSION_ACTION, PERMISSION_GLOBAL } from '@pulse/common/constants'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import { fetchWalletData } from './DeployUtils'
 import type {
@@ -260,11 +261,11 @@ const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
 
 // #region entity creator drawer
 const isEntityCreatorDrawerOpen = ref(false)
-const hasEntityCreatorPermission = computed(() => CurrentUserManager.hasPermission(PERMISSION_CODES.ENTITY_CREATOR))
+const hasEntityCreatorPermission = computed(() => CurrentUserManager.hasPermission(PERMISSION_GLOBAL.ENTITY_CREATOR))
 
 const hasManageAccess = computed(() =>
   FeatureFlagManager.isAccessManagementGlobalActivated()
-  && CurrentUserManager.hasPermission(PERMISSION_CODES.MANAGE_ACCESS),
+  && CurrentUserManager.hasPermission(PERMISSION_ACTION.MANAGE_ACCESS),
 )
 
 const isManageAccessButtonDisabled = computed(() => (manageAccessCount.value ?? 0) < 1)

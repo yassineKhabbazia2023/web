@@ -105,7 +105,7 @@ import OfferActivationStatus from './components/OfferActivationStatus'
 import type { SubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
 import { fetchAccountSubscriptions } from '@entities/services/subscription'
 import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
-import { PERMISSION_CODES } from '@entities/constants'
+import { PERMISSION_ACTION } from '@pulse/common/constants'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
 import { OfferActivationStatus as OfferActivationStatusEnum } from './components/OfferActivationStatus/OfferActivationStatusTypes'
@@ -138,7 +138,7 @@ const headerSubtitle = computed(() =>
   isCollab.value ? t('collabHeaderSubtitle') : t('clientHeaderSubtitle'),
 )
 const isActivateOffersButtonVisible = computed(
-  () => isCollab.value && CurrentUserManager.hasPermission(PERMISSION_CODES.ACTIVATE_OFFER),
+  () => isCollab.value && CurrentUserManager.hasPermission(PERMISSION_ACTION.ACTIVATE_OFFER),
 )
 
 const handleActivateOffersClick = () => {

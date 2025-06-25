@@ -120,7 +120,7 @@ import CollabRightsDrawer from './../CollabRightsDrawer'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { returnSortQueryField } from '@entities/helper'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { PERMISSION_CODES } from '@entities/constants'
+import { PERMISSION_ACTION } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -156,7 +156,7 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue: t('manageAccessRights'),
       pActionName: manageAccessRights,
       pState: 'default',
-      display: CurrentUserManager.hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_COLLAB),
+      display: CurrentUserManager.hasPermission(PERMISSION_ACTION.MODIFY_RIGHTS_COLLAB),
     },
   ]
     .filter(({ display }) => display)

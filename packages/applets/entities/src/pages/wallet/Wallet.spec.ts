@@ -1,5 +1,5 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { PERMISSION_CODES } from '@entities/constants'
+import { PERMISSION_GLOBAL } from '@pulse/common/constants'
 import { amplitudeServiceMock, amplitudeServiceTrackMock, CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked, getMockedUser, getStoreMock } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
 
@@ -100,7 +100,7 @@ describe('dossier', () => {
   })
 
   it('should only display tabs to which the user has permission to access', () => {
-    hasPermissionMock.mockImplementation(getHasPermissionMocked([PERMISSION_CODES.COLLABORATORS]))
+    hasPermissionMock.mockImplementation(getHasPermissionMocked([PERMISSION_GLOBAL.COLLABORATORS]))
     wrapper = createWrapper()
     const collaboratorsTabsAccess = ['Wallet', 'Collaborators']
     const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })

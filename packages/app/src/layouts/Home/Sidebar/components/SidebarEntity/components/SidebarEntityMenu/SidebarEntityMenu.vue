@@ -60,7 +60,7 @@ import { amplitudeService } from '@pulse/common'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { fetchBIReports } from '@app/services/reporting'
 import { PMenuItem, PMenu } from '@pulse/styleguide/components'
-import { PERMISSION_CODES } from '@app/constants'
+import { PERMISSION_ACCOUNT, PERMISSION_GLOBAL } from '@pulse/common/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 import type { IconName } from '@pulse/styleguide/types'
 
@@ -95,23 +95,23 @@ const folderOrEntityMenuItem = computed<MenuItem | null>(() => {
   const menuItem = [
     {
       index: `/dossier/${props.selectedEntityId}/gestion-utilisateurs`,
-      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
+      display: CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.USERS),
     },
     {
       index: `/dossier/${props.selectedEntityId}/collaborateurs`,
-      display: props.isCollab && CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
+      display: props.isCollab && CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.COLLABORATORS),
     },
     {
       index: `/dossier/${props.selectedEntityId}/offres`,
-      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
+      display: CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.OFFER),
     },
     {
       index: `/dossier/${props.selectedEntityId}/informations`,
-      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
+      display: CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.INFORMATION),
     },
     {
       index: `/dossier/${props.selectedEntityId}/historique-delegations`,
-      display: props.isCollab && CurrentUserManager.hasPermission(PERMISSION_CODES.HISTORY),
+      display: props.isCollab && CurrentUserManager.hasPermission(PERMISSION_GLOBAL.HISTORY),
     },
   ].find((item) => item.display)
   return menuItem ? { index: menuItem.index,
@@ -130,25 +130,25 @@ const menuItems = computed<MenuItem[]>(() => {
       index: `/dossier/${props.selectedEntityId}/ged`,
       title: t('documents'),
       iconLeftName: 'folder',
-      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_GED),
+      display: CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.GED),
     },
     {
       index: `/dossier/${props.selectedEntityId}/banque`,
       title: t('bank'),
       iconLeftName: 'piggyBank',
-      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_BANK),
+      display: CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.BANK),
     },
     {
       index: `/dossier/${props.selectedEntityId}/indicateurs`,
       title: t('indicators'),
       iconLeftName: 'speedometer2',
-      display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_INDICATORS),
+      display: CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.INDICATORS),
     },
     {
       index: `/dossier/${props.selectedEntityId}/launcher`,
       title: t('apps'),
       iconLeftName: 'grid',
-      display: !props.isCollab && CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_APPS),
+      display: !props.isCollab && CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.APPS),
     },
   ]
   return list.filter(({ display }) => display)
@@ -166,8 +166,10 @@ watchEffect(() => {
 })
 
 watchEffect(async () => {
-  const { totalItems } = await fetchBIReports(props.selectedEntityId)
-  hasBIReports.value = totalItems > 0
+  if(CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.POWERBI_REPORT)) {
+    const { totalItems } = await fetchBIReports(props.selectedEntityId)
+    hasBIReports.value = totalItems > 0
+  }
 })
 </script>
 

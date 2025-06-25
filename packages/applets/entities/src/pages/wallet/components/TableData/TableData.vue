@@ -189,7 +189,7 @@ import { AvatarRoles } from '@pulse/styleguide'
 import type { AccessibleMenuItem, AccountRow } from '@entities/common/types'
 import { filterAccessibleMenuItems } from '@entities/common/utils'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
-import { PERMISSION_CODES } from '@entities/constants'
+import { PERMISSION_ACTION, PERMISSION_GLOBAL } from '@pulse/common/constants'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
 
@@ -222,7 +222,7 @@ const defaultMenuElements : AccessibleMenuItem[] = [
     pValue: t('resendActivationEmail'),
     pActionName: 'retryMassActivationEmail',
     pState: 'default',
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACTIVATE_OFFER),
+    display: CurrentUserManager.hasPermission(PERMISSION_ACTION.ACTIVATE_OFFER),
   },
   {
     pIconName: 'personCheck',
@@ -250,14 +250,14 @@ const accountManagementMenu : AccessibleMenuItem[] = [
     pValue: t('manageAccountRights'),
     pActionName: 'manageAccountRights',
     pState: 'default',
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.MODIFY_ACCOUNT_RIGHTS),
+    display: CurrentUserManager.hasPermission(PERMISSION_ACTION.MODIFY_ACCOUNT_RIGHTS),
   },
   {
     pIconName: 'send',
     pValue: t('resendActivationEmail'),
     pActionName: 'retryMassActivationEmail',
     pState: 'default',
-    display: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_MANAGEMENT),
+    display: CurrentUserManager.hasPermission(PERMISSION_GLOBAL.ACCOUNT_MANAGEMENT),
   },
 ]
 

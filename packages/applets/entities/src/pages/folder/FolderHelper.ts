@@ -1,16 +1,16 @@
 import { CurrentUserManager } from '@pulse/common/managers'
-import { PERMISSION_CODES } from '@entities/constants'
+import { PERMISSION_ACCOUNT, PERMISSION_GLOBAL } from '@pulse/common/constants'
 import type { TabName, Tab } from './FolderTypes'
 
 const TAB_NAMES: TabName[] = ['users', 'collab', 'offers', 'info', 'delegationsHistory']
 
 export function getTabAuthorisations(isCollab: boolean): Record<TabName, boolean> {
   return {
-    offers: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_OFFER),
-    info: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_INFORMATION),
-    users: CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_USERS),
-    collab: isCollab && CurrentUserManager.hasPermission(PERMISSION_CODES.ACCOUNT_COLLABORATORS),
-    delegationsHistory: isCollab && CurrentUserManager.hasPermission(PERMISSION_CODES.HISTORY),
+    offers: CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.OFFER),
+    info: CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.INFORMATION),
+    users: CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.USERS),
+    collab: isCollab && CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.COLLABORATORS),
+    delegationsHistory: isCollab && CurrentUserManager.hasPermission(PERMISSION_GLOBAL.HISTORY),
   }
 }
 

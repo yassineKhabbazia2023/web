@@ -116,7 +116,8 @@ import { computed, reactive } from 'vue'
 import { CurrentUserManager } from '@pulse/common/managers'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
-import { PERMISSION_CODES, DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
+import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
+import { PERMISSION_ACTION } from '@pulse/common/constants'
 import type { ExtendedUser } from '../../UsersClientTypes'
 import { userActions } from './types'
 
@@ -153,14 +154,14 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue: t('modifyRights'),
       pActionName: modifyRights,
       pState: 'default',
-      display: CurrentUserManager.hasPermission(PERMISSION_CODES.MODIFY_RIGHTS_USER) && props.isInAnEntityPage,
+      display: CurrentUserManager.hasPermission(PERMISSION_ACTION.MODIFY_RIGHTS_USER) && props.isInAnEntityPage,
     },
     {
       pIconName: 'personRemove',
       pValue: t('removeUser'),
       pActionName: removeUser,
       pState: 'default',
-      display: CurrentUserManager.hasPermission(PERMISSION_CODES.DELETE_USER) && props.isInAnEntityPage,
+      display: CurrentUserManager.hasPermission(PERMISSION_ACTION.DELETE_USER) && props.isInAnEntityPage,
     },
   ]
     .filter(({ display }) => display)

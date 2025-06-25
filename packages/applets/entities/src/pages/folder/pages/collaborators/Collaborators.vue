@@ -198,7 +198,8 @@ import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { PAGE_SIZES, PERMISSION_CODES } from '@entities/constants'
+import { PAGE_SIZES } from '@entities/constants'
+import { PERMISSION_ACTION } from '@pulse/common/constants'
 import type { Collab } from './types'
 import type { Account } from '@entities/services/account/accountTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
@@ -374,7 +375,7 @@ const toolboxItems = computed(
         pValue: t('removeCollaborator'),
         pActionName: 'removeCollaborator',
         pState: 'default',
-        display: isCollab.value && CurrentUserManager.hasPermission(PERMISSION_CODES.DELETE_ACCOUNT_COLLAB),
+        display: isCollab.value && CurrentUserManager.hasPermission(PERMISSION_ACTION.DELETE_ACCOUNT_COLLAB),
       },
     ]
       .filter(({ display }) => display)
