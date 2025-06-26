@@ -20,9 +20,9 @@ export function getTableReferentsColumns(columnLabels: Record<string, string>) {
 
 export function getFormattedReferents(offerReferents?: OfferCatalogReferent[]) {
   return (offerReferents ?? [])
-    .map(({ firstName, lastName, hub, email }) => ({
+    .map(({ firstName, lastName, region, email }) => ({
       name: `${firstName} ${lastName}`,
-      hub,
+      hub: region?.name ?? '',
       email,
       initials: getInitials(firstName, lastName),
     }))

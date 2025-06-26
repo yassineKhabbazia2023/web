@@ -35,11 +35,16 @@ export interface OffersCatalogResponse {
   subCategories: OfferSubCategory[]
 }
 
+export interface OfferCatalogReferentRegion {
+  regionId: number
+  name: string
+}
+
 export interface OfferCatalogReferent {
   firstName: string
   lastName: string
   email: string
-  hub: string
+  region: OfferCatalogReferentRegion
 }
 
 export interface OfferCatalogDetailsResponse extends OfferDescription {

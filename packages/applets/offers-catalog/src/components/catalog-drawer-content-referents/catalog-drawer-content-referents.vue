@@ -50,8 +50,21 @@
         :pProp="columnProp"
         :pLabel="columnLabel"
         pSortable
-      />
-      <PTableColumn>
+      >
+        <template #default="{ row, column }">
+          <div
+            class="
+              white-space--wrap
+              word-break--normal
+            "
+          >
+            {{ row[column.property] }}
+          </div>
+        </template>
+      </PTableColumn>
+      <PTableColumn
+        :pWidth="48"
+      >
         <template #default="{ row }">
           <PTooltip
             :pContent="t('copy.tooltip')"

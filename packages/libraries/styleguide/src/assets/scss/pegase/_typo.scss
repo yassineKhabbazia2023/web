@@ -200,3 +200,39 @@ a {
     white-space: pre-line !important;
   }
 }
+
+.text-wrap {
+  &--balance {
+    text-wrap: balance;
+  }
+  &--nowrap {
+    text-wrap: nowrap;
+  }
+  &--stable {
+    text-wrap: stable;
+  }
+  &--wrap {
+    text-wrap: wrap;
+  }
+}
+
+.word-break {
+  &--normal {
+    word-break: normal;
+  }
+  &--break-all {
+    word-break: break-all;
+  }
+  &--keep-all {
+    word-break: keep-all;
+  }
+  &--break-word {
+    word-break: break-word;
+  }
+  &--initial {
+    word-break: initial;
+  }
+  &--inherit {
+    word-break: inherit;
+  }
+}

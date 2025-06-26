@@ -1,6 +1,7 @@
 <template>
   <PDrawer
     v-model:modelValue="internalIsOpened"
+    pSize="60%"
     @close-drawer-button="closeDrawer"
   >
     <template #header-prefix>
@@ -19,20 +20,19 @@
         :key="tab.name"
         :pLabel="tab.label"
         :pName="tab.name"
-      >
-        <CatalogDrawerContentPdf
-          v-if="tab.name === CatalogDrawerTabs.PDF"
-          :offer="offer"
-          :offerPdf="offerPdf"
-          :apiCallStatus="pdfApiCallStatus"
-          @open-pdf="onOpenPdf"
-        />
-        <CatalogDrawerContentReferents
-          v-if="tab.name === CatalogDrawerTabs.CONTACTS"
-          :offerReferents="offerReferents"
-          :apiCallStatus="offerReferentsApiCallStatus"
-        />
-      </PTabPane>
+      />
+      <CatalogDrawerContentPdf
+        v-if="currentTab === CatalogDrawerTabs.PDF"
+        :offer="offer"
+        :offerPdf="offerPdf"
+        :apiCallStatus="pdfApiCallStatus"
+        @open-pdf="onOpenPdf"
+      />
+      <CatalogDrawerContentReferents
+        v-if="currentTab === CatalogDrawerTabs.CONTACTS"
+        :offerReferents="offerReferents"
+        :apiCallStatus="offerReferentsApiCallStatus"
+      />
     </PTabs>
 
     <template #footer>

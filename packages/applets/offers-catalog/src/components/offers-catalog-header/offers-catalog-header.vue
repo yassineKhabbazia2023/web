@@ -105,5 +105,5 @@ defineExpose({
     need: 'besoin'
     theOffer: "l'offre"
     invalidSearch: 'les critères de recherche sont invalides'
-    searchPlaceholder: 'Renseignez un beoin'
+    searchPlaceholder: 'Renseignez un besoin'
 </i18n>

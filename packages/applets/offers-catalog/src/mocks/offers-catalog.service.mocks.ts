@@ -72,7 +72,10 @@ export function getOfferCatalogReferentMock(override: Partial<OfferCatalogRefere
     firstName: '',
     lastName: '',
     email: '',
-    hub: '',
+    region: {
+      regionId: 0,
+      name: '',
+    },
   }
 
   return {
@@ -86,17 +89,26 @@ export function getOfferCatalogReferentListMock() {
     firstName: 'John',
     lastName: 'Doe',
     email: 'john.doe@example.com',
-    hub: 'North Hub',
+    region: {
+      regionId: 16,
+      name: 'North Hub',
+    },
   }, {
     firstName: 'Jane',
     lastName: 'Smith',
     email: 'jane.smith@example.com',
-    hub: 'South Hub',
+    region: {
+      regionId: 16,
+      name: 'South Hub',
+    },
   }, {
     firstName: 'Alice',
     lastName: 'Johnson',
     email: 'alice.johnson@example.com',
-    hub: 'East Hub',
+    region: {
+      regionId: 321,
+      name: 'East Hub',
+    },
   }]
 
   return list

@@ -48,10 +48,15 @@ function createWrapper(override: Partial<CatalogDrawerContentReferentsProps> = {
         },
         PTableColumn: {
           name: 'PTableColumn',
-          template: '<div><slot :row="row" /></div>',
+          template: '<div><slot :row="row" :column="column" /></div>',
           data() {
+            const column = {
+              property: 'email',
+            }
+
             return {
               row: firstReferentMock,
+              column,
             }
           },
         },
