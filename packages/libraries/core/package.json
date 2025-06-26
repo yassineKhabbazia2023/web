@@ -14,6 +14,7 @@
     "./utils/idle": "./src/utils/idle/idle.utils.ts",
     "./utils/validator": "./src/utils/validators/validators.utils.ts",
     "./utils/string": "./src/utils/string/string.utils.ts",
+    "./utils/http": "./src/utils/http/http.utils.ts",
     "./utils/test": "./src/utils/test.utils.ts",
     ".": "./src/main.mts"
   },

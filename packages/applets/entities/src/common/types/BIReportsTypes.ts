@@ -30,7 +30,7 @@ export interface Report {
   dataUpdateDate?: string
 }
 
-type BaseReportExcludes = 'documentName' | 'embededReportId' | 'embededReportUrl';
+type BaseReportExcludes = 'documentName' | 'embededReportId' | 'embededReportUrl'
 
 export interface ReportTableRow extends Omit<Report, BaseReportExcludes> {
   embedReportId: string
@@ -42,7 +42,7 @@ export interface ReportTableRow extends Omit<Report, BaseReportExcludes> {
 }
 
 export interface MappedReportRow extends Omit<ReportTableRow, 'status'> {
-  status: ReportStatusTag,
+  status: ReportStatusTag
   avatarColor: string
 }
 
@@ -58,3 +58,22 @@ export interface ReportErrorData {
   errors: ReportError[]
   totalItems: number
 }
+
+export interface PaginationParams {
+  currentPage: number
+  limit: number
+  search?: string
+}
+
+export interface ReportFilters {
+  reportStatusFilter?: ReportStatus[]
+  reportTypeIdFilter?: number[]
+}
+
+export interface ReportFilterQueryParams extends ReportFilters {
+  pageNumber: number
+  pageSize: number
+  search?: string
+}
+
+export interface ReportSearchCriteria extends PaginationParams, ReportFilters {}

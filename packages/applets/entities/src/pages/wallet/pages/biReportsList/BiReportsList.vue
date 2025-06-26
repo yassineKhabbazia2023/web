@@ -1,5 +1,9 @@
 <template>
-  <ReportToolbar @search-report="handleSearchReport" />
+  <ReportToolbar
+    @search-report="handleSearchReport"
+    @apply-filters="handleApplyReportFilters"
+    @clear-filters="handleClearReportFilters"
+  />
   <div
     class="bi-reports-list"
     :class="{ 'bi-reports-list--loading': isLoading }"
@@ -52,12 +56,17 @@ import { reactive, onMounted, computed, ref } from 'vue'
 import { PPagination, PLoader } from '@pulse/styleguide/components'
 import ReportToolbar from './components/ReportToolbar'
 import { PAGE_SIZES } from '@entities/constants'
-import type { ReportStatusTag, MappedReportRow } from '@entities/common/types/BIReportsTypes'
+import type {
+  ReportStatusTag,
+  MappedReportRow,
+  ReportFilters,
+  ReportSearchCriteria,
+} from '@entities/common/types/BIReportsTypes'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
 import { getPaginationLabel } from '@entities/helper'
 import ReportTable from './components/ReportTable'
 import { getMappedReport, getReportsQueryParams } from './utils'
-import { SearchCriteria, SearchResult } from '../../types'
+import { SearchResult } from '../../types'
 import { fetchAvailableReports, fetchBIToken, updateReportStatus } from '@entities/services/reporting'
 import { displayNotification } from '@entities/common/utils'
 import PowerBIReportViewer from '@entities/common/components/PowerBIReportViewer'
@@ -97,13 +106,6 @@ const handleUpdateReportStatus = async (
 }
 // #endregion
 
-// #region pagination
-const searchCriteria = reactive<SearchCriteria>({
-  search: '',
-  currentPage: 1,
-  limit: PAGE_SIZES[0],
-})
-
 // #region search report
 const handleSearchReport = (term: string) => {
   if (searchCriteria.search !== term) {
@@ -112,7 +114,30 @@ const handleSearchReport = (term: string) => {
     fetchReportsData()
   }
 }
-//#endregion
+// #endregion
+
+// #region filter report
+const handleApplyReportFilters = (reportFilters: ReportFilters) => {
+  searchCriteria.reportStatusFilter = reportFilters.reportStatusFilter
+  searchCriteria.reportTypeIdFilter = reportFilters.reportTypeIdFilter
+
+  fetchReportsData()
+}
+
+const handleClearReportFilters = () => {
+  searchCriteria.reportStatusFilter = []
+  searchCriteria.reportTypeIdFilter = []
+
+  fetchReportsData()
+}
+// #endregion
+
+// #region manage pagination
+const searchCriteria = reactive<ReportSearchCriteria>({
+  search: '',
+  currentPage: 1,
+  limit: PAGE_SIZES[0],
+})
 
 const searchResult = reactive<SearchResult<MappedReportRow>>({
   currentPage: 1,
@@ -154,7 +179,7 @@ const handleCurrentPageUpdate = (value: number) => {
 }
 // #endregion
 
-// #region fetch data
+// #region fetch report data
 const fetchReportsData = async () => {
   isLoading.value = true
   try {
@@ -167,7 +192,7 @@ const fetchReportsData = async () => {
     isLoading.value = false
   }
 }
-//#endregion
+// #endregion
 
 // #region Fullscreen Report View Display
 const selectedReportLabel = ref('')

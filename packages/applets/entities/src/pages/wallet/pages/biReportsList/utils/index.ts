@@ -1,8 +1,12 @@
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
-import type { MappedReportRow, ReportStatusTag, ReportTableRow } from '@entities/common/types/BIReportsTypes'
-import { FilterQueryParams, SearchCriteria } from '@entities/pages/wallet/types'
-import { getQueryParams } from '../../folders/DeployUtils'
+import type {
+  MappedReportRow,
+  ReportFilterQueryParams,
+  ReportSearchCriteria,
+  ReportStatusTag,
+  ReportTableRow,
+} from '@entities/common/types/BIReportsTypes'
 import { removeFalsyValues } from '@entities/helper'
 
 export const getMappedReport = (
@@ -20,8 +24,32 @@ export const getMappedReport = (
   return mappedReports
 }
 
-export const getReportsQueryParams = (searchCriteria: SearchCriteria): FilterQueryParams => {
-  const queryParams = getQueryParams(searchCriteria)
+/**
+ * Maps frontend search criteria to API query parameters for report fetching.
+ *
+ * Converts:
+ * - `currentPage` → `pageNumber`
+ * - `limit`       → `pageSize`
+ */
+export function getQueryParams(searchCriteria: ReportSearchCriteria): ReportFilterQueryParams {
+  return {
+    pageNumber: searchCriteria.currentPage,
+    pageSize: searchCriteria.limit,
+    search: searchCriteria.search,
+    reportStatusFilter: searchCriteria.reportStatusFilter,
+    reportTypeIdFilter: searchCriteria.reportTypeIdFilter,
+  }
+}
+
+/**
+ * Builds and sanitizes query parameters for fetching reports.
+ *
+ * - Transforms `ReportSearchCriteria` into API-compatible query parameters via `getQueryParams`.
+ * - Removes any falsy values (e.g., null, undefined, empty strings) using `removeFalsyValues`
+ *   to avoid sending unnecessary or invalid query params to the backend.
+ */
+export const getReportsQueryParams = (reportSearchCriteria: ReportSearchCriteria): ReportFilterQueryParams => {
+  const queryParams = getQueryParams(reportSearchCriteria)
   const queryParamasCleaned = removeFalsyValues(queryParams)
 
   return queryParamasCleaned

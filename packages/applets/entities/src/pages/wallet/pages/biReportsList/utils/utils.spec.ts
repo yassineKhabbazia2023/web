@@ -1,8 +1,6 @@
-import { describe, it, expect } from 'vitest'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
-import type { ReportStatusTag, ReportTableRow } from '@entities/common/types/BIReportsTypes'
+import type { ReportSearchCriteria, ReportStatusTag, ReportTableRow } from '@entities/common/types/BIReportsTypes'
 import { getMockReportTable } from '@entities/__mocks__/bi-report.mocks'
-import { SearchCriteria } from '@entities/pages/wallet/types'
 
 import { getMappedReport, getReportsQueryParams } from '.'
 
@@ -40,12 +38,10 @@ describe('getMappedReport', () => {
 
 describe('getReportsQueryParams', () => {
   it('should return cleaned query params without falsy values', () => {
-    const input: SearchCriteria = {
+    const input: ReportSearchCriteria = {
       currentPage: 1,
       limit: 25,
       search: '',
-      accountNumber: undefined,
-      filterByDeploymentStatus: 'ACTIVE',
     }
 
     const result = getReportsQueryParams(input)
@@ -53,17 +49,14 @@ describe('getReportsQueryParams', () => {
     expect(result).toEqual({
       pageNumber: 1,
       pageSize: 25,
-      deploymentStatus: 'ACTIVE',
     })
   })
 
   it('should return full object if all values are truthy', () => {
-    const input: SearchCriteria = {
+    const input: ReportSearchCriteria = {
       currentPage: 2,
       limit: 50,
       search: 'marketing',
-      accountNumber: 'ACC456',
-      filterByDeploymentStatus: 'INACTIVE',
     }
 
     const result = getReportsQueryParams(input)
@@ -72,8 +65,6 @@ describe('getReportsQueryParams', () => {
       pageNumber: 2,
       pageSize: 50,
       search: 'marketing',
-      accountNumber: 'ACC456',
-      deploymentStatus: 'INACTIVE',
     })
   })
 })

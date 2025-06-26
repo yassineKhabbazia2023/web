@@ -1,12 +1,14 @@
 import { API_PREFIXES } from '@entities/common/config/services'
 import { commonApi } from '@pulse/common'
+import type { GetReportsRequest, GetReportAccountsRequest } from './reportingTypes'
 import type {
-  GetReportsRequest,
-  GetReportAccountsRequest,
-} from './reportingTypes'
-import type { ReportError, ReportTableRow, ReportType } from '@entities/common/types/BIReportsTypes'
-import type { FilterQueryParams } from '@entities/pages/wallet/types'
+  ReportError,
+  ReportFilterQueryParams,
+  ReportTableRow,
+  ReportType,
+} from '@entities/common/types/BIReportsTypes'
 import type { QueryResult } from '@pulse/common/types'
+import { serializeParams } from '@pulse/core/utils/http'
 
 export const fetchBIReports = async (accountId: number, reportTypeId?: number): Promise<GetReportsRequest> => {
   const basePath = `${API_PREFIXES.REPORTING}/reports`
@@ -70,9 +72,12 @@ export const uploadBIreport = async (
   })
 }
 
-export const fetchAvailableReports = async (queryParams: FilterQueryParams): Promise<QueryResult<ReportTableRow>> => {
+export const fetchAvailableReports = async (
+  queryParams: ReportFilterQueryParams,
+): Promise<QueryResult<ReportTableRow>> => {
   const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/reports/available`, {
     params: queryParams,
+    paramsSerializer: serializeParams,
   })
 
   return data

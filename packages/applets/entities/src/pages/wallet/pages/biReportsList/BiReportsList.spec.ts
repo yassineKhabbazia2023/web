@@ -46,7 +46,7 @@ const createWrapper = (options = {}) =>
         ReportToolbar: {
           name: 'ReportToolbar',
           template: '<div />',
-          emits: ['search-report'],
+          emits: ['search-report', 'apply-filters', 'clear-filters'],
         },
         PPagination: {
           name: 'PPagination',
@@ -208,10 +208,10 @@ describe('BiReportsList', () => {
     it("triggers data fetch with search term when 'search-report' is emitted", async () => {
       // Arrange
       const searchedReport = 'Test Report'
-      const reportHeader = wrapper.findComponent({ name: 'ReportToolbar' })
+      const reportToolbar = wrapper.findComponent({ name: 'ReportToolbar' })
 
       // Act
-      reportHeader.vm.$emit('search-report', searchedReport)
+      reportToolbar.vm.$emit('search-report', searchedReport)
 
       // Assert
       expect(fetchReportsMock).toHaveBeenCalledTimes(2) // onMounted and search emit = 2
@@ -224,13 +224,53 @@ describe('BiReportsList', () => {
     it('does not trigger data fetch if search input is empty or unchanged', async () => {
       // Arrange
       const emptySearch = ''
-      const reportHeader = wrapper.findComponent({ name: 'ReportToolbar' })
+      const reportToolbar = wrapper.findComponent({ name: 'ReportToolbar' })
 
       // Act
-      reportHeader.vm.$emit('search-report', emptySearch)
+      reportToolbar.vm.$emit('search-report', emptySearch)
 
       // Assert
       expect(fetchReportsMock).toHaveBeenCalledTimes(1) // Only initial fetch (onMounted)
+    })
+  })
+
+  describe('Report Filter', () => {
+    it("fetches reports with applied filters when 'apply-filters' is emitted", async () => {
+      // Arrange
+      const reportFilters = {
+        reportStatusFilter: [ReportStatus.ONLINE],
+        reportTypeIdFilter: [2],
+      }
+      const reportToolbar = wrapper.findComponent({ name: 'ReportToolbar' })
+
+      // Act
+      reportToolbar.vm.$emit('apply-filters', reportFilters)
+
+      // Assert
+      expect(fetchReportsMock).toHaveBeenCalledTimes(2) // Called onMounted + after emitting 'apply-filters'
+      expect(fetchReportsMock).toHaveBeenLastCalledWith({
+        pageNumber: 1,
+        reportStatusFilter: reportFilters.reportStatusFilter,
+        reportTypeIdFilter: reportFilters.reportTypeIdFilter,
+        pageSize: PAGE_SIZES[0],
+      })
+    })
+
+    it("fetches reports with cleared filters when 'clear-filters' is emitted", async () => {
+      // Arrange
+      const reportToolbar = wrapper.findComponent({ name: 'ReportToolbar' })
+
+      // Act
+      reportToolbar.vm.$emit('clear-filters')
+
+      // Assert
+      expect(fetchReportsMock).toHaveBeenCalledTimes(2) // Called onMounted + after emitting 'clear-filters'
+      expect(fetchReportsMock).toHaveBeenLastCalledWith({
+        pageNumber: 1,
+        reportStatusFilter: [],
+        reportTypeIdFilter: [],
+        pageSize: PAGE_SIZES[0],
+      })
     })
   })
 })

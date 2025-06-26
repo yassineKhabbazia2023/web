@@ -14,6 +14,7 @@ import {
   fetchReportErrors,
 } from '.'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
+import { serializeParams } from '@pulse/core/utils/http'
 
 const mockReportId = 15
 const mockAccountId = 602
@@ -121,6 +122,7 @@ describe('BI Reporting Services', () => {
 
       expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports/available`, {
         params: queryParams,
+        paramsSerializer: serializeParams,
       })
     })
   })
