@@ -1,12 +1,8 @@
 import { vi, describe, it, expect } from 'vitest'
 import { apiGatewayMock, apiGatewayPostMock, apiGatewayGetMock } from '../__mocks__/api-gateway.mocks'
 import { refreshClientToken, createNewPassword, isInvitationTokenValid, login } from './authentication.service'
-import { useTokenStore } from '../stores/token/token.store'
-import { getStoreMock } from '../__mocks__/store.mocks'
 
 import type { CreateNewPasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
-
-const tokenStoreMock = getStoreMock(useTokenStore)
 
 vi.mock('../api', () => ({
   default: () => ({
@@ -28,9 +24,6 @@ describe('test authentication.service', () => {
 
       expect(apiGatewayPostMock).toHaveBeenCalledOnce()
       expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedGatewayPostArgument)
-
-      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
-      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith(mockedToken)
     })
   })
 

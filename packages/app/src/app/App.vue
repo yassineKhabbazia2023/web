@@ -28,7 +28,7 @@ import { useRoute } from 'vue-router'
 import { PConfigProvider } from '@pulse/styleguide/components'
 import PopupRenewToken from '@app/components/PopupRenewToken'
 import { storeToRefs } from 'pinia'
-import { HTMLService } from '@pulse/core'
+import { HTMLService, logger } from '@pulse/core'
 import { useRedirection } from '@app/composables/useRedirection'
 import { getExpirationDelays } from './app.utils'
 import { LAYOUT_META } from '@pulse/common/constants'
@@ -118,9 +118,15 @@ async function onLogout() {
 }
 
 async function onRenewToken() {
-  popupRenewTokenIsVisible.value = false
-  const sub = tokenStore.tokenSub ?? ''
-  await refreshClientToken(sub)
+  try {
+    popupRenewTokenIsVisible.value = false
+    const newToken = await refreshClientToken(tokenStore.tokenSub ?? '')
+    CurrentUserManager.persistToken(newToken)
+  } catch (error) {
+    logger.error('Error renewing token:', error)
+    // logout and redirect to login if the token renewal fails
+    logoutAndRedirectToLogin()
+  }
 }
 
 function setTimers(exp?: number) {

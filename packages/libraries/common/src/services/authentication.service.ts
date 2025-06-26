@@ -1,6 +1,5 @@
 import api from '../api'
 import { API_PREFIXES } from '../constants/api-prefixes'
-import { CurrentUserManager } from '@pulse/common/managers'
 import type { CreateNewPasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
 
 export async function refreshClientToken(sub: string) {
@@ -8,8 +7,7 @@ export async function refreshClientToken(sub: string) {
 
   const { data: token } = await api().gateway.post(baseUrl)
 
-  // TODO : Bouger cette action en dehors du service qui n'a pas à réaliser ce type d'opérations // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47385
-  CurrentUserManager.persistToken(token)
+  return token
 }
 
 export async function createNewPassword(payload: CreateNewPasswordPayload) {

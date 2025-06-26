@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { envVarsMock } from '@pulse/core/mocks'
 import {
   amplitudeServiceMock,
@@ -96,15 +96,21 @@ describe('app with navigation guard', () => {
     expect(logoutAndRedirectToLoginMock).toHaveBeenCalledOnce()
   })
 
-  it('should call refreshClientToken when PopupRenewToken emits renew-token', () => {
+  it('should call refreshClientToken when PopupRenewToken emits renew-token', async () => {
     const mockedSub = 'mocked-sub'
+    const tokenMock = 'mocked-token'
+    mockedRefreshClientToken.mockResolvedValue(tokenMock)
     tokenStoreMock.tokenSub = mockedSub
     const wrapper = createWrapper()
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     popupRenewToken.vm.$emit('renew-token')
+    await flushPromises()
     expect(mockedRefreshClientToken).toHaveBeenCalledOnce()
-    expect(mockedRefreshClientToken).toHaveBeenNthCalledWith(1, mockedSub)
+    expect(mockedRefreshClientToken).toHaveBeenCalledWith(mockedSub)
+
+    expect(CurrentUserManagerMock.persistToken).toHaveBeenCalledOnce()
+    expect(CurrentUserManagerMock.persistToken).toHaveBeenCalledWith(tokenMock)
   })
 
   it.skip('should open PopupRenewToken 5 minutes before it expires AND when it has expired', async () => {
