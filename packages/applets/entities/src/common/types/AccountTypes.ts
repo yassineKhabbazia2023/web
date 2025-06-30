@@ -4,3 +4,8 @@ export interface AccountRow {
   accountNumber: string
   isCustomerRelation?: boolean
 }
+
+export interface AccountFilters {
+  isFavoriteFilter: boolean,
+  isCustomerRelationFilter: boolean
+}

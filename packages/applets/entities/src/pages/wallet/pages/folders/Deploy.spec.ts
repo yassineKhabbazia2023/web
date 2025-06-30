@@ -23,6 +23,7 @@ import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enum
 import type { Entity } from '@pulse/common/types'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
+import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 
 import Deploy from '.'
 
@@ -139,6 +140,12 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
             clearSearch: vi.fn(),
           },
         },
+        AccountFiltersDrawer: {
+          name: 'AccountFiltersDrawer',
+          template: '<div />',
+          props: ['modelValue', 'hasActiveFilters', 'accountFilters'],
+          emits: ['apply-filters', 'reset-filters'],
+        },
       },
     },
   })
@@ -234,6 +241,8 @@ describe('deploy', () => {
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 1,
       filterByDeploymentStatus: '',
+      isCustomerRelationFilter: false,
+      isFavoriteFilter: false,
       limit: 15,
       search: SEARCH_VALUE,
     })
@@ -415,6 +424,8 @@ describe('deploy', () => {
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 0,
       filterByDeploymentStatus: '',
+      isCustomerRelationFilter: false,
+      isFavoriteFilter: false,
       limit: 15,
       search: expectedSearchValue,
     })
@@ -541,6 +552,117 @@ describe('deploy', () => {
         expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
         expect(amplitudeServiceTrackMock).toHaveBeenCalledWith(expectedAmplitudeEventName, expectedAmplitudeParams)
       }
+    })
+  })
+
+  describe('AccountFiltersDrawer', () => {
+    let wrapper: ReturnType<typeof createWrapper>
+    let accountFiltersDrawer: VueWrapper<InstanceType<typeof AccountFiltersDrawer>>
+
+    beforeEach(async () => {
+      wrapper = createWrapper()
+      await flushPromises()
+      accountFiltersDrawer = wrapper.findComponent(AccountFiltersDrawer)
+    })
+
+    it('displays the filter count pastille when filters are applied', async () => {
+      // Arrange: Apply a single filter via drawer emit
+      accountFiltersDrawer.vm.$emit('apply-filters', {
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: true,
+      })
+      await nextTick()
+
+      // Act: Get the filter count pastille element
+      const filterCountPastille = wrapper.find('[data-testid="account-deploy__filter-count"]')
+
+      // Assert: Should show pastille with count 1
+      expect(filterCountPastille.exists()).toBe(true)
+      expect(filterCountPastille.text()).toBe('1')
+    })
+
+    it('displays the "Clear all" action when filters are applied', async () => {
+      // Arrange: Apply filters
+      accountFiltersDrawer.vm.$emit('apply-filters', {
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: true,
+      })
+      const expectedSearchCriteria = getMockedSearchCriteria({
+        currentPage: 0,
+        filterByDeploymentStatus: '',
+        isCustomerRelationFilter: true,
+        isFavoriteFilter: false,
+        limit: 15,
+        search: '',
+      })
+      await nextTick()
+
+      // Act: Click clear button
+      const clearAllButton = wrapper.find('[data-testid="account-deploy__clear-filters-button"]')
+
+      // Assert: Button exists and triggers correct fetch
+      expect(clearAllButton.exists()).toBe(true)
+      expect(clearAllButton.text().trim()).toBe('Clear all')
+
+      // Call count explanation:
+      // 1 - onMounted → fetchAccountList()
+      // 2 - fetchTableDataAndFavorites() → fetchFavoriteEntities()
+      // 3 - applyAccountFilters() → fetchAccountList()
+      expect(mockFetchWalletData).toHaveBeenCalledTimes(3)
+      expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+        3,
+        expect.anything(),
+        expectedSearchCriteria,
+      )
+    })
+
+    it('opens the filter drawer when the filter button is clicked', async () => {
+      // Arrange: Get button and confirm initial drawer state
+      const filterButton = wrapper.find('[data-testid="account-deploy__filter-button"]')
+      expect(accountFiltersDrawer.props('modelValue')).toBe(false)
+
+      // Act: Trigger click
+      await filterButton.trigger('click')
+
+      // Assert: Drawer should be open now
+      expect(accountFiltersDrawer.props('modelValue')).toBe(true)
+    })
+
+    it('emits "clear-filters" when the "Clear All" button is clicked after applying filters', async () => {
+      // Arrange: Apply filters to activate "Clear All"
+      accountFiltersDrawer.vm.$emit('apply-filters', {
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: true,
+      })
+      await nextTick()
+
+      const clearAllButton = wrapper.find('[data-testid="account-deploy__clear-filters-button"]')
+
+      // Act: Click the clear button
+      await clearAllButton.trigger('click')
+
+      const expectedSearchCriteria = getMockedSearchCriteria({
+        currentPage: 0,
+        filterByDeploymentStatus: '',
+        isCustomerRelationFilter: false,
+        isFavoriteFilter: false,
+        limit: 15,
+        search: '',
+      })
+
+      // Assert: fetchAccountList() called again after clearing
+      // Call count explanation:
+      // 1 - onMounted → fetchAccountList()
+      // 2 - fetchTableDataAndFavorites() → fetchFavoriteEntities()
+      // 3 - applyAccountFilters() → fetchAccountList()
+      // 4 - clearAllAccountFilters() → fetchAccountList()
+      // 5 - searchCriteria watcher triggers fetchAccountList()
+      expect(mockFetchWalletData).toHaveBeenCalledTimes(5)
+      expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+        5,
+        expect.anything(),
+        expectedSearchCriteria,
+      )
     })
   })
 

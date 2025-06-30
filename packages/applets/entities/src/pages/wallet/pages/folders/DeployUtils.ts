@@ -12,6 +12,8 @@ export function getQueryParams(searchCriteria: SearchCriteria): FilterQueryParam
     search: searchCriteria.search,
     accountNumber: searchCriteria.accountNumber,
     deploymentStatus: searchCriteria.filterByDeploymentStatus,
+    isFavoriteFilter: searchCriteria.isFavoriteFilter,
+    isCustomerRelationFilter: searchCriteria.isCustomerRelationFilter,
   }
 }
 

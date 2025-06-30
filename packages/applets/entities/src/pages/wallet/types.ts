@@ -40,6 +40,8 @@ export interface SearchCriteria {
   search?: string
   accountNumber?: string
   filterByDeploymentStatus?: string
+  isFavoriteFilter?: boolean
+  isCustomerRelationFilter?: boolean
 }
 
 export interface FilterQueryParams {
@@ -48,6 +50,8 @@ export interface FilterQueryParams {
   search?: string,
   accountNumber?: string,
   deploymentStatus?: string,
+  isFavoriteFilter?: boolean
+  isCustomerRelationFilter?: boolean
 }
 
 // we want to use SearchResult as an alias for QueryResult<WalletData>

@@ -70,14 +70,49 @@
         :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
       />
     </div>
-    <div class="margin-bottom--3">
+    <div class="account-deploy__filters flex flex--align-items-center margin-bottom--3">
       <FormSearch
         ref="searchBar"
         :forcedValue="searchCriteria.search"
         :placeholder="t('search')"
-        class="max-width-500"
+        class="width--100 max-width-500"
         @search-value-submitted="handleSearchValueSubmitted"
       />
+      <PButton
+        pType="default"
+        pSize="small"
+        data-testid="account-deploy__filter-button"
+        @click="openFiltersDrawer"
+      >
+        <PIcon pName="sliders" />
+        <span class="padding-left--2">{{ t('filter') }}</span>
+        <Transition name="fade">
+          <PPastille
+            v-if="accountFiltersCount > 0"
+            pType="persian"
+            pSize="small"
+            class="margin-left--2"
+            data-testid="account-deploy__filter-count"
+          >
+            {{ accountFiltersCount }}
+          </PPastille>
+        </Transition>
+      </PButton>
+      <Transition name="fade">
+        <PButton
+          v-if="accountFiltersCount > 0"
+          pType="default"
+          data-testid="account-deploy__clear-filters-button"
+          @click="clearAllAccountFilters"
+        >
+          <span
+            class="font-medium text-underline"
+            data-testid="account-deploy__clear-filters-text"
+          >
+            {{ t('clearAll') }}
+          </span>
+        </PButton>
+      </Transition>
     </div>
     <div
       v-if="isLoading"
@@ -132,6 +167,14 @@
         :currentUser="user"
         data-testid="offers-drawer"
       />
+      <AccountFiltersDrawer
+        v-model="isFiltersDrawerOpen"
+        v-model:hasActiveFilters="hasActiveFilters"
+        :accountFilters
+        data-testid="account-filters-drawer"
+        @apply-filters="applyAccountFilters"
+        @reset-filters="clearAllAccountFilters"
+      />
     </div>
     <ManageAccessDrawerGlobal
       v-if="hasManageAccess"
@@ -178,10 +221,11 @@ import Filters from '../../components/Filters'
 import TableData from '../../components/TableData'
 import DelegationDrawer from './components/DelegationDrawer'
 import EntityCreatorDrawer from './components/EntityCreatorDrawer'
+import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 import ResendActivationEmailDrawer from '@entities/common/components/ResendActivationEmailDrawer'
 import DeclareCustomerRelationDrawer from './components/DeclareCustomerRelationDrawer'
 import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
-import type { AccountRow } from '@entities/common/types'
+import type { AccountFilters, AccountRow } from '@entities/common/types'
 import ManageAccessDrawerGlobal from '@entities/common/components/ManageAccessDrawer/ManageAccessDrawerGlobal'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 import { useUserStore } from '@pulse/common/stores'
@@ -236,6 +280,45 @@ const handleDisplayResendActivationEmailDrawer = (account: AccountRow) => {
 }
 // #endregion
 
+// #region Account Filter Drawer State and Logic
+const hasActiveFilters = ref(false)
+const isFiltersDrawerOpen = ref(false)
+const accountFilters = ref<AccountFilters>({
+  isFavoriteFilter: false,
+  isCustomerRelationFilter: false,
+})
+
+const openFiltersDrawer = () => {
+  isFiltersDrawerOpen.value = true
+}
+
+const closeFiltersDrawer = () => {
+  isFiltersDrawerOpen.value = false
+}
+
+const accountFiltersCount = computed(() => {
+  const { isFavoriteFilter, isCustomerRelationFilter } = accountFilters.value
+  return (isFavoriteFilter ? 1 : 0) + (isCustomerRelationFilter ? 1 : 0)
+})
+
+const applyAccountFilters = (appliedFilters: AccountFilters) => {
+  accountFilters.value = appliedFilters
+  searchCriteria.value.isFavoriteFilter = appliedFilters.isFavoriteFilter
+  searchCriteria.value.isCustomerRelationFilter = appliedFilters.isCustomerRelationFilter
+  fetchAccountList()
+  closeFiltersDrawer()
+}
+
+const clearAllAccountFilters = () => {
+  accountFilters.value = { isFavoriteFilter: false, isCustomerRelationFilter: false }
+  searchCriteria.value.isFavoriteFilter = false
+  searchCriteria.value.isCustomerRelationFilter = false
+  hasActiveFilters.value = false
+  fetchAccountList()
+  closeFiltersDrawer()
+}
+// #enregion
+
 // delegation part
 const isDelegationDrawerOpened = ref(false)
 const numberOfFoldersInPortfolio = computed(() => searchResult.value.totalItems)
@@ -278,6 +361,8 @@ const searchCriteria = ref<SearchCriteria>({
   limit: PAGE_SIZES[0],
   search: '',
   filterByDeploymentStatus: '',
+  isFavoriteFilter: false,
+  isCustomerRelationFilter: false,
 })
 
 const searchResult = ref<SearchResult<WalletData>>({
@@ -458,23 +543,43 @@ const onSelectedFolder = (newSelectedFolder: SelectedFolder) => {
 defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerVisible, selectedAccount })
 </script>
 
+<style lang="scss" scoped>
+.account-deploy__filters {
+  // Prevents layout shift when dynamic UI elements like the "Clear" button are shown.
+  min-height: 44px;
+}
+// Ensures a smooth transition when the filter count disappears
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
+
 <i18n lang="yaml">
-  en-US:
-    search: "Search by company name, folder ID, first name, last name, and email of the executive"
-    toDeploy: 'To Deploy'
-    inProgress: 'In progress'
-    connected: 'Connected'
-    on: 'on'
-    delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
-    createTestAccount: 'Create a test account'
-    manageAccess: 'Manage access'
-  fr-FR:
-    search: 'Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant'
-    toDeploy: 'A déployer'
-    inProgress: 'En cours'
-    connected: 'Connecté'
-    on: 'sur'
-    delegation: 'Déléguer mon portefeuille | Déléguer le dossier | Déléguer les dossiers'
-    createTestAccount: 'Créer un compte de test'
-    manageAccess: 'Gérer les accès'
+en-US:
+  search: 'Search by company name, folder ID, first name, last name, and email of the executive'
+  toDeploy: 'To Deploy'
+  inProgress: 'In progress'
+  connected: 'Connected'
+  clearAll: 'Clear all'
+  filter: 'Filter'
+  on: 'on'
+  delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
+  createTestAccount: 'Create a test account'
+  manageAccess: 'Manage access'
+fr-FR:
+  search: 'Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant'
+  toDeploy: 'A déployer'
+  inProgress: 'En cours'
+  connected: 'Connecté'
+  clearAll: 'Tout effacer'
+  filter: 'Filtrer'
+  on: 'sur'
+  delegation: 'Déléguer mon portefeuille | Déléguer le dossier | Déléguer les dossiers'
+  createTestAccount: 'Créer un compte de test'
+  manageAccess: 'Gérer les accès'
 </i18n>
