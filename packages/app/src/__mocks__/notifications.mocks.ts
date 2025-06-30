@@ -74,6 +74,55 @@ export const mandateNotificationMock: FeedCenterNotification = {
   redirectLink: '0123456',
 }
 
+export const reportCollabCreatedNotificationMock: FeedCenterNotification = {
+  id: 6,
+  message: 'A new report has been created',
+  createdAt: '2024-10-05T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.ReportCollabCreated,
+  accounts: [
+    accountsMock[5],
+  ],
+  isRead: false,
+  redirectLink: String(accountsMock[5].id),
+}
+
+export const reportCollabUpdatedNotificationMock: FeedCenterNotification = {
+  id: 7,
+  message: 'A report has been updated',
+  createdAt: '2024-10-05T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.ReportCollabUpdated,
+  accounts: [
+    accountsMock[2],
+  ],
+  isRead: false,
+  redirectLink: String(accountsMock[2].id),
+}
+
+export const reportCustomerCreatedNotificationMock: FeedCenterNotification = {
+  id: 8,
+  message: 'A new report has been created for a customer',
+  createdAt: '2024-10-05T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.ReportCustomerCreated,
+  accounts: [
+    accountsMock[5],
+  ],
+  isRead: false,
+  redirectLink: String(accountsMock[5].id),
+}
+
+export const reportCustomerUpdatedNotificationMock: FeedCenterNotification = {
+  id: 9,
+  message: 'A report has been updated for a customer',
+  createdAt: '2024-10-05T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.ReportCustomerUpdated,
+  accounts: [
+    accountsMock[2],
+  ],
+  isRead: false,
+  redirectLink: String(accountsMock[2].id),
+}
+
+
 export const notificationsMock: FeedCenterNotification[] = [
   ...readNotificationsMock,
   ...unreadNotificationsMock,

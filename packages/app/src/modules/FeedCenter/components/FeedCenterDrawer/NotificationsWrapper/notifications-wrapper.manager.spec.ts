@@ -6,6 +6,10 @@ import {
   unreadNotificationsMock,
   gedNotificationMock,
   mandateNotificationMock,
+  reportCollabCreatedNotificationMock,
+  reportCollabUpdatedNotificationMock,
+  reportCustomerCreatedNotificationMock,
+  reportCustomerUpdatedNotificationMock,
 } from '@app/__mocks__/notifications.mocks'
 import { accountsMock } from '@app/__mocks__/accounts.mocks'
 import {
@@ -18,7 +22,7 @@ import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
 import * as NotificationService from './notifications-wrapper.service'
 import { flushPromises } from '@vue/test-utils'
-import { RouteName } from '@pulse/common/enums'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 
 import {
   patchUnreadNotification,
@@ -214,6 +218,58 @@ describe('handleNotificationAction', () => {
     })
     await flushPromises()
     expect(testSpy).toHaveBeenCalled()
+  })
+
+  it('should call the corresponding action in notificationActionsMapping for ReportCollabCreated', async () => {
+    handleNotificationAction({
+      notification: reportCollabCreatedNotificationMock,
+      router: mockRouter,
+    })
+
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      name: RouteName.REPORTS,
+      params: { [RouteParam.ENTITY_ID]: reportCollabCreatedNotificationMock.accounts[0].id },
+      query: { reportId: reportCollabCreatedNotificationMock.redirectLink },
+    })
+  })
+
+  it('should call the corresponding action in notificationActionsMappind for ReportCollabUpdated', async () => {
+    handleNotificationAction({
+      notification: reportCollabUpdatedNotificationMock,
+      router: mockRouter,
+    })
+
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      name: RouteName.REPORTS,
+      params: { [RouteParam.ENTITY_ID]: reportCollabUpdatedNotificationMock.accounts[0].id },
+      query: { reportId: reportCollabUpdatedNotificationMock.redirectLink },
+    })
+  })
+
+  it('should call the corresponding action in notificationActionsMapping for ReportCustomerCreated', async () => {
+    handleNotificationAction({
+      notification: reportCustomerCreatedNotificationMock,
+      router: mockRouter,
+    })
+
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      name: RouteName.REPORTS,
+      params: { [RouteParam.ENTITY_ID]: reportCustomerCreatedNotificationMock.accounts[0].id },
+      query: { reportId: reportCustomerCreatedNotificationMock.redirectLink },
+    })
+  })
+
+  it('should call the corresponding action in notificationActionsMappind for ReportCustomerUpdated', async () => {
+    handleNotificationAction({
+      notification: reportCustomerUpdatedNotificationMock,
+      router: mockRouter,
+    })
+
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      name: RouteName.REPORTS,
+      params: { [RouteParam.ENTITY_ID]: reportCustomerUpdatedNotificationMock.accounts[0].id },
+      query: { reportId: reportCustomerUpdatedNotificationMock.redirectLink },
+    })
   })
 })
 

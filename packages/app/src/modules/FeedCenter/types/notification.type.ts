@@ -5,8 +5,10 @@ export enum NotificationKindEnum {
   Delegation = 'Delegation-AddDelegation',
   GED = 'Ged-DocumentUploaded',
   Mandate = 'Mandate-MandateStatusChanged',
-  ReportingCreated = 'Reporting-ReportCreated',
-  ReportingUpdated = 'Reporting-ReportUpdated'
+  ReportCustomerCreated = 'Reporting-ReportCreatedCustomer',
+  ReportCustomerUpdated = 'Reporting-ReportUpdatedCustomer',
+  ReportCollabCreated = 'Reporting-ReportCreatedCollab',
+  ReportCollabUpdated = 'Reporting-ReportUpdatedCollab'
   // More notificationKind to come in the future #StayTuned
 }
 
