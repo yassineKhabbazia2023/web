@@ -65,7 +65,7 @@ export default ({ mode }: any) =>
       build: {
         outDir: '../../dist',
         rollupOptions: {
-          external: '/env-vars.js',
+          external: './env-vars.js',
         },
       },
     }),
