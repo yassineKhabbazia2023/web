@@ -1,5 +1,5 @@
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
-import { type VueWrapper, shallowMount, flushPromises } from '@vue/test-utils'
+import { shallowMount, flushPromises } from '@vue/test-utils'
 import * as SubscriptionServices from '@entities/services/subscription'
 import { nextTick } from 'vue'
 import { getActiveOffersMocked } from './OffersMocks'
@@ -25,8 +25,9 @@ vi.mock('@pulse/common/managers', () => ({
 const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 const userStoreMock = getStoreMock(useUserStore)
 
+const fetchAccountSubscriptionsMock = vi.hoisted(() => vi.fn())
 vi.mock('@entities/services/subscription', () => ({
-  fetchAccountSubscriptions: vi.fn(() => Promise.resolve(activeOffersMocked)),
+  fetchAccountSubscriptions: fetchAccountSubscriptionsMock,
 }))
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -44,7 +45,7 @@ const mockedEntity = getMockedEntity({
 })
 const userMock = getMockedUser()
 
-const createWrapper = (isCollab = true, hasPermission = true): VueWrapper => {
+const createWrapper = (isCollab = true, hasPermission = true) => {
   userStoreMock.isCollab = isCollab
   hasPermissionMock.mockImplementation((_: string | string[]) => hasPermission)
 
@@ -69,15 +70,24 @@ const createWrapper = (isCollab = true, hasPermission = true): VueWrapper => {
             'pData',
           ],
         },
-        PTableColumn: true,
-        OffersDrawer: true,
+        OffersDrawer: {
+          name: 'OffersDrawer',
+          template: '<div><slot /></div>',
+          methods: {
+            initDrawerForCurrentAccount: vi.fn(),
+          },
+          props: [
+            'modelValue',
+          ],
+        },
       },
     },
   })
 }
 describe('offers', () => {
-  let wrapper: VueWrapper
+  let wrapper: ReturnType<typeof createWrapper>
   beforeEach(() => {
+    fetchAccountSubscriptionsMock.mockResolvedValue(activeOffersMocked)
     userStoreMock.user = userMock
     selectedEntityStoreMock.selectedEntity = mockedEntity
 
@@ -143,6 +153,24 @@ describe('offers', () => {
       await nextTick()
 
       expect(offersDrawer.emitted('update:modelValue')).toStrictEqual([[false]])
+    })
+
+    it("should reload offers and close OffersDrawer when it emits 'offer-saved'", async () => {
+      const activateOffersButton = wrapper.find(
+        '[data-testid=folder-offer-activate-offers-button]',
+      )
+      expect(fetchAccountSubscriptionsMock).toHaveBeenCalledOnce()
+
+      await activateOffersButton.trigger('click')
+      const offersDrawer = wrapper.findComponent({ name: 'OffersDrawer' })
+      expect(offersDrawer.props('modelValue')).toBe(true)
+      offersDrawer.vm.$emit('offer-saved')
+      await flushPromises()
+
+      const offersDrawerAfter = wrapper.findComponent({ name: 'OffersDrawer' })
+      expect(fetchAccountSubscriptionsMock).toHaveBeenCalledTimes(2)
+      expect(offersDrawerAfter.props('modelValue')).toBe(false)
+      expect(offersDrawerAfter.exists()).toBe(true)
     })
 
     it('should catch the error and use logger.error when the API call fails', async () => {

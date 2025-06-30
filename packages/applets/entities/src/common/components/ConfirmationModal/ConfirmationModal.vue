@@ -11,6 +11,7 @@
           <PButton
             pType="secondary"
             pSize="small"
+            :pDisabled="isCancelButtonDisabled"
             data-testid="cancel-button"
             @click="handleCancel"
           >

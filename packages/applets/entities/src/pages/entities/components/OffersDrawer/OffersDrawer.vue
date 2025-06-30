@@ -6,6 +6,9 @@
       :content="t('confirmationContent')"
       :confirmButtonLabel="t('confirm')"
       :cancelButtonLabel="t('cancel')"
+      :isCancelButtonDisabled="isSaveOfferInProgress"
+      :isConfirmButtonDisabled="isSaveOfferInProgress"
+      :isConfirmButtonLoading="isSaveOfferInProgress"
       data-testid="create-offer-confirmation-modal"
       @confirm="handleConfirm"
     />
@@ -175,7 +178,7 @@ import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import type { Note } from '@entities/services/subscription/subscriptionTypes'
 import { createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
 import { type Contact } from '@entities/services/contact/contactTypes'
-import { ContactType } from '@pulse/common/enums'
+import { ContactType, APICallStatus } from '@pulse/common/enums'
 import { amplitudeService } from '@pulse/common'
 import type { ContactWithRoles } from '../ManageCollaborators/ManageCollaboratorsTypes'
 import { getIsNextButtonDisabled, updateAccountOnInput } from './OffersDrawer.utils'
@@ -186,7 +189,9 @@ const { t } = useI18n({
 })
 
 const currentStepIndex = ref(0)
+const saveOfferApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
 const currentStep = computed(() => OFFERS_DRAWER_STEPS[currentStepIndex.value])
+const isSaveOfferInProgress = computed(() => saveOfferApiCallStatus.value === APICallStatus.LOADING)
 
 const offerStepperConfig: any = {
   direction: 'horizontal',
@@ -221,6 +226,7 @@ const isNextButtonDisabled = computed(() => {
 
 const emit = defineEmits<{
   'update:modelValue': [boolean]
+  'offer-saved': [],
 }>()
 
 const props = defineProps<OffersDrawerProps>()
@@ -235,9 +241,12 @@ const selectedCollaboratorsWithRoles = ref<ContactWithRoles[]>([])
 const principalContacts = ref<ClientContact[]>([])
 const account = ref<Account | undefined>()
 const notes = ref<Note[]>([])
-const isLoading = ref<boolean>(true)
+const isLoadingOffers = ref<boolean>()
+const isLoadingAccount = ref<boolean>()
 const confirmationModalVisible = ref<boolean>(false)
 const companyInformationRef = useTemplateRef('companyInformation')
+
+const isLoading = computed(() => isLoadingOffers.value === true || isLoadingAccount.value === true)
 
 const internalIsOpened = computed({
   get() {
@@ -380,6 +389,7 @@ async function saveOffer() {
 }
 
 async function validateOffer() {
+  saveOfferApiCallStatus.value = APICallStatus.LOADING
   const patchOperations = getPatchOperations(patchValues)
   if (patchOperations.length > 0) {
     try {
@@ -390,6 +400,7 @@ async function validateOffer() {
   }
   try {
     await saveOffer()
+    saveOfferApiCallStatus.value = APICallStatus.SUCCESS
     if (!currentSubscriptionOffer.value?.approvalRequired) {
       displayNotification('success', t('offerActivated'))
       amplitudeService.track('Subscription Started', {
@@ -413,6 +424,7 @@ async function validateOffer() {
       })
     }
   } catch (error) {
+    saveOfferApiCallStatus.value = APICallStatus.ERROR
     if (!currentSubscriptionOffer.value?.approvalRequired) {
       displayNotification('error', t('offerNotActivated'))
       amplitudeService.track('Subscription Started', {
@@ -442,11 +454,7 @@ async function validateOffer() {
 const handleConfirm = async () => {
   await validateOffer()
   confirmationModalVisible.value = false
-
-  // To ensure a good user experience, as closing two things simultaneously is not ideal
-  setTimeout(() => {
-    onCloseOffersDrawer()
-  }, 600)
+  emit('offer-saved')
 }
 
 async function onClickNext() {
@@ -486,18 +494,30 @@ const offerSanitizedUrl = computed(() => {
     : ''
 })
 
+async function initDrawerForCurrentAccount() {
+  isLoadingAccount.value = true
+  await setSelectedOffer()
+  currentStepIndex.value = 0
+  principalContacts.value = await getPrincipalContacts(props.accountId)
+  const activeOffers = await fetchAccountSubscriptions(props.accountId)
+  activeOfferCodes.value = activeOffers.map((activeOffer) => activeOffer.offer.offerCode)
+  account.value = await fetchAccount(props.accountId)
+  isLoadingAccount.value = false
+}
+
 onMounted(async () => {
   try {
+    isLoadingOffers.value = true
     subscriptionOffers.value = await getAllOffers()
-    principalContacts.value = await getPrincipalContacts(props.accountId)
-    const activeOffers = await fetchAccountSubscriptions(props.accountId)
-    activeOfferCodes.value = activeOffers.map((activeOffer) => activeOffer.offer.offerCode)
-    account.value = await fetchAccount(props.accountId)
   } catch (error) {
     logger.error('Unable to retrieve data for subscribing to an offer :', error)
   } finally {
-    isLoading.value = false
+    isLoadingOffers.value = false
   }
+})
+
+defineExpose({
+  initDrawerForCurrentAccount,
 })
 </script>
 

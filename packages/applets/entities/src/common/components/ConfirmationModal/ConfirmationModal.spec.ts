@@ -1,9 +1,7 @@
-import { it, expect, describe, beforeEach } from 'vitest'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import type { PButton } from '@pulse/styleguide/components'
 import type { ConfirmationModalProps } from './ConfirmationModalTypes'
-import type { ComponentWrapper } from '@entities/common/types'
+
 import ConfirmationModal from '.'
 
 const defaultProps: ConfirmationModalProps = {
@@ -12,24 +10,37 @@ const defaultProps: ConfirmationModalProps = {
   content: 'Test Content',
   confirmButtonLabel: 'Confirmer',
   cancelButtonLabel: 'Annuler',
+  isCancelButtonDisabled: false,
   isConfirmButtonDisabled: false,
   isConfirmButtonLoading: false,
 }
 
-const createWrapper = (props = defaultProps) => {
-  return mount(ConfirmationModal, {
+const createWrapper = (override: Partial<ConfirmationModalProps> = {}) => {
+  const props = {
+    ...defaultProps,
+    ...override,
+  }
+
+  return shallowMount(ConfirmationModal, {
     props,
+    global: {
+      stubs: {
+        PDialog: {
+          name: 'PDialog',
+          template: '<div v-if="modelValue"><slot name="footer" /><slot /></div>',
+          props: ['modelValue'],
+        },
+        PImage: true,
+        PButton: true,
+      },
+    },
   })
 }
 
 describe('confirmationModal', () => {
-  let wrapper: VueWrapper
-  beforeEach(async () => {
-    wrapper = createWrapper()
-    await nextTick()
-  })
   describe('display', () => {
     it('should display correctly the confirmation modal', () => {
+      const wrapper = createWrapper()
       const dialog = wrapper.findComponent({ name: 'PDialog' })
       const cancelButton = wrapper.find('[data-testid="cancel-button"]')
       const confirmButton = wrapper.find('[data-testid="confirm-button"]')
@@ -39,20 +50,52 @@ describe('confirmationModal', () => {
       expect(confirmButton.exists()).toBeTruthy()
       expect(wrapper.props()).toStrictEqual(defaultProps)
     })
+
     it('should display the confirm button as disabled', async () => {
-      wrapper = createWrapper({
-        ...defaultProps,
+      const wrapper = createWrapper({
         isConfirmButtonDisabled: true,
       })
       await nextTick()
-      const confirmButton = wrapper.findComponent(
-        '[data-testid="confirm-button"]',
-      ) as ComponentWrapper<InstanceType<typeof PButton>>
+      const buttons = wrapper.findAllComponents({ name: 'PButton' })
+      const confirmButton = buttons[1]
 
       expect(confirmButton.props('pDisabled')).toBeTruthy()
+      expect(wrapper.html()).toMatchFileSnapshot('__snap__/ConfirmationModal.html')
+    })
+
+    const tests = [{
+      isCancelButtonDisabled: false,
+      isConfirmButtonDisabled: false,
+      isConfirmButtonLoading: false,
+      description: 'defaultState',
+    }, {
+      isCancelButtonDisabled: true,
+      isConfirmButtonDisabled: true,
+      isConfirmButtonLoading: true,
+      description: 'loadingState',
+    }]
+    it.each(tests)('should display properly when buttons are disabled', async ({
+      isCancelButtonDisabled,
+      isConfirmButtonDisabled,
+      isConfirmButtonLoading,
+      description,
+    }) => {
+      const wrapper = createWrapper({
+        isCancelButtonDisabled,
+        isConfirmButtonDisabled,
+        isConfirmButtonLoading,
+      })
+
+      const snapFilepath = `__snap__/ConfirmationModal.${description}.html`
+      expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
     })
   })
   describe('events', () => {
+    let wrapper: ReturnType<typeof createWrapper>
+    beforeEach(async () => {
+      wrapper = createWrapper()
+      await nextTick()
+    })
     it("should emit 'update:modelValue' when the model value is changed", async () => {
       const pDialog = wrapper.findComponent({ name: 'PDialog' })
       pDialog.vm.$emit('update:modelValue', false)

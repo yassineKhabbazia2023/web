@@ -146,12 +146,19 @@ const createWrapper = (): ComponentWrapper<InstanceType<typeof Deploy>> =>
           props: ['modelValue', 'hasActiveFilters', 'accountFilters'],
           emits: ['apply-filters', 'reset-filters'],
         },
+        OffersDrawer: {
+          name: 'OffersDrawer',
+          template: '<div><slot /></div>',
+          methods: {
+            initDrawerForCurrentAccount: vi.fn(),
+          },
+          props: [
+            'modelValue',
+          ],
+        },
       },
     },
   })
-
-const findSubscriptionDrawer = (wrapper: VueWrapper) =>
-  wrapper.findComponent('[data-testid="offers-drawer"]') as VueWrapper
 
 describe('deploy', () => {
   beforeEach(() => {
@@ -271,10 +278,28 @@ describe('deploy', () => {
 
     const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
     table.vm.$emit('click-deploy', 1, 'a', 'b')
-    await nextTick()
+    await flushPromises()
 
-    const subscriptionDrawer = findSubscriptionDrawer(wrapper)
-    expect(subscriptionDrawer.exists()).toBeTruthy()
+    const offersDrawer = wrapper.findComponent({ name: 'OffersDrawer' })
+    expect(offersDrawer.props('modelValue')).toBe(true)
+  })
+
+  it('reload offers and close drawer when it emits offer-saved', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    table.vm.$emit('click-deploy', 1, 'a', 'b')
+    await flushPromises()
+
+    const offersDrawer = wrapper.findComponent({ name: 'OffersDrawer' })
+    offersDrawer.vm.$emit('offer-saved')
+    await flushPromises()
+
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+
+    const offersDrawerAfter = wrapper.findComponent({ name: 'OffersDrawer' })
+    expect(offersDrawerAfter.props('modelValue')).toBe(false)
   })
 
   it('removes drawer when it has been closed', async () => {
@@ -283,15 +308,15 @@ describe('deploy', () => {
 
     const table = wrapper.findComponent({ name: 'TableData' })
     table.vm.$emit('click-deploy', 1, 'a', 'b')
+    await flushPromises()
+
+    const offersDrawer = wrapper.findComponent({ name: 'OffersDrawer' })
+    expect(offersDrawer.props('modelValue')).toBe(true)
+
+    offersDrawer.vm.$emit('update:modelValue', false)
     await nextTick()
 
-    const subscriptionDrawer = findSubscriptionDrawer(wrapper)
-    expect(subscriptionDrawer.exists()).toBeTruthy()
-    subscriptionDrawer.vm.$emit('update:modelValue', false)
-    await nextTick()
-
-    const subscriptionDrawerAfter = findSubscriptionDrawer(wrapper)
-    expect(subscriptionDrawerAfter.exists()).toBeFalsy()
+    expect(offersDrawer.props('modelValue')).toBe(false)
   })
 
   it('should redirect when click on access folder', async () => {

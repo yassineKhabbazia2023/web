@@ -1,5 +1,5 @@
 import { beforeEach, describe, it, expect, vi } from 'vitest'
-import { mount, flushPromises, type VueWrapper } from '@vue/test-utils'
+import { shallowMount, flushPromises } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { getMockedSubscriptionOffers, getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
@@ -23,8 +23,6 @@ import {
 import type { UserInfo } from '@pulse/common/types'
 import type { Note, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
 import type { PatchValue } from '@entities/services/PatchRecordService'
-import type { Contact } from '@entities/services/contact/contactTypes'
-import type { ComponentWrapper } from '@entities/common/types'
 import { amplitudeServiceTrackMock, amplitudeServiceMock } from '@pulse/common/mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
@@ -50,12 +48,15 @@ vi.mock('./OffersDrawer.utils', () => ({
 }))
 
 const principalContacts: ClientContact[] = getMockedPrincipalContacts()
-const collaborators: Contact[] = getMockedCollaborators()
 const currentUser: UserInfo = getMockedUser()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const notes: Note[] = getMockedStepNotes()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
+
+const firstOffer = subscriptionOffersServices[0]
+const secondOffer = subscriptionOffersServices[1]
+
 const companyTestName = 'Company Test Name'
 const offersBookTestLink = 'offers-book-test-link'
 const mockedAccount = getMockedAccount()
@@ -66,32 +67,27 @@ const mockedCollaboratorIds = mockedCollaborators.map(({ id }) => id)
 function getMockedSanitized(url: string) {
   return `sanitized-${url}`
 }
-async function asyncEmit(component: VueWrapper, eventName: string) {
-  component.vm.$emit(eventName)
-  await nextTick()
-}
+
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
+const getAllOffersMock = vi.hoisted(() => vi.fn(() => Promise.resolve(subscriptionOffers)))
+const getPrincipalContactsMock = vi.hoisted(() => vi.fn(() => Promise.resolve(principalContacts)))
 vi.mock('@entities/services/offer', () => ({
-  getAllOffers: vi.fn(() => Promise.resolve(subscriptionOffers)),
+  getAllOffers: getAllOffersMock,
   getOffer: vi.fn((offerId) =>
     Promise.resolve(
       subscriptionOffersServices.find((item) => item.offerId === offerId),
     ),
   ),
   getOffersBookLink: vi.fn(() => offersBookTestLink),
-  getPrincipalContacts: vi.fn(() => Promise.resolve(principalContacts)),
-  getCollaborators: vi.fn(() => Promise.resolve(collaborators)),
+  getPrincipalContacts: getPrincipalContactsMock,
 }))
 
-vi.mock('@entities/services/contact', () => ({
-  getCollaborators: vi.fn(() => Promise.resolve(collaborators)),
-}))
-
+const fetchAccountMock = vi.hoisted(() => vi.fn(() => Promise.resolve(mockedAccount)))
 vi.mock('@entities/services/account', () => ({
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
-  fetchAccount: vi.fn(() => Promise.resolve(mockedAccount)),
+  fetchAccount: fetchAccountMock,
   patchAccount: vi.fn(() => Promise.resolve({})),
 }))
 
@@ -106,9 +102,10 @@ vi.mock('@entities/services/PatchRecordService/PatchRecordService', () => ({
   getPatchOperations: getPatchOperationsMock,
 }))
 
+const fetchAccountSubscriptionsMock = vi.hoisted(() => vi.fn(() => Promise.resolve([])))
 vi.mock('@entities/services/subscription/subscriptionService', () => ({
   createSubscriptionRequest: vi.fn(),
-  fetchAccountSubscriptions: vi.fn(() => Promise.resolve([])),
+  fetchAccountSubscriptions: fetchAccountSubscriptionsMock,
 }))
 
 vi.mock('./OffersDrawerUtils', async () => {
@@ -122,8 +119,8 @@ vi.mock('@entities/common/utils/helpers')
 const accountNumber = 'account-number'
 const accountId = 5
 
-async function getWrapper(isOpened: boolean) {
-  const wrapper: ComponentWrapper<InstanceType<typeof OffersDrawer>> = mount(OffersDrawer, {
+async function getWrapper(isOpened: boolean, callInitDrawerForAccount = true) {
+  const wrapper = shallowMount(OffersDrawer, {
     props: {
       modelValue: isOpened,
       selectedCompanyName: companyTestName,
@@ -133,40 +130,22 @@ async function getWrapper(isOpened: boolean) {
     },
     global: {
       stubs: {
-        PInput: true,
-        ConfirmationModal: true,
-        PIcon: true,
-        PLoader: true,
-        PSteps: true,
-        PStep: true,
-        CustomersDetails: true,
-        OfferSubscription: true,
-        ManageCollaborators: true,
-        CompanyInformation: true,
-        StepNote: true,
-        NextPreviousButtons: true,
+        PDrawer: {
+          name: 'PDrawer',
+          template: '<div><slot name="header-prefix" /><slot name="header-suffix" /><slot /><slot name="footer" /></div>',
+          props: ['isOpened', 'pTitle'],
+          events: ['close-drawer-button'],
+        },
       },
     },
   })
+  if (callInitDrawerForAccount) {
+    await wrapper.vm.initDrawerForCurrentAccount()
+  }
   await flushPromises()
 
   return wrapper
 }
-
-const findSecondOffer = (wrapper: VueWrapper) =>
-  wrapper.find('[data-testid=offers] [data-testid=offer-item]:nth-child(2)')
-
-const findFirstOffer = (wrapper: VueWrapper) =>
-  wrapper.find('[data-testid=offers] [data-testid=offer-item]')
-
-const findOfferSubscription = (wrapper: VueWrapper) =>
-  wrapper.findComponent('[data-testid=offer]') as VueWrapper
-
-const findOffers = (wrapper: VueWrapper) =>
-  wrapper.find('[data-testid=offers]')
-
-const findNextPreviousButtons = (wrapper: VueWrapper) =>
-  wrapper.findComponent('[data-testid=next-previous-buttons]') as VueWrapper
 
 describe('offersDrawer', () => {
   beforeEach(() => {
@@ -181,6 +160,7 @@ describe('offersDrawer', () => {
 
       expect(confirmationModal.emitted('update:modelValue')).toStrictEqual([[false]])
     })
+
     it("should emit the 'update:modelValue' event when the v-model of drawer is updated", async () => {
       const wrapper = await getWrapper(true)
       const drawer = wrapper.findComponent({ name: 'PDrawer' })
@@ -189,76 +169,89 @@ describe('offersDrawer', () => {
 
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
     })
+
     it('should close offers drawer when clicking on close button', async () => {
       const wrapper = await getWrapper(true)
-      const offers = findOffers(wrapper)
+      const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
 
-      expect(wrapper.props('modelValue')).toBeTruthy()
-      expect(offers.exists()).toBeTruthy()
+      expect(wrapper.props('modelValue')).toBe(true)
+      expect(offers.exists()).toBe(true)
 
-      await wrapper.find('.p-drawer__close-button').trigger('click')
+      const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
+      await pDrawer.vm.$emit('close-drawer-button')
 
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
     })
+
     it('should display current offer when an offer is selected', async () => {
       const wrapper = await getWrapper(true)
-      const secondOffer = findSecondOffer(wrapper)
-      await secondOffer.trigger('click')
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
       await flushPromises()
 
       expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
       expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Subscription Initiated', {
         subscription_initiate_offer_name: subscriptionOffersServices.at(1)?.offerCode,
       })
-      const offers = findOffers(wrapper)
-      expect(offers.exists()).toBeFalsy()
+      const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      expect(offers.exists()).toBe(false)
 
-      const offer = findOfferSubscription(wrapper)
-      expect(offer.exists()).toBeTruthy()
+      const offer = wrapper.findComponent({ name: 'OfferSubscription' })
+      expect(offer.exists()).toBe(true)
     })
+
     it('should hide current offer when click on previousButton', async () => {
       const wrapper = await getWrapper(true)
-      const secondOffer = findSecondOffer(wrapper)
-      await secondOffer?.trigger('click')
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
       await flushPromises()
 
-      const nextPreviousButtons = findNextPreviousButtons(wrapper)
+      const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
 
       nextPreviousButtons.vm.$emit('click-previous')
       await nextTick()
 
-      const offers = findOffers(wrapper)
-      expect(offers.exists()).toBeTruthy()
+      const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      expect(offers.exists()).toBe(true)
 
-      const offer = findOfferSubscription(wrapper)
-      expect(offer.exists()).toBeFalsy()
+      const offer = wrapper.findComponent({ name: 'OfferSubscription' })
+      expect(offer.exists()).toBe(false)
     })
+
     describe('when user selects or deselects a product', () => {
       const offerId = subscriptionOffersServices.at(0)?.offerId
       const products = subscriptionOffersServices.at(0)?.providers?.at(0)?.products
       const productConfigurationId = products?.at(0)?.productConfigurationId ?? 1
-      let offer: VueWrapper
-      beforeEach(async () => {
+
+      it('should call addSelectedProduct when OfferSubscription emit select-product', async () => {
         const wrapper = await getWrapper(true)
-        const firstOffer = findFirstOffer(wrapper)
-        await firstOffer?.trigger('click')
+        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
         await flushPromises()
 
-        offer = findOfferSubscription(wrapper)
-      })
-      it('should call addSelectedProduct when OfferSubscription emit select-product', () => {
+        const offer = wrapper.findComponent({ name: 'OfferSubscription' })
         const addSelectedProductSpy = vi.spyOn(OffersDrawerUtils, 'addSelectedProduct')
         offer.vm.$emit('select-product', offerId, productConfigurationId)
 
         expect(addSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, productConfigurationId)
       })
-      it('should call removeSelectedProduct when OfferSubscription emit deselect-product', () => {
+
+      it('should call removeSelectedProduct when OfferSubscription emit deselect-product', async () => {
+        const wrapper = await getWrapper(true)
+        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
+        await flushPromises()
+
+        const offer = wrapper.findComponent({ name: 'OfferSubscription' })
         const removeSelectedProductSpy = vi.spyOn(OffersDrawerUtils, 'removeSelectedProduct')
         offer.vm.$emit('deselect-product', offerId, productConfigurationId)
 
         expect(removeSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, productConfigurationId)
       })
     })
+
     describe('create subscription', () => {
       const notes = [
         'services',
@@ -286,33 +279,67 @@ describe('offersDrawer', () => {
         notes: [],
         productConfigurations: [5],
       }
+
       it('should patch the account and create a subscription when the user confirms', async () => {
+        const content = 'After confirmation, the offer activation request will be submitted, and there will be no option to revert. Please review your information carefully before proceeding.\n'
+
+        const expectedConfirmationModalBefore = {
+          cancelButtonLabel: 'Cancel',
+          confirmButtonLabel: 'Confirm',
+          content,
+          isCancelButtonDisabled: false,
+          isConfirmButtonDisabled: false,
+          isConfirmButtonLoading: false,
+          modelValue: false,
+          title: 'Attention',
+        }
+        const expectedConfirmationModalDuring = {
+          ...expectedConfirmationModalBefore,
+          isCancelButtonDisabled: true,
+          isConfirmButtonDisabled: true,
+          isConfirmButtonLoading: true,
+        }
+        const expectedConfirmationModalAfter = {
+          ...expectedConfirmationModalBefore,
+        }
+
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
         const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
 
         const wrapper = await getWrapper(true)
-        const firstOffer = findFirstOffer(wrapper)
-        await firstOffer.trigger('click')
 
-        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
-        expect(confirmationModal.exists()).toBeTruthy()
-
-        confirmationModal.vm.$emit('confirm')
+        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
         await flushPromises()
 
+        const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+        expect(confirmationModal.exists()).toBe(true)
+        expect(confirmationModal.props()).toStrictEqual(expectedConfirmationModalBefore)
+
+        confirmationModal.vm.$emit('confirm')
+        await nextTick()
+        expect(confirmationModal.props()).toStrictEqual(expectedConfirmationModalDuring)
+        await flushPromises()
+
+        expect(confirmationModal.props()).toStrictEqual(expectedConfirmationModalAfter)
         expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount.accountId, mockedPatchOperations)
         expect(createSubscriptionRequestSpy).toHaveBeenNthCalledWith(1, expectedArgument)
+
+        expect(wrapper.emitted('offer-saved')).toStrictEqual([[]])
       })
+
       it('should track Amplitude event when saving for offers without validation', async () => {
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
         const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
 
         const wrapper = await getWrapper(true)
-        const secondOffer = findSecondOffer(wrapper)
-        await secondOffer.trigger('click')
 
-        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
-        expect(confirmationModal.exists()).toBeTruthy()
+        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+        subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
+        await flushPromises()
+
+        const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+        expect(confirmationModal.exists()).toBe(true)
 
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
@@ -336,16 +363,20 @@ describe('offersDrawer', () => {
         expect(patchAccountSpy).toHaveBeenNthCalledWith(1, mockedAccount.accountId, mockedPatchOperations)
         expect(createSubscriptionRequestSpy).toHaveBeenNthCalledWith(1, expectedArgumentWithoutValidation)
       })
+
       it('should not patch the account when no account diff', async () => {
         getPatchOperationsMock.mockReturnValueOnce([])
 
         const wrapper = await getWrapper(true)
-        const firstOffer = findFirstOffer(wrapper)
-        await firstOffer.trigger('click')
+
+        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
+        await flushPromises()
+
         const patchAccountSpy = vi.spyOn(ServicesAccount, 'patchAccount')
         const createSubscriptionRequestSpy = vi.spyOn(subscriptionService, 'createSubscriptionRequest')
-        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
-        expect(confirmationModal.exists()).toBeTruthy()
+        const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+        expect(confirmationModal.exists()).toBe(true)
 
         confirmationModal.vm.$emit('confirm')
 
@@ -361,11 +392,12 @@ describe('offersDrawer', () => {
 
 
         const wrapper = await getWrapper(true)
-        const firstOffer = findFirstOffer(wrapper)
-        firstOffer.trigger('click')
+        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
+        await flushPromises()
 
-        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
-        expect(confirmationModal.exists()).toBeTruthy()
+        const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+        expect(confirmationModal.exists()).toBe(true)
 
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
@@ -383,11 +415,12 @@ describe('offersDrawer', () => {
 
 
         const wrapper = await getWrapper(true)
-        const firstOffer = findFirstOffer(wrapper)
-        await firstOffer.trigger('click')
+        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
+        await flushPromises()
 
-        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
-        expect(confirmationModal.exists()).toBeTruthy()
+        const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+        expect(confirmationModal.exists()).toBe(true)
 
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
@@ -395,6 +428,7 @@ describe('offersDrawer', () => {
         expect(loggerErrorSpy).toHaveBeenCalledOnce()
         expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
       })
+
       it('should console error and track Amplitude event when saving fails for offers without validation', async () => {
         const errorMessage = 'save rejected'
         vi
@@ -403,11 +437,12 @@ describe('offersDrawer', () => {
 
 
         const wrapper = await getWrapper(true)
-        const secondOffer = findSecondOffer(wrapper)
-        await secondOffer.trigger('click')
+        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+        subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
+        await flushPromises()
 
-        const confirmationModal = wrapper.findComponent('[data-testid="create-offer-confirmation-modal"]') as VueWrapper
-        expect(confirmationModal.exists()).toBeTruthy()
+        const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+        expect(confirmationModal.exists()).toBe(true)
 
         confirmationModal.vm.$emit('confirm')
         await flushPromises()
@@ -430,14 +465,16 @@ describe('offersDrawer', () => {
         expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
       })
     })
+
     describe('when input CompanyInformation data', () => {
       it('should call addPathValue with proper arguments', async () => {
         const wrapper = await getWrapper(true)
-        const firstOffer = findFirstOffer(wrapper)
-        await firstOffer.trigger('click')
-        await nextTick()
 
-        const nextPreviousButtons = findNextPreviousButtons(wrapper)
+        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
+        await flushPromises()
+
+        const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
         const STEP_TO_REACH = 3
         for (let i = 0; i < STEP_TO_REACH; i++) {
           if (i === STEP_TO_REACH - 1) {
@@ -465,6 +502,7 @@ describe('offersDrawer', () => {
       })
     })
   })
+
   describe('props', () => {
     it('should display logger.error when API call is rejected', async () => {
       const errorMessage = 'Fetch API ERROR'
@@ -480,16 +518,48 @@ describe('offersDrawer', () => {
         errorMessage,
       )
     })
+
     it('should display offers when drawer is opened', async () => {
       const wrapper = await getWrapper(true)
-      const offers = findOffers(wrapper)
-      expect(offers.exists()).toBeTruthy()
+      const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      expect(offers.exists()).toBe(true)
     })
+
     it('should NOT display offers when drawer is closed', async () => {
       const wrapper = await getWrapper(false)
-      const offers = findOffers(wrapper)
-      expect(offers.exists()).toBeFalsy()
+      const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      expect(offers.exists()).toBe(false)
     })
+
+    it('should load current account data only on initDrawerForCurrentAccount call', async () => {
+      const wrapper = await getWrapper(true, false)
+      const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      const offerSubscription = wrapper.findComponent({ name: 'OfferSubscription' })
+
+      expect(offers.exists()).toBe(true)
+      expect(offerSubscription.exists()).toBe(false)
+
+      expect(getPrincipalContactsMock).not.toHaveBeenCalled()
+      expect(fetchAccountSubscriptionsMock).not.toHaveBeenCalled()
+      expect(fetchAccountMock).not.toHaveBeenCalled()
+
+      await wrapper.vm.initDrawerForCurrentAccount()
+
+      await offers.vm.$emit('select-offer', firstOffer.offerId)
+      await flushPromises()
+
+      expect(offerSubscription.exists()).toBe(false)
+
+      expect(getPrincipalContactsMock).toHaveBeenCalledOnce()
+      expect(getPrincipalContactsMock).toHaveBeenCalledWith(mockedAccount.accountId)
+
+      expect(fetchAccountSubscriptionsMock).toHaveBeenCalledOnce()
+      expect(fetchAccountSubscriptionsMock).toHaveBeenCalledWith(mockedAccount.accountId)
+
+      expect(fetchAccountMock).toHaveBeenCalledOnce()
+      expect(fetchAccountMock).toHaveBeenCalledWith(mockedAccount.accountId)
+    })
+
     it('should display company name at the top of the drawer', async () => {
       const wrapper = await getWrapper(true)
       const selectedCompanyName = wrapper.find('.offers-drawer__company-name')
@@ -497,6 +567,7 @@ describe('offersDrawer', () => {
       expect(selectedCompanyName.text()).toBe(companyTestName)
     })
   })
+
   describe('offersDrawerHeader', () => {
     it('should display offers book link beside the drawer title', async () => {
       const wrapper = await getWrapper(true)
@@ -506,12 +577,18 @@ describe('offersDrawer', () => {
       expect(offersBookLink.text()).toBe('Offers Book')
       expect(offersBookLink.attributes().href).toBe(sanitizedLink)
     })
+
     it('should display offer intranet link beside the drawer title', async () => {
+      const firstOfferIntranetLink = firstOffer.intranetLink!
+
       const wrapper = await getWrapper(true)
-      const firstOfferIntranetLink = subscriptionOffersServices[0].intranetLink ?? ''
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
+      await flushPromises()
+
       const sanitizedLink = getMockedSanitized(firstOfferIntranetLink)
-      const firstOffer = findFirstOffer(wrapper)
-      await firstOffer.trigger('click')
+
       await flushPromises()
       const offerIntranetLink = wrapper.find('.offers-drawer__details-link')
 
@@ -519,58 +596,65 @@ describe('offersDrawer', () => {
       expect(offerIntranetLink.attributes().href).toBe(sanitizedLink)
     })
   })
+
   describe('offerStepper', () => {
     it('the offer stepper should be displayed after clicking on offer', async () => {
       const wrapper = await getWrapper(true)
-      const firstOffer = findFirstOffer(wrapper)
-      await firstOffer.trigger('click')
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
       await flushPromises()
 
       const offerStepper = wrapper.find('[data-testid=offer-stepper]')
-      expect(offerStepper.exists()).toBeTruthy()
+      expect(offerStepper.exists()).toBe(true)
 
-      const offer = findOfferSubscription(wrapper)
-      expect(offer.exists()).toBeTruthy()
+      const offer = wrapper.findComponent({ name: 'OfferSubscription' })
+      expect(offer.exists()).toBe(true)
     })
+
     it('should display the correct page and maintain notes when using stepper navigation buttons 1/2', async () => {
       const wrapper = await getWrapper(true)
-      const firstOffer = findFirstOffer(wrapper)
-      await firstOffer.trigger('click')
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
       await flushPromises()
 
-      const nextPreviousButtons = findNextPreviousButtons(wrapper)
+      const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
 
-      await asyncEmit(nextPreviousButtons, 'click-next')
+      await nextPreviousButtons.vm.$emit('click-next')
+
       const customersStep = wrapper.find('[data-testid=customers-step]')
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
       expect(customersNoteStep.props()).toStrictEqual({ disabled: false, modelValue: notes[1] })
-      expect(customersStep.exists()).toBeTruthy()
+      expect(customersStep.exists()).toBe(true)
 
-      await asyncEmit(nextPreviousButtons, 'click-next')
+      await nextPreviousButtons.vm.$emit('click-next')
       const collaboratorsStep = wrapper.find('[data-testid=collaborators-step]')
-      expect(collaboratorsStep.exists()).toBeTruthy()
+      expect(collaboratorsStep.exists()).toBe(true)
     })
+
     it('should display the correct page and maintain notes when using stepper navigation buttons 2/2', async () => {
       const wrapper = await getWrapper(true)
-      const firstOffer = findFirstOffer(wrapper)
-      await firstOffer.trigger('click')
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
       await flushPromises()
 
-      const nextPreviousButtons = findNextPreviousButtons(wrapper)
+      const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
 
-      await asyncEmit(nextPreviousButtons, 'click-next')
+      await nextPreviousButtons.vm.$emit('click-next')
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
-      await asyncEmit(nextPreviousButtons, 'click-next')
+      await nextPreviousButtons.vm.$emit('click-next')
 
       const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
       manageCollaboratorsComponent.vm.$emit('update:selectedCollaboratorsWithRoles', mockedCollaboratorIds)
 
-      await asyncEmit(nextPreviousButtons, 'click-next')
+      await nextPreviousButtons.vm.$emit('click-next')
       const informationStep = wrapper.find('[data-testid=information-step]')
-      expect(informationStep.exists()).toBeTruthy()
+      expect(informationStep.exists()).toBe(true)
 
       nextPreviousButtons.vm.$emit('click-previous')
       nextPreviousButtons.vm.$emit('click-previous')
@@ -579,18 +663,20 @@ describe('offersDrawer', () => {
       const customersStep2 = wrapper.find('[data-testid=customers-step]')
       const customersNoteStep2 = wrapper.findComponent({ name: 'StepNote' })
       expect(customersNoteStep2.props('modelValue')).toStrictEqual(notes[1])
-      expect(customersStep2.exists()).toBeTruthy()
+      expect(customersStep2.exists()).toBe(true)
 
       nextPreviousButtons.vm.$emit('click-previous')
       await nextTick()
 
-      const offer = findOfferSubscription(wrapper)
-      expect(offer.exists()).toBeTruthy()
+      const offer = wrapper.findComponent({ name: 'OfferSubscription' })
+      expect(offer.exists()).toBe(true)
 
       nextPreviousButtons.vm.$emit('click-previous')
       await nextTick()
-      const secondOffer = findSecondOffer(wrapper)
-      await secondOffer.trigger('click')
+
+      subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
+      await flushPromises()
+
       const expectedCollaboratorIds = [{
         contactId: currentUser.id,
         roleIds: [],
@@ -598,27 +684,28 @@ describe('offersDrawer', () => {
 
       expect(manageCollaboratorsComponent.props('selectedCollaboratorsWithRoles')).toStrictEqual(expectedCollaboratorIds)
     })
-    it('should render the Manage Collaborators form with the default collaborator set to the authenticated user', async () => {
-      const expectedCollaboratorRoles = subscriptionOffersServices.at(0)!.functions
 
-      const wrapper = await getWrapper(true)
-      const firstOffer = findFirstOffer(wrapper)
+    it('should render the Manage Collaborators form with the default collaborator set to the authenticated user', async () => {
+      const expectedCollaboratorRoles = firstOffer.functions
       const expectedCollaboratorIds = [{
         contactId: currentUser.id,
         roleIds: [],
       }]
 
-      await firstOffer.trigger('click')
+      const wrapper = await getWrapper(true)
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
       await flushPromises()
 
-      const nextPreviousButtons = findNextPreviousButtons(wrapper) as VueWrapper<any>
+      const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
 
-      await asyncEmit(nextPreviousButtons, 'click-next')
+      await nextPreviousButtons.vm.$emit('click-next')
 
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
-      await asyncEmit(nextPreviousButtons, 'click-next')
+      await nextPreviousButtons.vm.$emit('click-next')
 
       const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
 
@@ -626,43 +713,46 @@ describe('offersDrawer', () => {
       expect(manageCollaboratorsComponent.props('selectedCollaboratorsWithRoles')).toStrictEqual(expectedCollaboratorIds)
       expect(manageCollaboratorsComponent.props('collaboratorRoles')).toStrictEqual(expectedCollaboratorRoles)
     })
+
     it('should disable the next button when no collaborator is selected', async () => {
       getIsNextButtonDisabledMock.mockReturnValue(true)
 
       const wrapper = await getWrapper(true)
-      const firstOffer = findFirstOffer(wrapper)
-      await firstOffer.trigger('click')
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
       await flushPromises()
 
-      const nextPreviousButtons = findNextPreviousButtons(wrapper) as VueWrapper<any>
+      const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
 
-      await asyncEmit(nextPreviousButtons, 'click-next')
+      await nextPreviousButtons.vm.$emit('click-next')
 
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
-      await asyncEmit(nextPreviousButtons, 'click-next')
+      await nextPreviousButtons.vm.$emit('click-next')
 
       const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
       manageCollaboratorsComponent.vm.$emit('update:selectedCollaboratorsWithRoles', [])
       await nextTick()
 
-      expect(nextPreviousButtons.props('isNextButtonDisabled')).toBeTruthy()
+      expect(nextPreviousButtons.props('isNextButtonDisabled')).toBe(true)
     })
 
-    it('should not display the offer stepper and note textarea when the validation is not required', async () => {
+    it('should not display the note textarea when the validation is not required', async () => {
+      const offerWithNoneRequiredValidation = subscriptionOffersServices[1]
+
       const wrapper = await getWrapper(true)
-      const secondOffer = findSecondOffer(wrapper)
-      await secondOffer.trigger('click')
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', offerWithNoneRequiredValidation.offerId)
       await flushPromises()
 
-      const offerStepper = wrapper.find('[data-testid=offer-stepper]')
       const noteStep = wrapper.findComponent({ name: 'StepNote' })
-      expect(offerStepper.exists()).toBeFalsy()
-      expect(noteStep.exists()).toBeFalsy()
+      expect(noteStep.exists()).toBe(false)
 
-      const offer = findOfferSubscription(wrapper)
-      expect(offer.exists()).toBeTruthy()
+      const offer = wrapper.findComponent({ name: 'OfferSubscription' })
+      expect(offer.exists()).toBe(true)
     })
   })
 })

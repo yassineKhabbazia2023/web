@@ -74,19 +74,21 @@
     </PTable>
   </div>
   <OffersDrawer
-    v-if="isOffersDrawerOpened && selectedEntity && user"
+    v-if="hasOffersDrawer && selectedEntity && user"
+    ref="offersDrawer"
     v-model="isOffersDrawerOpened"
     :selectedCompanyName="selectedEntity.legalName"
     :accountNumber="selectedEntity.accountNumber"
     :accountId="selectedEntity.accountId"
     :currentUser="user"
     data-testid="offers-drawer"
+    @offer-saved="onOfferSaved"
   />
 </template>
 
 <script setup lang="ts">
 import { logger } from '@pulse/core'
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, useTemplateRef, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -126,6 +128,7 @@ defineEmits<{
 
 const isLoading = ref(true)
 const isOffersDrawerOpened = ref(false)
+const hasOffersDrawer = ref(false)
 const activeOffers = ref<SubscriptionRequest[]>([])
 
 const { isCollab, user } = storeToRefs(userStore)
@@ -141,11 +144,15 @@ const isActivateOffersButtonVisible = computed(
   () => isCollab.value && CurrentUserManager.hasPermission(PERMISSION_ACTION.ACTIVATE_OFFER),
 )
 
-const handleActivateOffersClick = () => {
+const offersDrawerRef = useTemplateRef('offersDrawer')
+const handleActivateOffersClick = async () => {
+  hasOffersDrawer.value = true
+  await nextTick() // needed otherwise offersDrawerRef.value is not defined yet
+  offersDrawerRef.value?.initDrawerForCurrentAccount()
   isOffersDrawerOpened.value = true
 }
 
-onMounted(async () => {
+async function loadOffers() {
   try {
     const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
     // entityId can't be null here, so we use non-null assertion
@@ -155,7 +162,16 @@ onMounted(async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+onMounted(() => {
+  loadOffers()
 })
+
+async function onOfferSaved() {
+  await loadOffers()
+  isOffersDrawerOpened.value = false
+}
 </script>
 
 <style lang="scss" scoped>

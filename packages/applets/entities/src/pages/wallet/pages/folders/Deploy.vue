@@ -159,13 +159,15 @@
         :selectedAccount="selectedAccount"
       />
       <OffersDrawer
-        v-if="openOffersDrawer && selectedAccountId && user"
+        v-if="hasOffersDrawer === true && selectedAccountId && user"
+        ref="offersDrawer"
         v-model="openOffersDrawer"
         :selectedCompanyName="selectedCompanyName"
         :accountNumber="selectedAccountNumber"
         :accountId="selectedAccountId"
         :currentUser="user"
         data-testid="offers-drawer"
+        @offer-saved="onOfferSaved"
       />
       <AccountFiltersDrawer
         v-model="isFiltersDrawerOpen"
@@ -189,7 +191,7 @@
 <script lang='ts' setup>
 import { logger, FeatureFlagManager } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch, useTemplateRef, nextTick } from 'vue'
 import {
   PLoader,
   PButton,
@@ -491,6 +493,11 @@ async function onUpdateManageAccessDrawerOpened(isOpened: boolean) {
   }
 }
 
+async function onOfferSaved() {
+  await fetchAccountList()
+  openOffersDrawer.value = false
+}
+
 onMounted(async () => {
   loadManageAccessCount()
   await fetchTableDataAndFavorites()
@@ -501,14 +508,19 @@ watch(searchCriteria, async () => {
 }, { deep: true })
 
 const openOffersDrawer = ref(false)
+const hasOffersDrawer = ref(false)
 const selectedAccountNumber = ref<string>('')
 const selectedAccountId = ref<number | undefined>()
+const offersDrawerRef = useTemplateRef('offersDrawer')
 
-const onClickDeploy = (accountId: number, accountNumber: string, companyName: string) => {
-  openOffersDrawer.value = true
+const onClickDeploy = async (accountId: number, accountNumber: string, companyName: string) => {
+  hasOffersDrawer.value = true
   selectedAccountNumber.value = accountNumber
   selectedAccountId.value = accountId
   selectedCompanyName.value = companyName
+  await nextTick() // needed otherwise offersDrawerRef.value is not defined yet
+  offersDrawerRef.value?.initDrawerForCurrentAccount()
+  openOffersDrawer.value = true
 }
 const onClickFolder = (entityId: string) => {
   router.push({ name: RouteName.FOLDER, params: { [RouteParam.ENTITY_ID]: entityId } })
