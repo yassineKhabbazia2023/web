@@ -26,10 +26,9 @@ import { useI18n } from 'vue-i18n'
 import { PSkewedButton } from '@pulse/styleguide/components'
 import { msalInstance } from '@pulse/common'
 import { logger } from '@pulse/core'
-import useInitAuth from '@login/composable/useInitUserAuth'
+import { LoginManager } from '@pulse/common/managers'
 import useNavigation from '@login/composable/useNavigation'
 
-const { initAuthCollab, isTokenRetrieve } = useInitAuth()
 const { navigateToWallet } = useNavigation()
 
 const { t } = useI18n({
@@ -45,14 +44,13 @@ const handleLoginCollab = () => {
   msalInstance.loginRedirect()
 }
 
-onMounted(async () => {
+const handleMSALRedirectionAfterLogin = async () => {
   isLoading.value = true
   try {
-    await initAuthCollab()
+    const successfullyAuth = await LoginManager.initAuthCollab()
 
-    if (isTokenRetrieve.value) {
+    if (successfullyAuth) {
       navigateToWallet()
-
       return
     }
   } catch(e) {
@@ -60,6 +58,12 @@ onMounted(async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+onMounted(async () => {
+  // MSAL redirects to this page after SSO login
+  // We need to handle the redirection and check if the user is successfully authenticated
+  handleMSALRedirectionAfterLogin()
 })
 </script>
 

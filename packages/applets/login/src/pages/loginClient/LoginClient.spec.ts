@@ -4,19 +4,15 @@ import {
   cguServiceMock,
   amplitudeServiceTrackMock,
   amplitudeServiceMock,
-  getStoreMock,
+  CurrentUserManagerMock,
 } from '@pulse/common/mocks'
 import { envVarsMock } from '@pulse/core/mocks'
-import { useInitUserAuthMock } from '@login/__mocks__/useInitUserAuth.composable.mocks'
 import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import { flushPromises, mount } from '@vue/test-utils'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
-import { useTokenStore } from '@pulse/common/stores'
 
 import LoginClient from './LoginClient.vue'
-
-const tokenStoreMock = getStoreMock(useTokenStore)
 
 const USER_ID = 'customUserId'
 const GIGYA_USER_ID = 'customGigyaUserId'
@@ -31,7 +27,7 @@ declare let window: {
 } & Window
 
 const mockGigyaAccountsLogin = vi.fn()
-const mockStorePatch = vi.fn()
+const mockStorePatch = vi.hoisted(() => vi.fn())
 const mockRouterPush = vi.fn()
 const loginMock = vi.hoisted(() => vi.fn())
 
@@ -53,6 +49,7 @@ vi.mock('@pulse/common', () => ({
   login: loginMock,
   amplitudeService: amplitudeServiceMock,
 }))
+
 const initAuthClientMocked = vi.hoisted(() => vi.fn(() => {
   mockStorePatch({
     user: {
@@ -60,8 +57,9 @@ const initAuthClientMocked = vi.hoisted(() => vi.fn(() => {
       isCollab: false,
     },
   })
-  return { id: USER_ID }
+  return true
 }))
+
 const setStoreGigyaUserIdMocked = vi.hoisted(() => vi.fn(() => {
   mockStorePatch({
     user: {
@@ -70,12 +68,12 @@ const setStoreGigyaUserIdMocked = vi.hoisted(() => vi.fn(() => {
   })
 }))
 
-vi.mock('@login/composable/useInitUserAuth', () => ({
-  default: () => ({
-    ...useInitUserAuthMock,
+vi.mock('@pulse/common/managers', () => ({
+  LoginManager: {
     initAuthClient: initAuthClientMocked,
     setStoreGigyaUserId: setStoreGigyaUserIdMocked,
-  }),
+  },
+  CurrentUserManager: CurrentUserManagerMock,
 }))
 
 vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
@@ -128,6 +126,9 @@ describe('LoginClient', () => {
     expect(loginMock).toHaveBeenCalledTimes(1)
     expect(loginMock).toHaveBeenCalledWith(expectedPayload)
 
+    expect(initAuthClientMocked).toHaveBeenCalledOnce()
+    expect(setStoreGigyaUserIdMocked).toHaveBeenCalledWith(USER_ID)
+
     expect(mockStorePatch).toHaveBeenCalledTimes(2)
     expect(mockStorePatch).toHaveBeenCalledWith({
       user: {
@@ -145,7 +146,6 @@ describe('LoginClient', () => {
         gigyaUserId: GIGYA_USER_ID,
       },
     })
-    expect(tokenStoreMock.setTokenExpiration).toHaveBeenNthCalledWith(1, WEB_TOKEN)
     expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
   })
 
@@ -183,6 +183,8 @@ describe('LoginClient', () => {
       sign_in_result: 'failed',
     })
     expect(mockRouterPush).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('does not redirect to the home page if the api return a INVALID_LOGIN_CREDENTIALS error', async () => {
@@ -219,6 +221,8 @@ describe('LoginClient', () => {
       sign_in_result: 'failed',
     })
     expect(mockRouterPush).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('does not redirect to the home page if the api return empty response', async () => {
@@ -248,6 +252,8 @@ describe('LoginClient', () => {
       sign_in_result: 'failed',
     })
     expect(mockRouterPush).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('does display error message if the api return an unknown error', async () => {
@@ -283,6 +289,8 @@ describe('LoginClient', () => {
       sign_in_result: 'failed',
     })
     expect(mockRouterPush).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('give empty values in form', async () => {
@@ -303,6 +311,8 @@ describe('LoginClient', () => {
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
     expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('give none valid email form', async () => {
@@ -319,6 +329,8 @@ describe('LoginClient', () => {
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
     expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('has a link to resetPassword page', () => {
@@ -348,6 +360,8 @@ describe('LoginClient', () => {
       name: APP_ROUTES.login.cguValidation.name,
       params: { termsId: 123456 },
     })
+    expect(initAuthClientMocked).toHaveBeenCalledOnce()
+    expect(setStoreGigyaUserIdMocked).toHaveBeenCalledWith(USER_ID)
   })
 
   it('does not call login() when handleSubmit is called without form', async () => {
@@ -355,6 +369,8 @@ describe('LoginClient', () => {
     await submitButton.trigger('click')
     await flushPromises()
     expect(loginMock).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('does not call login() when form throws an exception', async () => {
@@ -362,6 +378,8 @@ describe('LoginClient', () => {
     pSkewedButton.vm.$emit('click')
 
     expect(loginMock).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('does not call login() when initAuthClient returns a 403042 error', async () => {
@@ -369,6 +387,8 @@ describe('LoginClient', () => {
     pSkewedButton.vm.$emit('click')
 
     expect(loginMock).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('does not call login() when initAuthClient returns an unknown error', async () => {
@@ -381,6 +401,8 @@ describe('LoginClient', () => {
     pSkewedButton.vm.$emit('click')
 
     expect(loginMock).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('does not call login() when not form given to handleSubmit', async () => {
@@ -388,6 +410,8 @@ describe('LoginClient', () => {
     pSkewedButton.vm.$emit('click')
 
     expect(loginMock).not.toHaveBeenCalled()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
   it('does not call login() when empty object given to handleSubmit', async () => {
@@ -396,5 +420,7 @@ describe('LoginClient', () => {
     await nextTick()
 
     expect(loginMock).not.toHaveBeenCalledOnce()
+    expect(initAuthClientMocked).not.toHaveBeenCalled()
+    expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 })

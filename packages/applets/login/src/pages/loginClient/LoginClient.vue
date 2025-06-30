@@ -73,18 +73,16 @@ import { useRouter } from 'vue-router'
 import { logger } from '@pulse/core'
 import { amplitudeService, login } from '@pulse/common'
 import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/components'
-import useInitUserAuth from '@login/composable/useInitUserAuth'
+import { LoginManager, CurrentUserManager } from '@pulse/common/managers'
 import useNavigation from '@login/composable/useNavigation'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
 import { getEmailError, getPasswordError } from './LoginClient.utils'
-import { CurrentUserManager } from '@pulse/common/managers'
 
 declare let window: {
   gigya: any
 } & Window
 
-const { initAuthClient, setStoreGigyaUserId } = useInitUserAuth()
 const { navigateToCustomerWallet } = useNavigation()
 
 const { t } = useI18n({
@@ -176,8 +174,8 @@ async function onSubmit() {
     CurrentUserManager.persistToken(token)
 
     // Set currentuser data
-    await initAuthClient()
-    setStoreGigyaUserId(userId)
+    await LoginManager.initAuthClient()
+    LoginManager.setStoreGigyaUserId(userId)
 
     // Activate Gigya SSO
     if(VITE_GIGYA_SSO_ACTIVATED === 'true'){

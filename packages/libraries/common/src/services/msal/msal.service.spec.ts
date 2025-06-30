@@ -3,7 +3,7 @@ import { loggerMock, loggerWarnSpy, envVarsMock } from '@pulse/core/mocks'
 import { getStoreMock } from '@pulse/common/mocks'
 import { useTokenStore } from '@pulse/common/stores'
 
-import { getMSALToken } from '.'
+import { getMSALToken } from './msal.service'
 
 const tokenStoreMock = getStoreMock(useTokenStore)
 
