@@ -15,7 +15,12 @@ vi.mock('@pulse/core', () => ({
 vi.mock('@pulse/common', async () => {
   return {
     amplitudeService: amplitudeServiceMock,
-    msalInstance: {
+  }
+})
+
+vi.mock('@pulse/common/services/msal', async () => {
+  return {
+    MsalService: {
       loginRedirect: msalLoginRedirectMock,
     },
   }

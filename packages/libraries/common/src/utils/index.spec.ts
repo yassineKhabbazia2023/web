@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
-import { msalInstance } from '../msal'
+import { MsalService } from '../services/msal/msal.service'
 import api from '../api'
 import { getInitials, logoutClient, logoutCollaborator, logoutGigyaSSO } from '.'
 
@@ -38,8 +38,8 @@ describe('getInitials', () => {
 })
 
 describe('logoutCollaborator', () => {
-  it('should invoke the logout function on msalInstance', () => {
-    const msalLogoutSpy = vi.spyOn(msalInstance, 'logout')
+  it('should invoke the logout function on MsalService', () => {
+    const msalLogoutSpy = vi.spyOn(MsalService, 'logout')
     logoutCollaborator()
 
     expect(msalLogoutSpy).toHaveBeenCalledOnce()

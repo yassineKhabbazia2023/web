@@ -7,7 +7,6 @@ import { i18n } from './i18n/i18n.setup'
 import AmplitudeService from './services/amplitude/amplitude.service'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
 import { fetchUrlTerms } from './services'
-import { msalInstance } from './msal'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { refreshClientToken, createNewPassword, isInvitationTokenValid, login } from './services/authentication.service'
 
@@ -22,7 +21,6 @@ export const amplitudeService = AmplitudeService.getInstance()
 export { DataStreamHubConnection }
 export { fetchUrlTerms }
 export { sanitizeUrl }
-export { msalInstance }
 export { refreshClientToken, createNewPassword, isInvitationTokenValid, login }
 
 export default {

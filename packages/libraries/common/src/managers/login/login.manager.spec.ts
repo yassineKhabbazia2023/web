@@ -10,17 +10,19 @@ import {
 } from '@pulse/common/mocks'
 import { TokenManager, CurrentUserManager } from '@pulse/common/managers'
 import { CurrentUserService } from '@pulse/common/services/current-user'
-import { getMSALToken } from '@pulse/common/services/msal'
+import { MsalService } from '@pulse/common/services/msal'
 
 import { LoginManager } from './login.manager'
 
 const userStoreMock = getStoreMock(useUserStore)
 
 const msalTokenMock = 'msal-token'
-const msalGetTokenMock = vi.mocked(getMSALToken)
+const msalGetTokenMock = vi.mocked(MsalService.getMSALToken)
 
 vi.mock('@pulse/common/services/msal', () => ({
-  getMSALToken: vi.fn(),
+  MsalService: {
+    getMSALToken: vi.fn(),
+  },
 }))
 
 vi.mock('@pulse/common/managers', () => ({

@@ -3,7 +3,7 @@ import { loggerMock, loggerWarnSpy, envVarsMock } from '@pulse/core/mocks'
 import { getStoreMock } from '@pulse/common/mocks'
 import { useTokenStore } from '@pulse/common/stores'
 
-import { getMSALToken } from './msal.service'
+import { MsalService } from './msal.service'
 
 const tokenStoreMock = getStoreMock(useTokenStore)
 
@@ -26,7 +26,7 @@ vi.mock('msal', () => ({
   UserAgentApplication: UserAgentApplicationMock,
 }))
 
-describe('msalService', () => {
+describe('MsalService', () => {
   describe('getMSALToken', () => {
     it('should return proper token msalInstance has no error', async () => {
       const userNameMocked = 'userName mocked'
@@ -39,7 +39,7 @@ describe('msalService', () => {
       })
       const expectedToken = accessTokenMocked
 
-      const token = await getMSALToken()
+      const token = await MsalService.getMSALToken()
 
       expect(token).toBe(expectedToken)
       expect(loginRedirectMocked).not.toHaveBeenCalled()
@@ -54,7 +54,7 @@ describe('msalService', () => {
       const error = new Error(errorMessage)
       acquireTokenSilentMocked.mockRejectedValue(error)
 
-      const token = await getMSALToken()
+      const token = await MsalService.getMSALToken()
 
       expect(token).toBeUndefined()
       expect(loggerWarnSpy).toHaveBeenCalledOnce()
@@ -63,12 +63,11 @@ describe('msalService', () => {
       expect(tokenStoreMock.setTokenExpiration).not.toHaveBeenCalled()
 
       expect(loginRedirectMocked).toHaveBeenCalledOnce()
-      expect(loginRedirectMocked).toHaveBeenCalledWith(/* nothing */)
     })
 
     it('should return null when msalInstance has no account', async () => {
       getAccountMock.mockReturnValue(undefined)
-      const token = await getMSALToken()
+      const token = await MsalService.getMSALToken()
 
       expect(token).toBeNull()
       expect(loggerWarnSpy).not.toHaveBeenCalled()

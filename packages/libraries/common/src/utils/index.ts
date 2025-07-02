@@ -1,5 +1,5 @@
 import { logger } from '@pulse/core'
-import { msalInstance } from '../msal'
+import { MsalService } from '../services/msal/msal.service'
 import api from '../api'
 
 declare let window: {
@@ -21,7 +21,7 @@ export const getInitials = (firstName: string | undefined, lastName: string | un
 
 export const logoutCollaborator = () => {
   try {
-    msalInstance.logout()
+    MsalService.logout()
   } catch (error) {
     logger.error('Error during collaborator logout: ', error)
   }

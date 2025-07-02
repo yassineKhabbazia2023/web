@@ -24,7 +24,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PSkewedButton } from '@pulse/styleguide/components'
-import { msalInstance } from '@pulse/common'
+import { MsalService } from '@pulse/common/services/msal'
 import { logger } from '@pulse/core'
 import { LoginManager } from '@pulse/common/managers'
 import useNavigation from '@login/composable/useNavigation'
@@ -41,7 +41,7 @@ const submitButtonContent = computed(() => isLoading.value ? t('loading') : t('l
 
 const handleLoginCollab = () => {
   isLoading.value = true
-  msalInstance.loginRedirect()
+  MsalService.loginRedirect()
 }
 
 const handleMSALRedirectionAfterLogin = async () => {

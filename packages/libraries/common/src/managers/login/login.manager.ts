@@ -2,7 +2,7 @@ import { amplitudeService } from '@pulse/common'
 import { CurrentUserManager, TokenManager } from '@pulse/common/managers'
 import { useUserStore } from '@pulse/common/stores'
 import { CurrentUserService } from '@pulse/common/services/current-user'
-import { getMSALToken } from '@pulse/common/services/msal'
+import { MsalService } from '@pulse/common/services/msal'
 
 export class LoginManager {
   static setStoreGigyaUserId(gigyaUserId: string) {
@@ -37,7 +37,7 @@ export class LoginManager {
 
   static async initAuthCollab(): Promise<boolean> {
     let success = false
-    const msalToken = await getMSALToken()
+    const msalToken = await MsalService.getMSALToken()
     CurrentUserManager.persistToken(msalToken)
 
     if (msalToken !== null && msalToken !== undefined && msalToken !== '') {
