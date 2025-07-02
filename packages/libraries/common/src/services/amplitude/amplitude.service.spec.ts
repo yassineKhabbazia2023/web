@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 import { SERVER_ZONE } from './constants'
 import { Identify } from '@amplitude/analytics-browser'
-import AmplitudeService from '.'
 import { ContactType } from '@pulse/common/enums'
+
+import AmplitudeService from './amplitude.service'
 
 const initSpy = vi.fn()
 const resetSpy = vi.fn()
@@ -26,7 +27,9 @@ vi.mock('@amplitude/analytics-browser', async () => {
 describe('amplitude', () => {
   let amplitudeService: AmplitudeService
   beforeEach(() => {
-    amplitudeService = new AmplitudeService()
+    // Reset the singleton instance before each test
+    (AmplitudeService as any).instance = undefined
+    amplitudeService = AmplitudeService.getInstance()
   })
 
   it('can init with serverUrl', () => {

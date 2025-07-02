@@ -4,14 +4,20 @@ import type { BaseEvent } from '@amplitude/analytics-types'
 import { logger } from '@pulse/core'
 
 export default class AmplitudeService {
+  private static instance: AmplitudeService
   private isInitiated: boolean
   private currentUserId: string
   private userProperty: Record<string, string | number>
 
-  constructor() {
+  private constructor() {
     this.isInitiated = false
     this.currentUserId = ''
     this.userProperty = {}
+  }
+
+  public static getInstance(): AmplitudeService {
+    AmplitudeService.instance ??= new AmplitudeService()
+    return AmplitudeService.instance
   }
 
   public init(apiKey: string, serverUrl?: string) {
