@@ -4,12 +4,23 @@ import { CurrentUserManager } from '@pulse/common/managers'
 import { authenticationGuard } from './authentication.guard'
 import { RouteName } from '@pulse/common/enums'
 
+const isUserOriginCollabMock = vi.hoisted(() => vi.fn(() => Promise.resolve(true)))
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@app/services/userOrigin/userOriginService.ts', () => ({
+  isUserOriginCollab: isUserOriginCollabMock,
+}))
 const nextMock = vi.fn()
 
-const anonymousRoot: any = { name: RouteName.ANONYMOUS }
 const authenticatedRoot: any = { name: RouteName.AUTHENTICATED }
 const fromRouteMock: any = { name: RouteName.HOME }
+const toRootRoute: any = {
+  path: '/',
+  meta: { [ALLOW_ANONYMOUS_META]: true },
+}
+const toNotAnonymousRoute: any = {
+  path: 'errors',
+  meta: { [ALLOW_ANONYMOUS_META]: false },
+}
 const toAllowAllRouteMock: any = {
   name: 'allow-all',
   meta: { [ALLOW_ANONYMOUS_META]: true, [ALLOW_AUTHENTICATED_META]: true },
@@ -78,19 +89,37 @@ describe('authenticationGuard', () => {
       expect(nextMock).toHaveBeenCalledWith(/* nothing */)
     })
 
-    it('should redirect to anonymous if route only allows authenticated access', () => {
-      authenticationGuard(toOnlyAllowAuthenticatedRouteMock, fromRouteMock, nextMock)
+    it('should redirect to LOGIN_COLLAB if user origin is collab', async () => {
+      await authenticationGuard(toRootRoute, fromRouteMock, nextMock)
 
-      expect(nextMock).toHaveBeenCalledWith(anonymousRoot)
+      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.LOGIN_COLLAB })
     })
 
-    it('should default redirect to anonymous if no specific access is defined', () => {
-      const toRouteMock = { name: RouteName.ERROR500 } as any
+    it('should redirect to LOGIN_CLIENT if user origin is NOT collab', async () => {
+      isUserOriginCollabMock.mockResolvedValue(false)
+
       const nextMock = vi.fn()
 
-      authenticationGuard(toRouteMock, fromRouteMock, nextMock)
+      await authenticationGuard(toRootRoute, fromRouteMock, nextMock)
 
-      expect(nextMock).toHaveBeenCalledWith(anonymousRoot)
+      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.LOGIN_CLIENT })
+    })
+
+    it('falls back to LOGIN_CLIENT and logs warning if isUserOriginCollab throws', async () => {
+      const error = new Error('fail')
+      isUserOriginCollabMock.mockRejectedValue(error)
+
+      await authenticationGuard(toRootRoute, fromRouteMock, nextMock)
+
+      expect(loggerMock.warn).toHaveBeenCalled()
+      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.LOGIN_CLIENT })
+    })
+
+    it('does NOT redirect if path is not root and allowAnonymous is true', async () => {
+      await authenticationGuard(toNotAnonymousRoute, fromRouteMock, nextMock)
+
+      expect(loggerMock.trace).toHaveBeenCalled()
+      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ANONYMOUS })
     })
   })
 })
