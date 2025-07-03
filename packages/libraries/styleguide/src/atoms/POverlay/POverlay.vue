@@ -7,11 +7,13 @@
       position--relative
       z-index-1000
       min-width--full
-      height--100vh
       cursor-pointer
     "
     :class="{
+      'p-overlay--vignette': pIsVignette === true,
       'p-overlay--hasOverEffect': pHasOverEffect === true,
+      'height--100': pIsVignette === true,
+      'height--100vh': pIsVignette === false,
     }"
   >
     <div
@@ -19,7 +21,6 @@
         p-overlay__background
         position--absolute
         min-width--full
-        height--100vh
       "
       :class="backgroundCssClass"
     />
@@ -37,9 +38,22 @@ import type { POverladyProps } from './POverlay.types'
 
 const props = defineProps<POverladyProps>()
 
-const backgroundCssClass = computed(() => props.pBackgroundColor === undefined
-  ? undefined
-  : `bg--${props.pBackgroundColor}`)
+const backgroundCssClass = computed(() => {
+  const cssClasses: string[] = []
+
+  if (props.pIsVignette === false) {
+    cssClasses.push('height--100vh')
+  }
+  if (props.pIsVignette === true) {
+    cssClasses.push('height--100')
+  }
+
+  if (props.pBackgroundColor !== undefined) {
+    cssClasses.push(`bg--${props.pBackgroundColor}`)
+  }
+
+  return cssClasses
+})
 </script>
 
 <style lang="scss" scoped>
@@ -62,7 +76,7 @@ const backgroundCssClass = computed(() => props.pBackgroundColor === undefined
         opacity: 0.5;
       }
       #{$self}__content {
-        display: inherit;
+        display: block;
       }
     }
   }

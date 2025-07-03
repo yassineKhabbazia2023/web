@@ -1,5 +1,13 @@
 import offersCatalogResponseMock from './offers-catalog.service.mocks.json'
-import type { OfferDescription, OfferCategory, OfferSubCategory, OffersCatalogResponse, OfferCatalogReferent } from '../types/offers-catalog.types'
+import type {
+  OfferDescription,
+  OfferCategory,
+  OfferSubCategory,
+  OffersCatalogResponse,
+  OfferCatalogReferent,
+  OfferCatalogDocument,
+  OfferCatalogDetailsResponse,
+} from '../types/offers-catalog.types'
 
 export function getOfferMock(
   override: Partial<OfferDescription> = {},
@@ -7,22 +15,22 @@ export function getOfferMock(
   categoryName = '',
 ): OfferDescription {
   const emptyOffer: OfferDescription = {
-    id: 13,
+    id: 2,
     title: '',
     shortDescription: '',
     imageUrl: '',
     pdfUrl: '',
-    subCategoryId: 17,
+    subCategoryId: 3,
     isBestOffer: false,
     akuiteoProduct: '',
     searchKeywords: '',
     internalLink: '',
     priorityTargets: [],
     subCategory: {
-      subCategoryId: 17,
+      subCategoryId: 4,
       name: subCategoryName,
       category: {
-        categoryId: 19,
+        categoryId: 5,
         name: categoryName,
       },
     },
@@ -112,4 +120,83 @@ export function getOfferCatalogReferentListMock() {
   }]
 
   return list
+}
+
+export function getOfferCatalogDocumentMock(override: Partial<OfferCatalogDocument> = {}): OfferCatalogDocument {
+  const defaultMock: OfferCatalogDocument = {
+    id: 0,
+    documentName: '',
+    category: '',
+    link: '',
+  }
+
+  return {
+    ...defaultMock,
+    ...override,
+  }
+}
+
+export function getOfferCatalogDocumentListMock() {
+  const list: OfferCatalogDocument[] = [
+    {
+      id: 1,
+      documentName: 'Product Brochure',
+      category: 'Marketing',
+      link: 'https://example.com/product-brochure.pdf',
+    },
+    {
+      id: 2,
+      documentName: 'Technical Specification',
+      category: 'Technical',
+      link: 'https://example.com/technical-specification.pdf',
+    },
+    {
+      id: 3,
+      documentName: 'User Guide',
+      category: 'Support',
+      link: 'https://example.com/user-guide.pdf',
+    },
+    {
+      id: 1,
+      documentName: 'Special offers',
+      category: 'Marketing',
+      link: 'https://example.com/special-offers.pdf',
+    },
+  ]
+
+  return list
+}
+
+export function getOfferCatalogDetailsResponseMock(
+  override: Partial<OfferCatalogDetailsResponse> = {},
+): OfferCatalogDetailsResponse {
+  const defaultMock: OfferCatalogDetailsResponse = {
+    id: 0,
+    title: '',
+    shortDescription: '',
+    imageUrl: '',
+    pdfUrl: '',
+    subCategoryId: 17,
+    isBestOffer: false,
+    akuiteoProduct: '',
+    searchKeywords: '',
+    internalLink: '',
+    priorityTargets: [],
+    subCategory: {
+      subCategoryId: 0,
+      name: '',
+      category: {
+        categoryId: 0,
+        name: '',
+      },
+    },
+    tags: [],
+    referents: [],
+    attachments: [],
+  }
+
+  return {
+    ...defaultMock,
+    ...override,
+  }
 }

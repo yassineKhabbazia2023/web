@@ -1,12 +1,13 @@
 import { shallowMount } from '@vue/test-utils'
 import type { CatalogDrawerProps } from './catalog-drawer.types'
-import { getOffersMock, getOfferCatalogReferentListMock } from '../../mocks/offers-catalog.service.mocks'
+import { getOffersMock, getOfferCatalogDocumentListMock, getOfferCatalogReferentListMock } from '../../mocks/offers-catalog.service.mocks'
 import { APICallStatus } from '@pulse/common/enums'
 import { CatalogDrawerTabs } from './catalog-drawer.enums'
 
 import CatalogDrawerList from './catalog-drawer.vue'
 
 const offerReferentsMock = getOfferCatalogReferentListMock()
+const offerDocumentsMock = getOfferCatalogDocumentListMock()
 
 const offersMock = getOffersMock()
 const offerMock = offersMock[0]
@@ -113,5 +114,19 @@ describe('catalog-drawer', () => {
 
     await wrapper.vm.openFirstTab()
     expect(pTabs.props('modelValue')).toBe(CatalogDrawerTabs.PDF)
+  })
+
+  it('should open documents tab when click on document tab', async () => {
+    const wrapper = createWrapper({
+      offerDocuments: offerDocumentsMock,
+    })
+    const pTabs = wrapper.findComponent({ name: 'PTabs' })
+
+    expect(pTabs.props('modelValue')).toBe(CatalogDrawerTabs.PDF)
+    await pTabs.vm.$emit('update:modelValue', CatalogDrawerTabs.DOCUMENTS)
+    expect(pTabs.props('modelValue')).toBe(CatalogDrawerTabs.DOCUMENTS)
+
+    const snapFilePath = '__snap__/catalog-drawer.documents-tab.html'
+    await expect(wrapper.html()).toMatchFileSnapshot(snapFilePath)
   })
 })

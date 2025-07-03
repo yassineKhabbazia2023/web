@@ -1,10 +1,10 @@
 import { ref, type Ref } from 'vue'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { getOfferCatalogReferentListMock, getOffersCatalogResponseMock } from '../../mocks/offers-catalog.service.mocks'
+import { getOfferCatalogReferentListMock, getOfferCatalogDocumentListMock, getOffersCatalogResponseMock } from '../../mocks/offers-catalog.service.mocks'
 import { APICallStatus } from '@pulse/common/enums'
 import { amplitudeServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/core/mocks'
-import type { OfferDescription, OfferCatalogReferent } from '@offers-catalog/types/offers-catalog.types'
+import type { OfferDescription, OfferCatalogReferent, OfferCatalogDocument } from '@offers-catalog/types/offers-catalog.types'
 
 import OffersCatalog from './offers-catalog.vue'
 
@@ -48,6 +48,7 @@ const offerPdfMock = 'offer pdf mock'
 const offersMock = offersCatalogResponseMock.offers
 const offerMock = offersCatalogResponseMock.offers[0]
 const offerReferentsMock = getOfferCatalogReferentListMock()
+const offerDocumentsMock = getOfferCatalogDocumentListMock()
 
 const loadOffersCatalogMock = vi.hoisted(() => vi.fn())
 const filterOffersCatalogMock = vi.hoisted(() => vi.fn())
@@ -63,6 +64,7 @@ function getUseOffersCatalogMock(overiddenOptions: Partial<{
   filteredOffers: Ref<OfferDescription[]>,
   offerPdf: Ref<string>,
   offerReferents: Ref<OfferCatalogReferent[]>,
+  offerDocuments: Ref<OfferCatalogDocument[]>,
   pdfApiCallStatus: Ref<APICallStatus>,
   catalogApiCallStatus: Ref<APICallStatus>,
 }> = {}) {
@@ -72,6 +74,7 @@ function getUseOffersCatalogMock(overiddenOptions: Partial<{
     catalogDocumentViewerIsOpened: ref(false),
     offer: ref(offerMock),
     offerReferents: ref(offerReferentsMock),
+    offerDocuments: ref(offerDocumentsMock),
     filteredOffers: ref(offersMock),
     offerPdf: ref(offerPdfMock),
     pdfApiCallStatus: ref(APICallStatus.IDLE),

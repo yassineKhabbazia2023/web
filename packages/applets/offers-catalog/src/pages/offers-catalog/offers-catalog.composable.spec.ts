@@ -1,16 +1,20 @@
 import type { OfferDescription } from '../../types/offers-catalog.types'
-import { getOffersCatalogResponseMock } from '../../mocks/offers-catalog.service.mocks'
+import { getOffersCatalogResponseMock, getOfferCatalogDetailsResponseMock, getOfferCatalogReferentListMock } from '../../mocks/offers-catalog.service.mocks'
 import { loggerMock } from '@pulse/core/mocks'
 import { APICallStatus } from '@pulse/common/enums'
 import { getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
+import { filterRecordByKeyCallback } from '@pulse/core/utils/array'
 
 import { useOffersCatalog } from './offers-catalog.composable'
 
 const offersCatalogResponseMock = getOffersCatalogResponseMock()
 const offerPdfMock = 'offer pdf mock'
+const offerDetailsMock = getOfferCatalogDetailsResponseMock()
+const referentsMock = getOfferCatalogReferentListMock()
 
 const getOffersCatalogMock = vi.hoisted(() => vi.fn())
 const getOfferCatalogPdfMock = vi.hoisted(() => vi.fn())
+const getOfferCatalogDetailsMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/core', () => ({
   logger: loggerMock,
@@ -19,7 +23,10 @@ vi.mock('@pulse/core', () => ({
 vi.mock('../../services/offers-catalog.service', () => ({
   getOffersCatalog: getOffersCatalogMock,
   getOfferCatalogPdf: getOfferCatalogPdfMock,
+  getOfferCatalogDetails: getOfferCatalogDetailsMock,
 }))
+
+vi.mock('@pulse/core/utils/array')
 
 describe('offers-catalog.composable', () => {
   describe('useOffersCatalog', () => {
@@ -41,7 +48,7 @@ describe('offers-catalog.composable', () => {
   })
 
   describe('loadOffersCatalog', () => {
-    it('should load offersCatalog properly', async () => {
+    it('should filter offers properly when no search term', async () => {
       getOffersCatalogMock.mockResolvedValue(offersCatalogResponseMock)
       const expectedCards: OfferDescription[] = getOffersWithSearchTerms(offersCatalogResponseMock.offers)
 
@@ -56,6 +63,32 @@ describe('offers-catalog.composable', () => {
 
       expect(filteredOffers.value).toStrictEqual(expectedCards)
       expect(loggerMock.error).not.toHaveBeenCalled()
+    })
+
+    it('should filter offers properly when any search term', async () => {
+      getOffersCatalogMock.mockResolvedValue(offersCatalogResponseMock)
+      const firstOffer = offersCatalogResponseMock.offers[0]
+      const expectedOffers: OfferDescription[] = getOffersWithSearchTerms([firstOffer])
+
+      const {
+        searchTerm,
+        filteredOffers,
+        loadOffersCatalog,
+        filterOffersCatalog,
+      } = useOffersCatalog()
+
+      searchTerm.value = 'Gérer sa comptabilité'
+
+      const filterRecordByKeyCallbackMock = vi
+        .mocked(filterRecordByKeyCallback)
+        .mockImplementation((offer) => `${offer.id}` === `${firstOffer.id}`) // should compare strings
+
+      await loadOffersCatalog()
+      filterOffersCatalog()
+
+      expect(filteredOffers.value).toStrictEqual(expectedOffers)
+      expect(loggerMock.error).not.toHaveBeenCalled()
+      expect(filterRecordByKeyCallbackMock).toHaveBeenCalledTimes(offersCatalogResponseMock.offers.length)
     })
 
     it('should call logger.error when getOffersCatalog fails', async () => {
@@ -182,6 +215,84 @@ describe('offers-catalog.composable', () => {
       await loadOfferPdf()
 
       expect(offerPdf.value).toStrictEqual(expectedofferPdf)
+
+      expect(loggerMock.error).toHaveBeenCalledOnce()
+      expect(loggerMock.error).toHaveBeenCalledWith(...expectedParameters)
+    })
+  })
+
+  describe('loadOfferReferents', () => {
+    it('should load referents when selected offer is given', async () => {
+      const offerDetailsWithReferentsMock = {
+        ...offerDetailsMock,
+        referents: referentsMock,
+      }
+      getOfferCatalogDetailsMock.mockResolvedValue(offerDetailsWithReferentsMock)
+      const selectedOfferMock = offersCatalogResponseMock.offers[0]
+      const expectedParameters = [selectedOfferMock.id]
+
+      const {
+        offerReferents,
+        offerReferentsApiCallStatus,
+        setSelectedOffer,
+        loadOfferReferents,
+      } = useOffersCatalog()
+
+      setSelectedOffer(selectedOfferMock)
+      await loadOfferReferents()
+
+      expect(offerReferents.value).toStrictEqual(referentsMock)
+
+      expect(getOfferCatalogDetailsMock).toHaveBeenCalledOnce()
+      expect(getOfferCatalogDetailsMock).toHaveBeenCalledWith(...expectedParameters)
+      expect(loggerMock.error).not.toHaveBeenCalled()
+      expect(offerReferentsApiCallStatus.value).toBe(APICallStatus.SUCCESS)
+    })
+
+    it('should not load referents when selected offer is undefined', async () => {
+      const expectedLoggerErrorMessage = 'Error while loading OfferCatalogDetails'
+      const expectedErrorMessage = 'Unmanaged case, offer.id is undefined'
+
+      const {
+        offerReferents,
+        pdfApiCallStatus,
+        setSelectedOffer,
+        loadOfferReferents,
+      } = useOffersCatalog()
+
+      setSelectedOffer()
+      await loadOfferReferents()
+
+      expect(offerReferents.value).toHaveLength(0)
+
+      expect(getOfferCatalogDetailsMock).not.toHaveBeenCalled()
+      expect(loggerMock.error).toHaveBeenCalledOnce()
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        expectedLoggerErrorMessage,
+        new Error(expectedErrorMessage),
+      )
+      expect(pdfApiCallStatus.value).toBe(APICallStatus.IDLE)
+    })
+
+    it('should call logger.error when api call fails', async () => {
+      const errorMock = 'error mock'
+      const expectedParameters = [
+        'Error while loading OfferCatalogDetails',
+        errorMock,
+      ]
+      getOfferCatalogDetailsMock.mockRejectedValue(errorMock)
+
+      const selectedOfferMock = offersCatalogResponseMock.offers[0]
+      const {
+        offerReferents,
+        setSelectedOffer,
+        loadOfferReferents,
+      } = useOffersCatalog()
+
+      setSelectedOffer(selectedOfferMock)
+      await loadOfferReferents()
+
+      expect(offerReferents.value).toHaveLength(0)
 
       expect(loggerMock.error).toHaveBeenCalledOnce()
       expect(loggerMock.error).toHaveBeenCalledWith(...expectedParameters)

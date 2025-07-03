@@ -12,6 +12,7 @@
     :offer="offer"
     :offerPdf="offerPdf"
     :offerReferents="offerReferents"
+    :offerDocuments="offerDocuments"
     :pdfApiCallStatus="pdfApiCallStatus"
     :offerReferentsApiCallStatus="offerReferentsApiCallStatus"
     @open-pdf="onOpenPdf"
@@ -52,6 +53,7 @@ const {
   offer,
   offerPdf,
   offerReferents,
+  offerDocuments,
   catalogDrawerIsOpened,
   pdfApiCallStatus,
   offerReferentsApiCallStatus,

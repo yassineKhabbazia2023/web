@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import type { OfferDescription, OfferCatalogReferent, OfferWithSearchTerms } from '../../types/offers-catalog.types'
+import type { OfferDescription, OfferCatalogReferent, OfferCatalogDocument, OfferWithSearchTerms } from '../../types/offers-catalog.types'
 import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails } from '../../services/offers-catalog.service'
 import { normalizeSearchTerm, getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
 import { logger } from '@pulse/core'
@@ -12,6 +12,7 @@ export function useOffersCatalog() {
   const filteredOffers = ref<OfferDescription[]>([])
   const offer = ref<OfferDescription>()
   const offerReferents = ref<OfferCatalogReferent[]>()
+  const offerDocuments = ref<OfferCatalogDocument[]>()
   const catalogDrawerIsOpened = ref(false)
   const pdfApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
   const offerReferentsApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
@@ -46,6 +47,7 @@ export function useOffersCatalog() {
     catalogDrawerIsOpened.value = selectedOffer !== undefined
     offerPdf.value = ''
     offerReferents.value = undefined
+    offerDocuments.value = undefined
   }
 
   async function loadOfferPdf() {
@@ -72,12 +74,14 @@ export function useOffersCatalog() {
   async function loadOfferReferents() {
     offerReferentsApiCallStatus.value = APICallStatus.LOADING
     offerReferents.value = []
+    offerDocuments.value = []
     try {
       if (offer.value?.id === undefined) {
         throw new Error('Unmanaged case, offer.id is undefined')
       }
       const offerDetails = await getOfferCatalogDetails(offer.value?.id)
       offerReferents.value = offerDetails.referents
+      offerDocuments.value = offerDetails.attachments
       offerReferentsApiCallStatus.value = APICallStatus.SUCCESS
     } catch (e) {
       logger.error('Error while loading OfferCatalogDetails', e)
@@ -91,6 +95,7 @@ export function useOffersCatalog() {
     offer,
     offerPdf,
     offerReferents,
+    offerDocuments,
     catalogDrawerIsOpened,
     pdfApiCallStatus,
     offerReferentsApiCallStatus,

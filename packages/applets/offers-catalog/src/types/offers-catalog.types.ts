@@ -47,8 +47,16 @@ export interface OfferCatalogReferent {
   region: OfferCatalogReferentRegion
 }
 
+export interface OfferCatalogDocument {
+  id: number
+  documentName: string
+  category: string
+  link: string
+}
+
 export interface OfferCatalogDetailsResponse extends OfferDescription {
   referents: OfferCatalogReferent[]
+  attachments: OfferCatalogDocument[]
 }
 
 export interface CatalogCard {

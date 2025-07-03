@@ -51,6 +51,7 @@ export type ImageName =
 'variable-pay-reception' |
 'variable-pay-summary' |
 'variable-pay-transmission' |
+'offers-catalog-document' |
 'add-entity' |
 'add-user' |
 'app-authorization' |

@@ -33,6 +33,11 @@
         :offerReferents="offerReferents"
         :apiCallStatus="offerReferentsApiCallStatus"
       />
+      <CatalogDrawerContentDocuments
+        v-if="currentTab === CatalogDrawerTabs.DOCUMENTS"
+        :offerDocuments="offerDocuments"
+        :apiCallStatus="offerReferentsApiCallStatus"
+      />
     </PTabs>
 
     <template #footer>
@@ -58,6 +63,7 @@ import { CatalogDrawerProps } from './catalog-drawer.types'
 import { PDrawer, PButton, PTabs, PTabPane } from '@pulse/styleguide/components'
 import CatalogDrawerContentPdf from '../catalog-drawer-content-pdf/catalog-drawer-content-pdf.vue'
 import CatalogDrawerContentReferents from '../catalog-drawer-content-referents/catalog-drawer-content-referents.vue'
+import CatalogDrawerContentDocuments from '../catalog-drawer-content-documents/catalog-drawer-content-documents.vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -80,6 +86,9 @@ const tabs = [{
 }, {
   name: CatalogDrawerTabs.CONTACTS,
   label: t('tabs.contacts'),
+}, {
+  name: CatalogDrawerTabs.DOCUMENTS,
+  label: t('tabs.documents'),
 }]
 const currentTab = ref<CatalogDrawerTabs>(CatalogDrawerTabs.PDF)
 
@@ -111,9 +120,11 @@ defineExpose({
     tabs:
       pdf: 'Offer Sheet'
       contacts: 'Reference Contacts'
+      documents: "Offer's documents"
   fr-FR:
     close: 'Fermer'
     tabs:
       pdf: "Fiche de l'offre"
       contacts: 'Contacts référents'
+      documents: "Documents de l'offre"
 </i18n>
