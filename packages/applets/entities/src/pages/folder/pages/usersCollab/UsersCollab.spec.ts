@@ -14,7 +14,7 @@ import { CurrentUserManagerMock, hasPermissionMock, getStoreMock, getMockedEntit
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
-import { RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 
 import UsersCollab from '.'
 
@@ -70,6 +70,7 @@ vi.mock('@entities/services/account', () => {
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
+    name: RouteName.USERS,
     params: {
       [RouteParam.ENTITY_ID]: DEFAULT_ROUTE_PARAMS_ID,
     },
@@ -107,6 +108,17 @@ const createWrapper = (): VueWrapper<any> =>
         PNotification: true,
         PToolbox: true,
         RemoveUserDialog: true,
+        PButton: {
+          name: 'PButton',
+          template: '<button><slot /></button>',
+          props: ['pDisabled', 'pLoading'],
+        },
+        AddCustomerDrawer: {
+          name: 'AddCustomerDrawer',
+          template: '<div></div>',
+          props: ['modelValue', 'targetEntityId', 'targetEntityName', 'targetEntityNumber'],
+          events: ['refresh-customers-list'],
+        },
         PTable: {
           name: 'PTable',
           template: '<div class="el-table__row"><slot /></div>',
@@ -206,6 +218,46 @@ describe('usersCollab', () => {
     })
   })
   describe('events', () => {
+    it('should NOT display add user button when user does NOT have permission', () => {
+      expect(wrapper.find('[data-testid="add-customer-button"]').exists()).toBe(false)
+    })
+
+    it('should display add user button when user has permission', async () => {
+      hasPermissionMock.mockReturnValue(true)
+      wrapper = createWrapper()
+      await flushPromises()
+      expect(wrapper.find('[data-testid="add-customer-button"]').exists()).toBe(true)
+    })
+
+    it('should display the AddCustomerDrawer when the add customer button is clicked', async () => {
+      hasPermissionMock.mockReturnValue(true)
+      wrapper = createWrapper()
+      await flushPromises()
+
+      const addCustomerButton = wrapper.find('[data-testid="add-customer-button"]')
+      await addCustomerButton.trigger('click')
+      await nextTick()
+
+      const addCustomerDrawer = wrapper.findComponent({ name: 'AddCustomerDrawer' })
+      expect(addCustomerDrawer.exists()).toBe(true)
+      expect(addCustomerDrawer.props('modelValue')).toBe(true)
+    })
+
+    it('should call fetchAccountCustomers on refresh-customers-list event from drawer', async () => {
+      hasPermissionMock.mockReturnValue(true)
+      wrapper = createWrapper()
+      await flushPromises()
+
+      const addCustomerButton = wrapper.find('[data-testid="add-customer-button"]')
+      await addCustomerButton.trigger('click')
+      await nextTick()
+
+      const addCustomerDrawer = wrapper.findComponent({ name: 'AddCustomerDrawer' })
+      addCustomerDrawer.vm.$emit('refresh-customers-list')
+
+      expect(fetchAccountCustomers).toHaveBeenCalled()
+    })
+
     it('can make a search', async () => {
       expect(fetchAccountCustomers).toHaveBeenCalledOnce()
 

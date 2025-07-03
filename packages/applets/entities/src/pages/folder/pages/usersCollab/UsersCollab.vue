@@ -1,5 +1,17 @@
 <template>
   <div class="margin-top--6">
+    <AddCustomerDrawer
+      v-if="currentEntityId &&
+        currentEntityName &&
+        currentEntityNumber &&
+        isAddCustomerDrawerOpened
+      "
+      v-model="isAddCustomerDrawerOpened"
+      :targetEntityId="currentEntityId"
+      :targetEntityName="currentEntityName"
+      :targetEntityNumber="currentEntityNumber"
+      @refresh-customers-list="formatAndFillUsersCollabTable"
+    />
     <RemoveUserDialog
       v-if="userToRemove"
       v-model="isRemoveUserDialogOpened"
@@ -20,18 +32,31 @@
         :placeholder="t('searchUsers')"
         @search-value-submitted="handleSearchValueSubmitted"
       />
-      <PButton
-        v-if="CurrentUserManager.hasPermission(PERMISSION_ACTION.MANAGE_ACCESS)"
-        pType="primary"
-        pSize="small"
-        :loading="isLoadingOperations"
-        :disabled="isAccessButtonDisabled"
-        pPlain
-        data-testid="manage-access-button"
-        @click="handleOpenAccessDrawer"
-      >
-        <span>{{ t('manageAccess') }}</span>
-      </PButton>
+      <div>
+        <PButton
+          v-if="isAddUserButtonVisible"
+          pType="primary"
+          pSize="small"
+          class="margin-right--2"
+          data-testid="add-customer-button"
+          @click="isAddCustomerDrawerOpened = true"
+        >
+          <PIcon pName="personAdd" />
+          <span class="padding-left--2">{{ t('addCustomer') }}</span>
+        </PButton>
+        <PButton
+          v-if="CurrentUserManager.hasPermission(PERMISSION_ACTION.MANAGE_ACCESS)"
+          pType="primary"
+          pSize="small"
+          :loading="isLoadingOperations"
+          :disabled="isAccessButtonDisabled"
+          pPlain
+          data-testid="manage-access-button"
+          @click="handleOpenAccessDrawer"
+        >
+          <span>{{ t('manageAccess') }}</span>
+        </PButton>
+      </div>
     </div>
 
     <div
@@ -212,8 +237,10 @@ import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 import { getOperationsWithLegalName, getAccountOperationsList } from './UsersCollab.utils'
-import { RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
+import AddCustomerDrawer from '../usersClient/components/AddCustomerDrawer'
+
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -259,7 +286,22 @@ const isAccessButtonDisabled = computed(() => {
 
   return operationsLength === 0
 })
+// #endregion
 
+// #region add customer user
+const isAddCustomerDrawerOpened = ref(false)
+
+const currentEntityId = computed(() => selectedEntity.value?.accountId)
+const currentEntityName = computed(() => selectedEntity.value?.legalName)
+const currentEntityNumber = computed(() => selectedEntity.value?.accountNumber)
+
+const canAddUser = computed(() => CurrentUserManager.hasPermission(PERMISSION_ACTION.ADD_USERS))
+
+const isAddUserButtonVisible = computed(() =>
+  currentEntityId.value &&
+  canAddUser.value &&
+  route.name === RouteName.USERS,
+)
 // #endregion
 
 const state: StateUser = reactive({
@@ -576,6 +618,7 @@ en-US:
   actions: 'Actions'
   email: 'Email'
   manageAccess: 'Manage access'
+  addCustomer: 'Add a customer'
   dateAccess: 'First date access'
   assignSignatory: 'Designate as signatory'
   removeSignatory: 'Revoke signatory status'
@@ -596,6 +639,7 @@ fr-FR:
   actions: 'Actions'
   email: 'E-mail'
   manageAccess: 'Gérer les accès'
+  addCustomer: 'Ajouter un utilisateur'
   dateAccess: "Date d'ajout"
   assignSignatory: 'Désigner en tant que signataire'
   removeSignatory: 'Retirer le statut de signataire'
