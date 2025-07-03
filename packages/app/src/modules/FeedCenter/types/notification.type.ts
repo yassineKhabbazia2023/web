@@ -3,13 +3,13 @@ import type { NotificationAccount } from '@app/modules/FeedCenter/types/notifica
 
 export enum NotificationKindEnum {
   Delegation = 'Delegation-AddDelegation',
-  GED = 'Ged-DocumentUploaded',
   Mandate = 'Mandate-MandateStatusChanged',
   ReportCustomerCreated = 'Reporting-ReportCreatedCustomer',
   ReportCustomerUpdated = 'Reporting-ReportUpdatedCustomer',
   ReportCollabCreated = 'Reporting-ReportCreatedCollab',
-  ReportCollabUpdated = 'Reporting-ReportUpdatedCollab'
-  // More notificationKind to come in the future #StayTuned
+  ReportCollabUpdated = 'Reporting-ReportUpdatedCollab',
+  AccountingDocumentUploaded = 'Ged-AccountingDocumentUploaded',
+  GSDocumentUploaded = 'Ged-GSDocumentUploaded',
 }
 
 export interface FeedCenterNotification {
@@ -34,4 +34,29 @@ export interface FetchNotificationsResponse {
 export enum SelectedNotificationEnum {
   ALL = 'all-notifications',
   UNREAD = 'unread-notifications'
+}
+
+interface PreferenceSettings {
+  hasOnlyFavouritesDisplayed: boolean
+}
+export interface NotificationSetting {
+  id: number
+  label: string
+  feedcenterValue: boolean | null
+  emailValue: boolean | null
+}
+
+export interface NotificationDomainSettings {
+  domain: string
+  settings: NotificationSetting[]
+}
+
+export interface NotificationSettingsConfiguration {
+  domainSettings: NotificationDomainSettings[]
+  preferenceSettings: PreferenceSettings
+}
+
+export interface NotificationSettingSavePayload {
+  notificationDefinitionId: number,
+  feedCenterValue: boolean | null
 }

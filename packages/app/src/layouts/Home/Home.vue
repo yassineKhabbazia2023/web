@@ -18,7 +18,7 @@
     />
 
     <NotificationSettings
-      v-if="FeatureFlagManager.isNotificationSettingsDrawerActivated()"
+      v-if="FeatureFlagManager.isNotificationSettingsDrawerActivated() && isNotificationSettingsDrawerOpened"
       v-model="isNotificationSettingsDrawerOpened"
     />
 

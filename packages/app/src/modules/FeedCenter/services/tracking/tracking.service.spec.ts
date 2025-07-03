@@ -29,8 +29,12 @@ describe('feedcenter opened tracking', () => {
 describe('feedcenter notification consultation tracking', () => {
   it.each([
     {
-      notificationKind: NotificationKindEnum.GED,
-      expectedTrackingValue: NotificationTrackingType.GED,
+      notificationKind: NotificationKindEnum.AccountingDocumentUploaded,
+      expectedTrackingValue: NotificationTrackingType.AccountingDocumentUploaded,
+    },
+    {
+      notificationKind: NotificationKindEnum.GSDocumentUploaded,
+      expectedTrackingValue: NotificationTrackingType.GSDocumentUploaded,
     },
     {
       notificationKind: NotificationKindEnum.Mandate,

@@ -3,10 +3,13 @@ import type {
   FeedCenterNotification,
   UnreadNotificationCountResponse,
   FetchNotificationsResponse,
+  NotificationSettingsConfiguration,
+  NotificationSettingSavePayload,
 } from '@app/modules/FeedCenter/types/notification.type'
 import type { Entity } from '@pulse/common/types'
 
 const NOTIFICATION_API_PREFIX = 'feedcenter/api/notifications'
+const SETTINGS_API_PREFIX = 'feedcenter/api/settings'
 const NOTIFICATION_API_PARAMS = {
   params: {
     deviceType: 'desktop',
@@ -51,10 +54,33 @@ export async function patchNotificationReadStatus(notificationId: FeedCenterNoti
   }
   await api().gateway.put(`${NOTIFICATION_API_PREFIX}/read/currentUser`, requestBody)
 }
+
 export function patchAllNotificationsReadStatus(userId: number) {
   const requestBody = {
     notificationReceiverId: userId,
     deviceType: 'desktop',
   }
   return api().gateway.put(`${NOTIFICATION_API_PREFIX}/read/currentUser`, requestBody)
+}
+
+export async function getNotificationSettings() {
+  const { data } = await api().gateway.get<NotificationSettingsConfiguration>(
+    `${SETTINGS_API_PREFIX}/currentUser`,
+    {
+      ...NOTIFICATION_API_PARAMS,
+    },
+  )
+
+  return data
+}
+
+export async function saveNotificationSettings(settingsToSave: NotificationSettingSavePayload[]) {
+  const requestBody = {
+    domainSettings: settingsToSave,
+  }
+
+  await api().gateway.post(
+    `${SETTINGS_API_PREFIX}/currentUser`,
+    requestBody,
+  )
 }

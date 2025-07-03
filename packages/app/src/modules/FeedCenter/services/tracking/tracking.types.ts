@@ -1,5 +1,6 @@
 export enum NotificationTrackingType {
-    GED = 'GED',
+    AccountingDocumentUploaded = 'Ged-AccountingDocumentUploaded',
+    GSDocumentUploaded = 'Ged-GSDocumentUploaded',
     MANDATE = 'Mandat',
     DELEGATION = 'Délégation',
     REPORTING = 'Rapport BI'

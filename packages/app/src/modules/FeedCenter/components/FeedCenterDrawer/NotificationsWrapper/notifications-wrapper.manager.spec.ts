@@ -5,6 +5,7 @@ import {
   readNotificationsMock,
   unreadNotificationsMock,
   gedNotificationMock,
+  gsDocumentUploadedNotificationMock,
   mandateNotificationMock,
   reportCollabCreatedNotificationMock,
   reportCollabUpdatedNotificationMock,
@@ -269,6 +270,32 @@ describe('handleNotificationAction', () => {
       name: RouteName.REPORTS,
       params: { [RouteParam.ENTITY_ID]: reportCustomerUpdatedNotificationMock.accounts[0].id },
       query: { reportId: reportCustomerUpdatedNotificationMock.redirectLink },
+    })
+  })
+
+  it('should call the router with the appropriate query on AccountingDocumentUploaded notification type', () => {
+    handleNotificationAction({
+      notification: gedNotificationMock,
+      router: mockRouter,
+    })
+
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      name: RouteName.GED,
+      params: { [RouteParam.ENTITY_ID]: gedNotificationMock.accounts[0].id },
+      query: { folderId: gedNotificationMock.redirectLink },
+    })
+  })
+
+  it('should call the router with the appropriate query on GSDocumentUploaded notification type', () => {
+    handleNotificationAction({
+      notification: gsDocumentUploadedNotificationMock,
+      router: mockRouter,
+    })
+
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      name: RouteName.GED,
+      params: { [RouteParam.ENTITY_ID]: gsDocumentUploadedNotificationMock.accounts[0].id },
+      query: { folderId: gsDocumentUploadedNotificationMock.redirectLink },
     })
   })
 })

@@ -1,6 +1,17 @@
 {
-  "notificationSettingsDrawer": {
-    "title": "Paramètres des notifications",
-    "subTitle": "Choisissez les notifications que vous souhaitez recevoir"
+  "feedCenter": {
+    "settingsDrawer": {
+      "title": "Paramètres des notifications",
+      "subTitle": "Choisissez les notifications que vous souhaitez recevoir",
+      "close": "Fermer",
+      "columns": {
+        "notificationType": "Type de notifications",
+        "email": "Par e-mail",
+        "inFeedCenter": "Dans Rydge"
+      },
+      "save": "Enregistrer les modifications",
+      "success": "Vos paramètres de notifications ont été sauvegardés.",
+      "error": "Une erreur est survenue lors de la sauvegarde de vos paramètres. Veuillez réessayer."
+    }
   }
 }

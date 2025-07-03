@@ -74,6 +74,15 @@ export function handleNotificationAction({
   })
 }
 
+const handleGEDNotification = async (params: NotificationActionsMappingParams) => {
+  const { accountIds, notification, router } = params
+  router.push({
+    name: RouteName.GED,
+    params: { [RouteParam.ENTITY_ID]: accountIds[0] },
+    query: { folderId: notification.redirectLink },
+  })
+}
+
 const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
   [NotificationKindEnum.Delegation]: (params: NotificationActionsMappingParams) => {
     const { accountNumbers, router } = params
@@ -82,14 +91,8 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
       query: { accountNumbers },
     })
   },
-  [NotificationKindEnum.GED]: async (params: NotificationActionsMappingParams) => {
-    const { accountIds, notification, router } = params
-    router.push({
-      name: RouteName.GED,
-      params: { [RouteParam.ENTITY_ID]: accountIds[0] },
-      query: { folderId: notification.redirectLink },
-    })
-  },
+  [NotificationKindEnum.AccountingDocumentUploaded]: handleGEDNotification,
+  [NotificationKindEnum.GSDocumentUploaded]: handleGEDNotification,
   [NotificationKindEnum.Mandate]: (params: NotificationActionsMappingParams) => {
     const { notification, router } = params
     router.push({

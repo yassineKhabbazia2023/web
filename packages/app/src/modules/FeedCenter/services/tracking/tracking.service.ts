@@ -7,7 +7,8 @@ import {
 } from './tracking.types'
 
 const mappingNotificationTrackingType: Record<NotificationKindEnum, NotificationTrackingType> = {
-  [NotificationKindEnum.GED]: NotificationTrackingType.GED,
+  [NotificationKindEnum.AccountingDocumentUploaded]: NotificationTrackingType.AccountingDocumentUploaded,
+  [NotificationKindEnum.GSDocumentUploaded]: NotificationTrackingType.GSDocumentUploaded,
   [NotificationKindEnum.Delegation]: NotificationTrackingType.DELEGATION,
   [NotificationKindEnum.Mandate]: NotificationTrackingType.MANDATE,
   [NotificationKindEnum.ReportCustomerCreated]: NotificationTrackingType.REPORTING,

@@ -1,6 +1,17 @@
 {
-  "notificationSettingsDrawer": {
-    "title": "Notification settings",
-    "subTitle": "Choose which notifications you want to receive"
+  "feedCenter": {
+    "settingsDrawer": {
+      "title": "Notification settings",
+      "subTitle": "Choose which notifications you want to receive",
+      "close": "Close",
+      "columns": {
+        "notificationType": "Notification type",
+        "email": "By email",
+        "inFeedCenter": "In Rydge"
+      },
+      "save": "Save changes",
+      "success": "Your notification settings have been saved.",
+      "error": "An error occurred while saving your settings. Please try again."
+    }
   }
 }

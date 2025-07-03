@@ -54,12 +54,24 @@ export const gedNotificationMock = {
   id: 10,
   message: 'Some documents have been dropped',
   createdAt: '2024-09-22T12:00:00.0000Z',
-  notificationType: NotificationKindEnum.GED,
+  notificationType: NotificationKindEnum.AccountingDocumentUploaded,
   accounts: [
     accountsMock[0],
   ],
   isRead: true,
   redirectLink: 'something/cool',
+}
+
+export const gsDocumentUploadedNotificationMock: FeedCenterNotification = {
+  id: 11,
+  message: 'Some GS documents have been uploaded',
+  createdAt: '2024-09-22T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.GSDocumentUploaded,
+  accounts: [
+    accountsMock[1],
+  ],
+  isRead: false,
+  redirectLink: 'gs/folder/123',
 }
 
 export const mandateNotificationMock: FeedCenterNotification = {

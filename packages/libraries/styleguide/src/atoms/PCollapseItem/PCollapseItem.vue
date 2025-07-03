@@ -11,6 +11,7 @@
         :size="16"
         class="p-collapse-item__icon margin-right--2"
       />
+      <slot name="before-title" />
       <span class="p-collapse-item__title margin-right--2 text-left">{{ pTitleCollapseItem }}</span>
     </template>
     <div class="p-collapse-item__content">
@@ -28,6 +29,7 @@ import type { PCollapseItemTypes } from './PCollapseItemTypes'
 const props = withDefaults(defineProps<PCollapseItemTypes>(), {
   pType: 'default',
   pFullBody: false,
+  pHasSwitch: false,
 })
 
 const pClassMapper = computed(() => ({
