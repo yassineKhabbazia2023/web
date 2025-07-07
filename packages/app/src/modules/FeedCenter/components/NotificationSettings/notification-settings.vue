@@ -16,6 +16,25 @@
         v-if="areSettingsLoading === false"
         class="margin-top--10"
       >
+        <!-- FAVOURITE -->
+        <div
+          class="
+          settings-drawer__favourite
+          flex
+          flex--align-items-center
+          bg--neutral-gray-50
+          border-radius--4
+          padding--4
+          margin-bottom--4
+        "
+        >
+          <PSwitch v-model="hasOnlyFavouritesDisplayed" :pActiveColor="AppColors.PERSIAN_400" />
+          <span class="text-color--neutral-gray-900 padding-left--4 font-semibold">
+            {{ t('feedCenter.settingsDrawer.favouritesOnly') }}
+          </span>
+        </div>
+        <!-- FAVOURITE END -->
+
         <PCollapse>
           <PCollapseItem
             v-for="(domainSetting, index) in settingsByDomain"
@@ -29,7 +48,7 @@
                   :modelValue="NotificationSettingsManager.hasAtLeastOneSettingEnabled(domainSetting.settings)"
                   :pActiveColor="AppColors.PERSIAN_400"
                   @click.stop
-                  @update:model-value="(isEnabled) => handleDomainSettingsSwitch(isEnabled, index)"
+                  @update:model-value="(isEnabled: boolean) => handleDomainSettingsSwitch(isEnabled, index)"
                 />
               </div>
             </template>
@@ -59,11 +78,15 @@
       >
         <PLoader
           pType="primary"
-          size="80"
+          size="64"
         />
       </div>
     </Transition>
-    <template #footer>
+
+    <template
+      v-if="notificationSettings !== undefined && areSettingsLoading === false"
+      #footer
+    >
       <PButton
         class="margin-right--4"
         pType="secondary"
@@ -73,7 +96,7 @@
       </PButton>
       <PButton
         pType="primary"
-        @click="NotificationSettingsManager.saveSettings(settingsByDomain)"
+        @click="NotificationSettingsManager.saveSettings(notificationSettings)"
       >
         {{ t('feedCenter.settingsDrawer.save') }}
       </PButton>
@@ -102,7 +125,9 @@ function closeDrawer() {
 
 const {
   areSettingsLoading,
+  hasOnlyFavouritesDisplayed,
   handleDomainSettingsSwitch,
+  notificationSettings,
   settingsByDomain,
   updateSetting,
 } = useNotificationSettings()
@@ -116,8 +141,22 @@ const {
   transition: opacity 0.2s ease;
 }
 
+.buttons-fade-in-enter-active {
+  transition: opacity 0.2s ease;
+  transition-delay: 0.4s;
+}
+.buttons-fade-in-enter-from {
+  opacity: 0;
+}
+
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+.settings_drawer {
+  &__favourite {
+    border-radius: 8px;
+  }
 }
 </style>

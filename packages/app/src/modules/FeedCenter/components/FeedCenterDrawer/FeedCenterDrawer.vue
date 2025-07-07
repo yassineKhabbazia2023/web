@@ -11,16 +11,11 @@
     @close-drawer-button="closeNotificationsDrawer"
     @p-toolbox-item-clicked="handleToolboxItemClick"
   >
-    <div class="padding-y--3">
-      <PSwitch v-model="isFavouritesFilterEnabled" />
-      <span class="padding-left--2">{{ t('favorites') }}</span>
-    </div>
-
     <PTabs v-model="activeTab">
       <PTabPane :label="t('tabs.all-notifications')" name="all-notifications">
         <NotificationsWrapper
           :isLoading="areNotificationsLoading"
-          :notifications="notifications"
+          :notifications="feedCenterStore.notifications"
           :wrapperType="SelectedNotificationEnum.ALL"
           @notification-clicked="closeNotificationsDrawer"
         />
@@ -52,14 +47,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRef, watch } from 'vue'
+import { computed, toRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PDrawer,
   PPastille,
   PTabs,
   PTabPane,
-  PSwitch,
 } from '@pulse/styleguide/components'
 import { FeatureFlagManager } from '@pulse/core'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
@@ -74,6 +68,9 @@ import {
 } from '@app/modules/FeedCenter/services/tracking/tracking.service'
 import { NotificationTrackingReadType } from '@app/modules/FeedCenter/services/tracking/tracking.types'
 import { FeedCenterActions } from '@app/modules/FeedCenter/feed-center.enum'
+import { useFeedCenterStore } from '@app/modules/FeedCenter/stores/feed-center.store'
+
+const feedCenterStore = useFeedCenterStore()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -125,31 +122,27 @@ const toolboxParams = (): PDrawerProps['pHeaderToolbox'] => {
 
 async function handleToolboxItemClick(actionName: string) {
   switch (actionName) {
-  case FeedCenterActions.MARK_ALL_AS_READ:
-    notifications.value = await patchAllNotificationsAsRead(userId.value)
+  case FeedCenterActions.MARK_ALL_AS_READ: {
+    const patchedNotifications = await patchAllNotificationsAsRead(userId.value)
+    feedCenterStore.setNotifications(patchedNotifications)
     trackNotificationMarkAsRead(NotificationTrackingReadType.ALL_READ)
     emit('notifications-updated')
     break
-  case FeedCenterActions.OPEN_SETTINGS_DRAWER:
+  }
+  case FeedCenterActions.OPEN_SETTINGS_DRAWER: {
     emit('open-notification-settings-drawer')
     break
+  }
   }
 }
 
 const {
   closeNotificationsDrawer,
   activeTab,
-  notifications,
   areNotificationsLoading,
   shortenedCount,
   unreadNotifications,
-  isFavouritesFilterEnabled,
 } = useFeedCenterDrawer(isDrawerOpened, unreadNotificationsCountRef)
-
-watch(isFavouritesFilterEnabled, () => {
-  emit('favourites-filter-updated', isFavouritesFilterEnabled.value)
-  localStorage.setItem('favoriteEnabled', isFavouritesFilterEnabled.value.toString())
-})
 
 </script>
 

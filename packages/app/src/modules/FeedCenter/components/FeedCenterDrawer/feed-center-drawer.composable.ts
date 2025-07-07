@@ -6,24 +6,20 @@ import {
 } from 'vue'
 import type { Ref, WritableComputedRef } from 'vue'
 import { logger } from '@pulse/core'
-import { useUserStore } from '@pulse/common/stores'
-import type { Entity } from '@pulse/common/types'
-import { type FeedCenterNotification, SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
+import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import { fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
 import { trackFeedCenterTabConsultation } from '@app/modules/FeedCenter/services/tracking/tracking.service'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
-import { getIdsFromEntities, hasFavouriteEntities } from './feed-center-drawer.manager'
+import { useFeedCenterStore } from '@app/modules/FeedCenter/stores/feed-center.store'
 
 export function useFeedCenterDrawer(
   isDrawerOpened: WritableComputedRef<FeedCenterDrawerProps['modelValue']>,
   unreadNotificationsCount: Ref<FeedCenterDrawerProps['unreadNotificationsCount']>,
 ) {
-  const userStore = useUserStore()
-
-  const notifications = ref<FeedCenterNotification[]>([])
+  const feedCenterStore = useFeedCenterStore()
 
   const unreadNotifications = computed(
-    () => notifications.value.filter(notification => !notification.isRead),
+    () => feedCenterStore.notifications.filter(notification => !notification.isRead),
   )
 
   const areNotificationsLoading = ref(false)
@@ -35,11 +31,11 @@ export function useFeedCenterDrawer(
     areNotificationsLoading.value = false
   }
 
-  async function fetchNotificationsWithHandler(entityIds: Entity['accountId'][]) {
+  async function fetchNotificationsWithHandler() {
     startLoadingNotifications()
     try {
-      const { notifications: fetchedNotification } = await fetchNotifications(entityIds)
-      notifications.value = fetchedNotification
+      const { notifications: fetchedNotifications } = await fetchNotifications()
+      feedCenterStore.setNotifications(fetchedNotifications)
     } catch (error) {
       logger.error('Notifications fetch failed', error)
     } finally {
@@ -47,55 +43,22 @@ export function useFeedCenterDrawer(
     }
   }
 
-  async function fetchNotificationsWithOrWithoutFavourites() {
-    if (
-      hasFavouriteEntities(favouritesEntitiyIds.value) === false &&
-      isFavouritesFilterEnabled.value
-    ) {
-      notifications.value = []
-    } else {
-      const entityIds = isFavouritesFilterEnabled.value
-        ? favouritesEntitiyIds.value
-        : []
-
-      await fetchNotificationsWithHandler(entityIds)
-    }
-  }
-
-  const isFavoriteFromLocalStorage = localStorage.getItem('favoriteEnabled')
-  const isFavouritesFilterEnabled = ref(isFavoriteFromLocalStorage === 'true')
-
-  const favouritesEntitiyIds = computed(() => getIdsFromEntities(userStore.favoriteEntities))
-
-  watch(favouritesEntitiyIds, () => {
-    // This is above any other possible rule
-    // If the user doesn't have any favourite entitiy, we want to disable the filter
-    const hasFavourites = hasFavouriteEntities(favouritesEntitiyIds.value)
-    if (!hasFavourites) {
-      isFavouritesFilterEnabled.value = false
-    }
-  })
-
-  watch(isFavouritesFilterEnabled, () => {
-    fetchNotificationsWithOrWithoutFavourites()
-  })
-
   watch(isDrawerOpened, (value) => {
     if (!value) {
       return
     }
-    fetchNotificationsWithOrWithoutFavourites()
+    fetchNotificationsWithHandler()
   })
 
   watch(unreadNotificationsCount, async () => {
     if (isDrawerOpened.value !== true) {
       return
     }
-    fetchNotificationsWithOrWithoutFavourites()
+    fetchNotificationsWithHandler()
   })
 
   onMounted(async () => {
-    await fetchNotificationsWithOrWithoutFavourites()
+    await fetchNotificationsWithHandler()
   })
 
   function closeNotificationsDrawer() {
@@ -117,10 +80,8 @@ export function useFeedCenterDrawer(
   return {
     closeNotificationsDrawer,
     activeTab,
-    notifications,
     areNotificationsLoading,
     shortenedCount,
-    isFavouritesFilterEnabled,
     unreadNotifications,
   }
 }

@@ -8,12 +8,12 @@
       v-if="FeatureFlagManager.isScheduleActivated() && calendarHasBeenOpened"
       v-model="showCalendar"
     />
+
     <FeedCenterDrawer
       v-if="FeatureFlagManager.isFeedCenterActivated()"
       v-model="showFeedCenter"
       :unreadNotificationsCount="unreadNotificationsCount"
       @notifications-updated="setNotificationsCount"
-      @favourites-filter-updated="onFavoriteFilterUpdated"
       @open-notification-settings-drawer="openNotificationSettingsDrawer"
     />
 
@@ -59,9 +59,8 @@
 
 <script setup lang="ts">
 import { logger, FeatureFlagManager } from '@pulse/core'
-import { computed, ref, onMounted, onBeforeUnmount, watch, type Ref } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import UserProfile from '@app/components/UserProfile'
 import HomeScheduleDrawer from '@app/components/HomeScheduleDrawer'
@@ -69,7 +68,6 @@ import FeedCenterDrawer from '@app/modules/FeedCenter/components/FeedCenterDrawe
 import { fetchUnreadNotificationsCount } from '@app/modules/FeedCenter/services/notifications.service'
 import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
 import { trackFeedcenterOpened } from '@app/modules/FeedCenter/services/tracking/tracking.service'
-import { useUserStore } from '@pulse/common/stores'
 import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 import NotificationSettings from '@app/modules/FeedCenter/components/NotificationSettings/notification-settings.vue'
 import Header from './Header'
@@ -80,8 +78,6 @@ const router = useRouter()
 const isLoading = ref<boolean>(true)
 const calendarIsOpened = ref(false)
 const calendarHasBeenOpened = ref(false)
-const isFavoriteFromLocalStorage = localStorage.getItem('favoriteEnabled')
-const isFavoriteEnabled: Ref<boolean> = ref(isFavoriteFromLocalStorage === 'true')
 const showCalendar = computed({
   get: () => calendarIsOpened.value,
   set: (value: boolean) => {
@@ -107,17 +103,10 @@ const handleClick = () => {
   hasUserProfileDrawerOpened.value = true
 }
 
-function onFavoriteFilterUpdated(isEnabled: boolean) {
-  isFavoriteEnabled.value = isEnabled
-  setNotificationsCount()
-}
-
 const shouldRemovePadding = computed(() => {
   const removePadding = router.currentRoute.value?.meta[LAYOUT_NO_PADDING_META] === true
   return removePadding
 })
-
-const userStore = useUserStore()
 
 // Hooks
 onMounted(async () => {
@@ -148,12 +137,7 @@ async function setNotificationsCount() {
   }
 
   try {
-    const { favoriteEntities } = storeToRefs(userStore)
-    const accountIds = isFavoriteEnabled.value
-      ? favoriteEntities.value.map(e => e.accountId)
-      : []
-
-    const { count } = await fetchUnreadNotificationsCount(accountIds)
+    const { count } = await fetchUnreadNotificationsCount()
     unreadNotificationsCount.value = count
   } catch (error) {
     logger.error('Notifications count fetch failed.', error)

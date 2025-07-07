@@ -39,6 +39,7 @@ export enum SelectedNotificationEnum {
 interface PreferenceSettings {
   hasOnlyFavouritesDisplayed: boolean
 }
+
 export interface NotificationSetting {
   id: number
   label: string
@@ -56,7 +57,12 @@ export interface NotificationSettingsConfiguration {
   preferenceSettings: PreferenceSettings
 }
 
-export interface NotificationSettingSavePayload {
+interface NotificationDomainSettingSave {
   notificationDefinitionId: number,
   feedCenterValue: boolean | null
+}
+
+export interface NotificationSettingsSavePayload {
+  preferenceSettings: PreferenceSettings,
+  domainSettings: NotificationDomainSettingSave[],
 }

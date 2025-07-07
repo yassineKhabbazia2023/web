@@ -4,9 +4,8 @@ import type {
   UnreadNotificationCountResponse,
   FetchNotificationsResponse,
   NotificationSettingsConfiguration,
-  NotificationSettingSavePayload,
+  NotificationSettingsSavePayload,
 } from '@app/modules/FeedCenter/types/notification.type'
-import type { Entity } from '@pulse/common/types'
 
 const NOTIFICATION_API_PREFIX = 'feedcenter/api/notifications'
 const SETTINGS_API_PREFIX = 'feedcenter/api/settings'
@@ -16,34 +15,22 @@ const NOTIFICATION_API_PARAMS = {
   },
 }
 
-export async function fetchUnreadNotificationsCount(accountIdsFilter: Entity['accountId'][] = []): Promise<UnreadNotificationCountResponse> {
+export async function fetchUnreadNotificationsCount(): Promise<UnreadNotificationCountResponse> {
   const { data } = await api().gateway.get(
     `${NOTIFICATION_API_PREFIX}/currentuser/unread/count`,
     {
       params: {
         ...NOTIFICATION_API_PARAMS.params,
-        accountIds: accountIdsFilter,
-      },
-      paramsSerializer: {
-        indexes: null,
       },
     },
   )
   return { count: data }
 }
 
-export async function fetchNotifications(accountIdsFilter: Entity['accountId'][] = []): Promise<FetchNotificationsResponse> {
+export async function fetchNotifications(): Promise<FetchNotificationsResponse> {
   const { data } = await api().gateway.get(
     `${NOTIFICATION_API_PREFIX}/currentuser`,
-    {
-      params: {
-        ...NOTIFICATION_API_PARAMS.params,
-        accountIds: accountIdsFilter,
-      },
-      paramsSerializer: {
-        indexes: null,
-      },
-    },
+    NOTIFICATION_API_PARAMS,
   )
   return { notifications: data }
 }
@@ -74,13 +61,9 @@ export async function getNotificationSettings() {
   return data
 }
 
-export async function saveNotificationSettings(settingsToSave: NotificationSettingSavePayload[]) {
-  const requestBody = {
-    domainSettings: settingsToSave,
-  }
-
+export async function saveNotificationSettings(settingsToSave: NotificationSettingsSavePayload) {
   await api().gateway.post(
     `${SETTINGS_API_PREFIX}/currentUser`,
-    requestBody,
+    settingsToSave,
   )
 }

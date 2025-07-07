@@ -3,12 +3,13 @@
     "settingsDrawer": {
       "title": "Paramètres des notifications",
       "subTitle": "Choisissez les notifications que vous souhaitez recevoir",
-      "close": "Fermer",
+      "favouritesOnly": "Recevoir uniquement les notifications de mes entités favorites",
       "columns": {
         "notificationType": "Type de notifications",
         "email": "Par e-mail",
         "inFeedCenter": "Dans Rydge"
       },
+      "close": "Fermer",
       "save": "Enregistrer les modifications",
       "success": "Vos paramètres de notifications ont été sauvegardés.",
       "error": "Une erreur est survenue lors de la sauvegarde de vos paramètres. Veuillez réessayer."

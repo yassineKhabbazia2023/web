@@ -65,6 +65,40 @@ describe('useNotificationSettings', () => {
     })
   })
 
+  describe('hasOnlyFavouritesDisplayed', () => {
+    it.each([
+      {
+        description: 'should get and set the correct value when notification settings are loaded',
+        mockSettings: mockNotificationSettings,
+        expectedInitialValue: false,
+        newValue: true,
+        expectedFinalValue: true,
+      },
+      {
+        description: 'should return undefined and not update when notification settings are not loaded',
+        mockSettings: undefined as any,
+        expectedInitialValue: undefined,
+        newValue: true,
+        expectedFinalValue: undefined,
+      },
+    ])('$description', async ({ mockSettings, expectedInitialValue, newValue, expectedFinalValue }) => {
+      vi.mocked(getNotificationSettings).mockResolvedValue(mockSettings)
+
+      const [{ hasOnlyFavouritesDisplayed }, appInstance] = withSetup(() => useNotificationSettings())
+      app = appInstance
+
+      await flushPromises()
+
+      // Test getter
+      expect(hasOnlyFavouritesDisplayed.value).toBe(expectedInitialValue)
+
+      // Test setter
+      hasOnlyFavouritesDisplayed.value = newValue
+
+      expect(hasOnlyFavouritesDisplayed.value).toBe(expectedFinalValue)
+    })
+  })
+
   describe('handleDomainSettingsSwitch', () => {
     it.each([
       {

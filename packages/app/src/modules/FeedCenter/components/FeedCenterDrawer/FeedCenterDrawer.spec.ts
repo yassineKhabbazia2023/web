@@ -7,10 +7,8 @@ import { NotificationTrackingReadType } from '@app/modules/FeedCenter/services/t
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import { useUserStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks'
-import { notificationsMock } from '@app/__mocks__/notifications.mocks'
 import { FeedCenterActions } from '@app/modules/FeedCenter/feed-center.enum'
-
-
+import { useFeedCenterStore } from '@app/modules/FeedCenter/stores/feed-center.store'
 import FeedCenterDrawer from '.'
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notificationsServiceMock)
@@ -18,6 +16,7 @@ vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trac
 vi.mock('./feed-center-drawer.manager', () => feedCenterDrawerManagerMock)
 
 getStoreMock(useUserStore)
+getStoreMock(useFeedCenterStore)
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
@@ -69,8 +68,6 @@ const FeedCenterDrawerBaseProps: FeedCenterDrawerProps = {
   modelValue: true,
   unreadNotificationsCount: 0,
 }
-
-const unreadNotificationsMock = notificationsMock.filter(n => n.isRead === false)
 
 describe('feed center drawer', () => {
   let wrapper: VueWrapper<InstanceType<typeof FeedCenterDrawer>>
@@ -141,12 +138,6 @@ describe('feed center drawer', () => {
     it('should fetch notifications on component creation', async () => {
       await flushPromises()
       expect(fetchNotificationsMock).toHaveBeenCalledOnce()
-    })
-
-    it('should filters the unread notifications', async () => {
-      await flushPromises()
-      // Casting as any because type resolution can't know that unreadNotifications is exposed to the template
-      expect((wrapper.vm as any).unreadNotifications).toMatchObject(unreadNotificationsMock)
     })
   })
 

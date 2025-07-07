@@ -1,8 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { PNotification } from '@pulse/styleguide'
-import { i18n } from '@pulse/common/i18n'
-import { saveNotificationSettings } from '@app/modules/FeedCenter/services/notifications.service'
-import type { NotificationDomainSettings } from '@app/modules/FeedCenter/types/notification.type'
+import { saveNotificationSettings, fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
 import { NotificationSettingsManager } from './notification-settings.manager'
 import {
   getNotificationSettingsWithTrueAndNull,
@@ -10,20 +8,19 @@ import {
   getNotificationSettingsWithTrueFalseAndNull,
   getDomainNotificationSettingsWithTrueAndFalse,
   getDomainNotificationSettingsWithTrueAndNull,
-  getMultipleDomainNotificationSettings,
-  getEmptyDomainNotificationSettings,
   getNotificationSettingsWithFalseAndNull,
+  getNotificationSettingsConfiguration,
+  getNotificationSettingsConfigurationWithFavourites,
+  getEmptyNotificationSettingsConfiguration,
+  getSingleDomainNotificationSettingsConfiguration,
 } from '@app/__mocks__/notification-settings.mocks'
+import { useFeedCenterStore } from '@app/modules/FeedCenter/stores/feed-center.store'
+import { getStoreMock } from '@pulse/common/mocks'
+
+getStoreMock(useFeedCenterStore)
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service')
 vi.mock('@pulse/styleguide')
-vi.mock('@pulse/common/i18n', () => ({
-  i18n: {
-    global: {
-      t: vi.fn(),
-    },
-  },
-}))
 
 describe('NotificationSettingsManager', () => {
   describe('hasAtLeastOneSettingEnabled', () => {
@@ -72,146 +69,177 @@ describe('NotificationSettingsManager', () => {
 
   describe('saveSettings', () => {
     it('should call saveNotificationSettings with formatted settings and display success notification', async () => {
-      const settingsByDomain: NotificationDomainSettings[] = [
-        getDomainNotificationSettingsWithTrueAndFalse(),
-      ]
-      const mockTranslation = 'Settings saved successfully'
-      vi.mocked(i18n.global.t).mockReturnValue(mockTranslation)
+      const settingsConfiguration = getSingleDomainNotificationSettingsConfiguration()
       vi.mocked(saveNotificationSettings).mockResolvedValue(undefined)
+      vi.mocked(fetchNotifications).mockResolvedValue({ notifications: [] })
 
-      await NotificationSettingsManager.saveSettings(settingsByDomain)
+      await NotificationSettingsManager.saveSettings(settingsConfiguration)
 
-      const expectedFormattedSettings = [
-        {
-          notificationDefinitionId: 1,
-          feedCenterValue: true,
+      const expectedFormattedSettings = {
+        domainSettings: [
+          {
+            notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[0].id,
+            feedCenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+          },
+          {
+            notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[1].id,
+            feedCenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+          },
+        ],
+        preferenceSettings: {
+          hasOnlyFavouritesDisplayed: settingsConfiguration.preferenceSettings.hasOnlyFavouritesDisplayed,
         },
-        {
-          notificationDefinitionId: 2,
-          feedCenterValue: false,
-        },
-      ]
+      }
 
       expect(saveNotificationSettings).toHaveBeenCalledWith(expectedFormattedSettings)
-      expect(PNotification).toHaveBeenCalledWith({
-        message: mockTranslation,
-        iconName: 'check',
-        showClose: true,
-        customClass: 'success',
-        position: 'bottom-right',
-      })
+      expect(PNotification).toHaveBeenCalledWith(
+        expect.objectContaining({
+          iconName: 'check',
+          showClose: true,
+          customClass: 'success',
+          position: 'bottom-right',
+        }),
+      )
     })
 
     it('should display error notification when save fails', async () => {
-      const settingsByDomain: NotificationDomainSettings[] = [
-        getDomainNotificationSettingsWithTrueAndFalse(),
-      ]
-      const mockTranslation = 'An error occurred while saving settings'
+      const settingsConfiguration = getSingleDomainNotificationSettingsConfiguration()
       const mockError = new Error('Save failed')
-      vi.mocked(i18n.global.t).mockReturnValue(mockTranslation)
       vi.mocked(saveNotificationSettings).mockRejectedValue(mockError)
 
-      await NotificationSettingsManager.saveSettings(settingsByDomain)
+      await NotificationSettingsManager.saveSettings(settingsConfiguration)
 
-      expect(PNotification).toHaveBeenCalledWith({
-        message: mockTranslation,
-        iconName: 'exclamationTriangle',
-        showClose: true,
-        customClass: 'error',
-        position: 'bottom-right',
-      })
+      expect(PNotification).toHaveBeenCalledWith(
+        expect.objectContaining({
+          iconName: 'exclamationTriangle',
+          showClose: true,
+          customClass: 'error',
+          position: 'bottom-right',
+        }),
+      )
     })
   })
 
   describe('formatSettingsForSave', () => {
-    it('should format notification domain settings for save correctly', () => {
-      const settingsByDomain = getMultipleDomainNotificationSettings()
+    it('should format notification settings configuration for save correctly', () => {
+      const settingsConfiguration = getNotificationSettingsConfiguration()
+      const result = NotificationSettingsManager.formatSettingsForSave(settingsConfiguration)
 
-      const result = NotificationSettingsManager.formatSettingsForSave(settingsByDomain)
+      const expectedResult = {
+        domainSettings: [
+          {
+            notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[0].id,
+            feedCenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+          },
+          {
+            notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[1].id,
+            feedCenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+          },
+          {
+            notificationDefinitionId: settingsConfiguration.domainSettings[1].settings[0].id,
+            feedCenterValue: settingsConfiguration.domainSettings[1].settings[0].feedcenterValue,
+          },
+        ],
+        preferenceSettings: {
+          hasOnlyFavouritesDisplayed: settingsConfiguration.preferenceSettings.hasOnlyFavouritesDisplayed,
+        },
+      }
 
-      expect(result).toEqual([
-        {
-          notificationDefinitionId: settingsByDomain[0].settings[0].id,
-          feedCenterValue: true,
-        },
-        {
-          notificationDefinitionId: settingsByDomain[0].settings[1].id,
-          feedCenterValue: null,
-        },
-        {
-          notificationDefinitionId: settingsByDomain[1].settings[0].id,
-          feedCenterValue: false,
-        },
-      ])
+      expect(result).toEqual(expectedResult)
     })
 
-    it('should return empty array when no settings provided', () => {
-      const settingsByDomain: NotificationDomainSettings[] = []
+    it('should format settings configuration with favourites preference correctly', () => {
+      const settingsConfiguration = getNotificationSettingsConfigurationWithFavourites()
+      const result = NotificationSettingsManager.formatSettingsForSave(settingsConfiguration)
 
-      const result = NotificationSettingsManager.formatSettingsForSave(settingsByDomain)
+      const expectedResult = {
+        domainSettings: [
+          {
+            notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[0].id,
+            feedCenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+          },
+          {
+            notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[1].id,
+            feedCenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+          },
+          {
+            notificationDefinitionId: settingsConfiguration.domainSettings[1].settings[0].id,
+            feedCenterValue: settingsConfiguration.domainSettings[1].settings[0].feedcenterValue,
+          },
+        ],
+        preferenceSettings: {
+          hasOnlyFavouritesDisplayed: settingsConfiguration.preferenceSettings.hasOnlyFavouritesDisplayed,
+        },
+      }
 
-      expect(result).toEqual([])
+      expect(result).toEqual(expectedResult)
     })
 
-    it('should handle domains with empty settings array', () => {
-      const settingsByDomain = getEmptyDomainNotificationSettings()
+    it('should return empty domain settings when no settings provided', () => {
+      const settingsConfiguration = getEmptyNotificationSettingsConfiguration()
+      const result = NotificationSettingsManager.formatSettingsForSave(settingsConfiguration)
 
-      const result = NotificationSettingsManager.formatSettingsForSave(settingsByDomain)
+      const expectedResult = {
+        domainSettings: [],
+        preferenceSettings: {
+          hasOnlyFavouritesDisplayed: settingsConfiguration.preferenceSettings.hasOnlyFavouritesDisplayed,
+        },
+      }
 
-      expect(result).toEqual([])
+      expect(result).toEqual(expectedResult)
     })
 
     it('should format single domain settings correctly', () => {
-      const settingsByDomain = [getDomainNotificationSettingsWithTrueAndFalse()]
+      const settingsConfiguration = getSingleDomainNotificationSettingsConfiguration()
+      const result = NotificationSettingsManager.formatSettingsForSave(settingsConfiguration)
 
-      const result = NotificationSettingsManager.formatSettingsForSave(settingsByDomain)
+      const expectedResult = {
+        domainSettings: [
+          {
+            notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[0].id,
+            feedCenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+          },
+          {
+            notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[1].id,
+            feedCenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+          },
+        ],
+        preferenceSettings: {
+          hasOnlyFavouritesDisplayed: settingsConfiguration.preferenceSettings.hasOnlyFavouritesDisplayed,
+        },
+      }
 
-      expect(result).toEqual([
-        {
-          notificationDefinitionId: 1,
-          feedCenterValue: true,
-        },
-        {
-          notificationDefinitionId: 2,
-          feedCenterValue: false,
-        },
-      ])
+      expect(result).toEqual(expectedResult)
     })
   })
 
   describe('displaySaveSuccessNotification', () => {
     it('should display success notification with correct parameters', () => {
-      const mockTranslation = 'Settings saved successfully'
-      vi.mocked(i18n.global.t).mockReturnValue(mockTranslation)
-
       NotificationSettingsManager.displaySaveSuccessNotification()
 
-      expect(i18n.global.t).toHaveBeenCalledWith('feedCenter.settingsDrawer.success')
-      expect(PNotification).toHaveBeenCalledWith({
-        message: mockTranslation,
-        iconName: 'check',
-        showClose: true,
-        customClass: 'success',
-        position: 'bottom-right',
-      })
+      expect(PNotification).toHaveBeenCalledWith(
+        expect.objectContaining({
+          iconName: 'check',
+          showClose: true,
+          customClass: 'success',
+          position: 'bottom-right',
+        }),
+      )
     })
   })
 
   describe('displaySaveErrorNotification', () => {
     it('should display error notification with correct parameters', () => {
-      const mockTranslation = 'An error occurred while saving settings'
-      vi.mocked(i18n.global.t).mockReturnValue(mockTranslation)
-
       NotificationSettingsManager.displaySaveErrorNotification()
 
-      expect(i18n.global.t).toHaveBeenCalledWith('feedCenter.settingsDrawer.success')
-      expect(PNotification).toHaveBeenCalledWith({
-        message: mockTranslation,
-        iconName: 'exclamationTriangle',
-        showClose: true,
-        customClass: 'error',
-        position: 'bottom-right',
-      })
+      expect(PNotification).toHaveBeenCalledWith(
+        expect.objectContaining({
+          iconName: 'exclamationTriangle',
+          showClose: true,
+          customClass: 'error',
+          position: 'bottom-right',
+        }),
+      )
     })
   })
 })

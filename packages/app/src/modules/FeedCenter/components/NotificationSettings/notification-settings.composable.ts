@@ -19,6 +19,18 @@ export function useNotificationSettings() {
     }, 400)
   })
 
+  const hasOnlyFavouritesDisplayed = computed({
+    get() {
+      return notificationSettings.value?.preferenceSettings.hasOnlyFavouritesDisplayed
+    },
+    set(value: boolean) {
+      if (notificationSettings.value === undefined) {
+        return
+      }
+      notificationSettings.value.preferenceSettings.hasOnlyFavouritesDisplayed = value
+    },
+  })
+
   const settingsByDomain = computed(() => notificationSettings.value?.domainSettings ?? [])
 
   function handleDomainSettingsSwitch(isEnabled: boolean, domainIndex: number) {
@@ -68,7 +80,9 @@ export function useNotificationSettings() {
 
   return {
     areSettingsLoading,
+    hasOnlyFavouritesDisplayed,
     handleDomainSettingsSwitch,
+    notificationSettings,
     settingsByDomain,
     updateSetting,
   }

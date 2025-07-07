@@ -1,8 +1,44 @@
 import type {
   NotificationDomainSettings,
+  NotificationSettingsConfiguration,
   NotificationSetting,
 } from '@app/modules/FeedCenter/types/notification.type'
 
+export function getNotificationSettingsConfiguration(): NotificationSettingsConfiguration {
+  return {
+    domainSettings: getMultipleDomainNotificationSettings(),
+    preferenceSettings: {
+      hasOnlyFavouritesDisplayed: false,
+    },
+  }
+}
+
+export function getNotificationSettingsConfigurationWithFavourites(): NotificationSettingsConfiguration {
+  return {
+    domainSettings: getMultipleDomainNotificationSettings(),
+    preferenceSettings: {
+      hasOnlyFavouritesDisplayed: true,
+    },
+  }
+}
+
+export function getEmptyNotificationSettingsConfiguration(): NotificationSettingsConfiguration {
+  return {
+    domainSettings: [],
+    preferenceSettings: {
+      hasOnlyFavouritesDisplayed: false,
+    },
+  }
+}
+
+export function getSingleDomainNotificationSettingsConfiguration(): NotificationSettingsConfiguration {
+  return {
+    domainSettings: [getDomainNotificationSettingsWithTrueAndFalse()],
+    preferenceSettings: {
+      hasOnlyFavouritesDisplayed: false,
+    },
+  }
+}
 
 export function getNotificationSettingsWithTrueAndNull(): NotificationSetting[] {
   return [
