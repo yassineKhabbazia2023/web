@@ -42,6 +42,16 @@ export default defineConfig({
         {
           text: 'Monorepo',
           link: '/monorepo/',
+          items: [
+            {
+              text: 'Structure du Monorepo',
+              link: '/monorepo/structure',
+            },
+            {
+              text: 'Imports dans le Monorepo',
+              link: '/monorepo/imports',
+            },
+          ],
         },
         {
           text: 'Packages',

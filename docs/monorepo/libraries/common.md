@@ -1,13 +1,24 @@
 # Common
 
-Le projet `@pulse/common` est une bibliothèque TypeScript (avec quelques éléments Vue) qui fournit aux développeurs divers assistants, services et fonctionnalités communes partagées entre l'application et les plugins.
+Le projet `@pulse/common` est une bibliothèque TypeScript avec des éléments Vue qui centralise les fonctionnalités partagées de l'écosystème Pulse. Elle sert de fondation commune pour l'application principale et tous les applets.
 
-Le processus d'initialisation est géré à la racine du monorepo en utilisant la fonctionnalité `workspaces` de npm.
+## Rôle et responsabilités
 
-Comme il s'agit d'une bibliothèque et non d'une application autonome, elle ne peut pas être exécutée indépendamment. Cependant, vous pouvez la builder et la tester.
+Cette bibliothèque fournit une couche d'abstraction pour :
 
-## Les scripts
+- **Services métier** : Gestion des entités, permissions, utilisateur courant et autres services transversaux
+- **Utilitaires et helpers** : Fonctions d'aide réutilisables pour le développement
+- **Gestion d'état** : Stores et gestionnaires d'état partagés
+- **Internationalisation** : Services de traduction et localisation
+- **Configuration** : Constants, énumérations et types communs
+- **Intégrations** : Services d'authentification, API et autres intégrations externes
 
-Référez-vous au `package.json` pour les scripts que vous pouvez exécuter sur ce package.
+## Architecture
 
-<<< @/../packages/libraries/common/package.json
+La bibliothèque est structurée en modules exportables indépendants, permettant aux consommateurs d'importer uniquement les fonctionnalités nécessaires. Chaque module expose ses fonctionnalités via des points d'entrée dédiés, facilitant la maintenance et optimisant les bundles.
+
+## Développement
+
+Comme il s'agit d'une bibliothèque, elle ne peut pas être exécutée indépendamment. Le développement se fait en mode monorepo avec hot-reload lors des modifications.
+
+Les scripts de build, test et lint sont disponibles dans le `package.json` du package.
