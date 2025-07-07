@@ -84,7 +84,7 @@
     </Transition>
 
     <template
-      v-if="notificationSettings !== undefined && areSettingsLoading === false"
+      v-if="notificationSettings !== undefined"
       #footer
     >
       <PButton

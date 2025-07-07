@@ -59,7 +59,8 @@ export interface NotificationSettingsConfiguration {
 
 interface NotificationDomainSettingSave {
   notificationDefinitionId: number,
-  feedCenterValue: boolean | null
+  feedcenterValue: boolean | null
+  emailValue: boolean | null
 }
 
 export interface NotificationSettingsSavePayload {

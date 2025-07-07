@@ -43,7 +43,8 @@ export class NotificationSettingsManager {
     const domainSettings = settingsConfiguration.domainSettings.flatMap(domain =>
       domain.settings.map(setting => ({
         notificationDefinitionId: setting.id,
-        feedCenterValue: setting.feedcenterValue,
+        feedcenterValue: setting.feedcenterValue,
+        emailValue: setting.emailValue,
       })),
     )
 

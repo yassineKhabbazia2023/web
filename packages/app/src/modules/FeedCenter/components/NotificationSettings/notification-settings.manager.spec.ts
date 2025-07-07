@@ -79,11 +79,13 @@ describe('NotificationSettingsManager', () => {
         domainSettings: [
           {
             notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[0].id,
-            feedCenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+            feedcenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+            emailValue: settingsConfiguration.domainSettings[0].settings[0].emailValue,
           },
           {
             notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[1].id,
-            feedCenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+            feedcenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+            emailValue: settingsConfiguration.domainSettings[0].settings[1].emailValue,
           },
         ],
         preferenceSettings: {
@@ -129,15 +131,18 @@ describe('NotificationSettingsManager', () => {
         domainSettings: [
           {
             notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[0].id,
-            feedCenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+            feedcenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+            emailValue: settingsConfiguration.domainSettings[0].settings[0].emailValue,
           },
           {
             notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[1].id,
-            feedCenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+            feedcenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+            emailValue: settingsConfiguration.domainSettings[0].settings[1].emailValue,
           },
           {
             notificationDefinitionId: settingsConfiguration.domainSettings[1].settings[0].id,
-            feedCenterValue: settingsConfiguration.domainSettings[1].settings[0].feedcenterValue,
+            feedcenterValue: settingsConfiguration.domainSettings[1].settings[0].feedcenterValue,
+            emailValue: settingsConfiguration.domainSettings[1].settings[0].emailValue,
           },
         ],
         preferenceSettings: {
@@ -156,15 +161,18 @@ describe('NotificationSettingsManager', () => {
         domainSettings: [
           {
             notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[0].id,
-            feedCenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+            feedcenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+            emailValue: settingsConfiguration.domainSettings[0].settings[0].emailValue,
           },
           {
             notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[1].id,
-            feedCenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+            feedcenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+            emailValue: settingsConfiguration.domainSettings[0].settings[1].emailValue,
           },
           {
             notificationDefinitionId: settingsConfiguration.domainSettings[1].settings[0].id,
-            feedCenterValue: settingsConfiguration.domainSettings[1].settings[0].feedcenterValue,
+            feedcenterValue: settingsConfiguration.domainSettings[1].settings[0].feedcenterValue,
+            emailValue: settingsConfiguration.domainSettings[1].settings[0].emailValue,
           },
         ],
         preferenceSettings: {
@@ -197,11 +205,13 @@ describe('NotificationSettingsManager', () => {
         domainSettings: [
           {
             notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[0].id,
-            feedCenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+            feedcenterValue: settingsConfiguration.domainSettings[0].settings[0].feedcenterValue,
+            emailValue: settingsConfiguration.domainSettings[0].settings[0].emailValue,
           },
           {
             notificationDefinitionId: settingsConfiguration.domainSettings[0].settings[1].id,
-            feedCenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+            feedcenterValue: settingsConfiguration.domainSettings[0].settings[1].feedcenterValue,
+            emailValue: settingsConfiguration.domainSettings[0].settings[1].emailValue,
           },
         ],
         preferenceSettings: {
