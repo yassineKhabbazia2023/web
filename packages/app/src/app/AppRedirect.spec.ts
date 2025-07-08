@@ -1,4 +1,4 @@
-import { flushPromises, mount } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import { envVarsMock } from '@pulse/core/mocks'
 import {
   amplitudeServiceMock,
@@ -68,14 +68,12 @@ vi.mock('@pulse/common', () => ({
 }))
 
 const createWrapper = () =>
-  mount(App, {
+  shallowMount(App, {
     global: {
       stubs: {
         PButton: { template: '<button><slot /></button>' },
         Suspense: { template: '<div><slot /></div>' },
         PConfigProvider: { template: '<div><slot /></div>' },
-        PopupRenewToken: true,
-        'router-view': true,
       },
     },
   })
@@ -113,7 +111,7 @@ describe('app with navigation guard', () => {
     expect(CurrentUserManagerMock.persistToken).toHaveBeenCalledWith(tokenMock)
   })
 
-  it.skip('should open PopupRenewToken 5 minutes before it expires AND when it has expired', async () => {
+  it('should open PopupRenewToken 5 minutes before it expires AND when it has expired', async () => {
     const expectedPropsBefore = {
       isCollab: false,
       isTokenExpired: false,
@@ -134,8 +132,16 @@ describe('app with navigation guard', () => {
       openPopupDelay: FIFTY_MINUTES_IN_MILLISECONDS - 1000,
     })
 
+    const tokenExpMock1 = 1
+    const tokenExpMock2 = 2
+    const tokenExpMock3 = 3
+
     tokenStoreMock.getIsTokenExpired.mockReturnValue(true)
+
+    tokenStoreMock.tokenExp = tokenExpMock1
     const wrapper = createWrapper()
+
+    tokenStoreMock.tokenExp = tokenExpMock2
     const vm = wrapper.vm as any
 
     tokenStoreMock.getIsTokenExpired
@@ -149,7 +155,7 @@ describe('app with navigation guard', () => {
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsBefore)
 
-    vi.advanceTimersByTime(FIFTY_MINUTES_IN_MILLISECONDS)
+    vi.advanceTimersByTime(FIFTY_MINUTES_IN_MILLISECONDS + 1)
     await nextTick()
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterFiveMinutes)
@@ -161,13 +167,14 @@ describe('app with navigation guard', () => {
     expect(vm.openPopupWhenHasExpiredTimer).not.toBeUndefined()
     expect(vm.openPopup5MinBeforeExpiredTimer).not.toBeUndefined()
 
+    tokenStoreMock.tokenExp = tokenExpMock3
     await nextTick()
 
     expect(vm.openPopupWhenHasExpiredTimer).toBeUndefined()
     expect(vm.openPopup5MinBeforeExpiredTimer).toBeUndefined()
   })
 
-  it.skip('should hide PopupRenewToken on route change to Login', async () => {
+  it('should hide PopupRenewToken on route change to Login', async () => {
     const expectedPropsAfterFiveMinutes = {
       isCollab: false,
       isTokenExpired: false,
@@ -192,13 +199,17 @@ describe('app with navigation guard', () => {
 
     tokenStoreMock.getIsTokenExpired.mockReturnValue(false)
 
+    tokenStoreMock.tokenExp = 0
     const wrapper = createWrapper()
 
     await nextTick()
 
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
-    vi.advanceTimersByTime(FIFTY_MINUTES_IN_MILLISECONDS)
+    tokenStoreMock.tokenExp = 1
+    await nextTick()
+
+    vi.advanceTimersByTime(1 + FIFTY_MINUTES_IN_MILLISECONDS)
     await nextTick()
 
     expect(popupRenewToken.props()).toStrictEqual(expectedPropsAfterFiveMinutes)

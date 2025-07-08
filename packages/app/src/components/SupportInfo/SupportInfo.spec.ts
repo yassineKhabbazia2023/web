@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
-import { mount, flushPromises } from '@vue/test-utils'
+import { shallowMount, flushPromises } from '@vue/test-utils'
 import SupportInfo from '.'
 
-const createWrapper = () => mount(SupportInfo)
+const createWrapper = () => shallowMount(SupportInfo)
 
 describe('supportInfo', () => {
   const wrapper: VueWrapper<any> = createWrapper()

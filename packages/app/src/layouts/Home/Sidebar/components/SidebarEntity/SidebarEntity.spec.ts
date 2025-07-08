@@ -1,6 +1,5 @@
-import type { VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import type { Entity } from '@pulse/common/types'
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import {
@@ -34,21 +33,24 @@ vi.mock('@pulse/common/managers', () => ({
 }))
 
 const createWrapper = () => {
-  const wrapper = mount(SidebarEntity, {
+  const wrapper = shallowMount(SidebarEntity, {
     props: {
       entities,
       totalEntities: entities.length,
       selectedEntity: getMockedEntity(),
     },
+    global: {
+      stubs: {
+        SidebarEntityItem: {
+          name: 'SidebarEntityItem',
+          template: '<sidebar-entity-item-stub><slot /></sidebar-entity-item-stub>',
+        },
+      },
+    },
   })
 
   return wrapper
 }
-
-const findSidebarToggle = (wrapper: VueWrapper) =>
-  wrapper.find('[data-testid=sidebar-toggle]')
-const findSelectedEntity = (wrapper: VueWrapper) =>
-  wrapper.find('[data-testid=selected-entity]')
 
 describe('sidebarEntity', () => {
   let wrapper: ReturnType<typeof createWrapper>
@@ -60,9 +62,9 @@ describe('sidebarEntity', () => {
 
   describe('display', () => {
     it('should display the sidebar correctly with actions and entities', () => {
-      const sidebarToggle = findSidebarToggle(wrapper)
+      const sidebarToggle = wrapper.findComponent({ name: 'SidebarEntityItem' })
       const walletItem = wrapper.find('[data-testid=wallet-item]')
-      const selectedEntity = findSelectedEntity(wrapper)
+      const selectedEntity = wrapper.find('[data-testid=selected-entity]')
       const starDivider = wrapper.find('[data-testid=star-divider]')
       const favoriteEntities = wrapper.find('[data-testid=favorite-entities]')
       const EntityAvatars = favoriteEntities.findAllComponents({ name: 'EntityAvatar' })
@@ -104,33 +106,36 @@ describe('sidebarEntity', () => {
   describe('events', () => {
     it('should open the sidebar when clicking on the toggle button', async () => {
       const sidenavEntity = wrapper.find('[data-testid="sidenav-entity"]')
-      const sidebarToggle = findSidebarToggle(wrapper)
+      const sidebarToggle = wrapper.findComponent({ name: 'SidebarEntityItem' })
       const pIcon = wrapper.findComponent({ name: 'PIcon' })
 
       expect(pIcon.props('pName')).toBe('arrowBarRight')
 
-      await sidebarToggle.trigger('click')
+      await sidebarToggle.vm.$emit('item-clicked')
 
       expect(pIcon.props('pName')).toBe('arrowBarLeft')
       expect(sidenavEntity.classes()).includes('sidenav-entity--opened')
     })
+
     it('should not display appVersion when sidebar is closed', async () => {
       const sidenavEntity = wrapper.find('[data-testid="sidenav-entity"]')
-      const appVersion = wrapper.find('[data-testid=app-version]')
+      const appVersion = wrapper.findComponent({ name: 'AppVersion' })
 
       expect(sidenavEntity.classes()).not.includes('sidenav-entity--opened')
-      expect(appVersion.exists()).not.toBeTruthy()
+      expect(appVersion.exists()).toBe(false)
     })
+
     it('should display appVersion when sidebar is opened', async () => {
       const sidenavEntity = wrapper.find('[data-testid="sidenav-entity"]')
-      const sidebarToggle = findSidebarToggle(wrapper)
+      const sidebarToggle = wrapper.findComponent({ name: 'SidebarEntityItem' })
 
-      await sidebarToggle.trigger('click')
+      await sidebarToggle.vm.$emit('item-clicked')
 
-      const appVersion = wrapper.find('[data-testid=app-version]')
+      const appVersion = wrapper.findComponent({ name: 'AppVersion' })
 
       expect(sidenavEntity.classes()).includes('sidenav-entity--opened')
-      expect(appVersion.exists()).toBeTruthy()
+      expect(sidenavEntity.classes()).includes('sidenav-entity--opened')
+      expect(appVersion.exists()).toBe(true)
     })
   })
 })

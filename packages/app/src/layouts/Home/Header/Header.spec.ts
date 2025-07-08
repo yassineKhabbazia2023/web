@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { isScheduleActivatedMock, isFeedCenterActivatedMock, loggerMock, featureFlagManagerMock } from '@pulse/core/mocks'
 import { routerMock } from '@app/__mocks__/router.mocks'
 import type { HeaderProps } from './HeaderTypes'
@@ -28,7 +28,7 @@ const createWrapper = (
   showFeedCenter: HeaderProps['showFeedCenter'] = false,
   unreadNotificationsCount: HeaderProps['unreadNotificationsCount'] = 0,
 ): VueWrapper<any> =>
-  mount(Header, {
+  shallowMount(Header, {
     props: {
       showCalendar,
       showFeedCenter,
@@ -36,6 +36,21 @@ const createWrapper = (
     },
     global: {
       plugins: [routerMock],
+      stubs: {
+        PAvatar: {
+          name: 'PAvatar',
+          template: '<p-avatar-stub><slot /></p-avatar-stub>',
+          props: ['pRole'],
+        },
+        PButton: {
+          name: 'PButton',
+          template: '<p-button-stub><slot /></p-button-stub>',
+          props: ['pType', 'pIsActive'],
+        },
+        'router-link': {
+          template: '<p-button-stub><slot /></p-button-stub>',
+        },
+      },
     },
   })
 
@@ -58,9 +73,11 @@ describe('test header', () => {
     })
 
     it('should display the calendar and the action buttons correctly', async () => {
-      const calendarBtn = wrapper.find('[data-testid="header-section-calendar-btn"]')
+      const buttons = wrapper.findAllComponents({ name: 'PButton' })
+      const calendarBtn = buttons[0]
 
-      expect(calendarBtn.classes()).toContain('el-button--default')
+      expect(calendarBtn.props('pType')).toBe('default')
+
       const icon = wrapper.findComponent({ name: 'PIcon' })
       expect(icon.props('pName')).toBe('calendarEvent')
 
@@ -72,19 +89,21 @@ describe('test header', () => {
     it('should display buttons when calendar is open correctly', () => {
       wrapper = createWrapper(true)
 
-      const calendarBtn = wrapper.find('[data-testid="header-section-calendar-btn"]')
+      const buttons = wrapper.findAllComponents({ name: 'PButton' })
+      const calendarBtn = buttons[0]
 
-      expect(calendarBtn.classes()).toContain('p-button--white')
-      expect(calendarBtn.classes()).toContain('p-button--is-active')
+      expect(calendarBtn.props('pType')).toBe('white')
+      expect(calendarBtn.props('pIsActive')).toBe(true)
 
       const pIcon = calendarBtn.findComponent({ name: 'PIcon' })
       expect(pIcon.props('pName')).toBe('x')
     })
 
     it('should display accordingly to opened state', async () => {
-      const feedCenterButton = wrapper.find('[data-testid="feed-center-button"]')
+      const buttons = wrapper.findAllComponents({ name: 'PButton' })
+      const feedCenterButton = buttons[1]
 
-      expect(feedCenterButton.classes()).toContain('el-button--default')
+      expect(feedCenterButton.props('pType')).toBe('default')
       const icon = feedCenterButton.findComponent({ name: 'PIcon' })
       expect(icon.props('pName')).toBe('bell')
 
@@ -96,10 +115,11 @@ describe('test header', () => {
     it('should display the appropriate button when feed center is opened', () => {
       wrapper = createWrapper(false, true)
 
-      const feedCenterButton = wrapper.find('[data-testid="feed-center-button"]')
+      const buttons = wrapper.findAllComponents({ name: 'PButton' })
+      const feedCenterButton = buttons[1]
 
-      expect(feedCenterButton.classes()).toContain('p-button--white')
-      expect(feedCenterButton.classes()).toContain('p-button--is-active')
+      expect(feedCenterButton.props('pType')).toBe('white')
+      expect(feedCenterButton.props('pIsActive')).toBe(true)
       const icon = feedCenterButton.findComponent({ name: 'PIcon' })
       expect(icon.props('pName')).toBe('x')
     })
@@ -165,6 +185,7 @@ describe('test header', () => {
     }) => {
       userStoreMock.isCollab = isCollab
       const wrapper = createWrapper(false)
+
       const avatar = wrapper.findComponent({ name: 'PAvatar' })
 
       expect(avatar.props('pRole')).toBe(expectedRole)

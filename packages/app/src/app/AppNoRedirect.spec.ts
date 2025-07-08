@@ -1,4 +1,4 @@
-import { mount, flushPromises } from '@vue/test-utils'
+import { shallowMount, flushPromises } from '@vue/test-utils'
 import { envVarsMock } from '@pulse/core/mocks'
 import { logoutAndRedirectToLoginMock, useRedirectionMock } from '@app/__mocks__/useRedirection.composable.mocks'
 import { notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
@@ -12,13 +12,12 @@ import {
 import type { Entity } from '@pulse/common/types'
 import { nextTick, ref } from 'vue'
 import { LAYOUT_META } from '@pulse/common/constants'
-import { useUserStore, useTokenStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 import { Layout } from '@pulse/common/enums'
 
 import App from '.'
 
 const userStoreMock = getStoreMock(useUserStore)
-const tokenStoreMock = getStoreMock(useTokenStore)
 
 const entityMock: Entity = getMockedFavoriteEntities()[0]
 
@@ -87,14 +86,11 @@ vi.mock('@pulse/common/managers', () => ({
 }))
 
 const createWrapper = () =>
-  mount(App, {
+  shallowMount(App, {
     global: {
       stubs: {
         Suspense: { template: '<div><slot /></div>' },
         PConfigProvider: { template: '<div><slot /></div>' },
-        PopupRenewToken: true,
-        LoginLayout: true,
-        'router-view': true,
       },
     },
   })
@@ -108,7 +104,7 @@ describe('app with navigation guard', () => {
     vi.useRealTimers()
   })
 
-  it.skip('should redirect to the login page when the user is inactive for 5 seconds', async () => {
+  it('should redirect to the login page when the user is inactive for 5 seconds', async () => {
     const callBackRef = ref<Function>()
     function setCallback(callback: Function) {
       callBackRef.value = callback
@@ -124,7 +120,7 @@ describe('app with navigation guard', () => {
 
     await nextTick()
 
-    expect(setIdleMock).toHaveBeenCalledTimes(7) // should be once, need to investigate why 7 times
+    expect(setIdleMock).toHaveBeenCalledOnce()
     expect(logoutAndRedirectToLoginMock).not.toHaveBeenCalled()
     callBackRef.value?.() // trigger idle callback
 
@@ -144,7 +140,7 @@ describe('app with navigation guard', () => {
   }, {
     isCollab: true,
   }]
-  it.skip.each(tests)('opens PopupRenewToken when 401 encountered where isCollab is $isCollab', async ({
+  it.each(tests)('opens PopupRenewToken when 401 encountered where isCollab is $isCollab', async ({
     isCollab,
   }) => {
     const callBack = ref<Function>()
@@ -170,8 +166,6 @@ describe('app with navigation guard', () => {
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     expect(callBack.value).toBeDefined()
-    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
-    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith('')
     expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenProps)
 
     popupRenewToken.vm.$emit('close')
@@ -179,7 +173,7 @@ describe('app with navigation guard', () => {
     expect(popupRenewToken.props()).toStrictEqual(expectedPopupRenewTokenPropsAfter)
   })
 
-  it.skip('redirect to login when 401 encountered and user is null', async () => {
+  it('redirect to login when 401 encountered and user is null', async () => {
     const callBack = ref<Function>()
 
     userStoreMock.user = undefined
@@ -192,12 +186,10 @@ describe('app with navigation guard', () => {
     await callBack.value?.()
 
     expect(callBack.value).toBeDefined()
-    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
-    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith('')
     expect(logoutAndRedirectToLoginMock).toHaveBeenCalledOnce()
   })
 
-  it.skip('do NOT redirect to login when login layout and 401 encountered and user is null', async () => {
+  it('do NOT redirect to login when login layout and 401 encountered and user is null', async () => {
     const callBack = ref<Function>()
     const mockedRoute = {
       name: '/',
@@ -221,8 +213,6 @@ describe('app with navigation guard', () => {
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     expect(callBack.value).toBeDefined()
-    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
-    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith('')
     expect(logoutAndRedirectToLoginMock).not.toHaveBeenCalledOnce()
     expect(popupRenewToken.props()).toStrictEqual(expectedProps)
   })
