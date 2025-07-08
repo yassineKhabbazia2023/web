@@ -152,7 +152,7 @@ import {
 import { showNotification } from '@mandate/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@mandate/helpers/NotificationHelperTypes'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 declare let window: any
 
@@ -347,19 +347,19 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
 }
 
 function trackTelecollectionCancellation() {
-  amplitudeService.track('Bank Mandate Deleted', {
+  AmplitudeService.track('Bank Mandate Deleted', {
     bank_mandate_delete: '',
   })
 }
 
 function trackPreFilledMandateDownload() {
-  amplitudeService.track('Blank Bank Mandate Downloaded', {
+  AmplitudeService.track('Blank Bank Mandate Downloaded', {
     blank_bank_mandate_download: '',
   })
 }
 
 function trackSubmitSignedMandate() {
-  amplitudeService.track('Bank Mandate Deposited Signed', {
+  AmplitudeService.track('Bank Mandate Deposited Signed', {
     bank_mandate_deposited_sign: '',
   })
 }

@@ -1,6 +1,6 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { PERMISSION_GLOBAL } from '@pulse/common/constants'
-import { amplitudeServiceMock, amplitudeServiceTrackMock, CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked, getMockedUser, getStoreMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock, CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked, getMockedUser, getStoreMock } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
 
 import Wallet from './'
@@ -19,8 +19,8 @@ vi.mock('vue-router', () => ({
 const userStoreMock = getStoreMock(useUserStore)
 const userMock = getMockedUser({ firstName: 'Jack' })
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: amplitudeServiceMock,
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 vi.mock('@pulse/common/managers', () => ({
@@ -78,8 +78,8 @@ describe('dossier', () => {
 
     pTabs.vm.$emit('tab-click', tab)
 
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Feature Consulted', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Feature Consulted', {
       feature_name: tabName.toLowerCase(),
     })
 

@@ -4,7 +4,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { getMockedMandatesList } from '@mandate/__mocks__/mandate.mocks'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
-import { amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { flushPromises, type VueWrapper } from '@vue/test-utils'
 import type { AxiosResponse } from 'axios'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
@@ -25,8 +25,9 @@ vi.mock('vue-router', () => ({
 }))
 
 vi.mock('@mandate/services/mandate')
-vi.mock('@pulse/common', () => ({
-  amplitudeService: amplitudeServiceMock,
+
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 const createWrapper = (props: any) =>
@@ -125,7 +126,7 @@ describe('test Mandate.vue', () => {
       currentPage: 1,
     }
 
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Bank Mandate Searched', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Bank Mandate Searched', {
       bank_mandate_search: inputValue,
     })
     expect(mockedGetMandatesCollection).toHaveBeenLastCalledWith(expected)

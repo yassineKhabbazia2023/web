@@ -1,4 +1,4 @@
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { NotificationKindEnum, SelectedNotificationEnum } from '../../types/notification.type'
 import {
   NotificationTrackingType,
@@ -22,24 +22,24 @@ const mappingNotificationTrackingTabs : Record<SelectedNotificationEnum, Notific
 }
 
 export function trackFeedcenterOpened() {
-  amplitudeService.track('Feedcenter opened')
+  AmplitudeService.track('Feedcenter opened')
 }
 export function trackNotificationsConsulted(notificationKind : NotificationKindEnum){
   const notifType = mappingNotificationTrackingType[notificationKind]
-  amplitudeService.track('Feedcenter notifications consulted', {
+  AmplitudeService.track('Feedcenter notifications consulted', {
     notification_type_consultation: notifType,
   })
 }
 
 export function trackNotificationMarkAsRead(readType : NotificationTrackingReadType){
-  amplitudeService.track('Feedcenter notifications marked as read', {
+  AmplitudeService.track('Feedcenter notifications marked as read', {
     Marked_as_read_origin: readType,
   })
 }
 
 export function trackFeedCenterTabConsultation(selectedNotification : SelectedNotificationEnum){
   const notificationTab = mappingNotificationTrackingTabs[selectedNotification]
-  amplitudeService.track('Feedcenter tabs selected', {
+  AmplitudeService.track('Feedcenter tabs selected', {
     feedcenter_tabs_consultation: notificationTab,
   })
 }

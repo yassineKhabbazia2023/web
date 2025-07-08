@@ -56,7 +56,7 @@
 import { ref, watchEffect, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { fetchBIReports } from '@app/services/reporting'
 import { PMenuItem, PMenu } from '@pulse/styleguide/components'
@@ -155,7 +155,7 @@ const menuItems = computed<MenuItem[]>(() => {
 })
 
 const logAmplitudeEvent = (featureName: string) => {
-  amplitudeService.track('Feature Consulted', {
+  AmplitudeService.track('Feature Consulted', {
     feature_name: featureName.toLowerCase(),
   })
 }

@@ -71,7 +71,8 @@ import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { logger } from '@pulse/core'
-import { amplitudeService, login } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { login } from '@pulse/common'
 import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/components'
 import { LoginManager, CurrentUserManager } from '@pulse/common/managers'
 import useNavigation from '@login/composable/useNavigation'
@@ -209,7 +210,7 @@ async function onSubmit() {
     setEmailError(errorMessage, false)
     setPasswordError(errorMessage)
 
-    amplitudeService.track('Sign In Completed', {
+    AmplitudeService.track('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })

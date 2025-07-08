@@ -4,7 +4,7 @@ import {
   useUserStore,
   useSelectedEntityStore,
 } from '@pulse/common/stores'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { fetchEntities, fetchFavoriteEntities } from '@app/services/entities'
 import { fetchUserPermissions } from '@pulse/common/services/permissions'
 import { CurrentUserService } from '@pulse/common/services/current-user'
@@ -113,12 +113,12 @@ export class AuthenticatedFlowManager {
 
       if(isCollab) {
         initProductFruitsAuthenticatedCollab(productFruitsUser)
-        amplitudeService.identifyCollaborator()
+        AmplitudeService.identifyCollaborator()
       } else {
         initProductFruitsAuthenticatedCustomer(productFruitsUser)
-        amplitudeService.identifyCustomer()
+        AmplitudeService.identifyCustomer()
       }
-      amplitudeService.setUserId(userId.toString())
+      AmplitudeService.setUserId(userId.toString())
     } catch (error) {
       logger.error('Anonymous - initAuthenticatedThirdParties - error: ', error)
       // errors are silent, we don't want to throw and crash the app if third parties fail

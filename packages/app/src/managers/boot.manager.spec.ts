@@ -1,6 +1,6 @@
 import { envVarsMock, featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 import { BootManager } from './boot.manager'
 
@@ -29,7 +29,7 @@ describe('BootManager', () => {
   })
   describe('initAmplitude', () => {
     it('should initialize amplitude with the correct parameters', () => {
-      const amplitudeInitSpy = vi.spyOn(amplitudeService, 'init')
+      const amplitudeInitSpy = vi.spyOn(AmplitudeService, 'init')
       const originalValue = envVarsMock.VITE_AMPLITUDE_API_KEY
       featureFlagManagerMock.isAmplitudeActivated.mockReturnValue(true)
       envVarsMock.VITE_AMPLITUDE_API_KEY = 'existing-key'
@@ -44,7 +44,7 @@ describe('BootManager', () => {
       envVarsMock.VITE_AMPLITUDE_API_KEY = originalValue
     })
     it('should NOT initialize amplitude if there is no VITE_AMPLITUDE_API_KEY', () => {
-      const amplitudeInitSpy = vi.spyOn(amplitudeService, 'init')
+      const amplitudeInitSpy = vi.spyOn(AmplitudeService, 'init')
       const originalValue = envVarsMock.VITE_AMPLITUDE_API_KEY
       featureFlagManagerMock.isAmplitudeActivated.mockReturnValue(true)
       envVarsMock.VITE_AMPLITUDE_API_KEY = ''
@@ -55,7 +55,7 @@ describe('BootManager', () => {
       envVarsMock.VITE_AMPLITUDE_API_KEY = originalValue
     })
     it('does not initialize Amplitude when the feature flag is disabled', () => {
-      const amplitudeInitSpy = vi.spyOn(amplitudeService, 'init')
+      const amplitudeInitSpy = vi.spyOn(AmplitudeService, 'init')
       featureFlagManagerMock.isAmplitudeActivated.mockReturnValue(false) // Disable feature flag for Amplitude
 
       BootManager.initAmplitude()
@@ -65,7 +65,7 @@ describe('BootManager', () => {
     it('should not throw an error if amplitude initialization fails', () => {
       featureFlagManagerMock.isAmplitudeActivated.mockReturnValue(true)
       const amplitudeInitError = new Error('Initialization failed')
-      const amplitudeInitSpy = vi.spyOn(amplitudeService, 'init').mockImplementation(() => {
+      const amplitudeInitSpy = vi.spyOn(AmplitudeService, 'init').mockImplementation(() => {
         throw amplitudeInitError
       })
 

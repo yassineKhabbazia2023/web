@@ -1,6 +1,6 @@
 import { describe } from 'vitest'
-import { amplitudeTrackSpy } from '@ged/__mocks__/common.import.mocks'
 import { TriggerSource } from './tracking.types'
+import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 
 import {
   trackDepositedDocument,
@@ -17,6 +17,8 @@ import {
   trackDocumentTransmitFlowStart,
 } from '@ged/services/tracking/tracking.service'
 
+vi.mock('@pulse/common/services/amplitude')
+
 const successValue = 'succeeded'
 const failValue = 'failed'
 
@@ -32,7 +34,7 @@ describe('document deposit tracking', () => {
     const lowerCasedServiceName = payload.serviceName.toLowerCase()
     trackDepositedDocument(payload)
 
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith(
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith(
       'Deposit Document Completed',
       {
         document_deposit_category: lowerCasedServiceName,
@@ -46,11 +48,11 @@ describe('document deposit tracking', () => {
 })
 
 describe('document move tracking', () => {
-  it('tracks the document move flow start and its origin', () => {
+  it('tracks the document move flow start and its originq', () => {
     const triggerSource = TriggerSource.ACTION_BAR
     trackDocumentMoveFlowStart(triggerSource)
 
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Moved Started', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Moved Started', {
       document_move_start: triggerSource,
     })
   })
@@ -66,7 +68,7 @@ describe('document move tracking', () => {
     },
   ])('tracks document move success', ({ hasSucceeded, expectedValue }) => {
     trackDocumentMove(hasSucceeded)
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Moved Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Moved Completed', {
       document_move_result: expectedValue,
     })
   })
@@ -77,7 +79,7 @@ describe('document rename tracking', () => {
     const triggerSource = TriggerSource.ACTION_BAR
     trackDocumentRenameFlowStart(triggerSource)
 
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Rename Started', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Rename Started', {
       document_rename_start: triggerSource,
     })
   })
@@ -93,7 +95,7 @@ describe('document rename tracking', () => {
     },
   ])('tracks document rename success', ({ hasSucceeded, expectedValue }) => {
     trackDocumentRename(hasSucceeded)
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Renamed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Renamed', {
       document_rename: expectedValue,
     })
   })
@@ -104,7 +106,7 @@ describe('document delete tracking', () => {
     const triggerSource = TriggerSource.ACTION_BAR
     trackDocumentDeleteFlowStart(triggerSource)
 
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Delete Started', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Delete Started', {
       document_delete_start: triggerSource,
     })
   })
@@ -120,7 +122,7 @@ describe('document delete tracking', () => {
     },
   ])('tracks document rename success', ({ hasSucceeded, expectedValue }) => {
     trackDocumentDelete(hasSucceeded)
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Deleted', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Deleted', {
       document_delete: expectedValue,
     })
   })
@@ -131,7 +133,7 @@ describe('document download tracking', () => {
     const triggerSource = TriggerSource.ACTION_BAR
     trackDocumentDownloadFlowStart(triggerSource)
 
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Download Started', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Download Started', {
       document_download_start: triggerSource,
     })
   })
@@ -147,7 +149,7 @@ describe('document download tracking', () => {
     },
   ])('tracks document rename success', ({ hasSucceeded, expectedValue }) => {
     trackDocumentDownload(hasSucceeded)
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Downloaded', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Downloaded', {
       document_download: expectedValue,
     })
   })
@@ -158,7 +160,7 @@ describe('document transmit tracking', () => {
     const triggerSource = TriggerSource.ACTION_BAR
     trackDocumentTransmitFlowStart(triggerSource)
 
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Transmit Started', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Transmit Started', {
       document_transmit_start: triggerSource,
     })
   })
@@ -174,7 +176,7 @@ describe('document transmit tracking', () => {
     },
   ])('tracks document transmit success', ({ hasSucceeded, expectedValue }) => {
     trackDocumentTransmit(hasSucceeded)
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Transmitted', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Transmitted', {
       document_transmission: expectedValue,
     })
   })
@@ -185,7 +187,7 @@ describe('document search tracking', () => {
     const searchValue = 'A search value'
     trackDocumentSearch(searchValue)
 
-    expect(amplitudeTrackSpy).toHaveBeenCalledWith('Document Searched', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Searched', {
       document_search: searchValue,
     })
   })

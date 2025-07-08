@@ -44,7 +44,7 @@ import OffersCatalogHeader from '../../components/offers-catalog-header/offers-c
 import CatalogDocumentViewer from '../../components/catalog-document-viewer/catalog-document-viewer.vue'
 import CatalogResultCount from '../../components/catalog-result-count/catalog-result-count.vue'
 import { useOffersCatalog } from './offers-catalog.composable'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { logger } from '@pulse/core'
 
 const {
@@ -85,7 +85,7 @@ function onSelectOffer(offerId: number) {
     logger.error(`Offer not found ${offerId}`)
     return
   }
-  amplitudeService.track('Offer Consulted', {
+  AmplitudeService.track('Offer Consulted', {
     offer_name: selectedOffer?.title ?? '',
   })
 }

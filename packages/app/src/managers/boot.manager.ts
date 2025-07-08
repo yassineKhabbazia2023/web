@@ -1,7 +1,7 @@
 import { CurrentUserManager, SelectedEntityManager, TokenManager } from '@pulse/common/managers'
 import { resetAllStores } from '@pulse/common/stores'
 import { APP_ROUTES } from '@pulse/common/constants'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
 import { FeatureFlagManager, logger } from '@pulse/core'
 
@@ -37,7 +37,7 @@ export class BootManager {
       const amplitudeServerUrl = VITE_AMPLITUDE_SERVER_URL
 
       if (amplitudeApiKey && FeatureFlagManager.isAmplitudeActivated()) {
-        amplitudeService.init(amplitudeApiKey, amplitudeServerUrl || undefined)
+        AmplitudeService.init(amplitudeApiKey, amplitudeServerUrl)
       }
     } catch (error) {
       logger.error('Amplitude initialization failed:', error)

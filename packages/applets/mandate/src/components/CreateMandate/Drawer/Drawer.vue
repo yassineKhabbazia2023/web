@@ -172,7 +172,7 @@ import { createMandate } from '@mandate/services/mandate'
 import Form from '@mandate/components/CreateMandate/Form'
 import Download from '@mandate/components/CreateMandate/Download'
 import type { CreateMandateModel } from '@mandate/components/CreateMandate/Form/FormModels'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const currentStep = ref(1)
 const nextStepAvailability = ref(false)
@@ -310,7 +310,7 @@ const submitMandate = async (mandate: CreateMandateModel) => {
 }
 
 function trackMandateCreation(result: 'success' | 'failed') {
-  amplitudeService.track('Bank Mandate Creation Completed', {
+  AmplitudeService.track('Bank Mandate Creation Completed', {
     bank_mandate_creation_result: result,
   })
 }

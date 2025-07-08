@@ -70,7 +70,7 @@
 import { computed } from 'vue'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { PImage, PIcon, PButton } from '@pulse/styleguide/components'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { LauncherFeature, LauncherTitle } from './LaunchCardTypes'
 import type { LaunchCardProps } from './LaunchCardTypes'
 
@@ -86,7 +86,7 @@ const sanitizedActionUrl = computed(() => {
 })
 
 const logAmplitudeEvent = (featureName: string) => {
-  amplitudeService.track('Feature Consulted', {
+  AmplitudeService.track('Feature Consulted', {
     feature_name: featureName,
   })
 }

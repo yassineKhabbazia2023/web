@@ -12,7 +12,7 @@
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { APP_ROUTES } from '@pulse/common/constants'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { PButton } from '@pulse/styleguide/components'
 import { CurrentUserManager } from '@pulse/common/managers'
@@ -29,11 +29,11 @@ const handleLogout = async () => {
   const isCollab = userStore.isCollab
   try {
     await CurrentUserManager.logout()
-    amplitudeService.track('Sign Out Completed', {
+    AmplitudeService.track('Sign Out Completed', {
       sign_out_result: 'succeeded',
     })
   } catch {
-    amplitudeService.track('Sign Out Completed', {
+    AmplitudeService.track('Sign Out Completed', {
       sign_out_result: 'failed',
     })
   }

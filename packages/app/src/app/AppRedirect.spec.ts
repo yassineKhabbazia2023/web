@@ -1,7 +1,7 @@
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { envVarsMock } from '@pulse/core/mocks'
 import {
-  amplitudeServiceMock,
+  AmplitudeServiceMock,
   getStoreMock,
   CurrentUserManagerMock,
 } from '@pulse/common/mocks'
@@ -62,9 +62,12 @@ vi.mock('@pulse/common', () => ({
   routes: {
     value: [],
   },
-  amplitudeService: amplitudeServiceMock,
   fetchUrlTerms: vi.fn(),
   setUnauthorizedCallback: setUnauthorizedCallbackMock,
+}))
+
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 const createWrapper = () =>

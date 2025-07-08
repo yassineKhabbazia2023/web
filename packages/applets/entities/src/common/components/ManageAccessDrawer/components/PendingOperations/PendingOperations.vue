@@ -84,7 +84,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { addIfNotExists, removeIfExists } from '@pulse/core/utils/array'
 import { PAccordion, PFormSearch, PIcon } from '@pulse/styleguide/components'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { displayNotification } from '@entities/common/utils'
 import type { Operation } from '@entities/common/types/OperationTypes'
 import { OperationStatus } from '@entities/common/types/OperationTypes'
@@ -142,14 +142,14 @@ const handleRejectOperation = (operation: Operation) => {
   rejectOperation()
   openConfirmationModal()
   const eventProperty = getTrackStartedEventProperty(props.trackingLocalisation, true)
-  amplitudeService.track('Registry Validation Started', eventProperty)
+  AmplitudeService.track('Registry Validation Started', eventProperty)
 }
 const handleApproveOperation = (operation: Operation) => {
   selectOperation(operation)
   approveOperation()
   openConfirmationModal()
   const eventProperty = getTrackStartedEventProperty(props.trackingLocalisation, false)
-  amplitudeService.track('Registry Validation Started', eventProperty)
+  AmplitudeService.track('Registry Validation Started', eventProperty)
 }
 const executeOperation = async (reasonForRefusal?: string) => {
   if (selectedOperation.value) {
@@ -168,7 +168,7 @@ const executeOperation = async (reasonForRefusal?: string) => {
       reasonForRefusal,
     )
 
-    amplitudeService.track('Registry Validation Completed', eventProperty)
+    AmplitudeService.track('Registry Validation Completed', eventProperty)
     // endregion
 
     displayNotification(

@@ -67,7 +67,7 @@ import { PButton, PTabs, PTabPane, PIcon } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import type { ActionBarProps } from './ActionBarTypes'
 import ActionBarLeft from '@app/schedule/components/ActionBarLeft'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const props = defineProps<ActionBarProps>()
 
@@ -81,7 +81,7 @@ const emit = defineEmits<{
 }>()
 
 const createSchedule = () => {
-  amplitudeService.track('Reminder Add Started', {
+  AmplitudeService.track('Reminder Add Started', {
     reminder_add_start: '',
   })
   emit('create-schedule')

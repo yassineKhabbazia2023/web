@@ -9,7 +9,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 import * as accountServices from '@entities/services/account'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import AddCustomerDrawer from '.'
 
 // Mocks
@@ -22,11 +22,9 @@ const defaultProps = {
   targetEntityName: mockedEntity.legalName,
   targetEntityNumber: mockedEntity.accountNumber,
 }
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: vi.fn(),
-  },
-}))
+
+vi.mock('@pulse/common/services/amplitude')
+
 vi.mock('@pulse/core', () => ({
   useDebounce: (fn: any) => fn,
 }))
@@ -199,7 +197,7 @@ describe('addCustomerDrawer', () => {
       expect(addCustomerFeedbackWrapper.props('hasError')).toBeFalsy()
     })
     it('should track an amplitude event when successfully creating a contact', async () => {
-      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
+      const trackAmplitudeSpy = vi.spyOn(AmplitudeService, 'track')
       fillEmailField()
       // To simulate the debounce time
       vi.advanceTimersByTime(600)
@@ -216,7 +214,7 @@ describe('addCustomerDrawer', () => {
       expect(wrapper.emitted('refresh-customers-list')).toBeTruthy()
     })
     it('should track an amplitude event when failing to create the contact', async () => {
-      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
+      const trackAmplitudeSpy = vi.spyOn(AmplitudeService, 'track')
       // Throw a bad request error (400)
       vi.spyOn(accountServices, 'createCustomer').mockRejectedValue({
         response: { status: 400 },
@@ -237,7 +235,7 @@ describe('addCustomerDrawer', () => {
       })
     })
     it('should create the role on the account if the contact exists in the database', async () => {
-      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
+      const trackAmplitudeSpy = vi.spyOn(AmplitudeService, 'track')
       // Throw a conflict error (409)
       vi.spyOn(accountServices, 'createCustomer').mockRejectedValue({
         response: { status: 409 },
@@ -269,7 +267,7 @@ describe('addCustomerDrawer', () => {
       expect(wrapper.emitted('refresh-customers-list')).toBeTruthy()
     })
     it('should track an amplitude event when creating a role to the account fails', async () => {
-      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
+      const trackAmplitudeSpy = vi.spyOn(AmplitudeService, 'track')
       // Throw a conflict error (409)
       vi.spyOn(accountServices, 'createCustomer').mockRejectedValue({
         response: { status: 409 },

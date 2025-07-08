@@ -130,7 +130,7 @@ import {
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
 import { fetchSubscriptionRequests, validateSubscriptionRequest } from '@entities/services/subscription'
@@ -189,12 +189,12 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
   clickedRow.value = subscriptionId
   try {
     await validateSubscriptionRequest(subscriptionId, user?.value?.email)
-    amplitudeService.track('Subscription Completed', {
+    AmplitudeService.track('Subscription Completed', {
       subscription_complete_offer_name: offer.offerCode,
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'succeeded',
     })
-    amplitudeService.track('Onboarding Started', {
+    AmplitudeService.track('Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',
       onboarding_start_result: 'succeeded',
     })
@@ -202,12 +202,12 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
     await fetchSubscriptions()
     handleOfferFiltered()
   } catch {
-    amplitudeService.track('Subscription Completed', {
+    AmplitudeService.track('Subscription Completed', {
       subscription_complete_offer_name: offer.offerCode,
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'failed',
     })
-    amplitudeService.track('Onboarding Started', {
+    AmplitudeService.track('Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',
       onboarding_start_result: 'failed',
     })

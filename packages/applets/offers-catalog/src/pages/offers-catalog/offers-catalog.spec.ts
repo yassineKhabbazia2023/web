@@ -2,7 +2,7 @@ import { ref, type Ref } from 'vue'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { getOfferCatalogReferentListMock, getOfferCatalogDocumentListMock, getOffersCatalogResponseMock } from '../../mocks/offers-catalog.service.mocks'
 import { APICallStatus } from '@pulse/common/enums'
-import { amplitudeServiceMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/core/mocks'
 import type { OfferDescription, OfferCatalogReferent, OfferCatalogDocument } from '@offers-catalog/types/offers-catalog.types'
 
@@ -15,8 +15,8 @@ vi.mock('./offers-catalog.composable', () => ({
   useOffersCatalog: useOffersCatalogMock,
 }))
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: amplitudeServiceMock,
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 vi.mock('@pulse/core', () => ({
@@ -189,8 +189,8 @@ describe('offers-catalog', () => {
     expect(openFirstTabMock).toHaveBeenCalledOnce()
     expect(openFirstTabMock).toHaveBeenCalledWith(/* no parameters */)
 
-    expect(amplitudeServiceMock.track).toHaveBeenCalledOnce()
-    expect(amplitudeServiceMock.track).toHaveBeenCalledWith(...expectedAmplitudeParameters)
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith(...expectedAmplitudeParameters)
   })
 
   it('should call logger.error when select unkown offer', async () => {
@@ -217,7 +217,7 @@ describe('offers-catalog', () => {
     expect(filterOffersCatalogMock).toHaveBeenCalledOnce()
     expect(filterOffersCatalogMock).toHaveBeenCalledWith(/* no parameters */)
 
-    expect(amplitudeServiceMock.track).not.toHaveBeenCalled()
+    expect(AmplitudeServiceMock.track).not.toHaveBeenCalled()
 
     expect(loggerMock.error).toHaveBeenCalledOnce()
     expect(loggerMock.error).toHaveBeenCalledWith(expectedLoggerErrorParameters)

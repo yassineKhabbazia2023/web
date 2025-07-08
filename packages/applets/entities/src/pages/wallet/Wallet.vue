@@ -26,7 +26,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { getTabs } from './Wallet.utils'
 import { WalletTab } from './Wallet.enums'
@@ -67,7 +67,7 @@ const handleTabClick = (tab: TabsPaneContext) => {
   const name = WALLET_TAB_ROUTES[walletTab]
 
   if (name !== undefined) {
-    amplitudeService.track('Feature Consulted', {
+    AmplitudeService.track('Feature Consulted', {
       feature_name: tab.props.label.toLowerCase(),
     })
     router.push({ name })

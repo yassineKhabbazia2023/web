@@ -4,18 +4,13 @@ import { getSmartMockedDeadline } from '@app/__mocks__/deadline.mocks'
 import { tvaLabelMock } from '@app/__mocks__/schedule.mocks'
 import { scheduleServicesMock, getScheduleModelsByKeyMock } from '@app/__mocks__/schedule.service.mocks'
 import type { Deadline } from '@app/schedule/models/Deadline'
+import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 
 import Deadlines from '.'
 
 vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
-}))
+vi.mock('@pulse/common/services/amplitude')
 
 const deadlineData: Deadline[] = [getSmartMockedDeadline()]
 
@@ -84,7 +79,7 @@ describe('deadline component', () => {
     expect(wrapper.emitted('select-deadline')).toStrictEqual([
       [occurrenceId],
     ])
-    expect(amplitudeTrackMock).toHaveBeenCalledWith('Reminder Consulted',
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Reminder Consulted',
       { reminder_consultation_localisation: 'list' })
   })
 })

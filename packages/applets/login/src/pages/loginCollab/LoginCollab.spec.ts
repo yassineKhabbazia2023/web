@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
-import { amplitudeServiceMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/core/mocks'
 
 import LoginCollab from './LoginCollab.vue'
@@ -12,11 +12,9 @@ vi.mock('@pulse/core', () => ({
   logger: loggerMock,
 }))
 
-vi.mock('@pulse/common', async () => {
-  return {
-    amplitudeService: amplitudeServiceMock,
-  }
-})
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
+}))
 
 vi.mock('@pulse/common/services/msal', async () => {
   return {

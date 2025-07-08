@@ -1,5 +1,5 @@
 import { mount, flushPromises } from '@vue/test-utils'
-import { getStoreMock, cguServiceMock, amplitudeServiceTrackMock, amplitudeServiceMock } from '@pulse/common/mocks'
+import { getStoreMock, cguServiceMock, AmplitudeServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/core/mocks'
 import { navigateToCustomerWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
@@ -33,7 +33,10 @@ vi.mock('@pulse/common', () => ({
   login: loginMock,
   isInvitationTokenValid: isInvitationTokenValidMock,
   fetchUrlTerms: vi.fn(() => CGU_URL),
-  amplitudeService: amplitudeServiceMock,
+}))
+
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 const routerPushMock = vi.hoisted(() => vi.fn())
@@ -80,8 +83,8 @@ describe('page creation password', () => {
 
   it(
     'should track amplitude event when create password page displayed', () => {
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Onboarding Email Accepted', {
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Onboarding Email Accepted', {
         onboarding_email_click: '',
       })
     },
@@ -166,7 +169,7 @@ describe('page creation password', () => {
     await flushPromises()
     wrapper.find('button').trigger('click')
     await flushPromises()
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Onboarding Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Onboarding Completed', {
       onboarding_result: 'failed',
     })
   })
@@ -192,7 +195,7 @@ describe('page creation password', () => {
       email: 'email',
       password: VALID_PASSWORD,
     }
-    expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(2, 'Onboarding Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenNthCalledWith(2, 'Onboarding Completed', {
       onboarding_result: 'succeeded',
     })
     expect(updateTermsByCurrentUser).toHaveBeenCalledTimes(1)

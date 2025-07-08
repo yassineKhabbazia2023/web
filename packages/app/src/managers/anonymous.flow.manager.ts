@@ -1,4 +1,4 @@
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { logger } from '@pulse/core'
 import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
@@ -14,13 +14,13 @@ export class AnonymousFlowManager {
   // #region setup
   static initAnonymousThirdParties(routeIsCollab: boolean) {
     try {
-      amplitudeService.reset()
+      AmplitudeService.reset()
       if(routeIsCollab) {
         initProductFruitsAnonymousCollab()
-        amplitudeService.identifyCollaborator()
+        AmplitudeService.identifyCollaborator()
       } else {
         initProductFruitsAnonymousCustomer()
-        amplitudeService.identifyCustomer()
+        AmplitudeService.identifyCustomer()
       }
     } catch (error) {
       logger.error('Anonymous - initAnonymousThirdParties - error: ', error)

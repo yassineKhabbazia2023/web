@@ -1,6 +1,6 @@
 import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
 import { getMockedMandatesData } from '@mandate/__mocks__/mandate.mocks'
-import { amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { mockedNotification, notificationHelperMock, showNotificationMock } from '@mandate/__mocks__/notification.helper.mocks'
 import * as mandateService from '@mandate/services/mandate'
 import { nextTick } from 'vue'
@@ -21,8 +21,9 @@ const idMock = 'id-mock'
 
 vi.mock('@mandate/helpers/NotificationHelper', () => notificationHelperMock)
 vi.mock('@mandate/helpers/utils', () => utilsMocks)
-vi.mock('@pulse/common', () => ({
-  amplitudeService: amplitudeServiceMock,
+
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 
@@ -292,7 +293,7 @@ describe('mandate collection', () => {
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
     await pToolbox.vm.$emit('p-toolbox-item-clicked', 'cancel-telecollection')
 
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Bank Mandate Deleted', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Bank Mandate Deleted', {
       bank_mandate_delete: '',
     })
   })
@@ -303,7 +304,7 @@ describe('mandate collection', () => {
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
     await pToolbox.vm.$emit('p-toolbox-item-clicked', 'download-pre-filled-mandate')
 
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Blank Bank Mandate Downloaded', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Blank Bank Mandate Downloaded', {
       blank_bank_mandate_download: '',
     })
   })

@@ -1,5 +1,5 @@
 vi.mock('@pulse/common', () => ({
-  amplitudeService: {
+  AmplitudeService: {
     track: vi.fn(),
   },
 }))

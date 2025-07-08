@@ -2,81 +2,148 @@ import { SERVER_ZONE } from './constants'
 import * as amplitude from '@amplitude/analytics-browser'
 import type { BaseEvent } from '@amplitude/analytics-types'
 import { logger } from '@pulse/core'
+import { ContactType } from '@pulse/common/enums'
 
-export default class AmplitudeService {
-  private static instance: AmplitudeService
-  private isInitiated: boolean
-  private currentUserId: string
-  private userProperty: Record<string, string | number>
+/**
+ * Service for managing Amplitude analytics integration
+ * Provides methods to initialize, track events, and manage user properties
+ */
+export class AmplitudeService {
+  private static initialized = false
+  private static currentUserId: string = ''
+  private static userProperty: Record<string, any> = {}
 
   private constructor() {
-    this.isInitiated = false
-    this.currentUserId = ''
-    this.userProperty = {}
+    // Private constructor to prevent instantiation
   }
 
-  public static getInstance(): AmplitudeService {
-    AmplitudeService.instance ??= new AmplitudeService()
-    return AmplitudeService.instance
+  /**
+   * Check if the service is initialized
+   * @returns true if initialized, false otherwise
+   */
+  private static isInitialized(): boolean {
+    // Check if the service is initialized
+    // Silent failure if not initialized (otherwise the .track will spam the console)
+    return AmplitudeService.initialized
   }
 
-  public init(apiKey: string, serverUrl?: string) {
-    if (!this.isInitiated) {
-      amplitude.init(
-        apiKey,
-        undefined, // the default value of the userId
-        {
-          serverZone: SERVER_ZONE,
-          defaultTracking: false,
-          minIdLength: 1,
-          serverUrl,
-        },
-      )
-      this.isInitiated = true
-      logger.trace('Amplitude - initialized')
+  /**
+   * Initialize the Amplitude service with API key and optional server proxy URL
+   * @param apiKey - The Amplitude API key
+   * @param serverUrl - Optional server proxy URL for data collection
+   */
+  static init(apiKey: string, serverUrl?: string) {
+    if (AmplitudeService.isInitialized()) {
+      logger.trace('Amplitude - already initialized, skipping init call')
+      return
     }
+
+    if (!apiKey || apiKey.trim() === '') {
+      logger.error('Amplitude - API key is required for initialization')
+      return
+    }
+
+    AmplitudeService.initialized = true
+    amplitude.init(
+      apiKey,
+      undefined, // the default value of the userId
+      {
+        serverZone: SERVER_ZONE,
+        defaultTracking: false,
+        minIdLength: 1,
+        serverUrl: serverUrl || undefined,
+      },
+    )
+    logger.trace('Amplitude - initialized')
   }
 
-  public track(
+  /**
+   * Track an event with optional properties
+   * @param eventInput - Event name or BaseEvent object
+   * @param eventProperties - Optional properties to associate with the event
+   */
+  static track(
     eventInput: string | BaseEvent,
     eventProperties?: Record<string, any>,
   ) {
-    logger.trace(`Amplitude - track event ${eventInput} for user ${this.currentUserId} with properties`, eventProperties)
-    amplitude.track(eventInput, eventProperties)
-  }
-
-  public setUserId(userId: string) {
-    // we ensure we only set the userId once per user
-    if(this.currentUserId !== userId) {
-      logger.trace('Amplitude - set current user id', userId)
-      amplitude.setUserId(userId)
-      this.currentUserId = userId
-    }
-  }
-
-  public setNewUserProperty(key: string, value: string | number) {
-    if(this.userProperty[key] === value) {
+    if (AmplitudeService.isInitialized() === false) {
       return
     }
-    const identifyEvent = new amplitude.Identify()
-    identifyEvent.set(key, value)
-    logger.trace('Amplitude - set property', key, value)
-    amplitude.identify(identifyEvent)
-    this.userProperty[key] = value
+
+    try {
+      const eventName = typeof eventInput === 'string' ? eventInput : eventInput.event_type
+      logger.trace(`Amplitude - track event "${eventName}" for user ${AmplitudeService.currentUserId} with properties`, eventProperties)
+      amplitude.track(eventInput, eventProperties)
+    } catch (error) {
+      logger.warn('Amplitude - failed to track event:', error)
+    }
   }
 
-  public identifyCustomer() {
-    this.setNewUserProperty('user_type', 'Client')
+  /**
+   * Set the user ID for Amplitude
+   * @param userId - The user ID to set
+   */
+  static setUserId(userId: string) {
+    if (AmplitudeService.isInitialized() === false) {
+      return
+    }
+
+    try {
+      // we ensure we only set the userId once per user
+      if(AmplitudeService.currentUserId !== userId) {
+        logger.trace('Amplitude - set current user id', userId)
+        amplitude.setUserId(userId)
+        AmplitudeService.currentUserId = userId
+      }
+    } catch (error) {
+      logger.warn('Amplitude - failed to set user id:', error)
+    }
   }
 
-  public identifyCollaborator() {
-    this.setNewUserProperty('user_type', 'Collaborateur')
+  private static setNewUserProperty(key: string, value: string | number) {
+    if(AmplitudeService.userProperty[key] === value) {
+      return
+    }
+    try {
+      const identifyEvent = new amplitude.Identify()
+      identifyEvent.set(key, value)
+      logger.trace('Amplitude - set property', key, value)
+      amplitude.identify(identifyEvent)
+      AmplitudeService.userProperty[key] = value
+    } catch (error) {
+      logger.warn('Amplitude - failed to set user property:', error)
+    }
   }
 
-  public reset() {
-    logger.trace('Amplitude - resetting to clean up user id and origin')
-    this.userProperty = {}
-    this.currentUserId = ''
-    amplitude.reset()
+  static identifyCustomer() {
+    if (AmplitudeService.isInitialized() === false) {
+      return
+    }
+    AmplitudeService.setNewUserProperty('user_type', ContactType.CUSTOMER)
+  }
+
+  static identifyCollaborator() {
+    if (AmplitudeService.isInitialized() === false) {
+      return
+    }
+    AmplitudeService.setNewUserProperty('user_type', ContactType.COLLABORATOR)
+  }
+
+  /**
+   * Reset the Amplitude service of all user identification properties
+   * Doesn't reset the init part
+   */
+  static reset() {
+    if (AmplitudeService.isInitialized() === false) {
+      return
+    }
+    try {
+      logger.trace('Amplitude - resetting to clean up user id and origin')
+      AmplitudeService.userProperty = {}
+      AmplitudeService.currentUserId = ''
+      amplitude.reset()
+    } catch (error) {
+      logger.warn('Amplitude - failed to reset:', error)
+    }
   }
 }

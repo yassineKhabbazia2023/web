@@ -100,7 +100,7 @@
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref, watch } from 'vue'
 import { useDebounce } from '@pulse/core'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import {
   PDrawer,
   PForm,
@@ -216,14 +216,14 @@ async function handleAddContactFormSubmission() {
   }
 }
 const onboardingFailed = () => {
-  amplitudeService.track('Onboarding Started', {
+  AmplitudeService.track('Onboarding Started', {
     onboarding_start_localisation: "Ajout d'un utilisateur",
     onboarding_start_result: 'failed',
   })
   hasFormSubmissionFailed.value = true
 }
 const onboardingSucceeded = () => {
-  amplitudeService.track('Onboarding Started', {
+  AmplitudeService.track('Onboarding Started', {
     onboarding_start_localisation: "Ajout d'un utilisateur",
     onboarding_start_result: 'succeeded',
   })

@@ -1,7 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
 import {
-  amplitudeServiceMock,
-  amplitudeServiceTrackMock,
+  AmplitudeServiceMock,
   getStoreMock,
 } from '@pulse/common/mocks'
 import { APP_ROUTES } from '@pulse/common/constants'
@@ -22,8 +21,8 @@ vi.mock('vue-router', () => ({
 
 const createWrapper = () => shallowMount(LogoutButton)
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: amplitudeServiceMock,
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 vi.mock('@pulse/common/managers')
@@ -63,8 +62,8 @@ describe('logoutButton', () => {
 
     await wrapper.findComponent({ name: 'PButton' }).trigger('click')
 
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign Out Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign Out Completed', {
       sign_out_result: 'failed',
     })
   })

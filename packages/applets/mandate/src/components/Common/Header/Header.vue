@@ -48,7 +48,7 @@ import {
   PFilterGroup,
 } from '@pulse/styleguide/components'
 import { type FilterOption } from '@pulse/styleguide/types'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 
 const { t } = useI18n({
@@ -69,7 +69,7 @@ const drawerHandler = () => {
 }
 
 function trackMandateFlowStart() {
-  amplitudeService.track('Bank Mandate Creation Started', {
+  AmplitudeService.track('Bank Mandate Creation Started', {
     bank_mandate_creation_start: '',
   })
 }

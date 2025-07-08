@@ -1,7 +1,7 @@
 import { BootManager } from './boot.manager'
 import { createTestingPinia } from '@pinia/testing'
 import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 import { AnonymousFlowManager } from './anonymous.flow.manager'
 
@@ -32,7 +32,7 @@ describe('AnonymousFlowManager', () => {
 
   describe('initAnonymousThirdParties', () => {
     it('should initialize anonymous third parties for the right typology of user - collab', () => {
-      const amplitudeIdentifyCollaboratorSpy = vi.spyOn(amplitudeService, 'identifyCollaborator')
+      const amplitudeIdentifyCollaboratorSpy = vi.spyOn(AmplitudeService, 'identifyCollaborator')
       const isCollab = true
 
       AnonymousFlowManager.initAnonymousThirdParties(isCollab)
@@ -41,7 +41,7 @@ describe('AnonymousFlowManager', () => {
       expect(amplitudeIdentifyCollaboratorSpy).toHaveBeenCalled()
     })
     it('should initialize anonymous third parties for the right typology of user - customer', () => {
-      const amplitudeIdentifyCustomerSpy = vi.spyOn(amplitudeService, 'identifyCustomer')
+      const amplitudeIdentifyCustomerSpy = vi.spyOn(AmplitudeService, 'identifyCustomer')
       const isCollab = false
 
       AnonymousFlowManager.initAnonymousThirdParties(isCollab)

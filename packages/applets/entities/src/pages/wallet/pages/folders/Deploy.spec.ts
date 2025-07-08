@@ -1,6 +1,5 @@
 import {
-  amplitudeServiceMock,
-  amplitudeServiceTrackMock,
+  AmplitudeServiceMock,
   getPaginationMock,
   getMockedUserInfo,
   getMockedEntities,
@@ -78,7 +77,10 @@ vi.mock('@pulse/common', () => ({
       get: mockedGatewayGet,
     },
   }),
-  amplitudeService: amplitudeServiceMock,
+}))
+
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 const mockRouterPush = vi.fn()
@@ -572,10 +574,10 @@ describe('deploy', () => {
         expect(manageAccessCount.text()).toBe(expectedManageAccessCount)
       }
       if (totalItemsMock === undefined || totalItemsMock === 0) {
-        expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
+        expect(AmplitudeServiceMock.track).not.toHaveBeenCalled()
       } else {
-        expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-        expect(amplitudeServiceTrackMock).toHaveBeenCalledWith(expectedAmplitudeEventName, expectedAmplitudeParams)
+        expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+        expect(AmplitudeServiceMock.track).toHaveBeenCalledWith(expectedAmplitudeEventName, expectedAmplitudeParams)
       }
     })
   })

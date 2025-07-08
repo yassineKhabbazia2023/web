@@ -24,7 +24,7 @@ import { getDeadlineCompletionSummary } from '@app/schedule/helpers/deadlineHelp
 import type { Deadline } from '@app/schedule/models/Deadline'
 import { getScheduleModelsByKey } from '@app/schedule/services'
 import { cloneDeep } from 'lodash-es'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CALENDAR_STATUS_MAPPING } from './CalendarConst'
 
 const locale = cloneDeep(fr)
@@ -38,7 +38,7 @@ const emit = defineEmits<{
 }>()
 
 const onSelectDeadline = (occurrenceId: number) => {
-  amplitudeService.track('Reminder Consulted', {
+  AmplitudeService.track('Reminder Consulted', {
     reminder_consultation_localisation: 'calendar',
   })
   emit('select-deadline', occurrenceId)

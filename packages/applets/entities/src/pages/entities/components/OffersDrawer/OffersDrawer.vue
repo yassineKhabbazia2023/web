@@ -179,7 +179,7 @@ import type { Note } from '@entities/services/subscription/subscriptionTypes'
 import { createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
 import { type Contact } from '@entities/services/contact/contactTypes'
 import { ContactType, APICallStatus } from '@pulse/common/enums'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { ContactWithRoles } from '../ManageCollaborators/ManageCollaboratorsTypes'
 import { getIsNextButtonDisabled, updateAccountOnInput } from './OffersDrawer.utils'
 
@@ -291,7 +291,7 @@ const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
       contactId: contact.id,
       roleIds: [],
     }]
-    amplitudeService.track('Subscription Initiated', {
+    AmplitudeService.track('Subscription Initiated', {
       subscription_initiate_offer_name: currentSubscriptionOffer.value?.offerCode,
     })
     if (currentSubscriptionOffer.value?.approvalRequired) {
@@ -403,22 +403,22 @@ async function validateOffer() {
     saveOfferApiCallStatus.value = APICallStatus.SUCCESS
     if (!currentSubscriptionOffer.value?.approvalRequired) {
       displayNotification('success', t('offerActivated'))
-      amplitudeService.track('Subscription Started', {
+      AmplitudeService.track('Subscription Started', {
         subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
         subscription_start_result: 'succeeded',
       })
-      amplitudeService.track('Subscription Completed', {
+      AmplitudeService.track('Subscription Completed', {
         subscription_complete_offer_name: currentSubscriptionOffer.value?.offerCode,
         subscription_complete_localisation: 'offer activation screen',
         subscription_complete_result: 'succeeded',
       })
-      amplitudeService.track('Onboarding Started', {
+      AmplitudeService.track('Onboarding Started', {
         onboarding_start_localisation: 'Offer activation',
         onboarding_start_result: 'succeeded',
       })
     } else {
       displayNotification('success', t('subscriptionCreated'))
-      amplitudeService.track('Subscription Started', {
+      AmplitudeService.track('Subscription Started', {
         subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
         subscription_start_result: 'succeeded',
       })
@@ -427,22 +427,22 @@ async function validateOffer() {
     saveOfferApiCallStatus.value = APICallStatus.ERROR
     if (!currentSubscriptionOffer.value?.approvalRequired) {
       displayNotification('error', t('offerNotActivated'))
-      amplitudeService.track('Subscription Started', {
+      AmplitudeService.track('Subscription Started', {
         subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
         subscription_start_result: 'failed',
       })
-      amplitudeService.track('Subscription Completed', {
+      AmplitudeService.track('Subscription Completed', {
         subscription_complete_offer_name: currentSubscriptionOffer.value?.offerCode,
         subscription_complete_localisation: 'offer activation screen',
         subscription_complete_result: 'failed',
       })
-      amplitudeService.track('Onboarding Started', {
+      AmplitudeService.track('Onboarding Started', {
         onboarding_start_localisation: 'Offer activation',
         onboarding_start_result: 'failed',
       })
     } else {
       displayNotification('error', t('subscriptionNotCreated'))
-      amplitudeService.track('Subscription Started', {
+      AmplitudeService.track('Subscription Started', {
         subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
         subscription_start_result: 'failed',
       })

@@ -2,6 +2,8 @@ import { describe, expect, it } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { LauncherFeature, LauncherTitle } from './LaunchCardTypes'
 import type { LaunchCardProps } from './LaunchCardTypes'
+import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
+
 import LaunchCard from '.'
 
 const defaultProps: LaunchCardProps = {
@@ -14,12 +16,7 @@ const defaultProps: LaunchCardProps = {
   downloadLabel: 'Download',
 }
 
-const mockTrackAmplitude = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: mockTrackAmplitude,
-  },
-}))
+vi.mock('@pulse/common/services/amplitude')
 
 function getWrapper(override: Partial<LaunchCardProps> = {}) {
   const props = {
@@ -122,8 +119,8 @@ describe('test LaunchCard', () => {
 
       await action.trigger('click')
 
-      expect(mockTrackAmplitude).toHaveBeenCalledOnce()
-      expect(mockTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Feature Consulted', {
         feature_name: LauncherFeature.SILAE_DOWNLOAD,
       })
     })
@@ -143,8 +140,8 @@ describe('test LaunchCard', () => {
 
       await action.trigger('click')
 
-      expect(mockTrackAmplitude).toHaveBeenCalledOnce()
-      expect(mockTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Feature Consulted', {
         feature_name: LauncherFeature.SSO_PENNYLANE,
       })
     })

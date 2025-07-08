@@ -109,11 +109,11 @@ import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
 import {
   fetchUrlTerms,
-  amplitudeService,
   createNewPassword,
   login,
   isInvitationTokenValid,
 } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { type UserInfo } from '@pulse/common/types'
 import { APP_ROUTES } from '@pulse/common/constants'
@@ -252,7 +252,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
 
           CurrentUserManager.persistToken(token)
           await updateTermsByCurrentUser(termsId.value as number)
-          amplitudeService.track('Onboarding Completed', {
+          AmplitudeService.track('Onboarding Completed', {
             onboarding_result: 'succeeded',
           })
           const user: UserInfo = {
@@ -270,7 +270,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           userStore.setUser(user)
           navigateToCustomerWallet()
         } catch {
-          amplitudeService.track('Onboarding Completed', {
+          AmplitudeService.track('Onboarding Completed', {
             onboarding_result: 'failed',
           })
         } finally {
@@ -304,8 +304,8 @@ onBeforeMount(async () => {
 })
 
 onMounted(async () => {
-  amplitudeService.reset()
-  amplitudeService.track('Onboarding Email Accepted', {
+  AmplitudeService.reset()
+  AmplitudeService.track('Onboarding Email Accepted', {
     onboarding_email_click: '',
   })
   try {

@@ -44,7 +44,7 @@ import Pagination from '@mandate/components/DisplayMandate/Pagination'
 import SearchBar from '@mandate/components/Common/SearchBar'
 import type { MandateCollection } from './Models'
 import { PAGE_SIZES } from '@mandate/constants'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { PLoader } from '@pulse/styleguide/components'
 import { useRoute } from 'vue-router'
 
@@ -97,7 +97,7 @@ async function refreshData() {
 }
 
 function trackMandateSearch(searchContent: string) {
-  amplitudeService.track('Bank Mandate Searched', {
+  AmplitudeService.track('Bank Mandate Searched', {
     bank_mandate_search: searchContent,
   })
 }

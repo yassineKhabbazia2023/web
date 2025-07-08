@@ -3,7 +3,7 @@ import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { mockTableData } from './mockData'
 import {
-  amplitudeServiceMock,
+  AmplitudeServiceMock,
   SelectedEntityManagerMock,
   getStoreMock,
   getMockedUserInfo,
@@ -35,7 +35,10 @@ vi.mock('@pulse/common', () => ({
       post: postMock,
     },
   }),
-  amplitudeService: amplitudeServiceMock,
+}))
+
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 vi.mock('@pulse/common/managers', () => ({

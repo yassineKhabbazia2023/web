@@ -7,20 +7,15 @@ import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import { tvaLabelMock } from '@app/__mocks__/schedule.mocks'
 import { PCalendar } from '@pulse/styleguide/components'
 import type { CalendarProps } from './CalendarTypes'
+import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 
 import Calendar from '.'
 
 const notCompletelyDoneDeadlinesByDateMock = getNotCompletelyDoneDeadlinesByDateMock()
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
-}))
-
+vi.mock('@pulse/common/services/amplitude')
 
 const FIXED_DATE = new Date(2024, 3, 1)
 
@@ -108,7 +103,7 @@ describe('calendar component', () => {
     const occurrenceId = 1234567890
     wrapper.findComponent(PCalendar).vm.$emit('select-deadline', occurrenceId)
     expect(wrapper.emitted('select-deadline')).toStrictEqual([[occurrenceId]])
-    expect(amplitudeTrackMock).toHaveBeenCalledWith('Reminder Consulted',
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Reminder Consulted',
       { reminder_consultation_localisation: 'calendar' })
   })
 })

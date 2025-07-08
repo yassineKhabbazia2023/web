@@ -10,9 +10,4 @@ export const commonMock = {
   routes: {
     value: [],
   },
-  amplitudeService: {
-    init: vi.fn(),
-    track: vi.fn(),
-    setUserId: vi.fn(),
-  },
 }

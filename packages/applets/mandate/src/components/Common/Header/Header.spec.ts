@@ -1,5 +1,5 @@
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
-import { amplitudeServiceMock, amplitudeServiceTrackMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { expect, describe, it, vi } from 'vitest'
 import Drawer from '@mandate/components/CreateMandate/Drawer'
 import { nextTick } from 'vue'
@@ -9,8 +9,8 @@ import Header from '.'
 const createWrapper = () =>
   wrapperFactory(Header)
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: amplitudeServiceMock,
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 function getDrawerOpenButton(wrapper: VueWrapper) {
@@ -33,7 +33,7 @@ describe('header.vue', () => {
   it('tracks mandate creation flow trigger', () => {
     const drawerOpenButton = getDrawerOpenButton(wrapper)
     drawerOpenButton.trigger('click')
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Bank Mandate Creation Started', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Bank Mandate Creation Started', {
       bank_mandate_creation_start: '',
     })
   })

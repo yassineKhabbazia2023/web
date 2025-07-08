@@ -5,7 +5,7 @@ import { notificationsServiceMock } from '@app/__mocks__/notification.service.mo
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import {
   CurrentUserManagerMock,
-  amplitudeServiceMock,
+  AmplitudeServiceMock,
   getStoreMock,
   getMockedUserInfo,
 } from '@pulse/common/mocks'
@@ -77,8 +77,11 @@ vi.mock('@pulse/common', () => ({
     value: [],
   },
   fetchUrlTerms: vi.fn(),
-  amplitudeService: amplitudeServiceMock,
   setUnauthorizedCallback: setUnauthorizedCallbackMock,
+}))
+
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 vi.mock('@pulse/common/managers', () => ({

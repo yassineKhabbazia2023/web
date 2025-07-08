@@ -64,7 +64,7 @@ export class MsalService {
           logger.warn(error)
           // we (temporarily?) don't track the sign in failure
           // we want to see if MsalService reduce the Amplitude billing
-          // amplitudeService.track('Sign In Completed', {
+          // AmplitudeService.track('Sign In Completed', {
           // sign_in_method: 'SSO',
           // sign_in_result: 'failed',
           // })

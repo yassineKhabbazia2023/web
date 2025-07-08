@@ -8,6 +8,7 @@ import { getOccurrenceAttachmentMock, getOccurrenceMock, scheduleServicesMock } 
 import { getMockedOccurrence, getMockedScheduleOccurrence } from '@app/__mocks__/occurrence.mocks'
 import * as scheduleServices from '@app/schedule/services'
 import { downloadFile, saveFileAs } from '@app/schedule/helpers/utils'
+import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 
 import OccurrenceDrawer from '.'
 
@@ -19,8 +20,6 @@ const mockedOccurrence = getMockedOccurrence({
 })
 const fileName = 'declaration_tva_mai_2024.pdf'
 const attachmentContent = 'schedule attachment data'
-
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
 interface Window {
   showSaveFilePicker: any
@@ -57,11 +56,7 @@ vi.mock('@app/schedule/helpers/utils', () => ({
   fileSizeHumanFormatter: vi.fn(() => ''),
 }))
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
-}))
+vi.mock('@pulse/common/services/amplitude')
 
 const occurrenceId = 442
 
@@ -163,7 +158,7 @@ describe('test OccurrenceDrawer', () => {
 
     expect(postDeadlineAccountStatusSpy).toHaveBeenCalledOnce()
     expect(postDeadlineAccountStatusSpy).toHaveBeenNthCalledWith(1, occurrenceId, accountId, expectedStatus)
-    expect(amplitudeTrackMock).toHaveBeenCalledOnce()
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
   })
   it('should log a logger.error message when the getOccurrence request fails', async () => {
     const expectedErrorMessage = 'Authorization Error: API Access Denied'

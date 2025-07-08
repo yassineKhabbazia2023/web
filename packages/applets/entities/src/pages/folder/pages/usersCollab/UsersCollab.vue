@@ -212,7 +212,8 @@ import {
 import RemoveUserDialog from '../usersClient/components/RemoveUserDialog'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { AvatarRoles, PNotification } from '@pulse/styleguide'
-import { amplitudeService, getInitials } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { getInitials } from '@pulse/common'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
 import {
@@ -263,7 +264,7 @@ const accountOperationsList = ref<AccountOperations[]>([])
 
 const handleOpenAccessDrawer = () => {
   isManageAccessDrawerOpened.value = true
-  amplitudeService.track('Registry Validation Initiated')
+  AmplitudeService.track('Registry Validation Initiated')
 }
 
 async function loadOperations() {

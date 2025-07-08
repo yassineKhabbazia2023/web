@@ -100,7 +100,7 @@ import {
   PPastille,
 } from '@pulse/styleguide/components'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const emit = defineEmits<{
   'update:active-date': [Date]
@@ -131,7 +131,7 @@ const props = defineProps<ActionBarLeftProps>()
 const isExpanded = ref(false)
 
 const searchReminder = () => {
-  amplitudeService.track('Reminder Searched', {
+  AmplitudeService.track('Reminder Searched', {
     reminder_search: props.searchTerm,
   })
   emit('update:is-search-state', true)

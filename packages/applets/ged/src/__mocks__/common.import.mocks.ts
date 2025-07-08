@@ -53,7 +53,7 @@ vi.mock('@pulse/common', () => ({
     }),
     destroyConnection: vi.fn(),
   })),
-  amplitudeService: {
+  AmplitudeService: {
     track: amplitudeTrackSpy,
   },
 }))

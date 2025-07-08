@@ -11,6 +11,7 @@
     "./enums": "./src/enums.mts",
     "./managers": "./src/managers/index.mts",
     "./helpers": "./src/helpers/index.mts",
+    "./services/amplitude": "./src/services/amplitude/index.mts",
     "./services/cgu": "./src/services/cgu/index.mts",
     "./services/current-user": "./src/services/current-user/index.mts",
     "./services/permissions": "./src/services/permissions/index.mts",

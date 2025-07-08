@@ -1,9 +1,8 @@
-import { describe, expect, it, vi } from 'vitest'
 import { SERVER_ZONE } from './constants'
 import { Identify } from '@amplitude/analytics-browser'
 import { ContactType } from '@pulse/common/enums'
 
-import AmplitudeService from './amplitude.service'
+import { AmplitudeService } from './amplitude.service'
 
 const initSpy = vi.fn()
 const resetSpy = vi.fn()
@@ -24,23 +23,30 @@ vi.mock('@amplitude/analytics-browser', async () => {
   }
 })
 
+const FAKE_API_KEY = '42'
+const serverUrl = 'https://api.eu.amplitude.com/2/httpapi'
+const CUSTOM_EVENT = 'custom event'
+const CUSTOM_USER_ID = '123'
+
+// Helper function to reset AmplitudeService static properties
+const resetAmplitudeService = () => {
+  // Use defensive semicolon to prevent Automatic Semicolon Insertion issues
+  ;(AmplitudeService as any).initialized = false
+  ;(AmplitudeService as any).currentUserId = ''
+  ;(AmplitudeService as any).userProperty = {}
+}
+
+
 describe('amplitude', () => {
-  let amplitudeService: AmplitudeService
   beforeEach(() => {
-    // Reset the singleton instance before each test
-    (AmplitudeService as any).instance = undefined
-    amplitudeService = AmplitudeService.getInstance()
+    resetAmplitudeService()
   })
 
   it('can init with serverUrl', () => {
-    const FAKE_API_KEY = '42'
-
     expect(initSpy).toHaveBeenCalledTimes(0)
 
-    const serverUrl = 'https://api.eu.amplitude.com/2/httpapi'
-
-    amplitudeService.init(FAKE_API_KEY, serverUrl)
-    amplitudeService.init(FAKE_API_KEY) // call init twice
+    AmplitudeService.init(FAKE_API_KEY, serverUrl)
+    AmplitudeService.init(FAKE_API_KEY) // call init twice
 
     expect(initSpy).toHaveBeenCalledOnce()
 
@@ -53,11 +59,9 @@ describe('amplitude', () => {
   })
 
   it('can init without serverUrl', () => {
-    const FAKE_API_KEY = '42'
-
     expect(initSpy).toHaveBeenCalledTimes(0)
 
-    amplitudeService.init(FAKE_API_KEY)
+    AmplitudeService.init(FAKE_API_KEY)
 
     expect(initSpy).toHaveBeenCalledOnce()
 
@@ -70,44 +74,100 @@ describe('amplitude', () => {
   })
 
   it('can track', () => {
-    const CUSTOM_EVENT = 'custom event'
+    AmplitudeService.init(FAKE_API_KEY)
 
     expect(trackSpy).toHaveBeenCalledTimes(0)
 
-    amplitudeService.track(CUSTOM_EVENT)
+    AmplitudeService.track(CUSTOM_EVENT)
 
     expect(trackSpy).toHaveBeenCalledOnce()
     expect(trackSpy).toHaveBeenCalledWith(CUSTOM_EVENT)
   })
 
   it('can set a user id', () => {
-    const CUSTOM_USER_ID = '123'
+    AmplitudeService.init(FAKE_API_KEY)
 
     expect(setUserIdSpy).toHaveBeenCalledTimes(0)
 
-    amplitudeService.setUserId(CUSTOM_USER_ID)
+    AmplitudeService.setUserId(CUSTOM_USER_ID)
+    AmplitudeService.setUserId(CUSTOM_USER_ID) // second call should not change anything
 
     expect(setUserIdSpy).toHaveBeenCalledOnce()
     expect(setUserIdSpy).toHaveBeenCalledWith(CUSTOM_USER_ID)
   })
 
-  it('can set new user property', () => {
+  it('identifyCustomer can set new user property', () => {
+    AmplitudeService.init(FAKE_API_KEY)
+
+    const identifyEvent = new Identify()
+    identifyEvent.set('user_type', ContactType.CUSTOMER)
+
+    expect(identifySpy).toHaveBeenCalledTimes(0)
+
+    AmplitudeService.identifyCustomer()
+    AmplitudeService.identifyCustomer() // second call should not change anything
+
+    expect(identifySpy).toHaveBeenCalledOnce()
+    expect(identifySpy).toHaveBeenCalledWith(identifyEvent)
+  })
+
+  it('identifyCollaborator can set new user property', () => {
+    AmplitudeService.init(FAKE_API_KEY)
+
     const identifyEvent = new Identify()
     identifyEvent.set('user_type', ContactType.COLLABORATOR)
 
     expect(identifySpy).toHaveBeenCalledTimes(0)
 
-    amplitudeService.setNewUserProperty('user_type', ContactType.COLLABORATOR)
+    AmplitudeService.identifyCollaborator()
+    AmplitudeService.identifyCollaborator() // second call should not change anything
 
     expect(identifySpy).toHaveBeenCalledOnce()
     expect(identifySpy).toHaveBeenCalledWith(identifyEvent)
   })
 
   it('can reset a user session', () => {
+    AmplitudeService.init(FAKE_API_KEY)
+
     expect(resetSpy).toHaveBeenCalledTimes(0)
 
-    amplitudeService.reset()
+    AmplitudeService.reset()
 
     expect(resetSpy).toHaveBeenCalledOnce()
+  })
+
+  describe('when isInitialized is false', () => {
+    beforeEach(() => {
+      resetAmplitudeService()
+    })
+
+    it('track should not operate', () => {
+      expect(AmplitudeService.track(CUSTOM_EVENT)).toBeUndefined()
+      expect(trackSpy).not.toHaveBeenCalled()
+    })
+
+    it('setUserId should not operate', () => {
+      AmplitudeService.setUserId(CUSTOM_USER_ID)
+
+      expect(setUserIdSpy).not.toHaveBeenCalled()
+    })
+
+    it('identifyCustomer should not operate', () => {
+      AmplitudeService.identifyCustomer()
+
+      expect(identifySpy).not.toHaveBeenCalled()
+    })
+
+    it('identifyCollaborator should not operate', () => {
+      AmplitudeService.identifyCollaborator()
+
+      expect(identifySpy).not.toHaveBeenCalled()
+    })
+
+    it('reset should not operate', () => {
+      AmplitudeService.reset()
+
+      expect(resetSpy).not.toHaveBeenCalled()
+    })
   })
 })

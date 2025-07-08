@@ -2,8 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import {
   cguServiceMock,
-  amplitudeServiceTrackMock,
-  amplitudeServiceMock,
+  AmplitudeServiceMock,
   CurrentUserManagerMock,
 } from '@pulse/common/mocks'
 import { envVarsMock } from '@pulse/core/mocks'
@@ -47,7 +46,10 @@ vi.mock('vue-router', () => ({
 
 vi.mock('@pulse/common', () => ({
   login: loginMock,
-  amplitudeService: amplitudeServiceMock,
+}))
+
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 const initAuthClientMocked = vi.hoisted(() => vi.fn(() => {
@@ -177,8 +179,8 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })
@@ -215,8 +217,8 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })
@@ -246,8 +248,8 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })
@@ -283,8 +285,8 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-    expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })
@@ -309,7 +311,7 @@ describe('LoginClient', () => {
 
     const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
-    expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
+    expect(AmplitudeServiceMock.track).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
     expect(initAuthClientMocked).not.toHaveBeenCalled()
     expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
@@ -327,7 +329,7 @@ describe('LoginClient', () => {
 
     const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
-    expect(amplitudeServiceTrackMock).not.toHaveBeenCalled()
+    expect(AmplitudeServiceMock.track).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
     expect(initAuthClientMocked).not.toHaveBeenCalled()
     expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()

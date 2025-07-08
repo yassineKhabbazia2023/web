@@ -1,7 +1,7 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { subscriptionRequestMock } from '@entities/__mocks__/subscription.mocks'
 import * as helpers from '@entities/common/utils/helpers'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { ComponentWrapper } from '@entities/common/types'
 import { nextTick } from 'vue'
 import { getMockedUserInfo, getStoreMock } from '@pulse/common/mocks'
@@ -24,11 +24,8 @@ vi.mock('@entities/services/subscription', async () => {
     fetchSubscriptionRequests: mockFetchSubscriptionRequests,
   }
 })
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: vi.fn(),
-  },
-}))
+
+vi.mock('@pulse/common/services/amplitude')
 
 const requestMenu = [
   {
@@ -130,7 +127,7 @@ describe('subscriptionsTable', () => {
   })
 
   it("should send a request to validate the demand when the 'Validate' button is clicked", async () => {
-    const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+    const spyTrackAmplitude = vi.spyOn(AmplitudeService, 'track')
     const spyDisplayNotification = vi.spyOn(helpers, 'displayNotification')
 
     wrapper = mount(SubscriptionsTable)
@@ -155,7 +152,7 @@ describe('subscriptionsTable', () => {
 
   it('should track the amplitude event and display an error notification if the demand validation fails', async () => {
     mockValidateSubscriptionRequest.mockRejectedValue('API Error: 503 Service Unavailable')
-    const spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+    const spyTrackAmplitude = vi.spyOn(AmplitudeService, 'track')
     const spyDisplayNotification = vi.spyOn(helpers, 'displayNotification')
 
     wrapper = mount(SubscriptionsTable)

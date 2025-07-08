@@ -3,7 +3,7 @@ import { flushPromises } from '@vue/test-utils'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { notificationHelperMock } from '@mandate/__mocks__/notification.helper.mocks'
 import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
-import { amplitudeServiceMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import Table from '.'
 
@@ -18,10 +18,10 @@ const currentPage = 1
 
 vi.mock('@mandate/helpers/NotificationHelper', () => notificationHelperMock)
 vi.mock('@mandate/helpers/utils', () => utilsMocks)
-vi.mock('@pulse/common', () => ({
-  amplitudeService: amplitudeServiceMock,
-}))
 
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
+}))
 
 vi.mock('@mandate/services/mandate', () => {
   return {

@@ -3,8 +3,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import type { Tab } from './FolderTypes'
 import * as FolderHelper from './FolderHelper'
 import {
-  amplitudeServiceMock,
-  amplitudeServiceTrackMock,
+  AmplitudeServiceMock,
   getStoreMock,
 } from '@pulse/common/mocks'
 import type { ComponentWrapper } from '@entities/common/types'
@@ -35,11 +34,13 @@ const mockedTabs: Tab[] = [
   },
 ]
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: amplitudeServiceMock,
-  sanitizeUrl: vi.fn(),
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
+vi.mock('@pulse/common', () => ({
+  sanitizeUrl: vi.fn(),
+}))
 
 const fetchUserAccountPermissionsMock = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/common/services/permissions', () => ({
@@ -120,8 +121,8 @@ describe('folder', () => {
     ])('should track amplitude event when %s is clicked', (tabName, tabId) => {
       document.getElementById(tabId)?.click()
 
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Feature Consulted', {
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Feature Consulted', {
         feature_name: tabName,
       })
     })

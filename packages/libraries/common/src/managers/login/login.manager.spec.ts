@@ -2,11 +2,7 @@ import { useUserStore } from '@pulse/common/stores'
 import {
   getStoreMock,
   getMockedUser,
-  amplitudeServiceMock,
-  amplitudeServiceIdentifyCollaboratorMock,
-  amplitudeServiceSetUserIdMock,
-  amplitudeServiceTrackMock,
-  amplitudeServiceIdentifyCustomerMock,
+  AmplitudeServiceMock,
 } from '@pulse/common/mocks'
 import { TokenManager, CurrentUserManager } from '@pulse/common/managers'
 import { CurrentUserService } from '@pulse/common/services/current-user'
@@ -34,8 +30,8 @@ vi.mock('@pulse/common/managers', () => ({
   },
 }))
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: amplitudeServiceMock,
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 const userMock = getMockedUser()
@@ -84,9 +80,9 @@ describe('LoginManager', () => {
       await LoginManager.initAuthCollab()
 
       // Assert
-      expect(amplitudeServiceIdentifyCollaboratorMock).toHaveBeenCalledOnce()
-      expect(amplitudeServiceSetUserIdMock).toHaveBeenCalledWith(userMock.id.toString())
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
+      expect(AmplitudeServiceMock.identifyCollaborator).toHaveBeenCalledOnce()
+      expect(AmplitudeServiceMock.setUserId).toHaveBeenCalledWith(userMock.id.toString())
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
         sign_in_method: 'SSO',
         sign_in_result: 'succeeded',
       })
@@ -130,9 +126,9 @@ describe('LoginManager', () => {
       await LoginManager.initAuthClient()
 
       // Assert
-      expect(amplitudeServiceIdentifyCustomerMock).toHaveBeenCalledOnce()
-      expect(amplitudeServiceSetUserIdMock).toHaveBeenCalledWith(userMock.id.toString())
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledWith('Sign In Completed', {
+      expect(AmplitudeServiceMock.identifyCustomer).toHaveBeenCalledOnce()
+      expect(AmplitudeServiceMock.setUserId).toHaveBeenCalledWith(userMock.id.toString())
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
         sign_in_method: 'email',
         sign_in_result: 'succeeded',
       })

@@ -5,7 +5,7 @@ import * as ReportService from '@app/services/reporting'
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import { getMockedBIReports } from '@app/__mocks__/bi-reports.mocks'
 import { CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked } from '@pulse/common/mocks'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { PERMISSION_ACCOUNT, PERMISSION_GLOBAL } from '@pulse/common/constants'
 
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
@@ -30,11 +30,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: vi.fn(),
-  },
-}))
+vi.mock('@pulse/common/services/amplitude')
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
@@ -52,7 +48,7 @@ describe('sidebarEntityMenu', () => {
   let wrapper: VueWrapper<any>
   let spyTrackAmplitude: MockInstance
   beforeEach(() => {
-    spyTrackAmplitude = vi.spyOn(amplitudeService, 'track')
+    spyTrackAmplitude = vi.spyOn(AmplitudeService, 'track')
   })
   describe('display', () => {
     it('should display the sidebar entity menu correctly', () => {

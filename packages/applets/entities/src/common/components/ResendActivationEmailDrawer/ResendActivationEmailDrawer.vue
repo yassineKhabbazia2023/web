@@ -80,7 +80,7 @@ import { displayNotification } from '@entities/common/utils'
 import { formatItemsFromApi } from '@entities/pages/folder/pages/usersClient/UsersClientHelper'
 import TableData from '@entities/pages/folder/pages/usersClient/components/TableData'
 import NoResult from '@entities/common/components/NoResult'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { ExtendedUser } from '@entities/pages/folder/pages/usersClient/UsersClientTypes'
 import type { UserStatus } from '@entities/common/types'
 import { ContactType } from '@pulse/common/enums'
@@ -126,13 +126,13 @@ const handleRetryMassActivationEmail = async () => {
           customerCount: invitedCustomerIDs.length,
         })
       displayNotification('success', notificationMessage)
-      amplitudeService.track('Onboarding Relaunched', {
+      AmplitudeService.track('Onboarding Relaunched', {
         onboarding_relaunch_result: 'succeeded',
       })
     }
   } catch {
     displayNotification('error', t('customersInvitationFailed'))
-    amplitudeService.track('Onboarding Relaunched', {
+    AmplitudeService.track('Onboarding Relaunched', {
       onboarding_relaunch_result: 'failed',
     })
   } finally {

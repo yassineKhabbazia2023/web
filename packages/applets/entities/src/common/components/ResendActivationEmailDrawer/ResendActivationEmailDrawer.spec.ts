@@ -10,7 +10,7 @@ import TableData from '@entities/pages/folder/pages/usersClient/components/Table
 import * as walletServices from '@entities/services/wallet'
 import * as contactServices from '@entities/services/contact'
 import * as helpers from '@entities/common/utils'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import ResendActivationEmailDrawer from '.'
 
 // Mocks
@@ -75,7 +75,7 @@ describe('resendActivationEmailDrawer', () => {
       ])
     })
     it('should send a request to the contact API to invite all selected customers when submitting', async () => {
-      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
+      const trackAmplitudeSpy = vi.spyOn(AmplitudeService, 'track')
       const inviteCustomersSpy = vi
         .spyOn(contactServices, 'inviteCustomers')
         .mockResolvedValue([mockedUserClientAccount.contactId])
@@ -107,7 +107,7 @@ describe('resendActivationEmailDrawer', () => {
     })
     it('should display a toast notification if the request to invite customers fails', async () => {
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      const trackAmplitudeSpy = vi.spyOn(amplitudeService, 'track')
+      const trackAmplitudeSpy = vi.spyOn(AmplitudeService, 'track')
       const spyInviteCustomers = vi
         .spyOn(contactServices, 'inviteCustomers')
         .mockRejectedValue(expectedErrorMessage)

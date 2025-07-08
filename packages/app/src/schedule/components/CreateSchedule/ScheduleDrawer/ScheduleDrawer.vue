@@ -48,7 +48,7 @@ import { useI18n } from 'vue-i18n'
 import type { ScheduleDrawerProps } from './ScheduleDrawerTypes'
 import CreateScheduleForm from '@app/schedule/components/CreateSchedule/CreateScheduleForm'
 import { accountsDataTransformer } from '@app/schedule/helpers/utils'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -109,7 +109,7 @@ const sendReminder = async (schedule: Schedule) => {
   } catch (error) {
     logger.warn(error)
   } finally {
-    amplitudeService.track('Reminder Add Completed', {
+    AmplitudeService.track('Reminder Add Completed', {
       reminder_add_type: schedule.template.typeShort,
       reminder_add_recipient: schedule.targets.length === 1 ? '1' : 'many',
       reminder_add_file_attached: schedule.attachment ? 'true' : 'false',

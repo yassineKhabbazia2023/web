@@ -200,7 +200,7 @@ import {
   PIcon,
 } from '@pulse/styleguide/components'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager } from '@pulse/common/managers'
 import type { Entity } from '@pulse/common/types'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
@@ -448,7 +448,7 @@ async function fetchAccountList() {
 
 async function onManageAccessButtonClick() {
   if (hasManageAccess.value && (manageAccessCount.value ?? 0) > 0) {
-    amplitudeService.track('Registry Validation Initiated', {
+    AmplitudeService.track('Registry Validation Initiated', {
       registry_validation_initialisation_localisation: 'portefeuille',
     })
     isManageAccessDrawerOpened.value = true

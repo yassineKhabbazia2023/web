@@ -39,11 +39,9 @@ vi.mock('@pulse/common', () => ({
   createNewPassword: createNewPasswordMock,
   isInvitationTokenValid: isInvitationTokenValidMock,
   fetchUrlTerms: vi.fn(),
-  amplitudeService: {
-    track: vi.fn(),
-    reset: vi.fn(),
-  },
 }))
+
+vi.mock('@pulse/common/services/amplitude')
 
 describe('page creation password', () => {
   beforeEach(() => {

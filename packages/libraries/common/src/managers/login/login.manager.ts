@@ -1,4 +1,4 @@
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager, TokenManager } from '@pulse/common/managers'
 import { useUserStore } from '@pulse/common/stores'
 import { CurrentUserService } from '@pulse/common/services/current-user'
@@ -23,11 +23,11 @@ export class LoginManager {
       const userId = userStore.getUserId()
 
       if (userId !== undefined && userId > 0) {
-        amplitudeService.identifyCustomer()
-        amplitudeService.setUserId(userId.toString())
+        AmplitudeService.identifyCustomer()
+        AmplitudeService.setUserId(userId.toString())
         // we only track the sign in success when the userId exists
         // this is to avoid tracking the sign in success with unknown user
-        amplitudeService.track('Sign In Completed', {
+        AmplitudeService.track('Sign In Completed', {
           sign_in_method: 'email',
           sign_in_result: 'succeeded',
         })
@@ -46,11 +46,11 @@ export class LoginManager {
       const userId = userStore.getUserId()
 
       if (userId !== undefined && userId > 0) {
-        amplitudeService.identifyCollaborator()
-        amplitudeService.setUserId(userId.toString())
+        AmplitudeService.identifyCollaborator()
+        AmplitudeService.setUserId(userId.toString())
         // we only track the sign in success when the userId exists
         // this is to avoid tracking the sign in success with unknown user
-        amplitudeService.track('Sign In Completed', {
+        AmplitudeService.track('Sign In Completed', {
           sign_in_method: 'SSO',
           sign_in_result: 'succeeded',
         })

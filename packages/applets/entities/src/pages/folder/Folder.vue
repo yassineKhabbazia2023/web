@@ -34,7 +34,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import Home from './pages/WalletLandingPage'
@@ -77,7 +77,7 @@ const isHomeDisplayed = computed(() => route.name === 'folder')
 
 // Functions
 const handleTabClick = (tab: any) => {
-  amplitudeService.track('Feature Consulted', {
+  AmplitudeService.track('Feature Consulted', {
     feature_name: tab.props.label.toLowerCase(),
   })
   router.push({

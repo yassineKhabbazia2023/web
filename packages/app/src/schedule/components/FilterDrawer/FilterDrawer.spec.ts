@@ -4,18 +4,13 @@ import { expect, describe, it, vi } from 'vitest'
 import { scheduleServicesMock } from '@app/__mocks__/schedule.service.mocks'
 import type { FilterDrawerProps, Filters } from './FilterDrawerTypes'
 import type { Status } from '@app/schedule/models/Deadline'
+import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 
 import FilterDrawer from '.'
 
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
-
 vi.mock('@app/schedule/services', () => scheduleServicesMock)
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
-}))
+vi.mock('@pulse/common/services/amplitude')
 
 async function createWrapper(override: Partial<FilterDrawerProps> = {}) {
   const defaultProps: FilterDrawerProps = {
@@ -163,7 +158,7 @@ describe('test FilterDrawer', () => {
 
     expect(emittedApply).toStrictEqual([expectedFilters])
     expect(emittedModelValue).toStrictEqual([false])
-    expect(amplitudeTrackMock).toHaveBeenCalledOnce()
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
   })
 
   it('should reset filters when user clicks on reset button', async () => {

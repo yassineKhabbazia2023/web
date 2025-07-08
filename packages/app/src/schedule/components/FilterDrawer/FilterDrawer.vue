@@ -83,7 +83,7 @@ import { getAccountsCollection, getScheduleModels } from '@app/schedule/services
 import type { PDropdownOption, PFieldRadioOptions } from '@pulse/styleguide/types'
 import type { Status } from '@app/schedule/models/Deadline'
 import { getDefaultFilters } from '@app/schedule/helpers/utils'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -187,7 +187,7 @@ function onClickApply() {
     ...templates,
   ].filter((s) => s !== '')
 
-  amplitudeService.track('Reminder Filtered', {
+  AmplitudeService.track('Reminder Filtered', {
     reminder_filter: filters,
   })
 

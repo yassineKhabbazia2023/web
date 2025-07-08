@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { amplitudeServiceTrackMock, amplitudeServiceMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import type { PendingOperationProps } from './PendingOperations.types'
 import { AmplitudeOperationStatus, TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
@@ -9,8 +9,8 @@ import * as commonUtils from '@entities/common/utils'
 
 import PendingOperationsTable from '.'
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: amplitudeServiceMock,
+vi.mock('@pulse/common/services/amplitude', () => ({
+  AmplitudeService: AmplitudeServiceMock,
 }))
 
 const trackingLocalisationMock = TrackingLocalisation.WALLET
@@ -104,7 +104,7 @@ describe('PendingOperations', () => {
         accountOperationsListMock[0].operations[0].operationId,
         OperationStatus.REJECTED,
       )
-      expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(
+      expect(AmplitudeServiceMock.track).toHaveBeenNthCalledWith(
         2,
         'Registry Validation Completed',
         {
@@ -132,7 +132,7 @@ describe('PendingOperations', () => {
         accountOperationsListMock[0].operations[0].operationId,
         OperationStatus.APPROVED,
       )
-      expect(amplitudeServiceTrackMock).toHaveBeenNthCalledWith(
+      expect(AmplitudeServiceMock.track).toHaveBeenNthCalledWith(
         2,
         'Registry Validation Completed',
         {
@@ -173,8 +173,8 @@ describe('PendingOperations', () => {
 
       expect(wrapper.vm.isConfirmationModalVisible).toBeTruthy()
       expect(wrapper.vm.isOperationPendingRefusal).toBeTruthy()
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledWith(
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith(
         'Registry Validation Started',
         {
           registry_validation_start_result: AmplitudeOperationStatus.REJECTED,
@@ -190,8 +190,8 @@ describe('PendingOperations', () => {
 
       expect(wrapper.vm.isConfirmationModalVisible).toBeTruthy()
       expect(wrapper.vm.isOperationPendingRefusal).toBeFalsy()
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledOnce()
-      expect(amplitudeServiceTrackMock).toHaveBeenCalledWith(
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith(
         'Registry Validation Started',
         {
           registry_validation_start_result: AmplitudeOperationStatus.ACCEPTED,

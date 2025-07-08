@@ -196,7 +196,7 @@ import {
 import { datetimeFormats } from '@app/schedule/helpers/scheduleConsts'
 import { showNotification } from '@app/schedule/helpers/notification'
 import type { NotificationType } from '@app/schedule/helpers/notificationTypes'
-import { amplitudeService } from '@pulse/common'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const StringField = PField<string>
 
@@ -266,7 +266,7 @@ async function onToggleDeadlineAccountStatus(accountId: number, actualStatus: St
   } catch (error) {
     logger.error(error)
   } finally {
-    amplitudeService.track('Reminder Status Updated', {
+    AmplitudeService.track('Reminder Status Updated', {
       reminder_update_status: status.toString(),
       reminder_update_result: createdSuccessfully ? 'succeeded' : 'failed',
     })

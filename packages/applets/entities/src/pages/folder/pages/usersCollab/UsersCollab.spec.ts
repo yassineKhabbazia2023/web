@@ -85,10 +85,9 @@ const selectedEntityMock = getMockedEntity({ accountId: mockedAccount.accountId 
 
 vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(),
-  amplitudeService: {
-    track: vi.fn(),
-  },
 }))
+
+vi.mock('@pulse/common/services/amplitude')
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,

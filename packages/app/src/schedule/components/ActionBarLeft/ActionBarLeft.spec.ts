@@ -2,17 +2,13 @@ import { mount } from '@vue/test-utils'
 import dayjs from 'dayjs'
 import { expect, describe, it, vi } from 'vitest'
 import type { ActionBarLeftProps } from './ActionBarLeftTypes'
+import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 
 import ActionBarLeft from '.'
 
 const TEST_DATE = '2024-04-10'
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
-}))
+vi.mock('@pulse/common/services/amplitude')
 
 function createWrapper(override: Partial<ActionBarLeftProps> = {}) {
   const defaultProps: ActionBarLeftProps = {
@@ -79,7 +75,7 @@ describe('month.vue', () => {
     pExpandableSearch.vm.$emit('enter')
 
     expect(wrapper.emitted('update:is-search-state')).toStrictEqual([[true]])
-    expect(amplitudeTrackMock).toHaveBeenCalledWith('Reminder Searched', { reminder_search: '' })
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Reminder Searched', { reminder_search: '' })
   })
 
   it('should display properly when isSearchState is true', () => {

@@ -2,15 +2,11 @@ import { describe, it, expect, vi } from 'vitest'
 import { TEST_DATE } from '@app/__mocks__/schedule.service.mocks'
 import { shallowMount } from '@vue/test-utils'
 import type { ActionBarProps } from './ActionBarTypes'
+import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 
 import ActionBar from '.'
 
-const amplitudeTrackMock = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/common', () => ({
-  amplitudeService: {
-    track: amplitudeTrackMock,
-  },
-}))
+vi.mock('@pulse/common/services/amplitude')
 
 function createWrapper(override: Partial<ActionBarProps> = {}) {
   const defaultProps: ActionBarProps = {
@@ -63,7 +59,7 @@ describe('action bar', () => {
       await wrapper.find('[data-testid="action-bar-create-schedule-button"]').trigger('click')
 
       expect(wrapper.emitted('create-schedule')).toStrictEqual([[]])
-      expect(amplitudeTrackMock).toHaveBeenCalledWith('Reminder Add Started', { reminder_add_start: '' })
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Reminder Add Started', { reminder_add_start: '' })
     })
 
     it('should emit update:modelValue on tab change', () => {
