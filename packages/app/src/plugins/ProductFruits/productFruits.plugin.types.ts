@@ -13,6 +13,7 @@ export interface ProductFruitUser {
   firstname: string
   lastname: string
   role: string
+  signUpAt: string
 }
 
 export interface InitProductFruitsParams {

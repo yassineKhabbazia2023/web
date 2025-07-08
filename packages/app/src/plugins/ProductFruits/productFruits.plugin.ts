@@ -2,6 +2,7 @@ import { type App } from 'vue'
 import { logger } from '@pulse/core'
 import { getBrowserName } from '@app/helper'
 import { productFruits } from 'product-fruits'
+import dayjs from 'dayjs'
 import type {
   ProductFruitConfig,
   ProductFruitStatus,
@@ -118,11 +119,16 @@ export function getProductFruitsUser(user: UserInfo): ProductFruitUser | undefin
     logger.error('No user given')
     return
   }
+
   return {
     username: user.id.toString(),
     email: user.email,
     firstname: user.firstName,
     lastname: user.lastName,
+    // for signUpAt, the ISO 8601 datetime format with UTC timezone is highly recommended by Product Fruits
+    // we set it to the current date and time in UTC
+    // this is not the date when the user signed up, but rather the date when we initialized Product Fruits for this user
+    signUpAt: dayjs().format('YYYY-MM-DDTHH:mm:ssZ[Z]'),
     role: user.isCollab ? ProductFruitsUserRoles.COLLAB : ProductFruitsUserRoles.CLIENT,
   }
 }
