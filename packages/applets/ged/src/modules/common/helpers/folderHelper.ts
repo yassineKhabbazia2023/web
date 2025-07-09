@@ -14,7 +14,7 @@ export const getBreadcrumbItems = (
   }
 
   const folder = findFolderDeepById(root, id)
-  if (folder && folder.id) {
+  if (folder?.id) {
     const item: BreadcrumbItems = {
       pId: folder.id,
       pText: folder.name,

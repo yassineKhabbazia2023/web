@@ -200,7 +200,7 @@ export function generateActionBarLeftSideButtons(
   toolboxBasicData.push(leftSideButtons.CAN_SEARCH_DOCUMENT)
 
   return toolboxBasicData
-    .sort((a, b) => (a.order > b.order ? 1 : -1))
+    .toSorted((a, b) => (a.order > b.order ? 1 : -1))
     ?.map((e) => e?.actionbarButton)
 }
 
@@ -226,6 +226,6 @@ export function generateActionBarRightSideButtons(
     toolboxBasicData.push(rightSideButtons.CAN_DOWNLOAD_DOCUMENT)
   }
   return toolboxBasicData
-    .sort((a, b) => (a.order > b.order ? 1 : -1))
+    .toSorted((a, b) => (a.order > b.order ? 1 : -1))
     ?.map((e) => e?.actionbarButton)
 }

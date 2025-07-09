@@ -1,9 +1,6 @@
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { foldersMappingRecord, documentsMappingRecord } from '../data/toolboxPermissionsMapping'
-export interface ToolboxLineWithOrder {
-  toolboxLine: PToolboxItemProps
-  order: number
-}
+import type { ToolboxLineWithOrder } from '@ged/modules/common/Types/toolbox.types'
 
 export function generateToolboxBasicData(
   target: string,
@@ -28,6 +25,6 @@ export function generateToolboxBasicData(
   }
 
   return toolboxBasicData
-    .sort((a, b) => (a.order > b.order ? 1 : -1))
+    .toSorted((a, b) => (a.order > b.order ? 1 : -1))
     ?.map((e) => e?.toolboxLine)
 }

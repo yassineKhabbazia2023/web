@@ -1,7 +1,7 @@
 export interface PDocumentViewerProps {
   modelValue: boolean
   pSize?: string | number
-  pDirection?: 'rtl' | 'ltr' | 'ttb' | 'btt' | 'rtl'
+  pDirection?: 'rtl' | 'ltr' | 'ttb' | 'btt'
   pShowClose?: boolean
   pDestroyOnClose?: boolean
   pTitleDocument: string

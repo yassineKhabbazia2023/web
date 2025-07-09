@@ -16,5 +16,5 @@ export interface Folder {
   permissions: string[]
   properties: FolderProperties
   serviceId: string
-  iconName?: string | undefined
+  iconName?: string
 }

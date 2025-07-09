@@ -36,7 +36,7 @@ export async function fetchReferentialOffices(){
 
   const offices = await fetchGatewayApi<Office[]>(url)
 
-  const sortedOfficesByName = offices?.sort((a, b) => a.name.localeCompare(b.name))
+  const sortedOfficesByName = offices?.toSorted((a, b) => a.name.localeCompare(b.name))
 
   return sortedOfficesByName
 }

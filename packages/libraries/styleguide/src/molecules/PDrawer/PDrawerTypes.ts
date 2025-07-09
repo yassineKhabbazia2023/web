@@ -6,7 +6,7 @@ export interface PDrawerProps {
   modelValue: boolean
   pTitle?: string
   pShowPreviousStep?: boolean
-  pDirection?: 'rtl' | 'ltr' | 'ttb' | 'btt' | 'rtl'
+  pDirection?: 'rtl' | 'ltr' | 'ttb' | 'btt'
   pSize?: number | string
   pShowClose?: boolean
   pBreadcrumb?: BreadcrumbItems[]

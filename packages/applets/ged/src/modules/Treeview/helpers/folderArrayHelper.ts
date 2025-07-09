@@ -23,8 +23,7 @@ export const findFolderDeepById = (
   array: Folder[],
   folderId: number | null,
 ): Folder | undefined => {
-  for (let i = 0; i < array.length; i++) {
-    const element = array[i]
+  for (const element of array) {
 
     if (element.id === folderId) {
       return element

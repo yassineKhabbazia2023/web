@@ -6,14 +6,11 @@ import type { AuthorizationState } from '../ManageRightsTypes'
 export const getPermissionCodes = (
   authorizationsState: Record<string, AuthorizationState>,
 ): string[] => {
-  const actions = Object.values(authorizationsState).map(
-    ({ actions }: { actions: string[] }) => actions,
-  )
+  const authorizationStates = Object.values(authorizationsState)
 
-  const permissionCodes = actions.reduce((actionsA, actionsB) => [
-    ...actionsA,
-    ...actionsB,
-  ])
+  const permissionCodes = authorizationStates.flatMap(({ actions }) => {
+    return actions
+  })
 
   return permissionCodes
 }

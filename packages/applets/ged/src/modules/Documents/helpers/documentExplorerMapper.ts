@@ -67,8 +67,6 @@ export const mapExplorerDocumentFromDocuments = (documents: Document[]): Explore
         codeError = 'DocumentCertifiedError'
       } else if (!canMoveDocument) {
         codeError = 'PermissionInvalidError'
-      } else {
-        codeError = ''
       }
       const state: GivenActionState = canMoveDocument && !isCertified ? 'TO_DO' : 'ERROR'
       explorerDocuments.push({

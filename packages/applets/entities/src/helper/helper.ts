@@ -67,10 +67,6 @@ export const returnSortQueryField = (columnProp: string, order: string | null) =
   const sortPrefix = order === 'ascending' ? '+' : '-'
   let sortValue = 'lastname'
 
-  if (columnProp === 'user' && order !== null) {
-    sortValue = 'lastname'
-  }
-
   if (columnProp === 'email' && order !== null) {
     sortValue = 'email'
   }

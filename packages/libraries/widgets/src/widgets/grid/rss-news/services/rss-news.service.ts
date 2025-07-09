@@ -22,9 +22,9 @@ export class RSSNewsService {
     }
 
     const imgRegex = /<img[^>]+src="([^">]+)"/
-    const match = description.match(imgRegex)
+    const match = RegExp(imgRegex).exec(description)
 
-    if (match && match[1]) {
+    if (match?.[1]) {
       return match[1]
     }
 

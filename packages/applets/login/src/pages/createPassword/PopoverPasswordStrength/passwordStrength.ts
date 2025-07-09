@@ -8,7 +8,7 @@ export enum PASSWORD_STRENGTH {
 const regexArray = [
   /[A-Z]/,
   /[a-z]/,
-  /[0-9]/,
+  /\d/,
   /[^a-zA-Z0-9]/,
 ]
 

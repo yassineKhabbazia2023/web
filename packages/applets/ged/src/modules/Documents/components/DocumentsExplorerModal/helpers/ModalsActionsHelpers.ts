@@ -16,5 +16,5 @@ export function generateActionsForModal(
     }
   }
   return (actionbuttonsData
-    .sort((a, b) => (a.order > b.order) ? 1 : -1)?.map(e => e?.modalButton))
+    .toSorted((a, b) => (a.order > b.order) ? 1 : -1)?.map(e => e?.modalButton))
 }

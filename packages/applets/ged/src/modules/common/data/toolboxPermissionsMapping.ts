@@ -1,4 +1,4 @@
-import type { ToolboxLineWithOrder } from '../helpers/toolboxHelper'
+import type { ToolboxLineWithOrder } from '@ged/modules/common/Types/toolbox.types'
 
 export const foldersMappingRecord: Record<string, ToolboxLineWithOrder> = {
   CAN_DELETE_FOLDER: {
