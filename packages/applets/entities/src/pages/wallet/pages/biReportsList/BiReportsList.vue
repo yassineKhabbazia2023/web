@@ -82,7 +82,6 @@ const isLoading = ref(false)
 const REPORT_STATUSES: Record<ReportStatus, ReportStatusTag> = {
   [ReportStatus.ONLINE]: { type: ReportStatus.ONLINE, text: t('online'), color: 'success', iconName: 'checkCircle' },
   [ReportStatus.OFFLINE]: { type: ReportStatus.OFFLINE, text: t('offline'), color: 'gray-900', iconName: 'eyeSlash' },
-  [ReportStatus.INITIALIZED]: { type: ReportStatus.INITIALIZED, text: t('initialized'), color: 'info', iconName: 'stars' },
   [ReportStatus.FAILED]: { type: ReportStatus.FAILED, text: t('failed'), color: 'danger', iconName: 'exclamationTriangle' },
 }
 
@@ -118,6 +117,7 @@ const handleSearchReport = (term: string) => {
 
 // #region filter report
 const handleApplyReportFilters = (reportFilters: ReportFilters) => {
+  searchCriteria.currentPage = 1
   searchCriteria.reportStatusFilter = reportFilters.reportStatusFilter
   searchCriteria.reportTypeIdFilter = reportFilters.reportTypeIdFilter
 
@@ -125,6 +125,7 @@ const handleApplyReportFilters = (reportFilters: ReportFilters) => {
 }
 
 const handleClearReportFilters = () => {
+  searchCriteria.currentPage = 1
   searchCriteria.reportStatusFilter = []
   searchCriteria.reportTypeIdFilter = []
 

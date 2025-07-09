@@ -157,7 +157,7 @@ const getReportActions = (status: ReportStatus): PToolboxItemProps[] => {
       pValue: t('activateReport'),
       pActionName: REPORT_ACTIONS.ACTIVATE_REPORT,
       pState: 'default',
-      display: [ReportStatus.OFFLINE, ReportStatus.INITIALIZED].includes(status),
+      display: status === ReportStatus.OFFLINE,
     },
     {
       pIconName: 'xCircle',

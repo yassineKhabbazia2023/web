@@ -12,6 +12,7 @@ import {
   fetchAvailableReports,
   updateReportStatus,
   fetchReportErrors,
+  fetchReportStatistics,
 } from '.'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
 import { serializeParams } from '@pulse/core/utils/http'
@@ -81,6 +82,14 @@ describe('BI Reporting Services', () => {
       await fetchReportErrors()
 
       expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/report-errors`)
+    })
+  })
+
+  describe('fetchReportStatistics()', () => {
+    it('should fetch report statistics', async () => {
+      await fetchReportStatistics()
+
+      expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reports/statistics`)
     })
   })
 

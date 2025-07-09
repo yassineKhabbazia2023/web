@@ -4,6 +4,7 @@ import type { GetReportsRequest, GetReportAccountsRequest } from './reportingTyp
 import type {
   ReportError,
   ReportFilterQueryParams,
+  ReportStatistics,
   ReportTableRow,
   ReportType,
 } from '@entities/common/types/BIReportsTypes'
@@ -38,6 +39,12 @@ export const fetchReportErrors = async (): Promise<QueryResult<ReportError>> => 
 
 export const fetchBIReportTypes = async (): Promise<ReportType[]> => {
   const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/reportType`)
+
+  return data
+}
+
+export const fetchReportStatistics = async (): Promise<ReportStatistics> => {
+  const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/reports/statistics`)
 
   return data
 }

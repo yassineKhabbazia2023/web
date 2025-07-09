@@ -15,7 +15,6 @@ describe('getMappedReport', () => {
     const reportStatus: Record<ReportStatus, ReportStatusTag> = {
       [ReportStatus.ONLINE]: { type: ReportStatus.ONLINE, text: 'Online', color: 'success', iconName: 'checkCircle' },
       [ReportStatus.OFFLINE]: { type: ReportStatus.OFFLINE, text: 'Offline', color: 'gray-900', iconName: 'eyeSlash' },
-      [ReportStatus.INITIALIZED]: { type: ReportStatus.INITIALIZED, text: 'Initialized', color: 'info', iconName: 'stars' },
       [ReportStatus.FAILED]: { type: ReportStatus.FAILED, text: 'Failure', color: 'danger', iconName: 'exclamationTriangle' },
     }
 

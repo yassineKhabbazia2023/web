@@ -70,6 +70,12 @@ export interface ReportFilters {
   reportTypeIdFilter?: number[]
 }
 
+export interface ReportStatistics {
+  online: number
+  offline: number
+  failed: number
+}
+
 export interface ReportFilterQueryParams extends ReportFilters {
   pageNumber: number
   pageSize: number

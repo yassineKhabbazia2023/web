@@ -5,6 +5,7 @@ import type {
   ReportTableRow,
   MappedReportRow,
   ReportError,
+  ReportStatistics,
 } from '@entities/common/types/BIReportsTypes'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 
@@ -222,4 +223,12 @@ export const getMockReportErrors = (): ReportError[] => {
       detectionDate: '2025-02-15T08:45:00Z',
     },
   ]
+}
+
+export const getMockReportStatistics = (): ReportStatistics => {
+  return {
+    failed: 10,
+    offline: 2,
+    online: 20,
+  }
 }

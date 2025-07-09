@@ -6,54 +6,63 @@
       flex--justify-content-space-between
       margin-bottom--6"
   >
-    <div class="report-toolbar__filters flex flex--align-items-center width--100 max-width-700">
-      <FormSearch
-        class="width--50"
-        :placeholder="t('searchBy')"
-        data-testid="report-toolbar__search-input"
-        @search-value-submitted="handleSearchValueSubmitted"
+    <div class="flex flex--direction-column width--100 max-width-700">
+      <ReportStatusFilter
+        :reportFilters
+        data-testid="report-status-filter"
+        @apply-status-filter="applyReportStatusFilter"
+        @reset-status-filter="clearReportStatusFilter"
       />
-      <PButton
-        pType="default"
-        pSize="small"
-        data-testid="report-toolbar__filter-button"
-        @click="openFiltersDrawer"
-      >
-        <PIcon pName="sliders" />
-        <span class="padding-left--2">{{ t('filter') }}</span>
-        <Transition name="fade">
-          <PPastille
-            v-if="reportFiltersCount > 0"
-            pType="persian"
-            pSize="small"
-            class="margin-left--2"
-            data-testid="report-toolbar__filter-count"
-          >
-            {{ reportFiltersCount }}
-          </PPastille>
-        </Transition>
-      </PButton>
-      <Transition name="fade">
+      <div class="report-toolbar__filters flex flex--align-items-center">
+        <FormSearch
+          class="width--50"
+          :placeholder="t('searchBy')"
+          data-testid="report-toolbar__search-input"
+          @search-value-submitted="handleSearchValueSubmitted"
+        />
         <PButton
-          v-if="reportFiltersCount > 0"
           pType="default"
-          data-testid="report-toolbar__clear-filters-button"
-          @click="clearAllReportFilters"
+          pSize="small"
+          data-testid="report-toolbar__filter-button"
+          @click="openFiltersDrawer"
         >
-          <span
-            class="font-medium text-underline"
-            data-testid="report-toolbar__clear-filters-text"
-          >
-            {{ t('clearAll') }}
-          </span>
+          <PIcon pName="sliders" />
+          <span class="padding-left--2">{{ t('filter') }}</span>
+          <Transition name="fade">
+            <PPastille
+              v-if="reportFiltersCount > 0"
+              pType="persian"
+              pSize="small"
+              class="margin-left--2"
+              data-testid="report-toolbar__filter-count"
+            >
+              {{ reportFiltersCount }}
+            </PPastille>
+          </Transition>
         </PButton>
-      </Transition>
+        <Transition name="fade">
+          <PButton
+            v-if="reportFiltersCount > 0"
+            pType="default"
+            data-testid="report-toolbar__clear-filters-button"
+            @click="clearAllReportFilters"
+          >
+            <span
+              class="font-medium text-underline"
+              data-testid="report-toolbar__clear-filters-text"
+            >
+              {{ t('clearAll') }}
+            </span>
+          </PButton>
+        </Transition>
+      </div>
     </div>
     <PButton
       pType="secondary"
       pSize="small"
       pPlain
       :pDisabled="reportErrorsData.totalItems === 0"
+      class="flex--align-self-flex-end margin-bottom--1"
       data-testid="report-toolbar__show-errors-button"
       @click="handleOpenErrorDrawer"
     >
@@ -90,6 +99,8 @@ import { PButton, PPastille, PIcon } from '@pulse/styleguide/components'
 import type { ReportFilters, ReportErrorData } from '@entities/common/types/BIReportsTypes'
 import ReportErrorDrawer from '../../components/ReportErrorDrawer'
 import ReportFiltersDrawer from './components/ReportFiltersDrawer/ReportFiltersDrawer.vue'
+import ReportStatusFilter from './components/ReportStatusFilter/ReportStatusFilter.vue'
+import { ReportStatus } from '@entities/common/types/BIReports.enums'
 import FormSearch from '@entities/common/components/FormSearch'
 import { fetchReportErrors } from '@entities/services/reporting'
 import { displayNotification } from '@entities/common/utils'
@@ -104,6 +115,24 @@ const emit = defineEmits<{
   'apply-filters': [ReportFilters]
   'clear-filters': []
 }>()
+
+// #region Report Statistics Filter
+const applyReportStatusFilter = (appliedStatusFilter: ReportStatus) => {
+  reportFilters.value = {
+    reportStatusFilter: [appliedStatusFilter],
+    reportTypeIdFilter: reportFilters.value.reportTypeIdFilter,
+  }
+  applyFilters()
+}
+
+const clearReportStatusFilter = (appliedStatusFilter: ReportStatus[]) => {
+  reportFilters.value = {
+    reportStatusFilter: appliedStatusFilter,
+    reportTypeIdFilter: reportFilters.value.reportTypeIdFilter,
+  }
+  applyFilters()
+}
+// #endregion
 
 // #region Report Filter Drawer State and Logic
 const hasActiveFilters = ref(false)
@@ -127,9 +156,13 @@ const reportFiltersCount = computed(() => {
   return statusCount + typeIdCount
 })
 
+const applyFilters = () => {
+  emit('apply-filters', reportFilters.value)
+}
+
 const applyReportFilters = (appliedFilters: ReportFilters) => {
   reportFilters.value = appliedFilters
-  emit('apply-filters', appliedFilters)
+  applyFilters()
 
   // Close the filter drawer after a short delay for smooth UX
   setTimeout(() => {
