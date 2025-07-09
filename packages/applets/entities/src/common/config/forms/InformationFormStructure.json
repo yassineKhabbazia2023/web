@@ -196,7 +196,8 @@
         "pFieldType": "dropdown",
         "pLabel": "Durée de l'exercice en mois",
         "pTestId": "offer-fiscal-exercise-duration",
-        "referentialKey": "fiscalExerciseDuration"
+        "referentialKey": "fiscalExerciseDuration",
+        "isStoredHasNumber": true
       },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-46",

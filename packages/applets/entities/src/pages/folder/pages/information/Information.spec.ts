@@ -23,22 +23,26 @@ const expectedAlertInstruction =
   'If any information is incorrect, please update it in the CRM'
 
 // Mocks
-const mockedGetFormStructure = vi.hoisted(() => vi.fn(() => InformationFormStructure))
+const getFormStructureMock = vi.hoisted(() => vi.fn(() => InformationFormStructure))
+const cleanRecordStructureMock = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@entities/common/utils/referential', () => ({
-  getFormStructure: mockedGetFormStructure,
+  getFormStructure: getFormStructureMock,
+  cleanRecordStructure: cleanRecordStructureMock,
 }))
 
 const mockedGetCanEdit = vi.hoisted(() => vi.fn(() => true))
-const mockedSavePatchedAccount = vi.hoisted(() => vi.fn())
+const savePatchedAccountMock = vi.hoisted(() => vi.fn())
 vi.mock('./InformationHelper', () => ({
   getCanEdit: mockedGetCanEdit,
-  savePatchedAccount: mockedSavePatchedAccount,
+  savePatchedAccount: savePatchedAccountMock,
 }))
 
+const accountMock = getMockedAccount()
+const fetchAccountMock = vi.hoisted(() => vi.fn())
 vi.mock('@entities/services/account', () => ({
-  fetchAccount: vi.fn(() => Promise.resolve(getMockedAccount())),
+  fetchAccount: fetchAccountMock,
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
 }))
@@ -75,6 +79,11 @@ const getWrapper = () => shallowMount(Information, {
 // Unit Tests
 describe('information', () => {
   let wrapper: ReturnType<typeof getWrapper>
+  beforeEach(() => {
+    fetchAccountMock.mockResolvedValue(accountMock)
+    cleanRecordStructureMock.mockResolvedValue(accountMock)
+  })
+
   describe('display', () => {
     beforeEach(() => {
       wrapper = getWrapper()
@@ -181,8 +190,13 @@ describe('information', () => {
 
         expect(mockedGetCanEdit).toHaveBeenCalledOnce()
         expect(mockedGetCanEdit).toHaveBeenCalledWith(isCollab)
-        expect(mockedGetFormStructure).toHaveBeenCalledOnce()
-        expect(mockedGetFormStructure).toHaveBeenCalledWith('CompanyProfile', expectedForceDisabled)
+
+        expect(getFormStructureMock).toHaveBeenCalledOnce()
+        expect(getFormStructureMock).toHaveBeenCalledWith('CompanyProfile', expectedForceDisabled)
+
+        expect(cleanRecordStructureMock).toHaveBeenCalledOnce()
+        expect(cleanRecordStructureMock).toHaveBeenCalledWith(InformationFormStructure, accountMock)
+
         expect(informationSaveButton.exists()).toBe(expectedHasInformationSaveButton)
       })
   })
@@ -227,12 +241,12 @@ describe('information', () => {
         saveButton.trigger('click')
         await nextTick()
 
-        expect(mockedSavePatchedAccount).toHaveBeenCalledOnce()
-        expect(mockedSavePatchedAccount).toHaveBeenCalledWith(ACCOUNT_ID, expectedPatchOperations)
+        expect(savePatchedAccountMock).toHaveBeenCalledOnce()
+        expect(savePatchedAccountMock).toHaveBeenCalledWith(ACCOUNT_ID, expectedPatchOperations)
       })
 
       it('should call displayNotification properly when savePatched succeeded', async () => {
-        mockedSavePatchedAccount.mockResolvedValueOnce(true)
+        savePatchedAccountMock.mockResolvedValueOnce(true)
         const saveButton = wrapper.find('[data-testid="information-save-button"]')
         const displayNotificationSpy = vi.mocked(CommonHelpers).displayNotification
 
@@ -247,7 +261,7 @@ describe('information', () => {
       it('should call displayNotification properly when savePatched failed', async () => {
         const error = new Error('error message')
 
-        mockedSavePatchedAccount.mockRejectedValueOnce(error)
+        savePatchedAccountMock.mockRejectedValueOnce(error)
         const saveButton = wrapper.find('[data-testid="information-save-button"]')
         const displayNotificationSpy = vi.mocked(CommonHelpers).displayNotification
 
@@ -259,7 +273,7 @@ describe('information', () => {
         expect(displayNotificationSpy).toHaveBeenCalledWith('error', 'Save failed')
 
         expect(loggerErrorSpy).toHaveBeenCalledOnce()
-        expect(loggerErrorSpy).toHaveBeenCalledWith(error)
+        expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, error)
       })
     })
   })

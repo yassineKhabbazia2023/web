@@ -22,6 +22,7 @@ import InformationFormStructure from '@entities/common/config/forms/InformationF
 import EntityCreatorFormStructure from '@entities/common/config/forms/EntityCreatorFormStructure.json'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 import type { FormStructureName } from './referentialUtilsTypes'
+import { get, setWith } from 'lodash-es'
 
 export function referentialOptionsToPDropdownOption(
   referentialOptions: ReferentialOptions | undefined,
@@ -43,7 +44,7 @@ export function referentialOptionsToPDropdownOption(
 export function getReferentialDropdownOptions(
   referential: ReferentialStructure,
   referentialHubs: Hub[],
-  referntialOffices: Office[],
+  referentialOffices: Office[],
   referentialKey: string | undefined,
 ): PDropdownOption[] | undefined {
   if (referentialKey === undefined) {
@@ -56,7 +57,7 @@ export function getReferentialDropdownOptions(
     }))
   }
   if (referentialKey === 'officeName') {
-    return referntialOffices.map<PDropdownOption>(({ officeId, name }) => ({
+    return referentialOffices.map<PDropdownOption>(({ officeId, name }) => ({
       pValue: officeId,
       pLabel: name,
     }))
@@ -152,4 +153,46 @@ export async function getFormStructure(formStructureName?: FormStructureName, fo
   )
 
   return enrichedFormSections
+}
+
+export function hasValueInDropdownOptions(
+  pDropdownOptions: PDropdownOption[],
+  isStoredHasNumber: boolean | undefined,
+  value: any,
+) {
+  const hasValue = pDropdownOptions.some(({ pValue }) => {
+    return isStoredHasNumber
+      ? Number(pValue) === value // referential values are numbers represented by strings
+      : pValue === value
+  })
+
+  return hasValue
+}
+
+export function cleanRecordDropdownField<T extends Record<string, any>>(
+  pFieldKey: string,
+  pDropdownOptions: PDropdownOption[],
+  isStoredHasNumber: boolean | undefined,
+  record: T,
+) {
+  const value = get(record, pFieldKey)
+  if (value === undefined) {
+    return
+  }
+  const hasValue = hasValueInDropdownOptions(pDropdownOptions, isStoredHasNumber, value)
+
+  if (hasValue === false) {
+    setWith(record, pFieldKey, undefined, Object)
+  }
+}
+
+export function cleanRecordStructure<T extends Record<string, any>>(formStructure: FormSection[], record: T) {
+  formStructure.forEach((formSection) => {
+    formSection.fields.forEach((formField) => {
+      const { pFieldKey, pDropdownOptions, isStoredHasNumber } = formField
+      if (pDropdownOptions !== undefined) {
+        cleanRecordDropdownField(pFieldKey, pDropdownOptions, isStoredHasNumber, record)
+      }
+    })
+  })
 }

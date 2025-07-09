@@ -1,9 +1,7 @@
-import { vi, expect, describe, it, beforeEach } from 'vitest'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { nextTick } from 'vue'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
-import type { ComponentWrapper } from '@entities/common/types'
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
 import {
   getMockedAccount,
@@ -27,8 +25,10 @@ vi.mock('@entities/services/account', () => ({
 }))
 
 const getFormStructureMock = vi.hoisted(() => vi.fn())
+const cleanRecordStructureMock = vi.hoisted(() => vi.fn())
 vi.mock('@entities/common/utils/referential', () => ({
   getFormStructure: getFormStructureMock,
+  cleanRecordStructure: cleanRecordStructureMock,
 }))
 
 const createWrapper = (account: any, providerName: any) => {
@@ -58,7 +58,7 @@ const createWrapper = (account: any, providerName: any) => {
 }
 
 describe('companyInformation', () => {
-  let wrapper: ComponentWrapper<InstanceType <typeof CompanyInformation>>
+  let wrapper: ReturnType<typeof createWrapper>
   beforeEach(async () => {
     getFormStructureMock.mockResolvedValue(MEGOffersFormStructure)
   })
@@ -75,7 +75,11 @@ describe('companyInformation', () => {
       expect(offerForm.exists()).toBeTruthy()
       expect(formInstruction.text()).toBe(formInstructionText)
       expect(alertInstruction.text()).toBe(alertInstructionText)
+
+      expect(cleanRecordStructureMock).toHaveBeenCalledOnce()
+      expect(cleanRecordStructureMock).toHaveBeenCalledWith(MEGOffersFormStructure, mockedAccount)
     })
+
     it('should display all form sections', () => {
       const formSections = wrapper.findAll('.company-information__form-section')
 
@@ -95,6 +99,7 @@ describe('companyInformation', () => {
       expect(loggerErrorSpy).toHaveBeenCalledOnce()
       expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
     })
+
     it('should update the form model when any form item is updated', async () => {
       const wrapper = createWrapper(mockedAccount, ProviderName.MEG)
       await flushPromises()

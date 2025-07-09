@@ -79,7 +79,7 @@ import { useUserStore } from '@pulse/common/stores'
 import { PButton, PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
-import { getFormStructure } from '@entities/common/utils/referential'
+import { getFormStructure, cleanRecordStructure } from '@entities/common/utils/referential'
 import { getCanEdit, savePatchedAccount } from './InformationHelper'
 import { cloneDeep, get, setWith } from 'lodash-es'
 import { addPathValue } from '@entities/services/PatchRecordService/PatchRecordService'
@@ -144,7 +144,11 @@ onMounted(async () => {
     canEdit.value = getCanEdit(isCollab.value ?? false)
     const forceDisabled = !canEdit.value
     informationFormStructure.value = await getFormStructure('CompanyProfile', forceDisabled)
-    currentAccount.value = await fetchAccount(accountId)
+    const account = await fetchAccount(accountId)
+    if (account !== undefined) {
+      cleanRecordStructure(informationFormStructure.value, account)
+    }
+    currentAccount.value = account
     originalAccount.value = cloneDeep(currentAccount.value)
   } catch (error) {
     logger.error('Error fetching information :', error)

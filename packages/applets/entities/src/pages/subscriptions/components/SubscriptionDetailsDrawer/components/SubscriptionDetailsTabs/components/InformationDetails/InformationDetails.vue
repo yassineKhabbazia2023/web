@@ -50,7 +50,7 @@ import { fetchAccount, type Account } from '@entities/services/account'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
 import type { FormSection } from '@entities/pages/entities/components/CompanyInformation/CompanyInformationTypes'
 import { ProviderName } from '@entities/common/types/ProviderNameEnums'
-import { getFormStructure } from '@entities/common/utils/referential'
+import { cleanRecordStructure, getFormStructure } from '@entities/common/utils/referential'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -76,6 +76,9 @@ onMounted(async () => {
     const forceDisabled = true
     informationFormStructure.value = await getFormStructure(providerName.value, forceDisabled)
     accountModel.value = await fetchAccount(props.accountId)
+    if (accountModel.value !== undefined) {
+      cleanRecordStructure(informationFormStructure.value, accountModel.value)
+    }
   } catch (error) {
     logger.error('Error fetching information: ', error)
   } finally {

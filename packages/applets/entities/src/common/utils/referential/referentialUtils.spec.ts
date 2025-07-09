@@ -7,6 +7,7 @@ import {
   getEnrichedFormSection,
   getFormSections,
   getFormStructure,
+  cleanRecordStructure,
 } from './referentialUtils'
 import { type ReferentialOptions } from '@entities/services/account'
 import type { PDropdownOption } from '@pulse/styleguide/types'
@@ -258,6 +259,87 @@ describe('referentialUtils', () => {
       const formStructure = await getFormStructure()
 
       expect(formStructure).toStrictEqual([])
+    })
+  })
+
+  describe('cleanRecordStructure', () => {
+    const staffSizeRangeDropdownOptions = [{
+      pValue: '=0',
+    }, {
+      pValue: '=1',
+    }, {
+      pValue: '<11',
+    }]
+    const fiscalExerciseDurationDropdownOptions = [{
+      pValue: '12',
+    }, {
+      pValue: '24',
+    }]
+
+    const staffSizeRangeFieldMock = getMockedFormField({
+      pFieldKey: 'accounting.staffSizeRange',
+      pFieldType: 'dropdown',
+      referentialKey: 'staffSizeRange',
+      pDropdownOptions: staffSizeRangeDropdownOptions,
+    })
+    const fiscalExerciseDurationFieldMock = getMockedFormField({
+      pFieldKey: 'accounting.fiscalExerciseDuration',
+      pFieldType: 'dropdown',
+      referentialKey: 'fiscalExerciseDuration',
+      pDropdownOptions: fiscalExerciseDurationDropdownOptions,
+      isStoredHasNumber: true,
+    })
+
+    const fieldsMock = [
+      staffSizeRangeFieldMock,
+      fiscalExerciseDurationFieldMock,
+    ]
+    const formSectionMock = getMockedFormSection({
+      fields: fieldsMock,
+    })
+
+    const formSections = [
+      formSectionMock,
+    ]
+
+    const tests = [{
+      staffSizeRange: 'z indefined',
+      expectedStaffSizeRange: undefined,
+      fiscalExerciseDuration: '12',
+      expectedFiscalExerciseDuration: undefined,
+      descriptions: 'should set to undefined wrong values',
+    }, {
+      staffSizeRange: '=1',
+      expectedStaffSizeRange: '=1',
+      fiscalExerciseDuration: 12,
+      expectedFiscalExerciseDuration: 12,
+      descriptions: 'should keep correct values',
+    }]
+    it.each(tests)('$description', ({
+      staffSizeRange,
+      fiscalExerciseDuration,
+      expectedStaffSizeRange,
+      expectedFiscalExerciseDuration,
+    }) => {
+      const record = {
+        label: 'Record Label',
+        accounting: {
+          staffSizeRange,
+          fiscalExerciseDuration,
+        },
+      }
+      const expectedCleanRecord = {
+        ...record,
+        accounting: {
+          ...record.accounting,
+          staffSizeRange: expectedStaffSizeRange,
+          fiscalExerciseDuration: expectedFiscalExerciseDuration,
+        },
+      }
+
+      cleanRecordStructure(formSections, record)
+
+      expect(record).toStrictEqual(expectedCleanRecord)
     })
   })
 })

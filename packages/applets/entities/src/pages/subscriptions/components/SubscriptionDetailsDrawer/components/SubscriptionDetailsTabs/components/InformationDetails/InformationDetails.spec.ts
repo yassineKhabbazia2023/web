@@ -1,5 +1,5 @@
 import { expect, describe, it, beforeEach, vi } from 'vitest'
-import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import {
   getMockedAccount,
   getMockedAccountReferential,
@@ -12,7 +12,6 @@ import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
 import InformationDetails from '.'
-import { ProviderName } from '@entities/common/types/ProviderNameEnums'
 
 // Mocks
 const mockedAccountId = 602
@@ -20,15 +19,20 @@ const mockedSubscriptionMEGOfferDetails =
   getMockedSubscriptionOffersServices()[0]
 const mockedSubscriptionLoopOfferDetails =
   getMockedSubscriptionOffersServices()[2]
-const mockedGetFormStructure = vi.hoisted(() => vi.fn(() => MEGOffersFormStructure))
+
+const getFormStructureMock = vi.hoisted(() => vi.fn(() => MEGOffersFormStructure))
+const cleanRecordStructureMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('@entities/common/utils/referential', () => ({
-  getFormStructure: mockedGetFormStructure,
+  getFormStructure: getFormStructureMock,
+  cleanRecordStructure: cleanRecordStructureMock,
 }))
+const accountMock = getMockedAccount()
+const fetchAccountMock = vi.hoisted(() => vi.fn())
 vi.mock('@entities/services/account', () => ({
-  fetchAccount: vi.fn(() => Promise.resolve(getMockedAccount())),
+  fetchAccount: fetchAccountMock,
   fetchAccountReferential: vi.fn(() => getMockedAccountReferential()),
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
 }))
@@ -42,17 +46,24 @@ const defaultProps: InformationDetailsProps = {
   subscriptionOfferDetails: mockedSubscriptionMEGOfferDetails,
 }
 
-const createWrapper = (
-  overriddenProps: InformationDetailsProps = defaultProps,
-) => {
-  return mount(InformationDetails, {
-    props: {
-      ...overriddenProps,
-    },
+const createWrapper = (overriddenProps: Partial<InformationDetailsProps> = {}) => {
+  const props = {
+    ...defaultProps,
+    ...overriddenProps,
+  }
+  return shallowMount(InformationDetails, {
+    props,
     global: {
       stubs: {
-        PLoader: true,
-        PFieldSet: true,
+        PForm: {
+          name: 'PForm',
+          template: '<div><slot /></div>',
+          props: ['pModel'],
+        },
+        PAlert: {
+          name: 'PAlert',
+          template: '<div><slot /></div>',
+        },
       },
     },
   })
@@ -60,74 +71,57 @@ const createWrapper = (
 
 // Unit Tests
 describe('informationDetails', () => {
-  let wrapper: VueWrapper<any>
   beforeEach(async () => {
-    wrapper = createWrapper()
-    await flushPromises()
+    fetchAccountMock.mockResolvedValue(accountMock)
   })
   describe('display', () => {
+    let wrapper: ReturnType<typeof createWrapper>
+    beforeEach(async () => {
+      wrapper = createWrapper()
+      await flushPromises()
+    })
     it('should accurately display the subscription information tab', () => {
-      const alertInstruction = wrapper.find(
-        '[data-testid="subscription-details-information-alert"]',
-      )
-      const informationForm = wrapper.find(
-        '[data-testid="subscription-details-information-form"]',
-      )
+      const alertInstruction = wrapper.find('[data-testid="subscription-details-information-alert"]')
+      const informationForm = wrapper.find('[data-testid="subscription-details-information-form"]')
 
       expect(informationForm.exists()).toBeTruthy()
       expect(alertInstruction.text()).toBe(expectedAlertInstruction)
     })
     it('should display all form sections for MEG offers correctly', () => {
-      const provider = wrapper.vm.providerName
       const formSections = wrapper.findAll(
         '.information-details__form-section',
       )
 
-      expect(provider).toBe('MEG')
       expect(formSections).toHaveLength(MEGOffersFormStructure.length)
     })
     it('should display all form sections for the LOOP offer correctly', async () => {
-      mockedGetFormStructure.mockReturnValue(LOOPOfferForm)
+      getFormStructureMock.mockReturnValue(LOOPOfferForm)
       wrapper = createWrapper({
         subscriptionOfferDetails: mockedSubscriptionLoopOfferDetails,
         accountId: mockedAccountId,
       })
       await flushPromises()
-      const provider = wrapper.vm.providerName
-      const formSections = wrapper.findAll(
-        '.information-details__form-section',
-      )
+      const formSections = wrapper.findAll('.information-details__form-section')
 
-      expect(provider).toBe(ProviderName.LOOP)
       expect(formSections).toHaveLength(LOOPOfferForm.length)
-    })
-    it('should display the form once the loader has finished', async () => {
-      wrapper.vm.isLoading = true
-      await flushPromises()
-      let loader = wrapper.find(
-        '[data-testid="subscription-details-information-loader"]',
-      )
-      let informationForm = wrapper.find(
-        '[data-testid="subscription-details-information-form"]',
-      )
-
-      expect(loader.exists()).toBeTruthy()
-      expect(informationForm.exists()).toBeFalsy()
-
-      wrapper.vm.isLoading = false
-      await flushPromises()
-      informationForm = wrapper.find(
-        '[data-testid="subscription-details-information-form"]',
-      )
-      loader = wrapper.find(
-        '[data-testid="subscription-details-information-loader"]',
-      )
-
-      expect(loader.exists()).toBeFalsy()
-      expect(informationForm.exists()).toBeTruthy()
     })
   })
   describe('events', () => {
+    it('should display the form once the loader has finished', async () => {
+      const wrapper = createWrapper()
+      const loaderBefore = wrapper.find('[data-testid="subscription-details-information-loader"]')
+      const informationFormBefore = wrapper.find('[data-testid="subscription-details-information-form"]')
+
+      expect(loaderBefore.exists()).toBe(true)
+      expect(informationFormBefore.exists()).toBe(false)
+
+      await flushPromises()
+      const loaderAfter = wrapper.find('[data-testid="subscription-details-information-loader"]')
+      const informationFormAfter = wrapper.find('[data-testid="subscription-details-information-form"]')
+
+      expect(loaderAfter.exists()).toBe(false)
+      expect(informationFormAfter.exists()).toBe(true)
+    })
     it('should call the Account API with the correct parameters to fetch the account details', async () => {
       const spyFetchAccount = vi.spyOn(accountServices, 'fetchAccount')
       createWrapper()
@@ -135,9 +129,11 @@ describe('informationDetails', () => {
 
       expect(spyFetchAccount).toHaveBeenCalledOnce()
       expect(spyFetchAccount).toHaveBeenCalledWith(mockedAccountId)
+
+      expect(cleanRecordStructureMock).toHaveBeenCalledOnce()
+      expect(cleanRecordStructureMock).toHaveBeenCalledWith(MEGOffersFormStructure, accountMock)
     })
     it('should display a console error if the request to fetch account fails', async () => {
-
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
       vi.spyOn(accountServices, 'fetchAccount').mockRejectedValue(
         expectedErrorMessage,

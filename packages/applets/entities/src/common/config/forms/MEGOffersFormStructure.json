@@ -80,6 +80,7 @@
         "pLabel": "Durée de l'exercice en mois",
         "pTestId": "offer-fiscal-exercise-duration",
         "referentialKey": "fiscalExerciseDuration",
+        "isStoredHasNumber": true,
         "pRules": [{ 
           "required": true, 
           "message": "Veuillez saisir une valeur", 

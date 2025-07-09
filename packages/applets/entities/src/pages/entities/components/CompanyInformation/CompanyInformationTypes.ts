@@ -4,6 +4,7 @@ import type { ProviderName } from '@entities/common/types/ProviderNameEnums'
 
 export interface FormField extends PFieldProps<string> {
   referentialKey?: string
+  isStoredHasNumber?: boolean // true when referential values are numbers represented by strings
 }
 
 export type FormSection = {

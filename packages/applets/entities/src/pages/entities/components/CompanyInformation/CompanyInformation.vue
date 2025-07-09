@@ -59,7 +59,7 @@ import { ref, onMounted, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith } from 'lodash-es'
 import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
-import { getFormStructure } from '@entities/common/utils/referential'
+import { cleanRecordStructure, getFormStructure } from '@entities/common/utils/referential'
 import { type Account } from '@entities/services/account'
 import type {
   CompanyInformationProps,
@@ -96,6 +96,9 @@ onMounted(async () => {
     internalAccount.value = cloneDeep(props.modelValue)
     if (props.providerName) {
       formStructure.value = await getFormStructure(props.providerName)
+      if (internalAccount.value !== undefined) {
+        cleanRecordStructure(formStructure.value, internalAccount.value)
+      }
     }
   } catch (e) {
     logger.error(e)

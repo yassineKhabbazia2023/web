@@ -382,6 +382,7 @@
         "pLabel": "Début de l'exercice",
       },
       {
+        "isStoredHasNumber": true,
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-24",
         "pDisabled": true,
         "pDropdownOptions": [

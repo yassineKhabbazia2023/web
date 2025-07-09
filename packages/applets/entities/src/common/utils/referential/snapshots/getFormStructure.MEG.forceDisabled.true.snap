@@ -259,6 +259,7 @@
         ],
       },
       {
+        "isStoredHasNumber": true,
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-30",
         "pDisabled": true,
         "pDropdownOptions": [
