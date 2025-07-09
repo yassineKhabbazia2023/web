@@ -1,7 +1,7 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
-import { mockTableData } from './mockData'
+import { mockTableData } from './table-data.mocks'
 import {
   AmplitudeServiceMock,
   SelectedEntityManagerMock,

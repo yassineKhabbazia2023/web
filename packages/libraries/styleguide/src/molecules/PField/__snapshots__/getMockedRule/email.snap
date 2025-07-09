@@ -1,8 +1,0 @@
-{
-  "message": "Veuillez saisir une adresse email correcte",
-  "trigger": [
-    "blur",
-    "change",
-  ],
-  "type": "email",
-}

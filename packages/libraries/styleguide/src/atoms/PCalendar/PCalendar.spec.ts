@@ -3,7 +3,7 @@ import { shallowMount } from '@vue/test-utils'
 import type { VueWrapper } from '@vue/test-utils'
 import PCalendar from '.'
 import type { PCalendarProps } from './PCalendarTypes'
-import { itemsGroupedByDate } from './PCalendarMocks'
+import { itemsGroupedByDate } from './PCalendar.mocks'
 
 const getDateTypeMock = vi.hoisted(() => vi.fn(() => 'current-month'))
 vi.mock('./PCalendarUtils', () => ({

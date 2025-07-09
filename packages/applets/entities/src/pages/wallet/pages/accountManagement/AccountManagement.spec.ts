@@ -6,7 +6,7 @@ import * as DeployUtils from '../folders/DeployUtils'
 import {
   getMockedWalletQueryResult,
   getMockedSearchCriteria,
-} from '../folders/DeployUtilsMock'
+} from '../folders/DeployUtils.mocks'
 import type { AccountRow } from '@entities/common/types'
 import { SelectedEntityManagerMock } from '@pulse/common/mocks'
 import { RouteParam } from '@pulse/common/enums'

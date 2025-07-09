@@ -1,6 +1,6 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { getMockedEntitiesStatistics } from './FiltersMocks'
+import { getMockedEntitiesStatistics } from './Filters.mocks'
 import { EntityStatus } from './FiltersTypes'
 import Filters from '.'
 

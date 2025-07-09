@@ -1,9 +1,0 @@
-{
-  "message": "Veuillez saisir numéro de téléphone correct",
-  "pattern": "^[+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$",
-  "trigger": [
-    "blur",
-    "change",
-  ],
-  "type": "string",
-}

@@ -11,7 +11,7 @@ import {
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import { nextTick, reactive } from 'vue'
-import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtilsMock'
+import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtils.mocks'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/common/types'
 import { isAccessManagementGlobalActivatedMock, featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getMockedFields } from './PFieldSetMock'
+import { getMockedFields } from './PFieldSet.mocks'
 import { getInternalFields } from './PFieldSetUtils'
 
 describe('pFieldSetUtils', () => {

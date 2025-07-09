@@ -2,7 +2,7 @@ import { type VueWrapper, mount } from '@vue/test-utils'
 import PUserAction from '.'
 import { describe, it, expect } from 'vitest'
 import type { PUserActionProps } from './PUserActionTypes'
-import { getMockedOptions } from './PUserActionMocks'
+import { getMockedOptions } from './PUserAction.mocks'
 
 const defaultProps: PUserActionProps = {
   pProfile: '',

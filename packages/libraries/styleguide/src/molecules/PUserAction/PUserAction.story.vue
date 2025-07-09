@@ -53,7 +53,7 @@ import PUserAction from '.'
 import type { PUserActionProps, POptionsValue } from './PUserActionTypes'
 import { reactive } from 'vue'
 import { logEvent } from 'histoire/client'
-import { getMockedOptions } from './PUserActionMocks'
+import { getMockedOptions } from './PUserAction.mocks'
 import { AvatarRoles } from '../../utils/avatar.roles'
 
 const exampleOffer1 = reactive<PUserActionProps>({

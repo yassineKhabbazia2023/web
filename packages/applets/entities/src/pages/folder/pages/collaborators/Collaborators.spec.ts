@@ -1,7 +1,7 @@
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { nextTick } from 'vue'
-import { mockCollabsData } from './mockData'
+import { mockCollabsData } from './collab-data.mocks'
 import * as walletServices from '@entities/services/wallet'
 import * as contactServices from '@entities/services/contact'
 import type { ComponentWrapper } from '@entities/common/types'

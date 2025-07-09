@@ -23,7 +23,7 @@ import { ref, computed } from 'vue'
 import dayjs from 'dayjs'
 import { logEvent } from 'histoire/client'
 import PCalendar from '.'
-import { itemsGroupedByDate } from './PCalendarMocks'
+import { itemsGroupedByDate } from './PCalendar.mocks'
 
 const activeDate = ref(new Date('2024-05-01'))
 const pInitialDateRange: [Date, Date] = [

@@ -1,5 +1,5 @@
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
-import { getMockedInputField, getDropdownField, getDateField } from '../PField/PFieldMock'
+import { getMockedInputField, getDropdownField, getDateField } from '../PField/PField.mocks'
 import type { PFieldProps } from '../PField/PFieldTypes'
 
 export function getMockedFields(

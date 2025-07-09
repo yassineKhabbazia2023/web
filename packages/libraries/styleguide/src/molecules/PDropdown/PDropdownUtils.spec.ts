@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { getMockedDropdownOptions } from './PDropdownMocks'
+import { getMockedDropdownOptions } from './PDropdown.mocks'
 import { getDropdownGroups, getHasGroups, getIsCheckAll, getAllEnabledValues } from './PDropdownUtils'
 import type { DropdownGroup } from './PDropdownTypes'
 

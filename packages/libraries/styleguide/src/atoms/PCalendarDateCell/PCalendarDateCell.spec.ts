@@ -4,7 +4,7 @@ import { vueuseCoreMock } from '@styleguide/__mocks__/vueuse.mocks'
 import type { VueWrapper } from '@vue/test-utils'
 import type { PCalendarDateCellProps } from './PCalendarDateCellTypes'
 import PCalendarCellNumber from '../../atoms/PCalendarCellNumber'
-import { itemsGroupedByDate } from '../../atoms/PCalendar/PCalendarMocks'
+import { itemsGroupedByDate } from '../../atoms/PCalendar/PCalendar.mocks'
 import PTaskItem from '../../atoms/PTaskItem'
 
 import PCalendarDateCell from '.'

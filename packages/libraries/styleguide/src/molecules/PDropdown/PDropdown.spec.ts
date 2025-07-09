@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 import { beforeEach, describe, it, expect, vi } from 'vitest'
 import PDropdown from '.'
 import type { PDropdownProps, PDropdownOption } from './PDropdownTypes'
-import { getMockedDropdownOptions } from './PDropdownMocks'
+import { getMockedDropdownOptions } from './PDropdown.mocks'
 import { nextTick } from 'vue'
 
 function getPropsValue(pOptions: PDropdownOption[], pCheckAllLabel = '') {

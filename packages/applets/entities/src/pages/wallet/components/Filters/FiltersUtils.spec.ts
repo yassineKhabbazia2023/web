@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { getMockedFilterLabels, getMockedEntitiesStatistics } from './FiltersMocks'
+import { getMockedFilterLabels, getMockedEntitiesStatistics } from './Filters.mocks'
 import { getOnboardingFilters, getUserConnexionFilters } from './FiltersUtils'
 
 describe('test FiltersUtils', () => {

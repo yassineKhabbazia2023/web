@@ -7,7 +7,7 @@ import {
 import {
   getMockedMappedAccount,
   getMockedSearchCriteria,
-} from './DeployUtilsMock'
+} from './DeployUtils.mocks'
 import type { DeploymentStatus, SearchCriteria } from '../../types'
 import * as accountService from '@entities/services/account'
 import {

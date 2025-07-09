@@ -43,7 +43,7 @@
 
 <script lang="ts" setup>
 import PcalendarDateCell from '.'
-import { itemsGroupedByDate } from '../../atoms/PCalendar/PCalendarMocks'
+import { itemsGroupedByDate } from '../../atoms/PCalendar/PCalendar.mocks'
 
 </script>
 

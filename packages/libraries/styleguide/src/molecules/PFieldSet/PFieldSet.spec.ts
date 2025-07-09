@@ -2,7 +2,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
 import type { PFieldSetProps } from './PFieldSetTypes'
-import { getMockedFields } from './PFieldSetMock'
+import { getMockedFields } from './PFieldSet.mocks'
 import { nextTick } from 'vue'
 import PFieldSet from '.'
 

@@ -98,7 +98,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import PDropdown from '.'
-import { getMockedDropdownOptions } from './PDropdownMocks'
+import { getMockedDropdownOptions } from './PDropdown.mocks'
 import { logEvent } from 'histoire/client'
 
 const valueSimple = ref('')

@@ -2,7 +2,7 @@ import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import * as SubscriptionServices from '@entities/services/subscription'
 import { nextTick } from 'vue'
-import { getActiveOffersMocked } from './OffersMocks'
+import { getActiveOffersMocked } from './Offers.mocks'
 import {
   getMockedEntity,
   CurrentUserManagerMock,

@@ -54,7 +54,7 @@ import { ref } from 'vue'
 import { logEvent } from 'histoire/client'
 import { setWith } from 'lodash-es'
 import PFieldSet from '.'
-import { getMockedFields } from './PFieldSetMock'
+import { getMockedFields } from './PFieldSet.mocks'
 import PForm from '../../molecules/PForm'
 
 type Section = {
