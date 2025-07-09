@@ -1,7 +1,6 @@
-import { describe, it, expect, vi } from 'vitest'
+import { loggerMock } from '@pulse/core/mocks'
 import { PNotification } from '@pulse/styleguide'
 import { saveNotificationSettings, fetchNotifications } from '@app/modules/FeedCenter/services/notifications.service'
-import { NotificationSettingsManager } from './notification-settings.manager'
 import {
   getNotificationSettingsWithTrueAndNull,
   getNotificationSettingsWithTrueAndFalse,
@@ -17,10 +16,13 @@ import {
 import { useFeedCenterStore } from '@app/modules/FeedCenter/stores/feed-center.store'
 import { getStoreMock } from '@pulse/common/mocks'
 
+import { NotificationSettingsManager } from './notification-settings.manager'
+
 getStoreMock(useFeedCenterStore)
 
 vi.mock('@app/modules/FeedCenter/services/notifications.service')
 vi.mock('@pulse/styleguide')
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 describe('NotificationSettingsManager', () => {
   describe('hasAtLeastOneSettingEnabled', () => {
@@ -119,6 +121,8 @@ describe('NotificationSettingsManager', () => {
           position: 'bottom-right',
         }),
       )
+
+      expect(loggerMock.error).toHaveBeenCalledWith(mockError)
     })
   })
 
