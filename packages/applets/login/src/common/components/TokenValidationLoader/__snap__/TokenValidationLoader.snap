@@ -1,5 +1,0 @@
-<div class="flex flex--direction-column flex--align-items-center margin-y--6" data-testid="token-validation-loader">
-  <p-loader-stub ptype="primary" psize="64"></p-loader-stub>
-  <p class="font-semibold margin-y--2">Loading...</p>
-  <p>Please do not close this page</p>
-</div>

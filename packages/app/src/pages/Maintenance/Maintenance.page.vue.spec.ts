@@ -17,9 +17,9 @@ declare let window: {
 
 window.setInterval = setIntervalMock
 window.clearInterval = clearIntervalMock
-window.location = {
+;(window.location as any) = {
   reload: reloadMock,
-} as unknown as Location
+}
 
 vi.mock('@pulse/core')
 const HTMLServiceSetDocumentTitleMock = vi.mocked(HTMLService.setDocumentTitle)
@@ -66,13 +66,13 @@ describe('Maintenance', () => {
     expect(setIntervalMock).toHaveBeenCalledWith(...expectedSetIntervalParameters)
 
     expect(initProductFruitsAnonymousCustomerMock).toHaveBeenCalledOnce()
-    expect(initProductFruitsAnonymousCustomerMock).toHaveBeenCalledWith(/* no paramter */)
+    expect(initProductFruitsAnonymousCustomerMock).toHaveBeenCalledWith(/* no parameter */)
 
     expect(stopProductFruitsMock).not.toHaveBeenCalled()
 
     wrapper.unmount()
     expect(stopProductFruitsMock).toHaveBeenCalledOnce()
-    expect(stopProductFruitsMock).toHaveBeenCalledWith(/* no paramter */)
+    expect(stopProductFruitsMock).toHaveBeenCalledWith(/* no parameter */)
 
     expect(clearIntervalMock).toHaveBeenCalledOnce()
     expect(clearIntervalMock).toHaveBeenCalledWith(...expectedClearIntervalParameters)
@@ -87,6 +87,6 @@ describe('Maintenance', () => {
     vi.useRealTimers()
 
     expect(reloadMock).toHaveBeenCalledOnce()
-    expect(reloadMock).toHaveBeenCalledWith(/* no paramter */)
+    expect(reloadMock).toHaveBeenCalledWith(/* no parameter */)
   })
 })
