@@ -34,19 +34,14 @@
     "build:types": "npm run build:types --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present",
     "lint:fix": "npm run lint:fix --workspaces --if-present",
-    "lint:staged": "lint-staged",
     "depcruise": "depcruise packages",
     "syncpack:list": "syncpack list-mismatches",
     "syncpack:fix": "syncpack fix-mismatches",
     "license": "license-checker --onlyAllow \"MIT; ISC; Apache-2.0; MIT AND CC-BY-3.0; CC-BY-3.0; CC0-1.0; BSD-3-Clause; BSD-2-Clause; 0BSD; Python-2.0; BlueOak-1.0.0; Unlicense\" --production --excludePrivatePackages --unknown ",
     "node:clean": "rm -rf node_modules && rm -rf ./packages/**/**/node_modules",
-    "prepare": "husky",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
-  },
-  "lint-staged": {
-    "*": "eslint --fix"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.7",
@@ -95,10 +90,8 @@
     "eslint": "^9.11.1",
     "eslint-plugin-vue": "^9.30.0",
     "globals": "^15.10.0",
-    "husky": "^9.1.7",
     "jsdom": "^22.1.0",
     "license-checker": "^25.0.1",
-    "lint-staged": "^15.2.10",
     "rollup-plugin-typescript-paths": "^1.5.0",
     "rollup-plugin-visualizer": "^5.12.0",
     "sass": "^1.79.4",
