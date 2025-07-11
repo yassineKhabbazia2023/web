@@ -23,7 +23,6 @@
           pIconOnly
           pPlain
           :pIsActive="showCalendar"
-          :pRound="false"
           :pDisabled="false"
           :pLoading="false"
           data-testid="header-section-calendar-btn"
@@ -41,7 +40,6 @@
           pIconOnly
           :pIsActive="showFeedCenter"
           pPlain
-          :pRound="false"
           pSize="small"
           :pType="showFeedCenter ? 'white' : 'default'"
           data-testid="feed-center-button"

@@ -4,7 +4,6 @@ export function getData(pLoading: boolean) {
       pButtonName: 'Télécharger',
       pButton: {
         pType: 'default',
-        pRound: false,
         pCircle: false,
         pLoading: false,
         pDisabled: false,
@@ -17,7 +16,6 @@ export function getData(pLoading: boolean) {
       pButtonName: 'Déplacer',
       pButton: {
         pType: 'default',
-        pRound: false,
         pCircle: false,
         pLoading,
         pDisabled: false,
@@ -35,7 +33,6 @@ export function getData2(pButtonName: string) {
       pButtonName: 'Déposer un document',
       pButton: {
         pType: 'primary',
-        pRound: false,
         pCircle: false,
         pLoading: false,
         pDisabled: false,
@@ -50,7 +47,6 @@ export function getData2(pButtonName: string) {
       pButtonName,
       pButton: {
         pType: 'default',
-        pRound: false,
         pCircle: false,
         pLoading: false,
         pDisabled: false,
@@ -63,7 +59,6 @@ export function getData2(pButtonName: string) {
       pButtonName: '',
       pButton: {
         pType: 'white',
-        pRound: false,
         pCircle: true,
         pLoading: false,
         pDisabled: false,
@@ -84,7 +79,6 @@ export function getLeftSideActionWithDisabledUpload() {
       pButtonName: 'Déposer un document',
       pButton: {
         pType: 'primary',
-        pRound: false,
         pCircle: false,
         pLoading: false,
         pDisabled: true,
@@ -100,7 +94,6 @@ export function getLeftSideActionWithDisabledUpload() {
       pButtonName: 'Filtrer',
       pButton: {
         pType: 'default',
-        pRound: false,
         pCircle: false,
         pLoading: false,
         pDisabled: false,
@@ -113,7 +106,6 @@ export function getLeftSideActionWithDisabledUpload() {
       pButtonName: '',
       pButton: {
         pType: 'white',
-        pRound: false,
         pCircle: true,
         pLoading: false,
         pDisabled: false,

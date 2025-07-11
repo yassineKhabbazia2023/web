@@ -90,7 +90,6 @@
           pType="secondary"
           pSize="small"
           pPlain
-          :pRound="false"
           :pDisabled="false"
           :pLoading="false"
           @click="closeTerminateMandatePopup"
@@ -100,7 +99,6 @@
         <PButton
           pType="primary"
           pSize="small"
-          :pRound="false"
           :pDisabled="false"
           :pLoading="false"
           class="margin-left--2"

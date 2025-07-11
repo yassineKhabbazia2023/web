@@ -12,7 +12,6 @@ describe('test for PButton', () => {
   it('render with props', () => {
     const wrapper = shallowMount(PButton, {
       props: {
-        pRound: true,
         pCircle: true,
         pDisabled: true,
         pLoading: true,

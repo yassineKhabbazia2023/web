@@ -9,7 +9,6 @@
     <Variant title="Basic Usage">
       <PButton
         :pType="basicButton.pType"
-        :pRound="basicButton.pRound"
         :pCircle="basicButton.pCircle"
         :pDisabled="basicButton.pDisabled"
         :pIsActive="basicButton.pIsActive"
@@ -23,7 +22,6 @@
       </PButton>
       <template #controls>
         <HstText v-model="buttonText" title="Text" />
-        <HstCheckbox v-model="basicButton.pRound" title="Round" />
         <HstCheckbox v-model="basicButton.pCircle" title="Circle" />
         <HstCheckbox v-model="basicButton.pDisabled" title="Disabled" />
         <HstCheckbox v-model="basicButton.pIsActive" title="Active" />
@@ -47,7 +45,6 @@
       <PButton
         pIconOnly
         :pType="iconButton.pType"
-        :pRound="iconButton.pRound"
         :pCircle="iconButton.pCircle"
         :pDisabled="iconButton.pDisabled"
         :pLoading="iconButton.pLoading"
@@ -57,7 +54,6 @@
         <PIcon pName="search" />
       </PButton>
       <template #controls>
-        <HstCheckbox v-model="iconButton.pRound" title="Round" />
         <HstCheckbox v-model="iconButton.pCircle" title="Circle" />
         <HstCheckbox v-model="iconButton.pDisabled" title="Disabled" />
         <HstCheckbox v-model="iconButton.pLoading" title="Loading" />
@@ -118,7 +114,6 @@
         >
           <PButton
             :pType="pType"
-            :pRound="basicButton.pRound"
             :pCircle="basicButton.pCircle"
             :pIsActive="basicButton.pIsActive"
             :pLoading="basicButton.pLoading"
@@ -133,7 +128,6 @@
           <PButton
             :pType="pType"
             pDisabled
-            :pRound="basicButton.pRound"
             :pCircle="basicButton.pCircle"
             :pIsActive="basicButton.pIsActive"
             :pLoading="basicButton.pLoading"
@@ -171,7 +165,6 @@ import PIcon from '../../atoms/PIcon'
 
 const basicButton = ref<PButtonProps>({
   pType: 'default',
-  pRound: false,
   pCircle: false,
   pDisabled: false,
   pIsActive: false,
@@ -183,7 +176,6 @@ const buttonText = ref('')
 
 const iconButton = ref<PButtonProps>({
   pType: 'default',
-  pRound: false,
   pCircle: true,
   pDisabled: false,
   pLoading: false,
@@ -215,10 +207,6 @@ const buttonTypeList: { label: string, value: PButtonProps['pType'] }[] = [
   {
     label: 'default',
     value: 'default',
-  },
-  {
-    label: 'warning',
-    value: 'warning',
   },
   {
     label: 'danger',

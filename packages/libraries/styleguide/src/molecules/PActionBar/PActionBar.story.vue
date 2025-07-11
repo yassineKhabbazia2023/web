@@ -36,7 +36,6 @@ function getButton(
 ): PButtonProps {
   const defaultButton: PButtonProps = {
     pType,
-    pRound: false,
     pCircle: false,
     pLoading: false,
     pDisabled: false,
@@ -140,7 +139,6 @@ const pLeftSideIcons = ref([{
   pButtonActionName: 'buttonActionName',
   pButton: {
     pType: 'primary',
-    pRound: false,
     pCircle: false,
     pLoading: false,
     pDisabled: false

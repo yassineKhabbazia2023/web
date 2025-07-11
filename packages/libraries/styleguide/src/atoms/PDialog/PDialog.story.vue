@@ -24,7 +24,6 @@
               pType="primary"
               pSize="small"
               pPlain
-              :pRound="false"
               :pDisabled="false"
               :pLoading="false"
               @click="closeDialog"
@@ -63,7 +62,6 @@
               pType="secondary"
               pSize="small"
               pPlain
-              :pRound="false"
               :pDisabled="false"
               :pLoading="false"
               @click="closeSecondDialog"
@@ -73,7 +71,6 @@
             <PButton
               pType="primary"
               pSize="small"
-              :pRound="false"
               :pDisabled="false"
               :pLoading="false"
               @click="closeSecondDialog"
@@ -119,7 +116,6 @@
               pType="secondary"
               pSize="small"
               pPlain
-              :pRound="false"
               :pDisabled="false"
               :pLoading="false"
               @click="closeThirdDialog"
@@ -129,7 +125,6 @@
             <PButton
               pType="primary"
               pSize="small"
-              :pRound="false"
               :pDisabled="false"
               :pLoading="false"
               @click="closeThirdDialog"

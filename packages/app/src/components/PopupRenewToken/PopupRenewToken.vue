@@ -28,7 +28,6 @@
         pPlain
         pType="secondary"
         pSize="small"
-        :pRound="false"
         data-testid="logout-button"
         @click="onClickFirstButton"
       >
@@ -37,7 +36,6 @@
       <PButton
         pType="primary"
         pSize="small"
-        :pRound="false"
         data-testid="renew-token-button"
         @click="onClickSecondButton"
       >

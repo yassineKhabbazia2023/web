@@ -38,7 +38,7 @@ $button-padding-vertical: (
 $button-padding-horizontal: (
   'large': 20px,
   'default': 13px,
-  'small': 9px,
+  'small': 8px,
 );
 
 // Custom css el-button
@@ -135,7 +135,7 @@ $button-padding-horizontal: (
       &.is-disabled:focus {
         background: transparent;
         border-color: transparent;
-        color: var(--el-color-neutral-gray-100);
+        color: var(--el-color-neutral-gray-400);
       }
 
       #{$self}__icon {
@@ -173,7 +173,7 @@ $button-padding-horizontal: (
     &.is-disabled:focus {
       background: var(--el-color-neutral-gray-100);
       border-color: var(--el-color-neutral-gray-100);
-      color: var(--el-color-base-white);
+      color: var(--el-color-neutral-gray-400);
     }
   }
 
@@ -190,7 +190,7 @@ $button-padding-horizontal: (
 
     &:focus,
     &.p-button--is-active {
-      background: var(--el-color-polar-200);
+      background: var(--el-color-persian-100);
       border-color: var(--el-color-polar-200);
       color: var(--el-color-base-blue-pulse);
     }
@@ -200,7 +200,7 @@ $button-padding-horizontal: (
     &.is-disabled:focus {
       background: var(--el-color-neutral-gray-100);
       border-color: var(--el-color-neutral-gray-100);
-      color: var(--el-color-base-white);
+      color: var(--el-color-neutral-gray-400);
     }
   }
 
@@ -227,7 +227,7 @@ $button-padding-horizontal: (
     &.is-disabled:focus {
       background: transparent;
       border-color: transparent;
-      color: var(--el-color-neutral-gray-100);
+      color: var(--el-color-neutral-gray-400);
     }
   }
 
@@ -254,34 +254,7 @@ $button-padding-horizontal: (
     &.is-disabled:focus {
       background: var(--el-color-neutral-gray-100);
       border-color: var(--el-color-neutral-gray-100);
-      color: var(--el-color-base-white);
-    }
-  }
-
-  &#{$self}--warning {
-    background: var(--el-color-warning-light-9);
-    border-color: var(--el-color-warning-light-9);
-    color: var(--el-color-warning);
-
-    &:hover {
-      background: var(--el-button-hover-bg-color);
-      border-color: var(--el-button-hover-border-color);
-      color: var(--el-button-hover-text-color);
-    }
-
-    &:focus,
-    &.p-button--is-active {
-      background: var(--el-color-warning-dark-2);
-      border-color: var(--el-color-warning-dark-2);
-      color: var(--el-color-warning-dark-2);
-    }
-
-    &.is-disabled,
-    &.is-disabled:hover,
-    &.is-disabled:focus {
-      background: var(--el-color-neutral-gray-100);
-      border-color: var(--el-color-neutral-gray-100);
-      color: var(--el-color-base-white);
+      color: var(--el-color-neutral-gray-400);
     }
   }
 
@@ -308,7 +281,7 @@ $button-padding-horizontal: (
     &.is-disabled:focus {
       background: var(--el-color-neutral-gray-100);
       border-color: var(--el-color-neutral-gray-100);
-      color: var(--el-color-base-white);
+      color: var(--el-color-neutral-gray-400);
     }
   }
 
@@ -339,7 +312,7 @@ $button-padding-horizontal: (
     &.is-disabled:focus {
       background: pink;
       border-color: pink;
-      color: var(--el-color-base-white);
+      color: var(--el-color-neutral-gray-400);
     }
   }
 }

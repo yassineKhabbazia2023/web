@@ -1,7 +1,6 @@
 <template>
   <ElButton
     :type="button.class"
-    :round="pRound"
     :circle="pCircle"
     :disabled="pDisabled"
     :loading="pLoading"
@@ -25,7 +24,6 @@ import { injectionButtonKey } from '../../atoms/PButtonGroup/PButtonGroupTypes'
 
 const props = withDefaults(defineProps<PButtonProps>(), {
   pType: 'default',
-  pRound: false,
   pCircle: false,
   pDisabled: false,
   pLoading: false,
