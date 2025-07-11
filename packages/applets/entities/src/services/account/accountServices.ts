@@ -4,7 +4,7 @@ import { commonApi } from '@pulse/common'
 import type { Entity, QueryResult } from '@pulse/common/types'
 import { API_PREFIXES } from '@entities/common/config/services'
 import type { PatchOperation } from '@entities/services/PatchRecordService'
-import type { AccountRow, ReferentialStructure, Hub, Office } from './accountTypes'
+import type { AccountRow, ReferentialStructure, Hub, Office, AccountsDelegation } from './accountTypes'
 import { ContactType } from '@pulse/common/enums'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
@@ -68,6 +68,12 @@ export async function deleteAccountDelegation(delegationId: number) {
       delegationId,
     },
   })
+}
+
+export async function delegateAccounts(delegationRequest: AccountsDelegation) {
+  const url = `${API_PREFIXES.WALLET}/delegations`
+
+  return await commonApi().gateway.post(url, delegationRequest)
 }
 
 export async function addContactToEntity(

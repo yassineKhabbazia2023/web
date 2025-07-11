@@ -122,3 +122,17 @@ export interface AccountSignatories {
   office: string
   creationDate: string
 }
+
+export interface AccountsDelegationDetails {
+  delegateeId: number
+  startDate: string
+  isAutomaticDelegation: boolean
+}
+
+export interface AccountsDelegation {
+  isFullDelegation: boolean
+  includePennylaneAccess: boolean
+  delegatorId: number
+  delegationDetails: AccountsDelegationDetails[]
+  accountIds: number[]
+}

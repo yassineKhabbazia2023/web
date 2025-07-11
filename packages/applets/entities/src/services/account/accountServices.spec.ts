@@ -8,6 +8,7 @@ import {
   fetchReferentialHubs,
   fetchAccountDelegationsHistory,
   deleteAccountDelegation,
+  delegateAccounts,
   addContactToEntity,
   fetchContactsFromSameHub,
   createCustomer,
@@ -16,11 +17,11 @@ import {
   getAccountSignatories,
   fetchGatewayApi,
   fetchReferentialOffices,
-  type Hub,
   deleteContactFromAccount,
   hasContactRoleOnCommonAccount,
   updateCustomerRelation,
 } from '.'
+import type { Hub } from './accountTypes'
 import {
   getMockedAccount,
   getMockedAccountRow,
@@ -28,6 +29,7 @@ import {
   getMockedAccountReferential,
   getMockedReferentialHubs,
   getMockedReferentialOffices,
+  getMockedAccountsDelegation,
 } from '@entities/__mocks__/account-row.mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { API_PREFIXES } from '@entities/common/config/services'
@@ -238,6 +240,18 @@ describe('test accountServices', () => {
       const response = await deleteAccountDelegation(accountId)
 
       expect(response).toStrictEqual({ status: 200, data: { accountId } })
+    })
+
+    it('delegate accounts', async () => {
+      const responseMock = true
+      postSpy.mockResolvedValue(responseMock)
+      const delegationRequestMock = getMockedAccountsDelegation()
+      const response = await delegateAccounts(delegationRequestMock)
+      const expectedUrl = `${API_PREFIXES.WALLET}/delegations`
+
+      expect(postSpy).toHaveBeenCalledOnce()
+      expect(postSpy).toHaveBeenCalledWith(expectedUrl, delegationRequestMock)
+      expect(response).toStrictEqual(responseMock)
     })
   })
 

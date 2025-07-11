@@ -1,11 +1,9 @@
-import { vi, describe, it, expect, beforeEach } from 'vitest'
-import { mount, type VueWrapper } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { createI18n } from 'vue-i18n'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
-import AddDelegatesStep from '.'
-import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
 import { getMockedCollaborators2 } from '@entities/__mocks__/collaborators.mocks'
+
+import AddDelegatesStep from '.'
 
 const mockedCollaborators = getMockedCollaborators2()
 vi.mock('@entities/services/wallet', () => ({
@@ -14,42 +12,46 @@ vi.mock('@entities/services/wallet', () => ({
   })),
 }))
 
+vi.mock('@pulse/common/managers')
+
 const defaultProps: DelegatorsAddStepProps = {
   numberOfFoldersInPortfolio: 5,
   shouldDisplayNumberOfFoldersInPortfolio: true,
+  hasPennylaneAccess: false,
 }
 
-const i18n = createI18n({
-  locale: 'fr-FR',
-})
-
 const createWrapper = (
-  props: DelegatorsAddStepProps = defaultProps,
-): VueWrapper => {
-  return mount(AddDelegatesStep, {
+  overriddenProps: Partial<DelegatorsAddStepProps> = {},
+) => {
+  const props = {
+    ...defaultProps,
+    ...overriddenProps,
+  }
+
+  return shallowMount(AddDelegatesStep, {
     props,
     global: {
-      provide: {
-        i18n,
+      stubs: {
+        PBlockHeader: {
+          name: 'PBlockHeader',
+          template: '<div><slot /><slot name="subtitle" /><slot name="suffix" /></div>',
+        },
+        PAlert: {
+          name: 'PAlert',
+          template: '<div><slot /></div>',
+        },
+        'i18n-t': {
+          template: '<div><slot name="amount" /></div>',
+        },
       },
     },
   })
 }
 
-const findCollaboratorSearchAutocomplete = (wrapper: VueWrapper) =>
-  wrapper.findComponent(CollaboratorsSearchAutocomplete)
-
-const findUserAction = (wrapper: VueWrapper) =>
-  wrapper.findComponent({ name: 'PUserAction' })
-
-let wrapper = createWrapper()
-let collaboratorsSearchAutocompleteWrapper =
-  findCollaboratorSearchAutocomplete(wrapper)
-
 describe('addDelegatesStep', () => {
+  let wrapper: ReturnType<typeof createWrapper>
   beforeEach(() => {
     wrapper = createWrapper()
-    collaboratorsSearchAutocompleteWrapper = findCollaboratorSearchAutocomplete(wrapper)
   })
 
   describe('props', () => {
@@ -62,6 +64,8 @@ describe('addDelegatesStep', () => {
 
   describe('interactions', () => {
     it('should emit collaborator-selection on add-collaborator event', () => {
+      const collaboratorsSearchAutocompleteWrapper = wrapper.findComponent({ name: 'CollaboratorsSearchAutocomplete' })
+
       collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', mockedCollaborators[0])
 
       const emitted = wrapper.emitted('collaborator-selection')
@@ -71,6 +75,8 @@ describe('addDelegatesStep', () => {
     })
 
     it('should emit collaborator-selection on remove-collaborator event', () => {
+      const collaboratorsSearchAutocompleteWrapper = wrapper.findComponent({ name: 'CollaboratorsSearchAutocomplete' })
+
       // set base content to test remove
       collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', mockedCollaborators[0])
       collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', mockedCollaborators[1])
@@ -86,10 +92,12 @@ describe('addDelegatesStep', () => {
     })
 
     it('should emit collaborator-selection on user line trash icon click', async () => {
+      const collaboratorsSearchAutocompleteWrapper = wrapper.findComponent({ name: 'CollaboratorsSearchAutocomplete' })
+
       collaboratorsSearchAutocompleteWrapper.vm.$emit('add-collaborator', mockedCollaborators[0])
       await nextTick()
 
-      const userLine = findUserAction(wrapper)
+      const userLine = wrapper.findComponent({ name: 'PUserAction' })
       userLine.vm.$emit('click-delete', 1)
 
       const emitted = wrapper.emitted('collaborator-selection')

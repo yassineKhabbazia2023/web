@@ -55,12 +55,23 @@
         </div>
       </template>
     </div>
+    <template v-if="hasPennylaneCheckbox">
+      <PCheckbox v-model="internalHasPennylaneAccess">
+        {{ t('pennylaneAccess.checkboxLabel') }}
+      </PCheckbox>
+      <PAlert pType="information">
+        <template #bold-text>
+          {{ t('pennylaneAccess.adviseTitle') }} :
+        </template>
+        {{ t('pennylaneAccess.adviseMessage') }}
+      </PAlert>
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { PAlert, PBlockHeader, PUserAction } from '@pulse/styleguide/components'
+import { computed, ref, onMounted } from 'vue'
+import { PCheckbox, PAlert, PBlockHeader, PUserAction } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
 import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
@@ -69,10 +80,15 @@ import type { Contact } from '@entities/services/contact/contactTypes'
 import { getInitials } from '@entities/helper/helper'
 import { getFullName } from '@entities/common/utils/helpers'
 import { AvatarRoles } from '@pulse/styleguide'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { FeatureFlagManager } from '@pulse/core'
+import { Feature } from '@pulse/core/enums'
 
-defineProps<DelegatorsAddStepProps>()
+const props = defineProps<DelegatorsAddStepProps>()
 const emit = defineEmits<{
   'collaborator-selection': [Contact[]]
+  'update:hasPennylaneAccess': [boolean]
 }>()
 
 const { t } = useI18n({
@@ -80,6 +96,15 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
+const hasPennylaneCheckbox = computed(() =>
+  FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_DELEGATE_RIGHTS_CHECKBOX) === true
+  && CurrentUserManager.hasPermission(PERMISSION_ACTION.ACCESS_PENNYLANE_COLLAB) === true,
+)
+
+const internalHasPennylaneAccess = computed({
+  get: () => props.hasPennylaneAccess,
+  set: (hasPennylaneAccess: boolean) => emit('update:hasPennylaneAccess', hasPennylaneAccess),
+})
 const folderUsers = ref<undefined | Contact[]>()
 onMounted(async () => {
   const { items } = await getCollaborators(1, 100)
@@ -118,10 +143,22 @@ function emitCollaboratorSelection() {
     addDelegator: 'Add delegators'
     addDelegatorDescription: 'Choose collaborators to delegate your portfolio to.'
     searchLabel: 'Please search for a collaborator:'
+    pennylaneAccess:
+      checkboxLabel: Give these collaborators access to Pennylane
+      adviseTitle: By enabling this option
+      adviseMessage: >
+        A Pennylane account will be created for these collaborators,
+        allowing them to access the delegated folders.
   fr-FR:
     folders: 1 dossier | {count} dossiers
     numberOfFolders: 'Il y a {amount} dans votre portefeuille'
     addDelegator: 'Ajouter des délégataires'
     addDelegatorDescription: 'Choisissez des collaborateurs à qui déléguer votre portefeuille'
     searchLabel: 'Veuillez rechercher un collaborateur :'
+    pennylaneAccess:
+      checkboxLabel: Donner l’accès à ces collaborateurs sur Pennylane
+      adviseTitle: En activant cette option
+      adviseMessage: >
+        Un compte Pennylane sera créé pour ces collaborateurs,
+        qui pourront accéder aux dossiers délégués.
 </i18n>

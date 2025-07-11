@@ -1,5 +1,17 @@
 import type { PatchOperation } from '@entities/services/PatchRecordService'
-import { Account, AccountRow, Address, Signatory, Deployment, ReferentialStructure, Hub, Office, AddressType } from '@entities/services/account'
+import type {
+  Account,
+  AccountRow,
+  Address,
+  Signatory,
+  Deployment,
+  ReferentialStructure,
+  Hub,
+  Office,
+  AccountsDelegationDetails,
+  AccountsDelegation,
+} from '@entities/services/account/accountTypes'
+import { AddressType } from '@entities/services/account/account.enums'
 import type { QueryResult } from '@pulse/common/types'
 import accountReferentialInformation from '@entities/__mocks__/json/accountReferentialInformation.json'
 import referentialHubs from '@entities/__mocks__/json/referentialHubs.json'
@@ -188,4 +200,28 @@ export function getMockedReferentialOffices(): Office[] {
       addressType: getValidAddressType(office.address.addressType),
     },
   }))
+}
+
+export function getMockedAccountsDelegationDetails(override: Partial<AccountsDelegationDetails> = {}) {
+  const delegationRequestDetails: AccountsDelegationDetails = {
+    delegateeId: 1,
+    startDate: '2025-07-09T09:19:43.192Z',
+    isAutomaticDelegation: true,
+    ...override,
+  }
+
+  return delegationRequestDetails
+}
+
+export function getMockedAccountsDelegation(override: Partial<AccountsDelegation> = {}): AccountsDelegation {
+  const delegationRequest: AccountsDelegation = {
+    isFullDelegation: true,
+    includePennylaneAccess: false,
+    delegatorId: 1, // Provide a valid number for delegatorId
+    delegationDetails: [getMockedAccountsDelegationDetails()],
+    accountIds: [1, 2, 3],
+    ...override,
+  }
+
+  return delegationRequest
 }

@@ -49,6 +49,7 @@
 
     <AddDelegatesStep
       v-if="activeStep === 0"
+      v-model:hasPennylaneAccess="hasPennylaneAccess"
       :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
       :shouldDisplayNumberOfFoldersInPortfolio="!isSpecificDelegationFlowType"
       @collaborator-selection="handleCollaboratorSelection"
@@ -78,7 +79,7 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PSteps, PStep, PIcon } from '@pulse/styleguide/components'
 import { AppColors, PNotification } from '@pulse/styleguide'
-import { commonApi } from '@pulse/common'
+import { delegateAccounts } from '@entities/services/account'
 import { useUserStore } from '@pulse/common/stores'
 import { DelegationFlowType } from './DelegationDrawerTypes'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
@@ -90,6 +91,7 @@ import DelegationPreviewList from './components/DelegationPreviewList'
 import CollapsableFoldersList from './components/CollapsableFoldersList'
 import SelectedFoldersList from './components/SelectedFoldersList'
 import type { DelegationDetails } from './models/Delegation'
+import type { AccountsDelegationDetails, AccountsDelegation } from '@entities/services/account/accountTypes'
 
 const props = defineProps<DelegationDrawerProps>()
 const emit = defineEmits<{
@@ -102,6 +104,7 @@ const { t } = useI18n({
 })
 
 const activeStep = ref<number>(0)
+const hasPennylaneAccess = ref(false)
 const delegationDetails = ref<DelegationDetails[]>([])
 
 const isDelegationDrawerOpened = computed({
@@ -139,12 +142,16 @@ async function handleNextClick() {
   if (activeStep.value === 0) {
     delegationDetails.value = formatCollaboratorsDetailsForDelegateSummary()
   }
+  if (currentUserId === undefined) {
+    throw new Error('unexpected undefined currentUserId')
+  }
 
   if (activeStep.value === 1 || isSpecificDelegationFlowType.value) {
-    const delegationRequest = {
+    const delegationRequest: AccountsDelegation = {
       isFullDelegation: !isSpecificDelegationFlowType.value,
+      includePennylaneAccess: hasPennylaneAccess.value,
       delegatorId: currentUserId,
-      delegationDetails: formatDelegateSummaryForDelegationRequest(delegationDetails.value),
+      delegationDetails: formatDelegateSummaryForAccountsDelegation(delegationDetails.value),
       accountIds: getAccountIdFromSelectedFolders(),
     }
     isNextButtonLoading.value = true
@@ -180,9 +187,9 @@ function formatCollaboratorsDetailsForDelegateSummary() {
     ))
 }
 
-const formatDelegateSummaryForDelegationRequest = (delegationDetails: DelegationDetails[]) => {
+const formatDelegateSummaryForAccountsDelegation = (delegationDetails: DelegationDetails[]) => {
   return delegationDetails
-    .map(({ delegate, isAutomaticDelegation }) => (
+    .map<AccountsDelegationDetails>(({ delegate, isAutomaticDelegation }) => (
       {
         delegateeId: delegate.id,
         startDate: new Date().toISOString(),
@@ -191,12 +198,9 @@ const formatDelegateSummaryForDelegationRequest = (delegationDetails: Delegation
     ))
 }
 
-const delegateFolder = async (delegationRequest: any) => {
+const delegateFolder = async (delegationRequest: AccountsDelegation) => {
   try {
-    await commonApi().gateway.post(
-      'wallet/api/delegations',
-      delegationRequest,
-    )
+    await delegateAccounts(delegationRequest)
     handleDisplayNotification(true, delegationRequest.accountIds.length)
   } catch (err) {
     handleDisplayNotification(false, delegationRequest.accountIds.length)
