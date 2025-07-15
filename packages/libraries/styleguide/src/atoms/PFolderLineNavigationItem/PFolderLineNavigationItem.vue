@@ -15,6 +15,7 @@
           v-if="pIconLeftName"
           :pName="pIconLeftName"
           class="margin-right--2"
+          pSize="16"
         />
         <span
           class="
@@ -71,6 +72,8 @@ const handleDoubleClickFolderNavigation = (pFolderId: number) => {
 
 <style lang="scss" scoped>
 .p-folder-line-navigation-item {
+  $self: &;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -82,9 +85,10 @@ const handleDoubleClickFolderNavigation = (pFolderId: number) => {
   outline: none;
   cursor: pointer;
   background: var(--el-color-white);
+  border-left: 2px solid transparent;
 
   &:hover {
-    background: var(--el-color-persian-50);
+    background: var(--el-color-secondary-cyan-bg);
   }
 
   &__folder {
@@ -101,13 +105,18 @@ const handleDoubleClickFolderNavigation = (pFolderId: number) => {
 
   &.selected {
     overflow: hidden;
-    color: var(--el-color-persian-500);
+    color: var(--el-color-black-rock-900);
     text-overflow: ellipsis;
     font-size: 1.4rem;
     font-style: normal;
     font-weight: 600;
     line-height: 120%;
-    background: var(--el-color-persian-50);
+    background: var(--el-color-secondary-amethyste-bg);
+    border-left: 2px solid var(--el-color-black-rock-900);
+
+    #{$self}__folder-name {
+      color: var(--el-color-secondary-amethyste);
+    }
   }
 
   &.disabled {
