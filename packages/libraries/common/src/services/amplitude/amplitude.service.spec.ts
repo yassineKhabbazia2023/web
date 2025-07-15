@@ -1,8 +1,7 @@
 import { SERVER_ZONE } from './constants'
 import { Identify } from '@amplitude/analytics-browser'
-import { ContactType } from '@pulse/common/enums'
-
 import { AmplitudeService } from './amplitude.service'
+import { AmplitudeUserType } from '@common/enums/amplitude.enums'
 
 const initSpy = vi.fn()
 const resetSpy = vi.fn()
@@ -100,7 +99,7 @@ describe('amplitude', () => {
     AmplitudeService.init(FAKE_API_KEY)
 
     const identifyEvent = new Identify()
-    identifyEvent.set('user_type', ContactType.CUSTOMER)
+    identifyEvent.set('user_type', AmplitudeUserType.CUSTOMER)
 
     expect(identifySpy).toHaveBeenCalledTimes(0)
 
@@ -115,7 +114,7 @@ describe('amplitude', () => {
     AmplitudeService.init(FAKE_API_KEY)
 
     const identifyEvent = new Identify()
-    identifyEvent.set('user_type', ContactType.COLLABORATOR)
+    identifyEvent.set('user_type', AmplitudeUserType.COLLAB)
 
     expect(identifySpy).toHaveBeenCalledTimes(0)
 

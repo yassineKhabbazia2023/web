@@ -2,7 +2,7 @@ import { SERVER_ZONE } from './constants'
 import * as amplitude from '@amplitude/analytics-browser'
 import type { BaseEvent } from '@amplitude/analytics-types'
 import { logger } from '@pulse/core'
-import { ContactType } from '@pulse/common/enums'
+import { AmplitudeUserType } from '@pulse/common/enums'
 
 /**
  * Service for managing Amplitude analytics integration
@@ -119,14 +119,14 @@ export class AmplitudeService {
     if (AmplitudeService.isInitialized() === false) {
       return
     }
-    AmplitudeService.setNewUserProperty('user_type', ContactType.CUSTOMER)
+    AmplitudeService.setNewUserProperty('user_type', AmplitudeUserType.CUSTOMER)
   }
 
   static identifyCollaborator() {
     if (AmplitudeService.isInitialized() === false) {
       return
     }
-    AmplitudeService.setNewUserProperty('user_type', ContactType.COLLABORATOR)
+    AmplitudeService.setNewUserProperty('user_type', AmplitudeUserType.COLLAB)
   }
 
   /**
