@@ -12,6 +12,7 @@
         padding-left--2
         padding-right--3
         padding-y--3
+        flex--align-items-stretch
         flex--grow-1
       "
       @click="$emit('action-notification-click')"
@@ -22,7 +23,7 @@
       <span class="p-notification-card__text padding-x--3 flex--grow-1">
         <slot name="text" />
       </span>
-      <div class="p-notification-card__right-col flex flex--direction-column text-right">
+      <div class="p-notification-card__right-col flex flex--direction-column text-right text-color--neutral-gray-400">
         <span class="p-notification-card__time font-small padding-left--2 padding-bottom--2">
           {{ pTime }}
         </span>
@@ -70,7 +71,6 @@ withDefaults(defineProps<PNotificationCardProps>(), {
 
   &__button {
     display: flex;
-    align-items: center;
     justify-content: flex-start;
     background: transparent;
     appearance: none;
@@ -89,7 +89,7 @@ withDefaults(defineProps<PNotificationCardProps>(), {
     &__tag {
       width: 42px;
       text-align: center;
-      color: var(--el-color-neutral-gray-900);
+      color: var(--el-color-neutral-gray-400);
     }
   }
 

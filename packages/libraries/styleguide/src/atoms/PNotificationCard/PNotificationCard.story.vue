@@ -27,7 +27,7 @@
               class="el-button--icon"
               pSize="small"
             >
-              <PIcon pName="threeDots" />
+              <PIcon pName="threeDots" :pColor="AppColors.GRAY_400" />
             </PButton>
           </PToolbox>
         </template>
@@ -60,7 +60,7 @@
               class="el-button--icon"
               pSize="small"
             >
-              <PIcon pName="threeDots" />
+              <PIcon pName="threeDots" :pColor="AppColors.GRAY_400" />
             </PButton>
           </PToolbox>
         </template>
@@ -81,6 +81,7 @@ import PIcon from '../../atoms/PIcon'
 import PNotificationCard from './'
 import type { PAvatarProps } from '../../atoms/PAvatar/PAvatarTypes'
 import type { PToolboxItemProps } from '../../atoms/PToolboxItem/PToolboxItemTypes'
+import { AppColors } from '../../utils/AppColorsEnum'
 
 const currentShape = ref<PAvatarProps['pShape']>('circle')
 const currentType = ref<PAvatarProps['pType']>('default')
