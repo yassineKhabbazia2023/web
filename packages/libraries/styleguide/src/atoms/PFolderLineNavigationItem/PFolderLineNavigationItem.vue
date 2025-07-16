@@ -112,7 +112,7 @@ const handleDoubleClickFolderNavigation = (pFolderId: number) => {
     font-weight: 600;
     line-height: 120%;
     background: var(--el-color-secondary-amethyste-bg);
-    border-left: 2px solid var(--el-color-black-rock-900);
+    border-left: 2px solid var(--el-color-secondary-amethyste);
 
     #{$self}__folder-name {
       color: var(--el-color-secondary-amethyste);
