@@ -85,7 +85,7 @@ import { PNotification } from '@pulse/styleguide'
 import type {
   AuthorizationState,
 } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
-import type { AccountRightsDrawerProps, PermissionTypeTab } from './AccountRightsDrawerTypes'
+import type { AccountRightsDrawerProps, PermissionTypeTab, PermissionType } from './AccountRightsDrawerTypes'
 import { ContactType } from '@pulse/common/enums'
 import { updateAccountPermissions } from '@entities/services/authorization'
 import { getPermissionCodes } from '@entities/common/components/ManageRightsDrawer/utils'
@@ -103,7 +103,7 @@ const emit = defineEmits<{
 }>()
 
 const isLoading = ref(false)
-const activeTab = ref<string>('clientPermissions')
+const activeTab = ref<PermissionType>('clientPermissions')
 const authorizationsState = ref<Record<string, AuthorizationState>>({})
 const permissionTypesTabs: PermissionTypeTab[] = [
   {

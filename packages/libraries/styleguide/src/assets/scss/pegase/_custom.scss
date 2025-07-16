@@ -35,6 +35,15 @@
   &--100vh {
     height: 100vh !important;
   }
+  &--inherit {
+    height: inherit !important;
+  }
+}
+
+.line-height {
+  &--inherit {
+    line-height: inherit !important;
+  }
 }
 
 .width {

@@ -52,12 +52,57 @@
     </template>
     <template v-if="!hasGroups">
       <ElOption
-        v-for="({ pValue, pLabel, pDisabled }, index) in pOptions"
+        v-for="({ pValue, pLabel, pDisabled, pDescription, internalValue }, index) in internalOptions"
         :key="index"
         :value="pValue"
         :label="pLabel"
         :disabled="pDisabled"
-      />
+        :class="{
+          'height--inherit': pHasRadioButton,
+          'line-height--inherit': pHasRadioButton,
+        }"
+      >
+        <div
+          v-if="pHasRadioButton === true"
+          class="
+            flex
+            flex--align-items-center
+            margin-y--2
+          "
+        >
+          <PRadio
+            :model-value="internalModelValue"
+            :pLabel="internalValue"
+            class="
+              p-dropdown--with-radio-button__option-item__radio
+              margin-left--2
+            "
+          />
+          <ul
+            class="
+              flex
+              flex--direction-column
+              list-style-none
+              max-width-300
+            "
+          >
+            <li
+              class="font-semibold"
+              :class="{
+                'text-color--base-persian': internalModelValue === pValue,
+              }"
+            >
+              {{ pLabel }}
+            </li>
+            <li
+              v-if="pDescription !== undefined && pDescription !== ''"
+              class="text-wrap--wrap"
+            >
+              {{ pDescription }}
+            </li>
+          </ul>
+        </div>
+      </ElOption>
     </template>
     <template v-if="hasGroups">
       <ElOptionGroup
@@ -81,8 +126,15 @@
 import { computed } from 'vue'
 import { ElSelect, ElOptionGroup, ElOption } from 'element-plus'
 import PCheckbox from '../../atoms/PCheckbox'
+import PRadio from '../../atoms/PRadio'
 import type { PDropdownProps } from './PDropdownTypes'
-import { getDropdownGroups, getHasGroups, getIsCheckAll, getAllEnabledValues } from './PDropdownUtils'
+import {
+  getDropdownGroups,
+  getHasGroups,
+  getIsCheckAll,
+  getAllEnabledValues,
+  getInternalOptions,
+} from './PDropdownUtils'
 
 const props = withDefaults(defineProps<PDropdownProps>(), {
   pAllowCreate: false,
@@ -143,4 +195,22 @@ const internalModelValue = computed({
     emit('update:modelValue', modelValue)
   },
 })
+
+const internalOptions = computed(() => getInternalOptions(props.pOptions))
 </script>
+
+<style lang="scss" scoped>
+.p-dropdown {
+  &--with-radio-button {
+    &__option-item {
+      &__radio {
+        margin-right: 8px;
+        color: red;
+        :deep(.el-radio__label) {
+          display: none;
+        }
+      }
+    }
+  }
+}
+</style>

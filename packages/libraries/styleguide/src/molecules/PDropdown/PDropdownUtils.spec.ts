@@ -1,7 +1,13 @@
 import { describe, it, expect } from 'vitest'
+import { loggerMock } from '@pulse/core/mocks'
 import { getMockedDropdownOptions } from './PDropdown.mocks'
-import { getDropdownGroups, getHasGroups, getIsCheckAll, getAllEnabledValues } from './PDropdownUtils'
-import type { DropdownGroup } from './PDropdownTypes'
+import type { DropdownGroup, PDropdownOption } from './PDropdownTypes'
+
+import { getDropdownGroups, getHasGroups, getIsCheckAll, getAllEnabledValues, getInternalOptions } from './PDropdownUtils'
+
+vi.mock('@pulse/core', () => ({
+  logger: loggerMock,
+}))
 
 describe('test PDropdownUtils', () => {
   describe('getDropdownGroups()', () => {
@@ -90,6 +96,40 @@ describe('test PDropdownUtils', () => {
       const isCheckedAll = getIsCheckAll(pOptions, modelValue)
 
       expect(isCheckedAll).toBe(expected)
+    })
+  })
+
+  describe('getInternalOptions', () => {
+    it('should return internal value and call logger.warn properly', () => {
+      const objetValueMock = {
+        a: 'B',
+      }
+      const options: PDropdownOption[] = [{
+        pValue: 'a',
+        pLabel: 'John',
+        pDisabled: false,
+      }, {
+        pValue: objetValueMock,
+        pLabel: 'Maria',
+        pDisabled: false,
+      }]
+      const expectedInternalOptions = [{
+        ...options[0],
+        internalValue: options[0].pValue,
+      }, {
+        ...options[1],
+        internalValue: undefined,
+      }]
+      const expectedLoggerWarnError = [
+        'Unexpected undefined value for option',
+        options[1],
+      ]
+
+      const internalOptions = getInternalOptions(options)
+      expect(internalOptions).toStrictEqual(expectedInternalOptions)
+
+      expect(loggerMock.warn).toHaveBeenCalledOnce()
+      expect(loggerMock.warn).toHaveBeenCalledWith(...expectedLoggerWarnError)
     })
   })
 })

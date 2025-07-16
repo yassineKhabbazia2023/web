@@ -178,9 +178,10 @@
     </div>
   </div>
   <ManageRightsDrawer
-    v-if="selectedRow"
+    v-if="selectedRow && selectedEntity !== undefined"
     v-model="isManageRightsDrawerOpened"
     :selectedUser="selectedRow"
+    :selectedEntity="selectedEntity"
   />
   <ManageAccessDrawerUnitary
     v-model="isManageAccessDrawerOpened"
@@ -241,7 +242,6 @@ import { getOperationsWithLegalName, getAccountOperationsList } from './UsersCol
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 import AddCustomerDrawer from '../usersClient/components/AddCustomerDrawer'
-
 
 const { d, t } = useI18n({
   inheritLocale: true,

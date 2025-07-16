@@ -22,7 +22,6 @@ vi.mock('@pulse/core', () => ({
   FeatureFlagManager: featureFlagManagerMock,
 }))
 
-
 const createWrapper = (
   showCalendar: HeaderProps['showCalendar'],
   showFeedCenter: HeaderProps['showFeedCenter'] = false,

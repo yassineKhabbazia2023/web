@@ -1,4 +1,5 @@
 export * from './stores/types'
 export * from './services/authentication.service.types'
 export * from './services/cgu/cgu.service.types'
+export * from './services/pennylane/pennylane.service.types'
 export * from './types/api.types'

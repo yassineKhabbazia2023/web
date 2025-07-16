@@ -1,11 +1,6 @@
 import type { AccountRow } from '@entities/common/types'
 
-
-export enum PermissionTypeTabs {
-  CLIENT_PERMISSIONS = 'clientPermissions',
-  COLLAB_PERMISSIONS = 'collabPermissions',
-}
-
+export type PermissionType = 'clientPermissions' | 'collabPermissions'
 
 export interface AccountRightsDrawerProps {
   modelValue: boolean
@@ -14,6 +9,6 @@ export interface AccountRightsDrawerProps {
 
 export interface PermissionTypeTab {
   index: number
-  name: `${PermissionTypeTabs}`
+  name: PermissionType
   label: string
 }

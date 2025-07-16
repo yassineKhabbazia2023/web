@@ -57,6 +57,14 @@
                 />
               </PTooltip>
             </PCheckbox>
+            <PDropdown
+              v-if="dropdownsByActionCode?.[authorizationAction.code]?.isVisible === true"
+              :modelValue="additionalOptionByActionCode?.[authorizationAction.code]"
+              :pPlaceholder="dropdownsByActionCode[authorizationAction.code].placeholder"
+              :pOptions="dropdownsByActionCode[authorizationAction.code].options"
+              pHasRadioButton
+              @update:model-value="$event => onUpdateAdditionalOptionByActionCode(authorizationAction.code, $event)"
+            />
           </li>
         </ul>
       </PCheckboxGroup>
@@ -69,9 +77,15 @@ import { logger, FeatureFlagManager } from '@pulse/core'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { PSwitch, PCheckbox, PCheckboxGroup, PLoader, PIcon, PTooltip } from '@pulse/styleguide/components'
+import { PSwitch, PCheckbox, PCheckboxGroup, PLoader, PIcon, PTooltip, PDropdown } from '@pulse/styleguide/components'
 import { fetchAuthorizationsConfig, fetchAccountAuthorizationsConfig } from '@entities/services/authorization'
-import { getAuthorizationsConfigMapped, getAuthorizationState } from './utils'
+import {
+  getHasAction,
+  getPennylaneDropdownOptions,
+  getDropdownsByActionCode,
+  getAuthorizationsConfigMapped,
+  getAuthorizationState,
+} from './utils'
 import { RouteParam } from '@pulse/common/enums'
 import type { AuthorizationState } from '../../ManageRightsTypes'
 import type {
@@ -90,6 +104,7 @@ const { t } = useI18n({
 const props = defineProps<RightsListProps>()
 const emit = defineEmits<{
   'update:modelValue': [Record<string, AuthorizationState>]
+  'update:additionalOptionByActionCode': [Record<string, string>]
 }>()
 
 // Mapping with the code is required to obtain the translated label
@@ -121,6 +136,15 @@ const internalAuthorizationState = computed({
   },
 })
 
+function onUpdateAdditionalOptionByActionCode(actionCode: string, role: string) {
+  const updatedAdditionalOptionByActionCode = {
+    ...props.additionalOptionByActionCode,
+    [actionCode]: role,
+  }
+
+  emit('update:additionalOptionByActionCode', updatedAdditionalOptionByActionCode)
+}
+
 // To manage the status of actions when there is a change in the state of the category switch
 const handleAuthorizationCategoryUpdate = (
   state: boolean,
@@ -147,6 +171,17 @@ const handleAuthorizationActionUpdate = (
     internalAuthorizationState.value[authorizationCategory].isActive = false
   }
 }
+
+const dropdownsByActionCode = computed(() => {
+  const hasPennylane = getHasAction(props.modelValue, PERMISSION_ACTION.ACCESS_PENNYLANE)
+  const pennylanedropdownOptions = getPennylaneDropdownOptions(props.pennylaneAvailableRoles ?? [])
+
+  return getDropdownsByActionCode(
+    hasPennylane,
+    pennylanedropdownOptions,
+    t('PennylaneDropdownPlaceholder'),
+  )
+})
 
 onMounted(async () => {
   internalAuthorizationState.value = {}
@@ -243,6 +278,7 @@ en-US:
   thisAccount: 'this folder'
   thisUser: 'this user'
   rightsNote: 'Activate or deactivate the features you want to give for {rightsType}.'
+  PennylaneDropdownPlaceholder: 'Choose a role'
 fr-FR:
   PennylaneAdditionalInfos: |
     ● En cochant cette case et en validant, un compte
@@ -266,4 +302,5 @@ fr-FR:
   thisAccount: 'ce dossier'
   thisUser: 'cet utilisateur'
   rightsNote: 'Activez ou désactivez les fonctionnalités que vous souhaitez donner pour {rightsType}.'
+  PennylaneDropdownPlaceholder: 'Choisir un rôle'
 </i18n>

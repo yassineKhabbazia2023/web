@@ -1,10 +1,26 @@
 import { it, expect, describe } from 'vitest'
-import { getMockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mocks'
-import { getAuthorizationsConfigMapped, getAuthorizationState, getEnrichedActions } from '.'
+import { getMockedAuthorizationsConfig, getMockedAuthorizationState } from '@entities/__mocks__/permissions.mocks'
+import { getMockedPennylaneAvailableRole } from '@pulse/common/mocks'
 import type { Action, EnrichedAction } from '../RightsListTypes'
+import type { PDropdownOption } from '@pulse/styleguide/types'
+import { PERMISSION_ACTION } from '@pulse/common/constants'
+
+import {
+  getAuthorizationsConfigMapped,
+  getAuthorizationState,
+  getEnrichedActions,
+  getPennylaneDropdownOptions,
+  getHasAction,
+  getDropdownsByActionCode,
+} from '.'
 
 // Mocks
 const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
+const authorizationStateMock = getMockedAuthorizationState()
+const pennylanedropdownOptionsMock: PDropdownOption[] = [{
+  pValue: 'a',
+  pLabel: 'admin',
+}]
 
 const mockedRightCategories = {
   COLADMIN: 'Administration',
@@ -92,6 +108,7 @@ describe('rightsListUtils', () => {
       )
     })
   })
+
   describe('getAuthorizationState', () => {
     it('should return a list of enabled actions along with their isActive state', () => {
       const authorizationState = getAuthorizationState(mockedActions)
@@ -99,6 +116,7 @@ describe('rightsListUtils', () => {
       expect(authorizationState).toStrictEqual(expectedAuthorizationState)
     })
   })
+
   describe('getEnrichedActions', () => {
     it('should return a list enriched actions', () => {
       const expectedEnrichedActions: EnrichedAction[] = [{
@@ -117,6 +135,97 @@ describe('rightsListUtils', () => {
       const enrichedActions = getEnrichedActions(mockedActions, tooltipByActionCode)
 
       expect(enrichedActions).toStrictEqual(expectedEnrichedActions)
+    })
+  })
+
+  describe('getPennylaneDropdownOptions(', () => {
+    const pennylaneAvailableRolesMock = [
+      getMockedPennylaneAvailableRole(),
+      getMockedPennylaneAvailableRole({
+        code: 'compta',
+        label: 'comptable',
+        description: 'comptable',
+      }),
+    ]
+    const expectedPennylanedropdownOptions = [{
+      pValue: pennylaneAvailableRolesMock[0].code,
+      pLabel: pennylaneAvailableRolesMock[0].label,
+      pDescription: pennylaneAvailableRolesMock[0].description,
+    }, {
+      pValue: pennylaneAvailableRolesMock[1].code,
+      pLabel: pennylaneAvailableRolesMock[1].label,
+      pDescription: pennylaneAvailableRolesMock[1].description,
+    }]
+    const tests = [{
+      pennylaneAvailableRoles: pennylaneAvailableRolesMock,
+      expectedPennylanedropdownOptions,
+    }, {
+      pennylaneAvailableRoles: undefined,
+      expectedPennylanedropdownOptions: [],
+    }]
+    it.each(tests)('should return', ({
+      pennylaneAvailableRoles,
+      expectedPennylanedropdownOptions,
+    }) => {
+      const pennylanedropdownOptions = getPennylaneDropdownOptions(pennylaneAvailableRoles)
+      expect(pennylanedropdownOptions).toStrictEqual(expectedPennylanedropdownOptions)
+    })
+  })
+
+  describe('getHasAction', () => {
+    const tests = [{
+      actionCode: 'foo',
+      expectedHasAction: false,
+    }, {
+      actionCode: authorizationStateMock['CLTGESTION'].actions[0],
+      expectedHasAction: true,
+    }]
+    it.each(tests)('should return $expectedHasAction when actionCode equals $actionCode', ({
+      actionCode,
+      expectedHasAction,
+    }) => {
+      const hasAction = getHasAction(
+        authorizationStateMock,
+        actionCode,
+      )
+
+      expect(hasAction).toBe(expectedHasAction)
+    })
+  })
+
+  describe('getDropdownsByActionCode', () => {
+    const pennylaneDropdownPlaceholderMock = 'Choisir un rôle'
+    const pennylaneDropdownMockUnvisible = {
+      isVisible: false,
+      placeholder: pennylaneDropdownPlaceholderMock,
+      options: pennylanedropdownOptionsMock,
+    }
+
+    const tests = [{
+      hasPennylane: false,
+      expectedDropdownsByActionCode: {
+        [PERMISSION_ACTION.ACCESS_PENNYLANE]: pennylaneDropdownMockUnvisible,
+      },
+    }, {
+      hasPennylane: true,
+      expectedDropdownsByActionCode: {
+        [PERMISSION_ACTION.ACCESS_PENNYLANE]: {
+          ...pennylaneDropdownMockUnvisible,
+          isVisible: true,
+        },
+      },
+    }]
+    it.each(tests)('should return $expectedHasAction when actionCode equals $actionCode', ({
+      hasPennylane,
+      expectedDropdownsByActionCode,
+    }) => {
+      const hasAction = getDropdownsByActionCode(
+        hasPennylane,
+        pennylanedropdownOptionsMock,
+        pennylaneDropdownPlaceholderMock,
+      )
+
+      expect(hasAction).toStrictEqual(expectedDropdownsByActionCode)
     })
   })
 })

@@ -25,3 +25,16 @@ export function getMockedDropdownOptions(
     pGroupLabel: altGroup,
   }]
 }
+
+
+export function getMockedDropdownOptionsWithDescription(): PDropdownOption[] {
+  const [option0, option1] = getMockedDropdownOptions(false)
+
+  return [{
+    ...option0,
+    pDescription: 'Mocked description for John',
+  }, {
+    ...option1,
+    pDescription: 'Mocked description for Maria',
+  }]
+}

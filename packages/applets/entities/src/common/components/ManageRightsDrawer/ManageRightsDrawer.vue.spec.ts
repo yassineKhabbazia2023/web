@@ -7,10 +7,14 @@ import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import type { User } from '@entities/pages/folder/pages/usersCollab/types'
 import { useRoute, useRouter } from 'vue-router'
 import * as authorizationServices from '@entities/services/authorization'
-import ManageRightsDrawer from '.'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
 import { RouteParam } from '@pulse/common/enums'
+import { getMockedEntity } from '@pulse/common/mocks'
+
+import ManageRightsDrawer from '.'
+
+vi.mock('@pulse/common/services/pennylane')
 
 // Mocks
 const mockedUseRoute = useRoute as Mock
@@ -32,6 +36,7 @@ const createWrapper = (selectedUser: User = mockedUser): VueWrapper<any> => {
     props: {
       modelValue: true,
       selectedUser,
+      selectedEntity: getMockedEntity(),
     },
   })
 }

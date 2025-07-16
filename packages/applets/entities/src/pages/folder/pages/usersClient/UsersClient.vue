@@ -91,9 +91,10 @@
     />
 
     <ManageRightsDrawer
-      v-if="state.isManageRightsDrawerOpened"
+      v-if="state.isManageRightsDrawerOpened && selectedEntity !== undefined"
       v-model="state.isManageRightsDrawerOpened"
       :selectedUser="getUserInfo"
+      :selectedEntity="selectedEntity"
     />
   </div>
 </template>

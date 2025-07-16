@@ -37,11 +37,13 @@ export interface PSelectProps {
   pMaxCollapseTags?: number
   pPopperOptions?: object
   pAriaLabel?: string
+  pHasRadioButton?: boolean
 }
 
 export interface POptionProps {
   pValue: string | number | boolean | Record<string, any>
   pLabel?: string | number
+  pDescription?: string
   pDisabled?: boolean
 }
 

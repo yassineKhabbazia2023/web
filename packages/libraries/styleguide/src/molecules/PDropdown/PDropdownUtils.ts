@@ -1,3 +1,4 @@
+import { logger } from '@pulse/core'
 import type { DropdownGroup, PDropdownOption, PDropdownProps } from './PDropdownTypes'
 
 export function addOptionInGroups(groups: DropdownGroup[], pGroupLabel: string, pOptions: PDropdownOption) {
@@ -48,4 +49,23 @@ export function getAllEnabledValues(
   return pOptions
     .filter(({ pDisabled }) => !pDisabled)
     .map(({ pValue }) => pValue)
+}
+
+export function getInternalOptions(pOptions: PDropdownOption[]) {
+  return pOptions.map((option) => {
+    // should replace label by value when element-plus will be 2.6.0 or higher
+    // see: https://element-plus.org/en-US/component/radio.html#radio-api
+    const internalValue = typeof option.pValue === 'object'
+      ? undefined
+      : option.pValue
+
+    if (internalValue === undefined) {
+      logger.warn('Unexpected undefined value for option', option)
+    }
+
+    return {
+      ...option,
+      internalValue,
+    }
+  })
 }

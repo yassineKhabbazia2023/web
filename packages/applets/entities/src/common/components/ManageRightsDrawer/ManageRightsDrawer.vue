@@ -32,11 +32,14 @@
     <RightsList
       v-else
       v-model="authorizationsState"
+      v-model:additionalOptionByActionCode="additionalOptionByActionCode"
       :contactId="selectedUser.contactId"
+      :pennylaneAvailableRoles="pennylaneAvailableRoles"
     />
     <template #footer>
       <div class="margin-left--auto">
         <PButton
+          :pDisabled="isFormValid === false"
           pType="primary"
           data-testid="manage-rights-submit-button"
           @click="handleUpdateUserPermissions"
@@ -49,8 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import {
@@ -60,16 +62,18 @@ import {
   PButton,
   PLoader,
 } from '@pulse/styleguide/components'
-import { PNotification } from '@pulse/styleguide'
+import { displayNotification } from '@entities/common/utils'
 import type {
   ManageRightsDrawerProps,
   AuthorizationState,
 } from './ManageRightsTypes'
-import { updateUserPermissions } from '@entities/services/authorization'
-import { getPermissionCodes } from './utils'
 import RightsList from './components/RightsList'
 import { RouteParam } from '@pulse/common/enums'
+import { logger } from '@pulse/core'
 import { RouterHelpers } from '@pulse/common/helpers'
+import type { PennylaneAvailableRole } from '@pulse/common/types'
+import { PennylaneService } from '@pulse/common/services/pennylane'
+import { saveUserPermissions, getAdditionalOptionByActionCode, getIsFormValid } from './utils'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -98,23 +102,24 @@ const isManageRightsDrawerVisible = computed({
 const handleCloseDrawer = () => {
   isManageRightsDrawerVisible.value = false
 }
+const getEntityId = () => RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
 
 const handleUpdateUserPermissions = async () => {
   isLoading.value = true
-  try {
-    /**
-     * To obtain an array of strings containing all permission codes.
-     * Because that's what the backend is waiting for to update permissions.
-     * exp: ['CODE1', 'CODE2', 'CODE3']
-     */
-    const permissionsCodes = getPermissionCodes(authorizationsState.value)
-    // If it's a collab, the entityId will be null and that's fine
-    const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
-    await updateUserPermissions(
-      props.selectedUser.contactId,
-      entityId,
-      permissionsCodes,
-    )
+  // If it's a collab, the entityId will be null and that's fine
+  const entityId = getEntityId()
+  const isSuccess = await saveUserPermissions({
+    contactId: props.selectedUser.contactId,
+    entityId,
+    authorizationsState: authorizationsState.value,
+    additionalOptionByActionCode: additionalOptionByActionCode.value,
+    additionalOptionByActionCodeOrigin: additionalOptionByActionCodeOrigin.value,
+  })
+  const notificationMessage = isSuccess === true
+    ? t('rightsModificationSucceeded', { userFullName: props.selectedUser.fullName })
+    : t('rightsModificationFailed')
+
+  if (isSuccess === true) {
     // I added a setTimeout to enhance the user experience (UX)
     setTimeout(() => {
       isManageRightsDrawerVisible.value = false
@@ -123,20 +128,54 @@ const handleUpdateUserPermissions = async () => {
         router.go(0)
       }, 30)
     }, 600)
-    PNotification({
-      message: t('rightsModificationSucceeded', {
-        userFullName: props.selectedUser.fullName,
-      }),
-      iconName: 'check',
-      showClose: true,
-      customClass: 'success',
-      position: 'bottom-right',
-      duration: 3000,
-    })
-  } catch (error) {
-    logger.error('Permission update unsuccessful :', error)
-  } finally {
-    isLoading.value = false
+  }
+  displayNotification(
+    isSuccess ? 'success' : 'error',
+    notificationMessage,
+  )
+
+  isLoading.value = false
+}
+
+const pennylaneAvailableRoles = ref<PennylaneAvailableRole[]>()
+const additionalOptionByActionCode = ref<Record<string, string>>()
+const additionalOptionByActionCodeOrigin = ref<Record<string, string>>()
+
+const isFormValid = computed(() => getIsFormValid(
+  authorizationsState.value,
+  additionalOptionByActionCode.value,
+))
+
+watch(() => props.modelValue && props.selectedUser.contactId, () => initAdditionalOptionByActionCodeOrigin())
+
+onMounted(async () => {
+  const entityAccountNumber = props.selectedEntity?.accountNumber
+  const availableRoles = entityAccountNumber === undefined
+    ? undefined
+    : await PennylaneService.getAvailableRoles(entityAccountNumber)
+  pennylaneAvailableRoles.value = availableRoles ?? []
+  initAdditionalOptionByActionCodeOrigin()
+})
+
+async function initAdditionalOptionByActionCodeOrigin() {
+  if (props.modelValue === false) {
+    return
+  }
+  const entityId = getEntityId()
+  const contactId = props.selectedUser.contactId
+  additionalOptionByActionCodeOrigin.value = {}
+  if (entityId !== null) {
+    try {
+      additionalOptionByActionCodeOrigin.value = await getAdditionalOptionByActionCode({
+        entityId,
+        contactId,
+      })
+    } catch(e) {
+      logger.error(e)
+    }
+  }
+  additionalOptionByActionCode.value = {
+    ...additionalOptionByActionCodeOrigin.value,
   }
 }
 </script>
@@ -146,8 +185,10 @@ en-US:
   submit: 'Submit'
   modifyUserRights: 'Modify user rights'
   rightsModificationSucceeded: "{userFullName}'s rights have indeed been modified"
+  rightsModificationFailed: 'A technical error has occurred'
 fr-FR:
   submit: 'Valider'
   modifyUserRights: 'Modifier les droits utilisateur'
   rightsModificationSucceeded: 'Les droits de {userFullName} ont bien été modifiés'
+  rightsModificationFailed: 'Une erreur technique est survenue'
 </i18n>

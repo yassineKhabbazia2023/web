@@ -7,6 +7,7 @@
           pPlaceholder="Dropdown"
           :pDisabled="state.disabled"
           :pClearable="state.clearable"
+          :pHasRadioButton="state.pHasRadioButton"
           :pOptions="dropdownOptions"
         />
       </template>
@@ -19,6 +20,10 @@
         <HstCheckbox
           v-model="state.clearable"
           title="Clearable"
+        />
+        <HstCheckbox
+          v-model="state.pHasRadioButton"
+          title="pHasRadioButton"
         />
       </template>
     </Variant>
@@ -98,12 +103,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import PDropdown from '.'
-import { getMockedDropdownOptions } from './PDropdown.mocks'
+import { getMockedDropdownOptions, getMockedDropdownOptionsWithDescription } from './PDropdown.mocks'
 import { logEvent } from 'histoire/client'
 
 const valueSimple = ref('')
 
-const dropdownOptions = getMockedDropdownOptions(false)
+const dropdownOptions = getMockedDropdownOptionsWithDescription()
 const dropdownOptionsWithGroups = getMockedDropdownOptions(true)
 
 const initState = () => {
@@ -125,6 +130,7 @@ const initState = () => {
     collapseTagsTooltip: false,
     popperAppendToBody: true,
     automaticDropdown: true,
+    pHasRadioButton: false,
     pCheckAllLabel: 'Tout sélectionner',
   }
 }

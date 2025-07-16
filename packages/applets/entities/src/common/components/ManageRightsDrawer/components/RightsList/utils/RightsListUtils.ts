@@ -4,7 +4,11 @@ import type {
   Action,
   AuthorizationConfigMapped,
   EnrichedAction,
+  RightsListDropdown,
 } from '../RightsListTypes'
+import type { PennylaneAvailableRole } from '@pulse/common/types'
+import type { PDropdownOption } from '@pulse/styleguide/types'
+import { PERMISSION_ACTION } from '@pulse/common/constants'
 
 export const getAuthorizationsConfigMapped = (
   authorizationsConfig: AuthorizationConfig[],
@@ -49,4 +53,40 @@ export function getEnrichedActions(
       tooltip: tooltipForActionCode ?? '',
     }
   })
+}
+
+export function getPennylaneDropdownOptions(
+  pennylaneAvailableRoles?: PennylaneAvailableRole[],
+): PDropdownOption[] {
+  return (pennylaneAvailableRoles ?? [])
+    .map(({ code, label, description }) => ({
+      pValue: code,
+      pLabel: label,
+      pDescription: description,
+    }))
+}
+
+export function getHasAction(
+  authorizationStates: Record<string, AuthorizationState>,
+  actionCode: string,
+) {
+  const keys = Object.keys(authorizationStates)
+
+  return keys.some(key => authorizationStates[key].actions.includes(actionCode))
+}
+
+export function getDropdownsByActionCode(
+  hasPennylane: boolean,
+  pennylanedropdownOptions: PDropdownOption[],
+  pennylaneDropdownPlaceholder: string,
+) {
+  const dropdownsByActionCode: Record<string, RightsListDropdown> = {
+    [PERMISSION_ACTION.ACCESS_PENNYLANE]: {
+      isVisible: hasPennylane,
+      placeholder: pennylaneDropdownPlaceholder,
+      options: pennylanedropdownOptions,
+    },
+  }
+
+  return dropdownsByActionCode
 }
