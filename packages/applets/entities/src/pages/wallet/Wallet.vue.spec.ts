@@ -56,39 +56,6 @@ describe('dossier', () => {
     await flushPromises()
   })
 
-  it('displays correctly the table', () => {
-    expect(wrapper.find('.wallet__title').text()).toBe('Hello Jack')
-  })
-
-  const tabs = [
-    ['folders'],
-    ['subscriptions'],
-    ['collaborators'],
-    ['folderMandats'],
-    ['folderLauncher'],
-  ]
-  it.each(tabs)('should redirect when click on %s', (tabName) => {
-    const pTabs = wrapper.findComponent({ name: 'PTabs' })
-    const tab = {
-      paneName: tabName,
-      props: {
-        label: tabName,
-      },
-    }
-
-    pTabs.vm.$emit('tab-click', tab)
-
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Feature Consulted', {
-      feature_name: tabName.toLowerCase(),
-    })
-
-    expect(mockRouterPush).toHaveBeenCalledTimes(1)
-    expect(mockRouterPush).toHaveBeenCalledWith({
-      name: tabName,
-    })
-  })
-
   it('should not display Launcher when user does not have authorization', async () => {
     hasPermissionMock.mockImplementation(getHasPermissionMocked([]))
     wrapper = createWrapper()

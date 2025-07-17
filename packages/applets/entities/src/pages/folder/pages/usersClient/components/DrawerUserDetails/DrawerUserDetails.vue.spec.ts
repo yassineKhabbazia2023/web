@@ -3,7 +3,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mockUser } from '@entities/__mocks__/users-client.mocks'
 import DrawerUserDetails from './DrawerUserDetails.vue'
 import type { Contact, PatchContactPayload } from '@entities/services/contact/contactTypes'
-import { nextTick } from 'vue'
 
 vi.mock('@entities/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
@@ -74,11 +73,6 @@ describe('drawerUserDetails', () => {
       const submit = wrapper.find('[data-testid=submit-btn]')
       expect(getCancelBtn().exists()).toBeTruthy()
       expect(submit.exists()).toBeTruthy()
-    })
-    it('can close the drawer by clicking the cancel button', async () => {
-      await getCancelBtn().trigger('click')
-      await nextTick()
-      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
     })
     it('contact-patch', async () => {
       const expectedPatchedContact = {

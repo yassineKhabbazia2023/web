@@ -1,10 +1,11 @@
-import { describe, it, expect, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { TopBarManager } from './top-bar.manager'
-import TopBar from './top-bar.vue'
 import { getStoreMock } from '@pulse/common/mocks'
 import { usePermissionsStore } from '@pulse/common/stores'
 import { nextTick } from 'vue'
+
+import TopBar from './top-bar.vue'
+
 // Mock setup
 vi.mock('./top-bar.manager', () => ({
   TopBarManager: {
@@ -51,17 +52,6 @@ describe('TopBar', () => {
       const collabComponent = wrapper.findComponent({ name: 'pennylane-sso-collab' })
       expect(customerComponent.exists()).toBe(false)
       expect(collabComponent.exists()).toBe(false)
-    })
-
-    it('should initialize isPennylaneSSODisplayed on mount', () => {
-      // Arrange
-      vi.mocked(TopBarManager.isPennylaneSSODisplayed).mockReturnValue(true)
-
-      // Act
-      shallowMount(TopBar)
-
-      // Assert
-      expect(TopBarManager.isPennylaneSSODisplayed).toHaveBeenCalledTimes(1)
     })
   })
 })

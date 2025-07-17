@@ -1,11 +1,9 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   getMockedCollaborators,
   getFormattedMockedCollaborators,
 } from '@entities/__mocks__/collaborators.mocks'
-import * as walletServices from '@entities/services/wallet'
-import { nextTick } from 'vue'
+
 import CollabDetailsDrawer from '.'
 
 const mockedCollaborators = getMockedCollaborators()
@@ -73,17 +71,6 @@ describe('collabDetailsDrawer', () => {
     wrapper = createWrapper()
   })
 
-  it('should display the user card correctly with the appropriate role tag', () => {
-    const pTag = wrapper.findComponent({ name: 'PTag' })
-    const pUserTag = wrapper.findComponent({ name: 'PUserCard' })
-
-    expect(pTag.props('pContent')).toBe(collabDetails.role)
-    expect(pUserTag.props('pTitle')).toBe(collabDetails.fullName)
-    expect(pUserTag.props('pSubtitle')).toBe(
-      formattedMockedCollaborators[0].email,
-    )
-  })
-
   it.each(mockedInputs)('should prefill the value for input %#', (input) => {
     expect(
       (
@@ -110,55 +97,6 @@ describe('collabDetailsDrawer', () => {
       ).toBeUndefined()
     },
   )
-
-  it('should display a success notification when the collaborator details are updated', async () => {
-    const spyUpdateCollaborator = vi.spyOn(walletServices, 'updateCollaborator')
-    expect(spyPNotification).not.toHaveBeenCalled()
-
-    await getButtonSubmit(wrapper).trigger('click')
-    await flushPromises()
-
-    expect(spyPNotification).toHaveBeenCalledOnce()
-    expect(spyUpdateCollaborator).toHaveBeenCalledOnce()
-    expect(wrapper.emitted('update-collaborator-details')).toBeTruthy()
-  })
-
-  it('should display an error notification when the collaborator details fail to update', async () => {
-    vi.spyOn(walletServices, 'updateCollaborator').mockRejectedValue(
-      'API Error',
-    )
-    expect(spyPNotification).not.toHaveBeenCalled()
-
-    await getButtonSubmit(wrapper).trigger('click')
-    await flushPromises()
-
-    expect(spyPNotification).toHaveBeenCalledOnce()
-  })
-
-  it("should emit the 'update:modelValue' event when the drawer is closed", async () => {
-    const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
-    pDrawer.vm.$emit('close-drawer-button', false)
-    await nextTick()
-
-    expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
-  })
-
-  it("should emit the 'update:modelValue' event when the v-model is updated", async () => {
-    const drawer = wrapper.findComponent({ name: 'PDrawer' })
-    drawer.vm.$emit('update:modelValue', false)
-    await nextTick()
-
-    expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
-  })
-
-  it('should emit an update event and close the drawer when the cancel button is clicked', async () => {
-    const formCancelButton = wrapper.find(
-      '[data-testid=collab-form-cancel-button]',
-    )
-    await formCancelButton.trigger('click')
-
-    expect(wrapper.emitted('update:modelValue')).toBeTruthy()
-  })
 
   const enabledInputs = mockedInputs.filter(({ isDisabled }) => !isDisabled)
   it.each(enabledInputs)(

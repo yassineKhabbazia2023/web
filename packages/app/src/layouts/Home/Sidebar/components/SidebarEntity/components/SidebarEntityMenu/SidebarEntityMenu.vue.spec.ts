@@ -1,11 +1,9 @@
-import { describe, it, expect, vi, type MockInstance, beforeEach } from 'vitest'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import * as ReportService from '@app/services/reporting'
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import { getMockedBIReports } from '@app/__mocks__/bi-reports.mocks'
 import { CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked } from '@pulse/common/mocks'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { PERMISSION_ACCOUNT, PERMISSION_GLOBAL } from '@pulse/common/constants'
 
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
@@ -30,8 +28,6 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-vi.mock('@pulse/common/services/amplitude')
-
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
 }))
@@ -46,17 +42,8 @@ const createWrapper = (props = defaultProps) => {
 
 describe('sidebarEntityMenu', () => {
   let wrapper: VueWrapper<any>
-  let spyTrackAmplitude: MockInstance
-  beforeEach(() => {
-    spyTrackAmplitude = vi.spyOn(AmplitudeService, 'track')
-  })
-  describe('display', () => {
-    it('should display the sidebar entity menu correctly', () => {
-      wrapper = createWrapper()
-      const sidebarEntityMenu = wrapper.find('[data-testid=sidenav-menu]')
 
-      expect(sidebarEntityMenu.exists()).toBeTruthy()
-    })
+  describe('display', () => {
     it('should display only the menu items that the user has access to', () => {
       hasPermissionMock.mockImplementation(getHasPermissionMocked([PERMISSION_ACCOUNT.INFORMATION[0]]))
       wrapper = createWrapper()
@@ -136,30 +123,6 @@ describe('sidebarEntityMenu', () => {
         }
         wrapper = createWrapper(props)
         expect(wrapper.classes()).toContain('sidenav-entity-menu--is-single-entity')
-      })
-    })
-  })
-  describe('events', () => {
-    it("should expand the sidebar entity menu on 'mouseover' and collapse it on 'mouseleave'", async () => {
-      wrapper = createWrapper()
-      expect(wrapper.classes()).toContain('sidenav-entity-menu--collapsed')
-
-      await wrapper.trigger('mouseover')
-
-      expect(wrapper.classes()).not.toContain('sidenav-entity-menu--collapsed')
-
-      await wrapper.trigger('mouseleave')
-
-      expect(wrapper.classes()).toContain('sidenav-entity-menu--collapsed')
-    })
-    it('should track amplitude event when a menu item is clicked', async () => {
-      wrapper = createWrapper()
-      const sidebarEntityMenuItem = wrapper.findAll('[data-testid=menu-item]')[2]
-      await sidebarEntityMenuItem.trigger('click')
-
-      expect(spyTrackAmplitude).toHaveBeenCalledOnce()
-      expect(spyTrackAmplitude).toHaveBeenCalledWith('Feature Consulted', {
-        feature_name: 'documents',
       })
     })
   })

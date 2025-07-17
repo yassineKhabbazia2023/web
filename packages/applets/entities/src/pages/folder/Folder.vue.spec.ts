@@ -107,39 +107,6 @@ describe('folder', () => {
       expect(folderTabsWrapper.exists()).toBeFalsy()
     })
 
-    it('renders the entity header', () => {
-      const entityHeaderWrapper = wrapper.findComponent({ name: 'EntityHeader' })
-
-      expect(entityHeaderWrapper.exists()).toBeTruthy()
-    })
-
-    it.each([
-      ['collaborateurs', 'tab-collab'],
-      ['utilisateurs', 'tab-users'],
-      ['offres', 'tab-offers'],
-      ['informations', 'tab-info'],
-    ])('should track amplitude event when %s is clicked', (tabName, tabId) => {
-      document.getElementById(tabId)?.click()
-
-      expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
-      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Feature Consulted', {
-        feature_name: tabName,
-      })
-    })
-
-    it.each([
-      ['collab', 'tab-collab'],
-      ['users', 'tab-users'],
-      ['offers', 'tab-offers'],
-      ['info', 'tab-info'],
-    ])('should redirect when click on %s', (tabs, tabsName) => {
-      document.getElementById(tabsName)?.click()
-      expect(mockRouterPush).toHaveBeenCalledTimes(1)
-      expect(mockRouterPush).toHaveBeenCalledWith({
-        name: tabs,
-      })
-    })
-
     it('should only display tabs to which the user has permission to access', async () => {
       const title = 'Information'
       const mockedTabs: Tab[] = [

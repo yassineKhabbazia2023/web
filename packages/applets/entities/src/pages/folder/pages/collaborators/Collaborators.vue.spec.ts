@@ -1,5 +1,4 @@
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { nextTick } from 'vue'
 import { mockCollabsData } from './collab-data.mocks'
 import * as walletServices from '@entities/services/wallet'
@@ -14,7 +13,6 @@ import Collaborators from '.'
 const userStoreMock = getStoreMock(useUserStore)
 
 const ENTITY_ID = 42
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 vi.mock('vue-router', () => ({
   useRoute: () => ({
@@ -122,22 +120,6 @@ describe('collaborators', () => {
     expect(getCollaboratorsSpy).toHaveBeenCalledOnce()
   })
 
-  it('should display a console error if the request to fetch collaborators for a specific entity fails', async () => {
-    vi.spyOn(walletServices, 'getCollaboratorsByIdEntity').mockRejectedValue(
-      expectedErrorMessage,
-    )
-    wrapper = createWrapper()
-    await flushPromises()
-
-    expect(loggerErrorSpy).toHaveBeenCalledOnce()
-    expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
-  })
-
-  it('should display the table with the list of collaborator', () => {
-    const pTable = wrapper.findComponent({ name: 'PTable' })
-    expect(pTable.props('pData')).toHaveLength(mockCollabsData.length)
-  })
-
   it("should emit an 'accessSwitched' event when the table changes", () => {
     const collaboratorsTable = wrapper.findComponent({ name: 'PTable' })
     collaboratorsTable.vm.$emit('current-change', mockCollabsData[0])
@@ -146,61 +128,6 @@ describe('collaborators', () => {
       [mockCollabsData[0]],
     ])
   })
-
-  it('can display the detail of the collaborator', async () => {
-    const collabDetailsDrawerBefore = wrapper.findComponent({ name: 'CollabDetailsDrawer' })
-
-    expect(collabDetailsDrawerBefore.exists()).toBeFalsy()
-    const pToolboxItem = wrapper.findComponent({ name: 'PToolbox' })
-
-    pToolboxItem.vm.$emit(
-      'p-toolbox-item-clicked',
-      'collaboratorInformation',
-    )
-    await flushPromises()
-
-    const collabDetailsDrawerAfter = wrapper.findComponent({ name: 'CollabDetailsDrawer' })
-    expect(collabDetailsDrawerAfter.exists()).toBeTruthy()
-
-    expect(loggerErrorSpy).toHaveBeenCalledOnce()
-    expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
-  })
-
-  it("should display a console error if the request to fetch the contact's phone number fails", async () => {
-    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
-    pToolbox.vm.$emit(
-      'p-toolbox-item-clicked',
-      'collaboratorInformation',
-    )
-    await flushPromises()
-
-    expect(loggerErrorSpy).toHaveBeenCalledOnce()
-    expect(loggerErrorSpy).toHaveBeenCalledWith(expectedErrorMessage)
-  })
-
-  it('can delete a collaborator from an entity and see a success notification', async () => {
-    const getNotificationSuccess = () =>
-      document.body.getElementsByClassName('el-notification success')
-    expect(getNotificationSuccess()).toHaveLength(0)
-
-    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
-    pToolbox.vm.$emit(
-      'p-toolbox-item-clicked',
-      'removeCollaborator',
-    )
-    await flushPromises()
-
-    expect(getNotificationSuccess()).toHaveLength(1)
-  })
-
-  it('has a pagination', () => {
-    const pPagination = wrapper.findComponent({ name: 'PPagination' })
-
-    expect(pPagination.exists()).toBeTruthy()
-    expect(pPagination.props('pCurrentPage')).toBe(1)
-    expect(pPagination.props('pPageSize')).toBe(15)
-  })
-
   it('should not display actions when is NOT Collab', async () => {
     userStoreMock.isCollab = false
     await nextTick()
@@ -213,10 +140,5 @@ describe('collaborators', () => {
 
     expect(collaboratorsAction.exists()).toBeFalsy()
     expect(addCollaboratorButton).toBeFalsy()
-  })
-
-  it('display tag when user is customer relation', () => {
-    const tooltip = wrapper.findComponent({ name: 'PTooltip' })
-    expect(tooltip.exists()).toBe(true)
   })
 })

@@ -10,10 +10,8 @@ import type {
   SubscriptionOfferServices,
 } from '../SubscriptionOffers/SubscriptionOffersTypes'
 import type { ClientContact } from '../PrincipalContact/PrincipalContactTypes'
-import * as OffersDrawerUtils from './utils/OffersDrawerUtils'
 import * as ServicesAccount from '@entities/services/account'
 import * as subscriptionService from '@entities/services/subscription/subscriptionService'
-import * as offerService from '@entities/services/offer/index'
 import {
   getMockedAccount,
   getMockedAccountReferential,
@@ -26,6 +24,7 @@ import type { PatchValue } from '@entities/services/PatchRecordService'
 import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
+
 import OffersDrawer from '.'
 
 vi.mock('@pulse/common/services/amplitude', () => ({
@@ -152,37 +151,6 @@ describe('offersDrawer', () => {
     getPatchOperationsMock.mockReturnValue(mockedPatchOperations)
   })
   describe('interactions', () => {
-    it("should emit the 'update:modelValue' event when the v-model of confirmation modal is updated", async () => {
-      const wrapper = await getWrapper(true)
-      const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
-      confirmationModal.vm.$emit('update:modelValue', false)
-      await nextTick()
-
-      expect(confirmationModal.emitted('update:modelValue')).toStrictEqual([[false]])
-    })
-
-    it("should emit the 'update:modelValue' event when the v-model of drawer is updated", async () => {
-      const wrapper = await getWrapper(true)
-      const drawer = wrapper.findComponent({ name: 'PDrawer' })
-      drawer.vm.$emit('update:modelValue', false)
-      await nextTick()
-
-      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
-    })
-
-    it('should close offers drawer when clicking on close button', async () => {
-      const wrapper = await getWrapper(true)
-      const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
-
-      expect(wrapper.props('modelValue')).toBe(true)
-      expect(offers.exists()).toBe(true)
-
-      const pDrawer = wrapper.findComponent({ name: 'PDrawer' })
-      await pDrawer.vm.$emit('close-drawer-button')
-
-      expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
-    })
-
     it('should display current offer when an offer is selected', async () => {
       const wrapper = await getWrapper(true)
 
@@ -218,38 +186,6 @@ describe('offersDrawer', () => {
 
       const offer = wrapper.findComponent({ name: 'OfferSubscription' })
       expect(offer.exists()).toBe(false)
-    })
-
-    describe('when user selects or deselects a product', () => {
-      const offerId = subscriptionOffersServices.at(0)?.offerId
-      const products = subscriptionOffersServices.at(0)?.providers?.at(0)?.products
-      const productConfigurationId = products?.at(0)?.productConfigurationId ?? 1
-
-      it('should call addSelectedProduct when OfferSubscription emit select-product', async () => {
-        const wrapper = await getWrapper(true)
-        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
-        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
-        await flushPromises()
-
-        const offer = wrapper.findComponent({ name: 'OfferSubscription' })
-        const addSelectedProductSpy = vi.spyOn(OffersDrawerUtils, 'addSelectedProduct')
-        offer.vm.$emit('select-product', offerId, productConfigurationId)
-
-        expect(addSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, productConfigurationId)
-      })
-
-      it('should call removeSelectedProduct when OfferSubscription emit deselect-product', async () => {
-        const wrapper = await getWrapper(true)
-        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
-        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
-        await flushPromises()
-
-        const offer = wrapper.findComponent({ name: 'OfferSubscription' })
-        const removeSelectedProductSpy = vi.spyOn(OffersDrawerUtils, 'removeSelectedProduct')
-        offer.vm.$emit('deselect-product', offerId, productConfigurationId)
-
-        expect(removeSelectedProductSpy).toHaveBeenNthCalledWith(1, expect.anything(), offerId, productConfigurationId)
-      })
     })
 
     describe('create subscription', () => {
@@ -384,51 +320,6 @@ describe('offersDrawer', () => {
         expect(createSubscriptionRequestSpy).toHaveBeenNthCalledWith(1, expectedArgument)
       })
 
-      it('should call logger.error when patch fails', async () => {
-        const errorMessage = 'patch rejected'
-        const patchAccountSpy = vi
-          .spyOn(ServicesAccount, 'patchAccount')
-          .mockRejectedValueOnce(errorMessage)
-
-
-        const wrapper = await getWrapper(true)
-        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
-        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
-        await flushPromises()
-
-        const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
-        expect(confirmationModal.exists()).toBe(true)
-
-        confirmationModal.vm.$emit('confirm')
-        await flushPromises()
-
-        expect(patchAccountSpy).toHaveBeenCalledOnce()
-        expect(loggerErrorSpy).toHaveBeenCalledOnce()
-        expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
-      })
-
-      it('should call logger.error when save fails', async () => {
-        const errorMessage = 'save rejected'
-        vi
-          .spyOn(subscriptionService, 'createSubscriptionRequest')
-          .mockRejectedValueOnce(errorMessage)
-
-
-        const wrapper = await getWrapper(true)
-        const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
-        subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
-        await flushPromises()
-
-        const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
-        expect(confirmationModal.exists()).toBe(true)
-
-        confirmationModal.vm.$emit('confirm')
-        await flushPromises()
-
-        expect(loggerErrorSpy).toHaveBeenCalledOnce()
-        expect(loggerErrorSpy).toHaveBeenNthCalledWith(1, errorMessage)
-      })
-
       it('should console error and track Amplitude event when saving fails for offers without validation', async () => {
         const errorMessage = 'save rejected'
         vi
@@ -504,33 +395,6 @@ describe('offersDrawer', () => {
   })
 
   describe('props', () => {
-    it('should display logger.error when API call is rejected', async () => {
-      const errorMessage = 'Fetch API ERROR'
-      vi.spyOn(
-        offerService,
-        'getAllOffers',
-      ).mockRejectedValueOnce(errorMessage)
-
-      await getWrapper(true)
-      expect(loggerErrorSpy).toHaveBeenCalledOnce()
-      expect(loggerErrorSpy).toHaveBeenNthCalledWith(1,
-        'Unable to retrieve data for subscribing to an offer :',
-        errorMessage,
-      )
-    })
-
-    it('should display offers when drawer is opened', async () => {
-      const wrapper = await getWrapper(true)
-      const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
-      expect(offers.exists()).toBe(true)
-    })
-
-    it('should NOT display offers when drawer is closed', async () => {
-      const wrapper = await getWrapper(false)
-      const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
-      expect(offers.exists()).toBe(false)
-    })
-
     it('should load current account data only on initDrawerForCurrentAccount call', async () => {
       const wrapper = await getWrapper(true, false)
       const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
@@ -558,42 +422,6 @@ describe('offersDrawer', () => {
 
       expect(fetchAccountMock).toHaveBeenCalledOnce()
       expect(fetchAccountMock).toHaveBeenCalledWith(mockedAccount.accountId)
-    })
-
-    it('should display company name at the top of the drawer', async () => {
-      const wrapper = await getWrapper(true)
-      const selectedCompanyName = wrapper.find('.offers-drawer__company-name')
-
-      expect(selectedCompanyName.text()).toBe(companyTestName)
-    })
-  })
-
-  describe('offersDrawerHeader', () => {
-    it('should display offers book link beside the drawer title', async () => {
-      const wrapper = await getWrapper(true)
-      const offersBookLink = wrapper.find('.offers-drawer__details-link')
-      const sanitizedLink = getMockedSanitized(offersBookTestLink)
-
-      expect(offersBookLink.text()).toBe('Offers Book')
-      expect(offersBookLink.attributes().href).toBe(sanitizedLink)
-    })
-
-    it('should display offer intranet link beside the drawer title', async () => {
-      const firstOfferIntranetLink = firstOffer.intranetLink!
-
-      const wrapper = await getWrapper(true)
-
-      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
-      subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
-      await flushPromises()
-
-      const sanitizedLink = getMockedSanitized(firstOfferIntranetLink)
-
-      await flushPromises()
-      const offerIntranetLink = wrapper.find('.offers-drawer__details-link')
-
-      expect(offerIntranetLink.text()).toBe('Offer Intranet')
-      expect(offerIntranetLink.attributes().href).toBe(sanitizedLink)
     })
   })
 

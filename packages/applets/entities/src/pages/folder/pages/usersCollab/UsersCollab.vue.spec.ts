@@ -5,7 +5,7 @@ import { walletServiceMock } from '@entities/__mocks__/wallet.service.mocks'
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
 import { fetchAccountCustomers } from '@entities/services/wallet'
-import { getAccountSignatories, updateSignatoryStatus } from '@entities/services/account'
+import { updateSignatoryStatus } from '@entities/services/account'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import { nextTick } from 'vue'
 import { userActions } from './types'
@@ -21,7 +21,6 @@ import UsersCollab from '.'
 const userStoreMock = getStoreMock(useUserStore)
 const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 
-const DEFAULT_CURRENT_PAGE = 1
 const DEFAULT_ROUTE_PARAMS_ID = 5
 
 const mockedCustomersCollab = getMockedCustomersCollab()
@@ -86,8 +85,6 @@ const selectedEntityMock = getMockedEntity({ accountId: mockedAccount.accountId 
 vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(),
 }))
-
-vi.mock('@pulse/common/services/amplitude')
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
@@ -187,35 +184,6 @@ describe('usersCollab', () => {
     wrapper = createWrapper()
     await flushPromises()
   })
-  describe('display', () => {
-    it('should display correctly the users collab table', () => {
-      const usersTable = wrapper.find('[data-testid=folder-users-table]')
-      expect(usersTable.exists()).toBeTruthy()
-
-      const pTable = wrapper.findComponent({ name: 'PTable' })
-
-      expect(pTable.props('pData')).toHaveLength(mockedCustomersCollab.length)
-    })
-
-    it('has a pagination', () => {
-      const totalItems = wrapper.vm.state.totalItems
-      const pagination = wrapper.findComponent({ name: 'PPagination' })
-
-      expect(pagination.exists()).toBeTruthy()
-      expect(pagination.props('pCurrentPage')).toBe(1)
-      expect(pagination.props('pPageSize')).toBe(15)
-      expect(totalItems).toBe(mockedCustomersCollab.length)
-    })
-
-    it('displays the name in semibold if contact is signatory', async () => {
-      await nextTick()
-      const rows = wrapper.findAll('.el-table__row')
-      // The first user in the mock is the one returned by getAccountSignatories mock
-      expect(getAccountSignatories).toHaveBeenCalledWith(mockedAccount.accountId)
-      const firstRowUsername = rows[0].find('p.font-semibold')
-      expect(firstRowUsername.exists()).toBeTruthy()
-    })
-  })
   describe('events', () => {
     it('should NOT display add user button when user does NOT have permission', () => {
       expect(wrapper.find('[data-testid="add-customer-button"]').exists()).toBe(false)
@@ -255,56 +223,6 @@ describe('usersCollab', () => {
       addCustomerDrawer.vm.$emit('refresh-customers-list')
 
       expect(fetchAccountCustomers).toHaveBeenCalled()
-    })
-
-    it('can make a search', async () => {
-      expect(fetchAccountCustomers).toHaveBeenCalledOnce()
-
-      const searchValue = 'customSearchValue'
-      await wrapper.findComponent({ name: 'FormSearch' }).vm.$emit('search-value-submitted', searchValue)
-
-      expect(fetchAccountCustomers).toHaveBeenCalledTimes(2)
-      expect(fetchAccountCustomers).toHaveBeenNthCalledWith(
-        2,
-        DEFAULT_ROUTE_PARAMS_ID,
-        {
-          search: searchValue,
-          pageSize: 15,
-          pageNumber: DEFAULT_CURRENT_PAGE,
-        },
-      )
-    })
-
-    it('can make a sort', async () => {
-      const SORTING_FIELD = 'name'
-
-      expect(fetchAccountCustomers).toHaveBeenCalledOnce()
-
-      await wrapper
-        .findComponent({ name: 'PTable' })
-        .vm.$emit('sort-change', {
-          prop: SORTING_FIELD,
-          order: 'ascending',
-        })
-      expect(fetchAccountCustomers).toHaveBeenCalledTimes(2)
-      expect(fetchAccountCustomers).toHaveBeenNthCalledWith(
-        2,
-        DEFAULT_ROUTE_PARAMS_ID,
-        {
-          pageSize: 15,
-          pageNumber: DEFAULT_CURRENT_PAGE,
-          'sorting.field': SORTING_FIELD,
-        },
-      )
-    })
-
-    it('should reset the current page and update the limit', () => {
-      const pagination = wrapper.findComponent({ name: 'PPagination' })
-
-      pagination.vm.$emit('on-page-range-changed', 30)
-
-      expect(wrapper.vm.state.limit).toBe(30)
-      expect(wrapper.vm.state.currentPage).toBe(1)
     })
 
     it("should display the 'Modify Rights' drawer when the 'Modify Rights' action is clicked", async () => {

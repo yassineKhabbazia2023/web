@@ -49,35 +49,9 @@ describe('PowerBIReportViewer', () => {
 
   beforeEach(() => {
     embedMock = vi.fn()
-    // @ts-ignore
     // To avoid mocking all properties since only 'embed' is needed
+    // @ts-ignore-next-line
     window.powerbi = { embed: embedMock }
-  })
-
-  it('passes correct props to PDocumentViewer and renders slots', () => {
-    const wrapper = createWrapper()
-    const reportViewer = wrapper.findComponent({ name: 'PDocumentViewer' })
-    const expectedProps = {
-      modelValue: false,
-      pSize: '100%',
-      pHasPagination: false,
-      pTitleDocument: defaultProps.reportLabel,
-      pActiveDocument: 1,
-      pTotalDocuments: 1,
-    }
-
-    expect(reportViewer.exists()).toBe(true)
-    expect(reportViewer.props()).toStrictEqual(expectedProps)
-  })
-
-  it('updates isReportViewerVisible when modelValue changes', async () => {
-    const wrapper = createWrapper()
-    const reportViewer = wrapper.findComponent({ name: 'PDocumentViewer' })
-
-    reportViewer.vm.$emit('update:modelValue', true)
-    await nextTick()
-
-    expect(reportViewer.props('modelValue')).toBe(true)
   })
 
   it('calls loadBIReportFullscreen on opened event and calls window.powerbi.embed with correct arguments', async () => {

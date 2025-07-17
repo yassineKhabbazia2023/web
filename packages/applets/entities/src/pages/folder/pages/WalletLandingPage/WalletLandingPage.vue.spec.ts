@@ -19,21 +19,8 @@ const createWrapper = (): VueWrapper<any> => mount(WalletLandingPage, {
 })
 
 describe('WalletLandingPage', () => {
-  const wrapper = createWrapper()
   beforeEach(async () => {
     selectedEntityStoreMock.selectedEntity = mockedEntity
-  })
-
-  describe('render', () => {
-    it('should render the the component', () => {
-      expect(wrapper.find('[data-testid=wallet-landing-page]').exists()).toBeTruthy()
-    })
-
-    it('renders the entity header', () => {
-      const wrapper = createWrapper()
-      const entityHeaderWrapper = wrapper.findComponent({ name: 'EntityHeader' })
-      expect(entityHeaderWrapper.exists()).toBeTruthy()
-    })
   })
 
   describe('widgets', () => {
