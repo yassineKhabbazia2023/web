@@ -56,8 +56,11 @@
       </template>
     </div>
     <template v-if="hasPennylaneCheckbox">
-      <PCheckbox v-model="internalHasPennylaneAccess">
-        {{ t('pennylaneAccess.checkboxLabel') }}
+      <PCheckbox
+        v-model="internalHasPennylaneAccess"
+        class="margin-top--6"
+      >
+        {{ t('pennylaneAccess.checkboxLabel', selectedCollaborators.length) }}
       </PCheckbox>
       <PAlert pType="information">
         <template #bold-text>
@@ -96,10 +99,13 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const hasPennylaneCheckbox = computed(() =>
-  FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_DELEGATE_RIGHTS_CHECKBOX) === true
-  && CurrentUserManager.hasPermission(PERMISSION_ACTION.ACCESS_PENNYLANE_COLLAB) === true,
-)
+const hasPennylaneCheckbox = computed(() => {
+  const isFeatureActivated = FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_DELEGATE_RIGHTS_CHECKBOX) === true
+  const hasSelectedCollaborators = selectedCollaborators.value.length > 0
+  const hasPermission = CurrentUserManager.hasPermission(PERMISSION_ACTION.ACCESS_PENNYLANE_COLLAB) === true
+
+  return isFeatureActivated === true && hasSelectedCollaborators === true && hasPermission === true
+})
 
 const internalHasPennylaneAccess = computed({
   get: () => props.hasPennylaneAccess,
@@ -144,7 +150,7 @@ function emitCollaboratorSelection() {
     addDelegatorDescription: 'Choose collaborators to delegate your portfolio to.'
     searchLabel: 'Please search for a collaborator:'
     pennylaneAccess:
-      checkboxLabel: Give these collaborators access to Pennylane
+      checkboxLabel: Give these collaborator access to Pennylane | Give these collaborators access to Pennylane
       adviseTitle: By enabling this option
       adviseMessage: >
         A Pennylane account will be created for these collaborators,
@@ -156,7 +162,7 @@ function emitCollaboratorSelection() {
     addDelegatorDescription: 'Choisissez des collaborateurs à qui déléguer votre portefeuille'
     searchLabel: 'Veuillez rechercher un collaborateur :'
     pennylaneAccess:
-      checkboxLabel: Donner l’accès à ces collaborateurs sur Pennylane
+      checkboxLabel: Donner l’accès à ce collaborateur sur Pennylane | Donner l’accès à ces collaborateurs sur Pennylane
       adviseTitle: En activant cette option
       adviseMessage: >
         Un compte Pennylane sera créé pour ces collaborateurs,
