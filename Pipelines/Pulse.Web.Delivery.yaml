@@ -9,15 +9,15 @@ parameters:
 - name: deployToItg
   displayName: 'Déployer sur ITG'
   type: boolean
-  default: true
+  default: false
 - name: deployToRec
   displayName: 'Déployer sur REC'
   type: boolean
-  default: true
+  default: false
 - name: deployToPrd
   displayName: 'Déployer sur PRD'
   type: boolean
-  default: true
+  default: false
 
 pool:
   vmImage: 'ubuntu-latest'
