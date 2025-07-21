@@ -38,7 +38,7 @@ export class LoginManager {
   static async initAuthCollab(): Promise<boolean> {
     let success = false
     const msalToken = await MsalService.getMSALToken()
-    CurrentUserManager.persistToken(msalToken)
+    CurrentUserManager.persistToken(msalToken ?? '')
 
     if (msalToken !== null && msalToken !== undefined && msalToken !== '') {
       await this.fetchAndStoreCurrentUser()
