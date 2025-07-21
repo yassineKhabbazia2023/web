@@ -19,9 +19,9 @@ export const getInitials = (firstName: string | undefined, lastName: string | un
   return `${firstInitial}${secondInitial}`
 }
 
-export const logoutCollaborator = () => {
+export const logoutCollaborator = async () => {
   try {
-    MsalService.logout()
+    await MsalService.logout()
   } catch (error) {
     logger.error('Error during collaborator logout: ', error)
   }
