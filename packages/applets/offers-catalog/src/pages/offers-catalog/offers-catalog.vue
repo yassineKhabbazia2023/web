@@ -96,6 +96,13 @@ function onOpenPdf() {
 
 function onUpdateSeachTerm(newSearchTerm: string) {
   searchTerm.value = newSearchTerm
+
+  if (newSearchTerm !== '') {
+    AmplitudeService.track('Offer Searched', {
+      offer_search: searchTerm.value,
+    })
+  }
+
   filterOffersCatalog()
 }
 

@@ -7,6 +7,7 @@
       pTag="a"
       :href="sanitizeUrl(SSOUrl)"
       target="_blank"
+      @click="onSSOConnection"
     >
       <PIcon pName="pennylaneColor" />
 
@@ -23,7 +24,9 @@
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { PButton, PIcon } from '@pulse/styleguide/components'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { PennylaneSSOProps } from './pennylane-sso.types'
+import { SsoTracking } from './pennylane-sso.enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -31,7 +34,11 @@ const { t } = useI18n({
 })
 
 defineProps<PennylaneSSOProps>()
-
+const onSSOConnection = () => {
+  AmplitudeService.track('Feature Consulted', {
+    feature_name: SsoTracking.SSO_PENNYLANE,
+  })
+}
 </script>
 
 <i18n lang="yaml">
