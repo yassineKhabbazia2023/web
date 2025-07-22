@@ -21,7 +21,7 @@
   >
     <template
       v-if="pCalendarLite"
-      #default="{ isCurrent, dayjs, text, type }"
+      #default="{ isCurrent, dayjs, text }"
     >
       <div
         :class="{ current:isCurrent, 'el-date-table-cell': true }"
@@ -29,10 +29,6 @@
         @click="selectedDate(dayjs.format('YYYY-MM-DD'))"
       >
         <span class="el-date-table-cell__text">{{ text }}</span>
-        <span
-          v-if="isScheduledDay(dayjs)"
-          :class="scheduleDateStyle(type)"
-        />
       </div>
     </template>
     <slot v-if="!pCalendarLite" />
@@ -92,24 +88,6 @@ const popperClassComputed = computed(() => {
   return popperClasses.join(' ')
 })
 
-const isScheduledDay = (dayjs: any) => {
-  return Array.isArray(props.pSchedulesCollection) && props.pSchedulesCollection.includes(dayjs.format('YYYY-MM-DD'))
-}
-
-const scheduleDateStyle = (type: string) => {
-  const commonClass = {
-    cell__schedule: true,
-  }
-  if (type === 'prev-month' || type === 'next-month') {
-    return Object.assign(commonClass, {
-      'cell__schedule--inactive': true,
-    })
-  }
-  return Object.assign(commonClass, {
-    'cell__schedule--active': true,
-  })
-}
-
 function calendarChange(val: [Date, Date]) {
   emit('calendar-change', val)
 }
@@ -165,23 +143,6 @@ const prefixIcon = computed(() => getIconComponent('calendarEvent'))
   }
   .current {
     font-weight: 600;
-  }
-  .cell {
-    &__schedule {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      bottom: -2px;
-      left: 50%;
-      transform: translateX(-51%);
-      outline: 2px solid white;
-      &--active {
-        background: var(--el-color-functionnal-red);
-      }
-      &--inactive {
-        background: var(--el-color-neutral-gray-300);
-      }
-    }
   }
   .el-date-picker__header {
     display: flex;

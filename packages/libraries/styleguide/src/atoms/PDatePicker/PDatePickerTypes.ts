@@ -9,7 +9,6 @@ export interface PDatePickerShortcut {
 export interface PDatePickerProps<T extends PDatePickerModelValue = PDatePickerModelValue> {
   modelValue: T
   pCalendarLite?: boolean
-  pSchedulesCollection?: string[]
   pReadonly?: boolean
   pDisabled?: boolean
   pSize?: '' | 'large' | 'default' | 'small'

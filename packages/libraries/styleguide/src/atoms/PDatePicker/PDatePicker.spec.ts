@@ -17,7 +17,6 @@ const defaultProps = {
   pValueFormat: 'YYYY-MM-DD',
   pFormat: 'YYYY-MM-DD',
   pCalendarLite: true,
-  pSchedulesCollection: ['2024-01-29', '2024-01-27', '2024-02-05'],
 }
 
 function createWrapper(overriddenProps: Partial<PDatePickerProps> = {}) {

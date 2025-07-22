@@ -39,7 +39,6 @@ window.EnvVars = envVars
 | VITE_API_MSAL_REDIRECT_URI | Route de redirection après l'authentification (Collab) |
 | VITE_API_MSAL_SCOPE | Configuration de l'autorité d’authentification utilisateur (Collab) |
 | VITE_API_MSAL_TENANT | Configuration de l'autorité d’authentification utilisateur (Collab) |
-| VITE_API_SCHEDULE | (DEPRECATED) API pour la fonctionnalité de calendrier |
 | VITE_ASSETS_BASE_URL | URL des assets Front (images, fonts) |
 | VITE_CONFIG_OFFERS_BOOK | URL d'un site web à partager aux utilisateurs |
 | VITE_FEED_CENTER_ACTIVATED | Feature-flag du Feed Center |
@@ -57,5 +56,4 @@ window.EnvVars = envVars
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT | Clé du workspace ProductFruit Client anonyme (login client et maintenance) |
 | VITE_PRODUCT_FRUITS_KEY | Clé du workspace ProductFruit Collab connecté |
 | VITE_PRODUCT_FRUITS_KEY_CLIENT | Clé du workspace ProductFruit Client connecté |
-| VITE_SCHEDULE_ACTIVATED | Feature-flag du Calendrier |
 | VITE_PASSWORD_RESET_MAX_ATTEMPTS | Nombre maximal de tentatives de réinitialisation du mot de passe |

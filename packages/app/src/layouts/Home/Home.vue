@@ -4,11 +4,6 @@
     class="common-layout"
     data-testid="common-layout"
   >
-    <HomeScheduleDrawer
-      v-if="FeatureFlagManager.isScheduleActivated() && calendarHasBeenOpened"
-      v-model="showCalendar"
-    />
-
     <FeedCenterDrawer
       v-if="FeatureFlagManager.isFeedCenterActivated()"
       v-model="showFeedCenter"
@@ -28,7 +23,6 @@
         height="56"
       >
         <Header
-          v-model:showCalendar="showCalendar"
           v-model:showFeedCenter="showFeedCenter"
           :unreadNotificationsCount="unreadNotificationsCount"
           @show-user-profile-drawer="handleClick"
@@ -63,7 +57,6 @@ import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import UserProfile from '@app/components/UserProfile'
-import HomeScheduleDrawer from '@app/components/HomeScheduleDrawer'
 import FeedCenterDrawer from '@app/modules/FeedCenter/components/FeedCenterDrawer'
 import { fetchUnreadNotificationsCount } from '@app/modules/FeedCenter/services/notifications.service'
 import { UNREAD_NOTIFICATIONS_COUNT_FETCH_INTERVAL } from '@app/constants'
@@ -76,19 +69,6 @@ import Sidebar from './Sidebar'
 // Variables
 const router = useRouter()
 const isLoading = ref<boolean>(true)
-const calendarIsOpened = ref(false)
-const calendarHasBeenOpened = ref(false)
-const showCalendar = computed({
-  get: () => calendarIsOpened.value,
-  set: (value: boolean) => {
-    calendarIsOpened.value = value
-    if (value && !calendarHasBeenOpened.value) {
-      // calendar has been opened at least once
-      calendarHasBeenOpened.value = true
-    }
-  },
-})
-
 const isFeedCenterOpened = ref(false)
 const showFeedCenter = computed({
   get: () => isFeedCenterOpened.value,

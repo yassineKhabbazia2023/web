@@ -24,7 +24,6 @@ Le fichier ressemble à ceci :
 const envVars = {
   VITE_ACCOUNTING_HUB_URL: `xxx`,
   VITE_AMPLITUDE_API_KEY: `yyy`,
-  VITE_SCHEDULE_ACTIVATED: `false`,
 }
 window.EnvVars = envVars
 ```

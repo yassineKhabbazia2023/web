@@ -16,22 +16,6 @@
       />
     </router-link>
     <div class="flex">
-      <div v-if="FeatureFlagManager.isScheduleActivated()">
-        <PButton
-          :pType="showCalendar ? 'white' : 'default'"
-          pSize="small"
-          pIconOnly
-          pPlain
-          :pIsActive="showCalendar"
-          :pDisabled="false"
-          :pLoading="false"
-          data-testid="header-section-calendar-btn"
-          @click="updateCalendarDisplay"
-        >
-          <PIcon :pName="calendarIconName" />
-        </PButton>
-      </div>
-
       <div
         v-if="FeatureFlagManager.isFeedCenterActivated()"
         class="position--relative padding-left--2"
@@ -105,7 +89,6 @@ const props = defineProps<HeaderProps>()
 const { user } = storeToRefs(userStore)
 
 const emit = defineEmits<{
-  'update:showCalendar': [boolean]
   'update:showFeedCenter': [boolean]
   'showUserProfileDrawer': []
 }>()
@@ -122,13 +105,6 @@ const userRole = computed(() => {
 const feedCenterIconName = computed(() =>
   props.showFeedCenter ? 'x' : 'bell',
 )
-const calendarIconName = computed(() =>
-  props.showCalendar ? 'x' : 'calendarEvent',
-)
-
-function updateCalendarDisplay() {
-  emit('update:showCalendar', !props.showCalendar)
-}
 
 function updateFeedCenterDisplay() {
   emit('update:showFeedCenter', !props.showFeedCenter)

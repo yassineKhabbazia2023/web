@@ -150,7 +150,6 @@
           pFormat="YYYY-MM-DD"
           pCalendarLite
           :pTeleported="false"
-          :pSchedulesCollection="pSchedulesCollection"
         />
       </div>
     </Variant>
@@ -248,13 +247,6 @@ const shortcutsMountRange: PDatePickerShortcut[] = [
     },
   },
 ]
-
-const days = [5, 15, 23]
-const pSchedulesCollection = days.map((day) => {
-  const date = new Date()
-  date.setDate(day)
-  return date.toISOString().substring(0, 10)
-})
 
 function disabledDate(time: Date) {
   return time.getTime() > Date.now()

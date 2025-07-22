@@ -122,24 +122,6 @@
         </PTabPane>
       </PTabs>
     </Variant>
-    <Variant title="Schedule icons">
-      {{ activeScheduleViewType }}
-      <PTabs
-        v-model="activeScheduleViewType"
-        pType="icon"
-        class="margin-right--2 margin-top--4"
-        @update:model-value="logEvent('update:model-value', $event)"
-      >
-        <PTabPane
-          pName="calendar"
-          pIconName="calendarEvent"
-        />
-        <PTabPane
-          pName="list"
-          pTabIcon="cardList"
-        />
-      </PTabs>
-    </Variant>
   </Story>
 </template>
 
@@ -151,7 +133,6 @@ import type { PTooltipProps } from '../../atoms/PTooltip/PTooltipTypes'
 import PTabs from '../../molecules/PTabs'
 import PPastille from '../../atoms/PPastille'
 
-const activeScheduleViewType = ref('calendar')
 const firstActiveVariant = ref('1')
 const secondActiveVariant = ref('1')
 const basicData = reactive({

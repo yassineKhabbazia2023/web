@@ -23,18 +23,6 @@ describe('FeatureFlagManager', () => {
   }]
 
   describe.each(tests)(
-    'isScheduleActivated',
-    ({
-      value,
-      expected,
-    }) => {
-      it('should return $expected when value is $value', () => {
-        window.EnvVars[Feature.SCHEDULE] = value
-        expect(FeatureFlagManager.isScheduleActivated()).toBe(expected)
-      })
-    })
-
-  describe.each(tests)(
     'isMailToGedActivated',
     ({
       value,

@@ -40,7 +40,6 @@ export enum RouteName {
   RESET_PASSWORD_FORM = 'resetPasswordForm',
   RESET_PASSWORD_SUCCESS = 'resetPasswordSuccess',
   ROOT = 'root',
-  SCHEDULE = 'schedule',
   SUBSCRIPTIONS = 'subscriptions',
   USERS = 'users',
   VALIDATION_CGU = 'validationCGU',

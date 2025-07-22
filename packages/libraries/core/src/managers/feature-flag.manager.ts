@@ -7,10 +7,6 @@ declare let window: {
 } & Window
 
 export class FeatureFlagManager {
-  static isScheduleActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.SCHEDULE)
-  }
-
   static isMailToGedActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.MAIL_TO_GED)
   }

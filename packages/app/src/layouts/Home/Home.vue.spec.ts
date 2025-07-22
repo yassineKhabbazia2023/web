@@ -32,14 +32,12 @@ const createWrapper = (): VueWrapper<any> =>
     attachTo: document.body,
     global: {
       stubs: {
-        Schedule: { template: '<div data-testid="schedule-stub" />' },
         MyInformation: { template: '<div />' },
         PContainer: { template: '<div><slot /></div>' },
         PCHeader: { template: '<div><slot /></div>' },
         PAside: true,
         PDrawer: true,
         Header: true,
-        HomeScheduleDrawer: true,
         FeedCenterDrawer: true,
         'router-link': true,
         'router-view': true,

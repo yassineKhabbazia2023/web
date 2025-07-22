@@ -10,7 +10,6 @@ export const envVarsMock = {
   VITE_API_MSAL_REDIRECT_URI: 'https://collaborateur',
   VITE_API_MSAL_SCOPE: 'pulse-tenant.com',
   VITE_API_MSAL_TENANT: 'pulse-tenant.com',
-  VITE_API_SCHEDULE: 'https://api.example.com/schedule',
   VITE_ASSETS_BASE_URL: 'https://assets.example.com/',
   VITE_AXEPTIO_KEY: 'pulse-axeptio-key',
   VITE_CONFIG_OFFERS_BOOK: 'https://example.com/offers-book',
@@ -29,6 +28,5 @@ export const envVarsMock = {
   VITE_PRODUCT_FRUITS_ANONYMOUS_KEY: 'pulse-product-fruits-anonymous-key',
   VITE_PRODUCT_FRUITS_KEY_CLIENT: 'pulse-product-fruits-key-client',
   VITE_PRODUCT_FRUITS_KEY: 'pulse-product-fruits-key',
-  VITE_SCHEDULE_ACTIVATED: 'true',
   VITE_LOGGER_LEVEL: '5',
 }
