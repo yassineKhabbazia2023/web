@@ -12,7 +12,7 @@
     "./enums": "./src/enums.mts",
     "./utils/array": "./src/utils/array/array.utils.ts",
     "./utils/idle": "./src/utils/idle/idle.utils.ts",
-    "./utils/validator": "./src/utils/validators/validators.utils.ts",
+    "./utils/validator": "./src/utils/validators/index.mts",
     "./utils/string": "./src/utils/string/string.utils.ts",
     "./utils/http": "./src/utils/http/http.utils.ts",
     "./utils/test": "./src/utils/test.utils.ts",

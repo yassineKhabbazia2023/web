@@ -55,6 +55,32 @@
                 data-testid="email-input"
               />
             </PFormItem>
+            <div v-if="shouldEnableNames === true" class="flex flex--align-items-start flex-gap--4">
+              <PFormItem
+                class="margin-bottom--0 flex--grow-1 flex--shrink-1 flex--basis-0"
+                :pLabel="t('lastName.label')"
+                pProp="lastName"
+                pValidateStatus="success"
+              >
+                <PInput
+                  v-model="newContact.lastName"
+                  pType="text"
+                  data-testid="customer-drawer-last-name-input"
+                />
+              </PFormItem>
+              <PFormItem
+                class="margin-bottom--0 flex--grow-1 flex--shrink-1 flex--basis-0"
+                :pLabel="t('firstName.label')"
+                pProp="firstName"
+                pValidateStatus="success"
+              >
+                <PInput
+                  v-model="newContact.firstName"
+                  pType="text"
+                  data-testid="customer-drawer-first-name-input"
+                />
+              </PFormItem>
+            </div>
           </PForm>
         </template>
       </PBlockHeader>
@@ -117,6 +143,7 @@ import type { AddCustomerDrawerProps } from './AddCustomerDrawerTypes'
 import NextPreviousButtons from '@entities/common/components/NextPreviousButtons'
 import AddCustomerFeedback from './components/addCustomerFeedback'
 import { createCustomer, hasContactRoleOnCommonAccount, addContactToEntity } from '@entities/services/account'
+import { FIRSTNAME_REG_EXP, LASTNAME_REG_EXP } from '@pulse/core/utils/validator'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -141,6 +168,8 @@ const isDrawerOpened = computed({
 
 const newContact = reactive({
   email: '',
+  firstName: '',
+  lastName: '',
 })
 const formRules = reactive<FormRules>({
   email: [
@@ -151,6 +180,22 @@ const formRules = reactive<FormRules>({
       type: 'email',
     },
   ],
+  firstName: [
+    {
+      required: true,
+      message: t('incorrectFirstName'),
+      trigger: 'blur',
+      pattern: FIRSTNAME_REG_EXP,
+    },
+  ],
+  lastName: [
+    {
+      required: true,
+      message: t('incorrectLastName'),
+      trigger: 'blur',
+      pattern: LASTNAME_REG_EXP,
+    },
+  ],
 })
 
 // #region Check Contact Role
@@ -158,23 +203,67 @@ const addCustomerFormRef = ref()
 const hasRoleOnAccount = ref(false)
 const isNextButtonLoading = ref(false)
 const isNextButtonDisabled = ref(true)
-const checkContactRole = async () => {
+const shouldEnableNames = ref(false)
+const checkContactRole = async (
+  newEmailValue: string | undefined,
+  oldEmailVlaue: string | undefined) => {
+
   isNextButtonLoading.value = true
+
+  if(newEmailValue !== oldEmailVlaue) {
+    shouldEnableNames.value = false
+  }
+
   if (newContact.email) {
     try {
+      // first step validate the form to ensure email is valid
       await addCustomerFormRef.value.validate()
-      // Check if the contact to be added exists in the database or has a role on the current account
-      hasRoleOnAccount.value = await hasContactRoleOnCommonAccount(newContact.email, props.targetEntityId)
+      // Check if the contact to be added exists in the database or has a role on the current account only when the names are not enabled
+      if(shouldEnableNames.value === false) {
+        hasRoleOnAccount.value = await hasContactRoleOnCommonAccount(newContact.email, props.targetEntityId)
+      }
+      if(hasRoleOnAccount.value === true) {
+        shouldEnableNames.value = false
+      } else {
+        // Display the new fields then validate them
+        shouldEnableNames.value = true
+        await addCustomerFormRef.value.validate()
+      }
       isNextButtonDisabled.value = hasRoleOnAccount.value
     } catch {
       isNextButtonDisabled.value = true
     }
   } else {
     isNextButtonDisabled.value = true
+    shouldEnableNames.value = false
   }
   isNextButtonLoading.value = false
 }
-watch(newContact, useDebounce(() => checkContactRole(), 600))
+
+const validateFirstNameAndLastName = async () => {
+  if (newContact.firstName && newContact.lastName) {
+    try{
+      await addCustomerFormRef.value.validate()
+      isNextButtonDisabled.value = false
+    }catch {
+      isNextButtonDisabled.value = true
+    }
+  }
+}
+
+watch(
+  () => newContact.email,
+  useDebounce((newEmail, oldEmail) => {
+    checkContactRole(newEmail!, oldEmail)
+  }, 600),
+)
+
+watch(
+  () => [newContact.firstName, newContact.lastName],
+  useDebounce(() => {
+    validateFirstNameAndLastName()
+  }, 600),
+)
 // #endregion
 
 // #region Handle Add Contact Form Submission
@@ -192,8 +281,8 @@ async function handleAddContactFormSubmission() {
     await addCustomerFormRef.value.validate()
     isNextButtonLoading.value = true
     await createCustomer({
-      firstName: NEW_USER.firstName,
-      lastName: NEW_USER.lastName,
+      firstName: newContact.firstName !== '' ? newContact.firstName : NEW_USER.firstName,
+      lastName: newContact.lastName !== '' ? newContact.lastName : NEW_USER.lastName,
       mobilePhone: '',
       email: newContact.email,
       accountNumber: props.targetEntityNumber,
@@ -256,8 +345,15 @@ const onboardingSucceeded = () => {
     previousLabel: 'Cancel'
     userAdded: 'User added'
     incorrectEmail: "Email format in not valid"
+    incorrectFirstName: "This field is required"
+    incorrectLastName: "This field is required"
     setUserEmail: "Please enter the email address of the user to be added"
     alreadyAddedToAccount: 'This user has already been added to this account'
+    firstName:
+      label: 'Prénom'
+    lastName:
+      label: 'Nom'
+
   fr-FR:
     email:
       address: 'E-mail'
@@ -269,6 +365,12 @@ const onboardingSucceeded = () => {
     previousLabel: 'Annuler'
     userAdded: 'Utilisateur ajouté'
     incorrectEmail: "L'adresse mail n'est pas conforme"
+    incorrectFirstName: "Ce champ est obligatoire"
+    incorrectLastName: "Ce champ est obligatoire"
     setUserEmail: "Veuillez saisir l'adresse e-mail de l'utilisateur à ajouter"
     alreadyAddedToAccount: 'Cet utilisateur a déjà été ajouté sur cette entité'
+    firstName:
+      label: 'Prénom'
+    lastName:
+      label: 'Nom'
 </i18n>
