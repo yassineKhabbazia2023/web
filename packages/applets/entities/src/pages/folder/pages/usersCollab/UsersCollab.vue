@@ -241,7 +241,7 @@ import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enum
 import { getOperationsWithLegalName, getAccountOperationsList } from './UsersCollab.utils'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
-import AddCustomerDrawer from '../usersClient/components/AddCustomerDrawer'
+import AddCustomerDrawer from '../usersClient/components/add-customer-drawer'
 
 const { d, t } = useI18n({
   inheritLocale: true,

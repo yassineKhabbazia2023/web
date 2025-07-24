@@ -1,7 +1,7 @@
 import type { Account, AccountSignatories } from '.'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { commonApi } from '@pulse/common'
-import type { Entity, QueryResult } from '@pulse/common/types'
+import type { Entity, QueryResult, UserInfoApi } from '@pulse/common/types'
 import { API_PREFIXES } from '@entities/common/config/services'
 import type { PatchOperation } from '@entities/services/PatchRecordService'
 import type { AccountRow, ReferentialStructure, Hub, Office, AccountsDelegation } from './accountTypes'
@@ -151,7 +151,7 @@ export async function deleteContactFromAccount(
   })
 }
 
-type createCustomerBody = {
+export type createCustomerBody = {
   firstName: Contact['firstName']
   lastName: Contact['lastName']
   email: Contact['email']
@@ -161,7 +161,7 @@ type createCustomerBody = {
 
 export async function createCustomer(customerInformation: createCustomerBody, accountId: number) {
   const url = `${API_PREFIXES.ACCOUNT}/customers`
-  const { data } = await commonApi().gateway.post(url, customerInformation, { params: { accountId } })
+  const { data } = await commonApi().gateway.post<UserInfoApi>(url, customerInformation, { params: { accountId } })
   return data
 }
 
@@ -197,4 +197,20 @@ export const updateCustomerRelation = async (accountId: number, contactId: numbe
       isCustomerRelation,
     },
   })
+}
+
+export async function fetchAccountContactsByEmail(
+  accountId: number,
+  email: string,
+) {
+  const queryParameters = {
+    pageNumber: '1',
+    pageSize: '1',
+    search: email,
+  }
+  const searchParams: URLSearchParams = new URLSearchParams(queryParameters)
+  const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?${searchParams}`
+  const response = await commonApi().gateway.get(url)
+
+  return response?.data
 }

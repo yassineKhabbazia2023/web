@@ -5,4 +5,5 @@ export const HTTP_RESPONSES = {
   // 400
   TOO_MANY_REQUESTS: 429,
   UNAUTHORIZED: 401,
+  CONFLICT: 409,
 }

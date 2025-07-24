@@ -6,3 +6,9 @@ export interface AddCustomerDrawerProps {
   targetEntityName: Entity['legalName']
   targetEntityNumber: Entity['accountNumber']
 }
+
+export interface Contact {
+  email: string
+  firstname: string
+  lastname: string
+}

@@ -63,6 +63,8 @@
               :pPlaceholder="dropdownsByActionCode[authorizationAction.code].placeholder"
               :pOptions="dropdownsByActionCode[authorizationAction.code].options"
               pHasRadioButton
+              fitInputWidth
+              popper-class="max-width-600"
               @update:model-value="$event => onUpdateAdditionalOptionByActionCode(authorizationAction.code, $event)"
             />
           </li>

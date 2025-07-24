@@ -83,8 +83,7 @@
               flex
               flex--direction-column
               list-style-none
-              max-width-300
-            "
+         "
           >
             <li
               class="font-semibold"

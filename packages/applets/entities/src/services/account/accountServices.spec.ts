@@ -20,6 +20,7 @@ import {
   deleteContactFromAccount,
   hasContactRoleOnCommonAccount,
   updateCustomerRelation,
+  fetchAccountContactsByEmail,
 } from '.'
 import type { Hub } from './accountTypes'
 import {
@@ -51,65 +52,13 @@ const mockedPatchOperations = getMockedPatchOperations()
 const mockedAccountApiPatch = vi.fn()
 const mockedCollaborators = getMockedCollaborators()
 const postSpy = vi.fn()
+const commonApiGetMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/common', () => {
   return {
     commonApi: () => ({
       gateway: {
-        get: vi.fn().mockImplementation((url, args) => {
-          if (url === 'offer/api/referentials/AccountReferentialInformation') {
-            return Promise.resolve({
-              data: mockedAccountReferential,
-            })
-          }
-          if (url === 'offer/api/referentials/hubs') {
-            return Promise.resolve({
-              data: mockedReferentialHubs,
-            })
-          }
-          if (url === `${API_PREFIXES.OFFER}/referentials/offices`) {
-            return Promise.resolve({
-              data: mockedReferentialOffices,
-            })
-          }
-          if (url === `account/api/accounts/${accountId}/currentuser`) {
-            return Promise.resolve({
-              data: mockedAccount,
-            })
-          }
-          if (url === `account/api/delegations/${accountId}/history?`) {
-            return Promise.resolve({ data: delegationsHistoryMock })
-          }
-          if (url === 'account/api/roles/currentuser/hub/contact') {
-            return Promise.resolve({
-              data: {
-                items: mockedCollaborators,
-              },
-            })
-          }
-          if (url === `${API_PREFIXES.ACCOUNT}/contacts`) {
-            return Promise.resolve({
-              status: args.params.email ? 200 : 204,
-              data: {
-                items: mockedCollaborators,
-              },
-            })
-          }
-          if (url === `${API_PREFIXES.ACCOUNT}/roles/signatory` && args.params.accountId) {
-            return Promise.resolve({
-              data: mockedCollaborators,
-            })
-          }
-          if (url === `${API_PREFIXES.ACCOUNT}/roles/check`) {
-            return Promise.resolve({
-              data: true,
-            })
-          }
-
-          return url.includes(SEARCH_CURRENT_USER)
-            ? Promise.resolve({ data: [mockedAccountRow] })
-            : Promise.reject(new Error(rejectedErrorMessage))
-        }),
+        get: commonApiGetMock,
         patch: mockedAccountApiPatch,
         delete: vi.fn().mockImplementation((url) => {
           if (url === `${API_PREFIXES.ACCOUNT}/roles`) {
@@ -137,6 +86,62 @@ vi.mock('@pulse/common', () => {
 })
 
 describe('test accountServices', () => {
+  beforeEach(() => {
+    commonApiGetMock.mockImplementation((url, args) => {
+      if (url === 'offer/api/referentials/AccountReferentialInformation') {
+        return Promise.resolve({
+          data: mockedAccountReferential,
+        })
+      }
+      if (url === 'offer/api/referentials/hubs') {
+        return Promise.resolve({
+          data: mockedReferentialHubs,
+        })
+      }
+      if (url === `${API_PREFIXES.OFFER}/referentials/offices`) {
+        return Promise.resolve({
+          data: mockedReferentialOffices,
+        })
+      }
+      if (url === `account/api/accounts/${accountId}/currentuser`) {
+        return Promise.resolve({
+          data: mockedAccount,
+        })
+      }
+      if (url === `account/api/delegations/${accountId}/history?`) {
+        return Promise.resolve({ data: delegationsHistoryMock })
+      }
+      if (url === 'account/api/roles/currentuser/hub/contact') {
+        return Promise.resolve({
+          data: {
+            items: mockedCollaborators,
+          },
+        })
+      }
+      if (url === `${API_PREFIXES.ACCOUNT}/contacts`) {
+        return Promise.resolve({
+          status: args.params.email ? 200 : 204,
+          data: {
+            items: mockedCollaborators,
+          },
+        })
+      }
+      if (url === `${API_PREFIXES.ACCOUNT}/roles/signatory` && args.params.accountId) {
+        return Promise.resolve({
+          data: mockedCollaborators,
+        })
+      }
+      if (url === `${API_PREFIXES.ACCOUNT}/roles/check`) {
+        return Promise.resolve({
+          data: true,
+        })
+      }
+
+      return url.includes(SEARCH_CURRENT_USER)
+        ? Promise.resolve({ data: [mockedAccountRow] })
+        : Promise.reject(new Error(rejectedErrorMessage))
+    })
+  })
   describe('fetchAccount', () => {
     it('should return account on success', async () => {
       const account = await fetchAccount(accountId)
@@ -369,5 +374,23 @@ describe('test accountServices', () => {
     const contact = await getAccountUserByEmail('')
 
     expect(contact).toBeNull()
+  })
+
+  describe('fetchAccountContactsByEmail', () => {
+    it('should return', async () => {
+      const email = 'email@adresse.fd'
+      const dataMock = {
+        items: [],
+      }
+      commonApiGetMock.mockReturnValue({
+        data: dataMock,
+      })
+      const expectedUrl = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?pageNumber=1&pageSize=1&search=email%40adresse.fd`
+      const contacts = await fetchAccountContactsByEmail(accountId, email)
+
+      expect(commonApiGetMock).toHaveBeenCalledOnce()
+      expect(commonApiGetMock).toHaveBeenCalledWith(expectedUrl)
+      expect(contacts).toStrictEqual(dataMock)
+    })
   })
 })

@@ -32,7 +32,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { PUserCard, PAlert } from '@pulse/styleguide/components'
-import type { AddCustomerFeedbackProps } from './AddCustomerFeedbackTypes'
+import type { AddCustomerFeedbackProps } from './add-customer-feedback.types'
 
 const { t } = useI18n({
   inheritLocale: true,

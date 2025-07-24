@@ -23,14 +23,14 @@
       />
     </PUserCard>
     <div
-      v-if="isLoading"
+      v-if="isLoading === true"
       class="flex flex--justify-content-center margin-y--4"
       data-testid="manage-rights-loader"
     >
       <PLoader pType="primary" pSize="50" />
     </div>
     <RightsList
-      v-else
+      v-if="isLoading === false"
       v-model="authorizationsState"
       v-model:additionalOptionByActionCode="additionalOptionByActionCode"
       :contactId="selectedUser.contactId"
