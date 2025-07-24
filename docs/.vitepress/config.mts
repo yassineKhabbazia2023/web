@@ -5,6 +5,7 @@ export default defineConfig({
   title: 'RYDGE Conseil - Front-End Doc',
   head: [['link', { rel: 'icon', href: '/favicon.png' }]],
   ignoreDeadLinks: true,
+  base: '/docs/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: {

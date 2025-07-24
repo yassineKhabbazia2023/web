@@ -15,7 +15,7 @@ parameters:
     - transverse
 
 variables:
-  nodeVersion: '20.x'
+  nodeVersion: '24.x'
   buildOutputFolder: 'dist'
   azureSubscriptionDEV: 'Rydge-dev'
   storageAccountNameDEV: 'sacegpulsefrontdev0101'
