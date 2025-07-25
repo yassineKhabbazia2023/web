@@ -26,6 +26,10 @@ export default defineConfig({
         text: 'Monorepo',
         link: '/monorepo/',
       },
+      {
+        text: 'Guidelines',
+        link: '/guidelines/',
+      },
     ],
 
     sidebar: {
@@ -51,6 +55,10 @@ export default defineConfig({
             {
               text: 'Imports dans le Monorepo',
               link: '/monorepo/imports',
+            },
+            {
+              text: 'Guidelines et bonnes pratiques',
+              link: '/monorepo/best-practices',
             },
           ],
         },
@@ -122,6 +130,22 @@ export default defineConfig({
                   ],
                 },
               ],
+            },
+          ],
+        },
+      ],
+      '/guidelines/': [
+        {
+          text: 'Guidelines et bonnes pratiques',
+          link: '/guidelines/',
+          items: [
+            {
+              text: 'Bad code / good Code',
+              link: '/guidelines/bad-code-good-code',
+            },
+            {
+              text: 'Tips and tricks',
+              link: '/guidelines/tips-and-tricks',
             },
           ],
         },
