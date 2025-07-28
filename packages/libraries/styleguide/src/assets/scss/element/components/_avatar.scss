@@ -11,7 +11,7 @@ $avatar: (
 
 $avatar-size: (
   'xlarge': 56px,
-  'large': 50px,
+  'large': 48px,
   'default': 40px,
   'small': 32px,
   'xsmall': 24px,
@@ -70,20 +70,21 @@ $avatar-size: (
 
     &--color-persian-gradient {
       border: none;
-      background: var(--persian-gradient);
+      background: var(--el-color-secondary-amethyste);
       color: var(--el-color-white);
     }
 
     &--color-orange {
-      border-color: var(--el-color-functionnal-orange-bg);
-      background: var(--el-color-functionnal-orange-bg);
-      color: var(--el-color-functionnal-orange);
+      border-color: var(--el-color-surface-active);
+      background: var(--el-color-surface-active);
+      color: var(--el-color-black-rock-900);
     }
 
     &--color-persian {
-      border-color: var(--el-color-persian-50);
-      background: var(--el-color-persian-50);
-      color: var(--el-color-persian-500);
+      border-color: var(--el-color-polar-50);
+      background: var(--el-color-polar-50);
+      color: var(--el-color-black-rock-900);
+
     }
 
     &--color-persian-light {
@@ -105,15 +106,15 @@ $avatar-size: (
     }
 
     &--color-teal {
-      border-color: var(--el-color-functionnal-teal-bg);
-      background: var(--el-color-functionnal-teal-bg);
-      color: var(--el-color-functionnal-teal);
+      border-color: var(--el-color-persian-200);
+      background: var(--el-color-persian-200);
+      color: var(--el-color-black-rock-900);
     }
 
     &--color-green {
-      border-color: var(--el-color-functionnal-green-bg);
-      background: var(--el-color-functionnal-green-bg);
-      color: var(--el-color-functionnal-green);
+      border-color: var(--el-color-persian-600);
+      background: var(--el-color-persian-600);
+      color: var(--el-color-white);
     }
 
     &--color-fuschia {
@@ -123,33 +124,33 @@ $avatar-size: (
     }
 
     &--color-gray {
-      border-color: var(--el-color-neutral-gray-50);
-      background: var(--el-color-neutral-gray-50);
-      color: var(--el-color-neutral-gray-500);
+      border-color: var(--el-color-secondary-fuschia-bg);
+      background: var(--el-color-secondary-fuschia-bg);
+      color: var(--el-color-black-rock-900);
     }
     
     &--color-white {
-      border-color: var(--el-color-white);
-      background: var(--el-color-white);
-      color: var(--el-color-persian-500);
+      border-color: var(--el-color-secondary-cyan-bg);
+      background: var(--el-color-secondary-cyan-bg);
+      color: var(--el-color-black-rock-900);
     }
     
     &--color-amethyste {
-      border-color: var(--el-color-secondary-amethyste-bg);
-      background: var(--el-color-secondary-amethyste-bg);
-      color: var(--el-color-secondary-amethyste);
+      border-color: var(--el-color-persian-100);
+      background: var(--el-color-persian-100);
+      color: var(--el-color-black-rock-900);
     }
     
     &--color-cyan {
-      border-color: var(--el-color-secondary-cyan-bg);
-      background: var(--el-color-secondary-cyan-bg);
-      color: var(--el-color-secondary-cyan);
+      border-color: var(--el-color-functionnal-teal-bg);
+      background: var(--el-color-functionnal-teal-bg);
+      color: var(--el-color-black-rock-900);
     }
     
     &--color-bordered-persian {
-      border-color: var(--el-color-persian-500);
-      background: var(--el-color-white);
-      color: var(--el-color-persian-500);
+      border-color: var(--el-color-persian-700);
+      background: var(--el-color-persian-700);
+      color: var(--el-color-white);
     }
 
     &--color-blue-pulse {

@@ -1,5 +1,5 @@
 <template>
-  <Story title="2. Atoms/Radio" icon="material-symbols:radio-button-checked-outline">
+  <Story title="2. Atoms/Radio Button" icon="material-symbols:radio-button-checked-outline">
     <Variant title="Basic Usage">
       <PRadio
         v-model="radio"

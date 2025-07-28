@@ -85,7 +85,7 @@ const colorMapper = computed(() => {
 
   &--color-success {
     &:hover {
-      border-color: var(--el-color-functionnal-green-txt);
+      border-color: var(--el-color-functionnal-green);
     }
     background-color: var(--el-color-functionnal-green-bg);
     #{$self}__icon {
@@ -95,7 +95,7 @@ const colorMapper = computed(() => {
 
   &--color-warning {
     &:hover {
-      border-color: var(--el-color-functionnal-orange-txt);
+      border-color: var(--el-color-functionnal-orange);
     }
     background-color: var(--el-color-functionnal-orange-bg);
     #{$self}__icon {
@@ -105,11 +105,11 @@ const colorMapper = computed(() => {
 
   &--color-amethyste {
     &:hover {
-      border-color: var(--el-color-secondary-amethyste-txt);
+      border-color: var(--el-color-secondary-fuschia);
     }
-    background-color: var(--el-color-secondary-amethyste-bg);
+    background-color: var(--el-color-secondary-fuschia-bg);
     #{$self}__icon {
-      color: var(--el-color-secondary-amethyste-txt);
+      color: var(--el-color-secondary-fuschia);
     }
   }
 
@@ -125,7 +125,7 @@ const colorMapper = computed(() => {
 
   &--color-danger {
     &:hover {
-      border-color: var(--el-color-functionnal-red-txt);
+      border-color: var(--el-color-functionnal-red);
     }
     background-color: var(--el-color-functionnal-red-bg);
     #{$self}__icon {
@@ -134,6 +134,9 @@ const colorMapper = computed(() => {
   }
 
   &--color-gray-500 {
+    &:hover {
+      border-color: var(--el-color-base-blue-pulse);
+    }
     background-color: var(--el-color-neutral-gray-50);
   }
 
@@ -147,22 +150,22 @@ const colorMapper = computed(() => {
   &--selected {
     &#{$self}--color-success {
       background-color: var(--el-color-functionnal-green-bg);
-      border-color: var(--el-color-functionnal-green-txt);
+      border-color: var(--el-color-stroke-success);
     }
 
     &#{$self}--color-warning {
       background-color: var(--el-color-functionnal-orange-bg);
-      border-color: var(--el-color-functionnal-orange-txt);
+      border-color: var(--el-color-stroke-warning);
     }
 
     &#{$self}--color-amethyste {
-      background-color: var(--el-color-secondary-amethyste-bg);
-      border-color: var(--el-color-functionnal-amethyste-txt);
+      background-color: var(--el-color-secondary-fuschia-bg);
+      border-color: var(--el-color-secondary-fuschia);
     }
 
     &#{$self}--color-danger {
       background-color: var(--el-color-functionnal-red-bg);
-      border-color: var(--el-color-functionnal-red-txt);
+      border-color: var(--el-color-stroke-error);
     }
 
     &#{$self}--color-gray-900 {

@@ -42,19 +42,19 @@ const props: PFilterOptionProps = reactive({
 
 const filterOptionColor: { label: string, value: PFilterOptionProps['pColor'] }[] = [
   {
-    label: 'amethyste',
+    label: 'En Cours',
     value: 'amethyste',
   },
   {
-    label: 'success',
+    label: 'Success',
     value: 'success',
   },
   {
-    label: 'warning',
+    label: 'Warning',
     value: 'warning',
   },
   {
-    label: 'danger',
+    label: 'Error',
     value: 'danger',
   },
   {

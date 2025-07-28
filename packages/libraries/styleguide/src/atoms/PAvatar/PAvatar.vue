@@ -2,11 +2,11 @@
   <div class="p-avatar-wrapper">
     <PIcon
       v-if="pSelected && pType=== 'small'"
-      :color="AppColors.PRIMARY"
+      :color="AppColors.SECONDARY_FUSCHIA_TXT"
       size="12px"
       data-testid="avatar-check-icon"
       class="p-avatar-wrapper__check-icon"
-      pName="checkCircle"
+      pName="check"
     />
     <ElAvatar
       :fit="pFit"
@@ -71,14 +71,10 @@ const getAvatarColor = () => {
   position: relative;
 
   &__check-icon {
-    z-index: 10;
+    z-index: 20;
     position: absolute;
     right: -3px;
-    background: radial-gradient(
-      circle,
-      var(--el-color-base-white) 50%,
-      var(--el-color-base-persian) 0%
-    );
+    background-color: var(--el-color-base-white);
     border-radius: 50%;
   }
 }

@@ -51,8 +51,8 @@ $tag-padding: (
     }
 
     &#{$self}--amethyste {
-      --el-tag-bg-color: var(--el-color-secondary-amethyste);
-      --el-tag-border-color: var(--el-color-secondary-amethyste);
+      --el-tag-bg-color: var(--el-color-secondary-fuschia-bg);
+      --el-tag-border-color: var(--el-color-secondary-fuschia-bg);
       --el-tag-hover-color: var(--el-color-secondary-amethyste-bg);
     }
 
@@ -136,10 +136,10 @@ $tag-padding: (
     }
 
     &#{$self}--amethyste {
-      --el-tag-bg-color: var(--el-color-secondary-amethyste-bg);
-      --el-tag-border-color: var(--el-color-secondary-amethyste-bg);
-      --el-tag-hover-color: var(--el-color-secondary-amethyste);
-      --el-tag-text-color: var(--el-color-secondary-amethyste-txt);
+      --el-tag-bg-color: var(--el-color-secondary-fuschia-bg);
+      --el-tag-border-color: var(--el-color-secondary-fuschia-bg);
+      --el-tag-hover-color: var(--el-color-secondary-fuschia-bg);
+      --el-tag-text-color: var(--el-color-secondary-fuschia);
     }
 
     &#{$self}--cyan {

@@ -11,7 +11,12 @@
     </div>
     <button
       v-if="pClosable"
-      class="p-alert__close-btn padding--0 margin-left--2"
+      class="
+        p-alert__close-btn
+        padding--0
+        margin-left--2
+        flex--align-self-flex-start
+      "
       @click="$emit('close')"
     >
       <PIcon
@@ -64,16 +69,17 @@ const iconName = computed<PIconProps['pName']>(() => {
   justify-content: flex-start;
   align-items: center;
   width: 100%;
-  border-radius: var(--el-border-radius-base);
+  border-radius: 4px;
 
   padding: 12px 16px;
 
   color: var(--el-color-gray-900);
-  background-color: var(--el-color-persian-50);
+  background-color: var(--el-color-black-rock-100);
 
   &--type-main {
+    color: var(--el-color-neutral-gray-900);
     #{$self}__icon {
-      color: var(--el-color-persian-500)
+      color: var(--el-color-black-rock-900)
     }
   }
 
@@ -94,7 +100,7 @@ const iconName = computed<PIconProps['pName']>(() => {
 
   &--type-information {
     color: var(--el-color-secondary-cyan-txt);
-    background-color: var(--el-color-secondary-cyan-bg);
+    background-color: var(--el-color-functionnal-teal-bg);
   }
   &__close-btn {
     appearance: none;
