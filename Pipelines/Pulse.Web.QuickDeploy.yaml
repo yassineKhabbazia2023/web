@@ -8,6 +8,7 @@ parameters:
     - hades
     - hermes
     - orion
+    - orphee
     - none
 - name: deployToDev
   displayName: 'Déployer sur DEV'

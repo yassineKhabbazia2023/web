@@ -12,6 +12,7 @@ parameters:
     - hades
     - hermes
     - orion
+    - orphee
     - transverse
 
 variables:

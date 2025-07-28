@@ -76,9 +76,8 @@ const appRoutes: RouteRecordRaw[] = [
         name: APP_ROUTES.error.error404.name,
         component: () => import('@app/pages/Error/404/Error404.page.vue'),
         beforeEnter: (to, _from, next) => {
-          const { HERMES, HADES, ORION, TRANSVERSE } = SQUAD_ROUTE_PATHS
-
-          const subRoutes = [HERMES, HADES, ORION, TRANSVERSE]
+          // Check if the path matches any of the squad routes
+          const subRoutes = Object.values(SQUAD_ROUTE_PATHS)
           const matches = subRoutes.some(route => to.path.startsWith(route))
 
           if (matches) {
