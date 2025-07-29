@@ -126,6 +126,20 @@
           </template>
         </PTableColumn>
         <PTableColumn
+          pProp="label"
+          pSortable="custom"
+          pWidth="340"
+        >
+          <template #header>
+            <CollaboratorRolesColumn />
+          </template>
+          <template #default="scope">
+            <CollaboratorRolesLabelDisplay
+              :roleLabels="splitRoleLabelsIntoGroups(scope.row.labels)"
+            />
+          </template>
+        </PTableColumn>
+        <PTableColumn
           v-if="toolboxItems.length > 0"
           :pLabel="t('actions')"
           :pWidth="100"
@@ -211,8 +225,11 @@ import { RouteParam } from '@pulse/common/enums'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import CollabDetailsDrawer from '@entities/common/components/CollabDetailsDrawer'
+import CollaboratorRolesLabelDisplay from './components/CollaboratorRolesLabelDisplay/CollaboratorRolesLabelDisplay.vue'
 import AddCollaboratorsDrawer from './components/AddCollaboratorDrawer'
 import { RouterHelpers } from '@pulse/common/helpers'
+import { splitRoleLabelsIntoGroups } from './utils/collaborators.utils'
+import CollaboratorRolesColumn from './components/CollaboratorRolesColumn/CollaboratorRolesColumn.vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -486,16 +503,6 @@ watch(() => [
   .p-toolbox-item__text {
     width: 230px;
   }
-}
-</style>
-
-<style lang="scss" scoped>
-.color-gray--900 {
-  color: var(--el-color-neutral-gray-900);
-}
-
-.line-height--120 {
-  line-height: 120%;
 }
 </style>
 
