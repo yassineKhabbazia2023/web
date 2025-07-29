@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.7",
+    "@amplitude/plugin-session-replay-browser": "^1.21.1",
     "@azure/msal-browser": "^4.14.0",
     "@braintree/sanitize-url": "^7.1.0",
     "@element-plus/icons-vue": "2.3.1",

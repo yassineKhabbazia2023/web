@@ -1,5 +1,6 @@
 import { SERVER_ZONE } from './constants'
 import * as amplitude from '@amplitude/analytics-browser'
+import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser'
 import type { BaseEvent } from '@amplitude/analytics-types'
 import { logger } from '@pulse/core'
 import { AmplitudeUserType } from '@pulse/common/enums'
@@ -44,12 +45,20 @@ export class AmplitudeService {
     }
 
     AmplitudeService.initialized = true
+    // Create and Install Session Replay Plugin
+    const sessionReplayTracking = sessionReplayPlugin()
+    amplitude.add(sessionReplayTracking)
+    logger.trace('Amplitude - activated session replay plugin')
+
+    // Initialize Amplitude with the provided configuration
     amplitude.init(
       apiKey,
       undefined, // the default value of the userId
       {
         serverZone: SERVER_ZONE,
-        defaultTracking: false,
+        defaultTracking: {
+          sessions: true, // start tracking session automatically
+        },
         minIdLength: 1,
         serverUrl: serverUrl || undefined,
       },

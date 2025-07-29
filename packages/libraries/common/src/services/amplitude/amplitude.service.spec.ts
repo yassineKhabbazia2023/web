@@ -26,6 +26,13 @@ const FAKE_API_KEY = '42'
 const serverUrl = 'https://api.eu.amplitude.com/2/httpapi'
 const CUSTOM_EVENT = 'custom event'
 const CUSTOM_USER_ID = '123'
+const mockAmplitudeSetup = {
+  serverZone: SERVER_ZONE,
+  defaultTracking: {
+    sessions: true,
+  },
+  minIdLength: 1,
+}
 
 // Helper function to reset AmplitudeService static properties
 const resetAmplitudeService = () => {
@@ -34,7 +41,6 @@ const resetAmplitudeService = () => {
   ;(AmplitudeService as any).currentUserId = ''
   ;(AmplitudeService as any).userProperty = {}
 }
-
 
 describe('amplitude', () => {
   beforeEach(() => {
@@ -50,10 +56,8 @@ describe('amplitude', () => {
     expect(initSpy).toHaveBeenCalledOnce()
 
     expect(initSpy).toHaveBeenCalledWith(FAKE_API_KEY, undefined, {
-      serverZone: SERVER_ZONE,
-      defaultTracking: false,
+      ...mockAmplitudeSetup,
       serverUrl,
-      minIdLength: 1,
     })
   })
 
@@ -64,12 +68,7 @@ describe('amplitude', () => {
 
     expect(initSpy).toHaveBeenCalledOnce()
 
-    expect(initSpy).toHaveBeenCalledWith(FAKE_API_KEY, undefined, {
-      serverZone: SERVER_ZONE,
-      defaultTracking: false,
-      serverUrl: undefined,
-      minIdLength: 1,
-    })
+    expect(initSpy).toHaveBeenCalledWith(FAKE_API_KEY, undefined, mockAmplitudeSetup)
   })
 
   it('can track', () => {
