@@ -1,22 +1,28 @@
 import { commonApi as api } from '@pulse/common'
 import type { AxiosResponse } from 'axios'
-import type { Document, DocumentsWithTableStructure } from '@ged/models/Document'
+import type {
+  Document,
+  DocumentsWithTableStructure,
+  FetchDocumentsParams,
+  FetchDocumentsByKeyWordParams,
+} from '@ged/models/Document'
 import type { Service } from '@ged/models/Service'
-import type { Folder } from '@ged/models/Folder'
 import type { MoveDocumentsRequest } from
   '@ged/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
-import type { DocumentSearchFilters } from '@ged/models/DocumentSearchFilters'
 
 export const fetchFolderDocuments = async (
-  serviceId: Service['ServiceId'],
-  folderId: Folder['id'],
-  entityId: string,
-  accountId: number,
-  skip = 0,
-  limit = 10,
-  sort = '-created',
-  filters: DocumentSearchFilters | null = null,
+  {
+    serviceId,
+    folderId,
+    entityId,
+    accountId,
+    skip = 0,
+    limit = 10,
+    sort = '-created',
+    filters = null,
+  }: FetchDocumentsParams,
 ): Promise<DocumentsWithTableStructure> => {
+
   const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}/currentuser`
   const apiObject = api().ds
 
@@ -192,16 +198,19 @@ export const previewDocument = async (
 }
 
 export const fetchDocumentsByKeyWord = async (
-  serviceId: Service['ServiceId'],
-  folderId: Folder['id'],
-  entityId: string,
-  accountId: number,
-  skip: number,
-  limit: number,
-  sort: string,
-  search: string,
-  findInChildFolders = true,
+  {
+    serviceId,
+    folderId,
+    entityId,
+    accountId,
+    skip,
+    limit,
+    sort,
+    search,
+    findInChildFolders = true,
+  }: FetchDocumentsByKeyWordParams,
 ): Promise<DocumentsWithTableStructure> => {
+
   const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}/currentuser`
   const apiObject = api().ds
 

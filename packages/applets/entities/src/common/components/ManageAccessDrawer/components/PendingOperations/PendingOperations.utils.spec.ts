@@ -1,64 +1,75 @@
-import { getTrackStartedEventProperty, getTrackCompletedEventProperty } from './PendingOperations.utils'
-import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
+import {
+  getTrackStartedApprovalEventProperty,
+  getTrackStartedRejectionEventProperty,
+  getTrackCompletedApprovalEventProperty,
+  getTrackCompletedRejectionEventProperty,
+} from './PendingOperations.utils'
+import { AmplitudeOperationStatus, TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 
 const trackingLocalisationMock = TrackingLocalisation.FOLDER
 
 describe('test PendingOperations.utils', () => {
-  describe('getTrackStartedEventProperty', () => {
-    const tests = [
-      {
-        isRefused: false,
-        expected: {
-          registry_validation_start_result: 'accepté',
-          registry_validation_start_localisation: trackingLocalisationMock,
-        },
-      },
-      {
-        isRefused: true,
-        expected: {
-          registry_validation_start_result: 'refusé',
-          registry_validation_start_localisation: trackingLocalisationMock,
-        },
-      },
-    ]
-    it.each(tests)('should return correct result for isRefused=$isRefused', ({
-      isRefused,
-      expected,
-    }) => {
-      const result = getTrackStartedEventProperty(trackingLocalisationMock, isRefused)
+  describe('getTrackStartedApprovalEventProperty', () => {
+    it('should return correct result for approval', () => {
+      const expected = {
+        registry_validation_start_result: AmplitudeOperationStatus.ACCEPTED,
+        registry_validation_start_localisation: trackingLocalisationMock,
+      }
+
+      const result = getTrackStartedApprovalEventProperty(trackingLocalisationMock)
       expect(result).toEqual(expected)
     })
   })
 
-  describe('getTrackCompletedEventProperty', () => {
+  describe('getTrackStartedRejectionEventProperty', () => {
+    it('should return correct result for rejection', () => {
+      const expected = {
+        registry_validation_start_result: AmplitudeOperationStatus.REJECTED,
+        registry_validation_start_localisation: trackingLocalisationMock,
+      }
+
+      const result = getTrackStartedRejectionEventProperty(trackingLocalisationMock)
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('getTrackCompletedApprovalEventProperty', () => {
+    it('should return correct result for approval completion', () => {
+      const expected = {
+        registry_validation_start_localisation: trackingLocalisationMock,
+        registry_validation_start_result: AmplitudeOperationStatus.ACCEPTED,
+      }
+
+      const result = getTrackCompletedApprovalEventProperty(trackingLocalisationMock)
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('getTrackCompletedRejectionEventProperty', () => {
     const tests = [
       {
-        isRefused: true,
         reasonForRefusal: 'Invalid data',
         expected: {
           registry_validation_reason: 'Invalid data',
           registry_validation_start_localisation: trackingLocalisationMock,
-          registry_validation_start_result: 'refusé',
+          registry_validation_start_result: AmplitudeOperationStatus.REJECTED,
         },
       },
       {
-
-        isRefused: false,
         reasonForRefusal: undefined,
         expected: {
+          registry_validation_reason: undefined,
           registry_validation_start_localisation: trackingLocalisationMock,
-          registry_validation_start_result: 'accepté',
+          registry_validation_start_result: AmplitudeOperationStatus.REJECTED,
         },
       },
     ]
-    it.each(tests)('should return correct result for isRefused=$isRefused', ({
-      isRefused,
+    it.each(tests)('should return correct result for rejection completion with reason=$reasonForRefusal', ({
       reasonForRefusal,
       expected,
     }) => {
-      const result = getTrackCompletedEventProperty(
+      const result = getTrackCompletedRejectionEventProperty(
         trackingLocalisationMock,
-        isRefused,
         reasonForRefusal,
       )
       expect(result).toEqual(expected)

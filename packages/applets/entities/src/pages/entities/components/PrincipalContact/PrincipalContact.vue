@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import { getFullName } from '@entities/common/utils'
+import { getFullNameWithUppercaseLastName } from '@entities/common/utils'
 import { PUserCard } from '@pulse/styleguide/components'
 import type { PrincipalContactProps } from './PrincipalContactTypes'
 import type { PTagProps } from '@pulse/styleguide/types'
@@ -33,10 +33,9 @@ const contactTag: PTagProps = {
 }
 
 const fullName = computed(() =>
-  getFullName(
+  getFullNameWithUppercaseLastName(
     props.principalContact.firstName,
     props.principalContact.lastName,
-    true,
   ),
 )
 </script>

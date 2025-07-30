@@ -45,7 +45,7 @@
         <div class="padding-x--4">
           <PUserAction
             :pProfile="getInitials(firstName, lastName)"
-            :pTitle="getFullName(firstName, lastName, true)"
+            :pTitle="getFullNameWithUppercaseLastName(firstName, lastName)"
             :pDescription="email"
             :pRole="persona?.name"
             :pAvatarRole="AvatarRoles.COLLAB"
@@ -81,7 +81,7 @@ import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
 import { getCollaborators } from '@entities/services/wallet'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { getInitials } from '@entities/helper/helper'
-import { getFullName } from '@entities/common/utils/helpers'
+import { getFullNameWithUppercaseLastName } from '@entities/common/utils/helpers'
 import { AvatarRoles } from '@pulse/styleguide'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { PERMISSION_ACTION } from '@pulse/common/constants'

@@ -94,8 +94,10 @@ import AccountHeader from './components/AccountHeader'
 import { patchOperationStatus } from '@entities/services/contact'
 import { PendingOperationProps } from './PendingOperations.types'
 import {
-  getTrackStartedEventProperty,
-  getTrackCompletedEventProperty,
+  getTrackStartedApprovalEventProperty,
+  getTrackStartedRejectionEventProperty,
+  getTrackCompletedApprovalEventProperty,
+  getTrackCompletedRejectionEventProperty,
 } from './PendingOperations.utils'
 
 const { t } = useI18n({
@@ -141,16 +143,18 @@ const handleRejectOperation = (operation: Operation) => {
   selectOperation(operation)
   rejectOperation()
   openConfirmationModal()
-  const eventProperty = getTrackStartedEventProperty(props.trackingLocalisation, true)
+  const eventProperty = getTrackStartedRejectionEventProperty(props.trackingLocalisation)
   AmplitudeService.track('Registry Validation Started', eventProperty)
 }
+
 const handleApproveOperation = (operation: Operation) => {
   selectOperation(operation)
   approveOperation()
   openConfirmationModal()
-  const eventProperty = getTrackStartedEventProperty(props.trackingLocalisation, false)
+  const eventProperty = getTrackStartedApprovalEventProperty(props.trackingLocalisation)
   AmplitudeService.track('Registry Validation Started', eventProperty)
 }
+
 const executeOperation = async (reasonForRefusal?: string) => {
   if (selectedOperation.value) {
     // We update the status to execute the operation in the registry after 24 hours
@@ -162,11 +166,9 @@ const executeOperation = async (reasonForRefusal?: string) => {
     )
 
     // #region Amplitude implementation
-    const eventProperty = getTrackCompletedEventProperty(
-      props.trackingLocalisation,
-      isOperationPendingRefusal.value,
-      reasonForRefusal,
-    )
+    const eventProperty = isOperationPendingRefusal.value
+      ? getTrackCompletedRejectionEventProperty(props.trackingLocalisation, reasonForRefusal)
+      : getTrackCompletedApprovalEventProperty(props.trackingLocalisation)
 
     AmplitudeService.track('Registry Validation Completed', eventProperty)
     // endregion

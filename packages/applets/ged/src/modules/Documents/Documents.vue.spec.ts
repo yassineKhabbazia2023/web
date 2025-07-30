@@ -198,16 +198,16 @@ describe('documents', () => {
       await documents.vm.$emit('on-sort-change', '-created')
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
-        foldersData[0][0].children[0].serviceId,
-        foldersData[0][0].children[0].id,
-        'my-entity',
-        defaultProps.accountId,
-        0,
-        10,
-        '-created',
-        null,
-      )
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith({
+        serviceId: foldersData[0][0].children[0].serviceId,
+        folderId: foldersData[0][0].children[0].id,
+        entityId: 'my-entity',
+        accountId: defaultProps.accountId,
+        skip: 0,
+        limit: 10,
+        sort: '-created',
+        filters: null,
+      })
     })
 
     it('should call searchDocumentsByKeyWord when on-sort-change is emitted while in search state',
@@ -226,16 +226,16 @@ describe('documents', () => {
         await documents.vm.$emit('on-sort-change', '+name')
         await nextTick()
 
-        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
-          foldersData[0][0].children[0].serviceId,
-          foldersData[0][0].children[0].id,
-          'my-entity',
-          defaultProps.accountId,
-          0,
-          10,
-          '+name',
-          'Hello',
-        )
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith({
+          serviceId: foldersData[0][0].children[0].serviceId,
+          folderId: foldersData[0][0].children[0].id,
+          entityId: 'my-entity',
+          accountId: defaultProps.accountId,
+          skip: 0,
+          limit: 10,
+          sort: '+name',
+          search: 'Hello',
+        })
       })
 
     it('should call download document composable upon  toolbox-action-triggered', async () => {
@@ -345,16 +345,16 @@ describe('documents', () => {
 
       expect(deleteModal.props('isVisible')).toBeFalsy()
       expect(deleteModal.props('documentIds')).toStrictEqual([])
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
-        foldersData[0][0].children[0].serviceId,
-        foldersData[0][0].children[0].id,
-        'my-entity',
-        defaultProps.accountId,
-        0,
-        10,
-        '-created',
-        null,
-      )
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith({
+        serviceId: foldersData[0][0].children[0].serviceId,
+        folderId: foldersData[0][0].children[0].id,
+        entityId: 'my-entity',
+        accountId: defaultProps.accountId,
+        skip: 0,
+        limit: 10,
+        sort: '-created',
+        filters: null,
+      })
     }, 30000)
 
     it(
@@ -375,16 +375,16 @@ describe('documents', () => {
 
         expect(deleteModal.props('isVisible')).toBeFalsy()
         expect(deleteModal.props('documentIds')).toStrictEqual([])
-        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
-          foldersData[0][0].children[0].serviceId,
-          foldersData[0][0].children[0].id,
-          'my-entity',
-          defaultProps.accountId,
-          0,
-          10,
-          '-created',
-          'Hello',
-        )
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith({
+          serviceId: foldersData[0][0].children[0].serviceId,
+          folderId: foldersData[0][0].children[0].id,
+          entityId: 'my-entity',
+          accountId: defaultProps.accountId,
+          skip: 0,
+          limit: 10,
+          sort: '-created',
+          search: 'Hello',
+        })
       }, 30000)
 
     it('should close delete modal when cancel-delete-document is emitted', async () => {
@@ -542,16 +542,16 @@ describe('documents', () => {
       await nextTick()
 
       vi.advanceTimersByTime(300)
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
-        defaultProps.currentService,
-        defaultProps.selectedFolder?.id,
-        'my-entity',
-        defaultProps.accountId,
-        0,
-        10,
-        '-created',
-        null,
-      )
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith({
+        serviceId: defaultProps.currentService,
+        folderId: defaultProps.selectedFolder?.id,
+        entityId: 'my-entity',
+        accountId: defaultProps.accountId,
+        skip: 0,
+        limit: 10,
+        sort: '-created',
+        filters: null,
+      })
     })
 
     it('should call fetch documents upon transmit documents event triggered from toolbox',
@@ -576,16 +576,16 @@ describe('documents', () => {
         await nextTick()
 
         vi.advanceTimersByTime(300)
-        expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
-          defaultProps.currentService,
-          defaultProps.selectedFolder?.id,
-          'my-entity',
-          defaultProps.accountId,
-          0,
-          10,
-          '-created',
-          null,
-        )
+        expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith({
+          serviceId: defaultProps.currentService,
+          folderId: defaultProps.selectedFolder?.id,
+          entityId: 'my-entity',
+          accountId: defaultProps.accountId,
+          skip: 0,
+          limit: 10,
+          sort: '-created',
+          filters: null,
+        })
       })
 
     it('should call search documents upon transmit documents event triggered from toolbox',
@@ -611,16 +611,16 @@ describe('documents', () => {
 
         vi.advanceTimersByTime(300)
 
-        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
-          foldersData[0][0].children[0].serviceId,
-          foldersData[0][0].children[0].id,
-          'my-entity',
-          defaultProps.accountId,
-          0,
-          10,
-          '-created',
-          'Hello',
-        )
+        expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith({
+          serviceId: foldersData[0][0].children[0].serviceId,
+          folderId: foldersData[0][0].children[0].id,
+          entityId: 'my-entity',
+          accountId: defaultProps.accountId,
+          skip: 0,
+          limit: 10,
+          sort: '-created',
+          search: 'Hello',
+        })
       })
 
     it('should open drawer when row clicked', async () => {
@@ -753,16 +753,16 @@ describe('documents', () => {
       await documentsActionBarWrapper.vm.$emit('p-search-input', 'Hello')
       await nextTick()
 
-      expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith(
-        foldersData[0][0].children[0].serviceId,
-        foldersData[0][0].children[0].id,
-        'my-entity',
-        defaultProps.accountId,
-        0,
-        10,
-        '-created',
-        'Hello',
-      )
+      expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith({
+        serviceId: foldersData[0][0].children[0].serviceId,
+        folderId: foldersData[0][0].children[0].id,
+        entityId: 'my-entity',
+        accountId: defaultProps.accountId,
+        skip: 0,
+        limit: 10,
+        sort: '-created',
+        search: 'Hello',
+      })
     })
 
     it('should display the loader upon p-search-input', async () => {
@@ -951,16 +951,16 @@ describe('documents', () => {
       )
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
-        defaultProps.currentService,
-        defaultProps.selectedFolder?.id,
-        'my-entity',
-        defaultProps.accountId,
-        0,
-        10,
-        '-created',
-        res,
-      )
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith({
+        serviceId: defaultProps.currentService,
+        folderId: defaultProps.selectedFolder?.id,
+        entityId: 'my-entity',
+        accountId: defaultProps.accountId,
+        skip: 0,
+        limit: 10,
+        sort: '-created',
+        filters: res,
+      })
 
       expect(wrapper.vm.isFiltersDrawerOpened).toBeFalsy()
     })
@@ -980,16 +980,16 @@ describe('documents', () => {
       documentSearchFiltersWrapper.vm.$emit('reset-filters-drawer')
       await nextTick()
 
-      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith(
-        foldersData[0][0].children[0].serviceId,
-        foldersData[0][0].children[0].id,
-        'my-entity',
-        defaultProps.accountId,
-        0,
-        10,
-        '-created',
-        null,
-      )
+      expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith({
+        serviceId: foldersData[0][0].children[0].serviceId,
+        folderId: foldersData[0][0].children[0].id,
+        entityId: 'my-entity',
+        accountId: defaultProps.accountId,
+        skip: 0,
+        limit: 10,
+        sort: '-created',
+        filters: null,
+      })
       expect(documentSearchFiltersWrapper.exists()).toBeFalsy()
     })
   })

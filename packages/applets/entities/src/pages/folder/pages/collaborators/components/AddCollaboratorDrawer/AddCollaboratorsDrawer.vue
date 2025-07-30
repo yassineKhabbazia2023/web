@@ -46,7 +46,7 @@ import type { AddCollaboratorsDrawerProps } from './AddCollaboratorsDrawerTypes'
 import AddCollaboratorsCard from './components/AddCollaboratorsCard'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { addContactToEntity } from '@entities/services/account'
-import { getFullName } from '@entities/common/utils/helpers/helpers'
+import { getFullNameWithUppercaseLastName } from '@entities/common/utils/helpers/helpers'
 
 const props = defineProps<AddCollaboratorsDrawerProps>()
 const emit = defineEmits<{
@@ -121,7 +121,7 @@ function displayAddCollaboratorErrorNotifications(failedResponses: any[]) {
     const concernedUser = selectedCollaborators.value
       .find((collaborator) => collaborator.id === contactId)
 
-    const collaboratorFullName = getFullName(concernedUser?.firstName, concernedUser?.lastName, true)
+    const collaboratorFullName = getFullNameWithUppercaseLastName(concernedUser?.firstName, concernedUser?.lastName)
 
     // Without that, notifications stack on each other and nextTick does not resolve that
     setTimeout(() => {

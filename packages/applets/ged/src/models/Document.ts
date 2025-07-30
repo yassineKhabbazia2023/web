@@ -1,3 +1,7 @@
+import type { Service } from './Service'
+import type { Folder as FolderModel } from './Folder'
+import type { DocumentSearchFilters } from './DocumentSearchFilters'
+
 interface Content {
   href: string
 }
@@ -107,4 +111,27 @@ export interface DocumentStatusUpdateResponse {
 export interface Coordinate {
   x: number
   y: number
+}
+
+export interface FetchDocumentsParams {
+  serviceId: Service['ServiceId']
+  folderId: FolderModel['id']
+  entityId: string
+  accountId: number
+  skip?: number
+  limit?: number
+  sort?: string
+  filters?: DocumentSearchFilters | null
+}
+
+export interface FetchDocumentsByKeyWordParams {
+  serviceId: Service['ServiceId']
+  folderId: FolderModel['id']
+  entityId: string
+  accountId: number
+  skip: number
+  limit: number
+  sort: string
+  search: string
+  findInChildFolders?: boolean
 }

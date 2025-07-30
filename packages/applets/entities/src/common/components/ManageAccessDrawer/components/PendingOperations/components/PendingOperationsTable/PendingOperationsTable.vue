@@ -16,7 +16,7 @@
             <PDoubleText
               pType="primary"
               :pTitle="
-                getFullName(scope.row.firstName, scope.row.lastName, true)
+                getFullNameWithUppercaseLastName(scope.row.firstName, scope.row.lastName)
               "
               :pContent="scope.row.email"
               :pDisabled="false"
@@ -85,7 +85,7 @@ import {
   PTableColumn,
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
-import { getFullName } from '@entities/common/utils'
+import { getFullNameWithUppercaseLastName } from '@entities/common/utils'
 import type { Operation } from '@entities/common/types/OperationTypes'
 import { OperationStatus } from '@entities/common/types/OperationTypes'
 import { getInitials } from '@entities/helper'

@@ -2,6 +2,7 @@ import { logger } from '@pulse/core'
 import { commonApi } from '@pulse/common'
 import type { Service } from '@ged/models/Service'
 import type { Folder } from '@ged/models/Folder'
+import { GedServiceError } from './ged-service-error.exception'
 
 export const fetchServiceFolders = async (
   service: Service,
@@ -20,7 +21,7 @@ export const fetchServiceFolders = async (
     logger.error(error)
     // We return the serviceId that failed in order to handle errors in a specific way
     // as "Comptabilité" service might work but "Gestion Sociale" might fail
-    return Promise.reject(service)
+    throw new GedServiceError(`Failed to fetch folders for service ${service.ServiceId}`, service)
   }
 }
 
@@ -46,7 +47,8 @@ export const fetchServicesFolders = async (
     if (promise.status === 'fulfilled') {
       foldersByService.push(promise.value)
     } else if (promise.status === 'rejected') {
-      unavailableServices.push(promise.reason as Service)
+      const error = promise.reason as GedServiceError
+      unavailableServices.push(error.service)
     }
   })
 

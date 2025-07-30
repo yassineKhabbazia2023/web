@@ -1,6 +1,11 @@
 import { describe, it, expect, vi } from 'vitest'
 import type { AccessibleMenuItem } from '@entities/common/types'
-import { displayNotification, filterAccessibleMenuItems, getFullName } from '.'
+import {
+  displayNotification,
+  filterAccessibleMenuItems,
+  getFullName,
+  getFullNameWithUppercaseLastName,
+} from '.'
 
 // Mocks
 const mockedMenuItems: AccessibleMenuItem[] = [
@@ -34,22 +39,36 @@ const expectedAccessibleMenuItems = {
 
 describe('getFullName', () => {
   it.each([
-    ['Janelle', 'Boyd', false, 'Janelle Boyd'],
-    ['Janelle', '', false, 'Janelle'],
-    ['', 'Boyd', false, 'Boyd'],
-    [undefined, 'Boyd', false, 'Boyd'],
-    ['Janelle', undefined, false, 'Janelle'],
-    ['', '', false, ''],
-    [undefined, undefined, false, ''],
-    [undefined, 'Boyd', true, 'BOYD'],
-    [undefined, 'Boyd', undefined, 'Boyd'],
-    ['Janelle', '', true, 'Janelle'],
-    ['Janelle', 'Boyd', true, 'Janelle BOYD'],
-    ['Janelle', undefined, true, 'Janelle'],
+    ['Janelle', 'Boyd', 'Janelle Boyd'],
+    ['Janelle', '', 'Janelle'],
+    ['', 'Boyd', 'Boyd'],
+    [undefined, 'Boyd', 'Boyd'],
+    ['Janelle', undefined, 'Janelle'],
+    ['', '', ''],
+    [undefined, undefined, ''],
   ])(
-    'returns the correct full name (%s, %s, %s) => %s',
-    (firstName, lastName, lastNametoUpper, expected) => {
-      const fullName = getFullName(firstName, lastName, lastNametoUpper)
+    'returns the correct full name (%s, %s) => %s',
+    (firstName, lastName, expected) => {
+      const fullName = getFullName(firstName, lastName)
+
+      expect(fullName).toBe(expected)
+    },
+  )
+})
+
+describe('getFullNameWithUppercaseLastName', () => {
+  it.each([
+    ['Janelle', 'Boyd', 'Janelle BOYD'],
+    ['Janelle', '', 'Janelle'],
+    ['', 'Boyd', 'BOYD'],
+    [undefined, 'Boyd', 'BOYD'],
+    ['Janelle', undefined, 'Janelle'],
+    ['', '', ''],
+    [undefined, undefined, ''],
+  ])(
+    'returns the correct full name with uppercase last name (%s, %s) => %s',
+    (firstName, lastName, expected) => {
+      const fullName = getFullNameWithUppercaseLastName(firstName, lastName)
 
       expect(fullName).toBe(expected)
     },

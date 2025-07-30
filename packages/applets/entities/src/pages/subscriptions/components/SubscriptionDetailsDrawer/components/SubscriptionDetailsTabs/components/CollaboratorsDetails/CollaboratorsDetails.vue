@@ -11,7 +11,7 @@
       >
         <PUserAction
           :pProfile="getInitials(firstName, lastName)"
-          :pTitle="getFullName(firstName, lastName, true)"
+          :pTitle="getFullNameWithUppercaseLastName(firstName, lastName)"
           :pDescription="email"
           :data-testid="`subscription-details-collaborator-${email}`"
           :pAvatarRole="AvatarRoles.COLLAB"
@@ -32,7 +32,7 @@ import { computed } from 'vue'
 import { PUserAction } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import { getInitials } from '@pulse/common'
-import { getFullName } from '@entities/common/utils'
+import { getFullNameWithUppercaseLastName } from '@entities/common/utils'
 import type { CollaboratorsDetailsProps } from './CollaboratorsDetailsTypes'
 import { getFormattedCollaborators, getFormattedCollaboratorRoles } from './CollaboratorsDetails.utils'
 

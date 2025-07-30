@@ -49,12 +49,12 @@ describe('documents service', () => {
 
     const folderId = 123
 
-    await fetchFolderDocuments(
-      service.ServiceId,
+    await fetchFolderDocuments({
+      serviceId: service.ServiceId,
       folderId,
-      accountNumber,
+      entityId: accountNumber,
       accountId,
-    )
+    })
 
     expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
     expect(commonApiDsGetSpy).toHaveBeenCalledWith(
@@ -76,7 +76,16 @@ describe('documents service', () => {
 
     const folderId = 123
 
-    await fetchDocumentsByKeyWord(service.ServiceId, folderId, accountNumber, accountId, 0, 10, '-created', 'test')
+    await fetchDocumentsByKeyWord({
+      serviceId: service.ServiceId,
+      folderId,
+      entityId: accountNumber,
+      accountId,
+      skip: 0,
+      limit: 10,
+      sort: '-created',
+      search: 'test',
+    })
 
     expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
     expect(commonApiDsGetSpy).toHaveBeenCalledWith(
@@ -103,21 +112,20 @@ describe('documents service', () => {
     const startDate = new Date()
     const endDate = new Date()
 
-    await fetchFolderDocuments(
-      service.ServiceId,
+    await fetchFolderDocuments({
+      serviceId: service.ServiceId,
       folderId,
-      accountNumber,
+      entityId: accountNumber,
       accountId,
-      0,
-      10,
-      '-created',
-      {
+      skip: 0,
+      limit: 10,
+      sort: '-created',
+      filters: {
         selectedPeriod: 'DAY',
         startDate,
         endDate,
       },
-
-    )
+    })
 
     expect(commonApiDsGetSpy).toHaveBeenCalledTimes(1)
     expect(commonApiDsGetSpy).toHaveBeenCalledWith(

@@ -14,10 +14,9 @@
         <template #fullName>
           <span class="font-semibold">
             {{
-              getFullName(
+              getFullNameWithUppercaseLastName(
                 selectedOperation?.firstName,
                 selectedOperation?.lastName,
-                true,
               )
             }}
           </span>
@@ -59,10 +58,9 @@
         <template #fullName>
           <span class="font-semibold">
             {{
-              getFullName(
+              getFullNameWithUppercaseLastName(
                 selectedOperation?.firstName,
                 selectedOperation?.lastName,
-                true,
               )
             }}
           </span>
@@ -91,7 +89,7 @@ import {
   PFormItem,
 } from '@pulse/styleguide/components'
 import type { FormRules } from '@pulse/styleguide/types'
-import { getFullName } from '@entities/common/utils'
+import { getFullNameWithUppercaseLastName } from '@entities/common/utils'
 import type { ConfirmActionModalProps } from './ConfirmActionModalTypes'
 import ConfirmationModal from '@entities/common/components/ConfirmationModal'
 

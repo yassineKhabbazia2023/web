@@ -52,7 +52,7 @@ import AddCollaboratorsAutocomplete from '../AddCollaboratorsAutocomplete'
 import { fetchContactsFromSameHub } from '@entities/services/account'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { getInitials } from '@entities/helper/helper'
-import { getFullName } from '@entities/common/utils/helpers/helpers'
+import { getFullNameWithUppercaseLastName } from '@entities/common/utils/helpers/helpers'
 
 const emit = defineEmits<{
   'collaborator-selection': [Contact[]]
@@ -73,7 +73,7 @@ const selectedCollaboratorsFormatted = computed(() => {
   return selectedCollaborators.value
     .map(user => ({
       ...user,
-      fullName: getFullName(user.firstName, user.lastName, true),
+      fullName: getFullNameWithUppercaseLastName(user.firstName, user.lastName),
       initials: getInitials(user.firstName, user.lastName),
     }))
 })

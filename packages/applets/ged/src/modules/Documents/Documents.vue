@@ -300,16 +300,16 @@ const fetchDocuments = async () => {
     await searchDocumentsByKeyWord(searchContent.value)
   } else {
     isLoading.value = true
-    documents.value = await fetchFolderDocuments(
-      props.currentService,
-      props.selectedFolder.id,
-      props.selectedEntity,
-      props.accountId,
-      skip.value,
-      currentPageSize.value,
-      componentSortQueryField.value,
-      docSearchFilters.value,
-    )
+    documents.value = await fetchFolderDocuments({
+      serviceId: props.currentService,
+      folderId: props.selectedFolder.id,
+      entityId: props.selectedEntity,
+      accountId: props.accountId,
+      skip: skip.value,
+      limit: currentPageSize.value,
+      sort: componentSortQueryField.value,
+      filters: docSearchFilters.value,
+    })
 
     // When we delete or move documents we're checking if the response is empty
     // in that case we just fallback to page one
@@ -510,16 +510,16 @@ const searchDocumentsByKeyWord = async (value: string) => {
     return
   }
 
-  documents.value = await fetchDocumentsByKeyWord(
-    props.currentService,
-    props.selectedFolder.id,
-    props.selectedEntity,
-    props.accountId,
-    skip.value,
-    currentPageSize.value,
-    componentSortQueryField.value,
-    value,
-  )
+  documents.value = await fetchDocumentsByKeyWord({
+    serviceId: props.currentService,
+    folderId: props.selectedFolder.id,
+    entityId: props.selectedEntity,
+    accountId: props.accountId,
+    skip: skip.value,
+    limit: currentPageSize.value,
+    sort: componentSortQueryField.value,
+    search: value,
+  })
   isSearchLoading.value = false
   trackDocumentSearch(value)
 }
