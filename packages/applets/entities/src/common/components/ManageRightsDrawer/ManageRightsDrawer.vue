@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import {
   PDrawer,
   PUserCard,
@@ -74,6 +74,7 @@ import { RouterHelpers } from '@pulse/common/helpers'
 import type { PennylaneAvailableRole } from '@pulse/common/types'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { saveUserPermissions, getAdditionalOptionByActionCode, getIsFormValid } from './utils'
+import { refreshPageWhenCurrentUserPermissionChange } from '@entities/composables/permission.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -86,7 +87,6 @@ const emit = defineEmits<{
 }>()
 
 const route = useRoute()
-const router = useRouter()
 const isLoading = ref(false)
 const authorizationsState = ref<Record<string, AuthorizationState>>({})
 
@@ -123,10 +123,7 @@ const handleUpdateUserPermissions = async () => {
     // I added a setTimeout to enhance the user experience (UX)
     setTimeout(() => {
       isManageRightsDrawerVisible.value = false
-      // The page will be reloaded 30ms after the drawer is closed
-      setTimeout(() => {
-        router.go(0)
-      }, 30)
+      refreshPageWhenCurrentUserPermissionChange(props.selectedUser.contactId)
     }, 600)
   }
   displayNotification(

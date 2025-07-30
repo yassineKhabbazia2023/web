@@ -59,7 +59,6 @@
 <script setup lang="ts">
 import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import { computed, ref, onMounted } from 'vue'
 import {
   PDrawer,
@@ -82,13 +81,12 @@ import {
   type CollabRightsDrawerProps,
 } from './CollabRightsDrawerTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
+import { refreshPageWhenCurrentUserPermissionChange } from '@entities/composables/permission.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
-const router = useRouter()
 const emit = defineEmits<{
   'update:modelValue': [boolean]
   'update-collaborator-role': [Contact]
@@ -133,10 +131,7 @@ const handleUpdatePermissions = async () => {
     // I added a setTimeout to enhance the user experience (UX)
     setTimeout(() => {
       isDrawerVisible.value = false
-      // The page will be reloaded 30ms after the drawer is closed
-      setTimeout(() => {
-        router.go(0)
-      }, 30)
+      refreshPageWhenCurrentUserPermissionChange(props.rowData.id)
     }, 600)
     PNotification({
       message: t('modifyRightsSucceeded', {
