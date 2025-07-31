@@ -44,4 +44,8 @@ export class FeatureFlagManager {
 
     return value === 'true'
   }
+
+  static isMailToPennylaneActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.MAIL_TO_PENNYLANE)
+  }
 }

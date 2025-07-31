@@ -5,7 +5,7 @@ export async function copyServiceEmailToClipboard(email: string) {
     await navigator.clipboard.writeText(email)
     PNotification(
       {
-        message: 'L\'e-mail de votre expert a été copié dans votre presse-papier',
+        message: 'L\'e-mail a été copié dans votre presse-papier.',
         iconName: 'check',
         showClose: true,
         customClass: 'success',

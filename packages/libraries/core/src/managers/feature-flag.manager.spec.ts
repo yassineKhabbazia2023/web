@@ -93,4 +93,17 @@ describe('FeatureFlagManager', () => {
         expect(FeatureFlagManager.isPennylaneActionAdditionalInfoActivated()).toBe(expected)
       })
     })
+
+  describe.each(tests)(
+    'isMailToPennylaneActivated',
+    ({
+      value,
+      expected,
+    }) => {
+      it('should return $expected when value is $value', () => {
+        window.EnvVars[Feature.MAIL_TO_PENNYLANE] = value
+        expect(FeatureFlagManager.isMailToPennylaneActivated()).toBe(expected)
+      })
+    })
 })
+

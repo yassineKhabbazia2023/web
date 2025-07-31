@@ -5,6 +5,7 @@ import type { Entity } from '../types'
 export const useSelectedEntityStore = defineStore('selected-entity', () => {
   const selectedEntity = ref<Entity>()
   const selectedEntityId = computed(() => selectedEntity.value?.accountId)
+  const selectedEntityAccountNumber = computed(() => selectedEntity.value?.accountNumber?.toString() ?? '')
 
   function setSelectedEntity(selectedEntityArg?: Entity) {
     selectedEntity.value = selectedEntityArg
@@ -18,6 +19,7 @@ export const useSelectedEntityStore = defineStore('selected-entity', () => {
     selectedEntity,
     selectedEntityId,
     setSelectedEntity,
+    selectedEntityAccountNumber,
     reset,
   }
 })

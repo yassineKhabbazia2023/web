@@ -35,21 +35,10 @@ describe('services service', () => {
 
   })
 
-  it('should not call the fetchServiceMailToGedInformation when the service is read only', async () => {
-    const services = [{
-      ServiceId: '0001',
-      ServiceName: 'Au5',
-      IsReadOnly: true,
-    }]
-
-    await fetchServicesMailToGedInformation(entityId, services, accountId)
-    expect(commonApiGatewayGetSpy).not.toHaveBeenCalled()
-  })
-
   it('should call the fetchServiceMailToGedInformation with appropriate url and parameters for each given service', async () => {
     commonApiGatewayGetSpy
-      .mockResolvedValueOnce({ data: {} })
-      .mockResolvedValueOnce({ data: {} })
+      .mockResolvedValueOnce({ data: [{}] })
+      .mockResolvedValueOnce({ data: [{}] })
 
     const services = [
       {

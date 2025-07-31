@@ -15,7 +15,7 @@ export const invalidWidgetNames = {
   invalidWidget: 'INVALID_WIDGET' as WidgetName,
 }
 
-export const mockWidgetGridDefinitions: Record<WidgetName, WidgetGridDefinition> = {
+export const mockWidgetGridDefinitions: Partial<Record<WidgetName, WidgetGridDefinition>> = {
   [WidgetName.SSO]: { name: WidgetName.SSO },
   [WidgetName.DIGILAB]: { name: WidgetName.DIGILAB },
   [WidgetName.PENNYLANE_INTRO]: { name: WidgetName.PENNYLANE_INTRO },

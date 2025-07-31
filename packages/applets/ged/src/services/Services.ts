@@ -17,31 +17,28 @@ export async function fetchServiceMailToGedInformation(
   entityId: Service['ServiceId'],
   service: Service,
   accountId: number,
-): Promise<AxiosResponse<ServiceMailToGedInformation>> {
+): Promise<AxiosResponse<ServiceMailToGedInformation[]>> {
   return await commonApi().gateway.get(`/ged/api/${service.ServiceId}/${entityId}/mail2ged/informations`, {
     headers: { 'Account-Id': accountId },
   })
 }
+
 export async function fetchServicesMailToGedInformation(
   entityId: Service['ServiceId'],
   entityServices: Service[],
   accountId: number,
-) {
-  const mailToGedCallsByUniverse =
-    entityServices
-      .filter(service => service.IsReadOnly === false)
-      .map((service) => {
-        return fetchServiceMailToGedInformation(entityId, service, accountId)
-      })
-
-  const promisesResult = await Promise.allSettled(mailToGedCallsByUniverse)
+): Promise<ServiceMailToGedInformation[]> {
   const result: ServiceMailToGedInformation[] = []
 
-  promisesResult.forEach(promise => {
-    if (promise.status === 'fulfilled') {
-      result.push(promise.value.data)
+  for (const service of entityServices) {
+    const response = await fetchServiceMailToGedInformation(entityId, service, accountId)
+
+    if (!response?.data?.length) {
+      continue
     }
-  })
+
+    result.push(...response.data)
+  }
 
   return result
 }

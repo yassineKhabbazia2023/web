@@ -30,7 +30,7 @@ describe('service email information line', () => {
     expect(mockClipboardWriteText).toHaveBeenCalledWith(email)
 
     expect(PNotification).toHaveBeenCalledWith({
-      message: 'L\'e-mail de votre expert a été copié dans votre presse-papier',
+      message: 'L\'e-mail a été copié dans votre presse-papier.',
       iconName: 'check',
       showClose: true,
       customClass: 'success',
