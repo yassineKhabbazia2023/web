@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, computed } from 'vue'
+import { ref, watchEffect, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
@@ -63,6 +63,7 @@ import { PMenuItem, PMenu } from '@pulse/styleguide/components'
 import { PERMISSION_ACCOUNT, PERMISSION_GLOBAL } from '@pulse/common/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 import type { IconName } from '@pulse/styleguide/types'
+import { usePermissionsStore } from '@pulse/common/stores'
 
 const route = useRoute()
 const { t } = useI18n({
@@ -118,7 +119,7 @@ const folderOrEntityMenuItem = computed<MenuItem | null>(() => {
     display: menuItem.display, title, iconLeftName: 'building' } : null
 })
 
-const menuItems = computed<MenuItem[]>(() => {
+const getMenuItems = () => {
   const list: MenuItem[] = [
     {
       title: t('biReports'),
@@ -152,6 +153,14 @@ const menuItems = computed<MenuItem[]>(() => {
     },
   ]
   return list.filter(({ display }) => display)
+}
+
+const menuItemsRef = ref(getMenuItems())
+const menuItems = computed({
+  get: () => menuItemsRef.value,
+  set: (newVal) => {
+    menuItemsRef.value = newVal
+  },
 })
 
 const logAmplitudeEvent = (featureName: string) => {
@@ -164,12 +173,24 @@ watchEffect(() => {
   activeMenuItem.value = route.path
   isEntityOrFolderPath.value = ['gestion-utilisateurs', 'collaborateurs', 'offres', 'informations', 'historique-delegations'].some((path) => route.fullPath.includes(path))
 })
-
-watchEffect(async () => {
+const setMenuItem = async () => {
   if(CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.POWERBI_REPORT)) {
     const { totalItems } = await fetchBIReports(props.selectedEntityId)
     hasBIReports.value = totalItems > 0
+  } else {
+    hasBIReports.value = false
   }
+  menuItems.value = getMenuItems()
+}
+
+const permissionsStore = usePermissionsStore()
+watch(() => permissionsStore.selectedEntityPermissions, async () => {
+  setMenuItem()
+})
+
+onMounted(async () => {
+  // get menu item first time when loaded page
+  setMenuItem()
 })
 </script>
 

@@ -45,7 +45,7 @@
         <PLoader pType="primary" pSize="50" />
       </div>
 
-      <div v-if="!state.isLoading">
+      <div v-show="state.isLoading === false">
         <TableData
           v-if="state.data.length"
           :data="state.data"
@@ -53,6 +53,7 @@
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
           @remove-user="handleRemoveUser"
+          @sort-user="handleSortUser"
         />
 
         <NoResult v-if="state.data.length === 0" />
@@ -125,6 +126,7 @@ import { fetchAccountContacts, fetchCustomers } from '@entities/services/wallet'
 import { storeToRefs } from 'pinia'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { ContactType } from '@pulse/common/enums'
+import type { SortingCriteria } from '@pulse/common/types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -141,6 +143,10 @@ const state: State = reactive({
   totalPages: undefined,
   totalItems: undefined,
   search: undefined,
+  sorting: {
+    descending: false,
+    field: undefined,
+  },
   isLoading: true,
   isDrawerViewDetailsOpened: false,
   isManageRightsDrawerOpened: false,
@@ -192,6 +198,8 @@ function getQueryParams(type: string | undefined) {
     pageNumber: state.currentPage,
     pageSize: state.limit,
     search: state.search,
+    'sorting.field': state.sorting.field,
+    'sorting.descending': state.sorting.descending,
     Type: type,
   }
 }
@@ -241,6 +249,11 @@ const handleRemoveUser = (row: any) => {
   state.isRemoveUserDialogOpened = true
 }
 
+const handleSortUser = (param: SortingCriteria) => {
+  state.sorting.descending = param.descending
+  state.sorting.field = param.field
+}
+
 const selectedEntityStore = useSelectedEntityStore()
 const { selectedEntity } = storeToRefs(selectedEntityStore)
 
@@ -269,6 +282,8 @@ watch(
     state.currentPage,
     state.limit,
     state.search,
+    state.sorting.field,
+    state.sorting.descending,
   ],
   async () => {
     await fetchUsers()

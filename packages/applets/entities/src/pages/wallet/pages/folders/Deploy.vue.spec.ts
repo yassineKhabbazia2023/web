@@ -254,6 +254,10 @@ describe('deploy', () => {
       isFavoriteFilter: false,
       limit: 15,
       search: SEARCH_VALUE,
+      sorting: {
+        descending: false,
+        field: '',
+      },
     })
 
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
@@ -455,6 +459,10 @@ describe('deploy', () => {
       isFavoriteFilter: false,
       limit: 15,
       search: expectedSearchValue,
+      sorting: {
+        descending: false,
+        field: '',
+      },
     })
     expect(mockFetchWalletData).toHaveBeenCalledTimes(1)
     expect(mockFetchWalletData).toHaveBeenNthCalledWith(
@@ -621,6 +629,10 @@ describe('deploy', () => {
         isFavoriteFilter: false,
         limit: 15,
         search: '',
+        sorting: {
+          descending: false,
+          field: '',
+        },
       })
       await nextTick()
 
@@ -675,6 +687,10 @@ describe('deploy', () => {
         isFavoriteFilter: false,
         limit: 15,
         search: '',
+        sorting: {
+          descending: false,
+          field: '',
+        },
       })
 
       // Assert: fetchAccountList() called again after clearing

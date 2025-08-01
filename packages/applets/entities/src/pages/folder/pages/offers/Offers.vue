@@ -37,7 +37,6 @@
       <PTableColumn
         :pLabel="t('offer')"
         pWidth="480px"
-        pSortable
       >
         <template #default="{ row: { offer: offerActivation } }">
           <div class="flex">
@@ -52,7 +51,7 @@
           </div>
         </template>
       </PTableColumn>
-      <PTableColumn :pLabel="t('status')" pSortable>
+      <PTableColumn :pLabel="t('status')">
         <template #default="{ row: { status: offerActivationStatus } }">
           <OfferActivationStatus
             v-if="user"
@@ -157,6 +156,8 @@ async function loadOffers() {
     const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
     // entityId can't be null here, so we use non-null assertion
     activeOffers.value = await fetchAccountSubscriptions(entityId!)
+    // sort offer by offer status by default
+    activeOffers.value = activeOffers.value.sort((a, b) => a.status.localeCompare(b.status))
   } catch (error) {
     logger.error('fetching account subscriptions', error)
   } finally {

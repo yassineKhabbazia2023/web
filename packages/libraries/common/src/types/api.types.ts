@@ -11,3 +11,8 @@ export interface QueryResult<T> {
   totalItems: number
   totalPage: number
 }
+
+export interface SortingCriteria {
+  field?: string
+  descending: boolean
+}

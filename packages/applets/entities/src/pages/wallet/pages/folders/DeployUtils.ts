@@ -10,6 +10,8 @@ export function getQueryParams(searchCriteria: SearchCriteria): FilterQueryParam
     pageNumber: searchCriteria.currentPage,
     pageSize: searchCriteria.limit,
     search: searchCriteria.search,
+    'sorting.field': searchCriteria.sorting?.field,
+    'sorting.descending': searchCriteria.sorting?.descending,
     accountNumber: searchCriteria.accountNumber,
     deploymentStatus: searchCriteria.filterByDeploymentStatus,
     isFavoriteFilter: searchCriteria.isFavoriteFilter,

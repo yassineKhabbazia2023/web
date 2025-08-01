@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { UserEntityPermissions } from '@pulse/common/enums'
+import { fetchUserPermissions, fetchUserAccountPermissions } from '@pulse/common/services/permissions'
 
 export const usePermissionsStore = defineStore('permissions', () => {
   const userPermissions = ref<string[]>([])
@@ -25,6 +26,14 @@ export const usePermissionsStore = defineStore('permissions', () => {
     )
   }
 
+  async function updateUserPermission() {
+    userPermissions.value = await fetchUserPermissions()
+  }
+
+  async function updateSelectedEntityPermissions(accountId: number) {
+    selectedEntityPermissions.value = await fetchUserAccountPermissions(accountId)
+  }
+
   return {
     userPermissions,
     selectedEntityPermissions,
@@ -32,5 +41,7 @@ export const usePermissionsStore = defineStore('permissions', () => {
     setSelectedEntityPermissions,
     reset,
     getHasPennylanePermission,
+    updateUserPermission,
+    updateSelectedEntityPermissions,
   }
 })

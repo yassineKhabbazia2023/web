@@ -21,13 +21,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { useUserStore } from '@pulse/common/stores'
+import { usePermissionsStore, useUserStore } from '@pulse/common/stores'
 import { getTabs } from './Wallet.utils'
 import { WalletTab } from './Wallet.enums'
 import { WALLET_TAB_ROUTES } from './Wallet.const'
@@ -60,8 +60,6 @@ const tabLabels: Record<WalletTab, string> = {
   [WalletTab.SUBSCRIPTIONS]: t('subscriptions'),
 }
 
-const tabs = computed(() => getTabs(tabLabels, isCollab.value ?? false))
-
 const handleTabClick = (tab: TabsPaneContext) => {
   const walletTab = tab.paneName as WalletTab
   const name = WALLET_TAB_ROUTES[walletTab]
@@ -73,6 +71,19 @@ const handleTabClick = (tab: TabsPaneContext) => {
     router.push({ name })
   }
 }
+
+const tabsRef = ref(getTabs(tabLabels, isCollab.value ?? false))
+const tabs = computed({
+  get: () => tabsRef.value,
+  set: (newVal) => {
+    tabsRef.value = newVal
+  },
+})
+
+const permissionsStore = usePermissionsStore()
+watch(() => permissionsStore.userPermissions, async () => {
+  tabs.value = getTabs(tabLabels, isCollab.value ?? false)
+})
 </script>
 
 <i18n lang="yaml">

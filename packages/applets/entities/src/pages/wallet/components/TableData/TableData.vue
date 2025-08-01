@@ -8,6 +8,7 @@
     pStripe
     tableLayout="fixed"
     class="wallet-table"
+    @sort-change="handleSort"
   >
     <PTableColumn
       v-if="!isAccountManagement"
@@ -31,8 +32,9 @@
     </PTableColumn>
     <PTableColumn
       :pLabel="t('companyName')"
-      pProp="name"
-      pSortable
+      pProp="companyName"
+      pSortable="custom"
+      :pSortOrders="SORT_ORDER"
       pMinWidth="120px"
     >
       <template #default="scope">
@@ -62,13 +64,21 @@
     </PTableColumn>
     <PTableColumn
       :pLabel="t('customerCode')"
-      pProp="accountNumber"
-      pSortable
-    />
+      pProp="customerCode"
+      pSortable="custom"
+      :pSortOrders="SORT_ORDER"
+    >
+      <template #default="scope">
+        <p class="overflow-hidden text-overflow--ellipsis">
+          {{ scope.row.accountNumber }}
+        </p>
+      </template>
+    </PTableColumn>
     <PTableColumn
       :pLabel="t('leader')"
-      pProp="owner.lastName"
-      pSortable
+      pProp="leader"
+      pSortable="custom"
+      :pSortOrders="SORT_ORDER"
     >
       <template #default="scope">
         <div class="flex flex--align-items-center overflow-hidden">
@@ -91,8 +101,9 @@
     </PTableColumn>
     <PTableColumn
       :pLabel="t('email')"
-      pProp="owner.email"
-      pSortable
+      pProp="email"
+      pSortable="custom"
+      :pSortOrders="SORT_ORDER"
     >
       <template #default="scope">
         <p class="overflow-hidden text-overflow--ellipsis">
@@ -103,7 +114,8 @@
     <PTableColumn
       :pLabel="t('city')"
       pProp="city"
-      pSortable
+      pSortable="custom"
+      :pSortOrders="SORT_ORDER"
     >
       <template #default="scope">
         <p class="text-capitalize overflow-hidden text-overflow--ellipsis">
@@ -116,6 +128,7 @@
         :pLabel="t('status')"
         pProp="deploymentStatus.text"
         pSortable
+        :pSortOrders="SORT_ORDER"
       >
         <template #default="scope">
           <PTag
@@ -189,9 +202,12 @@ import { AvatarRoles } from '@pulse/styleguide'
 import type { AccessibleMenuItem, AccountRow } from '@entities/common/types'
 import { filterAccessibleMenuItems } from '@entities/common/utils'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
-import { PERMISSION_ACTION, PERMISSION_GLOBAL } from '@pulse/common/constants'
+import { PERMISSION_ACTION, PERMISSION_GLOBAL, SORT_ORDER } from '@pulse/common/constants'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
+import type { SortChangeEventData, SortingCriteria } from '@pulse/common/types'
+import { SortDirection } from '@pulse/common/enums'
+
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -285,7 +301,15 @@ const emit = defineEmits<{
   displayAccountRightsDrawer: [AccountRow]
   displayResendActivationEmailDrawer: [AccountRow]
   displayDeclareCustomerRelationDrawer: [AccountRow]
+  'sort-account': [SortingCriteria]
 }>()
+
+const handleSort = (data: SortChangeEventData) => {
+  emit('sort-account', {
+    field: data.prop,
+    descending: data.order === SortDirection.DESCENDING,
+  })
+}
 
 const isToolboxDisabled = computed(() => {
   return props.isAccountManagement && accountManagementMenu.length === 0

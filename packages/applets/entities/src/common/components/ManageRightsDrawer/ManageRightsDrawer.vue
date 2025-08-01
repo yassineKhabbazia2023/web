@@ -121,7 +121,7 @@ const handleUpdateUserPermissions = async () => {
 
   if (isSuccess === true) {
     // I added a setTimeout to enhance the user experience (UX)
-    setTimeout(() => {
+    setTimeout(async () => {
       isManageRightsDrawerVisible.value = false
       refreshPageWhenCurrentUserPermissionChange(props.selectedUser.contactId)
     }, 600)

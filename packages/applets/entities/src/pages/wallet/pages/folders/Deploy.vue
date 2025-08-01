@@ -120,7 +120,7 @@
     >
       <PLoader pType="primary" pSize="50" />
     </div>
-    <div v-else>
+    <div v-show="isLoading === false">
       <NoResult v-if="searchResult.items.length === 0" />
       <TableData
         v-if="searchResult.items.length > 0"
@@ -132,6 +132,7 @@
         @selected-folder="onSelectedFolder"
         @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
         @display-declare-customer-relation-drawer="handleDeclareCustomerRelationDrawer"
+        @sort-account="handleSortAccount"
       />
       <PPagination
         v-model:p-page-size="searchCriteria.limit"
@@ -202,7 +203,7 @@ import {
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager } from '@pulse/common/managers'
-import type { Entity } from '@pulse/common/types'
+import type { Entity, SortingCriteria } from '@pulse/common/types'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import NoResult from '@entities/common/components/NoResult'
@@ -362,6 +363,10 @@ const searchCriteria = ref<SearchCriteria>({
   currentPage: 0,
   limit: PAGE_SIZES[0],
   search: '',
+  sorting: {
+    field: '',
+    descending: false,
+  },
   filterByDeploymentStatus: '',
   isFavoriteFilter: false,
   isCustomerRelationFilter: false,
@@ -550,6 +555,13 @@ const onSelectedFolder = (newSelectedFolder: SelectedFolder) => {
     hasAlreadySelectedSameFolder()
       ? selectedFolders.value.filter((selectedFolder: SelectedFolder) => selectedFolder.id !== newSelectedFolder.id)
       : [...selectedFolders.value, newSelectedFolder]
+}
+
+const handleSortAccount = (param: SortingCriteria) => {
+  if (searchCriteria.value.sorting !== undefined) {
+    searchCriteria.value.sorting.descending = param.descending
+    searchCriteria.value.sorting.field = param.field
+  }
 }
 
 defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerVisible, selectedAccount })

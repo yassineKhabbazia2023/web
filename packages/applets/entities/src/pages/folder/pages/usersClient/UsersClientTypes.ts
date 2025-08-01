@@ -20,6 +20,10 @@ export interface State {
   totalPages: number | undefined
   totalItems: number | undefined
   search: string | undefined
+  sorting: {
+    field?: string
+    descending: boolean
+  }
   isLoading: boolean
   isDrawerViewDetailsOpened: boolean
   isManageRightsDrawerOpened: boolean

@@ -129,7 +129,7 @@ const handleUpdatePermissions = async () => {
     const permissionsCodes = getPermissionCodes(authorizationsState.value)
     await updateUserPermissions(props.rowData.id, null, permissionsCodes)
     // I added a setTimeout to enhance the user experience (UX)
-    setTimeout(() => {
+    setTimeout(async () => {
       isDrawerVisible.value = false
       refreshPageWhenCurrentUserPermissionChange(props.rowData.id)
     }, 600)

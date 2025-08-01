@@ -6,11 +6,13 @@
       pStripe
       tableLayout="fixed"
       @selection-change="handleSelectUser"
+      @sort-change="handleSort"
     >
       <PTableColumn
         :pLabel="t('user')"
-        pProp="initials"
-        pSortable
+        pProp="name"
+        pSortable="custom"
+        :pSortOrders="SORT_ORDER"
       >
         <template #default="scope">
           <div class="flex flex--align-items-center">
@@ -42,13 +44,15 @@
       <PTableColumn
         :pLabel="t('email')"
         pProp="email"
-        pSortable
+        pSortable="custom"
+        :pSortOrders="SORT_ORDER"
       />
       <template v-if="!isAccountManagement">
         <PTableColumn
           :pLabel="t('dateAdded')"
           pProp="creationDate"
-          pSortable
+          pSortable="custom"
+          :pSortOrders="SORT_ORDER"
         >
           <template #default="scope">
             {{ d(scope.row.creationDate, 'short') }}
@@ -117,9 +121,11 @@ import { CurrentUserManager } from '@pulse/common/managers'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
-import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { PERMISSION_ACTION, SORT_ORDER } from '@pulse/common/constants'
 import type { ExtendedUser } from '../../UsersClientTypes'
 import { userActions } from './types'
+import type { SortChangeEventData, SortingCriteria } from '@pulse/common/types'
+import { SortDirection } from '@pulse/common/enums'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -133,6 +139,7 @@ const emit = defineEmits<{
   'display-manage-rights': [number]
   'remove-user': [ExtendedUser]
   'select-user': [number[]]
+  'sort-user': [SortingCriteria]
 }>()
 
 const {
@@ -191,6 +198,13 @@ const handleToolboxItemClick = (action: string, row: any) => {
 }
 const handleSelectUser = (users: ExtendedUser[]) => {
   emit('select-user', users.map((user) => user.contactId))
+}
+
+const handleSort = (data: SortChangeEventData) => {
+  emit('sort-user', {
+    field: data.prop,
+    descending: data.order === SortDirection.DESCENDING,
+  })
 }
 </script>
 
