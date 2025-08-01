@@ -1,50 +1,53 @@
-import type { CatalogTagStyle } from '@offers-catalog/types/offers-catalog.types'
+import type { PTagProps } from '@pulse/styleguide/types'
 
-export const DEFAULT_TAG_STYLE: CatalogTagStyle = 'style1'
+export const DEFAULT_TAG_PROPS: Omit<PTagProps, 'pContent'> = {
+  pColor: 'info',
+  pEffect: 'light',
+}
 
 export const CATALOG_TAG_STYLES: {
     tagLabel: string
-    tagStyle: CatalogTagStyle
+    tagProps: Omit<PTagProps, 'pContent'>
 }[] = [{
   tagLabel: 'Gérer',
-  tagStyle: 'style1',
+  tagProps: { pColor: 'info', pEffect: 'light' },
 }, {
   tagLabel: 'ERC',
-  tagStyle: 'style1',
+  tagProps: { pColor: 'info', pEffect: 'light' },
 }, {
   tagLabel: 'Pack',
-  tagStyle: 'style2',
+  tagProps: { pColor: 'amethyste', pEffect: 'light' },
 }, {
   tagLabel: 'Développer',
-  tagStyle: 'style3',
+  tagProps: { pColor: 'fuschia', pEffect: 'light' },
 }, {
   tagLabel: 'Transmettre',
-  tagStyle: 'style4',
+  tagProps: { pColor: 'cyan', pEffect: 'light' },
 }, {
   tagLabel: 'Conseil Patrimonial',
-  tagStyle: 'style5',
+  tagProps: { pColor: 'warning', pEffect: 'light' },
 }, {
   tagLabel: 'Gestion Privée',
-  tagStyle: 'style6',
+  tagProps: { pColor: 'success', pEffect: 'light' },
 }, {
   tagLabel: 'ESC',
-  tagStyle: 'style4',
+  tagProps: { pColor: 'cyan', pEffect: 'light' },
 }, {
   tagLabel: 'Conseil',
-  tagStyle: 'style3',
+  tagProps: { pColor: 'fuschia', pEffect: 'light' },
 }, {
   tagLabel: 'Gestion sociale',
-  tagStyle: 'style5',
+  tagProps: { pColor: 'warning', pEffect: 'light' },
 }, {
   tagLabel: 'Transverse',
-  tagStyle: 'style7',
+  tagProps: { pColor: 'warning', pEffect: 'light' },
 }, {
   tagLabel: 'Avocats',
-  tagStyle: 'style6',
+  tagProps: { pColor: 'success', pEffect: 'light' },
 }, {
   tagLabel: 'Filiale Gestion Privée',
-  tagStyle: 'style2',
+  tagProps: { pColor: 'amethyste', pEffect: 'light' },
 }, {
   tagLabel: 'Partenariat',
-  tagStyle: 'style3',
+  tagProps: { pColor: 'fuschia', pEffect: 'light' },
 }]

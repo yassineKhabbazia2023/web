@@ -1,8 +1,8 @@
-import { DEFAULT_TAG_STYLE, CATALOG_TAG_STYLES } from '../const/offers-catalog.const'
+import { DEFAULT_TAG_PROPS, CATALOG_TAG_STYLES } from '../const/offers-catalog.const'
 import { loggerMock } from '@pulse/core/mocks'
 import { getOfferMock, getOffersMock } from '../mocks/offers-catalog.service.mocks'
 
-import { getCatalogTagStyle, getOfferSearchTerms, getOffersWithSearchTerms } from './offers-catalog.utils'
+import { getCatalogTagProps, getOfferSearchTerms, getOffersWithSearchTerms } from './offers-catalog.utils'
 
 const offersMock = getOffersMock()
 
@@ -11,27 +11,27 @@ vi.mock('@pulse/core', () => ({
 }))
 
 describe('offers-catalog.utils', () => {
-  describe('getCatalogTagStyle', () => {
-    it('should return proper style when tag label is known', () => {
+  describe('getCatalogTagProps', () => {
+    it('should return proper props when tag label is known', () => {
       const tagLabel = CATALOG_TAG_STYLES[0].tagLabel
-      const expectedCatalogTagStyle = CATALOG_TAG_STYLES[0].tagStyle
+      const expectedCatalogTagProps = CATALOG_TAG_STYLES[0].tagProps
 
-      const catalogTagStyle = getCatalogTagStyle(tagLabel)
+      const catalogTagProps = getCatalogTagProps(tagLabel)
 
       expect(loggerMock.error).not.toHaveBeenCalled()
-      expect(catalogTagStyle).toBe(expectedCatalogTagStyle)
+      expect(catalogTagProps).toEqual(expectedCatalogTagProps)
     })
 
-    it('should return default style when tag label is unknown', () => {
+    it('should return default props when tag label is unknown', () => {
       const tagLabel = 'unknown'
-      const catalogTagStyle = getCatalogTagStyle(tagLabel)
+      const catalogTagProps = getCatalogTagProps(tagLabel)
 
-      const expectedCatalogTagStyle = DEFAULT_TAG_STYLE
-      const expectedParameters = `style not found for label '${tagLabel}'`
+      const expectedCatalogTagProps = DEFAULT_TAG_PROPS
+      const expectedParameters = `tag props not found for label '${tagLabel}'`
 
       expect(loggerMock.error).toHaveBeenCalledOnce()
       expect(loggerMock.error).toHaveBeenCalledWith(expectedParameters)
-      expect(catalogTagStyle).toBe(expectedCatalogTagStyle)
+      expect(catalogTagProps).toEqual(expectedCatalogTagProps)
     })
   })
 

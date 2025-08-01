@@ -25,11 +25,11 @@
         flex-gap--3
       "
     >
-      <CatalogTag
-        v-for="({ tagLabel, tagStyle }, index) in internalTags"
+      <PTag
+        v-for="({ tagLabel, tagProps }, index) in internalTags"
         :key="index"
-        :tagLabel="tagLabel"
-        :tagStyle="tagStyle"
+        :pContent="tagLabel"
+        v-bind="tagProps"
       />
     </li>
   </ul>
@@ -38,8 +38,8 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import type { CatalogCardProps } from './catalog-card.types'
-import { getCatalogTagStyle } from '../../utils/offers-catalog.utils'
-import CatalogTag from '../../components/catalog-tag/catalog-tag.vue'
+import { getCatalogTagProps } from '../../utils/offers-catalog.utils'
+import { PTag } from '@pulse/styleguide/components'
 
 const MAX_SUBTITLE_LENGTH = 100
 const ELLIPSIS = '…'
@@ -49,7 +49,7 @@ const props = defineProps<CatalogCardProps>()
 const internalTags = computed(() => {
   return props.tags.map((tag) => ({
     tagLabel: tag,
-    tagStyle: getCatalogTagStyle(tag),
+    tagProps: getCatalogTagProps(tag),
   }))
 })
 

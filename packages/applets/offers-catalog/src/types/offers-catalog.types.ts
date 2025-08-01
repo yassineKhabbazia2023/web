@@ -64,12 +64,3 @@ export interface CatalogCard {
   subtitle: string
   tags: string[]
 }
-
-export type CatalogTagStyle =
-  'style1' |
-  'style2' |
-  'style3' |
-  'style4' |
-  'style5' |
-  'style6' |
-  'style7'
