@@ -1,5 +1,6 @@
 import type { Router, RouteRecordRaw } from 'vue-router'
 import { APP_ROUTES } from '../../constants/app.routes'
+import { RouteName } from '../../enums/route-name.enums'
 import { logger } from '@pulse/core'
 
 export class RoutesManager {
@@ -32,6 +33,38 @@ export class RoutesManager {
 
     routesToAdd.forEach(routeToAdd =>
       router.addRoute(APP_ROUTES.authenticated.name, routeToAdd),
+    )
+  }
+
+  /**
+   * Add the given routes to the entity workspace.
+   *
+   * @param router - The vue-router instance.
+   * @param routesToAdd - An array of routes to add.
+   */
+  static addRoutesToEntity(router: Router, routesToAdd: RouteRecordRaw[]) {
+    if (!this.isRouteAvailable(router, APP_ROUTES.entity.root.name)) {
+      return
+    }
+
+    routesToAdd.forEach(routeToAdd =>
+      router.addRoute(APP_ROUTES.entity.root.name, routeToAdd),
+    )
+  }
+
+  /**
+   * Add the given routes to the wallet workspace.
+   *
+   * @param router - The vue-router instance.
+   * @param routesToAdd - An array of routes to add.
+   */
+  static addRoutesToWallet(router: Router, routesToAdd: RouteRecordRaw[]) {
+    if (!this.isRouteAvailable(router, RouteName.WALLET)) { // TODO to be replaced with APP_ROUTES.wallet.root.name when available
+      return
+    }
+
+    routesToAdd.forEach(routeToAdd =>
+      router.addRoute(RouteName.WALLET, routeToAdd),
     )
   }
 

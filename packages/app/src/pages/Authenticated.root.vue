@@ -6,6 +6,7 @@
 <script lang="ts" setup>
 import { ref, onBeforeMount, onBeforeUnmount } from 'vue'
 import { logger } from '@pulse/core'
+import { RouteName } from '@pulse/common/enums'
 import { AuthenticatedFlowManager } from '@app/managers/authenticated.flow.manager'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import type { RouteLocationNormalizedGeneric } from 'vue-router'
@@ -22,7 +23,7 @@ const checkRedirections = async (currentRoute: RouteLocationNormalizedGeneric) =
     return router.push(cguRedirection)
   }
 
-  if(AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot(currentRoute.name as string)) {
+  if (AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot(currentRoute.name as RouteName)) {
     const redirection = AuthenticatedFlowManager.getLandingPage()
 
     if(redirection && currentRoute.name !== redirection.name) {
@@ -30,7 +31,7 @@ const checkRedirections = async (currentRoute: RouteLocationNormalizedGeneric) =
     }
   }
 
-  if(AuthenticatedFlowManager.isNavigatingToCustomerWallet(currentRoute.name as string)) {
+  if (AuthenticatedFlowManager.isNavigatingToCustomerWallet(currentRoute.name as RouteName)) {
     const redirection = AuthenticatedFlowManager.getCustomerLandingPage()
 
     if(redirection && currentRoute.name !== redirection.name) {

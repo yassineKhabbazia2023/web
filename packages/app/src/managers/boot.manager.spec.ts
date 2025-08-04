@@ -9,6 +9,8 @@ vi.mock('@pulse/core', () => ({
   logger: loggerMock,
   FeatureFlagManager: featureFlagManagerMock,
 }))
+vi.mock('@pulse/common/services/amplitude')
+vi.mock('@pulse/common/managers')
 
 describe('BootManager', () => {
   describe('getDefaultRedirection', () => {

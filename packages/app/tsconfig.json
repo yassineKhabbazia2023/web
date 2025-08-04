@@ -46,6 +46,9 @@
       ],
       "@offers-catalog/*": [
         "../applets/offers-catalog/src/*"
+      ],
+      "@powerbi/*": [
+        "../applets/powerbi/src/*"
       ]
     },
     "types": [

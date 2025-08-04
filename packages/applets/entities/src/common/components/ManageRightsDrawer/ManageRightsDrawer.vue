@@ -62,7 +62,7 @@ import {
   PButton,
   PLoader,
 } from '@pulse/styleguide/components'
-import { displayNotification } from '@entities/common/utils'
+import { displayNotification } from '@pulse/styleguide'
 import type {
   ManageRightsDrawerProps,
   AuthorizationState,

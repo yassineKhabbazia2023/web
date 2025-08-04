@@ -68,7 +68,7 @@ import ReportTable from './components/ReportTable'
 import { getMappedReport, getReportsQueryParams } from './utils'
 import { SearchResult } from '../../types'
 import { fetchAvailableReports, fetchBIToken, updateReportStatus } from '@entities/services/reporting'
-import { displayNotification } from '@entities/common/utils'
+import { displayNotification } from '@pulse/styleguide'
 import PowerBIReportViewer from '@entities/common/components/PowerBIReportViewer'
 
 const { t } = useI18n({

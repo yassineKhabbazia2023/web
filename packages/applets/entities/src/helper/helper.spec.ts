@@ -6,7 +6,6 @@ import {
   removeFalsyValues,
   getPaginationLabel,
   returnSortQueryField,
-  getMostRecentDate,
 } from './helper'
 import type { PaginationData } from './helperTypes'
 
@@ -121,32 +120,5 @@ describe('getPaginationLabel', () => {
         expect(actualResult).toBe(expectedResult)
       },
     )
-  })
-})
-
-describe('getMostRecentDate', () => {
-  it.each([
-    ['2025-04-10', '2025-04-22', '2025-04-22'],
-    ['2025-06-01', '2025-05-01', '2025-06-01'],
-    ['2025-04-22', '2025-04-22', '2025-04-22'],
-  ])('should return the more recent date between "%s" and "%s"', (date1, date2, expected) => {
-    expect(getMostRecentDate(date1, date2)).toBe(expected)
-  })
-
-  it.each([
-    ['invalid-date', '2025-04-22', '2025-04-22'],
-    ['2025-04-10', 'bad-date', '2025-04-10'],
-  ])('should return the valid date when only one is valid: "%s" and "%s"', (date1, date2, expected) => {
-    expect(getMostRecentDate(date1, date2)).toBe(expected)
-  })
-
-  it.each([
-    ['foo', 'bar'],
-    ['not-a-date', 'still-not-a-date'],
-    [undefined, 'bar'],
-    ['foo', undefined],
-    [undefined, undefined],
-  ])('should return undefined when both dates are invalid: "%s" and "%s"', (date1, date2) => {
-    expect(getMostRecentDate(date1, date2)).toBeUndefined()
   })
 })

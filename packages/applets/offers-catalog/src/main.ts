@@ -1,6 +1,7 @@
 import type { App } from 'vue'
 import { RouteName } from '@pulse/common/enums'
 import { FEATURE_FLAG_META } from '@pulse/common/constants'
+import { RoutesManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/core/enums'
 
 const offersCatalogRoute = {
@@ -16,9 +17,6 @@ export default {
   install(_app: App, options: any) {
     const { router } = options
 
-    if (router.hasRoute(RouteName.WALLET)) {
-      // Register the route inside wallet if it exists
-      router.addRoute(RouteName.WALLET, offersCatalogRoute)
-    }
+    RoutesManager.addRoutesToWallet(router, [offersCatalogRoute])
   },
 }

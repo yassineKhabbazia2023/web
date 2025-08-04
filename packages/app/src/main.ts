@@ -7,6 +7,7 @@ import launcherApplet from '@pulse/launcher'
 import loginApplet from '@pulse/login'
 import mandateApplet from '@pulse/mandate'
 import offersCatalogApplet from '@pulse/offers-catalog'
+import powerBiApplet from '@pulse/powerbi'
 import commonLibrary from '@pulse/common'
 import { i18n } from '@pulse/common/i18n'
 import styleguideLibrary from '@pulse/styleguide'
@@ -16,7 +17,7 @@ import productFruitsPlugin from '@app/plugins/ProductFruits/productFruits.plugin
 import hubspotPlugin from '@app/plugins/Hubspot/hubspot.plugin'
 
 import App from './app/App.vue'
-import router from './router'
+import router from './router/app.router'
 
 import frFR from './i18n/fr-FR.json'
 import enUS from './i18n/en-US.json'
@@ -54,6 +55,7 @@ const app = createApp(App)
   .use(loginApplet, { router })
   .use(mandateApplet, { router })
   .use(offersCatalogApplet, { router })
+  .use(powerBiApplet, { router })
   // install library
   .use(styleguideLibrary, {
     assetsBaseUrl: VITE_ASSETS_BASE_URL,

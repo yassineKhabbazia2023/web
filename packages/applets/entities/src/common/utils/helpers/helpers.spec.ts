@@ -1,7 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import type { AccessibleMenuItem } from '@entities/common/types'
 import {
-  displayNotification,
   filterAccessibleMenuItems,
   getFullName,
   getFullNameWithUppercaseLastName,
@@ -73,26 +72,6 @@ describe('getFullNameWithUppercaseLastName', () => {
       expect(fullName).toBe(expected)
     },
   )
-})
-describe('displayNotification', () => {
-  it.each([
-    ['success', 'check'],
-    ['error', 'x'],
-  ])('should display correctly the notification', (type: any, iconName) => {
-    const expectedParams = {
-      customClass: type,
-      duration: 3000,
-      iconName,
-      message: 'Test Message',
-      position: 'bottom-right',
-      showClose: true,
-    }
-
-    displayNotification(type, 'Test Message')
-
-    expect(PNotificationMocked).toHaveBeenCalledOnce()
-    expect(PNotificationMocked).toHaveBeenNthCalledWith(1, expectedParams)
-  })
 })
 describe('filterAccessibleMenuItems', () => {
   it('should return only the menu items that the user has access to', () => {

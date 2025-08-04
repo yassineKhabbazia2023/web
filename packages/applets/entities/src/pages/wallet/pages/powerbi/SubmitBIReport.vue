@@ -83,7 +83,7 @@ import BIReportSubmitted from './components/BIReportSubmitted'
 import BIReportInformation from './components/BIReportInformation'
 import { fetchBIReportTypes, uploadBIreport } from '@entities/services/reporting'
 import type { ReportInfo } from './SubmitBIReportTypes'
-import { displayNotification } from '@entities/common/utils'
+import { displayNotification } from '@pulse/styleguide'
 import type { ReportType } from '@entities/common/types/BIReportsTypes'
 
 const { t } = useI18n({

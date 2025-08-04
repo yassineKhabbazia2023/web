@@ -1,14 +1,14 @@
 import type { App } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
 import { RoutesManager } from '@pulse/common/managers'
-import { IS_UNITARY_VIEW_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { APP_ROUTES, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 import EmailPnlWidget from '@ged/widgets/email-pennylane/email-pennylane.mts'
-const routes = [
+
+const routes: RouteRecordRaw[] = [
   {
-    path: `/dossier/:${RouteParam.ENTITY_ID}/ged`,
-    name: RouteName.GED,
+    path: APP_ROUTES.entity.ged.path,
+    name: APP_ROUTES.entity.ged.name,
     meta: {
-      [IS_UNITARY_VIEW_META]: true,
       [LAYOUT_NO_PADDING_META]: true,
     },
     component: () => import('@ged/Ged.vue'),
@@ -17,11 +17,9 @@ const routes = [
 
 export default {
   install(app: App, options: any) {
-    // Accept an array of routes that can be registered along
-    // with the plugin
     const { router } = options
 
-    RoutesManager.addRoutesToAuthenticated(router, routes)
+    RoutesManager.addRoutesToEntity(router, routes)
 
     // register GED widgets
     app.use(EmailPnlWidget, options)

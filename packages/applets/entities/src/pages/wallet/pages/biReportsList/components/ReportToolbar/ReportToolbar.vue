@@ -103,7 +103,7 @@ import ReportStatusFilter from './components/ReportStatusFilter/ReportStatusFilt
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
 import FormSearch from '@entities/common/components/FormSearch'
 import { fetchReportErrors } from '@entities/services/reporting'
-import { displayNotification } from '@entities/common/utils'
+import { displayNotification } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

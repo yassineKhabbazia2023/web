@@ -128,14 +128,13 @@ import {
   PText,
   PLoader,
 } from '@pulse/styleguide/components'
-import { AvatarRoles } from '@pulse/styleguide'
+import { AvatarRoles, displayNotification } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
 import { fetchSubscriptionRequests, validateSubscriptionRequest } from '@entities/services/subscription'
 import { getInitials } from '@entities/helper'
-import { displayNotification } from '@entities/common/utils/helpers'
 import SubscriptionsFilter from './components/SubscriptionsFilter'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
 import type { Contact } from '@entities/services/contact/contactTypes'

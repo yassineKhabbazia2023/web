@@ -10,7 +10,7 @@ import { SelectedEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { useUserStore, usePermissionsStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { APP_ROUTES } from '@pulse/common/constants'
-import { RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 
 import { AuthenticatedFlowManager } from './authenticated.flow.manager'
 
@@ -279,7 +279,7 @@ describe('AuthenticatedFlowManager', () => {
   describe('isNavigatingToAuthenticatedRoot', () => {
     it('should detect if the user is navigating to the root of the authenticated space', () => {
       const authenticatedRoute = AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot(APP_ROUTES.authenticated.name)
-      const otherRoute = AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot('other-route')
+      const otherRoute = AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot('other-route' as RouteName)
 
       expect(authenticatedRoute).toBe(true)
       expect(otherRoute).toBe(false)
@@ -290,7 +290,7 @@ describe('AuthenticatedFlowManager', () => {
     it('should detect if the user is navigating to the customer wallet pages', () => {
       const walletRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet(APP_ROUTES.wallet.client.root.name)
       const walletCustomerRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet(APP_ROUTES.wallet.client.landing.name)
-      const otherRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet('other-route')
+      const otherRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet('other-route' as RouteName)
 
       expect(walletRoute).toBe(true)
       expect(walletCustomerRoute).toBe(true)
@@ -388,7 +388,7 @@ describe('AuthenticatedFlowManager', () => {
         const result = AuthenticatedFlowManager.getLandingPage()
 
         expect(result).toEqual({
-          name: APP_ROUTES.wallet.client.folder.name,
+          name: RouteName.FOLDER, // TODO replace with APP_ROUTES.entity.homepage.name when possible
           params: { [RouteParam.ENTITY_ID]: accountId },
         })
       })
@@ -415,7 +415,7 @@ describe('AuthenticatedFlowManager', () => {
         const result = AuthenticatedFlowManager.getCustomerLandingPage()
 
         expect(result).toEqual({
-          name: APP_ROUTES.wallet.client.folder.name,
+          name: RouteName.FOLDER, // TODO replace with APP_ROUTES.entity.homepage.name when possible
           params: { [RouteParam.ENTITY_ID]: accountId },
         })
       })

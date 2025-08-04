@@ -18,7 +18,7 @@ import { logger } from '@pulse/core'
 import { SelectedEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import type { RouteLocationNamedRaw } from 'vue-router'
-import { RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 import { fetchEntityById } from '@pulse/common/services/entities'
 import { Entity } from '@pulse/common/types'
 
@@ -138,11 +138,11 @@ export class AuthenticatedFlowManager {
   // #endregion
 
   // #region redirections
-  static isNavigatingToAuthenticatedRoot(routeName: string) {
+  static isNavigatingToAuthenticatedRoot(routeName: RouteName) {
     return routeName === APP_ROUTES.authenticated.name
   }
 
-  static isNavigatingToCustomerWallet(routeName: string) {
+  static isNavigatingToCustomerWallet(routeName: RouteName) {
     const walletRoutes = [
       APP_ROUTES.wallet.client.root.name,
       APP_ROUTES.wallet.client.landing.name,
@@ -205,7 +205,7 @@ export class AuthenticatedFlowManager {
       const selectedEntityStore = useSelectedEntityStore()
       const entityAccountId = selectedEntityStore.selectedEntity?.accountId
       const entityLandingPage = {
-        name: APP_ROUTES.wallet.client.folder.name,
+        name: RouteName.FOLDER, // TODO replace with APP_ROUTES.entity.homepage.name when possible
         params: { [RouteParam.ENTITY_ID]: entityAccountId },
       }
 

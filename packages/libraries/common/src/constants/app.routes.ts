@@ -18,11 +18,27 @@ export const APP_ROUTES = {
     resetPasswordFailed: { path: 'resetPasswordFailed', name: RouteName.RESET_PASSWORD_FAILED },
     resetPasswordForm: { path: 'resetPasswordForm', name: RouteName.RESET_PASSWORD_FORM },
   },
+  entity: {
+    root: { path: `/dossier/:${RouteParam.ENTITY_ID}`, name: RouteName.ENTITY },
+    homepage: { path: '', name: RouteName.ENTITY_HOME },
+    overview: {
+      root: { path: '', name: RouteName.ENTITY_OVERVIEW },
+      users: { path: 'gestion-utilisateurs', name: RouteName.USERS },
+      collab: { path: 'collaborateurs', name: RouteName.COLLAB },
+      offers: { path: 'offres', name: RouteName.OFFERS },
+      info: { path: 'informations', name: RouteName.INFO },
+      delegationsHistory: { path: 'historique-delegations', name: RouteName.DELEGATIONS_HISTORY },
+    },
+    powerbi: { path: 'rapports-bi', name: RouteName.REPORTS },
+    ged: { path: 'ged', name: RouteName.GED },
+    launcher: { path: 'launcher', name: RouteName.LAUNCHER },
+    bank: { path: 'banque', name: RouteName.BANK },
+    indicators: { path: 'indicateurs', name: RouteName.INDICATORS },
+  },
   wallet: {
     client: {
-      root: { path: 'portefeuille', name: 'wallet-client' },
-      landing: { path: 'mes-entites', name: 'entity-client' },
-      folder: { path: `dossier/:${RouteParam.ENTITY_ID}`, name: RouteName.FOLDER },
+      root: { path: 'portefeuille', name: RouteName.WALLET_CLIENT },
+      landing: { path: 'mes-entites', name: RouteName.ENTITY_CLIENT },
     },
     collab: {
       root: { path: 'portefeuille', name: RouteName.WALLET },

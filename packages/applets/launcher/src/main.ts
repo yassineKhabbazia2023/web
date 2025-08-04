@@ -1,12 +1,13 @@
 import type { App } from 'vue'
+import type { RouteRecordRaw } from 'vue-router'
 import { RoutesManager } from '@pulse/common/managers'
-import { IS_UNITARY_VIEW_META } from '@pulse/common/constants'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { IS_UNITARY_VIEW_META, APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 
-const routes = [
+const entityRoutes: RouteRecordRaw[] = [
   {
-    path: `/dossier/:${RouteParam.ENTITY_ID}/launcher`,
-    name: RouteName.LAUNCHER,
+    path: APP_ROUTES.entity.launcher.path,
+    name: APP_ROUTES.entity.launcher.name,
     meta: {
       [IS_UNITARY_VIEW_META]: true,
     },
@@ -14,21 +15,19 @@ const routes = [
   },
 ]
 
-const folderLauncherRoute = {
-  name: RouteName.FOLDER_LAUNCHER,
-  path: 'launcher',
-  component: () => import('@launcher/pages/launcher'),
-}
+const walletRoutes: RouteRecordRaw[] = [
+  {
+    name: RouteName.FOLDER_LAUNCHER,
+    path: 'launcher',
+    component: () => import('@launcher/pages/launcher'),
+  },
+]
 
 export default {
   install(_app: App, options: any) {
     const { router } = options
 
-    if (router.hasRoute(RouteName.WALLET)) {
-      // Register the launcher route inside wallet if it exists
-      router.addRoute(RouteName.WALLET, folderLauncherRoute)
-    }
-
-    RoutesManager.addRoutesToAuthenticated(router, routes)
+    RoutesManager.addRoutesToWallet(router, walletRoutes)
+    RoutesManager.addRoutesToEntity(router, entityRoutes)
   },
 }

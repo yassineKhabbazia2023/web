@@ -76,7 +76,7 @@ import {
 import type { ResendActivationEmailDrawerProps } from './ResendActivationEmailDrawerTypes'
 import { fetchAccountContacts } from '@entities/services/wallet'
 import { inviteCustomers } from '@entities/services/contact'
-import { displayNotification } from '@entities/common/utils'
+import { displayNotification } from '@pulse/styleguide'
 import { formatItemsFromApi } from '@entities/pages/folder/pages/usersClient/UsersClientHelper'
 import TableData from '@entities/pages/folder/pages/usersClient/components/TableData'
 import NoResult from '@entities/common/components/NoResult'

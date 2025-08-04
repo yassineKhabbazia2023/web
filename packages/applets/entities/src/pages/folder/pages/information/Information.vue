@@ -84,7 +84,7 @@ import { getCanEdit, savePatchedAccount } from './InformationHelper'
 import { cloneDeep, get, setWith } from 'lodash-es'
 import { addPathValue } from '@entities/services/PatchRecordService/PatchRecordService'
 import { type PatchValue } from '@entities/services/PatchRecordService'
-import { displayNotification } from '@entities/common/utils/helpers'
+import { displayNotification } from '@pulse/styleguide'
 import { RouteParam } from '@pulse/common/enums'
 
 const { t } = useI18n({

@@ -121,7 +121,7 @@ import type CollabDetailsDrawerProps from './CollabDetailsDrawerTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { validPhoneNumberPattern } from '@entities/common/utils/helpers/forms'
 import { updateCollaborator } from '@entities/services/wallet'
-import { displayNotification } from '@entities/common/utils'
+import { displayNotification } from '@pulse/styleguide'
 
 const { t } = useI18n({
   inheritLocale: true,

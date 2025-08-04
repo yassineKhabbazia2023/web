@@ -25,6 +25,7 @@ export default ({ mode }: any) =>
           '@launcher': fileURLToPath(new URL('../applets/launcher/src', import.meta.url)),
           '@login': fileURLToPath(new URL('../applets/login/src', import.meta.url)),
           '@mandate': fileURLToPath(new URL('../applets/mandate/src', import.meta.url)),
+          '@powerbi': fileURLToPath(new URL('../applets/powerbi/src', import.meta.url)),
         },
       },
       server: {

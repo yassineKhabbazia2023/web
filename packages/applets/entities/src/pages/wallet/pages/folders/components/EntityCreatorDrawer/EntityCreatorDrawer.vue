@@ -120,7 +120,7 @@ import { setWith } from 'lodash-es'
 import { logger, useDebounce } from '@pulse/core'
 import { getInitials } from '@pulse/common'
 import type { FormInstance } from '@pulse/styleguide/types'
-import { AvatarRoles } from '@pulse/styleguide'
+import { AvatarRoles, displayNotification } from '@pulse/styleguide'
 import {
   PDrawer,
   PUserCard,
@@ -131,7 +131,7 @@ import {
   PUserAction,
   PLoader,
 } from '@pulse/styleguide/components'
-import { displayNotification, getFormStructure, getFullName } from '@entities/common/utils'
+import { getFormStructure, getFullName } from '@entities/common/utils'
 import { createTestAccount, generateAccountNumber } from '@entities/services/entity-creator'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import CollaboratorAutocomplete from '@entities/pages/entities/components/CollaboratorAutocomplete'

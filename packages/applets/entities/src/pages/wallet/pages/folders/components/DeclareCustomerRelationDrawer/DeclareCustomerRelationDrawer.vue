@@ -62,12 +62,11 @@
 import { logger } from '@pulse/core'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { AppColors } from '@pulse/styleguide'
+import { AppColors, displayNotification } from '@pulse/styleguide'
 import { PDrawer, PUserCard, PSwitch, PTag } from '@pulse/styleguide/components'
 import { DeclareCustomerRelationDrawerProps } from './DeclareCustomerRelationDrawer.types'
 import { updateCustomerRelation } from '@entities/services/account'
 import { useUserStore } from '@pulse/common/stores'
-import { displayNotification } from '@entities/common/utils'
 import DrawerActionButtons from '@entities/common/components/DrawerActionButtons/DrawerActionButtons.vue'
 
 const { t } = useI18n({
