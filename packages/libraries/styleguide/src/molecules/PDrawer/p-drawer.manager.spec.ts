@@ -29,9 +29,10 @@ describe('p-drawer.manager', () => {
 
   it('should remove the click event listener when killTrackOutsideClick is called', () => {
     const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener')
+    const drawerUniqueId = 'unique-drawer-id'
 
-    trackOutsideClickMiniDrawer('unique-drawer-id', drawerTemplateRef)
-    killTrackOutsideClick()
+    trackOutsideClickMiniDrawer(drawerUniqueId, drawerTemplateRef)
+    killTrackOutsideClick(drawerUniqueId)
 
     expect(removeEventListenerSpy).toHaveBeenCalledWith('click', expect.any(Function))
   })

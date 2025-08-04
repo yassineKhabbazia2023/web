@@ -1,24 +1,35 @@
 import type { Ref } from 'vue'
 import { ElDrawerInstanceType } from './PDrawerTypes'
 
+type ClickHandler = (event: Event) => void
 
-let outsideClickHandler: ((event: Event) => void) | null = null
+// Map to store multiple click handlers for different drawers
+const outsideClickHandlers = new Map<string, ClickHandler>()
 
 export function trackOutsideClickMiniDrawer(
   drawerUniqueId: string,
   drawerTemplateRef: Ref<ElDrawerInstanceType | null>,
 ) {
-  outsideClickHandler = (event: Event) => handleOutsideClickMiniDrawer(
-    event,
-    drawerUniqueId,
-    drawerTemplateRef,
-  )
-  window.addEventListener('click', outsideClickHandler)
+  // Remove existing handler for this drawer if it exists
+  killTrackOutsideClick(drawerUniqueId)
+
+  const handler = (event: Event) => {
+    handleOutsideClickMiniDrawer(
+      event,
+      drawerUniqueId,
+      drawerTemplateRef,
+    )
+  }
+
+  outsideClickHandlers.set(drawerUniqueId, handler)
+  window.addEventListener('click', handler)
 }
 
-export function killTrackOutsideClick() {
-  if (outsideClickHandler) {
-    window.removeEventListener('click', outsideClickHandler)
+export function killTrackOutsideClick(drawerUniqueId: string) {
+  const handler = outsideClickHandlers.get(drawerUniqueId)
+  if (handler) {
+    window.removeEventListener('click', handler)
+    outsideClickHandlers.delete(drawerUniqueId)
   }
 }
 
@@ -28,9 +39,11 @@ function handleOutsideClickMiniDrawer(
   drawerTemplateRef: Ref<ElDrawerInstanceType | null>,
 ) {
   const isDrawerInPath = getIsDrawerInPath(event.composedPath() as HTMLElement[], drawerUniqueId)
+
   if (isDrawerInPath || !drawerTemplateRef.value) {
     return
   }
+
   drawerTemplateRef.value.handleClose()
 }
 

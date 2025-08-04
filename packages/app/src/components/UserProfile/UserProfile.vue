@@ -1,12 +1,11 @@
 <template>
   <PDrawer
-    v-model="drawerModel"
+    v-model="isDrawerOpened"
     :pTitle="t('profileSettings')"
     pDirection="ttb"
     pType="mini"
-    appendToBody
     class="user-profile-drawer"
-    @close-drawer-button="drawerModel = false"
+    @close-drawer-button="isDrawerOpened = false"
   >
     <MyInformation />
     <template #footer>
@@ -16,10 +15,8 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer } from '@pulse/styleguide/components'
-import type UserProfileProps from './UserProfileTypes'
 import MyInformation from './components/MyInformation'
 
 const { t } = useI18n({
@@ -27,14 +24,8 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const emit = defineEmits(['update:modelValue'])
+const isDrawerOpened = defineModel<boolean>('isDrawerOpened', { default: false })
 
-const props = defineProps<UserProfileProps>()
-
-const drawerModel = computed({
-  get: () => props.hasDrawerOpened,
-  set: value => emit('update:modelValue', value),
-})
 </script>
 
 <i18n lang="yaml">

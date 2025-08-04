@@ -17,6 +17,12 @@
       v-model="isNotificationSettingsDrawerOpened"
     />
 
+    <UserProfile
+      v-if="hasUserProfileDrawerOpened"
+      v-model:is-drawer-opened="hasUserProfileDrawerOpened"
+      data-testid="home-user-profile"
+    />
+
     <PContainer pDirection="vertical">
       <PCHeader
         class="header-container"
@@ -38,12 +44,6 @@
             'main-container--no-paddings': shouldRemovePadding,
           }"
         >
-          <UserProfile
-            v-if="hasUserProfileDrawerOpened"
-            v-model="hasUserProfileDrawerOpened"
-            :hasDrawerOpened="hasUserProfileDrawerOpened"
-            data-testid="home-user-profile"
-          />
           <router-view />
         </PContainer>
       </PContainer>
