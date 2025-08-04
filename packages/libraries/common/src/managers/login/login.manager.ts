@@ -21,10 +21,12 @@ export class LoginManager {
       await this.fetchAndStoreCurrentUser()
       const userStore = useUserStore()
       const userId = userStore.getUserId()
+      const userEmail = userStore.getUserEmail()
 
       if (userId !== undefined && userId > 0) {
         AmplitudeService.identifyCustomer()
         AmplitudeService.setUserId(userId.toString())
+        AmplitudeService.setUserEmail(userEmail)
         // we only track the sign in success when the userId exists
         // this is to avoid tracking the sign in success with unknown user
         AmplitudeService.track('Sign In Completed', {
@@ -44,10 +46,12 @@ export class LoginManager {
       await this.fetchAndStoreCurrentUser()
       const userStore = useUserStore()
       const userId = userStore.getUserId()
+      const userEmail = userStore.getUserEmail()
 
       if (userId !== undefined && userId > 0) {
         AmplitudeService.identifyCollaborator()
         AmplitudeService.setUserId(userId.toString())
+        AmplitudeService.setUserEmail(userEmail)
         // we only track the sign in success when the userId exists
         // this is to avoid tracking the sign in success with unknown user
         AmplitudeService.track('Sign In Completed', {

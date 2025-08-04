@@ -75,6 +75,7 @@ describe('LoginManager', () => {
       msalGetTokenMock.mockResolvedValue(msalTokenMock)
       vi.spyOn(CurrentUserService, 'getCurrentUser').mockResolvedValue(userMock)
       userStoreMock.getUserId.mockReturnValue(userMock.id)
+      userStoreMock.getUserEmail.mockReturnValue(userMock.email)
 
       // Act
       await LoginManager.initAuthCollab()
@@ -82,6 +83,7 @@ describe('LoginManager', () => {
       // Assert
       expect(AmplitudeServiceMock.identifyCollaborator).toHaveBeenCalledOnce()
       expect(AmplitudeServiceMock.setUserId).toHaveBeenCalledWith(userMock.id.toString())
+      expect(AmplitudeServiceMock.setUserEmail).toHaveBeenCalledWith(userMock.email)
       expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
         sign_in_method: 'SSO',
         sign_in_result: 'succeeded',
@@ -121,6 +123,7 @@ describe('LoginManager', () => {
       vi.spyOn(CurrentUserService, 'getCurrentUser').mockResolvedValue(userMock)
       vi.mocked(TokenManager.getToken).mockReturnValue(tokenMock)
       userStoreMock.getUserId.mockReturnValue(userMock.id)
+      userStoreMock.getUserEmail.mockReturnValue(userMock.email)
 
       // Act
       await LoginManager.initAuthClient()
@@ -128,6 +131,7 @@ describe('LoginManager', () => {
       // Assert
       expect(AmplitudeServiceMock.identifyCustomer).toHaveBeenCalledOnce()
       expect(AmplitudeServiceMock.setUserId).toHaveBeenCalledWith(userMock.id.toString())
+      expect(AmplitudeServiceMock.setUserEmail).toHaveBeenCalledWith(userMock.email)
       expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
         sign_in_method: 'email',
         sign_in_result: 'succeeded',

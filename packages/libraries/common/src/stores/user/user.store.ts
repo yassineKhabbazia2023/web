@@ -24,6 +24,10 @@ export const useUserStore = defineStore('user', () => {
     return getUser()?.id
   }
 
+  function getUserEmail() {
+    return getUser()?.email
+  }
+
   function setGigyaUserId(gigyaUserIdArg?: string) {
     gigyaUserId.value = gigyaUserIdArg
   }
@@ -75,6 +79,7 @@ export const useUserStore = defineStore('user', () => {
     setUser,
     getUser,
     getUserId,
+    getUserEmail,
     setGigyaUserId,
     reset,
     setIsSingleEntity,

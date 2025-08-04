@@ -5,6 +5,7 @@ export const AmplitudeServiceMock = {
   reset: vi.fn(),
   track: vi.fn(),
   setUserId: vi.fn(),
+  setUserEmail: vi.fn(),
   setNewUserProperty: vi.fn(),
   identifyCustomer: vi.fn(),
   identifyCollaborator: vi.fn(),

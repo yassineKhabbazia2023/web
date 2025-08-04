@@ -1,7 +1,11 @@
+import { loggerWarnSpy, loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { SERVER_ZONE } from './constants'
 import { Identify } from '@amplitude/analytics-browser'
-import { AmplitudeService } from './amplitude.service'
 import { AmplitudeUserType } from '@common/enums/amplitude.enums'
+
+import { AmplitudeService } from './amplitude.service'
+
+vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 const initSpy = vi.fn()
 const resetSpy = vi.fn()
@@ -124,6 +128,21 @@ describe('amplitude', () => {
     expect(identifySpy).toHaveBeenCalledWith(identifyEvent)
   })
 
+  it('setUserEmail can set new user property', () => {
+    AmplitudeService.init(FAKE_API_KEY)
+
+    const identifyEvent = new Identify()
+    identifyEvent.set('email', 'john@example.com')
+
+    expect(identifySpy).toHaveBeenCalledTimes(0)
+
+    AmplitudeService.setUserEmail('john@example.com')
+    AmplitudeService.setUserEmail('john@example.com') // second call should not change anything
+
+    expect(identifySpy).toHaveBeenCalledOnce()
+    expect(identifySpy).toHaveBeenCalledWith(identifyEvent)
+  })
+
   it('can reset a user session', () => {
     AmplitudeService.init(FAKE_API_KEY)
 
@@ -162,10 +181,97 @@ describe('amplitude', () => {
       expect(identifySpy).not.toHaveBeenCalled()
     })
 
+    it('setUserEmail should not operate', () => {
+      AmplitudeService.setUserEmail('john@example.com')
+
+      expect(identifySpy).not.toHaveBeenCalled()
+    })
+
     it('reset should not operate', () => {
       AmplitudeService.reset()
 
       expect(resetSpy).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('error handling', () => {
+    beforeEach(() => {
+      resetAmplitudeService()
+    })
+
+    it('should log error when init is called with empty API key', () => {
+      AmplitudeService.init('')
+
+      expect(loggerErrorSpy).toHaveBeenCalledWith('Amplitude - API key is required for initialization')
+      expect(initSpy).not.toHaveBeenCalled()
+    })
+
+    it('should log error when init is called with whitespace-only API key', () => {
+      AmplitudeService.init('   ')
+
+      expect(loggerErrorSpy).toHaveBeenCalledWith('Amplitude - API key is required for initialization')
+      expect(initSpy).not.toHaveBeenCalled()
+    })
+
+    it('should log warning when track throws error', () => {
+      AmplitudeService.init(FAKE_API_KEY)
+      const trackError = new Error('Track failed')
+      trackSpy.mockImplementationOnce(() => {
+        throw trackError
+      })
+
+      AmplitudeService.track(CUSTOM_EVENT)
+
+      expect(loggerWarnSpy).toHaveBeenCalledWith('Amplitude - failed to track event:', trackError)
+    })
+
+    it('should log warning when setUserId throws error', () => {
+      AmplitudeService.init(FAKE_API_KEY)
+      const setUserIdError = new Error('SetUserId failed')
+      setUserIdSpy.mockImplementationOnce(() => {
+        throw setUserIdError
+      })
+
+      AmplitudeService.setUserId(CUSTOM_USER_ID)
+
+      expect(loggerWarnSpy).toHaveBeenCalledWith('Amplitude - failed to set user id:', setUserIdError)
+    })
+
+    it('should log warning when identify throws error', () => {
+      AmplitudeService.init(FAKE_API_KEY)
+      const identifyError = new Error('Identify failed')
+      identifySpy.mockImplementationOnce(() => {
+        throw identifyError
+      })
+
+      AmplitudeService.identifyCustomer()
+
+      expect(loggerWarnSpy).toHaveBeenCalledWith('Amplitude - failed to set user property:', identifyError)
+    })
+
+    it('should log warning when reset throws error', () => {
+      AmplitudeService.init(FAKE_API_KEY)
+      const resetError = new Error('Reset failed')
+      resetSpy.mockImplementationOnce(() => {
+        throw resetError
+      })
+
+      AmplitudeService.reset()
+
+      expect(loggerWarnSpy).toHaveBeenCalledWith('Amplitude - failed to reset:', resetError)
+    })
+
+    it.each([
+      ['empty email', ''],
+      ['undefined email', undefined],
+      ['whitespace-only email', '   '],
+    ])('should log warning when setUserEmail is called with %s', (_description, email) => {
+      AmplitudeService.init(FAKE_API_KEY)
+
+      AmplitudeService.setUserEmail(email)
+
+      expect(loggerWarnSpy).toHaveBeenCalledWith('Amplitude - setUserEmail called with empty email, skipping')
+      expect(identifySpy).not.toHaveBeenCalled()
     })
   })
 })

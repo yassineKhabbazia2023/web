@@ -138,6 +138,17 @@ export class AmplitudeService {
     AmplitudeService.setNewUserProperty('user_type', AmplitudeUserType.COLLAB)
   }
 
+  static setUserEmail(email: string | undefined) {
+    if(email === undefined || email.trim() === '') {
+      logger.warn('Amplitude - setUserEmail called with empty email, skipping')
+      return
+    }
+    if (AmplitudeService.isInitialized() === false) {
+      return
+    }
+    AmplitudeService.setNewUserProperty('email', email)
+  }
+
   /**
    * Reset the Amplitude service of all user identification properties
    * Doesn't reset the init part
