@@ -17,15 +17,13 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { logger } from '@pulse/core'
-import { ref, onMounted, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
 import type { FilterOption } from '@pulse/styleguide/types'
 import { PFilterGroup } from '@pulse/styleguide/components'
 import { getReportStatusFilter } from './utils/report-status-filter.utils'
 import type { ReportStatusFilterProps } from './report-status-filter.types'
 import { ReportFilters } from '@entities/common/types/BIReportsTypes'
-import { fetchReportStatistics } from '@entities/services/reporting'
 
 const props = defineProps<ReportStatusFilterProps>()
 
@@ -69,17 +67,21 @@ watch(
   },
 )
 
-onMounted(async () => {
-  try {
-    const reportStatistics = await fetchReportStatistics()
-    if (reportStatistics) {
-      isReportStatisticsAvailable.value = true
-      onBoardingFilters.value = getReportStatusFilter(FILTER_LABELS, reportStatistics)
-    }
-  } catch (error) {
-    logger.error('Error fetching report statistics: ', error)
+const loadReportStatisticsData = () => {
+  if (props.reportStatistics != null) {
+    isReportStatisticsAvailable.value = true
+    onBoardingFilters.value = getReportStatusFilter(FILTER_LABELS, props.reportStatistics)
   }
-})
+}
+
+watch(
+  () => props.reportStatistics,
+  loadReportStatisticsData,
+  {
+    // Trigger immediately to avoid having to call loadReportStatisticsData in onMounted
+    immediate: true,
+  },
+)
 </script>
 
 <i18n lang="yaml">

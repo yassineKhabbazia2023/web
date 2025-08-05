@@ -1,5 +1,6 @@
 <template>
   <ReportToolbar
+    :reportStatistics
     @search-report="handleSearchReport"
     @apply-filters="handleApplyReportFilters"
     @clear-filters="handleClearReportFilters"
@@ -19,11 +20,18 @@
       />
     </div>
     <div v-else>
+      <ReportDeletionDialog
+        v-if="isReportDeletionDialogVisible === true"
+        v-model:isReportDeletionDialogVisible="isReportDeletionDialogVisible"
+        :reportName="selectedReportName"
+        @delete-report="handleReportDeletion"
+      />
       <ReportTable
         :reports="searchResult.items"
         data-testid="bi-reports-list-table"
         @update-report-status="handleUpdateReportStatus"
         @view-report-fullscreen="handleViewReportFullscreen"
+        @delete-report="handleDeleteReport"
       />
       <PowerBIReportViewer
         v-model="isReportFullscreenVisible"
@@ -61,15 +69,18 @@ import type {
   MappedReportRow,
   ReportFilters,
   ReportSearchCriteria,
+  ReportStatistics,
 } from '@entities/common/types/BIReportsTypes'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
 import { getPaginationLabel } from '@entities/helper'
 import ReportTable from './components/ReportTable'
 import { getMappedReport, getReportsQueryParams } from './utils'
 import { SearchResult } from '../../types'
-import { fetchAvailableReports, fetchBIToken, updateReportStatus } from '@entities/services/reporting'
+import { deleteBIReport, fetchAvailableReports, fetchBIToken, fetchReportStatistics, updateReportStatus } from '@entities/services/reporting'
 import { displayNotification } from '@pulse/styleguide'
 import PowerBIReportViewer from '@entities/common/components/PowerBIReportViewer'
+import ReportDeletionDialog from './components/ReportDeletionDialog/report-deletion-dialog.vue'
+import { ReportDeleteOption } from './components/ReportDeletionDialog/report-deletion-dialog.enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -105,7 +116,9 @@ const handleUpdateReportStatus = async (
 }
 // #endregion
 
-// #region search report
+// #region report toolbar actions
+const reportStatistics = ref<ReportStatistics>()
+
 const handleSearchReport = (term: string) => {
   if (searchCriteria.search !== term) {
     searchCriteria.currentPage = 1
@@ -113,9 +126,7 @@ const handleSearchReport = (term: string) => {
     fetchReportsData()
   }
 }
-// #endregion
 
-// #region filter report
 const handleApplyReportFilters = (reportFilters: ReportFilters) => {
   searchCriteria.currentPage = 1
   searchCriteria.reportStatusFilter = reportFilters.reportStatusFilter
@@ -131,6 +142,15 @@ const handleClearReportFilters = () => {
 
   fetchReportsData()
 }
+
+const fetchReportStatisticsData = async () => {
+  try {
+    reportStatistics.value = await fetchReportStatistics()
+  } catch (error) {
+    logger.error('Error fetching report statistics: ', error)
+  }
+}
+
 // #endregion
 
 // #region manage pagination
@@ -235,8 +255,48 @@ const handleViewReportFullscreen = async (
 }
 // #endregion
 
+// #region report deletion
+const selectedReportName = ref('')
+const selectedReportEmbedId = ref('')
+const isReportDeletionDialogVisible = ref(false)
+
+const handleDeleteReport = async (
+  embeddedReportId: string,
+  reportName: string,
+) => {
+  selectedReportName.value = reportName
+  selectedReportEmbedId.value = embeddedReportId
+  isReportDeletionDialogVisible.value = true
+}
+
+const handleReportDeletion = async (deleteOption: ReportDeleteOption) => {
+  try {
+    await deleteBIReport(selectedReportEmbedId.value, deleteOption)
+    await Promise.all([
+      fetchReportsData(),
+      fetchReportStatisticsData(),
+    ])
+
+    const deleteOptionKey = deleteOption === ReportDeleteOption.ALL ? 'all' : 'platformOnly'
+    displayNotification(
+      'success',
+      t('notification.reportDeleted', {
+        reportName: selectedReportName.value,
+        destination: t(`notification.deleteOptions.${deleteOptionKey}`),
+      }),
+    )
+  } catch {
+    logger.trace('Report Deletion - Failed to delete BI report. Please try again later.')
+    displayNotification('error', t('notification.reportDeletionError'))
+  } finally {
+    isReportDeletionDialogVisible.value = false
+  }
+}
+// #endregion
+
 onMounted(() => {
   fetchReportsData()
+  fetchReportStatisticsData()
 })
 </script>
 
@@ -263,7 +323,15 @@ en-US:
   manualUpload: 'Upload Manually'
   statusChange: 'The report {reportName} has been successfully {action}.'
   biReportLoadingError: "The BI report can't be loaded at the moment. Please try again later."
+  notification:
+    reportDeleted: "{reportName} has been deleted {destination}."
+    deleteOptions:
+      all: "from the Platform and Power BI Services Workspace"
+      platformOnly: "from the Platform only"
+    reportDeletionError: "An error occurred while deleting the report. Please try again later."
   errors:
+    reportErrorsFetch: >
+      We couldn't load the report errors. Please check your connection or try again shortly.
     reportActivation: >
       An error occurred while activating the report. Please try again or contact support if the issue
       continues.
@@ -282,7 +350,16 @@ fr-FR:
   manualUpload: 'Déposer manuellement'
   statusChange: 'Le rapport {reportName} a été {action} avec succès.'
   biReportLoadingError: 'Le rapport BI ne peut pas être chargé pour le moment. Merci de réessayer plus tard.'
+  notification:
+    reportDeleted: "{reportName} a été supprimé {destination}."
+    deleteOptions:
+      all: "de la Plateforme et le Workspace Power BI Services"
+      platformOnly: "de la Plateforme uniquement"
+    reportDeletionError: "Une erreur est survenue lors de la suppression du rapport. Veuillez réessayer plus tard."
   errors:
+    reportErrorsFetch: >
+      Nous n'avons pas pu charger les erreurs de rapport.
+      Veuillez vérifier votre connexion ou réessayer dans un instant.
     reportActivation: >
       Une erreur est survenue lors de l'activation du rapport. Veuillez réessayer ou contacter le support
       si le problème persiste.

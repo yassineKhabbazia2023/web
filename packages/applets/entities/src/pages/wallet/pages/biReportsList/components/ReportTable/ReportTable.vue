@@ -93,6 +93,7 @@
         <PToolbox
           trigger="click"
           :pElements="getReportActions(scope.row.status.type)"
+          pElementsTestId="report-actions-toolbox"
           @p-toolbox-item-clicked="(event) => handleToolboxItemClick(event, scope.row)"
         >
           <PButton pSize="small">
@@ -109,7 +110,10 @@ import { useI18n } from 'vue-i18n'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
 import { PTable, PTableColumn, PTag, PAvatar, PButton, PIcon, PTooltip, PToolbox } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { PERMISSION_ACTION } from '@pulse/common/constants'
 import { ReportTableProps } from './report-table.types'
+import { REPORT_ACTIONS } from './constants/report-table.const'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
 
 const { t, d } = useI18n({
@@ -123,23 +127,28 @@ defineProps<ReportTableProps>()
 const emit = defineEmits<{
   'update-report-status': [number, number, string, ReportStatus]
   'view-report-fullscreen': [number, string, string, string]
+  'delete-report': [string, string]
 }>()
-
-const REPORT_ACTIONS = {
-  ACTIVATE_REPORT: 'ActivateReport',
-  DEACTIVATE_REPORT: 'DeactivateReport',
-  VIEW_REPORT: 'ViewReport',
-}
 
 const handleToolboxItemClick = (action: string, row: any) => {
   const { accountId, reportId, name, embedReportId, embedReportUrl } = row
 
-  if (action === REPORT_ACTIONS.ACTIVATE_REPORT) {
+  switch (action) {
+  case REPORT_ACTIONS.ACTIVATE_REPORT:
     emit('update-report-status', accountId, reportId, name, ReportStatus.ONLINE)
-  } else if (action === REPORT_ACTIONS.DEACTIVATE_REPORT) {
+    break
+
+  case REPORT_ACTIONS.DEACTIVATE_REPORT:
     emit('update-report-status', accountId, reportId, name, ReportStatus.OFFLINE)
-  } else if (action === REPORT_ACTIONS.VIEW_REPORT) {
+    break
+
+  case REPORT_ACTIONS.VIEW_REPORT:
     emit('view-report-fullscreen', accountId, name, embedReportId, embedReportUrl)
+    break
+
+  case REPORT_ACTIONS.DELETE_REPORT:
+    emit('delete-report', embedReportId, name)
+    break
   }
 }
 
@@ -165,6 +174,13 @@ const getReportActions = (status: ReportStatus): PToolboxItemProps[] => {
       pActionName: REPORT_ACTIONS.DEACTIVATE_REPORT,
       pState: 'default',
       display: status === ReportStatus.ONLINE,
+    },
+    {
+      pIconName: 'trash',
+      pValue: t('deleteReport'),
+      pActionName: REPORT_ACTIONS.DELETE_REPORT,
+      pState: 'default',
+      display: CurrentUserManager.hasPermission(PERMISSION_ACTION.DELETE_REPORT),
     },
   ]
     .filter(({ display }) => display)
@@ -193,6 +209,7 @@ en-US:
   customerLabel: 'Customer label:'
   initializedOn: 'Initialized on'
   manualUpload: 'Upload Manually'
+  deleteReport: 'Delete Report'
   activateReport: 'Activate Report'
   deactivateReport: 'Deactivate Report'
 fr-FR:
@@ -206,6 +223,7 @@ fr-FR:
   customerLabel: 'Libellé client:'
   initializedOn: 'Initialisé le'
   manualUpload: 'Déposer manuellement'
+  deleteReport: 'Supprimer le rapport'
   activateReport: 'Activer le rapport'
   deactivateReport: 'Désactiver le rapport'
 </i18n>

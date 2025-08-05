@@ -10,6 +10,7 @@ import type {
 } from '@entities/common/types/BIReportsTypes'
 import type { QueryResult } from '@pulse/common/types'
 import { serializeParams } from '@pulse/core/utils/http'
+import { ReportDeleteOption } from '@entities/pages/wallet/pages/biReportsList/components/ReportDeletionDialog/report-deletion-dialog.enums'
 
 export const fetchBIReports = async (accountId: number, reportTypeId?: number): Promise<GetReportsRequest> => {
   const basePath = `${API_PREFIXES.REPORTING}/reports`
@@ -55,6 +56,15 @@ export const fetchBIToken = async (reportId: string, accountId: number): Promise
   )
 
   return data
+}
+
+export const deleteBIReport = async (
+  embedReportId: string,
+  reportDeleteOption: ReportDeleteOption,
+): Promise<void> => {
+  await commonApi().gateway.delete(`${API_PREFIXES.REPORTING}/reports`, {
+    params: { embedReportId, option: reportDeleteOption },
+  })
 }
 
 export const uploadBIreport = async (

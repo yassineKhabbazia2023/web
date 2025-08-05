@@ -13,13 +13,16 @@ import {
   updateReportStatus,
   fetchReportErrors,
   fetchReportStatistics,
+  deleteBIReport,
 } from '.'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
 import { serializeParams } from '@pulse/core/utils/http'
+import { ReportDeleteOption } from '@entities/pages/wallet/pages/biReportsList/components/ReportDeletionDialog/report-deletion-dialog.enums'
 
 const mockReportId = 15
 const mockAccountId = 602
 const mockReportTypeId = 1
+const embedReportIdMock = 'test-embed-report-id'
 const mockBIReports = getMockedBIReports()
 const mockDefaultReport = mockBIReports[0]
 const mockReportUploadInfo = {
@@ -32,6 +35,7 @@ const mockReportUploadInfo = {
 
 const mockPostBIReport = vi.hoisted(() => vi.fn())
 const mockPatchBIReport = vi.hoisted(() => vi.fn())
+const mockDeleteBIReport = vi.hoisted(() => vi.fn())
 const mockGetBIReport = vi.hoisted(() => vi.fn(() => Promise.resolve({ data: {} })))
 
 vi.mock('@pulse/common', () => ({
@@ -40,6 +44,7 @@ vi.mock('@pulse/common', () => ({
       get: mockGetBIReport,
       post: mockPostBIReport,
       patch: mockPatchBIReport,
+      delete: mockDeleteBIReport,
     },
   }),
 }))
@@ -110,6 +115,14 @@ describe('BI Reporting Services', () => {
       await fetchBIReportTypes()
 
       expect(mockGetBIReport).toHaveBeenCalledWith(`${API_PREFIXES.REPORTING}/reportType`)
+    })
+  })
+
+  describe('deleteBIReport()', () => {
+    it('should delete a BI report with the given data', async () => {
+      await deleteBIReport(embedReportIdMock, ReportDeleteOption.ALL)
+
+      expect(mockDeleteBIReport).toHaveBeenCalledOnce()
     })
   })
 

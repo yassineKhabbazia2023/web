@@ -8,6 +8,8 @@
   >
     <div class="flex flex--direction-column width--100 max-width-700">
       <ReportStatusFilter
+        v-if="reportStatistics !== null && reportStatistics !== undefined"
+        :reportStatistics
         :reportFilters
         data-testid="report-status-filter"
         @apply-status-filter="applyReportStatusFilter"
@@ -97,6 +99,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton, PPastille, PIcon } from '@pulse/styleguide/components'
 import type { ReportFilters, ReportErrorData } from '@entities/common/types/BIReportsTypes'
+import type { ReportToolbarProps } from './report-toolbar.types'
 import ReportErrorDrawer from '../../components/ReportErrorDrawer'
 import ReportFiltersDrawer from './components/ReportFiltersDrawer/ReportFiltersDrawer.vue'
 import ReportStatusFilter from './components/ReportStatusFilter/ReportStatusFilter.vue'
@@ -115,6 +118,8 @@ const emit = defineEmits<{
   'apply-filters': [ReportFilters]
   'clear-filters': []
 }>()
+
+defineProps<ReportToolbarProps>()
 
 // #region Report Statistics Filter
 const applyReportStatusFilter = (appliedStatusFilter: ReportStatus) => {

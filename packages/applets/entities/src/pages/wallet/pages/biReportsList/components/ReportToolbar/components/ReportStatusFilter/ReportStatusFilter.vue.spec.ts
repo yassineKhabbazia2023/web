@@ -3,21 +3,22 @@ import { flushPromises, shallowMount } from '@vue/test-utils'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
 import { loggerMock } from '@pulse/core/mocks'
 import { getMockReportStatistics } from '@entities/__mocks__/bi-report.mocks'
+import type { ReportStatusFilterProps } from './report-status-filter.types'
 
 import ReportStatusFilter from './ReportStatusFilter.vue'
 
 const reportStatisticsMock = getMockReportStatistics()
-const fetchReportStatisticsMock = vi.hoisted(() => vi.fn())
 
+const defaultProps: ReportStatusFilterProps = {
+  reportFilters: {},
+  reportStatistics: reportStatisticsMock,
+}
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
-vi.mock('@entities/services/reporting', () => ({
-  fetchReportStatistics: fetchReportStatisticsMock,
-}))
 
-const createWrapper = (props: any = {}) =>
+const createWrapper = (props: ReportStatusFilterProps = defaultProps) =>
   shallowMount(ReportStatusFilter, {
     props: {
-      reportFilters: {},
+      ...defaultProps,
       ...props,
     },
     global: {
@@ -36,13 +37,8 @@ describe('ReportStatusFilter.vue', () => {
   let wrapper: ReturnType<typeof createWrapper>
 
   beforeEach(async () => {
-    fetchReportStatisticsMock.mockResolvedValue(reportStatisticsMock)
     wrapper = createWrapper()
     await flushPromises()
-  })
-
-  it('should fetch report statistics on mount', async () => {
-    expect(fetchReportStatisticsMock).toHaveBeenCalledOnce()
   })
 
   it('should render status filters correctly on mount', async () => {
@@ -76,6 +72,7 @@ describe('ReportStatusFilter.vue', () => {
 
   it('should emit reset-status-filter when deselecting a filter', async () => {
     wrapper = createWrapper({
+      ...defaultProps,
       reportFilters: {
         reportStatusFilter: [ReportStatus.FAILED],
       },
@@ -90,18 +87,5 @@ describe('ReportStatusFilter.vue', () => {
 
     expect(wrapper.emitted('reset-status-filter')).toBeTruthy()
     expect(wrapper.emitted('reset-status-filter')!).toStrictEqual([[[]]])
-  })
-
-  it('should display a console error if the request to fetch report statistics fails', async () => {
-    const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-    fetchReportStatisticsMock.mockRejectedValue(expectedErrorMessage)
-    wrapper = createWrapper()
-    await flushPromises()
-
-    expect(loggerMock.error).toHaveBeenCalledOnce()
-    expect(loggerMock.error).toHaveBeenCalledWith(
-      'Error fetching report statistics: ',
-      expectedErrorMessage,
-    )
   })
 })
