@@ -93,6 +93,13 @@ $colors: (
     'error': #FF0000,
   ),
   'surface': (
-    'active': #D4D6FF
+    'active': #D4D6FF,
+    'disabled': #F8F9FA
+  ),
+  'surface-state': (
+    'selection': #E4FCF7
+  ),
+  'text': (
+    'disabled': #ADB5BD
   )
 );
