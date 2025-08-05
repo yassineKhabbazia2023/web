@@ -1,17 +1,10 @@
 <template>
   <PDrawer
     v-model:modelValue="internalIsOpened"
+    :p-title="offer.title"
     pSize="60%"
     @close-drawer-button="closeDrawer"
   >
-    <template #header-prefix>
-      <div
-        class="font-large"
-      >
-        {{ offer.title }}
-      </div>
-    </template>
-
     <PTabs
       v-model:modelValue="currentTab"
     >
