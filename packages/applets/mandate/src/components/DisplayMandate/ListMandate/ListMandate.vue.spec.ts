@@ -1,12 +1,11 @@
 import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
 import { getMockedMandatesData } from '@mandate/__mocks__/mandate.mocks'
-import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { mockedNotification, notificationHelperMock, showNotificationMock } from '@mandate/__mocks__/notification.helper.mocks'
 import * as mandateService from '@mandate/services/mandate'
 import { nextTick } from 'vue'
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import type { ListMandateProps } from './ListMandateTypes'
-
+import { MandateTracking } from '@mandate/services/mandate-tracking.service'
 import Table from '.'
 
 interface Window {
@@ -21,11 +20,6 @@ const idMock = 'id-mock'
 
 vi.mock('@mandate/helpers/NotificationHelper', () => notificationHelperMock)
 vi.mock('@mandate/helpers/utils', () => utilsMocks)
-
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
-
 
 vi.mock('@mandate/services/mandate', () => {
   return {
@@ -232,6 +226,8 @@ describe('mandate collection', () => {
       currentPage,
     })
 
+    const trackingSpy = vi.spyOn(MandateTracking, 'trackSubmitSignedMandateSuccess')
+
     let fileInput: any
     const originalCreateElement = document.createElement.bind(document)
     vi.spyOn(document, 'createElement').mockImplementation((tagName) => {
@@ -270,6 +266,9 @@ describe('mandate collection', () => {
     expect(showNotificationMock).toHaveBeenNthCalledWith(1, notificationMessages, 'loading', false)
     expect(showNotificationMock)
       .toHaveBeenNthCalledWith(2, notificationMessages, 'success', true, mockedNotification)
+
+    expect(trackingSpy).toHaveBeenCalled()
+
     const refreshMandateCollectionEvent = wrapper.emitted('refresh-mandate-collection')
     expect(refreshMandateCollectionEvent).toStrictEqual([[{
       currentPage,
@@ -289,23 +288,21 @@ describe('mandate collection', () => {
 
   it('should track telecollection cancellation', async () => {
     const wrapper = createWrapper()
+    const trackingSpy = vi.spyOn(MandateTracking, 'trackTelecollectionCancellation')
 
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
     await pToolbox.vm.$emit('p-toolbox-item-clicked', 'cancel-telecollection')
 
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Bank Mandate Deleted', {
-      bank_mandate_delete: '',
-    })
+    expect(trackingSpy).toHaveBeenCalled()
   })
 
   it('should track pre filled mandate download', async () => {
     const wrapper = createWrapper()
+    const trackingSpy = vi.spyOn(MandateTracking, 'trackPreFilledMandateDownload')
 
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
     await pToolbox.vm.$emit('p-toolbox-item-clicked', 'download-pre-filled-mandate')
 
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Blank Bank Mandate Downloaded', {
-      blank_bank_mandate_download: '',
-    })
+    expect(trackingSpy).toHaveBeenCalled()
   })
 })

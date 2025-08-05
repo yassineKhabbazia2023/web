@@ -150,8 +150,7 @@ import {
 import { showNotification } from '@mandate/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@mandate/helpers/NotificationHelperTypes'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
-
+import { MandateTracking } from '@mandate/services/mandate-tracking.service'
 declare let window: any
 
 const { t } = useI18n({
@@ -307,7 +306,7 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
   { id: string, accountNumber: string, companyName: string }) => {
   const actions: Record<any, () => Promise<void> | void> = {
     'download-pre-filled-mandate': async () => {
-      trackPreFilledMandateDownload()
+      MandateTracking.trackPreFilledMandateDownload()
       await downloadAndSaveMandate(downloadUnsignedMandate, id, 'unsigned')
     },
     'download-signed-mandate': async () => {
@@ -327,10 +326,9 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
 
       // Cleanup: remove the file input after use
       fileUpload.remove()
-      trackSubmitSignedMandate()
     },
     'cancel-telecollection': () => {
-      trackTelecollectionCancellation()
+      MandateTracking.trackTelecollectionCancellation()
       accountNumberRef.value = accountNumber
       companyNameRef.value = companyName
       mandateIdRef.value = id
@@ -344,24 +342,6 @@ const actionClicked = async (event: ActionEvent, { id, accountNumber, companyNam
   }
 }
 
-function trackTelecollectionCancellation() {
-  AmplitudeService.track('Bank Mandate Deleted', {
-    bank_mandate_delete: '',
-  })
-}
-
-function trackPreFilledMandateDownload() {
-  AmplitudeService.track('Blank Bank Mandate Downloaded', {
-    blank_bank_mandate_download: '',
-  })
-}
-
-function trackSubmitSignedMandate() {
-  AmplitudeService.track('Bank Mandate Deposited Signed', {
-    bank_mandate_deposited_sign: '',
-  })
-}
-
 const handleFileUpload = async (event: any, id: string) => {
   const messages = getNotificationMessages('upload')
   const notification = showNotification(messages, 'loading', false)
@@ -372,9 +352,11 @@ const handleFileUpload = async (event: any, id: string) => {
       await uploadSignedMandate({ mandateId: id, file: filesCollection[0] })
     }
     showNotification(messages, 'success', true, notification)
+    MandateTracking.trackSubmitSignedMandateSuccess()
   } catch (error) {
     logger.error('Error in mandate upload ', error)
     showNotification(messages, 'error', true, notification)
+    MandateTracking.trackSubmitSignedMandateFail()
   } finally {
     emitRefreshMandateCollection({
       currentPage: props.currentPage,
