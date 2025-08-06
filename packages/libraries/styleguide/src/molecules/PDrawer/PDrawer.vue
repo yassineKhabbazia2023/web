@@ -33,7 +33,15 @@
             v-bind="pHeaderToolboxProps"
             @p-toolbox-item-clicked="handleToolboxItemClicked"
           >
-            <div class="p-drawer__toolbox-gear">
+            <div
+              class="
+              p-drawer__toolbox-gear
+              flex
+              flex--justify-content-center
+              flex--align-items-center
+              cursor-pointer
+            "
+            >
               <PIcon
                 pName="gear"
                 pSize="14"
@@ -130,6 +138,7 @@ const drawerModel = computed({
 function handleToolboxItemClicked(itemName: string) {
   emit('p-toolbox-item-clicked', itemName)
 }
+
 const { componentUniqueId } = usePDrawer(drawerRef, drawerModel, props.pType)
 
 const pHeaderToolboxProps = {
@@ -150,13 +159,21 @@ const pModalClass = computed(() => {
 <style scoped lang="scss">
 .p-drawer {
   &__toolbox-gear {
-    width: 14px;
-    height: 14px;
-    transition: transform 200ms ease-in-out;
+    width: 32px;
+    height: 32px;
 
     &:hover {
-      transform: rotate(45deg);
+      animation: gearRotate 200ms ease-in-out;
     }
+  }
+}
+
+@keyframes gearRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(45deg);
   }
 }
 </style>
