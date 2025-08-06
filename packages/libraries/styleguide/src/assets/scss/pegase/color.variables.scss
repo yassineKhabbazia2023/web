@@ -94,12 +94,19 @@ $colors: (
   ),
   'surface': (
     'active': #D4D6FF,
-    'disabled': #F8F9FA
+    'disabled': #F8F9FA,
   ),
   'surface-state': (
-    'selection': #E4FCF7
+    'selection': #E4FCF7,
   ),
   'text': (
-    'disabled': #ADB5BD
+    'disabled': #ADB5BD,
+    'active': #D4D6FF,
+  ),
+  'button-danger': (
+    'surface-hover': #FFDDDD,
+    'text-default': #FF0000,
+    'text-hover': #B10303,
+    'text-press': #920A0A,
   )
 );

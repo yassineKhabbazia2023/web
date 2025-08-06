@@ -3,99 +3,99 @@
 
 // css3 var in packages/theme-chalk/src/button.scss
 $button: (
-  'border-color': var(--el-color-neutral-gray-100),
-  'text-color': var(--el-color-neutral-gray-500),
-  'disabled-text-color': var(--el-color-neutral-gray-100),
-  'disabled-border-color': var(--el-color-neutral-gray-100),
-  'divide-border-color': rgba($color-white, 0.5),
-  'hover-text-color': var(--el-color-neutral-gray-500),
-  'hover-bg-color': var(--el-fill-color-blank),
-  'hover-border-color': var(--el-color-neutral-gray-300),
-  'active-text-color': var(--el-color-neutral-gray-500),
-  'active-border-color':var(--el-color-neutral-gray-500),
-  'active-bg-color': var(--el-fill-color-blank),
-  'outline-color': var(--el-color-base-blue-pulse),
-  'hover-link-text-color': var(--el-color-info),
-  'active-color': var(--el-text-color-primary),
+'border-color': var(--el-color-neutral-gray-100),
+'text-color': var(--el-color-neutral-gray-500),
+'disabled-text-color': var(--el-color-neutral-gray-100),
+'disabled-border-color': var(--el-color-neutral-gray-100),
+'divide-border-color': rgba($color-white, 0.5),
+'hover-text-color': var(--el-color-neutral-gray-500),
+'hover-bg-color': var(--el-fill-color-blank),
+'hover-border-color': var(--el-color-neutral-gray-300),
+'active-text-color': var(--el-color-neutral-gray-500),
+'active-border-color':var(--el-color-neutral-gray-500),
+'active-bg-color': var(--el-fill-color-blank),
+'outline-color': var(--el-color-base-blue-pulse),
+'hover-link-text-color': var(--el-color-info),
+'active-color': var(--el-text-color-primary),
 );
 
 $button-font-size: (
-  'large': var(--el-font-size-base),
-  'default': var(--el-font-size-base),
-  'small': 12px,
+'large': var(--el-font-size-base),
+'default': var(--el-font-size-base),
+'small': 12px,
 );
 
 $button-border-radius: (
-  'small': var(--el-border-radius-base),
+'small': var(--el-border-radius-base),
 );
 
 $button-padding-vertical: (
-  'large': 20px,
-  'default': 13px,
-  'small': 9px,
+'large': 20px,
+'default': 13px,
+'small': 9px,
 );
 
 $button-padding-horizontal: (
-  'large': 20px,
-  'default': 13px,
-  'small': 8px,
+'large': 20px,
+'default': 13px,
+'small': 8px,
 );
 
 // Custom css el-button
 .el-button {
   $self: &;
-
+  
   & + button.el-button {
     margin-left: 0;
   }
-
+  
   &.is-loading {
     &:not(.el-button--icon, .p-button--icon) {
       .el-icon.is-loading {
         margin-right: 1.2rem;
       }
     }
-
+    
     &.el-button--icon,
     &.p-button--icon {
       .el-icon:not(.is-loading) {
         display: none;
       }
     }
-
+    
     .el-button__icon--left {
       display: none;
     }
   }
-
+  
   & i[class*=el-icon] + span {
     margin-left: 0px;
   }
-
+  
   &#{$self} {
     .el-icon {
       font-size: 16px;
     }
-
+    
     &--small {
       --el-button-size: 32px;
-
+      
       height: 32px;
       padding-left: 8px;
       padding-right: 8px;
       padding-top: 9px;
       padding-bottom: 9px;
-
+      
       #{$self}__icon {
         &--left {
           margin-right: 8px;
         }
-
+        
         &--right {
           margin-left: 8px;
         }
       }
-
+      
       .el-icon {
         font-size: 14px;
       }
@@ -103,35 +103,35 @@ $button-padding-horizontal: (
     &#{$self}--icon,
     &.p-button--icon {
       width: 44px;
-
+      
       #{$self}__icon--left,
       #{$self}__icon--right {
         margin: 0;
       }
-
+      
       &#{$self}--small {
         width: 32px;
       }
     }
-
+    
     &--default {
       background: transparent;
       border-color: transparent;
       color: var(--el-color-base-blue-pulse);
-
+      
       &:hover {
         background: transparent;
         border-color: transparent;
-          color: var(--el-color-persian-700);
+        color: var(--el-color-persian-700);
       }
-
+      
       &:focus,
       &.p-button--is-active {
         background: transparent;
         border-color: transparent;
         color: var(--el-color-persian-800);
       }
-
+      
       &.is-disabled,
       &.is-disabled:hover,
       &.is-disabled:focus {
@@ -139,37 +139,37 @@ $button-padding-horizontal: (
         border-color: transparent;
         color: var(--el-color-neutral-gray-400);
       }
-
+      
       #{$self}__icon {
         &--left {
           margin-right: 12px;
         }
-
+        
         &--right {
           margin-left: 12px;
         }
       }
     }
   }
-
+  
   &#{$self}--primary {
     background: var(--el-color-base-blue-pulse);
     border-color: var(--el-color-base-blue-pulse);
     color: var(--el-color-base-white);
-
+    
     &:hover {
       background: var(--el-color-persian-700);
       border-color: var(--el-color-persian-700);
       color: var(--el-color-base-white);
     }
-
+    
     &:focus,
     &.p-button--is-active {
       background: var(--el-color-persian-800);
       border-color: var(--el-color-persian-800);
       color: var(--el-color-base-white);
     }
-
+    
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
@@ -178,25 +178,25 @@ $button-padding-horizontal: (
       color: var(--el-color-neutral-gray-400);
     }
   }
-
+  
   &.p-button--secondary {
     background: var(--el-color-polar-50);
     border-color: var(--el-color-polar-50);
     color: var(--el-color-base-blue-pulse);
-
+    
     &:hover {
       background: var(--el-color-polar-100);
       border-color: var(--el-color-polar-100);
       color: var(--el-color-base-blue-pulse);
     }
-
+    
     &:focus,
     &.p-button--is-active {
       background: var(--el-color-persian-100);
       border-color: var(--el-color-polar-200);
       color: var(--el-color-base-blue-pulse);
     }
-
+    
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
@@ -205,25 +205,25 @@ $button-padding-horizontal: (
       color: var(--el-color-neutral-gray-400);
     }
   }
-
+  
   &.p-button--tertiary {
     background: transparent;
     border-color: transparent;
     color: var(--el-color-secondary-amethyste);
-
+    
     &:hover {
       background: transparent;
       border-color: transparent;
       color: var(--el-color-persian-700);
     }
-
+    
     &:focus,
     &.p-button--is-active {
       background: transparent;
       border-color: transparent;
       color: var(--el-color-persian-700);
     }
-
+    
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
@@ -232,25 +232,25 @@ $button-padding-horizontal: (
       color: var(--el-color-neutral-gray-400);
     }
   }
-
+  
   &.p-button--white {
     border-color: var(--el-color-base-white);
     background: var(--el-color-base-white);
     color: var(--el-color-primary);
-
+    
     &:hover {
       background: var(--el-color-persian-50);
       border-color: var(--el-color-persian-50);
       color: var(--el-color-persian-700);
     }
-
+    
     &:focus,
     &.p-button--is-active {
       background: var(--el-color-persian-100);
       border-color: var(--el-color-persian-100);
       color: var(--el-color-persian-800);
     }
-
+    
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
@@ -259,25 +259,25 @@ $button-padding-horizontal: (
       color: var(--el-color-neutral-gray-400);
     }
   }
-
+  
   &#{$self}--danger {
-    background: var(--el-color-danger-light-9);
-    border-color: var(--el-color-danger);
-    color: var(--el-color-danger);
-
+    border-color: var(--el-color-base-white);
+    background: var(--el-color-base-white);
+    color: var(--el-color-button-danger-text-default);
+    
     &:hover {
-      background: var(--el-color-danger);
-      border-color: var(--el-color-danger);
-      color: var(--el-color-base-white);
+      background: var(--el-color-button-danger-surface-hover);
+      border-color: var(--el-color-button-danger-surface-hover);
+      color: var(--el-color-button-danger-text-hover);
     }
-
+    
     &:focus,
     &.p-button--is-active {
-      background: var(--el-button-active-bg-color);
-      border-color: var(--el-button-active-border-color);
-      color: var(--el-color-base-white);
+      background: var(--el-color-button-danger-surface-hover);
+      border-color: var(--el-color-button-danger-surface-hover);
+      color: var(--el-color-button-danger-text-press);
     }
-
+    
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
@@ -286,7 +286,7 @@ $button-padding-horizontal: (
       color: var(--el-color-neutral-gray-400);
     }
   }
-
+  
   &.p-button--default,
   &.p-button--generic,
   &#{$self}--success,
@@ -295,20 +295,20 @@ $button-padding-horizontal: (
     border-color: pink;
     background: pink !important;
     color: var(--el-color-base-white);
-
+    
     &:hover {
       background: pink;
       border-color: pink;
       color: var(--el-color-base-white);
     }
-
+    
     &:focus,
     &.p-button--is-active {
       background: pink;
       border-color: pink;
       color: var(--el-color-base-white);
     }
-
+    
     &.is-disabled,
     &.is-disabled:hover,
     &.is-disabled:focus {
@@ -323,7 +323,7 @@ $button-padding-horizontal: (
   .el-button + .el-button {
     margin-left: 12px;
   }
-
+  
   .el-button--small + .el-button--small {
     margin-left: 8px;
   }
