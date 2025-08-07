@@ -1,8 +1,33 @@
 import { logger } from '@pulse/core'
 import api from '../../api'
-import type { UserInfo } from '../../stores/types'
+import type { UserContextInfo, UserInfo } from '../../stores/types'
 
 export class CurrentUserService {
+  static async getCurrentUserContext(): Promise<UserContextInfo | undefined> {
+    try {
+      const url = 'connect/api/get-user-information'
+      const { data } = await api().gateway.get(url)
+      const {
+        contact,
+        permissions,
+        favoriteEntities,
+      } = data
+
+      const user: UserContextInfo = {
+        contact: {
+          ...contact,
+          isCollab: contact.isCustomer === false,
+        },
+        permissions,
+        favoriteEntities,
+      }
+
+      return user
+    } catch (error) {
+      logger.error('Unable to retrieve current-user', error)
+    }
+  }
+
   static async getCurrentUser(): Promise<UserInfo | undefined> {
     try {
       const url = 'contact/me'

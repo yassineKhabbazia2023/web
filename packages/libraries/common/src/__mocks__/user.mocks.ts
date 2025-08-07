@@ -1,4 +1,4 @@
-import type { UserInfo, UserInfoApi } from '../stores/types'
+import type { UserInfo, UserInfoApi, UserContextInfo } from '../stores/types'
 
 
 export const getMockedUser = (override: Partial<UserInfo> = {}) => {
@@ -20,6 +20,39 @@ export const getMockedUser = (override: Partial<UserInfo> = {}) => {
       name: 'Collaborator GS',
       description: '',
     },
+  }
+  const user = {
+    ...defaultUser,
+    ...override,
+  }
+
+  return user
+}
+
+export const getMockedUserContext = (override: Partial<UserContextInfo> = {}) => {
+  const defaultUser: UserContextInfo = {
+    contact: {
+
+      id: 123,
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john@example.com',
+      isCollab: true,
+      gigyaUserId: '',
+      occupation: '',
+      officeMobile: 'johnd-mobile-phone',
+      oldId: 'johnd-guid',
+      persona: {
+        id: 1,
+        description: '',
+        name: 'Collaborator GS',
+      },
+      entities: {
+        default: undefined,
+      },
+    },
+    permissions: ['AUT001', 'AUT002'],
+    favoriteEntities: [],
   }
   const user = {
     ...defaultUser,

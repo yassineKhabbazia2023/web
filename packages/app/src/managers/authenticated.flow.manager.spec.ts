@@ -1,10 +1,10 @@
 import { loggerMock } from '@pulse/core/mocks'
-import { AmplitudeServiceMock, getMockedEntity, getMockedSelectedEntity, getMockedUser, getStoreMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock, getMockedUserContext, getMockedEntity, getMockedSelectedEntity, getStoreMock } from '@pulse/common/mocks'
 import { initProductFruitsAuthenticatedCollab, initProductFruitsAuthenticatedCustomer, stopProductFruits, getProductFruitsUser } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { fetchUserPermissions } from '@pulse/common/services/permissions'
-import { fetchEntities, fetchFavoriteEntities } from '@app/services/entities'
+import { fetchEntities } from '@app/services/entities'
 import { fetchEntityById } from '@pulse/common/services/entities'
 import { SelectedEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
@@ -32,7 +32,7 @@ vi.mock('@app/plugins/ProductFruits/productFruits.plugin', () => ({
   stopProductFruits: vi.fn(),
 }))
 
-const userMock = getMockedUser()
+const userMock = getMockedUserContext()
 const permissionsMock = ['permission1', 'permission2']
 const entityMock = getMockedEntity()
 const entitiesMock = {
@@ -41,7 +41,6 @@ const entitiesMock = {
   totalItems: 1,
   totalPage: 1,
 }
-const favoriteEntitiesMock = [getMockedSelectedEntity()]
 const storedEntityMock = getMockedSelectedEntity()
 const defaultEntityMock = getMockedSelectedEntity()
 
@@ -53,32 +52,33 @@ const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 describe('AuthenticatedFlowManager', () => {
   describe('enterAuthenticatedFlow', () => {
     it('should init current user, user entities and third parties', async () => {
-      vi.mocked(CurrentUserService.getCurrentUser).mockResolvedValue(userMock as any)
-      vi.mocked(fetchUserPermissions).mockResolvedValue(permissionsMock)
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
 
       await AuthenticatedFlowManager.enterAuthenticatedFlow()
 
-      expect(CurrentUserService.getCurrentUser).toHaveBeenCalled()
-      expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock)
-      expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(permissionsMock)
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalled()
+      expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock.contact)
       expect(userStoreMock.setIsSingleEntity).toHaveBeenCalledWith(true)
+      expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(userMock.permissions)
+      expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(userMock.favoriteEntities)
     })
   })
 
   describe('initCurrentUser', () => {
     it('should initialize the current user and fetch their permissions', async () => {
-      vi.mocked(CurrentUserService.getCurrentUser).mockResolvedValue(userMock as any)
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchUserPermissions).mockResolvedValue(permissionsMock)
 
       await AuthenticatedFlowManager.initCurrentUser()
 
-      expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock)
-      expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(permissionsMock)
+      expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock.contact)
+      expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(userMock.permissions)
+      expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(userMock.favoriteEntities)
     })
 
     it('should handle errors gracefully when fetching user information', async () => {
-      vi.mocked(CurrentUserService.getCurrentUser).mockRejectedValue(new Error('User fetch error'))
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockRejectedValue(new Error('User fetch error'))
 
       await AuthenticatedFlowManager.initCurrentUser()
 
@@ -91,13 +91,11 @@ describe('AuthenticatedFlowManager', () => {
   describe('initEntities', () => {
     it('should initialize user as a single or multiple entities', async () => {
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
-      vi.mocked(fetchFavoriteEntities).mockResolvedValue(favoriteEntitiesMock)
       vi.mocked(SelectedEntityManager.initializeSelectedEntity).mockResolvedValue(undefined)
 
       await AuthenticatedFlowManager.initEntities()
 
       expect(userStoreMock.setIsSingleEntity).toHaveBeenCalledWith(true)
-      expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(favoriteEntitiesMock)
       expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(entitiesMock.items[0])
     })
 
@@ -192,22 +190,11 @@ describe('AuthenticatedFlowManager', () => {
     })
   })
 
-  describe('setUserFavoriteEntities', () => {
-    it('should fetch and store the user favorite entities', async () => {
-      vi.mocked(fetchFavoriteEntities).mockResolvedValue(favoriteEntitiesMock)
-
-      // @ts-ignore - accessing private method for testing
-      await AuthenticatedFlowManager.setUserFavoriteEntities()
-
-      expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(favoriteEntitiesMock)
-    })
-  })
-
   describe('initAuthenticatedThirdParties', () => {
     describe('user is Collab', () => {
       beforeEach(() => {
         userStoreMock.getUserId.mockReturnValue(1)
-        userStoreMock.getUser.mockReturnValue(userMock)
+        userStoreMock.getUser.mockReturnValue(userMock.contact)
         userStoreMock.isCollab = true
       })
 
@@ -221,7 +208,7 @@ describe('AuthenticatedFlowManager', () => {
     describe('user is Customer', () => {
       beforeEach(() => {
         userStoreMock.getUserId.mockReturnValue(1)
-        userStoreMock.getUser.mockReturnValue(userMock)
+        userStoreMock.getUser.mockReturnValue(userMock.contact)
         userStoreMock.isCollab = false
         vi.mocked(getProductFruitsUser).mockReturnValue({} as any)
       })

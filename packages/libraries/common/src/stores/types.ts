@@ -43,6 +43,12 @@ export interface UserInfo {
   persona?: Persona
 }
 
+export interface UserContextInfo {
+  contact: UserInfo
+  permissions: string[]
+  favoriteEntities: Entity[]
+}
+
 export interface UserInfoApi {
   id: number
   firstName: string

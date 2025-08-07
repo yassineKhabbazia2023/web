@@ -5,8 +5,7 @@ import {
   useSelectedEntityStore,
 } from '@pulse/common/stores'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { fetchEntities, fetchFavoriteEntities } from '@app/services/entities'
-import { fetchUserPermissions } from '@pulse/common/services/permissions'
+import { fetchEntities } from '@app/services/entities'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import {
   initProductFruitsAuthenticatedCustomer,
@@ -32,14 +31,17 @@ export class AuthenticatedFlowManager {
   // #region setup
   static async initCurrentUser() {
     try {
-      const currentUser = await CurrentUserService.getCurrentUser()
+      const currentUserContext = await CurrentUserService.getCurrentUserContext()
+      if (currentUserContext === undefined) {
+        throw new Error('unable to fetch users\'s context')
+      }
+
       const userStore = useUserStore()
-      userStore.setUser(currentUser)
+      userStore.setUser(currentUserContext.contact)
+      userStore.setFavoriteEntities(currentUserContext.favoriteEntities ?? [])
 
-      const permissions = await fetchUserPermissions()
       const permissionsStore = usePermissionsStore()
-      permissionsStore.setUserPermissions(permissions)
-
+      permissionsStore.setUserPermissions(currentUserContext.permissions ?? [])
     } catch (error) {
       logger.error('unable to fetch user information nor its permissions', error)
     }
@@ -56,7 +58,6 @@ export class AuthenticatedFlowManager {
 
       AuthenticatedFlowManager.setUserIsSingleEntity(entities)
       await AuthenticatedFlowManager.setUserSelectedEntity(entities[0])
-      await AuthenticatedFlowManager.setUserFavoriteEntities()
 
     } catch (error) {
       logger.error('unable to fetch and set entities', error)
@@ -88,14 +89,6 @@ export class AuthenticatedFlowManager {
       return SelectedEntityManager.initializeSelectedEntity(entityToPersist)
     }
   }
-
-  private static async setUserFavoriteEntities() {
-    const userStore = useUserStore()
-
-    const favoriteEntities = await fetchFavoriteEntities()
-    userStore.setFavoriteEntities(favoriteEntities)
-  }
-
 
   static initAuthenticatedThirdParties() {
     const userStore = useUserStore()
