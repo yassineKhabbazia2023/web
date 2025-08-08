@@ -18,8 +18,8 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import type { BIReportSubmittedProps } from './BIReportSubmittedTypes.ts'
 import { PButton } from '@pulse/styleguide/components'
+import type { BIReportSubmittedProps } from './bi-report-submitted.types'
 
 const { t } = useI18n({
   inheritLocale: true,

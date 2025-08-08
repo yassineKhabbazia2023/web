@@ -1,4 +1,10 @@
-import { addIfNotExists, removeIfExists, arrayIncludes, filterRecordByKeyCallback, stringContainsAllValues } from './array.utils'
+import {
+  addIfNotExists,
+  removeIfExists,
+  arrayIncludes,
+  filterRecordByKeyCallback,
+  stringContainsAllValues,
+} from './array.utils'
 
 describe('test array.utils', () => {
   describe('addIfNotExists', () => {
@@ -129,3 +135,4 @@ describe('test array.utils', () => {
     })
   })
 })
+

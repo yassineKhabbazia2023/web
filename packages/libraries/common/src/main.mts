@@ -10,7 +10,7 @@ import { sanitizeUrl } from '@braintree/sanitize-url'
 import { refreshClientToken, createNewPassword, isInvitationTokenValid, login } from './services/authentication.service'
 
 export * from './unauthorized-callback'
-export * from './utils'
+export * from './utils/index.mts'
 export const commonApi = api
 export const commonPinia = createPinia()
 export const widgets = shallowRef([] as Component[] | DefineComponent[])

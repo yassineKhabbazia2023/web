@@ -3,7 +3,7 @@ import { flushPromises } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import { MsalService } from '../services/msal/msal.service'
 import api from '../api'
-import { getInitials, logoutClient, logoutCollaborator, logoutGigyaSSO } from '.'
+import { getInitials, logoutClient, logoutCollaborator, logoutGigyaSSO } from './user.utils'
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { getMockedBIReports } from '@entities/__mocks__/bi-report.mocks'
 import { API_PREFIXES } from '@entities/common/config/services'
-import { PAGE_SIZES } from '@entities/constants'
+import { PAGE_SIZES } from '@pulse/common/constants'
 
 import {
   fetchBIReports,

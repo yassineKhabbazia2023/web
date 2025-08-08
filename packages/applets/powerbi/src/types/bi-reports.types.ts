@@ -1,4 +1,5 @@
 import type { PTagProps } from '@pulse/styleguide/types'
+import type { Entity, QueryResult } from '@pulse/common/types'
 import type { ReportStatus, ReportTypeEnum } from './bi-reports.enums'
 
 export interface ReportStatusTag {
@@ -83,3 +84,15 @@ export interface ReportFilterQueryParams extends ReportFilters {
 }
 
 export interface ReportSearchCriteria extends PaginationParams, ReportFilters {}
+
+export type GetReportsRequest = QueryResult<Report>
+
+export type GetReportAccountsRequest = QueryResult<Entity>
+
+export interface ReportInfo {
+  reportId?: number
+  reportLabel?: string
+  reportTypeId?: number
+  accountId?: number
+  accountLabel?: string
+}

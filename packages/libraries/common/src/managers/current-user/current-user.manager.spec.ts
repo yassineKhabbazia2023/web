@@ -22,7 +22,7 @@ const gigyaUserIdMock = 'gigya-user-id'
 
 vi.mock('env-vars', () => envVarsMock)
 
-vi.mock('../../utils', () => utilsMock)
+vi.mock('../../utils/user.utils', () => utilsMock)
 
 const getCurrentUserMock = vi.hoisted((() => vi.fn()))
 vi.mock('../../services/current-user/current-user.service', () => ({

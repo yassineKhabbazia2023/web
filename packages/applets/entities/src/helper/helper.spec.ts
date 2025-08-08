@@ -3,7 +3,6 @@ import {
   formatDateToLocale,
   generateObject,
   getInitials,
-  removeFalsyValues,
   getPaginationLabel,
   returnSortQueryField,
 } from './helper'
@@ -39,20 +38,6 @@ describe('formatDateToLocale', () => {
     const expectedDate = '19/02/2024'
     const dateString = formatDateToLocale('2024-02-19T07:25:58.8491912')
     expect(expectedDate).toStrictEqual(dateString)
-  })
-})
-
-describe('removeFalsyValues', () => {
-  it('remove falsy value in object', () => {
-    const OBJECT_WITH_FALSY_VALUES = {
-      a: undefined,
-      b: 'b',
-      c: false,
-      d: null,
-      e: '',
-      f: 0,
-    }
-    expect(removeFalsyValues(OBJECT_WITH_FALSY_VALUES)).toStrictEqual({ b: 'b' })
   })
 })
 

@@ -65,12 +65,11 @@ import {
   PIcon,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
-import { getSearchParams } from '@entities/pages/wallet/pages/folders/DeployUtils'
-import { PAGE_SIZES } from '@entities/constants'
-import { fetchBIReports, fetchReportAccounts } from '@entities/services/reporting'
-import type { Report } from '@entities/common/types/BIReportsTypes'
-import type { BIReportInformationProps } from './BIReportInformationTypes'
-import type { ReportInfo } from '../../SubmitBIReportTypes'
+import { getSearchParams } from '@pulse/common/utils'
+import { PAGE_SIZES } from '@pulse/common/constants'
+import { fetchBIReports, fetchReportAccounts } from '@powerbi/services/reporting.service'
+import type { Report, ReportInfo } from '@powerbi/types/bi-reports.types'
+import type { BIReportInformationProps } from './bi-report-information.types'
 import type { Entity } from '@pulse/common/types'
 
 const { t } = useI18n({

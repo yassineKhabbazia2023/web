@@ -1,29 +1,29 @@
-import { commonApi } from '@pulse/common'
+import { apiGatewayMock, apiGatewayGetMock, apiGatewayPostMock } from '@pulse/common/mocks'
+import { fetchBIReports, fetchBIReportTypes, fetchBIToken, fetchReportAccounts, uploadBIreport } from './reporting.service'
 
-import { fetchBIReports, fetchBIToken } from './reporting.service'
+const mockReportUploadInfo = {
+  accountId: 2,
+  reportTypeId: 5,
+  reportFile: new File(['Test Report'], 'my-report.pbx'),
+  reportName: 'My Test Report',
+  reportId: 6,
+}
 
-vi.mock('@pulse/common')
-
-const mockGet = vi.fn()
-const mockCommonApi = vi.mocked(commonApi)
+vi.mock('@pulse/common', () => ({
+  commonApi: () => ({
+    gateway: apiGatewayMock,
+  }),
+}))
 
 describe('BI Reporting Services', () => {
-  beforeEach(() => {
-    mockCommonApi.mockReturnValue({
-      gateway: {
-        get: mockGet,
-      },
-    } as any)
-  })
-
   describe('fetchBIReports()', () => {
     it('should fetch all BI reports for an account', async () => {
       const mockData = [{ id: 1, name: 'Report 1' }]
-      mockGet.mockResolvedValue({ data: mockData })
+      apiGatewayGetMock.mockResolvedValue({ data: mockData })
 
       const result = await fetchBIReports(123)
 
-      expect(mockGet).toHaveBeenCalledWith('reporting/api/reports/currentuser', {
+      expect(apiGatewayGetMock).toHaveBeenCalledWith('reporting/api/reports/currentuser', {
         params: {
           accountId: 123,
           reportTypeId: undefined,
@@ -34,11 +34,11 @@ describe('BI Reporting Services', () => {
 
     it('should fetch BI reports for an account with a report type', async () => {
       const mockData = [{ id: 1, name: 'Report 1', typeId: 456 }]
-      mockGet.mockResolvedValue({ data: mockData })
+      apiGatewayGetMock.mockResolvedValue({ data: mockData })
 
       const result = await fetchBIReports(123, 456)
 
-      expect(mockGet).toHaveBeenCalledWith('reporting/api/reports', {
+      expect(apiGatewayGetMock).toHaveBeenCalledWith('reporting/api/reports', {
         params: {
           accountId: 123,
           reportTypeId: 456,
@@ -49,7 +49,7 @@ describe('BI Reporting Services', () => {
 
     it('should handle API errors', async () => {
       const error = new Error('API Error')
-      mockGet.mockRejectedValue(error)
+      apiGatewayGetMock.mockRejectedValue(error)
 
       await expect(fetchBIReports(123)).rejects.toThrow('API Error')
     })
@@ -58,29 +58,64 @@ describe('BI Reporting Services', () => {
   describe('fetchBIToken()', () => {
     it('should fetch an embed token for a report', async () => {
       const mockToken = 'mock-embed-token'
-      mockGet.mockResolvedValue({ data: mockToken })
+      apiGatewayGetMock.mockResolvedValue({ data: mockToken })
 
       const result = await fetchBIToken('report-123', 456)
 
-      expect(mockGet).toHaveBeenCalledWith('reporting/api/reports/report-123/embedToken?accountId=456')
+      expect(apiGatewayGetMock).toHaveBeenCalledWith('reporting/api/reports/report-123/embedToken?accountId=456')
       expect(result).toBe(mockToken)
     })
 
     it('should handle API errors when fetching token', async () => {
       const error = new Error('Token fetch failed')
-      mockGet.mockRejectedValue(error)
+      apiGatewayGetMock.mockRejectedValue(error)
 
       await expect(fetchBIToken('report-123', 456)).rejects.toThrow('Token fetch failed')
     })
 
     it('should return correct token type', async () => {
       const mockToken = 'valid-token-string'
-      mockGet.mockResolvedValue({ data: mockToken })
+      apiGatewayGetMock.mockResolvedValue({ data: mockToken })
 
       const result = await fetchBIToken('report-456', 789)
 
       expect(typeof result).toBe('string')
       expect(result).toBe(mockToken)
+    })
+  })
+
+  describe('fetchBIReportTypes()', () => {
+    it('should fetch all BI report types', async () => {
+      apiGatewayGetMock.mockImplementation(() => Promise.resolve({ data: {} }))
+      await fetchBIReportTypes()
+
+      expect(apiGatewayGetMock).toHaveBeenCalledWith('reporting/api/reportType')
+    })
+  })
+
+  describe('fetchReportAccounts()', () => {
+    it('should fetch all report accounts', async () => {
+      apiGatewayGetMock.mockImplementation(() => Promise.resolve({ data: {} }))
+      await fetchReportAccounts('')
+
+      expect(apiGatewayGetMock).toHaveBeenCalledWith('reporting/api/account')
+    })
+
+    it('should fetch report accounts with a search query', async () => {
+      apiGatewayGetMock.mockImplementation(() => Promise.resolve({ data: {} }))
+      await fetchReportAccounts('currentUser?search=test')
+
+      expect(apiGatewayGetMock).toHaveBeenCalledWith('reporting/api/account/currentUser?search=test')
+    })
+  })
+
+  describe('uploadBIreport()', () => {
+    it('should upload a BI report with the given data', async () => {
+      const { accountId, reportFile, reportId, reportName, reportTypeId } = mockReportUploadInfo
+
+      await uploadBIreport(accountId, reportTypeId, reportFile, reportName, reportId)
+
+      expect(apiGatewayPostMock).toHaveBeenCalledOnce()
     })
   })
 })

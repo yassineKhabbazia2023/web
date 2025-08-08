@@ -14,11 +14,19 @@ const entityRoutes: RouteRecordRaw[] = [
   },
 ]
 
+const walletRoutes: RouteRecordRaw[] = [
+  {
+    path: APP_ROUTES.wallet.collab.submitBIReport.path,
+    name: APP_ROUTES.wallet.collab.submitBIReport.name,
+    component: () => import('@powerbi/pages/wallet/submit-bi-report/SubmitBIReport.page.vue'),
+  },
+]
+
 export default {
   install(_app: App, options: any) {
     const { router } = options
 
-    // RoutesManager.addRoutesToWallet(router, walletRoutes)
+    RoutesManager.addRoutesToWallet(router, walletRoutes)
     RoutesManager.addRoutesToEntity(router, entityRoutes)
   },
 }

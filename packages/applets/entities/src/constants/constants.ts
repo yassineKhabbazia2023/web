@@ -1,41 +1,7 @@
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
-import type { DefineDateTimeFormat } from 'vue-i18n'
 import { IconName, PFilterOptionProps } from '@pulse/styleguide/types'
 import { ReportTypeEnum, ReportTypeLabelEnum } from '@entities/common/types/BIReports.enums'
 import { ReportTypeTag } from '@entities/pages/wallet/pages/biReportsList/components/ReportErrorDrawer/components/ReportErrorCard/report-error-card.type'
-
-export const DATE_TIME_FORMATS = {
-  'en-US': {
-    short: {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-    },
-    long: {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    },
-  },
-  'fr-FR': {
-    short: {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-    },
-    long: {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    },
-  },
-} as Record<string, DefineDateTimeFormat>
-
-export const PAGE_SIZES = [15, 30, 45, 60]
 
 export const ENTITY_STATUS_COLOR: Record<EntityStatus, PFilterOptionProps['pColor']> = {
   [EntityStatus.TO_DEPLOY]: 'warning',

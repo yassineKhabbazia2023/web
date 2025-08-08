@@ -63,7 +63,7 @@ import { models } from 'powerbi-client'
 import { reactive, onMounted, computed, ref } from 'vue'
 import { PPagination, PLoader } from '@pulse/styleguide/components'
 import ReportToolbar from './components/ReportToolbar'
-import { PAGE_SIZES } from '@entities/constants'
+import { PAGE_SIZES } from '@pulse/common/constants'
 import type {
   ReportStatusTag,
   MappedReportRow,

@@ -7,7 +7,7 @@ import type {
   ReportStatusTag,
   ReportTableRow,
 } from '@entities/common/types/BIReportsTypes'
-import { removeFalsyValues } from '@entities/helper'
+import { removeFalsyValues } from '@pulse/core/utils/object'
 
 export const getMappedReport = (
   reports: ReportTableRow[],

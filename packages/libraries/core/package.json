@@ -11,6 +11,7 @@
     "./mocks": "./src/mocks.mts",
     "./enums": "./src/enums.mts",
     "./utils/array": "./src/utils/array/array.utils.ts",
+    "./utils/object": "./src/utils/object/object.utils.ts",
     "./utils/dates": "./src/utils/dates/dates.utils.ts",
     "./utils/idle": "./src/utils/idle/idle.utils.ts",
     "./utils/validator": "./src/utils/validators/index.mts",

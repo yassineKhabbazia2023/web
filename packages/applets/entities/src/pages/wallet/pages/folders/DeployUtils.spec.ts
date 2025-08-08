@@ -1,7 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import {
   fetchWalletData,
-  getSearchParams,
   getMappedAccount,
 } from './DeployUtils'
 import {
@@ -87,34 +86,6 @@ describe('test DeployUtils', () => {
       expect(fetchAccountsSpy).toHaveBeenCalledOnce()
       expect(fetchAccountsSpy).toHaveBeenNthCalledWith(1, expectedArguments)
       expect(queryResult).toMatchObject(expectedQueryResult)
-    })
-  })
-
-  describe('getSearchParams', () => {
-    it('should return proper queryParams', () => {
-      const searchCriteria = getMockedSearchCriteria({
-        currentPage: 1,
-      })
-      const queryParams = getSearchParams(searchCriteria)
-      const expectedSearchParams = [
-        'currentuser',
-        `?pageNumber=${searchCriteria.currentPage}`,
-        `&pageSize=${searchCriteria.limit}`,
-      ].join('')
-      expect(queryParams).toBe(expectedSearchParams)
-    })
-    it('should return the correct query parameters when the allAccounts parameter is set to true', () => {
-      const searchCriteria = getMockedSearchCriteria({
-        currentPage: 1,
-      })
-      const queryParams = getSearchParams(searchCriteria, true)
-      const expectedSearchParams = [
-        'all',
-        `?pageNumber=${searchCriteria.currentPage}`,
-        `&pageSize=${searchCriteria.limit}`,
-      ].join('')
-
-      expect(queryParams).toBe(expectedSearchParams)
     })
   })
 

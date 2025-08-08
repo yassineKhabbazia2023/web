@@ -217,14 +217,12 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { getInitials } from '@pulse/common'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
-import {
-  PAGE_SIZES,
-  DATE_TIME_FORMATS as datetimeFormats,
-} from '@entities/constants'
-import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { PAGE_SIZES, PERMISSION_ACTION } from '@pulse/common/constants'
+import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { getFullName } from '@entities/common/utils'
 import { fetchAccountCustomers } from '@entities/services/wallet'
-import { getPaginationLabel, removeFalsyValues } from '@entities/helper'
+import { getPaginationLabel } from '@entities/helper'
+import { removeFalsyValues } from '@pulse/core/utils/object'
 import { updateSignatoryStatus, getAccountSignatories } from '@entities/services/account'
 import type { AccountSignatories } from '@entities/services/account/accountTypes'
 import type { StateUser, User } from './types'

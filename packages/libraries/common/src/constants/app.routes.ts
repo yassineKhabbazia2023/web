@@ -43,6 +43,7 @@ export const APP_ROUTES = {
     collab: {
       root: { path: 'portefeuille', name: RouteName.WALLET },
       landing: { path: 'dossiers', name: RouteName.FOLDERS },
+      submitBIReport: { path: 'deposer-rapport-bi', name: RouteName.POWER_BI },
     },
   },
   error: {

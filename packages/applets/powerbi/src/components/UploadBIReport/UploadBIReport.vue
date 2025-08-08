@@ -33,7 +33,7 @@ import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { PFormItem, PUpload, PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
-import type { UploadBIReportProps } from './UploadBIReportTypes'
+import type { UploadBIReportProps } from './upload-bi-report.types'
 
 const { t } = useI18n({
   inheritLocale: true,

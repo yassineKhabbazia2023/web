@@ -58,8 +58,9 @@ import {
   PLoader,
   PPagination,
 } from '@pulse/styleguide/components'
-import { getInitials, removeFalsyValues, getPaginationLabel } from '@entities/helper'
-import { PAGE_SIZES } from '@entities/constants'
+import { getInitials, getPaginationLabel } from '@entities/helper'
+import { removeFalsyValues } from '@pulse/core/utils/object'
+import { PAGE_SIZES } from '@pulse/common/constants'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import type { ExtendedCollab, State } from './types'

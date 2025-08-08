@@ -107,7 +107,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
+import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { PTable, PTableColumn, PTag, PAvatar, PButton, PIcon, PTooltip, PToolbox } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { CurrentUserManager } from '@pulse/common/managers'

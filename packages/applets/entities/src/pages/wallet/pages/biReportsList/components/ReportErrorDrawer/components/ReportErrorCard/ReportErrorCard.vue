@@ -41,7 +41,8 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PNotificationCard, PTag } from '@pulse/styleguide/components'
-import { DATE_TIME_FORMATS, REPORT_TYPES } from '@entities/constants'
+import { REPORT_TYPES } from '@entities/constants'
+import { DATE_TIME_FORMATS } from '@pulse/common/i18n'
 import type { ReportErrorCardProps } from './report-error-card.type'
 import { getReportTypeTag } from './utils'
 

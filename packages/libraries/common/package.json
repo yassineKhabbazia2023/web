@@ -22,6 +22,7 @@
     "./types": "./src/types.mts",
     "./stores": "./src/stores/main.mts",
     "./mocks": "./src/__mocks__/index.ts",
+    "./utils": "./src/utils/index.mts",
     ".": "./src/main.mts"
   },
   "scripts": {

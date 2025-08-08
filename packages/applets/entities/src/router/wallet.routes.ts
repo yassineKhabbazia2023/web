@@ -19,11 +19,6 @@ const BASE_WALLET_ROUTES = [
     name: RouteName.BI_REPORTS_LIST,
     page: 'biReportsList',
   },
-  {
-    path: 'deposer-rapport-bi',
-    name: RouteName.POWER_BI,
-    page: 'powerbi',
-  },
 ]
 
 const WALLET_CHILDREN_ROUTES = [

@@ -78,13 +78,13 @@ import {
   PRow,
   PLoader,
 } from '@pulse/styleguide/components'
-import UploadBIReport from './components/UploadBIReport'
-import BIReportSubmitted from './components/BIReportSubmitted'
-import BIReportInformation from './components/BIReportInformation'
-import { fetchBIReportTypes, uploadBIreport } from '@entities/services/reporting'
-import type { ReportInfo } from './SubmitBIReportTypes'
 import { displayNotification } from '@pulse/styleguide'
-import type { ReportType } from '@entities/common/types/BIReportsTypes'
+import { fetchBIReportTypes, uploadBIreport } from '@powerbi/services/reporting.service'
+import type { ReportType, ReportInfo } from '@powerbi/types/bi-reports.types'
+
+import UploadBIReport from '@powerbi/components/UploadBIReport/UploadBIReport.vue'
+import BIReportSubmitted from '@powerbi/components/BIReportSubmitted/BIReportSubmitted.vue'
+import BIReportInformation from '@powerbi/components/BIReportInformation/BIReportInformation.vue'
 
 const { t } = useI18n({
   inheritLocale: true,

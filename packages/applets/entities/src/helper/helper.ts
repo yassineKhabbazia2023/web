@@ -39,12 +39,6 @@ export const formatDateToLocale = (dateString: string) => {
   return new Date(dateString).toLocaleDateString('fr-FR')
 }
 
-export const removeFalsyValues = (obj: object) =>
-  Object.entries(obj).reduce(
-    (acc: any, [key, value]) => (value ? ((acc[key] = value), acc) : acc),
-    {},
-  )
-
 export function getPaginationLabel<T>(onLabel: string, {
   currentPage,
   limit,

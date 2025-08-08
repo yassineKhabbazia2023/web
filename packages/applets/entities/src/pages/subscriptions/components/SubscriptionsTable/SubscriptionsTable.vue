@@ -136,7 +136,7 @@ import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/serv
 import { fetchSubscriptionRequests, validateSubscriptionRequest } from '@entities/services/subscription'
 import { getInitials } from '@entities/helper'
 import SubscriptionsFilter from './components/SubscriptionsFilter'
-import { DATE_TIME_FORMATS as datetimeFormats } from '@entities/constants'
+import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { logger } from '@pulse/core'
 

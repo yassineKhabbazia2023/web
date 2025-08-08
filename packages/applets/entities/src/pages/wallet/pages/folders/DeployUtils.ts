@@ -1,31 +1,10 @@
-import type { WalletData, SearchCriteria, DeploymentStatus, FilterQueryParams } from '../../types'
+import type { WalletData, SearchCriteria, DeploymentStatus } from '../../types'
 import type { AccountRow } from '@entities/services/account'
 import { fetchAccounts } from '@entities/services/account'
-import { getInitials, removeFalsyValues } from '@entities/helper'
+import { getInitials } from '@entities/helper'
 import type { QueryResult } from '@pulse/common/types'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
-
-export function getQueryParams(searchCriteria: SearchCriteria): FilterQueryParams {
-  return {
-    pageNumber: searchCriteria.currentPage,
-    pageSize: searchCriteria.limit,
-    search: searchCriteria.search,
-    'sorting.field': searchCriteria.sorting?.field,
-    'sorting.descending': searchCriteria.sorting?.descending,
-    accountNumber: searchCriteria.accountNumber,
-    deploymentStatus: searchCriteria.filterByDeploymentStatus,
-    isFavoriteFilter: searchCriteria.isFavoriteFilter,
-    isCustomerRelationFilter: searchCriteria.isCustomerRelationFilter,
-  }
-}
-
-export function getSearchParams(searchCriteria: SearchCriteria, allAccounts: boolean = false) {
-  const queryParams = getQueryParams(searchCriteria)
-  const queryParamsWithoutUndefined = removeFalsyValues(queryParams)
-  const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
-
-  return `${allAccounts ? 'all' : 'currentuser'}?${searchParams}`
-}
+import { getSearchParams } from '@pulse/common/utils'
 
 export async function fetchWalletData(
   deploymentStatuses: DeploymentStatus[],
