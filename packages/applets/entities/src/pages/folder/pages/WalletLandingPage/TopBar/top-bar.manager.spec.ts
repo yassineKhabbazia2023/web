@@ -1,13 +1,14 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { usePermissionsStore, useUserStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 import {
   getStoreMock,
   getMockedUser as getMockedUserCollab,
   getMockedUserInfo as getMockedUserCustomer,
 } from '@pulse/common/mocks'
 import { TopBarManager } from './top-bar.manager'
+import { CurrentUserManager } from '@pulse/common/managers'
 
-const permissionsStore = getStoreMock(usePermissionsStore)
+vi.mock('@pulse/common/managers')
+
 const userStore = getStoreMock(useUserStore)
 
 describe('TopBarManager', () => {
@@ -17,12 +18,12 @@ describe('TopBarManager', () => {
 
   describe('isPennylaneSSODisplayed', () => {
     it('should return true when user has pennylane permission', () => {
-      permissionsStore.getHasPennylanePermission.mockReturnValue(true)
+      vi.mocked(CurrentUserManager).getHasPennylanePermission.mockReturnValue(true)
       expect(TopBarManager.isPennylaneSSODisplayed()).toBe(true)
     })
 
     it('should return false when user does not have pennylane permission', () => {
-      permissionsStore.getHasPennylanePermission.mockReturnValue(false)
+      vi.mocked(CurrentUserManager).getHasPennylanePermission.mockReturnValue(false)
       expect(TopBarManager.isPennylaneSSODisplayed()).toBe(false)
     })
   })

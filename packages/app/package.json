@@ -25,6 +25,7 @@
     "@pulse/login": "1.0.0",
     "@pulse/mandate": "1.0.0",
     "@pulse/offers-catalog": "1.0.0",
+    "@pulse/pennylane": "1.0.0",
     "@pulse/powerbi": "1.0.0",
     "@pulse/styleguide": "3.1.0"
   }

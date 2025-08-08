@@ -9,6 +9,7 @@ import { useTokenStore } from '../../stores/token/token.store'
 import { storeToRefs } from 'pinia'
 import { TokenManager } from '../token/token.manager'
 import { SelectedEntityManager } from '../selected-entity/selected-entity.manager'
+import { PERMISSION_ACCOUNT } from '../../constants/permissions'
 
 export class CurrentUserManager {
   static async setCurrentUser(currentUser?: UserInfo) {
@@ -56,6 +57,14 @@ export class CurrentUserManager {
     const permissionsList = [...(selectedEntityPermissions.value || []), ...(userPermissions.value || [])]
 
     return arrayIncludes(permissionsList, permissionCode)
+  }
+
+  static getHasGedComptaPermission() {
+    return CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.GED_COMPTA)
+  }
+
+  static getHasPennylanePermission() {
+    return CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.PENNYLANE)
   }
 
   static persistToken(token: string) {

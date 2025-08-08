@@ -7,6 +7,7 @@ import launcherApplet from '@pulse/launcher'
 import loginApplet from '@pulse/login'
 import mandateApplet from '@pulse/mandate'
 import offersCatalogApplet from '@pulse/offers-catalog'
+import pennylaneApplet from '@pulse/pennylane'
 import powerBiApplet from '@pulse/powerbi'
 import commonLibrary from '@pulse/common'
 import { i18n } from '@pulse/common/i18n'
@@ -55,6 +56,7 @@ const app = createApp(App)
   .use(loginApplet, { router })
   .use(mandateApplet, { router })
   .use(offersCatalogApplet, { router })
+  .use(pennylaneApplet, { router })
   .use(powerBiApplet, { router })
   // install library
   .use(styleguideLibrary, {

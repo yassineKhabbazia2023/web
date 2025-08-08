@@ -1,12 +1,6 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { describe, expect, it } from 'vitest'
 import { usePermissionsStore } from './permissions.store'
-import {
-  customerEntityPermissionsWithPennylane,
-  collaboratorEntityPermissionsWithPennylane,
-  customerEntityPermissionsWithoutPennylane,
-  collaboratorEntityPermissionsWithoutPennylane,
-} from '@pulse/common/mocks'
 import * as permissionService from '@pulse/common/services/permissions'
 
 const permissionsMock = ['ab', 'c']
@@ -36,29 +30,6 @@ describe('test permissionsStore', () => {
     permissionsStore.setSelectedEntityPermissions(permissionsMock)
 
     expect(permissionsStore.selectedEntityPermissions).toStrictEqual(permissionsMock)
-  })
-
-  it.each([
-    {
-      entityPermissions: customerEntityPermissionsWithPennylane(),
-      expectedValue: true,
-    },
-    {
-      entityPermissions: collaboratorEntityPermissionsWithPennylane(),
-      expectedValue: true,
-    },
-    {
-      entityPermissions: customerEntityPermissionsWithoutPennylane(),
-      expectedValue: false,
-    },
-    {
-      entityPermissions: collaboratorEntityPermissionsWithoutPennylane(),
-      expectedValue: false,
-    },
-  ])('should return true when selectedEntityPermissions contains a pennylane permission', ({ entityPermissions, expectedValue }) => {
-    permissionsStore.setSelectedEntityPermissions(entityPermissions)
-    expect(permissionsStore.getHasPennylanePermission()).toBe(expectedValue)
-
   })
 
   it('updates userPermissions via service call', async () => {

@@ -47,6 +47,9 @@
       "@offers-catalog/*": [
         "../applets/offers-catalog/src/*"
       ],
+      "@pennylane/*": [
+        "../applets/pennylane/src/*"
+      ],
       "@powerbi/*": [
         "../applets/powerbi/src/*"
       ]

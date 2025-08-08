@@ -1,6 +1,7 @@
 export enum WidgetName {
   SSO = 'SSO',
   PENNYLANE_INTRO = 'PennylaneIntro',
+  PENNYLANE_DOCUMENTS = 'PennylaneDocuments',
   DIGILAB = 'Digilab',
   RSS_NEWS = 'RssNews',
   POWERBI_INTRO = 'PowerBIIntro',

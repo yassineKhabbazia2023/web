@@ -1,46 +1,41 @@
-import { describe, it, vi, expect } from 'vitest'
+import { type MockInstance } from 'vitest'
 import { refreshPageWhenCurrentUserPermissionChange } from './permission.composable'
+import { useUserStore } from '@pulse/common/stores'
+import { getStoreMock } from '@pulse/common/mocks'
 
-vi.mock('@pulse/common/stores', () => ({
-  useUserStore: () => ({
-    getUserId: () => 42,
-  }),
-}))
+const userIdMock = 42
+const otherUserIdMock = 999
+const userStoreMock = getStoreMock(useUserStore)
+Object.defineProperty(window, 'location', {
+  value: {
+    ...window.location,
+    reload: vi.fn(),
+  },
+  writable: true,
+})
 
 describe('refreshPageWhenPermissionChange', () => {
+  let reloadSpy: MockInstance
   beforeEach(() => {
-    Object.defineProperty(window, 'location', {
-      value: {
-        ...window.location,
-        reload: vi.fn(),
-      },
-      writable: true,
-    })
+    vi.useFakeTimers()
+    userStoreMock.getUserId.mockReturnValue(userIdMock)
+    reloadSpy = vi.spyOn(window.location, 'reload')
+  })
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   it('should reload the page if it\'s the current user', () => {
-    const reloadSpy = vi.spyOn(window.location, 'reload').mockImplementation(() => {})
+    refreshPageWhenCurrentUserPermissionChange(userIdMock)
 
-    refreshPageWhenCurrentUserPermissionChange(42)
-
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        expect(reloadSpy).toHaveBeenCalled()
-        resolve()
-      }, 50)
-    })
+    vi.advanceTimersByTime(500)
+    expect(reloadSpy).toHaveBeenCalled()
   })
 
   it('should not reload the page if isn\'t the current user', () => {
-    const reloadSpy = vi.spyOn(window.location, 'reload').mockImplementation(() => {})
+    refreshPageWhenCurrentUserPermissionChange(otherUserIdMock)
 
-    refreshPageWhenCurrentUserPermissionChange(999)
-
-    return new Promise<void>((resolve) => {
-      setTimeout(() => {
-        expect(reloadSpy).not.toHaveBeenCalled()
-        resolve()
-      }, 50)
-    })
+    vi.advanceTimersByTime(500)
+    expect(reloadSpy).not.toHaveBeenCalled()
   })
 })

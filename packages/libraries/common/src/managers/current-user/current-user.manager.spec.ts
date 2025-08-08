@@ -7,6 +7,7 @@ import { useUserStore } from '../../stores/user/user.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
 import { LOCAL_STORAGE_TOKEN_KEY } from '../token/token.manager'
+import { PERMISSION_ACCOUNT } from '../../constants/permissions'
 
 import { CurrentUserManager } from './current-user.manager'
 
@@ -129,6 +130,52 @@ describe('test current-user.manager', () => {
         expect(checkPermission).toBe(expected)
       },
     )
+  })
+
+  describe('getHasGedComptaPermission', () => {
+    const tests = [{
+      hasPermissionMock: false,
+      expectedHasGedComptaPermission: false,
+    }, {
+      hasPermissionMock: true,
+      expectedHasGedComptaPermission: true,
+    }]
+    it.each(tests)('should return $expected when $description', ({
+      hasPermissionMock,
+      expectedHasGedComptaPermission,
+    }) => {
+      const hasPermissionSpy = vi.spyOn(CurrentUserManager, 'hasPermission')
+      hasPermissionSpy.mockReturnValue(hasPermissionMock)
+
+      const hasGedComptaPermission = CurrentUserManager.getHasGedComptaPermission()
+
+      expect(hasPermissionSpy).toHaveBeenCalledOnce()
+      expect(hasPermissionSpy).toHaveBeenCalledWith(PERMISSION_ACCOUNT.GED_COMPTA)
+      expect(hasGedComptaPermission).toBe(expectedHasGedComptaPermission)
+    })
+  })
+
+  describe('getHasPennylanePermission', () => {
+    const tests = [{
+      hasPermissionMock: false,
+      expectedHasPennylanePermission: false,
+    }, {
+      hasPermissionMock: true,
+      expectedHasPennylanePermission: true,
+    }]
+    it.each(tests)('should return $expected when $description', ({
+      hasPermissionMock,
+      expectedHasPennylanePermission,
+    }) => {
+      const hasPermissionSpy = vi.spyOn(CurrentUserManager, 'hasPermission')
+      hasPermissionSpy.mockReturnValue(hasPermissionMock)
+
+      const hasPennylanePermission = CurrentUserManager.getHasPennylanePermission()
+
+      expect(hasPermissionSpy).toHaveBeenCalledOnce()
+      expect(hasPermissionSpy).toHaveBeenCalledWith(PERMISSION_ACCOUNT.PENNYLANE)
+      expect(hasPennylanePermission).toBe(expectedHasPennylanePermission)
+    })
   })
 
   describe('save token to store and local storage', () => {

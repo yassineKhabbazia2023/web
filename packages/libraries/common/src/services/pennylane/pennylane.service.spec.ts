@@ -1,6 +1,6 @@
 import { vi, describe, it, expect } from 'vitest'
 import { apiGatewayMock } from '../../__mocks__/api-gateway.mocks'
-import { getMockedPennylaneRole, getMockedPennylaneAvailableRole } from '../../__mocks__/pennylane.mocks'
+import { getMockedPennylaneRole, getMockedPennylaneAvailableRole, getMockedPennylaneDocument, getMockedPennylaneDocumentsQueryResult } from '../../__mocks__/pennylane.mocks'
 import { API_PREFIXES } from '../../constants/api-prefixes'
 
 import { PennylaneService } from './pennylane.service'
@@ -12,6 +12,9 @@ vi.mock('@pulse/common', () => ({
 }))
 
 const roleMock = getMockedPennylaneRole()
+const documentsMock = [
+  getMockedPennylaneDocument(),
+]
 
 describe('PennylaneService', () => {
   describe('getAvailableRoles', () => {
@@ -56,6 +59,31 @@ describe('PennylaneService', () => {
       expect(role).toStrictEqual(roleMock)
       expect(apiGatewayMock.get).toHaveBeenCalledOnce()
       expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl)
+    })
+  })
+
+  describe('getDocuments', () => {
+    it('should call properly commonApi.gateway.get', async () => {
+      const accountNumberMock = '23'
+      const expectedUrl = `${API_PREFIXES.PENNYLANE}/documents`
+      const queryParams = {
+        accountNumber: accountNumberMock,
+      }
+      const expectedParams = {
+        params: queryParams,
+      }
+      const documentsResultMock= getMockedPennylaneDocumentsQueryResult({
+        items: documentsMock,
+      })
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: documentsResultMock,
+      })
+      const documents = await PennylaneService.getDocuments(accountNumberMock)
+
+      expect(documents).toStrictEqual(documentsResultMock)
+      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
+      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl, expectedParams)
     })
   })
 

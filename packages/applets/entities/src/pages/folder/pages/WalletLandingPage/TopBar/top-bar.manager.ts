@@ -1,8 +1,11 @@
-import { usePermissionsStore, useUserStore } from '@pulse/common/stores'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { useUserStore } from '@pulse/common/stores'
+
 export class TopBarManager {
   static isPennylaneSSODisplayed() {
-    const permissionsStore = usePermissionsStore()
-    return permissionsStore.getHasPennylanePermission()
+    const hasPennylanePermission = CurrentUserManager.getHasPennylanePermission()
+
+    return hasPennylanePermission
   }
 
   static shouldDisplayCustomerSSO() {
