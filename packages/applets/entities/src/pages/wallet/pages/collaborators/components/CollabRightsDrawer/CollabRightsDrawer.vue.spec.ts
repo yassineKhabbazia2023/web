@@ -13,6 +13,7 @@ import { nextTick } from 'vue'
 import * as walletServices from '@entities/services/wallet'
 import type { CollabRightsDrawerProps } from './CollabRightsDrawerTypes'
 import CollabRightsDrawer from '.'
+import { createTestingPinia } from '@pinia/testing'
 
 // Mocks
 const mockedCollabRoles = getMockedCollabRoles()
@@ -44,6 +45,8 @@ vi.mock('vue-router', () => ({
     go: vi.fn(),
   }),
 }))
+
+createTestingPinia()
 
 const defaultProps = {
   rowData,
