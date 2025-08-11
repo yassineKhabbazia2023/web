@@ -55,7 +55,7 @@
       :key="index"
       :pIsOpen="openedAccountNumbers.includes(accountOperations.accountNumber)"
       class="margin-bottom--4 width--100"
-      pHeaderCssClass="bg--persian-50 margin-bottom--1"
+      pHeaderCssClass="bg--neutral-gray-50 margin-bottom--1"
       :pHasHeader="isGlobalMode"
       @open="addIfNotExists(openedAccountNumbers, accountOperations.accountNumber)"
       @close="removeIfExists(openedAccountNumbers, accountOperations.accountNumber)"

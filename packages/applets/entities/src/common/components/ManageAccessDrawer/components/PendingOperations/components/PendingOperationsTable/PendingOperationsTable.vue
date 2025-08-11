@@ -40,10 +40,10 @@
     <PTableColumn :pLabel="t('actions')" pAlign="right">
       <template #default="scope">
         <div class="flex flex--align-items-center">
-          <PTooltip :pContent="t('refuseAccess')">
+          <PTooltip :pContent="t('refuseAccess')" :pHideAfter="0">
             <PButton
               v-if="scope.row.status !== OperationStatus.APPROVED"
-              pType="primary"
+              pType="danger"
               pSize="small"
               class="margin-right--2"
               pPlain
@@ -56,9 +56,10 @@
           <PTooltip
             :pContent="t('validateAccess')"
             :disabled="scope.row.status === OperationStatus.APPROVED"
+            :pHideAfter="0"
           >
             <PButton
-              pType="primary"
+              pType="tertiary"
               pSize="small"
               :pDisabled="scope.row.status === OperationStatus.APPROVED"
               pPlain
