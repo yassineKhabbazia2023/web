@@ -32,9 +32,7 @@ const CUSTOM_EVENT = 'custom event'
 const CUSTOM_USER_ID = '123'
 const mockAmplitudeSetup = {
   serverZone: SERVER_ZONE,
-  defaultTracking: {
-    sessions: true,
-  },
+  defaultTracking: false,
   minIdLength: 1,
 }
 

@@ -56,9 +56,7 @@ export class AmplitudeService {
       undefined, // the default value of the userId
       {
         serverZone: SERVER_ZONE,
-        defaultTracking: {
-          sessions: true, // start tracking session automatically
-        },
+        defaultTracking: false,
         minIdLength: 1,
         serverUrl: serverUrl || undefined,
       },
