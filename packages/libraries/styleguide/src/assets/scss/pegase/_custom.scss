@@ -80,3 +80,19 @@
 .z-index-1001 {
   z-index: 1001;
 }
+
+// in styleguide
+.border {
+  &-bottom {
+    border-bottom: 1px solid transparent;
+
+    &--secondary-amethyste {
+      border-bottom-style: solid;
+      border-bottom-color: var(--secondary-amethyste) !important;
+    }
+
+    &--2px {
+      border-bottom-width: 2px;
+    }
+  }
+}

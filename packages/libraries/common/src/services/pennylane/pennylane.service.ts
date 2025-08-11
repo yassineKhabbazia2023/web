@@ -53,4 +53,18 @@ export class PennylaneService {
 
     return data
   }
+
+  static async getDocumentContent(accountNumber: string, documentId: number) {
+    const queryParams = {
+      accountNumber,
+    }
+    const url = `${API_PREFIXES.PENNYLANE}/documents/${documentId}/content`
+
+    const { data } = await commonApi().gateway.get(url, {
+      params: queryParams,
+      responseType: 'arraybuffer',
+    })
+
+    return data
+  }
 }

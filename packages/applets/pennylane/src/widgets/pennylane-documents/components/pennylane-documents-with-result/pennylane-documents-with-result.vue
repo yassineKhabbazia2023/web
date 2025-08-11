@@ -11,14 +11,17 @@
     "
   >
     <li
-      v-for="({ name, path, iconName }, index) in internalPennylaneDocuments"
+      v-for="({ pennylaneDocument, iconName }, index) in internalPennylaneDocuments"
       :key="index"
       class="
         flex
         flex--align-items-center
-        margin-x--3
-        margin-y--2
+        padding-x--3
+        padding-y--2
+        cursor-pointer
+        hover-bg--base-persian-light
       "
+      @click="onClickDocument(pennylaneDocument)"
     >
       <div
         class="
@@ -32,7 +35,10 @@
         />
       </div>
       <ul
-        class="list-style-none"
+        class="
+          list-style-none
+          overflow-hidden
+        "
       >
         <li
           class="
@@ -42,7 +48,7 @@
             no-wrap
           "
         >
-          {{ name }}
+          {{ pennylaneDocument.name }}
         </li>
         <li
           class="
@@ -53,7 +59,7 @@
             font-small
           "
         >
-          {{ path }}
+          {{ pennylaneDocument.path }}
         </li>
       </ul>
     </li>
@@ -65,8 +71,16 @@ import { computed } from 'vue'
 import { PIcon } from '@pulse/styleguide/components'
 import { PennylaneDocumentsWithResultProps } from './pennylane-documents-with-result.types'
 import { getInternalPennylaneDocuments } from './pennylane-documents-with-result.utils'
+import type { PennylaneDocument } from '@pulse/common/types'
 
 const props = defineProps<PennylaneDocumentsWithResultProps>()
+const emit = defineEmits<{
+  'open-document': [PennylaneDocument],
+}>()
 
 const internalPennylaneDocuments = computed(() => getInternalPennylaneDocuments(props.pennylaneDocuments))
+
+function onClickDocument(pennylaneDocument: PennylaneDocument) {
+  emit('open-document', pennylaneDocument)
+}
 </script>

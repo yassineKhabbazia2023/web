@@ -8,14 +8,13 @@ export function getInternalPennylaneDocuments(
   return pennylaneDocuments
     .slice(0, 4)
     .toSorted((a, b) => a.updatedAt > b.updatedAt ? -1 : 1)
-    .map(({ name, path }) => {
-      const extension = getFileExtension(name)
+    .map((pennylaneDocument) => {
+      const extension = getFileExtension(pennylaneDocument.name)
       const iconName = getIconFileName(extension, 'filetypeTxt')
 
       return {
-        name,
-        path,
         iconName,
+        pennylaneDocument,
       }
     })
 }

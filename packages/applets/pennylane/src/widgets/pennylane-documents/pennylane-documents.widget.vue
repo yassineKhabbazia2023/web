@@ -7,6 +7,13 @@
       height--100
     "
   >
+    <PennylaneDocumentsViewer
+      v-if="hasOpenedPennylaneDocumentsViewer === true"
+      :isOpened="pennylaneViewerDocument !== undefined"
+      :accountNumber="accountNumber"
+      :pennylaneDocument="pennylaneViewerDocument"
+      @update:is-opened="onUpdateViewIsOpened"
+    />
     <PennylaneDocumentsHeader
       :lastSynchroDate="pennylaneLastSynchroDate"
       class="margin-bottom--2"
@@ -31,6 +38,7 @@
         v-if="pennylaneDocuments.length > 0"
         :pennylaneDocuments="pennylaneDocuments"
         class="margin-top--4"
+        @open-document="onOpenDocument"
       />
 
       <PennylaneDocumentsNoResult
@@ -42,28 +50,53 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import PennylaneDocumentsHeader from './components/pennylane-documents-header/pennylane-documents-header.vue'
 import PennylaneDocumentsNoResult from './components/pennylane-documents-no-result/pennylane-documents-no-result.vue'
 import PennylaneDocumentsWithResult from './components/pennylane-documents-with-result/pennylane-documents-with-result.vue'
+import PennylaneDocumentsViewer from './components/pennylane-documents-viewer/pennylane-documents-viewer.vue'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { PennylaneDocument } from '@pulse/common/types'
 import { PLoader, POverlay } from '@pulse/styleguide/components'
 import { APICallStatus } from '@pulse/common/enums'
 import { logger } from '@pulse/core'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { getFormattedPennylaneDocuments } from './pennylane-documents.helper'
+
+const selectedEntityStore = useSelectedEntityStore()
 
 const pennylaneDocuments = ref<PennylaneDocument[]>([])
 const pennylaneLastSynchroDate = ref<Date>()
 const apiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
-const selectedEntityStore = useSelectedEntityStore()
+const pennylaneViewerDocument = ref<PennylaneDocument>()
+const hasOpenedPennylaneDocumentsViewer = ref<boolean>()
+
+function onOpenDocument(pennylaneDocument: PennylaneDocument) {
+  hasOpenedPennylaneDocumentsViewer.value = true
+  pennylaneViewerDocument.value = pennylaneDocument
+
+  const eventProperty = {
+    document_consultation_localisation: 'homepage',
+  }
+  AmplitudeService.track('Document Consulted', eventProperty)
+}
+
+function onUpdateViewIsOpened(isOpened: boolean) {
+  if (isOpened === false) {
+    pennylaneViewerDocument.value = undefined
+  }
+}
+
+const accountNumber = computed(() => selectedEntityStore.selectedEntityAccountNumber)
 
 onMounted(async () => {
+  const pathPrefix = 'Pennylane'
   try {
     apiCallStatus.value = APICallStatus.LOADING
-    const documentQueryResult = await PennylaneService.getDocuments(selectedEntityStore.selectedEntityAccountNumber)
+    const documentQueryResult = await PennylaneService.getDocuments(accountNumber.value)
 
-    pennylaneDocuments.value = documentQueryResult.items
+    pennylaneDocuments.value = getFormattedPennylaneDocuments(documentQueryResult.items, pathPrefix)
     const lastSynchroDate = new Date(documentQueryResult.lastSynchroDate)
     if (lastSynchroDate.toString() !== 'Invalid Date') {
       // avoid invalid date (if lastSynchroDate is undefined for example)

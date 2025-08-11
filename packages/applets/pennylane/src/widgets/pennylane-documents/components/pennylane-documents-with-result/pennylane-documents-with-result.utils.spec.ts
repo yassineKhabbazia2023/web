@@ -27,12 +27,10 @@ describe('pennylane-documents-result.utils', () => {
       ]
       const {
         name,
-        path,
       } = pennylaneDocumentMock
 
       const expected = [{
-        name,
-        path,
+        pennylaneDocument: pennylaneDocumentMock,
         iconName: iconNameMock,
       }]
       getFileExtensionMock.mockReturnValue(fileExtensionMock)
@@ -82,7 +80,7 @@ describe('pennylane-documents-result.utils', () => {
       ]
       const internalPennylaneDocuments = getInternalPennylaneDocuments(pennylaneDocuments)
       const internalPennylaneDocumentsNames = internalPennylaneDocuments
-        .map(({ name }) => name)
+        .map(({ pennylaneDocument }) => pennylaneDocument.name)
 
       expect(internalPennylaneDocumentsNames).toStrictEqual(expectedNames)
     })

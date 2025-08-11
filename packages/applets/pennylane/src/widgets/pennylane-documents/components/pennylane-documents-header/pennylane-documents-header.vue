@@ -49,8 +49,8 @@ import { useI18n } from 'vue-i18n'
 import { AppColors } from '@pulse/styleguide'
 import { PIcon } from '@pulse/styleguide/components'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/constants'
-import { PennylaneDocumentsHeaderProps } from './pennylane-documents-header.types'
-import { getDayLabel } from './pennylane-documents-header.utils'
+import { PennylaneDocumentsHeaderProps } from './pennylane-documents-header.type'
+import { getDayLabel } from './pennylane-documents-header.helper'
 
 const { t, d } = useI18n({
   inheritLocale: true,

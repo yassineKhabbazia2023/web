@@ -13,6 +13,7 @@ export interface PennylaneAvailableRole {
 }
 
 export interface PennylaneDocument {
+  id: number
   name: string
   path: string
   url: string

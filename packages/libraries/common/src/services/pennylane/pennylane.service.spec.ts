@@ -12,9 +12,8 @@ vi.mock('@pulse/common', () => ({
 }))
 
 const roleMock = getMockedPennylaneRole()
-const documentsMock = [
-  getMockedPennylaneDocument(),
-]
+const documentMock = getMockedPennylaneDocument()
+const documentsMock = [documentMock]
 
 describe('PennylaneService', () => {
   describe('getAvailableRoles', () => {
@@ -82,6 +81,30 @@ describe('PennylaneService', () => {
       const documents = await PennylaneService.getDocuments(accountNumberMock)
 
       expect(documents).toStrictEqual(documentsResultMock)
+      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
+      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl, expectedParams)
+    })
+  })
+
+  describe('getDocumentContent', () => {
+    it('should call properly commonApi.gateway.get', async () => {
+      const documentContentMock = 'document content mock'
+      const accountNumberMock = '23'
+      const documentIdMock = 23
+      const expectedUrl = `${API_PREFIXES.PENNYLANE}/documents/${documentIdMock}/content`
+      const queryParams = {
+        accountNumber: accountNumberMock,
+      }
+      const expectedParams = {
+        params: queryParams,
+        responseType: 'arraybuffer',
+      }
+      apiGatewayMock.get.mockResolvedValue({
+        data: documentContentMock,
+      })
+      const documentContent = await PennylaneService.getDocumentContent(accountNumberMock, documentIdMock)
+
+      expect(documentContent).toStrictEqual(documentContentMock)
       expect(apiGatewayMock.get).toHaveBeenCalledOnce()
       expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl, expectedParams)
     })
