@@ -14,6 +14,7 @@
 
     <POverlay
       v-if="apiCallStatus === APICallStatus.LOADING"
+      pIsVignette
     >
       <div
         class="margin-y--12"
