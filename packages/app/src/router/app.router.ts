@@ -13,6 +13,7 @@ import { anonymousRoutes } from './routes/anonymous.routes'
 import { authenticatedRoutes } from './routes/authenticated.routes'
 import { notFoundRoutes } from './routes/not-found.routes'
 import { maintenanceRoutes } from './routes/maintenance.routes'
+import { permissionGuard } from './guards/permission.guard'
 
 const appRoutes: RouteRecordRaw[] = [
   ...maintenanceRoutes,
@@ -52,6 +53,7 @@ const router = createRouter({
 router.beforeEach(authenticationGuard)
 router.beforeEach(featureFlagGuard)
 router.beforeEach(selectedEntityGuard)
+router.beforeEach(permissionGuard)
 router.afterEach(seoGuard)
 
 export default router

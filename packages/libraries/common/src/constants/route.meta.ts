@@ -6,3 +6,4 @@ export const FEATURE_FLAG_META = 'feature_flag' // this meta defines the feature
 export const IS_UNITARY_VIEW_META = 'is_unitary_view' // this meta expresses that the current route has an active entity, will be removed by url driven feature
 export const ALLOW_ANONYMOUS_META = 'allow_anonymous' // this meta defines if the route can be accessed by anonymous users
 export const ALLOW_AUTHENTICATED_META = 'allow_authenticated' // this meta defines if the route can be accessed by authenticated users
+export const PERMISSIONS_META = 'permissions' // this meta defines if the route can be only accessed by users with these permissions
