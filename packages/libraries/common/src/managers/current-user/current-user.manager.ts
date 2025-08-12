@@ -64,7 +64,18 @@ export class CurrentUserManager {
   }
 
   static getHasPennylanePermission() {
-    return CurrentUserManager.hasPermission(PERMISSION_ACCOUNT.PENNYLANE)
+    return CurrentUserManager.hasPermissionForCurrentEntity(PERMISSION_ACCOUNT.PENNYLANE)
+  }
+
+  static readonly hasPermissionForCurrentEntity = (
+    permissionCode: string | string[],
+  ): boolean => {
+    const permissionsStore = usePermissionsStore()
+
+    const { selectedEntityPermissions } = storeToRefs(permissionsStore)
+    const permissionsList = selectedEntityPermissions.value || []
+
+    return arrayIncludes(permissionsList, permissionCode)
   }
 
   static persistToken(token: string) {

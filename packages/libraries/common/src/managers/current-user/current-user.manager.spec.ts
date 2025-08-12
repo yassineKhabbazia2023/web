@@ -168,12 +168,14 @@ describe('test current-user.manager', () => {
       expectedHasPennylanePermission,
     }) => {
       const hasPermissionSpy = vi.spyOn(CurrentUserManager, 'hasPermission')
-      hasPermissionSpy.mockReturnValue(hasPermissionMock)
+      const hasPermissionForCurrentEntitySpy = vi.spyOn(CurrentUserManager, 'hasPermissionForCurrentEntity')
+      hasPermissionForCurrentEntitySpy.mockReturnValue(hasPermissionMock)
 
       const hasPennylanePermission = CurrentUserManager.getHasPennylanePermission()
 
-      expect(hasPermissionSpy).toHaveBeenCalledOnce()
-      expect(hasPermissionSpy).toHaveBeenCalledWith(PERMISSION_ACCOUNT.PENNYLANE)
+      expect(hasPermissionSpy).not.toHaveBeenCalledOnce()
+      expect(hasPermissionForCurrentEntitySpy).toHaveBeenCalledOnce()
+      expect(hasPermissionForCurrentEntitySpy).toHaveBeenCalledWith(PERMISSION_ACCOUNT.PENNYLANE)
       expect(hasPennylanePermission).toBe(expectedHasPennylanePermission)
     })
   })
