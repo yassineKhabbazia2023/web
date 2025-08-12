@@ -81,6 +81,7 @@ watch(() => props.isOpened && props.pennylaneDocument?.id, () => {
 
     loadDocument({
       accountNumber: props.accountNumber,
+      accountId: props.accountId,
       documentName: name ?? '',
       documentId: id ?? 0,
     })

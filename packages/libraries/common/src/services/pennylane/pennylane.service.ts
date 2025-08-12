@@ -41,11 +41,11 @@ export class PennylaneService {
     return data
   }
 
-  static async getDocuments(accountNumber: string) {
+  static async getDocuments(accountNumber: string, accountId: number) {
     const queryParams = {
       accountNumber,
     }
-    const url = `${API_PREFIXES.PENNYLANE}/documents`
+    const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/documents/currentuser`
 
     const { data } = await commonApi().gateway.get<PennylaneDocumentQueryResult>(url, {
       params: queryParams,
@@ -54,11 +54,11 @@ export class PennylaneService {
     return data
   }
 
-  static async getDocumentContent(accountNumber: string, documentId: number) {
+  static async getDocumentContent(accountNumber: string, accountId: number, documentId: number) {
     const queryParams = {
       accountNumber,
     }
-    const url = `${API_PREFIXES.PENNYLANE}/documents/${documentId}/content`
+    const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/documents/${documentId}/content/currentuser`
 
     const { data } = await commonApi().gateway.get(url, {
       params: queryParams,

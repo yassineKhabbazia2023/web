@@ -4,4 +4,5 @@ export interface PennylaneDocumentsViewerProps {
   isOpened: boolean
   pennylaneDocument?: PennylaneDocument
   accountNumber: string
+  accountId: number
 }

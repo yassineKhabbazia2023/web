@@ -11,6 +11,7 @@ vi.mock('./pennylane-documents-viewer.helper')
 const technicalErrorMessageMock = 'An error occurred while loading the document. Please try again later.'
 const documentNameMock = 'example-document.pdf'
 const accountNumberMock = '1234567890'
+const accountIdMock = 26
 const documentIdMock = 12345
 const previewImageMock = 'preview-image-mock'
 const documentTypeMock = 'document-type-mock'
@@ -51,6 +52,7 @@ describe('pennylane-documents-viewer.composable', () => {
       documentName: documentNameMock,
       accountNumber: accountNumberMock,
       documentId: documentIdMock,
+      accountId: accountIdMock,
     })
 
     expect(vi.mocked(getDocumentType)).toHaveBeenCalledWith(fileExtensionMock)
@@ -81,6 +83,7 @@ describe('pennylane-documents-viewer.composable', () => {
       documentName: documentNameMock,
       accountNumber: accountNumberMock,
       documentId: documentIdMock,
+      accountId: accountIdMock,
     })
 
     expect(vi.mocked(getDocumentType)).not.toHaveBeenCalled()

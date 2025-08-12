@@ -63,8 +63,9 @@ describe('PennylaneService', () => {
 
   describe('getDocuments', () => {
     it('should call properly commonApi.gateway.get', async () => {
-      const accountNumberMock = '23'
-      const expectedUrl = `${API_PREFIXES.PENNYLANE}/documents`
+      const accountNumberMock = '2025546345'
+      const accountIdMock = 26
+      const expectedUrl = `${API_PREFIXES.PENNYLANE}/accounts/${accountIdMock}/documents/currentuser`
       const queryParams = {
         accountNumber: accountNumberMock,
       }
@@ -78,7 +79,7 @@ describe('PennylaneService', () => {
       apiGatewayMock.get.mockResolvedValue({
         data: documentsResultMock,
       })
-      const documents = await PennylaneService.getDocuments(accountNumberMock)
+      const documents = await PennylaneService.getDocuments(accountNumberMock, accountIdMock)
 
       expect(documents).toStrictEqual(documentsResultMock)
       expect(apiGatewayMock.get).toHaveBeenCalledOnce()
@@ -89,9 +90,10 @@ describe('PennylaneService', () => {
   describe('getDocumentContent', () => {
     it('should call properly commonApi.gateway.get', async () => {
       const documentContentMock = 'document content mock'
-      const accountNumberMock = '23'
+      const accountNumberMock = '2025546345'
+      const accountIdMock = 26
       const documentIdMock = 23
-      const expectedUrl = `${API_PREFIXES.PENNYLANE}/documents/${documentIdMock}/content`
+      const expectedUrl = `${API_PREFIXES.PENNYLANE}/accounts/${accountIdMock}/documents/${documentIdMock}/content/currentuser`
       const queryParams = {
         accountNumber: accountNumberMock,
       }
@@ -102,7 +104,7 @@ describe('PennylaneService', () => {
       apiGatewayMock.get.mockResolvedValue({
         data: documentContentMock,
       })
-      const documentContent = await PennylaneService.getDocumentContent(accountNumberMock, documentIdMock)
+      const documentContent = await PennylaneService.getDocumentContent(accountNumberMock, accountIdMock, documentIdMock)
 
       expect(documentContent).toStrictEqual(documentContentMock)
       expect(apiGatewayMock.get).toHaveBeenCalledOnce()

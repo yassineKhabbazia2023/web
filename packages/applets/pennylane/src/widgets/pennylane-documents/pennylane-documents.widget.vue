@@ -11,6 +11,7 @@
       v-if="hasOpenedPennylaneDocumentsViewer === true"
       :isOpened="pennylaneViewerDocument !== undefined"
       :accountNumber="accountNumber"
+      :accountId="accountId"
       :pennylaneDocument="pennylaneViewerDocument"
       @update:is-opened="onUpdateViewIsOpened"
     />
@@ -89,12 +90,13 @@ function onUpdateViewIsOpened(isOpened: boolean) {
 }
 
 const accountNumber = computed(() => selectedEntityStore.selectedEntityAccountNumber)
+const accountId = computed(() => selectedEntityStore.selectedEntityId ?? 0)
 
 onMounted(async () => {
   const pathPrefix = 'Pennylane'
   try {
     apiCallStatus.value = APICallStatus.LOADING
-    const documentQueryResult = await PennylaneService.getDocuments(accountNumber.value)
+    const documentQueryResult = await PennylaneService.getDocuments(accountNumber.value, accountId.value)
 
     pennylaneDocuments.value = getFormattedPennylaneDocuments(documentQueryResult.items, pathPrefix)
     const lastSynchroDate = new Date(documentQueryResult.lastSynchroDate)

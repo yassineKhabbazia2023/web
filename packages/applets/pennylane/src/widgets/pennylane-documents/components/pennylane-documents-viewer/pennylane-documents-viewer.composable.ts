@@ -18,10 +18,12 @@ export function usePennylaneDocumentViewer(
   async function loadDocument({
     documentName,
     accountNumber,
+    accountId,
     documentId,
   }: {
     documentName: string
     accountNumber: string
+    accountId: number
     documentId: number
   }) {
     fileExtension.value = undefined
@@ -34,6 +36,7 @@ export function usePennylaneDocumentViewer(
         ? undefined
         : await PennylaneService.getDocumentContent(
           accountNumber,
+          accountId,
           documentId,
         )
       const extension = getFileExtension(documentName)
