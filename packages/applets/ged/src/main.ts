@@ -2,7 +2,7 @@ import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { RoutesManager } from '@pulse/common/managers'
 import { APP_ROUTES, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
-import EmailPnlWidget from '@ged/widgets/email-pennylane/email-pennylane.mts'
+import EmailPnlWidget from '@ged/widgets/email-pennylane/email-pennylane.widget'
 
 const routes: RouteRecordRaw[] = [
   {

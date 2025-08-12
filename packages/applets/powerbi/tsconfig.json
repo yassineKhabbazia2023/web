@@ -1,37 +1,13 @@
 {
-  "extends": "../../@config/tsconfig.base",
+  "extends": "../../@config/tsconfig.base.app",
   "include": [
     "env.d.ts",
     "./src/**/*",
     "tests/**/*",
     "__mocks__",
     "./vitest.setup.ts",
-    "src/**/*.json"
+    "src/**/*.json",
+    "./package.json"
   ],
-  "exclude": [
-    "node_modules"
-  ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "declarationDir": "./dist/types",
-    "outDir": "./dist/types",
-    "paths": {
-      "@common/*": [
-        "../../libraries/common/src/*"
-      ],
-      "@styleguide/*": [
-        "../../libraries/styleguide/src/*"
-      ],
-      "@powerbi/*": [
-        "src/*"
-      ]
-    },
-    "types": [
-      "@pinia/testing",
-      "vitest/globals",
-      "vitest/importMeta",
-      "vite/client",
-      "node"
-    ]
-  }
+  "compilerOptions": {}
 }

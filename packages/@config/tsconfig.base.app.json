@@ -1,0 +1,97 @@
+{
+  "extends": "./tsconfig.base",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": [
+      "@pinia/testing",
+      "vitest/globals",
+      "vitest/importMeta",
+      "vite/client",
+      "node"
+    ],
+    "declarationDir": "./dist/types",
+    "outDir": "./dist/types",
+    "paths": {
+      "@app/*": [
+        "../app/src/*"
+      ],
+      "@common/*": [
+        "../libraries/common/src/*"
+      ],
+      "@core/*": [
+        "../libraries/core/src/*"
+      ],
+      "@entities/*": [
+        "../applets/entities/src/*"
+      ],
+      "@ged/*": [
+        "../applets/ged/src/*"
+      ],
+      "@launcher/*": [
+        "../applets/launcher/src/*"
+      ],
+      "@login/*": [
+        "../applets/login/src/*"
+      ],
+      "@mandate/*": [
+        "../applets/mandate/src/*"
+      ],
+      "@offers-catalog/*": [
+        "../applets/offers-catalog/src/*"
+      ],
+      "@pennylane/*": [
+        "../applets/pennylane/src/*"
+      ],
+      "@powerbi/*": [
+        "../applets/powerbi/src/*"
+      ],
+      "@styleguide/*": [
+        "../libraries/styleguide/src/*"
+      ],
+      "@widgets/*": [
+        "../libraries/widgets/src/*"
+      ]
+    }
+  },
+  "references": [
+    {
+      "path": "./packages/app"
+    },
+    {
+      "path": "./packages/applets/entities"
+    },
+    {
+      "path": "./packages/applets/ged"
+    },
+    {
+      "path": "./packages/applets/launcher"
+    },
+    {
+      "path": "./packages/applets/login"
+    },
+    {
+      "path": "./packages/applets/mandate"
+    },
+    {
+      "path": "./packages/applets/offers-catalog"
+    },
+    {
+      "path": "./packages/applets/pennylane"
+    },
+    {
+      "path": "./packages/applets/powerbi"
+    },
+    {
+      "path": "./packages/libraries/common"
+    },
+    {
+      "path": "./packages/libraries/core"
+    },
+    {
+      "path": "./packages/libraries/styleguide"
+    },
+    {
+      "path": "./packages/libraries/widgets"
+    }
+  ],
+}

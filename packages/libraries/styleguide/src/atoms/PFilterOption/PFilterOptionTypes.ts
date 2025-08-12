@@ -1,4 +1,4 @@
-import { IconName } from '@styleguide/types.mts'
+import { IconName } from '@styleguide/types'
 
 export interface PFilterOptionProps {
   pValue?: string | number

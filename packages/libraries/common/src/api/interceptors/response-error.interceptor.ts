@@ -1,4 +1,4 @@
-import { HTTP_RESPONSES } from '../../constants.mjs'
+import { HTTP_RESPONSES } from '../../constants'
 import { getUnauthorizedCallback } from '../../unauthorized-callback'
 import { AxiosError } from 'axios'
 

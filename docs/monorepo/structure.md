@@ -38,7 +38,7 @@ Le monorepo Pulse.Web est organisé de manière logique et modulaire :
 Les fichiers de configuration à la racine permettent une gestion unifiée :
 - **TypeScript** : `tsconfig.json` avec des alias de chemins pour faciliter les imports
 - **ESLint** : `eslint.config.mjs` pour des règles de code cohérentes
-- **Vitest** : `vitest.config.mts` pour les tests unitaires
+- **Vitest** : `vitest.config.ts` pour les tests unitaires
 - **Git hooks** : `.husky/` pour automatiser les vérifications avant commit
 
 ## Pourquoi cette organisation ?

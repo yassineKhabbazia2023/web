@@ -1,65 +1,12 @@
 {
-  "extends": "../@config/tsconfig.base",
+  "extends": "../@config/tsconfig.base.app",
   "include": [
     "env.d.ts",
-    "./src/**/*",
+    "src/**/*",
     "tests/**/*",
     "__mocks__",
-    "./vitest.setup.ts",
     "src/**/*.json",
-    "package.json"
+    "./package.json",
   ],
-  "exclude": [
-    "node_modules"
-  ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "declarationDir": "./dist/types",
-    "outDir": "./dist/types",
-    "paths": {
-      "@app/*": [
-        "./src/*"
-      ],
-      "@common/*": [
-        "../libraries/common/src/*"
-      ],
-      "@core/*": [
-        "../libraries/core/src/*"
-      ],
-      "@styleguide/*": [
-        "../libraries/styleguide/src/*"
-      ],
-      "@entities/*": [
-        "../applets/entities/src/*"
-      ],
-      "@ged/*": [
-        "../applets/ged/src/*"
-      ],
-      "@launcher/*": [
-        "../applets/launcher/src/*"
-      ],
-      "@login/*": [
-        "../applets/login/src/*"
-      ],
-      "@mandate/*": [
-        "../applets/mandate/src/*"
-      ],
-      "@offers-catalog/*": [
-        "../applets/offers-catalog/src/*"
-      ],
-      "@pennylane/*": [
-        "../applets/pennylane/src/*"
-      ],
-      "@powerbi/*": [
-        "../applets/powerbi/src/*"
-      ]
-    },
-    "types": [
-      "@pinia/testing",
-      "vitest/globals",
-      "vitest/importMeta",
-      "vite/client",
-      "node"
-    ]
-  }
+  "compilerOptions": {},
 }

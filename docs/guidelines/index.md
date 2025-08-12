@@ -1,18 +1,18 @@
 # Export des modules
 
-Dans vos dossiers de code, vous pouvez regrouper et ré-exporter plusieurs modules via un fichier `index.mts` pour simplifier les imports ailleurs dans votre projet.
+Dans vos dossiers de code, vous pouvez regrouper et ré-exporter plusieurs modules via un fichier `index.ts` pour simplifier les imports ailleurs dans votre projet.
 
 ## Exemple : Export des constantes RegEx
 
 *Pull request de référence* :  
 https://dev.azure.com/FR-TPEME/Pulse/_git/Pulse.Web/pullrequest/5609
 
-### 1. Création du fichier `index.mts`
+### 1. Création du fichier `index.ts`
 
-Au sein du dossier `src/utils/validators`, créez un fichier `index.mts` et indiquez-y les entités (fonctions, classes, constantes…) que vous souhaitez exposer :
+Au sein du dossier `src/utils/validators`, créez un fichier `index.ts` et indiquez-y les entités (fonctions, classes, constantes…) que vous souhaitez exposer :
 
 ```ts
-// src/utils/validators/index.mts
+// src/utils/validators/index.ts
 
 export * from './validators.utils';
 export * from './validators.utils.const';
@@ -39,7 +39,7 @@ Pour pouvoir importer ces utilitaires via un chemin court (alias), utilisez le c
   "private": true,
   "exports": {
     // alias pour les validateurs
-    "./utils/validator": "./src/utils/validators/index.mts",
+    "./utils/validator": "./src/utils/validators/index.ts",
   }
 }
 ```
@@ -50,13 +50,3 @@ L’import se fait alors ainsi :
 import { validateEmail } from 'core/utils/validator';
 ```
 ---
-
-### 3. Qu’est‑ce qu’un fichier `.mts` ?
-
-- **Définition**  
-  L’extension `.mts` indique explicitement à TypeScript et à Node que le fichier est un module ES (équivalent à `.mjs`).  
-- **Avantage**  
-  Permet de forcer ESM au niveau fichier, indépendamment de l’option `--module` du compilateur.  
-- **Compatibilité**  
-  Support natif dans TypeScript 5.6+ et Node.js v14+.
-

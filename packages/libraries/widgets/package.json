@@ -7,12 +7,12 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/main.mts",
-    "./enums": "./src/enums.mts",
-    "./managers": "./src/managers.mts",
-    "./types": "./src/types.mts",
-    "./install": "./src/install.mts",
-    "./gridless": "./src/gridless.mts"
+  ".": "./src/main.ts",
+  "./enums": "./src/enums.ts",
+  "./managers": "./src/managers.ts",
+  "./types": "./src/types.ts",
+  "./install": "./src/install.ts",
+  "./gridless": "./src/gridless.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

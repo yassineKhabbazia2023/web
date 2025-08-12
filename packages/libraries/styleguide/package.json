@@ -6,9 +6,9 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./components": "./src/components.mts",
-    "./types": "./src/types.mts",
-    ".": "./src/main.mts"
+  "./components": "./src/components.ts",
+  "./types": "./src/types.ts",
+  ".": "./src/main.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

@@ -1,50 +1,7 @@
 {
   "extends": "./packages/@config/tsconfig.base",
-  "include": [
-    "packages/applets/*/package.json"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+  "files": [],  
   "compilerOptions": {
     "baseUrl": ".",
-    "declarationDir": "./dist/types",
-    "outDir": "./dist/types",
-    "paths": {
-      "@app/*": [
-        "./packages/app/src/*"
-      ],
-      "@common/*": [
-        "./packages/libraries/common/src/*"
-      ],
-      "@core/*": [
-        "./packages/libraries/core/src/*"
-      ],
-      "@styleguide/*": [
-        "./packages/libraries/styleguide/src/*"
-      ],
-      "@entities/*": [
-        "./packages/applets/entities/src/*"
-      ],
-      "@ged/*": [
-        "./packages/applets/ged/src/*"
-      ],
-      "@launcher/*": [
-        "./packages/applets/launcher/src/*"
-      ],
-      "@login/*": [
-        "./packages/applets/login/src/*"
-      ],
-      "@mandate/*": [
-        "./packages/applets/mandate/src/*"
-      ]
-    },
-    "types": [
-      "@pinia/testing",
-      "vitest/globals",
-      "vitest/importMeta",
-      "vite/client",
-      "node"
-    ]
   }
 }

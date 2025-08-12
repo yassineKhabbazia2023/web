@@ -35,10 +35,10 @@ Chaque package définit ses exports dans le `package.json` via la propriété `e
 ```json
 {
   "exports": {
-    "./constants": "./src/constants.mts",
-    "./managers": "./src/managers/index.mts",
-    "./services/cgu": "./src/services/cgu/index.mts",
-    "./types": "./src/types.mts"
+    "./constants": "./src/constants.ts",
+    "./managers": "./src/managers/index.ts",
+    "./services/cgu": "./src/services/cgu/index.ts",
+    "./types": "./src/types.ts"
   }
 }
 ```

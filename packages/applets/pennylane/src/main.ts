@@ -1,5 +1,5 @@
 import type { App } from 'vue'
-import PennylaneDocumentsWidget from './widgets/pennylane-documents/pennylane-documents.widget.mts'
+import PennylaneDocumentsWidget from './widgets/pennylane-documents/pennylane-documents.widget'
 
 export default {
   install(app: App, options: any) {
