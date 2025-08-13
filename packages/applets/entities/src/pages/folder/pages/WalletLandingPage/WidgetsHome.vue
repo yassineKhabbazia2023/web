@@ -67,10 +67,6 @@ onMounted(() => {
           grid-column: 1 / -1;
         }
       }
-
-      .widgets-home__grid-item--span-1:nth-of-type(2) {
-        order: 1;
-      }
     }
   }
 
