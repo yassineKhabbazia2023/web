@@ -2,7 +2,7 @@
   "extends": "../../@config/tsconfig.base.app",
   "include": [
     "env.d.ts",
-    "./src/**/*",
+    "src/**/*",
     "tests/**/*",
     "__mocks__",
     "src/**/*.json",

@@ -148,3 +148,10 @@ docs/.vitepress/cache
 
 # IDE
 .idea
+
+# Storybook
+*storybook.log
+storybook-static
+  
+# AI stuff
+.github/copilot-instructions.md

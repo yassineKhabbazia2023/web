@@ -1,0 +1,87 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+- name: subdirectory
+  displayName: "subdirectory"
+  type: string
+  default: histoire
+  values:
+    - histoire
+
+variables:
+  nodeVersion: '24.x'
+  buildOutputFolder: 'packages/libraries/styleguide/dist'
+  azureSubscriptionDEV: 'Rydge-dev'
+  storageAccountNameDEV: 'sacegpulsefrontdev0101'
+  containerName: '$web'
+
+stages:
+- stage: Build
+  jobs:
+  - job: BuildAndTest
+    steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '$(nodeVersion)'
+      displayName: 'Install Node.js'
+      
+    - task: Cache@2
+      inputs:
+        key: 'npm | "$(Agent.OS)" | package-lock.json'
+        restoreKeys: |
+          npm | "$(Agent.OS)"
+        path: $(Agent.HomeDirectory)/.npm
+      displayName: 'Cache npm packages'
+      
+    - script: npm ci --cache=$(Agent.HomeDirectory)/.npm
+      displayName: 'Install dependencies'
+      
+    - script: |
+        npm run styleguide:story:build
+      displayName: 'Build Histoire'
+
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: '$(buildOutputFolder)'
+        contents: '**'
+        targetFolder: '$(Build.ArtifactStagingDirectory)/${{ parameters.subdirectory }}'
+      displayName: 'Copy build output'
+      
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        artifactName: 'drop'
+      displayName: 'Publish artifacts'
+
+- stage: DeployToDEV
+  dependsOn: Build
+  condition: succeeded()
+  pool: Pulse-dev
+  jobs:
+  - deployment: DeployToStorage
+    workspace:
+      clean: all
+    environment: 'DEV'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: '$(azureSubscriptionDEV)'
+              scriptType: 'pscore'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                # 1. Nettoyage du container ou sous-répertoire
+                Write-Host "Nettoyage du sous-répertoire ${{ parameters.subdirectory }}..."
+                az storage blob delete-batch --account-name $(storageAccountNameDEV) --auth-mode login --source '$(containerName)' --pattern "${{ parameters.subdirectory }}/*" --delete-snapshots include
+                
+                # 2. Déploiement des nouveaux fichiers
+                Write-Host "Copie des fichiers dans le sous-répertoire ${{ parameters.subdirectory }}..."
+                az storage blob upload-batch --account-name $(storageAccountNameDEV) --auth-mode login --destination '$(containerName)/${{ parameters.subdirectory }}' --source $(Pipeline.Workspace)/drop/${{ parameters.subdirectory }} --overwrite True
+            displayName: 'Deploy to DEV Storage Account'
