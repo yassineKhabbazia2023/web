@@ -41,7 +41,7 @@
           <li
             v-for="authorizationAction in actions"
             :key="authorizationAction.code"
-            class="rights-list__authorizations-item"
+            class="rights-list__authorizations__item"
           >
             <PCheckbox :pLabel="authorizationAction.code">
               {{ authorizationAction.label }}
@@ -235,8 +235,8 @@ const handleInfoIconClick = (event: MouseEvent) => {
 .rights-list {
   &__authorizations {
     margin-left: 56px;
-    &-item {
-      margin-bottom: 1.2rem;
+    &__item {
+      margin-bottom: 1rem;
       &:last-child {
         margin-bottom: 0;
       }
@@ -249,8 +249,15 @@ const handleInfoIconClick = (event: MouseEvent) => {
     margin-top: 1.2rem;
     border-top: 1px solid var(--el-color-neutral-gray-100);
   }
-  .additional-infos-icon{
+  .additional-infos-icon {
     vertical-align: bottom;
+  }
+  ::v-deep .el-switch__label {
+    height: inherit;
+  }
+  ::v-deep .el-checkbox__label {
+    line-height: 1.2;
+    white-space: normal;
   }
 }
 </style>
@@ -266,11 +273,11 @@ en-US:
       who will be able to access it via the "Applications" tab on the RYDGE Conseil platform.
 
     ● By unchecking, access to Pennylane will be blocked for the user on this company.
-  management: 'Pilotage'
-  accountingManagement: 'Accounting management production'
-  socialManagement: 'Social management production'
-  accountingGed: 'Accounting GED'
-  socialGed: 'Social GED'
+  management: 'Management tools'
+  accountingManagement: 'Accounting management tools'
+  socialManagement: 'Social management tools'
+  accountingGed: 'Document space – Accounting'
+  socialGed: 'Document space – Social management'
   administration: 'Administration'
   offer: 'Offer and subscription'
   reports: 'Reports'
@@ -279,7 +286,7 @@ en-US:
   prod: 'Business production'
   thisAccount: 'this folder'
   thisUser: 'this user'
-  rightsNote: 'Activate or deactivate the features you want to give for {rightsType}.'
+  rightsNote: 'Select the rights you want to grant to {rightsType}:'
   PennylaneDropdownPlaceholder: 'Choose a role'
 fr-FR:
   PennylaneAdditionalInfos: |
@@ -290,11 +297,11 @@ fr-FR:
 
     ● En décochant, l’accès à Pennylane sera bloqué sur cette
       entreprise pour l'utilisateur.
-  management: 'Pilotage'
-  accountingManagement: 'Production gestion comptable'
-  socialManagement: 'Production gestion sociale'
-  accountingGed: 'GED comptable'
-  socialGed: 'GED sociale'
+  management: 'Outil de pilotage'
+  accountingManagement: 'Outil de gestion Comptable'
+  socialManagement: 'Outil de gestion Sociale'
+  accountingGed: 'Espace documentaire – Comptabilité'
+  socialGed: 'Espace documentaire – Gestion Sociale'
   administration: 'Administration'
   offer: 'Offre et souscription'
   reports: 'Rapports'
@@ -303,6 +310,6 @@ fr-FR:
   prod: 'Production métier'
   thisAccount: 'ce dossier'
   thisUser: 'cet utilisateur'
-  rightsNote: 'Activez ou désactivez les fonctionnalités que vous souhaitez donner pour {rightsType}.'
+  rightsNote: 'Sélectionnez les droits que vous souhaitez accorder à {rightsType} :'
   PennylaneDropdownPlaceholder: 'Choisir un rôle'
 </i18n>
