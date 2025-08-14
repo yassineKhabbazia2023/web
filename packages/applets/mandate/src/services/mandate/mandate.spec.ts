@@ -185,6 +185,7 @@ describe('createMandate', () => {
         country: 'France',
       },
       bban,
+      destinationTool: 'mandate',
     }
 
     await createMandate(requestBody)

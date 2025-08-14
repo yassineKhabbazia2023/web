@@ -47,11 +47,12 @@ window.EnvVars = envVars
 | VITE_HOMEPAGE_WIDGETS_ACTIVATED | Feature flag de la home widgétisée |
 | VITE_IDLE_DURATION | Temps de non-utilisation de l'app avant une proposition de déconnexion automatique |
 | VITE_MAIL_TO_GED_ACTIVATED | Feature flag de la fonctionnalité Mail2GED |
+| VITE_MANDATE_REDIRECTION_TOOL_ACTIVATED | Feature flag de la fonctionnalité Mandate Redirection Tool
 | VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |
 | VITE_PENNYLANE_COLLAB_SSO_URL | URL de connexion SSO Pennylane pour les collaborateurs |
 | VITE_PENNYLANE_DELEGATE_RIGHTS_CHECKBOX_ACTIVATED | Feature flag de la checkbox de delegation des droits Pennylane |
 | VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
-| VITE_GIGYA_KEY | Clé d'API Gigya (SSO) |
+| VITE_GIGYA_KEY | Clé d'API Gigya (SSO) | 
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY | Clé du workspace ProductFruit Collab anonyme (login collab) |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT | Clé du workspace ProductFruit Client anonyme (login client et maintenance) |
 | VITE_PRODUCT_FRUITS_KEY | Clé du workspace ProductFruit Collab connecté |

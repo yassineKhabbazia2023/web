@@ -41,4 +41,5 @@ export interface CreateMandateModel {
     address: Address
     signatory: Signatory
     bban: BbanModel
+    destinationTool: string
 }

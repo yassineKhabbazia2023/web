@@ -198,6 +198,7 @@ const mandateModel: CreateMandateModel = reactive({
     accountNumber: '',
     checkDigits: '',
   },
+  destinationTool: '',
 })
 const loading = ref(false)
 const mandateId = ref('')

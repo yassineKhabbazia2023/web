@@ -247,6 +247,30 @@
             disabled
           />
         </PFormItem>
+        <p
+          v-if="isMandateRedirectionToolFeatureEnabled === true"
+          class="font-large margin-bottom--4"
+        >
+          {{ t('flowRedirection') }}
+        </p>
+        <PFormItem
+          v-if="isMandateRedirectionToolFeatureEnabled === true"
+          pProp="redirectionTools"
+          inline
+          :pLabel="t('flowDestination')"
+          :pShowMessage="!validationError"
+          :pValidateStatus="validationError ? 'error' : ''"
+        >
+          <PDropdown
+            v-model="createMandateForm.redirectionTools"
+            :pAllowCreate="false"
+            :pDisabled="false"
+            :pOptions="redirectionToolsOptions"
+            pRequired
+            @change="checkFields"
+            @blur="checkFields"
+          />
+        </PFormItem>
         <PAlert v-if="isScrappable" pType="danger">
           {{ t('form.error.notListed') }}
           <span class="font-bold">
@@ -266,7 +290,7 @@
 </template>
 
 <script setup lang='ts'>
-import { logger } from '@pulse/core'
+import { FeatureFlagManager, logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch, computed } from 'vue'
 import {
@@ -283,7 +307,9 @@ import {
   PCol,
   PRow,
   PAlert,
+  PDropdown,
 } from '@pulse/styleguide/components'
+import { Feature } from '@pulse/core/enums'
 
 // Props
 interface FormProps {
@@ -291,6 +317,7 @@ interface FormProps {
   creationMandateError?: string
 }
 const props = defineProps<FormProps>()
+const isMandateRedirectionToolFeatureEnabled = FeatureFlagManager.isFeatureActivated(Feature.MANDATE_REDIRECTION_TOOL)
 
 // i18n
 const { t } = useI18n({
@@ -321,6 +348,7 @@ const createMandateForm: any = reactive({
   accountNumber: '',
   key: '',
   bank: '',
+  redirectionTools: '',
 })
 const isIBSValid = ref(false)
 const customErrorMessage = ref('')
@@ -333,7 +361,7 @@ const isValidateEnabled = computed(() => isBankCodeValid.value && isRibValid.val
 
 const areFieldsFilled = (fieldsToCheck: string[]) =>
   fieldsToCheck.every((field) => !!createMandateForm[field] &&
-  createMandateForm[field].trim() !== '')
+    createMandateForm[field].trim() !== '')
 
 const areStep2FieldsFilled = computed(() => {
   const fieldsToCheck = [
@@ -348,6 +376,29 @@ const areStep2FieldsFilled = computed(() => {
   ]
   return areFieldsFilled(fieldsToCheck)
 })
+
+const redirectionToolsOptions = [
+  {
+    pValue: 'Loop',
+    pLabel: 'Loop',
+    pDisabled: false,
+  },
+  {
+    pValue: 'Pennylane',
+    pLabel: 'Pennylane',
+    pDisabled: false,
+  },
+  {
+    pValue: 'RCA MEG',
+    pLabel: 'RCA MEG',
+    pDisabled: false,
+  },
+  {
+    pValue: 'ISACOMPTA',
+    pLabel: 'ISACOMPTA',
+    pDisabled: false,
+  },
+]
 
 // Methods
 const validateIBS = async (_: Rule, value: string, callback: any) => {
@@ -395,7 +446,7 @@ const getDataByIbsNumber = async (ibsNumber: string) => {
 }
 
 const getMandateModel = () => {
-  return {
+  const data = {
     erpId: createMandateForm.erpId,
     bban: {
       bankCode: createMandateForm.institutionCode,
@@ -417,6 +468,13 @@ const getMandateModel = () => {
       email: createMandateForm.email,
     },
   }
+  if (isMandateRedirectionToolFeatureEnabled === true) {
+    return {
+      ...data,
+      destinationTool: createMandateForm.redirectionTools,
+    }
+  }
+  return data
 }
 
 const areFieldsFilledStepBased = (step: number) => {
@@ -434,6 +492,9 @@ const areFieldsFilledStepBased = (step: number) => {
     ],
     3: ['institutionCode', 'branchCode', 'accountNumber',
       'key', 'bank'],
+  }
+  if (isMandateRedirectionToolFeatureEnabled === true) {
+    fieldsToCheckMap[3].unshift('redirectionTools')
   }
   const fieldStepFilledDone = areFieldsFilled(fieldsToCheckMap[step])
   if (fieldStepFilledDone) {
@@ -506,6 +567,9 @@ const isBbanComplete = async () => {
     'accountNumber',
     'key',
   ]
+  if(isMandateRedirectionToolFeatureEnabled === true) {
+    fieldsToValidate.push('redirectionTools')
+  }
   return fieldsToValidate.every(field => createMandateForm[field] !== '') &&
     await asyncEvery(fieldsToValidate, async (inputValue: string) => {
       try {
@@ -661,6 +725,7 @@ const rules = reactive<any>({
       t('form.error.only_numbers'),
     ),
   ],
+  redirectionTools: [createRule(requiredFieldMessage)],
 })
 
 // Watchers
@@ -668,14 +733,14 @@ watch(() => props.step, async (newValue) => {
   areFieldsFilledStepBased(props.step)
   // we check with extra care the second step
   // we don't want the user to be able to go to next step with errors
-  if(newValue === 2) {
+  if (newValue === 2) {
     try {
       // the solution if far from optimal (see FIXMEs above)
       // but it's the only way to make it work in a short time
       // without refactoring the whole component
-      if(areStep2FieldsFilled.value === true) {
+      if (areStep2FieldsFilled.value === true) {
         const fieldStepValid = await createMandateFormRef.value.validate()
-        if(fieldStepValid) {
+        if (fieldStepValid === true) {
           emit('enable-disable-next', true)
         } else {
           emit('enable-disable-next', false)
@@ -811,8 +876,8 @@ defineExpose({
 
 <!-- eslint-disable max-len -->
 <i18n lang="json">
-  {
-    "en-US": {
+{
+  "en-US": {
     "ibs-number": "Customer code",
     "company-name": "Company name",
     "siret-number": "SIRET",
@@ -834,6 +899,8 @@ defineExpose({
     "accountNumber": "Account Number",
     "key": "Key",
     "bank": "Bank",
+    "flowRedirection": "Automatic flow redirection",
+    "flowDestination": "Choose the destination tool to which the flows will be redirected",
     "form": {
       "asterisk": "*",
       "error": {
@@ -880,6 +947,8 @@ defineExpose({
     "accountNumber": "Numéro de compte",
     "key": "Clé",
     "bank": "Banque",
+    "flowRedirection": "Redirection automatique des flux",
+    "flowDestination": "Choisissez l'outil de destination vers lesquels les flux seront redirigés",
     "form": {
       "asterisk": "*",
       "error": {

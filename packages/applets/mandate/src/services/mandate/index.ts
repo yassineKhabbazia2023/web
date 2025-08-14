@@ -107,8 +107,9 @@ export const createMandate = async ({
   signatory,
   address,
   bban,
+  destinationTool,
 }: CreateMandateModel): Promise<any> => {
-  return await api().gateway.post('mandate/api/mandate/currentuser', { erpId, signatory, address, bban })
+  return await api().gateway.post('mandate/api/mandate/currentuser', { erpId, signatory, address, bban, destinationTool })
 }
 
 export const uploadSignedMandate = async ({
