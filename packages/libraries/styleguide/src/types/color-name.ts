@@ -5,6 +5,7 @@ export type ColorName =
   'base-persian-light' |
   'base-hover' |
   'base-white' |
+  'pennylane-dark-green' |
   'persian-50' |
   'persian-100' |
   'persian-200' |
@@ -28,6 +29,7 @@ export type ColorName =
   'neutral-gray-100' |
   'neutral-gray-200' |
   'neutral-gray-300' |
+  'neutral-gray-400' |
   'neutral-gray-500' |
   'neutral-gray-700' |
   'neutral-gray-800' |
@@ -66,4 +68,16 @@ export type ColorName =
   'black-rock-600' |
   'black-rock-700' |
   'black-rock-800' |
-  'black-rock-900'
+  'black-rock-900' |
+  'stroke-success' |
+  'stroke-warning' |
+  'stroke-error' |
+  'surface-active' |
+  'surface-disabled' |
+  'surface-state-selection' |
+  'text-disabled' |
+  'text-active' |
+  'button-danger-surface-hover' |
+  'button-danger-text-default' |
+  'button-danger-text-hover' |
+  'button-danger-text-press'

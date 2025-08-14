@@ -6,6 +6,9 @@ export const colorsConfig: Record<string, Record<string, string>> = {
     'hover': '#E4FCF7',
     white: 'color-white',
   },
+  pennylane: {
+    'dark-green': '#0F5757',
+  },
   persian: {
     50: '#D6F0EB',
     100: '#ADE1D6',
@@ -34,6 +37,7 @@ export const colorsConfig: Record<string, Record<string, string>> = {
     'gray-100': '#DEE2E6',
     'gray-200': '#CDD1D4', // ou bien '#C2C2C2' ?
     'gray-300': '#ADB5BD',
+    'gray-400': '#889BA8',
     'gray-500': '#6C757D',
     'gray-700': '#495057',
     'gray-800': '#3A3C3F',
@@ -79,5 +83,27 @@ export const colorsConfig: Record<string, Record<string, string>> = {
     '700': '#2C2FD6',
     '800': '#272C88',
     '900': '#0E0F30',
+  },
+  stroke: {
+    success: '#00B800',
+    warning: '#FFA500',
+    error: '#FF0000',
+  },
+  surface: {
+    active: '#D4D6FF',
+    disabled: '#F8F9FA',
+  },
+  'surface-state': {
+    selection: '#E4FCF7',
+  },
+  text: {
+    disabled: '#ADB5BD',
+    active: '#D4D6FF',
+  },
+  'button-danger': {
+    'surface-hover': '#FFDDDD',
+    'text-default': '#FF0000',
+    'text-hover': '#B10303',
+    'text-press': '#920A0A',
   },
 }
