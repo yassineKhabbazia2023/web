@@ -8,16 +8,15 @@
       @sort-change="sortColumnChange"
     >
       <template
-        v-for="({ label, prop, sortable, width, dataTestId }, index) in tableHead"
+        v-for="({ label, prop, width, dataTestId }, index) in tableHead"
         :key="index"
       >
         <PTableColumn
           v-if="label === 'Actions'"
           :key="prop"
-          :label="label"
-          :prop="prop"
-          :sortable="sortable"
-          :width="width"
+          :pLabel="label"
+          :pProp="prop"
+          :pWidth="width"
         >
           <template #default="scope">
             <PToolbox
@@ -39,10 +38,11 @@
         <PTableColumn
           v-else-if="label === `${t('status')}`"
           :key="label"
-          :label="label"
-          :prop="prop"
-          :sortable="sortable"
-          :width="width"
+          :pLabel="label"
+          :pProp="prop"
+          pSortable="custom"
+          :pSortOrders="SORT_ORDER"
+          :pWidth="width"
         >
           <template #default="scope">
             <PTooltip
@@ -58,9 +58,10 @@
         <PTableColumn
           v-else
           :key="index"
-          :prop="prop"
-          :sortable="sortable"
-          :width="width"
+          :pProp="prop"
+          pSortable="custom"
+          :pSortOrders="SORT_ORDER"
+          :pWidth="width"
         >
           <template #header>
             <span :data-testid="dataTestId">
@@ -151,6 +152,7 @@ import { showNotification } from '@mandate/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@mandate/helpers/NotificationHelperTypes'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 import { MandateTracking } from '@mandate/services/mandate-tracking.service'
+import { SORT_ORDER } from '@pulse/common/constants'
 declare let window: any
 
 const { t } = useI18n({
@@ -203,24 +205,22 @@ const dataFormatter = (data: Mandate[]) =>
   )
 const mandateCollection = computed(() => dataFormatter(props.data))
 const tableHead = [
-  { label: `${t('company-name')}`, prop: 'companyName', sortable: true, dataTestId: 'mandate-company-column' },
-  { label: `${t('ibs-code')}`, prop: 'erpId', sortable: true, width: '105' },
+  { label: `${t('company-name')}`, prop: 'companyName', dataTestId: 'mandate-company-column' },
+  { label: `${t('ibs-code')}`, prop: 'erpId', width: '105' },
   {
     label: `${t('account-number')}`,
     prop: 'accountNumber',
-    sortable: true,
     width: '120',
   },
-  { label: `${t('bank')}`, prop: 'bankName', sortable: true, dataTestId: 'mandate-bank-column' },
-  { label: `${t('created-on')}`, prop: 'creationDate', sortable: true, width: '105' },
+  { label: `${t('bank')}`, prop: 'bankName', dataTestId: 'mandate-bank-column' },
+  { label: `${t('created-on')}`, prop: 'creationDate', width: '105' },
   {
     label: `${t('modified-on')}`,
     prop: 'modificationDate',
-    sortable: true,
     width: '105',
   },
-  { label: t('status'), prop: 'statusCode', sortable: true, width: '204' },
-  { label: t('actions'), sortable: false, width: '72' },
+  { label: t('status'), prop: 'statusCode', width: '204' },
+  { label: t('actions'), width: '72' },
 ]
 const actionsBuilder = (
   jdcPartnership: string | number,

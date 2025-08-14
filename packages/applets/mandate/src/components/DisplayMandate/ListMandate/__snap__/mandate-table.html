@@ -1,13 +1,13 @@
 <div>
   <div pdata="[object Object],[object Object],[object Object]" pstripe="" emptytext="No data" data-testid="mandate-table">
-    <div prop="companyName" sortable="true"><span data-testid="mandate-company-column">Company name</span></div>
-    <div prop="erpId" sortable="true" width="105"><span>Customer code</span></div>
-    <div prop="accountNumber" sortable="true" width="120"><span>Account number</span></div>
-    <div prop="bankName" sortable="true"><span data-testid="mandate-bank-column">Bank</span></div>
-    <div prop="creationDate" sortable="true" width="105"><span>Created on</span></div>
-    <div prop="modificationDate" sortable="true" width="105"><span>Modified on</span></div>
-    <div label="Status" prop="statusCode" sortable="true" width="204"></div>
-    <div label="Actions" sortable="false" width="72">
+    <div pprop="companyName" psortable="custom" psortorders="ascending,descending"><span data-testid="mandate-company-column">Company name</span></div>
+    <div pprop="erpId" psortable="custom" psortorders="ascending,descending" pwidth="105"><span>Customer code</span></div>
+    <div pprop="accountNumber" psortable="custom" psortorders="ascending,descending" pwidth="120"><span>Account number</span></div>
+    <div pprop="bankName" psortable="custom" psortorders="ascending,descending"><span data-testid="mandate-bank-column">Bank</span></div>
+    <div pprop="creationDate" psortable="custom" psortorders="ascending,descending" pwidth="105"><span>Created on</span></div>
+    <div pprop="modificationDate" psortable="custom" psortorders="ascending,descending" pwidth="105"><span>Modified on</span></div>
+    <div plabel="Status" pprop="statusCode" psortable="custom" psortorders="ascending,descending" pwidth="204"></div>
+    <div plabel="Actions" pwidth="72">
       <div trigger="click" data-testid="mandate-actions-toolbox">
         <p-button-stub ptype="default" pcircle="false" pdisabled="false" ploading="false" psize="default" picononly="false" pisactive="false" ptag="button"></p-button-stub>
       </div>

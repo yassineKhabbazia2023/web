@@ -18,7 +18,7 @@
       <PLoader pType="primary" pSize="50" />
     </div>
     <ListMandate
-      v-if="!isLoading"
+      v-show="isLoading === false"
       :currentPage="searchParams.currentPage"
       :data="mandatesCollection.data"
       @refresh-mandate-collection="onUpdateSearchParams"
