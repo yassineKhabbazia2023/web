@@ -15,6 +15,10 @@ export const viteConfigBase = ({ mode }: any): UserConfig =>
       viteExternalsPlugin({ 'env-vars': 'EnvVars' }, { disableInServe: mode === 'test' }),
       viteVirtualModule(),
     ] as any,
+    build: {
+      target: 'esnext',
+      sourcemap: mode === 'development',
+    },
     test: {
       deps: {
         optimizer: {

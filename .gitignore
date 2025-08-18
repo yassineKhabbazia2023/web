@@ -132,6 +132,10 @@ stats.html
 ## public
 packages/app/public/env-vars.js
 packages/app/public/styles.css
+## version
+version.json
+## build
+dist-stats.html
 
 # VuePress default temp directory
 docs/.vuepress/.temp

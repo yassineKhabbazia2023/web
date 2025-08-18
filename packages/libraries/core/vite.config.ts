@@ -8,6 +8,14 @@ import { viteConfigBase } from '../../@config/vite.config.base'
 export default ({ mode }: any) =>
   defineConfig(
     mergeConfig(viteConfigBase({ mode }), {
+      plugins: [
+        typescriptPaths(),
+        typescript({
+          sourceMap: false,
+          declaration: true,
+          outDir: 'dist',
+        }),
+      ],
       test: {
         alias: {
           '@core/': new URL('./src/', import.meta.url).pathname,
@@ -29,23 +37,7 @@ export default ({ mode }: any) =>
               vue: 'Vue',
             },
           },
-          plugins: [
-            typescriptPaths({
-              preserveExtensions: true,
-            }),
-            typescript({
-              sourceMap: false,
-            }),
-          ],
         },
-        plugins: [
-          typescriptPaths(),
-          typescript({
-            sourceMap: false,
-            declaration: true,
-            outDir: 'dist',
-          }),
-        ],
       },
     }),
   )

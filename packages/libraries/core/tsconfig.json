@@ -8,5 +8,8 @@
     "src/**/*.json",
     "./package.json"
   ],
-  "compilerOptions": {}
+  "compilerOptions": {
+    "declarationDir": "./dist/types",
+    "outDir": "./dist/types",
+  }
 }
