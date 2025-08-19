@@ -34,7 +34,7 @@
       v-model="authorizationsState"
       v-model:additionalOptionByActionCode="additionalOptionByActionCode"
       :contactId="selectedUser.contactId"
-      :pennylaneAvailableRoles="pennylaneAvailableRoles"
+      :accountNumber="selectedEntity.accountNumber"
     />
     <template #footer>
       <div class="margin-left--auto">
@@ -62,6 +62,7 @@ import {
   PButton,
   PLoader,
 } from '@pulse/styleguide/components'
+
 import { displayNotification } from '@pulse/styleguide'
 import type {
   ManageRightsDrawerProps,
@@ -71,8 +72,6 @@ import RightsList from './components/RightsList'
 import { RouteParam } from '@pulse/common/enums'
 import { logger } from '@pulse/core'
 import { RouterHelpers } from '@pulse/common/helpers'
-import type { PennylaneAvailableRole } from '@pulse/common/types'
-import { PennylaneService } from '@pulse/common/services/pennylane'
 import { saveUserPermissions, getAdditionalOptionByActionCode, getIsFormValid } from './utils'
 import { refreshPageWhenCurrentUserPermissionChange } from '@entities/composables/permission.composable'
 
@@ -134,7 +133,6 @@ const handleUpdateUserPermissions = async () => {
   isLoading.value = false
 }
 
-const pennylaneAvailableRoles = ref<PennylaneAvailableRole[]>()
 const additionalOptionByActionCode = ref<Record<string, string>>()
 const additionalOptionByActionCodeOrigin = ref<Record<string, string>>()
 
@@ -143,14 +141,12 @@ const isFormValid = computed(() => getIsFormValid(
   additionalOptionByActionCode.value,
 ))
 
-watch(() => props.modelValue && props.selectedUser.contactId, () => initAdditionalOptionByActionCodeOrigin())
+watch(
+  () => props.modelValue && props.selectedUser.contactId,
+  () => initAdditionalOptionByActionCodeOrigin(),
+)
 
 onMounted(async () => {
-  const entityAccountNumber = props.selectedEntity?.accountNumber
-  const availableRoles = entityAccountNumber === undefined
-    ? undefined
-    : await PennylaneService.getAvailableRoles(entityAccountNumber)
-  pennylaneAvailableRoles.value = availableRoles ?? []
   initAdditionalOptionByActionCodeOrigin()
 })
 
@@ -167,7 +163,7 @@ async function initAdditionalOptionByActionCodeOrigin() {
         entityId,
         contactId,
       })
-    } catch(e) {
+    } catch (e) {
       logger.error(e)
     }
   }

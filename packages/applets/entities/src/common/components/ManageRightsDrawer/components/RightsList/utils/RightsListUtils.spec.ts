@@ -1,6 +1,5 @@
 import { it, expect, describe } from 'vitest'
 import { getMockedAuthorizationsConfig, getMockedAuthorizationState } from '@entities/__mocks__/permissions.mocks'
-import { getMockedPennylaneAvailableRole } from '@pulse/common/mocks'
 import type { Action, EnrichedAction } from '../RightsListTypes'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 import { PERMISSION_ACTION } from '@pulse/common/constants'
@@ -9,10 +8,11 @@ import {
   getAuthorizationsConfigMapped,
   getAuthorizationState,
   getEnrichedActions,
-  getPennylaneDropdownOptions,
   getHasAction,
   getDropdownsByActionCode,
+  getPennylaneDropdownOptions,
 } from '.'
+import { getMockedPennylaneAvailableRole } from '@pulse/common/mocks'
 
 // Mocks
 const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
@@ -171,6 +171,7 @@ describe('rightsListUtils', () => {
       expect(pennylanedropdownOptions).toStrictEqual(expectedPennylanedropdownOptions)
     })
   })
+
 
   describe('getHasAction', () => {
     const tests = [{

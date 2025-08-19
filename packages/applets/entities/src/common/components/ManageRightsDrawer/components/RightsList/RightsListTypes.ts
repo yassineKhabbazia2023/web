@@ -1,6 +1,5 @@
 import type { ContactType } from '@pulse/common/enums'
 import type { AuthorizationState } from '../../ManageRightsTypes'
-import type { PennylaneAvailableRole } from '@pulse/common/types'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 
 interface Category {
@@ -38,8 +37,8 @@ export interface RightsListProps {
   accountId?: number
   isAccountRights?: boolean
   contactType?: ContactType
-  pennylaneAvailableRoles?: PennylaneAvailableRole[]
   additionalOptionByActionCode?: Record<string, string>
+  accountNumber?: string;
 }
 
 export interface ActionAdditionalInfo {

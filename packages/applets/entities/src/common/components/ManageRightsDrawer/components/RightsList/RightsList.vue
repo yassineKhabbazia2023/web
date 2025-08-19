@@ -97,6 +97,8 @@ import type {
 } from './RightsListTypes'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { PennylaneService } from '@pulse/common/services/pennylane'
+import { PennylaneAvailableRole } from '@pulse/common/types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -128,6 +130,7 @@ const RIGHT_CATEGORIES = {
 const route = useRoute()
 const isLoading = ref(true)
 const authorizationsConfig = ref<AuthorizationConfigMapped[]>([])
+const pennylaneAvailableRoles = ref<PennylaneAvailableRole[]>([])
 
 const internalAuthorizationState = computed({
   get() {
@@ -176,7 +179,7 @@ const handleAuthorizationActionUpdate = (
 
 const dropdownsByActionCode = computed(() => {
   const hasPennylane = getHasAction(props.modelValue, PERMISSION_ACTION.ACCESS_PENNYLANE)
-  const pennylanedropdownOptions = getPennylaneDropdownOptions(props.pennylaneAvailableRoles ?? [])
+  const pennylanedropdownOptions = getPennylaneDropdownOptions(pennylaneAvailableRoles.value ?? [])
 
   return getDropdownsByActionCode(
     hasPennylane,
@@ -201,6 +204,19 @@ onMounted(async () => {
         entityId,
       )
     }
+
+    const isSubscribedToPennylaneOffer = rightsConfigList
+      .some((right) => right.actions
+        .some((action) => action.code === PERMISSION_ACTION.ACCESS_PENNYLANE),
+      )
+    if (isSubscribedToPennylaneOffer === true) {
+      const availableRoles = props.accountNumber === undefined
+        ? undefined
+        : await PennylaneService.getAvailableRoles(props.accountNumber)
+      pennylaneAvailableRoles.value = availableRoles ?? []
+    }
+
+
     const tooltipByActionCode = FeatureFlagManager.isPennylaneActionAdditionalInfoActivated()
       ? {
         [PERMISSION_ACTION.ACCESS_PENNYLANE]: t('PennylaneAdditionalInfos'),

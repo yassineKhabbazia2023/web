@@ -10,14 +10,14 @@
     v-if="authorizationsState !== undefined"
     v-model="authorizationsState"
     v-model:additionalOptionByActionCode="additionalOptionByActionCode"
-    :pennylaneAvailableRoles="pennylaneAvailableRoles"
     :contactId="contactId"
     :contactType="ContactType.CUSTOMER"
+    :accountNumber="accountNumber"
   />
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { logger } from '@pulse/core'
 import type { AddCustomerStepManageRightsProps } from './add-customer-step-manage-rights.types'
 import RightsList from '@entities/common/components/ManageRightsDrawer/components/RightsList'
@@ -26,14 +26,11 @@ import { getFullName } from '@entities/common/utils'
 import { ContactType } from '@pulse/common/enums'
 import { PUserCard } from '@pulse/styleguide/components'
 import { getAdditionalOptionByActionCode } from '@entities/common/components/ManageRightsDrawer/utils'
-import { PennylaneService } from '@pulse/common/services/pennylane'
-import type { PennylaneAvailableRole } from '@pulse/common/types'
 
 const props = defineProps<AddCustomerStepManageRightsProps>()
 const authorizationsState = defineModel<Record<string, AuthorizationState>>('authorizationsState')
 const additionalOptionByActionCode = defineModel<Record<string, string>>('additionalOptionByActionCode')
 const additionalOptionByActionCodeOrigin = defineModel<Record<string, string>>('additionalOptionByActionCodeOrigin')
-const pennylaneAvailableRoles = ref<PennylaneAvailableRole[]>()
 
 const fullname = computed(() => getFullName(
   props.newContact.firstname,
@@ -60,11 +57,6 @@ async function initAdditionalOptionByActionCodeOrigin() {
 }
 
 onMounted(async () => {
-  const entityAccountNumber = props.accountNumber
-  const availableRoles = entityAccountNumber === undefined
-    ? undefined
-    : await PennylaneService.getAvailableRoles(entityAccountNumber)
-  pennylaneAvailableRoles.value = availableRoles ?? []
   initAdditionalOptionByActionCodeOrigin()
 })
 </script>
