@@ -8,7 +8,8 @@
   "workspaces": [
     "packages/libraries/*",
     "packages/applets/*",
-    "packages/app"
+    "packages/app",
+    "packages/admin-tools"
   ],
   "engines": {
     "node": ">=20",

@@ -1,0 +1,18 @@
+{
+  "name": "@pulse/admin-tools",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@pulse/core": "1.0.0",
+    "@pulse/common": "1.0.0",
+    "@pulse/styleguide": "3.1.0"
+  }
+}
