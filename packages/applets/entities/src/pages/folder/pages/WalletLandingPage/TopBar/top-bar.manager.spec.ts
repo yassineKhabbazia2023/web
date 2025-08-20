@@ -18,12 +18,12 @@ describe('TopBarManager', () => {
 
   describe('isPennylaneSSODisplayed', () => {
     it('should return true when user has pennylane permission', () => {
-      vi.mocked(CurrentUserManager).getHasPennylanePermission.mockReturnValue(true)
+      vi.mocked(CurrentUserManager).hasSelectedEntityPennylanePermission.mockReturnValue(true)
       expect(TopBarManager.isPennylaneSSODisplayed()).toBe(true)
     })
 
     it('should return false when user does not have pennylane permission', () => {
-      vi.mocked(CurrentUserManager).getHasPennylanePermission.mockReturnValue(false)
+      vi.mocked(CurrentUserManager).hasSelectedEntityPennylanePermission.mockReturnValue(false)
       expect(TopBarManager.isPennylaneSSODisplayed()).toBe(false)
     })
   })

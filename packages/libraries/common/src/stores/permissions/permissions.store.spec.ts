@@ -1,9 +1,10 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { describe, expect, it } from 'vitest'
 import { usePermissionsStore } from './permissions.store'
+import { getPermissionsMock } from '@pulse/common/mocks'
 import * as permissionService from '@pulse/common/services/permissions'
 
-const permissionsMock = ['ab', 'c']
+const permissionsMock = getPermissionsMock()
 const entityPermissionsMock = ['PENNYLANE_VIEW']
 
 vi.mock('@pulse/common/services/permissions', () => ({

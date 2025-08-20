@@ -1,29 +1,39 @@
-export function customerEntityPermissionsWithPennylane() {
+import type { Permission } from '../types/permission.type'
+import { CollaboratorPermission, CustomerPermission } from '../enums/permission.enum'
+
+export function getPermissionsMock(): Permission[] {
   return [
-    'CLGED0001',
-    'CLGED0002',
-    'CLPEN001',
+    CollaboratorPermission.CREER_JEUX_DONNEES,
+    CustomerPermission.ACCEDER_DONNEES_BANCAIRES,
   ]
 }
 
-export function collaboratorEntityPermissionsWithPennylane() {
+export function customerEntityPermissionsWithPennylane(): Permission[] {
   return [
-    'COGED0001',
-    'COGED0002',
-    'COPEN001',
+    CustomerPermission.ACCEDER_GED_GESTION_SOCIALE,
+    CustomerPermission.ACCEDER_GED_COMPTABLE,
+    CustomerPermission.ACCEDER_OUTIL_PENNYLANE,
   ]
 }
 
-export function customerEntityPermissionsWithoutPennylane() {
+export function collaboratorEntityPermissionsWithPennylane(): Permission[] {
   return [
-    'CLGED0001',
-    'CLGED0002',
+    CollaboratorPermission.GED,
+    CollaboratorPermission.ACCEDER_GED_COMPTABLE,
+    CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE,
   ]
 }
 
-export function collaboratorEntityPermissionsWithoutPennylane() {
+export function customerEntityPermissionsWithoutPennylane(): Permission[] {
   return [
-    'COGED0001',
-    'COGED0002',
+    CustomerPermission.ACCEDER_GED_GESTION_SOCIALE,
+    CustomerPermission.ACCEDER_GED_COMPTABLE,
+  ]
+}
+
+export function collaboratorEntityPermissionsWithoutPennylane(): Permission[] {
+  return [
+    CollaboratorPermission.GED,
+    CollaboratorPermission.ACCEDER_GED_COMPTABLE,
   ]
 }

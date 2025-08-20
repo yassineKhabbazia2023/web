@@ -84,7 +84,7 @@ import { getInitials } from '@entities/helper/helper'
 import { getFullNameWithUppercaseLastName } from '@entities/common/utils/helpers'
 import { AvatarRoles } from '@pulse/styleguide'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { ACTION_PERMISSIONS } from '@pulse/common/constants'
 import { FeatureFlagManager } from '@pulse/core'
 import { Feature } from '@pulse/core/enums'
 
@@ -102,7 +102,7 @@ const { t } = useI18n({
 const hasPennylaneCheckbox = computed(() => {
   const isFeatureActivated = FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_DELEGATE_RIGHTS_CHECKBOX) === true
   const hasSelectedCollaborators = selectedCollaborators.value.length > 0
-  const hasPermission = CurrentUserManager.hasPermission(PERMISSION_ACTION.ACCESS_PENNYLANE_COLLAB) === true
+  const hasPermission = CurrentUserManager.hasPermission(ACTION_PERMISSIONS.ACCESS_PENNYLANE_COLLAB) === true
 
   return isFeatureActivated === true && hasSelectedCollaborators === true && hasPermission === true
 })

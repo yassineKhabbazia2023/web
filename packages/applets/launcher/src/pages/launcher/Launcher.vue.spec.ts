@@ -19,6 +19,8 @@ import {
   getMockedUserInfo,
 } from '@pulse/common/mocks'
 import { useSelectedEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
+import type { Permission } from '@pulse/common/types'
+import { CollaboratorPermission } from '@pulse/common/enums'
 
 import Launcher from '.'
 
@@ -56,7 +58,7 @@ function getLaunchCardComponents(wrapper: VueWrapper) {
 const entityMock = getMockedEntity({
   legalName: 'Entity Test',
 })
-const selectedEntityPermissionsMock = ['abc']
+const selectedEntityPermissionsMock: Permission[] = [CollaboratorPermission.CREER_JEUX_DONNEES]
 
 describe('test Home', () => {
   let wrapper: VueWrapper

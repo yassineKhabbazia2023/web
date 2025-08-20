@@ -1,5 +1,6 @@
 import type { ContactType } from '@pulse/common/enums'
 import type { AuthorizationState } from '../../ManageRightsTypes'
+import type { Permission } from '@pulse/common/types'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 
 interface Category {
@@ -9,20 +10,16 @@ interface Category {
 
 export interface Action {
   actionId: number
-  code: string
+  code: Permission
   name: string
   label: string
   enabled: boolean
 }
 
-export interface EnrichedAction extends Action {
-  tooltip: string
-}
-
 // Model used to display rights in the drawer (includes category name)
 export interface AuthorizationConfigMapped {
   category: Category
-  actions: EnrichedAction[]
+  actions: Action[]
 }
 
 // Model returned by the API

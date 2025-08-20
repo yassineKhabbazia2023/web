@@ -66,7 +66,7 @@ function showPopupRenewToken() {
 }
 
 function onRouteChange() {
-  const routeLayoutName = route.meta[LAYOUT_META] as Layout
+  const routeLayoutName = route.meta[LAYOUT_META]
   currentLayoutName.value = routeLayoutName || Layout.EMPTY
 
   if (popupRenewTokenIsVisible.value && !getCanShowPopupRenewToken()) {

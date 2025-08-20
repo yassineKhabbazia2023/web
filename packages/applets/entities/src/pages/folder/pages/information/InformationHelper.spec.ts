@@ -1,4 +1,4 @@
-import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { ACTION_PERMISSIONS } from '@pulse/common/constants'
 import { loggerMock } from '@pulse/core/mocks'
 import type { PatchOperation, PatchValue } from '@entities/services/PatchRecordService'
 import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks'
@@ -75,7 +75,7 @@ describe('test InformationHelper', () => {
       expect(canEdit).toBe(expectedCanEdit)
       expect(hasPermissionMock).toHaveBeenCalledTimes(expectedCalledTimes)
       if (expectedCalledTimes > 0) {
-        expect(hasPermissionMock).toHaveBeenNthCalledWith(expectedCalledTimes, PERMISSION_ACTION.EDIT_COMPANY_DATA)
+        expect(hasPermissionMock).toHaveBeenNthCalledWith(expectedCalledTimes, ACTION_PERMISSIONS.EDIT_COMPANY_DATA)
       }
     })
   })

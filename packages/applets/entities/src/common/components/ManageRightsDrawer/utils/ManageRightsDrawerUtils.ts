@@ -1,7 +1,8 @@
-import type { AuthorizationState } from '../ManageRightsTypes'
+import type { AuthorizationState, LabelByPermission } from '../ManageRightsTypes'
 import { logger } from '@pulse/core'
-import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/common/constants/rights-management.const'
 import { PennylaneService } from '@pulse/common/services/pennylane'
+import type { Permission } from '@pulse/common/types'
 
 import { updateUserPermissions } from '@entities/services/authorization'
 
@@ -31,8 +32,8 @@ export async function saveActionAdditionalOption({
   additionalOptionByActionCode?: Record<string, string>
   additionalOptionByActionCodeOrigin?: Record<string, string>
 }) {
-  const pennylaneRole = additionalOptionByActionCode?.[PERMISSION_ACTION.ACCESS_PENNYLANE]
-  const pennylaneRoleOrigin = additionalOptionByActionCodeOrigin?.[PERMISSION_ACTION.ACCESS_PENNYLANE]
+  const pennylaneRole = additionalOptionByActionCode?.[PERMISSION_PENNYLANE_CUSTOMER]
+  const pennylaneRoleOrigin = additionalOptionByActionCodeOrigin?.[PERMISSION_PENNYLANE_CUSTOMER]
 
   if (pennylaneRole !== undefined && pennylaneRole !== pennylaneRoleOrigin) {
     await PennylaneService.createRole({
@@ -49,12 +50,12 @@ export async function getAdditionalOptionByActionCode({
 }: {
   entityId: number,
   contactId: number,
-}) {
+}): Promise<LabelByPermission > {
   try {
     const pennylaneAccountContactRole = await PennylaneService.getAccountContactRole(entityId, contactId)
 
     return {
-      [PERMISSION_ACTION.ACCESS_PENNYLANE]: pennylaneAccountContactRole?.role,
+      [PERMISSION_PENNYLANE_CUSTOMER]: pennylaneAccountContactRole?.role,
     }
   } catch(e) {
     logger.warn('Failed to load account Pennylane AccountContactRole', e)
@@ -64,7 +65,7 @@ export async function getAdditionalOptionByActionCode({
 
 export function hasAction(
   authorizationStates: Record<string, AuthorizationState>,
-  actionCode: string,
+  actionCode: Permission,
 ) {
   const keys = Object.keys(authorizationStates)
 
@@ -75,11 +76,11 @@ export function getIsFormValid(
   authorizationStates: Record<string, AuthorizationState>,
   additionalOptionByActionCodeOrigin?: Record<string, string>,
 ) {
-  const hasPennylane = hasAction(authorizationStates, PERMISSION_ACTION.ACCESS_PENNYLANE)
+  const hasPennylane = hasAction(authorizationStates, PERMISSION_PENNYLANE_CUSTOMER)
   if (hasPennylane === false) {
     return true
   }
-  const pennylaneRole = additionalOptionByActionCodeOrigin?.[PERMISSION_ACTION.ACCESS_PENNYLANE]
+  const pennylaneRole = additionalOptionByActionCodeOrigin?.[PERMISSION_PENNYLANE_CUSTOMER]
   const hasPennylaneRole = (pennylaneRole ?? '') !== ''
 
   return hasPennylaneRole

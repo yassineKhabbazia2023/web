@@ -1,5 +1,5 @@
 import type { UserInfo, UserInfoApi, UserContextInfo } from '../stores/types'
-
+import { getPermissionsMock } from './permissions.mocks'
 
 export const getMockedUser = (override: Partial<UserInfo> = {}) => {
   const defaultUser: UserInfo = {
@@ -30,6 +30,8 @@ export const getMockedUser = (override: Partial<UserInfo> = {}) => {
 }
 
 export const getMockedUserContext = (override: Partial<UserContextInfo> = {}) => {
+  const permissions = getPermissionsMock()
+
   const defaultUser: UserContextInfo = {
     contact: {
 
@@ -51,7 +53,7 @@ export const getMockedUserContext = (override: Partial<UserContextInfo> = {}) =>
         default: undefined,
       },
     },
-    permissions: ['AUT001', 'AUT002'],
+    permissions,
     favoriteEntities: [],
   }
   const user = {
@@ -80,13 +82,3 @@ export const getMockedUserApi = () => {
   }
   return user
 }
-
-export const getMockedUserPermissions = (): string[] => [
-  'COADMI001',
-  'COBank001',
-  'COCAL001',
-  'COEMB001',
-  'COEVPO01',
-  'COGED0001',
-  'COGED0002',
-]

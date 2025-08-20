@@ -1,19 +1,17 @@
-import type { AuthorizationState } from '../../../ManageRightsTypes'
+import type { AuthorizationState, LabelByPermission } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
 import type {
   AuthorizationConfig,
   Action,
   AuthorizationConfigMapped,
-  EnrichedAction,
   RightsListDropdown,
 } from '../RightsListTypes'
-import type { PennylaneAvailableRole } from '@pulse/common/types'
+import type { PennylaneAvailableRole, Permission } from '@pulse/common/types'
 import type { PDropdownOption } from '@pulse/styleguide/types'
-import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/common/constants/rights-management.const'
 
 export const getAuthorizationsConfigMapped = (
   authorizationsConfig: AuthorizationConfig[],
   rightsCategories: Record<string, string>,
-  tooltipByActionCode: Record<Action['code'], string>,
 ): AuthorizationConfigMapped[] => {
   const authorizationsConfigFormatted = authorizationsConfig
     .map(({ category, actions }: AuthorizationConfig) => {
@@ -22,7 +20,7 @@ export const getAuthorizationsConfigMapped = (
           code: category,
           label: rightsCategories[category],
         },
-        actions: getEnrichedActions(actions, tooltipByActionCode),
+        actions,
       }
     })
 
@@ -41,20 +39,6 @@ export const getAuthorizationState = (
   }
 }
 
-export function getEnrichedActions(
-  actions: Action[],
-  tooltipByActionCode: Record<Action['code'], string>,
-): EnrichedAction[] {
-  return actions.map((action) => {
-    const tooltipForActionCode = tooltipByActionCode[action.code]
-
-    return {
-      ...action,
-      tooltip: tooltipForActionCode ?? '',
-    }
-  })
-}
-
 export function getPennylaneDropdownOptions(
   pennylaneAvailableRoles?: PennylaneAvailableRole[],
 ): PDropdownOption[] {
@@ -68,7 +52,7 @@ export function getPennylaneDropdownOptions(
 
 export function getHasAction(
   authorizationStates: Record<string, AuthorizationState>,
-  actionCode: string,
+  actionCode: Permission,
 ) {
   const keys = Object.keys(authorizationStates)
 
@@ -81,7 +65,7 @@ export function getDropdownsByActionCode(
   pennylaneDropdownPlaceholder: string,
 ) {
   const dropdownsByActionCode: Record<string, RightsListDropdown> = {
-    [PERMISSION_ACTION.ACCESS_PENNYLANE]: {
+    [PERMISSION_PENNYLANE_CUSTOMER]: {
       isVisible: hasPennylane,
       placeholder: pennylaneDropdownPlaceholder,
       options: pennylanedropdownOptions,
@@ -89,4 +73,19 @@ export function getDropdownsByActionCode(
   }
 
   return dropdownsByActionCode
+}
+
+export function getTooltipByActionCode({
+  hasFeature,
+  label,
+}: {
+  hasFeature: boolean
+  label: string
+}): LabelByPermission {
+  if (hasFeature === true) {
+    return {
+      [PERMISSION_PENNYLANE_CUSTOMER]: label,
+    }
+  }
+  return {}
 }

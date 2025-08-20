@@ -1,16 +1,16 @@
-import { it, expect, describe } from 'vitest'
 import { getMockedAuthorizationsConfig, getMockedAuthorizationState } from '@entities/__mocks__/permissions.mocks'
-import type { Action, EnrichedAction } from '../RightsListTypes'
+import type { Action } from '../RightsListTypes'
 import type { PDropdownOption } from '@pulse/styleguide/types'
-import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/common/constants/rights-management.const'
+import { CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
 
 import {
   getAuthorizationsConfigMapped,
   getAuthorizationState,
-  getEnrichedActions,
+  getPennylaneDropdownOptions,
   getHasAction,
   getDropdownsByActionCode,
-  getPennylaneDropdownOptions,
+  getTooltipByActionCode,
 } from '.'
 import { getMockedPennylaneAvailableRole } from '@pulse/common/mocks'
 
@@ -31,43 +31,41 @@ const mockedRightCategories = {
 const mockedActions: Action[] = [
   {
     actionId: 21,
-    code: 'COLUSER001',
+    code: CollaboratorPermission.MAJ_FICHE_ENTREPRISE_ONGLET_INFORMATION,
     name: 'Update user',
     label: 'Modifier les droits',
     enabled: true,
   },
   {
     actionId: 22,
-    code: 'COLUSER002',
+    code: CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE,
     name: 'Update user',
     label: 'Modifier les droits',
     enabled: true,
   },
   {
     actionId: 23,
-    code: 'COLUSER003',
+    code: CollaboratorPermission.RETIRER_UTILISATEUR_CLIENT_DOSSIER,
     name: 'Update user',
     label: 'Modifier les droits',
     enabled: false,
   },
   {
     actionId: 25,
-    code: 'COLUSER004',
+    code: CollaboratorPermission.ACCEDER_CALENDRIER,
     name: 'Update user',
     label: 'Modifier les droits',
     enabled: false,
   },
 ]
 
-const additionalInfoMock = 'additional info mock'
-const tooltipByActionCode: Record<Action['code'], string> = {
-  [mockedActions[0].code]: additionalInfoMock,
-}
-
 
 // Expectations
 const expectedAuthorizationState = {
-  actions: ['COLUSER001', 'COLUSER002'],
+  actions: [
+    CollaboratorPermission.MAJ_FICHE_ENTREPRISE_ONGLET_INFORMATION,
+    CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE,
+  ],
   isActive: true,
 }
 const expectedAuthorizationsConfigMapped = [
@@ -76,21 +74,21 @@ const expectedAuthorizationsConfigMapped = [
       code: 'CLTGESTION',
       label: 'File management',
     },
-    actions: getEnrichedActions(mockedAuthorizationsConfig[0].actions, tooltipByActionCode),
+    actions: mockedAuthorizationsConfig[0].actions,
   },
   {
     category: {
       code: 'COLADMIN',
       label: 'Administration',
     },
-    actions: getEnrichedActions(mockedAuthorizationsConfig[1].actions, tooltipByActionCode),
+    actions: mockedAuthorizationsConfig[1].actions,
   },
   {
     category: {
       code: 'COLMIRROIR',
       label: 'Customer mirror view',
     },
-    actions: getEnrichedActions(mockedAuthorizationsConfig[2].actions, tooltipByActionCode),
+    actions: mockedAuthorizationsConfig[2].actions,
   },
 ]
 
@@ -100,7 +98,6 @@ describe('rightsListUtils', () => {
       const authorizationsConfigMapped = getAuthorizationsConfigMapped(
         mockedAuthorizationsConfig,
         mockedRightCategories,
-        tooltipByActionCode,
       )
 
       expect(authorizationsConfigMapped).toStrictEqual(
@@ -114,27 +111,6 @@ describe('rightsListUtils', () => {
       const authorizationState = getAuthorizationState(mockedActions)
 
       expect(authorizationState).toStrictEqual(expectedAuthorizationState)
-    })
-  })
-
-  describe('getEnrichedActions', () => {
-    it('should return a list enriched actions', () => {
-      const expectedEnrichedActions: EnrichedAction[] = [{
-        ...mockedActions[0],
-        tooltip: additionalInfoMock,
-      }, {
-        ...mockedActions[1],
-        tooltip: '',
-      }, {
-        ...mockedActions[2],
-        tooltip: '',
-      }, {
-        ...mockedActions[3],
-        tooltip: '',
-      }]
-      const enrichedActions = getEnrichedActions(mockedActions, tooltipByActionCode)
-
-      expect(enrichedActions).toStrictEqual(expectedEnrichedActions)
     })
   })
 
@@ -175,7 +151,7 @@ describe('rightsListUtils', () => {
 
   describe('getHasAction', () => {
     const tests = [{
-      actionCode: 'foo',
+      actionCode: CustomerPermission.ACCEDER_OUTIL_SILAE,
       expectedHasAction: false,
     }, {
       actionCode: authorizationStateMock['CLTGESTION'].actions[0],
@@ -205,12 +181,12 @@ describe('rightsListUtils', () => {
     const tests = [{
       hasPennylane: false,
       expectedDropdownsByActionCode: {
-        [PERMISSION_ACTION.ACCESS_PENNYLANE]: pennylaneDropdownMockUnvisible,
+        [PERMISSION_PENNYLANE_CUSTOMER]: pennylaneDropdownMockUnvisible,
       },
     }, {
       hasPennylane: true,
       expectedDropdownsByActionCode: {
-        [PERMISSION_ACTION.ACCESS_PENNYLANE]: {
+        [PERMISSION_PENNYLANE_CUSTOMER]: {
           ...pennylaneDropdownMockUnvisible,
           isVisible: true,
         },
@@ -227,6 +203,32 @@ describe('rightsListUtils', () => {
       )
 
       expect(hasAction).toStrictEqual(expectedDropdownsByActionCode)
+    })
+  })
+
+  describe('getTooltipByActionCode', () => {
+    const label = 'tooltip label'
+    const tooltipByActionCodeWithFeature = {
+      [PERMISSION_PENNYLANE_CUSTOMER]: label,
+    }
+    const tooltipByActionCodeWithoutFeature = {}
+    const tests = [{
+      hasFeature: true,
+      expectedTooltipByActionCode: tooltipByActionCodeWithFeature,
+    }, {
+      hasFeature: false,
+      expectedTooltipByActionCode: tooltipByActionCodeWithoutFeature,
+    }]
+
+    it.each(tests)('should return expected object', ({
+      hasFeature,
+      expectedTooltipByActionCode,
+    }) => {
+      const tooltipByActionCode = getTooltipByActionCode({
+        hasFeature,
+        label,
+      })
+      expect(tooltipByActionCode).toStrictEqual(expectedTooltipByActionCode)
     })
   })
 })

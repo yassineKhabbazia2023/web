@@ -45,14 +45,14 @@ describe('WidgetsService', () => {
       hasGedCompta,
       expectedWidgets,
     }) => {
-      vi.mocked(CurrentUserManager).getHasPennylanePermission.mockReturnValue(hasPennylaneOffer)
-      vi.mocked(CurrentUserManager).getHasGedComptaPermission.mockReturnValue(hasGedCompta)
+      vi.mocked(CurrentUserManager).hasSelectedEntityPennylanePermission.mockReturnValue(hasPennylaneOffer)
+      vi.mocked(CurrentUserManager).hasGedComptaPermission.mockReturnValue(hasGedCompta)
 
       const homeWidgetNames = WidgetsService.getHomeWidgetNames()
 
       expect(homeWidgetNames).toEqual(expectedWidgets)
-      expect(vi.mocked(CurrentUserManager).getHasPennylanePermission).toHaveBeenCalledOnce()
-      expect(vi.mocked(CurrentUserManager).getHasGedComptaPermission).toHaveBeenCalledOnce()
+      expect(vi.mocked(CurrentUserManager).hasSelectedEntityPennylanePermission).toHaveBeenCalledOnce()
+      expect(vi.mocked(CurrentUserManager).hasGedComptaPermission).toHaveBeenCalledOnce()
     })
   })
 })

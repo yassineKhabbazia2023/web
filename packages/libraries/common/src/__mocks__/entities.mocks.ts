@@ -1,4 +1,6 @@
 import type { Entity, SelectedEntity } from '../stores/types'
+import type { Permission } from '../types/permission.type'
+import { CollaboratorPermission } from '../enums/permission.enum'
 
 export const getMockedEntity = (overridden: Partial<Entity> = {}) => {
   const defaultEntity: Entity = {
@@ -25,11 +27,17 @@ export const getMockedEntities = (): Entity[] => [
 ]
 
 export const getMockedSelectedEntity = (): SelectedEntity => {
+  const permissions: Permission[] = [
+    CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS,
+    CollaboratorPermission.ACCEDER_ONGLET_INFORMATIONS,
+    CollaboratorPermission.ACCEDER_ONGLET_UTILISATEURS,
+  ]
+
   return {
     accountId: 1,
     accountNumber: '2024643902',
     legalName: 'Test 1',
     color: 'orange',
-    permissions: ['COUSER002', 'COINFO001', 'COUSER001'],
+    permissions,
   }
 }

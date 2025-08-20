@@ -7,7 +7,7 @@ import { useRoute, useRouter } from 'vue-router'
 import * as authorizationServices from '@entities/services/authorization'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
-import { RouteParam } from '@pulse/common/enums'
+import { RouteParam, CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
 import { getMockedEntity } from '@pulse/common/mocks'
 
 import ManageRightsDrawer from '.'
@@ -28,6 +28,12 @@ vi.mock('@pulse/core', () => ({
   FeatureFlagManager: featureFlagManagerMock,
 }))
 vi.mock('vue-router')
+
+const actionCodesMock = [
+  CustomerPermission.ACCEDER_DONNEES_BANCAIRES,
+  CustomerPermission.ACCEDER_GED_COMPTABLE,
+  CollaboratorPermission.ACCEDER_DONNEES_BANCAIRES,
+]
 
 const createWrapper = (selectedUser: User = mockedUser): VueWrapper<any> => {
   return mount(ManageRightsDrawer, {
@@ -80,7 +86,7 @@ describe('manageRightsDrawer', () => {
       expect(spyAuthServices).toHaveBeenCalledWith(
         mockedUser.contactId,
         null,
-        ['CLUSER001', 'CLUSER002', 'COADMI001'],
+        actionCodesMock,
       )
     })
     it("should send a request to update the user's permissions when the submit button is clicked", async () => {
@@ -103,7 +109,7 @@ describe('manageRightsDrawer', () => {
       expect(spyAuthServices).toHaveBeenCalledWith(
         mockedUser.contactId,
         mockedAccountId,
-        ['CLUSER001', 'CLUSER002', 'COADMI001'],
+        actionCodesMock,
       )
     })
   })

@@ -1,14 +1,15 @@
 import { arrayIncludes } from '@pulse/core/utils/array'
+import type { Permission } from '../types/permission.type'
 
 export const setCurrentUserMock = vi.fn()
 export const initializeCurrentUserMock = vi.fn()
 export const logoutMock = vi.fn()
-export const hasPermissionMock = vi.fn((_: string | string[]) => true)
+export const hasPermissionMock = vi.fn((_: Permission[]) => true)
 export const initTokenMock = vi.fn()
 export const persistTokenMock = vi.fn()
 
-export function getHasPermissionMocked(permissionCodes: string[]) {
-  return (code: string | string[]) => arrayIncludes(permissionCodes, code)
+export function getHasPermissionMocked(permissionCodes: Permission[]) {
+  return (codes: Permission[]) => arrayIncludes(permissionCodes, codes)
 }
 
 export const CurrentUserManagerMock = {

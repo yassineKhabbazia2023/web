@@ -1,3 +1,5 @@
+import type { Permission } from '../types/permission.type'
+
 export type EntityColor =
   'orange' |
   'persian' |
@@ -16,7 +18,7 @@ export interface Entity {
 }
 
 export interface SelectedEntity extends Entity {
-  permissions?: string[]
+  permissions?: Permission[]
 }
 
 type Entities = {
@@ -45,7 +47,7 @@ export interface UserInfo {
 
 export interface UserContextInfo {
   contact: UserInfo
-  permissions: string[]
+  permissions: Permission[]
   favoriteEntities: Entity[]
 }
 

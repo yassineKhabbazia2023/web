@@ -13,10 +13,11 @@ export function removeIfExists<T>(arr: T[], item: T): T[] {
   return arr
 }
 
-export function arrayIncludes<T>(array: T[], value: T | T[]) {
-  return Array.isArray(value)
-    ? value.some((v) => array.includes(v))
-    : array.includes(value)
+/**
+ * returns true if any element in array1 is included in array2
+ */
+export function arrayIncludes<T>(array1: T[], array2: T[]) {
+  return array1.some((row1) => array2.includes(row1))
 }
 
 export function stringContainsAllValues(text: string, values: string[]) {

@@ -67,6 +67,7 @@ import { displayNotification } from '@pulse/styleguide'
 import type {
   ManageRightsDrawerProps,
   AuthorizationState,
+  LabelByPermission,
 } from './ManageRightsTypes'
 import RightsList from './components/RightsList'
 import { RouteParam } from '@pulse/common/enums'
@@ -133,8 +134,8 @@ const handleUpdateUserPermissions = async () => {
   isLoading.value = false
 }
 
-const additionalOptionByActionCode = ref<Record<string, string>>()
-const additionalOptionByActionCodeOrigin = ref<Record<string, string>>()
+const additionalOptionByActionCode = ref<LabelByPermission >()
+const additionalOptionByActionCodeOrigin = ref<LabelByPermission >()
 
 const isFormValid = computed(() => getIsFormValid(
   authorizationsState.value,

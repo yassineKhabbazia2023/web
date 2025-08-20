@@ -1,7 +1,8 @@
-import { CurrentUserManagerMock } from '@pulse/common/mocks'
+import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks'
 import { permissionGuard } from './permission.guard'
 import { PERMISSIONS_META } from '@pulse/common/constants'
 import { createTestingPinia } from '@pinia/testing'
+import { CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
 
 createTestingPinia()
 
@@ -30,7 +31,7 @@ describe('permissionGuard', () => {
       to: {
         name: 'settings',
         meta: {
-          [PERMISSIONS_META]: ['read'],
+          [PERMISSIONS_META]: [CustomerPermission.DROIT_SUPER_ADMIN_CLIENT],
         },
       },
       hasPermission: true,
@@ -39,7 +40,7 @@ describe('permissionGuard', () => {
       to: {
         name: 'settings',
         meta: {
-          [PERMISSIONS_META]: ['admin'],
+          [PERMISSIONS_META]: [CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS_ADMIN],
         },
       },
       target: {
@@ -51,7 +52,7 @@ describe('permissionGuard', () => {
     async ({ to, target, hasPermission }) => {
       const next = vi.fn()
 
-      CurrentUserManagerMock.hasPermission.mockImplementation((_: string | string[]) => hasPermission)
+      hasPermissionMock.mockReturnValue(hasPermission)
 
       await permissionGuard(to as any, {} as any, next)
       if (target !== undefined) {

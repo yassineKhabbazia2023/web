@@ -3,7 +3,7 @@ import { getMockedEntity } from '../../__mocks__/entities.mocks'
 import { permissionServiceMock, fetchUserAccountPermissionsMock } from '../../__mocks__/permissions.service.mocks'
 
 import { SelectedEntityManager } from './selected-entity.manager'
-import { getStoreMock } from '@common/__mocks__'
+import { getStoreMock, getPermissionsMock } from '@common/__mocks__'
 import { useSelectedEntityStore } from '../../stores/selected-entity/selected-entity.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 
@@ -15,7 +15,8 @@ vi.mock('../../services/permissions/permissions.service', () => permissionServic
 describe('test selected-entity.manager', () => {
   describe('SelectedEntityManager', () => {
     it('should set selectedEntity properly', async () => {
-      const permissionsMock = ['abc']
+      const permissionsMock = getPermissionsMock()
+
       const setItemMock = vi.spyOn(Object.getPrototypeOf(localStorage), 'setItem')
       const entityMock = getMockedEntity()
       const { accountId: expectedAccountId } = entityMock

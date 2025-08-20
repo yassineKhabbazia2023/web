@@ -111,7 +111,7 @@ import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { PTable, PTableColumn, PTag, PAvatar, PButton, PIcon, PTooltip, PToolbox } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { ACTION_PERMISSIONS } from '@pulse/common/constants'
 import { ReportTableProps } from './report-table.types'
 import { REPORT_ACTIONS } from './constants/report-table.const'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
@@ -180,7 +180,7 @@ const getReportActions = (status: ReportStatus): PToolboxItemProps[] => {
       pValue: t('deleteReport'),
       pActionName: REPORT_ACTIONS.DELETE_REPORT,
       pState: 'default',
-      display: CurrentUserManager.hasPermission(PERMISSION_ACTION.DELETE_REPORT),
+      display: CurrentUserManager.hasPermission(ACTION_PERMISSIONS.DELETE_REPORT),
     },
   ]
     .filter(({ display }) => display)

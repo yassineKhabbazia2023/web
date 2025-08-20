@@ -1,14 +1,19 @@
 import { LauncherKey } from '@launcher/pages/launcher/LauncherTypes'
+import type { Permission } from '@pulse/common/types'
+import { CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
 
-enum PermissionCodes {
-  MEG = 'CLMEG001',
-  SILAE = 'CLSILA001',
-  SILAE_COLLAB = 'COSILA001',
-  PENNYLANE = 'CLPEN001',
-  PENNYLANE_COLLAB = 'COPEN001',
+const PermissionCodes: Record<string, Permission> = {
+  MEG: CustomerPermission.ACCEDER_OUTIL_MEG,
+  SILAE: CustomerPermission.ACCEDER_OUTIL_SILAE,
+  SILAE_COLLAB: CollaboratorPermission.ACCEDER_LANCEUR_SILAE,
+  PENNYLANE: CustomerPermission.ACCEDER_OUTIL_PENNYLANE,
+  PENNYLANE_COLLAB: CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE,
 }
 
-export const LAUNCHER_AUTHORIZATIONS = [
+export const LAUNCHER_AUTHORIZATIONS: {
+  key: LauncherKey
+  authorizationCodes: Permission[]
+}[] = [
   {
     key: LauncherKey.MEG,
     authorizationCodes: [PermissionCodes.MEG],

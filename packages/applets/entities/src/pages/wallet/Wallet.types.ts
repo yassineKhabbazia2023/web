@@ -1,9 +1,10 @@
 import type { Feature } from '@pulse/core/enums'
+import type { Permission } from '@pulse/common/types'
 import { WalletTab } from './Wallet.enums'
 
 export type WalletTabConfiguration = {
   name: WalletTab,
-  permissionCode?: string | string[],
+  permissionCodes?: Permission[],
   featureFlag?: Feature,
 }
 

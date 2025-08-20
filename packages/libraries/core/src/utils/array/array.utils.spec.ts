@@ -37,27 +37,27 @@ describe('test array.utils', () => {
 
   describe('arrayIncludes', () => {
     it('should return true if the array includes the single value', () => {
-      const array = [1, 2, 3]
-      const value = 2
-      expect(arrayIncludes(array, value)).toBe(true)
+      const array1 = [1, 2, 3]
+      const array2 = [2]
+      expect(arrayIncludes(array1, array2)).toBe(true)
     })
 
     it('should return false if the array does not include the single value', () => {
-      const array = [1, 2, 3]
-      const value = 4
-      expect(arrayIncludes(array, value)).toBe(false)
+      const array1 = [1, 2, 3]
+      const array2 = [4]
+      expect(arrayIncludes(array1, array2)).toBe(false)
     })
 
     it('should return true if the array includes all values in the array of values', () => {
-      const array = [1, 2, 3, 4]
-      const value = [2, 3]
-      expect(arrayIncludes(array, value)).toBe(true)
+      const array1 = [1, 2, 3, 4]
+      const array2 = [2, 3]
+      expect(arrayIncludes(array1, array2)).toBe(true)
     })
 
     it('should return false if the array does not include all values in the array of values', () => {
-      const array = [1, 2, 3, 4]
-      const value = [0, 5]
-      expect(arrayIncludes(array, value)).toBe(false)
+      const array1 = [1, 2, 3, 4]
+      const array2 = [0, 5]
+      expect(arrayIncludes(array1, array2)).toBe(false)
     })
 
     describe('stringContainsAllValues', () => {

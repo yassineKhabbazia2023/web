@@ -74,9 +74,9 @@ describe('seoGuard', () => {
     expect(setDocumentTitleMock).not.toHaveBeenCalled()
   })
 
-  it('should reset document title when HTML_TITLE_META is null', () => {
+  it('should reset document title when HTML_TITLE_META is undefined', () => {
     const toRoute = createMockRoute({
-      [HTML_TITLE_META]: null,
+      [HTML_TITLE_META]: undefined,
     })
     const fromRoute = createMockRoute()
 

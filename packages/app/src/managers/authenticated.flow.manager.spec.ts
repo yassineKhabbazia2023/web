@@ -1,5 +1,5 @@
 import { loggerMock } from '@pulse/core/mocks'
-import { AmplitudeServiceMock, getMockedUserContext, getMockedEntity, getMockedSelectedEntity, getStoreMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock, getMockedUserContext, getMockedEntity, getMockedSelectedEntity, getStoreMock, getPermissionsMock } from '@pulse/common/mocks'
 import { initProductFruitsAuthenticatedCollab, initProductFruitsAuthenticatedCustomer, stopProductFruits, getProductFruitsUser } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserService } from '@pulse/common/services/current-user'
@@ -33,7 +33,7 @@ vi.mock('@app/plugins/ProductFruits/productFruits.plugin', () => ({
 }))
 
 const userMock = getMockedUserContext()
-const permissionsMock = ['permission1', 'permission2']
+const permissionsMock = getPermissionsMock()
 const entityMock = getMockedEntity()
 const entitiesMock = {
   items: [entityMock],

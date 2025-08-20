@@ -2,12 +2,14 @@ import { describe, it, expect, vi } from 'vitest'
 import { envVarsMock } from '@pulse/core/mocks'
 import { getMockedUserInfo } from '@common/__mocks__/user-client.mocks'
 import { utilsMock, logoutCollaboratorMock, logoutGigyaSSOMock, logoutClientMock } from '@common/__mocks__/utils.mocks'
-import { getMockedSelectedEntity, getMockedUserPermissions, getStoreMock } from '../../__mocks__'
+import { getMockedSelectedEntity, getPermissionsMock, getStoreMock } from '../../__mocks__'
 import { useUserStore } from '../../stores/user/user.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
 import { LOCAL_STORAGE_TOKEN_KEY } from '../token/token.manager'
-import { PERMISSION_ACCOUNT } from '../../constants/permissions'
+import { ACCOUNT_PERMISSIONS } from '../../constants/permissions.const'
+import type { Permission } from '../../types/permission.type'
+import { CollaboratorPermission, CustomerPermission } from '../../enums/permission.enum'
 
 import { CurrentUserManager } from './current-user.manager'
 
@@ -15,8 +17,9 @@ const userStoreMock = getStoreMock(useUserStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
 const tokenStoreMock = getStoreMock(useTokenStore)
 
-const userPermissionsMock = getMockedUserPermissions()
+const userPermissionsMock = getPermissionsMock()
 const selectedEntityMock = getMockedSelectedEntity()
+const selectedEntityPermissionsMock = selectedEntityMock.permissions ?? []
 
 const gigyaUserIdMock = 'gigya-user-id'
 
@@ -113,18 +116,40 @@ describe('test current-user.manager', () => {
   describe('hasPermission', () => {
     beforeEach(() => {
       permissionsStoreMock.userPermissions = userPermissionsMock
-      permissionsStoreMock.selectedEntityPermissions = selectedEntityMock.permissions ?? []
+      permissionsStoreMock.selectedEntityPermissions = selectedEntityPermissionsMock
     })
 
-    it.each([
-      ['COADMI001', true], // Permission code exists
-      ['COZDA0001', false], // Permission code does not exist
-      [['COEMB001', 'COEVPO01', 'COADMI001'], true], // All permission codes exist
-      [['COEMB001', 'COZZPO01', 'COADMI001'], true], // All permission codes exist except for one
-      [['COWSA0001', 'COZRA0001', 'COQSA0001'], false], // Not all permission codes exist
-    ])(
-      'returns whether the user has permission (%s, %s) => %s',
-      (permissions, expected) => {
+    const tests: {
+      permissions: Permission[]
+      expected: boolean
+      reason: string
+    }[] = [{
+      permissions: [CollaboratorPermission.CREER_JEUX_DONNEES],
+      expected: true,
+      reason: 'is present in global permissions',
+    }, {
+      permissions: [CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS],
+      expected: true,
+      reason: 'is present in selectedEntity permissions',
+    }, {
+      permissions: [CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS, CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
+      expected: true,
+      reason: 'one is present in global permissions',
+    }, {
+      permissions: [CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS, CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
+      expected: true,
+      reason: 'one is present in selectedEntity permissions',
+    }, {
+      permissions: [CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
+      expected: false,
+      reason: 'one is absent in selectedEntity and global permissions',
+    }]
+    it.each(tests)(
+      'return $expected when $reason',
+      ({
+        permissions,
+        expected,
+      }) => {
         const checkPermission = CurrentUserManager.hasPermission(permissions)
 
         expect(checkPermission).toBe(expected)
@@ -132,7 +157,85 @@ describe('test current-user.manager', () => {
     )
   })
 
-  describe('getHasGedComptaPermission', () => {
+  describe('hasGlobalPermission', () => {
+    beforeEach(() => {
+      permissionsStoreMock.userPermissions = userPermissionsMock
+      permissionsStoreMock.selectedEntityPermissions = selectedEntityPermissionsMock
+    })
+
+    const tests: {
+      permissions: Permission[],
+      expected: boolean,
+      reason: string,
+    }[] = [{
+      permissions: [CollaboratorPermission.CREER_JEUX_DONNEES],
+      expected: true,
+      reason: 'is present in global permissions',
+    }, {
+      permissions: [CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
+      expected: false,
+      reason: 'is absent in global permissions',
+    }, {
+      permissions: [CollaboratorPermission.CREER_JEUX_DONNEES, CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
+      expected: true,
+      reason: 'one is present in global permissions',
+    }, {
+      permissions: [CustomerPermission.ACCEDER_OUTIL_PENNYLANE, CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
+      expected: false,
+      reason: 'none are present in global permissions',
+    }]
+
+    it.each(tests)('should return $expected when $reason', ({
+      permissions,
+      expected,
+    }) => {
+      const hasPermission = CurrentUserManager.hasGlobalPermission(permissions)
+
+      expect(hasPermission).toBe(expected)
+    })
+  })
+
+  describe('hasSelectedEntityPermission', () => {
+    beforeEach(() => {
+      permissionsStoreMock.userPermissions = userPermissionsMock
+      permissionsStoreMock.selectedEntityPermissions = selectedEntityPermissionsMock
+    })
+
+    const tests: {
+      permissions: Permission[],
+      expected: boolean,
+      reason: string,
+    }[] = [{
+      permissions: [
+        CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS,
+      ],
+      expected: true,
+      reason: 'is present in selectedEntity permissions',
+    }, {
+      permissions: [CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
+      expected: false,
+      reason: 'is absent in selectedEntity permissions',
+    }, {
+      permissions: [CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS, CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
+      expected: true,
+      reason: 'one is present in selectedEntity permissions',
+    }, {
+      permissions: [CollaboratorPermission.CREER_JEUX_DONNEES, CustomerPermission.ACCEDER_DONNEES_BANCAIRES],
+      expected: false,
+      reason: 'none are present in selectedEntity permissions',
+    }]
+
+    it.each(tests)('should return $expected when $reason', ({
+      permissions,
+      expected,
+    }) => {
+      const hasPermission = CurrentUserManager.hasSelectedEntityPermission(permissions)
+
+      expect(hasPermission).toBe(expected)
+    })
+  })
+
+  describe('hasGedComptaPermission', () => {
     const tests = [{
       hasPermissionMock: false,
       expectedHasGedComptaPermission: false,
@@ -147,15 +250,15 @@ describe('test current-user.manager', () => {
       const hasPermissionSpy = vi.spyOn(CurrentUserManager, 'hasPermission')
       hasPermissionSpy.mockReturnValue(hasPermissionMock)
 
-      const hasGedComptaPermission = CurrentUserManager.getHasGedComptaPermission()
+      const hasGedComptaPermission = CurrentUserManager.hasGedComptaPermission()
 
       expect(hasPermissionSpy).toHaveBeenCalledOnce()
-      expect(hasPermissionSpy).toHaveBeenCalledWith(PERMISSION_ACCOUNT.GED_COMPTA)
+      expect(hasPermissionSpy).toHaveBeenCalledWith(ACCOUNT_PERMISSIONS.GED_COMPTA)
       expect(hasGedComptaPermission).toBe(expectedHasGedComptaPermission)
     })
   })
 
-  describe('getHasPennylanePermission', () => {
+  describe('hasSelectedEntityPennylanePermission', () => {
     const tests = [{
       hasPermissionMock: false,
       expectedHasPennylanePermission: false,
@@ -168,14 +271,14 @@ describe('test current-user.manager', () => {
       expectedHasPennylanePermission,
     }) => {
       const hasPermissionSpy = vi.spyOn(CurrentUserManager, 'hasPermission')
-      const hasPermissionForCurrentEntitySpy = vi.spyOn(CurrentUserManager, 'hasPermissionForCurrentEntity')
+      const hasPermissionForCurrentEntitySpy = vi.spyOn(CurrentUserManager, 'hasSelectedEntityPermission')
       hasPermissionForCurrentEntitySpy.mockReturnValue(hasPermissionMock)
 
-      const hasPennylanePermission = CurrentUserManager.getHasPennylanePermission()
+      const hasPennylanePermission = CurrentUserManager.hasSelectedEntityPennylanePermission()
 
       expect(hasPermissionSpy).not.toHaveBeenCalledOnce()
       expect(hasPermissionForCurrentEntitySpy).toHaveBeenCalledOnce()
-      expect(hasPermissionForCurrentEntitySpy).toHaveBeenCalledWith(PERMISSION_ACCOUNT.PENNYLANE)
+      expect(hasPermissionForCurrentEntitySpy).toHaveBeenCalledWith(ACCOUNT_PERMISSIONS.PENNYLANE)
       expect(hasPennylanePermission).toBe(expectedHasPennylanePermission)
     })
   })

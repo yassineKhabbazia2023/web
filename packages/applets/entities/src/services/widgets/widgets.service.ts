@@ -29,8 +29,8 @@ const userWithPennylaneAndGedWidgetNames = [
 // Done this way until we have a full experience layer / BackForFront work flow
 export class WidgetsService {
   static getHomeWidgetNames() {
-    const hasPennylanePermission = CurrentUserManager.getHasPennylanePermission()
-    const hasGedComptaPermission = CurrentUserManager.getHasGedComptaPermission()
+    const hasPennylanePermission = CurrentUserManager.hasSelectedEntityPennylanePermission()
+    const hasGedComptaPermission = CurrentUserManager.hasGedComptaPermission()
 
     if (hasPennylanePermission === true && hasGedComptaPermission === true) {
       return userWithPennylaneAndGedWidgetNames

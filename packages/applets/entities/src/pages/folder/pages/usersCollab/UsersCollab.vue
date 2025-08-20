@@ -45,7 +45,7 @@
           <span class="padding-left--2">{{ t('addCustomer') }}</span>
         </PButton>
         <PButton
-          v-if="CurrentUserManager.hasPermission(PERMISSION_ACTION.MANAGE_ACCESS)"
+          v-if="CurrentUserManager.hasPermission(ACTION_PERMISSIONS.MANAGE_ACCESS)"
           pType="primary"
           pSize="small"
           :loading="isLoadingOperations"
@@ -217,7 +217,7 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { getInitials } from '@pulse/common'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { PAGE_SIZES, PERMISSION_ACTION } from '@pulse/common/constants'
+import { PAGE_SIZES, ACTION_PERMISSIONS } from '@pulse/common/constants'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { getFullName } from '@entities/common/utils'
 import { fetchAccountCustomers } from '@entities/services/wallet'
@@ -294,7 +294,7 @@ const currentEntityId = computed(() => selectedEntity.value?.accountId)
 const currentEntityName = computed(() => selectedEntity.value?.legalName)
 const currentEntityNumber = computed(() => selectedEntity.value?.accountNumber)
 
-const canAddUser = computed(() => CurrentUserManager.hasPermission(PERMISSION_ACTION.ADD_USERS))
+const canAddUser = computed(() => CurrentUserManager.hasPermission(ACTION_PERMISSIONS.ADD_USERS))
 
 const isAddUserButtonVisible = computed(() =>
   currentEntityId.value &&
@@ -326,7 +326,7 @@ function handleToolboxClick(userRow: any) {
       pState: 'default',
     },
   ]
-  if (CurrentUserManager.hasPermission(PERMISSION_ACTION.COLLAB_REMOVE_USER)) {
+  if (CurrentUserManager.hasPermission(ACTION_PERMISSIONS.COLLAB_REMOVE_USER)) {
     items.push({
       pIconName: 'personRemove',
       pValue: t('removeUser'),

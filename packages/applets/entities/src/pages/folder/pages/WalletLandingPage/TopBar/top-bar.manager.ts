@@ -3,7 +3,7 @@ import { useUserStore } from '@pulse/common/stores'
 
 export class TopBarManager {
   static isPennylaneSSODisplayed() {
-    const hasPennylanePermission = CurrentUserManager.getHasPennylanePermission()
+    const hasPennylanePermission = CurrentUserManager.hasSelectedEntityPennylanePermission()
 
     return hasPennylanePermission
   }

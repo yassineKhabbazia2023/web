@@ -2,7 +2,8 @@ import { loggerMock } from '@pulse/core/mocks'
 import { getMockedAuthorizationState } from '@entities/__mocks__/permissions.mocks'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { getMockedPennylaneRole } from '@pulse/common/mocks'
-import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { CustomerPermission } from '@pulse/common/enums'
+import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/common/constants/rights-management.const'
 import { updateUserPermissions } from '@entities/services/authorization'
 
 import {
@@ -29,19 +30,19 @@ const roleMock = getMockedPennylaneRole()
 
 const emptyAdditionalOptionByActionCode: Record<string, string> = {}
 const adminAdditionalOptionByActionCode: Record<string, string> = {
-  [PERMISSION_ACTION.ACCESS_PENNYLANE]: 'admin',
+  [PERMISSION_PENNYLANE_CUSTOMER]: 'admin',
 }
 const comptaAdditionalOptionByActionCode: Record<string, string> = {
-  [PERMISSION_ACTION.ACCESS_PENNYLANE]: 'compta',
+  [PERMISSION_PENNYLANE_CUSTOMER]: 'compta',
 }
 
 // Expectations
 const expectedPermissionCodeList = [
-  'CLUSER001',
-  'CLUSER002',
-  'CLUSER003',
-  'CLGED0001',
-  'CLGED0002',
+  CustomerPermission.ACCEDER_DONNEES_BANCAIRES,
+  CustomerPermission.ACCEDER_EMBAUCHE_SALARIEE,
+  CustomerPermission.ACCEDER_EVP,
+  CustomerPermission.ACCEDER_GED_GESTION_SOCIALE,
+  CustomerPermission.ACCEDER_GED_COMPTABLE,
 ]
 
 describe('manageRightsDrawerUtils', () => {
@@ -72,7 +73,7 @@ describe('manageRightsDrawerUtils', () => {
         const expectedParameters = {
           accountId: 1,
           contactId: 2,
-          role: additionalOptionByActionCode[PERMISSION_ACTION.ACCESS_PENNYLANE],
+          role: additionalOptionByActionCode[PERMISSION_PENNYLANE_CUSTOMER],
         }
         saveActionAdditionalOption({
           accountId: 1,
@@ -116,7 +117,7 @@ describe('manageRightsDrawerUtils', () => {
     const contactIdMock = 12
     it('should return additionnalOptionByActionCode action properly', async () => {
       const expectedAdditionnalOptionByActionCode = {
-        [PERMISSION_ACTION.ACCESS_PENNYLANE]: roleMock.role,
+        [PERMISSION_PENNYLANE_CUSTOMER]: roleMock.role,
       }
       PennylaneServiceMock.getAccountContactRole.mockResolvedValue(roleMock)
       const additionnalOptionByActionCode = await getAdditionalOptionByActionCode({
@@ -151,7 +152,7 @@ describe('manageRightsDrawerUtils', () => {
     const pennylaneAuthorizationStateMock = {
       ...authorizationStateMock,
       'other': {
-        actions: [PERMISSION_ACTION.ACCESS_PENNYLANE],
+        actions: [PERMISSION_PENNYLANE_CUSTOMER],
         isActive: true,
       },
     }
@@ -193,13 +194,7 @@ describe('manageRightsDrawerUtils', () => {
       const expectedUpdateUserPermissionsParams = [
         contactId,
         entityId,
-        [
-          'CLUSER001',
-          'CLUSER002',
-          'CLUSER003',
-          'CLGED0001',
-          'CLGED0002',
-        ],
+        expectedPermissionCodeList,
       ]
 
       it('should retourn true in nominal case', async () => {
@@ -245,13 +240,7 @@ describe('manageRightsDrawerUtils', () => {
       const expectedUpdateUserPermissionsParams = [
         contactId,
         entityId,
-        [
-          'CLUSER001',
-          'CLUSER002',
-          'CLUSER003',
-          'CLGED0001',
-          'CLGED0002',
-        ],
+        expectedPermissionCodeList,
       ]
 
       it('should retourn true in nominal case', async () => {

@@ -108,7 +108,7 @@ import { useRoute } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon } from '@pulse/styleguide/components'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { removeFalsyValues } from '@pulse/core/utils/object'
-import { PAGE_SIZES, PERMISSION_ACTION } from '@pulse/common/constants'
+import { PAGE_SIZES, ACTION_PERMISSIONS } from '@pulse/common/constants'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import ManageRightsDrawer from '@entities/common/components/ManageRightsDrawer'
@@ -156,7 +156,7 @@ const state: State = reactive({
 
 const isMounted = ref(false)
 
-const canAddUser = computed(() => CurrentUserManager.hasPermission(PERMISSION_ACTION.ADD_USERS))
+const canAddUser = computed(() => CurrentUserManager.hasPermission(ACTION_PERMISSIONS.ADD_USERS))
 
 const handleSearchValueSubmitted = (newSearchValue: string) => {
   state.currentPage = 1
@@ -179,7 +179,7 @@ const shouldShowPagination = computed(
   () => !state.isLoading && state.totalItems,
 )
 
-const canEdit = computed(() => CurrentUserManager.hasPermission(PERMISSION_ACTION.MODIFY_RIGHTS_USER))
+const canEdit = computed(() => CurrentUserManager.hasPermission(ACTION_PERMISSIONS.MODIFY_RIGHTS_USER))
 
 const getUserInfo = computed(() => {
   const userInfo = state.data.find(

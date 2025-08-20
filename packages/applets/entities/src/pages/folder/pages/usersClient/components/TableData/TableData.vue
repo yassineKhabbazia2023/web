@@ -121,7 +121,7 @@ import { CurrentUserManager } from '@pulse/common/managers'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
-import { PERMISSION_ACTION, SORT_ORDER } from '@pulse/common/constants'
+import { ACTION_PERMISSIONS, SORT_ORDER } from '@pulse/common/constants'
 import type { ExtendedUser } from '../../UsersClientTypes'
 import { userActions } from './types'
 import type { SortChangeEventData, SortingCriteria } from '@pulse/common/types'
@@ -161,14 +161,14 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue: t('modifyRights'),
       pActionName: modifyRights,
       pState: 'default',
-      display: CurrentUserManager.hasPermission(PERMISSION_ACTION.MODIFY_RIGHTS_USER) && props.isInAnEntityPage,
+      display: CurrentUserManager.hasPermission(ACTION_PERMISSIONS.MODIFY_RIGHTS_USER) && props.isInAnEntityPage,
     },
     {
       pIconName: 'personRemove',
       pValue: t('removeUser'),
       pActionName: removeUser,
       pState: 'default',
-      display: CurrentUserManager.hasPermission(PERMISSION_ACTION.DELETE_USER) && props.isInAnEntityPage,
+      display: CurrentUserManager.hasPermission(ACTION_PERMISSIONS.DELETE_USER) && props.isInAnEntityPage,
     },
   ]
     .filter(({ display }) => display)

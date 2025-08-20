@@ -46,8 +46,8 @@
             <PCheckbox :pLabel="authorizationAction.code">
               {{ authorizationAction.label }}
               <PTooltip
-                v-if="authorizationAction.tooltip !== ''"
-                :pContent="authorizationAction.tooltip"
+                v-if="tooltipByActionCode?.[authorizationAction.code] !== undefined"
+                :pContent="tooltipByActionCode[authorizationAction.code]"
                 pPlacement="top"
               >
                 <PIcon
@@ -87,16 +87,18 @@ import {
   getDropdownsByActionCode,
   getAuthorizationsConfigMapped,
   getAuthorizationState,
+  getTooltipByActionCode,
 } from './utils'
 import { RouteParam } from '@pulse/common/enums'
-import type { AuthorizationState } from '../../ManageRightsTypes'
+
+import type { AuthorizationState, LabelByPermission } from '../../ManageRightsTypes'
 import type {
   AuthorizationConfig,
   AuthorizationConfigMapped,
   RightsListProps,
 } from './RightsListTypes'
 import { RouterHelpers } from '@pulse/common/helpers'
-import { PERMISSION_ACTION } from '@pulse/common/constants'
+import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/common/constants/rights-management.const'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { PennylaneAvailableRole } from '@pulse/common/types'
 
@@ -178,7 +180,7 @@ const handleAuthorizationActionUpdate = (
 }
 
 const dropdownsByActionCode = computed(() => {
-  const hasPennylane = getHasAction(props.modelValue, PERMISSION_ACTION.ACCESS_PENNYLANE)
+  const hasPennylane = getHasAction(props.modelValue, PERMISSION_PENNYLANE_CUSTOMER)
   const pennylanedropdownOptions = getPennylaneDropdownOptions(pennylaneAvailableRoles.value ?? [])
 
   return getDropdownsByActionCode(
@@ -188,7 +190,14 @@ const dropdownsByActionCode = computed(() => {
   )
 })
 
+const tooltipByActionCode = ref<LabelByPermission >()
+
 onMounted(async () => {
+  tooltipByActionCode.value = getTooltipByActionCode({
+    hasFeature: FeatureFlagManager.isPennylaneActionAdditionalInfoActivated(),
+    label: t('PennylaneAdditionalInfos'),
+  })
+
   internalAuthorizationState.value = {}
   try {
     let rightsConfigList: AuthorizationConfig[] = []
@@ -207,7 +216,7 @@ onMounted(async () => {
 
     const isSubscribedToPennylaneOffer = rightsConfigList
       .some((right) => right.actions
-        .some((action) => action.code === PERMISSION_ACTION.ACCESS_PENNYLANE),
+        .some((action) => action.code === PERMISSION_PENNYLANE_CUSTOMER),
       )
     if (isSubscribedToPennylaneOffer === true) {
       const availableRoles = props.accountNumber === undefined
@@ -216,16 +225,10 @@ onMounted(async () => {
       pennylaneAvailableRoles.value = availableRoles ?? []
     }
 
-
-    const tooltipByActionCode = FeatureFlagManager.isPennylaneActionAdditionalInfoActivated()
-      ? {
-        [PERMISSION_ACTION.ACCESS_PENNYLANE]: t('PennylaneAdditionalInfos'),
-      } : {}
     // We need to map the data in order to obtain the category label
     authorizationsConfig.value = getAuthorizationsConfigMapped(
       rightsConfigList,
       RIGHT_CATEGORIES,
-      tooltipByActionCode,
     )
 
     // To display the action checkboxes and the category switch with the correct values

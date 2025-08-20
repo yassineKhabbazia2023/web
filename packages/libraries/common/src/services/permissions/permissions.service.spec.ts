@@ -5,6 +5,7 @@ import {
   fetchUserPermissions,
   fetchUserAccountPermissions,
 } from './permissions.service'
+import { getPermissionsMock } from '@common/__mocks__'
 
 vi.mock('../../api', () => ({
   default: () => ({
@@ -14,7 +15,7 @@ vi.mock('../../api', () => ({
 
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
-const permissionsMock = ['abc', 'efg']
+const permissionsMock = getPermissionsMock()
 const accountId = 123456
 
 describe('test permissions.service', () => {

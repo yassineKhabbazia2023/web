@@ -1,8 +1,8 @@
 import { featureFlagManagerMock } from '@pulse/core/mocks'
 import { WalletTab } from './Wallet.enums'
 import type { WalletTabConfiguration, WalletAvailableTab } from './Wallet.types'
-import { PERMISSION_GLOBAL } from '@pulse/common/constants'
-import { CurrentUserManagerMock } from '@pulse/common/mocks'
+import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
+import { CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked } from '@pulse/common/mocks'
 import { COLLAB_TABS_CONFIGURATION, CUSTOMER_TABS_CONFIGURATION } from './Wallet.const'
 import { Feature } from '@pulse/core/enums'
 
@@ -35,10 +35,10 @@ describe('Wallet.utils', () => {
     it('should return availables tabs', () => {
       const tabs: WalletTabConfiguration[] = [{
         name: WalletTab.FOLDER_MANDATES,
-        permissionCode: PERMISSION_GLOBAL.MANDATE, // true
+        permissionCodes: GLOBAL_PERMISSIONS.MANDATE, // true
       }, {
         name: WalletTab.POWER_BI,
-        permissionCode: PERMISSION_GLOBAL.POWERBI_REPORT, // false
+        permissionCodes: GLOBAL_PERMISSIONS.POWERBI_REPORT, // false
       }, {
         name: WalletTab.ENTITY_CLIENT,
         featureFlag: Feature.ACCESS_MANAGEMENT_GLOBAL, // true
@@ -58,8 +58,7 @@ describe('Wallet.utils', () => {
         name: WalletTab.FOLDERS,
         title: tabLabels[WalletTab.FOLDERS],
       }]
-      CurrentUserManagerMock.hasPermission
-        .mockImplementation((permissionCode: string | string[]) => permissionCode === PERMISSION_GLOBAL.MANDATE)
+      hasPermissionMock.mockImplementation(getHasPermissionMocked(GLOBAL_PERMISSIONS.MANDATE))
       featureFlagManagerMock.isFeatureActivated
         .mockImplementation((featureFlag: Feature) => featureFlag === Feature.ACCESS_MANAGEMENT_GLOBAL)
 

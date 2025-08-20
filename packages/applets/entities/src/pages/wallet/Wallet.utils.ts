@@ -9,11 +9,13 @@ export function getAvailableTabs(
   tabLabels: Record<WalletTab, string>,
 ): WalletAvailableTab[] {
   return allTabs
-    .filter(({ permissionCode, featureFlag }) => {
+    .filter(({ permissionCodes, featureFlag }) => {
       if (featureFlag !== undefined && FeatureFlagManager.isFeatureActivated(featureFlag) === false) {
         return false
       }
-      const hasPermission = permissionCode ? CurrentUserManager.hasPermission(permissionCode) : true
+      const hasPermission = permissionCodes === undefined
+        ? true
+        : CurrentUserManager.hasPermission(permissionCodes)
 
       return hasPermission
     })

@@ -1,16 +1,17 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { fetchUserPermissions, fetchUserAccountPermissions } from '@pulse/common/services/permissions'
+import type { Permission } from '../../types/permission.type'
 
 export const usePermissionsStore = defineStore('permissions', () => {
-  const userPermissions = ref<string[]>([])
-  const selectedEntityPermissions = ref<string[]>([])
+  const userPermissions = ref<Permission[]>([])
+  const selectedEntityPermissions = ref<Permission[]>([])
 
-  function setUserPermissions(userPermissionsArg: string[]) {
+  function setUserPermissions(userPermissionsArg: Permission[]) {
     userPermissions.value = userPermissionsArg
   }
 
-  function setSelectedEntityPermissions(selectedEntityPermissionsArg: string[]) {
+  function setSelectedEntityPermissions(selectedEntityPermissionsArg: Permission[]) {
     selectedEntityPermissions.value = selectedEntityPermissionsArg
   }
 

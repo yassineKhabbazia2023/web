@@ -1,8 +1,8 @@
-import type { Entity } from '@pulse/common/types'
+import type { Entity, Permission } from '@pulse/common/types'
 import type { User } from '@entities/pages/folder/pages/usersCollab/types'
 
 export interface AuthorizationState {
-  actions: string[]
+  actions: Permission[]
   isActive: boolean
 }
 
@@ -11,3 +11,5 @@ export interface ManageRightsDrawerProps {
   selectedUser: User
   selectedEntity: Entity
 }
+
+export type LabelByPermission = { [Key in Permission]?: string | undefined }

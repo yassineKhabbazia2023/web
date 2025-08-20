@@ -4,7 +4,8 @@ import * as ReportService from '@app/services/reporting'
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
 import { getMockedBIReports } from '@app/__mocks__/bi-reports.mocks'
 import { CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked } from '@pulse/common/mocks'
-import { PERMISSION_ACCOUNT, PERMISSION_GLOBAL } from '@pulse/common/constants'
+import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
+import { CustomerPermission } from '@pulse/common/enums'
 
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 import SidebarEntityMenu from '.'
@@ -45,7 +46,7 @@ describe('sidebarEntityMenu', () => {
 
   describe('display', () => {
     it('should display only the menu items that the user has access to', () => {
-      hasPermissionMock.mockImplementation(getHasPermissionMocked([PERMISSION_ACCOUNT.INFORMATION[0]]))
+      hasPermissionMock.mockImplementation(getHasPermissionMocked([CustomerPermission.ACCEDER_INFORMATIONS_ENTREPRISE]))
       wrapper = createWrapper()
       const sidebarEntityMenuItems = wrapper
         .findAll('.p-menu-item__title')
@@ -57,7 +58,7 @@ describe('sidebarEntityMenu', () => {
       expect(sidebarEntityMenuItems).not.toContain(menuItemsWithoutAccess)
     })
     it('should not display the Delegations history for clients', async () => {
-      hasPermissionMock.mockImplementation(getHasPermissionMocked([PERMISSION_GLOBAL.HISTORY]))
+      hasPermissionMock.mockImplementation(getHasPermissionMocked(GLOBAL_PERMISSIONS.HISTORY))
       wrapper = createWrapper()
       await flushPromises()
       const sidebarEntityMenuItems = wrapper
