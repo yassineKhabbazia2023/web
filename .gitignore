@@ -156,6 +156,7 @@ docs/.vitepress/cache
 # Storybook
 *storybook.log
 storybook-static
+dist-storybook
   
 # AI stuff
 .github/copilot-instructions.md

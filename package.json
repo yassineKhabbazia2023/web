@@ -44,7 +44,8 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "storybook": "storybook dev -p 6009",
-    "storybook:build": "storybook build"
+    "storybook:build": "storybook build -o dist-storybook",
+    "storybook:preview": "vite preview --outDir dist-storybook --base=/storybook/"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.7",

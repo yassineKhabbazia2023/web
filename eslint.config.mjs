@@ -164,4 +164,12 @@ export default [
     },
   },
   ...storybook.configs['flat/recommended'],
+  {
+    // specific rulesets for Story files (above rules apply as well)
+    files: ['**/*.stories.ts'],
+    rules: {
+      'max-len': 'off', // we don't enforce line length in stories files
+      'no-console': 'off', // we allow console.log in stories
+    },
+  },
 ]

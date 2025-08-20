@@ -34,7 +34,7 @@ export const Basic: Story = {
       })
       const pRadioCard2 = reactive({ label: 'value2', title: 'Direction et administration générale' })
       const submit = () => {
-        // eslint-disable-next-line no-console
+
         console.log('submit', formValues.radioValue)
       }
       return { formValues, pRadioCard1, pRadioCard2, submit }

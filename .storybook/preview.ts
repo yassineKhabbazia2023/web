@@ -18,8 +18,8 @@ import '../packages/libraries/styleguide/src/assets/scss/index.scss'
 // Initialize StyleGuide assets
 async function initStyleGuide() {
   // For Storybook, images are served from publicDir (assets folder)
-  // Images will be available at /assets/images/ path (e.g., /assets/images/duotone/brand-monogram.svg)
-  const assetsBaseUrl = `${window.location.origin}/assets/images/`
+  // Images will be available at /storybook/assets/images/ path (e.g., /storybook/assets/images/duotone/brand-monogram.svg)
+  const assetsBaseUrl = `${window.location.origin}/storybook/assets/images/`
 
   setAssetsBaseUrl(assetsBaseUrl)
 }

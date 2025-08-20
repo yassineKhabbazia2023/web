@@ -190,7 +190,7 @@ export const StatusImages: Story = {
 }
 
 // File type images
-export const FileTypeImages: Story = {
+export const FileTypePng: Story = {
   render: () => ({
     components: { PImage },
     template: `

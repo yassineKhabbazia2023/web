@@ -48,6 +48,8 @@ const config: StorybookConfig = {
       config.plugins.push(vue.default())
     }
 
+    config.base = '/storybook/'
+
     // Add path aliases for styleguide and core
     // Note: use ordered array with an exact-match rule for bare imports ("@pulse/core")
     // so it resolves to main.ts, while subpaths ("@pulse/core/*") resolve to the src folder.
