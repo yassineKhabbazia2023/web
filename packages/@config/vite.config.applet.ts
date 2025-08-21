@@ -6,6 +6,10 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import terser from '@rollup/plugin-terser'
 import { viteConfigBase } from './vite.config.base'
 
+// Helper to resolve workspace root node_modules path
+const resolveWorkspaceNodeModules = (modulePath: string) =>
+  fileURLToPath(new URL(`../../node_modules/${modulePath}`, import.meta.url))
+
 interface AppletConfigOptions {
   mode: string
   packageName: string
@@ -63,12 +67,7 @@ export const createAppletConfig = ({ mode, packageName, aliasName, rootDir }: Ap
         alias: [
           {
             find: /^element-plus$/,
-            replacement: path.resolve(
-              path.dirname(new URL(rootDir).pathname),
-              '../../../',
-              'node_modules',
-              'element-plus/dist/index.full.mjs',
-            ),
+            replacement: resolveWorkspaceNodeModules('element-plus/dist/index.full.mjs'),
           },
         ],
         deps: {
