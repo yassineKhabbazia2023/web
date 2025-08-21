@@ -70,7 +70,7 @@ vi.mock('@pulse/common', () => {
               },
             }
           }
-          if (url === `${API_PREFIXES.ACCOUNT}/delegations`) {
+          if (url === `${API_PREFIXES.ACCOUNT}/delegations/currentuser`) {
             return {
               status: 200,
               data: {
@@ -108,7 +108,7 @@ describe('test accountServices', () => {
           data: mockedAccount,
         })
       }
-      if (url === `account/api/delegations/${accountId}/history?`) {
+      if (url === `account/api/delegations/currentuser/${accountId}/history?`) {
         return Promise.resolve({ data: delegationsHistoryMock })
       }
       if (url === 'account/api/roles/currentuser/hub/contact') {
@@ -252,7 +252,7 @@ describe('test accountServices', () => {
       postSpy.mockResolvedValue(responseMock)
       const delegationRequestMock = getMockedAccountsDelegation()
       const response = await delegateAccounts(delegationRequestMock)
-      const expectedUrl = `${API_PREFIXES.WALLET}/delegations`
+      const expectedUrl = `${API_PREFIXES.WALLET}/delegations/currentuser`
 
       expect(postSpy).toHaveBeenCalledOnce()
       expect(postSpy).toHaveBeenCalledWith(expectedUrl, delegationRequestMock)

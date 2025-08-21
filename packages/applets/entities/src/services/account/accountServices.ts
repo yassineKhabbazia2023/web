@@ -57,12 +57,12 @@ export async function fetchAccountDelegationsHistory(
   accountId: Entity['accountId'],
   searchParams: URLSearchParams,
 ) {
-  const url = `${API_PREFIXES.ACCOUNT}/delegations/${accountId}/history?${searchParams}`
+  const url = `${API_PREFIXES.ACCOUNT}/delegations/currentuser/${accountId}/history?${searchParams}`
   return await fetchGatewayApi(url)
 }
 
 export async function deleteAccountDelegation(delegationId: number) {
-  const url = `${API_PREFIXES.ACCOUNT}/delegations`
+  const url = `${API_PREFIXES.ACCOUNT}/delegations/currentuser`
   return await commonApi().gateway.delete(url, {
     params: {
       delegationId,
@@ -71,7 +71,7 @@ export async function deleteAccountDelegation(delegationId: number) {
 }
 
 export async function delegateAccounts(delegationRequest: AccountsDelegation) {
-  const url = `${API_PREFIXES.WALLET}/delegations`
+  const url = `${API_PREFIXES.WALLET}/delegations/currentuser`
 
   return await commonApi().gateway.post(url, delegationRequest)
 }

@@ -217,7 +217,6 @@ export function getMockedAccountsDelegation(override: Partial<AccountsDelegation
   const delegationRequest: AccountsDelegation = {
     isFullDelegation: true,
     includePennylaneAccess: false,
-    delegatorId: 1, // Provide a valid number for delegatorId
     delegationDetails: [getMockedAccountsDelegationDetails()],
     accountIds: [1, 2, 3],
     ...override,

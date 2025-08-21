@@ -4,8 +4,6 @@ import { shallowMount, flushPromises } from '@vue/test-utils'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 import { entitiesMock } from '@entities/__mocks__/entities.mocks'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
-import { useUserStore } from '@pulse/common/stores'
-import { getMockedUserInfo, getStoreMock } from '@pulse/common/mocks'
 import { delegateAccounts } from '@entities/services/account'
 
 import DelegationDrawer from '.'
@@ -13,9 +11,6 @@ import DelegationDrawer from '.'
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('@entities/services/account')
 
-const userStoreMock = getStoreMock(useUserStore)
-
-const USER_ID = 1324
 const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
 const FIRST_SELECTED_FOLDER = {
   id: 1,
@@ -69,15 +64,7 @@ const createFullDelegationWrapper = () => createWrapper({
   selectedFolders: [],
 })
 
-const userMock = getMockedUserInfo({
-  id: USER_ID,
-})
-
 describe('delegationDrawer', () => {
-  beforeEach(() => {
-    userStoreMock.user = userMock
-  })
-
   afterEach(() => {
     document.body.outerHTML = ''
   })
@@ -223,7 +210,6 @@ describe('delegationDrawer', () => {
                 startDate: expect.any(String),
               },
             ],
-            delegatorId: USER_ID,
             isFullDelegation: true,
           },
         )
@@ -298,7 +284,6 @@ describe('delegationDrawer', () => {
                 startDate: expect.any(String),
               },
             ],
-            delegatorId: USER_ID,
             isFullDelegation: false,
           },
         )

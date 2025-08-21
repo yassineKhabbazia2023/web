@@ -132,7 +132,6 @@ export interface AccountsDelegationDetails {
 export interface AccountsDelegation {
   isFullDelegation: boolean
   includePennylaneAccess: boolean
-  delegatorId: number
   delegationDetails: AccountsDelegationDetails[]
   accountIds: number[]
 }

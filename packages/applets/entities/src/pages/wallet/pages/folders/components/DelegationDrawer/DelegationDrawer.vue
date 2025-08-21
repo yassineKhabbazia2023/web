@@ -80,7 +80,6 @@ import { useI18n } from 'vue-i18n'
 import { PDrawer, PSteps, PStep, PIcon } from '@pulse/styleguide/components'
 import { AppColors, PNotification } from '@pulse/styleguide'
 import { delegateAccounts } from '@entities/services/account'
-import { useUserStore } from '@pulse/common/stores'
 import { DelegationFlowType } from './DelegationDrawerTypes'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 
@@ -133,24 +132,17 @@ function handlePreviousClick() {
   }
 }
 
-const userStore = useUserStore()
-const currentUserId = userStore.user?.id
-
 const isNextButtonLoading = ref<boolean>(false)
 
 async function handleNextClick() {
   if (activeStep.value === 0) {
     delegationDetails.value = formatCollaboratorsDetailsForDelegateSummary()
   }
-  if (currentUserId === undefined) {
-    throw new Error('unexpected undefined currentUserId')
-  }
 
   if (activeStep.value === 1 || isSpecificDelegationFlowType.value) {
     const delegationRequest: AccountsDelegation = {
       isFullDelegation: !isSpecificDelegationFlowType.value,
       includePennylaneAccess: hasPennylaneAccess.value,
-      delegatorId: currentUserId,
       delegationDetails: formatDelegateSummaryForAccountsDelegation(delegationDetails.value),
       accountIds: getAccountIdFromSelectedFolders(),
     }
