@@ -144,6 +144,13 @@ export class CurrentUserManager {
   }
 
   static isAuthenticated() {
-    return TokenManager.getToken() !== ''
+    const hasActiveToken = TokenManager.hasActiveToken()
+
+    if (hasActiveToken === false) {
+      // if the token is expired or invalid, delete it
+      TokenManager.removeToken()
+    }
+
+    return hasActiveToken
   }
 }

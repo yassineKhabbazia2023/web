@@ -6,7 +6,7 @@ import { getMockedSelectedEntity, getPermissionsMock, getStoreMock } from '../..
 import { useUserStore } from '../../stores/user/user.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
-import { LOCAL_STORAGE_TOKEN_KEY } from '../token/token.manager'
+import { LOCAL_STORAGE_TOKEN_KEY, TokenManager } from '../token/token.manager'
 import { ACCOUNT_PERMISSIONS } from '../../constants/permissions.const'
 import type { Permission } from '../../types/permission.type'
 import { CollaboratorPermission, CustomerPermission } from '../../enums/permission.enum'
@@ -293,6 +293,32 @@ describe('test current-user.manager', () => {
 
       const localToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)
       expect(localToken).toStrictEqual(token)
+    })
+  })
+
+  describe('isAuthenticated', () => {
+    it('should return true when token is valid and not expired', () => {
+      const hasActiveTokenSpy = vi.spyOn(TokenManager, 'hasActiveToken')
+      const removeTokenSpy = vi.spyOn(TokenManager, 'removeToken')
+      hasActiveTokenSpy.mockReturnValue(true)
+
+      const result = CurrentUserManager.isAuthenticated()
+
+      expect(hasActiveTokenSpy).toHaveBeenCalledOnce()
+      expect(removeTokenSpy).not.toHaveBeenCalled()
+      expect(result).toBe(true)
+    })
+
+    it('should return false and remove token when token is expired or invalid', () => {
+      const hasActiveTokenSpy = vi.spyOn(TokenManager, 'hasActiveToken')
+      const removeTokenSpy = vi.spyOn(TokenManager, 'removeToken')
+      hasActiveTokenSpy.mockReturnValue(false)
+
+      const result = CurrentUserManager.isAuthenticated()
+
+      expect(hasActiveTokenSpy).toHaveBeenCalledOnce()
+      expect(removeTokenSpy).toHaveBeenCalledOnce()
+      expect(result).toBe(false)
     })
   })
 })
