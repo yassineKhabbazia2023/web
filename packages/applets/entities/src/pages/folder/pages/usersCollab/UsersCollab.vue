@@ -450,15 +450,17 @@ const handleSortChange = ({ prop, order }: { prop: string, order: string }) => {
 }
 
 const handleUserAction = (action: string, row: any) => {
+  const { contactId, fullName, email } = row
   selectedRow.value = row
+
   if (action === userActions.MODIFY_RIGHTS) {
     isManageRightsDrawerOpened.value = true
   }
   if (action === userActions.ASSIGN_SIGNATORY) {
-    handleAddSignatory(row.contactId, row.fullName)
+    handleAddSignatory(contactId, fullName, email)
   }
   if (action === userActions.UNASSIGN_SIGNATORY) {
-    handleRemoveSignatory(row.contactId, row.fullName)
+    handleRemoveSignatory(contactId, fullName, email)
   }
   if (action === userActions.REMOVE_USER) {
     handleRemoveUser(row)
@@ -468,7 +470,7 @@ const handleUserAction = (action: string, row: any) => {
 // Signatory addition scope
 const { selectedEntity } = storeToRefs(selectedEntityStore)
 
-async function handleAddSignatory(contactId: User['contactId'], contactFullName: string) {
+async function handleAddSignatory(contactId: User['contactId'], contactFullName: string, email: string) {
   if (!selectedEntity.value) {
     return
   }
@@ -477,13 +479,17 @@ async function handleAddSignatory(contactId: User['contactId'], contactFullName:
     await updateSignatoryStatus(selectedEntity.value.accountId, contactId)
     showAddSignatorySuccess(contactFullName)
     setAccountSignatories()
+    AmplitudeService.track('Signatory Updated', {
+      signatory_status_after_update: 'On',
+      signatory_target_mail: email,
+    })
   } catch (error) {
     logger.error(error)
     showTechnicalError()
   }
 }
 
-async function handleRemoveSignatory(contactId: User['contactId'], contactFullName: string) {
+async function handleRemoveSignatory(contactId: User['contactId'], contactFullName: string, email: string) {
   if (!selectedEntity.value) {
     return
   }
@@ -491,6 +497,10 @@ async function handleRemoveSignatory(contactId: User['contactId'], contactFullNa
     await updateSignatoryStatus(selectedEntity.value.accountId, contactId, false)
     showSuccessNotification('signatoryRemoved', contactFullName)
     setAccountSignatories()
+    AmplitudeService.track('Signatory Updated', {
+      signatory_status_after_update: 'Off',
+      signatory_target_mail: email,
+    })
   } catch (error) {
     logger.error(error)
     showTechnicalError()
