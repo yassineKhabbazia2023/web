@@ -7,7 +7,7 @@ import { i18n } from './i18n/i18n.setup'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
 import { fetchUrlTerms } from './services'
 import { sanitizeUrl } from '@braintree/sanitize-url'
-import { refreshClientToken, createNewPassword, isInvitationTokenValid, login } from './services/authentication.service'
+import { refreshClientToken, createNewPassword, login } from './services/authentication.service'
 
 export * from './unauthorized-callback'
 export * from './utils'
@@ -19,7 +19,7 @@ export const routes: RouteRecordRaw[] = []
 export { DataStreamHubConnection }
 export { fetchUrlTerms }
 export { sanitizeUrl }
-export { refreshClientToken, createNewPassword, isInvitationTokenValid, login }
+export { refreshClientToken, createNewPassword, login }
 
 export default {
   install(app: App) {

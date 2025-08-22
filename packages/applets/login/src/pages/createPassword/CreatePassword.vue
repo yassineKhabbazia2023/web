@@ -1,12 +1,8 @@
 <template>
   <div
     class="page-content flex flex--direction-column flex--align-items-center margin-y--4"
-    :class="{'center': isTokenValidationLoading}"
   >
-    <TokenValidationLoader
-      v-if="isTokenValidationLoading"
-    />
-    <div v-else>
+    <div>
       <p class="txt-create-account">
         {{ t('createAccount') }}
         <span class="purple-text">
@@ -111,15 +107,13 @@ import {
   fetchUrlTerms,
   createNewPassword,
   login,
-  isInvitationTokenValid,
 } from '@pulse/common'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { type UserInfo } from '@pulse/common/types'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
 import { CurrentUserManager } from '@pulse/common/managers'
 import {
-  onBeforeMount,
   reactive,
   ref,
   computed,
@@ -138,7 +132,6 @@ import {
   levelPasswordStrength,
 } from './PopoverPasswordStrength/passwordStrength'
 import useNavigation from '@login/composable/useNavigation'
-import TokenValidationLoader from '@login/common/components/TokenValidationLoader'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 
 const { t } = useI18n({
@@ -157,7 +150,6 @@ const { contactId, accountNumber, token, email: emailQuery } = route.query as {
 
 const userStore = useUserStore()
 
-const isTokenValidationLoading = ref(false)
 const email = emailQuery?.toString().trim().replace(' ', '+')
 const formRef = ref<FormInstance>()
 const urlTerms = ref('')
@@ -234,7 +226,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
     (async () => {
       if (valid) {
         const data = {
-          contactId,
+          token,
           newPassword: formValue.password,
         }
         try {
@@ -269,10 +261,15 @@ const submitForm = (formEl: FormInstance | undefined) => {
           }
           userStore.setUser(user)
           navigateToCustomerWallet()
-        } catch {
+        } catch (error: any) {
           AmplitudeService.track('Onboarding Completed', {
             onboarding_result: 'failed',
           })
+          const { data } = error?.response ?? {}
+
+          if (data.errorCode === BackEndErrors.TOKEN_EXPIRED) {
+            router.push({ name: APP_ROUTES.login.expireToken.name, query: { contactId, accountNumber } })
+          }
         } finally {
           isLoading.value = false
         }
@@ -282,26 +279,6 @@ const submitForm = (formEl: FormInstance | undefined) => {
     })()
   })
 }
-
-const isValidToken = async () => {
-  isTokenValidationLoading.value = true
-  try {
-    const isValid = await isInvitationTokenValid(token)
-
-    return isValid
-  } catch (error) {
-    logger.error(error)
-  } finally {
-    isTokenValidationLoading.value = false
-  }
-}
-
-onBeforeMount(async () => {
-  const isValid = await isValidToken()
-  if (!isValid) {
-    router.push({ name: APP_ROUTES.login.expireToken.name, query: { contactId, accountNumber } })
-  }
-})
 
 onMounted(async () => {
   AmplitudeService.reset()

@@ -16,18 +16,6 @@ export async function createNewPassword(payload: CreateNewPasswordPayload) {
   return await api().gateway.post(urlUpdatePassword, payload)
 }
 
-export async function isInvitationTokenValid(invitationToken: string) {
-  const urlValidToken = `${API_PREFIXES.AUTHENTICATION}/IsInvitationTokenValid`
-
-  const { data: isValid } = await api().gateway.get<boolean>(urlValidToken, {
-    params: {
-      invitationToken,
-    },
-  })
-
-  return isValid
-}
-
 export async function login(payload: LoginPayload) {
   const loginUrl = `${API_PREFIXES.AUTHENTICATION}/login`
 

@@ -1,6 +1,6 @@
 import { vi, describe, it, expect } from 'vitest'
-import { apiGatewayMock, apiGatewayPostMock, apiGatewayGetMock } from '../__mocks__/api-gateway.mocks'
-import { refreshClientToken, createNewPassword, isInvitationTokenValid, login } from './authentication.service'
+import { apiGatewayMock, apiGatewayPostMock } from '../__mocks__/api-gateway.mocks'
+import { refreshClientToken, createNewPassword, login } from './authentication.service'
 
 import type { CreateNewPasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
 
@@ -30,7 +30,7 @@ describe('test authentication.service', () => {
   describe('createNewPassword', () => {
     it('should call gateway properly', async () => {
       const payload: CreateNewPasswordPayload = {
-        contactId: 'contact-id',
+        token: 'fake-token',
         newPassword: 'new-password',
         isCreatePasswordAction: false,
       }
@@ -44,30 +44,6 @@ describe('test authentication.service', () => {
       expect(response).toStrictEqual(gatewayResponseMock)
       expect(apiGatewayPostMock).toHaveBeenCalledOnce()
       expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedUrl, payload)
-    })
-  })
-
-  describe('isInvitationTokenValid', () => {
-    it('should call gateway properly', async () => {
-      const invitationToken = 'token-mock'
-      const expectedUrl = 'authentication/api/IsInvitationTokenValid'
-      const expectedQueryParams = {
-        params: {
-          invitationToken,
-        },
-      }
-      const isValidMock = true
-      const gatewayResponseMock = {
-        data: isValidMock,
-      }
-
-      apiGatewayGetMock.mockResolvedValue(gatewayResponseMock)
-
-      const response = await isInvitationTokenValid(invitationToken)
-
-      expect(response).toStrictEqual(isValidMock)
-      expect(apiGatewayGetMock).toHaveBeenCalledOnce()
-      expect(apiGatewayGetMock).toHaveBeenCalledWith(expectedUrl, expectedQueryParams)
     })
   })
 

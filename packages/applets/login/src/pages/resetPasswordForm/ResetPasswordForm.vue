@@ -1,10 +1,8 @@
 <template>
   <div
     class="page-content flex flex--direction-column flex--align-items-center margin-y--4"
-    :class="{'center': isTokenValidationLoading}"
   >
-    <TokenValidationLoader v-if="isTokenValidationLoading" />
-    <div v-else>
+    <div>
       <p class="txt-create-account">
         {{ t('createAccount') }}
         <span class="purple-text">
@@ -76,10 +74,9 @@
 import { logger } from '@pulse/core'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { createNewPassword, isInvitationTokenValid } from '@pulse/common'
+import { createNewPassword } from '@pulse/common'
 import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
 import {
-  onBeforeMount,
   ref,
   computed,
 } from 'vue'
@@ -90,7 +87,6 @@ import {
   PButton,
   PStrength,
 } from '@pulse/styleguide/components'
-import TokenValidationLoader from '@login/common/components/TokenValidationLoader'
 import type { PStrengthLevel } from '@pulse/styleguide/types'
 import { getPasswordError, getConfirmPasswordError, getApiErrorMessage } from './ResetPasswordForm.utils'
 import { getPasswordStrength } from '../../utils/passwordStrength/passwordStrength.utils'
@@ -101,8 +97,7 @@ const { t } = useI18n({
 })
 const route = useRoute()
 const router = useRouter()
-const { contactId, contactEmail, token } = route.query as {
-  contactId: string
+const { contactEmail, token } = route.query as {
   contactEmail: string
   token: string
 }
@@ -110,7 +105,6 @@ const { contactId, contactEmail, token } = route.query as {
 const password = ref('')
 const confirmPassword = ref('')
 
-const isTokenValidationLoading = ref(false)
 const passwordError = ref('')
 const isPasswordMessageVisible = ref(true)
 const confirmPasswordError = ref('')
@@ -174,6 +168,7 @@ const apiErrorMessages: Record<BackEndErrors, string> = {
   [BackEndErrors.ALREADY_USED_PASSWORD]: t('isPasswordAlreadyUsed'),
   [BackEndErrors.WRONG_LOGIN_PASSWORD]: '', // should centralize error messages
   [BackEndErrors.INVALID_LOGIN_CREDENTIALS]: '',
+  [BackEndErrors.TOKEN_EXPIRED]: '',
   [BackEndErrors.other]: t('technicalError'),
 }
 
@@ -184,8 +179,8 @@ const submitForm = async () => {
   }
 
   const data = {
-    contactId,
     newPassword: password.value,
+    token,
     isCreatePasswordAction: false,
   }
   try {
@@ -195,6 +190,9 @@ const submitForm = async () => {
   } catch (error: any) {
     logger.error(error)
     const { data } = error?.response ?? {}
+    if (data.errorCode === BackEndErrors.TOKEN_EXPIRED) {
+      router.push({ name: APP_ROUTES.login.expireToken.name, query: { contactEmail } })
+    }
     const errorMessage = getApiErrorMessage(
       data,
       apiErrorMessages,
@@ -205,26 +203,6 @@ const submitForm = async () => {
     isLoading.value = false
   }
 }
-
-const isValidToken = async () => {
-  isTokenValidationLoading.value = true
-  try {
-    const isValid = await isInvitationTokenValid(token)
-
-    return isValid
-  } catch (error) {
-    logger.error(error)
-  } finally {
-    isTokenValidationLoading.value = false
-  }
-}
-
-onBeforeMount(async () => {
-  const isValid = await isValidToken()
-  if (!isValid) {
-    router.push({ name: APP_ROUTES.login.expireToken.name, query: { contactEmail } })
-  }
-})
 defineExpose({ submitForm })
 </script>
 
@@ -232,23 +210,29 @@ defineExpose({ submitForm })
 .page-content {
   $self: &;
   text-align: start;
+
   &.center {
     height: calc(100% - 180px);
     justify-content: center;
   }
+
   .txt-create-account {
     font-size: 21px;
     font-weight: 600;
     line-height: 25px;
+
     .purple-text {
       color: var(--el-color-persian-500);
     }
+
     margin-bottom: 24px;
     margin-top: 14px;
   }
+
   .form-password {
     margin-top: 18px;
   }
+
   .btn-submit {
     width: 100%;
   }

@@ -2,5 +2,6 @@ export enum BackEndErrors {
   ALREADY_USED_PASSWORD = 'CNT111',
   WRONG_LOGIN_PASSWORD = 'CNT114',
   INVALID_LOGIN_CREDENTIALS = 'CNT033',
+  TOKEN_EXPIRED = '403025',
   other = 'other',
 }

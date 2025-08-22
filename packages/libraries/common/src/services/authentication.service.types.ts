@@ -1,5 +1,5 @@
 export interface CreateNewPasswordPayload {
-  contactId: string
+  token: string
   newPassword: string
   isCreatePasswordAction?: boolean
 }
