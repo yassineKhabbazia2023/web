@@ -899,8 +899,8 @@ defineExpose({
     "accountNumber": "Account Number",
     "key": "Key",
     "bank": "Bank",
-    "flowRedirection": "Automatic flow redirection",
-    "flowDestination": "Choose the destination tool to which the flows will be redirected",
+    "flowRedirection": "The software targets reports",
+    "flowDestination": "Choose where the data flows should be sent",
     "form": {
       "asterisk": "*",
       "error": {
@@ -947,8 +947,8 @@ defineExpose({
     "accountNumber": "Numéro de compte",
     "key": "Clé",
     "bank": "Banque",
-    "flowRedirection": "Redirection automatique des flux",
-    "flowDestination": "Choisissez l'outil de destination vers lesquels les flux seront redirigés",
+    "flowRedirection": "Le logiciel cible des relevés",
+    "flowDestination": "Choisissez l'outil de destination vers lequel les flux seront envoyés",
     "form": {
       "asterisk": "*",
       "error": {
