@@ -310,6 +310,7 @@ const getActiveWallet = computed(() => {
     gap: 12px;
     overflow-y: scroll;
     overscroll-behavior-y: contain;
+    overflow-x: hidden;
 
     > li {
       padding-left: 8px;
