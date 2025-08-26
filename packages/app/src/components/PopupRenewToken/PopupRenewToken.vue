@@ -16,10 +16,10 @@
         class="dialog-renew-token__popup-img"
       />
     </div>
-    <div class="h3 text-center margin-y--4">
+    <div class="h3 p-dialog__title text-center margin-y--4">
       {{ t(`${statusKey}.title`) }}
     </div>
-    <p class="p-dialog__text margin-bottom--3">
+    <p class="p-dialog__text">
       {{ t(`${statusKey}.content.${isCollab ? 'collab' : 'client'}`) }}
     </p>
     <template #footer>

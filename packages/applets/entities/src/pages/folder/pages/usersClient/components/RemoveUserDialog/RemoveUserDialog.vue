@@ -22,6 +22,7 @@
       <div class="p-dialog__footer">
         <PButton
           pType="secondary"
+          pSize="small"
           data-testid="dialog-close-button"
           @click="handleCloseDrawer"
         >
@@ -30,6 +31,7 @@
 
         <PButton
           pType="primary"
+          pSize="small"
           data-testid="remove-user-button"
           @click="handleRemoveUser"
         >

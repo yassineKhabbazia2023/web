@@ -210,7 +210,7 @@ const { t } = useI18n({
 
 const pDialogControl = reactive({
   dialogVisible: false,
-  dialogWidth: '440px',
+  dialogWidth: '420px',
   dialogModal: true,
   dialogCenter: false,
   dialogShowClose: true,

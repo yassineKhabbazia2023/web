@@ -124,12 +124,6 @@ const clearModalInputValue = () => {
   .el-dialog {
     max-width: 503px;
 
-    &__title {
-      color: var(--el-color-neutral-gray-900);
-      font-size: 24px;
-      font-weight: 400;
-    }
-
     &__body {
       display: grid;
       grid-row-gap: 8px;
