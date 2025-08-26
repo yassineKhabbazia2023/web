@@ -98,17 +98,15 @@ describe('app with navigation guard', () => {
   })
 
   it('should call refreshClientToken when PopupRenewToken emits renew-token', async () => {
-    const mockedSub = 'mocked-sub'
     const tokenMock = 'mocked-token'
     mockedRefreshClientToken.mockResolvedValue(tokenMock)
-    tokenStoreMock.tokenSub = mockedSub
     const wrapper = createWrapper()
     const popupRenewToken = wrapper.findComponent({ name: 'PopupRenewToken' })
 
     popupRenewToken.vm.$emit('renew-token')
     await flushPromises()
     expect(mockedRefreshClientToken).toHaveBeenCalledOnce()
-    expect(mockedRefreshClientToken).toHaveBeenCalledWith(mockedSub)
+    expect(mockedRefreshClientToken).toHaveBeenCalledWith()
 
     expect(CurrentUserManagerMock.persistToken).toHaveBeenCalledOnce()
     expect(CurrentUserManagerMock.persistToken).toHaveBeenCalledWith(tokenMock)

@@ -1,11 +1,11 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { describe, expect, it, vi } from 'vitest'
 import { useTokenStore } from './token.store'
-import { tokenMock, tokenSubMock, tokenExpMock } from '@common/__mocks__'
+import { tokenMock, tokenExpMock } from '@common/__mocks__'
 
-const getTokenExpSubMock = vi.hoisted(() => vi.fn())
+const getTokenExpMock = vi.hoisted(() => vi.fn())
 vi.mock('./token.store.utils', () => ({
-  getTokenExpSub: getTokenExpSubMock,
+  getTokenExp: getTokenExpMock,
 }))
 
 describe('test tokenStore', () => {
@@ -13,8 +13,7 @@ describe('test tokenStore', () => {
 
   beforeEach(() => {
     setActivePinia(createPinia())
-    getTokenExpSubMock.mockReturnValue({
-      sub: tokenSubMock,
+    getTokenExpMock.mockReturnValue({
       exp: tokenExpMock,
     })
 
@@ -24,9 +23,8 @@ describe('test tokenStore', () => {
   it('should set token properly when setTokenExpiration() is called', () => {
     tokenStore.setTokenExpiration(tokenMock)
 
-    expect(tokenStore.tokenSub).toBe(tokenSubMock)
     expect(tokenStore.tokenExp).toBe(tokenExpMock)
-    expect(getTokenExpSubMock).toHaveBeenCalledOnce()
-    expect(getTokenExpSubMock).toHaveBeenCalledWith(tokenMock)
+    expect(getTokenExpMock).toHaveBeenCalledOnce()
+    expect(getTokenExpMock).toHaveBeenCalledWith(tokenMock)
   })
 })

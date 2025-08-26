@@ -2,8 +2,8 @@ import api from '../api'
 import { API_PREFIXES } from '../constants/api-prefixes'
 import type { CreateNewPasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
 
-export async function refreshClientToken(sub: string) {
-  const baseUrl = `${API_PREFIXES.AUTHENTICATION}/refreshToken?userId=${sub}`
+export async function refreshClientToken() {
+  const baseUrl = `${API_PREFIXES.AUTHENTICATION}/refreshToken`
 
   const { data: token } = await api().gateway.post(baseUrl)
 

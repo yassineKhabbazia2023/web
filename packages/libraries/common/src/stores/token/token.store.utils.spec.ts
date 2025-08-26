@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
-import { getTokenExpSub } from './token.store.utils'
-import { tokenMock, tokenSubMock, tokenExpMock } from '@common/__mocks__'
+import { getTokenExp } from './token.store.utils'
+import { tokenMock, tokenExpMock } from '@common/__mocks__'
 
 const jwtDecodeMock = vi.hoisted(() => vi.fn())
 vi.mock('jwt-decode', () => ({
@@ -10,32 +10,29 @@ vi.mock('jwt-decode', () => ({
 describe('test token.store.utils', () => {
   beforeEach(() => {
     jwtDecodeMock.mockReturnValue({
-      sub: tokenSubMock,
       exp: tokenExpMock,
     })
   })
-  describe('getTokenExpSub', () => {
+  describe('getTokenExp', () => {
     const tests = [{
       token: tokenMock,
-      expectedSubExp: {
-        sub: tokenSubMock,
+      expected: {
         exp: tokenExpMock,
       },
     }, {
       token: '',
-      expectedSubExp: {
-        sub: undefined,
+      expected: {
         exp: undefined,
       },
     }]
 
     it.each(tests)('should return $expected when token is $token', ({
       token,
-      expectedSubExp,
+      expected,
     }) => {
-      const subExp = getTokenExpSub(token)
+      const exp = getTokenExp(token)
 
-      expect(subExp).toStrictEqual(expectedSubExp)
+      expect(exp).toStrictEqual(expected)
     })
   })
 })

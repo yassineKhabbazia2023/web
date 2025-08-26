@@ -120,7 +120,7 @@ async function onLogout() {
 async function onRenewToken() {
   try {
     popupRenewTokenIsVisible.value = false
-    const newToken = await refreshClientToken(tokenStore.tokenSub ?? '')
+    const newToken = await refreshClientToken()
     CurrentUserManager.persistToken(newToken)
   } catch (error) {
     logger.error('Error renewing token:', error)

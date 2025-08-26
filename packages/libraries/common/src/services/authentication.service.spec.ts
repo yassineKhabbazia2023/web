@@ -14,13 +14,12 @@ describe('test authentication.service', () => {
   describe('refreshClientToken', () => {
     it('should call gateway properly', async () => {
       const mockedToken = 'mocked-token'
-      const mockedSub = 'mocked-sub'
-      const expectedGatewayPostArgument = `authentication/api/refreshToken?userId=${mockedSub}`
+      const expectedGatewayPostArgument = 'authentication/api/refreshToken'
 
       apiGatewayPostMock.mockResolvedValue({
         data: mockedToken,
       })
-      await refreshClientToken(mockedSub)
+      await refreshClientToken()
 
       expect(apiGatewayPostMock).toHaveBeenCalledOnce()
       expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedGatewayPostArgument)
