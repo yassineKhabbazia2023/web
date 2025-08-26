@@ -16,7 +16,7 @@
         "
       >
         <div>
-          <p class="h4">
+          <p class="h4 text-color--black-rock-900">
             {{ pTitle }}
           </p>
           <p
@@ -25,6 +25,7 @@
               p-radio-card__description
               font-normal
               margin-top--1
+              text-color--neutral-gray-900
             "
           >
             {{ pDescription }}
@@ -64,27 +65,27 @@ defineProps<PRadioCardProps>()
 <style lang="scss" scoped>
 .p-radio-card {
   &:not(:last-child) {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
   }
 
   &__content {
     width: 100%;
     height: inherit;
     white-space: inherit;
-    border: 1px solid var(--el-border-color);
+    transition: background-color 0.3s ease;
+    background-color: var(--el-color-neutral-gray-50);
 
     &:hover,
     &.is-checked {
-      border-color: var(--el-color-primary);
+      background-color: var(--el-color-surface-state-selection);
     }
 
     &.is-checked {
-      background: var(--el-color-persian-50);
+      background-color: var(--el-color-surface-state-selection);
     }
   }
 
   &__description {
-    color: var(--el-color-neutral-gray-700);
     font-size: 1.4rem;
   }
 }
