@@ -129,6 +129,15 @@ const RIGHT_CATEGORIES = {
   CLTPILOTAGE: t('management'),
 }
 
+const ACTION_ORDER: Record<string, string[]> = {
+  CLTGEDESC: [
+    'CLGEDPEN01',
+    'CLGED0002',
+    'CLSPGDC01',
+    'CLSPGDC02',
+  ],
+}
+
 const route = useRoute()
 const isLoading = ref(true)
 const authorizationsConfig = ref<AuthorizationConfigMapped[]>([])
@@ -229,6 +238,7 @@ onMounted(async () => {
     authorizationsConfig.value = getAuthorizationsConfigMapped(
       rightsConfigList,
       RIGHT_CATEGORIES,
+      ACTION_ORDER,
     )
 
     // To display the action checkboxes and the category switch with the correct values

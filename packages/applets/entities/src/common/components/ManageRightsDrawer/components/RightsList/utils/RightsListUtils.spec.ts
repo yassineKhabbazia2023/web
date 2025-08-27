@@ -231,4 +231,135 @@ describe('rightsListUtils', () => {
       expect(tooltipByActionCode).toStrictEqual(expectedTooltipByActionCode)
     })
   })
+
+  describe('getAuthorizationsConfigMapped — sorting', () => {
+    const RIGHT_CATEGORIES_SORT = {
+      CLTGEDESC: 'Espace documentaire – Comptabilité',
+      CLTGESTION: 'File management',
+    }
+
+    // Helper to build minimal Action
+    const mkAction = (actionId: number, code: CollaboratorPermission, label = String(code), enabled = true): Action => ({
+      actionId,
+      code,
+      name: 'name',
+      label,
+      enabled,
+    })
+
+    // Base actions for tests (mix of ordered + unordered)
+    const A = mkAction(1, CollaboratorPermission.ACCEDER_CALENDRIER) // unordered
+    const B = mkAction(2, CollaboratorPermission.RETIRER_UTILISATEUR_CLIENT_DOSSIER) // unordered
+    const C = mkAction(3, CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE) // ordered candidate
+    const D = mkAction(4, CollaboratorPermission.MAJ_FICHE_ENTREPRISE_ONGLET_INFORMATION) // ordered candidate
+
+    it('does NOT sort when actionOrder is undefined', () => {
+      const cfg = [
+        {
+          category: 'CLTGEDESC',
+          actions: [A, C, B, D],
+        },
+      ]
+
+      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT)
+      expect(res[0].category).toStrictEqual({
+        code: 'CLTGEDESC',
+        label: RIGHT_CATEGORIES_SORT.CLTGEDESC,
+      })
+      // order should be preserved
+      expect(res[0].actions.map(a => a.code)).toStrictEqual([A.code, C.code, B.code, D.code])
+    })
+
+    it('does NOT sort when an order exists but has no matching codes in actions', () => {
+      const cfg = [
+        {
+          category: 'CLTGEDESC',
+          actions: [A, C, B, D],
+        },
+      ]
+      const ACTION_ORDER = {
+        CLTGEDESC: ['NON_EXISTENT_CODE_1', 'NON_EXISTENT_CODE_2'],
+      }
+
+      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT, ACTION_ORDER)
+      // no match => should not sort
+      expect(res[0].actions.map(a => a.code)).toStrictEqual([A.code, C.code, B.code, D.code])
+    })
+
+    it('sorts when an order exists and matches at least one action code', () => {
+      const cfg = [
+        {
+          category: 'CLTGEDESC',
+          actions: [A, C, B, D], // initial order
+        },
+      ]
+      const ACTION_ORDER = {
+        // D then C are explicitly ordered → they must come first, then A and B in their original relative order (A before B)
+        CLTGEDESC: [D.code, C.code],
+      }
+
+      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT, ACTION_ORDER)
+      expect(res[0].actions.map(a => a.code)).toStrictEqual([D.code, C.code, A.code, B.code])
+    })
+
+    it('keeps relative order for unordered actions', () => {
+      // Here only one code is ordered; the rest (A, B) must keep their original relative order
+      const cfg = [
+        {
+          category: 'CLTGEDESC',
+          actions: [B, A, C, D], // original relative order among unordered: B before A
+        },
+      ]
+      const ACTION_ORDER = {
+        CLTGEDESC: [C.code], // only C is ordered
+      }
+
+      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT, ACTION_ORDER)
+      // C first, then keep B before A, then D is unordered too (after B,A) and keeps its original position relative to them
+      // Original order after removing C is [B, A, D] => should be preserved as [B, A, D]
+      expect(res[0].actions.map(a => a.code)).toStrictEqual([C.code, B.code, A.code, D.code])
+    })
+
+    it('applies sorting only to categories that have an order; others remain unchanged', () => {
+      const cfg = [
+        {
+          category: 'CLTGEDESC',
+          actions: [A, C, B, D], // will be sorted
+        },
+        {
+          category: 'CLTGESTION',
+          actions: [D, B, C, A], // must remain untouched
+        },
+      ]
+      const ACTION_ORDER = {
+        CLTGEDESC: [D.code, C.code],
+        // No rule for CLTGESTION
+      }
+
+      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT, ACTION_ORDER)
+
+      // CLTGEDESC sorted
+      expect(res[0].category.code).toBe('CLTGEDESC')
+      expect(res[0].actions.map(a => a.code)).toStrictEqual([D.code, C.code, A.code, B.code])
+
+      // CLTGESTION unchanged
+      expect(res[1].category.code).toBe('CLTGESTION')
+      expect(res[1].actions.map(a => a.code)).toStrictEqual([D.code, B.code, C.code, A.code])
+    })
+
+    it('does NOT sort when the provided order array is empty', () => {
+      const cfg = [
+        {
+          category: 'CLTGEDESC',
+          actions: [A, C, B, D],
+        },
+      ]
+      const ACTION_ORDER = {
+        CLTGEDESC: [] as string[],
+      }
+
+      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT, ACTION_ORDER)
+      expect(res[0].actions.map(a => a.code)).toStrictEqual([A.code, C.code, B.code, D.code])
+    })
+  })
 })

@@ -12,19 +12,20 @@ import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/common/constants/rights
 export const getAuthorizationsConfigMapped = (
   authorizationsConfig: AuthorizationConfig[],
   rightsCategories: Record<string, string>,
+  actionOrder?: Record<string, string[]>,
 ): AuthorizationConfigMapped[] => {
-  const authorizationsConfigFormatted = authorizationsConfig
-    .map(({ category, actions }: AuthorizationConfig) => {
-      return {
-        category: {
-          code: category,
-          label: rightsCategories[category],
-        },
-        actions,
-      }
-    })
-
-  return authorizationsConfigFormatted
+  return authorizationsConfig.map(({ category, actions }: AuthorizationConfig) => {
+    const order = actionOrder?.[category] ?? []
+    return {
+      category: {
+        code: category,
+        label: rightsCategories[category] ?? category,
+      },
+      actions: order.length > 0
+        ? getSortActionsByGivenOrder(actions, actionOrder![category])
+        : actions,
+    }
+  })
 }
 
 export const getAuthorizationState = (
@@ -88,4 +89,30 @@ export function getTooltipByActionCode({
     }
   }
   return {}
+}
+
+function getSortActionsByGivenOrder(
+  actions: Action[],
+  order: readonly string[],
+): Action[] {
+  return actions.toSorted((a, b) => {
+    const indexA = order.indexOf(a.code)
+    const indexB = order.indexOf(b.code)
+
+    // Neither is explicitly ordered → keep their original relative order (stable sort)
+    if (indexA === -1 && indexB === -1) {
+      return 0
+    }
+
+    // Exactly one is ordered → the ordered one comes first
+    if (indexA === -1) {
+      return 1
+    }  // A is unordered → B first
+    if (indexB === -1) {
+      return -1
+    } // B is unordered → A first
+
+    // Both are ordered → compare their positions in `order`
+    return indexA - indexB
+  })
 }
