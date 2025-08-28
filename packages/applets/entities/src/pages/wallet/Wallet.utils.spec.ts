@@ -41,7 +41,6 @@ describe('Wallet.utils', () => {
         permissionCodes: GLOBAL_PERMISSIONS.POWERBI_REPORT, // false
       }, {
         name: WalletTab.ENTITY_CLIENT,
-        featureFlag: Feature.ACCESS_MANAGEMENT_GLOBAL, // true
       }, {
         name: WalletTab.SUBSCRIPTIONS,
         featureFlag: Feature.FEED_CENTER, // false
@@ -59,8 +58,6 @@ describe('Wallet.utils', () => {
         title: tabLabels[WalletTab.FOLDERS],
       }]
       hasPermissionMock.mockImplementation(getHasPermissionMocked(GLOBAL_PERMISSIONS.MANDATE))
-      featureFlagManagerMock.isFeatureActivated
-        .mockImplementation((featureFlag: Feature) => featureFlag === Feature.ACCESS_MANAGEMENT_GLOBAL)
 
       const availablesTabs = getAvailableTabs(tabs, tabLabels)
 
@@ -71,28 +68,16 @@ describe('Wallet.utils', () => {
   describe('getTabs', () => {
     const tests = [{
       isCollab: false,
-      hasCollabOffersCagalogFeatureFlag: true,
       expectedLength: CUSTOMER_TABS_CONFIGURATION.length,
     }, {
       isCollab: true,
-      hasCollabOffersCagalogFeatureFlag: true,
       expectedLength: COLLAB_TABS_CONFIGURATION.length,
-    }, {
-      isCollab: true,
-      hasCollabOffersCagalogFeatureFlag: false,
-      expectedLength: COLLAB_TABS_CONFIGURATION.length - 1,
     }]
 
-    it.each(tests)('should return $expectedLength when isCollab equals $isCollab and hasCollabOffersCagalogFeatureFlag equals $hasCollabOffersCagalogFeatureFlag', ({
+    it.each(tests)('should return $expectedLength when isCollab equals $isCollab', ({
       isCollab,
-      hasCollabOffersCagalogFeatureFlag,
       expectedLength,
     }) => {
-      featureFlagManagerMock.isFeatureActivated
-        .mockImplementation((featureFlag: Feature) => (
-          hasCollabOffersCagalogFeatureFlag &&
-          featureFlag === Feature.COLLAB_OFFERS_CATALOG
-        ))
       const availablesTabs = getTabs(tabLabels, isCollab)
 
       expect(availablesTabs).toHaveLength(expectedLength)

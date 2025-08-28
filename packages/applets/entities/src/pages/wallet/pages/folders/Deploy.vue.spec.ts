@@ -14,7 +14,7 @@ import { nextTick, reactive } from 'vue'
 import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtils.mocks'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/common/types'
-import { isAccessManagementGlobalActivatedMock, featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'
+import { featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'
 import { contactServiceMock, fetchAccountOperationsMock } from '@entities/__mocks__/contact.service.mocks'
 import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
@@ -482,39 +482,24 @@ describe('deploy', () => {
 
   describe('manageAccessButton', () => {
     const tests = [{
-      isAccessManagementGlobalActivated: false,
       hasManageAccessAuthorisation: false,
       expected: false,
       should: 'NOT display',
-      description: 'feature flag is NOT activated and user does NOT have manage access authorisation',
+      description: 'user does NOT have manage access authorisation',
     }, {
-      isAccessManagementGlobalActivated: true,
-      hasManageAccessAuthorisation: false,
-      expected: false,
-      should: 'NOT display',
-      description: 'feature flag is activated but user does NOT have manage access authorisation',
-    }, {
-      isAccessManagementGlobalActivated: false,
-      hasManageAccessAuthorisation: true,
-      expected: false,
-      should: 'NOT display',
-      description: 'user has manage access authorisation but feature flag is NOT activated',
-    }, {
-      isAccessManagementGlobalActivated: true,
       hasManageAccessAuthorisation: true,
       expected: true,
-      should: 'display',
-      description: 'feature flag is activated and user has manage access authorisation',
+      should: 'NOT display',
+      description: 'user has manage access authorisation',
     }]
     it.each(tests)('should $should when $description', async ({
-      isAccessManagementGlobalActivated,
       hasManageAccessAuthorisation,
       expected,
     }) => {
       hasPermissionMock
         .mockReturnValueOnce(true)
         .mockReturnValueOnce(hasManageAccessAuthorisation)
-      isAccessManagementGlobalActivatedMock.mockReturnValue(isAccessManagementGlobalActivated)
+
       const wrapper = createWrapper()
       await flushPromises()
 
@@ -559,7 +544,6 @@ describe('deploy', () => {
       const expectedManageAccessCount = `${totalItemsMock}`
 
       hasPermissionMock.mockReturnValue(true)
-      isAccessManagementGlobalActivatedMock.mockReturnValue(true)
       fetchAccountOperationsMock.mockResolvedValue(accountOperationMock)
 
       const wrapper = createWrapper()
@@ -719,7 +703,6 @@ describe('deploy', () => {
 
     beforeEach(() => {
       hasPermissionMock.mockReturnValue(true)
-      isAccessManagementGlobalActivatedMock.mockReturnValue(true)
       fetchAccountOperationsMock.mockResolvedValue(accountOperationMock)
     })
 

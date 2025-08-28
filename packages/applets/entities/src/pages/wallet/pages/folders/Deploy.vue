@@ -190,7 +190,7 @@
 </template>
 
 <script lang='ts' setup>
-import { logger, FeatureFlagManager } from '@pulse/core'
+import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, ref, watch, useTemplateRef, nextTick } from 'vue'
 import {
@@ -350,8 +350,7 @@ const isEntityCreatorDrawerOpen = ref(false)
 const hasEntityCreatorPermission = computed(() => CurrentUserManager.hasPermission(GLOBAL_PERMISSIONS.ENTITY_CREATOR))
 
 const hasManageAccess = computed(() =>
-  FeatureFlagManager.isAccessManagementGlobalActivated()
-  && CurrentUserManager.hasPermission(ACTION_PERMISSIONS.MANAGE_ACCESS),
+  CurrentUserManager.hasPermission(ACTION_PERMISSIONS.MANAGE_ACCESS),
 )
 
 const isManageAccessButtonDisabled = computed(() => (manageAccessCount.value ?? 0) < 1)

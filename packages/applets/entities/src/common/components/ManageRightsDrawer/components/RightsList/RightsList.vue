@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger, FeatureFlagManager } from '@pulse/core'
+import { logger } from '@pulse/core'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -87,7 +87,6 @@ import {
   getDropdownsByActionCode,
   getAuthorizationsConfigMapped,
   getAuthorizationState,
-  getTooltipByActionCode,
 } from './utils'
 import { RouteParam } from '@pulse/common/enums'
 
@@ -199,14 +198,12 @@ const dropdownsByActionCode = computed(() => {
   )
 })
 
-const tooltipByActionCode = ref<LabelByPermission >()
+const tooltipByActionCode: LabelByPermission = {
+  [PERMISSION_PENNYLANE_CUSTOMER]: t('PennylaneAdditionalInfos'),
+}
+
 
 onMounted(async () => {
-  tooltipByActionCode.value = getTooltipByActionCode({
-    hasFeature: FeatureFlagManager.isPennylaneActionAdditionalInfoActivated(),
-    label: t('PennylaneAdditionalInfos'),
-  })
-
   internalAuthorizationState.value = {}
   try {
     let rightsConfigList: AuthorizationConfig[] = []

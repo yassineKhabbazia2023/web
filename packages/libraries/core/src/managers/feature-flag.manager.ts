@@ -15,10 +15,6 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.FEED_CENTER)
   }
 
-  static isAccessManagementGlobalActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.ACCESS_MANAGEMENT_GLOBAL)
-  }
-
   static isHomepageWidgetsActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.HOMEPAGE_WIDGETS)
   }
@@ -29,10 +25,6 @@ export class FeatureFlagManager {
 
   static isAmplitudeActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.AMPLITUDE)
-  }
-
-  static isPennylaneActionAdditionalInfoActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_RIGHT_INFOS)
   }
 
   static isNotificationSettingsDrawerActivated() {

@@ -47,18 +47,6 @@ describe('FeatureFlagManager', () => {
     })
 
   describe.each(tests)(
-    'isAccessManagementGlobalActivated',
-    ({
-      value,
-      expected,
-    }) => {
-      it('should return $expected when value is $value', () => {
-        window.EnvVars[Feature.ACCESS_MANAGEMENT_GLOBAL] = value
-        expect(FeatureFlagManager.isAccessManagementGlobalActivated()).toBe(expected)
-      })
-    })
-
-  describe.each(tests)(
     'isHomepageWidgetsActivated',
     ({
       value,
@@ -81,18 +69,6 @@ describe('FeatureFlagManager', () => {
       expect(FeatureFlagManager.isFeatureActivated(Feature.HOMEPAGE_WIDGETS)).toBe(false)
     })
   })
-
-  describe.each(tests)(
-    'isPennylaneActionAdditionalInfoActivated',
-    ({
-      value,
-      expected,
-    }) => {
-      it('should return $expected when value is $value', () => {
-        window.EnvVars[Feature.PENNYLANE_RIGHT_INFOS] = value
-        expect(FeatureFlagManager.isPennylaneActionAdditionalInfoActivated()).toBe(expected)
-      })
-    })
 
   describe.each(tests)(
     'isMailToPennylaneActivated',

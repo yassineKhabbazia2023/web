@@ -10,7 +10,6 @@ import {
   getPennylaneDropdownOptions,
   getHasAction,
   getDropdownsByActionCode,
-  getTooltipByActionCode,
 } from '.'
 import { getMockedPennylaneAvailableRole } from '@pulse/common/mocks'
 
@@ -203,32 +202,6 @@ describe('rightsListUtils', () => {
       )
 
       expect(hasAction).toStrictEqual(expectedDropdownsByActionCode)
-    })
-  })
-
-  describe('getTooltipByActionCode', () => {
-    const label = 'tooltip label'
-    const tooltipByActionCodeWithFeature = {
-      [PERMISSION_PENNYLANE_CUSTOMER]: label,
-    }
-    const tooltipByActionCodeWithoutFeature = {}
-    const tests = [{
-      hasFeature: true,
-      expectedTooltipByActionCode: tooltipByActionCodeWithFeature,
-    }, {
-      hasFeature: false,
-      expectedTooltipByActionCode: tooltipByActionCodeWithoutFeature,
-    }]
-
-    it.each(tests)('should return expected object', ({
-      hasFeature,
-      expectedTooltipByActionCode,
-    }) => {
-      const tooltipByActionCode = getTooltipByActionCode({
-        hasFeature,
-        label,
-      })
-      expect(tooltipByActionCode).toStrictEqual(expectedTooltipByActionCode)
     })
   })
 

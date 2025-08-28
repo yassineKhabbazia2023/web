@@ -16,18 +16,14 @@ const nextMock = vi.fn(() => true)
 const toNameMock = RouteName.INFO
 
 describe('feature-flag.guard', () => {
-  beforeAll(() => {
-    featureFlagManagerMock.isFeatureActivated
-      .mockImplementation((featureFlag: Feature) => featureFlag === Feature.ACCESS_MANAGEMENT_GLOBAL)
-  })
   const tests = [{
-    featureFlag: Feature.COLLAB_OFFERS_CATALOG,
+    featureFlag: Feature.MAIL_TO_GED,
     featureFlagIsActivatedMock: false,
     expectedRouteName: 'Error404',
-    expectedLoggerMock: `feature flag '${Feature.COLLAB_OFFERS_CATALOG}' is not activated for route '${toNameMock}'`,
+    expectedLoggerMock: `feature flag '${Feature.MAIL_TO_GED}' is not activated for route '${toNameMock}'`,
     reason: 'redirect to Error404 because the required feature flag is NOT activated',
   }, {
-    featureFlag: Feature.COLLAB_OFFERS_CATALOG,
+    featureFlag: Feature.MAIL_TO_GED,
     featureFlagIsActivatedMock: true,
     expectedRouteName: undefined,
     expectedLoggerMock: undefined,

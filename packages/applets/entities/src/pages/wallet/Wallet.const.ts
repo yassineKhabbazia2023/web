@@ -1,7 +1,6 @@
 import { WalletTab } from './Wallet.enums'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import type { WalletTabConfiguration } from './Wallet.types'
-import { Feature } from '@pulse/core/enums'
 import { RouteName } from '@pulse/common/enums'
 
 export const COLLAB_TABS_CONFIGURATION: WalletTabConfiguration[] = [{
@@ -29,7 +28,6 @@ export const COLLAB_TABS_CONFIGURATION: WalletTabConfiguration[] = [{
   permissionCodes: GLOBAL_PERMISSIONS.ACCOUNT_MANAGEMENT,
 }, {
   name: WalletTab.OFFERS_CATALOG,
-  featureFlag: Feature.COLLAB_OFFERS_CATALOG,
 }]
 
 export const CUSTOMER_TABS_CONFIGURATION: WalletTabConfiguration[] = [{

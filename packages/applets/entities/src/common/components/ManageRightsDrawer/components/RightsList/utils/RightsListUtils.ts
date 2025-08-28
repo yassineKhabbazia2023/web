@@ -1,4 +1,4 @@
-import type { AuthorizationState, LabelByPermission } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
+import type { AuthorizationState } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
 import type {
   AuthorizationConfig,
   Action,
@@ -74,21 +74,6 @@ export function getDropdownsByActionCode(
   }
 
   return dropdownsByActionCode
-}
-
-export function getTooltipByActionCode({
-  hasFeature,
-  label,
-}: {
-  hasFeature: boolean
-  label: string
-}): LabelByPermission {
-  if (hasFeature === true) {
-    return {
-      [PERMISSION_PENNYLANE_CUSTOMER]: label,
-    }
-  }
-  return {}
 }
 
 function getSortActionsByGivenOrder(

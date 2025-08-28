@@ -14,7 +14,6 @@ export const envVarsMock = {
   VITE_AXEPTIO_KEY: 'pulse-axeptio-key',
   VITE_CONFIG_OFFERS_BOOK: 'https://example.com/offers-book',
   VITE_FEED_CENTER_ACTIVATED: 'true',
-  VITE_ACCESS_MANAGEMENT_GLOBAL: 'true',
   VITE_GESTION_MEG: 'https://gestion-meg',
   VITE_GIGYA_SSO_ACTIVATED: 'true',
   VITE_HUBSPOT_ACTIVATED: 'true',

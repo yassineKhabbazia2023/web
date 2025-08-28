@@ -26,7 +26,6 @@ window.EnvVars = envVars
 [//]: # (SCRAP BELOW)
 | variables d'environnement Front | description |
 |---|---|
-| VITE_ACCESS_MANAGEMENT_GLOBAL | Feature-flag de gestion des accès globale |
 | VITE_ACCOUNTING_HUB_URL | URL de Connexion au hub signalR pour la synchronisation PIA sur la GED  |
 | VITE_AMPLITUDE_ACTIVATED | Feature-flag pour Amplitude |
 | VITE_AMPLITUDE_API_KEY | Clé d'API Amplitude (outil de tracking) |
@@ -50,7 +49,6 @@ window.EnvVars = envVars
 | VITE_MANDATE_REDIRECTION_TOOL_ACTIVATED | Feature flag de la fonctionnalité Mandate Redirection Tool
 | VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |
 | VITE_PENNYLANE_COLLAB_SSO_URL | URL de connexion SSO Pennylane pour les collaborateurs |
-| VITE_PENNYLANE_DELEGATE_RIGHTS_CHECKBOX_ACTIVATED | Feature flag de la checkbox de delegation des droits Pennylane |
 | VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
 | VITE_GIGYA_KEY | Clé d'API Gigya (SSO) | 
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY | Clé du workspace ProductFruit Collab anonyme (login collab) |
