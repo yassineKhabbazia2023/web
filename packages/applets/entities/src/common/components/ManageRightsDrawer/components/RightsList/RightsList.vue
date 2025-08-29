@@ -278,16 +278,8 @@ const handleInfoIconClick = (event: MouseEvent) => {
   .additional-infos-icon {
     vertical-align: bottom;
   }
-  ::v-deep .el-switch__label {
-    height: inherit;
-  }
-  ::v-deep .el-checkbox__label {
-    line-height: 1.2;
-    white-space: normal;
-  }
 }
 </style>
-
 
 <!-- Note : désactivation uniquement dans la section YAML afin de permettre un contenu formaté -->
 <!-- avec des retours à la ligne -->

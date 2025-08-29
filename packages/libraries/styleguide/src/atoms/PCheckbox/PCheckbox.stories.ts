@@ -80,7 +80,7 @@ export const WithLabels: Story = {
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <PCheckbox>Option 1</PCheckbox>
         <PCheckbox :pChecked="true">Option 2</PCheckbox>
-        <PCheckbox>Option longue avec beaucoup de texte pour tester le comportement</PCheckbox>
+        <PCheckbox>Très long texte qui permet de tester le comportement. Dans ce cas particulier la checkbox à droite doit être centrée verticalements et le texte ne doit pas être tronqué.</PCheckbox>
       </div>
     `,
   }),

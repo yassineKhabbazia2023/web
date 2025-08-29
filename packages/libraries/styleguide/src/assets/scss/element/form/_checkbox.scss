@@ -34,4 +34,13 @@ $checkbox: (
       border-radius: var(--el-border-radius-circle);
     }
   }
+
+  .el-switch__label {
+    height: inherit;
+  }
+
+  .el-checkbox__label {
+    line-height: 1.2;
+    white-space: normal;
+  }
 }

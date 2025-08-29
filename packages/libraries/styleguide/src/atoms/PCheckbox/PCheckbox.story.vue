@@ -11,6 +11,7 @@
         <HstText v-model="checkBoxControl.contentSlot" title="ContentSlot" />
       </template>
     </Variant>
+
     <Variant title="Checkbox rounded">
       <PCheckbox
         pRounded
@@ -75,7 +76,7 @@ const checkBoxControl = reactive({
   disabled: false,
   valueTrue: true,
   valueFalse: false,
-  contentSlot: 'Checkbox label',
+  contentSlot: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus.',
 })
 </script>
 
