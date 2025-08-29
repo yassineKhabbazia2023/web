@@ -57,7 +57,7 @@ import { ref, watchEffect, computed, watch, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { CurrentUserManager } from '@pulse/common/managers'
+import { CurrentUserManager, PennylanePermissionsManager } from '@pulse/common/managers'
 import { fetchBIReports } from '@app/services/reporting'
 import { PMenuItem, PMenu } from '@pulse/styleguide/components'
 import { ACCOUNT_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
@@ -120,6 +120,8 @@ const folderOrEntityMenuItem = computed<MenuItem | null>(() => {
 })
 
 const getMenuItems = () => {
+  const hasPennylaneAccountingPermission = PennylanePermissionsManager.hasPennylaneAccountingPermission()
+
   const list: MenuItem[] = [
     {
       title: t('biReports'),
@@ -128,10 +130,18 @@ const getMenuItems = () => {
       display: hasBIReports.value,
     },
     {
-      index: `/dossier/${props.selectedEntityId}/ged`,
+      index: `/dossier/${props.selectedEntityId}/ged`, // Legacy GED path
       title: t('documents'),
       iconLeftName: 'folder',
-      display: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.GED),
+      // Need GED permission But not Pennylane Accounting permission which replace legacy GED
+      display: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.GED) && hasPennylaneAccountingPermission === false,
+    },
+    {
+      index: `/dossier/${props.selectedEntityId}/comptabilite`, // Accounting GED path for Pennylane users
+      title: t('pennylaneAccounting'),
+      iconLeftName: 'archive',
+      // Need specific Pennylane Accounting permission
+      display: hasPennylaneAccountingPermission === true,
     },
     {
       index: `/dossier/${props.selectedEntityId}/banque`,
@@ -271,6 +281,7 @@ en-US:
   indicators: 'Indicators'
   home: 'Home'
   biReports: 'BI reports'
+  pennylaneAccounting: 'Accounting'
 fr-FR:
   folder: 'Dossier'
   entity: 'Entité'
@@ -280,4 +291,5 @@ fr-FR:
   indicators: 'Indicateurs'
   home: 'Accueil'
   biReports: 'Rapports BI'
+  pennylaneAccounting: 'Comptabilité'
 </i18n>

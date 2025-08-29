@@ -1,15 +1,21 @@
 <template>
   <SidebarEntity
-    v-if="selectedEntity !== undefined"
-    :selected-entity="selectedEntity"
+    v-if="isVisible === true"
+    :selected-entity="selectedEntityStore.selectedEntity"
   />
 </template>
 <script setup lang="ts">
 import { computed } from 'vue'
 import SidebarEntity from './components/SidebarEntity'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 
 const selectedEntityStore = useSelectedEntityStore()
+const userStore = useUserStore()
 
-const selectedEntity = computed(() => selectedEntityStore.selectedEntity)
+const isVisible = computed(() => {
+  const user = userStore.user
+  const selectedEntity = selectedEntityStore.selectedEntity
+
+  return user !== undefined && selectedEntity !== undefined
+})
 </script>

@@ -1,5 +1,6 @@
 export * from './current-user/current-user.manager'
 export * from './login/login.manager'
+export * from './pennylane-permissions/pennylane-permissions.manager'
 export * from './routes/routes.manager'
 export * from './selected-entity/selected-entity.manager'
 export * from './token/token.manager'

@@ -55,7 +55,7 @@
           </SidebarEntityItem>
         </li>
         <li
-          v-if="selectedEntity"
+          v-if="selectedEntity !== undefined"
           :class="{
             'sidenav-entity__actions-active': isSelectedEntityActive,
           }"

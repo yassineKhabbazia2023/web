@@ -29,8 +29,12 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
+const hasPennylaneAccountingPermissionSpy = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
+  PennylanePermissionsManager: {
+    hasPennylaneAccountingPermission: hasPennylaneAccountingPermissionSpy,
+  },
 }))
 
 const createWrapper = (props = defaultProps) => {

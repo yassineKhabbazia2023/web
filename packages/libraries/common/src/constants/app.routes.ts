@@ -31,6 +31,7 @@ export const APP_ROUTES = {
     },
     powerbi: { path: 'rapports-bi', name: RouteName.REPORTS },
     ged: { path: 'ged', name: RouteName.GED },
+    pennylaneAccounting: { path: 'comptabilite', name: RouteName.PENNYLANE_ACCOUNTING },
     launcher: { path: 'launcher', name: RouteName.LAUNCHER },
     bank: { path: 'banque', name: RouteName.BANK },
     indicators: { path: 'indicateurs', name: RouteName.INDICATORS },

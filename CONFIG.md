@@ -39,20 +39,21 @@ window.EnvVars = envVars
 | VITE_API_MSAL_SCOPE | Configuration de l'autorité d’authentification utilisateur (Collab) |
 | VITE_API_MSAL_TENANT | Configuration de l'autorité d’authentification utilisateur (Collab) |
 | VITE_ASSETS_BASE_URL | URL des assets Front (images, fonts) |
+| VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
 | VITE_CONFIG_OFFERS_BOOK | URL d'un site web à partager aux utilisateurs |
 | VITE_FEED_CENTER_ACTIVATED | Feature-flag du Feed Center |
-| VITE_GIGYA_SSO_ACTIVATED | Feature-flag du GIGYA SSO |
+| VITE_GED_V2_ENABLED | Affichage de la page Ged Comptabilité de Pennylane |
 | VITE_GESTION_MEG | URL de connexion SSO MEG |
+| VITE_GIGYA_KEY | Clé d'API Gigya (SSO) | 
+| VITE_GIGYA_SSO_ACTIVATED | Feature-flag du GIGYA SSO |
 | VITE_HOMEPAGE_WIDGETS_ACTIVATED | Feature flag de la home widgétisée |
 | VITE_IDLE_DURATION | Temps de non-utilisation de l'app avant une proposition de déconnexion automatique |
 | VITE_MAIL_TO_GED_ACTIVATED | Feature flag de la fonctionnalité Mail2GED |
 | VITE_MANDATE_REDIRECTION_TOOL_ACTIVATED | Feature flag de la fonctionnalité Mandate Redirection Tool
-| VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |
+| VITE_PASSWORD_RESET_MAX_ATTEMPTS | Nombre maximal de tentatives de réinitialisation du mot de passe |
 | VITE_PENNYLANE_COLLAB_SSO_URL | URL de connexion SSO Pennylane pour les collaborateurs |
-| VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
-| VITE_GIGYA_KEY | Clé d'API Gigya (SSO) | 
+| VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY | Clé du workspace ProductFruit Collab anonyme (login collab) |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT | Clé du workspace ProductFruit Client anonyme (login client et maintenance) |
 | VITE_PRODUCT_FRUITS_KEY | Clé du workspace ProductFruit Collab connecté |
 | VITE_PRODUCT_FRUITS_KEY_CLIENT | Clé du workspace ProductFruit Client connecté |
-| VITE_PASSWORD_RESET_MAX_ATTEMPTS | Nombre maximal de tentatives de réinitialisation du mot de passe |
