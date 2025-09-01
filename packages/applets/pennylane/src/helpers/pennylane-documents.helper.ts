@@ -1,20 +1,21 @@
+import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
 import type { PennylaneDocument } from '@pulse/common/types'
 import { getFileExtension } from '@pulse/core'
 import { getIconFileName } from '@pulse/styleguide'
 
-export function getInternalPennylaneDocuments(
+export function getFormattedPennylaneDocuments(
   pennylaneDocuments: PennylaneDocument[],
-) {
+  pathPrefix: string,
+): FormattedPennylaneDocument[] {
   return pennylaneDocuments
-    .slice(0, 4)
-    .toSorted((a, b) => a.updatedAt > b.updatedAt ? -1 : 1)
     .map((pennylaneDocument) => {
       const extension = getFileExtension(pennylaneDocument.name)
       const iconName = getIconFileName(extension, 'filetypeTxt')
 
       return {
+        ...pennylaneDocument,
         iconName,
-        pennylaneDocument,
+        path: `${pathPrefix}${pennylaneDocument.path}`,
       }
     })
 }

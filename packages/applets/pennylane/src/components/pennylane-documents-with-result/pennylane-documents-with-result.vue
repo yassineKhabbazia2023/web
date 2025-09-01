@@ -11,7 +11,7 @@
     "
   >
     <li
-      v-for="({ pennylaneDocument, iconName }, index) in internalPennylaneDocuments"
+      v-for="(pennylaneDocument, index) in internalPennylaneDocuments"
       :key="index"
       class="
         flex
@@ -30,7 +30,7 @@
         "
       >
         <PIcon
-          :pName="iconName"
+          :pName="pennylaneDocument.iconName"
           pSize="16"
         />
       </div>
@@ -70,17 +70,20 @@
 import { computed } from 'vue'
 import { PIcon } from '@pulse/styleguide/components'
 import { PennylaneDocumentsWithResultProps } from './pennylane-documents-with-result.types'
-import { getInternalPennylaneDocuments } from './pennylane-documents-with-result.utils'
-import type { PennylaneDocument } from '@pulse/common/types'
+import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
 
 const props = defineProps<PennylaneDocumentsWithResultProps>()
 const emit = defineEmits<{
-  'open-document': [PennylaneDocument],
+  'open-document': [FormattedPennylaneDocument],
 }>()
 
-const internalPennylaneDocuments = computed(() => getInternalPennylaneDocuments(props.pennylaneDocuments))
+const internalPennylaneDocuments = computed(() => {
+  return props.pennylaneDocuments
+    .slice(0, 4)
+    .toSorted((a, b) => a.updatedAt > b.updatedAt ? -1 : 1)
+})
 
-function onClickDocument(pennylaneDocument: PennylaneDocument) {
+function onClickDocument(pennylaneDocument: FormattedPennylaneDocument) {
   emit('open-document', pennylaneDocument)
 }
 </script>

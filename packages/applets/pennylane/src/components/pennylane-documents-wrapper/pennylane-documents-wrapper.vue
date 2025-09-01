@@ -1,0 +1,102 @@
+<template>
+  <div
+    class="
+      flex
+      flex--direction-column
+    "
+  >
+    <PennylaneDocumentsViewer
+      v-if="hasOpenedPennylaneDocumentsViewer === true"
+      :isOpened="pennylaneViewerDocument !== undefined"
+      :accountNumber="accountNumber"
+      :accountId="accountId"
+      :pennylaneDocument="pennylaneViewerDocument"
+      @update:is-opened="onUpdateViewIsOpened"
+    />
+    <EntityHeader
+      v-if="displayMode === PennylaneDocumentWrapperDisplayMode.IN_TABLE"
+      :accountName
+      :accountNumber
+    />
+    <PennylaneDocumentsHeader
+      v-if="displayMode === PennylaneDocumentWrapperDisplayMode.IN_LIST"
+      :lastSynchroDate="pennylaneLastSynchroDate"
+      class="margin-bottom--2"
+    />
+
+    <POverlay
+      v-if="apiCallStatus === APICallStatus.LOADING"
+      pIsVignette
+    >
+      <div
+        class="margin-y--12"
+      >
+        <PLoader
+          pType="primary"
+          pSize="50"
+        />
+      </div>
+    </POverlay>
+
+    <template v-if="apiCallStatus !== APICallStatus.LOADING">
+      <template
+        v-if="pennylaneDocuments.length > 0"
+      >
+        <PennylaneDocumentsWithResult
+          v-if="displayMode === PennylaneDocumentWrapperDisplayMode.IN_LIST"
+          :pennylaneDocuments="pennylaneDocuments"
+          class="margin-top--4"
+          @open-document="onOpenDocument"
+        />
+        <PennylaneDocumentsTable
+          v-if="displayMode === PennylaneDocumentWrapperDisplayMode.IN_TABLE"
+          :pennylaneDocuments="pennylaneDocuments"
+          class="margin-top--4"
+          @open-document="onOpenDocument"
+        />
+      </template>
+
+      <PennylaneDocumentsNoResult
+        v-if="pennylaneDocuments.length === 0"
+        :isError="apiCallStatus === APICallStatus.ERROR"
+      />
+    </template>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import EntityHeader from '@pennylane/components/entity-header/entity-header.vue'
+import PennylaneDocumentsHeader from '@pennylane/components/pennylane-documents-header/pennylane-documents-header.vue'
+import PennylaneDocumentsNoResult from '@pennylane/components/pennylane-documents-no-result/pennylane-documents-no-result.vue'
+import PennylaneDocumentsWithResult from '@pennylane/components/pennylane-documents-with-result/pennylane-documents-with-result.vue'
+import PennylaneDocumentsTable from '@pennylane/components/pennylane-documents-table/pennylane-documents-table.vue'
+import PennylaneDocumentsViewer from '@pennylane/components/pennylane-documents-viewer/pennylane-documents-viewer.vue'
+import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
+import { PLoader, POverlay } from '@pulse/styleguide/components'
+import { APICallStatus } from '@pulse/common/enums'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
+import type { PennylaneDocumentWrapperProps } from './pennylane-documents-wrapper.type'
+import { PennylaneDocumentWrapperDisplayMode } from '@pennylane/enums/pennylane-documents-wrapper.enum'
+
+const props = defineProps<PennylaneDocumentWrapperProps>()
+
+const pennylaneViewerDocument = ref<FormattedPennylaneDocument>()
+const hasOpenedPennylaneDocumentsViewer = ref<boolean>()
+
+function onOpenDocument(pennylaneDocument: FormattedPennylaneDocument) {
+  hasOpenedPennylaneDocumentsViewer.value = true
+  pennylaneViewerDocument.value = pennylaneDocument
+
+  const eventProperty = {
+    document_consultation_localisation: props.amplitudeLocalisation,
+  }
+  AmplitudeService.track('Document Consulted', eventProperty)
+}
+
+function onUpdateViewIsOpened(isOpened: boolean) {
+  if (isOpened === false) {
+    pennylaneViewerDocument.value = undefined
+  }
+}
+</script>

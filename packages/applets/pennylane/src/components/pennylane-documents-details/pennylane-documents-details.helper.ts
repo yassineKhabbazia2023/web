@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
-import type { PennylaneDocument } from '@pulse/common/types'
+import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
 import type { PennylaneDocumentsDetailsLabels } from './pennylane-documents-details.type'
 
 export function getDisplayData(
   labels: PennylaneDocumentsDetailsLabels,
-  pennylaneDocument: PennylaneDocument,
+  pennylaneDocument: FormattedPennylaneDocument,
 ) {
   if (pennylaneDocument === undefined) {
     return []

@@ -1,7 +1,7 @@
-import type { PennylaneDocument } from '@pulse/common/types'
+import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
 
 export interface PennylaneDocumentsDetailsProps {
-  pennylaneDocument: PennylaneDocument
+  pennylaneDocument: FormattedPennylaneDocument
 }
 
 export type PennylaneDocumentsDetailsLabels = {

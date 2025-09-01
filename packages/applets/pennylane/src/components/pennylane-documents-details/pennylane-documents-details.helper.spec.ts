@@ -1,11 +1,11 @@
-import { getMockedPennylaneDocument } from '@pulse/common/mocks'
+import { getMockedFormattedPennylaneDocument } from '@pennylane/__mocks__/formatted-pennylane-document.mock'
 import { getDisplayData } from './pennylane-documents-details.helper'
 import type { PennylaneDocumentsDetailsLabels } from './pennylane-documents-details.type'
 
 describe('pennylane-documents-details.helper', () => {
   describe('getFormattedPennylaneDocuments', () => {
     it('should return formatted documents with the correct path prefix', () => {
-      const pennylaneDocument = getMockedPennylaneDocument()
+      const pennylaneDocument = getMockedFormattedPennylaneDocument()
       const expectedDisplayData = [{
         label: 'Emplacement du document',
         value: '/Dossier permanent/00 - Publications',
