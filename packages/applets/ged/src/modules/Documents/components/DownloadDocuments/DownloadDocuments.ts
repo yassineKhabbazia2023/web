@@ -2,7 +2,7 @@ import { logger } from '@pulse/core'
 import type { ComputedRef } from 'vue'
 import { ref } from 'vue'
 import { PNotification } from '@pulse/styleguide'
-import { downloadFile } from '@ged/modules/common/helpers/downloadFilesHelper'
+import { downloadFile } from '@pulse/common/helpers'
 import {
   downloadDocument,
   downloadDocuments,

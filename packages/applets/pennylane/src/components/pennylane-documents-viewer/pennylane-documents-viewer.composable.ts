@@ -14,6 +14,7 @@ export function usePennylaneDocumentViewer(
   const previewImage = ref<string|Blob>('')
   const fileExtension = ref<FileExtension>()
   const iconName = ref<IconName>()
+  const documentSrc = ref<any>()
 
   async function loadDocument({
     documentName,
@@ -32,7 +33,7 @@ export function usePennylaneDocumentViewer(
 
     try {
       apiCallStatus.value = APICallStatus.LOADING
-      const documentSrc = documentId === undefined
+      documentSrc.value = documentId === undefined
         ? undefined
         : await PennylaneService.getDocumentContent(
           accountNumber,
@@ -45,7 +46,7 @@ export function usePennylaneDocumentViewer(
 
       fileExtension.value = extension
       iconName.value = iconFileName
-      previewImage.value = getDocumentPreviewImage(documentSrc, documentType)
+      previewImage.value = getDocumentPreviewImage(documentSrc.value, documentType)
       apiCallStatus.value = APICallStatus.SUCCESS
     } catch (e) {
       apiCallStatus.value = APICallStatus.ERROR
@@ -55,6 +56,7 @@ export function usePennylaneDocumentViewer(
   }
 
   return {
+    documentSrc,
     apiCallStatus,
     iconName,
     previewImage,

@@ -64,9 +64,7 @@ vi.mock('@ged/services/Documents', () => ({
   previewDocument: previewDocumentMock,
 }))
 
-vi.mock('@ged/modules/common/downloadFilesHelper', () => ({
-  downloadFile: vi.fn(),
-}))
+vi.mock('@pulse/common/helpers')
 
 vi.mock('@ged/models/AccountingHubConnection', () => ({
   initializedAccountingDataStreamInstance: Promise.resolve({

@@ -2,9 +2,15 @@ import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-docu
 
 export interface PennylaneDocumentsTableProps {
   pennylaneDocuments: FormattedPennylaneDocument[]
+  accountNumber: string
+  accountId: number
 }
 
 export type PennylaneDocumentsTableFieldKeys =
 'name' |
 'path' |
-'updatedAt'
+'updatedAt' |
+'actions'
+
+export type PennylaneDocumentsTableActionName =
+'download'

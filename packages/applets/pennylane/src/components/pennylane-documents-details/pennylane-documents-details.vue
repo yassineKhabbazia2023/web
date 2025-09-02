@@ -1,6 +1,7 @@
 <template>
-  <div
-    class="
+  <div>
+    <div
+      class="
       text-center
       padding-y--3
       text-color--secondary-amethyste
@@ -8,42 +9,43 @@
       border-bottom--secondary-amethyste
       border-bottom--2px
     "
-  >
-    {{ t('details') }}
-  </div>
-  <ul
-    class="
+    >
+      {{ t('details') }}
+    </div>
+    <ul
+      class="
       margin-top--6
       list-style-none
     "
-  >
-    <li
-      v-for="({ label, value }, index) in displayData"
-      :key="index"
-      class="margin-bottom--4"
     >
-      <ul
-        class="list-style-none"
+      <li
+        v-for="({ label, value }, index) in displayData"
+        :key="index"
+        class="margin-bottom--4"
       >
-        <li
-          class="
+        <ul
+          class="list-style-none"
+        >
+          <li
+            class="
             text-color--neutral-gray-500
             font-small
             margin-bottom--1
           "
-        >
-          {{ label }}
-        </li>
-        <li
-          class="
+          >
+            {{ label }}
+          </li>
+          <li
+            class="
             text-color--neutral-gray-900
           "
-        >
-          {{ value }}
-        </li>
-      </ul>
-    </li>
-  </ul>
+          >
+            {{ value }}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script setup lang="ts">

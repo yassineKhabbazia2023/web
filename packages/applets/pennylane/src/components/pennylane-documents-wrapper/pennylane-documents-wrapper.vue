@@ -44,13 +44,17 @@
       >
         <PennylaneDocumentsWithResult
           v-if="displayMode === PennylaneDocumentWrapperDisplayMode.IN_LIST"
-          :pennylaneDocuments="pennylaneDocuments"
+          :pennylaneDocuments
+          :accountNumber
+          :accountId
           class="margin-top--4"
           @open-document="onOpenDocument"
         />
         <PennylaneDocumentsTable
           v-if="displayMode === PennylaneDocumentWrapperDisplayMode.IN_TABLE"
-          :pennylaneDocuments="pennylaneDocuments"
+          :pennylaneDocuments
+          :accountNumber
+          :accountId
           class="margin-top--4"
           @open-document="onOpenDocument"
         />

@@ -1,5 +1,4 @@
-import { it, expect, vi, describe } from 'vitest'
-import { downloadFile } from './downloadFilesHelper'
+import { downloadFile } from './downloadFiles.helper'
 
 const createObjectURLMock = vi.hoisted(() => vi.fn())
 

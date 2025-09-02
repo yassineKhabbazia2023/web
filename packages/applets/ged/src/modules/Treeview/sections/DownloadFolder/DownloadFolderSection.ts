@@ -6,7 +6,7 @@ import type { DownloadFolderComposableProps } from './DownloadFolderTypes'
 import { PNotification } from '@pulse/styleguide'
 import { formatDate } from '@ged/modules/common/helpers/dateFormatHelper'
 import { downloadFolder } from '@ged/services/Folder'
-import { downloadFile } from '@ged/modules/common/helpers/downloadFilesHelper'
+import { downloadFile } from '@pulse/common/helpers'
 
 export function useDownloadFolder(
   downloadFolderProps: ComputedRef<DownloadFolderComposableProps>,
