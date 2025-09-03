@@ -94,6 +94,7 @@ const REPORT_STATUSES: Record<ReportStatus, ReportStatusTag> = {
   [ReportStatus.ONLINE]: { type: ReportStatus.ONLINE, text: t('online'), color: 'success', iconName: 'checkCircle' },
   [ReportStatus.OFFLINE]: { type: ReportStatus.OFFLINE, text: t('offline'), color: 'gray-900', iconName: 'eyeSlash' },
   [ReportStatus.FAILED]: { type: ReportStatus.FAILED, text: t('failed'), color: 'danger', iconName: 'exclamationTriangle' },
+  [ReportStatus.PENDING_VALIDATION]: { type: ReportStatus.PENDING_VALIDATION, text: t('pendingValidation'), color: 'warning', iconName: 'clock' },
 }
 
 const handleUpdateReportStatus = async (
@@ -316,6 +317,7 @@ en-US:
   on: 'on'
   online: 'Online'
   offline: 'Offline'
+  pendingValidation: 'Pending validation'
   initialized: 'Initialized'
   failed: 'Failure'
   activated: 'activated'
@@ -343,6 +345,7 @@ fr-FR:
   on: 'sur'
   online: 'En ligne'
   offline: 'Hors ligne'
+  pendingValidation: 'À valider'
   initialized: 'Initialisé'
   failed: 'Incident'
   activated: 'activé'
