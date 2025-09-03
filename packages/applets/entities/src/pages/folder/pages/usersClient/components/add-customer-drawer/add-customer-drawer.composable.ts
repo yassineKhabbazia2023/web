@@ -56,11 +56,17 @@ export function useAddCustomerDrawer({
   })
 
   const isNextButtonDisabled = computed(() => {
+    if (addCustomerDrawerStep.value === AddCustomerDrawerStep.MANAGE_RIGHTS){
+      const hasSelection = Object.values(authorizationsState.value).some(({ isActive }) => isActive === true)
+      return hasSelection === false // At least one group must be active
+    }
+
     return newContact.value.email === '' || newContact.value.firstname === ''|| newContact.value.lastname === '' ||
      emailErrorMessage.value !== '' || firstNameErrorMessage.value !== '' || lastNameErrorMessage.value !== ''
   })
 
   const addCustomerDrawerStep = computed(() => addCustomerDrawerSteps[addCustomerDrawerStepIndex.value])
+
   function checkFirstName() {
     const firstName = newContact.value.firstname
     clearFirstNameErrorMessage()

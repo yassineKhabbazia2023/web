@@ -4,6 +4,7 @@ import { AddCustomerDrawerStep } from './add-customer-drawer.enums'
 import { saveUserPermissions } from '@entities/common/components/ManageRightsDrawer/utils'
 
 import { useAddCustomerDrawer } from './add-customer-drawer.composable'
+import { CollaboratorPermission } from '@pulse/common/enums'
 
 vi.mock('@entities/services/account')
 vi.mock('@entities/managers/account/account.manager')
@@ -143,6 +144,87 @@ describe('add-customer-drawer.composable', () => {
         expect(hasContactRoleOnCommonAccountMock).toHaveBeenCalledOnce()
         expect(hasContactRoleOnCommonAccountMock).toHaveBeenCalledWith(email, targetEntityIdMock)
       })
+    })
+  })
+
+  describe('rights gating on MANAGE_RIGHTS step', () => {
+    function makeFieldsValid(api: any) {
+      // Ensure other validators won't disable the button
+      api.newContact.value.email = 'user@example.com'
+      api.newContact.value.firstname = 'John'
+      api.newContact.value.lastname = 'Doe'
+
+      // Keep error messages empty
+      api.emailErrorMessage.value = ''
+      api.firstNameErrorMessage.value = ''
+      api.lastNameErrorMessage.value = ''
+    }
+
+    it('disables Next when on MANAGE_RIGHTS and no right is selected (all inactive)', () => {
+      const {
+        addCustomerDrawerStepIndex,
+        isNextButtonDisabled,
+        authorizationsState,
+        newContact,
+        emailErrorMessage,
+        firstNameErrorMessage,
+        lastNameErrorMessage,
+      } = useAddCustomerDrawer(initializationParamaters)
+
+      makeFieldsValid({ newContact, emailErrorMessage, firstNameErrorMessage, lastNameErrorMessage })
+
+      // Move to MANAGE_RIGHTS step (index 1 with your default steps)
+      addCustomerDrawerStepIndex.value = 1
+
+      // All groups inactive
+      authorizationsState.value = {
+        GROUP_A: { actions: [], isActive: false },
+        GROUP_B: { actions: [], isActive: false },
+      }
+
+      expect(isNextButtonDisabled.value).toBe(true)
+    })
+
+    it('enables Next when on MANAGE_RIGHTS and at least one right is active', () => {
+      const {
+        addCustomerDrawerStepIndex,
+        isNextButtonDisabled,
+        authorizationsState,
+        newContact,
+        emailErrorMessage,
+        firstNameErrorMessage,
+        lastNameErrorMessage,
+      } = useAddCustomerDrawer(initializationParamaters)
+
+      makeFieldsValid({ newContact, emailErrorMessage, firstNameErrorMessage, lastNameErrorMessage })
+
+      addCustomerDrawerStepIndex.value = 1
+
+      // One group active
+      authorizationsState.value = {
+        GROUP_A: { actions: [], isActive: false },
+        GROUP_B: { actions: [CollaboratorPermission.ACCEDER_CALENDRIER], isActive: true },
+      }
+
+      expect(isNextButtonDisabled.value).toBe(false)
+    })
+
+    it('disables Next when on MANAGE_RIGHTS and authorizationsState is empty', () => {
+      const {
+        addCustomerDrawerStepIndex,
+        isNextButtonDisabled,
+        authorizationsState,
+        newContact,
+        emailErrorMessage,
+        firstNameErrorMessage,
+        lastNameErrorMessage,
+      } = useAddCustomerDrawer(initializationParamaters)
+
+      makeFieldsValid({ newContact, emailErrorMessage, firstNameErrorMessage, lastNameErrorMessage })
+      addCustomerDrawerStepIndex.value = 1
+      authorizationsState.value = {}
+
+      expect(isNextButtonDisabled.value).toBe(true)
     })
   })
 
