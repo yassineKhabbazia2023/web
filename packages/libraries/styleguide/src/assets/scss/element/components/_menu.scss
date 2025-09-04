@@ -20,49 +20,6 @@ $menu: (
 
 
 .el-menu {
-  &--bottom {
-    --item-height: 32px;
-
-    &.el-menu--horizontal {
-      border-bottom: inherit;
-      box-shadow:
-        0 -12px 15px 0 rgba(112, 144, 176, 0.04),
-        0 -8px 8px 0 rgba(112, 144, 176, 0.05),
-        0 -4px 4px 0 rgba(112, 144, 176, 0.08),
-        0 -2px 2px 0 rgba(112, 144, 176, 0.05),
-        0 -1px 2px 0 rgba(112, 144, 176, 0.1);
-      overflow-x: hidden;
-
-      & > .el-menu-item {
-        line-height: 14px;
-
-        &.is-active {
-          border-top: 2px solid var(--el-menu-active-color);
-          border-bottom: inherit;
-
-          &:focus {
-            background-color: inherit;
-          }
-
-          .el-menu-item-content {
-            padding-top: 7px;
-          }
-        }
-
-        [class^="el-icon"] {
-          margin-right: 0;
-        }
-
-        .el-menu-item-content {
-          align-items: center;
-          display: flex;
-          flex-direction: column;
-          padding: 9px 8px;
-        }
-      }
-    }
-  }
-
   &.el-menu--navbar {
     height: 100%;
     padding: 16px 9px 16px 10px;
