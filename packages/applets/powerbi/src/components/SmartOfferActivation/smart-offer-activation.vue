@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { SmartOfferActivationProps } from './smart-offer-activation.type'
 import ThreeStepActivation from './components/ThreeStepActivation/three-step-activation.vue'
@@ -20,9 +21,20 @@ import SmartOfferMainSection from './components/SmartOfferMainSection/smart-offe
 
 defineProps<SmartOfferActivationProps>()
 
+const route = useRoute()
+
 onMounted(() => {
-  AmplitudeService.track('Feature Consulted', {
-    feature_name: 'Clarity',
-  })
+  const source = route.query?.source
+
+  if (source === 'email') {
+    AmplitudeService.track('Power BI Mail Eligible consulted', {
+      powerbi_eligibility_mail_type: 'Clarity',
+    })
+  } else {
+    AmplitudeService.track('Feature Consulted', {
+      feature_name: 'Clarity',
+    })
+  }
 })
+
 </script>
