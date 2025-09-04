@@ -1,8 +1,9 @@
 <template>
   <div>
+    <ActivateTrialOfferDialog v-model="isTrialOfferDialogVisible" />
     <SmartOfferHeader :selectedEntity />
     <div class="padding-x--11 padding-y--10">
-      <SmartOfferMainSection />
+      <SmartOfferMainSection @activate-offer="handleOfferActivation" />
       <BusinessRealTimeControl />
       <ThreeStepActivation />
     </div>
@@ -10,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { SmartOfferActivationProps } from './smart-offer-activation.type'
@@ -18,11 +19,19 @@ import ThreeStepActivation from './components/ThreeStepActivation/three-step-act
 import BusinessRealTimeControl from './components/BusinessRealTimeControl/business-real-time-control.vue'
 import SmartOfferHeader from './components/SmartOfferHeader/smart-offer-header.vue'
 import SmartOfferMainSection from './components/SmartOfferMainSection/smart-offer-main-section.vue'
+import ActivateTrialOfferDialog from './components/ActivateTrialOfferDialog/activate-trial-offer-dialog.vue'
 
 defineProps<SmartOfferActivationProps>()
 
-const route = useRoute()
+// #region manage activate trial offer
+const isTrialOfferDialogVisible = ref(false)
+const handleOfferActivation = () => {
+  isTrialOfferDialogVisible.value = true
+}
+// #endregion
 
+// #region manage amplitude tracking event
+const route = useRoute()
 onMounted(() => {
   const source = route.query?.source
 
@@ -36,5 +45,6 @@ onMounted(() => {
     })
   }
 })
+// #endregion
 
 </script>

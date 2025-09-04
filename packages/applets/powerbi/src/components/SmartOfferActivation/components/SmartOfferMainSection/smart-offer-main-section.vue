@@ -22,7 +22,8 @@
           class="margin-top--2"
           pType="secondary"
           pSize="small"
-          :pDisabled="user?.isCollab === true"
+          :pDisabled="canActivateOffer === false"
+          @click="activateSmartOffer"
         >
           {{ t('activateTrial') }}
         </PButton>
@@ -37,6 +38,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton, PImage } from '@pulse/styleguide/components'
 import { useUserStore } from '@pulse/common/stores'
@@ -46,8 +48,18 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
+const emits = defineEmits<{
+  'activate-offer': []
+}>()
+
 // #region manage trial activation
 const { user } = useUserStore()
+
+const canActivateOffer = computed(() => user?.isCollab === false)
+
+const activateSmartOffer = () => {
+  emits('activate-offer')
+}
 // #endregion
 </script>
 
