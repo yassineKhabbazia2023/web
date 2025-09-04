@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { FeatureFlagManager, logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
 import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -63,8 +63,8 @@ const { selectedEntity } = storeToRefs(selectedEntityStore)
 const isClarityOptionActive = computed(() => {
   const entity = selectedEntity.value
 
-  // Controlled also by a backend feature flag
-  const isClarityEnabledForEntity = entity?.isClarityVisible === true
+  const isClarityOfferFeatureFlagActive = FeatureFlagManager.isClarityOfferActivated()
+  const isClarityEnabledForEntity = entity?.isClarityVisible === true && isClarityOfferFeatureFlagActive
   const isCollab = user?.isCollab === true
   const isSignatory = entity?.isSignatory === true
 

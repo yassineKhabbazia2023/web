@@ -40,6 +40,7 @@ window.EnvVars = envVars
 | VITE_API_MSAL_TENANT | Configuration de l'autorité d’authentification utilisateur (Collab) |
 | VITE_ASSETS_BASE_URL | URL des assets Front (images, fonts) |
 | VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
+| VITE_CLARITY_OFFER_ACTIVATED | Feature flag de la fonctionnalité Clarity Offer |
 | VITE_CONFIG_OFFERS_BOOK | URL d'un site web à partager aux utilisateurs |
 | VITE_FEED_CENTER_ACTIVATED | Feature-flag du Feed Center |
 | VITE_GED_V2_ENABLED | Affichage de la page Ged Comptabilité de Pennylane |

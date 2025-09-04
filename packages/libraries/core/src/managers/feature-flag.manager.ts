@@ -27,6 +27,10 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.AMPLITUDE)
   }
 
+  static isClarityOfferActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.CLARITY_OFFER)
+  }
+
   static isNotificationSettingsDrawerActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.NOTIFICATION_SETTINGS_DRAWER)
   }
