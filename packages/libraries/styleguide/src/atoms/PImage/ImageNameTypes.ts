@@ -135,6 +135,7 @@ export type ImageName =
 'road_with_brand_shape' |
 'rydge-x-pennylane-transparent' |
 'three-persons-in-meeting' |
+'two-persons-in-discussion' |
 'worker-with-brand-shape' |
 'activation' |
 'collab-female-add' |

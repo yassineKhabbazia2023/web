@@ -1,35 +1,50 @@
 <template>
-  <div
-    v-if="isLoading"
-    class="loader flex flex--justify-content-center flex--align-items-center"
-    data-testid="bi-reports-loader"
-  >
-    <PLoader pType="primary" pSize="50" />
-  </div>
-  <div v-else-if="!isLoading && selectedReport" class="bi-reports flex">
-    <ReportsList
-      :selectedReport="selectedReport"
-      :reports="reports"
-      @select-report="handleReportSelection"
-    />
-    <ReportDisplay :selectedReport="selectedReport" />
-  </div>
+  <SmartOfferActivation
+    v-if="selectedEntity && isClarityOptionActive"
+    :selectedEntity
+  />
+  <template v-else>
+    <div
+      v-if="isLoading"
+      class="loader flex flex--justify-content-center flex--align-items-center"
+      data-testid="bi-reports-loader"
+    >
+      <PLoader
+        pType="primary"
+        pSize="50"
+      />
+    </div>
+    <div
+      v-else-if="!isLoading && selectedReport"
+      class="bi-reports flex"
+    >
+      <ReportsList
+        :selectedReport="selectedReport"
+        :reports="reports"
+        @select-report="handleReportSelection"
+      />
+      <ReportDisplay :selectedReport="selectedReport" />
+    </div>
+  </template>
 </template>
 
 <script setup lang="ts">
 import { logger } from '@pulse/core'
 import { useI18n } from 'vue-i18n'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { RouteParam } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { PLoader } from '@pulse/styleguide/components'
 import { displayNotification } from '@pulse/styleguide'
 import { fetchBIReports } from '@powerbi/services/reporting.service'
+import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 import type { Report } from '@powerbi/types/bi-reports.types'
 
 import ReportsList from '@powerbi/components/ReportsList/ReportsList.vue'
 import ReportDisplay from '@powerbi/components/ReportDisplay/ReportDisplay.vue'
+import SmartOfferActivation from '@powerbi/components/SmartOfferActivation/smart-offer-activation.vue'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -39,6 +54,25 @@ const { t } = useI18n({
 const isLoading = ref(true)
 const reports = ref<Report[]>([])
 const selectedReport = ref<Report>()
+
+// #region POC: manage smart offer page
+const { user } = useUserStore()
+const selectedEntityStore = useSelectedEntityStore()
+const { selectedEntity } = storeToRefs(selectedEntityStore)
+
+const isClarityOptionActive = computed(() => {
+  const entity = selectedEntity.value
+
+  // Controlled also by a backend feature flag
+  const isClarityEnabledForEntity = entity?.isClarityVisible === true
+  const isCollab = user?.isCollab === true
+  const isSignatory = entity?.isSignatory === true
+
+  const userHasAccess = isCollab || isSignatory
+
+  return isClarityEnabledForEntity && userHasAccess
+})
+// #endregion
 
 // #region manage reportId query
 const route = useRoute()

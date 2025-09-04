@@ -14,6 +14,8 @@ export interface Entity {
   accountId: number
   accountNumber: string
   legalName: string
+  isClarityVisible?: boolean
+  isSignatory?: boolean
   color?: EntityColor
 }
 
