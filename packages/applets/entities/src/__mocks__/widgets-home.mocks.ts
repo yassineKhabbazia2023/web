@@ -1,5 +1,6 @@
 import { WidgetName } from '@pulse/widgets/enums'
 import type { WidgetGridDefinition } from '@pulse/widgets/types'
+import { CustomerPermission } from '@pulse/common/enums'
 
 export const validWidgetNames = {
   sso: WidgetName.SSO,
@@ -7,6 +8,7 @@ export const validWidgetNames = {
   pennylaneIntro: WidgetName.PENNYLANE_INTRO,
   powerbiIntro: WidgetName.POWERBI_INTRO,
   rssNews: WidgetName.RSS_NEWS,
+  pennylaneDocuments: WidgetName.PENNYLANE_DOCUMENTS,
 }
 
 export const invalidWidgetNames = {
@@ -21,4 +23,14 @@ export const mockWidgetGridDefinitions: Partial<Record<WidgetName, WidgetGridDef
   [WidgetName.PENNYLANE_INTRO]: { name: WidgetName.PENNYLANE_INTRO },
   [WidgetName.POWERBI_INTRO]: { name: WidgetName.POWERBI_INTRO },
   [WidgetName.RSS_NEWS]: { name: WidgetName.RSS_NEWS },
+}
+
+export const mockWidgetGridDefinitionsWithPermissions: Partial<Record<WidgetName, WidgetGridDefinition>> = {
+  [WidgetName.SSO]: { name: WidgetName.SSO, customerPermission: [] },
+  [WidgetName.DIGILAB]: { name: WidgetName.DIGILAB, customerPermission: [] },
+  [WidgetName.PENNYLANE_INTRO]: { name: WidgetName.PENNYLANE_INTRO, customerPermission: [] },
+  [WidgetName.POWERBI_INTRO]: { name: WidgetName.POWERBI_INTRO, customerPermission: [] },
+  [WidgetName.RSS_NEWS]: { name: WidgetName.RSS_NEWS, customerPermission: [] },
+  [WidgetName.PENNYLANE_DOCUMENTS]: { name: WidgetName.PENNYLANE_DOCUMENTS,
+    customerPermission: [CustomerPermission.ACCEDER_DOCUMENTS_PENNYLANE] },
 }
