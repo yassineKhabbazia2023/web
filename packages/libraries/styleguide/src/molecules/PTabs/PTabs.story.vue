@@ -23,6 +23,24 @@
         </PTabPane>
       </PTabs>
     </Variant>
+
+    <Variant title="Smart Width">
+      <PTabs
+        v-model="firstActiveVariant"
+        pSmartWidth
+        @update:model-value="logEvent('update:model-value', $event)"
+      >
+        <PTabPane
+          v-for="tab in tabs"
+          :key="tab.name"
+          :pLabel="tab.label"
+          :pName="tab.name"
+        >
+          {{ tab.content }}
+        </PTabPane>
+      </PTabs>
+    </Variant>
+
     <Variant title="Counter Usage">
       <PTabs
         v-model="secondActiveVariant"

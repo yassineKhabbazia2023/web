@@ -39,6 +39,15 @@
     }
   }
 
+  &.smart-width {
+    display: inline-block;
+    #{$self}__item {
+      &:last-child {
+        padding-right: 16px !important;
+      }
+    }
+  }
+
   &.p-tabs--type-card {
     > #{$self}__header {
       border-color: var(--el-color-neutral-gray-100);

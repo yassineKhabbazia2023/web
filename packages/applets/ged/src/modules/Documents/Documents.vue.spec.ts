@@ -30,6 +30,7 @@ import {
 import { TriggerSource } from '@ged/services/tracking/tracking.types'
 
 import Documents from './Documents.vue'
+import { GedContext } from '@pulse/common/enums'
 
 type DocumentsWrapper = ComponentWrapper<InstanceType<typeof Documents>>
 
@@ -43,6 +44,7 @@ const defaultProps: DocumentsProps = {
   selectedEntityName: 'This is a legal name',
   selectedFolder: foldersData[0][0].children[0],
   currentServiceFolder: foldersData[0],
+  gedContext: GedContext.LEGACY,
 }
 
 vi.mock('@ged/services/tracking/tracking.service')

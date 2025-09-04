@@ -7,6 +7,7 @@ import { documentsResponsePayload } from '@ged/__mocks__/documents.mocks'
 import { onConnectedAsyncMock, onDisconnectedAsyncMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
 import type { DocumentStatusUpdateResponse, DocumentsWithTableStructure } from '@ged/models/Document'
 import type { Folder } from '@ged/models/Folder'
+import { Permissions } from '@ged/models/Permissions'
 
 import { usePiaStatusSync } from './PiaStatusSync'
 
@@ -77,7 +78,7 @@ describe('usePiaStatusSync', () => {
           labelEn: 'Transmitted',
           date: '2023-08-04T12:00:00Z',
         },
-        permissions: ['READ'],
+        permissions: [Permissions.READ],
       }
       const response = JSON.stringify(newDocumentStatusAndUpdate)
       done(response)

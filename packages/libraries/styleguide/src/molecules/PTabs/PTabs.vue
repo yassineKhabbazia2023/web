@@ -2,10 +2,7 @@
   <ElTabs
     v-model="selectedTabName"
     :type="tab.type"
-    :class="[
-      'p-tabs',
-      pClassMapper
-    ]"
+    :class="cssClasses"
     :closable="pClosable"
     :addable="pAddable"
     :editable="pEditable"
@@ -50,8 +47,16 @@ const selectedTabName = computed({
   set: newValue => emit('update:modelValue', newValue),
 })
 
-const pClassMapper = computed(() => ({
-  [`p-tabs--type-${props.pType}`]: true,
-}))
+const cssClasses = computed(() => {
+  const classes = ['p-tabs']
 
+  if (props.pType !== '') {
+    classes.push(`p-tabs--${props.pType}`)
+  }
+  if (props.pSmartWidth === true) {
+    classes.push('smart-width')
+  }
+
+  return classes
+})
 </script>

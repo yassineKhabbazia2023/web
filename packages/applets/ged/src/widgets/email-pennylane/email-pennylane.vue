@@ -33,6 +33,7 @@ import type { Service } from '@ged/models/Service'
 import type { Folder } from '@ged/models/Folder'
 import { fetchServicesFolders } from '@ged/services/Folder'
 import { storeToRefs } from 'pinia'
+import { GedContext } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -67,6 +68,7 @@ const fetchGedFoldersAndServices = async () => {
   entityServices.value = await fetchUserEntityServices(
     selectedEntityAccountNumber.value,
     selectedEntityId.value,
+    GedContext.LEGACY,
   )
 
   // Using services guids to get root folders

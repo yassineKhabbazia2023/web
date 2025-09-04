@@ -79,13 +79,14 @@ import { type IconName } from '@pulse/styleguide/types'
 import type { TableRowDocument } from '@ged/models/Document'
 import type { TableElementPops, PiaStatusTag } from './TableElementTypes'
 import { getPathFromArray } from '@ged/modules/Documents/helpers/pathBuildingHelper'
+import type { DocumentAction } from '@ged/modules/Documents/DocumentsTypes'
 
 
 const props = defineProps<TableElementPops>()
 const emit = defineEmits<{
   'actions-dropdown-opened': [TableRowDocument, { label: string }],
   'document-name-clicked': [TableRowDocument, { label: string }],
-  'toolbox-action-triggered': [action: string],
+  'toolbox-action-triggered': [action: DocumentAction],
 }>()
 
 const tagIconByState: Record<string, IconName> = {
@@ -139,7 +140,7 @@ const handleActionsDropdownOpening = () => {
 const handlePTextContentClicked = () => {
   emit('document-name-clicked', props.data, { label: props.fieldName })
 }
-const emitClickedAction = (action: string) => {
+const emitClickedAction = (action: DocumentAction) => {
   emit('toolbox-action-triggered', action)
 }
 </script>

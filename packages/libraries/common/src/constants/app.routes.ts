@@ -31,7 +31,11 @@ export const APP_ROUTES = {
     },
     powerbi: { path: 'rapports-bi', name: RouteName.REPORTS },
     ged: { path: 'ged', name: RouteName.GED },
-    pennylaneAccounting: { path: 'comptabilite', name: RouteName.PENNYLANE_ACCOUNTING },
+    pennylaneAccounting: {
+      root: { path: 'comptabilite', name: RouteName.PENNYLANE_ACCOUNTING },
+      gedV2: { path: 'rydge', name: RouteName.PENNYLANE_GED_V2 },
+      gedLegacy: { path: 'archive', name: RouteName.PENNYLANE_GED_LEGACY },
+    },
     launcher: { path: 'launcher', name: RouteName.LAUNCHER },
     bank: { path: 'banque', name: RouteName.BANK },
     indicators: { path: 'indicateurs', name: RouteName.INDICATORS },

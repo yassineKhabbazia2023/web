@@ -11,6 +11,7 @@ import type { ExplorerMoveFolder }
   from '@ged/modules/Treeview/components/modals/FoldersMove/FoldersMoveTypes'
 import type { Folder } from '@ged/models/Folder'
 import { MAX_FILE_SIZE_BYTES } from '@ged/modules/common/constants/files'
+import { Permissions } from '@ged/models/Permissions'
 
 export const mapExplorerDocumentFromFiles = (files: File[]): ExplorerUploadDocument[] => {
   const explorerDocuments: ExplorerUploadDocument[] = []
@@ -60,7 +61,7 @@ export const mapExplorerDocumentFromDocuments = (documents: Document[]): Explore
   const explorerDocuments: ExplorerMoveDocument[] = []
   if (documents.length > 0 && documents) {
     documents.forEach((document) => {
-      const canMoveDocument = document.permissions.includes('CAN_MOVE_DOCUMENT')
+      const canMoveDocument = document.permissions.includes(Permissions.CAN_MOVE_DOCUMENT)
       const isCertified = document.properties?.HasSubscribedToVault !== undefined
       let codeError = ''
       if (isCertified) {

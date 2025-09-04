@@ -51,12 +51,12 @@ const app = createApp(App)
   .use(commonLibrary)
   // install applets
   .use(entitiesApplet, { router })
+  .use(pennylaneApplet, { router }) // should register pennylaneApplet before gedApplet
   .use(gedApplet, { router })
   .use(launcherApplet, { router })
   .use(loginApplet, { router })
   .use(mandateApplet, { router })
   .use(offersCatalogApplet, { router })
-  .use(pennylaneApplet, { router })
   .use(powerBiApplet, { router })
   // install library
   .use(styleguideLibrary, {

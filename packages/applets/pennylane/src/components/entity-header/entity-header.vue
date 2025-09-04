@@ -1,9 +1,9 @@
 <template>
   <div
     class="
-      account-information
-      flex flex--align-items-center
-      padding-top--4 padding-left--4
+      entity-header
+      flex
+      flex--align-items-center
     "
   >
     <PAvatar pType="small" :pColor="entityAvatarColor">
@@ -40,7 +40,7 @@ const entityAvatarColor = computed(() => getAvatarColorFromKey(props.accountNumb
 </script>
 
 <style lang="scss" scoped>
-.account-information {
+.entity-header {
  &__fake-pipe {
     width: 1px;
     height: 12px;

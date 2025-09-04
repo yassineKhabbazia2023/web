@@ -1,6 +1,7 @@
 import type { Service } from './Service'
 import type { Folder as FolderModel } from './Folder'
 import type { DocumentSearchFilters } from './DocumentSearchFilters'
+import type { Permissions } from '@ged/models/Permissions'
 
 interface Content {
   href: string
@@ -58,7 +59,7 @@ export interface Document {
   paymentStatus: any
   source: Source
   piaStatus: PiaStatus
-  permissions: string[]
+  permissions: Permissions[]
   isNew: any
 }
 
@@ -105,7 +106,7 @@ export interface DocumentStatusUpdateResponse {
   folderId: number
   documentId: string
   newStatus: PiaStatus
-  permissions: string[]
+  permissions: Permissions[]
 }
 
 export interface Coordinate {

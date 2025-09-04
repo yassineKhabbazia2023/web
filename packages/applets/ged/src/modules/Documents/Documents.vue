@@ -8,13 +8,16 @@
       height--100
     "
   >
-    <div>
+    <div
+      v-if="isAccountInformationVisible === true"
+      class="margin-bottom--4"
+    >
       <AccountInformation
         :accountName="selectedEntityName"
         :accountNumber="selectedEntity"
       />
     </div>
-    <div class="padding-top--4 padding-left--4">
+    <div class="padding-left--4">
       <PBreadcrumb
         :pElements="breadcrumbItems"
         @p-breadcrumb-item-click="handleBreadcrumbClick"
@@ -210,6 +213,7 @@ import {
 } from '@ged/services/Documents'
 import type { DocumentsProps } from './DocumentsTypes'
 import type { Folder } from '@ged/models/Folder'
+import { GedContext } from '@pulse/common/enums'
 import { findFolderDeepById } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 
 import DocumentsList from './sections/DocumentsList'
@@ -710,6 +714,8 @@ defineExpose({
   isRenameModalOpened,
   isFiltersDrawerOpened,
 })
+
+const isAccountInformationVisible = computed(() => props.gedContext === GedContext.LEGACY)
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,6 @@
 import { APP_ROUTES } from '@pulse/common/constants'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
-import { routes } from './pennylane.router'
+import { routes } from './pennylane.routes'
 
 vi.mock('@pulse/common/managers')
 const hasPennylaneAccountingPermissionSpy = vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingPermission)

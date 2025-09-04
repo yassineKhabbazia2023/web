@@ -1,13 +1,13 @@
-import { FEATURE_FLAG_META, APP_ROUTES } from '@pulse/common/constants'
+import { GedContext } from '@pulse/common/enums'
+import { APP_ROUTES, GED_CONTEXT_META } from '@pulse/common/constants'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
 import type { RouteRecordRaw } from 'vue-router'
-import { Feature } from '@pulse/core/enums'
 
 export const routes: RouteRecordRaw[] = [{
-  path: APP_ROUTES.entity.pennylaneAccounting.path,
-  name: APP_ROUTES.entity.pennylaneAccounting.name,
+  path: APP_ROUTES.entity.pennylaneAccounting.root.path,
+  name: APP_ROUTES.entity.pennylaneAccounting.root.name,
   meta: {
-    [FEATURE_FLAG_META]: Feature.GED_V2,
+    [GED_CONTEXT_META]: GedContext.ACCOUNTING,
   },
   beforeEnter: (_to, _from, next) => {
     if (PennylanePermissionsManager.hasPennylaneAccountingPermission() === false) {
@@ -19,4 +19,10 @@ export const routes: RouteRecordRaw[] = [{
     next()
   },
   component: () => import('@pennylane/pages/accounting/accounting.page.vue'),
+}]
+
+export const pennylaneAccountingRoutes: RouteRecordRaw[] = [{
+  path: APP_ROUTES.entity.pennylaneAccounting.gedV2.path,
+  name: APP_ROUTES.entity.pennylaneAccounting.gedV2.name,
+  component: () => import('@pennylane/components/accounting/accounting.vue'),
 }]

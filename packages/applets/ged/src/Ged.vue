@@ -44,6 +44,7 @@
         :selectedEntityName="selectedEntityName"
         :selectedFolder="currentFolder"
         :currentServiceFolder="currentServiceFolder"
+        :gedContext
         @update-source-folders="handleUpdateSourceFolder"
         @change-selected-folder="setCurrentFolderAndService"
       />
@@ -95,12 +96,14 @@ const servicesFolders = ref<Folder[][]>([])
 
 const selectedEntityStore = useSelectedEntityStore()
 const { selectedEntity } = storeToRefs(selectedEntityStore)
+const gedContext = computed(() => GedManager.getGedContext())
 
 const fetchGedFoldersAndServices = async () => {
   try {
     entityServices.value = await fetchUserEntityServices(
       accountNumber.value,
       selectedAccountId.value,
+      gedContext.value,
     )
 
     const { foldersByService, unavailableServices } = await fetchServicesFolders(

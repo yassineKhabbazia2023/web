@@ -1,25 +1,47 @@
 <template>
-  <PennylaneDocumentsWrapper
-    :accountId
-    :accountNumber
-    :apiCallStatus
+  <EntityHeader
     :accountName
-    :displayMode="PennylaneDocumentWrapperDisplayMode.IN_TABLE"
-    :pennylaneDocuments
-    amplitudeLocalisation="ged_doc_rydge_conseil"
+    :accountNumber
+    class="margin-bottom--4"
   />
+  <PTabs
+    :modelValue="currentTabName"
+    pSmartWidth
+    @tab-click="onTabClick"
+  >
+    <PTabPane
+      v-for="tab in tabs"
+      :key="tab.name"
+      :label="tab.label"
+      :name="tab.name"
+    />
+  </PTabs>
+
+  <RouterView />
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
-import PennylaneDocumentsWrapper from '@pennylane/components/pennylane-documents-wrapper/pennylane-documents-wrapper.vue'
+import type { TabsPaneContext } from 'element-plus'
+import { useI18n } from 'vue-i18n'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
 import { APICallStatus } from '@pulse/common/enums'
-import { PennylaneDocumentWrapperDisplayMode } from '@pennylane/enums/pennylane-documents-wrapper.enum'
 import { logger } from '@pulse/core'
 import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-documents.helper'
+import { PTabs, PTabPane } from '@pulse/styleguide/components'
+import { AccountingTab } from './accounting.page.enum'
+import EntityHeader from '@pennylane/components/entity-header/entity-header.vue'
+import { APP_ROUTES } from '@pulse/common/constants'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
 
 const selectedEntityStore = useSelectedEntityStore()
 
@@ -29,6 +51,23 @@ const apiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
 const accountId = computed(() => selectedEntityStore.selectedEntityId ?? 0)
 const accountName = computed(() => selectedEntityStore.selectedEntity?.legalName ?? '')
 const accountNumber = computed(() => selectedEntityStore.selectedEntityAccountNumber)
+
+const tabs = [{
+  name: AccountingTab.GED_PENNYLANE,
+  label: t('tabs.ged-pennylane'),
+  routeName: APP_ROUTES.entity.pennylaneAccounting.gedV2.name,
+}, {
+  name: AccountingTab.GED_LEGACY,
+  label: t('tabs.ged-legacy'),
+  routeName: APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name,
+}]
+
+const currentTabName = computed(() => {
+  const routeName = router.currentRoute.value.name
+  const tab = tabs.find(tab => tab.routeName === routeName)
+
+  return tab?.name ?? tabs[0].name
+})
 
 onMounted(async () => {
   const pathPrefix = 'Pennylane'
@@ -43,4 +82,23 @@ onMounted(async () => {
     apiCallStatus.value = APICallStatus.ERROR
   }
 })
+
+function onTabClick(tabPane: TabsPaneContext) {
+  const tabName = tabPane.props.name as AccountingTab
+  const tab = tabs.find(tab => tab.name === tabName)
+  if (tab !== undefined) {
+    router.push({ name: tab.routeName })
+  }
+}
 </script>
+
+<i18n lang="yaml">
+  en-US:
+    tabs:
+      ged-pennylane: 'RYDGE Conseil documents '
+      ged-legacy: 'Archives'
+  fr-FR:
+    tabs:
+      ged-pennylane: 'Documents RYDGE Conseil'
+      ged-legacy: 'Archives'
+</i18n>

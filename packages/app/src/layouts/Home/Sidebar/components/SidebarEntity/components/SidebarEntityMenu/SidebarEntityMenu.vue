@@ -137,7 +137,7 @@ const getMenuItems = () => {
       display: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.GED) && hasPennylaneAccountingPermission === false,
     },
     {
-      index: `/dossier/${props.selectedEntityId}/comptabilite`, // Accounting GED path for Pennylane users
+      index: `/dossier/${props.selectedEntityId}/comptabilite/rydge`, // Accounting GED path for Pennylane users
       title: t('pennylaneAccounting'),
       iconLeftName: 'archive',
       // Need specific Pennylane Accounting permission

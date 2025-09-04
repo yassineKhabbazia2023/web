@@ -81,6 +81,7 @@ import { useDocumentsDragAndDrop } from './composables/DocumentsDragAndDrop'
 import DocumentDragGhost from './components/DocumentDragGhost'
 import { getRowAlignmentClass, getRowClasses, getDocumentIndex, getShouldOpenDrawer } from './documents-list.manager'
 import { DocumentsListProps, DocumentListTableColumn } from './documents-list.types'
+import type { DocumentAction } from '@ged/modules/Documents/DocumentsTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -141,11 +142,11 @@ const handleSortChange = (data:any) => {
   emit('on-sort-change', sortQueryField)
 }
 
-const handleToolboxActionTriggered = (action: string) => {
+const handleToolboxActionTriggered = (action: DocumentAction) => {
   emit('toolbox-action-triggered', action)
 }
 
-const contextMenuHandleToolboxActionTriggered = (action: string) => {
+const contextMenuHandleToolboxActionTriggered = (action: DocumentAction) => {
   if (contextmenuRow.value) {
     if (!selectedDocuments.value.includes(contextmenuRow.value)) {
       selectRow(contextmenuRow.value, { label: t('actions') })

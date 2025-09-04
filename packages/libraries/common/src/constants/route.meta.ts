@@ -1,6 +1,7 @@
 export const ALLOW_ANONYMOUS_META = 'allow_anonymous' // this meta defines if the route can be accessed by anonymous users
 export const ALLOW_AUTHENTICATED_META = 'allow_authenticated' // this meta defines if the route can be accessed by authenticated users
 export const FEATURE_FLAG_META = 'feature_flag' // this meta defines the feature flag to be activated for the route
+export const GED_CONTEXT_META = 'ged-context-meta' // this meta defines the ged context to be used for the route
 export const HTML_TITLE_META = 'html_title' // this meta defines the title of the page in the HTML head
 export const IS_UNITARY_VIEW_META = 'is_unitary_view' // this meta expresses that the current route has an active entity, will be removed by url driven feature
 export const LAYOUT_META = 'layout' // defines the layout to be used for the route

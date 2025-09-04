@@ -1,20 +1,27 @@
 <template>
-  <PennylaneDocumentsWrapper
-    data-testid="pennylane-documents-widget"
-    class="height--100"
-    :accountId
-    :accountName
-    :accountNumber
-    :apiCallStatus
-    :displayMode="PennylaneDocumentWrapperDisplayMode.IN_LIST"
-    :pennylaneDocuments
-    :pennylaneLastSynchroDate
-    amplitudeLocalisation="homepage"
-  />
+  <div>
+    <PennylaneDocumentsHeader
+      :lastSynchroDate="pennylaneLastSynchroDate"
+      class="margin-bottom--2"
+    />
+    <PennylaneDocumentsWrapper
+      data-testid="pennylane-documents-widget"
+      class="height--100"
+      :accountId
+      :accountName
+      :accountNumber
+      :apiCallStatus
+      :displayMode="PennylaneDocumentWrapperDisplayMode.IN_LIST"
+      :pennylaneDocuments
+      :pennylaneLastSynchroDate
+      amplitudeLocalisation="homepage"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
+import PennylaneDocumentsHeader from '@pennylane/components/pennylane-documents-header/pennylane-documents-header.vue'
 import PennylaneDocumentsWrapper from '@pennylane/components/pennylane-documents-wrapper/pennylane-documents-wrapper.vue'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { useSelectedEntityStore } from '@pulse/common/stores'

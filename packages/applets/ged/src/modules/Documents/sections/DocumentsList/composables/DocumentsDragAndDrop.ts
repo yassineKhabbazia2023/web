@@ -4,6 +4,7 @@ import type { Document } from '@ged/models/Document'
 import type { DocumentsListProps } from '../documents-list.types'
 import { trackDocumentMoveFlowStart } from '@ged/services/tracking/tracking.service'
 import { TriggerSource } from '@ged/services/tracking/tracking.types'
+import { Permissions } from '@ged/models/Permissions'
 
 export function useDocumentsDragAndDrop(
   selectedFolders: Ref<Document[]>,
@@ -32,7 +33,7 @@ export function useDocumentsDragAndDrop(
 
   const documentsToMove = computed(() =>
     selectedFolders.value.filter((folder) => {
-      return folder.permissions.includes('CAN_MOVE_DOCUMENT')
+      return folder.permissions.includes(Permissions.CAN_MOVE_DOCUMENT)
     }),
   )
 

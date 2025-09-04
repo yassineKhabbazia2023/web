@@ -1,16 +1,28 @@
 import { commonApi } from '@pulse/common'
 import type { AxiosResponse } from 'axios'
 import type { Service, ServiceMailToGedInformation } from '@ged/models/Service'
+import { GedServiceIdByContextName } from '@ged/constants/ged-context.const'
+import type { GedContext } from '@pulse/common/enums'
 
 export const fetchUserEntityServices = async (
-  entityId: Service['ServiceId'], accountId: number,
+  entityId: Service['ServiceId'],
+  accountId: number,
+  gedContext: GedContext,
 ) => {
   const fetchFolderUrl = `/ged/accounts/${entityId}/ged-services/currentuser`
-  const response = await commonApi().gateway.get(fetchFolderUrl, {
+  const response = await commonApi().gateway.get<Service[]>(fetchFolderUrl, {
     headers: { 'Account-Id': accountId },
   })
 
-  return response?.data
+  const { data: services } = response ?? {}
+
+  const gedServiceId = GedServiceIdByContextName[gedContext]
+  if (gedServiceId !== undefined) {
+    const filteredServices = services?.filter(({ ServiceId }) => ServiceId === gedServiceId)
+
+    return filteredServices
+  }
+  return services
 }
 
 export async function fetchServiceMailToGedInformation(

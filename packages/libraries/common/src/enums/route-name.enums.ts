@@ -36,6 +36,8 @@ export enum RouteName {
   OFFERS = 'offers',
   OFFERS_CATALOG = 'offers-catalog',
   PENNYLANE_ACCOUNTING = 'pennylane-accounting',
+  PENNYLANE_GED_V2 = 'ged-v2',
+  PENNYLANE_GED_LEGACY = 'ged-legacy',
   POWER_BI = 'powerbi',
   REPORTS = 'reports',
   RESEND_EMAIL_SUCCESS = 'resendEmailSuccess',

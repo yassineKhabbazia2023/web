@@ -1,6 +1,6 @@
 import type { App } from 'vue'
 import PennylaneDocumentsWidget from './widgets/pennylane-documents/pennylane-documents.widget'
-import { routes } from './router/pennylane.router'
+import { routes, pennylaneAccountingRoutes } from './routes/pennylane.routes'
 import { RoutesManager } from '@pulse/common/managers'
 
 export default {
@@ -10,5 +10,6 @@ export default {
     app.use(PennylaneDocumentsWidget, options)
 
     RoutesManager.addRoutesToEntity(router, routes)
+    RoutesManager.addRoutesToPennylaneAccounting(router, pennylaneAccountingRoutes)
   },
 }

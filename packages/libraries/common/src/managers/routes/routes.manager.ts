@@ -53,6 +53,22 @@ export class RoutesManager {
   }
 
   /**
+   * Add the given routes to the PennylaneAccounting workspace.
+   *
+   * @param router - The vue-router instance.
+   * @param routesToAdd - An array of routes to add.
+   */
+  static addRoutesToPennylaneAccounting(router: Router, routesToAdd: RouteRecordRaw[]) {
+    if (!this.isRouteAvailable(router, APP_ROUTES.entity.pennylaneAccounting.root.name)) {
+      return
+    }
+
+    routesToAdd.forEach(routeToAdd =>
+      router.addRoute(APP_ROUTES.entity.pennylaneAccounting.root.name, routeToAdd),
+    )
+  }
+
+  /**
    * Add the given routes to the wallet workspace.
    *
    * @param router - The vue-router instance.

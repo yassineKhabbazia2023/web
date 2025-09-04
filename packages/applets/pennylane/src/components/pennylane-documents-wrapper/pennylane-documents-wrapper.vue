@@ -13,17 +13,6 @@
       :pennylaneDocument="pennylaneViewerDocument"
       @update:is-opened="onUpdateViewIsOpened"
     />
-    <EntityHeader
-      v-if="displayMode === PennylaneDocumentWrapperDisplayMode.IN_TABLE"
-      :accountName
-      :accountNumber
-    />
-    <PennylaneDocumentsHeader
-      v-if="displayMode === PennylaneDocumentWrapperDisplayMode.IN_LIST"
-      :lastSynchroDate="pennylaneLastSynchroDate"
-      class="margin-bottom--2"
-    />
-
     <POverlay
       v-if="apiCallStatus === APICallStatus.LOADING"
       pIsVignette
@@ -70,8 +59,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import EntityHeader from '@pennylane/components/entity-header/entity-header.vue'
-import PennylaneDocumentsHeader from '@pennylane/components/pennylane-documents-header/pennylane-documents-header.vue'
 import PennylaneDocumentsNoResult from '@pennylane/components/pennylane-documents-no-result/pennylane-documents-no-result.vue'
 import PennylaneDocumentsWithResult from '@pennylane/components/pennylane-documents-with-result/pennylane-documents-with-result.vue'
 import PennylaneDocumentsTable from '@pennylane/components/pennylane-documents-table/pennylane-documents-table.vue'

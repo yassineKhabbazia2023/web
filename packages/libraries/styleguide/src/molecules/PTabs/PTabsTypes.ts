@@ -7,4 +7,5 @@ export interface PTabsProps {
   pTabPosition?: 'top' | 'right' | 'bottom' | 'left'
   pStretch?: boolean
   pBeforeLeave?: (_newName: string | number, _oldName: string | number) => Promise<boolean | void>
+  pSmartWidth?: boolean
 }
