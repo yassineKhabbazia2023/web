@@ -144,6 +144,13 @@ const getMenuItems = () => {
       display: hasPennylaneAccountingPermission === true,
     },
     {
+      index: `/dossier/${props.selectedEntityId}/gestion-sociale`, // Social-Management GED path for Pennylane users
+      title: t('pennylaneSocialManagement'),
+      iconLeftName: 'archive',
+      // Need specific Pennylane Accounting permission
+      display: hasPennylaneAccountingPermission === true,
+    },
+    {
       index: `/dossier/${props.selectedEntityId}/banque`,
       title: t('bank'),
       iconLeftName: 'piggyBank',
@@ -282,6 +289,7 @@ en-US:
   home: 'Home'
   biReports: 'BI reports'
   pennylaneAccounting: 'Accounting'
+  pennylaneSocialManagement: 'Social management'
 fr-FR:
   folder: 'Dossier'
   entity: 'Entité'
@@ -292,4 +300,5 @@ fr-FR:
   home: 'Accueil'
   biReports: 'Rapports BI'
   pennylaneAccounting: 'Comptabilité'
+  pennylaneSocialManagement: 'Gestion sociale'
 </i18n>

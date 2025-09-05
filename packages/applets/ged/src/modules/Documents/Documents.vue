@@ -715,7 +715,7 @@ defineExpose({
   isFiltersDrawerOpened,
 })
 
-const isAccountInformationVisible = computed(() => props.gedContext === GedContext.LEGACY)
+const isAccountInformationVisible = computed(() => props.gedContext !== GedContext.ACCOUNTING)
 </script>
 
 <style lang="scss" scoped>

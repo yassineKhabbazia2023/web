@@ -36,6 +36,7 @@ export const APP_ROUTES = {
       gedV2: { path: 'rydge', name: RouteName.PENNYLANE_GED_V2 },
       gedLegacy: { path: 'archive', name: RouteName.PENNYLANE_GED_LEGACY },
     },
+    pennylaneSocialManagement: { path: 'gestion-sociale', name: RouteName.PENNYLANE_SOCIAL_MANAGEMENT },
     launcher: { path: 'launcher', name: RouteName.LAUNCHER },
     bank: { path: 'banque', name: RouteName.BANK },
     indicators: { path: 'indicateurs', name: RouteName.INDICATORS },
