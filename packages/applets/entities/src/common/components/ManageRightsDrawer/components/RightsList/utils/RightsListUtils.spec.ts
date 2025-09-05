@@ -58,7 +58,6 @@ const mockedActions: Action[] = [
   },
 ]
 
-
 // Expectations
 const expectedAuthorizationState = {
   actions: [
@@ -94,10 +93,11 @@ const expectedAuthorizationsConfigMapped = [
 describe('rightsListUtils', () => {
   describe('getAuthorizationsConfigMapped', () => {
     it('should return an authorization config where each category is mapped with its corresponding label', () => {
-      const authorizationsConfigMapped = getAuthorizationsConfigMapped(
-        mockedAuthorizationsConfig,
-        mockedRightCategories,
-      )
+      const authorizationsConfigMapped = getAuthorizationsConfigMapped({
+        authorizationsConfig: mockedAuthorizationsConfig as any,
+        rightsCategories: mockedRightCategories,
+        customLabels: {},
+      })
 
       expect(authorizationsConfigMapped).toStrictEqual(
         expectedAuthorizationsConfigMapped,
@@ -234,7 +234,11 @@ describe('rightsListUtils', () => {
         },
       ]
 
-      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT)
+      const res = getAuthorizationsConfigMapped({
+        authorizationsConfig: cfg as any,
+        rightsCategories: RIGHT_CATEGORIES_SORT,
+        customLabels: {},
+      })
       expect(res[0].category).toStrictEqual({
         code: 'CLTGEDESC',
         label: RIGHT_CATEGORIES_SORT.CLTGEDESC,
@@ -254,7 +258,12 @@ describe('rightsListUtils', () => {
         CLTGEDESC: ['NON_EXISTENT_CODE_1', 'NON_EXISTENT_CODE_2'],
       }
 
-      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT, ACTION_ORDER)
+      const res = getAuthorizationsConfigMapped({
+        authorizationsConfig: cfg as any,
+        rightsCategories: RIGHT_CATEGORIES_SORT,
+        actionOrder: ACTION_ORDER,
+        customLabels: {},
+      })
       // no match => should not sort
       expect(res[0].actions.map(a => a.code)).toStrictEqual([A.code, C.code, B.code, D.code])
     })
@@ -267,11 +276,16 @@ describe('rightsListUtils', () => {
         },
       ]
       const ACTION_ORDER = {
-        // D then C are explicitly ordered → they must come first, then A and B in their original relative order (A before B)
+        // D then C are explicitly ordered => they must come first, then A and B in their original relative order (A before B)
         CLTGEDESC: [D.code, C.code],
       }
 
-      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT, ACTION_ORDER)
+      const res = getAuthorizationsConfigMapped({
+        authorizationsConfig: cfg as any,
+        rightsCategories: RIGHT_CATEGORIES_SORT,
+        actionOrder: ACTION_ORDER,
+        customLabels: {},
+      })
       expect(res[0].actions.map(a => a.code)).toStrictEqual([D.code, C.code, A.code, B.code])
     })
 
@@ -287,7 +301,12 @@ describe('rightsListUtils', () => {
         CLTGEDESC: [C.code], // only C is ordered
       }
 
-      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT, ACTION_ORDER)
+      const res = getAuthorizationsConfigMapped({
+        authorizationsConfig: cfg as any,
+        rightsCategories: RIGHT_CATEGORIES_SORT,
+        actionOrder: ACTION_ORDER,
+        customLabels: {},
+      })
       // C first, then keep B before A, then D is unordered too (after B,A) and keeps its original position relative to them
       // Original order after removing C is [B, A, D] => should be preserved as [B, A, D]
       expect(res[0].actions.map(a => a.code)).toStrictEqual([C.code, B.code, A.code, D.code])
@@ -309,7 +328,12 @@ describe('rightsListUtils', () => {
         // No rule for CLTGESTION
       }
 
-      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT, ACTION_ORDER)
+      const res = getAuthorizationsConfigMapped({
+        authorizationsConfig: cfg as any,
+        rightsCategories: RIGHT_CATEGORIES_SORT,
+        actionOrder: ACTION_ORDER,
+        customLabels: {},
+      })
 
       // CLTGEDESC sorted
       expect(res[0].category.code).toBe('CLTGEDESC')
@@ -331,8 +355,102 @@ describe('rightsListUtils', () => {
         CLTGEDESC: [] as string[],
       }
 
-      const res = getAuthorizationsConfigMapped(cfg as any, RIGHT_CATEGORIES_SORT, ACTION_ORDER)
+      const res = getAuthorizationsConfigMapped({
+        authorizationsConfig: cfg as any,
+        rightsCategories: RIGHT_CATEGORIES_SORT,
+        actionOrder: ACTION_ORDER,
+        customLabels: {},
+      })
       expect(res[0].actions.map(a => a.code)).toStrictEqual([A.code, C.code, B.code, D.code])
+    })
+  })
+
+  describe('getAuthorizationsConfigMapped — custom labels', () => {
+    const RIGHT_CATEGORIES = {
+      CLTGEDESC: 'Espace documentaire – Comptabilité',
+    }
+
+    // Minimal helper for "GED Comptabilité" actions where codes are plain strings
+    const mkDocAction = (actionId: number, code: string, label = code, enabled = true): Action => ({
+      actionId,
+      code: code as any, // code is a string; cast for the Action type
+      name: 'name',
+      label,
+      enabled,
+    })
+
+    // Action codes in this category
+    const PRESENCE_RIGHT = CustomerPermission.ACCEDER_DOCUMENTS_PENNYLANE as unknown as string
+    const A1 = 'CLGED0002'
+    const A2 = 'CLSPGDC01'
+    const A3 = 'CLSPGDC02'
+
+    it('does NOT apply custom labels when the presence right is NOT present', () => {
+      const cfg = [
+        {
+          category: 'CLTGEDESC',
+          // No PRESENCE_RIGHT here
+          actions: [
+            mkDocAction(1, A1, 'Accéder à l’espace documentaire Comptabilité'),
+            mkDocAction(2, A2, 'Accéder au dossier Comptabilité/Dépôt'),
+            mkDocAction(3, A3, 'Accéder au dossier Comptabilité/RYDGE Conseil'),
+          ],
+        },
+      ]
+
+      const CUSTOM_LABELS_FLAT = {
+        [A1]: "Accéder aux archives de l'espace documentaire Comptabilité",
+        [A2]: 'Accéder au dossier Comptabilité/Dépôt dans les archives',
+        [A3]: 'Accéder au dossier Comptabilité/RYDGE Conseil dans les archives',
+      }
+
+      const res = getAuthorizationsConfigMapped({
+        authorizationsConfig: cfg as any,
+        rightsCategories: RIGHT_CATEGORIES,
+        customLabels: CUSTOM_LABELS_FLAT,
+      })
+
+      // No change expected
+      expect(res[0].actions.map(a => a.label)).toStrictEqual([
+        'Accéder à l’espace documentaire Comptabilité',
+        'Accéder au dossier Comptabilité/Dépôt',
+        'Accéder au dossier Comptabilité/RYDGE Conseil',
+      ])
+    })
+
+    it('applies custom labels when the presence right is present', () => {
+      const cfg = [
+        {
+          category: 'CLTGEDESC',
+          actions: [
+            // Include the presence right among actions
+            mkDocAction(0, PRESENCE_RIGHT, 'Accéder aux documents RYDGE Conseil'),
+            mkDocAction(1, A1, 'Accéder à l’espace documentaire Comptabilité'),
+            mkDocAction(2, A2, 'Accéder au dossier Comptabilité/Dépôt'),
+            mkDocAction(3, A3, 'Accéder au dossier Comptabilité/RYDGE Conseil'),
+          ],
+        },
+      ]
+
+      const CUSTOM_LABELS_FLAT = {
+        [A1]: "Accéder aux archives de l'espace documentaire Comptabilité",
+        [A2]: 'Accéder au dossier Comptabilité/Dépôt dans les archives',
+        [A3]: 'Accéder au dossier Comptabilité/RYDGE Conseil dans les archives',
+      }
+
+      const res = getAuthorizationsConfigMapped({
+        authorizationsConfig: cfg as any,
+        rightsCategories: RIGHT_CATEGORIES,
+        customLabels: CUSTOM_LABELS_FLAT,
+      })
+
+      // Labels for A1/A2/A3 should be overridden; presence right label remains as initially provided
+      expect(res[0].actions.map(a => a.label)).toStrictEqual([
+        'Accéder aux documents RYDGE Conseil',
+        "Accéder aux archives de l'espace documentaire Comptabilité",
+        'Accéder au dossier Comptabilité/Dépôt dans les archives',
+        'Accéder au dossier Comptabilité/RYDGE Conseil dans les archives',
+      ])
     })
   })
 })

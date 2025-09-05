@@ -137,6 +137,13 @@ const ACTION_ORDER: Record<string, string[]> = {
   ],
 }
 
+const CLGEDPEN01_CUSTOM_ACTION_LABELS: Record<string, string> = {
+  CLGED0002: t('accountingGedArchiveLabel'),
+  CLSPGDC01: t('accountingGedDepositArchiveLabel'),
+  CLSPGDC02: t('accountingGedRydgeArchiveLabel'),
+}
+
+
 const route = useRoute()
 const isLoading = ref(true)
 const authorizationsConfig = ref<AuthorizationConfigMapped[]>([])
@@ -232,11 +239,12 @@ onMounted(async () => {
     }
 
     // We need to map the data in order to obtain the category label
-    authorizationsConfig.value = getAuthorizationsConfigMapped(
-      rightsConfigList,
-      RIGHT_CATEGORIES,
-      ACTION_ORDER,
-    )
+    authorizationsConfig.value = getAuthorizationsConfigMapped({
+      authorizationsConfig: rightsConfigList,
+      rightsCategories: RIGHT_CATEGORIES,
+      actionOrder: ACTION_ORDER,
+      customLabels: CLGEDPEN01_CUSTOM_ACTION_LABELS,
+    })
 
     // To display the action checkboxes and the category switch with the correct values
     authorizationsConfig.value.forEach(
@@ -306,6 +314,9 @@ en-US:
   thisUser: 'this user'
   rightsNote: 'Select the rights you want to grant to {rightsType}:'
   PennylaneDropdownPlaceholder: 'Choose a role'
+  accountingGedArchiveLabel: "Access the archives of the Accounting document space"
+  accountingGedDepositArchiveLabel: "Access the folder Accounting/Deposit in the archives"
+  accountingGedRydgeArchiveLabel: "Access the folder Accounting/RYDGE Conseil in the archives"
 fr-FR:
   PennylaneAdditionalInfos: |
     ● En cochant cette case et en validant, un compte
@@ -330,4 +341,7 @@ fr-FR:
   thisUser: 'cet utilisateur'
   rightsNote: 'Sélectionnez les droits que vous souhaitez accorder à {rightsType} :'
   PennylaneDropdownPlaceholder: 'Choisir un rôle'
+  accountingGedArchiveLabel: "Accéder aux archives de l'espace documentaire Comptabilité"
+  accountingGedDepositArchiveLabel: "Accéder au dossier Comptabilité/Dépôt dans les archives"
+  accountingGedRydgeArchiveLabel: "Accéder au dossier Comptabilité/RYDGE Conseil dans les archives"
 </i18n>

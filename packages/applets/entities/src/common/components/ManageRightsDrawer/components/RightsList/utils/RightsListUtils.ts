@@ -8,22 +8,31 @@ import type {
 import type { PennylaneAvailableRole, Permission } from '@pulse/common/types'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/common/constants/rights-management.const'
+import { CustomerPermission } from '@pulse/common/enums'
 
-export const getAuthorizationsConfigMapped = (
+export const getAuthorizationsConfigMapped = ({
+  authorizationsConfig,
+  rightsCategories,
+  actionOrder,
+  customLabels,
+}: {
   authorizationsConfig: AuthorizationConfig[],
   rightsCategories: Record<string, string>,
   actionOrder?: Record<string, string[]>,
-): AuthorizationConfigMapped[] => {
+  customLabels: Record<string, string>,
+}): AuthorizationConfigMapped[] => {
   return authorizationsConfig.map(({ category, actions }: AuthorizationConfig) => {
-    const order = actionOrder?.[category] ?? []
+    const order = actionOrder?.[category]
     return {
       category: {
         code: category,
         label: rightsCategories[category] ?? category,
       },
-      actions: order.length > 0
-        ? getSortActionsByGivenOrder(actions, actionOrder![category])
-        : actions,
+      actions: mapActionsWithConfig({
+        actions,
+        order,
+        customLabels,
+      }),
     }
   })
 }
@@ -84,20 +93,58 @@ function getSortActionsByGivenOrder(
     const indexA = order.indexOf(a.code)
     const indexB = order.indexOf(b.code)
 
-    // Neither is explicitly ordered → keep their original relative order (stable sort)
+    // Neither is explicitly ordered => keep their original relative order (stable sort)
     if (indexA === -1 && indexB === -1) {
       return 0
     }
 
-    // Exactly one is ordered → the ordered one comes first
+    // Exactly one is ordered => the ordered one comes first
     if (indexA === -1) {
       return 1
-    }  // A is unordered → B first
+    }  // A is unordered => B first
     if (indexB === -1) {
       return -1
-    } // B is unordered → A first
+    } // B is unordered => A first
 
-    // Both are ordered → compare their positions in `order`
+    // Both are ordered => compare their positions in `order`
     return indexA - indexB
   })
 }
+
+function mapActionsWithConfig({
+  actions,
+  order,
+  customLabels,
+}: {
+    actions: Action[],
+    order?: readonly string[],
+    customLabels: Record<string, string> // presenceRight -> (actionCode -> newLabel)
+  }) : Action[] {
+
+  // Sort if an order is provided
+  const base = order !== undefined
+    ? getSortActionsByGivenOrder(actions, order)
+    : [...actions]
+
+  // No labels config => nothing to change
+  if (customLabels === undefined) {
+    return base
+  }
+
+  const shouldApplyCustomLabels = actions.some(({ code }) => code === CustomerPermission.ACCEDER_DOCUMENTS_PENNYLANE)
+
+  if (shouldApplyCustomLabels === false) {
+    return base
+  }
+
+  return base
+    .map(action => {
+      const customLabel = customLabels[action.code]
+      const label = customLabel === undefined ? action.label : customLabel
+      return {
+        ...action,
+        label,
+      }
+    })
+}
+
