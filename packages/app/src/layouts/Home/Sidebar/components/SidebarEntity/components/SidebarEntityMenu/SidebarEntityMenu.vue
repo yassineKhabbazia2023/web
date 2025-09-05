@@ -58,7 +58,6 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager, PennylanePermissionsManager } from '@pulse/common/managers'
-import { fetchBIReports } from '@app/services/reporting'
 import { PMenuItem, PMenu } from '@pulse/styleguide/components'
 import { ACCOUNT_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
@@ -73,7 +72,6 @@ const { t } = useI18n({
 
 const props = defineProps<SidebarEntityMenuProps>()
 
-const hasBIReports = ref(false)
 const isMenuCollapsed = ref(true)
 const activeMenuItem = ref<string>(route.path)
 const isEntityOrFolderPath = ref(false)
@@ -127,7 +125,7 @@ const getMenuItems = () => {
       title: t('biReports'),
       index: `/dossier/${props.selectedEntityId}/rapports-bi`,
       iconLeftName: 'clipboardData',
-      display: hasBIReports.value,
+      display: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.POWERBI_REPORT),
     },
     {
       index: `/dossier/${props.selectedEntityId}/ged`, // Legacy GED path
@@ -190,13 +188,7 @@ watchEffect(() => {
   activeMenuItem.value = route.path
   isEntityOrFolderPath.value = ['gestion-utilisateurs', 'collaborateurs', 'offres', 'informations', 'historique-delegations'].some((path) => route.fullPath.includes(path))
 })
-const setMenuItem = async () => {
-  if(CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.POWERBI_REPORT)) {
-    const { totalItems } = await fetchBIReports(props.selectedEntityId)
-    hasBIReports.value = totalItems > 0
-  } else {
-    hasBIReports.value = false
-  }
+const setMenuItem = () => {
   menuItems.value = getMenuItems()
 }
 
