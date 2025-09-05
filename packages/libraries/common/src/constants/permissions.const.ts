@@ -82,9 +82,6 @@ export const ACCOUNT_PERMISSIONS: Record<string, Permission[]> = {
   POWERBI_REPORT: [
     CustomerPermission.ACCEDER_RAPPORTS_BI_FINANCIER,
     CollaboratorPermission.ACCEDER_RAPPORTS_BI,
-    CollaboratorPermission.GERER_DOSSIERS,
-    CollaboratorPermission.DEPOSER_RAPPORT_BI,
-    CustomerPermission.ACCEDER_RAPPORTS_BI_RH,
   ],
   USERS: [
     CustomerPermission.CONSULTER_UTILISATEURS,

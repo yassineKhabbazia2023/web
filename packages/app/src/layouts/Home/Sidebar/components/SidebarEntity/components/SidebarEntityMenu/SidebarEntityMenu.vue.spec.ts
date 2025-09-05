@@ -1,8 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import * as ReportService from '@app/services/reporting'
 import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
-import { getMockedBIReports } from '@app/__mocks__/bi-reports.mocks'
 import { CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked } from '@pulse/common/mocks'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { CustomerPermission } from '@pulse/common/enums'
@@ -10,7 +8,6 @@ import { CustomerPermission } from '@pulse/common/enums'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 import SidebarEntityMenu from '.'
 
-const mockedBIReports = getMockedBIReports()
 const favoriteEntityId: number = getMockedFavoriteEntities()[0].accountId
 
 const defaultProps: SidebarEntityMenuProps = {
@@ -19,19 +16,20 @@ const defaultProps: SidebarEntityMenuProps = {
   isSingleEntity: false,
 }
 
-vi.mock('@app/services/reporting', () => ({
-  fetchBIReports: vi.fn(() => Promise.resolve({ totalItems: 0 })),
-}))
-
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     fullPath: '/launcher',
   }),
 }))
 
+const canShowBIReportsSpy = vi.hoisted(() => vi.fn())
 const hasPennylaneAccountingPermissionSpy = vi.hoisted(() => vi.fn())
+
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
+  ReportingManager: {
+    canShowBIReports: canShowBIReportsSpy,
+  },
   PennylanePermissionsManager: {
     hasPennylaneAccountingPermission: hasPennylaneAccountingPermissionSpy,
   },
@@ -75,13 +73,8 @@ describe('sidebarEntityMenu', () => {
       expect(sidebarEntityMenuItems).not.toContain(menuItemsWithoutAccess)
     })
 
-    it('should display the Power BI menu if the user has BI reports', async () => {
-      vi.spyOn(ReportService, 'fetchBIReports').mockResolvedValue({
-        items: mockedBIReports,
-        totalItems: mockedBIReports.length,
-        currentPage: 1,
-        totalPage: 1,
-      })
+    it('should display the Power BI menu if the user has access to BI reports', async () => {
+      canShowBIReportsSpy.mockResolvedValue(true)
       wrapper = createWrapper()
       await flushPromises()
       const sidebarEntityMenuItems = wrapper
@@ -89,6 +82,17 @@ describe('sidebarEntityMenu', () => {
         .map((item) => item.text())
 
       expect(sidebarEntityMenuItems).toContain('BI reports')
+    })
+
+    it('should NOT display the Power BI menu if the user has no access', async () => {
+      canShowBIReportsSpy.mockResolvedValue(false)
+      wrapper = createWrapper()
+      await flushPromises()
+      const sidebarEntityMenuItems = wrapper
+        .findAll('.p-menu-item__title')
+        .map((item) => item.text())
+
+      expect(sidebarEntityMenuItems).not.toContain('BI reports')
     })
   })
   describe('classes behavior', () => {
