@@ -64,41 +64,41 @@ defineEmits<{
 
   &:disabled {
     pointer-events: none;
-    background: var(--el-color-neutral-gray-50);
+    background: var(--p-gray-50);
 
     #{$self}__title {
-      color: var(--el-color-neutral-gray-500)
+      color: var(--p-gray-500)
     }
     #{$self}__description {
-      color: var(--el-color-neutral-gray-300)
+      color: var(--p-gray-300)
     }
   }
 
   &:hover,
   &:focus {
-    background-color: var(--el-color-persian-50);
-    border-color: var(--el-color-base-persian);
+    background-color: var(--p-jungle-75);
+    border-color: var(--p-jungle-400);
     #{$self}__title {
-      color: var(--el-color-persian-500);
+      color: var(--p-jungle-400);
     }
     #{$self}__chevron-icon {
-      color: var(--el-color-persian-700);
+      color: var(--p-jungle-700);
     }
   }
 
   &:active {
     #{$self}__title {
-      color: var(--el-color-persian-700);
+      color: var(--p-jungle-700);
     }
     #{$self}__chevron-icon {
-      color: var(--el-color-persian-800);
+      color: var(--p-jungle-800);
     }
   }
 
   &--selected,
   &--selected:disabled {
-    background-color: var(--el-color-persian-50);
-    border-color: var(--el-color-base-persian);
+    background-color: var(--p-jungle-75);
+    border-color: var(--p-jungle-400);
   }
 
   &__logo {
@@ -119,7 +119,7 @@ defineEmits<{
     font-size: 1.6rem;
     font-weight: 700;
     line-height: 25px;
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
     text-overflow: ellipsis;
     white-space: nowrap;
     transition: all 0.3s ease;
@@ -129,7 +129,7 @@ defineEmits<{
     font-size: 1.4rem;
     font-weight: 400;
     line-height: 17px;
-    color: var(--el-color-neutral-gray-700);
+    color: var(--p-gray-700);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

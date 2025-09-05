@@ -1,25 +1,35 @@
+// Pégase Shadow System
+// Shadow definitions for the Pégase design system, migrated from Element Plus CSS variables.
+// Uses the same shadow color (#7090b0) with varying opacity and blur levels.
+
 $shadow-color: #7090b0;
 
 .shadow--1 {
-    box-shadow: var(--el-box-shadow-lighter);
+    // Equivalent to --el-box-shadow-lighter
+    box-shadow: 0 1px 2px 0 rgba($shadow-color, 0.2), 0 0 2px 0 rgba($shadow-color, 0.1);
 }
 
 .shadow--2 {
-    box-shadow: var(--el-box-shadow-light);
+    // Equivalent to --el-box-shadow-light  
+    box-shadow: 0 3px 4px 0 rgba($shadow-color, 0.1), 0 2px 4px 0 rgba($shadow-color, 0.08), 0 1px 2px 0 rgba($shadow-color, 0.05), 0 0 2px 0 rgba($shadow-color, 0.1);
 }
 
 .shadow--3 {
-    box-shadow: var(--el-box-shadow);
+    // Equivalent to --el-box-shadow
+    box-shadow: 0 16px 16px 0 rgba($shadow-color, 0.04), 0 6px 8px 0 rgba($shadow-color, 0.05), 0 2px 4px 0 rgba($shadow-color, 0.08), 0 1px 2px 0 rgba($shadow-color, 0.05), 0 0 2px 0 rgba($shadow-color, 0.1);
 }
 
 .shadow--4 {
+    // Custom Pégase shadow level
     box-shadow: 0 12px 15px 0 rgba($shadow-color, 0.04), 0 8px 8px 0 rgba($shadow-color, 0.05), 0 4px 4px 0 rgba($shadow-color, 0.08), 0 2px 2px 0 rgba($shadow-color, 0.05), 0 1px 2px 0 rgba($shadow-color, 0.10);
 }
 
 .shadow--5 {
+    // Custom Pégase shadow level
     box-shadow: 0 16px 40px 1px rgba($shadow-color, 0.15), 0 8px 8px 0 rgba($shadow-color, 0.05), 0 4px 4px 0 rgba($shadow-color, 0.08), 0 2px 2px 0 rgba($shadow-color, 0.05), 0 1px 2px 0 rgba($shadow-color, 0.10);
 }
 
 .shadow--6 {
-    box-shadow: var(--el-box-shadow-dark);
+    // Equivalent to --el-box-shadow-dark
+    box-shadow: 0 24px 50px 0 rgba($shadow-color, 0.2), 0 8px 8px 0 rgba($shadow-color, 0.05), 0 4px 4px 0 rgba($shadow-color, 0.08), 0 2px 2px 0 rgba($shadow-color, 0.05), 0 2px 1px 0 rgba($shadow-color, 0.1);
 }

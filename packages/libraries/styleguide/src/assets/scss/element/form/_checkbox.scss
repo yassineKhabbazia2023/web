@@ -1,19 +1,19 @@
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 $checkbox: (
-  'disabled-border-color': var(--el-color-neutral-gray-50),
-  'disabled-input-fill':  var(--el-color-neutral-gray-50),
-  'disabled-checked-input-fill': var(--el-color-neutral-gray-50),
-  'disabled-checked-input-border-color': var(--el-color-neutral-gray-50),
-  'disabled-checked-bg-color': var(--el-color-neutral-gray-50),
-  'input-border-color-hover': var(--el-color-persian-700),
-  'checked-text-color': var(--el-color-base-blue-pulse),
-  'border-color': var(--el-color-base-blue-pulse),
-  'input-fill':  var(--el-color-base-white),
-  'checked-input-fill': var(--el-color-base-blue-pulse),
-  'checked-input-border-color': var(--el-color-base-blue-pulse),
-  'checked-bg-color': var(--el-color-base-blue-pulse),
-  'checked-icon-color': var(--el-color-base-white),
+  'disabled-border-color': var(--p-gray-50),
+  'disabled-input-fill':  var(--p-gray-50),
+  'disabled-checked-input-fill': var(--p-gray-50),
+  'disabled-checked-input-border-color': var(--p-gray-50),
+  'disabled-checked-bg-color': var(--p-gray-50),
+  'input-border-color-hover': var(--p-jungle-700),
+  'checked-text-color': var(--p-black-rock-900),
+  'border-color': var(--p-black-rock-900),
+  'input-fill':  var(--p-white),
+  'checked-input-fill': var(--p-black-rock-900),
+  'checked-input-border-color': var(--p-black-rock-900),
+  'checked-bg-color': var(--p-black-rock-900),
+  'checked-icon-color': var(--p-white),
   'font-size': 1.4rem,
   'font-weight': 400
 );
@@ -24,8 +24,8 @@ $checkbox: (
 
   :not(.is-disabled).is-checked {
     .el-checkbox__inner:hover {
-      background: var(--el-color-persian-700);
-      border-color: var(--el-color-persian-700);
+      background: var(--p-jungle-700);
+      border-color: var(--p-jungle-700);
     }
   }
 

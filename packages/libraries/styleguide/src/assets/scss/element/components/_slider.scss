@@ -2,9 +2,9 @@
 $slider: () !default;
 $slider: map.merge(
   (
-    'main-bg-color': var(--el-color-primary),
+    'main-bg-color': var(--p-jungle-400),
     'runway-bg-color': var(--el-border-color-light),
-    'stop-bg-color': var(--el-color-white),
+    'stop-bg-color': var(--p-white),
     'disabled-color': var(--el-text-color-placeholder),
     // 'border-radius': 3px,
     'height': 6px,

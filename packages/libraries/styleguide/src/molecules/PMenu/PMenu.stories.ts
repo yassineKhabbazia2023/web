@@ -141,7 +141,7 @@ export const Default: Story = {
       }
     },
     template: `
-      <div style="padding: 20px; background-color: var(--el-color-persian-100, #f5f5f5); min-height: 400px;">
+      <div style="padding: 20px; background-color: var(--p-jungle-100, #f5f5f5); min-height: 400px;">
         <PMenu
           v-bind="args"
           @open="handleOpen"
@@ -205,7 +205,7 @@ export const CollapsedMenu: Story = {
       }
     },
     template: `
-      <div style="padding: 20px; background-color: var(--el-color-persian-100, #f5f5f5); min-height: 400px;">
+      <div style="padding: 20px; background-color: var(--p-black-rock-100, #f5f5f5); min-height: 400px;">
         <div style="width: 54px;">
           <PMenu v-bind="args">
             <PSubMenu
@@ -263,7 +263,7 @@ export const UniqueOpenedSubmenus: Story = {
       }
     },
     template: `
-      <div style="padding: 20px; background-color: var(--el-color-persian-100, #f5f5f5); min-height: 400px;">
+      <div style="padding: 20px; background-color: var(--p-black-rock-100, #f5f5f5); min-height: 400px;">
         <PMenu v-bind="args">
           <PSubMenu
             v-for="submenu in submenus"
@@ -320,7 +320,7 @@ export const ClickTriggerSubmenus: Story = {
       }
     },
     template: `
-      <div style="padding: 20px; background-color: var(--el-color-persian-100, #f5f5f5); min-height: 400px;">
+      <div style="padding: 20px; background-color: var(--p-black-rock-100, #f5f5f5); min-height: 400px;">
         <h3 style="margin-bottom: 16px;">Click to Open Submenus</h3>
         <PMenu v-bind="args">
           <PSubMenu
@@ -375,7 +375,7 @@ export const DisabledItems: Story = {
       }
     },
     template: `
-      <div style="padding: 20px; background-color: var(--el-color-persian-100, #f5f5f5); min-height: 400px;">
+      <div style="padding: 20px; background-color: var(--p-black-rock-100, #f5f5f5); min-height: 400px;">
         <h3 style="margin-bottom: 16px;">Menu with Disabled Items</h3>
         <PMenu v-bind="args">
           <PSubMenu
@@ -451,7 +451,7 @@ export const MenuVariations: Story = {
           </button>
         </div>
         
-        <div style="background-color: var(--el-color-persian-100, #f5f5f5); min-height: 400px;" :style="{ width: collapsedState.collapsed ? '64px' : '220px', transition: 'width 0.3s' }">
+        <div style="background-color: var(--p-black-rock-100, #f5f5f5); min-height: 400px;" :style="{ width: collapsedState.collapsed ? '64px' : '220px', transition: 'width 0.3s' }">
           <PMenu
             pDefaultActive="1-2"
             pMode="vertical"

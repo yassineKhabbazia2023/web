@@ -219,7 +219,7 @@ $sidenav-opened-width: 200px;
   top: 0;
   width: $sidenav-opened-width;
   height: 100%;
-  background-color: var(--el-color-base-persian-light);
+  background-color: var(--p-tranquil-50);
   transition: width var(--smooth-transition);
 
   &--collapsed {
@@ -234,9 +234,9 @@ $sidenav-opened-width: 200px;
 
   &__item-menu {
     // customer colors (collab have their own class .sidenav-entity-menu--is-collab below)
-    background-color: var(--el-color-persian-100);
+    background-color: var(--p-jungle-100);
     // we need to override the default border color with !important
-    border-color: var(--el-color-base-persian) !important;
+    border-color: var(--p-jungle-400) !important;
   }
 
   &--is-single-entity {
@@ -248,10 +248,10 @@ $sidenav-opened-width: 200px;
 <style lang="scss">
 // context specific design system overrides
 .sidenav-entity-menu--is-collab {
-  background-color: var(--el-color-secondary-fuschia-bg) !important;
+  background-color: var(--p-persian-100) !important;
 
   .p-menu.el-menu {
-    background-color: var(--el-color-secondary-fuschia-bg);
+    background-color: var(--p-persian-100);
 
     .p-menu-item {
       &:hover {
@@ -261,9 +261,9 @@ $sidenav-opened-width: 200px;
       &.is-active,
       &.sidenav-entity-menu__item-menu
        {
-        background-color: rgba(var(--el-color-secondary-fuschia-rgb), 0.2);
+        background-color: rgba(var(--p-black-rock-700-rgb), 0.2);
         // we need to override the default and customer border color with !important
-        border-color: var(--el-color-secondary-fuschia) !important;
+        border-color: var(--p-black-rock-700) !important;
       }
     }
   }

@@ -484,7 +484,7 @@ watch(() => [
 }
 .collab-table {
   .current-row > td:first-child {
-    border-left: 4px solid var(--el-color-base-persian);
+    border-left: 4px solid var(--p-jungle-400);
 
     .cell {
       padding-left: 0.8rem;
@@ -492,7 +492,7 @@ watch(() => [
   }
 
   p {
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
   }
 }
 

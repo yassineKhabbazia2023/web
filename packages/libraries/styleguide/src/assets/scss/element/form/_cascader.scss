@@ -3,7 +3,7 @@ $cascader: () !default;
 $cascader: map.merge(
   (
     'menu-text-color': var(--el-text-color-regular),
-    'menu-selected-text-color': var(--el-color-primary),
+    'menu-selected-text-color': var(--p-jungle-400),
     'menu-fill': var(--el-bg-color-overlay),
     'menu-font-size': var(--el-font-size-base),
     'menu-radius': var(--el-border-radius-base),

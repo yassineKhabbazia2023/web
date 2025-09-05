@@ -3,10 +3,10 @@
 // css3 var in packages/theme-chalk/src/input.scss
 $input: (
   'border-radius': var(--el-border-radius-small),
-  'icon-color': var(--el-color-neutral-gray-300),
-  'clear-hover-color': var(--el-color-primary),
-  'border-color': var(--el-color-white),
-  'hover-border-color': var(--el-color-white)
+  'icon-color': var(--p-icon-neutral),
+  'clear-hover-color': var(--p-stroke-default-secondary),
+  'border-color': var(--p-white),
+  'hover-border-color': var(--p-white)
 );
 
 $input-padding-horizontal: (
@@ -24,13 +24,13 @@ div.el-textarea {
   --el-input-border-radius: var(--el-border-radius-base);
 
   box-shadow: none;
-  border-bottom: 2px solid var(--el-color-persian-200);
+  border-bottom: 2px solid var(--p-stroke-default-secondary);
   &:hover {
-    border-bottom: 2px solid var(--el-color-base-persian);
+    border-bottom: 2px solid var(--p-stroke-hover);
   }
 
   &.is-disabled {
-    border-bottom-color: var(--el-color-neutral-gray-100);
+    border-bottom-color: var(--p-stroke-darker);
     .el-textarea__inner {
       box-shadow: none;
     }
@@ -57,24 +57,24 @@ div.el-textarea {
       display: none;
     }
   }
-  border-bottom: 2px solid var(--el-color-persian-200);
+  border-bottom: 2px solid var(--p-stroke-default-secondary);
   &:hover {
-    border-bottom: 2px solid var(--el-color-base-persian);
+    border-bottom: 2px solid var(--p-stroke-hover);
   }
   div {
     &#{$self}__wrapper {
       &.is-focus {
         box-shadow: none;
-        border-bottom-color: var(--el-color-persian-800);
+        border-bottom-color: var(--p-stroke-press);
       }
     }
   }
   &.is-disabled {
-    border-bottom-color: var(--el-color-neutral-gray-100);
+    border-bottom-color: var(--p-stroke-darker);
     div {
       &#{$self}__wrapper {
         box-shadow: none;
-        background-color: var(--el-color-neutral-gray-50);
+        background-color: var(--p-surface-state-disabled);
       }
     }
   }

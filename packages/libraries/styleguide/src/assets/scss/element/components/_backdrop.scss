@@ -3,8 +3,8 @@ $backtop: () !default;
 $backtop: map.merge(
   (
     'bg-color': var(--el-bg-color-overlay),
-    'text-color': var(--el-color-primary),
-    'hover-bg-color': var(--el-border-color-extra-light),
+    'text-color': var(--p-jungle-400),
+    'hover-bg-color': var(--p-gray-50),
   ),
   $backtop
 );

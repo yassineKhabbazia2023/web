@@ -22,12 +22,12 @@ $upload: (
         }
         .el-upload-dragger {
           cursor: default;
-          background: var(--el-color-neutral-gray-50);
-          border-color: var(--el-color-neutral-gray-100);
+          background: var(--p-gray-50);
+          border-color: var(--p-gray-100);
         }
 
         #{$self}__input {
-          color: var(--el-color-neutral-gray-500);
+          color: var(--p-gray-500);
         }
       }
     }
@@ -39,7 +39,7 @@ $upload: (
       .el-upload {
         position: relative;
         z-index: 1;
-        background: var(--el-fill-color-blank);
+        background: var(--p-white);
 
         &:focus {
           color: inherit;
@@ -56,7 +56,7 @@ $upload: (
       .el-upload {
         position: relative;
         z-index: 1;
-        background: var(--el-fill-color-blank);
+        background: var(--p-white);
 
         &:focus {
           color: inherit;
@@ -65,23 +65,23 @@ $upload: (
       .el-upload-dragger {
         padding: 2.8rem 3.2rem;
         border-radius: var(--el-border-radius-base);
-        border-color: var(--el-color-neutral-gray-300);
+        border-color: var(--p-gray-300);
         text-align: left;
 
         &.is-dragover {
           padding: 2.8rem 3.2rem;
           border-width: 1px;
-          border-color: var(--el-color-persian-700);
-          background: var(--el-color-persian-50);
+          border-color: var(--p-jungle-700);
+          background: var(--p-jungle-75);
         }
 
         &:hover,
         &:focus {
-          border-color: var(--el-color-persian-700);
+          border-color: var(--p-jungle-700);
         }
         
         &:focus {
-          background: var(--el-color-persian-50);
+          background: var(--p-jungle-75);
         }
       }
       #{$self}__input {
@@ -119,7 +119,7 @@ $upload: (
       }
 
       &:not(:last-child) {
-        border-color: var(--el-color-neutral-gray-100);
+        border-color: var(--p-gray-100);
       }
 
       & + .el-upload-list__item {

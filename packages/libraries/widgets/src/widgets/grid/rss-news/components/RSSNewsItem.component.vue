@@ -70,7 +70,7 @@ const newsPubDate = computed(() => {
 
   .rss-news-item__pub-date {
     font-size: 12px;
-    color: var(--el-color-neutral-gray-500);
+    color: var(--p-gray-500);
   }
 
   .rss-news-item__title {
@@ -93,7 +93,7 @@ const newsPubDate = computed(() => {
   }
 
   &:hover {
-    background-color: var(--el-color-base-blue-pulse);
+    background-color: var(--p-black-rock-900);
     color: white;
 
     .rss-news-item__pub-date {

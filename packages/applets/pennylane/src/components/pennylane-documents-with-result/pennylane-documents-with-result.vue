@@ -19,7 +19,7 @@
         padding-x--3
         padding-y--2
         cursor-pointer
-        hover-bg--base-persian-light
+        hover-bg--tranquil-50
       "
       @click="onClickDocument(pennylaneDocument)"
     >

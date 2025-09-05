@@ -2,10 +2,10 @@
   <div class="report-error-card padding-bottom--1">
     <PNotificationCard :pTime="formatDate(detectionDate)">
       <template #text>
-        <p class="report-error-card__title font-base font-semibold text-color--persian-600">
+        <p class="report-error-card__title font-base font-semibold text-color--jungle-600">
           {{ reportName }}
         </p>
-        <p class="report-error-card__id font-base text-color--persian-400 margin-y--1">
+        <p class="report-error-card__id font-base text-color--jungle-400 margin-y--1">
           {{ embedReportId }}
         </p>
         <ul class="report-error-card__message">
@@ -25,10 +25,10 @@
 
       <template #tag>
         <PTag
-          class="report-error-card__type font-xsmall text-color--persian-400"
+          class="report-error-card__type font-xsmall text-color--jungle-400"
           :pContent="reportTypeTag.text"
           :pIconLeftName="reportTypeTag.iconName"
-          pColor="amethyste"
+          pColor="fuschia"
           pEffect="light"
           pRound
           data-testid="report-error-tag"

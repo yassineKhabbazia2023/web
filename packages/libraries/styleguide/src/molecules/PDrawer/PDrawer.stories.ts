@@ -119,7 +119,7 @@ export const WithHeaderToolbox: Story = {
       <div>
         <PDrawer v-bind="args" v-model="open" @p-toolbox-item-clicked="onClick">
           <div style="padding: 16px;">Utilisez la roue pour accéder aux actions</div>
-          <div v-if="lastAction" style="padding: 0 16px 16px; color: var(--el-color-info);">
+          <div v-if="lastAction" style="padding: 0 16px 16px; color: var(--p-teal-500);">
             Dernière action: {{ lastAction }}
           </div>
         </PDrawer>

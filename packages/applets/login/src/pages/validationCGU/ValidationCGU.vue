@@ -30,7 +30,7 @@
           <a
             :href="urlTerms"
             target="_blank"
-            class="validation-cgu__link font-bold text-color--persian-500"
+            class="validation-cgu__link font-bold text-color--black-rock-700"
           >
             {{ t('cguLink') }}
           </a>

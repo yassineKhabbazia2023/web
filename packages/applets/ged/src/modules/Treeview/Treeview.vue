@@ -609,7 +609,7 @@ defineExpose({
   overflow: hidden;
   padding-bottom: 40px;
 
-  border-right: 1px solid var(--el-color-neutral-gray-100);
+  border-right: 1px solid var(--p-gray-100);
 
   & > div:not(.treeview__loader) {
     height: 100%;

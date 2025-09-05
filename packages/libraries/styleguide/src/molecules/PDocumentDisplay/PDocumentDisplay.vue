@@ -121,7 +121,7 @@ iframe.preview {
 }
 
 .text-section_title {
-  color: var(--el-color-white);
+  color: var(--p-white);
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
@@ -133,7 +133,7 @@ iframe.preview {
 }
 
 .text-section_second {
-  color: var(--el-color-white);
+  color: var(--p-white);
   font-size: 12px;
   font-style: normal;
   font-weight: 400;

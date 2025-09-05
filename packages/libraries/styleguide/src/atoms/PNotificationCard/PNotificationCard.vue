@@ -55,18 +55,18 @@ withDefaults(defineProps<PNotificationCardProps>(), {
 .p-notification-card {
   $self: &;
   position: relative;
-  background: var(--el-color-white);
+  background: var(--p-white);
   transition: all 0.1s ease;
   border-left: 4px solid transparent;
 
   &--new {
-    background: var(--el-color-black-rock-100);
-    border-color: var(--el-color-secondary-amethyste);
+    background: var(--p-black-rock-100);
+    border-color: var(--p-jungle-400);
   }
 
   &:hover,
   &:focus {
-    background: var(--el-color-secondary-cyan-bg);
+    background: var(--p-tranquil-50);
   }
 
   &__button {
@@ -89,7 +89,7 @@ withDefaults(defineProps<PNotificationCardProps>(), {
     &__tag {
       width: 42px;
       text-align: center;
-      color: var(--el-color-neutral-gray-400);
+      color: var(--p-gray-400);
     }
   }
 

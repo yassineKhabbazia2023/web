@@ -87,8 +87,8 @@ defineProps<PMaintenanceProps>()
   $self: &;
 
   height: 100%;
-  color: var(--el-color-base-white);
-  background: var(--el-color-base-blue-pulse);
+  color: var(--p-white);
+  background: var(--p-black-rock-900);
 
   &__body {
     width: 100%;

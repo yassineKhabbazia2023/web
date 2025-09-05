@@ -22,21 +22,21 @@ const currentCellNumberModifier = computed(() => `${rootWrapperClass}--state-${p
   width: 24px;
   height: 24px;
   font-weight: 600;
-  color: var(--el-color-neutral-gray-900);
+  color: var(--p-gray-900);
 
   &--state-inactive {
-    background-color: var(--el-color-neutral-gray-50);
-    color: var(--el-color-neutral-gray-300);
+    background-color: var(--p-gray-50);
+    color: var(--p-gray-300);
     font-weight: 400;
   }
 
   &--state-active {
-    background-color: var(--el-color-base-persian);
-    color: var(--el-color-base-white);
+    background-color: var(--p-jungle-400);
+    color: var(--p-white);
   }
 
   &--state-current {
-    color: var(--el-color-base-persian);
+    color: var(--p-jungle-400);
   }
 }
 </style>

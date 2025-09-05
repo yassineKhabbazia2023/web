@@ -8,6 +8,6 @@ $calendar: (
       1px solid #{var(--el-border-color-lighter)}
     ),
   'header-border-bottom': var(--el-calendar-border),
-  'selected-bg-color': var(--el-color-white),
+  'selected-bg-color': var(--p-white),
   'cell-width': calc(100% / 7),
 );

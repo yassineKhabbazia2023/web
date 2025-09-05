@@ -175,7 +175,7 @@ const internalDropdownValue = computed({
   }
 
   &__description {
-    color: var(--el-color-neutral-gray-500);
+    color: var(--p-gray-500);
     font-size: 1.2rem;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -183,7 +183,7 @@ const internalDropdownValue = computed({
   }
 
   &__role {
-    color: var(--el-color-neutral-gray-300);
+    color: var(--p-gray-300);
   }
 
   &__input,

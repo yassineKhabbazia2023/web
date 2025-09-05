@@ -87,5 +87,4 @@ export * from './organisms/PError/PErrorTypes'
 export * from './organisms/PTree/PTreeTypes'
 
 export * from './types/AppTypes'
-export * from './types/color-name'
 export * from './types/IconName.types'

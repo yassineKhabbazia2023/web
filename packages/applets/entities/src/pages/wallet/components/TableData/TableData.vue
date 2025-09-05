@@ -364,7 +364,7 @@ const onSelectedFolder = (row: any) => {
 <style lang="scss">
 .wallet-table {
   .current-row > td:first-child {
-    border-color: var(--el-color-base-persian) !important;
+    border-color: var(--p-jungle-400) !important;
   }
 }
 </style>

@@ -34,27 +34,27 @@ const pClassMapper = computed(() => ({
 
   &--status {
     &-done {
-      background: var(--el-color-functionnal-green-bg);
+      background: var(--p-green-100);
       #{$self}__numb-tasks {
-        color: var(--el-color-functionnal-green-txt);
+        color: var(--p-green-800);
       }
     }
     &-disabled {
-      background: var(--el-color-neutral-gray-100);
+      background: var(--p-gray-100);
       #{$self}__numb-tasks {
-        color: var(--el-color-neutral-gray-500);
+        color: var(--p-gray-500);
       }
     }
     &-todo {
-      background: var(--el-color-persian-100);
+      background: var(--p-jungle-100);
 
       #{$self}__numb-tasks {
-        color: var(--el-color-persian-600);
+        color: var(--p-jungle-600);
       }
     }
   }
   &__title {
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;

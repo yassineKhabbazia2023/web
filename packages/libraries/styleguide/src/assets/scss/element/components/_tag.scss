@@ -16,249 +16,276 @@ $tag-padding: (
   $self: &;
 
   &#{$self}--dark {
-    --el-tag-bg-color: var(--el-color-persian-500);
-    --el-tag-border-color: var(--el-color-persian-500);
-    --el-tag-hover-color: var(--el-color-persian-100);
+    --el-tag-bg-color: var(--p-jungle-400);
+    --el-tag-border-color: var(--p-jungle-400);
+    --el-tag-hover-color: var(--p-jungle-100);
 
     &#{$self}--success {
-      --el-tag-bg-color: var(--el-color-functionnal-green);
-      --el-tag-border-color: var(--el-color-functionnal-green);
-      --el-tag-hover-color: var(--el-color-functionnal-green-bg);
+      --el-tag-bg-color: var(--p-green-500);
+      --el-tag-border-color: var(--p-green-500);
+      --el-tag-hover-color: var(--p-green-100);
     }
 
     &#{$self}--warning {
-      --el-tag-bg-color: var(--el-color-functionnal-orange);
-      --el-tag-border-color: var(--el-color-functionnal-orange);
-      --el-tag-hover-color: var(--el-color-functionnal-orange-bg);
+      --el-tag-bg-color: var(--p-orange-500);
+      --el-tag-border-color: var(--p-orange-500);
+      --el-tag-hover-color: var(--p-orange-100);
     }
 
     &#{$self}--danger {
-      --el-tag-bg-color: var(--el-color-functionnal-red);
-      --el-tag-border-color: var(--el-color-functionnal-red);
-      --el-tag-hover-color: var(--el-color-functionnal-red-bg);
+      --el-tag-border-color: var(--p-surface-alert);
+      --el-tag-hover-color: var(--p-surface-alert);
+      --el-tag-text-color: var(--p-text-white);
+    }
+
+    &#{$self}--red {
+      --el-tag-bg-color: var(--p-red-500);
+      --el-tag-border-color: var(--p-red-500);
+      --el-tag-hover-color: var(--p-red-100);
     }
 
     &#{$self}--info {
-      --el-tag-bg-color: var(--el-color-functionnal-teal);
-      --el-tag-border-color: var(--el-color-functionnal-teal);
-      --el-tag-hover-color: var(--el-color-functionnal-teal-bg);
+      --el-tag-bg-color: var(--p-teal-500);
+      --el-tag-border-color: var(--p-teal-500);
+      --el-tag-hover-color: var(--p-teal-100);
     }
 
     &#{$self}--fuschia {
-      --el-tag-bg-color: var(--el-color-secondary-fuschia);
-      --el-tag-border-color: var(--el-color-secondary-fuschia);
-      --el-tag-hover-color: var(--el-color-secondary-fuschia-bg);
+      --el-tag-bg-color: var(--p-persian-800);
+      --el-tag-border-color: var(--p-persian-800);
+      --el-tag-hover-color: var(--p-persian-100);
     }
 
     &#{$self}--amethyste {
-      --el-tag-bg-color: var(--el-color-secondary-fuschia-bg);
-      --el-tag-border-color: var(--el-color-secondary-fuschia-bg);
-      --el-tag-hover-color: var(--el-color-secondary-amethyste-bg);
+      --el-tag-bg-color: var(--p-black-rock-100);
+      --el-tag-border-color: var(--p-black-rock-100);
+      --el-tag-hover-color: var(--p-jungle-50);
     }
 
     &#{$self}--cyan {
-      --el-tag-bg-color: var(--el-color-secondary-cyan);
-      --el-tag-border-color: var(--el-color-secondary-cyan);
-      --el-tag-hover-color: var(--el-color-secondary-cyan);
-      --el-tag-text-color: var(--el-color-secondary-cyan-txt);
+      --el-tag-bg-color: var(--p-mint-tulip-500);
+      --el-tag-border-color: var(--p-mint-tulip-500);
+      --el-tag-hover-color: var(--p-mint-tulip-500);
+      --el-tag-text-color: var(--p-mint-tulip-800);
     }
 
     &#{$self}--gray-500 {
-      --el-tag-bg-color: var(--el-color-neutral-gray-500);
-      --el-tag-border-color: var(--el-color-neutral-gray-500);
-      --el-tag-hover-color: var(--el-color-neutral-gray-50)
+      --el-tag-bg-color: var(--p-gray-500);
+      --el-tag-border-color: var(--p-gray-500);
+      --el-tag-hover-color: var(--p-gray-50)
     }
 
     &#{$self}--gray-900 {
-      --el-tag-bg-color: var(--el-color-neutral-gray-900);
-      --el-tag-border-color: var(--el-color-neutral-gray-900);
-      --el-tag-hover-color: var(--el-color-neutral-gray-100)
+      --el-tag-bg-color: var(--p-gray-900);
+      --el-tag-border-color: var(--p-gray-900);
+      --el-tag-hover-color: var(--p-gray-100)
     }
 
     &#{$self}--gray-300 {
-      --el-tag-bg-color: var(--el-color-neutral-gray-300);
-      --el-tag-border-color: var(--el-color-neutral-gray-300);
-      --el-tag-hover-color: var(--el-color-neutral-gray-50)
+      --el-tag-bg-color: var(--p-gray-300);
+      --el-tag-border-color: var(--p-gray-300);
+      --el-tag-hover-color: var(--p-gray-50)
     }
 
     &#{$self}--persian {
-      --el-tag-bg-color: var(--el-color-persian-500);
-      --el-tag-border-color: var(--el-color-persian-500);
-      --el-tag-hover-color: var(--el-color-persian-100);
+      --el-tag-bg-color: var(--p-jungle-400);
+      --el-tag-border-color: var(--p-jungle-400);
+      --el-tag-hover-color: var(--p-jungle-100);
     }
 
     &#{$self}--blue-pulse {
-      --el-tag-bg-color: var(--el-color-base-blue-pulse);
-      --el-tag-border-color: var(--el-color-base-blue-pulse);
-      --el-tag-hover-color: var(--el-color-persian-700);
+      --el-tag-bg-color: var(--p-black-rock-900);
+      --el-tag-border-color: var(--p-black-rock-900);
+      --el-tag-hover-color: var(--p-jungle-700);
     }
   }
 
   &#{$self}--light {
-    --el-tag-bg-color: var(--el-color-persian-100);
-    --el-tag-border-color: var(--el-color-persian-100);
-    --el-tag-hover-color: var(--el-color-persian-500);
-    --el-tag-text-color: var(--el-color-persian-500);
+    --el-tag-bg-color: var(--p-jungle-100);
+    --el-tag-border-color: var(--p-jungle-100);
+    --el-tag-hover-color: var(--p-jungle-400);
+    --el-tag-text-color: var(--p-jungle-400);
 
     &#{$self}--success {
-      --el-tag-bg-color: var(--el-color-functionnal-green-bg);
-      --el-tag-border-color: var(--el-color-functionnal-green-bg);
-      --el-tag-hover-color: var(--el-color-functionnal-green);
-      --el-tag-text-color: var(--el-color-functionnal-green-txt);
+      --el-tag-bg-color: var(--p-surface-success);
+      --el-tag-border-color: var(--p-surface-success);
+      --el-tag-hover-color: var(--p-surface-success);
+      --el-tag-text-color: var(--p-text-success);
+    }
+
+    &#{$self}--green {
+      --el-tag-bg-color: var(--p-green-100);
+      --el-tag-border-color: var(--p-green-100);
+      --el-tag-hover-color: var(--p-green-500);
+      --el-tag-text-color: var(--p-green-800);
     }
 
     &#{$self}--warning {
-      --el-tag-bg-color: var(--el-color-functionnal-orange-bg);
-      --el-tag-border-color: var(--el-color-functionnal-orange-bg);
-      --el-tag-hover-color: var(--el-color-functionnal-orange);
-      --el-tag-text-color: var(--el-color-functionnal-orange-txt);
+      --el-tag-bg-color: var(--p-surface-warning);
+      --el-tag-border-color: var(--p-surface-warning);
+      --el-tag-hover-color: var(--p-surface-warning);
+      --el-tag-text-color: var(--p-text-warning);
+    }
+
+    &#{$self}--orange {
+      --el-tag-bg-color: var(--p-orange-100);
+      --el-tag-border-color: var(--p-orange-100);
+      --el-tag-hover-color: var(--p-orange-500);
+      --el-tag-text-color: var(--p-orange-800);
     }
 
     &#{$self}--danger {
-      --el-tag-bg-color: var(--el-color-functionnal-red-bg);
-      --el-tag-border-color: var(--el-color-functionnal-red-bg);
-      --el-tag-hover-color: var(--el-color-functionnal-red);
-      --el-tag-text-color: var(--el-color-functionnal-red-txt);
+      --el-tag-bg-color: var(--p-surface-error);
+      --el-tag-border-color: var(--p-surface-error);
+      --el-tag-hover-color: var(--p-surface-error);
+      --el-tag-text-color: var(--p-text-error);
+    }
+
+    &#{$self}--red {
+      --el-tag-bg-color: var(--p-red-100);
+      --el-tag-border-color: var(--p-red-100);
+      --el-tag-hover-color: var(--p-red-500);
+      --el-tag-text-color: var(--p-red-800);
     }
 
     &#{$self}--info {
-      --el-tag-bg-color: var(--el-color-functionnal-teal-bg);
-      --el-tag-border-color: var(--el-color-functionnal-teal-bg);
-      --el-tag-hover-color: var(--el-color-functionnal-teal);
-      --el-tag-text-color: var(--el-color-functionnal-teal-txt);
+      --el-tag-bg-color: var(--p-teal-100);
+      --el-tag-border-color: var(--p-teal-100);
+      --el-tag-hover-color: var(--p-teal-500);
+      --el-tag-text-color: var(--p-teal-800);
     }
 
     &#{$self}--fuschia {
-      --el-tag-bg-color: var(--el-color-secondary-fuschia-bg);
-      --el-tag-border-color: var(--el-color-secondary-fuschia-bg);
-      --el-tag-hover-color: var(--el-color-secondary-fuschia);
-      --el-tag-text-color: var(--el-color-secondary-fuschia-txt);
+      --el-tag-bg-color: var(--p-persian-100);
+      --el-tag-border-color: var(--p-persian-100);
+      --el-tag-hover-color: var(--p-persian-800);
+      --el-tag-text-color: var(--p-persian-800);
     }
 
     &#{$self}--amethyste {
-      --el-tag-bg-color: var(--el-color-secondary-fuschia-bg);
-      --el-tag-border-color: var(--el-color-secondary-fuschia-bg);
-      --el-tag-hover-color: var(--el-color-secondary-fuschia-bg);
-      --el-tag-text-color: var(--el-color-secondary-fuschia);
+      --el-tag-bg-color: var(--p-black-rock-100);
+      --el-tag-border-color: var(--p-black-rock-100);
+      --el-tag-hover-color: var(--p-black-rock-100);
+      --el-tag-text-color: var(--p-black-rock-700);
     }
 
     &#{$self}--cyan {
-      --el-tag-bg-color: var(--el-color-secondary-cyan-bg);
-      --el-tag-border-color: var(--el-color-secondary-cyan-bg);
-      --el-tag-hover-color: var(--el-color-secondary-cyan);
-      --el-tag-text-color: var(--el-color-secondary-cyan-txt);
+      --el-tag-bg-color: var(--p-tranquil-50);
+      --el-tag-border-color: var(--p-tranquil-50);
+      --el-tag-hover-color: var(--p-mint-tulip-500);
+      --el-tag-text-color: var(--p-mint-tulip-800);
     }
 
     &#{$self}--gray-500 {
-      --el-tag-bg-color: var(--el-color-neutral-gray-50);
-      --el-tag-border-color: var(--el-color-neutral-gray-50);
-      --el-tag-hover-color: var(--el-color-neutral-gray-500);
-      --el-tag-text-color: var(--el-color-neutral-gray-500);
+      --el-tag-bg-color: var(--p-gray-50);
+      --el-tag-border-color: var(--p-gray-50);
+      --el-tag-hover-color: var(--p-gray-500);
+      --el-tag-text-color: var(--p-gray-500);
     }
 
     &#{$self}--gray-900 {
-      --el-tag-bg-color: var(--el-color-neutral-gray-100);
-      --el-tag-border-color: var(--el-color-neutral-gray-100);
-      --el-tag-hover-color: var(--el-color-neutral-gray-900);
-      --el-tag-text-color: var(--el-color-neutral-gray-900);
+      --el-tag-bg-color: var(--p-gray-100);
+      --el-tag-border-color: var(--p-gray-100);
+      --el-tag-hover-color: var(--p-gray-900);
+      --el-tag-text-color: var(--p-gray-900);
     }
 
     &#{$self}--gray-300 {
-      --el-tag-bg-color: var(--el-color-neutral-gray-50);
-      --el-tag-border-color: var(--el-color-neutral-gray-50);
-      --el-tag-hover-color: var(--el-color-neutral-gray-300);
-      --el-tag-text-color: var(--el-color-neutral-gray-300);
+      --el-tag-bg-color: var(--p-gray-50);
+      --el-tag-border-color: var(--p-gray-50);
+      --el-tag-hover-color: var(--p-gray-300);
+      --el-tag-text-color: var(--p-gray-300);
     }
 
     &#{$self}--persian {
-      --el-tag-bg-color: var(--el-color-persian-100);
-      --el-tag-border-color: var(--el-color-persian-100);
-      --el-tag-hover-color: var(--el-color-persian-500);
-      --el-tag-text-color: var(--el-color-persian-800);
+      --el-tag-bg-color: var(--p-jungle-100);
+      --el-tag-border-color: var(--p-jungle-100);
+      --el-tag-hover-color: var(--p-jungle-400);
+      --el-tag-text-color: var(--p-jungle-800);
     }
 
     &#{$self}--blue-pulse {
-      --el-tag-bg-color: var(--el-color-base-blue-pulse);
-      --el-tag-border-color: var(--el-color-base-blue-pulse);
-      --el-tag-hover-color: var(--el-color-persian-700);
+      --el-tag-bg-color: var(--p-black-rock-900);
+      --el-tag-border-color: var(--p-black-rock-900);
+      --el-tag-hover-color: var(--p-jungle-700);
     }
   }
 
   &#{$self}--plain {
-    --el-tag-border-color: var(--el-color-persian-500);
-    --el-tag-hover-color: var(--el-color-persian-500);
-    --el-tag-text-color: var(--el-color-persian-500);
+    --el-tag-border-color: var(--p-jungle-400);
+    --el-tag-hover-color: var(--p-jungle-400);
+    --el-tag-text-color: var(--p-jungle-400);
 
     &#{$self}--success {
-      --el-tag-border-color: var(--el-color-functionnal-green);
-      --el-tag-hover-color: var(--el-color-functionnal-green);
-      --el-tag-text-color: var(--el-color-functionnal-green);
+      --el-tag-border-color: var(--p-green-500);
+      --el-tag-hover-color: var(--p-green-500);
+      --el-tag-text-color: var(--p-green-500);
     }
 
     &#{$self}--warning {
-      --el-tag-border-color: var(--el-color-functionnal-orange);
-      --el-tag-hover-color: var(--el-color-functionnal-orange);
-      --el-tag-text-color: var(--el-color-functionnal-orange);
+      --el-tag-border-color: var(--p-orange-500);
+      --el-tag-hover-color: var(--p-orange-500);
+      --el-tag-text-color: var(--p-orange-500);
     }
 
     &#{$self}--danger {
-      --el-tag-border-color: var(--el-color-functionnal-red);
-      --el-tag-hover-color: var(--el-color-functionnal-red);
-      --el-tag-text-color: var(--el-color-functionnal-red);
+      --el-tag-border-color: var(--p-red-500);
+      --el-tag-hover-color: var(--p-red-500);
+      --el-tag-text-color: var(--p-red-500);
     }
 
     &#{$self}--info {
-      --el-tag-border-color: var(--el-color-functionnal-teal);
-      --el-tag-hover-color: var(--el-color-functionnal-teal);
-      --el-tag-text-color: var(--el-color-functionnal-teal);
+      --el-tag-border-color: var(--p-teal-500);
+      --el-tag-hover-color: var(--p-teal-500);
+      --el-tag-text-color: var(--p-teal-500);
     }
 
     &#{$self}--fuschia {
-      --el-tag-border-color: var(--el-color-secondary-fuschia);
-      --el-tag-hover-color: var(--el-color-secondary-fuschia);
-      --el-tag-text-color: var(--el-color-secondary-fuschia);
+      --el-tag-border-color: var(--p-persian-800);
+      --el-tag-hover-color: var(--p-persian-800);
+      --el-tag-text-color: var(--p-persian-800);
     }
 
     &#{$self}--amethyste {
-      --el-tag-border-color: var(--el-color-secondary-amethyste);
-      --el-tag-hover-color: var(--el-color-secondary-amethyste);
-      --el-tag-text-color: var(--el-color-secondary-amethyste);
+      --el-tag-border-color: var(--p-jungle-400);
+      --el-tag-hover-color: var(--p-jungle-400);
+      --el-tag-text-color: var(--p-jungle-400);
     }
 
     &#{$self}--cyan {
-      --el-tag-border-color: var(--el-color-secondary-cyan);
-      --el-tag-hover-color: var(--el-color-secondary-cyan);
-      --el-tag-text-color: var(--el-color-secondary-cyan);
+      --el-tag-border-color: var(--p-mint-tulip-500);
+      --el-tag-hover-color: var(--p-mint-tulip-500);
+      --el-tag-text-color: var(--p-mint-tulip-500);
     }
 
     &#{$self}--gray-500 {
-      --el-tag-border-color: var(--el-color-neutral-gray-500);
-      --el-tag-hover-color: var(--el-color-neutral-gray-500);
-      --el-tag-text-color: var(--el-color-neutral-gray-500);
+      --el-tag-border-color: var(--p-gray-500);
+      --el-tag-hover-color: var(--p-gray-500);
+      --el-tag-text-color: var(--p-gray-500);
     }
 
     &#{$self}--gray-900 {
-      --el-tag-border-color: var(--el-color-neutral-gray-900);
-      --el-tag-hover-color: var(--el-color-neutral-gray-900);
-      --el-tag-text-color: var(--el-color-neutral-gray-900);
+      --el-tag-border-color: var(--p-gray-900);
+      --el-tag-hover-color: var(--p-gray-900);
+      --el-tag-text-color: var(--p-gray-900);
     }
 
     &#{$self}--gray-300 {
-      --el-tag-border-color: var(--el-color-neutral-gray-300);
-      --el-tag-hover-color: var(--el-color-neutral-gray-300);
-      --el-tag-text-color: var(--el-color-neutral-gray-300);
+      --el-tag-border-color: var(--p-gray-300);
+      --el-tag-hover-color: var(--p-gray-300);
+      --el-tag-text-color: var(--p-gray-300);
     }
 
     &#{$self}--persian {
-      --el-tag-border-color: var(--el-color-persian-500);
-      --el-tag-hover-color: var(--el-color-persian-500);
-      --el-tag-text-color: var(--el-color-persian-500);
+      --el-tag-border-color: var(--p-jungle-400);
+      --el-tag-hover-color: var(--p-jungle-400);
+      --el-tag-text-color: var(--p-jungle-400);
     }
 
     &#{$self}--blue-pulse {
-      --el-tag-bg-color: var(--el-color-base-blue-pulse);
-      --el-tag-border-color: var(--el-color-base-blue-pulse);
-      --el-tag-hover-color: var(--el-color-persian-700);
+      --el-tag-bg-color: var(--p-black-rock-900);
+      --el-tag-border-color: var(--p-black-rock-900);
+      --el-tag-hover-color: var(--p-jungle-700);
     }
   }
 
@@ -301,42 +328,42 @@ $tag-padding: (
 
   // For tags in select
   .el-tag.el-tag--info.el-tag--default.el-tag--light {
-    background-color: var(--el-color-neutral-gray-100);
-    border-color: var(--el-color-neutral-gray-100);
-    --el-tag-hover-color: var(--el-color-neutral-gray-900);
-    --el-tag-text-color: var(--el-color-neutral-gray-900);
+    background-color: var(--p-gray-100);
+    border-color: var(--p-gray-100);
+    --el-tag-hover-color: var(--p-gray-900);
+    --el-tag-text-color: var(--p-gray-900);
   }
 }
 
 // CSS for component Pastille
 .el-tag.p-pastille {
-  background: var(--el-color-surface-state-selection);
-  color: var(--el-color-persian-500);
-  border: var(--el-color-persian-50);
+  background: var(--p-jungle-50);
+  color: var(--p-jungle-400);
+  border: var(--p-jungle-75);
   font-weight: 600;
   padding: 4px;
   min-width: 22px;
 
   &--disabled {
-    background: var(--el-color-surface-disabled);
-    border: var(--el-color-neutral-gray-100);
-    color: var(--el-color-text-disabled);
+    background: var(--p-gray-50);
+    border: var(--p-gray-100);
+    color: var(--p-gray-300);
   }
 
   &--type-warning {
-    background: var(--el-color-functionnal-red);
-    border: var(--el-color-functionnal-red);
-    color: var(--el-color-base-white);
+    background: var(--p-red-500);
+    border: var(--p-red-500);
+    color: var(--p-white);
   }
 
   &--type-persian {
-    background: var(--el-color-persian-500);
-    border: var(--el-color-persian-500);
-    color: var(--el-color-base-white);
+    background: var(--p-jungle-400);
+    border: var(--p-jungle-400);
+    color: var(--p-white);
   }
 
   &--type-white {
-    background: var(--el-color-base-white);
+    background: var(--p-white);
     border: none;
     color: inherit;
   }

@@ -44,7 +44,7 @@ const entityAvatarColor = computed(() => getAvatarColorFromKey(props.accountNumb
  &__fake-pipe {
     width: 1px;
     height: 12px;
-    background: var(--el-color-neutral-gray-300);
+    background: var(--p-gray-300);
  }
 }
 </style>

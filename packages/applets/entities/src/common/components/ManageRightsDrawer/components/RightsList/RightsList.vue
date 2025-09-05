@@ -273,7 +273,7 @@ const handleInfoIconClick = (event: MouseEvent) => {
   }
   & + & {
     margin-top: 1.2rem;
-    border-top: 1px solid var(--el-color-neutral-gray-100);
+    border-top: 1px solid var(--p-gray-100);
   }
   .additional-infos-icon {
     vertical-align: bottom;

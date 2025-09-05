@@ -14,7 +14,7 @@
       #{$self}__nav-wrap {
         margin: 0;
         &::after {
-         background: var(--el-color-neutral-gray-100); 
+         background: var(--p-gray-100); 
         }
       } 
 
@@ -50,17 +50,17 @@
 
   &.p-tabs--type-card {
     > #{$self}__header {
-      border-color: var(--el-color-neutral-gray-100);
+      border-color: var(--p-gray-100);
 
       #{$self}__nav {
         border-radius: var(--el-border-radius-base) var(--el-border-radius-base) 0 0;
-        border-color: var(--el-color-neutral-gray-100);
+        border-color: var(--p-gray-100);
       }
 
       #{$self}__item {
         padding: 0 16px;
         margin-bottom: -1px;
-        border-color: var(--el-color-neutral-gray-100);
+        border-color: var(--p-gray-100);
         font-weight: 400;
 
         &.is-active {
@@ -83,7 +83,7 @@
       #{$self}__nav {
         height: 32px;
         border-radius: var(--el-border-radius-base);
-        border: 1px solid var(--el-color-neutral-gray-100);
+        border: 1px solid var(--p-gray-100);
         overflow: hidden;
 
         #{$self}__active-bar {
@@ -95,14 +95,14 @@
         width: 32px;
         height: 100%;
         padding: 0;
-        border-right: 1px solid var(--el-color-neutral-gray-100);
-        background: var(--el-color-neutral-gray-50);
+        border-right: 1px solid var(--p-gray-100);
+        background: var(--p-gray-50);
         transition: all var(--el-transition-duration)
         var(--el-transition-function-ease-in-out-bezier);
 
         &:hover {
           .p-tab-pane__icon {
-            color: var(--el-color-persian-500);
+            color: var(--p-jungle-400);
           }
         }
 
@@ -111,10 +111,10 @@
         }
 
         &.is-active {
-          background: var(--el-color-white);
+          background: var(--p-white);
 
           .p-tab-pane__icon {
-            color: var(--el-color-neutral-gray-900);
+            color: var(--p-gray-900);
           }
         }
       }
@@ -122,7 +122,7 @@
       .p-tab-pane__icon {
         width: 100%;
         height: 100%;
-        color: var(--el-color-neutral-gray-500);
+        color: var(--p-gray-500);
         transition: color 0.3s ease;
       }
     }
@@ -130,9 +130,9 @@
 
   #{$self}__item:not(.is-active) {
     .p-pastille.p-pastille--persian {
-      background: var(--el-color-neutral-gray-50);
-      border: var(--el-color-neutral-gray-50);
-      color: var(--el-color-neutral-gray-500);
+      background: var(--p-gray-50);
+      border: var(--p-gray-50);
+      color: var(--p-gray-500);
     }
   }
 }

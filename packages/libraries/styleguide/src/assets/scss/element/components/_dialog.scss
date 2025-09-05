@@ -10,7 +10,7 @@ $dialog: (
   'content-font-size': 1.4rem,
   'font-line-height': var(--el-font-line-height-primary),
   'padding-primary': 20px,
-  'background': var(--el-color-base-white)
+  'background': var(--p-white)
 );
 
 .p-dialog {
@@ -32,14 +32,14 @@ $dialog: (
 
   .el-dialog__title {
     display: flex;
-    color: var(--el-color-black-rock-900);
+    color: var(--p-black-rock-900);
     padding-right: 44px;
     word-break: break-word;
     font-weight: 600;
   }
 
   .p-dialog__title {
-    color: var(--el-color-black-rock-900);
+    color: var(--p-black-rock-900);
     font-weight: 600;
   }
 

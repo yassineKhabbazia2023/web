@@ -138,13 +138,13 @@ const clearModalInputValue = () => {
     &-label {
       font-size: 12px;
       font-weight: 600;
-      color: var(--el-color-neutral-gray-900);
+      color: var(--p-gray-900);
     }
 
     &-error {
       font-weight: 400;
       line-height: 120%;
-      color: var(--el-color-functionnal-red);
+      color: var(--p-red-500);
       display: flex;
       gap: 8px;
       align-items: center;

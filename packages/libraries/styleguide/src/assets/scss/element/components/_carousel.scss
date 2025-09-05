@@ -4,8 +4,8 @@
 $carousel: (
   'arrow-font-size': 12px,
   'arrow-size': 36px,
-  'arrow-background': var(--el-color-white),
-  'arrow-hover-background': var(--el-color-white),
+  'arrow-background': var(--p-white),
+  'arrow-hover-background': var(--p-white),
   'indicator-width': 6px,
   'indicator-height': 6px,
   'indicator-padding-horizontal': 4px,
@@ -18,14 +18,14 @@ $carousel: (
   background: var(--persian-light-gradient);
 
   &__arrow {
-    border: 1px solid var(--el-color-persian-200);
-    color: var(--el-color-persian-200);
+    border: 1px solid var(--p-jungle-200);
+    color: var(--p-jungle-200);
 
     &:active,
     &:hover,
     &:focus {
-      border: 1px solid var(--el-color-base-persian);
-      color: var(--el-color-base-persian);
+      border: 1px solid var(--p-jungle-400);
+      color: var(--p-jungle-400);
     }
   }
 
@@ -34,13 +34,13 @@ $carousel: (
       &.is-active {
         .el-carousel__button {
           width: 20px;
-          background: var(--el-color-white);
+          background: var(--p-white);
         }
       }
     }
 
     > .el-carousel__button {
-      color: var(--el-color-neutral-gray-100);
+      color: var(--p-gray-100);
     }
   }
 }
@@ -63,7 +63,7 @@ $carousel: (
   &__text {
     padding: 16px 12px;
     font-size: 16px;
-    color: var(--el-color-white);
+    color: var(--p-white);
     text-align: center;
   }
 

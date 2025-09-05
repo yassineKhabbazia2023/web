@@ -101,11 +101,11 @@ onMounted(async () => {
   &__filter-group {
     &--with-separator {
       height: 32px;
-      border-right: 1px solid var(--el-color-neutral-gray-100);;
+      border-right: 1px solid var(--p-gray-100);;
     }
   }
   &__title {
-    color: var(--el-color-neutral-gray-500);
+    color: var(--p-gray-500);
   }
 }
 </style>

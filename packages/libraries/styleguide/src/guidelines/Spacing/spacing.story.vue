@@ -361,9 +361,9 @@ const groups: Group[] = [{
   border-collapse: collapse;
 
   thead {
-    background: var(--el-color-neutral-gray-50);
-    color: var(--el-color-neutral-gray-500);
-    border-bottom: 1px solid var(--el-color-neutral-gray-100);
+    background: var(--p-gray-50);
+    color: var(--p-gray-500);
+    border-bottom: 1px solid var(--p-gray-100);
   }
 
   th {
@@ -384,8 +384,8 @@ const groups: Group[] = [{
 
   td {
     padding: 12px 16px;
-    border-bottom: 1px solid var(--el-color-neutral-gray-100);
-    color: var(--el-color-neutral-gray-900);
+    border-bottom: 1px solid var(--p-gray-100);
+    color: var(--p-gray-900);
     font-weight: 400;
     font-size: 14px;
     line-height: 120%;
@@ -405,8 +405,8 @@ const groups: Group[] = [{
 }
 
 .darker {
-  background-color: var(--el-color-persian-900) !important;
-  border: 1px solid var(--el-color-persian-900);
+  background-color: var(--p-jungle-900) !important;
+  border: 1px solid var(--p-jungle-900);
 }
 </style>
 <docs lang="md">

@@ -23,7 +23,7 @@
             >
               <h1 class="home-folder__title font-semibold">
                 {{ t('entityWelcomeTitle') }}
-                <span class="text-color--base-persian">{{ t('brandName') }}</span>
+                <span class="text-color--jungle-400">{{ t('brandName') }}</span>
               </h1>
             </PCol>
           </PRow>
@@ -78,7 +78,7 @@
                   >
                     <template #loginUrl>
                       <a
-                        class="text-color--base-persian text-underline"
+                        class="text-color--jungle-400 text-underline"
                         :href="loginUrl"
                         target="_blank"
                       >
@@ -144,7 +144,7 @@
           class="
             home-folder__mobile
             height-100
-            bg--polar-50
+            bg--jungle-50
             padding-top--6
             padding-left--6
             padding-right--6
@@ -163,7 +163,7 @@
                   font-xsmall
                   text-uppercase
                   font-bold
-                  text-color--base-persian
+                  text-color--jungle-400
                 "
                   >
                     {{ t('mobileApp') }}

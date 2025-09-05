@@ -139,7 +139,7 @@ const prefixIcon = computed(() => getIconComponent('calendarEvent'))
   }
   .today {
     font-weight: 600;
-    color: var(--el-color-persian-500);
+    color: var(--p-jungle-400);
   }
   .current {
     font-weight: 600;

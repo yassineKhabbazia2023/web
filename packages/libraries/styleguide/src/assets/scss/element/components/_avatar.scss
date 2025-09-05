@@ -2,7 +2,7 @@
 
 // css3 var in packages/theme-chalk/src/avatar.scss
 $avatar: (
-  'text-color': var(--el-color-white),
+  'text-color': var(--p-white),
   'bg-color': var(--el-text-color-disabled),
   'text-size': 14px,
   'icon-size': 18px,
@@ -70,93 +70,93 @@ $avatar-size: (
 
     &--color-persian-gradient {
       border: none;
-      background: var(--el-color-secondary-amethyste);
-      color: var(--el-color-white);
+      background: var(--p-jungle-400);
+      color: var(--p-white);
     }
 
     &--color-orange {
-      border-color: var(--el-color-surface-active);
-      background: var(--el-color-surface-active);
-      color: var(--el-color-black-rock-900);
+      border-color: var(--p-black-rock-200);
+      background: var(--p-black-rock-200);
+      color: var(--p-black-rock-900);
     }
 
     &--color-persian {
-      border-color: var(--el-color-polar-50);
-      background: var(--el-color-polar-50);
-      color: var(--el-color-black-rock-900);
+      border-color: var(--p-jungle-50);
+      background: var(--p-jungle-50);
+      color: var(--p-black-rock-900);
 
     }
 
     &--color-persian-light {
-      border-color: var(--el-color-base-persian-light);
-      background: var(--el-color-base-persian-light);
-      color: var(--el-color-persian-600);
+      border-color: var(--p-tranquil-50);
+      background: var(--p-tranquil-50);
+      color: var(--p-jungle-600);
     }
 
     &--color-persian-400 {
-      border-color: var(--el-color-persian-400);
-      background: var(--el-color-persian-400);
-      color: var(--el-color-persian-50);
+      border-color: var(--p-jungle-400);
+      background: var(--p-jungle-400);
+      color: var(--p-jungle-75);
     }
 
     &--color-persian-600 {
-      border-color: var(--el-color-persian-600);
-      background: var(--el-color-persian-600);
-      color: var(--el-color-white);
+      border-color: var(--p-jungle-600);
+      background: var(--p-jungle-600);
+      color: var(--p-white);
     }
 
     &--color-teal {
-      border-color: var(--el-color-persian-200);
-      background: var(--el-color-persian-200);
-      color: var(--el-color-black-rock-900);
+      border-color: var(--p-jungle-200);
+      background: var(--p-jungle-200);
+      color: var(--p-black-rock-900);
     }
 
     &--color-green {
-      border-color: var(--el-color-persian-600);
-      background: var(--el-color-persian-600);
-      color: var(--el-color-white);
+      border-color: var(--p-jungle-600);
+      background: var(--p-jungle-600);
+      color: var(--p-white);
     }
 
     &--color-fuschia {
-      border-color: var(--el-color-secondary-fuschia);
-      background: var(--el-color-secondary-fuschia);
-      color: var(--el-color-white);
+      border-color: var(--p-black-rock-700);
+      background: var(--p-black-rock-700);
+      color: var(--p-white);
     }
 
     &--color-gray {
-      border-color: var(--el-color-secondary-fuschia-bg);
-      background: var(--el-color-secondary-fuschia-bg);
-      color: var(--el-color-black-rock-900);
+      border-color: var(--p-black-rock-100);
+      background: var(--p-black-rock-100);
+      color: var(--p-black-rock-900);
     }
     
     &--color-white {
-      border-color: var(--el-color-secondary-cyan-bg);
-      background: var(--el-color-secondary-cyan-bg);
-      color: var(--el-color-black-rock-900);
+      border-color: var(--p-tranquil-50);
+      background: var(--p-tranquil-50);
+      color: var(--p-black-rock-900);
     }
     
     &--color-amethyste {
-      border-color: var(--el-color-persian-100);
-      background: var(--el-color-persian-100);
-      color: var(--el-color-black-rock-900);
+      border-color: var(--p-jungle-100);
+      background: var(--p-jungle-100);
+      color: var(--p-black-rock-900);
     }
     
     &--color-cyan {
-      border-color: var(--el-color-functionnal-teal-bg);
-      background: var(--el-color-functionnal-teal-bg);
-      color: var(--el-color-black-rock-900);
+      border-color: var(--p-teal-100);
+      background: var(--p-teal-100);
+      color: var(--p-black-rock-900);
     }
     
     &--color-bordered-persian {
-      border-color: var(--el-color-persian-700);
-      background: var(--el-color-persian-700);
-      color: var(--el-color-white);
+      border-color: var(--p-jungle-700);
+      background: var(--p-jungle-700);
+      color: var(--p-white);
     }
 
     &--color-blue-pulse {
-      border-color: var(--el-color-base-blue-pulse);
-      background: var(--el-color-base-blue-pulse);
-      color: var(--el-color-base-white);
+      border-color: var(--p-black-rock-900);
+      background: var(--p-black-rock-900);
+      color: var(--p-white);
     }
 
     &--selected {

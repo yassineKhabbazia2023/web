@@ -74,7 +74,7 @@ const getAvatarColor = () => {
     z-index: 20;
     position: absolute;
     right: -3px;
-    background-color: var(--el-color-base-white);
+    background-color: var(--p-white);
     border-radius: 50%;
   }
 }

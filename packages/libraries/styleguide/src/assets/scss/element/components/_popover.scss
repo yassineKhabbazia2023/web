@@ -1,7 +1,7 @@
 $popover: (
   'font-size': 12px,
   'title-font-size': 1.4rem,
-  'title-text-color': var(--el-color-neutral-gray-900),
+  'title-text-color': var(--p-gray-900),
 );
 
 .el-popover {
@@ -18,7 +18,7 @@ $popover: (
     }
 
     .el-popover__content {
-      color: var(--el-color-neutral-gray-500);
+      color: var(--p-gray-500);
     }
   }
 }

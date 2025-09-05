@@ -271,12 +271,12 @@ This component (the node) is not inside the design system which is why we overri
   transition: all 150ms ease;
 
   &.hovered-with-dragged-item {
-  border: 1px dashed var(--el-color-primary);
-  background: var(--el-color-persian-100);
+  border: 1px dashed var(--p-jungle-400);
+  background: var(--p-jungle-100);
 
     &--error {
       border: 1px dashed transparent;
-      background: var(--el-color-functionnal-red-bg);
+      background: var(--p-red-100);
     }
   }
 }
@@ -299,7 +299,7 @@ This component (the node) is not inside the design system which is why we overri
   }
 
   &__no-child-icon {
-    color: var(--el-color-neutral-gray-300);
+    color: var(--p-gray-300);
   }
 
   &__icon,

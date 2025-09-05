@@ -1,9 +1,9 @@
 <div>
   <ul class="flex flex--justify-content-space-between list-style-none flex-gap--half">
-    <li class="bg--functionnal-yellow flex--grow-1 height--1"></li>
-    <li class="bg--functionnal-yellow flex--grow-1 height--1"></li>
-    <li class="bg--functionnal-yellow flex--grow-1 height--1"></li>
+    <li class="bg--stroke-warning flex--grow-1 height--1"></li>
+    <li class="bg--stroke-warning flex--grow-1 height--1"></li>
+    <li class="bg--stroke-warning flex--grow-1 height--1"></li>
     <li class="bg--neutral-gray-200 flex--grow-1 height--1"></li>
   </ul>
-  <div class="font-semibold text-color--functionnal-yellow">Moyen</div>
+  <div class="font-semibold text-color--stroke-warning">Moyen</div>
 </div>

@@ -2,36 +2,36 @@
 .el-popper:not(.el-select__popper) {
   $self: &;
   &.is-dark {
-    border: 1px solid var(--el-color-neutral-gray-700);
-    background: var(--el-color-neutral-gray-500);
+    border: 1px solid var(--p-gray-700);
+    background: var(--p-gray-500);
 
     .el-popper__arrow::before {
-      background: var(--el-color-neutral-gray-500);
+      background: var(--p-gray-500);
     }
   }
   
   &.el-popper-popover {
     &[data-popper-placement^=top] {
       #{$self}__arrow::before {
-        box-shadow: var(--el-color-black) 1px 1px 2px -2px;
+        box-shadow: var(--p-gray-900) 1px 1px 2px -2px;
       }
     }
 
     &[data-popper-placement^=bottom] {
       #{$self}__arrow::before {
-        box-shadow: var(--el-color-black) -1px -1px 2px -2px;
+        box-shadow: var(--p-gray-900) -1px -1px 2px -2px;
       }
     }
 
     &[data-popper-placement^=right] {
       #{$self}__arrow::before {
-        box-shadow: var(--el-color-black) -2px 2px 2px -3px;
+        box-shadow: var(--p-gray-900) -2px 2px 2px -3px;
       }
     }
 
     &[data-popper-placement^=left] {
       #{$self}__arrow::before {
-        box-shadow: var(--el-color-black) 2px -2px 2px -3px;
+        box-shadow: var(--p-gray-900) 2px -2px 2px -3px;
       }
     }
   }

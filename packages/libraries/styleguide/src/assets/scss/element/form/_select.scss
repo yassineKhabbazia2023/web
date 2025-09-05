@@ -1,20 +1,20 @@
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 $select: (
-  'close-hover-color': var(--el-color-primary),
+  'close-hover-color': var(--p-jungle-400),
   'multiple-input-color': var(--el-text-color-regular),
-  'input-focus-border-color': var(--el-color-white),
+  'input-focus-border-color': var(--p-white),
   'input-font-size': var(--el-font-size-base),
   'width': 100%,
-  'border-color-hover': var(--el-color-white)
+  'border-color-hover': var(--p-white)
 );
 
 $select-option: (
   'text-color': var(--el-text-color-regular),
   'disabled-color': var(--el-text-color-placeholder),
   'height': 32px,
-  'hover-background':  var(--el-color-base-hover),
-  'selected-text-color': var(--el-color-base-blue-pulse),
+  'hover-background':  var(--p-jungle-50),
+  'selected-text-color': var(--p-black-rock-900),
 );
 
 $select-group: (
@@ -40,18 +40,12 @@ $select-tags-prefix-padding: (
   width: var(--el-select-width);
   box-shadow: none;
   .is-focus {
-    border-bottom-color: var(--el-color-persian-800);
+    border-bottom-color: var(--p-jungle-800);
   }
   .el-input {
     .el-select__caret.el-icon {
       &.is-reverse {
-        color: var(--el-color-primary);
-      }
-    }
-    &.is-disabled.el-input--suffix {
-      border-bottom-color: var(--el-color-neutral-gray-100);
-      div.el-input__wrapper {
-        box-shadow: none;
+        color: var(--p-jungle-400);
       }
     }
   }
@@ -65,7 +59,7 @@ $select-tags-prefix-padding: (
     &.is-dark.el-popper {
       .el-popper__arrow {
         &:before {
-          background: var(--el-color-white);
+          background: var(--p-white);
         }
       }
     }

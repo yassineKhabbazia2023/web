@@ -1,0 +1,46 @@
+/**
+ * Pégase Color Utility Classes
+ * 
+ * Generates utility classes for ALL colors in the design system.
+ * Recursively traverses the color map to create classes for nested colors.
+ * 
+ * Generated patterns:
+ * - .bg--[path] : Background color
+ * - .hover-bg--[path]:hover : Background on hover
+ * - .text-color--[path] : Text color
+ * - .hover-text-color--[path]:hover : Text on hover
+ * 
+ * Path examples:
+ * - white (direct color)
+ * - jungle-400 (group-shade)
+ * - surface-state-hover (nested path)
+ * - button-primary-surface-default (deeply nested)
+ */
+
+@use 'color.variables.scss' as color-variables;
+@use 'legacy.variables.scss' as legacy-variables;
+
+@mixin generate-color-classes($map, $prefix: '') {
+  @each $key, $value in $map {
+    $path: if($prefix == '', $key, '#{$prefix}-#{$key}');
+    
+    @if type-of($value) == 'color' {
+      // Generate utility classes for this color
+      .bg--#{$path},
+      .hover-bg--#{$path}:hover {
+        background-color: $value !important;
+      }
+      .text-color--#{$path},
+      .hover-text-color--#{$path}:hover {
+        color: $value !important;
+      }
+    } @else if type-of($value) == 'map' {
+      // Recurse into nested map
+      @include generate-color-classes($value, $path);
+    }
+  }
+}
+
+// Generate all classes
+@include generate-color-classes(color-variables.$colors);
+@include generate-color-classes(legacy-variables.$colors);

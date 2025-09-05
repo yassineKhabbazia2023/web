@@ -1,4 +1,17 @@
+// These CSS files need to be imported first, don't change their order
+@import '../css/pegase-colors.css';
+@import '../css/figma-proxy.css';
+@import '../css/legacy-colors.css';
 @import './element/index';
-@import './pegase/var';
 @import './pegase/normalize';
 @import './pegase/custom';
+@import './pegase/colors-classes.generation';
+
+// Override Element Plus defaults after all imports (CSS cascade order)
+:root {
+  --el-font-weight-primary: 600;
+
+  --persian-gradient: linear-gradient(90deg, var(--p-jungle-400) 0%, var(--p-jungle-400) 100%);
+  --pulse-gradient: linear-gradient(90deg, var(--p-persian-500) 0%, var(--p-jungle-400) 31.25%, var(--p-jungle-400) 65.63%, var(--p-mint-tulip-500) 100%);
+  --persian-light-gradient: linear-gradient(135deg, var(--p-jungle-300) 0%, var(--p-jungle-400) 100%);
+}

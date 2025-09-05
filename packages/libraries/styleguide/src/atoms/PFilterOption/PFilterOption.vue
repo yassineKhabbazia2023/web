@@ -85,108 +85,108 @@ const colorMapper = computed(() => {
 
   &--color-success {
     &:hover {
-      border-color: var(--el-color-functionnal-green);
+      border-color: var(--p-green-500);
     }
-    background-color: var(--el-color-functionnal-green-bg);
+    background-color: var(--p-green-100);
     #{$self}__icon {
-      color: var(--el-color-functionnal-green-txt);
+      color: var(--p-green-800);
     }
   }
 
   &--color-warning {
     &:hover {
-      border-color: var(--el-color-functionnal-orange);
+      border-color: var(--p-orange-500);
     }
-    background-color: var(--el-color-functionnal-orange-bg);
+    background-color: var(--p-orange-100);
     #{$self}__icon {
-      color: var(--el-color-functionnal-orange-txt);
+      color: var(--p-orange-800);
     }
   }
 
   &--color-amethyste {
     &:hover {
-      border-color: var(--el-color-secondary-fuschia);
+      border-color: var(--p-black-rock-700);
     }
-    background-color: var(--el-color-secondary-fuschia-bg);
+    background-color: var(--p-black-rock-100);
     #{$self}__icon {
-      color: var(--el-color-secondary-fuschia);
+      color: var(--p-black-rock-700);
     }
   }
 
   &--color-fuschia {
     &:hover {
-      border-color: var(--el-color-secondary-fuschia-txt);
+      border-color: var(--p-persian-800);
     }
-    background-color: var(--el-color-secondary-fuschia-bg);
+    background-color: var(--p-persian-100);
     #{$self}__icon {
-      color: var(--el-color-secondary-fuschia-txt);
+      color: var(--p-persian-800);
     }
   }
 
   &--color-danger {
     &:hover {
-      border-color: var(--el-color-functionnal-red);
+      border-color: var(--p-red-500);
     }
-    background-color: var(--el-color-functionnal-red-bg);
+    background-color: var(--p-red-100);
     #{$self}__icon {
-      color: var(--el-color-functionnal-red-txt);
+      color: var(--p-red-800);
     }
   }
 
   &--color-gray-500 {
     &:hover {
-      border-color: var(--el-color-base-blue-pulse);
+      border-color: var(--p-black-rock-900);
     }
-    background-color: var(--el-color-neutral-gray-50);
+    background-color: var(--p-gray-50);
   }
 
   &--color-gray-900 {
     &:hover {
-      border-color: var(--el-color-base-blue-pulse);
+      border-color: var(--p-black-rock-900);
     }
-    background-color: var(--el-color-neutral-gray-100);
+    background-color: var(--p-gray-100);
   }
 
   &--selected {
     &#{$self}--color-success {
-      background-color: var(--el-color-functionnal-green-bg);
-      border-color: var(--el-color-stroke-success);
+      background-color: var(--p-green-100);
+      border-color: var(--p-green-500);
     }
 
     &#{$self}--color-warning {
-      background-color: var(--el-color-functionnal-orange-bg);
-      border-color: var(--el-color-stroke-warning);
+      background-color: var(--p-orange-100);
+      border-color: var(--p-orange-500);
     }
 
     &#{$self}--color-amethyste {
-      background-color: var(--el-color-secondary-fuschia-bg);
-      border-color: var(--el-color-secondary-fuschia);
+      background-color: var(--p-black-rock-100);
+      border-color: var(--p-black-rock-700);
     }
 
     &#{$self}--color-danger {
-      background-color: var(--el-color-functionnal-red-bg);
-      border-color: var(--el-color-stroke-error);
+      background-color: var(--p-red-100);
+      border-color: var(--p-red-500);
     }
 
     &#{$self}--color-gray-900 {
-      background-color: var(--el-color-neutral-gray-100);
-      border-color: var(--el-color-base-blue-pulse);
+      background-color: var(--p-gray-100);
+      border-color: var(--p-black-rock-900);
     }
 
     &#{$self}--color-fuschia {
-      background-color: var(--el-color-secondary-fuschia-bg);
-      border-color: var(--el-color-functionnal-fuschia-txt);
+      background-color: var(--p-black-rock-100);
+      border-color: var(--p-black-rock-800);
     }
   }
 
   &--disabled {
     pointer-events: none;
-    background-color: var(--el-color-neutral-gray-50);
+    background-color: var(--p-gray-50);
   }
 
   &__number {
     font-size: var(--el-font-size-base);
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
   }
 }
 </style>

@@ -156,25 +156,25 @@ function handleEmptyCellZoneClick() {
     position: absolute;
     bottom: 0;
     left: 0;
-    background: linear-gradient(to bottom, transparent 0%, var(--el-color-base-white) 62.5%);
+    background: linear-gradient(to bottom, transparent 0%, var(--p-white) 62.5%);
     z-index: 10;
     pointer-events: none;
   }
 
   &:hover {
-    background: var(--el-color-persian-50);
+    background: var(--p-jungle-75);
     &::after {
-      background: linear-gradient(to bottom, transparent 0%, var(--el-color-persian-50) 62.5%);
+      background: linear-gradient(to bottom, transparent 0%, var(--p-jungle-75) 62.5%);
     }
   }
 
   &--prev-month, &--next-month {
-    background: var(--el-color-neutral-gray-50);
+    background: var(--p-gray-50);
     &::after {
-      background: linear-gradient(to bottom, transparent 0%, var(--el-color-neutral-gray-50) 62.5%);
+      background: linear-gradient(to bottom, transparent 0%, var(--p-gray-50) 62.5%);
     }
     &:hover::after {
-      background: linear-gradient(to bottom, transparent 0%, var(--el-color-persian-50) 62.5%);
+      background: linear-gradient(to bottom, transparent 0%, var(--p-jungle-75) 62.5%);
     }
   }
 }

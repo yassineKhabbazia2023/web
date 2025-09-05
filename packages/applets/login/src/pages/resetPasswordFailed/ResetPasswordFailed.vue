@@ -56,7 +56,7 @@ const maxAttempts = computed(() => VITE_PASSWORD_RESET_MAX_ATTEMPTS || 5)
   &__circle {
     width: 56px;
     height: 56px;
-    background-color: var(--el-color-functionnal-red-bg);
+    background-color: var(--p-red-100);
     border-radius: 50%;
   }
 }

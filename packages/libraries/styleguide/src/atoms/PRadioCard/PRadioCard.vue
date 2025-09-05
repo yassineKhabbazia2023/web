@@ -25,7 +25,7 @@
               p-radio-card__description
               font-normal
               margin-top--1
-              text-color--neutral-gray-900
+              text-color--gray-900
             "
           >
             {{ pDescription }}
@@ -73,15 +73,15 @@ defineProps<PRadioCardProps>()
     height: inherit;
     white-space: inherit;
     transition: background-color 0.3s ease;
-    background-color: var(--el-color-neutral-gray-50);
+    background-color: var(--p-gray-50);
 
     &:hover,
     &.is-checked {
-      background-color: var(--el-color-surface-state-selection);
+      background-color: var(--p-surface-state-selection);
     }
 
     &.is-checked {
-      background-color: var(--el-color-surface-state-selection);
+      background-color: var(--p-surface-state-selection);
     }
   }
 

@@ -73,7 +73,7 @@
             <a
               :href="urlTerms"
               target="_blank"
-              class="cgu-link font-bold text-color--persian-500"
+              class="cgu-link font-bold text-color--black-rock-700"
             >
               {{ t('cguLink') }}
             </a>
@@ -310,7 +310,7 @@ defineExpose({ submitForm })
     font-weight: 600;
     line-height: 25px;
     .purple-text {
-      color: var(--el-color-persian-500);
+      color: var(--p-jungle-400);
     }
     margin-bottom: 24px;
     margin-top: 14px;

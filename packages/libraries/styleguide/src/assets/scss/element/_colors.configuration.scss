@@ -1,0 +1,83 @@
+/**
+ * Element Plus Color Configuration
+ * 
+ * This file configures Element Plus color variables using Pégase design system colors.
+ * It maps Pégase colors to Element Plus theme variables to ensure consistent styling
+ * across all Element Plus components.
+ * 
+ * Element Plus will automatically generate color variants (light-1 to light-9, dark-1 to dark-2)
+ * from the base colors defined here using SCSS mix() functions.
+ * 
+ * Example generated variables:
+ * --el-color-primary, --el-color-primary-light-3, --el-color-primary-dark-2, etc.
+ */
+
+@use 'element-plus/theme-chalk/src/mixins/function' as *;
+@use '../pegase/color.variables' as pegase;
+@use 'sass:map';
+
+/**
+ * Create --el-color-xxx and variants
+ * For instance : --el-color-primary, --el-color-primary-light-3, --el-color-primary-dark-2, etc.
+ */
+$colors: (
+  'primary': ( 
+    'base': map.get(pegase.$colors, 'jungle', '400'),
+  ),
+  'success': (
+    'base': map.get(pegase.$colors, 'green', '500'),
+  ),
+  'warning': (
+    'base': map.get(pegase.$colors, 'orange', '500'),
+  ),
+  'danger': (
+    'base': map.get(pegase.$colors, 'red', '500'),
+  ),
+  'error': (
+    'base': map.get(pegase.$colors, 'red', '500'),
+  ),
+  'info': (
+    'base': map.get(pegase.$colors, 'teal', '500'),
+  ),
+);
+// --el-text-color-xxx
+$text-color: (
+  'primary': map.get(pegase.$colors, 'black-rock', '900'),
+  'regular': map.get(pegase.$colors, 'gray', '900'),
+  'secondary': map.get(pegase.$colors, 'gray', '400'),
+  'placeholder': map.get(pegase.$colors, 'gray', '300'),
+  'disabled': map.get(pegase.$colors, 'gray', '500'),
+);
+// --el-border-color-xxx
+$border-color: (
+  '': map.get(pegase.$colors, 'gray', '200'),
+  'light': map.get(pegase.$colors, 'gray', '50'),
+  'lighter': map.get(pegase.$colors, 'gray', '100'),
+  'extra-light': map.get(pegase.$colors, 'gray', '50'),
+  'dark': map.get(pegase.$colors, 'gray', '200'),
+  'darker': map.get(pegase.$colors, 'gray', '200'),
+);
+// --el-border-color-hover
+$border-color-hover: map.get(pegase.$colors, 'jungle', '700');
+// --el-fill-color-xxx
+$fill-color: (
+  '': map.get(pegase.$colors, 'gray', '300'),
+  'light': map.get(pegase.$colors, 'jungle', '75'),
+  'lighter': map.get(pegase.$colors, 'gray', '50'),
+  'extra-light': map.get(pegase.$colors, 'gray', '50'),
+  'dark': map.get(pegase.$colors, 'gray', '500'),
+  'darker': map.get(pegase.$colors, 'gray', '900'),
+  'blank': map.get(pegase.$colors, 'white'),
+);
+// --el-overlay-color-xxx
+$overlay-color: (
+  '': rgba(map.get(pegase.$colors, 'black-rock', '900'), 0.8),
+  'light': rgba(map.get(pegase.$colors, 'black-rock', '900'), 0.7),
+  'lighter': rgba(map.get(pegase.$colors, 'black-rock', '900'), 0.5)
+);
+// --el-disabled-xxx
+$disabled: (
+  'bg-color': map.get(pegase.$colors, 'gray', '50'),
+  'text-color': map.get(pegase.$colors, 'gray', '500'),
+  'border-color': map.get(pegase.$colors, 'gray', '100'),
+);

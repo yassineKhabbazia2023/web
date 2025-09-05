@@ -43,7 +43,7 @@ const { t } = useI18n({
 
 <style lang="scss">
 .role-source {
-  color: var(--el-color-neutral-gray-400);
+  color: var(--p-gray-400);
   word-break: keep-all;
   overflow-wrap: normal;
 }

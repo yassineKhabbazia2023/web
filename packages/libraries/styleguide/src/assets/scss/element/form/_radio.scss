@@ -5,22 +5,22 @@ $radio: (
   'font-weight': 400,
   'input-height': 14px,
   'input-width': 14px,
-  'input-border-color': var(--el-color-neutral-gray-300),
+  'input-border-color': var(--p-gray-300),
 );
 
 $radio-disabled: (
-  'input-border-color': var(--el-color-neutral-gray-300),
-  'input-fill': var(--el-fill-blank),
-  'icon-color': var(--el-fill-blank),
-  'checked-input-border-color': var(--el-color-persian-200),
-  'checked-input-fill': var(--el-fill-blank),
-  'checked-icon-color': var(--el-fill-blank),
+  'input-border-color': var(--p-gray-300),
+  'input-fill': var(--p-white),
+  'icon-color': var(--p-white),
+  'checked-input-border-color': var(--p-jungle-200),
+  'checked-input-fill': var(--p-white),
+  'checked-icon-color': var(--p-white),
 );
 
 $radio-checked: (
   'text-color': var(--el-text-color-regular),
-  'input-border-color': var(--el-color-black-rock-900),
-  'icon-color': var(--el-fill-blank),
+  'input-border-color': var(--p-black-rock-900),
+  'icon-color': var(--p-white),
 );
 
 $radio-bordered-input-height: (
@@ -41,7 +41,7 @@ $radio-bordered-input-width: (
   &:hover,
   &:focus {
     #{$self}__inner {
-      border-color: var(--el-color-persian-700);
+      border-color: var(--p-jungle-700);
     }
   }
 
@@ -53,17 +53,17 @@ $radio-bordered-input-width: (
 
       &.is-disabled {
         #{$self}__inner {
-          border-color: var(--el-color-neutral-gray-300);
+          border-color: var(--p-gray-300);
           &:after {
-              background: var(--el-color-neutral-gray-300); }
+              background: var(--p-gray-300); }
         }
       }
 
       &:not(.is-disabled):hover {
         #{$self}__inner {
-          border-color: var(--el-color-persian-700);
+          border-color: var(--p-jungle-700);
           &:after {
-              background: var(--el-color-persian-700);
+              background: var(--p-jungle-700);
             }
         }
       }
@@ -71,7 +71,7 @@ $radio-bordered-input-width: (
 
     &.is-disabled {
       + span#{$self}__label {
-        color: var(--el-color-neutral-gray-300);
+        color: var(--p-gray-300);
       }
     }
 
@@ -85,7 +85,7 @@ $radio-bordered-input-width: (
         display: block;
         width: 6px;
         height: 6px;
-        background: var(--el-color-black-rock-900);
+        background: var(--p-black-rock-900);
         transform: scale(0);
       }
     }

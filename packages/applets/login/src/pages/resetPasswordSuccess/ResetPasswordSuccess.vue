@@ -71,7 +71,7 @@ const email = route.query.email
   &__circle {
     width: 80px;
     height: 80px;
-    background-color: var(--el-color-polar-50);
+    background-color: var(--p-jungle-50);
     border-radius: 50%;
     margin: 0 auto;
   }

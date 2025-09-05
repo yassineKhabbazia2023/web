@@ -93,7 +93,7 @@ const legalLinksHasCgu = computed(() => {
 <style lang="scss" scoped>
 .wrapper {
   padding: 2.4rem 1.6rem;
-  background: var(--el-color-base-blue-pulse);
+  background: var(--p-black-rock-900);
   height: 100vh;
   text-align: center;
   overflow: auto;
@@ -107,7 +107,7 @@ const legalLinksHasCgu = computed(() => {
 }
 
 .card {
-  background: var(--el-color-base-white);
+  background: var(--p-white);
 
   @media (min-width: 992px) {
     max-width: 920px;
@@ -142,7 +142,7 @@ const legalLinksHasCgu = computed(() => {
 $footer-margin: 24px;
 .footer {
   position: relative;
-  color: var(--el-color-white);
+  color: var(--p-white);
   &__legal-links,
   &__support {
     text-align: center;

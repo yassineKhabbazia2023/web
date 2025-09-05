@@ -224,7 +224,7 @@ async function onSubmit() {
   font-size: 3.2rem;
 
   &__second-part {
-    color: var(--el-color-primary);
+    color: var(--p-jungle-400);
   }
 }
 .formTitle {
@@ -233,11 +233,11 @@ async function onSubmit() {
 
 .forgot-password-btn {
   display: block;
-  color: var(--el-color-primary);
+  color: var(--p-jungle-400);
   font-size: 12px;
 
   &:hover {
-    color: var(--el-color-primary-dark-2);
+    color: var(--p-jungle-500);
   }
 }
 </style>

@@ -33,10 +33,10 @@ defineProps<DocumentsSearchAlertProps>()
 .documents-search-alert {
   padding-top: 8px;
   &__no-documents {
-    color: var(--el-color-neutral-gray-500);
+    color: var(--p-gray-500);
 
     span {
-      color: var(--el-color-neutral-gray-900);
+      color: var(--p-gray-900);
     }
   }
 }

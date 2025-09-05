@@ -6,7 +6,7 @@ const defaultProps = {
   pBorderStyle: 'solid',
   pDirection: 'horizontal',
   pContentPosition: 'center',
-  pBorderColor: 'neutral-gray-100',
+  pBorderColor: 'gray-100',
 }
 
 const createWrapper = (props: any = defaultProps) =>
@@ -35,7 +35,7 @@ describe('pDivider', () => {
       const wrapper = createWrapper()
       const divider = wrapper.find('[data-testid="el-divider-stub"]')
 
-      expect(divider.attributes('style')).toContain('--el-border-color: var(--el-color-neutral-gray-100);')
+      expect(divider.attributes('style')).toContain('--el-border-color: var(--p-gray-100);')
     })
   })
 })

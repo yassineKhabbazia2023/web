@@ -6,7 +6,7 @@
       padding-y--3
       text-color--secondary-amethyste
       border-bottom
-      border-bottom--secondary-amethyste
+      border-bottom--jungle-400
       border-bottom--2px
     "
     >

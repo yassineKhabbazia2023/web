@@ -1,10 +1,10 @@
 import { shallowMount } from '@vue/test-utils'
-import type { POverladyProps } from './POverlay.types'
+import type { POverlayProps } from './POverlay.types'
 
 import POverlay from './POverlay.vue'
 
 describe('POverlay', () => {
-  const tests: POverladyProps[] = [{
+  const tests: POverlayProps[] = [{
     pBackgroundColor: undefined,
     pHasOverEffect: false,
   }, {
@@ -21,7 +21,7 @@ describe('POverlay', () => {
     pBackgroundColor,
     pHasOverEffect,
   }) => {
-    const props: POverladyProps = {
+    const props: POverlayProps = {
       pBackgroundColor,
       pHasOverEffect,
     }

@@ -48,7 +48,7 @@ div.el-step {
           width: 100%;
           height: 1px;
           margin-left: 12px;
-          background: var(--el-color-neutral-gray-300);
+          background: var(--p-gray-300);
         }
       }
     }
@@ -60,7 +60,7 @@ div.el-step {
       left: 50%;
       width: 1px;
       height: calc(100% - 48px);
-      background: var(--el-color-neutral-gray-300);
+      background: var(--p-gray-300);
       transform: translate(-50%, -50%);
 
       .el-step__line-inner {
@@ -73,32 +73,32 @@ div.el-step {
     &__head {
       &.is-process {
         .el-step__icon {
-          background: var(--el-color-primary);
-          border-color: var(--el-color-primary);
-          color: var(--el-color-white);
+          background: var(--p-jungle-400);
+          border-color: var(--p-jungle-400);
+          color: var(--p-white);
         }
       }
 
       &.is-success,
       &.is-finish {
         .el-step__icon {
-          background: var(--el-color-base-blue-pulse);
-          border-color: var(--el-color-base-blue-pulse);
-          color: var(--el-color-base-white);
+          background: var(--p-black-rock-900);
+          border-color: var(--p-black-rock-900);
+          color: var(--p-white);
         }
       }
 
       &.is-error {
         .el-step__icon {
-          background: var(--el-color-functionnal-red-bg);
+          background: var(--p-red-100);
         }
       }
 
       &.is-wait {
         .el-step__icon {
-          background: var(--el-color-neutral-gray-50);
-          border-color: var(--el-color-neutral-gray-50);
-          color: var(--el-color-neutral-gray-300);
+          background: var(--p-gray-50);
+          border-color: var(--p-gray-50);
+          color: var(--p-gray-300);
         }
       }
     }
@@ -126,20 +126,20 @@ div.el-step {
 
       &.is-process {
         font-weight: 600;
-        color: var(--el-color-base-blue-pulse);
+        color: var(--p-black-rock-900);
       }
 
       &.is-success,
       &.is-finish {
-        color: var(--el-color-neutral-gray-900);
+        color: var(--p-gray-900);
       }
 
       &.is-error {
-        color: var(--el-color-functionnal-red-txt);
+        color: var(--p-red-800);
       }
 
       &.is-wait {
-        color: var(--el-color-neutral-gray-300);
+        color: var(--p-gray-300);
       }
     }
   }

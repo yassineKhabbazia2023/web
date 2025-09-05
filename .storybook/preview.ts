@@ -57,6 +57,13 @@ const preview: Preview = {
     docs: {
       toc: true,
     },
+    options: {
+      storySort: {
+        order: [
+          'Guidelines', // guidelines first, then alphabetical sort for the rest
+        ],
+      },
+    },
   },
   tags: ['autodocs'],
 }

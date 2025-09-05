@@ -31,15 +31,13 @@ const meta: Meta<typeof PDivider> = {
     pBorderColor: {
       control: 'select',
       options: [
-        'neutral-gray-100',
-        'neutral-gray-200',
-        'neutral-gray-300',
+        'gray-100',
+        'gray-200',
+        'gray-300',
         'persian-200',
         'persian-300',
-        'secondary-fuschia',
-        'secondary-cyan',
-        'functionnal-red',
-        'functionnal-green',
+        'red-500',
+        'green-500',
       ],
       description: 'Couleur de la bordure',
     },
@@ -48,7 +46,7 @@ const meta: Meta<typeof PDivider> = {
     pDirection: 'horizontal',
     pBorderStyle: 'solid',
     pContentPosition: 'center',
-    pBorderColor: 'neutral-gray-100',
+    pBorderColor: 'gray-100',
   },
 }
 
@@ -177,25 +175,25 @@ export const Colors: Story = {
     template: `
       <div style="width: 400px; display: flex; flex-direction: column; gap: 16px;">
         <div>
-          <PDivider pBorderColor="neutral-gray-100">Gris clair</PDivider>
+          <PDivider pBorderColor="gray-100">Gris clair</PDivider>
         </div>
         <div>
-          <PDivider pBorderColor="neutral-gray-300">Gris foncé</PDivider>
+          <PDivider pBorderColor="gray-300">Gris foncé</PDivider>
         </div>
         <div>
-          <PDivider pBorderColor="persian-200">Persian clair</PDivider>
+          <PDivider pBorderColor="jungle-100">Jungle clair</PDivider>
         </div>
         <div>
-          <PDivider pBorderColor="secondary-fuschia">Fuschia</PDivider>
+          <PDivider pBorderColor="jungle-400">Jungle</PDivider>
         </div>
         <div>
-          <PDivider pBorderColor="secondary-cyan">Cyan</PDivider>
+          <PDivider pBorderColor="black-rock-400">Black Rock</PDivider>
         </div>
         <div>
-          <PDivider pBorderColor="functionnal-green">Vert</PDivider>
+          <PDivider pBorderColor="green-500">Vert</PDivider>
         </div>
         <div>
-          <PDivider pBorderColor="functionnal-red">Rouge</PDivider>
+          <PDivider pBorderColor="red-500">Rouge</PDivider>
         </div>
       </div>
     `,
@@ -226,7 +224,7 @@ export const FormSections: Story = {
           <input type="email" style="margin-left: 8px; padding: 4px;" />
         </div>
         
-        <PDivider pBorderColor="persian-200">Informations de contact</PDivider>
+        <PDivider pBorderColor="jungle-200">Informations de contact</PDivider>
         
         <div style="margin-bottom: 16px;">
           <label>Téléphone :</label>
@@ -237,7 +235,7 @@ export const FormSections: Story = {
           <textarea style="margin-left: 8px; padding: 4px; width: 200px;"></textarea>
         </div>
         
-        <PDivider pBorderColor="functionnal-green">Validation</PDivider>
+        <PDivider pBorderColor="green-500">Validation</PDivider>
         
         <div style="text-align: center;">
           <button style="padding: 8px 16px; background: #10b981; color: white; border: none; border-radius: 4px;">

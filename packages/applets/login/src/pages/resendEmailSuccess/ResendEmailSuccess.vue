@@ -64,7 +64,7 @@ const router = useRouter()
   }
 
   .link {
-    color: var(--el-color-primary);
+    color: var(--p-jungle-400);
     font-weight: 600;
     line-height: 16.8px;
     font-size: 14px;

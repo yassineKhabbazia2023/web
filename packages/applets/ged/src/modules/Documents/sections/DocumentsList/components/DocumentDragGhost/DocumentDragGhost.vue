@@ -67,7 +67,7 @@ $ghostHeight: 56px;
   height: $ghostHeight;
 
   &__content {
-    background: var(--el-color-persian-500);
+    background: var(--p-jungle-400);
     position: absolute;
     top: 0;
     left: 0;
@@ -85,7 +85,7 @@ $ghostHeight: 56px;
     height: $ghostHeight;
     top: 8px;
     left: 8px;
-    background: var(--el-color-persian-300);
+    background: var(--p-jungle-300);
     border-radius: var(--el-border-radius-base);
   }
 
@@ -108,7 +108,7 @@ $ghostHeight: 56px;
     transform: translate(50%, -50%);
     border-radius: 100%;
     border: 2px solid white;
-    background: var(--el-color-functionnal-red);
+    background: var(--p-red-500);
     z-index: 10;
     line-height: 12px;
   }

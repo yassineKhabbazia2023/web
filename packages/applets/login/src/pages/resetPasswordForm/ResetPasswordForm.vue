@@ -222,7 +222,7 @@ defineExpose({ submitForm })
     line-height: 25px;
 
     .purple-text {
-      color: var(--el-color-persian-500);
+      color: var(--p-jungle-400);
     }
 
     margin-bottom: 24px;

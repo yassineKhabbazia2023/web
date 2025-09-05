@@ -287,7 +287,7 @@ const setToolboxStyle = (clientX: number, clientY: number) => {
 
 .ged-documents-list {
   .current-row > td:first-child {
-    border-left: 4px solid var(--el-color-base-persian);
+    border-left: 4px solid var(--p-jungle-400);
 
     .cell {
       padding-left: 0.8rem;

@@ -75,8 +75,8 @@ function handleCellClick(date: string) {
       border-collapse: collapse;
       thead th {
         font-size: 1.2rem;
-        color: var(--el-color-neutral-gray-500);
-        border: 1px solid var(--el-color-neutral-gray-100);
+        color: var(--p-gray-500);
+        border: 1px solid var(--p-gray-100);
         padding: 8px 0;
       }
     }

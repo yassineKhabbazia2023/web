@@ -47,7 +47,7 @@
       <PDivider
         class="margin-x--4 header-section__divider"
         pDirection="vertical"
-        pBorderColor="neutral-gray-100"
+        pBorderColor="gray-100"
       />
       <div
         class="header-section__user-avatar cursor-pointer"
@@ -122,7 +122,7 @@ function updateFeedCenterDisplay() {
     0px 3px 4px 0px rgba(32, 32, 32, 0.10);
   height: 56px;
   width: 100vw;
-  background-color: var(--el-color-base-white);
+  background-color: var(--p-white);
 
   &__logo {
     margin-top: 5px;

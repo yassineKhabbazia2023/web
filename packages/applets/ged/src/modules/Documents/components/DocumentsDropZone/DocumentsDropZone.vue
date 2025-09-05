@@ -56,12 +56,12 @@ const { t } = useI18n({
     // in order to makes the dashed borders visible on bottom and right side
     height: calc(100% - 2px);
     width: calc(100% - 2px);
-    background: var(--el-color-persian-100);
-    border: 1px dashed var(--el-color-persian-700);
+    background: var(--p-jungle-100);
+    border: 1px dashed var(--p-jungle-700);
 
     &--not-allowed {
-      background: var(--el-color-neutral-gray-50);
-      border: 1px dashed var(--el-color-persian-200);
+      background: var(--p-gray-50);
+      border: 1px dashed var(--p-jungle-200);
     }
 
     // Used to prevent dragover to be triggered and make the component blink

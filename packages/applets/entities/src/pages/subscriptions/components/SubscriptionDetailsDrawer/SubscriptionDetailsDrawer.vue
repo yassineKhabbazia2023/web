@@ -90,7 +90,7 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .subscription-drawer {
   &__account-name {
-    color: var(--el-text-color-secondary);
+    color: var(--p-gray-400);
   }
 }
 </style>

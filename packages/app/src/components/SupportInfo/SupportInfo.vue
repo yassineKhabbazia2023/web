@@ -43,7 +43,7 @@ const emailSanitizedUrl = computed(() => {
 
 <style lang="scss" scoped>
 .support {
-  color: var(--el-color-white);
+  color: var(--p-white);
 
   &__copyright {
     appearance: none;
@@ -53,7 +53,7 @@ const emailSanitizedUrl = computed(() => {
 }
 .link {
   font-size: 1.2rem;
-  color: var(--el-color-white)
+  color: var(--p-white)
 }
 </style>
 

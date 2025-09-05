@@ -112,7 +112,7 @@ const handleCreateFolderButtonClick = () => {
       transition: color 100ms ease-in;
     }
     &:hover {
-      color: var(--el-color-persian-400);
+      color: var(--p-jungle-400);
     }
   }
   .el-breadcrumb__item {

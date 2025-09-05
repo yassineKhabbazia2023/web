@@ -57,7 +57,7 @@ const iconName = computed(() => {
     padding: 8px;
     margin-right: 1.6rem;
     font-size: 2.4rem;
-    color: var(--el-color-neutral-gray-300);
+    color: var(--p-gray-300);
   }
 
   &__text {
@@ -69,7 +69,7 @@ const iconName = computed(() => {
     margin-bottom: 4px;
     font-size: 1.4rem;
     line-height: 1.2;
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
     text-overflow: ellipsis;
     white-space: nowrap;
 
@@ -87,7 +87,7 @@ const iconName = computed(() => {
   &__size {
     font-size: 1.2rem;
     line-height: 1.2;
-    color: var(--el-color-neutral-gray-500);
+    color: var(--p-gray-500);
   }
 
   &__group-btn {

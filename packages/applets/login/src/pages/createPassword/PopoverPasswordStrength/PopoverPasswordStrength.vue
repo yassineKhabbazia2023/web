@@ -82,13 +82,13 @@ const levelPasswordStrengthClass = computed(() => {
     margin-bottom: 8px;
 
     &.levelPwdStrong {
-      color: var(--el-color-functionnal-green);
+      color: var(--p-green-500);
     }
     &.levelPwdAverage {
-      color: var(--el-color-functionnal-orange);
+      color: var(--p-orange-500);
     }
     &.levelPwdWeak {
-      color: var(--el-color-functionnal-red);
+      color: var(--p-red-500);
     }
   }
 }

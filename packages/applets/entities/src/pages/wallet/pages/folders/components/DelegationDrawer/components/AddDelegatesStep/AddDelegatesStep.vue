@@ -135,7 +135,7 @@ function emitCollaboratorSelection() {
 .separator {
   width: 100%;
   height: 1px;
-  background: var(--el-color-neutral-gray-100);
+  background: var(--p-gray-100);
 }
 </style>
 

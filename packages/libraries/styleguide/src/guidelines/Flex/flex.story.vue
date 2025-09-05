@@ -153,7 +153,7 @@ height: 80px;
 }
 
 .darker {
-  background-color: var(--el-color-persian-900) !important;
+  background-color: var(--p-jungle-900) !important;
 }
 </style>
 

@@ -79,7 +79,7 @@ function resetSearchQuery() {
 
   &__search-line {
     &--selected {
-      color: var(--el-color-base-persian);
+      color: var(--p-jungle-400);
       font-weight: 600;
     }
 
@@ -88,7 +88,7 @@ function resetSearchQuery() {
     }
 
     &:not(#{$self}--selected) #{self}__additional-information {
-      color: var(--el-color-neutral-gray-300);
+      color: var(--p-gray-300);
     }
   }
 }

@@ -76,6 +76,6 @@ const filteredFailedDocuments = computed(() => props.documents
 }
 
 .files-error-item {
-  background-color: var(--el-color-base-white);
+  background-color: var(--p-white);
 }
 </style>

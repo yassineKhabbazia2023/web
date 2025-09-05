@@ -1,7 +1,5 @@
-import type { ColorName } from '../../types/color-name'
-
-export interface POverladyProps {
-  pBackgroundColor?: ColorName
+export interface POverlayProps {
+  pBackgroundColor?: string
   pHasOverEffect?: boolean
   pIsVignette?: boolean
 }

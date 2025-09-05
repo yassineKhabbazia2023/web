@@ -86,20 +86,3 @@ const onDelete = () => {
   }
 }
 </script>
-
-<style scoped>
-.scrollbar-demo-item {
-  height: 50px;
-  text-align: center;
-  background: var(--el-color-primary-light-9);
-  color: var(--el-color-primary);
-}
-.scrollbar-demo-item2 {
-  flex-shrink: 0;
-  width: 100px;
-  height: 50px;
-  text-align: center;
-  background: var(--el-color-danger-light-9);
-  color: var(--el-color-danger);
-}
-</style>

@@ -42,10 +42,10 @@ const fullName = computed(() =>
 
 <style lang="scss" scoped>
 .principal-contact {
-  background: var(--el-color-neutral-gray-50);
+  background: var(--p-gray-50);
 
   &__notes {
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
   }
 }
 </style>

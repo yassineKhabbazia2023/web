@@ -216,7 +216,7 @@ const isInPIASyncedFolder = computed(() => {
         line-height: 16px;
         display: flex;
         align-items: center;
-        color: var(--el-color-neutral-gray-500)
+        color: var(--p-gray-500)
       }
 
       .label {

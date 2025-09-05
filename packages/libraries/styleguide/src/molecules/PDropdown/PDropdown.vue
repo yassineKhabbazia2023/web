@@ -88,7 +88,7 @@
             <li
               class="font-semibold"
               :class="{
-                'text-color--base-persian': internalModelValue === pValue,
+                'text-color--jungle-400': internalModelValue === pValue,
               }"
             >
               {{ pLabel }}

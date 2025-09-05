@@ -8,7 +8,7 @@
       <div
         class="simple-menu-variant padding-y--3 padding-left--3"
         :class="{ 'simple-menu-variant--collapsed': menuConfig.collapse }"
-        style="background-color: var(--el-color-persian-100)"
+        style="background-color: var(--p-jungle-100)"
       >
         <PMenu
           pDefaultActive="1-2"

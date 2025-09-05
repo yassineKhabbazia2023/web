@@ -70,7 +70,7 @@ onMounted(async () => {
 
 <style lang="scss">
 .mail-to-ged {
-  background-color: var(--el-color-persian-50);
+  background-color: var(--p-jungle-75);
 
   &__text {
     width: 70%;

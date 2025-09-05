@@ -3,9 +3,9 @@ $scrollbar: () !default;
 $scrollbar: map.merge(
   (
     'opacity': 0.3,
-    'bg-color': var(--el-text-color-secondary),
+    'bg-color': var(--p-gray-400),
     'hover-opacity': 0.5,
-    'hover-bg-color': var(--el-text-color-secondary),
+    'hover-bg-color': var(--p-gray-400),
   ),
   $scrollbar
 );

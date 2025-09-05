@@ -95,7 +95,7 @@ const entityAvatarColor = computed(() => getAvatarColorFromKey(props.entity?.acc
   }
 
   &__details {
-    color: var(--el-color-base-white);
+    color: var(--p-white);
     display: block;
     font-size: 1.2rem;
     line-height: 1.2;
@@ -120,7 +120,7 @@ const entityAvatarColor = computed(() => getAvatarColorFromKey(props.entity?.acc
 
 .sidenav__selected-item {
   p {
-    color: var(--el-color-base-white);
+    color: var(--p-white);
   }
   .entity-wrapper__details-name {
     font-weight: 700;

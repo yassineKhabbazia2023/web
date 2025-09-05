@@ -275,7 +275,7 @@ function visibleChange(val: boolean) {
 
 .demo-date-picker .demonstration {
   display: block;
-  color: var(--el-text-color-secondary);
+  color: var(--p-gray-400);
   font-size: 14px;
   margin-bottom: 20px;
 }

@@ -73,7 +73,7 @@ const handleReportSelection = () => {
 .report-card {
   $self: &;
   width: 100%;
-  border: 1px solid var(--el-color-neutral-gray-100);
+  border: 1px solid var(--p-gray-100);
   appearance: none;
   background: none;
   text-align: left;
@@ -95,19 +95,19 @@ const handleReportSelection = () => {
 
   &:hover {
     #{$self}__name {
-      color: var(--el-color-persian-500);
+      color: var(--p-jungle-400);
     }
   }
 
   &--selected {
-    background: var(--el-color-persian-50);
-    border: 1px solid var(--el-color-persian-500);
+    background: var(--p-jungle-75);
+    border: 1px solid var(--p-jungle-400);
     #{$self}__name {
       font-weight: 600;
     }
     #{$self}__name,
     #{$self}__icon {
-      color: var(--el-color-persian-500);
+      color: var(--p-jungle-400);
     }
   }
 }

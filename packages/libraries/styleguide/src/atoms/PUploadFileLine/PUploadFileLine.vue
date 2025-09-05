@@ -92,20 +92,20 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
     &-persian {
       padding-top: 5px;
       padding-bottom: 5px;
-      background: var(--el-color-persian-50);
+      background: var(--p-jungle-75);
       border-radius: var(--el-border-radius-base);
 
       #{$self}__icon {
-        color: var(--el-color-neutral-gray-900);
+        color: var(--p-gray-900);
       }
     }
 
     &-white {
-      background: var(--el-color-base-white);
+      background: var(--p-white);
       border-bottom: 1px solid transparent;
 
       &:not(:last-child) {
-        border-color: var(--el-color-neutral-gray-100);
+        border-color: var(--p-gray-100);
       }
     }
   }
@@ -114,13 +114,13 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
     &-uploading,
     &-fail {
       #{$self}__title {
-        color: var(--el-color-neutral-gray-500);
+        color: var(--p-gray-500);
       }
     }
 
     &-fail {
       #{$self}__icon {
-        color: var(--el-color-functionnal-red);
+        color: var(--p-red-500);
       }
     }
   }
@@ -129,11 +129,11 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
     text-overflow: ellipsis;
     white-space: nowrap;
     font-size: 1.4rem;
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
   }
 
   &__icon {
-    color: var(--el-color-neutral-gray-300);
+    color: var(--p-gray-300);
   }
 }
 </style>

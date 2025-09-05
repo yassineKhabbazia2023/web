@@ -68,7 +68,7 @@ function onSelect(contact: Contact) {
 <style lang="scss" scoped>
 .collab-details {
   &__office {
-    color: var(--el-color-neutral-gray-300);
+    color: var(--p-gray-300);
   }
 }
 </style>

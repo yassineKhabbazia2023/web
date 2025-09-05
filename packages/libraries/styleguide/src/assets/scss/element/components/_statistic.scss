@@ -7,7 +7,7 @@ $statistic: map.merge(
     'title-color': var(--el-text-color-regular),
     'content-font-weight': 400,
     'content-font-size': var(--el-font-size-extra-large),
-    'content-color': var(--el-text-color-primary),
+    'content-color': var(--p-gray-800),
   ),
   $statistic
 );

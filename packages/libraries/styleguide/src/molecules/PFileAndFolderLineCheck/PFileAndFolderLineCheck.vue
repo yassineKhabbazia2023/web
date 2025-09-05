@@ -131,10 +131,10 @@ const stateIconName = computed<IconName | undefined>(() => {
 
   &__icon {
     &--success {
-      color: var(--el-color-functionnal-green);
+      color: var(--p-green-500);
     }
     &--error {
-      color: var(--el-color-functionnal-orange);
+      color: var(--p-orange-500);
     }
   }
 
@@ -158,30 +158,30 @@ const stateIconName = computed<IconName | undefined>(() => {
     &__additional-text {
       font-size: 1.2rem;
       margin-top: 4px;
-      color: var(--el-color-neutral-gray-500);
+      color: var(--p-gray-500);
     }
   }
 
   &--default {
     &:hover {
-      background: var(--el-color-persian-50);
+      background: var(--p-jungle-75);
       cursor: pointer;
     }
 
     #{$self}__file-icon {
-      color: var(--el-color-neutral-gray-300);
+      color: var(--p-gray-300);
     }
   }
 
   &--selected {
-    color: var(--el-color-blue-pulse);
+    color: var(--p-black-rock-900);
     font-weight: 600;
-    background-color: var(--el-color-persian-50);
+    background-color: var(--p-jungle-75);
     cursor: pointer;
   }
 
   &--error #{$self}__file-icon {
-    color: var(--el-color-neutral-gray-300);
+    color: var(--p-gray-300);
   }
 }
 </style>

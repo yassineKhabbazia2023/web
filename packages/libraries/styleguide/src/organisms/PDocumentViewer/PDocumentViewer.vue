@@ -102,7 +102,7 @@ const documentViewerModel = computed({
 
 <style lang="scss">
 .p-document-viewer-overlay {
-  background-color: rgba(var(--el-color-neutral-gray-900-rgb), 0.95);
+  background-color: rgba(var(--p-gray-900-rgb), 0.95);
 }
 .p-document-viewer {
   background-color: transparent;

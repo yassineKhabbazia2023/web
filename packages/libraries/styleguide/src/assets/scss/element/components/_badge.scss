@@ -2,7 +2,7 @@
 $badge: () !default;
 $badge: map.merge(
   (
-    'bg-color': var(--el-color-danger),
+    'bg-color': var(--p-red-500),
     'radius': 10px,
     'font-size': 12px,
     'padding': 6px,

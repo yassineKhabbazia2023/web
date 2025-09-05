@@ -8,7 +8,7 @@
 @use 'border';
 @use 'box-shadow';
 @use 'common';
-@use 'colors';
+@use 'colors.configuration';
 @use 'typography';
 @use './components/avatar';
 @use './components/breadcrumb';
@@ -62,7 +62,7 @@
   $datepicker: datepicker.$datepicker,
   $date-editor: datepicker.$date-editor,
   $dialog: dialog.$dialog,
-  $disabled: common.$disabled,
+  $disabled: colors.$disabled,
   $drawer: drawer.$drawer,
   $fill-color: colors.$fill-color,
   $font-family: typography.$font-family,

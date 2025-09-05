@@ -242,7 +242,7 @@ onMounted(() => {
   &__explorer {
     display: flex;
     flex-wrap: wrap;
-    border: 1px solid var(--el-color-neutral-gray-100);
+    border: 1px solid var(--p-gray-100);
     border-radius: var(--el-border-radius-small);
     height: 475px;
     margin-top: 16px;
@@ -250,7 +250,7 @@ onMounted(() => {
     &__left-section,
     &__right-section {
       &__header {
-        border-bottom: 1px solid var(--el-color-neutral-gray-100);
+        border-bottom: 1px solid var(--p-gray-100);
         padding: 0 16px;
         height: 44px; //based on check-all height from styleguide
       }
@@ -262,7 +262,7 @@ onMounted(() => {
 
     &__left-section {
       width: 36%;
-      border-right: 1px solid var(--el-color-neutral-gray-100);
+      border-right: 1px solid var(--p-gray-100);
       height: 100%;
 
       &__content {

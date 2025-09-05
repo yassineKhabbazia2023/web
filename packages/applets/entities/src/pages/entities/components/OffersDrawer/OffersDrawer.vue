@@ -523,7 +523,7 @@ defineExpose({
 <style lang="scss" scoped>
 .offers-drawer {
   &__company-name {
-    color: var(--el-text-color-secondary);
+    color: var(--p-gray-400);
   }
   &__details {
     display: flex;
@@ -538,7 +538,7 @@ defineExpose({
     }
 
     &-link {
-      color: var(--el-color-persian-500);
+      color: var(--p-jungle-400);
       font-weight: 600;
       text-decoration: none;
 

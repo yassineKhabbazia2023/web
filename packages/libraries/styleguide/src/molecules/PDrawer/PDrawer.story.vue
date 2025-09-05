@@ -274,13 +274,13 @@ const radioSizeOptions: { label: string, value: string }[] = [
   align-items: center;
 
   &-link {
-    color: var(--el-color-persian-500);
+    color: var(--p-jungle-400);
     font-weight: 600;
     text-decoration: underline;
   }
 }
 .drawer__header-prefix-text {
-  color: var(--el-color-neutral-gray-500);
+  color: var(--p-gray-500);
 }
 </style>
 

@@ -172,7 +172,7 @@ const propagateUpdateSourceFolders = (createdFolder: Folder) => {
     }
 
     &__label {
-      color: var(--el-color-neutral-gray-500);
+      color: var(--p-gray-500);
       text-align: center;
       font-size: 12px;
       font-style: normal;

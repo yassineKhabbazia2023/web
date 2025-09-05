@@ -50,7 +50,7 @@ const formattedCollaborators = computed(() => getFormattedCollaborators(props.co
 
 <style scoped lang="scss">
 .collaborator-details + .collaborator-details {
-  border-top: 1px solid var(--el-color-neutral-gray-100);
+  border-top: 1px solid var(--p-gray-100);
 }
 </style>
 

@@ -58,13 +58,13 @@ const pClassMapper = computed(() => ({
   }
 
   &--type-drag:not([disabled='true'], [selected='true']) {
-    background-color: var(--el-color-primary);
-    color:  var(--el-fill-color-blank);
+    background-color: var(--p-jungle-400);
+    color:  var(--p-white);
   }
 
   &--type-drag[disabled='true']:not([selected='true']) {
-    background-color: var(--el-color-neutral-gray-300);
-    color:  var(--el-color-neutral-gray-700);
+    background-color: var(--p-gray-300);
+    color:  var(--p-gray-700);
   }
 
   &[disabled='true'] {
@@ -73,8 +73,8 @@ const pClassMapper = computed(() => ({
   }
 
   &[selected='true'] {
-    background-color: var(--el-color-persian-200);
-    color:  var(--el-text-color-primary);
+    background-color: var(--p-jungle-200);
+    color:  var(--p-gray-800);
   }
 
   &--is-underlined-on-hover {

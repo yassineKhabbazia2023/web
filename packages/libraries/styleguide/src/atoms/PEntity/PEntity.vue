@@ -58,7 +58,7 @@ const typeModifierClass = computed(() => `p-entity--type-${props.pType}`)
   }
 
   &[selected="true"] {
-    background-color: var(--el-color-persian-200);
+    background-color: var(--p-jungle-200);
   }
 
   &__avatar {

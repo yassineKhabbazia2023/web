@@ -84,11 +84,11 @@ const handleDoubleClickFolderNavigation = (pFolderId: number) => {
   border: none;
   outline: none;
   cursor: pointer;
-  background: var(--el-color-white);
+  background: var(--p-white);
   border-left: 2px solid transparent;
 
   &:hover {
-    background: var(--el-color-secondary-cyan-bg);
+    background: var(--p-tranquil-50);
   }
 
   &__folder {
@@ -105,24 +105,24 @@ const handleDoubleClickFolderNavigation = (pFolderId: number) => {
 
   &.selected {
     overflow: hidden;
-    color: var(--el-color-black-rock-900);
+    color: var(--p-black-rock-900);
     text-overflow: ellipsis;
     font-size: 1.4rem;
     font-style: normal;
     font-weight: 600;
     line-height: 120%;
-    background: var(--el-color-secondary-amethyste-bg);
-    border-left: 2px solid var(--el-color-secondary-amethyste);
+    background: var(--p-jungle-50);
+    border-left: 2px solid var(--p-jungle-400);
 
     #{$self}__folder-name {
-      color: var(--el-color-secondary-amethyste);
+      color: var(--p-jungle-400);
     }
   }
 
   &.disabled {
     cursor: not-allowed;
     opacity: 0.6;
-    color: var(--el-color-neutral-gray-300);
+    color: var(--p-gray-300);
   }
 }
 </style>

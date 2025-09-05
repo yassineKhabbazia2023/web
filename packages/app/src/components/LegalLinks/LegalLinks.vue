@@ -96,7 +96,7 @@ onMounted(async () => {
   }
   &--dark {
     #{$self}__link {
-      color: var(--el-color-base-white);
+      color: var(--p-white);
     }
   }
 }

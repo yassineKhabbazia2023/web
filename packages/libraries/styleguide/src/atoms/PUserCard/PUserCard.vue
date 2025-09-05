@@ -85,11 +85,11 @@ const slots = useSlots()
 
   &--color {
     &-persian {
-      background: var(--el-color-persian-50);
+      background: var(--p-jungle-75);
     }
 
     &-gray {
-      background: var(--el-color-neutral-gray-50);
+      background: var(--p-gray-50);
     }
   }
 
@@ -157,7 +157,7 @@ const slots = useSlots()
     font-size: 2.1rem;
     line-height: 1.2;
     font-weight: 600;
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
   }
 
   &__subtitle {
@@ -165,7 +165,7 @@ const slots = useSlots()
     margin-top: 4px;
     font-size: 1.6rem;
     line-height: 1.3;
-    color: var(--el-color-neutral-gray-500);
+    color: var(--p-gray-500);
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -174,7 +174,7 @@ const slots = useSlots()
     margin-top: 4px;
     font-size: 1.2rem;
     line-height: 1.2;
-    color: var(--el-color-neutral-gray-500);
+    color: var(--p-gray-500);
   }
 }
 </style>

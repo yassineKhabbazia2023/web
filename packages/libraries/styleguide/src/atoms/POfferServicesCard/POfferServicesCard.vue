@@ -99,7 +99,7 @@ const getServiceClass = (serviceIndex: number): string[] => {
     align-items: center;
 
     &--border {
-      border-bottom: 1px solid var(--el-color-neutral-gray-100);
+      border-bottom: 1px solid var(--p-gray-100);
     }
 
     &--disabled {
@@ -109,7 +109,7 @@ const getServiceClass = (serviceIndex: number): string[] => {
     &:hover,
     &:focus {
       #{$self}__service-details {
-        color: var(--el-color-persian-500);
+        color: var(--p-jungle-400);
       }
     }
   }

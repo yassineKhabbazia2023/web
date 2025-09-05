@@ -110,15 +110,15 @@ const onSSOConnection = () => {
 
 <style lang="scss" scoped>
 .launch-card {
-  background: var(--el-color-neutral-gray-50);
-  border-left: 5px solid var(--el-color-neutral-gray-50);
-  border-right: 5px solid var(--el-color-neutral-gray-50);
+  background: var(--p-gray-50);
+  border-left: 5px solid var(--p-gray-50);
+  border-right: 5px solid var(--p-gray-50);
   max-width: 350px;
 
   &:hover {
-    background: var(--el-color-persian-50);
-    border-left-color: var(--el-color-secondary-amethyste);
-    border-right-color: var(--el-color-persian-50);
+    background: var(--p-jungle-75);
+    border-left-color: var(--p-jungle-400);
+    border-right-color: var(--p-jungle-75);
   }
 
   &__image {

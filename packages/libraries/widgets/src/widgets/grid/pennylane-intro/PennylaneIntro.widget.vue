@@ -3,7 +3,7 @@
     class="
       widget-pennylane-intro
       height--100
-      bg--polar-50
+      bg--jungle-50
       flex
       flex--justify-content-space-between
       position--relative
@@ -143,7 +143,7 @@
         widget-pennylane-intro__right-section
         flex
         flex--align-items-end
-        bg--pennylane-dark-green
+        bg--partner-pennylane-dark-green
       "
     >
       <div class="flex">

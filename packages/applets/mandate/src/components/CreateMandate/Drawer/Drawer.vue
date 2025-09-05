@@ -327,7 +327,7 @@ defineExpose({
   &__title {
     display: flex;
     align-items: center;
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
     font-style: normal;
     line-height: 120%;
   }

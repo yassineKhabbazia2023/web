@@ -85,7 +85,7 @@ watch(
   .no-documents-label {
     max-width: 242px;
     text-align: center;
-    color: var(--el-color-neutral-gray-500);
+    color: var(--p-gray-500);
     font-size: 12px;
     font-weight: 400;
   }
@@ -93,7 +93,7 @@ watch(
 
 svg.p-loader__icon--gradient {
   path[fill-rule='evenodd']{
-    fill: var(--el-color-persian-500)
+    fill: var(--p-jungle-400)
   }
 }
 </style>

@@ -34,7 +34,7 @@ export const Default: Story = {
       return { args }
     },
     template: `
-      <PCHeader v-bind="args" style="background: var(--el-color-neutral-gray-50);">
+      <PCHeader v-bind="args" style="background: var(--p-gray-50);">
         <div style="display:flex; align-items:center; height:100%; padding: 0 12px;">
           Contenu de l'en-tête
         </div>
@@ -53,7 +53,7 @@ export const TallHeader: Story = {
       return { args }
     },
     template: `
-      <PCHeader v-bind="args" style="background: var(--el-color-neutral-gray-50);">
+      <PCHeader v-bind="args" style="background: var(--p-gray-50);">
         <div style="display:flex; align-items:center; height:100%; padding: 0 12px;">
           En-tête plus haut pour des contenus denses
         </div>

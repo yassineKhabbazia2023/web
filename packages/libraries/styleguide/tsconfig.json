@@ -6,7 +6,7 @@
     "tests/**/*",
     "__mocks__",
     "src/**/*.json",
-    "./package.json"
+    "./package.json",
   ],
   "compilerOptions": {
     "declarationDir": "./dist/types",

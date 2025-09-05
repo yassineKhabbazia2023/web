@@ -34,9 +34,9 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { POverladyProps } from './POverlay.types'
+import type { POverlayProps } from './POverlay.types'
 
-const props = defineProps<POverladyProps>()
+const props = defineProps<POverlayProps>()
 
 const backgroundCssClass = computed(() => {
   const cssClasses: string[] = []

@@ -4,7 +4,7 @@ $card: map.merge(
     'border-color': var(--el-border-color-light),
     'border-radius': var(--el-border-radius-small),
     'padding': 20px,
-    'bg-color': var(--el-fill-color-blank),
+    'bg-color': var(--p-white),
   ),
   $card
 );

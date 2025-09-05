@@ -18,10 +18,10 @@
       </template>
 
       <template #text>
-        <div class="notification__title font-xsmall text-color--persian-700">
+        <div class="notification__title font-xsmall text-color--jungle-700">
           {{ notificationTitle }}
         </div>
-        <p class="margin-top--1 text-color--persian-900">
+        <p class="margin-top--1 text-color--black-rock-900">
           {{ message }}
         </p>
       </template>

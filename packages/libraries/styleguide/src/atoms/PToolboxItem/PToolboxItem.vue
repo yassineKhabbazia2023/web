@@ -63,7 +63,7 @@ const pClassMapper = computed(() => ({
   font-size: 1.4rem;
   line-height: 120%;
   text-align: left;
-  color: var(--el-color-neutral-gray-900);
+  color: var(--p-gray-900);
   user-select: none;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -73,23 +73,23 @@ const pClassMapper = computed(() => ({
 
   &#{$self}--state {
     &-danger {
-      color: var(--el-color-functionnal-red);
+      color: var(--p-red-500);
 
       &:not([disabled]) {
         &:hover {
-          color: var(--el-color-functionnal-red-txt);
+          color: var(--p-red-800);
         }
 
         &:hover,
         &:active,
         &:focus {
-          background: var(--el-color-functionnal-red-bg);
+          background: var(--p-red-100);
         }
 
         &:active,
         &:focus {
           font-weight: 600;
-          color: var(--el-color-functionnal-red);
+          color: var(--p-red-500);
         }
       }
     }
@@ -101,23 +101,23 @@ const pClassMapper = computed(() => ({
 
   &:not([disabled]) {
     &:hover {
-      background: var(--el-color-base-hover);
+      background: var(--p-jungle-50);
     }
     &:active {
-      background: var(--el-color-persian-50);
+      background: var(--p-jungle-75);
     }
     &:active {
-      color: var(--el-color-persian-500);
+      color: var(--p-jungle-400);
       font-weight: 600;
     }
   }
 
   &:disabled {
-    color: var(--el-color-neutral-gray-300);
+    color: var(--p-gray-300);
     cursor: not-allowed;
 
     &__icon {
-      fill: var(--el-color-neutral-gray-300);
+      fill: var(--p-gray-300);
     }
   }
 

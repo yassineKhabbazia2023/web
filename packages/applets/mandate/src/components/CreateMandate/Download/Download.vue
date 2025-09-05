@@ -248,7 +248,7 @@ const { t } = useI18n({
     height: 320px;
   }
   &__title {
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
     text-align: center;
     font-size: 2.1rem;
     font-style: normal;
@@ -258,7 +258,7 @@ const { t } = useI18n({
     width: 72%;
     margin: 0 auto;
     text-align: center;
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
     font-style: normal;
     line-height: 140%;
   }
@@ -275,7 +275,7 @@ const { t } = useI18n({
     font-style: normal;
     line-height: 140%;
     &--color {
-      color: var(--el-color-primary);
+      color: var(--p-jungle-400);
     }
   }
 }

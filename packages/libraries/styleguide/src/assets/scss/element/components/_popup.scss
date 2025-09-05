@@ -2,7 +2,7 @@
 $popup: () !default;
 $popup: map.merge(
   (
-    'modal-bg-color': var(--el-color-black),
+    'modal-bg-color': var(--p-black-rock-900),
     'modal-opacity': 0.5,
   ),
   $popup

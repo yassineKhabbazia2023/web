@@ -220,7 +220,7 @@ const getActiveWallet = computed(() => {
   height: 100vh;
   flex-grow: 0;
   flex-shrink: 0;
-  background-color: var(--el-color-base-blue-pulse);
+  background-color: var(--p-black-rock-900);
   transition: width var(--smooth-transition);
   overflow: hidden;
 
@@ -240,7 +240,7 @@ const getActiveWallet = computed(() => {
     }
 
     &-text {
-      color: var(--el-color-base-white);
+      color: var(--p-white);
       font-size: 1.2rem;
       font-weight: 600;
       transition: all var(--smooth-transition);
@@ -264,12 +264,12 @@ const getActiveWallet = computed(() => {
     &-active {
       z-index: 10;
       position: relative;
-      background-color: rgba(var(--el-color-base-persian-light-rgb), 0.2);
-      border-right: 6px solid var(--el-color-base-persian-light);
+      background-color: rgba(var(--p-tranquil-50-rgb), 0.2);
+      border-right: 6px solid var(--p-tranquil-50);
 
       #{$actions}-wallet-text {
         font-weight: 600;
-        color: var(--el-color-base-white);
+        color: var(--p-white);
       }
 
       #{$actions}-icon:hover {
@@ -300,7 +300,7 @@ const getActiveWallet = computed(() => {
     }
 
     &-wallet-text {
-      color: var(--el-color-base-white);
+      color: var(--p-white);
       font-weight: 400;
       transition: all var(--smooth-transition);
     }
@@ -331,18 +331,18 @@ const getActiveWallet = computed(() => {
 
   // context specific overrides
   &#{$self}--is-collab {
-    background-color: var(--el-color-base-blue-pulse);
+    background-color: var(--p-black-rock-900);
 
     #{$self}__actions-active {
-      background-color: rgba(var(--el-color-secondary-fuschia-bg-rgb), 0.2);
-      border-right-color: var(--el-color-secondary-fuschia-bg);
+      background-color: rgba(var(--p-black-rock-100-rgb), 0.2);
+      border-right-color: var(--p-black-rock-100);
     }
   }
 
   &--no-entity-selected {
     #{$self}__actions-active {
-      background-color: rgba(var(--el-color-base-white-rgb), 0.2) !important;
-      border-right-color: var(--el-color-base-white) !important;
+      background-color: rgba(var(--p-white-rgb), 0.2) !important;
+      border-right-color: var(--p-white) !important;
     }
   }
 }

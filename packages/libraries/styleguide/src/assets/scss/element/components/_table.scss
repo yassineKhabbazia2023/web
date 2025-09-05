@@ -2,16 +2,16 @@
 
 $table: (
   'border-color': 0,
-  'border': 1px solid var(--el-color-neutral-gray-100),
+  'border': 1px solid var(--p-gray-100),
   'text-color': var(--el-fill-color-darker),
   'header-text-color': var(--el-fill-color),
-  'row-hover-bg-color': var(--el-color-base-hover),
-  'current-row-bg-color': var(--el-color-persian-50),
+  'row-hover-bg-color': var(--p-jungle-50),
+  'current-row-bg-color': var(--p-jungle-75),
   'header-bg-color': var(--el-bg-color),
   'fixed-box-shadow': var(--el-box-shadow-light),
-  'bg-color': var(--el-fill-color-blank),
-  'tr-bg-color': var(--el-fill-color-blank),
-  'expanded-cell-bg-color': var(--el-fill-color-blank),
+  'bg-color': var(--p-white),
+  'tr-bg-color': var(--p-white),
+  'expanded-cell-bg-color': var(--p-white),
   'fixed-left-column': inset 10px 0 10px -10px rgb(0 0 0 / 0.15),
   'fixed-right-column': inset -10px 0 10px -10px rgb(0 0 0 / 0.15),
 );
@@ -84,20 +84,20 @@ tbody tr td .cell {
         td.el-table__cell {
           background-color: var(--el-table-current-row-bg-color);
           &:first-child {
-            border-color: var(--el-color-base-persian);
+            border-color: var(--p-jungle-400);
           }
         }
       }
       &.p-table__row--disabled,
       &.p-table__row--disabled.el-table__row--striped {
         td.el-table__cell {
-          background-color: var(--el-color-neutral-gray-50);
-          color: var(--el-color-neutral-gray-300);
+          background-color: var(--p-gray-50);
+          color: var(--p-gray-300);
           pointer-events: none;
 
           .p-double-text__content-description,
           .p-double-text__content-title {
-            color: var(--el-color-neutral-gray-300);
+            color: var(--p-gray-300);
           }
         }
       }
@@ -105,7 +105,7 @@ tbody tr td .cell {
       &.p-table__row--active,
       &.p-table__row--active.el-table__row--striped {
         td.el-table__cell {
-          background-color: var(--el-color-polar-50);
+          background-color: var(--p-jungle-50);
         }
       }
     }

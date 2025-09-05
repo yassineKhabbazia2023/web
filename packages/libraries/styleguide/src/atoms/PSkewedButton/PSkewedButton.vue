@@ -55,11 +55,11 @@ function handleClick(event: MouseEvent) {
 .p-skewed-button {
   $self: &;
   display: inline-block;
-  background: var(--el-color-base-blue-pulse);
+  background: var(--p-black-rock-900);
   // A top-left angle of 120° and a bottom-left angle of 60°
   // are achieved with a 30° skew, based on the skew function's mathematical result.
   transform: skew(-30deg);
-  color: var(--el-color-base-white);
+  color: var(--p-white);
   // The skew effect is lengthening the button on the sides.
   // It increases the width by approximately 13px with a 30 degree skew and the paddings (4) on the y-axis.
   margin-left: 13px;
@@ -91,38 +91,38 @@ function handleClick(event: MouseEvent) {
 
   &--primary {
     &:hover {
-      background: var(--el-color-persian-600);
+      background: var(--p-jungle-600);
     }
 
     &:active {
-      background: var(--el-color-persian-400);
+      background: var(--p-jungle-400);
     }
   }
 
   &--secondary {
-    background: var(--el-color-polar-50);
-    color: var(--el-color-base-blue-pulse);
+    background: var(--p-jungle-50);
+    color: var(--p-black-rock-900);
 
     &:hover {
-      background: var(--el-color-polar-100);
+      background: var(--p-humming-bird-100);
     }
 
     &:active {
-      background: var(--el-color-polar-200);
+      background: var(--p-humming-bird-200);
     }
   }
 
   &--disabled {
     cursor: not-allowed;
-    background: var(--el-color-neutral-gray-100);
-    color: var(--el-color-neutral-gray-500);
+    background: var(--p-gray-100);
+    color: var(--p-gray-500);
 
     button {
       cursor: not-allowed;
     }
 
     &:hover {
-      background: var(--el-color-neutral-gray-100);
+      background: var(--p-gray-100);
     }
   }
 }

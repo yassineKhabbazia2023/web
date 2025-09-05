@@ -106,6 +106,6 @@ defineExpose({
 
 <style scoped lang="scss">
 .p-input--focused {
-  border-bottom-color: var(--el-color-persian-800);
+  border-bottom-color: var(--p-stroke-press);
 }
 </style>

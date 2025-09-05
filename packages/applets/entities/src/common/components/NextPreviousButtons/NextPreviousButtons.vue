@@ -38,9 +38,9 @@ const emit = defineEmits<{
 <style scoped lang="scss">
 .previous-button {
   &:hover, &:active {
-    background-color: var(--el-color-base-blue-pulse);
-    color: var(--el-color-base-white);
-    border-color: var(--el-color-base-blue-pulse);
+    background-color: var(--p-black-rock-900);
+    color: var(--p-white);
+    border-color: var(--p-black-rock-900);
   }
 }
 </style>

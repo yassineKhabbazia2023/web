@@ -215,13 +215,13 @@ const pThirdDialogControl = reactive({
 <style lang="scss" scoped>
 .p-dialog {
   &__text {
-    color: var(--el-color-neutral-gray-900);
+    color: var(--p-gray-900);
     font-size: 1.4rem;
     font-weight: 400;
     line-height: 120%;
 
     &-file {
-      color: var(--el-color-neutral-gray-900);
+      color: var(--p-gray-900);
       font-size: 1.4rem;
       font-weight: 400;
       line-height: 120%;
@@ -234,7 +234,7 @@ const pThirdDialogControl = reactive({
     align-items: center;
 
     &-extension {
-      color: var(--el-color-neutral-gray-900);
+      color: var(--p-gray-900);
       padding-left: 8px;
     }
   }

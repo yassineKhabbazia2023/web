@@ -64,7 +64,7 @@ defineProps<ServiceEmailInformationLineProps>()
 .service-email-information-line {
   width: 100%;
   &:last-of-type:not(:only-of-type) {
-    border-top: 1px solid var(--el-color-neutral-gray-100);
+    border-top: 1px solid var(--p-gray-100);
   }
 
   &__information {

@@ -69,7 +69,7 @@ onMounted(async () => {
 
 <style lang="scss">
 .wrapperLogin .error .el-input__wrapper {
-  box-shadow: 0 0 0 1px var(--el-color-danger) inset;
+  box-shadow: 0 0 0 1px var(--p-red-500) inset;
 }
 </style>
 
@@ -85,7 +85,7 @@ onMounted(async () => {
   font-size: 3.2rem;
 
   &__second-part {
-    color: var(--el-color-primary);
+    color: var(--p-jungle-400);
   }
 }
 
