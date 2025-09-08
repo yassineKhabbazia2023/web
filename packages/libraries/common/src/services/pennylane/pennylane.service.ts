@@ -22,7 +22,7 @@ export class PennylaneService {
       const { data } = await PennylaneService.availableRolesByCompanyId[companyId]
 
       return data
-    } catch(e) {
+    } catch (e) {
       logger.error(e)
     }
   }

@@ -98,22 +98,22 @@ const tagIconByState: Record<string, IconName> = {
 
 const tagTypeProps = (piaStatus: string): PiaStatusTag => {
   switch (piaStatus) {
-  case 'New':
-    return { iconName: tagIconByState.default, type: '' }
-  case 'Collectable':
-    return { iconName: tagIconByState.warning, type: 'warning' }
-  case 'Collected':
-    return { iconName: tagIconByState.success, type: 'success' }
-  case 'Duplicate':
-    return { iconName: tagIconByState.success, type: 'success' }
-  case 'Error':
-    return { iconName: tagIconByState.danger, type: 'danger' }
-  case 'Archived':
-    return { iconName: tagIconByState.success, type: 'success' }
-  case 'NotTransmitted':
-    return { iconName: tagIconByState.danger, type: 'danger' }
-  default:
-    return { iconName: tagIconByState.danger, type: 'danger' }
+    case 'New':
+      return { iconName: tagIconByState.default, type: '' }
+    case 'Collectable':
+      return { iconName: tagIconByState.warning, type: 'warning' }
+    case 'Collected':
+      return { iconName: tagIconByState.success, type: 'success' }
+    case 'Duplicate':
+      return { iconName: tagIconByState.success, type: 'success' }
+    case 'Error':
+      return { iconName: tagIconByState.danger, type: 'danger' }
+    case 'Archived':
+      return { iconName: tagIconByState.success, type: 'success' }
+    case 'NotTransmitted':
+      return { iconName: tagIconByState.danger, type: 'danger' }
+    default:
+      return { iconName: tagIconByState.danger, type: 'danger' }
   }
 }
 

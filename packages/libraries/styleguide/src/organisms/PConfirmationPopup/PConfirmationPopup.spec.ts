@@ -1,7 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import { type PConfirmationPopupProps } from'./PConfirmationPopupTypes'
+import { type PConfirmationPopupProps } from './PConfirmationPopupTypes'
 import { nextTick, type ComponentPublicInstance } from 'vue'
 import PConfirmationPopup from '.'
 

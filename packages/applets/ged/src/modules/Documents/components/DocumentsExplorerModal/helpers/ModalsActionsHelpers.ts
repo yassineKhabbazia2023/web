@@ -1,8 +1,8 @@
 import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 
 interface ModalActionsWithOrder {
-    modalButton: ButtonAction
-    order: number
+  modalButton: ButtonAction
+  order: number
 }
 
 export function generateActionsForModal(

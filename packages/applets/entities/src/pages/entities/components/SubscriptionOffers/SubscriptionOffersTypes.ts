@@ -11,7 +11,7 @@ export interface SubscriptionOfferProduct {
   isSelected?: boolean
   priceType: SubscriptionPriceType
   price: number
- }
+}
 
 export interface SubscriptionOfferProvider {
   providerName: ProviderName

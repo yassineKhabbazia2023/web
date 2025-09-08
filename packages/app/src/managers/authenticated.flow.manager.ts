@@ -75,7 +75,7 @@ export class AuthenticatedFlowManager {
     const selectedEntityStore = useSelectedEntityStore()
     // if no entity is selected, we try to fetch the one stored in local storage
     // or set the default entity provided
-    if(selectedEntityStore.selectedEntityId === undefined) {
+    if (selectedEntityStore.selectedEntityId === undefined) {
       let storedEntity
 
       const localStorageEntityId = SelectedEntityManager.getLocalStorageEntityId()
@@ -104,7 +104,7 @@ export class AuthenticatedFlowManager {
     try {
       const productFruitsUser = getProductFruitsUser(user)
 
-      if(isCollab) {
+      if (isCollab) {
         initProductFruitsAuthenticatedCollab(productFruitsUser)
         AmplitudeService.identifyCollaborator()
       } else {
@@ -155,7 +155,7 @@ export class AuthenticatedFlowManager {
       }
       // if it is set to false in the store it is better to refetch the information to make sure it is really up to date
       const { isCurrent: hasUserAcceptedCgu, terms } = await getTermsByCurrentUser()
-      if(hasUserAcceptedCgu === false && terms) {
+      if (hasUserAcceptedCgu === false && terms) {
         const cguRedirection = {
           name: APP_ROUTES.login.cguValidation.name, // TODO déplacer cette route en dehors de login // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47375
           params: {
@@ -190,7 +190,7 @@ export class AuthenticatedFlowManager {
     }
   }
 
-  static getCustomerLandingPage(){
+  static getCustomerLandingPage() {
     const userStore = useUserStore()
     const isSingleEntity = userStore.getIsSingleEntity()
 

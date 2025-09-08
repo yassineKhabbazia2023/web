@@ -124,18 +124,18 @@ export function getEnrichedFormSection(
 
 export const getFormSections = (formStructureName: FormStructureName) => {
   switch (formStructureName) {
-  case ProviderName.MEG:
-    return MEGOffersFormStructure as FormSection[]
-  case ProviderName.LOOP:
-    return LOOPOfferFormStructure as FormSection[]
-  case ProviderName.PENNYLANE:
-    return PennylaneOfferFormStructure as FormSection[]
-  case 'CompanyProfile':
-    return InformationFormStructure as FormSection[]
-  case 'EntityCreator':
-    return EntityCreatorFormStructure as FormSection[]
-  default:
-    return []
+    case ProviderName.MEG:
+      return MEGOffersFormStructure as FormSection[]
+    case ProviderName.LOOP:
+      return LOOPOfferFormStructure as FormSection[]
+    case ProviderName.PENNYLANE:
+      return PennylaneOfferFormStructure as FormSection[]
+    case 'CompanyProfile':
+      return InformationFormStructure as FormSection[]
+    case 'EntityCreator':
+      return EntityCreatorFormStructure as FormSection[]
+    default:
+      return []
   }
 }
 

@@ -10,7 +10,7 @@ const DIRECTORY_NAME = './src/assets/'
 
 type MimeTypes = {
   [key: string]: string;
-};
+}
 
 const types: MimeTypes = {
   html: 'text/html',

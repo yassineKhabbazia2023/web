@@ -62,7 +62,7 @@ export function initProductFruits({ lang, key, user, openChatCallback }: InitPro
   }
 
   const productFruitsOptions = getProductFruitsOptions(user)
-  if(typeof openChatCallback === 'function') {
+  if (typeof openChatCallback === 'function') {
     setupChat(openChatCallback)
     // hubspot exists only if there's a need for a chat
     initHubspotWithProductFruits()

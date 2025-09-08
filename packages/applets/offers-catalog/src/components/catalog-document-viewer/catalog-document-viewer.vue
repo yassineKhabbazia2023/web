@@ -40,7 +40,7 @@ const { t } = useI18n({
 const props = defineProps<CatalogDocumentViewerProps>()
 
 const emit = defineEmits<{
-    'update:is-opened': [boolean]
+  'update:is-opened': [boolean]
 }>()
 const internalIsOpened = computed({
   get: () => props.isOpened,

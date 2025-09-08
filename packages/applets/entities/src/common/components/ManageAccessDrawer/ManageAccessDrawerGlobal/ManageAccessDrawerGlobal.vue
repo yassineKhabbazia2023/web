@@ -141,7 +141,7 @@ function onUpdateSearch(searchValue: string) {
   refreshList()
 }
 
-const refreshList = async ({ page }: {page?: number} = {}) => {
+const refreshList = async ({ page }: { page?: number } = {}) => {
   await refreshManageAccessOperations({
     page,
   })

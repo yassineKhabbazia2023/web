@@ -116,10 +116,10 @@ function mapActionsWithConfig({
   order,
   customLabels,
 }: {
-    actions: Action[],
-    order?: readonly string[],
-    customLabels: Record<string, string> // presenceRight -> (actionCode -> newLabel)
-  }) : Action[] {
+  actions: Action[],
+  order?: readonly string[],
+  customLabels: Record<string, string> // presenceRight -> (actionCode -> newLabel)
+}) : Action[] {
 
   // Sort if an order is provided
   const base = order !== undefined

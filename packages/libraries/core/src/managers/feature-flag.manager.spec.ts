@@ -3,8 +3,8 @@ import { type EnvVars, FeatureFlagManager } from './feature-flag.manager'
 import { Feature } from '../enums/feature.enums'
 
 declare let window: {
-    EnvVars: EnvVars
-  } & Window
+  EnvVars: EnvVars
+} & Window
 
 vi.stubGlobal('window', {
   EnvVars: {} as Record<Feature, 'true' | 'false'>,

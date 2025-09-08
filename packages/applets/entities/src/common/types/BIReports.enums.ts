@@ -2,7 +2,7 @@ export enum ReportStatus {
   ONLINE = 'ONLINE',
   OFFLINE = 'OFFLINE',
   FAILED = 'FAILED',
-  PENDING_VALIDATION = 'PENDING_VALIDATION'
+  PENDING_VALIDATION = 'PENDING_VALIDATION',
 }
 
 export enum ReportTypeEnum {

@@ -24,7 +24,7 @@ export class AccountManager {
           const user = items.at(0)
 
           return user?.contactId
-        } catch(e) {
+        } catch (e) {
           logger.warn(`Failed to add contact to entity, accountId = ${accountId}, email = ${email}`, e)
         }
       } else {

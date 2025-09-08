@@ -31,7 +31,7 @@ export async function fetchReferentialHubs() {
   return await fetchGatewayApi<Hub[]>(url)
 }
 
-export async function fetchReferentialOffices(){
+export async function fetchReferentialOffices() {
   const url = `${API_PREFIXES.OFFER}/referentials/offices`
 
   const offices = await fetchGatewayApi<Office[]>(url)

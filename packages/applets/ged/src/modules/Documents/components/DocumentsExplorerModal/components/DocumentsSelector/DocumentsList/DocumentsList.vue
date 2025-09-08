@@ -33,16 +33,16 @@ const documents = ref(props.documents)
 
 const getDocumentState = (givenActionState: string) => {
   switch (givenActionState) {
-  case 'TO_DO':
-    return 'default'
-  case 'IN_PROGRESS':
-    return 'loading'
-  case 'DONE':
-    return 'success'
-  case 'FAILED':
-    return 'error'
-  default:
-    return 'default'
+    case 'TO_DO':
+      return 'default'
+    case 'IN_PROGRESS':
+      return 'loading'
+    case 'DONE':
+      return 'success'
+    case 'FAILED':
+      return 'error'
+    default:
+      return 'default'
   }
 }
 

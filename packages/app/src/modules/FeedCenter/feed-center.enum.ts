@@ -5,5 +5,5 @@ export enum FeedCenterActions {
 
 export enum SettingsType {
   EMAIL = 'email',
-  FEED_CENTER = 'feedCenter'
+  FEED_CENTER = 'feedCenter',
 }

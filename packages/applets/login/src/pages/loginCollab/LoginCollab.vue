@@ -53,7 +53,7 @@ const handleMSALRedirectionAfterLogin = async () => {
       navigateToWallet()
       return
     }
-  } catch(e) {
+  } catch (e) {
     logger.error(e)
   } finally {
     isLoading.value = false

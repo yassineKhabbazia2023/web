@@ -47,7 +47,7 @@ async function initAdditionalOptionByActionCodeOrigin() {
         entityId,
         contactId,
       })
-    } catch(e) {
+    } catch (e) {
       logger.error(e)
     }
   }

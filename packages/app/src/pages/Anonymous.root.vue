@@ -13,7 +13,7 @@ const router = useRouter()
 const route = useRoute()
 
 const checkRedirections = (currentRoute: RouteLocationNormalizedGeneric) => {
-  if(currentRoute.name === APP_ROUTES.anonymous.name) {
+  if (currentRoute.name === APP_ROUTES.anonymous.name) {
     const nextRoute = AnonymousFlowManager.getLandingPage()
     router.push(nextRoute)
   }

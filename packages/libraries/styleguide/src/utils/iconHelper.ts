@@ -6,9 +6,7 @@ import { PIXCircle } from '../atoms/PIcon/components'
 export const getIconComponent = (iconName?: IconName) =>
   iconName
     ? defineAsyncComponent({
-      loader: () => import(
-        `../atoms/PIcon/components/PI${capitalize(iconName)}.vue`
-      ),
+      loader: () => import(`../atoms/PIcon/components/PI${capitalize(iconName)}.vue`),
       errorComponent: PIXCircle,
     })
     : undefined

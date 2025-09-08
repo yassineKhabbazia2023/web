@@ -120,7 +120,7 @@ async function onToolboxItemClick(
         successMessage: t('messages.download-success'),
         errorMessage: t('messages.download-error'),
       })
-    } catch(e) {
+    } catch (e) {
       logger.error('Error while downloading document', e)
       inProgressNotification.close()
       displayNotification('error', t('messages.download-error'))

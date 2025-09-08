@@ -130,7 +130,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
       },
     })
   } catch (error: any) {
-    if(error.status === HTTP_RESPONSES.TOO_MANY_REQUESTS) {
+    if (error.status === HTTP_RESPONSES.TOO_MANY_REQUESTS) {
       router.push({
         name: APP_ROUTES.login.resetPasswordFailed.name,
         query: {

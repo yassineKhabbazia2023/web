@@ -115,7 +115,7 @@ export const createMandate = async ({
 export const uploadSignedMandate = async ({
   mandateId,
   file,
-}: {mandateId: string, file: any}): Promise<any> => {
+}: { mandateId: string, file: any }): Promise<any> => {
   const formData = new FormData()
 
   formData.append('file', file)

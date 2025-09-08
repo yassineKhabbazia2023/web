@@ -55,12 +55,12 @@ export default [
       'curly': 'error',
       // 'max-params': ['error', 3], // TODO: uncomment after eslint migration
       // Format rules
-      'comma-dangle': ['error', 'always-multiline'],
-      'array-bracket-spacing': ['error', 'never', { 'singleValue': false }],
-      'func-call-spacing': ['error', 'never'],
-      'indent': ['error', 2],
-      'key-spacing': ['error', { beforeColon: false }],
-      'max-len': ['warn', {
+      '@stylistic/comma-dangle': ['error', 'always-multiline'],
+      '@stylistic/array-bracket-spacing': ['error', 'never', { singleValue: false }],
+      '@stylistic/func-call-spacing': ['error', 'never'],
+      '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
+      '@stylistic/key-spacing': ['error', { beforeColon: false }],
+      '@stylistic/max-len': ['warn', {
         code: 120,
         ignoreComments: true,
         ignoreTrailingComments: true,
@@ -71,21 +71,29 @@ export default [
         ignorePattern: '^\\s*<path',
       }],
       'import/no-duplicates': 'error',
-      'no-empty': 'error',
-      'no-multi-spaces': ['error', { 'ignoreEOLComments': true }],
-      'comma-spacing': ['error', { 'before': false, 'after': true }],
-      'no-multiple-empty-lines': ['error', { 'max': 2, 'maxBOF': 0, 'maxEOF': 1 }],
-      'no-trailing-spaces': 'error',
-      'no-whitespace-before-property': 'error',
-      'object-curly-spacing': ['error', 'always', { 'arraysInObjects': true }],
-      'quotes': ['error', 'single', { avoidEscape: true }],
-      'semi': ['error', 'never'],
-      'space-before-function-paren': ['error', { 'anonymous': 'never', 'named': 'never', 'asyncArrow': 'always' }],
-      'space-in-parens': ['error', 'never'],
+      '@stylistic/no-multi-spaces': ['error', { ignoreEOLComments: true }],
+      '@stylistic/comma-spacing': ['error', { before: false, after: true }],
+      '@stylistic/no-multiple-empty-lines': ['error', { max: 2, maxBOF: 0, maxEOF: 1 }],
+      '@stylistic/no-trailing-spaces': 'error',
+      '@stylistic/no-whitespace-before-property': 'error',
+      '@stylistic/object-curly-spacing': ['error', 'always', { arraysInObjects: true }],
+      '@stylistic/quotes': ['error', 'single', { avoidEscape: true }],
+      '@stylistic/semi': ['error', 'never'],
+      '@stylistic/space-before-function-paren': ['error', { anonymous: 'never', named: 'never', asyncArrow: 'always' }],
+      '@stylistic/space-in-parens': ['error', 'never'],
       'vue/attributes-order': 'error',
       'vue/max-attributes-per-line': ['error', { singleline: 2 }],
+      'vue/no-spaces-around-equal-signs-in-attribute': 'error',
+      'vue/html-indent': ['error', 2, {
+        attribute: 1,
+        baseIndent: 1,
+        closeBracket: 0,
+        alignAttributesVertically: true,
+      }],
       '@stylistic/brace-style': ['error', '1tbs', { 'allowSingleLine': false }],
       '@stylistic/eol-last': ['error', 'always'],
+      '@stylistic/space-before-blocks': ['error', 'always'],
+      '@stylistic/keyword-spacing': ['error', { 'before': true, 'after': true }],
     },
   },
   {
@@ -97,7 +105,7 @@ export default [
       // specific rules for our usage
       '@typescript-eslint/ban-ts-comment': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
-      'max-len': ['warn', {
+      '@stylistic/max-len': ['warn', {
         code: 150, // longer for specs
         ignoreComments: true,
         ignoreTrailingComments: true,
@@ -121,7 +129,7 @@ export default [
     // specific rulesets for Story files (above rules apply as well)
     files: ['**/*.story.vue'],
     rules: {
-      'max-len': 'off', // we don't enforce line length in stories files
+      '@stylistic/max-len': 'off', // we don't enforce line length in stories files
     },
   },
   {
@@ -168,7 +176,7 @@ export default [
     // specific rulesets for Story files (above rules apply as well)
     files: ['**/*.stories.ts'],
     rules: {
-      'max-len': 'off', // we don't enforce line length in stories files
+      '@stylistic/max-len': 'off', // we don't enforce line length in stories files
       'no-console': 'off', // we allow console.log in stories
     },
   },

@@ -413,24 +413,24 @@ const formatAndFillUsersCollabTable = async () => {
  */
 const getStatus = (status: string): UserStatus => {
   switch (status) {
-  case 'Declared':
-    return {
-      text: t('statusDeclared'),
-      iconName: 'patchCheck',
-      color: 'gray-900',
-    }
-  case 'Connected':
-    return {
-      text: t('statusConnect'),
-      iconName: 'power',
-      color: 'success',
-    }
-  default:
-    return {
-      text: t('statusInvite'),
-      iconName: 'person',
-      color: 'persian',
-    }
+    case 'Declared':
+      return {
+        text: t('statusDeclared'),
+        iconName: 'patchCheck',
+        color: 'gray-900',
+      }
+    case 'Connected':
+      return {
+        text: t('statusConnect'),
+        iconName: 'power',
+        color: 'success',
+      }
+    default:
+      return {
+        text: t('statusInvite'),
+        iconName: 'person',
+        color: 'persian',
+      }
   }
 }
 

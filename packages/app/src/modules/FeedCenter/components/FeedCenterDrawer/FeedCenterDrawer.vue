@@ -122,17 +122,17 @@ const toolboxParams = (): PDrawerProps['pHeaderToolbox'] => {
 
 async function handleToolboxItemClick(actionName: string) {
   switch (actionName) {
-  case FeedCenterActions.MARK_ALL_AS_READ: {
-    const patchedNotifications = await patchAllNotificationsAsRead(userId.value)
-    feedCenterStore.setNotifications(patchedNotifications)
-    trackNotificationMarkAsRead(NotificationTrackingReadType.ALL_READ)
-    emit('notifications-updated')
-    break
-  }
-  case FeedCenterActions.OPEN_SETTINGS_DRAWER: {
-    emit('open-notification-settings-drawer')
-    break
-  }
+    case FeedCenterActions.MARK_ALL_AS_READ: {
+      const patchedNotifications = await patchAllNotificationsAsRead(userId.value)
+      feedCenterStore.setNotifications(patchedNotifications)
+      trackNotificationMarkAsRead(NotificationTrackingReadType.ALL_READ)
+      emit('notifications-updated')
+      break
+    }
+    case FeedCenterActions.OPEN_SETTINGS_DRAWER: {
+      emit('open-notification-settings-drawer')
+      break
+    }
   }
 }
 

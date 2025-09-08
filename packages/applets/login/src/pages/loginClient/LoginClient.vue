@@ -179,7 +179,7 @@ async function onSubmit() {
     LoginManager.setStoreGigyaUserId(userId)
 
     // Activate Gigya SSO
-    if(VITE_GIGYA_SSO_ACTIVATED === 'true'){
+    if (VITE_GIGYA_SSO_ACTIVATED === 'true') {
       try {
         window.gigya.accounts.login({
           loginID: email.value,

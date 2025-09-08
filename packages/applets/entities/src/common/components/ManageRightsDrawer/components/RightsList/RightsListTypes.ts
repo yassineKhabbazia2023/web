@@ -39,7 +39,7 @@ export interface RightsListProps {
 }
 
 export interface ActionAdditionalInfo {
-  actionCode:string
+  actionCode: string
   content: string
 }
 

@@ -82,7 +82,7 @@ const basicDataTitles = ref({
   step3: 'step 3',
 })
 
-const stepperDirection: { label: string, value:string }[] = [{
+const stepperDirection: { label: string, value: string }[] = [{
   label: 'vertical',
   value: 'vertical',
 }, {

@@ -6,8 +6,8 @@ export const DEFAULT_TAG_PROPS: Omit<PTagProps, 'pContent'> = {
 }
 
 export const CATALOG_TAG_STYLES: {
-    tagLabel: string
-    tagProps: Omit<PTagProps, 'pContent'>
+  tagLabel: string
+  tagProps: Omit<PTagProps, 'pContent'>
 }[] = [{
   tagLabel: 'Gérer',
   tagProps: { pColor: 'info', pEffect: 'light' },

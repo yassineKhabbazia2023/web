@@ -3,9 +3,9 @@ import type { Service } from '@ged/models/Service'
 import type { ExplorerDocument, ExplorerFoldersListLineDisabledState } from '../../DocumentsTypes'
 import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 
-export interface GivenActionAuthorization{
-    actionName: string
-    isActionAuthorized: boolean
+export interface GivenActionAuthorization {
+  actionName: string
+  isActionAuthorized: boolean
 }
 
 export interface DocumentsModalExplorerProps {
@@ -26,5 +26,5 @@ export interface DocumentsModalExplorerProps {
   isFolderLineDisabled?: boolean
   explorerFolderListLineDisabledState?: ExplorerFoldersListLineDisabledState
   isFolderLine?: boolean
-  canCloseModal:boolean
+  canCloseModal: boolean
 }

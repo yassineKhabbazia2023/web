@@ -49,14 +49,14 @@ const iconSize = computed(() => props.pIconName ? 32 : 16)
 
 const iconName = computed<PIconProps['pName']>(() => {
   switch (props.pType) {
-  case 'success':
-    return 'checkCircle'
-  case 'warning':
-    return 'exclamationTriangle'
-  case 'danger':
-    return 'xCircle'
-  default:
-    return props.pIconName ?? 'infoCircle'
+    case 'success':
+      return 'checkCircle'
+    case 'warning':
+      return 'exclamationTriangle'
+    case 'danger':
+      return 'xCircle'
+    default:
+      return props.pIconName ?? 'infoCircle'
   }
 })
 

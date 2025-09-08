@@ -1,9 +1,9 @@
 export enum AmplitudeOperationStatus {
   ACCEPTED = 'accepté',
-  REJECTED = 'refusé'
+  REJECTED = 'refusé',
 }
 
 export enum TrackingLocalisation {
   WALLET = 'portefeuille',
-  FOLDER = 'dossier'
+  FOLDER = 'dossier',
 }

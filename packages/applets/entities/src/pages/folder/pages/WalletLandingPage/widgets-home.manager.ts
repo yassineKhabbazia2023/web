@@ -20,7 +20,7 @@ export class WidgetsHomeManager {
         const widgetGridDefinition = WidgetsGridManager.getWidgetGridDefinition(widgetName)
         if (isCustomer === true) { // Business rule: Customers need a specific permissions to access certain widgets
           if (widgetGridDefinition !== undefined &&
-            this.hasRequiredPermissions(widgetGridDefinition.customerPermission) === false){
+            this.hasRequiredPermissions(widgetGridDefinition.customerPermission) === false) {
             logger.warn(`Widget ${widgetName} will not be displayed due to missing permissions.`)
             return undefined
           }

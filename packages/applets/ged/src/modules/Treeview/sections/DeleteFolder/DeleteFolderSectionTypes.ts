@@ -6,5 +6,5 @@ export interface DeleteFolderSectionProps {
   entityId: string
   accountId: number
   selectedFolder: Folder
-  isDeleteFolderPopupVisible:boolean
+  isDeleteFolderPopupVisible: boolean
 }

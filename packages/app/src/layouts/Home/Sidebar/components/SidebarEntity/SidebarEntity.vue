@@ -199,7 +199,7 @@ const onToggleSidebar = () => {
 
 const getActiveWallet = computed(() => {
   const routesWithActiveWallet = ['wallet', 'wallet-client']
-  if(RouterHelpers.isRouteOrAncestorActive({ route, routesToMatch: routesWithActiveWallet })) {
+  if (RouterHelpers.isRouteOrAncestorActive({ route, routesToMatch: routesWithActiveWallet })) {
     return 'sidenav-entity__actions-active'
   }
 

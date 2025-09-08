@@ -11,8 +11,8 @@ import { downloadFile } from '@pulse/common/helpers'
 export function useDownloadFolder(
   downloadFolderProps: ComputedRef<DownloadFolderComposableProps>,
 ): {
-  handleDownloadFolderEvent: () => Promise<void>
-} {
+    handleDownloadFolderEvent: () => Promise<void>
+  } {
   const { t } = useI18n({
     inheritLocale: true,
     useScope: 'global',

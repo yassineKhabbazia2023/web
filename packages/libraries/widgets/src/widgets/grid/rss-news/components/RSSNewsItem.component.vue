@@ -34,7 +34,7 @@ const imgSrc = computed(() => RSSNewsService.extractImageUrl(props.newsItem?.des
 const sanitizedUrl = computed(() => sanitizeUrl(props.newsItem.guid))
 
 const newsPubDate = computed(() => {
-  if(!props.newsItem?.pubDate) {
+  if (!props.newsItem?.pubDate) {
     return ''
   }
 

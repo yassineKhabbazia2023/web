@@ -54,7 +54,7 @@ onMounted(async () => {
       pennylaneLastSynchroDate.value = lastSynchroDate
     }
     apiCallStatus.value = APICallStatus.SUCCESS
-  } catch(e) {
+  } catch (e) {
     logger.error('Error while loading pennylane documents', e)
     apiCallStatus.value = APICallStatus.ERROR
   }

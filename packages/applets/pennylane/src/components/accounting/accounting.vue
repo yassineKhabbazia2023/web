@@ -38,7 +38,7 @@ onMounted(async () => {
 
     pennylaneDocuments.value = getFormattedPennylaneDocuments(documentQueryResult.items, pathPrefix)
     apiCallStatus.value = APICallStatus.SUCCESS
-  } catch(e) {
+  } catch (e) {
     logger.error('Error while loading pennylane documents', e)
     apiCallStatus.value = APICallStatus.ERROR
   }

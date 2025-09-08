@@ -9,7 +9,7 @@ export function getRowAlignmentClass(index: number, referenceTable: Array<any>) 
 }
 
 export function getIsDraggedDocument(document: Document, draggedDocuments: Document[]) {
-  if(getIsDocumentCertified(document)) {
+  if (getIsDocumentCertified(document)) {
     return false
   }
 

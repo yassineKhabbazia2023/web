@@ -57,7 +57,7 @@ export async function getAdditionalOptionByActionCode({
     return {
       [PERMISSION_PENNYLANE_CUSTOMER]: pennylaneAccountContactRole?.role,
     }
-  } catch(e) {
+  } catch (e) {
     logger.warn('Failed to load account Pennylane AccountContactRole', e)
     return {}
   }

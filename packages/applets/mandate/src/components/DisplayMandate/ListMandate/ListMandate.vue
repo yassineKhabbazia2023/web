@@ -303,7 +303,7 @@ const saveFile = async (id: string, data: any, mandateType: string) => {
 }
 
 const actionClicked = async (event: ActionEvent, { id, accountNumber, companyName }:
-  { id: string, accountNumber: string, companyName: string }) => {
+{ id: string, accountNumber: string, companyName: string }) => {
   const actions: Record<any, () => Promise<void> | void> = {
     'download-pre-filled-mandate': async () => {
       MandateTracking.trackPreFilledMandateDownload()

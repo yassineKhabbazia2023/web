@@ -57,7 +57,7 @@ const AVATAR_ROLES_COLORS: Record<AvatarRoles, PAvatarProps['pColor']> = {
 
 const getAvatarColor = () => {
   // we allow to force the color
-  if(props.pColor) {
+  if (props.pColor) {
     return props.pColor
   }
   // if we have a role, we use the role color

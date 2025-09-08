@@ -26,5 +26,5 @@ export interface PActionBarProps {
 
 export enum ActionBarComponentTypes {
   UPLOAD = 'UPLOAD',
-  SEARCH = 'SEARCH'
+  SEARCH = 'SEARCH',
 }

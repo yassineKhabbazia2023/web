@@ -46,12 +46,12 @@ const props = defineProps<{
 const levelPasswordStrengthClass = computed(() => {
   const level = levelPasswordStrength(props.password)
   switch (level) {
-  case PASSWORD_STRENGTH.STRONG:
-    return { class: 'levelPwdStrong', text: t('levelPasswordStrengthStrong') }
-  case PASSWORD_STRENGTH.AVERAGE:
-    return { class: 'levelPwdAverage', text: t('levelPasswordStrengthAverage') }
-  default:
-    return { class: 'levelPwdWeak', text: t('levelPasswordStrengthWeak') }
+    case PASSWORD_STRENGTH.STRONG:
+      return { class: 'levelPwdStrong', text: t('levelPasswordStrengthStrong') }
+    case PASSWORD_STRENGTH.AVERAGE:
+      return { class: 'levelPwdAverage', text: t('levelPasswordStrengthAverage') }
+    default:
+      return { class: 'levelPwdWeak', text: t('levelPasswordStrengthWeak') }
   }
 })
 </script>

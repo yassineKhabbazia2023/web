@@ -136,14 +136,14 @@ useDownloadDocuments(downloadDocumentsProps)
 
 const tagTypeProps = (piaStatus: string): PiaStatusTag => {
   switch (piaStatus) {
-  case 'Collected':
-    return { iconName: 'checkCircle', type: 'success' }
-  case 'Duplicate':
-    return { iconName: 'checkCircle', type: 'success' }
-  case 'Archived':
-    return { iconName: 'checkCircle', type: 'success' }
-  default:
-    return { iconName: 'checkCircle', type: 'success' }
+    case 'Collected':
+      return { iconName: 'checkCircle', type: 'success' }
+    case 'Duplicate':
+      return { iconName: 'checkCircle', type: 'success' }
+    case 'Archived':
+      return { iconName: 'checkCircle', type: 'success' }
+    default:
+      return { iconName: 'checkCircle', type: 'success' }
   }
 }
 

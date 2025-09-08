@@ -7,7 +7,7 @@ export const featureFlagGuard: NavigationGuard = (to: RouteLocationNormalizedGen
   const toFeatureFlag = to.meta[FEATURE_FLAG_META]
   const toName = to.name as string
 
-  if(
+  if (
     toFeatureFlag !== undefined
     && FeatureFlagManager.isFeatureActivated(toFeatureFlag) === false
   ) {

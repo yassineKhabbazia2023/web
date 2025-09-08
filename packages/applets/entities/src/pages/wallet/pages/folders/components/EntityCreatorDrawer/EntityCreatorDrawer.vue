@@ -183,7 +183,7 @@ const onClickDelete = (index: number) => {
 const onInputAccount = (fieldKey: string, value: any) => {
   setWith(newTestAccount.value, fieldKey, value, Object)
   if (fieldKey === 'email') {
-    if (newTestAccount.value.existingContactGuid){
+    if (newTestAccount.value.existingContactGuid) {
       validateContactFields()
       clearContactFields()
       enableContactFields()

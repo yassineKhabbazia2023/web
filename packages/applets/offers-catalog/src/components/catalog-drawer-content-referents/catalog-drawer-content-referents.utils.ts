@@ -54,7 +54,7 @@ export function copyColumnContent(
     }
     copy(value)
     showNotification(successMessage, true)
-  } catch(e) {
+  } catch (e) {
     logger.error(e)
     showNotification(errorMessage, false)
   }

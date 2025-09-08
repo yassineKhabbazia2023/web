@@ -8,7 +8,7 @@ import { FeatureFlagManager, logger } from '@pulse/core'
 export class BootManager {
 
   static checkMaintenanceMode() {
-    if(FeatureFlagManager.isMaintenanceModeActivated()) {
+    if (FeatureFlagManager.isMaintenanceModeActivated()) {
       logger.info('Maintenance mode is activated')
       return true
     }
@@ -16,7 +16,7 @@ export class BootManager {
   }
 
   static getDefaultRedirection() {
-    if(CurrentUserManager.isAuthenticated()) {
+    if (CurrentUserManager.isAuthenticated()) {
       return BootManager.getDefaultAuthenticatedRoute()
     } else {
       return BootManager.getDefaultAnonymousRoute()

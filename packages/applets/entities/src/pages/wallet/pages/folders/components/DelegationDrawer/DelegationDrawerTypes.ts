@@ -16,5 +16,5 @@ export interface DelegationDrawerProps {
 
 export enum DelegationFlowType {
   FULL = 'full',
-  SPECIFIC = 'specific'
+  SPECIFIC = 'specific',
 }

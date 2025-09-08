@@ -97,7 +97,7 @@ export class AmplitudeService {
 
     try {
       // we ensure we only set the userId once per user
-      if(AmplitudeService.currentUserId !== userId) {
+      if (AmplitudeService.currentUserId !== userId) {
         logger.trace('Amplitude - set current user id', userId)
         amplitude.setUserId(userId)
         AmplitudeService.currentUserId = userId
@@ -108,7 +108,7 @@ export class AmplitudeService {
   }
 
   private static setNewUserProperty(key: string, value: string | number) {
-    if(AmplitudeService.userProperty[key] === value) {
+    if (AmplitudeService.userProperty[key] === value) {
       return
     }
     try {
@@ -137,7 +137,7 @@ export class AmplitudeService {
   }
 
   static setUserEmail(email: string | undefined) {
-    if(email === undefined || email.trim() === '') {
+    if (email === undefined || email.trim() === '') {
       logger.warn('Amplitude - setUserEmail called with empty email, skipping')
       return
     }

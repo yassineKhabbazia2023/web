@@ -111,15 +111,15 @@ const isDateRange = (range: [Date, Date] | ''): range is [Date, Date] => {
 
 const handlePeriodChange = (value: string) => {
   switch (value) {
-  case Period.DAY:
-    dateRange.value = [new Date(new Date().setHours(0, 0, 0, 0)), new Date()]
-    break
-  case Period.WEEK:
-    dateRange.value = [new Date(new Date().setDate(new Date().getDate() - 7)), new Date()]
-    break
-  case Period.MONTH:
-    dateRange.value = [new Date(new Date().setDate(new Date().getDate() - 30)), new Date()]
-    break
+    case Period.DAY:
+      dateRange.value = [new Date(new Date().setHours(0, 0, 0, 0)), new Date()]
+      break
+    case Period.WEEK:
+      dateRange.value = [new Date(new Date().setDate(new Date().getDate() - 7)), new Date()]
+      break
+    case Period.MONTH:
+      dateRange.value = [new Date(new Date().setDate(new Date().getDate() - 30)), new Date()]
+      break
   }
 }
 

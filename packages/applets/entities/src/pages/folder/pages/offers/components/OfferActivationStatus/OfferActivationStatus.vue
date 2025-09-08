@@ -26,16 +26,16 @@ const props = defineProps<OfferActivationStatusProps>()
 
 const formattedStatus = computed((): ActivationStatus => {
   switch (props.status) {
-  case OfferActivationStatus.VALIDATED:
-    return { text: t('validated'), color: 'success', iconName: 'checkCircle' }
-  case OfferActivationStatus.REJECTED:
-    return { text: t('rejected'), color: 'danger', iconName: 'xCircle' }
-  case OfferActivationStatus.PENDING_MIGRATION:
-    return pendingMigrationStatus.value
-  case OfferActivationStatus.FAILED_MIGRATION:
-    return { text: t('failedMigration'), color: 'danger', iconName: 'exclamationTriangle' }
-  default:
-    return { text: t('pending'), color: 'warning', iconName: 'infoCircle' }
+    case OfferActivationStatus.VALIDATED:
+      return { text: t('validated'), color: 'success', iconName: 'checkCircle' }
+    case OfferActivationStatus.REJECTED:
+      return { text: t('rejected'), color: 'danger', iconName: 'xCircle' }
+    case OfferActivationStatus.PENDING_MIGRATION:
+      return pendingMigrationStatus.value
+    case OfferActivationStatus.FAILED_MIGRATION:
+      return { text: t('failedMigration'), color: 'danger', iconName: 'exclamationTriangle' }
+    default:
+      return { text: t('pending'), color: 'warning', iconName: 'infoCircle' }
   }
 })
 

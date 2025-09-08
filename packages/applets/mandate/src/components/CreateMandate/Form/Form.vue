@@ -567,7 +567,7 @@ const isBbanComplete = async () => {
     'accountNumber',
     'key',
   ]
-  if(isMandateRedirectionToolFeatureEnabled === true) {
+  if (isMandateRedirectionToolFeatureEnabled === true) {
     fieldsToValidate.push('redirectionTools')
   }
   return fieldsToValidate.every(field => createMandateForm[field] !== '') &&

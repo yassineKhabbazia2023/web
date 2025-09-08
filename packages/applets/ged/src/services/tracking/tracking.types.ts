@@ -5,7 +5,7 @@ export interface TrackDepositedDocumentParams {
   serviceName: Service['ServiceName']
   depositedDocumentsCount: number
   successfulDepositsCount: number
-  failedDepositsCount : number,
+  failedDepositsCount: number,
   destinationFolder: Folder['name']
 }
 
@@ -31,10 +31,10 @@ export interface TrackDocumentTransmitParams {
 export enum TriggerSource {
   ACTION_BAR = 'Action bar',
   CONTEXT_MENU = 'Context menu',
-  DRAG_AND_DROP = 'Drag Drop'
+  DRAG_AND_DROP = 'Drag Drop',
 }
 
 export enum DocumentConsultationSource {
   GED = 'ged',
-  DEPOSIT_HISTORY = 'historique de dépôts'
+  DEPOSIT_HISTORY = 'historique de dépôts',
 }

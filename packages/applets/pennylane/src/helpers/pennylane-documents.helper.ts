@@ -35,7 +35,7 @@ export function downloadDocument({
   try {
     downloadFile(documentSrc, documentName)
     displayNotification('success', successMessage)
-  } catch(e) {
+  } catch (e) {
     logger.error('Something wrong occurred', e)
     displayNotification('error', errorMessage)
   }

@@ -215,7 +215,7 @@ watch(
       return
     }
     try {
-      if(props.servicesFolders.length) {
+      if (props.servicesFolders.length) {
         defaultFolder.value = props.servicesFolders[0][0].children[0]
         emit('selected-folder-change', defaultFolder.value)
 

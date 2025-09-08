@@ -6,7 +6,7 @@ export const AVATAR_COLORS: PAvatarProps['pColor'][] = [
 
 const hashString = (str: string): number => {
   let hash = 0
-  if(str && str.length > 0) {
+  if (str && str.length > 0) {
     for (let i = 0; i < str.length; i++) {
       hash = (hash << 5) - hash + str.charCodeAt(i)
       hash = hash & hash
@@ -16,7 +16,7 @@ const hashString = (str: string): number => {
 }
 
 export const getAvatarColorFromKey = (key: string = ''): PAvatarProps['pColor'] => {
-  if(!key) {
+  if (!key) {
     return AVATAR_COLORS[0]
   }
 

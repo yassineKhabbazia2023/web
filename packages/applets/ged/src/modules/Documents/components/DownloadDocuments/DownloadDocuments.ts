@@ -15,8 +15,8 @@ import { trackDocumentDownload } from '@ged/services/tracking/tracking.service'
 export function useDownloadDocuments(
   downloadDocumentsProps: ComputedRef<DownloadDocumentsComposableProps>,
 ): {
-  handleDownloadDocumentsEvent: () => Promise<void>
-} {
+    handleDownloadDocumentsEvent: () => Promise<void>
+  } {
   const { t } = useI18n({
     inheritLocale: true,
     useScope: 'global',

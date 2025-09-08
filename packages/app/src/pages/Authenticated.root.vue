@@ -19,14 +19,14 @@ const route = useRoute()
 
 const checkRedirections = async (currentRoute: RouteLocationNormalizedGeneric) => {
   const cguRedirection = await AuthenticatedFlowManager.getCGURedirection()
-  if(cguRedirection && currentRoute.name !== cguRedirection.name) {
+  if (cguRedirection && currentRoute.name !== cguRedirection.name) {
     return router.push(cguRedirection)
   }
 
   if (AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot(currentRoute.name as RouteName)) {
     const redirection = AuthenticatedFlowManager.getLandingPage()
 
-    if(redirection && currentRoute.name !== redirection.name) {
+    if (redirection && currentRoute.name !== redirection.name) {
       return router.push(redirection)
     }
   }
@@ -34,7 +34,7 @@ const checkRedirections = async (currentRoute: RouteLocationNormalizedGeneric) =
   if (AuthenticatedFlowManager.isNavigatingToCustomerWallet(currentRoute.name as RouteName)) {
     const redirection = AuthenticatedFlowManager.getCustomerLandingPage()
 
-    if(redirection && currentRoute.name !== redirection.name) {
+    if (redirection && currentRoute.name !== redirection.name) {
       return router.push(redirection)
     }
   }

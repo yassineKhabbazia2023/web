@@ -3,7 +3,7 @@ import type { PImageProps } from '@pulse/styleguide/types'
 export enum LauncherTitle {
   MEG = 'MEG',
   SILAE = 'Silae',
-  PENNYLANE = 'Pennylane'
+  PENNYLANE = 'Pennylane',
 }
 
 export enum LauncherFeature {

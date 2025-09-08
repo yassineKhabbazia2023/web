@@ -128,21 +128,21 @@ const {
 
 const nextLabelKey = computed(() => {
   switch (addCustomerDrawerStep.value) {
-  case AddCustomerDrawerStep.ADD_EMAIL:
-    return 'addUser'
-  case AddCustomerDrawerStep.MANAGE_RIGHTS:
-    return 'grantSelectedRights'
-  default:
-    return 'nextLabel'
+    case AddCustomerDrawerStep.ADD_EMAIL:
+      return 'addUser'
+    case AddCustomerDrawerStep.MANAGE_RIGHTS:
+      return 'grantSelectedRights'
+    default:
+      return 'nextLabel'
   }
 })
 
 const previousLabelKey = computed(() => {
   switch (addCustomerDrawerStep.value) {
-  case AddCustomerDrawerStep.MANAGE_RIGHTS:
-    return 'noRights'
-  default:
-    return 'previousLabel'
+    case AddCustomerDrawerStep.MANAGE_RIGHTS:
+      return 'noRights'
+    default:
+      return 'previousLabel'
   }
 })
 

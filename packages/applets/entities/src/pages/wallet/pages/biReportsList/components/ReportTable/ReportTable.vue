@@ -134,21 +134,21 @@ const handleToolboxItemClick = (action: string, row: any) => {
   const { accountId, reportId, name, embedReportId, embedReportUrl } = row
 
   switch (action) {
-  case REPORT_ACTIONS.ACTIVATE_REPORT:
-    emit('update-report-status', accountId, reportId, name, ReportStatus.ONLINE)
-    break
+    case REPORT_ACTIONS.ACTIVATE_REPORT:
+      emit('update-report-status', accountId, reportId, name, ReportStatus.ONLINE)
+      break
 
-  case REPORT_ACTIONS.DEACTIVATE_REPORT:
-    emit('update-report-status', accountId, reportId, name, ReportStatus.OFFLINE)
-    break
+    case REPORT_ACTIONS.DEACTIVATE_REPORT:
+      emit('update-report-status', accountId, reportId, name, ReportStatus.OFFLINE)
+      break
 
-  case REPORT_ACTIONS.VIEW_REPORT:
-    emit('view-report-fullscreen', accountId, name, embedReportId, embedReportUrl)
-    break
+    case REPORT_ACTIONS.VIEW_REPORT:
+      emit('view-report-fullscreen', accountId, name, embedReportId, embedReportUrl)
+      break
 
-  case REPORT_ACTIONS.DELETE_REPORT:
-    emit('delete-report', embedReportId, name)
-    break
+    case REPORT_ACTIONS.DELETE_REPORT:
+      emit('delete-report', embedReportId, name)
+      break
   }
 }
 

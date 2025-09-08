@@ -9,8 +9,8 @@ import { trackDocumentTransmit } from '@ged/services/tracking/tracking.service'
 export function useTransmitDocuments(
   transmitDocumentsProps: ComputedRef<TransmitDocumentsComposableProps>,
 ): {
-  handleTransmitDocumentsEvent: () => Promise<void>
-} {
+    handleTransmitDocumentsEvent: () => Promise<void>
+  } {
   // Define the composable actions
 
   const handleTransmitDocumentsEvent = async () => {

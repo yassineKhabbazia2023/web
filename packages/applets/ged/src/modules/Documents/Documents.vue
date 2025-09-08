@@ -605,74 +605,74 @@ const handleApplyFilters = async (val: DocumentSearchFilters) => {
 // Actions handlers
 const handleToolboxActionTriggered = async (action: string) => {
   switch (action) {
-  case 'download-document':
-    handleDownloadDocumentsEvent()
-    trackDocumentDownloadFlowStart(TriggerSource.CONTEXT_MENU)
-    break
-  case 'rename-document':
-    handleRenameDocumentEvent()
-    trackDocumentRenameFlowStart(TriggerSource.CONTEXT_MENU)
-    break
-  case 'delete-document':
-    isDeletePopupVisible.value = true
-    trackDocumentDeleteFlowStart(TriggerSource.CONTEXT_MENU)
-    break
-  case 'move-document':
-    handleMoveDocumentEvent()
-    trackDocumentMoveFlowStart(TriggerSource.CONTEXT_MENU)
-    break
-  case 'transmit-document':
-    await handleTransmitDocuments()
-    trackDocumentTransmitFlowStart(TriggerSource.CONTEXT_MENU)
-    break
-  case 'go-to-document':
-    handleGoToSearchedDocument()
-    break
+    case 'download-document':
+      handleDownloadDocumentsEvent()
+      trackDocumentDownloadFlowStart(TriggerSource.CONTEXT_MENU)
+      break
+    case 'rename-document':
+      handleRenameDocumentEvent()
+      trackDocumentRenameFlowStart(TriggerSource.CONTEXT_MENU)
+      break
+    case 'delete-document':
+      isDeletePopupVisible.value = true
+      trackDocumentDeleteFlowStart(TriggerSource.CONTEXT_MENU)
+      break
+    case 'move-document':
+      handleMoveDocumentEvent()
+      trackDocumentMoveFlowStart(TriggerSource.CONTEXT_MENU)
+      break
+    case 'transmit-document':
+      await handleTransmitDocuments()
+      trackDocumentTransmitFlowStart(TriggerSource.CONTEXT_MENU)
+      break
+    case 'go-to-document':
+      handleGoToSearchedDocument()
+      break
   }
 }
 
 const handleActionBarButtonClick = async (actionName: string) => {
   switch (actionName) {
-  case 'actionbar-download-action-click':
-    if (selectedDocuments.value.length === 0) {
+    case 'actionbar-download-action-click':
+      if (selectedDocuments.value.length === 0) {
+        break
+      }
+      trackDocumentDownloadFlowStart(TriggerSource.ACTION_BAR)
+      handleDownloadDocumentsEvent()
       break
-    }
-    trackDocumentDownloadFlowStart(TriggerSource.ACTION_BAR)
-    handleDownloadDocumentsEvent()
-    break
-  case 'actionbar-delete-action-click':
-    if (selectedDocuments.value.length === 0) {
+    case 'actionbar-delete-action-click':
+      if (selectedDocuments.value.length === 0) {
+        break
+      }
+      isDeletePopupVisible.value = true
+      trackDocumentDeleteFlowStart(TriggerSource.ACTION_BAR)
       break
-    }
-    isDeletePopupVisible.value = true
-    trackDocumentDeleteFlowStart(TriggerSource.ACTION_BAR)
-    break
-  case 'actionbar-rename-action-click':
-    if (selectedDocuments.value.length === 0) {
+    case 'actionbar-rename-action-click':
+      if (selectedDocuments.value.length === 0) {
+        break
+      }
+      trackDocumentRenameFlowStart(TriggerSource.ACTION_BAR)
+      handleRenameDocumentEvent()
       break
-    }
-    trackDocumentRenameFlowStart(TriggerSource.ACTION_BAR)
-    handleRenameDocumentEvent()
-    break
-  case 'actionbar-move-action-click':
-    if (selectedDocuments.value.length === 0) {
+    case 'actionbar-move-action-click':
+      if (selectedDocuments.value.length === 0) {
+        break
+      }
+      trackDocumentMoveFlowStart(TriggerSource.ACTION_BAR)
+      handleMoveDocumentEvent()
       break
-    }
-    trackDocumentMoveFlowStart(TriggerSource.ACTION_BAR)
-    handleMoveDocumentEvent()
-    break
-  case 'actionbar-transmit-action-click':
-    if (selectedDocuments.value.length === 0) {
+    case 'actionbar-transmit-action-click':
+      if (selectedDocuments.value.length === 0) {
+        break
+      }
+      trackDocumentTransmitFlowStart(TriggerSource.ACTION_BAR)
+      await handleTransmitDocuments()
       break
-    }
-    trackDocumentTransmitFlowStart(TriggerSource.ACTION_BAR)
-    await handleTransmitDocuments()
-    break
-  case 'actionbar-filter-action-click':
-    isFiltersDrawerOpened.value = true
-    break
-  default:
-    break
+    case 'actionbar-filter-action-click':
+      isFiltersDrawerOpened.value = true
+      break
+    default:
+      break
   }
 }
 

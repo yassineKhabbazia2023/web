@@ -17,10 +17,10 @@ export const defaultProps: DocumentUploadProps = {
 }
 
 export type DocumentUploadSetup = {
-    isDocumentExplorerModalOpened: boolean
-    explorerDocuments: ExplorerUploadDocument[]
-    numberOfSelectedDocuments: number
-    isUploadAuthorized: GivenActionAuthorization
-    modalActionsbuttons: ButtonAction[]
-    currentExplorerFolder: Folder
-  }
+  isDocumentExplorerModalOpened: boolean
+  explorerDocuments: ExplorerUploadDocument[]
+  numberOfSelectedDocuments: number
+  isUploadAuthorized: GivenActionAuthorization
+  modalActionsbuttons: ButtonAction[]
+  currentExplorerFolder: Folder
+}

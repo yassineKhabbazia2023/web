@@ -33,7 +33,7 @@ const defaultProps: PActionBarProps = {
   pLeftSideButtons: defaultButtons,
 }
 export type PActionBarWrapper = VueWrapper<
-ComponentPublicInstance<PButtonActionBarProps, PActionBarSetup>
+  ComponentPublicInstance<PButtonActionBarProps, PActionBarSetup>
 >
 
 const createWrapper = (

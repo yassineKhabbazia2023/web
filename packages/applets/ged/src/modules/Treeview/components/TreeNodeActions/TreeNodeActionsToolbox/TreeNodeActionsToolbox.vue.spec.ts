@@ -24,7 +24,7 @@ export type TreeNodeActionsWrapper = VueWrapper<
 >
 
 const createWrapper = (props: TreeNodeActionsToolboxProps = defaultProps)
-  : TreeNodeActionsWrapper => {
+: TreeNodeActionsWrapper => {
   return mount(TreeNodeActionsToolbox, {
     props,
     slots: {

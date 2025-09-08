@@ -3,7 +3,7 @@ import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCard
 export enum LauncherKey {
   MEG = 'MEG',
   SILAE = 'SILAE',
-  PENNYLANE = 'PENNYLANE'
+  PENNYLANE = 'PENNYLANE',
 }
 export interface ExtendedLaunchCard extends LaunchCardProps {
   key: LauncherKey

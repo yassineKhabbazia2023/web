@@ -12,11 +12,11 @@ import { ContactType } from '@pulse/common/enums'
 
 const defaultValue = { items: [], currentPage: 1, totalPages: 1, totalItems: 0 }
 export interface GenericPageResponse<T> {
-    items: T[]
-    currentPage: number
-    totalItems: number
-    totalPages?: number
-    totalPage?: number // due to getCollaboratorsByIdEntity :/
+  items: T[]
+  currentPage: number
+  totalItems: number
+  totalPages?: number
+  totalPage?: number // due to getCollaboratorsByIdEntity :/
 }
 
 export const getCollaboratorsByIdEntity = async (

@@ -19,7 +19,7 @@ export class SelectedEntityManager {
   }
 
   static setLocalStorageEntityId(entityId: number | null | undefined) {
-    if(entityId === null || entityId === undefined) {
+    if (entityId === null || entityId === undefined) {
       SelectedEntityManager.clearLocalStorageEntityId()
     } else {
       localStorage.setItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY, JSON.stringify(entityId))

@@ -22,7 +22,7 @@ const appRoutes: RouteRecordRaw[] = [
     name: APP_ROUTES.root.name,
     beforeEnter: (_to, _from, next) => {
       const isMaintenanceMode = BootManager.checkMaintenanceMode()
-      if(isMaintenanceMode) {
+      if (isMaintenanceMode) {
         next({ name: APP_ROUTES.maintenance.name })
       } else {
         BootManager.initAmplitude()

@@ -105,7 +105,7 @@ const addressSectionTitle = computed(() => {
   const currentAccountAddress = currentAccount.value?.address
   const hasAddress = currentAccountAddress && currentAccountAddress.length > 0
 
-  if(!hasAddress) {
+  if (!hasAddress) {
     return t('addressFallback')
   }
   return currentAccountAddress[0].addressType === 'billing'

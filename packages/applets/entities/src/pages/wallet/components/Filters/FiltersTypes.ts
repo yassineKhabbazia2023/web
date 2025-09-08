@@ -14,7 +14,7 @@ export interface Filter {
   color: string
   apiKey: string
   filterValue: EntityStatus
-  isSelected : boolean
+  isSelected: boolean
 }
 
 export interface State {

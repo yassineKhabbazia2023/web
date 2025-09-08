@@ -7,7 +7,7 @@ export enum userActions {
   DELETE_USER = 'deleteUser',
   REMOVE_USER = 'removeUser',
   ASSIGN_SIGNATORY = 'assignSignatory',
-  UNASSIGN_SIGNATORY = 'unassignSignatory'
+  UNASSIGN_SIGNATORY = 'unassignSignatory',
 }
 
 

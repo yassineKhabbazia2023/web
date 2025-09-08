@@ -20,7 +20,7 @@ export interface PAvatarProps {
     | 'persian-400'
   pFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   pSrc?: string
-  pShape? : 'circle' | 'square'
+  pShape?: 'circle' | 'square'
   pSelected?: boolean
   pRole?: AvatarRoles
 }

@@ -21,18 +21,18 @@ export function getStoreMock<TStoreDef extends() => unknown>(
     infer State,
     infer Getters,
     infer Actions
->
+  >
     ? Store<
-        Id,
-        State,
-        Record<string, never>,
-        {
-            [K in keyof Actions]: Actions[K] extends (...args: any[]) => any
-            ? Mock<Actions[K]>
-            : Actions[K]
-        }
+      Id,
+      State,
+      Record<string, never>,
+      {
+        [K in keyof Actions]: Actions[K] extends (...args: any[]) => any
+          ? Mock<Actions[K]>
+          : Actions[K]
+      }
     > & {
-        [K in keyof Getters]: UnwrapRef<Getters[K]>
+      [K in keyof Getters]: UnwrapRef<Getters[K]>
     }
     : ReturnType<TStoreDef> {
   return useStore() as any

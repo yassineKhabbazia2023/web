@@ -1,7 +1,7 @@
 export enum PASSWORD_STRENGTH {
   STRONG,
   AVERAGE,
-  WEAK
+  WEAK,
 }
 
 
@@ -21,11 +21,11 @@ export const levelPasswordStrength = (password: string):PASSWORD_STRENGTH => {
     conditionsGroup += regex.test(password) ? 1 : 0
   })
   switch (conditionsGroup) {
-  case 4:
-    return PASSWORD_STRENGTH.STRONG
-  case 3:
-    return PASSWORD_STRENGTH.AVERAGE
-  default:
-    return PASSWORD_STRENGTH.WEAK
+    case 4:
+      return PASSWORD_STRENGTH.STRONG
+    case 3:
+      return PASSWORD_STRENGTH.AVERAGE
+    default:
+      return PASSWORD_STRENGTH.WEAK
   }
 }

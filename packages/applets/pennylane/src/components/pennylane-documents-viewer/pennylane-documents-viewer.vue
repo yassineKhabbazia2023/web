@@ -85,7 +85,7 @@ const { t } = useI18n({
 const props = defineProps<PennylaneDocumentsViewerProps>()
 
 const emit = defineEmits<{
-    'update:is-opened': [boolean]
+  'update:is-opened': [boolean]
 }>()
 
 const isDownloading = ref(false)

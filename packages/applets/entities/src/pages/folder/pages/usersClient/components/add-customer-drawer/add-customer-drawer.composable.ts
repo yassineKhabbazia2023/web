@@ -56,7 +56,7 @@ export function useAddCustomerDrawer({
   })
 
   const isNextButtonDisabled = computed(() => {
-    if (addCustomerDrawerStep.value === AddCustomerDrawerStep.MANAGE_RIGHTS){
+    if (addCustomerDrawerStep.value === AddCustomerDrawerStep.MANAGE_RIGHTS) {
       const hasSelection = Object.values(authorizationsState.value).some(({ isActive }) => isActive === true)
       return hasSelection === false // At least one group must be active
     }

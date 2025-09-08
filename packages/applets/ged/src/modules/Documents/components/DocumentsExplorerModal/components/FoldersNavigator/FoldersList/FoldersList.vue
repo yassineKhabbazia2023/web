@@ -81,28 +81,28 @@ const { t } = useI18n({
 
 const getIconMapping = (iconName: string | undefined): IconName => {
   switch (iconName) {
-  case 'accountingRoot':
-    return 'calculatorEuro'
-  case 'socialRoot':
-    return 'personVcard'
-  case 'deposit':
-    return 'inbox'
-  case 'reservedKpmg': // waiting for API changes
-    return 'shieldLock'
-  case 'binIcon':
-    return 'trash'
-  default:
-    return 'folder'
+    case 'accountingRoot':
+      return 'calculatorEuro'
+    case 'socialRoot':
+      return 'personVcard'
+    case 'deposit':
+      return 'inbox'
+    case 'reservedKpmg': // waiting for API changes
+      return 'shieldLock'
+    case 'binIcon':
+      return 'trash'
+    default:
+      return 'folder'
   }
 }
 
 const isFolderLineDisabled = (folderLineFolderId: Folder['id']) => {
   if (props.explorerFolderListLineDisabledState) {
     switch (props.explorerFolderListLineDisabledState.context) {
-    case 'MOVE_FOLDER':
-      return isFolderLineDisabledBasedOnMoveFolderContext(folderLineFolderId)
-    default:
-      return false
+      case 'MOVE_FOLDER':
+        return isFolderLineDisabledBasedOnMoveFolderContext(folderLineFolderId)
+      default:
+        return false
     }
   }
   return false

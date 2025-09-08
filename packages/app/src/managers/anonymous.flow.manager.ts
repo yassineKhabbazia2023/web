@@ -15,7 +15,7 @@ export class AnonymousFlowManager {
   static initAnonymousThirdParties(routeIsCollab: boolean) {
     try {
       AmplitudeService.reset()
-      if(routeIsCollab) {
+      if (routeIsCollab) {
         initProductFruitsAnonymousCollab()
         AmplitudeService.identifyCollaborator()
       } else {

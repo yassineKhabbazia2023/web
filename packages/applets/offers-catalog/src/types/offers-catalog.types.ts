@@ -1,28 +1,28 @@
 export interface OfferCategory {
-    categoryId: number
-    name: string
+  categoryId: number
+  name: string
 }
 
 export interface OfferSubCategory {
-    subCategoryId: number
-    name: string
-    category: OfferCategory
+  subCategoryId: number
+  name: string
+  category: OfferCategory
 }
 
 export interface OfferDescription {
-    id: number
-    title: string
-    shortDescription: string
-    imageUrl: string
-    pdfUrl: string
-    subCategoryId: number
-    isBestOffer: boolean,
-    akuiteoProduct: string
-    searchKeywords: string
-    priorityTargets: string[]
-    internalLink: string
-    subCategory: OfferSubCategory,
-    tags: string[]
+  id: number
+  title: string
+  shortDescription: string
+  imageUrl: string
+  pdfUrl: string
+  subCategoryId: number
+  isBestOffer: boolean,
+  akuiteoProduct: string
+  searchKeywords: string
+  priorityTargets: string[]
+  internalLink: string
+  subCategory: OfferSubCategory,
+  tags: string[]
 }
 
 export interface OfferWithSearchTerms extends OfferDescription {

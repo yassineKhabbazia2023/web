@@ -61,7 +61,7 @@ const onClickEmailModalButton = () => {
 }
 
 const fetchGedFoldersAndServices = async () => {
-  if(selectedEntityId.value == null || selectedEntityAccountNumber.value == '' || selectedEntityAccountNumber.value === undefined) {
+  if (selectedEntityId.value == null || selectedEntityAccountNumber.value == '' || selectedEntityAccountNumber.value === undefined) {
     return
   }
 

@@ -24,20 +24,20 @@ const mappingNotificationTrackingTabs : Record<SelectedNotificationEnum, Notific
 export function trackFeedcenterOpened() {
   AmplitudeService.track('Feedcenter opened')
 }
-export function trackNotificationsConsulted(notificationKind : NotificationKindEnum){
+export function trackNotificationsConsulted(notificationKind : NotificationKindEnum) {
   const notifType = mappingNotificationTrackingType[notificationKind]
   AmplitudeService.track('Feedcenter notifications consulted', {
     notification_type_consultation: notifType,
   })
 }
 
-export function trackNotificationMarkAsRead(readType : NotificationTrackingReadType){
+export function trackNotificationMarkAsRead(readType : NotificationTrackingReadType) {
   AmplitudeService.track('Feedcenter notifications marked as read', {
     Marked_as_read_origin: readType,
   })
 }
 
-export function trackFeedCenterTabConsultation(selectedNotification : SelectedNotificationEnum){
+export function trackFeedCenterTabConsultation(selectedNotification : SelectedNotificationEnum) {
   const notificationTab = mappingNotificationTrackingTabs[selectedNotification]
   AmplitudeService.track('Feedcenter tabs selected', {
     feedcenter_tabs_consultation: notificationTab,

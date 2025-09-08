@@ -57,10 +57,10 @@ const emit = defineEmits([
 ])
 
 const isVisible = computed({
-  get(){
+  get() {
     return mailModalProps.isVisible
   },
-  set(value){
+  set(value) {
     emit('update:isVisible', value)
   },
 })
