@@ -29,7 +29,7 @@
         </PButton>
         <PButton
           class="margin-left--2"
-          pType="primary"
+          pType="secondary"
           pSize="small"
           @click="isDelegationDrawerOpened = true"
         >
