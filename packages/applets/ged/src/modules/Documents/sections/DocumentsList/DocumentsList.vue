@@ -247,14 +247,14 @@ const setToolboxStyle = (clientX: number, clientY: number) => {
     // header height - entity information height - breadcrumb height - action bar wrapper height
     // - pagination wrapper height - paddings
     height: 100%;
-    max-height: calc(100vh - 48px - 32px - 52px - 80px - 46px);
+    max-height: calc(100vh - 48px - 32px - 56px - 80px - 48px);
     width: 100%;
     overflow-y: auto;
 
     &--search {
       // when search is enabled, the alert changes the remaining height of the page
       // Taking the same calculation - alert height - alert top padding
-      max-height: calc(100vh - 48px - 32px - 52px - 80px - 46px - 41px - 8px);
+      max-height: calc(100vh - 48px - 32px - 56px - 80px - 48px - 41px - 8px);
     }
 
     .blur-fade {

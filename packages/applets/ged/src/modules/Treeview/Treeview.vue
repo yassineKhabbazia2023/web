@@ -604,8 +604,8 @@ defineExpose({
 
 .treeview {
   width: 100%;
-  height: calc(100vh - 52px);
-  max-height: calc(100vh - 52px);
+  height: calc(100vh - 56px);
+  max-height: calc(100vh - 56px);
   overflow: hidden;
   padding-bottom: 40px;
 

@@ -101,8 +101,12 @@ onMounted(() => {
     border-bottom: 1px solid var(--el-border-color);
   }
 
+  &__container {
+    // - header - header from BI report - margin from container
+    max-height: calc(100vh - 56px - 66px - 24px);
+  }
+
   &__iframe {
-    height: 80vh;
     width: 100%;
   }
 }

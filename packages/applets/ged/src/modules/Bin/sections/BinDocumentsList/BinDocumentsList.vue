@@ -72,7 +72,7 @@ const restoreDocument = (doc: BinDocument) => {
     // header height - breadcrumb height
     // - pagination wrapper height - paddings
     height: 100%;
-    max-height: calc(100vh - 32px - 80px - 46px);
+    max-height: calc(100vh - 32px - 80px - 48px);
     width: 100%;
     overflow-y: auto;
 
