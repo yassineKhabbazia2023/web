@@ -102,7 +102,7 @@ const handleCloseModal = () => {
 }
 
 const handleConfirmClick = () => {
-  emit('on-confirm-action-click', inputContent)
+  emit('on-confirm-action-click', inputContent.value)
 }
 const handleCancelClick = () => {
   emit('on-cancel-action-click')

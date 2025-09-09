@@ -43,6 +43,10 @@ vi.mock('@pulse/common/managers', () => ({
   SelectedEntityManager: SelectedEntityManagerMock,
 }))
 
+const routerMock = {
+  push: vi.fn(),
+} as unknown as Router
+
 describe('patchUnreadNotification', () => {
   it('should call the patch API when the notification is unread', () => {
     const unreadNotification = unreadNotificationsMock[0]
@@ -61,7 +65,7 @@ describe('getTimeSinceCreation', () => {
   const fakeSystemDate = new Date('2024-10-04T12:00:00.0000Z')
 
   // These are based on the fake system date above
-  const fiftynineMinutesAgo = '2024-10-04T11:01:00.0000Z'
+  const fiftyNineMinutesAgo = '2024-10-04T11:01:00.0000Z'
   const oneHourAgo = '2024-10-04T11:00:00.0000Z'
   const oneDayAgo = '2024-10-03T12:00:00.0000Z'
   const twoWeeksAgo = '2024-09-20T12:00:00.0000Z'
@@ -91,7 +95,7 @@ describe('getTimeSinceCreation', () => {
 
 
   it('should return time in minutes if the elapsed time is less than a hour', () => {
-    const elapsedTime = getTimeSinceCreation(formatParameters(fiftynineMinutesAgo))
+    const elapsedTime = getTimeSinceCreation(formatParameters(fiftyNineMinutesAgo))
     expect(elapsedTime).toBe('59min')
   })
 
@@ -134,28 +138,20 @@ describe('getIsNotificationRead', () => {
 })
 
 describe('handleNotificationAction', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
-  const mockRouter = {
-    push: vi.fn(),
-  } as unknown as Router
-
-  it('should call patchUnreadNotification with unread notifiation', () => {
+  it('should call patchUnreadNotification with unread notification', () => {
     const notification = unreadNotificationsMock[0]
     handleNotificationAction({
       notification,
-      router: mockRouter,
+      router: routerMock,
     })
 
     expect(patchNotificationReadStatusMock).toHaveBeenCalledWith(notification.id)
   })
 
-  it('should NOT call patchUnreadNotification with unread notifiation', () => {
+  it('should NOT call patchUnreadNotification with unread notification', () => {
     handleNotificationAction({
       notification: readNotificationsMock[0],
-      router: mockRouter,
+      router: routerMock,
     })
 
     expect(patchNotificationReadStatusMock).not.toHaveBeenCalled()
@@ -164,10 +160,10 @@ describe('handleNotificationAction', () => {
   it('should call the corresponding action in notificationActionsMapping', () => {
     handleNotificationAction({
       notification: notificationsMock[0],
-      router: mockRouter,
+      router: routerMock,
     })
 
-    expect(mockRouter.push).toHaveBeenCalledWith({
+    expect(routerMock.push).toHaveBeenCalledWith({
       name: RouteName.WALLET,
       query: { accountNumbers: [notificationsMock[0].accounts[0].accountNumber] },
     })
@@ -176,10 +172,10 @@ describe('handleNotificationAction', () => {
   it('should call the router with the appropriate query on mandate notification type', () => {
     handleNotificationAction({
       notification: mandateNotificationMock,
-      router: mockRouter,
+      router: routerMock,
     })
 
-    expect(mockRouter.push).toHaveBeenCalledWith({
+    expect(routerMock.push).toHaveBeenCalledWith({
       name: RouteName.MANDATE,
       query: { bankAccountNumbers: mandateNotificationMock.redirectLink },
     })
@@ -202,8 +198,6 @@ describe('handleNotificationAction', () => {
     selectedEntityStoreMock.selectedEntity = currentSelectedEntity
     const fetchUserEntities = vi.spyOn(NotificationService, 'fetchUserEntities')
     fetchUserEntities.mockResolvedValueOnce(accountsRowMock)
-    const testSpy = vi.spyOn(mockRouter, 'push')
-
     handleNotificationAction({
       notification: {
         ...gedNotificationMock,
@@ -215,32 +209,32 @@ describe('handleNotificationAction', () => {
           },
         ],
       },
-      router: mockRouter,
+      router: routerMock,
     })
     await flushPromises()
-    expect(testSpy).toHaveBeenCalled()
+    expect(routerMock.push).toHaveBeenCalled()
   })
 
   it('should call the corresponding action in notificationActionsMapping for ReportCollabCreated', async () => {
     handleNotificationAction({
       notification: reportCollabCreatedNotificationMock,
-      router: mockRouter,
+      router: routerMock,
     })
 
-    expect(mockRouter.push).toHaveBeenCalledWith({
+    expect(routerMock.push).toHaveBeenCalledWith({
       name: RouteName.REPORTS,
       params: { [RouteParam.ENTITY_ID]: reportCollabCreatedNotificationMock.accounts[0].id },
       query: { reportId: reportCollabCreatedNotificationMock.redirectLink },
     })
   })
 
-  it('should call the corresponding action in notificationActionsMappind for ReportCollabUpdated', async () => {
+  it('should call the corresponding action in notificationActionsMapping for ReportCollabUpdated', async () => {
     handleNotificationAction({
       notification: reportCollabUpdatedNotificationMock,
-      router: mockRouter,
+      router: routerMock,
     })
 
-    expect(mockRouter.push).toHaveBeenCalledWith({
+    expect(routerMock.push).toHaveBeenCalledWith({
       name: RouteName.REPORTS,
       params: { [RouteParam.ENTITY_ID]: reportCollabUpdatedNotificationMock.accounts[0].id },
       query: { reportId: reportCollabUpdatedNotificationMock.redirectLink },
@@ -250,23 +244,23 @@ describe('handleNotificationAction', () => {
   it('should call the corresponding action in notificationActionsMapping for ReportCustomerCreated', async () => {
     handleNotificationAction({
       notification: reportCustomerCreatedNotificationMock,
-      router: mockRouter,
+      router: routerMock,
     })
 
-    expect(mockRouter.push).toHaveBeenCalledWith({
+    expect(routerMock.push).toHaveBeenCalledWith({
       name: RouteName.REPORTS,
       params: { [RouteParam.ENTITY_ID]: reportCustomerCreatedNotificationMock.accounts[0].id },
       query: { reportId: reportCustomerCreatedNotificationMock.redirectLink },
     })
   })
 
-  it('should call the corresponding action in notificationActionsMappind for ReportCustomerUpdated', async () => {
+  it('should call the corresponding action in notificationActionsMapping for ReportCustomerUpdated', async () => {
     handleNotificationAction({
       notification: reportCustomerUpdatedNotificationMock,
-      router: mockRouter,
+      router: routerMock,
     })
 
-    expect(mockRouter.push).toHaveBeenCalledWith({
+    expect(routerMock.push).toHaveBeenCalledWith({
       name: RouteName.REPORTS,
       params: { [RouteParam.ENTITY_ID]: reportCustomerUpdatedNotificationMock.accounts[0].id },
       query: { reportId: reportCustomerUpdatedNotificationMock.redirectLink },
@@ -276,10 +270,10 @@ describe('handleNotificationAction', () => {
   it('should call the router with the appropriate query on AccountingDocumentUploaded notification type', () => {
     handleNotificationAction({
       notification: gedNotificationMock,
-      router: mockRouter,
+      router: routerMock,
     })
 
-    expect(mockRouter.push).toHaveBeenCalledWith({
+    expect(routerMock.push).toHaveBeenCalledWith({
       name: RouteName.GED,
       params: { [RouteParam.ENTITY_ID]: gedNotificationMock.accounts[0].id },
       query: { folderId: gedNotificationMock.redirectLink },
@@ -289,10 +283,10 @@ describe('handleNotificationAction', () => {
   it('should call the router with the appropriate query on GSDocumentUploaded notification type', () => {
     handleNotificationAction({
       notification: gsDocumentUploadedNotificationMock,
-      router: mockRouter,
+      router: routerMock,
     })
 
-    expect(mockRouter.push).toHaveBeenCalledWith({
+    expect(routerMock.push).toHaveBeenCalledWith({
       name: RouteName.GED,
       params: { [RouteParam.ENTITY_ID]: gsDocumentUploadedNotificationMock.accounts[0].id },
       query: { folderId: gsDocumentUploadedNotificationMock.redirectLink },
