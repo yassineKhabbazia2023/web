@@ -39,7 +39,7 @@ const loadBIReportFullscreen = () => {
 
 <style scoped lang="scss">
 .report-fullscreen__iframe {
-  height: calc(100vh - 52px);
+  height: calc(100vh - 56px);
   overflow: hidden;
 }
 </style>

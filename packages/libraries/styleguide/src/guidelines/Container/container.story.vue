@@ -40,7 +40,7 @@ import PCHeader from '../../atoms/PCHeader'
 import PFooter from '../../atoms/PFooter'
 import PMain from '../../atoms/PMain'
 
-const headerHeight = ref('52px')
+const headerHeight = ref('56px')
 const footerHeight = ref('6rem')
 const asideWidth = ref('20%')
 </script>

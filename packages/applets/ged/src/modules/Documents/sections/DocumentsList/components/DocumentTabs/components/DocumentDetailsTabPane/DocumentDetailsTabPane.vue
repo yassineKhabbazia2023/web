@@ -84,17 +84,19 @@
         </p>
       </div>
     </div>
-    <PButton
-      pType="primary"
-      class="drawer-download-button"
-      pSize="default"
-      :pLoading="isLoading"
-      pPlain
-      @click="handleDownloadClick"
-    >
-      <PIcon class="el-button__icon--left" pName="download" />
-      {{ t('label.download') }}
-    </PButton>
+    <div class="w-100 text-right">
+      <PButton
+        pType="primary"
+        class="drawer-download-button"
+        pSize="default"
+        :pLoading="isLoading"
+        pPlain
+        @click="handleDownloadClick"
+      >
+        <PIcon class="el-button__icon--left" pName="download" />
+        {{ t('label.download') }}
+      </PButton>
+    </div>
   </div>
 </template>
 
@@ -233,10 +235,6 @@ const isInPIASyncedFolder = computed(() => {
       padding-bottom: 0px;
     }
   }
-      .drawer-download-button{
-      float:right;
-      clear:left;
-    }
 }
 </style>
 <i18n lang="yaml">
