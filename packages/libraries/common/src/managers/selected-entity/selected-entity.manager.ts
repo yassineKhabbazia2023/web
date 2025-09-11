@@ -1,4 +1,4 @@
-import type { Entity } from '../../stores/types'
+import type { EntitySummary } from '@pulse/common/types'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { fetchUserAccountPermissions } from '../../services/permissions/permissions.service'
@@ -6,7 +6,7 @@ import { fetchUserAccountPermissions } from '../../services/permissions/permissi
 export const LOCAL_STORAGE_SELECTED_ENTITY_KEY = 'selected-entity'
 
 export class SelectedEntityManager {
-  static async initializeSelectedEntity(entity: Entity) {
+  static async initializeSelectedEntity(entity: EntitySummary) {
     const { accountId } = entity
 
     const permissionsStore = usePermissionsStore()

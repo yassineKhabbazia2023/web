@@ -76,15 +76,14 @@ export class AuthenticatedFlowManager {
     // if no entity is selected, we try to fetch the one stored in local storage
     // or set the default entity provided
     if (selectedEntityStore.selectedEntityId === undefined) {
-      let storedEntity
-
       const localStorageEntityId = SelectedEntityManager.getLocalStorageEntityId()
-      if (localStorageEntityId) {
-        storedEntity = await fetchEntityById(localStorageEntityId)
-      }
+
       // If the entity is not found in local storage or the user doesn't have permissions on it anymore,
       // we default to the one provided
-      const entityToPersist = storedEntity || defaultEntity
+      const entityToPersistId = (localStorageEntityId === undefined || localStorageEntityId === 0)
+        ? defaultEntity.accountId
+        : localStorageEntityId
+      const entityToPersist = await fetchEntityById(entityToPersistId)
 
       return SelectedEntityManager.initializeSelectedEntity(entityToPersist)
     }

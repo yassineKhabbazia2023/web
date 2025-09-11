@@ -24,6 +24,7 @@ vi.mock('vue-router', () => ({
 
 const canShowBIReportsSpy = vi.hoisted(() => vi.fn())
 const hasPennylaneAccountingPermissionSpy = vi.hoisted(() => vi.fn())
+const hasSocialManagementV2Spy = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
@@ -32,6 +33,7 @@ vi.mock('@pulse/common/managers', () => ({
   },
   PennylanePermissionsManager: {
     hasPennylaneAccountingPermission: hasPennylaneAccountingPermissionSpy,
+    hasSocialManagementV2: hasSocialManagementV2Spy,
   },
 }))
 

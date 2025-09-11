@@ -8,6 +8,7 @@ import {
   getStoreMock,
   getMockedUserInfo,
   CurrentUserManagerMock,
+  getMockedEntitySummary,
 } from '@pulse/common/mocks'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 
@@ -86,13 +87,14 @@ const clientsColumnLabels = [
 ]
 
 const userMock = getMockedUserInfo()
+const entitySummaryMock = getMockedEntitySummary(testEntity)
 
 describe('tableData', () => {
   let wrapper: VueWrapper<any>
 
   beforeEach(async () => {
     vi.useFakeTimers()
-    selectedEntityStoreMock.selectedEntity = testEntity
+    selectedEntityStoreMock.selectedEntity = entitySummaryMock
     userStoreMock.user = userMock
     userStoreMock.isCollab = true
     wrapper = createWrapper()

@@ -1,7 +1,8 @@
 import { commonApi } from '@pulse/common'
-import type { Entity } from '@pulse/common/types'
+import type { EntitySummary } from '@pulse/common/types'
 
-export async function fetchEntityById(entityId: number): Promise<Entity> {
-  const { data } = await commonApi().gateway.get(`account/api/accounts/${entityId}/summary`)
+export async function fetchEntityById(entityId: number) {
+  const { data } = await commonApi().gateway.get<EntitySummary>(`connect/api/accounts/${entityId}/summary`)
+
   return data
 }

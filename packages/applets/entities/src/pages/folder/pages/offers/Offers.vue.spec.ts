@@ -6,6 +6,7 @@ import {
   hasPermissionMock,
   getStoreMock,
   getMockedUser,
+  getMockedEntitySummary,
 } from '@pulse/common/mocks'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 
@@ -39,6 +40,8 @@ const mockedEntity = getMockedEntity({
   legalName: 'Restaurant Le Grand Bleu',
   color: 'orange',
 })
+const entitySummaryMock = getMockedEntitySummary(mockedEntity)
+
 const userMock = getMockedUser()
 
 const createWrapper = (isCollab = true, hasPermission = true) => {
@@ -85,7 +88,7 @@ describe('offers', () => {
   beforeEach(() => {
     fetchAccountSubscriptionsMock.mockResolvedValue(activeOffersMocked)
     userStoreMock.user = userMock
-    selectedEntityStoreMock.selectedEntity = mockedEntity
+    selectedEntityStoreMock.selectedEntity = entitySummaryMock
 
     wrapper = createWrapper()
   })

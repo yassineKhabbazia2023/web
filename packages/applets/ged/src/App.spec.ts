@@ -21,7 +21,7 @@ import {
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import { createMemoryHistory, createRouter } from 'vue-router'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getMockedEntitySummary, getStoreMock } from '@pulse/common/mocks'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 
 import Ged from './'
@@ -138,9 +138,11 @@ const folder = {
   serviceId: 'some-service',
 } as Folder
 
+const selectedEntityMock = getMockedEntitySummary(defaultEntityMock)
+
 describe('ged', () => {
   beforeEach(() => {
-    selectedEntityStoreMock.selectedEntity = defaultEntityMock
+    selectedEntityStoreMock.selectedEntity = selectedEntityMock
   })
   it('renders correctly', () => {
     const wrapper = createWrapper()

@@ -1,4 +1,5 @@
 import type { Permission } from '../types/permission.type'
+import type { Address } from '../types/account.types'
 
 export type EntityColor =
   'orange' |
@@ -77,17 +78,6 @@ export interface AccountRow {
   deployment: Deployment
 }
 
-export interface Address {
-  addressId: number
-  addressLine1?: string
-  addressLine2?: string
-  addressLine3?: string
-  addressType?: 'delivery' | 'billing'
-  state?: string
-  zipCode?: string
-  country?: string
-  city?: string
-}
 export interface Deployment {
   deploymentId: number
   deploymentDate?: string

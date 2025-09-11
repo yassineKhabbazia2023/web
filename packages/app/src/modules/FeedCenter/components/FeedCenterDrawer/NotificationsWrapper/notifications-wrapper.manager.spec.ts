@@ -18,6 +18,7 @@ import {
   entitiesFromAccountsRow,
   SelectedEntityManagerMock,
   getStoreMock,
+  entitySummaryMock,
 } from '@pulse/common/mocks'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
@@ -183,19 +184,17 @@ describe('handleNotificationAction', () => {
 
   it.each([
     {
-      currentSelectedEntity: entitiesFromAccountsRow[0],
       notificationEntity: entitiesFromAccountsRow[1],
     },
     {
-      currentSelectedEntity: entitiesFromAccountsRow[0],
       notificationEntity: entitiesFromAccountsRow[0],
     },
   ])('should redirect to ged route with appropriate param', async (
-    { currentSelectedEntity,
+    {
       notificationEntity,
     },
   ) => {
-    selectedEntityStoreMock.selectedEntity = currentSelectedEntity
+    selectedEntityStoreMock.selectedEntity = entitySummaryMock
     const fetchUserEntities = vi.spyOn(NotificationService, 'fetchUserEntities')
     fetchUserEntities.mockResolvedValueOnce(accountsRowMock)
     handleNotificationAction({

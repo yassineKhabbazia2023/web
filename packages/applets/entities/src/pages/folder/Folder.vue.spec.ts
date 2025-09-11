@@ -5,6 +5,7 @@ import * as FolderHelper from './FolderHelper'
 import {
   AmplitudeServiceMock,
   getStoreMock,
+  getMockedEntitySummary,
 } from '@pulse/common/mocks'
 import type { ComponentWrapper } from '@entities/common/types'
 import { mockedEntity } from '@entities/__mocks__/entities.mocks'
@@ -33,6 +34,7 @@ const mockedTabs: Tab[] = [
     title: 'Informations',
   },
 ]
+const entitySummaryMock = getMockedEntitySummary(mockedEntity)
 
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
@@ -86,7 +88,7 @@ describe('folder', () => {
   beforeEach(async () => {
     vi.useFakeTimers()
     userStoreMock.isCollab = true
-    selectedEntityStoreMock.selectedEntity = mockedEntity
+    selectedEntityStoreMock.selectedEntity = entitySummaryMock
 
     wrapper = createWrapper()
     await flushPromises()

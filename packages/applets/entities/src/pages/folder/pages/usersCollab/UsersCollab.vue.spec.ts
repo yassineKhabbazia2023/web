@@ -10,7 +10,14 @@ import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import { nextTick } from 'vue'
 import { userActions } from './types'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { CurrentUserManagerMock, hasPermissionMock, getStoreMock, getMockedEntity, getMockedUser } from '@pulse/common/mocks'
+import {
+  CurrentUserManagerMock,
+  hasPermissionMock,
+  getStoreMock,
+  getMockedEntity,
+  getMockedUser,
+  getMockedEntitySummary,
+} from '@pulse/common/mocks'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
@@ -81,6 +88,7 @@ vi.mock('vue-router', () => ({
 
 const userMock = getMockedUser({ id: 2 })
 const selectedEntityMock = getMockedEntity({ accountId: mockedAccount.accountId })
+const entitySummaryMock = getMockedEntitySummary(selectedEntityMock)
 
 vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(),
@@ -179,7 +187,7 @@ const removeUserToolboxItem: PToolboxItemProps = {
 describe('usersCollab', () => {
   beforeEach(async () => {
     userStoreMock.user = userMock
-    selectedEntityStoreMock.selectedEntity = selectedEntityMock
+    selectedEntityStoreMock.selectedEntity = entitySummaryMock
     hasPermissionMock.mockReturnValue(false)
     wrapper = createWrapper()
     await flushPromises()
@@ -251,7 +259,7 @@ describe('usersCollab', () => {
         trackingLocalisation: TrackingLocalisation.FOLDER,
         modelValue: false,
         accountOperationsList: accountOperationsListMock,
-        currentEntity: selectedEntityMock,
+        currentEntity: entitySummaryMock,
       }
       const expectedPropsAfter = {
         ...expectedPropsBefore,

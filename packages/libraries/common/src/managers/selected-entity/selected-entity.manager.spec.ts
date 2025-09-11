@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { getMockedEntity } from '../../__mocks__/entities.mocks'
+import { getMockedEntitySummary } from '../../__mocks__/entity-summary.mock'
 import { permissionServiceMock, fetchUserAccountPermissionsMock } from '../../__mocks__/permissions.service.mocks'
 
 import { SelectedEntityManager } from './selected-entity.manager'
@@ -18,7 +18,7 @@ describe('test selected-entity.manager', () => {
       const permissionsMock = getPermissionsMock()
 
       const setItemMock = vi.spyOn(Object.getPrototypeOf(localStorage), 'setItem')
-      const entityMock = getMockedEntity()
+      const entityMock = getMockedEntitySummary()
       const { accountId: expectedAccountId } = entityMock
 
       fetchUserAccountPermissionsMock.mockResolvedValueOnce(permissionsMock)

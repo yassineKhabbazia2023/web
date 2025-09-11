@@ -23,3 +23,36 @@ export interface FilterQueryParams {
   isFavoriteFilter?: boolean
   isCustomerRelationFilter?: boolean
 }
+
+export interface Office {
+  officeId: number;
+  name: string;
+  phoneNumber: string;
+  addressId: number;
+  address?: Address;
+}
+
+export interface Address {
+  addressId: number
+  addressLine1?: string
+  addressLine2?: string
+  addressLine3?: string
+  addressType?: 'delivery' | 'billing'
+  state?: string
+  zipCode?: string
+  country?: string
+  city?: string
+  latitude?: number
+  longitude?: number
+}
+
+export interface Subscription {
+  subscriptionId: number
+  offerId: number
+  status?: 'validated' | 'rejected' | 'pending' | 'pending-migration' | 'failed-migration'
+  accountId: number
+  offerCode: string
+  offerName: string
+  creationDate: string
+  validator?: string
+}

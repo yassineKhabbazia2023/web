@@ -1,5 +1,13 @@
 import { loggerMock } from '@pulse/core/mocks'
-import { AmplitudeServiceMock, getMockedUserContext, getMockedEntity, getMockedSelectedEntity, getStoreMock, getPermissionsMock } from '@pulse/common/mocks'
+import {
+  AmplitudeServiceMock,
+  getMockedUserContext,
+  getMockedEntity,
+  getMockedSelectedEntity,
+  getStoreMock,
+  getPermissionsMock,
+  getMockedEntitySummary,
+} from '@pulse/common/mocks'
 import { initProductFruitsAuthenticatedCollab, initProductFruitsAuthenticatedCustomer, stopProductFruits, getProductFruitsUser } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserService } from '@pulse/common/services/current-user'
@@ -43,6 +51,7 @@ const entitiesMock = {
 }
 const storedEntityMock = getMockedSelectedEntity()
 const defaultEntityMock = getMockedSelectedEntity()
+const entitySummaryMock = getMockedEntitySummary(entityMock)
 
 // Stores mocks
 const userStoreMock = getStoreMock(useUserStore)
@@ -91,12 +100,13 @@ describe('AuthenticatedFlowManager', () => {
   describe('initEntities', () => {
     it('should initialize user as a single or multiple entities', async () => {
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(fetchEntityById).mockResolvedValue(entitySummaryMock)
       vi.mocked(SelectedEntityManager.initializeSelectedEntity).mockResolvedValue(undefined)
 
       await AuthenticatedFlowManager.initEntities()
 
       expect(userStoreMock.setIsSingleEntity).toHaveBeenCalledWith(true)
-      expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(entitiesMock.items[0])
+      expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(entitySummaryMock)
     })
 
     it('should handle the case when no entities are found', async () => {
@@ -144,31 +154,32 @@ describe('AuthenticatedFlowManager', () => {
     it('should set the locally stored selected entity if it exists', async () => {
       selectedEntityStoreMock.selectedEntityId = undefined
       vi.mocked(SelectedEntityManager.getLocalStorageEntityId).mockReturnValue(2)
-      vi.mocked(fetchEntityById).mockResolvedValue(storedEntityMock)
+      vi.mocked(fetchEntityById).mockResolvedValue(entitySummaryMock)
       vi.mocked(SelectedEntityManager.initializeSelectedEntity).mockResolvedValue(undefined)
 
       // @ts-ignore - accessing private method for testing
       await AuthenticatedFlowManager.setUserSelectedEntity(defaultEntityMock)
 
       expect(fetchEntityById).toHaveBeenCalledWith(2)
-      expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(storedEntityMock)
+      expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(entitySummaryMock)
     })
 
     it('should persist the first provided entity of there is no previously selected entity', async () => {
       selectedEntityStoreMock.selectedEntityId = undefined
       vi.mocked(SelectedEntityManager.getLocalStorageEntityId).mockReturnValue(undefined)
+      vi.mocked(fetchEntityById).mockResolvedValue(entitySummaryMock)
       vi.mocked(SelectedEntityManager.initializeSelectedEntity).mockResolvedValue(undefined)
 
       // @ts-ignore - accessing private method for testing
       await AuthenticatedFlowManager.setUserSelectedEntity(defaultEntityMock)
 
-      expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(defaultEntityMock)
+      expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(entitySummaryMock)
     })
 
     it('should persist the first provided entity if the user has no rights to see the previously selected entity', async () => {
       selectedEntityStoreMock.selectedEntityId = undefined
       vi.mocked(SelectedEntityManager.getLocalStorageEntityId).mockReturnValue(2)
-      vi.mocked(fetchEntityById).mockResolvedValue(undefined as any)
+      vi.mocked(fetchEntityById).mockResolvedValue(defaultEntityMock as any)
       vi.mocked(SelectedEntityManager.initializeSelectedEntity).mockResolvedValue(undefined)
 
       // @ts-ignore - accessing private method for testing
@@ -369,7 +380,7 @@ describe('AuthenticatedFlowManager', () => {
         userStoreMock.isCollab = false
         userStoreMock.isCustomer = true
         userStoreMock.getIsSingleEntity.mockReturnValue(true)
-        selectedEntityStoreMock.selectedEntity = entityMock
+        selectedEntityStoreMock.selectedEntity = entitySummaryMock
         const accountId = entityMock.accountId
 
         const result = AuthenticatedFlowManager.getLandingPage()
@@ -396,7 +407,7 @@ describe('AuthenticatedFlowManager', () => {
     describe('user is a single entity user', () => {
       it('should return the entity landing page', () => {
         userStoreMock.getIsSingleEntity.mockReturnValue(true)
-        selectedEntityStoreMock.selectedEntity = entityMock
+        selectedEntityStoreMock.selectedEntity = entitySummaryMock
         const accountId = entityMock.accountId
 
         const result = AuthenticatedFlowManager.getCustomerLandingPage()

@@ -1,6 +1,6 @@
 import { loggerMock } from '@pulse/core/mocks'
 import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/api-gateway.mocks'
-import { getMockedEntity } from '../../__mocks__/entities.mocks'
+import { getMockedEntitySummary } from '../../__mocks__/entity-summary.mock'
 
 import { fetchEntityById } from './entities.service'
 
@@ -13,22 +13,22 @@ vi.mock('../../api', () => ({
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 
 const entityIdMock = 12345
-const entityMock = getMockedEntity({ accountId: entityIdMock })
+const entitySummaryMock = getMockedEntitySummary({ accountId: entityIdMock })
 
 describe('entities.service', () => {
   describe('fetchEntityById', () => {
     it('should return entity data when API call succeeds', async () => {
-      const expectedUrl = `account/api/accounts/${entityIdMock}/summary`
+      const expectedUrl = `connect/api/accounts/${entityIdMock}/summary`
 
       apiGatewayGetMock.mockResolvedValueOnce({
-        data: entityMock,
+        data: entitySummaryMock,
       })
 
       const result = await fetchEntityById(entityIdMock)
 
       expect(apiGatewayGetMock).toHaveBeenCalledOnce()
       expect(apiGatewayGetMock).toHaveBeenNthCalledWith(1, expectedUrl)
-      expect(result).toStrictEqual(entityMock)
+      expect(result).toStrictEqual(entitySummaryMock)
     })
 
     it('should handle API error and rethrow it', async () => {

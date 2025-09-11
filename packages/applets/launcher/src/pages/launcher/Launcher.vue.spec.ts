@@ -12,7 +12,7 @@ import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCard
 import { LauncherKey } from './LauncherTypes'
 import * as VueRouter from 'vue-router'
 import {
-  getMockedEntity,
+  getMockedEntitySummary,
   hasPermissionMock,
   getHasPermissionMocked,
   getStoreMock,
@@ -55,7 +55,7 @@ function getLaunchCardComponents(wrapper: VueWrapper) {
     .findAllComponents('[data-testid^="launch-card-"]')
 }
 
-const entityMock = getMockedEntity({
+const entitySummaryMock = getMockedEntitySummary({
   legalName: 'Entity Test',
 })
 const selectedEntityPermissionsMock: Permission[] = [CollaboratorPermission.CREER_JEUX_DONNEES]
@@ -63,7 +63,7 @@ const selectedEntityPermissionsMock: Permission[] = [CollaboratorPermission.CREE
 describe('test Home', () => {
   let wrapper: VueWrapper
   beforeEach(() => {
-    selectedEntityStoreMock.selectedEntity = entityMock
+    selectedEntityStoreMock.selectedEntity = entitySummaryMock
     permissionsStoreMock.selectedEntityPermissions = selectedEntityPermissionsMock
     userStoreMock.user = getMockedUserInfo()
 

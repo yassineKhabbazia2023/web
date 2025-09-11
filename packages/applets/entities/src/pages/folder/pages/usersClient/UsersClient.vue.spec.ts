@@ -14,6 +14,7 @@ import {
   CurrentUserManagerMock,
   getStoreMock,
   getMockedUser,
+  getMockedEntitySummary,
 } from '@pulse/common/mocks'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { ContactType } from '@pulse/common/enums'
@@ -45,6 +46,8 @@ const contactsList = generateContactsMock({
   numberOfPages: 2,
   currentPage: 1,
 }).data
+
+const entitySummaryMock = getMockedEntitySummary(mockedEntity)
 
 vi.mock('@entities/services/wallet', () => walletServiceMock)
 
@@ -78,7 +81,7 @@ const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
 describe('test UsersClient', () => {
   let mockGatewayGet: MockInstance
   beforeEach(async () => {
-    selectedEntityStoreMock.selectedEntity = mockedEntity
+    selectedEntityStoreMock.selectedEntity = entitySummaryMock
     userStoreMock.user = userMock
     mockGatewayGet = vi
       .spyOn(WalletServices, 'fetchCustomers')

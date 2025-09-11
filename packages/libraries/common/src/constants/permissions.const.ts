@@ -63,6 +63,10 @@ export const ACCOUNT_PERMISSIONS: Record<string, Permission[]> = {
     CustomerPermission.ACCEDER_OUTIL_PENNYLANE,
     CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE,
   ],
+  PENNYLANE_ACCOUNTING_V2: [
+    CollaboratorPermission.ACCEDER_GED_COMPTABLE,
+    CustomerPermission.ACCEDER_DOCUMENTS_PENNYLANE,
+  ],
   INDICATORS: [
     CustomerPermission.ACCEDER_INDICATEURS,
     CollaboratorPermission.ACCEDER_INDICATEURS,

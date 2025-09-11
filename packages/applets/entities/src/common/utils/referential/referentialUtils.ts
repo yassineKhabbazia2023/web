@@ -13,8 +13,8 @@ import type {
   ReferentialStructure,
   ReferentialOptions,
   Hub,
-  Office,
 } from '@entities/services/account'
+import type { Office } from '@pulse/common/types'
 import MEGOffersFormStructure from '@entities/common/config/forms/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '@entities/common/config/forms/LOOPOfferFormStructure.json'
 import PennylaneOfferFormStructure from '@entities/common/config/forms/PennylaneOfferFormStructure.json'

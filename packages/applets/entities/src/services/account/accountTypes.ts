@@ -1,3 +1,5 @@
+import type { Address } from '@pulse/common/types'
+
 export interface Accounting {
   fiscalExerciseStartDate?: string
   fiscalExerciseDuration?: number
@@ -41,25 +43,6 @@ export interface Hub {
   hubName?: string
 }
 
-export interface Office {
-  officeId: number;
-  name: string;
-  phoneNumber: string;
-  addressId: number;
-  address?: Address;
-}
-
-export interface Address {
-  addressId: number
-  addressLine1?: string
-  addressLine2?: string
-  addressLine3?: string
-  addressType?: 'delivery' | 'billing'
-  state?: string
-  zipCode?: string
-  country?: string
-  city?: string
-}
 export interface Deployment {
   deploymentId: number
   deploymentDate?: string

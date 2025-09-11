@@ -1,18 +1,29 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import type { Entity } from '../types'
+import type { EntitySummary } from '@pulse/common/types'
+import { SubscriptionOfferCode } from '@pulse/common/enums'
 
 export const useSelectedEntityStore = defineStore('selected-entity', () => {
-  const selectedEntity = ref<Entity>()
+  const selectedEntity = ref<EntitySummary>()
   const selectedEntityId = computed(() => selectedEntity.value?.accountId)
   const selectedEntityAccountNumber = computed(() => selectedEntity.value?.accountNumber?.toString() ?? '')
 
-  function setSelectedEntity(selectedEntityArg?: Entity) {
+  function setSelectedEntity(selectedEntityArg?: EntitySummary) {
     selectedEntity.value = selectedEntityArg
   }
 
   function reset() {
     selectedEntity.value = undefined
+  }
+
+  function hasOffer(offerCode: SubscriptionOfferCode) {
+    const subscriptions = selectedEntity.value?.subscriptions
+    if (subscriptions === undefined) {
+      return false
+    }
+    const hasOffer = subscriptions.some(subcription => subcription.offerCode === offerCode)
+
+    return hasOffer === true
   }
 
   return {
@@ -21,5 +32,6 @@ export const useSelectedEntityStore = defineStore('selected-entity', () => {
     setSelectedEntity,
     selectedEntityAccountNumber,
     reset,
+    hasOffer,
   }
 })

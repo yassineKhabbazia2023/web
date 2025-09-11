@@ -1,10 +1,12 @@
 import { mount, type VueWrapper } from '@vue/test-utils'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock, getMockedEntitySummary } from '@pulse/common/mocks'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 import { FeatureFlagManager } from '@pulse/core'
 
 import WalletLandingPage from '.'
+
+const entitySummaryMock = getMockedEntitySummary(mockedEntity)
 
 const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 
@@ -20,7 +22,7 @@ const createWrapper = (): VueWrapper<any> => mount(WalletLandingPage, {
 
 describe('WalletLandingPage', () => {
   beforeEach(async () => {
-    selectedEntityStoreMock.selectedEntity = mockedEntity
+    selectedEntityStoreMock.selectedEntity = entitySummaryMock
   })
 
   describe('widgets', () => {
