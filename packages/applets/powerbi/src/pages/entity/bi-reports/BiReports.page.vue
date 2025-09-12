@@ -2,6 +2,7 @@
   <SmartOfferActivation
     v-if="selectedEntity && isClarityOptionActive"
     :selectedEntity
+    @display-reports="handleDisplayReports"
   />
   <template v-else>
     <div
@@ -72,6 +73,11 @@ const isClarityOptionActive = computed(() => {
 
   return isClarityEnabledForEntity && userHasAccess
 })
+
+const handleDisplayReports = () => {
+  selectedEntityStore.setSelectedEntityClarityVisibility(false)
+  initializeBIReports()
+}
 // #endregion
 
 // #region manage reportId query
@@ -99,7 +105,7 @@ const handleReportSelection = (reportId: number) => {
 }
 // #endregion
 
-onMounted(async () => {
+const initializeBIReports = async () => {
   try {
     const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
     // entityId can't be null here, so we use non-null assertion
@@ -126,6 +132,10 @@ onMounted(async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+onMounted(() => {
+  initializeBIReports()
 })
 </script>
 

@@ -20,6 +20,32 @@ describe('test selectedEntityStore', () => {
     expect(selectedEntityStore.selectedEntity).toStrictEqual(selectedEntityMock)
   })
 
+  it('should set clarity visibility correctly when calling setSelectedEntityClarityVisibility()', () => {
+    selectedEntityStore.setSelectedEntity(selectedEntityMock)
+
+    selectedEntityStore.setSelectedEntityClarityVisibility(true)
+    expect(selectedEntityStore.selectedEntity?.isClarityVisible).toBe(true)
+
+    selectedEntityStore.setSelectedEntityClarityVisibility(false)
+    expect(selectedEntityStore.selectedEntity?.isClarityVisible).toBe(false)
+  })
+
+  it('should do nothing when setting clarity visibility if selectedEntity is undefined', () => {
+    selectedEntityStore.selectedEntity = undefined
+    expect(() => {
+      selectedEntityStore.setSelectedEntityClarityVisibility(true)
+    }).not.toThrow()
+    expect(selectedEntityStore.selectedEntity).toBeUndefined()
+  })
+
+  it('should reset selectedEntity to undefined when calling reset()', () => {
+    selectedEntityStore.setSelectedEntity(selectedEntityMock)
+    expect(selectedEntityStore.selectedEntity).toBeDefined()
+
+    selectedEntityStore.reset()
+    expect(selectedEntityStore.selectedEntity).toBeUndefined()
+  })
+
   describe('hasOffer', () => {
     const tests = [{
       offerCode: SubscriptionOfferCode.PENNYLANE,

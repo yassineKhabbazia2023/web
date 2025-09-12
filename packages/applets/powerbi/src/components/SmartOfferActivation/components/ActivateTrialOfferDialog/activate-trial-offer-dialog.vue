@@ -1,6 +1,6 @@
 <template>
   <PDialog
-    :modelValue="isDialogVisible"
+    v-model="isDialogVisible"
     pWidth="420px"
     pModal
     @close="handleCloseDialog"
@@ -55,11 +55,12 @@
 
     <template #footer>
       <PButton
-        :disabled="acceptOfferTerms !== true"
         pType="primary"
         pSize="small"
         data-testid="smart-offer-accept-button"
-        @click="handleAcceptOffer"
+        :pDisabled="acceptOfferTerms !== true"
+        :pLoading="isActivatingSmartOffer === true"
+        @click="handleSmartOfferActivation"
       >
         {{ t('acceptTerms') }}
       </PButton>
@@ -70,31 +71,65 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { logger } from '@pulse/core'
 import { PDialog, PButton, PCheckbox } from '@pulse/styleguide/components'
+import { displayNotification } from '@pulse/styleguide'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { ActivateTrialOfferDialogProps } from './activate-trial-offer-dialog.type'
-
-defineProps<ActivateTrialOfferDialogProps>()
+import { activateSmartOfferTrial } from '@powerbi/services/reporting.service'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
 
+const props = defineProps<ActivateTrialOfferDialogProps>()
+const emits = defineEmits<{
+  'offer-activated': []
+}>()
+
 const acceptOfferTerms = ref(false)
+// #region manage activate trial offer dialog visibility
 const isDialogVisible = defineModel<boolean>({ default: false })
 
 const handleCloseDialog = () => {
   isDialogVisible.value = false
 }
+// #endregion
 
-const handleAcceptOffer = () => {
-  // ✅ TODO: Call API to activate trial offer
+// #region Smart Offer trial activation logic
+const isActivatingSmartOffer = ref(false)
+
+const handleSmartOfferActivation = async () => {
+  isActivatingSmartOffer.value = true
+  try {
+    await activateSmartOfferTrial(props.selectedEntity.accountId)
+    AmplitudeService.track('Power BI Promotion Activated', {
+      powerbi_eligibility_promotion_type: 'Clarity',
+    })
+    displayNotification('success', t('smartOfferActivatedSuccess'))
+    setTimeout(() => {
+      isDialogVisible.value = false
+      setTimeout(() => {
+        emits('offer-activated')
+      }, 600)// Wait to emit the event to ensure the backend has completed processing.
+    }, 600)
+  } catch (error) {
+    logger.error('Error activating Smart Offer trial:', error)
+    displayNotification('error', t('technicalError'))
+  } finally {
+    isActivatingSmartOffer.value = false
+  }
 }
+// #endregion
 </script>
 
 <i18n lang="yaml">
 en-US:
   financialIndicatorsIntro: "The financial indicators presented will be:"
+  technicalError: "A technical error occurred. Please try again later."
+  smartOfferActivatedSuccess: >
+    The offer has been successfully activated. You will be redirected to your SMART dashboard.
   financialIndicators:
     cashFlow: "Cash flow: receipts, disbursements, outstanding amounts, debts, etc."
     performance: "Performance: revenue, payroll, etc."
@@ -117,6 +152,8 @@ en-US:
 
 fr-FR:
   financialIndicatorsIntro: "Les indicateurs financiers présentés seront :"
+  technicalError: "Une erreur technique est survenue. Veuillez réessayer plus tard."
+  smartOfferActivatedSuccess: "L'offre a été activée avec succès. Vous serez redirigé vers votre tableau de bord SMART."
   missionDescription: "Description de la mission"
   financialIndicators:
     cashFlow: "Trésorerie : encaissements, décaissements, encours, dettes, etc."

@@ -1,6 +1,10 @@
 <template>
   <div>
-    <ActivateTrialOfferDialog v-model="isTrialOfferDialogVisible" />
+    <ActivateTrialOfferDialog
+      v-model="isTrialOfferDialogVisible"
+      :selectedEntity
+      @offer-activated="handleOfferActivated"
+    />
     <SmartOfferHeader :selectedEntity />
     <div class="padding-x--11 padding-y--10">
       <SmartOfferMainSection @activate-offer="handleOfferActivation" />
@@ -22,11 +26,23 @@ import SmartOfferMainSection from './components/SmartOfferMainSection/smart-offe
 import ActivateTrialOfferDialog from './components/ActivateTrialOfferDialog/activate-trial-offer-dialog.vue'
 
 defineProps<SmartOfferActivationProps>()
+const emits = defineEmits<{
+  'display-reports': []
+}>()
 
 // #region manage activate trial offer
 const isTrialOfferDialogVisible = ref(false)
 const handleOfferActivation = () => {
   isTrialOfferDialogVisible.value = true
+  AmplitudeService.track('Power BI Promotion Activated', {
+    powerbi_eligibilty_promotion_type: 'Clarity',
+  })
+}
+const handleOfferActivated = () => {
+  AmplitudeService.track('Power BI Promotion Validated', {
+    powerbi_eligibilty_form_type: 'Clarity',
+  })
+  emits('display-reports')
 }
 // #endregion
 

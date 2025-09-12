@@ -1,5 +1,5 @@
-import { apiGatewayMock, apiGatewayGetMock, apiGatewayPostMock } from '@pulse/common/mocks'
-import { fetchBIReports, fetchBIReportTypes, fetchBIToken, fetchReportAccounts, uploadBIreport } from './reporting.service'
+import { apiGatewayMock, apiGatewayGetMock, apiGatewayPostMock, apiGatewayPatchMock } from '@pulse/common/mocks'
+import { activateSmartOfferTrial, fetchBIReports, fetchBIReportTypes, fetchBIToken, fetchReportAccounts, uploadBIreport } from './reporting.service'
 
 const mockReportUploadInfo = {
   accountId: 2,
@@ -90,6 +90,19 @@ describe('BI Reporting Services', () => {
       await fetchBIReportTypes()
 
       expect(apiGatewayGetMock).toHaveBeenCalledWith('reporting/api/reportType')
+    })
+  })
+
+  describe('activateSmartOfferTrial()', () => {
+    it('should trigger the activation of the Smart Offer trial for the given account', async () => {
+      const accountId = 602
+      await activateSmartOfferTrial(accountId)
+
+      expect(apiGatewayPatchMock).toHaveBeenCalledWith(
+        'account/api/activate-offer/currentuser',
+        {},
+        { params: { accountId } },
+      )
     })
   })
 

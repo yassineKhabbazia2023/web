@@ -12,6 +12,12 @@ export const useSelectedEntityStore = defineStore('selected-entity', () => {
     selectedEntity.value = selectedEntityArg
   }
 
+  function setSelectedEntityClarityVisibility(isVisible: boolean) {
+    if (selectedEntity.value !== undefined) {
+      selectedEntity.value.isClarityVisible = isVisible
+    }
+  }
+
   function reset() {
     selectedEntity.value = undefined
   }
@@ -30,6 +36,7 @@ export const useSelectedEntityStore = defineStore('selected-entity', () => {
     selectedEntity,
     selectedEntityId,
     setSelectedEntity,
+    setSelectedEntityClarityVisibility,
     selectedEntityAccountNumber,
     reset,
     hasOffer,
