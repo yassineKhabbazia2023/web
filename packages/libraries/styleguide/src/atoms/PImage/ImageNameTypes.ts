@@ -35,9 +35,11 @@ export type ImageName =
 'meg' |
 'microsoft-power-bi' |
 'pennylane-color' |
+'pennylane-logo' |
 'pulse-black' |
 'pulse-color' |
 'pulse-white' |
+'rydge-logo' |
 'silae-color' |
 'account-creation' |
 'document-summary' |
@@ -95,6 +97,7 @@ export type ImageName =
 'user-desktop' |
 'van' |
 'work-in-progress' |
+'pennylane-header-illustration' |
 'meeting_working_together_1x' |
 'meeting_working_together_2x' |
 'meeting_working_together_3x' |

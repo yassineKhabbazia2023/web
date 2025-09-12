@@ -4,6 +4,10 @@
     :accountNumber
     class="margin-bottom--4"
   />
+  <AccountingHeader
+    v-if="hideAccountingHeader === false"
+    @close="onClickCloseAccountingHeader"
+  />
   <PTabs
     :modelValue="currentTabName"
     pSmartWidth
@@ -33,8 +37,10 @@ import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-doc
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import { AccountingTab } from './accounting.page.enum'
 import EntityHeader from '@pennylane/components/entity-header/entity-header.vue'
+import AccountingHeader from '@pennylane/components/accounting-header/accounting-header.vue'
 import { APP_ROUTES, ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 import { useRouter } from 'vue-router'
+import { persistHideAccountingHeader, getHideAccountingHeader } from './accounting.helper'
 import { CurrentUserManager } from '@pulse/common/managers'
 
 const router = useRouter()
@@ -88,11 +94,19 @@ const currentTabName = computed(() => {
   return tab?.name ?? tabs[0].name
 })
 
+const hideAccountingHeader = ref(false)
+
+function onClickCloseAccountingHeader() {
+  hideAccountingHeader.value = true
+  persistHideAccountingHeader(hideAccountingHeader.value)
+}
+
 onMounted(async () => {
   if (tabs.length === 0) {
     logger.error('unmanaged case')
     router.push({ name: RouteName.ERROR403 })
   }
+  hideAccountingHeader.value = getHideAccountingHeader()
   const pathPrefix = 'Pennylane'
   try {
     apiCallStatus.value = APICallStatus.LOADING

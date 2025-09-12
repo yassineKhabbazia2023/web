@@ -56,6 +56,9 @@
   &--50 {
     width: 50% !important;
   }
+  &--inherit {
+    width: inherit !important;
+  }
 }
 
 .transform {
@@ -93,6 +96,14 @@
 
     &--2px {
       border-bottom-width: 2px;
+    }
+  }
+
+  &-left {
+    border-left: 1px solid transparent;
+
+    &--white {
+      border-left-color: var(--p-white) !important;
     }
   }
 }
