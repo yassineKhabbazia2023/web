@@ -77,9 +77,7 @@ export default ({ mode }: any) =>
         minify: mode === 'production' ? 'terser' : false,
         terserOptions: {
           compress: {
-            drop_console: mode === 'production',
             drop_debugger: true,
-            pure_funcs: mode === 'production' ? ['console.log', 'console.info'] : [],
           },
         },
         reportCompressedSize: false,

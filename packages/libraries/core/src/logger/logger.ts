@@ -18,12 +18,13 @@ declare let window: {
 
 // https://tslog.js.org/#/?id=minlevel
 const getMinLevel = () => {
-  const LoggerLevel = typeof window === 'undefined' ? undefined : window.EnvVars?.VITE_LOGGER_LEVEL
+  const loggerLevel = typeof window === 'undefined' ? undefined : window.EnvVars?.VITE_LOGGER_LEVEL
   const defaultLevel = isProd ? LogLevel.ERROR : LogLevel.INFO
-  return LoggerLevel || defaultLevel
+  return loggerLevel || defaultLevel
 }
 
-export const logger: Logger<ILogObj> = new Logger({ minLevel: getMinLevel(),
+export const logger: Logger<ILogObj> = new Logger({
+  minLevel: getMinLevel(),
   prettyLogTemplate: '{{yyyy}}.{{mm}}.{{dd}} {{hh}}:{{MM}}:{{ss}}:{{ms}}\t{{logLevelName}} ',
   prettyLogStyles: {
     logLevelName: {
