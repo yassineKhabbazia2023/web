@@ -1,6 +1,7 @@
 import { describe } from 'vitest'
-import { TriggerSource } from './tracking.types'
+import { TriggerSource, DocumentConsultationSource } from './tracking.types'
 import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
+import { GedContext } from '@pulse/common/enums'
 
 import {
   trackDepositedDocument,
@@ -15,6 +16,7 @@ import {
   trackDocumentSearch,
   trackDocumentTransmit,
   trackDocumentTransmitFlowStart,
+  trackDocumentConsulted,
 } from '@ged/services/tracking/tracking.service'
 
 vi.mock('@pulse/common/services/amplitude')
@@ -189,6 +191,32 @@ describe('document search tracking', () => {
 
     expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Searched', {
       document_search: searchValue,
+    })
+  })
+})
+
+describe('trackDocumentConsulted', () => {
+  const tests: {
+    gedContext: GedContext
+    expectedLocalisation: string
+  }[] = [{
+    gedContext: GedContext.ACCOUNTING,
+    expectedLocalisation: DocumentConsultationSource.ARCHIVES,
+  }, {
+    gedContext: GedContext.LEGACY,
+    expectedLocalisation: DocumentConsultationSource.GED,
+  }, {
+    gedContext: GedContext.SOCIAL_MANAGEMENT,
+    expectedLocalisation: DocumentConsultationSource.GED,
+  }]
+  it.each(tests)('$description', ({
+    gedContext,
+    expectedLocalisation,
+  }) => {
+    trackDocumentConsulted(gedContext)
+
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Consulted', {
+      document_consultation_localisation: expectedLocalisation,
     })
   })
 })

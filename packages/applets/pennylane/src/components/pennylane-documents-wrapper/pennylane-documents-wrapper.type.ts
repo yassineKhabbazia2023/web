@@ -8,7 +8,7 @@ export interface PennylaneDocumentWrapperProps {
   pennylaneLastSynchroDate?: Date
   displayMode: PennylaneDocumentWrapperDisplayMode
   accountName: string
-  amplitudeLocalisation: 'homepage' | 'ged_doc_rydge_conseil'
+  amplitudeLocalisation: 'homepage' | 'documents rydge conseil'
   accountNumber: string
   accountId: number
 }

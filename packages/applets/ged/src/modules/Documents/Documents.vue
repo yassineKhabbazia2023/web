@@ -428,7 +428,7 @@ const handleDocumentPreview = (document: TableRowDocument) => {
 
     totalDocumentsCount.value = currentPageSize.value
   }
-  trackDocumentConsulted()
+  trackDocumentConsulted(props.gedContext)
 }
 
 const { handleDownloadDocumentsEvent } =

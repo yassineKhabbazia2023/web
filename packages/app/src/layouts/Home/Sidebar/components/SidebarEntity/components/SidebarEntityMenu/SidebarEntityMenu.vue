@@ -42,7 +42,7 @@
         :pIndex="menuItem.index"
         :pIconLeftName="menuItem.iconLeftName"
         data-testid="menu-item"
-        @click="logAmplitudeEvent(menuItem.title)"
+        @click="logAmplitudeEvent(menuItem)"
       >
         <template #title>
           {{ menuItem.title }}
@@ -86,6 +86,7 @@ const canBeConsideredSingleEntity = computed(() => {
 interface MenuItem {
   index: string
   title: string
+  featureName?: string
   display: boolean
   iconLeftName?: IconName
 }
@@ -144,6 +145,7 @@ const getMenuItems = () => {
     {
       index: `/dossier/${props.selectedEntityId}/comptabilite/rydge`, // Accounting GED path for Pennylane users
       title: t('pennylaneAccounting'),
+      featureName: 'documents comptables',
       iconLeftName: 'archive',
       // Need specific Pennylane Accounting permission
       display: hasPennylaneAccountingPermission === true &&
@@ -152,6 +154,7 @@ const getMenuItems = () => {
     {
       index: `/dossier/${props.selectedEntityId}/comptabilite/archive`, // Legacy GED path for Pennylane users
       title: t('pennylaneAccounting'),
+      featureName: 'documents comptables',
       iconLeftName: 'archive',
       // User do not have access to Pennylane-Accounting but has access to Ged-V2
       display: hasPennylaneAccountingPermission === true &&
@@ -160,6 +163,7 @@ const getMenuItems = () => {
     {
       index: `/dossier/${props.selectedEntityId}/gestion-sociale`, // Social-Management GED path for Pennylane users
       title: t('pennylaneSocialManagement'),
+      featureName: 'documents gestion sociale',
       iconLeftName: 'archive',
       // Need specific Social Management permission
       display: hasSocialManagementV2 === true,
@@ -194,9 +198,13 @@ const menuItems = computed({
   },
 })
 
-const logAmplitudeEvent = (featureName: string) => {
+const logAmplitudeEvent = (menuItem: MenuItem) => {
+  const { featureName, title } = menuItem
+
   AmplitudeService.track('Feature Consulted', {
-    feature_name: featureName.toLowerCase(),
+    feature_name: featureName === undefined
+      ? title.toLowerCase()
+      : featureName,
   })
 }
 

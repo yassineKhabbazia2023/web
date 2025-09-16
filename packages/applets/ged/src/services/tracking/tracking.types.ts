@@ -35,6 +35,7 @@ export enum TriggerSource {
 }
 
 export enum DocumentConsultationSource {
-  GED = 'ged',
+  ARCHIVES = 'archives',
   DEPOSIT_HISTORY = 'historique de dépôts',
+  GED = 'ged',
 }

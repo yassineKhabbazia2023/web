@@ -6,7 +6,7 @@
     :accountName
     :displayMode="PennylaneDocumentWrapperDisplayMode.IN_TABLE"
     :pennylaneDocuments
-    amplitudeLocalisation="ged_doc_rydge_conseil"
+    amplitudeLocalisation="documents rydge conseil"
   />
 </template>
 

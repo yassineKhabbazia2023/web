@@ -9,6 +9,7 @@ import type {
   TrackDocumentTransmitParams,
 } from './tracking.types'
 import { DocumentConsultationSource } from './tracking.types'
+import { GedContext } from '@pulse/common/enums'
 
 export function trackDepositedDocument({
   serviceName,
@@ -27,10 +28,14 @@ export function trackDepositedDocument({
   })
 }
 
-export function trackDocumentConsulted() {
+export function trackDocumentConsulted(gedContext: GedContext) {
+  const DocumentConsultationLocalisation = gedContext === GedContext.ACCOUNTING
+    ? DocumentConsultationSource.ARCHIVES
+    : DocumentConsultationSource.GED
+
   AmplitudeService.track('Document Consulted', {
     // Fixed value for now as document history doesn't exist yet
-    document_consultation_localisation: DocumentConsultationSource.GED,
+    document_consultation_localisation: DocumentConsultationLocalisation,
   })
 }
 
