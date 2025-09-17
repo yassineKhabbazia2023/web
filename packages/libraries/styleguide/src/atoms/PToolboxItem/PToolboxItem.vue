@@ -73,23 +73,23 @@ const pClassMapper = computed(() => ({
 
   &#{$self}--state {
     &-danger {
-      color: var(--p-red-500);
+      color: var(--p-button-danger-text-hover);
 
       &:not([disabled]) {
         &:hover {
-          color: var(--p-red-800);
+          color: var(--p-button-danger-text-hover);
         }
 
         &:hover,
         &:active,
         &:focus {
-          background: var(--p-red-100);
+          background: var(--p-button-danger-surface-hover);
         }
 
         &:active,
         &:focus {
           font-weight: 600;
-          color: var(--p-red-500);
+          color: var(--p-button-danger-text-hover);
         }
       }
     }
@@ -101,23 +101,21 @@ const pClassMapper = computed(() => ({
 
   &:not([disabled]) {
     &:hover {
-      background: var(--p-jungle-50);
+      background: var(--p-surface-state-hover);
     }
     &:active {
-      background: var(--p-jungle-75);
-    }
-    &:active {
-      color: var(--p-jungle-400);
+      background: var(--p-surface-state-press);
+      color: var(--p-surface-state-action-hover);
       font-weight: 600;
     }
   }
 
   &:disabled {
-    color: var(--p-gray-300);
+    color: var(--p-text-disabled);
     cursor: not-allowed;
 
     &__icon {
-      fill: var(--p-gray-300);
+      fill: var(--p-text-disabled);
     }
   }
 
