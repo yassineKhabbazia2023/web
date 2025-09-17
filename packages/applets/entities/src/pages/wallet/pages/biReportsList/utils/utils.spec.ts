@@ -1,5 +1,5 @@
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
-import type { ReportSearchCriteria, ReportStatusTag, ReportTableRow } from '@entities/common/types/BIReportsTypes'
+import type { ReportQueryParams, ReportStatusTag, ReportTableRow } from '@entities/common/types/BIReportsTypes'
 import { getMockReportTable } from '@entities/__mocks__/bi-report.mocks'
 
 import { getMappedReport, getReportsQueryParams } from '.'
@@ -38,10 +38,14 @@ describe('getMappedReport', () => {
 
 describe('getReportsQueryParams', () => {
   it('should return cleaned query params without falsy values', () => {
-    const input: ReportSearchCriteria = {
+    const input: ReportQueryParams = {
       currentPage: 1,
       limit: 25,
       search: '',
+      sorting: {
+        descending: false,
+        field: '',
+      },
     }
 
     const result = getReportsQueryParams(input)
@@ -53,10 +57,14 @@ describe('getReportsQueryParams', () => {
   })
 
   it('should return full object if all values are truthy', () => {
-    const input: ReportSearchCriteria = {
+    const input: ReportQueryParams = {
       currentPage: 2,
       limit: 50,
       search: 'marketing',
+      sorting: {
+        descending: false,
+        field: '',
+      },
     }
 
     const result = getReportsQueryParams(input)

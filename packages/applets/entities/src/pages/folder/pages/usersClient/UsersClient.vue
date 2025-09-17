@@ -126,6 +126,7 @@ import { storeToRefs } from 'pinia'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { ContactType } from '@pulse/common/enums'
 import type { SortingCriteria } from '@pulse/common/types'
+import { handleSort } from '@entities/composables/handleSortTable.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -248,9 +249,8 @@ const handleRemoveUser = (row: any) => {
   state.isRemoveUserDialogOpened = true
 }
 
-const handleSortUser = (param: SortingCriteria) => {
-  state.sorting.descending = param.descending
-  state.sorting.field = param.field
+const handleSortUser = async (param: SortingCriteria) => {
+  handleSort(param, state)
 }
 
 const selectedEntityStore = useSelectedEntityStore()

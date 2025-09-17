@@ -56,25 +56,16 @@ export function getPaginationLabel<T>(onLabel: string, {
   return `${firstRowNumber} - ${lastRowNumber} ${onLabel} ${totalItems}`
 }
 
-export const returnSortQueryField = (columnProp: string, order: string | null) => {
-  const sortPrefix = order === 'ascending' ? '+' : '-'
-  let sortValue = 'lastname'
-
-  if (columnProp === 'email' && order !== null) {
-    sortValue = 'email'
-  }
-
-  if (columnProp === 'createdAt' && order !== null) {
-    sortValue = 'created'
-  }
-
-  if (columnProp === 'persona' && order !== null) {
-    sortValue = 'persona'
-  }
-
-  if (columnProp === 'role' && order !== null) {
-    sortValue = 'persona'
-  }
+const SORT_VALUES = new Map<string, string>([
+  ['createdAt', 'created'],
+  ['role', 'persona'],
+  ['email', 'email'],
+  ['persona', 'persona'],
+  ['office', 'office'],
+])
+export const returnSortQueryField = (columnProp: string, descending: boolean) => {
+  const sortPrefix = descending === true ? '-' : '+'
+  const sortValue = SORT_VALUES.get(columnProp) ?? 'lastname'
 
   return `${sortPrefix}${sortValue}`
 }

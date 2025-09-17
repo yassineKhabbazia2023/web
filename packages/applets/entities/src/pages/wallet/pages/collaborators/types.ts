@@ -1,3 +1,4 @@
+import { SortingCriteria } from '@pulse/common/types'
 import type { PaginationData } from '@entities/helper/helperTypes'
 
 export interface Collab {
@@ -21,5 +22,5 @@ export interface State extends PaginationData<ExtendedCollab> {
   totalPages: number | undefined
   search: string | undefined
   isLoading: boolean | undefined
-  sort: string | undefined
+  sorting: SortingCriteria
 }

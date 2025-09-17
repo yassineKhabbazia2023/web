@@ -4,11 +4,13 @@
     tableLayout="fixed"
     showOverflowTooltip
     pStripe
+    @sort-change="handleSort"
   >
     <PTableColumn
       :pLabel="t('companyName')"
       pProp="name"
-      pSortable
+      pSortable="custom"
+      :pSortOrders="SORT_ORDERS"
       pMinWidth="120px"
     >
       <template #default="scope">
@@ -33,12 +35,14 @@
     <PTableColumn
       :pLabel="t('clientCode')"
       pProp="accountNumber"
-      pSortable
+      pSortable="custom"
+      :pSortOrders="SORT_ORDERS"
     />
     <PTableColumn
       :pLabel="t('reportType')"
       pProp="reportType"
-      pSortable
+      pSortable="custom"
+      :pSortOrders="SORT_ORDERS"
     >
       <template #default="scope">
         <PTooltip
@@ -52,7 +56,8 @@
     <PTableColumn
       :pLabel="t('initializedOn')"
       pProp="initializedOn"
-      pSortable
+      pSortable="custom"
+      :pSortOrders="SORT_ORDERS"
     >
       <template #default="scope">
         <p>{{ getReportFormattedDate(scope.row.creationDate) }}</p>
@@ -61,7 +66,8 @@
     <PTableColumn
       :pLabel="t('updatedOn')"
       pProp="updatedOn"
-      pSortable
+      pSortable="custom"
+      :pSortOrders="SORT_ORDERS"
     >
       <template #default="scope">
         <p>{{ getReportFormattedDate(scope.row.dataUpdateDate) }}</p>
@@ -71,7 +77,8 @@
       :pLabel="t('status')"
       :pWidth="150"
       pProp="status"
-      pSortable
+      pSortable="custom"
+      :pSortOrders="SORT_ORDERS"
     >
       <template #default="scope">
         <PTag
@@ -111,10 +118,12 @@ import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { PTable, PTableColumn, PTag, PAvatar, PButton, PIcon, PTooltip, PToolbox } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { ACTION_PERMISSIONS } from '@pulse/common/constants'
+import { ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
 import { ReportTableProps } from './report-table.types'
 import { REPORT_ACTIONS } from './constants/report-table.const'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
+import { SortChangeEventData, SortingCriteria } from '@pulse/common/types'
+import { SortDirection } from '@pulse/common/enums'
 
 const { t, d } = useI18n({
   inheritLocale: true,
@@ -128,6 +137,7 @@ const emit = defineEmits<{
   'update-report-status': [number, number, string, ReportStatus]
   'view-report-fullscreen': [number, string, string, string]
   'delete-report': [string, string]
+  'sort-report': [SortingCriteria]
 }>()
 
 const handleToolboxItemClick = (action: string, row: any) => {
@@ -194,6 +204,13 @@ const getReportActions = (status: ReportStatus): PToolboxItemProps[] => {
 
 const getReportFormattedDate = (dateString: string) => {
   return dateString ? d(new Date(dateString), 'short') : '-'
+}
+
+const handleSort = (sortChangeEventData: SortChangeEventData) => {
+  emit('sort-report', {
+    field: sortChangeEventData.prop,
+    descending: sortChangeEventData.order === SortDirection.DESCENDING,
+  })
 }
 </script>
 

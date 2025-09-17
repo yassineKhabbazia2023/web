@@ -1,11 +1,10 @@
+import { SortingCriteria } from './api.types'
+
 export interface SearchCriteria {
   currentPage: number
   limit: number
   search?: string
-  sorting?: {
-    field?: string
-    descending: boolean
-  }
+  sorting?: SortingCriteria
   accountNumber?: string
   filterByDeploymentStatus?: string
   isFavoriteFilter?: boolean

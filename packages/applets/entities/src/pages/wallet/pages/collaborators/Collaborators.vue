@@ -58,7 +58,7 @@ import {
   PLoader,
   PPagination,
 } from '@pulse/styleguide/components'
-import { getInitials, getPaginationLabel } from '@entities/helper'
+import { getInitials, getPaginationLabel, returnSortQueryField } from '@entities/helper'
 import { removeFalsyValues } from '@pulse/core/utils/object'
 import { PAGE_SIZES } from '@pulse/common/constants'
 import NoResult from '@entities/common/components/NoResult'
@@ -67,6 +67,8 @@ import type { ExtendedCollab, State } from './types'
 import TableData from './components/TableData'
 import { getCollaborators } from '@entities/services/wallet'
 import type { Contact } from '@entities/services/contact/contactTypes'
+import { SortingCriteria } from '@pulse/common/types'
+import { handleSort } from '@entities/composables/handleSortTable.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -81,7 +83,10 @@ const state: State = reactive({
   totalItems: undefined,
   search: undefined,
   isLoading: undefined,
-  sort: undefined,
+  sorting: {
+    field: undefined,
+    descending: false,
+  },
 })
 
 const handleSearchValueSubmitted = (searchValue: string) => {
@@ -104,11 +109,12 @@ const getQueryParams = () => ({
   page: state.currentPage,
   limit: state.limit,
   search: state.search,
-  sort: state.sort,
+  sort: returnSortQueryField(state.sorting.field ?? '', state.sorting.descending),
 })
 
 const fetch = async () => {
-  const queryParamsWithoutUndefined = removeFalsyValues(getQueryParams())
+  const params = getQueryParams()
+  const queryParamsWithoutUndefined = removeFalsyValues(params)
   const searchParams = new URLSearchParams(queryParamsWithoutUndefined)
 
   state.isLoading = searchParams && true
@@ -118,7 +124,7 @@ const fetch = async () => {
       state.limit,
       null,
       state.search,
-      state.sort,
+      params.sort,
     )
     if (response) {
       state.data = response?.items.map<ExtendedCollab>(({
@@ -163,8 +169,8 @@ const handleUpdateCollaborateurRole = (contact: Contact) => {
   state.data[index].role = contact.persona?.name ?? ''
 }
 
-const handleSortChange = (sortQueryField: string) => {
-  state.sort = sortQueryField
+const handleSortChange = (sortCriteria: SortingCriteria) => {
+  handleSort(sortCriteria, state)
 }
 
 onMounted(async () => {
@@ -174,7 +180,8 @@ onMounted(async () => {
     state.currentPage,
     state.limit,
     state.search,
-    state.sort,
+    state.sorting.field,
+    state.sorting.descending,
   ], async () => {
     await fetch()
   })

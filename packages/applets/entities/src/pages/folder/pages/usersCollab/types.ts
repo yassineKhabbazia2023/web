@@ -1,5 +1,6 @@
 import type { PaginationData } from '@entities/helper/helperTypes'
 import type { UserStatus } from '@entities/common/types'
+import { SortingCriteria } from '@pulse/common/types'
 
 
 export enum userActions {
@@ -30,7 +31,6 @@ export interface StateUser extends PaginationData<User> {
   totalItems: number | undefined
   totalPage: number | undefined
   isLoading: boolean | undefined
-  sort: string | undefined
-  order: string | undefined
+  sorting: SortingCriteria
   search: string | undefined
 }

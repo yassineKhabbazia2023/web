@@ -122,6 +122,7 @@ const fetchBin = async () => {
 
 const handleSortChange = async (sortQueryField:string) => {
   componentSortQueryField.value = sortQueryField
+  currentPage.value = 1
   await fetchBin()
 }
 

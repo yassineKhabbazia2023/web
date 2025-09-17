@@ -1,5 +1,6 @@
 import type { PTagProps } from '@pulse/styleguide/types'
 import type { ReportStatus, ReportTypeEnum } from './BIReports.enums'
+import { SortingCriteria } from '@pulse/common/types'
 
 export interface ReportStatusTag {
   text: string
@@ -59,12 +60,6 @@ export interface ReportErrorData {
   totalItems: number
 }
 
-export interface PaginationParams {
-  currentPage: number
-  limit: number
-  search?: string
-}
-
 export interface ReportFilters {
   reportStatusFilter?: ReportStatus[]
   reportTypeIdFilter?: number[]
@@ -76,10 +71,10 @@ export interface ReportStatistics {
   failed: number
 }
 
-export interface ReportFilterQueryParams extends ReportFilters {
-  pageNumber: number
-  pageSize: number
+export interface ReportQueryParams extends ReportFilters {
+  currentPage: number
+  limit: number
   search?: string
+  sorting: SortingCriteria
 }
 
-export interface ReportSearchCriteria extends PaginationParams, ReportFilters {}

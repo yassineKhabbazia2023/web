@@ -66,6 +66,7 @@
           :pLabel="t('collaboratorName')"
           pSortable="custom"
           pProp="name"
+          :pSortOrders="SORT_ORDERS"
         >
           <template #default="scope">
             <div class="flex flex--align-items-center">
@@ -101,6 +102,7 @@
           :pLabel="t('collaboratorEmail')"
           pProp="email"
           pSortable="custom"
+          :pSortOrders="SORT_ORDERS"
         />
         <PTableColumn
           :pLabel="t('collaboratorFunction')"
@@ -117,6 +119,7 @@
           :pLabel="t('collaboratorOffice')"
           pProp="office"
           pSortable="custom"
+          :pSortOrders="SORT_ORDERS"
         >
           <template #default="scope">
             <p>
@@ -127,7 +130,6 @@
         </PTableColumn>
         <PTableColumn
           pProp="label"
-          pSortable="custom"
           pWidth="340"
         >
           <template #header>
@@ -212,7 +214,7 @@ import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { PAGE_SIZES, ACTION_PERMISSIONS } from '@pulse/common/constants'
+import { PAGE_SIZES, ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
 import type { Collab } from './types'
 import type { Account } from '@entities/services/account/accountTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
@@ -221,7 +223,7 @@ import { getCollaboratorsByIdEntity } from '@entities/services/wallet'
 import { deleteContactFromAccount } from '@entities/services/account'
 import { getInitials } from '@entities/helper'
 import { removeFalsyValues } from '@pulse/core/utils/object'
-import { RouteParam } from '@pulse/common/enums'
+import { RouteParam, SortDirection } from '@pulse/common/enums'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import CollabDetailsDrawer from '@entities/common/components/CollabDetailsDrawer'
@@ -230,6 +232,7 @@ import AddCollaboratorsDrawer from './components/AddCollaboratorDrawer'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { splitRoleLabelsIntoGroups } from './utils/collaborators.utils'
 import CollaboratorRolesColumn from './components/CollaboratorRolesColumn/CollaboratorRolesColumn.vue'
+import { handleSort } from '@entities/composables/handleSortTable.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -257,8 +260,10 @@ const state: any = reactive({
   totalPages: undefined,
   totalItems: undefined,
   search: undefined,
-  sort: undefined,
-  order: undefined,
+  sorting: {
+    field: undefined,
+    descending: false,
+  },
 })
 
 const rowDataForDrawers = ref()
@@ -366,8 +371,11 @@ const handlePageRangeChanged = (newItemsPerPage: number) => {
 }
 
 const handleSortChange = ({ prop, order }: { prop: string, order: string }) => {
-  state.sort = prop
-  state.order = order
+  const sortCriteria = {
+    field: prop,
+    descending: order === SortDirection.DESCENDING,
+  }
+  handleSort(sortCriteria, state)
 }
 
 const paginationLabel = computed(() =>
@@ -416,8 +424,8 @@ const getQueryParams = () => ({
   pageNumber: state.currentPage,
   pageSize: state.limit,
   search: state.search,
-  'sorting.field': state.sort,
-  'sorting.descending': state.order === 'descending',
+  'sorting.field': state.sorting.field,
+  'sorting.descending': state.sorting.descending,
 })
 
 const emit = defineEmits<{
@@ -468,8 +476,8 @@ watch(() => [
   state.currentPage,
   state.limit,
   state.search,
-  state.sort,
-  state.order,
+  state.sorting.field,
+  state.sorting.descending,
 ], async () => {
   await fetchCollaborators()
 })

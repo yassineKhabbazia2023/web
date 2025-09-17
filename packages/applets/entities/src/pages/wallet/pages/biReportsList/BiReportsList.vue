@@ -10,7 +10,7 @@
     :class="{ 'bi-reports-list--loading': isLoading }"
   >
     <div
-      v-if="isLoading"
+      v-show="isLoading === true"
       class="flex flex--justify-content-center margin-bottom--6"
       data-testid="bi-reports-list-loader"
     >
@@ -19,7 +19,7 @@
         pSize="50"
       />
     </div>
-    <div v-else>
+    <div v-show="isLoading === false">
       <ReportDeletionDialog
         v-if="isReportDeletionDialogVisible === true"
         v-model:isReportDeletionDialogVisible="isReportDeletionDialogVisible"
@@ -32,6 +32,7 @@
         @update-report-status="handleUpdateReportStatus"
         @view-report-fullscreen="handleViewReportFullscreen"
         @delete-report="handleDeleteReport"
+        @sort-report="handleSort"
       />
       <PowerBIReportViewer
         v-model="isReportFullscreenVisible"
@@ -68,7 +69,7 @@ import type {
   ReportStatusTag,
   MappedReportRow,
   ReportFilters,
-  ReportSearchCriteria,
+  ReportQueryParams,
   ReportStatistics,
 } from '@entities/common/types/BIReportsTypes'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
@@ -81,6 +82,8 @@ import { displayNotification } from '@pulse/styleguide'
 import PowerBIReportViewer from '@entities/common/components/PowerBIReportViewer'
 import ReportDeletionDialog from './components/ReportDeletionDialog/report-deletion-dialog.vue'
 import { ReportDeleteOption } from './components/ReportDeletionDialog/report-deletion-dialog.enums'
+import { SortingCriteria } from '@pulse/common/types'
+import { handleSort as handleSortComposable } from '@entities/composables/handleSortTable.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -155,8 +158,12 @@ const fetchReportStatisticsData = async () => {
 // #endregion
 
 // #region manage pagination
-const searchCriteria = reactive<ReportSearchCriteria>({
+const searchCriteria = reactive<ReportQueryParams>({
   search: '',
+  sorting: {
+    field: undefined,
+    descending: false,
+  },
   currentPage: 1,
   limit: PAGE_SIZES[0],
 })
@@ -294,6 +301,14 @@ const handleReportDeletion = async (deleteOption: ReportDeleteOption) => {
   }
 }
 // #endregion
+
+// #region Sort
+const handleSort = (param: SortingCriteria) => {
+  handleSortComposable(param, searchCriteria)
+
+  fetchReportsData()
+}
+// #endregion Sort
 
 onMounted(() => {
   fetchReportsData()

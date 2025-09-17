@@ -1,6 +1,7 @@
 <template>
   <div>
     <PTable
+      v-if="mandateCollection !== undefined"
       :pData="mandateCollection"
       pStripe
       :emptyText="t('no-data')"
@@ -41,7 +42,7 @@
           :pLabel="label"
           :pProp="prop"
           pSortable="custom"
-          :pSortOrders="SORT_ORDER"
+          :pSortOrders="SORT_ORDERS"
           :pWidth="width"
         >
           <template #default="scope">
@@ -60,7 +61,7 @@
           :key="index"
           :pProp="prop"
           pSortable="custom"
-          :pSortOrders="SORT_ORDER"
+          :pSortOrders="SORT_ORDERS"
           :pWidth="width"
         >
           <template #header>
@@ -152,7 +153,7 @@ import { showNotification } from '@mandate/helpers/NotificationHelper'
 import type { NotificationMessagesByType } from '@mandate/helpers/NotificationHelperTypes'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
 import { MandateTracking } from '@mandate/services/mandate-tracking.service'
-import { SORT_ORDER } from '@pulse/common/constants'
+import { SORT_ORDERS } from '@pulse/common/constants'
 declare let window: any
 
 const { t } = useI18n({
@@ -277,6 +278,7 @@ const sortColumnChange = ({ order, prop }: any) => {
   emitRefreshMandateCollection({
     sortOrder: order === 'descending' ? 'Descending' : 'Ascending',
     sortCriteria: criteriaMapper[prop] || '',
+    currentPage: 1,
   })
 }
 

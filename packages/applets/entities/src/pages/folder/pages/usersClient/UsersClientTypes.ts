@@ -1,3 +1,4 @@
+import { SortingCriteria } from '@pulse/common/types'
 import type { Contact, UserStatus } from '@entities/common/types'
 
 export interface UsersClientProps {
@@ -20,10 +21,7 @@ export interface State {
   totalPages: number | undefined
   totalItems: number | undefined
   search: string | undefined
-  sorting: {
-    field?: string
-    descending: boolean
-  }
+  sorting: SortingCriteria
   isLoading: boolean
   isDrawerViewDetailsOpened: boolean
   isManageRightsDrawerOpened: boolean

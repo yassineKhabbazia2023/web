@@ -9,18 +9,19 @@
       />
     </div>
     <div
-      v-if="isLoading"
+      v-show="isLoading === true"
       class="loader flex flex--justify-content-center flex--align-items-center"
     >
       <PLoader pType="primary" pSize="50" />
     </div>
-    <div v-else>
-      <NoResult v-if="searchResult.items.length === 0" />
+    <div v-show="isLoading === false">
+      <NoResult v-show="searchResult.items.length === 0" />
       <TableData
-        v-if="searchResult.items.length > 0"
+        v-show="searchResult.items.length > 0"
         data-testid="accounts-table"
         :data="searchResult.items"
         isAccountManagement
+        @sort-account="handleSort"
         @access="handleOpenFolder"
         @display-account-rights-drawer="handleDisplayAccountRightsDrawer"
         @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
@@ -79,6 +80,8 @@ import type {
   WalletData,
 } from '../../types'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
+import { SortingCriteria } from '@pulse/common/types'
+import { handleSort as handleSortComposable } from '@entities/composables/handleSortTable.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -114,6 +117,10 @@ const searchCriteria = ref<SearchCriteria>({
   currentPage: 0,
   limit: PAGE_SIZES[0],
   search: '',
+  sorting: {
+    field: '',
+    descending: false,
+  },
   filterByDeploymentStatus: '',
 })
 const searchResult = ref<SearchResult<WalletData>>({
@@ -165,7 +172,9 @@ const handlePageChange = (currentPage: number) => {
 const handleOpenFolder = (entityId: string) => {
   router.push({ name: RouteName.FOLDER, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
-
+const handleSort = (param: SortingCriteria) => {
+  handleSortComposable(param, searchCriteria.value)
+}
 onMounted(async () => {
   await fetchAccountList()
 })

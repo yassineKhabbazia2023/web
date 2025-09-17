@@ -3,7 +3,7 @@ import { commonApi } from '@pulse/common'
 import type { GetReportsRequest, GetReportAccountsRequest } from './reportingTypes'
 import type {
   ReportError,
-  ReportFilterQueryParams,
+  ReportQueryParams,
   ReportStatistics,
   ReportTableRow,
   ReportType,
@@ -90,7 +90,7 @@ export const uploadBIreport = async (
 }
 
 export const fetchAvailableReports = async (
-  queryParams: ReportFilterQueryParams,
+  queryParams: ReportQueryParams,
 ): Promise<QueryResult<ReportTableRow>> => {
   const { data } = await commonApi().gateway.get(`${API_PREFIXES.REPORTING}/reports/available`, {
     params: queryParams,

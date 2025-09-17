@@ -234,6 +234,7 @@ import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enum
 import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { fetchAccountOperations } from '@entities/services/contact'
+import { handleSort } from '@entities/composables/handleSortTable.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -534,6 +535,10 @@ const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
     currentPage: 0,
     limit: PAGE_SIZES[0],
     filterByDeploymentStatus: filterValue.toString(),
+    sorting: {
+      field: '',
+      descending: false,
+    },
   }
   searchBar.value.clearSearch()
 }
@@ -541,6 +546,10 @@ const handleRemoveFilter = () => {
   searchCriteria.value = {
     currentPage: 0,
     limit: PAGE_SIZES[0],
+    sorting: {
+      field: '',
+      descending: false,
+    },
   }
   searchBar.value.clearSearch()
 }
@@ -557,10 +566,7 @@ const onSelectedFolder = (newSelectedFolder: SelectedFolder) => {
 }
 
 const handleSortAccount = (param: SortingCriteria) => {
-  if (searchCriteria.value.sorting !== undefined) {
-    searchCriteria.value.sorting.descending = param.descending
-    searchCriteria.value.sorting.field = param.field
-  }
+  handleSort(param, searchCriteria.value)
 }
 
 defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerVisible, selectedAccount })

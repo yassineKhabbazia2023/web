@@ -1,5 +1,5 @@
 import type { DeploymentStatus, State, WalletData, SearchCriteria } from '../../types'
-import type { QueryResult } from '@pulse/common/types'
+import type { QueryResult, SortingCriteria } from '@pulse/common/types'
 
 export function getMockedState(override: Partial<State> = {}): State {
   const defaultState = {
@@ -19,12 +19,18 @@ export function getMockedState(override: Partial<State> = {}): State {
   }
 }
 
+const sortingCriteria: SortingCriteria = {
+  descending: false,
+  field: '',
+}
+
 export function getMockedSearchCriteria(override: Partial<SearchCriteria> = {}): SearchCriteria {
   const defaultSearchCriteria: SearchCriteria = {
     currentPage: 1,
     limit: 15,
     search: undefined,
     filterByDeploymentStatus: undefined,
+    sorting: sortingCriteria,
   }
 
   return {

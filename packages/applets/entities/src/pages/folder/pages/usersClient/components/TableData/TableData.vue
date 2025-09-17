@@ -12,7 +12,7 @@
         :pLabel="t('user')"
         pProp="name"
         pSortable="custom"
-        :pSortOrders="SORT_ORDER"
+        :pSortOrders="SORT_ORDERS"
       >
         <template #default="scope">
           <div class="flex flex--align-items-center">
@@ -45,14 +45,14 @@
         :pLabel="t('email')"
         pProp="email"
         pSortable="custom"
-        :pSortOrders="SORT_ORDER"
+        :pSortOrders="SORT_ORDERS"
       />
       <template v-if="!isAccountManagement">
         <PTableColumn
           :pLabel="t('dateAdded')"
           pProp="creationDate"
           pSortable="custom"
-          :pSortOrders="SORT_ORDER"
+          :pSortOrders="SORT_ORDERS"
         >
           <template #default="scope">
             {{ d(scope.row.creationDate, 'short') }}
@@ -121,7 +121,7 @@ import { CurrentUserManager } from '@pulse/common/managers'
 import type { Props } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
-import { ACTION_PERMISSIONS, SORT_ORDER } from '@pulse/common/constants'
+import { ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
 import type { ExtendedUser } from '../../UsersClientTypes'
 import { userActions } from './types'
 import type { SortChangeEventData, SortingCriteria } from '@pulse/common/types'

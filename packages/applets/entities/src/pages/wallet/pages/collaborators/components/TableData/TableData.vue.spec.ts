@@ -166,6 +166,6 @@ describe('tableData', () => {
     table.vm.$emit('sort-change', JSON.parse(sortPayload))
 
     expect(wrapper.emitted('on-sort-change')).toBeTruthy()
-    expect(wrapper.emitted('on-sort-change')).toStrictEqual([['+email']])
+    expect(wrapper.emitted('on-sort-change')).toStrictEqual([[{ 'descending': false, 'field': 'email' }]])
   })
 })

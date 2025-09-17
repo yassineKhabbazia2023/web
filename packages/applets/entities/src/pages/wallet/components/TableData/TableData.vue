@@ -11,7 +11,7 @@
     @sort-change="handleSort"
   >
     <PTableColumn
-      v-if="!isAccountManagement"
+      v-if="isAccountManagement === false"
       pProp="isFavorite"
       :pWidth="54"
       :pShowOverflowTooltip="false"
@@ -34,7 +34,7 @@
       :pLabel="t('companyName')"
       pProp="companyName"
       pSortable="custom"
-      :pSortOrders="SORT_ORDER"
+      :pSortOrders="SORT_ORDERS"
       pMinWidth="120px"
     >
       <template #default="scope">
@@ -66,7 +66,7 @@
       :pLabel="t('customerCode')"
       pProp="customerCode"
       pSortable="custom"
-      :pSortOrders="SORT_ORDER"
+      :pSortOrders="SORT_ORDERS"
     >
       <template #default="scope">
         <p class="overflow-hidden text-overflow--ellipsis">
@@ -78,7 +78,7 @@
       :pLabel="t('leader')"
       pProp="leader"
       pSortable="custom"
-      :pSortOrders="SORT_ORDER"
+      :pSortOrders="SORT_ORDERS"
     >
       <template #default="scope">
         <div class="flex flex--align-items-center overflow-hidden">
@@ -103,7 +103,7 @@
       :pLabel="t('email')"
       pProp="email"
       pSortable="custom"
-      :pSortOrders="SORT_ORDER"
+      :pSortOrders="SORT_ORDERS"
     >
       <template #default="scope">
         <p class="overflow-hidden text-overflow--ellipsis">
@@ -115,7 +115,7 @@
       :pLabel="t('city')"
       pProp="city"
       pSortable="custom"
-      :pSortOrders="SORT_ORDER"
+      :pSortOrders="SORT_ORDERS"
     >
       <template #default="scope">
         <p class="text-capitalize overflow-hidden text-overflow--ellipsis">
@@ -123,12 +123,10 @@
         </p>
       </template>
     </PTableColumn>
-    <template v-if="isCollab">
+    <template v-if="isCollab === true">
       <PTableColumn
         :pLabel="t('status')"
-        pProp="deploymentStatus.text"
-        pSortable
-        :pSortOrders="SORT_ORDER"
+        pProp="status"
       >
         <template #default="scope">
           <PTag
@@ -162,7 +160,7 @@
         </template>
       </PTableColumn>
       <PTableColumn
-        v-if="!isAccountManagement"
+        v-if="isAccountManagement === false"
         pWidth="46"
         :pShowOverflowTooltip="false"
       >
@@ -202,7 +200,7 @@ import { AvatarRoles } from '@pulse/styleguide'
 import type { AccessibleMenuItem, AccountRow } from '@entities/common/types'
 import { filterAccessibleMenuItems } from '@entities/common/utils'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
-import { ACTION_PERMISSIONS, GLOBAL_PERMISSIONS, SORT_ORDER } from '@pulse/common/constants'
+import { ACTION_PERMISSIONS, GLOBAL_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
 import type { SortChangeEventData, SortingCriteria } from '@pulse/common/types'

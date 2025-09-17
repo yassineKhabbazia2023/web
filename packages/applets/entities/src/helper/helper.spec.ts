@@ -86,22 +86,24 @@ describe('getPaginationLabel', () => {
 
   describe('should return the correct sort query field', () => {
     const testCases = [
-      ['user', 'ascending', '+lastname'],
-      ['user', 'descending', '-lastname'],
-      ['email', 'ascending', '+email'],
-      ['email', 'descending', '-email'],
-      ['persona', 'ascending', '+persona'],
-      ['persona', 'descending', '-persona'],
-      ['createdAt', 'ascending', '+created'],
-      ['createdAt', 'descending', '-created'],
-      ['role', 'ascending', '+persona'],
-      ['role', 'descending', '-persona'],
+      ['user', false, '+lastname'],
+      ['user', true, '-lastname'],
+      ['email', false, '+email'],
+      ['email', true, '-email'],
+      ['persona', false, '+persona'],
+      ['persona', true, '-persona'],
+      ['createdAt', false, '+created'],
+      ['createdAt', true, '-created'],
+      ['role', false, '+persona'],
+      ['role', true, '-persona'],
+      ['office', false, '+office'],
+      ['office', true, '-office'],
     ]
 
     it.each(testCases)(
       'helper mapping with "%s"',
       (columnLabel, order, expectedResult) => {
-        const actualResult = returnSortQueryField(columnLabel, order)
+        const actualResult = returnSortQueryField(columnLabel as string, order as boolean)
         expect(actualResult).toBe(expectedResult)
       },
     )

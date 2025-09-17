@@ -211,10 +211,12 @@ describe('mandate collection', () => {
       currentPage: 1,
     }])
     expect(emittedEvents?.at(1)).toStrictEqual([{
+      currentPage: 1,
       sortCriteria: 'ErpId',
       sortOrder: 'Ascending',
     }])
     expect(emittedEvents?.at(2)).toStrictEqual([{
+      currentPage: 1,
       sortCriteria: '',
       sortOrder: 'Descending',
     }])

@@ -138,7 +138,7 @@ describe('BI Reporting Services', () => {
 
   describe('fetchAvailableReports()', () => {
     it('should fetch paginated list of available reports', async () => {
-      const queryParams = { pageNumber: 2, pageSize: PAGE_SIZES[0] }
+      const queryParams = { currentPage: 2, limit: PAGE_SIZES[0], sorting: { field: '', descending: true } }
 
       await fetchAvailableReports(queryParams)
 

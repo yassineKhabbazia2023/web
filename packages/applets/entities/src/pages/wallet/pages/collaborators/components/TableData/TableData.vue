@@ -11,6 +11,7 @@
         :pLabel="t('collaborators')"
         pProp="lastName"
         pSortable="custom"
+        :pSortOrders="SORT_ORDERS"
       >
         <template #default="scope">
           <div class="flex flex--align-items-center">
@@ -30,35 +31,35 @@
           </div>
         </template>
       </PTableColumn>
-
       <PTableColumn
         :pLabel="t('email')"
         pProp="email"
         pSortable="custom"
+        :pSortOrders="SORT_ORDERS"
       />
 
       <PTableColumn
         :pLabel="t('phoneNumber')"
         pProp="landPhone"
-        pSortable="custom"
       />
 
       <PTableColumn
         :pLabel="t('crmRole')"
         pProp="ibsStatus"
-        pSortable="custom"
       />
 
       <PTableColumn
         :pLabel="t('role')"
         pProp="role"
         pSortable="custom"
+        :pSortOrders="SORT_ORDERS"
       />
 
       <PTableColumn
         :pLabel="t('office')"
         pProp="office"
         pSortable="custom"
+        :pSortOrders="SORT_ORDERS"
       />
 
       <PTableColumn
@@ -118,9 +119,10 @@ import { MENU_ACTIONS_NAME } from './constants'
 import CollabDetailsDrawer from '@entities/common/components/CollabDetailsDrawer'
 import CollabRightsDrawer from './../CollabRightsDrawer'
 import type { Contact } from '@entities/services/contact/contactTypes'
-import { returnSortQueryField } from '@entities/helper'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { ACTION_PERMISSIONS } from '@pulse/common/constants'
+import { ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
+import { SortingCriteria } from '@pulse/common/types'
+import { SortDirection } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -130,7 +132,7 @@ const { t } = useI18n({
 const emit = defineEmits<{
   'update-collaborator-details': [Contact]
   'update-collaborator-role': [Contact]
-  'on-sort-change': [string]
+  'on-sort-change': [SortingCriteria]
 }>()
 const props = defineProps<Props>()
 
@@ -193,10 +195,11 @@ const handleToolboxItemClick = (action: string, row: any) => {
 }
 
 const handleSortChange = (data: any) => {
-  const columnLabel = data.prop
-  const order = data.order
-  const sortQueryField = returnSortQueryField(columnLabel, order)
-  emit('on-sort-change', sortQueryField)
+  const sortCriteria: SortingCriteria = {
+    field: data.prop,
+    descending: data.order === SortDirection.DESCENDING,
+  }
+  emit('on-sort-change', sortCriteria)
 }
 </script>
 

@@ -85,6 +85,7 @@
             :pLabel="t('user')"
             pProp="name"
             pSortable="custom"
+            :pSortOrders="SORT_ORDERS"
           >
             <template #default="scope">
               <div class="flex flex--align-items-center">
@@ -106,6 +107,7 @@
             :pLabel="t('email')"
             pProp="email"
             pSortable="custom"
+            :pSortOrders="SORT_ORDERS"
           >
             <template #default="scope">
               <p>
@@ -117,6 +119,7 @@
             :pLabel="t('status')"
             pSortable="custom"
             pProp="status"
+            :pSortOrders="SORT_ORDERS"
           >
             <template #default="scope">
               <PTag
@@ -130,7 +133,8 @@
           <PTableColumn
             :pLabel="t('dateAccess')"
             pSortable="custom"
-            pProp="date"
+            pProp="creationDate"
+            :pSortOrders="SORT_ORDERS"
           >
             <template #default="scope">
               {{ scope.row.firstDateAccess }}
@@ -217,7 +221,7 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { getInitials } from '@pulse/common'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { PAGE_SIZES, ACTION_PERMISSIONS } from '@pulse/common/constants'
+import { PAGE_SIZES, ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { getFullName } from '@entities/common/utils'
 import { fetchAccountCustomers } from '@entities/services/wallet'
@@ -237,9 +241,10 @@ import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getPendingOperations } from '@entities/pages/folder/utils/operation.utils'
 import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enums'
 import { getOperationsWithLegalName, getAccountOperationsList } from './UsersCollab.utils'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam, SortDirection } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 import AddCustomerDrawer from '../usersClient/components/add-customer-drawer'
+import { handleSort } from '@entities/composables/handleSortTable.composable'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -311,8 +316,10 @@ const state: StateUser = reactive({
   totalItems: undefined,
   isLoading: true,
   search: undefined,
-  sort: undefined,
-  order: undefined,
+  sorting: {
+    field: undefined,
+    descending: false,
+  },
 })
 
 const toolboxItems = ref<PToolboxItemProps[]>([])
@@ -445,8 +452,11 @@ const handlePageRangeChanged = (newValue: number) => {
 }
 
 const handleSortChange = ({ prop, order }: { prop: string, order: string }) => {
-  state.sort = prop
-  state.order = order
+  const sortCriteria = {
+    field: prop,
+    descending: order === SortDirection.DESCENDING,
+  }
+  handleSort(sortCriteria, state)
 }
 
 const handleUserAction = (action: string, row: any) => {
@@ -579,16 +589,16 @@ const getQueryParams = () => ({
   pageNumber: state.currentPage,
   pageSize: state.limit,
   search: state.search,
-  'sorting.field': state.sort,
-  'sorting.descending': state.order === 'descending',
+  'sorting.field': state.sorting.field,
+  'sorting.descending': state.sorting.descending,
 })
 
 watch(() => [
   state.currentPage,
   state.limit,
   state.search,
-  state.sort,
-  state.order,
+  state.sorting.field,
+  state.sorting.descending,
 ], async () => {
   await formatAndFillUsersCollabTable()
 })

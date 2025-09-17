@@ -388,6 +388,8 @@ watch([() => props.selectedFolder], async () => {
 // Sort
 const handleSortChange = async (sortQueryField:string) => {
   componentSortQueryField.value = sortQueryField
+  currentPage.value = 1
+
   await fetchDocuments()
 }
 

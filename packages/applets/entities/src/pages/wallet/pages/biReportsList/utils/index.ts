@@ -2,8 +2,7 @@ import { getAvatarColorFromKey } from '@pulse/styleguide'
 import { ReportStatus } from '@entities/common/types/BIReports.enums'
 import type {
   MappedReportRow,
-  ReportFilterQueryParams,
-  ReportSearchCriteria,
+  ReportQueryParams,
   ReportStatusTag,
   ReportTableRow,
 } from '@entities/common/types/BIReportsTypes'
@@ -31,13 +30,15 @@ export const getMappedReport = (
  * - `currentPage` → `pageNumber`
  * - `limit`       → `pageSize`
  */
-export function getQueryParams(searchCriteria: ReportSearchCriteria): ReportFilterQueryParams {
+export function getQueryParams(reportCriteria: ReportQueryParams) {
   return {
-    pageNumber: searchCriteria.currentPage,
-    pageSize: searchCriteria.limit,
-    search: searchCriteria.search,
-    reportStatusFilter: searchCriteria.reportStatusFilter,
-    reportTypeIdFilter: searchCriteria.reportTypeIdFilter,
+    pageNumber: reportCriteria.currentPage,
+    pageSize: reportCriteria.limit,
+    search: reportCriteria.search,
+    reportStatusFilter: reportCriteria.reportStatusFilter,
+    reportTypeIdFilter: reportCriteria.reportTypeIdFilter,
+    field: reportCriteria.sorting.field,
+    descending: reportCriteria.sorting.descending,
   }
 }
 
@@ -48,7 +49,7 @@ export function getQueryParams(searchCriteria: ReportSearchCriteria): ReportFilt
  * - Removes any falsy values (e.g., null, undefined, empty strings) using `removeFalsyValues`
  *   to avoid sending unnecessary or invalid query params to the backend.
  */
-export const getReportsQueryParams = (reportSearchCriteria: ReportSearchCriteria): ReportFilterQueryParams => {
+export const getReportsQueryParams = (reportSearchCriteria: ReportQueryParams): ReportQueryParams => {
   const queryParams = getQueryParams(reportSearchCriteria)
   const queryParamasCleaned = removeFalsyValues(queryParams)
 
