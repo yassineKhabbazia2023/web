@@ -11,9 +11,9 @@ describe('WidgetsService', () => {
       {
         testName: 'when hasPennylaneOffer returns true',
         hasPennylaneOffer: true,
-        hasGedCompta: false,
         expectedWidgets: [
           WidgetName.PENNYLANE_INTRO,
+          WidgetName.PENNYLANE_DOCUMENTS,
           WidgetName.DIGILAB,
           WidgetName.RSS_NEWS,
           WidgetName.POWERBI_INTRO,
@@ -22,7 +22,6 @@ describe('WidgetsService', () => {
       {
         testName: 'when hasPennylaneOffer returns true and hasGedCompta returns true',
         hasPennylaneOffer: true,
-        hasGedCompta: true,
         expectedWidgets: [
           WidgetName.PENNYLANE_INTRO,
           WidgetName.PENNYLANE_DOCUMENTS,
@@ -34,7 +33,6 @@ describe('WidgetsService', () => {
       {
         testName: 'when hasPennylaneOffer returns false',
         hasPennylaneOffer: false,
-        hasGedCompta: true,
         expectedWidgets: [
           WidgetName.RSS_NEWS,
           WidgetName.DIGILAB,
@@ -42,17 +40,14 @@ describe('WidgetsService', () => {
       },
     ])('shoud return proper list when $testName', ({
       hasPennylaneOffer,
-      hasGedCompta,
       expectedWidgets,
     }) => {
       vi.mocked(CurrentUserManager).hasSelectedEntityPennylanePermission.mockReturnValue(hasPennylaneOffer)
-      vi.mocked(CurrentUserManager).hasGedComptaPermission.mockReturnValue(hasGedCompta)
 
       const homeWidgetNames = WidgetsService.getHomeWidgetNames()
 
       expect(homeWidgetNames).toEqual(expectedWidgets)
       expect(vi.mocked(CurrentUserManager).hasSelectedEntityPennylanePermission).toHaveBeenCalledOnce()
-      expect(vi.mocked(CurrentUserManager).hasGedComptaPermission).toHaveBeenCalledOnce()
     })
   })
 })

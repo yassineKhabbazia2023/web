@@ -31,17 +31,17 @@ import { useI18n } from 'vue-i18n'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
-import { APICallStatus, CustomerPermission, CollaboratorPermission, RouteName } from '@pulse/common/enums'
+import { APICallStatus, RouteName } from '@pulse/common/enums'
 import { logger } from '@pulse/core'
 import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-documents.helper'
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import { AccountingTab } from './accounting.page.enum'
 import EntityHeader from '@pennylane/components/entity-header/entity-header.vue'
 import AccountingHeader from '@pennylane/components/accounting-header/accounting-header.vue'
-import { APP_ROUTES, ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { useRouter } from 'vue-router'
 import { persistHideAccountingHeader, getHideAccountingHeader } from './accounting.helper'
-import { CurrentUserManager } from '@pulse/common/managers'
+import { PennylanePermissionsManager } from '@pulse/common/managers'
 
 const router = useRouter()
 
@@ -65,18 +65,14 @@ const tabs: {
   routeName: RouteName
 }[] = []
 
-const gedLegacyRequiredPermissions = [
-  CollaboratorPermission.ACCEDER_GED_COMPTABLE,
-  CustomerPermission.ACCEDER_GED_COMPTABLE,
-]
-if (CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.PENNYLANE_ACCOUNTING_V2) === true) {
+if (PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true) {
   tabs.push({
-    name: AccountingTab.GED_PENNYLANE,
-    label: t('tabs.ged-pennylane'),
+    name: AccountingTab.GED_V2,
+    label: t('tabs.ged-v2'),
     routeName: APP_ROUTES.entity.pennylaneAccounting.gedV2.name,
   })
 }
-if (CurrentUserManager.hasPermission(gedLegacyRequiredPermissions) === true) {
+if (PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true) {
   tabs.push({
     name: AccountingTab.GED_LEGACY,
     label: t('tabs.ged-legacy'),
@@ -86,7 +82,7 @@ if (CurrentUserManager.hasPermission(gedLegacyRequiredPermissions) === true) {
 
 const currentTabName = computed(() => {
   if (tabs.length === 0) {
-    return AccountingTab.GED_PENNYLANE
+    return AccountingTab.GED_V2
   }
   const routeName = router.currentRoute.value.name
   const tab = tabs.find(tab => tab.routeName === routeName)
@@ -132,10 +128,10 @@ function onTabClick(tabPane: TabsPaneContext) {
 <i18n lang="yaml">
   en-US:
     tabs:
-      ged-pennylane: 'RYDGE Conseil documents '
+      ged-v2: 'RYDGE Conseil documents '
       ged-legacy: 'Archives'
   fr-FR:
     tabs:
-      ged-pennylane: 'Documents RYDGE Conseil'
+      ged-v2: 'Documents RYDGE Conseil'
       ged-legacy: 'Archives'
 </i18n>

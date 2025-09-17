@@ -47,9 +47,9 @@
 import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { APP_ROUTES, ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
+import { APP_ROUTES } from '@pulse/common/constants'
 import { PButton, PIcon } from '@pulse/styleguide/components'
-import { CurrentUserManager, PennylanePermissionsManager } from '@pulse/common/managers'
+import { PennylanePermissionsManager } from '@pulse/common/managers'
 import PennylaneDocumentsHeader from '@pennylane/components/pennylane-documents-header/pennylane-documents-header.vue'
 import PennylaneDocumentsWrapper from '@pennylane/components/pennylane-documents-wrapper/pennylane-documents-wrapper.vue'
 import { PennylaneService } from '@pulse/common/services/pennylane'
@@ -67,10 +67,6 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const hasPennylaneAccountingPermission = PennylanePermissionsManager.hasPennylaneAccountingPermission()
-const hasPennylaneAccountingV2Permission =
-    CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.PENNYLANE_ACCOUNTING_V2) === true
-
 const selectedEntityStore = useSelectedEntityStore()
 
 const pennylaneDocuments = ref<FormattedPennylaneDocument[]>([])
@@ -81,8 +77,8 @@ const accountId = computed(() => selectedEntityStore.selectedEntityId ?? 0)
 const accountName = computed(() => selectedEntityStore.selectedEntity?.legalName ?? '')
 const accountNumber = computed(() => selectedEntityStore.selectedEntityAccountNumber)
 const showSeeAllDocumentsButton = computed(() =>
-  hasPennylaneAccountingPermission === true &&
-  hasPennylaneAccountingV2Permission === true &&
+  PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true &&
+  pennylaneDocuments.value.length > 0 &&
   pennylaneDocuments.value.length < 5,
 )
 

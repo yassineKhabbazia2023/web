@@ -232,29 +232,6 @@ describe('test current-user.manager', () => {
     })
   })
 
-  describe('hasGedComptaPermission', () => {
-    const tests = [{
-      hasPermissionMock: false,
-      expectedHasGedComptaPermission: false,
-    }, {
-      hasPermissionMock: true,
-      expectedHasGedComptaPermission: true,
-    }]
-    it.each(tests)('should return $expected when $description', ({
-      hasPermissionMock,
-      expectedHasGedComptaPermission,
-    }) => {
-      const hasPermissionSpy = vi.spyOn(CurrentUserManager, 'hasPermission')
-      hasPermissionSpy.mockReturnValue(hasPermissionMock)
-
-      const hasGedComptaPermission = CurrentUserManager.hasGedComptaPermission()
-
-      expect(hasPermissionSpy).toHaveBeenCalledOnce()
-      expect(hasPermissionSpy).toHaveBeenCalledWith(ACCOUNT_PERMISSIONS.GED_COMPTA)
-      expect(hasGedComptaPermission).toBe(expectedHasGedComptaPermission)
-    })
-  })
-
   describe('hasSelectedEntityPennylanePermission', () => {
     const tests = [{
       hasPermissionMock: false,

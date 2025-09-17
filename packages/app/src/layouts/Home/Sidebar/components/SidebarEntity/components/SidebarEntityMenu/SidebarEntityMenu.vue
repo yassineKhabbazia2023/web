@@ -122,8 +122,8 @@ const folderOrEntityMenuItem = computed<MenuItem | null>(() => {
 const getMenuItems = () => {
   const hasPennylaneAccountingPermission = PennylanePermissionsManager.hasPennylaneAccountingPermission()
   const hasSocialManagementV2 = PennylanePermissionsManager.hasSocialManagementV2() === true
-  const hasPennylaneAccountingV2Permission =
-    CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.PENNYLANE_ACCOUNTING_V2)
+  const hasPennylaneAccountingGedV2Permission =
+    PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true
 
   const list: MenuItem[] = [
     {
@@ -147,18 +147,19 @@ const getMenuItems = () => {
       title: t('pennylaneAccounting'),
       featureName: 'documents comptables',
       iconLeftName: 'archive',
-      // Need specific Pennylane Accounting permission
+      // User has access to Pennylane-Ged-V2
       display: hasPennylaneAccountingPermission === true &&
-        hasPennylaneAccountingV2Permission === true,
+        hasPennylaneAccountingGedV2Permission === true,
     },
     {
       index: `/dossier/${props.selectedEntityId}/comptabilite/archive`, // Legacy GED path for Pennylane users
       title: t('pennylaneAccounting'),
       featureName: 'documents comptables',
       iconLeftName: 'archive',
-      // User do not have access to Pennylane-Accounting but has access to Ged-V2
+      // User does not have access to Pennylane-Ged-V2 but has access to Pennylane and Legacy GED
       display: hasPennylaneAccountingPermission === true &&
-        hasPennylaneAccountingV2Permission === false,
+        hasPennylaneAccountingGedV2Permission === false &&
+        PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true,
     },
     {
       index: `/dossier/${props.selectedEntityId}/gestion-sociale`, // Social-Management GED path for Pennylane users

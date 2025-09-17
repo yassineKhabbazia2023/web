@@ -10,15 +10,18 @@ export const fetchUserEntityServices = async (
   gedContext: GedContext,
 ) => {
   const fetchFolderUrl = `/ged/accounts/${entityId}/ged-services/currentuser`
-  const response = await commonApi().gateway.get<Service[]>(fetchFolderUrl, {
+  const response = await commonApi().gateway.get<Service[] | undefined>(fetchFolderUrl, {
     headers: { 'Account-Id': accountId },
   })
 
   const { data: services } = response ?? {}
+  if (services === undefined) {
+    return []
+  }
 
   const gedServiceId = GedServiceIdByContextName[gedContext]
   if (gedServiceId !== undefined) {
-    const filteredServices = services?.filter(({ ServiceId }) => ServiceId === gedServiceId)
+    const filteredServices = services.filter(({ ServiceId }) => ServiceId === gedServiceId)
 
     return filteredServices
   }

@@ -55,16 +55,15 @@ export const ACCOUNT_PERMISSIONS: Record<string, Permission[]> = {
     CollaboratorPermission.GED,
     CollaboratorPermission.ACCEDER_GED_COMPTABLE,
   ],
-  GED_COMPTA: [
-    CollaboratorPermission.ACCEDER_GED_COMPTABLE,
-    CustomerPermission.ACCEDER_GED_COMPTABLE,
-  ],
   PENNYLANE: [
     CustomerPermission.ACCEDER_OUTIL_PENNYLANE,
     CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE,
   ],
-  PENNYLANE_ACCOUNTING_V2: [
+  PENNYLANE_ACCOUNTING_GED_LEGACY: [
     CollaboratorPermission.ACCEDER_GED_COMPTABLE,
+    CustomerPermission.ACCEDER_GED_COMPTABLE,
+  ],
+  PENNYLANE_ACCOUNTING_GED_V2: [
     CustomerPermission.ACCEDER_DOCUMENTS_PENNYLANE,
   ],
   INDICATORS: [

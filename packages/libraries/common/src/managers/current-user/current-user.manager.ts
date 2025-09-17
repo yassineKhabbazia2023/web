@@ -108,10 +108,6 @@ export class CurrentUserManager {
     return CurrentUserManager.hasScopedPermission(PermissionScope.SELECTED_ENTITY, permissionCodes)
   }
 
-  static hasGedComptaPermission() {
-    return CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.GED_COMPTA)
-  }
-
   static hasSelectedEntityPennylanePermission() {
     return CurrentUserManager.hasSelectedEntityPermission(ACCOUNT_PERMISSIONS.PENNYLANE)
   }

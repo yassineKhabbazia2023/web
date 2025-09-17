@@ -1,13 +1,15 @@
 import { FeatureFlagManager } from '@pulse/core'
 import { CurrentUserManager } from '../current-user/current-user.manager'
 import { Feature } from '@pulse/core/enums'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks'
 import { SubscriptionOfferCode, CustomerPermission, CollaboratorPermission } from '@pulse/common/enums'
+import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 
 import { PennylanePermissionsManager } from './pennylane-permissions.manager'
 
 const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const useUserStoreMock = getStoreMock(useUserStore)
 
 vi.mock('@pulse/core')
 vi.mock('../current-user/current-user.manager')
@@ -58,33 +60,39 @@ describe('PennylanePermissionsManager', () => {
   })
 
   describe('hasPennylaneAccountingPermission', () => {
-    const requiredPermissions = [
-      CollaboratorPermission.ACCEDER_GED_COMPTABLE, // COGED0002
-      CustomerPermission.ACCEDER_GED_COMPTABLE, // CLGED0002
-      CustomerPermission.ACCEDER_DOCUMENTS_PENNYLANE, // CLGEDPEN01
-    ]
     const tests = [{
       description: 'should return false if the GED_V2 feature is not activated',
       isGedUxV2Mock: false,
       hasGedComptaPermission: true,
+      isCollab: false,
       expected: false,
     }, {
-      description: 'should return false if the user does not have GED Compta permission',
+      description: 'should return false if the customer does not have GED Compta permission',
       isGedUxV2Mock: true,
       hasGedComptaPermission: false,
+      isCollab: false,
       expected: false,
+    }, {
+      description: 'should return true even if the collab does not have GED Compta permission',
+      isGedUxV2Mock: true,
+      hasGedComptaPermission: false,
+      isCollab: true,
+      expected: true,
     }, {
       description: 'should return true if all conditions are met',
       isGedUxV2Mock: true,
       hasGedComptaPermission: true,
+      isCollab: false,
       expected: true,
     }]
 
     it.each(tests)('$description', ({
       isGedUxV2Mock,
       hasGedComptaPermission,
+      isCollab,
       expected,
     }) => {
+      useUserStoreMock.isCollab = isCollab
       const isGedUxV2Spy = vi
         .spyOn(PennylanePermissionsManager, 'isGedUxV2')
         .mockReturnValue(isGedUxV2Mock)
@@ -96,9 +104,13 @@ describe('PennylanePermissionsManager', () => {
 
       expect(result).toBe(expected)
       expect(isGedUxV2Spy).toHaveBeenCalledWith()
-      if (isGedUxV2Mock === true) {
+
+      if (isGedUxV2Mock === true && isCollab === false && hasGedComptaPermission === false) {
+        expect(hasPermissionSpy).toHaveBeenCalledTimes(2)
+        expect(hasPermissionSpy).toHaveBeenCalledWith(ACCOUNT_PERMISSIONS.PENNYLANE_ACCOUNTING_GED_LEGACY)
+      } else if (isGedUxV2Mock === true && isCollab === false) {
         expect(hasPermissionSpy).toHaveBeenCalledOnce()
-        expect(hasPermissionSpy).toHaveBeenCalledWith(requiredPermissions)
+        expect(hasPermissionSpy).toHaveBeenCalledWith(ACCOUNT_PERMISSIONS.PENNYLANE_ACCOUNTING_GED_V2)
       } else {
         expect(hasPermissionSpy).not.toHaveBeenCalled()
       }

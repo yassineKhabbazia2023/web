@@ -6,13 +6,6 @@ export enum HomeWidgetNames {
   USER_WITHOUT_PENNYLANE_OFFER = 'userWithoutPennylaneOffer',
 }
 
-const userWithPennylaneOfferWidgetNames = [
-  WidgetName.PENNYLANE_INTRO,
-  WidgetName.DIGILAB,
-  WidgetName.RSS_NEWS,
-  WidgetName.POWERBI_INTRO,
-]
-
 const userWithoutPennylaneOfferWidgetNames = [
   WidgetName.RSS_NEWS,
   WidgetName.DIGILAB,
@@ -30,14 +23,11 @@ const userWithPennylaneAndGedWidgetNames = [
 export class WidgetsService {
   static getHomeWidgetNames() {
     const hasPennylanePermission = CurrentUserManager.hasSelectedEntityPennylanePermission()
-    const hasGedComptaPermission = CurrentUserManager.hasGedComptaPermission()
 
-    if (hasPennylanePermission === true && hasGedComptaPermission === true) {
+    if (hasPennylanePermission === true) {
       return userWithPennylaneAndGedWidgetNames
     }
-    if (hasPennylanePermission === true) {
-      return userWithPennylaneOfferWidgetNames
-    }
+
     return userWithoutPennylaneOfferWidgetNames
   }
 }
