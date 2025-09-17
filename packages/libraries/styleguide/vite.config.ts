@@ -17,6 +17,9 @@ const basicConfig = {
     'process.env': process.env,
   },
   rollupOptions: {},
+  ssr: {
+    noExternal: ['tslog'], // necessary for tslog to work properly in ssr (needed for histoire)
+  },
   resolve: {
     alias: {
       '@styleguide': fileURLToPath(new URL('./src', import.meta.url)),
