@@ -1,3 +1,4 @@
+import { setActivePinia, createPinia } from 'pinia'
 import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
 import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
 import type { HubConnection } from '@microsoft/signalr'
@@ -19,7 +20,7 @@ describe('dataStreamHubConnection', () => {
   const mockHubUrl = 'https://mockurl.com'
 
   beforeEach(() => {
-    vi.clearAllMocks()
+    setActivePinia(createPinia())
     dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
   })
 

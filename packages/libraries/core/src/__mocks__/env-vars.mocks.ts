@@ -17,7 +17,6 @@ export const envVarsMock = {
   VITE_GESTION_MEG: 'https://gestion-meg',
   VITE_GIGYA_SSO_ACTIVATED: 'true',
   VITE_HUBSPOT_ACTIVATED: 'true',
-  VITE_IDLE_DURATION: '90',
   VITE_MAIL_TO_GED_ACTIVATED: 'true',
   VITE_NOTIFICATION_SETTINGS_DRAWER_ACTIVATED: 'true',
   VITE_PASSWORD_RESET_MAX_ATTEMPTS: '5',
@@ -28,4 +27,5 @@ export const envVarsMock = {
   VITE_PRODUCT_FRUITS_KEY_CLIENT: 'pulse-product-fruits-key-client',
   VITE_PRODUCT_FRUITS_KEY: 'pulse-product-fruits-key',
   VITE_LOGGER_LEVEL: '5',
+  VITE_TOKEN_EXPIRATION_BUFFER: '5',
 }

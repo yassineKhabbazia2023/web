@@ -1,5 +1,5 @@
-import { CurrentUserManager, SelectedEntityManager, TokenManager } from '@pulse/common/managers'
-import { resetAllStores } from '@pulse/common/stores'
+import { CurrentUserManager, SelectedEntityManager } from '@pulse/common/managers'
+import { resetAllStores, useTokenStore } from '@pulse/common/stores'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
@@ -46,13 +46,14 @@ export class BootManager {
   }
 
   static clearAppState() {
-    // clean stores
+    // clear stores
     resetAllStores()
   }
 
   static clearAppStorage() {
-    // clean localStorage
-    TokenManager.removeToken()
+    // clear user data
+    const tokenStore = useTokenStore()
+    tokenStore.removeToken()
     SelectedEntityManager.clearSelectedEntity()
   }
 }

@@ -2,8 +2,7 @@ import type { EntitySummary } from '@pulse/common/types'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { fetchUserAccountPermissions } from '../../services/permissions/permissions.service'
-
-export const LOCAL_STORAGE_SELECTED_ENTITY_KEY = 'selected-entity'
+import { LocalStorageService } from '../../services/storage'
 
 export class SelectedEntityManager {
   static async initializeSelectedEntity(entity: EntitySummary) {
@@ -22,17 +21,16 @@ export class SelectedEntityManager {
     if (entityId === null || entityId === undefined) {
       SelectedEntityManager.clearLocalStorageEntityId()
     } else {
-      localStorage.setItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY, JSON.stringify(entityId))
+      LocalStorageService.setSelectedEntityId(entityId)
     }
   }
 
   static getLocalStorageEntityId() {
-    const localStorageEntityId = Number(localStorage.getItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY))
-    return isNaN(localStorageEntityId) ? undefined : localStorageEntityId
+    return LocalStorageService.getSelectedEntityId()
   }
 
   static clearLocalStorageEntityId() {
-    localStorage.removeItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY)
+    LocalStorageService.removeSelectedEntityId()
   }
 
   static clearSelectedEntity() {

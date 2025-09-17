@@ -67,27 +67,55 @@
         alt="Brand logo"
       />
     </footer>
+
+    <!-- Session expired information modal -->
+    <SessionExpiredModal
+      v-if="showSessionExpiredModal === true"
+      v-model:visible="showSessionExpiredModal"
+      @close="removeSessionExpiredQuery"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { PCol, PImage, PRow } from '@pulse/styleguide/components'
 import LegalLinks from '@app/components/LegalLinks'
 import SupportInfo from '@app/components/SupportInfo'
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
 import { OFFICIAL_WEBSITE_URL } from '@pulse/core'
 import { APP_ROUTES } from '@pulse/common/constants'
 
 import SupportInfoCollab from '@app/components/SupportInfoCollab'
+import SessionExpiredModal from './SessionExpired.modal.vue'
 
 const route = useRoute()
+const router = useRouter()
 const isCollabPage = computed(() => route.name === APP_ROUTES.login.collab.name)
 const imageName = computed(() => isCollabPage.value ? 'login-page-collab' : 'login-page-client')
 
 const legalLinksHasCgu = computed(() => {
   return route.name !== APP_ROUTES.login.collab.name
 })
+
+// #region session expired modal
+const showSessionExpiredModal = ref(false)
+
+watch(
+  () => route.query.sessionExpired,
+  (newValue) => {
+    showSessionExpiredModal.value = newValue === 'true'
+  },
+  { immediate: true },
+)
+
+const removeSessionExpiredQuery = () => {
+  const { sessionExpired, ...otherQueries } = route.query
+  router.replace({
+    query: otherQueries, // preserve other query params
+  })
+}
+// #endregion
 </script>
 
 <style lang="scss" scoped>

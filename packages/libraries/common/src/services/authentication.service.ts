@@ -1,11 +1,16 @@
 import api from '../api'
 import { API_PREFIXES } from '../constants/api-prefixes'
 import type { CreateNewPasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
+import type { CustomAxiosRequestConfig } from '../api/api.types'
 
 export async function refreshClientToken() {
   const baseUrl = `${API_PREFIXES.AUTHENTICATION}/refreshToken`
 
-  const { data: token } = await api().gateway.post(baseUrl)
+  const { data: token } = await api().gateway.post(
+    baseUrl,
+    undefined, // no payload
+    { skipTokenRefresh: true } as CustomAxiosRequestConfig,
+  )
 
   return token
 }

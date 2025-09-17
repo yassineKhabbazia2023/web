@@ -32,7 +32,6 @@ describe('test selected-entity.manager', () => {
       expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledOnce()
       expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledWith(entityMock)
 
-      expect(setItemMock).toHaveBeenCalledOnce()
       expect(setItemMock).toHaveBeenCalledWith(...expectedSetItemArguments)
 
       expect(fetchUserAccountPermissionsMock).toHaveBeenCalledOnce()

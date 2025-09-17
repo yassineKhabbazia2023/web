@@ -1,16 +1,17 @@
-import { useUserStore } from '@pulse/common/stores'
+import { useUserStore, useTokenStore } from '@pulse/common/stores'
 import {
   getStoreMock,
   getMockedUser,
   AmplitudeServiceMock,
 } from '@pulse/common/mocks'
-import { TokenManager, CurrentUserManager } from '@pulse/common/managers'
+import { CurrentUserManager } from '@pulse/common/managers'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { MsalService } from '@pulse/common/services/msal'
 
 import { LoginManager } from './login.manager'
 
 const userStoreMock = getStoreMock(useUserStore)
+const tokenStoreMock = getStoreMock(useTokenStore)
 
 const msalTokenMock = 'msal-token'
 const msalGetTokenMock = vi.mocked(MsalService.getMSALToken)
@@ -22,9 +23,6 @@ vi.mock('@pulse/common/services/msal', () => ({
 }))
 
 vi.mock('@pulse/common/managers', () => ({
-  TokenManager: {
-    getToken: vi.fn(),
-  },
   CurrentUserManager: {
     persistToken: vi.fn(),
   },
@@ -95,21 +93,21 @@ describe('LoginManager', () => {
     it('should init auth when user is client', async () => {
       // Setup
       vi.spyOn(CurrentUserService, 'getCurrentUser').mockResolvedValue(userMock)
-      vi.mocked(TokenManager.getToken).mockReturnValue(tokenMock)
+      tokenStoreMock.getToken.mockReturnValue(tokenMock)
       userStoreMock.getUserId.mockReturnValue(userMock.id)
 
       // Act
       await LoginManager.initAuthClient()
 
       // Assert
-      expect(TokenManager.getToken).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.getToken).toHaveBeenCalledOnce()
       expect(userStoreMock.setUser).toHaveBeenCalledOnce()
       expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock)
     })
 
     it('should not update state if the token is not present', async () => {
       // Setup
-      vi.mocked(TokenManager.getToken).mockReturnValue('')
+      tokenStoreMock.getToken.mockReturnValue('')
 
       // Act
       await LoginManager.initAuthClient()
@@ -121,7 +119,7 @@ describe('LoginManager', () => {
     it('should track amplitude events when user has valid ID', async () => {
       // Setup
       vi.spyOn(CurrentUserService, 'getCurrentUser').mockResolvedValue(userMock)
-      vi.mocked(TokenManager.getToken).mockReturnValue(tokenMock)
+      tokenStoreMock.getToken.mockReturnValue(tokenMock)
       userStoreMock.getUserId.mockReturnValue(userMock.id)
       userStoreMock.getUserEmail.mockReturnValue(userMock.email)
 
@@ -142,7 +140,7 @@ describe('LoginManager', () => {
   describe('setStoreGigyaUserId', () => {
     it('should not set gigyaUserId given that the token is not available', () => {
       // Setup
-      vi.mocked(TokenManager.getToken).mockReturnValue('')
+      tokenStoreMock.getToken.mockReturnValue('')
       const mockGigyaUserId = 'gigya-user-id'
 
       // Act
@@ -154,7 +152,7 @@ describe('LoginManager', () => {
 
     it('should set gigyaUserId given that the token is available', () => {
       // Setup
-      vi.mocked(TokenManager.getToken).mockReturnValue(tokenMock)
+      tokenStoreMock.getToken.mockReturnValue(tokenMock)
       const mockGigyaUserId = 'gigya-user-id'
 
       // Act

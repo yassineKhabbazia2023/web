@@ -7,18 +7,17 @@
   "private": true,
   "type": "module",
   "exports": {
-  "./types": "./src/types.ts",
-  "./mocks": "./src/mocks.ts",
-  "./enums": "./src/enums.ts",
+    "./types": "./src/types.ts",
+    "./mocks": "./src/mocks.ts",
+    "./enums": "./src/enums.ts",
     "./utils/array": "./src/utils/array/array.utils.ts",
     "./utils/object": "./src/utils/object/object.utils.ts",
     "./utils/dates": "./src/utils/dates/dates.utils.ts",
-    "./utils/idle": "./src/utils/idle/idle.utils.ts",
-  "./utils/validator": "./src/utils/validators/index.ts",
+    "./utils/validator": "./src/utils/validators/index.ts",
     "./utils/string": "./src/utils/string/string.utils.ts",
     "./utils/http": "./src/utils/http/http.utils.ts",
     "./utils/test": "./src/utils/test.utils.ts",
-  ".": "./src/main.ts"
+    ".": "./src/main.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

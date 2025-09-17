@@ -14,5 +14,12 @@
       "success": "Your notification settings have been saved.",
       "error": "An error occurred while saving your settings. Please try again."
     }
+  },  
+  "modals":{
+    "sessionExpired": {
+      "title": "Session expired",
+      "message": "You have been logged out for safety reasons.",
+      "okBtn": "Understood"
+    }
   }
 }

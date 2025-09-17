@@ -6,7 +6,6 @@ import { getMockedSelectedEntity, getPermissionsMock, getStoreMock } from '../..
 import { useUserStore } from '../../stores/user/user.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
-import { LOCAL_STORAGE_TOKEN_KEY, TokenManager } from '../token/token.manager'
 import { ACCOUNT_PERMISSIONS } from '../../constants/permissions.const'
 import type { Permission } from '../../types/permission.type'
 import { CollaboratorPermission, CustomerPermission } from '../../enums/permission.enum'
@@ -24,6 +23,7 @@ const selectedEntityPermissionsMock = selectedEntityMock.permissions ?? []
 const gigyaUserIdMock = 'gigya-user-id'
 
 vi.mock('env-vars', () => envVarsMock)
+envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
 
 vi.mock('../../utils/user.utils', () => utilsMock)
 
@@ -35,9 +35,6 @@ vi.mock('../../services/current-user/current-user.service', () => ({
 }))
 
 describe('test current-user.manager', () => {
-  beforeEach(() => {
-    envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
-  })
   describe('initializeCurrentUser', () => {
     it('should initialize current user', async () => {
       const currentUserMock = getMockedUserInfo()
@@ -59,8 +56,7 @@ describe('test current-user.manager', () => {
     it('should process logout properly', async () => {
       await CurrentUserManager.logout()
 
-      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
-      expect(tokenStoreMock.setTokenExpiration).toHaveBeenNthCalledWith(1, '')
+      expect(tokenStoreMock.removeToken).toHaveBeenCalledOnce()
 
       expect(userStoreMock.setUser).toHaveBeenCalledOnce()
       expect(userStoreMock.setUser).toHaveBeenNthCalledWith(1, undefined)
@@ -112,6 +108,7 @@ describe('test current-user.manager', () => {
       expect(logoutClientMock).toHaveBeenNthCalledWith(1, gigyaUserIdMock)
     })
   })
+
 
   describe('hasPermission', () => {
     beforeEach(() => {
@@ -283,41 +280,66 @@ describe('test current-user.manager', () => {
     })
   })
 
-  describe('save token to store and local storage', () => {
-    it('both set the token in the store and saves it to the local storage', () => {
+  describe('save token to store', () => {
+    it('should set the token in the store', () => {
       const token = '1234'
       CurrentUserManager.persistToken(token)
 
-      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledOnce()
-      expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith(token)
-
-      const localToken = localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY)
-      expect(localToken).toStrictEqual(token)
+      expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.setToken).toHaveBeenCalledWith(token)
     })
   })
 
   describe('isAuthenticated', () => {
     it('should return true when token is valid and not expired', () => {
-      const hasActiveTokenSpy = vi.spyOn(TokenManager, 'hasActiveToken')
-      const removeTokenSpy = vi.spyOn(TokenManager, 'removeToken')
-      hasActiveTokenSpy.mockReturnValue(true)
+      tokenStoreMock.hasActiveToken.mockReturnValue(true)
 
       const result = CurrentUserManager.isAuthenticated()
 
-      expect(hasActiveTokenSpy).toHaveBeenCalledOnce()
-      expect(removeTokenSpy).not.toHaveBeenCalled()
+      expect(tokenStoreMock.hasActiveToken).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.removeToken).not.toHaveBeenCalled()
       expect(result).toBe(true)
     })
 
     it('should return false and remove token when token is expired or invalid', () => {
-      const hasActiveTokenSpy = vi.spyOn(TokenManager, 'hasActiveToken')
-      const removeTokenSpy = vi.spyOn(TokenManager, 'removeToken')
-      hasActiveTokenSpy.mockReturnValue(false)
+      tokenStoreMock.hasActiveToken.mockReturnValue(false)
 
       const result = CurrentUserManager.isAuthenticated()
 
-      expect(hasActiveTokenSpy).toHaveBeenCalledOnce()
-      expect(removeTokenSpy).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.hasActiveToken).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.removeToken).toHaveBeenCalledOnce()
+      expect(result).toBe(false)
+    })
+  })
+
+  describe('hasToken', () => {
+    it('should return true when token exists', () => {
+      const getTokenSpy = vi.spyOn(CurrentUserManager, 'getToken')
+      getTokenSpy.mockReturnValue('valid-token-123')
+
+      const result = CurrentUserManager.hasToken()
+
+      expect(getTokenSpy).toHaveBeenCalledOnce()
+      expect(result).toBe(true)
+    })
+
+    it('should return false when no token exists', () => {
+      const getTokenSpy = vi.spyOn(CurrentUserManager, 'getToken')
+      getTokenSpy.mockReturnValue('')
+
+      const result = CurrentUserManager.hasToken()
+
+      expect(getTokenSpy).toHaveBeenCalledOnce()
+      expect(result).toBe(false)
+    })
+
+    it('should return false when token is undefined', () => {
+      const getTokenSpy = vi.spyOn(CurrentUserManager, 'getToken')
+      getTokenSpy.mockReturnValue(undefined as any)
+
+      const result = CurrentUserManager.hasToken()
+
+      expect(getTokenSpy).toHaveBeenCalledOnce()
       expect(result).toBe(false)
     })
   })

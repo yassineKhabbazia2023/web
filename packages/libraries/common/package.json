@@ -18,6 +18,7 @@
   "./services/entities": "./src/services/entities/index.ts",
   "./services/msal": "./src/services/msal/index.ts",
   "./services/pennylane": "./src/services/pennylane/index.ts",
+  "./services/storage": "./src/services/storage/index.ts",
   "./i18n": "./src/i18n/index.ts",
   "./types": "./src/types.ts",
   "./stores": "./src/stores/main.ts",

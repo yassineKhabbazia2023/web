@@ -1,12 +1,13 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { CurrentUserManager, TokenManager } from '@pulse/common/managers'
-import { useUserStore } from '@pulse/common/stores'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { useUserStore, useTokenStore } from '@pulse/common/stores'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { MsalService } from '@pulse/common/services/msal'
 
 export class LoginManager {
   static setStoreGigyaUserId(gigyaUserId: string) {
-    const token = TokenManager.getToken()
+    const tokenStore = useTokenStore()
+    const token = tokenStore.getToken()
 
     if (token) {
       const userStore = useUserStore()
@@ -15,7 +16,8 @@ export class LoginManager {
   }
 
   static async initAuthClient() {
-    const token = TokenManager.getToken()
+    const tokenStore = useTokenStore()
+    const token = tokenStore.getToken()
 
     if (token !== null && token !== undefined && token !== '') {
       await this.fetchAndStoreCurrentUser()

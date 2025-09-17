@@ -211,7 +211,7 @@ describe('page creation password', () => {
     expect(loginMock).toHaveBeenCalledOnce()
     expect(loginMock).toHaveBeenCalledWith(dataLogin)
 
-    expect(tokenStoreMock.setTokenExpiration).toHaveBeenCalledWith(mockToken)
+    expect(tokenStoreMock.setToken).toHaveBeenCalledWith(mockToken)
     expect(navigateToCustomerWalletMock).toHaveBeenCalledOnce()
   })
 

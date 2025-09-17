@@ -94,7 +94,7 @@ export class MsalService {
     return await instance.acquireTokenSilent(userRequest)
   }
 
-  static async getMSALToken() {
+  static async getMSALToken(forceRefresh: boolean = false) {
     const account = await MsalService.getAccount()
     if (!account) {
       return null
@@ -103,6 +103,7 @@ export class MsalService {
     const silentRequest: SilentRequest = {
       account,
       scopes: [VITE_API_MSAL_SCOPE],
+      forceRefresh,
     }
     const instance = await MsalService.getInstance()
     try {
@@ -113,5 +114,9 @@ export class MsalService {
     } catch (error) {
       logger.warn(error)
     }
+  }
+
+  static async getFreshMSALToken() {
+    return await MsalService.getMSALToken(true)
   }
 }

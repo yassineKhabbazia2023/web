@@ -7,7 +7,6 @@ import { CurrentUserService } from '../../services/current-user/current-user.ser
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
 import { storeToRefs } from 'pinia'
-import { TokenManager } from '../token/token.manager'
 import { SelectedEntityManager } from '../selected-entity/selected-entity.manager'
 import { ACCOUNT_PERMISSIONS } from '../../constants/permissions.const'
 import { PermissionScope } from './current-user.manager.enum'
@@ -119,36 +118,41 @@ export class CurrentUserManager {
 
   static persistToken(token: string) {
     this.saveToken(token)
-    const tokenStore = useTokenStore()
-    tokenStore.setTokenExpiration(token)
   }
 
   static saveToken(token: string) {
+    const tokenStore = useTokenStore()
     if (token) {
-      TokenManager.setToken(token)
+      tokenStore.setToken(token)
     } else {
-      TokenManager.removeToken()
+      tokenStore.removeToken()
     }
   }
 
   static getToken() {
-    return TokenManager.getToken()
+    const tokenStore = useTokenStore()
+    return tokenStore.getToken()
   }
 
   static initToken() {
     const storedToken = this.getToken()
     if (storedToken) {
       const tokenStore = useTokenStore()
-      tokenStore.setTokenExpiration(storedToken)
+      tokenStore.setToken(storedToken)
     }
   }
 
+  static hasToken() {
+    return !!this.getToken()
+  }
+
   static isAuthenticated() {
-    const hasActiveToken = TokenManager.hasActiveToken()
+    const tokenStore = useTokenStore()
+    const hasActiveToken = tokenStore.hasActiveToken()
 
     if (hasActiveToken === false) {
       // if the token is expired or invalid, delete it
-      TokenManager.removeToken()
+      tokenStore.removeToken()
     }
 
     return hasActiveToken

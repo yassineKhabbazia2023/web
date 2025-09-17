@@ -48,7 +48,6 @@ window.EnvVars = envVars
 | VITE_GIGYA_KEY | Clé d'API Gigya (SSO) | 
 | VITE_GIGYA_SSO_ACTIVATED | Feature-flag du GIGYA SSO |
 | VITE_HOMEPAGE_WIDGETS_ACTIVATED | Feature flag de la home widgétisée |
-| VITE_IDLE_DURATION | Temps de non-utilisation de l'app avant une proposition de déconnexion automatique |
 | VITE_MAIL_TO_GED_ACTIVATED | Feature flag de la fonctionnalité Mail2GED |
 | VITE_MANDATE_REDIRECTION_TOOL_ACTIVATED | Feature flag de la fonctionnalité Mandate Redirection Tool
 | VITE_PASSWORD_RESET_MAX_ATTEMPTS | Nombre maximal de tentatives de réinitialisation du mot de passe |
@@ -58,3 +57,4 @@ window.EnvVars = envVars
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT | Clé du workspace ProductFruit Client anonyme (login client et maintenance) |
 | VITE_PRODUCT_FRUITS_KEY | Clé du workspace ProductFruit Collab connecté |
 | VITE_PRODUCT_FRUITS_KEY_CLIENT | Clé du workspace ProductFruit Client connecté |
+| VITE_TOKEN_EXPIRATION_BUFFER | Temps en minutes pour refresh le token avant son expiration |

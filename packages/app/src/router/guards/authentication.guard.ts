@@ -6,6 +6,7 @@ import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META, APP_ROUTES } from '@pul
 import { isUserOriginCollab } from '@app/services/userOrigin/userOriginService'
 
 export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
+  const hasToken = CurrentUserManager.hasToken()
   const isAuthenticated = CurrentUserManager.isAuthenticated()
   const allowAnonymous = to.meta?.[ALLOW_ANONYMOUS_META] === true
   const allowAuthenticated = to.meta?.[ALLOW_AUTHENTICATED_META] === true
@@ -28,8 +29,15 @@ export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
 
   // user is NOT authenticated (anonymous) and tries to access a route that does not allow anonymous users
   if (isAuthenticated === false && allowAnonymous === false) {
+    if (hasToken === true) {
+      // User has a token but is not authenticated, likely due to token expiration
+      logger.trace('User has a token but is not authenticated. Go back to login.')
+      return next({ name: APP_ROUTES.login.client.name, query: { sessionExpired: 'true' } })
+    }
+
     // redirect to anonymous path
     const anonymousRoute = BootManager.getDefaultAnonymousRoute()
+
     logger.trace(
       `NOT authenticated user tries to access forbidden authenticated route '${toName}', redirect to route '${anonymousRoute.name}'`,
     )

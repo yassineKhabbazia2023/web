@@ -9,6 +9,12 @@ vi.mock('@pulse/core', () => ({ logger: loggerMock }))
 vi.mock('@app/services/userOrigin/userOriginService.ts', () => ({
   isUserOriginCollab: isUserOriginCollabMock,
 }))
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: {
+    isAuthenticated: vi.fn(),
+    hasToken: vi.fn(),
+  },
+}))
 const nextMock = vi.fn()
 
 const authenticatedRoot: any = { name: RouteName.AUTHENTICATED }
@@ -35,9 +41,14 @@ const toOnlyAllowAuthenticatedRouteMock: any = {
 }
 
 describe('authenticationGuard', () => {
+  beforeEach(() => {
+    nextMock.mockClear()
+  })
+
   describe('when user is authenticated', () => {
     beforeEach(() => {
       vi.spyOn(CurrentUserManager, 'isAuthenticated').mockReturnValue(true)
+      vi.spyOn(CurrentUserManager, 'hasToken').mockReturnValue(true)
     })
 
     it('should proceed if route allows anonymous access and authenticated access', () => {
@@ -73,6 +84,7 @@ describe('authenticationGuard', () => {
   describe('when user is NOT authenticated', () => {
     beforeEach(() => {
       vi.spyOn(CurrentUserManager, 'isAuthenticated').mockReturnValue(false)
+      vi.spyOn(CurrentUserManager, 'hasToken').mockReturnValue(false)
     })
 
     it('should proceed if route allows anonymous access and authenticated access', () => {
@@ -120,6 +132,18 @@ describe('authenticationGuard', () => {
 
       expect(loggerMock.trace).toHaveBeenCalled()
       expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ANONYMOUS })
+    })
+
+    it('should redirect to login with sessionExpired query when user has token but is not authenticated', async () => {
+      vi.spyOn(CurrentUserManager, 'hasToken').mockReturnValue(true)
+
+      await authenticationGuard(toOnlyAllowAuthenticatedRouteMock, fromRouteMock, nextMock)
+
+      expect(loggerMock.trace).toHaveBeenCalledWith('User has a token but is not authenticated. Go back to login.')
+      expect(nextMock).toHaveBeenCalledWith({
+        name: RouteName.LOGIN_CLIENT,
+        query: { sessionExpired: 'true' },
+      })
     })
   })
 })

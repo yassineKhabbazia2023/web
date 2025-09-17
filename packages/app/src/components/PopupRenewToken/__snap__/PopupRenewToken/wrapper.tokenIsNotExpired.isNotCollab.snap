@@ -1,9 +1,0 @@
-<div data-v-7a0be8a8="" pwidth="420px" pmodal="" class="dialog-renew-token" pcenter="false" pshowclose="false" data-testid="renew-token-dialog">
-  <p-button-stub data-v-7a0be8a8="" ptype="secondary" pcircle="false" pdisabled="false" ploading="false" psize="small" picononly="false" pisactive="false" ptag="button" pplain="" data-testid="logout-button"></p-button-stub>
-  <p-button-stub data-v-7a0be8a8="" ptype="primary" pcircle="false" pdisabled="false" ploading="false" psize="small" picononly="false" pisactive="false" ptag="button" data-testid="renew-token-button"></p-button-stub>
-  <div data-v-7a0be8a8="" class="flex flex--justify-content-center">
-    <p-image-stub data-v-7a0be8a8="" pname="hourglass-duotone" pfit="fill" ptype="portrait" class="dialog-renew-token__popup-img"></p-image-stub>
-  </div>
-  <div data-v-7a0be8a8="" class="h3 p-dialog__title text-center margin-y--4">Your session will expire soon</div>
-  <p data-v-7a0be8a8="" class="p-dialog__text">Privacy is important and you have been logged in for a while. We will log you out in a few minutes, unless you confirm that you are still on RYDGE Conseil.</p>
-</div>

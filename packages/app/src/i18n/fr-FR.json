@@ -14,5 +14,12 @@
       "success": "Vos paramètres de notifications ont été sauvegardés.",
       "error": "Une erreur est survenue lors de la sauvegarde de vos paramètres. Veuillez réessayer."
     }
+  },
+  "modals":{
+    "sessionExpired": {
+      "title": "Session expirée",
+      "message": "Vous avez été déconnecté pour des raisons de sécurité.",
+      "okBtn": "Compris"
+    }
   }
 }

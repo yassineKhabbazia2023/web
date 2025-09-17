@@ -216,6 +216,7 @@ describe('MsalService', () => {
       expect(result).toBe('test-access-token')
       expect(mockMsalInstance.acquireTokenSilent).toHaveBeenCalledWith({
         account: mockAccount,
+        forceRefresh: false,
         scopes: ['pulse-tenant.com'],
       })
     })

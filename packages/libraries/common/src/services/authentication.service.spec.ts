@@ -22,7 +22,9 @@ describe('test authentication.service', () => {
       await refreshClientToken()
 
       expect(apiGatewayPostMock).toHaveBeenCalledOnce()
-      expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedGatewayPostArgument)
+      expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedGatewayPostArgument, undefined, {
+        skipTokenRefresh: true,
+      })
     })
   })
 
