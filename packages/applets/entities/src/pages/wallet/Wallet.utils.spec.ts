@@ -78,6 +78,7 @@ describe('Wallet.utils', () => {
       isCollab,
       expectedLength,
     }) => {
+      featureFlagManagerMock.isFeatureActivated.mockReturnValue(true)
       const availablesTabs = getTabs(tabLabels, isCollab)
 
       expect(availablesTabs).toHaveLength(expectedLength)

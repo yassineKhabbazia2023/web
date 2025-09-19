@@ -1,3 +1,4 @@
+import { featureFlagManagerMock } from '@pulse/core/mocks'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { AmplitudeServiceMock, CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked, getMockedUser, getStoreMock } from '@pulse/common/mocks'
@@ -19,6 +20,10 @@ vi.mock('vue-router', () => ({
 
 const userStoreMock = getStoreMock(useUserStore)
 const userMock = getMockedUser({ firstName: 'Jack' })
+
+vi.mock('@pulse/core', () => ({
+  FeatureFlagManager: featureFlagManagerMock,
+}))
 
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
@@ -51,6 +56,7 @@ describe('dossier', () => {
   beforeEach(async () => {
     userStoreMock.user = userMock
     userStoreMock.isCollab = true
+    featureFlagManagerMock.isFeatureActivated.mockReturnValue(true)
     wrapper = createWrapper()
     vi.useFakeTimers()
 

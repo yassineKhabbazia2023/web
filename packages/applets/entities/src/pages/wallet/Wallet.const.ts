@@ -1,6 +1,7 @@
 import { WalletTab } from './Wallet.enums'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import type { WalletTabConfiguration } from './Wallet.types'
+import { Feature } from '@pulse/core/enums'
 import { RouteName } from '@pulse/common/enums'
 
 export const COLLAB_TABS_CONFIGURATION: WalletTabConfiguration[] = [{
@@ -11,6 +12,7 @@ export const COLLAB_TABS_CONFIGURATION: WalletTabConfiguration[] = [{
 }, {
   name: WalletTab.POWER_BI,
   permissionCodes: GLOBAL_PERMISSIONS.POWERBI_REPORT,
+  featureFlag: Feature.LEGACY_BI_REPORT_DEPOSIT,
 }, {
   name: WalletTab.BI_REPORTS_LIST,
   permissionCodes: GLOBAL_PERMISSIONS.POWERBI_REPORT,
