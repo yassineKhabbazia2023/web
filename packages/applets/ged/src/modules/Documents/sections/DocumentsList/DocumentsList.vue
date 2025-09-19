@@ -244,17 +244,17 @@ const setToolboxStyle = (clientX: number, clientY: number) => {
 <style lang="scss" scoped>
   .documents-table {
     position: relative;
-    // header height - entity information height - breadcrumb height - action bar wrapper height
-    // - pagination wrapper height - paddings
+    //  entity information height - breadcrumb height - header height - action bar wrapper height
+    // - pagination wrapper height
     height: 100%;
-    max-height: calc(100vh - 48px - 32px - 56px - 80px - 48px);
+    max-height: calc(100vh - 48px - 32px - var(--p-header-height) - 80px - 48px);
     width: 100%;
     overflow-y: auto;
 
     &--search {
       // when search is enabled, the alert changes the remaining height of the page
       // Taking the same calculation - alert height - alert top padding
-      max-height: calc(100vh - 48px - 32px - 56px - 80px - 48px - 41px - 8px);
+      max-height: calc(100vh - 48px - 32px - var(--p-header-height) - 80px - 48px - 41px - 8px);
     }
 
     .blur-fade {

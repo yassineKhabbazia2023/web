@@ -103,7 +103,7 @@ onMounted(() => {
 
   &__container {
     // - header - header from BI report - margin from container
-    max-height: calc(100vh - 56px - 66px - 24px);
+    max-height: calc(100vh - var(--p-header-height) - 66px - 24px);
   }
 
   &__iframe {

@@ -141,8 +141,8 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .bi-reports {
-  height: calc(100vh - 56px);
-  max-height: calc(100vh - 56px);
+  height: calc(100vh - var(--p-header-height));
+  max-height: calc(100vh - var(--p-header-height));
   overflow: hidden;
 }
 </style>

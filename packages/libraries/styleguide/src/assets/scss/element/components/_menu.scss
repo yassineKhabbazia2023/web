@@ -7,7 +7,7 @@ $menu: (
   'bg-color': transparent,
   'hover-bg-color': var(--p-jungle-75),
   'item-height': 36px,
-  'horizontal-height': 52px,
+  'horizontal-height': var(--p-header-height),
   'sub-item-height': var(--el-menu-item-height),
   'horizontal-sub-item-height': 32px,
   'item-font-size': var(--el-font-size-small),
@@ -41,11 +41,6 @@ $menu: (
           }
         }
       }
-
-      .p-navbar__avatar-container {
-        overflow: visible;
-        visibility: visible;
-      }
     }
 
     &:not(.el-menu--collapse) {
@@ -77,12 +72,6 @@ $menu: (
 
       &:hover {
         background-color: rgba(0, 0, 0, 0.16);
-      }
-
-      &.is-active {
-        .p-navbar__avatar-container {
-          background: var(--p-jungle-400);
-        }
       }
 
       &.el-menu-item--title {
@@ -126,174 +115,6 @@ $menu: (
         }
       }
     }
-
-    &.el-menu--horizontal {
-      padding: 10px 16px;
-      height: 50px;
-
-      .el-menu-item {
-        margin-left: 15px;
-        margin-bottom: 0;
-        padding: 0;
-        border: none;
-        color: var(--p-white) !important;
-
-        &:focus {
-          background: none;
-        }
-
-        &:hover {
-          background: transparent;
-
-          .p-navbar__icon {
-            border-color: var(--p-gray-900);
-            background-color: var(--p-gray-900);
-          }
-        }
-
-        .p-navbar__icon {
-          margin-left: 0;
-          margin-right: 0;
-        }
-
-        &.p-menu-item-entity {
-          display: none;
-
-          .p-navbar__avatar-container {
-            margin-left: 0;
-          }
-
-          &.is-active {
-            display: flex;
-            flex-grow: 1;
-            justify-content: flex-start;
-            margin-left: 0;
-            border: none;
-          }
-        }
-      }
-    }
-
-    .p-navbar__avatar-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 30px;
-      height: 30px;
-      margin-left: 3px;
-      background: var(--p-gray-500);
-
-      &::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: block;
-        width: 27px;
-        height: 27px;
-        background: var(--p-gray-700);
-        z-index: 0;
-      }
-
-      .el-avatar {
-        position: relative;
-        z-index: 1;
-      }
-
-      [class^="el-icon"] {
-        margin-right: 0;
-      }
-    }
-  }
-
-  &--header {
-    height: 52px;
-    display: flex;
-    border-bottom: none;
-    padding: 0 16px;
-    background-color: var(--p-white);
-
-    &__link {
-      flex-grow: 0;
-      flex-shrink: 0;
-      display: flex;
-    }
-
-    .menu-item {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-left: 10px;
-
-      &--logo {
-        margin-left: 0;
-        margin-right: 32px;
-      }
-    }
-
-    .el-menu-item {
-      & + .el-menu-item {
-        margin-left: 24px;
-      }
-
-      &.menu-item:not(.is-disabled) {
-        &:hover,
-        &:focus {
-          background: var(--p-white);
-        }
-      }
-    }
-
-    &__logo {
-      height: 18px;
-    }
-
-    .p-header-tabs {
-      border: none;
-
-      [class^="el-icon"] {
-        margin-right: 8px;
-        flex-grow: 1;
-        flex-shrink: 1;
-      }
-    }
-
-    .p-header-right {
-      margin-right: 16px;
-      margin-right: 0;
-
-      .el-avatar[aria-haspopup="menu"] {
-        cursor: pointer;
-
-        &[color="persian-gradient"] {
-          &:hover,
-          &[aria-expanded="true"] {
-            background: var(--p-jungle-800);
-          }
-        }
-      }
-    }
-
-    .flex-grow {
-      flex-grow: 1;
-    }
-
-    .el-sub-menu {
-      margin-left: 24px;
-
-      &[aria-expanded="true"] {
-        .el-sub-menu__title {
-          color: var(--p-jungle-400);
-        }
-      }
-
-      .el-sub-menu__icon-arrow {
-        position: initial;
-        margin: 0 0 0 8px;
-      }
-    }
   }
 
   &--popup {
@@ -319,9 +140,11 @@ $menu: (
     opacity: 0;
     transform: translateX(+100%);
   }
+
   50% {
     opacity: 0;
   }
+
   100% {
     opacity: 1;
     transform: translateX(0);
@@ -370,7 +193,6 @@ $menu: (
   &.p-menu--collapsed {
     .p-menu-item,
     .p-submenu {
-
       &__title,
       .el-menu,
       .el-sub-menu__icon-arrow {

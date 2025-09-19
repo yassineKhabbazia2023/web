@@ -1,4 +1,10 @@
+$header-height: 56px;
+
 $header: (
   'padding': 0 20px,
-  'height': 56px,
+  'height': $header-height,
 );
+
+:root {
+  --p-header-height: #{$header-height};
+}

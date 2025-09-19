@@ -172,8 +172,8 @@ function openNotificationSettingsDrawer() {
     padding: 24px;
     position: relative;
     width: 100%;
-    height: calc(100vh - 56px);
-    margin-top: 56px;
+    height: calc(100vh - var(--p-header-height));
+    margin-top: var(--p-header-height);
     overflow: auto;
 
     &--no-paddings {

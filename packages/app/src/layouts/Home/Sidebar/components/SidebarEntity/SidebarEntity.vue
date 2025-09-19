@@ -254,7 +254,7 @@ const getActiveWallet = computed(() => {
     }
 
     $actions: &;
-    margin-top: 56px;
+    margin-top: var(--p-header-height);
 
     &-icon {
       width: var(--default-size);

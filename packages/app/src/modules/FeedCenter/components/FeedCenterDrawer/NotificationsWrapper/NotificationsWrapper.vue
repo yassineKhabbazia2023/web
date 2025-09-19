@@ -88,7 +88,7 @@ function handleNotificationClick(notification: FeedCenterNotification) {
 <style lang="scss" scoped>
   // target height - header height - drawer header height - tab title height
   .notifications-drawer {
-    height: calc(92vh - 56px - 92px - 45px - 32px);
+    height: calc(92vh - var(--p-header-height) - 92px - 45px - 32px);
   }
 </style>
 
