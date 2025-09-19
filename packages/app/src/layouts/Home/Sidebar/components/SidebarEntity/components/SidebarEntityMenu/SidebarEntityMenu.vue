@@ -42,6 +42,7 @@
         :pIndex="menuItem.index"
         :pIconLeftName="menuItem.iconLeftName"
         data-testid="menu-item"
+        :class="{ 'sidenav-entity-menu__item-menu': menuItem.hasSubmenuSelected === true }"
         @click="logAmplitudeEvent(menuItem)"
       >
         <template #title>
@@ -54,8 +55,9 @@
 
 <script setup lang="ts">
 import { ref, watchEffect, computed, watch, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { RouteName } from '@pulse/common/enums'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager, PennylanePermissionsManager, ReportingManager } from '@pulse/common/managers'
 import { PMenuItem, PMenu } from '@pulse/styleguide/components'
@@ -65,6 +67,7 @@ import type { IconName } from '@pulse/styleguide/types'
 import { usePermissionsStore } from '@pulse/common/stores'
 
 const route = useRoute()
+const router = useRouter()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
@@ -89,6 +92,7 @@ interface MenuItem {
   featureName?: string
   display: boolean
   iconLeftName?: IconName
+  hasSubmenuSelected?: boolean
 }
 
 const folderOrEntityMenuItem = computed<MenuItem | null>(() => {
@@ -125,6 +129,12 @@ const getMenuItems = () => {
   const hasPennylaneAccountingGedV2Permission =
     PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true
 
+  const legacyGedRoute = router.resolve({
+    name: RouteName.PENNYLANE_GED_LEGACY,
+    params: { entityId: props.selectedEntityId },
+  })
+  const legacyGedIndex = legacyGedRoute.path
+
   const list: MenuItem[] = [
     {
       title: t('biReports'),
@@ -147,12 +157,14 @@ const getMenuItems = () => {
       title: t('pennylaneAccounting'),
       featureName: 'documents comptables',
       iconLeftName: 'archive',
+      // should be selected also when current page is /comptabilite/archive
+      hasSubmenuSelected: route.path === legacyGedIndex,
       // User has access to Pennylane-Ged-V2
       display: hasPennylaneAccountingPermission === true &&
         hasPennylaneAccountingGedV2Permission === true,
     },
     {
-      index: `/dossier/${props.selectedEntityId}/comptabilite/archive`, // Legacy GED path for Pennylane users
+      index: legacyGedIndex, // Legacy GED path for Pennylane users
       title: t('pennylaneAccounting'),
       featureName: 'documents comptables',
       iconLeftName: 'archive',
@@ -220,7 +232,10 @@ const setMenuItem = async () => {
 }
 
 const permissionsStore = usePermissionsStore()
-watch(() => permissionsStore.selectedEntityPermissions, async () => {
+watch(() => [
+  permissionsStore.selectedEntityPermissions,
+  route.path,
+], async () => {
   setMenuItem()
 })
 

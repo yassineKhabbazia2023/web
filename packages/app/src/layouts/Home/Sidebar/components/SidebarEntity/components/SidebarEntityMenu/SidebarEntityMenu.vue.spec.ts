@@ -16,9 +16,13 @@ const defaultProps: SidebarEntityMenuProps = {
   isSingleEntity: false,
 }
 
+const resolveSpy = vi.hoisted(() => vi.fn())
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     fullPath: '/launcher',
+  }),
+  useRouter: () => ({
+    resolve: resolveSpy,
   }),
 }))
 
@@ -51,6 +55,11 @@ const createWrapper = (props = defaultProps) => {
 
 describe('sidebarEntityMenu', () => {
   let wrapper: VueWrapper<any>
+  beforeEach(() => {
+    resolveSpy.mockResolvedValue({
+      path: '',
+    })
+  })
 
   describe('display', () => {
     it('should display only the menu items that the user has access to', () => {
