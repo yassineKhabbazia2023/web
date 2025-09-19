@@ -1,4 +1,15 @@
 <template>
+  <PennylaneDialog
+    :isOpened="errorStatus === HTTP_RESPONSES.NOT_FOUND"
+    iconName="fileText"
+    :title="t('documentUnavailable.title')"
+    :subtitle="t('documentUnavailable.documentHasBeenDeleted')"
+    :closeButtonLabel="t('documentUnavailable.understood')"
+    @close="onClose"
+  />
+  <PLoadingModal
+    v-if="apiCallStatus === APICallStatus.LOADING"
+  />
   <PDocumentViewer
     v-model="internalIsOpened"
     :pTitleDocument="pennylaneDocument?.name ?? ''"
@@ -70,12 +81,14 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDocumentViewer, PDocumentDisplay, PIcon, PButton } from '@pulse/styleguide/components'
+import { PDocumentViewer, PDocumentDisplay, PIcon, PButton, PLoadingModal } from '@pulse/styleguide/components'
 import { APICallStatus } from '@pulse/common/enums'
+import PennylaneDialog from '../pennylane-dialog/pennylane-dialog.vue'
 import { usePennylaneDocumentViewer } from './pennylane-documents-viewer.composable'
 import type { PennylaneDocumentsViewerProps } from './pennylane-documents-viewer.types'
 import PennylaneDocumentsDetails from '../pennylane-documents-details/pennylane-documents-details.vue'
 import { downloadDocument } from '@pennylane/helpers/pennylane-documents.helper'
+import { HTTP_RESPONSES } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -91,11 +104,17 @@ const emit = defineEmits<{
 const isDownloading = ref(false)
 
 const internalIsOpened = computed({
-  get: () => props.isOpened,
+  get: () => {
+    return props.isOpened === true && apiCallStatus.value === APICallStatus.SUCCESS
+  },
   set: (value) => {
     emit('update:is-opened', value)
   },
 })
+
+function onClose() {
+  internalIsOpened.value = false
+}
 
 const {
   documentSrc,
@@ -103,6 +122,7 @@ const {
   iconName,
   previewImage,
   fileExtension,
+  errorStatus,
   loadDocument,
 } = usePennylaneDocumentViewer(t('errorWhileLoading'))
 
@@ -163,4 +183,8 @@ fr-FR:
     messages:
       download-success: 'Document téléchargé avec succès'
       download-error: 'Une erreur technique est survenue lors du téléchargement du document'
+    documentUnavailable:
+      title: 'Aperçu indisponible'
+      documentHasBeenDeleted: 'Le document a été supprimé dans Pennylane'
+      understood: 'C’est compris'
 </i18n>

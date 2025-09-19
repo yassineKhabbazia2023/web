@@ -6,6 +6,7 @@ import { APICallStatus } from '@pulse/common/enums'
 import { getDocumentType, getDocumentPreviewImage } from './pennylane-documents-viewer.helper'
 import type { FileExtension } from '@pulse/core/types'
 import type { IconName } from '@pulse/styleguide/types'
+import { HTTP_RESPONSES } from '@pulse/common/constants'
 
 export function usePennylaneDocumentViewer(
   technicalErrorMessage: string,
@@ -15,6 +16,7 @@ export function usePennylaneDocumentViewer(
   const fileExtension = ref<FileExtension>()
   const iconName = ref<IconName>()
   const documentSrc = ref<any>()
+  const errorStatus = ref<number>()
 
   async function loadDocument({
     documentName,
@@ -33,6 +35,7 @@ export function usePennylaneDocumentViewer(
 
     try {
       apiCallStatus.value = APICallStatus.LOADING
+      errorStatus.value = undefined
       documentSrc.value = documentId === undefined
         ? undefined
         : await PennylaneService.getDocumentContent(
@@ -48,10 +51,13 @@ export function usePennylaneDocumentViewer(
       iconName.value = iconFileName
       previewImage.value = getDocumentPreviewImage(documentSrc.value, documentType)
       apiCallStatus.value = APICallStatus.SUCCESS
-    } catch (e) {
+    } catch (error: any) {
       apiCallStatus.value = APICallStatus.ERROR
-      displayNotification('error', technicalErrorMessage)
-      logger.error('Error while loading document content:', e)
+      errorStatus.value = error.status
+      if (error.status !== HTTP_RESPONSES.NOT_FOUND) {
+        displayNotification('error', technicalErrorMessage)
+      }
+      logger.error('Error while loading document content:', error)
     }
   }
 
@@ -61,6 +67,7 @@ export function usePennylaneDocumentViewer(
     iconName,
     previewImage,
     fileExtension,
+    errorStatus,
     loadDocument,
   }
 }

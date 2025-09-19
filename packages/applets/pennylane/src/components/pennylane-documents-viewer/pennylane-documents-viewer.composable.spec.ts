@@ -3,6 +3,7 @@ import { usePennylaneDocumentViewer } from './pennylane-documents-viewer.composa
 import { APICallStatus } from '@pulse/common/enums'
 import { getDocumentType, getDocumentPreviewImage } from './pennylane-documents-viewer.helper'
 import { logger, getFileExtension } from '@pulse/core'
+import { HTTP_RESPONSES } from '@pulse/common/constants'
 
 vi.mock('@pulse/common/services/pennylane')
 vi.mock('@pulse/core')
@@ -63,14 +64,34 @@ describe('pennylane-documents-viewer.composable', () => {
     expect(previewImage.value).toBe(previewImageMock)
   })
 
-  it('should handle error properly', async () => {
-    const errorMock = 'error-mock'
+  const tests = [{
+    errorMock: 'error-mock',
+    expectedErrorStatus: undefined,
+    description: 'any error occurred',
+  }, {
+    errorMock: {
+      status: HTTP_RESPONSES.NOT_FOUND,
+    },
+    expectedErrorStatus: HTTP_RESPONSES.NOT_FOUND,
+    description: 'a 404 error occurred',
+  }, {
+    errorMock: {
+      status: HTTP_RESPONSES.CONFLICT,
+    },
+    expectedErrorStatus: HTTP_RESPONSES.CONFLICT,
+    description: 'any http error occurred',
+  }]
+  it.each(tests)('should handle error properly when $description', async ({
+    errorMock,
+    expectedErrorStatus,
+  }) => {
     const expectedErrorMessage = 'Error while loading document content:'
     const {
       apiCallStatus,
       iconName,
       previewImage,
       fileExtension,
+      errorStatus,
       loadDocument,
     } = usePennylaneDocumentViewer(technicalErrorMessageMock)
 
@@ -92,6 +113,7 @@ describe('pennylane-documents-viewer.composable', () => {
     expect(iconName.value).toBeUndefined()
     expect(previewImage.value).toBe('')
     expect(fileExtension.value).toBeUndefined()
+    expect(errorStatus.value).toBe(expectedErrorStatus)
     expect(vi.mocked(logger).error).toHaveBeenCalledWith(expectedErrorMessage, errorMock)
   })
 })
