@@ -8,5 +8,5 @@ export interface PUserCardProps {
   pDescription?: string
   pImageName?: ImageName
   pAvatarContent?: string
-  pColor?: 'persian' | 'gray'
+  pColor?: 'default' | 'gray'
 }

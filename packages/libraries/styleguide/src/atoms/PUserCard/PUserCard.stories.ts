@@ -39,7 +39,7 @@ export const WithImage: Story = {
     components: { PUserCard, PButton, PIcon },
     setup: () => ({ args }),
     template: `
-      <PUserCard v-bind="args" pImageName="user-female">
+      <PUserCard v-bind="args" pImageName="user-duotone">
         <PButton pType="default" pSize="small">
           <PIcon class="el-button__icon--left" pName="vectorPen" />
           Désigner un signataire
@@ -55,7 +55,7 @@ export const GrayWithImage: Story = {
     components: { PUserCard, PButton, PIcon },
     setup: () => ({ args }),
     template: `
-      <PUserCard v-bind="args" pImageName="user-female">
+      <PUserCard v-bind="args" pImageName="user-duotone">
         <PButton pType="default" pSize="small">
           <PIcon class="el-button__icon--left" pName="vectorPen" />
           Désigner un signataire
@@ -86,7 +86,7 @@ export const TagOnRight: Story = {
     components: { PUserCard, PTag },
     setup: () => ({ args }),
     template: `
-      <PUserCard v-bind="args" pImageName="user-male">
+      <PUserCard v-bind="args" pImageName="user-duotone">
         <PTag
           pColor="persian"
           pSize="default"

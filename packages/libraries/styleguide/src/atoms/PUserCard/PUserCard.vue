@@ -10,7 +10,7 @@
       <PAvatar
         v-if="pAvatarContent"
         pType="xlarge"
-        pColor="bordered-persian"
+        pColor="fuschia"
       >
         {{ pAvatarContent }}
       </PAvatar>
@@ -64,7 +64,7 @@ import PTag from '../../atoms/PTag'
 import type { PUserCardProps } from './PUserCardTypes'
 
 const props = withDefaults(defineProps<PUserCardProps>(), {
-  pColor: 'persian',
+  pColor: 'default',
 })
 
 const pClassMapper = computed(() => ({
@@ -81,11 +81,10 @@ const slots = useSlots()
   display: flex;
   align-items: center;
   padding: 20px;
-  border-radius: var(--el-border-radius-small);
 
   &--color {
-    &-persian {
-      background: var(--p-jungle-75);
+    &-default {
+      background: var(--p-surface-state-selection);
     }
 
     &-gray {
@@ -102,14 +101,9 @@ const slots = useSlots()
   &__image {
     flex-grow: 0;
     flex-shrink: 0;
-    height: 95px;
-    padding: 34px;
+    height: 90px;
+    padding: 32px;
     width: auto;
-    filter: drop-shadow(0 16px 16px rgba(#7090b0, 0.04))
-      drop-shadow(0 6px 8px rgba(#7090b0, 0.05))
-      drop-shadow(0 2px 4px rgba(#7090b0, 0.08))
-      drop-shadow(0 1px 2px rgba(#7090b0, 0.05))
-      drop-shadow(0 0 2px rgba(#7090b0, 0.10));
   }
 
   &__content {
@@ -157,15 +151,15 @@ const slots = useSlots()
     font-size: 2.1rem;
     line-height: 1.2;
     font-weight: 600;
-    color: var(--p-gray-900);
+    color: var(--p-text-heading);
   }
 
   &__subtitle {
     max-width: 100%;
     margin-top: 4px;
     font-size: 1.6rem;
-    line-height: 1.3;
-    color: var(--p-gray-500);
+    line-height: 1.2;
+    color: var(--p-text-body);
     overflow: hidden;
     text-overflow: ellipsis;
   }
@@ -174,7 +168,7 @@ const slots = useSlots()
     margin-top: 4px;
     font-size: 1.2rem;
     line-height: 1.2;
-    color: var(--p-gray-500);
+    color: var(--p-text-body);
   }
 }
 </style>

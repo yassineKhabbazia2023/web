@@ -15,7 +15,7 @@
       "
     >
       <PUserCard
-        pColor="persian"
+        pColor="default"
         pImageName="folder-open-duotone"
         :pTitle="currentEntity?.legalName"
         :pSubtitle="currentEntity?.accountNumber"
