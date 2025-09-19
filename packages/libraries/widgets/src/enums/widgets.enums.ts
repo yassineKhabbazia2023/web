@@ -6,6 +6,7 @@ export enum WidgetName {
   RSS_NEWS = 'RssNews',
   POWERBI_INTRO = 'PowerBIIntro',
   EMAIL_PENNYLANE = 'EmailPennylane',
+  SMART_INTRO = 'SmartIntro',
 }
 
 /**

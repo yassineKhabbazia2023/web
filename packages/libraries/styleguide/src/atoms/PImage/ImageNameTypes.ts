@@ -110,6 +110,7 @@ export type ImageName =
 'offline_conversation_2x' |
 'offline_conversation_3x' |
 'offline_conversation_4x' |
+'person-man-with-glasses' |
 'person_girl_office_1x' |
 'person_girl_office_2x' |
 'person_girl_office_3x' |

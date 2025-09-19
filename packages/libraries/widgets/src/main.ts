@@ -2,6 +2,7 @@ import type { App } from 'vue'
 import { i18n } from '@pulse/common/i18n'
 import digilabWidget from './widgets/grid/digi-lab/digi-lab.widget'
 import pennylaneIntroWidget from './widgets/grid/pennylane-intro/pennylane-intro.widget'
+import smartIntroWidget from './widgets/grid/smart-intro/smart-intro.widget'
 import powerBIIntroWidget from './widgets/grid/power-bi-intro/power-bi-intro.widget'
 import rssNewsWidget from './widgets/grid/rss-news/rss-news.widget'
 import frFR from './i18n/fr-FR.json'
@@ -20,5 +21,6 @@ export default {
     app.use(pennylaneIntroWidget, {})
     app.use(powerBIIntroWidget, {})
     app.use(rssNewsWidget, {})
+    app.use(smartIntroWidget, {})
   },
 }
