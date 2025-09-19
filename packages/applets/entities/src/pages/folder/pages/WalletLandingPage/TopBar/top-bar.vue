@@ -6,28 +6,35 @@
       flex-gap--4
     "
   >
-    <template v-if="isPennylaneSSODisplayed === true">
-      <PennylaneSSOCustomer v-if="TopBarManager.shouldDisplayCustomerSSO() === true" />
-      <PennylaneSSOCollab v-if="TopBarManager.shouldDisplayCustomerSSO() === false" />
-      <!-- A widget that is registered  from GED -->
-      <component
-        :is="WidgetName.EMAIL_PENNYLANE"
-        v-if="FeatureFlagManager.isMailToPennylaneActivated() === true"
-      />
-    </template>
+    <PennylaneSSO
+      v-if="isPennylaneSSODisplayed === true"
+      :isCollab="userStore.isCollab ?? false"
+    />
+    <component
+      :is="WidgetName.EMAIL_PENNYLANE"
+      v-if="showEmailPennylaneWidget === true"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import { TopBarManager } from './top-bar.manager'
-import { PennylaneSSOCustomer, PennylaneSSOCollab } from '@pulse/widgets/gridless'
+import { computed } from 'vue'
+import { PennylaneSSO } from '@pulse/widgets/gridless'
+import { PennylanePermissionsManager, CurrentUserManager } from '@pulse/common/managers'
+import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { SubscriptionOfferCode } from '@pulse/common/enums'
+import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 import { WidgetName } from '@pulse/widgets/enums'
-import { FeatureFlagManager } from '@pulse/core'
 
-const isPennylaneSSODisplayed = ref(false)
+const userStore = useUserStore()
+const selectedEntityStore = useSelectedEntityStore()
 
-onMounted(() => {
-  isPennylaneSSODisplayed.value = TopBarManager.isPennylaneSSODisplayed()
-})
+const isPennylaneSSODisplayed = computed(() =>
+  selectedEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true &&
+  CurrentUserManager.hasSelectedEntityPermission(ACCOUNT_PERMISSIONS.PENNYLANE) === true,
+)
+
+const showEmailPennylaneWidget = computed(() =>
+  PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true,
+)
 </script>

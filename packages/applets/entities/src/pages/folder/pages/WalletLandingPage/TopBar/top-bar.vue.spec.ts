@@ -1,57 +1,91 @@
 import { shallowMount } from '@vue/test-utils'
-import { TopBarManager } from './top-bar.manager'
 import { getStoreMock } from '@pulse/common/mocks'
-import { usePermissionsStore } from '@pulse/common/stores'
-import { nextTick } from 'vue'
+import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 
 import TopBar from './top-bar.vue'
 
 // Mock setup
-vi.mock('./top-bar.manager', () => ({
-  TopBarManager: {
-    shouldDisplayCustomerSSO: vi.fn(),
-    isPennylaneSSODisplayed: vi.fn(),
+const userStoreMock = getStoreMock(useUserStore)
+const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+
+const hasSelectedEntityPermissionSpy = vi.hoisted(() => vi.fn())
+const hasPennylaneAccountingGedV2PermissionSpy = vi.hoisted(() => vi.fn())
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: {
+    hasSelectedEntityPermission: hasSelectedEntityPermissionSpy,
+  },
+  PennylanePermissionsManager: {
+    hasPennylaneAccountingGedV2Permission: hasPennylaneAccountingGedV2PermissionSpy,
   },
 }))
 
-getStoreMock(usePermissionsStore)
-
 describe('TopBar', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-    vi.mocked(TopBarManager.isPennylaneSSODisplayed).mockReturnValue(true)
-  })
-
   describe('PennylaneSSO display', async () => {
     it.each([
       {
-        testName: 'should display PennylaneSSOCustomer when user is customer',
-        shouldDisplayCustomerSSO: true,
-        component: 'pennylane-sso-customer',
+        testName: 'should display PennylaneSSO properly when customer has PennylaneOffer',
+        isCollab: false,
+        hasPennylaneOffer: true,
       },
       {
-        testName: 'should display PennylaneSSOCollab when user is collab',
-        shouldDisplayCustomerSSO: false,
-        component: 'pennylane-sso-collab',
+        testName: 'should NOT display PennylaneSSO properly when customer does NOT have PennylaneOffer',
+        isCollab: false,
+        hasPennylaneOffer: false,
       },
-    ])('$testName', async ({ shouldDisplayCustomerSSO, component }) => {
-      vi.mocked(TopBarManager.shouldDisplayCustomerSSO).mockReturnValue(shouldDisplayCustomerSSO)
+      {
+        testName: 'should display PennylaneSSO properly when collab HAS PennylaneOffer',
+        isCollab: true,
+        hasPennylaneOffer: true,
+      },
+      {
+        testName: 'should NOT display PennylaneSSO properly when collab does NOT have PennylaneOffer',
+        isCollab: true,
+        hasPennylaneOffer: false,
+      },
+    ])('$testName', async ({
+      isCollab,
+      hasPennylaneOffer,
+    }) => {
+      userStoreMock.isCollab = isCollab
+      selectedEntityStoreMock.hasOffer.mockReturnValue(hasPennylaneOffer)
+      hasSelectedEntityPermissionSpy.mockReturnValue(hasPennylaneOffer)
 
       const wrapper = shallowMount(TopBar)
-      await nextTick()
-      const ssoComponent = wrapper.findComponent({ name: component })
-      expect(ssoComponent.exists()).toBe(true)
+      const pennylaneSSO = wrapper.findComponent({ name: 'pennylane-sso' })
+
+      expect(pennylaneSSO.exists()).toBe(hasPennylaneOffer)
+      if (hasPennylaneOffer === true) {
+        expect(pennylaneSSO.props('isCollab')).toBe(isCollab)
+      }
     })
+  })
 
-    it('should not display any PennylaneSSO component when isPennylaneSSODisplayed is false', () => {
-      vi.mocked(TopBarManager.isPennylaneSSODisplayed).mockReturnValue(false)
+  describe('EmailPennylane display', async () => {
+    const tests = [{
+      hasPennylaneAccountingGedV2PermissionMock: true,
+      description: 'should display EmailPennylane when hasPennylaneAccountingGedV2Permission is true',
+    }, {
+      hasPennylaneAccountingGedV2PermissionMock: false,
+      description: 'should NOT display EmailPennylane when hasPennylaneAccountingGedV2Permission is false',
+    }]
+    it.each(tests)('$description', ({
+      hasPennylaneAccountingGedV2PermissionMock,
+    }) => {
+      hasPennylaneAccountingGedV2PermissionSpy.mockReturnValue(hasPennylaneAccountingGedV2PermissionMock)
+      const wrapper = shallowMount(TopBar, {
+        global: {
+          stubs: {
+            EmailPennylane: {
+              name: 'EmailPennylane',
+              template: '<div />',
+            },
+          },
+        },
+      })
 
-      const wrapper = shallowMount(TopBar)
-
-      const customerComponent = wrapper.findComponent({ name: 'pennylane-sso-customer' })
-      const collabComponent = wrapper.findComponent({ name: 'pennylane-sso-collab' })
-      expect(customerComponent.exists()).toBe(false)
-      expect(collabComponent.exists()).toBe(false)
+      const emailPennylaneComponent = wrapper.findComponent({ name: 'EmailPennylane' })
+      expect(emailPennylaneComponent.exists()).toBe(hasPennylaneAccountingGedV2PermissionMock)
     })
   })
 })

@@ -1,3 +1,3 @@
 export interface PennylaneSSOProps {
-  SSOUrl: string
+  isCollab: boolean
 }
