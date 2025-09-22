@@ -67,7 +67,7 @@
         v-if="isDelegationDrawerOpened"
         v-model="isDelegationDrawerOpened"
         :selectedFolders="selectedFolders"
-        :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
+        :numberOfFoldersInPortfolio="totalAccounts"
       />
     </div>
     <div class="account-deploy__filters flex flex--align-items-center margin-bottom--3">
@@ -325,7 +325,6 @@ const clearAllAccountFilters = () => {
 
 // delegation part
 const isDelegationDrawerOpened = ref(false)
-const numberOfFoldersInPortfolio = computed(() => searchResult.value.totalItems)
 
 // table part
 const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
@@ -503,9 +502,12 @@ async function onOfferSaved() {
   openOffersDrawer.value = false
 }
 
+const totalAccounts = ref(0)
+
 onMounted(async () => {
   loadManageAccessCount()
   await fetchTableDataAndFavorites()
+  totalAccounts.value = searchResult.value.totalItems // Store the nb of total account for later use
 })
 
 watch(searchCriteria, async () => {
