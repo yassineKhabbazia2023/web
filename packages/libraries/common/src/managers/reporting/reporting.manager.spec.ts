@@ -1,3 +1,4 @@
+import { envVarsMock } from '@pulse/core/mocks'
 import { useSelectedEntityStore, useUserStore } from '../../stores/main'
 import { CurrentUserManager } from '../current-user/current-user.manager'
 import { ReportingService } from '../../services/reporting/reporting.service'
@@ -8,6 +9,7 @@ vi.mock('@pulse/core')
 vi.mock('../../stores/main')
 vi.mock('../current-user/current-user.manager')
 vi.mock('../../services/reporting/reporting.service')
+vi.mock('env-vars', () => envVarsMock)
 
 const mockedUseSelectedEntityStore = vi.mocked(useSelectedEntityStore)
 const mockedUseUserStore = vi.mocked(useUserStore)
@@ -189,5 +191,45 @@ describe('ReportingManager.canShowSmartOfferWidget', () => {
     const result = ReportingManager.canShowSmartOfferWidget()
 
     expect(result).toBe(expected)
+  })
+
+  describe('ReportingManager.calculateSmartOfferPrice', () => {
+    beforeEach(() => {
+      vi.clearAllMocks()
+    })
+
+    it.each([
+      {
+        description: 'returns default price when accountNumber is undefined',
+        selectedEntity: { accountNumber: undefined },
+        expected: ReportingManager.SMART_OFFER_DEFAULT_PRICE,
+      },
+      {
+        description: 'returns default price when accountNumber is null',
+        selectedEntity: { accountNumber: null },
+        expected: ReportingManager.SMART_OFFER_DEFAULT_PRICE,
+      },
+      {
+        description: 'returns smart offer price when accountNumber is exactly matched',
+        selectedEntity: { accountNumber: 'ACC123' },
+        expected: envVarsMock.VITE_SMART_OFFER_DIFFERENT_RATE_PRICE,
+      },
+      {
+        description: 'returns smart offer price when accountNumber matches trimmed value',
+        selectedEntity: { accountNumber: 'ACC456' },
+        expected: envVarsMock.VITE_SMART_OFFER_DIFFERENT_RATE_PRICE,
+      },
+      {
+        description: 'returns default price when accountNumber is not in the list',
+        selectedEntity: { accountNumber: 'NOT_IN_LIST' },
+        expected: ReportingManager.SMART_OFFER_DEFAULT_PRICE,
+      },
+    ])('$description', ({ selectedEntity, expected }) => {
+      selectedEntityStoreMock = { selectedEntity }
+      mockedUseSelectedEntityStore.mockReturnValue(selectedEntityStoreMock)
+
+      const result = ReportingManager.calculateSmartOfferPrice()
+      expect(result).toBe(expected)
+    })
   })
 })

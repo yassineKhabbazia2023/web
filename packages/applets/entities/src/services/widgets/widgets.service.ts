@@ -34,7 +34,7 @@ export class WidgetsService {
     const selectedEntityStore = useSelectedEntityStore()
     const canShowSmartOfferWidget = ReportingManager.canShowSmartOfferWidget()
 
-    // Temporary: for the POC, we prioritized SmartOffer. A carousel will be added once validated.
+    // Temporary: for the Clarity POC, we prioritized SmartOffer. A carousel will be added once validated.
     if (canShowSmartOfferWidget === true) {
       return userWithSmartWidgetNames
     }

@@ -23,6 +23,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { ReportingManager } from '@pulse/common/managers'
 import type { SmartOfferCardProps } from '../SmartOfferCard/smart-offer-card.type'
 import SmartOfferCard from '../SmartOfferCard/smart-offer-card.vue'
 
@@ -32,6 +33,7 @@ const { t } = useI18n({
 })
 
 // POC: Static demo data for Smart offer cards. No translation planned yet.
+const smartOfferPrice = ReportingManager.calculateSmartOfferPrice()
 const activationCards: SmartOfferCardProps[] = [
   {
     title: 'ÉTAPE 1 : ACTIVATION INSTANTANÉE',
@@ -49,7 +51,7 @@ const activationCards: SmartOfferCardProps[] = [
     title: 'ÉTAPE 3 : DÉCISION LIBRE APRÈS 3 MOIS',
     subtitle: 'Testez sans engagement',
     description:
-      'Au bout de 3 mois, vous décidez ! Vous continuez à profiter de votre tableau de bord ou vous annulez sans frais. Vous pourrez également découvrir nos tableaux de bord premium pour optimiser votre pilotage (trésorerie prédictive, benchmark, indicateurs sectoriels)',
+      `Au bout de 3 mois, vous décidez ! Vous continuez à profiter de votre tableau de bord pour ${smartOfferPrice} €/mois sans engagement ou vous annulez sans frais. Vous pourrez également découvrir nos tableaux de bord premium pour optimiser votre pilotage (trésorerie prédictive, benchmark, indicateurs sectoriels).`,
   },
 ]
 </script>

@@ -3,8 +3,11 @@ import { FeatureFlagManager } from '@pulse/core'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '../current-user/current-user.manager'
 import { ReportingService } from '../../services/reporting/reporting.service'
+import { VITE_SMART_OFFER_DIFFERENT_RATE_ACCOUNTS, VITE_SMART_OFFER_DIFFERENT_RATE_PRICE } from 'env-vars'
 
 export class ReportingManager {
+  static readonly SMART_OFFER_DEFAULT_PRICE = '30'
+
   static async canShowBIReports() {
     const selectedEntityStore = useSelectedEntityStore()
     if (selectedEntityStore.selectedEntityId === undefined) {
@@ -49,5 +52,23 @@ export class ReportingManager {
     const userHasAccess = user.isCollab === true || selectedEntity.isSignatory === true
 
     return userHasAccess
+  }
+
+  static calculateSmartOfferPrice() {
+    const { selectedEntity } = useSelectedEntityStore()
+
+    if (selectedEntity?.accountNumber === undefined || selectedEntity?.accountNumber === null) {
+      return this.SMART_OFFER_DEFAULT_PRICE
+    }
+
+    // Clarity POC: Temporary client-side calculation — will be refactored to backend logic soon.
+    const smartOfferPrice = VITE_SMART_OFFER_DIFFERENT_RATE_PRICE
+    const accountsWithDifferentRate = VITE_SMART_OFFER_DIFFERENT_RATE_ACCOUNTS?.split(',') || []
+
+    if (accountsWithDifferentRate.includes(selectedEntity.accountNumber)) {
+      return smartOfferPrice
+    }
+
+    return this.SMART_OFFER_DEFAULT_PRICE
   }
 }

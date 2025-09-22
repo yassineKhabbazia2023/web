@@ -31,6 +31,9 @@
         <span class="font-semibold">{{ t('dashboardAccess.overview') }}</span>
         {{ t('dashboardAccess.limitation') }}
       </p>
+      <p class="margin-y--4">
+        {{ t('dashboardAccess.trialOffer', { price: smartOfferPrice }) }}
+      </p>
     </div>
 
     <div class="margin-bottom--4">
@@ -74,6 +77,7 @@ import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/core'
 import { PDialog, PButton, PCheckbox } from '@pulse/styleguide/components'
 import { displayNotification } from '@pulse/styleguide'
+import { ReportingManager } from '@pulse/common/managers'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { ActivateTrialOfferDialogProps } from './activate-trial-offer-dialog.type'
 import { activateSmartOfferTrial } from '@powerbi/services/reporting.service'
@@ -91,6 +95,7 @@ const emits = defineEmits<{
 const acceptOfferTerms = ref(false)
 // #region manage activate trial offer dialog visibility
 const isDialogVisible = defineModel<boolean>({ default: false })
+const smartOfferPrice = ReportingManager.calculateSmartOfferPrice()
 
 const handleCloseDialog = () => {
   isDialogVisible.value = false
@@ -140,6 +145,8 @@ en-US:
       From this dynamic BI dashboard, you will have the ability to access a detailed view of the desired items.
     limitation: >
       Potential requests for enrichment in terms of indicators and analytical axes are not covered by this proposal.
+    trialOffer: >
+      Try our solution free for 3 months, then continue enjoying it for only €{price}/month with no commitment.
   biDashboardSupport: >
     To support you in managing your business, we offer — in addition to our current engagement —
     services for providing key performance indicators on a dynamic BI dashboard.
@@ -166,6 +173,9 @@ fr-FR:
     limitation: >
       Les potentielles demandes d'enrichissement en matière d'indicateurs et
       d'axes analytiques ne sont pas couvertes par la présente proposition.
+    trialOffer: >
+      Testez notre solution gratuitement pendant 3 mois,
+      puis continuez à en profiter pour seulement {price} €/mois sans engagement.
   biDashboardSupport: >
     Pour vous accompagner dans la gestion de votre activité, nous vous proposons en complément de notre
     mission actuelle les prestations de mise à disposition d'indicateurs sur un tableau de bord BI dynamique.
