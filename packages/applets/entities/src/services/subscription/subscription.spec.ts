@@ -1,12 +1,12 @@
 import { describe, it, expect, vi } from 'vitest'
 import { subscriptionRequestMock, subscriptionDemandMock } from '@entities/__mocks__/subscription.mocks'
+import { API_PREFIXES } from '@pulse/common/constants'
 import {
   fetchSubscriptionRequests,
   validateSubscriptionRequest,
   createSubscriptionRequest,
   fetchAccountSubscriptions,
 } from '.'
-import { API_PREFIXES } from '@entities/common/config/services'
 
 const subscriptionPutMock = vi.fn()
 const subscriptionPostMock = vi.fn()

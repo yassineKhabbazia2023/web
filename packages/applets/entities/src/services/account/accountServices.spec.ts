@@ -33,7 +33,7 @@ import {
   getMockedAccountsDelegation,
 } from '@entities/__mocks__/account-row.mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
-import { API_PREFIXES } from '@entities/common/config/services'
+import { API_PREFIXES } from '@pulse/common/constants'
 
 const accountId = 5
 const contactId = 25

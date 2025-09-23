@@ -4,7 +4,7 @@ import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contac
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { envVarsMock } from '@pulse/core/mocks'
 import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
-import { API_PREFIXES } from '@entities/common/config/services'
+import { API_PREFIXES } from '@pulse/common/constants'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,

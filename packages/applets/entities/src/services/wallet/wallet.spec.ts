@@ -1,5 +1,4 @@
-import { describe, it, vi, expect } from 'vitest'
-import { API_PREFIXES } from '@entities/common/config/services'
+import { API_PREFIXES } from '@pulse/common/constants'
 import {
   fetchFavoriteEntities,
   getCollaborators,

@@ -1,6 +1,5 @@
-import { describe, it, vi, expect } from 'vitest'
 import { ContactType } from '@pulse/common/enums'
-import { API_PREFIXES } from '@entities/common/config/services'
+import { API_PREFIXES } from '@pulse/common/constants'
 import {
   fetchContactRoles,
   getCollaborators,

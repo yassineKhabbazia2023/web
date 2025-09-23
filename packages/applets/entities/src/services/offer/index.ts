@@ -5,7 +5,7 @@ import type {
 } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
 import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
-import { API_PREFIXES } from '@entities/common/config/services'
+import { API_PREFIXES } from '@pulse/common/constants'
 import { handleRequestError } from '@entities/helper/helper'
 import type { Contact } from '../contact/contactTypes'
 import { ContactType } from '@pulse/common/enums'

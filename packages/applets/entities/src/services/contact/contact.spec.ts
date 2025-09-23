@@ -1,5 +1,5 @@
 import { describe, it, vi, expect } from 'vitest'
-import { API_PREFIXES } from '@entities/common/config/services'
+import { API_PREFIXES } from '@pulse/common/constants'
 import { omit } from 'lodash-es'
 import { getMockedCustomer } from '@entities/__mocks__/customer.mocks'
 import type { PatchContactPayload, AccountOperations } from './contactTypes'

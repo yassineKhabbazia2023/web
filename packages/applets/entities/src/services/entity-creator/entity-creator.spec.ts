@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { API_PREFIXES } from '@entities/common/config/services'
+import { API_PREFIXES } from '@pulse/common/constants'
 import type { OnboardingDetails } from '@entities/pages/wallet/pages/folders/components/EntityCreatorDrawer/entity-creator-drawer.types'
 import { createTestAccount, generateAccountNumber } from '.'
 

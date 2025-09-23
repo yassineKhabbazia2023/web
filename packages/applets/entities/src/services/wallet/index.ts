@@ -1,7 +1,7 @@
 import { logger } from '@pulse/core'
 import type { Collab } from '@entities/pages/folder/pages/collaborators/types'
 import { handleRequestError } from '@entities/helper/helper'
-import { API_PREFIXES } from '@entities/common/config/services'
+import { API_PREFIXES } from '@pulse/common/constants'
 import { commonApi } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
 import type { Contact } from '../contact/contactTypes'

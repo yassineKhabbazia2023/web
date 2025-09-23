@@ -1,7 +1,7 @@
 import { logger } from '@pulse/core'
 import { commonApi } from '@pulse/common'
 import type { Entity, QueryResult } from '@pulse/common/types'
-import { API_PREFIXES } from '../config'
+import { API_PREFIXES } from '@pulse/common/constants'
 
 export const DEFAULT_ENTITIES = {
   items: [],
