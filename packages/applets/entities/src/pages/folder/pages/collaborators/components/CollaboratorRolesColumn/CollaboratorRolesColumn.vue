@@ -10,7 +10,6 @@
       <PTag
         v-for="(roleTag, index) in ROLE_COLORS"
         :key="index"
-        pEffect="light"
         :pContent="t(roleTag.label)"
         :pColor="roleTag.color"
         class="margin-x--1 margin-bottom--2"

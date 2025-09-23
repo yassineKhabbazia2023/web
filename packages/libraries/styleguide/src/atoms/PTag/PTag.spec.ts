@@ -8,7 +8,6 @@ const createWrapper = (overridenProps: Partial<PTagProps> = {}) => {
   const props: PTagProps = {
     pColor: '',
     pContent: '',
-    pEffect: 'plain',
     ...overridenProps,
   }
 

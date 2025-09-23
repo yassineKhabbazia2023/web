@@ -50,7 +50,6 @@ describe('offerProviderProductsUtils', () => {
       expected: {
         pColor: 'gray-900',
         pContent: 'Inclus',
-        pEffect: 'light',
       },
     }, {
       isOptionnal: true,
@@ -62,7 +61,6 @@ describe('offerProviderProductsUtils', () => {
       expected: {
         pColor: 'gray-900',
         pContent: 'Inclus',
-        pEffect: 'light',
       },
     }, {
       isOptionnal: true,
@@ -70,7 +68,6 @@ describe('offerProviderProductsUtils', () => {
       expected: {
         pColor: 'amethyste',
         pContent: 'Prix additionnel',
-        pEffect: 'light',
       },
     }]
     it.each(tests)('should return $expected when isOptionnal = $isOptionnal and priceType is \'$priceType\'', ({

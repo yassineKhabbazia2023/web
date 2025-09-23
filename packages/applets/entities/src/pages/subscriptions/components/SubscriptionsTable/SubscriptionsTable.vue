@@ -86,7 +86,6 @@
                 ? 'success'
                 : 'info'
             "
-            pEffect="light"
             :pContent="formatStatus(scope.row.status)"
           />
         </template>

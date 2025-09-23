@@ -23,7 +23,6 @@
       :pContent="pContent"
       :pColor="colorMapper"
       :pIconLeftName="pIconName"
-      pEffect="light"
     />
     <PIcon
       v-if="isSelected && !pDisabled"

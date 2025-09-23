@@ -85,7 +85,6 @@
           :pContent="scope.row.status.text"
           :pColor="scope.row.status.color"
           :pIconLeftName="scope.row.status.iconName"
-          pEffect="light"
           style="width: 70%"
           pRound
         />

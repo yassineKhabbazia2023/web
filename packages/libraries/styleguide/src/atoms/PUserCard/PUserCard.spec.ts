@@ -93,7 +93,6 @@ describe('pUserCard', () => {
           pSize: 'small',
           pIconLeftName: 'person',
           pContent: 'Client',
-          pEffect: 'light',
         },
       })
       const userCardTag = wrapper.find('[data-ut=user-card-tag]')

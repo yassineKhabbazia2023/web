@@ -39,7 +39,6 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pTag: {
           pContent: 'Included',
           pColor: 'gray-900',
-          pEffect: 'light',
         },
       },
     ],
@@ -55,7 +54,6 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pTag: {
           pContent: 'Included',
           pColor: 'gray-900',
-          pEffect: 'light',
         },
       },
       {
@@ -75,7 +73,6 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pTag: {
           pContent: 'Additional price',
           pColor: 'amethyste',
-          pEffect: 'light',
         },
       },
     ],
@@ -91,7 +88,6 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pTag: {
           pContent: 'Included',
           pColor: 'gray-900',
-          pEffect: 'light',
         },
       },
       {
@@ -101,7 +97,6 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pTag: {
           pContent: 'Additional price',
           pColor: 'amethyste',
-          pEffect: 'light',
         },
       },
     ],

@@ -13,10 +13,9 @@
     @click="handleReportSelection"
   >
     <PTag
-      pColor="persian"
+      pColor="outline"
       pSize="default"
       :pContent="type"
-      pEffect="plain"
       data-testid="report-card-type"
     />
     <div class="report-card__details flex flex--direction-column">

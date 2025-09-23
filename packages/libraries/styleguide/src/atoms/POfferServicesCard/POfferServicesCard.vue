@@ -37,7 +37,6 @@
         <PTag
           v-if="!!service.pTag"
           :pColor="service.pTag.pColor"
-          pEffect="light"
           :pContent="service.pTag.pContent"
         />
       </div>

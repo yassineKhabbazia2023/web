@@ -29,7 +29,6 @@
           :pContent="reportTypeTag.text"
           :pIconLeftName="reportTypeTag.iconName"
           pColor="fuschia"
-          pEffect="light"
           pRound
           data-testid="report-error-tag"
         />

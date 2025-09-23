@@ -26,7 +26,6 @@
           </p>
           <PTag
             v-if="!!pTag"
-            :pEffect="pTag.pEffect"
             :pSize="pTag.pSize"
             :pRound="pTag.pRound"
             :pDisableTransitions="pTag.pDisableTransitions"

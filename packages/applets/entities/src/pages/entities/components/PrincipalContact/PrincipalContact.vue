@@ -29,7 +29,6 @@ const contactTag: PTagProps = {
   pColor: 'cyan',
   pContent: t('signatoryCustomer'),
   pIconLeftName: 'vectorPen',
-  pEffect: 'dark',
 }
 
 const fullName = computed(() =>

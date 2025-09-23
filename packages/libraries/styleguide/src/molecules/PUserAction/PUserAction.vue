@@ -54,9 +54,8 @@
       </PAlert>
       <PTag
         v-if="pTagContent"
-        pColor="gray-100"
+        pColor="outline"
         :pContent="pTagContent"
-        pEffect="plain"
         data-testid="p-user-action-tag-content"
       />
       <p

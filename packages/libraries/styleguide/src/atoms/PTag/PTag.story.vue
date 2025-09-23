@@ -10,7 +10,6 @@
       <PTag
         :pColor="color"
         :pSize="currentSize"
-        :pEffect="currentTheme"
         :pIconLeftName="pIconLeftName"
         :pIconRightName="pIconRightName"
         :pContent="pContent"
@@ -26,18 +25,12 @@
           title="Tag Sizes"
           :options="tagSizeList"
         />
-        <HstRadio
-          v-model="currentTheme"
-          title="Theme"
-          :options="themeList"
-        />
       </template>
     </Variant>
     <Variant title="Removable Tag">
       <PTag
         :pClosable="closable"
         :pColor="color"
-        pEffect="plain"
         :pDisableTransitions="disableTransitions"
         :pIconLeftName="pIconLeftName"
         :pIconRightName="pIconRightName"
@@ -57,7 +50,6 @@
     <Variant title="Rounded">
       <PTag
         :pColor="color"
-        :pEffect="currentTheme"
         :pRound="rounded"
         :pIconLeftName="pIconLeftName"
         :pIconRightName="pIconRightName"
@@ -69,49 +61,8 @@
           title="Tag Color"
           :options="tagColorList"
         />
-        <HstButtonGroup
-          v-model="currentTheme"
-          title="Theme"
-          :options="themeList"
-        />
         <HstCheckbox v-model="rounded" title="rounded" />
       </template>
-    </Variant>
-    <Variant title="Design system">
-      <table>
-        <tr>
-          <th>
-            pColor <br>\ pEffect
-          </th>
-          <th
-            v-for="(theme) in themeList"
-            :key="theme.value"
-          >
-            {{ theme.value }}
-          </th>
-        </tr>
-        <tr
-          v-for="(colorItem, index) in tagColorList"
-          :key="index"
-          class="padding--1"
-        >
-          <td>&nbsp;{{ colorItem.value }}</td>
-          <td
-            v-for="(theme) in themeList"
-            :key="`${colorItem.value}-${theme.value}`"
-            class="padding--1"
-          >
-            <PTag
-              :pClosable="closable"
-              :pColor="colorItem.value"
-              :pEffect="theme.value"
-              :pDisableTransitions="disableTransitions"
-              :pContent="pContent"
-              @close="fireClose"
-            />
-          </td>
-        </tr>
-      </table>
     </Variant>
   </Story>
 </template>
@@ -196,21 +147,6 @@ const tagSizeList: { label: string, value: PTagProps['pSize'] }[] = [
     value: 'small',
   },
 ]
-const themeList: { label: string, value: PTagProps['pEffect'] }[] = [
-  {
-    label: 'Dark',
-    value: 'dark',
-  },
-  {
-    label: 'Light',
-    value: 'light',
-  },
-  {
-    label: 'Plain',
-    value: 'plain',
-  },
-]
-const currentTheme = ref<PTagProps['pEffect']>('light')
 function fireClose(e: Event) {
   logEvent('close', e)
 }

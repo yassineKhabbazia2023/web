@@ -30,13 +30,10 @@ const meta: Meta<typeof PTag> = {
         'gray-300',
         'gray-500',
         'gray-900',
+        'plain',
+        'outline',
       ],
       description: 'Couleur de l\'étiquette',
-    },
-    pEffect: {
-      control: 'select',
-      options: ['dark', 'light', 'plain'],
-      description: 'Effet visuel de l\'étiquette',
     },
     pSize: {
       control: 'select',
@@ -72,7 +69,6 @@ const meta: Meta<typeof PTag> = {
   },
   args: {
     pColor: '',
-    pEffect: 'light',
     pSize: 'default',
     pContent: 'Étiquette',
     pIconLeftName: undefined,
@@ -110,16 +106,22 @@ export const Colors: Story = {
     components: { PTag },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-        <PTag pContent="Défaut" pColor="" pEffect="light" />
-        <PTag pContent="Succès" pColor="success" pEffect="light" />
-        <PTag pContent="Avertissement" pColor="warning" pEffect="light" />
-        <PTag pContent="Danger" pColor="danger" pEffect="light" />
-        <PTag pContent="Info" pColor="info" pEffect="light" />
-        <PTag pContent="Persian" pColor="persian" pEffect="light" />
-        <PTag pContent="Fuschia" pColor="fuschia" pEffect="light" />
-        <PTag pContent="Cyan" pColor="cyan" pEffect="light" />
-        <PTag pContent="Amethyste" pColor="amethyste" pEffect="light" />
-        <PTag pContent="Blue Pulse" pColor="blue-pulse" pEffect="light" />
+        <PTag pContent="Défaut" pColor="" />
+        <PTag pContent="Succès" pColor="success" />
+        <PTag pContent="Avertissement" pColor="warning" />
+        <PTag pContent="Danger" pColor="danger" />
+        <PTag pContent="Info" pColor="info" />
+        <PTag pContent="Persian" pColor="persian" />
+        <PTag pContent="Fuschia" pColor="fuschia" />
+        <PTag pContent="Cyan" pColor="cyan" />
+        <PTag pContent="Amethyste" pColor="amethyste" />
+        <PTag pContent="Blue Pulse" pColor="blue-pulse" />
+        <PTag pContent="Plain" pColor="plain" />
+        <PTag pContent="Outline" pColor="outline" />
+        <PTag pContent="Gray-100" pColor="gray-100" />
+        <PTag pContent="Gray-300" pColor="gray-300" />
+        <PTag pContent="Gray-500" pColor="gray-500" />
+        <PTag pContent="Gray-900" pColor="gray-900" />
       </div>
     `,
   }),
@@ -133,49 +135,15 @@ export const Colors: Story = {
   },
 }
 
-// Different effects
-export const Effects: Story = {
-  render: () => ({
-    components: { PTag },
-    template: `
-      <div style="display: flex; flex-direction: column; gap: 16px;">
-        <div style="display: flex; gap: 12px;">
-          <PTag pContent="Light" pColor="info" pEffect="light" />
-          <PTag pContent="Dark" pColor="info" pEffect="dark" />
-          <PTag pContent="Plain" pColor="info" pEffect="plain" />
-        </div>
-        <div style="display: flex; gap: 12px;">
-          <PTag pContent="Light" pColor="success" pEffect="light" />
-          <PTag pContent="Dark" pColor="success" pEffect="dark" />
-          <PTag pContent="Plain" pColor="success" pEffect="plain" />
-        </div>
-        <div style="display: flex; gap: 12px;">
-          <PTag pContent="Light" pColor="danger" pEffect="light" />
-          <PTag pContent="Dark" pColor="danger" pEffect="dark" />
-          <PTag pContent="Plain" pColor="danger" pEffect="plain" />
-        </div>
-      </div>
-    `,
-  }),
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: 'Différents effets visuels : light, dark, plain.',
-      },
-    },
-  },
-}
-
 // Different sizes
 export const Sizes: Story = {
   render: () => ({
     components: { PTag },
     template: `
       <div style="display: flex; align-items: center; gap: 16px;">
-        <PTag pContent="Petit" pColor="info" pEffect="light" pSize="small" />
-        <PTag pContent="Normal" pColor="info" pEffect="light" pSize="default" />
-        <PTag pContent="Grand" pColor="info" pEffect="light" pSize="large" />
+        <PTag pContent="Petit" pColor="info" pSize="small" />
+        <PTag pContent="Normal" pColor="info" pSize="default" />
+        <PTag pContent="Grand" pColor="info" pSize="large" />
       </div>
     `,
   }),
@@ -195,11 +163,11 @@ export const WithIcons: Story = {
     components: { PTag },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-        <PTag pContent="Avec icône gauche" pColor="success" pEffect="light" pIconLeftName="check" />
-        <PTag pContent="Avec icône droite" pColor="info" pEffect="light" pIconRightName="infoCircle" />
-        <PTag pContent="Deux icônes" pColor="warning" pEffect="light" pIconLeftName="exclamationTriangle" pIconRightName="x" />
-        <PTag pContent="Utilisateur" pColor="blue-pulse" pEffect="light" pIconLeftName="person" />
-        <PTag pContent="Favoris" pColor="fuschia" pEffect="light" pIconLeftName="star" />
+        <PTag pContent="Avec icône gauche" pColor="success" pIconLeftName="check" />
+        <PTag pContent="Avec icône droite" pColor="info" pIconRightName="infoCircle" />
+        <PTag pContent="Deux icônes" pColor="warning" pIconLeftName="exclamationTriangle" pIconRightName="x" />
+        <PTag pContent="Utilisateur" pColor="blue-pulse" pIconLeftName="person" />
+        <PTag pContent="Favoris" pColor="fuschia" pIconLeftName="star" />
       </div>
     `,
   }),
@@ -219,10 +187,10 @@ export const Closable: Story = {
     components: { PTag },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-        <PTag pContent="Fermable" pColor="info" pEffect="light" pClosable />
-        <PTag pContent="Avec icône" pColor="success" pEffect="light" pIconLeftName="check" pClosable />
-        <PTag pContent="Arrondi" pColor="warning" pEffect="light" pRound pClosable />
-        <PTag pContent="Dark fermable" pColor="danger" pEffect="dark" pClosable />
+        <PTag pContent="Fermable" pColor="info" pClosable />
+        <PTag pContent="Avec icône" pColor="success" pIconLeftName="check" pClosable />
+        <PTag pContent="Arrondi" pColor="warning" pRound pClosable />
+        <PTag pContent="Dark fermable" pColor="danger" pClosable />
       </div>
     `,
   }),
@@ -242,10 +210,10 @@ export const Round: Story = {
     components: { PTag },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-        <PTag pContent="Arrondi" pColor="info" pEffect="light" pRound />
-        <PTag pContent="Succès" pColor="success" pEffect="dark" pRound />
-        <PTag pContent="Danger" pColor="danger" pEffect="plain" pRound />
-        <PTag pContent="Avec icône" pColor="blue-pulse" pEffect="light" pIconLeftName="star" pRound />
+        <PTag pContent="Arrondi" pColor="info" pRound />
+        <PTag pContent="Succès" pColor="success" pRound />
+        <PTag pContent="Danger" pColor="danger" pRound />
+        <PTag pContent="Avec icône" pColor="blue-pulse" pIconLeftName="star" pRound />
       </div>
     `,
   }),
@@ -300,58 +268,56 @@ export const AllVariants: Story = {
         <div>
           <h3 style="margin-bottom: 16px;">Couleurs principales</h3>
           <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-            <PTag pContent="Défaut" pColor="" pEffect="light" />
-            <PTag pContent="Succès" pColor="success" pEffect="light" />
-            <PTag pContent="Avertissement" pColor="warning" pEffect="light" />
-            <PTag pContent="Danger" pColor="danger" pEffect="light" />
-            <PTag pContent="Info" pColor="info" pEffect="light" />
+            <PTag pContent="Défaut" pColor="" />
+            <PTag pContent="Succès" pColor="success" />
+            <PTag pContent="Avertissement" pColor="warning" />
+            <PTag pContent="Danger" pColor="danger" />
+            <PTag pContent="Info" pColor="info" />
           </div>
         </div>
         
         <div>
           <h3 style="margin-bottom: 16px;">Couleurs personnalisées</h3>
           <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-            <PTag pContent="Persian" pColor="persian" pEffect="light" />
-            <PTag pContent="Fuschia" pColor="fuschia" pEffect="light" />
-            <PTag pContent="Cyan" pColor="cyan" pEffect="light" />
-            <PTag pContent="Amethyste" pColor="amethyste" pEffect="light" />
-            <PTag pContent="Blue Pulse" pColor="blue-pulse" pEffect="light" />
+            <PTag pContent="Persian" pColor="persian" />
+            <PTag pContent="Fuschia" pColor="fuschia" />
+            <PTag pContent="Cyan" pColor="cyan" />
+            <PTag pContent="Amethyste" pColor="amethyste" />
+            <PTag pContent="Blue Pulse" pColor="blue-pulse" />
           </div>
         </div>
         
         <div>
           <h3 style="margin-bottom: 16px;">Effets</h3>
           <div style="display: flex; gap: 12px;">
-            <PTag pContent="Light" pColor="info" pEffect="light" />
-            <PTag pContent="Dark" pColor="info" pEffect="dark" />
-            <PTag pContent="Plain" pColor="info" pEffect="plain" />
+            <PTag pContent="Light" pColor="info" />
+            <PTag pContent="Dark" pColor="info" />
+            <PTag pContent="Plain" pColor="info" />
           </div>
         </div>
         
         <div>
           <h3 style="margin-bottom: 16px;">Tailles</h3>
           <div style="display: flex; align-items: center; gap: 12px;">
-            <PTag pContent="Petit" pColor="info" pEffect="light" pSize="small" />
-            <PTag pContent="Normal" pColor="info" pEffect="light" pSize="default" />
-            <PTag pContent="Grand" pColor="info" pEffect="light" pSize="large" />
+            <PTag pContent="Normal" pColor="info" pSize="default" />
           </div>
         </div>
         
         <div>
           <h3 style="margin-bottom: 16px;">Avec icônes</h3>
           <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-            <PTag pContent="Succès" pColor="success" pEffect="light" pIconLeftName="check" />
-            <PTag pContent="Info" pColor="info" pEffect="light" pIconRightName="infoCircle" />
-            <PTag pContent="Utilisateur" pColor="blue-pulse" pEffect="light" pIconLeftName="person" />
+            <PTag pContent="Succès" pColor="success" pIconLeftName="check" />
+            <PTag pContent="Info" pColor="info" pIconRightName="infoCircle" />
+            <PTag pContent="Utilisateur" pColor="blue-pulse" pIconLeftName="person" />
           </div>
         </div>
         
         <div>
           <h3 style="margin-bottom: 16px;">Options</h3>
           <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-            <PTag pContent="Arrondi" pColor="info" pEffect="light" pRound />
-            <PTag pContent="Fermable" pColor="warning" pEffect="light" pClosable />
-            <PTag pContent="Complet" pColor="success" pEffect="light" pIconLeftName="check" pRound pClosable />
+            <PTag pContent="Arrondi" pColor="info" pRound />
+            <PTag pContent="Fermable" pColor="warning" pClosable />
+            <PTag pContent="Complet" pColor="success" pIconLeftName="check" pRound pClosable />
           </div>
         </div>
       </div>

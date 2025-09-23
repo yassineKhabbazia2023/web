@@ -95,7 +95,6 @@
             <PTag
               pColor="success"
               pSize="default"
-              pEffect="light"
               :pIconLeftName="scope.row.tag.iconLeftName"
               :pIconRightName="scope.row.tag.iconRightName"
               :pContent="scope.row.tag.content"

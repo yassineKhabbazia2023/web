@@ -13,7 +13,6 @@
         <PTag
           pIconLeftName="stars"
           :pContent="tagContent"
-          pEffect="light"
           pColor="success"
         />
       </li>

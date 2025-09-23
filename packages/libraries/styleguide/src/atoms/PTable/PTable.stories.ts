@@ -145,7 +145,7 @@ export const Advanced: Story = {
 
         <PTableColumn pLabel="Tag" pWidth="180" :pSortMethod="sortMethodsTags" :pSortable="tableInputs.sortable">
           <template #default="scope">
-            <PTag pColor="success" pSize="default" pEffect="light" :pIconLeftName="scope.row.tag.iconLeftName" :pIconRightName="scope.row.tag.iconRightName" :pContent="scope.row.tag.content" />
+            <PTag pColor="success" pSize="default" :pIconLeftName="scope.row.tag.iconLeftName" :pIconRightName="scope.row.tag.iconRightName" :pContent="scope.row.tag.content" />
           </template>
         </PTableColumn>
 

@@ -1,7 +1,6 @@
 <template>
   <PTag
     :pColor="formattedStatus.color"
-    pEffect="light"
     :pIconLeftName="formattedStatus.iconName"
     :pContent="formattedStatus.text"
   />

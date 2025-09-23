@@ -92,7 +92,6 @@ export const TagOnRight: Story = {
           pSize="default"
           pIconLeftName="person"
           pContent="Client"
-          pEffect="light"
         />
       </PUserCard>
     `,

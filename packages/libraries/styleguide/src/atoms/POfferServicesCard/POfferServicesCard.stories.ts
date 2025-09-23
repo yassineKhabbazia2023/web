@@ -37,7 +37,6 @@ const meta: Meta<typeof POfferServicesCard> = {
         pTag: {
           pContent: 'Included',
           pColor: 'gray-900',
-          pEffect: 'light',
         },
       },
     ],
@@ -73,7 +72,6 @@ export const WithMultipleServices: Story = {
         pTag: {
           pContent: 'Included',
           pColor: 'gray-900',
-          pEffect: 'light',
         },
       },
       {
@@ -93,7 +91,6 @@ export const WithMultipleServices: Story = {
         pTag: {
           pContent: 'Additional price',
           pColor: 'amethyste',
-          pEffect: 'light',
         },
       },
     ],
@@ -112,7 +109,6 @@ export const LoopServices: Story = {
         pTag: {
           pContent: 'Included',
           pColor: 'gray-900',
-          pEffect: 'light',
         },
       },
       {
@@ -122,7 +118,6 @@ export const LoopServices: Story = {
         pTag: {
           pContent: 'Additional price',
           pColor: 'amethyste',
-          pEffect: 'light',
         },
       },
     ],

@@ -16,7 +16,6 @@
         pSize="default"
         pIconLeftName="person"
         :pContent="userInfo?.persona?.name ?? ''"
-        pEffect="light"
         data-testid="persona"
       />
     </PUserCard>

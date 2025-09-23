@@ -126,7 +126,6 @@
                 :pContent="scope.row.status.text"
                 :pColor="scope.row.status.color"
                 :pIconLeftName="scope.row.status.iconName"
-                pEffect="light"
               />
             </template>
           </PTableColumn>

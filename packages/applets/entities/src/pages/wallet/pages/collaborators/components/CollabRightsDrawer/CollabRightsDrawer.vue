@@ -17,7 +17,6 @@
         pColor="gray-900"
         pSize="default"
         pIconLeftName="person"
-        pEffect="light"
         :pContent="rowData.role"
       />
     </PUserCard>

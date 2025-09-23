@@ -133,7 +133,6 @@
             :pContent="scope.row.deploymentStatus.text"
             :pColor="scope.row.deploymentStatus.color"
             :pIconLeftName="scope.row.deploymentStatus.iconName"
-            pEffect="light"
           />
         </template>
       </PTableColumn>

@@ -2,7 +2,6 @@ import type { PTagProps } from '@pulse/styleguide/types'
 
 export const DEFAULT_TAG_PROPS: Omit<PTagProps, 'pContent'> = {
   pColor: 'info',
-  pEffect: 'light',
 }
 
 export const CATALOG_TAG_STYLES: {
@@ -10,44 +9,44 @@ export const CATALOG_TAG_STYLES: {
   tagProps: Omit<PTagProps, 'pContent'>
 }[] = [{
   tagLabel: 'Gérer',
-  tagProps: { pColor: 'info', pEffect: 'light' },
+  tagProps: { pColor: 'info' },
 }, {
   tagLabel: 'ERC',
-  tagProps: { pColor: 'info', pEffect: 'light' },
+  tagProps: { pColor: 'info' },
 }, {
   tagLabel: 'Pack',
-  tagProps: { pColor: 'amethyste', pEffect: 'light' },
+  tagProps: { pColor: 'amethyste' },
 }, {
   tagLabel: 'Développer',
-  tagProps: { pColor: 'fuschia', pEffect: 'light' },
+  tagProps: { pColor: 'fuschia' },
 }, {
   tagLabel: 'Transmettre',
-  tagProps: { pColor: 'cyan', pEffect: 'light' },
+  tagProps: { pColor: 'cyan' },
 }, {
   tagLabel: 'Conseil Patrimonial',
-  tagProps: { pColor: 'warning', pEffect: 'light' },
+  tagProps: { pColor: 'warning' },
 }, {
   tagLabel: 'Gestion Privée',
-  tagProps: { pColor: 'success', pEffect: 'light' },
+  tagProps: { pColor: 'success' },
 }, {
   tagLabel: 'ESC',
-  tagProps: { pColor: 'cyan', pEffect: 'light' },
+  tagProps: { pColor: 'cyan' },
 }, {
   tagLabel: 'Conseil',
-  tagProps: { pColor: 'fuschia', pEffect: 'light' },
+  tagProps: { pColor: 'fuschia' },
 }, {
   tagLabel: 'Gestion sociale',
-  tagProps: { pColor: 'warning', pEffect: 'light' },
+  tagProps: { pColor: 'warning' },
 }, {
   tagLabel: 'Transverse',
-  tagProps: { pColor: 'warning', pEffect: 'light' },
+  tagProps: { pColor: 'warning' },
 }, {
   tagLabel: 'Avocats',
-  tagProps: { pColor: 'success', pEffect: 'light' },
+  tagProps: { pColor: 'success' },
 }, {
   tagLabel: 'Filiale Gestion Privée',
-  tagProps: { pColor: 'amethyste', pEffect: 'light' },
+  tagProps: { pColor: 'amethyste' },
 }, {
   tagLabel: 'Partenariat',
-  tagProps: { pColor: 'fuschia', pEffect: 'light' },
+  tagProps: { pColor: 'fuschia' },
 }]

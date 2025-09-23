@@ -16,7 +16,6 @@
       <PTag
         v-if="selectedUser.role"
         pSize="default"
-        pEffect="light"
         pColor="gray-900"
         pIconLeftName="person"
         :pContent="selectedUser.role"

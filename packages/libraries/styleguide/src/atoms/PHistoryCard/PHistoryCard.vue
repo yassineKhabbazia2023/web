@@ -14,7 +14,6 @@
             pSize="small"
             pColor="blue-pulse"
             pPlain
-            pEffect="dark"
             :pContent="pDate"
             data-testid="history-card-date"
           />
@@ -23,7 +22,6 @@
           <PTag
             pSize="small"
             pColor="gray-500"
-            pEffect="light"
             :pContent="pType"
             data-testid="history-card-type"
           />
@@ -38,7 +36,6 @@
             <PTag
               pSize="small"
               pColor="gray-500"
-              pEffect="light"
               :pIconLeftName="pEntityIconName"
               :pContent="pEntity"
               data-testid="history-card-entity"
@@ -48,7 +45,6 @@
             v-else
             pSize="small"
             pColor="gray-500"
-            pEffect="light"
             :pIconLeftName="pEntityIconName"
             :pContent="pEntity"
             data-testid="history-card-entity"

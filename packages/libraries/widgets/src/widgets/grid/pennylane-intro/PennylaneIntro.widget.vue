@@ -30,8 +30,7 @@
         "
       >
         <PTag
-          pEffect="dark"
-          pColor="persian"
+          pColor="plain"
           :pContent="t('header.new')"
           pIconLeftName="stars"
           pRound

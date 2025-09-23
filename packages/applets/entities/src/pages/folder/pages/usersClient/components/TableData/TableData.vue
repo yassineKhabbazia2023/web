@@ -90,7 +90,6 @@
               :pContent="scope.row.statusTag.text"
               :pColor="scope.row.statusTag.color"
               :pIconLeftName="scope.row.statusTag.iconName"
-              pEffect="light"
             />
           </template>
         </PTableColumn>

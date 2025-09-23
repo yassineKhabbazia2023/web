@@ -2,7 +2,6 @@
   <PTag
     v-for="{ labelId, description, business } in roleLabels.main"
     :key="labelId"
-    pEffect="light"
     :pContent="description"
     :pColor="getBusinessRoleColor(business)"
     class="margin-x--1 margin-y--2"
@@ -21,7 +20,6 @@
         :key="index"
       >
         <PTag
-          pEffect="light"
           :pContent="description"
           :pColor="getBusinessRoleColor(business)"
           class="margin-x--1 margin-bottom--2"
@@ -30,7 +28,6 @@
       </template>
     </template>
     <PTag
-      pEffect="light"
       :pContent="roleLabelsOthersCount"
       :pColor="getOverflowIndicatorColor(roleLabels.others)"
       class="margin-x--1 margin-y--2"

@@ -16,7 +16,6 @@
         pColor="gray-500"
         pSize="default"
         pIconLeftName="person"
-        pEffect="light"
       />
     </PUserCard>
     <i18n-t

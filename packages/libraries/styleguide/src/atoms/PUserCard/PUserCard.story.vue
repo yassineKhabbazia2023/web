@@ -67,7 +67,6 @@
           pSize="default"
           pIconLeftName="person"
           pContent="Client"
-          pEffect="light"
         />
       </PUserCard>
     </Variant>
@@ -91,7 +90,6 @@ const data: PUserCardProps = {
     pColor: 'gray-900',
     pContent: 'Entity',
     pIconLeftName: 'building',
-    pEffect: 'light',
   },
 }
 </script>

@@ -15,7 +15,8 @@ export interface PTagProps {
     | 'gray-300'
     | 'gray-500'
     | 'gray-900'
-  pEffect: 'dark' | 'light' | 'plain'
+    | 'plain'
+    | 'outline'
   pSize?: 'large' | 'default' | 'small' | ''
   pContent?: string
   pIconLeftName?: IconName

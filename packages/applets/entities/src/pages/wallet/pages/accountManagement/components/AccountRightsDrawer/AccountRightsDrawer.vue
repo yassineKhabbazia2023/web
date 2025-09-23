@@ -16,7 +16,6 @@
     >
       <PTag
         pSize="default"
-        pEffect="light"
         pColor="gray-900"
         pIconLeftName="building"
         :pContent="t('clientCompany')"

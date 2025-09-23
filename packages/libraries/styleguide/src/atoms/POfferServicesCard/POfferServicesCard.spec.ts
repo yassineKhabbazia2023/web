@@ -19,7 +19,6 @@ const defaultProps: POfferServicesCardProps = {
       pTag: {
         pContent: 'Included',
         pColor: 'gray-900',
-        pEffect: 'light',
       },
     },
     {

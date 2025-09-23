@@ -2,7 +2,6 @@
   <PTag
     v-if="tagProperties !== undefined"
     :pColor="tagProperties.color"
-    pEffect="light"
     :pIconLeftName="tagProperties.iconName"
     :pContent="tagProperties.content"
     :pClosable="false"

@@ -3,7 +3,7 @@
     v-bind="$props"
     class="p-tag"
     :class="'el-tag--' + pColor"
-    :effect="pEffect"
+    effect="light"
     :size="pSize"
     :round="pRound"
     :disableTransitions="pDisableTransitions"
