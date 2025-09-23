@@ -58,7 +58,8 @@ import {
   PLoader,
   PPagination,
 } from '@pulse/styleguide/components'
-import { getInitials, getPaginationLabel, returnSortQueryField } from '@entities/helper'
+import { getInitials, returnSortQueryField } from '@entities/helper'
+import { getPaginationLabel } from '@pulse/common/utils'
 import { removeFalsyValues } from '@pulse/core/utils/object'
 import { PAGE_SIZES } from '@pulse/common/constants'
 import NoResult from '@entities/common/components/NoResult'
@@ -68,7 +69,7 @@ import TableData from './components/TableData'
 import { getCollaborators } from '@entities/services/wallet'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { SortingCriteria } from '@pulse/common/types'
-import { handleSort } from '@entities/composables/handleSortTable.composable'
+import { useSort } from '@pulse/common/composables/sort'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -170,7 +171,8 @@ const handleUpdateCollaborateurRole = (contact: Contact) => {
 }
 
 const handleSortChange = (sortCriteria: SortingCriteria) => {
-  handleSort(sortCriteria, state)
+  const { handleSortCriteria } = useSort()
+  handleSortCriteria(sortCriteria, state)
 }
 
 onMounted(async () => {

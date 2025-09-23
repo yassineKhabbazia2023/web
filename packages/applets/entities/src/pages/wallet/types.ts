@@ -1,5 +1,4 @@
-import type { QueryResult, SortingCriteria } from '@pulse/common/types'
-import type { PaginationData } from '@entities/helper/helperTypes'
+import type { QueryResult, SortingCriteria, PaginationData } from '@pulse/common/types'
 import type { IconName } from '@pulse/styleguide/types'
 
 export interface DeploymentStatus {

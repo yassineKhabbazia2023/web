@@ -14,11 +14,6 @@ const BASE_WALLET_ROUTES = [
     name: RouteName.ACCOUNT_MANAGEMENT,
     page: 'accountManagement',
   },
-  {
-    path: 'rapports-bi',
-    name: RouteName.BI_REPORTS_LIST,
-    page: 'biReportsList',
-  },
 ]
 
 const WALLET_CHILDREN_ROUTES = [

@@ -1,7 +1,5 @@
-import type { PaginationData } from '@entities/helper/helperTypes'
 import type { UserStatus } from '@entities/common/types'
-import { SortingCriteria } from '@pulse/common/types'
-
+import type { SortingCriteria, PaginationData } from '@pulse/common/types'
 
 export enum userActions {
   MODIFY_RIGHTS = 'modifyRights',
@@ -10,7 +8,6 @@ export enum userActions {
   ASSIGN_SIGNATORY = 'assignSignatory',
   UNASSIGN_SIGNATORY = 'unassignSignatory',
 }
-
 
 export interface User {
   contactId: number

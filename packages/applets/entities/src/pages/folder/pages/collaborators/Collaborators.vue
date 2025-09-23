@@ -232,7 +232,7 @@ import AddCollaboratorsDrawer from './components/AddCollaboratorDrawer'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { splitRoleLabelsIntoGroups } from './utils/collaborators.utils'
 import CollaboratorRolesColumn from './components/CollaboratorRolesColumn/CollaboratorRolesColumn.vue'
-import { handleSort } from '@entities/composables/handleSortTable.composable'
+import { useSort } from '@pulse/common/composables/sort'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -375,7 +375,8 @@ const handleSortChange = ({ prop, order }: { prop: string, order: string }) => {
     field: prop,
     descending: order === SortDirection.DESCENDING,
   }
-  handleSort(sortCriteria, state)
+  const { handleSortCriteria } = useSort()
+  handleSortCriteria(sortCriteria, state)
 }
 
 const paginationLabel = computed(() =>

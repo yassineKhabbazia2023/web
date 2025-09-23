@@ -1,5 +1,4 @@
-import { SortingCriteria } from '@pulse/common/types'
-import type { PaginationData } from '@entities/helper/helperTypes'
+import type { SortingCriteria, PaginationData } from '@pulse/common/types'
 
 export interface Collab {
   id: number

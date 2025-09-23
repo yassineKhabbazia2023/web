@@ -24,6 +24,11 @@ const walletRoutes: RouteRecordRaw[] = [
       [FEATURE_FLAG_META]: Feature.LEGACY_BI_REPORT_DEPOSIT,
     },
   },
+  {
+    path: APP_ROUTES.wallet.collab.biReportsList.path,
+    name: APP_ROUTES.wallet.collab.biReportsList.name,
+    component: () => import('@powerbi/pages/wallet/bi-reports-list/BiReportsList.page.vue'),
+  },
 ]
 
 export default {

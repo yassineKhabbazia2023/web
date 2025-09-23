@@ -1,5 +1,4 @@
 import { nextTick } from 'vue'
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { PowerBIReportViewerProps } from './power-bi-report-viewer.types'
 

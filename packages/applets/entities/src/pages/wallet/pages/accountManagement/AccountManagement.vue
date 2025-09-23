@@ -68,7 +68,7 @@ import TableData from '../../components/TableData'
 import AccountRightsDrawer from './components/AccountRightsDrawer'
 import ResendActivationEmailDrawer from '@entities/common/components/ResendActivationEmailDrawer'
 import { fetchWalletData } from '../folders/DeployUtils'
-import { getPaginationLabel } from '@entities/helper'
+import { getPaginationLabel } from '@pulse/common/utils'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { PAGE_SIZES } from '@pulse/common/constants'
 import type { AccountRow } from '@entities/common/types'
@@ -81,7 +81,7 @@ import type {
 } from '../../types'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
 import { SortingCriteria } from '@pulse/common/types'
-import { handleSort as handleSortComposable } from '@entities/composables/handleSortTable.composable'
+import { useSort } from '@pulse/common/composables/sort'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -173,7 +173,8 @@ const handleOpenFolder = (entityId: string) => {
   router.push({ name: RouteName.FOLDER, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
 const handleSort = (param: SortingCriteria) => {
-  handleSortComposable(param, searchCriteria.value)
+  const { handleSortCriteria } = useSort()
+  handleSortCriteria(param, searchCriteria.value)
 }
 onMounted(async () => {
   await fetchAccountList()

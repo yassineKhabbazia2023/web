@@ -209,7 +209,7 @@ import { storeToRefs } from 'pinia'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'
 import OffersDrawer from '@entities/pages/entities/components/OffersDrawer'
-import { getPaginationLabel } from '@entities/helper'
+import { getPaginationLabel } from '@pulse/common/utils'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { PAGE_SIZES, ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
@@ -234,7 +234,7 @@ import { TrackingLocalisation } from '@entities/pages/folder/enums/tracking.enum
 import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { fetchAccountOperations } from '@entities/services/contact'
-import { handleSort } from '@entities/composables/handleSortTable.composable'
+import { useSort } from '@pulse/common/composables/sort'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -567,8 +567,10 @@ const onSelectedFolder = (newSelectedFolder: SelectedFolder) => {
       : [...selectedFolders.value, newSelectedFolder]
 }
 
+const { handleSortCriteria } = useSort()
+
 const handleSortAccount = (param: SortingCriteria) => {
-  handleSort(param, searchCriteria.value)
+  handleSortCriteria(param, searchCriteria.value)
 }
 
 defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerVisible, selectedAccount })

@@ -225,7 +225,7 @@ import { PAGE_SIZES, ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/const
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { getFullName } from '@entities/common/utils'
 import { fetchAccountCustomers } from '@entities/services/wallet'
-import { getPaginationLabel } from '@entities/helper'
+import { getPaginationLabel } from '@pulse/common/utils'
 import { removeFalsyValues } from '@pulse/core/utils/object'
 import { updateSignatoryStatus, getAccountSignatories } from '@entities/services/account'
 import type { AccountSignatories } from '@entities/services/account/accountTypes'
@@ -244,7 +244,7 @@ import { getOperationsWithLegalName, getAccountOperationsList } from './UsersCol
 import { RouteName, RouteParam, SortDirection } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 import AddCustomerDrawer from '../usersClient/components/add-customer-drawer'
-import { handleSort } from '@entities/composables/handleSortTable.composable'
+import { useSort } from '@pulse/common/composables/sort'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -456,7 +456,8 @@ const handleSortChange = ({ prop, order }: { prop: string, order: string }) => {
     field: prop,
     descending: order === SortDirection.DESCENDING,
   }
-  handleSort(sortCriteria, state)
+  const { handleSortCriteria } = useSort()
+  handleSortCriteria(sortCriteria, state)
 }
 
 const handleUserAction = (action: string, row: any) => {

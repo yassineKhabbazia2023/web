@@ -6,8 +6,8 @@
     <div class="widget-smart-intro__main-section flex flex--direction-column padding-y--8 padding-x--6">
       <div class="widget-smart-intro__main-section-text text-color--base-white">
         <h2 class="h2">
-          {{ t('discoverSmartDashboard.line1') }}<br />
-          {{ t('discoverSmartDashboard.line2') }}<br />
+          {{ t('discoverSmartDashboard.line1') }}<br>
+          {{ t('discoverSmartDashboard.line2') }}<br>
           {{ t('discoverSmartDashboard.line3') }}
         </h2>
 

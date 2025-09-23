@@ -1,6 +1,6 @@
 import type { PTagProps } from '@pulse/styleguide/types'
-import type { Entity, QueryResult } from '@pulse/common/types'
-import type { ReportStatus, ReportTypeEnum } from './bi-reports.enums'
+import type { Entity, QueryResult, SortingCriteria } from '@pulse/common/types'
+import type { ReportStatus, ReportTypeEnum } from '@powerbi/enums/bi-reports.enum'
 
 export interface ReportStatusTag {
   text: string
@@ -14,6 +14,11 @@ export interface ReportType {
   name: string
   collaboratorLabel: string
   customerLabel: string
+}
+
+export interface ReportTypeTag {
+  text: string
+  iconName?: PTagProps['pIconLeftName']
 }
 
 export interface Report {
@@ -85,6 +90,13 @@ export interface ReportFilterQueryParams extends ReportFilters {
 
 export interface ReportSearchCriteria extends PaginationParams, ReportFilters {}
 
+export interface ReportQueryParams extends ReportFilters {
+  currentPage: number
+  limit: number
+  search?: string
+  sorting: SortingCriteria
+}
+
 export type GetReportsRequest = QueryResult<Report>
 
 export type GetReportAccountsRequest = QueryResult<Entity>
@@ -95,4 +107,11 @@ export interface ReportInfo {
   reportTypeId?: number
   accountId?: number
   accountLabel?: string
+}
+
+export interface SearchResult<T> {
+  currentPage: number
+  items: T[]
+  totalPage: number
+  totalItems: number
 }

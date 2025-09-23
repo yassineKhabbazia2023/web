@@ -72,11 +72,15 @@ function setSearchValue(value: string) {
 }
 
 async function onInput(value: string) {
-  setSearchValue(value)
-  const isValid = await formRef.value?.validate()
+  try {
+    setSearchValue(value)
+    const isValid = await formRef.value?.validate()
 
-  if (isValid) {
-    emitUpdateSearchDebounced(value)
+    if (isValid) {
+      emitUpdateSearchDebounced(value)
+    }
+  } catch (_error) {
+    // silent validation failed
   }
 }
 
