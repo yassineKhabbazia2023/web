@@ -3,16 +3,11 @@
     <div
       class="report-display__header bg--base-white flex flex--align-items-center padding-x--6 padding-y--4"
     >
-      <PAvatar
-        pShape="circle"
-        pType="small"
-        :pColor="entityAvatarColor"
-      >
-        <PIcon pName="pulse" />
-      </PAvatar>
-      <h4 class="h4 margin-left--2" data-testid="report-display-account-name">
-        {{ selectedEntity?.legalName }}
-      </h4>
+      <PEntityHeader
+        :pAccountNumber="selectedEntity!.accountNumber"
+        :pLegalName="selectedEntity!.legalName"
+        pSize="small"
+      />
     </div>
     <div class="report-display__container flex margin-top--6 padding--4">
       <section
@@ -34,8 +29,8 @@ import * as models from 'powerbi-models'
 import { useI18n } from 'vue-i18n'
 import { watch, toRefs, computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { displayNotification, getAvatarColorFromKey } from '@pulse/styleguide'
-import { PAvatar, PIcon } from '@pulse/styleguide/components'
+import { displayNotification } from '@pulse/styleguide'
+import { PEntityHeader } from '@pulse/styleguide/components'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { ReportDisplayProps } from './report-display.types'
 import { fetchBIToken } from '@powerbi/services/reporting.service'
@@ -79,8 +74,6 @@ const loadPowerBIReport = async () => {
     displayNotification('error', t('biReportLoadingError'))
   }
 }
-
-const entityAvatarColor = computed(() => getAvatarColorFromKey(selectedEntity.value?.accountNumber))
 
 // If a different report is selected, the new report should be loaded again
 watch(selectedReport, () => {

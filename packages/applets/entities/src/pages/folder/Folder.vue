@@ -4,10 +4,11 @@
     class="folder-wrapper"
     data-testid="folder-tabs-wrapper"
   >
-    <EntityHeader
+    <PEntityHeader
       v-if="selectedEntity"
-      :legalName="selectedEntity.legalName"
-      :accountNumber="selectedEntity.accountNumber"
+      :pLegalName="selectedEntity.legalName"
+      :pAccountNumber="selectedEntity.accountNumber"
+      class="margin-bottom--4"
     />
     <PTabs
       :modelValue="activeTab"
@@ -36,11 +37,10 @@ import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
-import { PTabs, PTabPane } from '@pulse/styleguide/components'
+import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
 import Home from './pages/WalletLandingPage'
 import { getTabAuthorisations, getTabs } from './FolderHelper'
 import type { TabName, Tab } from './FolderTypes'
-import EntityHeader from '@entities/common/components/EntityHeader'
 
 const { t } = useI18n({
   inheritLocale: true,

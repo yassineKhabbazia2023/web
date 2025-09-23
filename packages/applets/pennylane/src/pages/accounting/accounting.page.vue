@@ -1,7 +1,7 @@
 <template>
-  <EntityHeader
-    :accountName
-    :accountNumber
+  <PEntityHeader
+    :pLegalName
+    :pAccountNumber
     class="margin-bottom--4"
   />
   <AccountingHeader
@@ -34,9 +34,8 @@ import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-docu
 import { APICallStatus, RouteName } from '@pulse/common/enums'
 import { logger } from '@pulse/core'
 import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-documents.helper'
-import { PTabs, PTabPane } from '@pulse/styleguide/components'
+import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
 import { AccountingTab } from './accounting.page.enum'
-import EntityHeader from '@pennylane/components/entity-header/entity-header.vue'
 import AccountingHeader from '@pennylane/components/accounting-header/accounting-header.vue'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { useRouter } from 'vue-router'
@@ -56,8 +55,8 @@ const pennylaneDocuments = ref<FormattedPennylaneDocument[]>([])
 const apiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
 
 const accountId = computed(() => selectedEntityStore.selectedEntityId ?? 0)
-const accountName = computed(() => selectedEntityStore.selectedEntity?.legalName ?? '')
-const accountNumber = computed(() => selectedEntityStore.selectedEntityAccountNumber)
+const pLegalName = computed(() => selectedEntityStore.selectedEntity?.legalName ?? '')
+const pAccountNumber = computed(() => selectedEntityStore.selectedEntityAccountNumber)
 
 const tabs: {
   name: AccountingTab
@@ -106,7 +105,7 @@ onMounted(async () => {
   const pathPrefix = 'Pennylane'
   try {
     apiCallStatus.value = APICallStatus.LOADING
-    const documentQueryResult = await PennylaneService.getDocuments(accountNumber.value, accountId.value)
+    const documentQueryResult = await PennylaneService.getDocuments(pAccountNumber.value, accountId.value)
 
     pennylaneDocuments.value = getFormattedPennylaneDocuments(documentQueryResult.items, pathPrefix)
     apiCallStatus.value = APICallStatus.SUCCESS

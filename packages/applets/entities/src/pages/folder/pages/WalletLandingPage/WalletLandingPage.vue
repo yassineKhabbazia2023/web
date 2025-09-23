@@ -1,9 +1,10 @@
 <template>
   <div class="wallet-landing-page" data-testid="wallet-landing-page">
-    <EntityHeader
+    <PEntityHeader
       v-if="selectedEntity"
-      :legalName="selectedEntity.legalName"
-      :accountNumber="selectedEntity.accountNumber"
+      :pLegalName="selectedEntity.legalName"
+      :pAccountNumber="selectedEntity.accountNumber"
+      class="margin-bottom--4"
     />
     <div v-if="FeatureFlagManager.isHomepageWidgetsActivated() === true">
       <TopBar />
@@ -21,7 +22,8 @@ import { storeToRefs } from 'pinia'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import { FeatureFlagManager } from '@pulse/core'
 
-import EntityHeader from '@entities/common/components/EntityHeader'
+import { PEntityHeader } from '@pulse/styleguide/components'
+
 import TopBar from './TopBar/top-bar.vue'
 import WidgetsHome from './WidgetsHome.vue'
 import LegacyHome from './LegacyHome.vue'

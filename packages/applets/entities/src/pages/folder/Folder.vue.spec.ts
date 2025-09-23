@@ -76,7 +76,7 @@ const createWrapper = () =>
     global: {
       stubs: {
         RouterView: true,
-        EntityHeader: true,
+        PEntityHeader: true,
         Home: true,
       },
     },

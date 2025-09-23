@@ -13,7 +13,7 @@ const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 const createWrapper = (): VueWrapper<any> => mount(WalletLandingPage, {
   global: {
     stubs: {
-      EntityHeader: true,
+      PEntityHeader: true,
       WidgetsHome: true,
       LegacyHome: true,
     },

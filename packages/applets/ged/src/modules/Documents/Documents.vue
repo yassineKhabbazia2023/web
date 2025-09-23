@@ -12,9 +12,11 @@
       v-if="isAccountInformationVisible === true"
       class="margin-bottom--4"
     >
-      <AccountInformation
-        :accountName="selectedEntityName"
-        :accountNumber="selectedEntity"
+      <PEntityHeader
+        :pLegalName="selectedEntityName"
+        :pAccountNumber="selectedEntity"
+        pSize="small"
+        class="padding-left--4 padding-top--4"
       />
     </div>
     <div class="padding-left--4">
@@ -239,7 +241,7 @@ import DocumentRename from './components/DocumentRename'
 import DocumentMove from './components/DocumentsMove'
 import DocumentPreview from './components/DocumentPreview'
 import DocumentDeleteModal from '@ged/modules/Documents/components/DocumentDeleteModal'
-import { PBreadcrumb, PLoader, PPagination } from '@pulse/styleguide/components'
+import { PBreadcrumb, PLoader, PPagination, PEntityHeader } from '@pulse/styleguide/components'
 import DocumentUpload from '@ged/modules/Documents/components/DocumentsUpload'
 import { getBreadcrumbItems }
   from '@ged/modules/common/helpers/folderHelper'
@@ -254,7 +256,6 @@ import DocumentsDropZone from './components/DocumentsDropZone'
 import { useDragAndDropFromExplorer } from './composable/DragAndDropFromExplorer'
 import DocumentsDropModal from './components/DocumentsDropModal'
 import { Permissions } from '@ged/models/Permissions'
-import AccountInformation from './components/AccountInformation'
 import {
   trackDocumentConsulted,
   trackDocumentMoveFlowStart,
