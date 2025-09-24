@@ -73,6 +73,7 @@ import { PImage, PIcon, PButton } from '@pulse/styleguide/components'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { LauncherFeature, LauncherTitle } from './LaunchCardTypes'
 import type { LaunchCardProps } from './LaunchCardTypes'
+import { AmplitudeTrackingLocation } from '@pulse/common/enums'
 
 const emit = defineEmits<{
   'click-download': []
@@ -88,6 +89,7 @@ const sanitizedActionUrl = computed(() => {
 const logAmplitudeEvent = (featureName: string) => {
   AmplitudeService.track('Feature Consulted', {
     feature_name: featureName,
+    feature_consultation_localisation: AmplitudeTrackingLocation.LAUNCHER,
   })
 }
 

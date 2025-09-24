@@ -29,6 +29,7 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { PennylaneSSOProps } from './pennylane-sso.types'
 import { SsoTracking } from './pennylane-sso.enums'
 import { VITE_PENNYLANE_COLLAB_SSO_URL, VITE_PENNYLANE_SSO_URL } from 'env-vars'
+import { AmplitudeTrackingLocation } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -46,6 +47,7 @@ const ssoUrl = computed(() => {
 const onSSOConnection = () => {
   AmplitudeService.track('Feature Consulted', {
     feature_name: SsoTracking.SSO_PENNYLANE,
+    feature_consultation_localisation: AmplitudeTrackingLocation.HOMEPAGE,
   })
 }
 </script>
