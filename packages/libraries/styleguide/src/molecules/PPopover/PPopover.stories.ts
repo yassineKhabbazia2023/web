@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { reactive } from 'vue'
 import PPopover from './PPopover.vue'
 import PButton from '../../atoms/PButton'
-import type { PPopoverProps } from './PPopoverTypes'
 import type { PlacementOptions } from '../../constants/placementOptions'
 import type { TriggerOptionsType } from '../../constants/triggerOptions'
+import { PPopoverProps } from './PPopoverTypes'
 
 const meta: Meta<typeof PPopover> = {
   title: 'Molecules/PPopover',
@@ -68,10 +68,10 @@ const meta: Meta<typeof PPopover> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PPopover>
+type Story = StoryObj<PPopoverProps>
 
 export const Default: Story = {
-  render: (args: PPopoverProps) => ({
+  render: (args) => ({
     components: { PPopover, PButton },
     setup() {
       return {
@@ -99,7 +99,7 @@ export const Default: Story = {
 }
 
 export const ClickTrigger: Story = {
-  render: (args: PPopoverProps) => ({
+  render: (args) => ({
     components: { PPopover, PButton },
     setup() {
       return {
@@ -127,7 +127,7 @@ export const ClickTrigger: Story = {
 }
 
 export const FocusTrigger: Story = {
-  render: (args: PPopoverProps) => ({
+  render: (args) => ({
     components: { PPopover, PButton },
     setup() {
       return {
@@ -155,7 +155,7 @@ export const FocusTrigger: Story = {
 }
 
 export const AllPlacements: Story = {
-  render: (_args: PPopoverProps) => ({
+  render: () => ({
     components: { PPopover, PButton },
     setup() {
       const placements: PlacementOptions[] = [
@@ -194,7 +194,7 @@ export const AllPlacements: Story = {
 }
 
 export const WithoutArrow: Story = {
-  render: (args: PPopoverProps) => ({
+  render: (args) => ({
     components: { PPopover, PButton },
     setup() {
       return {
@@ -222,7 +222,7 @@ export const WithoutArrow: Story = {
 }
 
 export const DisabledPopover: Story = {
-  render: (args: PPopoverProps) => ({
+  render: (args) => ({
     components: { PPopover, PButton },
     setup() {
       return {
@@ -250,7 +250,7 @@ export const DisabledPopover: Story = {
 }
 
 export const LongContent: Story = {
-  render: (args: PPopoverProps) => ({
+  render: (args) => ({
     components: { PPopover, PButton },
     setup() {
       return {
@@ -286,7 +286,7 @@ export const LongContent: Story = {
 }
 
 export const InteractiveDemo: Story = {
-  render: (_args: PPopoverProps) => ({
+  render: () => ({
     components: { PPopover, PButton },
     setup() {
       const config = reactive({

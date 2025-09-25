@@ -57,10 +57,10 @@ const meta: Meta<typeof PFileCard> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PFileCard>
+type Story = StoryObj<PFileCardProps>
 
 export const Default: Story = {
-  render: (args: PFileCardProps) => ({
+  render: (args) => ({
     components: { PFileCard, PButton, PIcon },
     setup() {
       const handleDownload = () => {
@@ -113,7 +113,7 @@ export const Default: Story = {
 }
 
 export const WithoutIcon: Story = {
-  render: (args: PFileCardProps) => ({
+  render: (args) => ({
     components: { PFileCard, PButton, PIcon },
     setup() {
       const handleDownload = () => {
@@ -163,7 +163,7 @@ export const WithoutIcon: Story = {
 }
 
 export const WithoutButtons: Story = {
-  render: (args: PFileCardProps) => ({
+  render: (args) => ({
     components: { PFileCard, PIcon },
     setup() {
       return {
@@ -190,7 +190,7 @@ export const WithoutButtons: Story = {
 }
 
 export const MinimalCard: Story = {
-  render: (args: PFileCardProps) => ({
+  render: (args) => ({
     components: { PFileCard },
     setup() {
       return {
@@ -213,7 +213,7 @@ export const MinimalCard: Story = {
 }
 
 export const DifferentFileTypes: Story = {
-  render: (_args: PFileCardProps) => ({
+  render: () => ({
     components: { PFileCard, PButton, PIcon },
     setup() {
       const handleAction = (action: string, fileName: string) => {

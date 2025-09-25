@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import PConfirmationPopup from './PConfirmationPopup.vue'
 import PButton from '../../atoms/PButton'
-import type { PConfirmationPopupProps } from './PConfirmationPopupTypes'
+import { PConfirmationPopupProps } from './PConfirmationPopupTypes'
 
 const meta: Meta<typeof PConfirmationPopup> = {
   title: 'Organisms/PConfirmationPopup',
@@ -73,10 +73,10 @@ const meta: Meta<typeof PConfirmationPopup> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PConfirmationPopup>
+type Story = StoryObj<PConfirmationPopupProps>
 
 export const Default: Story = {
-  render: (args: PConfirmationPopupProps) => ({
+  render: (args) => ({
     components: { PConfirmationPopup, PButton },
     setup() {
       const isVisible = ref(false)
@@ -146,7 +146,7 @@ export const Default: Story = {
 }
 
 export const WithLoadingState: Story = {
-  render: (args: PConfirmationPopupProps) => ({
+  render: (args) => ({
     components: { PConfirmationPopup, PButton },
     setup() {
       const isVisible = ref(false)
@@ -229,7 +229,7 @@ export const WithLoadingState: Story = {
 }
 
 export const DeleteConfirmation: Story = {
-  render: (args: PConfirmationPopupProps) => ({
+  render: (args) => ({
     components: { PConfirmationPopup, PButton },
     setup() {
       const isVisible = ref(false)
@@ -299,7 +299,7 @@ export const DeleteConfirmation: Story = {
 }
 
 export const WithoutCloseButton: Story = {
-  render: (args: PConfirmationPopupProps) => ({
+  render: (args) => ({
     components: { PConfirmationPopup, PButton },
     setup() {
       const isVisible = ref(false)

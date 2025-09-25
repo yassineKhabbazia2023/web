@@ -39,8 +39,8 @@
 
 <script setup lang="ts">
 import { PButton, PIcon } from '@pulse/styleguide/components'
-import { ServiceEmailInformationLineProps } from '@ged/modules/Treeview/components/mail-to-ged-card/service-email-information-line/service-email-information-line.type.ts'
-import { copyServiceEmailToClipboard } from '@ged/modules/Treeview/components/mail-to-ged-card/service-email-information-line/service-email-information-line.manager.ts'
+import { ServiceEmailInformationLineProps } from '@ged/modules/Treeview/components/mail-to-ged-card/service-email-information-line/service-email-information-line.type'
+import { copyServiceEmailToClipboard } from '@ged/modules/Treeview/components/mail-to-ged-card/service-email-information-line/service-email-information-line.manager'
 
 const props = defineProps<ServiceEmailInformationLineProps>()
 </script>

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import PPagination from './PPagination.vue'
 import { ref } from 'vue'
+import { PaginationProps } from './PPaginationTypes'
 
 const meta: Meta<typeof PPagination> = {
   title: 'Atoms/PPagination',
@@ -60,7 +61,7 @@ const meta: Meta<typeof PPagination> = {
 }
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<PaginationProps>
 
 export const Default: Story = {
   render: (args) => ({

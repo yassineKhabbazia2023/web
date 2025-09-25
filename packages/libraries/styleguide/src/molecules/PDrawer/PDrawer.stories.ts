@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import PDrawer from './PDrawer.vue'
 import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
+import { PDrawerProps } from './PDrawerTypes'
 
 const meta: Meta<typeof PDrawer> = {
   title: 'Molecules/PDrawer',
@@ -42,7 +43,7 @@ const meta: Meta<typeof PDrawer> = {
 }
 
 export default meta
-export type Story = StoryObj<typeof meta>
+export type Story = StoryObj<PDrawerProps>
 
 // Basic drawer with header and footer
 export const Basic: Story = {

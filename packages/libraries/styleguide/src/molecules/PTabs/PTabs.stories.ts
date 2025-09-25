@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import PTabs from './PTabs.vue'
 import PTabPane from '../../atoms/PTabPane'
 import PPastille from '../../atoms/PPastille'
+import { PTabsProps } from './PTabsTypes'
 
 const meta: Meta<typeof PTabs> = {
   title: 'Molecules/PTabs',
@@ -37,7 +38,7 @@ const meta: Meta<typeof PTabs> = {
 }
 
 export default meta
-export type Story = StoryObj<typeof meta>
+export type Story = StoryObj<PTabsProps>
 
 // Basic text tabs
 export const Basic: Story = {

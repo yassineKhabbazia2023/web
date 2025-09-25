@@ -2,6 +2,12 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
+    projects: [
+      'packages/libraries/*',
+      'packages/applets/*',
+      'packages/app',
+      'packages/admin-tools',
+    ],
     reporters: [
       ['default', { summary: false }],
     ],

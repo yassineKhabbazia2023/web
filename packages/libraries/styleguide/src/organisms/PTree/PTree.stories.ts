@@ -3,8 +3,8 @@ import PTree from './PTree.vue'
 import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
 import PToolbox from '../../molecules/PToolbox'
-import type { PTreeProps } from './PTreeTypes'
 import type { PToolboxItemProps } from '../../atoms/PToolboxItem/PToolboxItemTypes'
+import { PTreeProps } from './PTreeTypes'
 
 const meta: Meta<typeof PTree> = {
   title: 'Organisms/PTree',
@@ -66,7 +66,7 @@ const meta: Meta<typeof PTree> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PTree>
+type Story = StoryObj<PTreeProps>
 
 interface Tree {
   id: number
@@ -210,7 +210,7 @@ const toolboxItems: PToolboxItemProps[] = [
 ]
 
 export const BasicUsage: Story = {
-  render: (args: PTreeProps) => ({
+  render: (args) => ({
     components: { PTree },
     setup() {
       const handlePTreeNodeClicked = (node: any) => {
@@ -241,7 +241,7 @@ export const BasicUsage: Story = {
 }
 
 export const WithCustomNodes: Story = {
-  render: (args: PTreeProps) => ({
+  render: (args) => ({
     components: { PTree, PToolbox, PButton, PIcon },
     setup() {
       const handlePTreeNodeClicked = (node: any) => {
@@ -293,7 +293,7 @@ export const WithCustomNodes: Story = {
 }
 
 export const WithDefaultExpanded: Story = {
-  render: (args: PTreeProps) => ({
+  render: (args) => ({
     components: { PTree },
     setup() {
       const handlePTreeNodeClicked = (node: any) => {
@@ -328,7 +328,7 @@ export const WithDefaultExpanded: Story = {
 }
 
 export const WithSelectedNode: Story = {
-  render: (args: PTreeProps) => ({
+  render: (args) => ({
     components: { PTree },
     setup() {
       const handlePTreeNodeClicked = (node: any) => {
@@ -364,7 +364,7 @@ export const WithSelectedNode: Story = {
 }
 
 export const FileSystemTree: Story = {
-  render: (args: PTreeProps) => ({
+  render: (args) => ({
     components: { PTree, PIcon },
     setup() {
       const fileSystemData = [
@@ -449,7 +449,7 @@ export const FileSystemTree: Story = {
 }
 
 export const LongLabelsTree: Story = {
-  render: (args: PTreeProps) => ({
+  render: (args) => ({
     components: { PTree },
     setup() {
       const longLabelData = [

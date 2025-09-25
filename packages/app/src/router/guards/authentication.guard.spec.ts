@@ -6,7 +6,7 @@ import { RouteName } from '@pulse/common/enums'
 
 const isUserOriginCollabMock = vi.hoisted(() => vi.fn(() => Promise.resolve(true)))
 vi.mock('@pulse/core', () => ({ logger: loggerMock }))
-vi.mock('@app/services/userOrigin/userOriginService.ts', () => ({
+vi.mock('@app/services/userOrigin/userOriginService', () => ({
   isUserOriginCollab: isUserOriginCollabMock,
 }))
 vi.mock('@pulse/common/managers', () => ({

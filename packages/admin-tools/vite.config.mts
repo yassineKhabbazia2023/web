@@ -3,7 +3,7 @@ import path from 'node:path'
 import { defineConfig, mergeConfig } from 'vitest/config'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
-import { viteConfigBase } from '../@config/vite.config.base'
+import { viteConfigBase } from '../@config/vite.config.base.mts'
 
 const PORT = 9000
 

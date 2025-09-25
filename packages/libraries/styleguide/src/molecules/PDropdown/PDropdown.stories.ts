@@ -120,13 +120,13 @@ const meta: Meta<typeof PDropdown> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PDropdown>
+type Story = StoryObj<PDropdownProps>
 
 const basicOptions = getMockedDropdownOptionsWithDescription()
 const groupedOptions = getMockedDropdownOptions(true)
 
 export const BasicUsage: Story = {
-  render: (args: PDropdownProps) => ({
+  render: (args) => ({
     components: { PDropdown },
     setup() {
       const value = ref('')
@@ -157,7 +157,7 @@ export const BasicUsage: Story = {
 }
 
 export const WithRadioButtons: Story = {
-  render: (args: PDropdownProps) => ({
+  render: (args) => ({
     components: { PDropdown },
     setup() {
       const value = ref('')
@@ -188,7 +188,7 @@ export const WithRadioButtons: Story = {
 }
 
 export const MultipleSelection: Story = {
-  render: (args: PDropdownProps) => ({
+  render: (args) => ({
     components: { PDropdown },
     setup() {
       const value = ref<string[]>([])
@@ -221,7 +221,7 @@ export const MultipleSelection: Story = {
 }
 
 export const MultipleWithCollapsedTags: Story = {
-  render: (args: PDropdownProps) => ({
+  render: (args) => ({
     components: { PDropdown },
     setup() {
       const value = ref<string[]>(['a', 'b'])
@@ -253,7 +253,7 @@ export const MultipleWithCollapsedTags: Story = {
 }
 
 export const FilterableDropdown: Story = {
-  render: (args: PDropdownProps) => ({
+  render: (args) => ({
     components: { PDropdown },
     setup() {
       const value = ref('')
@@ -284,7 +284,7 @@ export const FilterableDropdown: Story = {
 }
 
 export const AllowCreate: Story = {
-  render: (args: PDropdownProps) => ({
+  render: (args) => ({
     components: { PDropdown },
     setup() {
       const value = ref('')
@@ -316,7 +316,7 @@ export const AllowCreate: Story = {
 }
 
 export const GroupedOptions: Story = {
-  render: (args: PDropdownProps) => ({
+  render: (args) => ({
     components: { PDropdown },
     setup() {
       const value = ref('')
@@ -344,7 +344,7 @@ export const GroupedOptions: Story = {
 }
 
 export const DisabledState: Story = {
-  render: (args: PDropdownProps) => ({
+  render: (args) => ({
     components: { PDropdown },
     setup() {
       const value = ref('a')
@@ -373,7 +373,7 @@ export const DisabledState: Story = {
 }
 
 export const DifferentSizes: Story = {
-  render: (args: PDropdownProps) => ({
+  render: (args) => ({
     components: { PDropdown },
     setup() {
       const valueLarge = ref('')
@@ -426,7 +426,7 @@ export const DifferentSizes: Story = {
 }
 
 export const WithClearButton: Story = {
-  render: (args: PDropdownProps) => ({
+  render: (args) => ({
     components: { PDropdown },
     setup() {
       const value = ref('a')

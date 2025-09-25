@@ -5,7 +5,7 @@ import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
 import PUpload from '../../atoms/PUpload'
 import PDocumentDisplay from '../../molecules/PDocumentDisplay'
-import type { PDocumentViewerProps } from './PDocumentViewerTypes'
+import { PDocumentViewerProps } from './PDocumentViewerTypes'
 
 const meta: Meta<typeof PDocumentViewer> = {
   title: 'Organisms/PDocumentViewer',
@@ -125,10 +125,10 @@ const meta: Meta<typeof PDocumentViewer> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PDocumentViewer>
+type Story = StoryObj<PDocumentViewerProps>
 
 export const Default: Story = {
-  render: (args: PDocumentViewerProps) => ({
+  render: (args) => ({
     components: { PDocumentViewer, PButton, PIcon, PUpload, PDocumentDisplay },
     setup() {
       const isDrawerOpened = ref(false)
@@ -224,7 +224,7 @@ export const Default: Story = {
 }
 
 export const SingleDocument: Story = {
-  render: (args: PDocumentViewerProps) => ({
+  render: (args) => ({
     components: { PDocumentViewer, PButton, PIcon, PDocumentDisplay },
     setup() {
       const isDrawerOpened = ref(false)
@@ -304,7 +304,7 @@ export const SingleDocument: Story = {
 }
 
 export const LeftDrawer: Story = {
-  render: (args: PDocumentViewerProps) => ({
+  render: (args) => ({
     components: { PDocumentViewer, PButton, PIcon, PDocumentDisplay },
     setup() {
       const isDrawerOpened = ref(false)
@@ -382,7 +382,7 @@ export const LeftDrawer: Story = {
 }
 
 export const WithoutNavigation: Story = {
-  render: (args: PDocumentViewerProps) => ({
+  render: (args) => ({
     components: { PDocumentViewer, PButton, PIcon, PDocumentDisplay },
     setup() {
       const isDrawerOpened = ref(false)

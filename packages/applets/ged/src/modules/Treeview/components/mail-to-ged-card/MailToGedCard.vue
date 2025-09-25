@@ -38,7 +38,7 @@ import { PIcon } from '@pulse/styleguide/components'
 import EmailByServiceModal from './email-by-service-modal'
 import { fetchServicesMailToGedInformation } from '@ged/services/Services'
 import { ServiceMailToGedInformation } from '@ged/models/Service'
-import type { MailToGedProps } from './mail-to-ged-card.types.ts'
+import type { MailToGedProps } from './mail-to-ged-card.types'
 import { logger } from '@pulse/core'
 
 const { t } = useI18n({

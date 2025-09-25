@@ -3,7 +3,7 @@ import { reactive } from 'vue'
 import PMenu from './PMenu.vue'
 import PMenuItem from '../PMenuItem'
 import PSubMenu from '../PSubMenu'
-import type { PMenuProps } from './PMenuTypes'
+import { PMenuProps } from './PMenuTypes'
 
 const meta: Meta<typeof PMenu> = {
   title: 'Molecules/PMenu',
@@ -93,7 +93,7 @@ const meta: Meta<typeof PMenu> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PMenu>
+type Story = StoryObj<PMenuProps>
 
 const menuItems = [
   { index: '1', title: 'Menu Item 1' },
@@ -116,7 +116,7 @@ const submenus = [
 ]
 
 export const Default: Story = {
-  render: (args: PMenuProps) => ({
+  render: (args) => ({
     components: { PMenu, PMenuItem, PSubMenu },
     setup() {
       const handleOpen = (index: string) => {
@@ -195,7 +195,7 @@ export const Default: Story = {
 }
 
 export const CollapsedMenu: Story = {
-  render: (args: PMenuProps) => ({
+  render: (args) => ({
     components: { PMenu, PMenuItem, PSubMenu },
     setup() {
       return {
@@ -253,7 +253,7 @@ export const CollapsedMenu: Story = {
 }
 
 export const UniqueOpenedSubmenus: Story = {
-  render: (args: PMenuProps) => ({
+  render: (args) => ({
     components: { PMenu, PMenuItem, PSubMenu },
     setup() {
       return {
@@ -310,7 +310,7 @@ export const UniqueOpenedSubmenus: Story = {
 }
 
 export const ClickTriggerSubmenus: Story = {
-  render: (args: PMenuProps) => ({
+  render: (args) => ({
     components: { PMenu, PMenuItem, PSubMenu },
     setup() {
       return {
@@ -365,7 +365,7 @@ export const ClickTriggerSubmenus: Story = {
 }
 
 export const DisabledItems: Story = {
-  render: (args: PMenuProps) => ({
+  render: (args) => ({
     components: { PMenu, PMenuItem, PSubMenu },
     setup() {
       return {
@@ -422,7 +422,7 @@ export const DisabledItems: Story = {
 }
 
 export const MenuVariations: Story = {
-  render: (_args: PMenuProps) => ({
+  render: () => ({
     components: { PMenu, PMenuItem, PSubMenu },
     setup() {
       const collapsedState = reactive({ collapsed: false })

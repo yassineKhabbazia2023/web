@@ -49,10 +49,10 @@ const meta: Meta<typeof PFileAndFolderLineCheck> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PFileAndFolderLineCheck>
+type Story = StoryObj<PFileAndFolderLineCheckProps>
 
 export const Default: Story = {
-  render: (args: PFileAndFolderLineCheckProps) => ({
+  render: (args) => ({
     components: { PFileAndFolderLineCheck },
     setup() {
       const checkboxValue = ref(false)
@@ -81,7 +81,7 @@ export const Default: Story = {
 }
 
 export const Success: Story = {
-  render: (args: PFileAndFolderLineCheckProps) => ({
+  render: (args) => ({
     components: { PFileAndFolderLineCheck },
     setup() {
       const checkboxValue = ref(false)
@@ -111,7 +111,7 @@ export const Success: Story = {
 }
 
 export const Error: Story = {
-  render: (args: PFileAndFolderLineCheckProps) => ({
+  render: (args) => ({
     components: { PFileAndFolderLineCheck },
     setup() {
       const checkboxValue = ref(false)
@@ -141,7 +141,7 @@ export const Error: Story = {
 }
 
 export const Loading: Story = {
-  render: (args: PFileAndFolderLineCheckProps) => ({
+  render: (args) => ({
     components: { PFileAndFolderLineCheck },
     setup() {
       const checkboxValue = ref(false)
@@ -170,7 +170,7 @@ export const Loading: Story = {
 }
 
 export const AllStates: Story = {
-  render: (_args: PFileAndFolderLineCheckProps) => ({
+  render: () => ({
     components: { PFileAndFolderLineCheck },
     setup() {
       const defaultValue = ref(false)

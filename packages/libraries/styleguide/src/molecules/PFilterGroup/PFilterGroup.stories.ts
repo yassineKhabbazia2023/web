@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import PFilterGroup from './PFilterGroup.vue'
-import type { FilterOption } from './PFilterGroupTypes'
+import type { FilterOption, PFilterGroupProps } from './PFilterGroupTypes'
 
 const meta: Meta<typeof PFilterGroup> = {
   title: 'Molecules/PFilterGroup',
@@ -33,7 +33,7 @@ const meta: Meta<typeof PFilterGroup> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PFilterGroup>
+type Story = StoryObj<PFilterGroupProps<any>>
 
 const defaultFilters: FilterOption[] = [
   {
@@ -111,7 +111,7 @@ const numberFilters: FilterOption<number>[] = [
 ]
 
 export const Default: Story = {
-  render: (args: any) => ({
+  render: (args) => ({
     components: { PFilterGroup },
     setup() {
       const selectedCodes = ref<string[]>([])
@@ -145,7 +145,7 @@ export const Default: Story = {
 }
 
 export const WithNumberCodes: Story = {
-  render: (args: any) => ({
+  render: (args) => ({
     components: { PFilterGroup },
     setup() {
       const selectedIds = ref<number[]>([])
@@ -179,7 +179,7 @@ export const WithNumberCodes: Story = {
 }
 
 export const PreSelected: Story = {
-  render: (args: any) => ({
+  render: (args) => ({
     components: { PFilterGroup },
     setup() {
       const selectedCodes = ref<string[]>(['incident', 'actif'])
@@ -214,7 +214,7 @@ export const PreSelected: Story = {
 }
 
 export const StatusFilters: Story = {
-  render: (_args: any) => ({
+  render: () => ({
     components: { PFilterGroup },
     setup() {
       const selectedStatuses = ref<string[]>([])
@@ -274,7 +274,7 @@ export const StatusFilters: Story = {
 }
 
 export const CategoryFilters: Story = {
-  render: (_args: any) => ({
+  render: () => ({
     components: { PFilterGroup },
     setup() {
       const selectedCategories = ref<string[]>([])
@@ -340,7 +340,7 @@ export const CategoryFilters: Story = {
 }
 
 export const AllVariants: Story = {
-  render: (_args: any) => ({
+  render: () => ({
     components: { PFilterGroup },
     setup() {
       const stringSelected = ref<string[]>(['incident'])

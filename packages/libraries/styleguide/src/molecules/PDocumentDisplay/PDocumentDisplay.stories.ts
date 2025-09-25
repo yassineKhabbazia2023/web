@@ -62,10 +62,10 @@ const meta: Meta<typeof PDocumentDisplay> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PDocumentDisplay>
+type Story = StoryObj<PDocumentDisplayProps>
 
 export const ImageDocument: Story = {
-  render: (args: PDocumentDisplayProps) => ({
+  render: (args) => ({
     components: { PDocumentDisplay },
     setup() {
       return { args }
@@ -86,7 +86,7 @@ export const ImageDocument: Story = {
 }
 
 export const LoadingState: Story = {
-  render: (args: PDocumentDisplayProps) => ({
+  render: (args) => ({
     components: { PDocumentDisplay },
     setup() {
       return { args }
@@ -107,7 +107,7 @@ export const LoadingState: Story = {
 }
 
 export const UnsupportedFormat: Story = {
-  render: (args: PDocumentDisplayProps) => ({
+  render: (args) => ({
     components: { PDocumentDisplay },
     setup() {
       return { args }
@@ -128,7 +128,7 @@ export const UnsupportedFormat: Story = {
 }
 
 export const PdfDocument: Story = {
-  render: (args: PDocumentDisplayProps) => ({
+  render: (args) => ({
     components: { PDocumentDisplay },
     setup() {
       return { args }
@@ -149,7 +149,7 @@ export const PdfDocument: Story = {
 }
 
 export const PngImage: Story = {
-  render: (args: PDocumentDisplayProps) => ({
+  render: (args) => ({
     components: { PDocumentDisplay },
     setup() {
       return { args }
@@ -170,7 +170,7 @@ export const PngImage: Story = {
 }
 
 export const SmallContainer: Story = {
-  render: (args: PDocumentDisplayProps) => ({
+  render: (args) => ({
     components: { PDocumentDisplay },
     setup() {
       return { args }
@@ -192,7 +192,7 @@ export const SmallContainer: Story = {
 }
 
 export const CustomErrorMessages: Story = {
-  render: (args: PDocumentDisplayProps) => ({
+  render: (args) => ({
     components: { PDocumentDisplay },
     setup() {
       return { args }
@@ -213,7 +213,7 @@ export const CustomErrorMessages: Story = {
 }
 
 export const MultipleExtensionSupport: Story = {
-  render: (args: PDocumentDisplayProps) => ({
+  render: (args) => ({
     components: { PDocumentDisplay },
     setup() {
       return { args }

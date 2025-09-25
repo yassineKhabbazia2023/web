@@ -71,10 +71,10 @@ const meta: Meta<typeof PConfigProvider> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PConfigProvider>
+type Story = StoryObj<PConfigProviderProps>
 
 export const BasicUsage: Story = {
-  render: (args: PConfigProviderProps) => ({
+  render: (args) => ({
     components: { PConfigProvider, PButton, PTable, PPagination },
     setup() {
       const language = ref('fr')
@@ -111,7 +111,7 @@ export const BasicUsage: Story = {
 }
 
 export const ButtonConfiguration: Story = {
-  render: (args: PConfigProviderProps) => ({
+  render: (args) => ({
     components: { PConfigProvider, PButton, PCheckbox },
     setup() {
       const configButton = reactive({
@@ -142,7 +142,7 @@ export const ButtonConfiguration: Story = {
 }
 
 export const MessageConfiguration: Story = {
-  render: (args: PConfigProviderProps) => ({
+  render: (args) => ({
     components: { PConfigProvider, PButton },
     setup() {
       const configMessage = reactive({
@@ -172,7 +172,7 @@ export const MessageConfiguration: Story = {
 }
 
 export const SizeConfiguration: Story = {
-  render: (args: PConfigProviderProps) => ({
+  render: (args) => ({
     components: { PConfigProvider, PButton },
     setup() {
       return { args }
@@ -198,7 +198,7 @@ export const SizeConfiguration: Story = {
 }
 
 export const LocaleConfiguration: Story = {
-  render: (args: PConfigProviderProps) => ({
+  render: (args) => ({
     components: { PConfigProvider, PPagination },
     setup() {
       return { args }
@@ -218,7 +218,7 @@ export const LocaleConfiguration: Story = {
 }
 
 export const ZIndexConfiguration: Story = {
-  render: (args: PConfigProviderProps) => ({
+  render: (args) => ({
     components: { PConfigProvider, PButton },
     setup() {
       const showTooltip = ref(false)
@@ -249,7 +249,7 @@ export const ZIndexConfiguration: Story = {
 }
 
 export const NamespaceConfiguration: Story = {
-  render: (args: PConfigProviderProps) => ({
+  render: (args) => ({
     components: { PConfigProvider, PButton },
     setup() {
       return { args }

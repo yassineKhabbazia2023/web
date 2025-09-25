@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import PMaintenance from './PMaintenance.vue'
-import type { PMaintenanceProps } from './PMaintenance.types'
+import { PMaintenanceProps } from './PMaintenance.types'
 
 const meta: Meta<typeof PMaintenance> = {
   title: 'Organisms/PMaintenance',
@@ -27,10 +27,10 @@ const meta: Meta<typeof PMaintenance> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PMaintenance>
+type Story = StoryObj<PMaintenanceProps>
 
 export const Default: Story = {
-  render: (args: PMaintenanceProps) => ({
+  render: (args) => ({
     components: { PMaintenance },
     setup() {
       return {
@@ -69,7 +69,7 @@ export const Default: Story = {
 }
 
 export const ScheduledMaintenance: Story = {
-  render: (args: PMaintenanceProps) => ({
+  render: (args) => ({
     components: { PMaintenance },
     setup() {
       return {
@@ -110,7 +110,7 @@ export const ScheduledMaintenance: Story = {
 }
 
 export const SystemUpgrade: Story = {
-  render: (args: PMaintenanceProps) => ({
+  render: (args) => ({
     components: { PMaintenance },
     setup() {
       return {
@@ -162,7 +162,7 @@ export const SystemUpgrade: Story = {
 }
 
 export const EmergencyMaintenance: Story = {
-  render: (args: PMaintenanceProps) => ({
+  render: (args) => ({
     components: { PMaintenance },
     setup() {
       return {
@@ -215,7 +215,7 @@ export const EmergencyMaintenance: Story = {
 }
 
 export const MinimalMaintenance: Story = {
-  render: (args: PMaintenanceProps) => ({
+  render: (args) => ({
     components: { PMaintenance },
     setup() {
       return {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import PError from './PError.vue'
-import type { PErrorBlockProps } from './PErrorTypes'
+import { PErrorBlockProps } from './PErrorTypes'
 
 const meta: Meta<typeof PError> = {
   title: 'Organisms/PError',
@@ -78,10 +78,10 @@ const meta: Meta<typeof PError> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PError>
+type Story = StoryObj<PErrorBlockProps>
 
 export const Default: Story = {
-  render: (args: PErrorBlockProps) => ({
+  render: (args) => ({
     components: { PError },
     setup() {
       const handleClick = () => {
@@ -122,7 +122,7 @@ export const Default: Story = {
 }
 
 export const Error500: Story = {
-  render: (args: PErrorBlockProps) => ({
+  render: (args) => ({
     components: { PError },
     setup() {
       const handleClick = () => {
@@ -163,7 +163,7 @@ export const Error500: Story = {
 }
 
 export const Error403: Story = {
-  render: (args: PErrorBlockProps) => ({
+  render: (args) => ({
     components: { PError },
     setup() {
       const handleClick = () => {
@@ -204,7 +204,7 @@ export const Error403: Story = {
 }
 
 export const WithoutFooter: Story = {
-  render: (args: PErrorBlockProps) => ({
+  render: (args) => ({
     components: { PError },
     setup() {
       const handleClick = () => {
@@ -237,7 +237,7 @@ export const WithoutFooter: Story = {
 }
 
 export const FullSize: Story = {
-  render: (args: PErrorBlockProps) => ({
+  render: (args) => ({
     components: { PError },
     setup() {
       const handleClick = () => {
@@ -278,7 +278,7 @@ export const FullSize: Story = {
 }
 
 export const CustomContent: Story = {
-  render: (args: PErrorBlockProps) => ({
+  render: (args) => ({
     components: { PError },
     setup() {
       const handleClick = () => {

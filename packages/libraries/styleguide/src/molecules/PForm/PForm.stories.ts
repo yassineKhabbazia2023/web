@@ -6,7 +6,7 @@ import PFormItem from '../../atoms/PFormItem'
 import PButton from '../../atoms/PButton'
 import PInput from '../../atoms/PInput'
 import PCheckbox from '../../atoms/PCheckbox'
-import type { PFormProps } from './PFormTypes'
+import { PFormProps } from './PFormTypes'
 
 const meta: Meta<typeof PForm> = {
   title: 'Molecules/PForm',
@@ -142,10 +142,10 @@ const meta: Meta<typeof PForm> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PForm>
+type Story = StoryObj<PFormProps>
 
 export const Basic: Story = {
-  render: (args: PFormProps) => ({
+  render: (args) => ({
     components: { PForm, PFormItem, PButton, PInput },
     setup() {
       const formRef = ref<FormInstance>()
@@ -301,7 +301,7 @@ export const Basic: Story = {
 }
 
 export const InlineForm: Story = {
-  render: (args: PFormProps) => ({
+  render: (args) => ({
     components: { PForm, PFormItem, PButton, PInput },
     setup() {
       const formRef = ref<FormInstance>()
@@ -359,7 +359,7 @@ export const InlineForm: Story = {
 }
 
 export const LabelPositions: Story = {
-  render: (_args: PFormProps) => ({
+  render: () => ({
     components: { PForm, PFormItem, PInput },
     setup() {
       const formValues = reactive({
@@ -427,7 +427,7 @@ export const LabelPositions: Story = {
 }
 
 export const RequiredAsteriskPositions: Story = {
-  render: (_args: PFormProps) => ({
+  render: () => ({
     components: { PForm, PFormItem, PInput },
     setup() {
       const formValues = reactive({
@@ -487,7 +487,7 @@ export const RequiredAsteriskPositions: Story = {
 }
 
 export const FormSizes: Story = {
-  render: (_args: PFormProps) => ({
+  render: () => ({
     components: { PForm, PFormItem, PInput, PButton },
     setup() {
       const formValues = reactive({
@@ -546,7 +546,7 @@ export const FormSizes: Story = {
 }
 
 export const DisabledForm: Story = {
-  render: (args: PFormProps) => ({
+  render: (args) => ({
     components: { PForm, PFormItem, PInput, PButton, PCheckbox },
     setup() {
       const formValues = reactive({

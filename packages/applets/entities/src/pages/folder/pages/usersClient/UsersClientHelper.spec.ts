@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { formatItemsFromApi } from './UsersClientHelper'
-import { generateContactsMock } from '@entities/__mocks__/contact.mocks.ts'
+import { generateContactsMock } from '@entities/__mocks__/contact.mocks'
 import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { ContactType } from '@pulse/common/enums'
 

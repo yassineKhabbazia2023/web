@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import PFormSearch from './PFormSearch.vue'
-import type { PFormSearchProps } from './PFormSearch.types'
+import { PFormSearchProps } from './PFormSearch.types'
 
 const meta: Meta<typeof PFormSearch> = {
   title: 'Organisms/PFormSearch',
@@ -82,10 +82,10 @@ const meta: Meta<typeof PFormSearch> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PFormSearch>
+type Story = StoryObj<PFormSearchProps>
 
 export const Default: Story = {
-  render: (args: PFormSearchProps) => ({
+  render: (args) => ({
     components: { PFormSearch },
     setup() {
       const searchValue = ref('')
@@ -127,7 +127,7 @@ export const Default: Story = {
 }
 
 export const WithClearButton: Story = {
-  render: (args: PFormSearchProps) => ({
+  render: (args) => ({
     components: { PFormSearch },
     setup() {
       const searchValue = ref('search query')
@@ -169,7 +169,7 @@ export const WithClearButton: Story = {
 }
 
 export const AutofocusEnabled: Story = {
-  render: (args: PFormSearchProps) => ({
+  render: (args) => ({
     components: { PFormSearch },
     setup() {
       const searchValue = ref('')
@@ -212,7 +212,7 @@ export const AutofocusEnabled: Story = {
 }
 
 export const DifferentSizes: Story = {
-  render: (_args: PFormSearchProps) => ({
+  render: () => ({
     components: { PFormSearch },
     setup() {
       const searchValueLarge = ref('')
@@ -295,7 +295,7 @@ export const DifferentSizes: Story = {
 }
 
 export const CustomDebounce: Story = {
-  render: (args: PFormSearchProps) => ({
+  render: (args) => ({
     components: { PFormSearch },
     setup() {
       const searchValue = ref('')

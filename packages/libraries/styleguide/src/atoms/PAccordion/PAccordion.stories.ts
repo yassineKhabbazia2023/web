@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import PAccordion from './PAccordion.vue'
+import { PAccordionProps } from './PAccordion.types'
 
 const meta: Meta<typeof PAccordion> = {
   title: 'Atoms/PAccordion',
@@ -35,7 +36,7 @@ const meta: Meta<typeof PAccordion> = {
 }
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<PAccordionProps>
 
 // Default story
 export const Default: Story = {

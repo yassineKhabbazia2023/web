@@ -3,7 +3,7 @@ import path from 'node:path'
 import { mergeConfig, UserConfig } from 'vite'
 import { configDefaults, defineConfig } from 'vitest/config'
 
-import viteConfig from './vite.config.ts'
+import viteConfig from './vite.config.mts'
 
 export default mergeConfig(
   viteConfig as UserConfig,

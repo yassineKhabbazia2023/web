@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { PTitleProps } from './PTitleTypes'
-import { pulseGeneratedIcons } from '../PIcon/components/constants.ts'
+import { pulseGeneratedIcons } from '../PIcon/components/constants'
 import { AppColors } from '../../utils/AppColorsEnum'
 
 import PTitle from './'

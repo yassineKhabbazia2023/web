@@ -1,1 +1,1 @@
-export * from './referentialUtils.ts'
+export * from './referentialUtils'

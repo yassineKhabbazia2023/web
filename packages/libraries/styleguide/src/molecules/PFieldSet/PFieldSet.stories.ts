@@ -4,6 +4,7 @@ import { setWith } from 'lodash-es'
 import PFieldSet from './PFieldSet.vue'
 import PForm from '../PForm'
 import { getMockedFields } from './PFieldSet.mocks'
+import { PFieldSetProps } from './PFieldSetTypes'
 
 interface CustomModel {
   person: {
@@ -66,13 +67,11 @@ const meta: Meta<typeof PFieldSet> = {
 }
 
 export default meta
-type Story = StoryObj<typeof PFieldSet>
-
-const PFieldSetCustom = PFieldSet<CustomModel>
+type Story = StoryObj<PFieldSetProps<CustomModel>>
 
 export const CompanyIdentification: Story = {
-  render: (args: any) => ({
-    components: { PFieldSetCustom, PForm },
+  render: (args) => ({
+    components: { PFieldSet, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -101,7 +100,7 @@ export const CompanyIdentification: Story = {
       <div style="padding: 20px;">
         <h2>Company Identification</h2>
         <PForm pLabelPosition="top">
-          <PFieldSetCustom 
+          <PFieldSet
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />
@@ -119,8 +118,8 @@ export const CompanyIdentification: Story = {
 }
 
 export const CompanyContact: Story = {
-  render: (args: any) => ({
-    components: { PFieldSetCustom, PForm },
+  render: (args) => ({
+    components: { PFieldSet, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -149,7 +148,7 @@ export const CompanyContact: Story = {
       <div style="padding: 20px;">
         <h2>Company Contact Information</h2>
         <PForm pLabelPosition="top">
-          <PFieldSetCustom 
+          <PFieldSet
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />
@@ -167,8 +166,8 @@ export const CompanyContact: Story = {
 }
 
 export const CompanyAddress: Story = {
-  render: (args: any) => ({
-    components: { PFieldSetCustom, PForm },
+  render: (args) => ({
+    components: { PFieldSet, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -201,7 +200,7 @@ export const CompanyAddress: Story = {
       <div style="padding: 20px;">
         <h2>Company Address</h2>
         <PForm pLabelPosition="top">
-          <PFieldSetCustom 
+          <PFieldSet
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />
@@ -219,8 +218,8 @@ export const CompanyAddress: Story = {
 }
 
 export const AccountingInformation: Story = {
-  render: (args: any) => ({
-    components: { PFieldSetCustom, PForm },
+  render: (args) => ({
+    components: { PFieldSet, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -255,7 +254,7 @@ export const AccountingInformation: Story = {
       <div style="padding: 20px;">
         <h2>Accounting and Tax Information</h2>
         <PForm pLabelPosition="top">
-          <PFieldSetCustom 
+          <PFieldSet
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />
@@ -273,8 +272,8 @@ export const AccountingInformation: Story = {
 }
 
 export const ReadonlyMode: Story = {
-  render: (args: any) => ({
-    components: { PFieldSetCustom, PForm },
+  render: (args) => ({
+    components: { PFieldSet, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -303,7 +302,7 @@ export const ReadonlyMode: Story = {
       <div style="padding: 20px;">
         <h2>Readonly Mode</h2>
         <PForm pLabelPosition="top">
-          <PFieldSetCustom 
+          <PFieldSet
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />
@@ -322,8 +321,8 @@ export const ReadonlyMode: Story = {
 }
 
 export const CompleteForm: Story = {
-  render: (args: any) => ({
-    components: { PFieldSetCustom, PForm },
+  render: (args) => ({
+    components: { PFieldSet, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -372,7 +371,7 @@ export const CompleteForm: Story = {
           <div v-for="(section, index) in sections" :key="index" 
                style="margin-bottom: 32px; padding: 24px; border: 1px solid #e0e0e0; border-radius: 8px;">
             <h3 style="margin: 0 0 20px 0; color: #333;">{{ section.title }}</h3>
-            <PFieldSetCustom 
+            <PFieldSet
               :pModel="model"
               :pFields="section.fields"
               :pReadonly="args.pReadonly"
@@ -393,8 +392,8 @@ export const CompleteForm: Story = {
 }
 
 export const EmptyFieldSet: Story = {
-  render: (args: any) => ({
-    components: { PFieldSetCustom, PForm },
+  render: (args) => ({
+    components: { PFieldSet, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -422,7 +421,7 @@ export const EmptyFieldSet: Story = {
       <div style="padding: 20px;">
         <h2>Empty FieldSet</h2>
         <PForm pLabelPosition="top">
-          <PFieldSetCustom 
+          <PFieldSet
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />

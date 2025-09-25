@@ -6,9 +6,9 @@ import type { IconName } from '../../types/IconName.types'
 
 const action = 'delete'
 const value = 'Hello'
-const componenRootCSSClass = 'p-toolbox-item'
+const componentRootCSSClass = 'p-toolbox-item'
 
-const defaultProps: PToolboxItemProps = {
+const defaultProps: PToolboxItemProps<string> = {
   pValue: value,
   pActionName: action,
   pIconName: 'add',
@@ -39,13 +39,13 @@ describe('pToolboxItem', () => {
   describe('props', () => {
     it('should have the "default" pState by default', () => {
       const wrapper = createWrapper()
-      expect(wrapper.classes()).toContain(`${componenRootCSSClass}--state-default`)
+      expect(wrapper.classes()).toContain(`${componentRootCSSClass}--state-default`)
     })
 
     it.each([
       {
         pState: 'danger',
-        expectedClassBinding: `${componenRootCSSClass}--state-danger`,
+        expectedClassBinding: `${componentRootCSSClass}--state-danger`,
       },
     ])(
       'should always bind class based on current state $pState',
@@ -75,7 +75,7 @@ describe('pToolboxItem', () => {
           disabled,
         })
 
-        const hasDisabledAttr = wrapper.props('disabled')
+        const hasDisabledAttr = wrapper.props().disabled
 
         expect(hasDisabledAttr).toBe(shouldHaveDisabledAttr)
       },
@@ -122,7 +122,7 @@ describe('pToolboxItem', () => {
     it('should render the action name value of the component', () => {
       const wrapper = createWrapper()
 
-      expect(wrapper.props('pActionName')).toContain(action)
+      expect(wrapper.props().pActionName).toContain(action)
     })
 
     it('should render the text values of the component', () => {

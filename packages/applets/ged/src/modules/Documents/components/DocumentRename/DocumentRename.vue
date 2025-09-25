@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { DocumentRenameProps } from './DocumentRenameTypes.ts'
+import type { DocumentRenameProps } from './DocumentRenameTypes'
 import DocumentRenameModal from './components/DocumentRenameModal.vue'
 import { renameDocument } from '@ged/services/Documents'
 import { PNotification } from '@pulse/styleguide'
