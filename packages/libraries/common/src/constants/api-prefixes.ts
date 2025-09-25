@@ -1,6 +1,7 @@
 export const API_PREFIXES = {
   ACCOUNT: 'account/api',
   AUTHENTICATION: 'authentication/api',
+  AUTHORIZATION: 'authorization/api',
   CONTACT: 'contact/api',
   CUSTOMER_WALLET: 'customer-wallet/api',
   ENTITY_CREATOR: 'entitycreator/api',

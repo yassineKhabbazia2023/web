@@ -9,7 +9,7 @@ export const fetchAuthorizationsConfig = async (
   accountId: number | null,
 ): Promise<AuthorizationConfig[]> => {
   const { data } = await commonApi().gateway.get(
-    `${API_PREFIXES.AUTHENTICATION}/authorizations/configuration`,
+    `${API_PREFIXES.AUTHORIZATION}/authorizations/configuration`,
     {
       params: {
         contactId,
@@ -27,7 +27,7 @@ export const updateUserPermissions = async (
   permissionCodes: string[],
 ) => {
   await commonApi().gateway.post(
-    `${API_PREFIXES.AUTHENTICATION}/authorizations/configuration`,
+    `${API_PREFIXES.AUTHORIZATION}/authorizations/configuration`,
     permissionCodes,
     {
       params: {
@@ -44,7 +44,7 @@ export const fetchAccountAuthorizationsConfig = async (
   type: ContactType,
 ): Promise<AuthorizationConfig[]> => {
   const { data } = await commonApi().gateway.get(
-    `${API_PREFIXES.AUTHENTICATION}/authorizations/configuration/account`,
+    `${API_PREFIXES.AUTHORIZATION}/authorizations/configuration/account`,
     {
       params: {
         accountId,
@@ -63,7 +63,7 @@ export const updateAccountPermissions = async (
   permissionCodes: string[],
 ) => {
   await commonApi().gateway.post(
-    `${API_PREFIXES.AUTHENTICATION}/authorizations/configuration/account`,
+    `${API_PREFIXES.AUTHORIZATION}/authorizations/configuration/account`,
     permissionCodes,
     {
       params: {
