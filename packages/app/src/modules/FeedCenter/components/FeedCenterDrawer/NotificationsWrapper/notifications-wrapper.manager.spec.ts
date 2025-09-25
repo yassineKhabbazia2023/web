@@ -24,7 +24,7 @@ import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
 import * as NotificationService from './notifications-wrapper.service'
 import { flushPromises } from '@vue/test-utils'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { NotificationKindEnum, RouteName, RouteParam } from '@pulse/common/enums'
 
 import {
   patchUnreadNotification,
@@ -275,7 +275,10 @@ describe('handleNotificationAction', () => {
     expect(routerMock.push).toHaveBeenCalledWith({
       name: RouteName.GED,
       params: { [RouteParam.ENTITY_ID]: gedNotificationMock.accounts[0].id },
-      query: { folderId: gedNotificationMock.redirectLink },
+      query: {
+        folderId: gedNotificationMock.redirectLink,
+        notificationType: NotificationKindEnum.AccountingDocumentUploaded,
+      },
     })
   })
 
@@ -288,7 +291,10 @@ describe('handleNotificationAction', () => {
     expect(routerMock.push).toHaveBeenCalledWith({
       name: RouteName.GED,
       params: { [RouteParam.ENTITY_ID]: gsDocumentUploadedNotificationMock.accounts[0].id },
-      query: { folderId: gsDocumentUploadedNotificationMock.redirectLink },
+      query: {
+        folderId: gsDocumentUploadedNotificationMock.redirectLink,
+        notificationType: NotificationKindEnum.GSDocumentUploaded,
+      },
     })
   })
 })

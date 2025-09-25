@@ -3,6 +3,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { BootManager } from '@app/managers/boot.manager'
 
+import { redirectionGuard } from './guards/redirection.guard'
 import { authenticationGuard } from './guards/authentication.guard'
 import { featureFlagGuard } from './guards/feature-flag.guard'
 import { selectedEntityGuard } from './guards/entity.guard'
@@ -53,6 +54,7 @@ const router = createRouter({
 router.beforeEach(authenticationGuard)
 router.beforeEach(featureFlagGuard)
 router.beforeEach(selectedEntityGuard)
+router.beforeEach(redirectionGuard) // should be after selectedEntityGuard
 router.beforeEach(permissionGuard)
 router.afterEach(seoGuard)
 

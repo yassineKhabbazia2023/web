@@ -1,16 +1,5 @@
 import type { NotificationAccount } from '@app/modules/FeedCenter/types/notification-account.type'
-
-
-export enum NotificationKindEnum {
-  Delegation = 'Delegation-AddDelegation',
-  Mandate = 'Mandate-MandateStatusChanged',
-  ReportCustomerCreated = 'Reporting-ReportCreatedCustomer',
-  ReportCustomerUpdated = 'Reporting-ReportUpdatedCustomer',
-  ReportCollabCreated = 'Reporting-ReportCreatedCollab',
-  ReportCollabUpdated = 'Reporting-ReportUpdatedCollab',
-  AccountingDocumentUploaded = 'Ged-AccountingDocumentUploaded',
-  GSDocumentUploaded = 'Ged-GSDocumentUploaded',
-}
+import { NotificationKindEnum } from '@pulse/common/enums'
 
 export interface FeedCenterNotification {
   id: number

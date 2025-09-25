@@ -84,6 +84,7 @@ import { PNotification } from '@pulse/styleguide'
 import { logger } from '@pulse/core'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import { GedManager } from '@ged/ged.manager'
+import { GedContext } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -96,10 +97,11 @@ const servicesFolders = ref<Folder[][]>([])
 
 const selectedEntityStore = useSelectedEntityStore()
 const { selectedEntity } = storeToRefs(selectedEntityStore)
-const gedContext = computed(() => GedManager.getGedContext())
+const gedContext = ref<GedContext>(GedContext.LEGACY)
 
 const fetchGedFoldersAndServices = async () => {
   try {
+    gedContext.value = GedManager.getGedContext()
     entityServices.value = await fetchUserEntityServices(
       accountNumber.value,
       selectedAccountId.value,

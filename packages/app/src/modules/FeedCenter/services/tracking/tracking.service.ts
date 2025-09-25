@@ -1,5 +1,6 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { NotificationKindEnum, SelectedNotificationEnum } from '../../types/notification.type'
+import { SelectedNotificationEnum } from '../../types/notification.type'
+import { NotificationKindEnum } from '@pulse/common/enums'
 import {
   NotificationTrackingType,
   NotificationTrackingReadType,

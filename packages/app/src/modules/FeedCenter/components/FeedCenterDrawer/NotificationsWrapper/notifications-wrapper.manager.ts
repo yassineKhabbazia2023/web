@@ -1,4 +1,4 @@
-import { type FeedCenterNotification, NotificationKindEnum } from '@app/modules/FeedCenter/types/notification.type'
+import type { FeedCenterNotification } from '@app/modules/FeedCenter/types/notification.type'
 import type {
   HandleNotificationActionParams,
   GetTimeSinceCreationParams,
@@ -7,7 +7,7 @@ import type {
 import { patchNotificationReadStatus } from '@app/modules/FeedCenter/services/notifications.service'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { NotificationKindEnum, RouteName, RouteParam } from '@pulse/common/enums'
 
 dayjs.extend(relativeTime)
 
@@ -76,10 +76,14 @@ export function handleNotificationAction({
 
 const handleGEDNotification = async (params: NotificationActionsMappingParams) => {
   const { accountIds, notification, router } = params
+
   router.push({
     name: RouteName.GED,
     params: { [RouteParam.ENTITY_ID]: accountIds[0] },
-    query: { folderId: notification.redirectLink },
+    query: {
+      folderId: notification.redirectLink,
+      notificationType: notification.notificationType,
+    },
   })
 }
 

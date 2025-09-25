@@ -1,5 +1,6 @@
 import { accountsMock } from '@app/__mocks__/accounts.mocks'
-import { type FeedCenterNotification, NotificationKindEnum } from '@app/modules/FeedCenter/types/notification.type'
+import type { FeedCenterNotification } from '@app/modules/FeedCenter/types/notification.type'
+import { NotificationKindEnum } from '@pulse/common/enums'
 
 export const readNotificationsMock = [
   {

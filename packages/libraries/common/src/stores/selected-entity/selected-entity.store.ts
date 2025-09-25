@@ -27,7 +27,10 @@ export const useSelectedEntityStore = defineStore('selected-entity', () => {
     if (subscriptions === undefined) {
       return false
     }
-    const hasOffer = subscriptions.some(subcription => subcription.offerCode === offerCode)
+    const hasOffer = subscriptions.some(subscription =>
+      subscription.offerCode === offerCode &&
+      subscription.status === 'validated',
+    )
 
     return hasOffer === true
   }

@@ -1,5 +1,6 @@
 import { describe } from 'vitest'
-import { NotificationKindEnum, SelectedNotificationEnum } from '../../types/notification.type'
+import { SelectedNotificationEnum } from '../../types/notification.type'
+import { NotificationKindEnum } from '@pulse/common/enums'
 import { NotificationTrackingType, NotificationTrackingReadType, NotificationTrackingTab } from './tracking.types'
 import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 

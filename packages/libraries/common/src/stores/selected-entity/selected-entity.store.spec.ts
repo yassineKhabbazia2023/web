@@ -73,8 +73,22 @@ describe('test selectedEntityStore', () => {
           }),
         ],
       },
-      description: 'should return false when selected entity does not contain Pennylane offer',
+      description: 'should return true when selected entity contains validated Pennylane offer',
       expectedHasOffer: true,
+    }, {
+      offerCode: SubscriptionOfferCode.PENNYLANE,
+      selectedEntity: {
+        ...selectedEntityMock,
+        subscriptions: [
+          getMockedSubscription(),
+          getMockedSubscription({
+            offerCode: SubscriptionOfferCode.PENNYLANE,
+            status: 'pending',
+          }),
+        ],
+      },
+      description: 'should return false when selected entity contains non validated Pennylane offer',
+      expectedHasOffer: false,
     }]
     it.each(tests)('$description', ({
       selectedEntity,
