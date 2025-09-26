@@ -50,11 +50,11 @@
         </i18n-t>
       </div>
 
-      <div class="widget-pennylane-intro__title margin-top--4">
-        <i18n-t
-          class="text-color--black-rock-900"
-          keypath="title.revolutionizingSoftware"
-        >
+      <div class="widget-pennylane-intro__title margin-top--4 font-bold">
+        <i18n-t keypath="title.revolutionizingSoftware">
+          <template #brand>
+            <span class="text-color--secondary-amethyste">{{ t('title.brand') }}</span>
+          </template>
           <template #softwareName>
             <span class="text-color--secondary-amethyste">{{ t('title.pennylane') }}</span>
           </template>
@@ -247,14 +247,15 @@ const { t } = useI18n({
   en-US:
     header:
       new: "New"
-      toolChange: "Tool change for {accountingTool}"
-      accounting: "accounting production"
+      toolChange: "Change of {accountingTool}"
+      accounting: "management tool"
     title:
+      brand: 'RYDGE Conseil'
       pennylane: "Pennylane"
-      revolutionizingSoftware: "{softwareName}, the software revolutionizing accounting"
+      revolutionizingSoftware: "{brand} combines its expertise with {softwareName}"
     description:
-      partnerChange: "RYDGE Conseil is switching partners for {accountingManagement}!"
-      accountingManagement: "its accounting management"
+      partnerChange: "Your new partner in daily {accountingManagement}!"
+      accountingManagement: "managing your activities"
       newProcedure: "This change introduces a new procedure for {accountingDocumentsDeposit}:"
       accountingDocumentsDeposit: "submitting your accounting documents"
       links:
@@ -268,14 +269,15 @@ const { t } = useI18n({
   fr-FR:
     header:
       new: 'Nouveau'
-      toolChange: "Changement d'outil de {accountingTool}"
-      accounting: 'production comptable'
+      toolChange: "Changement d'{accountingTool}"
+      accounting: 'outil de gestion'
     title:
+      brand: 'RYDGE Conseil'
       pennylane: 'Pennylane'
-      revolutionizingSoftware: '{softwareName}, le logiciel qui révolutionne la comptabilité'
+      revolutionizingSoftware: '{brand} allie son expertise à {softwareName}'
     description:
-      partnerChange: 'RYDGE Conseil change de partenaire pour la {accountingManagement} !'
-      accountingManagement: 'gestion de sa comptabilité'
+      partnerChange: 'Votre nouveau partenaire dans la {accountingManagement} au quotidien !'
+      accountingManagement: 'gestion de vos activités'
       newProcedure: 'Ce changement implique une nouvelle procédure pour le {accountingDocumentsDeposit} :'
       accountingDocumentsDeposit: 'dépôt de vos pièces comptables'
       links:
