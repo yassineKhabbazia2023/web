@@ -27,6 +27,12 @@
         :href="RSS_NEWS_SITE_URL"
         target="_blank"
         rel="noopener"
+        @click="widgetClick({
+          event: AmplitudeEvent.WIDGET_INTERACTED,
+          widgetName: WidgetName.RSS_NEWS,
+          featureName: AmplitudeFeatureName.HOMEPAGE,
+          widgetItemClicked: WidgetItemClicked.RSS_VIEW_ALL,
+        })"
       >
         {{ t('widgets.rssNews.seeMore') }}
       </a>
@@ -79,6 +85,9 @@ import { RssNewsItem } from './types/rss-news.types'
 import { PTitle, PLoader } from '@pulse/styleguide/components'
 
 import RSSNewsItemComponent from './components/RSSNewsItem.component.vue'
+import { widgetClick } from '@pulse/widgets/utils'
+import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
+import { WidgetItemClicked, WidgetName } from '@pulse/widgets/enums'
 
 const { t } = useI18n()
 

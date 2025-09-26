@@ -48,6 +48,11 @@
       :href="POWER_BI_INTRODUCTION"
       target="_blank"
       rel="noopener"
+      @click="widgetClick({
+        event: AmplitudeEvent.WIDGET_INTERACTED,
+        widgetName: WidgetName.POWERBI_INTRO,
+        featureName: AmplitudeFeatureName.HOMEPAGE,
+      })"
     >
       {{ t('widgets.powerBi.seeMore') }}
     </a>
@@ -58,6 +63,9 @@
 import { useI18n } from 'vue-i18n'
 import { PImage } from '@pulse/styleguide/components'
 import { POWER_BI_INTRODUCTION } from '@pulse/core'
+import { widgetClick } from '@pulse/widgets/utils'
+import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
+import { WidgetName } from '@pulse/widgets/enums'
 
 const { t } = useI18n()
 </script>

@@ -43,6 +43,11 @@
       pTag="a"
       pType="secondary"
       target="_blank"
+      @click="widgetClick({
+        event: AmplitudeEvent.WIDGET_INTERACTED,
+        widgetName: WidgetName.DIGILAB,
+        featureName: AmplitudeFeatureName.HOMEPAGE,
+      })"
     >
       {{ t('widgets.digilab.joinAction') }}
     </PButton>
@@ -54,6 +59,9 @@ import { useI18n } from 'vue-i18n'
 import { PButton, PImage } from '@pulse/styleguide/components'
 import { DIGILAB_JOIN_FORM_URL } from '@pulse/core'
 import { sanitizeUrl } from '@braintree/sanitize-url'
+import { widgetClick } from '@pulse/widgets/utils'
+import { WidgetName } from '@pulse/widgets/enums'
+import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 
 const { t } = useI18n()
 </script>

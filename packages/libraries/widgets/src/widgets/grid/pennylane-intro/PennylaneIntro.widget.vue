@@ -85,6 +85,12 @@
                 class="text-underline text-color--secondary-amethyste"
                 :href="PENNYLANE_ACTIVATION_AND_CONNECTION_HELP_URL"
                 target="_blank"
+                @click="widgetClick({
+                  event: AmplitudeEvent.WIDGET_INTERACTED,
+                  widgetName: WidgetName.PENNYLANE_INTRO,
+                  featureName: AmplitudeFeatureName.HOMEPAGE,
+                  widgetItemClicked: WidgetItemClicked.PENNYLANE_CONNECTED
+                })"
               >
                 {{ t('description.links.pennylaneFromRydge') }}
               </a>
@@ -97,6 +103,12 @@
                 class="text-underline text-color--secondary-amethyste"
                 :href="PENNYLANE_IMPORT_INVOICE_HELP_URL"
                 target="_blank"
+                @click="widgetClick({
+                  event: AmplitudeEvent.WIDGET_INTERACTED,
+                  widgetName: WidgetName.PENNYLANE_INTRO,
+                  featureName: AmplitudeFeatureName.HOMEPAGE,
+                  widgetItemClicked: WidgetItemClicked.PENNYLANE_DEPOSED
+                })"
               >
                 {{ t('description.links.pennylanePlatform') }}
               </a>
@@ -109,6 +121,12 @@
                 class="text-underline text-color--secondary-amethyste"
                 :href="PENNYLANE_MOBILE_APP_URL"
                 target="_blank"
+                @click="widgetClick({
+                  event: AmplitudeEvent.WIDGET_INTERACTED,
+                  widgetName: WidgetName.PENNYLANE_INTRO,
+                  featureName: AmplitudeFeatureName.HOMEPAGE,
+                  widgetItemClicked: WidgetItemClicked.PENNYLANE_MOBILE
+                })"
               >
                 {{ t('description.links.pennylaneAppDiscovery') }}
               </a>
@@ -131,6 +149,12 @@
           pType="primary"
           target="_blank"
           pSize="small"
+          @click="widgetClick({
+            event: AmplitudeEvent.WIDGET_INTERACTED,
+            widgetName: WidgetName.PENNYLANE_INTRO,
+            featureName: AmplitudeFeatureName.HOMEPAGE,
+            widgetItemClicked: WidgetItemClicked.PENNYLANE_GETTING_STARTED
+          })"
         >
           {{ t('description.links.pennylaneGettingStarted') }}
         </PButton>
@@ -162,13 +186,15 @@ import {
   PENNYLANE_MOBILE_APP_URL,
   PENNYLANE_GETTING_STARTED_URL,
 } from '@pulse/core'
+import { widgetClick } from '@pulse/widgets/utils'
+import { WidgetItemClicked, WidgetName } from '@pulse/widgets/enums'
+import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
+
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
-
 </script>
-
 <style lang="scss">
 @use '../../../utils/breakpoints';
 

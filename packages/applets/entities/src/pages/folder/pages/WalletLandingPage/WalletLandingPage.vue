@@ -27,7 +27,16 @@ import { PEntityHeader } from '@pulse/styleguide/components'
 import TopBar from './TopBar/top-bar.vue'
 import WidgetsHome from './WidgetsHome.vue'
 import LegacyHome from './LegacyHome.vue'
+import { onMounted } from 'vue'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 
 const selectedEntityStore = useSelectedEntityStore()
 const { selectedEntity } = storeToRefs(selectedEntityStore)
+
+onMounted(() => {
+  AmplitudeService.track(AmplitudeEvent.FEATURE_CONSULTED, {
+    feature_name: AmplitudeFeatureName.HOMEPAGE,
+  })
+})
 </script>

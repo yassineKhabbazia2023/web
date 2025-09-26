@@ -5,6 +5,12 @@
     rel="noopener"
     class="rss-news-item height--100"
     data-testid="rss-news-item"
+    @click="widgetClick({
+      event: AmplitudeEvent.WIDGET_INTERACTED,
+      widgetName: WidgetName.RSS_NEWS,
+      featureName: AmplitudeFeatureName.HOMEPAGE,
+      widgetItemClicked: 'RSS - ' + props.newsItem.title
+    })"
   >
     <img
       v-if="imgSrc"
@@ -25,6 +31,9 @@ import { sanitizeUrl } from '@braintree/sanitize-url'
 import { RssNewsItem } from '../types/rss-news.types'
 import { RSSNewsService } from '../services/rss-news.service'
 import { computed } from 'vue'
+import { widgetClick } from '@pulse/widgets/utils'
+import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
+import { WidgetName } from '@pulse/widgets/enums'
 
 const props = defineProps<{
   newsItem: RssNewsItem

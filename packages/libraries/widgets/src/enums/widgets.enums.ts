@@ -22,3 +22,11 @@ export enum WidgetSize {
   THREE_SPANS = 3,
   FOUR_CELLS_SQUARE = 4,
 }
+
+export enum WidgetItemClicked {
+  PENNYLANE_GETTING_STARTED = 'PNL - Bien débuter avec Pennylane',
+  PENNYLANE_CONNECTED = 'PNL - Se connecter à Pennylane',
+  PENNYLANE_DEPOSED = 'PNL - Déposer ses factures',
+  PENNYLANE_MOBILE = "PNL - Découvrir l'application mobile Pennylane",
+  RSS_VIEW_ALL = 'RSS - View All',
+}

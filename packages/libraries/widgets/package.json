@@ -12,7 +12,8 @@
   "./managers": "./src/managers.ts",
   "./types": "./src/types.ts",
   "./install": "./src/install.ts",
-  "./gridless": "./src/gridless.ts"
+  "./gridless": "./src/gridless.ts",
+  "./utils": "./src/utils.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",
