@@ -54,6 +54,7 @@ export type ImageName =
 'variable-pay-summary' |
 'variable-pay-transmission' |
 'offers-catalog-document' |
+'pennylane-separator' |
 'add-entity' |
 'add-user' |
 'app-authorization' |
