@@ -60,14 +60,14 @@ const defaultFilters: FilterOption[] = [
     pIconName: 'checkCircle',
     pValue: 2,
     pContent: 'En cours',
-    pColor: 'fuschia',
+    pColor: 'light-blue',
     pCode: 'en-cours',
   },
   {
     pIconName: 'xCircle',
     pValue: '9',
     pContent: 'Résilié',
-    pColor: 'gray-900',
+    pColor: 'gray',
     pCode: 'resilie',
   },
 ]
@@ -83,7 +83,7 @@ const numberFilters: FilterOption<number>[] = [
   {
     pIconName: 'checkCircle',
     pValue: '4',
-    pContent: 'Deploiment',
+    pContent: 'Déploiement',
     pColor: 'warning',
     pCode: 2,
   },
@@ -98,14 +98,14 @@ const numberFilters: FilterOption<number>[] = [
     pIconName: 'checkCircle',
     pValue: 2,
     pContent: 'En cours',
-    pColor: 'fuschia',
+    pColor: 'light-blue',
     pCode: 4,
   },
   {
     pIconName: 'xCircle',
     pValue: '9',
     pContent: 'Résilié',
-    pColor: 'gray-900',
+    pColor: 'gray',
     pCode: 5,
   },
 ]
@@ -241,7 +241,7 @@ export const StatusFilters: Story = {
         {
           pIconName: 'xCircle',
           pContent: 'Suspended',
-          pColor: 'gray-500',
+          pColor: 'light-gray',
           pCode: 'suspended',
         },
       ]
@@ -283,7 +283,7 @@ export const CategoryFilters: Story = {
         {
           pIconName: 'fileText',
           pContent: 'Documents',
-          pColor: 'amethyste',
+          pColor: 'tranquil',
           pCode: 'documents',
         },
         {
@@ -295,13 +295,13 @@ export const CategoryFilters: Story = {
         {
           pIconName: 'person',
           pContent: 'Users',
-          pColor: 'fuschia',
+          pColor: 'light-blue',
           pCode: 'users',
         },
         {
           pIconName: 'gear',
           pContent: 'Settings',
-          pColor: 'gray-500',
+          pColor: 'light-gray',
           pCode: 'settings',
         },
         {

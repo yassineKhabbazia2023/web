@@ -119,7 +119,7 @@ const filters: FilterOption<number>[] = [
   {
     pContent: t('in-progress'),
     pCode: 30,
-    pColor: 'fuschia',
+    pColor: 'light-blue',
     pIconName: 'arrowRepeat',
   },
   {
@@ -131,7 +131,7 @@ const filters: FilterOption<number>[] = [
   {
     pContent: t('inactive'),
     pCode: 50,
-    pColor: 'gray-900',
+    pColor: 'gray',
     pIconName: 'xCircle',
   },
 ]

@@ -30,10 +30,9 @@
         "
       >
         <PTag
-          pColor="plain"
+          pColor="dark-green"
           :pContent="t('header.new')"
           pIconLeftName="stars"
-          pRound
         />
         <i18n-t
           class="

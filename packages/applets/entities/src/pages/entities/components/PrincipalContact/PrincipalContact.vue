@@ -26,7 +26,7 @@ const props = defineProps<PrincipalContactProps>()
 const contactDescription = t('contactDescription')
 const contactTag: PTagProps = {
   pSize: 'default',
-  pColor: 'cyan',
+  pColor: 'blue',
   pContent: t('signatoryCustomer'),
   pIconLeftName: 'vectorPen',
 }

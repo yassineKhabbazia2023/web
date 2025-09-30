@@ -45,7 +45,7 @@ const pFilters: FilterOption[] = [
   {
     pIconName: 'checkCircle',
     pValue: '4',
-    pContent: 'Deploiment',
+    pContent: 'Déploiement',
     pColor: 'warning',
     pCode: 'deploiment',
   },
@@ -59,14 +59,14 @@ const pFilters: FilterOption[] = [
     pIconName: 'checkCircle',
     pValue: 2,
     pContent: 'En cours',
-    pColor: 'fuschia',
+    pColor: 'light-blue',
     pCode: 'en-cours',
   },
   {
     pIconName: 'xCircle',
     pValue: '9',
     pContent: 'Résilié',
-    pColor: 'gray-900',
+    pColor: 'gray',
     pCode: 'resilie',
   },
 ]
@@ -81,7 +81,7 @@ const filtersNumber: FilterOption<number>[] = [
   {
     pIconName: 'checkCircle',
     pValue: '4',
-    pContent: 'Deploiment',
+    pContent: 'Déploiement',
     pColor: 'warning',
     pCode: 2,
   },
@@ -96,14 +96,14 @@ const filtersNumber: FilterOption<number>[] = [
     pIconName: 'checkCircle',
     pValue: 2,
     pContent: 'En cours',
-    pColor: 'fuschia',
+    pColor: 'light-blue',
     pCode: 4,
   },
   {
     pIconName: 'xCircle',
     pValue: '9',
     pContent: 'Résilié',
-    pColor: 'gray-900',
+    pColor: 'gray',
     pCode: 5,
   },
 ]

@@ -14,7 +14,7 @@
       :pSubtitle="rowData.email"
     >
       <PTag
-        pColor="gray-900"
+        pColor="gray"
         pSize="default"
         pIconLeftName="person"
         :pContent="rowData.role"

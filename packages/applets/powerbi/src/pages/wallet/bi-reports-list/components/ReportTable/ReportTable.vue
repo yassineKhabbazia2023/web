@@ -86,7 +86,6 @@
           :pColor="scope.row.status.color"
           :pIconLeftName="scope.row.status.iconName"
           style="width: 70%"
-          pRound
         />
       </template>
     </PTableColumn>

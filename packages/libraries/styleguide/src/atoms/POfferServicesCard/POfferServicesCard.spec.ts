@@ -18,7 +18,7 @@ const defaultProps: POfferServicesCardProps = {
       pName: 'GED Accounting',
       pTag: {
         pContent: 'Included',
-        pColor: 'gray-900',
+        pColor: 'gray',
       },
     },
     {

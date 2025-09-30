@@ -89,7 +89,7 @@ describe('pUserCard', () => {
       const wrapper = createWrapper({
         ...defaultProps,
         pTag: {
-          pColor: 'persian',
+          pColor: 'default',
           pSize: 'small',
           pIconLeftName: 'person',
           pContent: 'Client',

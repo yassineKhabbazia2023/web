@@ -38,7 +38,7 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pName: 'GED Accounting',
         pTag: {
           pContent: 'Included',
-          pColor: 'gray-900',
+          pColor: 'gray',
         },
       },
     ],
@@ -53,7 +53,7 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pName: 'Access to the Meg tool',
         pTag: {
           pContent: 'Included',
-          pColor: 'gray-900',
+          pColor: 'gray',
         },
       },
       {
@@ -72,7 +72,7 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pName: 'Initiation training in Meg',
         pTag: {
           pContent: 'Additional price',
-          pColor: 'amethyste',
+          pColor: 'tranquil',
         },
       },
     ],
@@ -87,7 +87,7 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pName: 'Access to the Loop tool',
         pTag: {
           pContent: 'Included',
-          pColor: 'gray-900',
+          pColor: 'gray',
         },
       },
       {
@@ -96,7 +96,7 @@ const offersData = reactive<POfferServicesCardProps[]>([
         pName: 'Complete support training in Meg',
         pTag: {
           pContent: 'Additional price',
-          pColor: 'amethyste',
+          pColor: 'tranquil',
         },
       },
     ],

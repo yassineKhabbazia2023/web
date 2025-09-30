@@ -38,7 +38,7 @@ describe('filterOption', () => {
     })
     const filterOption = wrapper.findComponent('.p-filter-option--disabled')
     const tag = wrapper.find('.p-filter-option__tag')
-    expect(tag.attributes('pcolor')).toBe('gray-500')
+    expect(tag.attributes('pcolor')).toBe('light-gray')
     expect(filterOption.exists()).toBeTruthy()
   })
 

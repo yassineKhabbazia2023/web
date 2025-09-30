@@ -8,9 +8,9 @@ import type { PTagProps } from '@pulse/styleguide/types'
 export const ROLE_BUSINESS_COLORS: Record<string, PTagProps['pColor']> = {
   transverse: 'warning',
   esc: 'info',
-  conseil: 'fuschia',
+  conseil: 'light-blue',
   juridique: 'success',
-  social: 'persian',
+  social: 'default',
 } as const
 
 /**
@@ -61,4 +61,4 @@ export const MAX_MAIN_ROLES_SHORT = 1
 /**
  * Default color for mixed business roles
  */
-export const DEFAULT_MIXED_ROLE_COLOR: PTagProps['pColor'] = 'gray-900'
+export const DEFAULT_MIXED_ROLE_COLOR: PTagProps['pColor'] = 'gray'

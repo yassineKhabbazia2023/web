@@ -3,7 +3,7 @@ import { IconName } from '@styleguide/types'
 export interface PFilterOptionProps {
   pValue?: string | number
   pContent: string
-  pColor: 'success' | 'warning' | 'amethyste' | 'danger' | 'gray-500' | 'gray-900' | 'fuschia'
+  pColor: 'success' | 'warning' | 'tranquil' | 'danger' | 'disabled' | 'light-gray' | 'gray' | 'light-blue'
   pSelected?: boolean
   pDisabled?: boolean
   pIconName: IconName

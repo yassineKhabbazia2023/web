@@ -25,11 +25,10 @@
 
       <template #tag>
         <PTag
-          class="report-error-card__type font-xsmall text-color--jungle-400"
+          class="report-error-card__type font-xsmall"
           :pContent="reportTypeTag.text"
           :pIconLeftName="reportTypeTag.iconName"
-          pColor="fuschia"
-          pRound
+          pColor="light-blue"
           data-testid="report-error-tag"
         />
       </template>

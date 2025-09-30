@@ -13,8 +13,7 @@
     >
       <PTag
         :pContent="collabDetails.role"
-        pColor="gray-500"
-        pSize="default"
+        pColor="light-gray"
         pIconLeftName="person"
       />
     </PUserCard>

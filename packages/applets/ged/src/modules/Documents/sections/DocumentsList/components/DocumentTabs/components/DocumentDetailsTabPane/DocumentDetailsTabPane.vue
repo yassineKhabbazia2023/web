@@ -7,13 +7,12 @@
       >
         <p class="label certified-tag">
           <PTag
-            pColor="gray-900"
+            pColor="gray"
             pContent="Certifié"
             pIconLeftName="patchCheck"
             pSize="default"
             :pClosable="false"
             :pDisableTransitions="false"
-            :pRound="false"
           />
         </p>
       </div>
@@ -77,7 +76,6 @@
             pSize="default"
             :pClosable="false"
             :pDisableTransitions="false"
-            :pRound="false"
           />
         </p>
       </div>

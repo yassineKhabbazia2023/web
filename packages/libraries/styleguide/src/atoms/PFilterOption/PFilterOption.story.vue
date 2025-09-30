@@ -43,7 +43,7 @@ const props: PFilterOptionProps = reactive({
 const filterOptionColor: { label: string, value: PFilterOptionProps['pColor'] }[] = [
   {
     label: 'En Cours',
-    value: 'amethyste',
+    value: 'tranquil',
   },
   {
     label: 'Success',
@@ -58,12 +58,12 @@ const filterOptionColor: { label: string, value: PFilterOptionProps['pColor'] }[
     value: 'danger',
   },
   {
-    label: 'gray-500',
-    value: 'gray-500',
+    label: 'light-gray',
+    value: 'light-gray',
   },
   {
-    label: 'gray-900',
-    value: 'gray-900',
+    label: 'gray',
+    value: 'gray',
   },
 ]
 </script>

@@ -12,8 +12,7 @@
         <li v-if="pDate" class="p-history-card__list-item">
           <PTag
             pSize="small"
-            pColor="blue-pulse"
-            pPlain
+            pColor="dark-blue"
             :pContent="pDate"
             data-testid="history-card-date"
           />
@@ -21,7 +20,7 @@
         <li v-if="pType" class="p-history-card__list-item">
           <PTag
             pSize="small"
-            pColor="gray-500"
+            pColor="light-gray"
             :pContent="pType"
             data-testid="history-card-type"
           />
@@ -35,7 +34,7 @@
           >
             <PTag
               pSize="small"
-              pColor="gray-500"
+              pColor="light-gray"
               :pIconLeftName="pEntityIconName"
               :pContent="pEntity"
               data-testid="history-card-entity"
@@ -44,7 +43,7 @@
           <PTag
             v-else
             pSize="small"
-            pColor="gray-500"
+            pColor="light-gray"
             :pIconLeftName="pEntityIconName"
             :pContent="pEntity"
             data-testid="history-card-entity"

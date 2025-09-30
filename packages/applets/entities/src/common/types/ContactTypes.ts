@@ -1,4 +1,4 @@
-import type { IconName } from '@pulse/styleguide/types'
+import type { IconName, PTagProps } from '@pulse/styleguide/types'
 
 export interface Contact {
   contactId: number
@@ -14,19 +14,7 @@ export interface Contact {
 
 export interface UserStatus {
   text: string
-  color:
-    | ''
-    | 'success'
-    | 'warning'
-    | 'danger'
-    | 'info'
-    | 'persian'
-    | 'fuschia'
-    | 'cyan'
-    | 'amethyste'
-    | 'gray-300'
-    | 'gray-500'
-    | 'gray-900'
+  color: PTagProps['pColor']
   iconName: IconName
 }
 

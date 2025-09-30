@@ -63,7 +63,6 @@
         :pSubtitle="data.pSubtitle"
       >
         <PTag
-          pColor="persian"
           pSize="default"
           pIconLeftName="person"
           pContent="Client"
@@ -87,7 +86,7 @@ const data: PUserCardProps = {
   pImageName: 'activation',
   pTag: {
     pSize: 'default',
-    pColor: 'gray-900',
+    pColor: 'gray',
     pContent: 'Entity',
     pIconLeftName: 'building',
   },

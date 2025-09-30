@@ -33,13 +33,12 @@
 
   <PTag
     v-else-if="fieldType === 'Tag' && isCertified && fieldName === ''"
-    pColor="gray-900"
+    pColor="gray"
     pContent="Certifié"
     pIconLeftName="patchCheck"
     pSize="default"
     :pClosable="false"
     :pDisableTransitions="false"
-    :pRound="false"
   />
 
   <PTag
@@ -50,7 +49,6 @@
     pSize="default"
     :pClosable="false"
     :pDisableTransitions="false"
-    :pRound="false"
     pType="primary"
   />
 

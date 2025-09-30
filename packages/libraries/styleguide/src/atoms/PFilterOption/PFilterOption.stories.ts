@@ -29,15 +29,15 @@ export const Default: Story = {
         pContent: 'À déployer',
         pIconName: 'arrowUpCircle',
         pValue: 3,
-        pColor: 'fuschia',
+        pColor: 'light-blue',
       })
       const filterOptionColor: { label: string; value: PFilterOptionProps['pColor'] }[] = [
-        { label: 'En cours', value: 'amethyste' },
+        { label: 'En cours', value: 'tranquil' },
         { label: 'Succès', value: 'success' },
         { label: 'Avertissement', value: 'warning' },
         { label: 'Erreur', value: 'danger' },
-        { label: 'Gris 500', value: 'gray-500' },
-        { label: 'Gris 900', value: 'gray-900' },
+        { label: 'Gris Léger', value: 'light-gray' },
+        { label: 'Gris', value: 'gray' },
       ]
       return { props, filterOptionColor }
     },

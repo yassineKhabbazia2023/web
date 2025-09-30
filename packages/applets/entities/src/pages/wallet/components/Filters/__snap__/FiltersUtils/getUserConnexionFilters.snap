@@ -1,7 +1,7 @@
 [
   {
     "pCode": undefined,
-    "pColor": "gray-900",
+    "pColor": "gray",
     "pContent": "declared",
     "pDisabled": true,
     "pIconName": "patchCheck",
@@ -9,7 +9,7 @@
   },
   {
     "pCode": undefined,
-    "pColor": "gray-900",
+    "pColor": "gray",
     "pContent": "connected",
     "pDisabled": true,
     "pIconName": "power",
@@ -17,7 +17,7 @@
   },
   {
     "pCode": undefined,
-    "pColor": "gray-900",
+    "pColor": "gray",
     "pContent": "guests",
     "pDisabled": true,
     "pIconName": "person",

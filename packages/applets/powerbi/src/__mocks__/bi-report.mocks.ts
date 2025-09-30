@@ -199,7 +199,7 @@ export const getFormattedMockReports = (): MappedReportRow[] => {
       creationDate: '2025-01-12T10:22:00.000Z',
       updateDate: '2025-04-01T14:30:00.000Z',
       createdBy: 'Sophie Leclair',
-      status: { type: ReportStatus.OFFLINE, text: 'Offline', color: 'gray-900', iconName: 'eyeSlash' },
+      status: { type: ReportStatus.OFFLINE, text: 'Offline', color: 'gray', iconName: 'eyeSlash' },
       avatarColor: 'color-gray-900',
       dataUpdateDate: '2025-03-30T16:00:00.000Z',
     },

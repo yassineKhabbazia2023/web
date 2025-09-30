@@ -15,13 +15,13 @@ export const CATALOG_TAG_STYLES: {
   tagProps: { pColor: 'info' },
 }, {
   tagLabel: 'Pack',
-  tagProps: { pColor: 'amethyste' },
+  tagProps: { pColor: 'blue' },
 }, {
   tagLabel: 'Développer',
-  tagProps: { pColor: 'fuschia' },
+  tagProps: { pColor: 'blue' },
 }, {
   tagLabel: 'Transmettre',
-  tagProps: { pColor: 'cyan' },
+  tagProps: { pColor: 'tranquil' },
 }, {
   tagLabel: 'Conseil Patrimonial',
   tagProps: { pColor: 'warning' },
@@ -30,10 +30,10 @@ export const CATALOG_TAG_STYLES: {
   tagProps: { pColor: 'success' },
 }, {
   tagLabel: 'ESC',
-  tagProps: { pColor: 'cyan' },
+  tagProps: { pColor: 'tranquil' },
 }, {
   tagLabel: 'Conseil',
-  tagProps: { pColor: 'fuschia' },
+  tagProps: { pColor: 'blue' },
 }, {
   tagLabel: 'Gestion sociale',
   tagProps: { pColor: 'warning' },
@@ -45,8 +45,8 @@ export const CATALOG_TAG_STYLES: {
   tagProps: { pColor: 'success' },
 }, {
   tagLabel: 'Filiale Gestion Privée',
-  tagProps: { pColor: 'amethyste' },
+  tagProps: { pColor: 'blue' },
 }, {
   tagLabel: 'Partenariat',
-  tagProps: { pColor: 'fuschia' },
+  tagProps: { pColor: 'blue' },
 }]

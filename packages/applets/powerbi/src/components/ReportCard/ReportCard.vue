@@ -13,8 +13,7 @@
     @click="handleReportSelection"
   >
     <PTag
-      pColor="outline"
-      pSize="default"
+      pColor="outline-green"
       :pContent="type"
       data-testid="report-card-type"
     />

@@ -36,7 +36,7 @@ const meta: Meta<typeof POfferServicesCard> = {
         pName: 'GED Accounting',
         pTag: {
           pContent: 'Included',
-          pColor: 'gray-900',
+          pColor: 'gray',
         },
       },
     ],
@@ -71,7 +71,7 @@ export const WithMultipleServices: Story = {
         pName: 'Access to the Meg tool',
         pTag: {
           pContent: 'Included',
-          pColor: 'gray-900',
+          pColor: 'gray',
         },
       },
       {
@@ -90,7 +90,7 @@ export const WithMultipleServices: Story = {
         pName: 'Initiation training in Meg',
         pTag: {
           pContent: 'Additional price',
-          pColor: 'amethyste',
+          pColor: 'tranquil',
         },
       },
     ],
@@ -108,7 +108,7 @@ export const LoopServices: Story = {
         pName: 'Access to the Loop tool',
         pTag: {
           pContent: 'Included',
-          pColor: 'gray-900',
+          pColor: 'gray',
         },
       },
       {
@@ -117,7 +117,7 @@ export const LoopServices: Story = {
         pName: 'Complete support training in Loop',
         pTag: {
           pContent: 'Additional price',
-          pColor: 'amethyste',
+          pColor: 'tranquil',
         },
       },
     ],
@@ -139,8 +139,7 @@ export const AllOffersShowcase: Story = {
               pName: 'GED Accounting',
               pTag: {
                 pContent: 'Included',
-                pColor: 'gray-900',
-                pEffect: 'light',
+                pColor: 'gray',
               },
             },
           ]"
@@ -155,8 +154,7 @@ export const AllOffersShowcase: Story = {
               pName: 'Access to the Meg tool',
               pTag: {
                 pContent: 'Included',
-                pColor: 'gray-900',
-                pEffect: 'light',
+                pColor: 'gray',
               },
             },
             {
@@ -175,8 +173,7 @@ export const AllOffersShowcase: Story = {
               pName: 'Initiation training in Meg',
               pTag: {
                 pContent: 'Additional price',
-                pColor: 'amethyste',
-                pEffect: 'light',
+                pColor: 'tranquil',
               },
             },
           ]"
@@ -191,8 +188,7 @@ export const AllOffersShowcase: Story = {
               pName: 'Access to the Loop tool',
               pTag: {
                 pContent: 'Included',
-                pColor: 'gray-900',
-                pEffect: 'light',
+                pColor: 'gray',
               },
             },
             {
@@ -201,8 +197,7 @@ export const AllOffersShowcase: Story = {
               pName: 'Complete support training in Loop',
               pTag: {
                 pContent: 'Additional price',
-                pColor: 'amethyste',
-                pEffect: 'light',
+                pColor: 'tranquil',
               },
             },
           ]"

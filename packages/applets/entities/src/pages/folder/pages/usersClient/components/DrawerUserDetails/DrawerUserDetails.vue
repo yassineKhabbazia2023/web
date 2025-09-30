@@ -12,7 +12,7 @@
       pColor="gray"
     >
       <PTag
-        pColor="gray-900"
+        pColor="gray"
         pSize="default"
         pIconLeftName="person"
         :pContent="userInfo?.persona?.name ?? ''"

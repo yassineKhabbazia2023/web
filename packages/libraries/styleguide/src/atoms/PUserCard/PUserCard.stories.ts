@@ -88,8 +88,6 @@ export const TagOnRight: Story = {
     template: `
       <PUserCard v-bind="args" pImageName="user-duotone">
         <PTag
-          pColor="persian"
-          pSize="default"
           pIconLeftName="person"
           pContent="Client"
         />

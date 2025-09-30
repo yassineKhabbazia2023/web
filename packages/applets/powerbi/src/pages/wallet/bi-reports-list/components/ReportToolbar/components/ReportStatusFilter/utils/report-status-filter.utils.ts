@@ -18,7 +18,7 @@ export function getReportStatusFilter(
       pContent: reportStatusFilterLabels['offline'],
       pCode: ReportStatus.OFFLINE,
       pValue: reportStatistics?.offline,
-      pColor: 'gray-900',
+      pColor: 'gray',
       pIconName: 'eyeSlash',
     },
     {

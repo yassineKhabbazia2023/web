@@ -22,7 +22,7 @@ const expectedFilters = [
     key: 'offline',
     status: ReportStatus.OFFLINE,
     label: 'Offline',
-    color: 'gray-900',
+    color: 'gray',
     icon: 'eyeSlash',
     value: reportStatisticsMock.offline,
   },

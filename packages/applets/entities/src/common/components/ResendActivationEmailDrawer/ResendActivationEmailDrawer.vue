@@ -16,7 +16,7 @@
     >
       <PTag
         pSize="default"
-        pColor="gray-900"
+        pColor="gray"
         pIconLeftName="building"
         :pContent="t('clientCompany')"
       />
@@ -145,7 +145,7 @@ const getStatus = (status: string): UserStatus => {
       return {
         text: t('statusDeclared'),
         iconName: 'patchCheck',
-        color: 'gray-900',
+        color: 'gray',
       }
     case 'Connected':
       return {
@@ -157,7 +157,7 @@ const getStatus = (status: string): UserStatus => {
       return {
         text: t('statusInvite'),
         iconName: 'person',
-        color: 'persian',
+        color: 'default',
       }
   }
 }

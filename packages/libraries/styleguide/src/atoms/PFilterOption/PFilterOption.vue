@@ -45,7 +45,7 @@ const emit = defineEmits<{
 
 const props = withDefaults(defineProps<PFilterOptionProps>(), {
   pSelected: false,
-  pColor: 'gray-500',
+  pColor: 'light-gray',
 })
 
 const isSelected = computed({
@@ -68,7 +68,7 @@ const cssClass = computed(() => ({
 }))
 
 const colorMapper = computed(() => {
-  return props.pDisabled ? 'gray-500' : props.pColor
+  return props.pDisabled ? 'light-gray' : props.pColor
 })
 </script>
 
@@ -112,6 +112,16 @@ const colorMapper = computed(() => {
     }
   }
 
+  &--color-light-blue {
+    &:hover {
+      border-color: var(--p-teal-800);
+    }
+    background-color: var(--p-teal-100);
+    #{$self}__icon {
+      color: var(--p-teal-800);
+    }
+  }
+
   &--color-fuschia {
     &:hover {
       border-color: var(--p-persian-800);
@@ -140,6 +150,13 @@ const colorMapper = computed(() => {
   }
 
   &--color-gray-900 {
+    &:hover {
+      border-color: var(--p-black-rock-900);
+    }
+    background-color: var(--p-gray-100);
+  }
+
+  &--color-gray {
     &:hover {
       border-color: var(--p-black-rock-900);
     }

@@ -48,7 +48,7 @@ describe('offerProviderProductsUtils', () => {
       isOptionnal: false,
       priceType: SubscriptionPriceType.free,
       expected: {
-        pColor: 'gray-900',
+        pColor: 'gray',
         pContent: 'Inclus',
       },
     }, {
@@ -59,14 +59,14 @@ describe('offerProviderProductsUtils', () => {
       isOptionnal: false,
       priceType: SubscriptionPriceType.exact,
       expected: {
-        pColor: 'gray-900',
+        pColor: 'gray',
         pContent: 'Inclus',
       },
     }, {
       isOptionnal: true,
       priceType: SubscriptionPriceType.exact,
       expected: {
-        pColor: 'amethyste',
+        pColor: 'tranquil',
         pContent: 'Prix additionnel',
       },
     }]

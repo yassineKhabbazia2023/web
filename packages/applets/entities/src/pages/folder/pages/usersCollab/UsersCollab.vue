@@ -423,7 +423,7 @@ const getStatus = (status: string): UserStatus => {
       return {
         text: t('statusDeclared'),
         iconName: 'patchCheck',
-        color: 'gray-900',
+        color: 'gray',
       }
     case 'Connected':
       return {
@@ -435,7 +435,7 @@ const getStatus = (status: string): UserStatus => {
       return {
         text: t('statusInvite'),
         iconName: 'person',
-        color: 'persian',
+        color: 'default',
       }
   }
 }

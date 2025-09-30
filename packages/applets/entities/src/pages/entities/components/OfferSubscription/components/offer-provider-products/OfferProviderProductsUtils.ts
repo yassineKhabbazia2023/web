@@ -30,13 +30,13 @@ export function getServiceTag(
 ): PTagProps | undefined {
   if (!isOptionnal) {
     return {
-      pColor: 'gray-900',
+      pColor: 'gray',
       pContent: includedLabel,
     }
   }
   if (priceType === SubscriptionPriceType.exact) {
     return {
-      pColor: 'amethyste',
+      pColor: 'tranquil',
       pContent: additionalPriceLabel,
     }
   }

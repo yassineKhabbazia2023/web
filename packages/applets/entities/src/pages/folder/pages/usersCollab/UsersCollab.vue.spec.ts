@@ -48,7 +48,7 @@ const MOCKED_USER = {
   status: {
     text: 'statusDeclared',
     iconName: 'patchCheck',
-    color: 'gray-900',
+    color: 'gray',
   },
 }
 

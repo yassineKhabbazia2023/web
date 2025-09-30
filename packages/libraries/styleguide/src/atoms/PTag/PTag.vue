@@ -32,9 +32,3 @@ import PIcon from '../../atoms/PIcon'
 
 defineProps<PTagProps>()
 </script>
-
-<style lang="scss" scoped>
-.p-tag {
-  border-radius: 0;
-}
-</style>

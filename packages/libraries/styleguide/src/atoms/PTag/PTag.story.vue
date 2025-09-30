@@ -103,34 +103,6 @@ const tagColorList: { label: string, value: PTagProps['pColor'] }[] = [
     label: 'info',
     value: 'info',
   },
-  {
-    label: 'persian',
-    value: 'persian',
-  },
-  {
-    label: 'fuschia',
-    value: 'fuschia',
-  },
-  {
-    label: 'amethyste',
-    value: 'amethyste',
-  },
-  {
-    label: 'cyan',
-    value: 'cyan',
-  },
-  {
-    label: 'gray-500',
-    value: 'gray-500',
-  },
-  {
-    label: 'gray-900',
-    value: 'gray-900',
-  },
-  {
-    label: 'gray-300 / disable',
-    value: 'gray-300',
-  },
 ]
 const currentSize = ref<PTagProps['pSize']>('default')
 const tagSizeList: { label: string, value: PTagProps['pSize'] }[] = [

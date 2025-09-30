@@ -5,7 +5,6 @@
     :pIconLeftName="tagProperties.iconName"
     :pContent="tagProperties.content"
     :pClosable="false"
-    :pRound="false"
     pSize="default"
     :pDisableTransitions="false"
   />
@@ -35,13 +34,13 @@ interface StatusMap {
 }
 
 const statusMap = new Map<number, StatusMap>([
-  [99, { color: 'cyan', iconName: 'hourglass', content: t('creating') }],
+  [99, { color: 'blue', iconName: 'hourglass', content: t('creating') }],
   [98, { color: 'danger', iconName: 'exclamationTriangle', content: t('technical-incident') }],
   [10, { color: 'danger', iconName: 'exclamationTriangle', content: t('business-incident') }],
   [20, { color: 'warning', iconName: 'arrowUpCircle', content: t('to-do') }],
-  [30, { color: 'fuschia', iconName: 'arrowRepeat', content: t('in-progress') }],
+  [30, { color: 'light-blue', iconName: 'arrowRepeat', content: t('in-progress') }],
   [40, { color: 'success', iconName: 'checkCircle', content: t('active') }],
-  [50, { color: 'gray-900', iconName: 'xCircle', content: t('inactive') }],
+  [50, { color: 'gray', iconName: 'xCircle', content: t('inactive') }],
 ])
 
 const tagProperties = computed(() => statusMap.get(Number(props.status)))
