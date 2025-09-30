@@ -231,4 +231,10 @@ $tag-padding: (
     font-size: 1.1rem;
     font-weight: 600;
   }
+
+  &--size-x-small {
+    min-width: 12px;
+    height: 12px;
+    padding: 0px;
+  }
 }

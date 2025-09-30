@@ -21,7 +21,7 @@ const meta: Meta<typeof PPastille> = {
     },
     pSize: {
       control: 'select',
-      options: ['default', 'small'],
+      options: ['default', 'small', 'x-small'],
       description: 'Taille de la pastille',
     },
     pDisabled: {

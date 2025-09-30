@@ -12,6 +12,7 @@ export const envVarsMock = {
   VITE_API_MSAL_TENANT: 'pulse-tenant.com',
   VITE_ASSETS_BASE_URL: 'https://assets.example.com/',
   VITE_AXEPTIO_KEY: 'pulse-axeptio-key',
+  VITE_BOOKING_LINK_PATTERN: '^https:\\/\\/outlook\\.office\\.com\\/bookwithme\\/user\\/[a-f0-9]{32}@rydge\\.fr\\/meetingtype\\/[A-Za-z0-9_-]+\\?anonymous&ismsaljsauthenabled&ep=mlink$',
   VITE_CONFIG_OFFERS_BOOK: 'https://example.com/offers-book',
   VITE_FEED_CENTER_ACTIVATED: 'true',
   VITE_GESTION_MEG: 'https://gestion-meg',

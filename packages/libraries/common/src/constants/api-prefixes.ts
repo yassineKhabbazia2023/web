@@ -1,6 +1,7 @@
 export const API_PREFIXES = {
   ACCOUNT: 'account/api',
   AUTHENTICATION: 'authentication/api',
+  BOOKING: 'booking/api',
   AUTHORIZATION: 'authorization/api',
   CONTACT: 'contact/api',
   CUSTOMER_WALLET: 'customer-wallet/api',

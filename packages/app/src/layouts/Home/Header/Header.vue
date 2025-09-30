@@ -7,6 +7,10 @@
       padding-y--3
       padding-x--6"
   >
+    <BookingDrawer
+      v-if="hasBookingDrawerBeenOpened"
+      v-model:isOpened="isBookingDrawerOpened"
+    />
     <router-link to="/">
       <PImage
         class="header-section__logo"
@@ -16,6 +20,28 @@
       />
     </router-link>
     <div class="flex">
+      <PButton
+        v-if="showBookingButton"
+        pSize="small"
+        pIconOnly
+        pPlain
+        :pDisabled="false"
+        :pLoading="false"
+        data-testid="booking-button"
+        class="position--relative"
+        @click="openDrawer"
+      >
+        <PIcon pName="calendarEvent" />
+        <PPastille
+          class="
+            position--absolute
+            header-section__x-small-pastille
+          "
+          pSize="x-small"
+          pType="warning"
+        />
+      </PButton>
+
       <div
         v-if="FeatureFlagManager.isFeedCenterActivated()"
         class="position--relative padding-left--2"
@@ -66,10 +92,11 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { getInitials } from '@pulse/common'
 import { useUserStore } from '@pulse/common/stores'
+import { Feature } from '@pulse/core/enums'
 import { FeatureFlagManager } from '@pulse/core'
 import {
   PAvatar,
@@ -81,12 +108,16 @@ import {
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import type { HeaderProps } from './HeaderTypes'
+import BookingDrawer from '../booking/booking-drawer/booking-drawer.vue'
 
 const userStore = useUserStore()
 
 const props = defineProps<HeaderProps>()
 
 const { user } = storeToRefs(userStore)
+
+const hasBookingDrawerBeenOpened = ref(false)
+const isBookingDrawerOpened = ref(false)
 
 const emit = defineEmits<{
   'update:showFeedCenter': [boolean]
@@ -106,8 +137,18 @@ const feedCenterIconName = computed(() =>
   props.showFeedCenter ? 'x' : 'bell',
 )
 
+const showBookingButton = computed(() =>
+  userStore.isCollab === true &&
+  FeatureFlagManager.isFeatureActivated(Feature.BOOKING) === true,
+)
+
 function updateFeedCenterDisplay() {
   emit('update:showFeedCenter', !props.showFeedCenter)
+}
+
+function openDrawer() {
+  hasBookingDrawerBeenOpened.value = true
+  isBookingDrawerOpened.value = true
 }
 </script>
 
@@ -136,6 +177,11 @@ function updateFeedCenterDisplay() {
     position: absolute;
     right: 0;
     top: 0;
+  }
+
+  &__x-small-pastille {
+    right: 1px;
+    top: 0px;
   }
 }
 </style>
