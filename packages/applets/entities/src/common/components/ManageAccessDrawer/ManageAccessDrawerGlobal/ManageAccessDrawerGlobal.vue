@@ -6,6 +6,7 @@
     destroyOnClose
     data-testid="manage-access-drawer"
     @close-drawer-button="handleCloseDrawer"
+    @opened="handleOpen"
   >
     <div
       class="
@@ -88,7 +89,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, useTemplateRef, onMounted } from 'vue'
+import { computed, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PButton, PPagination, PLoader } from '@pulse/styleguide/components'
 import type { ManageAccessDrawerGlobalProps } from './ManageAccessDrawerGlobal.types'
@@ -133,6 +134,10 @@ const isManageAccessDrawerGlobalVisible = computed({
 const handleCloseDrawer = () => {
   isManageAccessDrawerGlobalVisible.value = false
 }
+
+const handleOpen = () => {
+  refreshList({ page: 1 })
+}
 // #endregion
 
 
@@ -155,10 +160,6 @@ const onUpdateOperationTable = () => {
 const onUpdateCurrentPage = (page: number) => {
   refreshList({ page })
 }
-
-onMounted(() => {
-  refreshList({ page: 1 })
-})
 </script>
 
 <i18n lang="yaml">
