@@ -1,0 +1,72 @@
+{
+  "extends": "../packages/@config/tsconfig.base.json",
+  "include": [
+    "**/*.ts",
+    "**/*.vue",
+    "**/*.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "../packages/**/node_modules",
+    "../packages/**/*.spec.ts"
+  ],
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true,
+    "types": [
+      "vite/client",
+      "vitest/globals"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": [
+        "../packages/app/src/*"
+      ],
+      "@common/*": [
+        "../packages/libraries/common/src/*"
+      ],
+      "@core/*": [
+        "../packages/libraries/core/src/*"
+      ],
+      "@entities/*": [
+        "../packages/applets/entities/src/*"
+      ],
+      "@ged/*": [
+        "../packages/applets/ged/src/*"
+      ],
+      "@launcher/*": [
+        "../packages/applets/launcher/src/*"
+      ],
+      "@login/*": [
+        "../packages/applets/login/src/*"
+      ],
+      "@mandate/*": [
+        "../packages/applets/mandate/src/*"
+      ],
+      "@offers-catalog/*": [
+        "../packages/applets/offers-catalog/src/*"
+      ],
+      "@pennylane/*": [
+        "../packages/applets/pennylane/src/*"
+      ],
+      "@powerbi/*": [
+        "../packages/applets/powerbi/src/*"
+      ],
+      "@styleguide/*": [
+        "../packages/libraries/styleguide/src/*"
+      ],
+      "@widgets/*": [
+        "../packages/libraries/widgets/src/*"
+      ],
+      "@pulse/styleguide": [
+        "../packages/libraries/styleguide/src/main.ts"
+      ],
+      "@pulse/styleguide/*": [
+        "../packages/libraries/styleguide/src/*"
+      ],
+      "~storybook/*": [
+        "./*"
+      ]
+    }
+  }
+}

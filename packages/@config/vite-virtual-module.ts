@@ -5,9 +5,13 @@ import type { Plugin } from 'vite'
 export const viteVirtualModule = (): Plugin => ({
   name: 'virtualModule',
   resolveId(id) {
-    if (id === 'env-vars') return id
+    if (id === 'env-vars') {
+      return id
+    }
   },
   load(id) {
-    if (id === 'env-vars') return ''
+    if (id === 'env-vars') {
+      return ''
+    }
   },
 })

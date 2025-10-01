@@ -1,6 +1,7 @@
 import type { StorybookConfig } from '@storybook/vue3-vite'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
+import { viteExternalsPlugin } from 'vite-plugin-externals'
 
 /**
 * This function is used to resolve the absolute path of a package.
@@ -26,7 +27,7 @@ const config: StorybookConfig = {
   staticDirs: [
     {
       from: '../packages/libraries/styleguide/src/assets/images',
-      to: '/assets/images',
+      to: '/storybook/assets/images',
     },
   ],
   addons: [
@@ -43,6 +44,7 @@ const config: StorybookConfig = {
   viteFinal: async (config) => {
     // Add Vue plugin if not already present
     const vue = await import('@vitejs/plugin-vue')
+    const VueI18nPlugin = await import('@intlify/unplugin-vue-i18n/vite')
 
     if (!config.plugins?.find(plugin =>
       plugin && typeof plugin === 'object' && 'name' in plugin && plugin.name === 'vite:vue',
@@ -53,7 +55,18 @@ const config: StorybookConfig = {
 
     config.base = '/storybook/'
 
-    // Add path aliases for styleguide and core
+    // Add Vue i18n plugin for YAML support
+    config.plugins = config.plugins || []
+    config.plugins.push(VueI18nPlugin.default())
+
+    // Add viteExternalsPlugin to transform env-vars imports to window.EnvVars
+    config.plugins.push(viteExternalsPlugin({ 'env-vars': 'EnvVars' }))
+
+    // Configure Vite to resolve workspace packages according to their package.json exports
+    config.resolve = config.resolve || {}
+    config.resolve.conditions = ['development', 'module', 'import', 'default']
+
+    // Add path aliases for mocks and non-workspace modules
     // Note: use ordered array with an exact-match rule for bare imports ("@pulse/core")
     // so it resolves to main.ts, while subpaths ("@pulse/core/*") resolve to the src folder.
     config.resolve = config.resolve || {}
@@ -74,15 +87,17 @@ const config: StorybookConfig = {
         find: '@pulse/styleguide',
         replacement: fileURLToPath(new URL('../packages/libraries/styleguide/src', import.meta.url)),
       },
-      // @pulse/core exact (bare specifier) → main.ts
       {
-        find: /^@pulse\/core$/,
-        replacement: fileURLToPath(new URL('../packages/libraries/core/src/main.ts', import.meta.url)),
+        find: /^@login/,
+        replacement: fileURLToPath(new URL('../packages/applets/login/src', import.meta.url)),
       },
-      // @pulse/core subpaths → src
       {
-        find: '@pulse/core',
-        replacement: fileURLToPath(new URL('../packages/libraries/core/src', import.meta.url)),
+        find: '@app',
+        replacement: fileURLToPath(new URL('../packages/app/src', import.meta.url)),
+      },
+      {
+        find: '~storybook',
+        replacement: fileURLToPath(new URL('.', import.meta.url)),
       },
     ]
 
