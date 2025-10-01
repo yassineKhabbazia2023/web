@@ -46,6 +46,7 @@ import BookingConfigurationSuccess from '../booking-configuration-success/bookin
 import BookingConfigurationFailed from '../booking-configuration-failed/booking-configuration-failed.vue'
 import { BookingDrawerState } from './booking-drawer.enum'
 import { BookingService } from '@app/services/booking/booking.service'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const props = defineProps<BookingDrawerProps>()
 
@@ -89,6 +90,8 @@ async function validate() {
 
   if (isValid === true) {
     await saveConfigurationLink()
+  } else {
+    amplitudeTrack('wrong link')
   }
 }
 
@@ -96,9 +99,11 @@ async function saveConfigurationLink() {
   try {
     await BookingService.createBookingConfiguration(bookingConfigurationFormData.value.configurationLink)
     bookingDrawerState.value = BookingDrawerState.SUCCESS
+    amplitudeTrack('succeeded')
   } catch (error) {
     logger.error('Error saving booking configuration', error)
     bookingDrawerState.value = BookingDrawerState.FAILED
+    amplitudeTrack('failed')
   }
 }
 
@@ -126,6 +131,12 @@ watch(() => props.isOpened, (newVal) => {
     bookingConfigurationRef.value?.clearState()
   }
 })
+
+function amplitudeTrack(result: 'succeeded' | 'failed' | 'wrong link') {
+  AmplitudeService.track('Booking Configuration View Completed', {
+    booking_config_view_completed_result: result,
+  })
+}
 </script>
 
 <i18n lang="yaml">

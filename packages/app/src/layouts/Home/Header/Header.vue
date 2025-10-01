@@ -109,6 +109,7 @@ import {
 import { AvatarRoles } from '@pulse/styleguide'
 import type { HeaderProps } from './HeaderTypes'
 import BookingDrawer from '../booking/booking-drawer/booking-drawer.vue'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const userStore = useUserStore()
 
@@ -147,6 +148,7 @@ function updateFeedCenterDisplay() {
 }
 
 function openDrawer() {
+  AmplitudeService.track('Booking Configuration View Started')
   hasBookingDrawerBeenOpened.value = true
   isBookingDrawerOpened.value = true
 }
