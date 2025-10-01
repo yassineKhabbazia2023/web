@@ -16,6 +16,7 @@ const mappingNotificationTrackingType: Record<NotificationKindEnum, Notification
   [NotificationKindEnum.ReportCustomerUpdated]: NotificationTrackingType.REPORTING,
   [NotificationKindEnum.ReportCollabCreated]: NotificationTrackingType.REPORTING,
   [NotificationKindEnum.ReportCollabUpdated]: NotificationTrackingType.REPORTING,
+  [NotificationKindEnum.PennylaneDocumentSyncCompleted]: NotificationTrackingType.PennylaneDocumentSyncCompleted,
 }
 const mappingNotificationTrackingTabs : Record<SelectedNotificationEnum, NotificationTrackingTab> = {
   [SelectedNotificationEnum.ALL]: NotificationTrackingTab.ALL,

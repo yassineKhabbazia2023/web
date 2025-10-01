@@ -11,6 +11,7 @@ import {
   reportCollabUpdatedNotificationMock,
   reportCustomerCreatedNotificationMock,
   reportCustomerUpdatedNotificationMock,
+  PennylaneDocumentSyncCompletedNotificationMock,
 } from '@app/__mocks__/notifications.mocks'
 import { accountsMock } from '@app/__mocks__/accounts.mocks'
 import {
@@ -295,6 +296,18 @@ describe('handleNotificationAction', () => {
         folderId: gsDocumentUploadedNotificationMock.redirectLink,
         notificationType: NotificationKindEnum.GSDocumentUploaded,
       },
+    })
+  })
+
+  it('should call the router with the appropriate query on PennylaneDocumentSyncUpdated notification type', () => {
+    handleNotificationAction({
+      notification: PennylaneDocumentSyncCompletedNotificationMock,
+      router: routerMock,
+    })
+
+    expect(routerMock.push).toHaveBeenCalledWith({
+      name: RouteName.PENNYLANE_GED_V2,
+      params: { [RouteParam.ENTITY_ID]: PennylaneDocumentSyncCompletedNotificationMock.accounts[0].id },
     })
   })
 })

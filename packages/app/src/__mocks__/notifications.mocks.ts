@@ -135,6 +135,18 @@ export const reportCustomerUpdatedNotificationMock: FeedCenterNotification = {
   redirectLink: String(accountsMock[2].id),
 }
 
+export const PennylaneDocumentSyncCompletedNotificationMock: FeedCenterNotification = {
+  id: 10,
+  message: 'Document Has Been Added to Pennylane',
+  createdAt: '2024-10-05T12:00:00.0000Z',
+  notificationType: NotificationKindEnum.PennylaneDocumentSyncCompleted,
+  accounts: [
+    accountsMock[2],
+  ],
+  isRead: false,
+  redirectLink: '',
+}
+
 
 export const notificationsMock: FeedCenterNotification[] = [
   ...readNotificationsMock,

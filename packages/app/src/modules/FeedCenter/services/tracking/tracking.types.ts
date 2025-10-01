@@ -4,6 +4,7 @@ export enum NotificationTrackingType {
   MANDATE = 'Mandat',
   DELEGATION = 'Délégation',
   REPORTING = 'Rapport BI',
+  PennylaneDocumentSyncCompleted = 'Ged-PennylaneDocumentSyncCompleted',
 }
 
 export enum NotificationTrackingReadType {

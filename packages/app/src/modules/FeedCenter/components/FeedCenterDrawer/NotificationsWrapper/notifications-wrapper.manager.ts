@@ -97,6 +97,15 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
   },
   [NotificationKindEnum.AccountingDocumentUploaded]: handleGEDNotification,
   [NotificationKindEnum.GSDocumentUploaded]: handleGEDNotification,
+
+  [NotificationKindEnum.PennylaneDocumentSyncCompleted]: (params: NotificationActionsMappingParams) => {
+    const { router, accountIds } = params
+    router.push({
+      name: RouteName.PENNYLANE_GED_V2,
+      params: { [RouteParam.ENTITY_ID]: accountIds[0] },
+    })
+  },
+
   [NotificationKindEnum.Mandate]: (params: NotificationActionsMappingParams) => {
     const { notification, router } = params
     router.push({

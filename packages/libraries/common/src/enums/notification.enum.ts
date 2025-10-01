@@ -7,4 +7,5 @@ export enum NotificationKindEnum {
   ReportCollabUpdated = 'Reporting-ReportUpdatedCollab',
   AccountingDocumentUploaded = 'Ged-AccountingDocumentUploaded',
   GSDocumentUploaded = 'Ged-GSDocumentUploaded',
+  PennylaneDocumentSyncCompleted = 'Ged-PennylaneDocumentSyncCompleted',
 }
