@@ -29,7 +29,7 @@ export const Default: Story = {
         pContent: 'À déployer',
         pIconName: 'arrowUpCircle',
         pValue: 3,
-        pColor: 'light-blue',
+        pColor: 'disabled',
       })
       const filterOptionColor: { label: string; value: PFilterOptionProps['pColor'] }[] = [
         { label: 'En cours', value: 'tranquil' },

@@ -122,13 +122,13 @@ const colorMapper = computed(() => {
     }
   }
 
-  &--color-fuschia {
+  &--color-tranquil {
     &:hover {
-      border-color: var(--p-persian-800);
+      border-color: var(--p-mint-tulip-800);
     }
-    background-color: var(--p-persian-100);
+    background-color: var(--p-tranquil-50);
     #{$self}__icon {
-      color: var(--p-persian-800);
+      color: var(--p-mint-tulip-800);
     }
   }
 
@@ -142,18 +142,18 @@ const colorMapper = computed(() => {
     }
   }
 
-  &--color-gray-500 {
+  &--color-light-gray {
     &:hover {
       border-color: var(--p-black-rock-900);
     }
     background-color: var(--p-gray-50);
   }
 
-  &--color-gray-900 {
+  &--color-disabled {
     &:hover {
-      border-color: var(--p-black-rock-900);
+      border-color: var(--p-text-disabled);
     }
-    background-color: var(--p-gray-100);
+    background-color: var(--p-surface-state-disabled);
   }
 
   &--color-gray {
@@ -184,14 +184,14 @@ const colorMapper = computed(() => {
       border-color: var(--p-red-500);
     }
 
-    &#{$self}--color-gray-900 {
-      background-color: var(--p-gray-100);
-      border-color: var(--p-black-rock-900);
+    &#{$self}--color-tranquil {
+      background-color: var(--p-tranquil-50);
+      border-color: var(--p-mint-tulip-800);
     }
 
-    &#{$self}--color-fuschia {
-      background-color: var(--p-black-rock-100);
-      border-color: var(--p-black-rock-800);
+    &#{$self}--color-disabled {
+      background-color: var(--p-surface-state-disabled);
+      border-color: var(--p-text-disabled);
     }
   }
 
