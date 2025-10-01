@@ -23,3 +23,4 @@ export const PENNYLANE_ACTIVATION_AND_CONNECTION_HELP_URL = 'https://help.client
 export const PENNYLANE_IMPORT_INVOICE_HELP_URL = 'https://help.pennylane.com/fr/articles/185113-importer-une-facture-depuis-l-ordinateur-ou-le-mobile'
 export const PENNYLANE_MOBILE_APP_URL = 'https://www.pennylane.com/fr/application-mobile'
 export const PENNYLANE_GETTING_STARTED_URL = 'https://help.pennylane.com/fr/collections/4143-debuter-sur-pennylane'
+export const AKUITEO_URL = 'https://akuiteo.rydge.fr/akuiteo/login.html'

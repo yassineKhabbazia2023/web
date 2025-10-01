@@ -101,6 +101,7 @@
             ref="companyInformation"
             :modelValue="account"
             :providerName="providerName"
+            :offerCode="currentSubscriptionOffer?.offerCode"
             data-testid="information-step"
             @input="onInputAccount"
           />
