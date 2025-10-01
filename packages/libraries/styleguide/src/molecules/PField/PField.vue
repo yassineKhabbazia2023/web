@@ -47,6 +47,7 @@
       :pMultiple="pMultiple"
       :data-testid="pTestId"
       :pCheckAllLabel="pCheckAllLabel"
+      :pFilterable="pFilterable"
       :pCollapseTags="pCollapseTags"
       :pCollapseTagsTooltip="pCollapseTagsTooltip"
     />
@@ -120,6 +121,7 @@ const props = withDefaults(defineProps<PFieldProps<T>>(), {
   modelValue: undefined,
   pReadonly: false,
   pDisabled: false,
+  pFilterable: false,
   pTestId: undefined,
   pDropdownOptions: () => [],
   pPlaceholder: '',

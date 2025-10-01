@@ -95,6 +95,7 @@
       },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pFilterable":true,
         "pDisabled": false,
         "pFieldKey": "officeId",
         "pFieldType": "dropdown",

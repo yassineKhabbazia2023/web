@@ -28,6 +28,7 @@ export interface PFieldPropsDropdown<T> extends PFieldPropsBase<T> {
   pCheckAllLabel?: string
   pCollapseTags?: boolean
   pCollapseTagsTooltip?: boolean
+  pFilterable?: boolean
 }
 
 export interface PFieldPropsDate<T> extends PFieldPropsBase<T> {
