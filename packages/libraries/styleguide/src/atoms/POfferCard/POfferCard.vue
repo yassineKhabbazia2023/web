@@ -1,6 +1,12 @@
 <template>
   <button
-    class="p-offer-card padding-y--2"
+    class="
+      p-offer-card
+      padding-top--2
+      padding-right--4
+      padding-bottom--2
+      padding-left--4
+    "
     :disabled="disabled"
     type="button"
     :class="{'p-offer-card--selected': pSelected}"
@@ -14,7 +20,7 @@
       />
     </div>
     <div class="p-offer-card__body">
-      <h4 class="p-offer-card__title margin-bottom--2">
+      <h4 class="p-offer-card__title margin-bottom--1">
         {{ pTitle }}
       </h4>
       <p class="p-offer-card__description">
@@ -58,8 +64,6 @@ defineEmits<{
   cursor: pointer;
   outline: none;
   transition: all 0.3s ease;
-  padding-left: 8px;
-  padding-right: 0;
   border-left: 4px solid transparent;
 
   &:disabled {
@@ -67,7 +71,7 @@ defineEmits<{
     background: var(--p-gray-50);
 
     #{$self}__title {
-      color: var(--p-gray-500)
+      color: var(--p-surface-neutral-default)
     }
     #{$self}__description {
       color: var(--p-gray-300)
@@ -76,14 +80,7 @@ defineEmits<{
 
   &:hover,
   &:focus {
-    background-color: var(--p-jungle-75);
-    border-color: var(--p-jungle-400);
-    #{$self}__title {
-      color: var(--p-jungle-400);
-    }
-    #{$self}__chevron-icon {
-      color: var(--p-jungle-700);
-    }
+    background-color: var(--p-surface-state-hover);
   }
 
   &:active {
@@ -97,13 +94,13 @@ defineEmits<{
 
   &--selected,
   &--selected:disabled {
-    background-color: var(--p-jungle-75);
-    border-color: var(--p-jungle-400);
+    background-color: var(--p-surface-state-selection);
+    border-color: var(--p-stroke-active);
   }
 
   &__logo {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
