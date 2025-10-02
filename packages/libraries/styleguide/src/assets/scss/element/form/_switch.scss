@@ -10,6 +10,10 @@ $switch: (
 div.el-switch {
   height: auto;
 
+  &.is-disabled.is-checked > .el-switch__core {
+    --el-switch-on-color: var(--p-stroke-default-secondary);
+  }
+
   &.is-disabled > .el-switch__core .el-switch__action {
     --el-switch-on-color: var(--p-jungle-200);
     --el-switch-off-color: var(--p-gray-50);
