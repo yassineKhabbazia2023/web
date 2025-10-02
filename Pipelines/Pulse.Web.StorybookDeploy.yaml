@@ -14,8 +14,8 @@ parameters:
 variables:
   nodeVersion: '24.x'
   buildOutputFolder: 'dist-storybook'
-  azureSubscriptionDEV: 'Rydge-dev'
-  storageAccountNameDEV: 'sacegpulsefrontdev0101'
+  azureSubscriptionITG: 'Rydge-itg'
+  storageAccountNameITG: 'sacegpulsefrontitg0101'
   containerName: '$web'
 
 stages:
@@ -56,15 +56,15 @@ stages:
         artifactName: 'drop'
       displayName: 'Publish artifacts'
 
-- stage: DeployToDEV
+- stage: DeployToITG
   dependsOn: Build
   condition: succeeded()
-  pool: Pulse-dev
+  pool: Pulse-itg
   jobs:
   - deployment: DeployToStorage
     workspace:
       clean: all
-    environment: 'DEV'
+    environment: ITG01
     strategy:
       runOnce:
         deploy:
@@ -73,15 +73,15 @@ stages:
             artifact: drop
           - task: AzureCLI@2
             inputs:
-              azureSubscription: '$(azureSubscriptionDEV)'
+              azureSubscription: '$(azureSubscriptionITG)'
               scriptType: 'pscore'
               scriptLocation: 'inlineScript'
               inlineScript: |
                 # 1. Nettoyage du container ou sous-répertoire
                 Write-Host "Nettoyage du sous-répertoire ${{ parameters.subdirectory }}..."
-                az storage blob delete-batch --account-name $(storageAccountNameDEV) --auth-mode login --source '$(containerName)' --pattern "${{ parameters.subdirectory }}/*" --delete-snapshots include
+                az storage blob delete-batch --account-name $(storageAccountNameITG) --auth-mode login --source '$(containerName)' --pattern "${{ parameters.subdirectory }}/*" --delete-snapshots include
                 
                 # 2. Déploiement des nouveaux fichiers
                 Write-Host "Copie des fichiers dans le sous-répertoire ${{ parameters.subdirectory }}..."
-                az storage blob upload-batch --account-name $(storageAccountNameDEV) --auth-mode login --destination '$(containerName)/${{ parameters.subdirectory }}' --source $(Pipeline.Workspace)/drop/${{ parameters.subdirectory }} --overwrite True
-            displayName: 'Deploy to DEV Storage Account'
+                az storage blob upload-batch --account-name $(storageAccountNameITG) --auth-mode login --destination '$(containerName)/${{ parameters.subdirectory }}' --source $(Pipeline.Workspace)/drop/${{ parameters.subdirectory }} --overwrite True
+            displayName: 'Deploy to ITG Storage Account'
