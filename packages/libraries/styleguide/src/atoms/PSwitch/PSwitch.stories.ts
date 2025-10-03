@@ -22,11 +22,6 @@ const meta: Meta<typeof PSwitch> = {
       control: 'boolean',
       description: 'État de chargement du switch',
     },
-    pSize: {
-      control: 'select',
-      options: ['', 'large', 'default', 'small'],
-      description: 'Taille du switch',
-    },
     pActiveText: {
       control: 'text',
       description: 'Texte affiché quand le switch est activé',
@@ -34,10 +29,6 @@ const meta: Meta<typeof PSwitch> = {
     pInactiveText: {
       control: 'text',
       description: 'Texte affiché quand le switch est désactivé',
-    },
-    pInlinePrompt: {
-      control: 'boolean',
-      description: 'Afficher le texte à l\'intérieur du switch',
     },
   },
   args: {
@@ -72,43 +63,6 @@ export const Default: Story = {
   },
 }
 
-// Different sizes
-export const DifferentSizes: Story = {
-  render: () => ({
-    components: { PSwitch },
-    setup() {
-      const smallValue = ref(false)
-      const defaultValue = ref(true)
-      const largeValue = ref(false)
-      return { smallValue, defaultValue, largeValue }
-    },
-    template: `
-      <div style="display: flex; flex-direction: column; gap: 16px; align-items: flex-start;">
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <PSwitch v-model="smallValue" pSize="small" />
-          <span>Petit</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <PSwitch v-model="defaultValue" pSize="default" />
-          <span>Normal</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <PSwitch v-model="largeValue" pSize="large" />
-          <span>Grand</span>
-        </div>
-      </div>
-    `,
-  }),
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: 'Différentes tailles de switch.',
-      },
-    },
-  },
-}
-
 // With text labels
 export const WithTextLabels: Story = {
   render: () => ({
@@ -136,16 +90,6 @@ export const WithTextLabels: Story = {
             pInactiveText="NON"
           />
           <span>Switch OUI/NON</span>
-        </div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <PSwitch 
-            v-model="customValue" 
-            pActiveText="Activé" 
-            pInactiveText="Désactivé"
-            :pInlinePrompt="true"
-            :pWidth="100"
-          />
-          <span>Avec texte intégré</span>
         </div>
       </div>
     `,
@@ -248,16 +192,6 @@ export const RealWorldExamples: Story = {
                 v-model="publicProfile" 
                 pActiveText="Public" 
                 pInactiveText="Privé"
-              />
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; width: 300px;">
-              <span>Authentification 2FA</span>
-              <PSwitch 
-                v-model="twoFactor" 
-                pActiveText="Activé" 
-                pInactiveText="Désactivé"
-                :pInlinePrompt="true"
-                :pWidth="80"
               />
             </div>
           </div>

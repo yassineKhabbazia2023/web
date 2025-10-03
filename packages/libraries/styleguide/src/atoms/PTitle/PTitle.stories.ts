@@ -130,30 +130,6 @@ export const DifferentColors: Story = {
   },
 }
 
-// Different sizes
-export const DifferentSizes: Story = {
-  render: () => ({
-    components: { PTitle },
-    template: `
-      <div style="display: flex; flex-direction: column; gap: 24px;">
-        <PTitle pTitle="Petite icône" pIconName="pulse" pIconSize="16" />
-        <PTitle pTitle="Icône normale" pIconName="pulse" pIconSize="24" />
-        <PTitle pTitle="Icône par défaut" pIconName="pulse" pIconSize="28" />
-        <PTitle pTitle="Grande icône" pIconName="pulse" pIconSize="32" />
-        <PTitle pTitle="Très grande icône" pIconName="pulse" pIconSize="40" />
-      </div>
-    `,
-  }),
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: 'Titres avec différentes tailles d\'icônes.',
-      },
-    },
-  },
-}
-
 // Real world examples
 export const RealWorldExamples: Story = {
   render: () => ({
