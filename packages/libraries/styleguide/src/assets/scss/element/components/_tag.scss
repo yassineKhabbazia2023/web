@@ -215,10 +215,15 @@ $tag-padding: (
   padding: 4px;
   min-width: 22px;
 
-  &--disabled {
-    background: var(--p-gray-50);
-    border: var(--p-gray-100);
-    color: var(--p-gray-300);
+  &--type-warning,
+  &--type-persian,
+  &--type-white,
+  &--type-default {
+    &.p-pastille--disabled {
+      background: var(--p-gray-50);
+      border: var(--p-gray-100);
+      color: var(--p-gray-300);
+    }
   }
 
   &--type-warning {

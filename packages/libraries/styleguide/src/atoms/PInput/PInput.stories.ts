@@ -21,7 +21,7 @@ const meta: Meta<typeof PInput> = {
     },
     pSize: {
       control: 'select',
-      options: ['large', 'default', 'small'],
+      options: ['default', 'small'],
       description: 'Taille du champ',
     },
     pPlaceholder: {
@@ -132,7 +132,6 @@ export const Sizes: Story = {
       <div style="display: flex; flex-direction: column; gap: 16px; width: 300px;">
         <PInput v-model="value1" pSize="small" pPlaceholder="Petite taille" />
         <PInput v-model="value2" pSize="default" pPlaceholder="Taille par défaut" />
-        <PInput v-model="value3" pSize="large" pPlaceholder="Grande taille" />
       </div>
     `,
   }),
@@ -140,7 +139,7 @@ export const Sizes: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: 'Différentes tailles de champs : small, default, large.',
+        story: 'Différentes tailles de champs : small, default.',
       },
     },
   },
@@ -267,7 +266,6 @@ export const AllVariants: Story = {
           <div style="display: flex; flex-direction: column; gap: 12px;">
             <PInput v-model="values.text" pSize="small" pPlaceholder="Petit" />
             <PInput v-model="values.text" pSize="default" pPlaceholder="Normal" />
-            <PInput v-model="values.text" pSize="large" pPlaceholder="Grand" />
           </div>
         </div>
         

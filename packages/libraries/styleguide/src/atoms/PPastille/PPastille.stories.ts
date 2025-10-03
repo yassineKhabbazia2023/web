@@ -21,7 +21,7 @@ const meta: Meta<typeof PPastille> = {
     },
     pSize: {
       control: 'select',
-      options: ['default', 'small', 'x-small'],
+      options: ['default', 'small'],
       description: 'Taille de la pastille',
     },
     pDisabled: {
@@ -52,12 +52,12 @@ export const Default: Story = {
     setup() {
       return { args }
     },
-    template: '<PPastille v-bind="args">Pastille</PPastille>',
+    template: '<PPastille v-bind="args">3</PPastille>',
   }),
   parameters: {
     docs: {
       description: {
-        story: 'Pastille par défaut avec du texte.',
+        story: 'Pastille par défaut.',
       },
     },
   },
@@ -69,10 +69,10 @@ export const DifferentTypes: Story = {
     components: { PPastille },
     template: `
       <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
-        <PPastille pType="default">Défaut</PPastille>
-        <PPastille pType="warning">Avertissement</PPastille>
-        <PPastille pType="persian">Persian</PPastille>
-        <PPastille pType="white">Blanc</PPastille>
+        <PPastille pType="default">1</PPastille>
+        <PPastille pType="warning">12</PPastille>
+        <PPastille pType="persian">1234</PPastille>
+        <PPastille pType="white">1</PPastille>
       </div>
     `,
   }),
@@ -92,8 +92,8 @@ export const DifferentSizes: Story = {
     components: { PPastille },
     template: `
       <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
-        <PPastille pSize="small">Petit</PPastille>
-        <PPastille pSize="default">Normal</PPastille>
+        <PPastille pSize="small">1</PPastille>
+        <PPastille pSize="default">12</PPastille>
       </div>
     `,
   }),
@@ -124,7 +124,7 @@ export const WithIcons: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: 'Pastilles avec des icônes au lieu de texte.',
+        story: 'Pastilles avec des icônes au lieu de nombres.',
       },
     },
   },
@@ -137,16 +137,20 @@ export const States: Story = {
     template: `
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <div style="display: flex; gap: 16px; align-items: center;">
-          <PPastille pType="default">Normal</PPastille>
-          <PPastille pType="default" :pDisabled="true">Désactivé</PPastille>
+          <PPastille pType="default">1</PPastille>
+          <PPastille pType="default" :pDisabled="true">1</PPastille>
         </div>
         <div style="display: flex; gap: 16px; align-items: center;">
-          <PPastille pType="warning">Normal</PPastille>
-          <PPastille pType="warning" :pDisabled="true">Désactivé</PPastille>
+          <PPastille pType="warning">2</PPastille>
+          <PPastille pType="warning" :pDisabled="true">2</PPastille>
         </div>
         <div style="display: flex; gap: 16px; align-items: center;">
-          <PPastille pIconName="check">Normal</PPastille>
-          <PPastille pIconName="check" :pDisabled="true">Désactivé</PPastille>
+          <PPastille pIconName="check" pType="persian"></PPastille>
+          <PPastille pIconName="check" pType="persian" :pDisabled="true"></PPastille>
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+          <PPastille pIconName="check" pType="white">3</PPastille>
+          <PPastille pIconName="check" pType="white" :pDisabled="true">3</PPastille>
         </div>
       </div>
     `,
@@ -156,53 +160,6 @@ export const States: Story = {
     docs: {
       description: {
         story: 'États normal et désactivé des pastilles.',
-      },
-    },
-  },
-}
-
-// Real world examples
-export const RealWorldExamples: Story = {
-  render: () => ({
-    components: { PPastille },
-    template: `
-      <div style="display: flex; flex-direction: column; gap: 24px;">
-        <div>
-          <h3 style="margin-bottom: 12px;">États de commande</h3>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <PPastille pType="default">En attente</PPastille>
-            <PPastille pType="warning">En cours</PPastille>
-            <PPastille pType="persian">Annulé</PPastille>
-            <PPastille pIconName="check" pType="default">Terminé</PPastille>
-          </div>
-        </div>
-        
-        <div>
-          <h3 style="margin-bottom: 12px;">Notifications</h3>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <PPastille pIconName="bell" pType="warning" pSize="small" />
-            <PPastille pType="persian" pSize="small">3</PPastille>
-            <PPastille pIconName="envelope" pType="default" pSize="small" />
-          </div>
-        </div>
-        
-        <div>
-          <h3 style="margin-bottom: 12px;">Tags de catégorie</h3>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <PPastille pType="default" pSize="small">Personnel</PPastille>
-            <PPastille pType="warning" pSize="small">Professionnel</PPastille>
-            <PPastille pType="persian" pSize="small">Urgent</PPastille>
-            <PPastille pType="white" pSize="small">Archive</PPastille>
-          </div>
-        </div>
-      </div>
-    `,
-  }),
-  parameters: {
-    controls: { disable: true },
-    docs: {
-      description: {
-        story: 'Exemples d\'utilisation dans des interfaces réelles.',
       },
     },
   },
