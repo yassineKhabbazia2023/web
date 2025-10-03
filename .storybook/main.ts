@@ -27,7 +27,7 @@ const config: StorybookConfig = {
   staticDirs: [
     {
       from: '../packages/libraries/styleguide/src/assets/images',
-      to: '/storybook/assets/images',
+      to: '/assets/images',
     },
   ],
   addons: [
