@@ -38,7 +38,7 @@ export const Default: Story = {
     setup() {
       return { args }
     },
-    template: '<PCheckbox v-bind="args">Accepter les conditions</PCheckbox>',
+    template: '<PCheckbox v-model="args.pChecked" v-bind="args">Accepter les conditions</PCheckbox>',
   }),
   parameters: {
     docs: {

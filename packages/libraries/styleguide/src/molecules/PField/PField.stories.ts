@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import PField from './PField.vue'
 import PForm from '../PForm'
 import type {
@@ -8,18 +8,15 @@ import type {
   PFieldPropsDropdown,
   PFieldPropsDate,
   PFieldPropsRadio,
-  PFieldPropsEmailInput,
-  PFieldPropsCheckbox,
 } from './PFieldTypes'
 import {
   getMockedInputField,
   getDropdownField,
   getDateField,
   getRadioField,
-  getMockedEmailInputField,
-  getMockedCheckbox,
 } from './PField.mocks'
 import type { PDropdownOption } from '../PDropdown/PDropdownTypes'
+import { pulseGeneratedIcons } from '../../atoms/PIcon/components/constants'
 
 const meta: Meta<typeof PField> = {
   title: 'Molecules/PField',
@@ -84,8 +81,22 @@ const meta: Meta<typeof PField> = {
         defaultValue: { summary: 'false' },
       },
     },
+    pSuffixIconName: {
+      control: 'select',
+      options: [undefined, ...pulseGeneratedIcons.map(icon => icon.name)],
+      description: 'Nom de l\'icône en suffix du champ (facultatif)',
+    },
   },
   tags: ['autodocs'],
+  args: {
+    pFieldType: 'input',
+    pFieldKey: '',
+    pLabel: '',
+    pPlaceholder: '',
+    pReadonly: false,
+    pDisabled: false,
+    pCssClass: '',
+  },
 }
 
 export default meta
@@ -110,24 +121,22 @@ export const StringInput: Story = {
   render: (args: any) => ({
     components: { PField, PForm },
     setup() {
-      const fieldProps = reactive<PFieldPropsInput<string>>(
-        getMockedInputField('firstname', 'Prénom', 'John', 50),
-      )
-
+      const value = ref('')
       return {
-        fieldProps: { ...fieldProps, ...args },
+        args,
+        value,
       }
     },
     template: `
       <div style="padding: 20px;">
         <PForm pLabelPosition="top">
           <PField
-            v-model="fieldProps.modelValue"
-            v-bind="fieldProps"
+            v-model="value" 
+            v-bind="args"
           />
         </PForm>
         <div style="margin-top: 16px;">
-          <strong>Value:</strong> {{ fieldProps.modelValue }}
+          <strong>Value:</strong> {{ value }}
         </div>
       </div>
     `,
@@ -142,27 +151,25 @@ export const StringInput: Story = {
 }
 
 export const NumberDropdown: Story = {
-  render: (args: any) => ({
+  render: (args) => ({
     components: { PField, PForm },
     setup() {
-      const fieldProps = reactive<PFieldPropsDropdown<number | undefined>>(
-        getDropdownField('range', 'Tranche', 50, dropdownOptions),
-      )
-
+      const value = ref('')
       return {
-        fieldProps: { ...fieldProps, ...args },
+        args: { ...args },
+        value,
       }
     },
     template: `
       <div style="padding: 20px;">
         <PForm pLabelPosition="top">
           <PField
-            v-model="fieldProps.modelValue"
-            v-bind="fieldProps"
+            v-model="value"
+            v-bind="args"
           />
         </PForm>
         <div style="margin-top: 16px;">
-          <strong>Value:</strong> {{ fieldProps.modelValue }}
+          <strong>Value:</strong> {{ value }}
         </div>
       </div>
     `,
@@ -181,32 +188,22 @@ export const MultipleDropdown: Story = {
   render: (args: any) => ({
     components: { PField, PForm },
     setup() {
-      const fieldProps = reactive<any>({
-        pFieldType: 'dropdown',
-        pFieldKey: 'ranges',
-        pLabel: 'Ranges',
-        pPlaceholder: 'Select multiple ranges',
-        pDropdownOptions: dropdownOptions,
-        pMultiple: true,
-        pCheckAllLabel: 'Select All',
-        pDisabled: false,
-        modelValue: undefined,
-      })
-
+      const value = ref('')
       return {
-        fieldProps: { ...fieldProps, ...args },
+        args: { ...args },
+        value,
       }
     },
     template: `
       <div style="padding: 20px;">
         <PForm pLabelPosition="top">
           <PField
-            v-model="fieldProps.modelValue"
-            v-bind="fieldProps"
+            v-model="value"
+            v-bind="args"
           />
         </PForm>
         <div style="margin-top: 16px;">
-          <strong>Values:</strong> {{ fieldProps.modelValue }}
+          <strong>Values:</strong> {{ value }}
         </div>
       </div>
     `,
@@ -227,24 +224,22 @@ export const DatePicker: Story = {
   render: (args: any) => ({
     components: { PField, PForm },
     setup() {
-      const fieldProps = reactive<PFieldPropsDate<string>>(
-        getDateField('creationDate', 'Date de création', '13/12/2014', 50),
-      )
-
+      const value = ref('')
       return {
-        fieldProps: { ...fieldProps, ...args },
+        args: { ...args },
+        value,
       }
     },
     template: `
       <div style="padding: 20px;">
         <PForm pLabelPosition="top">
           <PField
-            v-model="fieldProps.modelValue"
-            v-bind="fieldProps"
+            v-model="value"
+            v-bind="args"
           />
         </PForm>
         <div style="margin-top: 16px;">
-          <strong>Value:</strong> {{ fieldProps.modelValue }}
+          <strong>Value:</strong> {{ value }}
         </div>
       </div>
     `,
@@ -263,28 +258,22 @@ export const RadioButtons: Story = {
   render: (args: any) => ({
     components: { PField, PForm },
     setup() {
-      const fieldProps = reactive<PFieldPropsRadio<string | string[]>>(
-        getRadioField({
-          pFieldKey: 'type',
-          pLabel: 'Type',
-          flexBasis: 50,
-        }),
-      )
-
+      const value = ref('')
       return {
-        fieldProps: { ...fieldProps, ...args },
+        args: { ...args },
+        value,
       }
     },
     template: `
       <div style="padding: 20px;">
         <PForm pLabelPosition="top">
           <PField
-            v-model="fieldProps.modelValue"
-            v-bind="fieldProps"
+            v-model="value"
+            v-bind="args"
           />
         </PForm>
         <div style="margin-top: 16px;">
-          <strong>Value:</strong> {{ fieldProps.modelValue }}
+          <strong>Value:</strong> {{ value }}
         </div>
       </div>
     `,
@@ -307,32 +296,22 @@ export const EmailInput: Story = {
   render: (args: any) => ({
     components: { PField, PForm },
     setup() {
-      const fieldProps = reactive<PFieldPropsEmailInput<string>>(
-        getMockedEmailInputField(
-          'email',
-          'company.com',
-          'Enter local part',
-          'Enter domain',
-          false,
-          false,
-          50,
-        ),
-      )
-
+      const value = ref('')
       return {
-        fieldProps: { ...fieldProps, ...args },
+        args: { ...args },
+        value,
       }
     },
     template: `
       <div style="padding: 20px;">
         <PForm pLabelPosition="top">
           <PField
-            v-model="fieldProps.modelValue"
-            v-bind="fieldProps"
+            v-model="value"
+            v-bind="args"
           />
         </PForm>
         <div style="margin-top: 16px;">
-          <strong>Value:</strong> {{ fieldProps.modelValue }}
+          <strong>Value:</strong> {{ value }}
         </div>
       </div>
     `,
@@ -354,24 +333,23 @@ export const CheckboxField: Story = {
   render: (args: any) => ({
     components: { PField, PForm },
     setup() {
-      const fieldProps = reactive<PFieldPropsCheckbox<boolean>>(
-        getMockedCheckbox('terms', 'I accept the terms and conditions', false, false, 50),
-      )
+      const value = ref('')
 
       return {
-        fieldProps: { ...fieldProps, ...args },
+        args,
+        value,
       }
     },
     template: `
       <div style="padding: 20px;">
         <PForm pLabelPosition="top">
-          <CheckboxField 
-            v-model="fieldProps.modelValue"
-            v-bind="fieldProps"
+          <PField 
+            v-model="value"
+            v-bind="args"
           />
         </PForm>
         <div style="margin-top: 16px;">
-          <strong>Value:</strong> {{ fieldProps.modelValue }}
+          <strong>Value:</strong> {{ value }}
         </div>
       </div>
     `,
@@ -433,19 +411,15 @@ export const DisabledStates: Story = {
 }
 
 export const WithValidation: Story = {
-  render: () => ({
+  render: (args) => ({
     components: { PField, PForm },
     setup() {
-      const emailField = reactive<PFieldPropsInput<string>>(
-        getMockedInputField('email', 'Email', 'Enter email', 50, false, ['email']),
-      )
-      const phoneField = reactive<PFieldPropsInput<string>>(
-        getMockedInputField('phone', 'Phone', 'Enter phone', 50, false, ['phone']),
-      )
-
+      const valueMail = ref('')
+      const valuePhone = ref('')
       return {
-        emailField,
-        phoneField,
+        args,
+        valueMail,
+        valuePhone,
       }
     },
     template: `
@@ -453,13 +427,27 @@ export const WithValidation: Story = {
         <h3>Fields with Validation</h3>
         <PForm pLabelPosition="top">
           <div style="display: grid; gap: 20px;">
-            <PField v-bind="emailField" />
-            <PField v-bind="phoneField" />
+            <PField
+              v-model="valueMail"
+              v-bind="args"
+              pFieldKey="email"
+              pLabel="Email"
+              pPlaceholder="Enter email"
+              required
+            />
+            <PField
+              v-model="valuePhone"
+              v-bind="args"
+              pFieldKey="phone"
+              pLabel="Phone"
+              pPlaceholder="Enter phone"
+              required
+            />
           </div>
         </PForm>
         <div style="margin-top: 16px;">
-          <p><strong>Email value:</strong> {{ emailField.modelValue }}</p>
-          <p><strong>Phone value:</strong> {{ phoneField.modelValue }}</p>
+          <p><strong>Email value:</strong> {{ valueMail }}</p>
+          <p><strong>Phone value:</strong> {{ valuePhone }}</p>
           <p><em>Try entering invalid values to see validation</em></p>
         </div>
       </div>
@@ -469,26 +457,28 @@ export const WithValidation: Story = {
 }
 
 export const AllFieldTypes: Story = {
-  render: () => ({
+  render: (args) => ({
     components: {
       PField,
       PForm,
     },
     setup() {
-      const stringField = reactive(getMockedInputField('text', 'Text Input', 'Enter text', 50))
-      const dropdownField = reactive(getDropdownField('dropdown', 'Dropdown', 50, dropdownOptions))
-      const dateField = reactive(getDateField('date', 'Date Picker', 'Select date', 50))
-      const radioField = reactive(getRadioField({ pFieldKey: 'radio', pLabel: 'Radio Buttons', flexBasis: 50 }))
-      const emailField = reactive(getMockedEmailInputField('email', 'company.com', 'username', 'domain', false, false, 50))
-      const checkboxField = reactive(getMockedCheckbox('checkbox', 'Checkbox Option', false, false, 50))
+      const value = ref('')
+      const valueDropdown = ref('')
+      const valueDate = ref('')
+      const valueMail = ref('')
+      const valueRadio = ref('')
+      const valueCheckbox = ref('')
 
       return {
-        stringField,
-        dropdownField,
-        dateField,
-        radioField,
-        emailField,
-        checkboxField,
+        args,
+        value,
+        valueDropdown,
+        valueRadio,
+        valueDate,
+        valueMail,
+        valueCheckbox,
+        dropdownOptions,
       }
     },
     template: `
@@ -496,12 +486,54 @@ export const AllFieldTypes: Story = {
         <h3>All Field Types</h3>
         <PForm pLabelPosition="top">
           <div style="display: grid; gap: 20px; max-width: 500px;">
-            <PField v-bind="stringField" />
-            <PField v-bind="dropdownField" />
-            <PField v-bind="dateField" />
-            <PField v-bind="radioField" />
-            <PField v-bind="emailField" />
-            <PField v-bind="checkboxField" />
+            <PField 
+              v-model="value"
+              v-bind="args"
+              pFieldKey="text"
+              pLabel="Text Input"
+              pPlaceholder="Enter text" />
+            <PField 
+              v-model="valueDropdown"
+              v-bind="args"
+              pFieldType="dropdown"
+              pFieldKey="dropdown"
+              pLabel="Dropdown"
+              :pDropdownOptions="dropdownOptions"
+            />
+            <PField 
+              v-model="valueDate"
+              v-bind="args"
+              pFieldType="date"
+              pFieldKey="date"
+              pLabel="Date Picker"
+              pPlaceholder="Select Date" />
+            <PField 
+              v-model="valueRadio"
+              v-bind="args"
+              pFieldType="radio"
+              pFieldKey="radio"
+              pLabel="Radio Button"
+              :pOptions="[
+                { pValue: 'a', pLabel: 'Option A' },
+                { pValue: 'b', pLabel: 'Option B' },
+              ]"
+            />
+            <PField 
+              v-model="valueMail"
+              v-bind="args"
+              pFieldType="email-input"
+              pFieldKey="email"
+              pLabel="Email Address"
+              pDefaultDomainPart="company.com"
+              pLocalPartPlaceholder="username"
+              pDomainPartPlaceholder="domain.com"
+            />
+            <PField 
+              v-model="valueCheckbox"
+              v-bind="args"
+              pFieldType="checkbox"
+              pFieldKey="checkbox"
+              pLabel="Checkbox Options" />
           </div>
         </PForm>
       </div>

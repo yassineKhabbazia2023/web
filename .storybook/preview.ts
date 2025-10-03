@@ -14,9 +14,7 @@ import fr from 'element-plus/es/locale/lang/fr'
 import dayjs from 'dayjs'
 
 // Import styleguide styles
-import 'element-plus/dist/index.css'
 import '../packages/libraries/styleguide/src/assets/fonts/index.css'
-import '../packages/libraries/styleguide/src/assets/scss/histoire.scss'
 import '../packages/libraries/styleguide/src/assets/scss/index.scss'
 
 // Initialize StyleGuide assets

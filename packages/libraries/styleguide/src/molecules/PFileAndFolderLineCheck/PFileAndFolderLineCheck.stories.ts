@@ -5,7 +5,7 @@ import type { PFileAndFolderLineCheckProps } from './PFileAndFolderLineCheckType
 
 const meta: Meta<typeof PFileAndFolderLineCheck> = {
   title: 'Molecules/PFileAndFolderLineCheck',
-  component: PFileAndFolderLineCheck,
+  component: PFileAndFolderLineCheck as any,
   parameters: {
     docs: {
       description: {
@@ -46,6 +46,11 @@ const meta: Meta<typeof PFileAndFolderLineCheck> = {
     },
   },
   tags: ['autodocs'],
+  args: {
+    pAdditionalText: '',
+    pState: 'default',
+    pFileName: '',
+  },
 }
 
 export default meta
@@ -58,7 +63,7 @@ export const Default: Story = {
       const checkboxValue = ref(false)
 
       return {
-        args: { ...args, modelValue: checkboxValue.value },
+        args,
         checkboxValue,
       }
     },
@@ -87,7 +92,7 @@ export const Success: Story = {
       const checkboxValue = ref(false)
 
       return {
-        args: { ...args, modelValue: checkboxValue.value },
+        args: { ...args },
         checkboxValue,
       }
     },
@@ -97,9 +102,6 @@ export const Success: Story = {
           v-model="checkboxValue"
           v-bind="args"
         />
-        <div style="margin-top: 16px;">
-          <strong>Checked:</strong> {{ checkboxValue }}
-        </div>
       </div>
     `,
   }),
@@ -117,7 +119,7 @@ export const Error: Story = {
       const checkboxValue = ref(false)
 
       return {
-        args: { ...args, modelValue: checkboxValue.value },
+        args: { ...args },
         checkboxValue,
       }
     },
@@ -127,9 +129,6 @@ export const Error: Story = {
           v-model="checkboxValue"
           v-bind="args"
         />
-        <div style="margin-top: 16px;">
-          <strong>Checked:</strong> {{ checkboxValue }}
-        </div>
       </div>
     `,
   }),
@@ -147,7 +146,7 @@ export const Loading: Story = {
       const checkboxValue = ref(false)
 
       return {
-        args: { ...args, modelValue: checkboxValue.value },
+        args: { ...args },
         checkboxValue,
       }
     },
@@ -157,9 +156,6 @@ export const Loading: Story = {
           v-model="checkboxValue"
           v-bind="args"
         />
-        <div style="margin-top: 16px;">
-          <strong>Checked:</strong> {{ checkboxValue }}
-        </div>
       </div>
     `,
   }),
@@ -227,16 +223,7 @@ export const AllStates: Story = {
             />
           </div>
         </div>
-        
-        <div style="margin-top: 24px; padding: 16px; background-color: #f5f5f5; border-radius: 8px;">
-          <h4>Values:</h4>
-          <p><strong>Default:</strong> {{ defaultValue }}</p>
-          <p><strong>Success:</strong> {{ successValue }}</p>
-          <p><strong>Error:</strong> {{ errorValue }}</p>
-          <p><strong>Loading:</strong> {{ loadingValue }}</p>
-        </div>
       </div>
     `,
   }),
-  args: {},
 }

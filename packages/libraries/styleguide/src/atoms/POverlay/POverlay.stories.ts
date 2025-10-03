@@ -27,7 +27,7 @@ const meta: Meta<typeof POverlay> = {
     },
   },
   args: {
-    pBackgroundColor: undefined,
+    pBackgroundColor: 'neutral-gray-500',
     pHasOverEffect: false,
     pIsVignette: false,
   },
@@ -73,7 +73,7 @@ export const VignetteMode: Story = {
         <p style="position: absolute; top: 10px; left: 10px; margin: 0; color: #666;">
           Zone conteneur (400px de hauteur)
         </p>
-        <POverlay :pIsVignette="true">
+        <POverlay :pIsVignette="true" pBackgroundColor="neutral-gray-500">
           <div style="background: white; padding: 24px; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
             <h3>Mode vignette</h3>
             <p>L'overlay prend la hauteur de son conteneur</p>
@@ -101,7 +101,7 @@ export const WithHoverEffect: Story = {
         <p style="position: absolute; top: 10px; left: 10px; margin: 0; color: #666;">
           Survolez l'overlay pour voir l'effet
         </p>
-        <POverlay :pIsVignette="true" :pHasOverEffect="true">
+        <POverlay :pIsVignette="true" :pHasOverEffect="true" pBackgroundColor="neutral-gray-500">
           <div style="background: white; padding: 24px; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
             <h3>Effet au survol</h3>
             <p>Cet overlay réagit au survol de la souris</p>
@@ -130,7 +130,7 @@ export const DifferentContentTypes: Story = {
           <p style="position: absolute; top: 10px; left: 10px; margin: 0; color: #666; z-index: 10;">
             Modal de confirmation
           </p>
-          <POverlay :pIsVignette="true">
+          <POverlay :pIsVignette="true" pBackgroundColor="neutral-gray-500">
             <div style="background: white; padding: 24px; border-radius: 8px; text-align: center; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
               <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
               <h3 style="margin-bottom: 16px; color: #d32f2f;">Confirmer la suppression</h3>
@@ -153,7 +153,7 @@ export const DifferentContentTypes: Story = {
           <p style="position: absolute; top: 10px; left: 10px; margin: 0; color: #666; z-index: 10;">
             Chargement
           </p>
-          <POverlay :pIsVignette="true">
+          <POverlay :pIsVignette="true" pBackgroundColor="neutral-gray-500">
             <div style="background: white; padding: 32px; border-radius: 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
               <div style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #1890ff; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 16px;"></div>
               <p style="color: #666;">Chargement en cours...</p>
@@ -189,7 +189,7 @@ export const ImageGalleryOverlay: Story = {
         <p style="position: absolute; top: 10px; left: 10px; margin: 0; color: #666; z-index: 10;">
           Overlay pour galerie d'images
         </p>
-        <POverlay :pIsVignette="true">
+        <POverlay :pIsVignette="true" pBackgroundColor="neutral-gray-500">
           <div style="background: white; border-radius: 8px; overflow: hidden; max-width: 600px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
             <div style="position: relative;">
               <div style="width: 100%; height: 300px; background: linear-gradient(45deg, #f0f0f0 25%, transparent 25%), linear-gradient(-45deg, #f0f0f0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #f0f0f0 75%), linear-gradient(-45deg, transparent 75%, #f0f0f0 75%); background-size: 20px 20px; background-position: 0 0, 0 10px, 10px -10px, -10px 0px; display: flex; align-items: center; justify-content: center; color: #666;">

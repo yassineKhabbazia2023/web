@@ -18,9 +18,6 @@ const meta: Meta<typeof PDropdown> = {
     modelValue: {
       control: 'text',
       description: 'Selected value(s)',
-      table: {
-        type: { summary: 'any' },
-      },
     },
     pOptions: {
       control: 'object',
@@ -32,91 +29,63 @@ const meta: Meta<typeof PDropdown> = {
     pPlaceholder: {
       control: 'text',
       description: 'Placeholder text',
-      table: {
-        type: { summary: 'string' },
-      },
     },
     pDisabled: {
       control: 'boolean',
       description: 'Disable the dropdown',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     pClearable: {
       control: 'boolean',
       description: 'Show clear button',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     pMultiple: {
       control: 'boolean',
       description: 'Enable multiple selection',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     pFilterable: {
       control: 'boolean',
       description: 'Enable option filtering',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     pAllowCreate: {
       control: 'boolean',
       description: 'Allow creating new options',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     pCollapseTags: {
       control: 'boolean',
       description: 'Collapse multiple selection tags',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     pCollapseTagsTooltip: {
       control: 'boolean',
       description: 'Show tooltip for collapsed tags',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     pHasRadioButton: {
       control: 'boolean',
       description: 'Show radio buttons for single selection',
-      table: {
-        type: { summary: 'boolean' },
-        defaultValue: { summary: 'false' },
-      },
     },
     pCheckAllLabel: {
       control: 'text',
       description: 'Label for check all option in multiple mode',
-      table: {
-        type: { summary: 'string' },
-      },
-    },
-    pSize: {
-      control: 'select',
-      options: ['', 'large', 'default', 'small'],
-      description: 'Size of the dropdown',
-      table: {
-        type: { summary: "'large' | 'default' | 'small'" },
-      },
     },
   },
-  tags: ['autodocs'],
+  args: {
+    pSize: 'default',
+    pDisabled: false,
+    pClearable: false,
+    pFilterable: false,
+    pAllowCreate: false,
+    pMultiple: false,
+    pMultipleLimit: 0,
+    pPlaceholder: 'Select',
+    pDefaultFirstOption: false,
+    pPopperClass: '',
+    pReserveKeyword: false,
+    pValueKey: '',
+    pCollapseTags: false,
+    pCollapseTagsTooltip: false,
+    pAutomaticDropdown: true,
+    pHasRadioButton: false,
+    pCheckAllLabel: 'Tout sélectionner',
+  },
 }
 
 export default meta
@@ -130,30 +99,24 @@ export const BasicUsage: Story = {
     components: { PDropdown },
     setup() {
       const value = ref('')
-
       return {
-        args: { ...args, pOptions: basicOptions },
+        args,
         value,
+        basicOptions,
       }
     },
     template: `
       <div style="padding: 20px; height: 300px;">
-        <h3>Basic Dropdown</h3>
         <PDropdown 
           v-model="value" 
           v-bind="args"
+          :pOptions="basicOptions"
           style="width: 240px;"
         />
         <p style="margin-top: 16px;">Selected value: {{ value }}</p>
       </div>
     `,
   }),
-  args: {
-    pPlaceholder: 'Select option',
-    pDisabled: false,
-    pClearable: false,
-    pHasRadioButton: false,
-  },
 }
 
 export const WithRadioButtons: Story = {
@@ -161,9 +124,8 @@ export const WithRadioButtons: Story = {
     components: { PDropdown },
     setup() {
       const value = ref('')
-
       return {
-        args: { ...args, pOptions: basicOptions },
+        args: { ...args, pOptions: basicOptions, pCheckAllLabel: '' },
         value,
       }
     },
@@ -370,59 +332,6 @@ export const DisabledState: Story = {
     pPlaceholder: 'Disabled dropdown',
     pDisabled: true,
   },
-}
-
-export const DifferentSizes: Story = {
-  render: (args) => ({
-    components: { PDropdown },
-    setup() {
-      const valueLarge = ref('')
-      const valueDefault = ref('')
-      const valueSmall = ref('')
-
-      return {
-        args: { ...args, pOptions: basicOptions },
-        valueLarge,
-        valueDefault,
-        valueSmall,
-      }
-    },
-    template: `
-      <div style="padding: 20px; height: 400px;">
-        <div style="margin-bottom: 20px;">
-          <h4>Large Size</h4>
-          <PDropdown 
-            v-model="valueLarge" 
-            v-bind="args"
-            pSize="large"
-            pPlaceholder="Large dropdown"
-            style="width: 240px;"
-          />
-        </div>
-        <div style="margin-bottom: 20px;">
-          <h4>Default Size</h4>
-          <PDropdown 
-            v-model="valueDefault" 
-            v-bind="args"
-            pSize="default"
-            pPlaceholder="Default dropdown"
-            style="width: 240px;"
-          />
-        </div>
-        <div style="margin-bottom: 20px;">
-          <h4>Small Size</h4>
-          <PDropdown 
-            v-model="valueSmall" 
-            v-bind="args"
-            pSize="small"
-            pPlaceholder="Small dropdown"
-            style="width: 240px;"
-          />
-        </div>
-      </div>
-    `,
-  }),
-  args: {},
 }
 
 export const WithClearButton: Story = {

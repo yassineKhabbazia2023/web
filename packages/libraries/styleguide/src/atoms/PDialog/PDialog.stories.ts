@@ -27,6 +27,7 @@ const meta: Meta<typeof PDialog> = {
     pDestroyOnClose: { control: 'boolean', description: 'Détruire le contenu à la fermeture' },
     pCloseIconName: { control: 'text', description: 'Icône de fermeture (nom)' },
   },
+  tags: ['!autodocs'],
   args: {
     modelValue: false,
     pTitle: 'Titre du dialogue',

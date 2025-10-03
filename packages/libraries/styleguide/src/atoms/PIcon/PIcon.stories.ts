@@ -24,8 +24,23 @@ const meta: Meta<typeof PIcon> = {
       description: 'Nom de l\'icône à afficher',
     },
     pColor: {
-      control: 'color',
+      control: 'select',
       description: 'Couleur de l\'icône',
+      options: [
+        '#0E0F30',
+        '#ADB5BD',
+        '#fff',
+        '#DEE2E6',
+        '#B10303',
+        '#BB5502',
+        '#126778',
+        '#3438C5',
+        '#0A710B',
+        '#0E0F30',
+        '#1AAB8E',
+        '#0C4F41',
+        '#093C32',
+      ],
     },
     pSize: {
       control: 'text',
@@ -90,11 +105,11 @@ export const Colors: Story = {
     components: { PIcon },
     template: `
       <div style="display: flex; align-items: center; gap: 16px;">
-        <PIcon pName="star" pColor="#E53E3E" pSize="24px" />
-        <PIcon pName="star" pColor="#38A169" pSize="24px" />
-        <PIcon pName="star" pColor="#3182CE" pSize="24px" />
-        <PIcon pName="star" pColor="#805AD5" pSize="24px" />
-        <PIcon pName="star" pColor="#D69E2E" pSize="24px" />
+        <PIcon pName="star" pColor="#126778" pSize="24px" />
+        <PIcon pName="star" pColor="#3438C5" pSize="24px" />
+        <PIcon pName="star" pColor="#0A710B" pSize="24px" />
+        <PIcon pName="star" pColor="#0E0F30" pSize="24px" />
+        <PIcon pName="star" pColor="#0C4F41" pSize="24px" />
       </div>
     `,
   }),
@@ -159,10 +174,10 @@ export const AllVariants: Story = {
         <div>
           <h3 style="margin-bottom: 16px;">Couleurs</h3>
           <div style="display: flex; align-items: center; gap: 16px;">
-            <PIcon pName="star" pColor="#E53E3E" pSize="24px" />
-            <PIcon pName="star" pColor="#38A169" pSize="24px" />
-            <PIcon pName="star" pColor="#3182CE" pSize="24px" />
-            <PIcon pName="star" pColor="#805AD5" pSize="24px" />
+            <PIcon pName="star" pColor="#0C4F41" pSize="24px" />
+            <PIcon pName="star" pColor="#3438C5" pSize="24px" />
+            <PIcon pName="star" pColor="#0A710B" pSize="24px" />
+            <PIcon pName="star" pColor="#0E0F30" pSize="24px" />
           </div>
         </div>
         

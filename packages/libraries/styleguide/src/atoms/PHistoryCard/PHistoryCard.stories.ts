@@ -112,30 +112,6 @@ export const WithEntityTooltip: Story = {
   }),
 }
 
-export const SimpleText: Story = {
-  args: {
-    pDate: '15/04/2024',
-    pType: 'Modification',
-    pEntity: 'Document.pdf',
-    pEntityIconName: 'fileText',
-  },
-  render: (args) => ({
-    components: { PHistoryCard },
-    setup() {
-      return { args }
-    },
-    template: `
-      <div style="width: 700px; padding: 24px;">
-        <PHistoryCard v-bind="args">
-          <template #text>
-            Le document a été modifié
-          </template>
-        </PHistoryCard>
-      </div>
-    `,
-  }),
-}
-
 export const WithoutAction: Story = {
   args: {
     pDate: '20/05/2024',

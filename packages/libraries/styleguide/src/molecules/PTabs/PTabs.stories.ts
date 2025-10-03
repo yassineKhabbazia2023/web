@@ -18,7 +18,7 @@ const meta: Meta<typeof PTabs> = {
   },
   argTypes: {
     modelValue: { control: 'text', description: 'Nom de l’onglet actif' },
-    pType: { control: 'select', options: ['', 'card', 'border-card', 'icon'], description: 'Style des onglets' },
+    pType: { control: 'select', options: ['', 'card', 'icon'], description: 'Style des onglets' },
     pClosable: { control: 'boolean', description: 'Active la fermeture des onglets' },
     pAddable: { control: 'boolean', description: 'Affiche le bouton d’ajout' },
     pEditable: { control: 'boolean', description: 'Active l’édition (ajout/suppression)' },
@@ -61,14 +61,75 @@ export const Basic: Story = {
   }),
 }
 
-// Card variant
-export const Card: Story = {
-  args: { pType: 'card' },
-  render: () => ({
-    components: { PTabs, PTabPane },
+// Tabs with counter
+export const WithCounter: Story = {
+  render: (args) => ({
+    components: { PPastille, PTabs, PTabPane },
+    setup() {
+      const active = ref(args.modelValue)
+      const onUpdate = (v: string) => (active.value = v)
+      return { args, active, onUpdate }
+    },
     template: `
       <div style="width: 640px;">
-        <PTabs>
+        <PTabs v-bind="args" v-model="active" @update:model-value="onUpdate">
+          <PTabPane pLabel="Onglet A" pName="1">
+            <template #label>
+              <span>Option A</span>
+              <PPastille
+                size="small"
+                kind="persian"
+                class="margin-left--2"
+              >
+                12
+              </PPastille>
+            </template>
+            Option A
+          </PTabPane>
+          <PTabPane pLabel="Onglet B" pName="2">
+            <template #label>
+              <span>Option B</span>
+              <PPastille
+                size="small"
+                kind="persian"
+                class="margin-left--2"
+              >
+                123
+              </PPastille>
+            </template>
+            Option B
+          </PTabPane>
+          <PTabPane pLabel="Onglet C" pName="3">          
+            <template #label>
+              <span>Option C</span>
+              <PPastille
+                size="small"
+                kind="persian"
+                class="margin-left--2"
+              >
+                1
+              </PPastille>
+            </template>
+            Option C
+          </PTabPane>
+        </PTabs>
+      </div>
+    `,
+  }),
+}
+
+// Card variant
+export const Card: Story = {
+  render: (args) => ({
+    components: { PTabs, PTabPane },
+    setup() {
+      const active = ref(args.modelValue)
+      const onUpdate = (v: string) => (active.value = v)
+      return { args, active, onUpdate }
+    },
+    template: `
+      <div style="width: 640px;">
+        <PTabs v-bind="args" v-model="active" @update:model-value="onUpdate" pType="card">
           <PTabPane pLabel="Résumé" pName="1">Vue d’ensemble</PTabPane>
           <PTabPane pLabel="Détails" pName="2">Informations détaillées</PTabPane>
           <PTabPane pLabel="Historique" pName="3">Historique des actions</PTabPane>
@@ -78,29 +139,37 @@ export const Card: Story = {
   }),
 }
 
-// Icon variant with counter using PPastille
-export const WithIconsAndCounters: Story = {
-  args: { pType: 'icon' },
-  render: () => ({
-    components: { PTabs, PTabPane, PPastille },
+// Icon variant with counter using Tooltip
+export const WithIconsAndTooltip: Story = {
+  render: (args) => ({
+    components: { PTabs, PTabPane },
+    setup() {
+      const active = ref(args.modelValue)
+      const onUpdate = (v: string) => (active.value = v)
+      return { args, active, onUpdate }
+    },
     template: `
       <div style="width: 640px;">
-        <PTabs pType="icon">
-          <PTabPane pName="1" pIconName="calendarEvent">
-            <template #label>
-              <span>Agenda</span>
-              <PPastille size="small" kind="persian" class="margin-left--2">3</PPastille>
-            </template>
+        <PTabs v-bind="args" v-model="active" @update:model-value="onUpdate" pType="icon">
+          <PTabPane pName="1" pIconName="calendarEvent" :pTooltip="{
+            pPlacement: 'bottom',
+            pContent: 'Agenda',
+            disabled: false,
+          }">
             Prochaines échéances
           </PTabPane>
-          <PTabPane pName="2" pIconName="envelope">
-            <template #label>
-              <span>Messages</span>
-              <PPastille size="small" kind="persian" class="margin-left--2">12</PPastille>
-            </template>
+          <PTabPane pName="2" pIconName="envelope" :pTooltip="{
+            pPlacement: 'top',
+            pContent: 'Messages',
+            disabled: false,
+          }">
             Messages récents
           </PTabPane>
-          <PTabPane pName="3" pIconName="gear">Paramètres</PTabPane>
+          <PTabPane pName="3" pIconName="gear" :pTooltip="{
+            pPlacement: 'right',
+            pContent: 'Paramètres',
+            disabled: false,
+          }">Paramètres</PTabPane>
         </PTabs>
       </div>
     `,

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import { reactive } from 'vue'
 import PFilterOption from './PFilterOption.vue'
-import type { PFilterOptionProps } from './PFilterOptionTypes'
+import { pulseGeneratedIcons } from '../PIcon/components/constants'
 
 const meta: Meta<typeof PFilterOption> = {
   title: 'Atoms/PFilterOption',
@@ -13,6 +12,44 @@ const meta: Meta<typeof PFilterOption> = {
         component: 'Option de filtre avec compteur, couleur et icône.',
       },
     },
+  }, argTypes: {
+    pValue: {
+      control: 'text',
+      description: 'Nombre à afficher',
+    },
+    pContent: {
+      control: 'text',
+      description: 'Texte à afficher',
+    },
+    pIconName: {
+      control: 'select',
+      options: [undefined, ...pulseGeneratedIcons.map(icon => icon.name)],
+      description: 'Nom de l\'icône à afficher dans le filtre',
+    },
+    pColor: {
+      control: 'select',
+      description: 'Couleur du filtre',
+      options: [
+        'success',
+        'warning',
+        'tranquil',
+        'danger',
+        'disabled',
+        'light-gray',
+        'gray',
+        'light-blue',
+      ],
+    },
+    pSelected: { control: 'boolean', description: 'État sélectionné' },
+    pDisabled: { control: 'boolean', description: 'État désactivé' },
+  },
+  args: {
+    pValue: '9',
+    pContent: 'A Déployer',
+    pSelected: false,
+    pColor: 'success',
+    pDisabled: false,
+    pIconName: 'arrowUpCircle',
   },
 }
 
@@ -20,37 +57,12 @@ export default meta
 export type Story = StoryObj<typeof meta>
 
 export const Default: Story = {
-  render: () => ({
+  render: (args) => ({
     components: { PFilterOption },
-    setup() {
-      const props: PFilterOptionProps = reactive({
-        pSelected: false,
-        pDisabled: false,
-        pContent: 'À déployer',
-        pIconName: 'arrowUpCircle',
-        pValue: 3,
-        pColor: 'disabled',
-      })
-      const filterOptionColor: { label: string; value: PFilterOptionProps['pColor'] }[] = [
-        { label: 'En cours', value: 'tranquil' },
-        { label: 'Succès', value: 'success' },
-        { label: 'Avertissement', value: 'warning' },
-        { label: 'Erreur', value: 'danger' },
-        { label: 'Gris Léger', value: 'light-gray' },
-        { label: 'Gris', value: 'gray' },
-      ]
-      return { props, filterOptionColor }
-    },
+    setup: () => ({ args }),
     template: `
       <div style="padding: 16px;">
-        <PFilterOption
-          v-model:pSelected="props.pSelected"
-          :pDisabled="props.pDisabled"
-          :pContent="props.pContent"
-          :pColor="props.pColor"
-          :pIconName="props.pIconName"
-          :pValue="props.pValue"
-        />
+        <PFilterOption v-bind="args" v-model:pSelected="args.pSelected"/>
       </div>
     `,
   }),

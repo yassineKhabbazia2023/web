@@ -41,15 +41,19 @@ export const Basic: Story = {
     },
     template: `
       <PForm :pModel="formValues" @submit.prevent="submit">
-        <PRadioCard :pLabel="pRadioCard1.label" :pTitle="pRadioCard1.title" :pDescription="pRadioCard1.description">
-          <PButton pType="white">
-            Personnaliser
-            <PIcon class="el-button__icon--right" pName="arrowRight" />
-          </PButton>
-        </PRadioCard>
-        <br />
-        <PRadioCard :pLabel="pRadioCard2.label" :pTitle="pRadioCard2.title" />
-        <br />
+        <PRadioGroup
+          v-model="formValues.radioValue"
+        >
+          <PRadioCard :pLabel="pRadioCard1.label" :pTitle="pRadioCard1.title" :pDescription="pRadioCard1.description">
+            <PButton pType="white">
+              Personnaliser
+              <PIcon class="el-button__icon--right" pName="arrowRight" />
+            </PButton>
+          </PRadioCard>
+          <br />
+          <PRadioCard :pLabel="pRadioCard2.label" :pTitle="pRadioCard2.title" />
+          <br />
+        </PRadioGroup>
         <PButton pType="primary" class="margin-top--4" @click="submit">Soumettre</PButton>
       </PForm>
     `,

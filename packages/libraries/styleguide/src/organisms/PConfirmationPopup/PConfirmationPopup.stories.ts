@@ -69,7 +69,7 @@ const meta: Meta<typeof PConfirmationPopup> = {
       },
     },
   },
-  tags: ['autodocs'],
+  tags: ['!autodocs'],
 }
 
 export default meta
@@ -298,7 +298,7 @@ export const DeleteConfirmation: Story = {
   },
 }
 
-export const WithoutCloseButton: Story = {
+export const WithCloseButton: Story = {
   render: (args) => ({
     components: { PConfirmationPopup, PButton },
     setup() {
@@ -344,7 +344,7 @@ export const WithoutCloseButton: Story = {
           @on-confirm-button-click="onConfirmButtonClick"
           @on-cancel-button-click="onCancelButtonClick"
         >
-          <p>This dialog must be answered - you cannot close it with the X button.</p>
+          <p>This dialog must be answered - you can close it with the X button.</p>
         </PConfirmationPopup>
       </div>
     `,
@@ -356,6 +356,6 @@ export const WithoutCloseButton: Story = {
     pCancelButtonContent: 'Decline',
     pConfirmButtonIsLoading: false,
     pAlignCenter: true,
-    pNoCloseButton: true,
+    pNoCloseButton: false,
   },
 }

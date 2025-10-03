@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { ref } from 'vue'
 import PUserAction from './PUserAction.vue'
 import type { PUserActionProps } from './PUserActionTypes'
 import { getMockedOptions } from './PUserAction.mocks'
@@ -111,7 +112,21 @@ export const WithInput: Story = {
     pInputPlaceholder: 'Entrez la fonction du collaborateur',
     pShowDelete: true,
     pAvatarRole: AvatarRoles.COLLAB,
-  },
+  }, render: (args) => ({
+    components: { PUserAction },
+    setup() {
+      const pInputValue = ref('')
+      return { args, pInputValue }
+    },
+    template: `
+      <div class="space-y-4">
+        <PUserAction
+          v-model:pInputValue="pInputValue"
+          v-bind="args"
+        />
+      </div>
+    `,
+  }),
 }
 
 export const WithInputNoDelete: Story = {
@@ -124,7 +139,21 @@ export const WithInputNoDelete: Story = {
     pInputPlaceholder: 'Entrez la fonction du collaborateur',
     pShowDelete: false,
     pAvatarRole: AvatarRoles.COLLAB,
-  },
+  }, render: (args) => ({
+    components: { PUserAction },
+    setup() {
+      const pInputValue = ref('')
+      return { args, pInputValue }
+    },
+    template: `
+      <div class="space-y-4">
+        <PUserAction
+          v-model:pInputValue="pInputValue"
+          v-bind="args"
+        />
+      </div>
+    `,
+  }),
 }
 
 export const WithSingleSelect: Story = {
@@ -138,7 +167,21 @@ export const WithSingleSelect: Story = {
     pOptions: getMockedOptions(),
     pOptionsPlaceholder: 'Rôle Akuiteo',
     pAvatarRole: AvatarRoles.COLLAB,
-  },
+  }, render: (args) => ({
+    components: { PUserAction },
+    setup() {
+      const pOptionValue = ref('')
+      return { args, pOptionValue }
+    },
+    template: `
+      <div class="space-y-4">
+        <PUserAction
+          v-model:pOptionsValue="pOptionValue"
+          v-bind="args"
+        />
+      </div>
+    `,
+  }),
 }
 
 export const WithMultiSelect: Story = {
@@ -152,7 +195,21 @@ export const WithMultiSelect: Story = {
     pOptions: getMockedOptions(),
     pOptionsPlaceholder: 'Rôles Akuiteo',
     pAvatarRole: AvatarRoles.COLLAB,
-  },
+  }, render: (args) => ({
+    components: { PUserAction },
+    setup() {
+      const pOptionValue = ref('')
+      return { args, pOptionValue }
+    },
+    template: `
+      <div class="space-y-4">
+        <PUserAction
+          v-model:pOptionsValue="pOptionValue"
+          v-bind="args"
+        />
+      </div>
+    `,
+  }),
 }
 
 export const WithWarning: Story = {
@@ -165,31 +222,12 @@ export const WithWarning: Story = {
   },
 }
 
-export const Interactive: Story = {
-  args: {
-    pProfile: 'IL',
-    pTitle: 'Isabelle Leroy',
-    pDescription: 'isabelle.leroy@company.fr',
-    pShowInput: true,
-    pInputPlaceholder: 'Fonction du collaborateur',
-    pShowDelete: true,
-    pShowOptions: true,
-    pOptionsMultiple: false,
-    pOptions: [
-      { pValue: 'manager', pLabel: 'Manager' },
-      { pValue: 'consultant', pLabel: 'Consultant' },
-      { pValue: 'analyst', pLabel: 'Analyst' },
-      { pValue: 'director', pLabel: 'Director' },
-    ],
-    pOptionsPlaceholder: 'Sélectionner un rôle',
-    pAvatarRole: AvatarRoles.COLLAB,
-  },
-}
-
 export const AllVariants: Story = {
   render: () => ({
     components: { PUserAction },
     setup() {
+      const pInputValue = ref('')
+      const pOptionValue = ref('')
       const variants: PUserActionProps[] = [
         {
           pProfile: 'SL',
@@ -229,11 +267,13 @@ export const AllVariants: Story = {
         },
       ]
 
-      return { variants }
+      return { variants, pInputValue, pOptionValue }
     },
     template: `
       <div class="space-y-4">
         <PUserAction
+          v-model:pInputValue="pInputValue"
+          v-model:pOptionsValue="pOptionValue"
           v-for="(variant, index) in variants"
           :key="index"
           v-bind="variant"

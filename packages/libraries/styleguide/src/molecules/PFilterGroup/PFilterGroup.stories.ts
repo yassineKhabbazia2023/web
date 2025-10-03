@@ -38,14 +38,14 @@ type Story = StoryObj<PFilterGroupProps<any>>
 const defaultFilters: FilterOption[] = [
   {
     pIconName: 'checkCircle',
-    pValue: '2',
+    pValue: undefined,
     pContent: 'Incident',
     pColor: 'danger',
     pCode: 'incident',
   },
   {
     pIconName: 'checkCircle',
-    pValue: '4',
+    pValue: undefined,
     pContent: 'Deploiment',
     pColor: 'warning',
     pCode: 'deploiment',
@@ -58,14 +58,14 @@ const defaultFilters: FilterOption[] = [
   },
   {
     pIconName: 'checkCircle',
-    pValue: 2,
+    pValue: undefined,
     pContent: 'En cours',
     pColor: 'light-blue',
     pCode: 'en-cours',
   },
   {
     pIconName: 'xCircle',
-    pValue: '9',
+    pValue: undefined,
     pContent: 'Résilié',
     pColor: 'gray',
     pCode: 'resilie',
@@ -266,72 +266,6 @@ export const StatusFilters: Story = {
         />
         <div style="margin-top: 16px;">
           <strong>Selected statuses:</strong> {{ selectedStatuses }}
-        </div>
-      </div>
-    `,
-  }),
-  args: {},
-}
-
-export const CategoryFilters: Story = {
-  render: () => ({
-    components: { PFilterGroup },
-    setup() {
-      const selectedCategories = ref<string[]>([])
-
-      const categoryFilters: FilterOption[] = [
-        {
-          pIconName: 'fileText',
-          pContent: 'Documents',
-          pColor: 'tranquil',
-          pCode: 'documents',
-        },
-        {
-          pIconName: 'folder',
-          pContent: 'Projects',
-          pColor: 'success',
-          pCode: 'projects',
-        },
-        {
-          pIconName: 'person',
-          pContent: 'Users',
-          pColor: 'light-blue',
-          pCode: 'users',
-        },
-        {
-          pIconName: 'gear',
-          pContent: 'Settings',
-          pColor: 'light-gray',
-          pCode: 'settings',
-        },
-        {
-          pIconName: 'shield',
-          pContent: 'Security',
-          pColor: 'danger',
-          pCode: 'security',
-        },
-      ]
-
-      const handleUpdate = (value: string[]) => {
-        console.log('Selected categories:', value)
-      }
-
-      return {
-        selectedCategories,
-        categoryFilters,
-        handleUpdate,
-      }
-    },
-    template: `
-      <div style="padding: 20px;">
-        <h3>Category Filters</h3>
-        <PFilterGroup 
-          v-model="selectedCategories"
-          :pFilters="categoryFilters"
-          @update:model-value="handleUpdate"
-        />
-        <div style="margin-top: 16px;">
-          <strong>Selected categories:</strong> {{ selectedCategories }}
         </div>
       </div>
     `,

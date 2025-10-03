@@ -100,10 +100,3 @@ export const WithMaxLength: Story = {
     pPlaceholder: 'Max 20 characters',
   },
 }
-
-export const PrimaryStyle: Story = {
-  args: {
-    pType: 'primary',
-    pPlaceholder: 'Primary search',
-  },
-}
