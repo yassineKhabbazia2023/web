@@ -1,3 +1,4 @@
+export * from './booking/booking.manager'
 export * from './current-user/current-user.manager'
 export * from './login/login.manager'
 export * from './pennylane-permissions/pennylane-permissions.manager'

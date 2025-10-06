@@ -45,7 +45,7 @@ import BookingConfiguration from '../booking-configuration/booking-configuration
 import BookingConfigurationSuccess from '../booking-configuration-success/booking-configuration-success.vue'
 import BookingConfigurationFailed from '../booking-configuration-failed/booking-configuration-failed.vue'
 import { BookingDrawerState } from './booking-drawer.enum'
-import { BookingService } from '@app/services/booking/booking.service'
+import { BookingService } from '@pulse/common/services/booking'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const props = defineProps<BookingDrawerProps>()

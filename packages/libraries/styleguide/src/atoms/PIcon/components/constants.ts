@@ -1143,6 +1143,12 @@ export const pulseGeneratedIcons: {
     category: 'Spatiotemporal',
   },
   {
+    name: 'calendarNone',
+    componentName: 'PICalendarNone',
+    fileName: 'calendar-none.svg',
+    category: 'Spatiotemporal',
+  },
+  {
     name: 'calendarPlus',
     componentName: 'PICalendarPlus',
     fileName: 'calendar-plus.svg',

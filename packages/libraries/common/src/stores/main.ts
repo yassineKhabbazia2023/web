@@ -1,3 +1,4 @@
+export { useBookingStore } from './booking/booking.store'
 export { usePermissionsStore } from './permissions/permissions.store'
 export { useSelectedEntityStore } from './selected-entity/selected-entity.store'
 export { useTokenStore } from './token/token.store'

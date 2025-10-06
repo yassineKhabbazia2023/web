@@ -11,6 +11,10 @@ import {
   mockWidgetGridDefinitionsWithPermissions,
 } from '@entities/__mocks__/widgets-home.mocks'
 import { CurrentUserManager } from '@pulse/common/managers'
+import { getStoreMock } from '@pulse/common/mocks'
+import { useBookingStore } from '@pulse/common/stores'
+
+getStoreMock(useBookingStore)
 
 vi.mock('@entities/services/widgets/widgets.service')
 vi.mock('@pulse/widgets/managers')

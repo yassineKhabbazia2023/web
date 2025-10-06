@@ -1,4 +1,4 @@
-import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
+import type { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 import { WidgetItemClicked, WidgetName, WidgetSize } from '../enums/widgets.enums'
 import type { Permission } from '@pulse/common/types'
 

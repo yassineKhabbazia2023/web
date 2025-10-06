@@ -1,12 +1,13 @@
 export enum WidgetName {
-  SSO = 'SSO',
-  PENNYLANE_INTRO = 'PennylaneIntro',
-  PENNYLANE_DOCUMENTS = 'PennylaneDocuments',
+  BOOKING_RENDEZ_VOUS = 'BookingRendezVous',
   DIGILAB = 'Digilab',
-  RSS_NEWS = 'RssNews',
-  POWERBI_INTRO = 'PowerBIIntro',
   EMAIL_PENNYLANE = 'EmailPennylane',
+  PENNYLANE_DOCUMENTS = 'PennylaneDocuments',
+  PENNYLANE_INTRO = 'PennylaneIntro',
+  POWERBI_INTRO = 'PowerBIIntro',
+  RSS_NEWS = 'RssNews',
   SMART_INTRO = 'SmartIntro',
+  SSO = 'SSO',
 }
 
 /**
@@ -21,6 +22,11 @@ export enum WidgetSize {
   TWO_SPANS = 2,
   THREE_SPANS = 3,
   FOUR_CELLS_SQUARE = 4,
+}
+
+export enum WidgetScope {
+  ONLY_COLLAB = 'only-collab',
+  ONLY_CUSTOMER = 'only-customer',
 }
 
 export enum WidgetItemClicked {

@@ -9,6 +9,7 @@ export const validWidgetNames = {
   powerbiIntro: WidgetName.POWERBI_INTRO,
   rssNews: WidgetName.RSS_NEWS,
   pennylaneDocuments: WidgetName.PENNYLANE_DOCUMENTS,
+  bookingRendezVous: WidgetName.BOOKING_RENDEZ_VOUS,
 }
 
 export const invalidWidgetNames = {

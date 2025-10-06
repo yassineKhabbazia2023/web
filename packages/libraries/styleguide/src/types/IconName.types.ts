@@ -31,6 +31,7 @@ export type IconName =
 'buildingSupport' |
 'calculatorEuro' |
 'calendarEvent' |
+'calendarNone' |
 'calendarPlus' |
 'camera' |
 'carFront' |

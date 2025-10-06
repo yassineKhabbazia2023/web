@@ -8,6 +8,7 @@ import loginApplet from '@pulse/login'
 import mandateApplet from '@pulse/mandate'
 import offersCatalogApplet from '@pulse/offers-catalog'
 import pennylaneApplet from '@pulse/pennylane'
+import bookingApplet from '@pulse/booking'
 import powerBiApplet from '@pulse/powerbi'
 import commonLibrary from '@pulse/common'
 import { i18n } from '@pulse/common/i18n'
@@ -52,6 +53,7 @@ const app = createApp(App)
   // install applets
   .use(entitiesApplet, { router })
   .use(pennylaneApplet, { router }) // should register pennylaneApplet before gedApplet
+  .use(bookingApplet, { router })
   .use(gedApplet, { router })
   .use(launcherApplet, { router })
   .use(loginApplet, { router })

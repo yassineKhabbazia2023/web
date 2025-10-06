@@ -1,5 +1,5 @@
 import { envVarsMock } from '@pulse/core/mocks'
-import { bookingLinkMock } from '@app/__mocks__/booking.mock'
+import { bookingLinkMock } from '@pulse/common/mocks'
 import { getConfigurationLinkErrorMessage } from './booking-configuration-form.helper'
 
 declare let window: {

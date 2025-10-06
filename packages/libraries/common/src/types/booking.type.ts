@@ -5,3 +5,10 @@ export interface BookingServiceConfiguration {
   creationDate: string
   updatedDate: string
 }
+
+export interface BookingServiceExpert {
+  contactId: number
+  link: string
+  fullName: string
+  email: string
+}
