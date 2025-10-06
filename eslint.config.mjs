@@ -126,13 +126,6 @@ export default [
     },
   },
   {
-    // specific rulesets for Story files (above rules apply as well)
-    files: ['**/*.story.vue'],
-    rules: {
-      '@stylistic/max-len': 'off', // we don't enforce line length in stories files
-    },
-  },
-  {
     // specific rulesets for App & Applets (above rules apply as well)
     files: ['packages/app/**/*', 'packages/applets/**/*'],
     rules: {

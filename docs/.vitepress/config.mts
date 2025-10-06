@@ -112,12 +112,6 @@ export default defineConfig({
                 {
                   text: 'StyleGuide',
                   link: '/monorepo/libraries/styleguide/styleguide',
-                  items: [
-                    {
-                      text: 'Histoire',
-                      link: '/monorepo/libraries/styleguide/histoire',
-                    },
-                  ],
                 },
                 {
                   text: 'Widgets',

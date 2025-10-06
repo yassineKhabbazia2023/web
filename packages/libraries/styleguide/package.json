@@ -14,9 +14,6 @@
     "build": "npm run build:types && npm run build:vite",
     "build:types": "vue-tsc --build --force",
     "build:vite": "vite build",
-    "story:dev": "histoire dev",
-    "story:build": "histoire build",
-    "story:preview": "histoire preview",
     "test": "npx vitest run",
     "test:ci": "vitest run --coverage",
     "test:update": "npx vitest -u",
@@ -27,9 +24,6 @@
     "generate:images": "tsx ./scripts/generateImages.ts ./src/assets/images-origin ./src/assets/images ./src/atoms/PImage/imagesList.json ./src/atoms/PImage/ImageNameTypes.ts && eslint ./src/atoms/PImage/* --fix",
     "generate:colors": "tsx ./scripts/generate-colors.ts",
     "serve:assets": "tsx ./scripts/assets"
-  },
-  "devDependencies": {
-    "histoire": "^0.17.0"
   },
   "dependencies": {
     "@pulse/core": "1.0.0"

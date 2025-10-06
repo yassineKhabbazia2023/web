@@ -189,9 +189,9 @@ export default {
       from: {
         path: '^(packages)',
         // we don't want to throw errors on our devDependencies
-        // in our test setups, story from Histoire or any config or setup files
+        // in our test setups or any config or setup files
         pathNot: [
-          '[.](?:spec|test|story|config|setup)[.](?:js|mjs|cjs|jsx|ts|mts|cts|tsx|vue)$',
+          '[.](?:spec|test|config|setup)[.](?:js|mjs|cjs|jsx|ts|mts|cts|tsx|vue)$',
           // nothing in those specific folders should be checked
           '/tests/',
           '/__mocks__/',

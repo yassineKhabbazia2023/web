@@ -1,24 +1,16 @@
 import path from 'path'
 import { fileURLToPath, URL } from 'node:url'
 import type { UserConfigExport } from 'vite'
-import { defineConfig, mergeConfig } from 'vite'
-import { defaultColors } from 'histoire'
-import { HstVue } from '@histoire/plugin-vue'
+import { mergeConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 
-let consolidatedConfig: UserConfigExport
 const basicConfig = {
-  histoire: {},
   define: {
     'process.env': process.env,
-  },
-  rollupOptions: {},
-  ssr: {
-    noExternal: ['tslog'], // necessary for tslog to work properly in ssr (needed for histoire)
   },
   resolve: {
     alias: {
@@ -32,101 +24,44 @@ const basicConfig = {
   ],
 }
 
-if (process.env.HISTOIRE) {
-  const logo = './src/assets/images/logos/iconpulse-color.svg'
-
-  basicConfig.rollupOptions = {
-    input: {
-      main: path.resolve(__dirname, 'src/histoire.setup.ts'),
+const consolidatedConfig: UserConfigExport = mergeConfig(basicConfig, {
+  resolve: {
+    dedupe: ['vue'],
+  },
+  build: {
+    minify: true,
+    reportCompressedSize: true,
+    lib: {
+      name: '@pulse/styleguide',
+      entry: path.resolve(__dirname, 'src/main.ts'),
+      formats: ['es'],
+      fileName: (format: string) => `lib/styleguide.pegase.${format}.min.js`,
     },
-  }
-
-  basicConfig.histoire = {
-    setupFile: './src/histoire.setup.ts',
-    plugins: [HstVue()],
-    outDir: './dist',
-    storyIgnored: [
-      '**/node_modules/**',
-      '**/dist/**',
-    ],
-    theme: {
-      colors: {
-        gray: {
-          ...defaultColors.slate,
-          100: '#cfd3dc',
-          300: '#b7b7b7',
-          700: '#141414',
-          750: '#141414',
-          800: '#434445',
-          900: '#606266',
-        },
-        primary: {
-          ...defaultColors.blue,
-          500: '#409eff',
-          700: '#409eff',
+    rollupOptions: {
+      input: 'src/main.ts',
+      preserveEntrySignatures: 'strict',
+      external: ['vue'],
+      output: {
+        globals: {
+          vue: 'Vue',
         },
       },
-      title: 'RYDGE Conseil Styleguide - Pegase',
-      logo: {
-        dark: logo,
-        light: logo,
-        square: logo,
-      },
-      favicon: 'favicon.svg',
-      hideColorSchemeSwitch: false,
-      storeColorScheme: true,
+      plugins: [
+        typescriptPaths({
+          preserveExtensions: true,
+        }),
+        typescript({
+          sourceMap: false,
+        }),
+      ],
     },
-    defaultStoryProps: {
-      layout: {
-        type: 'grid',
-        width: 320,
-      },
-      responsiveDisabled: true,
-      autoPropsDisabled: true,
-    },
-  }
-
-  consolidatedConfig = defineConfig(basicConfig as any)
-} else {
-  consolidatedConfig = mergeConfig(basicConfig, {
-    resolve: {
-      dedupe: ['vue'],
-    },
-    build: {
-      minify: true,
-      reportCompressedSize: true,
-      lib: {
-        name: '@pulse/styleguide',
-        entry: path.resolve(__dirname, 'src/main.ts'),
-        formats: ['es'],
-        fileName: (format: string) => `lib/styleguide.pegase.${format}.min.js`,
-      },
-      rollupOptions: {
-        input: 'src/main.ts',
-        preserveEntrySignatures: 'strict',
-        external: ['vue'],
-        output: {
-          globals: {
-            vue: 'Vue',
-          },
-        },
-        plugins: [
-          typescriptPaths({
-            preserveExtensions: true,
-          }),
-          typescript({
-            sourceMap: false,
-          }),
-        ],
-      },
-    },
-    output: {
-      assetFileNames: 'lib/styleguide.pegase.[name][extname]',
-    },
-    server: {
-      port: 8084,
-    } as UserConfigExport,
-  })
-}
+  },
+  output: {
+    assetFileNames: 'lib/styleguide.pegase.[name][extname]',
+  },
+  server: {
+    port: 8084,
+  } as UserConfigExport,
+})
 
 export default consolidatedConfig
