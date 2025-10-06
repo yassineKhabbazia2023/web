@@ -1,18 +1,14 @@
-import { featureFlagManagerMock } from '@pulse/core/mocks'
+import { featureFlagManagerMock, CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked } from '@pulse/common/mocks'
 import { WalletTab } from './Wallet.enums'
 import type { WalletTabConfiguration, WalletAvailableTab } from './Wallet.types'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
-import { CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked } from '@pulse/common/mocks'
 import { COLLAB_TABS_CONFIGURATION, CUSTOMER_TABS_CONFIGURATION } from './Wallet.const'
-import { Feature } from '@pulse/core/enums'
+import { Feature } from '@pulse/common/enums'
 
 import { getAvailableTabs, getTabs } from './Wallet.utils'
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
-}))
-
-vi.mock('@pulse/core', () => ({
   FeatureFlagManager: featureFlagManagerMock,
 }))
 

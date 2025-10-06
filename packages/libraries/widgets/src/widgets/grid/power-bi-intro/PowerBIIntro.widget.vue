@@ -62,7 +62,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { PImage } from '@pulse/styleguide/components'
-import { POWER_BI_INTRODUCTION } from '@pulse/core'
+import { POWER_BI_INTRODUCTION } from '@pulse/common/constants'
 import { widgetClick } from '@pulse/widgets/utils'
 import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 import { WidgetName } from '@pulse/widgets/enums'

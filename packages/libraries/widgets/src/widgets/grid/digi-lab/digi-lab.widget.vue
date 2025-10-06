@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PButton, PImage } from '@pulse/styleguide/components'
-import { DIGILAB_JOIN_FORM_URL } from '@pulse/core'
+import { DIGILAB_JOIN_FORM_URL } from '@pulse/common/constants'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { widgetClick } from '@pulse/widgets/utils'
 import { WidgetName } from '@pulse/widgets/enums'

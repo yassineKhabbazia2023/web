@@ -1,4 +1,4 @@
-import { envVarsMock } from '@pulse/core/mocks'
+import { envVarsMock } from '@pulse/common/mocks'
 
 export const launchCardsMock = [
   {

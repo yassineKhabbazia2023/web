@@ -4,8 +4,8 @@ import {
   cguServiceMock,
   AmplitudeServiceMock,
   CurrentUserManagerMock,
+  envVarsMock,
 } from '@pulse/common/mocks'
-import { envVarsMock } from '@pulse/core/mocks'
 import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import { flushPromises, mount } from '@vue/test-utils'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'

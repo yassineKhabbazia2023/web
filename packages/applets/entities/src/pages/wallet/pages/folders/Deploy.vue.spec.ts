@@ -7,6 +7,7 @@ import {
   hasPermissionMock,
   CurrentUserManagerMock,
   getStoreMock,
+  featureFlagManagerMock,
 } from '@pulse/common/mocks'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
@@ -14,7 +15,7 @@ import { nextTick, reactive } from 'vue'
 import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtils.mocks'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/common/types'
-import { featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/core/mocks'
 import { contactServiceMock, fetchAccountOperationsMock } from '@entities/__mocks__/contact.service.mocks'
 import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'

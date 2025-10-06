@@ -24,7 +24,7 @@ import { onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useSelectedEntityStore, useBookingStore } from '@pulse/common/stores'
-import { FeatureFlagManager } from '@pulse/core'
+import { FeatureFlagManager } from '@pulse/common/managers'
 
 import { PEntityHeader } from '@pulse/styleguide/components'
 import BookingRendezVousDrawer from '@entities/common/components/booking-rendez-vous-drawer/booking-rendez-vous-drawer.vue'

@@ -2,7 +2,7 @@ import { mount, type VueWrapper } from '@vue/test-utils'
 import { getStoreMock, getMockedEntitySummary } from '@pulse/common/mocks'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import { mockedEntity } from '@entities/__mocks__/entities.mocks'
-import { FeatureFlagManager } from '@pulse/core'
+import { FeatureFlagManager } from '@pulse/common/managers'
 
 import WalletLandingPage from '.'
 

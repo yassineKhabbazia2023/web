@@ -1,9 +1,9 @@
-import { HTMLService } from '@pulse/core'
+import { HTMLService } from '@pulse/common/services/html'
 import { HTML_TITLE_META } from '@pulse/common/constants'
 import { seoGuard } from './seo.guard'
 import type { RouteLocationNormalized } from 'vue-router'
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/common/services/html', () => ({
   HTMLService: {
     setDocumentTitle: vi.fn(),
     resetDocumentTitle: vi.fn(),

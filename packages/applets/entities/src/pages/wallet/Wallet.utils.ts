@@ -1,8 +1,7 @@
-import { CurrentUserManager } from '@pulse/common/managers'
+import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import { WalletTab } from './Wallet.enums'
 import type { WalletTabConfiguration, WalletAvailableTab } from './Wallet.types'
 import { COLLAB_TABS_CONFIGURATION, CUSTOMER_TABS_CONFIGURATION } from './Wallet.const'
-import { FeatureFlagManager } from '@pulse/core'
 
 export function getAvailableTabs(
   allTabs: WalletTabConfiguration[],

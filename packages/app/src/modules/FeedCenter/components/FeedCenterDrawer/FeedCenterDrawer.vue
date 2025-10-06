@@ -55,7 +55,7 @@ import {
   PTabs,
   PTabPane,
 } from '@pulse/styleguide/components'
-import { FeatureFlagManager } from '@pulse/core'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { SelectedNotificationEnum } from '@app/modules/FeedCenter/types/notification.type'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import NotificationsWrapper from './NotificationsWrapper'

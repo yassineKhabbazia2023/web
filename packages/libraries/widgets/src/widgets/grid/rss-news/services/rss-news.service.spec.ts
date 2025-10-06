@@ -1,10 +1,10 @@
 import { RSSNewsService } from './rss-news.service'
 import axios from 'axios'
-import { RSS_NEWS_FEED_URL } from '@pulse/core'
+import { RSS_NEWS_FEED_URL } from '@pulse/common/constants'
 
 // Mock dependencies
 vi.mock('axios')
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/common/constants', () => ({
   RSS_NEWS_FEED_URL: 'https://mock-rss-url.com',
 }))
 

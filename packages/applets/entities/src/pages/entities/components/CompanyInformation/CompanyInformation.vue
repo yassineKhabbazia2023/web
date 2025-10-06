@@ -94,7 +94,8 @@
 </template>
 
 <script setup lang="ts">
-import { logger, AKUITEO_URL } from '@pulse/core'
+import { logger } from '@pulse/core'
+import { AKUITEO_URL } from '@pulse/common/constants'
 import { ref, onMounted, useTemplateRef, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith } from 'lodash-es'

@@ -68,7 +68,7 @@ export default [
         ignoreStrings: true,
         ignoreTemplateLiterals: true,
         ignoreRegExpLiterals: true,
-        ignorePattern: '^\\s*<path',
+        ignorePattern: '^\\s*<path|^\\s*"[\\w-]+": ".*",?\\s*$',
       }],
       'import/no-duplicates': 'error',
       '@stylistic/no-multi-spaces': ['error', { ignoreEOLComments: true }],
@@ -94,6 +94,13 @@ export default [
       '@stylistic/eol-last': ['error', 'always'],
       '@stylistic/space-before-blocks': ['error', 'always'],
       '@stylistic/keyword-spacing': ['error', { 'before': true, 'after': true }],
+    },
+  },
+  {
+    // Specific config for icon components to allow long lines (SVG paths) or some styleguide files
+    files: ['**/PIcon/components/**/*.vue', '**/styleguide/src/guidelines/**/*'],
+    rules: {
+      '@stylistic/max-len': 'off',
     },
   },
   {

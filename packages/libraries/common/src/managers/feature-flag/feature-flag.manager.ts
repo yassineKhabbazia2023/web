@@ -1,4 +1,4 @@
-import { Feature } from '../enums/feature.enums'
+import { Feature } from '../../enums/feature.enums'
 
 export type EnvVars = Record<Feature, 'true' | 'false'>
 

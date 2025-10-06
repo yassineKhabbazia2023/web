@@ -300,7 +300,8 @@ const triggerErrorNotification = (failedCount : number, errorDetails : string) =
       "successMsg": {
         "plural": "Les {documentCount} documents ont été déposés dans le dossier {folderName}",
         "single": "1 document a été déposé dans le dossier {folderName}"
-      },"errorMsg": "1 document n'a pas pu être déposé : {errorDetails}.|{failedCount} documents n'ont pas pu être déposés : {errorDetails}."
+      },
+      "errorMsg": "1 document n'a pas pu être déposé : {errorDetails}.|{failedCount} documents n'ont pas pu être déposés : {errorDetails}."
     },
     "header": {
       "title": "Certains documents ne peuvent pas être déposés dans votre espace documentaire"

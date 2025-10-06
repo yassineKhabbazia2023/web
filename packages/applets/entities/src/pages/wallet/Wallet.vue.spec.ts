@@ -1,8 +1,8 @@
-import { featureFlagManagerMock } from '@pulse/core/mocks'
+import { AmplitudeServiceMock, getHasPermissionMocked, getMockedUser, getStoreMock } from '@pulse/common/mocks'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
-import { AmplitudeServiceMock, CurrentUserManagerMock, hasPermissionMock, getHasPermissionMocked, getMockedUser, getStoreMock } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
+import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import type { Permission } from '@pulse/common/types'
 
 import Wallet from './'
@@ -21,16 +21,8 @@ vi.mock('vue-router', () => ({
 const userStoreMock = getStoreMock(useUserStore)
 const userMock = getMockedUser({ firstName: 'Jack' })
 
-vi.mock('@pulse/core', () => ({
-  FeatureFlagManager: featureFlagManagerMock,
-}))
-
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
-}))
-
-vi.mock('@pulse/common/managers', () => ({
-  CurrentUserManager: CurrentUserManagerMock,
 }))
 
 const createWrapper = (): VueWrapper<any> =>
@@ -47,7 +39,7 @@ const createWrapper = (): VueWrapper<any> =>
       },
     },
   })
-const collaboratorsTabs = ['Wallet', 'Mandate', 'Upload a BI report', 'BI Reports', 'MOD requests', 'Collaborators']
+const collaboratorsTabs = ['Wallet', 'Mandate', 'Upload a BI report', 'BI Reports', 'MOD requests', 'Collaborators', 'Applications', 'Folder administration', 'Offers catalog']
 const clientTabs = ['All entities', 'All users']
 
 describe('dossier', () => {
@@ -56,7 +48,8 @@ describe('dossier', () => {
   beforeEach(async () => {
     userStoreMock.user = userMock
     userStoreMock.isCollab = true
-    featureFlagManagerMock.isFeatureActivated.mockReturnValue(true)
+    vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+    vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
     wrapper = createWrapper()
     vi.useFakeTimers()
 
@@ -65,7 +58,7 @@ describe('dossier', () => {
 
   it('should not display Launcher when user does not have authorization', async () => {
     const noPermissions: Permission[] = []
-    hasPermissionMock.mockImplementation(getHasPermissionMocked(noPermissions))
+    vi.spyOn(CurrentUserManager, 'hasPermission').mockImplementation(getHasPermissionMocked(noPermissions))
     wrapper = createWrapper()
 
     await flushPromises()
@@ -75,9 +68,9 @@ describe('dossier', () => {
   })
 
   it('should only display tabs to which the user has permission to access', () => {
-    hasPermissionMock.mockImplementation(getHasPermissionMocked(GLOBAL_PERMISSIONS.COLLABORATORS))
+    vi.spyOn(CurrentUserManager, 'hasPermission').mockImplementation(getHasPermissionMocked(GLOBAL_PERMISSIONS.COLLABORATORS))
     wrapper = createWrapper()
-    const collaboratorsTabsAccess = ['Wallet', 'Collaborators']
+    const collaboratorsTabsAccess = ['Wallet', 'Collaborators', 'Offers catalog']
     const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })
 
     collaboratorsTabsAccess.forEach((tabPane, index) => {
@@ -96,6 +89,7 @@ describe('dossier', () => {
 
   it('should display the correct tab when user is client', () => {
     userStoreMock.isCollab = false
+    vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
     wrapper = createWrapper()
     const tabsPane = wrapper.findAllComponents({ name: 'PTabPane' })
     clientTabs.forEach((expectedLabel, index) => {

@@ -1,13 +1,17 @@
 import { FEATURE_FLAG_META } from '@pulse/common/constants'
-import { featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'
-import { Feature } from '@pulse/core/enums'
+import { loggerMock } from '@pulse/core/mocks'
+import { featureFlagManagerMock } from '@pulse/common/mocks'
+import { Feature, RouteName } from '@pulse/common/enums'
 import type { RouteLocationNormalizedGeneric } from 'vue-router'
-import { RouteName } from '@pulse/common/enums'
+
 
 import { featureFlagGuard } from './feature-flag.guard'
 
 vi.mock('@pulse/core', () => ({
   logger: loggerMock,
+}))
+
+vi.mock('@pulse/common/managers', () => ({
   FeatureFlagManager: featureFlagManagerMock,
 }))
 

@@ -1,5 +1,5 @@
 import { ACCOUNT_PERMISSIONS } from '../../constants'
-import { FeatureFlagManager } from '@pulse/core'
+import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '../current-user/current-user.manager'
 import { ReportingService } from '../../services/reporting/reporting.service'

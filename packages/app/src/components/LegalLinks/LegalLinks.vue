@@ -44,7 +44,7 @@
 import { useI18n } from 'vue-i18n'
 import { ref, onMounted } from 'vue'
 import { fetchUrlTerms } from '@pulse/common'
-import { LEGAL_NOTICE_URL, PRIVACY_POLICY_URL } from '@pulse/core'
+import { LEGAL_NOTICE_URL, PRIVACY_POLICY_URL } from '@pulse/common/constants'
 import type { LegalLinksProps } from './LegalLinks.types'
 
 const { t } = useI18n({

@@ -1,6 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
 import { type EnvVars, FeatureFlagManager } from './feature-flag.manager'
-import { Feature } from '../enums/feature.enums'
+import { Feature } from '../../enums/feature.enums'
 
 declare let window: {
   EnvVars: EnvVars
@@ -82,4 +81,3 @@ describe('FeatureFlagManager', () => {
       })
     })
 })
-

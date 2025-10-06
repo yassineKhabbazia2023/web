@@ -1,7 +1,7 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest'
 import type { AxiosResponse } from 'axios'
 import { commonApiGatewayGetSpy, commonApiGatewayPostSpy } from '@launcher/__mocks__/api.mocks'
-import { envVarsMock } from '@pulse/core/mocks'
+import { envVarsMock } from '@pulse/common/mocks'
 import '@launcher/__mocks__/common.import.mocks'
 import { DEFAULT_APPLICATION_FILENAME, ApiRoutes } from './launcherServiceConsts'
 import * as FileSaver from 'file-saver'

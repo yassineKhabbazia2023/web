@@ -184,7 +184,7 @@ import {
   PENNYLANE_IMPORT_INVOICE_HELP_URL,
   PENNYLANE_MOBILE_APP_URL,
   PENNYLANE_GETTING_STARTED_URL,
-} from '@pulse/core'
+} from '@pulse/common/constants'
 import { widgetClick } from '@pulse/widgets/utils'
 import { WidgetItemClicked, WidgetName } from '@pulse/widgets/enums'
 import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'

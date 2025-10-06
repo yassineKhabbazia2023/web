@@ -1,6 +1,6 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, shallowMount } from '@vue/test-utils'
-import { envVarsMock, featureFlagManagerMock, isFeedCenterActivatedMock } from '@pulse/core/mocks'
+import { envVarsMock, featureFlagManagerMock, isFeedCenterActivatedMock } from '@pulse/common/mocks'
 import { fetchUnreadNotificationsCountMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 import { trackingServiceMock } from '@app/__mocks__/tracking.service.mocks'
 import { nextTick } from 'vue'
@@ -15,7 +15,7 @@ vi.mock('@app/modules/FeedCenter/services/notifications.service', () => notifica
 vi.mock('@app/modules/FeedCenter/services/tracking/tracking.service', () => trackingServiceMock)
 vi.mock('env-vars', () => envVarsMock)
 
-vi.mock('@pulse/core', async () => ({
+vi.mock('@pulse/common/managers', async () => ({
   FeatureFlagManager: featureFlagManagerMock,
 }))
 

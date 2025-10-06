@@ -52,7 +52,8 @@
 </template>
 
 <script setup lang="ts">
-import { logger, FeatureFlagManager } from '@pulse/core'
+import { logger } from '@pulse/core'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'

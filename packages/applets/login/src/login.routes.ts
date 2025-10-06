@@ -1,7 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { APP_ROUTES, HTML_TITLE_META, LAYOUT_META, ROUTE_IS_COLLAB_META } from '@pulse/common/constants'
+import { APP_ROUTES, HTML_TITLE_META, LAYOUT_META, ROUTE_IS_COLLAB_META, APP_TITLE_CUSTOMER, APP_TITLE_COLLABORATOR } from '@pulse/common/constants'
 import { Layout } from '@pulse/common/enums'
-import { APP_TITLE_CUSTOMER, APP_TITLE_COLLABORATOR } from '@pulse/core'
 
 export const anonymousLoginRoutes: RouteRecordRaw[] = [
   {

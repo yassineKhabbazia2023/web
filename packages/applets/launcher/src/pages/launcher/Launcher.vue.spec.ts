@@ -5,19 +5,18 @@ import { launchCardsMock, collabLaunchCardsMock } from '@launcher/__mocks__/laun
 import { launcherServicesMocks } from '@launcher/__mocks__/launcher.service.mocks'
 import { mockedEntity } from '@launcher/__mocks__/entity.mocks'
 import { getLaunchCardsMock, getSilaeDownloadLabelMock, handleClickActionMock, handleDownloadMock, LauncherUtilsMocks, mockedPercent } from '@launcher/__mocks__/home-utils.mocks'
-import { envVarsMock } from '@pulse/core/mocks'
-import '@launcher/__mocks__/common.import.mocks'
-import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
-import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
-import { LauncherKey } from './LauncherTypes'
-import * as VueRouter from 'vue-router'
-import {
+import { envVarsMock,
   getMockedEntitySummary,
   hasPermissionMock,
   getHasPermissionMocked,
   getStoreMock,
   getMockedUserInfo,
 } from '@pulse/common/mocks'
+import '@launcher/__mocks__/common.import.mocks'
+import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
+import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
+import { LauncherKey } from './LauncherTypes'
+import * as VueRouter from 'vue-router'
 import { useSelectedEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
 import type { Permission } from '@pulse/common/types'
 import { CollaboratorPermission } from '@pulse/common/enums'

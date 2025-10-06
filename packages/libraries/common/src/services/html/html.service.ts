@@ -1,4 +1,4 @@
-import { APP_NAME } from '../constants/pulse.constants'
+import { APP_NAME } from '../../constants/pulse.constants'
 
 export class HTMLService {
   static setDocumentTitle(title: string = ''): void {

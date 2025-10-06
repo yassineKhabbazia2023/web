@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { envVarsMock } from '@pulse/core/mocks'
+import { envVarsMock } from '@pulse/common/mocks'
 import { getMockedUserInfo } from '@common/__mocks__/user-client.mocks'
 import { utilsMock, logoutCollaboratorMock, logoutGigyaSSOMock, logoutClientMock } from '@common/__mocks__/utils.mocks'
 import { getMockedSelectedEntity, getPermissionsMock, getStoreMock } from '../../__mocks__'

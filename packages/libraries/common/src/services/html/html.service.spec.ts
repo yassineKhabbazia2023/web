@@ -1,5 +1,5 @@
 import { HTMLService } from './html.service'
-import { APP_NAME } from '../constants/pulse.constants'
+import { APP_NAME } from '../../constants/pulse.constants'
 
 describe('HTMLService', () => {
   beforeEach(() => {

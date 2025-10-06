@@ -9,7 +9,6 @@
   "exports": {
     "./types": "./src/types.ts",
     "./mocks": "./src/mocks.ts",
-    "./enums": "./src/enums.ts",
     "./utils/array": "./src/utils/array/array.utils.ts",
     "./utils/object": "./src/utils/object/object.utils.ts",
     "./utils/dates": "./src/utils/dates/dates.utils.ts",

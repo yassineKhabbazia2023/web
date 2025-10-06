@@ -96,8 +96,8 @@ import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { getInitials } from '@pulse/common'
 import { useUserStore } from '@pulse/common/stores'
-import { Feature } from '@pulse/core/enums'
-import { FeatureFlagManager } from '@pulse/core'
+import { Feature } from '@pulse/common/enums'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import {
   PAvatar,
   PButton,

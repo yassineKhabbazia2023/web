@@ -12,7 +12,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@pulse/common/stores'
-import { APP_COPYRIGHT, SUPPORT_PHONE_CLIENT, SUPPORT_PHONE_COLLAB } from '@pulse/core'
+import { APP_COPYRIGHT, SUPPORT_PHONE_CLIENT, SUPPORT_PHONE_COLLAB } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,

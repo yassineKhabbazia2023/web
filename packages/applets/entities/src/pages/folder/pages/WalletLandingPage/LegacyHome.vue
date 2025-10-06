@@ -309,7 +309,7 @@ import {
   CLIENT_HELP_URL,
   HOST_NAME,
   MOBILE_APPLICATION_DOCUMENTATION_URL,
-} from '@pulse/core'
+} from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,

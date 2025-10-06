@@ -26,7 +26,7 @@
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@braintree/sanitize-url'
 import { computed } from 'vue'
-import { APP_COPYRIGHT, SUPPORT_PHONE_CLIENT, SUPPORT_PHONE_CLIENT_LINK, SUPPORT_EMAIL_CLIENT } from '@pulse/core'
+import { APP_COPYRIGHT, SUPPORT_PHONE_CLIENT, SUPPORT_PHONE_CLIENT_LINK, SUPPORT_EMAIL_CLIENT } from '@pulse/common/constants'
 
 const { t } = useI18n({
   inheritLocale: true,

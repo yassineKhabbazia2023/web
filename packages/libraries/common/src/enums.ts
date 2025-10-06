@@ -1,6 +1,7 @@
 export * from './enums/amplitude.enums'
 export * from './enums/api-call.enums'
 export * from './enums/contact.enums'
+export * from './enums/feature.enums'
 export * from './enums/ged-context.enum'
 export * from './enums/layouts.enums'
 export * from './enums/notification.enum'

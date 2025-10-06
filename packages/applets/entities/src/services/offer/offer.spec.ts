@@ -1,8 +1,7 @@
-import { describe, it, vi, expect } from 'vitest'
 import { getMockedSubscriptionOffers, getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
-import { envVarsMock } from '@pulse/core/mocks'
+import { envVarsMock } from '@pulse/common/mocks'
 import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type {

@@ -1,5 +1,5 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { FeatureFlagManager } from '@pulse/core'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { fetchNotificationsMock, notificationsServiceMock } from '@app/__mocks__/notification.service.mocks'
 import { trackingServiceMock, trackNotificationMarkAsReadMock } from '@app/__mocks__/tracking.service.mocks'
 import { feedCenterDrawerManagerMock, patchAllNotificationsAsReadMock } from '@app/__mocks__/feed-center-drawer.manager.mocks'
@@ -26,7 +26,7 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/common/managers', () => ({
   FeatureFlagManager: {
     isNotificationSettingsDrawerActivated: vi.fn(),
   },

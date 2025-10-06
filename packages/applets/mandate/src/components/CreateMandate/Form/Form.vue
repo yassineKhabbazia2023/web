@@ -290,7 +290,9 @@
 </template>
 
 <script setup lang='ts'>
-import { FeatureFlagManager, logger } from '@pulse/core'
+import { logger } from '@pulse/core'
+import { FeatureFlagManager } from '@pulse/common/managers'
+import { Feature } from '@pulse/common/enums'
 import { useI18n } from 'vue-i18n'
 import { ref, reactive, watch, computed } from 'vue'
 import {
@@ -309,7 +311,6 @@ import {
   PAlert,
   PDropdown,
 } from '@pulse/styleguide/components'
-import { Feature } from '@pulse/core/enums'
 
 // Props
 interface FormProps {

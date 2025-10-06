@@ -1,9 +1,9 @@
-import { FeatureFlagManager } from '@pulse/core'
+import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
 import { CurrentUserManager } from '../current-user/current-user.manager'
-import { Feature } from '@pulse/core/enums'
+import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermission } from '@pulse/common/enums'
 import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks'
-import { SubscriptionOfferCode, CustomerPermission, CollaboratorPermission } from '@pulse/common/enums'
+
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 
 import { PennylanePermissionsManager } from './pennylane-permissions.manager'
@@ -11,7 +11,7 @@ import { PennylanePermissionsManager } from './pennylane-permissions.manager'
 const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
 const useUserStoreMock = getStoreMock(useUserStore)
 
-vi.mock('@pulse/core')
+vi.mock('../feature-flag/feature-flag.manager')
 vi.mock('../current-user/current-user.manager')
 
 describe('PennylanePermissionsManager', () => {

@@ -1,7 +1,7 @@
 import type { App } from 'vue'
 import type { RouteRecordRaw } from 'vue-router'
 import { RoutesManager } from '@pulse/common/managers'
-import { Feature } from '@pulse/core/enums'
+import { Feature } from '@pulse/common/enums'
 import { APP_ROUTES, FEATURE_FLAG_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 
 const entityRoutes: RouteRecordRaw[] = [

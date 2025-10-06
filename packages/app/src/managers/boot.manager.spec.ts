@@ -1,5 +1,6 @@
-import { envVarsMock, featureFlagManagerMock, loggerMock } from '@pulse/core/mocks'
-import { CurrentUserManager } from '@pulse/common/managers'
+import { loggerMock } from '@pulse/core/mocks'
+import { envVarsMock } from '@pulse/common/mocks'
+import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 import { BootManager } from './boot.manager'
@@ -7,10 +8,8 @@ import { BootManager } from './boot.manager'
 vi.mock('env-vars', () => envVarsMock)
 vi.mock('@pulse/core', () => ({
   logger: loggerMock,
-  FeatureFlagManager: featureFlagManagerMock,
 }))
 vi.mock('@pulse/common/services/amplitude')
-vi.mock('@pulse/common/managers')
 
 describe('BootManager', () => {
   describe('getDefaultRedirection', () => {
@@ -33,7 +32,7 @@ describe('BootManager', () => {
     it('should initialize amplitude with the correct parameters', () => {
       const amplitudeInitSpy = vi.spyOn(AmplitudeService, 'init')
       const originalValue = envVarsMock.VITE_AMPLITUDE_API_KEY
-      featureFlagManagerMock.isAmplitudeActivated.mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isAmplitudeActivated').mockReturnValue(true)
       envVarsMock.VITE_AMPLITUDE_API_KEY = 'existing-key'
 
       BootManager.initAmplitude()
@@ -48,7 +47,7 @@ describe('BootManager', () => {
     it('should NOT initialize amplitude if there is no VITE_AMPLITUDE_API_KEY', () => {
       const amplitudeInitSpy = vi.spyOn(AmplitudeService, 'init')
       const originalValue = envVarsMock.VITE_AMPLITUDE_API_KEY
-      featureFlagManagerMock.isAmplitudeActivated.mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isAmplitudeActivated').mockReturnValue(true)
       envVarsMock.VITE_AMPLITUDE_API_KEY = ''
 
       BootManager.initAmplitude()
@@ -58,14 +57,14 @@ describe('BootManager', () => {
     })
     it('does not initialize Amplitude when the feature flag is disabled', () => {
       const amplitudeInitSpy = vi.spyOn(AmplitudeService, 'init')
-      featureFlagManagerMock.isAmplitudeActivated.mockReturnValue(false) // Disable feature flag for Amplitude
+      vi.spyOn(FeatureFlagManager, 'isAmplitudeActivated').mockReturnValue(false)
 
       BootManager.initAmplitude()
 
       expect(amplitudeInitSpy).not.toHaveBeenCalled()
     })
     it('should not throw an error if amplitude initialization fails', () => {
-      featureFlagManagerMock.isAmplitudeActivated.mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isAmplitudeActivated').mockReturnValue(true)
       const amplitudeInitError = new Error('Initialization failed')
       const amplitudeInitSpy = vi.spyOn(AmplitudeService, 'init').mockImplementation(() => {
         throw amplitudeInitError

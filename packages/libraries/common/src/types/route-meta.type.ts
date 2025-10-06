@@ -11,8 +11,8 @@ import {
   ROUTE_IS_COLLAB_META,
 } from '@pulse/common/constants'
 import { Permission } from '@pulse/common/types'
-import { Feature } from '@pulse/core/enums'
-import { Layout, GedContext } from '@pulse/common/enums'
+import { Feature, Layout, GedContext } from '@pulse/common/enums'
+
 
 declare module 'vue-router' {
   interface RouteMeta {

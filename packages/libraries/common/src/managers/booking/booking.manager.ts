@@ -2,8 +2,9 @@ import { BookingService } from '../../services/booking/booking.service'
 import { useUserStore } from '../../stores/user/user.store'
 import { useSelectedEntityStore } from '../../stores/selected-entity/selected-entity.store'
 import { useBookingStore } from '../../stores/booking/booking.store'
-import { FeatureFlagManager, logger } from '@pulse/core'
-import { Feature } from '@pulse/core/enums'
+import { logger } from '@pulse/core'
+import { FeatureFlagManager } from '@pulse/common/managers'
+import { Feature } from '@pulse/common/enums'
 
 export class BookingManager {
   private static async loadAvailableExperts() {

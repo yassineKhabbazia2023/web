@@ -1,5 +1,6 @@
 import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
-import { loggerMock, featureFlagManagerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/core/mocks'
+import { featureFlagManagerMock, getMockedEntity } from '@pulse/common/mocks'
 import { expect, beforeEach, describe, it, vi, type Mock } from 'vitest'
 import { type VueWrapper, mount, flushPromises } from '@vue/test-utils'
 import type { User } from '@entities/pages/folder/pages/usersCollab/types'
@@ -8,7 +9,6 @@ import * as authorizationServices from '@entities/services/authorization'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
 import { RouteParam, CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
-import { getMockedEntity } from '@pulse/common/mocks'
 
 import ManageRightsDrawer from '.'
 
@@ -25,6 +25,8 @@ const mockedUser = {
 vi.mock('@entities/services/authorization', () => authorizationServiceMock)
 vi.mock('@pulse/core', () => ({
   logger: loggerMock,
+}))
+vi.mock('@pulse/common/managers', () => ({
   FeatureFlagManager: featureFlagManagerMock,
 }))
 vi.mock('vue-router')

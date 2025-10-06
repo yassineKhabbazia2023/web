@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { XMLParser } from 'fast-xml-parser'
-import { RSS_NEWS_FEED_URL } from '@pulse/core'
+import { RSS_NEWS_FEED_URL } from '@pulse/common/constants'
 import { RssNewsItem } from '../types/rss-news.types'
 
 export class RSSNewsService {
@@ -22,7 +22,7 @@ export class RSSNewsService {
     }
 
     const imgRegex = /<img[^>]+src="([^">]+)"/
-    const match = RegExp(imgRegex).exec(description)
+    const match = new RegExp(imgRegex).exec(description)
 
     if (match?.[1]) {
       return match[1]

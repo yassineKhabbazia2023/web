@@ -1,11 +1,11 @@
-import { envVarsMock } from '@pulse/core/mocks'
+import { envVarsMock } from '@pulse/common/mocks'
 import { useSelectedEntityStore, useUserStore } from '../../stores/main'
 import { CurrentUserManager } from '../current-user/current-user.manager'
 import { ReportingService } from '../../services/reporting/reporting.service'
-import { FeatureFlagManager } from '@pulse/core'
+import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
 import { ReportingManager } from './reporting.manager'
 
-vi.mock('@pulse/core')
+vi.mock('../feature-flag/feature-flag.manager')
 vi.mock('../../stores/main')
 vi.mock('../current-user/current-user.manager')
 vi.mock('../../services/reporting/reporting.service')

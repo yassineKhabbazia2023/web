@@ -29,7 +29,7 @@
 import { useI18n } from 'vue-i18n'
 import { PMaintenance } from '@pulse/styleguide/components'
 import { onBeforeMount, onBeforeUnmount, onMounted } from 'vue'
-import { HTMLService } from '@pulse/core'
+import { HTMLService } from '@pulse/common/services/html'
 import { initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import LegalLinks from '@app/components/LegalLinks'
 import ErrorFooterContent from '@app/pages/Error/components/ErrorFooterContent'

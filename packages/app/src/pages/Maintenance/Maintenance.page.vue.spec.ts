@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
-import { HTMLService } from '@pulse/core'
+import { HTMLService } from '@pulse/common/services/html'
 
 import Maintenance from './Maintenance.page.vue'
 
@@ -21,7 +21,12 @@ window.clearInterval = clearIntervalMock
   reload: reloadMock,
 }
 
-vi.mock('@pulse/core')
+vi.mock('@pulse/common/services/html', () => ({
+  HTMLService: {
+    setDocumentTitle: vi.fn(),
+    resetDocumentTitle: vi.fn(),
+  },
+}))
 const HTMLServiceSetDocumentTitleMock = vi.mocked(HTMLService.setDocumentTitle)
 
 vi.mock('@app/plugins/ProductFruits/productFruits.plugin')

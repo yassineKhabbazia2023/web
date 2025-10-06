@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { envVarsMock } from '@pulse/core/mocks'
+import { envVarsMock } from '@pulse/common/mocks'
 import { fetchUrlTerms } from '.'
 
 vi.mock('env-vars', () => envVarsMock)

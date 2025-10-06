@@ -1,8 +1,8 @@
 import { CurrentUserManager } from '../current-user/current-user.manager'
-import { Feature } from '@pulse/core/enums'
+import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermission } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
-import { SubscriptionOfferCode, CustomerPermission, CollaboratorPermission } from '@pulse/common/enums'
-import { FeatureFlagManager } from '@pulse/core'
+
+import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 
 export class PennylanePermissionsManager {

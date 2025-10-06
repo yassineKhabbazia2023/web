@@ -1,5 +1,5 @@
 import { NavigationHookAfter } from 'vue-router'
-import { HTMLService } from '@pulse/core'
+import { HTMLService } from '@pulse/common/services/html'
 import { HTML_TITLE_META } from '@pulse/common/constants'
 
 export const seoGuard: NavigationHookAfter = (to, _from) => {

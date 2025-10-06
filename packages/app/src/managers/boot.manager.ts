@@ -1,9 +1,9 @@
-import { CurrentUserManager, SelectedEntityManager } from '@pulse/common/managers'
+import { CurrentUserManager, SelectedEntityManager, FeatureFlagManager } from '@pulse/common/managers'
 import { resetAllStores, useTokenStore } from '@pulse/common/stores'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
-import { FeatureFlagManager, logger } from '@pulse/core'
+import { logger } from '@pulse/core'
 
 export class BootManager {
 

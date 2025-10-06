@@ -1,25 +1,46 @@
 import { computed, nextTick, ref } from 'vue'
-import type { Ref } from 'vue'
+import type { Ref, WritableComputedRef } from 'vue'
 import { vi } from 'vitest'
 import { usePDrawer } from './p-drawer.composable'
 import type { ElDrawerInstanceType } from './PDrawerTypes'
 import * as drawerManager from './p-drawer.manager'
 
-const drawerTemplateRef = ref({}) as Ref<ElDrawerInstanceType>
-const isDrawerOpened = ref(false)
-const drawerModel = computed({
-  get() {
-    return isDrawerOpened.value
-  },
-  set(value) {
-    isDrawerOpened.value = value
-  },
+vi.mock('vue', async () => {
+  const actual = await vi.importActual('vue')
+  return {
+    ...actual,
+    onBeforeUnmount: vi.fn(),
+  }
 })
+
 const drawerTypeMini = 'mini'
 const drawerTypeFullscreen = 'fullscreen'
 
 
 describe('p drawer composable', () => {
+  let drawerTemplateRef: Ref<ElDrawerInstanceType>
+  let isDrawerOpened: Ref<boolean>
+  let drawerModel: WritableComputedRef<boolean>
+
+  beforeEach(() => {
+    drawerTemplateRef = ref({}) as Ref<ElDrawerInstanceType>
+    isDrawerOpened = ref(false)
+    drawerModel = computed({
+      get() {
+        return isDrawerOpened.value
+      },
+      set(value: boolean) {
+        isDrawerOpened.value = value
+      },
+    })
+  })
+
+  afterEach(() => {
+    vi.clearAllTimers()
+    vi.useRealTimers()
+    vi.restoreAllMocks()
+  })
+
   it('should call trackOutsideClickMiniDrawer 50ms after opening the drawer', async () => {
     vi.useFakeTimers()
     const trackOutsideClickSpy = vi.spyOn(drawerManager, 'trackOutsideClickMiniDrawer')
@@ -31,7 +52,6 @@ describe('p drawer composable', () => {
 
     vi.advanceTimersByTime(50)
     expect(trackOutsideClickSpy).toHaveBeenCalled()
-    vi.useRealTimers()
   })
 
   it('should not trackOutsideClickMiniDrawer if drawer type is NOT mini', async () => {
@@ -45,7 +65,6 @@ describe('p drawer composable', () => {
 
     vi.advanceTimersByTime(50)
     expect(trackOutsideClickSpy).not.toHaveBeenCalled()
-    vi.useRealTimers()
   })
 
   it('should call killTrackOutsideClick after closing the drawer', async () => {
