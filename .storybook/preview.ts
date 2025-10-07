@@ -36,7 +36,7 @@ dayjs.Ls.en.weekStart = 1
 
 // Setup Vue app globally for Storybook
 const i18n = createI18n({
-  locale: Intl.DateTimeFormat().resolvedOptions().locale,
+  locale: 'fr-FR',
 })
 
 const pinia = createPinia()

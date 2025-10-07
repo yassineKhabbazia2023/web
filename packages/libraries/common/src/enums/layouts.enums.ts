@@ -1,6 +1,6 @@
 export enum Layout {
-  MAIN = 'Home',
-  LOGIN = 'LoginLayout',
-  ERROR = 'Error',
-  EMPTY = 'Empty',
+  MAIN = 'home',
+  LOGIN = 'login',
+  ERROR = 'error',
+  EMPTY = 'empty',
 }

@@ -1,0 +1,29 @@
+{
+  "name": "@pulse/shared",
+  "version": "1.0.0",
+  "author": "Pulse Team",
+  "description": "Shared library",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./components": "./src/components/components.ts",
+    "./layouts": "./src/layouts.ts",
+    ".": "./src/main.ts"
+  },
+  "scripts": {
+    "build": "npm run build:types && npm run build:vite",
+    "build:types": "vue-tsc --build --force",
+    "build:vite": "vite build",
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@pulse/core": "1.0.0",
+    "@pulse/common": "1.0.0",
+    "@pulse/styleguide": "3.1.0",
+    "@braintree/sanitize-url": "^7.1.0"
+  }
+}

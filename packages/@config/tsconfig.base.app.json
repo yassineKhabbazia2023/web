@@ -45,6 +45,9 @@
       "@powerbi/*": [
         "../applets/powerbi/src/*"
       ],
+      "@shared/*": [
+        "../libraries/shared/src/*"
+      ],
       "@styleguide/*": [
         "../libraries/styleguide/src/*"
       ],

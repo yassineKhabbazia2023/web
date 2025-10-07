@@ -1,4 +1,6 @@
-import mockedEntities from '@app/__mocks__/entities.mocks.json'
+import { getMockedFavoriteEntities } from '@pulse/common/mocks'
+
+const mockedEntities = getMockedFavoriteEntities()
 
 const fetchEntitiesMock = vi.fn(() => ({
   items: mockedEntities,

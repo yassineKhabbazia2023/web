@@ -1,4 +1,4 @@
-import type { BookingServiceConfiguration, BookingServiceExpert } from '@common/types/booking.type'
+import type { BookingServiceConfiguration, BookingServiceExpert } from '@pulse/common/types'
 
 export const bookingLinkMock = 'https://outlook.office.com/bookwithme/user/206b1d956a484d488fdbf896f418e0f9@rydge.fr/meetingtype/zuolSkK_lEqt1HhFDPJP1w2?anonymous&ismsaljsauthenabled&ep=mlink'
 

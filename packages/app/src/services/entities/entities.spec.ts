@@ -1,5 +1,5 @@
 import { loggerMock } from '@pulse/core/mocks'
-import { getMockedFavoriteEntities } from '@app/__mocks__/entities.mocks'
+import { getMockedFavoriteEntities } from '@pulse/common/mocks'
 import type { Entity } from '@pulse/common/types'
 
 import { fetchFavoriteEntities, fetchEntities, DEFAULT_ENTITIES, DEFAULT_FAVORITE_ENTITIES } from '.'

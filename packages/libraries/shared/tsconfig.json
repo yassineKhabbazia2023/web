@@ -1,0 +1,14 @@
+{
+  "extends": "../../@config/tsconfig.base.app",
+  "include": [
+    "env.d.ts",
+    "./src/**/*",
+    "tests/**/*",
+    "src/**/*.json",
+    "./package.json"
+  ],
+  "compilerOptions": {
+    "declarationDir": "./dist/types",
+    "outDir": "./dist/types",
+  }
+}

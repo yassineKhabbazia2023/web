@@ -1,8 +1,7 @@
 import type { Decorator } from '@storybook/vue3-vite'
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
-import LoginLayout from '@app/layouts/LoginLayout/LoginLayout.vue'
-
+import { LoginLayout } from '@pulse/shared/layouts'
 
 interface LoginLayoutDecoratorOptions {
   routeName?: string

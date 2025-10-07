@@ -36,7 +36,7 @@ function updateLayout() {
 
   if (previousLayoutName.value !== currentLayoutName.value) {
     currentLayout.value = markRaw(defineAsyncComponent(
-      () => import(`@app/layouts/${currentLayoutName.value}/index.ts`),
+      () => import(`@shared/layouts/${currentLayoutName.value}/index.ts`),
     ))
     previousLayoutName.value = currentLayoutName.value
   }
