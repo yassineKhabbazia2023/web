@@ -11,6 +11,9 @@
       v-if="hasBookingDrawerBeenOpened"
       v-model:isOpened="isBookingDrawerOpened"
     />
+    <BookingRendezVousDrawer
+      v-model:isOpened="isOpenedBookingRendezVousDrawer"
+    />
     <router-link to="/">
       <PImage
         class="header-section__logo"
@@ -95,7 +98,7 @@
 import { computed, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { getInitials } from '@pulse/common'
-import { useUserStore } from '@pulse/common/stores'
+import { useUserStore, useBookingStore } from '@pulse/common/stores'
 import { Feature } from '@pulse/common/enums'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import {
@@ -108,17 +111,16 @@ import {
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import type { HeaderProps } from './HeaderTypes'
-import BookingDrawer from '../booking/booking-drawer/booking-drawer.vue'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
+
+import BookingDrawer from '../booking/booking-drawer/booking-drawer.vue'
+import BookingRendezVousDrawer from '../booking/booking-rendez-vous-drawer/booking-rendez-vous-drawer.vue'
 
 const userStore = useUserStore()
 
 const props = defineProps<HeaderProps>()
 
 const { user } = storeToRefs(userStore)
-
-const hasBookingDrawerBeenOpened = ref(false)
-const isBookingDrawerOpened = ref(false)
 
 const emit = defineEmits<{
   'update:showFeedCenter': [boolean]
@@ -147,11 +149,21 @@ function updateFeedCenterDisplay() {
   emit('update:showFeedCenter', !props.showFeedCenter)
 }
 
+// #region booking
+const hasBookingDrawerBeenOpened = ref(false)
+const isBookingDrawerOpened = ref(false)
 function openDrawer() {
   AmplitudeService.track('Booking Configuration View Started')
   hasBookingDrawerBeenOpened.value = true
   isBookingDrawerOpened.value = true
 }
+
+const bookingStore = useBookingStore()
+const isOpenedBookingRendezVousDrawer = computed({
+  get: () => bookingStore.isOpenedBookingRendezVousDrawer,
+  set: (isOpened: boolean) => bookingStore.isOpenedBookingRendezVousDrawer = isOpened,
+})
+// #endregion booking
 </script>
 
 <style lang="scss" scoped>

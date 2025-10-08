@@ -1,8 +1,5 @@
 <template>
   <div class="wallet-landing-page" data-testid="wallet-landing-page">
-    <BookingRendezVousDrawer
-      v-model:isOpened="isOpenedBookingRendezVousDrawer"
-    />
     <PEntityHeader
       v-if="selectedEntity"
       :pLegalName="selectedEntity.legalName"
@@ -20,30 +17,21 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, computed } from 'vue'
+import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import { useSelectedEntityStore, useBookingStore } from '@pulse/common/stores'
+import { useSelectedEntityStore } from '@pulse/common/stores'
 import { FeatureFlagManager } from '@pulse/common/managers'
-
 import { PEntityHeader } from '@pulse/styleguide/components'
-import BookingRendezVousDrawer from '@entities/common/components/booking-rendez-vous-drawer/booking-rendez-vous-drawer.vue'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 
 import TopBar from './TopBar/top-bar.vue'
 import WidgetsHome from './WidgetsHome.vue'
 import LegacyHome from './LegacyHome.vue'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 
 const selectedEntityStore = useSelectedEntityStore()
 const { selectedEntity } = storeToRefs(selectedEntityStore)
-
-const bookingStore = useBookingStore()
-
-const isOpenedBookingRendezVousDrawer = computed({
-  get: () => bookingStore.isOpenedBookingRendezVousDrawer,
-  set: (isOpened: boolean) => bookingStore.isOpenedBookingRendezVousDrawer = isOpened,
-})
 
 onMounted(() => {
   AmplitudeService.track(AmplitudeEvent.FEATURE_CONSULTED, {

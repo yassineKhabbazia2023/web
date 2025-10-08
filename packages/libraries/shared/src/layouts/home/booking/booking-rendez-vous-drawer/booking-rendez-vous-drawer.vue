@@ -91,7 +91,6 @@ function openFirstTab() {
   currentStep.value = BookingRendezVousDrawerTabs.CHOOSE_EXPERT
 }
 
-
 function onSelectExpert(expertId: number) {
   selectedExpertId.value = expertId
   currentStep.value = BookingRendezVousDrawerTabs.CHOOSE_TIME_SLOT
