@@ -3,7 +3,7 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { pegaseColors, figmaProxyTokens } from '../src/design-system/pegase-colors.config'
 import { legacyColorMappings } from '../src/design-system/legacy-colors.config'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 // ES module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url)

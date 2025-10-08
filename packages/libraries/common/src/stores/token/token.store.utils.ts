@@ -1,6 +1,6 @@
 import { jwtDecode } from 'jwt-decode'
 import type { JwtPayload } from 'jwt-decode'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 function decodeToken(token: string) {
   return jwtDecode<JwtPayload>(token)

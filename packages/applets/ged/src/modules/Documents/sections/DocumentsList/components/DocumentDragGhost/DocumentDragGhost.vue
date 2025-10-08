@@ -37,7 +37,7 @@
 import { computed } from 'vue'
 import { PIcon } from '@pulse/styleguide/components'
 import { getIconFileName } from '@pulse/styleguide'
-import { getFileExtension } from '@pulse/core'
+import { getFileExtension } from '@pulse/toolbox'
 import type { DocumentDragGhostProps } from './DocumentDragGhostTypes'
 
 const props = withDefaults(

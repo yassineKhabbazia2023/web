@@ -18,7 +18,7 @@ import { useSelectedEntityStore } from '@pulse/common/stores'
 import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
 import { APICallStatus } from '@pulse/common/enums'
 import { PennylaneDocumentWrapperDisplayMode } from '@pennylane/enums/pennylane-documents-wrapper.enum'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-documents.helper'
 
 const selectedEntityStore = useSelectedEntityStore()

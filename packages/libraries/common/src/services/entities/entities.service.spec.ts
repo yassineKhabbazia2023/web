@@ -1,4 +1,4 @@
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/api-gateway.mocks'
 import { getMockedEntitySummary } from '../../__mocks__/entity-summary.mock'
 
@@ -10,7 +10,7 @@ vi.mock('../../api', () => ({
   }),
 }))
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const entityIdMock = 12345
 const entitySummaryMock = getMockedEntitySummary({ accountId: entityIdMock })

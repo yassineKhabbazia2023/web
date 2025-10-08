@@ -1,11 +1,11 @@
 import { setActivePinia, createPinia } from 'pinia'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
 import type { HubConnection } from '@microsoft/signalr'
 
 import { DataStreamHubConnection } from './DataStreamHubConnection'
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('./DataStreamHubConnectionHelper', () => {
   return {
     getNewHubConnection: () => ({

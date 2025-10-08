@@ -1,4 +1,4 @@
-import type { FileExtension } from '@pulse/core/types'
+import type { FileExtension } from '@pulse/toolbox/types'
 import { getDocumentType, getDocumentPreviewImage } from './pennylane-documents-viewer.helper'
 
 interface Window {

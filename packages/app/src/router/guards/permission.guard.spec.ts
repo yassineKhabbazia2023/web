@@ -6,7 +6,7 @@ import { CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
 
 createTestingPinia()
 
-vi.mock('@pulse/core')
+vi.mock('@pulse/toolbox')
 
 vi.mock('@app/managers/authenticated.flow.manager', () => ({
   AuthenticatedFlowManager: {

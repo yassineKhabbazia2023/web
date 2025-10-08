@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { type FeedCenterNotification } from '../../types/notification.type'
 import { patchAllNotificationsReadStatus, fetchNotifications } from '../../services/notifications.service'
 

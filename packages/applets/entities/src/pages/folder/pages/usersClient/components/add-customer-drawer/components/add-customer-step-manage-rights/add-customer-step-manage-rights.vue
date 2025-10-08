@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type { AddCustomerStepManageRightsProps } from './add-customer-step-manage-rights.types'
 import RightsList from '@entities/common/components/ManageRightsDrawer/components/RightsList'
 import { AuthorizationState } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'

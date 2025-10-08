@@ -13,7 +13,7 @@ import {
   getProductFruitsUser,
   stopProductFruits,
 } from '@app/plugins/ProductFruits/productFruits.plugin'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { SelectedEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import type { RouteLocationNamedRaw } from 'vue-router'

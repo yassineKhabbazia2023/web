@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
-import { withSetup } from '@pulse/core/utils/test'
+import { withSetup } from '@pulse/toolbox/utils/test'
 import { useNotificationSettings } from './notification-settings.composable'
 import { getNotificationSettings } from '../../services/notifications.service'
 import type { NotificationSettingsConfiguration } from '../../types/notification.type'

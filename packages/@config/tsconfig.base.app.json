@@ -18,8 +18,8 @@
       "@common/*": [
         "../libraries/common/src/*"
       ],
-      "@core/*": [
-        "../libraries/core/src/*"
+      "@toolbox/*": [
+        "../libraries/toolbox/src/*"
       ],
       "@entities/*": [
         "../applets/entities/src/*"
@@ -88,7 +88,7 @@
       "path": "./packages/libraries/common"
     },
     {
-      "path": "./packages/libraries/core"
+      "path": "./packages/libraries/toolbox"
     },
     {
       "path": "./packages/libraries/styleguide"

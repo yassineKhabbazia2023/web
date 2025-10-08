@@ -18,7 +18,7 @@ export default ({ mode }: any) =>
         alias: {
           '@admin-tools': fileURLToPath(new URL('./src', import.meta.url)),
           '@styleguide': fileURLToPath(new URL('../libraries/styleguide/src', import.meta.url)),
-          '@core': fileURLToPath(new URL('../libraries/core/src', import.meta.url)),
+          '@toolbox': fileURLToPath(new URL('../libraries/toolbox/src', import.meta.url)),
         },
       },
       server: {

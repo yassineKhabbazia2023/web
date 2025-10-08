@@ -1,10 +1,10 @@
 import { ref } from 'vue'
 import { PennylaneService } from '@pulse/common/services/pennylane'
-import { logger, getFileExtension } from '@pulse/core'
+import { logger, getFileExtension } from '@pulse/toolbox'
 import { getIconFileName, displayNotification } from '@pulse/styleguide'
 import { APICallStatus } from '@pulse/common/enums'
 import { getDocumentType, getDocumentPreviewImage } from './pennylane-documents-viewer.helper'
-import type { FileExtension } from '@pulse/core/types'
+import type { FileExtension } from '@pulse/toolbox/types'
 import type { IconName } from '@pulse/styleguide/types'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
 

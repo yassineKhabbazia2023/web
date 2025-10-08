@@ -1,4 +1,4 @@
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import {
   AmplitudeServiceMock,
   getMockedUserContext,
@@ -28,7 +28,7 @@ vi.mock('@app/services/entities')
 vi.mock('@pulse/common/services/entities')
 vi.mock('@pulse/common/managers')
 vi.mock('@pulse/common/services/cgu')
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
 }))

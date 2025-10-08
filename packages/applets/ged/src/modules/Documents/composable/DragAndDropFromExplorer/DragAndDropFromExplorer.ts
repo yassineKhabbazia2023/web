@@ -1,7 +1,7 @@
 import { type Ref, ref, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PNotification } from '@pulse/styleguide'
-import { logger, getFileExtension, isExtensionAuthorized } from '@pulse/core'
+import { logger, getFileExtension, isExtensionAuthorized } from '@pulse/toolbox'
 import { uploadDocument } from '@ged/services/Documents'
 import type { DocumentsProps } from '../../DocumentsTypes'
 import { Permissions } from '@ged/models/Permissions'

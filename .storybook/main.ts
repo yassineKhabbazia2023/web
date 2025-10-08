@@ -19,7 +19,7 @@ const config: StorybookConfig = {
     '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/applets/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/libraries/common/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../packages/libraries/core/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../packages/libraries/toolbox/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/libraries/widgets/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/libraries/styleguide/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/app/**/*.stories.@(js|jsx|mjs|ts|tsx)',
@@ -67,8 +67,8 @@ const config: StorybookConfig = {
     config.resolve.conditions = ['development', 'module', 'import', 'default']
 
     // Add path aliases for mocks and non-workspace modules
-    // Note: use ordered array with an exact-match rule for bare imports ("@pulse/core")
-    // so it resolves to main.ts, while subpaths ("@pulse/core/*") resolve to the src folder.
+    // Note: use ordered array with an exact-match rule for bare imports ("@pulse/toolbox")
+    // so it resolves to main.ts, while subpaths ("@pulse/toolbox/*") resolve to the src folder.
     config.resolve = config.resolve || {}
     const existingAliases = Array.isArray(config.resolve.alias)
       ? config.resolve.alias

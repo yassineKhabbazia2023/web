@@ -18,15 +18,15 @@ export default ({ mode }: any) =>
       ],
       test: {
         alias: {
-          '@core/': new URL('./src/', import.meta.url).pathname,
+          '@toolbox/': new URL('./src/', import.meta.url).pathname,
         },
       },
       build: {
         lib: {
-          name: '@pulse/core',
+          name: '@pulse/toolbox',
           entry: path.resolve(__dirname, 'src/main.ts'),
           formats: ['es'],
-          fileName: (format: string) => `lib/core.${format}.js`,
+          fileName: (format: string) => `lib/toolbox.${format}.js`,
         },
         rollupOptions: {
           input: 'src/main.ts',

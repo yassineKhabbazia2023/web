@@ -37,8 +37,8 @@ import PText from '../../atoms/PText'
 import type { PDocumentDisplayProps, DocumentPreviewResponse } from './PDocumentDisplayTypes'
 import PLoader from '../../atoms/PLoader'
 import { computed } from 'vue'
-import { isImageDocument, isPdfDocument } from '@pulse/core'
-import type { FileExtension } from '@pulse/core/types'
+import { isImageDocument, isPdfDocument } from '@pulse/toolbox'
+import type { FileExtension } from '@pulse/toolbox/types'
 
 const props = defineProps<PDocumentDisplayProps>()
 

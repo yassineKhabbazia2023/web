@@ -17,7 +17,7 @@ Object.defineProperty(window, 'localStorage', {
 
 vi.mock('../../services/token-refresh.service')
 vi.mock('../../managers/current-user/current-user.manager')
-vi.mock('@pulse/core')
+vi.mock('@pulse/toolbox')
 
 
 // Helper function to create JWT tokens for testing

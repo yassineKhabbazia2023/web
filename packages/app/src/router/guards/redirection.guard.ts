@@ -1,7 +1,7 @@
 import type { NavigationGuard } from 'vue-router'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
 import { APP_ROUTES } from '@pulse/common/constants'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { NotificationKindEnum, RouteName } from '@pulse/common/enums'
 
 export const redirectionGuard: NavigationGuard = async (to, _from, next) => {

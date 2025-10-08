@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { getOfferCatalogReferentListMock } from '../../mocks/offers-catalog.service.mocks'
 
 import { getTableReferentsColumns, getFormattedReferents, copyColumnContent } from './catalog-drawer-content-referents.utils'
@@ -17,7 +17,7 @@ vi.mock('@pulse/styleguide', () => ({
   PNotification: PNotificationMock,
 }))
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
 }))
 

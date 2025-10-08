@@ -1,9 +1,9 @@
 import type { OfferDescription } from '../../types/offers-catalog.types'
 import { getOffersCatalogResponseMock, getOfferCatalogDetailsResponseMock, getOfferCatalogReferentListMock } from '../../mocks/offers-catalog.service.mocks'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { APICallStatus } from '@pulse/common/enums'
 import { getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
-import { filterRecordByKeyCallback } from '@pulse/core/utils/array'
+import { filterRecordByKeyCallback } from '@pulse/toolbox/utils/array'
 
 import { useOffersCatalog } from './offers-catalog.composable'
 
@@ -16,7 +16,7 @@ const getOffersCatalogMock = vi.hoisted(() => vi.fn())
 const getOfferCatalogPdfMock = vi.hoisted(() => vi.fn())
 const getOfferCatalogDetailsMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
 }))
 
@@ -26,7 +26,7 @@ vi.mock('../../services/offers-catalog.service', () => ({
   getOfferCatalogDetails: getOfferCatalogDetailsMock,
 }))
 
-vi.mock('@pulse/core/utils/array')
+vi.mock('@pulse/toolbox/utils/array')
 
 describe('offers-catalog.composable', () => {
   describe('useOffersCatalog', () => {

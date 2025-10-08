@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 const LOCAL_STORAGE_TOKEN_KEY = 'token'
 const LOCAL_STORAGE_SELECTED_ENTITY_KEY = 'selected-entity'

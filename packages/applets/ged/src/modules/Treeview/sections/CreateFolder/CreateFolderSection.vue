@@ -29,7 +29,7 @@
   />
 </template>
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { ref, watch, toRef, computed } from 'vue'
 import type { Folder } from '@ged/models/Folder'
 import { CreateFolder } from '@ged/services/Folder'

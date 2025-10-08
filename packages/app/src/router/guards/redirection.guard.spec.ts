@@ -11,7 +11,7 @@ vi.mock('@pulse/common/managers', () => ({
   },
 }))
 
-vi.mock('@pulse/core')
+vi.mock('@pulse/toolbox')
 
 const toMock = {
   query: {

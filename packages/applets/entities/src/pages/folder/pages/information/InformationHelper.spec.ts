@@ -1,11 +1,11 @@
 import { ACTION_PERMISSIONS } from '@pulse/common/constants'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import type { PatchOperation, PatchValue } from '@entities/services/PatchRecordService'
 import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks'
 
 import { getCanEdit, savePatchedAccount } from './InformationHelper'
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,

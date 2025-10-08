@@ -1,7 +1,7 @@
 import { readFile, accessSync, constants } from 'fs'
 import { createServer } from 'http'
 import { join, normalize, resolve, extname } from 'path'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 const [givenPort] = process.argv.slice(2)
 

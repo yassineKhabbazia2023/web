@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { WidgetName } from '../enums/widgets.enums'
 import type { WidgetGridDefinition } from '../types/widget.types'
 

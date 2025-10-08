@@ -1,11 +1,11 @@
-# Core
+# Toolbox
 
-La bibliothèque `@pulse/core` est le **socle technique fondamental** du monorepo. Elle fournit les utilitaires TypeScript essentiels, les gestionnaires système et les outils de base partagés par tous les packages de l'écosystème Pulse.
+La bibliothèque `@pulse/toolbox` est la **boîte à outil technique** du monorepo. Elle fournit les utilitaires TypeScript essentiels, les gestionnaires système et les outils de base partagés par tous les packages de l'écosystème Pulse.
 
 ## Rôle et responsabilités
 
 ### Fondations techniques
-`@pulse/core` constitue la **couche de base** du monorepo :
+`@pulse/toolbox` constitue la **couche de base** du monorepo :
 - **Utilitaires purs** : Fonctions TypeScript sans dépendances Vue
 - **Gestionnaires système** : Services de configuration et de contrôle applicatif
 - **Types et constantes** : Définitions partagées pour la cohérence globale
@@ -40,16 +40,6 @@ Le gestionnaire de versions fournit automatiquement les informations de build :
 - **Debug et support** : Identification précise des builds
 - **CI/CD** : Intégration dans les pipelines de déploiement
 
-### Système de Feature Flags
-
-Le gestionnaire de feature flags permet le contrôle conditionnel de fonctionnalités.
-
-**Avantages :**
-- **Déploiement progressif** : Activation graduelle des nouvelles fonctionnalités
-- **A/B Testing** : Tests utilisateur contrôlés (plus tard)
-- **Rollback rapide** : Désactivation instantanée sans redéploiement
-- **Environnements multiples** : Configuration par environnement
-
 ### Logger centralisé
 
 Le système de logging configurable offre plusieurs niveaux de traçabilité :
@@ -67,17 +57,15 @@ Le système de logging configurable offre plusieurs niveaux de traçabilité :
 ## Intégration dans l'écosystème
 
 ### Utilisation transversale
-`@pulse/core` est utilisé par **tous les packages**, par exemple :
+`@pulse/toolbox` est utilisé par **tous les packages**, par exemple :
 
 #### Dans les applets
-- **Feature flags** : Activation conditionnelle des fonctionnalités
 - **Logging** : Traçabilité des erreurs et actions
 - **Validation** : Contrôles de saisie utilisateur
 
 #### Dans l'application principale
 - **Version management** : Affichage des informations de build
 - **Configuration globale** : Paramétrage par environnement
-- **Guards de navigation** : Contrôle d'accès par feature flags
 
 #### Dans les autres bibliothèques
 - **Utilitaires de base** : Fonctions pures réutilisables
@@ -87,7 +75,6 @@ Le système de logging configurable offre plusieurs niveaux de traçabilité :
 ### Extensibilité
 La bibliothèque est conçue pour **évoluer facilement** :
 - **Nouveaux utilitaires** : Ajout simple via exports modulaires
-- **Feature flags additionnels** : Extension du FeatureFlagManager
 - **Types métier** : Centralisation des définitions communes
 
 ## Scripts et développement

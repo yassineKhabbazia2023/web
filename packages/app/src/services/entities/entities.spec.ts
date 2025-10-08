@@ -1,4 +1,4 @@
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedFavoriteEntities } from '@pulse/common/mocks'
 import type { Entity } from '@pulse/common/types'
 
@@ -6,7 +6,7 @@ import { fetchFavoriteEntities, fetchEntities, DEFAULT_ENTITIES, DEFAULT_FAVORIT
 
 const testEntities: Entity[] = getMockedFavoriteEntities()
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const gatewayGetMock = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/common', () => {

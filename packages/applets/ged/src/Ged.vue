@@ -81,7 +81,7 @@ import {
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import { PCol, PRow } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useSelectedEntityStore } from '@pulse/common/stores'
 import { GedManager } from '@ged/ged.manager'
 import { GedContext } from '@pulse/common/enums'

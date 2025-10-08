@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { useI18n } from 'vue-i18n'
 import { ref, onMounted, computed } from 'vue'

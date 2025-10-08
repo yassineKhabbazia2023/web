@@ -26,7 +26,7 @@
 import { computed } from 'vue'
 import PIcon from '../../atoms/PIcon'
 import { getIconFileName } from '../../utils/fileExtension'
-import { getFileExtension } from '@pulse/core'
+import { getFileExtension } from '@pulse/toolbox'
 import type { PFileCardProps } from './PFileCardTypes'
 
 const props = withDefaults(defineProps<PFileCardProps>(), {

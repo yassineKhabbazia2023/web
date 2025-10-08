@@ -47,7 +47,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { TableColumnCtx } from 'element-plus'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { PTable, PTableColumn, PIcon, PToolbox, PButton } from '@pulse/styleguide/components'
 import type {
   PennylaneDocumentsTableFieldKeys,

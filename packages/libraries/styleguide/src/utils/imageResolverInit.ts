@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 const context = {
   assetsBaseUrl: '',

@@ -3,7 +3,7 @@ import { getNotificationSettings } from '../../services/notifications.service'
 import type { NotificationSettingsConfiguration } from '../../types/notification.type'
 import { SettingsType } from '../../feed-center.enum'
 import type { UpdateSettingsParams } from './notification-settings.types'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 export function useNotificationSettings() {
   const notificationSettings = ref<NotificationSettingsConfiguration>()

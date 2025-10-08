@@ -9,7 +9,7 @@ import {
 
 vi.mock('env-vars', () => envVarsMock)
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: {
     warn: vi.fn(),
   },
@@ -230,7 +230,7 @@ describe('MsalService', () => {
     })
 
     it('should handle generic error', async () => {
-      const { logger } = await import('@pulse/core')
+      const { logger } = await import('@pulse/toolbox')
       mockMsalInstance.getAllAccounts.mockReturnValue([mockAccount])
 
       const genericError = new Error('Generic error')

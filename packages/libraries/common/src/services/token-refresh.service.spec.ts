@@ -8,7 +8,7 @@ vi.mock('./authentication.service')
 vi.mock('./msal')
 vi.mock('../stores/user/user.store')
 vi.mock('../stores/token/token.store.utils')
-vi.mock('@pulse/core')
+vi.mock('@pulse/toolbox')
 
 describe('TokenRefreshService', () => {
   beforeEach(() => {

@@ -25,8 +25,8 @@
       "@common/*": [
         "../packages/libraries/common/src/*"
       ],
-      "@core/*": [
-        "../packages/libraries/core/src/*"
+      "@toolbox/*": [
+        "../packages/libraries/toolbox/src/*"
       ],
       "@entities/*": [
         "../packages/applets/entities/src/*"

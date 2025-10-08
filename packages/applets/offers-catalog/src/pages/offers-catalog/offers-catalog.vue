@@ -45,7 +45,7 @@ import CatalogDocumentViewer from '../../components/catalog-document-viewer/cata
 import CatalogResultCount from '../../components/catalog-result-count/catalog-result-count.vue'
 import { useOffersCatalog } from './offers-catalog.composable'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 const {
   searchTerm,

@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type { ComputedRef } from 'vue'
 import { ref } from 'vue'
 import { PNotification } from '@pulse/styleguide'

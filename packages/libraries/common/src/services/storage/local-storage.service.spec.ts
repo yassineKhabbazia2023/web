@@ -1,4 +1,4 @@
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 
 import { LocalStorageService } from './local-storage.service'
 
@@ -14,7 +14,7 @@ Object.defineProperty(window, 'localStorage', {
   writable: true,
 })
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 describe('LocalStorageService', () => {
   describe('Token methods', () => {

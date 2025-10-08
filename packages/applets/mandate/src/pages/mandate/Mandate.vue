@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger, useDebounce } from '@pulse/core'
+import { logger, useDebounce } from '@pulse/toolbox'
 import { ref, onMounted, watch } from 'vue'
 import { getMandatesCollection } from '@mandate/services/mandate'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'

@@ -5,7 +5,7 @@ import {
   watch,
 } from 'vue'
 import type { Ref, WritableComputedRef } from 'vue'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { SelectedNotificationEnum } from '../../types/notification.type'
 import { fetchNotifications } from '../../services/notifications.service'
 import { trackFeedCenterTabConsultation } from '../../services/tracking/tracking.service'

@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach, type MockInstance } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { envVarsMock } from '@pulse/common/mocks'
 import { launcherServicesMocks, mockedSilaeUrl } from '@launcher/__mocks__/launcher.service.mocks'
 import '@launcher/__mocks__/common.import.mocks'
@@ -16,7 +16,7 @@ import {
 } from './LauncherUtils'
 
 vi.mock('env-vars', () => envVarsMock)
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@launcher/services/launcherServices', () => launcherServicesMocks)
 
 function getMockedResponse(disposition = '') {

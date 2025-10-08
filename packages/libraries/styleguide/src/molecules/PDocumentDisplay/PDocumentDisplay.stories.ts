@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import PDocumentDisplay from './PDocumentDisplay.vue'
 import type { PDocumentDisplayProps } from './PDocumentDisplayTypes'
-import type { FileExtension } from '@pulse/core/types'
+import type { FileExtension } from '@pulse/toolbox/types'
 
 const meta: Meta<typeof PDocumentDisplay> = {
   title: 'Molecules/PDocumentDisplay',

@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type { Collab } from '@entities/pages/folder/pages/collaborators/types'
 import { handleRequestError } from '@entities/helper/helper'
 import { API_PREFIXES } from '@pulse/common/constants'

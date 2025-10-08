@@ -145,8 +145,8 @@ export default [
               message: 'Please use @pulse/common instead',
             },
             {
-              name: '@core',
-              message: 'Please use @pulse/core instead',
+              name: '@toolbox',
+              message: 'Please use @pulse/toolbox instead',
             },
             {
               name: '@styleguide',
@@ -159,8 +159,8 @@ export default [
               message: 'Please use @pulse/common instead',
             },
             {
-              group: ['@core'],
-              message: 'Please use @pulse/core instead',
+              group: ['@toolbox'],
+              message: 'Please use @pulse/toolbox instead',
             },
             {
               group: ['@styleguide'],

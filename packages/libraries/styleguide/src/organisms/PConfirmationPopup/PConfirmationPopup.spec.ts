@@ -15,7 +15,7 @@ const defaultProps: PConfirmationPopupProps = {
   pAlignCenter: false,
 }
 
-// TODO should export it in @pulse/core
+// TODO should export it in @pulse/toolbox
 type ComponentWrapper<T> = VueWrapper<ComponentPublicInstance & T>
 
 function createWrapper(

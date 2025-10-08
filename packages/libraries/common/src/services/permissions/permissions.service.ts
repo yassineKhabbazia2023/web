@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import api from '../../api'
 
 const AUTH_API = 'authorization/api'

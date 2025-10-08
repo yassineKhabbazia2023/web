@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { PDialog, PButton, PCheckbox } from '@pulse/styleguide/components'
 import { displayNotification } from '@pulse/styleguide'
 import { ReportingManager } from '@pulse/common/managers'

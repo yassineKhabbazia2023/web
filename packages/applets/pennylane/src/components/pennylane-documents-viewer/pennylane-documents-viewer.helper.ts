@@ -1,5 +1,5 @@
-import type { FileExtension } from '@pulse/core/types'
-import { isPdfDocument } from '@pulse/core'
+import type { FileExtension } from '@pulse/toolbox/types'
+import { isPdfDocument } from '@pulse/toolbox'
 
 export function getDocumentType(fileExtension?: FileExtension) {
   if (fileExtension === undefined) {

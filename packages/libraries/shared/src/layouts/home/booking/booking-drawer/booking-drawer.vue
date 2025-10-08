@@ -37,7 +37,7 @@
 <script lang="ts" setup>
 import { computed, ref, useTemplateRef, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { PDrawer, PButton } from '@pulse/styleguide/components'
 import type { BookingDrawerProps } from './booking-drawer.types'
 import type { BookingConfigurationFormData } from '../booking.type'

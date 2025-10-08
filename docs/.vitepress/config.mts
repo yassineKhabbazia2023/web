@@ -106,8 +106,8 @@ export default defineConfig({
                   link: '/monorepo/libraries/common',
                 },
                 {
-                  text: 'Core',
-                  link: '/monorepo/libraries/core',
+                  text: 'Toolbox',
+                  link: '/monorepo/libraries/toolbox',
                 },
                 {
                   text: 'StyleGuide',

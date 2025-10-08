@@ -15,7 +15,7 @@ Le monorepo est organisé en plusieurs catégories de packages :
 ### Libraries (`packages/libraries/`)
 
 - `@pulse/common` - Utilitaires, services et composables partagés
-- `@pulse/core` - Fonctions utilitaires de base et types fondamentaux  
+- `@pulse/toolbox` - Fonctions utilitaires de base et types fondamentaux
 - `@pulse/styleguide` - Composants UI et styles
 - `@pulse/widgets` - Widgets réutilisables
 
@@ -53,9 +53,9 @@ import { CurrentUserManager } from '@pulse/common/managers'
 import { amplitudeService } from '@pulse/common'
 import { useUserStore } from '@pulse/common/stores'
 
-// ✅ Correct - Import depuis @pulse/core
-import { loggerMock } from '@pulse/core/mocks'
-import { arrayUtils } from '@pulse/core/utils/array'
+// ✅ Correct - Import depuis @pulse/toolbox
+import { loggerMock } from '@pulse/toolbox/mocks'
+import { arrayUtils } from '@pulse/toolbox/utils/array'
 
 // ✅ Correct - Import de composants UI
 import { PButton } from '@pulse/styleguide/components'
@@ -69,7 +69,7 @@ import { APP_ROUTES } from '@pulse/common/constants'
 
 // ✅ Correct - Import de types
 import type { User } from '@pulse/common/types'
-import type { ValidationRule } from '@pulse/core/types'
+import type { ValidationRule } from '@pulse/toolbox/types'
 ```
 
 ### Import complet d'un package
@@ -77,7 +77,7 @@ import type { ValidationRule } from '@pulse/core/types'
 ```typescript
 // ✅ Correct - Import du point d'entrée principal
 import { amplitudeService } from '@pulse/common'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 ```
 
 ## Erreurs courantes à éviter
@@ -126,7 +126,7 @@ Avant d'utiliser un import, assurez-vous que :
    {
      "dependencies": {
        "@pulse/common": "1.0.0",
-       "@pulse/core": "1.0.0"
+       "@pulse/toolbox": "1.0.0"
      }
    }
    ```

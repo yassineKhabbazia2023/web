@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useI18n } from 'vue-i18n'
 import { onMounted, ref } from 'vue'
 import { PFilterGroup } from '@pulse/styleguide/components'

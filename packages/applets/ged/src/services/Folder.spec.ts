@@ -6,7 +6,7 @@ import {
   commonApiDsPatchSpy,
 } from '@ged/__mocks__/common.import.mocks'
 import { accountId } from '@ged/__mocks__/files.mocks'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import type { Service } from '@ged/models/Service'
 
 import {
@@ -18,7 +18,7 @@ import {
   downloadFolder,
 } from './Folder'
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const fetchedFolder = 'fetched'
 const patchedFolder = 'patched'

@@ -1,12 +1,12 @@
 import { DEFAULT_TAG_PROPS, CATALOG_TAG_STYLES } from '../const/offers-catalog.const'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { getOfferMock, getOffersMock } from '../mocks/offers-catalog.service.mocks'
 
 import { getCatalogTagProps, getOfferSearchTerms, getOffersWithSearchTerms } from './offers-catalog.utils'
 
 const offersMock = getOffersMock()
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
 }))
 

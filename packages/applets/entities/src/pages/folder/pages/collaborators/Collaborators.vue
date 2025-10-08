@@ -185,7 +185,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useI18n } from 'vue-i18n'
 import {
   PTooltip,
@@ -222,7 +222,7 @@ import { getContactById } from '@entities/services/contact'
 import { getCollaboratorsByIdEntity } from '@entities/services/wallet'
 import { deleteContactFromAccount } from '@entities/services/account'
 import { getInitials } from '@entities/helper'
-import { removeFalsyValues } from '@pulse/core/utils/object'
+import { removeFalsyValues } from '@pulse/toolbox/utils/object'
 import { RouteParam, SortDirection } from '@pulse/common/enums'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'

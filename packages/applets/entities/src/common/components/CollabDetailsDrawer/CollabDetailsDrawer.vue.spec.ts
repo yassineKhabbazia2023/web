@@ -40,7 +40,7 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   useDebounce: (fn: any) => fn,
 }))
 

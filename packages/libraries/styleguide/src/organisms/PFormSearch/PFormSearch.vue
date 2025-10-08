@@ -27,7 +27,7 @@
 <script lang="ts" setup>
 import { ref, useTemplateRef } from 'vue'
 import type { FormRules } from 'element-plus'
-import { useDebounce } from '@pulse/core'
+import { useDebounce } from '@pulse/toolbox'
 
 import PFormItem from '../../atoms/PFormItem/PFormItem.vue'
 import PInput from '../../atoms/PInput/PInput.vue'

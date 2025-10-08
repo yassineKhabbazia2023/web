@@ -1,5 +1,5 @@
 import { commonApi } from '@pulse/common'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type { AxiosResponse } from 'axios'
 import { API_PREFIXES } from '../../constants/api-prefixes'
 import type { PennylaneRole, PennylaneDocumentQueryResult, PennylaneAvailableRole } from './pennylane.service.types'

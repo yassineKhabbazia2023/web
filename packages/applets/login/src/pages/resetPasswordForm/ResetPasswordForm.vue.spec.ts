@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { APP_ROUTES } from '@pulse/common/constants'
 
 import ResetPasswordForm from './ResetPasswordForm.vue'
@@ -11,7 +11,7 @@ const validPasswordMock = 'aaAA11@@'
 
 const createNewPasswordMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 vi.mock('@pulse/common', () => ({
   createNewPassword: createNewPasswordMock,

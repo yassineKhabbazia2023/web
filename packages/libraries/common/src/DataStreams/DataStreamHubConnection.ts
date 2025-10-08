@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type { HubConnection } from '@microsoft/signalr'
 import { getNewHubConnection } from './DataStreamHubConnectionHelper'
 import { useTokenStore } from '../stores/token/token.store'

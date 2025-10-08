@@ -1,6 +1,6 @@
 import { PNotification } from '@pulse/styleguide'
 import { i18n } from '@pulse/common/i18n'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type
 {
   NotificationDomainSettings,

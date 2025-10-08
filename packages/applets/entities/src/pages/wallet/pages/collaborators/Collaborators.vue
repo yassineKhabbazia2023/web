@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch } from 'vue'
 import {
@@ -60,7 +60,7 @@ import {
 } from '@pulse/styleguide/components'
 import { getInitials, returnSortQueryField } from '@entities/helper'
 import { getPaginationLabel } from '@pulse/common/utils'
-import { removeFalsyValues } from '@pulse/core/utils/object'
+import { removeFalsyValues } from '@pulse/toolbox/utils/object'
 import { PAGE_SIZES } from '@pulse/common/constants'
 import NoResult from '@entities/common/components/NoResult'
 import FormSearch from '@entities/common/components/FormSearch'

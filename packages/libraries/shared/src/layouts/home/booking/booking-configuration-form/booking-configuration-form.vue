@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useDebounce } from '@pulse/core'
+import { useDebounce } from '@pulse/toolbox'
 import { PForm, PFormItem, PInput } from '@pulse/styleguide/components'
 import { getFormErrors } from './booking-configuration-form.helper'
 import type { BookingConfigurationFormData } from '../booking.type'

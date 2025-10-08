@@ -2,11 +2,11 @@ import { PennylaneService } from '@pulse/common/services/pennylane'
 import { usePennylaneDocumentViewer } from './pennylane-documents-viewer.composable'
 import { APICallStatus } from '@pulse/common/enums'
 import { getDocumentType, getDocumentPreviewImage } from './pennylane-documents-viewer.helper'
-import { logger, getFileExtension } from '@pulse/core'
+import { logger, getFileExtension } from '@pulse/toolbox'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
 
 vi.mock('@pulse/common/services/pennylane')
-vi.mock('@pulse/core')
+vi.mock('@pulse/toolbox')
 vi.mock('./pennylane-documents-viewer.helper')
 
 const technicalErrorMessageMock = 'An error occurred while loading the document. Please try again later.'

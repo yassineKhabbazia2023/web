@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { VITE_ASSETS_BASE_URL } from 'env-vars'
-import { AppVersionManager } from '@pulse/core'
+import { AppVersionManager } from '@pulse/toolbox'
 import entitiesApplet from '@pulse/entities'
 import gedApplet from '@pulse/ged'
 import launcherApplet from '@pulse/launcher'

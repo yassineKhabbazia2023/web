@@ -7,7 +7,7 @@ import { AccountFilters } from '@entities/common/types'
 
 const loggerErrorSpy = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: {
     error: loggerErrorSpy,
   },

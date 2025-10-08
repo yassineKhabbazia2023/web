@@ -1,7 +1,7 @@
 import type { NavigationGuard, RouteLocationNormalizedGeneric } from 'vue-router'
 import { FEATURE_FLAG_META } from '@pulse/common/constants'
 import { RouteName } from '@pulse/common/enums'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { FeatureFlagManager } from '@pulse/common/managers'
 
 export const featureFlagGuard: NavigationGuard = (to: RouteLocationNormalizedGeneric, _from, next) => {

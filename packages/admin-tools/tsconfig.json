@@ -9,8 +9,8 @@
   ],
   "compilerOptions": {
     "paths": {
-      "@core/*": [
-        "../libraries/core/src/*"
+      "@toolbox/*": [
+        "../libraries/toolbox/src/*"
       ],
       "@styleguide/*": [
         "../libraries/styleguide/src/*"

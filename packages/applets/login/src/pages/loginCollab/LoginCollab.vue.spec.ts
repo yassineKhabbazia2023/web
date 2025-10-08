@@ -1,14 +1,14 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { AmplitudeServiceMock } from '@pulse/common/mocks'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 
 import LoginCollab from './LoginCollab.vue'
 
 const msalLoginRedirectMock = vi.hoisted(() => vi.fn())
 const initAuthCollabMock = vi.hoisted(() => vi.fn(() => Promise.resolve(true)))
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
 }))
 

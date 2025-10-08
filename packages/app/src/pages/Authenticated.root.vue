@@ -5,7 +5,7 @@
 
 <script lang="ts" setup>
 import { ref, onBeforeMount, onBeforeUnmount } from 'vue'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { RouteName } from '@pulse/common/enums'
 import { AuthenticatedFlowManager } from '@app/managers/authenticated.flow.manager'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'

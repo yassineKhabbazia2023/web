@@ -1,7 +1,7 @@
 import { compressImages } from './imageGen/utils'
 import { getImageList, writeImageListFile, writeImageNameFile } from './imageGen/lib'
 import { clearFolder } from './common/utils'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 const [originFolder, targetFolder, imageListPath, imageNamePath] = process.argv.slice(2)
 

@@ -1,5 +1,5 @@
 import { VITE_TOKEN_EXPIRATION_BUFFER } from 'env-vars'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useTokenStore } from '../../stores/token/token.store'
 import { TokenRefreshService } from '../../services/token-refresh.service'
 import { CurrentUserManager } from '../../managers/current-user/current-user.manager'

@@ -103,7 +103,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref, watch } from 'vue'
-import { useDebounce } from '@pulse/core'
+import { useDebounce } from '@pulse/toolbox'
 import {
   PButton,
   PDrawer,

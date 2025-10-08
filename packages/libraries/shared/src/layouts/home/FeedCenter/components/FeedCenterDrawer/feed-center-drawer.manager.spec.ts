@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import { notificationsMock } from '../../__mocks__/notifications.mocks'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { patchAllNotificationsReadStatusMock, fetchNotificationsMock, notificationsServiceMock } from '../../__mocks__/notification.service.mocks'
 
 import {
@@ -9,7 +9,7 @@ import {
 } from './feed-center-drawer.manager'
 
 vi.mock('../../services/notifications.service', () => notificationsServiceMock)
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const userIdMock = 12
 

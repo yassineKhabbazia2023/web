@@ -24,7 +24,7 @@ export default ({ mode }: any) =>
         alias: {
           '@app': fileURLToPath(new URL('./src', import.meta.url)),
           '@common': fileURLToPath(new URL('../libraries/common/src', import.meta.url)),
-          '@core': fileURLToPath(new URL('../libraries/core/src', import.meta.url)),
+          '@toolbox': fileURLToPath(new URL('../libraries/toolbox/src', import.meta.url)),
           '@styleguide': fileURLToPath(new URL('../libraries/styleguide/src', import.meta.url)),
           '@shared': fileURLToPath(new URL('../libraries/shared/src', import.meta.url)),
           '@entities': fileURLToPath(new URL('../applets/entities/src', import.meta.url)),

@@ -1,7 +1,7 @@
-import type { FileExtension } from '@pulse/core/types'
+import type { FileExtension } from '@pulse/toolbox/types'
 import {
   getFileExtension,
-} from '@pulse/core'
+} from '@pulse/toolbox'
 import type { IconName } from '../types/IconName.types'
 
 const fileNameByExtension = new Map<FileExtension, IconName>([

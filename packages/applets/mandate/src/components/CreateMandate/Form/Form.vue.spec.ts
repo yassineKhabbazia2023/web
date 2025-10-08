@@ -1,5 +1,5 @@
 import { expect, describe, it, vi } from 'vitest'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { featureFlagManagerMock } from '@pulse/common/mocks'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { getCompany } from '@mandate/services/mandate'
@@ -17,7 +17,7 @@ function mockMandateService(
   }
 }
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
 }))
 vi.mock('@pulse/common/managers', () => ({

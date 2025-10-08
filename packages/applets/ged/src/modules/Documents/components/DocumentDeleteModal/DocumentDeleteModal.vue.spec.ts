@@ -1,7 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
 import { deleteDocuments } from '@ged/services/Documents'
 import { createI18n } from 'vue-i18n'
@@ -11,7 +11,7 @@ import { type DocumentDeleteModalTypesProps } from './DocumentDeleteModalTypes'
 
 import DocumentDeleteModal from './DocumentDeleteModal.vue'
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const defaultProps: DocumentDeleteModalTypesProps = {
   isVisible: false,

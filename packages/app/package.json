@@ -19,7 +19,7 @@
   "dependencies": {
     "@pulse/booking": "1.0.0",
     "@pulse/common": "1.0.0",
-    "@pulse/core": "1.0.0",
+    "@pulse/toolbox": "1.0.0",
     "@pulse/entities": "1.0.0",
     "@pulse/ged": "1.0.0",
     "@pulse/launcher": "1.0.0",

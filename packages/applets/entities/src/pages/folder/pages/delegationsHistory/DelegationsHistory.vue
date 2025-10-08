@@ -84,7 +84,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -104,7 +104,7 @@ import { useUserStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
 import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
-import { removeFalsyValues } from '@pulse/core/utils/object'
+import { removeFalsyValues } from '@pulse/toolbox/utils/object'
 import FormSearch from '@entities/common/components/FormSearch'
 import NoResult from '@entities/common/components/NoResult'
 import type { Delegation } from './DelegationsHistoryTypes'

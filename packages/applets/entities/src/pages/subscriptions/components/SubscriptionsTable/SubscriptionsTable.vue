@@ -137,7 +137,7 @@ import { getInitials } from '@entities/helper'
 import SubscriptionsFilter from './components/SubscriptionsFilter'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import type { Contact } from '@entities/services/contact/contactTypes'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 const { t, d } = useI18n({
   inheritLocale: true,

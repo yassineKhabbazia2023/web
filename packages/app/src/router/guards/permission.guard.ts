@@ -1,6 +1,6 @@
 import { PERMISSIONS_META } from '@pulse/common/constants'
 import { NavigationGuard } from 'vue-router'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { AuthenticatedFlowManager } from '@app/managers/authenticated.flow.manager'
 import { CurrentUserManager } from '@pulse/common/managers'
 import type { RouteLocationNormalizedGeneric } from 'vue-router'

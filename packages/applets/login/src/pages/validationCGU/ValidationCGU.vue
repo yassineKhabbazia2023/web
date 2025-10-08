@@ -77,7 +77,7 @@
 import { onMounted, ref, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type { FormRules } from 'element-plus'
 import { PButton, PCheckbox, PForm, PFormItem, PTooltip } from '@pulse/styleguide/components'
 import { type ValidationCGUProps } from './ValidationCGUTypes'

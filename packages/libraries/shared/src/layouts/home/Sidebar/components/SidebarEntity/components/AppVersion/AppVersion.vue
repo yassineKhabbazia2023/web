@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { AppVersionManager } from '@pulse/core'
+import { AppVersionManager } from '@pulse/toolbox'
 
 const appVersion = AppVersionManager.getMonorepoVersion()
 </script>

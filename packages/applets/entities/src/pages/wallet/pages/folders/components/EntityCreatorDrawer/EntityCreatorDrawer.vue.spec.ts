@@ -1,7 +1,7 @@
 import { nextTick } from 'vue'
 import { describe, vi, it, expect } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import EntityCreatorFormStructure from '@entities/common/config/forms/EntityCreatorFormStructure.json'
 import { EntityCreatorDrawerProps } from './entity-creator-drawer.types'
 import { PButton } from '@pulse/styleguide/components'
@@ -59,7 +59,7 @@ const entityCreatorFormStructureMock = vi.hoisted(() => vi.fn(() => Promise.reso
 vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(() => 'AD'),
 }))
-vi.mock('@pulse/core', () => ({ logger: loggerMock, useDebounce: (fn: any) => fn }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock, useDebounce: (fn: any) => fn }))
 vi.mock('@entities/services/entity-creator', () => ({
   createTestAccount: createTestAccountMock,
   generateAccountNumber: generateAccountNumberMock,

@@ -1,4 +1,4 @@
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { envVarsMock } from '@pulse/common/mocks'
 import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
@@ -6,7 +6,7 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { BootManager } from './boot.manager'
 
 vi.mock('env-vars', () => envVarsMock)
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
 }))
 vi.mock('@pulse/common/services/amplitude')

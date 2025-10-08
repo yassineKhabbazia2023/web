@@ -1,4 +1,4 @@
-import { getEmailIsValid } from '@pulse/core/utils/validator'
+import { getEmailIsValid } from '@pulse/toolbox/utils/validator'
 
 export function getEmailError(
   email: string,

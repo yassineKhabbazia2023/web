@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { computed, watch } from 'vue'
-import { getFileExtension } from '@pulse/core'
+import { getFileExtension } from '@pulse/toolbox'
 import PCheckbox from '../../atoms/PCheckbox'
 import PIcon from '../../atoms/PIcon'
 import PLoader from '../../atoms/PLoader'

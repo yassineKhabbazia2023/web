@@ -1,12 +1,12 @@
 import { getMockedPennylaneDocument } from '@pulse/common/mocks'
-import { getFileExtension, logger } from '@pulse/core'
+import { getFileExtension, logger } from '@pulse/toolbox'
 import { getIconFileName, displayNotification } from '@pulse/styleguide'
 import { downloadFile } from '@pulse/common/helpers'
 import type { IconName } from '@pulse/styleguide/types'
 
 import { getFormattedPennylaneDocuments, downloadDocument } from './pennylane-documents.helper'
 
-vi.mock('@pulse/core')
+vi.mock('@pulse/toolbox')
 vi.mock('@pulse/styleguide')
 vi.mock('@pulse/common/helpers')
 

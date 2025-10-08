@@ -1,11 +1,11 @@
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { authenticationGuard } from './authentication.guard'
 import { RouteName } from '@pulse/common/enums'
 
 const isUserOriginCollabMock = vi.hoisted(() => vi.fn(() => Promise.resolve(true)))
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@app/services/userOrigin/userOriginService', () => ({
   isUserOriginCollab: isUserOriginCollabMock,
 }))

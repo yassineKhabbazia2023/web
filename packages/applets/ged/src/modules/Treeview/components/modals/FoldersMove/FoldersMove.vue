@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { computed, ref, watch } from 'vue'
 import DocumentModalExplorer from '@ged/modules/Documents/components/DocumentsExplorerModal'
 import type { FoldersMoveProps, ExplorerMoveFolder } from './FoldersMoveTypes'

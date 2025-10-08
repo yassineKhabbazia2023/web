@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type { NavigationGuard } from 'vue-router'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { BootManager } from '@app/managers/boot.manager'

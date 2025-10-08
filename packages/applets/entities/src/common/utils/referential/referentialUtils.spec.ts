@@ -1,5 +1,5 @@
 import { vi, it, expect, describe } from 'vitest'
-import { loggerMock, loggerWarnSpy } from '@pulse/core/mocks'
+import { loggerMock, loggerWarnSpy } from '@pulse/toolbox/mocks'
 import {
   referentialOptionsToPDropdownOption,
   getReferentialDropdownOptions,
@@ -25,7 +25,7 @@ const mockedReferentialHubs = getMockedReferentialHubs().slice(0, 2)
 const mockedFormSection = getMockedFormSection()
 const mockedReferentialOffices = getMockedReferentialOffices()
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 vi.mock('@entities/services/account', async () => {
   const actual = await vi.importActual('@entities/services/account')

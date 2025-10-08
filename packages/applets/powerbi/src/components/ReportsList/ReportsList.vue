@@ -31,7 +31,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PScrollbar } from '@pulse/styleguide/components'
-import { getMostRecentDate } from '@pulse/core/utils/dates'
+import { getMostRecentDate } from '@pulse/toolbox/utils/dates'
 import type { ReportsListProps } from './reports-list.types'
 
 import ReportCard from '@powerbi/components/ReportCard/ReportCard.vue'

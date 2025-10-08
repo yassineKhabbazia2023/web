@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { MsalService } from '../services/msal/msal.service'
 import api from '../api'
 

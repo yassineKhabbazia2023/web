@@ -70,7 +70,7 @@ import type {
 } from './ManageRightsTypes'
 import RightsList from './components/RightsList'
 import { RouteParam } from '@pulse/common/enums'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { saveUserPermissions, getAdditionalOptionByActionCode, getIsFormValid } from './utils'
 import { refreshPageWhenCurrentUserPermissionChange } from '@entities/composables/permission.composable'

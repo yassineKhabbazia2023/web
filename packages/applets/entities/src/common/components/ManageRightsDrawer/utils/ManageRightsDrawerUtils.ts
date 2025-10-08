@@ -1,5 +1,5 @@
 import type { AuthorizationState, LabelByPermission } from '../ManageRightsTypes'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/common/constants/rights-management.const'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import type { Permission } from '@pulse/common/types'

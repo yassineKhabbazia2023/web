@@ -1,4 +1,4 @@
-import type { FileExtension } from '@pulse/core/types'
+import type { FileExtension } from '@pulse/toolbox/types'
 
 export interface DocumentPreviewResponse {
   data: ArrayBuffer

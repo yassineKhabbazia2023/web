@@ -1,7 +1,7 @@
 import { execSync } from 'child_process'
 import path from 'path'
 import { writeFileSync } from 'fs'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 const [scriptName, relativeOutputFilePath] = process.argv.slice(1)
 logger.info(`execute ${scriptName}`)

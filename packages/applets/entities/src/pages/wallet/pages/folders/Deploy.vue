@@ -190,7 +190,7 @@
 </template>
 
 <script lang='ts' setup>
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, ref, watch, useTemplateRef, nextTick } from 'vue'
 import {

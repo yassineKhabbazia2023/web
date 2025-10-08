@@ -1,11 +1,11 @@
-import { loggerWarnSpy, loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerWarnSpy, loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { SERVER_ZONE } from './constants'
 import { Identify } from '@amplitude/analytics-browser'
 import { AmplitudeUserType } from '@common/enums/amplitude.enums'
 
 import { AmplitudeService } from './amplitude.service'
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const initSpy = vi.fn()
 const resetSpy = vi.fn()

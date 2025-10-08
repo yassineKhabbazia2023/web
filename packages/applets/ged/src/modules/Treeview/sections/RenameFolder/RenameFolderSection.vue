@@ -16,7 +16,7 @@
   />
 </template>
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { ref, toRef, watch } from 'vue'
 import { RenameFolder } from '@ged/services/Folder'
 import type { Folder } from '@ged/models/Folder'

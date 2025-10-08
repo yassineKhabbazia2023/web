@@ -74,7 +74,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { PDrawer, PForm, PFormItem, PDropdown, PCheckboxGroup, PCheckbox, PButton } from '@pulse/styleguide/components'
 import type { ReportFiltersDrawerProps } from './report-filters-drawer.types'
 import type { ReportType, ReportFilters } from '@powerbi/types/bi-reports.types'

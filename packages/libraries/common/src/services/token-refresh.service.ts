@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { refreshClientToken } from './authentication.service'
 import { MsalService } from './msal'
 import { useUserStore } from '../stores/user/user.store'

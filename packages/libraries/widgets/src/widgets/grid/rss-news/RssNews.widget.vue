@@ -79,7 +79,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { RSS_NEWS_SITE_URL } from '@pulse/common/constants'
 import { RSSNewsService } from './services/rss-news.service'
 import { RssNewsItem } from './types/rss-news.types'

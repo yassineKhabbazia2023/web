@@ -1,7 +1,7 @@
 import type { UserInfo } from '../../stores/types'
 import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useUserStore } from '../../stores/user/user.store'
-import { arrayIncludes } from '@pulse/core/utils/array'
+import { arrayIncludes } from '@pulse/toolbox/utils/array'
 import { logoutCollaborator, logoutGigyaSSO, logoutClient } from '../../utils/user.utils'
 import { CurrentUserService } from '../../services/current-user/current-user.service'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'

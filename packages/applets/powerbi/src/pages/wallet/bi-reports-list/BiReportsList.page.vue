@@ -59,7 +59,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { models } from 'powerbi-client'
 import { reactive, onMounted, computed, ref } from 'vue'
 import { PPagination, PLoader } from '@pulse/styleguide/components'

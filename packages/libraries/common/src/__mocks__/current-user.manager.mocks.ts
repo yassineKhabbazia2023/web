@@ -1,4 +1,4 @@
-import { arrayIncludes } from '@pulse/core/utils/array'
+import { arrayIncludes } from '@pulse/toolbox/utils/array'
 import type { Permission } from '../types/permission.type'
 
 export const setCurrentUserMock = vi.fn()

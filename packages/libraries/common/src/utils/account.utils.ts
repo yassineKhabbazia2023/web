@@ -1,5 +1,5 @@
 import type { FilterQueryParams, SearchCriteria } from '../types/account.types'
-import { removeFalsyValues } from '@pulse/core/utils/object'
+import { removeFalsyValues } from '@pulse/toolbox/utils/object'
 
 export function getQueryParams(searchCriteria: SearchCriteria): FilterQueryParams {
   return {

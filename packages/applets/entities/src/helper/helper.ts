@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 export const handleRequestError = (action: string, error: any) => {
   logger.error(`Error ${action}:`, error)

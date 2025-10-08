@@ -1,4 +1,4 @@
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { PNotification } from '@pulse/styleguide'
 import { saveNotificationSettings, fetchNotifications } from '../../services/notifications.service'
 import {
@@ -22,7 +22,7 @@ getStoreMock(useFeedCenterStore)
 
 vi.mock('../../services/notifications.service')
 vi.mock('@pulse/styleguide')
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 describe('NotificationSettingsManager', () => {
   describe('hasAtLeastOneSettingEnabled', () => {

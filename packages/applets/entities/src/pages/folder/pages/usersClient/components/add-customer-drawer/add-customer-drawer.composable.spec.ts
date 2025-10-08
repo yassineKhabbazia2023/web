@@ -9,7 +9,7 @@ import { CollaboratorPermission } from '@pulse/common/enums'
 vi.mock('@entities/services/account')
 vi.mock('@entities/managers/account/account.manager')
 vi.mock('@pulse/common/services/amplitude')
-vi.mock('@pulse/core')
+vi.mock('@pulse/toolbox')
 vi.mock('@entities/common/components/ManageRightsDrawer/utils')
 
 const hasContactRoleOnCommonAccountMock = vi.mocked(hasContactRoleOnCommonAccount)

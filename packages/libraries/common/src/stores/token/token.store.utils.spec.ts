@@ -1,7 +1,7 @@
 import { tokenMock, tokenExpMock } from '@common/__mocks__'
 import { getTokenExp, tokenIsValid, nowInSeconds } from './token.store.utils'
 
-vi.mock('@pulse/core')
+vi.mock('@pulse/toolbox')
 const jwtDecodeMock = vi.hoisted(() => vi.fn())
 vi.mock('jwt-decode', () => ({
   jwtDecode: jwtDecodeMock,

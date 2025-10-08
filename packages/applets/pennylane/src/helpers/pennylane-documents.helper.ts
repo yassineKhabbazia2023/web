@@ -1,6 +1,6 @@
 import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
 import type { PennylaneDocument } from '@pulse/common/types'
-import { getFileExtension, logger } from '@pulse/core'
+import { getFileExtension, logger } from '@pulse/toolbox'
 import { getIconFileName, displayNotification } from '@pulse/styleguide'
 import { downloadFile } from '@pulse/common/helpers'
 

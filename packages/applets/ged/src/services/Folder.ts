@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { commonApi } from '@pulse/common'
 import type { Service } from '@ged/models/Service'
 import type { Folder } from '@ged/models/Folder'

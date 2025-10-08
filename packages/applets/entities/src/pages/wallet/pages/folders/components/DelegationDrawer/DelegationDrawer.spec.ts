@@ -1,5 +1,5 @@
 import { nextTick } from 'vue'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 import { entitiesMock } from '@entities/__mocks__/entities.mocks'
@@ -8,7 +8,7 @@ import { delegateAccounts } from '@entities/services/account'
 
 import DelegationDrawer from '.'
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@entities/services/account')
 
 const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]

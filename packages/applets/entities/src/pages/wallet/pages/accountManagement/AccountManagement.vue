@@ -54,7 +54,7 @@
 </template>
 
 <script lang='ts' setup>
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { computed, onMounted, ref, watch } from 'vue'

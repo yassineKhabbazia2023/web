@@ -1,5 +1,5 @@
 import type { App } from 'vue'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type { InitHubspotParams, HubSpotState, InstallHubSpotParams } from './hubspot.plugin.types'
 
 declare let window: {

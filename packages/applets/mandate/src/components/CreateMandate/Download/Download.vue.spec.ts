@@ -1,5 +1,5 @@
 import { expect, describe, it, vi, beforeEach } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { PNotificationMocked } from '@mandate/__mocks__/styleguide.mocks'
@@ -30,7 +30,7 @@ const apiMocks = vi.hoisted(() => ({
   ),
 }))
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 vi.mock('@mandate/services/mandate', () => ({
   downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data })),

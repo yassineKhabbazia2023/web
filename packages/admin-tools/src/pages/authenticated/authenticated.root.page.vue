@@ -97,7 +97,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { PButton, PTabs, PTabPane, PIcon, PTooltip } from '@pulse/styleguide/components'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useRouter, useRoute } from 'vue-router'
 import { MsalService } from '@admin-tools/services/msal.service'
 import { AdminRouteNames } from '@admin-tools/constants/admin-tools-route-names.enum'

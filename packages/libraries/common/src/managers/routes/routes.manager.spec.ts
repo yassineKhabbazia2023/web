@@ -1,7 +1,7 @@
 import { Router, RouteRecordRaw } from 'vue-router'
 import { RoutesManager } from './routes.manager'
 
-vi.mock('@pulse/core', () => ({ logger: { error: vi.fn() } }))
+vi.mock('@pulse/toolbox', () => ({ logger: { error: vi.fn() } }))
 
 describe('RoutesManager', () => {
   describe.each([

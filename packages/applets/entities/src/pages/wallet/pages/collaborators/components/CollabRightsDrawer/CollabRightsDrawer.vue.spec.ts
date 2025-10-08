@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import '@entities/__mocks__/common.import.mocks'
 import { mockedPermissionCodes, mockUpdateUserPermission } from '@entities/__mocks__/permissions.mocks'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { featureFlagManagerMock } from '@pulse/common/mocks'
 import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
@@ -29,7 +29,7 @@ const mockedSelectedRoleId = mockedCollabRoles.find(
 )?.id
 
 vi.mock('@entities/services/authorization', () => authorizationServiceMock)
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
   FeatureFlagManager: featureFlagManagerMock,
 }))

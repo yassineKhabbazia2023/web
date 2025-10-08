@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/api-gateway.mocks'
 import {
   fetchUserPermissions,
@@ -13,7 +13,7 @@ vi.mock('../../api', () => ({
   }),
 }))
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const permissionsMock = getPermissionsMock()
 const accountId = 123456

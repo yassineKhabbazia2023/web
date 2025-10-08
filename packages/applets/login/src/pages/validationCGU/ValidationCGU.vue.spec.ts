@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { cguServiceMock, updateTermsByCurrentUserMock } from '@pulse/common/mocks'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { CurrentUserManager } from '@pulse/common/managers'
@@ -9,7 +9,7 @@ import validationCGU from './ValidationCGU.vue'
 
 const mockRouterPush = vi.fn()
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({

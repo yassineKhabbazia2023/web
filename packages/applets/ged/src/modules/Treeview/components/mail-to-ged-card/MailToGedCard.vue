@@ -39,7 +39,7 @@ import EmailByServiceModal from './email-by-service-modal'
 import { fetchServicesMailToGedInformation } from '@ged/services/Services'
 import { ServiceMailToGedInformation } from '@ged/models/Service'
 import type { MailToGedProps } from './mail-to-ged-card.types'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 const { t } = useI18n({
   inheritLocale: true,

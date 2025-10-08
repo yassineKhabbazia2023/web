@@ -15,7 +15,7 @@ import { nextTick, reactive } from 'vue'
 import { getMockedWalletQueryResult, getMockedSearchCriteria } from './DeployUtils.mocks'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/common/types'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { contactServiceMock, fetchAccountOperationsMock } from '@entities/__mocks__/contact.service.mocks'
 import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
@@ -31,7 +31,7 @@ const userStoreMock = getStoreMock(useUserStore)
 const mockedAccount = getMockedAccount()
 const totalPagesMock = 5
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
   FeatureFlagManager: featureFlagManagerMock,
 }))
@@ -42,7 +42,7 @@ const putFavoriteMock = vi.fn()
 const getFavoritesMock = vi.fn()
 const accountOperationsListMock = getAccountOperationsListMock()
 
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
   FeatureFlagManager: featureFlagManagerMock,
 }))

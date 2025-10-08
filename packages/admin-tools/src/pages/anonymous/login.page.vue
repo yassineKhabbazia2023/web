@@ -51,7 +51,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { PButton, PLoader, PIcon } from '@pulse/styleguide/components'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useRouter } from 'vue-router'
 import { LoginManager } from '@admin-tools/managers/login.manager'
 import { AdminRouteNames } from '@admin-tools/constants/admin-tools-route-names.enum'

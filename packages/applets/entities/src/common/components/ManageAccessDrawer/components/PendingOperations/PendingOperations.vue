@@ -82,7 +82,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { addIfNotExists, removeIfExists } from '@pulse/core/utils/array'
+import { addIfNotExists, removeIfExists } from '@pulse/toolbox/utils/array'
 import { PAccordion, PFormSearch, PIcon } from '@pulse/styleguide/components'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { displayNotification } from '@pulse/styleguide'

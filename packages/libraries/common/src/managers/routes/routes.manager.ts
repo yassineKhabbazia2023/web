@@ -1,7 +1,7 @@
 import type { Router, RouteRecordRaw } from 'vue-router'
 import { APP_ROUTES } from '../../constants/app.routes'
 import { RouteName } from '../../enums/route-name.enums'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 export class RoutesManager {
   /**

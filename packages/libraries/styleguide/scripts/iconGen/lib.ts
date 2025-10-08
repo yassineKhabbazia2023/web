@@ -2,7 +2,7 @@ import { type Config, optimize } from 'svgo'
 import path from 'path'
 import { writeFileSync, readdirSync, readFileSync, statSync, existsSync, mkdirSync } from 'fs'
 import type { Icon } from './types'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 
 const POLYCHOME_CATEGORY = 'Polychrome'
 

@@ -1,5 +1,5 @@
 import { useClipboard } from '@vueuse/core'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { PNotification } from '@pulse/styleguide'
 import type { IconName } from '@pulse/styleguide/types'
 import type { OfferCatalogReferent } from '../../types/offers-catalog.types'

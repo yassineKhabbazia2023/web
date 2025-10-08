@@ -6,7 +6,7 @@ import type {
   ReportStatusTag,
   ReportTableRow,
 } from '@powerbi/types/bi-reports.types'
-import { removeFalsyValues } from '@pulse/core/utils/object'
+import { removeFalsyValues } from '@pulse/toolbox/utils/object'
 
 export const getMappedReport = (
   reports: ReportTableRow[],

@@ -1,6 +1,6 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { getStoreMock, cguServiceMock, AmplitudeServiceMock } from '@pulse/common/mocks'
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { navigateToCustomerWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
@@ -19,7 +19,7 @@ const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
 const CGU_URL = 'https://custom-CGU.com'
 
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
 vi.mock('@login/composable/useNavigation', () => ({
   default: () => useNavigationMock,

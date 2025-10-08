@@ -3,7 +3,7 @@ import { WidgetsHomeManager } from './widgets-home.manager'
 import { WidgetsService } from '@entities/services/widgets/widgets.service'
 import { WidgetsGridManager } from '@pulse/widgets/managers'
 import { WidgetName } from '@pulse/widgets/enums'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import {
   validWidgetNames,
   invalidWidgetNames,
@@ -18,7 +18,7 @@ getStoreMock(useBookingStore)
 
 vi.mock('@entities/services/widgets/widgets.service')
 vi.mock('@pulse/widgets/managers')
-vi.mock('@pulse/core')
+vi.mock('@pulse/toolbox')
 
 describe('WidgetsHomeManager', () => {
   beforeEach(() => {

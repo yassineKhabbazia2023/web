@@ -196,7 +196,7 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -225,7 +225,7 @@ import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { getFullName } from '@entities/common/utils'
 import { fetchAccountCustomers } from '@entities/services/wallet'
 import { getPaginationLabel } from '@pulse/common/utils'
-import { removeFalsyValues } from '@pulse/core/utils/object'
+import { removeFalsyValues } from '@pulse/toolbox/utils/object'
 import { updateSignatoryStatus, getAccountSignatories } from '@entities/services/account'
 import type { AccountSignatories } from '@entities/services/account/accountTypes'
 import type { StateUser, User } from './types'

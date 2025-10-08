@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { loggerErrorSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/api-gateway.mocks'
 import { getMockedUser, getMockedUserContext } from '../../__mocks__'
 
@@ -11,7 +11,7 @@ vi.mock('../../api', () => ({
   }),
 }))
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 describe('test current-user.service', () => {
   describe('fetchUserPermissions', () => {

@@ -1,8 +1,8 @@
 {
-  "name": "@pulse/core",
+  "name": "@pulse/toolbox",
   "version": "1.0.0",
   "author": "Pulse Team",
-  "description": "Core library",
+  "description": "Toolbox library",
   "license": "UNLICENSED",
   "private": true,
   "type": "module",

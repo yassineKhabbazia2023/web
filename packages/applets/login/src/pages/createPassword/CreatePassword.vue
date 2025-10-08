@@ -99,7 +99,7 @@
 </template>
 
 <script lang="ts" setup>
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'

@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useDebounce } from '@pulse/core'
+import { useDebounce } from '@pulse/toolbox'
 import type { ActionBarLoadingButtonsState } from './helpers/DocumentsActionsHelpers'
 import {
   generateActionBarLeftSideButtons,

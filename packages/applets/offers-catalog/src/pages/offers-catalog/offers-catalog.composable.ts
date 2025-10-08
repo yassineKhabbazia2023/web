@@ -2,8 +2,8 @@ import { ref } from 'vue'
 import type { OfferDescription, OfferCatalogReferent, OfferCatalogDocument, OfferWithSearchTerms } from '../../types/offers-catalog.types'
 import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails } from '../../services/offers-catalog.service'
 import { normalizeSearchTerm, getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
-import { logger } from '@pulse/core'
-import { filterRecordByKeyCallback } from '@pulse/core/utils/array'
+import { logger } from '@pulse/toolbox'
+import { filterRecordByKeyCallback } from '@pulse/toolbox/utils/array'
 import { APICallStatus } from '@pulse/common/enums'
 
 export function useOffersCatalog() {

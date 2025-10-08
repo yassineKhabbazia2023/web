@@ -1,6 +1,6 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { APP_ROUTES } from '@pulse/common/constants'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { BootManager } from './boot.manager'
 

@@ -1,5 +1,5 @@
 import { HIDE_ACCOUNTING_HEADER_KEY, HIDE_ACCOUNTING_HEADER_TRUE, HIDE_ACCOUNTING_HEADER_FALSE } from './accounting.const'
-import { localStorageMock } from '@pulse/core/mocks'
+import { localStorageMock } from '@pulse/toolbox/mocks'
 import { persistHideAccountingHeader, getHideAccountingHeader } from './accounting.helper'
 
 Object.defineProperty(window, 'localStorage', {

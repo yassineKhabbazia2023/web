@@ -1,4 +1,4 @@
-import { loggerMock } from '@pulse/core/mocks'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedAuthorizationState } from '@entities/__mocks__/permissions.mocks'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { getMockedPennylaneRole } from '@pulse/common/mocks'
@@ -15,7 +15,7 @@ import {
 } from '../utils'
 
 // Mocks
-vi.mock('@pulse/core', () => ({
+vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
 }))
 

@@ -1,11 +1,11 @@
 import { vi, describe, it, expect } from 'vitest'
-import { loggerWarnSpy, loggerMock } from '@pulse/core/mocks'
+import { loggerWarnSpy, loggerMock } from '@pulse/toolbox/mocks'
 
 import { getAssetsBaseUrl, setAssetsBaseUrl } from './imageResolverInit'
 
 const baseCDNUrl = 'https://example.com'
 
-vi.mock('@pulse/core', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 describe('test imageResolverInit', () => {
   it('getAssetsBaseUrl should return empty string when assetsBaseUrl is not initialized', () => {

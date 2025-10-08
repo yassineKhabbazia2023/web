@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue'
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type { DownloadFolderComposableProps } from './DownloadFolderTypes'
 import { PNotification } from '@pulse/styleguide'
 import { formatDate } from '@ged/modules/common/helpers/dateFormatHelper'

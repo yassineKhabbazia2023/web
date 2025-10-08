@@ -1,4 +1,4 @@
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import type { DropdownGroup, PDropdownOption, PDropdownProps } from './PDropdownTypes'
 
 export function addOptionInGroups(groups: DropdownGroup[], pGroupLabel: string, pOptions: PDropdownOption) {

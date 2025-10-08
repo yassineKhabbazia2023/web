@@ -2,7 +2,7 @@ import { commonApi } from '@pulse/common'
 import type { ReportType, GetReportAccountsRequest, GetReportsRequest, ReportQueryParams, ReportTableRow, ReportStatistics, ReportError } from '@powerbi/types/bi-reports.types'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { QueryResult } from '@pulse/common/types'
-import { serializeParams } from '@pulse/core/utils/http'
+import { serializeParams } from '@pulse/toolbox/utils/http'
 import { ReportDeleteOption } from '@powerbi/enums/bi-reports.enum'
 
 export const fetchBIReports = async (accountId: number, reportTypeId?: number): Promise<GetReportsRequest> => {

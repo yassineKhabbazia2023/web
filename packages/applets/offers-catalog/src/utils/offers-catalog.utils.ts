@@ -1,8 +1,8 @@
 import type { OfferDescription, OfferWithSearchTerms } from '@offers-catalog/types/offers-catalog.types'
 import type { PTagProps } from '@pulse/styleguide/types'
 import { DEFAULT_TAG_PROPS, CATALOG_TAG_STYLES } from '../const/offers-catalog.const'
-import { logger } from '@pulse/core'
-import { getAlphanumericString } from '@pulse/core/utils/string'
+import { logger } from '@pulse/toolbox'
+import { getAlphanumericString } from '@pulse/toolbox/utils/string'
 
 export function getCatalogTagProps(label: string): Omit<PTagProps, 'pContent'> {
   const catalogTagStyle = CATALOG_TAG_STYLES.find(({ tagLabel }) => tagLabel === label)

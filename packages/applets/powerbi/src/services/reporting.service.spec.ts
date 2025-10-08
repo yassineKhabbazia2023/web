@@ -1,6 +1,6 @@
 import { getMockedBIReports } from '@powerbi/__mocks__/bi-report.mocks'
 import { API_PREFIXES, PAGE_SIZES } from '@pulse/common/constants'
-import { serializeParams } from '@pulse/core/utils/http'
+import { serializeParams } from '@pulse/toolbox/utils/http'
 import { ReportDeleteOption, ReportStatus } from '@powerbi/enums/bi-reports.enum'
 
 import {

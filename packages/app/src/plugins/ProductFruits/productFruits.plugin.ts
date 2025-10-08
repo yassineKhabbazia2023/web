@@ -1,5 +1,5 @@
 import { type App } from 'vue'
-import { logger } from '@pulse/core'
+import { logger } from '@pulse/toolbox'
 import { getBrowserName } from '@app/helper'
 import { productFruits } from 'product-fruits'
 import dayjs from 'dayjs'
