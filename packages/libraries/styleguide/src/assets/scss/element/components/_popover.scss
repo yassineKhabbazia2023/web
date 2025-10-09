@@ -1,7 +1,7 @@
 $popover: (
   'font-size': 12px,
   'title-font-size': 1.4rem,
-  'title-text-color': var(--p-gray-900),
+  'title-text-color': var(--p-black-rock-900),
 );
 
 .el-popover {
@@ -10,15 +10,18 @@ $popover: (
       box-shadow: var(--el-box-shadow-dark);
       text-align: unset;
       padding: 16px;
+      border-radius: 0;
+      border: none;
     }
 
     .el-popover__title {
       font-weight: 600;
       margin-bottom: 4px;
+      color: var(--p-black-rock-900);
     }
 
     .el-popover__content {
-      color: var(--p-gray-500);
+      color: var(--p-gray-400);
     }
   }
 }

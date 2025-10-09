@@ -2,7 +2,7 @@
 // Shadow definitions for the Pégase design system, migrated from Element Plus CSS variables.
 // Uses the same shadow color (#7090b0) with varying opacity and blur levels.
 
-$shadow-color: #7090b0;
+$shadow-color: var(--p-black-rock-900-rgb);
 
 .shadow--1 {
     // Equivalent to --el-box-shadow-lighter
