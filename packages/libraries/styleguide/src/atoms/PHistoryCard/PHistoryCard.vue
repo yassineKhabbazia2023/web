@@ -5,7 +5,8 @@
       flex--align-item-center
       flex--justify-content-space-between
       padding-left--5 padding-right--2 padding-y--3
-      bg--base-white"
+      bg--base-white
+      shadow--2"
   >
     <div class="p-history-card__content">
       <ul class="p-history-card__list-tags flex flex--align-items-center list-style-none">
@@ -20,7 +21,7 @@
         <li v-if="pType" class="p-history-card__list-item">
           <PTag
             pSize="small"
-            pColor="light-gray"
+            pColor="lighter-gray"
             :pContent="pType"
             data-testid="history-card-type"
           />
@@ -34,7 +35,7 @@
           >
             <PTag
               pSize="small"
-              pColor="light-gray"
+              pColor="lighter-gray"
               :pIconLeftName="pEntityIconName"
               :pContent="pEntity"
               data-testid="history-card-entity"
@@ -43,7 +44,7 @@
           <PTag
             v-else
             pSize="small"
-            pColor="light-gray"
+            pColor="lighter-gray"
             :pIconLeftName="pEntityIconName"
             :pContent="pEntity"
             data-testid="history-card-entity"

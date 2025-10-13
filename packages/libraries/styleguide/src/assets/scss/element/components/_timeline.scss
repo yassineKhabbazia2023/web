@@ -4,7 +4,7 @@
 $timeline: (
   'node-size-normal': 10px,
   'node-size-large': 30px,
-  'node-color': var(--el-border-color-lighter),
+  'node-color': var(--p-gray-200),
 );
 
 .p-timeline-item {
@@ -33,6 +33,7 @@ $timeline: (
     background: var(--p-jungle-400);
     border-color: var(--p-white);
     border-style: solid;
+    box-shadow: var(--el-box-shadow-light);
 
     &--normal {
       border-width: 2px;
@@ -41,5 +42,9 @@ $timeline: (
     &--large {
       border-width: 3px;
     }
+  }
+
+  .el-timeline-item__wrapper {
+    padding-left: 22px;
   }
 }
