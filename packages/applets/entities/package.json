@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@pulse/common": "1.0.0",
+    "@pulse/shared": "1.0.0",
     "@pulse/widgets": "1.0.0",
     "@pulse/styleguide": "3.1.0"
   }

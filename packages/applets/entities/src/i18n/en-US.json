@@ -1,0 +1,18 @@
+{
+  "entities": {
+    "wallet": {
+      "folders": "Wallet",
+      "hello": "Hello",
+      "mandate": "Mandate",
+      "subscriptions": "MOD requests",
+      "launcher": "Applications",
+      "collaborators": "Collaborators",
+      "allEntities": "All entities",
+      "allUsers": "All users",
+      "accountManagement": "Folder administration",
+      "uploadPowerBIReport": "Upload a BI report",
+      "biReportsList": "BI Reports",
+      "offersCatalog": "Offers catalog"
+    }
+  }
+}

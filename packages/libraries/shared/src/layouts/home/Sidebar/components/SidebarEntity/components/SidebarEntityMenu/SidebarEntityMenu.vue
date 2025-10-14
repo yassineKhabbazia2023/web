@@ -22,31 +22,31 @@
         data-testid="menu-item"
       >
         <template #title>
-          {{ t('home') }}
+          {{ t('shared.sidebar.home') }}
         </template>
       </PMenuItem>
       <PMenuItem
         v-if="folderOrEntityMenuItem"
-        :pIndex="folderOrEntityMenuItem.index"
+        :pIndex="folderOrEntityMenuItem.routePath"
         :pIconLeftName="folderOrEntityMenuItem.iconLeftName"
         data-testid="menu-item"
         :class="{ 'sidenav-entity-menu__item-menu': isEntityOrFolderPath }"
       >
         <template #title>
-          {{ folderOrEntityMenuItem.title }}
+          {{ t(folderOrEntityMenuItem.title) }}
         </template>
       </PMenuItem>
       <PMenuItem
         v-for="menuItem in menuItems"
-        :key="menuItem.index"
-        :pIndex="menuItem.index"
+        :key="menuItem.routePath"
+        :pIndex="menuItem.routePath"
         :pIconLeftName="menuItem.iconLeftName"
         data-testid="menu-item"
         :class="{ 'sidenav-entity-menu__item-menu': menuItem.hasSubmenuSelected === true }"
         @click="logAmplitudeEvent(menuItem)"
       >
         <template #title>
-          {{ menuItem.title }}
+          {{ t(menuItem.title) }}
         </template>
       </PMenuItem>
     </PMenu>
@@ -63,8 +63,10 @@ import { CurrentUserManager, PennylanePermissionsManager, ReportingManager } fro
 import { PMenuItem, PMenu } from '@pulse/styleguide/components'
 import { ACCOUNT_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
-import type { IconName } from '@pulse/styleguide/types'
 import { usePermissionsStore } from '@pulse/common/stores'
+import { SidebarManager } from '../../../../manager/sidebar.manager'
+import type { MenuItem, MenuContext } from '../../../../manager/sidebar.types'
+
 
 const route = useRoute()
 const router = useRouter()
@@ -86,149 +88,67 @@ const canBeConsideredSingleEntity = computed(() => {
   && props.isCollab === false
 })
 
-interface MenuItem {
-  index: string
-  title: string
-  featureName?: string
-  display: boolean
-  iconLeftName?: IconName
-  hasSubmenuSelected?: boolean
-}
-
-const folderOrEntityMenuItem = computed<MenuItem | null>(() => {
-  const title = props.isCollab ? t('folder') : t('entity')
-  const menuItem = [
-    {
-      index: `/dossier/${props.selectedEntityId}/gestion-utilisateurs`,
-      display: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.USERS),
-    },
-    {
-      index: `/dossier/${props.selectedEntityId}/collaborateurs`,
-      display: props.isCollab && CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.COLLABORATORS),
-    },
-    {
-      index: `/dossier/${props.selectedEntityId}/offres`,
-      display: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.OFFER),
-    },
-    {
-      index: `/dossier/${props.selectedEntityId}/informations`,
-      display: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.INFORMATION),
-    },
-    {
-      index: `/dossier/${props.selectedEntityId}/historique-delegations`,
-      display: props.isCollab && CurrentUserManager.hasPermission(GLOBAL_PERMISSIONS.HISTORY),
-    },
-  ].find((item) => item.display)
-  return menuItem ? { index: menuItem.index,
-    display: menuItem.display, title, iconLeftName: 'building' } : null
-})
-
-const getMenuItems = () => {
-  const hasPennylaneAccountingPermission = PennylanePermissionsManager.hasPennylaneAccountingPermission()
-  const hasSocialManagementV2 = PennylanePermissionsManager.hasSocialManagementV2() === true
-  const hasPennylaneAccountingGedV2Permission =
-    PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true
-
+// Build menu context for the manager
+const menuContext = computed<MenuContext>(() => {
   const legacyGedRoute = router.resolve({
     name: RouteName.PENNYLANE_GED_LEGACY,
     params: { entityId: props.selectedEntityId },
   })
-  const legacyGedIndex = legacyGedRoute.path
 
-  const list: MenuItem[] = [
-    {
-      title: t('biReports'),
-      index: `/dossier/${props.selectedEntityId}/rapports-bi`,
-      iconLeftName: 'clipboardData',
-      display: shouldShowBIReports.value,
+  return {
+    entityId: props.selectedEntityId,
+    isCollab: props.isCollab ?? false,
+    currentRoute: route,
+    legacyGedPath: legacyGedRoute.path,
+    permissions: {
+      shouldShowBIReports: shouldShowBIReports.value,
+      hasPennylaneAccounting: PennylanePermissionsManager.hasPennylaneAccountingPermission(),
+      hasPennylaneAccountingGedV2: PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true,
+      hasPennylaneAccountingGedLegacy: PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true,
+      hasSocialManagementV2: PennylanePermissionsManager.hasSocialManagementV2() === true,
+      hasGed: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.GED) === true,
+      hasBank: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.BANK),
+      hasIndicators: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.INDICATORS),
+      hasApps: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.APPS),
+      hasUsers: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.USERS),
+      hasCollaborators: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.COLLABORATORS),
+      hasOffer: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.OFFER),
+      hasInformation: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.INFORMATION),
+      hasHistory: CurrentUserManager.hasPermission(GLOBAL_PERMISSIONS.HISTORY),
     },
-    {
-      index: `/dossier/${props.selectedEntityId}/ged`, // Legacy GED path
-      title: t('documents'),
-      iconLeftName: 'folder',
-      // Need GED permission But not Pennylane Accounting permission neither SocialManagementV2 which replace legacy GED
-      display:
-        CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.GED) === true &&
-        hasPennylaneAccountingPermission === false &&
-        hasSocialManagementV2 === false,
-    },
-    {
-      index: `/dossier/${props.selectedEntityId}/comptabilite/rydge`, // Accounting GED path for Pennylane users
-      title: t('pennylaneAccounting'),
-      featureName: 'documents comptables',
-      iconLeftName: 'archive',
-      // should be selected also when current page is /comptabilite/archive
-      hasSubmenuSelected: route.path === legacyGedIndex,
-      // User has access to Pennylane-Ged-V2
-      display: hasPennylaneAccountingPermission === true &&
-        hasPennylaneAccountingGedV2Permission === true,
-    },
-    {
-      index: legacyGedIndex, // Legacy GED path for Pennylane users
-      title: t('pennylaneAccounting'),
-      featureName: 'documents comptables',
-      iconLeftName: 'archive',
-      // User does not have access to Pennylane-Ged-V2 but has access to Pennylane and Legacy GED
-      display: hasPennylaneAccountingPermission === true &&
-        hasPennylaneAccountingGedV2Permission === false &&
-        PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true,
-    },
-    {
-      index: `/dossier/${props.selectedEntityId}/gestion-sociale`, // Social-Management GED path for Pennylane users
-      title: t('pennylaneSocialManagement'),
-      featureName: 'documents gestion sociale',
-      iconLeftName: 'archive',
-      // Need specific Social Management permission
-      display: hasSocialManagementV2 === true,
-    },
-    {
-      index: `/dossier/${props.selectedEntityId}/banque`,
-      title: t('bank'),
-      iconLeftName: 'piggyBank',
-      display: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.BANK),
-    },
-    {
-      index: `/dossier/${props.selectedEntityId}/indicateurs`,
-      title: t('indicators'),
-      iconLeftName: 'speedometer2',
-      display: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.INDICATORS),
-    },
-    {
-      index: `/dossier/${props.selectedEntityId}/launcher`,
-      title: t('apps'),
-      iconLeftName: 'grid',
-      display: !props.isCollab && CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.APPS),
-    },
-  ]
-  return list.filter(({ display }) => display)
-}
-
-const menuItemsRef = ref(getMenuItems())
-const menuItems = computed({
-  get: () => menuItemsRef.value,
-  set: (newVal) => {
-    menuItemsRef.value = newVal
-  },
+  }
 })
+
+// Get menu items from the manager
+const menuItems = computed(() => SidebarManager.getMenuItems(menuContext.value))
+
+// Get folder or entity menu item from the manager
+const folderOrEntityMenuItem = computed(() => SidebarManager.getFolderOrEntityMenuItem(menuContext.value))
 
 const logAmplitudeEvent = (menuItem: MenuItem) => {
   const { featureName, title } = menuItem
 
   AmplitudeService.track('Feature Consulted', {
     feature_name: featureName === undefined
-      ? title.toLowerCase()
+      ? t(title).toLowerCase()
       : featureName,
   })
 }
 
 watchEffect(() => {
   activeMenuItem.value = route.path
-  isEntityOrFolderPath.value = ['gestion-utilisateurs', 'collaborateurs', 'offres', 'informations', 'historique-delegations'].some((path) => route.fullPath.includes(path))
+  isEntityOrFolderPath.value =
+    [
+      'gestion-utilisateurs',
+      'collaborateurs',
+      'offres',
+      'informations',
+      'historique-delegations',
+    ].some((path) => route.fullPath.includes(path))
 })
 
 const setMenuItem = async () => {
   shouldShowBIReports.value = await ReportingManager.canShowBIReports()
-  menuItems.value = getMenuItems()
 }
 
 const permissionsStore = usePermissionsStore()
@@ -312,27 +232,3 @@ $sidenav-opened-width: 200px;
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  folder: 'Folder'
-  entity: 'Entity'
-  documents: 'Documents'
-  apps: 'Applications'
-  bank: 'Bank'
-  indicators: 'Indicators'
-  home: 'Home'
-  biReports: 'BI reports'
-  pennylaneAccounting: 'Accounting'
-  pennylaneSocialManagement: 'Social management'
-fr-FR:
-  folder: 'Dossier'
-  entity: 'Entité'
-  documents: 'Documents'
-  apps: 'Applications'
-  bank: 'Banque'
-  indicators: 'Indicateurs'
-  home: 'Accueil'
-  biReports: 'Rapports BI'
-  pennylaneAccounting: 'Comptabilité'
-  pennylaneSocialManagement: 'Gestion sociale'
-</i18n>

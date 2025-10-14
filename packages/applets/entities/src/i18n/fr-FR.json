@@ -1,0 +1,18 @@
+{
+  "entities": {
+    "wallet": {
+      "folders": "Portefeuille",
+      "hello": "Bonjour",
+      "mandate": "Mandat",
+      "subscriptions": "Demandes MOD",
+      "launcher": "Applications",
+      "collaborators": "Collaborateurs",
+      "allEntities": "Mes entités",
+      "allUsers": "Tous les utilisateurs",
+      "accountManagement": "Administration dossiers",
+      "uploadPowerBIReport": "Déposer un rapport BI",
+      "biReportsList": "Rapports BI",
+      "offersCatalog": "Catalogue des offres"
+    }
+  }
+}

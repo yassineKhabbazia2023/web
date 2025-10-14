@@ -13,6 +13,7 @@ import bookingApplet from '@pulse/booking'
 import powerBiApplet from '@pulse/powerbi'
 import commonLibrary from '@pulse/common'
 import { i18n } from '@pulse/common/i18n'
+import sharedLibrary from '@pulse/shared'
 import styleguideLibrary from '@pulse/styleguide'
 import axeptioPlugin from '@app/plugins/Axeptio/axeptio.plugin'
 import gigyaPlugin from '@app/plugins/Gigya/gigya.plugin'
@@ -51,6 +52,7 @@ const app = createApp(App)
     isActive: isProd,
   })
   .use(commonLibrary)
+  .use(sharedLibrary)
   // install applets
   .use(entitiesApplet, { router })
   .use(pennylaneApplet, { router }) // should register pennylaneApplet before gedApplet

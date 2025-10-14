@@ -9,6 +9,7 @@
   "exports": {
     "./components": "./src/components/components.ts",
     "./layouts": "./src/layouts.ts",
+    "./manager": "./src/layouts/home/Sidebar/manager/index.ts",
     ".": "./src/main.ts"
   },
   "scripts": {

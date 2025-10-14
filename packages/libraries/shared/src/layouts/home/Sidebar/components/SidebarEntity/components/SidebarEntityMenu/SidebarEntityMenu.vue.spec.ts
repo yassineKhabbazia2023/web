@@ -49,6 +49,15 @@ vi.mock('@pulse/common/managers', () => ({
   },
 }))
 
+const getMenuItemsMock = vi.hoisted(() => vi.fn())
+const getFolderOrEntityMenuItemMock = vi.hoisted(() => vi.fn())
+vi.mock('../../../../manager/sidebar.manager', () => ({
+  SidebarManager: {
+    getMenuItems: getMenuItemsMock,
+    getFolderOrEntityMenuItem: getFolderOrEntityMenuItemMock,
+  },
+}))
+
 const createWrapper = (props = defaultProps) => {
   const wrapper = mount(SidebarEntityMenu, {
     props,
@@ -62,6 +71,15 @@ describe('sidebarEntityMenu', () => {
   beforeEach(() => {
     resolveSpy.mockResolvedValue({
       path: '',
+    })
+
+    // Default mock values for SidebarManager
+    getMenuItemsMock.mockReturnValue([])
+    getFolderOrEntityMenuItemMock.mockReturnValue({
+      routePath: `/dossier/${favoriteEntityId}/informations`,
+      title: 'shared.sidebar.entity',
+      iconLeftName: 'building',
+      display: true,
     })
   })
 
@@ -80,6 +98,7 @@ describe('sidebarEntityMenu', () => {
     })
     it('should not display the Delegations history for clients', async () => {
       hasPermissionMock.mockImplementation(getHasPermissionMocked(GLOBAL_PERMISSIONS.HISTORY))
+      getFolderOrEntityMenuItemMock.mockReturnValue(null)
       wrapper = createWrapper()
       await flushPromises()
       const sidebarEntityMenuItems = wrapper
@@ -94,6 +113,14 @@ describe('sidebarEntityMenu', () => {
 
     it('should display the Power BI menu if the user has access to BI reports', async () => {
       canShowBIReportsSpy.mockResolvedValue(true)
+      getMenuItemsMock.mockReturnValue([
+        {
+          routePath: `/dossier/${favoriteEntityId}/rapports-bi`,
+          title: 'shared.sidebar.biReports',
+          iconLeftName: 'clipboardData',
+          display: true,
+        },
+      ])
       wrapper = createWrapper()
       await flushPromises()
       const sidebarEntityMenuItems = wrapper

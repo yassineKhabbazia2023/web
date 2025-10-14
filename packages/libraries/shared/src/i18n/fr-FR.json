@@ -1,0 +1,16 @@
+{
+  "shared": {
+    "sidebar": {
+      "home": "Accueil",
+      "folder": "Dossier",
+      "entity": "Entité",
+      "documents": "Documents",
+      "apps": "Applications",
+      "bank": "Banque",
+      "indicators": "Indicateurs",
+      "biReports": "Rapports BI",
+      "pennylaneAccounting": "Comptabilité",
+      "pennylaneSocialManagement": "Gestion sociale"
+    }
+  }
+}
