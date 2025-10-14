@@ -13,7 +13,7 @@ $pagination: (
   font-size: 12px;
 
   &__total-page-counter {
-    color: var(--p-gray-500);
+    color: var(--p-gray-400);
     font-weight: 400;
   }
 
@@ -22,9 +22,14 @@ $pagination: (
 
     .el-input {
       border-bottom: none;
+      font-size: 1.2rem;
 
       &:hover {
         border-bottom: none;
+      }
+
+      .el-select__caret.el-icon {
+        color: var(--p-gray-900);
       }
     }
 
@@ -42,7 +47,8 @@ $pagination: (
 
   &.is-background {
     .el-pager {
-      li.number {
+      li.number,
+      li.more {
         min-width: 24px;
         height: 24px;
         background-color: var(--p-white);
@@ -51,10 +57,15 @@ $pagination: (
         &.is-active {
           background-color: var(--p-black-rock-900);
           font-weight: 600;
+
+          &:hover {
+            background-color: var(--p-black-rock-900);
+            color: var(--p-white);
+          }
         }
 
         &:hover {
-          background-color: var(--p-jungle-50);
+          background-color: var(--p-tranquil-50);
           color: var(--p-black-rock-900);
         }
       }
@@ -71,10 +82,14 @@ $pagination: (
 
       &.btn-prev,
       &.btn-next {
+        width: 2.4rem;
+        height: 2.4rem;
+        min-width: 0;
         background-color: var(--p-white);
+        color: var(--p-gray-900);
 
         &:hover {
-          background-color: var(--p-jungle-50);
+          background-color: var(--p-tranquil-50);
           color: var(--p-black-rock-900);
         }
 
