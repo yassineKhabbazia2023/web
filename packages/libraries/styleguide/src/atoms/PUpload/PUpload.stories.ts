@@ -50,6 +50,7 @@ export const FileLine: Story = {
         pTextLimitSize="5MB"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
+        pColorFileLine="persian"
         :pDisabled="uploadDisabled"
       />
     `,

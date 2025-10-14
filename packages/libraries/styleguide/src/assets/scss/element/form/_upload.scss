@@ -23,11 +23,11 @@ $upload: (
         .el-upload-dragger {
           cursor: default;
           background: var(--p-gray-50);
-          border-color: var(--p-gray-100);
+          border-color: var(--p-gray-200);
         }
 
         #{$self}__input {
-          color: var(--p-gray-500);
+          color: var(--p-gray-300);
         }
       }
     }
@@ -46,9 +46,13 @@ $upload: (
         }
       }
       .el-upload-dragger {
-        border-style: solid;
+        border-style: dashed;
         border-radius: var(--el-border-radius-small);
         text-align: left;
+
+        &.is-dragover {
+          border-width: 1px;
+        }
       }
     }
     &-dragger {
@@ -72,7 +76,7 @@ $upload: (
           padding: 2.8rem 3.2rem;
           border-width: 1px;
           border-color: var(--p-jungle-700);
-          background: var(--p-jungle-75);
+          background: var(--p-tranquil-50);
         }
 
         &:hover,
@@ -81,7 +85,7 @@ $upload: (
         }
         
         &:focus {
-          background: var(--p-jungle-75);
+          background: var(--p-tranquil-50);
         }
       }
       #{$self}__input {
