@@ -15,7 +15,7 @@ vi.mock('@pulse/common/managers', () => ({
   FeatureFlagManager: featureFlagManagerMock,
 }))
 
-const fromRouteMock = { name: RouteName.HOME } as RouteLocationNormalizedGeneric
+const fromRouteMock = { name: RouteName.HOMEPAGE } as RouteLocationNormalizedGeneric
 const nextMock = vi.fn(() => true)
 const toNameMock = RouteName.INFO
 

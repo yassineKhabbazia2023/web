@@ -20,7 +20,7 @@ export const APP_ROUTES = {
   },
   entity: {
     root: { path: `/dossier/:${RouteParam.ENTITY_ID}`, name: RouteName.ENTITY },
-    homepage: { path: '', name: RouteName.HOMEPAGE },
+    homepage: { path: 'accueil', name: RouteName.HOMEPAGE },
     overview: {
       root: { path: '', name: RouteName.ENTITY_OVERVIEW },
       users: { path: 'gestion-utilisateurs', name: RouteName.USERS },

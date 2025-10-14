@@ -18,7 +18,7 @@ vi.mock('@pulse/common/managers', () => ({
 const nextMock = vi.fn()
 
 const authenticatedRoot: any = { name: RouteName.AUTHENTICATED }
-const fromRouteMock: any = { name: RouteName.HOME }
+const fromRouteMock: any = { name: RouteName.HOMEPAGE }
 const toRootRoute: any = {
   path: '/',
   meta: { [ALLOW_ANONYMOUS_META]: true },

@@ -222,11 +222,11 @@ describe('SidebarManager', () => {
     })
   })
 
-  describe('getFolderOrEntityMenuItem()', () => {
+  describe('getEntityOverviewMenuItem()', () => {
     it('should return null if no permissions are granted', () => {
       const context = createContextWithPermissions([])
 
-      const result = SidebarManager.getFolderOrEntityMenuItem(context)
+      const result = SidebarManager.getEntityOverviewMenuItem(context)
 
       expect(result).toBeNull()
     })
@@ -234,7 +234,7 @@ describe('SidebarManager', () => {
     it('should return title "shared.sidebar.folder" for collab users', () => {
       const context = createContextWithPermissions(['hasCollaborators'], { isCollab: true })
 
-      const result = SidebarManager.getFolderOrEntityMenuItem(context)
+      const result = SidebarManager.getEntityOverviewMenuItem(context)
 
       expect(result?.title).toBe('shared.sidebar.folder')
     })
@@ -242,7 +242,7 @@ describe('SidebarManager', () => {
     it('should return title "shared.sidebar.entity" for non-collab users', () => {
       const context = createContextWithPermissions(['hasUsers'], { isCollab: false })
 
-      const result = SidebarManager.getFolderOrEntityMenuItem(context)
+      const result = SidebarManager.getEntityOverviewMenuItem(context)
 
       expect(result?.title).toBe('shared.sidebar.entity')
     })
@@ -253,7 +253,7 @@ describe('SidebarManager', () => {
         { entityId: 123 },
       )
 
-      const result = SidebarManager.getFolderOrEntityMenuItem(context)
+      const result = SidebarManager.getEntityOverviewMenuItem(context)
 
       expect(result?.routePath).toBe('/dossier/123/gestion-utilisateurs')
     })
@@ -264,7 +264,7 @@ describe('SidebarManager', () => {
         { entityId: 123, isCollab: true },
       )
 
-      const result = SidebarManager.getFolderOrEntityMenuItem(context)
+      const result = SidebarManager.getEntityOverviewMenuItem(context)
 
       expect(result?.routePath).toBe('/dossier/123/collaborateurs')
     })
@@ -275,7 +275,7 @@ describe('SidebarManager', () => {
         { entityId: 123 },
       )
 
-      const result = SidebarManager.getFolderOrEntityMenuItem(context)
+      const result = SidebarManager.getEntityOverviewMenuItem(context)
 
       expect(result?.routePath).toBe('/dossier/123/offres')
     })
@@ -286,7 +286,7 @@ describe('SidebarManager', () => {
         { entityId: 123 },
       )
 
-      const result = SidebarManager.getFolderOrEntityMenuItem(context)
+      const result = SidebarManager.getEntityOverviewMenuItem(context)
 
       expect(result?.routePath).toBe('/dossier/123/informations')
     })
@@ -294,7 +294,7 @@ describe('SidebarManager', () => {
     it('should prioritize historique-delegations route for collab with hasHistory', () => {
       const context = createContextWithPermissions(['hasHistory'], { entityId: 123, isCollab: true })
 
-      const result = SidebarManager.getFolderOrEntityMenuItem(context)
+      const result = SidebarManager.getEntityOverviewMenuItem(context)
 
       expect(result?.routePath).toBe('/dossier/123/historique-delegations')
     })
@@ -302,7 +302,7 @@ describe('SidebarManager', () => {
     it('should always have iconLeftName: "building"', () => {
       const context = createContextWithPermissions(['hasUsers'])
 
-      const result = SidebarManager.getFolderOrEntityMenuItem(context)
+      const result = SidebarManager.getEntityOverviewMenuItem(context)
 
       expect(result?.iconLeftName).toBe('building')
     })
@@ -310,7 +310,7 @@ describe('SidebarManager', () => {
     it('should construct routePath with entityId', () => {
       const context = createContextWithPermissions(['hasInformation'], { entityId: 999 })
 
-      const result = SidebarManager.getFolderOrEntityMenuItem(context)
+      const result = SidebarManager.getEntityOverviewMenuItem(context)
 
       expect(result?.routePath).toBe('/dossier/999/informations')
     })

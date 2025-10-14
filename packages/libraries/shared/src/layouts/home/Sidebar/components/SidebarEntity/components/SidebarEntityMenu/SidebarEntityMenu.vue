@@ -16,8 +16,9 @@
       class="sidenav-entity-menu__main-menu"
       data-testid="sidenav-menu"
     >
+      <!-- Home menu item -->
       <PMenuItem
-        :pIndex="`/dossier/${props.selectedEntityId}`"
+        :pIndex="homepagePath"
         pIconLeftName="house"
         data-testid="menu-item"
       >
@@ -25,17 +26,19 @@
           {{ t('shared.sidebar.home') }}
         </template>
       </PMenuItem>
+      <!-- Entity overview menu item -->
       <PMenuItem
-        v-if="folderOrEntityMenuItem"
-        :pIndex="folderOrEntityMenuItem.routePath"
-        :pIconLeftName="folderOrEntityMenuItem.iconLeftName"
+        v-if="entityOverviewMenuItem"
+        :pIndex="entityOverviewMenuItem.routePath"
+        :pIconLeftName="entityOverviewMenuItem.iconLeftName"
         data-testid="menu-item"
-        :class="{ 'sidenav-entity-menu__item-menu': isEntityOrFolderPath }"
+        :class="{ 'sidenav-entity-menu__item-menu': entityOverviewPath }"
       >
         <template #title>
-          {{ t(folderOrEntityMenuItem.title) }}
+          {{ t(entityOverviewMenuItem.title) }}
         </template>
       </PMenuItem>
+      <!-- Other registered menu items -->
       <PMenuItem
         v-for="menuItem in menuItems"
         :key="menuItem.routePath"
@@ -54,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { RouteName } from '@pulse/common/enums'
@@ -66,6 +69,7 @@ import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 import { usePermissionsStore } from '@pulse/common/stores'
 import { SidebarManager } from '../../../../manager/sidebar.manager'
 import type { MenuItem, MenuContext } from '../../../../manager/sidebar.types'
+import { RouterHelpers } from '@pulse/common/helpers'
 
 
 const route = useRoute()
@@ -79,8 +83,12 @@ const props = defineProps<SidebarEntityMenuProps>()
 
 const shouldShowBIReports = ref(false)
 const isMenuCollapsed = ref(true)
-const activeMenuItem = ref<string>(route.path)
-const isEntityOrFolderPath = ref(false)
+
+const activeMenuItem = computed<string>(() => route.path)
+const homepagePath = computed(() => router.resolve({ name: RouteName.HOMEPAGE }).path)
+const entityOverviewPath = computed(
+  () => RouterHelpers.hasProvidedAncestor({ route, ancestorName: RouteName.FOLDER }),
+)
 
 const canBeConsideredSingleEntity = computed(() => {
   return props.isSingleEntity === true
@@ -123,7 +131,7 @@ const menuContext = computed<MenuContext>(() => {
 const menuItems = computed(() => SidebarManager.getMenuItems(menuContext.value))
 
 // Get folder or entity menu item from the manager
-const folderOrEntityMenuItem = computed(() => SidebarManager.getFolderOrEntityMenuItem(menuContext.value))
+const entityOverviewMenuItem = computed(() => SidebarManager.getEntityOverviewMenuItem(menuContext.value))
 
 const logAmplitudeEvent = (menuItem: MenuItem) => {
   const { featureName, title } = menuItem
@@ -134,18 +142,6 @@ const logAmplitudeEvent = (menuItem: MenuItem) => {
       : featureName,
   })
 }
-
-watchEffect(() => {
-  activeMenuItem.value = route.path
-  isEntityOrFolderPath.value =
-    [
-      'gestion-utilisateurs',
-      'collaborateurs',
-      'offres',
-      'informations',
-      'historique-delegations',
-    ].some((path) => route.fullPath.includes(path))
-})
 
 const setMenuItem = async () => {
   shouldShowBIReports.value = await ReportingManager.canShowBIReports()

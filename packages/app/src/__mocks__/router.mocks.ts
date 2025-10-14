@@ -6,7 +6,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      name: RouteName.HOME,
+      name: RouteName.HOMEPAGE,
       path: '/',
       component: {
         template: '<div />',

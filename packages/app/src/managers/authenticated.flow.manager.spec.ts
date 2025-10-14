@@ -386,7 +386,7 @@ describe('AuthenticatedFlowManager', () => {
         const result = AuthenticatedFlowManager.getLandingPage()
 
         expect(result).toEqual({
-          name: RouteName.FOLDER, // TODO replace with APP_ROUTES.entity.homepage.name when possible
+          name: RouteName.HOMEPAGE,
           params: { [RouteParam.ENTITY_ID]: accountId },
         })
       })
@@ -413,7 +413,7 @@ describe('AuthenticatedFlowManager', () => {
         const result = AuthenticatedFlowManager.getCustomerLandingPage()
 
         expect(result).toEqual({
-          name: RouteName.FOLDER, // TODO replace with APP_ROUTES.entity.homepage.name when possible
+          name: RouteName.HOMEPAGE,
           params: { [RouteParam.ENTITY_ID]: accountId },
         })
       })

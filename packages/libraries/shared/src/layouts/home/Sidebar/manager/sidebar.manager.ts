@@ -32,8 +32,9 @@ export class SidebarManager {
 
   /**
    * Get the folder or entity menu item based on context
+   * If the user does not have access to the first available submenu, returns the second and so on
    */
-  static getFolderOrEntityMenuItem(context: MenuContext): MenuItem | null {
+  static getEntityOverviewMenuItem(context: MenuContext): MenuItem | null {
     const title = context.isCollab ? 'shared.sidebar.folder' : 'shared.sidebar.entity'
 
     const menuItems = [

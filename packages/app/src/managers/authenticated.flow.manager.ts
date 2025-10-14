@@ -197,7 +197,7 @@ export class AuthenticatedFlowManager {
       const selectedEntityStore = useSelectedEntityStore()
       const entityAccountId = selectedEntityStore.selectedEntity?.accountId
       const entityLandingPage = {
-        name: RouteName.FOLDER, // TODO replace with APP_ROUTES.entity.homepage.name when possible
+        name: RouteName.HOMEPAGE,
         params: { [RouteParam.ENTITY_ID]: entityAccountId },
       }
 

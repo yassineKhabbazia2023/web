@@ -50,11 +50,11 @@ vi.mock('@pulse/common/managers', () => ({
 }))
 
 const getMenuItemsMock = vi.hoisted(() => vi.fn())
-const getFolderOrEntityMenuItemMock = vi.hoisted(() => vi.fn())
+const getEntityOverviewMenuItemMock = vi.hoisted(() => vi.fn())
 vi.mock('../../../../manager/sidebar.manager', () => ({
   SidebarManager: {
     getMenuItems: getMenuItemsMock,
-    getFolderOrEntityMenuItem: getFolderOrEntityMenuItemMock,
+    getEntityOverviewMenuItem: getEntityOverviewMenuItemMock,
   },
 }))
 
@@ -75,7 +75,7 @@ describe('sidebarEntityMenu', () => {
 
     // Default mock values for SidebarManager
     getMenuItemsMock.mockReturnValue([])
-    getFolderOrEntityMenuItemMock.mockReturnValue({
+    getEntityOverviewMenuItemMock.mockReturnValue({
       routePath: `/dossier/${favoriteEntityId}/informations`,
       title: 'shared.sidebar.entity',
       iconLeftName: 'building',
@@ -98,7 +98,7 @@ describe('sidebarEntityMenu', () => {
     })
     it('should not display the Delegations history for clients', async () => {
       hasPermissionMock.mockImplementation(getHasPermissionMocked(GLOBAL_PERMISSIONS.HISTORY))
-      getFolderOrEntityMenuItemMock.mockReturnValue(null)
+      getEntityOverviewMenuItemMock.mockReturnValue(null)
       wrapper = createWrapper()
       await flushPromises()
       const sidebarEntityMenuItems = wrapper

@@ -24,7 +24,6 @@ export enum RouteName {
   FOLDER_MANDATES = 'folderMandats',
   FOLDERS = 'folders',
   GED = 'ged',
-  HOME = 'home',
   HOMEPAGE = 'homepage',
   INDICATORS = 'indicators',
   INFO = 'info',
