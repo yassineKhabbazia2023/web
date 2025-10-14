@@ -27,6 +27,9 @@
       "@ged/*": [
         "../applets/ged/src/*"
       ],
+      "@homepage/*": [
+        "../applets/homepage/src/*"
+      ],
       "@launcher/*": [
         "../applets/launcher/src/*"
       ],
@@ -65,6 +68,9 @@
     },
     {
       "path": "./packages/applets/ged"
+    },
+    {
+      "path": "./packages/applets/homepage"
     },
     {
       "path": "./packages/applets/launcher"

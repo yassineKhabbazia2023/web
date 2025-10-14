@@ -19,7 +19,7 @@ export const authenticatedRoutes: RouteRecordRaw[] = [
         meta: {
           [IS_UNITARY_VIEW_META]: true,
         },
-        redirect: { name: RouteName.FOLDER }, // TODO replace with APP_ROUTES.entity.homepage.name when possible
+        redirect: { name: RouteName.HOMEPAGE },
         children: [/* To be defined in applets */],
       },
     ],

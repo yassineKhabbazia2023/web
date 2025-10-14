@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { WidgetsHomeManager } from './widgets-home.manager'
-import { WidgetsService } from '@entities/services/widgets/widgets.service'
+import { WidgetsService } from '@pulse/common/services/widgets'
 import { WidgetsGridManager } from '@pulse/widgets/managers'
 import { WidgetName } from '@pulse/widgets/enums'
 import { logger } from '@pulse/toolbox'
@@ -9,14 +8,14 @@ import {
   invalidWidgetNames,
   mockWidgetGridDefinitions,
   mockWidgetGridDefinitionsWithPermissions,
-} from '@entities/__mocks__/widgets-home.mocks'
+} from '@homepage/__mocks__/widgets-home.mocks'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { getStoreMock } from '@pulse/common/mocks'
 import { useBookingStore } from '@pulse/common/stores'
 
 getStoreMock(useBookingStore)
 
-vi.mock('@entities/services/widgets/widgets.service')
+vi.mock('@pulse/common/services/widgets')
 vi.mock('@pulse/widgets/managers')
 vi.mock('@pulse/toolbox')
 

@@ -3,6 +3,7 @@ import { VITE_ASSETS_BASE_URL } from 'env-vars'
 import { AppVersionManager } from '@pulse/toolbox'
 import entitiesApplet from '@pulse/entities'
 import gedApplet from '@pulse/ged'
+import homepageApplet from '@pulse/homepage'
 import launcherApplet from '@pulse/launcher'
 import loginApplet from '@pulse/login'
 import mandateApplet from '@pulse/mandate'
@@ -55,6 +56,7 @@ const app = createApp(App)
   .use(pennylaneApplet, { router }) // should register pennylaneApplet before gedApplet
   .use(bookingApplet, { router })
   .use(gedApplet, { router })
+  .use(homepageApplet, { router })
   .use(launcherApplet, { router })
   .use(loginApplet, { router })
   .use(mandateApplet, { router })

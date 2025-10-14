@@ -1,0 +1,13 @@
+{
+  "extends": "../../@config/tsconfig.base.app",
+  "include": [
+    "env.d.ts",
+    "./src/**/*",
+    "tests/**/*",
+    "__mocks__",
+    "./vitest.setup.ts",
+    "src/**/*.json",
+    "./package.json"
+  ],
+  "compilerOptions": {}
+}

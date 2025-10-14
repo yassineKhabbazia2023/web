@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue'
 import type { WidgetGridDefinition } from '@pulse/widgets/types'
-import { WidgetsHomeManager } from './widgets-home.manager'
+import { WidgetsHomeManager } from '@homepage/managers/widgets-home.manager'
 import { useUserStore } from '@pulse/common/stores'
 import { BookingManager } from '@pulse/common/managers'
 import { storeToRefs } from 'pinia'

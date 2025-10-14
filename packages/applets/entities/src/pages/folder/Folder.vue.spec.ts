@@ -3,7 +3,6 @@ import { flushPromises, mount } from '@vue/test-utils'
 import type { Tab } from './FolderTypes'
 import * as FolderHelper from './FolderHelper'
 import {
-  AmplitudeServiceMock,
   getStoreMock,
   getMockedEntitySummary,
 } from '@pulse/common/mocks'
@@ -35,10 +34,6 @@ const mockedTabs: Tab[] = [
   },
 ]
 const entitySummaryMock = getMockedEntitySummary(mockedEntity)
-
-vi.mock('@pulse/common/services/amplitude', () => ({
-  AmplitudeService: AmplitudeServiceMock,
-}))
 
 vi.mock('@pulse/common', () => ({
   sanitizeUrl: vi.fn(),
@@ -95,20 +90,6 @@ describe('folder', () => {
   })
 
   describe('display', () => {
-    it('displays the home page if route equal to folder', async () => {
-      useRouteSpy.mockReturnValueOnce({ name: 'folder' })
-      wrapper = createWrapper()
-
-      await flushPromises()
-      const homeComponent = wrapper.findComponent({ name: 'WalletLandingPage' })
-      const folderTabsWrapper = wrapper.find(
-        '[data-testid=folder-tabs-wrapper]',
-      )
-
-      expect(homeComponent.exists()).toBeTruthy()
-      expect(folderTabsWrapper.exists()).toBeFalsy()
-    })
-
     it('should only display tabs to which the user has permission to access', async () => {
       const title = 'Information'
       const mockedTabs: Tab[] = [

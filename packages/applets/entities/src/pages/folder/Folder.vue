@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="areTabsDisplayed"
     class="folder-wrapper"
     data-testid="folder-tabs-wrapper"
   >
@@ -22,11 +21,6 @@
       />
     </PTabs>
   </div>
-  <!-- This makes sure that the home component is being re-rendered each time we're changing entity -->
-  <Home
-    v-else-if="isHomeDisplayed && selectedEntity"
-    :key="selectedEntity.accountId"
-  />
   <router-view />
 </template>
 
@@ -38,7 +32,6 @@ import { useRouter, useRoute } from 'vue-router'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
-import Home from './pages/WalletLandingPage'
 import { getTabAuthorisations, getTabs } from './FolderHelper'
 import type { TabName, Tab } from './FolderTypes'
 
@@ -68,12 +61,6 @@ const tabTitles: Record<TabName, string> = {
 const tabAuthorisations = computed(() => getTabAuthorisations(isCollab.value ?? false))
 
 const tabsList = computed<Tab[]>(() => getTabs(tabAuthorisations.value, tabTitles))
-
-const NO_TABS = ['reports', 'folder']
-const areTabsDisplayed = computed(
-  () => !NO_TABS.includes(route.name as string),
-)
-const isHomeDisplayed = computed(() => route.name === 'folder')
 
 // Functions
 const handleTabClick = (tab: any) => {

@@ -40,6 +40,7 @@ entityRoutes.push(
       [IS_UNITARY_VIEW_META]: true,
     },
     component: () => import('@entities/pages/folder'),
+    redirect: { name: RouteName.HOMEPAGE },
     children: [
       ...ENTITY_OVERVIEW_CHILDREN,
     ],
