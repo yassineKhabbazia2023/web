@@ -5,6 +5,7 @@
       showOverflowTooltip
       pStripe
       tableLayout="fixed"
+      data-testid="folder-users-table"
       @selection-change="handleSelectUser"
       @sort-change="handleSort"
     >
