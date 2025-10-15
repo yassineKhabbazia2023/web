@@ -663,14 +663,14 @@ fr-FR:
   assignSignatory: 'Désigner en tant que signataire'
   removeSignatory: 'Retirer le statut de signataire'
   modifyRights: 'Modifier les droits'
-  removeUser: 'Retirer l’utilisateur'
+  removeUser: "Retirer l'utilisateur"
   searchUsers: 'Rechercher par nom, prénom, e-mail, statut'
   statusConnect: 'Connecté'
   statusInvite: 'Invité'
   statusDeclared: 'Déclaré'
   signatoryAdded: "L'utilisateur {userFullName} a été désigné en tant que signataire de l'entité avec succès"
-  signatoryRemoved: "L’utilisateur {userFullName} n’est plus signataire du dossier."
+  signatoryRemoved: "L'utilisateur {userFullName} n'est plus signataire du dossier."
   deleteSignatoryTooltip: 'Un dossier doit avoir au moins un signataire'
-  technicalError: 'L’opération a échoué suite à une erreur technique. Veuillez réessayer plus tard.'
+  technicalError: "L'opération a échoué suite à une erreur technique. Veuillez réessayer plus tard."
   on: 'sur'
 </i18n>
