@@ -96,6 +96,24 @@
             </template>
           </i18n-t>
 
+          <i18n-t keypath="description.links.pennylaneSession" tag="li">
+            <template #pennylaneFreeClass>
+              <a
+                class="text-underline text-color--secondary-amethyste"
+                :href="PENNYLANE_FREE_CLASS_SESSION_URL"
+                target="_blank"
+                @click="widgetClick({
+                  event: AmplitudeEvent.WIDGET_INTERACTED,
+                  widgetName: WidgetName.PENNYLANE_INTRO,
+                  featureName: AmplitudeFeatureName.HOMEPAGE,
+                  widgetItemClicked: WidgetItemClicked.PENNYLANE_SESSION
+                })"
+              >
+                {{ t('description.links.pennylaneFreeClass') }}
+              </a>
+            </template>
+          </i18n-t>
+
           <i18n-t keypath="description.links.invoiceDeposit" tag="li">
             <template #pennylanePlatform>
               <a
@@ -184,6 +202,7 @@ import {
   PENNYLANE_IMPORT_INVOICE_HELP_URL,
   PENNYLANE_MOBILE_APP_URL,
   PENNYLANE_GETTING_STARTED_URL,
+  PENNYLANE_FREE_CLASS_SESSION_URL,
 } from '@pulse/common/constants'
 import { widgetClick } from '@pulse/widgets/utils'
 import { WidgetItemClicked, WidgetName } from '@pulse/widgets/enums'
@@ -240,6 +259,7 @@ const { t } = useI18n({
 
     li {
       line-height: 140%;
+      margin: 0.8rem 0;
     }
   }
 
@@ -286,6 +306,8 @@ const { t } = useI18n({
       links:
         pennylaneConnection: "Log in to {pennylaneFromRydge}"
         pennylaneFromRydge: "Pennylane via the RYDGE Conseil platform"
+        pennylaneSession: 'Register for a {pennylaneFreeClass}'
+        pennylaneFreeClass: "free training on the Pennylane tool"
         invoiceDeposit: "Upload your invoices from {pennylanePlatform}"
         pennylanePlatform: "the Pennylane platform"
         discover: "Discover {pennylaneAppDiscovery}"
@@ -308,6 +330,8 @@ const { t } = useI18n({
       links:
         pennylaneConnection: 'Se connecter à {pennylaneFromRydge}'
         pennylaneFromRydge: 'Pennylane depuis la plateforme RYDGE Conseil'
+        pennylaneSession: "S'inscrire à une session de {pennylaneFreeClass}"
+        pennylaneFreeClass: "formation gratuite sur l'outil Pennylane"
         invoiceDeposit: 'Déposer ses factures depuis {pennylanePlatform}'
         pennylanePlatform: 'la plateforme Pennylane'
         discover: 'Découvrir {pennylaneAppDiscovery}'

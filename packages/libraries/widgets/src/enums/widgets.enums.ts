@@ -32,6 +32,7 @@ export enum WidgetScope {
 export enum WidgetItemClicked {
   PENNYLANE_GETTING_STARTED = 'PNL - Bien débuter avec Pennylane',
   PENNYLANE_CONNECTED = 'PNL - Se connecter à Pennylane',
+  PENNYLANE_SESSION = "PNL - S'inscrire à une formation",
   PENNYLANE_DEPOSED = 'PNL - Déposer ses factures',
   PENNYLANE_MOBILE = "PNL - Découvrir l'application mobile Pennylane",
   RSS_VIEW_ALL = 'RSS - View All',
