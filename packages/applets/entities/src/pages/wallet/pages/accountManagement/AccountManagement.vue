@@ -44,6 +44,7 @@
         :pPageSizes="PAGE_SIZES"
         pPageSizeSelectorSuffix=""
         pShowTotalPageCounter
+        data-testid="account-management-list-pagination"
         @on-page-range-changed="handlePageRangeChange"
         @update:p-current-page="handlePageChange"
       >
