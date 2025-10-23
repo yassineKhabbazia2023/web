@@ -1,4 +1,4 @@
-import { AccountRow } from '@entities/common/types'
+import { AccountRow } from '@entities/types'
 
 export const mockedAccountId = 602
 export const mockedAccountType = 'Client Company'

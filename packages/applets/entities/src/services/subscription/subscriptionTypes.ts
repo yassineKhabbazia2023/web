@@ -1,4 +1,4 @@
-import type { SubscriptionOfferServices } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import type { SubscriptionOfferServices } from '@entities/types'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ContactType } from '@pulse/common/enums'
 

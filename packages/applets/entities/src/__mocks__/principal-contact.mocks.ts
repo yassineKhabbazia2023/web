@@ -1,4 +1,4 @@
-import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+import type { ClientContact } from '@entities/types'
 
 export function getClientContactMock(override: Partial<ClientContact> = {}) {
   const defaultClientContact: ClientContact = {

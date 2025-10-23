@@ -1,5 +1,5 @@
 import type { Contact } from '@entities/services/contact/contactTypes'
-import type { Collab } from '@entities/pages/wallet/pages/collaborators/types'
+import type { Collab } from '@entities/modules/wallet/types'
 import type { Persona } from '@pulse/common/types'
 import { ContactType } from '@pulse/common/enums'
 

@@ -1,8 +1,7 @@
 import type { SubscriptionContact } from '@entities/services/subscription/subscriptionTypes'
 import { ContactType } from '@pulse/common/enums'
-import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
-import { ProviderName } from '@entities/common/types/ProviderNameEnums'
-import type { CollaboratorRole, SubscriptionOfferServices, SubscriptionOffer, SubscriptionOfferProduct } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+import { SubscriptionPriceType, ProviderName } from '@entities/enums'
+import type { CollaboratorRole, SubscriptionOfferServices, SubscriptionOffer, SubscriptionOfferProduct } from '@entities/types'
 
 export function getCollaboratorRoleMock(override: Partial<CollaboratorRole> = {}): CollaboratorRole {
   return {

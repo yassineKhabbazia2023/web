@@ -1,12 +1,10 @@
 import { logger } from '@pulse/toolbox'
-import type { Collab } from '@entities/pages/folder/pages/collaborators/types'
+import type { Collab, Role, Contact as userContact } from '@entities/types'
 import { handleRequestError } from '@entities/helper/helper'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { commonApi } from '@pulse/common'
 import type { Entity } from '@pulse/common/types'
 import type { Contact } from '../contact/contactTypes'
-import type { Contact as userContact } from '@entities/common/types'
-import type { Role } from '@entities/pages/wallet/pages/collaborators/components/CollabRightsDrawer/CollabRightsDrawerTypes'
 import { EntitiesStatistics } from './serviceWalletTypes'
 import { ContactType } from '@pulse/common/enums'
 

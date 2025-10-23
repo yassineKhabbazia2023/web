@@ -41,18 +41,18 @@ const walletPatchChildren = (paths: { path: string, name: string, page: string, 
       path: path.path,
       name: path.name,
       meta: path.meta,
-      component: () => import(`@entities/pages/wallet/pages/${path.page}/index.ts`),
+      component: () => import(`@entities/modules/wallet/pages/${path.page}/index.ts`),
     } as RouteRecordRaw)
   })
   res.push({
     path: 'gestion-utilisateurs',
     name: RouteName.ALL_USERS,
-    component: () => import('@entities/pages/folder/pages/users'),
+    component: () => import('@entities/modules/entity/pages/users'),
   } as RouteRecordRaw)
   res.push({
     path: 'demandes-mod',
     name: RouteName.SUBSCRIPTIONS,
-    component: () => import('@entities/pages/subscriptions'),
+    component: () => import('@entities/modules/wallet/pages/subscriptions'),
   } as RouteRecordRaw)
   return res
 }
@@ -61,7 +61,7 @@ walletRoutes.push({
   path: '/portefeuille',
   name: RouteName.WALLET,
   redirect: { name: RouteName.FOLDERS },
-  component: () => import('@entities/pages/wallet'),
+  component: () => import('@entities/modules/wallet'),
   children: walletPatchChildren(WALLET_CHILDREN_ROUTES),
 } as RouteRecordRaw)
 
@@ -69,7 +69,7 @@ walletRoutes.push({
   path: '/portefeuille',
   name: RouteName.WALLET_CLIENT,
   redirect: { name: RouteName.ENTITY_CLIENT },
-  component: () => import('@entities/pages/wallet'),
+  component: () => import('@entities/modules/wallet'),
   children: walletPatchChildren(CUSTOMER_WALLET_CHILDREN_ROUTES),
 } as RouteRecordRaw)
 

@@ -1,4 +1,4 @@
-import { Role } from '@entities/pages/wallet/pages/collaborators/components/CollabRightsDrawer/CollabRightsDrawerTypes'
+import { Role } from '@entities/types'
 
 export const getMockedCollabRoles = (): Role[] => {
   return [

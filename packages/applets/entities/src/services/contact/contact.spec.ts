@@ -5,7 +5,7 @@ import { getMockedCustomer } from '@entities/__mocks__/customer.mocks'
 import type { PatchContactPayload, AccountOperations } from './contactTypes'
 import { getMockedOperations, getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { getPaginationMock } from '@pulse/common/mocks'
-import { OperationStatus } from '@entities/common/types/OperationTypes'
+import { OperationStatus } from '@entities/enums'
 import {
   fetchOperationsForAccount,
   getCollaborators,

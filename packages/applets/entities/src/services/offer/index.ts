@@ -2,8 +2,8 @@ import { commonApi } from '@pulse/common'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
-} from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
-import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
+  ClientContact,
+} from '@entities/types'
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { handleRequestError } from '@entities/helper/helper'

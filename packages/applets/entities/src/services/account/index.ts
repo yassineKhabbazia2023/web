@@ -1,3 +1,3 @@
 export * from './accountServices'
 export * from './accountTypes'
-export * from './account.enums'
+export * from '@entities/enums'

@@ -4,8 +4,8 @@ import {
   type SubscriptionRequest,
   SubscriptionStatusCode,
 } from '@entities/services/subscription/subscriptionTypes'
-import { ProviderName } from '@entities/common/types/ProviderNameEnums'
-import { SubscriptionPriceType } from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersEnums'
+import { ProviderName, SubscriptionPriceType } from '@entities/enums'
+
 import { ContactType } from '@pulse/common/enums'
 
 export const subscriptionRequestMock: SubscriptionRequest[] = [

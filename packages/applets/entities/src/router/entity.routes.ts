@@ -8,27 +8,27 @@ const ENTITY_OVERVIEW_CHILDREN = [
   {
     path: 'gestion-utilisateurs',
     name: RouteName.USERS,
-    component: () => import('@entities/pages/folder/pages/users'),
+    component: () => import('@entities/modules/entity/pages/users'),
   },
   {
     path: 'collaborateurs',
     name: RouteName.COLLAB,
-    component: () => import('@entities/pages/folder/pages/collaborators'),
+    component: () => import('@entities/modules/entity/pages/collaborators'),
   },
   {
     path: 'offres',
     name: RouteName.OFFERS,
-    component: () => import('@entities/pages/folder/pages/offers'),
+    component: () => import('@entities/modules/entity/pages/offers'),
   },
   {
     path: 'informations',
     name: RouteName.INFO,
-    component: () => import('@entities/pages/folder/pages/information'),
+    component: () => import('@entities/modules/entity/pages/information'),
   },
   {
     path: 'historique-delegations',
     name: RouteName.DELEGATIONS_HISTORY,
-    component: () => import('@entities/pages/folder/pages/delegationsHistory'),
+    component: () => import('@entities/modules/entity/pages/delegationsHistory'),
   },
 ]
 
@@ -39,7 +39,7 @@ entityRoutes.push(
     meta: {
       [IS_UNITARY_VIEW_META]: true,
     },
-    component: () => import('@entities/pages/folder'),
+    component: () => import('@entities/modules/entity'),
     redirect: { name: RouteName.HOMEPAGE },
     children: [
       ...ENTITY_OVERVIEW_CHILDREN,
@@ -48,7 +48,7 @@ entityRoutes.push(
   {
     path: APP_ROUTES.entity.bank.path,
     name: APP_ROUTES.entity.bank.name,
-    component: () => import('@entities/pages/WorkInProgress'),
+    component: () => import('@entities/modules/entity/pages/workInProgress'),
     meta: {
       [LAYOUT_NO_PADDING_META]: true,
     },
@@ -56,7 +56,7 @@ entityRoutes.push(
   {
     path: APP_ROUTES.entity.indicators.path,
     name: APP_ROUTES.entity.indicators.name,
-    component: () => import('@entities/pages/WorkInProgress'),
+    component: () => import('@entities/modules/entity/pages/workInProgress'),
     meta: {
       [LAYOUT_NO_PADDING_META]: true,
     },

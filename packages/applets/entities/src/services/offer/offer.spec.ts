@@ -2,12 +2,12 @@ import { getMockedSubscriptionOffers, getMockedSubscriptionOffersServices } from
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { envVarsMock } from '@pulse/common/mocks'
-import type { ClientContact } from '@entities/pages/entities/components/PrincipalContact/PrincipalContactTypes'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type {
+  ClientContact,
   SubscriptionOffer,
   SubscriptionOfferServices,
-} from '@entities/pages/entities/components/SubscriptionOffers/SubscriptionOffersTypes'
+} from '@entities/types'
 
 import {
   getAllOffers,

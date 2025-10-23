@@ -1,5 +1,5 @@
 import { ContactType } from '@pulse/common/enums'
-import type { Contact, contactsRequest } from '@entities/common/types'
+import type { Contact, contactsRequest } from '@entities/types'
 
 export const mockedContactId = 25
 export const mockedContactType = ContactType.COLLABORATOR

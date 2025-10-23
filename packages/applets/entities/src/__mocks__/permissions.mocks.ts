@@ -1,6 +1,6 @@
 import { CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
-import { AuthorizationConfig } from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListTypes'
-import { AuthorizationState } from '@entities/common/components/ManageRightsDrawer/ManageRightsTypes'
+import type { AuthorizationConfig } from '@entities/types'
+import { AuthorizationState } from '@entities/components/ManageRightsDrawer/ManageRightsTypes'
 
 export const getMockedAuthorizationState = (): Record<
   string,

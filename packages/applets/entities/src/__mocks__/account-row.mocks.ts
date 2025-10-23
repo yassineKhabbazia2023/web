@@ -9,7 +9,7 @@ import type {
   AccountsDelegationDetails,
   AccountsDelegation,
 } from '@entities/services/account/accountTypes'
-import { AddressType } from '@entities/services/account/account.enums'
+import { AddressType } from '@entities/enums'
 import type { Address, Office, QueryResult } from '@pulse/common/types'
 import accountReferentialInformation from '@entities/__mocks__/json/accountReferentialInformation.json'
 import referentialHubs from '@entities/__mocks__/json/referentialHubs.json'

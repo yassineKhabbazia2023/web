@@ -3,7 +3,7 @@ import { handleRequestError } from '@entities/helper'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { Contact, PatchContactPayload, AccountOperations } from './contactTypes'
 import type { PaginationResponse } from '@pulse/common/types'
-import type { OperationStatus } from '@entities/common/types/OperationTypes'
+import type { OperationStatus } from '@entities/enums'
 import { ContactType } from '@pulse/common/enums'
 
 export const getCollaborators = async (

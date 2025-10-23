@@ -1,4 +1,4 @@
-import { EntityStatus } from '@entities/pages/wallet/components/Filters/FiltersTypes'
+import { EntityStatus } from '@entities/modules/wallet/enums'
 import { IconName, PFilterOptionProps } from '@pulse/styleguide/types'
 
 export const ENTITY_STATUS_COLOR: Record<EntityStatus, PFilterOptionProps['pColor']> = {

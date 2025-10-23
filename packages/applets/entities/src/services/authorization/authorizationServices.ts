@@ -1,7 +1,7 @@
 import { commonApi } from '@pulse/common'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { ContactType } from '@pulse/common/enums'
-import type { AuthorizationConfig } from '@entities/common/components/ManageRightsDrawer/components/RightsList/RightsListTypes'
+import type { AuthorizationConfig } from '@entities/types'
 
 // User permissions
 export const fetchAuthorizationsConfig = async (
