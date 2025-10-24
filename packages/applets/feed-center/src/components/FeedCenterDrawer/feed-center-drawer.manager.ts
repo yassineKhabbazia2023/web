@@ -18,7 +18,7 @@ export async function patchAllNotificationsAsRead(userId: number | undefined): P
 
   } catch (error) {
     logger.error(error)
-    return Promise.reject(new Error('Failed to patch or mark notifications as read'))
+    throw new Error('Failed to patch or mark notifications as read')
   }
 }
 

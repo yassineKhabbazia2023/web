@@ -34,7 +34,6 @@ function initializeTestState(initialDrawervalue = false) {
 describe('feed center drawer composable', () => {
   beforeEach(() => {
     userStore.favoriteEntities = [favouriteEntities[0], favouriteEntities[1]]
-    localStorage.setItem('favoriteEnabled', 'true')
   })
 
   it('should fetch notifications on mounted and when drawer is being opened', async () => {

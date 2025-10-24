@@ -24,6 +24,9 @@
       "@entities/*": [
         "../applets/entities/src/*"
       ],
+      "@feed-center/*": [
+        "../applets/feed-center/src/*"
+      ],
       "@ged/*": [
         "../applets/ged/src/*"
       ],
@@ -67,6 +70,9 @@
       "path": "./packages/applets/entities"
     },
     {
+      "path": "./packages/applets/feed-center"
+    },
+    {
       "path": "./packages/applets/ged"
     },
     {
@@ -92,6 +98,9 @@
     },
     {
       "path": "./packages/libraries/common"
+    },
+    {
+      "path": "./packages/libraries/shared"
     },
     {
       "path": "./packages/libraries/toolbox"

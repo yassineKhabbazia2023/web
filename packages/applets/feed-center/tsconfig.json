@@ -1,0 +1,39 @@
+{
+  "extends": "../../@config/tsconfig.base.app",
+  "include": [
+    "env.d.ts",
+    "./src/**/*",
+    "tests/**/*",
+    "__mocks__",
+    "./vitest.setup.ts",
+    "src/**/*.json"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "composite": true,
+    "noEmit": false,
+    "declarationDir": "./dist/types",
+    "outDir": "./dist/types",
+    "paths": {
+      "@common/*": [
+        "../../libraries/common/src/*"
+      ],
+      "@styleguide/*": [
+        "../../libraries/styleguide/src/*"
+      ],
+      "@feed-center/*": [
+        "src/*"
+      ]
+    },
+    "types": [
+      "@pinia/testing",
+      "vitest/globals",
+      "vitest/importMeta",
+      "vite/client",
+      "node"
+    ]
+  }
+}

@@ -25,6 +25,7 @@ export default ({ mode }: any) =>
           '@app': fileURLToPath(new URL('./src', import.meta.url)),
           '@common': fileURLToPath(new URL('../libraries/common/src', import.meta.url)),
           '@entities': fileURLToPath(new URL('../applets/entities/src', import.meta.url)),
+          '@feed-center': fileURLToPath(new URL('../applets/feed-center/src', import.meta.url)),
           '@ged': fileURLToPath(new URL('../applets/ged/src', import.meta.url)),
           '@homepage': fileURLToPath(new URL('../applets/homepage/src', import.meta.url)),
           '@launcher': fileURLToPath(new URL('../applets/launcher/src', import.meta.url)),

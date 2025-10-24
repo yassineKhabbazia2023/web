@@ -39,14 +39,14 @@ export function useNotificationSettings() {
       return
     }
 
-    concernedDomain.settings.forEach((setting) => {
+    for (const setting of concernedDomain.settings) {
       if (setting.feedcenterValue !== null) {
         setting.feedcenterValue = isEnabled
       }
       if (setting.emailValue !== null) {
         setting.emailValue = isEnabled
       }
-    })
+    }
   }
 
   function updateSetting(

@@ -14,7 +14,7 @@
     <BookingRendezVousDrawer
       v-model:isOpened="isOpenedBookingRendezVousDrawer"
     />
-    <router-link to="/">
+    <router-link to="/" class="line-height--0">
       <PImage
         class="header-section__logo"
         pType="logos"
@@ -45,34 +45,7 @@
         />
       </PButton>
 
-      <div
-        v-if="FeatureFlagManager.isFeedCenterActivated()"
-        class="position--relative padding-left--2"
-      >
-        <PButton
-          pIconOnly
-          :pIsActive="showFeedCenter"
-          pPlain
-          pSize="small"
-          :pType="showFeedCenter ? 'white' : 'default'"
-          data-testid="feed-center-button"
-          @click="updateFeedCenterDisplay"
-        >
-          <PIcon :pName="feedCenterIconName" />
-          <div
-            v-if="unreadNotificationsCount > 0"
-            class="header-section__feed-center-notification-pastille"
-          >
-            <PPastille
-              v-if="!showFeedCenter"
-              pSize="small"
-              pType="warning"
-            >
-              {{ unreadNotificationsCount }}
-            </PPastille>
-          </div>
-        </PButton>
-      </div>
+      <slot name="header-top-right-zone" />
       <PDivider
         class="margin-x--4 header-section__divider"
         pDirection="vertical"
@@ -110,7 +83,6 @@ import {
   PPastille,
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
-import type { HeaderProps } from './HeaderTypes'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 import BookingDrawer from '../booking/booking-drawer/booking-drawer.vue'
@@ -118,12 +90,9 @@ import BookingRendezVousDrawer from '../booking/booking-rendez-vous-drawer/booki
 
 const userStore = useUserStore()
 
-const props = defineProps<HeaderProps>()
-
 const { user } = storeToRefs(userStore)
 
 const emit = defineEmits<{
-  'update:showFeedCenter': [boolean]
   'showUserProfileDrawer': []
 }>()
 
@@ -136,18 +105,10 @@ const userRole = computed(() => {
   return isCollab ? AvatarRoles.COLLAB : AvatarRoles.CLIENT
 })
 
-const feedCenterIconName = computed(() =>
-  props.showFeedCenter ? 'x' : 'bell',
-)
-
 const showBookingButton = computed(() =>
   userStore.isCollab === true &&
   FeatureFlagManager.isFeatureActivated(Feature.BOOKING) === true,
 )
-
-function updateFeedCenterDisplay() {
-  emit('update:showFeedCenter', !props.showFeedCenter)
-}
 
 // #region booking
 const hasBookingDrawerBeenOpened = ref(false)
@@ -185,12 +146,6 @@ const isOpenedBookingRendezVousDrawer = computed({
 
   &__divider {
     height: 32px;
-  }
-
-  &__feed-center-notification-pastille {
-    position: absolute;
-    right: 0;
-    top: 0;
   }
 
   &__x-small-pastille {
