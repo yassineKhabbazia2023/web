@@ -5,6 +5,7 @@
       highlightCurrentRow
       pStripe
       tableLayout="fixed"
+      data-testid="collaborators-table"
       @sort-change="handleSortChange"
     >
       <PTableColumn
