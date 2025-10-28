@@ -27,6 +27,7 @@
           pAutofocus
           data-testid="login-input-email"
           @blur="checkEmail"
+          @keydown="handleKeypressAfterIncorrectCredentials"
         />
       </PFormItem>
       <PFormItem
@@ -43,6 +44,7 @@
           pShowPassword
           data-testid="login-input-password"
           @blur="checkPassword"
+          @keydown="handleKeypressAfterIncorrectCredentials"
         />
       </PFormItem>
       <router-link
@@ -149,6 +151,17 @@ function checkValidity() {
   checkPassword()
 
   return getIsValidForm()
+}
+
+function handleKeypressAfterIncorrectCredentials() {
+  // Only clear credential errors (not individual field validation errors)
+  const hasCredentialErrors = isEmailMessageVisible.value === false && isPasswordMessageVisible.value === true
+  if (!hasCredentialErrors) {
+    return
+  }
+
+  setEmailError('', false)
+  setPasswordError('')
 }
 
 async function onSubmit() {

@@ -95,6 +95,8 @@ let wrapper: ReturnType<typeof createWrapper>
 
 const getInputEmail = () => wrapper.find('[data-testid="login-input-email"]')
 const getInputPassword = () => wrapper.find('[data-testid="login-input-password"]')
+const getSubmitButton = (wrapper: ReturnType<typeof createWrapper>) => wrapper.find('[data-testid="login-submit-button"]')
+const getSkewedButton = (wrapper: ReturnType<typeof createWrapper>) => wrapper.findComponent({ name: 'PSkewedButton' })
 
 const INPUT_EMAIL_VALUE = 'customEmail@aol.com'
 const INPUT_PASSWORD_VALUE = 'customPassword'
@@ -117,7 +119,7 @@ describe('LoginClient', () => {
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
-    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    const submitButton = getSubmitButton(wrapper)
     await submitButton.trigger('click')
     await flushPromises()
     const expectedPayload = {
@@ -164,7 +166,7 @@ describe('LoginClient', () => {
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
-    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    const submitButton = getSubmitButton(wrapper)
     await submitButton.trigger('click')
     await flushPromises()
     await nextTick()
@@ -202,7 +204,7 @@ describe('LoginClient', () => {
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
-    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    const submitButton = getSubmitButton(wrapper)
     await submitButton.trigger('click')
     await flushPromises()
     await nextTick()
@@ -227,12 +229,74 @@ describe('LoginClient', () => {
     expect(setStoreGigyaUserIdMocked).not.toHaveBeenCalled()
   })
 
+  it('should clear errors and enable submit button when user types after incorrect credentials', async () => {
+    // Setup: simulate a login error
+    loginMock.mockRejectedValueOnce({
+      response: {
+        data: {
+          errorCode: BackEndErrors.WRONG_LOGIN_PASSWORD,
+        },
+      },
+    })
+
+    await getInputEmail().setValue(INPUT_EMAIL_VALUE)
+    await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
+
+    const submitButton = getSubmitButton(wrapper)
+    await submitButton.trigger('click')
+    await flushPromises()
+    await nextTick()
+
+    // Verify that button is disabled (errors are present)
+    const pSkewedButton = getSkewedButton(wrapper)
+    expect(pSkewedButton.props('pDisabled')).toBe(true)
+
+    // Action: simulate a keydown in the email field
+    await getInputEmail().trigger('keydown')
+    await nextTick()
+
+    // Assertions: errors should be cleared and button enabled
+    const pFormItems = wrapper.findAllComponents({ name: 'PFormItem' })
+    const firstFormItemProps = pFormItems.at(0)!.props()
+    const secondFormItemProps = pFormItems.at(1)!.props()
+
+    expect(firstFormItemProps['pError']).toBe('')
+    expect(secondFormItemProps['pError']).toBe('')
+    expect(pSkewedButton.props('pDisabled')).toBe(false)
+  })
+
+  it('should NOT clear validation errors when typing in a different field', async () => {
+    // Setup: Enter an invalid email and trigger validation
+    const inputEmail = getInputEmail()
+    const inputPassword = getInputPassword()
+
+    await inputEmail.setValue('invalid-email')
+    await inputEmail.trigger('blur')
+    await nextTick()
+
+    // Verify that email validation error is present
+    let pFormItems = wrapper.findAllComponents({ name: 'PFormItem' })
+    let firstFormItemProps = pFormItems.at(0)!.props()
+    expect(firstFormItemProps['pError']).toBe('Please enter a valid e-mail address')
+    expect(firstFormItemProps['pShowMessage']).toBe(true)
+
+    // Action: type in the password field
+    await inputPassword.trigger('keydown')
+    await nextTick()
+
+    // Assertions: email validation error should still be present
+    pFormItems = wrapper.findAllComponents({ name: 'PFormItem' })
+    firstFormItemProps = pFormItems.at(0)!.props()
+    expect(firstFormItemProps['pError']).toBe('Please enter a valid e-mail address')
+    expect(firstFormItemProps['pShowMessage']).toBe(true)
+  })
+
   it('does not redirect to the home page if the api return empty response', async () => {
     loginMock.mockResolvedValueOnce({})
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
 
-    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    const submitButton = getSubmitButton(wrapper)
     await submitButton.trigger('click')
     await flushPromises()
 
@@ -271,7 +335,7 @@ describe('LoginClient', () => {
     await getInputEmail().setValue('error@aol.com')
     await getInputPassword().setValue('error')
 
-    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    const submitButton = getSubmitButton(wrapper)
     await submitButton.trigger('click')
     await flushPromises()
 
@@ -305,11 +369,11 @@ describe('LoginClient', () => {
     await inputEmail.trigger('blur')
     await inputPassword.trigger('blur')
 
-    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    const submitButton = getSubmitButton(wrapper)
     await submitButton.trigger('click')
     await flushPromises()
 
-    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    const pSkewedButton = getSkewedButton(wrapper)
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
     expect(AmplitudeServiceMock.track).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
@@ -323,11 +387,11 @@ describe('LoginClient', () => {
     inputEmail.setValue('invalid-email')
     inputPassword.setValue(INPUT_PASSWORD_VALUE)
 
-    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    const submitButton = getSubmitButton(wrapper)
     await submitButton.trigger('click')
     await flushPromises()
 
-    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    const pSkewedButton = getSkewedButton(wrapper)
     expect(pSkewedButton.props('pDisabled')).toBeTruthy()
     expect(AmplitudeServiceMock.track).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
@@ -354,7 +418,7 @@ describe('LoginClient', () => {
     await getInputEmail().setValue(INPUT_EMAIL_VALUE)
     await getInputPassword().setValue(INPUT_PASSWORD_VALUE)
 
-    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    const submitButton = getSubmitButton(wrapper)
     await submitButton.trigger('click')
     await flushPromises()
 
@@ -367,7 +431,7 @@ describe('LoginClient', () => {
   })
 
   it('does not call login() when handleSubmit is called without form', async () => {
-    const submitButton = wrapper.find('[data-testid="login-submit-button"]')
+    const submitButton = getSubmitButton(wrapper)
     await submitButton.trigger('click')
     await flushPromises()
     expect(loginMock).not.toHaveBeenCalled()
@@ -376,7 +440,7 @@ describe('LoginClient', () => {
   })
 
   it('does not call login() when form throws an exception', async () => {
-    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    const pSkewedButton = getSkewedButton(wrapper)
     pSkewedButton.vm.$emit('click')
 
     expect(loginMock).not.toHaveBeenCalled()
@@ -385,7 +449,7 @@ describe('LoginClient', () => {
   })
 
   it('does not call login() when initAuthClient returns a 403042 error', async () => {
-    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    const pSkewedButton = getSkewedButton(wrapper)
     pSkewedButton.vm.$emit('click')
 
     expect(loginMock).not.toHaveBeenCalled()
@@ -399,7 +463,7 @@ describe('LoginClient', () => {
         code: 'unknown',
       },
     })
-    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    const pSkewedButton = getSkewedButton(wrapper)
     pSkewedButton.vm.$emit('click')
 
     expect(loginMock).not.toHaveBeenCalled()
@@ -408,7 +472,7 @@ describe('LoginClient', () => {
   })
 
   it('does not call login() when not form given to handleSubmit', async () => {
-    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    const pSkewedButton = getSkewedButton(wrapper)
     pSkewedButton.vm.$emit('click')
 
     expect(loginMock).not.toHaveBeenCalled()
@@ -417,7 +481,7 @@ describe('LoginClient', () => {
   })
 
   it('does not call login() when empty object given to handleSubmit', async () => {
-    const pSkewedButton = wrapper.findComponent({ name: 'PSkewedButton' })
+    const pSkewedButton = getSkewedButton(wrapper)
     pSkewedButton.vm.$emit('click')
     await nextTick()
 
