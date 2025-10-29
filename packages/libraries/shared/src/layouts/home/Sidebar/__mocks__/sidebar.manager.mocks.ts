@@ -56,7 +56,7 @@ export function createMockMenuItem(overrides?: Partial<MenuItemConfig>): MenuIte
     id: 'test-item',
     title: 'shared.sidebar.testItem',
     icon: 'house',
-    route: (entityId) => `/dossier/${entityId}/test`,
+    routeName: 'homepage' as any, // Default test route name
     shouldDisplay: () => true,
     order: 1,
   }

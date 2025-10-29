@@ -22,6 +22,8 @@ import hubspotPlugin from '@app/plugins/Hubspot/hubspot.plugin'
 
 import App from './app/App.vue'
 import router from './router/app.router'
+import { registerSidebarItems } from './managers/sidebar.registry'
+import { registerWalletTabs } from './managers/wallet.registry'
 
 import frFR from './i18n/fr-FR.json'
 import enUS from './i18n/en-US.json'
@@ -68,7 +70,12 @@ const app = createApp(App)
   .use(styleguideLibrary, {
     assetsBaseUrl: VITE_ASSETS_BASE_URL,
   })
-  // install router last in order to register the applets first
-  .use(router)
+
+// Register app-specific menu items and tabs
+registerSidebarItems()
+registerWalletTabs()
+
+// install router last in order to register the applets first
+app.use(router)
 
 app.mount('#app')

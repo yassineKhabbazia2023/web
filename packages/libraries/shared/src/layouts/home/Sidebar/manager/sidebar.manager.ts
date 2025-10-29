@@ -1,3 +1,4 @@
+import { RouteName } from '@pulse/common/enums'
 import type { MenuItemConfig, MenuContext, MenuItem } from './sidebar.types'
 
 /**
@@ -14,6 +15,13 @@ export class SidebarManager {
   }
 
   /**
+   * Get a specific menu item configuration by id
+   */
+  static getMenuItem(id: string): MenuItemConfig | undefined {
+    return this.menuItems.get(id)
+  }
+
+  /**
    * Get all menu items for the current context, filtered and sorted
    */
   static getMenuItems(context: MenuContext): MenuItem[] {
@@ -21,7 +29,7 @@ export class SidebarManager {
       .filter(item => item.shouldDisplay(context))
       .sort((a, b) => a.order - b.order)
       .map(item => ({
-        routePath: item.route(context.entityId, context),
+        routeName: item.routeName,
         title: item.title,
         iconLeftName: item.icon,
         display: true,
@@ -39,36 +47,38 @@ export class SidebarManager {
 
     const menuItems = [
       {
-        routePath: `/dossier/${context.entityId}/gestion-utilisateurs`,
+        routeName: RouteName.USERS,
         display: context.permissions.hasUsers,
       },
       {
-        routePath: `/dossier/${context.entityId}/collaborateurs`,
+        routeName: RouteName.COLLAB,
         display: context.isCollab && context.permissions.hasCollaborators,
       },
       {
-        routePath: `/dossier/${context.entityId}/offres`,
+        routeName: RouteName.OFFERS,
         display: context.permissions.hasOffer,
       },
       {
-        routePath: `/dossier/${context.entityId}/informations`,
+        routeName: RouteName.INFO,
         display: context.permissions.hasInformation,
       },
       {
-        routePath: `/dossier/${context.entityId}/historique-delegations`,
+        routeName: RouteName.DELEGATIONS_HISTORY,
         display: context.isCollab && context.permissions.hasHistory,
       },
     ]
 
     const menuItem = menuItems.find((item) => item.display)
 
-    return menuItem
-      ? {
-        routePath: menuItem.routePath,
-        display: menuItem.display,
-        title,
-        iconLeftName: 'building',
-      }
-      : null
+    if (menuItem === undefined) {
+      return null
+    }
+
+    return {
+      routeName: menuItem.routeName,
+      display: menuItem.display,
+      title,
+      iconLeftName: 'building',
+    }
   }
 }

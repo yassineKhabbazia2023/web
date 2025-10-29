@@ -28,7 +28,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { usePermissionsStore, useUserStore } from '@pulse/common/stores'
-import { WalletManager } from './manager'
+import { WalletManager } from './managers'
 import type { TabsPaneContext } from '@pulse/styleguide/types'
 
 const { t } = useI18n({

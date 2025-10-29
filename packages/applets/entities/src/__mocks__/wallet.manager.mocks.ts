@@ -1,4 +1,4 @@
-import type { WalletContext, WalletTabConfig } from '../modules/wallet/manager/wallet.types'
+import type { WalletContext, WalletTabConfig } from '../modules/wallet/types'
 import { WalletTab } from '../modules/wallet/enums'
 import { RouteName } from '@pulse/common/enums'
 

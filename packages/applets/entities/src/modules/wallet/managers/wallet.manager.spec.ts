@@ -1,9 +1,11 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { WalletManager } from './wallet.manager'
 import { createMockWalletContext, createMockWalletTabConfig } from '@entities/__mocks__/wallet.manager.mocks'
 import { WalletTab } from '../enums'
 import { RouteName } from '@pulse/common/enums'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
+import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
+
+vi.mock('@pulse/common/managers')
 
 describe('WalletManager', () => {
   beforeEach(() => {
@@ -71,6 +73,49 @@ describe('WalletManager', () => {
       const tabs = WalletManager.getTabs(context)
 
       expect(tabs).toHaveLength(3)
+    })
+  })
+
+  describe('getTab()', () => {
+    it('should return undefined if tab does not exist', () => {
+      const result = WalletManager.getTab(WalletTab.FOLDERS)
+
+      expect(result).toBeUndefined()
+    })
+
+    it('should return the tab configuration by id', () => {
+      const tabConfig = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        title: 'entities.wallet.folders',
+        route: RouteName.FOLDERS,
+        order: 1,
+      })
+
+      WalletManager.register(tabConfig)
+
+      const result = WalletManager.getTab(WalletTab.FOLDERS)
+
+      expect(result).toBeDefined()
+      expect(result?.id).toBe(WalletTab.FOLDERS)
+      expect(result?.title).toBe('entities.wallet.folders')
+      expect(result?.route).toBe(RouteName.FOLDERS)
+      expect(result?.order).toBe(1)
+    })
+
+    it('should return the correct tab when multiple tabs are registered', () => {
+      const tab1 = createMockWalletTabConfig({ id: WalletTab.FOLDERS, title: 'entities.wallet.folders' })
+      const tab2 = createMockWalletTabConfig({ id: WalletTab.COLLABORATORS, title: 'entities.wallet.collaborators' })
+      const tab3 = createMockWalletTabConfig({ id: WalletTab.ALL_USERS, title: 'entities.wallet.allUsers' })
+
+      WalletManager.register(tab1)
+      WalletManager.register(tab2)
+      WalletManager.register(tab3)
+
+      const result = WalletManager.getTab(WalletTab.COLLABORATORS)
+
+      expect(result).toBeDefined()
+      expect(result?.id).toBe(WalletTab.COLLABORATORS)
+      expect(result?.title).toBe('entities.wallet.collaborators')
     })
   })
 
@@ -263,6 +308,132 @@ describe('WalletManager', () => {
 
       expect(tabsWithFeature).toHaveLength(1)
       expect(tabsWithFeature[0].name).toBe(WalletTab.POWER_BI)
+    })
+  })
+
+  describe('getTabsForUser()', () => {
+    it('should build context and return tabs for collab user', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      const tab1 = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        title: 'entities.wallet.folders',
+        isDisplayed: (context) => context.isCollab,
+        order: 1,
+      })
+
+      const tab2 = createMockWalletTabConfig({
+        id: WalletTab.ENTITY_CLIENT,
+        title: 'entities.wallet.allEntities',
+        isDisplayed: (context) => !context.isCollab,
+        order: 2,
+      })
+
+      WalletManager.register(tab1)
+      WalletManager.register(tab2)
+
+      const tabs = WalletManager.getTabsForUser(true)
+
+      expect(tabs).toHaveLength(1)
+      expect(tabs[0].name).toBe(WalletTab.FOLDERS)
+    })
+
+    it('should build context and return tabs for non-collab user', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      const tab1 = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        title: 'entities.wallet.folders',
+        isDisplayed: (context) => context.isCollab,
+        order: 1,
+      })
+
+      const tab2 = createMockWalletTabConfig({
+        id: WalletTab.ENTITY_CLIENT,
+        title: 'entities.wallet.allEntities',
+        isDisplayed: (context) => !context.isCollab,
+        order: 2,
+      })
+
+      WalletManager.register(tab1)
+      WalletManager.register(tab2)
+
+      const tabs = WalletManager.getTabsForUser(false)
+
+      expect(tabs).toHaveLength(1)
+      expect(tabs[0].name).toBe(WalletTab.ENTITY_CLIENT)
+    })
+
+    it('should use CurrentUserManager.hasPermission in context', () => {
+      const hasPermissionSpy = vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      const tab = createMockWalletTabConfig({
+        id: WalletTab.COLLABORATORS,
+        isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.COLLABORATORS),
+        order: 1,
+      })
+
+      WalletManager.register(tab)
+
+      const tabs = WalletManager.getTabsForUser(true)
+
+      expect(tabs).toHaveLength(1)
+      expect(hasPermissionSpy).toHaveBeenCalledWith(GLOBAL_PERMISSIONS.COLLABORATORS)
+    })
+
+    it('should use FeatureFlagManager.isFeatureActivated in context', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      const isFeatureActivatedSpy = vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      const tab = createMockWalletTabConfig({
+        id: WalletTab.POWER_BI,
+        isDisplayed: (context) => context.hasFeatureFlag('TEST_FEATURE' as any),
+        order: 1,
+      })
+
+      WalletManager.register(tab)
+
+      const tabs = WalletManager.getTabsForUser(true)
+
+      expect(tabs).toHaveLength(1)
+      expect(isFeatureActivatedSpy).toHaveBeenCalledWith('TEST_FEATURE')
+    })
+
+    it('should filter tabs based on permission from CurrentUserManager', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(false)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      const tab = createMockWalletTabConfig({
+        id: WalletTab.COLLABORATORS,
+        isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.COLLABORATORS),
+        order: 1,
+      })
+
+      WalletManager.register(tab)
+
+      const tabs = WalletManager.getTabsForUser(true)
+
+      expect(tabs).toHaveLength(0)
+    })
+
+    it('should filter tabs based on feature flag from FeatureFlagManager', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(false)
+
+      const tab = createMockWalletTabConfig({
+        id: WalletTab.POWER_BI,
+        isDisplayed: (context) => context.hasFeatureFlag('TEST_FEATURE' as any),
+        order: 1,
+      })
+
+      WalletManager.register(tab)
+
+      const tabs = WalletManager.getTabsForUser(true)
+
+      expect(tabs).toHaveLength(0)
     })
   })
 })

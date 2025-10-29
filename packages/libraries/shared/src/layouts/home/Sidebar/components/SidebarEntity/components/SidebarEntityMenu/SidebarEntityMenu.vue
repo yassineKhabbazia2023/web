@@ -18,7 +18,8 @@
     >
       <!-- Home menu item -->
       <PMenuItem
-        :pIndex="homepagePath"
+        :pIndex="RouteName.HOMEPAGE"
+        :pRoute="{ name: RouteName.HOMEPAGE }"
         pIconLeftName="house"
         data-testid="menu-item"
       >
@@ -29,7 +30,8 @@
       <!-- Entity overview menu item -->
       <PMenuItem
         v-if="entityOverviewMenuItem"
-        :pIndex="entityOverviewMenuItem.routePath"
+        :pIndex="entityOverviewMenuItem.routeName"
+        :pRoute="{ name: entityOverviewMenuItem.routeName, params: { entityId: selectedEntityId } }"
         :pIconLeftName="entityOverviewMenuItem.iconLeftName"
         data-testid="menu-item"
         :class="{ 'sidenav-entity-menu__item-menu': entityOverviewPath }"
@@ -41,8 +43,9 @@
       <!-- Other registered menu items -->
       <PMenuItem
         v-for="menuItem in menuItems"
-        :key="menuItem.routePath"
-        :pIndex="menuItem.routePath"
+        :key="menuItem.routeName"
+        :pIndex="menuItem.routeName"
+        :pRoute="{ name: menuItem.routeName, params: { entityId: selectedEntityId } }"
         :pIconLeftName="menuItem.iconLeftName"
         data-testid="menu-item"
         :class="{ 'sidenav-entity-menu__item-menu': menuItem.hasSubmenuSelected === true }"
@@ -67,10 +70,9 @@ import { PMenuItem, PMenu } from '@pulse/styleguide/components'
 import { ACCOUNT_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
 import { usePermissionsStore } from '@pulse/common/stores'
-import { SidebarManager } from '../../../../manager/sidebar.manager'
-import type { MenuItem, MenuContext } from '../../../../manager/sidebar.types'
+import { SidebarManager } from '@pulse/shared/manager'
+import type { MenuItem, MenuContext } from '@pulse/shared/manager'
 import { RouterHelpers } from '@pulse/common/helpers'
-
 
 const route = useRoute()
 const router = useRouter()
@@ -84,8 +86,7 @@ const props = defineProps<SidebarEntityMenuProps>()
 const shouldShowBIReports = ref(false)
 const isMenuCollapsed = ref(true)
 
-const activeMenuItem = computed<string>(() => route.path)
-const homepagePath = computed(() => router.resolve({ name: RouteName.HOMEPAGE }).path)
+const activeMenuItem = computed<string>(() => route.name as string)
 const entityOverviewPath = computed(
   () => RouterHelpers.hasProvidedAncestor({ route, ancestorName: RouteName.FOLDER }),
 )
@@ -96,18 +97,19 @@ const canBeConsideredSingleEntity = computed(() => {
   && props.isCollab === false
 })
 
+// Calculate legacy GED path
+const legacyGedPath = computed(() => router.resolve({
+  name: RouteName.PENNYLANE_GED_LEGACY,
+  params: { entityId: props.selectedEntityId },
+}).path)
+
 // Build menu context for the manager
 const menuContext = computed<MenuContext>(() => {
-  const legacyGedRoute = router.resolve({
-    name: RouteName.PENNYLANE_GED_LEGACY,
-    params: { entityId: props.selectedEntityId },
-  })
-
   return {
     entityId: props.selectedEntityId,
     isCollab: props.isCollab ?? false,
     currentRoute: route,
-    legacyGedPath: legacyGedRoute.path,
+    legacyGedPath: legacyGedPath.value,
     permissions: {
       shouldShowBIReports: shouldShowBIReports.value,
       hasPennylaneAccounting: PennylanePermissionsManager.hasPennylaneAccountingPermission(),
@@ -150,7 +152,7 @@ const setMenuItem = async () => {
 const permissionsStore = usePermissionsStore()
 watch(() => [
   permissionsStore.selectedEntityPermissions,
-  route.path,
+  route.name,
 ], async () => {
   setMenuItem()
 })

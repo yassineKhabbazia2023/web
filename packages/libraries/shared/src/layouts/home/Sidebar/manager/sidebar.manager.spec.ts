@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { RouteName } from '@pulse/common/enums'
 import { SidebarManager } from './sidebar.manager'
 import { createMockContext, createMockMenuItem, createContextWithPermissions } from '../__mocks__/sidebar.manager.mocks'
 
@@ -15,6 +15,7 @@ describe('SidebarManager', () => {
         id: 'test-item',
         title: 'shared.sidebar.test',
         icon: 'house',
+        routeName: RouteName.BANK,
         order: 1,
         featureName: 'test feature',
       })
@@ -26,7 +27,7 @@ describe('SidebarManager', () => {
 
       expect(items).toHaveLength(1)
       expect(items[0]).toMatchObject({
-        routePath: '/dossier/123/test',
+        routeName: RouteName.BANK,
         title: 'shared.sidebar.test',
         iconLeftName: 'house',
         display: true,
@@ -73,6 +74,49 @@ describe('SidebarManager', () => {
     })
   })
 
+  describe('getMenuItem()', () => {
+    it('should return undefined if menu item does not exist', () => {
+      const result = SidebarManager.getMenuItem('non-existent')
+
+      expect(result).toBeUndefined()
+    })
+
+    it('should return the menu item configuration by id', () => {
+      const menuItem = createMockMenuItem({
+        id: 'test-item',
+        title: 'shared.sidebar.test',
+        icon: 'house',
+        order: 1,
+      })
+
+      SidebarManager.register(menuItem)
+
+      const result = SidebarManager.getMenuItem('test-item')
+
+      expect(result).toBeDefined()
+      expect(result?.id).toBe('test-item')
+      expect(result?.title).toBe('shared.sidebar.test')
+      expect(result?.icon).toBe('house')
+      expect(result?.order).toBe(1)
+    })
+
+    it('should return the correct menu item when multiple items are registered', () => {
+      const item1 = createMockMenuItem({ id: 'item-1', title: 'shared.sidebar.first' })
+      const item2 = createMockMenuItem({ id: 'item-2', title: 'shared.sidebar.second' })
+      const item3 = createMockMenuItem({ id: 'item-3', title: 'shared.sidebar.third' })
+
+      SidebarManager.register(item1)
+      SidebarManager.register(item2)
+      SidebarManager.register(item3)
+
+      const result = SidebarManager.getMenuItem('item-2')
+
+      expect(result).toBeDefined()
+      expect(result?.id).toBe('item-2')
+      expect(result?.title).toBe('shared.sidebar.second')
+    })
+  })
+
   describe('getMenuItems()', () => {
     it('should return an empty array if no items are registered', () => {
       const context = createMockContext()
@@ -84,6 +128,7 @@ describe('SidebarManager', () => {
     it('should filter items based on shouldDisplay()', () => {
       const visibleItem = createMockMenuItem({
         id: 'visible',
+        routeName: RouteName.INDICATORS,
         shouldDisplay: () => true,
         order: 1,
       })
@@ -101,7 +146,7 @@ describe('SidebarManager', () => {
       const items = SidebarManager.getMenuItems(context)
 
       expect(items).toHaveLength(1)
-      expect(items[0].routePath).toBe('/dossier/123/test')
+      expect(items[0].routeName).toBe(RouteName.INDICATORS)
     })
 
     it('should sort items by order in ascending order', () => {
@@ -122,12 +167,12 @@ describe('SidebarManager', () => {
       expect(items[2].title).toBe('shared.sidebar.third')
     })
 
-    it('should map properties correctly (routePath, title, iconLeftName)', () => {
+    it('should map properties correctly (routeName, title, iconLeftName)', () => {
       const menuItem = createMockMenuItem({
         id: 'test',
         title: 'shared.sidebar.test',
         icon: 'clipboardData',
-        route: (entityId) => `/dossier/${entityId}/custom-route`,
+        routeName: RouteName.GED,
         order: 1,
       })
 
@@ -137,27 +182,25 @@ describe('SidebarManager', () => {
       const items = SidebarManager.getMenuItems(context)
 
       expect(items[0]).toMatchObject({
-        routePath: '/dossier/456/custom-route',
+        routeName: RouteName.GED,
         title: 'shared.sidebar.test',
         iconLeftName: 'clipboardData',
       })
     })
 
-    it('should call route() with entityId and context', () => {
-      const routeMock = vi.fn((entityId) => `/dossier/${entityId}/test`)
-
+    it('should return routeName from the menu item config', () => {
       const menuItem = createMockMenuItem({
         id: 'test',
-        route: routeMock,
+        routeName: RouteName.BANK,
         order: 1,
       })
 
       SidebarManager.register(menuItem)
 
       const context = createMockContext({ entityId: 789 })
-      SidebarManager.getMenuItems(context)
+      const items = SidebarManager.getMenuItems(context)
 
-      expect(routeMock).toHaveBeenCalledWith(789, context)
+      expect(items[0].routeName).toBe(RouteName.BANK)
     })
 
     it('should handle optional featureName', () => {
@@ -255,7 +298,7 @@ describe('SidebarManager', () => {
 
       const result = SidebarManager.getEntityOverviewMenuItem(context)
 
-      expect(result?.routePath).toBe('/dossier/123/gestion-utilisateurs')
+      expect(result?.routeName).toBe(RouteName.USERS)
     })
 
     it('should prioritize collaborateurs route for collab with hasCollaborators', () => {
@@ -266,7 +309,7 @@ describe('SidebarManager', () => {
 
       const result = SidebarManager.getEntityOverviewMenuItem(context)
 
-      expect(result?.routePath).toBe('/dossier/123/collaborateurs')
+      expect(result?.routeName).toBe(RouteName.COLLAB)
     })
 
     it('should prioritize offres route if hasOffer is true', () => {
@@ -277,7 +320,7 @@ describe('SidebarManager', () => {
 
       const result = SidebarManager.getEntityOverviewMenuItem(context)
 
-      expect(result?.routePath).toBe('/dossier/123/offres')
+      expect(result?.routeName).toBe(RouteName.OFFERS)
     })
 
     it('should prioritize informations route if hasInformation is true', () => {
@@ -288,7 +331,7 @@ describe('SidebarManager', () => {
 
       const result = SidebarManager.getEntityOverviewMenuItem(context)
 
-      expect(result?.routePath).toBe('/dossier/123/informations')
+      expect(result?.routeName).toBe(RouteName.INFO)
     })
 
     it('should prioritize historique-delegations route for collab with hasHistory', () => {
@@ -296,7 +339,7 @@ describe('SidebarManager', () => {
 
       const result = SidebarManager.getEntityOverviewMenuItem(context)
 
-      expect(result?.routePath).toBe('/dossier/123/historique-delegations')
+      expect(result?.routeName).toBe(RouteName.DELEGATIONS_HISTORY)
     })
 
     it('should always have iconLeftName: "building"', () => {
@@ -307,12 +350,12 @@ describe('SidebarManager', () => {
       expect(result?.iconLeftName).toBe('building')
     })
 
-    it('should construct routePath with entityId', () => {
+    it('should return routeName from menu configuration', () => {
       const context = createContextWithPermissions(['hasInformation'], { entityId: 999 })
 
       const result = SidebarManager.getEntityOverviewMenuItem(context)
 
-      expect(result?.routePath).toBe('/dossier/999/informations')
+      expect(result?.routeName).toBe(RouteName.INFO)
     })
   })
 })

@@ -1,5 +1,6 @@
 import type { IconName } from '@pulse/styleguide/types'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
+import type { RouteName } from '@pulse/common/enums'
 
 /**
  * Represents a menu item configuration for registration
@@ -8,7 +9,7 @@ export interface MenuItemConfig {
   id: string
   title: string // i18n key
   icon: IconName
-  route: (entityId: number, context: MenuContext) => string
+  routeName: RouteName // Route name from APP_ROUTES
   shouldDisplay: (context: MenuContext) => boolean
   order: number
   featureName?: string // For Amplitude tracking
@@ -45,7 +46,7 @@ export interface MenuContext {
  * Represents a resolved menu item ready for display
  */
 export interface MenuItem {
-  routePath: string
+  routeName: RouteName
   title: string
   featureName?: string
   display: boolean

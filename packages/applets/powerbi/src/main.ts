@@ -3,7 +3,6 @@ import type { RouteRecordRaw } from 'vue-router'
 import { RoutesManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'
 import { APP_ROUTES, FEATURE_FLAG_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
-import { SidebarManager } from '@pulse/shared/manager'
 
 const entityRoutes: RouteRecordRaw[] = [
   {
@@ -38,15 +37,5 @@ export default {
 
     RoutesManager.addRoutesToWallet(router, walletRoutes)
     RoutesManager.addRoutesToEntity(router, entityRoutes)
-
-    // Register sidebar menu item
-    SidebarManager.register({
-      id: 'bi-reports',
-      title: 'shared.sidebar.biReports',
-      icon: 'clipboardData',
-      route: (entityId) => `/dossier/${entityId}/rapports-bi`,
-      shouldDisplay: (ctx) => ctx.permissions.shouldShowBIReports,
-      order: 1,
-    })
   },
 }

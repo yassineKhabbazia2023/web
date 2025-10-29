@@ -6,7 +6,11 @@
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
-  "main": "src/main.ts",
+  "exports": {
+    ".": "./src/main.ts",
+    "./enums": "./src/modules/wallet/enums/index.ts",
+    "./wallet-managers": "./src/modules/wallet/managers/index.ts"
+  },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",
     "build:types": "vue-tsc --build --force",

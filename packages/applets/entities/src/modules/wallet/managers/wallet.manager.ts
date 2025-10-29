@@ -1,4 +1,4 @@
-import type { WalletTabConfig, WalletContext, WalletTabItem } from './wallet.types'
+import type { WalletTabConfig, WalletContext, WalletTabItem } from '../types'
 import type { WalletTab } from '../enums'
 import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 
@@ -13,6 +13,13 @@ export class WalletManager {
    */
   static register(config: WalletTabConfig): void {
     this.tabs.set(config.id, config)
+  }
+
+  /**
+   * Get a specific wallet tab configuration by id
+   */
+  static getTab(id: WalletTab): WalletTabConfig | undefined {
+    return this.tabs.get(id)
   }
 
   /**
