@@ -1,5 +1,6 @@
 import { ElNotification } from 'element-plus'
 import type { NotificationPosition, PNotificationProps } from './PNotificationTypes'
+import type { IconName } from '../../types/IconName.types'
 import { getIconComponent } from '../../utils/iconHelper'
 
 export function PNotification(props: PNotificationProps) {
@@ -33,17 +34,32 @@ export function PNotification(props: PNotificationProps) {
 }
 
 /**
- * Function that simplifies the display of success and error notifications
+ * Function that simplifies the display of success, error and warning notifications
  */
 export const displayNotification = (
-  type: 'success' | 'error',
+  type: 'success' | 'error' | 'warning',
   message: string,
   position: NotificationPosition = 'bottom-right',
   duration: number = 3000,
 ) => {
+  let iconName: IconName
+
+  switch (type) {
+    case 'success':
+      iconName = 'check'
+      break
+    case 'warning':
+      iconName = 'exclamationTriangle'
+      break
+    case 'error':
+    default:
+      iconName = 'x'
+      break
+  }
+
   PNotification({
     message,
-    iconName: type === 'success' ? 'check' : 'x',
+    iconName,
     showClose: true,
     customClass: type,
     position,

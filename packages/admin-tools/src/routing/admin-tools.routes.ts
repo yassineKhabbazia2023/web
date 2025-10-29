@@ -11,22 +11,13 @@ const routes: RouteRecordRaw[] = [
     redirect: { name: ADMIN_TOOLS_ROUTES.anonymous.login.name },
     children: [
       {
-        path: ADMIN_TOOLS_ROUTES.anonymous.root.path,
-        name: ADMIN_TOOLS_ROUTES.anonymous.root.name,
+        path: ADMIN_TOOLS_ROUTES.anonymous.login.path,
+        name: ADMIN_TOOLS_ROUTES.anonymous.login.name,
+        component: () => import('@admin-tools/pages/anonymous/login.page.vue'),
         meta: {
           [ALLOW_ANONYMOUS_META]: true,
+          title: 'Connexion - Pulse Admin Tools',
         },
-        redirect: { name: ADMIN_TOOLS_ROUTES.anonymous.login.name },
-        children: [
-          {
-            path: ADMIN_TOOLS_ROUTES.anonymous.login.path,
-            name: ADMIN_TOOLS_ROUTES.anonymous.login.name,
-            component: () => import('@admin-tools/pages/anonymous/login.page.vue'),
-            meta: {
-              title: 'Admin Tools - Connexion',
-            },
-          },
-        ],
       },
       {
         path: ADMIN_TOOLS_ROUTES.authenticated.root.path,
@@ -35,14 +26,14 @@ const routes: RouteRecordRaw[] = [
         meta: {
           [ALLOW_AUTHENTICATED_META]: true,
         },
-        redirect: { name: ADMIN_TOOLS_ROUTES.authenticated.envVars.name },
+        redirect: { name: ADMIN_TOOLS_ROUTES.authenticated.appSettings.name },
         children: [
           {
-            path: ADMIN_TOOLS_ROUTES.authenticated.envVars.path,
-            name: ADMIN_TOOLS_ROUTES.authenticated.envVars.name,
-            component: () => import('@admin-tools/pages/authenticated/env-vars.page.vue'),
+            path: ADMIN_TOOLS_ROUTES.authenticated.appSettings.path,
+            name: ADMIN_TOOLS_ROUTES.authenticated.appSettings.name,
+            component: () => import('@admin-tools/pages/authenticated/app-settings-list.page.vue'),
             meta: {
-              title: 'Admin Tools - Variables d\'environnement',
+              title: 'Variables d\'environnement - Pulse Admin Tools',
             },
           },
         ],
@@ -52,14 +43,14 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
 
 router.beforeEach(authenticationGuard)
 
 router.beforeEach((to) => {
-  const title = to.meta?.title as string || 'Admin Tools'
+  const title = to.meta?.title as string || 'Pulse Admin Tools'
   document.title = title
 })
 

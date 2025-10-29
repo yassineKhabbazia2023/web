@@ -1,21 +1,16 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { LoginManager } from './login.manager'
-import { MsalService } from '@admin-tools/services/msal.service'
+import { AdminMsalService } from '@admin-tools/services/admin-msal/admin-msal.service'
 
 vi.mock('@azure/msal-browser', () => ({
   PublicClientApplication: vi.fn(),
   AccountInfo: {},
 }))
 
-vi.mock('@admin-tools/services/msal.service')
+vi.mock('@admin-tools/services/admin-msal/admin-msal.service')
 
-const mockedMsalService = vi.mocked(MsalService)
+const mockedMsalService = vi.mocked(AdminMsalService)
 
 describe('LoginManager', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   describe('initAuthSSO', () => {
     it('should handle redirect result and call login redirect', async () => {
       mockedMsalService.handleRedirectResult.mockResolvedValue(true)
@@ -23,9 +18,8 @@ describe('LoginManager', () => {
 
       await LoginManager.initAuthSSO()
 
-      expect(mockedMsalService.handleRedirectResult).toHaveBeenCalledOnce()
-      expect(mockedMsalService.loginRedirect).toHaveBeenCalledOnce()
-      expect(mockedMsalService.loginRedirect).toHaveBeenCalledWith()
+      expect(mockedMsalService.handleRedirectResult).toHaveBeenCalledExactlyOnceWith()
+      expect(mockedMsalService.loginRedirect).toHaveBeenCalledExactlyOnceWith()
     })
 
     it('should handle errors from handleRedirectResult', async () => {
@@ -33,7 +27,7 @@ describe('LoginManager', () => {
       mockedMsalService.handleRedirectResult.mockRejectedValue(error)
 
       await expect(LoginManager.initAuthSSO()).rejects.toThrow('Redirect handling failed')
-      expect(mockedMsalService.handleRedirectResult).toHaveBeenCalledOnce()
+      expect(mockedMsalService.handleRedirectResult).toHaveBeenCalledExactlyOnceWith()
       expect(mockedMsalService.loginRedirect).not.toHaveBeenCalled()
     })
   })
@@ -44,8 +38,39 @@ describe('LoginManager', () => {
 
       await LoginManager.handleLogout()
 
-      expect(mockedMsalService.logout).toHaveBeenCalledOnce()
-      expect(mockedMsalService.logout).toHaveBeenCalledWith()
+      expect(mockedMsalService.logout).toHaveBeenCalledExactlyOnceWith()
+    })
+  })
+
+  describe('clearAuthStorage', () => {
+    it('should clear all localStorage', () => {
+      const clearMock = vi.fn()
+
+      vi.stubGlobal('localStorage', {
+        clear: clearMock,
+      })
+
+      LoginManager.clearAuthStorage()
+
+      expect(clearMock).toHaveBeenCalledExactlyOnceWith()
+
+      vi.unstubAllGlobals()
+    })
+
+    it('should handle errors when clearing localStorage', () => {
+      const clearMock = vi.fn(() => {
+        throw new Error('Clear failed')
+      })
+
+      vi.stubGlobal('localStorage', {
+        clear: clearMock,
+      })
+
+      // Should not throw, just log the error
+      expect(() => LoginManager.clearAuthStorage()).not.toThrow()
+      expect(clearMock).toHaveBeenCalledExactlyOnceWith()
+
+      vi.unstubAllGlobals()
     })
   })
 })

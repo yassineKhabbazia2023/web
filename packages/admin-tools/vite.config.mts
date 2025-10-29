@@ -3,9 +3,10 @@ import path from 'node:path'
 import { defineConfig, mergeConfig } from 'vitest/config'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
+import { viteExternalsPlugin } from 'vite-plugin-externals'
 import { viteConfigBase } from '../@config/vite.config.base.mts'
 
-const PORT = 9000
+const PORT = 9001
 
 export default ({ mode }: any) =>
   defineConfig(
@@ -13,6 +14,7 @@ export default ({ mode }: any) =>
       plugins: [
         vue(),
         VueI18nPlugin({}),
+        viteExternalsPlugin({ 'env-vars': 'EnvVars' }, { disableInServe: mode === 'test' }),
       ],
       resolve: {
         alias: {
@@ -34,6 +36,7 @@ export default ({ mode }: any) =>
       },
       test: {
         testTimeout: 60000,
+        setupFiles: 'vitest.setup.ts',
         alias: [
           {
             find: /^element-plus$/,
@@ -57,9 +60,27 @@ export default ({ mode }: any) =>
       },
       build: {
         outDir: '../../dist-admin-tools',
+        chunkSizeWarningLimit: 500,
+        minify: mode === 'production' ? 'terser' : false,
+        terserOptions: {
+          compress: {
+            drop_debugger: true,
+          },
+        },
+        reportCompressedSize: false,
+        sourcemap: mode === 'development' ? 'inline' : false,
         rollupOptions: {
           external: './env-vars.js',
+          preserveEntrySignatures: 'exports-only',
+          output: {
+            chunkFileNames: 'js/[name]-[hash].js',
+            entryFileNames: 'js/[name]-[hash].js',
+            assetFileNames: 'assets/[name]-[hash][extname]',
+          },
         },
+        cssCodeSplit: true,
+        cssMinify: mode === 'production' ? 'lightningcss' : false,
+        modulePreload: { polyfill: false },
       },
     }),
   )

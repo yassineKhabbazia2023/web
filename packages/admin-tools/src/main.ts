@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import styleguideLibrary from '@pulse/styleguide'
+import '@pulse/styleguide/fonts'
 
 import router from './routing/admin-tools.routes'
 

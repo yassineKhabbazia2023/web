@@ -8,6 +8,7 @@
   "exports": {
   "./components": "./src/components.ts",
   "./types": "./src/types.ts",
+  "./fonts": "./src/assets/fonts/index.css",
   ".": "./src/main.ts"
   },
   "scripts": {

@@ -1,0 +1,27 @@
+trigger: none
+
+parameters:
+- name: deployToItg
+  displayName: 'Déployer sur ITG'
+  type: boolean
+  default: true
+- name: deployToRec
+  displayName: 'Déployer sur REC'
+  type: boolean
+  default: false
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+resources:
+  repositories:
+  - repository: Pulse
+    name: 'Pulse.Operations.Pipelines'
+    type: git
+    ref: 'Release/v4.0'
+
+extends:
+  template: pipelines/quick-build/backoffice.yaml@Pulse
+  parameters:
+    deployToItg: ${{ parameters.deployToItg }}
+    deployToRec: ${{ parameters.deployToRec }}

@@ -1,15 +1,24 @@
 import { logger } from '@pulse/toolbox'
 import type { NavigationGuard } from 'vue-router'
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
-import { MsalService } from '@admin-tools/services/msal.service'
+import { AdminMsalService } from '@admin-tools/services/admin-msal/admin-msal.service'
 import { AdminRouteNames } from '@admin-tools/constants/admin-tools-route-names.enum'
 
 export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
-  const isAuthenticated = await MsalService.isUserAuthenticated()
+  let isAuthenticated = false
+
+  try {
+    isAuthenticated = await AdminMsalService.isUserAuthenticated()
+  } catch (error) {
+    logger.error('Failed to verify authentication', error)
+    // En cas d'erreur, on considère l'utilisateur comme non authentifié
+    isAuthenticated = false
+  }
+
   const allowAnonymous = to.meta?.[ALLOW_ANONYMOUS_META] === true
   const allowAuthenticated = to.meta?.[ALLOW_AUTHENTICATED_META] === true
   const toName = to.name as string
-  const anonymousRouteName = AdminRouteNames.ANONYMOUS
+  const anonymousRouteName = AdminRouteNames.LOGIN
   const authenticatedRouteName = AdminRouteNames.AUTHENTICATED
 
   if (allowAnonymous === true && allowAuthenticated === true) {
