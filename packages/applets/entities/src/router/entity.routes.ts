@@ -48,7 +48,7 @@ entityRoutes.push(
   {
     path: APP_ROUTES.entity.bank.path,
     name: APP_ROUTES.entity.bank.name,
-    component: () => import('@entities/modules/entity/pages/workInProgress'),
+    component: () => import('@pulse/shared/pages/work-in-progress'),
     meta: {
       [LAYOUT_NO_PADDING_META]: true,
     },
@@ -56,7 +56,7 @@ entityRoutes.push(
   {
     path: APP_ROUTES.entity.indicators.path,
     name: APP_ROUTES.entity.indicators.name,
-    component: () => import('@entities/modules/entity/pages/workInProgress'),
+    component: () => import('@pulse/shared/pages/work-in-progress'),
     meta: {
       [LAYOUT_NO_PADDING_META]: true,
     },
