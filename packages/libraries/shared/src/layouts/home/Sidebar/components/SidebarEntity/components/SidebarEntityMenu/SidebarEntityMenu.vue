@@ -63,13 +63,12 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { RouteName } from '@pulse/common/enums'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager, PennylanePermissionsManager, ReportingManager } from '@pulse/common/managers'
 import { PMenuItem, PMenu } from '@pulse/styleguide/components'
 import { ACCOUNT_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import type { SidebarEntityMenuProps } from './SidebarEntityMenuTypes'
-import { usePermissionsStore } from '@pulse/common/stores'
 import { SidebarManager } from '@pulse/shared/manager'
 import type { MenuItem, MenuContext } from '@pulse/shared/manager'
 import { RouterHelpers } from '@pulse/common/helpers'
@@ -145,21 +144,16 @@ const logAmplitudeEvent = (menuItem: MenuItem) => {
   })
 }
 
-const setMenuItem = async () => {
+const refreshPowerBIReportsBtnVisibility = async () => {
   shouldShowBIReports.value = await ReportingManager.canShowBIReports()
 }
 
-const permissionsStore = usePermissionsStore()
-watch(() => [
-  permissionsStore.selectedEntityPermissions,
-  route.name,
-], async () => {
-  setMenuItem()
+watch(() => route.params[RouteParam.ENTITY_ID], () => {
+  refreshPowerBIReportsBtnVisibility()
 })
 
-onMounted(async () => {
-  // get menu item first time when loaded page
-  setMenuItem()
+onMounted(() => {
+  refreshPowerBIReportsBtnVisibility()
 })
 </script>
 

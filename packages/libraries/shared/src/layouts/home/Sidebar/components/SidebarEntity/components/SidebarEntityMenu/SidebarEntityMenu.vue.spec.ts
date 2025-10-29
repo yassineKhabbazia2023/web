@@ -24,6 +24,8 @@ const resolveSpy = vi.hoisted(() => vi.fn())
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     fullPath: '/launcher',
+    name: 'homepage',
+    params: {},
   }),
   useRouter: () => ({
     resolve: resolveSpy,
