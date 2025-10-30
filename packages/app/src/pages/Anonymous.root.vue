@@ -3,35 +3,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeMount, onBeforeUnmount } from 'vue'
+import { onBeforeUnmount } from 'vue'
 import { AnonymousFlowManager } from '@app/managers/anonymous.flow.manager'
-import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
-import type { RouteLocationNormalizedGeneric } from 'vue-router'
-import { ROUTE_IS_COLLAB_META, APP_ROUTES } from '@pulse/common/constants'
-
-const router = useRouter()
-const route = useRoute()
-
-const checkRedirections = (currentRoute: RouteLocationNormalizedGeneric) => {
-  if (currentRoute.name === APP_ROUTES.anonymous.name) {
-    const nextRoute = AnonymousFlowManager.getLandingPage()
-    router.push(nextRoute)
-  }
-}
-
-onBeforeMount(async () => {
-  const routeIsCollab = route.meta[ROUTE_IS_COLLAB_META] === true
-  AnonymousFlowManager.enterAnonymousFlow({ routeIsCollab })
-
-  // check if we should redirect on first mount
-  checkRedirections(route)
-})
-
-onBeforeRouteUpdate(async (to) => {
-  // check if we should redirect on route update
-  checkRedirections(to)
-})
-
 
 onBeforeUnmount(() => {
   AnonymousFlowManager.exitAnonymousFlow()

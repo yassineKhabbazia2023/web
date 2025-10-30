@@ -2,6 +2,7 @@ import { BootManager } from './boot.manager'
 import { createTestingPinia } from '@pinia/testing'
 import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { APP_ROUTES } from '@pulse/common/constants'
 
 import { AnonymousFlowManager } from './anonymous.flow.manager'
 
@@ -49,12 +50,59 @@ describe('AnonymousFlowManager', () => {
       expect(initProductFruitsAnonymousCustomer).toHaveBeenCalled()
       expect(amplitudeIdentifyCustomerSpy).toHaveBeenCalled()
     })
+    it('should NOT throw (and lock the UX) if third parties are broken', () => {
+      vi.mocked(initProductFruitsAnonymousCustomer).mockImplementation(() => {
+        throw new Error('ProductFruits error')
+      })
+
+      expect(() => AnonymousFlowManager.initAnonymousThirdParties(false)).not.toThrow()
+    })
   })
 
   describe('exitAnonymousFlow', () => {
     it('should call stopProductFruits', () => {
       AnonymousFlowManager.exitAnonymousFlow()
       expect(stopProductFruits).toHaveBeenCalled()
+    })
+    it('should NOT throw (and lock the UX) if third parties are broken', () => {
+      vi.mocked(stopProductFruits).mockImplementation(() => {
+        throw new Error('ProductFruits error')
+      })
+
+      expect(() => AnonymousFlowManager.exitAnonymousFlow()).not.toThrow()
+    })
+  })
+
+  describe('getAnonymousRedirection', () => {
+    const createMockRoute = (name: string) => ({ name }) as any
+
+    it('should return landing page when navigating to anonymous root', () => {
+      const route = createMockRoute(APP_ROUTES.anonymous.name)
+      const result = AnonymousFlowManager.getAnonymousRedirection(route)
+
+      expect(result).toEqual({ name: APP_ROUTES.login.client.name })
+    })
+
+    it('should return null when navigating to a specific anonymous route', () => {
+      const route = createMockRoute(APP_ROUTES.login.client.name)
+      const result = AnonymousFlowManager.getAnonymousRedirection(route)
+
+      expect(result).toBe(null)
+    })
+
+    it('should return null when navigating to any other route', () => {
+      const route = createMockRoute('some-other-route')
+      const result = AnonymousFlowManager.getAnonymousRedirection(route)
+
+      expect(result).toBe(null)
+    })
+  })
+
+  describe('getLandingPage', () => {
+    it('should return the client login page', () => {
+      const result = AnonymousFlowManager.getLandingPage()
+
+      expect(result).toEqual({ name: APP_ROUTES.login.client.name })
     })
   })
 })

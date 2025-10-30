@@ -3,6 +3,7 @@ import { APP_ROUTES } from '@pulse/common/constants'
 import { logger } from '@pulse/toolbox'
 import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { BootManager } from './boot.manager'
+import type { RouteLocationNormalized, RouteLocationNamedRaw } from 'vue-router'
 
 export class AnonymousFlowManager {
   static enterAnonymousFlow({ routeIsCollab }: { routeIsCollab: boolean }) {
@@ -39,6 +40,19 @@ export class AnonymousFlowManager {
     }
   }
   // #endregion setup
+
+  // #region redirections
+  /**
+   * Check if the current route should be redirected
+   * Returns the redirection route or null if no redirection is needed
+   */
+  static getAnonymousRedirection(to: RouteLocationNormalized): RouteLocationNamedRaw | null {
+    if (to.name === APP_ROUTES.anonymous.name) {
+      return this.getLandingPage()
+    }
+    return null
+  }
+  // #endregion redirections
 
   // #region landing pages
   static getLandingPage() {

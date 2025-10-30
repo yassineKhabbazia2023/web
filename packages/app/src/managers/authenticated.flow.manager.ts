@@ -16,7 +16,7 @@ import {
 import { logger } from '@pulse/toolbox'
 import { SelectedEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import type { RouteLocationNamedRaw } from 'vue-router'
+import type { RouteLocationNamedRaw, RouteLocationNormalized } from 'vue-router'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { fetchEntityById } from '@pulse/common/services/entities'
 import { Entity } from '@pulse/common/types'
@@ -173,6 +173,38 @@ export class AuthenticatedFlowManager {
   static hasUserAcceptedCGUStored() {
     const userStore = useUserStore()
     return userStore.getHasAcceptedCGU()
+  }
+
+  /**
+   * Check if the current route should be redirected
+   * Returns the redirection route or null if no redirection is needed
+   */
+  static async getAuthenticatedRedirection(
+    to: RouteLocationNormalized,
+  ): Promise<RouteLocationNamedRaw | null> {
+    // Check CGU redirection first (highest priority)
+    const cguRedirection = await this.getCGURedirection()
+    if (cguRedirection && to.name !== cguRedirection.name) {
+      return cguRedirection
+    }
+
+    // Check if navigating to authenticated root (needs landing page redirect)
+    if (this.isNavigatingToAuthenticatedRoot(to.name as RouteName)) {
+      const redirection = this.getLandingPage()
+      if (redirection && to.name !== redirection.name) {
+        return redirection
+      }
+    }
+
+    // Check if navigating to customer wallet (needs specific landing page redirect)
+    if (this.isNavigatingToCustomerWallet(to.name as RouteName)) {
+      const redirection = this.getCustomerLandingPage()
+      if (redirection && to.name !== redirection.name) {
+        return redirection
+      }
+    }
+
+    return null
   }
   // #endregion redirections
 

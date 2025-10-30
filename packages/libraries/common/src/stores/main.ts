@@ -1,6 +1,7 @@
+export { resetAllStores } from './stores.utils'
 export { useBookingStore } from './booking/booking.store'
+export { useLoadingStore } from './loading/loading.store'
 export { usePermissionsStore } from './permissions/permissions.store'
 export { useSelectedEntityStore } from './selected-entity/selected-entity.store'
 export { useTokenStore } from './token/token.store'
 export { useUserStore } from './user/user.store'
-export { resetAllStores } from './stores.utils'

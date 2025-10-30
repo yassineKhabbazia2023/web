@@ -95,6 +95,21 @@ describe('AuthenticatedFlowManager', () => {
       expect(userStoreMock.setUser).not.toHaveBeenCalled()
       expect(permissionsStoreMock.setUserPermissions).not.toHaveBeenCalled()
     })
+
+    it('should log error when currentUserContext is undefined', async () => {
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(undefined as any)
+
+      await AuthenticatedFlowManager.initCurrentUser()
+
+      // Should log error and not throw (graceful degradation)
+      expect(loggerMock.error).toHaveBeenCalledWith(
+        'unable to fetch user information nor its permissions',
+        expect.any(Error),
+      )
+      // Should not call store methods when context is undefined
+      expect(userStoreMock.setUser).not.toHaveBeenCalled()
+      expect(permissionsStoreMock.setUserPermissions).not.toHaveBeenCalled()
+    })
   })
 
   describe('initEntities', () => {
@@ -434,6 +449,126 @@ describe('AuthenticatedFlowManager', () => {
       const result = AuthenticatedFlowManager.getCollabLandingPage()
 
       expect(result).toEqual({ name: APP_ROUTES.wallet.collab.landing.name })
+    })
+  })
+
+  describe('getAuthenticatedRedirection', () => {
+    const createMockRoute = (name: string) => ({ name }) as any
+
+    describe('CGU redirection (highest priority)', () => {
+      it('should return CGU redirection when user has not accepted CGU', async () => {
+        userStoreMock.isCollab = false
+        userStoreMock.getHasAcceptedCGU.mockReturnValue(false)
+        vi.mocked(getTermsByCurrentUser).mockResolvedValue({
+          isCurrent: false,
+          terms: { termsId: 123 } as any,
+          hasAcceptedBefore: false,
+        } as any)
+
+        const route = createMockRoute(APP_ROUTES.authenticated.name)
+        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
+
+        expect(result).toEqual({
+          name: APP_ROUTES.login.cguValidation.name,
+          params: { termsId: 123 },
+        })
+      })
+
+      it('should not redirect if already on CGU page', async () => {
+        userStoreMock.isCollab = false
+        userStoreMock.getHasAcceptedCGU.mockReturnValue(false)
+        vi.mocked(getTermsByCurrentUser).mockResolvedValue({
+          isCurrent: false,
+          terms: { termsId: 123 } as any,
+          hasAcceptedBefore: false,
+        } as any)
+
+        const route = createMockRoute(APP_ROUTES.login.cguValidation.name)
+        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
+
+        expect(result).toBe(null)
+      })
+    })
+
+    describe('Authenticated root redirection', () => {
+      beforeEach(() => {
+        userStoreMock.isCollab = true
+      })
+
+      it('should return landing page when navigating to authenticated root', async () => {
+        const route = createMockRoute(APP_ROUTES.authenticated.name)
+        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
+
+        expect(result).toEqual({ name: APP_ROUTES.wallet.collab.landing.name })
+      })
+
+      it('should not redirect if already on landing page', async () => {
+        const route = createMockRoute(APP_ROUTES.wallet.collab.landing.name)
+        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
+
+        expect(result).toBe(null)
+      })
+    })
+
+    describe('Customer wallet redirection', () => {
+      beforeEach(() => {
+        userStoreMock.isCollab = false
+        userStoreMock.isCustomer = true
+        userStoreMock.getHasAcceptedCGU.mockReturnValue(true)
+      })
+
+      it('should return customer landing page when navigating to wallet root', async () => {
+        userStoreMock.getIsSingleEntity.mockReturnValue(false)
+
+        const route = createMockRoute(APP_ROUTES.wallet.client.root.name)
+        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
+
+        expect(result).toEqual({ name: APP_ROUTES.wallet.client.landing.name })
+      })
+
+      it('should not redirect if already on customer landing page', async () => {
+        userStoreMock.getIsSingleEntity.mockReturnValue(false)
+
+        const route = createMockRoute(APP_ROUTES.wallet.client.landing.name)
+        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
+
+        expect(result).toBe(null)
+      })
+    })
+
+    describe('No redirection needed', () => {
+      beforeEach(() => {
+        userStoreMock.isCollab = true
+      })
+
+      it('should return null when navigating to a regular route', async () => {
+        const route = createMockRoute(RouteName.HOMEPAGE)
+        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
+
+        expect(result).toBe(null)
+      })
+    })
+
+    describe('Priority order', () => {
+      it('should prioritize CGU redirection over landing page redirection', async () => {
+        userStoreMock.isCollab = false
+        userStoreMock.getHasAcceptedCGU.mockReturnValue(false)
+        vi.mocked(getTermsByCurrentUser).mockResolvedValue({
+          isCurrent: false,
+          terms: { termsId: 123 } as any,
+          hasAcceptedBefore: false,
+        } as any)
+
+        // Even though we're navigating to authenticated root (which would normally redirect to landing page)
+        // CGU redirection should take priority
+        const route = createMockRoute(APP_ROUTES.authenticated.name)
+        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
+
+        expect(result).toEqual({
+          name: APP_ROUTES.login.cguValidation.name,
+          params: { termsId: 123 },
+        })
+      })
     })
   })
 })
