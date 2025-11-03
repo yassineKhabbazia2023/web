@@ -73,8 +73,16 @@ export default defineConfig({
               text: 'Applets',
               items: [
                 {
+                  text: 'Booking',
+                  link: '/monorepo/applets/booking',
+                },
+                {
                   text: 'Entities',
                   link: '/monorepo/applets/entities',
+                },
+                {
+                  text: 'Feed Center',
+                  link: '/monorepo/applets/feed-center',
                 },
                 {
                   text: 'GED',
@@ -102,12 +110,16 @@ export default defineConfig({
               text: 'libraries',
               items: [
                 {
+                  text: 'Toolbox',
+                  link: '/monorepo/libraries/toolbox',
+                },
+                {
                   text: 'Common',
                   link: '/monorepo/libraries/common',
                 },
                 {
-                  text: 'Toolbox',
-                  link: '/monorepo/libraries/toolbox',
+                  text: 'Shared',
+                  link: '/monorepo/libraries/shared',
                 },
                 {
                   text: 'StyleGuide',

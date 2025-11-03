@@ -1,22 +1,24 @@
 # Toolbox
 
-La bibliothèque `@pulse/toolbox` est la **boîte à outil technique** du monorepo. Elle fournit les utilitaires TypeScript essentiels, les gestionnaires système et les outils de base partagés par tous les packages de l'écosystème Pulse.
+La bibliothèque `@pulse/toolbox` est la **boîte à outils technique** du monorepo. Elle fournit les utilitaires TypeScript purs, le logger, et les outils de base partagés par tous les packages de l'écosystème Pulse.
 
 ## Rôle et responsabilités
 
-### Fondations techniques
-`@pulse/toolbox` constitue la **couche de base** du monorepo :
-- **Utilitaires purs** : Fonctions TypeScript sans dépendances Vue
-- **Gestionnaires système** : Services de configuration et de contrôle applicatif
-- **Types et constantes** : Définitions partagées pour la cohérence globale
-- **Outils de développement** : Helpers pour les tests et le debugging
+### Fondations techniques pures
+`@pulse/toolbox` constitue la **couche utilitaire de base** du monorepo, strictement **agnostique du métier** et **du framework** :
+- **Utilitaires TypeScript purs** : Fonctions pour manipuler arrays, objects, dates, strings, HTTP
+- **Logger centralisé** : Système de logging configurable pour toute l'application
+- **Validateurs** : Fonctions de validation de données
+- **Gestionnaires système** : Services de configuration technique (versions, build info)
+- **Mocks de test** : Utilitaires pour faciliter les tests unitaires
 
 ### Architecture zero-dependency
-Cette bibliothèque est **intentionnellement légère** :
-- **Aucune dépendance Vue** : Code TypeScript pur réutilisable partout
-- **API minimaliste** : Fonctions simples et composables
+Cette bibliothèque est **intentionnellement minimaliste** et se distingue de `@pulse/common` :
+- **Aucune dépendance Vue** : Code TypeScript pur réutilisable partout (contrairement à `@pulse/common`)
+- **Aucun service métier** : Pas de logique liée aux entités, permissions, ou autres concepts Pulse
+- **API simple** : Fonctions pures et composables
 - **Performance optimale** : Pas de surcharge framework
-- **Testabilité maximale** : Isolation complète des logiques métier
+- **Testabilité maximale** : Isolation complète pour tests unitaires simples
 
 ## Structure et exports modulaires
 
@@ -57,20 +59,26 @@ Le système de logging configurable offre plusieurs niveaux de traçabilité :
 ## Intégration dans l'écosystème
 
 ### Utilisation transversale
-`@pulse/toolbox` est utilisé par **tous les packages**, par exemple :
+`@pulse/toolbox` fournit des **utilitaires réutilisables** à travers le monorepo :
+
+#### Dans `@pulse/common`
+- **Utilitaires de base** : Manipulation de données, dates, strings
+- **Logger** : Traçabilité des opérations métier
+- **Validateurs** : Validation de données métier
+
+#### Dans `@pulse/shared`
+- **Utilitaires** : Helpers pour les composants
+- **Types** : Définitions communes
 
 #### Dans les applets
 - **Logging** : Traçabilité des erreurs et actions
 - **Validation** : Contrôles de saisie utilisateur
+- **Utilitaires** : Manipulation de données
 
 #### Dans l'application principale
 - **Version management** : Affichage des informations de build
 - **Configuration globale** : Paramétrage par environnement
-
-#### Dans les autres bibliothèques
-- **Utilitaires de base** : Fonctions pures réutilisables
-- **Types partagés** : Cohérence des interfaces
-- **Mocks de test** : Facilitation des tests unitaires
+- **Logger** : Système de logging centralisé
 
 ### Extensibilité
 La bibliothèque est conçue pour **évoluer facilement** :

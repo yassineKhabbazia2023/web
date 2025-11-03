@@ -14,8 +14,9 @@ Ce projet utilise les **npm workspaces** pour gérer l'ensemble des packages dan
   - `launcher` : Lanceur d'applications
   - `offers-catalog` : Catalogue d'offres
 - **`libraries/`** : Bibliothèques partagées entre les différents packages
-  - `core` : Utilitaires TypeScript de base (helpers, types, etc.)
-  - `common` : Services et composables Vue partagés
+  - `toolbox` : Utilitaires TypeScript purs (helpers, types, logger, etc.)
+  - `common` : Cœur de l'application (services métier, stores et managers essentiels)
+  - `shared` : Composants et layouts partagés agnostiques du métier
   - `styleguide` : Composants UI réutilisables et système de design
   - `widgets` : Fonctionnalités packagées autonomes
 
@@ -51,9 +52,10 @@ Les fichiers de configuration à la racine permettent une gestion unifiée :
 4. **Maintenance simplifiée** : Les mises à jour de dépendances se font en un seul endroit
 
 ### Séparation des responsabilités
-- **`core`** : Logique métier pure (pas de Vue)
-- **`common`** : Services et composables Vue partagés
-- **`styleguide`** : Composants UI réutilisables
+- **`toolbox`** : Utilitaires TypeScript purs (pas de dépendances Vue)
+- **`common`** : Cœur de l'application avec services métier, stores Pinia, et managers essentiels (sans lesquels l'app ne peut fonctionner)
+- **`shared`** : Composants et layouts partagés agnostiques du métier (sidebar, layouts home/login/empty)
+- **`styleguide`** : Composants UI réutilisables et système de design
 - **`widgets`** : Fonctionnalités complètes et autonomes
 
 Cette architecture permet de :
