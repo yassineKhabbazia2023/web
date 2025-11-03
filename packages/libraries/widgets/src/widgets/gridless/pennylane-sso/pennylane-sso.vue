@@ -12,7 +12,7 @@
       <PIcon pName="pennylaneColor" />
 
       <div class="margin-x--2">
-        {{ t('accessToPennylane') }}
+        {{ t('widgets.pennylaneSSO.accessToPennylane') }}
       </div>
 
       <PIcon pName="arrowRight" />
@@ -33,7 +33,7 @@ import { AmplitudeTrackingLocation } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local',
+  useScope: 'global',
 })
 
 const props = defineProps<PennylaneSSOProps>()
@@ -51,10 +51,3 @@ const onSSOConnection = () => {
   })
 }
 </script>
-
-<i18n lang="yaml">
-en-US:
-  accessToPennylane: 'Access to Pennylane'
-fr-FR:
-  accessToPennylane: 'Accéder à Pennylane'
-</i18n>

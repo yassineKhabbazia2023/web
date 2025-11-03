@@ -22,15 +22,15 @@
               :pLg="12"
             >
               <h1 class="home-folder__title font-semibold">
-                {{ t('entityWelcomeTitle') }}
-                <span class="text-color--jungle-400">{{ t('brandName') }}</span>
+                {{ t('homepage.legacy.entityWelcomeTitle') }}
+                <span class="text-color--jungle-400">{{ t('homepage.legacy.brandName') }}</span>
               </h1>
             </PCol>
           </PRow>
 
           <PRow class="margin-top--8">
             <PCol>
-              <h2>{{ t('welcome') }}</h2>
+              <h2>{{ t('homepage.legacy.welcome') }}</h2>
             </PCol>
           </PRow>
 
@@ -41,8 +41,9 @@
               :pMd="20"
             >
               <i18n-t
-                keypath="introductionText"
+                keypath="homepage.legacy.introductionText"
                 tag="p"
+                scope="global"
               >
                 <template #aboutUrl>
                   <a
@@ -50,7 +51,7 @@
                     :href="ABOUT_URL"
                     target="_blank"
                   >
-                    {{ t('about') }}
+                    {{ t('homepage.legacy.about') }}
                   </a>
                 </template>
               </i18n-t>
@@ -59,7 +60,7 @@
 
           <PRow class="margin-top--8">
             <PCol>
-              <h2>{{ t('secondSection.title') }}</h2>
+              <h2>{{ t('homepage.legacy.secondSection.title') }}</h2>
             </PCol>
           </PRow>
 
@@ -70,11 +71,12 @@
               :pMd="18"
             >
               <ul class="margin-left--8">
-                <li>{{ t('secondSection.listItems.first') }}</li>
+                <li>{{ t('homepage.legacy.secondSection.listItems.first') }}</li>
                 <li>
                   <i18n-t
-                    keypath="secondSection.listItems.second"
+                    keypath="homepage.legacy.secondSection.listItems.second"
                     tag="p"
+                    scope="global"
                   >
                     <template #loginUrl>
                       <a
@@ -91,7 +93,7 @@
                         :href="CLIENT_HELP_URL"
                         target="_blank"
                       >
-                        {{ t('secondSection.listItems.connexionGuide') }}
+                        {{ t('homepage.legacy.secondSection.listItems.connexionGuide') }}
                       </a>
                     </template>
                   </i18n-t>
@@ -102,7 +104,7 @@
 
           <PRow class="margin-top--8">
             <PCol>
-              <h2>{{ t('thirdSection.title') }}</h2>
+              <h2>{{ t('homepage.legacy.thirdSection.title') }}</h2>
             </PCol>
           </PRow>
 
@@ -113,10 +115,10 @@
               :pMd="20"
             >
               <ul class="margin-left--8">
-                <li>{{ t('thirdSection.listItems.first') }}</li>
-                <li>{{ t('thirdSection.listItems.second') }}</li>
-                <li>{{ t('thirdSection.listItems.third') }}</li>
-                <li>{{ t('thirdSection.listItems.fourth') }}</li>
+                <li>{{ t('homepage.legacy.thirdSection.listItems.first') }}</li>
+                <li>{{ t('homepage.legacy.thirdSection.listItems.second') }}</li>
+                <li>{{ t('homepage.legacy.thirdSection.listItems.third') }}</li>
+                <li>{{ t('homepage.legacy.thirdSection.listItems.fourth') }}</li>
               </ul>
             </PCol>
           </PRow>
@@ -124,8 +126,8 @@
           <PRow class="margin-top--8">
             <PCol :pSpan="16">
               <p class="font-bold">
-                {{ t('greetings.message') }}<br>
-                {{ t('greetings.signature') }}
+                {{ t('homepage.legacy.greetings.message') }}<br>
+                {{ t('homepage.legacy.greetings.signature') }}
               </p>
             </PCol>
           </PRow>
@@ -166,7 +168,7 @@
                   text-color--jungle-400
                 "
                   >
-                    {{ t('mobileApp') }}
+                    {{ t('homepage.legacy.mobileApp') }}
                   </p>
                 </PCol>
               </PRow>
@@ -174,7 +176,7 @@
               <PRow class="margin-top--2">
                 <PCol>
                   <h3 class="font-semibold font-large text-color--base-blue-pulse">
-                    {{ t('titleMobileApp') }}
+                    {{ t('homepage.legacy.titleMobileApp') }}
                   </h3>
                 </PCol>
               </PRow>
@@ -183,7 +185,7 @@
                 <PCol>
                   <p class="font-normal font-large text-underline text-color--base-blue-pulse">
                     <a :href="MOBILE_APPLICATION_DOCUMENTATION_URL" target="_blank">
-                      {{ t('downloadTutorial') }}
+                      {{ t('homepage.legacy.downloadTutorial') }}
                     </a>
                   </p>
                 </PCol>
@@ -208,7 +210,7 @@
                         pFit="fill"
                       />
                       <figcaption class="font-small font-semibold text-color--neutral-gray-700">
-                        {{ t('ios') }}
+                        {{ t('homepage.legacy.ios') }}
                       </figcaption>
                     </figure>
                   </div>
@@ -228,7 +230,7 @@
                         pFit="fill"
                       />
                       <figcaption class="font-small font-semibold text-color--neutral-gray-700">
-                        {{ t('android') }}
+                        {{ t('homepage.legacy.android') }}
                       </figcaption>
                     </figure>
                   </div>
@@ -245,7 +247,7 @@
                         class="margin-right--2"
                         pName="check"
                       />
-                      {{ t('mobileListItems.first') }}
+                      {{ t('homepage.legacy.mobileListItems.first') }}
                     </li>
                     <li class="margin-bottom--2 flex flex--align-items-center font-small">
                       <PIcon
@@ -254,7 +256,7 @@
                         class="margin-right--2"
                         pName="check"
                       />
-                      {{ t('mobileListItems.second') }}
+                      {{ t('homepage.legacy.mobileListItems.second') }}
                     </li>
                     <li class="margin-bottom--2 flex flex--align-items-center font-small">
                       <PIcon
@@ -263,7 +265,7 @@
                         class="margin-right--2"
                         pName="check"
                       />
-                      {{ t('mobileListItems.third') }}
+                      {{ t('homepage.legacy.mobileListItems.third') }}
                     </li>
                     <li class="flex flex--align-items-center font-small">
                       <PIcon
@@ -272,7 +274,7 @@
                         class="margin-right--2"
                         pName="check"
                       />
-                      {{ t('mobileListItems.fourth') }}
+                      {{ t('homepage.legacy.mobileListItems.fourth') }}
                     </li>
                   </ul>
                 </PCol>
@@ -313,7 +315,7 @@ import {
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local',
+  useScope: 'global',
 })
 
 const loginUrl = `${APP_URL}login`
@@ -360,77 +362,3 @@ const loginDisplayUrl = `${HOST_NAME}/login`
   }
 }
 </style>
-
-<i18n lang="yaml">
-  en-US:
-    entityWelcomeTitle: 'As of January 13, 2025, KPMG Pulse becomes'
-    brandName: 'RYDGE Conseil'
-    welcome: 'Welcome to your new interface'
-    introductionText: >
-      From January 2025, KPMG Pulse becomes RYDGE Conseil.
-      To learn more about this change, we invite you to visit our {aboutUrl} page.
-    about: 'about'
-    secondSection:
-      title: 'What this means for you:'
-      listItems:
-        first: 'A new look with the same navigation'
-        connexionGuide: 'login guide'
-        second: 'A new login address: your platform is accessible at {loginUrl} ({connexionGuide})'
-        loginUrl: 'app.rydge.fr/login'
-    thirdSection:
-      title: 'What remains unchanged:'
-      listItems:
-        first: 'The care we take with your data'
-        second: 'The history of your documents'
-        third: 'The commitment of our 4500 employees at your side, all over France'
-        fourth: 'Our solid support to build your success sustainably'
-    greetings:
-      message: 'We remain at your disposal and see you soon.'
-      signature: 'The RYDGE Conseil team'
-    mobileApp: 'Mobile application'
-    titleMobileApp: 'The KPMG Pulse mobile app becomes RYDGE Conseil'
-    downloadTutorial: 'How to download your new mobile application?'
-    ios: 'IOS'
-    android: 'Android'
-    mobileListItems:
-      first: 'Access your data with our secure authentication'
-      second: 'Take photos of your receipts and send them to your expert'
-      third: 'View the history of your documents'
-      fourth: 'Track your company’s performance'
-  fr-FR:
-    entityWelcomeTitle: 'À compter du 13 janvier 2025, KPMG Pulse devient'
-    brandName: 'RYDGE Conseil'
-    welcome: 'Bienvenue sur votre nouvelle interface'
-    introductionText: >
-      Dès janvier 2025, KPMG Pulse devient RYDGE Conseil.
-      Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page {aboutUrl}.
-    about: 'à propos'
-    secondSection:
-      title: 'Ce que cela change pour vous :'
-      listItems:
-        first: 'Une nouvelle apparence pour la même navigation'
-        connexionGuide: 'guide de connexion'
-        second: >
-          Une nouvelle adresse de connexion : votre plateforme est accessible à l’adresse {loginUrl} ({connexionGuide})
-        loginUrl: 'app.rydge.fr/login'
-    thirdSection:
-      title: 'Ce qui reste inchangé :'
-      listItems:
-        first: 'Le soin que nous prenons de vos données'
-        second: "L'historique de vos documents"
-        third: "L'engagement de nos 4500 collaborateurs à vos côtés, partout en France"
-        fourth: 'Notre appui solide pour construire votre réussite durablement'
-    greetings:
-      message: 'Nous restons à votre disposition et à bientôt.'
-      signature: "L'équipe RYDGE Conseil"
-    mobileApp: 'Application mobile'
-    titleMobileApp: "L'app mobile KPMG Pulse devient RYDGE Conseil"
-    downloadTutorial: 'Comment télécharger votre nouvelle application mobile ?'
-    ios: 'IOS'
-    android: 'Android'
-    mobileListItems:
-      first: 'Accédez à vos données avec notre authentification sécurisée'
-      second: 'Prenez en photo vos justificatifs et envoyez-les à votre expert'
-      third: "Consultez l’historique de vos documents"
-      fourth: 'Suivez les performances de votre entreprise'
-</i18n>

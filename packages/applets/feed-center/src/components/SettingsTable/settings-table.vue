@@ -52,7 +52,7 @@ import { PCheckbox, PTable, PTableColumn } from '@pulse/styleguide/components'
 import type { SettingsTableProps } from './settings-table.type'
 import { SettingsType } from '../../feed-center.enum'
 
-const { t } = useI18n()
+const { t } = useI18n({ useScope: 'global' })
 defineProps<SettingsTableProps>()
 
 const emit = defineEmits<{

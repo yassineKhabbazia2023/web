@@ -41,7 +41,7 @@ const emit = defineEmits<{
   'close': []
 }>()
 
-const { t } = useI18n()
+const { t } = useI18n({ useScope: 'global' })
 
 const isVisible = computed({
   get: () => props.visible,

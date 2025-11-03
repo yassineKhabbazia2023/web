@@ -1,0 +1,44 @@
+{
+  "homepage": {
+    "legacy": {
+      "entityWelcomeTitle": "As of January 13, 2025, KPMG Pulse becomes",
+      "brandName": "RYDGE Conseil",
+      "welcome": "Welcome to your new interface",
+      "introductionText": "From January 2025, KPMG Pulse becomes RYDGE Conseil. To learn more about this change, we invite you to visit our {aboutUrl} page.",
+      "about": "about",
+      "secondSection": {
+        "title": "What this means for you:",
+        "listItems": {
+          "first": "A new look with the same navigation",
+          "connexionGuide": "login guide",
+          "second": "A new login address: your platform is accessible at {loginUrl} ({connexionGuide})",
+          "loginUrl": "app.rydge.fr/login"
+        }
+      },
+      "thirdSection": {
+        "title": "What remains unchanged:",
+        "listItems": {
+          "first": "The care we take with your data",
+          "second": "The history of your documents",
+          "third": "The commitment of our 4500 employees at your side, all over France",
+          "fourth": "Our solid support to build your success sustainably"
+        }
+      },
+      "greetings": {
+        "message": "We remain at your disposal and see you soon.",
+        "signature": "The RYDGE Conseil team"
+      },
+      "mobileApp": "Mobile application",
+      "titleMobileApp": "The KPMG Pulse mobile app becomes RYDGE Conseil",
+      "downloadTutorial": "How to download your new mobile application?",
+      "ios": "IOS",
+      "android": "Android",
+      "mobileListItems": {
+        "first": "Access your data with our secure authentication",
+        "second": "Take photos of your receipts and send them to your expert",
+        "third": "View the history of your documents",
+        "fourth": "Track your company's performance"
+      }
+    }
+  }
+}

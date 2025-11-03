@@ -6,19 +6,19 @@
     <div class="widget-smart-intro__main-section flex flex--direction-column padding-y--8 padding-x--6">
       <div class="widget-smart-intro__main-section-text text-color--base-white">
         <h2 class="h2">
-          {{ t('discoverSmartDashboard.line1') }}<br>
-          {{ t('discoverSmartDashboard.line2') }}<br>
-          {{ t('discoverSmartDashboard.line3') }}
+          {{ t('widgets.smartIntro.discoverSmartDashboard.line1') }}<br>
+          {{ t('widgets.smartIntro.discoverSmartDashboard.line2') }}<br>
+          {{ t('widgets.smartIntro.discoverSmartDashboard.line3') }}
         </h2>
 
         <ul
           class="margin-y--4 padding-x--6"
           role="list"
         >
-          <li>{{ t('features.measurePerformance') }}</li>
-          <li>{{ t('features.manageCashFlow') }}</li>
-          <li>{{ t('features.anticipateFinancialNeeds') }}</li>
-          <li>{{ t('features.analyzeOrganization') }}</li>
+          <li>{{ t('widgets.smartIntro.features.measurePerformance') }}</li>
+          <li>{{ t('widgets.smartIntro.features.manageCashFlow') }}</li>
+          <li>{{ t('widgets.smartIntro.features.anticipateFinancialNeeds') }}</li>
+          <li>{{ t('widgets.smartIntro.features.analyzeOrganization') }}</li>
         </ul>
 
         <PButton
@@ -30,7 +30,7 @@
           data-testid="discover-smart-offer-button"
           @click="discoverSmartOffer"
         >
-          {{ t('discover') }}
+          {{ t('widgets.smartIntro.discover') }}
         </PButton>
       </div>
     </div>
@@ -54,7 +54,7 @@ import { RouteName, RouteParam } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local',
+  useScope: 'global',
 })
 
 const router = useRouter()
@@ -121,29 +121,3 @@ const discoverSmartOffer = () => {
   }
 }
 </style>
-
-<i18n lang="yaml">
-en-US:
-  discoverSmartDashboard:
-    line1: "Discover your new"
-    line2: "SMART dashboard"
-    line3: "(3 months free)"
-  features:
-    measurePerformance: "Measure your company's performance"
-    manageCashFlow: "Proactively manage your cash flow to ensure the sustainability of your business"
-    anticipateFinancialNeeds: "Anticipate financial needs"
-    analyzeOrganization: "Analyze your company's organizational dynamics and HR structure"
-  discover: "Discover"
-
-fr-FR:
-  discoverSmartDashboard:
-    line1: "Découvrez votre nouveau"
-    line2: "tableau de bord SMART"
-    line3: "(3 mois offerts)"
-  features:
-    measurePerformance: "Mesurez la performance de votre entreprise"
-    manageCashFlow: "Pilotez votre trésorerie de manière proactive pour sécuriser la pérennité de votre activité"
-    anticipateFinancialNeeds: "Anticipez les besoins financiers"
-    analyzeOrganization: "Analysez la dynamique organisationnelle et la structure RH de votre entreprise"
-  discover: "Découvrir"
-</i18n>

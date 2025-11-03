@@ -77,7 +77,7 @@ const route = useRoute()
 const router = useRouter()
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local',
+  useScope: 'global',
 })
 
 const props = defineProps<SidebarEntityMenuProps>()

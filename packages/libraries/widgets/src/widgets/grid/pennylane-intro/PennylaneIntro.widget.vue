@@ -31,7 +31,7 @@
       >
         <PTag
           pColor="dark-green"
-          :pContent="t('header.new')"
+          :pContent="t('widgets.pennylaneIntro.header.new')"
           pIconLeftName="stars"
         />
         <i18n-t
@@ -40,45 +40,55 @@
             padding-left--2
             font-small
           "
-          keypath="header.toolChange"
+          keypath="widgets.pennylaneIntro.header.toolChange"
           tag="span"
+          scope="global"
         >
           <template #accountingTool>
-            <span class="font-bold">{{ t('header.accounting') }}</span>
+            <span class="font-bold">{{ t('widgets.pennylaneIntro.header.accounting') }}</span>
           </template>
         </i18n-t>
       </div>
 
       <div class="widget-pennylane-intro__title margin-top--4 font-bold">
-        <i18n-t keypath="title.revolutionizingSoftware">
+        <i18n-t keypath="widgets.pennylaneIntro.title.revolutionizingSoftware" scope="global">
           <template #brand>
-            <span class="text-color--secondary-amethyste">{{ t('title.brand') }}</span>
+            <span class="text-color--secondary-amethyste">{{ t('widgets.pennylaneIntro.title.brand') }}</span>
           </template>
           <template #softwareName>
-            <span class="text-color--secondary-amethyste">{{ t('title.pennylane') }}</span>
+            <span class="text-color--secondary-amethyste">{{ t('widgets.pennylaneIntro.title.pennylane') }}</span>
           </template>
         </i18n-t>
       </div>
 
       <div class="widget-pennylane-intro__description margin-top--4">
-        <i18n-t keypath="description.partnerChange" tag="p">
+        <i18n-t
+          keypath="widgets.pennylaneIntro.description.partnerChange"
+          tag="p"
+          scope="global"
+        >
           <template #accountingManagement>
-            <span class="font-bold">{{ t('description.accountingManagement') }}</span>
+            <span class="font-bold">{{ t('widgets.pennylaneIntro.description.accountingManagement') }}</span>
           </template>
         </i18n-t>
 
         <i18n-t
           class="margin-top--4"
-          keypath="description.newProcedure"
+          keypath="widgets.pennylaneIntro.description.newProcedure"
           tag="p"
+          scope="global"
         >
           <template #accountingDocumentsDeposit>
-            <span class="font-bold">{{ t('description.accountingDocumentsDeposit') }}</span>
+            <span class="font-bold">{{ t('widgets.pennylaneIntro.description.accountingDocumentsDeposit') }}</span>
           </template>
         </i18n-t>
 
         <ul class="widget-pennylane-intro__list margin-top--4 margin-left--4 padding--0">
-          <i18n-t keypath="description.links.pennylaneConnection" tag="li">
+          <i18n-t
+            keypath="widgets.pennylaneIntro.description.links.pennylaneConnection"
+            tag="li"
+            scope="global"
+          >
             <template #pennylaneFromRydge>
               <a
                 class="text-underline text-color--secondary-amethyste"
@@ -91,12 +101,16 @@
                   widgetItemClicked: WidgetItemClicked.PENNYLANE_CONNECTED
                 })"
               >
-                {{ t('description.links.pennylaneFromRydge') }}
+                {{ t('widgets.pennylaneIntro.description.links.pennylaneFromRydge') }}
               </a>
             </template>
           </i18n-t>
 
-          <i18n-t keypath="description.links.pennylaneSession" tag="li">
+          <i18n-t
+            keypath="widgets.pennylaneIntro.description.links.pennylaneSession"
+            tag="li"
+            scope="global"
+          >
             <template #pennylaneFreeClass>
               <a
                 class="text-underline text-color--secondary-amethyste"
@@ -109,12 +123,16 @@
                   widgetItemClicked: WidgetItemClicked.PENNYLANE_SESSION
                 })"
               >
-                {{ t('description.links.pennylaneFreeClass') }}
+                {{ t('widgets.pennylaneIntro.description.links.pennylaneFreeClass') }}
               </a>
             </template>
           </i18n-t>
 
-          <i18n-t keypath="description.links.invoiceDeposit" tag="li">
+          <i18n-t
+            keypath="widgets.pennylaneIntro.description.links.invoiceDeposit"
+            tag="li"
+            scope="global"
+          >
             <template #pennylanePlatform>
               <a
                 class="text-underline text-color--secondary-amethyste"
@@ -127,12 +145,16 @@
                   widgetItemClicked: WidgetItemClicked.PENNYLANE_DEPOSED
                 })"
               >
-                {{ t('description.links.pennylanePlatform') }}
+                {{ t('widgets.pennylaneIntro.description.links.pennylanePlatform') }}
               </a>
             </template>
           </i18n-t>
 
-          <i18n-t keypath="description.links.discover" tag="li">
+          <i18n-t
+            keypath="widgets.pennylaneIntro.description.links.discover"
+            tag="li"
+            scope="global"
+          >
             <template #pennylaneAppDiscovery>
               <a
                 class="text-underline text-color--secondary-amethyste"
@@ -145,7 +167,7 @@
                   widgetItemClicked: WidgetItemClicked.PENNYLANE_MOBILE
                 })"
               >
-                {{ t('description.links.pennylaneAppDiscovery') }}
+                {{ t('widgets.pennylaneIntro.description.links.pennylaneAppDiscovery') }}
               </a>
             </template>
           </i18n-t>
@@ -173,7 +195,7 @@
             widgetItemClicked: WidgetItemClicked.PENNYLANE_GETTING_STARTED
           })"
         >
-          {{ t('description.links.pennylaneGettingStarted') }}
+          {{ t('widgets.pennylaneIntro.description.links.pennylaneGettingStarted') }}
         </PButton>
       </div>
     </div>
@@ -210,7 +232,7 @@ import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local',
+  useScope: 'global',
 })
 </script>
 <style lang="scss">
@@ -287,54 +309,3 @@ const { t } = useI18n({
   }
 }
 </style>
-
-<i18n lang="yaml">
-  en-US:
-    header:
-      new: "New"
-      toolChange: "Change of {accountingTool}"
-      accounting: "management tool"
-    title:
-      brand: 'RYDGE Conseil'
-      pennylane: "Pennylane"
-      revolutionizingSoftware: "{brand} combines its expertise with {softwareName}"
-    description:
-      partnerChange: "Your new partner in daily {accountingManagement}!"
-      accountingManagement: "managing your activities"
-      newProcedure: "This change introduces a new procedure for {accountingDocumentsDeposit}:"
-      accountingDocumentsDeposit: "submitting your accounting documents"
-      links:
-        pennylaneConnection: "Log in to {pennylaneFromRydge}"
-        pennylaneFromRydge: "Pennylane via the RYDGE Conseil platform"
-        pennylaneSession: 'Register for a {pennylaneFreeClass}'
-        pennylaneFreeClass: "free training on the Pennylane tool"
-        invoiceDeposit: "Upload your invoices from {pennylanePlatform}"
-        pennylanePlatform: "the Pennylane platform"
-        discover: "Discover {pennylaneAppDiscovery}"
-        pennylaneAppDiscovery: "the Pennylane mobile app"
-        pennylaneGettingStarted: 'Getting started on Pennylane'
-  fr-FR:
-    header:
-      new: 'Nouveau'
-      toolChange: "Changement d'{accountingTool}"
-      accounting: 'outil de gestion'
-    title:
-      brand: 'RYDGE Conseil'
-      pennylane: 'Pennylane'
-      revolutionizingSoftware: '{brand} allie son expertise à {softwareName}'
-    description:
-      partnerChange: 'Votre nouveau partenaire dans la {accountingManagement} au quotidien !'
-      accountingManagement: 'gestion de vos activités'
-      newProcedure: 'Ce changement implique une nouvelle procédure pour le {accountingDocumentsDeposit} :'
-      accountingDocumentsDeposit: 'dépôt de vos pièces comptables'
-      links:
-        pennylaneConnection: 'Se connecter à {pennylaneFromRydge}'
-        pennylaneFromRydge: 'Pennylane depuis la plateforme RYDGE Conseil'
-        pennylaneSession: "S'inscrire à une session de {pennylaneFreeClass}"
-        pennylaneFreeClass: "formation gratuite sur l'outil Pennylane"
-        invoiceDeposit: 'Déposer ses factures depuis {pennylanePlatform}'
-        pennylanePlatform: 'la plateforme Pennylane'
-        discover: 'Découvrir {pennylaneAppDiscovery}'
-        pennylaneAppDiscovery: "l'application mobile Pennylane"
-        pennylaneGettingStarted: 'Bien débuter sur Pennylane'
-</i18n>

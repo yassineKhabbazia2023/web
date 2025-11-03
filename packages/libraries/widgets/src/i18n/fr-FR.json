@@ -19,6 +19,52 @@
       "contribute": "Contribuez à l'amélioration de la plateforme {brandName} en participant à des tests utilisateurs, des ateliers et des échanges individuels ou en groupe.",
       "brandName": "RYDGE Conseil",
       "joinAction": "Rejoindre le DiGiLAB"
+    },
+    "pennylaneSSO": {
+      "accessToPennylane": "Accéder à Pennylane"
+    },
+    "pennylaneIntro": {
+      "header": {
+        "new": "Nouveau",
+        "toolChange": "Changement d'{accountingTool}",
+        "accounting": "outil de gestion"
+      },
+      "title": {
+        "brand": "RYDGE Conseil",
+        "pennylane": "Pennylane",
+        "revolutionizingSoftware": "{brand} allie son expertise à {softwareName}"
+      },
+      "description": {
+        "partnerChange": "Votre nouveau partenaire dans la {accountingManagement} au quotidien !",
+        "accountingManagement": "gestion de vos activités",
+        "newProcedure": "Ce changement implique une nouvelle procédure pour le {accountingDocumentsDeposit} :",
+        "accountingDocumentsDeposit": "dépôt de vos pièces comptables",
+        "links": {
+          "pennylaneConnection": "Se connecter à {pennylaneFromRydge}",
+          "pennylaneFromRydge": "Pennylane depuis la plateforme RYDGE Conseil",
+          "pennylaneSession": "S'inscrire à une session de {pennylaneFreeClass}",
+          "pennylaneFreeClass": "formation gratuite sur l'outil Pennylane",
+          "invoiceDeposit": "Déposer ses factures depuis {pennylanePlatform}",
+          "pennylanePlatform": "la plateforme Pennylane",
+          "discover": "Découvrir {pennylaneAppDiscovery}",
+          "pennylaneAppDiscovery": "l'application mobile Pennylane",
+          "pennylaneGettingStarted": "Bien débuter sur Pennylane"
+        }
+      }
+    },
+    "smartIntro": {
+      "discoverSmartDashboard": {
+        "line1": "Découvrez votre nouveau",
+        "line2": "tableau de bord SMART",
+        "line3": "(3 mois offerts)"
+      },
+      "features": {
+        "measurePerformance": "Mesurez la performance de votre entreprise",
+        "manageCashFlow": "Pilotez votre trésorerie de manière proactive pour sécuriser la pérennité de votre activité",
+        "anticipateFinancialNeeds": "Anticipez les besoins financiers",
+        "analyzeOrganization": "Analysez la dynamique organisationnelle et la structure RH de votre entreprise"
+      },
+      "discover": "Découvrir"
     }
   }
 }

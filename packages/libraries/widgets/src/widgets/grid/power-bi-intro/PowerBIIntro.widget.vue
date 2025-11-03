@@ -18,6 +18,7 @@
         font-semibold
         text-color--neutral-gray-900
       "
+      scope="global"
     >
       <template #emphasis>
         <span class="text-color--secondary-amethyste">{{ t('widgets.powerBi.titleEmphasis') }}</span>
@@ -31,6 +32,7 @@
         margin-y--4
         text-color--neutral-gray-900
       "
+      scope="global"
     >
       <template #emphasis>
         <span class="font-semibold">
@@ -67,7 +69,10 @@ import { widgetClick } from '@pulse/widgets/utils'
 import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 import { WidgetName } from '@pulse/widgets/enums'
 
-const { t } = useI18n()
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'global',
+})
 </script>
 
 <style lang="scss" scoped>

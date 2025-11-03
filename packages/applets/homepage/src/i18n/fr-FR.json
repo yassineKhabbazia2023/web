@@ -1,0 +1,44 @@
+{
+  "homepage": {
+    "legacy": {
+      "entityWelcomeTitle": "À compter du 13 janvier 2025, KPMG Pulse devient",
+      "brandName": "RYDGE Conseil",
+      "welcome": "Bienvenue sur votre nouvelle interface",
+      "introductionText": "Dès janvier 2025, KPMG Pulse devient RYDGE Conseil. Pour en savoir plus sur ce changement, nous vous invitons à consulter notre page {aboutUrl}.",
+      "about": "à propos",
+      "secondSection": {
+        "title": "Ce que cela change pour vous :",
+        "listItems": {
+          "first": "Une nouvelle apparence pour la même navigation",
+          "connexionGuide": "guide de connexion",
+          "second": "Une nouvelle adresse de connexion : votre plateforme est accessible à l'adresse {loginUrl} ({connexionGuide})",
+          "loginUrl": "app.rydge.fr/login"
+        }
+      },
+      "thirdSection": {
+        "title": "Ce qui reste inchangé :",
+        "listItems": {
+          "first": "Le soin que nous prenons de vos données",
+          "second": "L'historique de vos documents",
+          "third": "L'engagement de nos 4500 collaborateurs à vos côtés, partout en France",
+          "fourth": "Notre appui solide pour construire votre réussite durablement"
+        }
+      },
+      "greetings": {
+        "message": "Nous restons à votre disposition et à bientôt.",
+        "signature": "L'équipe RYDGE Conseil"
+      },
+      "mobileApp": "Application mobile",
+      "titleMobileApp": "L'app mobile KPMG Pulse devient RYDGE Conseil",
+      "downloadTutorial": "Comment télécharger votre nouvelle application mobile ?",
+      "ios": "IOS",
+      "android": "Android",
+      "mobileListItems": {
+        "first": "Accédez à vos données avec notre authentification sécurisée",
+        "second": "Prenez en photo vos justificatifs et envoyez-les à votre expert",
+        "third": "Consultez l'historique de vos documents",
+        "fourth": "Suivez les performances de votre entreprise"
+      }
+    }
+  }
+}

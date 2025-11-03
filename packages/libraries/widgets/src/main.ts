@@ -8,12 +8,10 @@ import rssNewsWidget from './widgets/grid/rss-news/rss-news.widget'
 import frFR from './i18n/fr-FR.json'
 import enUS from './i18n/en-US.json'
 
-// Register i18n
-i18n.global.mergeLocaleMessage('fr-FR', frFR)
-i18n.global.mergeLocaleMessage('en-US', enUS)
-
 export default {
-  install(app: App, _options: any) {
+  install(app: App) {
+    i18n.global.mergeLocaleMessage('fr-FR', frFR)
+    i18n.global.mergeLocaleMessage('en-US', enUS)
 
     // Register all widgets here
     // Consumers will pick the widgets they want to use through the widget grid manager

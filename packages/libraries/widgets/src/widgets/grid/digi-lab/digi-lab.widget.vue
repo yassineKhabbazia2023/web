@@ -18,6 +18,7 @@
         "
         keypath="widgets.digilab.join"
         tag="p"
+        scope="global"
       >
         <template #brandName>
           <span class="text-color--secondary-amethyste">{{ t('widgets.digilab.brandNameLeftPart') }}</span>
@@ -29,6 +30,7 @@
         class="margin-top--4"
         keypath="widgets.digilab.contribute"
         tag="p"
+        scope="global"
       >
         <template #brandName>
           <span class="font-bold">{{ t('widgets.digilab.brandName') }}</span>
@@ -63,5 +65,8 @@ import { widgetClick } from '@pulse/widgets/utils'
 import { WidgetName } from '@pulse/widgets/enums'
 import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 
-const { t } = useI18n()
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'global',
+})
 </script>

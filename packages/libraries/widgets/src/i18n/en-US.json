@@ -19,6 +19,52 @@
       "contribute": "Help improve the {brandName} platform by taking part in user testing, workshops, and one-on-one or group discussions.",
       "brandName": "RYDGE Conseil",
       "joinAction": "Join the DiGiLAB"
+    },
+    "pennylaneSSO": {
+      "accessToPennylane": "Access to Pennylane"
+    },
+    "pennylaneIntro": {
+      "header": {
+        "new": "New",
+        "toolChange": "Change of {accountingTool}",
+        "accounting": "management tool"
+      },
+      "title": {
+        "brand": "RYDGE Conseil",
+        "pennylane": "Pennylane",
+        "revolutionizingSoftware": "{brand} combines its expertise with {softwareName}"
+      },
+      "description": {
+        "partnerChange": "Your new partner in daily {accountingManagement}!",
+        "accountingManagement": "managing your activities",
+        "newProcedure": "This change introduces a new procedure for {accountingDocumentsDeposit}:",
+        "accountingDocumentsDeposit": "submitting your accounting documents",
+        "links": {
+          "pennylaneConnection": "Log in to {pennylaneFromRydge}",
+          "pennylaneFromRydge": "Pennylane via the RYDGE Conseil platform",
+          "pennylaneSession": "Register for a {pennylaneFreeClass}",
+          "pennylaneFreeClass": "free training on the Pennylane tool",
+          "invoiceDeposit": "Upload your invoices from {pennylanePlatform}",
+          "pennylanePlatform": "the Pennylane platform",
+          "discover": "Discover {pennylaneAppDiscovery}",
+          "pennylaneAppDiscovery": "the Pennylane mobile app",
+          "pennylaneGettingStarted": "Getting started on Pennylane"
+        }
+      }
+    },
+    "smartIntro": {
+      "discoverSmartDashboard": {
+        "line1": "Discover your new",
+        "line2": "SMART dashboard",
+        "line3": "(3 months free)"
+      },
+      "features": {
+        "measurePerformance": "Measure your company's performance",
+        "manageCashFlow": "Proactively manage your cash flow to ensure the sustainability of your business",
+        "anticipateFinancialNeeds": "Anticipate financial needs",
+        "analyzeOrganization": "Analyze your company's organizational dynamics and HR structure"
+      },
+      "discover": "Discover"
     }
   }
 }

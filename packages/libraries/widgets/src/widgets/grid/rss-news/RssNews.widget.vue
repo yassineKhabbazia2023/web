@@ -90,7 +90,7 @@ import { widgetClick } from '@pulse/widgets/utils'
 import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 import { WidgetItemClicked, WidgetName } from '@pulse/widgets/enums'
 
-const { t } = useI18n()
+const { t } = useI18n({ useScope: 'global' })
 
 const news = ref<RssNewsItem[]>([])
 const isLoading = ref(false)

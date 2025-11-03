@@ -10,7 +10,11 @@
       "indicators": "Indicateurs",
       "biReports": "Rapports BI",
       "pennylaneAccounting": "Comptabilité",
-      "pennylaneSocialManagement": "Gestion sociale"
+      "pennylaneSocialManagement": "Gestion sociale",
+      "open": "Ouvrir",
+      "close": "Fermer",
+      "favorites": "Favoris",
+      "globalView": "Vue globale"
     },
     "pages": {
       "workInProgress": {

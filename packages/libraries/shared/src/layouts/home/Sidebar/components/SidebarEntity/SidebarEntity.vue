@@ -19,7 +19,7 @@
           }"
         >
           <SidebarEntityItem
-            :tooltipContent="isSidebarOpened ? t('close') : t('open')"
+            :tooltipContent="isSidebarOpened ? t('shared.sidebar.close') : t('shared.sidebar.open')"
             :tooltipDisabled="isToggleTooltipDisabled"
             :class="{
               'sidenav-entity__actions-toggle--open': isSidebarOpened,
@@ -49,7 +49,7 @@
             />
             <template #suffix-content>
               <p class="sidenav-entity__actions-wallet-text">
-                {{ t('globalView') }}
+                {{ t('shared.sidebar.globalView') }}
               </p>
             </template>
           </SidebarEntityItem>
@@ -89,7 +89,7 @@
             class="sidenav-entity__star-divider-text"
             :class="{ 'margin-left--3': !isSidebarOpened }"
           >
-            {{ t('favorites') }}
+            {{ t('shared.sidebar.favorites') }}
           </p>
         </div>
         <!-- Favorite Entities -->
@@ -143,7 +143,7 @@ const selectedEntityStore = useSelectedEntityStore()
 
 const { t } = useI18n({
   inheritLocale: true,
-  useScope: 'local',
+  useScope: 'global',
 })
 
 defineProps<SidebarEntityProps>()
@@ -169,7 +169,7 @@ const walletItem = computed((): SidebarEntityItemProps => {
   const collabWalletRouteName = APP_ROUTES.wallet.collab.root.name
   const customerWalletRouteName = APP_ROUTES.wallet.client.root.name
   return {
-    tooltipContent: t('globalView'),
+    tooltipContent: t('shared.sidebar.globalView'),
     tooltipDisabled: isSidebarOpened.value,
     route: { name: isCollab.value === true ? collabWalletRouteName : customerWalletRouteName },
   }
@@ -347,16 +347,3 @@ const getActiveWallet = computed(() => {
   }
 }
 </style>
-
-<i18n lang="yaml">
-en-US:
-  open: 'Open'
-  close: 'Close'
-  favorites: 'Favorites'
-  globalView: 'Global view'
-fr-FR:
-  open: 'Ouvrir'
-  close: 'Fermer'
-  favorites: 'Favoris'
-  globalView: 'Vue globale'
-</i18n>

@@ -10,7 +10,11 @@
       "indicators": "Indicators",
       "biReports": "BI reports",
       "pennylaneAccounting": "Accounting",
-      "pennylaneSocialManagement": "Social management"
+      "pennylaneSocialManagement": "Social management",
+      "open": "Open",
+      "close": "Close",
+      "favorites": "Favorites",
+      "globalView": "Global view"
     },
     "pages": {
       "workInProgress": {

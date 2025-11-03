@@ -112,7 +112,7 @@ import { useNotificationSettings } from './notification-settings.composable'
 import { NotificationSettingsManager } from './notification-settings.manager'
 import SettingsTable from '../SettingsTable/settings-table.vue'
 
-const { t } = useI18n()
+const { t } = useI18n({ useScope: 'global' })
 
 const isNotificationSettingsDrawerOpened = defineModel({
   type: Boolean,

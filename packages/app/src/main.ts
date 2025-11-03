@@ -14,6 +14,7 @@ import powerBiApplet from '@pulse/powerbi'
 import commonLibrary from '@pulse/common'
 import { i18n } from '@pulse/common/i18n'
 import sharedLibrary from '@pulse/shared'
+import widgetsLibrary from '@pulse/widgets'
 import styleguideLibrary from '@pulse/styleguide'
 import axeptioPlugin from '@app/plugins/Axeptio/axeptio.plugin'
 import gigyaPlugin from '@app/plugins/Gigya/gigya.plugin'
@@ -53,8 +54,13 @@ const app = createApp(App)
   .use(hubspotPlugin, {
     isActive: isProd,
   })
+  // install internal libraries
   .use(commonLibrary)
+  .use(styleguideLibrary, {
+    assetsBaseUrl: VITE_ASSETS_BASE_URL,
+  })
   .use(sharedLibrary)
+  .use(widgetsLibrary)
   // install applets
   .use(entitiesApplet, { router })
   .use(pennylaneApplet, { router }) // should register pennylaneApplet before gedApplet
@@ -66,10 +72,6 @@ const app = createApp(App)
   .use(mandateApplet, { router })
   .use(offersCatalogApplet, { router })
   .use(powerBiApplet, { router })
-  // install library
-  .use(styleguideLibrary, {
-    assetsBaseUrl: VITE_ASSETS_BASE_URL,
-  })
 
 // Register app-specific menu items and tabs
 registerSidebarItems()
