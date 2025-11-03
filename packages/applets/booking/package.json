@@ -6,7 +6,11 @@
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
-  "main": "src/main.ts",
+  "exports": {
+    ".": "./src/main.ts",
+    "./managers/booking": "./src/managers/booking.manager.ts",
+    "./widgets/booking-header": "./src/widgets/booking-header/widget.ts"
+  },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",
     "build:types": "vue-tsc --build --force",

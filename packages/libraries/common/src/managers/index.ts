@@ -1,4 +1,3 @@
-export * from './booking/booking.manager'
 export * from './current-user/current-user.manager'
 export * from './feature-flag/feature-flag.manager'
 export * from './login/login.manager'

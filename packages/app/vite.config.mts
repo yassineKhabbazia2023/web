@@ -23,6 +23,7 @@ export default ({ mode }: any) =>
       resolve: {
         alias: {
           '@app': fileURLToPath(new URL('./src', import.meta.url)),
+          '@booking': fileURLToPath(new URL('../applets/booking/src', import.meta.url)),
           '@common': fileURLToPath(new URL('../libraries/common/src', import.meta.url)),
           '@entities': fileURLToPath(new URL('../applets/entities/src', import.meta.url)),
           '@feed-center': fileURLToPath(new URL('../applets/feed-center/src', import.meta.url)),

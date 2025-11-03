@@ -1,8 +1,11 @@
 import type { App } from 'vue'
-import BookingRendezVousWidget from './widgets/booking-rendez-vous/booking-rendez-vous.widget'
+
+export { BookingHeaderWidget } from './widgets/booking-header/widget'
+export { BookingManager } from './managers/booking.manager'
 
 export default {
-  install(app: App, options: any) {
-    app.use(BookingRendezVousWidget, options)
+  install(_app: App, _options: any) {
+    // Booking applet plugin
+    // No routes or additional setup needed - booking is used via widget
   },
 }

@@ -1,7 +1,7 @@
-import { BookingService } from '../../services/booking/booking.service'
-import { useUserStore } from '../../stores/user/user.store'
-import { useSelectedEntityStore } from '../../stores/selected-entity/selected-entity.store'
-import { useBookingStore } from '../../stores/booking/booking.store'
+import { BookingService } from '@pulse/common/services/booking'
+import { useUserStore, useSelectedEntityStore, useBookingStore } from '@pulse/common/stores'
+
+
 import { logger } from '@pulse/toolbox'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'

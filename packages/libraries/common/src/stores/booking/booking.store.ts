@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import type { BookingServiceExpert } from '../../types/booking.type'
+import type { BookingServiceExpert } from '@pulse/common/types'
 
 export const useBookingStore = defineStore('booking', () => {
   const availableExperts = ref<BookingServiceExpert[]>([])

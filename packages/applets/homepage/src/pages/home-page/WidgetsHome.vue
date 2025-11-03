@@ -28,7 +28,6 @@ import { onMounted, ref } from 'vue'
 import type { WidgetGridDefinition } from '@pulse/widgets/types'
 import { WidgetsHomeManager } from '@homepage/managers/widgets-home.manager'
 import { useUserStore } from '@pulse/common/stores'
-import { BookingManager } from '@pulse/common/managers'
 import { storeToRefs } from 'pinia'
 
 const userStore = useUserStore()
@@ -37,7 +36,6 @@ const { isCustomer } = storeToRefs(userStore)
 const widgets = ref<WidgetGridDefinition[]>([])
 
 onMounted(async () => {
-  await BookingManager.refreshAvailableExperts()
   widgets.value = WidgetsHomeManager.getWidgetsLayout(isCustomer.value)
 })
 </script>
