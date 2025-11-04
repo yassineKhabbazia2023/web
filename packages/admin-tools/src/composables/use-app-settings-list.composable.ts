@@ -1,7 +1,7 @@
 import { ref, computed, watch } from 'vue'
 import { displayNotification } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
-import type { AppSettingItem } from '@admin-tools/types/app-settings-list.type'
+import { FilterCode, type AppSettingItem } from '@admin-tools/types/app-settings-list.type'
 import { AppSettingsListService } from '@admin-tools/services/app-settings-list/app-settings-list.service'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@admin-tools/constants/admin-tool.const'
 
@@ -12,6 +12,7 @@ export function useAppSettingsList() {
 
   const searchQuery = ref<string>('')
   const selectedDomains = ref<string[]>([])
+  const selectedFilters = ref<FilterCode[]>([])
 
   const pagination = ref({
     totalCount: 0,
@@ -24,18 +25,24 @@ export function useAppSettingsList() {
     return `${count} ${count > 1 ? 'variables' : 'variable'}`
   })
 
+  // Computed values for filter flags
+  const hasMissingFilter = computed(() => selectedFilters.value.includes(FilterCode.MISSING))
+  const hasIncoherenceFilter = computed(() => selectedFilters.value.includes(FilterCode.INCOHERENT))
+
   const fetchAppSettings = async () => {
     isLoading.value = true
 
     try {
       const key = searchQuery.value.length >= 3 ? searchQuery.value : undefined
       const domains = selectedDomains.value.length > 0 ? selectedDomains.value : undefined
-      const response = await AppSettingsListService.getAppSettingsList(
-        pagination.value.currentPage,
-        pagination.value.pageSize,
+      const response = await AppSettingsListService.getAppSettingsList({
+        page: pagination.value.currentPage,
+        pageSize: pagination.value.pageSize,
         key,
         domains,
-      )
+        hasMissing: hasMissingFilter.value,
+        hasIncoherence: hasIncoherenceFilter.value,
+      })
       appSettings.value = response.items
       pagination.value.totalCount = response.totalCount
       pagination.value.currentPage = response.page
@@ -88,12 +95,18 @@ export function useAppSettingsList() {
     fetchAppSettings()
   })
 
+  watch(selectedFilters, () => {
+    pagination.value.currentPage = DEFAULT_PAGE_NUMBER
+    fetchAppSettings()
+  })
+
   return {
     appSettings,
     isLoading,
     isRefreshing,
     searchQuery,
     selectedDomains,
+    selectedFilters,
     pagination,
     variablesCountLabel,
     handlePageChange,

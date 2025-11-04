@@ -54,9 +54,10 @@ describe('AppSettingsListService', () => {
 
     it('should fetch env vars with page number', async () => {
       const page = 2
+      const params = { page }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      const result = await AppSettingsListService.getAppSettingsList(page)
+      const result = await AppSettingsListService.getAppSettingsList(params)
 
       expect(mockGet).toBeCalledWith(`/keys?page=${page}&pageSize=25`)
       expect(result).toEqual(mockAppSettingsListResponse)
@@ -64,9 +65,10 @@ describe('AppSettingsListService', () => {
 
     it('should fetch env vars with custom page size', async () => {
       const pageSize = 100
+      const params = { page: 1, pageSize }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      const result = await AppSettingsListService.getAppSettingsList(1, pageSize)
+      const result = await AppSettingsListService.getAppSettingsList(params)
 
       expect(mockGet).toBeCalledWith(`/keys?page=1&pageSize=${pageSize}`)
       expect(result).toEqual(mockAppSettingsListResponse)
@@ -74,9 +76,10 @@ describe('AppSettingsListService', () => {
 
     it('should fetch env vars with key filter', async () => {
       const key = 'VITE_API'
+      const params = { page: 1, pageSize: 25, key }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      const result = await AppSettingsListService.getAppSettingsList(1, 25, key)
+      const result = await AppSettingsListService.getAppSettingsList(params)
 
       expect(mockGet).toBeCalledWith(`/keys?page=1&pageSize=25&key=${key}`)
       expect(result).toEqual(mockAppSettingsListResponse)
@@ -86,26 +89,29 @@ describe('AppSettingsListService', () => {
       const page = 3
       const pageSize = 50
       const key = 'API_KEY'
+      const params = { page, pageSize, key }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      const result = await AppSettingsListService.getAppSettingsList(page, pageSize, key)
+      const result = await AppSettingsListService.getAppSettingsList(params)
 
       expect(mockGet).toBeCalledWith(`/keys?page=${page}&pageSize=${pageSize}&key=${key}`)
       expect(result).toEqual(mockAppSettingsListResponse)
     })
 
     it('should handle undefined key correctly', async () => {
+      const params = { page: 1, pageSize: 25, key: undefined }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      await AppSettingsListService.getAppSettingsList(1, 25, undefined)
+      await AppSettingsListService.getAppSettingsList(params)
 
       expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25')
     })
 
     it('should handle empty key string', async () => {
+      const params = { page: 1, pageSize: 25, key: '' }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      await AppSettingsListService.getAppSettingsList(1, 25, '')
+      await AppSettingsListService.getAppSettingsList(params)
 
       expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25')
     })
@@ -118,6 +124,7 @@ describe('AppSettingsListService', () => {
     })
 
     it('should return data with pagination info', async () => {
+      const params = { page: 2, pageSize: 25 }
       const responseWithMultiplePages: AppSettingsListResponse = {
         ...mockAppSettingsListResponse,
         totalCount: 250,
@@ -126,7 +133,7 @@ describe('AppSettingsListService', () => {
       }
       mockGet.mockResolvedValue({ data: responseWithMultiplePages })
 
-      const result = await AppSettingsListService.getAppSettingsList(2, 25)
+      const result = await AppSettingsListService.getAppSettingsList(params)
 
       expect(result.totalCount).toBe(250)
       expect(result.page).toBe(2)
@@ -152,30 +159,41 @@ describe('AppSettingsListService', () => {
 
     it('should handle special characters in key filter', async () => {
       const key = 'API&KEY=VALUE'
+      const params = { page: 1, pageSize: 25, key }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      await AppSettingsListService.getAppSettingsList(1, 25, key)
+      await AppSettingsListService.getAppSettingsList(params)
 
       expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25&key=API%26KEY%3DVALUE')
     })
 
-    it('should fetch env vars with single domain filter', async () => {
-      const domains = ['account']
+    it('should fetch env vars with hasMissing=true', async () => {
+      const params = { page: 1, pageSize: 25, hasMissing: true, hasIncoherence: false }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      const result = await AppSettingsListService.getAppSettingsList(1, 25, undefined, domains)
+      const result = await AppSettingsListService.getAppSettingsList(params)
 
-      expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25&domains=account')
+      expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25&hasMissing=true')
       expect(result).toEqual(mockAppSettingsListResponse)
     })
 
-    it('should fetch env vars with multiple domain filters', async () => {
-      const domains = ['account', 'contact', 'admintools']
+    it('should fetch env vars with hasIncoherence=true', async () => {
+      const params = { page: 1, pageSize: 25, hasMissing: false, hasIncoherence: true }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      const result = await AppSettingsListService.getAppSettingsList(1, 25, undefined, domains)
+      const result = await AppSettingsListService.getAppSettingsList(params)
 
-      expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25&domains=account&domains=contact&domains=admintools')
+      expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25&hasIncoherence=true')
+      expect(result).toEqual(mockAppSettingsListResponse)
+    })
+
+    it('should fetch env vars with both hasMissing and hasIncoherence', async () => {
+      const params = { page: 1, pageSize: 25, hasMissing: true, hasIncoherence: true }
+      mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
+
+      const result = await AppSettingsListService.getAppSettingsList(params)
+
+      expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25&hasMissing=true&hasIncoherence=true')
       expect(result).toEqual(mockAppSettingsListResponse)
     })
 
@@ -184,26 +202,83 @@ describe('AppSettingsListService', () => {
       const pageSize = 50
       const key = 'VITE_API'
       const domains = ['account', 'contact']
+      const params = { page, pageSize, key, domains, hasMissing: true, hasIncoherence: true }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      const result = await AppSettingsListService.getAppSettingsList(page, pageSize, key, domains)
+      const result = await AppSettingsListService.getAppSettingsList(params)
+
+      expect(mockGet).toBeCalledWith(`/keys?page=${page}&pageSize=${pageSize}&key=${key}&domains=account&domains=contact&hasMissing=true&hasIncoherence=true`)
+      expect(result).toEqual(mockAppSettingsListResponse)
+    })
+
+    it('should not send filter params when they are false', async () => {
+      const params = { page: 1, pageSize: 25, hasMissing: false, hasIncoherence: false }
+      mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
+
+      await AppSettingsListService.getAppSettingsList(params)
+
+      expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25')
+    })
+
+    it('should not send filter params when they are undefined', async () => {
+      const params = { page: 1, pageSize: 25, hasMissing: undefined, hasIncoherence: undefined }
+      mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
+
+      await AppSettingsListService.getAppSettingsList(params)
+
+      expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25')
+    })
+
+    it('should fetch env vars with single domain filter', async () => {
+      const domains = ['account']
+      const params = { page: 1, pageSize: 25, domains }
+      mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
+
+      const result = await AppSettingsListService.getAppSettingsList(params)
+
+      expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25&domains=account')
+      expect(result).toEqual(mockAppSettingsListResponse)
+    })
+
+    it('should fetch env vars with multiple domain filters', async () => {
+      const domains = ['account', 'contact', 'admintools']
+      const params = { page: 1, pageSize: 25, domains }
+      mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
+
+      const result = await AppSettingsListService.getAppSettingsList(params)
+
+      expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25&domains=account&domains=contact&domains=admintools')
+      expect(result).toEqual(mockAppSettingsListResponse)
+    })
+
+    it('should fetch env vars with key and domains filters', async () => {
+      const page = 2
+      const pageSize = 50
+      const key = 'VITE_API'
+      const domains = ['account', 'contact']
+      const params = { page, pageSize, key, domains }
+      mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
+
+      const result = await AppSettingsListService.getAppSettingsList(params)
 
       expect(mockGet).toBeCalledWith(`/keys?page=${page}&pageSize=${pageSize}&key=${key}&domains=account&domains=contact`)
       expect(result).toEqual(mockAppSettingsListResponse)
     })
 
     it('should handle undefined domains array', async () => {
+      const params = { page: 1, pageSize: 25, domains: undefined }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      await AppSettingsListService.getAppSettingsList(1, 25, undefined, undefined)
+      await AppSettingsListService.getAppSettingsList(params)
 
       expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25')
     })
 
     it('should handle empty domains array', async () => {
+      const params = { page: 1, pageSize: 25, domains: [] }
       mockGet.mockResolvedValue({ data: mockAppSettingsListResponse })
 
-      await AppSettingsListService.getAppSettingsList(1, 25, undefined, [])
+      await AppSettingsListService.getAppSettingsList(params)
 
       expect(mockGet).toBeCalledWith('/keys?page=1&pageSize=25')
     })

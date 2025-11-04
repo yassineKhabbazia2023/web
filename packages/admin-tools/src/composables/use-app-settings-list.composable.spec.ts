@@ -2,6 +2,7 @@ import { nextTick } from 'vue'
 import { useAppSettingsList } from './use-app-settings-list.composable'
 import { AppSettingsListService } from '@admin-tools/services/app-settings-list/app-settings-list.service'
 import { displayNotification } from '@pulse/styleguide'
+import { FilterCode } from '@admin-tools/types/app-settings-list.type'
 
 vi.mock('@admin-tools/services/app-settings-list/app-settings-list.service')
 vi.mock('@pulse/styleguide', () => ({
@@ -20,6 +21,7 @@ describe('useAppSettingsList', () => {
     expect(manager.isRefreshing.value).toBe(false)
     expect(manager.searchQuery.value).toBe('')
     expect(manager.selectedDomains.value).toEqual([])
+    expect(manager.selectedFilters.value).toEqual([])
     expect(manager.pagination.value).toEqual({
       totalCount: 0,
       currentPage: 1,
@@ -86,8 +88,17 @@ describe('useAppSettingsList', () => {
     const manager = useAppSettingsList()
     await manager.handlePageChange(2)
 
+    const expectedParams = {
+      page: 2,
+      pageSize: 25,
+      key: undefined,
+      domains: undefined,
+      hasMissing: false,
+      hasIncoherence: false,
+    }
+
     expect(manager.pagination.value.currentPage).toBe(2)
-    expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(2, 25, undefined, undefined)
+    expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(expectedParams)
   })
 
   it('should handle page size change and reset to page 1', async () => {
@@ -103,9 +114,18 @@ describe('useAppSettingsList', () => {
     manager.pagination.value.currentPage = 3
     await manager.handlePageSizeChange(50)
 
+    const expectedParams = {
+      page: 1,
+      pageSize: 50,
+      key: undefined,
+      domains: undefined,
+      hasMissing: false,
+      hasIncoherence: false,
+    }
+
     expect(manager.pagination.value.pageSize).toBe(50)
     expect(manager.pagination.value.currentPage).toBe(1)
-    expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(1, 50, undefined, undefined)
+    expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(expectedParams)
   })
 
   it('should handle refresh successfully', async () => {
@@ -193,9 +213,18 @@ describe('useAppSettingsList', () => {
     const manager = useAppSettingsList()
     manager.searchQuery.value = 'test'
 
+    const expectedParams = {
+      page: 1,
+      pageSize: 25,
+      key: 'test',
+      domains: undefined,
+      hasMissing: false,
+      hasIncoherence: false,
+    }
+
     await nextTick()
     await vi.waitFor(() => {
-      expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(1, 25, 'test', undefined)
+      expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(expectedParams)
     })
   })
 
@@ -211,9 +240,18 @@ describe('useAppSettingsList', () => {
     const manager = useAppSettingsList()
     manager.searchQuery.value = 'te'
 
+    const expectedParams = {
+      page: 1,
+      pageSize: 25,
+      key: undefined,
+      domains: undefined,
+      hasMissing: false,
+      hasIncoherence: false,
+    }
+
     await nextTick()
     await vi.waitFor(() => {
-      expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(1, 25, undefined, undefined)
+      expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(expectedParams)
     })
   })
 
@@ -229,9 +267,226 @@ describe('useAppSettingsList', () => {
     const manager = useAppSettingsList()
     manager.selectedDomains.value = ['domain1', 'domain2']
 
+    const expectedParams = {
+      page: 1,
+      pageSize: 25,
+      key: undefined,
+      domains: ['domain1', 'domain2'],
+      hasMissing: false,
+      hasIncoherence: false,
+    }
+
     await nextTick()
     await vi.waitFor(() => {
-      expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(1, 25, undefined, ['domain1', 'domain2'])
+      expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledExactlyOnceWith(expectedParams)
+    })
+  })
+
+  describe('filters', () => {
+    it('should pass hasMissing=true when missing filter is selected', async () => {
+      const mockResponse = {
+        items: [],
+        totalCount: 10,
+        page: 1,
+        pageSize: 25,
+      }
+      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+
+      const manager = useAppSettingsList()
+      manager.selectedFilters.value = [FilterCode.MISSING]
+
+      const expectedParams = {
+        page: 1,
+        pageSize: 25,
+        key: undefined,
+        domains: undefined,
+        hasMissing: true,
+        hasIncoherence: false,
+      }
+
+      await nextTick()
+      await vi.waitFor(() => {
+        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+      })
+    })
+
+    it('should pass hasIncoherence=true when incoherent filter is selected', async () => {
+      const mockResponse = {
+        items: [],
+        totalCount: 10,
+        page: 1,
+        pageSize: 25,
+      }
+      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+
+      const manager = useAppSettingsList()
+      manager.selectedFilters.value = [FilterCode.INCOHERENT]
+
+      const expectedParams = {
+        page: 1,
+        pageSize: 25,
+        key: undefined,
+        domains: undefined,
+        hasMissing: false,
+        hasIncoherence: true,
+      }
+
+      await nextTick()
+      await vi.waitFor(() => {
+        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+      })
+    })
+
+    it('should pass both filters=true when both filters are selected', async () => {
+      const mockResponse = {
+        items: [],
+        totalCount: 10,
+        page: 1,
+        pageSize: 25,
+      }
+      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+
+      const manager = useAppSettingsList()
+      manager.selectedFilters.value = [FilterCode.MISSING, FilterCode.INCOHERENT]
+
+      const expectedParams = {
+        page: 1,
+        pageSize: 25,
+        key: undefined,
+        domains: undefined,
+        hasMissing: true,
+        hasIncoherence: true,
+      }
+
+      await nextTick()
+      await vi.waitFor(() => {
+        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+      })
+    })
+
+    it('should reset to page 1 when filters change', async () => {
+      const mockResponse = {
+        items: [],
+        totalCount: 10,
+        page: 1,
+        pageSize: 25,
+      }
+      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+
+      const manager = useAppSettingsList()
+      manager.pagination.value.currentPage = 3
+      manager.selectedFilters.value = [FilterCode.MISSING]
+
+      await nextTick()
+      await vi.waitFor(() => {
+        expect(manager.pagination.value.currentPage).toBe(1)
+      })
+    })
+
+    it('should pass filters=false when selectedFilters is empty', async () => {
+      const mockResponse = {
+        items: [],
+        totalCount: 10,
+        page: 1,
+        pageSize: 25,
+      }
+      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+
+      const manager = useAppSettingsList()
+      manager.selectedFilters.value = []
+
+      const expectedParams = {
+        page: 1,
+        pageSize: 25,
+        key: undefined,
+        domains: undefined,
+        hasMissing: false,
+        hasIncoherence: false,
+      }
+
+      await nextTick()
+      await vi.waitFor(() => {
+        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+      })
+    })
+
+    it('should work with filters combined with search and domains', async () => {
+      const mockResponse = {
+        items: [],
+        totalCount: 10,
+        page: 1,
+        pageSize: 25,
+      }
+      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+
+      const manager = useAppSettingsList()
+      manager.searchQuery.value = 'test'
+      manager.selectedDomains.value = ['domain1']
+      manager.selectedFilters.value = [FilterCode.MISSING, FilterCode.INCOHERENT]
+
+      const expectedParams = {
+        page: 1,
+        pageSize: 25,
+        key: 'test',
+        domains: ['domain1'],
+        hasMissing: true,
+        hasIncoherence: true,
+      }
+
+      await nextTick()
+      await vi.waitFor(() => {
+        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+      })
+    })
+
+    it('should handle array order for filter codes', async () => {
+      const mockResponse = {
+        items: [],
+        totalCount: 10,
+        page: 1,
+        pageSize: 25,
+      }
+      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+
+      const manager = useAppSettingsList()
+      // Test with reversed order
+      manager.selectedFilters.value = [FilterCode.INCOHERENT, FilterCode.MISSING]
+
+      const expectedParams = {
+        page: 1,
+        pageSize: 25,
+        key: undefined,
+        domains: undefined,
+        hasMissing: true,
+        hasIncoherence: true,
+      }
+
+      await nextTick()
+      await vi.waitFor(() => {
+        // Should still pass both as true regardless of order
+        expect(mockedAppSettingsListService.getAppSettingsList).toHaveBeenCalledWith(expectedParams)
+      })
+    })
+
+    it('should trigger loading state when filters change', async () => {
+      const mockResponse = {
+        items: [],
+        totalCount: 10,
+        page: 1,
+        pageSize: 25,
+      }
+      mockedAppSettingsListService.getAppSettingsList.mockResolvedValue(mockResponse)
+
+      const manager = useAppSettingsList()
+      manager.selectedFilters.value = [FilterCode.MISSING]
+
+      // Loading should become true during fetch
+      await nextTick()
+
+      // Wait for completion
+      await vi.waitFor(() => {
+        expect(manager.isLoading.value).toBe(false)
+      })
     })
   })
 })

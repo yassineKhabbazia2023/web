@@ -16,3 +16,15 @@ export interface DomainItem {
   domainName: string
   keysCount: number
 }
+
+/**
+ * Parameters for fetching the app settings list
+ */
+export interface GetAppSettingsListParams {
+  page?: number
+  pageSize?: number
+  key?: string
+  domains?: string[]
+  hasMissing?: boolean
+  hasIncoherence?: boolean
+}

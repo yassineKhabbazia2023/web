@@ -30,3 +30,11 @@ export interface AppSettingsListResponse {
   page: number
   pageSize: number
 }
+
+/**
+ * Filter codes for filtering app settings by missing or incoherent values
+ */
+export enum FilterCode {
+  MISSING = 'missing',
+  INCOHERENT = 'incoherent',
+}

@@ -1,39 +1,50 @@
 import type { AppSettingsListResponse } from '@admin-tools/types/app-settings-list.type'
-import type { DeleteAppSettingResponse, DomainItem } from './app-settings-list.service.type'
+import type { DeleteAppSettingResponse, DomainItem, GetAppSettingsListParams } from './app-settings-list.service.type'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@admin-tools/constants/admin-tool.const'
 import api from '@admin-tools/api/api'
 
 export class AppSettingsListService {
   /**
    * Fetch environment variables from the backend
-   * @param page - Page number (starting from 1)
-   * @param pageSize - Number of items per page
-   * @param key - Optional search query to filter env vars by key
-   * @param domains - Optional array of domain names to filter env vars
+   * @param params - Parameters object for filtering and pagination
    * @returns Promise with environment variables response
    */
   static async getAppSettingsList(
-    page: number = DEFAULT_PAGE_NUMBER,
-    pageSize: number = DEFAULT_PAGE_SIZE,
-    key?: string,
-    domains?: string[],
+    params: GetAppSettingsListParams = {},
   ): Promise<AppSettingsListResponse> {
-    const params = new URLSearchParams()
+    const {
+      page = DEFAULT_PAGE_NUMBER,
+      pageSize = DEFAULT_PAGE_SIZE,
+      key,
+      domains,
+      hasMissing,
+      hasIncoherence,
+    } = params
 
-    params.append('page', page.toString())
-    params.append('pageSize', pageSize.toString())
+    const urlParams = new URLSearchParams({
+      page: page.toString(),
+      pageSize: pageSize.toString(),
+    })
 
-    if (key) {
-      params.append('key', key)
+    if (key !== undefined && key !== '') {
+      urlParams.append('key', key)
     }
 
     if (domains && domains.length > 0) {
       for (const domain of domains) {
-        params.append('domains', domain)
+        urlParams.append('domains', domain)
       }
     }
 
-    const response = await api.get<AppSettingsListResponse>(`/keys?${params.toString()}`)
+    if (hasMissing === true) {
+      urlParams.append('hasMissing', 'true')
+    }
+
+    if (hasIncoherence === true) {
+      urlParams.append('hasIncoherence', 'true')
+    }
+
+    const response = await api.get<AppSettingsListResponse>(`/keys?${urlParams.toString()}`)
     return response.data
   }
 
