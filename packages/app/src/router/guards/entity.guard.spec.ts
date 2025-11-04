@@ -1,5 +1,5 @@
 import {
-  selectedEntityGuard,
+  currentEntityGuard,
   findEntityWithId,
   isEntityAlreadySelected,
 } from './entity.guard'
@@ -12,9 +12,9 @@ import {
   entitiesServiceMocks,
 } from '@pulse/common/mocks'
 
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
-import { SelectedEntityManager } from '@pulse/common/managers'
+import { CurrentEntityManager } from '@pulse/common/managers'
 import { RouteLocationNormalizedGeneric } from 'vue-router'
 vi.mock('@pulse/common/managers')
 
@@ -45,39 +45,39 @@ describe('verify entity change', () => {
   it('directly calls next without fetching entities if target route doesn\'t contain an entity id in the route params', async () => {
     const from = createMockedRoute('123')
     const to = createMockedRoute('')
-    await selectedEntityGuard(to, from, nextMock)
+    await currentEntityGuard(to, from, nextMock)
 
     expect(fetchEntityByIdMock).not.toHaveBeenCalled()
   })
 
   it('directly calls next without fetching entities if entityId param is the same between TO and FROM', async () => {
     const routeWithEntityId = createMockedRoute('123')
-    await selectedEntityGuard(routeWithEntityId, routeWithEntityId, nextMock)
+    await currentEntityGuard(routeWithEntityId, routeWithEntityId, nextMock)
 
     expect(fetchEntityByIdMock).not.toHaveBeenCalled()
   })
 
-  it('directly calls next without fetching entities if entityId param from TO is the same as stored selectedEntityId', async () => {
-    const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
-    selectedEntityStoreMock.selectedEntityId = entitiesFromAccountsRow[1].accountId
+  it('directly calls next without fetching entities if entityId param from TO is the same as stored currentEntityId', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entitiesFromAccountsRow[1].accountId
 
     const from = createMockedRoute(entitiesFromAccountsRow[0].accountId.toString())
     const to = createMockedRoute(entitiesFromAccountsRow[1].accountId.toString())
-    await selectedEntityGuard(to, from, nextMock)
+    await currentEntityGuard(to, from, nextMock)
 
     expect(fetchEntityByIdMock).not.toHaveBeenCalled()
   })
 
-  it('fetches entities when entityId from TO is different than stored selectedEntityId', async () => {
-    const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
-    selectedEntityStoreMock.selectedEntityId = entitiesFromAccountsRow[1].accountId
+  it('fetches entities when entityId from TO is different than stored currentEntityId', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entitiesFromAccountsRow[1].accountId
 
     const from = createMockedRoute('')
     const to = createMockedRoute(entitiesFromAccountsRow[0].accountId.toString())
-    await selectedEntityGuard(to, from, nextMock)
+    await currentEntityGuard(to, from, nextMock)
 
     expect(fetchEntityByIdMock).toHaveBeenCalled()
-    expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalled()
+    expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalled()
   })
 })
 
@@ -114,8 +114,8 @@ describe('is entity already selected', () => {
       expectedResult: false,
     },
   ])('$testName', ({ storedEntityMock, givenEntityId, expectedResult }) => {
-    const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
-    selectedEntityStoreMock.selectedEntityId = storedEntityMock.accountId
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = storedEntityMock.accountId
     const result = isEntityAlreadySelected(givenEntityId)
 
     expect(result).toBe(expectedResult)

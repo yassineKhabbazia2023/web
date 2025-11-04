@@ -9,10 +9,10 @@ createTestingPinia()
 /*
  * example of use:
  * // test.spec.ts
- * import { useSelectedEntityStore } from '@pulse/common/stores'
+ * import { useCurrentEntityStore } from '@pulse/common/stores'
  *
- * const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
- * selectedEntityStoreMock.selectedEntity = getMockedEntity()
+ * const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+ * currentEntityStoreMock.currentEntity = getMockedEntity()
  */
 export function getStoreMock<TStoreDef extends() => unknown>(
   useStore: TStoreDef,

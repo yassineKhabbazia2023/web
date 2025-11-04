@@ -181,16 +181,16 @@
     </div>
   </div>
   <ManageRightsDrawer
-    v-if="selectedRow && selectedEntity !== undefined"
+    v-if="selectedRow && currentEntity !== undefined"
     v-model="isManageRightsDrawerOpened"
     :selectedUser="selectedRow"
-    :selectedEntity="selectedEntity"
+    :currentEntity="currentEntity"
   />
   <ManageAccessDrawerUnitary
     v-model="isManageAccessDrawerOpened"
     :accountOperationsList="accountOperationsList"
     :trackingLocalisation="TrackingLocalisation.ENTITY"
-    :currentEntity="selectedEntity"
+    :currentEntity="currentEntity"
     @update-operation-table="loadOperations"
   />
 </template>
@@ -218,7 +218,7 @@ import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { AvatarRoles, PNotification } from '@pulse/styleguide'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { getInitials } from '@pulse/common'
-import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { PAGE_SIZES, ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
@@ -252,7 +252,7 @@ const { d, t } = useI18n({
 })
 
 const userStore = useUserStore()
-const selectedEntityStore = useSelectedEntityStore()
+const currentEntityStore = useCurrentEntityStore()
 
 const route = useRoute()
 const selectedRow = ref(undefined)
@@ -272,9 +272,9 @@ const handleOpenAccessDrawer = () => {
 async function loadOperations() {
   isLoadingOperations.value = true
   try {
-    const operations = await fetchOperationsForAccount(selectedEntity.value?.accountId ?? 0)
+    const operations = await fetchOperationsForAccount(currentEntity.value?.accountId ?? 0)
     const pendingOperations = getPendingOperations(operations)
-    const defaultLegalName = selectedEntity.value?.legalName ?? ''
+    const defaultLegalName = currentEntity.value?.legalName ?? ''
     const pendingOperationsWithLegalName = getOperationsWithLegalName(pendingOperations, defaultLegalName)
     accountOperationsList.value = getAccountOperationsList(pendingOperationsWithLegalName)
   } catch (error) {
@@ -294,9 +294,9 @@ const isAccessButtonDisabled = computed(() => {
 // #region add customer user
 const isAddCustomerDrawerOpened = ref(false)
 
-const currentEntityId = computed(() => selectedEntity.value?.accountId)
-const currentEntityName = computed(() => selectedEntity.value?.legalName)
-const currentEntityNumber = computed(() => selectedEntity.value?.accountNumber)
+const currentEntityId = computed(() => currentEntity.value?.accountId)
+const currentEntityName = computed(() => currentEntity.value?.legalName)
+const currentEntityNumber = computed(() => currentEntity.value?.accountNumber)
 
 const canAddUser = computed(() => CurrentUserManager.hasPermission(ACTION_PERMISSIONS.ADD_USERS))
 
@@ -478,15 +478,15 @@ const handleUserAction = (action: string, row: any) => {
 }
 
 // Signatory addition scope
-const { selectedEntity } = storeToRefs(selectedEntityStore)
+const { currentEntity } = storeToRefs(currentEntityStore)
 
 async function handleAddSignatory(contactId: User['contactId'], contactFullName: string, email: string) {
-  if (!selectedEntity.value) {
+  if (!currentEntity.value) {
     return
   }
 
   try {
-    await updateSignatoryStatus(selectedEntity.value.accountId, contactId)
+    await updateSignatoryStatus(currentEntity.value.accountId, contactId)
     showAddSignatorySuccess(contactFullName)
     setAccountSignatories()
     AmplitudeService.track('Signatory Updated', {
@@ -500,11 +500,11 @@ async function handleAddSignatory(contactId: User['contactId'], contactFullName:
 }
 
 async function handleRemoveSignatory(contactId: User['contactId'], contactFullName: string, email: string) {
-  if (!selectedEntity.value) {
+  if (!currentEntity.value) {
     return
   }
   try {
-    await updateSignatoryStatus(selectedEntity.value.accountId, contactId, false)
+    await updateSignatoryStatus(currentEntity.value.accountId, contactId, false)
     showSuccessNotification('signatoryRemoved', contactFullName)
     setAccountSignatories()
     AmplitudeService.track('Signatory Updated', {
@@ -540,12 +540,12 @@ function hasMultipleSignatories() {
 }
 
 async function setAccountSignatories() {
-  if (!selectedEntity.value) {
+  if (!currentEntity.value) {
     return
   }
   state.isLoading = true
   try {
-    const signatories = await getAccountSignatories(selectedEntity.value.accountId)
+    const signatories = await getAccountSignatories(currentEntity.value.accountId)
     accountSignatories.value.length = 0
     accountSignatories.value.push(...signatories)
   } catch (error) {
@@ -606,7 +606,7 @@ watch(() => [
 onMounted(async () => {
   await formatAndFillUsersCollabTable()
   await setAccountSignatories()
-  if (selectedEntity.value?.accountId) {
+  if (currentEntity.value?.accountId) {
     await loadOperations()
   }
 })

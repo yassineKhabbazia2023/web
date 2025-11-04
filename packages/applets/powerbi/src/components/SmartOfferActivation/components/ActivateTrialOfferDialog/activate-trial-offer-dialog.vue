@@ -108,7 +108,7 @@ const isActivatingSmartOffer = ref(false)
 const handleSmartOfferActivation = async () => {
   isActivatingSmartOffer.value = true
   try {
-    await activateSmartOfferTrial(props.selectedEntity.accountId)
+    await activateSmartOfferTrial(props.currentEntity.accountId)
     AmplitudeService.track('Power BI Promotion Activated', {
       powerbi_eligibility_promotion_type: 'Clarity',
     })

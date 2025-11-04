@@ -12,6 +12,7 @@
     "./manager": "./src/layouts/home/Sidebar/manager/index.ts",
     "./pages": "./src/pages/pages.ts",
     "./pages/work-in-progress": "./src/pages/work-in-progress/index.ts",
+    "./types": "./src/types.ts",
     ".": "./src/main.ts"
   },
   "scripts": {

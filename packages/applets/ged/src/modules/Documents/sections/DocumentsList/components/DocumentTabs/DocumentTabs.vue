@@ -9,7 +9,7 @@
     >
       <DocumentDetailsTabPane
         :document="document"
-        :selectedEntity="selectedEntity"
+        :currentEntity="currentEntity"
         :accountId="accountId"
         :currentService="currentService"
       />

@@ -1,7 +1,7 @@
 import type { Service } from '@ged/models/Service'
 
 export interface MailToGedProps {
-  selectedEntity: string
+  currentEntity: string
   accountId: number
   entityServices: Service[]
 }

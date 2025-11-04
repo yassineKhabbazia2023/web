@@ -2,10 +2,10 @@
   <div>
     <ActivateTrialOfferDialog
       v-model="isTrialOfferDialogVisible"
-      :selectedEntity
+      :currentEntity
       @offer-activated="handleOfferActivated"
     />
-    <SmartOfferHeader :selectedEntity />
+    <SmartOfferHeader :currentEntity />
     <div class="padding-x--11 padding-y--10">
       <SmartOfferMainSection @activate-offer="handleOfferActivation" />
       <BusinessRealTimeControl />

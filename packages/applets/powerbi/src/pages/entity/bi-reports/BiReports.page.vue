@@ -1,7 +1,7 @@
 <template>
   <SmartOfferActivation
-    v-if="selectedEntity && isClarityOptionActive"
-    :selectedEntity
+    v-if="currentEntity && isClarityOptionActive"
+    :currentEntity
     @display-reports="handleDisplayReports"
   />
   <template v-else>
@@ -40,7 +40,7 @@ import { RouterHelpers } from '@pulse/common/helpers'
 import { PLoader } from '@pulse/styleguide/components'
 import { displayNotification } from '@pulse/styleguide'
 import { fetchBIReports } from '@powerbi/services/reporting.service'
-import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import type { Report } from '@powerbi/types/bi-reports.types'
 
 import ReportsList from '@powerbi/components/ReportsList/ReportsList.vue'
@@ -59,11 +59,11 @@ const selectedReport = ref<Report>()
 
 // #region POC: manage smart offer page
 const { user } = useUserStore()
-const selectedEntityStore = useSelectedEntityStore()
-const { selectedEntity } = storeToRefs(selectedEntityStore)
+const currentEntityStore = useCurrentEntityStore()
+const { currentEntity } = storeToRefs(currentEntityStore)
 
 const isClarityOptionActive = computed(() => {
-  const entity = selectedEntity.value
+  const entity = currentEntity.value
 
   const isClarityOfferFeatureFlagActive = FeatureFlagManager.isClarityOfferActivated()
   const isClarityEnabledForEntity = entity?.isClarityVisible === true && isClarityOfferFeatureFlagActive
@@ -76,7 +76,7 @@ const isClarityOptionActive = computed(() => {
 })
 
 const handleDisplayReports = () => {
-  selectedEntityStore.setSelectedEntityClarityVisibility(false)
+  currentEntityStore.setCurrentEntityClarityVisibility(false)
   initializeBIReports()
 }
 // #endregion

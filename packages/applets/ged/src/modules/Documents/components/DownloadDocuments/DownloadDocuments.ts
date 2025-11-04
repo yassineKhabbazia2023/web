@@ -49,7 +49,7 @@ export function useDownloadDocuments(
       !downloadDocumentsProps.value.selectedDocuments ||
       downloadDocumentsProps.value.selectedDocuments.length === 0
     ) {
-      return Promise.resolve()
+      return
     }
 
     triggerInProgressNotification()
@@ -79,7 +79,7 @@ export function useDownloadDocuments(
     try {
       const documentBlob = await downloadDocument(
         downloadDocumentsProps.currentService,
-        downloadDocumentsProps.selectedEntity,
+        downloadDocumentsProps.currentEntity,
         downloadDocumentsProps.selectedDocuments[0].id,
         downloadDocumentsProps.accountId,
       )
@@ -96,7 +96,7 @@ export function useDownloadDocuments(
     try {
       const documentsArchiveBlob = await downloadDocuments(
         downloadDocumentsProps.currentService,
-        downloadDocumentsProps.selectedEntity,
+        downloadDocumentsProps.currentEntity,
         downloadDocumentsProps.selectedDocuments.map((x) => x.id),
         downloadDocumentsProps.accountId,
       )

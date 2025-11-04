@@ -12,7 +12,7 @@ import { hasDragType } from '@ged/modules/common/helpers/drag-and-drop.helper'
 export function useDragAndDropFromExplorer(
   currentService: Ref<DocumentsProps['currentService']>,
   currentServiceName: Ref<DocumentsProps['currentServiceName']>,
-  selectedEntity: Ref<DocumentsProps['selectedEntity']>,
+  currentEntity: Ref<DocumentsProps['currentEntity']>,
   accountId: Ref<DocumentsProps['accountId']>,
   selectedFolder: Ref<DocumentsProps['selectedFolder']>,
   refreshDocumentsList: Function,
@@ -97,7 +97,7 @@ export function useDragAndDropFromExplorer(
 
     const documentsToUploadPromises = files.map(file => uploadDocument(
       currentService.value,
-      selectedEntity.value,
+      currentEntity.value,
       file,
       folder.id,
       accountId.value,
@@ -108,13 +108,13 @@ export function useDragAndDropFromExplorer(
       const successfulResults: Array<any> = []
       const failedResults = []
 
-      settledUploads.forEach(upload => {
+      for (const upload of settledUploads) {
         if (upload.status === 'fulfilled') {
           successfulResults.push(upload.value)
         } else if (upload.status === 'rejected') {
           failedResults.push(upload.reason)
         }
-      })
+      }
       refreshDocumentsList()
       isDropFromExplorerConfirmationModalVisible.value = false
 

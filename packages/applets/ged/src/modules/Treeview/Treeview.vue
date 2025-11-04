@@ -7,7 +7,7 @@
     <div v-else-if="defaultFolder !== null" class="padding-top--4">
       <div class="padding-left--2">
         <CreateFolderSection
-          :entityId="selectedEntity"
+          :entityId="currentEntity"
           :accountId="accountId"
           :isCreateFolderModalVisible="isCreateFolderModalVisible"
           :isInBinContext="isInBinContext"
@@ -20,7 +20,7 @@
       </div>
 
       <DeleteFolderSection
-        :entityId="selectedEntity"
+        :entityId="currentEntity"
         :accountId="accountId"
         :isDeleteFolderPopupVisible="isDeleteFolderPopupVisible"
         :serviceId="currentService"
@@ -36,7 +36,7 @@
         :folder="folderMovingDestination"
         :folderToMove="toolBoxSelectedFolder"
         :isMoveModalOpened="isMoveFolderModalOpened"
-        :selectedEntity="selectedEntity"
+        :currentEntity="currentEntity"
         :accountId="accountId"
         @close-move-folder-modal="handleCloseMoveFolderModal"
         @refresh-tree="propagateRefreshTree"
@@ -45,7 +45,7 @@
 
       <RenameFolderSection
         v-if="parentNodeOfSelectedFolderTreeNodeAction"
-        :entityId="selectedEntity"
+        :entityId="currentEntity"
         :accountId="accountId"
         :folderId="currentFolderId"
         :folderName="currentFolderName"
@@ -81,7 +81,7 @@
             <template #default="{ node, data }">
               <TreeNode
                 :serviceId="currentService"
-                :entityId="selectedEntity"
+                :entityId="currentEntity"
                 :accountId="accountId"
                 :node="node"
                 :data="data"
@@ -111,7 +111,7 @@
       </div>
       <MailToGedCard
         v-if="FeatureFlagManager.isMailToGedActivated()"
-        :selectedEntity="selectedEntity"
+        :currentEntity="currentEntity"
         :accountId="accountId"
         :entityServices="entityServices"
       />
@@ -172,7 +172,7 @@ const downloadFolderProps: ComputedRef<DownloadFolderComposableProps> =
       selectedFolderName: currentFolderName.value,
       selectedFolderId: currentFolderId.value,
       currentService: props.currentService,
-      selectedEntity: props.selectedEntity,
+      currentEntity: props.currentEntity,
       accountId: props.accountId,
     }
   })
@@ -514,7 +514,7 @@ async function handleConfirmDocumentDrop() {
     isDocumentDropConfirmButtonLoading.value = true
     await moveDocuments(
       props.currentService,
-      props.selectedEntity,
+      props.currentEntity,
       formattedMoveDocumentsRequest,
       props.accountId,
     )

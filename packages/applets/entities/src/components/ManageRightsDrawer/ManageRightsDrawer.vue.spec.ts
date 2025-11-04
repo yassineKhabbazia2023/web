@@ -42,7 +42,7 @@ const createWrapper = (selectedUser: User = mockedUser): VueWrapper<any> => {
     props: {
       modelValue: true,
       selectedUser,
-      selectedEntity: getMockedEntity(),
+      currentEntity: getMockedEntity(),
     },
   })
 }

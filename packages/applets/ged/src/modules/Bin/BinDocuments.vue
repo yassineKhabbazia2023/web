@@ -34,7 +34,7 @@
 
   <DocumentRestoreModal
     :serviceId="currentBinService"
-    :entityId="selectedEntity"
+    :entityId="currentEntity"
     :isVisible="isRestoring"
     :accountId="accountId"
     :document="documentToRestore"
@@ -111,7 +111,7 @@ const fetchBin = async () => {
   isLoading.value = true
   binDocuments.value = await fetchBinDocuments(
     props.currentBinService,
-    props.selectedEntity,
+    props.currentEntity,
     props.accountId,
     skip.value,
     currentPageSize.value,

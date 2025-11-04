@@ -2,7 +2,7 @@ import { APP_ROUTES } from '@pulse/common/constants'
 import {
   usePermissionsStore,
   useUserStore,
-  useSelectedEntityStore,
+  useCurrentEntityStore,
 } from '@pulse/common/stores'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { fetchEntities } from '@app/services/entities'
@@ -14,7 +14,7 @@ import {
   stopProductFruits,
 } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { logger } from '@pulse/toolbox'
-import { SelectedEntityManager } from '@pulse/common/managers'
+import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import type { RouteLocationNamedRaw, RouteLocationNormalized } from 'vue-router'
 import { RouteName, RouteParam } from '@pulse/common/enums'
@@ -57,7 +57,7 @@ export class AuthenticatedFlowManager {
       }
 
       AuthenticatedFlowManager.setUserIsSingleEntity(entities)
-      await AuthenticatedFlowManager.setUserSelectedEntity(entities[0])
+      await AuthenticatedFlowManager.setUserCurrentEntity(entities[0])
 
     } catch (error) {
       logger.error('unable to fetch and set entities', error)
@@ -71,12 +71,12 @@ export class AuthenticatedFlowManager {
     userStore.setIsSingleEntity(isSingleEntity)
   }
 
-  private static async setUserSelectedEntity(defaultEntity: Entity) {
-    const selectedEntityStore = useSelectedEntityStore()
-    // if no entity is selected, we try to fetch the one stored in local storage
+  private static async setUserCurrentEntity(defaultEntity: Entity) {
+    const currentEntityStore = useCurrentEntityStore()
+    // if there is no current entity, we try to fetch the one stored in local storage
     // or set the default entity provided
-    if (selectedEntityStore.selectedEntityId === undefined) {
-      const localStorageEntityId = SelectedEntityManager.getLocalStorageEntityId()
+    if (currentEntityStore.currentEntityId === undefined) {
+      const localStorageEntityId = CurrentEntityManager.getLocalStorageEntityId()
 
       // If the entity is not found in local storage or the user doesn't have permissions on it anymore,
       // we default to the one provided
@@ -85,7 +85,7 @@ export class AuthenticatedFlowManager {
         : localStorageEntityId
       const entityToPersist = await fetchEntityById(entityToPersistId)
 
-      return SelectedEntityManager.initializeSelectedEntity(entityToPersist)
+      return CurrentEntityManager.initializeCurrentEntity(entityToPersist)
     }
   }
 
@@ -226,8 +226,8 @@ export class AuthenticatedFlowManager {
     const isSingleEntity = userStore.getIsSingleEntity()
 
     if (isSingleEntity) {
-      const selectedEntityStore = useSelectedEntityStore()
-      const entityAccountId = selectedEntityStore.selectedEntity?.accountId
+      const currentEntityStore = useCurrentEntityStore()
+      const entityAccountId = currentEntityStore.currentEntity?.accountId
       const entityLandingPage = {
         name: RouteName.HOMEPAGE,
         params: { [RouteParam.ENTITY_ID]: entityAccountId },

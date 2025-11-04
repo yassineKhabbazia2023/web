@@ -4,17 +4,17 @@ import { nextTick } from 'vue'
 import { mockTableData } from '@entities/__mocks__/table-data.mocks'
 import {
   AmplitudeServiceMock,
-  SelectedEntityManagerMock,
+  CurrentEntityManagerMock,
   getStoreMock,
   getMockedUserInfo,
   CurrentUserManagerMock,
   getMockedEntitySummary,
 } from '@pulse/common/mocks'
-import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 
 import TableData from '.'
 
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const userStoreMock = getStoreMock(useUserStore)
 
 const handleFavorites = vi.fn()
@@ -43,7 +43,7 @@ vi.mock('@pulse/common/services/amplitude', () => ({
 }))
 
 vi.mock('@pulse/common/managers', () => ({
-  SelectedEntityManager: SelectedEntityManagerMock,
+  CurrentEntityManager: CurrentEntityManagerMock,
   CurrentUserManager: CurrentUserManagerMock,
 }))
 
@@ -94,7 +94,7 @@ describe('tableData', () => {
 
   beforeEach(async () => {
     vi.useFakeTimers()
-    selectedEntityStoreMock.selectedEntity = entitySummaryMock
+    currentEntityStoreMock.currentEntity = entitySummaryMock
     userStoreMock.user = userMock
     userStoreMock.isCollab = true
     wrapper = createWrapper()

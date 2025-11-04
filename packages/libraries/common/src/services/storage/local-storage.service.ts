@@ -1,7 +1,7 @@
 import { logger } from '@pulse/toolbox'
 
 const LOCAL_STORAGE_TOKEN_KEY = 'token'
-const LOCAL_STORAGE_SELECTED_ENTITY_KEY = 'selected-entity'
+const LOCAL_STORAGE_LAST_VISITED_ENTITY_KEY = 'last-visited-entity'
 
 /**
  * Service to handle all localStorage operations
@@ -63,23 +63,23 @@ export class LocalStorageService {
 
   // #endregion
 
-  // #region selected entity
+  // #region last visited entity
 
-  static setSelectedEntityId(entityId: number): void {
-    this.setItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY, JSON.stringify(entityId))
+  static setLastVisitedEntityId(entityId: number): void {
+    this.setItem(LOCAL_STORAGE_LAST_VISITED_ENTITY_KEY, JSON.stringify(entityId))
   }
 
-  static getSelectedEntityId(): number | undefined {
-    const value = this.getItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY)
+  static getLastVisitedEntityId(): number | undefined {
+    const value = this.getItem(LOCAL_STORAGE_LAST_VISITED_ENTITY_KEY)
     if (!value) {
       return undefined
     }
     const parsed = Number(value)
-    return isNaN(parsed) ? undefined : parsed
+    return Number.isNaN(parsed) ? undefined : parsed
   }
 
-  static removeSelectedEntityId(): void {
-    this.removeItem(LOCAL_STORAGE_SELECTED_ENTITY_KEY)
+  static removeLastVisitedEntityId(): void {
+    this.removeItem(LOCAL_STORAGE_LAST_VISITED_ENTITY_KEY)
   }
 
   // #endregion

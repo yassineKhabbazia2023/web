@@ -99,7 +99,7 @@ describe('WidgetsHomeManager', () => {
       const expectedMockedGridDefinitions = [
         mockWidgetGridDefinitionsWithPermissions[validWidgetNames.pennylaneIntro],
       ]
-      const hasPermissionForCurrentEntitySpy = vi.spyOn(CurrentUserManager, 'hasSelectedEntityPermission')
+      const hasPermissionForCurrentEntitySpy = vi.spyOn(CurrentUserManager, 'hasCurrentEntityPermission')
       hasPermissionForCurrentEntitySpy.mockReturnValue(false)
 
       vi.mocked(WidgetsService.getHomeWidgetNames).mockReturnValue(mockWidgets)

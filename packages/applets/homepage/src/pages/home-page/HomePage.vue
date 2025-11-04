@@ -1,13 +1,13 @@
 <template>
   <div
-    :key="selectedEntity?.accountId"
+    :key="currentEntity?.accountId"
     class="home-page"
     data-testid="home-page"
   >
     <PEntityHeader
-      v-if="selectedEntity"
-      :pLegalName="selectedEntity.legalName"
-      :pAccountNumber="selectedEntity.accountNumber"
+      v-if="currentEntity"
+      :pLegalName="currentEntity.legalName"
+      :pAccountNumber="currentEntity.accountNumber"
       class="margin-bottom--4"
     />
     <div v-if="FeatureFlagManager.isHomepageWidgetsActivated() === true">
@@ -24,7 +24,7 @@
 import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { PEntityHeader } from '@pulse/styleguide/components'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
@@ -34,8 +34,8 @@ import TopBar from './TopBar/top-bar.vue'
 import WidgetsHome from './WidgetsHome.vue'
 import LegacyHome from './LegacyHome.vue'
 
-const selectedEntityStore = useSelectedEntityStore()
-const { selectedEntity } = storeToRefs(selectedEntityStore)
+const currentEntityStore = useCurrentEntityStore()
+const { currentEntity } = storeToRefs(currentEntityStore)
 
 onMounted(() => {
   AmplitudeService.track(AmplitudeEvent.FEATURE_CONSULTED, {

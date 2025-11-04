@@ -8,7 +8,7 @@ export interface DocumentUploadProps {
   currentServiceFolder: Folder[]
   currentService: Service['ServiceId']
   currentServiceName: Service['ServiceName']
-  selectedEntity: string
+  currentEntity: string
   files: File[]
   accountId: number
 }

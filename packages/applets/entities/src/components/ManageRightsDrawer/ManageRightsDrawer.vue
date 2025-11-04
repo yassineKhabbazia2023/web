@@ -33,7 +33,7 @@
       v-model="authorizationsState"
       v-model:additionalOptionByActionCode="additionalOptionByActionCode"
       :contactId="selectedUser.contactId"
-      :accountNumber="selectedEntity.accountNumber"
+      :accountNumber="currentEntity.accountNumber"
     />
     <template #footer>
       <div class="margin-left--auto">

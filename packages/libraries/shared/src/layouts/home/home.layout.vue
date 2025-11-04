@@ -25,7 +25,14 @@
       </PCHeader>
       <PContainer class="aside-main-container">
         <PAside class="aside-container">
-          <Sidebar class="sidebar-container" />
+          <Sidebar
+            class="sidebar-container"
+            :current-entity="currentEntity"
+            :favorite-entities="favoriteEntities"
+            :user-config="userConfig"
+            :is-visible="isVisible"
+            :current-entity-permissions="currentEntityPermissions"
+          />
         </PAside>
         <PContainer
           class="main-container"
@@ -48,6 +55,7 @@ import UserProfile from './UserProfile'
 import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 import Header from './header'
 import Sidebar from './Sidebar'
+import type { HomeLayoutProps } from './home.layout.types'
 
 // Variables
 const router = useRouter()
@@ -55,6 +63,8 @@ const router = useRouter()
 const isLoading = ref<boolean>(false)
 
 const hasUserProfileDrawerOpened = ref(false)
+
+defineProps<HomeLayoutProps>()
 
 const handleClick = () => {
   hasUserProfileDrawerOpened.value = true

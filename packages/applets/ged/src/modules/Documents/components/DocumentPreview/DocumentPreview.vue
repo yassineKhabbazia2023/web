@@ -32,7 +32,7 @@
     <template #content>
       <DocumentsTabs
         :document="document"
-        :selectedEntity="entityId"
+        :currentEntity="entityId"
         :accountId="accountId"
         :currentService="serviceId"
       />

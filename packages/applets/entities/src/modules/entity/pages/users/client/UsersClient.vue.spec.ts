@@ -16,7 +16,7 @@ import {
   getMockedUser,
   getMockedEntitySummary,
 } from '@pulse/common/mocks'
-import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { ContactType } from '@pulse/common/enums'
 
 import UsersClient from '.'
@@ -36,7 +36,7 @@ vi.mock('vue-router', () => ({
   }),
 }))
 
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const userStoreMock = getStoreMock(useUserStore)
 const userMock = getMockedUser({ id: 2 })
 
@@ -81,7 +81,7 @@ const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
 describe('test UsersClient', () => {
   let mockGatewayGet: MockInstance
   beforeEach(async () => {
-    selectedEntityStoreMock.selectedEntity = entitySummaryMock
+    currentEntityStoreMock.currentEntity = entitySummaryMock
     userStoreMock.user = userMock
     mockGatewayGet = vi
       .spyOn(WalletServices, 'fetchCustomers')

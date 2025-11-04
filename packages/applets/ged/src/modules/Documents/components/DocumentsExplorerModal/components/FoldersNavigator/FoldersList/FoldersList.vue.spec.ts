@@ -13,7 +13,7 @@ const defaultProps: FoldersListProps = {
   currentServiceFolder: foldersData[0],
   explorerAuthorizedGivenAction: true,
   currentService: 'service-id-compta',
-  selectedEntity: 'entity',
+  currentEntity: 'entity',
   accountId: 1234,
   isCreateFolderModalVisible: true,
   explorerUnauthorizedGivenActionMessage: 'msg',

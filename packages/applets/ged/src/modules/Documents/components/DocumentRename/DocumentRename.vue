@@ -40,7 +40,7 @@ const handleDocumentRename = async (documentName: string) => {
   try {
     await renameDocument(
       props.currentService,
-      props.selectedEntity,
+      props.currentEntity,
       props.document.id,
       documentName,
       props.accountId,

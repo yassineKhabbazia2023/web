@@ -57,7 +57,7 @@ const mailToGedInformation = ref<ServiceMailToGedInformation[]>([])
 onMounted(async () => {
   try {
     mailToGedInformation.value = await fetchServicesMailToGedInformation(
-      props.selectedEntity,
+      props.currentEntity,
       props.entityServices,
       props.accountId,
     )

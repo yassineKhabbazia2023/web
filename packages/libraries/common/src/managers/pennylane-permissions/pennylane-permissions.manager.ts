@@ -3,7 +3,7 @@ import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermiss
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 
 import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
-import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 
 export class PennylanePermissionsManager {
   /**
@@ -12,10 +12,10 @@ export class PennylanePermissionsManager {
    * - que l'entité sélectionnée ait souscrit à l'offre Pennylane
    */
   static isGedUxV2() {
-    const selectedEntityStore = useSelectedEntityStore()
+    const currentEntityStore = useCurrentEntityStore()
 
     return FeatureFlagManager.isFeatureActivated(Feature.GED_V2) === true &&
-      selectedEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true
+      currentEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true
   }
 
   /**

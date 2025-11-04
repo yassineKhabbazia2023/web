@@ -46,7 +46,7 @@
 
   <CreateFolderSection
     :serviceId="currentService"
-    :entityId="selectedEntity"
+    :entityId="currentEntity"
     :accountId="accountId"
     :selectedFolder="currentFolder"
     :isCreateFolderModalVisible="isCreateFolderModalVisible"

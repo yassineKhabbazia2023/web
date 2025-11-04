@@ -8,12 +8,12 @@ import {
 } from '@pulse/common/mocks'
 import type { ComponentWrapper } from '@entities/types'
 import { mockedEntity } from '@entities/__mocks__/entities.mocks'
-import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 
 import Entity from '.'
 
 const userStoreMock = getStoreMock(useUserStore)
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 const mockedTabs: Tab[] = [
   {
@@ -83,7 +83,7 @@ describe('entity', () => {
   beforeEach(async () => {
     vi.useFakeTimers()
     userStoreMock.isCollab = true
-    selectedEntityStoreMock.selectedEntity = entitySummaryMock
+    currentEntityStoreMock.currentEntity = entitySummaryMock
 
     wrapper = createWrapper()
     await flushPromises()

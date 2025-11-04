@@ -22,11 +22,11 @@ import {
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import { createMemoryHistory, createRouter } from 'vue-router'
 import { getMockedEntitySummary, getStoreMock } from '@pulse/common/mocks'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 
 import Ged from './'
 
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 vi.mock('@ged/models/AccountingHubConnection', () => accountingHubConnectionServiceMock)
 
@@ -74,7 +74,7 @@ vi.mock('@ged/modules/Treeview/helpers/folderArrayHelper', async (importActual) 
 })
 
 type AppSetup = {
-  selectedEntity: string
+  currentEntity: string
   currentBinService: Service['ServiceId']
   currentService: Service['ServiceId']
   isCreateFolderModalVisible: boolean
@@ -138,11 +138,11 @@ const folder = {
   serviceId: 'some-service',
 } as Folder
 
-const selectedEntityMock = getMockedEntitySummary(defaultEntityMock)
+const currentEntityMock = getMockedEntitySummary(defaultEntityMock)
 
 describe('ged', () => {
   beforeEach(() => {
-    selectedEntityStoreMock.selectedEntity = selectedEntityMock
+    currentEntityStoreMock.currentEntity = currentEntityMock
   })
   it('renders correctly', () => {
     const wrapper = createWrapper()
@@ -367,7 +367,7 @@ describe('ged', () => {
         expect(bin.exists()).toBeTruthy()
         expect(bin.props('currentBinService')).toBe(foldersData[0][0].serviceId)
         expect(bin.props('selectedServiceName')).toBe(foldersData[0][0].name)
-        expect(bin.props('selectedEntity')).toBe(defaultEntityMock.accountNumber)
+        expect(bin.props('currentEntity')).toBe(defaultEntityMock.accountNumber)
       })
 
       it('should set the prop that will disable the create folder button when currentBinService is set', async () => {

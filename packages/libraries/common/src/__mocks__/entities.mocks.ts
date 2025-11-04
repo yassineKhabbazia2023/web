@@ -1,4 +1,4 @@
-import type { Entity, SelectedEntity } from '../stores/types'
+import type { Entity, CurrentEntity } from '../stores/types'
 import type { Permission } from '../types/permission.type'
 import { CollaboratorPermission } from '../enums/permission.enum'
 import mockedEntitiesJson from './entities.mocks.json'
@@ -31,7 +31,7 @@ export const getMockedFavoriteEntities = (): Entity[] => {
   return mockedEntitiesJson as Entity[]
 }
 
-export const getMockedSelectedEntity = (): SelectedEntity => {
+export const getMockedCurrentEntity = (): CurrentEntity => {
   const permissions: Permission[] = [
     CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS,
     CollaboratorPermission.ACCEDER_ONGLET_INFORMATIONS,

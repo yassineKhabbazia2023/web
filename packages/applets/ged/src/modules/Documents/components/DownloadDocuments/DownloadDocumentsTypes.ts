@@ -4,6 +4,6 @@ import type { Document } from '@ged/models/Document'
 export interface DownloadDocumentsComposableProps {
   selectedDocuments: Document[]
   currentService: Service['ServiceId']
-  selectedEntity: string
+  currentEntity: string
   accountId: number
 }

@@ -6,7 +6,7 @@ import { BootManager } from '@app/managers/boot.manager'
 import { redirectionGuard } from './guards/redirection.guard'
 import { authenticationGuard } from './guards/authentication.guard'
 import { featureFlagGuard } from './guards/feature-flag.guard'
-import { selectedEntityGuard } from './guards/entity.guard'
+import { currentEntityGuard } from './guards/entity.guard'
 import { seoGuard } from './guards/seo.guard'
 
 import { errorRoutes } from '@app/pages/Error/error.routes'
@@ -53,8 +53,8 @@ const router = createRouter({
 // Inject the guards
 router.beforeEach(authenticationGuard)
 router.beforeEach(featureFlagGuard)
-router.beforeEach(selectedEntityGuard)
-router.beforeEach(redirectionGuard) // should be after selectedEntityGuard
+router.beforeEach(currentEntityGuard)
+router.beforeEach(redirectionGuard) // should be after currentEntityGuard
 router.beforeEach(permissionGuard)
 router.afterEach(seoGuard)
 

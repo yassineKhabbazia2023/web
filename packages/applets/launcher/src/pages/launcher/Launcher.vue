@@ -16,7 +16,7 @@
       </h2>
     </template>
     <PAlert
-      v-if="selectedEntityPermissions && launchCards.length === 0"
+      v-if="currentEntityPermissions && launchCards.length === 0"
       pType="danger"
       class="margin-top--3"
       data-testid="home-no-launcher"
@@ -53,7 +53,7 @@ import { PBreadcrumb, PAlert } from '@pulse/styleguide/components'
 import LaunchCard from '@launcher/components/launchCard'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LauncherKey, ExtendedLaunchCard } from './LauncherTypes'
-import { useSelectedEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
 import {
   getLaunchCards,
   handleClickAction,
@@ -91,16 +91,16 @@ async function onClickAction(key: LauncherKey) {
 }
 
 const isClient = computed(() => route.name === 'launcher')
-const selectedEntityStore = useSelectedEntityStore()
+const currentEntityStore = useCurrentEntityStore()
 const permissionsStore = usePermissionsStore()
 
-const { selectedEntity } = storeToRefs(selectedEntityStore)
-const { selectedEntityPermissions } = storeToRefs(permissionsStore)
+const { currentEntity } = storeToRefs(currentEntityStore)
+const { currentEntityPermissions } = storeToRefs(permissionsStore)
 
 const breadcrumbElements = computed(() => ([
   {
     pId: -1,
-    pText: selectedEntity.value?.legalName ?? '',
+    pText: currentEntity.value?.legalName ?? '',
   },
   {
     pId: -1,

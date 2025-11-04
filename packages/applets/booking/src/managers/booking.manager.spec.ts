@@ -1,9 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { BookingManager } from './booking.manager'
 import { BookingService } from '@pulse/common/services/booking'
-import { useUserStore, useSelectedEntityStore, useBookingStore } from '@pulse/common/stores'
-
-
+import { useUserStore, useCurrentEntityStore, useBookingStore } from '@pulse/common/stores'
 import { logger } from '@pulse/toolbox'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'
@@ -26,7 +24,7 @@ const mockExperts: BookingServiceExpert[] = [
 ]
 
 const userStoreMock = getStoreMock(useUserStore)
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const bookingStoreMock = getStoreMock(useBookingStore)
 
 describe('BookingManager', () => {
@@ -34,7 +32,7 @@ describe('BookingManager', () => {
   beforeEach(() => {
     // Reset store mocks to default state
     userStoreMock.isCollab = false
-    selectedEntityStoreMock.selectedEntityId = undefined
+    currentEntityStoreMock.currentEntityId = undefined
 
     vi.spyOn(BookingService, 'getBookingAvailableExperts')
     vi.spyOn(FeatureFlagManager, 'isFeatureActivated')
@@ -44,7 +42,7 @@ describe('BookingManager', () => {
   describe('refreshAvailableExperts', () => {
     it('should load and set available experts when user is client, entity is selected, and feature is activated', async () => {
       userStoreMock.isCollab = false
-      selectedEntityStoreMock.selectedEntityId = 123
+      currentEntityStoreMock.currentEntityId = 123
       vi.mocked(FeatureFlagManager.isFeatureActivated).mockReturnValue(true)
       vi.mocked(BookingService.getBookingAvailableExperts).mockResolvedValue(mockExperts)
 
@@ -58,7 +56,7 @@ describe('BookingManager', () => {
 
     it('should set empty array when user is collab', async () => {
       userStoreMock.isCollab = true
-      selectedEntityStoreMock.selectedEntityId = 123
+      currentEntityStoreMock.currentEntityId = 123
       vi.mocked(FeatureFlagManager.isFeatureActivated).mockReturnValue(true)
 
       await BookingManager.refreshAvailableExperts()
@@ -69,7 +67,7 @@ describe('BookingManager', () => {
 
     it('should set empty array when no entity is selected', async () => {
       userStoreMock.isCollab = false
-      selectedEntityStoreMock.selectedEntityId = undefined
+      currentEntityStoreMock.currentEntityId = undefined
       vi.mocked(FeatureFlagManager.isFeatureActivated).mockReturnValue(true)
 
       await BookingManager.refreshAvailableExperts()
@@ -80,7 +78,7 @@ describe('BookingManager', () => {
 
     it('should set empty array when booking feature is not activated', async () => {
       userStoreMock.isCollab = false
-      selectedEntityStoreMock.selectedEntityId = 123
+      currentEntityStoreMock.currentEntityId = 123
       vi.mocked(FeatureFlagManager.isFeatureActivated).mockReturnValue(false)
 
       await BookingManager.refreshAvailableExperts()
@@ -93,7 +91,7 @@ describe('BookingManager', () => {
     it('should handle errors and set empty array when service fails', async () => {
       const mockError = new Error('API error')
       userStoreMock.isCollab = false
-      selectedEntityStoreMock.selectedEntityId = 123
+      currentEntityStoreMock.currentEntityId = 123
       vi.mocked(FeatureFlagManager.isFeatureActivated).mockReturnValue(true)
       vi.mocked(BookingService.getBookingAvailableExperts).mockRejectedValue(mockError)
 

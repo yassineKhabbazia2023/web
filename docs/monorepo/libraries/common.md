@@ -26,7 +26,7 @@ Contrairement à `@pulse/toolbox` qui fournit des utilitaires purs, `@pulse/comm
 La bibliothèque expose ses fonctionnalités via des **points d'entrée dédiés** :
 - **Services métier** : `services/entities`, `services/permissions`, `services/booking`, `services/current-user`, etc.
 - **Stores Pinia** : `stores` (user, entités, permissions, tokens, booking)
-- **Managers** : `managers` (login, routes, feature-flags, selected-entity, reporting)
+- **Managers** : `managers` (login, routes, feature-flags, current-entity, reporting)
 - **Utilitaires** : `helpers`, `utils`, `composables`
 - **Configuration** : `constants`, `enums`, `types`
 - **Internationalisation** : `i18n`

@@ -17,11 +17,11 @@ import { accountsMock } from '../../../__mocks__/accounts.mocks'
 import {
   accountsRowMock,
   entitiesFromAccountsRow,
-  SelectedEntityManagerMock,
+  CurrentEntityManagerMock,
   getStoreMock,
   entitySummaryMock,
 } from '@pulse/common/mocks'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
 import * as NotificationService from './notifications-wrapper.service'
 import { flushPromises } from '@vue/test-utils'
@@ -37,12 +37,12 @@ import {
   getNotificationAccountNames,
 } from './notifications-wrapper.manager'
 
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 vi.mock('../../../services/notifications.service', () => notificationsServiceMock)
 
 vi.mock('@pulse/common/managers', () => ({
-  SelectedEntityManager: SelectedEntityManagerMock,
+  CurrentEntityManager: CurrentEntityManagerMock,
 }))
 
 const routerMock = {
@@ -195,7 +195,7 @@ describe('handleNotificationAction', () => {
       notificationEntity,
     },
   ) => {
-    selectedEntityStoreMock.selectedEntity = entitySummaryMock
+    currentEntityStoreMock.currentEntity = entitySummaryMock
     const fetchUserEntities = vi.spyOn(NotificationService, 'fetchUserEntities')
     fetchUserEntities.mockResolvedValueOnce(accountsRowMock)
     handleNotificationAction({

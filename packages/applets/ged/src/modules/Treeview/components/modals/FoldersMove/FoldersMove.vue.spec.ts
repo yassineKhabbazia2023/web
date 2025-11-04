@@ -182,7 +182,7 @@ describe('test FoldersMove', () => {
 
           expect(vi.mocked(moveFolderAsync)).toHaveBeenCalledWith(
             'service-id-compta',
-            'my-selected-entity',
+            'my-current-entity',
             11111111,
             135393637,
             1234,

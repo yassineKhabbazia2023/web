@@ -1,5 +1,5 @@
 import { WidgetName } from '@pulse/widgets/enums'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { ReportingManager } from '@pulse/common/managers'
 
@@ -34,7 +34,7 @@ const userWithSmartWidgetNames = [
 // Done this way until we have a full experience layer / BackForFront work flow
 export class WidgetsService {
   static getHomeWidgetNames() {
-    const selectedEntityStore = useSelectedEntityStore()
+    const currentEntityStore = useCurrentEntityStore()
     const canShowSmartOfferWidget = ReportingManager.canShowSmartOfferWidget()
 
     // Temporary: for the Clarity POC, we prioritized SmartOffer. A carousel will be added once validated.
@@ -42,7 +42,7 @@ export class WidgetsService {
       return userWithSmartWidgetNames
     }
 
-    if (selectedEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true) {
+    if (currentEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true) {
       return userWithPennylaneAndGedWidgetNames
     }
 

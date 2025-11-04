@@ -13,8 +13,8 @@
       class="margin-bottom--4"
     >
       <PEntityHeader
-        :pLegalName="selectedEntityName"
-        :pAccountNumber="selectedEntity"
+        :pLegalName="currentEntityName"
+        :pAccountNumber="currentEntity"
         pSize="small"
         class="padding-left--4 padding-top--4"
       />
@@ -127,7 +127,7 @@
     v-if="selectedDocuments && selectedDocuments.length === 1"
     v-model="isRenameModalOpened"
     :currentService="currentService"
-    :selectedEntity="selectedEntity"
+    :currentEntity="currentEntity"
     :accountId="accountId"
     :document="selectedDocuments[0]"
     @document-rename="handleDocumentRename"
@@ -135,7 +135,7 @@
 
   <DocumentDeleteModal
     :serviceId="currentService"
-    :entityId="selectedEntity"
+    :entityId="currentEntity"
     :accountId="accountId"
     :isVisible="isDeletePopupVisible"
     :documentIds="deletableSelectedDocumentsIds"
@@ -146,7 +146,7 @@
   <DocumentMove
     v-if="selectedFolder"
     :currentService="currentService"
-    :selectedEntity="selectedEntity"
+    :currentEntity="currentEntity"
     :accountId="accountId"
     :folder="selectedFolder"
     :selectedDocuments="selectedDocumentsForMove"
@@ -168,7 +168,7 @@
     v-if="selectedFolder && filesSelected"
     :currentService="currentService"
     :currentServiceName="currentServiceName"
-    :selectedEntity="selectedEntity"
+    :currentEntity="currentEntity"
     :accountId="accountId"
     :folder="selectedFolder"
     :files="filesSelected"
@@ -183,7 +183,7 @@
     :openDrawer="isPreviewDrawerOpened"
     :document="documentToPreview"
     :serviceId="currentService"
-    :entityId="selectedEntity"
+    :entityId="currentEntity"
     :accountId="accountId"
     :selectedDocumentIndex="selectedDocumentIndex"
     :totalDocumentsCount="totalDocumentsCount"
@@ -308,7 +308,7 @@ const fetchDocuments = async () => {
     documents.value = await fetchFolderDocuments({
       serviceId: props.currentService,
       folderId: props.selectedFolder.id,
-      entityId: props.selectedEntity,
+      entityId: props.currentEntity,
       accountId: props.accountId,
       skip: skip.value,
       limit: currentPageSize.value,
@@ -403,7 +403,7 @@ const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = com
   return {
     selectedDocuments: selectedDocuments.value,
     currentService: props.currentService,
-    selectedEntity: props.selectedEntity,
+    currentEntity: props.currentEntity,
     accountId: props.accountId,
   }
 })
@@ -411,7 +411,7 @@ const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = com
 const transmitDocumentsProps = computed<TransmitDocumentsComposableProps>(() => ({
   selectedDocumentsIds: documentIdsSelected.value,
   currentService: props.currentService,
-  selectedEntity: props.selectedEntity,
+  currentEntity: props.currentEntity,
   accountId: props.accountId,
 }),
 )
@@ -520,7 +520,7 @@ const searchDocumentsByKeyWord = async (value: string) => {
   documents.value = await fetchDocumentsByKeyWord({
     serviceId: props.currentService,
     folderId: props.selectedFolder.id,
-    entityId: props.selectedEntity,
+    entityId: props.currentEntity,
     accountId: props.accountId,
     skip: skip.value,
     limit: currentPageSize.value,
@@ -680,7 +680,7 @@ const handleActionBarButtonClick = async (actionName: string) => {
 }
 
 // Drag and drop -> Composable
-const { currentService, currentServiceName, selectedEntity, accountId } = toRefs(props)
+const { currentService, currentServiceName, currentEntity, accountId } = toRefs(props)
 const {
   isDropZoneVisible,
   isAllowedDropZone,
@@ -692,7 +692,7 @@ const {
 } = useDragAndDropFromExplorer(
   currentService,
   currentServiceName,
-  selectedEntity,
+  currentEntity,
   accountId,
   selectedFolder,
   refreshDocumentsList,

@@ -2,7 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { documentsMock, documentsMockWithOneCertified } from '@ged/__mocks__/documents.mocks'
 import { documentsServiceMock } from '@ged/__mocks__/documents.service.mocks'
-import { validDestination, currentServiceFolder, unValidDestination, secondValidDestination, currentService, selectedEntity, accountId } from '@ged/__mocks__/files.mocks'
+import { validDestination, currentServiceFolder, unValidDestination, secondValidDestination, currentService, currentEntity, accountId } from '@ged/__mocks__/files.mocks'
 import { findComponentByNameInWrapper } from '@ged/__mocks__/component.wrapper'
 import type { Folder } from '@ged/models/Folder'
 import type { VueWrapper } from '@vue/test-utils'
@@ -19,7 +19,7 @@ const defaultProps: DocumentMoveProps = {
   isMoveModalOpened: false,
   currentServiceFolder,
   currentService: currentService,
-  selectedEntity,
+  currentEntity,
   selectedDocuments: documentsMock,
   accountId,
 }
@@ -274,9 +274,9 @@ describe('documents Move', () => {
             sourceFolderId: validDocument.folder.id,
             destinationFolderId: validDocument.folder.id,
             moveAll: false,
-            serviceId: selectedEntity,
+            serviceId: currentEntity,
           }
-          expect(moveDocuments).toHaveBeenCalledWith(currentService, selectedEntity, expectedDocumentRequest, accountId)
+          expect(moveDocuments).toHaveBeenCalledWith(currentService, currentEntity, expectedDocumentRequest, accountId)
 
         })
       })

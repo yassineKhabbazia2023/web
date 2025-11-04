@@ -38,7 +38,7 @@ export function useDownloadFolder(
 
   const handleDownloadFolderEvent = async () => {
     if (!downloadFolderProps.value.selectedFolderId) {
-      return Promise.resolve()
+      return
     }
 
     triggerInProgressNotification()
@@ -58,7 +58,7 @@ export function useDownloadFolder(
   ) => {
     const folderBlob = await downloadFolder(
       downloadFolderProps.currentService,
-      downloadFolderProps.selectedEntity,
+      downloadFolderProps.currentEntity,
       downloadFolderProps.selectedFolderId,
       downloadFolderProps.accountId,
     )

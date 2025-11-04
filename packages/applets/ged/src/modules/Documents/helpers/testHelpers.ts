@@ -1,4 +1,4 @@
-import { validDestination, validFiles, currentServiceFolder, currentService, currentServiceName, selectedEntity, accountId } from '@ged/__mocks__/files.mocks'
+import { validDestination, validFiles, currentServiceFolder, currentService, currentServiceName, currentEntity, accountId } from '@ged/__mocks__/files.mocks'
 import type { Folder } from '@ged/models/Folder'
 import type { GivenActionAuthorization }
   from '@ged/modules/Documents/components/DocumentsExplorerModal/DocumentsExplorerModalTypes'
@@ -11,7 +11,7 @@ export const defaultProps: DocumentUploadProps = {
   currentServiceFolder,
   currentServiceName,
   currentService: currentService,
-  selectedEntity,
+  currentEntity,
   files: validFiles,
   accountId,
 }

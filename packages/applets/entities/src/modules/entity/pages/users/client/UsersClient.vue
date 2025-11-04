@@ -92,10 +92,10 @@
     />
 
     <ManageRightsDrawer
-      v-if="state.isManageRightsDrawerOpened && selectedEntity !== undefined"
+      v-if="state.isManageRightsDrawerOpened && currentEntity !== undefined"
       v-model="state.isManageRightsDrawerOpened"
       :selectedUser="getUserInfo"
-      :selectedEntity="selectedEntity"
+      :currentEntity="currentEntity"
     />
   </div>
 </template>
@@ -123,7 +123,7 @@ import { getPrincipalContacts } from '@entities/services/offer'
 import type { ClientContact } from '@entities/types'
 import { fetchAccountContacts, fetchCustomers } from '@entities/services/wallet'
 import { storeToRefs } from 'pinia'
-import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { ContactType } from '@pulse/common/enums'
 import type { SortingCriteria } from '@pulse/common/types'
 import { useSort } from '@pulse/common/composables/sort'
@@ -254,12 +254,12 @@ const handleSortUser = async (param: SortingCriteria) => {
   handleSortCriteria(param, state)
 }
 
-const selectedEntityStore = useSelectedEntityStore()
-const { selectedEntity } = storeToRefs(selectedEntityStore)
+const currentEntityStore = useCurrentEntityStore()
+const { currentEntity } = storeToRefs(currentEntityStore)
 
-const currentEntityId = computed(() => selectedEntity.value?.accountId)
-const currentEntityName = computed(() => selectedEntity.value?.legalName)
-const currentEntityNumber = computed(() => selectedEntity.value?.accountNumber)
+const currentEntityId = computed(() => currentEntity.value?.accountId)
+const currentEntityName = computed(() => currentEntity.value?.legalName)
+const currentEntityNumber = computed(() => currentEntity.value?.accountNumber)
 
 const isAddCustomerDrawerOpened = ref(false)
 const principalContacts = ref<ClientContact[]>([])

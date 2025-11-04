@@ -134,9 +134,9 @@ function handleClose() {
 <template>
   <div
     v-if="
-      selectedEntity !== null &&
+      currentEntity !== null &&
       entityServices.length > 0 &&
-      selectedEntityAccountNumber !== ''
+      currentEntityAccountNumber !== ''
     "
   >
     <!-- contenu… -->
@@ -146,9 +146,9 @@ function handleClose() {
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const selectedEntity = ref<Entity | null>(null)
+const currentEntity = ref<Entity | null>(null)
 const entityServices = ref<Service[]>([])
-const selectedEntityAccountNumber = ref<string>('')
+const currentEntityAccountNumber = ref<string>('')
 </script>
 ```
 
@@ -164,16 +164,16 @@ const selectedEntityAccountNumber = ref<string>('')
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
-const selectedEntity = ref<Entity | null>(null)
+const currentEntity = ref<Entity | null>(null)
 const entityServices = ref<Service[]>([])
-const selectedEntityAccountNumber = ref<string>('')
+const currentEntityAccountNumber = ref<string>('')
 
 // Centralisation de la logique dans une computed
 const shouldDisplayEmailPennylane = computed(() => {
   return (
-    selectedEntity.value !== null &&
+    currentEntity.value !== null &&
     entityServices.value.length > 0 &&
-    selectedEntityAccountNumber.value !== ''
+    currentEntityAccountNumber.value !== ''
   )
 })
 </script>
@@ -236,7 +236,7 @@ userStoreMock.getUserId.mockReturnValue(42)
 Dans `@pulse/common/mocks` vous trouverez également :
 
 * `AmplitudeServiceMock`
-* `getMockedUserContext()`, `getMockedEntity()`, `getMockedSelectedEntity()`
+* `getMockedUserContext()`, `getMockedEntity()`, `getMockedCurrentEntity()`
 * …
 
 Importez-les directement pour simuler des contextes, entités ou appels à des services sans réinventer la roue !

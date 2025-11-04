@@ -200,7 +200,7 @@ import type { AccessibleMenuItem, AccountRow } from '@entities/types'
 import { filterAccessibleMenuItems } from '@entities/utils'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
 import { ACTION_PERMISSIONS, GLOBAL_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
-import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
 import type { SortChangeEventData, SortingCriteria } from '@pulse/common/types'
 import { SortDirection } from '@pulse/common/enums'
@@ -283,8 +283,8 @@ const menuElementsCollaborator = (status: string) => {
     : filterAccessibleMenuItems(defaultMenuElements)
 }
 
-const selectedEntityStore = useSelectedEntityStore()
-const { selectedEntity } = storeToRefs(selectedEntityStore)
+const currentEntityStore = useCurrentEntityStore()
+const { currentEntity } = storeToRefs(currentEntityStore)
 
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
@@ -327,7 +327,7 @@ onMounted(() => {
 
 watch(() => props.data, () => {
   const rowToSelect = props.data
-    .find(({ accountId }: AccountRow) => accountId === selectedEntity.value?.accountId)
+    .find(({ accountId }: AccountRow) => accountId === currentEntity.value?.accountId)
   selectRowWhenTableFullyLoaded(rowToSelect)
 })
 

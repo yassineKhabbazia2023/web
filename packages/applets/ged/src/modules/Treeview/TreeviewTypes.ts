@@ -11,7 +11,7 @@ export interface TreeviewProps {
   servicesFolders: ExtendedFolder[][]
   currentService: string
   currentServiceName: Service['ServiceName'] | null
-  selectedEntity: string
+  currentEntity: string
   selectedFolder: null | Folder
   currentServiceFolder: Folder[] | undefined
   isInBinContext?: boolean

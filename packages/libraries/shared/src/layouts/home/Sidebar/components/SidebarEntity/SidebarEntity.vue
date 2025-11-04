@@ -1,12 +1,12 @@
 <template>
-  <div :class="{ 'padding-right--0': !isSelectedEntityActive }">
+  <div :class="{ 'padding-right--0': !isCurrentEntityActive }">
     <nav
       v-if="shouldDisplaySidebar"
       class="sidenav-entity flex flex--direction-column"
       :class="{
         'sidenav-entity--opened': isSidebarOpened,
-        'sidenav-entity--is-collab': isCollab,
-        'sidenav-entity--no-entity-selected': !isSelectedEntityActive,
+        'sidenav-entity--is-collab': userConfig?.isCollab === true,
+        'sidenav-entity--no-entity-selected': !isCurrentEntityActive,
       }"
       data-testid="sidenav-entity"
     >
@@ -55,18 +55,18 @@
           </SidebarEntityItem>
         </li>
         <li
-          v-if="selectedEntity !== undefined"
+          v-if="currentEntity !== undefined"
           :class="{
-            'sidenav-entity__actions-active': isSelectedEntityActive,
+            'sidenav-entity__actions-active': isCurrentEntityActive,
           }"
           class="flex flex--align-items-center is-entity"
           data-testid="selected-entity"
         >
           <EntityAvatar
-            :entity="selectedEntity"
+            :entity="currentEntity"
             :hideTooltip="isSidebarOpened"
             :class="{
-              'sidenav__selected-item': isSelectedEntityActive,
+              'sidenav__selected-item': isCurrentEntityActive,
             }"
           />
         </li>
@@ -103,7 +103,7 @@
               data-testid="favorite-entity"
               :entity="favoriteEntity"
               :hideTooltip="isSidebarOpened"
-              :selected="favoriteEntity.accountId === currentAccountId"
+              :selected="favoriteEntity.accountId === currentEntityId"
             />
           </li>
         </ul>
@@ -111,10 +111,11 @@
       <AppVersion v-if="isSidebarOpened" />
     </nav>
     <SidebarEntityMenu
-      v-if="isSelectedEntityActive && currentAccountId"
-      :isCollab="isCollab"
-      :isSingleEntity="isSingleEntity"
-      :selectedEntityId="currentAccountId"
+      v-if="isCurrentEntityActive && currentEntityId && userConfig"
+      :isCollab="userConfig.isCollab"
+      :isSingleEntity="userConfig.isSingleEntity"
+      :currentEntityId="currentEntityId"
+      :currentEntityPermissions="currentEntityPermissions"
     />
   </div>
 </template>
@@ -123,11 +124,10 @@
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { storeToRefs } from 'pinia'
-import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
 import { APP_ROUTES, IS_UNITARY_VIEW_META } from '@pulse/common/constants'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { PIcon } from '@pulse/styleguide/components'
+import { RouteParam } from '@pulse/common/enums'
 import { AppColors } from '@pulse/styleguide'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
 import type { SidebarEntityProps } from './SidebarEntityTypes'
@@ -138,49 +138,52 @@ import AppVersion from './components/AppVersion'
 
 const route = useRoute()
 
-const userStore = useUserStore()
-const selectedEntityStore = useSelectedEntityStore()
-
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'global',
 })
 
-defineProps<SidebarEntityProps>()
-
-const { favoriteEntities } = storeToRefs(userStore)
-const { isCollab, isCustomer } = storeToRefs(userStore)
-const isSingleEntity = computed(() => userStore.getIsSingleEntity())
+const props = defineProps<SidebarEntityProps>()
 
 const favoriteEntitiesSorted = computed(() => {
-  return [...favoriteEntities.value].sort((a, b) => a.legalName.localeCompare(b.legalName))
+  return props.favoriteEntities.toSorted((a, b) => a.legalName.localeCompare(b.legalName))
 })
 
 const isSidebarOpened = ref(false)
 const isToggleTooltipDisabled = ref(false)
 const shouldDisplaySidebar = computed(() => {
+  // Guard against undefined userConfig during initialization
+  if (!props.userConfig) {
+    return false
+  }
   // sidebar should alway display for a collab user
-  return isCollab.value === true
+  return props.userConfig.isCollab === true
     // sidebar shouldn't display for a single entity customer user
-    || (isCustomer.value === true && isSingleEntity.value === false)
+    || (props.userConfig.isCustomer === true && props.userConfig.isSingleEntity === false)
 })
 
 const walletItem = computed((): SidebarEntityItemProps => {
   const collabWalletRouteName = APP_ROUTES.wallet.collab.root.name
   const customerWalletRouteName = APP_ROUTES.wallet.client.root.name
+  const isCollabUser = props.userConfig?.isCollab === true
   return {
     tooltipContent: t('shared.sidebar.globalView'),
     tooltipDisabled: isSidebarOpened.value,
-    route: { name: isCollab.value === true ? collabWalletRouteName : customerWalletRouteName },
+    route: { name: isCollabUser ? collabWalletRouteName : customerWalletRouteName },
   }
 })
 
-const currentAccountId = computed(() => {
-  return selectedEntityStore.selectedEntityId
+const routeEntityId = computed(() => {
+  return route.params[RouteParam.ENTITY_ID] as string | undefined
 })
 
-const isSelectedEntityActive = computed(() => {
-  if (!currentAccountId.value) {
+const currentEntityId = computed(() => {
+  const accountId = routeEntityId.value
+  return accountId ? Number(accountId) : undefined
+})
+
+const isCurrentEntityActive = computed(() => {
+  if (!routeEntityId.value) {
     return false
   }
 

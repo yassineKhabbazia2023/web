@@ -53,7 +53,7 @@ import { PennylanePermissionsManager } from '@pulse/common/managers'
 import PennylaneDocumentsHeader from '@pennylane/components/pennylane-documents-header/pennylane-documents-header.vue'
 import PennylaneDocumentsWrapper from '@pennylane/components/pennylane-documents-wrapper/pennylane-documents-wrapper.vue'
 import { PennylaneService } from '@pulse/common/services/pennylane'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
 import { APICallStatus } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
@@ -67,15 +67,15 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const selectedEntityStore = useSelectedEntityStore()
+const currentEntityStore = useCurrentEntityStore()
 
 const pennylaneDocuments = ref<FormattedPennylaneDocument[]>([])
 const pennylaneLastSynchroDate = ref<Date>()
 const apiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
 
-const accountId = computed(() => selectedEntityStore.selectedEntityId ?? 0)
-const accountName = computed(() => selectedEntityStore.selectedEntity?.legalName ?? '')
-const accountNumber = computed(() => selectedEntityStore.selectedEntityAccountNumber)
+const accountId = computed(() => currentEntityStore.currentEntityId ?? 0)
+const accountName = computed(() => currentEntityStore.currentEntity?.legalName ?? '')
+const accountNumber = computed(() => currentEntityStore.currentEntityAccountNumber)
 const showSeeAllDocumentsButton = computed(() =>
   PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true &&
   pennylaneDocuments.value.length > 0 &&

@@ -7,7 +7,7 @@ export interface FoldersListProps {
   currentServiceFolder: Folder[]
   explorerAuthorizedGivenAction: boolean
   currentService: Service['ServiceId']
-  selectedEntity: string
+  currentEntity: string
   accountId: number
   isCreateFolderModalVisible: boolean
   explorerUnauthorizedGivenActionMessage: string

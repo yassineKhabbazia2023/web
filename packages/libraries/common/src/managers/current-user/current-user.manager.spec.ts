@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { envVarsMock } from '@pulse/common/mocks'
 import { getMockedUserInfo } from '@common/__mocks__/user-client.mocks'
 import { utilsMock, logoutCollaboratorMock, logoutGigyaSSOMock, logoutClientMock } from '@common/__mocks__/utils.mocks'
-import { getMockedSelectedEntity, getPermissionsMock, getStoreMock } from '../../__mocks__'
+import { getMockedCurrentEntity, getPermissionsMock, getStoreMock } from '../../__mocks__'
 import { useUserStore } from '../../stores/user/user.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
@@ -17,8 +17,8 @@ const permissionsStoreMock = getStoreMock(usePermissionsStore)
 const tokenStoreMock = getStoreMock(useTokenStore)
 
 const userPermissionsMock = getPermissionsMock()
-const selectedEntityMock = getMockedSelectedEntity()
-const selectedEntityPermissionsMock = selectedEntityMock.permissions ?? []
+const currentEntityMock = getMockedCurrentEntity()
+const currentEntityPermissionsMock = currentEntityMock.permissions ?? []
 
 const gigyaUserIdMock = 'gigya-user-id'
 
@@ -47,8 +47,8 @@ describe('test current-user.manager', () => {
       expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledOnce()
       expect(permissionsStoreMock.setUserPermissions).toHaveBeenNthCalledWith(1, [])
 
-      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenCalledOnce()
-      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenNthCalledWith(1, [])
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledOnce()
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenNthCalledWith(1, [])
     })
   })
 
@@ -64,8 +64,8 @@ describe('test current-user.manager', () => {
       expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledOnce()
       expect(permissionsStoreMock.setUserPermissions).toHaveBeenNthCalledWith(1, [])
 
-      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenCalledTimes(2) // called once in CurrentUserManager.setCurrentUser and once in SelectedEntityManager.clearSelectedEntity
-      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenNthCalledWith(1, [])
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledTimes(2) // called once in CurrentUserManager.setCurrentUser and once in CurrentEntityManager.clearCurrentEntity
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenNthCalledWith(1, [])
 
       expect(logoutCollaboratorMock).not.toHaveBeenCalledOnce()
       expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
@@ -113,7 +113,7 @@ describe('test current-user.manager', () => {
   describe('hasPermission', () => {
     beforeEach(() => {
       permissionsStoreMock.userPermissions = userPermissionsMock
-      permissionsStoreMock.selectedEntityPermissions = selectedEntityPermissionsMock
+      permissionsStoreMock.currentEntityPermissions = currentEntityPermissionsMock
     })
 
     const tests: {
@@ -127,7 +127,7 @@ describe('test current-user.manager', () => {
     }, {
       permissions: [CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS],
       expected: true,
-      reason: 'is present in selectedEntity permissions',
+      reason: 'is present in currentEntity permissions',
     }, {
       permissions: [CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS, CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
       expected: true,
@@ -135,11 +135,11 @@ describe('test current-user.manager', () => {
     }, {
       permissions: [CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS, CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
       expected: true,
-      reason: 'one is present in selectedEntity permissions',
+      reason: 'one is present in currentEntity permissions',
     }, {
       permissions: [CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
       expected: false,
-      reason: 'one is absent in selectedEntity and global permissions',
+      reason: 'one is absent in currentEntity and global permissions',
     }]
     it.each(tests)(
       'return $expected when $reason',
@@ -157,7 +157,7 @@ describe('test current-user.manager', () => {
   describe('hasGlobalPermission', () => {
     beforeEach(() => {
       permissionsStoreMock.userPermissions = userPermissionsMock
-      permissionsStoreMock.selectedEntityPermissions = selectedEntityPermissionsMock
+      permissionsStoreMock.currentEntityPermissions = currentEntityPermissionsMock
     })
 
     const tests: {
@@ -192,10 +192,10 @@ describe('test current-user.manager', () => {
     })
   })
 
-  describe('hasSelectedEntityPermission', () => {
+  describe('hasCurrentEntityPermission', () => {
     beforeEach(() => {
       permissionsStoreMock.userPermissions = userPermissionsMock
-      permissionsStoreMock.selectedEntityPermissions = selectedEntityPermissionsMock
+      permissionsStoreMock.currentEntityPermissions = currentEntityPermissionsMock
     })
 
     const tests: {
@@ -207,32 +207,32 @@ describe('test current-user.manager', () => {
         CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS,
       ],
       expected: true,
-      reason: 'is present in selectedEntity permissions',
+      reason: 'is present in currentEntity permissions',
     }, {
       permissions: [CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
       expected: false,
-      reason: 'is absent in selectedEntity permissions',
+      reason: 'is absent in currentEntity permissions',
     }, {
       permissions: [CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS, CustomerPermission.ACCEDER_OUTIL_PENNYLANE],
       expected: true,
-      reason: 'one is present in selectedEntity permissions',
+      reason: 'one is present in currentEntity permissions',
     }, {
       permissions: [CollaboratorPermission.CREER_JEUX_DONNEES, CustomerPermission.ACCEDER_DONNEES_BANCAIRES],
       expected: false,
-      reason: 'none are present in selectedEntity permissions',
+      reason: 'none are present in currentEntity permissions',
     }]
 
     it.each(tests)('should return $expected when $reason', ({
       permissions,
       expected,
     }) => {
-      const hasPermission = CurrentUserManager.hasSelectedEntityPermission(permissions)
+      const hasPermission = CurrentUserManager.hasCurrentEntityPermission(permissions)
 
       expect(hasPermission).toBe(expected)
     })
   })
 
-  describe('hasSelectedEntityPennylanePermission', () => {
+  describe('hasCurrentEntityPennylanePermission', () => {
     const tests = [{
       hasPermissionMock: false,
       expectedHasPennylanePermission: false,
@@ -245,10 +245,10 @@ describe('test current-user.manager', () => {
       expectedHasPennylanePermission,
     }) => {
       const hasPermissionSpy = vi.spyOn(CurrentUserManager, 'hasPermission')
-      const hasPermissionForCurrentEntitySpy = vi.spyOn(CurrentUserManager, 'hasSelectedEntityPermission')
+      const hasPermissionForCurrentEntitySpy = vi.spyOn(CurrentUserManager, 'hasCurrentEntityPermission')
       hasPermissionForCurrentEntitySpy.mockReturnValue(hasPermissionMock)
 
-      const hasPennylanePermission = CurrentUserManager.hasSelectedEntityPennylanePermission()
+      const hasPennylanePermission = CurrentUserManager.hasCurrentEntityPennylanePermission()
 
       expect(hasPermissionSpy).not.toHaveBeenCalledOnce()
       expect(hasPermissionForCurrentEntitySpy).toHaveBeenCalledOnce()

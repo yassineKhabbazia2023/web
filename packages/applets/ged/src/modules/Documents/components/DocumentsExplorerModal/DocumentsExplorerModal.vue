@@ -46,7 +46,7 @@
               :currentServiceFolder="currentServiceFolder"
               :explorerAuthorizedGivenAction="ExplorerAuthorizedGivenAction.isActionAuthorized"
               :currentService="currentService"
-              :selectedEntity="selectedEntity"
+              :currentEntity="currentEntity"
               :accountId="accountId"
               :isCreateFolderModalVisible="isCreateFolderModalVisible"
               :explorerUnauthorizedGivenActionMessage="explorerUnauthorizedGivenActionMessage"

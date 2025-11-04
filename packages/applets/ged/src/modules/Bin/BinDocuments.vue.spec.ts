@@ -15,7 +15,7 @@ vi.mock('@pulse/styleguide')
 
 const defaultProps: BinDocumentProps = {
   currentBinService: 'serv',
-  selectedEntity: 'ent',
+  currentEntity: 'ent',
   selectedServiceName: 'compta',
   accountId: 1234,
 }
@@ -81,7 +81,7 @@ describe('binDocuments', () => {
 
         expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
-          defaultProps.selectedEntity,
+          defaultProps.currentEntity,
           defaultProps.accountId,
           0,
           10,
@@ -107,7 +107,7 @@ describe('binDocuments', () => {
         expect(restoreModal.exists()).toBeTruthy()
         expect(restoreModal.props('isVisible')).toBeFalsy()
         expect(restoreModal.props('serviceId')).toBe(defaultProps.currentBinService)
-        expect(restoreModal.props('entityId')).toBe(defaultProps.selectedEntity)
+        expect(restoreModal.props('entityId')).toBe(defaultProps.currentEntity)
         expect(restoreModal.props('document')).toBeNull()
       })
       it('should display loader when fetching documents', async () => {
@@ -135,7 +135,7 @@ describe('binDocuments', () => {
         await nextTick()
         expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
-          defaultProps.selectedEntity,
+          defaultProps.currentEntity,
           defaultProps.accountId,
           0,
           10,
@@ -168,7 +168,7 @@ describe('binDocuments', () => {
         expect(pagination.props('pPageSize')).toBe(50)
         expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
-          defaultProps.selectedEntity,
+          defaultProps.currentEntity,
           defaultProps.accountId,
           0,
           50,
@@ -192,7 +192,7 @@ describe('binDocuments', () => {
         expect(restoreModal.props('document')).toBeNull()
         expect(vi.mocked(fetchBinDocuments)).toHaveBeenCalledWith(
           defaultProps.currentBinService,
-          defaultProps.selectedEntity,
+          defaultProps.currentEntity,
           defaultProps.accountId,
           0,
           10,

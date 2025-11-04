@@ -17,13 +17,13 @@ import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'
 import { LauncherKey } from './LauncherTypes'
 import * as VueRouter from 'vue-router'
-import { useSelectedEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
 import type { Permission } from '@pulse/common/types'
 import { CollaboratorPermission } from '@pulse/common/enums'
 
 import Launcher from '.'
 
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
 const userStoreMock = getStoreMock(useUserStore)
 
@@ -57,13 +57,13 @@ function getLaunchCardComponents(wrapper: VueWrapper) {
 const entitySummaryMock = getMockedEntitySummary({
   legalName: 'Entity Test',
 })
-const selectedEntityPermissionsMock: Permission[] = [CollaboratorPermission.CREER_JEUX_DONNEES]
+const currentEntityPermissionsMock: Permission[] = [CollaboratorPermission.CREER_JEUX_DONNEES]
 
 describe('test Home', () => {
   let wrapper: VueWrapper
   beforeEach(() => {
-    selectedEntityStoreMock.selectedEntity = entitySummaryMock
-    permissionsStoreMock.selectedEntityPermissions = selectedEntityPermissionsMock
+    currentEntityStoreMock.currentEntity = entitySummaryMock
+    permissionsStoreMock.currentEntityPermissions = currentEntityPermissionsMock
     userStoreMock.user = getMockedUserInfo()
 
     getLaunchCardsMock.mockReturnValue(launchCardsMock)

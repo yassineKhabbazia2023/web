@@ -8,7 +8,7 @@ import {
   getMockedUser,
   getMockedEntitySummary,
 } from '@pulse/common/mocks'
-import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 
 import Offers from '.'
 
@@ -19,7 +19,7 @@ vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
 }))
 
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const userStoreMock = getStoreMock(useUserStore)
 
 const fetchAccountSubscriptionsMock = vi.hoisted(() => vi.fn())
@@ -88,7 +88,7 @@ describe('offers', () => {
   beforeEach(() => {
     fetchAccountSubscriptionsMock.mockResolvedValue(activeOffersMocked)
     userStoreMock.user = userMock
-    selectedEntityStoreMock.selectedEntity = entitySummaryMock
+    currentEntityStoreMock.currentEntity = entitySummaryMock
 
     wrapper = createWrapper()
   })

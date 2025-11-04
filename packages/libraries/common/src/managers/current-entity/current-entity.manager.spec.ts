@@ -2,19 +2,19 @@ import { describe, it, expect, vi } from 'vitest'
 import { getMockedEntitySummary } from '../../__mocks__/entity-summary.mock'
 import { permissionServiceMock, fetchUserAccountPermissionsMock } from '../../__mocks__/permissions.service.mocks'
 
-import { SelectedEntityManager } from './selected-entity.manager'
+import { CurrentEntityManager } from './current-entity.manager'
 import { getStoreMock, getPermissionsMock } from '@common/__mocks__'
-import { useSelectedEntityStore } from '../../stores/selected-entity/selected-entity.store'
+import { useCurrentEntityStore } from '../../stores/current-entity/current-entity.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
 
 vi.mock('../../services/permissions/permissions.service', () => permissionServiceMock)
 
-describe('test selected-entity.manager', () => {
-  describe('SelectedEntityManager', () => {
-    it('should set selectedEntity properly', async () => {
+describe('test current-entity.manager', () => {
+  describe('CurrentEntityManager', () => {
+    it('should set currentEntity properly', async () => {
       const permissionsMock = getPermissionsMock()
 
       const setItemMock = vi.spyOn(Object.getPrototypeOf(localStorage), 'setItem')
@@ -24,24 +24,24 @@ describe('test selected-entity.manager', () => {
       fetchUserAccountPermissionsMock.mockResolvedValueOnce(permissionsMock)
 
       const expectedSetItemArguments = [
-        'selected-entity',
+        'last-visited-entity',
         JSON.stringify(expectedAccountId),
       ]
-      await SelectedEntityManager.initializeSelectedEntity(entityMock)
+      await CurrentEntityManager.initializeCurrentEntity(entityMock)
 
-      expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledOnce()
-      expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledWith(entityMock)
+      expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledOnce()
+      expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledWith(entityMock)
 
       expect(setItemMock).toHaveBeenCalledWith(...expectedSetItemArguments)
 
       expect(fetchUserAccountPermissionsMock).toHaveBeenCalledOnce()
       expect(fetchUserAccountPermissionsMock).toHaveBeenCalledWith(expectedAccountId)
 
-      expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledOnce()
-      expect(selectedEntityStoreMock.setSelectedEntity).toHaveBeenCalledWith(entityMock)
+      expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledOnce()
+      expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledWith(entityMock)
 
-      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenCalledOnce()
-      expect(permissionsStoreMock.setSelectedEntityPermissions).toHaveBeenCalledWith(permissionsMock)
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledOnce()
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledWith(permissionsMock)
     })
   })
 })

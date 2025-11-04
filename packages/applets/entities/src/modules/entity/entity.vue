@@ -4,9 +4,9 @@
     data-testid="folder-tabs-wrapper"
   >
     <PEntityHeader
-      v-if="selectedEntity"
-      :pLegalName="selectedEntity.legalName"
-      :pAccountNumber="selectedEntity.accountNumber"
+      v-if="currentEntity"
+      :pLegalName="currentEntity.legalName"
+      :pAccountNumber="currentEntity.accountNumber"
       class="margin-bottom--4"
     />
     <PTabs
@@ -30,7 +30,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
 import { getTabAuthorisations, getTabs } from './entity-helper'
 import type { TabName, Tab } from './types'
@@ -44,10 +44,10 @@ const { t } = useI18n({
 const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
-const selectedEntityStore = useSelectedEntityStore()
+const currentEntityStore = useCurrentEntityStore()
 const activeTab = computed(() => route.name as string)
 
-const { selectedEntity } = storeToRefs(selectedEntityStore)
+const { currentEntity } = storeToRefs(currentEntityStore)
 const { isCollab } = storeToRefs(userStore)
 
 // Computed

@@ -27,10 +27,10 @@ describe('test permissionsStore', () => {
     expect(permissionsStore.userPermissions).toStrictEqual(permissionsMock)
   })
 
-  it('should set selectedEntityPermissions properly when call setSelectedEntityPermissions()', () => {
-    permissionsStore.setSelectedEntityPermissions(permissionsMock)
+  it('should set currentEntityPermissions properly when call setCurrentEntityPermissions()', () => {
+    permissionsStore.setCurrentEntityPermissions(permissionsMock)
 
-    expect(permissionsStore.selectedEntityPermissions).toStrictEqual(permissionsMock)
+    expect(permissionsStore.currentEntityPermissions).toStrictEqual(permissionsMock)
   })
 
   it('updates userPermissions via service call', async () => {
@@ -40,10 +40,10 @@ describe('test permissionsStore', () => {
     expect(permissionService.fetchUserPermissions).toHaveBeenCalled()
   })
 
-  it('updates selectedEntityPermissions via service call', async () => {
+  it('updates currentEntityPermissions via service call', async () => {
     (permissionService.fetchUserAccountPermissions as any).mockResolvedValue(entityPermissionsMock)
-    await permissionsStore.updateSelectedEntityPermissions(123)
-    expect(permissionsStore.selectedEntityPermissions).toEqual(entityPermissionsMock)
+    await permissionsStore.updateCurrentEntityPermissions(123)
+    expect(permissionsStore.currentEntityPermissions).toEqual(entityPermissionsMock)
     expect(permissionService.fetchUserAccountPermissions).toHaveBeenCalledWith(123)
   })
 

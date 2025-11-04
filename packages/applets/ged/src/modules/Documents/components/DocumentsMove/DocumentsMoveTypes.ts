@@ -8,7 +8,7 @@ export interface DocumentMoveProps {
   isMoveModalOpened: boolean
   currentServiceFolder: Folder[]
   currentService: Service['ServiceId']
-  selectedEntity: string
+  currentEntity: string
   selectedDocuments: Document[]
   accountId: number
 }

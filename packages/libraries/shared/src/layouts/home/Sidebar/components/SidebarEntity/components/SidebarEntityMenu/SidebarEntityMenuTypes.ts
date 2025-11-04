@@ -1,5 +1,8 @@
+import type { Permission } from '@pulse/common/types'
+
 export interface SidebarEntityMenuProps {
-  selectedEntityId: number
+  currentEntityId: number
   isCollab?: boolean
   isSingleEntity?: boolean
+  currentEntityPermissions?: Permission[]
 }

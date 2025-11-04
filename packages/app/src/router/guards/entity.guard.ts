@@ -1,13 +1,13 @@
 import { logger } from '@pulse/toolbox'
 import type { NavigationGuard } from 'vue-router'
-import { SelectedEntityManager } from '@pulse/common/managers'
+import { CurrentEntityManager } from '@pulse/common/managers'
 import { fetchEntityById } from '@pulse/common/services/entities'
 import type { AccountRow, Entity } from '@pulse/common/types'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 
-export const selectedEntityGuard: NavigationGuard = async (to, from, next) => {
+export const currentEntityGuard: NavigationGuard = async (to, from, next) => {
   if (to.params[RouteParam.ENTITY_ID] === undefined) {
     // the route does not require an entity id, exit the guard
     return next()
@@ -35,7 +35,7 @@ export const selectedEntityGuard: NavigationGuard = async (to, from, next) => {
         return next({ name: RouteName.ERROR403 })
       }
 
-      await SelectedEntityManager.initializeSelectedEntity(entity)
+      await CurrentEntityManager.initializeCurrentEntity(entity)
 
     } catch (error) {
       logger.error(`Entity Router Guard - Error while trying to fetch user entity (${toEntityId})`, error)
@@ -52,6 +52,6 @@ export function findEntityWithId(entities: AccountRow[], entityId: Entity['accou
 }
 
 export function isEntityAlreadySelected(targetEntityId: Entity['accountId']) {
-  const selectedEntityStore = useSelectedEntityStore()
-  return targetEntityId === selectedEntityStore.selectedEntityId
+  const currentEntityStore = useCurrentEntityStore()
+  return targetEntityId === currentEntityStore.currentEntityId
 }

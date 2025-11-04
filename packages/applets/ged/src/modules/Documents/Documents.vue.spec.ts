@@ -38,10 +38,10 @@ const defaultProps: DocumentsProps = {
   currentService: foldersData[0][0].children[0].serviceId,
   currentServiceName: 'cool service name',
   isCurrentServiceReadOnly: false,
-  selectedEntity: 'my-entity',
+  currentEntity: 'my-entity',
   accountId: 1234,
-  selectedEntityAvatarColor: 'persian' as Entity['color'],
-  selectedEntityName: 'This is a legal name',
+  currentEntityAvatarColor: 'persian' as Entity['color'],
+  currentEntityName: 'This is a legal name',
   selectedFolder: foldersData[0][0].children[0],
   currentServiceFolder: foldersData[0],
   gedContext: GedContext.LEGACY,
@@ -258,7 +258,7 @@ describe('documents', () => {
 
       expect(vi.mocked(downloadDocument)).toHaveBeenCalledWith(
         defaultProps.currentService,
-        defaultProps.selectedEntity,
+        defaultProps.currentEntity,
         documentsResponsePayload.documentsPage.items[0].id,
         defaultProps.accountId,
       )
@@ -285,7 +285,7 @@ describe('documents', () => {
       await nextTick()
       expect(vi.mocked(downloadDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
-        defaultProps.selectedEntity,
+        defaultProps.currentEntity,
         documentsResponsePayloadMoreThanOneDoc.documentsPage.items.map(
           (x) => x.id,
         ),
@@ -470,7 +470,7 @@ describe('documents', () => {
 
       expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
-        defaultProps.selectedEntity,
+        defaultProps.currentEntity,
         [documentsResponsePayload.documentsPage.items[0].id],
         defaultProps.accountId,
       )
@@ -517,7 +517,7 @@ describe('documents', () => {
       await nextTick()
       expect(vi.mocked(transmitDocuments)).toHaveBeenCalledWith(
         defaultProps.currentService,
-        defaultProps.selectedEntity,
+        defaultProps.currentEntity,
         [documentsResponsePayload.documentsPage.items[0].id],
         defaultProps.accountId,
       )

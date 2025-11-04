@@ -1,4 +1,4 @@
-import { CurrentUserManager, SelectedEntityManager, FeatureFlagManager } from '@pulse/common/managers'
+import { CurrentUserManager, CurrentEntityManager, FeatureFlagManager } from '@pulse/common/managers'
 import { resetAllStores, useTokenStore } from '@pulse/common/stores'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
@@ -54,6 +54,6 @@ export class BootManager {
     // clear user data
     const tokenStore = useTokenStore()
     tokenStore.removeToken()
-    SelectedEntityManager.clearSelectedEntity()
+    CurrentEntityManager.clearCurrentEntity()
   }
 }

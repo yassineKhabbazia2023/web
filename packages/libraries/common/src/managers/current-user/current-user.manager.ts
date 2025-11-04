@@ -7,7 +7,7 @@ import { CurrentUserService } from '../../services/current-user/current-user.ser
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
 import { storeToRefs } from 'pinia'
-import { SelectedEntityManager } from '../selected-entity/selected-entity.manager'
+import { CurrentEntityManager } from '../current-entity/current-entity.manager'
 import { ACCOUNT_PERMISSIONS } from '../../constants/permissions.const'
 import { PermissionScope } from './current-user.manager.enum'
 import type { Permission } from '../../types/permission.type'
@@ -19,7 +19,7 @@ export class CurrentUserManager {
 
     userStore.setUser(currentUser)
     permissionsStore.setUserPermissions([])
-    permissionsStore.setSelectedEntityPermissions([])
+    permissionsStore.setCurrentEntityPermissions([])
   }
 
   static async initializeCurrentUser() {
@@ -46,7 +46,7 @@ export class CurrentUserManager {
     }
     // clean localStorage
     this.persistToken('')
-    SelectedEntityManager.clearSelectedEntity()
+    CurrentEntityManager.clearCurrentEntity()
   }
 
   private static readonly getCurrentPermissions = (
@@ -54,19 +54,19 @@ export class CurrentUserManager {
   ): Permission[] => {
     const permissionsStore = usePermissionsStore()
 
-    const { userPermissions, selectedEntityPermissions } = storeToRefs(permissionsStore)
+    const { userPermissions, currentEntityPermissions } = storeToRefs(permissionsStore)
     const userPermissionsList = userPermissions.value
-    const selectedEntityPermissionsList = selectedEntityPermissions.value
+    const currentEntityPermissionsList = currentEntityPermissions.value
 
     if (scope === PermissionScope.ALL) {
       return [
         ...userPermissionsList,
-        ...selectedEntityPermissionsList,
+        ...currentEntityPermissionsList,
       ]
     }
 
-    if (scope === PermissionScope.SELECTED_ENTITY) {
-      return selectedEntityPermissionsList
+    if (scope === PermissionScope.CURRENT_ENTITY) {
+      return currentEntityPermissionsList
     }
 
     return userPermissionsList // scope === PermissionScope.GLOBAL here
@@ -100,16 +100,16 @@ export class CurrentUserManager {
   }
 
   /**
-   * return true if the user has the permission in the selected entity scope
+   * return true if the user has the permission in the current entity scope
    */
-  static readonly hasSelectedEntityPermission = (
+  static readonly hasCurrentEntityPermission = (
     permissionCodes: Permission[],
   ): boolean => {
-    return CurrentUserManager.hasScopedPermission(PermissionScope.SELECTED_ENTITY, permissionCodes)
+    return CurrentUserManager.hasScopedPermission(PermissionScope.CURRENT_ENTITY, permissionCodes)
   }
 
-  static hasSelectedEntityPennylanePermission() {
-    return CurrentUserManager.hasSelectedEntityPermission(ACCOUNT_PERMISSIONS.PENNYLANE)
+  static hasCurrentEntityPennylanePermission() {
+    return CurrentUserManager.hasCurrentEntityPermission(ACCOUNT_PERMISSIONS.PENNYLANE)
   }
 
   static persistToken(token: string) {

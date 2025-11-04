@@ -15,7 +15,7 @@ import SidebarEntityMenu from '.'
 const favoriteEntityId: number = getMockedFavoriteEntities()[0].accountId
 
 const defaultProps: SidebarEntityMenuProps = {
-  selectedEntityId: favoriteEntityId,
+  currentEntityId: favoriteEntityId,
   isCollab: false,
   isSingleEntity: false,
 }

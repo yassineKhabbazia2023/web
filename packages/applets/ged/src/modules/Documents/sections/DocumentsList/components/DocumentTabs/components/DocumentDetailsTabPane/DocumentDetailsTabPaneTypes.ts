@@ -9,7 +9,7 @@ export interface PiaStatusTag {
 
 export interface DocumentDetailsTabPaneProps {
   document: Document
-  selectedEntity: string
+  currentEntity: string
   accountId: number
   currentService: Service['ServiceId']
 }

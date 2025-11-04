@@ -12,11 +12,11 @@
       </PButton>
     </div>
     <EmailPennylaneModal
-      v-if="selectedEntityId !== undefined"
+      v-if="currentEntityId !== undefined"
       v-model:isVisible="isModalOpen"
-      :accountNumber="selectedEntityAccountNumber"
+      :accountNumber="currentEntityAccountNumber"
       :entityServices="entityServices"
-      :accountId="selectedEntityId"
+      :accountId="currentEntityId"
       @on-close-popup="handleClose"
     />
   </template>
@@ -27,7 +27,7 @@ import { useI18n } from 'vue-i18n'
 import { PButton, PIcon } from '@pulse/styleguide/components'
 import { computed, ref, watch, onMounted } from 'vue'
 import EmailPennylaneModal from './components/email-pennylane-modal.vue'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import { fetchUserEntityServices } from '@ged/services/Services'
 import type { Service } from '@ged/models/Service'
 import type { Folder } from '@ged/models/Folder'
@@ -42,14 +42,14 @@ const { t } = useI18n({
 
 const isModalOpen = ref(false)
 
-const selectedEntityStore = useSelectedEntityStore()
-const { selectedEntity, selectedEntityId, selectedEntityAccountNumber } = storeToRefs(selectedEntityStore)
+const currentEntityStore = useCurrentEntityStore()
+const { currentEntity, currentEntityId, currentEntityAccountNumber } = storeToRefs(currentEntityStore)
 
 const entityServices = ref<Service[]>([])
 const servicesFolders = ref<Folder[][]>([])
 
 const shouldDisplayEmailPennylane = computed(() => {
-  return selectedEntity.value !== null && entityServices.value.length > 0 && selectedEntityAccountNumber.value !== ''
+  return currentEntity.value !== null && entityServices.value.length > 0 && currentEntityAccountNumber.value !== ''
 })
 
 const handleClose = () => {
@@ -61,21 +61,21 @@ const onClickEmailModalButton = () => {
 }
 
 const fetchGedFoldersAndServices = async () => {
-  if (selectedEntityId.value == null || selectedEntityAccountNumber.value == '' || selectedEntityAccountNumber.value === undefined) {
+  if (currentEntityId.value == null || currentEntityAccountNumber.value == '' || currentEntityAccountNumber.value === undefined) {
     return
   }
 
   entityServices.value = await fetchUserEntityServices(
-    selectedEntityAccountNumber.value,
-    selectedEntityId.value,
+    currentEntityAccountNumber.value,
+    currentEntityId.value,
     GedContext.LEGACY,
   )
 
   // Using services guids to get root folders
   const { foldersByService } = await fetchServicesFolders(
     entityServices.value,
-    selectedEntityAccountNumber.value,
-    selectedEntityId.value,
+    currentEntityAccountNumber.value,
+    currentEntityId.value,
   )
 
   servicesFolders.value = foldersByService
@@ -85,7 +85,7 @@ onMounted(async () => {
   await fetchGedFoldersAndServices()
 })
 
-watch(selectedEntityAccountNumber, async () => {
+watch(currentEntityAccountNumber, async () => {
   // Fetching folders and services when account number changes
   await fetchGedFoldersAndServices()
 })

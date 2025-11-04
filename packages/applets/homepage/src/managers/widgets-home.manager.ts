@@ -53,6 +53,6 @@ export class WidgetsHomeManager {
     } // No guard defined -> allow rendering
 
     // Check if the user has all the required permissions
-    return CurrentUserManager.hasSelectedEntityPermission(required)
+    return CurrentUserManager.hasCurrentEntityPermission(required)
   }
 }

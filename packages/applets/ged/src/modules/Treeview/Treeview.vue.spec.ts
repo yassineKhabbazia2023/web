@@ -32,7 +32,7 @@ const defaultProps: TreeviewProps = {
   servicesFolders: foldersData,
   currentService: 'service-id-compta',
   currentServiceName: 'service name',
-  selectedEntity: 'my-entity-id',
+  currentEntity: 'my-entity-id',
   selectedFolder: foldersData[0][0].children[0],
   currentServiceFolder: undefined,
   accountId: 1234,
@@ -346,7 +346,7 @@ describe('treeview', () => {
               await nextTick()
               expect(vi.mocked(downloadFolder)).toHaveBeenCalledWith(
                 defaultProps.currentService,
-                defaultProps.selectedEntity,
+                defaultProps.currentEntity,
                 componentInstance.currentFolderId,
                 defaultProps.accountId,
               )

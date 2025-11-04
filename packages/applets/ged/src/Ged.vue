@@ -5,7 +5,7 @@
         :entityServices="entityServices"
         :currentService="currentService ?? ''"
         :currentServiceName="currentServiceName"
-        :selectedEntity="accountNumber"
+        :currentEntity="accountNumber"
         :accountId="selectedAccountId"
         :isLoading="isLoadingServicesOrFolders"
         :servicesFolders="servicesFolders"
@@ -38,10 +38,10 @@
         :currentService="currentService"
         :currentServiceName="currentServiceName"
         :isCurrentServiceReadOnly="isCurrentServiceReadOnly"
-        :selectedEntity="accountNumber"
+        :currentEntity="accountNumber"
         :accountId="selectedAccountId"
-        :selectedEntityAvatarColor="selectedEntityAvatarColor"
-        :selectedEntityName="selectedEntityName"
+        :currentEntityAvatarColor="currentEntityAvatarColor"
+        :currentEntityName="currentEntityName"
         :selectedFolder="currentFolder"
         :currentServiceFolder="currentServiceFolder"
         :gedContext
@@ -52,7 +52,7 @@
     <PCol v-else-if="currentBinService" :span="18">
       <BinDocuments
         :currentBinService="currentBinService"
-        :selectedEntity="accountNumber"
+        :currentEntity="accountNumber"
         :accountId="selectedAccountId"
         :selectedServiceName="currentBinServiceName"
         @navigate-to-folder="handleTreeRefreshAndRedirectToFolder"
@@ -82,7 +82,7 @@ import {
 import { PCol, PRow } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import { GedManager } from '@ged/ged.manager'
 import { GedContext } from '@pulse/common/enums'
 
@@ -95,8 +95,8 @@ const isLoadingServicesOrFolders = ref(true)
 const currentFolder = ref<null | Folder>(null)
 const servicesFolders = ref<Folder[][]>([])
 
-const selectedEntityStore = useSelectedEntityStore()
-const { selectedEntity } = storeToRefs(selectedEntityStore)
+const currentEntityStore = useCurrentEntityStore()
+const { currentEntity } = storeToRefs(currentEntityStore)
 const gedContext = ref<GedContext>(GedContext.LEGACY)
 
 const fetchGedFoldersAndServices = async () => {
@@ -129,18 +129,18 @@ const fetchGedFoldersAndServices = async () => {
 }
 // Entities and services scope
 
-const accountNumber = computed(() => selectedEntity?.value?.accountNumber?.toString() ?? '')
-watch(accountNumber, async (selectedEntityValue) => {
-  if (selectedEntityValue) {
+const accountNumber = computed(() => currentEntity?.value?.accountNumber?.toString() ?? '')
+watch(accountNumber, async (currentEntityValue) => {
+  if (currentEntityValue) {
     isLoadingServicesOrFolders.value = true
     await fetchGedFoldersAndServices()
     isLoadingServicesOrFolders.value = false
   }
 })
 
-const selectedAccountId = computed(() => selectedEntity?.value?.accountId ?? 0)
-const selectedEntityAvatarColor = computed(() => selectedEntity?.value?.color)
-const selectedEntityName = computed(() => selectedEntity?.value?.legalName ?? '')
+const selectedAccountId = computed(() => currentEntity?.value?.accountId ?? 0)
+const currentEntityAvatarColor = computed(() => currentEntity?.value?.color)
+const currentEntityName = computed(() => currentEntity?.value?.legalName ?? '')
 const entityServices = ref<Service[]>([])
 const currentService = ref<null | Service['ServiceId']>(null)
 const currentServiceName = ref<null | Service['ServiceName']>(null)

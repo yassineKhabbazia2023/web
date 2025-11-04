@@ -3,7 +3,7 @@ import {
   AmplitudeServiceMock,
   getMockedUserContext,
   getMockedEntity,
-  getMockedSelectedEntity,
+  getMockedCurrentEntity,
   getStoreMock,
   getPermissionsMock,
   getMockedEntitySummary,
@@ -14,9 +14,9 @@ import { CurrentUserService } from '@pulse/common/services/current-user'
 import { fetchUserPermissions } from '@pulse/common/services/permissions'
 import { fetchEntities } from '@app/services/entities'
 import { fetchEntityById } from '@pulse/common/services/entities'
-import { SelectedEntityManager } from '@pulse/common/managers'
+import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { useUserStore, usePermissionsStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { useUserStore, usePermissionsStore, useCurrentEntityStore, useBookingStore } from '@pulse/common/stores'
 import { APP_ROUTES } from '@pulse/common/constants'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 
@@ -49,14 +49,15 @@ const entitiesMock = {
   totalItems: 1,
   totalPage: 1,
 }
-const storedEntityMock = getMockedSelectedEntity()
-const defaultEntityMock = getMockedSelectedEntity()
+const storedEntityMock = getMockedCurrentEntity()
+const defaultEntityMock = getMockedCurrentEntity()
 const entitySummaryMock = getMockedEntitySummary(entityMock)
 
 // Stores mocks
 const userStoreMock = getStoreMock(useUserStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+getStoreMock(useBookingStore)
 
 describe('AuthenticatedFlowManager', () => {
   describe('enterAuthenticatedFlow', () => {
@@ -116,12 +117,12 @@ describe('AuthenticatedFlowManager', () => {
     it('should initialize user as a single or multiple entities', async () => {
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
       vi.mocked(fetchEntityById).mockResolvedValue(entitySummaryMock)
-      vi.mocked(SelectedEntityManager.initializeSelectedEntity).mockResolvedValue(undefined)
+      vi.mocked(CurrentEntityManager.initializeCurrentEntity).mockResolvedValue(undefined)
 
       await AuthenticatedFlowManager.initEntities()
 
       expect(userStoreMock.setIsSingleEntity).toHaveBeenCalledWith(true)
-      expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(entitySummaryMock)
+      expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledWith(entitySummaryMock)
     })
 
     it('should handle the case when no entities are found', async () => {
@@ -131,7 +132,7 @@ describe('AuthenticatedFlowManager', () => {
 
       // Should not call entity-related methods when no entities found
       expect(userStoreMock.setIsSingleEntity).not.toHaveBeenCalled()
-      expect(SelectedEntityManager.initializeSelectedEntity).not.toHaveBeenCalled()
+      expect(CurrentEntityManager.initializeCurrentEntity).not.toHaveBeenCalled()
     })
 
     it('should handle errors gracefully when fetching entities', async () => {
@@ -141,7 +142,7 @@ describe('AuthenticatedFlowManager', () => {
 
       // Should not throw and should not call entity-related methods
       expect(userStoreMock.setIsSingleEntity).not.toHaveBeenCalled()
-      expect(SelectedEntityManager.initializeSelectedEntity).not.toHaveBeenCalled()
+      expect(CurrentEntityManager.initializeCurrentEntity).not.toHaveBeenCalled()
     })
   })
 
@@ -165,54 +166,54 @@ describe('AuthenticatedFlowManager', () => {
     })
   })
 
-  describe('setUserSelectedEntity', () => {
-    it('should set the locally stored selected entity if it exists', async () => {
-      selectedEntityStoreMock.selectedEntityId = undefined
-      vi.mocked(SelectedEntityManager.getLocalStorageEntityId).mockReturnValue(2)
+  describe('setUserCurrentEntity', () => {
+    it('should set the locally stored current entity if it exists', async () => {
+      currentEntityStoreMock.currentEntityId = undefined
+      vi.mocked(CurrentEntityManager.getLocalStorageEntityId).mockReturnValue(2)
       vi.mocked(fetchEntityById).mockResolvedValue(entitySummaryMock)
-      vi.mocked(SelectedEntityManager.initializeSelectedEntity).mockResolvedValue(undefined)
+      vi.mocked(CurrentEntityManager.initializeCurrentEntity).mockResolvedValue(undefined)
 
       // @ts-ignore - accessing private method for testing
-      await AuthenticatedFlowManager.setUserSelectedEntity(defaultEntityMock)
+      await AuthenticatedFlowManager.setUserCurrentEntity(defaultEntityMock)
 
       expect(fetchEntityById).toHaveBeenCalledWith(2)
-      expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(entitySummaryMock)
+      expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledWith(entitySummaryMock)
     })
 
-    it('should persist the first provided entity of there is no previously selected entity', async () => {
-      selectedEntityStoreMock.selectedEntityId = undefined
-      vi.mocked(SelectedEntityManager.getLocalStorageEntityId).mockReturnValue(undefined)
+    it('should persist the first provided entity if there is no previously current entity', async () => {
+      currentEntityStoreMock.currentEntityId = undefined
+      vi.mocked(CurrentEntityManager.getLocalStorageEntityId).mockReturnValue(undefined)
       vi.mocked(fetchEntityById).mockResolvedValue(entitySummaryMock)
-      vi.mocked(SelectedEntityManager.initializeSelectedEntity).mockResolvedValue(undefined)
+      vi.mocked(CurrentEntityManager.initializeCurrentEntity).mockResolvedValue(undefined)
 
       // @ts-ignore - accessing private method for testing
-      await AuthenticatedFlowManager.setUserSelectedEntity(defaultEntityMock)
+      await AuthenticatedFlowManager.setUserCurrentEntity(defaultEntityMock)
 
-      expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(entitySummaryMock)
+      expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledWith(entitySummaryMock)
     })
 
-    it('should persist the first provided entity if the user has no rights to see the previously selected entity', async () => {
-      selectedEntityStoreMock.selectedEntityId = undefined
-      vi.mocked(SelectedEntityManager.getLocalStorageEntityId).mockReturnValue(2)
+    it('should persist the first provided entity if the user has no rights to see the previously current entity', async () => {
+      currentEntityStoreMock.currentEntityId = undefined
+      vi.mocked(CurrentEntityManager.getLocalStorageEntityId).mockReturnValue(2)
       vi.mocked(fetchEntityById).mockResolvedValue(defaultEntityMock as any)
-      vi.mocked(SelectedEntityManager.initializeSelectedEntity).mockResolvedValue(undefined)
+      vi.mocked(CurrentEntityManager.initializeCurrentEntity).mockResolvedValue(undefined)
 
       // @ts-ignore - accessing private method for testing
-      await AuthenticatedFlowManager.setUserSelectedEntity(defaultEntityMock)
+      await AuthenticatedFlowManager.setUserCurrentEntity(defaultEntityMock)
 
       expect(fetchEntityById).toHaveBeenCalledWith(2)
-      expect(SelectedEntityManager.initializeSelectedEntity).toHaveBeenCalledWith(defaultEntityMock)
+      expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledWith(defaultEntityMock)
     })
 
-    it('should do nothing when an entity is already selected', async () => {
-      selectedEntityStoreMock.selectedEntityId = 1
+    it('should do nothing when an entity is already current', async () => {
+      currentEntityStoreMock.currentEntityId = 1
 
       // @ts-ignore - accessing private method for testing
-      await AuthenticatedFlowManager.setUserSelectedEntity(defaultEntityMock)
+      await AuthenticatedFlowManager.setUserCurrentEntity(defaultEntityMock)
 
-      expect(SelectedEntityManager.getLocalStorageEntityId).not.toHaveBeenCalled()
+      expect(CurrentEntityManager.getLocalStorageEntityId).not.toHaveBeenCalled()
       expect(fetchEntityById).not.toHaveBeenCalled()
-      expect(SelectedEntityManager.initializeSelectedEntity).not.toHaveBeenCalled()
+      expect(CurrentEntityManager.initializeCurrentEntity).not.toHaveBeenCalled()
     })
   })
 
@@ -395,7 +396,7 @@ describe('AuthenticatedFlowManager', () => {
         userStoreMock.isCollab = false
         userStoreMock.isCustomer = true
         userStoreMock.getIsSingleEntity.mockReturnValue(true)
-        selectedEntityStoreMock.selectedEntity = entitySummaryMock
+        currentEntityStoreMock.currentEntity = entitySummaryMock
         const accountId = entityMock.accountId
 
         const result = AuthenticatedFlowManager.getLandingPage()
@@ -422,7 +423,7 @@ describe('AuthenticatedFlowManager', () => {
     describe('user is a single entity user', () => {
       it('should return the entity landing page', () => {
         userStoreMock.getIsSingleEntity.mockReturnValue(true)
-        selectedEntityStoreMock.selectedEntity = entitySummaryMock
+        currentEntityStoreMock.currentEntity = entitySummaryMock
         const accountId = entityMock.accountId
 
         const result = AuthenticatedFlowManager.getCustomerLandingPage()

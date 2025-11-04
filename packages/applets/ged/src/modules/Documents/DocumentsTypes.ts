@@ -30,10 +30,10 @@ export interface DocumentsProps {
   currentServiceName: Service['ServiceName']
   isCurrentServiceReadOnly: Service['IsReadOnly']
   // selected entity corresponds to accountNumber, this will be changed
-  selectedEntity: string
+  currentEntity: string
   accountId: number
-  selectedEntityAvatarColor: Entity['color']
-  selectedEntityName: Entity['legalName']
+  currentEntityAvatarColor: Entity['color']
+  currentEntityName: Entity['legalName']
   selectedFolder: null | Folder
   currentServiceFolder: Folder[]
   gedContext: GedContext

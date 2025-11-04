@@ -20,12 +20,12 @@ export interface Entity {
   color?: EntityColor
 }
 
-export interface SelectedEntity extends Entity {
+export interface CurrentEntity extends Entity {
   permissions?: Permission[]
 }
 
 type Entities = {
-  default: SelectedEntity | undefined
+  default: CurrentEntity | undefined
 }
 
 export interface Persona {

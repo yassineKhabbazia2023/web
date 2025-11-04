@@ -1,13 +1,13 @@
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { getStoreMock, getMockedEntitySummary, getMockedEntity } from '@pulse/common/mocks'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import { FeatureFlagManager } from '@pulse/common/managers'
 
 import HomePage from '.'
 
 const mockedEntity = getMockedEntity()
 const entitySummaryMock = getMockedEntitySummary(mockedEntity)
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 const createWrapper = (): VueWrapper<any> => mount(HomePage, {
   global: {
@@ -22,7 +22,7 @@ const createWrapper = (): VueWrapper<any> => mount(HomePage, {
 
 describe('HomePage', () => {
   beforeEach(async () => {
-    selectedEntityStoreMock.selectedEntity = entitySummaryMock
+    currentEntityStoreMock.currentEntity = entitySummaryMock
   })
 
   describe('widgets', () => {

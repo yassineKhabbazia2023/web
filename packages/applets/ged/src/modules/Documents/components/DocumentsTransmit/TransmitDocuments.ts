@@ -23,7 +23,7 @@ export function useTransmitDocuments(
     try {
       await transmitDocuments(
         transmitDocumentsProps.value.currentService,
-        transmitDocumentsProps.value.selectedEntity,
+        transmitDocumentsProps.value.currentEntity,
         transmitDocumentsProps.value.selectedDocumentsIds,
         transmitDocumentsProps.value.accountId,
       )

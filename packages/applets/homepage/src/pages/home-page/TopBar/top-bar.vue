@@ -21,17 +21,17 @@
 import { computed } from 'vue'
 import { PennylaneSSO } from '@pulse/widgets/gridless'
 import { PennylanePermissionsManager, CurrentUserManager } from '@pulse/common/managers'
-import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 import { WidgetName } from '@pulse/widgets/enums'
 
 const userStore = useUserStore()
-const selectedEntityStore = useSelectedEntityStore()
+const currentEntityStore = useCurrentEntityStore()
 
 const isPennylaneSSODisplayed = computed(() =>
-  selectedEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true &&
-  CurrentUserManager.hasSelectedEntityPermission(ACCOUNT_PERMISSIONS.PENNYLANE) === true,
+  currentEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true &&
+  CurrentUserManager.hasCurrentEntityPermission(ACCOUNT_PERMISSIONS.PENNYLANE) === true,
 )
 
 const showEmailPennylaneWidget = computed(() =>

@@ -32,7 +32,7 @@ export const currentServiceFolder: Folder[] = foldersData[0]
 export const currentService: Service['ServiceId'] = foldersData[0][0].serviceId
 export const currentServiceName = 'A service name'
 
-export const selectedEntity = 'my-selected-entity'
+export const currentEntity = 'my-current-entity'
 export const entityId = '1234'
 export const accountId = 1234
 export const accountNumber = 'my-account-id'

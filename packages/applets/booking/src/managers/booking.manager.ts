@@ -1,24 +1,22 @@
 import { BookingService } from '@pulse/common/services/booking'
-import { useUserStore, useSelectedEntityStore, useBookingStore } from '@pulse/common/stores'
-
-
+import { useUserStore, useCurrentEntityStore, useBookingStore } from '@pulse/common/stores'
 import { logger } from '@pulse/toolbox'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'
 
 export class BookingManager {
   private static async loadAvailableExperts() {
-    const selectedEntityStore = useSelectedEntityStore()
+    const currentEntityStore = useCurrentEntityStore()
     const userStore = useUserStore()
 
     if (
       userStore.isCollab === false &&
-      selectedEntityStore.selectedEntityId !== undefined &&
+      currentEntityStore.currentEntityId !== undefined &&
       FeatureFlagManager.isFeatureActivated(Feature.BOOKING) === true
     ) {
       try {
         return await BookingService.getBookingAvailableExperts({
-          accountId: selectedEntityStore.selectedEntityId,
+          accountId: currentEntityStore.currentEntityId,
         })
       } catch (error) {
         logger.error(error)

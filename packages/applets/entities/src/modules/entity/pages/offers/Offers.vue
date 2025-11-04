@@ -73,12 +73,12 @@
     </PTable>
   </div>
   <OffersDrawer
-    v-if="hasOffersDrawer && selectedEntity && user"
+    v-if="hasOffersDrawer && currentEntity && user"
     ref="offersDrawer"
     v-model="isOffersDrawerOpened"
-    :selectedCompanyName="selectedEntity.legalName"
-    :accountNumber="selectedEntity.accountNumber"
-    :accountId="selectedEntity.accountId"
+    :selectedCompanyName="currentEntity.legalName"
+    :accountNumber="currentEntity.accountNumber"
+    :accountId="currentEntity.accountId"
     :currentUser="user"
     data-testid="offers-drawer"
     @offer-saved="onOfferSaved"
@@ -107,14 +107,14 @@ import type { SubscriptionRequest } from '@entities/services/subscription/subscr
 import { fetchAccountSubscriptions } from '@entities/services/subscription'
 import OffersDrawer from '@entities/components/OffersDrawer'
 import { ACTION_PERMISSIONS } from '@pulse/common/constants'
-import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
 import { OfferActivationStatus as OfferActivationStatusEnum } from '@entities/modules/entity/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 
 const route = useRoute()
 const userStore = useUserStore()
-const selectedEntityStore = useSelectedEntityStore()
+const currentEntityStore = useCurrentEntityStore()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -131,7 +131,7 @@ const hasOffersDrawer = ref(false)
 const activeOffers = ref<SubscriptionRequest[]>([])
 
 const { isCollab, user } = storeToRefs(userStore)
-const { selectedEntity } = storeToRefs(selectedEntityStore)
+const { currentEntity } = storeToRefs(currentEntityStore)
 
 const headerTitle = computed(() =>
   isCollab.value ? t('collabHeaderTitle') : t('clientHeaderTitle'),

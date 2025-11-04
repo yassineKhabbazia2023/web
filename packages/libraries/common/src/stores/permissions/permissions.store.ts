@@ -5,36 +5,36 @@ import type { Permission } from '../../types/permission.type'
 
 export const usePermissionsStore = defineStore('permissions', () => {
   const userPermissions = ref<Permission[]>([])
-  const selectedEntityPermissions = ref<Permission[]>([])
+  const currentEntityPermissions = ref<Permission[]>([])
 
   function setUserPermissions(userPermissionsArg: Permission[]) {
     userPermissions.value = userPermissionsArg
   }
 
-  function setSelectedEntityPermissions(selectedEntityPermissionsArg: Permission[]) {
-    selectedEntityPermissions.value = selectedEntityPermissionsArg
+  function setCurrentEntityPermissions(currentEntityPermissionsArg: Permission[]) {
+    currentEntityPermissions.value = currentEntityPermissionsArg
   }
 
   function reset() {
     userPermissions.value = []
-    selectedEntityPermissions.value = []
+    currentEntityPermissions.value = []
   }
 
   async function updateUserPermission() {
     userPermissions.value = await fetchUserPermissions()
   }
 
-  async function updateSelectedEntityPermissions(accountId: number) {
-    selectedEntityPermissions.value = await fetchUserAccountPermissions(accountId)
+  async function updateCurrentEntityPermissions(accountId: number) {
+    currentEntityPermissions.value = await fetchUserAccountPermissions(accountId)
   }
 
   return {
     userPermissions,
-    selectedEntityPermissions,
+    currentEntityPermissions,
     setUserPermissions,
-    setSelectedEntityPermissions,
+    setCurrentEntityPermissions,
     reset,
     updateUserPermission,
-    updateSelectedEntityPermissions,
+    updateCurrentEntityPermissions,
   }
 })

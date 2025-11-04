@@ -31,7 +31,7 @@
       <PMenuItem
         v-if="entityOverviewMenuItem"
         :pIndex="entityOverviewMenuItem.routeName"
-        :pRoute="{ name: entityOverviewMenuItem.routeName, params: { entityId: selectedEntityId } }"
+        :pRoute="{ name: entityOverviewMenuItem.routeName, params: { entityId: currentEntityId } }"
         :pIconLeftName="entityOverviewMenuItem.iconLeftName"
         data-testid="menu-item"
         :class="{ 'sidenav-entity-menu__item-menu': entityOverviewPath }"
@@ -45,7 +45,7 @@
         v-for="menuItem in menuItems"
         :key="menuItem.routeName"
         :pIndex="menuItem.routeName"
-        :pRoute="{ name: menuItem.routeName, params: { entityId: selectedEntityId } }"
+        :pRoute="{ name: menuItem.routeName, params: { entityId: currentEntityId } }"
         :pIconLeftName="menuItem.iconLeftName"
         data-testid="menu-item"
         :class="{ 'sidenav-entity-menu__item-menu': menuItem.hasSubmenuSelected === true }"
@@ -99,13 +99,13 @@ const canBeConsideredSingleEntity = computed(() => {
 // Calculate legacy GED path
 const legacyGedPath = computed(() => router.resolve({
   name: RouteName.PENNYLANE_GED_LEGACY,
-  params: { entityId: props.selectedEntityId },
+  params: { entityId: props.currentEntityId },
 }).path)
 
 // Build menu context for the manager
 const menuContext = computed<MenuContext>(() => {
   return {
-    entityId: props.selectedEntityId,
+    entityId: props.currentEntityId,
     isCollab: props.isCollab ?? false,
     currentRoute: route,
     legacyGedPath: legacyGedPath.value,

@@ -18,7 +18,7 @@ import {
   getMockedUser,
   getMockedEntitySummary,
 } from '@pulse/common/mocks'
-import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { getPendingOperations } from '@entities/modules/entity/utils/operation.utils'
 import { TrackingLocalisation } from '@entities/enums'
 import { RouteName, RouteParam } from '@pulse/common/enums'
@@ -26,7 +26,7 @@ import { RouteName, RouteParam } from '@pulse/common/enums'
 import UsersCollab from '.'
 
 const userStoreMock = getStoreMock(useUserStore)
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 const DEFAULT_ROUTE_PARAMS_ID = 5
 
@@ -87,8 +87,8 @@ vi.mock('vue-router', () => ({
 }))
 
 const userMock = getMockedUser({ id: 2 })
-const selectedEntityMock = getMockedEntity({ accountId: mockedAccount.accountId })
-const entitySummaryMock = getMockedEntitySummary(selectedEntityMock)
+const currentEntityMock = getMockedEntity({ accountId: mockedAccount.accountId })
+const entitySummaryMock = getMockedEntitySummary(currentEntityMock)
 
 vi.mock('@pulse/common', () => ({
   getInitials: vi.fn(),
@@ -187,7 +187,7 @@ const removeUserToolboxItem: PToolboxItemProps = {
 describe('usersCollab', () => {
   beforeEach(async () => {
     userStoreMock.user = userMock
-    selectedEntityStoreMock.selectedEntity = entitySummaryMock
+    currentEntityStoreMock.currentEntity = entitySummaryMock
     hasPermissionMock.mockReturnValue(false)
     wrapper = createWrapper()
     await flushPromises()

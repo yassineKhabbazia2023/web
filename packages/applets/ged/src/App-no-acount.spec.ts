@@ -5,12 +5,12 @@ import { folderServiceMock } from './__mocks__/folder.service.mocks'
 import { fetchUserEntityServices } from '@ged/services/Services'
 import { fetchServicesFolders } from '@ged/services/Folder'
 import { nextTick } from 'vue'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks'
 
 import Ged from './'
 
-getStoreMock(useSelectedEntityStore)
+getStoreMock(useCurrentEntityStore)
 
 vi.mock('@ged/models/AccountingHubConnection', () => accountingHubConnectionServiceMock)
 

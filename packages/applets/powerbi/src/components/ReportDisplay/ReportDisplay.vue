@@ -4,8 +4,8 @@
       class="report-display__header bg--base-white flex flex--align-items-center padding-x--6 padding-y--4"
     >
       <PEntityHeader
-        :pAccountNumber="selectedEntity!.accountNumber"
-        :pLegalName="selectedEntity!.legalName"
+        :pAccountNumber="currentEntity!.accountNumber"
+        :pLegalName="currentEntity!.legalName"
         pSize="small"
       />
     </div>
@@ -31,7 +31,7 @@ import { watch, toRefs, computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { displayNotification } from '@pulse/styleguide'
 import { PEntityHeader } from '@pulse/styleguide/components'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import type { ReportDisplayProps } from './report-display.types'
 import { fetchBIToken } from '@powerbi/services/reporting.service'
 
@@ -48,8 +48,8 @@ const reportToken = ref<string>('')
 const powerbiSection = ref<HTMLElement>()
 const { selectedReport } = toRefs(props)
 
-const selectedEntityStore = useSelectedEntityStore()
-const { selectedEntity } = storeToRefs(selectedEntityStore)
+const currentEntityStore = useCurrentEntityStore()
+const { currentEntity } = storeToRefs(currentEntityStore)
 
 const powerBIConfig = computed(() => ({
   type: 'report',

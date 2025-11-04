@@ -1,14 +1,14 @@
 import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
 import { CurrentUserManager } from '../current-user/current-user.manager'
 import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermission } from '@pulse/common/enums'
-import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks'
 
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 
 import { PennylanePermissionsManager } from './pennylane-permissions.manager'
 
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const useUserStoreMock = getStoreMock(useUserStore)
 
 vi.mock('../feature-flag/feature-flag.manager')
@@ -16,7 +16,7 @@ vi.mock('../current-user/current-user.manager')
 
 describe('PennylanePermissionsManager', () => {
   const isFeatureActivatedSpy = vi.mocked(FeatureFlagManager).isFeatureActivated
-  const hasOfferSpy = selectedEntityStoreMock.hasOffer
+  const hasOfferSpy = currentEntityStoreMock.hasOffer
 
   describe('isGedUxV2', () => {
     const tests = [{

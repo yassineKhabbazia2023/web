@@ -1,19 +1,19 @@
 import { shallowMount } from '@vue/test-utils'
 import { getStoreMock } from '@pulse/common/mocks'
-import { useUserStore, useSelectedEntityStore } from '@pulse/common/stores'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 
 import TopBar from './top-bar.vue'
 
 // Mock setup
 const userStoreMock = getStoreMock(useUserStore)
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
-const hasSelectedEntityPermissionSpy = vi.hoisted(() => vi.fn())
+const hasCurrentEntityPermissionSpy = vi.hoisted(() => vi.fn())
 const hasPennylaneAccountingGedV2PermissionSpy = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: {
-    hasSelectedEntityPermission: hasSelectedEntityPermissionSpy,
+    hasCurrentEntityPermission: hasCurrentEntityPermissionSpy,
   },
   PennylanePermissionsManager: {
     hasPennylaneAccountingGedV2Permission: hasPennylaneAccountingGedV2PermissionSpy,
@@ -48,8 +48,8 @@ describe('TopBar', () => {
       hasPennylaneOffer,
     }) => {
       userStoreMock.isCollab = isCollab
-      selectedEntityStoreMock.hasOffer.mockReturnValue(hasPennylaneOffer)
-      hasSelectedEntityPermissionSpy.mockReturnValue(hasPennylaneOffer)
+      currentEntityStoreMock.hasOffer.mockReturnValue(hasPennylaneOffer)
+      hasCurrentEntityPermissionSpy.mockReturnValue(hasPennylaneOffer)
 
       const wrapper = shallowMount(TopBar)
       const pennylaneSSO = wrapper.findComponent({ name: 'pennylane-sso' })

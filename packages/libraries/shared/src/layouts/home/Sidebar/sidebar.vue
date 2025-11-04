@@ -1,21 +1,15 @@
 <template>
   <SidebarEntity
-    v-if="isVisible === true"
-    :selected-entity="selectedEntityStore.selectedEntity"
+    v-if="isVisible"
+    :current-entity="currentEntity"
+    :favorite-entities="favoriteEntities"
+    :user-config="userConfig"
+    :current-entity-permissions="currentEntityPermissions"
   />
 </template>
 <script setup lang="ts">
-import { computed } from 'vue'
 import SidebarEntity from './components/SidebarEntity'
-import { useSelectedEntityStore, useUserStore } from '@pulse/common/stores'
+import type { SidebarProps } from './sidebar.types'
 
-const selectedEntityStore = useSelectedEntityStore()
-const userStore = useUserStore()
-
-const isVisible = computed(() => {
-  const user = userStore.user
-  const selectedEntity = selectedEntityStore.selectedEntity
-
-  return user !== undefined && selectedEntity !== undefined
-})
+defineProps<SidebarProps>()
 </script>

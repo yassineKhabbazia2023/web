@@ -9,7 +9,7 @@ export interface AuthorizationState {
 export interface ManageRightsDrawerProps {
   modelValue: boolean
   selectedUser: User
-  selectedEntity: Entity
+  currentEntity: Entity
 }
 
 export type LabelByPermission = { [Key in Permission]?: string | undefined }

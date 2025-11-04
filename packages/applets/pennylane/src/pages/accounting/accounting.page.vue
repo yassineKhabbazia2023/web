@@ -29,7 +29,7 @@ import { onMounted, ref, computed } from 'vue'
 import type { TabsPaneContext } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { PennylaneService } from '@pulse/common/services/pennylane'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
 import { APICallStatus, RouteName } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
@@ -49,14 +49,14 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const selectedEntityStore = useSelectedEntityStore()
+const currentEntityStore = useCurrentEntityStore()
 
 const pennylaneDocuments = ref<FormattedPennylaneDocument[]>([])
 const apiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
 
-const accountId = computed(() => selectedEntityStore.selectedEntityId ?? 0)
-const pLegalName = computed(() => selectedEntityStore.selectedEntity?.legalName ?? '')
-const pAccountNumber = computed(() => selectedEntityStore.selectedEntityAccountNumber)
+const accountId = computed(() => currentEntityStore.currentEntityId ?? 0)
+const pLegalName = computed(() => currentEntityStore.currentEntity?.legalName ?? '')
+const pAccountNumber = computed(() => currentEntityStore.currentEntityAccountNumber)
 
 const tabs: {
   name: AccountingTab

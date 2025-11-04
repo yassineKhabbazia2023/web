@@ -5,7 +5,7 @@
     :currentServiceFolder="currentServiceFolder"
     :ExplorerAuthorizedGivenAction="isMoveAuthorized"
     :currentService="currentService"
-    :selectedEntity="selectedEntity"
+    :currentEntity="currentEntity"
     :accountId="accountId"
     :documentsSelectorEmptyDocumentsListLabel="
       t('documentsList.noMovableDocumentsLabel')
@@ -175,7 +175,7 @@ const moveFolder = async () => {
 
     await moveFolderAsync(
       props.currentService,
-      props.selectedEntity,
+      props.currentEntity,
       props.folderToMove.id,
       currentExplorerFolder.value.id,
       props.accountId,

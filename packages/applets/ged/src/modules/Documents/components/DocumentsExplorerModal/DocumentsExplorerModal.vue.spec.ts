@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
 import type { DocumentsModalExplorerProps, GivenActionAuthorization } from './DocumentsExplorerModalTypes'
-import { currentService, secondValidDestination, validDestination, currentServiceFolder, selectedEntity, accountId } from '@ged/__mocks__/files.mocks'
+import { currentService, secondValidDestination, validDestination, currentServiceFolder, currentEntity, accountId } from '@ged/__mocks__/files.mocks'
 import type { GivenActionState, ExplorerDocument } from '../../DocumentsTypes'
 import type { ButtonAction } from '@ged/modules/common/Types/ButtonAction'
 import { modalButtonsUpload } from '../DocumentsUpload/helpers/ModalUploadActionsHelpers'
@@ -57,7 +57,7 @@ const defaultProps: DocumentsModalExplorerProps = {
   documents: generateExplorerDocuments(2, 'TO_DO'),
   ExplorerAuthorizedGivenAction: explorerAuthorizedGivenAction,
   currentService: currentService,
-  selectedEntity,
+  currentEntity,
   accountId,
   explorerUnauthorizedGivenActionMessage: 'you are not authorized',
   foldersListEmptyFolderLabel: '',

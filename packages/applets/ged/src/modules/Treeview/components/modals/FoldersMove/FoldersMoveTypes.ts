@@ -7,7 +7,7 @@ export interface FoldersMoveProps {
   isMoveModalOpened: boolean
   currentServiceFolder: Folder[]
   currentService: Service['ServiceId']
-  selectedEntity: string
+  currentEntity: string
   folderToMove: Folder
   accountId: number
 }

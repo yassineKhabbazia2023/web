@@ -1,5 +1,9 @@
-import type { Entity } from '@pulse/common/types'
+import type { Entity, Permission } from '@pulse/common/types'
+import type { UserConfig } from '../../../home.layout.types'
 
 export interface SidebarEntityProps {
-  selectedEntity?: Entity,
+  currentEntity?: Entity
+  favoriteEntities: Entity[]
+  userConfig?: UserConfig
+  currentEntityPermissions?: Permission[]
 }

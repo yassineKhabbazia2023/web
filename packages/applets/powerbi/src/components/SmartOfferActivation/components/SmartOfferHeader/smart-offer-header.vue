@@ -14,7 +14,7 @@
     <h4
       class="h4 margin-left--2"
     >
-      {{ selectedEntity.legalName }}
+      {{ currentEntity.legalName }}
     </h4>
   </div>
 </template>
@@ -27,7 +27,7 @@ import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 const props = defineProps<SmartOfferHeaderProps>()
 
-const entityAvatarColor = computed(() => getAvatarColorFromKey(props.selectedEntity.accountNumber))
+const entityAvatarColor = computed(() => getAvatarColorFromKey(props.currentEntity.accountNumber))
 
 </script>
 

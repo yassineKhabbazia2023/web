@@ -1,12 +1,12 @@
 import { WidgetName } from '@pulse/widgets/enums'
-import { useSelectedEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks'
 
 import { WidgetsService } from './widgets.service'
 
 vi.mock('@pulse/common/managers')
 
-const selectedEntityStoreMock = getStoreMock(useSelectedEntityStore)
+const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 describe('WidgetsService', () => {
   describe('getHomeWidgetNames', () => {
@@ -48,12 +48,12 @@ describe('WidgetsService', () => {
       hasPennylaneOffer,
       expectedWidgets,
     }) => {
-      selectedEntityStoreMock.hasOffer.mockReturnValue(hasPennylaneOffer)
+      currentEntityStoreMock.hasOffer.mockReturnValue(hasPennylaneOffer)
 
       const homeWidgetNames = WidgetsService.getHomeWidgetNames()
 
       expect(homeWidgetNames).toEqual(expectedWidgets)
-      expect(selectedEntityStoreMock.hasOffer).toHaveBeenCalledOnce()
+      expect(currentEntityStoreMock.hasOffer).toHaveBeenCalledOnce()
     })
   })
 })

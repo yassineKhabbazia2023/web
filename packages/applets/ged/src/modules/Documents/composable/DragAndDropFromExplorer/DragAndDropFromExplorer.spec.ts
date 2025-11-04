@@ -9,7 +9,7 @@ import { useDragAndDropFromExplorer } from '.'
 
 let currentServiceName: Ref<DocumentsProps['currentServiceName']>
 let currentService: Ref<DocumentsProps['currentService']>
-let selectedEntity: Ref<DocumentsProps['selectedEntity']>
+let currentEntity: Ref<DocumentsProps['currentEntity']>
 let accountId: Ref<DocumentsProps['accountId']>
 let selectedFolder: Ref<DocumentsProps['selectedFolder']>
 let refreshDocumentsList: () => void
@@ -70,7 +70,7 @@ describe('drag and drop from explorer composable', () => {
   beforeEach(() => {
     currentService = ref('a really cool service')
     currentServiceName = ref('a service name')
-    selectedEntity = ref('An Entity')
+    currentEntity = ref('An Entity')
     accountId = ref(1234)
     selectedFolder = ref(depositFolder)
     refreshDocumentsList = vi.fn()
@@ -84,7 +84,7 @@ describe('drag and drop from explorer composable', () => {
     } = useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
-      selectedEntity,
+      currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
@@ -99,7 +99,7 @@ describe('drag and drop from explorer composable', () => {
     const { handleDragOverFromExplorer, isDropZoneVisible } = useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
-      selectedEntity,
+      currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
@@ -123,7 +123,7 @@ describe('drag and drop from explorer composable', () => {
     const { handleDragLeaveFromExplorer, isDropZoneVisible } = useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
-      selectedEntity,
+      currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
@@ -142,7 +142,7 @@ describe('drag and drop from explorer composable', () => {
     } = useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
-      selectedEntity,
+      currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
@@ -169,7 +169,7 @@ describe('drag and drop from explorer composable', () => {
     const { handleDropFromExplorer, validDroppedFiles } = useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
-      selectedEntity,
+      currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
@@ -195,7 +195,7 @@ describe('drag and drop from explorer composable', () => {
     const { handleDropFromExplorer } = useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
-      selectedEntity,
+      currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
@@ -228,7 +228,7 @@ describe('drag and drop from explorer composable', () => {
     const { handleDropFromExplorer } = useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
-      selectedEntity,
+      currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
@@ -261,7 +261,7 @@ describe('drag and drop from explorer composable', () => {
     const { handleDropFromExplorer } = useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
-      selectedEntity,
+      currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
@@ -317,7 +317,7 @@ describe('drag and drop from explorer composable', () => {
     const { handleDragOverFromExplorer, isDropZoneVisible } = useDragAndDropFromExplorer(
       currentService,
       currentServiceName,
-      selectedEntity,
+      currentEntity,
       accountId,
       selectedFolder,
       refreshDocumentsList,
