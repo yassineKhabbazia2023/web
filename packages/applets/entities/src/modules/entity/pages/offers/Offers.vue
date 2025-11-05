@@ -14,7 +14,7 @@
         data-testid="folder-offer-activate-offers-button"
         @click="handleActivateOffersClick"
       >
-        {{ t('activateOffers') }}
+        {{ t('activateOffer') }}
         <PIcon class="el-button__icon--right" pName="arrowRight" />
       </PButton>
     </PBlockHeader>
@@ -189,7 +189,7 @@ en-US:
   clientHeaderTitle: 'Activated offers'
   collabHeaderSubtitle: 'Manage the offers enabled and activatable for this folder.'
   clientHeaderSubtitle: 'Digital offers activated for this entity.'
-  activateOffers: 'Activate offers'
+  activateOffer: 'Activate an offer'
   offer: 'Offer'
   status: 'Status'
   failedMigrationAdditionalInfos: |
@@ -202,7 +202,7 @@ fr-FR:
   clientHeaderTitle: 'Offres activées'
   collabHeaderSubtitle: 'Gérez les offres activées et activables pour ce dossier'
   clientHeaderSubtitle: 'Les offres digitales activées pour cette entité'
-  activateOffers: 'Activer les offres'
+  activateOffer: 'Activer une offre'
   offer: 'Offre'
   status: 'Statut'
   failedMigrationAdditionalInfos: |

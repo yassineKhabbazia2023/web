@@ -26,7 +26,7 @@ const props = defineProps<OfferActivationStatusProps>()
 const formattedStatus = computed((): ActivationStatus => {
   switch (props.status) {
     case OfferActivationStatus.VALIDATED:
-      return { text: t('validated'), color: 'success', iconName: 'checkCircle' }
+      return { text: t('activated'), color: 'success', iconName: 'checkCircle' }
     case OfferActivationStatus.REJECTED:
       return { text: t('rejected'), color: 'danger', iconName: 'xCircle' }
     case OfferActivationStatus.PENDING_MIGRATION:
@@ -39,7 +39,7 @@ const formattedStatus = computed((): ActivationStatus => {
 })
 
 const pendingMigrationStatus = computed((): ActivationStatus => {
-  const textKey = props.currentUser.isCollab ? 'pendingMigrationCollab' : 'pendingMigrationClient'
+  const textKey = props.currentUser.isCollab ? 'pendingMigrationCollab' : 'pending'
 
   return {
     text: t(textKey),
@@ -51,18 +51,16 @@ const pendingMigrationStatus = computed((): ActivationStatus => {
 
 <i18n lang="yaml">
 en-US:
-  validated: 'Validated'
+  activated: 'Activated'
   rejected: 'Rejected'
-  pending: 'Pending'
-  pendingMigrationClient: 'In the process of activation'
+  pending: 'In the process of activation'
   pendingMigrationCollab: 'In the process of validation'
   failedMigration: 'Failed migration'
 
 fr-FR:
-  validated: 'Validée'
+  activated: 'Activée'
   rejected: 'Rejetée'
-  pending: 'En attente'
-  pendingMigrationClient: 'En cours d’activation'
+  pending: "En cours d'activation"
   pendingMigrationCollab: 'En cours de validation'
   failedMigration: 'Migration échouée'
 </i18n>
