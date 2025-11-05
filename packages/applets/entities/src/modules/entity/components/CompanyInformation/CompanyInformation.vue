@@ -96,7 +96,7 @@
 <script setup lang="ts">
 import { logger } from '@pulse/toolbox'
 import { AKUITEO_URL } from '@pulse/common/constants'
-import { ref, onMounted, useTemplateRef, computed } from 'vue'
+import { ref, onMounted, useTemplateRef, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith } from 'lodash-es'
 import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
@@ -105,6 +105,8 @@ import { type Account } from '@entities/services/account'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
 import type { FormSection } from '@entities/types'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
+import { PENNYLANE_REQUIRED_FIELDS } from './CompanyInformation.const'
+import type { FormInstance } from '@pulse/styleguide/types'
 
 const PFieldSetAccount = PFieldSet<Account>
 
@@ -121,7 +123,8 @@ const emit = defineEmits<{
 const formStructure = ref<FormSection[]>()
 const internalAccount = ref<Account | undefined>()
 const isLoading = ref<boolean>(true)
-const companyFormRef = useTemplateRef('companyForm')
+const companyFormRef = useTemplateRef<FormInstance>('companyForm')
+const areRequiredFieldsValid = ref<boolean>(true)
 
 const handleUpdateAccountModel = (fieldKey: string, fieldValue: any) => {
   if (internalAccount.value === undefined) {
@@ -131,7 +134,7 @@ const handleUpdateAccountModel = (fieldKey: string, fieldValue: any) => {
   emit('input', fieldKey, fieldValue)
 }
 
-onMounted(async () => {
+async function loadCompanyInformation() {
   try {
     internalAccount.value = cloneDeep(props.modelValue)
     if (props.providerName) {
@@ -145,10 +148,44 @@ onMounted(async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+async function validateForm() {
+  // Validate required fields after form is mounted (Pennylane only)
+  await nextTick()
+  await validateRequiredFieldsForPennylane()
+}
+
+onMounted(async () => {
+  await loadCompanyInformation()
+  await validateForm()
 })
 
 function isValid() {
   return companyFormRef.value?.validate() ?? false
+}
+
+async function isValidFields(fields: string[]): Promise<boolean> {
+  if (companyFormRef.value === null) {
+    return false
+  }
+
+  return new Promise((resolve) => {
+    companyFormRef.value!.validateField(fields, (validationResult) => {
+      resolve(validationResult)
+    })
+  })
+}
+
+async function validateRequiredFieldsForPennylane(): Promise<void> {
+  // Only validate for Pennylane offer
+  if (props.offerCode !== SubscriptionOfferCode.PENNYLANE) {
+    areRequiredFieldsValid.value = true
+    return
+  }
+
+  const validationResult = await isValidFields(PENNYLANE_REQUIRED_FIELDS)
+  areRequiredFieldsValid.value = validationResult
 }
 
 const OFFERS_WITHOUT_INFORMATION_NOTE: ReadonlyArray<string> = [
@@ -161,6 +198,7 @@ const shouldDisplayInformationNote = computed(() => {
 
 defineExpose({
   isValid,
+  areRequiredFieldsValid,
 })
 </script>
 

@@ -208,14 +208,20 @@ const isSubmitButton = computed((): boolean => {
 })
 
 const isNextButtonDisabled = computed(() => {
-  const isDisabled = getIsNextButtonDisabled({
+  // Check Pennylane-specific validation on INFORMATION step
+  if (
+    currentStep.value === OffersDrawerStep.INFORMATION &&
+    companyInformationRef.value?.areRequiredFieldsValid === false
+  ) {
+    return true
+  }
+
+  return getIsNextButtonDisabled({
     currentSubscriptionOffer: currentSubscriptionOffer.value,
     currentStep: currentStep.value,
     selectedCollaboratorsWithRoles: selectedCollaboratorsWithRoles.value,
     principalContacts: principalContacts.value,
   })
-
-  return isDisabled
 })
 
 const emit = defineEmits<{

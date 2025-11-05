@@ -8,7 +8,12 @@
         "pDisabled": true,
         "pFieldKey": "accountNumber",
         "pFieldType": "input",
-        "pLabel": "Identifiant"
+        "pLabel": "Identifiant",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir dans le CRM Akuiteo", 
+          "trigger": "change"
+        }]
       },
       {
         "modelValue": "",
@@ -16,7 +21,12 @@
         "pDisabled": true,
         "pFieldKey": "legal.legalName",
         "pFieldType": "input",
-        "pLabel": "Raison sociale"
+        "pLabel": "Raison sociale",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir dans le CRM Akuiteo", 
+          "trigger": "change"
+        }]
       }
     ]
   },
@@ -29,7 +39,12 @@
         "pDisabled": true,
         "pFieldKey": "phone[0].phoneNumber",
         "pFieldType": "input",
-        "pLabel": "Numéro de téléphone "
+        "pLabel": "Numéro de téléphone",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir dans le CRM Akuiteo", 
+          "trigger": "change"
+        }]
       }
     ]
   },
@@ -42,7 +57,12 @@
         "pDisabled": true,
         "pFieldKey": "legal.siren",
         "pFieldType": "input",
-        "pLabel": "SIREN"
+        "pLabel": "SIREN",
+        "pRules": [{ 
+          "required": true, 
+          "message": "Veuillez saisir dans le CRM Akuiteo", 
+          "trigger": "change"
+        }]
       }
     ]
   },
