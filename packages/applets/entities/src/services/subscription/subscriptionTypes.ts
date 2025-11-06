@@ -61,6 +61,7 @@ export interface PostSubscriptionRequest {
   notes: Note[]
   applicant: string
   contactFunctions?: ContactFunction[]
+  planId?: number
 }
 
 export interface SubscriptionContact {

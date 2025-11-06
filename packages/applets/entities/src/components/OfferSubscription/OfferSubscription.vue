@@ -14,17 +14,28 @@
       @select-product="onSelectProduct"
       @deselect-product="onDeselectProduct"
     />
+    <OfferPlanSubscription
+      v-if="subscriptionOffer.plans !== undefined && subscriptionOffer.plans.length > 0"
+      v-model:selected-plan-id="selectedPlanId"
+      :plans="subscriptionOffer.plans"
+      class="margin-bottom--6"
+    />
   </div>
 </template>
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import OfferProviderProducts from './components/offer-provider-products/OfferProviderProducts.vue'
+import OfferPlanSubscription from './components/OfferPlanSubscription/OfferPlanSubscription.vue'
 import type { OfferSubscriptionProps } from './OfferSubscriptionTypes'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+defineProps<OfferSubscriptionProps>()
+
+const selectedPlanId = defineModel<number>('selectedPlanId')
 
 const emit = defineEmits<{
   'select-product': [number, number]
@@ -39,7 +50,6 @@ function onDeselectProduct(offerId: number, productId: number) {
   emit('deselect-product', offerId, productId)
 }
 
-defineProps<OfferSubscriptionProps>()
 </script>
 <i18n lang="yaml">
 en-US:

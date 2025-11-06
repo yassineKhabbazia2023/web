@@ -86,6 +86,7 @@ interface GetPostSubscriptionRequestParams {
   currentSubscriptionOffer: SubscriptionOfferServices | undefined
   selectedProducts: SelectedProduct[]
   notes: Note[]
+  selectedPlanId?: number
 }
 
 export function getFormattedContactFunctions(collaboratorsWithRoles: ContactWithRoles[]) {
@@ -105,6 +106,7 @@ export function getPostSubscriptionRequest({
   currentSubscriptionOffer,
   selectedProducts,
   notes,
+  selectedPlanId,
 }: GetPostSubscriptionRequestParams): PostSubscriptionRequest | undefined {
   if (currentSubscriptionOffer === undefined) {
     return
@@ -130,6 +132,7 @@ export function getPostSubscriptionRequest({
     contactFunctions,
     applicant: userEmail ?? '',
     notes,
+    planId: selectedPlanId,
   }
 }
 

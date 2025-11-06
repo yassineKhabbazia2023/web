@@ -1,12 +1,27 @@
 import type { SubscriptionContact } from '@entities/services/subscription/subscriptionTypes'
 import { ContactType } from '@pulse/common/enums'
 import { SubscriptionPriceType, ProviderName } from '@entities/enums'
-import type { CollaboratorRole, SubscriptionOfferServices, SubscriptionOffer, SubscriptionOfferProduct } from '@entities/types'
+import type { CollaboratorRole, SubscriptionOfferServices, SubscriptionOffer, SubscriptionOfferProduct, OfferPlan } from '@entities/types'
 
 export function getCollaboratorRoleMock(override: Partial<CollaboratorRole> = {}): CollaboratorRole {
   return {
     functionId: 1,
     functionName: 'Expert comptable',
+    ...override,
+  }
+}
+
+/**
+ * Factory function to create mock OfferPlan objects for testing
+ * @param override - Partial OfferPlan properties to override defaults
+ * @returns Mock OfferPlan object
+ */
+export function getOfferPlanMock(override: Partial<OfferPlan> = {}): OfferPlan {
+  return {
+    planId: 1,
+    planCode: 'BASIC',
+    planName: 'Basique',
+    isDefault: false,
     ...override,
   }
 }
@@ -42,6 +57,11 @@ export function getSubscriptionOffersServiceMock(override: Partial<SubscriptionO
     intranetLink: 'test-link',
     functions: [
       getCollaboratorRoleMock(),
+    ],
+    plans: [
+      getOfferPlanMock({ planId: 1, planCode: 'BASIC', planName: 'Basique' }),
+      getOfferPlanMock({ planId: 2, planCode: 'ESSENTIAL', planName: 'Essentiel', isDefault: true }),
+      getOfferPlanMock({ planId: 3, planCode: 'PREMIUM', planName: 'Premium' }),
     ],
     providers: [
       {

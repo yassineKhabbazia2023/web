@@ -44,6 +44,13 @@ export interface CollaboratorRole {
   functionName: string
 }
 
+export interface OfferPlan {
+  planId: number
+  planCode: string
+  planName: string
+  isDefault: boolean
+}
+
 export interface SubscriptionOfferServices extends SubscriptionOffer {
   offerDescription?: string
   offersBookLink?: string
@@ -51,4 +58,5 @@ export interface SubscriptionOfferServices extends SubscriptionOffer {
   intranetLink?: string
   providers: SubscriptionOfferProvider[]
   functions: CollaboratorRole[]
+  plans?: OfferPlan[]
 }

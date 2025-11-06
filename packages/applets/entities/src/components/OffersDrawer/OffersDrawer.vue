@@ -75,6 +75,7 @@
           />
           <OfferSubscription
             v-if="currentStep === OffersDrawerStep.SERVICES"
+            v-model:selectedPlanId="selectedPlanId"
             data-testid="offer"
             :accountId="props.accountId"
             :subscriptionOffer="currentSubscriptionOffer"
@@ -235,6 +236,7 @@ const currentSubscriptionOffer = ref<SubscriptionOfferServices | undefined>()
 const activeOfferCodes = ref<string[]>([])
 const patchValues: PatchValue[] = []
 const selectedProducts = ref<SelectedProduct[]>([])
+const selectedPlanId = ref<number | undefined>()
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const knownCollaborators = ref<Contact[]>([])
 const selectedCollaboratorsWithRoles = ref<ContactWithRoles[]>([])
@@ -382,6 +384,7 @@ async function saveOffer() {
     currentSubscriptionOffer: currentSubscriptionOffer.value,
     selectedProducts: selectedProducts.value,
     notes: notes.value,
+    selectedPlanId: selectedPlanId.value,
   })
   if (postSubscriptionRequest) {
     await createSubscriptionRequest(postSubscriptionRequest)

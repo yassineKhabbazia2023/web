@@ -134,6 +134,7 @@ describe('offersDrawerUtils', () => {
         notes,
         applicant: 'user@email.com',
         contactFunctions: undefined,
+        planId: undefined,
       }
       expect(postSubscriptionRequest).toStrictEqual(
         expectedPostSubscriptionRequest,
@@ -166,6 +167,42 @@ describe('offersDrawerUtils', () => {
         notes,
         applicant: 'user@email.com',
         contactFunctions,
+        planId: undefined,
+      }
+      expect(postSubscriptionRequest).toStrictEqual(
+        expectedPostSubscriptionRequest,
+      )
+    })
+
+    it('should include planId when selectedPlanId is provided', () => {
+      const selectedPlanId = 2
+      const postSubscriptionRequest = getPostSubscriptionRequest({
+        accountId,
+        userEmail,
+        collaboratorsWithRoles: selectedCollaboratorIds,
+        clients,
+        currentSubscriptionOffer,
+        selectedProducts,
+        notes,
+        selectedPlanId,
+      })
+      const collaboratorsIds = collaborators.map(({ id }) => id)
+      const clientsIds = clients.map(({ contactId }) => contactId)
+      const contacts = [...clientsIds, ...collaboratorsIds]
+      const contactFunctions = selectedCollaboratorIds.map(({ contactId }) => ({
+        contactId,
+        functionId: roleIdMock,
+      }))
+
+      const expectedPostSubscriptionRequest: PostSubscriptionRequest = {
+        accountId,
+        offerId: 1,
+        productConfigurations: [1, 2, 3, 4],
+        contacts,
+        notes,
+        applicant: 'user@email.com',
+        contactFunctions,
+        planId: selectedPlanId,
       }
       expect(postSubscriptionRequest).toStrictEqual(
         expectedPostSubscriptionRequest,
