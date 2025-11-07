@@ -2,7 +2,7 @@ import { loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedFavoriteEntities } from '@pulse/common/mocks'
 import type { Entity } from '@pulse/common/types'
 
-import { fetchFavoriteEntities, fetchEntities, DEFAULT_ENTITIES, DEFAULT_FAVORITE_ENTITIES } from '.'
+import { fetchEntities, DEFAULT_ENTITIES } from './entity.service'
 
 const testEntities: Entity[] = getMockedFavoriteEntities()
 
@@ -17,23 +17,6 @@ vi.mock('@pulse/common', () => {
       },
     }),
   }
-})
-
-describe('user favorite entities', () => {
-  it('should return the favorite entities of the current user', async () => {
-    gatewayGetMock.mockResolvedValue({
-      data: testEntities,
-    })
-    const favoriteEntities = await fetchFavoriteEntities()
-    expect(favoriteEntities).toStrictEqual(testEntities)
-  })
-
-  it('should return default value if API call is in error', async () => {
-    gatewayGetMock.mockRejectedValue(new Error('No data received from the API'))
-    const favoriteEntities = await fetchFavoriteEntities()
-
-    expect(favoriteEntities).toStrictEqual(DEFAULT_FAVORITE_ENTITIES)
-  })
 })
 
 describe('user entities', () => {

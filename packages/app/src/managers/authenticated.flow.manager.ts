@@ -5,7 +5,7 @@ import {
   useCurrentEntityStore,
 } from '@pulse/common/stores'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { fetchEntities } from '@app/services/entities'
+import { fetchEntities } from '@app/services/entities/entity.service'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import {
   initProductFruitsAuthenticatedCustomer,

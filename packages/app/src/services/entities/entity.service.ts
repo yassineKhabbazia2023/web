@@ -10,8 +10,6 @@ export const DEFAULT_ENTITIES = {
   totalItems: 0,
 }
 
-export const DEFAULT_FAVORITE_ENTITIES = []
-
 export const fetchEntities = async (pageSize?: number): Promise<QueryResult<Entity>> => {
   try {
     const response = await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/accounts/currentuser`, {
@@ -25,19 +23,5 @@ export const fetchEntities = async (pageSize?: number): Promise<QueryResult<Enti
     logger.error('Error fetching entities :', error)
     // return default result to avoid breaking the app
     return DEFAULT_ENTITIES
-  }
-}
-
-export const fetchFavoriteEntities = async (): Promise<Entity[]> => {
-  try {
-    const response = await commonApi().gateway.get(
-      `${API_PREFIXES.WALLET}/favorites/currentuser`,
-    )
-
-    return response.data
-  } catch (error) {
-    logger.error('Error fetching favorite entities:', error)
-    // return default result to avoid breaking the app
-    return DEFAULT_FAVORITE_ENTITIES
   }
 }

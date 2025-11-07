@@ -12,7 +12,7 @@ import { initProductFruitsAuthenticatedCollab, initProductFruitsAuthenticatedCus
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { fetchUserPermissions } from '@pulse/common/services/permissions'
-import { fetchEntities } from '@app/services/entities'
+import { fetchEntities } from '@app/services/entities/entity.service'
 import { fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
@@ -24,7 +24,7 @@ import { AuthenticatedFlowManager } from './authenticated.flow.manager'
 
 vi.mock('@pulse/common/services/current-user')
 vi.mock('@pulse/common/services/permissions')
-vi.mock('@app/services/entities')
+vi.mock('@app/services/entities/entity.service')
 vi.mock('@pulse/common/services/entities')
 vi.mock('@pulse/common/managers')
 vi.mock('@pulse/common/services/cgu')

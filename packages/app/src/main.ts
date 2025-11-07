@@ -24,7 +24,7 @@ import gigyaPlugin from '@app/plugins/Gigya/gigya.plugin'
 import productFruitsPlugin from '@app/plugins/ProductFruits/productFruits.plugin'
 import hubspotPlugin from '@app/plugins/Hubspot/hubspot.plugin'
 
-import App from './app/App.vue'
+import App from './App.vue'
 import router from './router/app.router'
 import { registerSidebarItems } from './managers/sidebar.registry'
 import { registerWalletTabs } from './managers/wallet.registry'
