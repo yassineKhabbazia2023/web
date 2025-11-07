@@ -17,6 +17,7 @@ const hubSpotStatus: HubSpotState = {
   isActive: false,
   isInitialized: false,
 }
+
 export const openHubspot = () => {
   if (!hubSpotStatus.isInitialized) {
     logger.error('Hubspot Plugin - Hubspot is not initialized')
@@ -54,9 +55,7 @@ export function initHubspot({ onHubspotClose }: InitHubspotParams) {
 }
 
 export default {
-  install(_app: App, {
-    isActive,
-  }: InstallHubSpotParams) {
-    hubSpotStatus.isActive = isActive
+  install(_app: App, options: InstallHubSpotParams) {
+    hubSpotStatus.isActive = options.isActive
   },
 }

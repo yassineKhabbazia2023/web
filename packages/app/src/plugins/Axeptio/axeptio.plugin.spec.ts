@@ -14,17 +14,13 @@ describe('Axeptio Plugin', () => {
     window.axeptioSettings = {}
   })
 
-  it('should install in PROD environment', () => {
-    import.meta.env.PROD = true
-
-    axeptioPlugin.install()
+  it('should install if set as active', () => {
+    axeptioPlugin.install({} as any, { isActive: true })
 
     expect(window.axeptioSettings.clientId).toBeDefined()
   })
-  it('should NOT install in environment other than PROD', () => {
-    import.meta.env.PROD = false
-
-    axeptioPlugin.install()
+  it('should NOT install if NOT set as active', () => {
+    axeptioPlugin.install({} as any, { isActive: false })
 
     expect(window.axeptioSettings.clientId).toBeUndefined()
   })

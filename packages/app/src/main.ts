@@ -50,13 +50,9 @@ const isProd = import.meta.env.PROD
 const app = createApp(App)
   // install plugins
   .use(gigyaPlugin)
-  .use(axeptioPlugin)
-  .use(productFruitsPlugin, {
-    isActive: isProd,
-  })
-  .use(hubspotPlugin, {
-    isActive: isProd,
-  })
+  .use(axeptioPlugin, { isActive: isProd })
+  .use(productFruitsPlugin, { isActive: isProd })
+  .use(hubspotPlugin, { isActive: isProd })
   // install internal libraries
   .use(commonLibrary)
   .use(styleguideLibrary, {

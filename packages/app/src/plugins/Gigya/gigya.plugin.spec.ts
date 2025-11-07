@@ -26,7 +26,7 @@ describe('Gigya Plugin', () => {
     envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'true'
     envVarsMock.VITE_GIGYA_KEY = 'test-gigya-key'
 
-    gigyaPlugin.install()
+    gigyaPlugin.install({} as any)
 
     const gigyaScript = findGigyaScript(document)
     expect(gigyaScript).not.toBeNull()
@@ -35,7 +35,7 @@ describe('Gigya Plugin', () => {
     envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
     envVarsMock.VITE_GIGYA_KEY = 'test-gigya-key'
 
-    gigyaPlugin.install()
+    gigyaPlugin.install({} as any)
 
     const gigyaScript = findGigyaScript(document)
     expect(gigyaScript).toBeNull()
@@ -44,7 +44,7 @@ describe('Gigya Plugin', () => {
     envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'true'
     envVarsMock.VITE_GIGYA_KEY = ''
 
-    gigyaPlugin.install()
+    gigyaPlugin.install({} as any)
 
     const gigyaScript = findGigyaScript(document)
     expect(gigyaScript).toBeNull()

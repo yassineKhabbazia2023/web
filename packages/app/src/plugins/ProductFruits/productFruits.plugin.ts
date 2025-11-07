@@ -1,6 +1,6 @@
 import { type App } from 'vue'
 import { logger } from '@pulse/toolbox'
-import { getBrowserName } from '@app/helper'
+import { getBrowserName } from '@pulse/toolbox/utils/browser'
 import { productFruits } from 'product-fruits'
 import dayjs from 'dayjs'
 import type {
@@ -199,10 +199,8 @@ export function hideProductFruits() {
 }
 
 export default {
-  install(_app: App, {
-    isActive,
-  }: InstallProductFruitsParams) {
-    productFruitStatus.isActive = isActive
+  install(_app: App, options: InstallProductFruitsParams) {
+    productFruitStatus.isActive = options.isActive
     productFruitStatus.isInitialized = false
   },
 }

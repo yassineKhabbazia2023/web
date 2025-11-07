@@ -10,6 +10,7 @@
     "./types": "./src/types.ts",
     "./mocks": "./src/mocks.ts",
     "./utils/array": "./src/utils/array/array.utils.ts",
+    "./utils/browser": "./src/utils/browser/browser.utils.ts",
     "./utils/object": "./src/utils/object/object.utils.ts",
     "./utils/dates": "./src/utils/dates/dates.utils.ts",
     "./utils/validator": "./src/utils/validators/index.ts",
