@@ -177,6 +177,7 @@ import { ContactType, APICallStatus } from '@pulse/common/enums'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { ContactWithRoles } from '@entities/modules/entity/components/ManageCollaborators/ManageCollaboratorsTypes'
 import { getIsNextButtonDisabled, updateAccountOnInput } from './OffersDrawer.utils'
+import { OfferPlanManager } from '../OfferSubscription/components/OfferPlanSubscription/offer-plan.manager'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -401,6 +402,12 @@ async function validateOffer() {
       logger.error(error)
     }
   }
+
+  const planName = OfferPlanManager.getPlanName(
+    selectedPlanId.value,
+    currentSubscriptionOffer.value?.plans,
+  )
+
   try {
     await saveOffer()
     saveOfferApiCallStatus.value = APICallStatus.SUCCESS
@@ -424,6 +431,7 @@ async function validateOffer() {
       AmplitudeService.track('Subscription Started', {
         subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
         subscription_start_result: 'succeeded',
+        subscription_start_plan: planName,
       })
     }
   } catch (error) {
@@ -448,6 +456,7 @@ async function validateOffer() {
       AmplitudeService.track('Subscription Started', {
         subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
         subscription_start_result: 'failed',
+        subscription_start_plan: planName,
       })
     }
     logger.error(error)

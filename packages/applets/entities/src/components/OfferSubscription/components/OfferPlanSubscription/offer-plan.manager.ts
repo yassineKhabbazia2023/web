@@ -24,4 +24,34 @@ export class OfferPlanManager {
     // Fallback: select first plan if no default exists
     return plans[0].planId
   }
+
+  /**
+   * Finds the selected plan from an array of plans
+   *
+   * @param plans - Array of available offer plans (can be undefined for offers without plans)
+   * @returns The selected plan (where isSelected === true), or undefined if no plan is selected or plans is empty/undefined
+   */
+  static getSelectedPlan(plans: OfferPlan[] | undefined): OfferPlan | undefined {
+    if (plans === undefined || plans.length === 0) {
+      return undefined
+    }
+
+    return plans.find(plan => plan.isSelected === true)
+  }
+
+  /**
+   * Retrieves the plan name for a given plan ID
+   *
+   * @param planId - The plan ID to look up
+   * @param plans - Array of available offer plans (can be undefined for offers without plans)
+   * @returns The plan name if found, or undefined if not found or planId is undefined
+   */
+  static getPlanName(planId: number | undefined, plans: OfferPlan[] | undefined): string | undefined {
+    if (planId === undefined || plans === undefined || plans.length === 0) {
+      return undefined
+    }
+
+    const plan = plans.find(p => p.planId === planId)
+    return plan?.planName
+  }
 }

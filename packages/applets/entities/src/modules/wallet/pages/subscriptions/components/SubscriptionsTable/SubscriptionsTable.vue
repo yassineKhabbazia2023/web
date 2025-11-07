@@ -138,6 +138,7 @@ import SubscriptionsFilter from './components/SubscriptionsFilter'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { logger } from '@pulse/toolbox'
+import { OfferPlanManager } from '@entities/components/OfferSubscription/components/OfferPlanSubscription/offer-plan.manager'
 
 const { t, d } = useI18n({
   inheritLocale: true,
@@ -183,6 +184,8 @@ const formatStatus = (status: string) => {
 }
 
 const validateSubscription = async (subscriptionId: number, offer: SubscriptionRequest['offer']) => {
+  const selectedPlan = OfferPlanManager.getSelectedPlan(offer.plans)
+
   isActionInProgress.value = true
   clickedRow.value = subscriptionId
   try {
@@ -191,6 +194,7 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
       subscription_complete_offer_name: offer.offerCode,
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'succeeded',
+      subscription_complete_plan: selectedPlan?.planName,
     })
     AmplitudeService.track('Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',
@@ -204,6 +208,7 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
       subscription_complete_offer_name: offer.offerCode,
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'failed',
+      subscription_complete_plan: selectedPlan?.planName,
     })
     AmplitudeService.track('Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',

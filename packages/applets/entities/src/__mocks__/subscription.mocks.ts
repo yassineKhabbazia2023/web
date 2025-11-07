@@ -21,6 +21,22 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
       offerId: 5,
       offerCode: 'MEG Smart',
       offerLabel: 'Modules MEG : facturation et caisse',
+      plans: [
+        {
+          planId: 1,
+          planCode: 'MEG_BASIC',
+          planName: 'MEG Basic',
+          isDefault: true,
+          isSelected: false,
+        },
+        {
+          planId: 2,
+          planCode: 'MEG_PREMIUM',
+          planName: 'MEG Premium',
+          isDefault: false,
+          isSelected: true,
+        },
+      ],
     },
     clients: [
       {

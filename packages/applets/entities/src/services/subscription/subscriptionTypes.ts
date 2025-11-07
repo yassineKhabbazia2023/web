@@ -1,4 +1,4 @@
-import type { SubscriptionOfferServices } from '@entities/types'
+import type { OfferPlan, SubscriptionOfferServices } from '@entities/types'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ContactType } from '@pulse/common/enums'
 
@@ -21,6 +21,7 @@ export interface SubscriptionRequest {
     offerId: number
     offerCode: string
     offerLabel: string
+    plans?: OfferPlan[]
   }
   clients: Contact[]
   subscriptionDate: string

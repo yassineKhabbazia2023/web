@@ -48,7 +48,8 @@ export interface OfferPlan {
   planId: number
   planCode: string
   planName: string
-  isDefault: boolean
+  isDefault?: boolean
+  isSelected?: boolean
 }
 
 export interface SubscriptionOfferServices extends SubscriptionOffer {

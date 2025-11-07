@@ -142,6 +142,7 @@ describe('subscriptionsTable', () => {
       subscription_complete_offer_name: offer.offerCode,
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'succeeded',
+      subscription_complete_plan: 'MEG Premium',
     })
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',
@@ -166,6 +167,7 @@ describe('subscriptionsTable', () => {
       subscription_complete_offer_name: offer.offerCode,
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'failed',
+      subscription_complete_plan: 'MEG Premium',
     })
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',
