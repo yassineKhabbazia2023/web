@@ -3,10 +3,10 @@
 </template>
 
 <script lang="ts" setup>
-import { onBeforeUnmount } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import { AnonymousFlowManager } from '@app/managers/anonymous.flow.manager'
 
-onBeforeUnmount(() => {
+onBeforeRouteLeave(() => {
   AnonymousFlowManager.exitAnonymousFlow()
 })
 </script>

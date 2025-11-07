@@ -4,7 +4,8 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, onBeforeUnmount, computed } from 'vue'
+import { onMounted, computed } from 'vue'
+import { onBeforeRouteLeave } from 'vue-router'
 import { AuthenticatedFlowManager } from '@app/managers/authenticated.flow.manager'
 import FullPageLoader from '@app/components/FullPageLoader/FullPageLoader.vue'
 import { useLoadingStore } from '@pulse/common/stores'
@@ -19,7 +20,7 @@ onMounted(() => {
   loadingStore.stopLoading()
 })
 
-onBeforeUnmount(() => {
+onBeforeRouteLeave(() => {
   AuthenticatedFlowManager.exitAuthenticatedFlow()
 })
 </script>
