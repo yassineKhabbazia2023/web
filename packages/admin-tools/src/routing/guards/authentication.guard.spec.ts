@@ -1,8 +1,11 @@
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { AdminMsalService } from '@admin-tools/services/admin-msal/admin-msal.service'
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
 import { AdminRouteNames } from '@admin-tools/constants/admin-tools-route-names.enum'
 
 import { authenticationGuard } from './authentication.guard'
+
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const authenticatedRoot: any = { name: AdminRouteNames.AUTHENTICATED }
 const fromRouteMock: any = { name: AdminRouteNames.ROOT }

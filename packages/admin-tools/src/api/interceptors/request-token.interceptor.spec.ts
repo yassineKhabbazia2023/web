@@ -1,7 +1,9 @@
 import type { InternalAxiosRequestConfig } from 'axios'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { requestTokenInterceptor } from './request-token.interceptor'
 import { AdminMsalService } from '@admin-tools/services/admin-msal/admin-msal.service'
 
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@admin-tools/services/admin-msal/admin-msal.service')
 
 describe('requestTokenInterceptor', () => {

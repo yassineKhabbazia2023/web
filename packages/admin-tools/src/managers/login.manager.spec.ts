@@ -1,5 +1,8 @@
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { LoginManager } from './login.manager'
 import { AdminMsalService } from '@admin-tools/services/admin-msal/admin-msal.service'
+
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 vi.mock('@azure/msal-browser', () => ({
   PublicClientApplication: vi.fn(),

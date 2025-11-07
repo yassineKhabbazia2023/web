@@ -5,17 +5,11 @@ import {
   VITE_MSAL_POST_LOGOUT_REDIRECT_URI,
   VITE_MSAL_AUTHORITY,
 } from 'env-vars'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { AdminMsalService } from './admin-msal.service'
 
 vi.mock('@azure/msal-browser')
-vi.mock('@pulse/core', () => ({
-  logger: {
-    error: vi.fn(),
-    warn: vi.fn(),
-    info: vi.fn(),
-    debug: vi.fn(),
-  },
-}))
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const mockedPublicClientApplication = vi.mocked(PublicClientApplication)
 

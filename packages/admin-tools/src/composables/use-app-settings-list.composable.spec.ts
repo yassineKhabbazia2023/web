@@ -1,9 +1,11 @@
 import { nextTick } from 'vue'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { useAppSettingsList } from './use-app-settings-list.composable'
 import { AppSettingsListService } from '@admin-tools/services/app-settings-list/app-settings-list.service'
 import { displayNotification } from '@pulse/styleguide'
 import { FilterCode } from '@admin-tools/types/app-settings-list.type'
 
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@admin-tools/services/app-settings-list/app-settings-list.service')
 vi.mock('@pulse/styleguide', () => ({
   displayNotification: vi.fn(),
