@@ -55,6 +55,7 @@ window.EnvVars = envVars
 | VITE_MANDATE_REDIRECTION_TOOL_ACTIVATED | Feature flag de la fonctionnalité Mandate Redirection Tool
 | VITE_PASSWORD_RESET_MAX_ATTEMPTS | Nombre maximal de tentatives de réinitialisation du mot de passe |
 | VITE_PENNYLANE_COLLAB_SSO_URL | URL de connexion SSO Pennylane pour les collaborateurs |
+| VITE_PENNYLANE_PRICING_TABLE_URL | URL de l'image de la grille tarifaire Pennylane affichée lors de l'activation d'offre |
 | VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY | Clé du workspace ProductFruit Collab anonyme (login collab) |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT | Clé du workspace ProductFruit Client anonyme (login client et maintenance) |
