@@ -1,11 +1,14 @@
 import { nextTick } from 'vue'
 import { shallowMount } from '@vue/test-utils'
 import type { AccountFiltersDrawerProps } from './account-filters-drawer.types'
+import { useUserStore } from '@pulse/common/stores'
 
 import AccountFiltersDrawer from './AccountFiltersDrawer.vue'
 import { AccountFilters } from '@entities/types'
+import { getStoreMock } from '@pulse/common/mocks'
 
 const loggerErrorSpy = vi.hoisted(() => vi.fn())
+const userStoreMock = getStoreMock(useUserStore)
 
 vi.mock('@pulse/toolbox', () => ({
   logger: {
@@ -36,6 +39,7 @@ const stubs = {
 }
 
 function createWrapper(props: Partial<AccountFiltersDrawerProps> = {}) {
+  userStoreMock.isCollab = true
   const defaultProps: AccountFiltersDrawerProps = {
     modelValue: true,
     hasActiveFilters: false,

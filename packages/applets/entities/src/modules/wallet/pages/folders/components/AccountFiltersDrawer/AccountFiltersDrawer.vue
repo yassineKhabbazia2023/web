@@ -23,7 +23,7 @@
         />
       </PFormItem>
       <!-- Customer Relationship Switch -->
-      <PFormItem>
+      <PFormItem v-if="isCollab === true">
         <PSwitch
           v-model="internalFilters.isCustomerRelationFilter"
           :pActiveText="t('customerRelationship')"
@@ -60,7 +60,9 @@ import { useI18n } from 'vue-i18n'
 import { AppColors } from '@pulse/styleguide'
 import { PDrawer, PForm, PFormItem, PButton, PSwitch } from '@pulse/styleguide/components'
 import type { AccountFiltersDrawerProps } from './account-filters-drawer.types'
+import { useUserStore } from '@pulse/common/stores'
 import type { AccountFilters } from '@entities/types'
+import { storeToRefs } from 'pinia'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -72,6 +74,9 @@ const emit = defineEmits<{
   'apply-filters': [AccountFilters]
   'reset-filters': []
 }>()
+
+const userStore = useUserStore()
+const { isCollab } = storeToRefs(userStore)
 
 // #region Actions Related to Filters
 const internalFilters = ref<AccountFilters>({
