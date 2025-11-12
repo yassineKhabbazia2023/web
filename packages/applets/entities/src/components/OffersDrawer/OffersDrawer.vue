@@ -303,6 +303,7 @@ const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
       notes.value = []
     }
   }
+  selectedPlanId.value = undefined
   selectedProducts.value = getInitialSelectedProducts(
     currentSubscriptionOffer.value,
   )

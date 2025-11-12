@@ -2,6 +2,7 @@
   <div class="p-radio-card">
     <PRadio
       :pLabel="pLabel"
+      :pDisabled="pDisabled"
       class="
         p-radio-card__content
         padding--4
@@ -16,7 +17,7 @@
         "
       >
         <div>
-          <p class="h4 text-color--black-rock-900">
+          <p :class="['h4', titleColorClass]">
             {{ pTitle }}
           </p>
           <p
@@ -40,10 +41,15 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import PRadio from '../../atoms/PRadio'
 import type { PRadioCardProps } from './PRadioCardTypes'
 
-defineProps<PRadioCardProps>()
+const props = defineProps<PRadioCardProps>()
+
+const titleColorClass = computed(() =>
+  props.pDisabled === true ? 'text-color--gray-300' : 'text-color--black-rock-900',
+)
 </script>
 
 <style lang="scss">

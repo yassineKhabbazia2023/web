@@ -8,9 +8,10 @@
         class="font-semibold"
         data-testid="offer-plan-subscription-note"
       >
-        {{ t('planSelectionNote') }}
+        {{ headerText }}
       </p>
       <PButton
+        v-if="isRecap === false"
         pType="tertiary"
         class="text-underline text-color--persian-500"
         data-testid="offer-plan-subscription-view-pricing-button"
@@ -22,6 +23,7 @@
 
     <PRadioGroup
       v-model="selectedPlanId"
+      :disabled="isRecap"
       data-testid="offer-plan-subscription-radio-group"
     >
       <PRadioCard
@@ -29,6 +31,7 @@
         :key="planId"
         :pLabel="planId"
         :pTitle="planName"
+        :pDisabled="isRecap"
         data-testid="offer-plan-subscription-radio-card"
       />
     </PRadioGroup>
@@ -67,7 +70,9 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const props = defineProps<OfferPlanSubscriptionProps>()
+const props = withDefaults(defineProps<OfferPlanSubscriptionProps>(), {
+  isRecap: false,
+})
 
 const selectedPlanId = defineModel<number>('selectedPlanId')
 const isPricingTableDialogVisible = ref(false)
@@ -77,6 +82,10 @@ const sanitizedPricingTableUrl = computed(() => sanitizeUrl(VITE_PENNYLANE_PRICI
 function openDialog() {
   isPricingTableDialogVisible.value = true
 }
+
+const headerText = computed(() =>
+  props.isRecap === true ? t('planSelectionRecap') : t('planSelectionNote'),
+)
 
 function initializeSelectedPlan() {
   // Early return if already selected
@@ -105,7 +114,9 @@ onMounted(() => {
 en-US:
   planSelectionNote: 'Select the plan to activate for this customer'
   viewPricingTable: 'View pricing table'
+  planSelectionRecap: 'Activated plan :'
 fr-FR:
   planSelectionNote: "Sélectionnez le plan à activer pour ce client"
   viewPricingTable: "Voir la grille tarifaire"
+  planSelectionRecap: "Plan activé :"
 </i18n>
