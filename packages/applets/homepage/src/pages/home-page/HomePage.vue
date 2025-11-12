@@ -10,13 +10,8 @@
       :pAccountNumber="currentEntity.accountNumber"
       class="margin-bottom--4"
     />
-    <div v-if="FeatureFlagManager.isHomepageWidgetsActivated() === true">
-      <TopBar />
-      <WidgetsHome />
-    </div>
-    <div v-else-if="FeatureFlagManager.isHomepageWidgetsActivated() === false">
-      <LegacyHome />
-    </div>
+    <TopBar />
+    <WidgetsHome />
   </div>
 </template>
 
@@ -25,14 +20,12 @@ import { onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useCurrentEntityStore } from '@pulse/common/stores'
-import { FeatureFlagManager } from '@pulse/common/managers'
 import { PEntityHeader } from '@pulse/styleguide/components'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
 
 import TopBar from './TopBar/top-bar.vue'
 import WidgetsHome from './WidgetsHome.vue'
-import LegacyHome from './LegacyHome.vue'
 
 const currentEntityStore = useCurrentEntityStore()
 const { currentEntity } = storeToRefs(currentEntityStore)

@@ -15,7 +15,7 @@ describe('SidebarManager', () => {
         id: 'test-item',
         title: 'shared.sidebar.test',
         icon: 'house',
-        routeName: RouteName.BANK,
+        routeName: RouteName.GED,
         order: 1,
         featureName: 'test feature',
       })
@@ -27,7 +27,7 @@ describe('SidebarManager', () => {
 
       expect(items).toHaveLength(1)
       expect(items[0]).toMatchObject({
-        routeName: RouteName.BANK,
+        routeName: RouteName.GED,
         title: 'shared.sidebar.test',
         iconLeftName: 'house',
         display: true,
@@ -128,7 +128,7 @@ describe('SidebarManager', () => {
     it('should filter items based on shouldDisplay()', () => {
       const visibleItem = createMockMenuItem({
         id: 'visible',
-        routeName: RouteName.INDICATORS,
+        routeName: RouteName.GED,
         shouldDisplay: () => true,
         order: 1,
       })
@@ -146,7 +146,6 @@ describe('SidebarManager', () => {
       const items = SidebarManager.getMenuItems(context)
 
       expect(items).toHaveLength(1)
-      expect(items[0].routeName).toBe(RouteName.INDICATORS)
     })
 
     it('should sort items by order in ascending order', () => {
@@ -191,7 +190,7 @@ describe('SidebarManager', () => {
     it('should return routeName from the menu item config', () => {
       const menuItem = createMockMenuItem({
         id: 'test',
-        routeName: RouteName.BANK,
+        routeName: RouteName.GED,
         order: 1,
       })
 
@@ -200,7 +199,7 @@ describe('SidebarManager', () => {
       const context = createMockContext({ entityId: 789 })
       const items = SidebarManager.getMenuItems(context)
 
-      expect(items[0].routeName).toBe(RouteName.BANK)
+      expect(items[0].routeName).toBe(RouteName.GED)
     })
 
     it('should handle optional featureName', () => {

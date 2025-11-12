@@ -63,24 +63,6 @@ export function registerSidebarItems() {
   })
 
   SidebarManager.register({
-    id: 'bank',
-    title: 'shared.sidebar.bank',
-    icon: 'piggyBank',
-    routeName: RouteName.BANK,
-    shouldDisplay: (context) => context.permissions.hasBank,
-    order: 6,
-  })
-
-  SidebarManager.register({
-    id: 'indicators',
-    title: 'shared.sidebar.indicators',
-    icon: 'speedometer2',
-    routeName: RouteName.INDICATORS,
-    shouldDisplay: (context) => context.permissions.hasIndicators,
-    order: 7,
-  })
-
-  SidebarManager.register({
     id: 'apps',
     title: 'shared.sidebar.apps',
     icon: 'grid',

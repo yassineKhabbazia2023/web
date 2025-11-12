@@ -116,8 +116,6 @@ const menuContext = computed<MenuContext>(() => {
       hasPennylaneAccountingGedLegacy: PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true,
       hasSocialManagementV2: PennylanePermissionsManager.hasSocialManagementV2() === true,
       hasGed: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.GED) === true,
-      hasBank: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.BANK),
-      hasIndicators: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.INDICATORS),
       hasApps: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.APPS),
       hasUsers: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.USERS),
       hasCollaborators: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.COLLABORATORS),

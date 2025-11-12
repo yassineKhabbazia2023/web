@@ -38,8 +38,6 @@ export const APP_ROUTES = {
     },
     pennylaneSocialManagement: { path: 'gestion-sociale', name: RouteName.PENNYLANE_SOCIAL_MANAGEMENT },
     launcher: { path: 'launcher', name: RouteName.LAUNCHER },
-    bank: { path: 'banque', name: RouteName.BANK },
-    indicators: { path: 'indicateurs', name: RouteName.INDICATORS },
   },
   wallet: {
     root: { path: 'portefeuille', name: RouteName.WALLET },

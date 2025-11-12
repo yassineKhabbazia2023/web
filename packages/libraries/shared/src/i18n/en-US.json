@@ -7,7 +7,6 @@
       "documents": "Documents",
       "apps": "Applications",
       "bank": "Bank",
-      "indicators": "Indicators",
       "biReports": "BI reports",
       "pennylaneAccounting": "Accounting",
       "pennylaneSocialManagement": "Social management",
@@ -15,12 +14,6 @@
       "close": "Close",
       "favorites": "Favorites",
       "globalView": "Global view"
-    },
-    "pages": {
-      "workInProgress": {
-        "title": "This functionality is no longer available",
-        "description": "We are constantly working to improve your platform and add new features that meet your needs. We will keep you informed of the new features to come!"
-      }
     }
   }
 }

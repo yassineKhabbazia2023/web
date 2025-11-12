@@ -41,10 +41,6 @@ export const ACCOUNT_PERMISSIONS: Record<string, Permission[]> = {
     CollaboratorPermission.MEG,
     CollaboratorPermission.ACCEDER_LANCEUR_PENNYLANE,
   ],
-  BANK: [
-    CustomerPermission.ACCEDER_DONNEES_BANCAIRES,
-    CollaboratorPermission.ACCEDER_DONNEES_BANCAIRES,
-  ],
   COLLABORATORS: [
     CustomerPermission.CONSULTER_UTILISATEURS,
     CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS,
@@ -65,10 +61,6 @@ export const ACCOUNT_PERMISSIONS: Record<string, Permission[]> = {
   ],
   PENNYLANE_ACCOUNTING_GED_V2: [
     CustomerPermission.ACCEDER_DOCUMENTS_PENNYLANE,
-  ],
-  INDICATORS: [
-    CustomerPermission.ACCEDER_INDICATEURS,
-    CollaboratorPermission.ACCEDER_INDICATEURS,
   ],
   INFORMATION: [
     CustomerPermission.ACCEDER_INFORMATIONS_ENTREPRISE,

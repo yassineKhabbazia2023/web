@@ -31,8 +31,6 @@ export interface MenuContext {
     hasPennylaneAccountingGedLegacy: boolean
     hasSocialManagementV2: boolean
     hasGed: boolean
-    hasBank: boolean
-    hasIndicators: boolean
     hasApps: boolean
     hasUsers: boolean
     hasCollaborators: boolean

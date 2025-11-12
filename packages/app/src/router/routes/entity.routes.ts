@@ -48,24 +48,6 @@ export const entityRoutes = [
         },
         component: () => import('@pulse/launcher/pages').then(pages => pages.Launcher),
       },
-      // BANK (WIP)
-      {
-        path: APP_ROUTES.entity.bank.path,
-        name: APP_ROUTES.entity.bank.name,
-        component: () => import('@pulse/shared/pages').then(pages => pages.WorkInProgress),
-        meta: {
-          [LAYOUT_NO_PADDING_META]: true,
-        },
-      },
-      // INDICATORS (WIP)
-      {
-        path: APP_ROUTES.entity.indicators.path,
-        name: APP_ROUTES.entity.indicators.name,
-        component: () => import('@pulse/shared/pages').then(pages => pages.WorkInProgress),
-        meta: {
-          [LAYOUT_NO_PADDING_META]: true,
-        },
-      },
     ],
   },
 ] as RouteRecordRaw[]

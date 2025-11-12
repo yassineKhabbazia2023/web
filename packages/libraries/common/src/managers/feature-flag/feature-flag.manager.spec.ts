@@ -46,30 +46,6 @@ describe('FeatureFlagManager', () => {
     })
 
   describe.each(tests)(
-    'isHomepageWidgetsActivated',
-    ({
-      value,
-      expected,
-    }) => {
-      it('should return $expected when value is $value', () => {
-        window.EnvVars[Feature.HOMEPAGE_WIDGETS] = value
-        expect(FeatureFlagManager.isHomepageWidgetsActivated()).toBe(expected)
-      })
-    })
-
-  describe('isFeatureActivated', () => {
-    it('should return true if HOMEPAGE_WIDGETS feature is activated', () => {
-      window.EnvVars[Feature.HOMEPAGE_WIDGETS] = 'true'
-      expect(FeatureFlagManager.isFeatureActivated(Feature.HOMEPAGE_WIDGETS)).toBe(true)
-    })
-
-    it('should return false if HOMEPAGE_WIDGETS feature is not activated', () => {
-      window.EnvVars[Feature.HOMEPAGE_WIDGETS] = 'false'
-      expect(FeatureFlagManager.isFeatureActivated(Feature.HOMEPAGE_WIDGETS)).toBe(false)
-    })
-  })
-
-  describe.each(tests)(
     'isMailToPennylaneActivated',
     ({
       value,

@@ -5,8 +5,6 @@ import { registerSidebarItems } from './sidebar.registry'
 // Items that are always available when user has the basic permission
 const BASIC_ITEMS = [
   'bi-reports',
-  'bank',
-  'indicators',
 ]
 
 // Document management items (mutually exclusive based on configuration)
@@ -24,9 +22,9 @@ describe('registerSidebarItems', () => {
     registerSidebarItems()
   })
 
-  it('should add eight sidebar items', () => {
+  it('should add six sidebar items', () => {
     // @ts-expect-error - Accessing private static field for test
-    expect(SidebarManager.menuItems.size).toBe(8)
+    expect(SidebarManager.menuItems.size).toBe(6)
   })
 
   it.each([
@@ -35,8 +33,6 @@ describe('registerSidebarItems', () => {
     { itemKey: 'pennylane-accounting-v2', expectedRouteName: RouteName.PENNYLANE_GED_V2 },
     { itemKey: 'pennylane-accounting-legacy', expectedRouteName: RouteName.PENNYLANE_GED_LEGACY },
     { itemKey: 'social-management', expectedRouteName: RouteName.PENNYLANE_SOCIAL_MANAGEMENT },
-    { itemKey: 'bank', expectedRouteName: RouteName.BANK },
-    { itemKey: 'indicators', expectedRouteName: RouteName.INDICATORS },
     { itemKey: 'apps', expectedRouteName: RouteName.LAUNCHER },
   ])('should register $itemKey sidebar item with correct routeName', ({ itemKey, expectedRouteName }) => {
     const config = SidebarManager.getMenuItem(itemKey)
@@ -51,8 +47,6 @@ describe('registerSidebarItems', () => {
         hasGed: true,
         hasPennylaneAccounting: false,
         hasSocialManagementV2: false,
-        hasBank: true,
-        hasIndicators: true,
       },
     }
 
@@ -60,8 +54,6 @@ describe('registerSidebarItems', () => {
       const visibleItems = [
         'bi-reports',
         'documents-legacy',
-        'bank',
-        'indicators',
       ]
 
       visibleItems.forEach(itemKey => {
@@ -92,8 +84,6 @@ describe('registerSidebarItems', () => {
         hasPennylaneAccounting: true,
         hasPennylaneAccountingGedV2: true,
         hasSocialManagementV2: false,
-        hasBank: true,
-        hasIndicators: true,
       },
     }
 
@@ -101,8 +91,6 @@ describe('registerSidebarItems', () => {
       const visibleItems = [
         'bi-reports',
         'pennylane-accounting-v2',
-        'bank',
-        'indicators',
       ]
 
       visibleItems.forEach(itemKey => {
@@ -134,8 +122,6 @@ describe('registerSidebarItems', () => {
         hasPennylaneAccountingGedV2: false,
         hasPennylaneAccountingGedLegacy: true,
         hasSocialManagementV2: false,
-        hasBank: true,
-        hasIndicators: true,
       },
     }
 
@@ -143,8 +129,6 @@ describe('registerSidebarItems', () => {
       const visibleItems = [
         'bi-reports',
         'pennylane-accounting-legacy',
-        'bank',
-        'indicators',
       ]
 
       visibleItems.forEach(itemKey => {
@@ -174,8 +158,6 @@ describe('registerSidebarItems', () => {
         hasGed: true,
         hasPennylaneAccounting: false,
         hasSocialManagementV2: true,
-        hasBank: true,
-        hasIndicators: true,
       },
     }
 
@@ -183,8 +165,6 @@ describe('registerSidebarItems', () => {
       const visibleItems = [
         'bi-reports',
         'social-management',
-        'bank',
-        'indicators',
       ]
 
       visibleItems.forEach(itemKey => {
@@ -214,8 +194,6 @@ describe('registerSidebarItems', () => {
         hasGed: false,
         hasPennylaneAccounting: false,
         hasSocialManagementV2: false,
-        hasBank: false,
-        hasIndicators: false,
       },
     }
 
