@@ -2,24 +2,24 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useLoadingStore = defineStore('loading', () => {
-  const isLoading = ref(false)
+  const isGlobalLoading = ref(false)
 
-  function startLoading() {
-    isLoading.value = true
+  function startGlobalLoading() {
+    isGlobalLoading.value = true
   }
 
-  function stopLoading() {
-    isLoading.value = false
+  function stopGlobalLoading() {
+    isGlobalLoading.value = false
   }
 
   function reset() {
-    isLoading.value = false
+    isGlobalLoading.value = false
   }
 
   return {
-    isLoading,
-    startLoading,
-    stopLoading,
+    isGlobalLoading,
+    startGlobalLoading,
+    stopGlobalLoading,
     reset,
   }
 })

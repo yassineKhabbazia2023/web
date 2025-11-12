@@ -18,7 +18,7 @@ export const authenticatedRoutes: RouteRecordRaw[] = [
     },
     beforeEnter: async (to, _from, next) => {
       const loadingStore = useLoadingStore()
-      loadingStore.startLoading() // will stop in Authenticated.root.vue
+      loadingStore.startGlobalLoading() // will stop in Authenticated.root.vue
 
       try {
         // Initialize authenticated flow (stores, third parties, entities)
@@ -36,7 +36,7 @@ export const authenticatedRoutes: RouteRecordRaw[] = [
       } catch (error) {
         logger.error('Error while entering authenticated flow', error)
         // Stop loading on error
-        loadingStore.stopLoading()
+        loadingStore.stopGlobalLoading()
         //  and continue anyway (graceful degradation)
         return next()
       }

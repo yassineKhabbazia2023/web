@@ -4,7 +4,7 @@
       flex
       flex--align-items-center
       flex--justify-content-center
-      height--100
+      height--100vh
     "
   >
     <PLoader pType="primary" size="80" />

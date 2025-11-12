@@ -7,67 +7,67 @@ describe('useLoadingStore', () => {
   })
 
   describe('initial state', () => {
-    it('should have isLoading set to false initially', () => {
+    it('should have isGlobalLoading set to false initially', () => {
       const store = useLoadingStore()
 
-      expect(store.isLoading).toBe(false)
+      expect(store.isGlobalLoading).toBe(false)
     })
   })
 
-  describe('startLoading', () => {
-    it('should set isLoading to true', () => {
+  describe('startGlobalLoading', () => {
+    it('should set isGlobalLoading to true', () => {
       const store = useLoadingStore()
 
-      store.startLoading()
+      store.startGlobalLoading()
 
-      expect(store.isLoading).toBe(true)
+      expect(store.isGlobalLoading).toBe(true)
     })
 
-    it('should set isLoading to true multiple times', () => {
+    it('should set isGlobalLoading to true multiple times', () => {
       const store = useLoadingStore()
 
-      store.startLoading()
-      store.startLoading()
+      store.startGlobalLoading()
+      store.startGlobalLoading()
 
-      expect(store.isLoading).toBe(true)
+      expect(store.isGlobalLoading).toBe(true)
     })
   })
 
-  describe('stopLoading', () => {
-    it('should set isLoading to false', () => {
+  describe('stopGlobalLoading', () => {
+    it('should set isGlobalLoading to false', () => {
       const store = useLoadingStore()
-      store.startLoading()
+      store.startGlobalLoading()
 
-      store.stopLoading()
+      store.stopGlobalLoading()
 
-      expect(store.isLoading).toBe(false)
+      expect(store.isGlobalLoading).toBe(false)
     })
 
     it('should set isLoading to false when already stopped', () => {
       const store = useLoadingStore()
 
-      store.stopLoading()
+      store.stopGlobalLoading()
 
-      expect(store.isLoading).toBe(false)
+      expect(store.isGlobalLoading).toBe(false)
     })
   })
 
   describe('reset', () => {
-    it('should reset isLoading to false', () => {
+    it('should reset isGlobalLoading to false', () => {
       const store = useLoadingStore()
-      store.startLoading()
+      store.startGlobalLoading()
 
       store.reset()
 
-      expect(store.isLoading).toBe(false)
+      expect(store.isGlobalLoading).toBe(false)
     })
 
-    it('should reset isLoading to false when already false', () => {
+    it('should reset isGlobalLoading to false when already false', () => {
       const store = useLoadingStore()
 
       store.reset()
 
-      expect(store.isLoading).toBe(false)
+      expect(store.isGlobalLoading).toBe(false)
     })
   })
 
@@ -75,29 +75,29 @@ describe('useLoadingStore', () => {
     it('should handle complete loading cycle', () => {
       const store = useLoadingStore()
 
-      expect(store.isLoading).toBe(false)
+      expect(store.isGlobalLoading).toBe(false)
 
-      store.startLoading()
-      expect(store.isLoading).toBe(true)
+      store.startGlobalLoading()
+      expect(store.isGlobalLoading).toBe(true)
 
-      store.stopLoading()
-      expect(store.isLoading).toBe(false)
+      store.stopGlobalLoading()
+      expect(store.isGlobalLoading).toBe(false)
     })
 
     it('should handle multiple start/stop cycles', () => {
       const store = useLoadingStore()
 
-      store.startLoading()
-      expect(store.isLoading).toBe(true)
+      store.startGlobalLoading()
+      expect(store.isGlobalLoading).toBe(true)
 
-      store.stopLoading()
-      expect(store.isLoading).toBe(false)
+      store.stopGlobalLoading()
+      expect(store.isGlobalLoading).toBe(false)
 
-      store.startLoading()
-      expect(store.isLoading).toBe(true)
+      store.startGlobalLoading()
+      expect(store.isGlobalLoading).toBe(true)
 
-      store.stopLoading()
-      expect(store.isLoading).toBe(false)
+      store.stopGlobalLoading()
+      expect(store.isGlobalLoading).toBe(false)
     })
   })
 })

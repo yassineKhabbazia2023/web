@@ -1,7 +1,8 @@
 <template>
   <Suspense>
     <PConfigProvider>
-      <component :is="currentExperience" />
+      <FullPageLoader v-show="isGlobalLoading === true" />
+      <component :is="currentExperience" v-show="isGlobalLoading === false" />
     </PConfigProvider>
   </Suspense>
 </template>
@@ -14,10 +15,16 @@ import { HTMLService } from '@pulse/common/services/html'
 import { useRoute } from 'vue-router'
 import { PConfigProvider } from '@pulse/styleguide/components'
 import { useRedirection } from '@app/composables/useRedirection'
+import { useLoadingStore } from '@pulse/common/stores'
 import { LAYOUT_META } from '@pulse/common/constants'
 import { Layout } from '@pulse/common/enums'
 
+import FullPageLoader from '@app/components/FullPageLoader/FullPageLoader.vue'
+
 const route = useRoute()
+const loadingStore = useLoadingStore()
+
+const isGlobalLoading = computed(() => loadingStore.isGlobalLoading)
 const { logoutAndRedirectToLogin } = useRedirection()
 
 // #region experience loading
