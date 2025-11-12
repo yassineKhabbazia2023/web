@@ -9,9 +9,6 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 const basicConfig = {
-  define: {
-    'process.env': process.env,
-  },
   resolve: {
     alias: {
       '@styleguide': fileURLToPath(new URL('./src', import.meta.url)),

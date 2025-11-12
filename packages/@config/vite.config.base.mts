@@ -8,7 +8,6 @@ export const viteConfigBase = ({ mode }: any): UserConfig =>
   defineConfig({
     define: {
       'import.meta.vitest': false,
-      'process.env': process.env,
     },
     plugins: [
       visualizer(),
@@ -35,13 +34,6 @@ export const viteConfigBase = ({ mode }: any): UserConfig =>
       coverage: {
         provider: 'istanbul',
         reporter: ['lcov', 'json', 'html'],
-      },
-    },
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler',
-        },
       },
     },
   }) as UserConfig
