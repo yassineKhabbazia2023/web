@@ -19,7 +19,7 @@ import {
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { ContactType } from '@pulse/common/enums'
 
-import UsersClient from '.'
+import UsersClient from './UsersClient.vue'
 
 vi.mock('@entities/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),

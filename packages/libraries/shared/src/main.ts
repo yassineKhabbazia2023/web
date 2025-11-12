@@ -4,7 +4,7 @@ import frFR from './i18n/fr-FR.json'
 import enUS from './i18n/en-US.json'
 
 export default {
-  install(_app: App) {
+  install(_app: App, _options: any) {
     i18n.global.mergeLocaleMessage('fr-FR', frFR)
     i18n.global.mergeLocaleMessage('en-US', enUS)
   },

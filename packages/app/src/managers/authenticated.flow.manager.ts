@@ -1,4 +1,3 @@
-import { APP_ROUTES } from '@pulse/common/constants'
 import {
   usePermissionsStore,
   useUserStore,
@@ -131,13 +130,13 @@ export class AuthenticatedFlowManager {
 
   // #region redirections
   static isNavigatingToAuthenticatedRoot(routeName: RouteName) {
-    return routeName === APP_ROUTES.authenticated.name
+    return routeName === RouteName.AUTHENTICATED
   }
 
   static isNavigatingToCustomerWallet(routeName: RouteName) {
     const walletRoutes = [
-      APP_ROUTES.wallet.client.root.name,
-      APP_ROUTES.wallet.client.landing.name,
+      RouteName.WALLET,
+      RouteName.CUSTOMER_ENTITIES,
     ]
     return walletRoutes.includes(routeName)
   }
@@ -156,7 +155,7 @@ export class AuthenticatedFlowManager {
       const { isCurrent: hasUserAcceptedCgu, terms } = await getTermsByCurrentUser()
       if (hasUserAcceptedCgu === false && terms) {
         const cguRedirection = {
-          name: APP_ROUTES.login.cguValidation.name, // TODO déplacer cette route en dehors de login // https://dev.azure.com/FR-TPEME/Pulse/_workitems/edit/47375
+          name: RouteName.VALIDATION_CGU,
           params: {
             termsId: terms.termsId,
           },
@@ -236,12 +235,12 @@ export class AuthenticatedFlowManager {
       return entityLandingPage
     }
 
-    const walletLandingPage = { name: APP_ROUTES.wallet.client.landing.name }
+    const walletLandingPage = { name: RouteName.CUSTOMER_ENTITIES }
     return walletLandingPage
   }
 
   static getCollabLandingPage(): RouteLocationNamedRaw {
-    return { name: APP_ROUTES.wallet.collab.landing.name }
+    return { name: RouteName.FOLDERS }
   }
   // #endregion landing pages
 }

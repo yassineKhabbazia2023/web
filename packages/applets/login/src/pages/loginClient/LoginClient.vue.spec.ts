@@ -9,7 +9,8 @@ import {
 import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import { flushPromises, mount } from '@vue/test-utils'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
+import { BackEndErrors } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 
 import LoginClient from './LoginClient.vue'
 
@@ -150,7 +151,7 @@ describe('LoginClient', () => {
         gigyaUserId: GIGYA_USER_ID,
       },
     })
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: RouteName.WALLET })
   })
 
   it('does not redirect to the home page if the api return a WRONG_LOGIN_PASSWORD error', async () => {
@@ -423,7 +424,7 @@ describe('LoginClient', () => {
     await flushPromises()
 
     expect(mockRouterPush).toHaveBeenCalledWith({
-      name: APP_ROUTES.login.cguValidation.name,
+      name: RouteName.VALIDATION_CGU,
       params: { termsId: 123456 },
     })
     expect(initAuthClientMocked).toHaveBeenCalledOnce()

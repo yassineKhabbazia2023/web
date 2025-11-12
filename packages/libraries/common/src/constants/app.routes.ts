@@ -42,16 +42,18 @@ export const APP_ROUTES = {
     indicators: { path: 'indicateurs', name: RouteName.INDICATORS },
   },
   wallet: {
-    client: {
-      root: { path: 'portefeuille', name: RouteName.WALLET_CLIENT },
-      landing: { path: 'mes-entites', name: RouteName.ENTITY_CLIENT },
-    },
-    collab: {
-      root: { path: 'portefeuille', name: RouteName.WALLET },
-      landing: { path: 'dossiers', name: RouteName.FOLDERS },
-      submitBIReport: { path: 'deposer-rapport-bi', name: RouteName.POWER_BI },
-      biReportsList: { path: 'rapports-bi', name: RouteName.BI_REPORTS_LIST },
-    },
+    root: { path: 'portefeuille', name: RouteName.WALLET },
+    landingCustomer: { path: 'mes-entites', name: RouteName.CUSTOMER_ENTITIES },
+    landingCollab: { path: 'dossiers', name: RouteName.FOLDERS },
+    collaborators: { path: 'collaborateurs', name: RouteName.COLLABORATORS },
+    accountManagement: { path: 'administration-dossiers', name: RouteName.ACCOUNT_MANAGEMENT },
+    allUsers: { path: 'gestion-utilisateurs', name: RouteName.ALL_USERS },
+    subscriptions: { path: 'demandes-mod', name: RouteName.SUBSCRIPTIONS },
+    submitBIReport: { path: 'deposer-rapport-bi', name: RouteName.POWER_BI },
+    biReportsList: { path: 'rapports-bi', name: RouteName.BI_REPORTS_LIST },
+    offersCatalog: { path: 'catalogue-des-offres', name: RouteName.OFFERS_CATALOG },
+    launcher: { path: 'launcher', name: RouteName.WALLET_LAUNCHER },
+    mandates: { path: 'mandats', name: RouteName.MANDATES },
   },
   error: {
     root: { path: '/error', name: RouteName.ERROR_ROOT },

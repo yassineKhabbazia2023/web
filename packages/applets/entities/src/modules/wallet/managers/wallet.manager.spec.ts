@@ -239,7 +239,7 @@ describe('WalletManager', () => {
       })
 
       const customerTab = createMockWalletTabConfig({
-        id: WalletTab.ENTITY_CLIENT,
+        id: WalletTab.CUSTOMER_ENTITIES,
         isDisplayed: (context) => !context.isCollab,
         order: 2,
       })
@@ -257,7 +257,7 @@ describe('WalletManager', () => {
       const customerTabs = WalletManager.getTabs(customerContext)
 
       expect(customerTabs).toHaveLength(1)
-      expect(customerTabs[0].name).toBe(WalletTab.ENTITY_CLIENT)
+      expect(customerTabs[0].name).toBe(WalletTab.CUSTOMER_ENTITIES)
     })
 
     it('should filter tabs based on permissions', () => {
@@ -324,7 +324,7 @@ describe('WalletManager', () => {
       })
 
       const tab2 = createMockWalletTabConfig({
-        id: WalletTab.ENTITY_CLIENT,
+        id: WalletTab.CUSTOMER_ENTITIES,
         title: 'entities.wallet.allEntities',
         isDisplayed: (context) => !context.isCollab,
         order: 2,
@@ -351,7 +351,7 @@ describe('WalletManager', () => {
       })
 
       const tab2 = createMockWalletTabConfig({
-        id: WalletTab.ENTITY_CLIENT,
+        id: WalletTab.CUSTOMER_ENTITIES,
         title: 'entities.wallet.allEntities',
         isDisplayed: (context) => !context.isCollab,
         order: 2,
@@ -363,7 +363,7 @@ describe('WalletManager', () => {
       const tabs = WalletManager.getTabsForUser(false)
 
       expect(tabs).toHaveLength(1)
-      expect(tabs[0].name).toBe(WalletTab.ENTITY_CLIENT)
+      expect(tabs[0].name).toBe(WalletTab.CUSTOMER_ENTITIES)
     })
 
     it('should use CurrentUserManager.hasPermission in context', () => {

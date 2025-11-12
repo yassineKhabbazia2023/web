@@ -17,7 +17,6 @@ import { fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore, useBookingStore } from '@pulse/common/stores'
-import { APP_ROUTES } from '@pulse/common/constants'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 
 import { AuthenticatedFlowManager } from './authenticated.flow.manager'
@@ -292,7 +291,7 @@ describe('AuthenticatedFlowManager', () => {
 
   describe('isNavigatingToAuthenticatedRoot', () => {
     it('should detect if the user is navigating to the root of the authenticated space', () => {
-      const authenticatedRoute = AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot(APP_ROUTES.authenticated.name)
+      const authenticatedRoute = AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot(RouteName.AUTHENTICATED)
       const otherRoute = AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot('other-route' as RouteName)
 
       expect(authenticatedRoute).toBe(true)
@@ -302,8 +301,8 @@ describe('AuthenticatedFlowManager', () => {
 
   describe('isNavigatingToCustomerWallet', () => {
     it('should detect if the user is navigating to the customer wallet pages', () => {
-      const walletRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet(APP_ROUTES.wallet.client.root.name)
-      const walletCustomerRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet(APP_ROUTES.wallet.client.landing.name)
+      const walletRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet(RouteName.WALLET)
+      const walletCustomerRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet(RouteName.CUSTOMER_ENTITIES)
       const otherRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet('other-route' as RouteName)
 
       expect(walletRoute).toBe(true)
@@ -348,7 +347,7 @@ describe('AuthenticatedFlowManager', () => {
           const result = await AuthenticatedFlowManager.getCGURedirection()
 
           expect(result).toEqual({
-            name: APP_ROUTES.login.cguValidation.name,
+            name: RouteName.VALIDATION_CGU,
             params: {
               termsId: 123,
             },
@@ -388,7 +387,7 @@ describe('AuthenticatedFlowManager', () => {
 
         const result = AuthenticatedFlowManager.getLandingPage()
 
-        expect(result).toEqual({ name: APP_ROUTES.wallet.collab.landing.name })
+        expect(result).toEqual({ name: RouteName.FOLDERS })
       })
     })
     describe('user is a Customer', () => {
@@ -440,7 +439,7 @@ describe('AuthenticatedFlowManager', () => {
 
         const result = AuthenticatedFlowManager.getCustomerLandingPage()
 
-        expect(result).toEqual({ name: APP_ROUTES.wallet.client.landing.name })
+        expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
       })
     })
   })
@@ -449,7 +448,7 @@ describe('AuthenticatedFlowManager', () => {
     it('should return the collab landing page', () => {
       const result = AuthenticatedFlowManager.getCollabLandingPage()
 
-      expect(result).toEqual({ name: APP_ROUTES.wallet.collab.landing.name })
+      expect(result).toEqual({ name: RouteName.FOLDERS })
     })
   })
 
@@ -466,11 +465,11 @@ describe('AuthenticatedFlowManager', () => {
           hasAcceptedBefore: false,
         } as any)
 
-        const route = createMockRoute(APP_ROUTES.authenticated.name)
+        const route = createMockRoute(RouteName.AUTHENTICATED)
         const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
 
         expect(result).toEqual({
-          name: APP_ROUTES.login.cguValidation.name,
+          name: RouteName.VALIDATION_CGU,
           params: { termsId: 123 },
         })
       })
@@ -484,7 +483,7 @@ describe('AuthenticatedFlowManager', () => {
           hasAcceptedBefore: false,
         } as any)
 
-        const route = createMockRoute(APP_ROUTES.login.cguValidation.name)
+        const route = createMockRoute(RouteName.VALIDATION_CGU)
         const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
 
         expect(result).toBe(null)
@@ -497,14 +496,14 @@ describe('AuthenticatedFlowManager', () => {
       })
 
       it('should return landing page when navigating to authenticated root', async () => {
-        const route = createMockRoute(APP_ROUTES.authenticated.name)
+        const route = createMockRoute(RouteName.AUTHENTICATED)
         const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
 
-        expect(result).toEqual({ name: APP_ROUTES.wallet.collab.landing.name })
+        expect(result).toEqual({ name: RouteName.FOLDERS })
       })
 
       it('should not redirect if already on landing page', async () => {
-        const route = createMockRoute(APP_ROUTES.wallet.collab.landing.name)
+        const route = createMockRoute(RouteName.FOLDERS)
         const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
 
         expect(result).toBe(null)
@@ -521,16 +520,16 @@ describe('AuthenticatedFlowManager', () => {
       it('should return customer landing page when navigating to wallet root', async () => {
         userStoreMock.getIsSingleEntity.mockReturnValue(false)
 
-        const route = createMockRoute(APP_ROUTES.wallet.client.root.name)
+        const route = createMockRoute(RouteName.WALLET)
         const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
 
-        expect(result).toEqual({ name: APP_ROUTES.wallet.client.landing.name })
+        expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
       })
 
       it('should not redirect if already on customer landing page', async () => {
         userStoreMock.getIsSingleEntity.mockReturnValue(false)
 
-        const route = createMockRoute(APP_ROUTES.wallet.client.landing.name)
+        const route = createMockRoute(RouteName.CUSTOMER_ENTITIES)
         const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
 
         expect(result).toBe(null)
@@ -562,11 +561,11 @@ describe('AuthenticatedFlowManager', () => {
 
         // Even though we're navigating to authenticated root (which would normally redirect to landing page)
         // CGU redirection should take priority
-        const route = createMockRoute(APP_ROUTES.authenticated.name)
+        const route = createMockRoute(RouteName.AUTHENTICATED)
         const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
 
         expect(result).toEqual({
-          name: APP_ROUTES.login.cguValidation.name,
+          name: RouteName.VALIDATION_CGU,
           params: { termsId: 123 },
         })
       })

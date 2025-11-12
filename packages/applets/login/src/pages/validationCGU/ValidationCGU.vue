@@ -84,7 +84,7 @@ import { type ValidationCGUProps } from './ValidationCGUTypes'
 import { fetchUrlTerms } from '@pulse/common'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { updateTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 import { useUserStore } from '@pulse/common/stores'
 
 const { t } = useI18n({
@@ -117,7 +117,7 @@ const acceptNewCgu = async (termsId: string) => {
     loading.value = true
     await updateTermsByCurrentUser(parseInt(termsId))
     userStore.setHasAcceptedCGU(true)
-    router.push({ name: APP_ROUTES.wallet.client.root.name })
+    router.push({ name: RouteName.WALLET })
   } catch (error) {
     userStore.setHasAcceptedCGU(false)
     logger.error(error)
@@ -128,7 +128,7 @@ const acceptNewCgu = async (termsId: string) => {
 
 const back = async () => {
   await CurrentUserManager.logout()
-  router.push({ name: APP_ROUTES.login.client.name })
+  router.push({ name: RouteName.LOGIN_CLIENT })
 }
 </script>
 

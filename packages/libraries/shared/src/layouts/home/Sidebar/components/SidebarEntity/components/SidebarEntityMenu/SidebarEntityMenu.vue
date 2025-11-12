@@ -87,7 +87,7 @@ const isMenuCollapsed = ref(true)
 
 const activeMenuItem = computed<string>(() => route.name as string)
 const entityOverviewPath = computed(
-  () => RouterHelpers.hasProvidedAncestor({ route, ancestorName: RouteName.FOLDER }),
+  () => RouterHelpers.hasProvidedAncestor({ route, ancestorName: RouteName.ENTITY_OVERVIEW }),
 )
 
 const canBeConsideredSingleEntity = computed(() => {

@@ -111,8 +111,9 @@ import {
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { type UserInfo } from '@pulse/common/types'
-import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
+import { BackEndErrors } from '@pulse/common/constants'
 import { CurrentUserManager } from '@pulse/common/managers'
+import { RouteName } from '@pulse/common/enums'
 import {
   reactive,
   ref,
@@ -131,7 +132,6 @@ import {
   PASSWORD_STRENGTH,
   levelPasswordStrength,
 } from './PopoverPasswordStrength/passwordStrength'
-import useNavigation from '@login/composable/useNavigation'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 
 const { t } = useI18n({
@@ -217,7 +217,6 @@ const rules = reactive<FormRules<typeof formValue>>({
   terms: [{ trigger: 'change', validator: validateTerm }],
 })
 
-const { navigateToCustomerWallet } = useNavigation()
 const submitForm = (formEl: FormInstance | undefined) => {
   if (!formEl) {
     return
@@ -260,7 +259,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
             gigyaUserId: '',
           }
           userStore.setUser(user)
-          navigateToCustomerWallet()
+          router.push({ name: RouteName.WALLET })
         } catch (error: any) {
           AmplitudeService.track('Onboarding Completed', {
             onboarding_result: 'failed',
@@ -268,7 +267,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
           const { data } = error?.response ?? {}
 
           if (data.errorCode === BackEndErrors.TOKEN_EXPIRED) {
-            router.push({ name: APP_ROUTES.login.expireToken.name, query: { contactId, accountNumber } })
+            router.push({ name: RouteName.EXPIRE_TOKEN, query: { contactId, accountNumber } })
           }
         } finally {
           isLoading.value = false

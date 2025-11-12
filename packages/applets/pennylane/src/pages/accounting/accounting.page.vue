@@ -37,7 +37,6 @@ import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-doc
 import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
 import { AccountingTab } from './accounting.page.enum'
 import AccountingHeader from '@pennylane/components/accounting-header/accounting-header.vue'
-import { APP_ROUTES } from '@pulse/common/constants'
 import { useRouter } from 'vue-router'
 import { persistHideAccountingHeader, getHideAccountingHeader } from './accounting.helper'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
@@ -68,14 +67,14 @@ if (PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true
   tabs.push({
     name: AccountingTab.GED_V2,
     label: t('tabs.ged-v2'),
-    routeName: APP_ROUTES.entity.pennylaneAccounting.gedV2.name,
+    routeName: RouteName.PENNYLANE_GED_V2,
   })
 }
 if (PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true) {
   tabs.push({
     name: AccountingTab.GED_LEGACY,
     label: t('tabs.ged-legacy'),
-    routeName: APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name,
+    routeName: RouteName.PENNYLANE_GED_LEGACY,
   })
 }
 

@@ -2,8 +2,9 @@ import { logger } from '@pulse/toolbox'
 import type { NavigationGuard } from 'vue-router'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { BootManager } from '@app/managers/boot.manager'
-import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META, APP_ROUTES } from '@pulse/common/constants'
+import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
 import { isUserOriginCollab } from '@app/services/userOrigin/userOriginService'
+import { RouteName } from '@pulse/common/enums'
 
 export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
   const hasToken = CurrentUserManager.hasToken()
@@ -32,7 +33,7 @@ export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
     if (hasToken === true) {
       // User has a token but is not authenticated, likely due to token expiration
       logger.trace('User has a token but is not authenticated. Go back to login.')
-      return next({ name: APP_ROUTES.login.client.name, query: { sessionExpired: 'true' } })
+      return next({ name: RouteName.LOGIN_CLIENT, query: { sessionExpired: 'true' } })
     }
 
     // redirect to anonymous path
@@ -45,7 +46,7 @@ export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
   }
 
   // Handle unauthenticated access to the root route (e.g., '/') and redirect to appropriate login page
-  if (isAuthenticated === false && to.path === APP_ROUTES.root.path) {
+  if (isAuthenticated === false && to.path === '/') {
     let isCollabOrigin = false
     try {
       isCollabOrigin = await isUserOriginCollab()
@@ -53,10 +54,10 @@ export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
       logger.warn('Unable to determine user origin; falling back to client login.', error)
     }
 
-    const targetRoute = isCollabOrigin ? APP_ROUTES.login.collab : APP_ROUTES.login.client
+    const targetRoute = isCollabOrigin ? RouteName.LOGIN_COLLAB : RouteName.LOGIN_CLIENT
 
-    logger.trace(`Unauthenticated access to Root, user origin redirects to '${targetRoute.name}'.`)
-    return next({ name: targetRoute.name })
+    logger.trace(`Unauthenticated access to Root, user origin redirects to '${targetRoute}'.`)
+    return next({ name: targetRoute })
   }
 
   // go to next route in case we didn't catch a use case

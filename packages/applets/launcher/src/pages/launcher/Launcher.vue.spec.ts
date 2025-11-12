@@ -21,7 +21,7 @@ import { useCurrentEntityStore, usePermissionsStore, useUserStore } from '@pulse
 import type { Permission } from '@pulse/common/types'
 import { CollaboratorPermission } from '@pulse/common/enums'
 
-import Launcher from '.'
+import Launcher from './Launcher.vue'
 
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)

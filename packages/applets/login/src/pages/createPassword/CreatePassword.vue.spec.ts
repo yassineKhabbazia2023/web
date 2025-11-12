@@ -1,9 +1,9 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import { getStoreMock, cguServiceMock, AmplitudeServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/toolbox/mocks'
-import { navigateToCustomerWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
+import { BackEndErrors } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 import type { FormInstance } from 'element-plus'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
 
@@ -21,9 +21,6 @@ const CGU_URL = 'https://custom-CGU.com'
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
-vi.mock('@login/composable/useNavigation', () => ({
-  default: () => useNavigationMock,
-}))
 
 const createNewPasswordMock = vi.hoisted(() => vi.fn())
 const loginMock = vi.hoisted(() => vi.fn())
@@ -171,7 +168,7 @@ describe('page creation password', () => {
     // Check redirection to expired token page
     expect(routerPushMock).toHaveBeenCalledTimes(1)
     expect(routerPushMock).toHaveBeenCalledWith({
-      name: APP_ROUTES.login.expireToken.name,
+      name: RouteName.EXPIRE_TOKEN,
       query: { accountNumber: 'accountNumber', contactId: 'contactId' },
     })
 
@@ -212,7 +209,7 @@ describe('page creation password', () => {
     expect(loginMock).toHaveBeenCalledWith(dataLogin)
 
     expect(tokenStoreMock.setToken).toHaveBeenCalledWith(mockToken)
-    expect(navigateToCustomerWalletMock).toHaveBeenCalledOnce()
+    expect(routerPushMock).toHaveBeenCalledOnce()
   })
 
   it('should throw error', async () => {

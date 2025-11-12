@@ -11,7 +11,7 @@ export function createMockContext(overrides?: Partial<MenuContext>): MenuContext
     currentRoute: {
       path: '/dossier/123',
       fullPath: '/dossier/123',
-      name: 'entity-home',
+      name: 'homepage',
       params: { entityId: '123' },
       query: {},
       hash: '',

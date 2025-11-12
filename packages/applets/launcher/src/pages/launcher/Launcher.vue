@@ -49,6 +49,7 @@ import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { CurrentUserManager } from '@pulse/common/managers'
+import { RouteName } from '@pulse/common/enums'
 import { PBreadcrumb, PAlert } from '@pulse/styleguide/components'
 import LaunchCard from '@launcher/components/launchCard'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
@@ -90,7 +91,7 @@ async function onClickAction(key: LauncherKey) {
   await handleClickAction(key)
 }
 
-const isClient = computed(() => route.name === 'launcher')
+const isClient = computed(() => route.name === RouteName.LAUNCHER)
 const currentEntityStore = useCurrentEntityStore()
 const permissionsStore = usePermissionsStore()
 

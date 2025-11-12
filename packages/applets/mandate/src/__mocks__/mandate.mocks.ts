@@ -1,5 +1,5 @@
 import type { BbanModel } from '@mandate/components/CreateMandate/Form/FormModels'
-import { MandateActions, type Mandate } from '@mandate/pages/mandate/Models'
+import { MandateActions, type Mandate } from '@mandate/types/mandate.types'
 
 export function getMockedMandatesList(override = {}) {
   const defaultMandateList = {

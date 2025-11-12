@@ -1,4 +1,4 @@
-import type { Mandate } from '@mandate/pages/mandate/Models'
+import type { Mandate } from '@mandate/types/mandate.types'
 import { commonApi as api } from '@pulse/common'
 import type { BbanModel, CreateMandateModel } from '@mandate/components/CreateMandate/Form/FormModels'
 import type { SearchMandateParams } from './ServiceMandateTypes'

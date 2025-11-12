@@ -2,7 +2,7 @@ import { BootManager } from './boot.manager'
 import { createTestingPinia } from '@pinia/testing'
 import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 
 import { AnonymousFlowManager } from './anonymous.flow.manager'
 
@@ -77,14 +77,14 @@ describe('AnonymousFlowManager', () => {
     const createMockRoute = (name: string) => ({ name }) as any
 
     it('should return landing page when navigating to anonymous root', () => {
-      const route = createMockRoute(APP_ROUTES.anonymous.name)
+      const route = createMockRoute(RouteName.ANONYMOUS)
       const result = AnonymousFlowManager.getAnonymousRedirection(route)
 
-      expect(result).toEqual({ name: APP_ROUTES.login.client.name })
+      expect(result).toEqual({ name: RouteName.LOGIN_CLIENT })
     })
 
     it('should return null when navigating to a specific anonymous route', () => {
-      const route = createMockRoute(APP_ROUTES.login.client.name)
+      const route = createMockRoute(RouteName.LOGIN_CLIENT)
       const result = AnonymousFlowManager.getAnonymousRedirection(route)
 
       expect(result).toBe(null)
@@ -102,7 +102,7 @@ describe('AnonymousFlowManager', () => {
     it('should return the client login page', () => {
       const result = AnonymousFlowManager.getLandingPage()
 
-      expect(result).toEqual({ name: APP_ROUTES.login.client.name })
+      expect(result).toEqual({ name: RouteName.LOGIN_CLIENT })
     })
   })
 })

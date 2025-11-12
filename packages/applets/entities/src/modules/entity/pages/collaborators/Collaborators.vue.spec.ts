@@ -8,7 +8,7 @@ import { CurrentUserManagerMock, getStoreMock } from '@pulse/common/mocks'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
 
-import Collaborators from '.'
+import Collaborators from './Collaborators.vue'
 
 const userStoreMock = getStoreMock(useUserStore)
 

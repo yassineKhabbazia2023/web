@@ -1,6 +1,6 @@
 import { CurrentUserManager, CurrentEntityManager, FeatureFlagManager } from '@pulse/common/managers'
 import { resetAllStores, useTokenStore } from '@pulse/common/stores'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { VITE_AMPLITUDE_API_KEY, VITE_AMPLITUDE_SERVER_URL } from 'env-vars'
 import { logger } from '@pulse/toolbox'
@@ -24,11 +24,11 @@ export class BootManager {
   }
 
   static getDefaultAnonymousRoute() {
-    return { name: APP_ROUTES.anonymous.name }
+    return { name: RouteName.ANONYMOUS }
   }
 
   static getDefaultAuthenticatedRoute() {
-    return { name: APP_ROUTES.authenticated.name }
+    return { name: RouteName.AUTHENTICATED }
   }
 
   static initAmplitude() {

@@ -23,13 +23,14 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { PSkewedButton } from '@pulse/styleguide/components'
 import { MsalService } from '@pulse/common/services/msal'
 import { logger } from '@pulse/toolbox'
 import { LoginManager } from '@pulse/common/managers'
-import useNavigation from '@login/composable/useNavigation'
+import { RouteName } from '@pulse/common/enums'
 
-const { navigateToWallet } = useNavigation()
+const router = useRouter()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -50,7 +51,7 @@ const handleMSALRedirectionAfterLogin = async () => {
     const successfullyAuth = await LoginManager.initAuthCollab()
 
     if (successfullyAuth) {
-      navigateToWallet()
+      router.push({ name: RouteName.WALLET })
       return
     }
   } catch (e) {

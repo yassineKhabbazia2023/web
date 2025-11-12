@@ -10,7 +10,7 @@ import InformationFormStructure from '@entities/config/forms/InformationFormStru
 import { getStoreMock } from '@pulse/common/mocks'
 import { RouteParam } from '@pulse/common/enums'
 
-import Information from '.'
+import Information from './Information.vue'
 
 const userStoreMock = getStoreMock(useUserStore)
 

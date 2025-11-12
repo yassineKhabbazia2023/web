@@ -178,7 +178,7 @@ describe('handleNotificationAction', () => {
     })
 
     expect(routerMock.push).toHaveBeenCalledWith({
-      name: RouteName.MANDATE,
+      name: RouteName.MANDATES,
       query: { bankAccountNumbers: mandateNotificationMock.redirectLink },
     })
   })

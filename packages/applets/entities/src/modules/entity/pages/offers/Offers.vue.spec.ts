@@ -10,7 +10,7 @@ import {
 } from '@pulse/common/mocks'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 
-import Offers from '.'
+import Offers from './Offers.vue'
 
 // Mocks
 const activeOffersMocked = getActiveOffersMocked()

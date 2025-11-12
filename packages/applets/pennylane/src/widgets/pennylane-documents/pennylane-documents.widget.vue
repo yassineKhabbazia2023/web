@@ -47,7 +47,7 @@
 import { onMounted, ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName, APICallStatus } from '@pulse/common/enums'
 import { PButton, PIcon } from '@pulse/styleguide/components'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
 import PennylaneDocumentsHeader from '@pennylane/components/pennylane-documents-header/pennylane-documents-header.vue'
@@ -55,7 +55,6 @@ import PennylaneDocumentsWrapper from '@pennylane/components/pennylane-documents
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import type { FormattedPennylaneDocument } from '@pennylane/types/pennylane-documents.type'
-import { APICallStatus } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
 import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-documents.helper'
 import { PennylaneDocumentWrapperDisplayMode } from '@pennylane/enums/pennylane-documents-wrapper.enum'
@@ -103,7 +102,7 @@ onMounted(async () => {
 
 function onClickSeeAllDocuments() {
   router.push({
-    name: APP_ROUTES.entity.pennylaneAccounting.gedV2.name,
+    name: RouteName.PENNYLANE_GED_V2,
   })
 }
 </script>

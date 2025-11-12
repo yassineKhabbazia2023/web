@@ -10,7 +10,7 @@
       pType="white"
       class="back-to-login-button margin-bottom--4"
       data-testid="back-to-login-button"
-      @click="router.push({ name: APP_ROUTES.login.client.name })"
+      @click="router.push({ name: RouteName.LOGIN_CLIENT })"
     >
       {{ t('returnLoginPage') }}
     </PButton>
@@ -21,7 +21,7 @@
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { PButton } from '@pulse/styleguide/components'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,

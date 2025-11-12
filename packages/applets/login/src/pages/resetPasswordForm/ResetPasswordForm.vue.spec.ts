@@ -2,7 +2,7 @@ import { nextTick } from 'vue'
 import { mount, flushPromises } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { loggerMock } from '@pulse/toolbox/mocks'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 
 import ResetPasswordForm from './ResetPasswordForm.vue'
 
@@ -126,7 +126,7 @@ describe('page reset password form', () => {
     expect(createNewPasswordMock).toHaveBeenCalledWith(data)
 
     expect(routerPushMock).toHaveBeenCalledTimes(1)
-    expect(routerPushMock).toHaveBeenLastCalledWith({ name: APP_ROUTES.login.client.name })
+    expect(routerPushMock).toHaveBeenLastCalledWith({ name: RouteName.LOGIN_CLIENT })
   })
   it('do not call mockAuthPost when not form given to submitForm', async () => {
     wrapper = createWrapper()

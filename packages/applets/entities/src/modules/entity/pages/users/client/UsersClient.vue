@@ -124,7 +124,7 @@ import type { ClientContact } from '@entities/types'
 import { fetchAccountContacts, fetchCustomers } from '@entities/services/wallet'
 import { storeToRefs } from 'pinia'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
-import { ContactType } from '@pulse/common/enums'
+import { ContactType, RouteName } from '@pulse/common/enums'
 import type { SortingCriteria } from '@pulse/common/types'
 import { useSort } from '@pulse/common/composables/sort'
 
@@ -268,7 +268,7 @@ const isAddUserButtonVisible = computed(() =>
   currentEntityId.value &&
   isMounted.value &&
   canAddUser.value &&
-  route.name === 'users',
+  route.name === RouteName.USERS,
 )
 
 onMounted(async () => {

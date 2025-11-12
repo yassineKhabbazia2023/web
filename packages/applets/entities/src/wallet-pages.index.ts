@@ -1,0 +1,5 @@
+export { default as WalletRoot } from './modules/wallet/Wallet.page.vue'
+export { default as Folders } from './modules/wallet/pages/folders/Folders.vue'
+export { default as Collaborators } from './modules/wallet/pages/collaborators/Collaborators.vue'
+export { default as AccountManagement } from './modules/wallet/pages/accountManagement/AccountManagement.vue'
+export { default as Subscriptions } from './modules/wallet/pages/subscriptions/Subscriptions.vue'

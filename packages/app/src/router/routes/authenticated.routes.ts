@@ -1,9 +1,11 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { ALLOW_AUTHENTICATED_META, APP_ROUTES, IS_UNITARY_VIEW_META, LAYOUT_META } from '@pulse/common/constants'
-import { Layout, RouteName } from '@pulse/common/enums'
+import { ALLOW_AUTHENTICATED_META, APP_ROUTES, APP_TITLE_CUSTOMER, HTML_TITLE_META, LAYOUT_META } from '@pulse/common/constants'
+import { Layout } from '@pulse/common/enums'
+import { logger } from '@pulse/toolbox'
 import { useLoadingStore } from '@pulse/common/stores'
 import { AuthenticatedFlowManager } from '@app/managers/authenticated.flow.manager'
-import { logger } from '@pulse/toolbox'
+import { entityRoutes } from './entity.routes'
+import { walletRoutes } from './wallet.routes'
 
 export const authenticatedRoutes: RouteRecordRaw[] = [
   {
@@ -30,24 +32,27 @@ export const authenticatedRoutes: RouteRecordRaw[] = [
         }
 
         // No redirection needed, continue to route
-        next()
+        return next()
       } catch (error) {
         logger.error('Error while entering authenticated flow', error)
-        // Stop loading on error and continue anyway (graceful degradation)
+        // Stop loading on error
         loadingStore.stopLoading()
-        next()
+        //  and continue anyway (graceful degradation)
+        return next()
       }
     },
     children: [
+      ...entityRoutes,
+      ...walletRoutes,
       {
-        path: APP_ROUTES.entity.root.path,
-        name: APP_ROUTES.entity.root.name,
-        component: () => import('@app/pages/Entity/Entity.root.vue'),
+        path: APP_ROUTES.login.cguValidation.path,
+        name: APP_ROUTES.login.cguValidation.name,
+        component: () => import('@pulse/login/pages').then(pages => pages.ValidationCGU),
+        props: true,
         meta: {
-          [IS_UNITARY_VIEW_META]: true,
+          [LAYOUT_META]: Layout.LOGIN,
+          [HTML_TITLE_META]: APP_TITLE_CUSTOMER,
         },
-        redirect: { name: RouteName.HOMEPAGE },
-        children: [/* To be defined in applets */],
       },
     ],
   },

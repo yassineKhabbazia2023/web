@@ -1,4 +1,4 @@
-import type { Mandate } from '@mandate/pages/mandate/Models'
+import type { Mandate } from '@mandate/types/mandate.types'
 
 export interface ListMandateProps {
   currentPage: number

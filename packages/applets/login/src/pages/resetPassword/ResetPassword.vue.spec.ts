@@ -4,7 +4,7 @@ import type { FormInstance } from 'element-plus'
 import { flushPromises, mount } from '@vue/test-utils'
 import ResetPassword from './ResetPassword.vue'
 import { nextTick } from 'vue'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({
@@ -62,7 +62,7 @@ describe('reset password', () => {
     })
 
     expect(mockRouterPush).toHaveBeenCalledWith({
-      name: APP_ROUTES.login.resetPasswordSuccess.name,
+      name: RouteName.RESET_PASSWORD_SUCCESS,
       query: {
         email: INPUT_EMAIL_VALUE,
       },
@@ -82,7 +82,7 @@ describe('reset password', () => {
     await flushPromises()
 
     expect(mockRouterPush).toHaveBeenCalledWith({
-      name: APP_ROUTES.login.resetPasswordFailed.name,
+      name: RouteName.RESET_PASSWORD_FAILED,
       query: {
         maxAttempts: MAX_ATTEMPTS,
       },
@@ -132,7 +132,7 @@ describe('reset password', () => {
     await submitButton.trigger('click')
     expect(mockAuthPost).not.toHaveBeenCalled()
     expect(mockRouterPush).toHaveBeenNthCalledWith(1, {
-      name: APP_ROUTES.login.client.name,
+      name: RouteName.LOGIN_CLIENT,
     })
   })
 

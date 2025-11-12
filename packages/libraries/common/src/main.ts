@@ -22,7 +22,7 @@ export { sanitizeUrl }
 export { refreshClientToken, createNewPassword, login }
 
 export default {
-  install(app: App) {
+  install(app: App, _options: any) {
     app
       .use(i18n)
       .use(commonPinia)

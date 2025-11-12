@@ -1,18 +1,15 @@
 import { RouteRecordRaw } from 'vue-router'
-import { AnonymousFlowManager } from '@app/managers/anonymous.flow.manager'
 import { ALLOW_ANONYMOUS_META, APP_ROUTES, LAYOUT_META, ROUTE_IS_COLLAB_META } from '@pulse/common/constants'
 import { Layout } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
+import { AnonymousFlowManager } from '@app/managers/anonymous.flow.manager'
+import { loginRoutes } from './login.routes'
 
 export const anonymousRoutes: RouteRecordRaw[] = [
   {
     path: APP_ROUTES.anonymous.path,
     name: APP_ROUTES.anonymous.name,
     component: () => import('@app/pages/Anonymous.root.vue'),
-    meta: {
-      [LAYOUT_META]: Layout.LOGIN,
-      [ALLOW_ANONYMOUS_META]: true,
-    },
     beforeEnter: (to, _from, next) => {
       try {
         const routeIsCollab = to.meta[ROUTE_IS_COLLAB_META] === true
@@ -32,6 +29,12 @@ export const anonymousRoutes: RouteRecordRaw[] = [
         next()
       }
     },
-    children: [/* To be defined in applets */],
+    meta: {
+      [LAYOUT_META]: Layout.LOGIN,
+      [ALLOW_ANONYMOUS_META]: true,
+    },
+    children: [
+      ...loginRoutes,
+    ],
   },
 ]

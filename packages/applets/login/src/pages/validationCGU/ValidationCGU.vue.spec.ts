@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { cguServiceMock, updateTermsByCurrentUserMock } from '@pulse/common/mocks'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 import { CurrentUserManager } from '@pulse/common/managers'
 
 import validationCGU from './ValidationCGU.vue'
@@ -61,7 +61,7 @@ describe('cgu validation', () => {
 
     const confirmButton = wrapper.find('[data-testid="cgu-button-confirm"]')
     await confirmButton.trigger('click')
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: 'wallet-client' })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: RouteName.WALLET })
   })
 
   it('should back to login page and logout', async () => {
@@ -69,7 +69,7 @@ describe('cgu validation', () => {
     const wrapper = createWrapper()
     const backButton = wrapper.find('[data-testid="cgu-button-back"]')
     await backButton.trigger('click')
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: APP_ROUTES.login.client.name })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: RouteName.LOGIN_CLIENT })
     expect(CurrentUserManagerLogoutMock).toHaveBeenCalled()
   })
 

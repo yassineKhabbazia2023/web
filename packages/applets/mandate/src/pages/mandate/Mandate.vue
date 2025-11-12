@@ -34,19 +34,21 @@
 </template>
 
 <script setup lang="ts">
-import { logger, useDebounce } from '@pulse/toolbox'
 import { ref, onMounted, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { logger, useDebounce } from '@pulse/toolbox'
 import { getMandatesCollection } from '@mandate/services/mandate'
 import type { SearchMandateParams } from '@mandate/services/mandate/ServiceMandateTypes'
+import type { MandateCollection } from '@mandate/types/mandate.types'
+import { PAGE_SIZES } from '@pulse/common/constants'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { PLoader } from '@pulse/styleguide/components'
+import { RouteName } from '@pulse/common/enums'
+
 import Header from '@mandate/components/Common/Header'
 import ListMandate from '@mandate/components/DisplayMandate/ListMandate'
 import Pagination from '@mandate/components/DisplayMandate/Pagination'
 import SearchBar from '@mandate/components/Common/SearchBar'
-import type { MandateCollection } from './Models'
-import { PAGE_SIZES } from '@pulse/common/constants'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { PLoader } from '@pulse/styleguide/components'
-import { useRoute } from 'vue-router'
 
 const mandatesCollection = ref<MandateCollection>({
   counters: {
@@ -74,7 +76,7 @@ const searchParams = ref<SearchMandateParams>({
 })
 const route = useRoute()
 watch(route, (value) => {
-  if (value.name === 'mandate') {
+  if (value.name === RouteName.MANDATES) {
     // Backend will always return a simple string in this case
     searchParams.value.searchTerm = value.query.bankAccountNumber as string
   }

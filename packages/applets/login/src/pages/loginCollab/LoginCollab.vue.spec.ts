@@ -1,5 +1,4 @@
 import { flushPromises, mount } from '@vue/test-utils'
-import { navigateToWalletMock, useNavigationMock } from '@login/__mocks__/useNavigation.composable.mocks'
 import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/toolbox/mocks'
 
@@ -7,6 +6,7 @@ import LoginCollab from './LoginCollab.vue'
 
 const msalLoginRedirectMock = vi.hoisted(() => vi.fn())
 const initAuthCollabMock = vi.hoisted(() => vi.fn(() => Promise.resolve(true)))
+const mockRouterPush = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
@@ -30,8 +30,10 @@ vi.mock('@pulse/common/managers', () => ({
   },
 }))
 
-vi.mock('@login/composable/useNavigation', () => ({
-  default: () => useNavigationMock,
+vi.mock('vue-router', () => ({
+  useRouter: () => ({
+    push: mockRouterPush,
+  }),
 }))
 
 const createWrapper = () => mount(LoginCollab, {
@@ -45,7 +47,7 @@ describe('loginCollab', () => {
       createWrapper()
       await flushPromises()
       expect(initAuthCollabMock).toHaveBeenCalledOnce()
-      expect(navigateToWalletMock).toHaveBeenCalledOnce()
+      expect(mockRouterPush).toHaveBeenCalledOnce()
     })
 
     it('should not redirect to wallet when authentication fails', async () => {
@@ -54,7 +56,7 @@ describe('loginCollab', () => {
       await flushPromises()
 
       expect(initAuthCollabMock).toHaveBeenCalledOnce()
-      expect(navigateToWalletMock).not.toHaveBeenCalled()
+      expect(mockRouterPush).not.toHaveBeenCalled()
     })
 
     it('should handle authentication error gracefully', async () => {
@@ -64,7 +66,7 @@ describe('loginCollab', () => {
       await flushPromises()
 
       expect(initAuthCollabMock).toHaveBeenCalledOnce()
-      expect(navigateToWalletMock).not.toHaveBeenCalled()
+      expect(mockRouterPush).not.toHaveBeenCalled()
       expect(loggerMock.error).toHaveBeenCalledWith(errorMock)
     })
 

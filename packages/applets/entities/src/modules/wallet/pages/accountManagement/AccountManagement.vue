@@ -68,7 +68,7 @@ import FormSearch from '@entities/components/FormSearch'
 import TableData from '../../components/TableData'
 import AccountRightsDrawer from './components/AccountRightsDrawer'
 import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
-import { fetchWalletData } from '../folders/DeployUtils'
+import { fetchWalletData } from '../folders/FoldersUtils'
 import { getPaginationLabel } from '@pulse/common/utils'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { PAGE_SIZES } from '@pulse/common/constants'
@@ -171,7 +171,7 @@ const handlePageChange = (currentPage: number) => {
   searchCriteria.value.currentPage = currentPage
 }
 const handleOpenFolder = (entityId: string) => {
-  router.push({ name: RouteName.FOLDER, params: { [RouteParam.ENTITY_ID]: entityId } })
+  router.push({ name: RouteName.ENTITY_OVERVIEW, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
 const handleSort = (param: SortingCriteria) => {
   const { handleSortCriteria } = useSort()

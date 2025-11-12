@@ -3,7 +3,7 @@ import { getStoreMock, getMockedEntitySummary, getMockedEntity } from '@pulse/co
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { FeatureFlagManager } from '@pulse/common/managers'
 
-import HomePage from '.'
+import HomePage from './HomePage.vue'
 
 const mockedEntity = getMockedEntity()
 const entitySummaryMock = getMockedEntitySummary(mockedEntity)

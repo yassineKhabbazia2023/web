@@ -33,7 +33,7 @@ describe('App Router', () => {
 
     it('should have maintenance routes', () => {
       const routes = router.getRoutes()
-      const maintenanceRoute = routes.find(route => route.name === 'maintenance')
+      const maintenanceRoute = routes.find(route => route.name === RouteName.MAINTENANCE)
       expect(maintenanceRoute).toBeDefined()
     })
 

@@ -1,7 +1,7 @@
 import { useRouter } from 'vue-router'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { useUserStore } from '@pulse/common/stores'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 
 export const useRedirection = () => {
   const router = useRouter()
@@ -11,11 +11,11 @@ export const useRedirection = () => {
   }
 
   const redirectToLoginClient = (query?: Record<string, any>) => {
-    router.replace({ name: APP_ROUTES.login.client.name, query })
+    router.replace({ name: RouteName.LOGIN_CLIENT, query })
   }
 
   const redirectToLoginCollab = (query?: Record<string, any>) => {
-    router.replace({ name: APP_ROUTES.login.collab.name, query })
+    router.replace({ name: RouteName.LOGIN_COLLAB, query })
   }
 
   const logoutAndRedirectToLogin = async (query?: Record<string, any>) => {

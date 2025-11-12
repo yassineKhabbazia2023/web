@@ -77,16 +77,14 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { login } from '@pulse/common'
 import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/components'
 import { LoginManager, CurrentUserManager } from '@pulse/common/managers'
-import useNavigation from '@login/composable/useNavigation'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { APP_ROUTES, BackEndErrors } from '@pulse/common/constants'
+import { BackEndErrors } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 import { getEmailError, getPasswordError } from './LoginClient.utils'
 
 declare let window: {
   gigya: any
 } & Window
-
-const { navigateToCustomerWallet } = useNavigation()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -207,10 +205,11 @@ async function onSubmit() {
     const { isCurrent, terms } = await getTermsByCurrentUser()
 
     if (isCurrent) {
-      return navigateToCustomerWallet()
+      return router.push({ name: RouteName.WALLET })
     }
-    router.push({ name: APP_ROUTES.login.cguValidation.name, params: { termsId: terms.termsId } })
+    router.push({ name: RouteName.VALIDATION_CGU, params: { termsId: terms.termsId } })
   } catch (error: any) {
+    logger.error('Error during login attempt: ', error)
     isLoading.value = false
     const invalidLoginErrorCodes = [
       BackEndErrors.WRONG_LOGIN_PASSWORD,

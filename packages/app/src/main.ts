@@ -17,6 +17,7 @@ import mandateApplet from '@pulse/mandate'
 import offersCatalogApplet from '@pulse/offers-catalog'
 import pennylaneApplet from '@pulse/pennylane'
 import bookingApplet from '@pulse/booking'
+import feedCenterApplet from '@pulse/feed-center'
 import powerBiApplet from '@pulse/powerbi'
 // then import plugins and misc
 import axeptioPlugin from '@app/plugins/Axeptio/axeptio.plugin'
@@ -26,8 +27,8 @@ import hubspotPlugin from '@app/plugins/Hubspot/hubspot.plugin'
 
 import App from './App.vue'
 import router from './router/app.router'
-import { registerSidebarItems } from './managers/sidebar.registry'
-import { registerWalletTabs } from './managers/wallet.registry'
+import { registerSidebarItems } from './router/registry/sidebar.registry'
+import { registerWalletTabs } from './router/registry/wallet.registry'
 
 import frFR from './i18n/fr-FR.json'
 import enUS from './i18n/en-US.json'
@@ -54,23 +55,22 @@ const app = createApp(App)
   .use(productFruitsPlugin, { isActive: isProd })
   .use(hubspotPlugin, { isActive: isProd })
   // install internal libraries
-  .use(commonLibrary)
-  .use(styleguideLibrary, {
-    assetsBaseUrl: VITE_ASSETS_BASE_URL,
-  })
-  .use(sharedLibrary)
-  .use(widgetsLibrary)
+  .use(commonLibrary, {})
+  .use(styleguideLibrary, { assetsBaseUrl: VITE_ASSETS_BASE_URL })
+  .use(sharedLibrary, {})
+  .use(widgetsLibrary, {})
   // install applets
-  .use(entitiesApplet, { router })
-  .use(pennylaneApplet, { router }) // should register pennylaneApplet before gedApplet
-  .use(bookingApplet, { router })
-  .use(gedApplet, { router })
-  .use(homepageApplet, { router })
-  .use(launcherApplet, { router })
-  .use(loginApplet, { router })
-  .use(mandateApplet, { router })
-  .use(offersCatalogApplet, { router })
-  .use(powerBiApplet, { router })
+  .use(entitiesApplet, {})
+  .use(pennylaneApplet, {})
+  .use(bookingApplet, {})
+  .use(feedCenterApplet, {})
+  .use(gedApplet, {})
+  .use(homepageApplet, {})
+  .use(launcherApplet, {})
+  .use(loginApplet, {})
+  .use(mandateApplet, {})
+  .use(offersCatalogApplet, {})
+  .use(powerBiApplet, {})
 
 // Register app-specific menu items and tabs
 registerSidebarItems()

@@ -124,10 +124,10 @@
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { APP_ROUTES, IS_UNITARY_VIEW_META } from '@pulse/common/constants'
+import { IS_UNITARY_VIEW_META } from '@pulse/common/constants'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { PIcon } from '@pulse/styleguide/components'
-import { RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 import { AppColors } from '@pulse/styleguide'
 import type { SidebarEntityItemProps } from './components/SidebarEntityItem/SidebarEntityItemTypes'
 import type { SidebarEntityProps } from './SidebarEntityTypes'
@@ -163,13 +163,11 @@ const shouldDisplaySidebar = computed(() => {
 })
 
 const walletItem = computed((): SidebarEntityItemProps => {
-  const collabWalletRouteName = APP_ROUTES.wallet.collab.root.name
-  const customerWalletRouteName = APP_ROUTES.wallet.client.root.name
-  const isCollabUser = props.userConfig?.isCollab === true
+  const walletRouteName = RouteName.WALLET
   return {
     tooltipContent: t('shared.sidebar.globalView'),
     tooltipDisabled: isSidebarOpened.value,
-    route: { name: isCollabUser ? collabWalletRouteName : customerWalletRouteName },
+    route: { name: walletRouteName },
   }
 })
 
@@ -201,7 +199,7 @@ const onToggleSidebar = () => {
 }
 
 const getActiveWallet = computed(() => {
-  const routesWithActiveWallet = ['wallet', 'wallet-client']
+  const routesWithActiveWallet = [RouteName.WALLET]
   if (RouterHelpers.isRouteOrAncestorActive({ route, routesToMatch: routesWithActiveWallet })) {
     return 'sidenav-entity__actions-active'
   }

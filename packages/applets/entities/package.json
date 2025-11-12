@@ -9,7 +9,9 @@
   "exports": {
     ".": "./src/main.ts",
     "./enums": "./src/modules/wallet/enums/index.ts",
-    "./wallet-managers": "./src/modules/wallet/managers/index.ts"
+    "./wallet-managers": "./src/modules/wallet/managers/index.ts",
+    "./wallet-pages": "./src/wallet-pages.index.ts",
+    "./entity-pages": "./src/entity-pages.index.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

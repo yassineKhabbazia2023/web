@@ -47,7 +47,7 @@
           pType="white"
           class="back-to-login-button"
           data-testid="reset-password-back-to-login-button"
-          @click="router.push({ name: APP_ROUTES.login.client.name })"
+          @click="router.push({ name: RouteName.LOGIN_CLIENT })"
         >
           {{ t('backToLogin') }}
         </PButton>
@@ -64,7 +64,8 @@ import { useRouter } from 'vue-router'
 import { commonApi } from '@pulse/common'
 import { PForm, PFormItem, PInput, PButton } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
-import { APP_ROUTES, HTTP_RESPONSES } from '@pulse/common/constants'
+import { HTTP_RESPONSES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -124,7 +125,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
     isLoading.value = true
     await commonApi().gateway.post('authentication/api/sendResetPasswordLink', toRaw(formValues))
     router.push({
-      name: APP_ROUTES.login.resetPasswordSuccess.name,
+      name: RouteName.RESET_PASSWORD_SUCCESS,
       query: {
         email: formValues.email || '',
       },
@@ -132,7 +133,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   } catch (error: any) {
     if (error.status === HTTP_RESPONSES.TOO_MANY_REQUESTS) {
       router.push({
-        name: APP_ROUTES.login.resetPasswordFailed.name,
+        name: RouteName.RESET_PASSWORD_FAILED,
         query: {
           maxAttempts: error.response.data.maxAttempts,
         },

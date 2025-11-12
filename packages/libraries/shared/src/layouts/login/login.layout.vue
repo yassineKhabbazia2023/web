@@ -80,18 +80,20 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { OFFICIAL_WEBSITE_URL, APP_ROUTES } from '@pulse/common/constants'
+import { OFFICIAL_WEBSITE_URL } from '@pulse/common/constants'
 import { PCol, PImage, PRow } from '@pulse/styleguide/components'
 import { LegalLinks, SupportInformation, SupportInformationCollab } from '@pulse/shared/components'
+import { RouteName } from '@pulse/common/enums'
+
 import SessionExpiredModal from './session-expired.modal.vue'
 
 const route = useRoute()
 const router = useRouter()
-const isCollabPage = computed(() => route.name === APP_ROUTES.login.collab.name)
+const isCollabPage = computed(() => route.name === RouteName.LOGIN_COLLAB)
 const imageName = computed(() => isCollabPage.value ? 'login-page-collab' : 'login-page-client')
 
 const legalLinksHasCgu = computed(() => {
-  return route.name !== APP_ROUTES.login.collab.name
+  return route.name !== RouteName.LOGIN_COLLAB
 })
 
 // #region session expired modal

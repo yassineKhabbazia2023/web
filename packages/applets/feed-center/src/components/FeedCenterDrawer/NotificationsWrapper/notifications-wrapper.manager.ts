@@ -109,7 +109,7 @@ const notificationActionsMapping: Record<NotificationKindEnum, Function> = {
   [NotificationKindEnum.Mandate]: (params: NotificationActionsMappingParams) => {
     const { notification, router } = params
     router.push({
-      name: RouteName.MANDATE,
+      name: RouteName.MANDATES,
       query: { bankAccountNumbers: notification.redirectLink },
     })
   },

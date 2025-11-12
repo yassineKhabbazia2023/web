@@ -1,5 +1,5 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { RouteName } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
 import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
 import { BootManager } from './boot.manager'
@@ -47,7 +47,7 @@ export class AnonymousFlowManager {
    * Returns the redirection route or null if no redirection is needed
    */
   static getAnonymousRedirection(to: RouteLocationNormalized): RouteLocationNamedRaw | null {
-    if (to.name === APP_ROUTES.anonymous.name) {
+    if (to.name === RouteName.ANONYMOUS) {
       return this.getLandingPage()
     }
     return null
@@ -56,7 +56,7 @@ export class AnonymousFlowManager {
 
   // #region landing pages
   static getLandingPage() {
-    return { name: APP_ROUTES.login.client.name }
+    return { name: RouteName.LOGIN_CLIENT }
   }
   // #endregion landing pages
 }

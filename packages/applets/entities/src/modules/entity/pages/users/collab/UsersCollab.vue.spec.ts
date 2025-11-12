@@ -23,7 +23,7 @@ import { getPendingOperations } from '@entities/modules/entity/utils/operation.u
 import { TrackingLocalisation } from '@entities/enums'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 
-import UsersCollab from '.'
+import UsersCollab from './UsersCollab.vue'
 
 const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
