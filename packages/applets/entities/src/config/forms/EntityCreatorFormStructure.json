@@ -32,7 +32,11 @@
         "pFieldType": "input",
         "pPlaceholder": "Saisissez un numéro SIRET",
         "pTestId": "entity-creator-siret-input",
-        "pLabel": "Numéro SIRET"
+        "pLabel": "Numéro SIRET",
+        "pRules": [
+          { "required": true, "message": "Veuillez saisir un numéro SIRET", "trigger": "blur" },
+          { "min": 9, "message": "Le numéro SIRET doit contenir au moins 9 caractères", "trigger": "blur" }
+        ]
       }
     ]
   },
