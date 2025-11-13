@@ -11,7 +11,7 @@ export enum HomeWidgetNames {
 const userWithoutPennylaneOfferWidgetNames = [
   WidgetName.RSS_NEWS,
   WidgetName.DIGILAB,
-  WidgetName.BOOKING_RENDEZ_VOUS,
+  WidgetName.BOOKING_APPOINTMENT,
 ]
 
 const userWithPennylaneAndGedWidgetNames = [
@@ -19,7 +19,7 @@ const userWithPennylaneAndGedWidgetNames = [
   WidgetName.PENNYLANE_DOCUMENTS,
   WidgetName.DIGILAB,
   WidgetName.RSS_NEWS,
-  WidgetName.BOOKING_RENDEZ_VOUS,
+  WidgetName.BOOKING_APPOINTMENT,
   WidgetName.POWERBI_INTRO,
 ]
 
@@ -27,7 +27,7 @@ const userWithSmartWidgetNames = [
   WidgetName.SMART_INTRO,
   WidgetName.DIGILAB,
   WidgetName.RSS_NEWS,
-  WidgetName.BOOKING_RENDEZ_VOUS,
+  WidgetName.BOOKING_APPOINTMENT,
   WidgetName.POWERBI_INTRO,
 ]
 

@@ -35,8 +35,12 @@ const { isCustomer } = storeToRefs(userStore)
 
 const widgets = ref<WidgetGridDefinition[]>([])
 
-onMounted(async () => {
+function loadWidgets() {
   widgets.value = WidgetsHomeManager.getWidgetsLayout(isCustomer.value)
+}
+
+onMounted(async () => {
+  loadWidgets()
 })
 </script>
 

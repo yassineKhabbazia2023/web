@@ -19,7 +19,7 @@ describe('WidgetsService', () => {
           WidgetName.PENNYLANE_DOCUMENTS,
           WidgetName.DIGILAB,
           WidgetName.RSS_NEWS,
-          WidgetName.BOOKING_RENDEZ_VOUS,
+          WidgetName.BOOKING_APPOINTMENT,
           WidgetName.POWERBI_INTRO,
         ],
       },
@@ -31,7 +31,7 @@ describe('WidgetsService', () => {
           WidgetName.PENNYLANE_DOCUMENTS,
           WidgetName.DIGILAB,
           WidgetName.RSS_NEWS,
-          WidgetName.BOOKING_RENDEZ_VOUS,
+          WidgetName.BOOKING_APPOINTMENT,
           WidgetName.POWERBI_INTRO,
         ],
       },
@@ -41,7 +41,7 @@ describe('WidgetsService', () => {
         expectedWidgets: [
           WidgetName.RSS_NEWS,
           WidgetName.DIGILAB,
-          WidgetName.BOOKING_RENDEZ_VOUS,
+          WidgetName.BOOKING_APPOINTMENT,
         ],
       },
     ])('shoud return proper list when $testName', ({

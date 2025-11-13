@@ -45,6 +45,7 @@ export default ({ mode }: any) =>
         strictPort: true,
         open: true,
         origin: `http://localhost:${PORT}`,
+        https: false,
       },
       preview: {
         port: PORT,

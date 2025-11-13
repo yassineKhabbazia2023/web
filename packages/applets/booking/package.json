@@ -8,8 +8,9 @@
   "type": "module",
   "exports": {
     ".": "./src/main.ts",
-    "./managers/booking": "./src/managers/booking.manager.ts",
-    "./widgets/booking-header": "./src/widgets/booking-header/widget.ts"
+    "./shared/managers/booking": "./src/shared/managers/booking.manager.ts",
+    "./shared/managers/booking-tracking": "./src/shared/managers/booking-tracking.manager.ts",
+    "./collab/widgets/header-widget": "./src/collab/widgets/header-widget/widget.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

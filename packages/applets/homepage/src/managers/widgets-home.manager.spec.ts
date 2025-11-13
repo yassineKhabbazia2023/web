@@ -11,9 +11,9 @@ import {
 } from '@homepage/__mocks__/widgets-home.mocks'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { getStoreMock } from '@pulse/common/mocks'
-import { useBookingStore } from '@pulse/common/stores'
+import { useBookingCustomerStore } from '@pulse/common/stores'
 
-getStoreMock(useBookingStore)
+getStoreMock(useBookingCustomerStore)
 
 vi.mock('@pulse/common/services/widgets')
 vi.mock('@pulse/widgets/managers')

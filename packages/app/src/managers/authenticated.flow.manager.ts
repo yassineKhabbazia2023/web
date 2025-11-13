@@ -19,12 +19,14 @@ import type { RouteLocationNamedRaw, RouteLocationNormalized } from 'vue-router'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { fetchEntityById } from '@pulse/common/services/entities'
 import { Entity } from '@pulse/common/types'
+import { BookingManager } from '@pulse/booking/shared/managers/booking'
 
 export class AuthenticatedFlowManager {
   static async enterAuthenticatedFlow() {
     await this.initCurrentUser()
     this.initAuthenticatedThirdParties()
     await this.initEntities()
+    await BookingManager.refreshAvailableExperts()
   }
 
   // #region setup

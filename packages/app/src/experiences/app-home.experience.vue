@@ -14,13 +14,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { HomeLayout } from '@pulse/shared/layouts'
 import type { UserConfig } from '@pulse/shared/types'
 import { FeedCenterHeaderWidget } from '@pulse/feed-center/widgets/feed-center-header'
-import { BookingHeaderWidget } from '@pulse/booking/widgets/booking-header'
-import { BookingManager } from '@pulse/booking/managers/booking'
+import { BookingHeaderWidget } from '@pulse/booking/collab/widgets/header-widget'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { useUserStore, useCurrentEntityStore, usePermissionsStore } from '@pulse/common/stores'
 import { Feature } from '@pulse/common/enums'
@@ -54,8 +53,4 @@ const shouldShowBooking = computed(() =>
   userStore.isCollab === true &&
   FeatureFlagManager.isFeatureActivated(Feature.BOOKING) === true,
 )
-
-onMounted(async () => {
-  await BookingManager.refreshAvailableExperts()
-})
 </script>

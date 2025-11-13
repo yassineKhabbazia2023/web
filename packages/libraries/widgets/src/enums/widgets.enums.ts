@@ -1,5 +1,5 @@
 export enum WidgetName {
-  BOOKING_RENDEZ_VOUS = 'BookingRendezVous',
+  BOOKING_APPOINTMENT = 'BookingAppointment',
   DIGILAB = 'Digilab',
   EMAIL_PENNYLANE = 'EmailPennylane',
   PENNYLANE_DOCUMENTS = 'PennylaneDocuments',
