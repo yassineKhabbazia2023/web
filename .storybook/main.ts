@@ -21,6 +21,7 @@ const config: StorybookConfig = {
     '../packages/libraries/common/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/libraries/toolbox/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/libraries/widgets/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../packages/libraries/shared/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/libraries/styleguide/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/app/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
