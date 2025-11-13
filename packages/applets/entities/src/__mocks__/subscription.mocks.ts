@@ -21,6 +21,8 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
       offerId: 5,
       offerCode: 'MEG Smart',
       offerLabel: 'Modules MEG : facturation et caisse',
+      offerName: 'Mes modules de gestion : RCA MEG Smart',
+      logoName: 'meg',
       plans: [
         {
           planId: 1,
@@ -63,6 +65,8 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
       offerId: 6,
       offerCode: 'Pennylane',
       offerLabel: "Mise à disposition de l'outil Pennylane alliée à l'expertise de RYDGE",
+      offerName: 'Pennylane',
+      logoName: 'pennylane',
     },
     clients: [
       {

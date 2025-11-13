@@ -21,6 +21,8 @@ export interface SubscriptionRequest {
     offerId: number
     offerCode: string
     offerLabel: string
+    offerName: string
+    logoName: string
     plans?: OfferPlan[]
   }
   clients: Contact[]

@@ -7,6 +7,7 @@ export const getActiveOffersMocked = () => {
         offerCode: 'MEG Smart',
         logoName: 'meg',
         provider: 'RCA - MEG Premium',
+        plans: [],
       },
     },
     {

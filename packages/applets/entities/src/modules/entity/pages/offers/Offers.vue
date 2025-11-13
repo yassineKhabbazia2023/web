@@ -46,7 +46,7 @@
               class="offers-table__offer-logo margin-right--2"
             />
             <p class="text-capitalize">
-              <span class="font-semibold">{{ offerActivation.offerName }}</span>
+              <span class="font-semibold">{{ getOfferNameWithPlan(offerActivation) }}</span>
             </p>
           </div>
         </template>
@@ -106,9 +106,10 @@ import OfferActivationStatus from './components/OfferActivationStatus'
 import type { SubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
 import { fetchAccountSubscriptions } from '@entities/services/subscription'
 import OffersDrawer from '@entities/components/OffersDrawer'
+import { OfferPlanManager } from '@entities/components/OfferSubscription/components/OfferPlanSubscription/offer-plan.manager'
 import { ACTION_PERMISSIONS } from '@pulse/common/constants'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
-import { RouteParam } from '@pulse/common/enums'
+import { SubscriptionOfferCode, RouteParam } from '@pulse/common/enums'
 import { OfferActivationStatus as OfferActivationStatusEnum } from '@entities/modules/entity/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 
@@ -142,6 +143,14 @@ const headerSubtitle = computed(() =>
 const isActivateOffersButtonVisible = computed(
   () => isCollab.value && CurrentUserManager.hasPermission(ACTION_PERMISSIONS.ACTIVATE_OFFER),
 )
+
+const getOfferNameWithPlan = (offer: SubscriptionRequest['offer']): string => {
+  const selectedPlan = OfferPlanManager.getSelectedPlan(offer.plans)
+  if (selectedPlan !== undefined && offer.offerCode === SubscriptionOfferCode.PENNYLANE) {
+    return `${offer.offerName} : Plan ${selectedPlan.planName}`
+  }
+  return offer.offerName
+}
 
 const offersDrawerRef = useTemplateRef<InstanceType<typeof OffersDrawer>>('offersDrawer')
 const handleActivateOffersClick = async () => {
