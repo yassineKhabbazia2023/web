@@ -56,10 +56,6 @@ export default defineConfig({
               text: 'Imports dans le Monorepo',
               link: '/monorepo/imports',
             },
-            {
-              text: 'Guidelines et bonnes pratiques',
-              link: '/monorepo/best-practices',
-            },
           ],
         },
         {
