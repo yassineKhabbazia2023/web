@@ -23,7 +23,7 @@ const config: StorybookConfig = {
     '../packages/libraries/widgets/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/libraries/shared/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/libraries/styleguide/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../packages/app/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../packages/apps/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   staticDirs: [
     {
@@ -94,7 +94,7 @@ const config: StorybookConfig = {
       },
       {
         find: '@app',
-        replacement: fileURLToPath(new URL('../packages/app/src', import.meta.url)),
+        replacement: fileURLToPath(new URL('../packages/apps/plu/src', import.meta.url)),
       },
       {
         find: '~storybook',

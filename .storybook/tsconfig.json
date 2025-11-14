@@ -20,7 +20,7 @@
     "baseUrl": ".",
     "paths": {
       "@app/*": [
-        "../packages/app/src/*"
+        "../packages/apps/plu/src/*"
       ],
       "@common/*": [
         "../packages/libraries/common/src/*"

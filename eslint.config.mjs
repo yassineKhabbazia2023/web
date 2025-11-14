@@ -134,7 +134,7 @@ export default [
   },
   {
     // specific rulesets for App & Applets (above rules apply as well)
-    files: ['packages/app/**/*', 'packages/applets/**/*'],
+    files: ['packages/apps/**/*', 'packages/applets/**/*'],
     rules: {
       'no-restricted-imports': [
         'error',

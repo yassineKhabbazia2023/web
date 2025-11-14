@@ -12,7 +12,7 @@ npm install
 
 ## Fichiers /public
 
-Pour démarrer l'application sur votre ordinateur local, assurez-vous d'avoir deux fichiers, qui sont ignorés par git, configurés dans le dossier `./packages/app/public/` :
+Pour démarrer l'application sur votre ordinateur local, assurez-vous d'avoir deux fichiers, qui sont ignorés par git, configurés dans le dossier `./packages/apps/plu/public/` :
 
 ### env-vars.js
 
@@ -20,7 +20,7 @@ Les variables d'environnement sont essentielles pour le lancement de l'applicati
 
 Le fichier ressemble à ceci :
 
-```javascript title="./packages/app/public/env-vars.js"
+```javascript title="./packages/apps/plu/public/env-vars.js"
 const envVars = {
   VITE_ACCOUNTING_HUB_URL: `xxx`,
   VITE_AMPLITUDE_API_KEY: `yyy`,
@@ -47,7 +47,7 @@ Deux façon de récupérer le fichier _env-vars.js_ :
 
 Ces valeurs permettent au Front de se logger sur l'application en tant que collaborateur et de retourner sur le localhost. Sans ça, MSAL (l'outil de connexion SSO Collab) renverrait l'adresse d'ITG.
 
-Copiez ensuite ce fichier dans `./packages/app/public/env-vars.js`.
+Copiez ensuite ce fichier dans `./packages/apps/plu/public/env-vars.js`.
 
 ### styles.css
 
@@ -57,11 +57,11 @@ Sans cela, l'application fonctionnera, mais la font ne sera pas la bonne.
 
 Le fichier ressemble à ça :
 
-```javascript title="./packages/app/public/styles.css"
+```javascript title="./packages/apps/plu/public/styles.css"
 @import url("https://assets-xxx.xxx/fonts/index.css");
 ```
 
-Comme pour les `env-vars.js`, vous pouvez récupérer le fichier `styles.css` sur [ITG](https://app-itg01.itg.pulse.rydge.fr/styles.css) et le placer dans `./packages/app/public/styles.css`.
+Comme pour les `env-vars.js`, vous pouvez récupérer le fichier `styles.css` sur [ITG](https://app-itg01.itg.pulse.rydge.fr/styles.css) et le placer dans `./packages/apps/plu/public/styles.css`.
 
 ## Démarrer le Front en local
 

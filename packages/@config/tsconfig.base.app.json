@@ -13,7 +13,7 @@
     "outDir": "./dist/types",
     "paths": {
       "@app/*": [
-        "../app/src/*"
+        "../apps/plu/src/*"
       ],
       "@common/*": [
         "../libraries/common/src/*"
@@ -67,7 +67,7 @@
   },
   "references": [
     {
-      "path": "./packages/app"
+      "path": "./packages/apps/plu"
     },
     {
       "path": "./packages/applets/booking"

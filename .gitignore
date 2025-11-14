@@ -130,8 +130,8 @@ stats.html
 
 # app
 ## public
-packages/app/public/env-vars.js
-packages/app/public/styles.css
+packages/apps/plu/public/env-vars.js
+packages/apps/plu/public/styles.css
 ## version
 version.json
 ## build

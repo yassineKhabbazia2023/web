@@ -1,5 +1,5 @@
 {
-  "extends": "../@config/tsconfig.base.app",
+  "extends": "../../@config/tsconfig.base.app",
   "include": [
     "env.d.ts",
     "src/**/*",

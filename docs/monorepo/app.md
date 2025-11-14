@@ -83,7 +83,7 @@ Le routeur gère :
 
 Référez-vous au `package.json` pour les scripts que vous pouvez exécuter sur ce package.
 
-<<< @/../packages/app/package.json
+<<< @/../packages/apps/plu/package.json
 
 ### Scripts principaux
 

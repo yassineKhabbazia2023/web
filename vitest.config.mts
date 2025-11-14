@@ -5,7 +5,7 @@ export default defineConfig({
     projects: [
       'packages/libraries/*',
       'packages/applets/*',
-      'packages/app',
+      'packages/apps/*',
       'packages/admin-tools',
     ],
     reporters: [
