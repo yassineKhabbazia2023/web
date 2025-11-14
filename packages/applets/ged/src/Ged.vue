@@ -294,10 +294,6 @@ onMounted(async () => {
 })
 </script>
 
-<style lang="scss">
-@import './styles/main';
-</style>
-
 <i18n lang="yaml">
   en-US:
     unavailableService: 'The {serviceName} document management service is temporarily unavailable.'

@@ -114,3 +114,13 @@
 .bg--transparent {
   background-color: transparent;
 }
+
+.cursor {
+  &-grabbing {
+    cursor: grabbing;
+  }
+
+  &-not-allowed {
+    cursor: not-allowed;
+  }
+}

@@ -1,15 +1,7 @@
 import type { StorybookConfig } from '@storybook/vue3-vite'
-import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 
-/**
-* This function is used to resolve the absolute path of a package.
-* It is needed in projects that use workspaces within a monorepo.
-*/
-function getAbsolutePath(value: string): any {
-  return dirname(require.resolve(join(value, 'package.json')))
-}
 const config: StorybookConfig = {
   core: {
     disableTelemetry: true,
@@ -32,11 +24,11 @@ const config: StorybookConfig = {
     },
   ],
   addons: [
-    getAbsolutePath('@storybook/addon-docs'),
-    getAbsolutePath('@storybook/addon-a11y'),
+    '@storybook/addon-docs',
+    '@storybook/addon-a11y',
   ],
   framework: {
-    name: getAbsolutePath('@storybook/vue3-vite'),
+    name: '@storybook/vue3-vite',
     options: {},
   },
   docs: {

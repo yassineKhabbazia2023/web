@@ -3,6 +3,11 @@ import { type AppOptions } from './types/AppTypes'
 
 import dayjs from 'dayjs'
 
+// Design System colors
+import './assets/css/pegase-colors.css'
+import './assets/css/figma-proxy.css'
+import './assets/css/legacy-colors.css'
+// Design System styles (starring Element Plus)
 import './assets/scss/index.scss'
 
 import { setAssetsBaseUrl } from './utils/imageResolverInit'

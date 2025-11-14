@@ -6,10 +6,10 @@
   "private": true,
   "type": "module",
   "exports": {
-  "./components": "./src/components.ts",
-  "./types": "./src/types.ts",
-  "./fonts": "./src/assets/fonts/index.css",
-  ".": "./src/main.ts"
+    "./components": "./src/components.ts",
+    "./types": "./src/types.ts",
+    "./fonts": "./src/assets/fonts/index.css",
+    ".": "./src/main.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

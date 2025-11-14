@@ -1,12 +1,9 @@
-// These CSS files need to be imported first, don't change their order
-@import '../css/pegase-colors.css';
-@import '../css/figma-proxy.css';
-@import '../css/legacy-colors.css';
-@import './element/index';
-@import './pegase/normalize';
-@import './pegase/custom';
-@import './pegase/colors-classes.generation';
-@import './partners/pennylane';
+@use './element/index';
+@use './pegase/normalize';
+@use './pegase/custom';
+@use './pegase/colors-classes.generation';
+@use './partners/pennylane';
+
 
 // Override Element Plus defaults after all imports (CSS cascade order)
 :root {
