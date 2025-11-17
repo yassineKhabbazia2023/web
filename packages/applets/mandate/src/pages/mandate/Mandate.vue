@@ -76,9 +76,9 @@ const searchParams = ref<SearchMandateParams>({
 })
 const route = useRoute()
 watch(route, (value) => {
-  if (value.name === RouteName.MANDATES) {
+  if (value.name === RouteName.MANDATES && value.query.bankAccountNumbers !== undefined) {
     // Backend will always return a simple string in this case
-    searchParams.value.searchTerm = value.query.bankAccountNumber as string
+    searchParams.value.searchTerm = value.query.bankAccountNumbers as string
   }
 }, {
   immediate: true,
