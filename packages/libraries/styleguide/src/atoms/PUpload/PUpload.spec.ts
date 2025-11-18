@@ -23,6 +23,7 @@ const defaultProps: UploadProps = {
   pDisabled: false,
   pAccept: 'image/png, image/jpeg',
   pShowFileList: true,
+  pDeleteButtonTitle: 'Delete document',
 }
 
 const createWrapper = (props = defaultProps) =>

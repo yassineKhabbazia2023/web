@@ -45,7 +45,7 @@
         :pIconName="getIconName(file.name, 'filetypeNone')"
         pHasButton
         pButtonIconName="trash"
-        pTitleButton="Supprimer le document"
+        :pTitleButton="pDeleteButtonTitle"
         :pColor="pColorFileLine"
         @on-click-file-action="removeFile(file)"
       />

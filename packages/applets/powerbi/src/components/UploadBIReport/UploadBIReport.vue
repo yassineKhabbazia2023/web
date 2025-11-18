@@ -18,6 +18,7 @@
       pUploadType="dragger"
       :pPrefixLabelFileLine="t('prefixLabelFileLine')"
       :pSuffixLabelFileLine="t('suffixLabelFileLine')"
+      :pDeleteButtonTitle="t('deleteButtonTitle')"
       pAuthorizedFileFormat="PBX"
       pTextLimitSize="50 Mo"
       pColorFileLine="persian"
@@ -78,8 +79,10 @@ en-US:
   uploadReport: 'Please file BI report'
   prefixLabelFileLine: 'Drag file or'
   suffixLabelFileLine: 'browse computer'
+  deleteButtonTitle: 'Delete document'
 fr-FR:
   uploadReport: 'Veuillez déposer le rapport BI'
   prefixLabelFileLine: 'Glisser le fichier ou'
   suffixLabelFileLine: "parcourir l'ordinateur"
+  deleteButtonTitle: 'Supprimer le document'
 </i18n>

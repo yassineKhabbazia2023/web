@@ -14,4 +14,5 @@ export interface UploadProps {
   pShouldClearPreviousFilesListOnUpload?: boolean
   pAuthorizedFileFormat?: string
   pColorFileLine?: PUploadFileLineProps['pColor']
+  pDeleteButtonTitle?: string
 }
