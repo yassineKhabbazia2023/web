@@ -1,5 +1,7 @@
-export const fetchUserPermissionsMock = vi.fn()
-export const fetchUserAccountPermissionsMock = vi.fn()
+import type { Mock } from 'vitest'
+
+export const fetchUserPermissionsMock: Mock = vi.fn()
+export const fetchUserAccountPermissionsMock: Mock = vi.fn()
 
 export const permissionServiceMock = {
   fetchUserPermissions: fetchUserPermissionsMock,

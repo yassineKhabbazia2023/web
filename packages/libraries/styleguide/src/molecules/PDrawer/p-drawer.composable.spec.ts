@@ -68,6 +68,7 @@ describe('p drawer composable', () => {
   })
 
   it('should call killTrackOutsideClick after closing the drawer', async () => {
+    vi.useFakeTimers()
     const killTrackOutsideSpy = vi.spyOn(drawerManager, 'killTrackOutsideClick')
     drawerModel.value = true
     usePDrawer(drawerTemplateRef, drawerModel, drawerTypeMini)

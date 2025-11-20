@@ -1,30 +1,31 @@
+import type { Mock } from 'vitest'
 import { foldersData } from './tree-folders.mocks'
 import { servicesDataMock } from './services.mocks'
 import { Service } from '@ged/models/Service'
 
-export const fetchServicesFoldersSuccessMock = vi.fn(() => ({
+export const fetchServicesFoldersSuccessMock: Mock = vi.fn(() => ({
   foldersByService: foldersData,
   unavailableServices: [] as Service[],
 }))
 
-export const fetchServicesFoldersFailMock = vi.fn(() => ({
+export const fetchServicesFoldersFailMock: Mock = vi.fn(() => ({
   foldersByService: foldersData,
   unavailableServices: [servicesDataMock[0]],
 }))
 
-export const moveFolderAsyncFailMock = vi.fn(() => {
+export const moveFolderAsyncFailMock: Mock = vi.fn(() => {
   throw new Error('Something uncool')
 })
 
-export const createFolderFailMock = vi.fn(() => {
+export const createFolderFailMock: Mock = vi.fn(() => {
   throw new Error('Something uncool')
 })
 
-export const deleteFolderFailMock = vi.fn(() => {
+export const deleteFolderFailMock: Mock = vi.fn(() => {
   throw new Error('Something uncool')
 })
 
-export const renameFolderFailMock = vi.fn(() => {
+export const renameFolderFailMock: Mock = vi.fn(() => {
   throw new Error('Something uncool')
 })
 

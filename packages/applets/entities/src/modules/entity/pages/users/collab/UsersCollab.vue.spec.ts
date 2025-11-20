@@ -1,7 +1,6 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
 import { contactServiceMock } from '@entities/__mocks__/contact.service.mocks'
-import { walletServiceMock } from '@entities/__mocks__/wallet.service.mocks'
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
 import { fetchAccountCustomers } from '@entities/services/wallet'
@@ -55,7 +54,7 @@ const MOCKED_USER = {
 const mockedAccount = getMockedAccount()
 
 vi.mock('@entities/services/contact', () => contactServiceMock)
-vi.mock('@entities/services/wallet', () => walletServiceMock)
+vi.mock('@entities/services/wallet')
 
 const apiMocks = vi.hoisted(() => ({
   singleAccountSignatory: vi.fn(() => Promise.resolve([
@@ -186,6 +185,20 @@ const removeUserToolboxItem: PToolboxItemProps = {
 
 describe('usersCollab', () => {
   beforeEach(async () => {
+    // Reset API mocks
+    apiMocks.singleAccountSignatory.mockResolvedValue([mockedCustomersCollab[0]])
+    apiMocks.multipleAccountSignatories.mockResolvedValue([
+      mockedCustomersCollab[0],
+      mockedCustomersCollab[1],
+    ])
+
+    vi.mocked(fetchAccountCustomers).mockResolvedValue({
+      items: mockedCustomersCollab as any,
+      totalItems: mockedCustomersCollab.length,
+      currentPage: 1,
+      totalPages: 1,
+    })
+
     userStoreMock.user = userMock
     currentEntityStoreMock.currentEntity = entitySummaryMock
     hasPermissionMock.mockReturnValue(false)

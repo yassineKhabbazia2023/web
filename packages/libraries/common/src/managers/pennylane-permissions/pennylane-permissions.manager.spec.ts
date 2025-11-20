@@ -15,7 +15,7 @@ vi.mock('../feature-flag/feature-flag.manager')
 vi.mock('../current-user/current-user.manager')
 
 describe('PennylanePermissionsManager', () => {
-  const isFeatureActivatedSpy = vi.mocked(FeatureFlagManager).isFeatureActivated
+  const isFeatureActivatedSpy = vi.mocked(FeatureFlagManager.isFeatureActivated)
   const hasOfferSpy = currentEntityStoreMock.hasOffer
 
   describe('isGedUxV2', () => {

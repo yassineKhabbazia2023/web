@@ -3,7 +3,7 @@ import path from 'node:path'
 import { mergeConfig, UserConfig } from 'vite'
 import { configDefaults, defineConfig } from 'vitest/config'
 
-import viteConfig from './vite.config.mts'
+import viteConfig from './vite.config.ts'
 
 export default mergeConfig(
   viteConfig as UserConfig,
@@ -27,7 +27,7 @@ export default mergeConfig(
       ],
       deps: {
         optimizer: {
-          web: {
+          client: {
             enabled: true,
             include: ['element-plus'],
           },

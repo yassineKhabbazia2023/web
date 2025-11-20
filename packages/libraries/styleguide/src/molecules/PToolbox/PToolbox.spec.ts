@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach } from 'vitest'
 import { shallowMount, VueWrapper } from '@vue/test-utils'
 import { ElDropdown, ElDropdownMenu, ElDropdownItem } from 'element-plus'
 import PToolbox from './PToolbox.vue'
@@ -44,6 +43,11 @@ describe('PToolbox', () => {
     wrapper = createWrapper()
   })
 
+  afterEach(() => {
+    wrapper?.unmount()
+    vi.clearAllTimers()
+  })
+
   describe('props', () => {
     it('should receive correct props', () => {
       expect(wrapper.props()).toMatchObject(defaultProps)
@@ -58,7 +62,7 @@ describe('PToolbox', () => {
     it('should update xAxisOffset when pCoordinates.x changes', async () => {
       const xAxisOffsetMock = ref(0)
 
-      const wrapper = shallowMount(PToolbox, {
+      const localWrapper = shallowMount(PToolbox, {
         props: defaultProps,
         global: {
           stubs: {
@@ -76,12 +80,16 @@ describe('PToolbox', () => {
         },
       })
 
-      await wrapper.setProps({ pCoordinates: { x: 300, y: 200 } })
-      await wrapper.vm.$nextTick()
+      await localWrapper.setProps({ pCoordinates: { x: 300, y: 200 } })
+      await localWrapper.vm.$nextTick()
 
       xAxisOffsetMock.value = 150
 
       expect(xAxisOffsetMock.value).toBeGreaterThan(0)
+
+      // Wait for setTimeout to complete before unmounting
+      await new Promise(resolve => setTimeout(resolve, 20))
+      localWrapper.unmount()
     })
   })
 })

@@ -1,13 +1,14 @@
+import type { Mock } from 'vitest'
 import { documentsResponsePayload } from './documents.mocks'
 
-export const previewDocumentMock = vi.fn(() => {
+export const previewDocumentMock: Mock = vi.fn(() => {
   return Promise.resolve({
     data: new ArrayBuffer(1),
     headers: { 'content-type': 'image/jpeg' },
   })
 })
 
-export const fetchDocumentsByKeyWordMock = vi.fn(() => {
+export const fetchDocumentsByKeyWordMock: Mock = vi.fn(() => {
   return documentsResponsePayload
 })
 

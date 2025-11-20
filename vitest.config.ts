@@ -13,11 +13,9 @@ export default defineConfig({
     ],
     watch: false,
     coverage: {
-      all: false,
       enabled: true,
       provider: 'istanbul',
       reporter: ['lcov', 'json', 'html'],
-      include: ['packages/**/src/**/*'],
       exclude: [
         'node_modules',
         'dist',
@@ -26,6 +24,8 @@ export default defineConfig({
         '.turbo',
         'stats.html',
         'packages/**/*/*.mocks.ts',
+        '.cache',
+        '.rollup.cache',
       ],
     },
   },

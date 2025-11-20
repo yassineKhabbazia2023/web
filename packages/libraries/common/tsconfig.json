@@ -4,8 +4,6 @@
     "env.d.ts",
     "./src/**/*",
     "tests/**/*",
-    "__mocks__",
-    "src/**/*.json",
     "./package.json"
   ],
   "compilerOptions": {

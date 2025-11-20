@@ -5,11 +5,13 @@ const mockedLoggerDebug = vi.hoisted(() => vi.fn((_: string) => _))
 const mockedLoggerWarn = vi.hoisted(() => vi.fn((_: string) => _))
 const mockedLoggerError = vi.hoisted(() => vi.fn((_: string) => _))
 
-const mockedLoggerConstructor = vi.hoisted(() => vi.fn(() => ({
-  debug: mockedLoggerDebug,
-  warn: mockedLoggerWarn,
-  error: mockedLoggerError,
-})))
+const mockedLoggerConstructor = vi.hoisted(() => vi.fn(function() {
+  return {
+    debug: mockedLoggerDebug,
+    warn: mockedLoggerWarn,
+    error: mockedLoggerError,
+  }
+}))
 
 vi.mock('tslog', () => ({
   Logger: mockedLoggerConstructor,

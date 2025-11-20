@@ -1,7 +1,9 @@
-export const trackFeedcenterOpenedMock = vi.fn()
-export const trackNotificationsConsultedMock = vi.fn()
-export const trackNotificationMarkAsReadMock = vi.fn()
-export const trackFeedCenterTabConsultationMock = vi.fn()
+import type { Mock } from 'vitest'
+
+export const trackFeedcenterOpenedMock: Mock = vi.fn()
+export const trackNotificationsConsultedMock: Mock = vi.fn()
+export const trackNotificationMarkAsReadMock: Mock = vi.fn()
+export const trackFeedCenterTabConsultationMock: Mock = vi.fn()
 
 export const trackingServiceMock = {
   trackFeedcenterOpened: trackFeedcenterOpenedMock,

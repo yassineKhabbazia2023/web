@@ -1,7 +1,7 @@
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedAuthorizationState } from '@entities/__mocks__/permissions.mocks'
-import { PennylaneService } from '@pulse/common/services/pennylane'
 import { getMockedPennylaneRole } from '@pulse/common/mocks'
+import { PennylaneService } from '@pulse/common/services/pennylane'
 import { CustomerPermission } from '@pulse/common/enums'
 import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants/rights-management.const'
 import { updateUserPermissions } from '@entities/services/authorization'
@@ -22,7 +22,6 @@ vi.mock('@pulse/toolbox', () => ({
 vi.mock('@pulse/common/services/pennylane')
 vi.mock('@entities/services/authorization')
 
-const PennylaneServiceMock = vi.mocked(PennylaneService)
 const updateUserPermissionsMock = vi.mocked(updateUserPermissions)
 
 const authorizationStateMock = getMockedAuthorizationState()
@@ -46,6 +45,10 @@ const expectedPermissionCodeList = [
 ]
 
 describe('manageRightsDrawerUtils', () => {
+  beforeEach(() => {
+    updateUserPermissionsMock.mockResolvedValue()
+  })
+
   describe('getPermissionCodes', () => {
     it('should return the permission code list', () => {
       const permissionCodes = getPermissionCodes(authorizationStateMock)
@@ -119,7 +122,7 @@ describe('manageRightsDrawerUtils', () => {
       const expectedAdditionnalOptionByActionCode = {
         [PERMISSION_PENNYLANE_CUSTOMER]: roleMock.role,
       }
-      PennylaneServiceMock.getAccountContactRole.mockResolvedValue(roleMock)
+      vi.mocked(PennylaneService.getAccountContactRole).mockResolvedValue(roleMock)
       const additionnalOptionByActionCode = await getAdditionalOptionByActionCode({
         entityId: entityIdMock,
         contactId: contactIdMock,
@@ -128,7 +131,7 @@ describe('manageRightsDrawerUtils', () => {
       expect(additionnalOptionByActionCode).toStrictEqual(expectedAdditionnalOptionByActionCode)
     })
 
-    it('should call logger when PennylaneServiceMock.getAccountContactRole fails', async () => {
+    it('should call logger when PennylaneService.getAccountContactRole fails', async () => {
       const expectedAdditionnalOptionByActionCode = {}
       const errorMock = 'error mock'
       const expectedLoggerErrorParams = [
@@ -136,7 +139,7 @@ describe('manageRightsDrawerUtils', () => {
         errorMock,
       ]
 
-      PennylaneServiceMock.getAccountContactRole.mockRejectedValue(errorMock)
+      vi.mocked(PennylaneService.getAccountContactRole).mockRejectedValue(errorMock)
       const additionnalOptionByActionCode = await getAdditionalOptionByActionCode({
         entityId: entityIdMock,
         contactId: contactIdMock,
@@ -197,7 +200,7 @@ describe('manageRightsDrawerUtils', () => {
         expectedPermissionCodeList,
       ]
 
-      it('should retourn true in nominal case', async () => {
+      it('should return true in nominal case', async () => {
         const expectedIsSuccess = true
         const isSuccess = await saveUserPermissions({
           contactId,
@@ -211,10 +214,10 @@ describe('manageRightsDrawerUtils', () => {
         expect(updateUserPermissionsMock).toHaveBeenCalledOnce()
         expect(updateUserPermissionsMock).toHaveBeenCalledWith(...expectedUpdateUserPermissionsParams)
 
-        expect(PennylaneServiceMock.createRole).not.toHaveBeenCalled()
+        expect(PennylaneService.createRole).not.toHaveBeenCalled()
       })
 
-      it('should retourn false when api throws an error', async () => {
+      it('should return false when api throws an error', async () => {
         const errorMock = 'error mock'
         updateUserPermissionsMock.mockRejectedValue(errorMock)
         const expectedIsSuccess = false
@@ -230,7 +233,7 @@ describe('manageRightsDrawerUtils', () => {
         expect(updateUserPermissionsMock).toHaveBeenCalledOnce()
         expect(updateUserPermissionsMock).toHaveBeenCalledWith(...expectedUpdateUserPermissionsParams)
 
-        expect(PennylaneServiceMock.createRole).not.toHaveBeenCalled()
+        expect(PennylaneService.createRole).not.toHaveBeenCalled()
         expect(loggerMock.error).toHaveBeenCalledOnce()
       })
     })
@@ -243,7 +246,7 @@ describe('manageRightsDrawerUtils', () => {
         expectedPermissionCodeList,
       ]
 
-      it('should retourn true in nominal case', async () => {
+      it('should return true in nominal case', async () => {
         const expectedIsSuccess = true
         const expectedParams = {
           accountId: entityId,
@@ -262,14 +265,14 @@ describe('manageRightsDrawerUtils', () => {
         expect(updateUserPermissionsMock).toHaveBeenCalledOnce()
         expect(updateUserPermissionsMock).toHaveBeenCalledWith(...expectedUpdateUserPermissionsParams)
 
-        expect(PennylaneServiceMock.createRole).toHaveBeenCalled()
-        expect(PennylaneServiceMock.createRole).toHaveBeenCalledWith(expectedParams)
+        expect(PennylaneService.createRole).toHaveBeenCalled()
+        expect(PennylaneService.createRole).toHaveBeenCalledWith(expectedParams)
       })
 
       it('should retourn false when api throws an error', async () => {
         const errorMock = 'error mock'
         const expectedIsSuccess = false
-        PennylaneServiceMock.createRole.mockRejectedValue(errorMock)
+        vi.mocked(PennylaneService.createRole).mockRejectedValue(errorMock)
         const isSuccess = await saveUserPermissions({
           contactId,
           entityId,

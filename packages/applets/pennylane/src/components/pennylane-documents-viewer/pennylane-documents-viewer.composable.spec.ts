@@ -43,7 +43,7 @@ describe('pennylane-documents-viewer.composable', () => {
     } = usePennylaneDocumentViewer(technicalErrorMessageMock)
 
     const documentContentMock = 'mocked-document-content'
-    vi.mocked(PennylaneService).getDocumentContent.mockResolvedValue(documentContentMock)
+    vi.mocked(PennylaneService.getDocumentContent).mockResolvedValue(documentContentMock)
     vi.mocked(getFileExtension).mockReturnValue(fileExtensionMock)
 
     vi.mocked(getDocumentType).mockReturnValue(documentTypeMock)
@@ -95,7 +95,7 @@ describe('pennylane-documents-viewer.composable', () => {
       loadDocument,
     } = usePennylaneDocumentViewer(technicalErrorMessageMock)
 
-    vi.mocked(PennylaneService).getDocumentContent.mockRejectedValue(errorMock)
+    vi.mocked(PennylaneService.getDocumentContent).mockRejectedValue(errorMock)
 
     vi.mocked(getDocumentType).mockReturnValue(documentTypeMock)
     vi.mocked(getDocumentPreviewImage).mockReturnValue(previewImageMock)

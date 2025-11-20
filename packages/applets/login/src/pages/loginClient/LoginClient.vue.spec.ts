@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import {
   cguServiceMock,
   AmplitudeServiceMock,
@@ -38,6 +39,7 @@ window.gigya = {
 }
 
 vi.mock('env-vars', () => envVarsMock)
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 vi.mock('vue-router', () => ({
   useRouter: () => ({

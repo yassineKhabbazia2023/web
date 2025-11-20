@@ -1,3 +1,4 @@
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { BootManager } from './boot.manager'
 import { createTestingPinia } from '@pinia/testing'
 import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
@@ -8,13 +9,12 @@ import { AnonymousFlowManager } from './anonymous.flow.manager'
 
 createTestingPinia()
 
-
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@app/plugins/ProductFruits/productFruits.plugin', () => ({
   initProductFruitsAnonymousCollab: vi.fn(),
   initProductFruitsAnonymousCustomer: vi.fn(),
   stopProductFruits: vi.fn(),
 }))
-
 
 describe('AnonymousFlowManager', () => {
   describe('enterAnonymousFlow', () => {

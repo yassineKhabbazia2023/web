@@ -1,4 +1,4 @@
-import { createAppletConfig } from '../../@config/vite.config.applet.mts'
+import { createAppletConfig } from '../../@config/vite.config.applet.ts'
 import { name } from './package.json'
 
 export default ({ mode }: any) =>

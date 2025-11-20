@@ -1,0 +1,40 @@
+import type { Entity } from '../stores/types'
+
+export const mockedEntitiesJsonData: Entity[] = [
+  {
+    accountId: 1,
+    accountNumber: '3669209950',
+    legalName: 'Restaurant Le Grand Bleu',
+    color: 'orange',
+  },
+  {
+    accountId: 2,
+    accountNumber: '4811247468',
+    legalName: 'Restaurant Bistro Kitchen',
+    color: 'persian',
+  },
+  {
+    accountId: 3,
+    accountNumber: '3590284870',
+    legalName: 'Fleuriste de la mairie',
+    color: 'green',
+  },
+  {
+    accountId: 4,
+    accountNumber: '4377393628',
+    legalName: 'La Maison Blanche',
+    color: 'fuschia',
+  },
+  {
+    accountId: 5,
+    accountNumber: '4193754384',
+    legalName: 'La Terrasse Rouge',
+    color: 'gray',
+  },
+  {
+    accountId: 6,
+    accountNumber: '4644722294',
+    legalName: 'Restaurant Maison de Pierre',
+    color: 'orange',
+  },
+]

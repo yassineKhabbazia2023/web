@@ -1,4 +1,3 @@
-import { describe, it, expect, vi } from 'vitest'
 import { getMockedBban } from '@mandate/__mocks__/mandate.mocks'
 import {
   getBankDetail,
@@ -26,12 +25,8 @@ const validateIbanImplementation = ({ params }: any) => {
   return Promise.resolve({ data: { valid: false } })
 }
 
-const gatewayGetSpy = vi.fn(() => {
-  return Promise.resolve({ data: {}, status: {} })
-})
-const gatewayPostSpy = vi.fn(() => {
-  return Promise.resolve({ data: {}, status: {} })
-})
+const gatewayGetSpy = vi.fn()
+const gatewayPostSpy = vi.fn()
 
 vi.mock('@pulse/common', () => {
   return {
@@ -42,6 +37,11 @@ vi.mock('@pulse/common', () => {
       },
     }),
   }
+})
+
+beforeEach(() => {
+  gatewayGetSpy.mockResolvedValue({ data: {}, status: {} })
+  gatewayPostSpy.mockResolvedValue({ data: {}, status: {} })
 })
 
 describe('getBankDetail', () => {

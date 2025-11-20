@@ -52,7 +52,9 @@ describe('AdminMsalService', () => {
       acquireTokenSilent: vi.fn(),
     }
 
-    mockedPublicClientApplication.mockImplementation(() => mockPcaInstance)
+    mockedPublicClientApplication.mockImplementation(function() {
+      return mockPcaInstance
+    })
 
     // Mock sessionStorage
     Object.defineProperty(window, 'sessionStorage', {

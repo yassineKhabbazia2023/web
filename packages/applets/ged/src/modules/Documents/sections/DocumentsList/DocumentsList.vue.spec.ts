@@ -43,9 +43,19 @@ const createWrapper = (props: DocumentsListProps = defaultProps): DocumentsListW
 }
 
 describe('documentList', () => {
+  let wrapper: DocumentsListWrapper | null = null
+
+  afterEach(() => {
+    if (wrapper !== null) {
+      wrapper.unmount()
+      wrapper = null
+    }
+    vi.restoreAllMocks()
+  })
+
   describe('props', () => {
     it('should render columns based on provided documentHeaders', async () => {
-      const wrapper: DocumentsListWrapper = mount(DocumentsList, {
+      wrapper = mount(DocumentsList, {
         props: defaultProps,
         global: {
           stubs: {
@@ -70,7 +80,7 @@ describe('documentList', () => {
 
         '{"column":{"order":"ascending","id":"el-table_2_column_11","type":"default","align":null,"headerAlign":null,"showOverflowTooltip":false,"filteredValue":[],"filterPlacement":"","isColumnGroup":false,"isSubColumn":false,"filterOpened":false,"sortable":true,"rawColumnKey":0,"label":"Nom du document","fixed":false,"resizable":true,"sortOrders":["ascending","descending",null],"reserveSelection":false,"filterMultiple":true,"width":591,"minWidth":80,"realWidth":591,"no":2,"level":1,"colSpan":1,"rowSpan":1},"order":"ascending"}'
 
-      const wrapper = createWrapper()
+      wrapper = createWrapper()
 
       wrapper.find('.el-table__cell')
       await nextTick()
@@ -85,7 +95,7 @@ describe('documentList', () => {
     }, 30000)
 
     it('should emit document-selection-change upon ptable selection-change event', async () => {
-      const wrapper = createWrapper()
+      wrapper = createWrapper()
       wrapper.find('.el-table__cell')
       await nextTick()
 
@@ -121,6 +131,12 @@ describe('documentList', () => {
         await nextTick()
       })
 
+      afterEach(() => {
+        if (wrapper !== null) {
+          wrapper.unmount()
+        }
+      })
+
       it('should select row oppon TableElement actions-dropdown-opened', async () => {
         const tableElements = wrapper.findAllComponents(TableElement)
         tableElements[0].vm.$emit('actions-dropdown-opened',
@@ -151,7 +167,7 @@ describe('documentList', () => {
     })
 
     it('should emit table-row-double-clicked when double clicking a document row', async () => {
-      const wrapper = createWrapper()
+      wrapper = createWrapper()
       const table = wrapper.findComponent({ name: 'PTable' })
       const fakeRow = getDocumentTableRow()
       const fakeLabel = { label: documentsResponsePayload.documentHeaders[0].columnName }
@@ -163,7 +179,7 @@ describe('documentList', () => {
     })
 
     it('should NOT emit table-row-double-clicked when double clicking a document row', async () => {
-      const wrapper = createWrapper()
+      wrapper = createWrapper()
       const table = wrapper.findComponent({ name: 'PTable' })
       const fakeRow = getDocumentTableRow()
       const fakeLabel = { label: 'unknown column label' }
@@ -187,6 +203,12 @@ describe('documentList', () => {
             },
           },
         }) as unknown as DocumentsListWrapper
+      })
+
+      afterEach(() => {
+        if (wrapper !== null) {
+          wrapper.unmount()
+        }
       })
 
       it('should emit document-name-clicked when doucment name is clicked', async () => {
@@ -215,7 +237,7 @@ describe('documentList', () => {
     })
 
     it('should propagate toolbox-action-triggered of tableElement', async () => {
-      const wrapper: DocumentsListWrapper = mount(DocumentsList, {
+      wrapper = mount(DocumentsList, {
         props: defaultProps,
         global: {
           stubs: {
@@ -241,7 +263,7 @@ describe('documentList', () => {
     })
 
     it('should display the correct text when not data available in the documentsList', async () => {
-      const wrapper = createWrapper({
+      wrapper = createWrapper({
         ...defaultProps,
         documentsListWithTableStructure: payloadWithZeroItems,
       })
@@ -255,7 +277,7 @@ describe('documentList', () => {
 
     describe('DocumentsList - Right-click a row should open toolbox', () => {
       it('should trigger toolbox action when right-clicking on a row', async () => {
-        const wrapper = createWrapper()
+        wrapper = createWrapper()
         const table = wrapper.findComponent({ name: 'PTable' })
         const mockedRow = { permissions: [] }
         const mockedEvent = { preventDefault: vi.fn(), clientX: 100, clientY: 100 }
@@ -268,7 +290,8 @@ describe('documentList', () => {
       })
 
       it('should correctly set toolbox style on right-click', async () => {
-        const wrapper = createWrapper()
+        vi.useFakeTimers()
+        wrapper = createWrapper()
         const table = wrapper.findComponent({ name: 'PTable' })
         const mockedRow = { permissions: [] }
         const mockedEvent = { preventDefault: vi.fn(), clientX: 100, clientY: 100 }
@@ -284,10 +307,12 @@ describe('documentList', () => {
 
         table.vm.$emit('row-contextmenu', mockedRow, null, mockedEvent)
         await wrapper.vm.$nextTick()
-        await new Promise(resolve => setTimeout(resolve, 50))
+        await vi.advanceTimersByTimeAsync(50)
 
         expect((wrapper.vm as any).toolboxCoordinates.x).toBeGreaterThanOrEqual(10)
         expect((wrapper.vm as any).toolboxCoordinates.y).toBeGreaterThanOrEqual(100)
+
+        vi.useRealTimers()
       })
     })
   })

@@ -88,8 +88,8 @@ describe('CompanyInformation', () => {
     })
 
     it('should return false when companyFormRef is undefined', async () => {
-      const wrapper = createWrapper()
-      wrapper.vm.companyFormRef = undefined
+      const wrapper = createWrapper({ providerName: undefined })
+      await flushPromises()
 
       const result = await wrapper.vm.isValidFields(['accountNumber'])
       expect(result).toBe(false)
@@ -177,8 +177,8 @@ describe('CompanyInformation', () => {
     })
 
     it('should return false when form ref is not available', async () => {
-      const wrapper = createWrapper()
-      wrapper.vm.companyFormRef = undefined
+      const wrapper = createWrapper({ providerName: undefined })
+      await flushPromises()
 
       const result = await wrapper.vm.isValid()
 

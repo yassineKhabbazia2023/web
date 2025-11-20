@@ -883,15 +883,18 @@ describe('documents', () => {
 
       const documentsList = wrapper.findComponent({ name: 'DocumentsList' })
 
+      vi.useFakeTimers()
+
       await documentsList.vm.$emit(
         'toolbox-action-triggered',
         'go-to-document',
       )
       await nextTick()
 
-      vi.useFakeTimers()
-      vi.advanceTimersByTime(1000)
+      await vi.advanceTimersByTimeAsync(1000)
       expect(wrapper.emitted('change-selected-folder')).toBeTruthy()
+
+      vi.useRealTimers()
     })
 
     it('should close filters drawer when close-filters-drawer event is emitted', async () => {

@@ -114,6 +114,8 @@ describe('collaborators', () => {
       walletServices,
       'getCollaboratorsByIdEntity',
     )
+    // Clear previous calls (from component mount in beforeEach)
+    getCollaboratorsSpy.mockClear()
 
     getAddCollaboratorDrawer().vm.$emit('refresh-collaborators-list')
     await flushPromises()

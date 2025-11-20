@@ -10,6 +10,10 @@ vi.mock('../../api', () => ({
   }),
 }))
 
+vi.mock('../../api/interceptors/request-token.interceptor', () => ({
+  requestTokenInterceptor: vi.fn((config) => config),
+}))
+
 describe('ReportingService', () => {
   describe('getTotalBIReports', () => {
     it('should call the API and return totalItems', async () => {

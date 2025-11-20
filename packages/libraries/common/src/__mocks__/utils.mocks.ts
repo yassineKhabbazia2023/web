@@ -1,6 +1,8 @@
-export const logoutCollaboratorMock = vi.fn()
-export const logoutGigyaSSOMock = vi.fn()
-export const logoutClientMock = vi.fn()
+import type { Mock } from 'vitest'
+
+export const logoutCollaboratorMock: Mock = vi.fn()
+export const logoutGigyaSSOMock: Mock = vi.fn()
+export const logoutClientMock: Mock = vi.fn()
 
 export const utilsMock = {
   logoutCollaborator: logoutCollaboratorMock,

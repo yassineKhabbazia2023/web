@@ -1,7 +1,7 @@
 import type { Entity, CurrentEntity } from '../stores/types'
 import type { Permission } from '../types/permission.type'
 import { CollaboratorPermission } from '../enums/permission.enum'
-import mockedEntitiesJson from './entities.mocks.json'
+import { mockedEntitiesJsonData } from './entities.mocks.data'
 
 export const getMockedEntity = (overridden: Partial<Entity> = {}) => {
   const defaultEntity: Entity = {
@@ -28,7 +28,7 @@ export const getMockedEntities = (): Entity[] => [
 ]
 
 export const getMockedFavoriteEntities = (): Entity[] => {
-  return mockedEntitiesJson as Entity[]
+  return mockedEntitiesJsonData
 }
 
 export const getMockedCurrentEntity = (): CurrentEntity => {

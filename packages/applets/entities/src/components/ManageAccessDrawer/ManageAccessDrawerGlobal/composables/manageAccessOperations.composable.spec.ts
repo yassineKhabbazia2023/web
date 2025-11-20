@@ -18,16 +18,15 @@ const searchResultMock = getPaginationMock<AccountOperations>({
 })
 
 describe('manageAccessOperation.composable', () => {
-  const {
-    searchTerm,
-    searchResult,
-    showPagination,
-    showNoOperation,
-    refreshManageAccessOperations,
-  } = useManageAccessOperations(MANAGE_ACCESS_PAGE_SIZE_MOCK)
-
   describe('initial state', () => {
     it('initialize properly', () => {
+      const {
+        searchTerm,
+        searchResult,
+        showPagination,
+        showNoOperation,
+      } = useManageAccessOperations(MANAGE_ACCESS_PAGE_SIZE_MOCK)
+
       expect(searchResult.value).toBeUndefined()
       expect(showPagination.value).toStrictEqual(false)
       expect(showNoOperation.value).toStrictEqual(false)
@@ -45,12 +44,6 @@ describe('manageAccessOperation.composable', () => {
       ...searchResultMock,
       currentPage: 5,
     }
-    beforeEach(() => {
-      contactServiceMock.fetchAccountOperations
-        .mockResolvedValueOnce(searchResultMock1)
-        .mockResolvedValueOnce(searchResultMock2)
-        .mockResolvedValueOnce(searchResultMock3)
-    })
 
     const tests = [{
       pageFirstCall: undefined,
@@ -84,6 +77,20 @@ describe('manageAccessOperation.composable', () => {
         expectedPageParameterLastCall,
         expectedSearchResult,
       }) => {
+        // Reset mock completely before each test
+        contactServiceMock.fetchAccountOperations.mockReset()
+        contactServiceMock.fetchAccountOperations
+          .mockResolvedValueOnce(searchResultMock1)
+          .mockResolvedValueOnce(searchResultMock2)
+          .mockResolvedValueOnce(searchResultMock3)
+
+        // Create fresh instance for each test
+        const {
+          searchResult,
+          showPagination,
+          refreshManageAccessOperations,
+        } = useManageAccessOperations(MANAGE_ACCESS_PAGE_SIZE_MOCK)
+
         const expectedParametersFirstCall = [expectedPageParameterFirstCall, 5, '']
         const expectedParametersSecondCall = [expectedPageParameterLastCall, 5, '']
 
@@ -133,8 +140,17 @@ describe('manageAccessOperation.composable', () => {
       hasResult,
       expectedshowNoOperation,
     }) => {
+      // Reset mock completely before each test
+      contactServiceMock.fetchAccountOperations.mockReset()
       contactServiceMock.fetchAccountOperations
         .mockResolvedValueOnce(hasResult ? searchResultMock : searchNoResultResultMock)
+
+      // Create fresh instance for each test
+      const {
+        searchTerm,
+        showNoOperation,
+        refreshManageAccessOperations,
+      } = useManageAccessOperations(MANAGE_ACCESS_PAGE_SIZE_MOCK)
       searchTerm.value = search
       const page = 2
       const expectedParameters = [page, 5, search]

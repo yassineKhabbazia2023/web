@@ -3,7 +3,7 @@ import path from 'path'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
-import { viteConfigBase } from '../../@config/vite.config.base.mts'
+import { viteConfigBase } from '../../@config/vite.config.base.ts'
 
 // https://vitejs.dev/config/
 export default ({ mode }: any) =>

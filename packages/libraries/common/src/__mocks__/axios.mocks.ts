@@ -1,3 +1,5 @@
+import type { Mock } from 'vitest'
+
 const defaults = {
   headers: {
     'Content-Type': '',
@@ -5,9 +7,9 @@ const defaults = {
   },
 }
 
-export const requestInterceptorMock = vi.fn(() => defaults)
-export const responseInterceptorSuccessMock = vi.fn()
-export const responseInterceptorErrorMock = vi.fn()
+export const requestInterceptorMock: Mock = vi.fn(() => defaults)
+export const responseInterceptorSuccessMock: Mock = vi.fn()
+export const responseInterceptorErrorMock: Mock = vi.fn()
 
 export default {
   defaults,

@@ -1,22 +1,23 @@
+import type { Mock } from 'vitest'
 import type { Entity } from '@pulse/common/types'
 
-export const commonApiDsGetSpy = vi.fn()
-export const commonApiDsPostSpy = vi.fn().mockResolvedValue({
+export const commonApiDsGetSpy: Mock = vi.fn()
+export const commonApiDsPostSpy: Mock = vi.fn().mockResolvedValue({
   data: {},
 })
-export const commonApiDsPatchSpy = vi.fn().mockResolvedValue({
+export const commonApiDsPatchSpy: Mock = vi.fn().mockResolvedValue({
   data: {},
 })
-export const commonApiDsDeleteSpy = vi.fn().mockResolvedValue({
+export const commonApiDsDeleteSpy: Mock = vi.fn().mockResolvedValue({
   data: {},
 })
-export const commonApiPortalGetSpy = vi.fn().mockResolvedValue({
+export const commonApiPortalGetSpy: Mock = vi.fn().mockResolvedValue({
   data: {},
 })
-export const commonApiGatewayGetSpy = vi.fn().mockResolvedValue({
+export const commonApiGatewayGetSpy: Mock = vi.fn().mockResolvedValue({
   data: {},
 })
-export const amplitudeTrackSpy = vi.fn()
+export const amplitudeTrackSpy: Mock = vi.fn()
 
 export const defaultEntityMock: Entity = {
   legalName: 'JEAN LÉVAGE',

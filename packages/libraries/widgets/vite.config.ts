@@ -3,7 +3,7 @@ import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import terser from '@rollup/plugin-terser'
-import { viteConfigBase } from '../../@config/vite.config.base.mts'
+import { viteConfigBase } from '../../@config/vite.config.base.ts'
 import { name } from './package.json'
 
 const APP_NAME = name.split('/')[1]

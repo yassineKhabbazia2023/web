@@ -69,7 +69,7 @@ packages/admin-tools/
 │   ├── services/              # MSAL, env vars
 │   └── main.ts
 ├── .env-vars.example.js       # Template
-└── vite.config.mts
+└── vite.config.ts
 ```
 
 ## 📦 Déploiement

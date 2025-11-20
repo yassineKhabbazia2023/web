@@ -1,6 +1,8 @@
-export const getConnectionMock = vi.fn(() => ({ on: vi.fn() }))
-export const onConnectedAsyncMock = vi.fn()
-export const onDisconnectedAsyncMock = vi.fn()
+import type { Mock } from 'vitest'
+
+export const getConnectionMock: Mock = vi.fn(() => ({ on: vi.fn() }))
+export const onConnectedAsyncMock: Mock = vi.fn()
+export const onDisconnectedAsyncMock: Mock = vi.fn()
 
 export const documentPiaStatusChangedResponseMock = {
   folderId: 45454,
@@ -14,7 +16,7 @@ export const documentPiaStatusChangedResponseMock = {
   permissions: ['CAN_MOVE_DOCUMENT'],
 }
 
-export const getConnectionDocumentPiaStatusChangedMock = vi.fn(() => ({
+export const getConnectionDocumentPiaStatusChangedMock: Mock = vi.fn(() => ({
   on: vi.fn()
     .mockImplementation(
       (eventName: string, newMethod: (_res: string) => void) => {

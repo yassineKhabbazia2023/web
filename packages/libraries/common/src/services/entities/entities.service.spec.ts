@@ -4,13 +4,17 @@ import { getMockedEntitySummary } from '../../__mocks__/entity-summary.mock'
 
 import { fetchEntityById } from './entities.service'
 
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
+
 vi.mock('../../api', () => ({
   default: () => ({
     gateway: apiGatewayMock,
   }),
 }))
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
+vi.mock('../../api/interceptors/request-token.interceptor', () => ({
+  requestTokenInterceptor: vi.fn((config) => config),
+}))
 
 const entityIdMock = 12345
 const entitySummaryMock = getMockedEntitySummary({ accountId: entityIdMock })

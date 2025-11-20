@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { BookingManager } from './booking.manager'
 import { BookingService } from '@pulse/common/services/booking'
 import { useUserStore, useCurrentEntityStore, useBookingCustomerStore } from '@pulse/common/stores'
@@ -26,6 +26,8 @@ const mockExperts: BookingServiceExpert[] = [
 const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const bookingStoreMock = getStoreMock(useBookingCustomerStore)
+
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 describe('BookingManager', () => {
 

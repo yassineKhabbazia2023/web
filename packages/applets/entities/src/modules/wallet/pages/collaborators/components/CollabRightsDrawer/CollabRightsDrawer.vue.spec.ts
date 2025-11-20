@@ -5,7 +5,6 @@ import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { featureFlagManagerMock } from '@pulse/common/mocks'
 import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
-import { walletServiceMock } from '@entities/__mocks__/wallet.service.mocks'
 import { rightDrawerUtilsMocks } from '@entities/__mocks__/utils.mocks'
 import { mockedCollaboratorsList1 } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedCollabRoles } from '@entities/__mocks__/collab-roles.mocks'
@@ -33,7 +32,7 @@ vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
   FeatureFlagManager: featureFlagManagerMock,
 }))
-vi.mock('@entities/services/wallet', () => walletServiceMock)
+vi.mock('@entities/services/wallet')
 vi.mock('@entities/components/ManageRightsDrawer/utils', () => rightDrawerUtilsMocks)
 
 vi.mock('vue-router', () => ({
@@ -66,6 +65,7 @@ const createWrapper = (
 describe('collabRightsDrawer', () => {
   let wrapper: VueWrapper<any>
   beforeEach(async () => {
+    vi.mocked(walletServices.fetchContactRoles).mockResolvedValue(getMockedCollabRoles())
     wrapper = createWrapper()
     await flushPromises()
   })

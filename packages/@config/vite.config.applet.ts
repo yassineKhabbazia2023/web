@@ -4,7 +4,7 @@ import path from 'path'
 import vue from '@vitejs/plugin-vue'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import terser from '@rollup/plugin-terser'
-import { viteConfigBase } from './vite.config.base.mts'
+import { viteConfigBase } from './vite.config.base.ts'
 
 // Helper to resolve workspace root node_modules path
 const resolveWorkspaceNodeModules = (modulePath: string) =>

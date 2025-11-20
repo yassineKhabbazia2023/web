@@ -5,7 +5,8 @@ import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import EntityCreatorFormStructure from '@entities/config/forms/EntityCreatorFormStructure.json'
 import { EntityCreatorDrawerProps } from '@entities/modules/wallet/types'
 import { PButton } from '@pulse/styleguide/components'
-import type { ComponentWrapper, Contact } from '@entities/types'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import type { ComponentWrapper } from '@entities/types'
 import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
 import type { UserInfo } from '@pulse/common/types'
 import EntityCreatorDrawer from '.'
@@ -107,6 +108,16 @@ const createWrapper = (props: EntityCreatorDrawerProps = defaultProps) => {
 describe('EntityCreatorDrawer Component - Unit Tests', () => {
   let wrapper: ComponentWrapper<InstanceType<typeof EntityCreatorDrawer>>
   beforeEach(async () => {
+    // Reset mocks to default values
+    generateAccountNumberMock.mockResolvedValue({ data: { accountNumber: '123456' } })
+    getAccountUserByEmailMock.mockResolvedValue({
+      firstName: expectedExistingClient.contactFirstName,
+      lastName: expectedExistingClient.contactLastName,
+      oldId: expectedExistingClient.existingContactGuid,
+    })
+    entityCreatorFormValidateMock.mockResolvedValue(true)
+    entityCreatorFormStructureMock.mockResolvedValue(EntityCreatorFormStructure)
+
     wrapper = createWrapper()
     await flushPromises()
     if (wrapper.vm.entityCreatorForm) {
@@ -115,10 +126,14 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
     }
     // If 'any' is not used, it would be necessary to expose the 'entityCreatorFormFieldSet' ref from the EntityCreatorDrawer component to access it.
     const wrapperVm = wrapper.vm as any
-    wrapperVm.$refs.entityCreatorFormFieldSet[1].enableField = enableFieldMock
-    wrapperVm.$refs.entityCreatorFormFieldSet[1].disableField = disableFieldMock
-    wrapperVm.$refs.entityCreatorFormFieldSet[0].enableField = enableFieldMock
-    wrapperVm.$refs.entityCreatorFormFieldSet[0].disableField = disableFieldMock
+    if (wrapperVm.$refs.entityCreatorFormFieldSet && wrapperVm.$refs.entityCreatorFormFieldSet[1]) {
+      wrapperVm.$refs.entityCreatorFormFieldSet[1].enableField = enableFieldMock
+      wrapperVm.$refs.entityCreatorFormFieldSet[1].disableField = disableFieldMock
+    }
+    if (wrapperVm.$refs.entityCreatorFormFieldSet && wrapperVm.$refs.entityCreatorFormFieldSet[0]) {
+      wrapperVm.$refs.entityCreatorFormFieldSet[0].enableField = enableFieldMock
+      wrapperVm.$refs.entityCreatorFormFieldSet[0].disableField = disableFieldMock
+    }
   })
   describe('display', () => {
     it('should correctly render the Entity Creator Drawer with its main components', () => {

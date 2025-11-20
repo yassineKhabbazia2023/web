@@ -49,8 +49,11 @@ const consolidatedConfig: UserConfigExport = mergeConfig(basicConfig, {
         }),
         typescript({
           sourceMap: false,
+          cacheDir: undefined, // Disable Rollup cache
         }),
       ],
+      // Disable Rollup cache
+      cache: false,
     },
   },
   output: {

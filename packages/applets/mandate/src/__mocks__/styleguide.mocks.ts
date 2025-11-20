@@ -1,1 +1,3 @@
-export const PNotificationMocked = vi.fn(() => ({ close: vi.fn() }))
+import type { Mock } from 'vitest'
+
+export const PNotificationMocked: Mock = vi.fn(() => ({ close: vi.fn() }))

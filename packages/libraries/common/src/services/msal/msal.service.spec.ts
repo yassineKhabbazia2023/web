@@ -70,7 +70,9 @@ describe('MsalService', () => {
       acquireTokenRedirect: vi.fn().mockResolvedValue(undefined),
     }
 
-    ;(PublicClientApplication as any).mockImplementation(() => mockMsalInstance)
+    ;(PublicClientApplication as any).mockImplementation(function() {
+      return mockMsalInstance
+    })
   })
 
   describe('getInstance', () => {

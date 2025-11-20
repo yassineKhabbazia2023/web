@@ -198,6 +198,7 @@ const shouldDisplayInformationNote = computed(() => {
 
 defineExpose({
   isValid,
+  isValidFields,
   areRequiredFieldsValid,
 })
 </script>

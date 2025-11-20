@@ -2,7 +2,7 @@ import { defineConfig, mergeConfig } from 'vitest/config'
 import path from 'path'
 import typescript from '@rollup/plugin-typescript'
 import { typescriptPaths } from 'rollup-plugin-typescript-paths'
-import { viteConfigBase } from '../../@config/vite.config.base.mts'
+import { viteConfigBase } from '../../@config/vite.config.base.ts'
 
 // https://vitejs.dev/config/
 export default ({ mode }: any) =>
@@ -14,19 +14,28 @@ export default ({ mode }: any) =>
           sourceMap: false,
           declaration: true,
           outDir: 'dist',
+          // Disable Rollup cache
+          cacheDir: undefined,
         }),
       ],
       test: {
         alias: {
-          '@toolbox/': new URL('./src/', import.meta.url).pathname,
+          '@common/': new URL('./src/', import.meta.url).pathname,
         },
+        exclude: [
+          '**/node_modules/**',
+          '**/dist/**',
+          '**/.rollup.cache/**',
+          '**/.{idea,git,cache,output,temp}/**',
+          '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build}.config.*',
+        ],
       },
       build: {
         lib: {
-          name: '@pulse/toolbox',
+          name: '@pulse/common',
           entry: path.resolve(__dirname, 'src/main.ts'),
           formats: ['es'],
-          fileName: (format: string) => `lib/toolbox.${format}.js`,
+          fileName: (format: string) => `lib/common.${format}.js`,
         },
         rollupOptions: {
           input: 'src/main.ts',
@@ -37,6 +46,8 @@ export default ({ mode }: any) =>
               vue: 'Vue',
             },
           },
+          // Disable Rollup cache
+          cache: false,
         },
       },
     }),

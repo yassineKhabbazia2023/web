@@ -1,10 +1,13 @@
-import { describe, it, vi, expect } from 'vitest'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedUserApi } from '@pulse/common/mocks'
 import { createCustomer, addContactToEntity, fetchAccountContactsByEmail } from '../../services/account/accountServices'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
 
 import { AccountManager } from './account.manager'
 
+vi.mock('@pulse/toolbox', () => ({
+  logger: loggerMock,
+}))
 vi.mock('../../services/account/accountServices')
 const createCustomerMock = vi.mocked(createCustomer)
 const addContactToEntityMock = vi.mocked(addContactToEntity)

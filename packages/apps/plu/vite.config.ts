@@ -3,24 +3,41 @@ import path from 'node:path'
 import { defineConfig, mergeConfig } from 'vitest/config'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
-import { viteExternalsPlugin } from 'vite-plugin-externals'
-import { viteConfigBase } from '../@config/vite.config.base.mts'
+import { viteConfigBase } from '../../@config/vite.config.base.ts'
+import { visualizer } from 'rollup-plugin-visualizer'
 
-const PORT = 9001
+const PORT = 9000
 
 export default ({ mode }: any) =>
   defineConfig(
     mergeConfig(viteConfigBase({ mode }), {
       plugins: [
         vue(),
-        VueI18nPlugin({}),
-        viteExternalsPlugin({ 'env-vars': 'EnvVars' }, { disableInServe: mode === 'test' }),
-      ],
+        VueI18nPlugin(),
+        mode === 'analyze' && visualizer({
+          open: true,
+          filename: 'dist-stats.html',
+          gzipSize: true,
+        }),
+      ].filter(Boolean),
       resolve: {
         alias: {
-          '@admin-tools': fileURLToPath(new URL('./src', import.meta.url)),
-          '@styleguide': fileURLToPath(new URL('../libraries/styleguide/src', import.meta.url)),
-          '@toolbox': fileURLToPath(new URL('../libraries/toolbox/src', import.meta.url)),
+          '@app': fileURLToPath(new URL('./src', import.meta.url)),
+          '@booking': fileURLToPath(new URL('../../applets/booking/src', import.meta.url)),
+          '@common': fileURLToPath(new URL('../../libraries/common/src', import.meta.url)),
+          '@entities': fileURLToPath(new URL('../../applets/entities/src', import.meta.url)),
+          '@feed-center': fileURLToPath(new URL('../../applets/feed-center/src', import.meta.url)),
+          '@ged': fileURLToPath(new URL('../../applets/ged/src', import.meta.url)),
+          '@homepage': fileURLToPath(new URL('../../applets/homepage/src', import.meta.url)),
+          '@launcher': fileURLToPath(new URL('../../applets/launcher/src', import.meta.url)),
+          '@login': fileURLToPath(new URL('../../applets/login/src', import.meta.url)),
+          '@mandate': fileURLToPath(new URL('../../applets/mandate/src', import.meta.url)),
+          '@offers-catalog': fileURLToPath(new URL('../../applets/offers-catalog/src', import.meta.url)),
+          '@pennylane': fileURLToPath(new URL('../../applets/pennylane/src', import.meta.url)),
+          '@powerbi': fileURLToPath(new URL('../../applets/powerbi/src', import.meta.url)),
+          '@shared': fileURLToPath(new URL('../../libraries/shared/src', import.meta.url)),
+          '@styleguide': fileURLToPath(new URL('../../libraries/styleguide/src', import.meta.url)),
+          '@toolbox': fileURLToPath(new URL('../../libraries/toolbox/src', import.meta.url)),
         },
       },
       server: {
@@ -28,6 +45,7 @@ export default ({ mode }: any) =>
         strictPort: true,
         open: true,
         origin: `http://localhost:${PORT}`,
+        https: false,
       },
       preview: {
         port: PORT,
@@ -42,7 +60,7 @@ export default ({ mode }: any) =>
             find: /^element-plus$/,
             replacement: path.resolve(
               __dirname,
-              '../../',
+              '../../../',
               'node_modules',
               'element-plus/dist/index.full.mjs',
             ),
@@ -59,7 +77,7 @@ export default ({ mode }: any) =>
         },
       },
       build: {
-        outDir: '../../dist-admin-tools',
+        outDir: '../../../dist',
         chunkSizeWarningLimit: 500,
         minify: mode === 'production' ? 'terser' : false,
         terserOptions: {
