@@ -1,7 +1,7 @@
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { BootManager } from './boot.manager'
 import { createTestingPinia } from '@pinia/testing'
-import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
+import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@pulse/shared/plugins'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { RouteName } from '@pulse/common/enums'
 
@@ -10,7 +10,7 @@ import { AnonymousFlowManager } from './anonymous.flow.manager'
 createTestingPinia()
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
-vi.mock('@app/plugins/ProductFruits/productFruits.plugin', () => ({
+vi.mock('@pulse/shared/plugins', () => ({
   initProductFruitsAnonymousCollab: vi.fn(),
   initProductFruitsAnonymousCustomer: vi.fn(),
   stopProductFruits: vi.fn(),

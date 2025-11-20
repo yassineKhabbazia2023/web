@@ -1,6 +1,6 @@
 import { RouteName } from '@pulse/common/enums'
 import { SidebarManager } from './sidebar.manager'
-import { createMockContext, createMockMenuItem, createContextWithPermissions } from '../__mocks__/sidebar.manager.mocks'
+import { createMockContext, createMockMenuItem, createContextWithPermissions } from '@shared/layouts/home/Sidebar/__mocks__/sidebar.manager.mocks'
 
 describe('SidebarManager', () => {
   beforeEach(() => {

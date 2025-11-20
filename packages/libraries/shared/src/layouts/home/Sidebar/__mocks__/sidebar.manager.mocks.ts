@@ -1,4 +1,4 @@
-import type { MenuContext, MenuItemConfig } from '../manager/sidebar.types'
+import type { MenuContext, MenuItemConfig } from '@shared/layouts/home/Sidebar/manager/sidebar.types'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
 /**

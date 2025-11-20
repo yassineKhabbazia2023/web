@@ -14,6 +14,11 @@ export default ({ mode }: any) =>
         VueI18nPlugin(),
         typescriptPaths(),
       ],
+      resolve: {
+        alias: {
+          '@shared/': new URL('./src/', import.meta.url).pathname,
+        },
+      },
       test: {
         setupFiles: 'vitest.setup.ts',
         alias: {
@@ -34,7 +39,7 @@ export default ({ mode }: any) =>
           name: '@pulse/shared',
           entry: path.resolve(__dirname, 'src/main.ts'),
           formats: ['es'],
-          fileName: (format: string) => `lib/common.${format}.js`,
+          fileName: (format: string) => `lib/shared.${format}.js`,
         },
         rollupOptions: {
           input: 'src/main.ts',

@@ -100,7 +100,7 @@ import type { FormInstance } from '@pulse/styleguide/types'
 import { PButton, PForm, PFormItem, PInput, PLoader } from '@pulse/styleguide/components'
 import { LegalLinks } from '@pulse/shared/components'
 import type { FormValues, User } from './MyInformationTypes'
-import LogoutButton from '../LogoutButton'
+import LogoutButton from '@shared/layouts/home/UserProfile/components/LogoutButton'
 
 const { t } = useI18n({
   inheritLocale: true,

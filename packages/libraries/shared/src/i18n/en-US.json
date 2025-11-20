@@ -15,5 +15,12 @@
       "favorites": "Favorites",
       "globalView": "Global view"
     }
+  },
+  "modals": {
+    "sessionExpired": {
+      "title": "Session expired",
+      "message": "You have been logged out for safety reasons.",
+      "okBtn": "Understood"
+    }
   }
 }

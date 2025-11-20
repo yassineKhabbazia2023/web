@@ -39,7 +39,7 @@ import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import type { EntityAvatarProps } from './EntityAvatarTypes'
 import type { Entity } from '@pulse/common/types'
 import { RouteName, RouteParam } from '@pulse/common/enums'
-import SidebarEntityItem from '../SidebarEntityItem'
+import SidebarEntityItem from '@shared/layouts/home/Sidebar/components/SidebarEntity/components/SidebarEntityItem'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 const props = defineProps<EntityAvatarProps>()

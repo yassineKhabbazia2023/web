@@ -1,0 +1,19 @@
+$banner-height: 56px; // we force the limit of the banner to be 56px, we need to do the same in the Product Fruits console
+$header-height: 56px;
+
+// Workaround for the issue where the product fruits banner creates a useless scroll to the body
+.productfruits--banners-shown {
+  overflow: hidden !important;
+}
+
+// Since the size of the body changed, we need to recalculate the height of the main container which carries the scrollable content
+.productfruits--banners-shown .common-layout .main-container {
+  height: calc(100vh - ($banner-height + $header-height)) !important;
+}
+
+// Since Product Fruits creates element in a shadow-root tree, we can't target it from here
+// We need to add this code in the Product Fruits console directly:
+// .pfruits-banner-v3 {
+//   max-height: 56px !important; /* we force the height in order to not destroy the app's layout - this allows 2 lines of text */
+//   overflow: auto !important; /* if you really want to write a lot of text, it will scroll */
+// }

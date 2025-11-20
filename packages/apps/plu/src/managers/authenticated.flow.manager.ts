@@ -11,7 +11,7 @@ import {
   initProductFruitsAuthenticatedCollab,
   getProductFruitsUser,
   stopProductFruits,
-} from '@app/plugins/ProductFruits/productFruits.plugin'
+} from '@pulse/shared/plugins'
 import { logger } from '@pulse/toolbox'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'

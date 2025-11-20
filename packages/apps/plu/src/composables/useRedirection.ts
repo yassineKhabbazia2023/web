@@ -6,10 +6,6 @@ import { RouteName } from '@pulse/common/enums'
 export const useRedirection = () => {
   const router = useRouter()
 
-  const redirectToHome = () => {
-    router.push('/')
-  }
-
   const redirectToLoginClient = (query?: Record<string, any>) => {
     router.replace({ name: RouteName.LOGIN_CLIENT, query })
   }
@@ -32,7 +28,6 @@ export const useRedirection = () => {
   }
 
   return {
-    redirectToHome,
     redirectToLoginClient,
     redirectToLoginCollab,
     logoutAndRedirectToLogin,

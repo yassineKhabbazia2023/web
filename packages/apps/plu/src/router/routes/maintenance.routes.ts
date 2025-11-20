@@ -7,7 +7,7 @@ export const maintenanceRoutes: RouteRecordRaw[] = [
   {
     path: APP_ROUTES.maintenance.path,
     name: APP_ROUTES.maintenance.name,
-    component: () => import('@app/pages/Maintenance/Maintenance.page.vue'),
+    component: () => import('@pulse/shared/pages').then(m => ({ default: m.MaintenancePage })),
     meta: {
       [LAYOUT_META]: Layout.ERROR,
       [ALLOW_ANONYMOUS_META]: true,

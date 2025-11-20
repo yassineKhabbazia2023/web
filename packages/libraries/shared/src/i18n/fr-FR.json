@@ -15,5 +15,12 @@
       "favorites": "Favoris",
       "globalView": "Vue globale"
     }
+  },
+  "modals": {
+    "sessionExpired": {
+      "title": "Session expirée",
+      "message": "Vous avez été déconnecté pour des raisons de sécurité.",
+      "okBtn": "Compris"
+    }
   }
 }

@@ -18,8 +18,7 @@ import { useRedirection } from '@app/composables/useRedirection'
 import { useLoadingStore } from '@pulse/common/stores'
 import { LAYOUT_META } from '@pulse/common/constants'
 import { Layout } from '@pulse/common/enums'
-
-import FullPageLoader from '@app/components/FullPageLoader/FullPageLoader.vue'
+import { FullPageLoader } from '@pulse/shared/components'
 
 const route = useRoute()
 const loadingStore = useLoadingStore()

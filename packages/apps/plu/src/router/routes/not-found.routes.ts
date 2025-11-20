@@ -7,7 +7,7 @@ export const notFoundRoutes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*', // specific catch all
     name: APP_ROUTES.error.error404.name,
-    component: () => import('@app/pages/Error/404/Error404.page.vue'),
+    component: () => import('@pulse/shared/pages').then(m => ({ default: m.Error404Page })),
     beforeEnter: (to, _from, next) => {
       const loadingStore = useLoadingStore()
       // Check if the path matches any of the squad routes

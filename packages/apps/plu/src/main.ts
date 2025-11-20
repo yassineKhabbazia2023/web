@@ -3,7 +3,6 @@ import { VITE_ASSETS_BASE_URL } from 'env-vars'
 import { AppVersionManager } from '@pulse/toolbox'
 // import libraries first for CSS resolution
 import commonLibrary from '@pulse/common'
-import { i18n } from '@pulse/common/i18n'
 import styleguideLibrary from '@pulse/styleguide'
 import sharedLibrary from '@pulse/shared'
 import widgetsLibrary from '@pulse/widgets'
@@ -20,21 +19,13 @@ import bookingApplet from '@pulse/booking'
 import feedCenterApplet from '@pulse/feed-center'
 import powerBiApplet from '@pulse/powerbi'
 // then import plugins and misc
-import axeptioPlugin from '@app/plugins/Axeptio/axeptio.plugin'
 import gigyaPlugin from '@app/plugins/Gigya/gigya.plugin'
-import productFruitsPlugin from '@app/plugins/ProductFruits/productFruits.plugin'
-import hubspotPlugin from '@app/plugins/Hubspot/hubspot.plugin'
+import { axeptioPlugin, productFruitsPlugin, hubspotPlugin } from '@pulse/shared/plugins'
 
 import App from './App.vue'
 import router from './router/app.router'
 import { registerSidebarItems } from './router/registry/sidebar.registry'
 import { registerWalletTabs } from './router/registry/wallet.registry'
-
-import frFR from './i18n/fr-FR.json'
-import enUS from './i18n/en-US.json'
-
-i18n.global.mergeLocaleMessage('fr-FR', frFR)
-i18n.global.mergeLocaleMessage('en-US', enUS)
 
 declare let window: {
   version: string

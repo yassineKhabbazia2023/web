@@ -1,7 +1,7 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { RouteName } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
-import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@app/plugins/ProductFruits/productFruits.plugin'
+import { initProductFruitsAnonymousCollab, initProductFruitsAnonymousCustomer, stopProductFruits } from '@pulse/shared/plugins'
 import { BootManager } from './boot.manager'
 import type { RouteLocationNormalized, RouteLocationNamedRaw } from 'vue-router'
 

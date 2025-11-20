@@ -20,17 +20,6 @@ vi.mock('@pulse/common/managers')
 const userStoreMock = getStoreMock(useUserStore)
 
 describe('useRedirection', () => {
-  describe('redirectToHome', () => {
-    it('should redirect to home page using router.push', () => {
-      const { redirectToHome } = useRedirection()
-
-      redirectToHome()
-
-      expect(mockRouterPush).toHaveBeenCalledOnce()
-      expect(mockRouterPush).toHaveBeenCalledWith('/')
-    })
-  })
-
   describe('redirectToLoginClient', () => {
     it('should redirect to client login page using router.replace', () => {
       const { redirectToLoginClient } = useRedirection()

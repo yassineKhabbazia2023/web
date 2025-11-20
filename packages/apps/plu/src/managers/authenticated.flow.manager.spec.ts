@@ -8,7 +8,7 @@ import {
   getPermissionsMock,
   getMockedEntitySummary,
 } from '@pulse/common/mocks'
-import { initProductFruitsAuthenticatedCollab, initProductFruitsAuthenticatedCustomer, stopProductFruits, getProductFruitsUser } from '@app/plugins/ProductFruits/productFruits.plugin'
+import { initProductFruitsAuthenticatedCollab, initProductFruitsAuthenticatedCustomer, stopProductFruits, getProductFruitsUser } from '@pulse/shared/plugins'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { fetchUserPermissions } from '@pulse/common/services/permissions'
@@ -33,7 +33,7 @@ vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
 }))
 
-vi.mock('@app/plugins/ProductFruits/productFruits.plugin', () => ({
+vi.mock('@pulse/shared/plugins', () => ({
   initProductFruitsAuthenticatedCollab: vi.fn(),
   initProductFruitsAuthenticatedCustomer: vi.fn(),
   getProductFruitsUser: vi.fn(),
