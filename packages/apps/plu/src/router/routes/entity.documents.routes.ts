@@ -56,6 +56,7 @@ export const entityDocumentsRoutes: RouteRecordRaw[] = [
         path: APP_ROUTES.entity.pennylaneAccounting.gedLegacy.path,
         name: APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name,
         meta: {
+          [GED_CONTEXT_META]: GedContext.ACCOUNTING,
           [PERMISSIONS_META]: [
             CollaboratorPermission.ACCEDER_GED_COMPTABLE,
             CustomerPermission.ACCEDER_GED_COMPTABLE,

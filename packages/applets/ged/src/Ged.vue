@@ -65,6 +65,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import { useRoute, onBeforeRouteUpdate } from 'vue-router'
 import Treeview from '@ged/modules/Treeview'
 import Documents from '@ged/modules/Documents'
 import BinDocuments from '@ged/modules/Bin'
@@ -85,6 +86,8 @@ import { logger } from '@pulse/toolbox'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { GedManager } from '@ged/ged.manager'
 import { GedContext } from '@pulse/common/enums'
+import { GED_CONTEXT_META } from '@pulse/common/constants'
+import { gedLegacyRouteUpdate } from '@ged/guard/ged-context-navigation.guard'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -97,11 +100,17 @@ const servicesFolders = ref<Folder[][]>([])
 
 const currentEntityStore = useCurrentEntityStore()
 const { currentEntity } = storeToRefs(currentEntityStore)
-const gedContext = ref<GedContext>(GedContext.LEGACY)
+const route = useRoute()
+
+// Handle navigation between GED legacy instances (when route params change but same route)
+onBeforeRouteUpdate(gedLegacyRouteUpdate)
+
+const gedContext = computed<GedContext>(() => {
+  return (route.meta?.[GED_CONTEXT_META] as GedContext) ?? GedContext.LEGACY
+})
 
 const fetchGedFoldersAndServices = async () => {
   try {
-    gedContext.value = GedManager.getGedContext()
     entityServices.value = await fetchUserEntityServices(
       accountNumber.value,
       selectedAccountId.value,
@@ -137,6 +146,20 @@ watch(accountNumber, async (currentEntityValue) => {
     isLoadingServicesOrFolders.value = false
   }
 })
+
+// Watch for GED context changes (e.g., switching between Social Management and Accounting)
+watch(
+  gedContext,
+  async (newContext, oldContext) => {
+    // Only refetch if context actually changed and we have an entity
+    if (newContext !== oldContext && oldContext !== undefined && accountNumber.value) {
+      isLoadingServicesOrFolders.value = true
+      currentBinService.value = null // Reset bin context when switching GED contexts
+      await fetchGedFoldersAndServices()
+      isLoadingServicesOrFolders.value = false
+    }
+  },
+)
 
 const selectedAccountId = computed(() => currentEntity?.value?.accountId ?? 0)
 const currentEntityAvatarColor = computed(() => currentEntity?.value?.color)

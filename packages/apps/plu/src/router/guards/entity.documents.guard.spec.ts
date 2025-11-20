@@ -51,8 +51,8 @@ describe('gedLegacyBeforeEnter', () => {
       })
     })
 
-    it('should redirect to pennylane accounting ged legacy for other notification types', () => {
-      const to = createMockedRoute({ notificationType: 'OTHER_TYPE' })
+    it('should redirect to pennylane accounting ged legacy when notificationType is AccountingDocumentUploaded', () => {
+      const to = createMockedRoute({ notificationType: NotificationKindEnum.AccountingDocumentUploaded })
 
       gedLegacyBeforeEnter(to, from, nextMock)
 
@@ -66,16 +66,22 @@ describe('gedLegacyBeforeEnter', () => {
       })
     })
 
-    it('should redirect to pennylane accounting ged legacy when no notificationType', () => {
+    it('should not redirect when notificationType is unknown', () => {
+      const to = createMockedRoute({ notificationType: 'OTHER_TYPE' })
+
+      gedLegacyBeforeEnter(to, from, nextMock)
+
+      // Should fall through to the second check (Pennylane permissions)
+      expect(nextMock).toHaveBeenCalled()
+    })
+
+    it('should not redirect when no notificationType is provided', () => {
       const to = createMockedRoute()
 
       gedLegacyBeforeEnter(to, from, nextMock)
 
-      expect(nextMock).toHaveBeenCalledWith({
-        name: APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name,
-        query: to.query,
-        params: to.params,
-      })
+      // Should fall through to the second check (Pennylane permissions)
+      expect(nextMock).toHaveBeenCalled()
     })
   })
 

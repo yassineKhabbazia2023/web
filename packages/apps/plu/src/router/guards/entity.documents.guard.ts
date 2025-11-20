@@ -16,16 +16,23 @@ export function gedLegacyBeforeEnter(
   // First, check if we need to redirect to new GED routes (V2)
   if (PennylanePermissionsManager.isGedUxV2() === true) {
     const notificationType = to.query?.notificationType
-    const routeName = notificationType === NotificationKindEnum.GSDocumentUploaded
-      ? APP_ROUTES.entity.pennylaneSocialManagement.name
-      : APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name
-    logger.trace(`redirection to ${routeName} instead legacy GED, notificationType equals '${notificationType}'`)
+    let routeName: string | undefined
 
-    return next({
-      name: routeName,
-      query: to.query,
-      params: to.params,
-    })
+    if (notificationType === NotificationKindEnum.GSDocumentUploaded) {
+      routeName = APP_ROUTES.entity.pennylaneSocialManagement.name
+    } else if (notificationType === NotificationKindEnum.AccountingDocumentUploaded) {
+      routeName = APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name
+    }
+
+    if (routeName) {
+      logger.trace(`redirection to ${routeName} instead legacy GED, notificationType equals '${notificationType}'`)
+
+      return next({
+        name: routeName,
+        query: to.query,
+        params: to.params,
+      })
+    }
   }
 
   // Then, block access if user has Pennylane permissions
