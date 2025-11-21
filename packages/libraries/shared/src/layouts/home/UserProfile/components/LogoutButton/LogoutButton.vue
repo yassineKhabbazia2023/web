@@ -38,7 +38,11 @@ const handleLogout = async () => {
     })
   }
   const routeName = isCollab ? RouteName.LOGIN_COLLAB : RouteName.LOGIN_CLIENT
-  router.push({ name: routeName })
+  // give some time for the logout process to complete before navigating
+  // especially for amplitude events to be sent before the user context is lost
+  setTimeout(() => {
+    router.push({ name: routeName })
+  }, 250)
 }
 </script>
 
