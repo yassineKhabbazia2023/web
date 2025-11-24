@@ -6,7 +6,7 @@ import {
   pennylaneSocialManagementBeforeEnter,
   pennylaneAccountingBeforeEnter,
   pennylaneGedV2BeforeEnter,
-} from '@app/router/guards/entity.documents.guard'
+} from '@pulse/shared/guards'
 
 /**
  * Entity Documents routes

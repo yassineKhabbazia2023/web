@@ -8,6 +8,7 @@
   "type": "module",
   "exports": {
     "./components": "./src/components/components.ts",
+    "./guards": "./src/guards/index.ts",
     "./layouts": "./src/layouts.ts",
     "./manager": "./src/layouts/home/Sidebar/manager/index.ts",
     "./pages": "./src/pages.index.ts",

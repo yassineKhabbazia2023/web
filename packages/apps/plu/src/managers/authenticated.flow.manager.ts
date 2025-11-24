@@ -4,7 +4,7 @@ import {
   useCurrentEntityStore,
 } from '@pulse/common/stores'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { fetchEntities } from '@app/services/entities/entity.service'
+import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import {
   initProductFruitsAuthenticatedCustomer,
@@ -17,7 +17,6 @@ import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import type { RouteLocationNamedRaw, RouteLocationNormalized } from 'vue-router'
 import { RouteName, RouteParam } from '@pulse/common/enums'
-import { fetchEntityById } from '@pulse/common/services/entities'
 import { Entity } from '@pulse/common/types'
 import { BookingManager } from '@pulse/booking/shared/managers/booking'
 
