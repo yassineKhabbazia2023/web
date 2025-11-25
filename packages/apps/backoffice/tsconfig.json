@@ -1,0 +1,30 @@
+{
+  "extends": "../../@config/tsconfig.base",
+  "include": [
+    "env.d.ts",
+    "src/**/*",
+    "__mocks__",
+    "src/**/*.json",
+    "./package.json"
+  ],
+  "compilerOptions": {
+    "paths": {
+      "@toolbox/*": [
+        "../../libraries/toolbox/src/*"
+      ],
+      "@styleguide/*": [
+        "../../libraries/styleguide/src/*"
+      ],
+      "@backoffice/*": [
+        "./src/*"
+      ]
+    },
+    "types": [
+      "@pinia/testing",
+      "vitest/globals",
+      "vitest/importMeta",
+      "vite/client",
+      "node"
+    ],
+  }
+}

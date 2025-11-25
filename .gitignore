@@ -82,7 +82,7 @@ out
 
 #  generate output
 dist
-dist-admin-tools
+dist-backoffice
 
 # Gatsby files
 .cache/

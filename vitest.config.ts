@@ -6,7 +6,6 @@ export default defineConfig({
       'packages/libraries/*',
       'packages/applets/*',
       'packages/apps/*',
-      'packages/admin-tools',
     ],
     reporters: [
       ['default', { summary: false }],
