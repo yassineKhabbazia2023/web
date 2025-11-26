@@ -117,7 +117,7 @@ const acceptNewCgu = async (termsId: string) => {
     loading.value = true
     await updateTermsByCurrentUser(parseInt(termsId))
     userStore.setHasAcceptedCGU(true)
-    router.push({ name: RouteName.WALLET })
+    router.push({ name: RouteName.LANDING })
   } catch (error) {
     userStore.setHasAcceptedCGU(false)
     logger.error(error)

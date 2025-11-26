@@ -153,7 +153,7 @@ describe('LoginClient', () => {
         gigyaUserId: GIGYA_USER_ID,
       },
     })
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: RouteName.WALLET })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: RouteName.LANDING })
   })
 
   it('does not redirect to the home page if the api return a WRONG_LOGIN_PASSWORD error', async () => {

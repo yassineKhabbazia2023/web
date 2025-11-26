@@ -289,28 +289,6 @@ describe('AuthenticatedFlowManager', () => {
     })
   })
 
-  describe('isNavigatingToAuthenticatedRoot', () => {
-    it('should detect if the user is navigating to the root of the authenticated space', () => {
-      const authenticatedRoute = AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot(RouteName.AUTHENTICATED)
-      const otherRoute = AuthenticatedFlowManager.isNavigatingToAuthenticatedRoot('other-route' as RouteName)
-
-      expect(authenticatedRoute).toBe(true)
-      expect(otherRoute).toBe(false)
-    })
-  })
-
-  describe('isNavigatingToCustomerWallet', () => {
-    it('should detect if the user is navigating to the customer wallet pages', () => {
-      const walletRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet(RouteName.WALLET)
-      const walletCustomerRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet(RouteName.CUSTOMER_ENTITIES)
-      const otherRoute = AuthenticatedFlowManager.isNavigatingToCustomerWallet('other-route' as RouteName)
-
-      expect(walletRoute).toBe(true)
-      expect(walletCustomerRoute).toBe(true)
-      expect(otherRoute).toBe(false)
-    })
-  })
-
   describe('getCGURedirection', () => {
     describe('user is a Collab', () => {
       it('should do nothing, as collabs do not have CGU to sign', async () => {
@@ -407,13 +385,13 @@ describe('AuthenticatedFlowManager', () => {
       })
     })
     describe('user is neither Collab nor Customer', () => {
-      it('should return undefined', () => {
+      it('should return null', () => {
         userStoreMock.isCollab = false
         userStoreMock.isCustomer = false
 
         const result = AuthenticatedFlowManager.getLandingPage()
 
-        expect(result).toBeUndefined()
+        expect(result).toBe(null)
       })
     })
   })
@@ -449,126 +427,6 @@ describe('AuthenticatedFlowManager', () => {
       const result = AuthenticatedFlowManager.getCollabLandingPage()
 
       expect(result).toEqual({ name: RouteName.FOLDERS })
-    })
-  })
-
-  describe('getAuthenticatedRedirection', () => {
-    const createMockRoute = (name: string) => ({ name }) as any
-
-    describe('CGU redirection (highest priority)', () => {
-      it('should return CGU redirection when user has not accepted CGU', async () => {
-        userStoreMock.isCollab = false
-        userStoreMock.getHasAcceptedCGU.mockReturnValue(false)
-        vi.mocked(getTermsByCurrentUser).mockResolvedValue({
-          isCurrent: false,
-          terms: { termsId: 123 } as any,
-          hasAcceptedBefore: false,
-        } as any)
-
-        const route = createMockRoute(RouteName.AUTHENTICATED)
-        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
-
-        expect(result).toEqual({
-          name: RouteName.VALIDATION_CGU,
-          params: { termsId: 123 },
-        })
-      })
-
-      it('should not redirect if already on CGU page', async () => {
-        userStoreMock.isCollab = false
-        userStoreMock.getHasAcceptedCGU.mockReturnValue(false)
-        vi.mocked(getTermsByCurrentUser).mockResolvedValue({
-          isCurrent: false,
-          terms: { termsId: 123 } as any,
-          hasAcceptedBefore: false,
-        } as any)
-
-        const route = createMockRoute(RouteName.VALIDATION_CGU)
-        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
-
-        expect(result).toBe(null)
-      })
-    })
-
-    describe('Authenticated root redirection', () => {
-      beforeEach(() => {
-        userStoreMock.isCollab = true
-      })
-
-      it('should return landing page when navigating to authenticated root', async () => {
-        const route = createMockRoute(RouteName.AUTHENTICATED)
-        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
-
-        expect(result).toEqual({ name: RouteName.FOLDERS })
-      })
-
-      it('should not redirect if already on landing page', async () => {
-        const route = createMockRoute(RouteName.FOLDERS)
-        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
-
-        expect(result).toBe(null)
-      })
-    })
-
-    describe('Customer wallet redirection', () => {
-      beforeEach(() => {
-        userStoreMock.isCollab = false
-        userStoreMock.isCustomer = true
-        userStoreMock.getHasAcceptedCGU.mockReturnValue(true)
-      })
-
-      it('should return customer landing page when navigating to wallet root', async () => {
-        userStoreMock.getIsSingleEntity.mockReturnValue(false)
-
-        const route = createMockRoute(RouteName.WALLET)
-        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
-
-        expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
-      })
-
-      it('should not redirect if already on customer landing page', async () => {
-        userStoreMock.getIsSingleEntity.mockReturnValue(false)
-
-        const route = createMockRoute(RouteName.CUSTOMER_ENTITIES)
-        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
-
-        expect(result).toBe(null)
-      })
-    })
-
-    describe('No redirection needed', () => {
-      beforeEach(() => {
-        userStoreMock.isCollab = true
-      })
-
-      it('should return null when navigating to a regular route', async () => {
-        const route = createMockRoute(RouteName.HOMEPAGE)
-        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
-
-        expect(result).toBe(null)
-      })
-    })
-
-    describe('Priority order', () => {
-      it('should prioritize CGU redirection over landing page redirection', async () => {
-        userStoreMock.isCollab = false
-        userStoreMock.getHasAcceptedCGU.mockReturnValue(false)
-        vi.mocked(getTermsByCurrentUser).mockResolvedValue({
-          isCurrent: false,
-          terms: { termsId: 123 } as any,
-          hasAcceptedBefore: false,
-        } as any)
-
-        // Even though we're navigating to authenticated root (which would normally redirect to landing page)
-        // CGU redirection should take priority
-        const route = createMockRoute(RouteName.AUTHENTICATED)
-        const result = await AuthenticatedFlowManager.getAuthenticatedRedirection(route)
-
-        expect(result).toEqual({
-          name: RouteName.VALIDATION_CGU,
-          params: { termsId: 123 },
-        })
-      })
     })
   })
 })

@@ -51,8 +51,7 @@ const handleMSALRedirectionAfterLogin = async () => {
     const successfullyAuth = await LoginManager.initAuthCollab()
 
     if (successfullyAuth) {
-      router.push({ name: RouteName.WALLET })
-      return
+      return router.push({ name: RouteName.LANDING })
     }
   } catch (e) {
     logger.error(e)

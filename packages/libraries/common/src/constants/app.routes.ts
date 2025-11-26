@@ -6,6 +6,7 @@ export const APP_ROUTES = {
   maintenance: { path: '/maintenance', name: RouteName.MAINTENANCE },
   anonymous: { path: '', name: RouteName.ANONYMOUS },
   authenticated: { path: '', name: RouteName.AUTHENTICATED },
+  landing: { path: 'landing', name: RouteName.LANDING },
   login: {
     client: { path: 'login', name: RouteName.LOGIN_CLIENT },
     collab: { path: 'collaborateur', name: RouteName.LOGIN_COLLAB },

@@ -20,6 +20,7 @@ export enum RouteName {
   FOLDERS = 'folders',
   GED = 'ged',
   HOMEPAGE = 'homepage',
+  LANDING = 'landing',
   INFO = 'info',
   LAUNCHER = 'launcher',
   LOGIN_CLIENT = 'loginClient',

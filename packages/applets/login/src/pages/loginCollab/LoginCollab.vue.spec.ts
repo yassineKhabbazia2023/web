@@ -1,4 +1,5 @@
 import { flushPromises, mount } from '@vue/test-utils'
+import { RouteName } from '@pulse/common/enums'
 import { AmplitudeServiceMock } from '@pulse/common/mocks'
 import { loggerMock } from '@pulse/toolbox/mocks'
 
@@ -42,15 +43,15 @@ const createWrapper = () => mount(LoginCollab, {
 
 describe('loginCollab', () => {
   describe('events', () => {
-    it('should redirect to wallet when the authentication succeeds', async () => {
+    it('should redirect to landing when the authentication succeeds', async () => {
       initAuthCollabMock.mockResolvedValue(true)
       createWrapper()
       await flushPromises()
       expect(initAuthCollabMock).toHaveBeenCalledOnce()
-      expect(mockRouterPush).toHaveBeenCalledOnce()
+      expect(mockRouterPush).toHaveBeenCalledWith({ name: RouteName.LANDING })
     })
 
-    it('should not redirect to wallet when authentication fails', async () => {
+    it('should not redirect to landing when authentication fails', async () => {
       initAuthCollabMock.mockResolvedValue(false)
       createWrapper()
       await flushPromises()

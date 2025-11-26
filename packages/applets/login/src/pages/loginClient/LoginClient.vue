@@ -205,7 +205,7 @@ async function onSubmit() {
     const { isCurrent, terms } = await getTermsByCurrentUser()
 
     if (isCurrent) {
-      return router.push({ name: RouteName.WALLET })
+      return router.push({ name: RouteName.LANDING })
     }
     router.push({ name: RouteName.VALIDATION_CGU, params: { termsId: terms.termsId } })
   } catch (error: any) {

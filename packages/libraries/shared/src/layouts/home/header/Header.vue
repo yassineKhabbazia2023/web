@@ -7,7 +7,11 @@
       padding-y--3
       padding-x--6"
   >
-    <router-link to="/" class="line-height--0">
+    <router-link
+      :to="{ name: RouteName.LANDING }"
+      class="line-height--0"
+      @click="amplitudeTrack"
+    >
       <PImage
         class="header-section__logo"
         pType="logos"
@@ -40,9 +44,12 @@
 </template>
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { getInitials } from '@pulse/common'
 import { useUserStore } from '@pulse/common/stores'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { RouteName } from '@pulse/common/enums'
 import {
   PAvatar,
   PDivider,
@@ -51,6 +58,7 @@ import {
 import { AvatarRoles } from '@pulse/styleguide'
 
 const userStore = useUserStore()
+const route = useRoute()
 
 const { user } = storeToRefs(userStore)
 
@@ -66,6 +74,12 @@ const userRole = computed(() => {
   const isCollab = userStore.isCollab
   return isCollab ? AvatarRoles.COLLAB : AvatarRoles.CLIENT
 })
+
+function amplitudeTrack() {
+  AmplitudeService.track('Brand logo clicked', {
+    from_location: route.name,
+  })
+}
 </script>
 
 <style lang="scss" scoped>

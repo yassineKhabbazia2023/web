@@ -61,7 +61,7 @@ describe('cgu validation', () => {
 
     const confirmButton = wrapper.find('[data-testid="cgu-button-confirm"]')
     await confirmButton.trigger('click')
-    expect(mockRouterPush).toHaveBeenCalledWith({ name: RouteName.WALLET })
+    expect(mockRouterPush).toHaveBeenCalledWith({ name: RouteName.LANDING })
   })
 
   it('should back to login page and logout', async () => {
