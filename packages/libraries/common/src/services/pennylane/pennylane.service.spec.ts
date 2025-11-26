@@ -62,17 +62,19 @@ describe('PennylaneService', () => {
   })
 
   describe('getDocuments', () => {
-    it('should call properly commonApi.gateway.get', async () => {
+    it('should call properly commonApi.gateway.get without pagination params', async () => {
       const accountNumberMock = '2025546345'
       const accountIdMock = 26
       const expectedUrl = `${API_PREFIXES.PENNYLANE}/accounts/${accountIdMock}/documents/currentuser`
       const queryParams = {
         accountNumber: accountNumberMock,
+        page: undefined,
+        pageSize: undefined,
       }
       const expectedParams = {
         params: queryParams,
       }
-      const documentsResultMock= getMockedPennylaneDocumentsQueryResult({
+      const documentsResultMock = getMockedPennylaneDocumentsQueryResult({
         items: documentsMock,
       })
 
@@ -80,6 +82,34 @@ describe('PennylaneService', () => {
         data: documentsResultMock,
       })
       const documents = await PennylaneService.getDocuments(accountNumberMock, accountIdMock)
+
+      expect(documents).toStrictEqual(documentsResultMock)
+      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
+      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl, expectedParams)
+    })
+
+    it('should call properly commonApi.gateway.get with pagination params', async () => {
+      const accountNumberMock = '2025546345'
+      const accountIdMock = 26
+      const pageMock = 2
+      const pageSizeMock = 25
+      const expectedUrl = `${API_PREFIXES.PENNYLANE}/accounts/${accountIdMock}/documents/currentuser`
+      const queryParams = {
+        accountNumber: accountNumberMock,
+        page: pageMock,
+        pageSize: pageSizeMock,
+      }
+      const expectedParams = {
+        params: queryParams,
+      }
+      const documentsResultMock = getMockedPennylaneDocumentsQueryResult({
+        items: documentsMock,
+      })
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: documentsResultMock,
+      })
+      const documents = await PennylaneService.getDocuments(accountNumberMock, accountIdMock, pageMock, pageSizeMock)
 
       expect(documents).toStrictEqual(documentsResultMock)
       expect(apiGatewayMock.get).toHaveBeenCalledOnce()

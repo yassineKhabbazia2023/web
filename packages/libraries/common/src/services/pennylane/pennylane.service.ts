@@ -41,9 +41,16 @@ export class PennylaneService {
     return data
   }
 
-  static async getDocuments(accountNumber: string, accountId: number) {
+  static async getDocuments(
+    accountNumber: string,
+    accountId: number,
+    page?: number,
+    pageSize?: number,
+  ) {
     const queryParams = {
       accountNumber,
+      page,
+      pageSize,
     }
     const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/documents/currentuser`
 
