@@ -7,11 +7,12 @@ export class AccountManager {
   static async createOrAddCustomerToAccount(
     customer: createCustomerBody,
     accountId: number,
+    accountNumber: string,
   ): Promise<number | undefined> {
     const { email } = customer
 
     try {
-      const user = await createCustomer(customer, accountId)
+      const user = await createCustomer(customer, accountNumber)
 
       return user.id
     } catch (error: any) {

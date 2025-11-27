@@ -156,12 +156,11 @@ export type createCustomerBody = {
   lastName: Contact['lastName']
   email: Contact['email']
   mobilePhone: Contact['mobilePhone']
-  accountNumber: string
 }
 
-export async function createCustomer(customerInformation: createCustomerBody, accountId: number) {
+export async function createCustomer(customerInformation: createCustomerBody, accountNumber: string) {
   const url = `${API_PREFIXES.ACCOUNT}/customers`
-  const { data } = await commonApi().gateway.post<UserInfoApi>(url, customerInformation, { params: { accountId } })
+  const { data } = await commonApi().gateway.post<UserInfoApi>(url, customerInformation, { params: { accountNumber } })
   return data
 }
 

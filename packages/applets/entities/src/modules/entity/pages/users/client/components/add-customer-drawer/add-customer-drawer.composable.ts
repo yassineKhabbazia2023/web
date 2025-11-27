@@ -190,7 +190,7 @@ export function useAddCustomerDrawer({
         email: newContact.value.email,
         accountNumber: targetEntityNumber,
       }
-      contactId.value = await AccountManager.createOrAddCustomerToAccount(customer, targetEntityId)
+      contactId.value = await AccountManager.createOrAddCustomerToAccount(customer, targetEntityId, targetEntityNumber)
       onboardingSucceeded()
       isSuccess = true
     } catch (error) {

@@ -16,23 +16,23 @@ const fetchAccountContactsByEmailMock = vi.mocked(fetchAccountContactsByEmail)
 describe('AccountManager', () => {
   describe('createOrAddCustomerToAccount', () => {
     const accountId = 234
+    const accountNumberMock = '432101'
     const newCustomerMock = getMockedUserApi()
     const customer = {
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
       mobilePhone: '065432101',
-      accountNumber: '432101',
     }
 
     it('should return newCustomerId when is does not exist', async () => {
       const expectedParams = [
         customer,
-        accountId,
+        accountNumberMock,
       ]
 
       createCustomerMock.mockResolvedValue(newCustomerMock)
-      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId)
+      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock)
 
       expect(createCustomerMock).toHaveBeenCalledOnce()
       expect(createCustomerMock).toHaveBeenCalledWith(...expectedParams)
@@ -57,7 +57,7 @@ describe('AccountManager', () => {
           contactId: contactIdMock,
         }],
       })
-      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId)
+      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock)
 
       expect(addContactToEntityMock).toHaveBeenCalledOnce()
       expect(addContactToEntityMock).toHaveBeenCalledWith(...expectedParams)
@@ -68,12 +68,12 @@ describe('AccountManager', () => {
       expect(newCustomerId).toStrictEqual(contactIdMock)
     })
 
-    it('should not return customerId when somethine wrong occurs', async () => {
+    it('should not return customerId when something wrong occurs', async () => {
       const errorMock = 'error mock'
 
       createCustomerMock.mockRejectedValue(errorMock)
 
-      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId)
+      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock)
 
       expect(addContactToEntityMock).not.toHaveBeenCalled()
       expect(fetchAccountContactsByEmailMock).not.toHaveBeenCalled()
