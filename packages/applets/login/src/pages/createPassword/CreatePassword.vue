@@ -259,7 +259,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
             gigyaUserId: '',
           }
           userStore.setUser(user)
-          router.push({ name: RouteName.WALLET })
+          router.push({ name: RouteName.LANDING })
         } catch (error: any) {
           AmplitudeService.track('Onboarding Completed', {
             onboarding_result: 'failed',
