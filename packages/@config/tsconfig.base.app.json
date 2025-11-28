@@ -15,6 +15,9 @@
       "@app/*": [
         "../apps/plu/src/*"
       ],
+      "@collaborator/*": [
+        "../apps/collaborator/src/*"
+      ],
       "@common/*": [
         "../libraries/common/src/*"
       ],
