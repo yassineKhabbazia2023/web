@@ -61,11 +61,12 @@ export async function fetchAccountDelegationsHistory(
   return await fetchGatewayApi(url)
 }
 
-export async function deleteAccountDelegation(delegationId: number) {
+export async function deleteAccountDelegation(delegationId: number, delegateeId: number) {
   const url = `${API_PREFIXES.ACCOUNT}/delegations/currentuser`
   return await commonApi().gateway.delete(url, {
     params: {
       delegationId,
+      delegateeId,
     },
   })
 }

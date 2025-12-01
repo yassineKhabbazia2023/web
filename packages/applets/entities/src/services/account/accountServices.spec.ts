@@ -35,6 +35,7 @@ import {
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 
+const delegationId = 3
 const accountId = 5
 const contactId = 25
 const accountIdRejected = 8
@@ -73,9 +74,6 @@ vi.mock('@pulse/common', () => {
           if (url === `${API_PREFIXES.ACCOUNT}/delegations/currentuser`) {
             return {
               status: 200,
-              data: {
-                accountId,
-              },
             }
           }
         }),
@@ -242,9 +240,9 @@ describe('test accountServices', () => {
     })
 
     it('delete a delegation', async () => {
-      const response = await deleteAccountDelegation(accountId)
+      const response = await deleteAccountDelegation(delegationId, contactId)
 
-      expect(response).toStrictEqual({ status: 200, data: { accountId } })
+      expect(response).toStrictEqual({ status: 200 })
     })
 
     it('delegate accounts', async () => {

@@ -222,7 +222,7 @@ const displayErrorNotification = (delegatee: Delegation['delegatee']) => {
 
 const deleteDelegation = async (delegationId: Delegation['id'], delegatee: Delegation['delegatee']) => {
   try {
-    await deleteAccountDelegation(delegationId)
+    await deleteAccountDelegation(delegationId, delegatee.id)
     displaySuccessNotification(delegatee)
     await fetchDelegationsHistory()
   } catch (error) {
