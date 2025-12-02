@@ -81,12 +81,9 @@
       <PTableColumn :pLabel="t('status')">
         <template #default="scope">
           <PTag
-            :pColor="
-              scope.row.status === SubscriptionStatusCode.VALIDATED
-                ? 'success'
-                : 'info'
-            "
-            :pContent="formatStatus(scope.row.status)"
+            :pColor="getStatusDetails(scope.row.status).color"
+            :pIconLeftName="getStatusDetails(scope.row.status).iconName"
+            :pContent="getStatusDetails(scope.row.status).text"
           />
         </template>
       </PTableColumn>
@@ -128,7 +125,7 @@ import {
   PLoader,
 } from '@pulse/styleguide/components'
 import { AvatarRoles, displayNotification } from '@pulse/styleguide'
-import type { PToolboxItemProps } from '@pulse/styleguide/types'
+import type { PToolboxItemProps, IconName, PTagProps } from '@pulse/styleguide/types'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
@@ -179,8 +176,25 @@ const fetchSubscriptions = async () => {
   filteredSubscriptions.value = subscriptions.value
 }
 
-const formatStatus = (status: string) => {
-  return status === SubscriptionStatusCode.PENDING ? t('toValidate') : status
+interface StatusDetails {
+  text: string
+  color: PTagProps['pColor']
+  iconName: IconName
+}
+
+const getStatusDetails = (status: string): StatusDetails => {
+  switch (status) {
+    case SubscriptionStatusCode.VALIDATED:
+      return { text: t('validated'), color: 'success', iconName: 'checkCircle' }
+    case SubscriptionStatusCode.PENDING:
+      return { text: t('pending'), color: 'info', iconName: 'infoCircle' }
+    case SubscriptionStatusCode.PENNYLANE_CREATED:
+      return { text: t('pennylaneCreated'), color: 'light-green', iconName: 'checkCircle' }
+    case SubscriptionStatusCode.PENNYLANE_NOT_CREATED:
+      return { text: t('pennylaneNotCreated'), color: 'orange', iconName: 'exclamationTriangle' }
+    default:
+      return { text: status, color: 'info', iconName: 'infoCircle' }
+  }
 }
 
 const validateSubscription = async (subscriptionId: number, offer: SubscriptionRequest['offer']) => {
@@ -272,7 +286,10 @@ en-US:
   dateRequest: 'Date'
   validate: 'Validate request'
   consult: 'Consult'
-  toValidate: 'To validate'
+  validated: 'Activated'
+  pending: 'To validate'
+  pennylaneCreated: 'Update plan'
+  pennylaneNotCreated: 'To create'
   offerActivated: 'The offer has been activated'
   offerNotActivated: 'The offer could not be activated'
 fr-FR:
@@ -286,7 +303,10 @@ fr-FR:
   dateRequest: 'Date'
   validate: 'Valider la demande'
   consult: 'Consulter'
-  toValidate: 'A valider'
+  validated: 'Activée'
+  pending: 'A valider'
+  pennylaneCreated: 'Modifier le plan'
+  pennylaneNotCreated: 'A créer'
   offerActivated: "L'offre a été activée"
   offerNotActivated: "L'offre n'a pas pu être activée"
 </i18n>

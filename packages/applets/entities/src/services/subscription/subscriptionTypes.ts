@@ -5,6 +5,8 @@ import type { ContactType } from '@pulse/common/enums'
 export enum SubscriptionStatusCode {
   PENDING = 'pending',
   VALIDATED = 'validated',
+  PENNYLANE_CREATED = 'pennylane-created',
+  PENNYLANE_NOT_CREATED = 'pennylane-not-created',
 }
 
 export interface Account {
