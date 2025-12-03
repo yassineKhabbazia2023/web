@@ -62,12 +62,12 @@
               </template>
               <template #action>
                 <PTooltip
-                  :pContent="tooltipContentForDeleting(isEnabled, delegator)"
+                  :pContent="tooltipContentForDeleting(isEnabled, delegator, delegatee)"
                 >
                   <PButton
                     pIconOnly
-                    :pDisabled="!isEnabled || !delegator.isCurrentUser"
-                    @click="deleteDelegation(id, delegatee)"
+                    :pDisabled="checkDeletionDisabled(isEnabled, delegator.isCurrentUser, delegatee.isCurrentUser)"
+                    @click="deleteDelegation(id, delegator, delegatee)"
                   >
                     <PIcon pName="trash" />
                   </PButton>
@@ -124,8 +124,8 @@ const isLoading = ref<boolean>(false)
 const search = ref<undefined|string>()
 const delegations = ref<Delegation[]>([])
 
-const tooltipContentForDeleting = (isEnabled: Delegation['isEnabled'], delegator: Delegation['delegator']) => {
-  if (delegator.isCurrentUser) {
+const tooltipContentForDeleting = (isEnabled: Delegation['isEnabled'], delegator: Delegation['delegator'], delegatee: Delegation['delegatee']) => {
+  if (delegator.isCurrentUser === true || delegatee.isCurrentUser === true) {
     return isEnabled
       ? t('deleteTheDelegation')
       : t('alreadyDeleted')
@@ -220,15 +220,19 @@ const displayErrorNotification = (delegatee: Delegation['delegatee']) => {
   })
 }
 
-const deleteDelegation = async (delegationId: Delegation['id'], delegatee: Delegation['delegatee']) => {
+const deleteDelegation = async (delegationId: Delegation['id'], delegator: Delegation['delegator'], delegatee: Delegation['delegatee']) => {
   try {
-    await deleteAccountDelegation(delegationId, delegatee.id)
+    await deleteAccountDelegation(delegationId, delegator.id, delegatee.id)
     displaySuccessNotification(delegatee)
     await fetchDelegationsHistory()
   } catch (error) {
     displayErrorNotification(delegatee)
     logger.error(error)
   }
+}
+
+const checkDeletionDisabled = (isEnabled: boolean, isDelegatorCurrentUser: boolean, isDelegateeCurrentUser: boolean) => {
+  return !isEnabled || (!isDelegatorCurrentUser && !isDelegateeCurrentUser)
 }
 
 // init part

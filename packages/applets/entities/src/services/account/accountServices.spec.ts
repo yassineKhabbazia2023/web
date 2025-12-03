@@ -240,7 +240,7 @@ describe('test accountServices', () => {
     })
 
     it('delete a delegation', async () => {
-      const response = await deleteAccountDelegation(delegationId, contactId)
+      const response = await deleteAccountDelegation(delegationId, contactId, 1)
 
       expect(response).toStrictEqual({ status: 200 })
     })
