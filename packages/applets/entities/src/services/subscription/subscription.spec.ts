@@ -52,7 +52,7 @@ describe('subscriptionService', () => {
   })
   describe('createSubscriptionRequest', () => {
     it('should call subscription.post()', async () => {
-      const expectedUrl = 'offer/api/subscription'
+      const expectedUrl = 'offer/api/subscription/create'
       const expectedParams = [
         expectedUrl,
         subscriptionDemandMock,

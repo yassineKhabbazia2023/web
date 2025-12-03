@@ -35,7 +35,7 @@ export async function createSubscriptionRequest(
 ) {
   try {
     const response = await commonApi().gateway.post(
-      `${API_PREFIXES.OFFER}/subscription`,
+      `${API_PREFIXES.OFFER}/subscription/create`,
       request,
     )
 
