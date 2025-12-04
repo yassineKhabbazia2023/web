@@ -1,27 +1,29 @@
 <template>
-  <div
-    class="entity-wrapper"
-    data-testid="folder-tabs-wrapper"
-  >
-    <PEntityHeader
-      v-if="currentEntity"
-      :pLegalName="currentEntity.legalName"
-      :pAccountNumber="currentEntity.accountNumber"
-      class="margin-bottom--4"
-    />
-    <PTabs
-      :modelValue="activeTab"
-      @tab-click="handleTabClick"
+  <div class="entity-page">
+    <header
+      class="entity-wrapper"
+      data-testid="folder-tabs-wrapper"
     >
-      <PTabPane
-        v-for="tab in tabsList"
-        :key="tab.name"
-        :pLabel="tab.title"
-        :name="tab.name"
+      <PEntityHeader
+        v-if="currentEntity"
+        :pLegalName="currentEntity.legalName"
+        :pAccountNumber="currentEntity.accountNumber"
+        class="margin-bottom--4"
       />
-    </PTabs>
+      <PTabs
+        :modelValue="activeTab"
+        @tab-click="handleTabClick"
+      >
+        <PTabPane
+          v-for="tab in tabsList"
+          :key="tab.name"
+          :pLabel="tab.title"
+          :name="tab.name"
+        />
+      </PTabs>
+    </header>
+    <router-view />
   </div>
-  <router-view />
 </template>
 
 <script setup lang="ts">

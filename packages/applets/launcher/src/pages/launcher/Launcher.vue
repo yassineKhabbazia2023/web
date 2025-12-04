@@ -1,7 +1,12 @@
 <template>
   <div>
     <template v-if="isClient">
-      <PBreadcrumb :pElements="breadcrumbElements" />
+      <PEntityHeader
+        v-if="currentEntity"
+        :pLegalName="currentEntity.legalName"
+        :pAccountNumber="currentEntity.accountNumber"
+        class="margin-bottom--4"
+      />
       <h1
         class="h4 margin-top--3 text-color--neutral-gray-700"
         data-testid="launcher-home-title"
@@ -50,7 +55,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { RouteName } from '@pulse/common/enums'
-import { PBreadcrumb, PAlert } from '@pulse/styleguide/components'
+import { PAlert, PEntityHeader } from '@pulse/styleguide/components'
 import LaunchCard from '@launcher/components/launchCard'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LauncherKey, ExtendedLaunchCard } from './LauncherTypes'
@@ -97,17 +102,6 @@ const permissionsStore = usePermissionsStore()
 
 const { currentEntity } = storeToRefs(currentEntityStore)
 const { currentEntityPermissions } = storeToRefs(permissionsStore)
-
-const breadcrumbElements = computed(() => ([
-  {
-    pId: -1,
-    pText: currentEntity.value?.legalName ?? '',
-  },
-  {
-    pId: -1,
-    pText: t('title'),
-  },
-]))
 
 const authorizedKeys = computed<LauncherKey[]>(() =>
   LAUNCHER_AUTHORIZATIONS

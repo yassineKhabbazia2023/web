@@ -3,7 +3,6 @@ import { describe, expect, it, vi, beforeEach } from 'vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { launchCardsMock, collabLaunchCardsMock } from '@launcher/__mocks__/launch-cards.mocks'
 import { launcherServicesMocks } from '@launcher/__mocks__/launcher.service.mocks'
-import { mockedEntity } from '@launcher/__mocks__/entity.mocks'
 import { getLaunchCardsMock, getSilaeDownloadLabelMock, handleClickActionMock, handleDownloadMock, LauncherUtilsMocks, mockedPercent } from '@launcher/__mocks__/home-utils.mocks'
 import { envVarsMock,
   getMockedEntitySummary,
@@ -72,22 +71,17 @@ describe('test Home', () => {
   })
 
   describe('default display', () => {
-    it('proper launchCards length and breadcrumb elements', async () => {
+    it('proper launchCards length and entity header elements', async () => {
       await nextTick()
       const launchCards = getLaunchCardComponents(wrapper)
-      const PBreadcrumb = wrapper.findComponent({ name: 'PBreadcrumb' })
+      const entityHeader = wrapper.findComponent({ name: 'PEntityHeader' })
       const title = wrapper.find('[data-testid="launcher-home-title"]')
       const sectionTitle = wrapper.find('[data-testid="launcher-home-section-title"]')
-      const expectedBreadcrumbElements = [{
-        pId: -1,
-        pText: mockedEntity.legalName,
-      }, {
-        pId: -1,
-        pText: 'Applications',
-      }]
 
       expect(launchCards).toHaveLength(CARDS_LENGTH)
-      expect(PBreadcrumb.props('pElements')).toStrictEqual(expectedBreadcrumbElements)
+      expect(entityHeader.exists()).toBeTruthy()
+      expect(entityHeader.props('pLegalName')).toBe(entitySummaryMock.legalName)
+      expect(entityHeader.props('pAccountNumber')).toBe(entitySummaryMock.accountNumber)
       expect(title.exists()).toBeTruthy()
       expect(sectionTitle.exists()).toBeTruthy()
     })
@@ -189,7 +183,7 @@ describe('test Home', () => {
   })
 
   describe('when route is launcher-collab', () => {
-    it('proper launchCards length and breadcrumb elements', async () => {
+    it('proper launchCards length and entity header elements', async () => {
       vi
         .spyOn(VueRouter, 'useRoute')
         .mockReturnValueOnce({
@@ -198,12 +192,12 @@ describe('test Home', () => {
       const wrapper = getWrapper()
       await nextTick()
       const launchCards = getLaunchCardComponents(wrapper)
-      const PBreadcrumb = wrapper.findComponent({ name: 'PBreadcrumb' })
+      const entityHeader = wrapper.findComponent({ name: 'PEntityHeader' })
       const title = wrapper.find('[data-testid="launcher-home-title"]')
       const sectionTitle = wrapper.find('[data-testid="launcher-home-section-title"]')
 
       expect(launchCards).toHaveLength(CARDS_LENGTH)
-      expect(PBreadcrumb.exists()).toBeFalsy()
+      expect(entityHeader.exists()).toBeFalsy()
       expect(title.exists()).toBeFalsy()
       expect(sectionTitle.exists()).toBeFalsy()
     })
