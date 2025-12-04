@@ -1,10 +1,11 @@
 <template>
   <PDrawer
     v-model="isNotificationSettingsDrawerOpened"
-    destroyOnClose
+    :beforeClose="handleBeforeClose"
     :pTitle="t('feedCenter.settingsDrawer.title')"
+    destroyOnClose
     pSize="50%"
-    @close-drawer-button="closeDrawer"
+    @close-drawer-button="handleBeforeClose"
   >
     <template #header-suffix>
       <div class="text-color--neutral-gray-300 margin-top--2 width--100 ">
@@ -90,38 +91,57 @@
       <PButton
         class="margin-right--4"
         pType="secondary"
-        @click="closeDrawer"
+        @click="handleBeforeClose"
       >
         {{ t('feedCenter.settingsDrawer.close') }}
       </PButton>
       <PButton
         pType="primary"
-        @click="NotificationSettingsManager.saveSettings(notificationSettings)"
+        @click="handleSave"
       >
         {{ t('feedCenter.settingsDrawer.save') }}
       </PButton>
     </template>
+
+    <!-- Confirmation popup -->
+    <UnsavedChangesConfirmationModal
+      v-model="isConfirmationModalOpen"
+      @cancel="handleCancelLeave"
+      @confirm-leave="handleConfirmLeave"
+    />
   </PDrawer>
 </template>
 
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { AppColors } from '@pulse/styleguide'
 import { PButton, PCollapse, PCollapseItem, PDrawer, PLoader, PSwitch } from '@pulse/styleguide/components'
 import { useNotificationSettings } from './notification-settings.composable'
 import { NotificationSettingsManager } from './notification-settings.manager'
 import SettingsTable from '../SettingsTable/settings-table.vue'
+import UnsavedChangesConfirmationModal from './components/unsaved-changes-confirmation-modal.vue'
 
 const { t } = useI18n({ useScope: 'global' })
 
-const isNotificationSettingsDrawerOpened = defineModel({
-  type: Boolean,
-  default: false,
+const props = defineProps<{
+  modelValue: boolean
+}>()
+
+const emit = defineEmits<{
+  'update:modelValue': [value: boolean]
+}>()
+
+const isNotificationSettingsDrawerOpened = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value) {
+    emit('update:modelValue', value)
+  },
 })
 
-function closeDrawer() {
-  isNotificationSettingsDrawerOpened.value = false
-}
+const isConfirmationModalOpen = ref(false)
 
 const {
   areSettingsLoading,
@@ -130,8 +150,47 @@ const {
   notificationSettings,
   settingsByDomain,
   updateSetting,
+  hasUnsavedChanges,
+  markAsSaved,
 } = useNotificationSettings()
 
+function closeDrawer() {
+  isNotificationSettingsDrawerOpened.value = false
+}
+
+function handleBeforeClose(done?: () => void) {
+  if (hasUnsavedChanges.value === true) {
+    isConfirmationModalOpen.value = true
+    return
+  }
+
+  if (typeof done === 'function') {
+    done()
+  }
+
+  closeDrawer()
+}
+
+async function handleSave() {
+  if (notificationSettings.value === undefined) {
+    return
+  }
+  const { success } = await NotificationSettingsManager.saveSettings(notificationSettings.value)
+
+  if (success === true) {
+    markAsSaved()
+  }
+}
+
+function handleConfirmLeave() {
+  isConfirmationModalOpen.value = false
+  hasUnsavedChanges.value = false
+  closeDrawer()
+}
+
+function handleCancelLeave() {
+  isConfirmationModalOpen.value = false
+}
 
 </script>
 

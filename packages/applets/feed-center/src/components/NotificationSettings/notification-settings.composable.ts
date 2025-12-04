@@ -9,10 +9,12 @@ export function useNotificationSettings() {
   const notificationSettings = ref<NotificationSettingsConfiguration>()
 
   const areSettingsLoading = ref(false)
+  const settingsModified = ref(false)
 
   onMounted(async () => {
     areSettingsLoading.value = true
     notificationSettings.value = await getNotificationSettings()
+
     // In order to make the transition between loading and content smoother
     setTimeout(() => {
       areSettingsLoading.value = false
@@ -28,6 +30,7 @@ export function useNotificationSettings() {
         return
       }
       notificationSettings.value.preferenceSettings.hasOnlyFavouritesDisplayed = value
+      settingsModified.value = true
     },
   })
 
@@ -47,6 +50,8 @@ export function useNotificationSettings() {
         setting.emailValue = isEnabled
       }
     }
+
+    settingsModified.value = true
   }
 
   function updateSetting(
@@ -76,6 +81,13 @@ export function useNotificationSettings() {
     if (settingType === SettingsType.FEED_CENTER) {
       settingToUpdate.feedcenterValue = isActivated
     }
+
+    settingsModified.value = true
+  }
+
+  // Mark settings as saved after successful save
+  function markAsSaved() {
+    settingsModified.value = false
   }
 
   return {
@@ -85,5 +97,7 @@ export function useNotificationSettings() {
     notificationSettings,
     settingsByDomain,
     updateSetting,
+    hasUnsavedChanges: settingsModified,
+    markAsSaved,
   }
 }

@@ -24,16 +24,18 @@ export class NotificationSettingsManager {
     )
   }
 
-  static async saveSettings(settingsConfiguration: NotificationSettingsConfiguration) {
+  static async saveSettings(settingsConfiguration: NotificationSettingsConfiguration): Promise<{ success: boolean }> {
     const formattedSettingsForSave = this.formatSettingsForSave(settingsConfiguration)
 
     try {
       await saveNotificationSettings(formattedSettingsForSave)
       await this.refreshNotification()
       this.displaySaveSuccessNotification()
+      return { success: true }
     } catch (error) {
       this.displaySaveErrorNotification()
       logger.error(error)
+      return { success: false }
     }
   }
 

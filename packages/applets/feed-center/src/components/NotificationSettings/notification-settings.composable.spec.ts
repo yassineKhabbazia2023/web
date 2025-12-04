@@ -73,6 +73,7 @@ describe('useNotificationSettings', () => {
         expectedInitialValue: false,
         newValue: true,
         expectedFinalValue: true,
+        shouldMarkAsModified: true,
       },
       {
         description: 'should return undefined and not update when notification settings are not loaded',
@@ -80,22 +81,25 @@ describe('useNotificationSettings', () => {
         expectedInitialValue: undefined,
         newValue: true,
         expectedFinalValue: undefined,
+        shouldMarkAsModified: false,
       },
-    ])('$description', async ({ mockSettings, expectedInitialValue, newValue, expectedFinalValue }) => {
+    ])('$description', async ({ mockSettings, expectedInitialValue, newValue, expectedFinalValue, shouldMarkAsModified }) => {
       vi.mocked(getNotificationSettings).mockResolvedValue(mockSettings)
 
-      const [{ hasOnlyFavouritesDisplayed }, appInstance] = withSetup(() => useNotificationSettings())
+      const [{ hasOnlyFavouritesDisplayed, hasUnsavedChanges }, appInstance] = withSetup(() => useNotificationSettings())
       app = appInstance
 
       await flushPromises()
 
       // Test getter
       expect(hasOnlyFavouritesDisplayed.value).toBe(expectedInitialValue)
+      expect(hasUnsavedChanges.value).toBe(false)
 
       // Test setter
       hasOnlyFavouritesDisplayed.value = newValue
 
       expect(hasOnlyFavouritesDisplayed.value).toBe(expectedFinalValue)
+      expect(hasUnsavedChanges.value).toBe(shouldMarkAsModified)
     })
   })
 
@@ -120,20 +124,23 @@ describe('useNotificationSettings', () => {
         expectedSettings: getDomainNotificationSettingsAfterEnableAllWithNulls().settings,
       },
     ])('$description', async ({ isEnabled, domainIndex, expectedSettings }) => {
-      const [{ handleDomainSettingsSwitch, settingsByDomain }, appInstance] = withSetup(
+      const [{ handleDomainSettingsSwitch, settingsByDomain, hasUnsavedChanges }, appInstance] = withSetup(
         () => useNotificationSettings(),
       )
       app = appInstance
 
       await flushPromises()
 
+      expect(hasUnsavedChanges.value).toBe(false)
+
       handleDomainSettingsSwitch(isEnabled, domainIndex)
 
       expect(settingsByDomain.value[domainIndex].settings).toEqual(expectedSettings)
+      expect(hasUnsavedChanges.value).toBe(true)
     })
 
     it('should do nothing when domain index is out of bounds', async () => {
-      const [{ handleDomainSettingsSwitch, settingsByDomain }, appInstance] = withSetup(
+      const [{ handleDomainSettingsSwitch, settingsByDomain, hasUnsavedChanges }, appInstance] = withSetup(
         () => useNotificationSettings(),
       )
       app = appInstance
@@ -141,9 +148,12 @@ describe('useNotificationSettings', () => {
       await flushPromises()
       const originalSettings = JSON.parse(JSON.stringify(settingsByDomain.value))
 
+      expect(hasUnsavedChanges.value).toBe(false)
+
       handleDomainSettingsSwitch(true, 999)
 
       expect(settingsByDomain.value).toEqual(originalSettings)
+      expect(hasUnsavedChanges.value).toBe(false)
     })
   })
 
@@ -168,16 +178,40 @@ describe('useNotificationSettings', () => {
         expectedFeedcenterValue: false,
       },
     ])('$description', async ({ isActivated, settingId, domainIndex, settingType, expectedEmailValue, expectedFeedcenterValue }) => {
-      const [{ updateSetting, settingsByDomain }, appInstance] = withSetup(() => useNotificationSettings())
+      const [{ updateSetting, settingsByDomain, hasUnsavedChanges }, appInstance] = withSetup(() => useNotificationSettings())
       app = appInstance
 
       await flushPromises()
+
+      expect(hasUnsavedChanges.value).toBe(false)
 
       updateSetting({ isActivated, settingId, domainIndex, settingType })
 
       const updatedSetting = settingsByDomain.value[domainIndex].settings.find(s => s.id === settingId)
       expect(updatedSetting?.emailValue).toBe(expectedEmailValue)
       expect(updatedSetting?.feedcenterValue).toBe(expectedFeedcenterValue)
+      expect(hasUnsavedChanges.value).toBe(true)
+    })
+  })
+
+  describe('markAsSaved', () => {
+    it('should reset hasUnsavedChanges to false', async () => {
+      const [{ hasOnlyFavouritesDisplayed, hasUnsavedChanges, markAsSaved }, appInstance] = withSetup(
+        () => useNotificationSettings(),
+      )
+      app = appInstance
+
+      await flushPromises()
+
+      // Make a change to set hasUnsavedChanges to true
+      hasOnlyFavouritesDisplayed.value = true
+      expect(hasUnsavedChanges.value).toBe(true)
+
+      // Call markAsSaved
+      markAsSaved()
+
+      // Verify hasUnsavedChanges is reset to false
+      expect(hasUnsavedChanges.value).toBe(false)
     })
   })
 })

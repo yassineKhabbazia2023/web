@@ -12,7 +12,13 @@
       "close": "Close",
       "save": "Save changes",
       "success": "Your notification settings have been saved.",
-      "error": "An error occurred while saving your settings. Please try again."
+      "error": "An error occurred while saving your settings. Please try again.",
+      "unsavedChanges": {
+        "title": "Leave notification settings?",
+        "content": "You are about to leave the notification settings center without saving your changes, all progress will be lost. Do you want to leave?",
+        "cancelButton": "Cancel",
+        "leaveButton": "Leave"
+      }
     }
   }
 }

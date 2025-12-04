@@ -12,7 +12,13 @@
       "close": "Fermer",
       "save": "Enregistrer les modifications",
       "success": "Vos paramètres de notifications ont été sauvegardés.",
-      "error": "Une erreur est survenue lors de la sauvegarde de vos paramètres. Veuillez réessayer."
+      "error": "Une erreur est survenue lors de la sauvegarde de vos paramètres. Veuillez réessayer.",
+      "unsavedChanges": {
+        "title": "Quitter le paramétrage de vos notifications ?",
+        "content": "Vous êtes sur le point de quitter le centre de paramétrage des notifications sans avoir validé vos modifications, toute progression sera perdue. Souhaitez-vous quitter ce parcours ?",
+        "cancelButton": "Annuler",
+        "leaveButton": "Quitter"
+      }
     }
   }
 }
