@@ -23,7 +23,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { sanitizeUrl } from '@braintree/sanitize-url'
+import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { PButton, PIcon } from '@pulse/styleguide/components'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { PennylaneSSOProps } from './pennylane-sso.types'

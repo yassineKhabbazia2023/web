@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { sanitizeUrl } from '@braintree/sanitize-url'
+import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { computed } from 'vue'
 import { APP_COPYRIGHT, SUPPORT_PHONE_COLLAB, SUPPORT_PHONE_COLLAB_LINK } from '@pulse/common/constants'
 
@@ -26,7 +26,7 @@ const { t } = useI18n({
 })
 
 const phoneSanitizedUrl = computed(() => {
-  return sanitizeUrl(`tel:${SUPPORT_PHONE_COLLAB_LINK}`)
+  return sanitizeUrl(`tel:${SUPPORT_PHONE_COLLAB_LINK}`, { allowedSchemes: ['tel'] })
 })
 </script>
 

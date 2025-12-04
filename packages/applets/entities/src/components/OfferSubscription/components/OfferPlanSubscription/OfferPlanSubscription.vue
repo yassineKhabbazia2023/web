@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { sanitizeUrl } from '@braintree/sanitize-url'
+import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { PButton, PRadioCard, PRadioGroup, PDialog } from '@pulse/styleguide/components'
 import { VITE_PENNYLANE_PRICING_TABLE_URL } from 'env-vars'
 import type { OfferPlanSubscriptionProps } from './OfferPlanSubscription.type'

@@ -68,7 +68,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { sanitizeUrl } from '@braintree/sanitize-url'
+import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { PImage, PIcon, PButton } from '@pulse/styleguide/components'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { LauncherFeature, LauncherTitle } from './LaunchCardTypes'

@@ -86,7 +86,7 @@ vi.mock('@entities/services/account', () => ({
   patchAccount: vi.fn(() => Promise.resolve({})),
 }))
 
-vi.mock('@braintree/sanitize-url', () => ({
+vi.mock('@pulse/toolbox/utils/url', () => ({
   sanitizeUrl: getMockedSanitized,
 }))
 

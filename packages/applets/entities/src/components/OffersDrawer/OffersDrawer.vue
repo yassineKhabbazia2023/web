@@ -140,7 +140,7 @@
 import { logger } from '@pulse/toolbox'
 import { computed, ref, onMounted, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { sanitizeUrl } from '@braintree/sanitize-url'
+import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { PDrawer, PSteps, PStep, PIcon, PLoader } from '@pulse/styleguide/components'
 import { AppColors, displayNotification } from '@pulse/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'

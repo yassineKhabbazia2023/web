@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { sanitizeUrl } from '@braintree/sanitize-url'
+import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { computed } from 'vue'
 import { APP_COPYRIGHT, SUPPORT_PHONE_CLIENT, SUPPORT_PHONE_CLIENT_LINK, SUPPORT_EMAIL_CLIENT } from '@pulse/common/constants'
 
@@ -34,10 +34,10 @@ const { t } = useI18n({
 })
 
 const phoneSanitizedUrl = computed(() => {
-  return sanitizeUrl(`tel:${SUPPORT_PHONE_CLIENT_LINK}`)
+  return sanitizeUrl(`tel:${SUPPORT_PHONE_CLIENT_LINK}`, { allowedSchemes: ['tel'] })
 })
 const emailSanitizedUrl = computed(() => {
-  return sanitizeUrl(`mailto:${SUPPORT_EMAIL_CLIENT}`)
+  return sanitizeUrl(`mailto:${SUPPORT_EMAIL_CLIENT}`, { allowedSchemes: ['mailto'] })
 })
 </script>
 

@@ -12,7 +12,7 @@ export default mergeConfig(
       clearMocks: true,
       environment: 'jsdom',
       globals: true,
-      exclude: [...configDefaults.exclude, 'e2e/*'],
+      exclude: [...configDefaults.exclude, 'e2e/*', '.rollup.cache/**'],
       root: fileURLToPath(new URL('./', import.meta.url)),
       alias: [
         {

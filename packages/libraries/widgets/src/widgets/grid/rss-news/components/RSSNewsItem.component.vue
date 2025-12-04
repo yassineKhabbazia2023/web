@@ -27,7 +27,7 @@
 
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import { sanitizeUrl } from '@braintree/sanitize-url'
+import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { RssNewsItem } from '../types/rss-news.types'
 import { RSSNewsService } from '../services/rss-news.service'
 import { computed } from 'vue'

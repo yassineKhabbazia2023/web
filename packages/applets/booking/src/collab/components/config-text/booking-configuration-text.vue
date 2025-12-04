@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { sanitizeUrl } from '@braintree/sanitize-url'
+import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { useI18n } from 'vue-i18n'
 import { BOOKING_CONFIGURATION_LINK } from './booking-configuration-text .const'
 
