@@ -549,7 +549,7 @@ const getBankInformation = async (bankCode: string) => {
   } catch (error: any) {
     createMandateForm.bank = ''
     isBankCodeValid.value = false
-    return { status: 'error-not-found', error: error?.response?.data?.message }
+    return { status: 'error-not-found', error: error?.response?.data?.errorMessage }
   }
 }
 
