@@ -178,6 +178,57 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
     })
   })
 
+  describe('shouldRedirectWrongUserType', () => {
+    it('should return true when user is a customer', () => {
+      userStoreMock.isCollab = false
+
+      const result = CollaboratorAuthenticatedFlowManager.shouldRedirectWrongUserType()
+
+      expect(result).toBe(true)
+    })
+
+    it('should return false when user is a collaborator', () => {
+      userStoreMock.isCollab = true
+
+      const result = CollaboratorAuthenticatedFlowManager.shouldRedirectWrongUserType()
+
+      expect(result).toBe(false)
+    })
+
+    it('should return false when user type is undefined', () => {
+      userStoreMock.isCollab = undefined
+
+      const result = CollaboratorAuthenticatedFlowManager.shouldRedirectWrongUserType()
+
+      expect(result).toBe(false)
+    })
+  })
+
+  describe('redirectWrongUser', () => {
+    it('should redirect to customer app with current pathname', () => {
+      Object.defineProperty(globalThis, 'location', {
+        value: { href: '', pathname: '/collaborateur/dossiers' },
+        writable: true,
+      })
+
+      CollaboratorAuthenticatedFlowManager.redirectWrongUser()
+
+      expect(globalThis.location.href).toBe('/dossiers')
+      expect(loggerMock.warn).toHaveBeenCalled()
+    })
+
+    it('should redirect to root when pathname is only /collaborateur', () => {
+      Object.defineProperty(globalThis, 'location', {
+        value: { href: '', pathname: '/collaborateur' },
+        writable: true,
+      })
+
+      CollaboratorAuthenticatedFlowManager.redirectWrongUser()
+
+      expect(globalThis.location.href).toBe('/')
+    })
+  })
+
   describe('initAuthenticatedThirdParties', () => {
     beforeEach(() => {
       userStoreMock.getUserId.mockReturnValue(1)

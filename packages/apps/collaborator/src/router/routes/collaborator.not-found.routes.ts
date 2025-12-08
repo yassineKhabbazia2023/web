@@ -2,15 +2,30 @@ import type { RouteRecordRaw } from 'vue-router'
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META, LAYOUT_META, SQUAD_ROUTE_PATHS } from '@pulse/common/constants'
 import { COLLABORATOR_ROUTES } from '@collaborator/router/collaborator.routes'
 import { Layout } from '@pulse/common/enums'
-import { useLoadingStore } from '@pulse/common/stores'
+import { useLoadingStore, useUserStore } from '@pulse/common/stores'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { CollaboratorAuthenticatedFlowManager } from '@collaborator/managers/collaborator.authenticated.flow.manager'
 
 export const notFoundCollaboratorRoutes: RouteRecordRaw[] = [
   {
     path: '/:pathMatch(.*)*', // specific catch all
     name: COLLABORATOR_ROUTES.error.error404.name,
     component: () => import('@pulse/shared/pages').then(m => ({ default: m.Error404Page })),
-    beforeEnter: (to, _from, next) => {
+    beforeEnter: async (to, _from, next) => {
       const loadingStore = useLoadingStore()
+
+      // Check if user is on the wrong app and redirect if needed
+      if (CurrentUserManager.isAuthenticated()) {
+        const userStore = useUserStore()
+        if (userStore.isCollab === undefined) {
+          await CollaboratorAuthenticatedFlowManager.initCurrentUser()
+        }
+        if (CollaboratorAuthenticatedFlowManager.shouldRedirectWrongUserType()) {
+          CollaboratorAuthenticatedFlowManager.redirectWrongUser()
+          return
+        }
+      }
+
       // Check if the path matches any of the squad routes
       const subRoutes = Object.values(SQUAD_ROUTE_PATHS)
       const matches = subRoutes.some(route => to.path.startsWith(route))

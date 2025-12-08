@@ -18,6 +18,9 @@
       "@collaborator/*": [
         "../apps/collaborator/src/*"
       ],
+      "@customer/*": [
+        "../apps/customer/src/*"
+      ],
       "@common/*": [
         "../libraries/common/src/*"
       ],

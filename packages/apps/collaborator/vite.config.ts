@@ -11,7 +11,7 @@ const PORT = 9000
 export default ({ mode }: any) =>
   defineConfig(
     mergeConfig(viteConfigBase({ mode }), {
-      base: '/collaborateur',
+      base: '/collaborateur/',
       plugins: [
         vue(),
         VueI18nPlugin(),

@@ -1,0 +1,27 @@
+import type { RouteRecordRaw } from 'vue-router'
+import { CUSTOMER_ROUTES } from '../customer.routes'
+
+export const walletCustomerRoutes = [
+  {
+    path: CUSTOMER_ROUTES.wallet.root.path,
+    name: CUSTOMER_ROUTES.wallet.root.name,
+    redirect: (_to) => {
+      return { name: CUSTOMER_ROUTES.wallet.landingCustomer.name }
+    },
+    component: () => import('@pulse/entities/wallet-pages').then(pages => pages.WalletRoot),
+    children: [
+      // CUSTOMER LANDING: entity list
+      {
+        path: CUSTOMER_ROUTES.wallet.landingCustomer.path,
+        name: CUSTOMER_ROUTES.wallet.landingCustomer.name,
+        component: () => import('@pulse/entities/wallet-pages').then(pages => pages.Folders),
+      },
+      // All users management
+      {
+        path: CUSTOMER_ROUTES.wallet.allUsers.path,
+        name: CUSTOMER_ROUTES.wallet.allUsers.name,
+        component: () => import('@pulse/entities/entity-pages').then(pages => pages.Users),
+      },
+    ],
+  },
+] as RouteRecordRaw[]

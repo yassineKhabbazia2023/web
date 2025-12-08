@@ -19,6 +19,13 @@ import { RouteName } from '@pulse/common/enums'
 export class CollaboratorAuthenticatedFlowManager {
   static async enterAuthenticatedFlow() {
     await this.initCurrentUser()
+
+    if (this.shouldRedirectWrongUserType()) {
+      this.redirectWrongUser()
+      // early exit if the user is not a collaborator
+      return
+    }
+
     this.initAuthenticatedThirdParties()
     await this.initEntities()
   }
@@ -40,6 +47,17 @@ export class CollaboratorAuthenticatedFlowManager {
     } catch (error) {
       logger.error('unable to fetch user information nor its permissions', error)
     }
+  }
+
+  static shouldRedirectWrongUserType(): boolean {
+    const userStore = useUserStore()
+    return userStore.isCollab === false
+  }
+
+  static redirectWrongUser(): void {
+    logger.warn('Customer detected on collaborator app, redirecting to customer app')
+    const targetPath = globalThis.location.pathname.replace(/^\/collaborateur/, '') || '/'
+    globalThis.location.href = targetPath
   }
 
   static async initEntities() {

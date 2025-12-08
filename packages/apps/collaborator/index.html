@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="fr">
   <head>
+    <base href="/collaborateur/" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -8,10 +9,10 @@
       content="Entrepreneurs, simplifiez la gestion quotidienne de votre entreprise avec nos experts-conseils à vos côtés et notre plateforme digitale."
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <!-- Load the dynamic assets with the correct base path injected by Vite -->
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="env-vars.js"></script>
+    <!-- Static assets - relative paths work in both dev and preview -->
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./env-vars.js"></script>
     <!-- Start of HubSpot Embed Code -->
     <!-- Block HubSpot Trackers -->
     <script>

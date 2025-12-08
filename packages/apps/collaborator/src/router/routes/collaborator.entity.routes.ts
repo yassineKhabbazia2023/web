@@ -39,15 +39,6 @@ export const entityCollaboratorRoutes = [
           [LAYOUT_NO_PADDING_META]: true,
         },
       },
-      // LAUNCHER
-      {
-        path: COLLABORATOR_ROUTES.entity.launcher.path,
-        name: COLLABORATOR_ROUTES.entity.launcher.name,
-        meta: {
-          [IS_UNITARY_VIEW_META]: true,
-        },
-        component: () => import('@pulse/launcher/pages').then(pages => pages.Launcher),
-      },
     ],
   },
 ] as RouteRecordRaw[]

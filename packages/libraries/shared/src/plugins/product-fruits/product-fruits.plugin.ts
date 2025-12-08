@@ -153,7 +153,7 @@ export function stopProductFruits() {
   if (!productFruitStatus.isInitialized) {
     return
   }
-  window.productFruits.services.destroy()
+  window.productFruits?.services?.destroy()
 
   window.removeEventListener(
     'productfruits_button_ext_widget_init',
