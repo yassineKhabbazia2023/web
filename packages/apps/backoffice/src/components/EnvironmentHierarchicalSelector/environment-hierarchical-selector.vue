@@ -3,17 +3,23 @@
     <div
       v-for="group in groupedEnvironments"
       :key="group.environment"
-      class="environment-group margin-bottom--4"
+      class="environment-group margin-y--2"
     >
-      <p class="font-small font-semibold text-color--neutral-gray-900 margin--0 margin-bottom--2">
-        {{ group.environment }}
-      </p>
+      <PTag
+        :pContent="group.environment"
+        pColor="gray"
+        pSize="small"
+        class="margin-bottom--2"
+      />
+      <br>
 
       <PCheckbox
         :modelValue="isEnvironmentSelected(group.environment)"
+        :pIndeterminate="isEnvironmentIndeterminate(group.environment)"
         :pLabel="group.environment"
         :disabled="props.disabled === true"
         :data-testid="`env-checkbox-${group.environment}`"
+        :border="true"
         class="environment-hierarchical-selector__checkbox"
         @update:model-value="handleToggle(group.environment, $event)"
       >
@@ -26,6 +32,7 @@
         :modelValue="isLabelSelected(group.environment, label)"
         :pLabel="`${group.environment}:${label}`"
         :disabled="props.disabled === true"
+        :border="true"
         :data-testid="`env-checkbox-${group.environment}-${label}`"
         class="environment-hierarchical-selector__checkbox"
         @update:model-value="handleToggle(`${group.environment}:${label}`, $event)"
@@ -38,7 +45,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PCheckbox } from '@pulse/styleguide/components'
+import { PCheckbox, PTag } from '@pulse/styleguide/components'
 import type { EnvironmentHierarchicalSelectorProps } from './environment-hierarchical-selector.type'
 import { EnvironmentHierarchicalSelectorManager } from './environment-hierarchical-selector.manager'
 
@@ -52,8 +59,27 @@ const groupedEnvironments = computed(() =>
   EnvironmentHierarchicalSelectorManager.groupEnvironments(props.availableEnvironments),
 )
 
+const environmentStates = computed(() => {
+  const states = new Map<string, { checked: boolean; indeterminate: boolean }>()
+  groupedEnvironments.value.forEach((group) => {
+    states.set(
+      group.environment,
+      EnvironmentHierarchicalSelectorManager.getParentCheckboxState(
+        props.modelValue,
+        group.environment,
+        group.labels,
+      ),
+    )
+  })
+  return states
+})
+
 function isEnvironmentSelected(environment: string): boolean {
-  return EnvironmentHierarchicalSelectorManager.isEnvironmentSelected(props.modelValue, environment)
+  return environmentStates.value.get(environment)?.checked ?? false
+}
+
+function isEnvironmentIndeterminate(environment: string): boolean {
+  return environmentStates.value.get(environment)?.indeterminate ?? false
 }
 
 function isLabelSelected(environment: string, label: string): boolean {
@@ -61,7 +87,12 @@ function isLabelSelected(environment: string, label: string): boolean {
 }
 
 function handleToggle(value: string, isChecked: boolean): void {
-  const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(props.modelValue, value, isChecked)
+  const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+    props.modelValue,
+    value,
+    isChecked,
+    props.availableEnvironments,
+  )
   emit('update:modelValue', newValue)
 }
 </script>

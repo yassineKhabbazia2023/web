@@ -40,22 +40,6 @@ describe('EnvironmentHierarchicalSelectorManager', () => {
     })
   })
 
-  describe('isEnvironmentSelected', () => {
-    it('should return true when environment is in selection', () => {
-      expect(EnvironmentHierarchicalSelectorManager.isEnvironmentSelected(['ITG', 'REC'], 'ITG')).toBe(true)
-      expect(EnvironmentHierarchicalSelectorManager.isEnvironmentSelected(['ITG', 'REC'], 'REC')).toBe(true)
-    })
-
-    it('should return false when environment is not in selection', () => {
-      expect(EnvironmentHierarchicalSelectorManager.isEnvironmentSelected(['ITG'], 'REC')).toBe(false)
-      expect(EnvironmentHierarchicalSelectorManager.isEnvironmentSelected([], 'ITG')).toBe(false)
-    })
-
-    it('should return false when only labels are selected', () => {
-      expect(EnvironmentHierarchicalSelectorManager.isEnvironmentSelected(['ITG:ITG01'], 'ITG')).toBe(false)
-    })
-  })
-
   describe('isLabelSelected', () => {
     it('should return true when specific label is selected', () => {
       expect(EnvironmentHierarchicalSelectorManager.isLabelSelected(['ITG:ITG01'], 'ITG', 'ITG01')).toBe(true)
@@ -71,90 +55,337 @@ describe('EnvironmentHierarchicalSelectorManager', () => {
     })
   })
 
+  describe('getParentCheckboxState', () => {
+    it.each([
+      {
+        description: 'should return checked=true, indeterminate=false when all labels selected',
+        selected: ['ITG:ITG01', 'ITG:ITG02'],
+        environment: 'ITG',
+        labels: ['ITG01', 'ITG02'],
+        expected: { checked: true, indeterminate: false },
+      },
+      {
+        description: 'should return checked=false, indeterminate=true when some labels selected',
+        selected: ['ITG:ITG01'],
+        environment: 'ITG',
+        labels: ['ITG01', 'ITG02'],
+        expected: { checked: false, indeterminate: true },
+      },
+      {
+        description: 'should return checked=false, indeterminate=false when no labels selected',
+        selected: [],
+        environment: 'ITG',
+        labels: ['ITG01', 'ITG02'],
+        expected: { checked: false, indeterminate: false },
+      },
+      {
+        description: 'should return checked=true for single label environment when selected',
+        selected: ['PRD:PRD01'],
+        environment: 'PRD',
+        labels: ['PRD01'],
+        expected: { checked: true, indeterminate: false },
+      },
+      {
+        description: 'should handle environment with no labels when selected',
+        selected: ['DEV'],
+        environment: 'DEV',
+        labels: [],
+        expected: { checked: true, indeterminate: false },
+      },
+      {
+        description: 'should return unchecked for environment with no labels when not selected',
+        selected: [],
+        environment: 'DEV',
+        labels: [],
+        expected: { checked: false, indeterminate: false },
+      },
+    ])('$description', ({ selected, environment, labels, expected }) => {
+      const result = EnvironmentHierarchicalSelectorManager.getParentCheckboxState(
+        selected,
+        environment,
+        labels,
+      )
+
+      expect(result).toEqual(expected)
+    })
+  })
+
   describe('handleCheckboxToggle', () => {
-    describe('adding values', () => {
-      it('should add environment when checking', () => {
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle([], 'ITG', true)
+    describe('parent checkbox behavior (check all / uncheck all pattern)', () => {
+      describe('checking parent', () => {
+        it('should add all children when checking parent', () => {
+          const selection: string[] = []
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG',
+            true,
+            mockEnvironments,
+          )
 
-        expect(newValue).toEqual(['ITG'])
+          expect(newValue).toContain('ITG:ITG01')
+          expect(newValue).toContain('ITG:ITG02')
+          expect(newValue).toHaveLength(2)
+        })
+
+        it('should work with multiple-label environments', () => {
+          const selection: string[] = []
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'REC',
+            true,
+            mockEnvironments,
+          )
+
+          expect(newValue).toContain('REC:REC01')
+          expect(newValue).toContain('REC:REC02')
+        })
+
+        it('should work with single-label environments', () => {
+          const selection: string[] = []
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'PRD',
+            true,
+            mockEnvironments,
+          )
+
+          expect(newValue).toContain('PRD:PRD01')
+          expect(newValue).toHaveLength(1)
+        })
+
+        it('should not duplicate if children already checked', () => {
+          const selection = ['ITG:ITG01']
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG',
+            true,
+            mockEnvironments,
+          )
+
+          expect(newValue).toContain('ITG:ITG01')
+          expect(newValue).toContain('ITG:ITG02')
+          expect(newValue.filter((v) => v === 'ITG:ITG01')).toHaveLength(1)
+        })
+
+        it('should preserve other environments', () => {
+          const selection = ['REC:REC01']
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG',
+            true,
+            mockEnvironments,
+          )
+
+          expect(newValue).toContain('ITG:ITG01')
+          expect(newValue).toContain('ITG:ITG02')
+          expect(newValue).toContain('REC:REC01')
+        })
       })
 
-      it('should add label when checking', () => {
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle([], 'ITG:ITG01', true)
+      describe('unchecking parent', () => {
+        it('should remove all children when unchecking parent', () => {
+          const selection = ['ITG:ITG01', 'ITG:ITG02']
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG',
+            false,
+            mockEnvironments,
+          )
 
-        expect(newValue).toEqual(['ITG:ITG01'])
-      })
+          expect(newValue).not.toContain('ITG:ITG01')
+          expect(newValue).not.toContain('ITG:ITG02')
+          expect(newValue).toHaveLength(0)
+        })
 
-      it('should add value to existing selection', () => {
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(['ITG'], 'REC', true)
+        it('should preserve other environments', () => {
+          const selection = ['ITG:ITG01', 'ITG:ITG02', 'REC:REC01']
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG',
+            false,
+            mockEnvironments,
+          )
 
-        expect(newValue).toEqual(['ITG', 'REC'])
-      })
-
-      it('should not duplicate if value already exists', () => {
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(['ITG'], 'ITG', true)
-
-        expect(newValue).toEqual(['ITG'])
+          expect(newValue).not.toContain('ITG:ITG01')
+          expect(newValue).not.toContain('ITG:ITG02')
+          expect(newValue).toContain('REC:REC01')
+        })
       })
     })
 
-    describe('removing values', () => {
-      it('should remove environment when unchecking', () => {
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(['ITG', 'REC'], 'ITG', false)
+    describe('child checkbox behavior', () => {
+      describe('checking child', () => {
+        it('should add child when checking', () => {
+          const selection: string[] = []
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG:ITG01',
+            true,
+            mockEnvironments,
+          )
 
-        expect(newValue).toEqual(['REC'])
+          expect(newValue).toContain('ITG:ITG01')
+          expect(newValue).toHaveLength(1)
+        })
+
+        it('should not affect other children', () => {
+          const selection = ['ITG:ITG02']
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG:ITG01',
+            true,
+            mockEnvironments,
+          )
+
+          expect(newValue).toContain('ITG:ITG01')
+          expect(newValue).toContain('ITG:ITG02')
+        })
+
+        it('should preserve other environments', () => {
+          const selection = ['REC:REC01']
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG:ITG01',
+            true,
+            mockEnvironments,
+          )
+
+          expect(newValue).toContain('ITG:ITG01')
+          expect(newValue).toContain('REC:REC01')
+        })
       })
 
-      it('should remove label when unchecking', () => {
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(['ITG:ITG01', 'ITG:ITG02'], 'ITG:ITG01', false)
+      describe('unchecking child', () => {
+        it('should remove child when unchecking', () => {
+          const selection = ['ITG:ITG01', 'ITG:ITG02']
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG:ITG01',
+            false,
+            mockEnvironments,
+          )
 
-        expect(newValue).toEqual(['ITG:ITG02'])
+          expect(newValue).not.toContain('ITG:ITG01')
+          expect(newValue).toContain('ITG:ITG02')
+        })
+
+        it('should not affect other children', () => {
+          const selection = ['ITG:ITG01', 'ITG:ITG02']
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG:ITG02',
+            false,
+            mockEnvironments,
+          )
+
+          expect(newValue).toContain('ITG:ITG01')
+          expect(newValue).not.toContain('ITG:ITG02')
+        })
+
+        it('should preserve other environments', () => {
+          const selection = ['ITG:ITG01', 'REC:REC01']
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'ITG:ITG01',
+            false,
+            mockEnvironments,
+          )
+
+          expect(newValue).not.toContain('ITG:ITG01')
+          expect(newValue).toContain('REC:REC01')
+        })
+      })
+    })
+
+    describe('backward compatibility', () => {
+      it('should maintain backward compatibility when availableEnvironments is not provided', () => {
+        const selection = ['ITG:ITG01']
+        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+          selection,
+          'ITG:ITG02',
+          true,
+        )
+
+        expect(newValue).toContain('ITG:ITG01')
+        expect(newValue).toContain('ITG:ITG02')
       })
 
-      it('should handle unchecking when value not in selection', () => {
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(['REC'], 'ITG', false)
+      it('should handle simple toggle for legacy behavior', () => {
+        let selection: string[] = []
 
-        expect(newValue).toEqual(['REC'])
+        selection = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(selection, 'ITG', true)
+        expect(selection).toEqual(['ITG'])
+
+        selection = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(selection, 'ITG', false)
+        expect(selection).toEqual([])
+      })
+    })
+
+    describe('environment without labels (edge cases)', () => {
+      it('should add environment itself when checking environment with no labels', () => {
+        const selection: string[] = []
+        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+          selection,
+          'DEV',
+          true,
+          mockEnvironments,
+        )
+
+        expect(newValue).toContain('DEV')
+        expect(newValue).toHaveLength(1)
       })
 
-      it('should handle unchecking from empty selection', () => {
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle([], 'ITG', false)
+      it('should remove environment itself when unchecking environment with no labels', () => {
+        const selection = ['DEV']
+        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+          selection,
+          'DEV',
+          false,
+          mockEnvironments,
+        )
 
+        expect(newValue).not.toContain('DEV')
         expect(newValue).toEqual([])
       })
     })
 
-    describe('independent checkbox behavior', () => {
-      it('should allow both environment and its labels to be selected independently', () => {
-        let selection: string[] = []
+    describe('standalone value fallback (invalid format)', () => {
+      describe('checking standalone values', () => {
+        it.each([
+          {
+            description: 'should treat value as standalone when format is invalid (more than 2 parts)',
+            value: 'ENV:LABEL:EXTRA',
+          },
+          {
+            description: 'should treat value as standalone when it is not a parent and not a valid child',
+            value: 'UNKNOWN_VALUE',
+          },
+        ])('$description', ({ value }) => {
+          const selection: string[] = []
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            value,
+            true,
+            mockEnvironments,
+          )
 
-        selection = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(selection, 'ITG', true)
-        selection = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(selection, 'ITG:ITG01', true)
-
-        expect(selection).toEqual(['ITG', 'ITG:ITG01'])
+          expect(newValue).toContain(value)
+        })
       })
 
-      it('should not remove labels when unchecking environment', () => {
-        const selection = ['ITG', 'ITG:ITG01', 'ITG:ITG02']
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(selection, 'ITG', false)
+      describe('unchecking standalone values', () => {
+        it('should remove standalone value when unchecking', () => {
+          const selection = ['UNKNOWN_VALUE']
+          const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(
+            selection,
+            'UNKNOWN_VALUE',
+            false,
+            mockEnvironments,
+          )
 
-        expect(newValue).toEqual(['ITG:ITG01', 'ITG:ITG02'])
-      })
-
-      it('should not remove environment when unchecking label', () => {
-        const selection = ['ITG', 'ITG:ITG01']
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(selection, 'ITG:ITG01', false)
-
-        expect(newValue).toEqual(['ITG'])
-      })
-
-      it('should preserve other environments when toggling', () => {
-        const selection = ['ITG', 'REC:REC01']
-        const newValue = EnvironmentHierarchicalSelectorManager.handleCheckboxToggle(selection, 'ITG:ITG01', true)
-
-        expect(newValue).toContain('ITG')
-        expect(newValue).toContain('REC:REC01')
-        expect(newValue).toContain('ITG:ITG01')
+          expect(newValue).not.toContain('UNKNOWN_VALUE')
+          expect(newValue).toEqual([])
+        })
       })
     })
   })
