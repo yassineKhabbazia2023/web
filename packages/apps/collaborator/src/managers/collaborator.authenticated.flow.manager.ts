@@ -15,6 +15,7 @@ import { logger } from '@pulse/toolbox'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { Entity } from '@pulse/common/types'
 import { RouteName } from '@pulse/common/enums'
+import { COLLABORATOR_BASE_PATH } from '@pulse/common/constants'
 
 export class CollaboratorAuthenticatedFlowManager {
   static async enterAuthenticatedFlow() {
@@ -49,14 +50,28 @@ export class CollaboratorAuthenticatedFlowManager {
     }
   }
 
+  /**
+   * Builds the target path for redirecting a customer to the customer app.
+   * Simply removes /collaborateur from the pathname.
+   * @param pathname - The current pathname to transform
+   * @returns The transformed path pointing to the customer app
+   * @example
+   * buildCustomerTargetPath('/transverse/collaborateur/foo') // returns '/transverse/foo'
+   * buildCustomerTargetPath('/collaborateur/mon-compte') // returns '/mon-compte'
+   */
+  static buildCustomerTargetPath(pathname: string): string {
+    return pathname.replace(COLLABORATOR_BASE_PATH, '') || '/'
+  }
+
   static shouldRedirectWrongUserType(): boolean {
     const userStore = useUserStore()
+    // a customer should not be in the collaborator app
     return userStore.isCollab === false
   }
 
   static redirectWrongUser(): void {
     logger.warn('Customer detected on collaborator app, redirecting to customer app')
-    const targetPath = globalThis.location.pathname.replace(/^\/collaborateur/, '') || '/'
+    const targetPath = this.buildCustomerTargetPath(globalThis.location.pathname)
     globalThis.location.href = targetPath
   }
 

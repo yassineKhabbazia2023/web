@@ -14,7 +14,7 @@ import {
   VITE_API_MSAL_SCOPE,
   VITE_API_MSAL_POST_LOGOUT_REDIRECT_URI,
 } from 'env-vars'
-import { SQUAD_ROUTE_PATHS } from '@pulse/common/constants'
+import { SQUAD_ROUTE_PATHS, COLLABORATOR_BASE_PATH } from '@pulse/common/constants'
 
 export class MsalService {
   private static instance: PublicClientApplication
@@ -29,10 +29,10 @@ export class MsalService {
    * Ex: https://localhost:9000/collaborateur transform to https://localhost:9000/transverse/collaborateur in sub-environment 'transverse'
    */
   private static getRedirectUri(uriOriginal: string): string {
-    const url = window.location.href
+    const url = globalThis.location.href
     const envCollection = Object.values(SQUAD_ROUTE_PATHS)
     const env = envCollection.find(e => url.includes(e)) ?? ''
-    return uriOriginal.replace('/collaborateur', env.concat('/collaborateur'))
+    return uriOriginal.replace(COLLABORATOR_BASE_PATH, env.concat(COLLABORATOR_BASE_PATH))
   }
 
   private static getConfiguration(): Configuration {

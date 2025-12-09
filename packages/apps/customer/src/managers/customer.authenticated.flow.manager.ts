@@ -3,6 +3,7 @@ import {
   useUserStore,
   useCurrentEntityStore,
 } from '@pulse/common/stores'
+import { SQUAD_ROUTE_PATHS, COLLABORATOR_BASE_PATH } from '@pulse/common/constants'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentUserService } from '@pulse/common/services/current-user'
@@ -53,14 +54,36 @@ export class CustomerAuthenticatedFlowManager {
     }
   }
 
+  /**
+   * Builds the target path for redirecting a collaborator to the collaborator app.
+   * For squad routes (e.g. /transverse, /hermes), inserts /collaborateur after the squad prefix.
+   * For other routes, prepends /collaborateur to the pathname.
+   * @param pathname - The current pathname to transform
+   * @returns The transformed path pointing to the collaborator app
+   * @example
+   * buildCollaboratorTargetPath('/transverse/foo') // returns '/transverse/collaborateur/foo'
+   * buildCollaboratorTargetPath('/mon-compte') // returns '/collaborateur/mon-compte'
+   */
+  static buildCollaboratorTargetPath(pathname: string): string {
+    const squadPaths = Object.values(SQUAD_ROUTE_PATHS)
+    for (const squadPath of squadPaths) {
+      if (pathname.startsWith(squadPath)) {
+        const restOfPath = pathname.slice(squadPath.length)
+        return squadPath + COLLABORATOR_BASE_PATH + restOfPath
+      }
+    }
+    return COLLABORATOR_BASE_PATH + pathname
+  }
+
   static shouldRedirectWrongUserType(): boolean {
     const userStore = useUserStore()
+    // a collaborator should not be in the customer app
     return userStore.isCollab === true
   }
 
   static redirectWrongUser(): void {
     logger.warn('Collaborator detected on customer app, redirecting to collaborator app')
-    const targetPath = '/collaborateur' + globalThis.location.pathname
+    const targetPath = this.buildCollaboratorTargetPath(globalThis.location.pathname)
     globalThis.location.href = targetPath
   }
 

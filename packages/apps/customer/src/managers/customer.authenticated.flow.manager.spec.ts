@@ -215,6 +215,13 @@ describe('CustomerAuthenticatedFlowManager', () => {
     })
   })
 
+  describe('buildCollaboratorTargetPath', () => {
+    it('should build a collaborator target path from a customer path', () => {
+      const result = CustomerAuthenticatedFlowManager.buildCollaboratorTargetPath('/mon-compte')
+      expect(result).toBe('/collaborateur/mon-compte')
+    })
+  })
+
   describe('shouldRedirectWrongUserType', () => {
     it('should return true when user is a collaborator', () => {
       userStoreMock.isCollab = true

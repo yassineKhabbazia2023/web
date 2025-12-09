@@ -25,3 +25,4 @@ export const PENNYLANE_IMPORT_INVOICE_HELP_URL = 'https://help.pennylane.com/fr/
 export const PENNYLANE_MOBILE_APP_URL = 'https://www.pennylane.com/fr/application-mobile'
 export const PENNYLANE_GETTING_STARTED_URL = 'https://help.pennylane.com/fr/collections/4143-debuter-sur-pennylane'
 export const AKUITEO_URL = 'https://akuiteo.rydge.fr/akuiteo/login.html'
+export const COLLABORATOR_BASE_PATH = '/collaborateur'

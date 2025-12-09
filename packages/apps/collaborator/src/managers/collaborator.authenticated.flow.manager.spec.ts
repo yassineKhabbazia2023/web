@@ -204,6 +204,18 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
     })
   })
 
+  describe('buildCustomerTargetPath', () => {
+    it('should remove /collaborateur from the pathname', () => {
+      expect(CollaboratorAuthenticatedFlowManager.buildCustomerTargetPath('/collaborateur/mon-compte')).toBe('/mon-compte')
+      expect(CollaboratorAuthenticatedFlowManager.buildCustomerTargetPath('/transverse/collaborateur/foo')).toBe('/transverse/foo')
+    })
+
+    it('should return root for /collaborateur only', () => {
+      expect(CollaboratorAuthenticatedFlowManager.buildCustomerTargetPath('/collaborateur')).toBe('/')
+      expect(CollaboratorAuthenticatedFlowManager.buildCustomerTargetPath('/collaborateur/')).toBe('/')
+    })
+  })
+
   describe('redirectWrongUser', () => {
     it('should redirect to customer app with current pathname', () => {
       Object.defineProperty(globalThis, 'location', {
