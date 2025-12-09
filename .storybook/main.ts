@@ -85,6 +85,10 @@ const config: StorybookConfig = {
         replacement: fileURLToPath(new URL('../packages/applets/login/src', import.meta.url)),
       },
       {
+        find: /^@launcher/,
+        replacement: fileURLToPath(new URL('../packages/applets/launcher/src', import.meta.url)),
+      },
+      {
         find: '@app',
         replacement: fileURLToPath(new URL('../packages/apps/plu/src', import.meta.url)),
       },
