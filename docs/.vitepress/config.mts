@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: 'RYDGE Conseil - Front-End Doc',
-  head: [['link', { rel: 'icon', href: '/favicon.png' }]],
+  head: [['link', { rel: 'icon', href: '/docs/favicon.png' }]],
   ignoreDeadLinks: true,
   base: '/docs/',
   themeConfig: {
@@ -62,8 +62,12 @@ export default defineConfig({
           text: 'Packages',
           items: [
             {
-              text: 'App',
-              link: '/monorepo/app',
+              text: 'Customer',
+              link: '/monorepo/customer',
+            },
+            {
+              text: 'Collaborator',
+              link: '/monorepo/collaborator',
             },
             {
               text: 'Applets',
@@ -85,6 +89,10 @@ export default defineConfig({
                   link: '/monorepo/applets/ged',
                 },
                 {
+                  text: 'Homepage',
+                  link: '/monorepo/applets/homepage',
+                },
+                {
                   text: 'Launcher',
                   link: '/monorepo/applets/launcher',
                 },
@@ -99,6 +107,14 @@ export default defineConfig({
                 {
                   text: 'Offers-catalog',
                   link: '/monorepo/applets/offers-catalog',
+                },
+                {
+                  text: 'Pennylane',
+                  link: '/monorepo/applets/pennylane',
+                },
+                {
+                  text: 'Power BI',
+                  link: '/monorepo/applets/powerbi',
                 },
               ],
             },

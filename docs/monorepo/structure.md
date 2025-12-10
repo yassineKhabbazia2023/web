@@ -5,7 +5,9 @@ Ce projet utilise les **npm workspaces** pour gérer l'ensemble des packages dan
 ## Organisation des dossiers
 
 ### 📁 `packages/` - Le cœur du monorepo
-- **`app/`** : Application principale Vue 3 qui sert de conteneur pour orchestrer tous les modules
+- **`apps/`** : Applications Vue 3 qui servent de conteneurs pour orchestrer tous les modules
+  - `customer` : Application client (authentification Gigya, URL: `/`)
+  - `collaborator` : Application collaborateur (authentification MSAL SSO, URL: `/collaborateur/`)
 - **`applets/`** : Modules métier indépendants et réutilisables
   - `login` : Gestion de l'authentification
   - `ged` : Gestion électronique de documents
@@ -25,8 +27,8 @@ Ce projet utilise les **npm workspaces** pour gérer l'ensemble des packages dan
 Le monorepo Pulse.Web est organisé de manière logique et modulaire :
 
 ### Architecture en couches
-- **`app/`** : L'application hôte qui orchestre l'ensemble
-- **`applets/`** : Les modules métier qui s'enregistrent auprès de l'app principale
+- **`apps/`** : Les applications hôtes (customer et collaborator) qui orchestrent l'ensemble
+- **`applets/`** : Les modules métier qui s'enregistrent auprès des apps
 - **`libraries/`** : Les briques de base réutilisées partout
 
 ### Gestion des dépendances
