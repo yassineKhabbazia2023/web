@@ -7,10 +7,12 @@ import { viteConfigBase } from '../../@config/vite.config.base.ts'
 import { visualizer } from 'rollup-plugin-visualizer'
 
 const PORT = 9000
+const baseUrl = process.env.VITE_BASE_PATH || '/'
 
 export default ({ mode }: any) =>
   defineConfig(
     mergeConfig(viteConfigBase({ mode }), {
+      base: baseUrl,
       plugins: [
         vue(),
         VueI18nPlugin(),
