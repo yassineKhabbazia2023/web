@@ -1,3 +1,4 @@
+import { dirname } from 'node:path'
 import type { StorybookConfig } from '@storybook/vue3-vite'
 import { fileURLToPath } from 'url'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
@@ -22,13 +23,14 @@ const config: StorybookConfig = {
       from: '../packages/libraries/styleguide/src/assets/images',
       to: '/assets/images',
     },
+    '../mocks',
   ],
   addons: [
-    '@storybook/addon-docs',
-    '@storybook/addon-a11y',
+    getAbsolutePath('@storybook/addon-docs'),
+    getAbsolutePath('@storybook/addon-a11y'),
   ],
   framework: {
-    name: '@storybook/vue3-vite',
+    name: getAbsolutePath('@storybook/vue3-vite'),
     options: {},
   },
   docs: {
@@ -70,6 +72,16 @@ const config: StorybookConfig = {
     config.resolve.alias = [
       // Keep any existing aliases first
       ...existingAliases,
+      // vitest shim for mocks that import vitest
+      {
+        find: 'vitest',
+        replacement: fileURLToPath(new URL('./vitest-shim.ts', import.meta.url)),
+      },
+      // @styleguide → styleguide/src (for SCSS imports)
+      {
+        find: '@styleguide',
+        replacement: fileURLToPath(new URL('../packages/libraries/styleguide/src', import.meta.url)),
+      },
       // @pulse/styleguide exact (bare specifier) → main.ts
       {
         find: /^@pulse\/styleguide$/,
@@ -89,6 +101,14 @@ const config: StorybookConfig = {
         replacement: fileURLToPath(new URL('../packages/applets/launcher/src', import.meta.url)),
       },
       {
+        find: /^@homepage/,
+        replacement: fileURLToPath(new URL('../packages/applets/homepage/src', import.meta.url)),
+      },
+      {
+        find: /^@pennylane/,
+        replacement: fileURLToPath(new URL('../packages/applets/pennylane/src', import.meta.url)),
+      },
+      {
         find: '@app',
         replacement: fileURLToPath(new URL('../packages/apps/plu/src', import.meta.url)),
       },
@@ -106,3 +126,7 @@ const config: StorybookConfig = {
   },
 }
 export default config
+
+function getAbsolutePath(value: string): any {
+  return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)))
+}

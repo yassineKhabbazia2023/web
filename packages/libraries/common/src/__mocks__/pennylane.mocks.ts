@@ -32,7 +32,7 @@ export const getMockedPennylaneDocument = (override: Partial<PennylaneDocument> 
     id: 1,
     name: 'Header.png',
     path: '/Dossier permanent/00 - Publications',
-    url: 'https://sandbox.pennylane.com/rails/active_storage/blobs/redirect/zICBpl9yYWlsc4OkZGF0Yc4BFb%2Feo2V4cMcLB85okNo1ziumNfIAo3B1cqdibG9iX2lk--25ba2372333c0f73b6a1c296776959dd183ddbf9/Header.png',
+    url: 'placeholder.pdf',
     createdAt: '2025-08-04T12:51:56.78',
     updatedAt: '2025-08-04T12:51:56.78',
   }
