@@ -1,5 +1,5 @@
 // Load vitest shim first to expose vi globally
-import './vitest-shim'
+import './shims/vitest-shim'
 
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3'

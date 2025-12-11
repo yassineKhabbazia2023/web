@@ -10,7 +10,8 @@
   "exports": {
     ".": "./src/main.ts",
     "./entity-pages": "./src/entity-pages.index.ts",
-    "./wallet-pages": "./src/wallet-pages.index.ts"
+    "./wallet-pages": "./src/wallet-pages.index.ts",
+    "./mocks": "./src/__mocks__/index.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

@@ -1,6 +1,7 @@
 export const envVarsMock = {
   VITE_ACCOUNTING_HUB_URL: 'https://api.example.com/accounting-hub',
   VITE_AMPLITUDE_API_KEY: 'mocked-amplitude-api-key',
+  VITE_CLARITY_OFFER_ACTIVATED: 'true',
   VITE_AMPLITUDE_SERVER_URL: 'mocked-amplitude-server-url',
   VITE_API_DS: 'https://api.example.com/ds',
   VITE_API_GATEWAY: 'https://api.example.com/gateway',

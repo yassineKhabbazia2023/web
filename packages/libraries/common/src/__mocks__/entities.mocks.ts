@@ -3,16 +3,16 @@ import type { Permission } from '../types/permission.type'
 import { CollaboratorPermission } from '../enums/permission.enum'
 import { mockedEntitiesJsonData } from './entities.mocks.data'
 
-export const getMockedEntity = (overridden: Partial<Entity> = {}) => {
-  const defaultEntity: Entity = {
-    accountId: 1,
-    accountNumber: '2024643902',
-    legalName: 'Test 1',
-    color: 'orange',
-  }
+export const MOCKED_ENTITY_DEFAULTS = {
+  accountId: 1337,
+  accountNumber: '1234567890',
+  legalName: 'Boulangerie Bel Epi',
+  color: 'orange',
+} as const
 
+export const getMockedEntity = (overridden: Partial<Entity> = {}): Entity => {
   return {
-    ...defaultEntity,
+    ...MOCKED_ENTITY_DEFAULTS,
     ...overridden,
   }
 }
@@ -20,9 +20,9 @@ export const getMockedEntity = (overridden: Partial<Entity> = {}) => {
 export const getMockedEntities = (): Entity[] => [
   getMockedEntity(),
   getMockedEntity({
-    accountId: 2,
-    accountNumber: '3524433298',
-    legalName: 'Test 2',
+    accountId: 1338,
+    accountNumber: '1234567891',
+    legalName: 'Pâtisserie Belle Étoile',
     color: 'cyan',
   }),
 ]
@@ -31,7 +31,7 @@ export const getMockedFavoriteEntities = (): Entity[] => {
   return mockedEntitiesJsonData
 }
 
-export const getMockedCurrentEntity = (): CurrentEntity => {
+export const getMockedCurrentEntity = (overridden: Partial<CurrentEntity> = {}): CurrentEntity => {
   const permissions: Permission[] = [
     CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS,
     CollaboratorPermission.ACCEDER_ONGLET_INFORMATIONS,
@@ -39,10 +39,8 @@ export const getMockedCurrentEntity = (): CurrentEntity => {
   ]
 
   return {
-    accountId: 1,
-    accountNumber: '2024643902',
-    legalName: 'Test 1',
-    color: 'orange',
+    ...MOCKED_ENTITY_DEFAULTS,
     permissions,
+    ...overridden,
   }
 }

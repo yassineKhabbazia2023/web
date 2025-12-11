@@ -75,7 +75,17 @@ const config: StorybookConfig = {
       // vitest shim for mocks that import vitest
       {
         find: 'vitest',
-        replacement: fileURLToPath(new URL('./vitest-shim.ts', import.meta.url)),
+        replacement: fileURLToPath(new URL('./shims/vitest-shim.ts', import.meta.url)),
+      },
+      // powerbi-client shim to display placeholder instead of real reports
+      {
+        find: 'powerbi-client',
+        replacement: fileURLToPath(new URL('./shims/powerbi-shim.ts', import.meta.url)),
+      },
+      // powerbi-models shim
+      {
+        find: 'powerbi-models',
+        replacement: fileURLToPath(new URL('./shims/powerbi-models-shim.ts', import.meta.url)),
       },
       // @styleguide → styleguide/src (for SCSS imports)
       {
@@ -107,6 +117,10 @@ const config: StorybookConfig = {
       {
         find: /^@pennylane/,
         replacement: fileURLToPath(new URL('../packages/applets/pennylane/src', import.meta.url)),
+      },
+      {
+        find: /^@powerbi/,
+        replacement: fileURLToPath(new URL('../packages/applets/powerbi/src', import.meta.url)),
       },
       {
         find: '@app',

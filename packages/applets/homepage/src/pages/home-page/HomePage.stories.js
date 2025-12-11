@@ -1,21 +1,17 @@
 import { useCurrentEntityStore, usePermissionsStore } from '@pulse/common/stores'
 import { CustomerPermission } from '@pulse/common/enums'
+import { getMockedCurrentEntity } from '@pulse/common/mocks'
 
 import HomePageComponent from './HomePage.vue'
 
 const withHomePageSetup = (entityConfig = {}) => {
   return (_story) => ({
     setup() {
-      // Setup stores
       const currentEntityStore = useCurrentEntityStore()
-      currentEntityStore.currentEntity = {
-        accountId: 602,
-        accountNumber: '2025546345',
-        legalName: 'Boulangerie Bel Epi',
+      currentEntityStore.currentEntity = getMockedCurrentEntity({
         subscriptions: entityConfig.subscriptions ?? [],
-      }
+      })
 
-      // Setup permissions
       const permissionsStore = usePermissionsStore()
       permissionsStore.setCurrentEntityPermissions(entityConfig.permissions ?? [])
 
