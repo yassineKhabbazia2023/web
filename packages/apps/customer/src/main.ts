@@ -13,7 +13,6 @@ import homepageApplet from '@pulse/homepage'
 import launcherApplet from '@pulse/launcher'
 import loginApplet from '@pulse/login'
 import mandateApplet from '@pulse/mandate'
-import offersCatalogApplet from '@pulse/offers-catalog'
 import pennylaneApplet from '@pulse/pennylane'
 import bookingApplet from '@pulse/booking'
 import feedCenterApplet from '@pulse/feed-center'
@@ -60,7 +59,6 @@ const app = createApp(App)
   .use(launcherApplet, {})
   .use(loginApplet, {})
   .use(mandateApplet, {})
-  .use(offersCatalogApplet, {})
   .use(powerBiApplet, {})
 
 // Register app-specific menu items and tabs
