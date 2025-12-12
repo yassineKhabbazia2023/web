@@ -10,9 +10,9 @@
         :pPlacement="placementOptions[0].value"
         :disabled="item.pId === -1"
       >
-        <a href="#">
+        <span class="cursor-pointer">
           {{ item.pText }}
-        </a>
+        </span>
       </PTooltip>
     </ElBreadcrumbItem>
   </ElBreadcrumb>
