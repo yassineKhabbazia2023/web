@@ -18,6 +18,10 @@
   "scripts": {
     "audit": "npm audit --registry=https://registry.npmjs.org/ --audit-level=high",
     "audit:fix": "npm audit fix --registry=https://registry.npmjs.org/ --audit-level=high",
+    "customer:dev": "npm run dev --workspace=@pulse/customer",
+    "collaborator:dev": "npm run dev --workspace=@pulse/collaborator",
+    "apps:build": "npm run app:pre-build && npm run build --workspace=@pulse/customer && npm run build --workspace=@pulse/collaborator",
+    "apps:preview": "npm run preview --workspace=@pulse/customer",
     "app:dev": "npm run dev --workspace=@pulse/app",
     "app:kill": "for /f \"tokens=5\" %a in ('netstat -ano ^| findstr :9000') do taskkill /PID %a /F",
     "app:build": "npm run app:pre-build && npm run build --workspace=@pulse/app",

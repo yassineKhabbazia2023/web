@@ -8,10 +8,12 @@ import { visualizer } from 'rollup-plugin-visualizer'
 
 const PORT = 9000
 
+const baseUrl = `${process.env.VITE_BASE_PATH || '/'}collaborateur/`
+
 export default ({ mode }: any) =>
   defineConfig(
     mergeConfig(viteConfigBase({ mode }), {
-      base: '/collaborateur/',
+      base: baseUrl,
       plugins: [
         vue(),
         VueI18nPlugin(),
@@ -20,6 +22,21 @@ export default ({ mode }: any) =>
           filename: 'dist-stats.html',
           gzipSize: true,
         }),
+        {
+          name: 'collaborator-html-transform',
+          // We find the assets in the parent (customer) folder
+          transformIndexHtml: {
+            order: 'pre',
+            handler(html: any) {
+              if (mode === 'development') {
+                return html
+              }
+              return html
+                .replace('href="styles.css"', 'href="../styles.css"')
+                .replace('src="env-vars.js"', 'src="../env-vars.js"')
+            },
+          },
+        },
       ].filter(Boolean),
       resolve: {
         alias: {
