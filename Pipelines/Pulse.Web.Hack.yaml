@@ -9,10 +9,10 @@ parameters:
   type: string
   default: transverse
   values:
-    - hades
-    - hermes
-    - orion
-    - orphee
+    - tokyo
+    - frydge
+    - forrest
+    - joker
     - transverse
 
 variables:

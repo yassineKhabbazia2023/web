@@ -1,7 +1,7 @@
 export const SQUAD_ROUTE_PATHS = {
-  HERMES: '/hermes',
-  HADES: '/hades',
-  ORION: '/orion',
-  ORPHEE: '/orphee',
+  TOKYO: '/tokyo',
+  FRYDGE: '/frydge',
+  FORREST: '/forrest',
+  JOKER: '/joker',
   TRANSVERSE: '/transverse',
 }
