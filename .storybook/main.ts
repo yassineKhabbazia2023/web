@@ -129,6 +129,10 @@ const config: StorybookConfig = {
         replacement: fileURLToPath(new URL('../packages/applets/powerbi/src', import.meta.url)),
       },
       {
+        find: /^@mandate/,
+        replacement: fileURLToPath(new URL('../packages/applets/mandate/src', import.meta.url)),
+      },
+      {
         find: '@app',
         replacement: fileURLToPath(new URL('../packages/apps/plu/src', import.meta.url)),
       },
