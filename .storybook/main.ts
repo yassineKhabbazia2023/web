@@ -7,6 +7,12 @@ const config: StorybookConfig = {
   core: {
     disableTelemetry: true,
   },
+  managerHead: (head, { configType }) => {
+    if (configType === 'PRODUCTION') {
+      return `${head}<base href="/storybook/">`
+    }
+    return head
+  },
   stories: [
     '../stories/**/*.mdx',
     '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
