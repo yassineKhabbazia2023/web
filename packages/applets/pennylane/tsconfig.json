@@ -8,9 +8,6 @@
     "./vitest.setup.ts",
     "src/**/*.json"
   ],
-  "exclude": [
-    "node_modules"
-  ],
   "compilerOptions": {
     "baseUrl": ".",
     "declarationDir": "./dist/types",

@@ -3,7 +3,9 @@
   "include": [
     "**/*.ts",
     "**/*.vue",
-    "**/*.js"
+    "../packages/applets/**/*.stories.ts",
+    "../packages/apps/**/*.stories.ts",
+    "../packages/libraries/**/*.stories.ts"
   ],
   "exclude": [
     "node_modules",

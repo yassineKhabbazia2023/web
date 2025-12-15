@@ -1,11 +1,10 @@
 import ResetPasswordFailedComponent from './ResetPasswordFailed.vue'
-import { withLoginLayout } from '~storybook/decorators/with-login-layout.decorator.ts'
 
 const meta = {
   title: 'Applets/Login/ResetPasswordFailed',
   component: ResetPasswordFailedComponent,
   tags: ['!autodocs'],
-  decorators: [withLoginLayout()],
+  parameters: { loginLayout: true },
 }
 
 export default meta

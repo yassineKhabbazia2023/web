@@ -1,11 +1,10 @@
 import LoginClientComponent from './LoginClient.vue'
-import { withLoginLayoutClient } from '~storybook/decorators/with-login-layout.decorator.ts'
 
 const meta = {
   title: 'Applets/Login/LoginClient',
   component: LoginClientComponent,
   tags: ['!autodocs'],
-  decorators: [withLoginLayoutClient],
+  parameters: { loginLayout: 'client' },
 }
 
 export default meta

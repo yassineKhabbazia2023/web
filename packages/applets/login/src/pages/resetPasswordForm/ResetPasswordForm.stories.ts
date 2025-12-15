@@ -1,11 +1,10 @@
 import ResetPasswordFormComponent from './ResetPasswordForm.vue'
-import { withLoginLayout } from '~storybook/decorators/with-login-layout.decorator.ts'
 
 const meta = {
   title: 'Applets/Login/ResetPasswordForm',
   component: ResetPasswordFormComponent,
   tags: ['!autodocs'],
-  decorators: [withLoginLayout()],
+  parameters: { loginLayout: true },
 }
 
 export default meta

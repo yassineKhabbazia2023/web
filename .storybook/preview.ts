@@ -18,13 +18,17 @@ import dayjs from 'dayjs'
 // Import i18n from @pulse/common to share with widgets
 import { i18n } from '../packages/libraries/common/src/i18n/i18n.setup'
 
+// Import applet plugins
+import feedCenterPlugin from '../packages/applets/feed-center/src/main'
+import pennylanePlugin from '../packages/applets/pennylane/src/main'
+
 // Import widgets plugin to register all grid widgets
 import widgetsPlugin from '../packages/libraries/widgets/src/main'
-
-// Import pennylane widgets components and managers
-import pennylaneDocumentsWidget from '../packages/applets/pennylane/src/widgets/pennylane-documents/pennylane-documents.widget'
 // Import MSW worker
 import { worker } from '../mocks/mockAPI'
+
+// Import global decorators
+import { globalDecorators } from './decorators/decorator.manager'
 
 // Import styleguide styles
 import '../packages/libraries/styleguide/src/assets/fonts/index.css'
@@ -71,11 +75,13 @@ setup((app) => {
   app.use(pinia)
   // Register widgets plugin to make grid widgets available
   app.use(widgetsPlugin, {})
-  // Register pennylane widgets
-  app.use(pennylaneDocumentsWidget, {})
+  // Register applet plugins
+  app.use(feedCenterPlugin, {})
+  app.use(pennylanePlugin, {})
 })
 
 const preview: Preview = {
+  decorators: globalDecorators,
   parameters: {
     controls: {
       matchers: {

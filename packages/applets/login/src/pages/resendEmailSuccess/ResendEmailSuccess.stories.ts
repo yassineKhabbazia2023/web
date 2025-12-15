@@ -1,11 +1,10 @@
 import ResendEmailSuccessComponent from './ResendEmailSuccess.vue'
-import { withLoginLayout } from '~storybook/decorators/with-login-layout.decorator.ts'
 
 const meta = {
   title: 'Applets/Login/ResendEmailSuccess',
   component: ResendEmailSuccessComponent,
   tags: ['!autodocs'],
-  decorators: [withLoginLayout()],
+  parameters: { loginLayout: true },
 }
 
 export default meta
