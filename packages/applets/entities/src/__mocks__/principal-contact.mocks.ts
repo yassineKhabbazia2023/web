@@ -3,9 +3,9 @@ import type { ClientContact } from '@entities/types'
 export function getClientContactMock(override: Partial<ClientContact> = {}) {
   const defaultClientContact: ClientContact = {
     contactId: 1,
-    firstName: 'Corabel',
-    lastName: 'Greenall',
-    email: 'test_loscos@yopmail.com',
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@yopmail.com',
   }
 
   return {
@@ -20,9 +20,9 @@ export function getMockedPrincipalContacts(): ClientContact[] {
     clientContactMock,
     {
       contactId: 2,
-      firstName: 'Jean',
-      lastName: 'Levage',
-      email: 'test_loscos2@yopmail.com',
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'jane.smith@yopmail.com',
     },
   ]
 

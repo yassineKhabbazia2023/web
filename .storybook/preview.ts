@@ -21,6 +21,7 @@ import { i18n } from '../packages/libraries/common/src/i18n/i18n.setup'
 // Import applet plugins
 import feedCenterPlugin from '../packages/applets/feed-center/src/main'
 import pennylanePlugin from '../packages/applets/pennylane/src/main'
+import entitiesPlugin from '../packages/applets/entities/src/main'
 
 // Import widgets plugin to register all grid widgets
 import widgetsPlugin from '../packages/libraries/widgets/src/main'
@@ -78,6 +79,7 @@ setup((app) => {
   // Register applet plugins
   app.use(feedCenterPlugin, {})
   app.use(pennylanePlugin, {})
+  app.use(entitiesPlugin, {})
 })
 
 const preview: Preview = {

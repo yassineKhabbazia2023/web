@@ -361,6 +361,32 @@
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-25",
         "pDisabled": false,
+        "pDropdownOptions": [
+          {
+            "pLabel": "Expert-comptable",
+            "pValue": "EC",
+          },
+          {
+            "pLabel": "Commissariat aux comptes",
+            "pValue": "CAC",
+          },
+          {
+            "pLabel": "Paie",
+            "pValue": "PA",
+          },
+          {
+            "pLabel": "Juridique",
+            "pValue": "JUR",
+          },
+          {
+            "pLabel": "Fiscal",
+            "pValue": "FIS",
+          },
+          {
+            "pLabel": "Social",
+            "pValue": "SOC",
+          },
+        ],
         "pFieldKey": "missionType",
         "pFieldType": "dropdown",
         "pLabel": "Type de mission",

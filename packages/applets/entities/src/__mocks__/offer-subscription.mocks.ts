@@ -29,9 +29,9 @@ export function getOfferPlanMock(override: Partial<OfferPlan> = {}): OfferPlan {
 export function getSubscriptionContactMock(override: Partial<SubscriptionContact> = {}) {
   const defaultSubscriptionContact: SubscriptionContact = {
     contactId: 543,
-    firstName: 'Leonard',
-    lastName: 'Striga',
-    email: 'leo@mail.test',
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john.doe@mail.test',
     type: ContactType.COLLABORATOR,
   }
 

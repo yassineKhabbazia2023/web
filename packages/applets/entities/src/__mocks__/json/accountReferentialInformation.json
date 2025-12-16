@@ -1,4 +1,12 @@
 {
+    "missionType": {
+        "EC": "Expert-comptable",
+        "CAC": "Commissariat aux comptes",
+        "PA": "Paie",
+        "JUR": "Juridique",
+        "FIS": "Fiscal",
+        "SOC": "Social"
+    },
     "staffSizeRange": {
         "=0": "0 salarié",
         "=1": "1 salarié",

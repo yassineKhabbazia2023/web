@@ -30,7 +30,7 @@ describe('test ManageCollaborators.utils', () => {
       const expectedFormattedCollaborators = [{
         ...collaboratorA,
         fullName: `${collaboratorA.firstName} ${collaboratorA.lastName}`,
-        profile: 'FL',
+        profile: 'EW',
         role: collaboratorA.persona!.name,
         type: ContactType.COLLABORATOR,
         dataTestId: `offer-selected-collaborator-${collaboratorA.email}`,
@@ -39,7 +39,7 @@ describe('test ManageCollaborators.utils', () => {
       }, {
         ...collaboratorB,
         fullName: `${collaboratorB.firstName} ${collaboratorB.lastName}`,
-        profile: 'FL',
+        profile: 'SM',
         role: collaboratorB.persona!.name,
         type: ContactType.COLLABORATOR,
         dataTestId: `offer-selected-collaborator-${collaboratorB.email}`,
@@ -74,7 +74,7 @@ describe('test ManageCollaborators.utils', () => {
       const expectedFormattedCollaborators = [{
         ...firstCollaborators,
         fullName: `${firstCollaborators.firstName} ${firstCollaborators.lastName}`,
-        profile: 'FL',
+        profile: 'EW',
         role: firstCollaborators.persona!.name,
         type: ContactType.COLLABORATOR,
         dataTestId: `offer-selected-collaborator-${firstCollaborators.email}`,
@@ -94,7 +94,7 @@ describe('test ManageCollaborators.utils', () => {
       const expectedFormattedCollaborator = {
         ...collaboratorA,
         fullName: `${collaboratorA.firstName} ${collaboratorA.lastName}`,
-        profile: 'FL',
+        profile: 'EW',
         role: collaboratorA.persona!.name,
         type: ContactType.COLLABORATOR,
         dataTestId: `offer-selected-collaborator-${collaboratorA.email}`,
@@ -122,7 +122,7 @@ describe('test ManageCollaborators.utils', () => {
       const expectedFormattedCollaborator = {
         ...collaboratorA,
         fullName: `${collaboratorA.firstName} ${collaboratorA.lastName}`,
-        profile: 'FL',
+        profile: 'EW',
         role: '',
         type: ContactType.COLLABORATOR,
         dataTestId: `offer-selected-collaborator-${collaboratorA.email}`,

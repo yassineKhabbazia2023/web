@@ -6,9 +6,9 @@ export function getMockedCustomer(): Contact[] {
   return [
     {
       id: 1,
-      firstName: 'Jean',
-      lastName: 'yve',
-      email: 'yve@test.fr',
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'john.doe@test.fr',
       landPhone: '0674589003',
       mobilePhone: '0785667003',
       type: ContactType.CUSTOMER,
@@ -21,9 +21,9 @@ export function getMockedCustomer(): Contact[] {
     },
     {
       id: 2,
-      firstName: 'Bernard',
-      lastName: 'yve',
-      email: 'bernard@test.fr',
+      firstName: 'Jane',
+      lastName: 'Smith',
+      email: 'jane.smith@test.fr',
       landPhone: '0674589003',
       mobilePhone: '0785667003',
       type: ContactType.CUSTOMER,

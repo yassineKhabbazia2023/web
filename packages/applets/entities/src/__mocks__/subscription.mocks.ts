@@ -58,28 +58,44 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
     account: {
       accountId: 5,
       accountNumber: '1000265308',
-      accountLegalName: 'JEAN LÉVAGE',
+      accountLegalName: 'JOHN SMITH',
     },
     applicant: 'test-03@test.fr',
     offer: {
       offerId: 6,
       offerCode: 'Pennylane',
       offerLabel: "Mise à disposition de l'outil Pennylane alliée à l'expertise de RYDGE",
-      offerName: 'Pennylane',
-      logoName: 'pennylane',
+      offerName: 'RYDGE Conseil x Pennylane',
+      logoName: 'pennylane-color',
+      plans: [
+        {
+          planId: 10,
+          planCode: 'PENNYLANE_BASIQUE',
+          planName: 'Basique',
+          isDefault: true,
+          isSelected: true,
+        },
+        {
+          planId: 11,
+          planCode: 'PENNYLANE_ESSENTIEL',
+          planName: 'Essentiel',
+          isDefault: false,
+          isSelected: false,
+        },
+      ],
     },
     clients: [
       {
         id: 2,
-        firstName: 'Suliman',
-        lastName: 'Test',
+        firstName: 'John',
+        lastName: 'Doe',
         email: 'test-05@test.onmicrosoft.com',
         mobilePhone: '1234567P',
       },
     ],
     subscriptionDate: '2023-03-30T12:32:29.9400933',
     creationDate: '2023-03-30T12:32:29.9400933',
-    status: SubscriptionStatusCode.PENDING,
+    status: SubscriptionStatusCode.VALIDATED,
   },
 ]
 
@@ -89,7 +105,7 @@ export function getMockedSubscriptionDetails(override: Partial<SubscriptionDetai
     account: {
       accountId: 62,
       accountNumber: '2024705285',
-      accountLegalName: 'Armani Conway',
+      accountLegalName: 'Jane Smith',
     },
     offer: {
       offerId: 1,
@@ -152,26 +168,26 @@ export function getMockedSubscriptionDetails(override: Partial<SubscriptionDetai
     clients: [
       {
         contactId: 56,
-        firstName: 'Alice',
-        lastName: 'Durand',
+        firstName: 'Jane',
+        lastName: 'Doe',
         type: ContactType.CUSTOMER,
-        email: 'alice.durand@test.fr',
+        email: 'jane.doe@test.fr',
       },
       {
         contactId: 25,
-        firstName: 'Jannelle',
-        lastName: 'Boyd',
+        firstName: 'Emily',
+        lastName: 'Johnson',
         type: ContactType.CUSTOMER,
-        email: 'janelle.boyd@test.fr',
+        email: 'emily.johnson@test.fr',
       },
     ],
     collaborators: [
       {
         contactId: 22,
-        firstName: 'Jerry',
-        lastName: 'Nantenaina',
+        firstName: 'Bob',
+        lastName: 'Wilson',
         type: ContactType.COLLABORATOR,
-        email: 'jnantenaina@test.fr',
+        email: 'bob.wilson@test.fr',
       },
     ],
     notes: [

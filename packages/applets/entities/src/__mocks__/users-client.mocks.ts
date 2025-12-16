@@ -26,8 +26,8 @@ export const getMockedUser = (override: Partial<UserInfo> = {}): UserInfo => {
 
 export const mockUser: Contact = {
   id: 521,
-  firstName: 'jojo',
-  lastName: 'jojo',
+  firstName: 'John',
+  lastName: 'Doe',
   email: 'email330@example.com',
   landPhone: '123-456-7890',
   mobilePhone: '987-654-3210',
