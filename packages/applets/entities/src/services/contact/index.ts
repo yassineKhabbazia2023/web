@@ -40,6 +40,7 @@ export const getContactById = async (
 }
 export const patchContact = async (
   id: number,
+  accountId: number,
   contact: PatchContactPayload,
 ): Promise<Contact> => {
   const patchDocument = Object.entries(contact)
@@ -49,6 +50,7 @@ export const patchContact = async (
     `${API_PREFIXES.CUSTOMER_WALLET}/contacts/${id}`,
     patchDocument,
     {
+      params: { accountId },
       headers: {
         'Content-Type': 'application/json-patch+json',
       },

@@ -60,6 +60,7 @@
           </template>
         </PTableColumn>
         <PTableColumn
+          v-if="canManageUsers"
           :pLabel="t('options')"
           :pWidth="100"
           pProp="options"

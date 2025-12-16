@@ -229,9 +229,10 @@ onMounted(async () => {
         .some((action: Action) => action.code === PERMISSION_PENNYLANE_CUSTOMER),
       )
     if (isSubscribedToPennylaneOffer === true) {
+      const entityId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
       const availableRoles = props.accountNumber === undefined
         ? undefined
-        : await PennylaneService.getAvailableRoles(props.accountNumber)
+        : await PennylaneService.getAvailableRoles(props.accountNumber, entityId, props.contactId)
       pennylaneAvailableRoles.value = availableRoles ?? []
     }
 

@@ -122,13 +122,21 @@ describe('contact', () => {
   })
   describe('patchContact', () => {
     it('should return the patched contact with given payload', async () => {
-      mocks.patch.mockImplementation((url, payload, contentType) => {
-        return handlePatchApiMock(url, payload, contentType)
+      mocks.patch.mockImplementation((url, payload, config) => {
+        return handlePatchApiMock(url, payload, config)
       })
       const patchPayload = omit(mockedContact[0], 'id', 'persona', 'email', 'type', 'office') as PatchContactPayload
-      const contact = await patchContact(1, patchPayload)
+      const contact = await patchContact(1, mockedAccountId, patchPayload)
 
       expect(contact).toStrictEqual(mockedContact[0])
+      expect(mocks.patch).toHaveBeenCalledWith(
+        `${API_PREFIXES.CUSTOMER_WALLET}/contacts/1`,
+        expect.any(Array),
+        {
+          params: { accountId: mockedAccountId },
+          headers: { 'Content-Type': 'application/json-patch+json' },
+        },
+      )
     })
   })
   describe('inviteCustomers', () => {

@@ -6,14 +6,17 @@ import type { Contact, PatchContactPayload } from '@entities/services/contact/co
 
 vi.mock('@entities/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
-  patchContact: vi.fn((_: number, contact: PatchContactPayload) => Promise.resolve(contact)),
+  patchContact: vi.fn((_id: number, _accountId: number, contact: PatchContactPayload) => Promise.resolve(contact)),
 }))
+
+const mockEntityId = 42
 
 const createWrapper = async (editMode: boolean = false): Promise<VueWrapper<any>> => {
   const wrapper = mount(DrawerUserDetails, {
     props: {
       hasDrawerOpened: true,
       userId: mockUser.id,
+      entityId: mockEntityId,
       editMode,
     },
     global: {

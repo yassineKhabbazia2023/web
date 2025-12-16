@@ -155,7 +155,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   const isValid = await formEl.validate()
   if (isValid) {
     try {
-      const pachedContact = await patchContact(props.userId, formValues)
+      const updatedUserDetails = await patchContact(props.userId, props.entityId, formValues)
       PNotification({
         message: t('patchSuccess', { fullName: fullName.value }),
         iconName: 'check',
@@ -163,7 +163,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
         customClass: 'success',
         position: 'bottom-right',
       })
-      emits('contact-patched', pachedContact)
+      emits('contact-patched', updatedUserDetails)
     } catch (error) {
       PNotification({
         message: t('patchFailed', { fullName: fullName.value }),

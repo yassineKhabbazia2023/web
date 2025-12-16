@@ -21,7 +21,7 @@ import UsersClient from './UsersClient.vue'
 
 vi.mock('@entities/services/contact', () => ({
   getContactById: vi.fn((_: number) => Promise.resolve(mockUser)),
-  patchContact: vi.fn((_: number, contact: PatchContactPayload) => Promise.resolve(contact)),
+  patchContact: vi.fn((_id: number, _accountId: number, contact: PatchContactPayload) => Promise.resolve(contact)),
 }))
 
 vi.mock('@entities/services/offer', () => ({
@@ -62,7 +62,7 @@ function createWrapper(entityId?: number) {
         'ManageRightsDrawer': true,
         'DrawerUserDetails': {
           template: '<div></div>',
-          props: ['modelValue', 'userId', 'hasDrawerOpened', 'editMode'],
+          props: ['modelValue', 'userId', 'entityId', 'hasDrawerOpened', 'editMode'],
         },
         'TableData': true,
       },
@@ -191,10 +191,15 @@ describe('test UsersClient', () => {
     }
 
     beforeEach(() => {
+      const entityWithCustomId = getMockedEntitySummary({
+        ...mockedEntity,
+        accountId: entityId,
+      })
+      currentEntityStoreMock.currentEntity = entityWithCustomId
       fetchAccountContactsSpy = vi
         .spyOn(WalletServices, 'fetchAccountContacts')
         .mockResolvedValue(mockedResponse)
-      createWrapper(entityId)
+      wrapper = createWrapper(entityId)
     })
 
     it('should call api with the right params', () => {

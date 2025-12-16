@@ -50,6 +50,7 @@
           v-if="state.data.length"
           :data="state.data"
           :isInAnEntityPage="!!entityId"
+          :canManageUsers="!!entityId"
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
           @remove-user="handleRemoveUser"
@@ -82,9 +83,10 @@
     />
 
     <DrawerUserDetails
-      v-if="state.isDrawerViewDetailsOpened"
+      v-if="state.isDrawerViewDetailsOpened && currentEntityId"
       v-model="state.isDrawerViewDetailsOpened"
       :userId="state.selectedUserId"
+      :entityId="currentEntityId"
       :hasDrawerOpened="state.isDrawerViewDetailsOpened"
       :editMode="canEdit"
       data-testid="viewinfo-drawer"

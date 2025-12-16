@@ -45,6 +45,7 @@ const createWrapper = (): VueWrapper<any> =>
         ...rest,
       })),
       isInAnEntityPage: true,
+      canManageUsers: true,
     },
     global: {
       stubs: {

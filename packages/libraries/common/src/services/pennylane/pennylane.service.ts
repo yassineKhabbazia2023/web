@@ -7,10 +7,12 @@ import type { PennylaneRole, PennylaneDocumentQueryResult, PennylaneAvailableRol
 export class PennylaneService {
   static readonly availableRolesByCompanyId: Record<string, Promise<AxiosResponse<PennylaneAvailableRole[], any>>> = {}
 
-  static async getAvailableRoles(companyId: string) {
+  static async getAvailableRoles(companyId: string, accountId: number | null, contactId?: number) {
     const url = `${API_PREFIXES.PENNYLANE}/roles`
     const params = {
       companyId,
+      accountId,
+      contactId,
     }
 
     if (PennylaneService.availableRolesByCompanyId[companyId] === undefined) {
@@ -30,7 +32,7 @@ export class PennylaneService {
   static async createRole(role: PennylaneRole) {
     const url = `${API_PREFIXES.PENNYLANE}/role`
 
-    await commonApi().gateway.post(url, role)
+    await commonApi().gateway.post(url, role, { params: { accountId: role.accountId, contactId: role.contactId } })
   }
 
   static async getAccountContactRole(accountId: number, contactId: number) {

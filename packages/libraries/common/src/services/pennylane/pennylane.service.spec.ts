@@ -27,16 +27,20 @@ describe('PennylaneService', () => {
         }),
       ]
       const companyId = '1'
+      const accountId = 123
+      const contactId = 456
       const expectedUrl = `${API_PREFIXES.PENNYLANE}/roles`
       const expectedParams = {
         params: {
           companyId,
+          accountId,
+          contactId,
         },
       }
       apiGatewayMock.get.mockResolvedValue({
         data: rolesMock,
       })
-      const roles = await PennylaneService.getAvailableRoles(companyId)
+      const roles = await PennylaneService.getAvailableRoles(companyId, accountId, contactId)
 
       expect(roles).toStrictEqual(rolesMock)
       expect(apiGatewayMock.get).toHaveBeenCalledOnce()
@@ -149,7 +153,11 @@ describe('PennylaneService', () => {
       await PennylaneService.createRole(roleMock)
 
       expect(apiGatewayMock.post).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.post).toHaveBeenCalledWith(expectedUrl, roleMock)
+      expect(apiGatewayMock.post).toHaveBeenCalledWith(
+        expectedUrl,
+        roleMock,
+        { params: { accountId: roleMock.accountId, contactId: roleMock.contactId } },
+      )
     })
   })
 })
