@@ -2,12 +2,12 @@ import type { Service } from '@ged/models/Service'
 
 export const servicesDataMock: Service[] = [
   {
-    ServiceName: 'service-id-compta',
+    ServiceName: 'Comptabilité',
     ServiceId: 'service-id-compta',
     IsReadOnly: false,
   },
   {
-    ServiceName: 'service-id-gs',
+    ServiceName: 'Gestion Sociale',
     ServiceId: 'service-id-gs',
     IsReadOnly: false,
   },
@@ -16,12 +16,12 @@ export const servicesDataMock: Service[] = [
 export function getServiceDataMockWithFirstIsReadOnly() {
   return [
     {
-      ServiceName: 'service-id-compta',
+      ServiceName: 'Comptabilité',
       ServiceId: 'service-id-compta',
       IsReadOnly: true,
     },
     {
-      ServiceName: 'service-id-gs',
+      ServiceName: 'Gestion Sociale',
       ServiceId: 'service-id-gs',
       IsReadOnly: false,
     },

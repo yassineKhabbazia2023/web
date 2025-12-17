@@ -3,16 +3,14 @@ import './shims/vitest-shim'
 
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3'
-import ElementPlus from 'element-plus'
 import { createRouter, createMemoryHistory } from 'vue-router'
 import { createPinia } from 'pinia'
-import { setAssetsBaseUrl } from '../packages/libraries/styleguide/src/utils/imageResolverInit'
+import styleguideLibrary from '@pulse/styleguide'
 
 // Import env-vars setup to initialize window.EnvVars
 import './env-vars.setup.js'
 
 // Import Element Plus locale
-import fr from 'element-plus/es/locale/lang/fr'
 import dayjs from 'dayjs'
 
 // Import i18n from @pulse/common to share with widgets
@@ -35,20 +33,6 @@ import { globalDecorators } from './decorators/decorator.manager'
 import '../packages/libraries/styleguide/src/assets/fonts/index.css'
 import '../packages/libraries/styleguide/src/assets/scss/index.scss'
 
-// Initialize StyleGuide assets
-async function initStyleGuide() {
-  // For Storybook, images are served from publicDir (assets folder)
-  // In dev: /assets/images/
-  // In build: /storybook/assets/images/ (with base path)
-  const basePath = import.meta.env.DEV === true ? '' : '/storybook'
-  const assetsBaseUrl = `${window.location.origin}${basePath}/assets/images/`
-
-  setAssetsBaseUrl(assetsBaseUrl)
-}
-
-// Initialize StyleGuide on load
-initStyleGuide()
-
 // Initialize MSW worker
 const mswBasePath = import.meta.env.DEV === true ? '' : '/storybook'
 worker.start({
@@ -70,10 +54,14 @@ const router = createRouter({
 })
 
 setup((app) => {
-  app.use(ElementPlus, { locale: fr })
+  // Configure styleguide assets URL
+  const basePath = import.meta.env.DEV === true ? '' : '/storybook'
+  const assetsBaseUrl = `${window.location.origin}${basePath}/assets/images/`
+
   app.use(i18n)
   app.use(router)
   app.use(pinia)
+  app.use(styleguideLibrary, { assetsBaseUrl })
   // Register widgets plugin to make grid widgets available
   app.use(widgetsPlugin, {})
   // Register applet plugins

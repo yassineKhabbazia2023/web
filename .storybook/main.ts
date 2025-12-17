@@ -66,6 +66,7 @@ const config: StorybookConfig = {
     // Configure Vite to resolve workspace packages according to their package.json exports
     config.resolve = config.resolve || {}
     config.resolve.conditions = ['development', 'module', 'import', 'default']
+    config.resolve.extensions = ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json', '.vue']
 
     // Add path aliases for mocks and non-workspace modules
     // Note: use ordered array with an exact-match rule for bare imports ("@pulse/toolbox")
@@ -92,6 +93,11 @@ const config: StorybookConfig = {
       {
         find: 'powerbi-models',
         replacement: fileURLToPath(new URL('./shims/powerbi-models-shim.ts', import.meta.url)),
+      },
+      // signalr shim to prevent WebSocket connection errors
+      {
+        find: '@microsoft/signalr',
+        replacement: fileURLToPath(new URL('./shims/signalr-shim.ts', import.meta.url)),
       },
       // @styleguide → styleguide/src (for SCSS imports)
       {
@@ -135,6 +141,10 @@ const config: StorybookConfig = {
       {
         find: /^@entities/,
         replacement: fileURLToPath(new URL('../packages/applets/entities/src', import.meta.url)),
+      },
+      {
+        find: /^@ged/,
+        replacement: fileURLToPath(new URL('../packages/applets/ged/src', import.meta.url)),
       },
       {
         find: '@app',

@@ -1,0 +1,6 @@
+export * from './services.mocks'
+export * from './tree-folders.mocks'
+export * from './documents.mocks'
+export * from './bin-documents.mocks'
+export * from './mail-to-ged.mocks'
+export * from './treeview.mocks'
