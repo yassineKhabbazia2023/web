@@ -18,6 +18,7 @@ import { i18n } from '../packages/libraries/common/src/i18n/i18n.setup'
 
 // Import applet plugins
 import feedCenterPlugin from '../packages/applets/feed-center/src/main'
+import offersCatalogPlugin from '../packages/applets/offers-catalog/src/main'
 import pennylanePlugin from '../packages/applets/pennylane/src/main'
 import entitiesPlugin from '../packages/applets/entities/src/main'
 
@@ -66,6 +67,7 @@ setup((app) => {
   app.use(widgetsPlugin, {})
   // Register applet plugins
   app.use(feedCenterPlugin, {})
+  app.use(offersCatalogPlugin, {})
   app.use(pennylanePlugin, {})
   app.use(entitiesPlugin, {})
 })

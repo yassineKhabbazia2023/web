@@ -9,7 +9,8 @@
   "main": "src/main.ts",
   "exports": {
     ".": "./src/main.ts",
-    "./pages": "./src/pages.index.ts"
+    "./pages": "./src/pages.index.ts",
+    "./mocks": "./src/__mocks__/index.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

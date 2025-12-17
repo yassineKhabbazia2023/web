@@ -143,6 +143,10 @@ const config: StorybookConfig = {
         replacement: fileURLToPath(new URL('../packages/applets/entities/src', import.meta.url)),
       },
       {
+        find: /^@offers-catalog/,
+        replacement: fileURLToPath(new URL('../packages/applets/offers-catalog/src', import.meta.url)),
+      },
+      {
         find: /^@ged/,
         replacement: fileURLToPath(new URL('../packages/applets/ged/src', import.meta.url)),
       },
