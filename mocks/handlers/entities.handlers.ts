@@ -7,7 +7,6 @@ import {
   getMockedCollaborators,
   mockedCollaboratorsList2,
   getActiveOffersMocked,
-  entitiesMock,
   subscriptionRequestMock,
   getMockedSubscriptionDetails,
   getMockedOperations,
@@ -21,6 +20,7 @@ import {
   getMockedSignatory,
   getMockedAuthorizationsConfig,
 } from '@pulse/entities/mocks'
+import { getMockedEntitySummary, getMockedSubscription } from '@pulse/common/mocks'
 
 function getOperationsPaginatedResponse() {
   const operations = getMockedOperations()
@@ -105,7 +105,47 @@ function getAccountData() {
   }
 }
 
+// Pennylane subscription for Global Services Inc
+const pennylaneSubscription = getMockedSubscription({
+  subscriptionId: 504,
+  offerId: 8,
+  status: 'validated',
+  accountId: 3,
+  offerCode: 'Pennylane',
+  offerName: 'RYDGE Conseil x Pennylane',
+})
+
+// Entity summaries mapping for multi-entity customer story
+const entitySummariesMap: Record<number, ReturnType<typeof getMockedEntitySummary>> = {
+  1: getMockedEntitySummary({
+    accountId: 1,
+    accountNumber: 'V900000547',
+    legalName: 'Acme Corp',
+  }),
+  2: getMockedEntitySummary({
+    accountId: 2,
+    accountNumber: 'V900000546',
+    legalName: 'Tech Solutions Ltd',
+  }),
+  3: getMockedEntitySummary({
+    accountId: 3,
+    accountNumber: 'V900000545',
+    legalName: 'Global Services Inc',
+    subscriptions: [pennylaneSubscription],
+  }),
+}
+
+function getEntitySummaryById(entityId: number) {
+  return entitySummariesMap[entityId] ?? getMockedEntitySummary({ accountId: entityId })
+}
+
 export const entitiesHandlers = [
+  // Entity summary endpoint - used when navigating to an entity
+  http.get('*/connect/api/accounts/:entityId/summary', ({ params }) => {
+    const entityId = Number(params.entityId)
+    return HttpResponse.json(getEntitySummaryById(entityId))
+  }),
+
   http.get('*/account/api/accounts/:accountId/currentuser', () => {
     return HttpResponse.json(getAccountData())
   }),
@@ -154,9 +194,13 @@ export const entitiesHandlers = [
 
   http.get('*/account/api/roles/signatory', () => {
     const signatory = getMockedSignatory()
-    return HttpResponse.json([
-      { contactId: signatory.contactId, firstName: signatory.firstName, lastName: signatory.lastName, email: signatory.email, isSignatory: true },
-    ])
+    return HttpResponse.json([{
+      contactId: signatory.contactId,
+      firstName: signatory.firstName,
+      lastName: signatory.lastName,
+      email: signatory.email,
+      isSignatory: true,
+    }])
   }),
 
   http.get('*/account/api/roles/currentuser/hub/contact', () => {
@@ -209,7 +253,14 @@ export const entitiesHandlers = [
   }),
 
   http.get('*/wallet/api/favorites/currentuser', () => {
-    return HttpResponse.json(entitiesMock)
+    // Return favorites that match wallet entities
+    const accountRows = getAccountRowsMock()
+    const favorites = accountRows.map(row => ({
+      accountId: row.accountId,
+      accountNumber: row.accountNumber,
+      legalName: row.legalName,
+    }))
+    return HttpResponse.json(favorites)
   }),
 
   http.patch('*/wallet/api/favorites/currentuser', () => {
@@ -321,6 +372,34 @@ export const entitiesHandlers = [
 
   http.get('*/entitycreator/api/AccountInjector/generate-account-number', () => {
     return HttpResponse.json({ accountNumber: 'V999999999' })
+  }),
+
+  // Permissions endpoint - returns different permissions per entity
+  http.get('*/authorization/api/authorization/currentuser', ({ request }) => {
+    const url = new URL(request.url)
+    const accountId = Number(url.searchParams.get('accountId'))
+
+    // Base permissions (without Pennylane)
+    const basePermissions = [
+      'CLGED0002', // ACCEDER_GED_COMPTABLE
+      'CLGED0001', // ACCEDER_GED_GESTION_SOCIALE
+      'CLRAPP001', // ACCEDER_RAPPORTS_BI_FINANCIER
+      'CLRAPP002', // ACCEDER_RAPPORTS_BI_RH
+      'CLMEG001',  // ACCEDER_OUTIL_MEG
+      'CLUSER001', // CONSULTER_UTILISATEURS
+    ]
+
+    // Pennylane permissions for entity 3 (Global Services Inc)
+    const pennylanePermissions = [
+      'CLPEN001',    // ACCEDER_OUTIL_PENNYLANE
+      'CLGEDPEN01',  // ACCEDER_DOCUMENTS_PENNYLANE
+    ]
+
+    const permissions = accountId === 3
+      ? [...basePermissions, ...pennylanePermissions]
+      : basePermissions
+
+    return HttpResponse.json(permissions)
   }),
 
   http.get('*/authorization/api/authorizations/configuration', () => {

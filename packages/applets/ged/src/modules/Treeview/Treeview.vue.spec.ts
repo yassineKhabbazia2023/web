@@ -10,6 +10,7 @@ import type { Service } from '@ged/models/Service'
 import { downloadFolder } from '@ged/services/Folder'
 import type { ComponentWrapper } from '@ged/__mocks__/component.wrapper'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
+import { GedServiceId } from '@ged/enums/ged.enum'
 
 import Treeview from '@ged/modules/Treeview'
 
@@ -25,12 +26,12 @@ const nestedFolder = foldersData[0][0].children[0].children[0].children[0]
 
 const defaultProps: TreeviewProps = {
   entityServices: [
-    { ServiceId: 'service-id-compta', ServiceName: 'Comptabilité' } as Service,
-    { ServiceId: 'service-id-gs', ServiceName: 'Gestion sociale' } as Service,
+    { ServiceId: GedServiceId.ACCOUNTING, ServiceName: 'Comptabilité' } as Service,
+    { ServiceId: GedServiceId.SOCIAL_MANAGEMENT, ServiceName: 'Gestion sociale' } as Service,
   ],
   isLoading: true,
   servicesFolders: foldersData,
-  currentService: 'service-id-compta',
+  currentService: GedServiceId.ACCOUNTING,
   currentServiceName: 'service name',
   currentEntity: 'my-entity-id',
   selectedFolder: foldersData[0][0].children[0],
@@ -434,7 +435,7 @@ describe('treeview', () => {
   })
   describe('routing', () => {
     it('should target the appropriate folder ID if an ID is specified in the route query', async () => {
-      routerDataMock.query.folderId = `service-id-compta/${nestedFolder.id}`
+      routerDataMock.query.folderId = `${GedServiceId.ACCOUNTING}/${nestedFolder.id}`
 
       const wrapper = createWrapper()
       await wrapper.setProps({ isLoading: false })
@@ -445,13 +446,13 @@ describe('treeview', () => {
       expect(emit![1]).toEqual([nestedFolder])
     })
 
-    it('should target the folder spicified in the url params even when we\'re already on the page', async () => {
-      routerDataMock.query.folderId = `service-id-compta/${folderWithRenameRight.id}`
+    it('should target the folder specified in the url params even when we\'re already on the page', async () => {
+      routerDataMock.query.folderId = `${GedServiceId.ACCOUNTING}/${folderWithRenameRight.id}`
       const wrapper = createWrapper()
       await wrapper.setProps({ isLoading: false })
       await flushPromises()
 
-      routerDataMock.query.folderId = `service-id-compta/${nestedFolder.id}`
+      routerDataMock.query.folderId = `${GedServiceId.ACCOUNTING}/${nestedFolder.id}`
       await flushPromises()
 
       const emit = wrapper.emitted('selected-folder-change')

@@ -2,6 +2,7 @@ import { nextTick } from 'vue'
 import { type VueWrapper, mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { foldersData, newFolderData } from '@ged/__mocks__/tree-folders.mocks'
+import { GedServiceId } from '@ged/enums/ged.enum'
 import { type FoldersListProps } from './FoldersListTypes'
 
 import FoldersList from './FoldersList.vue'
@@ -12,7 +13,7 @@ const defaultProps: FoldersListProps = {
   currentFolder: foldersData[0][0].children[0],
   currentServiceFolder: foldersData[0],
   explorerAuthorizedGivenAction: true,
-  currentService: 'service-id-compta',
+  currentService: GedServiceId.ACCOUNTING,
   currentEntity: 'entity',
   accountId: 1234,
   isCreateFolderModalVisible: true,

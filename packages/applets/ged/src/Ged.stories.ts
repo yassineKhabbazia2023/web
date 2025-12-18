@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { useRouter } from 'vue-router'
 import { useCurrentEntityStore, useUserStore, usePermissionsStore } from '@pulse/common/stores'
 import { getMockedUser, getMockedEntitySummary } from '@pulse/common/mocks'
-import { CollaboratorPermission } from '@pulse/common/enums'
+import { CollaboratorPermission, RouteParam } from '@pulse/common/enums'
 import Ged from './Ged.vue'
 
 const meta: Meta<typeof Ged> = {
@@ -18,8 +18,10 @@ const meta: Meta<typeof Ged> = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+const mockedEntity = getMockedEntitySummary()
+
 const gedRoute = {
-  path: '/ged',
+  path: `/dossier/:${RouteParam.ENTITY_ID}/ged`,
   name: 'ged',
   component: Ged,
 }
@@ -32,7 +34,7 @@ function useStorySetup() {
   userStore.setUser(getMockedUser({ isCollab: true }))
 
   const currentEntityStore = useCurrentEntityStore()
-  currentEntityStore.setCurrentEntity(getMockedEntitySummary())
+  currentEntityStore.setCurrentEntity(mockedEntity)
 
   const permissionsStore = usePermissionsStore()
   permissionsStore.setCurrentEntityPermissions([
@@ -42,12 +44,15 @@ function useStorySetup() {
     CollaboratorPermission.GED,
   ])
 
-  if (!router.hasRoute(gedRoute.name)) {
+  if (router.hasRoute(gedRoute.name) === false) {
     router.addRoute(gedRoute)
   }
 
   onMounted(async () => {
-    await router.push({ name: 'ged' })
+    await router.push({
+      name: 'ged',
+      params: { [RouteParam.ENTITY_ID]: String(mockedEntity.accountId) },
+    })
     isReady.value = true
   })
 

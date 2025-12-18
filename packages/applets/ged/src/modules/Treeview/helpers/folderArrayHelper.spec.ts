@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
 import { getMockedFolder } from '@ged/__mocks__/treeview.mocks'
+import { GedServiceId } from '@ged/enums/ged.enum'
 import type { Folder } from '@ged/models/Folder'
 
 import {
@@ -25,11 +26,11 @@ describe('folderArrayHelper.spec', () => {
 
   it.each([
     {
-      serviceId: 'service-id-compta',
+      serviceId: GedServiceId.ACCOUNTING,
       expectedFolder: foldersData[0],
     },
     {
-      serviceId: 'service-id-gs',
+      serviceId: GedServiceId.SOCIAL_MANAGEMENT,
       expectedFolder: foldersData[1],
     },
     {
@@ -52,7 +53,7 @@ describe('folderArrayHelper.spec', () => {
 
     const newFolder = getMockedFolder(parentId)
 
-    const serviceId = 'service-id-compta'
+    const serviceId = GedServiceId.ACCOUNTING
     const added = appendChildFolder(data, parentId, newFolder, serviceId)
 
     expect(added).toBeTruthy()
@@ -65,7 +66,7 @@ describe('folderArrayHelper.spec', () => {
       const parentId = 11111000
 
       const newFolder = getMockedFolder(parentId)
-      const serviceId = 'service-id-compta'
+      const serviceId = GedServiceId.ACCOUNTING
       const added = appendChildFolder(data, parentId, newFolder, serviceId)
 
       expect(added).toBeFalsy()
@@ -73,7 +74,7 @@ describe('folderArrayHelper.spec', () => {
 
   it('should rename folder when renameFolder is called', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
-    const serviceId = 'service-id-compta'
+    const serviceId = GedServiceId.ACCOUNTING
     const folderUpdatedData = data[0][0].children[0]
 
     const renamed = renameFolder(data, serviceId, folderUpdatedData)
@@ -82,7 +83,7 @@ describe('folderArrayHelper.spec', () => {
 
   it('should not rename folder when renameFolder is called and the folder dose not exists', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
-    const serviceId = 'service-id-compta'
+    const serviceId = GedServiceId.ACCOUNTING
     const folderUpdatedData = getMockedFolder(1234)
 
     const renamed = renameFolder(data, serviceId, folderUpdatedData)
@@ -91,7 +92,7 @@ describe('folderArrayHelper.spec', () => {
 
   it('should not rename folder when renameFolder is called and the folder dose not exists (2)', () => {
     const data = JSON.parse(JSON.stringify(foldersData))
-    const serviceId = 'service-id-compta'
+    const serviceId = GedServiceId.ACCOUNTING
     const folderUpdatedData = getMockedFolder(1234)
 
     const renamed = renameFolder(data, serviceId, folderUpdatedData)
@@ -101,7 +102,7 @@ describe('folderArrayHelper.spec', () => {
   it('should sort folders based on their names when sortFolderByName is called', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
     const folderIdToSort = 135393637
-    const serviceId = 'service-id-compta'
+    const serviceId = GedServiceId.ACCOUNTING
 
     const beforeSort = [
       ...source[0][0].children[0].children,
@@ -132,7 +133,7 @@ describe('folderArrayHelper.spec', () => {
               folderDescription: "Ce dossier regroupe l'ensemble des documents.",
               tracingName: 'tracing-name',
             },
-            serviceId: 'service-id-compta',
+            serviceId: GedServiceId.ACCOUNTING,
           }),
         ],
         permissions: [
@@ -155,7 +156,7 @@ describe('folderArrayHelper.spec', () => {
   it('should not sort folders when a non existing folder id is provided', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
     const folderIdToSort = 111111111
-    const serviceId = 'service-id-compta'
+    const serviceId = GedServiceId.ACCOUNTING
 
     const sorted = sortFolderByName(source, serviceId, folderIdToSort)
 
@@ -165,7 +166,7 @@ describe('folderArrayHelper.spec', () => {
   it('should delete folder when deleteFolder is called', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
     const parentFolderId = 135393637
-    const serviceId = 'service-id-compta'
+    const serviceId = GedServiceId.ACCOUNTING
     const folderIdToDelete = 1111111112
 
     const beforeDelete = [
@@ -186,7 +187,7 @@ describe('folderArrayHelper.spec', () => {
   it('should delete folder when deleteFolder is called (3)', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
     const parentFolderId = 135393637
-    const serviceId = 'service-id-compta'
+    const serviceId = GedServiceId.ACCOUNTING
     const folderIdToDelete = 1111111112
 
     const beforeDelete = [
@@ -215,7 +216,7 @@ describe('folderArrayHelper.spec', () => {
   it('should not delete folder when provided parentId dose not exists', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
     const parentFolderId = 111111111
-    const serviceId = 'service-id-compta'
+    const serviceId = GedServiceId.ACCOUNTING
     const folderIdToDelete = 1111111112
 
     const beforeDelete = [
@@ -238,7 +239,7 @@ describe('folderArrayHelper.spec', () => {
   it('should not delete folder when provided folderId dose not exists', () => {
     const source = JSON.parse(JSON.stringify(foldersData)) as Folder[][]
     const parentFolderId = 135393637
-    const serviceId = 'service-id-compta'
+    const serviceId = GedServiceId.ACCOUNTING
     const folderIdToDelete = 1
 
     const beforeDelete = [

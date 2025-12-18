@@ -9,6 +9,7 @@ import { foldersData } from '@ged/__mocks__/tree-folders.mocks'
 import { documentsServiceMock } from './__mocks__/documents.service.mocks'
 import { fetchUserEntityServices } from '@ged/services/Services'
 import { fetchServicesFolders } from '@ged/services/Folder'
+import { GedServiceId } from '@ged/enums/ged.enum'
 import type { ComponentPublicInstance } from 'vue'
 import { nextTick } from 'vue'
 import type { Folder, FolderProperties } from './models/Folder'
@@ -206,7 +207,7 @@ describe('ged', () => {
         expect(vi.mocked(fetchUserEntityServices)).toHaveBeenCalledTimes(2)
         expect(vi.mocked(fetchServicesFolders)).toHaveBeenCalledTimes(2)
         expect(tree.props('selectedFolder')).toStrictEqual(null)
-        expect(tree.props('currentService')).toBe('service-id-compta')
+        expect(tree.props('currentService')).toBe(GedServiceId.ACCOUNTING)
       })
 
       it('should set the trash serviceId on selected-bin-service-change', async () => {
@@ -348,7 +349,7 @@ describe('ged', () => {
           foldersData[0][0].children[0],
         )
         expect(documentComponent.props('currentService')).toBe(
-          'service-id-compta',
+          GedServiceId.ACCOUNTING,
         )
       })
     })

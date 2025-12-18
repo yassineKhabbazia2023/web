@@ -5,6 +5,7 @@ import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { moveFolderAsync } from '@ged/services/Folder'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
+import { GedServiceId } from '@ged/enums/ged.enum'
 import type { FoldersMoveProps } from './FoldersMoveTypes'
 import { type FoldersMoveWrapper, defaultProps } from './helpers/testHelpers'
 
@@ -181,7 +182,7 @@ describe('test FoldersMove', () => {
           await nextTick()
 
           expect(vi.mocked(moveFolderAsync)).toHaveBeenCalledWith(
-            'service-id-compta',
+            GedServiceId.ACCOUNTING,
             'my-current-entity',
             11111111,
             135393637,

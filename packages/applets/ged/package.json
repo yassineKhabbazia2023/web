@@ -9,6 +9,7 @@
   "main": "src/main.ts",
   "exports": {
     ".": "./src/main.ts",
+    "./enums": "./src/enums/index.ts",
     "./pages": "./src/pages.index.ts",
     "./mocks": "./src/__mocks__/index.ts"
   },

@@ -1,4 +1,5 @@
 import type { Folder } from '@ged/models/Folder'
+import { GedServiceId } from '@ged/enums/ged.enum'
 
 export const foldersData: Folder[][] = [
   [
@@ -34,7 +35,7 @@ export const foldersData: Folder[][] = [
                       "Ce dossier regroupe l'ensemble des documents.",
                     tracingName: 'tracing-name',
                   },
-                  serviceId: 'service-id-compta',
+                  serviceId: GedServiceId.ACCOUNTING,
                 },
               ],
               name: 'A classer',
@@ -53,7 +54,7 @@ export const foldersData: Folder[][] = [
                   "Ce dossier regroupe l'ensemble des documents.",
                 tracingName: 'tracing-name',
               },
-              serviceId: 'service-id-compta',
+              serviceId: GedServiceId.ACCOUNTING,
             },
           ],
           name: 'Dépôt',
@@ -69,7 +70,7 @@ export const foldersData: Folder[][] = [
           properties: {
             syncStatus: 'PENDING_SYNC',
           },
-          serviceId: 'service-id-compta',
+          serviceId: GedServiceId.ACCOUNTING,
         },
         {
           iconName: 'deposit',
@@ -86,7 +87,7 @@ export const foldersData: Folder[][] = [
             tracingName: 'tracing-name',
             syncStatus: 'PENDING_SYNC',
           },
-          serviceId: 'service-id-compta',
+          serviceId: GedServiceId.ACCOUNTING,
         },
       ],
       name: 'Comptabilité',
@@ -100,7 +101,7 @@ export const foldersData: Folder[][] = [
           "Déposez et retrouvez ici l'ensemble des documents échangés avec votre expert comptable.",
         tracingName: 'Accounting',
       },
-      serviceId: 'service-id-compta',
+      serviceId: GedServiceId.ACCOUNTING,
     },
   ],
   [
@@ -130,7 +131,7 @@ export const foldersData: Folder[][] = [
                   "Ce dossier regroupe l'ensemble des documents sociaux à reclasser ultérieurement.",
                 syncStatus: 'PENDING_SYNC',
               },
-              serviceId: 'service-id-gs',
+              serviceId: GedServiceId.SOCIAL_MANAGEMENT,
             },
           ],
           name: 'Dépôt',
@@ -146,7 +147,7 @@ export const foldersData: Folder[][] = [
           properties: {
             syncStatus: 'PENDING_SYNC',
           },
-          serviceId: 'service-id-gs',
+          serviceId: GedServiceId.SOCIAL_MANAGEMENT,
         },
         {
           iconName: 'deposit',
@@ -165,7 +166,7 @@ export const foldersData: Folder[][] = [
                   "Ici, veuillez trouver l'ensemble des bulletins de salaire.",
                 syncStatus: 'PENDING_SYNC',
               },
-              serviceId: 'service-id-gs',
+              serviceId: GedServiceId.SOCIAL_MANAGEMENT,
             },
           ],
           name: 'RYDGE',
@@ -176,7 +177,7 @@ export const foldersData: Folder[][] = [
           properties: {
             syncStatus: 'PENDING_SYNC',
           },
-          serviceId: 'service-id-gs',
+          serviceId: GedServiceId.SOCIAL_MANAGEMENT,
         },
       ],
       name: 'Gestion Sociale',
@@ -190,7 +191,7 @@ export const foldersData: Folder[][] = [
         tracingName: 'Human resources management',
         syncStatus: 'PENDING_SYNC',
       },
-      serviceId: 'service-id-gs',
+      serviceId: GedServiceId.SOCIAL_MANAGEMENT,
     },
   ],
 ]
@@ -210,5 +211,5 @@ export const newFolderData: Folder = {
       "Ce dossier regroupe l'ensemble des documents.",
     syncStatus: 'PENDING_SYNC',
   },
-  serviceId: 'service-id-compta',
+  serviceId: GedServiceId.ACCOUNTING,
 }

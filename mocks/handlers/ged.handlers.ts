@@ -7,15 +7,16 @@ import {
   documentsResponsePayload,
   binDocumentsMock,
 } from '@pulse/ged/mocks'
+import { GedServiceId } from '@pulse/ged/enums'
 
 // Mock SignalR connection ID
 const MOCK_CONNECTION_ID = 'mock-signalr-connection-id'
 
 function getFoldersByServiceId(serviceId: string) {
-  if (serviceId === 'service-id-compta') {
+  if (serviceId === GedServiceId.ACCOUNTING) {
     return foldersData[0]
   }
-  if (serviceId === 'service-id-gs') {
+  if (serviceId === GedServiceId.SOCIAL_MANAGEMENT) {
     return foldersData[1]
   }
   return []

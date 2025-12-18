@@ -3,9 +3,12 @@
   "include": [
     "**/*.ts",
     "**/*.vue",
-    "../packages/applets/**/*.stories.ts",
-    "../packages/apps/**/*.stories.ts",
-    "../packages/libraries/**/*.stories.ts"
+    "../packages/applets/**/*.ts",
+    "../packages/applets/**/*.vue",
+    "../packages/apps/**/*.ts",
+    "../packages/apps/**/*.vue",
+    "../packages/libraries/**/*.ts",
+    "../packages/libraries/**/*.vue"
   ],
   "exclude": [
     "node_modules",

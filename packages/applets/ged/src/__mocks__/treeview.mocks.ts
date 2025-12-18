@@ -1,4 +1,5 @@
 import type { Folder } from '@ged/models/Folder'
+import { GedServiceId } from '@ged/enums/ged.enum'
 
 export function getMockedFolder(
   parentId: number,
@@ -19,7 +20,7 @@ export function getMockedFolder(
       folderDescription: '',
       tracingName: '',
     },
-    serviceId: 'service-id-compta',
+    serviceId: GedServiceId.ACCOUNTING,
   }
 
   return {

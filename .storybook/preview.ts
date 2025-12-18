@@ -22,6 +22,9 @@ import offersCatalogPlugin from '../packages/applets/offers-catalog/src/main'
 import pennylanePlugin from '../packages/applets/pennylane/src/main'
 import entitiesPlugin from '../packages/applets/entities/src/main'
 
+// Import shared plugin for i18n translations
+import sharedPlugin from '../packages/libraries/shared/src/main'
+
 // Import widgets plugin to register all grid widgets
 import widgetsPlugin from '../packages/libraries/widgets/src/main'
 // Import MSW worker
@@ -65,6 +68,8 @@ setup((app) => {
   app.use(styleguideLibrary, { assetsBaseUrl })
   // Register widgets plugin to make grid widgets available
   app.use(widgetsPlugin, {})
+  // Register shared plugin for i18n translations
+  app.use(sharedPlugin, {})
   // Register applet plugins
   app.use(feedCenterPlugin, {})
   app.use(offersCatalogPlugin, {})
@@ -87,7 +92,9 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
-          'Guidelines', // guidelines first, then alphabetical sort for the rest
+          'Guidelines',
+          'Apps',
+          'Applets',
         ],
       },
     },
