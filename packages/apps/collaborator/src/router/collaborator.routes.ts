@@ -7,6 +7,7 @@ export const COLLABORATOR_ROUTES = {
   authenticated: { path: '', name: RouteName.AUTHENTICATED },
   landing: { path: 'landing', name: RouteName.LANDING },
   login: { path: '', name: RouteName.LOGIN_COLLAB },
+  loginRedirect: { path: '/login', name: RouteName.LOGIN_REDIRECT },
   entity: {
     root: { path: `/dossier/:${RouteParam.ENTITY_ID}`, name: RouteName.ENTITY },
     homepage: { path: 'accueil', name: RouteName.HOMEPAGE },

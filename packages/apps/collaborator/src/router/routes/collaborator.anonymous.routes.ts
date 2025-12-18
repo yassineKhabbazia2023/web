@@ -47,6 +47,16 @@ export const anonymousCollaboratorRoutes: RouteRecordRaw[] = [
           [ALLOW_ANONYMOUS_META]: true,
         },
       },
+      {
+        // we redirect /login to the login route in case the user comes from another app
+        // or an old bookmark
+        path: COLLABORATOR_ROUTES.loginRedirect.path,
+        name: COLLABORATOR_ROUTES.loginRedirect.name,
+        redirect: { name: COLLABORATOR_ROUTES.login.name },
+        meta: {
+          [ALLOW_ANONYMOUS_META]: true,
+        },
+      },
     ],
   },
 ]

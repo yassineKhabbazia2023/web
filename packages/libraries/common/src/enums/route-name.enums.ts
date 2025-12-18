@@ -25,6 +25,7 @@ export enum RouteName {
   LAUNCHER = 'launcher',
   LOGIN_CLIENT = 'loginClient',
   LOGIN_COLLAB = 'loginCollab',
+  LOGIN_REDIRECT = 'loginRedirect',
   MAINTENANCE = 'maintenance',
   MANDATES = 'mandates',
   OFFERS = 'offers',
