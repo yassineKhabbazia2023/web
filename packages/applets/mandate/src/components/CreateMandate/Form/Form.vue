@@ -173,7 +173,7 @@
                 data-testid="institutionCode-input-test"
                 pPlaceholder="_ _ _ _ _"
                 state="default"
-                @blur="checkFields()"
+                @blur="checkFields"
               />
             </PFormItem>
           </PCol>
@@ -191,7 +191,7 @@
                 data-testid="branchCode-input-test"
                 pPlaceholder="_ _ _ _ _"
                 state="default"
-                @blur="checkFields()"
+                @blur="checkFields"
               />
             </PFormItem>
           </PCol>
@@ -211,7 +211,7 @@
                 data-testid="accountNumber-input-test"
                 pPlaceholder="_ _ _ _ _ _ _ _ _ _ _"
                 state="default"
-                @blur="checkFields()"
+                @blur="checkFields"
               />
             </PFormItem>
           </PCol>
@@ -229,7 +229,7 @@
                 data-testid="key-input-test"
                 pPlaceholder="_ _"
                 state="default"
-                @blur="checkFields()"
+                @blur="checkFields"
               />
             </PFormItem>
           </PCol>
@@ -268,7 +268,6 @@
             :pOptions="redirectionToolsOptions"
             pRequired
             @change="checkFields"
-            @blur="checkFields"
           />
         </PFormItem>
         <PAlert v-if="isScrappable" pType="danger">
@@ -358,7 +357,13 @@ const isScrappable = ref(false)
 const isNonScrappable = ref(false)
 const isBankCodeValid = ref(false)
 const isRibValid = ref(false)
-const isValidateEnabled = computed(() => isBankCodeValid.value && isRibValid.value)
+const isValidateEnabled = computed(() => {
+  const ribValid = isBankCodeValid.value && isRibValid.value
+  if (isMandateRedirectionToolFeatureEnabled === true) {
+    return ribValid && createMandateForm.redirectionTools !== ''
+  }
+  return ribValid
+})
 
 const areFieldsFilled = (fieldsToCheck: string[]) =>
   fieldsToCheck.every((field) => !!createMandateForm[field] &&
@@ -591,7 +596,8 @@ const checkFields = async () => {
   } catch (error) {
     logger.error(error)
   } finally {
-    if (await isBbanComplete()) {
+    const isBbanCompleteResult = await isBbanComplete()
+    if (isBbanCompleteResult) {
       await checkBbanValidity({
         bankCode: createMandateForm.institutionCode,
         branchCode: createMandateForm.branchCode,
@@ -662,7 +668,7 @@ const requiredFieldMessage = t('form.error.requiredField')
 const rules = reactive<any>({
   erpId: [
     createRule(requiredFieldMessage, 'blur'),
-    { validator: validateIBS, trigger: ['change', 'blur'] },
+    { validator: validateIBS, trigger: 'change' },
     { message: t('form.error.ibsFormatIssue'), pattern: /^\d{10}$/, trigger: ['blur'] },
   ],
   title: [createRule(t('form.error.mandatoryChoice'), 'change')],
