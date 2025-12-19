@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { envVarsMock } from '@pulse/common/mocks'
 import { getMockedUserInfo } from '@common/__mocks__/user-client.mocks'
-import { utilsMock, logoutCollaboratorMock, logoutGigyaSSOMock, logoutClientMock } from '@common/__mocks__/utils.mocks'
+import { utilsMock, logoutCollaboratorMock, logoutGigyaSSOMock, logoutUserMock } from '@common/__mocks__/utils.mocks'
 import { getMockedCurrentEntity, getPermissionsMock, getStoreMock } from '../../__mocks__'
 import { useUserStore } from '../../stores/user/user.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
@@ -19,8 +19,6 @@ const tokenStoreMock = getStoreMock(useTokenStore)
 const userPermissionsMock = getPermissionsMock()
 const currentEntityMock = getMockedCurrentEntity()
 const currentEntityPermissionsMock = currentEntityMock.permissions ?? []
-
-const gigyaUserIdMock = 'gigya-user-id'
 
 vi.mock('env-vars', () => envVarsMock)
 envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
@@ -53,7 +51,9 @@ describe('test current-user.manager', () => {
   })
 
   describe('logout', () => {
-    it('should process logout properly', async () => {
+    it('should process logout properly for non-collab users without SSO', async () => {
+      userStoreMock.isCollab = false
+      envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
       await CurrentUserManager.logout()
 
       expect(tokenStoreMock.removeToken).toHaveBeenCalledOnce()
@@ -67,45 +67,44 @@ describe('test current-user.manager', () => {
       expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledTimes(2) // called once in CurrentUserManager.setCurrentUser and once in CurrentEntityManager.clearCurrentEntity
       expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenNthCalledWith(1, [])
 
-      expect(logoutCollaboratorMock).not.toHaveBeenCalledOnce()
+      expect(logoutUserMock).toHaveBeenCalledOnce()
+      expect(logoutCollaboratorMock).not.toHaveBeenCalled()
       expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
-      expect(logoutClientMock).not.toHaveBeenCalled()
     })
 
     it('should call logoutCollaborator() when isCollab is true', async () => {
       userStoreMock.isCollab = true
+      envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
       await CurrentUserManager.logout()
 
+      expect(logoutUserMock).toHaveBeenCalledOnce()
       expect(logoutCollaboratorMock).toHaveBeenCalledOnce()
       expect(logoutCollaboratorMock).toHaveBeenCalledWith()
 
       expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
-      expect(logoutClientMock).not.toHaveBeenCalled()
     })
 
-    it('should call logoutCollaborator() when isCollab is false but gigyaUserId is not empty', async () => {
-      userStoreMock.isCollab = false
-      userStoreMock.gigyaUserId = gigyaUserIdMock
-      await CurrentUserManager.logout()
-
-      expect(logoutCollaboratorMock).not.toHaveBeenCalled()
-      expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
-      expect(logoutClientMock).toHaveBeenCalled()
-      expect(logoutClientMock).toHaveBeenNthCalledWith(1, gigyaUserIdMock)
-    })
-
-    it('should call logoutCollaborator() when isCollab is false but gigyaUserId is not empty and VITE_GIGYA_SSO_ACTIVATED is true', async () => {
+    it('should call logoutGigyaSSO() when VITE_GIGYA_SSO_ACTIVATED is true', async () => {
       userStoreMock.isCollab = false
       envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'true'
-      userStoreMock.gigyaUserId = gigyaUserIdMock
       await CurrentUserManager.logout()
 
+      expect(logoutUserMock).toHaveBeenCalledOnce()
       expect(logoutCollaboratorMock).not.toHaveBeenCalled()
-      expect(logoutGigyaSSOMock).toHaveBeenCalled()
+      expect(logoutGigyaSSOMock).toHaveBeenCalledOnce()
       expect(logoutGigyaSSOMock).toHaveBeenCalledWith()
+    })
 
-      expect(logoutClientMock).toHaveBeenCalled()
-      expect(logoutClientMock).toHaveBeenNthCalledWith(1, gigyaUserIdMock)
+    it('should call both logoutCollaborator() and logoutGigyaSSO() when isCollab is true and VITE_GIGYA_SSO_ACTIVATED is true', async () => {
+      userStoreMock.isCollab = true
+      envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'true'
+      await CurrentUserManager.logout()
+
+      expect(logoutUserMock).toHaveBeenCalledOnce()
+      expect(logoutCollaboratorMock).toHaveBeenCalledOnce()
+      expect(logoutCollaboratorMock).toHaveBeenCalledWith()
+      expect(logoutGigyaSSOMock).toHaveBeenCalledOnce()
+      expect(logoutGigyaSSOMock).toHaveBeenCalledWith()
     })
   })
 

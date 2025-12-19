@@ -2,7 +2,7 @@ import type { UserInfo } from '../../stores/types'
 import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useUserStore } from '../../stores/user/user.store'
 import { arrayIncludes } from '@pulse/toolbox/utils/array'
-import { logoutCollaborator, logoutGigyaSSO, logoutClient } from '../../utils/user.utils'
+import { logoutCollaborator, logoutGigyaSSO, logoutUser } from '../../utils/user.utils'
 import { CurrentUserService } from '../../services/current-user/current-user.service'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
@@ -31,19 +31,20 @@ export class CurrentUserManager {
     const userStore = useUserStore()
 
     const isCollab = userStore.isCollab
-    const gigyaUserId = userStore.gigyaUserId
 
     this.setCurrentUser()
 
+    // Logout User (Collab or Customer)
+    await logoutUser()
+
     if (isCollab) {
-      logoutCollaborator()
+      await logoutCollaborator()
     }
-    if (gigyaUserId) {
-      if (VITE_GIGYA_SSO_ACTIVATED === 'true') {
-        logoutGigyaSSO()
-      }
-      logoutClient(gigyaUserId)
+
+    if (VITE_GIGYA_SSO_ACTIVATED === 'true') {
+      logoutGigyaSSO()
     }
+
     // clean localStorage
     this.persistToken('')
     CurrentEntityManager.clearCurrentEntity()

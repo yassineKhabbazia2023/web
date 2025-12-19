@@ -35,10 +35,10 @@ export const logoutGigyaSSO = () => {
   }
 }
 
-export const logoutClient = async (gigyaUserId: string) => {
+export const logoutUser = async () => {
   try {
     const urlLogout = 'authentication/api/logout'
-    await api().gateway.post(urlLogout, { gigyaUserId })
+    await api().gateway.post(urlLogout)
   } catch (error) {
     logger.error('Error during client logout: ', error)
   }

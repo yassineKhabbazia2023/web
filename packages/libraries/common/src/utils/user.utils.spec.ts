@@ -3,7 +3,7 @@ import { flushPromises } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { MsalService } from '../services/msal/msal.service'
 import api from '../api'
-import { getInitials, logoutClient, logoutCollaborator, logoutGigyaSSO } from './user.utils'
+import { getInitials, logoutUser, logoutCollaborator, logoutGigyaSSO } from './user.utils'
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
@@ -11,7 +11,6 @@ declare let window: {
   gigya: any
 } & Window
 
-const mockedGigyaUserId = 'gigya-user-id-value'
 const mockGigyaAccountsLogout = vi.hoisted(() => vi.fn())
 
 window.gigya = {
@@ -54,20 +53,20 @@ describe('logoutGigyaSSO', () => {
   })
 })
 
-describe('logoutClient', () => {
-  it('should call the API with the correct endpoint and payload to logout the client', () => {
+describe('logoutUser', () => {
+  it('should call the API with the correct endpoint to logout the user', () => {
     const gatewayPostSpy = vi.spyOn(api().gateway, 'post').mockImplementation(() => Promise.resolve())
 
-    logoutClient(mockedGigyaUserId)
+    logoutUser()
 
     expect(gatewayPostSpy).toHaveBeenCalledOnce()
-    expect(gatewayPostSpy).toHaveBeenCalledWith('authentication/api/logout', { gigyaUserId: mockedGigyaUserId })
+    expect(gatewayPostSpy).toHaveBeenCalledWith('authentication/api/logout')
   })
   it('should log an error when the API call fails to logout the user', async () => {
     const expectedErrorMessage = 'API Error: 503 Service Unavailable'
     vi.spyOn(api().gateway, 'post').mockRejectedValue(expectedErrorMessage)
 
-    logoutClient(mockedGigyaUserId)
+    logoutUser()
     await flushPromises()
 
     expect(loggerErrorSpy).toHaveBeenCalledOnce()
