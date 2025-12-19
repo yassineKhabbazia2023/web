@@ -54,10 +54,7 @@ describe('customerPermissionGuard', () => {
       hasPermissionMock.mockReturnValue(hasPermission)
 
       await customerPermissionGuard(to as any, {} as any, next)
-      if (target !== undefined) {
-        expect(next).toHaveBeenCalledWith(target)
-      } else {
-        expect(next).toHaveBeenCalledWith()
-      }
+      const expectedCall = target !== undefined ? [target] : []
+      expect(next).toHaveBeenCalledWith(...expectedCall)
     })
 })

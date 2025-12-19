@@ -72,8 +72,7 @@ describe('CustomerBootManager', () => {
 
       expect(() => CustomerBootManager.initAmplitude()).not.toThrow()
       expect(amplitudeInitSpy).toHaveBeenCalled()
-      expect(loggerMock.error).toHaveBeenCalledOnce()
-      expect(loggerMock.error).toHaveBeenCalledWith('Amplitude initialization failed:', amplitudeInitError)
+      expect(loggerMock.error).toHaveBeenCalledExactlyOnceWith('Amplitude initialization failed:', amplitudeInitError)
     })
   })
 })

@@ -34,6 +34,7 @@ export enum RouteName {
   PENNYLANE_GED_LEGACY = 'ged-legacy',
   PENNYLANE_GED_V2 = 'ged-v2',
   PENNYLANE_SOCIAL_MANAGEMENT = 'pennylane-social-management',
+  PENNYLANE_SSO_PROXY = 'pennylane-sso-proxy',
   POWER_BI = 'powerbi',
   REPORTS = 'reports',
   RESEND_EMAIL_SUCCESS = 'resendEmailSuccess',

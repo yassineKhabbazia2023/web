@@ -1,12 +1,17 @@
-import type { RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
+import type { RouteLocationNormalized, NavigationGuardNext, NavigationGuard } from 'vue-router'
 import { RouteName } from '@pulse/common/enums'
 import { CustomerAuthenticatedFlowManager } from '@customer/managers/customer.authenticated.flow.manager'
 import { landingCustomerRoutes } from './customer.landing.routes'
 
 vi.mock('@customer/managers/customer.authenticated.flow.manager')
+vi.mock('../guards/customer.pennylane-sso-redirect.guard', () => ({
+  customerPennylaneSsoRedirectGuard: vi.fn((_to, _from, next) => next()),
+}))
 
 const landingRoute = landingCustomerRoutes[0]
-const beforeEnter = landingRoute.beforeEnter as (
+// beforeEnter is now an array of guards: [customerPennylaneSsoRedirectGuard, redirectionGuard]
+const beforeEnterGuards = landingRoute.beforeEnter as NavigationGuard[]
+const redirectionGuard = beforeEnterGuards[1] as (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
   next: NavigationGuardNext
@@ -25,12 +30,16 @@ describe('landingCustomerRoutes', () => {
   })
 
   describe('beforeEnter', () => {
+    it('should have customerPennylaneSsoRedirectGuard as first guard', () => {
+      expect(beforeEnterGuards).toHaveLength(2)
+    })
+
     it('should redirect to landing page based on user type', () => {
       const mockLandingPage = { name: RouteName.ENTITY }
       vi.mocked(CustomerAuthenticatedFlowManager.getLandingPage).mockReturnValue(mockLandingPage)
       const next = vi.fn()
 
-      beforeEnter({} as RouteLocationNormalized, {} as RouteLocationNormalized, next)
+      redirectionGuard({} as RouteLocationNormalized, {} as RouteLocationNormalized, next)
 
       expect(next).toHaveBeenCalledWith(mockLandingPage)
     })
@@ -39,7 +48,7 @@ describe('landingCustomerRoutes', () => {
       vi.mocked(CustomerAuthenticatedFlowManager.getLandingPage).mockReturnValue(null)
       const next = vi.fn()
 
-      beforeEnter({} as RouteLocationNormalized, {} as RouteLocationNormalized, next)
+      redirectionGuard({} as RouteLocationNormalized, {} as RouteLocationNormalized, next)
 
       expect(next).toHaveBeenCalledWith({ name: RouteName.CUSTOMER_ENTITIES })
     })

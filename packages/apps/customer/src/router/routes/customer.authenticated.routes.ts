@@ -7,6 +7,7 @@ import { CustomerAuthenticatedFlowManager } from '@customer/managers/customer.au
 import { entityCustomerRoutes } from './customer.entity.routes'
 import { walletCustomerRoutes } from './customer.wallet.routes'
 import { landingCustomerRoutes } from './customer.landing.routes'
+import { pennylaneSsoProxyCustomerRoutes } from './customer.pennylane-sso-proxy.routes'
 import { CUSTOMER_ROUTES } from '../customer.routes'
 
 export const authenticatedCustomerRoutes: RouteRecordRaw[] = [
@@ -49,6 +50,7 @@ export const authenticatedCustomerRoutes: RouteRecordRaw[] = [
     },
     children: [
       ...landingCustomerRoutes,
+      ...pennylaneSsoProxyCustomerRoutes,
       ...entityCustomerRoutes,
       ...walletCustomerRoutes,
       {

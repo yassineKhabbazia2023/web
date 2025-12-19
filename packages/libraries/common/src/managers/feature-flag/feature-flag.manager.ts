@@ -40,4 +40,8 @@ export class FeatureFlagManager {
   static isMailToPennylaneActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.MAIL_TO_PENNYLANE)
   }
+
+  static isPennylaneSsoRedirectActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_SSO_REDIRECT)
+  }
 }

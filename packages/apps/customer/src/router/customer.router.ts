@@ -4,6 +4,7 @@ import { CustomerBootManager } from '@customer/managers/customer.boot.manager'
 import { featureFlagGuard, currentEntityGuard, seoGuard } from '@pulse/shared/guards'
 import { customerAuthenticationGuard } from './guards/customer.authentication.guard'
 import { customerPermissionGuard } from './guards/customer.permission.guard'
+import { customerSsoGuard } from './guards/customer.sso.guard'
 import { CUSTOMER_ROUTES } from './customer.routes'
 
 import { errorCustomerRoutes } from './routes/customer.error.routes'
@@ -47,6 +48,7 @@ const router = createRouter({
 })
 
 // Inject the guards
+router.beforeEach(customerSsoGuard)
 router.beforeEach(customerAuthenticationGuard)
 router.beforeEach(featureFlagGuard)
 router.beforeEach(currentEntityGuard)
