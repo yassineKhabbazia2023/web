@@ -1,3 +1,4 @@
+export * from './deep-link.guard'
 export * from './entity.documents.guard'
 export * from './entity.guard'
 export * from './feature-flag.guard'

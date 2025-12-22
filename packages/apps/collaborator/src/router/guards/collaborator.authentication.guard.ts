@@ -1,6 +1,7 @@
 import { logger } from '@pulse/toolbox'
 import type { NavigationGuard } from 'vue-router'
 import { CurrentUserManager } from '@pulse/common/managers'
+import { SessionStorageService } from '@pulse/common/services/storage'
 import { CollaboratorBootManager } from '@collaborator/managers/collaborator.boot.manager'
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
 import { RouteName } from '@pulse/common/enums'
@@ -29,6 +30,11 @@ export const collaboratorAuthenticationGuard: NavigationGuard = async (to, _from
 
   // user is NOT authenticated (anonymous) and tries to access a route that does not allow anonymous users
   if (isAuthenticated === false && allowAnonymous === false) {
+    // Save redirect context before redirecting to login (skip for 404 pages to avoid redirecting to error page after login)
+    if (to.name !== RouteName.ERROR404) {
+      SessionStorageService.setRedirectContext(to.fullPath)
+    }
+
     if (hasToken === true) {
       // User has a token but is not authenticated, likely due to token expiration
       logger.trace('User has a token but is not authenticated. Go back to login.')

@@ -206,4 +206,68 @@ describe('SessionStorageService', () => {
   })
 
   // #endregion
+
+  // #region Redirect context tests
+
+  describe('Redirect context methods', () => {
+    describe('setRedirectContext', () => {
+      it('should save redirect context in sessionStorage', () => {
+        const fullPath = '/dossier/12?mode=notification'
+
+        SessionStorageService.setRedirectContext(fullPath)
+
+        expect(sessionStorageMock.setItem).toHaveBeenCalledWith('pulse-redirect-context', fullPath)
+      })
+
+      it('should not save empty path', () => {
+        SessionStorageService.setRedirectContext('')
+
+        expect(sessionStorageMock.setItem).not.toHaveBeenCalled()
+      })
+
+      it('should not save path that does not start with /', () => {
+        SessionStorageService.setRedirectContext('invalid-path')
+
+        expect(sessionStorageMock.setItem).not.toHaveBeenCalled()
+      })
+    })
+
+    describe('consumeRedirectContext', () => {
+      it('should return redirect context from sessionStorage', () => {
+        const fullPath = '/dossier/12?mode=notification'
+        sessionStorageMock.getItem.mockReturnValue(fullPath)
+
+        const result = SessionStorageService.consumeRedirectContext()
+
+        expect(sessionStorageMock.getItem).toHaveBeenCalledWith('pulse-redirect-context')
+        expect(result).toBe(fullPath)
+      })
+
+      it('should remove redirect context after reading', () => {
+        sessionStorageMock.getItem.mockReturnValue('/some/path')
+
+        SessionStorageService.consumeRedirectContext()
+
+        expect(sessionStorageMock.removeItem).toHaveBeenCalledWith('pulse-redirect-context')
+      })
+
+      it('should return undefined when no context exists', () => {
+        sessionStorageMock.getItem.mockReturnValue(null)
+
+        const result = SessionStorageService.consumeRedirectContext()
+
+        expect(result).toBeUndefined()
+      })
+
+      it('should not call removeItem when no context exists', () => {
+        sessionStorageMock.getItem.mockReturnValue(null)
+
+        SessionStorageService.consumeRedirectContext()
+
+        expect(sessionStorageMock.removeItem).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  // #endregion
 })

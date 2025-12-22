@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
+import { deepLinkGuard } from '@pulse/shared/guards'
 import { RouteName } from '@pulse/common/enums'
 import { CustomerAuthenticatedFlowManager } from '@customer/managers/customer.authenticated.flow.manager'
 import { CUSTOMER_ROUTES } from '../customer.routes'
@@ -15,6 +16,7 @@ export const landingCustomerRoutes: RouteRecordRaw[] = [
     component: () => import('@customer/pages/CustomerLanding.page.vue'),
     beforeEnter: [
       customerPennylaneSsoRedirectGuard,
+      deepLinkGuard,
       (_to, _from, next) => {
         const redirection = CustomerAuthenticatedFlowManager.getLandingPage()
         // Fallback to folders route if no landing page found

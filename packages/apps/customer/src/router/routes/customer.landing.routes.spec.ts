@@ -7,11 +7,14 @@ vi.mock('@customer/managers/customer.authenticated.flow.manager')
 vi.mock('../guards/customer.pennylane-sso-redirect.guard', () => ({
   customerPennylaneSsoRedirectGuard: vi.fn((_to, _from, next) => next()),
 }))
+vi.mock('@pulse/shared/guards', () => ({
+  deepLinkGuard: vi.fn((_to, _from, next) => next()),
+}))
 
 const landingRoute = landingCustomerRoutes[0]
-// beforeEnter is now an array of guards: [customerPennylaneSsoRedirectGuard, redirectionGuard]
+// beforeEnter is an array of guards: [customerPennylaneSsoRedirectGuard, deepLinkGuard, redirectionGuard]
 const beforeEnterGuards = landingRoute.beforeEnter as NavigationGuard[]
-const redirectionGuard = beforeEnterGuards[1] as (
+const redirectionGuard = beforeEnterGuards[2] as (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
   next: NavigationGuardNext
@@ -30,10 +33,6 @@ describe('landingCustomerRoutes', () => {
   })
 
   describe('beforeEnter', () => {
-    it('should have customerPennylaneSsoRedirectGuard as first guard', () => {
-      expect(beforeEnterGuards).toHaveLength(2)
-    })
-
     it('should redirect to landing page based on user type', () => {
       const mockLandingPage = { name: RouteName.ENTITY }
       vi.mocked(CustomerAuthenticatedFlowManager.getLandingPage).mockReturnValue(mockLandingPage)

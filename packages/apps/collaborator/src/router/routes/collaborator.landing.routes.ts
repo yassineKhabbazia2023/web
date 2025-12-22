@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
+import { deepLinkGuard } from '@pulse/shared/guards'
 import { COLLABORATOR_ROUTES } from '../collaborator.routes'
 import { CollaboratorAuthenticatedFlowManager } from '@collaborator/managers/collaborator.authenticated.flow.manager'
 
@@ -11,9 +12,12 @@ export const landingCollaboratorRoutes: RouteRecordRaw[] = [
       [ALLOW_AUTHENTICATED_META]: true,
     },
     component: () => import('@collaborator/pages/CollaboratorLanding.page.vue'),
-    beforeEnter: (_to, _from, next) => {
-      const redirection = CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage()
-      return next(redirection)
-    },
+    beforeEnter: [
+      deepLinkGuard,
+      (_to, _from, next) => {
+        const redirection = CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage()
+        return next(redirection)
+      },
+    ],
   },
 ]

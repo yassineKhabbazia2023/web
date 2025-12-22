@@ -3,13 +3,13 @@ import type { SsoProvider } from './session-storage.service.enums'
 import type { SamlSsoContext } from './session-storage.service.types'
 
 const SAML_SSO_KEY_PREFIX = 'saml-sso-context'
+const SESSION_STORAGE_REDIRECT_CONTEXT_KEY = 'pulse-redirect-context'
 
 /**
  * Service to handle all sessionStorage operations
  * Centralizes sessionStorage access for better testability and error handling
  */
 export class SessionStorageService {
-
   // #region Generic storage methods
 
   /**
@@ -88,6 +88,37 @@ export class SessionStorageService {
       this.removeSamlSsoContext(spName)
     }
     return context
+  }
+
+  // #endregion
+
+  // #region Redirect context
+
+  /**
+   * Save the redirect context (URL to redirect to after login)
+   * @param fullPath The full path including query params (e.g., "/dossier/12?mode=notification")
+   */
+  static setRedirectContext(fullPath: string): void {
+    if (fullPath === '' || fullPath.startsWith('/') === false) {
+      logger.warn(`Invalid redirect path: ${fullPath}`)
+      return
+    }
+
+    this.setItem(SESSION_STORAGE_REDIRECT_CONTEXT_KEY, fullPath)
+    logger.trace(`Redirect context saved: ${fullPath}`)
+  }
+
+  /**
+   * Get and consume the redirect context (deleted after read)
+   * @returns The full path or undefined if not found
+   */
+  static consumeRedirectContext(): string | undefined {
+    const fullPath = this.getItem(SESSION_STORAGE_REDIRECT_CONTEXT_KEY)
+    if (fullPath !== undefined) {
+      this.removeItem(SESSION_STORAGE_REDIRECT_CONTEXT_KEY)
+      logger.trace(`Redirect context consumed: ${fullPath}`)
+    }
+    return fullPath
   }
 
   // #endregion
