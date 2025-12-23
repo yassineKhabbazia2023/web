@@ -4,7 +4,6 @@ import { deepLinkGuard } from '@pulse/shared/guards'
 import { RouteName } from '@pulse/common/enums'
 import { CustomerAuthenticatedFlowManager } from '@customer/managers/customer.authenticated.flow.manager'
 import { CUSTOMER_ROUTES } from '../customer.routes'
-import { customerPennylaneSsoRedirectGuard } from '../guards/customer.pennylane-sso-redirect.guard'
 
 export const landingCustomerRoutes: RouteRecordRaw[] = [
   {
@@ -15,7 +14,6 @@ export const landingCustomerRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@customer/pages/CustomerLanding.page.vue'),
     beforeEnter: [
-      customerPennylaneSsoRedirectGuard,
       deepLinkGuard,
       (_to, _from, next) => {
         const redirection = CustomerAuthenticatedFlowManager.getLandingPage()

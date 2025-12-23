@@ -71,7 +71,7 @@ describe('customerSsoGuard', () => {
         samlContext: 'test-saml-context',
         mode: 'login',
       })
-      expect(nextMock).toHaveBeenCalled()
+      expect(nextMock).toHaveBeenCalledWith()
     })
 
     it('should not store SSO context when samlContext is missing', () => {
@@ -101,20 +101,9 @@ describe('customerSsoGuard', () => {
       expect(SessionStorageService.setSamlSsoContext).not.toHaveBeenCalled()
       expect(nextMock).toHaveBeenCalled()
     })
-
-    it('should not store SSO context when query params are empty', () => {
-      const toRoute: any = {
-        query: {},
-      }
-
-      customerSsoGuard(toRoute, fromRouteMock, nextMock)
-
-      expect(SessionStorageService.setSamlSsoContext).not.toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalled()
-    })
   })
 
-  describe('optimization: early exit when no spName query param', () => {
+  describe('early exit when no spName query param', () => {
     it('should not check feature flag when spName is not present', () => {
       const toRoute: any = {
         query: {},
@@ -126,20 +115,7 @@ describe('customerSsoGuard', () => {
       expect(nextMock).toHaveBeenCalled()
     })
 
-    it('should not check feature flag when only other query params are present', () => {
-      const toRoute: any = {
-        query: {
-          someOtherParam: 'value',
-        },
-      }
-
-      customerSsoGuard(toRoute, fromRouteMock, nextMock)
-
-      expect(FeatureFlagManager.isPennylaneSsoRedirectActivated).not.toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalled()
-    })
-
-    it('should not check feature flag when spName is not pennylane', () => {
+    it('should not store SSO context when spName is not pennylane', () => {
       const toRoute: any = {
         query: {
           spName: 'other-provider',

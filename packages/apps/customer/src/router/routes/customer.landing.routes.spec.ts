@@ -4,17 +4,14 @@ import { CustomerAuthenticatedFlowManager } from '@customer/managers/customer.au
 import { landingCustomerRoutes } from './customer.landing.routes'
 
 vi.mock('@customer/managers/customer.authenticated.flow.manager')
-vi.mock('../guards/customer.pennylane-sso-redirect.guard', () => ({
-  customerPennylaneSsoRedirectGuard: vi.fn((_to, _from, next) => next()),
-}))
 vi.mock('@pulse/shared/guards', () => ({
   deepLinkGuard: vi.fn((_to, _from, next) => next()),
 }))
 
 const landingRoute = landingCustomerRoutes[0]
-// beforeEnter is an array of guards: [customerPennylaneSsoRedirectGuard, deepLinkGuard, redirectionGuard]
+// beforeEnter is an array of guards: [deepLinkGuard, redirectionGuard]
 const beforeEnterGuards = landingRoute.beforeEnter as NavigationGuard[]
-const redirectionGuard = beforeEnterGuards[2] as (
+const redirectionGuard = beforeEnterGuards[1] as (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
   next: NavigationGuardNext
