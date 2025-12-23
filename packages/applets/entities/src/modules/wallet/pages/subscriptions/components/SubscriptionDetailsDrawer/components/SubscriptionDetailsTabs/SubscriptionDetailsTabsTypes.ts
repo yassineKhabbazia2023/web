@@ -1,6 +1,6 @@
 import { SubscriptionOfferServices } from '@entities/types'
 import type { SubscriptionDetails } from '@entities/services/subscription/subscriptionTypes'
-import { RecapTabs } from '@entities/modules/wallet/enums'
+import { RecapTabs, SubscriptionDetailsContext } from '@entities/modules/wallet/enums'
 
 export interface SubscriptionDetailsTab {
   index: number
@@ -10,4 +10,5 @@ export interface SubscriptionDetailsTab {
 export interface SubscriptionDetailsTabsProps {
   subscriptionDetails?: SubscriptionDetails
   currentSubscriptionOffer?: SubscriptionOfferServices
+  pageContext?: SubscriptionDetailsContext
 }

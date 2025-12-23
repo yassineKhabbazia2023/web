@@ -114,17 +114,16 @@
         }]
       },
       {
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
-        "pFilterable":true,
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
         "pDisabled": false,
-        "pFieldKey": "officeId",
+        "pFieldKey": "hub.hubId",
         "pFieldType": "dropdown",
-        "pLabel": "Bureau RYDGE de rattachement",
-        "pTestId": "offer-office-name-list",
-        "referentialKey": "officeName",
+        "pLabel": "Hub RYDGE de rattachement",
+        "pTestId": "offer-hub-name-list",
+        "referentialKey": "hubName",
         "pRules": [{
-          "required": true,
-          "message": "Veuillez saisir une valeur",
+          "required": true, 
+          "message": "Veuillez saisir une valeur", 
           "trigger": "change"
         }]
       }

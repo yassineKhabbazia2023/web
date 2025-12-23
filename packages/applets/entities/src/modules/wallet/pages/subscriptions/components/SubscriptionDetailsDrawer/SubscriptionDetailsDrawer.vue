@@ -20,6 +20,7 @@
       v-else
       :subscriptionDetails="subscriptionDetails"
       :currentSubscriptionOffer="currentSubscriptionOffer"
+      :pageContext="pageContext"
       data-testid="subscription-recap-drawer-tabs"
     />
   </PDrawer>
@@ -36,6 +37,7 @@ import { fetchSubscriptionDetails } from '@entities/services/subscription'
 import type { SubscriptionDetails } from '@entities/services/subscription/subscriptionTypes'
 import { getOffer } from '@entities/services/offer'
 import { SubscriptionOfferServices } from '@entities/types'
+import { SubscriptionDetailsContext } from '@entities/modules/wallet/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -50,6 +52,7 @@ const emit = defineEmits<{
 const isLoading = ref<boolean>(true)
 const subscriptionDetails = ref<SubscriptionDetails | undefined>(undefined)
 const currentSubscriptionOffer = ref<SubscriptionOfferServices>()
+const pageContext = computed(() => props.pageContext ?? SubscriptionDetailsContext.DEFAULT)
 
 const internalIsOpened = computed({
   get() {

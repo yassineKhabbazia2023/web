@@ -5,6 +5,7 @@
       v-if="displaySubscriptionDrawer && selectedSubscriptionId"
       v-model="displaySubscriptionDrawer"
       :selectedSubscriptionId="selectedSubscriptionId"
+      :pageContext="SubscriptionDetailsContext.MOD_APPROVALS"
     />
   </div>
 </template>
@@ -13,6 +14,7 @@
 import { ref } from 'vue'
 import SubscriptionsTable from './components/SubscriptionsTable'
 import SubscriptionDetailsDrawer from './components/SubscriptionDetailsDrawer'
+import { SubscriptionDetailsContext } from '../../enums'
 
 const displaySubscriptionDrawer = ref<boolean>(false)
 const selectedSubscriptionId = ref<number | undefined>(undefined)

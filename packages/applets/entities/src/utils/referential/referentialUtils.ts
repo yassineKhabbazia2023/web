@@ -18,6 +18,7 @@ import type { Office } from '@pulse/common/types'
 import MEGOffersFormStructure from '@entities/config/forms/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '@entities/config/forms/LOOPOfferFormStructure.json'
 import PennylaneOfferFormStructure from '@entities/config/forms/PennylaneOfferFormStructure.json'
+import PennylaneModOfferFormStructure from '@entities/config/forms/PennylaneModOfferFormStructure.json'
 import InformationFormStructure from '@entities/config/forms/InformationFormStructure.json'
 import EntityCreatorFormStructure from '@entities/config/forms/EntityCreatorFormStructure.json'
 import { ProviderName } from '@entities/enums'
@@ -130,6 +131,8 @@ export const getFormSections = (formStructureName: FormStructureName) => {
       return LOOPOfferFormStructure as FormSection[]
     case ProviderName.PENNYLANE:
       return PennylaneOfferFormStructure as FormSection[]
+    case ProviderName.PENNYLANE_MOD:
+      return PennylaneModOfferFormStructure as FormSection[]
     case 'CompanyProfile':
       return InformationFormStructure as FormSection[]
     case 'EntityCreator':

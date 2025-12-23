@@ -50,6 +50,7 @@ import { fetchAccount, type Account } from '@entities/services/account'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
 import type { FormSection } from '@entities/types'
 import { ProviderName } from '@entities/enums'
+import { SubscriptionDetailsContext } from '@entities/modules/wallet/enums'
 import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
 
 const { t } = useI18n({
@@ -62,13 +63,25 @@ const props = defineProps<InformationDetailsProps>()
 const isLoading = ref(true)
 const informationFormStructure = ref<FormSection[]>()
 const accountModel = ref<Account>()
+const pageContext = computed(() => props.pageContext ?? SubscriptionDetailsContext.DEFAULT)
+
+const resolveProviderName = (
+  providerName: ProviderName | undefined,
+  context: SubscriptionDetailsContext,
+): ProviderName => {
+  if (providerName === ProviderName.PENNYLANE && context === SubscriptionDetailsContext.MOD_APPROVALS) {
+    return ProviderName.PENNYLANE_MOD
+  }
+
+  return providerName ?? ProviderName.LOOP
+}
 
 const providerName = computed(() => {
   const filteredProviders = props.subscriptionOfferDetails?.providers
     .filter(({ providerName }) => providerName !== ProviderName.RYDGE)
   const firstFilteredProviders = filteredProviders?.at(0)
 
-  return firstFilteredProviders?.providerName ?? ProviderName.LOOP
+  return resolveProviderName(firstFilteredProviders?.providerName, pageContext.value)
 })
 
 onMounted(async () => {

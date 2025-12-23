@@ -13,6 +13,8 @@ import { type ReferentialOptions } from '@entities/services/account'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 import MEGOffersFormStructure from '@entities/config/forms/MEGOffersFormStructure.json'
 import LOOPOfferFormStructure from '@entities/config/forms/LOOPOfferFormStructure.json'
+import PennylaneOfferFormStructure from '@entities/config/forms/PennylaneOfferFormStructure.json'
+import PennylaneModOfferFormStructure from '@entities/config/forms/PennylaneModOfferFormStructure.json'
 import InformationFormStructure from '@entities/config/forms/InformationFormStructure.json'
 import { getMockedAccountReferential, getMockedReferentialHubs, getMockedReferentialOffices } from '@entities/__mocks__/account-row.mocks'
 import { getMockedFormField, getMockedFormSection } from '@entities/__mocks__/company-information.mocks'
@@ -193,6 +195,14 @@ describe('referentialUtils', () => {
       {
         formType: ProviderName.LOOP,
         expectedFormStructure: LOOPOfferFormStructure,
+      },
+      {
+        formType: ProviderName.PENNYLANE,
+        expectedFormStructure: PennylaneOfferFormStructure,
+      },
+      {
+        formType: ProviderName.PENNYLANE_MOD,
+        expectedFormStructure: PennylaneModOfferFormStructure,
       },
       {
         formType: 'CompanyProfile',

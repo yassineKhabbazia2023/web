@@ -24,6 +24,7 @@
         v-if="activeTab === RecapTabs.INFORMATION"
         :subscriptionOfferDetails="subscriptionDetails?.offer"
         :accountId="subscriptionDetails.account.accountId"
+        :pageContext="pageContext"
       />
       <StepNote
         v-if="hasNote"
@@ -39,7 +40,7 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PTabs, PTabPane } from '@pulse/styleguide/components'
-import { RecapTabs } from '@entities/modules/wallet/enums'
+import { RecapTabs, SubscriptionDetailsContext } from '@entities/modules/wallet/enums'
 import type { Note } from '@entities/services/subscription/subscriptionTypes'
 import type {
   SubscriptionDetailsTabsProps,
@@ -60,6 +61,7 @@ const props = defineProps<SubscriptionDetailsTabsProps>()
 
 const notes = ref<Note[]>(props.subscriptionDetails?.notes ?? [])
 const activeTab = ref<SubscriptionDetailsTab['name']>('services')
+const pageContext = computed(() => props.pageContext ?? SubscriptionDetailsContext.DEFAULT)
 
 const noteIndex = computed(() =>
   Object.values(RecapTabs).indexOf(activeTab.value as RecapTabs),
