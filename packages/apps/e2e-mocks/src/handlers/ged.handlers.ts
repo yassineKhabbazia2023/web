@@ -12,6 +12,9 @@ import { GedServiceId } from '@pulse/ged/enums'
 // Mock SignalR connection ID
 const MOCK_CONNECTION_ID = 'mock-signalr-connection-id'
 
+// Auto-incrementing folder ID for deterministic mock responses
+let mockFolderIdCounter = 10000
+
 function getFoldersByServiceId(serviceId: string) {
   if (serviceId === GedServiceId.ACCOUNTING) {
     return foldersData[0]
@@ -41,7 +44,7 @@ export const gedHandlers = [
 
   http.post('*/:serviceId/:entityId/folders/currentuser', async ({ request }) => {
     const body = await request.json() as { parentId: number, name: string }
-    const newFolder = getMockedFolder(body.parentId, Math.floor(Math.random() * 10000), body.name)
+    const newFolder = getMockedFolder(body.parentId, mockFolderIdCounter++, body.name)
     return HttpResponse.json(newFolder)
   }),
 
