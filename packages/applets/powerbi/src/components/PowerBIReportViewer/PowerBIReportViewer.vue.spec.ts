@@ -61,7 +61,6 @@ describe('PowerBIReportViewer', () => {
     reportViewer.vm.$emit('opened')
     await nextTick()
 
-    expect(embedMock).toHaveBeenCalledOnce()
-    expect(embedMock).toHaveBeenCalledWith(fullscreenReportIframe.element, defaultProps.powerBIConfig)
+    expect(embedMock).toHaveBeenCalledExactlyOnceWith(fullscreenReportIframe.element, defaultProps.powerBIConfig)
   })
 })

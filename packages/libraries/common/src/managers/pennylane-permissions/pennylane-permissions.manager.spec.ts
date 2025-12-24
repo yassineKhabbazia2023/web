@@ -47,12 +47,10 @@ describe('PennylanePermissionsManager', () => {
 
       expect(isGedUxV2).toBe(expected)
 
-      expect(isFeatureActivatedSpy).toHaveBeenCalledOnce()
-      expect(isFeatureActivatedSpy).toHaveBeenCalledWith(Feature.GED_V2)
+      expect(isFeatureActivatedSpy).toHaveBeenCalledExactlyOnceWith(Feature.GED_V2)
 
       if (isGedV2FeatureActivated === true) {
-        expect(hasOfferSpy).toHaveBeenCalledOnce()
-        expect(hasOfferSpy).toHaveBeenCalledWith(SubscriptionOfferCode.PENNYLANE)
+        expect(hasOfferSpy).toHaveBeenCalledExactlyOnceWith(SubscriptionOfferCode.PENNYLANE)
       } else {
         expect(hasOfferSpy).not.toHaveBeenCalled()
       }
@@ -109,8 +107,7 @@ describe('PennylanePermissionsManager', () => {
         expect(hasPermissionSpy).toHaveBeenCalledTimes(2)
         expect(hasPermissionSpy).toHaveBeenCalledWith(ACCOUNT_PERMISSIONS.PENNYLANE_ACCOUNTING_GED_LEGACY)
       } else if (isGedUxV2Mock === true && isCollab === false) {
-        expect(hasPermissionSpy).toHaveBeenCalledOnce()
-        expect(hasPermissionSpy).toHaveBeenCalledWith(ACCOUNT_PERMISSIONS.PENNYLANE_ACCOUNTING_GED_V2)
+        expect(hasPermissionSpy).toHaveBeenCalledExactlyOnceWith(ACCOUNT_PERMISSIONS.PENNYLANE_ACCOUNTING_GED_V2)
       } else {
         expect(hasPermissionSpy).not.toHaveBeenCalled()
       }
@@ -156,8 +153,7 @@ describe('PennylanePermissionsManager', () => {
       expect(hasSocialManagementV2).toBe(expected)
       expect(isGedUxV2Spy).toHaveBeenCalledOnce()
       if (isGedUxV2Mock === true) {
-        expect(hasPermissionSpy).toHaveBeenCalledOnce()
-        expect(hasPermissionSpy).toHaveBeenCalledWith(requiredSocialManagementPermissions)
+        expect(hasPermissionSpy).toHaveBeenCalledExactlyOnceWith(requiredSocialManagementPermissions)
       } else {
         expect(hasPermissionSpy).not.toHaveBeenCalled()
       }

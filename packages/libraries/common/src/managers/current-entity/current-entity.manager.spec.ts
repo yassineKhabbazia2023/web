@@ -34,14 +34,12 @@ describe('test current-entity.manager', () => {
 
       expect(setItemMock).toHaveBeenCalledWith(...expectedSetItemArguments)
 
-      expect(fetchUserAccountPermissionsMock).toHaveBeenCalledOnce()
-      expect(fetchUserAccountPermissionsMock).toHaveBeenCalledWith(expectedAccountId)
+      expect(fetchUserAccountPermissionsMock).toHaveBeenCalledExactlyOnceWith(expectedAccountId)
 
       expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledOnce()
       expect(currentEntityStoreMock.setCurrentEntity).toHaveBeenCalledWith(entityMock)
 
-      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledOnce()
-      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledWith(permissionsMock)
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledExactlyOnceWith(permissionsMock)
     })
   })
 })

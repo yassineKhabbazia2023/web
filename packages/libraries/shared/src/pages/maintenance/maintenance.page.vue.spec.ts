@@ -63,23 +63,18 @@ describe('Maintenance', () => {
     const snapFilepath = '__snap__/maintenance.page.html'
     await expect(wrapper.html()).toMatchFileSnapshot(snapFilepath)
 
-    expect(HTMLServiceSetDocumentTitleMock).toHaveBeenCalledOnce()
-    expect(HTMLServiceSetDocumentTitleMock).toHaveBeenCalledWith(...expectedSetTitleParameters)
+    expect(HTMLServiceSetDocumentTitleMock).toHaveBeenCalledExactlyOnceWith(...expectedSetTitleParameters)
 
-    expect(setIntervalMock).toHaveBeenCalledOnce()
-    expect(setIntervalMock).toHaveBeenCalledWith(...expectedSetIntervalParameters)
+    expect(setIntervalMock).toHaveBeenCalledExactlyOnceWith(...expectedSetIntervalParameters)
 
-    expect(initProductFruitsAnonymousCustomerMock).toHaveBeenCalledOnce()
-    expect(initProductFruitsAnonymousCustomerMock).toHaveBeenCalledWith(/* no parameter */)
+    expect(initProductFruitsAnonymousCustomerMock).toHaveBeenCalledExactlyOnceWith()
 
     expect(stopProductFruitsMock).not.toHaveBeenCalled()
 
     wrapper.unmount()
-    expect(stopProductFruitsMock).toHaveBeenCalledOnce()
-    expect(stopProductFruitsMock).toHaveBeenCalledWith(/* no parameter */)
+    expect(stopProductFruitsMock).toHaveBeenCalledExactlyOnceWith()
 
-    expect(clearIntervalMock).toHaveBeenCalledOnce()
-    expect(clearIntervalMock).toHaveBeenCalledWith(...expectedClearIntervalParameters)
+    expect(clearIntervalMock).toHaveBeenCalledExactlyOnceWith(...expectedClearIntervalParameters)
   })
 
   it('should call window.location.reload after a while', () => {
@@ -90,7 +85,6 @@ describe('Maintenance', () => {
     vi.advanceTimersByTime(DURATION + 1)
     vi.useRealTimers()
 
-    expect(reloadMock).toHaveBeenCalledOnce()
-    expect(reloadMock).toHaveBeenCalledWith(/* no parameter */)
+    expect(reloadMock).toHaveBeenCalledExactlyOnceWith()
   })
 })

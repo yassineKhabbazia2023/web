@@ -68,8 +68,7 @@ describe('page creation password', () => {
 
   it(
     'should track amplitude event when create password page displayed', () => {
-      expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
-      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Onboarding Email Accepted', {
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledExactlyOnceWith('Onboarding Email Accepted', {
         onboarding_email_click: '',
       })
     },
@@ -202,11 +201,9 @@ describe('page creation password', () => {
       onboarding_result: 'succeeded',
     })
     expect(updateTermsByCurrentUser).toHaveBeenCalledTimes(1)
-    expect(createNewPasswordMock).toHaveBeenCalledOnce()
-    expect(createNewPasswordMock).toHaveBeenCalledWith(data)
+    expect(createNewPasswordMock).toHaveBeenCalledExactlyOnceWith(data)
 
-    expect(loginMock).toHaveBeenCalledOnce()
-    expect(loginMock).toHaveBeenCalledWith(dataLogin)
+    expect(loginMock).toHaveBeenCalledExactlyOnceWith(dataLogin)
 
     expect(tokenStoreMock.setToken).toHaveBeenCalledWith(mockToken)
     expect(routerPushMock).toHaveBeenCalledOnce()

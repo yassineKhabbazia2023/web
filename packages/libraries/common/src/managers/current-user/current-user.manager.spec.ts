@@ -78,8 +78,7 @@ describe('test current-user.manager', () => {
       await CurrentUserManager.logout()
 
       expect(logoutUserMock).toHaveBeenCalledOnce()
-      expect(logoutCollaboratorMock).toHaveBeenCalledOnce()
-      expect(logoutCollaboratorMock).toHaveBeenCalledWith()
+      expect(logoutCollaboratorMock).toHaveBeenCalledExactlyOnceWith()
 
       expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
     })
@@ -91,8 +90,7 @@ describe('test current-user.manager', () => {
 
       expect(logoutUserMock).toHaveBeenCalledOnce()
       expect(logoutCollaboratorMock).not.toHaveBeenCalled()
-      expect(logoutGigyaSSOMock).toHaveBeenCalledOnce()
-      expect(logoutGigyaSSOMock).toHaveBeenCalledWith()
+      expect(logoutGigyaSSOMock).toHaveBeenCalledExactlyOnceWith()
     })
 
     it('should call both logoutCollaborator() and logoutGigyaSSO() when isCollab is true and VITE_GIGYA_SSO_ACTIVATED is true', async () => {
@@ -101,10 +99,8 @@ describe('test current-user.manager', () => {
       await CurrentUserManager.logout()
 
       expect(logoutUserMock).toHaveBeenCalledOnce()
-      expect(logoutCollaboratorMock).toHaveBeenCalledOnce()
-      expect(logoutCollaboratorMock).toHaveBeenCalledWith()
-      expect(logoutGigyaSSOMock).toHaveBeenCalledOnce()
-      expect(logoutGigyaSSOMock).toHaveBeenCalledWith()
+      expect(logoutCollaboratorMock).toHaveBeenCalledExactlyOnceWith()
+      expect(logoutGigyaSSOMock).toHaveBeenCalledExactlyOnceWith()
     })
   })
 
@@ -250,8 +246,7 @@ describe('test current-user.manager', () => {
       const hasPennylanePermission = CurrentUserManager.hasCurrentEntityPennylanePermission()
 
       expect(hasPermissionSpy).not.toHaveBeenCalledOnce()
-      expect(hasPermissionForCurrentEntitySpy).toHaveBeenCalledOnce()
-      expect(hasPermissionForCurrentEntitySpy).toHaveBeenCalledWith(ACCOUNT_PERMISSIONS.PENNYLANE)
+      expect(hasPermissionForCurrentEntitySpy).toHaveBeenCalledExactlyOnceWith(ACCOUNT_PERMISSIONS.PENNYLANE)
       expect(hasPennylanePermission).toBe(expectedHasPennylanePermission)
     })
   })
@@ -261,8 +256,7 @@ describe('test current-user.manager', () => {
       const token = '1234'
       CurrentUserManager.persistToken(token)
 
-      expect(tokenStoreMock.setToken).toHaveBeenCalledOnce()
-      expect(tokenStoreMock.setToken).toHaveBeenCalledWith(token)
+      expect(tokenStoreMock.setToken).toHaveBeenCalledExactlyOnceWith(token)
     })
   })
 

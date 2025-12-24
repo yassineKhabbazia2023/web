@@ -21,8 +21,7 @@ describe('test authentication.service', () => {
       })
       await refreshClientToken()
 
-      expect(apiGatewayPostMock).toHaveBeenCalledOnce()
-      expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedGatewayPostArgument, undefined, {
+      expect(apiGatewayPostMock).toHaveBeenCalledExactlyOnceWith(expectedGatewayPostArgument, undefined, {
         skipTokenRefresh: true,
       })
     })
@@ -43,8 +42,7 @@ describe('test authentication.service', () => {
       const response = await createNewPassword(payload)
 
       expect(response).toStrictEqual(gatewayResponseMock)
-      expect(apiGatewayPostMock).toHaveBeenCalledOnce()
-      expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedUrl, payload)
+      expect(apiGatewayPostMock).toHaveBeenCalledExactlyOnceWith(expectedUrl, payload)
     })
   })
 
@@ -68,8 +66,7 @@ describe('test authentication.service', () => {
       const response = await login(loginPayload)
 
       expect(response).toStrictEqual(loginResponseMock)
-      expect(apiGatewayPostMock).toHaveBeenCalledOnce()
-      expect(apiGatewayPostMock).toHaveBeenCalledWith(expectedUrl, loginPayload)
+      expect(apiGatewayPostMock).toHaveBeenCalledExactlyOnceWith(expectedUrl, loginPayload)
     })
   })
 })

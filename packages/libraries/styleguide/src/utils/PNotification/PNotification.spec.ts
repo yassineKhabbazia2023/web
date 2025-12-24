@@ -46,17 +46,14 @@ describe('test displayNotification', () => {
     displayNotification('success', message)
 
     expect(getIconComponentMock).toHaveBeenCalledWith('check')
-    expect(ElNotificationMock).toHaveBeenCalledOnce()
-    expect(ElNotificationMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        message,
-        icon: mockedIconComponent,
-        customClass: 'success',
-        showClose: true,
-        position: 'bottom-right',
-        duration: 3000,
-      }),
-    )
+    expect(ElNotificationMock).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({
+      message,
+      icon: mockedIconComponent,
+      customClass: 'success',
+      showClose: true,
+      position: 'bottom-right',
+      duration: 3000,
+    }))
   })
 
   it('should display error notification with x icon', () => {
@@ -68,17 +65,14 @@ describe('test displayNotification', () => {
     displayNotification('error', message)
 
     expect(getIconComponentMock).toHaveBeenCalledWith('x')
-    expect(ElNotificationMock).toHaveBeenCalledOnce()
-    expect(ElNotificationMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        message,
-        icon: mockedIconComponent,
-        customClass: 'error',
-        showClose: true,
-        position: 'bottom-right',
-        duration: 3000,
-      }),
-    )
+    expect(ElNotificationMock).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({
+      message,
+      icon: mockedIconComponent,
+      customClass: 'error',
+      showClose: true,
+      position: 'bottom-right',
+      duration: 3000,
+    }))
   })
 
   it('should display warning notification with exclamationTriangle icon', () => {
@@ -90,17 +84,14 @@ describe('test displayNotification', () => {
     displayNotification('warning', message)
 
     expect(getIconComponentMock).toHaveBeenCalledWith('exclamationTriangle')
-    expect(ElNotificationMock).toHaveBeenCalledOnce()
-    expect(ElNotificationMock).toHaveBeenCalledWith(
-      expect.objectContaining({
-        message,
-        icon: mockedIconComponent,
-        customClass: 'warning',
-        showClose: true,
-        position: 'bottom-right',
-        duration: 3000,
-      }),
-    )
+    expect(ElNotificationMock).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({
+      message,
+      icon: mockedIconComponent,
+      customClass: 'warning',
+      showClose: true,
+      position: 'bottom-right',
+      duration: 3000,
+    }))
   })
 
   it('should allow custom position and duration', () => {

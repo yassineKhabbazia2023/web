@@ -22,8 +22,7 @@ describe('offers-catalog.service', () => {
       const offersCatalog = await getOffersCatalog()
       const expectedParameters = `${API_PREFIXES.OFFER}/catalog/offers`
 
-      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedParameters)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedParameters)
       expect(offersCatalog).toStrictEqual(offersCatalogMock)
     })
   })
@@ -44,8 +43,7 @@ describe('offers-catalog.service', () => {
         },
       ]
 
-      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.get).toHaveBeenCalledWith(...expectedParameters)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
       expect(offersCatalogPdf).toStrictEqual(offerCatalogPdfMock)
     })
   })
@@ -68,8 +66,7 @@ describe('offers-catalog.service', () => {
         `${API_PREFIXES.OFFER}/catalog/offers/${offerIdMock}`,
       ]
 
-      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.get).toHaveBeenCalledWith(...expectedParameters)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
       expect(offersCatalogDetails).toStrictEqual(offersCatalogDetailsMock)
     })
   })

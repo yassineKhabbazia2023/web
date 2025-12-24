@@ -59,8 +59,7 @@ describe('logoutUser', () => {
 
     logoutUser()
 
-    expect(gatewayPostSpy).toHaveBeenCalledOnce()
-    expect(gatewayPostSpy).toHaveBeenCalledWith('authentication/api/logout')
+    expect(gatewayPostSpy).toHaveBeenCalledExactlyOnceWith('authentication/api/logout')
   })
   it('should log an error when the API call fails to logout the user', async () => {
     const expectedErrorMessage = 'API Error: 503 Service Unavailable'
@@ -69,7 +68,6 @@ describe('logoutUser', () => {
     logoutUser()
     await flushPromises()
 
-    expect(loggerErrorSpy).toHaveBeenCalledOnce()
-    expect(loggerErrorSpy).toHaveBeenCalledWith('Error during client logout: ', expectedErrorMessage)
+    expect(loggerErrorSpy).toHaveBeenCalledExactlyOnceWith('Error during client logout: ', expectedErrorMessage)
   })
 })

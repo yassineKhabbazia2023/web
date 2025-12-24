@@ -72,15 +72,11 @@ describe('folder service', () => {
     const entityId = 'some-entity-id'
 
     const data = await fetchServiceFolders(service, entityId, accountId)
-    expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
-    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
-      'some-service-id/some-entity-id/folders/currentuser',
-      {
-        headers: {
-          'Account-Id': accountId,
-        },
+    expect(commonApiDsGetSpy).toHaveBeenCalledExactlyOnceWith('some-service-id/some-entity-id/folders/currentuser', {
+      headers: {
+        'Account-Id': accountId,
       },
-    )
+    })
     expect(data).toStrictEqual({
       folders: fetchedFolder,
     })
@@ -156,13 +152,9 @@ describe('folder service', () => {
 
     await downloadFolder(service.ServiceId, entityId, folderId, accountId)
 
-    expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
-    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
-      'service-1/my-entity/folders/1/archive',
-      {
-        headers: { 'Account-Id': accountId },
-        responseType: 'blob',
-      },
-    )
+    expect(commonApiDsGetSpy).toHaveBeenCalledExactlyOnceWith('service-1/my-entity/folders/1/archive', {
+      headers: { 'Account-Id': accountId },
+      responseType: 'blob',
+    })
   })
 })

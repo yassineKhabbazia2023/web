@@ -78,11 +78,9 @@ describe('catalog-drawer-content-referents.utils', () => {
 
       copyColumnContent(valueMock, successMessageMock, errorMessageMock)
 
-      expect(copyMock).toHaveBeenCalledOnce()
-      expect(copyMock).toHaveBeenCalledWith(...expectedCopyParameters)
+      expect(copyMock).toHaveBeenCalledExactlyOnceWith(...expectedCopyParameters)
 
-      expect(PNotificationMock).toHaveBeenCalledOnce()
-      expect(PNotificationMock).toHaveBeenCalledWith(expectedNotificationParameters)
+      expect(PNotificationMock).toHaveBeenCalledExactlyOnceWith(expectedNotificationParameters)
     })
 
     it('should copy when isSupported is false', () => {
@@ -99,8 +97,7 @@ describe('catalog-drawer-content-referents.utils', () => {
 
       expect(copyMock).not.toHaveBeenCalled()
 
-      expect(PNotificationMock).toHaveBeenCalledOnce()
-      expect(PNotificationMock).toHaveBeenCalledWith(expectedNotificationParameters)
+      expect(PNotificationMock).toHaveBeenCalledExactlyOnceWith(expectedNotificationParameters)
     })
   })
 })

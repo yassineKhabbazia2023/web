@@ -122,8 +122,7 @@ describe('page reset password form', () => {
       newPassword: 'aaAA11@@',
       isCreatePasswordAction: false,
     }
-    expect(createNewPasswordMock).toHaveBeenCalledOnce()
-    expect(createNewPasswordMock).toHaveBeenCalledWith(data)
+    expect(createNewPasswordMock).toHaveBeenCalledExactlyOnceWith(data)
 
     expect(routerPushMock).toHaveBeenCalledTimes(1)
     expect(routerPushMock).toHaveBeenLastCalledWith({ name: RouteName.LOGIN_CLIENT })

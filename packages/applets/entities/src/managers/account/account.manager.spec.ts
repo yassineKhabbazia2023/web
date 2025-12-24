@@ -34,8 +34,7 @@ describe('AccountManager', () => {
       createCustomerMock.mockResolvedValue(newCustomerMock)
       const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock)
 
-      expect(createCustomerMock).toHaveBeenCalledOnce()
-      expect(createCustomerMock).toHaveBeenCalledWith(...expectedParams)
+      expect(createCustomerMock).toHaveBeenCalledExactlyOnceWith(...expectedParams)
 
       expect(newCustomerId).toStrictEqual(newCustomerMock.id)
     })
@@ -59,11 +58,9 @@ describe('AccountManager', () => {
       })
       const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock)
 
-      expect(addContactToEntityMock).toHaveBeenCalledOnce()
-      expect(addContactToEntityMock).toHaveBeenCalledWith(...expectedParams)
+      expect(addContactToEntityMock).toHaveBeenCalledExactlyOnceWith(...expectedParams)
 
-      expect(fetchAccountContactsByEmailMock).toHaveBeenCalledOnce()
-      expect(fetchAccountContactsByEmailMock).toHaveBeenCalledWith(...expectedParams)
+      expect(fetchAccountContactsByEmailMock).toHaveBeenCalledExactlyOnceWith(...expectedParams)
 
       expect(newCustomerId).toStrictEqual(contactIdMock)
     })

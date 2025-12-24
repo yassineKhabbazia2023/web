@@ -27,8 +27,7 @@ describe('ReportingService', () => {
 
       const totalItems = await ReportingService.getTotalBIReports(accountId)
 
-      expect(apiGatewayGetMock).toHaveBeenCalledOnce()
-      expect(apiGatewayGetMock).toHaveBeenCalledWith(expectedUrl, {
+      expect(apiGatewayGetMock).toHaveBeenCalledExactlyOnceWith(expectedUrl, {
         params: { accountId },
       })
       expect(totalItems).toBe(10)

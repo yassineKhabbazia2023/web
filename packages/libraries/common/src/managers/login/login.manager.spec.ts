@@ -50,8 +50,7 @@ describe('LoginManager', () => {
       expect(msalGetTokenMock).toHaveBeenCalledWith()
       expect(CurrentUserManager.persistToken).toHaveBeenCalledWith(msalTokenMock)
       expect(result).toBe(true)
-      expect(userStoreMock.setUser).toHaveBeenCalledOnce()
-      expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock)
+      expect(userStoreMock.setUser).toHaveBeenCalledExactlyOnceWith(userMock)
     })
 
     it('should NOT init auth when msal getToken returns empty token', async () => {
@@ -101,8 +100,7 @@ describe('LoginManager', () => {
 
       // Assert
       expect(tokenStoreMock.getToken).toHaveBeenCalledOnce()
-      expect(userStoreMock.setUser).toHaveBeenCalledOnce()
-      expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock)
+      expect(userStoreMock.setUser).toHaveBeenCalledExactlyOnceWith(userMock)
     })
 
     it('should not update state if the token is not present', async () => {
@@ -159,8 +157,7 @@ describe('LoginManager', () => {
       LoginManager.setStoreGigyaUserId(mockGigyaUserId)
 
       // Assert
-      expect(userStoreMock.setGigyaUserId).toHaveBeenCalledOnce()
-      expect(userStoreMock.setGigyaUserId).toHaveBeenCalledWith(mockGigyaUserId)
+      expect(userStoreMock.setGigyaUserId).toHaveBeenCalledExactlyOnceWith(mockGigyaUserId)
     })
   })
 })

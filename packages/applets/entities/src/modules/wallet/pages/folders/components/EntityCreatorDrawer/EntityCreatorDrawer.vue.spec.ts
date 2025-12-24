@@ -174,8 +174,7 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
       wrapper = createWrapper()
       await flushPromises()
 
-      expect(loggerErrorSpy).toHaveBeenCalledOnce()
-      expect(loggerErrorSpy).toHaveBeenCalledWith('Error fetching form structure :', expectedErrorMessage)
+      expect(loggerErrorSpy).toHaveBeenCalledExactlyOnceWith('Error fetching form structure :', expectedErrorMessage)
     })
 
     it("should add a collaborator when the component emits the 'add-contact' event", async () => {
@@ -211,8 +210,7 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
       await pFieldSet.vm.$emit('update:pModel', 'email', emailSuffix)
       await flushPromises()
 
-      expect(getAccountUserByEmailMock).toHaveBeenCalledOnce()
-      expect(getAccountUserByEmailMock).toHaveBeenCalledWith(emailSuffix)
+      expect(getAccountUserByEmailMock).toHaveBeenCalledExactlyOnceWith(emailSuffix)
     })
 
     it('should populate form data when search contact API returns a response', async () => {

@@ -55,12 +55,11 @@ describe('amplitude', () => {
     AmplitudeService.init(FAKE_API_KEY, serverUrl)
     AmplitudeService.init(FAKE_API_KEY) // call init twice
 
-    expect(initSpy).toHaveBeenCalledOnce()
-
-    expect(initSpy).toHaveBeenCalledWith(FAKE_API_KEY, undefined, {
+    expect(initSpy).toHaveBeenCalledExactlyOnceWith(FAKE_API_KEY, undefined, {
       ...mockAmplitudeSetup,
       serverUrl,
     })
+
   })
 
   it('can init without serverUrl', () => {
@@ -68,9 +67,8 @@ describe('amplitude', () => {
 
     AmplitudeService.init(FAKE_API_KEY)
 
-    expect(initSpy).toHaveBeenCalledOnce()
+    expect(initSpy).toHaveBeenCalledExactlyOnceWith(FAKE_API_KEY, undefined, mockAmplitudeSetup)
 
-    expect(initSpy).toHaveBeenCalledWith(FAKE_API_KEY, undefined, mockAmplitudeSetup)
   })
 
   it('can track', () => {
@@ -80,8 +78,7 @@ describe('amplitude', () => {
 
     AmplitudeService.track(CUSTOM_EVENT)
 
-    expect(trackSpy).toHaveBeenCalledOnce()
-    expect(trackSpy).toHaveBeenCalledWith(CUSTOM_EVENT)
+    expect(trackSpy).toHaveBeenCalledExactlyOnceWith(CUSTOM_EVENT)
   })
 
   it('can set a user id', () => {
@@ -92,8 +89,7 @@ describe('amplitude', () => {
     AmplitudeService.setUserId(CUSTOM_USER_ID)
     AmplitudeService.setUserId(CUSTOM_USER_ID) // second call should not change anything
 
-    expect(setUserIdSpy).toHaveBeenCalledOnce()
-    expect(setUserIdSpy).toHaveBeenCalledWith(CUSTOM_USER_ID)
+    expect(setUserIdSpy).toHaveBeenCalledExactlyOnceWith(CUSTOM_USER_ID)
   })
 
   it('identifyCustomer can set new user property', () => {
@@ -107,8 +103,7 @@ describe('amplitude', () => {
     AmplitudeService.identifyCustomer()
     AmplitudeService.identifyCustomer() // second call should not change anything
 
-    expect(identifySpy).toHaveBeenCalledOnce()
-    expect(identifySpy).toHaveBeenCalledWith(identifyEvent)
+    expect(identifySpy).toHaveBeenCalledExactlyOnceWith(identifyEvent)
   })
 
   it('identifyCollaborator can set new user property', () => {
@@ -122,8 +117,7 @@ describe('amplitude', () => {
     AmplitudeService.identifyCollaborator()
     AmplitudeService.identifyCollaborator() // second call should not change anything
 
-    expect(identifySpy).toHaveBeenCalledOnce()
-    expect(identifySpy).toHaveBeenCalledWith(identifyEvent)
+    expect(identifySpy).toHaveBeenCalledExactlyOnceWith(identifyEvent)
   })
 
   it('setUserEmail can set new user property', () => {
@@ -137,8 +131,7 @@ describe('amplitude', () => {
     AmplitudeService.setUserEmail('john@example.com')
     AmplitudeService.setUserEmail('john@example.com') // second call should not change anything
 
-    expect(identifySpy).toHaveBeenCalledOnce()
-    expect(identifySpy).toHaveBeenCalledWith(identifyEvent)
+    expect(identifySpy).toHaveBeenCalledExactlyOnceWith(identifyEvent)
   })
 
   it('can reset a user session', () => {

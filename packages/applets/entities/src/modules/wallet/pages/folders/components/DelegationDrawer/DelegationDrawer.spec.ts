@@ -188,31 +188,28 @@ describe('delegationDrawer', () => {
         await nextPreviousButtonsWrapper.vm.$emit('click-next')
         await nextPreviousButtonsWrapper.vm.$emit('click-next')
 
-        expect(delegateAccountsMock).toHaveBeenCalledOnce()
-        expect(delegateAccountsMock).toHaveBeenCalledWith(
-          {
-            accountIds: [],
-            includePennylaneAccess: false,
-            delegationDetails: [
-              {
-                delegateeId: COLLABORATORS_SELECTED[0].id,
-                isAutomaticDelegation: false,
-                startDate: expect.any(String),
-              },
-              {
-                delegateeId: COLLABORATORS_SELECTED[1].id,
-                isAutomaticDelegation: false,
-                startDate: expect.any(String),
-              },
-              {
-                delegateeId: COLLABORATORS_SELECTED[2].id,
-                isAutomaticDelegation: false,
-                startDate: expect.any(String),
-              },
-            ],
-            isFullDelegation: true,
-          },
-        )
+        expect(delegateAccountsMock).toHaveBeenCalledExactlyOnceWith({
+          accountIds: [],
+          includePennylaneAccess: false,
+          delegationDetails: [
+            {
+              delegateeId: COLLABORATORS_SELECTED[0].id,
+              isAutomaticDelegation: false,
+              startDate: expect.any(String),
+            },
+            {
+              delegateeId: COLLABORATORS_SELECTED[1].id,
+              isAutomaticDelegation: false,
+              startDate: expect.any(String),
+            },
+            {
+              delegateeId: COLLABORATORS_SELECTED[2].id,
+              isAutomaticDelegation: false,
+              startDate: expect.any(String),
+            },
+          ],
+          isFullDelegation: true,
+        })
 
         await flushPromises()
 

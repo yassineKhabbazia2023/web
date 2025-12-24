@@ -50,15 +50,12 @@ describe('getNewHubConnection', () => {
     const connection = getNewHubConnection(HUB_URL, USER_TOKEN)
     expect(connection).toStrictEqual(hubConnectionMocked)
 
-    expect(withUrlMocked).toHaveBeenCalledOnce()
-    expect(withUrlMocked).toHaveBeenCalledWith(HUB_URL, { accessTokenFactory: expect.any(Function) })
+    expect(withUrlMocked).toHaveBeenCalledExactlyOnceWith(HUB_URL, { accessTokenFactory: expect.any(Function) })
 
     expect(accessTokenFactoryCallbackSpy).toHaveBeenCalledWith(USER_TOKEN)
 
-    expect(configureLoggingMocked).toHaveBeenCalledOnce()
-    expect(configureLoggingMocked).toHaveBeenCalledWith(LogLevel.Information)
+    expect(configureLoggingMocked).toHaveBeenCalledExactlyOnceWith(LogLevel.Information)
 
-    expect(withAutomaticReconnectMocked).toHaveBeenCalledOnce()
-    expect(withAutomaticReconnectMocked).toHaveBeenCalledWith()
+    expect(withAutomaticReconnectMocked).toHaveBeenCalledExactlyOnceWith()
   })
 })

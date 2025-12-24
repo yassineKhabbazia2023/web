@@ -161,12 +161,7 @@ describe('collabRightsDrawer', () => {
       })
       nextPreviousButtons.vm.$emit('click-next')
 
-      expect(mockUpdateUserPermission).toHaveBeenCalledOnce()
-      expect(mockUpdateUserPermission).toHaveBeenCalledWith(
-        1,
-        null,
-        mockedPermissionCodes,
-      )
+      expect(mockUpdateUserPermission).toHaveBeenCalledExactlyOnceWith(1, null, mockedPermissionCodes)
     })
     it('should display a console error if the request to update permissions fails', async () => {
 
@@ -184,11 +179,7 @@ describe('collabRightsDrawer', () => {
       nextPreviousButtons.vm.$emit('click-next')
       await flushPromises()
 
-      expect(loggerErrorSpy).toHaveBeenCalledOnce()
-      expect(loggerErrorSpy).toHaveBeenCalledWith(
-        'Permission update unsuccessful: ',
-        expectedErrorMessage,
-      )
+      expect(loggerErrorSpy).toHaveBeenCalledExactlyOnceWith('Permission update unsuccessful: ', expectedErrorMessage)
     })
     it('should call the wallet API with the correct parameters to update collaborator role', () => {
       const spyUpdateCollaborator = vi.spyOn(
@@ -204,8 +195,7 @@ describe('collabRightsDrawer', () => {
       })
       nextPreviousButtons.vm.$emit('click-next')
 
-      expect(spyUpdateCollaborator).toHaveBeenCalledOnce()
-      expect(spyUpdateCollaborator).toHaveBeenCalledWith(1, {
+      expect(spyUpdateCollaborator).toHaveBeenCalledExactlyOnceWith(1, {
         personaId: mockedCollabRoles[0].id,
       })
     })

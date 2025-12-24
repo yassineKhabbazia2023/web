@@ -144,7 +144,7 @@ describe('launcherServices', () => {
         data: {},
       })
 
-      await expect(async () => await getSsoSilaeUrl()).rejects.toThrow(expectedError)
+      await expect(getSsoSilaeUrl()).rejects.toThrow(expectedError)
     })
   })
 })

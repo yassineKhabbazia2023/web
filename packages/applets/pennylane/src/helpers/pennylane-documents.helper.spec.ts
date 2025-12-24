@@ -59,11 +59,9 @@ describe('pennylane-documents.helper', () => {
         errorMessage,
       })
 
-      expect(downloadFileSpy).toHaveBeenCalledOnce()
-      expect(downloadFileSpy).toHaveBeenCalledWith(documentSrc, documentName)
+      expect(downloadFileSpy).toHaveBeenCalledExactlyOnceWith(documentSrc, documentName)
 
-      expect(displayNotificationSpy).toHaveBeenCalledOnce()
-      expect(displayNotificationSpy).toHaveBeenCalledWith('success', successMessage)
+      expect(displayNotificationSpy).toHaveBeenCalledExactlyOnceWith('success', successMessage)
 
       expect(loggerSpy.error).not.toHaveBeenCalled()
     })
@@ -88,11 +86,9 @@ describe('pennylane-documents.helper', () => {
 
       expect(downloadFileSpy).toHaveBeenCalledOnce()
 
-      expect(displayNotificationSpy).toHaveBeenCalledOnce()
-      expect(displayNotificationSpy).toHaveBeenCalledWith('error', errorMessage)
+      expect(displayNotificationSpy).toHaveBeenCalledExactlyOnceWith('error', errorMessage)
 
-      expect(loggerSpy.error).toHaveBeenCalledOnce()
-      expect(loggerSpy.error).toHaveBeenCalledWith(...expectedErrorMessage)
+      expect(loggerSpy.error).toHaveBeenCalledExactlyOnceWith(...expectedErrorMessage)
     })
   })
 })

@@ -30,13 +30,9 @@ describe('services service', () => {
   it('should return folder object', async () => {
     await fetchUserEntityServices(accountNumber, accountId, GedContext.LEGACY)
 
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledOnce()
-    expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(
-      `/ged/accounts/${accountNumber}/ged-services/currentuser`,
-      {
-        headers: { 'Account-Id': accountId },
-      },
-    )
+    expect(commonApiGatewayGetSpy).toHaveBeenCalledExactlyOnceWith(`/ged/accounts/${accountNumber}/ged-services/currentuser`, {
+      headers: { 'Account-Id': accountId },
+    })
   })
 
   it('should call the fetchServiceMailToGedInformation with appropriate url and parameters', async () => {

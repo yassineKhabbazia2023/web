@@ -43,8 +43,7 @@ describe('PennylaneService', () => {
       const roles = await PennylaneService.getAvailableRoles(companyId, accountId, contactId)
 
       expect(roles).toStrictEqual(rolesMock)
-      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl, expectedParams)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedParams)
     })
   })
 
@@ -60,8 +59,7 @@ describe('PennylaneService', () => {
       const role = await PennylaneService.getAccountContactRole(accountIdMock, contactIdMock)
 
       expect(role).toStrictEqual(roleMock)
-      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
     })
   })
 
@@ -88,8 +86,7 @@ describe('PennylaneService', () => {
       const documents = await PennylaneService.getDocuments(accountNumberMock, accountIdMock)
 
       expect(documents).toStrictEqual(documentsResultMock)
-      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl, expectedParams)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedParams)
     })
 
     it('should call properly commonApi.gateway.get with pagination params', async () => {
@@ -116,8 +113,7 @@ describe('PennylaneService', () => {
       const documents = await PennylaneService.getDocuments(accountNumberMock, accountIdMock, pageMock, pageSizeMock)
 
       expect(documents).toStrictEqual(documentsResultMock)
-      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl, expectedParams)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedParams)
     })
   })
 
@@ -141,8 +137,7 @@ describe('PennylaneService', () => {
       const documentContent = await PennylaneService.getDocumentContent(accountNumberMock, accountIdMock, documentIdMock)
 
       expect(documentContent).toStrictEqual(documentContentMock)
-      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl, expectedParams)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedParams)
     })
   })
 
@@ -152,12 +147,7 @@ describe('PennylaneService', () => {
 
       await PennylaneService.createRole(roleMock)
 
-      expect(apiGatewayMock.post).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.post).toHaveBeenCalledWith(
-        expectedUrl,
-        roleMock,
-        { params: { accountId: roleMock.accountId, contactId: roleMock.contactId } },
-      )
+      expect(apiGatewayMock.post).toHaveBeenCalledExactlyOnceWith(expectedUrl, roleMock, { params: { accountId: roleMock.accountId, contactId: roleMock.contactId } })
     })
   })
 })

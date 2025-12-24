@@ -85,8 +85,7 @@ describe('manageRightsDrawerUtils', () => {
           additionalOptionByActionCodeOrigin,
         })
 
-        expect(PennylaneService.createRole).toHaveBeenCalledOnce()
-        expect(PennylaneService.createRole).toHaveBeenCalledWith(expectedParameters)
+        expect(PennylaneService.createRole).toHaveBeenCalledExactlyOnceWith(expectedParameters)
       })
     })
 
@@ -146,8 +145,7 @@ describe('manageRightsDrawerUtils', () => {
       })
 
       expect(additionnalOptionByActionCode).toStrictEqual(expectedAdditionnalOptionByActionCode)
-      expect(loggerMock.warn).toHaveBeenCalledOnce()
-      expect(loggerMock.warn).toHaveBeenCalledWith(...expectedLoggerErrorParams)
+      expect(loggerMock.warn).toHaveBeenCalledExactlyOnceWith(...expectedLoggerErrorParams)
     })
   })
 
@@ -211,8 +209,7 @@ describe('manageRightsDrawerUtils', () => {
         })
         expect(isSuccess).toBe(expectedIsSuccess)
 
-        expect(updateUserPermissionsMock).toHaveBeenCalledOnce()
-        expect(updateUserPermissionsMock).toHaveBeenCalledWith(...expectedUpdateUserPermissionsParams)
+        expect(updateUserPermissionsMock).toHaveBeenCalledExactlyOnceWith(...expectedUpdateUserPermissionsParams)
 
         expect(PennylaneService.createRole).not.toHaveBeenCalled()
       })
@@ -230,8 +227,7 @@ describe('manageRightsDrawerUtils', () => {
         })
         expect(isSuccess).toBe(expectedIsSuccess)
 
-        expect(updateUserPermissionsMock).toHaveBeenCalledOnce()
-        expect(updateUserPermissionsMock).toHaveBeenCalledWith(...expectedUpdateUserPermissionsParams)
+        expect(updateUserPermissionsMock).toHaveBeenCalledExactlyOnceWith(...expectedUpdateUserPermissionsParams)
 
         expect(PennylaneService.createRole).not.toHaveBeenCalled()
         expect(loggerMock.error).toHaveBeenCalledOnce()
@@ -262,8 +258,7 @@ describe('manageRightsDrawerUtils', () => {
         })
         expect(isSuccess).toBe(expectedIsSuccess)
 
-        expect(updateUserPermissionsMock).toHaveBeenCalledOnce()
-        expect(updateUserPermissionsMock).toHaveBeenCalledWith(...expectedUpdateUserPermissionsParams)
+        expect(updateUserPermissionsMock).toHaveBeenCalledExactlyOnceWith(...expectedUpdateUserPermissionsParams)
 
         expect(PennylaneService.createRole).toHaveBeenCalled()
         expect(PennylaneService.createRole).toHaveBeenCalledWith(expectedParams)
@@ -282,8 +277,7 @@ describe('manageRightsDrawerUtils', () => {
         })
         expect(isSuccess).toBe(expectedIsSuccess)
 
-        expect(updateUserPermissionsMock).toHaveBeenCalledOnce()
-        expect(updateUserPermissionsMock).toHaveBeenCalledWith(...expectedUpdateUserPermissionsParams)
+        expect(updateUserPermissionsMock).toHaveBeenCalledExactlyOnceWith(...expectedUpdateUserPermissionsParams)
         expect(loggerMock.error).toHaveBeenCalledOnce()
       })
     })

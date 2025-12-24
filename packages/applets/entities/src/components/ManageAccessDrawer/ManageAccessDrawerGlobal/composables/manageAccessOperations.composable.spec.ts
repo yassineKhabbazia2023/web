@@ -157,8 +157,7 @@ describe('manageAccessOperation.composable', () => {
 
       await refreshManageAccessOperations({ page })
       expect(showNoOperation.value).toBe(expectedshowNoOperation)
-      expect(contactServiceMock.fetchAccountOperations).toHaveBeenCalledOnce()
-      expect(contactServiceMock.fetchAccountOperations).toHaveBeenCalledWith(...expectedParameters)
+      expect(contactServiceMock.fetchAccountOperations).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
     })
   })
 })

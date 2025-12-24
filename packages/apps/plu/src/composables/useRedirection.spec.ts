@@ -26,8 +26,7 @@ describe('useRedirection', () => {
 
       redirectToLoginClient()
 
-      expect(mockRouterReplace).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledWith({
+      expect(mockRouterReplace).toHaveBeenCalledExactlyOnceWith({
         name: RouteName.LOGIN_CLIENT,
         query: undefined,
       })
@@ -39,8 +38,7 @@ describe('useRedirection', () => {
 
       redirectToLoginClient(query)
 
-      expect(mockRouterReplace).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledWith({
+      expect(mockRouterReplace).toHaveBeenCalledExactlyOnceWith({
         name: RouteName.LOGIN_CLIENT,
         query,
       })
@@ -53,8 +51,7 @@ describe('useRedirection', () => {
 
       redirectToLoginCollab()
 
-      expect(mockRouterReplace).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledWith({
+      expect(mockRouterReplace).toHaveBeenCalledExactlyOnceWith({
         name: RouteName.LOGIN_COLLAB,
         query: undefined,
       })
@@ -66,8 +63,7 @@ describe('useRedirection', () => {
 
       redirectToLoginCollab(query)
 
-      expect(mockRouterReplace).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledWith({
+      expect(mockRouterReplace).toHaveBeenCalledExactlyOnceWith({
         name: RouteName.LOGIN_COLLAB,
         query,
       })
@@ -84,8 +80,7 @@ describe('useRedirection', () => {
       await logoutAndRedirectToLogin()
 
       expect(CurrentUserManagerLogoutMock).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledWith({
+      expect(mockRouterReplace).toHaveBeenCalledExactlyOnceWith({
         name: RouteName.LOGIN_COLLAB,
         query: undefined,
       })
@@ -98,8 +93,7 @@ describe('useRedirection', () => {
       await logoutAndRedirectToLogin()
 
       expect(CurrentUserManagerLogoutMock).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledWith({
+      expect(mockRouterReplace).toHaveBeenCalledExactlyOnceWith({
         name: RouteName.LOGIN_CLIENT,
         query: undefined,
       })
@@ -112,8 +106,7 @@ describe('useRedirection', () => {
       await logoutAndRedirectToLogin()
 
       expect(CurrentUserManagerLogoutMock).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledWith({
+      expect(mockRouterReplace).toHaveBeenCalledExactlyOnceWith({
         name: RouteName.LOGIN_CLIENT,
         query: undefined,
       })
@@ -127,8 +120,7 @@ describe('useRedirection', () => {
       await logoutAndRedirectToLogin(query)
 
       expect(CurrentUserManagerLogoutMock).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledOnce()
-      expect(mockRouterReplace).toHaveBeenCalledWith({
+      expect(mockRouterReplace).toHaveBeenCalledExactlyOnceWith({
         name: RouteName.LOGIN_COLLAB,
         query,
       })

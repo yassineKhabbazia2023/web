@@ -43,8 +43,7 @@ describe('booking.service', () => {
       })
       const bookingServiceConfiguration = await BookingService.getBookingConfiguration()
 
-      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
       expect(bookingServiceConfiguration).toStrictEqual(expectedbookingServiceConfiguration)
     })
   })
@@ -88,8 +87,7 @@ describe('booking.service', () => {
       })
       const experts = await BookingService.getBookingAvailableExperts(params)
 
-      expect(apiGatewayMock.get).toHaveBeenCalledOnce()
-      expect(apiGatewayMock.get).toHaveBeenCalledWith(expectedUrl, expectedParameters)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedParameters)
       expect(experts).toStrictEqual(expertsMock)
     })
   })

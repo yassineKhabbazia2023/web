@@ -128,8 +128,7 @@ describe('test PDropdownUtils', () => {
       const internalOptions = getInternalOptions(options)
       expect(internalOptions).toStrictEqual(expectedInternalOptions)
 
-      expect(loggerMock.warn).toHaveBeenCalledOnce()
-      expect(loggerMock.warn).toHaveBeenCalledWith(...expectedLoggerWarnError)
+      expect(loggerMock.warn).toHaveBeenCalledExactlyOnceWith(...expectedLoggerWarnError)
     })
   })
 })

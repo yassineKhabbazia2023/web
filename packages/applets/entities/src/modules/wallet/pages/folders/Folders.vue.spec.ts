@@ -222,11 +222,7 @@ describe('deploy', () => {
     wrapper.vm.handleAddFavorite(mockedAccount.accountId, true)
     await flushPromises()
 
-    expect(manageFavoriteEntitiesMock).toHaveBeenCalledOnce()
-    expect(manageFavoriteEntitiesMock).toHaveBeenCalledWith(
-      mockedAccount.accountId,
-      true,
-    )
+    expect(manageFavoriteEntitiesMock).toHaveBeenCalledExactlyOnceWith(mockedAccount.accountId, true)
   })
 
   it('should update the current page when it changes', async () => {
@@ -569,8 +565,7 @@ describe('deploy', () => {
       if (totalItemsMock === undefined || totalItemsMock === 0) {
         expect(AmplitudeServiceMock.track).not.toHaveBeenCalled()
       } else {
-        expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
-        expect(AmplitudeServiceMock.track).toHaveBeenCalledWith(expectedAmplitudeEventName, expectedAmplitudeParams)
+        expect(AmplitudeServiceMock.track).toHaveBeenCalledExactlyOnceWith(expectedAmplitudeEventName, expectedAmplitudeParams)
       }
     })
   })

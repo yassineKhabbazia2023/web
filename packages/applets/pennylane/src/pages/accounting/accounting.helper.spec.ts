@@ -22,8 +22,7 @@ describe('accounting.helper', () => {
     }) => {
       persistHideAccountingHeader(hideAccountingHeader)
 
-      expect(localStorageMock.setItem).toHaveBeenCalledOnce()
-      expect(localStorageMock.setItem).toHaveBeenCalledWith(HIDE_ACCOUNTING_HEADER_KEY, expected)
+      expect(localStorageMock.setItem).toHaveBeenCalledExactlyOnceWith(HIDE_ACCOUNTING_HEADER_KEY, expected)
     })
   })
 
@@ -47,8 +46,7 @@ describe('accounting.helper', () => {
       const hideAccountingHeader = getHideAccountingHeader()
 
       expect(hideAccountingHeader).toBe(expectedHideAccountingHeader)
-      expect(localStorageMock.getItem).toHaveBeenCalledOnce()
-      expect(localStorageMock.getItem).toHaveBeenCalledWith(HIDE_ACCOUNTING_HEADER_KEY)
+      expect(localStorageMock.getItem).toHaveBeenCalledExactlyOnceWith(HIDE_ACCOUNTING_HEADER_KEY)
     })
   })
 })

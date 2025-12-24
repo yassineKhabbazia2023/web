@@ -56,19 +56,16 @@ describe('documents service', () => {
       accountId,
     })
 
-    expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
-    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents/folder/123/currentuser', {
-        headers: { 'Account-Id': accountId },
-        params: {
-          createdEnd: null,
-          createdStart: null,
-          limit: 10,
-          skip: 0,
-          sort: '-created',
-        },
+    expect(commonApiDsGetSpy).toHaveBeenCalledExactlyOnceWith('service-1/my-account-id/documents/folder/123/currentuser', {
+      headers: { 'Account-Id': accountId },
+      params: {
+        createdEnd: null,
+        createdStart: null,
+        limit: 10,
+        skip: 0,
+        sort: '-created',
       },
-    )
+    })
   })
 
   it('should fetsh documents with the keyword  when fetchDocumentsByKeyWord is called', async () => {
@@ -87,20 +84,16 @@ describe('documents service', () => {
       search: 'test',
     })
 
-    expect(commonApiDsGetSpy).toHaveBeenCalledOnce()
-    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents/folder/123/currentuser',
-      {
-        headers: { 'Account-Id': accountId },
-        params: {
-          limit: 10,
-          skip: 0,
-          sort: '-created',
-          search: 'test',
-          findInChildFolders: true,
-        },
+    expect(commonApiDsGetSpy).toHaveBeenCalledExactlyOnceWith('service-1/my-account-id/documents/folder/123/currentuser', {
+      headers: { 'Account-Id': accountId },
+      params: {
+        limit: 10,
+        skip: 0,
+        sort: '-created',
+        search: 'test',
+        findInChildFolders: true,
       },
-    )
+    })
   })
 
   it('should fetch documents with appropriate parameters when specified', async () => {

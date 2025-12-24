@@ -68,8 +68,7 @@ describe('InformationDetails', () => {
         await flushPromises()
 
         expect(wrapper.exists()).toBeTruthy()
-        expect(getFormStructureMock).toHaveBeenCalledOnce()
-        expect(getFormStructureMock).toHaveBeenCalledWith(expectedProviderName, true)
+        expect(getFormStructureMock).toHaveBeenCalledExactlyOnceWith(expectedProviderName, true)
       },
     )
   })

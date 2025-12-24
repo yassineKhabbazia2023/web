@@ -76,8 +76,7 @@ describe('DeclareCustomerRelationDrawer', () => {
 
     await nextTick()
 
-    expect(updateCustomerRelationMock).toHaveBeenCalledOnce()
-    expect(updateCustomerRelationMock).toHaveBeenCalledWith(defaultProps.selectedAccount.accountId, userMock.id, false)
+    expect(updateCustomerRelationMock).toHaveBeenCalledExactlyOnceWith(defaultProps.selectedAccount.accountId, userMock.id, false)
     expect(displayNotificationMock).toHaveBeenCalledWith('success', expect.any(String))
     expect(wrapper.emitted('update-account-table')).toBeTruthy()
   })

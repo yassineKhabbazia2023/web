@@ -121,14 +121,11 @@ describe('information', () => {
 
         const informationSaveButton = wrapper.find('[data-testid="information-save-button"]')
 
-        expect(mockedGetCanEdit).toHaveBeenCalledOnce()
-        expect(mockedGetCanEdit).toHaveBeenCalledWith(isCollab)
+        expect(mockedGetCanEdit).toHaveBeenCalledExactlyOnceWith(isCollab)
 
-        expect(getFormStructureMock).toHaveBeenCalledOnce()
-        expect(getFormStructureMock).toHaveBeenCalledWith('CompanyProfile', expectedForceDisabled)
+        expect(getFormStructureMock).toHaveBeenCalledExactlyOnceWith('CompanyProfile', expectedForceDisabled)
 
-        expect(cleanRecordStructureMock).toHaveBeenCalledOnce()
-        expect(cleanRecordStructureMock).toHaveBeenCalledWith(InformationFormStructure, accountMock)
+        expect(cleanRecordStructureMock).toHaveBeenCalledExactlyOnceWith(InformationFormStructure, accountMock)
 
         expect(informationSaveButton.exists()).toBe(expectedHasInformationSaveButton)
       })

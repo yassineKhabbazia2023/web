@@ -122,6 +122,9 @@ export default [
         ignoreRegExpLiterals: true,
         ignorePattern: '^\\s*<path',
       }],
+      // shut off rules that conflict with our implementation of vitest
+      'vitest/no-mocks-import': 'off',
+      'vitest/no-conditional-expect': 'off',
     },
   },
   {

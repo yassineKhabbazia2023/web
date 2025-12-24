@@ -173,7 +173,7 @@ describe('test LauncherUtils', () => {
         .spyOn(launcherServices, 'getSsoSilaeUrl')
         .mockResolvedValueOnce('')
 
-      await expect(async () => await openSilaeUrl()).rejects.toThrow(expectedError)
+      await expect(openSilaeUrl()).rejects.toThrow(expectedError)
     })
   })
 })

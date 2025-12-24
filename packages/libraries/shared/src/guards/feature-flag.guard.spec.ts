@@ -61,8 +61,7 @@ describe('feature-flag.guard', () => {
     if (expectedLoggerMock === undefined) {
       expect(loggerMock.trace).not.toHaveBeenCalled()
     } else {
-      expect(loggerMock.trace).toHaveBeenCalledOnce()
-      expect(loggerMock.trace).toHaveBeenCalledWith(expectedLoggerMock)
+      expect(loggerMock.trace).toHaveBeenCalledExactlyOnceWith(expectedLoggerMock)
     }
 
     if (expectedRouteName === undefined) {

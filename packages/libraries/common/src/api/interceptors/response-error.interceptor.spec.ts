@@ -25,8 +25,7 @@ describe('responseInterceptorError', () => {
 
     await expect(responseInterceptorError(error)).rejects.toStrictEqual(error)
 
-    expect(promiseRejectSpy).toHaveBeenCalledOnce()
-    expect(promiseRejectSpy).toHaveBeenCalledWith(error)
+    expect(promiseRejectSpy).toHaveBeenCalledExactlyOnceWith(error)
   })
 
   it('should call unauthorizedCallback twice when 401 occurs twice', async () => {

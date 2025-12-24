@@ -59,8 +59,7 @@ describe('subscriptionService', () => {
       ]
       await createSubscriptionRequest(subscriptionDemandMock)
 
-      expect(subscriptionPostMock).toHaveBeenCalledOnce()
-      expect(subscriptionPostMock).toHaveBeenCalledWith(...expectedParams)
+      expect(subscriptionPostMock).toHaveBeenCalledExactlyOnceWith(...expectedParams)
     })
   })
 })

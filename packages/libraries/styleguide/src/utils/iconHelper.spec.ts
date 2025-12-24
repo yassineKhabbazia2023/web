@@ -20,8 +20,7 @@ describe('test iconHelper', () => {
 
       const iconComponent = getIconComponent('arrowBarLeft')
 
-      expect(defineAsyncComponentMock).toHaveBeenCalledOnce()
-      expect(defineAsyncComponentMock).toHaveBeenCalledWith(expectedParams)
+      expect(defineAsyncComponentMock).toHaveBeenCalledExactlyOnceWith(expectedParams)
       expect(iconComponent).toStrictEqual(mockedIconComponent)
     })
 

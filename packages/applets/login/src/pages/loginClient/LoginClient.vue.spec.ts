@@ -143,8 +143,7 @@ describe('LoginClient', () => {
         isCollab: false,
       },
     })
-    expect(mockGigyaAccountsLogin).toHaveBeenCalledOnce()
-    expect(mockGigyaAccountsLogin).toHaveBeenCalledWith({
+    expect(mockGigyaAccountsLogin).toHaveBeenCalledExactlyOnceWith({
       loginID: INPUT_EMAIL_VALUE,
       password: INPUT_PASSWORD_VALUE,
     })
@@ -184,8 +183,7 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledExactlyOnceWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })
@@ -222,8 +220,7 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledExactlyOnceWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })
@@ -315,8 +312,7 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledExactlyOnceWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })
@@ -352,8 +348,7 @@ describe('LoginClient', () => {
     expect(secondFormItemProps['pError']).toBe(expectedErrorMessage)
     expect(secondFormItemProps['pShowMessage']).toBe(true)
 
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Sign In Completed', {
+    expect(AmplitudeServiceMock.track).toHaveBeenCalledExactlyOnceWith('Sign In Completed', {
       sign_in_method: 'email',
       sign_in_result: 'failed',
     })

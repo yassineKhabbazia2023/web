@@ -84,12 +84,7 @@ describe('manageRightsDrawer', () => {
       vi.advanceTimersByTime(800)
 
       expect(wrapper.vm.isManageRightsDrawerOpened).toBeFalsy()
-      expect(spyAuthServices).toHaveBeenCalledOnce()
-      expect(spyAuthServices).toHaveBeenCalledWith(
-        mockedUser.contactId,
-        null,
-        actionCodesMock,
-      )
+      expect(spyAuthServices).toHaveBeenCalledExactlyOnceWith(mockedUser.contactId, null, actionCodesMock)
     })
     it("should send a request to update the user's permissions when the submit button is clicked", async () => {
       const spyAuthServices = vi.spyOn(
@@ -107,12 +102,7 @@ describe('manageRightsDrawer', () => {
       vi.advanceTimersByTime(800)
 
       expect(wrapper.vm.isManageRightsDrawerOpened).toBeFalsy()
-      expect(spyAuthServices).toHaveBeenCalledOnce()
-      expect(spyAuthServices).toHaveBeenCalledWith(
-        mockedUser.contactId,
-        mockedAccountId,
-        actionCodesMock,
-      )
+      expect(spyAuthServices).toHaveBeenCalledExactlyOnceWith(mockedUser.contactId, mockedAccountId, actionCodesMock)
     })
   })
 })

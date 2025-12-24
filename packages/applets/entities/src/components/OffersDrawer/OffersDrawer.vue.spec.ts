@@ -154,8 +154,7 @@ describe('offersDrawer', () => {
       subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
       await flushPromises()
 
-      expect(AmplitudeServiceMock.track).toHaveBeenCalledOnce()
-      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Subscription Initiated', {
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledExactlyOnceWith('Subscription Initiated', {
         subscription_initiate_offer_name: subscriptionOffersServices.at(1)?.offerCode,
       })
       const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
@@ -410,14 +409,11 @@ describe('offersDrawer', () => {
 
       expect(offerSubscription.exists()).toBe(false)
 
-      expect(getPrincipalContactsMock).toHaveBeenCalledOnce()
-      expect(getPrincipalContactsMock).toHaveBeenCalledWith(mockedAccount.accountId)
+      expect(getPrincipalContactsMock).toHaveBeenCalledExactlyOnceWith(mockedAccount.accountId)
 
-      expect(fetchAccountSubscriptionsMock).toHaveBeenCalledOnce()
-      expect(fetchAccountSubscriptionsMock).toHaveBeenCalledWith(mockedAccount.accountId)
+      expect(fetchAccountSubscriptionsMock).toHaveBeenCalledExactlyOnceWith(mockedAccount.accountId)
 
-      expect(fetchAccountMock).toHaveBeenCalledOnce()
-      expect(fetchAccountMock).toHaveBeenCalledWith(mockedAccount.accountId)
+      expect(fetchAccountMock).toHaveBeenCalledExactlyOnceWith(mockedAccount.accountId)
     })
   })
 

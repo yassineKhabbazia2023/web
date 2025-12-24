@@ -29,8 +29,7 @@ describe('offers-catalog.utils', () => {
       const expectedCatalogTagProps = DEFAULT_TAG_PROPS
       const expectedParameters = `tag props not found for label '${tagLabel}'`
 
-      expect(loggerMock.error).toHaveBeenCalledOnce()
-      expect(loggerMock.error).toHaveBeenCalledWith(expectedParameters)
+      expect(loggerMock.error).toHaveBeenCalledExactlyOnceWith(expectedParameters)
       expect(catalogTagProps).toEqual(expectedCatalogTagProps)
     })
   })

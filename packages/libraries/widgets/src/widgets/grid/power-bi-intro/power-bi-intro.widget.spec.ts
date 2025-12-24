@@ -27,10 +27,8 @@ describe('power-bi-intro widget', () => {
 
     PowerBiIntroWidget.install(app, _options)
 
-    expect(appComponentMock).toHaveBeenCalledOnce()
-    expect(defineAsyncComponentSpy).toHaveBeenCalledOnce()
-    expect(defineAsyncComponentSpy).toHaveBeenCalledWith(...expectedDefineAsyncComponentArguments)
-    expect(appComponentMock).toHaveBeenCalledWith(...expectedAppComponentArguments)
+    expect(appComponentMock).toHaveBeenCalledExactlyOnceWith(...expectedAppComponentArguments)
+    expect(defineAsyncComponentSpy).toHaveBeenCalledExactlyOnceWith(...expectedDefineAsyncComponentArguments)
   })
 })
 

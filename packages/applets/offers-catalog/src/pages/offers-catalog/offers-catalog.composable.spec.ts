@@ -108,8 +108,7 @@ describe('offers-catalog.composable', () => {
       await loadOffersCatalog()
 
       expect(filteredOffers.value).toStrictEqual(expectedCards)
-      expect(loggerMock.error).toHaveBeenCalledOnce()
-      expect(loggerMock.error).toHaveBeenCalledWith(...expectedParameters)
+      expect(loggerMock.error).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
     })
   })
 
@@ -162,8 +161,7 @@ describe('offers-catalog.composable', () => {
 
       expect(offerPdf.value).toStrictEqual(expectedofferPdf)
 
-      expect(getOfferCatalogPdfMock).toHaveBeenCalledOnce()
-      expect(getOfferCatalogPdfMock).toHaveBeenCalledWith(...expectedParameters)
+      expect(getOfferCatalogPdfMock).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
       expect(loggerMock.error).not.toHaveBeenCalled()
       expect(pdfApiCallStatus.value).toBe(APICallStatus.SUCCESS)
     })
@@ -190,8 +188,7 @@ describe('offers-catalog.composable', () => {
       expect(offerPdf.value).toStrictEqual(expectedofferPdf)
 
       expect(getOfferCatalogPdfMock).not.toHaveBeenCalled()
-      expect(loggerMock.warn).toHaveBeenCalledOnce()
-      expect(loggerMock.warn).toHaveBeenCalledWith(expectedLoggerWarnMessage)
+      expect(loggerMock.warn).toHaveBeenCalledExactlyOnceWith(expectedLoggerWarnMessage)
       expect(pdfApiCallStatus.value).toBe(APICallStatus.IDLE)
     })
 
@@ -216,8 +213,7 @@ describe('offers-catalog.composable', () => {
 
       expect(offerPdf.value).toStrictEqual(expectedofferPdf)
 
-      expect(loggerMock.error).toHaveBeenCalledOnce()
-      expect(loggerMock.error).toHaveBeenCalledWith(...expectedParameters)
+      expect(loggerMock.error).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
     })
   })
 
@@ -243,8 +239,7 @@ describe('offers-catalog.composable', () => {
 
       expect(offerReferents.value).toStrictEqual(referentsMock)
 
-      expect(getOfferCatalogDetailsMock).toHaveBeenCalledOnce()
-      expect(getOfferCatalogDetailsMock).toHaveBeenCalledWith(...expectedParameters)
+      expect(getOfferCatalogDetailsMock).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
       expect(loggerMock.error).not.toHaveBeenCalled()
       expect(offerReferentsApiCallStatus.value).toBe(APICallStatus.SUCCESS)
     })
@@ -266,11 +261,7 @@ describe('offers-catalog.composable', () => {
       expect(offerReferents.value).toHaveLength(0)
 
       expect(getOfferCatalogDetailsMock).not.toHaveBeenCalled()
-      expect(loggerMock.error).toHaveBeenCalledOnce()
-      expect(loggerMock.error).toHaveBeenCalledWith(
-        expectedLoggerErrorMessage,
-        new Error(expectedErrorMessage),
-      )
+      expect(loggerMock.error).toHaveBeenCalledExactlyOnceWith(expectedLoggerErrorMessage, new Error(expectedErrorMessage))
       expect(pdfApiCallStatus.value).toBe(APICallStatus.IDLE)
     })
 
@@ -294,8 +285,7 @@ describe('offers-catalog.composable', () => {
 
       expect(offerReferents.value).toHaveLength(0)
 
-      expect(loggerMock.error).toHaveBeenCalledOnce()
-      expect(loggerMock.error).toHaveBeenCalledWith(...expectedParameters)
+      expect(loggerMock.error).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
     })
   })
 })

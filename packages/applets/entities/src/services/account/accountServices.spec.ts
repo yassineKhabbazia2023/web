@@ -159,7 +159,7 @@ describe('test accountServices', () => {
       const searchParams = SEARCH_THROWS_ERROR
       const expectedErrorMessage = rejectedErrorMessage
 
-      await expect(async () => await fetchAccounts(searchParams))
+      await expect(fetchAccounts(searchParams))
         .rejects.toThrow(expectedErrorMessage)
     })
   })
@@ -176,7 +176,7 @@ describe('test accountServices', () => {
       const errorMessage = 'Error while patchAccount'
       mockedAccountApiPatch.mockRejectedValueOnce(new Error(errorMessage))
 
-      await expect(async () => await patchAccount(accountIdRejected, mockedPatchOperations))
+      await expect(patchAccount(accountIdRejected, mockedPatchOperations))
         .rejects.toThrow(errorMessage)
     })
   })
@@ -252,8 +252,7 @@ describe('test accountServices', () => {
       const response = await delegateAccounts(delegationRequestMock)
       const expectedUrl = `${API_PREFIXES.WALLET}/delegations/currentuser`
 
-      expect(postSpy).toHaveBeenCalledOnce()
-      expect(postSpy).toHaveBeenCalledWith(expectedUrl, delegationRequestMock)
+      expect(postSpy).toHaveBeenCalledExactlyOnceWith(expectedUrl, delegationRequestMock)
       expect(response).toStrictEqual(responseMock)
     })
   })
@@ -385,8 +384,7 @@ describe('test accountServices', () => {
       const expectedUrl = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?pageNumber=1&pageSize=1&search=email%40adresse.fd`
       const contacts = await fetchAccountContactsByEmail(accountId, email)
 
-      expect(commonApiGetMock).toHaveBeenCalledOnce()
-      expect(commonApiGetMock).toHaveBeenCalledWith(expectedUrl)
+      expect(commonApiGetMock).toHaveBeenCalledExactlyOnceWith(expectedUrl)
       expect(contacts).toStrictEqual(dataMock)
     })
   })

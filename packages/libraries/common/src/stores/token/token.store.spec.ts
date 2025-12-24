@@ -29,8 +29,7 @@ describe('test tokenStore', () => {
     it('should set token properly when setToken() is called', () => {
       tokenStore.setToken(tokenMock)
 
-      expect(getTokenExpMock).toHaveBeenCalledOnce()
-      expect(getTokenExpMock).toHaveBeenCalledWith(tokenMock)
+      expect(getTokenExpMock).toHaveBeenCalledExactlyOnceWith(tokenMock)
       expect(localStorageServiceMock.setToken).toHaveBeenCalledWith(tokenMock)
     })
 

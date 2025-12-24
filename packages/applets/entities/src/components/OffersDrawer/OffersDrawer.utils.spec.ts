@@ -318,8 +318,7 @@ describe('test OffersDrawer.utils', () => {
         patchValues,
         account,
       )
-      expect(addPathValueMock).toHaveBeenCalledOnce()
-      expect(addPathValueMock).toHaveBeenCalledWith(...expectedParams)
+      expect(addPathValueMock).toHaveBeenCalledExactlyOnceWith(...expectedParams)
       expect(updatedAccount).toStrictEqual(expectedAccount)
     })
   })

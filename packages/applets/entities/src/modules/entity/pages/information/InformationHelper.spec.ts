@@ -83,8 +83,7 @@ describe('test InformationHelper', () => {
   describe('savePatchedAccount', () => {
     it('should call getPatchOperations with proper arguments', () => {
       savePatchedAccount(ACCOUNT_ID, mockedPatchValues)
-      expect(mockedGetPatchOperations).toHaveBeenCalledOnce()
-      expect(mockedGetPatchOperations).toHaveBeenCalledWith(mockedPatchValues)
+      expect(mockedGetPatchOperations).toHaveBeenCalledExactlyOnceWith(mockedPatchValues)
     })
 
     it('should call logger.error and return true when patchValues is empty', async () => {
@@ -94,22 +93,21 @@ describe('test InformationHelper', () => {
 
       expect(mockedPatchAccount).not.toHaveBeenCalled()
 
-      await expect(async () => await savePatchedAccount(ACCOUNT_ID, []))
+      await expect(savePatchedAccount(ACCOUNT_ID, []))
         .rejects.toThrow(expectedErrorMessage)
     })
 
     it('should call patchAccount with proper arguments and return true when patchValues is not empty', async () => {
       await savePatchedAccount(ACCOUNT_ID, mockedPatchValues)
 
-      expect(mockedPatchAccount).toHaveBeenCalledOnce()
-      expect(mockedPatchAccount).toHaveBeenCalledWith(ACCOUNT_ID, mockedPatchOperations)
+      expect(mockedPatchAccount).toHaveBeenCalledExactlyOnceWith(ACCOUNT_ID, mockedPatchOperations)
     })
 
     it('should call logger.error and return false when patchAccount throws an error', async () => {
       const errorMessage = 'error'
       mockedPatchAccount.mockRejectedValueOnce(new Error(errorMessage))
 
-      await expect(async () => await savePatchedAccount(ACCOUNT_ID, mockedPatchValues))
+      await expect(savePatchedAccount(ACCOUNT_ID, mockedPatchValues))
         .rejects.toThrow(errorMessage)
     })
   })

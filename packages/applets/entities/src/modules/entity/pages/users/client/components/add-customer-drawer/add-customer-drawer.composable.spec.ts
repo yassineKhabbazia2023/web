@@ -141,8 +141,7 @@ describe('add-customer-drawer.composable', () => {
 
         expect(emailErrorMessage.value).toBe(expectedEmailErrorMessage)
         expect(isNextButtonLoading.value).toBe(false)
-        expect(hasContactRoleOnCommonAccountMock).toHaveBeenCalledOnce()
-        expect(hasContactRoleOnCommonAccountMock).toHaveBeenCalledWith(email, targetEntityIdMock)
+        expect(hasContactRoleOnCommonAccountMock).toHaveBeenCalledExactlyOnceWith(email, targetEntityIdMock)
       })
     })
   })
