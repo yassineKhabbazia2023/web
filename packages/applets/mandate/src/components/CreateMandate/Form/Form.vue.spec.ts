@@ -1,6 +1,6 @@
 import { expect, describe, it, vi } from 'vitest'
 import { loggerMock } from '@pulse/toolbox/mocks'
-import { featureFlagManagerMock } from '@pulse/common/mocks'
+import { featureFlagManagerMock } from '@pulse/common/mocks/vitest'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { getCompany } from '@mandate/services/mandate'
 import CreateMandateForm from '.'

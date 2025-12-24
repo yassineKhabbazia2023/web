@@ -1,5 +1,5 @@
 import { mount, flushPromises } from '@vue/test-utils'
-import { getStoreMock, cguServiceMock, AmplitudeServiceMock } from '@pulse/common/mocks'
+import { getStoreMock, cguServiceMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { BackEndErrors } from '@pulse/common/constants'

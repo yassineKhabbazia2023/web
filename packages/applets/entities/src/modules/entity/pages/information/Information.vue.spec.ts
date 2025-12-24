@@ -7,7 +7,7 @@ import {
 } from '@entities/__mocks__/account-row.mocks'
 import { useUserStore } from '@pulse/common/stores'
 import InformationFormStructure from '@entities/config/forms/InformationFormStructure.json'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { RouteParam } from '@pulse/common/enums'
 
 import Information from './Information.vue'

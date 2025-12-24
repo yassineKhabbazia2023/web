@@ -1,5 +1,5 @@
 import { commonApiDsDeleteSpy, commonApiDsGetSpy, commonApiDsPatchSpy, commonApiDsPostSpy, commonApiGatewayGetSpy, commonApiGatewayPostSpy, commonApiPortalGetSpy } from './api.mocks'
-import { CurrentUserManagerMock } from '@pulse/common/mocks'
+import { CurrentUserManagerMock } from '@pulse/common/mocks/vitest'
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({

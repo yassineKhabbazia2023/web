@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 
 import TopBar from './top-bar.vue'

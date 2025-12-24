@@ -4,13 +4,8 @@ import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { launchCardsMock, collabLaunchCardsMock } from '@launcher/__mocks__/launch-cards.mocks'
 import { launcherServicesMocks } from '@launcher/__mocks__/launcher.service.mocks'
 import { getLaunchCardsMock, getSilaeDownloadLabelMock, handleClickActionMock, handleDownloadMock, LauncherUtilsMocks, mockedPercent } from '@launcher/__mocks__/home-utils.mocks'
-import { envVarsMock,
-  getMockedEntitySummary,
-  hasPermissionMock,
-  getHasPermissionMocked,
-  getStoreMock,
-  getMockedUserInfo,
-} from '@pulse/common/mocks'
+import { envVarsMock, getMockedEntitySummary, getHasPermissionMocked, getMockedUserInfo } from '@pulse/common/mocks'
+import { hasPermissionMock, getStoreMock } from '@pulse/common/mocks/vitest'
 import '@launcher/__mocks__/common.import.mocks'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { LaunchCardProps } from '@launcher/components/launchCard/LaunchCardTypes'

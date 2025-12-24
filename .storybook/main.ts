@@ -29,7 +29,7 @@ const config: StorybookConfig = {
       from: '../packages/libraries/styleguide/src/assets/images',
       to: '/assets/images',
     },
-    '../mocks',
+    '../packages/apps/e2e-mocks/src/static',
   ],
   addons: [
     getAbsolutePath('@storybook/addon-docs'),
@@ -82,7 +82,7 @@ const config: StorybookConfig = {
       // vitest shim for mocks that import vitest
       {
         find: 'vitest',
-        replacement: fileURLToPath(new URL('./shims/vitest-shim.ts', import.meta.url)),
+        replacement: fileURLToPath(new URL('../packages/apps/e2e-mocks/src/shims/vitest-shim.ts', import.meta.url)),
       },
       // powerbi-client shim to display placeholder instead of real reports
       {

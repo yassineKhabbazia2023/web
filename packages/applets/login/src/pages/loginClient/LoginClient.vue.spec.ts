@@ -1,12 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { loggerMock } from '@pulse/toolbox/mocks'
-import {
-  cguServiceMock,
-  AmplitudeServiceMock,
-  CurrentUserManagerMock,
-  envVarsMock,
-} from '@pulse/common/mocks'
+import { envVarsMock } from '@pulse/common/mocks'
+import { cguServiceMock, AmplitudeServiceMock, CurrentUserManagerMock } from '@pulse/common/mocks/vitest'
 import type { ComponentWrapper } from '@login/__mocks__/component.wrapper'
 import { flushPromises, mount } from '@vue/test-utils'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'

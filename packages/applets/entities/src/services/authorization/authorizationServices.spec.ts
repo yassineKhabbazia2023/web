@@ -1,9 +1,7 @@
-import { describe, it, expect } from 'vitest'
-import '@entities/__mocks__/common.import.mocks'
-import { authorizationServiceMock } from '@entities/__mocks__/authorization.service.mocks'
+import { authorizationServiceMock, mockUpdateAccountPermission, mockUpdateUserPermission } from '@entities/__mocks__/vitest'
 import { mockedContactId, mockedContactType } from '@entities/__mocks__/contact.mocks'
 import { mockedAccountId } from '@entities/__mocks__/account.mocks'
-import { mockUpdateAccountPermission, mockUpdateUserPermission, mockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mocks'
+import { mockedAuthorizationsConfig } from '@entities/__mocks__/permissions.mocks'
 import {
   fetchAuthorizationsConfig,
   updateUserPermissions,

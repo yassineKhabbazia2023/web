@@ -14,10 +14,16 @@
       </div>
     </div>
 
-    <p class="forgot-password-title">
+    <p
+      class="forgot-password-title"
+      data-testid="reset-password-success-title"
+    >
       {{ t('verifyMailTitle') }}
     </p>
-    <p class="reset-password-msg">
+    <p
+      class="reset-password-msg"
+      data-testid="reset-password-success-message"
+    >
       {{ t('sendEmailDescription') }}
       <strong>{{ email }}</strong>
       {{ t('associatedAccount') }}

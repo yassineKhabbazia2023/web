@@ -2,7 +2,7 @@ import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
 import { CurrentUserManager } from '../current-user/current-user.manager'
 import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermission } from '@pulse/common/enums'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 

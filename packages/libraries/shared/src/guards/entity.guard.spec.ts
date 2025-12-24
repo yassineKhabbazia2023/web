@@ -8,9 +8,9 @@ import {
   accountsRowMock,
   entitiesFromAccountsRow,
   entitiesNotInAccountsRow,
-  getStoreMock,
   entitiesServiceMocks,
 } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'

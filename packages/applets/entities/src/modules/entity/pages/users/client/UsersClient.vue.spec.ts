@@ -9,11 +9,8 @@ import type { PatchContactPayload } from '@entities/services/contact/contactType
 import * as WalletServices from '@entities/services/wallet'
 import type { Contact } from '@entities/types'
 import type { UsersClientProps } from './UsersClientTypes'
-import {
-  getStoreMock,
-  getMockedUser,
-  getMockedEntitySummary,
-} from '@pulse/common/mocks'
+import { getMockedUser, getMockedEntitySummary } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { ContactType } from '@pulse/common/enums'
 

@@ -60,6 +60,7 @@
             :pLoading="isLoading"
             pSize="default"
             class="btn-submit"
+            data-testid="reset-password-form-submit-button"
             @click="submitForm"
           >
             {{ t('btnSubmit') }}

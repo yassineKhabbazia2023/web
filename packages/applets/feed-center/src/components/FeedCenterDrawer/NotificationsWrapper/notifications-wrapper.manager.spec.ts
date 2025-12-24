@@ -17,10 +17,9 @@ import { accountsMock } from '../../../__mocks__/accounts.mocks'
 import {
   accountsRowMock,
   entitiesFromAccountsRow,
-  CurrentEntityManagerMock,
-  getStoreMock,
   entitySummaryMock,
 } from '@pulse/common/mocks'
+import { getStoreMock, CurrentEntityManagerMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import type { GetTimeSinceCreationParams } from './notifications-wrapper.types'
 import * as NotificationService from './notifications-wrapper.service'

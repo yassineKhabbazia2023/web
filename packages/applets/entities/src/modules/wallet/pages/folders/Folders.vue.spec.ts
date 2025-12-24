@@ -1,14 +1,12 @@
+import { getPaginationMock, getMockedUserInfo, getMockedEntities } from '@pulse/common/mocks'
 import {
   AmplitudeServiceMock,
-  getPaginationMock,
-  getMockedUserInfo,
-  getMockedEntities,
   CurrentEntityManagerMock,
   hasPermissionMock,
   CurrentUserManagerMock,
   getStoreMock,
   featureFlagManagerMock,
-} from '@pulse/common/mocks'
+} from '@pulse/common/mocks/vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import { nextTick, reactive } from 'vue'
@@ -16,7 +14,7 @@ import { getMockedWalletQueryResult, getMockedSearchCriteria } from '@entities/_
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/types'
 import { loggerMock } from '@pulse/toolbox/mocks'
-import { contactServiceMock, fetchAccountOperationsMock } from '@entities/__mocks__/contact.service.mocks'
+import { contactServiceMock, fetchAccountOperationsMock } from '@entities/__mocks__/vitest'
 import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { TrackingLocalisation } from '@entities/enums'

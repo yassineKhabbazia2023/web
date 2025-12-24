@@ -1,5 +1,5 @@
 import { getOffersCatalogResponseMock, getOfferMock, getOfferCatalogReferentListMock } from '../mocks/offers-catalog.service.mocks'
-import { apiGatewayMock } from '@pulse/common/mocks'
+import { apiGatewayMock } from '@pulse/common/mocks/vitest'
 import { API_PREFIXES } from '@pulse/common/constants'
 
 import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails } from './offers-catalog.service'

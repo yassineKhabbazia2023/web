@@ -1,5 +1,5 @@
 import { CurrentUserManager } from '@pulse/common/managers'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteName } from '@pulse/common/enums'
 

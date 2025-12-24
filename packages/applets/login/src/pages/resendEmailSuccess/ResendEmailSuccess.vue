@@ -1,9 +1,15 @@
 <template>
   <div class="page-content">
-    <p class="verifyEmail">
+    <p
+      class="verifyEmail"
+      data-testid="resend-email-success-title"
+    >
       {{ t('verifyEmail') }}
     </p>
-    <p class="msgInfo">
+    <p
+      class="msgInfo"
+      data-testid="resend-email-success-message"
+    >
       {{ t('msgInfo') }}
     </p>
     <PButton

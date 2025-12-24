@@ -6,7 +6,7 @@ import { feedCenterDrawerManagerMock, patchAllNotificationsAsReadMock } from '..
 import { NotificationTrackingReadType } from '../../services/tracking/tracking.types'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
 import { useUserStore } from '@pulse/common/stores'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { FeedCenterActions } from '../../feed-center.enum'
 import { useFeedCenterStore } from '../../stores/feed-center.store'
 import FeedCenterDrawer from '.'

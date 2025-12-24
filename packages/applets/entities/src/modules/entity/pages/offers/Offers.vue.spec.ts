@@ -1,13 +1,7 @@
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import { getActiveOffersMocked } from '@entities/__mocks__/offers.mocks'
-import {
-  getMockedEntity,
-  CurrentUserManagerMock,
-  hasPermissionMock,
-  getStoreMock,
-  getMockedUser,
-  getMockedEntitySummary,
-} from '@pulse/common/mocks'
+import { getMockedEntity, getMockedUser, getMockedEntitySummary } from '@pulse/common/mocks'
+import { CurrentUserManagerMock, hasPermissionMock, getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 
 import Offers from './Offers.vue'

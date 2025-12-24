@@ -14,7 +14,7 @@ import {
   getSingleDomainNotificationSettingsConfiguration,
 } from '../../__mocks__/notification-settings.mocks'
 import { useFeedCenterStore } from '../../stores/feed-center.store'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 
 import { NotificationSettingsManager } from './notification-settings.manager'
 

@@ -6,7 +6,8 @@ import { fetchNotificationsMock, notificationsServiceMock } from '../../__mocks_
 import { trackFeedCenterTabConsultationMock, trackingServiceMock } from '../../__mocks__/tracking.service.mocks'
 import { SelectedNotificationEnum } from '../../types/notification.type'
 import { useUserStore } from '@pulse/common/stores'
-import { getMockedFavoriteEntities, getStoreMock } from '@pulse/common/mocks'
+import { getMockedFavoriteEntities } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useFeedCenterDrawer } from './feed-center-drawer.composable'
 
 vi.mock('../../services/notifications.service', () => notificationsServiceMock)

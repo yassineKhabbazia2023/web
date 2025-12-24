@@ -1,6 +1,6 @@
 import { flushPromises, mount } from '@vue/test-utils'
 import { RouteName } from '@pulse/common/enums'
-import { AmplitudeServiceMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { loggerMock } from '@pulse/toolbox/mocks'
 
 import LoginCollab from './LoginCollab.vue'

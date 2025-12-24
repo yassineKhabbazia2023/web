@@ -1,7 +1,7 @@
 import { type MockInstance } from 'vitest'
 import { refreshPageWhenCurrentUserPermissionChange } from './permission.composable'
 import { useUserStore } from '@pulse/common/stores'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 
 const userIdMock = 42
 const otherUserIdMock = 999

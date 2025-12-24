@@ -64,7 +64,7 @@ export const getMockedUserContext = (override: Partial<UserContextInfo> = {}) =>
   return user
 }
 
-export const getMockedUserApi = () => {
+export const getMockedUserApi = (override: Partial<UserInfoApi> = {}): UserInfoApi => {
   const user: UserInfoApi = {
     id: 123,
     firstName: 'John',
@@ -80,5 +80,8 @@ export const getMockedUserApi = () => {
     officePhone: '',
     oldId: '',
   }
-  return user
+  return {
+    ...user,
+    ...override,
+  }
 }

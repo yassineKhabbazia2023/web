@@ -2,14 +2,13 @@ import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, afterEach, describe, it, expect, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { mockTableData } from '@entities/__mocks__/table-data.mocks'
+import { getMockedUserInfo, getMockedEntitySummary } from '@pulse/common/mocks'
 import {
   AmplitudeServiceMock,
   CurrentEntityManagerMock,
   getStoreMock,
-  getMockedUserInfo,
   CurrentUserManagerMock,
-  getMockedEntitySummary,
-} from '@pulse/common/mocks'
+} from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 
 import TableData from '.'

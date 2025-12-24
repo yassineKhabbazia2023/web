@@ -8,7 +8,8 @@
   "type": "module",
   "exports": {
     ".": "./src/main.ts",
-    "./widgets/feed-center-header": "./src/widgets/feed-center-header/widget.ts"
+    "./widgets/feed-center-header": "./src/widgets/feed-center-header/widget.ts",
+    "./mocks": "./src/__mocks__/index.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

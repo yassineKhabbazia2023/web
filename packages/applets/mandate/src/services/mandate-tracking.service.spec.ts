@@ -1,5 +1,4 @@
-import { describe, it, expect, vi } from 'vitest'
-import { AmplitudeServiceMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { MandateTracking } from './mandate-tracking.service'
 
 vi.mock('@pulse/common/services/amplitude', () => ({

@@ -1,5 +1,5 @@
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
-import { AmplitudeServiceMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { expect, describe, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 import { createMandate } from '@mandate/services/mandate'

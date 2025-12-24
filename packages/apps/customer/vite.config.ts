@@ -1,16 +1,20 @@
 import { fileURLToPath, URL } from 'node:url'
 import path from 'node:path'
-import type { IncomingMessage, ServerResponse } from 'http'
+import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { PreviewServer } from 'vite'
 import { defineConfig, mergeConfig } from 'vitest/config'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
 import { viteConfigBase } from '../../@config/vite.config.base.ts'
 import { visualizer } from 'rollup-plugin-visualizer'
+import { e2ePlugin } from '@pulse/e2e-mocks/vite-plugin'
 
 const PORT = 9000
 
 const baseUrl = process.env.VITE_BASE_PATH || '/'
+
+// Directory path derived from import.meta.url for ES module compatibility
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 export default ({ mode }: any) =>
   defineConfig(
@@ -19,6 +23,7 @@ export default ({ mode }: any) =>
       plugins: [
         vue(),
         VueI18nPlugin(),
+        e2ePlugin(),
         mode === 'analyze' && visualizer({
           open: true,
           filename: 'dist-stats.html',

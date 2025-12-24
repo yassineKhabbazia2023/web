@@ -40,7 +40,10 @@
     "docs:preview": "vitepress preview docs",
     "storybook": "storybook dev -p 6009",
     "storybook:build": "storybook build -o dist-storybook",
-    "storybook:preview": "vite preview --outDir dist-storybook --base=/storybook/"
+    "storybook:preview": "vite preview --outDir dist-storybook --base=/storybook/",
+    "e2e": "npm run e2e --workspaces --if-present",
+    "e2e:customer": "npm run e2e --workspace=@pulse/customer",
+    "e2e:customer:report": "npm run e2e:report --workspace=@pulse/customer"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.7",
@@ -72,6 +75,7 @@
     "@eslint/js": "^9.14.0",
     "@intlify/unplugin-vue-i18n": "^6.0.0",
     "@pinia/testing": "^0.1.6",
+    "@playwright/test": "^1.49.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "@storybook/addon-a11y": "^10.1.5",
@@ -109,10 +113,5 @@
     "vitepress": "^1.6.3",
     "vitest": "^4.0.0",
     "vue-tsc": "^2.1.6"
-  },
-  "msw": {
-    "workerDirectory": [
-      "mocks"
-    ]
   }
 }

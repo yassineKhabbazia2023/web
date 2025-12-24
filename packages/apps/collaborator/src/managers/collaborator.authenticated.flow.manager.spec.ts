@@ -1,12 +1,11 @@
 import { loggerMock } from '@pulse/toolbox/mocks'
 import {
-  AmplitudeServiceMock,
   getMockedUserContext,
   getMockedEntity,
   getMockedCurrentEntity,
-  getStoreMock,
   getMockedEntitySummary,
 } from '@pulse/common/mocks'
+import { getStoreMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { initProductFruitsAuthenticatedCollab, stopProductFruits, getProductFruitsUser } from '@pulse/shared/plugins'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserService } from '@pulse/common/services/current-user'

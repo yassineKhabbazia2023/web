@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
-import { getStoreMock, getMockedUserInfo } from '@pulse/common/mocks'
+import { getMockedUserInfo } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import * as styleguide from '@pulse/styleguide'
 import type { DeclareCustomerRelationDrawerProps } from './DeclareCustomerRelationDrawer.types'

@@ -1,9 +1,8 @@
-import { expect, describe, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
 import { notificationHelperMock } from '@mandate/__mocks__/notification.helper.mocks'
 import { utilsMocks } from '@mandate/__mocks__/utils.mocks'
-import { AmplitudeServiceMock } from '@pulse/common/mocks'
+import { AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { downloadFile, saveFileAs } from '@mandate/helpers/utils'
 import Table from '.'
 

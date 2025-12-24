@@ -8,8 +8,7 @@ import { PButton } from '@pulse/styleguide/components'
 import { useUserStore } from '@pulse/common/stores'
 import { getMockedUser } from '@pulse/common/mocks'
 import { useFeedCenterStore } from './stores/feed-center.store'
-// @ts-ignore-next-line storybook stuff is outside of tsconfig
-import { worker } from '~storybook/msw-worker'
+import { worker } from '@pulse/e2e-mocks/msw'
 import {
   notificationsMock,
   unreadNotificationsMock,

@@ -4,7 +4,7 @@ import { mockCollabsData } from '@entities/__mocks__/collab-data.mocks'
 import * as walletServices from '@entities/services/wallet'
 import * as contactServices from '@entities/services/contact'
 import type { ComponentWrapper } from '@entities/types'
-import { CurrentUserManagerMock, getStoreMock } from '@pulse/common/mocks'
+import { CurrentUserManagerMock, getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
 

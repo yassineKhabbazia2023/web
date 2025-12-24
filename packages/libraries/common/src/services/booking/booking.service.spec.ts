@@ -1,8 +1,9 @@
-import { apiGatewayMock, getMockedQueryResult } from '@pulse/common/mocks'
+import { getMockedQueryResult, getMockedBookingServiceConfiguration, getBookingServiceExpert } from '@pulse/common/mocks'
+import { apiGatewayMock } from '@pulse/common/mocks/vitest'
 import { API_PREFIXES } from '@pulse/common/constants'
-import { BookingService } from './booking.service'
-import { getMockedBookingServiceConfiguration, getBookingServiceExpert } from '@common/__mocks__/booking.mock'
 import type { BookingServiceExpert } from '../../types/booking.type'
+
+import { BookingService } from './booking.service'
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({

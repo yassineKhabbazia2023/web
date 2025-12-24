@@ -212,7 +212,7 @@ vi.mock('@pulse/common/stores', () => ({
 ```ts
 // test.spec.ts
 import { createTestingPinia } from '@pinia/testing'
-import { getStoreMock }    from '@pulse/common/mocks'
+import { getStoreMock }    from '@pulse/common/mocks/vitest'
 import { useUserStore }    from '@pulse/common/stores'
 
 // Récupération d’un mock Pinia typé pour useUserStore

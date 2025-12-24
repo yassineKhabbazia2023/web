@@ -2,10 +2,8 @@ import { http, HttpResponse } from 'msw'
 import {
   notificationsMock,
   unreadNotificationsMock,
-} from '../../packages/applets/feed-center/src/__mocks__/notifications.mocks'
-import {
   getNotificationSettingsConfiguration,
-} from '../../packages/applets/feed-center/src/__mocks__/notification-settings.mocks'
+} from '@pulse/feed-center/mocks'
 
 export const feedCenterHandlers = [
   // Fetch unread notifications count

@@ -1,0 +1,25 @@
+{
+  "name": "@pulse/e2e-mocks",
+  "version": "1.0.0",
+  "author": "Pulse Team",
+  "description": "E2E testing and MSW infrastructure library",
+  "license": "UNLICENSED",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./msw": "./src/msw/worker.ts",
+    "./msw/bootstrap": "./src/msw/bootstrap.ts",
+    "./handlers": "./src/handlers/index.ts",
+    "./vite-plugin": "./src/vite-plugin/plugin.e2e.ts",
+    "./shims": "./src/shims/vitest-shim.ts",
+    "./fixtures/env-vars": "./src/fixtures/env-vars.e2e.js",
+    "./fixtures/styles": "./src/fixtures/styles.e2e.css"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "dependencies": {
+    "msw": "^2.12.4"
+  }
+}

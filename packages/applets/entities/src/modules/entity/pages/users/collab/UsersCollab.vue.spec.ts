@@ -1,6 +1,6 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
-import { contactServiceMock } from '@entities/__mocks__/contact.service.mocks'
+import { contactServiceMock } from '@entities/__mocks__/vitest'
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
 import { fetchAccountCustomers } from '@entities/services/wallet'
@@ -9,14 +9,8 @@ import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import { nextTick } from 'vue'
 import { UserActions } from '@entities/modules/entity/enums'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import {
-  CurrentUserManagerMock,
-  hasPermissionMock,
-  getStoreMock,
-  getMockedEntity,
-  getMockedUser,
-  getMockedEntitySummary,
-} from '@pulse/common/mocks'
+import { getMockedEntity, getMockedUser, getMockedEntitySummary } from '@pulse/common/mocks'
+import { CurrentUserManagerMock, hasPermissionMock, getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { getPendingOperations } from '@entities/modules/entity/utils/operation.utils'
 import { TrackingLocalisation } from '@entities/enums'

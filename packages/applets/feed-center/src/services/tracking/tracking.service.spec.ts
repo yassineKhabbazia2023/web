@@ -1,4 +1,3 @@
-import { describe } from 'vitest'
 import { SelectedNotificationEnum } from '../../types/notification.type'
 import { NotificationKindEnum } from '@pulse/common/enums'
 import { NotificationTrackingType, NotificationTrackingReadType, NotificationTrackingTab } from './tracking.types'

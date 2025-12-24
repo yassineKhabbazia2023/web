@@ -1,4 +1,3 @@
-import type { Mock } from 'vitest'
 import { CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
 import type { AuthorizationConfig } from '@entities/types'
 import { AuthorizationState } from '@entities/components/ManageRightsDrawer/ManageRightsTypes'
@@ -102,7 +101,3 @@ export const getMockedAuthorizationsConfig = (): AuthorizationConfig[] => {
 
 export const mockedAuthorizationsConfig = getMockedAuthorizationsConfig()
 export const mockedPermissionCodes = ['CLUSER001', 'CLUSER002']
-
-export const mockUpdateUserPermission: Mock = vi.fn()
-export const mockUpdateAccountPermission: Mock = vi.fn()
-export const mockFetchAuthorizationsConfig: Mock = vi.fn(() => Promise.resolve(mockedAuthorizationsConfig))

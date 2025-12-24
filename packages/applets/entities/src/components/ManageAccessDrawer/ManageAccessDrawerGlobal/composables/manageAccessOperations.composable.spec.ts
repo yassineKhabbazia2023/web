@@ -1,4 +1,4 @@
-import { contactServiceMock } from '@entities/__mocks__/contact.service.mocks'
+import { contactServiceMock } from '@entities/__mocks__/vitest'
 import type { AccountOperations } from '@entities/services/contact/contactTypes'
 import { getPaginationMock } from '@pulse/common/mocks'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'

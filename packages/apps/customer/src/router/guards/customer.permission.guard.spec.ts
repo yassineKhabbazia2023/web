@@ -1,4 +1,4 @@
-import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks'
+import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
 import { customerPermissionGuard } from './customer.permission.guard'
 import { PERMISSIONS_META } from '@pulse/common/constants'
 import { createTestingPinia } from '@pinia/testing'

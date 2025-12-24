@@ -1,9 +1,6 @@
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
-import {
-  getStoreMock,
-  getMockedUser,
-  AmplitudeServiceMock,
-} from '@pulse/common/mocks'
+import { getMockedUser } from '@pulse/common/mocks'
+import { getStoreMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { MsalService } from '@pulse/common/services/msal'

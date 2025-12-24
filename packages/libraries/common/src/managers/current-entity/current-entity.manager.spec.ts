@@ -1,11 +1,9 @@
-import { describe, it, expect, vi } from 'vitest'
 import { getMockedEntitySummary } from '../../__mocks__/entity-summary.mock'
-import { permissionServiceMock, fetchUserAccountPermissionsMock } from '../../__mocks__/permissions.service.mocks'
-
-import { CurrentEntityManager } from './current-entity.manager'
-import { getStoreMock, getPermissionsMock } from '@common/__mocks__'
+import { getPermissionsMock } from '@pulse/common/mocks'
+import { getStoreMock, permissionServiceMock, fetchUserAccountPermissionsMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '../../stores/current-entity/current-entity.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
+import { CurrentEntityManager } from './current-entity.manager'
 
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)

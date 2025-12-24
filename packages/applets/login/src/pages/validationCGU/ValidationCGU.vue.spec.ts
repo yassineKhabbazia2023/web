@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
-import { cguServiceMock, updateTermsByCurrentUserMock } from '@pulse/common/mocks'
+import { cguServiceMock, updateTermsByCurrentUserMock } from '@pulse/common/mocks/vitest'
 import { RouteName } from '@pulse/common/enums'
 import { CurrentUserManager } from '@pulse/common/managers'
 

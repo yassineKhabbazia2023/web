@@ -1,6 +1,4 @@
-import { describe, it, expect } from 'vitest'
-import '@entities/__mocks__/common.import.mocks'
-import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks'
+import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
 import type { TabName, Tab } from './types'
 
 import { getTabAuthorisations, getTabs } from './entity-helper'

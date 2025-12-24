@@ -1,6 +1,6 @@
 import { WidgetName } from '@pulse/widgets/enums'
 import { useCurrentEntityStore } from '@pulse/common/stores'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 
 import { WidgetsService } from './widgets.service'
 

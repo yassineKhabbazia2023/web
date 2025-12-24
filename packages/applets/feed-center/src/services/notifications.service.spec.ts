@@ -1,5 +1,4 @@
-import { vi } from 'vitest'
-import { apiGatewayMock, apiGatewayGetMock } from '@pulse/common/mocks'
+import { apiGatewayMock, apiGatewayGetMock } from '@pulse/common/mocks/vitest'
 import * as notificationsService from './notifications.service'
 const NOTIFICATION_API_PREFIX = 'feedcenter/api/notifications'
 

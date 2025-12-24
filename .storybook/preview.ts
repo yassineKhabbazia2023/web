@@ -1,5 +1,5 @@
 // Load vitest shim first to expose vi globally
-import './shims/vitest-shim'
+import '@pulse/e2e-mocks/shims'
 
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3'
@@ -28,7 +28,7 @@ import sharedPlugin from '../packages/libraries/shared/src/main'
 // Import widgets plugin to register all grid widgets
 import widgetsPlugin from '../packages/libraries/widgets/src/main'
 // Import MSW worker
-import { worker } from '../mocks/mockAPI'
+import { worker } from '@pulse/e2e-mocks/msw'
 
 // Import global decorators
 import { globalDecorators } from './decorators/decorator.manager'

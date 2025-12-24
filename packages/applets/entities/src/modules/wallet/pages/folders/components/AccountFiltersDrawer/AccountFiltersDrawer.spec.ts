@@ -5,7 +5,7 @@ import { useUserStore } from '@pulse/common/stores'
 
 import AccountFiltersDrawer from './AccountFiltersDrawer.vue'
 import { AccountFilters } from '@entities/types'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 
 const loggerErrorSpy = vi.hoisted(() => vi.fn())
 const userStoreMock = getStoreMock(useUserStore)

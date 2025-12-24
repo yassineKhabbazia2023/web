@@ -1,9 +1,15 @@
 <template>
   <div class="page-content">
-    <p class="expireMsg">
+    <p
+      class="expireMsg"
+      data-testid="expire-token-message"
+    >
       {{ t('expireMsg') }}
     </p>
-    <p class="helpMsg">
+    <p
+      class="helpMsg"
+      data-testid="expire-token-help-message"
+    >
       {{ t('helpMsg') }}
     </p>
     <PButton
@@ -11,6 +17,7 @@
       pSize="default"
       class="btn-link"
       :pLoading="isLoading"
+      data-testid="expire-token-resend-button"
       @click="resendLink"
     >
       {{ t('btnReceiveLink') }}

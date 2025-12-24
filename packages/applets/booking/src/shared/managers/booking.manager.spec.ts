@@ -5,7 +5,7 @@ import { useUserStore, useCurrentEntityStore, useBookingCustomerStore } from '@p
 import { logger } from '@pulse/toolbox'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import type { BookingServiceExpert } from '@pulse/common/types'
 
 const mockExperts: BookingServiceExpert[] = [

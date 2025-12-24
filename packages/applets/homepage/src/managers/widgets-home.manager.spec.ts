@@ -10,7 +10,7 @@ import {
   mockWidgetGridDefinitionsWithPermissions,
 } from '@homepage/__mocks__/widgets-home.mocks'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { getStoreMock } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useBookingCustomerStore } from '@pulse/common/stores'
 
 getStoreMock(useBookingCustomerStore)

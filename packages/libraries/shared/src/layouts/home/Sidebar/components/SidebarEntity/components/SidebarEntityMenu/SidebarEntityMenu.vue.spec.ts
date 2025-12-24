@@ -1,11 +1,7 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
-import {
-  getMockedFavoriteEntities,
-  CurrentUserManagerMock,
-  hasPermissionMock,
-  getHasPermissionMocked,
-} from '@pulse/common/mocks'
+import { getMockedFavoriteEntities, getHasPermissionMocked } from '@pulse/common/mocks'
+import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { CustomerPermission } from '@pulse/common/enums'
 
