@@ -1,0 +1,98 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  npmCacheFolder: $(Agent.HomeDirectory)/.npm
+  playwrightCacheFolder: $(Agent.HomeDirectory)/.cache/ms-playwright
+
+stages:
+- stage: OfflineE2E
+  displayName: 'Offline E2E'
+  jobs:
+  - job: RunE2ETests
+    displayName: 'Run Offline E2E Tests'
+    timeoutInMinutes: 30
+    steps:
+    # Preparation
+    - checkout: self
+      fetchDepth: 0
+      displayName: 'Preparation - Checkout with full history'
+
+    - task: UseNode@1
+      inputs:
+        version: '24.x'
+      displayName: 'Preparation - Install Node.js'
+
+    - task: Cache@2
+      inputs:
+        key: 'npm | "$(Agent.OS)" | package-lock.json'
+        restoreKeys: |
+          npm | "$(Agent.OS)"
+        path: $(npmCacheFolder)
+      displayName: 'Preparation - Cache npm packages'
+
+    - script: npm ci --cache=$(npmCacheFolder)
+      displayName: 'Preparation - Install dependencies'
+
+    - task: Cache@2
+      inputs:
+        key: 'playwright | "$(Agent.OS)" | package-lock.json'
+        restoreKeys: |
+          playwright | "$(Agent.OS)"
+        path: $(playwrightCacheFolder)
+      displayName: 'Preparation - Cache Playwright browsers'
+
+    - script: npx playwright install --with-deps
+      displayName: 'Preparation - Install Playwright browsers'
+
+    # Check changes
+    - script: |
+        git fetch origin main:refs/remotes/origin/main
+        git diff --name-only origin/main...HEAD > changed_files.txt
+        if grep -q "^packages/apps/customer/" changed_files.txt; then
+          echo "##vso[task.setvariable variable=customerChanged]true"
+        else
+          echo "##vso[task.setvariable variable=customerChanged]false"
+        fi
+        if grep -q "^packages/libraries/" changed_files.txt; then
+          echo "##vso[task.setvariable variable=librariesChanged]true"
+        else
+          echo "##vso[task.setvariable variable=librariesChanged]false"
+        fi
+      displayName: 'Check - Detect changed files'
+
+    # Offline E2E
+    # Targeted Customer tests (only in PR when only customer changed)
+    - script: npm run e2e:customer
+      displayName: 'Offline E2E - Run Customer tests'
+      condition: |
+        and(
+          eq(variables['Build.Reason'], 'PullRequest'),
+          eq(variables.customerChanged, 'true'),
+          eq(variables.librariesChanged, 'false')
+        )
+      env:
+        CI: 'true'
+
+    # All tests: manual run OR libraries changed in PR
+    - script: npm run e2e
+      displayName: 'Offline E2E - Run all tests'
+      condition: |
+        or(
+          eq(variables['Build.Reason'], 'Manual'),
+          eq(variables.librariesChanged, 'true')
+        )
+      env:
+        CI: 'true'
+
+    # Publish test results
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/e2e-results/junit.xml'
+        mergeTestResults: true
+        testRunTitle: 'E2E Tests'
+      displayName: 'Publish - Test results'
+      condition: succeededOrFailed()

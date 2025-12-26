@@ -10,6 +10,7 @@ export default defineConfig({
   reporter: [
     ['html', { open: 'never' }],
     ['list'],
+    ...(process.env.CI ? [['junit', { outputFile: 'e2e-results/junit.xml' }] as const] : []),
   ],
   use: {
     baseURL: 'http://localhost:9000',
