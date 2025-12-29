@@ -55,10 +55,12 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { RouteName } from '@pulse/common/enums'
+import { usePennylaneSso } from '@pulse/common/composables/pennylane-sso'
 import { PAlert, PEntityHeader } from '@pulse/styleguide/components'
 import LaunchCard from '@launcher/components/launchCard'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
-import type { LauncherKey, ExtendedLaunchCard } from './LauncherTypes'
+import type { ExtendedLaunchCard } from './LauncherTypes'
+import { LauncherKey } from './LauncherTypes'
 import { useCurrentEntityStore, usePermissionsStore, useUserStore } from '@pulse/common/stores'
 import {
   getLaunchCards,
@@ -69,6 +71,7 @@ import {
 
 const route = useRoute()
 const userStore = useUserStore()
+const { url: pennylaneSsoUrl, clearSsoContext: clearPennylaneSsoContext } = usePennylaneSso({ isCollab: userStore.isCollab })
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -93,6 +96,9 @@ async function onClickDownload(key: LauncherKey) {
 }
 
 async function onClickAction(key: LauncherKey) {
+  if (key === LauncherKey.PENNYLANE) {
+    clearPennylaneSsoContext()
+  }
   await handleClickAction(key)
 }
 
@@ -112,8 +118,14 @@ const authorizedKeys = computed<LauncherKey[]>(() =>
 
 const launchCards = computed<ExtendedLaunchCard[]>(() => {
   const downloadLabel = getSilaeDownloadLabel(silaeDownloadPercent.value)
+  const cards = getLaunchCards(downloadLabel, authorizedKeys.value, userStore.isCollab)
 
-  return getLaunchCards(downloadLabel, authorizedKeys.value, userStore.isCollab)
+  return cards.map(card => {
+    if (card.key === LauncherKey.PENNYLANE) {
+      return { ...card, actionUrl: pennylaneSsoUrl.value }
+    }
+    return card
+  })
 })
 
 </script>

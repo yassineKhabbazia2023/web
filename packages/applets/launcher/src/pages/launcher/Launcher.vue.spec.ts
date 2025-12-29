@@ -25,6 +25,10 @@ vi.mock('vue-router', () => ({
   useRoute: () => ({
     name: 'launcher',
   }),
+  useRouter: () => ({
+    resolve: () => ({ href: '/pennylane-sso-proxy' }),
+    hasRoute: () => false,
+  }),
 }))
 
 vi.mock('./LauncherUtils', () => LauncherUtilsMocks)
@@ -161,10 +165,12 @@ describe('test Home', () => {
       userStoreMock.user = getMockedUserInfo({ isCollab: true })
       getLaunchCardsMock.mockReturnValue(collabLaunchCardsMock)
 
+      // Create new wrapper after setting isCollab to true
+      const collabWrapper = getWrapper()
       await flushPromises()
 
       // Act
-      const launchCards = getLaunchCardComponents(wrapper)
+      const launchCards = getLaunchCardComponents(collabWrapper)
       const actionUrls = launchCards.map((launchCard) => {
         const { actionUrl } = (launchCard as VueWrapper).props() as LaunchCardProps
         return actionUrl

@@ -23,6 +23,7 @@
     "./services/html": "./src/services/html/index.ts",
     "./services/widgets": "./src/services/widgets/index.ts",
     "./composables/sort": "./src/composables/sort.composable.ts",
+    "./composables/pennylane-sso": "./src/composables/pennylane-sso.composable.ts",
     "./i18n": "./src/i18n/index.ts",
     "./types": "./src/types.ts",
     "./stores": "./src/stores/main.ts",

@@ -1,5 +1,6 @@
 import { commonApiDsDeleteSpy, commonApiDsGetSpy, commonApiDsPatchSpy, commonApiDsPostSpy, commonApiGatewayGetSpy, commonApiGatewayPostSpy, commonApiPortalGetSpy } from './api.mocks'
 import { CurrentUserManagerMock } from '@pulse/common/mocks/vitest'
+import { envVarsMock } from '@pulse/common/mocks'
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
@@ -34,4 +35,9 @@ vi.mock('@pulse/common', () => ({
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
+  FeatureFlagManager: {
+    isPennylaneSsoRedirectActivated: vi.fn(() => false),
+  },
 }))
+
+vi.mock('env-vars', () => envVarsMock)
