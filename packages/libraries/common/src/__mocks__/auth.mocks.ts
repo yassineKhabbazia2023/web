@@ -46,6 +46,11 @@ export function getUserContextResponseMock(override: Partial<UserContextInfo> = 
       CustomerPermission.ACCEDER_GED_GESTION_SOCIALE,
       CustomerPermission.ACCEDER_RAPPORTS_BI_FINANCIER,
     ],
+    favoriteEntities: [
+      { accountId: 1, accountNumber: 'V900000547', legalName: 'Acme Corp (basic)' },
+      { accountId: 2, accountNumber: 'V900000546', legalName: 'Tech Solutions Ltd (legacy)' },
+      { accountId: 3, accountNumber: 'V900000545', legalName: 'Global Services Inc (Pennylane)' },
+    ],
     ...override,
   })
 }

@@ -87,17 +87,17 @@ const config: StorybookConfig = {
       // powerbi-client shim to display placeholder instead of real reports
       {
         find: 'powerbi-client',
-        replacement: fileURLToPath(new URL('./shims/powerbi-shim.ts', import.meta.url)),
+        replacement: fileURLToPath(new URL('../packages/apps/e2e-mocks/src/shims/powerbi-shim.ts', import.meta.url)),
       },
       // powerbi-models shim
       {
         find: 'powerbi-models',
-        replacement: fileURLToPath(new URL('./shims/powerbi-models-shim.ts', import.meta.url)),
+        replacement: fileURLToPath(new URL('../packages/apps/e2e-mocks/src/shims/powerbi-models-shim.ts', import.meta.url)),
       },
       // signalr shim to prevent WebSocket connection errors
       {
         find: '@microsoft/signalr',
-        replacement: fileURLToPath(new URL('./shims/signalr-shim.ts', import.meta.url)),
+        replacement: fileURLToPath(new URL('../packages/apps/e2e-mocks/src/shims/signalr-shim.ts', import.meta.url)),
       },
       // @styleguide → styleguide/src (for SCSS imports)
       {

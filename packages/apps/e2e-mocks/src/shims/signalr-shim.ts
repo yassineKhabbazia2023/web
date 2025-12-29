@@ -1,8 +1,8 @@
-// Shim for @microsoft/signalr in Storybook
+// Shim for @microsoft/signalr in E2E mode
 // Provides a mock HubConnection that doesn't actually connect
 
 class MockHubConnection {
-  private handlers: Map<string, ((...args: unknown[]) => void)[]> = new Map()
+  private readonly handlers: Map<string, ((...args: unknown[]) => void)[]> = new Map()
 
   start(): Promise<void> {
     return Promise.resolve()
@@ -51,15 +51,15 @@ class MockHubConnection {
 }
 
 class MockHubConnectionBuilder {
-  withUrl(_url: string, _options?: unknown): MockHubConnectionBuilder {
+  withUrl(_url: string, _options?: unknown) {
     return this
   }
 
-  withAutomaticReconnect(_retryDelays?: number[]): MockHubConnectionBuilder {
+  withAutomaticReconnect(_retryDelays?: number[]) {
     return this
   }
 
-  configureLogging(_logLevel: unknown): MockHubConnectionBuilder {
+  configureLogging(_logLevel: unknown) {
     return this
   }
 

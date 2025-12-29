@@ -10,14 +10,21 @@
     "./msw": "./src/msw/worker.ts",
     "./msw/bootstrap": "./src/msw/bootstrap.ts",
     "./handlers": "./src/handlers/index.ts",
+    "./constants": "./src/constants/index.ts",
+    "./helpers": "./src/helpers/index.ts",
     "./vite-plugin": "./src/vite-plugin/plugin.e2e.ts",
-    "./shims": "./src/shims/vitest-shim.ts",
+    "./shims/vitest": "./src/shims/vitest-shim.ts",
+    "./shims/signalr": "./src/shims/signalr-shim.ts",
+    "./shims/powerbi": "./src/shims/powerbi-shim.ts",
+    "./shims/powerbi-models": "./src/shims/powerbi-models-shim.ts",
     "./fixtures/env-vars": "./src/fixtures/env-vars.e2e.js",
     "./fixtures/styles": "./src/fixtures/styles.e2e.css"
   },
   "scripts": {
     "lint": "eslint .",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "msw": "^2.12.4"

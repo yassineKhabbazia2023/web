@@ -36,6 +36,9 @@ stages:
     - script: npm ci --cache=$(npmCacheFolder)
       displayName: 'Preparation - Install dependencies'
 
+    - script: mkdir -p $(playwrightCacheFolder)
+      displayName: 'Preparation - Create Playwright cache directory'
+
     - task: Cache@2
       inputs:
         key: 'playwright | "$(Agent.OS)" | package-lock.json'

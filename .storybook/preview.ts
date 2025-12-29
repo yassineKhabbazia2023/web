@@ -1,5 +1,5 @@
 // Load vitest shim first to expose vi globally
-import '@pulse/e2e-mocks/shims'
+import '@pulse/e2e-mocks/shims/vitest'
 
 import type { Preview } from '@storybook/vue3-vite'
 import { setup } from '@storybook/vue3'

@@ -8,7 +8,7 @@ const envVars = {
   VITE_API_DS: 'http://localhost:9000/mock-ds/',
   VITE_API_SCHEDULE: 'http://localhost:9000/mock-schedule/',
   VITE_ACCOUNTING_HUB_URL: 'http://localhost:9000/mock-hub/',
-  VITE_ASSETS_BASE_URL: 'http://localhost:9000/',
+  VITE_ASSETS_BASE_URL: 'http://localhost:9000/assets/images/',
 
   // Authentication - disabled/mocked for E2E
   VITE_GIGYA_KEY: 'e2e-mock-key',

@@ -1,4 +1,4 @@
-// Shim for powerbi-models in Storybook
+// Shim for powerbi-models
 
 export const TokenType = {
   Embed: 1,

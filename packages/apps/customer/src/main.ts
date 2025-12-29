@@ -36,6 +36,12 @@ window.version = AppVersionManager.getMonorepoVersion()
 window.commit = AppVersionManager.getShortCommitId()
 window.branch = AppVersionManager.getBranchName()
 
+// Wait for MSW to be ready in E2E mode before initializing the app
+if (import.meta.env.VITE_E2E_MODE === 'true') {
+  const { waitForMsw } = await import('@pulse/e2e-mocks/helpers')
+  await waitForMsw()
+}
+
 const isProd = import.meta.env.PROD
 
 const app = createApp(App)

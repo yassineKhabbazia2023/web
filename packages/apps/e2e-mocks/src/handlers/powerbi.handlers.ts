@@ -6,10 +6,24 @@ import {
   getMockReportStatistics,
   getMockReportErrors,
 } from '@pulse/powerbi/mocks'
+import { MockEntityId } from '../constants'
 
 export const powerbiHandlers = [
   // Fetch BI reports for an entity (customer view)
-  http.get('*/reporting/api/reports/currentuser', () => {
+  http.get('*/reporting/api/reports/currentuser', ({ request }) => {
+    const url = new URL(request.url)
+    const accountId = Number(url.searchParams.get('accountId'))
+
+    // No BI reports for basic entity
+    if (accountId === MockEntityId.BASIC) {
+      return HttpResponse.json({
+        items: [],
+        totalItems: 0,
+        totalPage: 1,
+        currentPage: 1,
+      })
+    }
+
     return HttpResponse.json({
       items: getMockedBIReports(),
       totalItems: getMockedBIReports().length,

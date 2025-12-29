@@ -9,6 +9,7 @@
     @close="onClickCloseAccountingHeader"
   />
   <PTabs
+    data-testid="accounting-tabs"
     :modelValue="currentTabName"
     pSmartWidth
     @tab-click="onTabClick"

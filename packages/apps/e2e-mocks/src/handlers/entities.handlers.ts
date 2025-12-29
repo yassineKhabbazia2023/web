@@ -21,6 +21,8 @@ import {
   getMockedAuthorizationsConfig,
 } from '@pulse/entities/mocks'
 import { getMockedEntitySummary, getMockedSubscription } from '@pulse/common/mocks'
+import { CustomerPermission } from '@pulse/common/enums'
+import { MockEntityId } from '../constants'
 
 function getOperationsPaginatedResponse() {
   const operations = getMockedOperations()
@@ -38,7 +40,7 @@ function getAccountRowsMock() {
       accountId: 1,
       accountGlobalUniqueId: '5f85e793-57c0-4da6-b821-3b2888567256',
       accountNumber: 'V900000547',
-      legalName: 'Acme Corp',
+      legalName: 'Acme Corp (basic)',
       isFavorite: false,
       signatory: getMockedSignatory({ contactId: 1 }),
     }),
@@ -46,7 +48,7 @@ function getAccountRowsMock() {
       accountId: 2,
       accountGlobalUniqueId: '5f85e793-57c0-4da6-b821-3b2888567255',
       accountNumber: 'V900000546',
-      legalName: 'Tech Solutions Ltd',
+      legalName: 'Tech Solutions Ltd (legacy)',
       isFavorite: true,
       signatory: getMockedSignatory({ contactId: 2 }),
       isCustomerRelation: true,
@@ -55,7 +57,7 @@ function getAccountRowsMock() {
       accountId: 3,
       accountGlobalUniqueId: '5f85e793-57c0-4da6-b821-3b2888567254',
       accountNumber: 'V900000545',
-      legalName: 'Global Services Inc',
+      legalName: 'Global Services Inc (Pennylane)',
       isFavorite: false,
       signatory: getMockedSignatory({ contactId: 3 }),
     }),
@@ -105,32 +107,34 @@ function getAccountData() {
   }
 }
 
-// Pennylane subscription for Global Services Inc
+// Pennylane subscription for Global Services Inc (Pennylane)
 const pennylaneSubscription = getMockedSubscription({
   subscriptionId: 504,
   offerId: 8,
   status: 'validated',
-  accountId: 3,
+  accountId: MockEntityId.PENNYLANE,
   offerCode: 'Pennylane',
   offerName: 'RYDGE Conseil x Pennylane',
 })
 
 // Entity summaries mapping for multi-entity customer story
 const entitySummariesMap: Record<number, ReturnType<typeof getMockedEntitySummary>> = {
-  1: getMockedEntitySummary({
-    accountId: 1,
+  [MockEntityId.BASIC]: getMockedEntitySummary({
+    accountId: MockEntityId.BASIC,
     accountNumber: 'V900000547',
-    legalName: 'Acme Corp',
+    legalName: 'Acme Corp (basic)',
+    subscriptions: [],
   }),
-  2: getMockedEntitySummary({
-    accountId: 2,
+  [MockEntityId.LEGACY_GED]: getMockedEntitySummary({
+    accountId: MockEntityId.LEGACY_GED,
     accountNumber: 'V900000546',
-    legalName: 'Tech Solutions Ltd',
+    legalName: 'Tech Solutions Ltd (legacy)',
+    subscriptions: [],
   }),
-  3: getMockedEntitySummary({
-    accountId: 3,
+  [MockEntityId.PENNYLANE]: getMockedEntitySummary({
+    accountId: MockEntityId.PENNYLANE,
     accountNumber: 'V900000545',
-    legalName: 'Global Services Inc',
+    legalName: 'Global Services Inc (Pennylane)',
     subscriptions: [pennylaneSubscription],
   }),
 }
@@ -379,25 +383,45 @@ export const entitiesHandlers = [
     const url = new URL(request.url)
     const accountId = Number(url.searchParams.get('accountId'))
 
-    // Base permissions (without Pennylane)
-    const basePermissions = [
-      'CLGED0002', // ACCEDER_GED_COMPTABLE
-      'CLGED0001', // ACCEDER_GED_GESTION_SOCIALE
-      'CLRAPP001', // ACCEDER_RAPPORTS_BI_FINANCIER
-      'CLRAPP002', // ACCEDER_RAPPORTS_BI_RH
-      'CLMEG001',  // ACCEDER_OUTIL_MEG
-      'CLUSER001', // CONSULTER_UTILISATEURS
+    // Acme Corp (basic) - New client with minimal permissions
+    const basicPermissions = [
+      CustomerPermission.CONSULTER_UTILISATEURS,
+      CustomerPermission.ACCEDER_INFORMATIONS_ENTREPRISE,
+      CustomerPermission.ACCEDER_OFFRES_SOUSCRITES,
     ]
 
-    // Pennylane permissions for entity 3 (Global Services Inc)
+    // Tech Solutions Ltd (legacy) - Legacy GED + PowerBI + Launcher
+    const legacyGedPermissions = [
+      CustomerPermission.ACCEDER_GED_COMPTABLE,
+      CustomerPermission.ACCEDER_GED_GESTION_SOCIALE,
+      CustomerPermission.ACCEDER_RAPPORTS_BI_FINANCIER,
+      CustomerPermission.ACCEDER_RAPPORTS_BI_RH,
+      CustomerPermission.ACCEDER_OUTIL_MEG,
+      CustomerPermission.CONSULTER_UTILISATEURS,
+      CustomerPermission.ACCEDER_INFORMATIONS_ENTREPRISE,
+      CustomerPermission.ACCEDER_OFFRES_SOUSCRITES,
+    ]
+
+    // Global Services Inc (Pennylane) - Pennylane accounting + social management + PowerBI + Launcher
     const pennylanePermissions = [
-      'CLPEN001',    // ACCEDER_OUTIL_PENNYLANE
-      'CLGEDPEN01',  // ACCEDER_DOCUMENTS_PENNYLANE
+      CustomerPermission.ACCEDER_OUTIL_PENNYLANE,
+      CustomerPermission.ACCEDER_DOCUMENTS_PENNYLANE,
+      CustomerPermission.ACCEDER_GED_GESTION_SOCIALE,
+      CustomerPermission.ACCEDER_RAPPORTS_BI_FINANCIER,
+      CustomerPermission.ACCEDER_RAPPORTS_BI_RH,
+      CustomerPermission.ACCEDER_OUTIL_MEG,
+      CustomerPermission.CONSULTER_UTILISATEURS,
+      CustomerPermission.ACCEDER_INFORMATIONS_ENTREPRISE,
+      CustomerPermission.ACCEDER_OFFRES_SOUSCRITES,
     ]
 
-    const permissions = accountId === 3
-      ? [...basePermissions, ...pennylanePermissions]
-      : basePermissions
+    const permissionsMap: Record<number, string[]> = {
+      [MockEntityId.BASIC]: basicPermissions,
+      [MockEntityId.LEGACY_GED]: legacyGedPermissions,
+      [MockEntityId.PENNYLANE]: pennylanePermissions,
+    }
+
+    const permissions = permissionsMap[accountId] ?? basicPermissions
 
     return HttpResponse.json(permissions)
   }),

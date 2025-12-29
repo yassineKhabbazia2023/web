@@ -1,5 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { IS_UNITARY_VIEW_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
+import { IS_UNITARY_VIEW_META, LAYOUT_NO_PADDING_META, PERMISSIONS_META, ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 import { CUSTOMER_ROUTES } from '../customer.routes'
 
 import { entityOverviewCustomerRoutes } from './customer.entity.overview.routes'
@@ -38,6 +38,7 @@ export const entityCustomerRoutes = [
         component: () => import('@pulse/powerbi/entity-pages').then(pages => pages.BiReports),
         meta: {
           [LAYOUT_NO_PADDING_META]: true,
+          [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.POWERBI_REPORT,
         },
       },
       // LAUNCHER
@@ -46,6 +47,7 @@ export const entityCustomerRoutes = [
         name: CUSTOMER_ROUTES.entity.launcher.name,
         meta: {
           [IS_UNITARY_VIEW_META]: true,
+          [PERMISSIONS_META]: ACCOUNT_PERMISSIONS.APPS,
         },
         component: () => import('@pulse/launcher/pages').then(pages => pages.Launcher),
       },
