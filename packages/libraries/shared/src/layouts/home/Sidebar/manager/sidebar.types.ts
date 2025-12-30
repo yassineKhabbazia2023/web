@@ -9,7 +9,7 @@ export interface MenuItemConfig {
   id: string
   title: string // i18n key
   icon: IconName
-  routeName: RouteName // Route name from APP_ROUTES
+  routeName: RouteName
   shouldDisplay: (context: MenuContext) => boolean
   order: number
   featureName?: string // For Amplitude tracking

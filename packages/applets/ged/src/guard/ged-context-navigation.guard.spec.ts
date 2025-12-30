@@ -1,6 +1,5 @@
 import type { LocationQuery, RouteLocationNormalizedGeneric } from 'vue-router'
-import { APP_ROUTES } from '@pulse/common/constants'
-import { NotificationKindEnum } from '@pulse/common/enums'
+import { NotificationKindEnum, RouteName } from '@pulse/common/enums'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
 import { logger } from '@pulse/toolbox'
 import { gedLegacyRouteUpdate } from './ged-context-navigation.guard'
@@ -48,10 +47,10 @@ describe('GedContextNavigationGuard', () => {
           expect.stringContaining('[RouteUpdate]'),
         )
         expect(logger.trace).toHaveBeenCalledWith(
-          expect.stringContaining(APP_ROUTES.entity.pennylaneSocialManagement.name),
+          expect.stringContaining(RouteName.PENNYLANE_SOCIAL_MANAGEMENT),
         )
         expect(nextMock).toHaveBeenCalledWith({
-          name: APP_ROUTES.entity.pennylaneSocialManagement.name,
+          name: RouteName.PENNYLANE_SOCIAL_MANAGEMENT,
           query: { additionalParam: 'value' },
           params: to.params,
         })
@@ -71,10 +70,10 @@ describe('GedContextNavigationGuard', () => {
           expect.stringContaining('[RouteUpdate]'),
         )
         expect(logger.trace).toHaveBeenCalledWith(
-          expect.stringContaining(APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name),
+          expect.stringContaining(RouteName.PENNYLANE_GED_LEGACY),
         )
         expect(nextMock).toHaveBeenCalledWith({
-          name: APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name,
+          name: RouteName.PENNYLANE_GED_LEGACY,
           query: { entityId: '123' },
           params: to.params,
         })

@@ -1,7 +1,6 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { NotificationKindEnum, RouteName } from '@pulse/common/enums'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
-import { NotificationKindEnum } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
 
 /**
@@ -19,9 +18,9 @@ export function gedLegacyBeforeEnter(
     let routeName: string | undefined
 
     if (notificationType === NotificationKindEnum.GSDocumentUploaded) {
-      routeName = APP_ROUTES.entity.pennylaneSocialManagement.name
+      routeName = RouteName.PENNYLANE_SOCIAL_MANAGEMENT
     } else if (notificationType === NotificationKindEnum.AccountingDocumentUploaded) {
-      routeName = APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name
+      routeName = RouteName.PENNYLANE_GED_LEGACY
     }
 
     if (routeName) {
@@ -41,7 +40,7 @@ export function gedLegacyBeforeEnter(
     PennylanePermissionsManager.hasSocialManagementV2() === true
   ) {
     // DENY access to Legacy GED when we have access to Pennylane Accounting page or SocialManagement V2
-    return next({ name: APP_ROUTES.error.error404.name })
+    return next({ name: RouteName.ERROR404 })
   }
   return next()
 }
@@ -57,7 +56,7 @@ export function pennylaneSocialManagementBeforeEnter(
 ) {
   if (PennylanePermissionsManager.hasSocialManagementV2() === false) {
     // DENY access Social Management when we DO NOT have access to Social Management V2
-    return next({ name: APP_ROUTES.error.error404.name })
+    return next({ name: RouteName.ERROR404 })
   }
   return next()
 }
@@ -73,7 +72,7 @@ export function pennylaneAccountingBeforeEnter(
 ) {
   if (PennylanePermissionsManager.hasPennylaneAccountingPermission() === false) {
     // Can not access to Pennylane Accounting page when we don't have those specific permissions
-    return next({ name: APP_ROUTES.error.error404.name })
+    return next({ name: RouteName.ERROR404 })
   }
   return next()
 }
@@ -88,7 +87,7 @@ export function pennylaneGedV2BeforeEnter(
   next: NavigationGuardNext,
 ) {
   if (PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === false) {
-    return next({ name: APP_ROUTES.error.error404.name })
+    return next({ name: RouteName.ERROR404 })
   }
   return next()
 }

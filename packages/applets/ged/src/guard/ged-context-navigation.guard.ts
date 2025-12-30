@@ -1,7 +1,6 @@
 import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { NotificationKindEnum, RouteName } from '@pulse/common/enums'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
-import { NotificationKindEnum } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
 
 /**
@@ -20,9 +19,9 @@ export function gedLegacyRouteUpdate(
     let routeName: string | undefined
 
     if (notificationType === NotificationKindEnum.GSDocumentUploaded) {
-      routeName = APP_ROUTES.entity.pennylaneSocialManagement.name
+      routeName = RouteName.PENNYLANE_SOCIAL_MANAGEMENT
     } else if (notificationType === NotificationKindEnum.AccountingDocumentUploaded) {
-      routeName = APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name
+      routeName = RouteName.PENNYLANE_GED_LEGACY
     }
 
     if (routeName !== undefined) {

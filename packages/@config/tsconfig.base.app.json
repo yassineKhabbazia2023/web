@@ -12,9 +12,6 @@
     "declarationDir": "./dist/types",
     "outDir": "./dist/types",
     "paths": {
-      "@app/*": [
-        "../apps/plu/src/*"
-      ],
       "@collaborator/*": [
         "../apps/collaborator/src/*"
       ],
@@ -72,9 +69,6 @@
     }
   },
   "references": [
-    {
-      "path": "./packages/apps/plu"
-    },
     {
       "path": "./packages/applets/booking"
     },

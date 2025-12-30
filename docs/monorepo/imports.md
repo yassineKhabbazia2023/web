@@ -65,7 +65,7 @@ import { PButton } from '@pulse/styleguide/components'
 
 ```typescript
 // ✅ Correct - Import de constantes
-import { APP_ROUTES } from '@pulse/common/constants'
+import { CONSTANT } from '@pulse/common/constants'
 
 // ✅ Correct - Import de types
 import type { User } from '@pulse/common/types'
@@ -162,10 +162,10 @@ Préférez les imports spécifiques aux imports globaux :
 ```typescript
 // ✅ Préféré - import granulaire
 import { CurrentUserManager } from '@pulse/common/managers'
-import { APP_ROUTES } from '@pulse/common/constants'
+import { CONSTANT } from '@pulse/common/constants'
 
 // ⚠️ Moins optimal - on préfère l'import granulaire à l'import global
-import { CurrentUserManager, APP_ROUTES } from '@pulse/common'
+import { CurrentUserManager, CONSTANT } from '@pulse/common'
 ```
 
 ### Groupement des imports

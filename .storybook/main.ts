@@ -155,10 +155,6 @@ const config: StorybookConfig = {
         replacement: fileURLToPath(new URL('../packages/apps/customer/src', import.meta.url)),
       },
       {
-        find: '@app',
-        replacement: fileURLToPath(new URL('../packages/apps/plu/src', import.meta.url)),
-      },
-      {
         find: '@shared',
         replacement: fileURLToPath(new URL('../packages/libraries/shared/src', import.meta.url)),
       },

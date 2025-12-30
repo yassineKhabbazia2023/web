@@ -1,6 +1,5 @@
 import type { LocationQuery, RouteLocationNormalizedGeneric } from 'vue-router'
-import { APP_ROUTES } from '@pulse/common/constants'
-import { NotificationKindEnum } from '@pulse/common/enums'
+import { NotificationKindEnum, RouteName } from '@pulse/common/enums'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
 import { logger } from '@pulse/toolbox'
 import {
@@ -42,10 +41,10 @@ describe('gedLegacyBeforeEnter', () => {
       gedLegacyBeforeEnter(to, from, nextMock)
 
       expect(logger.trace).toHaveBeenCalledWith(
-        expect.stringContaining(APP_ROUTES.entity.pennylaneSocialManagement.name),
+        expect.stringContaining(RouteName.PENNYLANE_SOCIAL_MANAGEMENT),
       )
       expect(nextMock).toHaveBeenCalledWith({
-        name: APP_ROUTES.entity.pennylaneSocialManagement.name,
+        name: RouteName.PENNYLANE_SOCIAL_MANAGEMENT,
         query: to.query,
         params: to.params,
       })
@@ -57,10 +56,10 @@ describe('gedLegacyBeforeEnter', () => {
       gedLegacyBeforeEnter(to, from, nextMock)
 
       expect(logger.trace).toHaveBeenCalledWith(
-        expect.stringContaining(APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name),
+        expect.stringContaining(RouteName.PENNYLANE_GED_LEGACY),
       )
       expect(nextMock).toHaveBeenCalledWith({
-        name: APP_ROUTES.entity.pennylaneAccounting.gedLegacy.name,
+        name: RouteName.PENNYLANE_GED_LEGACY,
         query: to.query,
         params: to.params,
       })
@@ -97,7 +96,7 @@ describe('gedLegacyBeforeEnter', () => {
 
       gedLegacyBeforeEnter(to, from, nextMock)
 
-      expect(nextMock).toHaveBeenCalledWith({ name: APP_ROUTES.error.error404.name })
+      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
     })
 
     it('should deny access when user has Social Management V2 permission', () => {
@@ -107,7 +106,7 @@ describe('gedLegacyBeforeEnter', () => {
 
       gedLegacyBeforeEnter(to, from, nextMock)
 
-      expect(nextMock).toHaveBeenCalledWith({ name: APP_ROUTES.error.error404.name })
+      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
     })
 
     it('should deny access when user has both Pennylane permissions', () => {
@@ -117,7 +116,7 @@ describe('gedLegacyBeforeEnter', () => {
 
       gedLegacyBeforeEnter(to, from, nextMock)
 
-      expect(nextMock).toHaveBeenCalledWith({ name: APP_ROUTES.error.error404.name })
+      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
     })
 
     it('should allow access when user has no Pennylane permissions', () => {
@@ -152,7 +151,7 @@ describe('pennylaneSocialManagementBeforeEnter', () => {
 
     pennylaneSocialManagementBeforeEnter(to, from, nextMock)
 
-    expect(nextMock).toHaveBeenCalledWith({ name: APP_ROUTES.error.error404.name })
+    expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
   })
 })
 
@@ -176,7 +175,7 @@ describe('pennylaneAccountingBeforeEnter', () => {
 
     pennylaneAccountingBeforeEnter(to, from, nextMock)
 
-    expect(nextMock).toHaveBeenCalledWith({ name: APP_ROUTES.error.error404.name })
+    expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
   })
 })
 
@@ -200,6 +199,6 @@ describe('pennylaneGedV2BeforeEnter', () => {
 
     pennylaneGedV2BeforeEnter(to, from, nextMock)
 
-    expect(nextMock).toHaveBeenCalledWith({ name: APP_ROUTES.error.error404.name })
+    expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
   })
 })
