@@ -26,6 +26,7 @@
             pType="primary"
             size="small"
             :loading="isConfirmButtonLoading"
+            data-testid="ged-popup-confirm-button"
             @click="handleConfirmButtonClick"
           >
             {{ confirmButtonContent }}

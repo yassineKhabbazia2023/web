@@ -38,7 +38,7 @@
           :pShowAfter="500"
           :pHideAfter="0"
         >
-          <span class="tree-node__label">{{ data.name }}</span>
+          <span class="tree-node__label" data-testid="ged-tree-node-label">{{ data.name }}</span>
         </PTooltip>
         <TreeNodeActions
           v-if="!data.isRootFolder"

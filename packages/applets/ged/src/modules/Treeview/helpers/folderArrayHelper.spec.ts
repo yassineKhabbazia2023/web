@@ -122,6 +122,7 @@ describe('folderArrayHelper.spec', () => {
             children: [],
             permissions: [
               'CAN_DELETE_FILES',
+              'CAN_DELETE_FOLDER',
               'CAN_UPLOAD_FILES',
               'CAN_CREATE_FOLDER',
               'CAN_MOVE_INTO_FOLDER',

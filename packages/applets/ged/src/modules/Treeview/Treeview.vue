@@ -1,5 +1,9 @@
 <template>
-  <div class="treeview" :class="{ 'treeview--is-loading': isLoading }">
+  <div
+    class="treeview"
+    :class="{ 'treeview--is-loading': isLoading }"
+    data-testid="ged-treeview"
+  >
     <div v-if="isLoading || currentServiceName === null" class="treeview__loader">
       <PLoader pType="primary" size="42" />
     </div>
