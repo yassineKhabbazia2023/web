@@ -22,6 +22,7 @@ export enum RouteName {
   HOMEPAGE = 'homepage',
   LANDING = 'landing',
   INFO = 'info',
+  RYDGE_INVOICES = 'invoices',
   LAUNCHER = 'launcher',
   LOGIN_CLIENT = 'loginClient',
   LOGIN_COLLAB = 'loginCollab',

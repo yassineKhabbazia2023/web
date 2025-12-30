@@ -56,11 +56,14 @@ const { isCollab } = storeToRefs(userStore)
 const tabTitles: Record<TabName, string> = {
   offers: t('offers'),
   info: t('info'),
+  invoices: t('invoices'),
   users: t('users'),
   collab: t('collab'),
   delegationsHistory: t('delegationsHistory'),
 }
-const tabAuthorisations = computed(() => getTabAuthorisations(isCollab.value ?? false))
+const tabAuthorisations = computed(() =>
+  getTabAuthorisations(isCollab.value ?? false, currentEntity.value?.isSignatory === true),
+)
 
 const tabsList = computed<Tab[]>(() => getTabs(tabAuthorisations.value, tabTitles))
 
@@ -90,11 +93,13 @@ en-US:
   collab: 'Collaborators'
   offers: 'Offers'
   info: 'Information'
+  invoices: 'RYDGE Conseil invoices'
   delegationsHistory: 'Delegations history'
 fr-FR:
   users: 'Utilisateurs'
   collab: 'Collaborateurs'
   offers: 'Offres'
   info: 'Informations'
+  invoices: 'Factures RYDGE Conseil'
   delegationsHistory: 'Historique des délégations'
 </i18n>

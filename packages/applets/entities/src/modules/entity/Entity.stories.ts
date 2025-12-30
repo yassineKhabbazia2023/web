@@ -6,6 +6,7 @@ import { getMockedUser, getMockedEntitySummary } from '@pulse/common/mocks'
 import { CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
 import Entity from './Entity.page.vue'
 import Offers from './pages/offers/Offers.vue'
+import Invoices from './pages/invoices/Invoices.vue'
 import Information from './pages/information/Information.vue'
 import Users from './pages/users/Users.vue'
 import Collaborators from './pages/collaborators/Collaborators.vue'
@@ -31,6 +32,7 @@ const parentRoute = {
   component: { template: '<router-view />' },
   children: [
     { path: 'offers', name: 'offers', component: Offers },
+    { path: 'factures-rydge-conseil', name: 'invoices', component: Invoices },
     { path: 'info', name: 'info', component: Information },
     { path: 'users', name: 'users', component: Users },
     { path: 'collab', name: 'collab', component: Collaborators },

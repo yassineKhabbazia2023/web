@@ -1,5 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
-import { IS_UNITARY_VIEW_META } from '@pulse/common/constants'
+import { FEATURE_FLAG_META, IS_UNITARY_VIEW_META } from '@pulse/common/constants'
+import { Feature } from '@pulse/common/enums'
 import { COLLABORATOR_ROUTES } from '@collaborator/router/collaborator.routes'
 
 /**
@@ -29,6 +30,14 @@ export const entityOverviewCollaboratorRoutes: RouteRecordRaw[] = [
         path: COLLABORATOR_ROUTES.entity.overview.offers.path,
         name: COLLABORATOR_ROUTES.entity.overview.offers.name,
         component: () => import('@pulse/entities/entity-pages').then(pages => pages.Offers),
+      },
+      {
+        path: COLLABORATOR_ROUTES.entity.overview.invoices.path,
+        name: COLLABORATOR_ROUTES.entity.overview.invoices.name,
+        meta: {
+          [FEATURE_FLAG_META]: Feature.RYDGE_INVOICES,
+        },
+        component: () => import('@pulse/entities/entity-pages').then(pages => pages.Invoices),
       },
       {
         path: COLLABORATOR_ROUTES.entity.overview.info.path,

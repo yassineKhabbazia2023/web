@@ -1,4 +1,4 @@
-export type TabName = 'offers' | 'info' | 'users' | 'collab' | 'delegationsHistory'
+export type TabName = 'offers' | 'invoices' | 'info' | 'users' | 'collab' | 'delegationsHistory'
 
 export interface Tab {
   name: TabName

@@ -16,6 +16,7 @@ export const COLLABORATOR_ROUTES = {
       users: { path: 'gestion-utilisateurs', name: RouteName.USERS },
       collab: { path: 'collaborateurs', name: RouteName.COLLAB },
       offers: { path: 'offres', name: RouteName.OFFERS },
+      invoices: { path: 'factures-rydge-conseil', name: RouteName.RYDGE_INVOICES },
       info: { path: 'informations', name: RouteName.INFO },
       delegationsHistory: { path: 'historique-delegations', name: RouteName.DELEGATIONS_HISTORY },
     },

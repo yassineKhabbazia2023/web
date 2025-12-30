@@ -25,6 +25,7 @@ export const CUSTOMER_ROUTES = {
       root: { path: '', name: RouteName.ENTITY_OVERVIEW },
       users: { path: 'gestion-utilisateurs', name: RouteName.USERS },
       offers: { path: 'offres', name: RouteName.OFFERS },
+      invoices: { path: 'factures-rydge-conseil', name: RouteName.RYDGE_INVOICES },
       info: { path: 'informations', name: RouteName.INFO },
     },
     powerbi: { path: 'rapports-bi', name: RouteName.REPORTS },
