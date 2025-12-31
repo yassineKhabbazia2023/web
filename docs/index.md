@@ -15,6 +15,5 @@ hero:
   actions:
     - theme: brand
       text: Démarrer
-      link: /getting-started
----
+      link: /onboarding
 

@@ -1,4 +1,4 @@
-# Explications du monorepo Pulse.Web
+# Explications du projet Pulse.Web
 
 Ce projet utilise les **npm workspaces** pour gérer l'ensemble des packages dans un monorepo unifié.
 
@@ -24,7 +24,7 @@ Ce projet utilise les **npm workspaces** pour gérer l'ensemble des packages dan
 
 ## Comment ça fonctionne
 
-Le monorepo Pulse.Web est organisé de manière logique et modulaire :
+Le monorepo Pulse.Web est organisé de manière modulaire :
 
 ### Architecture en couches
 - **`apps/`** : Les applications hôtes (customer et collaborator) qui orchestrent l'ensemble
@@ -42,7 +42,6 @@ Les fichiers de configuration à la racine permettent une gestion unifiée :
 - **TypeScript** : `tsconfig.json` avec des alias de chemins pour faciliter les imports
 - **ESLint** : `eslint.config.mjs` pour des règles de code cohérentes
 - **Vitest** : `vitest.config.ts` pour les tests unitaires
-- **Git hooks** : `.husky/` pour automatiser les vérifications avant commit
 
 ## Pourquoi cette organisation ?
 

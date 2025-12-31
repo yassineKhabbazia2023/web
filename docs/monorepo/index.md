@@ -1,19 +1,94 @@
-# Monorepo
+# Le concept de Monorepo
 
 ## Qu'est-ce qu'un monorepo ?
 
-Un monorepo est une stratégie de gestion de code source où plusieurs projets liés sont stockés dans un unique dépôt, plutôt que dans des dépôts séparés.
+Un **monorepo** (monolithic repository) est une stratégie de gestion de code où plusieurs projets sont stockés dans un seul repository Git. Contrairement à l'approche "polyrepo" où chaque package a son propre repository, le monorepo centralise tout le code dans un seul endroit.
 
-### Avantages pour le développement
+## Pourquoi un monorepo ?
 
-* Partage de code facilité : on peut aisément retrouver les composants UI, utilitaires et configurations à travers différentes applications (via la recherche ou la navigation vers l'implémentation)
+### Avantages
 
-* Cohérence technique : les versions de dépendances et d'outils de build sont de facto harmonisées
+- **Partage de code simplifié** : Les libraries communes sont directement accessibles sans publication npm
+- **Refactoring global** : Renommer une fonction ou un type se propage instantanément partout
+- **Versioning unifié** : Toutes les dépendances internes sont toujours synchronisées
+- **CI/CD centralisée** : Un seul pipeline pour tout le projet
+- **Visibilité complète** : Chaque développeur voit l'ensemble du code
 
-* Refactoring simplifié : on modifie dans la même PR les API partagées et on visualise immédiatement l'impact sur l'application en local
+### Inconvénients à connaître
 
-### Caractéristiques principales
+- **Clone initial plus long** : Le repository contient tout le code
+- **Build potentiellement plus long** : Nécessite des optimisations (caching, builds incrémentaux)
+- **Permissions globales** : Tout le monde a accès à tout le code
 
-* Structure organisée : Un monorepo contient typiquement plusieurs packages, applications ou bibliothèques dans des sous-répertoires bien définis (souvent dans un dossier `packages`)
+## Notre implémentation
 
-* Histoire de commits unifiée : Toutes les modifications apportées aux différents projets sont tracées dans une chronologie commune, facilitant la compréhension de l'évolution globale
+Pulse.Web utilise **npm workspaces** pour gérer le monorepo. Chaque package est déclaré dans le `package.json` racine :
+
+```json
+{
+  "workspaces": [
+    "packages/apps/*",
+    "packages/applets/*",
+    "packages/libraries/*"
+  ]
+}
+```
+
+### Structure des packages
+
+```
+packages/
+├── apps/           # Applications déployables
+│   ├── customer/
+│   ├── collaborator/
+│   └── backoffice/
+├── applets/        # Fonctionnalités métier
+│   ├── ged/
+│   ├── login/
+│   └── ...
+└── libraries/      # Code partagé
+    ├── common/
+    ├── shared/
+    ├── toolbox/
+    └── styleguide/
+```
+
+### Dépendances internes
+
+Les packages se référencent entre eux via leur nom npm :
+
+```json
+// packages/apps/customer/package.json
+{
+  "dependencies": {
+    "@pulse/common": "1.0.0",
+    "@pulse/styleguide": "3.1.0",
+    "@pulse/ged": "1.0.0"
+  }
+}
+```
+
+npm workspaces résout automatiquement ces dépendances vers les packages locaux.
+
+## Commandes utiles
+
+```bash
+# Installer toutes les dépendances (à la racine)
+npm install
+
+# Exécuter un script dans un workspace spécifique
+npm run dev --workspace=@pulse/customer
+
+# Exécuter un script dans tous les workspaces
+npm run build --workspaces
+
+# Lister tous les workspaces
+npm query .workspace
+```
+
+## Bonnes pratiques
+
+1. **Toujours travailler à la racine** : Lancer `npm install` depuis la racine du projet
+2. **Respecter les frontières** : Les apps importent les libraries, pas l'inverse
+3. **Utiliser les alias** : Importer via `@pulse/common` et non des chemins relatifs
+4. **Vérifier les dépendances** : `npm run syncpack:list` pour détecter les incohérences

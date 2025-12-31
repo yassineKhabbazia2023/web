@@ -15,8 +15,8 @@ export default defineConfig({
     siteTitle: 'Front-End Doc',
     nav: [
       {
-        text: 'Home',
-        link: '/',
+        text: 'Onboarding',
+        link: '/onboarding/',
       },
       {
         text: 'Getting-started',
@@ -25,6 +25,14 @@ export default defineConfig({
       {
         text: 'Monorepo',
         link: '/monorepo/',
+      },
+      {
+        text: 'PLU',
+        link: '/plu/structure',
+      },
+      {
+        text: 'Back-Office',
+        link: '/backoffice/',
       },
       {
         text: 'Guidelines',
@@ -43,78 +51,102 @@ export default defineConfig({
           link: '/getting-started/how-to-doc',
         },
       ],
+      '/onboarding/': [
+        {
+          text: 'Vue d\'ensemble',
+          link: '/onboarding/',
+        },
+      ],
+      '/backoffice/': [
+        {
+          text: 'Back-Office',
+          link: '/backoffice/',
+        },
+      ],
       '/monorepo/': [
         {
-          text: 'Monorepo',
+          text: 'Le concept de Monorepo',
           link: '/monorepo/',
-          items: [
-            {
-              text: 'Structure du Monorepo',
-              link: '/monorepo/structure',
-            },
-            {
-              text: 'Imports dans le Monorepo',
-              link: '/monorepo/imports',
-            },
-          ],
+        },
+        {
+          text: 'Imports dans le Monorepo',
+          link: '/monorepo/imports',
+        },
+        {
+          text: 'Stack technique',
+          link: '/monorepo/stack',
+        },
+      ],
+      '/plu/': [
+        {
+          text: 'Structure de la PLU',
+          link: '/plu/structure',
+        },
+        {
+          text: 'Routing',
+          link: '/plu/routing',
+        },
+        {
+          text: 'Experience & Layouts',
+          link: '/plu/experience',
         },
         {
           text: 'Packages',
           items: [
             {
               text: 'Customer',
-              link: '/monorepo/customer',
+              link: '/plu/customer',
             },
             {
               text: 'Collaborator',
-              link: '/monorepo/collaborator',
+              link: '/plu/collaborator',
             },
             {
               text: 'Applets',
               items: [
                 {
                   text: 'Booking',
-                  link: '/monorepo/applets/booking',
+                  link: '/plu/applets/booking',
                 },
                 {
                   text: 'Entities',
-                  link: '/monorepo/applets/entities',
+                  link: '/plu/applets/entities',
                 },
                 {
                   text: 'Feed Center',
-                  link: '/monorepo/applets/feed-center',
+                  link: '/plu/applets/feed-center',
                 },
                 {
                   text: 'GED',
-                  link: '/monorepo/applets/ged',
+                  link: '/plu/applets/ged',
                 },
                 {
                   text: 'Homepage',
-                  link: '/monorepo/applets/homepage',
+                  link: '/plu/applets/homepage',
                 },
                 {
                   text: 'Launcher',
-                  link: '/monorepo/applets/launcher',
+                  link: '/plu/applets/launcher',
                 },
                 {
                   text: 'Login',
-                  link: '/monorepo/applets/login',
+                  link: '/plu/applets/login',
                 },
                 {
                   text: 'Mandate',
-                  link: '/monorepo/applets/mandate',
+                  link: '/plu/applets/mandate',
                 },
                 {
                   text: 'Offers-catalog',
-                  link: '/monorepo/applets/offers-catalog',
+                  link: '/plu/applets/offers-catalog',
                 },
                 {
                   text: 'Pennylane',
-                  link: '/monorepo/applets/pennylane',
+                  link: '/plu/applets/pennylane',
                 },
                 {
                   text: 'Power BI',
-                  link: '/monorepo/applets/powerbi',
+                  link: '/plu/applets/powerbi',
                 },
               ],
             },
@@ -123,27 +155,27 @@ export default defineConfig({
               items: [
                 {
                   text: 'Toolbox',
-                  link: '/monorepo/libraries/toolbox',
+                  link: '/plu/libraries/toolbox',
                 },
                 {
                   text: 'Common',
-                  link: '/monorepo/libraries/common',
+                  link: '/plu/libraries/common',
                 },
                 {
                   text: 'Shared',
-                  link: '/monorepo/libraries/shared',
+                  link: '/plu/libraries/shared',
                 },
                 {
                   text: 'StyleGuide',
-                  link: '/monorepo/libraries/styleguide/styleguide',
+                  link: '/plu/libraries/styleguide/styleguide',
                 },
                 {
                   text: 'Widgets',
-                  link: '/monorepo/libraries/widgets/widgets',
+                  link: '/plu/libraries/widgets/widgets',
                   items: [
                     {
                       text: 'Comment créer un widget',
-                      link: '/monorepo/libraries/widgets/how-to-widgets',
+                      link: '/plu/libraries/widgets/how-to-widgets',
                     },
                   ],
                 },
