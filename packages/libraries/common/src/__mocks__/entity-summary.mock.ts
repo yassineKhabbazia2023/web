@@ -1,7 +1,8 @@
 import type { Office, Deployment, Subscription, Address, EntitySummary } from '@common/types'
+import { MockEntityData } from './entities.constants'
 
 const address: Address = {
-  addressId: 3268,
+  addressId: MockEntityData.BASIC.accountId,
   addressLine1: '2 avenue Gambetta',
   addressLine2: 'Tour Eqho',
   addressLine3: '',
@@ -18,23 +19,12 @@ const office: Office = {
   officeId: 100,
   name: 'Paris La Défense - Courbevoie',
   phoneNumber: 'Numéro non trouvé',
-  addressId: 3268,
-  address: {
-    addressId: 3268,
-    addressLine1: '2 avenue Gambetta',
-    addressLine2: 'Tour Eqho',
-    addressLine3: '',
-    state: '',
-    zipCode: '92400',
-    country: 'France',
-    city: 'Courbevoie',
-    addressType: 'delivery',
-    latitude: 48.884810,
-    longitude: 2.236140,
-  },
+  addressId: MockEntityData.BASIC.accountId,
+  address,
 }
+
 const deployment: Deployment = {
-  deploymentId: 672,
+  deploymentId: MockEntityData.BASIC.accountId,
   deploymentDate: '2024-09-26T15:16:13.7406315',
   status: 3,
 }
@@ -44,7 +34,7 @@ export function getMockedSubscription(override: Partial<Subscription> = {}): Sub
     subscriptionId: 480,
     offerId: 1,
     status: 'validated',
-    accountId: 602,
+    accountId: MockEntityData.BASIC.accountId,
     offerCode: 'MEG Smart',
     offerName: 'Mes modules de gestion : RCA MEG Smart',
     creationDate: '2025-07-11T12:03:15.5724735',
@@ -58,30 +48,33 @@ export function getMockedSubscription(override: Partial<Subscription> = {}): Sub
 }
 
 const subscriptions: Subscription[] = [
-  getMockedSubscription(), {
+  getMockedSubscription(),
+  {
     subscriptionId: 481,
     offerId: 5,
     status: 'validated',
-    accountId: 602,
+    accountId: MockEntityData.BASIC.accountId,
     offerCode: 'Silae Externalisation',
     offerName: 'Externalisation de la paie',
     creationDate: '2025-07-21T17:44:48.953619',
-  }, {
+  },
+  {
     subscriptionId: 504,
     offerId: 8,
     status: 'validated',
-    accountId: 602,
+    accountId: MockEntityData.BASIC.accountId,
     offerCode: 'Pennylane',
     offerName: 'RYDGE Conseil x Pennylane',
     creationDate: '2025-07-28T14:23:59.6203772',
     validator: 'migration',
-  }]
+  },
+]
 
 export const entitySummaryMock: EntitySummary = {
-  accountId: 602,
-  accountGlobalUniqueId: '6dc0650b-55c7-44f9-aa34-a12b90a34647',
-  accountNumber: '2025546345',
-  legalName: 'Boulangerie Bel Epi',
+  accountId: MockEntityData.BASIC.accountId,
+  accountGlobalUniqueId: MockEntityData.BASIC.accountGlobalUniqueId,
+  accountNumber: MockEntityData.BASIC.accountNumber,
+  legalName: MockEntityData.BASIC.legalName,
   missionType: 'Revision',
   officeId: 100,
   office,

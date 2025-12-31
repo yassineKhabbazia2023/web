@@ -6,6 +6,7 @@
       { 'sidenav-entity-menu--is-collab': isCollab },
       { 'sidenav-entity-menu--is-single-entity': canBeConsideredSingleEntity },
     ]"
+    data-testid="sidenav-entity-menu"
     @mouseover="isMenuCollapsed = false"
     @mouseleave="isMenuCollapsed = true"
   >

@@ -10,7 +10,6 @@
     "./msw": "./src/msw/worker.ts",
     "./msw/bootstrap": "./src/msw/bootstrap.ts",
     "./handlers": "./src/handlers/index.ts",
-    "./constants": "./src/constants/index.ts",
     "./helpers": "./src/helpers/index.ts",
     "./vite-plugin": "./src/vite-plugin/plugin.e2e.ts",
     "./shims/vitest": "./src/shims/vitest-shim.ts",

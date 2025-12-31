@@ -2,10 +2,9 @@ import { beforeEach, describe, it, expect, vi } from 'vitest'
 import { flushPromises, mount } from '@vue/test-utils'
 import type { Tab } from './types'
 import * as EntityHelper from './entity-helper'
-import { getMockedEntitySummary } from '@pulse/common/mocks'
+import { getMockedEntitySummary, getMockedEntity } from '@pulse/common/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import type { ComponentWrapper } from '@entities/types'
-import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 
 import Entity from './Entity.page.vue'
@@ -31,7 +30,7 @@ const mockedTabs: Tab[] = [
     title: 'Informations',
   },
 ]
-const entitySummaryMock = getMockedEntitySummary(mockedEntity)
+const entitySummaryMock = getMockedEntitySummary(getMockedEntity())
 
 vi.mock('@pulse/common', () => ({
   sanitizeUrl: vi.fn(),

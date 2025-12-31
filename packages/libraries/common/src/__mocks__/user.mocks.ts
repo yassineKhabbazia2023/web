@@ -1,4 +1,4 @@
-import type { UserInfo, UserInfoApi, UserContextInfo } from '../stores/types'
+import type { UserInfo, UserInfoApi, UserContextInfo } from '../types/user.type'
 import { getPermissionsMock } from './permissions.mocks'
 
 export const getMockedUser = (override: Partial<UserInfo> = {}) => {

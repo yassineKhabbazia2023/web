@@ -6,7 +6,7 @@ import {
   getMockReportStatistics,
   getMockReportErrors,
 } from '@pulse/powerbi/mocks'
-import { MockEntityId } from '../constants'
+import { MockEntityId } from '@pulse/common/mocks'
 
 export const powerbiHandlers = [
   // Fetch BI reports for an entity (customer view)

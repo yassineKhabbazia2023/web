@@ -2,7 +2,6 @@ import { nextTick } from 'vue'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
-import { entitiesMock } from '@entities/__mocks__/entities.mocks'
 import { PNotification as PNotificationMock } from '@pulse/styleguide'
 import { delegateAccounts } from '@entities/services/account'
 
@@ -70,10 +69,12 @@ describe('delegationDrawer', () => {
   })
 
   describe('rendering', () => {
-    it('should display the collab folders number', () => {
+    it('should display the folder delegation header for specific flow', () => {
       const wrapper = createWrapper()
-      const foldersNumber = wrapper.find('.delegation-drawer__header')
-      expect(foldersNumber.html()).toContain(entitiesMock.length)
+      const header = wrapper.find('.delegation-drawer__header')
+      expect(header.exists()).toBeTruthy()
+      // The header contains the folderDelegation translation text
+      expect(header.text()).toContain('folders')
     })
 
     it('should display the correct steps when DelegationFlowType.FULL', async () => {

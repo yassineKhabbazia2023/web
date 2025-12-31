@@ -1,5 +1,11 @@
 import type { DeploymentStatus, State, WalletData, SearchCriteria } from '@entities/modules/wallet/types'
 import type { QueryResult, SortingCriteria } from '@pulse/common/types'
+import { MockEntityData, getMockSignatory, getMockAddress, getMockHub } from '@pulse/common/mocks'
+import { getAvatarColorFromKey } from '@pulse/styleguide'
+
+const basicSignatory = getMockSignatory('BASIC')
+const basicAddress = getMockAddress('BASIC')
+const basicHub = getMockHub('BASIC')
 
 export function getMockedState(override: Partial<State> = {}): State {
   const defaultState = {
@@ -54,25 +60,27 @@ export function getMockedDeploymentStatus(override: Partial<DeploymentStatus> = 
 
 export function getMockedMappedAccount(
   override: Partial<WalletData> = {},
-  avatarColor = 'persian-light',
 ): WalletData {
+  const accountNumber = override.accountNumber ?? MockEntityData.BASIC.accountNumber
+  const avatarColor = getAvatarColorFromKey(accountNumber) as string
+
   const defaultMappedAccount: WalletData = {
-    accountId: 1,
-    accountNumber: '10102',
-    city: 'Paris',
+    accountId: MockEntityData.BASIC.accountId,
+    accountNumber: MockEntityData.BASIC.accountNumber,
+    city: basicAddress.city ?? '',
     deploymentStatus: getMockedDeploymentStatus(),
-    hub: 'Hub Aquitaine Nord',
-    id: 'account-global-unique-id',
+    hub: basicHub.hubName ?? '',
+    id: MockEntityData.BASIC.accountGlobalUniqueId,
     isFavorite: false,
     isCustomerRelation: false,
-    name: 'Legal Name',
+    name: MockEntityData.BASIC.legalName,
     owner: {
-      contactId: 22,
+      contactId: basicSignatory.contactId,
       avatarColor,
-      email: 'sign@test.fr',
-      firstName: 'Signa',
-      initials: 'ST',
-      lastName: 'Tory',
+      email: basicSignatory.email,
+      firstName: basicSignatory.firstName,
+      initials: `${basicSignatory.firstName[0]}${basicSignatory.lastName[0]}`.toUpperCase(),
+      lastName: basicSignatory.lastName,
     },
   }
 
@@ -85,11 +93,16 @@ export function getMockedMappedAccount(
 export function getMockedWalletQueryResult(
   override: Partial<QueryResult<WalletData>> = {},
 ): QueryResult<WalletData> {
+  const legacyData = MockEntityData.LEGACY_GED
   const defaultWalletQueryResult: QueryResult<WalletData> = {
     currentPage: 0,
     items: [
       getMockedMappedAccount(),
-      getMockedMappedAccount({ id: 'account-global-unique-id-2', accountId: 2, accountNumber: '10102' }),
+      getMockedMappedAccount({
+        id: legacyData.accountGlobalUniqueId,
+        accountId: legacyData.accountId,
+        accountNumber: legacyData.accountNumber,
+      }),
     ],
     totalItems: 2,
     totalPage: 1,

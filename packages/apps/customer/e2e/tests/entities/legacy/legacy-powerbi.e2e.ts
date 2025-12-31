@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { tokenMock } from '@pulse/common/mocks'
-import { MockEntityId } from '@pulse/e2e-mocks/constants'
+import { tokenMock, MockEntityId } from '@pulse/common/mocks'
 
 test.describe('Legacy Entity - PowerBI', () => {
   test.beforeEach(async ({ page }) => {

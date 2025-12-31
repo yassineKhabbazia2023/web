@@ -1,4 +1,4 @@
-import type { UserInfo } from '../../stores/types'
+import type { UserInfo } from '../../types/user.type'
 import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useUserStore } from '../../stores/user/user.store'
 import { arrayIncludes } from '@pulse/toolbox/utils/array'

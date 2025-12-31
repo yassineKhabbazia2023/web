@@ -55,3 +55,37 @@ export interface Subscription {
   creationDate: string
   validator?: string
 }
+
+export interface Deployment {
+  deploymentId: number
+  deploymentDate?: string
+  status: number
+}
+
+export interface Signatory {
+  contactId: number
+  globalContactId: string
+  firstName: string
+  lastName: string
+  email: string
+  status: string
+  personaName: string
+  creationDate: string
+}
+
+export interface Hub {
+  hubId: number
+  hubName?: string
+}
+
+export interface AccountRow {
+  accountId: number
+  accountGlobalUniqueId: string
+  accountNumber: string
+  legalName: string
+  isFavorite: boolean
+  address: Address
+  hub: Hub
+  signatory: Signatory
+  deployment: Deployment
+}

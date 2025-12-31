@@ -1,5 +1,4 @@
 import type { MockInstance } from 'vitest'
-import { mockedEntity } from '@entities/__mocks__/entities.mocks'
 import { mockUser } from '@entities/__mocks__/users-client.mocks'
 import { nextTick } from 'vue'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
@@ -9,7 +8,7 @@ import type { PatchContactPayload } from '@entities/services/contact/contactType
 import * as WalletServices from '@entities/services/wallet'
 import type { Contact } from '@entities/types'
 import type { UsersClientProps } from './UsersClientTypes'
-import { getMockedUser, getMockedEntitySummary } from '@pulse/common/mocks'
+import { getMockedUser, getMockedEntitySummary, getMockedEntity } from '@pulse/common/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { ContactType } from '@pulse/common/enums'
@@ -42,6 +41,7 @@ const contactsList = generateContactsMock({
   currentPage: 1,
 }).data
 
+const mockedEntity = getMockedEntity()
 const entitySummaryMock = getMockedEntitySummary(mockedEntity)
 
 vi.mock('@entities/services/wallet')

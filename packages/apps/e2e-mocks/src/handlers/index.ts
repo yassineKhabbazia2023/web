@@ -19,3 +19,4 @@ export const handlers = [
   ...pennylaneHandlers,
   ...powerbiHandlers,
 ]
+

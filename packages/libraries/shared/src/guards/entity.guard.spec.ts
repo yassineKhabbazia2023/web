@@ -5,11 +5,13 @@ import {
 } from './entity.guard'
 
 import {
-  accountsRowMock,
-  entitiesFromAccountsRow,
-  entitiesNotInAccountsRow,
+  getAllMockAccountRows,
+  getMockedEntities,
   entitiesServiceMocks,
 } from '@pulse/common/mocks'
+
+const accountRows = getAllMockAccountRows()
+const entities = getMockedEntities()
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 
 import { useCurrentEntityStore } from '@pulse/common/stores'
@@ -59,10 +61,10 @@ describe('verify entity change', () => {
 
   it('directly calls next without fetching entities if entityId param from TO is the same as stored currentEntityId', async () => {
     const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
-    currentEntityStoreMock.currentEntityId = entitiesFromAccountsRow[1].accountId
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
 
-    const from = createMockedRoute(entitiesFromAccountsRow[0].accountId.toString())
-    const to = createMockedRoute(entitiesFromAccountsRow[1].accountId.toString())
+    const from = createMockedRoute(entities[0].accountId.toString())
+    const to = createMockedRoute(entities[1].accountId.toString())
     await currentEntityGuard(to, from, nextMock)
 
     expect(fetchEntityByIdMock).not.toHaveBeenCalled()
@@ -70,10 +72,10 @@ describe('verify entity change', () => {
 
   it('fetches entities when entityId from TO is different than stored currentEntityId', async () => {
     const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
-    currentEntityStoreMock.currentEntityId = entitiesFromAccountsRow[1].accountId
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
 
     const from = createMockedRoute('')
-    const to = createMockedRoute(entitiesFromAccountsRow[0].accountId.toString())
+    const to = createMockedRoute(entities[0].accountId.toString())
     await currentEntityGuard(to, from, nextMock)
 
     expect(fetchEntityByIdMock).toHaveBeenCalled()
@@ -84,17 +86,17 @@ describe('verify entity change', () => {
 describe('find entity with id', () => {
   it.each([
     {
-      entities: accountsRowMock,
-      entityToFind: entitiesFromAccountsRow[0].accountId,
-      expectedResult: accountsRowMock[0],
+      accountRowsList: accountRows,
+      entityToFind: entities[0].accountId,
+      expectedResult: accountRows[0],
     },
     {
-      entities: accountsRowMock,
-      entityToFind: entitiesNotInAccountsRow[0].accountId,
+      accountRowsList: accountRows,
+      entityToFind: 9999, // Non-existent entity ID
       expectedResult: undefined,
     },
-  ])('return the entity when it exists among a list of entities', ({ entities, entityToFind, expectedResult }) => {
-    const result = findEntityWithId(entities, entityToFind)
+  ])('return the entity when it exists among a list of entities', ({ accountRowsList, entityToFind, expectedResult }) => {
+    const result = findEntityWithId(accountRowsList, entityToFind)
     expect(result).toBe(expectedResult)
   })
 })
@@ -103,14 +105,14 @@ describe('is entity already selected', () => {
   it.each([
     {
       testName: 'returns true when stored entity is the same as given entity id',
-      storedEntityMock: entitiesFromAccountsRow[0],
-      givenEntityId: entitiesFromAccountsRow[0].accountId,
+      storedEntityMock: entities[0],
+      givenEntityId: entities[0].accountId,
       expectedResult: true,
     },
     {
       testName: 'returns false when stored entity is different than the given entity id',
-      storedEntityMock: entitiesFromAccountsRow[0],
-      givenEntityId: entitiesFromAccountsRow[1].accountId,
+      storedEntityMock: entities[0],
+      givenEntityId: entities[1].accountId,
       expectedResult: false,
     },
   ])('$testName', ({ storedEntityMock, givenEntityId, expectedResult }) => {

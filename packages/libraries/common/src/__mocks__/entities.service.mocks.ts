@@ -1,5 +1,5 @@
-import { accountsRowMock } from './accounts-row.mocks'
+import { getAllMockAccountRows } from './entities.constants'
 
 export const entitiesServiceMocks = {
-  fetchEntityById: accountsRowMock[0],
+  fetchEntityById: getAllMockAccountRows()[0],
 }

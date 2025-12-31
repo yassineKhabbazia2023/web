@@ -113,7 +113,7 @@ vi.mock('./OffersDrawerUtils', async () => {
 vi.mock('@entities/utils/helpers')
 
 const accountNumber = 'account-number'
-const accountId = 5
+const accountId = mockedAccount.accountId
 
 async function getWrapper(isOpened: boolean, callInitDrawerForAccount = true) {
   const wrapper = shallowMount(OffersDrawer, {
@@ -197,7 +197,7 @@ describe('offersDrawer', () => {
       }))
       const expectedArgument: PostSubscriptionRequest = {
         accountId,
-        applicant: 'john@example.com',
+        applicant: currentUser.email,
         contacts: [1, 2, currentUser.id],
         offerId: 1,
         notes,
@@ -208,7 +208,7 @@ describe('offersDrawer', () => {
       }
       const expectedArgumentWithoutValidation: PostSubscriptionRequest = {
         accountId,
-        applicant: 'john@example.com',
+        applicant: currentUser.email,
         contacts: [1, 2, currentUser.id],
         offerId: 2,
         notes: [],

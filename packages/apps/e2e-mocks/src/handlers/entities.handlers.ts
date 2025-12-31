@@ -1,7 +1,5 @@
 import { http, HttpResponse } from 'msw'
 import {
-  mockedAccount,
-  mockedAccountId,
   mockedUserClientAccount,
   mockedUsersList,
   getMockedCollaborators,
@@ -15,14 +13,18 @@ import {
   referentialHubsMock,
   referentialOfficesMock,
   accountReferentialInformationMock,
-  getMockedAccountRow,
   getMockedAccount,
-  getMockedSignatory,
   getMockedAuthorizationsConfig,
 } from '@pulse/entities/mocks'
-import { getMockedEntitySummary, getMockedSubscription } from '@pulse/common/mocks'
+import {
+  getMockedEntitySummary,
+  getMockedSubscription,
+  getAllMockAccountRows,
+  MockEntityId,
+  MockEntityData,
+  getMockSignatory,
+} from '@pulse/common/mocks'
 import { CustomerPermission } from '@pulse/common/enums'
-import { MockEntityId } from '../constants'
 
 function getOperationsPaginatedResponse() {
   const operations = getMockedOperations()
@@ -34,38 +36,9 @@ function getOperationsPaginatedResponse() {
   }
 }
 
-function getAccountRowsMock() {
-  return [
-    getMockedAccountRow({
-      accountId: 1,
-      accountGlobalUniqueId: '5f85e793-57c0-4da6-b821-3b2888567256',
-      accountNumber: 'V900000547',
-      legalName: 'Acme Corp (basic)',
-      isFavorite: false,
-      signatory: getMockedSignatory({ contactId: 1 }),
-    }),
-    getMockedAccountRow({
-      accountId: 2,
-      accountGlobalUniqueId: '5f85e793-57c0-4da6-b821-3b2888567255',
-      accountNumber: 'V900000546',
-      legalName: 'Tech Solutions Ltd (legacy)',
-      isFavorite: true,
-      signatory: getMockedSignatory({ contactId: 2 }),
-      isCustomerRelation: true,
-    }),
-    getMockedAccountRow({
-      accountId: 3,
-      accountGlobalUniqueId: '5f85e793-57c0-4da6-b821-3b2888567254',
-      accountNumber: 'V900000545',
-      legalName: 'Global Services Inc (Pennylane)',
-      isFavorite: false,
-      signatory: getMockedSignatory({ contactId: 3 }),
-    }),
-  ]
-}
 
 function getWalletPaginatedResponse() {
-  const items = getAccountRowsMock()
+  const items = getAllMockAccountRows()
   return {
     items,
     currentPage: 1,
@@ -99,8 +72,8 @@ function getAccountData() {
   const account = getMockedAccount()
   return {
     ...account,
-    accountId: mockedAccountId,
-    accountNumber: mockedAccount.accountNumber,
+    accountId: MockEntityId.BASIC,
+    accountNumber: MockEntityData.BASIC.accountNumber,
     turnover: 450000,
     officeId: 1,
     missionType: 'EC',
@@ -121,20 +94,20 @@ const pennylaneSubscription = getMockedSubscription({
 const entitySummariesMap: Record<number, ReturnType<typeof getMockedEntitySummary>> = {
   [MockEntityId.BASIC]: getMockedEntitySummary({
     accountId: MockEntityId.BASIC,
-    accountNumber: 'V900000547',
-    legalName: 'Acme Corp (basic)',
+    accountNumber: MockEntityData.BASIC.accountNumber,
+    legalName: MockEntityData.BASIC.legalName,
     subscriptions: [],
   }),
   [MockEntityId.LEGACY_GED]: getMockedEntitySummary({
     accountId: MockEntityId.LEGACY_GED,
-    accountNumber: 'V900000546',
-    legalName: 'Tech Solutions Ltd (legacy)',
+    accountNumber: MockEntityData.LEGACY_GED.accountNumber,
+    legalName: MockEntityData.LEGACY_GED.legalName,
     subscriptions: [],
   }),
   [MockEntityId.PENNYLANE]: getMockedEntitySummary({
     accountId: MockEntityId.PENNYLANE,
-    accountNumber: 'V900000545',
-    legalName: 'Global Services Inc (Pennylane)',
+    accountNumber: MockEntityData.PENNYLANE.accountNumber,
+    legalName: MockEntityData.PENNYLANE.legalName,
     subscriptions: [pennylaneSubscription],
   }),
 }
@@ -197,7 +170,7 @@ export const entitiesHandlers = [
   }),
 
   http.get('*/account/api/roles/signatory', () => {
-    const signatory = getMockedSignatory()
+    const signatory = getMockSignatory('BASIC')
     return HttpResponse.json([{
       contactId: signatory.contactId,
       firstName: signatory.firstName,
@@ -258,7 +231,7 @@ export const entitiesHandlers = [
 
   http.get('*/wallet/api/favorites/currentuser', () => {
     // Return favorites that match wallet entities
-    const accountRows = getAccountRowsMock()
+    const accountRows = getAllMockAccountRows()
     const favorites = accountRows.map(row => ({
       accountId: row.accountId,
       accountNumber: row.accountNumber,
@@ -439,9 +412,10 @@ export const entitiesHandlers = [
   }),
 
   http.get('*/pennylane/api/pennylane/role/accounts/:accountId/contacts/:contactId', () => {
+    const basicSignatory = getMockSignatory('BASIC')
     return HttpResponse.json({
-      accountId: 602,
-      contactId: 68,
+      accountId: MockEntityId.PENNYLANE,
+      contactId: basicSignatory.contactId,
       role: 'accountant',
     })
   }),

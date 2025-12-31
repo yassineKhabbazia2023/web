@@ -181,10 +181,10 @@ describe('tableData', () => {
     checkbox.trigger('change')
     await nextTick()
 
-    const { accountNumber, accountId: id, legalName: name } = testEntity
+    const { accountNumber, accountId: id, name } = mockTableData[0]
     const {
       owner: { avatarColor },
-    } = mockTableData[1]
+    } = mockTableData[0]
 
     expect(wrapper.emitted('selectedFolder')).toStrictEqual([
       [

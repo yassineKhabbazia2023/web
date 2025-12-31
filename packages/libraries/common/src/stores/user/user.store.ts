@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import type { Entity, UserInfo } from '../types'
+import type { Entity } from '../../types/entities.type'
+import type { UserInfo } from '../../types/user.type'
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<UserInfo>()

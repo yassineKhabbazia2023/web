@@ -1,13 +1,13 @@
-import type { Entity, CurrentEntity } from '../stores/types'
+import type { Entity, CurrentEntity } from '../types/entities.type'
 import type { Permission } from '../types/permission.type'
 import { CollaboratorPermission } from '../enums/permission.enum'
-import { mockedEntitiesJsonData } from './entities.mocks.data'
+import { MockEntityData } from './entities.constants'
 
 export const MOCKED_ENTITY_DEFAULTS = {
-  accountId: 1337,
-  accountNumber: '1234567890',
-  legalName: 'Boulangerie Bel Epi',
-  color: 'orange',
+  accountId: MockEntityData.BASIC.accountId,
+  accountNumber: MockEntityData.BASIC.accountNumber,
+  legalName: MockEntityData.BASIC.legalName,
+  color: MockEntityData.BASIC.color,
 } as const
 
 export const getMockedEntity = (overridden: Partial<Entity> = {}): Entity => {
@@ -18,17 +18,28 @@ export const getMockedEntity = (overridden: Partial<Entity> = {}): Entity => {
 }
 
 export const getMockedEntities = (): Entity[] => [
-  getMockedEntity(),
-  getMockedEntity({
-    accountId: 1338,
-    accountNumber: '1234567891',
-    legalName: 'Pâtisserie Belle Étoile',
-    color: 'cyan',
-  }),
+  {
+    accountId: MockEntityData.BASIC.accountId,
+    accountNumber: MockEntityData.BASIC.accountNumber,
+    legalName: MockEntityData.BASIC.legalName,
+    color: MockEntityData.BASIC.color,
+  },
+  {
+    accountId: MockEntityData.LEGACY_GED.accountId,
+    accountNumber: MockEntityData.LEGACY_GED.accountNumber,
+    legalName: MockEntityData.LEGACY_GED.legalName,
+    color: MockEntityData.LEGACY_GED.color,
+  },
+  {
+    accountId: MockEntityData.PENNYLANE.accountId,
+    accountNumber: MockEntityData.PENNYLANE.accountNumber,
+    legalName: MockEntityData.PENNYLANE.legalName,
+    color: MockEntityData.PENNYLANE.color,
+  },
 ]
 
 export const getMockedFavoriteEntities = (): Entity[] => {
-  return mockedEntitiesJsonData
+  return getMockedEntities()
 }
 
 export const getMockedCurrentEntity = (overridden: Partial<CurrentEntity> = {}): CurrentEntity => {

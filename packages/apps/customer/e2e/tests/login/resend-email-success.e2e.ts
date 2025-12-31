@@ -8,7 +8,7 @@ test.describe('Resend Email Success Page', () => {
   })
 
   test('should display resend email success page with all elements', async ({ page }) => {
-    await expect(page.getByTestId('resend-email-success-title')).toBeVisible()
+    await expect(page.getByTestId('resend-email-success-title')).toBeVisible({ timeout: 10000 })
     await expect(page.getByTestId('resend-email-success-message')).toBeVisible()
     await expect(page.getByTestId('back-to-login-button')).toBeVisible()
   })

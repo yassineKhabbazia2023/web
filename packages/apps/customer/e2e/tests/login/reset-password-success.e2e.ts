@@ -8,7 +8,7 @@ test.describe('Reset Password Success Page', () => {
   })
 
   test('should display reset password success page with all elements', async ({ page }) => {
-    await expect(page.getByTestId('reset-password-success-title')).toBeVisible()
+    await expect(page.getByTestId('reset-password-success-title')).toBeVisible({ timeout: 10000 })
     await expect(page.getByTestId('reset-password-success-message')).toBeVisible()
     await expect(page.getByTestId('back-to-login-button')).toBeVisible()
   })

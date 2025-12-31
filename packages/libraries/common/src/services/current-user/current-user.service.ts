@@ -1,6 +1,6 @@
 import { logger } from '@pulse/toolbox'
 import api from '../../api'
-import type { UserContextInfo, UserInfo } from '../../stores/types'
+import type { UserContextInfo, UserInfo } from '../../types/user.type'
 
 export class CurrentUserService {
   static async getCurrentUserContext(): Promise<UserContextInfo | undefined> {

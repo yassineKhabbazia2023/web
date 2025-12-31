@@ -1,6 +1,5 @@
 import { Page, expect, Locator } from '@playwright/test'
-import { tokenMock } from '@pulse/common/mocks'
-import { MockEntityId } from '@pulse/e2e-mocks/constants'
+import { tokenMock, MockEntityId } from '@pulse/common/mocks'
 
 export const GED_URL = `/dossier/${MockEntityId.LEGACY_GED}/ged`
 

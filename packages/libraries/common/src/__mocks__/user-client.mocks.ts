@@ -1,4 +1,4 @@
-import type { UserInfo } from '../stores/types'
+import type { UserInfo } from '../types/user.type'
 
 export const getMockedUserInfo = (overridden: Partial<UserInfo> = {}): UserInfo => {
   const user: UserInfo = {

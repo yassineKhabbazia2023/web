@@ -1,10 +1,11 @@
-import type { UserInfoApi, UserContextInfo } from '../stores/types'
+import type { UserInfoApi, UserContextInfo } from '../types/user.type'
 import type { BookingServiceExpert } from '@pulse/common/types'
 import { CustomerPermission } from '../enums/permission.enum'
 import { tokenMock } from './token.mocks'
 import { getMockedUserApi, getMockedUserContext } from './user.mocks'
 import { getBookingServiceExpert } from './booking.mock'
 import { getPaginationMock } from './pagination.mocks'
+import { MockEntityId, MockEntityData } from './entities.constants'
 
 export interface LoginResponse {
   userId: string
@@ -47,9 +48,21 @@ export function getUserContextResponseMock(override: Partial<UserContextInfo> = 
       CustomerPermission.ACCEDER_RAPPORTS_BI_FINANCIER,
     ],
     favoriteEntities: [
-      { accountId: 1, accountNumber: 'V900000547', legalName: 'Acme Corp (basic)' },
-      { accountId: 2, accountNumber: 'V900000546', legalName: 'Tech Solutions Ltd (legacy)' },
-      { accountId: 3, accountNumber: 'V900000545', legalName: 'Global Services Inc (Pennylane)' },
+      {
+        accountId: MockEntityId.BASIC,
+        accountNumber: MockEntityData.BASIC.accountNumber,
+        legalName: MockEntityData.BASIC.legalName,
+      },
+      {
+        accountId: MockEntityId.LEGACY_GED,
+        accountNumber: MockEntityData.LEGACY_GED.accountNumber,
+        legalName: MockEntityData.LEGACY_GED.legalName,
+      },
+      {
+        accountId: MockEntityId.PENNYLANE,
+        accountNumber: MockEntityData.PENNYLANE.accountNumber,
+        legalName: MockEntityData.PENNYLANE.legalName,
+      },
     ],
     ...override,
   })

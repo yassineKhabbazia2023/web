@@ -15,6 +15,7 @@ import {
 } from '@entities/__mocks__/account-row.mocks'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
+import { MockEntityId, MockEntityData } from '@pulse/common/mocks'
 
 const deploymentStatuses: DeploymentStatus[] = [
   {
@@ -71,8 +72,8 @@ describe('test FoldersUtils', () => {
       })
       const item2 = getMockedMappedAccount(
         {
-          accountId: 2,
-          accountNumber: '10102',
+          accountId: MockEntityId.LEGACY_GED,
+          accountNumber: MockEntityData.LEGACY_GED.accountNumber,
           deploymentStatus: deploymentStatuses[0],
         },
       )

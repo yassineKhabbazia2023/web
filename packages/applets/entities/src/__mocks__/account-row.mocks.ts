@@ -10,56 +10,36 @@ import type {
   AccountsDelegation,
 } from '@entities/services/account/accountTypes'
 import { AddressType } from '@entities/enums'
-import type { Address, Office, QueryResult } from '@pulse/common/types'
+import type { Address, Office, QueryResult, MockEntityKey } from '@pulse/common/types'
+import {
+  getMockAddress as getCommonMockAddress,
+  getMockSignatory as getCommonMockSignatory,
+  getMockDeployment as getCommonMockDeployment,
+  getMockAccountRow as getCommonMockAccountRow,
+  MockEntityData,
+  MockEntityId,
+} from '@pulse/common/mocks'
 import accountReferentialInformation from '@entities/__mocks__/json/accountReferentialInformation.json'
 import referentialHubs from '@entities/__mocks__/json/referentialHubs.json'
 import referentialOffices from '@entities/__mocks__/json/referentialOffices.json'
 
 export function getMockedAddress(override: Partial<Address> = {}): Address {
-  const defaultAddress: Address = {
-    addressId: 2,
-    addressLine1: 'Rue de liege',
-    addressLine2: 'test 2',
-    addressLine3: 'test 3',
-    addressType: 'billing',
-    country: 'France',
-    city: 'Paris',
-    zipCode: '25300',
-  }
-
   return {
-    ...defaultAddress,
+    ...getCommonMockAddress('BASIC'),
     ...override,
   }
 }
 
 export function getMockedSignatory(override: Partial<Signatory> = {}): Signatory {
-  const defaultSignatory = {
-    contactId: 22,
-    globalContactId: '231231-34234',
-    firstName: 'Signa',
-    lastName: 'Tory',
-    email: 'sign@test.fr',
-    status: 'status',
-    personaName: 'person Name',
-    creationDate: '2024-03-25',
-  }
-
   return {
-    ...defaultSignatory,
+    ...getCommonMockSignatory('BASIC'),
     ...override,
   }
 }
 
 export function getMockedDeployment(override: Partial<Deployment> = {}): Deployment {
-  const defaultDeployment: Deployment = {
-    deploymentId: 3242,
-    deploymentDate: '2024-02-01',
-    status: 1,
-  }
-
   return {
-    ...defaultDeployment,
+    ...getCommonMockDeployment('BASIC'),
     ...override,
   }
 }
@@ -69,8 +49,8 @@ export function getMockedAccountQueryResult(
 ): QueryResult<AccountRow> {
   const accountRow1 = getMockedAccountRow()
   const accountRow2 = getMockedAccountRow({
-    accountId: 2,
-    accountNumber: '10102',
+    accountId: MockEntityId.LEGACY_GED,
+    accountNumber: MockEntityData.LEGACY_GED.accountNumber,
   })
   const items = [accountRow1, accountRow2]
 
@@ -87,19 +67,9 @@ export function getMockedAccountQueryResult(
 }
 
 export function getMockedAccountRow(override: Partial<AccountRow> = {}): AccountRow {
+  const commonAccountRow = getCommonMockAccountRow('BASIC')
   const defaultAccountRow: AccountRow = {
-    accountId: 1,
-    accountGlobalUniqueId: 'account-global-unique-id',
-    accountNumber: '10102',
-    legalName: 'Legal Name',
-    isFavorite: false,
-    hub: {
-      hubId: 1,
-      hubName: 'Hub Aquitaine Nord',
-    },
-    address: getMockedAddress(),
-    signatory: getMockedSignatory(),
-    deployment: getMockedDeployment(),
+    ...commonAccountRow,
     isCustomerRelation: false,
   }
 
@@ -109,15 +79,25 @@ export function getMockedAccountRow(override: Partial<AccountRow> = {}): Account
   }
 }
 
-export function getMockedAccount(): Account {
+export function getMockedAccountRowForEntity(entityKey: MockEntityKey, override: Partial<AccountRow> = {}): AccountRow {
+  const commonAccountRow = getCommonMockAccountRow(entityKey)
   return {
-    accountId: 5,
-    accountNumber: '1999162161',
+    ...commonAccountRow,
+    isCustomerRelation: false,
+    ...override,
+  }
+}
+
+export function getMockedAccount(): Account {
+  const entity = MockEntityData.BASIC
+  return {
+    accountId: entity.accountId,
+    accountNumber: entity.accountNumber,
     iconName: 'mon icone',
     isActive: true,
-    accountNumberSource: '1999162161',
+    accountNumberSource: entity.accountNumber,
     employeeCount: 8,
-    commercialName: 'SCI Licorn',
+    commercialName: entity.legalName,
     accounting: {
       accountingType: 'Engagement',
       activityType: 'Prestation de services',
@@ -127,7 +107,7 @@ export function getMockedAccount(): Account {
       taxationSystem: 'Impôt sur le revenu',
     },
     legal: {
-      legalName: 'SCI Licorn',
+      legalName: entity.legalName,
       siret: '443 061 841 00047',
       createdAt: '2022-01-22T12:00:00',
       legalFormCode: 'EURL',
@@ -153,18 +133,12 @@ export function getMockedAccount(): Account {
         phoneNumber: '0622827143',
       },
     ],
-    email: 'contact@johnnyspizza.com',
+    email: 'contact@acmecorp.com',
     hub: {
-      hubId: 14,
-      hubName: 'Hub Normandie Seine Baie de Somme',
+      hubId: entity.accountId,
+      hubName: 'Hub Ile-de-France',
     },
-    deploymentPlanning: [
-      {
-        deploymentId: 1,
-        deploymentDate: '2024-02-07T00:00:00',
-        status: 1,
-      },
-    ],
+    deploymentPlanning: [getMockedDeployment()],
   }
 }
 
@@ -202,7 +176,7 @@ export function getMockedReferentialOffices(): Office[] {
 
 export function getMockedAccountsDelegationDetails(override: Partial<AccountsDelegationDetails> = {}) {
   const delegationRequestDetails: AccountsDelegationDetails = {
-    delegateeId: 1,
+    delegateeId: MockEntityId.BASIC,
     startDate: '2025-07-09T09:19:43.192Z',
     isAutomaticDelegation: true,
     ...override,
@@ -216,7 +190,7 @@ export function getMockedAccountsDelegation(override: Partial<AccountsDelegation
     isFullDelegation: true,
     includePennylaneAccess: false,
     delegationDetails: [getMockedAccountsDelegationDetails()],
-    accountIds: [1, 2, 3],
+    accountIds: [MockEntityId.BASIC, MockEntityId.LEGACY_GED, MockEntityId.PENNYLANE],
     ...override,
   }
 

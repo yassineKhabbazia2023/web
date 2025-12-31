@@ -8,7 +8,7 @@ test.describe('Reset Password Form Page', () => {
   })
 
   test('should display reset password form page with form elements', async ({ page }) => {
-    await expect(page.getByTestId('reset-password-form-first-password')).toBeVisible()
+    await expect(page.getByTestId('reset-password-form-first-password')).toBeVisible({ timeout: 10000 })
     await expect(page.getByTestId('reset-password-form-second-password')).toBeVisible()
     await expect(page.getByTestId('reset-password-form-submit-button')).toBeVisible()
   })

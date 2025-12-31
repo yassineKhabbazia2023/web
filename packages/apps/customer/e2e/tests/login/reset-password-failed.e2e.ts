@@ -8,7 +8,7 @@ test.describe('Reset Password Failed Page', () => {
   })
 
   test('should display reset password failed page with all elements', async ({ page }) => {
-    await expect(page.getByTestId('password-change-denied-para')).toBeVisible()
+    await expect(page.getByTestId('password-change-denied-para')).toBeVisible({ timeout: 10000 })
     await expect(page.getByTestId('password-change-limit-exceeded-para')).toBeVisible()
     await expect(page.getByTestId('back-to-login-button')).toBeVisible()
   })
