@@ -55,6 +55,7 @@ const secondOffer = subscriptionOffersServices[1]
 const companyTestName = 'Company Test Name'
 const offersBookTestLink = 'offers-book-test-link'
 const mockedAccount = getMockedAccount()
+const hubName = mockedAccount.hub?.hubName?.replace(/^Hub\s+/i, '')
 const mockedPatchOperations = getMockedPatchOperations()
 const mockedCollaborators = getMockedCollaborators()
 const mockedCollaboratorIds = mockedCollaborators.map(({ id }) => id)
@@ -145,6 +146,7 @@ async function getWrapper(isOpened: boolean, callInitDrawerForAccount = true) {
 describe('offersDrawer', () => {
   beforeEach(() => {
     getPatchOperationsMock.mockReturnValue(mockedPatchOperations)
+    getIsNextButtonDisabledMock.mockReturnValue(false)
   })
   describe('interactions', () => {
     it('should display current offer when an offer is selected', async () => {
@@ -201,6 +203,8 @@ describe('offersDrawer', () => {
         notes,
         productConfigurations: [1, 2, 3, 4],
         contactFunctions: [],
+        hubName,
+        planId: undefined,
       }
       const expectedArgumentWithoutValidation: PostSubscriptionRequest = {
         accountId,
@@ -209,6 +213,8 @@ describe('offersDrawer', () => {
         offerId: 2,
         notes: [],
         productConfigurations: [5],
+        hubName,
+        planId: undefined,
       }
 
       it('should patch the account and create a subscription when the user confirms', async () => {

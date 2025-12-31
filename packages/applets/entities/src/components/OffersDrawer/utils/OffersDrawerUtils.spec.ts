@@ -135,6 +135,7 @@ describe('offersDrawerUtils', () => {
         applicant: 'user@email.com',
         contactFunctions: undefined,
         planId: undefined,
+        hubName: undefined,
       }
       expect(postSubscriptionRequest).toStrictEqual(
         expectedPostSubscriptionRequest,
@@ -168,6 +169,7 @@ describe('offersDrawerUtils', () => {
         applicant: 'user@email.com',
         contactFunctions,
         planId: undefined,
+        hubName: undefined,
       }
       expect(postSubscriptionRequest).toStrictEqual(
         expectedPostSubscriptionRequest,
@@ -203,6 +205,43 @@ describe('offersDrawerUtils', () => {
         applicant: 'user@email.com',
         contactFunctions,
         planId: selectedPlanId,
+        hubName: undefined,
+      }
+      expect(postSubscriptionRequest).toStrictEqual(
+        expectedPostSubscriptionRequest,
+      )
+    })
+
+    it('should include hubName when provided', () => {
+      const hubName = 'Normandie Seine Baie de Somme'
+      const postSubscriptionRequest = getPostSubscriptionRequest({
+        accountId,
+        hubName,
+        userEmail,
+        collaboratorsWithRoles: selectedCollaboratorIds,
+        clients,
+        currentSubscriptionOffer,
+        selectedProducts,
+        notes,
+      })
+      const collaboratorsIds = collaborators.map(({ id }) => id)
+      const clientsIds = clients.map(({ contactId }) => contactId)
+      const contacts = [...clientsIds, ...collaboratorsIds]
+      const contactFunctions = selectedCollaboratorIds.map(({ contactId }) => ({
+        contactId,
+        functionId: roleIdMock,
+      }))
+
+      const expectedPostSubscriptionRequest: PostSubscriptionRequest = {
+        accountId,
+        offerId: 1,
+        productConfigurations: [1, 2, 3, 4],
+        contacts,
+        notes,
+        applicant: 'user@email.com',
+        contactFunctions,
+        planId: undefined,
+        hubName,
       }
       expect(postSubscriptionRequest).toStrictEqual(
         expectedPostSubscriptionRequest,

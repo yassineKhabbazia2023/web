@@ -188,6 +188,23 @@ async function validateRequiredFieldsForPennylane(): Promise<void> {
   areRequiredFieldsValid.value = validationResult
 }
 
+function getSelectedHubName(): string | undefined {
+  const hubId = internalAccount.value?.hub?.hubId
+  if (hubId === undefined) {
+    return
+  }
+  const hubField = formStructure.value
+    ?.flatMap((section) => section.fields)
+    .find((field) => field.pFieldKey === 'hub.hubId')
+  const hubOption = hubField?.pDropdownOptions?.find(({ pValue }) =>
+    Number(pValue) === Number(hubId),
+  )
+
+  const hubLabel = hubOption?.pLabel ?? undefined
+
+  return hubLabel?.toString()
+}
+
 const OFFERS_WITHOUT_INFORMATION_NOTE: ReadonlyArray<string> = [
   SubscriptionOfferCode.FORMS.toString(),
 ]
@@ -200,6 +217,7 @@ defineExpose({
   isValid,
   isValidFields,
   areRequiredFieldsValid,
+  getSelectedHubName,
 })
 </script>
 

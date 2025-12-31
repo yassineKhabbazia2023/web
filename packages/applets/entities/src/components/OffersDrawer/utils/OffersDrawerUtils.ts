@@ -80,6 +80,7 @@ export function getInitialSelectedProducts(
 
 interface GetPostSubscriptionRequestParams {
   accountId: number
+  hubName?: string
   userEmail: string | undefined
   collaboratorsWithRoles: ContactWithRoles[]
   clients: ClientContact[] | undefined
@@ -100,6 +101,7 @@ export function getFormattedContactFunctions(collaboratorsWithRoles: ContactWith
 
 export function getPostSubscriptionRequest({
   accountId,
+  hubName,
   userEmail,
   collaboratorsWithRoles,
   clients,
@@ -124,7 +126,7 @@ export function getPostSubscriptionRequest({
     ? getFormattedContactFunctions(collaboratorsWithRoles)
     : undefined
 
-  return {
+  const request: PostSubscriptionRequest = {
     accountId,
     offerId,
     productConfigurations,
@@ -133,7 +135,10 @@ export function getPostSubscriptionRequest({
     applicant: userEmail ?? '',
     notes,
     planId: selectedPlanId,
+    hubName: hubName,
   }
+
+  return request
 }
 
 export const getFirstDayOfYear = () => {

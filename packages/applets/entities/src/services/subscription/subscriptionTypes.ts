@@ -60,6 +60,7 @@ export interface ContactFunction {
 
 export interface PostSubscriptionRequest {
   accountId: number
+  hubName?: string
   offerId: number
   productConfigurations: number[]
   contacts: number[]

@@ -7,6 +7,7 @@ import type { CompanyInformationProps } from './CompanyInformationTypes'
 import { PENNYLANE_REQUIRED_FIELDS } from './CompanyInformation.const'
 import type { Account } from '@entities/services/account'
 import { ProviderName } from '@entities/enums'
+import { getFormStructure } from '@entities/utils/referential'
 
 import CompanyInformation from './CompanyInformation.vue'
 
@@ -23,6 +24,8 @@ vi.mock('@entities/utils/referential', () => ({
   ])),
   cleanRecordStructure: vi.fn(),
 }))
+
+const getFormStructureMock = vi.mocked(getFormStructure)
 
 const mockAccount: Account = {
   accountId: 1,
@@ -186,6 +189,33 @@ describe('CompanyInformation', () => {
     })
   })
 
+  describe('getSelectedHubName', () => {
+    it('should return the selected hub name', async () => {
+      getFormStructureMock.mockResolvedValueOnce([{
+        title: 'Test Section',
+        fields: [{
+          pFieldKey: 'hub.hubId',
+          pFieldType: 'dropdown',
+          pDropdownOptions: [{
+            pValue: 14,
+            pLabel: 'Hub Normandie Seine Baie de Somme',
+          }],
+        }],
+      }])
+      const wrapper = createWrapper({
+        modelValue: {
+          ...mockAccount,
+          hub: {
+            hubId: 14,
+          },
+        },
+      })
+      await flushPromises()
+
+      expect(wrapper.vm.getSelectedHubName()).toBe('Hub Normandie Seine Baie de Somme')
+    })
+  })
+
   describe('exposed methods and properties', () => {
     it('should expose required validation methods and state', async () => {
       const wrapper = createWrapper()
@@ -194,6 +224,7 @@ describe('CompanyInformation', () => {
       expect(wrapper.vm.isValid).toBeDefined()
       expect(wrapper.vm.isValidFields).toBeDefined()
       expect(wrapper.vm.areRequiredFieldsValid).toBeDefined()
+      expect(wrapper.vm.getSelectedHubName).toBeDefined()
     })
   })
 })
