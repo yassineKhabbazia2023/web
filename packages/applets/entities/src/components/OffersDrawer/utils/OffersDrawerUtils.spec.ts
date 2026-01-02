@@ -213,7 +213,7 @@ describe('offersDrawerUtils', () => {
     })
 
     it('should include hubName when provided', () => {
-      const hubName = 'Normandie Seine Baie de Somme'
+      const hubName = 'Hub Normandie Seine Baie de Somme'
       const postSubscriptionRequest = getPostSubscriptionRequest({
         accountId,
         hubName,

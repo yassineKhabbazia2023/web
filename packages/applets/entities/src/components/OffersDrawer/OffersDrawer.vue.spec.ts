@@ -55,7 +55,7 @@ const secondOffer = subscriptionOffersServices[1]
 const companyTestName = 'Company Test Name'
 const offersBookTestLink = 'offers-book-test-link'
 const mockedAccount = getMockedAccount()
-const hubName = mockedAccount.hub?.hubName?.replace(/^Hub\s+/i, '')
+const hubName = mockedAccount.hub?.hubName
 const mockedPatchOperations = getMockedPatchOperations()
 const mockedCollaborators = getMockedCollaborators()
 const mockedCollaboratorIds = mockedCollaborators.map(({ id }) => id)

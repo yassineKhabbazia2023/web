@@ -116,6 +116,7 @@
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
         "pDisabled": false,
+        "pFilterable": true,
         "pFieldKey": "hub.hubId",
         "pFieldType": "dropdown",
         "pLabel": "Hub RYDGE de rattachement",

@@ -91,7 +91,7 @@ describe('test accountServices', () => {
           data: mockedAccountReferential,
         })
       }
-      if (url === 'offer/api/referentials/hubs') {
+      if (url === 'offer/api/referentials/hubs' || url === 'offer/api/referentials/hubs?sort=ASC') {
         return Promise.resolve({
           data: mockedReferentialHubs,
         })
@@ -194,6 +194,7 @@ describe('test accountServices', () => {
       const referentialHubs = await fetchReferentialHubs()
 
       expect(referentialHubs).toMatchObject(mockedReferentialHubs)
+      expect(commonApiGetMock).toHaveBeenCalledWith('offer/api/referentials/hubs?sort=ASC')
     })
   })
 

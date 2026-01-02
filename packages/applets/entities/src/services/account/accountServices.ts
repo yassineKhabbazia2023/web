@@ -26,7 +26,7 @@ export async function fetchGatewayApi<T>(url: string) {
 }
 
 export async function fetchReferentialHubs() {
-  const url = `${API_PREFIXES.OFFER}/referentials/hubs`
+  const url = `${API_PREFIXES.OFFER}/referentials/hubs?sort=ASC`
 
   return await fetchGatewayApi<Hub[]>(url)
 }

@@ -377,18 +377,9 @@ function onDeselectProduct(offerId: number, productId: number) {
   removeSelectedProduct(selectedProducts.value, offerId, productId)
 }
 
-const normalizeHubName = (value?: string) => {
-  if (value == null || value.trim().length === 0) {
-    return
-  }
-  // Temporary: strip "Hub" prefix; remove once SQL hub names are updated.
-  const normalized = value.replace(/^Hub\s+/i, '').trim()
-  return normalized.length > 0 ? normalized : undefined
-}
-
 const getSelectedHubName = () => {
   const selectedHubName = companyInformationRef.value?.getSelectedHubName()
-  return normalizeHubName(selectedHubName ?? account.value?.hub?.hubName)
+  return selectedHubName ?? account.value?.hub?.hubName
 }
 
 async function saveOffer() {
