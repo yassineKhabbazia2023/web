@@ -11,7 +11,7 @@ export const requestInterceptorMock: Mock = vi.fn(() => defaults)
 export const responseInterceptorSuccessMock: Mock = vi.fn()
 export const responseInterceptorErrorMock: Mock = vi.fn()
 
-export default {
+export const axiosMock = {
   defaults,
   create: vi.fn(function() {
     return {

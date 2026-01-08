@@ -3,9 +3,9 @@ import type { BookingServiceExpert } from '@pulse/common/types'
 import { CustomerPermission } from '../enums/permission.enum'
 import { tokenMock } from './token.mocks'
 import { getMockedUserApi, getMockedUserContext } from './user.mocks'
-import { getBookingServiceExpert } from './booking.mock'
+import { getBookingServiceExpert } from './booking.mocks'
 import { getPaginationMock } from './pagination.mocks'
-import { MockEntityId, MockEntityData } from './entities.constants'
+import { MockEntityId, MockEntityData } from './entities.mocks'
 
 export interface LoginResponse {
   userId: string

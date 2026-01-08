@@ -1,5 +1,5 @@
 import { vi, describe, it, expect } from 'vitest'
-import { apiGatewayMock, apiGatewayPostMock } from '../__mocks__/api-gateway.mocks'
+import { apiGatewayMock, apiGatewayPostMock } from '../__mocks__/vitest'
 import { refreshClientToken, createNewPassword, login } from './authentication.service'
 
 import type { CreateNewPasswordPayload, LoginPayload, LoginData } from './authentication.service.types'

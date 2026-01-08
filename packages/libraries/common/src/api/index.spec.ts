@@ -1,5 +1,5 @@
 import { envVarsMock } from '@pulse/common/mocks'
-import axiosMock from '../__mocks__/axios.mocks'
+import { axiosMock } from '../__mocks__/vitest'
 
 import api from '.'
 

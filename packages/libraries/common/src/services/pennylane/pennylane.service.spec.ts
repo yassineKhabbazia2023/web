@@ -1,6 +1,6 @@
 import { vi, describe, it, expect } from 'vitest'
-import { apiGatewayMock } from '../../__mocks__/api-gateway.mocks'
-import { getMockedPennylaneRole, getMockedPennylaneAvailableRole, getMockedPennylaneDocument, getMockedPennylaneDocumentsQueryResult } from '../../__mocks__/pennylane.mocks'
+import { apiGatewayMock } from '../../__mocks__/vitest'
+import { getMockedPennylaneRole, getMockedPennylaneAvailableRole, getMockedPennylaneDocument, getMockedPennylaneDocumentsQueryResult } from '../../__mocks__'
 import { API_PREFIXES } from '../../constants/api-prefixes'
 
 import { PennylaneService } from './pennylane.service'

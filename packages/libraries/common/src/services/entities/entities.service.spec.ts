@@ -1,8 +1,7 @@
 import { loggerMock } from '@pulse/toolbox/mocks'
 import type { Entity } from '@pulse/common/types'
-import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/api-gateway.mocks'
-import { getMockedEntitySummary } from '../../__mocks__/entity-summary.mock'
-import { getMockedFavoriteEntities } from '../../__mocks__/entities.mocks'
+import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/vitest'
+import { getMockedEntitySummary, getMockedFavoriteEntities } from '../../__mocks__'
 
 import { DEFAULT_ENTITIES, fetchEntities, fetchEntityById } from './entities.service'
 

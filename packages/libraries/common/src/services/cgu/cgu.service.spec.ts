@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { apiGatewayMock, apiGatewayGetMock, apiGatewayPatchMock } from '../../__mocks__/api-gateway.mocks'
+import { apiGatewayMock, apiGatewayGetMock, apiGatewayPatchMock } from '../../__mocks__/vitest'
 import {
   getTermsByCurrentUser,
   updateTermsByCurrentUser,

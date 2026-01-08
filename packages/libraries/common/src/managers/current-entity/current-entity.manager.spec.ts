@@ -1,5 +1,4 @@
-import { getMockedEntitySummary } from '../../__mocks__/entity-summary.mock'
-import { getPermissionsMock } from '@pulse/common/mocks'
+import { getMockedEntitySummary, getPermissionsMock } from '../../__mocks__'
 import { getStoreMock, permissionServiceMock, fetchUserAccountPermissionsMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '../../stores/current-entity/current-entity.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'

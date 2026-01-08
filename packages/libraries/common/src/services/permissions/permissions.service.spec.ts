@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
-import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/api-gateway.mocks'
+import { apiGatewayMock, apiGatewayGetMock } from '../../__mocks__/vitest'
 import {
   fetchUserPermissions,
   fetchUserAccountPermissions,

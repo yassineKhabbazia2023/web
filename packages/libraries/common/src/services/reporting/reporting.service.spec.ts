@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { apiGatewayGetMock } from '../../__mocks__/api-gateway.mocks'
+import { apiGatewayGetMock } from '../../__mocks__/vitest'
 import { ReportingService } from './reporting.service'
 
 vi.mock('../../api', () => ({

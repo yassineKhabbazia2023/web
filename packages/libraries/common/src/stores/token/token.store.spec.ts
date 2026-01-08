@@ -1,6 +1,6 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { tokenMock, tokenExpMock } from '@common/__mocks__'
-import { localStorageServiceMock } from '@common/__mocks__/local-storage.service.mocks'
+import { localStorageServiceMock } from '@common/__mocks__/vitest'
 
 import { useTokenStore } from './token.store'
 

@@ -1,7 +1,7 @@
 import type { Document } from '@ged/models/Document'
 import { describe, it, expect } from 'vitest'
 import { getPermissionsFromDocuments } from './documentSelectionHelper'
-import mock from '@ged/__mocks__/document-selection-helper.mock'
+import mock from '@ged/__mocks__/document-selection-helper.mocks'
 
 describe('getPermissionsFromDocuments', () => {
   it('should return an empty array when no documents are provided', () => {

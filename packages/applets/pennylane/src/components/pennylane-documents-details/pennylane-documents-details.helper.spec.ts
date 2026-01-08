@@ -1,4 +1,4 @@
-import { getMockedFormattedPennylaneDocument } from '@pennylane/__mocks__/formatted-pennylane-document.mock'
+import { getMockedFormattedPennylaneDocument } from '@pennylane/__mocks__/formatted-pennylane-document.mocks'
 import { getDisplayData } from './pennylane-documents-details.helper'
 import type { PennylaneDocumentsDetailsLabels } from './pennylane-documents-details.type'
 

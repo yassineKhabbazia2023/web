@@ -1,5 +1,5 @@
 import type { Office, Deployment, Subscription, Address, EntitySummary } from '@common/types'
-import { MockEntityData } from './entities.constants'
+import { MockEntityData } from './entities.mocks'
 
 const address: Address = {
   addressId: MockEntityData.BASIC.accountId,

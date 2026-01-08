@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { getUnauthorizedCallbackMock } from '../../__mocks__/unauthorized-callback.mocks'
+import { getUnauthorizedCallbackMock } from '../../__mocks__/vitest'
 
 import { responseInterceptorError } from './response-error.interceptor'
 
