@@ -36,6 +36,14 @@ const routes: RouteRecordRaw[] = [
               title: 'Variables d\'environnement - Pulse Back Office',
             },
           },
+          {
+            path: BACKOFFICE_ROUTES.authenticated.azureDevops.path,
+            name: BACKOFFICE_ROUTES.authenticated.azureDevops.name,
+            component: () => import('@backoffice/pages/azure-devops/azure-devops.page.vue'),
+            meta: {
+              title: 'Azure DevOps - Pulse Back Office',
+            },
+          },
         ],
       },
     ],

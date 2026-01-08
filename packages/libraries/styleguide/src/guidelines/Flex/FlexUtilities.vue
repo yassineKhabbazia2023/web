@@ -256,6 +256,7 @@ const getFlexDescription = (prefix: string, value: string) => {
       'center': 'Centre les éléments sur l\'axe principal',
     },
     'flex--align-items-': {
+      'baseline': 'Aligne les éléments sur la ligne de base de l\'axe transversal',
       'flex-start': 'Aligne les éléments au début de l\'axe transversal',
       'flex-end': 'Aligne les éléments à la fin de l\'axe transversal',
       'stretch': 'Étire les éléments sur l\'axe transversal',

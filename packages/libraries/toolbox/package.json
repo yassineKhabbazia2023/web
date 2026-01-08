@@ -15,6 +15,7 @@
     "./utils/dates": "./src/utils/dates/dates.utils.ts",
     "./utils/validator": "./src/utils/validators/index.ts",
     "./utils/string": "./src/utils/string/string.utils.ts",
+    "./utils/html": "./src/utils/html/html.utils.ts",
     "./utils/http": "./src/utils/http/http.utils.ts",
     "./utils/url": "./src/utils/url/url.utils.ts",
     "./utils/test": "./src/utils/test.utils.ts",

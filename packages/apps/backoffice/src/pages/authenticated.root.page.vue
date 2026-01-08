@@ -22,6 +22,22 @@
           <h4 class="dashboard-layout__title-text font-bold padding-right--4 margin-right--4">
             Back Office
           </h4>
+          <nav class="dashboard-layout__nav flex flex--align-items-center flex-gap--2">
+            <router-link
+              :to="{ name: AdminRouteNames.APP_SETTINGS }"
+              class="dashboard-layout__nav-link"
+              :class="{ 'dashboard-layout__nav-link--active': isAppSettingsActive }"
+            >
+              Variables d'environnement
+            </router-link>
+            <router-link
+              :to="{ name: AdminRouteNames.AZURE_DEVOPS }"
+              class="dashboard-layout__nav-link"
+              :class="{ 'dashboard-layout__nav-link--active': isAzureDevopsActive }"
+            >
+              Azure DevOps
+            </router-link>
+          </nav>
         </div>
 
         <div class="dashboard-layout__actions flex flex--align-items-center text-color--white flex-gap--4">
@@ -90,7 +106,7 @@ import { ref, onMounted, computed } from 'vue'
 import type { AccountInfo } from '@azure/msal-browser'
 import { PButton, PIcon, PTooltip } from '@pulse/styleguide/components'
 import { logger } from '@pulse/toolbox'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { AdminMsalService } from '@backoffice/services/admin-msal/admin-msal.service'
 import { AdminRouteNames } from '@backoffice/constants/backoffice-route-names.enum'
 import { LoginManager } from '@backoffice/managers/login.manager'
@@ -98,11 +114,14 @@ import { APP_COPYRIGHT } from '@backoffice/constants/backoffice.const'
 import { getFirstName, getUserInitials } from '@backoffice/utils/authenticated.root.page.utils'
 
 const router = useRouter()
+const route = useRoute()
 const isLoading = ref(false)
 const userInfo = ref<AccountInfo | null>(null)
 
 const firstName = computed(() => getFirstName(userInfo.value?.name))
 const userInitials = computed(() => getUserInitials(userInfo.value?.name))
+const isAppSettingsActive = computed(() => route.name === AdminRouteNames.APP_SETTINGS)
+const isAzureDevopsActive = computed(() => route.name === AdminRouteNames.AZURE_DEVOPS)
 
 const handleLogout = async () => {
   isLoading.value = true
@@ -163,6 +182,26 @@ onMounted(async () => {
 
   &__greeting-text {
     line-height: 1.2;
+  }
+
+  &__nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+
+    &:hover {
+      color: white;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    &--active {
+      color: white;
+      background: rgba(255, 255, 255, 0.2);
+      font-weight: 600;
+    }
   }
 
   &__logout-button {
