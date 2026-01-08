@@ -13,7 +13,7 @@ export default defineConfig({
     ...(process.env.CI ? [['junit', { outputFile: 'e2e-results/junit.xml' }] as const] : []),
   ],
   use: {
-    baseURL: 'http://localhost:9000',
+    baseURL: 'http://localhost:1337',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
   },
@@ -29,7 +29,7 @@ export default defineConfig({
   },
   webServer: {
     command: 'npm run dev:e2e --workspace=@pulse/customer',
-    url: 'http://localhost:9000',
+    url: 'http://localhost:1337',
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
     cwd: '../../../..',
