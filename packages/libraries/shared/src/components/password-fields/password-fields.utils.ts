@@ -1,5 +1,5 @@
 import type { PStrengthLevel } from '@pulse/styleguide/types'
-import { PASSWORD_STRENGTH_RULES, DIFF_TO_STRENGTH_LEVEL } from './passwordStrength.const'
+import { PASSWORD_STRENGTH_RULES, DIFF_TO_STRENGTH_LEVEL } from './password-fields.const'
 
 export function getPasswordStrength(password: string): PStrengthLevel {
   const matchingRules = PASSWORD_STRENGTH_RULES

@@ -91,7 +91,7 @@ import {
 } from '@pulse/styleguide/components'
 import type { PStrengthLevel } from '@pulse/styleguide/types'
 import { getPasswordError, getConfirmPasswordError, getApiErrorMessage } from './ResetPasswordForm.utils'
-import { getPasswordStrength } from '../../utils/passwordStrength/passwordStrength.utils'
+import { getPasswordStrength } from '@pulse/shared/components'
 
 const { t } = useI18n({
   inheritLocale: true,

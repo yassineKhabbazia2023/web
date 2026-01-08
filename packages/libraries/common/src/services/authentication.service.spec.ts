@@ -1,8 +1,8 @@
 import { vi, describe, it, expect } from 'vitest'
 import { apiGatewayMock, apiGatewayPostMock } from '../__mocks__/vitest'
-import { refreshClientToken, createNewPassword, login } from './authentication.service'
+import { refreshClientToken, createNewPassword, updatePassword, login } from './authentication.service'
 
-import type { CreateNewPasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
+import type { CreateNewPasswordPayload, UpdatePasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
 
 vi.mock('../api', () => ({
   default: () => ({
@@ -43,6 +43,27 @@ describe('test authentication.service', () => {
 
       expect(response).toStrictEqual(gatewayResponseMock)
       expect(apiGatewayPostMock).toHaveBeenCalledExactlyOnceWith(expectedUrl, payload)
+    })
+  })
+
+  describe('updatePassword', () => {
+    it('should call gateway properly', async () => {
+      const payload: UpdatePasswordPayload = {
+        oldPassword: 'old-password',
+        newPassword: 'new-password',
+      }
+      const contactId = 123456
+      const expectedUrl = 'authentication/api/update-password'
+      const gatewayResponseMock = {}
+
+      apiGatewayPostMock.mockResolvedValue(gatewayResponseMock)
+
+      const response = await updatePassword(payload, contactId)
+
+      expect(response).toStrictEqual(gatewayResponseMock)
+      expect(apiGatewayPostMock).toHaveBeenCalledExactlyOnceWith(expectedUrl, payload, {
+        params: { contactId },
+      })
     })
   })
 

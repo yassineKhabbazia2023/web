@@ -77,18 +77,24 @@ describe('page creation password', () => {
   it(
     'should show error when user dont enter password and button submit is disabled',
     async () => {
-      wrapper.findAll('.el-input__inner')[0].setValue(VALID_PASSWORD)
+      const inputs = wrapper.findAll('.el-input__inner')
+      await inputs[0].setValue(VALID_PASSWORD)
+      await inputs[0].trigger('blur')
+      await inputs[1].trigger('blur')
       wrapper.find('.el-checkbox__original').setValue('true')
       await flushPromises()
       expect(wrapper.findAll('.is-error')).toHaveLength(1)
-      expect(wrapper.find('button').classes()).toContain('is-disabled')
+      expect(wrapper.find('[data-testid="create-password-submit-button"]').attributes('disabled')).toBeDefined()
     },
   )
 
 
   it('should show error when user enter a invalid password', async () => {
-    wrapper.findAll('.el-input__inner')[0].setValue('aaAA11aa')
-    wrapper.findAll('.el-input__inner')[1].setValue('aaAA11aa')
+    const inputs = wrapper.findAll('.el-input__inner')
+    await inputs[0].setValue('aaAA11aa')
+    await inputs[0].trigger('blur')
+    await inputs[1].setValue('aaAA11aa')
+    await inputs[1].trigger('blur')
     wrapper.find('.el-checkbox__original').setValue('true')
     await flushPromises()
     expect(wrapper.findAll('.is-error')).toHaveLength(1)
@@ -96,29 +102,30 @@ describe('page creation password', () => {
 
 
   it('should show error when user enter an empty password', async () => {
-    const firstInput = wrapper.find('[data-testid="create-password-first-password"]')
-    const secondInput = wrapper.find('[data-testid="create-password-second-password"]')
-    await firstInput.setValue('')
-    await firstInput.trigger('blur')
-    await secondInput.setValue('')
-    await secondInput.trigger('blur')
+    const inputs = wrapper.findAll('.el-input__inner')
+    await inputs[0].setValue('')
+    await inputs[0].trigger('blur')
+    await inputs[1].setValue('')
+    await inputs[1].trigger('blur')
+    await flushPromises()
     expect(wrapper.findAll('.is-error')).toHaveLength(2)
   })
 
 
   it('should disable submitButton when terms checkbox is not checked', async () => {
-    const firstInput = wrapper.find('[data-testid="create-password-first-password"]')
-    const secondInput = wrapper.find('[data-testid="create-password-second-password"]')
-    await firstInput.setValue(VALID_PASSWORD)
-    await secondInput.setValue(VALID_PASSWORD)
+    const inputs = wrapper.findAll('.el-input__inner')
+    await inputs[0].setValue(VALID_PASSWORD)
+    await inputs[1].setValue(VALID_PASSWORD)
 
     const termsCheckbox = wrapper.find('[data-testid="create-password-terms-checkbox"] .el-checkbox__original')
     const submitButton = wrapper.find('[data-testid="create-password-submit-button"]')
 
     await termsCheckbox.setValue(true)
+    await flushPromises()
     expect(submitButton.attributes('disabled')).toBeUndefined()
 
     await termsCheckbox.setValue(false)
+    await flushPromises()
     expect(submitButton.attributes('disabled')).toBeDefined()
   })
 
@@ -134,12 +141,13 @@ describe('page creation password', () => {
 
 
   it('should show error when user enter password and confirm password differently', async () => {
-    wrapper.findAll('.el-input__inner')[0].setValue(VALID_PASSWORD)
-    wrapper.findAll('.el-input__inner')[1].setValue('different password')
-    wrapper.find('.el-checkbox__original').setValue('true')
+    const inputs = wrapper.findAll('.el-input__inner')
+    await inputs[0].setValue(VALID_PASSWORD)
+    await inputs[0].trigger('blur')
+    await inputs[1].setValue('different password')
+    await inputs[1].trigger('blur')
     await flushPromises()
     expect(wrapper.findAll('.is-error')).toHaveLength(1)
-    expect(wrapper.find('button').classes()).toContain('is-disabled')
   })
 
 

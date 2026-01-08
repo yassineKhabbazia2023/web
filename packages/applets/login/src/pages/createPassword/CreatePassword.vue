@@ -20,36 +20,14 @@
         :pRules="rules"
         :pModel="formValue"
       >
-        <PFormItem
-          :pLabel="t('labelPassword')"
-          pProp="password"
-          pRequired
-        >
-          <PopoverPasswordStrength
-            :password="formValue.password"
-          >
-            <PInput
-              v-model="formValue.password"
-              :pPlaceholder="t('placeholderPassword')"
-              pType="password"
-              pShowPassword
-              data-testid="create-password-first-password"
-            />
-          </PopoverPasswordStrength>
-        </PFormItem>
-        <PFormItem
-          :pLabel="t('labelConfirmPassword')"
-          pProp="confirmPassword"
-          pRequired
-        >
-          <PInput
-            v-model="formValue.confirmPassword"
-            :pPlaceholder="t('placeholderConfirmPassword')"
-            pType="password"
-            pShowPassword
-            data-testid="create-password-second-password"
-          />
-        </PFormItem>
+        <PasswordFields
+          ref="passwordFieldsRef"
+          v-model:newPassword="formValue.newPassword"
+          v-model:confirmPassword="formValue.confirmPassword"
+          :requireCurrentPassword="false"
+          :disabled="isLoading"
+          :isPasswordStrengthGaugeVisible="false"
+        />
         <p>
           {{ t('validCgu') }}
         </p>
@@ -123,15 +101,18 @@ import {
 import {
   PForm,
   PFormItem,
-  PInput,
   PCheckbox,
   PButton,
 } from '@pulse/styleguide/components'
-import PopoverPasswordStrength from './PopoverPasswordStrength'
 import {
-  PASSWORD_STRENGTH,
-  levelPasswordStrength,
-} from './PopoverPasswordStrength/passwordStrength'
+  PasswordFields,
+  createNewPasswordValidator,
+  createConfirmPasswordValidator,
+} from '@pulse/shared/components'
+import type {
+  PasswordFieldsExposed,
+  PasswordValidationTranslations,
+} from '@pulse/shared/types'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 
 const { t } = useI18n({
@@ -152,55 +133,39 @@ const userStore = useUserStore()
 
 const email = emailQuery?.toString().trim().replace(' ', '+')
 const formRef = ref<FormInstance>()
+const passwordFieldsRef = ref<PasswordFieldsExposed>()
 const urlTerms = ref('')
 const isLoading = ref(false)
 const termsId = ref<null | number>(null)
 const formValidity = reactive({
-  password: false,
-  confirmPassword: false,
   terms: false,
 })
 const formValue = reactive({
-  password: '',
+  newPassword: '',
   confirmPassword: '',
   terms: false,
 })
 
 const isValidForm = computed(() => {
-  return formValidity.password &&
-    formValidity.confirmPassword &&
-    formValidity.terms &&
-    levelPasswordStrength(formValue.password) === PASSWORD_STRENGTH.STRONG
+  return formValidity.terms &&
+         formValue.newPassword !== '' &&
+         formValue.confirmPassword !== ''
 })
 
-const validatePassword = (_rule: any, value: any, callback: any) => {
-  if (!value) {
-    formValidity.password = false
-    callback(new Error(t('alertPasswordRequired')))
-  } else {
-    if (levelPasswordStrength(value) !== PASSWORD_STRENGTH.STRONG) {
-      formValidity.password = false
-      callback(new Error(t('alertPasswordLevelLow')))
-    } else {
-      formRef.value?.validateField('confirmPassword', () => null)
-      callback()
-    }
-    formValidity.password = true
-  }
+// Password validation
+const passwordTranslations: PasswordValidationTranslations = {
+  currentPasswordRequired: t('currentPasswordRequired'),
+  newPasswordRequired: t('newPasswordRequired'),
+  newPasswordWeak: t('newPasswordWeak'),
+  confirmPasswordRequired: t('confirmPasswordRequired'),
+  confirmPasswordMismatch: t('confirmPasswordMismatch'),
 }
 
-const validateCheckPass = (_rule: any, value: any, callback: any) => {
-  if (!value) {
-    formValidity.confirmPassword = false
-    callback(new Error(t('alertConfirmPass')))
-  } else if (!!formValue.password && value !== formValue.password) {
-    formValidity.confirmPassword = false
-    callback(new Error(t('alertPasswordNotMatch')))
-  } else {
-    formValidity.confirmPassword = true
-    callback()
-  }
-}
+const validateNewPassword = createNewPasswordValidator(passwordTranslations)
+const validateConfirmPassword = createConfirmPasswordValidator(
+  passwordTranslations,
+  () => formValue.newPassword,
+)
 
 const validateTerm = (_rule: any, value: any, callback: any) => {
   formValidity.terms = !!value
@@ -212,71 +177,73 @@ const validateTerm = (_rule: any, value: any, callback: any) => {
 }
 
 const rules = reactive<FormRules<typeof formValue>>({
-  password: [{ trigger: ['change', 'blur'], validator: validatePassword }],
-  confirmPassword: [{ trigger: ['change', 'blur'], validator: validateCheckPass }],
+  newPassword: [{ trigger: 'blur', validator: validateNewPassword }],
+  confirmPassword: [{ trigger: 'blur', validator: validateConfirmPassword }],
   terms: [{ trigger: 'change', validator: validateTerm }],
 })
 
-const submitForm = (formEl: FormInstance | undefined) => {
+const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) {
     return
   }
-  formEl.validate((valid) => {
-    (async () => {
-      if (valid) {
-        const data = {
-          token,
-          newPassword: formValue.password,
-        }
-        try {
-          isLoading.value = true
-          await createNewPassword(data)
-          const loginPayload = {
-            email: email ?? '',
-            password: formValue.password,
-          }
 
-          const {
-            userId: id,
-            webToken: token,
-          } = await login(loginPayload) as any // this is temporary, we need to fix the type when refact userStore
+  // Validate entire form (includes passwords and terms)
+  try {
+    await formEl.validate()
+  } catch (error) {
+    logger.error(error)
+    return
+  }
 
-          CurrentUserManager.persistToken(token)
-          await updateTermsByCurrentUser(termsId.value as number)
-          AmplitudeService.track('Onboarding Completed', {
-            onboarding_result: 'succeeded',
-          })
-          const user: UserInfo = {
-            id,
-            firstName: '',
-            lastName: '',
-            occupation: '',
-            email: '',
-            entities: {
-              default: undefined,
-            },
-            isCollab: false,
-            gigyaUserId: '',
-          }
-          userStore.setUser(user)
-          router.push({ name: RouteName.LANDING })
-        } catch (error: any) {
-          AmplitudeService.track('Onboarding Completed', {
-            onboarding_result: 'failed',
-          })
-          const { data } = error?.response ?? {}
+  // Validation passed - proceed with submission
+  const data = {
+    token,
+    newPassword: formValue.newPassword,
+  }
+  try {
+    isLoading.value = true
+    await createNewPassword(data)
+    const loginPayload = {
+      email: email ?? '',
+      password: formValue.newPassword,
+    }
 
-          if (data.errorCode === BackEndErrors.TOKEN_EXPIRED) {
-            router.push({ name: RouteName.EXPIRE_TOKEN, query: { contactId, accountNumber } })
-          }
-        } finally {
-          isLoading.value = false
-        }
-      } else {
-        return false
-      }
-    })()
-  })
+    const {
+      userId: id,
+      webToken: token,
+    } = await login(loginPayload) as any // this is temporary, we need to fix the type when refact userStore
+
+    CurrentUserManager.persistToken(token)
+    await updateTermsByCurrentUser(termsId.value as number)
+    AmplitudeService.track('Onboarding Completed', {
+      onboarding_result: 'succeeded',
+    })
+    const user: UserInfo = {
+      id,
+      firstName: '',
+      lastName: '',
+      occupation: '',
+      email: '',
+      entities: {
+        default: undefined,
+      },
+      isCollab: false,
+      gigyaUserId: '',
+    }
+    userStore.setUser(user)
+    router.push({ name: RouteName.LANDING })
+  } catch (error: any) {
+    AmplitudeService.track('Onboarding Completed', {
+      onboarding_result: 'failed',
+    })
+    const { data } = error?.response ?? {}
+
+    if (data.errorCode === BackEndErrors.TOKEN_EXPIRED) {
+      router.push({ name: RouteName.EXPIRE_TOKEN, query: { contactId, accountNumber } })
+    }
+  } finally {
+    isLoading.value = false
+  }
 }
 
 onMounted(async () => {
@@ -343,36 +310,30 @@ defineExpose({ submitForm })
     createAccount: 'Create your account '
     1step: 'in 1 step.'
     defPassword: 'Please enter and confirm your new password'
-    labelPassword: 'Your new password'
-    labelConfirmPassword: 'Confirm your new password'
-    placeholderPassword: 'Enter your new password'
-    placeholderConfirmPassword: 'Confirm your new password'
     validCgu: 'Please valid the General Terms and Conditions of use'
     cguMessagePartOne: 'By checking this box, I confirm that I have read and accepted the '
     cguLink: 'general terms and conditions of use '
     cguMessagePartTwo: 'of RYDGE Conseil.'
-    alertConfirmPass: 'Please confirm the password'
-    alertPasswordNotMatch: "Passwords don't match!"
     alertCgu: 'Please accept the general terms and conditions of use'
-    alertPasswordRequired: 'Please enter the password'
-    alertPasswordLevelLow: 'Your password is not valid'
     btnSubmit: 'Activate my account'
+    currentPasswordRequired: 'Current password is required'
+    newPasswordRequired: 'New password is required'
+    newPasswordWeak: 'Password must contain at least 8 characters with uppercase, lowercase, number and special character'
+    confirmPasswordRequired: 'Password confirmation is required'
+    confirmPasswordMismatch: 'Passwords do not match'
   fr-FR:
     createAccount: 'Créez votre compte'
     1step: 'en une étape.'
     defPassword: 'Veuillez définir votre mot de passe et le confirmer.'
-    labelPassword: 'Définissez votre mot de passe'
-    labelConfirmPassword: 'Confirmer votre mot de passe'
-    placeholderPassword: 'Saisir votre mot de passe'
-    placeholderConfirmPassword: 'Confirmer votre mot de passe'
     validCgu: "Validez les conditions générales d'utilisation."
     cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté les'
     cguLink: "conditions générales d'utilisation "
     cguMessagePartTwo: 'de RYDGE Conseil.'
-    alertConfirmPass: 'Veuillez confirmer votre mot de passe'
-    alertPasswordNotMatch: 'Mot de passe ne correspondent pas!'
     alertCgu: "Veuillez accepter les conditions générales d'utilisation"
-    alertPasswordRequired: 'Veuillez rentrer votre mot de passe'
-    alertPasswordLevelLow: "Votre mot de passe n'est pas valide"
     btnSubmit: 'Activer mon compte'
+    currentPasswordRequired: 'Le mot de passe actuel est requis'
+    newPasswordRequired: 'Le nouveau mot de passe est requis'
+    newPasswordWeak: 'Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule, chiffre et caractère spécial'
+    confirmPasswordRequired: 'La confirmation du mot de passe est requise'
+    confirmPasswordMismatch: 'Les mots de passe ne correspondent pas'
 </i18n>

@@ -4,6 +4,11 @@ export interface CreateNewPasswordPayload {
   isCreatePasswordAction?: boolean
 }
 
+export interface UpdatePasswordPayload {
+  oldPassword: string
+  newPassword: string
+}
+
 export interface LoginPayload {
   email: string
   password: string

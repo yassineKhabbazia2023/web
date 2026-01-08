@@ -1,3 +1,4 @@
+export * from './components/password-fields/password-fields.types'
 export * from './layouts/layouts.types'
 export * from './plugins/axeptio/axeptio.plugin.types'
 export * from './plugins/hubspot/hubspot.plugin.types'

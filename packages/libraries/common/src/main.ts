@@ -6,7 +6,7 @@ import api from './api'
 import { i18n } from './i18n/i18n.setup'
 import { DataStreamHubConnection } from './DataStreams/DataStreamHubConnection'
 import { fetchUrlTerms } from './services'
-import { refreshClientToken, createNewPassword, login } from './services/authentication.service'
+import { refreshClientToken, createNewPassword, updatePassword, login } from './services/authentication.service'
 
 export * from './unauthorized-callback'
 export * from './utils'
@@ -17,7 +17,7 @@ export const routes: RouteRecordRaw[] = []
 
 export { DataStreamHubConnection }
 export { fetchUrlTerms }
-export { refreshClientToken, createNewPassword, login }
+export { refreshClientToken, createNewPassword, updatePassword, login }
 
 export default {
   install(app: App, _options: any) {
