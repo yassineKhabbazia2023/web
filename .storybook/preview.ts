@@ -27,8 +27,8 @@ import sharedPlugin from '../packages/libraries/shared/src/main'
 
 // Import widgets plugin to register all grid widgets
 import widgetsPlugin from '../packages/libraries/widgets/src/main'
-// Import MSW worker
-import { worker } from '@pulse/e2e-mocks/msw'
+// Import MSW worker initialization
+import { initializeWorker } from '@pulse/e2e-mocks/msw'
 
 // Import global decorators
 import { globalDecorators } from './decorators/decorator.manager'
@@ -39,12 +39,7 @@ import '../packages/libraries/styleguide/src/assets/scss/index.scss'
 
 // Initialize MSW worker
 const mswBasePath = import.meta.env.DEV === true ? '' : '/storybook'
-worker.start({
-  onUnhandledRequest: 'bypass',
-  serviceWorker: {
-    url: `${mswBasePath}/mockServiceWorker.js`,
-  },
-})
+initializeWorker(mswBasePath)
 
 // Setup dayjs
 dayjs.Ls.en.weekStart = 1

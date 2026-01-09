@@ -99,6 +99,11 @@ const config: StorybookConfig = {
         find: '@microsoft/signalr',
         replacement: fileURLToPath(new URL('../packages/apps/e2e-mocks/src/shims/signalr-shim.ts', import.meta.url)),
       },
+      // MSAL shim to bypass Azure AD authentication in Storybook
+      {
+        find: '@azure/msal-browser',
+        replacement: fileURLToPath(new URL('../packages/apps/e2e-mocks/src/shims/msal-shim.ts', import.meta.url)),
+      },
       // @styleguide → styleguide/src (for SCSS imports)
       {
         find: '@styleguide',
@@ -155,8 +160,16 @@ const config: StorybookConfig = {
         replacement: fileURLToPath(new URL('../packages/apps/customer/src', import.meta.url)),
       },
       {
+        find: '@backoffice',
+        replacement: fileURLToPath(new URL('../packages/apps/backoffice/src', import.meta.url)),
+      },
+      {
         find: '@shared',
         replacement: fileURLToPath(new URL('../packages/libraries/shared/src', import.meta.url)),
+      },
+      {
+        find: '@toolbox',
+        replacement: fileURLToPath(new URL('../packages/libraries/toolbox/src', import.meta.url)),
       },
       {
         find: '~storybook',

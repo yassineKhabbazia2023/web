@@ -7,16 +7,20 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./types": "./src/types/index.ts",
     "./msw": "./src/msw/worker.ts",
     "./msw/bootstrap": "./src/msw/bootstrap.ts",
     "./handlers": "./src/handlers/index.ts",
+    "./handlers/backoffice": "./src/handlers/backoffice/index.ts",
     "./helpers": "./src/helpers/index.ts",
     "./vite-plugin": "./src/vite-plugin/plugin.e2e.ts",
     "./shims/vitest": "./src/shims/vitest-shim.ts",
     "./shims/signalr": "./src/shims/signalr-shim.ts",
     "./shims/powerbi": "./src/shims/powerbi-shim.ts",
     "./shims/powerbi-models": "./src/shims/powerbi-models-shim.ts",
+    "./shims/msal": "./src/shims/msal-shim.ts",
     "./fixtures/env-vars": "./src/fixtures/env-vars.e2e.js",
+    "./fixtures/env-vars-backoffice": "./src/fixtures/env-vars.backoffice.e2e.js",
     "./fixtures/styles": "./src/fixtures/styles.e2e.css"
   },
   "scripts": {

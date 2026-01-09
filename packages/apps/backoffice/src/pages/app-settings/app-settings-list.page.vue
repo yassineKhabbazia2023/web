@@ -2,7 +2,10 @@
   <div class="app-settings-list-page">
     <div class="padding-y--2 padding-x--6 padding-bottom--0">
       <div class="flex flex--align-items-center flex-gap--2 margin-bottom--2">
-        <h1 class="font-large font-bold text-color--black-rock-900">
+        <h1
+          class="font-large font-bold text-color--black-rock-900"
+          data-testid="app-settings-page-title"
+        >
           Variables d'environnement
         </h1>
         <PTag

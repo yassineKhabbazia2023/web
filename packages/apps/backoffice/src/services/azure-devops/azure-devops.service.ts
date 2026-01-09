@@ -56,6 +56,13 @@ export class AzureDevOpsService {
     return 'Basic ' + btoa(credentials)
   }
 
+  private static validateResponse<T extends { value?: unknown }>(response: { data?: T }, context: string): void {
+    if (response.data?.value === undefined) {
+      logger.error(`Invalid API response for ${context} - PAT may be invalid`)
+      throw new Error('Le Personal Access Token (PAT) Azure DevOps est invalide ou a expiré')
+    }
+  }
+
   static async getRepositories(pat: string): Promise<AzureDevOpsRepository[]> {
     const params = new URLSearchParams({
       'api-version': AZURE_DEVOPS_API_VERSION,
@@ -66,6 +73,7 @@ export class AzureDevOpsService {
       { headers: { Authorization: this.getAuthHeader(pat) } },
     )
 
+    this.validateResponse(response, 'repositories')
     return response.data.value.sort((a, b) => a.name.localeCompare(b.name))
   }
 
@@ -81,6 +89,7 @@ export class AzureDevOpsService {
       { headers: { Authorization: this.getAuthHeader(pat) } },
     )
 
+    this.validateResponse(response, 'tags')
     return response.data.value
   }
 
@@ -162,6 +171,7 @@ export class AzureDevOpsService {
       { headers: { Authorization: this.getAuthHeader(pat) } },
     )
 
+    this.validateResponse(response, 'commits')
     return response.data.value
   }
 
@@ -338,6 +348,7 @@ export class AzureDevOpsService {
       { headers: { Authorization: this.getAuthHeader(pat) } },
     )
 
+    this.validateResponse(response, 'refs')
     const mainRef = response.data.value.find((ref) => ref.name === 'refs/heads/main')
     if (mainRef === undefined) {
       throw new Error('Main branch not found')
@@ -419,6 +430,7 @@ export class AzureDevOpsService {
       { headers: { Authorization: this.getAuthHeader(pat) } },
     )
 
+    this.validateResponse(response, 'commits')
     return {
       commits: response.data.value,
       totalCount: response.data.count,

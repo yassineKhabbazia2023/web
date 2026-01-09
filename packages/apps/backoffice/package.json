@@ -5,14 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:e2e": "VITE_E2E_MODE=true vite --port 1339",
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:ci": "vitest run --coverage"
+    "test:ci": "vitest run --coverage",
+    "e2e": "playwright test --config=e2e/playwright.config.ts",
+    "e2e:debug": "playwright test --config=e2e/playwright.config.ts --debug",
+    "e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@pulse/toolbox": "1.0.0",
     "@pulse/common": "1.0.0",
-    "@pulse/styleguide": "3.1.0"
+    "@pulse/styleguide": "3.1.0",
+    "@pulse/e2e-mocks": "1.0.0"
   }
 }

@@ -3,10 +3,9 @@ import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { Plugin, ViteDevServer } from 'vite'
+import type { E2EPluginOptions } from '../types'
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url))
-
-export type E2EPluginOptions = object
 
 // Content type mapping for common file extensions
 const contentTypeMap: Record<string, string> = {
@@ -36,8 +35,9 @@ const contentTypeMap: Record<string, string> = {
  * - Serves styleguide assets (images, fonts, icons)
  * - Provides shims for external services (SignalR, PowerBI)
  */
-export function e2ePlugin(_options: E2EPluginOptions = {}): Plugin {
+export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
   const isE2E = process.env.VITE_E2E_MODE === 'true'
+  const appType = options.app || 'customer'
 
   // Path to fixtures in this library
   const fixturesPath = path.resolve(__dirname, '../fixtures')
@@ -53,9 +53,12 @@ export function e2ePlugin(_options: E2EPluginOptions = {}): Plugin {
   // Path to styleguide assets (for images, fonts, icons)
   const styleguideAssetsPath = path.resolve(__dirname, '../../../../libraries/styleguide/src/assets')
 
+  // Select env-vars file based on app type
+  const envVarsFile = appType === 'backoffice' ? 'env-vars.backoffice.e2e.js' : 'env-vars.e2e.js'
+
   // Map of public files to their E2E mock equivalents
   const e2ePublicFiles: Record<string, { file: string; contentType: string; basePath: string }> = {
-    '/env-vars.js': { file: 'env-vars.e2e.js', contentType: 'application/javascript', basePath: fixturesPath },
+    '/env-vars.js': { file: envVarsFile, contentType: 'application/javascript', basePath: fixturesPath },
     '/styles.css': { file: 'styles.e2e.css', contentType: 'text/css', basePath: fixturesPath },
     '/mockServiceWorker.js': { file: 'mockServiceWorker.js', contentType: 'application/javascript', basePath: staticPath },
     '/assets/sample.pdf': { file: 'sample.pdf', contentType: 'application/pdf', basePath: assetsPath },
@@ -68,14 +71,21 @@ export function e2ePlugin(_options: E2EPluginOptions = {}): Plugin {
         return
       }
 
-      // Add aliases for external services shims in E2E mode
+      // Base aliases for external services shims in E2E mode
+      const aliases: Record<string, string> = {
+        '@microsoft/signalr': path.resolve(shimsPath, 'signalr-shim.ts'),
+        'powerbi-client': path.resolve(shimsPath, 'powerbi-shim.ts'),
+        'powerbi-models': path.resolve(shimsPath, 'powerbi-models-shim.ts'),
+      }
+
+      // Add MSAL shim for backoffice app
+      if (appType === 'backoffice') {
+        aliases['@azure/msal-browser'] = path.resolve(shimsPath, 'msal-shim.ts')
+      }
+
       return {
         resolve: {
-          alias: {
-            '@microsoft/signalr': path.resolve(shimsPath, 'signalr-shim.ts'),
-            'powerbi-client': path.resolve(shimsPath, 'powerbi-shim.ts'),
-            'powerbi-models': path.resolve(shimsPath, 'powerbi-models-shim.ts'),
-          },
+          alias: aliases,
         },
       }
     },
@@ -84,10 +94,12 @@ export function e2ePlugin(_options: E2EPluginOptions = {}): Plugin {
         return html
       }
 
-      // Inject MSW bootstrap script - use /@fs/ prefix for direct file access
-      // Vite will transform and serve this TypeScript file
+      // Inject MSW app type and bootstrap script
+      // The inline script sets the app type before the bootstrap module loads
+      const appTypeScript = `<script>window.__MSW_APP_TYPE__ = '${appType}';</script>`
+      // Use /@fs/ prefix for direct file access - Vite will transform and serve this TypeScript file
       const mswScript = `<script type="module" src="/@fs${bootstrapPath}"></script>`
-      return html.replace('<head>', `<head>${mswScript}`)
+      return html.replace('<head>', `<head>${appTypeScript}${mswScript}`)
     },
     configureServer(server: ViteDevServer) {
       if (isE2E === false) {

@@ -8,7 +8,7 @@ import { PButton } from '@pulse/styleguide/components'
 import { useUserStore } from '@pulse/common/stores'
 import { getMockedUser } from '@pulse/common/mocks'
 import { useFeedCenterStore } from './stores/feed-center.store'
-import { worker } from '@pulse/e2e-mocks/msw'
+import { getWorker } from '@pulse/e2e-mocks/msw'
 import {
   notificationsMock,
   unreadNotificationsMock,
@@ -21,7 +21,7 @@ function setupUserStore() {
 }
 
 function setupEmptyNotifications() {
-  worker.use(
+  getWorker().use(
     http.get('*/feedcenter/api/notifications/currentuser/unread/count', () => {
       return HttpResponse.json(0)
     }),
@@ -32,7 +32,7 @@ function setupEmptyNotifications() {
 }
 
 function setupWithNotifications() {
-  worker.use(
+  getWorker().use(
     http.get('*/feedcenter/api/notifications/currentuser/unread/count', () => {
       return HttpResponse.json(unreadNotificationsMock.length)
     }),
@@ -162,7 +162,7 @@ export const Settings: Story = {
     setup() {
       setupUserStore()
 
-      worker.use(
+      getWorker().use(
         http.get('*/feedcenter/api/settings/currentUser', () => {
           return HttpResponse.json(getNotificationSettingsConfiguration())
         }),

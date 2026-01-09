@@ -5,6 +5,7 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import vue from '@vitejs/plugin-vue'
 import { viteExternalsPlugin } from 'vite-plugin-externals'
 import { viteConfigBase } from '../../@config/vite.config.base.ts'
+import { e2ePlugin } from '@pulse/e2e-mocks/vite-plugin'
 
 const PORT = 9001
 
@@ -15,6 +16,7 @@ export default ({ mode }: any) =>
         vue(),
         VueI18nPlugin({}),
         viteExternalsPlugin({ 'env-vars': 'EnvVars' }, { disableInServe: mode === 'test' }),
+        e2ePlugin({ app: 'backoffice' }),
       ],
       resolve: {
         alias: {
@@ -27,7 +29,6 @@ export default ({ mode }: any) =>
         port: PORT,
         strictPort: true,
         open: true,
-        origin: `http://localhost:${PORT}`,
       },
       preview: {
         port: PORT,

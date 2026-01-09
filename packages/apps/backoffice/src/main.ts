@@ -7,6 +7,12 @@ import router from './routing/backoffice.routes'
 
 import App from './App.vue'
 
+// Wait for MSW to be ready in E2E mode before initializing the app
+if (import.meta.env.VITE_E2E_MODE === 'true') {
+  const { waitForMsw } = await import('@pulse/e2e-mocks/helpers')
+  await waitForMsw()
+}
+
 const app = createApp(App)
 
 app.use(createPinia())

@@ -1,7 +1,10 @@
 <template>
   <div class="azure-devops-page">
     <div class="padding-y--2 padding-x--6 padding-bottom--0">
-      <h1 class="font-large font-bold text-color--black-rock-900">
+      <h1
+        class="font-large font-bold text-color--black-rock-900"
+        data-testid="azure-devops-page-title"
+      >
         Azure DevOps
       </h1>
       <p class="text-color--neutral-gray-500 font-small">
@@ -29,11 +32,13 @@
               </div>
             </template>
             <div class="flex flex-gap--2 flex--align-items-center">
-              <div class="azure-devops-page__pat-input">
+              <div
+                class="azure-devops-page__pat-input"
+                data-testid="azure-devops-pat-input"
+              >
                 <PInput
                   id="pat-input"
                   v-model="patValue"
-                  data-testid="azure-devops-pat-input"
                   pPlaceholder="Entrez votre PAT Azure DevOps"
                   pType="password"
                 />

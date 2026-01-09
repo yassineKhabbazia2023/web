@@ -1,6 +1,9 @@
 <template>
   <div class="dashboard-layout flex flex--direction-column height--100vh">
-    <header class="dashboard-layout__header bg--base-blue-pulse text-white position--relative shadow--5">
+    <header
+      class="dashboard-layout__header bg--base-blue-pulse text-white position--relative shadow--5"
+      data-testid="backoffice-header"
+    >
       <div
         class="
           dashboard-layout__toolbar

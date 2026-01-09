@@ -2,6 +2,7 @@ import axios from 'axios'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { AzureDevOpsService } from './azure-devops.service'
 import type {
+  AzureDevOpsCommit,
   AzureDevOpsCommitsResponse,
   AzureDevOpsRefsResponse,
   AzureDevOpsWorkItemsBatchResponse,
@@ -10,7 +11,8 @@ import type {
 vi.mock('axios')
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
-const mockedAxios = vi.mocked(axios)
+const mockedAxiosGet = vi.mocked(axios.get)
+const mockedAxiosPost = vi.mocked(axios.post)
 
 const mockPat = 'test-pat-token'
 const mockRepository = 'PULSE.WEB'
@@ -18,7 +20,7 @@ const mockRepository = 'PULSE.WEB'
 describe('AzureDevOpsService', () => {
   describe('getRepositories', () => {
     it('returns sorted list of repositories', async () => {
-      mockedAxios.get.mockResolvedValueOnce({
+      mockedAxiosGet.mockResolvedValueOnce({
         data: {
           value: [
             { id: '2', name: 'Zulu', defaultBranch: 'main' },
@@ -38,7 +40,7 @@ describe('AzureDevOpsService', () => {
     })
 
     it('returns empty array when no repositories', async () => {
-      mockedAxios.get.mockResolvedValueOnce({
+      mockedAxiosGet.mockResolvedValueOnce({
         data: { value: [], count: 0 },
       })
 
@@ -50,7 +52,7 @@ describe('AzureDevOpsService', () => {
 
   describe('getMainBranchHead', () => {
     it('returns HEAD commit ID of main branch', async () => {
-      mockedAxios.get.mockResolvedValueOnce({
+      mockedAxiosGet.mockResolvedValueOnce({
         data: {
           value: [{ name: 'refs/heads/main', objectId: 'head-commit-id' }],
           count: 1,
@@ -63,7 +65,7 @@ describe('AzureDevOpsService', () => {
     })
 
     it('throws error when main branch not found', async () => {
-      mockedAxios.get.mockResolvedValueOnce({
+      mockedAxiosGet.mockResolvedValueOnce({
         data: { value: [{ name: 'refs/heads/develop', objectId: 'other' }], count: 1 },
       })
 
@@ -74,7 +76,7 @@ describe('AzureDevOpsService', () => {
   describe('getHeadInfo', () => {
     it('returns commit ID and version tag when tag exists', async () => {
       const headCommitId = 'abc123'
-      mockedAxios.get
+      mockedAxiosGet
         .mockResolvedValueOnce({
           data: { value: [{ name: 'refs/heads/main', objectId: headCommitId }], count: 1 },
         })
@@ -93,7 +95,7 @@ describe('AzureDevOpsService', () => {
 
     it('returns null tagName when no version tag exists', async () => {
       const headCommitId = 'abc123'
-      mockedAxios.get
+      mockedAxiosGet
         .mockResolvedValueOnce({
           data: { value: [{ name: 'refs/heads/main', objectId: headCommitId }], count: 1 },
         })
@@ -109,7 +111,7 @@ describe('AzureDevOpsService', () => {
 
     it('uses peeledObjectId for annotated version tags', async () => {
       const headCommitId = 'abc123'
-      mockedAxios.get
+      mockedAxiosGet
         .mockResolvedValueOnce({
           data: { value: [{ name: 'refs/heads/main', objectId: headCommitId }], count: 1 },
         })
@@ -140,7 +142,7 @@ describe('AzureDevOpsService', () => {
         ],
         count: 3,
       }
-      mockedAxios.get.mockResolvedValueOnce({ data: mockRefs })
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockRefs })
 
       const result = await AzureDevOpsService.getLatestMepTag(mockPat, mockRepository)
 
@@ -150,7 +152,7 @@ describe('AzureDevOpsService', () => {
     })
 
     it('returns null when no MEP tags exist', async () => {
-      mockedAxios.get.mockResolvedValueOnce({
+      mockedAxiosGet.mockResolvedValueOnce({
         data: { value: [{ name: 'refs/tags/V1.0.0', objectId: 'commit' }], count: 1 },
       })
 
@@ -168,7 +170,7 @@ describe('AzureDevOpsService', () => {
         }],
         count: 1,
       }
-      mockedAxios.get.mockResolvedValueOnce({ data: mockRefs })
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockRefs })
 
       const result = await AzureDevOpsService.getLatestMepTag(mockPat, mockRepository)
 
@@ -176,7 +178,7 @@ describe('AzureDevOpsService', () => {
     })
 
     it('ignores invalid MEP tag formats', async () => {
-      mockedAxios.get.mockResolvedValueOnce({
+      mockedAxiosGet.mockResolvedValueOnce({
         data: {
           value: [
             { name: 'refs/tags/MEP.invalid-format', objectId: 'commit1' },
@@ -194,7 +196,7 @@ describe('AzureDevOpsService', () => {
 
   describe('getWorkItemsForCommitRange', () => {
     it('returns empty result when no commits in range', async () => {
-      mockedAxios.get.mockResolvedValueOnce({ data: { value: [], count: 0 } })
+      mockedAxiosGet.mockResolvedValueOnce({ data: { value: [], count: 0 } })
 
       const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
@@ -210,7 +212,7 @@ describe('AzureDevOpsService', () => {
         ],
         count: 2,
       }
-      mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
 
       const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
@@ -258,8 +260,8 @@ describe('AzureDevOpsService', () => {
           },
         ],
       }
-      mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
-      mockedAxios.post.mockResolvedValueOnce({ data: mockWorkItems })
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
+      mockedAxiosPost.mockResolvedValueOnce({ data: mockWorkItems })
 
       const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
@@ -298,8 +300,8 @@ describe('AzureDevOpsService', () => {
           url: 'https://dev.azure.com/.../123',
         }],
       }
-      mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
-      mockedAxios.post.mockResolvedValueOnce({ data: mockWorkItems })
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
+      mockedAxiosPost.mockResolvedValueOnce({ data: mockWorkItems })
 
       const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
@@ -311,8 +313,8 @@ describe('AzureDevOpsService', () => {
         value: [{ commitId: 'other', comment: 'feat', author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' } }],
         count: 1,
       }
-      mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
-      mockedAxios.get.mockResolvedValueOnce({ data: { value: [], count: 0 } })
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
+      mockedAxiosGet.mockResolvedValueOnce({ data: { value: [], count: 0 } })
 
       const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'non-existent')
 
@@ -350,9 +352,9 @@ describe('AzureDevOpsService', () => {
           url: 'https://dev.azure.com/.../123',
         }],
       }
-      mockedAxios.get.mockResolvedValueOnce({ data: page1 })
-      mockedAxios.get.mockResolvedValueOnce({ data: page2 })
-      mockedAxios.post.mockResolvedValueOnce({ data: mockWorkItems })
+      mockedAxiosGet.mockResolvedValueOnce({ data: page1 })
+      mockedAxiosGet.mockResolvedValueOnce({ data: page2 })
+      mockedAxiosPost.mockResolvedValueOnce({ data: mockWorkItems })
 
       const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
@@ -373,8 +375,8 @@ describe('AzureDevOpsService', () => {
         ],
         count: 2,
       }
-      mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
-      mockedAxios.post.mockRejectedValueOnce(new Error('Batch request failed'))
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
+      mockedAxiosPost.mockRejectedValueOnce(new Error('Batch request failed'))
 
       await expect(AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')).rejects.toThrow('Batch request failed')
     })
@@ -405,13 +407,224 @@ describe('AzureDevOpsService', () => {
           url: 'https://dev.azure.com/.../123',
         }],
       }
-      mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
-      mockedAxios.post.mockResolvedValueOnce({ data: mockWorkItems })
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
+      mockedAxiosPost.mockResolvedValueOnce({ data: mockWorkItems })
 
       const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
       expect(result.workItemsByTeam['Team Alpha']).toBeDefined()
       expect(result.workItemsByTeam['Team Alpha'][0].team).toBe('Team Alpha')
+    })
+
+    it('generates warning when fromCommitId is not found but commits exist', async () => {
+      const mockCommits: AzureDevOpsCommitsResponse = {
+        value: [
+          {
+            commitId: 'to',
+            comment: 'feat',
+            author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' },
+            workItems: [{ id: '123', url: 'https://dev.azure.com/.../123' }],
+          },
+          { commitId: 'other', comment: 'fix', author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' } },
+        ],
+        count: 2,
+      }
+      const mockWorkItems: AzureDevOpsWorkItemsBatchResponse = {
+        count: 1,
+        value: [{
+          id: 123,
+          fields: {
+            'System.Title': 'Work Item',
+            'System.WorkItemType': 'Task',
+            'System.State': 'New',
+            'System.AreaPath': 'Pulse\\Team',
+          },
+          url: 'https://dev.azure.com/.../123',
+        }],
+      }
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
+      mockedAxiosGet.mockResolvedValueOnce({ data: { value: [], count: 0 } })
+      mockedAxiosPost.mockResolvedValueOnce({ data: mockWorkItems })
+
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'non-existent-from', 'to')
+
+      expect(result.warnings.some((w) => w.includes('non-exis'))).toBe(true)
+    })
+  })
+
+  describe('extractWorkItemIds', () => {
+    it('extracts unique work item IDs from commits', () => {
+      const commits: AzureDevOpsCommit[] = [
+        {
+          commitId: 'abc',
+          comment: 'feat',
+          author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' },
+          workItems: [
+            { id: '123', url: 'https://dev.azure.com/.../123' },
+            { id: '456', url: 'https://dev.azure.com/.../456' },
+          ],
+        },
+        {
+          commitId: 'def',
+          comment: 'fix',
+          author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' },
+          workItems: [
+            { id: '123', url: 'https://dev.azure.com/.../123' },
+            { id: '789', url: 'https://dev.azure.com/.../789' },
+          ],
+        },
+      ]
+
+      const result = AzureDevOpsService.extractWorkItemIds(commits)
+
+      expect(result).toHaveLength(3)
+      expect(result).toContain(123)
+      expect(result).toContain(456)
+      expect(result).toContain(789)
+    })
+
+    it('returns empty array when commits have no work items', () => {
+      const commits: AzureDevOpsCommit[] = [
+        { commitId: 'abc', comment: 'feat', author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' } },
+      ]
+
+      const result = AzureDevOpsService.extractWorkItemIds(commits)
+
+      expect(result).toEqual([])
+    })
+
+    it('skips invalid work item URLs', () => {
+      const commits: AzureDevOpsCommit[] = [
+        {
+          commitId: 'abc',
+          comment: 'feat',
+          author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' },
+          workItems: [
+            { id: '123', url: 'https://dev.azure.com/.../123' },
+            { id: 'invalid', url: 'https://dev.azure.com/.../' },
+          ],
+        },
+      ]
+
+      const result = AzureDevOpsService.extractWorkItemIds(commits)
+
+      expect(result).toHaveLength(1)
+      expect(result).toContain(123)
+    })
+  })
+
+  describe('getAllTags', () => {
+    it('returns all tags from repository', async () => {
+      const mockRefs: AzureDevOpsRefsResponse = {
+        value: [
+          { name: 'refs/tags/V1.0.0', objectId: 'commit1' },
+          { name: 'refs/tags/MEP.2024.01.01-10.00', objectId: 'commit2' },
+        ],
+        count: 2,
+      }
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockRefs })
+
+      const result = await AzureDevOpsService.getAllTags(mockPat, mockRepository)
+
+      expect(result).toHaveLength(2)
+      expect(result[0].name).toBe('refs/tags/V1.0.0')
+    })
+  })
+
+  describe('fetchCommitsForExplorer', () => {
+    it('returns commits with total count', async () => {
+      const mockCommits: AzureDevOpsCommitsResponse = {
+        value: [
+          { commitId: 'abc', comment: 'feat', author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' } },
+          { commitId: 'def', comment: 'fix', author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-02' } },
+        ],
+        count: 100,
+      }
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
+
+      const result = await AzureDevOpsService.fetchCommitsForExplorer(mockPat, mockRepository, 0)
+
+      expect(result.commits).toHaveLength(2)
+      expect(result.totalCount).toBe(100)
+    })
+
+    it('supports pagination with skip and top parameters', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      await AzureDevOpsService.fetchCommitsForExplorer(mockPat, mockRepository, 30, 15)
+
+      expect(mockedAxiosGet).toHaveBeenCalledWith(
+        expect.stringContaining('%24skip=30'),
+        expect.any(Object),
+      )
+      expect(mockedAxiosGet).toHaveBeenCalledWith(
+        expect.stringContaining('%24top=15'),
+        expect.any(Object),
+      )
+    })
+  })
+
+  describe('getWorkItemsByIds', () => {
+    it('returns empty array when no IDs provided', async () => {
+      const result = await AzureDevOpsService.getWorkItemsByIds(mockPat, [])
+
+      expect(result).toEqual([])
+      expect(mockedAxiosPost).not.toHaveBeenCalled()
+    })
+
+    it('returns normalized work items', async () => {
+      const mockWorkItems: AzureDevOpsWorkItemsBatchResponse = {
+        count: 2,
+        value: [
+          {
+            id: 123,
+            fields: {
+              'System.Title': 'Story 1',
+              'System.WorkItemType': 'User Story',
+              'System.State': 'Active',
+              'System.AreaPath': 'Pulse\\Team Alpha',
+            },
+            url: 'https://dev.azure.com/.../123',
+          },
+          {
+            id: 456,
+            fields: {
+              'System.Title': 'Bug 1',
+              'System.WorkItemType': 'Bug',
+              'System.State': 'Closed',
+              'System.AreaPath': 'Pulse\\Team Beta',
+            },
+            url: 'https://dev.azure.com/.../456',
+          },
+        ],
+      }
+      mockedAxiosPost.mockResolvedValueOnce({ data: mockWorkItems })
+
+      const result = await AzureDevOpsService.getWorkItemsByIds(mockPat, [123, 456])
+
+      expect(result).toHaveLength(2)
+      expect(result[0]).toEqual({
+        id: 123,
+        title: 'Story 1',
+        type: 'User Story',
+        state: 'Active',
+        team: 'Team Alpha',
+        webUrl: expect.stringContaining('_workitems/edit/123'),
+      })
+    })
+  })
+
+  describe('validateResponse', () => {
+    it('throws error when response has no value (invalid PAT)', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({ data: {} })
+
+      await expect(AzureDevOpsService.getRepositories(mockPat)).rejects.toThrow('Personal Access Token')
+    })
+
+    it('throws error when response data is undefined', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({ data: undefined })
+
+      await expect(AzureDevOpsService.getRepositories(mockPat)).rejects.toThrow('Personal Access Token')
     })
   })
 })
