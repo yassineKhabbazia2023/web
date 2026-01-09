@@ -11,6 +11,7 @@ vi.mock('@backoffice/services/azure-devops/azure-devops.service')
 const mockedGetWorkItemsForCommitRange = vi.mocked(AzureDevOpsService.getWorkItemsForCommitRange)
 const mockedGetLatestMepTag = vi.mocked(AzureDevOpsService.getLatestMepTag)
 const mockedGetHeadInfo = vi.mocked(AzureDevOpsService.getHeadInfo)
+const mockedGetRepositories = vi.mocked(AzureDevOpsService.getRepositories)
 
 describe('useAzureDevOpsWorkItems', () => {
   beforeEach(() => {
@@ -253,6 +254,100 @@ describe('useAzureDevOpsWorkItems', () => {
       composable.applyHeadToToCommit()
 
       expect(composable.toCommitId.value).toBe('original')
+    })
+  })
+
+  describe('fetchRepositories', () => {
+    it('should fetch repositories when PAT becomes available', async () => {
+      const mockRepos = [
+        { id: '1', name: 'Repo1', defaultBranch: 'main' },
+        { id: '2', name: 'Repo2', defaultBranch: 'main' },
+      ]
+      mockedGetRepositories.mockResolvedValueOnce(mockRepos)
+      mockedGetLatestMepTag.mockResolvedValueOnce(null)
+      mockedGetHeadInfo.mockResolvedValueOnce({ commitId: 'head', tagName: null })
+
+      const store = useAzureDevOpsStore()
+      useAzureDevOpsWorkItems()
+
+      store.setPat('valid-pat')
+      await nextTick()
+
+      await vi.waitFor(() => {
+        expect(mockedGetRepositories).toHaveBeenCalledWith('valid-pat')
+        expect(store.repositories).toEqual(mockRepos)
+      })
+    })
+
+    it('should handle fetch repositories error', async () => {
+      mockedGetRepositories.mockRejectedValueOnce(new Error('API Error'))
+      mockedGetLatestMepTag.mockResolvedValueOnce(null)
+      mockedGetHeadInfo.mockResolvedValueOnce({ commitId: 'head', tagName: null })
+
+      const store = useAzureDevOpsStore()
+      useAzureDevOpsWorkItems()
+
+      store.setPat('valid-pat')
+      await nextTick()
+
+      await vi.waitFor(() => {
+        expect(store.repositories).toEqual([])
+      })
+    })
+
+    it('should reset repositories when PAT is cleared', async () => {
+      mockedGetRepositories.mockResolvedValueOnce([{ id: '1', name: 'Repo1', defaultBranch: 'main' }])
+      mockedGetLatestMepTag.mockResolvedValueOnce(null)
+      mockedGetHeadInfo.mockResolvedValueOnce({ commitId: 'head', tagName: null })
+
+      const store = useAzureDevOpsStore()
+      useAzureDevOpsWorkItems()
+
+      store.setPat('valid-pat')
+      await nextTick()
+
+      await vi.waitFor(() => {
+        expect(store.hasRepositories).toBe(true)
+      })
+
+      store.setPat('')
+      await nextTick()
+
+      expect(store.repositories).toEqual([])
+    })
+  })
+
+  describe('repository change watcher', () => {
+    it('should reset results and re-fetch when repository changes', async () => {
+      mockedGetRepositories.mockResolvedValue([])
+      mockedGetLatestMepTag.mockResolvedValue({
+        name: 'MEP.2024.01.01-10.00',
+        commitId: 'mep-commit',
+        date: new Date(),
+      })
+      mockedGetHeadInfo.mockResolvedValue({
+        commitId: 'head-commit',
+        tagName: 'V1.0.0',
+      })
+
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const composable = useAzureDevOpsWorkItems()
+      composable.workItemsByTeam.value = { 'Team A': [{ id: 1, title: '', type: '', state: '', team: '', webUrl: '' }] }
+      composable.fromCommitId.value = 'old-from'
+      composable.toCommitId.value = 'old-to'
+
+      await nextTick()
+
+      store.setSelectedRepository('NewRepo')
+      await nextTick()
+
+      await vi.waitFor(() => {
+        expect(composable.workItemsByTeam.value).toEqual({})
+        expect(composable.fromCommitId.value).toBe('')
+        expect(composable.toCommitId.value).toBe('')
+      })
     })
   })
 })

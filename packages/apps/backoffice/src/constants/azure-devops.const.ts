@@ -1,16 +1,17 @@
 export const AZURE_DEVOPS_CONFIG = {
   organization: 'https://dev.azure.com/FR-TPEME',
   project: 'PULSE',
-  repository: 'PULSE.WEB',
+  repository: 'Pulse.Web',
 } as const
 
 export const AZURE_DEVOPS_API_VERSION = '7.1'
 
 export const MAX_COMMITS_SAFETY_LIMIT = 5000
 export const COMMITS_PAGE_SIZE = 100
+export const EXPLORER_PAGE_SIZE = 30
 
 // Work item states considered as completed
-export const WORK_ITEM_COMPLETED_STATES = ['Validated', 'Closed'] as const
+export const WORK_ITEM_COMPLETED_STATES = ['Validated', 'Closed', 'Released', 'Resolved'] as const
 
 // Work item type colors for display
 export const WORK_ITEM_TYPE_COLORS = {
@@ -24,12 +25,15 @@ export const WORK_ITEM_TYPE_COLORS = {
 
 // Work item state colors for display
 export const WORK_ITEM_STATE_COLORS = {
-  'New': 'info',
-  'Active': 'info',
+  'New': 'warning',
+  'Active': 'warning',
+  'Ready for test': 'warning',
+  'Ready for check': 'warning',
   'In Progress': 'warning',
   'Resolved': 'success',
   'Validated': 'success',
   'Closed': 'success',
+  'Released': 'success',
   'Done': 'success',
   'Removed': 'danger',
 } as const

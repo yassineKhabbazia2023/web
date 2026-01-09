@@ -16,15 +16,30 @@
           pLabelFor="from-commit-input"
           :pError="fromCommitIdError ?? undefined"
         >
-          <PInput
-            id="from-commit-input"
-            :modelValue="fromCommitId"
-            data-testid="work-items-from-commit-input"
-            pPlaceholder="abc123..."
-            :pDisabled="isLoading"
-            :pStatus="fromCommitIdError ? 'error' : undefined"
-            @update:model-value="$emit('update:fromCommitId', $event)"
-          />
+          <div class="flex flex-gap--1 flex--align-items-center">
+            <PInput
+              id="from-commit-input"
+              :modelValue="fromCommitId"
+              data-testid="work-items-from-commit-input"
+              pPlaceholder="abc123..."
+              :pDisabled="isLoading"
+              :pStatus="fromCommitIdError ? 'error' : undefined"
+              @update:model-value="$emit('update:fromCommitId', $event)"
+            />
+            <PButton
+              pType="tertiary"
+              pSize="small"
+              pIconOnly
+              data-testid="from-commit-explore-button"
+              :pDisabled="isLoading"
+              @click="$emit('openExplorer', 'from')"
+            >
+              <PIcon
+                pName="search"
+                pSize="14"
+              />
+            </PButton>
+          </div>
         </PFormItem>
 
         <PFormItem
@@ -33,15 +48,30 @@
           pLabelFor="to-commit-input"
           :pError="toCommitIdError ?? undefined"
         >
-          <PInput
-            id="to-commit-input"
-            :modelValue="toCommitId"
-            data-testid="work-items-to-commit-input"
-            pPlaceholder="def456..."
-            :pDisabled="isLoading"
-            :pStatus="toCommitIdError ? 'error' : undefined"
-            @update:model-value="$emit('update:toCommitId', $event)"
-          />
+          <div class="flex flex-gap--1 flex--align-items-center">
+            <PInput
+              id="to-commit-input"
+              :modelValue="toCommitId"
+              data-testid="work-items-to-commit-input"
+              pPlaceholder="def456..."
+              :pDisabled="isLoading"
+              :pStatus="toCommitIdError ? 'error' : undefined"
+              @update:model-value="$emit('update:toCommitId', $event)"
+            />
+            <PButton
+              pType="tertiary"
+              pSize="small"
+              pIconOnly
+              data-testid="to-commit-explore-button"
+              :pDisabled="isLoading"
+              @click="$emit('openExplorer', 'to')"
+            >
+              <PIcon
+                pName="search"
+                pSize="14"
+              />
+            </PButton>
+          </div>
         </PFormItem>
 
         <PButton
@@ -126,6 +156,7 @@ defineEmits<{
   'search': []
   'applyMepTag': []
   'applyHead': []
+  'openExplorer': [target: 'from' | 'to']
 }>()
 
 const headTagLabel = computed(() => {

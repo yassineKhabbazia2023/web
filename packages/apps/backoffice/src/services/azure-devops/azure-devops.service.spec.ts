@@ -13,8 +13,41 @@ vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 const mockedAxios = vi.mocked(axios)
 
 const mockPat = 'test-pat-token'
+const mockRepository = 'PULSE.WEB'
 
 describe('AzureDevOpsService', () => {
+  describe('getRepositories', () => {
+    it('returns sorted list of repositories', async () => {
+      mockedAxios.get.mockResolvedValueOnce({
+        data: {
+          value: [
+            { id: '2', name: 'Zulu', defaultBranch: 'main' },
+            { id: '1', name: 'Alpha', defaultBranch: 'main' },
+            { id: '3', name: 'Beta', defaultBranch: 'develop' },
+          ],
+          count: 3,
+        },
+      })
+
+      const result = await AzureDevOpsService.getRepositories(mockPat)
+
+      expect(result).toHaveLength(3)
+      expect(result[0].name).toBe('Alpha')
+      expect(result[1].name).toBe('Beta')
+      expect(result[2].name).toBe('Zulu')
+    })
+
+    it('returns empty array when no repositories', async () => {
+      mockedAxios.get.mockResolvedValueOnce({
+        data: { value: [], count: 0 },
+      })
+
+      const result = await AzureDevOpsService.getRepositories(mockPat)
+
+      expect(result).toEqual([])
+    })
+  })
+
   describe('getMainBranchHead', () => {
     it('returns HEAD commit ID of main branch', async () => {
       mockedAxios.get.mockResolvedValueOnce({
@@ -24,7 +57,7 @@ describe('AzureDevOpsService', () => {
         },
       })
 
-      const result = await AzureDevOpsService.getMainBranchHead(mockPat)
+      const result = await AzureDevOpsService.getMainBranchHead(mockPat, mockRepository)
 
       expect(result).toBe('head-commit-id')
     })
@@ -34,7 +67,7 @@ describe('AzureDevOpsService', () => {
         data: { value: [{ name: 'refs/heads/develop', objectId: 'other' }], count: 1 },
       })
 
-      await expect(AzureDevOpsService.getMainBranchHead(mockPat)).rejects.toThrow('Main branch not found')
+      await expect(AzureDevOpsService.getMainBranchHead(mockPat, mockRepository)).rejects.toThrow('Main branch not found')
     })
   })
 
@@ -52,7 +85,7 @@ describe('AzureDevOpsService', () => {
           },
         })
 
-      const result = await AzureDevOpsService.getHeadInfo(mockPat)
+      const result = await AzureDevOpsService.getHeadInfo(mockPat, mockRepository)
 
       expect(result.commitId).toBe(headCommitId)
       expect(result.tagName).toBe('V1.2.3')
@@ -68,7 +101,7 @@ describe('AzureDevOpsService', () => {
           data: { value: [{ name: 'refs/tags/MEP.2024.01.01-10.00', objectId: 'other' }], count: 1 },
         })
 
-      const result = await AzureDevOpsService.getHeadInfo(mockPat)
+      const result = await AzureDevOpsService.getHeadInfo(mockPat, mockRepository)
 
       expect(result.commitId).toBe(headCommitId)
       expect(result.tagName).toBeNull()
@@ -91,7 +124,7 @@ describe('AzureDevOpsService', () => {
           },
         })
 
-      const result = await AzureDevOpsService.getHeadInfo(mockPat)
+      const result = await AzureDevOpsService.getHeadInfo(mockPat, mockRepository)
 
       expect(result.tagName).toBe('V2.0.0')
     })
@@ -109,7 +142,7 @@ describe('AzureDevOpsService', () => {
       }
       mockedAxios.get.mockResolvedValueOnce({ data: mockRefs })
 
-      const result = await AzureDevOpsService.getLatestMepTag(mockPat)
+      const result = await AzureDevOpsService.getLatestMepTag(mockPat, mockRepository)
 
       expect(result).not.toBeNull()
       expect(result?.name).toBe('MEP.2024.02.15-14.30')
@@ -121,7 +154,7 @@ describe('AzureDevOpsService', () => {
         data: { value: [{ name: 'refs/tags/V1.0.0', objectId: 'commit' }], count: 1 },
       })
 
-      const result = await AzureDevOpsService.getLatestMepTag(mockPat)
+      const result = await AzureDevOpsService.getLatestMepTag(mockPat, mockRepository)
 
       expect(result).toBeNull()
     })
@@ -137,7 +170,7 @@ describe('AzureDevOpsService', () => {
       }
       mockedAxios.get.mockResolvedValueOnce({ data: mockRefs })
 
-      const result = await AzureDevOpsService.getLatestMepTag(mockPat)
+      const result = await AzureDevOpsService.getLatestMepTag(mockPat, mockRepository)
 
       expect(result?.commitId).toBe('actual-commit-id')
     })
@@ -153,7 +186,7 @@ describe('AzureDevOpsService', () => {
         },
       })
 
-      const result = await AzureDevOpsService.getLatestMepTag(mockPat)
+      const result = await AzureDevOpsService.getLatestMepTag(mockPat, mockRepository)
 
       expect(result?.name).toBe('MEP.2024.01.01-10.00')
     })
@@ -163,7 +196,7 @@ describe('AzureDevOpsService', () => {
     it('returns empty result when no commits in range', async () => {
       mockedAxios.get.mockResolvedValueOnce({ data: { value: [], count: 0 } })
 
-      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, 'from', 'to')
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
       expect(result.workItemsByTeam).toEqual({})
       expect(result.failedIds).toEqual([])
@@ -179,7 +212,7 @@ describe('AzureDevOpsService', () => {
       }
       mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
 
-      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, 'from', 'to')
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
       expect(result.workItemsByTeam).toEqual({})
     })
@@ -228,7 +261,7 @@ describe('AzureDevOpsService', () => {
       mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
       mockedAxios.post.mockResolvedValueOnce({ data: mockWorkItems })
 
-      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, 'from', 'to')
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
       expect(result.workItemsByTeam['Team Alpha']).toHaveLength(1)
       expect(result.workItemsByTeam['Team Beta']).toHaveLength(1)
@@ -268,7 +301,7 @@ describe('AzureDevOpsService', () => {
       mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
       mockedAxios.post.mockResolvedValueOnce({ data: mockWorkItems })
 
-      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, 'from', 'to')
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
       expect(result.failedIds).toContain(999)
     })
@@ -281,7 +314,7 @@ describe('AzureDevOpsService', () => {
       mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
       mockedAxios.get.mockResolvedValueOnce({ data: { value: [], count: 0 } })
 
-      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, 'from', 'non-existent')
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'non-existent')
 
       expect(result.warnings.length).toBeGreaterThan(0)
       expect(result.warnings[0]).toContain('non-exis')
@@ -321,7 +354,7 @@ describe('AzureDevOpsService', () => {
       mockedAxios.get.mockResolvedValueOnce({ data: page2 })
       mockedAxios.post.mockResolvedValueOnce({ data: mockWorkItems })
 
-      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, 'from', 'to')
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
       expect(result.workItemsByTeam['Team']).toHaveLength(1)
       expect(result.warnings).toEqual([])
@@ -343,7 +376,7 @@ describe('AzureDevOpsService', () => {
       mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
       mockedAxios.post.mockRejectedValueOnce(new Error('Batch request failed'))
 
-      await expect(AzureDevOpsService.getWorkItemsForCommitRange(mockPat, 'from', 'to')).rejects.toThrow('Batch request failed')
+      await expect(AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')).rejects.toThrow('Batch request failed')
     })
 
     it('extracts team name from area path correctly', async () => {
@@ -375,7 +408,7 @@ describe('AzureDevOpsService', () => {
       mockedAxios.get.mockResolvedValueOnce({ data: mockCommits })
       mockedAxios.post.mockResolvedValueOnce({ data: mockWorkItems })
 
-      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, 'from', 'to')
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to')
 
       expect(result.workItemsByTeam['Team Alpha']).toBeDefined()
       expect(result.workItemsByTeam['Team Alpha'][0].team).toBe('Team Alpha')

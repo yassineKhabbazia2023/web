@@ -21,6 +21,9 @@ export function useAzureDevOpsWorkItems() {
   const headInfo = ref<HeadInfo | null>(null)
   const isLoadingHead = ref<boolean>(false)
 
+  // Repository selection computed
+  const selectedRepository = computed(() => azureDevOpsStore.selectedRepository)
+
   // Computed
   const hasResults = computed(() => Object.keys(workItemsByTeam.value).length > 0)
 
@@ -58,6 +61,27 @@ export function useAzureDevOpsWorkItems() {
   )
 
   /**
+   * Fetch repositories for the current PAT
+   */
+  const fetchRepositories = async (): Promise<void> => {
+    if (azureDevOpsStore.hasPat === false) {
+      return
+    }
+
+    azureDevOpsStore.setIsLoadingRepositories(true)
+
+    try {
+      const repos = await AzureDevOpsService.getRepositories(azureDevOpsStore.pat)
+      azureDevOpsStore.setRepositories(repos)
+    } catch (err) {
+      logger.error('Failed to fetch repositories:', err)
+      azureDevOpsStore.setRepositories([])
+    } finally {
+      azureDevOpsStore.setIsLoadingRepositories(false)
+    }
+  }
+
+  /**
    * Fetch work items for the specified commit range
    */
   const fetchWorkItems = async (): Promise<void> => {
@@ -74,6 +98,7 @@ export function useAzureDevOpsWorkItems() {
     try {
       const result = await AzureDevOpsService.getWorkItemsForCommitRange(
         azureDevOpsStore.pat,
+        selectedRepository.value,
         fromCommitId.value.trim(),
         toCommitId.value.trim(),
       )
@@ -104,7 +129,10 @@ export function useAzureDevOpsWorkItems() {
     isLoadingMepTag.value = true
 
     try {
-      latestMepTag.value = await AzureDevOpsService.getLatestMepTag(azureDevOpsStore.pat)
+      latestMepTag.value = await AzureDevOpsService.getLatestMepTag(
+        azureDevOpsStore.pat,
+        selectedRepository.value,
+      )
     } catch (err) {
       logger.error('Failed to fetch latest MEP tag:', err)
       latestMepTag.value = null
@@ -133,7 +161,10 @@ export function useAzureDevOpsWorkItems() {
     isLoadingHead.value = true
 
     try {
-      headInfo.value = await AzureDevOpsService.getHeadInfo(azureDevOpsStore.pat)
+      headInfo.value = await AzureDevOpsService.getHeadInfo(
+        azureDevOpsStore.pat,
+        selectedRepository.value,
+      )
     } catch (err) {
       logger.error('Failed to fetch HEAD info:', err)
       headInfo.value = null
@@ -151,19 +182,40 @@ export function useAzureDevOpsWorkItems() {
     }
   }
 
-  // Auto-fetch latest MEP tag and HEAD info when PAT is available
+  // Auto-fetch repositories, latest MEP tag and HEAD info when PAT is available
   watch(
     () => azureDevOpsStore.hasPat,
     (hasPat) => {
       if (hasPat) {
+        fetchRepositories()
         fetchLatestMepTag()
         fetchHeadInfo()
       } else {
         latestMepTag.value = null
         headInfo.value = null
+        azureDevOpsStore.resetRepositories()
       }
     },
     { immediate: true },
+  )
+
+  // Re-fetch MEP tag and HEAD info when selected repository changes
+  watch(
+    () => azureDevOpsStore.selectedRepository,
+    () => {
+      if (azureDevOpsStore.hasPat) {
+        // Reset current results and commit IDs when changing repository
+        workItemsByTeam.value = {}
+        failedWorkItemIds.value = []
+        warnings.value = []
+        fromCommitId.value = ''
+        toCommitId.value = ''
+        error.value = null
+
+        fetchLatestMepTag()
+        fetchHeadInfo()
+      }
+    },
   )
 
   return {

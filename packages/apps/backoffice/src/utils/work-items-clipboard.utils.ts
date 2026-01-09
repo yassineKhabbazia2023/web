@@ -87,6 +87,55 @@ const formatForTeamsText = (options: CopyWorkItemsToClipboardOptions): string =>
   return lines.join('\n').trim()
 }
 
+const formatWorkItemsOnlyHtml = (options: CopyWorkItemsToClipboardOptions): string => {
+  const { workItemsByTeam, sortedTeamNames, repositoryName } = options
+  const htmlParts: string[] = []
+
+  if (repositoryName !== undefined) {
+    htmlParts.push(`<p><strong>[${escapeHtml(repositoryName)}]</strong></p>`)
+  }
+
+  for (const teamName of sortedTeamNames) {
+    const items = workItemsByTeam[teamName]
+    const displayName = teamName.trim() === '' ? 'Liste de work items' : teamName
+    const itemCount = items.length
+    const pluralSuffix = itemCount > 1 ? 's' : ''
+
+    htmlParts.push(
+      `<p><strong>${escapeHtml(displayName)}</strong> (${itemCount} work item${pluralSuffix})</p>`,
+      '<ul>',
+      ...items.map(formatWorkItemHtml),
+      '</ul>',
+    )
+  }
+
+  return htmlParts.join('')
+}
+
+const formatWorkItemsOnlyText = (options: CopyWorkItemsToClipboardOptions): string => {
+  const { workItemsByTeam, sortedTeamNames, repositoryName } = options
+  const lines: string[] = []
+
+  if (repositoryName !== undefined) {
+    lines.push(`[${repositoryName}]`, '')
+  }
+
+  for (const teamName of sortedTeamNames) {
+    const items = workItemsByTeam[teamName]
+    const displayName = teamName.trim() === '' ? 'Liste de work items' : teamName
+    const itemCount = items.length
+    const pluralSuffix = itemCount > 1 ? 's' : ''
+
+    lines.push(
+      `${displayName} (${itemCount} work item${pluralSuffix})`,
+      ...items.flatMap(formatWorkItemText),
+      '',
+    )
+  }
+
+  return lines.join('\n').trim()
+}
+
 export const copyWorkItemsAsTeamsExport = async (options: CopyWorkItemsToClipboardOptions): Promise<void> => {
   const htmlContent = formatForTeamsHtml(options)
   const textContent = formatForTeamsText(options)
@@ -101,7 +150,27 @@ export const copyWorkItemsAsTeamsExport = async (options: CopyWorkItemsToClipboa
         'text/plain': textBlob,
       }),
     ])
-    displayNotification('success', 'Export copié dans le presse-papiers')
+    displayNotification('success', 'Message MEP copié dans le presse-papiers')
+  } catch {
+    displayNotification('error', 'Impossible de copier dans le presse-papiers')
+  }
+}
+
+export const copyWorkItemsOnly = async (options: CopyWorkItemsToClipboardOptions): Promise<void> => {
+  const htmlContent = formatWorkItemsOnlyHtml(options)
+  const textContent = formatWorkItemsOnlyText(options)
+
+  try {
+    const htmlBlob = new Blob([htmlContent], { type: 'text/html' })
+    const textBlob = new Blob([textContent], { type: 'text/plain' })
+
+    await navigator.clipboard.write([
+      new ClipboardItem({
+        'text/html': htmlBlob,
+        'text/plain': textBlob,
+      }),
+    ])
+    displayNotification('success', 'Work items copiés dans le presse-papiers')
   } catch {
     displayNotification('error', 'Impossible de copier dans le presse-papiers')
   }

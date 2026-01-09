@@ -5,8 +5,11 @@ import type {
   AzureDevOpsCommitsResponse,
   AzureDevOpsRef,
   AzureDevOpsRefsResponse,
+  AzureDevOpsRepository,
+  AzureDevOpsRepositoriesResponse,
   AzureDevOpsWorkItemResponse,
   AzureDevOpsWorkItemsBatchResponse,
+  CommitExplorerPageResult,
   CommitsInRangeResult,
   HeadInfo,
   MepTag,
@@ -18,17 +21,23 @@ import {
   AZURE_DEVOPS_API_VERSION,
   AZURE_DEVOPS_CONFIG,
   COMMITS_PAGE_SIZE,
+  EXPLORER_PAGE_SIZE,
   MAX_COMMITS_SAFETY_LIMIT,
 } from '@backoffice/constants/azure-devops.const'
 
 export class AzureDevOpsService {
-  private static buildRefsUrl(): string {
-    const { organization, project, repository } = AZURE_DEVOPS_CONFIG
+  private static buildRepositoriesUrl(): string {
+    const { organization, project } = AZURE_DEVOPS_CONFIG
+    return `${organization}/${project}/_apis/git/repositories`
+  }
+
+  private static buildRefsUrl(repository: string): string {
+    const { organization, project } = AZURE_DEVOPS_CONFIG
     return `${organization}/${project}/_apis/git/repositories/${repository}/refs`
   }
 
-  private static buildCommitsUrl(): string {
-    const { organization, project, repository } = AZURE_DEVOPS_CONFIG
+  private static buildCommitsUrl(repository: string): string {
+    const { organization, project } = AZURE_DEVOPS_CONFIG
     return `${organization}/${project}/_apis/git/repositories/${repository}/commits`
   }
 
@@ -47,7 +56,20 @@ export class AzureDevOpsService {
     return 'Basic ' + btoa(credentials)
   }
 
-  private static async fetchAllTags(pat: string): Promise<AzureDevOpsRef[]> {
+  static async getRepositories(pat: string): Promise<AzureDevOpsRepository[]> {
+    const params = new URLSearchParams({
+      'api-version': AZURE_DEVOPS_API_VERSION,
+    })
+
+    const response = await axios.get<AzureDevOpsRepositoriesResponse>(
+      `${this.buildRepositoriesUrl()}?${params}`,
+      { headers: { Authorization: this.getAuthHeader(pat) } },
+    )
+
+    return response.data.value.sort((a, b) => a.name.localeCompare(b.name))
+  }
+
+  private static async fetchAllTags(pat: string, repository: string): Promise<AzureDevOpsRef[]> {
     const params = new URLSearchParams({
       'filter': 'tags/',
       'peelTags': 'true',
@@ -55,7 +77,7 @@ export class AzureDevOpsService {
     })
 
     const response = await axios.get<AzureDevOpsRefsResponse>(
-      `${this.buildRefsUrl()}?${params}`,
+      `${this.buildRefsUrl(repository)}?${params}`,
       { headers: { Authorization: this.getAuthHeader(pat) } },
     )
 
@@ -125,7 +147,7 @@ export class AzureDevOpsService {
     return null
   }
 
-  private static async fetchCommitPage(pat: string, skip: number): Promise<AzureDevOpsCommit[]> {
+  private static async fetchCommitPage(pat: string, repository: string, skip: number): Promise<AzureDevOpsCommit[]> {
     const params = new URLSearchParams({
       'searchCriteria.itemVersion.version': 'main',
       'searchCriteria.itemVersion.versionType': 'branch',
@@ -136,7 +158,7 @@ export class AzureDevOpsService {
     })
 
     const response = await axios.get<AzureDevOpsCommitsResponse>(
-      `${this.buildCommitsUrl()}?${params}`,
+      `${this.buildCommitsUrl(repository)}?${params}`,
       { headers: { Authorization: this.getAuthHeader(pat) } },
     )
 
@@ -199,6 +221,7 @@ export class AzureDevOpsService {
 
   private static async fetchCommitsInRange(
     pat: string,
+    repository: string,
     fromCommitId: string,
     toCommitId: string,
   ): Promise<CommitsInRangeResult> {
@@ -207,7 +230,7 @@ export class AzureDevOpsService {
     let skip = 0
 
     while (skip <= MAX_COMMITS_SAFETY_LIMIT) {
-      const commits = await this.fetchCommitPage(pat, skip)
+      const commits = await this.fetchCommitPage(pat, repository, skip)
 
       if (commits.length === 0) {
         break
@@ -235,7 +258,7 @@ export class AzureDevOpsService {
     return { commits: allCommits, warnings }
   }
 
-  private static extractWorkItemIds(commits: AzureDevOpsCommit[]): number[] {
+  static extractWorkItemIds(commits: AzureDevOpsCommit[]): number[] {
     const ids = new Set<number>()
 
     for (const commit of commits) {
@@ -304,14 +327,14 @@ export class AzureDevOpsService {
     return grouped
   }
 
-  static async getMainBranchHead(pat: string): Promise<string> {
+  static async getMainBranchHead(pat: string, repository: string): Promise<string> {
     const params = new URLSearchParams({
       'filter': 'heads/main',
       'api-version': AZURE_DEVOPS_API_VERSION,
     })
 
     const response = await axios.get<AzureDevOpsRefsResponse>(
-      `${this.buildRefsUrl()}?${params}`,
+      `${this.buildRefsUrl(repository)}?${params}`,
       { headers: { Authorization: this.getAuthHeader(pat) } },
     )
 
@@ -323,27 +346,28 @@ export class AzureDevOpsService {
     return mainRef.objectId
   }
 
-  static async getHeadInfo(pat: string): Promise<HeadInfo> {
+  static async getHeadInfo(pat: string, repository: string): Promise<HeadInfo> {
     const [commitId, tags] = await Promise.all([
-      this.getMainBranchHead(pat),
-      this.fetchAllTags(pat),
+      this.getMainBranchHead(pat, repository),
+      this.fetchAllTags(pat, repository),
     ])
 
     const tagName = this.findVersionTagForCommit(tags, commitId)
     return { commitId, tagName }
   }
 
-  static async getLatestMepTag(pat: string): Promise<MepTag | null> {
-    const tags = await this.fetchAllTags(pat)
+  static async getLatestMepTag(pat: string, repository: string): Promise<MepTag | null> {
+    const tags = await this.fetchAllTags(pat, repository)
     return this.findLatestMepTag(tags)
   }
 
   static async getWorkItemsForCommitRange(
     pat: string,
+    repository: string,
     fromCommitId: string,
     toCommitId: string,
   ): Promise<WorkItemsResult> {
-    const { commits, warnings } = await this.fetchCommitsInRange(pat, fromCommitId, toCommitId)
+    const { commits, warnings } = await this.fetchCommitsInRange(pat, repository, fromCommitId, toCommitId)
 
     if (commits.length === 0) {
       return { workItemsByTeam: {}, failedIds: [], warnings }
@@ -369,5 +393,44 @@ export class AzureDevOpsService {
       logger.error('Failed to fetch work items batch:', error)
       throw error
     }
+  }
+
+  static async getAllTags(pat: string, repository: string): Promise<AzureDevOpsRef[]> {
+    return this.fetchAllTags(pat, repository)
+  }
+
+  static async fetchCommitsForExplorer(
+    pat: string,
+    repository: string,
+    skip: number,
+    top: number = EXPLORER_PAGE_SIZE,
+  ): Promise<CommitExplorerPageResult> {
+    const params = new URLSearchParams({
+      'searchCriteria.itemVersion.version': 'main',
+      'searchCriteria.itemVersion.versionType': 'branch',
+      'searchCriteria.includeWorkItems': 'true',
+      'searchCriteria.$top': top.toString(),
+      'searchCriteria.$skip': skip.toString(),
+      'api-version': AZURE_DEVOPS_API_VERSION,
+    })
+
+    const response = await axios.get<AzureDevOpsCommitsResponse>(
+      `${this.buildCommitsUrl(repository)}?${params}`,
+      { headers: { Authorization: this.getAuthHeader(pat) } },
+    )
+
+    return {
+      commits: response.data.value,
+      totalCount: response.data.count,
+    }
+  }
+
+  static async getWorkItemsByIds(pat: string, workItemIds: number[]): Promise<WorkItem[]> {
+    if (workItemIds.length === 0) {
+      return []
+    }
+
+    const batchResponse = await this.fetchWorkItemsBatch(pat, workItemIds)
+    return batchResponse.value.map((response) => this.normalizeWorkItem(response))
   }
 }

@@ -89,7 +89,44 @@ export interface HeadInfo {
   tagName: string | null
 }
 
+export interface AzureDevOpsRepository {
+  id: string
+  name: string
+  defaultBranch: string
+}
+
+export interface AzureDevOpsRepositoriesResponse {
+  value: AzureDevOpsRepository[]
+  count: number
+}
+
 export interface CopyWorkItemsToClipboardOptions {
   workItemsByTeam: WorkItemsByTeam
   sortedTeamNames: string[]
+  repositoryName?: string
+}
+
+export interface CommitWorkItemInfo {
+  id: number
+  webUrl: string
+  state: string
+  title: string
+  team: string
+}
+
+export interface CommitWithDetails {
+  commitId: string
+  shortCommitId: string
+  comment: string
+  author: {
+    name: string
+    date: string
+  }
+  workItems: CommitWorkItemInfo[]
+  tags: string[]
+}
+
+export interface CommitExplorerPageResult {
+  commits: AzureDevOpsCommit[]
+  totalCount: number
 }

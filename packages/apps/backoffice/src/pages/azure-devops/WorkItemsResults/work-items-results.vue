@@ -64,8 +64,16 @@
           pSize="small"
           @click="handleCopyAsTeamsExport"
         >
-          <PIcon pName="clipboardData" class="el-button__icon--left" />
-          Copier en tant qu'export Teams
+          <PIcon pName="clipboardData" class="margin-right--1" />
+          Message MEP Standard
+        </PButton>
+        <PButton
+          pType="default"
+          pSize="small"
+          @click="handleCopyWorkItemsOnly"
+        >
+          <PIcon pName="cardList" class="margin-right--1" />
+          Work Items uniquement
         </PButton>
       </div>
 
@@ -77,15 +85,28 @@
           v-for="teamName in sortedTeamNames"
           :key="teamName"
           pType="gray"
-          :pTitleCollapseItem="`${teamName} (${workItemsByTeam[teamName].length})`"
           pIconName="people"
           :name="teamName"
+          :pTitleCollapseItem="`${getTeamDisplayName(teamName)} (${workItemsByTeam[teamName].length})`"
           pFullBody
         >
+          <template #before-title>
+            <PIcon
+              v-if="hasIncompleteWorkItems(teamName)"
+              pName="exclamationTriangle"
+              pSize="16"
+              class="
+                text-color--danger-500
+                margin-right--2
+                work-items-results__warning-icon
+              "
+            />
+          </template>
           <PTable
             :pData="workItemsByTeam[teamName]"
             pSize="small"
             class="work-items-results__table margin-top--0"
+            :pRowClassName="getRowClassName"
           >
             <PTableColumn
               pProp="id"
@@ -171,8 +192,9 @@ import type { PTagProps } from '@pulse/styleguide/types'
 import {
   WORK_ITEM_TYPE_COLORS,
   WORK_ITEM_STATE_COLORS,
+  WORK_ITEM_COMPLETED_STATES,
 } from '@backoffice/constants/azure-devops.const'
-import { copyWorkItemsAsTeamsExport } from '@backoffice/utils/work-items-clipboard.utils'
+import { copyWorkItemsAsTeamsExport, copyWorkItemsOnly } from '@backoffice/utils/work-items-clipboard.utils'
 
 type TagColor = NonNullable<PTagProps['pColor']>
 
@@ -187,6 +209,7 @@ const props = defineProps<{
   hasResults: boolean
   hasPartialErrors: boolean
   hasWarnings: boolean
+  repositoryName?: string
 }>()
 
 const activeTeams = ref<string[]>([])
@@ -195,6 +218,14 @@ const handleCopyAsTeamsExport = () => {
   copyWorkItemsAsTeamsExport({
     workItemsByTeam: props.workItemsByTeam,
     sortedTeamNames: props.sortedTeamNames,
+  })
+}
+
+const handleCopyWorkItemsOnly = () => {
+  copyWorkItemsOnly({
+    workItemsByTeam: props.workItemsByTeam,
+    sortedTeamNames: props.sortedTeamNames,
+    repositoryName: props.repositoryName,
   })
 }
 
@@ -209,6 +240,27 @@ const getTypeColor = (type: string): TagColor => {
 
 const getStateColor = (state: string): TagColor => {
   return (WORK_ITEM_STATE_COLORS as Record<string, TagColor>)[state] ?? 'gray'
+}
+
+const isWorkItemIncomplete = (state: string): boolean => {
+  return WORK_ITEM_COMPLETED_STATES.includes(state as typeof WORK_ITEM_COMPLETED_STATES[number]) === false
+}
+
+const getIncompleteWorkItemsCount = (teamName: string): number => {
+  const workItems = props.workItemsByTeam[teamName]
+  return workItems.filter((wi) => isWorkItemIncomplete(wi.state)).length
+}
+
+const hasIncompleteWorkItems = (teamName: string): boolean => {
+  return getIncompleteWorkItemsCount(teamName) > 0
+}
+
+const getRowClassName = ({ row }: { row: { state: string } }): string => {
+  return isWorkItemIncomplete(row.state) ? 'work-items-results__row--incomplete' : ''
+}
+
+const getTeamDisplayName = (teamName: string): string => {
+  return teamName.trim() === '' ? 'Liste de work items' : teamName
 }
 </script>
 
@@ -231,6 +283,10 @@ const getStateColor = (state: string): TagColor => {
   &__empty {
     background-color: var(--el-fill-color-lighter);
     border-radius: 8px;
+  }
+
+  :deep(.work-items-results__row--incomplete) {
+    background-color: var(--el-color-danger-light-9);
   }
 }
 </style>

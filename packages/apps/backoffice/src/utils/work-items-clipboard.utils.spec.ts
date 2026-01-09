@@ -1,4 +1,4 @@
-import { copyWorkItemsAsTeamsExport } from './work-items-clipboard.utils'
+import { copyWorkItemsAsTeamsExport, copyWorkItemsOnly } from './work-items-clipboard.utils'
 import { displayNotification } from '@pulse/styleguide'
 import type { WorkItemsByTeam } from '@backoffice/types/azure-devops.type'
 
@@ -137,13 +137,160 @@ describe('copyWorkItemsAsTeamsExport', () => {
       sortedTeamNames: mockSortedTeamNames,
     })
 
-    expect(displayNotification).toHaveBeenCalledWith('success', 'Export copié dans le presse-papiers')
+    expect(displayNotification).toHaveBeenCalledWith('success', 'Message MEP copié dans le presse-papiers')
   })
 
   it('shows error notification on clipboard failure', async () => {
     mockWrite.mockRejectedValueOnce(new Error('Clipboard error'))
 
     await copyWorkItemsAsTeamsExport({
+      workItemsByTeam: mockWorkItemsByTeam,
+      sortedTeamNames: mockSortedTeamNames,
+    })
+
+    expect(displayNotification).toHaveBeenCalledWith('error', 'Impossible de copier dans le presse-papiers')
+  })
+})
+
+describe('copyWorkItemsOnly', () => {
+  let capturedHtml = ''
+  let capturedText = ''
+  let mockWrite: ReturnType<typeof vi.fn>
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+    capturedHtml = ''
+    capturedText = ''
+
+    mockWrite = vi.fn().mockResolvedValue(undefined)
+
+    vi.stubGlobal('navigator', { clipboard: { write: mockWrite } })
+    vi.stubGlobal('Blob', class MockBlob {
+      content: string
+      type: string
+      constructor(parts: string[], options: { type: string }) {
+        this.content = parts.join('')
+        this.type = options.type
+        if (options.type === 'text/html') {
+          capturedHtml = this.content
+        } else if (options.type === 'text/plain') {
+          capturedText = this.content
+        }
+      }
+    })
+    vi.stubGlobal('ClipboardItem', function ClipboardItem(items: Record<string, unknown>) {
+      return items
+    })
+  })
+
+  it('does not include MEP header in HTML', async () => {
+    await copyWorkItemsOnly({
+      workItemsByTeam: mockWorkItemsByTeam,
+      sortedTeamNames: mockSortedTeamNames,
+    })
+
+    expect(capturedHtml).not.toContain('Statut livraison')
+    expect(capturedHtml).not.toContain('Validé par')
+    expect(capturedHtml).not.toContain('Cible livraison')
+  })
+
+  it('includes repository name in brackets in HTML when provided', async () => {
+    await copyWorkItemsOnly({
+      workItemsByTeam: mockWorkItemsByTeam,
+      sortedTeamNames: mockSortedTeamNames,
+      repositoryName: 'Pulse.Web',
+    })
+
+    expect(capturedHtml).toContain('<strong>[Pulse.Web]</strong>')
+  })
+
+  it('does not include repository name in HTML when not provided', async () => {
+    await copyWorkItemsOnly({
+      workItemsByTeam: mockWorkItemsByTeam,
+      sortedTeamNames: mockSortedTeamNames,
+    })
+
+    expect(capturedHtml).not.toContain('<p><strong>[Pulse.Web]</strong></p>')
+  })
+
+  it('formats teams with work item counts in HTML', async () => {
+    await copyWorkItemsOnly({
+      workItemsByTeam: mockWorkItemsByTeam,
+      sortedTeamNames: mockSortedTeamNames,
+    })
+
+    expect(capturedHtml).toContain('<strong>Team Alpha</strong> (2 work items)')
+    expect(capturedHtml).toContain('<strong>Team Beta</strong> (1 work item)')
+  })
+
+  it('includes work item links and details in HTML', async () => {
+    await copyWorkItemsOnly({
+      workItemsByTeam: mockWorkItemsByTeam,
+      sortedTeamNames: mockSortedTeamNames,
+    })
+
+    expect(capturedHtml).toContain('href="https://dev.azure.com/1"')
+    expect(capturedHtml).toContain('#1')
+    expect(capturedHtml).toContain('Feature A')
+  })
+
+  it('includes repository name in brackets in plain text when provided', async () => {
+    await copyWorkItemsOnly({
+      workItemsByTeam: mockWorkItemsByTeam,
+      sortedTeamNames: mockSortedTeamNames,
+      repositoryName: 'Pulse.Web',
+    })
+
+    expect(capturedText).toMatch(/^\[Pulse\.Web\]/)
+  })
+
+  it('does not include MEP header in plain text', async () => {
+    await copyWorkItemsOnly({
+      workItemsByTeam: mockWorkItemsByTeam,
+      sortedTeamNames: mockSortedTeamNames,
+    })
+
+    expect(capturedText).not.toContain('Statut livraison')
+    expect(capturedText).not.toContain('Validé par')
+  })
+
+  it('formats teams with work item counts in plain text', async () => {
+    await copyWorkItemsOnly({
+      workItemsByTeam: mockWorkItemsByTeam,
+      sortedTeamNames: mockSortedTeamNames,
+    })
+
+    expect(capturedText).toContain('Team Alpha (2 work items)')
+    expect(capturedText).toContain('Team Beta (1 work item)')
+  })
+
+  it('displays Liste de work items for empty team names', async () => {
+    const workItemsWithEmptyTeam: WorkItemsByTeam = {
+      '': [{ id: 1, title: 'Item', type: 'Task', state: 'Active', webUrl: 'https://example.com', team: '' }],
+    }
+
+    await copyWorkItemsOnly({
+      workItemsByTeam: workItemsWithEmptyTeam,
+      sortedTeamNames: [''],
+    })
+
+    expect(capturedHtml).toContain('<strong>Liste de work items</strong>')
+    expect(capturedText).toContain('Liste de work items')
+  })
+
+  it('shows success notification on successful copy', async () => {
+    await copyWorkItemsOnly({
+      workItemsByTeam: mockWorkItemsByTeam,
+      sortedTeamNames: mockSortedTeamNames,
+    })
+
+    expect(displayNotification).toHaveBeenCalledWith('success', 'Work items copiés dans le presse-papiers')
+  })
+
+  it('shows error notification on clipboard failure', async () => {
+    mockWrite.mockRejectedValueOnce(new Error('Clipboard error'))
+
+    await copyWorkItemsOnly({
       workItemsByTeam: mockWorkItemsByTeam,
       sortedTeamNames: mockSortedTeamNames,
     })

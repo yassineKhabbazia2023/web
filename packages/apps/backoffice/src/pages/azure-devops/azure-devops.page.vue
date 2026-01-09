@@ -65,53 +65,132 @@
     </div>
 
     <div
-      v-if="azureDevOpsStore.hasPat"
-      class="padding-x--6 padding-top--8"
+      v-if="isPatValidated"
+      class="padding-x--6 padding-top--6"
     >
-      <WorkItemsSearch
-        v-model:fromCommitId="fromCommitId"
-        v-model:toCommitId="toCommitId"
-        :isLoading="isLoading"
-        :canSearch="canSearch"
-        :latestMepTag="latestMepTag"
-        :isLoadingMepTag="isLoadingMepTag"
-        :headInfo="headInfo"
-        :isLoadingHead="isLoadingHead"
-        :fromCommitIdError="fromCommitIdError"
-        :toCommitIdError="toCommitIdError"
-        @search="fetchWorkItems"
-        @apply-mep-tag="applyMepTagToFromCommit"
-        @apply-head="applyHeadToToCommit"
-      />
+      <PForm pLabelPosition="top">
+        <PFormItem pLabel="Repository">
+          <div class="azure-devops-page__repo-select">
+            <PDropdown
+              v-model="selectedRepository"
+              data-testid="azure-devops-repo-select"
+              pPlaceholder="Sélectionnez un repository"
+              :pLoading="azureDevOpsStore.isLoadingRepositories"
+              :pDisabled="azureDevOpsStore.hasRepositories === false"
+              :pOptions="repositoryOptions"
+              pFilterable
+            />
+          </div>
+        </PFormItem>
+      </PForm>
 
-      <WorkItemsResults
-        v-if="shouldDisplayWorkItemsResults"
-        :workItemsByTeam="workItemsByTeam"
-        :sortedTeamNames="sortedTeamNames"
-        :totalWorkItems="totalWorkItems"
-        :isLoading="isLoading"
-        :error="error"
-        :failedWorkItemIds="failedWorkItemIds"
-        :warnings="warnings"
-        :hasResults="hasResults"
-        :hasPartialErrors="hasPartialErrors"
-        :hasWarnings="hasWarnings"
-        class="margin-top--6"
-      />
+      <PTabs
+        v-model="activeTab"
+        class="margin-top--4"
+      >
+        <PTabPane
+          pLabel="MEP Standard"
+          pName="mep-standard"
+        >
+          <div class="padding-top--4">
+            <WorkItemsSearch
+              v-model:fromCommitId="fromCommitId"
+              v-model:toCommitId="toCommitId"
+              :isLoading="isLoading"
+              :canSearch="canSearch"
+              :latestMepTag="latestMepTag"
+              :isLoadingMepTag="isLoadingMepTag"
+              :headInfo="headInfo"
+              :isLoadingHead="isLoadingHead"
+              :fromCommitIdError="fromCommitIdError"
+              :toCommitIdError="toCommitIdError"
+              @search="fetchWorkItems"
+              @apply-mep-tag="applyMepTagToFromCommit"
+              @apply-head="applyHeadToToCommit"
+              @open-explorer="openExplorer"
+            />
+
+            <WorkItemsResults
+              v-if="shouldDisplayWorkItemsResults"
+              :workItemsByTeam="workItemsByTeam"
+              :sortedTeamNames="sortedTeamNames"
+              :totalWorkItems="totalWorkItems"
+              :isLoading="isLoading"
+              :error="error"
+              :failedWorkItemIds="failedWorkItemIds"
+              :warnings="warnings"
+              :hasResults="hasResults"
+              :hasPartialErrors="hasPartialErrors"
+              :hasWarnings="hasWarnings"
+              :repositoryName="selectedRepository"
+              class="margin-top--6"
+            />
+          </div>
+        </PTabPane>
+
+        <PTabPane
+          pLabel="Explorateur de commits"
+          pName="commit-explorer"
+        >
+          <div class="padding-top--4">
+            <CommitExplorerList
+              :commits="explorerCommits"
+              :isLoading="isExplorerLoading"
+              :isLoadingMore="isExplorerLoadingMore"
+              :error="explorerError"
+              :hasMore="explorerHasMore"
+              :repository="selectedRepository"
+              @load-more="loadMoreExplorer"
+            />
+          </div>
+        </PTabPane>
+      </PTabs>
     </div>
+
+    <CommitExplorerModal
+      v-model="isExplorerOpen"
+      :repository="selectedRepository"
+      @commit-selected="handleCommitSelected"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { PInput, PForm, PFormItem, PButton, PAlert, PIcon, PTooltip } from '@pulse/styleguide/components'
+import { computed, ref, watch } from 'vue'
+import {
+  PInput,
+  PForm,
+  PFormItem,
+  PButton,
+  PAlert,
+  PIcon,
+  PTooltip,
+  PDropdown,
+  PTabs,
+  PTabPane,
+} from '@pulse/styleguide/components'
 import { useAzureDevOpsStore } from '@backoffice/stores/azure-devops.store'
 import { useAzureDevOpsWorkItems } from '@backoffice/composables/use-azure-devops-work-items.composable'
 import { AzureDevOpsService } from '@backoffice/services/azure-devops/azure-devops.service'
 import WorkItemsSearch from './WorkItemsSearch/work-items-search.vue'
 import WorkItemsResults from './WorkItemsResults/work-items-results.vue'
+import CommitExplorerModal from './CommitExplorerModal/commit-explorer-modal.vue'
+import CommitExplorerList from './CommitExplorer/commit-explorer-list.vue'
+import { useCommitExplorer } from './CommitExplorer/use-commit-explorer.composable'
 
 const azureDevOpsStore = useAzureDevOpsStore()
+
+const selectedRepository = computed({
+  get: () => azureDevOpsStore.selectedRepository,
+  set: (value: string) => azureDevOpsStore.setSelectedRepository(value),
+})
+
+const repositoryOptions = computed(() => {
+  return azureDevOpsStore.repositories.map((repo) => ({
+    pValue: repo.name,
+    pLabel: repo.name,
+  }))
+})
 
 const patTooltipContent = `Comment créer un PAT :
 1. Allez dans Azure DevOps → User Settings (icône engrenage)
@@ -128,25 +207,104 @@ const patValue = computed({
 
 const isTestingPat = ref(false)
 const patTestResult = ref<{ success: boolean; message: string } | null>(null)
+const isPatValidated = ref(false)
+
+const activeTab = ref('mep-standard')
+const isExplorerOpen = ref(false)
+const explorerTargetField = ref<'from' | 'to'>('from')
+
+const {
+  commits: explorerCommits,
+  isLoading: isExplorerLoading,
+  isLoadingMore: isExplorerLoadingMore,
+  error: explorerError,
+  hasMore: explorerHasMore,
+  load: loadExplorer,
+  loadMore: loadMoreExplorer,
+  reset: resetExplorer,
+} = useCommitExplorer()
+
+// Reset validation when PAT changes
+watch(
+  () => azureDevOpsStore.pat,
+  () => {
+    isPatValidated.value = false
+    patTestResult.value = null
+  },
+)
+
+// Load explorer when tab changes to commit-explorer
+watch(activeTab, (newTab) => {
+  if (newTab === 'commit-explorer' && explorerCommits.value.length === 0) {
+    loadExplorer()
+  }
+})
+
+// Reload explorer when repository changes
+watch(selectedRepository, () => {
+  resetExplorer()
+  if (activeTab.value === 'commit-explorer') {
+    loadExplorer()
+  }
+})
 
 const testPat = async () => {
   isTestingPat.value = true
   patTestResult.value = null
 
   try {
-    const headCommitId = await AzureDevOpsService.getMainBranchHead(azureDevOpsStore.pat)
+    // Wait for repositories to be loaded by the composable if still loading
+    if (azureDevOpsStore.isLoadingRepositories) {
+      await new Promise<void>((resolve) => {
+        const unwatch = watch(
+          () => azureDevOpsStore.isLoadingRepositories,
+          (loading) => {
+            if (loading === false) {
+              unwatch()
+              resolve()
+            }
+          },
+          { immediate: true },
+        )
+      })
+    }
+
+    // Use already loaded repositories or fetch if needed
+    const repositories = azureDevOpsStore.hasRepositories
+      ? azureDevOpsStore.repositories
+      : await AzureDevOpsService.getRepositories(azureDevOpsStore.pat)
+
+    if (azureDevOpsStore.hasRepositories === false) {
+      azureDevOpsStore.setRepositories(repositories)
+    }
+
     patTestResult.value = {
       success: true,
-      message: `PAT valide ! HEAD: ${headCommitId.substring(0, 8)}`,
+      message: `PAT valide ! ${repositories.length} repositories trouvés.`,
     }
+    isPatValidated.value = true
   } catch (err) {
     const error = err as Error
     patTestResult.value = {
       success: false,
       message: `Erreur : ${error.message || 'Impossible de valider le PAT'}`,
     }
+    isPatValidated.value = false
   } finally {
     isTestingPat.value = false
+  }
+}
+
+const openExplorer = (target: 'from' | 'to'): void => {
+  explorerTargetField.value = target
+  isExplorerOpen.value = true
+}
+
+const handleCommitSelected = (commitId: string): void => {
+  if (explorerTargetField.value === 'from') {
+    fromCommitId.value = commitId
+  } else {
+    toCommitId.value = commitId
   }
 }
 
@@ -183,5 +341,9 @@ const shouldDisplayWorkItemsResults = computed(
 <style scoped>
 .azure-devops-page__pat-input {
   width: min(500px, 75vw);
+}
+
+.azure-devops-page__repo-select {
+  width: min(400px, 60vw);
 }
 </style>
