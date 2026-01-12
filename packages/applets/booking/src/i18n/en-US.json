@@ -1,0 +1,102 @@
+{
+  "booking-configuration": {
+    "steps": {
+      "intro": "Introduction",
+      "customize-meeting": "Configuration",
+      "configure-slots": "Days"
+    },
+    "drawer-titles": {
+      "intro": "Your customer availability",
+      "customize-meeting": "Setting up your appointments",
+      "configure-slots": "Your appointment availability hours"
+    },
+    "buttons": {
+      "previous": "Previous",
+      "next": "Next",
+      "validate": "Validate",
+      "finish": "Finish"
+    }
+  },
+  "booking-configuration-text": {
+    "intro": "Indicate when you are available for your clients.",
+    "withBookings": "With Bookings, prepare the {timeSlots} on which your clients can book appointments from the home page of their {platform}.",
+    "timeSlots": "time slots",
+    "platform": "RYDGE Conseil platform",
+    "keepControl": "Keep control of your calendar",
+    "centralizeRelation": "Centralize your client relationship and avoid unexpected events",
+    "strengthenSatisfaction": "Strengthen client satisfaction",
+    "noLimitation": "{note}: There is {noLimit} on the number of appointments a client can book with you.",
+    "note": "Note",
+    "noLimit": "no limitation",
+    "nextButton": "Next",
+    "highlights": {
+      "keep-control": "Keep control of your calendar",
+      "centralize-relation": "Centralize your client relationship and avoid unexpected events",
+      "strengthen-satisfaction": "Strengthen client satisfaction"
+    }
+  },
+  "booking-appointment-configuration": {
+    "futureTypesInfo": "Note: Times when you already have a meeting cannot be booked by your clients.",
+    "title": "Define your appointment type",
+    "name": {
+      "label": "Your appointment name",
+      "placeholder": "e.g., Meeting with Ms. Cottin - Accountant",
+      "required": "The appointment name is required",
+      "error": "The appointment name is required"
+    },
+    "description": {
+      "label": "Appointment description",
+      "placeholder": "e.g., \"Specify if you want a video, phone, or in-person appointment\""
+    },
+    "location": {
+      "label": "Location",
+      "placeholder": "e.g., Office, Meeting room A...",
+      "error": "Location is required for physical meetings"
+    },
+    "isOnline": {
+      "label": "Include a video link in your meetings",
+      "tooltip": "Without video, your appointments are in-person or by phone"
+    },
+    "onlineAlert": "{note} Times when you already have a meeting cannot be booked by your clients.",
+    "onlineAlertNote": "Note:",
+    "duration": {
+      "label": "Your appointment duration",
+      "error": "Appointment duration is required",
+      "15min": "15 minutes",
+      "30min": "30 minutes (default)",
+      "45min": "45 minutes",
+      "1hour": "1 hour",
+      "1hour15": "1 hour 15 minutes",
+      "1hour30": "1 hour 30 minutes",
+      "1hour45": "1 hour 45 minutes",
+      "2hours": "2 hours",
+      "2hours15": "2 hours 15 minutes",
+      "2hours30": "2 hours 30 minutes",
+      "2hours45": "2 hours 45 minutes",
+      "3hours": "3 hours",
+      "3hours15": "3 hours 15 minutes",
+      "3hours30": "3 hours 30 minutes",
+      "3hours45": "3 hours 45 minutes",
+      "4hours": "4 hours"
+    }
+  },
+  "booking-time-slots-configuration": {
+    "description": "By default, Monday and Tuesday time slots are pre-selected. Customize them according to your preferences.",
+    "tip": "Define one or two days to organize your appointments without overload.",
+    "tipLabel": "Tip:",
+    "addDay": "Add this day",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "days": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday"
+    }
+  },
+  "notifications": {
+    "submit-success": "Your time slots settings have been saved",
+    "submit-error": "Error saving your time slots, please try again later"
+  }
+}

@@ -1,8 +1,9 @@
-import { BookingService } from '@pulse/common/services/booking'
-import { useUserStore, useCurrentEntityStore, useBookingCustomerStore } from '@pulse/common/stores'
+import { BookingService } from '../../services'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { logger } from '@pulse/toolbox'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'
+import { useBookingCustomerStore } from '../../stores'
 
 export class BookingManager {
   private static async loadAvailableExperts() {

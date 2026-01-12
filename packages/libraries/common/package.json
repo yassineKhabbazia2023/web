@@ -12,7 +12,6 @@
     "./managers": "./src/managers/index.ts",
     "./helpers": "./src/helpers/index.ts",
     "./services/amplitude": "./src/services/amplitude/index.ts",
-    "./services/booking": "./src/services/booking/booking.service.ts",
     "./services/cgu": "./src/services/cgu/index.ts",
     "./services/current-user": "./src/services/current-user/index.ts",
     "./services/permissions": "./src/services/permissions/index.ts",

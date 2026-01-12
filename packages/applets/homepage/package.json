@@ -21,6 +21,7 @@
     "test:ci": "vitest run --coverage"
   },
   "dependencies": {
+    "@pulse/booking": "1.0.0",
     "@pulse/common": "1.0.0",
     "@pulse/styleguide": "3.1.0",
     "@pulse/widgets": "1.0.0"

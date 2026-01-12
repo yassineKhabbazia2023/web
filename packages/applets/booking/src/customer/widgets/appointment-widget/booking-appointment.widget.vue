@@ -53,7 +53,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { AppColors } from '@pulse/styleguide'
 import { PIcon, PButton } from '@pulse/styleguide/components'
-import { useBookingCustomerStore } from '@pulse/common/stores'
+import { useBookingCustomerStore } from '../../../stores'
 import BookingAppointmentNoResult from '../../components/no-result/booking-appointment-no-result.vue'
 import BookingAppointmentDrawer from '../../components/appointment-drawer/booking-appointment-drawer.vue'
 

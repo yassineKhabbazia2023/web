@@ -5,7 +5,6 @@ import { WidgetName } from '@pulse/widgets/enums'
 import { WidgetsService } from '@pulse/common/services/widgets'
 import type { Permission } from '@pulse/common/types'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { useBookingCustomerStore } from '@pulse/common/stores'
 
 export class WidgetsHomeManager {
 
@@ -16,16 +15,9 @@ export class WidgetsHomeManager {
 
   static getWidgetGridDefinitions(
     widgetNames: WidgetName[], isCustomer: boolean): WidgetGridDefinition[] {
-    const bookingStore = useBookingCustomerStore()
     return widgetNames
       .map((widgetName) => {
         const widgetGridDefinition = WidgetsGridManager.getWidgetGridDefinition(widgetName)
-        if (
-          widgetGridDefinition?.name === WidgetName.BOOKING_APPOINTMENT &&
-          bookingStore.hasAvailableExperts() === false
-        ) {
-          return undefined
-        }
         if (isCustomer === true) {
           // Business rule: Customers need a specific permissions to access certain widgets
           if (widgetGridDefinition !== undefined &&

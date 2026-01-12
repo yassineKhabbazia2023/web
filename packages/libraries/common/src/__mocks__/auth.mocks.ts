@@ -1,10 +1,7 @@
 import type { UserInfoApi, UserContextInfo } from '../types/user.type'
-import type { BookingServiceExpert } from '@pulse/common/types'
 import { CustomerPermission } from '../enums/permission.enum'
 import { tokenMock } from './token.mocks'
 import { getMockedUserApi, getMockedUserContext } from './user.mocks'
-import { getBookingServiceExpert } from './booking.mocks'
-import { getPaginationMock } from './pagination.mocks'
 import { MockEntityId, MockEntityData } from './entities.mocks'
 
 export interface LoginResponse {
@@ -65,17 +62,5 @@ export function getUserContextResponseMock(override: Partial<UserContextInfo> = 
       },
     ],
     ...override,
-  })
-}
-
-export function getBookingExpertsResponseMock(experts: BookingServiceExpert[] = [
-  getBookingServiceExpert({ contactId: 1, fullName: 'Expert One', email: 'expert1@test.com', link: 'https://booking.test/1' }),
-  getBookingServiceExpert({ contactId: 2, fullName: 'Expert Two', email: 'expert2@test.com', link: 'https://booking.test/2' }),
-]) {
-  return getPaginationMock({
-    items: experts,
-    currentPage: 1,
-    totalPages: 1,
-    totalItems: experts.length,
   })
 }

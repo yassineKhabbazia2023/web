@@ -45,7 +45,7 @@
 import { useI18n } from 'vue-i18n'
 import { computed, ref, watch } from 'vue'
 import { PDrawer, PButton, PSteps, PStep } from '@pulse/styleguide/components'
-import { useBookingCustomerStore } from '@pulse/common/stores'
+import { useBookingCustomerStore } from '../../../stores'
 import type { BookingAppointmentDrawerProps } from './booking-appointment-drawer.type'
 import { BookingAppointmentDrawerTabs } from './booking-appointment-drawer.enum'
 import BookingAppointmentChooseExpert from '../choose-expert/booking-appointment-choose-expert.vue'

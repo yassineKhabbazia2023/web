@@ -10,22 +10,22 @@ describe('useBookingCollabStore', () => {
     it('should have initial state', () => {
       const store = useBookingCollabStore()
 
-      expect(store.hasConfigDrawerBeenOpened).toBe(false)
-      expect(store.isConfigDrawerOpen).toBe(false)
+      expect(store.hasBookingDrawerBeenOpened).toBe(false)
+      expect(store.isBookingDrawerOpened).toBe(false)
     })
   })
 
-  describe('configDrawer', () => {
+  describe('bookingDrawer', () => {
     it('should open and close drawer', () => {
       const store = useBookingCollabStore()
 
-      store.openConfigDrawer()
-      expect(store.isConfigDrawerOpen).toBe(true)
-      expect(store.hasConfigDrawerBeenOpened).toBe(true)
+      store.openBookingDrawer()
+      expect(store.isBookingDrawerOpened).toBe(true)
+      expect(store.hasBookingDrawerBeenOpened).toBe(true)
 
-      store.closeConfigDrawer()
-      expect(store.isConfigDrawerOpen).toBe(false)
-      expect(store.hasConfigDrawerBeenOpened).toBe(true)
+      store.closeBookingDrawer()
+      expect(store.isBookingDrawerOpened).toBe(false)
+      expect(store.hasBookingDrawerBeenOpened).toBe(true)
     })
   })
 
@@ -33,12 +33,12 @@ describe('useBookingCollabStore', () => {
     it('should reset all state', () => {
       const store = useBookingCollabStore()
 
-      store.openConfigDrawer()
+      store.openBookingDrawer()
 
       store.reset()
 
-      expect(store.hasConfigDrawerBeenOpened).toBe(false)
-      expect(store.isConfigDrawerOpen).toBe(false)
+      expect(store.hasBookingDrawerBeenOpened).toBe(false)
+      expect(store.isBookingDrawerOpened).toBe(false)
     })
   })
 })

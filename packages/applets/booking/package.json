@@ -8,6 +8,7 @@
   "type": "module",
   "exports": {
     ".": "./src/main.ts",
+    "./stores": "./src/stores/index.ts",
     "./shared/managers/booking": "./src/shared/managers/booking.manager.ts",
     "./shared/managers/booking-tracking": "./src/shared/managers/booking-tracking.manager.ts",
     "./collab/widgets/header-widget": "./src/collab/widgets/header-widget/widget.ts"

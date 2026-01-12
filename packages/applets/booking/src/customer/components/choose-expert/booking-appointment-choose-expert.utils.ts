@@ -1,5 +1,5 @@
 import { getInitials } from '@pulse/common/utils'
-import type { BookingServiceExpert } from '@pulse/common/types'
+import type { BookingServiceExpert } from '../../../types/booking.types'
 
 export function getFormattedExperts(experts: BookingServiceExpert[]) {
   return experts.map((expert) => {

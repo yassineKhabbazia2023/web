@@ -1,6 +1,5 @@
-import { describe, it, expect, vi } from 'vitest'
 import { getFormattedExperts } from './booking-appointment-choose-expert.utils'
-import type { BookingServiceExpert } from '@pulse/common/types'
+import type { BookingServiceExpert } from '../../../types/booking.types'
 import * as commonUtils from '@pulse/common/utils'
 
 const mockExperts: BookingServiceExpert[] = [

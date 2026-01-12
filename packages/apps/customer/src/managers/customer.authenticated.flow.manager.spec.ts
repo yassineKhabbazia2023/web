@@ -14,7 +14,7 @@ import { fetchUserPermissions } from '@pulse/common/services/permissions'
 import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { useUserStore, usePermissionsStore, useCurrentEntityStore, useBookingCustomerStore } from '@pulse/common/stores'
+import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 
 import { CustomerAuthenticatedFlowManager } from './customer.authenticated.flow.manager'
@@ -25,7 +25,6 @@ vi.mock('@customer/services/entities/entity.service')
 vi.mock('@pulse/common/services/entities')
 vi.mock('@pulse/common/managers')
 vi.mock('@pulse/common/services/cgu')
-vi.mock('@pulse/booking/shared/managers/booking')
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
@@ -54,7 +53,6 @@ const entitySummaryMock = getMockedEntitySummary(entityMock)
 const userStoreMock = getStoreMock(useUserStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
-getStoreMock(useBookingCustomerStore)
 
 describe('CustomerAuthenticatedFlowManager', () => {
   describe('enterAuthenticatedFlow', () => {

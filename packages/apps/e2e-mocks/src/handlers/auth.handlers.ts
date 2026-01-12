@@ -3,7 +3,6 @@ import {
   getLoginResponseMock,
   getCurrentUserResponseMock,
   getUserContextResponseMock,
-  getBookingExpertsResponseMock,
 } from '@pulse/common/mocks'
 
 export const authHandlers = [
@@ -20,10 +19,5 @@ export const authHandlers = [
   // User context - called after navigation to landing page
   http.get('*/connect/api/get-user-information', () => {
     return HttpResponse.json(getUserContextResponseMock())
-  }),
-
-  // Booking experts - called on landing page
-  http.get('*/booking/api/accounts/:accountId/booking-link/currentuser/experts', () => {
-    return HttpResponse.json(getBookingExpertsResponseMock())
   }),
 ]

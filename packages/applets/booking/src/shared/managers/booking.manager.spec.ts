@@ -1,12 +1,13 @@
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { BookingManager } from './booking.manager'
-import { BookingService } from '@pulse/common/services/booking'
-import { useUserStore, useCurrentEntityStore, useBookingCustomerStore } from '@pulse/common/stores'
+import { BookingService } from '../../services'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { logger } from '@pulse/toolbox'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
-import type { BookingServiceExpert } from '@pulse/common/types'
+import type { BookingServiceExpert } from '../../types/booking.types'
+import { useBookingCustomerStore } from '../../stores'
 
 const mockExperts: BookingServiceExpert[] = [
   {

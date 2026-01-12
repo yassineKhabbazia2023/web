@@ -2,28 +2,28 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useBookingCollabStore = defineStore('booking-collab', () => {
-  const hasConfigDrawerBeenOpened = ref(false)
-  const isConfigDrawerOpen = ref(false)
+  const hasBookingDrawerBeenOpened = ref(false)
+  const isBookingDrawerOpened = ref(false)
 
-  function openConfigDrawer() {
-    hasConfigDrawerBeenOpened.value = true
-    isConfigDrawerOpen.value = true
+  function openBookingDrawer() {
+    hasBookingDrawerBeenOpened.value = true
+    isBookingDrawerOpened.value = true
   }
 
-  function closeConfigDrawer() {
-    isConfigDrawerOpen.value = false
+  function closeBookingDrawer() {
+    isBookingDrawerOpened.value = false
   }
 
   function reset() {
-    hasConfigDrawerBeenOpened.value = false
-    isConfigDrawerOpen.value = false
+    hasBookingDrawerBeenOpened.value = false
+    isBookingDrawerOpened.value = false
   }
 
   return {
-    hasConfigDrawerBeenOpened,
-    isConfigDrawerOpen,
-    openConfigDrawer,
-    closeConfigDrawer,
+    hasBookingDrawerBeenOpened,
+    isBookingDrawerOpened,
+    openBookingDrawer,
+    closeBookingDrawer,
     reset,
   }
 })

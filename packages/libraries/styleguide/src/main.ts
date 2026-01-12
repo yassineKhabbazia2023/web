@@ -7,6 +7,7 @@ import dayjs from 'dayjs'
 import './assets/css/pegase-colors.css'
 import './assets/css/figma-proxy.css'
 import './assets/css/legacy-colors.css'
+import './assets/css/animations.css'
 // Design System styles (starring Element Plus)
 import './assets/scss/index.scss'
 

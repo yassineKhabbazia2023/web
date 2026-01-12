@@ -1,5 +1,4 @@
 export { resetAllStores } from './stores.utils'
-export { useBookingCustomerStore } from './booking/booking-customer.store'
 export { useBookingCollabStore } from './booking/booking-collab.store'
 export { useLoadingStore } from './loading/loading.store'
 export { usePermissionsStore } from './permissions/permissions.store'

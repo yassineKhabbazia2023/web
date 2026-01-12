@@ -1,0 +1,102 @@
+{
+  "booking-configuration": {
+    "steps": {
+      "intro": "Présentation",
+      "customize-meeting": "Configuration",
+      "configure-slots": "Jours"
+    },
+    "drawer-titles": {
+      "intro": "Vos disponibilités Clients",
+      "customize-meeting": "Paramétrage de vos rendez-vous",
+      "configure-slots": "Vos horaires ouverts aux rendez-vous"
+    },
+    "buttons": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "validate": "Valider",
+      "finish": "Terminer"
+    }
+  },
+  "booking-configuration-text": {
+    "intro": "Indiquez les moments où vous êtes disponible pour vos clients.",
+    "withBookings": "Avec Bookings, préparez les {timeSlots} sur lesquelles vos clients pourront prendre rendez-vous depuis la page d'accueil de leur {platform}.",
+    "timeSlots": "plages horaires",
+    "platform": "plateforme RYDGE Conseil",
+    "keepControl": "Conservez la maîtrise de votre agenda",
+    "centralizeRelation": "Centralisez votre relation client et évitez les imprévus",
+    "strengthenSatisfaction": "Renforcez la satisfaction client",
+    "noLimitation": "{note} : Il n'y a {noLimit} sur le nombre de rendez-vous qu'un client peut prendre avec vous.",
+    "note": "À noter",
+    "noLimit": "pas de limitation",
+    "nextButton": "Suivant",
+    "highlights": {
+      "keep-control": "Conservez la maîtrise de votre agenda",
+      "centralize-relation": "Centralisez votre relation client et évitez les imprévus",
+      "strengthen-satisfaction": "Renforcez la satisfaction client"
+    }
+  },
+  "booking-appointment-configuration": {
+    "futureTypesInfo": "À noter : Les moments où vous avez déjà une réunion ne pourront pas être réservés par vos clients.",
+    "title": "Définissez votre type de rendez-vous",
+    "name": {
+      "label": "Nom de vos rendez-vous",
+      "placeholder": "Ex : Rendez-vous avec Mme Cottin - Expert comptable",
+      "required": "Le nom du rendez-vous est requis",
+      "error": "Le nom du rendez-vous est requis"
+    },
+    "description": {
+      "label": "Description de rendez-vous",
+      "placeholder": "Ex: \"Précisez si vous souhaitez un rendez-vous visio, téléphone ou physique\""
+    },
+    "location": {
+      "label": "Emplacement",
+      "placeholder": "Ex: Bureau, Salle de réunion A...",
+      "error": "L'emplacement est requis pour les rendez-vous physiques"
+    },
+    "isOnline": {
+      "label": "Inclure un lien visio dans vos réunions",
+      "tooltip": "Sans visio vos rendez-vous sont en présentiel ou par téléphone"
+    },
+    "onlineAlert": "{note} Les moments où vous avez déjà une réunion ne pourront pas être réservés par vos clients.",
+    "onlineAlertNote": "À noter :",
+    "duration": {
+      "label": "Durée de vos rendez-vous",
+      "error": "La durée du rendez-vous est requise",
+      "15min": "15 minutes",
+      "30min": "30 minutes (par défaut)",
+      "45min": "45 minutes",
+      "1hour": "1 heure",
+      "1hour15": "1 heure 15",
+      "1hour30": "1 heure 30",
+      "1hour45": "1 heure 45",
+      "2hours": "2 heures",
+      "2hours15": "2 heures 15",
+      "2hours30": "2 heures 30",
+      "2hours45": "2 heures 45",
+      "3hours": "3 heures",
+      "3hours15": "3 heures 15",
+      "3hours30": "3 heures 30",
+      "3hours45": "3 heures 45",
+      "4hours": "4 heures"
+    }
+  },
+  "booking-time-slots-configuration": {
+    "description": "Par défaut, les plages horaires du lundi et mardi sont pré-sélectionnées. Personnalisez-les selon vos préférences.",
+    "tip": "Définissez une ou deux journées pour organiser vos rendez-vous sans surcharge.",
+    "tipLabel": "Astuce :",
+    "addDay": "Ajouter ce jour",
+    "startTime": "Heure de début",
+    "endTime": "Heure de fin",
+    "days": {
+      "monday": "Lundi",
+      "tuesday": "Mardi",
+      "wednesday": "Mercredi",
+      "thursday": "Jeudi",
+      "friday": "Vendredi"
+    }
+  },
+  "notifications": {
+    "submit-success": "Le paramétrage de vos créneaux a bien été pris en compte",
+    "submit-error": "Erreur lors de l'enregistrement de vos créneaux, veuillez ressayer plus tard"
+  }
+}

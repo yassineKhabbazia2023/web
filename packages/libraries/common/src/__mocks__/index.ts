@@ -1,5 +1,4 @@
 export * from './auth.mocks'
-export * from './booking.mocks'
 export * from './cgu.service.mocks'
 export * from './current-user.manager.mocks'
 export * from './entities.mocks'

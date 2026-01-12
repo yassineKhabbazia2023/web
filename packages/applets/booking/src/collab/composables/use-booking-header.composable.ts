@@ -1,6 +1,7 @@
 import { computed } from 'vue'
-import { useBookingCollabStore, useBookingCustomerStore } from '@pulse/common/stores'
+import { useBookingCollabStore } from '@pulse/common/stores'
 import { BookingTrackingManager } from '@pulse/booking/shared/managers/booking-tracking'
+import { useBookingCustomerStore } from '../../stores'
 
 export function useBookingHeader() {
   const collabStore = useBookingCollabStore()
@@ -8,7 +9,7 @@ export function useBookingHeader() {
 
   function openDrawer() {
     BookingTrackingManager.trackBookingConfigurationViewStarted()
-    collabStore.openConfigDrawer()
+    collabStore.openBookingDrawer()
   }
 
   const isOpenedBookingAppointmentDrawer = computed({
@@ -16,8 +17,8 @@ export function useBookingHeader() {
     set: (isOpened: boolean) => customerStore.isAppointmentDrawerOpen = isOpened,
   })
 
-  const hasBookingDrawerBeenOpened = computed(() => collabStore.hasConfigDrawerBeenOpened)
-  const isBookingDrawerOpened = computed(() => collabStore.isConfigDrawerOpen)
+  const hasBookingDrawerBeenOpened = computed(() => collabStore.hasBookingDrawerBeenOpened)
+  const isBookingDrawerOpened = computed(() => collabStore.isBookingDrawerOpened)
 
   return {
     hasBookingDrawerBeenOpened,
