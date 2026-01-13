@@ -10,7 +10,10 @@
         :pPlacement="placementOptions[0].value"
         :disabled="item.pId === -1"
       >
-        <span class="cursor-pointer">
+        <span
+          class="cursor-pointer"
+          :class="{ 'font-semibold text-color--neutral-gray-900': index === items.length - 1 }"
+        >
           {{ item.pText }}
         </span>
       </PTooltip>
