@@ -21,10 +21,11 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton, PIcon } from '@pulse/styleguide/components'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { usePennylaneSso } from '@pulse/common/composables/pennylane-sso'
+import { PennylaneSsoManager } from '@pulse/common/managers'
 import { PennylaneSSOProps } from './pennylane-sso.types'
 import { SsoTracking } from './pennylane-sso.enums'
 import { AmplitudeTrackingLocation } from '@pulse/common/enums'
@@ -36,13 +37,13 @@ const { t } = useI18n({
 
 const props = defineProps<PennylaneSSOProps>()
 
-const { url: ssoUrl, clearSsoContext } = usePennylaneSso({ isCollab: props.isCollab })
+const ssoUrl = computed(() => PennylaneSsoManager.getUrl(props.isCollab))
 
 const onSSOConnection = () => {
   AmplitudeService.track('Feature Consulted', {
     feature_name: SsoTracking.SSO_PENNYLANE,
     feature_consultation_localisation: AmplitudeTrackingLocation.HOMEPAGE,
   })
-  clearSsoContext()
+  PennylaneSsoManager.setSsoOrigin()
 }
 </script>

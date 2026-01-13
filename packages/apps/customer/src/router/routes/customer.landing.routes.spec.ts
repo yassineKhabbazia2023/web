@@ -7,11 +7,14 @@ vi.mock('@customer/managers/customer.authenticated.flow.manager')
 vi.mock('@pulse/shared/guards', () => ({
   deepLinkGuard: vi.fn((_to, _from, next) => next()),
 }))
+vi.mock('../guards/pennylane-sso.guard', () => ({
+  pennylaneSsoGuard: vi.fn((_to, _from, next) => next()),
+}))
 
 const landingRoute = landingCustomerRoutes[0]
-// beforeEnter is an array of guards: [deepLinkGuard, redirectionGuard]
+// beforeEnter is an array of guards: [pennylaneSsoGuard, deepLinkGuard, redirectionGuard]
 const beforeEnterGuards = landingRoute.beforeEnter as NavigationGuard[]
-const redirectionGuard = beforeEnterGuards[1] as (
+const redirectionGuard = beforeEnterGuards[2] as (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
   next: NavigationGuardNext

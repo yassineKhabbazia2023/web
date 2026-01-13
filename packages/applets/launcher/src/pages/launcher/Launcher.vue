@@ -53,9 +53,8 @@ import { ref, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { CurrentUserManager } from '@pulse/common/managers'
+import { CurrentUserManager, PennylaneSsoManager } from '@pulse/common/managers'
 import { RouteName } from '@pulse/common/enums'
-import { usePennylaneSso } from '@pulse/common/composables/pennylane-sso'
 import { PAlert, PEntityHeader } from '@pulse/styleguide/components'
 import LaunchCard from '@launcher/components/launchCard'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
@@ -71,7 +70,7 @@ import {
 
 const route = useRoute()
 const userStore = useUserStore()
-const { url: pennylaneSsoUrl, clearSsoContext: clearPennylaneSsoContext } = usePennylaneSso({ isCollab: userStore.isCollab })
+const pennylaneSsoUrl = computed(() => PennylaneSsoManager.getUrl(userStore.isCollab))
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -97,7 +96,7 @@ async function onClickDownload(key: LauncherKey) {
 
 async function onClickAction(key: LauncherKey) {
   if (key === LauncherKey.PENNYLANE) {
-    clearPennylaneSsoContext()
+    PennylaneSsoManager.setSsoOrigin()
   }
   await handleClickAction(key)
 }

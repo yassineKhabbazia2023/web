@@ -38,6 +38,12 @@ vi.mock('@pulse/common/managers', () => ({
   FeatureFlagManager: {
     isPennylaneSsoRedirectActivated: vi.fn(() => false),
   },
+  PennylaneSsoManager: {
+    getUrl: vi.fn((isCollab: boolean) =>
+      isCollab ? envVarsMock.VITE_PENNYLANE_COLLAB_SSO_URL : envVarsMock.VITE_PENNYLANE_SSO_URL,
+    ),
+    setSsoOrigin: vi.fn(),
+  },
 }))
 
 vi.mock('env-vars', () => envVarsMock)

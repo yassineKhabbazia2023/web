@@ -3,6 +3,7 @@ import { ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
 import { deepLinkGuard } from '@pulse/shared/guards'
 import { RouteName } from '@pulse/common/enums'
 import { CustomerAuthenticatedFlowManager } from '@customer/managers/customer.authenticated.flow.manager'
+import { pennylaneSsoGuard } from '../guards/pennylane-sso.guard'
 import { CUSTOMER_ROUTES } from '../customer.routes'
 
 export const landingCustomerRoutes: RouteRecordRaw[] = [
@@ -14,6 +15,7 @@ export const landingCustomerRoutes: RouteRecordRaw[] = [
     },
     component: () => import('@customer/pages/CustomerLanding.page.vue'),
     beforeEnter: [
+      pennylaneSsoGuard,
       deepLinkGuard,
       (_to, _from, next) => {
         const redirection = CustomerAuthenticatedFlowManager.getLandingPage()
