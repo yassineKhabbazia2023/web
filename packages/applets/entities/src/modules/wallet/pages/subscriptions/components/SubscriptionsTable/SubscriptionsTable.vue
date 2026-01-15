@@ -192,6 +192,8 @@ const getStatusDetails = (status: string): StatusDetails => {
       return { text: t('pennylaneCreated'), color: 'light-green', iconName: 'checkCircle' }
     case SubscriptionStatusCode.PENNYLANE_NOT_CREATED:
       return { text: t('pennylaneNotCreated'), color: 'orange', iconName: 'exclamationTriangle' }
+    case SubscriptionStatusCode.PENNYLANE_TO_VERIFY:
+      return { text: t('pennylaneToVerify'), color: 'blue', iconName: 'search' }
     default:
       return { text: status, color: 'info', iconName: 'infoCircle' }
   }
@@ -290,6 +292,7 @@ en-US:
   pending: 'To validate'
   pennylaneCreated: 'Update plan'
   pennylaneNotCreated: 'To create'
+  pennylaneToVerify: 'To verify'
   offerActivated: 'The offer has been activated'
   offerNotActivated: 'The offer could not be activated'
 fr-FR:
@@ -307,6 +310,7 @@ fr-FR:
   pending: 'A valider'
   pennylaneCreated: 'Modifier le plan'
   pennylaneNotCreated: 'A créer'
+  pennylaneToVerify: 'À vérifier'
   offerActivated: "L'offre a été activée"
   offerNotActivated: "L'offre n'a pas pu être activée"
 </i18n>

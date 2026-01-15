@@ -7,6 +7,7 @@ export enum SubscriptionStatusCode {
   VALIDATED = 'validated',
   PENNYLANE_CREATED = 'pennylane-created',
   PENNYLANE_NOT_CREATED = 'pennylane-not-created',
+  PENNYLANE_TO_VERIFY = 'pennylane-to-verify',
 }
 
 export interface Account {
