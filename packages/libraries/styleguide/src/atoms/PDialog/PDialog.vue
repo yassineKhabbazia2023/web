@@ -5,6 +5,7 @@
     class="p-dialog"
     :title="pTitle"
     :width="pWidth"
+    :fullscreen="pFullscreen"
     :modal="pModal"
     :center="pCenter"
     :alignCenter="pAlignCenter"
@@ -14,7 +15,7 @@
     @close="handleClose"
   >
     <slot />
-    <template #footer>
+    <template v-if="$slots.footer" #footer>
       <slot name="footer" />
     </template>
   </ElDialog>
@@ -37,6 +38,7 @@ const props = withDefaults(defineProps<PDialogProps>(), {
   pAlignCenter: false,
   pDestroyOnClose: false,
   pCloseIconName: 'x',
+  pFullscreen: false,
 })
 
 const dialogModel = computed({

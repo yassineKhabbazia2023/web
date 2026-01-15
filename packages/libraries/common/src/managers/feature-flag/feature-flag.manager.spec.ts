@@ -68,4 +68,16 @@ describe('FeatureFlagManager', () => {
         expect(FeatureFlagManager.isCustomerBookingActivated()).toBe(expected)
       })
     })
+
+  describe.each(tests)(
+    'isPennylaneAmendmentFlowActivated',
+    ({
+      value,
+      expected,
+    }) => {
+      it('should return $expected when value is $value', () => {
+        window.EnvVars[Feature.PENNYLANE_AMENDMENT_FLOW] = value
+        expect(FeatureFlagManager.isPennylaneAmendmentFlowActivated()).toBe(expected)
+      })
+    })
 })

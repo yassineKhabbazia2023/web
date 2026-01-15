@@ -5,6 +5,8 @@
     :stripe="pStripe"
     :rowClassName="tableRowClassName"
     :fit="pFit"
+    :header-cell-style="pHeaderCellStyle"
+    :cell-style="pCellStyle"
   >
     <slot />
   </ElTable>

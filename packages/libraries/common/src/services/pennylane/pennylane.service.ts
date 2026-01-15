@@ -2,7 +2,7 @@ import { commonApi } from '@pulse/common'
 import { logger } from '@pulse/toolbox'
 import type { AxiosResponse } from 'axios'
 import { API_PREFIXES } from '../../constants/api-prefixes'
-import type { PennylaneRole, PennylaneDocumentQueryResult, PennylaneAvailableRole } from './pennylane.service.types'
+import type { PennylaneRole, PennylaneDocumentQueryResult, PennylaneAvailableRole, PennylaneAccessResponse } from './pennylane.service.types'
 
 export class PennylaneService {
   static readonly availableRolesByCompanyId: Record<string, Promise<AxiosResponse<PennylaneAvailableRole[], any>>> = {}
@@ -73,6 +73,14 @@ export class PennylaneService {
       params: queryParams,
       responseType: 'arraybuffer',
     })
+
+    return data
+  }
+
+  static async checkPennylaneAccess(accountId: number): Promise<PennylaneAccessResponse> {
+    const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/access/currentuser`
+
+    const { data } = await commonApi().gateway.get<PennylaneAccessResponse>(url)
 
     return data
   }

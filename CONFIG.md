@@ -57,6 +57,7 @@ window.EnvVars = envVars
 | VITE_PENNYLANE_COLLAB_SSO_URL | URL de connexion SSO Pennylane pour les collaborateurs |
 | VITE_PENNYLANE_PRICING_TABLE_URL | URL de l'image de la grille tarifaire Pennylane affichée lors de l'activation d'offre |
 | VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |
+| VITE_PENNYLANE_AMENDMENT_FLOW_ACTIVATED | Feature-flag du flow de validation d'accès Pennylane (avenant) |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY | Clé du workspace ProductFruit Collab anonyme (login collab) |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT | Clé du workspace ProductFruit Client anonyme (login client et maintenance) |
 | VITE_PRODUCT_FRUITS_KEY | Clé du workspace ProductFruit Collab connecté |

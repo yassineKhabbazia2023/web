@@ -1,6 +1,5 @@
-import { vi, describe, it, expect } from 'vitest'
 import { apiGatewayMock } from '../../__mocks__/vitest'
-import { getMockedPennylaneRole, getMockedPennylaneAvailableRole, getMockedPennylaneDocument, getMockedPennylaneDocumentsQueryResult } from '../../__mocks__'
+import { getMockedPennylaneRole, getMockedPennylaneAvailableRole, getMockedPennylaneDocument, getMockedPennylaneDocumentsQueryResult, getMockedPennylaneAccessResponse } from '../../__mocks__'
 import { API_PREFIXES } from '../../constants/api-prefixes'
 
 import { PennylaneService } from './pennylane.service'
@@ -147,7 +146,46 @@ describe('PennylaneService', () => {
 
       await PennylaneService.createRole(roleMock)
 
-      expect(apiGatewayMock.post).toHaveBeenCalledExactlyOnceWith(expectedUrl, roleMock, { params: { accountId: roleMock.accountId, contactId: roleMock.contactId } })
+      expect(apiGatewayMock.post).toHaveBeenCalledExactlyOnceWith(
+        expectedUrl,
+        roleMock,
+        { params: { accountId: roleMock.accountId, contactId: roleMock.contactId } },
+      )
+    })
+  })
+
+  describe('checkPennylaneAccess', () => {
+    it('should call properly commonApi.gateway.get with account number', async () => {
+      const accountIdMock = 602
+      const expectedUrl = `${API_PREFIXES.PENNYLANE}/accounts/${accountIdMock}/access/currentuser`
+      const accessResponseMock = getMockedPennylaneAccessResponse()
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: accessResponseMock,
+      })
+      const accessResponse = await PennylaneService.checkPennylaneAccess(accountIdMock)
+
+      expect(accessResponse).toStrictEqual(accessResponseMock)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+    })
+
+    it('should handle response when isPennylaneSignatory and details are undefined', async () => {
+      const accountIdMock = 602
+      const expectedUrl = `${API_PREFIXES.PENNYLANE}/accounts/${accountIdMock}/access/currentuser`
+      const minimalResponseMock = getMockedPennylaneAccessResponse({
+        isPennylaneSignatory: undefined,
+        details: undefined,
+      })
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: minimalResponseMock,
+      })
+      const accessResponse = await PennylaneService.checkPennylaneAccess(accountIdMock)
+
+      expect(accessResponse.canAccess).toBeDefined()
+      expect(accessResponse.isPennylaneSignatory).toBeUndefined()
+      expect(accessResponse.details).toBeUndefined()
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
     })
   })
 })

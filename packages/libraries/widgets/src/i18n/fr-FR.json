@@ -23,6 +23,93 @@
     "pennylaneSSO": {
       "accessToPennylane": "Accéder à Pennylane"
     },
+    "pennylaneAccessBlocked": {
+      "title": "Validation requise pour votre entreprise",
+      "intro": "Votre entreprise doit accepter",
+      "conformityRequirement": "la mise en conformité de sa facturation",
+      "introEnd": "et finaliser son parcours d'adhésion à la plateforme",
+      "pennylane": "Pennylane",
+      "explanation": "Cette étape ne peut être validée que par un mandataire habilité car elle engage juridiquement l'entreprise dans ce nouveau cadre réglementaire.",
+      "instructions": "Merci de demander à cette personne de se connecter à son espace RYDGE Conseil pour effectuer cette validation.",
+      "conclusion": "Une fois les nouvelles conditions de RYDGE Conseil validées, vous pourrez continuer à utiliser la plateforme Pennylane.",
+      "understood": "C'est compris"
+    },
+    "pennylaneAmendmentFlow": {
+      "step1": {
+        "title": "Accédez à Pennylane et assurez votre mise en conformité avec la réforme de la facturation électronique",
+        "subtitlePart1": "Nous mettons à jour votre facturation et votre environnement comptable pour ",
+        "subtitleGreen": "anticiper la réforme de la facture.",
+        "reform": {
+          "title": "Réforme de la facture électronique",
+          "description1": "La réforme de la facturation électronique va généraliser progressivement les échanges électroniques des factures dès 2026. Cette réforme impacte notre organisation, c'est pourquoi nous avons choisi de l'anticiper dès maintenant pour garantir votre conformité et assurer la poursuite de nos missions.",
+          "description2Part1": "Pour recevoir et émettre des factures conformes ",
+          "description2Bold": "à compter de septembre 2026,",
+          "description2Part2": " un travail complémentaire de mise à jour des fiches clients et fournisseurs est nécessaire par nos équipes (fiches fournisseurs uniquement pour les sociétés qui réalisent des opérations de vente exonérées de TVA)."
+        },
+        "pennylane": {
+          "title": "Pennylane",
+          "descriptionPart1": "Pour faire de cette réforme une opportunité d'optimiser votre expérience de gestion et de mieux collaborer, ",
+          "descriptionBold": "RYDGE Conseil a choisi d'utiliser la Plateforme Agréée Pennylane,",
+          "descriptionPart2": " afin de centraliser vos finances, automatiser vos tâches de gestion comptable et gagner un temps précieux au quotidien."
+        },
+        "buttonContinue": "Continuer"
+      },
+      "step2": {
+        "title": "1/3 Votre accompagnement vers la réforme",
+        "subtitlePart1": "La réforme de la Facturation Électronique sera obligatoire dès septembre 2026 pour chaque entreprise. Cette étape inclut la mise en conformité de votre facturation ainsi que l'activation de la plateforme ",
+        "subtitleBold": "Pennylane",
+        "subtitlePart2": " dédiée à chaque société.",
+        "table": {
+          "company": "Entreprise",
+          "compliance": "Mise en conformité*",
+          "subscription": "Abonnement Pennylane**",
+          "perMonth": "mois",
+          "free": "Offert",
+          "complianceNote": "* facturation en juin 2026",
+          "subscriptionNote": "** facturation à partir de juillet 2026"
+        },
+        "freeAccessNotice": {
+          "title": "Accès gratuit",
+          "descriptionPart1": "L'accès à ",
+          "descriptionBold": "Pennylane",
+          "descriptionPart2": " est gratuit jusqu'au 30 juin 2026."
+        },
+        "supportNotice": {
+          "title": "Besoin d'aide ?",
+          "description": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)"
+        },
+        "faq": {
+          "risks": {
+            "title": "Quels risques si vous n'anticipez pas cette réforme ?",
+            "item1": "Ne plus pouvoir facturer vos clients",
+            "item2": "Retard de paiement",
+            "item3": "Sanctions pécuniaires et amendes"
+          },
+          "reform": {
+            "title": "Pourquoi cette réforme ?",
+            "item1": "Lutte contre la fraude à la TVA",
+            "item2": "Simplification des échanges",
+            "item3": "Traçabilité en temps réel"
+          },
+          "pennylane": {
+            "title": "Pourquoi Pennylane ?",
+            "item1Bold": "Une solution conforme à la facturation électronique ",
+            "item1": "habilité pour traiter des factures électronique",
+            "item2Bold": "Une solution tout-en-un",
+            "item2": " qui rassemble votre comptabilité, votre gestion financière, votre compte pro et votre Plateforme Agréée.",
+            "item3Bold": "Une collaboration optimisée :",
+            "item3": " votre Plateforme Agréée, intégrée à votre solution de gestion financière, vous permet de centraliser vos opérations et d'assurer une fluidité optimale entre vos processus de comptabilité et de gestion.",
+            "item4Bold": "Une centralisation de vos factures",
+            "item4": " et visibilité en temps réel de leur statut"
+          }
+        }
+      },
+      "common": {
+        "buttonBack": "Retour",
+        "buttonContinue": "Continuer",
+        "buttonValidate": "Valider"
+      }
+    },
     "pennylaneIntro": {
       "header": {
         "new": "Nouveau",

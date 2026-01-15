@@ -1,4 +1,13 @@
-import type { PennylaneRole, PennylaneAvailableRole, PennylaneDocument, PennylaneDocumentQueryResult } from '../services/pennylane/pennylane.service.types'
+import type {
+  PennylaneRole,
+  PennylaneAvailableRole,
+  PennylaneDocument,
+  PennylaneDocumentQueryResult,
+  PennylaneAccessResponse,
+  PennylaneAccessTerm,
+  PennylaneAccessAccount,
+  PennylaneAccessDetails,
+} from '../services/pennylane/pennylane.service.types'
 import { getMockedQueryResult } from './query-result.mocks'
 
 export const getMockedPennylaneRole = (override: Partial<PennylaneRole> = {}) => {
@@ -47,6 +56,65 @@ export function getMockedPennylaneDocumentsQueryResult(override: Partial<Pennyla
   return {
     ...getMockedQueryResult<PennylaneDocument>(),
     lastSynchroDate: '2025-08-05T08:57:18.6151591+02:00',
+    ...override,
+  }
+}
+
+export const getMockedPennylaneAccessTerm = (override: Partial<PennylaneAccessTerm> = {}): PennylaneAccessTerm => {
+  const defaultRecord: PennylaneAccessTerm = {
+    id: 1,
+    linkFr: 'https://example.com/terms-fr',
+  }
+
+  return {
+    ...defaultRecord,
+    ...override,
+  }
+}
+
+export const getMockedPennylaneAccessAccount = (
+  override: Partial<PennylaneAccessAccount> = {},
+): PennylaneAccessAccount => {
+  const defaultRecord: PennylaneAccessAccount = {
+    accountNumber: '2025546345',
+    legalName: 'ACME Corporation SARL',
+    planName: 'Premium Plan',
+    planPriceExclTax: 99.99,
+    compliancePriceExclTax: 49.99,
+  }
+
+  return {
+    ...defaultRecord,
+    ...override,
+  }
+}
+
+export const getMockedPennylaneAccessDetails = (
+  override: Partial<PennylaneAccessDetails> = {},
+): PennylaneAccessDetails => {
+  const defaultRecord: PennylaneAccessDetails = {
+    id: 'detail-123',
+    terms: getMockedPennylaneAccessTerm(),
+    accounts: [getMockedPennylaneAccessAccount()],
+  }
+
+  return {
+    ...defaultRecord,
+    ...override,
+  }
+}
+
+export const getMockedPennylaneAccessResponse = (
+  override: Partial<PennylaneAccessResponse> = {},
+): PennylaneAccessResponse => {
+  const defaultRecord: PennylaneAccessResponse = {
+    canAccess: true,
+    isPennylaneSignatory: false,
+    details: getMockedPennylaneAccessDetails(),
+  }
+
+  return {
+    ...defaultRecord,
     ...override,
   }
 }

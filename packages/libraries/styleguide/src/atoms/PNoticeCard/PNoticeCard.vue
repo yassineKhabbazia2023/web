@@ -3,6 +3,7 @@
     <div
       class="
         p-notice-card__header
+        padding--2
         flex
         flex--align-items-center
         flex-gap--1
@@ -12,7 +13,7 @@
     >
       <PIcon
         v-if="pIcon !== undefined"
-        class="p-notice-card__icon flex--shrink-0"
+        class="p-notice-card__icon margin-right--1 flex--shrink-0"
         :pName="pIcon"
       />
       <h3 class="p-notice-card__title margin--0">
@@ -44,8 +45,6 @@ withDefaults(defineProps<PNoticeCardProps>(), {
   overflow: hidden;
 
   &__header {
-    padding: 4px 8px;
-
     &--dark-green {
       background-color: var(--p-jungle-400);
       color: var(--p-white);
@@ -110,40 +109,34 @@ withDefaults(defineProps<PNoticeCardProps>(), {
 
   &__body {
     background-color: var(--p-white);
+    color: var(--p-black-rock-900);
 
     &--default {
       background-color: var(--p-white);
-      color: var(--p-black-rock-900);
     }
 
     &--light-green {
       background-color: var(--p-jungle-50);
-      color: var(--p-jungle-700);
     }
 
     &--green-lighter {
       background-color: var(--p-jungle-75);
-      color: var(--p-jungle-700);
     }
 
     &--light-blue {
       background-color: var(--p-teal-100);
-      color: var(--p-teal-800);
     }
 
     &--lighter-gray {
       background-color: var(--p-gray-50);
-      color: var(--p-black-rock-900);
     }
 
     &--light-gray {
       background-color: var(--p-gray-100);
-      color: var(--p-black-rock-900);
     }
 
     &--tranquil {
       background-color: var(--p-tranquil-50);
-      color: var(--p-mint-tulip-800);
     }
   }
 }
