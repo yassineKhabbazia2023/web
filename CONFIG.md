@@ -42,6 +42,7 @@ window.EnvVars = envVars
 | VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
 | VITE_BOOKING_ACTIVATED | Feature flag de la fonctionnalité Microsoft Bookings |
 | VITE_BOOKING_LINK_PATTERN | Regexp de validation de l'url de configuration. Pas de contrôle si non défini |
+| VITE_CUSTOMER_BOOKING_ACTIVATED | Si booking est activé pour les clients. |
 | VITE_CLARITY_OFFER_ACTIVATED | Feature flag de la fonctionnalité Clarity Offer |
 | VITE_CONFIG_OFFERS_BOOK | URL d'un site web à partager aux utilisateurs |
 | VITE_FEED_CENTER_ACTIVATED | Feature-flag du Feed Center |

@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="FeatureFlagManager.isCustomerBookingActivated()"
     class="
         flex
         flex--direction-column
@@ -56,6 +57,7 @@ import { PIcon, PButton } from '@pulse/styleguide/components'
 import { useBookingCustomerStore } from '../../../stores'
 import BookingAppointmentNoResult from '../../components/no-result/booking-appointment-no-result.vue'
 import BookingAppointmentDrawer from '../../components/appointment-drawer/booking-appointment-drawer.vue'
+import { FeatureFlagManager } from '@pulse/common/managers'
 
 const customerStore = useBookingCustomerStore()
 const { isAppointmentDrawerOpen } = storeToRefs(customerStore)

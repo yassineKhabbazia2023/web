@@ -56,4 +56,16 @@ describe('FeatureFlagManager', () => {
         expect(FeatureFlagManager.isMailToPennylaneActivated()).toBe(expected)
       })
     })
+
+  describe.each(tests)(
+    'isCustomerBookingActivated',
+    ({
+      value,
+      expected,
+    }) => {
+      it('should return $expected when value is $value', () => {
+        window.EnvVars[Feature.CUSTOMER_BOOKING] = value
+        expect(FeatureFlagManager.isCustomerBookingActivated()).toBe(expected)
+      })
+    })
 })
