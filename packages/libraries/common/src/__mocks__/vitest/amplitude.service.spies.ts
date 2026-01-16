@@ -6,6 +6,7 @@ export const AmplitudeServiceMock: {
   track: Mock
   setUserId: Mock
   setUserEmail: Mock
+  addDeviceSizePlugin: Mock
   setNewUserProperty: Mock
   identifyCustomer: Mock
   identifyCollaborator: Mock
@@ -15,6 +16,7 @@ export const AmplitudeServiceMock: {
   track: vi.fn(),
   setUserId: vi.fn(),
   setUserEmail: vi.fn(),
+  addDeviceSizePlugin: vi.fn(),
   setNewUserProperty: vi.fn(),
   identifyCustomer: vi.fn(),
   identifyCollaborator: vi.fn(),

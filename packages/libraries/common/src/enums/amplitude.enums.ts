@@ -16,3 +16,8 @@ export enum AmplitudeEvent {
 export enum AmplitudeFeatureName {
   HOMEPAGE = 'homepage',
 }
+
+export enum AmplitudeDeviceSize {
+  MOBILE = 'mobile',
+  DESKTOP = 'desktop',
+}

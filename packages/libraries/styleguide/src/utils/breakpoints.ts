@@ -18,3 +18,7 @@ export function getCurrentBreakpoint(windowWidth: number): breakpoint {
   }
   return 'xs'
 }
+
+export function getIsMobile(windowWidth: number): boolean {
+  return windowWidth < BREAKPOINT_SIZES.sm
+}

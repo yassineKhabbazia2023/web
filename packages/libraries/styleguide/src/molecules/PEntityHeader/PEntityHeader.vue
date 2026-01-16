@@ -1,6 +1,7 @@
 <template>
   <div
     class="
+      p-entity-header
       flex
       flex--align-items-center
     "
@@ -55,6 +56,14 @@ const variant = computed(() => {
 </script>
 
 <style lang="scss">
+@use '../../assets/scss/pegase/breakpoints';
+
+.p-entity-header {
+  @include breakpoints.media(xs) {
+    display: none;
+  }
+}
+
 $entityHeaderVariant:
   "small" 2.1rem 1.4rem 10px,
   "default" 2.8rem 1.8rem 12px;

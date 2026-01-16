@@ -1,4 +1,4 @@
-import type { Entity, Permission } from '@pulse/common/types'
+import type { Entity } from '@pulse/common/types'
 
 export interface UserConfig {
   isCollab: boolean
@@ -10,6 +10,8 @@ export interface HomeLayoutProps {
   currentEntity?: Entity
   favoriteEntities: Entity[]
   userConfig?: UserConfig
-  isVisible: boolean
-  currentEntityPermissions?: Permission[]
+}
+
+export interface MobileHomeLayoutProps {
+  currentEntity?: Entity
 }

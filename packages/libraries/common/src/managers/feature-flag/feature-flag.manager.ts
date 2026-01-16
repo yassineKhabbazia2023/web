@@ -49,6 +49,10 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_SSO_REDIRECT)
   }
 
+  static isResponsiveActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.RESPONSIVE)
+  }
+
   static isPennylaneAmendmentFlowActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_AMENDMENT_FLOW)
   }

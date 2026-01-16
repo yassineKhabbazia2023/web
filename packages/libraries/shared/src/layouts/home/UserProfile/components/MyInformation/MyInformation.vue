@@ -1,91 +1,88 @@
 <template>
   <div>
-    <PLoader v-if="isLoading" />
-    <div v-if="!isLoading">
-      <p class="h4 margin-bottom--6">
-        {{ user.firstName }} <span class="text-uppercase">{{ user.lastName }}</span>
-      </p>
-      <PForm
-        ref="formRef"
-        :pModel="formValues"
-        :pRules="rules"
-        pLabelPosition="top"
-        pRequireAsteriskPosition="right"
-        @submit.prevent="handleFormSubmit(formRef)"
-      >
-        <div class="flex flex--justify-content-space-between">
-          <div class="half-width">
-            <PFormItem
-              :pLabel="t('role')"
-              prop="personaName"
-              pRequired
-            >
-              <PInput
-                v-model="formValues.personaName"
-                pName="personaName"
-                pDisabled
-              />
-            </PFormItem>
-          </div>
-
-          <div class="half-width">
-            <PFormItem
-              :pLabel="t('mobilePhone')"
-              prop="mobilePhone"
-              pRequired
-            >
-              <PInput
-                v-model="formValues.mobilePhone"
-                pName="mobilePhone"
-              />
-            </PFormItem>
-          </div>
+    <p class="h4 margin-bottom--6">
+      {{ user.firstName }} <span class="text-uppercase">{{ user.lastName }}</span>
+    </p>
+    <PForm
+      ref="formRef"
+      :pModel="formValues"
+      :pRules="rules"
+      pLabelPosition="top"
+      pRequireAsteriskPosition="right"
+      @submit.prevent="handleFormSubmit(formRef)"
+    >
+      <div class="flex flex--justify-content-space-between">
+        <div class="half-width">
+          <PFormItem
+            :pLabel="t('role')"
+            prop="personaName"
+            pRequired
+          >
+            <PInput
+              v-model="formValues.personaName"
+              pName="personaName"
+              pDisabled
+            />
+          </PFormItem>
         </div>
 
-        <PFormItem
-          :pLabel="t('email')"
-          prop="email"
-          pRequired
-        >
-          <PInput
-            v-model="formValues.email"
-            pName="email"
-            pDisabled
-          />
-        </PFormItem>
+        <div class="half-width">
+          <PFormItem
+            :pLabel="t('mobilePhone')"
+            prop="mobilePhone"
+            pRequired
+          >
+            <PInput
+              v-model="formValues.mobilePhone"
+              pName="mobilePhone"
+            />
+          </PFormItem>
+        </div>
+      </div>
 
-        <p
-          class="
+      <PFormItem
+        :pLabel="t('email')"
+        prop="email"
+        pRequired
+      >
+        <PInput
+          v-model="formValues.email"
+          pName="email"
+          pDisabled
+        />
+      </PFormItem>
+
+      <p
+        class="
             padding-top--2
             text-color--neutral-gray-300
             font-small
           "
-        >
-          {{ t('requiredFields') }}
-        </p>
-        <div class="margin-top--6">
-          <LegalLinks
-            :hasCgu="isCollab === false"
-            class="margin-top--4 font-small"
-          />
+      >
+        {{ t('requiredFields') }}
+      </p>
+      <div class="margin-top--6">
+        <LegalLinks
+          :hasCgu="isCollab === false"
+          class="margin-top--4 font-small"
+        />
+      </div>
+
+      <Teleport to="#my-information__footer-drawer">
+        <div class="flex flex--justify-content-space-between">
+          <LogoutButton />
+
+          <PButton
+            pType="primary"
+            :pDisabled="!formValues.mobilePhone"
+            :pLoading="isUpdateInProgress"
+            @click="handleFormSubmit(formRef)"
+          >
+            {{ t('saveChanges') }}
+          </PButton>
         </div>
-
-        <Teleport to="#my-information__footer-drawer">
-          <div class="flex flex--justify-content-space-between">
-            <LogoutButton />
-
-            <PButton
-              pType="primary"
-              :pDisabled="!formValues.mobilePhone"
-              :pLoading="isUpdateInProgress"
-              @click="handleFormSubmit(formRef)"
-            >
-              {{ t('saveChanges') }}
-            </PButton>
-          </div>
-        </Teleport>
-      </PForm>
-    </div>
+      </Teleport>
+    </PForm>
   </div>
 </template>
 
@@ -97,7 +94,7 @@ import { commonApi } from '@pulse/common'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { PNotification } from '@pulse/styleguide'
 import type { FormInstance } from '@pulse/styleguide/types'
-import { PButton, PForm, PFormItem, PInput, PLoader } from '@pulse/styleguide/components'
+import { PButton, PForm, PFormItem, PInput } from '@pulse/styleguide/components'
 import { LegalLinks } from '@pulse/shared/components'
 import type { FormValues, User } from './MyInformationTypes'
 import LogoutButton from '@shared/layouts/home/UserProfile/components/LogoutButton'
@@ -107,7 +104,6 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const isLoading = ref(false)
 const isUpdateInProgress = ref(false)
 const formRef = ref<FormInstance>()
 const isCollab = ref(false)
@@ -199,12 +195,6 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 $gap: 12px;
-
-.my-information {
-  &__image-portrait {
-    height: 95px;
-  }
-}
 
 .half-width {
   width: calc(50% - $gap/2);

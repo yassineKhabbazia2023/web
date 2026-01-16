@@ -62,6 +62,7 @@ window.EnvVars = envVars
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT | Clé du workspace ProductFruit Client anonyme (login client et maintenance) |
 | VITE_PRODUCT_FRUITS_KEY | Clé du workspace ProductFruit Collab connecté |
 | VITE_PRODUCT_FRUITS_KEY_CLIENT | Clé du workspace ProductFruit Client connecté |
+| VITE_RESPONSIVE_ACTIVATED | Feature flag pour activer le layout mobile responsive |
 | VITE_SMART_OFFER_DIFFERENT_RATE_ACCOUNTS | Liste des dossiers ayant un tarif différent pour l'offre Smart (usage temporaire). |
 | VITE_SMART_OFFER_DIFFERENT_RATE_PRICE | Prix de l'offre Smart pour les dossiers ayant un tarif différent(usage temporaire). |
 | VITE_TOKEN_EXPIRATION_BUFFER | Temps en minutes pour refresh le token avant son expiration |

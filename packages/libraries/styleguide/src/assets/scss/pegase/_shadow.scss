@@ -9,9 +9,19 @@ $shadow-color: var(--p-black-rock-900-rgb);
     box-shadow: 0 1px 2px 0 rgba($shadow-color, 0.2), 0 0 2px 0 rgba($shadow-color, 0.1);
 }
 
+.shadow--1-inverted {
+    // Inverted shadow (going upward) - for bottom navigation bars
+    box-shadow: 0 -1px 2px 0 rgba($shadow-color, 0.05), 0 -2px 4px 0 rgba($shadow-color, 0.08);
+}
+
 .shadow--2 {
-    // Equivalent to --el-box-shadow-light  
+    // Equivalent to --el-box-shadow-light
     box-shadow: 0 3px 4px 0 rgba($shadow-color, 0.1), 0 2px 4px 0 rgba($shadow-color, 0.08), 0 1px 2px 0 rgba($shadow-color, 0.05), 0 0 2px 0 rgba($shadow-color, 0.1);
+}
+
+.shadow--2-inverted {
+    // Inverted shadow (going upward)
+    box-shadow: 0 -3px 4px 0 rgba($shadow-color, 0.1), 0 -2px 4px 0 rgba($shadow-color, 0.08), 0 -1px 2px 0 rgba($shadow-color, 0.05), 0 0 2px 0 rgba($shadow-color, 0.1);
 }
 
 .shadow--3 {
@@ -19,9 +29,19 @@ $shadow-color: var(--p-black-rock-900-rgb);
     box-shadow: 0 16px 16px 0 rgba($shadow-color, 0.04), 0 6px 8px 0 rgba($shadow-color, 0.05), 0 2px 4px 0 rgba($shadow-color, 0.08), 0 1px 2px 0 rgba($shadow-color, 0.05), 0 0 2px 0 rgba($shadow-color, 0.1);
 }
 
+.shadow--3-inverted {
+    // Inverted shadow (going upward)
+    box-shadow: 0 -16px 16px 0 rgba($shadow-color, 0.04), 0 -6px 8px 0 rgba($shadow-color, 0.05), 0 -2px 4px 0 rgba($shadow-color, 0.08), 0 -1px 2px 0 rgba($shadow-color, 0.05), 0 0 2px 0 rgba($shadow-color, 0.1);
+}
+
 .shadow--4 {
     // Custom Pégase shadow level
     box-shadow: 0 12px 15px 0 rgba($shadow-color, 0.04), 0 8px 8px 0 rgba($shadow-color, 0.05), 0 4px 4px 0 rgba($shadow-color, 0.08), 0 2px 2px 0 rgba($shadow-color, 0.05), 0 1px 2px 0 rgba($shadow-color, 0.10);
+}
+
+.shadow--4-inverted {
+    // Inverted shadow (going upward)
+    box-shadow: 0 -12px 15px 0 rgba($shadow-color, 0.04), 0 -8px 8px 0 rgba($shadow-color, 0.05), 0 -4px 4px 0 rgba($shadow-color, 0.08), 0 -2px 2px 0 rgba($shadow-color, 0.05), 0 -1px 2px 0 rgba($shadow-color, 0.10);
 }
 
 .shadow--5 {
@@ -29,7 +49,17 @@ $shadow-color: var(--p-black-rock-900-rgb);
     box-shadow: 0 16px 40px 1px rgba($shadow-color, 0.15), 0 8px 8px 0 rgba($shadow-color, 0.05), 0 4px 4px 0 rgba($shadow-color, 0.08), 0 2px 2px 0 rgba($shadow-color, 0.05), 0 1px 2px 0 rgba($shadow-color, 0.10);
 }
 
+.shadow--5-inverted {
+    // Inverted shadow (going upward)
+    box-shadow: 0 -16px 40px 1px rgba($shadow-color, 0.15), 0 -8px 8px 0 rgba($shadow-color, 0.05), 0 -4px 4px 0 rgba($shadow-color, 0.08), 0 -2px 2px 0 rgba($shadow-color, 0.05), 0 -1px 2px 0 rgba($shadow-color, 0.10);
+}
+
 .shadow--6 {
     // Equivalent to --el-box-shadow-dark
     box-shadow: 0 24px 50px 0 rgba($shadow-color, 0.2), 0 8px 8px 0 rgba($shadow-color, 0.05), 0 4px 4px 0 rgba($shadow-color, 0.08), 0 2px 2px 0 rgba($shadow-color, 0.05), 0 2px 1px 0 rgba($shadow-color, 0.1);
+}
+
+.shadow--6-inverted {
+    // Inverted shadow (going upward)
+    box-shadow: 0 -24px 50px 0 rgba($shadow-color, 0.2), 0 -8px 8px 0 rgba($shadow-color, 0.05), 0 -4px 4px 0 rgba($shadow-color, 0.08), 0 -2px 2px 0 rgba($shadow-color, 0.05), 0 -2px 1px 0 rgba($shadow-color, 0.1);
 }

@@ -54,3 +54,15 @@ export enum CustomerPermission {
   GERER_DROITS_UTILISATEURS = 'CLUSER004',
   SUPPRIMER_UTILISATEUR = 'CLUSER003',
 }
+
+/**
+ * Types used to check access to Pennylane features.
+ * These are not traditional user permissions but abstractions for UX decisions
+ * based on multiple factors (feature flags, offers, user permissions) evaluated by PennylanePermissionsManager.
+ */
+export enum PennylanePermission {
+  ACCOUNTING = 'accounting',
+  GED_V2 = 'gedV2',
+  GED_LEGACY = 'gedLegacy',
+  SOCIAL_V2 = 'socialV2',
+}

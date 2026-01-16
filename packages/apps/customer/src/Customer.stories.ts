@@ -15,10 +15,10 @@ import type { Entity } from '@pulse/common/types'
 import { entityCustomerRoutes } from './router/routes/customer.entity.routes'
 import { walletCustomerRoutes } from './router/routes/customer.wallet.routes'
 import { landingCustomerRoutes } from './router/routes/customer.landing.routes'
-import { registerCustomerSidebarItems } from './router/registry/customer.sidebar.registry'
+import { registerCustomerNavigationItems } from './router/registry/customer.navigation.registry'
 
-// Register sidebar items once for all stories
-registerCustomerSidebarItems()
+// Register navigation items once for all stories
+registerCustomerNavigationItems()
 
 const meta: Meta<typeof HomeLayout> = {
   title: 'Apps/Customer',

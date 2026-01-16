@@ -1,6 +1,6 @@
 import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
 import { CurrentUserManager } from '../current-user/current-user.manager'
-import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermission } from '@pulse/common/enums'
+import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermission, PennylanePermission } from '@pulse/common/enums'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 
@@ -157,6 +157,32 @@ describe('PennylanePermissionsManager', () => {
       } else {
         expect(hasPermissionSpy).not.toHaveBeenCalled()
       }
+    })
+  })
+
+  describe('hasPermission', () => {
+    it.each([
+      { type: PennylanePermission.ACCOUNTING, methodName: 'hasPennylaneAccountingPermission' },
+      { type: PennylanePermission.GED_V2, methodName: 'hasPennylaneAccountingGedV2Permission' },
+      { type: PennylanePermission.GED_LEGACY, methodName: 'hasPennylaneAccountingGedLegacyPermission' },
+      { type: PennylanePermission.SOCIAL_V2, methodName: 'hasSocialManagementV2' },
+    ])('should delegate $type to $methodName', ({ type, methodName }) => {
+      const spy = vi
+        .spyOn(PennylanePermissionsManager, methodName as any)
+        .mockReturnValue(true)
+
+      const result = PennylanePermissionsManager.hasPermission(type)
+
+      expect(result).toBe(true)
+      expect(spy).toHaveBeenCalledOnce()
+    })
+
+    it('should return false when underlying method returns false', () => {
+      vi.spyOn(PennylanePermissionsManager, 'hasPennylaneAccountingPermission').mockReturnValue(false)
+
+      const result = PennylanePermissionsManager.hasPermission(PennylanePermission.ACCOUNTING)
+
+      expect(result).toBe(false)
     })
   })
 })

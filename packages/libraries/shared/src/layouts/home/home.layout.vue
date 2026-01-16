@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="!isLoading"
     class="common-layout"
     data-testid="common-layout"
   >
@@ -25,13 +24,11 @@
       </PCHeader>
       <PContainer class="aside-main-container">
         <PAside class="aside-container">
-          <Sidebar
+          <SidebarEntity
             class="sidebar-container"
             :current-entity="currentEntity"
             :favorite-entities="favoriteEntities"
             :user-config="userConfig"
-            :is-visible="isVisible"
-            :current-entity-permissions="currentEntityPermissions"
           />
         </PAside>
         <PContainer
@@ -54,13 +51,10 @@ import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import UserProfile from './UserProfile'
 import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 import Header from './header'
-import Sidebar from './Sidebar'
+import SidebarEntity from './navigation/components/desktop'
 import type { HomeLayoutProps } from './home.layout.types'
 
-// Variables
 const router = useRouter()
-// TODO:  update with a stored value
-const isLoading = ref<boolean>(false)
 
 const hasUserProfileDrawerOpened = ref(false)
 
@@ -96,9 +90,7 @@ const shouldRemovePadding = computed(() => {
     height: 100vh;
     padding-right: 50px;
     position: relative;
-    @media only screen and (min-width: 992px) {
       z-index: 10;
-    }
   }
 
   .main-container {

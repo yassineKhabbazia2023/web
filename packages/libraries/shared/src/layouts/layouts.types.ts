@@ -1,1 +1,1 @@
-export type { UserConfig, HomeLayoutProps } from './home/home.layout.types'
+export type { UserConfig, HomeLayoutProps, MobileHomeLayoutProps } from './home/home.layout.types'

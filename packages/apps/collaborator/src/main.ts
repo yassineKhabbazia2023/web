@@ -23,7 +23,7 @@ import { axeptioPlugin, productFruitsPlugin, hubspotPlugin } from '@pulse/shared
 
 import App from './Collaborator.app.vue'
 import router from './router/collaborator.router'
-import { registerCollaboratorSidebarItems } from './router/registry/collaborator.sidebar.registry'
+import { registerCollaboratorNavigationItems } from './router/registry/collaborator.navigation.registry'
 import { registerCollaboratorWalletTabs } from './router/registry/collaborator.wallet.registry'
 
 declare let window: {
@@ -62,7 +62,7 @@ const app = createApp(App)
   .use(powerBiApplet, {})
 
 // Register app-specific menu items and tabs
-registerCollaboratorSidebarItems()
+registerCollaboratorNavigationItems()
 registerCollaboratorWalletTabs()
 
 // install router last in order to register the applets first

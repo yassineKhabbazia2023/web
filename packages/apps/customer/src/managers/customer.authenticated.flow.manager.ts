@@ -12,11 +12,12 @@ import {
   getProductFruitsUser,
   stopProductFruits,
 } from '@pulse/shared/plugins'
+import { getIsMobile } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import type { RouteLocationNamedRaw } from 'vue-router'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam, AmplitudeDeviceSize } from '@pulse/common/enums'
 import { Entity } from '@pulse/common/types'
 import { BookingManager } from '@pulse/booking/shared/managers/booking'
 
@@ -145,6 +146,10 @@ export class CustomerAuthenticatedFlowManager {
 
       AmplitudeService.identifyCustomer()
       AmplitudeService.setUserId(userId.toString())
+
+      const isMobile = getIsMobile(window.innerWidth)
+      const deviceSize = isMobile ? AmplitudeDeviceSize.MOBILE : AmplitudeDeviceSize.DESKTOP
+      AmplitudeService.addDeviceSizePlugin(deviceSize)
     } catch (error) {
       logger.error('Anonymous - initAuthenticatedThirdParties - error: ', error)
       // errors are silent, we don't want to throw and crash the app if third parties fail

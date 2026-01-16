@@ -1,5 +1,5 @@
 import { CurrentUserManager } from '../current-user/current-user.manager'
-import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermission } from '@pulse/common/enums'
+import { Feature, SubscriptionOfferCode, CustomerPermission, CollaboratorPermission, PennylanePermission } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 
 import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
@@ -70,5 +70,21 @@ export class PennylanePermissionsManager {
     ]
     return PennylanePermissionsManager.isGedUxV2() === true &&
       CurrentUserManager.hasPermission(requiredPermissions) === true
+  }
+
+  /**
+   * Check if user has a specific Pennylane permission
+   */
+  static hasPermission(type: PennylanePermission): boolean {
+    switch (type) {
+      case PennylanePermission.ACCOUNTING:
+        return PennylanePermissionsManager.hasPennylaneAccountingPermission() === true
+      case PennylanePermission.GED_V2:
+        return PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true
+      case PennylanePermission.GED_LEGACY:
+        return PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true
+      case PennylanePermission.SOCIAL_V2:
+        return PennylanePermissionsManager.hasSocialManagementV2() === true
+    }
   }
 }

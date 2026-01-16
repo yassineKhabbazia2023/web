@@ -1,7 +1,7 @@
 import { loggerWarnSpy, loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { SERVER_ZONE } from './constants'
 import { Identify } from '@amplitude/analytics-browser'
-import { AmplitudeUserType } from '@common/enums/amplitude.enums'
+import { AmplitudeUserType, AmplitudeDeviceSize } from '../../enums/amplitude.enums'
 
 import { AmplitudeService } from './amplitude.service'
 
@@ -12,6 +12,7 @@ const resetSpy = vi.fn()
 const trackSpy = vi.fn()
 const identifySpy = vi.fn()
 const setUserIdSpy = vi.fn()
+const addSpy = vi.fn()
 
 vi.mock('@amplitude/analytics-browser', async () => {
   const actual = await vi.importActual('@amplitude/analytics-browser')
@@ -23,6 +24,7 @@ vi.mock('@amplitude/analytics-browser', async () => {
     track: (arg: string) => trackSpy(arg),
     identify: (arg: string) => identifySpy(arg),
     reset: () => resetSpy(),
+    add: (plugin: any) => addSpy(plugin),
   }
 })
 
@@ -134,6 +136,36 @@ describe('amplitude', () => {
     expect(identifySpy).toHaveBeenCalledExactlyOnceWith(identifyEvent)
   })
 
+  it('addDeviceSizePlugin adds an enrichment plugin', () => {
+    AmplitudeService.init(FAKE_API_KEY)
+
+    addSpy.mockClear() // clear the session replay plugin call from init
+
+    AmplitudeService.addDeviceSizePlugin(AmplitudeDeviceSize.MOBILE)
+
+    expect(addSpy).toHaveBeenCalledOnce()
+    const plugin = addSpy.mock.calls[0][0]
+    expect(plugin.name).toBe('device-size-enrichment')
+    expect(plugin.type).toBe('enrichment')
+  })
+
+  it('addDeviceSizePlugin enriches event with device_size', async () => {
+    AmplitudeService.init(FAKE_API_KEY)
+
+    addSpy.mockClear()
+
+    AmplitudeService.addDeviceSizePlugin(AmplitudeDeviceSize.MOBILE)
+
+    const plugin = addSpy.mock.calls[0][0]
+    const testEvent = { event_type: 'test', event_properties: { existing: 'prop' } }
+    const enrichedEvent = await plugin.execute(testEvent)
+
+    expect(enrichedEvent.event_properties).toEqual({
+      existing: 'prop',
+      device_size: AmplitudeDeviceSize.MOBILE,
+    })
+  })
+
   it('can reset a user session', () => {
     AmplitudeService.init(FAKE_API_KEY)
 
@@ -176,6 +208,12 @@ describe('amplitude', () => {
       AmplitudeService.setUserEmail('john@example.com')
 
       expect(identifySpy).not.toHaveBeenCalled()
+    })
+
+    it('addDeviceSizePlugin should not operate', () => {
+      AmplitudeService.addDeviceSizePlugin(AmplitudeDeviceSize.MOBILE)
+
+      expect(addSpy).not.toHaveBeenCalled()
     })
 
     it('reset should not operate', () => {

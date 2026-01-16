@@ -8,12 +8,14 @@
   "type": "module",
   "exports": {
     "./components": "./src/components/components.ts",
+    "./composables": "./src/composables/index.ts",
     "./guards": "./src/guards/index.ts",
     "./layouts": "./src/layouts.ts",
-    "./manager": "./src/layouts/home/Sidebar/manager/index.ts",
+    "./managers": "./src/managers/index.ts",
+    "./mocks": "./src/__mocks__/index.ts",
     "./pages": "./src/pages.index.ts",
     "./plugins": "./src/plugins/plugins.ts",
-    "./types": "./src/types.ts",
+    "./types": "./src/types/index.ts",
     ".": "./src/main.ts"
   },
   "scripts": {

@@ -3,7 +3,7 @@ import * as amplitude from '@amplitude/analytics-browser'
 import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser'
 import type { BaseEvent } from '@amplitude/analytics-types'
 import { logger } from '@pulse/toolbox'
-import { AmplitudeUserType } from '@pulse/common/enums'
+import { AmplitudeUserType, AmplitudeDeviceSize } from '@pulse/common/enums'
 
 /**
  * Service for managing Amplitude analytics integration
@@ -145,6 +145,27 @@ export class AmplitudeService {
       return
     }
     AmplitudeService.setNewUserProperty('email', email)
+  }
+
+  static addDeviceSizePlugin(deviceSize: AmplitudeDeviceSize) {
+    if (AmplitudeService.isInitialized() === false) {
+      return
+    }
+
+    const deviceSizePlugin = {
+      name: 'device-size-enrichment',
+      type: 'enrichment' as const,
+      execute: async (event: BaseEvent) => {
+        event.event_properties = {
+          ...event.event_properties,
+          device_size: deviceSize,
+        }
+        return event
+      },
+    }
+
+    amplitude.add(deviceSizePlugin)
+    logger.trace('Amplitude - added device size plugin:', deviceSize)
   }
 
   /**

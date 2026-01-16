@@ -15,7 +15,7 @@ import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam, AmplitudeDeviceSize } from '@pulse/common/enums'
 
 import { CustomerAuthenticatedFlowManager } from './customer.authenticated.flow.manager'
 
@@ -271,6 +271,22 @@ describe('CustomerAuthenticatedFlowManager', () => {
 
       expect(initProductFruitsAuthenticatedCustomer).toHaveBeenCalled()
       expect(AmplitudeService.identifyCustomer).toHaveBeenCalled()
+    })
+
+    it('should add device_size plugin with mobile for mobile users', () => {
+      Object.defineProperty(window, 'innerWidth', { value: 767, writable: true })
+
+      CustomerAuthenticatedFlowManager.initAuthenticatedThirdParties()
+
+      expect(AmplitudeService.addDeviceSizePlugin).toHaveBeenCalledWith(AmplitudeDeviceSize.MOBILE)
+    })
+
+    it('should add device_size plugin with desktop for desktop users', () => {
+      Object.defineProperty(window, 'innerWidth', { value: 768, writable: true })
+
+      CustomerAuthenticatedFlowManager.initAuthenticatedThirdParties()
+
+      expect(AmplitudeService.addDeviceSizePlugin).toHaveBeenCalledWith(AmplitudeDeviceSize.DESKTOP)
     })
 
     it('should return early when user is not defined', () => {
