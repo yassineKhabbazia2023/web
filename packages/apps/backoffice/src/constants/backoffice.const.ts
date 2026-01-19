@@ -4,7 +4,7 @@ import { VITE_MSAL_BACK_CLIENT_ID } from 'env-vars'
 export const MSAL_SCOPES = [`api://${VITE_MSAL_BACK_CLIENT_ID}/AppConfig.ReadWrite`]
 
 // Application Information
-export const APP_COPYRIGHT = '© 2025 RYDGE Conseil. Tous droits réservés.'
+export const APP_COPYRIGHT = '© 2026 RYDGE Conseil. Tous droits réservés.'
 
 // Pagination Configuration
 export const DEFAULT_PAGE_SIZE = 25

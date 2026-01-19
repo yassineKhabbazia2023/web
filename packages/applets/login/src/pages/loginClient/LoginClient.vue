@@ -1,8 +1,8 @@
 <template>
   <div class="wrapperLogin text-left margin-top--11">
     <h4 class="title font--bold">
-      {{ t('welcomeTo') }}<br>
-      <span class="title__second-part"> {{ t('yourSpace') }}</span>
+      {{ t('welcomeTo') }}
+      <span class="title__second-part">{{ t('yourSpace') }}</span>
     </h4>
     <p class="formTitle margin-top--2 margin-bottom--6">
       {{ t('formTitle') }}
@@ -234,6 +234,8 @@ async function onSubmit() {
 <style lang="scss" scoped>
 .title {
   font-size: 3.2rem;
+  text-wrap: balance;
+  max-width: 15ch;
 
   &__second-part {
     color: var(--p-jungle-400);

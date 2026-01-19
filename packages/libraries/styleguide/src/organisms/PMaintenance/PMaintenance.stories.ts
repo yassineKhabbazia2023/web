@@ -57,7 +57,7 @@ export const Default: Story = {
             <li>Mentions légales</li>
             <li>Politique de confidentialité</li>
             <li>Contact Support : 09 73 73 3000</li>
-            <li>© 2025 RYDGE Conseil</li>
+            <li>© 2026 RYDGE Conseil</li>
           </ul>
         </template>
       </PMaintenance>

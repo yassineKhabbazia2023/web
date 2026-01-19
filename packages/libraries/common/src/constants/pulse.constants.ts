@@ -1,5 +1,5 @@
 export const APP_NAME = 'RYDGE Conseil'
-export const APP_COPYRIGHT = '© 2025 RYDGE Conseil'
+export const APP_COPYRIGHT = '© 2026 RYDGE Conseil'
 export const APP_TITLE_CUSTOMER = 'Plateforme client - RYDGE Conseil'
 export const APP_TITLE_COLLABORATOR = 'Plateforme collaborateur - RYDGE Conseil'
 export const APP_TITLE_PENNYLANE_REDIRECT = 'Redirection Pennylane'

@@ -64,6 +64,7 @@ onMounted(async () => {
 .legal-links {
   $self: &;
   display: inline-flex;
+  justify-content: center;
   &__item {
     margin-right: 0.4rem;
 
