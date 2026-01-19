@@ -1,11 +1,12 @@
 import type { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
-import { WidgetItemClicked, WidgetName, WidgetSize } from '../enums/widgets.enums'
+import { WidgetItemClicked, WidgetName, WidgetScope, WidgetSize } from '../enums/widgets.enums'
 import type { Permission } from '@pulse/common/types'
 
 export type WidgetGridDefinition = {
   name: WidgetName
   size?: WidgetSize
   customerPermission?: Permission[]
+  scope?: WidgetScope[]
 }
 
 export type WidgetProp = {

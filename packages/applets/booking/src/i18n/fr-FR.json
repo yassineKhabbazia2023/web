@@ -98,5 +98,16 @@
   "notifications": {
     "submit-success": "Le paramétrage de vos créneaux a bien été pris en compte",
     "submit-error": "Erreur lors de l'enregistrement de vos créneaux, veuillez ressayer plus tard"
+  },
+  "booking-appointment-drawer": {
+    "title": "Prendre rendez-vous avec un expert",
+    "close": "Fermer",
+    "steps": {
+      "choose-expert": "Choisissez un expert",
+      "choose-time-slot": "Choisissez un créneau"
+    }
+  },
+  "booking-appointment-choose-expert": {
+    "description": "Choisissez votre expert pour accéder à ses disponibilités et réserver un rendez-vous."
   }
 }

@@ -1,9 +1,8 @@
-import { getMockedQueryResult } from '@pulse/common/mocks'
 import { apiGatewayMock } from '@pulse/common/mocks/vitest'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { BookingService } from './booking.service'
-import type { BookingServiceExpert, BookingConfigurationResponse, BookingConfigurationPayload } from '../types/booking.types'
-import { getMockedBookingServiceConfiguration, getBookingServiceExpert } from '../__mocks__'
+import type { BookingConfigurationResponse, BookingConfigurationPayload } from '../types/booking.types'
+import { getMockedBookingServiceConfiguration } from '../__mocks__'
 
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
@@ -12,10 +11,6 @@ vi.mock('@pulse/common', () => ({
 }))
 
 const bookingServiceConfigurationMock = getMockedBookingServiceConfiguration()
-const accountId = 2312
-const expertsMock = [
-  getBookingServiceExpert(),
-]
 
 describe('booking.service', () => {
   describe('createBookingConfiguration', () => {
@@ -49,47 +44,18 @@ describe('booking.service', () => {
     })
   })
 
+  // TODO: Restore API tests when removing mock data from service
   describe('getBookingAvailableExperts', () => {
-    const tests = [{
-      params: {
-        accountId,
-        page: 3,
-        pageSize: 10,
-      },
-      expectedUrl: `${API_PREFIXES.BOOKING}/accounts/${accountId}/booking-link/currentuser/experts`,
-      expectedParams: {
-        page: 3,
-        pageSize: 10,
-      },
-      description: 'when giving page and pageSize, should use given values',
-    }, {
-      params: {
-        accountId,
-      },
-      expectedUrl: `${API_PREFIXES.BOOKING}/accounts/${accountId}/booking-link/currentuser/experts`,
-      expectedParams: {
-        page: 1,
-        pageSize: 3,
-      },
-      description: 'when not giving page and pageSize, should use default values',
-    }]
-    it.each(tests)('should call api properly $description', async ({
-      params,
-      expectedUrl,
-      expectedParams,
-    }) => {
-      const expectedParameters = {
-        params: expectedParams,
-      }
-      apiGatewayMock.get.mockResolvedValue({
-        data: getMockedQueryResult<BookingServiceExpert>({
-          items: expertsMock,
-        }),
-      })
-      const experts = await BookingService.getBookingAvailableExperts(params)
+    it('should return mocked experts', async () => {
+      const experts = await BookingService.getBookingAvailableExperts()
 
-      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedParameters)
-      expect(experts).toStrictEqual(expertsMock)
+      expect(experts).toHaveLength(3)
+      expect(experts[0]).toEqual({
+        contactId: 1,
+        iframeUrl: 'https://outlook.office.com/book/BookingAmauryLinde@conseilescgs.com/?ismsaljsauthenabled&lang=fr-FR',
+        fullName: 'Amaury Linde',
+        email: 'amaury.linde@conseilescgs.com',
+      })
     })
   })
 

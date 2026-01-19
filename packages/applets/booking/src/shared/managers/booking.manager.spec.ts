@@ -6,22 +6,12 @@ import { logger } from '@pulse/toolbox'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
-import type { BookingServiceExpert } from '../../types/booking.types'
 import { useBookingCustomerStore } from '../../stores'
+import { getBookingServiceExpert } from '../../__mocks__'
 
-const mockExperts: BookingServiceExpert[] = [
-  {
-    contactId: 1,
-    fullName: 'John Doe',
-    link: 'http://example.com/johndoe',
-    email: 'john.doe@example.com',
-  },
-  {
-    contactId: 2,
-    fullName: 'Jane Smith',
-    link: 'http://example.com/janesmith',
-    email: 'jane.smith@example.com',
-  },
+const mockExperts = [
+  getBookingServiceExpert({ contactId: 1, fullName: 'John Doe', email: 'john.doe@example.com' }),
+  getBookingServiceExpert({ contactId: 2, fullName: 'Jane Smith', email: 'jane.smith@example.com' }),
 ]
 
 const userStoreMock = getStoreMock(useUserStore)
@@ -51,9 +41,7 @@ describe('BookingManager', () => {
 
       await BookingManager.refreshAvailableExperts()
 
-      expect(BookingService.getBookingAvailableExperts).toHaveBeenCalledWith({
-        accountId: 123,
-      })
+      expect(BookingService.getBookingAvailableExperts).toHaveBeenCalled()
       expect(bookingStoreMock.setAvailableExperts).toHaveBeenCalledWith(mockExperts)
     })
 
@@ -100,9 +88,7 @@ describe('BookingManager', () => {
 
       await BookingManager.refreshAvailableExperts()
 
-      expect(BookingService.getBookingAvailableExperts).toHaveBeenCalledWith({
-        accountId: 123,
-      })
+      expect(BookingService.getBookingAvailableExperts).toHaveBeenCalled()
       expect(logger.error).toHaveBeenCalledWith(mockError)
       expect(bookingStoreMock.setAvailableExperts).toHaveBeenCalledWith([])
     })

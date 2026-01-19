@@ -98,5 +98,16 @@
   "notifications": {
     "submit-success": "Your time slots settings have been saved",
     "submit-error": "Error saving your time slots, please try again later"
+  },
+  "booking-appointment-drawer": {
+    "title": "Make an appointment with an expert",
+    "close": "Close",
+    "steps": {
+      "choose-expert": "Choose an expert",
+      "choose-time-slot": "Choose a time slot"
+    }
+  },
+  "booking-appointment-choose-expert": {
+    "description": "Choose your expert to access their availability and book an appointment."
   }
 }

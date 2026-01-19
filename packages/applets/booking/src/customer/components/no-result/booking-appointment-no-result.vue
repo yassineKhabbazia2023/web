@@ -9,11 +9,12 @@
       flex--grow-1
       flex-gap--3
       text-color--neutral-gray-900
+      margin-y--4
     "
   >
     <PIcon
       pName="calendarNone"
-      pSize="40"
+      pSize="28"
     />
     <span
       class="

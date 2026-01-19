@@ -1,21 +1,6 @@
 import { getFormattedExperts } from './booking-appointment-choose-expert.utils'
-import type { BookingServiceExpert } from '../../../types/booking.types'
+import { getBookingServiceExpert } from '../../../__mocks__'
 import * as commonUtils from '@pulse/common/utils'
-
-const mockExperts: BookingServiceExpert[] = [
-  {
-    contactId: 1,
-    fullName: 'John Doe',
-    link: 'http://example.com/johndoe',
-    email: 'john.doe@example.com',
-  },
-  {
-    contactId: 2,
-    fullName: 'Jane Smith',
-    link: 'http://example.com/janesmith',
-    email: 'jane.smith@example.com',
-  },
-]
 
 vi.mock('@pulse/common/utils', () => ({
   getInitials: vi.fn(),
@@ -24,6 +9,10 @@ vi.mock('@pulse/common/utils', () => ({
 describe('booking-appointment-choose-expert.utils', () => {
   describe('getFormattedExperts', () => {
     it('should format experts with initials', () => {
+      const mockExperts = [
+        getBookingServiceExpert({ contactId: 1, fullName: 'John Doe', email: 'john.doe@example.com' }),
+        getBookingServiceExpert({ contactId: 2, fullName: 'Jane Smith', email: 'jane.smith@example.com' }),
+      ]
 
       vi.mocked(commonUtils.getInitials).mockImplementation((firstName, lastName) => {
         if (firstName === 'John' && lastName === 'Doe') {
@@ -46,13 +35,8 @@ describe('booking-appointment-choose-expert.utils', () => {
     })
 
     it('should handle single name experts', () => {
-      const singleNameExperts: BookingServiceExpert[] = [
-        {
-          contactId: 1,
-          fullName: 'John',
-          link: 'http://example.com/john',
-          email: 'john@example.com',
-        },
+      const singleNameExperts = [
+        getBookingServiceExpert({ contactId: 1, fullName: 'John', email: 'john@example.com' }),
       ]
 
       vi.mocked(commonUtils.getInitials).mockReturnValue('J')
@@ -73,13 +57,8 @@ describe('booking-appointment-choose-expert.utils', () => {
     })
 
     it('should handle experts with multiple name parts', () => {
-      const multiPartNameExperts: BookingServiceExpert[] = [
-        {
-          contactId: 1,
-          fullName: 'Jean Pierre Dubois',
-          link: 'http://example.com/jeanpierredubois',
-          email: 'jean.pierre.dubois@example.com',
-        },
+      const multiPartNameExperts = [
+        getBookingServiceExpert({ contactId: 1, fullName: 'Jean Pierre Dubois', email: 'jean.pierre.dubois@example.com' }),
       ]
 
       vi.mocked(commonUtils.getInitials).mockReturnValue('JP')

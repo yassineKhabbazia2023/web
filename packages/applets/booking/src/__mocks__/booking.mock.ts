@@ -20,7 +20,7 @@ export function getMockedBookingServiceConfiguration(overridden: Partial<Booking
 export function getBookingServiceExpert(overridden: Partial<BookingServiceExpert> = {}) {
   const bookingServiceExpert: BookingServiceExpert = {
     contactId: 0,
-    link: bookingLinkMock,
+    iframeUrl: bookingLinkMock,
     fullName: 'Hugh Laurie',
     email: 'hl@test.ng',
   }

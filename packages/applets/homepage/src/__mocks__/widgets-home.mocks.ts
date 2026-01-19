@@ -1,4 +1,4 @@
-import { WidgetName } from '@pulse/widgets/enums'
+import { WidgetName, WidgetScope } from '@pulse/widgets/enums'
 import type { WidgetGridDefinition } from '@pulse/widgets/types'
 import { CustomerPermission } from '@pulse/common/enums'
 
@@ -34,4 +34,11 @@ export const mockWidgetGridDefinitionsWithPermissions: Partial<Record<WidgetName
   [WidgetName.RSS_NEWS]: { name: WidgetName.RSS_NEWS, customerPermission: [] },
   [WidgetName.PENNYLANE_DOCUMENTS]: { name: WidgetName.PENNYLANE_DOCUMENTS,
     customerPermission: [CustomerPermission.ACCEDER_DOCUMENTS_PENNYLANE] },
+}
+
+export const mockWidgetGridDefinitionsWithScope: Partial<Record<WidgetName, WidgetGridDefinition>> = {
+  [WidgetName.SSO]: { name: WidgetName.SSO },
+  [WidgetName.DIGILAB]: { name: WidgetName.DIGILAB, scope: [WidgetScope.COLLAB] },
+  [WidgetName.BOOKING_APPOINTMENT]: { name: WidgetName.BOOKING_APPOINTMENT, scope: [WidgetScope.CUSTOMER] },
+  [WidgetName.RSS_NEWS]: { name: WidgetName.RSS_NEWS, scope: [WidgetScope.CUSTOMER, WidgetScope.COLLAB] },
 }

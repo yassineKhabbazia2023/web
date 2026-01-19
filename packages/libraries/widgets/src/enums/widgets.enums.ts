@@ -25,8 +25,8 @@ export enum WidgetSize {
 }
 
 export enum WidgetScope {
-  ONLY_COLLAB = 'only-collab',
-  ONLY_CUSTOMER = 'only-customer',
+  COLLAB = 'collab',
+  CUSTOMER = 'customer',
 }
 
 export enum WidgetItemClicked {

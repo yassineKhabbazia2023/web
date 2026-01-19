@@ -16,9 +16,7 @@ export class BookingManager {
       FeatureFlagManager.isFeatureActivated(Feature.BOOKING) === true
     ) {
       try {
-        return await BookingService.getBookingAvailableExperts({
-          accountId: currentEntityStore.currentEntityId,
-        })
+        return await BookingService.getBookingAvailableExperts()
       } catch (error) {
         logger.error(error)
       }

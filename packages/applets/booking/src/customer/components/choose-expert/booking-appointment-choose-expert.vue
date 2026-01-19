@@ -1,10 +1,14 @@
 <template>
+  <p class="margin-top--10">
+    {{ t('booking-appointment-choose-expert.description') }}
+  </p>
   <ul
     class="
       list-style-none
       flex
       flex--wrap
       flag--gap-4
+      margin-top--4
     "
   >
     <li
@@ -26,17 +30,20 @@
       >
         {{ expert.initials }}
       </PAvatar>
-      {{ expert.fullName }}
+      <span class="font-semibold">{{ expert.fullName }}</span>
     </li>
   </ul>
 </template>
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { PAvatar } from '@pulse/styleguide/components'
 import type { BookingAppointmentChooseExpertProps } from './booking-appointment-choose-expert.type'
 import { AvatarRoles } from '@pulse/styleguide'
 import { getFormattedExperts } from './booking-appointment-choose-expert.utils'
+
+const { t } = useI18n({ useScope: 'global' })
 
 const props = defineProps<BookingAppointmentChooseExpertProps>()
 

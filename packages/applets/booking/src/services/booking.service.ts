@@ -1,6 +1,5 @@
 import { commonApi as api } from '@pulse/common'
 import { API_PREFIXES } from '@pulse/common/constants'
-import type { QueryResult } from '@pulse/common/types'
 import type {
   BookingConfigurationPayload,
   BookingServiceConfiguration,
@@ -25,25 +24,42 @@ export class BookingService {
     return data
   }
 
-  static async getBookingAvailableExperts({
-    accountId,
-    page = 1,
-    pageSize = 3,
-  } : {
-    accountId: number
-    page?: number
-    pageSize?: number
-  }) {
-    const url = `${API_PREFIXES.BOOKING}/accounts/${accountId}/booking-link/currentuser/experts`
-    const params = {
-      page,
-      pageSize,
-    }
-    const { data } = await api().gateway.get<QueryResult<BookingServiceExpert>>(url, {
-      params,
-    })
+  static async getBookingAvailableExperts() {
+    // TODO: Remove mock data and restore API call
+    const sharedPageUrl = 'https://outlook.office.com/book/BookingAmauryLinde@conseilescgs.com/?ismsaljsauthenabled&lang=fr-FR'
+    const mockedExperts: BookingServiceExpert[] = [
+      {
+        contactId: 1,
+        iframeUrl: sharedPageUrl,
+        fullName: 'Amaury Linde',
+        email: 'amaury.linde@conseilescgs.com',
+      },
+      {
+        contactId: 2,
+        iframeUrl: sharedPageUrl,
+        fullName: 'Jean Dupont',
+        email: 'jean.dupont@conseilescgs.com',
+      },
+      {
+        contactId: 3,
+        iframeUrl: sharedPageUrl,
+        fullName: 'Marie Martin',
+        email: 'marie.martin@conseilescgs.com',
+      },
+    ]
 
-    return data.items ?? []
+    return mockedExperts
+
+    // Original API call (commented out for now)
+    // const url = `${API_PREFIXES.BOOKING}/accounts/${accountId}/booking-link/currentuser/experts`
+    // const params = {
+    //   page,
+    //   pageSize,
+    // }
+    // const { data } = await api().gateway.get<QueryResult<BookingServiceExpert>>(url, {
+    //   params,
+    // })
+    // return data.items ?? []
   }
 
   static async submitBookingConfiguration(

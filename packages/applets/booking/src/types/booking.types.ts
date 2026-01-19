@@ -13,7 +13,7 @@ export interface BookingServiceConfiguration {
 
 export interface BookingServiceExpert {
   contactId: number
-  link: string
+  iframeUrl: string
   fullName: string
   email: string
 }

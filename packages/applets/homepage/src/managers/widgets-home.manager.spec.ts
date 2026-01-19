@@ -8,6 +8,7 @@ import {
   invalidWidgetNames,
   mockWidgetGridDefinitions,
   mockWidgetGridDefinitionsWithPermissions,
+  mockWidgetGridDefinitionsWithScope,
 } from '@homepage/__mocks__/widgets-home.mocks'
 import { CurrentUserManager } from '@pulse/common/managers'
 
@@ -106,6 +107,66 @@ describe('WidgetsHomeManager', () => {
       const result = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets, isCustomer)
 
       expect(result).toEqual(expectedMockedGridDefinitions)
+    })
+  })
+
+  describe('scope filtering', () => {
+    it('should exclude CUSTOMER-only widgets when user is a collaborator', () => {
+      const isCustomer = false
+      const mockWidgets = [validWidgetNames.sso, validWidgetNames.bookingAppointment]
+
+      vi.mocked(WidgetsGridManager.getWidgetGridDefinition)
+        .mockReturnValueOnce(mockWidgetGridDefinitionsWithScope[validWidgetNames.sso])
+        .mockReturnValueOnce(mockWidgetGridDefinitionsWithScope[validWidgetNames.bookingAppointment])
+
+      const result = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets, isCustomer)
+
+      expect(result).toEqual([mockWidgetGridDefinitionsWithScope[validWidgetNames.sso]])
+      expect(logger.warn).toHaveBeenCalledWith(
+        `Widget ${validWidgetNames.bookingAppointment} will not be displayed due to scope restrictions.`,
+      )
+    })
+
+    it('should exclude COLLAB-only widgets when user is a customer', () => {
+      const isCustomer = true
+      const mockWidgets = [validWidgetNames.sso, validWidgetNames.digilab]
+
+      vi.mocked(WidgetsGridManager.getWidgetGridDefinition)
+        .mockReturnValueOnce(mockWidgetGridDefinitionsWithScope[validWidgetNames.sso])
+        .mockReturnValueOnce(mockWidgetGridDefinitionsWithScope[validWidgetNames.digilab])
+
+      const result = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets, isCustomer)
+
+      expect(result).toEqual([mockWidgetGridDefinitionsWithScope[validWidgetNames.sso]])
+      expect(logger.warn).toHaveBeenCalledWith(
+        `Widget ${validWidgetNames.digilab} will not be displayed due to scope restrictions.`,
+      )
+    })
+
+    it('should include widgets with both CUSTOMER and COLLAB scope for all users', () => {
+      const mockWidgets = [validWidgetNames.rssNews]
+
+      vi.mocked(WidgetsGridManager.getWidgetGridDefinition)
+        .mockReturnValue(mockWidgetGridDefinitionsWithScope[validWidgetNames.rssNews])
+
+      const resultForCollab = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets, false)
+      const resultForCustomer = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets, true)
+
+      expect(resultForCollab).toEqual([mockWidgetGridDefinitionsWithScope[validWidgetNames.rssNews]])
+      expect(resultForCustomer).toEqual([mockWidgetGridDefinitionsWithScope[validWidgetNames.rssNews]])
+    })
+
+    it('should include widgets without scope for all users', () => {
+      const mockWidgets = [validWidgetNames.sso]
+
+      vi.mocked(WidgetsGridManager.getWidgetGridDefinition)
+        .mockReturnValue(mockWidgetGridDefinitionsWithScope[validWidgetNames.sso])
+
+      const resultForCollab = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets, false)
+      const resultForCustomer = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets, true)
+
+      expect(resultForCollab).toEqual([mockWidgetGridDefinitionsWithScope[validWidgetNames.sso]])
+      expect(resultForCustomer).toEqual([mockWidgetGridDefinitionsWithScope[validWidgetNames.sso]])
     })
   })
 })
