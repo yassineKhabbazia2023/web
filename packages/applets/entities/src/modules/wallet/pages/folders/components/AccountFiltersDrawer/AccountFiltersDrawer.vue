@@ -19,7 +19,7 @@
         <PSwitch
           v-model="internalFilters.isFavoriteFilter"
           :pActiveText="t('favorites')"
-          :pActiveColor="AppColors.PRIMARY"
+          :pActiveColor="AppColors.JUNGLE_400"
         />
       </PFormItem>
       <!-- Customer Relationship Switch -->
@@ -27,7 +27,7 @@
         <PSwitch
           v-model="internalFilters.isCustomerRelationFilter"
           :pActiveText="t('customerRelationship')"
-          :pActiveColor="AppColors.PRIMARY"
+          :pActiveColor="AppColors.JUNGLE_400"
         />
       </PFormItem>
     </PForm>

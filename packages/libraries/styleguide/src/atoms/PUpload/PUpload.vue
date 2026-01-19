@@ -16,7 +16,7 @@
     <div v-else class="p-upload__input flex flex--align-items-center">
       <PIcon
         v-if="pUploadType === 'file-line'"
-        :color="AppColors.PRIMARY"
+        :color="AppColors.JUNGLE_400"
         size="16"
         class="margin-right--2"
         pName="upload"

@@ -20,7 +20,7 @@
       @click="$emit('close')"
     >
       <PIcon
-        :color="AppColors.PERSIAN_900"
+        :color="AppColors.JUNGLE_900"
         size="16"
         pName="x"
       />

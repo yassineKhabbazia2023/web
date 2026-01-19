@@ -28,7 +28,7 @@
       <div class="flex flex--align-items-center margin-top--3">
         <PSwitch
           v-model="hasCustomerRelationStatus"
-          :pActiveColor="AppColors.PRIMARY"
+          :pActiveColor="AppColors.JUNGLE_400"
           aria-labelledby="relation-switch-label"
           data-testid="declare-customer-relation-switch"
         />

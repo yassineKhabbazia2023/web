@@ -29,7 +29,7 @@
           margin-bottom--4
         "
         >
-          <PSwitch v-model="hasOnlyFavouritesDisplayed" :pActiveColor="AppColors.PERSIAN_400" />
+          <PSwitch v-model="hasOnlyFavouritesDisplayed" :pActiveColor="AppColors.JUNGLE_400" />
           <span class="text-color--neutral-gray-900 padding-left--4 font-semibold">
             {{ t('feedCenter.settingsDrawer.favouritesOnly') }}
           </span>
@@ -47,7 +47,7 @@
                 <!-- click.stop is here in order to prevent accordion to fold / unfold when clicking the switch -->
                 <PSwitch
                   :modelValue="NotificationSettingsManager.hasAtLeastOneSettingEnabled(domainSetting.settings)"
-                  :pActiveColor="AppColors.PERSIAN_400"
+                  :pActiveColor="AppColors.JUNGLE_400"
                   @click.stop
                   @update:model-value="(isEnabled: boolean) => handleDomainSettingsSwitch(isEnabled, index)"
                 />

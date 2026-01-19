@@ -66,7 +66,7 @@
             <h3 v-if="pTitle && pTitle.length > 0" class="p-drawer__title white-space--wrap">
               <PIcon
                 pName="pulse"
-                :pColor="AppColors.PRIMARY"
+                :pColor="AppColors.JUNGLE_400"
                 pSize="30"
               />
               <span class="margin-left--1 font-semibold">

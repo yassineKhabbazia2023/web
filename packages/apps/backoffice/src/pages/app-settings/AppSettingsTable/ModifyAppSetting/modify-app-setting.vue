@@ -6,7 +6,7 @@
   >
     <PIcon
       pName="pencilSquare"
-      :pColor="AppColors.PERSIAN_300"
+      :pColor="AppColors.JUNGLE_300"
     />
   </PButton>
 </template>

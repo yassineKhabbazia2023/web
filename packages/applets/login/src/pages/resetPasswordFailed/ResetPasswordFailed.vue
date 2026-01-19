@@ -3,7 +3,7 @@
     <div class="reset-password-failed__circle flex flex--align-items-center flex--justify-content-center margin--auto">
       <PIcon
         pName="x"
-        :pColor="AppColors.RED_TXT"
+        :pColor="AppColors.RED_800"
         size="32"
       />
     </div>

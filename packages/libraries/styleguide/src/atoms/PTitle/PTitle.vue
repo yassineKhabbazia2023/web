@@ -19,6 +19,6 @@ import { AppColors } from '../../utils/AppColorsEnum'
 withDefaults(defineProps<PTitleProps>(), {
   pIconName: 'pulse',
   pIconSize: '28',
-  pIconColor: AppColors.PRIMARY,
+  pIconColor: AppColors.JUNGLE_400,
 })
 </script>

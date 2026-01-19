@@ -2,7 +2,7 @@
   <div class="p-avatar-wrapper">
     <PIcon
       v-if="pSelected && pType=== 'small'"
-      :color="AppColors.SECONDARY_FUSCHIA_TXT"
+      :color="AppColors.BLACK_ROCK_900"
       size="12px"
       data-testid="avatar-check-icon"
       class="p-avatar-wrapper__check-icon"

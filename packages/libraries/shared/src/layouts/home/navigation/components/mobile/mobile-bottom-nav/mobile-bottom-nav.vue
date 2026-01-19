@@ -172,7 +172,7 @@ const isMenuItemActive = (menuItem: NavigationItem): boolean => {
   return menuItem.activeRoutes.includes(route.name as RouteName)
 }
 
-const activeColor = AppColors.PERSIAN_400
+const activeColor = AppColors.JUNGLE_400
 const inactiveColor = AppColors.BLACK_ROCK_900
 
 const isMenuActive = computed(() => props.isMenuActive === true)

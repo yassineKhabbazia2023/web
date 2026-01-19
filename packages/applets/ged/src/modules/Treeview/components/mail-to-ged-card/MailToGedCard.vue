@@ -14,7 +14,7 @@
     @click="openMailToGedModal"
   >
     <PIcon
-      :pColor="AppColors.PERSIAN_400"
+      :pColor="AppColors.JUNGLE_400"
       pName="envelope"
       pSize="16"
     />

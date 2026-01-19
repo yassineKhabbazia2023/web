@@ -51,7 +51,7 @@
 
         <PIcon
           v-show="isDragovered"
-          :color="isErrorDragover ? AppColors.RED : AppColors.PRIMARY"
+          :color="isErrorDragover ? AppColors.RED_500 : AppColors.JUNGLE_400"
           :pName="isErrorDragover ? 'xCircle' : 'arrowLeftRight'"
           size="18"
         />

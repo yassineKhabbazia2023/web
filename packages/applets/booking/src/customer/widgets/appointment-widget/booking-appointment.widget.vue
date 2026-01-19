@@ -21,7 +21,7 @@
     >
       <PIcon
         pName="pulse"
-        :pColor="AppColors.PRIMARY"
+        :pColor="AppColors.JUNGLE_400"
         pSize="30"
       />
       <span class="h3 margin-left--1 font-semibold">

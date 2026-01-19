@@ -8,7 +8,7 @@
       >
         <PIcon
           pName="arrowsAngleExpand"
-          :pColor="AppColors.PRIMARY"
+          :pColor="AppColors.JUNGLE_400"
           pSize="16"
         />
       </PButton>

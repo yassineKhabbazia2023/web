@@ -69,7 +69,7 @@
       <div class="flex flex--items-center flex-gap--3 margin-top--2">
         <PSwitch
           v-model="formData.isOnline"
-          :pActiveColor="AppColors.PERSIAN_400"
+          :pActiveColor="AppColors.JUNGLE_400"
         />
         <label
           class="

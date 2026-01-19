@@ -38,7 +38,7 @@ const meta: Meta<typeof PTitle> = {
     pTitle: 'Titre par défaut',
     pIconName: 'pulse',
     pIconSize: '28',
-    pIconColor: AppColors.PRIMARY,
+    pIconColor: AppColors.JUNGLE_400,
   },
 }
 
@@ -112,11 +112,11 @@ export const DifferentColors: Story = {
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: 24px;">
-        <PTitle pTitle="Couleur primaire" pIconName="pulse" :pIconColor="AppColors.PRIMARY" />
-        <PTitle pTitle="Couleur secondaire" pIconName="pulse" :pIconColor="AppColors.SECONDARY" />
-        <PTitle pTitle="Couleur succès" pIconName="check" :pIconColor="AppColors.SUCCESS" />
-        <PTitle pTitle="Couleur avertissement" pIconName="exclamationTriangle" :pIconColor="AppColors.WARNING" />
-        <PTitle pTitle="Couleur erreur" pIconName="x" :pIconColor="AppColors.ERROR" />
+        <PTitle pTitle="Couleur primaire" pIconName="pulse" :pIconColor="AppColors.JUNGLE_400" />
+        <PTitle pTitle="Couleur secondaire" pIconName="pulse" :pIconColor="AppColors.BLACK_ROCK_900" />
+        <PTitle pTitle="Couleur succès" pIconName="check" :pIconColor="AppColors.TEXT_SUCCESS" />
+        <PTitle pTitle="Couleur avertissement" pIconName="exclamationTriangle" :pIconColor="AppColors.TEXT_WARNING" />
+        <PTitle pTitle="Couleur erreur" pIconName="x" :pIconColor="AppColors.TEXT_ERROR" />
       </div>
     `,
   }),
@@ -140,22 +140,22 @@ export const RealWorldExamples: Story = {
     template: `
       <div style="display: flex; flex-direction: column; gap: 32px;">
         <div>
-          <PTitle pTitle="Mon portefeuille" pIconName="wallet2" :pIconColor="AppColors.PRIMARY" />
+          <PTitle pTitle="Mon portefeuille" pIconName="wallet2" :pIconColor="AppColors.JUNGLE_400" />
           <p style="margin-top: 8px; color: #666;">Gérez vos comptes et transactions</p>
         </div>
-        
+
         <div>
-          <PTitle pTitle="Historique" pIconName="clockHistory" :pIconColor="AppColors.SECONDARY" />
+          <PTitle pTitle="Historique" pIconName="clockHistory" :pIconColor="AppColors.BLACK_ROCK_900" />
           <p style="margin-top: 8px; color: #666;">Consultez vos opérations passées</p>
         </div>
-        
+
         <div>
-          <PTitle pTitle="Alertes actives" pIconName="bell" :pIconColor="AppColors.WARNING" pIconSize="24" />
+          <PTitle pTitle="Alertes actives" pIconName="bell" :pIconColor="AppColors.TEXT_WARNING" pIconSize="24" />
           <p style="margin-top: 8px; color: #666;">3 nouvelles notifications</p>
         </div>
-        
+
         <div>
-          <PTitle pTitle="Support" pIconName="questionCircle" :pIconColor="AppColors.INFO" />
+          <PTitle pTitle="Support" pIconName="questionCircle" :pIconColor="AppColors.TEXT_INFORMATION_PRIMARY" />
           <p style="margin-top: 8px; color: #666;">Besoin d'aide ? Contactez-nous</p>
         </div>
       </div>

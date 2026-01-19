@@ -33,7 +33,7 @@
           class="offers-drawer__details"
         >
           <PIcon
-            :color="AppColors.PRIMARY"
+            :color="AppColors.JUNGLE_400"
             size="16"
             pName="link45deg"
           />

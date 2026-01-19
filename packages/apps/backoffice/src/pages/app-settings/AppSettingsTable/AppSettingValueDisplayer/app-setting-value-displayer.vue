@@ -10,7 +10,7 @@
           <PIcon
             data-testid="app-setting-value-missing-icon"
             pName="exclamationTriangle"
-            :color="AppColors.RED"
+            :color="AppColors.RED_500"
             class="margin-right--2"
           />
         </PTooltip>
@@ -22,7 +22,7 @@
           <PIcon
             data-testid="app-setting-value-incoherent-icon"
             pName="exclamationTriangle"
-            :color="AppColors.ORANGE"
+            :color="AppColors.ORANGE_500"
             class="margin-right--2"
           />
         </PTooltip>

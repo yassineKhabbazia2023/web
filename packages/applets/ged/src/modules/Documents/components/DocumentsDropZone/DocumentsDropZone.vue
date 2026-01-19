@@ -27,7 +27,7 @@
         font-semibold
       "
     >
-      <PIcon :color="AppColors.RED" pName="slashCircle" />
+      <PIcon :color="AppColors.RED_500" pName="slashCircle" />
       <span class="padding-left--2">{{ t('dropNotAllowed') }}</span>
     </p>
   </div>

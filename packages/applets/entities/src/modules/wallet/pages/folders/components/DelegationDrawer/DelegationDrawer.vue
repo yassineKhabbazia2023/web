@@ -9,7 +9,7 @@
       <h3 class="delegation-drawer__header flex flex--align-items-center">
         <PIcon
           pName="pulse"
-          :pColor="AppColors.PRIMARY"
+          :pColor="AppColors.JUNGLE_400"
           pSize="30"
         />
         <h3 v-if="!isSpecificDelegationFlowType" class="margin-left--1 font-semibold">

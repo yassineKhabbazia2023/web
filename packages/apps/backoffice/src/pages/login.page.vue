@@ -35,7 +35,7 @@
             <PIcon
               pName="gear"
               pSize="40"
-              :color="AppColors.PRIMARY"
+              :color="AppColors.JUNGLE_400"
               class="margin-bottom--3"
             />
             <h2 class="login-page__title margin--0 text-color--neutral-gray-900">

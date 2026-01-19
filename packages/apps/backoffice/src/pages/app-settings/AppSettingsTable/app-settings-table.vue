@@ -63,7 +63,7 @@
             <PIcon
               data-testid="app-settings-table-missing-env-icon"
               pName="exclamationTriangle"
-              :color="AppColors.RED"
+              :color="AppColors.RED_500"
               class="margin-right--2"
               pSize="14"
             />
@@ -97,7 +97,7 @@
           >
             <PIcon
               pName="trash"
-              :color="AppColors.RED"
+              :color="AppColors.RED_500"
             />
           </PButton>
         </PTooltip>
