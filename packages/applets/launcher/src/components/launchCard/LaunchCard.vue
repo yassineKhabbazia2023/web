@@ -48,12 +48,10 @@
 
       <PButton
         v-if="actionLabel"
-        :href="sanitizedActionUrl"
+        v-bind="actionButtonProps"
         pType="primary"
         pSize="small"
         data-testid="launch-card-action"
-        tag="a"
-        target="_blank"
         @click="onSSOConnection"
       >
         {{ actionLabel }}
@@ -84,6 +82,17 @@ const props = defineProps<LaunchCardProps>()
 
 const sanitizedActionUrl = computed(() => {
   return props.actionUrl ? sanitizeUrl(props.actionUrl) : undefined
+})
+
+const actionButtonProps = computed(() => {
+  if (props.preventNavigation === true) {
+    return { tag: 'button' as const }
+  }
+  return {
+    tag: 'a' as const,
+    href: sanitizedActionUrl.value,
+    target: '_blank',
+  }
 })
 
 const logAmplitudeEvent = (featureName: string) => {

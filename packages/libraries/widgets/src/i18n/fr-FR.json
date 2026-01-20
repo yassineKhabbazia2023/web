@@ -25,12 +25,9 @@
     },
     "pennylaneAccessBlocked": {
       "title": "Validation requise pour votre entreprise",
-      "intro": "Votre entreprise doit accepter",
-      "conformityRequirement": "la mise en conformité de sa facturation",
-      "introEnd": "et finaliser son parcours d'adhésion à la plateforme",
-      "pennylane": "Pennylane",
-      "explanation": "Cette étape ne peut être validée que par un mandataire habilité car elle engage juridiquement l'entreprise dans ce nouveau cadre réglementaire.",
-      "instructions": "Merci de demander à cette personne de se connecter à son espace RYDGE Conseil pour effectuer cette validation.",
+      "complianceRequirement": "Votre entreprise doit accepter la mise en conformité de sa facturation et finaliser son parcours d'adhésion à la plateforme Pennylane.",
+      "authorizedRepresentativeOnly": "Cette étape ne peut être validée que par un mandataire habilité, car elle engage l'entreprise dans ce nouveau cadre réglementaire.",
+      "connectionInstructions": "Merci de demander à cette personne de se connecter à son espace RYDGE Conseil pour effectuer cette validation.",
       "conclusion": "Une fois les nouvelles conditions de RYDGE Conseil validées, vous pourrez continuer à utiliser la plateforme Pennylane.",
       "understood": "C'est compris"
     },
@@ -56,9 +53,7 @@
       },
       "step2": {
         "title": "1/3 Votre accompagnement vers la réforme",
-        "subtitlePart1": "La réforme de la Facturation Électronique sera obligatoire dès septembre 2026 pour chaque entreprise. Cette étape inclut la mise en conformité de votre facturation ainsi que l'activation de la plateforme ",
-        "subtitleBold": "Pennylane",
-        "subtitlePart2": " dédiée à chaque société.",
+        "reformDescription": "La réforme de la Facture Électronique impose une mise à niveau obligatoire pour chaque entreprise. Cette étape inclut la mise en conformité de votre facturation ainsi que l'activation de la plateforme Pennylane. Le montant de l'abonnement varie selon les besoins de votre structure.",
         "table": {
           "company": "Entreprise",
           "compliance": "Mise en conformité*",
@@ -104,10 +99,53 @@
           }
         }
       },
+      "step3": {
+        "title": "2/3 Les nouvelles conditions de RYDGE Conseil",
+        "subtitle": "La consultation complète du document est obligatoire, veuillez aller jusqu'en bas du texte pour continuer.",
+        "noPdfAvailable": "Le document n'est pas disponible actuellement.",
+        "scrollToBottom": "Aller en bas du texte"
+      },
+      "step4": {
+        "title": "3/3 Acceptation des conditions",
+        "validationNotice": "En validant, vous permettez la continuité de la mission confiée à RYDGE Conseil et assurez votre mise en conformité",
+        "checkboxLabelPrefix": "J'ai lu ",
+        "checkboxLinkText": "les nouvelles conditions de RYDGE Conseil",
+        "checkboxLabelSuffix": " et j'accepte :",
+        "listItem1": "de confier à RYDGE Conseil la mission d'accompagnement relative aux fiches clients et fournisseurs dans le cadre de la réforme de la facturation électronique (fiches fournisseurs uniquement pour les sociétés qui réalisent des opérations de vente exonérées de TVA)",
+        "listItem2": "le ou les plan(s) proposé(s) par RYDGE Conseil pour l'utilisation de l'outil Pennylane en sachant que je peux choisir à tout moment un autre plan, durant la période de gratuité ou après celle-ci selon les modalités prévues dans ce formulaire et de modifier ou compléter en conséquence la lettre de mission que j'ai signée avec RYDGE Conseil.",
+        "supportNotice": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)",
+        "buttonRefuse": "Refuser",
+        "buttonAccept": "Accepter",
+        "refuseTooltip": "En cas de refus votre accès à Pennylane sera bloqué. Rapprochez vous de votre Expert avant de refuser"
+      },
       "common": {
         "buttonBack": "Retour",
         "buttonContinue": "Continuer",
         "buttonValidate": "Valider"
+      },
+      "success": {
+        "title": "Merci de votre acceptation",
+        "descriptionPart1": "Vous pouvez maintenant accéder à ",
+        "pennylane": "Pennylane.",
+        "descriptionPart2": " Afin de vous laisser le temps de vous approprier ces nouvelles fonctionnalités, vous avez accès à ",
+        "descriptionPart3": " gratuitement jusqu'au 30 juin 2026.",
+        "buttonClose": "Fermer"
+      },
+      "decline": {
+        "title": "Valider les nouvelles conditions de RYDGE Conseil",
+        "descriptionPart1": "Pour vous mettre en conformité avec ",
+        "reformBold": "la réforme de la facturation électronique",
+        "descriptionPart2": " dans le cadre des services fournis par RYDGE Conseil, vous devez accepter ",
+        "conditionsBold": "les nouvelles conditions de RYDGE Conseil",
+        "descriptionPart3": ". Cette mise à niveau requiert votre accord.",
+        "accessPart1": "Sans votre validation, l'accès à ",
+        "pennylane": "Pennylane",
+        "accessPart2": " ne peut pas être maintenu, car notre service intègre les obligations prévues par la réforme de la facturation électronique.",
+        "instructionPart1": "Veuillez cliquer à nouveau sur ",
+        "instructionBold": "« Accéder à Pennylane »",
+        "instructionPart2": " pour accéder au formulaire d'acceptation.",
+        "supportNotice": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)",
+        "buttonClose": "Fermer"
       }
     },
     "pennylaneIntro": {

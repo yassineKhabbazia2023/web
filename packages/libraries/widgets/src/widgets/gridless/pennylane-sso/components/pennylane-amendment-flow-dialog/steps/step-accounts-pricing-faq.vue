@@ -1,7 +1,7 @@
 <template>
   <div class="step-accounts-pricing-faq padding--10">
     <div class="faq-section margin-y--8">
-      <div class="faq-section__header flex flex--align-items-center margin-bottom--3">
+      <div class="faq-section__header flex flex--align-items-end margin-bottom--3">
         <PIcon
           pName="scales"
           pSize="20"
@@ -23,7 +23,7 @@
     </div>
 
     <div class="faq-section">
-      <div class="faq-section__header flex flex--align-items-center margin-bottom--3">
+      <div class="faq-section__header flex flex--align-items-end margin-bottom--3">
         <PIcon
           pName="currencyEuro"
           pSize="20"
@@ -45,7 +45,7 @@
     </div>
 
     <div class="faq-section margin-y--8">
-      <div class="faq-section__header flex flex--align-items-center margin-bottom--3">
+      <div class="faq-section__header flex flex--align-items-end margin-bottom--3">
         <PIcon
           pName="pennylane"
           pSize="20"
@@ -86,9 +86,9 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PIcon } from '@pulse/styleguide/components'
-import { computed } from 'vue'
 
 const { t } = useI18n({
   inheritLocale: true,

@@ -2,9 +2,10 @@ import { ref, computed } from 'vue'
 import { PennylaneAmendmentStep } from './pennylane-amendment-flow-dialog.enum'
 import { PENNYLANE_AMENDMENT_STEPS } from './pennylane-amendment-flow-dialog.const'
 
-export function usePennylaneAmendmentFlow() {
+export function usePennylaneAmendmentSteps() {
   const currentStepIndex = ref(0)
   const isTermsAccepted = ref(false)
+  const isTermsScrolledToBottom = ref(false)
 
   const currentStep = computed(() => PENNYLANE_AMENDMENT_STEPS[currentStepIndex.value])
 
@@ -18,8 +19,10 @@ export function usePennylaneAmendmentFlow() {
     switch (currentStep.value) {
       case PennylaneAmendmentStep.INFORMATION:
       case PennylaneAmendmentStep.ACCOUNTS_PRICING:
-      case PennylaneAmendmentStep.TERMS_PREVIEW:
         return false
+
+      case PennylaneAmendmentStep.TERMS_PREVIEW:
+        return isTermsScrolledToBottom.value === false
 
       case PennylaneAmendmentStep.ACCEPTANCE:
         return isTermsAccepted.value === false
@@ -29,34 +32,48 @@ export function usePennylaneAmendmentFlow() {
     }
   })
 
-  function goNext() {
-    if (isLastStep.value === true) {
+  function handleNext() {
+    if (isLastStep.value) {
       return
     }
+    isTermsScrolledToBottom.value = false
     currentStepIndex.value += 1
   }
 
-  function goPrevious() {
+  function handlePrevious() {
     if (isFirstStep.value === true) {
       return
     }
+    isTermsScrolledToBottom.value = false
+    isTermsAccepted.value = false
     currentStepIndex.value -= 1
+  }
+
+  function setTermsScrollComplete() {
+    isTermsScrolledToBottom.value = true
+  }
+
+  function setTermsAccepted(value: boolean) {
+    isTermsAccepted.value = value
   }
 
   function reset() {
     currentStepIndex.value = 0
     isTermsAccepted.value = false
+    isTermsScrolledToBottom.value = false
   }
 
   return {
-    currentStepIndex,
     currentStep,
+    currentStepIndex,
     isFirstStep,
     isLastStep,
     isNextButtonDisabled,
     isTermsAccepted,
-    goNext,
-    goPrevious,
+    handleNext,
+    handlePrevious,
+    setTermsScrollComplete,
+    setTermsAccepted,
     reset,
   }
 }

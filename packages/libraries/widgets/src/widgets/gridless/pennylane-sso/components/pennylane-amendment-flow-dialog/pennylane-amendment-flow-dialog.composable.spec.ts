@@ -1,99 +1,99 @@
-import { usePennylaneAmendmentFlow } from './pennylane-amendment-flow-dialog.composable'
+import { usePennylaneAmendmentSteps } from './pennylane-amendment-flow-dialog.composable'
 import { PennylaneAmendmentStep } from './pennylane-amendment-flow-dialog.enum'
 import { PENNYLANE_AMENDMENT_STEPS } from './pennylane-amendment-flow-dialog.const'
 
-describe('usePennylaneAmendmentFlow', () => {
+describe('usePennylaneAmendmentSteps', () => {
   describe('initial state', () => {
     it('should start at step index 0', () => {
-      const { currentStepIndex } = usePennylaneAmendmentFlow()
+      const { currentStepIndex } = usePennylaneAmendmentSteps()
       expect(currentStepIndex.value).toBe(0)
     })
 
     it('should have terms not accepted initially', () => {
-      const { isTermsAccepted } = usePennylaneAmendmentFlow()
+      const { isTermsAccepted } = usePennylaneAmendmentSteps()
       expect(isTermsAccepted.value).toBe(false)
     })
 
     it('should return INFORMATION as current step initially', () => {
-      const { currentStep } = usePennylaneAmendmentFlow()
+      const { currentStep } = usePennylaneAmendmentSteps()
       expect(currentStep.value).toBe(PennylaneAmendmentStep.INFORMATION)
     })
 
     it('should be first step initially', () => {
-      const { isFirstStep } = usePennylaneAmendmentFlow()
+      const { isFirstStep } = usePennylaneAmendmentSteps()
       expect(isFirstStep.value).toBe(true)
     })
 
     it('should not be last step initially', () => {
-      const { isLastStep } = usePennylaneAmendmentFlow()
+      const { isLastStep } = usePennylaneAmendmentSteps()
       expect(isLastStep.value).toBe(false)
     })
   })
 
-  describe('goNext', () => {
+  describe('handleNext', () => {
     it('should increment step index', () => {
-      const { currentStepIndex, goNext } = usePennylaneAmendmentFlow()
+      const { currentStepIndex, handleNext } = usePennylaneAmendmentSteps()
 
-      goNext()
+      handleNext()
 
       expect(currentStepIndex.value).toBe(1)
     })
 
-    it('should update currentStep after goNext', () => {
-      const { currentStep, goNext } = usePennylaneAmendmentFlow()
+    it('should update currentStep after handleNext', () => {
+      const { currentStep, handleNext } = usePennylaneAmendmentSteps()
 
-      goNext()
+      handleNext()
 
       expect(currentStep.value).toBe(PennylaneAmendmentStep.ACCOUNTS_PRICING)
     })
 
     it('should not go past last step', () => {
-      const { currentStepIndex, goNext, isLastStep } = usePennylaneAmendmentFlow()
+      const { currentStepIndex, handleNext, isLastStep } = usePennylaneAmendmentSteps()
 
       for (let i = 0; i < PENNYLANE_AMENDMENT_STEPS.length; i++) {
-        goNext()
+        handleNext()
       }
 
       expect(isLastStep.value).toBe(true)
       expect(currentStepIndex.value).toBe(PENNYLANE_AMENDMENT_STEPS.length - 1)
     })
 
-    it('should update isFirstStep to false after goNext', () => {
-      const { isFirstStep, goNext } = usePennylaneAmendmentFlow()
+    it('should update isFirstStep to false after handleNext', () => {
+      const { isFirstStep, handleNext } = usePennylaneAmendmentSteps()
 
-      goNext()
+      handleNext()
 
       expect(isFirstStep.value).toBe(false)
     })
   })
 
-  describe('goPrevious', () => {
+  describe('handlePrevious', () => {
     it('should decrement step index', () => {
-      const { currentStepIndex, goNext, goPrevious } = usePennylaneAmendmentFlow()
+      const { currentStepIndex, handleNext, handlePrevious } = usePennylaneAmendmentSteps()
 
-      goNext()
-      goNext()
-      goPrevious()
+      handleNext()
+      handleNext()
+      handlePrevious()
 
       expect(currentStepIndex.value).toBe(1)
     })
 
     it('should not go before first step', () => {
-      const { currentStepIndex, goPrevious, isFirstStep } = usePennylaneAmendmentFlow()
+      const { currentStepIndex, handlePrevious, isFirstStep } = usePennylaneAmendmentSteps()
 
-      goPrevious()
-      goPrevious()
+      handlePrevious()
+      handlePrevious()
 
       expect(isFirstStep.value).toBe(true)
       expect(currentStepIndex.value).toBe(0)
     })
 
-    it('should update currentStep after goPrevious', () => {
-      const { currentStep, goNext, goPrevious } = usePennylaneAmendmentFlow()
+    it('should update currentStep after handlePrevious', () => {
+      const { currentStep, handleNext, handlePrevious } = usePennylaneAmendmentSteps()
 
-      goNext()
-      goNext()
-      goPrevious()
+      handleNext()
+      handleNext()
+      handlePrevious()
 
       expect(currentStep.value).toBe(PennylaneAmendmentStep.ACCOUNTS_PRICING)
     })
@@ -101,17 +101,17 @@ describe('usePennylaneAmendmentFlow', () => {
 
   describe('reset', () => {
     it('should reset step index to 0', () => {
-      const { currentStepIndex, goNext, reset } = usePennylaneAmendmentFlow()
+      const { currentStepIndex, handleNext, reset } = usePennylaneAmendmentSteps()
 
-      goNext()
-      goNext()
+      handleNext()
+      handleNext()
       reset()
 
       expect(currentStepIndex.value).toBe(0)
     })
 
     it('should reset terms accepted to false', () => {
-      const { isTermsAccepted, reset } = usePennylaneAmendmentFlow()
+      const { isTermsAccepted, reset } = usePennylaneAmendmentSteps()
 
       isTermsAccepted.value = true
       reset()
@@ -120,10 +120,10 @@ describe('usePennylaneAmendmentFlow', () => {
     })
 
     it('should return to first step after reset', () => {
-      const { isFirstStep, goNext, reset } = usePennylaneAmendmentFlow()
+      const { isFirstStep, handleNext, reset } = usePennylaneAmendmentSteps()
 
-      goNext()
-      goNext()
+      handleNext()
+      handleNext()
       reset()
 
       expect(isFirstStep.value).toBe(true)
@@ -132,37 +132,48 @@ describe('usePennylaneAmendmentFlow', () => {
 
   describe('isNextButtonDisabled', () => {
     it('should return false for INFORMATION step', () => {
-      const { isNextButtonDisabled, currentStep } = usePennylaneAmendmentFlow()
+      const { isNextButtonDisabled, currentStep } = usePennylaneAmendmentSteps()
 
       expect(currentStep.value).toBe(PennylaneAmendmentStep.INFORMATION)
       expect(isNextButtonDisabled.value).toBe(false)
     })
 
     it('should return false for ACCOUNTS_PRICING step', () => {
-      const { isNextButtonDisabled, goNext, currentStep } = usePennylaneAmendmentFlow()
+      const { isNextButtonDisabled, handleNext, currentStep } = usePennylaneAmendmentSteps()
 
-      goNext()
+      handleNext()
 
       expect(currentStep.value).toBe(PennylaneAmendmentStep.ACCOUNTS_PRICING)
       expect(isNextButtonDisabled.value).toBe(false)
     })
 
-    it('should return false for TERMS_PREVIEW step', () => {
-      const { isNextButtonDisabled, goNext, currentStep } = usePennylaneAmendmentFlow()
+    it('should return true for TERMS_PREVIEW step when not scrolled to bottom', () => {
+      const { isNextButtonDisabled, handleNext, currentStep } = usePennylaneAmendmentSteps()
 
-      goNext()
-      goNext()
+      handleNext()
+      handleNext()
+
+      expect(currentStep.value).toBe(PennylaneAmendmentStep.TERMS_PREVIEW)
+      expect(isNextButtonDisabled.value).toBe(true)
+    })
+
+    it('should return false for TERMS_PREVIEW step when scrolled to bottom', () => {
+      const { isNextButtonDisabled, handleNext, currentStep, setTermsScrollComplete } = usePennylaneAmendmentSteps()
+
+      handleNext()
+      handleNext()
+      setTermsScrollComplete()
 
       expect(currentStep.value).toBe(PennylaneAmendmentStep.TERMS_PREVIEW)
       expect(isNextButtonDisabled.value).toBe(false)
     })
 
     it('should return true for ACCEPTANCE step when terms not accepted', () => {
-      const { isNextButtonDisabled, goNext, currentStep, isTermsAccepted } = usePennylaneAmendmentFlow()
+      const { isNextButtonDisabled, handleNext, currentStep, isTermsAccepted } = usePennylaneAmendmentSteps()
 
-      goNext()
-      goNext()
-      goNext()
+      handleNext()
+      handleNext()
+      handleNext()
 
       expect(currentStep.value).toBe(PennylaneAmendmentStep.ACCEPTANCE)
       expect(isTermsAccepted.value).toBe(false)
@@ -170,11 +181,11 @@ describe('usePennylaneAmendmentFlow', () => {
     })
 
     it('should return false for ACCEPTANCE step when terms accepted', () => {
-      const { isNextButtonDisabled, goNext, currentStep, isTermsAccepted } = usePennylaneAmendmentFlow()
+      const { isNextButtonDisabled, handleNext, currentStep, isTermsAccepted } = usePennylaneAmendmentSteps()
 
-      goNext()
-      goNext()
-      goNext()
+      handleNext()
+      handleNext()
+      handleNext()
       isTermsAccepted.value = true
 
       expect(currentStep.value).toBe(PennylaneAmendmentStep.ACCEPTANCE)
@@ -184,19 +195,19 @@ describe('usePennylaneAmendmentFlow', () => {
 
   describe('isLastStep', () => {
     it('should return true when at last step', () => {
-      const { isLastStep, goNext } = usePennylaneAmendmentFlow()
+      const { isLastStep, handleNext } = usePennylaneAmendmentSteps()
 
       for (let i = 0; i < PENNYLANE_AMENDMENT_STEPS.length - 1; i++) {
-        goNext()
+        handleNext()
       }
 
       expect(isLastStep.value).toBe(true)
     })
 
     it('should return false when not at last step', () => {
-      const { isLastStep, goNext } = usePennylaneAmendmentFlow()
+      const { isLastStep, handleNext } = usePennylaneAmendmentSteps()
 
-      goNext()
+      handleNext()
 
       expect(isLastStep.value).toBe(false)
     })
@@ -204,18 +215,110 @@ describe('usePennylaneAmendmentFlow', () => {
 
   describe('currentStep computed', () => {
     it('should return correct step for each index', () => {
-      const { currentStep, goNext } = usePennylaneAmendmentFlow()
+      const { currentStep, handleNext } = usePennylaneAmendmentSteps()
 
       expect(currentStep.value).toBe(PennylaneAmendmentStep.INFORMATION)
 
-      goNext()
+      handleNext()
       expect(currentStep.value).toBe(PennylaneAmendmentStep.ACCOUNTS_PRICING)
 
-      goNext()
+      handleNext()
       expect(currentStep.value).toBe(PennylaneAmendmentStep.TERMS_PREVIEW)
 
-      goNext()
+      handleNext()
       expect(currentStep.value).toBe(PennylaneAmendmentStep.ACCEPTANCE)
+    })
+  })
+
+  describe('setTermsAccepted', () => {
+    it('should set terms accepted to true', () => {
+      const { isTermsAccepted, setTermsAccepted } = usePennylaneAmendmentSteps()
+
+      expect(isTermsAccepted.value).toBe(false)
+
+      setTermsAccepted(true)
+
+      expect(isTermsAccepted.value).toBe(true)
+    })
+
+    it('should set terms accepted to false', () => {
+      const { isTermsAccepted, setTermsAccepted } = usePennylaneAmendmentSteps()
+
+      setTermsAccepted(true)
+      expect(isTermsAccepted.value).toBe(true)
+
+      setTermsAccepted(false)
+      expect(isTermsAccepted.value).toBe(false)
+    })
+  })
+
+  describe('setTermsScrollComplete', () => {
+    it('should set isTermsScrolledToBottom to true', () => {
+      const { setTermsScrollComplete, handleNext, currentStep, isNextButtonDisabled } = usePennylaneAmendmentSteps()
+
+      handleNext()
+      handleNext()
+
+      expect(currentStep.value).toBe(PennylaneAmendmentStep.TERMS_PREVIEW)
+      expect(isNextButtonDisabled.value).toBe(true)
+
+      setTermsScrollComplete()
+
+      expect(isNextButtonDisabled.value).toBe(false)
+    })
+  })
+
+  describe('handlePrevious resets state', () => {
+    it('should reset isTermsScrolledToBottom when going back', () => {
+      const { handleNext, handlePrevious, setTermsScrollComplete, isNextButtonDisabled, currentStep } = usePennylaneAmendmentSteps()
+
+      handleNext()
+      handleNext()
+      setTermsScrollComplete()
+
+      expect(currentStep.value).toBe(PennylaneAmendmentStep.TERMS_PREVIEW)
+      expect(isNextButtonDisabled.value).toBe(false)
+
+      handlePrevious()
+      handleNext()
+
+      expect(currentStep.value).toBe(PennylaneAmendmentStep.TERMS_PREVIEW)
+      expect(isNextButtonDisabled.value).toBe(true)
+    })
+
+    it('should reset isTermsAccepted when going back', () => {
+      const { handleNext, handlePrevious, setTermsAccepted, isTermsAccepted, currentStep } = usePennylaneAmendmentSteps()
+
+      handleNext()
+      handleNext()
+      handleNext()
+      setTermsAccepted(true)
+
+      expect(currentStep.value).toBe(PennylaneAmendmentStep.ACCEPTANCE)
+      expect(isTermsAccepted.value).toBe(true)
+
+      handlePrevious()
+
+      expect(isTermsAccepted.value).toBe(false)
+    })
+  })
+
+  describe('handleNext resets scroll state', () => {
+    it('should reset isTermsScrolledToBottom when advancing', () => {
+      const { handleNext, handlePrevious, setTermsScrollComplete, isNextButtonDisabled, currentStep } = usePennylaneAmendmentSteps()
+
+      handleNext()
+      handleNext()
+      setTermsScrollComplete()
+
+      expect(currentStep.value).toBe(PennylaneAmendmentStep.TERMS_PREVIEW)
+      expect(isNextButtonDisabled.value).toBe(false)
+
+      handleNext()
+      handlePrevious()
+
+      expect(currentStep.value).toBe(PennylaneAmendmentStep.TERMS_PREVIEW)
+      expect(isNextButtonDisabled.value).toBe(true)
     })
   })
 })

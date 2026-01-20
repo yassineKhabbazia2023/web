@@ -7,13 +7,14 @@
   "private": true,
   "type": "module",
   "exports": {
-  ".": "./src/main.ts",
-  "./enums": "./src/enums.ts",
-  "./managers": "./src/managers.ts",
-  "./types": "./src/types.ts",
-  "./install": "./src/install.ts",
-  "./gridless": "./src/gridless.ts",
-  "./utils": "./src/utils.ts"
+    ".": "./src/main.ts",
+    "./enums": "./src/enums.ts",
+    "./managers": "./src/managers.ts",
+    "./types": "./src/types.ts",
+    "./install": "./src/install.ts",
+    "./gridless": "./src/gridless.ts",
+    "./utils": "./src/utils.ts",
+    "./pennylane-dialogs": "./src/widgets/gridless/pennylane-sso/components/index.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",
@@ -26,6 +27,10 @@
   },
   "dependencies": {
     "@pulse/common": "1.0.0",
-    "@pulse/styleguide": "3.1.0"
+    "@pulse/styleguide": "3.1.0",
+    "pdfjs-dist": "^5.4.530"
+  },
+  "devDependencies": {
+    "@types/pdfjs-dist": "^2.10.377"
   }
 }

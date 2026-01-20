@@ -10,6 +10,10 @@ vi.mock('@pulse/common', () => ({
   }),
 }))
 
+vi.mock('env-vars', () => ({
+  VITE_API_GATEWAY: 'https://api.mock.com',
+}))
+
 const roleMock = getMockedPennylaneRole()
 const documentMock = getMockedPennylaneDocument()
 const documentsMock = [documentMock]
@@ -186,6 +190,58 @@ describe('PennylaneService', () => {
       expect(accessResponse.isPennylaneSignatory).toBeUndefined()
       expect(accessResponse.details).toBeUndefined()
       expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+    })
+  })
+
+  describe('getTermsContent', () => {
+    it('should call properly commonApi.gateway.get with accountId', async () => {
+      const accountIdMock = 123
+      const termsContentMock = new ArrayBuffer(8)
+      const expectedUrl = `${API_PREFIXES.PENNYLANE}/terms/content`
+      const expectedParams = {
+        params: { accountId: accountIdMock },
+        responseType: 'arraybuffer',
+      }
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: termsContentMock,
+      })
+      const termsContent = await PennylaneService.getTermsContent(accountIdMock)
+
+      expect(termsContent).toStrictEqual(termsContentMock)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedParams)
+    })
+  })
+
+  describe('validatePennylaneAmendment', () => {
+    it('should call properly commonApi.gateway.post with accountId and details', async () => {
+      const accountIdMock = 456
+      const detailsMock = {
+        accountNumbers: ['123456', '789012'],
+        status: true,
+      }
+      const expectedUrl = `${API_PREFIXES.PENNYLANE}/accounts/${accountIdMock}/validation/currentuser`
+      const responseMock = { success: true }
+
+      apiGatewayMock.post.mockResolvedValue({
+        data: responseMock,
+      })
+      const result = await PennylaneService.validatePennylaneAmendment(accountIdMock, detailsMock)
+
+      expect(result).toStrictEqual(responseMock)
+      expect(apiGatewayMock.post).toHaveBeenCalledExactlyOnceWith(expectedUrl, detailsMock)
+    })
+  })
+
+  describe('buildTermsContentUrl', () => {
+    it('should return the correct URL with accountId and token', async () => {
+      const accountIdMock = 789
+      const tokenMock = 'test-token-123'
+      const expectedUrl = `https://api.mock.com${API_PREFIXES.PENNYLANE}/terms/content?accountId=${accountIdMock}&token=${tokenMock}`
+
+      const result = await PennylaneService.buildTermsContentUrl(accountIdMock, tokenMock)
+
+      expect(result).toBe(expectedUrl)
     })
   })
 })

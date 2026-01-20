@@ -33,18 +33,15 @@
         </h2>
 
         <p class="pennylane-access-blocked-dialog__text margin-bottom--4">
-          {{ t('widgets.pennylaneAccessBlocked.intro') }}
-          <strong>{{ t('widgets.pennylaneAccessBlocked.conformityRequirement') }}</strong>
-          {{ t('widgets.pennylaneAccessBlocked.introEnd') }}
-          <strong>{{ t('widgets.pennylaneAccessBlocked.pennylane') }}</strong>.
+          {{ t('widgets.pennylaneAccessBlocked.complianceRequirement') }}
         </p>
 
         <p class="pennylane-access-blocked-dialog__text margin-bottom--4">
-          {{ t('widgets.pennylaneAccessBlocked.explanation') }}
+          {{ t('widgets.pennylaneAccessBlocked.authorizedRepresentativeOnly') }}
         </p>
 
         <p class="pennylane-access-blocked-dialog__text margin-bottom--4">
-          {{ t('widgets.pennylaneAccessBlocked.instructions') }}
+          {{ t('widgets.pennylaneAccessBlocked.connectionInstructions') }}
         </p>
 
         <p

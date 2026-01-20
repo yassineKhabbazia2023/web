@@ -1,8 +1,10 @@
 import { commonApi } from '@pulse/common'
 import { logger } from '@pulse/toolbox'
 import type { AxiosResponse } from 'axios'
+import { VITE_API_GATEWAY } from 'env-vars'
+
 import { API_PREFIXES } from '../../constants/api-prefixes'
-import type { PennylaneRole, PennylaneDocumentQueryResult, PennylaneAvailableRole, PennylaneAccessResponse } from './pennylane.service.types'
+import type { PennylaneRole, PennylaneDocumentQueryResult, PennylaneAvailableRole, PennylaneAccessResponse, PennylaneValidationPayload } from './pennylane.service.types'
 
 export class PennylaneService {
   static readonly availableRolesByCompanyId: Record<string, Promise<AxiosResponse<PennylaneAvailableRole[], any>>> = {}
@@ -83,5 +85,31 @@ export class PennylaneService {
     const { data } = await commonApi().gateway.get<PennylaneAccessResponse>(url)
 
     return data
+  }
+
+  static async getTermsContent(accountId: number) {
+    const url = `${API_PREFIXES.PENNYLANE}/terms/content`
+    const queryParams = {
+      accountId,
+    }
+
+    const { data } = await commonApi().gateway.get(url, {
+      params: queryParams,
+      responseType: 'arraybuffer',
+    })
+
+    return data
+  }
+
+  static async validatePennylaneAmendment(accountId: number, details: PennylaneValidationPayload) {
+    const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/validation/currentuser`
+
+    const { data } = await commonApi().gateway.post(url, details)
+
+    return data
+  }
+
+  static buildTermsContentUrl(accountId: number, token: string) {
+    return `${VITE_API_GATEWAY}${API_PREFIXES.PENNYLANE}/terms/content?accountId=${accountId}&token=${token}`
   }
 }

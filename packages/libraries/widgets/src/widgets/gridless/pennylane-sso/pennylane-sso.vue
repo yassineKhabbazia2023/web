@@ -18,15 +18,23 @@
         pType="primary"
       />
       <PIcon v-else-if="isCheckingPennylaneAccess === false" pName="arrowRight" />
+      <PIcon v-else-if="accessDetails === undefined" pName="exclamationTriangle" />
     </PButton>
 
     <PennylaneAccessBlockedDialog v-model="isAccessBlockedDialogOpen" />
 
     <PennylaneAmendmentFlowDialog
+      v-if="isAmendmentFlowDialogOpen && currentAccountId"
       v-model="isAmendmentFlowDialogOpen"
       :access-details="accessDetails"
+      :current-account-id="currentAccountId"
       @continue="handleAmendmentFlowContinue"
+      @accept-success="handleAcceptSuccess"
+      @decline="handleDecline"
     />
+
+    <PennylaneAmendmentSuccessDialog v-model="isSuccessDialogOpen" />
+    <PennylaneAmendmentDeclineDialog v-model="isDeclineDialogOpen" />
   </div>
 </template>
 
@@ -45,6 +53,8 @@ import { AmplitudeTrackingLocation, RouteParam } from '@pulse/common/enums'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import PennylaneAccessBlockedDialog from './components/pennylane-access-blocked-dialog.vue'
 import PennylaneAmendmentFlowDialog from './components/pennylane-amendment-flow-dialog.vue'
+import PennylaneAmendmentSuccessDialog from './components/pennylane-amendment-success-dialog.vue'
+import PennylaneAmendmentDeclineDialog from './components/pennylane-amendment-decline-dialog.vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -58,6 +68,8 @@ const ssoUrl = computed(() => PennylaneSsoManager.getUrl(props.isCollab))
 
 const isAccessBlockedDialogOpen = ref(false)
 const isAmendmentFlowDialogOpen = ref(false)
+const isSuccessDialogOpen = ref(false)
+const isDeclineDialogOpen = ref(false)
 const isCheckingPennylaneAccess = ref(false)
 const canAccess = ref<boolean | undefined>(undefined)
 const isPennylaneSignatory = ref<boolean | undefined>(undefined)
@@ -112,6 +124,15 @@ const onSSOConnection = () => {
 
 const handleAmendmentFlowContinue = () => {
   isAmendmentFlowDialogOpen.value = false
+}
+
+const handleAcceptSuccess = () => {
+  checkPennylaneAccess()
+  isSuccessDialogOpen.value = true
+}
+
+const handleDecline = () => {
+  isDeclineDialogOpen.value = true
 }
 
 const checkPennylaneAccess = async () => {

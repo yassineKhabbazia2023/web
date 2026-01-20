@@ -5,9 +5,7 @@
     </h2>
 
     <p class="margin-bottom--6">
-      {{ t('widgets.pennylaneAmendmentFlow.step2.subtitlePart1') }}
-      <span class="font-bold">{{ t('widgets.pennylaneAmendmentFlow.step2.subtitleBold') }}</span>
-      {{ t('widgets.pennylaneAmendmentFlow.step2.subtitlePart2') }}
+      {{ t('widgets.pennylaneAmendmentFlow.step2.reformDescription') }}
     </p>
 
     <div class="table-scroll-wrapper">
@@ -19,13 +17,13 @@
       >
         <PTableColumn
           pProp="legalName"
-          pAlign="center"
+          pAlign="left"
           class-name="accounts-pricing-table__company-cell"
-          :min-width="110"
+          :min-width="140"
         >
           <template #default="{ row }">
             <PTooltip :pContent="row.legalName">
-              <span>{{ row.legalName }}</span>
+              <span class="accounts-pricing-table__company-cell-text">{{ row.legalName }}</span>
             </PTooltip>
           </template>
         </PTableColumn>
@@ -161,5 +159,14 @@ function cellStyle() {
   max-height: 350px;
   -webkit-overflow-scrolling: touch;
   width: 100%;
+}
+
+.accounts-pricing-table {
+  &__company-cell-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 160px;
+  }
 }
 </style>

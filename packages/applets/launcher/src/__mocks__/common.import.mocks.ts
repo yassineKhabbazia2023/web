@@ -37,6 +37,7 @@ vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
   FeatureFlagManager: {
     isPennylaneSsoRedirectActivated: vi.fn(() => false),
+    isPennylaneAmendmentFlowActivated: vi.fn(() => false),
   },
   PennylaneSsoManager: {
     getUrl: vi.fn((isCollab: boolean) =>

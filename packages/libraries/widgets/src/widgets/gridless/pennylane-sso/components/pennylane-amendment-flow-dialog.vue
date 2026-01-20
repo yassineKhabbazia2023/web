@@ -1,11 +1,11 @@
 <template>
   <PDialog
     v-model="isVisible"
-    p-width="70%"
+    :p-width="dialogWidth"
     :p-fullscreen="isMobile"
-    :p-lock-scroll="true"
     :p-show-close="false"
-    :p-align-center="true"
+    p-lock-scroll
+    p-align-center
     :before-close="() => {}"
     class="
       pennylane-amendment-flow-dialog
@@ -32,28 +32,75 @@
           :accounts
         />
 
+        <StepTermsPreview
+          v-else-if="currentStep === PennylaneAmendmentStep.TERMS_PREVIEW"
+          :account-id="props.currentAccountId"
+          @scroll-complete="setTermsScrollComplete"
+        />
+
+        <StepAcceptance
+          v-else-if="currentStep === PennylaneAmendmentStep.ACCEPTANCE"
+          :is-accepted="isTermsAccepted"
+          :account-id="props.currentAccountId"
+          @update:is-accepted="setTermsAccepted"
+        />
+
         <div class="margin-top--auto">
           <div id="pennylane-amendment-flow-dialog-footer" />
 
-          <div class="flex flex--justify-content-flex-end margin-top--4">
-            <PButton
-              v-if="isFirstStep === false"
-              p-type="secondary"
-              class="margin-right--2"
-              @click="handlePrevious"
+          <div class="flex flex--justify-content-space-between margin-top--2">
+            <div
+              v-if="currentStep === PennylaneAmendmentStep.ACCEPTANCE"
+              class="flex flex--align-items-center"
             >
-              {{ t('widgets.pennylaneAmendmentFlow.common.buttonBack') }}
-            </PButton>
+              <PTooltip
+                :pContent="t('widgets.pennylaneAmendmentFlow.step4.refuseTooltip')"
+                pPlacement="top"
+              >
+                <PIcon
+                  p-name="infoCircle"
+                  p-size="16"
+                  class="text-color--red-800 cursor--pointer"
+                />
+              </PTooltip>
+              <PButton
+                p-type="tertiary"
+                class="text-color--red-800"
+                :p-loading="isRefuseLoading"
+                @click="handleRefuse"
+              >
+                {{ t('widgets.pennylaneAmendmentFlow.step4.buttonRefuse') }}
+              </PButton>
+            </div>
 
-            <PButton
-              v-if="isLastStep === false"
-              class="margin-left--auto"
-              p-type="primary"
-              :p-disabled="isNextButtonDisabled"
-              @click="handleNext"
-            >
-              {{ t('widgets.pennylaneAmendmentFlow.common.buttonContinue') }}
-            </PButton>
+            <div class="flex flex--align-items-center flex-gap--2 margin-left--auto">
+              <PButton
+                v-if="isFirstStep === false"
+                p-type="secondary"
+                @click="handlePrevious"
+              >
+                {{ t('widgets.pennylaneAmendmentFlow.common.buttonBack') }}
+              </PButton>
+
+              <PButton
+                v-if="currentStep === PennylaneAmendmentStep.ACCEPTANCE"
+                p-type="primary"
+                :p-disabled="isNextButtonDisabled"
+                :p-loading="isAcceptLoading"
+                @click="handleAccept"
+              >
+                {{ t('widgets.pennylaneAmendmentFlow.step4.buttonAccept') }}
+              </PButton>
+
+              <PButton
+                v-else-if="isLastStep === false"
+                p-type="primary"
+                :p-disabled="isNextButtonDisabled"
+                @click="handleNext"
+              >
+                {{ t('widgets.pennylaneAmendmentFlow.common.buttonContinue') }}
+              </PButton>
+            </div>
           </div>
         </div>
       </div>
@@ -112,16 +159,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useResponsive } from '@pulse/styleguide'
-import { PButton, PDialog, PImage } from '@pulse/styleguide/components'
+import { logger } from '@pulse/toolbox'
+import { PButton, PDialog, PImage, PTooltip, PIcon } from '@pulse/styleguide/components'
 import type { PennylaneAmendmentFlowDialogProps } from './pennylane-amendment-flow-dialog.type'
 import { PennylaneAmendmentStep } from './pennylane-amendment-flow-dialog/pennylane-amendment-flow-dialog.enum'
-import { usePennylaneAmendmentFlow } from './pennylane-amendment-flow-dialog/pennylane-amendment-flow-dialog.composable'
+import { usePennylaneAmendmentSteps } from './pennylane-amendment-flow-dialog/pennylane-amendment-flow-dialog.composable'
 import StepInformation from './pennylane-amendment-flow-dialog/steps/step-information.vue'
 import StepAccountsPricing from './pennylane-amendment-flow-dialog/steps/step-accounts-pricing.vue'
 import StepAccountsPricingFAQ from './pennylane-amendment-flow-dialog/steps/step-accounts-pricing-faq.vue'
+import StepTermsPreview from './pennylane-amendment-flow-dialog/steps/step-terms-preview.vue'
+import StepAcceptance from './pennylane-amendment-flow-dialog/steps/step-acceptance.vue'
+import { PennylaneService, PennylaneValidationPayload } from '@pulse/common/services/pennylane'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -132,6 +183,8 @@ const props = defineProps<PennylaneAmendmentFlowDialogProps>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
+  'accept-success': []
+  'decline': []
 }>()
 
 const {
@@ -139,10 +192,16 @@ const {
   isFirstStep,
   isLastStep,
   isNextButtonDisabled,
-  goNext,
-  goPrevious,
+  isTermsAccepted,
+  handleNext,
+  handlePrevious,
   reset,
-} = usePennylaneAmendmentFlow()
+  setTermsScrollComplete,
+  setTermsAccepted,
+} = usePennylaneAmendmentSteps()
+
+const isAcceptLoading = ref(false)
+const isRefuseLoading = ref(false)
 
 const isVisible = computed({
   get: () => props.modelValue,
@@ -156,26 +215,71 @@ const isVisible = computed({
 
 const accounts = computed(() => props.accessDetails?.accounts ?? [])
 
+const accountNumbers = computed(() => accounts.value.map((a) => a.accountNumber))
+
 const { isMobile } = useResponsive()
 
+const dialogWidth = computed(() => {
+  switch (currentStep.value) {
+    case PennylaneAmendmentStep.TERMS_PREVIEW:
+    case PennylaneAmendmentStep.ACCEPTANCE:
+      return '56%'
+    case PennylaneAmendmentStep.ACCOUNTS_PRICING:
+      return '70%'
+    default:
+      return '70%'
+  }
+})
+
 const contentClasses = computed(() => {
+  const isAccountsPricing = currentStep.value === PennylaneAmendmentStep.ACCOUNTS_PRICING
+  const isFullWidth = currentStep.value === PennylaneAmendmentStep.TERMS_PREVIEW
+    || currentStep.value === PennylaneAmendmentStep.ACCEPTANCE
+
   return [
     'pennylane-amendment-flow-dialog__content',
     'font-large',
     'font-medium',
     'flex',
     {
-      'pennylane-amendment-flow-dialog__content--step-accounts-pricing': currentStep.value === PennylaneAmendmentStep.ACCOUNTS_PRICING,
+      'pennylane-amendment-flow-dialog__content--step-accounts-pricing': isAccountsPricing,
+      'pennylane-amendment-flow-dialog__content--full-width': isFullWidth,
     },
   ]
 })
 
-function handleNext() {
-  goNext()
+async function handleRefuse() {
+  isRefuseLoading.value = true
+  try {
+    const payload: PennylaneValidationPayload = {
+      accountNumbers: accountNumbers.value,
+      status: false,
+    }
+    await PennylaneService.validatePennylaneAmendment(props.currentAccountId, payload)
+    isVisible.value = false
+    emit('decline')
+  } catch {
+    logger.error('Error refusing pennylane amendement')
+  } finally {
+    isRefuseLoading.value = false
+  }
 }
 
-function handlePrevious() {
-  goPrevious()
+async function handleAccept() {
+  isAcceptLoading.value = true
+  try {
+    const payload: PennylaneValidationPayload = {
+      accountNumbers: accountNumbers.value,
+      status: true,
+    }
+    await PennylaneService.validatePennylaneAmendment(props.currentAccountId, payload)
+    isVisible.value = false
+    emit('accept-success')
+  } catch {
+    logger.error('Error validating pennylane amendement')
+  } finally {
+    isAcceptLoading.value = false
+  }
 }
 </script>
 
@@ -211,7 +315,18 @@ function handlePrevious() {
       }
     }
 
-    &:not(&--step-accounts-pricing) {
+    &--full-width {
+      .pennylane-amendment-flow-dialog__left {
+        flex-basis: 100%;
+        width: 100%;
+      }
+
+      .pennylane-amendment-flow-dialog__right {
+        display: none;
+      }
+    }
+
+    &:not(&--step-accounts-pricing):not(&--full-width) {
       .pennylane-amendment-flow-dialog__left {
         flex-basis: 54%;
 

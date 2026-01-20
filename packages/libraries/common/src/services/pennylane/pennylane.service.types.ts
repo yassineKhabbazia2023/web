@@ -49,3 +49,8 @@ export interface PennylaneAccessResponse {
   isPennylaneSignatory?: boolean
   details?: PennylaneAccessDetails
 }
+
+export interface PennylaneValidationPayload {
+  accountNumbers: string[]
+  status: boolean
+}

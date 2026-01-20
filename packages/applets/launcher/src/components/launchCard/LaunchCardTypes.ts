@@ -21,4 +21,5 @@ export type LaunchCardProps = {
   actionLabel: string
   actionUrl: string
   downloadLabel: string
+  preventNavigation?: boolean
 }

@@ -41,10 +41,25 @@
         :actionLabel="launchCard.actionLabel"
         :actionUrl="launchCard.actionUrl"
         :downloadLabel="launchCard.downloadLabel"
+        :preventNavigation="launchCard.key === LauncherKey.PENNYLANE && shouldBlockAccess"
         @click-download="onClickDownload(launchCard.key)"
         @click-action="onClickAction(launchCard.key)"
       />
     </div>
+
+    <PennylaneAccessBlockedDialog v-model="isAccessBlockedDialogOpen" />
+
+    <PennylaneAmendmentFlowDialog
+      v-if="isAmendmentFlowDialogOpen === true && currentAccountId !== undefined"
+      v-model="isAmendmentFlowDialogOpen"
+      :access-details="accessDetails"
+      :current-account-id="currentAccountId"
+      @accept-success="handleAcceptSuccess"
+      @decline="handleDecline"
+    />
+
+    <PennylaneAmendmentSuccessDialog v-model="isSuccessDialogOpen" />
+    <PennylaneAmendmentDeclineDialog v-model="isDeclineDialogOpen" />
   </div>
 </template>
 
@@ -56,6 +71,12 @@ import { useI18n } from 'vue-i18n'
 import { CurrentUserManager, PennylaneSsoManager } from '@pulse/common/managers'
 import { RouteName } from '@pulse/common/enums'
 import { PAlert, PEntityHeader } from '@pulse/styleguide/components'
+import {
+  PennylaneAccessBlockedDialog,
+  PennylaneAmendmentFlowDialog,
+  PennylaneAmendmentSuccessDialog,
+  PennylaneAmendmentDeclineDialog,
+} from '@pulse/widgets/pennylane-dialogs'
 import LaunchCard from '@launcher/components/launchCard'
 import { LAUNCHER_AUTHORIZATIONS } from '@launcher/common/authorizationConst'
 import type { ExtendedLaunchCard } from './LauncherTypes'
@@ -67,10 +88,24 @@ import {
   handleDownload,
   getSilaeDownloadLabel,
 } from './LauncherUtils'
+import { usePennylaneAmendmentFlow } from './composables/pennylane-amendment-flow.composable'
 
 const route = useRoute()
 const userStore = useUserStore()
 const pennylaneSsoUrl = computed(() => PennylaneSsoManager.getUrl(userStore.isCollab))
+
+const {
+  isAccessBlockedDialogOpen,
+  isAmendmentFlowDialogOpen,
+  isSuccessDialogOpen,
+  isDeclineDialogOpen,
+  accessDetails,
+  currentAccountId,
+  shouldBlockAccess,
+  handlePennylaneClick,
+  handleAcceptSuccess,
+  handleDecline,
+} = usePennylaneAmendmentFlow()
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -97,6 +132,8 @@ async function onClickDownload(key: LauncherKey) {
 async function onClickAction(key: LauncherKey) {
   if (key === LauncherKey.PENNYLANE) {
     PennylaneSsoManager.setSsoOrigin()
+    handlePennylaneClick()
+    return
   }
   await handleClickAction(key)
 }
