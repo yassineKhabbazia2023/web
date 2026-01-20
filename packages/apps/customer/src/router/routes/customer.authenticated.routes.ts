@@ -6,6 +6,7 @@ import { useLoadingStore } from '@pulse/common/stores'
 import { CustomerAuthenticatedFlowManager } from '@customer/managers/customer.authenticated.flow.manager'
 import { entityCustomerRoutes } from './customer.entity.routes'
 import { walletCustomerRoutes } from './customer.wallet.routes'
+import { profileCustomerRoutes } from './customer.profile.routes'
 import { landingCustomerRoutes } from './customer.landing.routes'
 import { pennylaneSsoProxyCustomerRoutes } from './customer.pennylane-sso-proxy.routes'
 import { CUSTOMER_ROUTES } from '../customer.routes'
@@ -53,6 +54,7 @@ export const authenticatedCustomerRoutes: RouteRecordRaw[] = [
       ...pennylaneSsoProxyCustomerRoutes,
       ...entityCustomerRoutes,
       ...walletCustomerRoutes,
+      ...profileCustomerRoutes,
       {
         path: CUSTOMER_ROUTES.login.cguValidation.path,
         name: CUSTOMER_ROUTES.login.cguValidation.name,

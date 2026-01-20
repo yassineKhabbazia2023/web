@@ -1,0 +1,25 @@
+import { BREAKPOINT_SIZES, type breakpoint } from '../constants/breakpoint.const'
+
+export function getCurrentBreakpoint(windowWidth: number): breakpoint {
+  if (windowWidth >= BREAKPOINT_SIZES.xl) {
+    return 'xl'
+  }
+  if (windowWidth >= BREAKPOINT_SIZES.lg) {
+    return 'lg'
+  }
+  if (windowWidth >= BREAKPOINT_SIZES.md) {
+    return 'md'
+  }
+  if (windowWidth >= BREAKPOINT_SIZES.sm) {
+    return 'sm'
+  }
+  return 'xs'
+}
+
+export function getIsMobile(windowWidth: number): boolean {
+  return windowWidth < BREAKPOINT_SIZES.sm
+}
+
+export function getIsDesktop(windowWidth: number): boolean {
+  return windowWidth >= BREAKPOINT_SIZES.sm
+}

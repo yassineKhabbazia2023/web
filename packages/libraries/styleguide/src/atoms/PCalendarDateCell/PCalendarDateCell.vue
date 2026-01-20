@@ -54,7 +54,7 @@ import PCalendarCellNumber from '../../atoms/PCalendarCellNumber'
 import type { CellNumberState } from '../../atoms/PCalendarCellNumber/PCalendarCellNumberTypes'
 import PTaskItem from '../../atoms/PTaskItem'
 import PIcon from '../../atoms/PIcon'
-import { getCurrentBreakpoint } from '../../utils/breakpoints'
+import { getCurrentBreakpoint } from '../../utils/responsive.utils'
 import { AppColors } from '../../utils/AppColorsEnum'
 
 const props = defineProps<PCalendarDateCellProps>()
@@ -106,7 +106,7 @@ const dayState = computed<CellNumberState>(() => {
 })
 
 // Even though there's an overflow hidden on the cell content,
-// we're using this for perfomance purposes by preventing useless nodes creation in the DOM when where are lines
+// we're using this for performance purposes by preventing useless nodes creation in the DOM when where are lines
 // that can't be displayed because it overflows.
 const numberOfCellElementsToDisplay = computed(() =>
   NUMBER_OF_CELL_ELEMENTS_BY_BREAKPOINT[getCurrentBreakpoint(width.value)])

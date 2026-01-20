@@ -2,12 +2,12 @@
   <PDrawer
     v-model="isDrawerOpened"
     class="feed-center-drawer"
-    pType="mini"
+    :pType="isMobile ? 'fullscreen' : 'mini'"
     :pTitle="t('title')"
     modal
-    pDirection="ttb"
+    :pDirection="isMobile ? undefined : 'ttb'"
     destroyOnClose
-    :pHeaderToolbox="toolboxParams()"
+    :pHeaderToolbox="isMobile ? undefined : toolboxParams()"
     @close-drawer-button="closeNotificationsDrawer"
     @p-toolbox-item-clicked="handleToolboxItemClick"
   >
@@ -55,6 +55,7 @@ import {
   PTabs,
   PTabPane,
 } from '@pulse/styleguide/components'
+import { useResponsive } from '@pulse/styleguide'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { SelectedNotificationEnum } from '../../types/notification.type'
 import type { FeedCenterDrawerProps } from './feed-center-drawer.types'
@@ -71,6 +72,7 @@ import { FeedCenterActions } from '../../feed-center.enum'
 import { useFeedCenterStore } from '../../stores/feed-center.store'
 
 const feedCenterStore = useFeedCenterStore()
+const { isMobile } = useResponsive()
 
 const { t } = useI18n({
   inheritLocale: true,

@@ -43,6 +43,10 @@ export const CUSTOMER_ROUTES = {
     landingCustomer: { path: 'mes-entites', name: RouteName.CUSTOMER_ENTITIES },
     allUsers: { path: 'gestion-utilisateurs', name: RouteName.ALL_USERS },
   },
+  profile: {
+    information: { path: 'profil/informations', name: RouteName.PROFILE_INFORMATION },
+    password: { path: 'profil/mot-de-passe', name: RouteName.PROFILE_PASSWORD },
+  },
   error: {
     root: { path: '/error', name: RouteName.ERROR_ROOT },
     error403: { path: '403', name: RouteName.ERROR403 },

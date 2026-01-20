@@ -1,0 +1,66 @@
+import { useNavigationTracking } from './use-navigation-tracking.composable'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
+import type { NavigationItem } from '../types'
+import { RouteName } from '@pulse/common/enums'
+
+const mockT = vi.fn((key: string) => `translated_${key}`)
+
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: mockT,
+  }),
+}))
+
+vi.mock('@pulse/common/services/amplitude')
+
+describe('useNavigationTracking', () => {
+  describe('trackNavigationFeature', () => {
+    it('should track with featureName when defined', () => {
+      const { trackNavigationFeature } = useNavigationTracking()
+
+      const menuItem: NavigationItem = {
+        routeName: RouteName.HOMEPAGE,
+        title: 'shared.menu.dashboard',
+        icon: 'house',
+        featureName: 'dashboard',
+        activeRoutes: [RouteName.HOMEPAGE],
+      }
+
+      trackNavigationFeature(menuItem)
+
+      expect(AmplitudeService.track).toHaveBeenCalledWith('Feature Consulted', {
+        feature_name: 'dashboard',
+      })
+    })
+
+    it('should track with translated title lowercase when featureName is undefined', () => {
+      const { trackNavigationFeature } = useNavigationTracking()
+
+      const menuItem: NavigationItem = {
+        routeName: RouteName.HOMEPAGE,
+        title: 'shared.menu.myTitle',
+        icon: 'house',
+        activeRoutes: [RouteName.HOMEPAGE],
+      }
+
+      trackNavigationFeature(menuItem)
+
+      expect(mockT).toHaveBeenCalledWith('shared.menu.myTitle')
+      expect(AmplitudeService.track).toHaveBeenCalledWith('Feature Consulted', {
+        feature_name: 'translated_shared.menu.mytitle',
+      })
+    })
+  })
+
+  describe('trackFeature', () => {
+    it('should track with the provided feature name', () => {
+      const { trackFeature } = useNavigationTracking()
+
+      trackFeature('entity')
+
+      expect(AmplitudeService.track).toHaveBeenCalledWith('Feature Consulted', {
+        feature_name: 'entity',
+      })
+    })
+  })
+})

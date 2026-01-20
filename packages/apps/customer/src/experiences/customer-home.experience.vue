@@ -3,7 +3,11 @@
     <MobileHomeLayout
       v-if="shouldShowMobileLayout === true"
       :currentEntity
-    />
+    >
+      <template #header-actions>
+        <FeedCenterHeaderWidget v-if="shouldShowFeedCenter === true" />
+      </template>
+    </MobileHomeLayout>
     <HomeLayout
       v-else
       :currentEntity
@@ -24,7 +28,7 @@ import type { UserConfig } from '@pulse/shared/types'
 import { FeedCenterHeaderWidget } from '@pulse/feed-center/widgets/feed-center-header'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
-import { useBreakpoint } from '@pulse/styleguide'
+import { useResponsive } from '@pulse/styleguide'
 
 const MobileHomeLayout = defineAsyncComponent(() =>
   import('@pulse/shared/layouts').then(m => m.MobileHomeLayout),
@@ -36,7 +40,7 @@ const HomeLayout = defineAsyncComponent(() =>
 const currentEntityStore = useCurrentEntityStore()
 const userStore = useUserStore()
 
-const { isMobile } = useBreakpoint()
+const { isMobile } = useResponsive()
 
 const shouldShowMobileLayout = computed(() =>
   FeatureFlagManager.isResponsiveActivated() && isMobile.value === true,

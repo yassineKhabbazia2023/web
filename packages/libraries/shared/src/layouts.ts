@@ -1,5 +1,5 @@
 export { default as LoginLayout } from './layouts/login/login.layout.vue'
-export { default as HomeLayout } from './layouts/home/home.layout.vue'
-export { default as MobileHomeLayout } from './layouts/home/mobile-home-layout/mobile-home.layout.vue'
+export { default as HomeLayout } from './layouts/home/desktop-home.layout.vue'
+export { default as MobileHomeLayout } from './layouts/home/mobile-home.layout.vue'
 export { default as ErrorLayout } from './layouts/error/error.layout.vue'
 export { default as EmptyLayout } from './layouts/empty/empty.layout.vue'

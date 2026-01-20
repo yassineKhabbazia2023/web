@@ -37,6 +37,8 @@ export enum RouteName {
   PENNYLANE_SOCIAL_MANAGEMENT = 'pennylane-social-management',
   PENNYLANE_SSO_PROXY = 'pennylane-sso-proxy',
   POWER_BI = 'powerbi',
+  PROFILE_INFORMATION = 'profile-information',
+  PROFILE_PASSWORD = 'profile-password',
   REPORTS = 'reports',
   RESEND_EMAIL_SUCCESS = 'resendEmailSuccess',
   RESET_PASSWORD = 'resetPassword',
