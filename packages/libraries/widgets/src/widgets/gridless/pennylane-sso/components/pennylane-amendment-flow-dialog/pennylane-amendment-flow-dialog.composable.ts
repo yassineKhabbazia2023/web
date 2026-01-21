@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { PennylaneAmendmentStep } from './pennylane-amendment-flow-dialog.enum'
 import { PENNYLANE_AMENDMENT_STEPS } from './pennylane-amendment-flow-dialog.const'
+import { PennylaneAmendmentTrackingManager } from '../../pennylane-amendment-tracking.manager'
 
 export function usePennylaneAmendmentSteps() {
   const currentStepIndex = ref(0)
@@ -38,6 +39,7 @@ export function usePennylaneAmendmentSteps() {
     }
     isTermsScrolledToBottom.value = false
     currentStepIndex.value += 1
+    PennylaneAmendmentTrackingManager.trackStepDisplayed(currentStep.value)
   }
 
   function handlePrevious() {
@@ -47,6 +49,7 @@ export function usePennylaneAmendmentSteps() {
     isTermsScrolledToBottom.value = false
     isTermsAccepted.value = false
     currentStepIndex.value -= 1
+    PennylaneAmendmentTrackingManager.trackStepDisplayed(currentStep.value)
   }
 
   function setTermsScrollComplete() {

@@ -102,6 +102,8 @@ import PennylaneAccessBlockedDialog from './components/pennylane-access-blocked-
 import PennylaneAmendmentFlowDialog from './components/pennylane-amendment-flow-dialog.vue'
 import PennylaneAmendmentSuccessDialog from './components/pennylane-amendment-success-dialog.vue'
 import PennylaneAmendmentDeclineDialog from './components/pennylane-amendment-decline-dialog.vue'
+import { PennylaneAmendmentTrackingManager } from './pennylane-amendment-tracking.manager'
+import { PennylaneAmendmentStep } from './components/pennylane-amendment-flow-dialog/pennylane-amendment-flow-dialog.enum'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -163,8 +165,10 @@ const onSSOConnection = () => {
 
   if (shouldShowValidationDialog.value === true) {
     isAccessBlockedDialogOpen.value = true
+    PennylaneAmendmentTrackingManager.trackNonSignataireDisplayed()
   } else if (shouldShowAmendmentFlowDialog.value === true) {
     isAmendmentFlowDialogOpen.value = true
+    PennylaneAmendmentTrackingManager.trackStepDisplayed(PennylaneAmendmentStep.INFORMATION)
   } else {
     window.open(ssoUrl.value, '_blank')
   }
@@ -177,10 +181,12 @@ const handleAmendmentFlowContinue = () => {
 const handleAcceptSuccess = () => {
   checkPennylaneAccess()
   isSuccessDialogOpen.value = true
+  PennylaneAmendmentTrackingManager.trackOutroOK()
 }
 
 const handleDecline = () => {
   isDeclineDialogOpen.value = true
+  PennylaneAmendmentTrackingManager.trackOutroKO()
 }
 
 const checkPennylaneAccess = async () => {
