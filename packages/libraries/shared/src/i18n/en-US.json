@@ -1,5 +1,9 @@
 {
   "shared": {
+    "mobile-not-available": {
+      "title": "This feature is not yet available on mobile:",
+      "description": "to view this page, please use your computer."
+    },
     "sidebar": {
       "home": "Home",
       "folder": "Folder",

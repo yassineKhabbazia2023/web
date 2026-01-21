@@ -11,38 +11,53 @@
     @close-drawer-button="closeNotificationsDrawer"
     @p-toolbox-item-clicked="handleToolboxItemClick"
   >
-    <PTabs v-model="activeTab">
-      <PTabPane :label="t('tabs.all-notifications')" name="all-notifications">
-        <NotificationsWrapper
-          :isLoading="areNotificationsLoading"
-          :notifications="feedCenterStore.notifications"
-          :wrapperType="SelectedNotificationEnum.ALL"
-          @notification-clicked="closeNotificationsDrawer"
-        />
-      </PTabPane>
-
-      <PTabPane
-        name="unread-notifications"
+    <div class="position--relative height--100">
+      <div
+        v-if="isMobile"
+        data-testid="mobile-not-available-overlay"
+        class="
+          feed-center-drawer__mobile-overlay
+          flex
+          flex--align-items-center
+          flex--justify-content-center
+          padding--4
+        "
       >
-        <template #label>
-          <div class="flex flex--align-items-center">
-            <p class="margin-right--1">
-              {{ t('tabs.unread-notifications') }}
-            </p>
-            <PPastille v-if="unreadNotificationsCountRef" pSize="small">
-              {{ shortenedCount }}
-            </PPastille>
-          </div>
-        </template>
-        <NotificationsWrapper
-          :isLoading="areNotificationsLoading"
-          :wrapperType="SelectedNotificationEnum.UNREAD"
-          :notifications="unreadNotifications"
-          data-testid="unread-notifications"
-          @notification-clicked="closeNotificationsDrawer"
-        />
-      </PTabPane>
-    </PTabs>
+        <MobileNotAvailableAlert />
+      </div>
+      <PTabs v-model="activeTab">
+        <PTabPane :label="t('tabs.all-notifications')" name="all-notifications">
+          <NotificationsWrapper
+            :isLoading="areNotificationsLoading"
+            :notifications="feedCenterStore.notifications"
+            :wrapperType="SelectedNotificationEnum.ALL"
+            @notification-clicked="closeNotificationsDrawer"
+          />
+        </PTabPane>
+
+        <PTabPane
+          name="unread-notifications"
+        >
+          <template #label>
+            <div class="flex flex--align-items-center">
+              <p class="margin-right--1">
+                {{ t('tabs.unread-notifications') }}
+              </p>
+              <PPastille v-if="unreadNotificationsCountRef" pSize="small">
+                {{ shortenedCount }}
+              </PPastille>
+            </div>
+          </template>
+          <NotificationsWrapper
+            :isLoading="areNotificationsLoading"
+            :wrapperType="SelectedNotificationEnum.UNREAD"
+            :notifications="unreadNotifications"
+            data-testid="unread-notifications"
+            @notification-clicked="closeNotificationsDrawer"
+          />
+        </PTabPane>
+      </PTabs>
+    </div>
   </PDrawer>
 </template>
 
@@ -55,6 +70,7 @@ import {
   PTabs,
   PTabPane,
 } from '@pulse/styleguide/components'
+import { MobileNotAvailableAlert } from '@pulse/shared/components'
 import { useResponsive } from '@pulse/styleguide'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { SelectedNotificationEnum } from '../../types/notification.type'
@@ -166,3 +182,14 @@ fr-FR:
     unread-notifications: 'Non lu'
   favorites: 'Favoris'
 </i18n>
+
+<style scoped>
+.feed-center-drawer__mobile-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.7);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+</style>
