@@ -65,7 +65,7 @@ describe('usePennylaneTermsViewer', () => {
 
     await flushPromises()
 
-    expect(result.error.value).toBe('Unable to load document. Please try again.')
+    expect(result.isError.value).toBe(true)
     expect(result.isLoading.value).toBe(false)
     expect(loggerErrorSpy).toHaveBeenCalled()
 

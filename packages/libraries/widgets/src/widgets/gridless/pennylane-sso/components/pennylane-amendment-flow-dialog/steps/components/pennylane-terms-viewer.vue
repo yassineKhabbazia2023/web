@@ -14,14 +14,14 @@
     </div>
 
     <div
-      v-else-if="error !== null"
+      v-else-if="isError === true"
       class="pennylane-terms-viewer__error-state
         flex
         flex--justify-content-center
         flex--align-items-flex-start"
     >
       <PAlert pType="danger">
-        {{ error }}
+        {{ t('widgets.pennylaneAmendmentFlow.step3.errorLoadingDocument') }}
       </PAlert>
     </div>
 
@@ -93,7 +93,7 @@ const accountIdRef = toRef(props, 'accountId')
 
 const {
   isLoading,
-  error,
+  isError,
   numPages,
   pdfContainer,
   isAtBottom,
@@ -102,7 +102,7 @@ const {
 } = usePennylaneTermsViewer(accountIdRef, () => emit('scroll-complete'))
 
 const shouldShowScrollButton = computed(() =>
-  isLoading.value === false && error.value === null && isAtBottom.value === false,
+  isLoading.value === false && isError.value === false && isAtBottom.value === false,
 )
 
 /**

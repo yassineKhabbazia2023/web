@@ -14,7 +14,7 @@ export function usePennylaneTermsViewer(
   emit: (event: 'scroll-complete') => void,
 ) {
   const isLoading = ref(true)
-  const error = ref<string | null>(null)
+  const isError = ref(false)
   const numPages = ref(0)
   const canvasRefs = ref<(HTMLCanvasElement | null)[]>([])
   const pdfContainer = ref<HTMLDivElement | null>(null)
@@ -32,7 +32,7 @@ export function usePennylaneTermsViewer(
   async function loadPdf() {
     try {
       isLoading.value = true
-      error.value = null
+      isError.value = false
 
       cleanupObserverAndListeners()
       cancelAllRenderTasks()
@@ -53,7 +53,7 @@ export function usePennylaneTermsViewer(
       setupScrollObserver()
     } catch (err) {
       logger.error('Error loading PDF:', err)
-      error.value = 'Unable to load document. Please try again.'
+      isError.value = true
       isLoading.value = false
     }
   }
@@ -98,7 +98,7 @@ export function usePennylaneTermsViewer(
         entries.forEach((entry) => {
           if (
             entry.isIntersecting &&
-            entry.target.getAttribute('data-last-page') === 'true' &&
+            (entry.target as HTMLElement).dataset.lastPage === 'true' &&
             entry.intersectionRatio >= 0.5
           ) {
             emit('scroll-complete')
@@ -221,7 +221,7 @@ export function usePennylaneTermsViewer(
 
   return {
     isLoading,
-    error,
+    isError,
     numPages,
     pdfContainer,
     isAtBottom,

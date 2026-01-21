@@ -20,10 +20,9 @@
         <span class="step-acceptance__checkbox-label">
           {{ t('widgets.pennylaneAmendmentFlow.step4.checkboxLabelPrefix') }}
           <a
-            :href="cguUrl"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#"
             class="step-acceptance__link text-color--jungle-400"
+            @click.prevent="openTermsPdf"
           >
             {{ t('widgets.pennylaneAmendmentFlow.step4.checkboxLinkText') }}
           </a>
@@ -51,12 +50,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PCheckbox, PAlert } from '@pulse/styleguide/components'
-import type { StepAcceptanceProps } from './step-acceptance.types'
 import { PennylaneService } from '@pulse/common/services/pennylane'
-import { CurrentUserManager } from '@pulse/common/managers'
+import { logger } from '@pulse/toolbox'
+import type { StepAcceptanceProps } from './step-acceptance.types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -69,12 +67,16 @@ const emit = defineEmits<{
   'update:isAccepted': [value: boolean]
 }>()
 
-const cguUrl = ref<string>()
-
-onMounted(() => {
-  const encodedToken = window.btoa(CurrentUserManager.getToken())
-  cguUrl.value = PennylaneService.buildTermsContentUrl(props.accountId, encodedToken)
-})
+async function openTermsPdf() {
+  try {
+    const pdfData = await PennylaneService.getTermsContent(props.accountId)
+    const blob = new Blob([pdfData], { type: 'application/pdf' })
+    const fileURL = URL.createObjectURL(blob)
+    window.open(fileURL)
+  } catch {
+    logger.error('Error opening terms PDF')
+  }
+}
 </script>
 
 <style lang="scss" scoped>

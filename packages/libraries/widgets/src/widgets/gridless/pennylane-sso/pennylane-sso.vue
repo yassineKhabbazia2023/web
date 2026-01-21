@@ -63,8 +63,11 @@
         pSize="16"
         pType="primary"
       />
-      <PIcon v-else-if="isCheckingPennylaneAccess === false" pName="arrowRight" />
-      <PIcon v-else-if="accessDetails === undefined" pName="exclamationTriangle" />
+      <PIcon
+        v-else-if="canAccess === undefined"
+        pName="exclamationTriangle"
+      />
+      <PIcon v-else-if="canAccess !== undefined" pName="arrowRight" />
     </PButton>
 
     <PennylaneAccessBlockedDialog v-model="isAccessBlockedDialogOpen" />
@@ -74,7 +77,6 @@
       v-model="isAmendmentFlowDialogOpen"
       :access-details="accessDetails"
       :current-account-id="currentAccountId"
-      @continue="handleAmendmentFlowContinue"
       @accept-success="handleAcceptSuccess"
       @decline="handleDecline"
     />
@@ -162,7 +164,6 @@ const onSSOConnection = () => {
   })
   PennylaneSsoManager.setSsoOrigin()
 
-
   if (shouldShowValidationDialog.value === true) {
     isAccessBlockedDialogOpen.value = true
     PennylaneAmendmentTrackingManager.trackNonSignataireDisplayed()
@@ -172,10 +173,6 @@ const onSSOConnection = () => {
   } else {
     window.open(ssoUrl.value, '_blank')
   }
-}
-
-const handleAmendmentFlowContinue = () => {
-  isAmendmentFlowDialogOpen.value = false
 }
 
 const handleAcceptSuccess = () => {

@@ -199,7 +199,9 @@ describe('PennylaneService', () => {
       const termsContentMock = new ArrayBuffer(8)
       const expectedUrl = `${API_PREFIXES.PENNYLANE}/terms/content`
       const expectedParams = {
-        params: { accountId: accountIdMock },
+        params: {
+          accountId: accountIdMock,
+        },
         responseType: 'arraybuffer',
       }
 
@@ -230,18 +232,6 @@ describe('PennylaneService', () => {
 
       expect(result).toStrictEqual(responseMock)
       expect(apiGatewayMock.post).toHaveBeenCalledExactlyOnceWith(expectedUrl, detailsMock)
-    })
-  })
-
-  describe('buildTermsContentUrl', () => {
-    it('should return the correct URL with accountId and token', async () => {
-      const accountIdMock = 789
-      const tokenMock = 'test-token-123'
-      const expectedUrl = `https://api.mock.com${API_PREFIXES.PENNYLANE}/terms/content?accountId=${accountIdMock}&token=${tokenMock}`
-
-      const result = await PennylaneService.buildTermsContentUrl(accountIdMock, tokenMock)
-
-      expect(result).toBe(expectedUrl)
     })
   })
 })

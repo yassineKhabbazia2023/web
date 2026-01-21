@@ -1,7 +1,6 @@
 import { commonApi } from '@pulse/common'
 import { logger } from '@pulse/toolbox'
 import type { AxiosResponse } from 'axios'
-import { VITE_API_GATEWAY } from 'env-vars'
 
 import { API_PREFIXES } from '../../constants/api-prefixes'
 import type { PennylaneRole, PennylaneDocumentQueryResult, PennylaneAvailableRole, PennylaneAccessResponse, PennylaneValidationPayload } from './pennylane.service.types'
@@ -107,9 +106,5 @@ export class PennylaneService {
     const { data } = await commonApi().gateway.post(url, details)
 
     return data
-  }
-
-  static buildTermsContentUrl(accountId: number, token: string) {
-    return `${VITE_API_GATEWAY}${API_PREFIXES.PENNYLANE}/terms/content?accountId=${accountId}&token=${token}`
   }
 }

@@ -103,7 +103,8 @@
         "title": "2/3 New Terms and Conditions of RYDGE Conseil",
         "subtitle": "Full consultation of the document is mandatory. Please scroll to the bottom of the text to continue.",
         "noPdfAvailable": "The document is not currently available.",
-        "scrollToBottom": "Go to bottom"
+        "scrollToBottom": "Go to bottom",
+        "errorLoadingDocument": "Unable to load document. Please try again."
       },
       "step4": {
         "title": "3/3 Terms Acceptance",

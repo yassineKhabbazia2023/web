@@ -28,7 +28,7 @@
         />
 
         <StepAccountsPricing
-          v-if="currentStep === PennylaneAmendmentStep.ACCOUNTS_PRICING"
+          v-else-if="currentStep === PennylaneAmendmentStep.ACCOUNTS_PRICING"
           :accounts
         />
 
