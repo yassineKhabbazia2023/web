@@ -6,8 +6,8 @@
       flex--align-items-stretch
     "
   >
-    <div class="flex--basis-11 flex--shrink-1" />
-    <div class="flex flex--grow-1">
+    <div class="p-maintenance__spacer flex--basis-11 flex--shrink-1" />
+    <div class="p-maintenance__content-wrapper flex flex--grow-1">
       <div
         class="
           p-maintenance__body
@@ -16,6 +16,10 @@
           flex--justify-content-space-between
         "
       >
+        <PImage
+          pName="brand-white"
+          class="p-maintenance__logo hidden-sm-and-up"
+        />
         <div
           class="
             flex--grow-1
@@ -90,6 +94,26 @@ defineProps<PMaintenanceProps>()
   color: var(--p-white);
   background: var(--p-black-rock-900);
 
+  &__spacer {
+    @include breakpoints.media(xs) {
+      display: none;
+    }
+  }
+
+  &__content-wrapper {
+    @include breakpoints.media(xs) {
+      padding-left: 1.6rem;
+      padding-right: 1.6rem;
+    }
+  }
+
+  &__logo {
+    align-self: center;
+    flex-shrink: 0;
+    margin-top: 2.4rem;
+    width: 12rem;
+  }
+
   &__body {
     width: 100%;
   }
@@ -114,6 +138,9 @@ defineProps<PMaintenanceProps>()
     @include breakpoints.media(sm) {
       max-width: 80%;
     }
+    @include breakpoints.media(xs) {
+      max-width: 100%;
+    }
   }
 
   &__image {
@@ -133,10 +160,6 @@ defineProps<PMaintenanceProps>()
 
     @include breakpoints.media(md) {
       flex-basis: 56%;
-    }
-
-    @include breakpoints.media(xxs) {
-      font-size: 3.2rem;
     }
   }
 

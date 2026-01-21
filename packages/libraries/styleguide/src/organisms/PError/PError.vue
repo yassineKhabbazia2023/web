@@ -1,16 +1,25 @@
 <template>
   <div
-    class="p-error flex flex--align-items-stretch"
+    class="
+      p-error
+      flex
+      flex--align-items-stretch
+      height--100
+      position--relative
+      text-color--white
+      bg--black-rock-900
+    "
     :class="{ 'p-error--full-size': pIsFullSize }"
   >
-    <div class="flex--basis-11 flex--shrink-1" />
-    <div class="flex flex--grow-1">
+    <div class="p-error__spacer flex--basis-11 flex--shrink-1" />
+    <div class="p-error__content-wrapper flex flex--grow-1">
       <div
         class="
           p-error__body
           flex
           flex--direction-column
           flex--justify-content-space-between
+          width--100
         "
       >
         <div
@@ -21,13 +30,13 @@
             flex--justify-content-center
           "
         >
-          <p class="p-error__title">
+          <p class="p-error__title font-bold text-color--jungle-400">
             {{ pTitle }}
           </p>
           <p class="p-error__description margin-top--2">
             {{ pDescription }}
           </p>
-          <div class="margin-top--10">
+          <div class="p-error__button-wrapper margin-top--10">
             <PSkewedButton
               v-if="pButtonText"
               :pContent="pButtonText"
@@ -53,6 +62,7 @@
           </div>
           <div
             class="
+              p-error__footer-content
               flex
               flex--grow-1
               flex--direction-column
@@ -67,11 +77,7 @@
     </div>
     <PImage
       :pName="pIllustrationName"
-      class="
-        p-error__image
-        hidden-sm-and-down
-        flex--shrink-1
-      "
+      class="p-error__image flex--shrink-1"
       pFit="contain"
     />
   </div>
@@ -102,16 +108,23 @@ const errorText = computed(() => getErrorText(props.pErrorName, props.pErrorText
 .p-error {
   $self: &;
 
-  height: 100%;
-  color: var(--p-white);
-  background: var(--p-black-rock-900);
-
-  &__body {
-    width: 100%;
+  &__spacer {
+    @include breakpoints.media(xs) {
+      display: none;
+    }
   }
+
+  &__content-wrapper {
+    @include breakpoints.media(xs) {
+      padding-left: 1.6rem;
+      padding-right: 1.6rem;
+    }
+  }
+
 
   &__title {
     font-size: 4.6rem;
+
     @include breakpoints.media(xs) {
       font-size: 4.0rem;
     }
@@ -130,6 +143,26 @@ const errorText = computed(() => getErrorText(props.pErrorName, props.pErrorText
     }
     @include breakpoints.media(sm) {
       max-width: 80%;
+    }
+    @include breakpoints.media(xs) {
+      max-width: 100%;
+    }
+  }
+
+  &__button-wrapper {
+    @include breakpoints.media(xs) {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+  &__footer-content {
+    @include breakpoints.media(xs) {
+      align-items: flex-end;
+      background-color: rgb(0 0 0 / 60%);
+      padding: 0.8rem 1.2rem;
+      border-radius: 0.4rem;
+      z-index: 1;
     }
   }
 
@@ -152,8 +185,18 @@ const errorText = computed(() => getErrorText(props.pErrorName, props.pErrorText
       flex-basis: 56%;
     }
 
+    @include breakpoints.media(xs) {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 32rem;
+      height: 32rem;
+      flex-basis: auto;
+    }
+
     @include breakpoints.media(xxs) {
-      font-size: 3.2rem;
+      width: 24rem;
+      height: 24rem;
     }
   }
 

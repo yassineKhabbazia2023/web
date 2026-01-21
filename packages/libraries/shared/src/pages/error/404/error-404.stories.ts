@@ -14,6 +14,6 @@ export default meta
 export const Default = {
   render: () => ({
     components: { Error404Page },
-    template: '<Error404Page />',
+    template: '<div style="height: 100vh"><Error404Page /></div>',
   }),
 }

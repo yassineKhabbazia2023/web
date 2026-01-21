@@ -14,6 +14,6 @@ export default meta
 export const Default = {
   render: () => ({
     components: { MaintenancePage },
-    template: '<MaintenancePage />',
+    template: '<div style="height: 100vh"><MaintenancePage /></div>',
   }),
 }
