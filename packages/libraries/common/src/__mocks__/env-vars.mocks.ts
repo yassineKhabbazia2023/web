@@ -29,6 +29,7 @@ export const envVarsMock = {
   VITE_PRODUCT_FRUITS_ANONYMOUS_KEY: 'pulse-product-fruits-anonymous-key',
   VITE_PRODUCT_FRUITS_KEY_CLIENT: 'pulse-product-fruits-key-client',
   VITE_PRODUCT_FRUITS_KEY: 'pulse-product-fruits-key',
+  VITE_RESPONSIVE_ACTIVATED: 'true',
   VITE_LOGGER_LEVEL: '5',
   VITE_TOKEN_EXPIRATION_BUFFER: '5',
   VITE_SMART_OFFER_DIFFERENT_RATE_PRICE: '50',

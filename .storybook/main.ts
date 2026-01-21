@@ -104,21 +104,12 @@ const config: StorybookConfig = {
         find: '@azure/msal-browser',
         replacement: fileURLToPath(new URL('../packages/apps/e2e-mocks/src/shims/msal-shim.ts', import.meta.url)),
       },
-      // @styleguide → styleguide/src (for SCSS imports)
+      // @styleguide → styleguide/src (for internal SCSS imports using @styleguide alias)
       {
         find: '@styleguide',
         replacement: fileURLToPath(new URL('../packages/libraries/styleguide/src', import.meta.url)),
       },
-      // @pulse/styleguide exact (bare specifier) → main.ts
-      {
-        find: /^@pulse\/styleguide$/,
-        replacement: fileURLToPath(new URL('../packages/libraries/styleguide/src/main.ts', import.meta.url)),
-      },
-      // @pulse/styleguide subpaths → src
-      {
-        find: '@pulse/styleguide',
-        replacement: fileURLToPath(new URL('../packages/libraries/styleguide/src', import.meta.url)),
-      },
+      // @pulse/styleguide is resolved via package.json exports (no alias needed)
       {
         find: /^@login/,
         replacement: fileURLToPath(new URL('../packages/applets/login/src', import.meta.url)),

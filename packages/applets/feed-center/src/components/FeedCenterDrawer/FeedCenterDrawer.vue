@@ -183,7 +183,7 @@ fr-FR:
   favorites: 'Favoris'
 </i18n>
 
-<style scoped>
+<style lang="scss" scoped>
 .feed-center-drawer__mobile-overlay {
   position: absolute;
   inset: 0;
@@ -191,5 +191,15 @@ fr-FR:
   background: rgba(255, 255, 255, 0.7);
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
+}
+</style>
+
+<style lang="scss">
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
+.feed-center-drawer.el-drawer .el-drawer__body {
+  @include breakpoints.media(xs) {
+    padding-bottom: 0;
+  }
 }
 </style>

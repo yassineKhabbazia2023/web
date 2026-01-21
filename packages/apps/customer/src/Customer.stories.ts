@@ -5,11 +5,11 @@ import { useRouter } from 'vue-router'
 import { RouteParam, CustomerPermission, RouteName, Layout } from '@pulse/common/enums'
 import { useUserStore, useCurrentEntityStore, usePermissionsStore } from '@pulse/common/stores'
 import { getMockedUser, getMockedEntitySummary, getMockedSubscription } from '@pulse/common/mocks'
-
 import { LAYOUT_META } from '@pulse/common/constants'
-import { HomeLayout } from '@pulse/shared/layouts'
-import type { UserConfig } from '@pulse/shared/types'
 import type { Entity } from '@pulse/common/types'
+import type { UserConfig } from '@pulse/shared/types'
+
+import CustomerHomeExperience from './experiences/customer-home.experience.vue'
 
 // Import existing routes from customer app
 import { entityCustomerRoutes } from './router/routes/customer.entity.routes'
@@ -20,9 +20,9 @@ import { registerCustomerNavigationItems } from './router/registry/customer.navi
 // Register navigation items once for all stories
 registerCustomerNavigationItems()
 
-const meta: Meta<typeof HomeLayout> = {
+const meta: Meta<typeof CustomerHomeExperience> = {
   title: 'Apps/Customer',
-  component: HomeLayout,
+  component: CustomerHomeExperience,
   parameters: {
     layout: 'fullscreen',
   },
@@ -211,35 +211,13 @@ function useMonoEntitySetup() {
 
 export const MonoEntity: Story = {
   render: () => ({
-    components: { HomeLayout },
+    components: { CustomerHomeExperience },
     setup() {
-      const {
-        isReady,
-        currentEntity,
-        favoriteEntities,
-        currentEntityPermissions,
-        userConfig,
-        isVisible,
-      } = useMonoEntitySetup()
-
-      return {
-        isReady,
-        currentEntity,
-        favoriteEntities,
-        currentEntityPermissions,
-        userConfig,
-        isVisible,
-      }
+      const { isReady } = useMonoEntitySetup()
+      return { isReady }
     },
     template: `
-      <HomeLayout
-        v-if="isReady"
-        :current-entity="currentEntity"
-        :favorite-entities="favoriteEntities"
-        :user-config="userConfig"
-        :is-visible="isVisible"
-        :current-entity-permissions="currentEntityPermissions"
-      />
+      <CustomerHomeExperience v-if="isReady" />
     `,
   }),
 }
@@ -356,35 +334,13 @@ function useMultiEntitySetup() {
 
 export const MultiEntities: Story = {
   render: () => ({
-    components: { HomeLayout },
+    components: { CustomerHomeExperience },
     setup() {
-      const {
-        isReady,
-        currentEntity,
-        favoriteEntities,
-        currentEntityPermissions,
-        userConfig,
-        isVisible,
-      } = useMultiEntitySetup()
-
-      return {
-        isReady,
-        currentEntity,
-        favoriteEntities,
-        currentEntityPermissions,
-        userConfig,
-        isVisible,
-      }
+      const { isReady } = useMultiEntitySetup()
+      return { isReady }
     },
     template: `
-      <HomeLayout
-        v-if="isReady"
-        :current-entity="currentEntity"
-        :favorite-entities="favoriteEntities"
-        :user-config="userConfig"
-        :is-visible="isVisible"
-        :current-entity-permissions="currentEntityPermissions"
-      />
+      <CustomerHomeExperience v-if="isReady" />
     `,
   }),
 }
