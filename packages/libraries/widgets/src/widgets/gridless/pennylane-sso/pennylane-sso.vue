@@ -3,7 +3,53 @@
     class="widget-sso"
     data-testid="widget-pennylane-sso"
   >
+    <!-- Mobile version: card style like launcher -->
+    <div
+      v-if="isMobile === true"
+      class="
+        bg--gray-50
+        hover-bg--jungle-75
+        padding--6
+        cursor-pointer
+        width--100
+      "
+      @click="onSSOConnection"
+    >
+      <div
+        class="
+          flex
+          flex--direction-column
+          flex--align-items-center
+          flex--justify-content-center
+          flex-gap--3
+        "
+      >
+        <PLoader
+          v-if="isCheckingPennylaneAccess === true"
+          pSize="24"
+          pType="primary"
+        />
+        <PImage
+          v-else
+          pName="pennylane-color"
+          class="widget-sso__mobile-image"
+        />
+        <span
+          class="
+            font-xsmall
+            font-semibold
+            text-center
+            text-color--gray-900
+          "
+        >
+          {{ t('widgets.pennylaneSSO.accessToPennylane') }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Desktop version: horizontal button with arrow -->
     <PButton
+      v-else
       @click="onSSOConnection"
     >
       <PIcon pName="pennylaneColor" />
@@ -41,7 +87,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PButton, PIcon, PLoader } from '@pulse/styleguide/components'
+import { PButton, PIcon, PLoader, PImage } from '@pulse/styleguide/components'
+import { useResponsive } from '@pulse/styleguide'
 import { useRoute } from 'vue-router'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
@@ -62,6 +109,7 @@ const { t } = useI18n({
 })
 
 const route = useRoute()
+const { isMobile } = useResponsive()
 const props = defineProps<PennylaneSSOProps>()
 
 const ssoUrl = computed(() => PennylaneSsoManager.getUrl(props.isCollab))
@@ -164,3 +212,10 @@ onMounted(() => {
   checkPennylaneAccess()
 })
 </script>
+
+<style lang="scss" scoped>
+.widget-sso__mobile-image {
+  height: 48px;
+  width: auto;
+}
+</style>

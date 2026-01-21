@@ -31,21 +31,37 @@ const userWithSmartWidgetNames = [
   WidgetName.POWERBI_INTRO,
 ]
 
+const mobileAllowedWidgets: WidgetName[] = [
+  WidgetName.PENNYLANE_DOCUMENTS,
+  WidgetName.RSS_NEWS,
+  WidgetName.DIGILAB,
+]
+
 // Done this way until we have a full experience layer / BackForFront work flow
 export class WidgetsService {
-  static getHomeWidgetNames() {
+  static getHomeWidgetNames(isMobile = false): WidgetName[] {
     const currentEntityStore = useCurrentEntityStore()
     const canShowSmartOfferWidget = ReportingManager.canShowSmartOfferWidget()
 
+    let widgetNames: WidgetName[]
+
     // Temporary: for the Clarity POC, we prioritized SmartOffer. A carousel will be added once validated.
     if (canShowSmartOfferWidget === true) {
-      return userWithSmartWidgetNames
+      widgetNames = userWithSmartWidgetNames
+    } else if (currentEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true) {
+      widgetNames = userWithPennylaneAndGedWidgetNames
+    } else {
+      widgetNames = userWithoutPennylaneOfferWidgetNames
     }
 
-    if (currentEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true) {
-      return userWithPennylaneAndGedWidgetNames
+    if (isMobile === true) {
+      return this.filterForMobile(widgetNames)
     }
 
-    return userWithoutPennylaneOfferWidgetNames
+    return widgetNames
+  }
+
+  private static filterForMobile(widgetNames: WidgetName[]): WidgetName[] {
+    return mobileAllowedWidgets.filter((name) => widgetNames.includes(name))
   }
 }

@@ -1,10 +1,10 @@
 <template>
   <div
-    class="
-      home-top-bar
-      flex
-      flex-gap--4
-    "
+    class="home-top-bar"
+    :class="{
+      'flex flex-gap--4': isMobile === false,
+      'flex flex--justify-content-center': isMobile === true,
+    }"
   >
     <PennylaneSSO
       v-if="isPennylaneSSODisplayed === true"
@@ -25,9 +25,11 @@ import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 import { WidgetName } from '@pulse/widgets/enums'
+import { useResponsive } from '@pulse/styleguide'
 
 const userStore = useUserStore()
 const currentEntityStore = useCurrentEntityStore()
+const { isMobile } = useResponsive()
 
 const isPennylaneSSODisplayed = computed(() =>
   currentEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true &&
@@ -35,6 +37,7 @@ const isPennylaneSSODisplayed = computed(() =>
 )
 
 const showEmailPennylaneWidget = computed(() =>
+  isMobile.value === false &&
   PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true,
 )
 </script>

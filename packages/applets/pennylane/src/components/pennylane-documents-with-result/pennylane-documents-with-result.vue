@@ -8,6 +8,7 @@
       flex-gap--3
       margin-right--2
       overflow-hidden
+      width--100
     "
   >
     <li
@@ -16,17 +17,17 @@
       class="
         flex
         flex--align-items-center
-        padding-x--3
         padding-y--2
         cursor-pointer
         hover-bg--tranquil-50
+        overflow-hidden
       "
       @click="onClickDocument(pennylaneDocument)"
     >
       <div
         class="
           text-color--neutral-gray-900
-          padding-x--3
+          margin-right--2
         "
       >
         <PIcon
@@ -38,6 +39,7 @@
         class="
           list-style-none
           overflow-hidden
+          min-width--0
         "
       >
         <li

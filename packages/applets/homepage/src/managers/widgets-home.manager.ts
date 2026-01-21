@@ -8,8 +8,8 @@ import { CurrentUserManager } from '@pulse/common/managers'
 
 export class WidgetsHomeManager {
 
-  static getWidgetsLayout(isCustomer: boolean) {
-    const widgetNames = WidgetsService.getHomeWidgetNames()
+  static getWidgetsLayout(isCustomer: boolean, isMobile = false) {
+    const widgetNames = WidgetsService.getHomeWidgetNames(isMobile)
     return this.getWidgetGridDefinitions(widgetNames, isCustomer)
   }
 

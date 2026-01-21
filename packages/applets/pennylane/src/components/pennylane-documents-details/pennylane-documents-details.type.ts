@@ -5,6 +5,7 @@ export interface PennylaneDocumentsDetailsProps {
 }
 
 export type PennylaneDocumentsDetailsLabels = {
+  name: string
   path: string
   createdAt: string
   updatedAt: string

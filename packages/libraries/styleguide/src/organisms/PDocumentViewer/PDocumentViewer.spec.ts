@@ -1,7 +1,8 @@
 import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
-import PDocumentViewer from '.'
 import type { PDocumentViewerProps } from './PDocumentViewerTypes'
+
+import PDocumentViewer from '.'
 
 const defaultProps: PDocumentViewerProps = {
   modelValue: false,
@@ -136,10 +137,10 @@ describe('pDocumentViewer', () => {
       })
 
       const pButtons = wrapper.findAllComponents({ name: 'PButton' })
-      expect(pButtons).toHaveLength(3)
-      const secondButton = pButtons.at(1)
-      expect(secondButton?.classes()).toContain('p-document-viewer__btn-previous')
-      expect(secondButton?.props('pDisabled')).toBe(shouldHavePreviousButtonClass)
+      expect(pButtons).toHaveLength(4)
+      const previousButton = pButtons.at(1)
+      expect(previousButton?.classes()).toContain('p-document-viewer__btn-previous')
+      expect(previousButton?.props('pDisabled')).toBe(shouldHavePreviousButtonClass)
     })
 
     it.each([
@@ -161,10 +162,10 @@ describe('pDocumentViewer', () => {
           text,
         })
         const pButtons = wrapper.findAllComponents({ name: 'PButton' })
-        expect(pButtons).toHaveLength(3)
-        const secondButton = pButtons.at(2)
-        expect(secondButton?.classes()).toContain('p-document-viewer__btn-next')
-        expect(secondButton?.props('pDisabled')).toBe(shouldHaveNextDocumentClass)
+        expect(pButtons).toHaveLength(4)
+        const nextButton = pButtons.at(2)
+        expect(nextButton?.classes()).toContain('p-document-viewer__btn-next')
+        expect(nextButton?.props('pDisabled')).toBe(shouldHaveNextDocumentClass)
       },
     )
 

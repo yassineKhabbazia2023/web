@@ -24,20 +24,24 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import type { WidgetGridDefinition } from '@pulse/widgets/types'
 import { WidgetsHomeManager } from '@homepage/managers/widgets-home.manager'
 import { useUserStore } from '@pulse/common/stores'
 import { storeToRefs } from 'pinia'
+import { useResponsive } from '@pulse/styleguide'
 
 const userStore = useUserStore()
 const { isCustomer } = storeToRefs(userStore)
+const { isMobile } = useResponsive()
 
 const widgets = ref<WidgetGridDefinition[]>([])
 
 function loadWidgets() {
-  widgets.value = WidgetsHomeManager.getWidgetsLayout(isCustomer.value)
+  widgets.value = WidgetsHomeManager.getWidgetsLayout(isCustomer.value, isMobile.value)
 }
+
+watch(isMobile, loadWidgets)
 
 onMounted(async () => {
   loadWidgets()
@@ -45,6 +49,8 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
 .widgets-home {
   &__main-section {
     margin: 16px 0;
@@ -53,6 +59,9 @@ onMounted(async () => {
   }
 
   &__grid-item {
+    overflow: hidden;
+    min-width: 0;
+
     &--span-1 {
       grid-column: span 1;
     }
@@ -67,7 +76,7 @@ onMounted(async () => {
   }
 
 
-  @media (max-width: 1260px) {
+  @include breakpoints.media(md) {
     &__main-section {
       grid-template-columns: repeat(2, minmax(250px, 1fr));
 
@@ -79,7 +88,7 @@ onMounted(async () => {
     }
   }
 
-  @media (max-width: 767px) {
+  @include breakpoints.media(xs) {
     &__main-section {
       grid-template-columns: 1fr;
 

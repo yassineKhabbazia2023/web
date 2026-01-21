@@ -6,6 +6,7 @@
       flex
       flex--justify-content-space-around
       flex--align-items-center
+      padding-x--12
     "
     data-testid="mobile-bottom-nav"
   >

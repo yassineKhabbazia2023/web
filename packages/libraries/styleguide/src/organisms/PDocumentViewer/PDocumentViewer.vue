@@ -10,11 +10,11 @@
   >
     <template #header>
       <div class="p-document-viewer__header shadow--3">
-        <div class="p-document-viewer__header-left margin-right--2">
+        <div class="p-document-viewer__header-left">
           <PButton
             v-if="pShowCloseButton"
             pPlain
-            class="el-button--icon p-document-viewer__btn-close margin-right--2"
+            class="p-document-viewer__btn-back margin-right--2"
             @click="documentViewerModel = false"
           >
             <PIcon pName="arrowLeft" />
@@ -23,7 +23,7 @@
             <span v-if="pHasIcon" class="margin-right--2 p-document-viewer__icon-document">
               <slot name="iconDocument" />
             </span>
-            {{ pTitleDocument }}
+            <span class="p-document-viewer__title-text">{{ pTitleDocument }}</span>
           </p>
         </div>
         <div v-if="pHasPagination" class="p-document-viewer__header-right">
@@ -51,6 +51,14 @@
             <PIcon pName="chevronRight" />
           </PButton>
         </div>
+        <PButton
+          v-if="pShowCloseButton"
+          pPlain
+          class="p-document-viewer__btn-close"
+          @click="documentViewerModel = false"
+        >
+          <PIcon pName="x" />
+        </PButton>
       </div>
     </template>
     <div class="p-document-viewer__content">

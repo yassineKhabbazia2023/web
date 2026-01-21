@@ -1,4 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
+import { ref } from 'vue'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 
@@ -10,6 +11,7 @@ const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 const hasCurrentEntityPermissionSpy = vi.hoisted(() => vi.fn())
 const hasPennylaneAccountingGedV2PermissionSpy = vi.hoisted(() => vi.fn())
+const isMobileRef = ref(false)
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: {
@@ -18,6 +20,12 @@ vi.mock('@pulse/common/managers', () => ({
   PennylanePermissionsManager: {
     hasPennylaneAccountingGedV2Permission: hasPennylaneAccountingGedV2PermissionSpy,
   },
+}))
+
+vi.mock('@pulse/styleguide', () => ({
+  useResponsive: () => ({
+    isMobile: isMobileRef,
+  }),
 }))
 
 describe('TopBar', () => {
@@ -62,9 +70,13 @@ describe('TopBar', () => {
   })
 
   describe('EmailPennylane display', async () => {
+    beforeEach(() => {
+      isMobileRef.value = false
+    })
+
     const tests = [{
       hasPennylaneAccountingGedV2PermissionMock: true,
-      description: 'should display EmailPennylane when hasPennylaneAccountingGedV2Permission is true',
+      description: 'should display EmailPennylane when hasPennylaneAccountingGedV2Permission is true on desktop',
     }, {
       hasPennylaneAccountingGedV2PermissionMock: false,
       description: 'should NOT display EmailPennylane when hasPennylaneAccountingGedV2Permission is false',
@@ -86,6 +98,25 @@ describe('TopBar', () => {
 
       const emailPennylaneComponent = wrapper.findComponent({ name: 'EmailPennylane' })
       expect(emailPennylaneComponent.exists()).toBe(hasPennylaneAccountingGedV2PermissionMock)
+    })
+
+    it('should NOT display EmailPennylane on mobile even with permission', () => {
+      isMobileRef.value = true
+      hasPennylaneAccountingGedV2PermissionSpy.mockReturnValue(true)
+
+      const wrapper = shallowMount(TopBar, {
+        global: {
+          stubs: {
+            EmailPennylane: {
+              name: 'EmailPennylane',
+              template: '<div />',
+            },
+          },
+        },
+      })
+
+      const emailPennylaneComponent = wrapper.findComponent({ name: 'EmailPennylane' })
+      expect(emailPennylaneComponent.exists()).toBe(false)
     })
   })
 })

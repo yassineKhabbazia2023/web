@@ -1,5 +1,7 @@
 <template>
-  <div class="flex flex--direction-column height--100">
+  <div
+    class="flex flex--direction-column"
+  >
     <PennylaneDocumentsWrapper
       :accountId
       :accountNumber
@@ -8,17 +10,16 @@
       :displayMode="PennylaneDocumentWrapperDisplayMode.IN_TABLE"
       :pennylaneDocuments
       amplitudeLocalisation="documents rydge conseil"
-      class="flex--grow-1"
     />
 
     <PPagination
       v-if="totalDocuments > 0 && apiCallStatus === APICallStatus.SUCCESS"
       v-model:p-current-page="currentPage"
       v-model:p-page-size="currentPageSize"
-      class="margin-x--6"
+      class="margin-x--2 margin-top--1"
       :pTotal="totalDocuments"
       pShowTotalPageCounter
-      :pPageSizes="PAGE_SIZES"
+      :pPageSizes="pageSizes"
       pTestIdRoot="pennylane-ged-v2"
       pPageSizeSelectorSuffix=""
     >
@@ -38,10 +39,12 @@ import { PennylaneDocumentWrapperDisplayMode } from '@pennylane/enums/pennylane-
 import { logger } from '@pulse/toolbox'
 import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-documents.helper'
 import { PPagination } from '@pulse/styleguide/components'
-import { PAGE_SIZES } from '@pulse/common/constants'
+import { useResponsive } from '@pulse/styleguide'
+import { PAGE_SIZES, MOBILE_PAGE_SIZES } from '@pulse/common/constants'
 import { getPaginationLabel } from '@pulse/common/utils'
 
 const currentEntityStore = useCurrentEntityStore()
+const { isMobile } = useResponsive()
 
 const pennylaneDocuments = ref<FormattedPennylaneDocument[]>([])
 const apiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
@@ -52,7 +55,8 @@ const accountName = computed(() => currentEntityStore.currentEntity?.legalName ?
 const accountNumber = computed(() => currentEntityStore.currentEntityAccountNumber)
 
 const currentPage = ref(1)
-const currentPageSize = ref(PAGE_SIZES[0])
+const pageSizes = computed(() => isMobile.value ? [...MOBILE_PAGE_SIZES, ...PAGE_SIZES] : PAGE_SIZES)
+const currentPageSize = ref(pageSizes.value[0])
 
 const paginationLabel = computed(() => getPaginationLabel('sur', {
   currentPage: currentPage.value,

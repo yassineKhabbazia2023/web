@@ -2,6 +2,7 @@
   <div
     data-testid="pennylane-documents-no-result"
     class="
+        pennylane-documents-no-result
         flex
         flex--direction-column
         flex--align-items-center
@@ -46,3 +47,15 @@ const message = computed(() => props.isError === true ? t('errorMessage') : t('n
     noDocuments: 'Aucun document reçu pour le moment'
     errorMessage: 'Une erreur est survenue lors de la récupération des documents'
 </i18n>
+
+<style scoped lang="scss">
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
+.pennylane-documents-no-result {
+  @include breakpoints.media(xs) {
+    .p-icon {
+      margin: 1.6rem;
+    }
+  }
+}
+</style>

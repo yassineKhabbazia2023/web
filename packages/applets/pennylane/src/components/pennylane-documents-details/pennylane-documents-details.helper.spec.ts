@@ -7,6 +7,10 @@ describe('pennylane-documents-details.helper', () => {
     it('should return formatted documents with the correct path prefix', () => {
       const pennylaneDocument = getMockedFormattedPennylaneDocument()
       const expectedDisplayData = [{
+        label: 'Nom du document',
+        value: 'Header.png',
+      },
+      {
         label: 'Emplacement du document',
         value: '/Dossier permanent/00 - Publications',
       },
@@ -20,6 +24,7 @@ describe('pennylane-documents-details.helper', () => {
       }]
 
       const labels: PennylaneDocumentsDetailsLabels = {
+        name: 'Nom du document',
         path: 'Emplacement du document',
         createdAt: 'Date de dépôt',
         updatedAt: 'Dernière modification',

@@ -2,25 +2,17 @@
   <div
     data-testid="pennylane-documents-header"
   >
-    <div
-      class="
-        flex
-      "
-    >
-      <PIcon
-        pName="pulse"
-        :pColor="AppColors.JUNGLE_400"
-        pSize="30"
-      />
-      <span class="h3 margin-left--1 font-semibold">
-        {{ t('title') }}
-      </span>
-    </div>
+    <PTitle
+      pIconName="pulse"
+      pIconSize="30"
+      :pIconColor="AppColors.JUNGLE_400"
+      :pTitle="t('title')"
+    />
 
     <div
       v-if="lastSynchroDate !== undefined"
       class="
-        margin-left--8
+        pennylane-documents-header__last-synchro
         margin-top--1
         flex
         flex--align-items-center
@@ -47,7 +39,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { AppColors } from '@pulse/styleguide'
-import { PIcon } from '@pulse/styleguide/components'
+import { PIcon, PTitle } from '@pulse/styleguide/components'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/constants'
 import { PennylaneDocumentsHeaderProps } from './pennylane-documents-header.type'
 import { getDayLabel } from './pennylane-documents-header.helper'
@@ -78,7 +70,7 @@ const dayLabel = computed(() => {
 <i18n lang="yaml">
   en-US:
     title: 'Last RYDGE Conseil documents'
-    lastSynchroDate: 'Last synchrozation'
+    lastSynchroDate: 'Last synchronization'
     at: 'at'
     today: 'Today'
     on: 'On'
@@ -86,6 +78,17 @@ const dayLabel = computed(() => {
     title: 'Derniers documents RYDGE Conseil'
     lastSynchroDate: 'Dernière synchronisation'
     at: 'à'
-    today: 'Aujourd’hui'
+    today: "Aujourd'hui"
     on: 'Le'
 </i18n>
+
+<style scoped lang="scss">
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
+.pennylane-documents-header__last-synchro {
+  @include breakpoints.media(xs) {
+    margin-left: 0;
+    font-size: 1.2rem;
+  }
+}
+</style>

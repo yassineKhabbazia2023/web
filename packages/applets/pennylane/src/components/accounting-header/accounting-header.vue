@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="isMobile === false"
     class="position--relative"
   >
     <div
@@ -132,6 +133,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PImage, PButton, PIcon } from '@pulse/styleguide/components'
+import { useResponsive } from '@pulse/styleguide'
+
+const { isMobile } = useResponsive()
 
 const { t } = useI18n({
   inheritLocale: true,

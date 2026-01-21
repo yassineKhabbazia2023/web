@@ -52,6 +52,8 @@ const newsPubDate = computed(() => {
 </script>
 
 <style lang="scss" scoped>
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
 .rss-news-item {
   // restyle the anchor
   display: block;
@@ -85,6 +87,7 @@ const newsPubDate = computed(() => {
   .rss-news-item__title {
     $fontSize: 14px;
     $lineClamp: 2;
+    $lineClampMobile: 3;
 
     font-size: $fontSize;
     // line-clamp needs a fixed height to work properly
@@ -99,6 +102,12 @@ const newsPubDate = computed(() => {
     -webkit-box-orient: vertical;
     box-orient: vertical;
     padding-right: 8px; // leave space for the ellipsis
+
+    @include breakpoints.media(xs) {
+      height: calc($fontSize * 1.2 * $lineClampMobile);
+      -webkit-line-clamp: $lineClampMobile;
+      line-clamp: $lineClampMobile;
+    }
   }
 
   &:hover {

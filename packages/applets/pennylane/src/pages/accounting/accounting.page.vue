@@ -36,11 +36,14 @@ import { APICallStatus, RouteName } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
 import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-documents.helper'
 import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
+import { useResponsive } from '@pulse/styleguide'
 import { AccountingTab } from './accounting.page.enum'
 import AccountingHeader from '@pennylane/components/accounting-header/accounting-header.vue'
 import { useRouter } from 'vue-router'
 import { persistHideAccountingHeader, getHideAccountingHeader } from './accounting.helper'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
+
+const { isMobile } = useResponsive()
 
 const router = useRouter()
 
@@ -58,35 +61,46 @@ const accountId = computed(() => currentEntityStore.currentEntityId ?? 0)
 const pLegalName = computed(() => currentEntityStore.currentEntity?.legalName ?? '')
 const pAccountNumber = computed(() => currentEntityStore.currentEntityAccountNumber)
 
-const tabs: {
+type Tab = {
   name: AccountingTab
   label: string
   routeName: RouteName
-}[] = []
+}
 
-if (PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true) {
-  tabs.push({
-    name: AccountingTab.GED_V2,
-    label: t('tabs.ged-v2'),
-    routeName: RouteName.PENNYLANE_GED_V2,
-  })
-}
-if (PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true) {
-  tabs.push({
-    name: AccountingTab.GED_LEGACY,
-    label: t('tabs.ged-legacy'),
-    routeName: RouteName.PENNYLANE_GED_LEGACY,
-  })
-}
+const tabs = computed<Tab[]>(() => {
+  const result: Tab[] = []
+
+  if (PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true) {
+    result.push({
+      name: AccountingTab.GED_V2,
+      label: t('tabs.ged-v2'),
+      routeName: RouteName.PENNYLANE_GED_V2,
+    })
+  }
+
+  const showArchivesTab = PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true
+    && isMobile.value === false
+
+  // show archives on desktop only
+  if (showArchivesTab) {
+    result.push({
+      name: AccountingTab.GED_LEGACY,
+      label: t('tabs.ged-legacy'),
+      routeName: RouteName.PENNYLANE_GED_LEGACY,
+    })
+  }
+
+  return result
+})
 
 const currentTabName = computed(() => {
-  if (tabs.length === 0) {
+  if (tabs.value.length === 0) {
     return AccountingTab.GED_V2
   }
   const routeName = router.currentRoute.value.name
-  const tab = tabs.find(tab => tab.routeName === routeName)
+  const tab = tabs.value.find(tab => tab.routeName === routeName)
 
-  return tab?.name ?? tabs[0].name
+  return tab?.name ?? tabs.value[0].name
 })
 
 const hideAccountingHeader = ref(false)
@@ -97,7 +111,7 @@ function onClickCloseAccountingHeader() {
 }
 
 onMounted(async () => {
-  if (tabs.length === 0) {
+  if (tabs.value.length === 0) {
     logger.error('unmanaged case')
     router.push({ name: RouteName.ERROR403 })
   }
@@ -117,7 +131,7 @@ onMounted(async () => {
 
 function onTabClick(tabPane: TabsPaneContext) {
   const tabName = tabPane.props.name as AccountingTab
-  const tab = tabs.find(tab => tab.name === tabName)
+  const tab = tabs.value.find(tab => tab.name === tabName)
   if (tab !== undefined) {
     router.push({ name: tab.routeName })
   }

@@ -10,12 +10,16 @@ export function getDisplayData(
     return []
   }
   const {
+    name,
     path,
     createdAt,
     updatedAt,
   } = pennylaneDocument
 
   const displayData = [{
+    label: labels.name,
+    value: name,
+  }, {
     label: labels.path,
     value: path,
   }, {

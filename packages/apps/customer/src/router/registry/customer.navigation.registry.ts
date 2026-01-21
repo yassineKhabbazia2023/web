@@ -73,7 +73,7 @@ export function registerCustomerNavigationItems() {
     shouldDisplay: (ctx) => ctx.hasPennylanePermission(PennylanePermission.SOCIAL_V2),
     featureName: 'documents gestion sociale',
     order: 5,
-    showInMobile: true,
+    showInMobile: false,
     activeRoutes: [RouteName.PENNYLANE_SOCIAL_MANAGEMENT],
   })
 

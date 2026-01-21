@@ -38,6 +38,7 @@
           <li
             class="
             text-color--neutral-gray-900
+            word-break--break-all
           "
           >
             {{ value }}
@@ -63,6 +64,7 @@ const { t } = useI18n({
 const props = defineProps<PennylaneDocumentsDetailsProps>()
 
 const labels: PennylaneDocumentsDetailsLabels = {
+  name: t('fields.name'),
   path: t('fields.path'),
   createdAt: t('fields.createdAt'),
   updatedAt: t('fields.updatedAt'),
@@ -75,6 +77,7 @@ const displayData = computed(() => getDisplayData(labels, props.pennylaneDocumen
     details: 'Details'
     pathPrefix: 'Pennylane'
     fields:
+      name: 'Document name'
       path: 'Document localisation'
       createdAt: 'Filing date'
       updatedAt: 'Last update'
@@ -82,6 +85,7 @@ const displayData = computed(() => getDisplayData(labels, props.pennylaneDocumen
     details: 'Détails'
     pathPrefix: 'Pennylane'
     fields:
+      name: 'Nom du document'
       path: 'Emplacement du document'
       createdAt: 'Date de dépôt'
       updatedAt: 'Dernière modification'
