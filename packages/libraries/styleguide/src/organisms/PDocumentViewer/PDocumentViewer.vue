@@ -15,6 +15,7 @@
             v-if="pShowCloseButton"
             pPlain
             class="p-document-viewer__btn-back margin-right--2"
+            data-testid="document-viewer-back-button"
             @click="documentViewerModel = false"
           >
             <PIcon pName="arrowLeft" />
