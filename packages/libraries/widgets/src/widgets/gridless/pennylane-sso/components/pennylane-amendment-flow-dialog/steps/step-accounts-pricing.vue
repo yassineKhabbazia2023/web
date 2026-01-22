@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 class="font-extrabold margin-bottom--4">
+    <h2 class="font-bold margin-bottom--4">
       {{ t('widgets.pennylaneAmendmentFlow.step2.title') }}
     </h2>
 
@@ -8,7 +8,11 @@
       {{ t('widgets.pennylaneAmendmentFlow.step2.reformDescription') }}
     </p>
 
-    <div class="table-scroll-wrapper">
+    <!-- Desktop: Table -->
+    <div
+      v-if="isMobile === false"
+      class="table-scroll-wrapper"
+    >
       <PTable
         :pData="tableData"
         :pHeaderCellStyle="headerCellStyle"
@@ -34,7 +38,7 @@
           :min-width="180"
         >
           <template #header>
-            <div class="flex flex--align-items-center flex--justify-content-center width--full">
+            <div class="flex flex--align-items-center flex--justify-content-center width--100">
               <PIcon
                 pName="scales"
                 pSize="20"
@@ -51,7 +55,7 @@
           :min-width="200"
         >
           <template #header>
-            <div class="flex flex--align-items-center flex--justify-content-center width--full">
+            <div class="flex flex--align-items-center flex--justify-content-center width--100">
               <PIcon
                 pName="pennylaneColor"
                 pSize="20"
@@ -62,6 +66,73 @@
           </template>
         </PTableColumn>
       </PTable>
+    </div>
+
+    <!-- Mobile: Cards -->
+    <div
+      v-if="isMobile === true"
+      class="accounts-pricing-cards"
+    >
+      <div
+        v-for="(account, index) in tableData"
+        :key="index"
+        class="
+          accounts-pricing-card
+          radius--8
+          margin-bottom--3
+          overflow--hidden
+        "
+      >
+        <div class="accounts-pricing-card__header padding--4">
+          <span class="accounts-pricing-card__company font-bold">
+            {{ account.legalName }}
+          </span>
+        </div>
+
+        <div
+          class="
+            accounts-pricing-card__row
+            flex
+            flex--justify-content-space-between
+            flex--align-items-center
+            padding--4
+          "
+        >
+          <div class="accounts-pricing-card__label flex flex--align-items-center">
+            <PIcon
+              pName="scales"
+              pSize="16"
+              class="margin-right--2"
+            />
+            <span>{{ t('widgets.pennylaneAmendmentFlow.step2.table.compliance') }}</span>
+          </div>
+          <div class="accounts-pricing-card__value font-bold">
+            {{ account.compliancePrice }}
+          </div>
+        </div>
+
+        <div
+          class="
+            accounts-pricing-card__row
+            flex
+            flex--justify-content-space-between
+            flex--align-items-center
+            padding--4
+          "
+        >
+          <div class="accounts-pricing-card__label flex flex--align-items-center">
+            <PIcon
+              pName="pennylaneColor"
+              pSize="16"
+              class="margin-right--2"
+            />
+            <span>{{ t('widgets.pennylaneAmendmentFlow.step2.table.subscription') }}</span>
+          </div>
+          <div class="accounts-pricing-card__value font-bold">
+            {{ account.subscriptionPrice }}
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="margin-y--6">
@@ -96,6 +167,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useResponsive } from '@pulse/styleguide'
 import { PAlert, PIcon, PTable, PTableColumn, PTooltip } from '@pulse/styleguide/components'
 import type { StepAccountsPricingProps } from './step-accounts-pricing.types'
 
@@ -103,6 +175,8 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'global',
 })
+
+const { isMobile } = useResponsive()
 
 const props = defineProps<StepAccountsPricingProps>()
 
@@ -154,10 +228,6 @@ function cellStyle() {
 
 <style lang="scss" scoped>
 .table-scroll-wrapper {
-  overflow-x: auto;
-  overflow-y: auto;
-  max-height: 350px;
-  -webkit-overflow-scrolling: touch;
   width: 100%;
 }
 
@@ -167,6 +237,44 @@ function cellStyle() {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 160px;
+  }
+}
+
+.accounts-pricing-card {
+  border: 1px solid var(--p-gray-300);
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &__header {
+    background-color: var(--p-teal-100);
+    border-bottom: 1px solid var(--p-gray-200);
+  }
+
+  &__company {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__row {
+    border-bottom: 1px solid var(--p-gray-200);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__label {
+    font-size: 14px;
+  }
+
+  &__value {
+    text-align: right;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 }
 </style>

@@ -1,7 +1,12 @@
 <template>
-  <div class="step-accounts-pricing-faq padding--10">
+  <div
+    class="
+      step-accounts-pricing-faq
+      padding-responsive--dialog-content
+    "
+  >
     <div class="faq-section margin-y--8">
-      <div class="faq-section__header flex flex--align-items-end margin-bottom--3">
+      <div class="faq-section__header flex flex--align-items-center margin-bottom--3">
         <PIcon
           pName="scales"
           pSize="20"
@@ -23,7 +28,7 @@
     </div>
 
     <div class="faq-section">
-      <div class="faq-section__header flex flex--align-items-end margin-bottom--3">
+      <div class="faq-section__header flex flex--align-items-center margin-bottom--3">
         <PIcon
           pName="currencyEuro"
           pSize="20"
@@ -45,7 +50,7 @@
     </div>
 
     <div class="faq-section margin-y--8">
-      <div class="faq-section__header flex flex--align-items-end margin-bottom--3">
+      <div class="faq-section__header flex flex--align-items-center margin-bottom--3">
         <PIcon
           pName="pennylane"
           pSize="20"

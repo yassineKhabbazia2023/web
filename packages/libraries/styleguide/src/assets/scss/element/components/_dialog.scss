@@ -1,5 +1,6 @@
 // css3 var in packages/theme-chalk/src/dialog.scss
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
+@use '../../pegase/breakpoints' as breakpoints;
 
 $dialog: (
   'width': 50%,
@@ -13,7 +14,24 @@ $dialog: (
   'background': var(--p-white)
 );
 
+.el-overlay-dialog:has(.p-dialog:not(.is-fullscreen)) {
+  padding: 24px 0;
+  box-sizing: border-box;
+}
+
 .p-dialog {
+  &:not(.is-fullscreen) {
+    max-height: calc(100vh - 48px);
+    display: flex;
+    flex-direction: column;
+
+    .el-dialog__body {
+      overflow: auto;
+      flex: 1;
+      min-height: 0;
+    }
+  }
+
   &.no-shadow {
     box-shadow: none;
   }
@@ -67,5 +85,13 @@ $dialog: (
     .el-dialog__body {
       padding: 0;
     }
+  }
+}
+
+.padding-responsive--dialog-content {
+  padding: 4rem;
+
+  @include breakpoints.media(sm) {
+    padding: 1.6rem;
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <PDialog
     v-model="isVisible"
-    p-width="70%"
+    :p-width="dialogWidth"
     :p-show-close="false"
     :p-align-center="true"
     class="
@@ -20,15 +20,14 @@
       <div
         class="
           pennylane-access-blocked-dialog__left
-          padding-top--0
-          padding--10
+          padding-responsive--dialog-content
           flex
           flex--direction-column
           flex--basis-50
           bg--base-white
         "
       >
-        <h2 class="pennylane-access-blocked-dialog__title margin-bottom--6">
+        <h2 class="pennylane-access-blocked-dialog__title margin-bottom--6 font-bold">
           {{ t('widgets.pennylaneAccessBlocked.title') }}
         </h2>
 
@@ -118,12 +117,17 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDialog, PButton, PImage } from '@pulse/styleguide/components'
+import { useResponsive } from '@pulse/styleguide'
 import type { PennylaneAccessBlockedDialogProps } from './pennylane-access-blocked-dialog.type'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'global',
 })
+
+const { isMobile } = useResponsive()
+
+const dialogWidth = computed(() => isMobile.value ? '95%' : '70%')
 
 const props = defineProps<PennylaneAccessBlockedDialogProps>()
 
@@ -142,15 +146,17 @@ const handleClose = () => {
 </script>
 
 <style lang="scss" scoped>
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
 .pennylane-access-blocked-dialog {
   &__content {
-    @media screen and (max-width: 1125px) {
-      min-height: auto;
+    @include breakpoints.media(xs) {
+      flex-direction: column;
     }
   }
 
   &__left {
-    @media screen and (max-width: 1100px) {
+    @include breakpoints.media(sm) {
       flex-basis: 100% !important;
     }
   }
@@ -158,7 +164,7 @@ const handleClose = () => {
   &__right {
     position: relative;
 
-    @media screen and (max-width: 1100px) {
+    @include breakpoints.media(sm) {
       display: none;
     }
   }

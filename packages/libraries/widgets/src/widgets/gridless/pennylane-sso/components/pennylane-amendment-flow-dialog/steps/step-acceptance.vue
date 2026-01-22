@@ -52,8 +52,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PCheckbox, PAlert } from '@pulse/styleguide/components'
-import { PennylaneService } from '@pulse/common/services/pennylane'
-import { logger } from '@pulse/toolbox'
+import { openTermsPdfInNewTab } from '../pennylane-terms.helper'
 import type { StepAcceptanceProps } from './step-acceptance.types'
 
 const { t } = useI18n({
@@ -67,22 +66,17 @@ const emit = defineEmits<{
   'update:isAccepted': [value: boolean]
 }>()
 
-async function openTermsPdf() {
-  try {
-    const pdfData = await PennylaneService.getTermsContent(props.accountId)
-    const blob = new Blob([pdfData], { type: 'application/pdf' })
-    const fileURL = URL.createObjectURL(blob)
-    window.open(fileURL)
-  } catch {
-    logger.error('Error opening terms PDF')
-  }
+function openTermsPdf() {
+  openTermsPdfInNewTab(props.accountId)
 }
 </script>
 
 <style lang="scss" scoped>
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
 .step-acceptance {
   &__checkbox-label {
-    @media screen and (max-width: 768px) {
+    @include breakpoints.media(xs) {
       font-size: 16px;
     }
   }

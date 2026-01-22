@@ -51,6 +51,15 @@ export class PennylaneTermsViewerManager {
   }
 
   /**
+   * Formats zoom value as percentage string
+   * @param zoom - Zoom value (1 = 100%)
+   * @returns Formatted percentage string
+   */
+  static formatZoomPercentage(zoom: number): string {
+    return `${Math.round(zoom * 100)}%`
+  }
+
+  /**
    * Renders a PDF page on a canvas
    * @param page - PDF page to render
    * @param canvas - Target HTML canvas

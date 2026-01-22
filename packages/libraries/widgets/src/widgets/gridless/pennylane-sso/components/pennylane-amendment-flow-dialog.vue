@@ -14,10 +14,10 @@
   >
     <div :class="contentClasses">
       <div
+        ref="leftPanelRef"
         class="
           pennylane-amendment-flow-dialog__left
-          padding-top--0
-          padding--10
+          padding-responsive--dialog-content
           flex
           flex--direction-column
           bg--base-white
@@ -77,7 +77,7 @@
               <PButton
                 v-if="isFirstStep === false"
                 p-type="secondary"
-                @click="handlePrevious"
+                @click="onPrevious"
               >
                 {{ t('widgets.pennylaneAmendmentFlow.common.buttonBack') }}
               </PButton>
@@ -96,7 +96,7 @@
                 v-else-if="isLastStep === false"
                 p-type="primary"
                 :p-disabled="isNextButtonDisabled"
-                @click="handleNext"
+                @click="onNext"
               >
                 {{ t('widgets.pennylaneAmendmentFlow.common.buttonContinue') }}
               </PButton>
@@ -159,7 +159,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useResponsive } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
@@ -202,6 +202,22 @@ const {
 
 const isAcceptLoading = ref(false)
 const isRefuseLoading = ref(false)
+const leftPanelRef = ref<HTMLElement | null>(null)
+
+async function scrollToTop() {
+  await nextTick()
+  leftPanelRef.value?.scrollTo({ top: 0 })
+}
+
+async function onNext() {
+  handleNext()
+  await scrollToTop()
+}
+
+async function onPrevious() {
+  handlePrevious()
+  await scrollToTop()
+}
 
 const isVisible = computed({
   get: () => props.modelValue,
@@ -284,9 +300,11 @@ async function handleAccept() {
 </script>
 
 <style lang="scss" scoped>
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
 .pennylane-amendment-flow-dialog {
   &__content {
-    @media screen and (max-width: 1125px) {
+    @include breakpoints.media(sm) {
       min-height: auto;
     }
 
@@ -295,7 +313,7 @@ async function handleAccept() {
         flex-basis: 62%;
         min-width: 0;
 
-        @media screen and (max-width: 1024px) {
+        @include breakpoints.media(md2) {
           flex-basis: 100%;
         }
       }
@@ -305,12 +323,12 @@ async function handleAccept() {
         min-width: 0;
         display: block;
 
-        @media screen and (max-width: 1024px) {
+        @include breakpoints.media(md2) {
           flex-basis: 100%;
         }
       }
 
-      @media screen and (max-width: 1024px) {
+      @include breakpoints.media(md2) {
         flex-wrap: wrap;
       }
     }
@@ -330,7 +348,7 @@ async function handleAccept() {
       .pennylane-amendment-flow-dialog__left {
         flex-basis: 54%;
 
-        @media screen and (max-width: 1120px) {
+        @include breakpoints.media(md) {
           flex-basis: 100%;
         }
       }
@@ -338,7 +356,7 @@ async function handleAccept() {
       .pennylane-amendment-flow-dialog__right {
         flex-basis: 46%;
 
-        @media screen and (max-width: 1120px) {
+        @include breakpoints.media(md) {
           display: none;
         }
       }

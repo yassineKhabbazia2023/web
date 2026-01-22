@@ -104,7 +104,8 @@
         "subtitle": "La consultation complète du document est obligatoire, veuillez aller jusqu'en bas du texte pour continuer.",
         "noPdfAvailable": "Le document n'est pas disponible actuellement.",
         "scrollToBottom": "Aller en bas du texte",
-        "errorLoadingDocument": "Impossible de charger le document. Veuillez réessayer."
+        "errorLoadingDocument": "Impossible de charger le document. Veuillez réessayer.",
+        "openInNewTab": "Ouvrir dans un nouvel onglet"
       },
       "step4": {
         "title": "3/3 Acceptation des conditions",

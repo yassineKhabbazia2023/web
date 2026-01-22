@@ -1,13 +1,15 @@
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import type { Ref } from 'vue'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { logger } from '@pulse/toolbox'
+import { getIsMobile } from '@pulse/styleguide'
 import { PennylaneTermsViewerManager } from './pennylane-terms-viewer.manager'
 import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from './pennylane-terms-viewer.types'
+import { ZOOM_STEP, MIN_ZOOM, MAX_ZOOM, MOBILE_SCALE, DEFAULT_CONTAINER_WIDTH } from './pennylane-terms-viewer.types'
 
 /**
  * Composable for managing the Pennylane terms and conditions PDF viewer
- * Handles loading, page rendering and scroll detection
+ * Handles loading, page rendering, zoom controls and scroll detection
  */
 export function usePennylaneTermsViewer(
   accountId: Ref<number>,
@@ -20,11 +22,23 @@ export function usePennylaneTermsViewer(
   const pdfContainer = ref<HTMLDivElement | null>(null)
   const isAtBottom = ref(false)
 
+  const zoomLevel = ref(1)
+  const baseScale = ref(1)
+
   let pdfDocument: PDFDocumentProxy | null = null
   let pdfPages: PDFPageProxy[] = []
   let renderTasks: (RenderTask | null)[] = []
   const renderedPages = new Set<number>()
   let scrollObserver: IntersectionObserver | null = null
+
+  const effectiveScale = computed(() => baseScale.value * zoomLevel.value)
+
+  const zoomPercentage = computed(() =>
+    PennylaneTermsViewerManager.formatZoomPercentage(zoomLevel.value),
+  )
+
+  const canZoomIn = computed(() => zoomLevel.value < MAX_ZOOM)
+  const canZoomOut = computed(() => zoomLevel.value > MIN_ZOOM)
 
   /**
    * Loads the PDF from the Pennylane service
@@ -37,15 +51,18 @@ export function usePennylaneTermsViewer(
       cleanupObserverAndListeners()
       cancelAllRenderTasks()
 
-      const pdfData = await PennylaneService.getTermsContent(accountId.value)
+      const fetchedPdfData = await PennylaneService.getTermsContent(accountId.value)
 
-      pdfDocument = await PennylaneTermsViewerManager.loadPdfDocument(pdfData)
+      pdfDocument = await PennylaneTermsViewerManager.loadPdfDocument(fetchedPdfData)
       pdfPages = await PennylaneTermsViewerManager.getAllPages(pdfDocument)
 
       canvasRefs.value = new Array(pdfPages.length).fill(null)
       numPages.value = pdfPages.length
 
       await nextTick()
+
+      calculateBaseScale()
+
       await new Promise(resolve => setTimeout(resolve, 200))
 
       isLoading.value = false
@@ -59,11 +76,34 @@ export function usePennylaneTermsViewer(
   }
 
   /**
+   * Calculates the base scale to fit the PDF width in the container
+   */
+  function calculateBaseScale() {
+    if (pdfPages.length === 0) {
+      return
+    }
+
+    const firstPage = pdfPages[0]
+    const isMobile = getIsMobile(window.innerWidth)
+
+    if (isMobile) {
+      baseScale.value = MOBILE_SCALE
+      return
+    }
+
+    const containerWidth = pdfContainer.value?.clientWidth ?? DEFAULT_CONTAINER_WIDTH
+    baseScale.value = PennylaneTermsViewerManager.calculateOptimalScale(
+      firstPage,
+      containerWidth,
+    )
+  }
+
+  /**
    * Renders a PDF page on the corresponding canvas
    */
   function renderPage(page: PDFPageProxy, index: number) {
     const canvas = canvasRefs.value[index]
-    if (!canvas) {
+    if (canvas === null || canvas === undefined) {
       return
     }
 
@@ -71,8 +111,7 @@ export function usePennylaneTermsViewer(
       renderTasks[index]?.cancel()
     }
 
-    const containerWidth = pdfContainer.value?.clientWidth ?? 733
-    const scale = PennylaneTermsViewerManager.calculateOptimalScale(page, containerWidth)
+    const scale = effectiveScale.value
 
     const renderTask = PennylaneTermsViewerManager.renderPageToCanvas(page, canvas, scale)
     renderTasks[index] = renderTask
@@ -87,6 +126,42 @@ export function usePennylaneTermsViewer(
         }
         renderTasks[index] = null
       })
+  }
+
+  /**
+   * Re-renders all pages with the current scale
+   */
+  function rerenderAllPages() {
+    renderedPages.clear()
+    pdfPages.forEach((page, index) => {
+      const canvas = canvasRefs.value[index]
+      if (canvas) {
+        renderedPages.add(index)
+        renderPage(page, index)
+      }
+    })
+  }
+
+  /**
+   * Zooms in by one step
+   */
+  function zoomIn() {
+    if (canZoomIn.value === false) {
+      return
+    }
+    zoomLevel.value += ZOOM_STEP
+    rerenderAllPages()
+  }
+
+  /**
+   * Zooms out by one step
+   */
+  function zoomOut() {
+    if (canZoomOut.value === false) {
+      return
+    }
+    zoomLevel.value -= ZOOM_STEP
+    rerenderAllPages()
   }
 
   /**
@@ -108,11 +183,11 @@ export function usePennylaneTermsViewer(
       },
       {
         root: pdfContainer.value,
-        threshold: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+        threshold: [0.5, 0.6, 0.7, 0.8, 0.9, 1],
       },
     )
 
-    const lastCanvas = canvasRefs.value[canvasRefs.value.length - 1]
+    const lastCanvas = canvasRefs.value.at(-1)
     if (lastCanvas) {
       scrollObserver.observe(lastCanvas)
     }
@@ -148,7 +223,7 @@ export function usePennylaneTermsViewer(
    * Automatically scrolls to the bottom of the PDF
    */
   function scrollToBottom() {
-    if (!pdfContainer.value) {
+    if (pdfContainer.value === null) {
       return
     }
 
@@ -190,7 +265,7 @@ export function usePennylaneTermsViewer(
     if (el) {
       canvasRefs.value[index] = el
 
-      if (!renderedPages.has(index)) {
+      if (renderedPages.has(index) === false) {
         const page = pdfPages[index]
         if (page) {
           renderedPages.add(index)
@@ -225,7 +300,12 @@ export function usePennylaneTermsViewer(
     numPages,
     pdfContainer,
     isAtBottom,
+    zoomPercentage,
+    canZoomIn,
+    canZoomOut,
     setCanvasRef,
     scrollToBottom,
+    zoomIn,
+    zoomOut,
   }
 }

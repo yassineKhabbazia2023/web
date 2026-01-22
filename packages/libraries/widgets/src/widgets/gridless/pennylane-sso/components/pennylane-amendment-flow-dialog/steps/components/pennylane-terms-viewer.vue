@@ -2,10 +2,12 @@
   <div class="height--100 flex flex--direction-column position--relative">
     <div
       v-if="isLoading === true"
-      class="pennylane-terms-viewer__loading-state
+      class="
+        pennylane-terms-viewer__loading-state
         flex
         flex--justify-content-center
-        flex--align-items-center"
+        flex--align-items-center
+      "
     >
       <PLoader
         pType="gradient"
@@ -15,53 +17,65 @@
 
     <div
       v-else-if="isError === true"
-      class="pennylane-terms-viewer__error-state
+      class="
+        pennylane-terms-viewer__error-state
         flex
         flex--justify-content-center
-        flex--align-items-flex-start"
+        flex--align-items-flex-start
+      "
     >
       <PAlert pType="danger">
         {{ t('widgets.pennylaneAmendmentFlow.step3.errorLoadingDocument') }}
       </PAlert>
     </div>
 
-    <div
-      v-else
-      ref="pdfContainer"
-      class="pennylane-terms-viewer__container width--100 margin-x--auto"
-      role="document"
-      aria-label="Pennylane terms and conditions PDF document"
-    >
-      <div class="pennylane-terms-viewer__content flex flex--direction-column flex--align-items-center">
-        <canvas
-          v-for="index in numPages"
-          :key="index"
-          :ref="el => handleCanvasRef(el, index - 1)"
-          :data-page="index"
-          :data-last-page="index === numPages"
-          class="pennylane-terms-viewer__page bg--white shadow--1 margin-x--auto"
-        />
-      </div>
+    <template v-else>
+      <PennylaneTermsViewerToolbar
+        :zoom-percentage="zoomPercentage"
+        :can-zoom-in="canZoomIn"
+        :can-zoom-out="canZoomOut"
+        :account-id="props.accountId"
+        @zoom-in="zoomIn"
+        @zoom-out="zoomOut"
+      />
 
       <div
-        v-if="shouldShowScrollButton === true"
-        class="pennylane-terms-viewer__button-wrapper flex flex--justify-content-flex-end"
+        ref="pdfContainer"
+        class="pennylane-terms-viewer__container width--100 margin-x--auto"
+        role="document"
+        aria-label="Pennylane terms and conditions PDF document"
       >
-        <PButton
-          p-type="secondary"
-          p-size="small"
-          class="pennylane-terms-viewer__button margin-right--4"
-          @click="scrollToBottom"
-        >
-          {{ t('widgets.pennylaneAmendmentFlow.step3.scrollToBottom') }}
-          <PIcon
-            class="margin-left--2"
-            pName="arrowDown"
-            pSize="12"
+        <div class="pennylane-terms-viewer__content flex flex--direction-column flex--align-items-center">
+          <canvas
+            v-for="index in numPages"
+            :key="index"
+            :ref="el => handleCanvasRef(el, index - 1)"
+            :data-page="index"
+            :data-last-page="index === numPages"
+            class="pennylane-terms-viewer__page bg--white shadow--1 margin-x--auto"
           />
-        </PButton>
+        </div>
+
+        <div
+          v-if="shouldShowScrollButton === true"
+          class="pennylane-terms-viewer__button-wrapper flex flex--justify-content-flex-end"
+        >
+          <PButton
+            p-type="secondary"
+            p-size="small"
+            class="pennylane-terms-viewer__button margin-right--4"
+            @click="scrollToBottom"
+          >
+            {{ t('widgets.pennylaneAmendmentFlow.step3.scrollToBottom') }}
+            <PIcon
+              class="margin-left--2"
+              pName="arrowDown"
+              pSize="12"
+            />
+          </PButton>
+        </div>
       </div>
-    </div>
+    </template>
   </div>
 </template>
 
@@ -72,6 +86,7 @@ import { useI18n } from 'vue-i18n'
 import { GlobalWorkerOptions } from 'pdfjs-dist'
 import { PLoader, PAlert, PButton, PIcon } from '@pulse/styleguide/components'
 import { usePennylaneTermsViewer } from './pennylane-terms-viewer.composable'
+import PennylaneTermsViewerToolbar from './pennylane-terms-viewer-toolbar.vue'
 import type { PennylaneTermsViewerProps } from './pennylane-terms-viewer.types'
 
 GlobalWorkerOptions.workerPort = new Worker(
@@ -97,8 +112,13 @@ const {
   numPages,
   pdfContainer,
   isAtBottom,
+  zoomPercentage,
+  canZoomIn,
+  canZoomOut,
   setCanvasRef,
   scrollToBottom,
+  zoomIn,
+  zoomOut,
 } = usePennylaneTermsViewer(accountIdRef, () => emit('scroll-complete'))
 
 const shouldShowScrollButton = computed(() =>
@@ -125,8 +145,9 @@ function handleCanvasRef(el: Element | ComponentPublicInstance | null, pageIndex
     overflow-y: auto;
     background-color: var(--p-gray-100);
     border: 1px solid var(--p-gray-300);
+    border-top: none;
     max-height: 345px;
-    padding: var(--spacing-4) var(--spacing-4) 0;
+    padding: 1.6rem 1.6rem 0;
   }
 
   &__content {
@@ -135,7 +156,7 @@ function handleCanvasRef(el: Element | ComponentPublicInstance | null, pageIndex
 
   &__page {
     display: block;
-    margin-bottom: var(--spacing-4);
+    margin-bottom: 1.6rem;
 
     &:last-child {
       margin-bottom: 0;

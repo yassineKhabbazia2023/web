@@ -83,6 +83,24 @@ describe('PennylaneTermsViewerManager', () => {
     })
   })
 
+  describe('formatZoomPercentage', () => {
+    it('should format zoom level as percentage', () => {
+      expect(PennylaneTermsViewerManager.formatZoomPercentage(1)).toBe('100%')
+    })
+
+    it('should format decimal zoom level as percentage', () => {
+      expect(PennylaneTermsViewerManager.formatZoomPercentage(1.5)).toBe('150%')
+    })
+
+    it('should round zoom percentage', () => {
+      expect(PennylaneTermsViewerManager.formatZoomPercentage(1.234)).toBe('123%')
+    })
+
+    it('should handle zoom below 100%', () => {
+      expect(PennylaneTermsViewerManager.formatZoomPercentage(0.5)).toBe('50%')
+    })
+  })
+
   describe('calculateOptimalScale', () => {
     it('should calculate correct scale for given container width', () => {
       const mockPage = {

@@ -1,6 +1,6 @@
 <template>
   <div class="step-terms-preview">
-    <h2 class="font-extrabold margin-bottom--6">
+    <h2 class="font-bold margin-bottom--6">
       {{ t('widgets.pennylaneAmendmentFlow.step3.title') }}
     </h2>
 
