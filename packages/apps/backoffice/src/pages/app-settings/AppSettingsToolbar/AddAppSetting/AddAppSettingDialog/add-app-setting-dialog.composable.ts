@@ -1,13 +1,12 @@
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { logger } from '@pulse/toolbox'
 import { displayNotification } from '@pulse/styleguide'
 import { AppSettingsListService } from '@backoffice/services/app-settings-list/app-settings-list.service'
-import type {
-  CreateAppSettingApiPayload,
-  EnvironmentOption,
-} from '@backoffice/services/app-settings-list/app-settings-list.service.type'
+import type { CreateAppSettingApiPayload } from '@backoffice/services/app-settings-list/app-settings-list.service.type'
+import type { EnvironmentOption } from '@backoffice/types/environment-option.type'
 import type { CreateAppSettingFormData, UseAddAppSettingDialogOptions, ValidationErrors } from './add-app-setting-dialog.type'
 import { AddAppSettingDialogManager } from './add-app-setting-dialog.manager'
+import { buildTargetsFromValues } from '@backoffice/helpers/app-settings-targets.helper'
 
 export function useAddAppSettingDialog(options: UseAddAppSettingDialogOptions) {
   const form = ref<CreateAppSettingFormData>(AddAppSettingDialogManager.createInitialFormState())
@@ -17,26 +16,16 @@ export function useAddAppSettingDialog(options: UseAddAppSettingDialogOptions) {
   const isCreating = ref(false)
   const errors = ref<ValidationErrors>({})
 
-  const isFormValid = computed(() => {
+ const isFormValid = computed(() => {
     const hasName = form.value.name.trim().length > 0
-    const hasValue = form.value.value.trim().length > 0
-    const hasEnvironments =
-      form.value.allEnvs === true ||
-      form.value.selectedEnvironments.length > 0
 
-    return hasName === true && hasValue === true && hasEnvironments === true
+    const values = Object.values(form.value.valuesByTarget ?? {})
+    const hasAtLeastOneTargetValue = values.some(
+      (value) => value.trim().length > 0,
+    )
+
+    return hasName && hasAtLeastOneTargetValue
   })
-
-  watch(
-    () => form.value.allEnvs,
-    (allEnvs) => {
-      if (allEnvs === true) {
-        form.value.selectedEnvironments = []
-      } else {
-        form.value.withLabels = false
-      }
-    },
-  )
 
   function validateForm(): boolean {
     errors.value = {}
@@ -47,33 +36,22 @@ export function useAddAppSettingDialog(options: UseAddAppSettingDialogOptions) {
       errors.value.name = 'Le nom de la clé doit respecter le format : Domain_xxx_nomdomain_nomcle'
     }
 
-    if (form.value.value.trim().length === 0) {
-      errors.value.value = 'La valeur est requise'
-    }
-
-    if (
-      form.value.allEnvs === false &&
-      form.value.selectedEnvironments.length === 0
-    ) {
-      errors.value.selectedEnvironments = 'Au moins un environnement doit être sélectionné'
+    const valuesByTarget = form.value.valuesByTarget ?? {}
+    const hasAny = Object.values(valuesByTarget).some((v) => v.trim().length > 0)
+    if (hasAny === false) {
+      errors.value.valuesByTarget = 'Renseignez au moins une valeur pour un environnement ou un label'
     }
 
     return Object.keys(errors.value).length === 0
   }
 
   function buildApiPayload(): CreateAppSettingApiPayload {
-    const type = form.value.isSecret === true ? 'secret' : 'string'
-    const targets = AddAppSettingDialogManager.buildTargetsFromSelection(form.value.selectedEnvironments)
-
     return {
       name: form.value.name,
-      type,
-      value: form.value.value,
-      targets,
-      allEnvs: form.value.allEnvs,
-      withLabels: form.value.withLabels,
+      targets: buildTargetsFromValues(form.value.valuesByTarget),
     }
   }
+
 
   function resetForm(): void {
     form.value = AddAppSettingDialogManager.createInitialFormState()
@@ -91,7 +69,7 @@ export function useAddAppSettingDialog(options: UseAddAppSettingDialogOptions) {
 
   async function handleCreate(): Promise<void> {
     if (validateForm() === false) {
-      return
+        return
     }
 
     const payload = buildApiPayload()

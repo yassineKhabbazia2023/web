@@ -4,11 +4,7 @@ export interface AddAppSettingDialogProps {
 
 export interface CreateAppSettingFormData {
   name: string
-  value: string
-  isSecret: boolean
-  allEnvs: boolean
-  withLabels: boolean
-  selectedEnvironments: string[]
+  valuesByTarget: Record<string, string>
 }
 
 export interface UseAddAppSettingDialogOptions {
@@ -18,6 +14,5 @@ export interface UseAddAppSettingDialogOptions {
 
 export interface ValidationErrors {
   name?: string
-  selectedEnvironments?: string
-  value?: string
+  valuesByTarget?: string
 }

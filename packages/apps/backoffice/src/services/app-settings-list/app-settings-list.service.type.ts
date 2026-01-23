@@ -1,5 +1,3 @@
-import type { EnvironmentOption } from '@backoffice/types/environment-option.type'
-
 export interface DeleteAppSettingResult {
   environment: string
   success: boolean
@@ -31,11 +29,14 @@ export interface GetAppSettingsListParams {
   hasIncoherence?: boolean
 }
 
+export interface CreateAppSettingTarget {
+  environment: string
+  label: string
+  value: string
+}
+
 export interface CreateAppSettingApiPayload {
   name: string
-  type: 'string' | 'secret'
-  value: string
-  targets: EnvironmentOption[]
-  allEnvs: boolean
-  withLabels: boolean
+  targets: CreateAppSettingTarget[]
 }
+

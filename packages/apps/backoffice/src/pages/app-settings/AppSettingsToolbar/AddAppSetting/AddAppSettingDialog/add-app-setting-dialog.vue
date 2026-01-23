@@ -33,83 +33,11 @@
           pPlaceholder="Domain_acc_account_Config__ApiKey"
         />
       </PFormItem>
-
-      <PFormItem
-        pLabel="Valeur"
-        prop="value"
-        pRequired
-        :pError="errors.value"
-        class="margin-bottom--5"
-      >
-        <PInput
-          id="value-input"
-          v-model="form.value"
-          data-testid="add-app-setting-value-input"
-          pPlaceholder="https://api.example.com/..."
-        />
-      </PFormItem>
     </PForm>
 
-    <div class="background-color--neutral-gray-50 border-radius--2 margin-bottom--5">
-      <div class="flex flex--align-items-center flex--justify-content-space-between margin-bottom--">
-        <div>
-          <p class="font-small font-semibold text-color--neutral-gray-900 margin--0">
-            Variable secrète
-          </p>
-          <p class="font-small text-color--neutral-gray-600 margin--0 margin-top--1">
-            Les valeurs seront masquées dans l'interface
-          </p>
-        </div>
-        <PSwitch
-          v-model="form.isSecret"
-          data-testid="add-app-setting-is-secret-switch"
-          pSize="small"
-        />
-      </div>
-
-      <div class="border-top--1 border-color--neutral-gray-200 padding-top--3">
-        <div class="flex flex--align-items-center flex--justify-content-space-between">
-          <div>
-            <p class="font-small font-semibold text-color--neutral-gray-900 margin--0">
-              Appliquer à tous les environnements
-            </p>
-            <p class="font-small text-color--neutral-gray-600 margin--0 margin-top--1">
-              Tous les environnements et labels disponibles
-            </p>
-          </div>
-          <PSwitch
-            v-model="form.allEnvs"
-            data-testid="add-app-setting-all-envs-switch"
-            pSize="small"
-          />
-        </div>
-      </div>
-
-      <div
-        v-if="form.allEnvs === true"
-        class="border-top--1 border-color--neutral-gray-200 padding-top--3"
-      >
-        <div class="flex flex--align-items-center flex--justify-content-space-between">
-          <div>
-            <p class="font-small font-semibold text-color--neutral-gray-900 margin--0">
-              Inclure les labels
-            </p>
-            <p class="font-small text-color--neutral-gray-600 margin--0 margin-top--1">
-              Applique également à tous les labels de chaque environnement
-            </p>
-          </div>
-          <PSwitch
-            v-model="form.withLabels"
-            data-testid="add-app-setting-with-labels-switch"
-            pSize="small"
-          />
-        </div>
-      </div>
-    </div>
-
-    <div v-if="form.allEnvs === false">
+    <div>
       <p class="font-small font-semibold text-color--neutral-gray-900 margin--0 margin-y--3">
-        Sélectionner les environnements cibles
+        Saisir les valeurs par environnement
       </p>
 
       <div
@@ -120,7 +48,7 @@
       </div>
 
       <PAlert
-        v-else-if="hasEnvironmentLoadError"
+        v-if="hasEnvironmentLoadError"
         pType="error"
         class="margin-bottom--3"
       >
@@ -131,18 +59,18 @@
         v-else
         class="bg--neutral-gray-50 border-radius--2 padding-x--4 padding-y--2"
       >
-        <EnvironmentHierarchicalSelector
-          v-model="form.selectedEnvironments"
+        <EnvironmentValueEditor
+          v-model="form.valuesByTarget"
           :availableEnvironments="availableEnvironments"
           :disabled="isCreating"
         />
       </div>
 
       <p
-        v-if="errors.selectedEnvironments"
+        v-if="errors.valuesByTarget"
         class="font-small text-color--danger-500 margin--0 margin-top--2"
       >
-        {{ errors.selectedEnvironments }}
+        {{ errors.valuesByTarget }}
       </p>
     </div>
 
@@ -183,7 +111,6 @@ import {
   PButton,
   PDialog,
   PInput,
-  PSwitch,
   PIcon,
   PForm,
   PFormItem,
@@ -191,7 +118,7 @@ import {
   PLoader,
 } from '@pulse/styleguide/components'
 import type { FormInstance } from '@pulse/styleguide/types'
-import EnvironmentHierarchicalSelector from '@backoffice/components/EnvironmentHierarchicalSelector/environment-hierarchical-selector.vue'
+import EnvironmentValueEditor from '@backoffice/components/EnvironmentValueEditor/environment-value-editor.vue'
 import type { AddAppSettingDialogProps } from './add-app-setting-dialog.type'
 import { useAddAppSettingDialog } from './add-app-setting-dialog.composable'
 
