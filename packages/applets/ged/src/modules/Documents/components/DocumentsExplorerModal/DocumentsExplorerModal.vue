@@ -221,7 +221,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
-@use '@ged/utils/breakpoints';
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
 .documents-explorer-modal {
   margin-top: 13vh;
 

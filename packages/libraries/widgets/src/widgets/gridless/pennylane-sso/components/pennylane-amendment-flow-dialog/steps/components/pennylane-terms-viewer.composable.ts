@@ -4,6 +4,7 @@ import { PennylaneService } from '@pulse/common/services/pennylane'
 import { logger } from '@pulse/toolbox'
 import { getIsMobile } from '@pulse/styleguide'
 import { PennylaneTermsViewerManager } from './pennylane-terms-viewer.manager'
+import { downloadTermsPdf } from '../../pennylane-terms.helper'
 import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from './pennylane-terms-viewer.types'
 import { ZOOM_STEP, MIN_ZOOM, MAX_ZOOM, MOBILE_SCALE, DEFAULT_CONTAINER_WIDTH } from './pennylane-terms-viewer.types'
 
@@ -294,9 +295,26 @@ export function usePennylaneTermsViewer(
     loadPdf()
   })
 
+  const isDownloading = ref(false)
+
+  /**
+   * Downloads the PDF and emits scroll-complete to enable the next button.
+   * Used as fallback when the PDF viewer fails to load (e.g., on iOS).
+   */
+  async function downloadAndContinue() {
+    isDownloading.value = true
+    try {
+      await downloadTermsPdf(accountId.value)
+      emit('scroll-complete')
+    } finally {
+      isDownloading.value = false
+    }
+  }
+
   return {
     isLoading,
     isError,
+    isDownloading,
     numPages,
     pdfContainer,
     isAtBottom,
@@ -307,5 +325,6 @@ export function usePennylaneTermsViewer(
     scrollToBottom,
     zoomIn,
     zoomOut,
+    downloadAndContinue,
   }
 }

@@ -23,6 +23,7 @@ export { useResponsive } from './composables/use-responsive.composable'
 export type { UseResponsiveReturn } from './composables/use-responsive.composable'
 export * from './utils/avatar-colors.helper'
 export * from './utils/fileExtension'
+export * from './utils/scroll.utils'
 
 export default {
   install(_app: App, options: AppOptions) {

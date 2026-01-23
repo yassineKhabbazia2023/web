@@ -1,6 +1,6 @@
 <template>
   <ProfilePageLayout
-    footer-id="my-information__footer-drawer"
+    footer-id="my-information__footer-page"
     :title="t('title')"
   >
     <MyInformation standalone />

@@ -58,7 +58,7 @@ const filteredFailedDocuments = computed(() => props.documents
 </script>
 
 <style lang="scss">
-@use '@ged/utils/breakpoints';
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
 
 .files-error-container {
   display: flex;

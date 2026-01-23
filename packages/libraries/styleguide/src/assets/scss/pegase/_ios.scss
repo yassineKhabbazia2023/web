@@ -1,0 +1,9 @@
+// iOS Safari smooth momentum scrolling
+.el-dialog__body,
+.el-drawer__body,
+.p-drawer__body,
+.el-scrollbar__wrap,
+.overflow-y--auto,
+.overflow--auto {
+  -webkit-overflow-scrolling: touch;
+}

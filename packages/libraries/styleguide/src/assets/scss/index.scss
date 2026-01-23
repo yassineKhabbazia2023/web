@@ -1,6 +1,8 @@
 @use './element/index';
 @use './pegase/normalize';
 @use './pegase/custom';
+@use './pegase/responsive-display';
+@use './pegase/ios';
 @use './pegase/colors-classes.generation';
 @use './partners/pennylane';
 

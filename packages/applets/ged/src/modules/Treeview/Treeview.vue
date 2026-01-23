@@ -605,7 +605,7 @@ defineExpose({
 </script>
 
 <style lang="scss">
-@use '@ged/utils/breakpoints';
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
 
 .treeview {
   width: 100%;

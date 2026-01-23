@@ -71,15 +71,29 @@
         />
       </div>
 
+      <!-- Standalone mode: render button inline -->
+      <div
+        v-if="standalone === true"
+        class="flex flex--justify-content-flex-end margin-top--6"
+      >
+        <PButton
+          pType="primary"
+          :pDisabled="!formValues.mobilePhone"
+          :pLoading="isUpdateInProgress"
+          @click="handleFormSubmit(formRef)"
+        >
+          {{ t('saveChanges') }}
+        </PButton>
+      </div>
+
+      <!-- Drawer mode: teleport to drawer footer -->
       <Teleport
+        v-if="standalone === false"
         defer
         to="#my-information__footer-drawer"
       >
-        <div
-          class="flex"
-          :class="footerClass"
-        >
-          <LogoutButton v-if="standalone === false" />
+        <div class="flex flex--justify-content-space-between">
+          <LogoutButton />
 
           <PButton
             pType="primary"
@@ -96,7 +110,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
 import { commonApi } from '@pulse/common'
@@ -108,15 +122,9 @@ import { LegalLinks } from '@pulse/shared/components'
 import type { FormValues, MyInformationProps, User } from './my-information.type'
 import LogoutButton from '../logout-button'
 
-const props = withDefaults(defineProps<MyInformationProps>(), {
+withDefaults(defineProps<MyInformationProps>(), {
   standalone: false,
 })
-
-const footerClass = computed(() =>
-  props.standalone === false
-    ? 'flex--justify-content-space-between'
-    : 'flex--justify-content-flex-end',
-)
 
 const { t } = useI18n({
   inheritLocale: true,

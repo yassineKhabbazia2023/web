@@ -17,7 +17,24 @@
         :disabled="isLoading"
       />
 
+      <!-- Standalone mode: render button inline -->
+      <div
+        v-if="standalone === true"
+        class="flex flex--justify-content-flex-end margin-top--6"
+      >
+        <PButton
+          pType="primary"
+          :pLoading="isLoading"
+          :pDisabled="!isFormValid"
+          @click="handleSubmit"
+        >
+          {{ t('saveChanges') }}
+        </PButton>
+      </div>
+
+      <!-- Drawer mode: teleport to drawer footer -->
       <Teleport
+        v-if="standalone === false"
         to="#update-password__footer-drawer"
         defer
       >
@@ -39,6 +56,10 @@ import { useI18n } from 'vue-i18n'
 import { PButton, PForm } from '@pulse/styleguide/components'
 import { PasswordFields } from '@pulse/shared/components'
 import { useUpdatePassword } from './update-password.composable'
+
+withDefaults(defineProps<{ standalone?: boolean }>(), {
+  standalone: false,
+})
 
 const { t } = useI18n({
   inheritLocale: true,

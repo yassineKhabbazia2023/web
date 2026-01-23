@@ -236,7 +236,7 @@ const { t } = useI18n({
 })
 </script>
 <style lang="scss">
-@use '../../../utils/breakpoints';
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
 
 .widget-pennylane-intro {
   &__left-section {

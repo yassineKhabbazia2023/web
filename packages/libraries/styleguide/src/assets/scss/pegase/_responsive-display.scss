@@ -1,0 +1,56 @@
+@use './breakpoints' as breakpoints;
+
+// Hide below breakpoint (mobile-first approach)
+.hide-below-sm {
+  @include breakpoints.media(xs) {
+    display: none !important;
+  }
+}
+
+.hide-below-md {
+  @include breakpoints.media(sm) {
+    display: none !important;
+  }
+}
+
+.hide-below-lg {
+  @include breakpoints.media(md) {
+    display: none !important;
+  }
+}
+
+// Hide above breakpoint
+.hide-above-xs {
+  @media (min-width: 768px) {
+    display: none !important;
+  }
+}
+
+.hide-above-sm {
+  @media (min-width: 992px) {
+    display: none !important;
+  }
+}
+
+.hide-above-md {
+  @media (min-width: 1200px) {
+    display: none !important;
+  }
+}
+
+// Semantic aliases
+.hide-on-mobile {
+  @extend .hide-below-sm;
+}
+
+.hide-on-desktop {
+  @extend .hide-above-xs;
+}
+
+.show-on-mobile-only {
+  @extend .hide-above-xs;
+}
+
+.show-on-desktop-only {
+  @extend .hide-below-sm;
+}

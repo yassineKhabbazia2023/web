@@ -105,7 +105,9 @@
         "noPdfAvailable": "The document is not currently available.",
         "scrollToBottom": "Go to bottom",
         "errorLoadingDocument": "Unable to load document. Please try again.",
-        "openInNewTab": "Open in new tab"
+        "openInNewTab": "Open in new tab",
+        "viewerFallbackMessage": "The document could not be displayed. Please download it to view the terms and conditions.",
+        "downloadPdf": "Download PDF"
       },
       "step4": {
         "title": "3/3 Terms Acceptance",

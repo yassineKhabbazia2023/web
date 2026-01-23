@@ -20,13 +20,34 @@
       class="
         pennylane-terms-viewer__error-state
         flex
+        flex--direction-column
         flex--justify-content-center
-        flex--align-items-flex-start
+        flex--align-items-center
+        flex-gap--4
       "
     >
-      <PAlert pType="danger">
-        {{ t('widgets.pennylaneAmendmentFlow.step3.errorLoadingDocument') }}
-      </PAlert>
+      <PIcon
+        pName="filetypePdf"
+        pSize="48"
+        pColor="gray-500"
+      />
+
+      <p class="font-base text-center text-color--gray-700">
+        {{ t('widgets.pennylaneAmendmentFlow.step3.viewerFallbackMessage') }}
+      </p>
+
+      <PButton
+        p-type="primary"
+        :p-loading="isDownloading"
+        @click="downloadAndContinue"
+      >
+        <PIcon
+          pName="download"
+          pSize="16"
+          class="margin-right--2"
+        />
+        {{ t('widgets.pennylaneAmendmentFlow.step3.downloadPdf') }}
+      </PButton>
     </div>
 
     <template v-else>
@@ -84,7 +105,7 @@ import { toRef, computed } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { GlobalWorkerOptions } from 'pdfjs-dist'
-import { PLoader, PAlert, PButton, PIcon } from '@pulse/styleguide/components'
+import { PLoader, PButton, PIcon } from '@pulse/styleguide/components'
 import { usePennylaneTermsViewer } from './pennylane-terms-viewer.composable'
 import PennylaneTermsViewerToolbar from './pennylane-terms-viewer-toolbar.vue'
 import type { PennylaneTermsViewerProps } from './pennylane-terms-viewer.types'
@@ -109,6 +130,7 @@ const accountIdRef = toRef(props, 'accountId')
 const {
   isLoading,
   isError,
+  isDownloading,
   numPages,
   pdfContainer,
   isAtBottom,
@@ -119,6 +141,7 @@ const {
   scrollToBottom,
   zoomIn,
   zoomOut,
+  downloadAndContinue,
 } = usePennylaneTermsViewer(accountIdRef, () => emit('scroll-complete'))
 
 const shouldShowScrollButton = computed(() =>

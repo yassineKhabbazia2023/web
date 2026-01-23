@@ -1,9 +1,9 @@
 <template>
   <ProfilePageLayout
-    footer-id="update-password__footer-drawer"
+    footer-id="update-password__footer-page"
     :title="t('title')"
   >
-    <UpdatePassword />
+    <UpdatePassword standalone />
   </ProfilePageLayout>
 </template>
 

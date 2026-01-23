@@ -119,7 +119,9 @@ function handleMenuClick() {
   z-index: 21;
   position: fixed;
   height: var(--p-header-height);
-  width: 100vw;
+  width: 100%;
+  left: 0;
+  right: 0;
   padding: 0 16px;
   background-color: var(--p-white);
 

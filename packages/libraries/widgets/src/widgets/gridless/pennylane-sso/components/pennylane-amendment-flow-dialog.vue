@@ -161,7 +161,7 @@
 <script setup lang="ts">
 import { computed, ref, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useResponsive } from '@pulse/styleguide'
+import { useResponsive, scrollToTop } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
 import { PButton, PDialog, PImage, PTooltip, PIcon } from '@pulse/styleguide/components'
 import type { PennylaneAmendmentFlowDialogProps } from './pennylane-amendment-flow-dialog.type'
@@ -204,19 +204,22 @@ const isAcceptLoading = ref(false)
 const isRefuseLoading = ref(false)
 const leftPanelRef = ref<HTMLElement | null>(null)
 
-async function scrollToTop() {
+async function resetScrollPosition() {
   await nextTick()
-  leftPanelRef.value?.scrollTo({ top: 0 })
+  scrollToTop({
+    element: leftPanelRef.value,
+    scrollWindow: isMobile.value,
+  })
 }
 
 async function onNext() {
   handleNext()
-  await scrollToTop()
+  await resetScrollPosition()
 }
 
 async function onPrevious() {
   handlePrevious()
-  await scrollToTop()
+  await resetScrollPosition()
 }
 
 const isVisible = computed({
@@ -303,6 +306,14 @@ async function handleAccept() {
 @use '@pulse/styleguide/scss/breakpoints' as breakpoints;
 
 .pennylane-amendment-flow-dialog {
+  &__left {
+    // Enable scrolling for iOS fullscreen mode
+    @include breakpoints.media(sm) {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
   &__content {
     @include breakpoints.media(sm) {
       min-height: auto;

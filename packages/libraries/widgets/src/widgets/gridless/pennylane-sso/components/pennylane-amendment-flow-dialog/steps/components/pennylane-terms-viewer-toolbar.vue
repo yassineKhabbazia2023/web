@@ -42,14 +42,14 @@
     </div>
 
     <div class="pennylane-terms-viewer-toolbar__spacer flex flex--justify-content-flex-end">
-      <PTooltip :pContent="t('widgets.pennylaneAmendmentFlow.step3.openInNewTab')">
+      <PTooltip :pContent="t('widgets.pennylaneAmendmentFlow.step3.downloadPdf')">
         <PButton
           p-type="tertiary"
           p-size="small"
-          @click="openInNewTab"
+          @click="downloadDocument"
         >
           <PIcon
-            pName="arrowsAngleExpand"
+            pName="download"
             pSize="16"
           />
         </PButton>
@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PButton, PIcon, PTooltip } from '@pulse/styleguide/components'
-import { openTermsPdfInNewTab } from '../../pennylane-terms.helper'
+import { downloadTermsPdf } from '../../pennylane-terms.helper'
 import type { PennylaneTermsViewerToolbarProps } from './pennylane-terms-viewer-toolbar.type'
 
 const { t } = useI18n({
@@ -76,8 +76,8 @@ defineEmits<{
   'zoom-out': []
 }>()
 
-function openInNewTab() {
-  openTermsPdfInNewTab(props.accountId)
+function downloadDocument() {
+  downloadTermsPdf(props.accountId)
 }
 </script>
 

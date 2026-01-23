@@ -1,6 +1,6 @@
-import { getBrowserName } from './browser.utils.js'
+import { getBrowserName, isMobileDevice } from './browser.utils.js'
 
-describe('helper', () => {
+describe('browser.utils', () => {
   describe('getBrowserName', () => {
     it.each([
       {
@@ -41,5 +41,30 @@ describe('helper', () => {
         expect(browserName).toBe(expectedBrowserName)
       },
     )
+  })
+
+  describe('isMobileDevice', () => {
+    it.each([
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X)',
+      'Mozilla/5.0 (iPad; CPU OS 14_0 like Mac OS X)',
+      'Mozilla/5.0 (iPod touch; CPU iPhone OS 14_0 like Mac OS X)',
+      'Mozilla/5.0 (Linux; Android 10; SM-G975F)',
+      'Mozilla/5.0 (Linux; U; Android 4.0; en-us; GT-I9300 Build/IMM76D) AppleWebKit/534.30 Opera Mini',
+      'Mozilla/5.0 (compatible; MSIE 10.0; Windows Phone 8.0; IEMobile/10.0)',
+      'Mozilla/5.0 (BlackBerry; U; BlackBerry 9900)',
+      'Mozilla/5.0 (webOS/1.0; U; en-US)',
+    ])('should return true for mobile user agent: %s', (userAgent) => {
+      vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(userAgent)
+      expect(isMobileDevice()).toBe(true)
+    })
+
+    it.each([
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/91.0',
+      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) Safari/605.1.15',
+      'Mozilla/5.0 (X11; Linux x86_64) Firefox/89.0',
+    ])('should return false for desktop user agent: %s', (userAgent) => {
+      vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(userAgent)
+      expect(isMobileDevice()).toBe(false)
+    })
   })
 })

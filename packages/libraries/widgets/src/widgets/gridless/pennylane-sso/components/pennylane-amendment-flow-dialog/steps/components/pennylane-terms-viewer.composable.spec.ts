@@ -7,6 +7,7 @@ import { PennylaneService } from '@pulse/common/services/pennylane'
 import { PennylaneTermsViewerManager } from './pennylane-terms-viewer.manager'
 import { MOBILE_SCALE } from './pennylane-terms-viewer.types'
 import { getIsMobile } from '@pulse/styleguide'
+import { downloadTermsPdf } from '../../pennylane-terms.helper'
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/pennylane')
@@ -14,6 +15,9 @@ vi.mock('pdfjs-dist', () => ({ getDocument: vi.fn() }))
 vi.mock('./pennylane-terms-viewer.manager')
 vi.mock('@pulse/styleguide', () => ({
   getIsMobile: vi.fn().mockReturnValue(false),
+}))
+vi.mock('../../pennylane-terms.helper', () => ({
+  downloadTermsPdf: vi.fn(),
 }))
 
 async function waitForPdfLoad() {
@@ -525,5 +529,47 @@ describe('usePennylaneTermsViewer', () => {
 
       app.unmount()
     })
+  })
+
+  describe('downloadAndContinue', () => {
+    it('should download PDF and emit scroll-complete', async () => {
+      const accountId = ref(123)
+      const emit = vi.fn()
+
+      vi.mocked(downloadTermsPdf).mockResolvedValue(undefined)
+
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+
+      await result.downloadAndContinue()
+
+      expect(downloadTermsPdf).toHaveBeenCalledWith(123)
+      expect(emit).toHaveBeenCalledWith('scroll-complete')
+
+      app.unmount()
+    })
+
+    it('should set isDownloading to true while downloading', async () => {
+      const accountId = ref(123)
+      const emit = vi.fn()
+
+      let resolveDownload: () => void = () => {}
+      vi.mocked(downloadTermsPdf).mockImplementation(() => new Promise(resolve => {
+        resolveDownload = resolve
+      }))
+
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+
+      const downloadPromise = result.downloadAndContinue()
+
+      expect(result.isDownloading.value).toBe(true)
+
+      resolveDownload()
+      await downloadPromise
+
+      expect(result.isDownloading.value).toBe(false)
+
+      app.unmount()
+    })
+
   })
 })

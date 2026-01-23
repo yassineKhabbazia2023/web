@@ -61,6 +61,7 @@ $mobile-bottom-nav-height: v-bind('`${MOBILE_BOTTOM_NAV_HEIGHT}px`');
     position: relative;
     width: 100%;
     height: calc(100vh - var(--p-header-height) - #{$mobile-bottom-nav-height} - env(safe-area-inset-bottom));
+    height: calc(100dvh - var(--p-header-height) - #{$mobile-bottom-nav-height} - env(safe-area-inset-bottom));
     margin-top: var(--p-header-height);
     overflow: auto;
   }

@@ -105,7 +105,9 @@
         "noPdfAvailable": "Le document n'est pas disponible actuellement.",
         "scrollToBottom": "Aller en bas du texte",
         "errorLoadingDocument": "Impossible de charger le document. Veuillez réessayer.",
-        "openInNewTab": "Ouvrir dans un nouvel onglet"
+        "openInNewTab": "Ouvrir dans un nouvel onglet",
+        "viewerFallbackMessage": "Le document n'a pas pu s'afficher. Veuillez le télécharger pour consulter les conditions générales.",
+        "downloadPdf": "Télécharger le PDF"
       },
       "step4": {
         "title": "3/3 Acceptation des conditions",

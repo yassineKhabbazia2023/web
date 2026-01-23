@@ -1,4 +1,5 @@
 export * from './fileExtensionUtils/fileExtensionUtils'
 export * from './logger/logger'
 export * from './managers/app-version.manager'
+export * from './utils/browser/browser.utils'
 export { useDebounce } from './composable/useDebounce'
