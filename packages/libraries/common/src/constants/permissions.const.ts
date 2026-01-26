@@ -21,8 +21,11 @@ export const GLOBAL_PERMISSIONS: Record<string, Permission[]> = {
   MANDATE: [
     CollaboratorPermission.ONGLET_MANDAT,
   ],
-  POWERBI_REPORT: [
+  POWERBI_REPORT_UPLOAD: [
     CollaboratorPermission.DEPOSER_RAPPORT_BI,
+  ],
+  POWERBI_REPORT_ADMIN: [
+    CollaboratorPermission.ADMINISTRER_RAPPORT_BI,
   ],
   SUBSCRIPTIONS: [
     CollaboratorPermission.ONGLET_DEMANDES_MOD,

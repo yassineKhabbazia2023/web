@@ -79,7 +79,11 @@ import {
   PLoader,
 } from '@pulse/styleguide/components'
 import { displayNotification } from '@pulse/styleguide'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { fetchBIReportTypes, uploadBIreport } from '@powerbi/services/reporting.service'
+import { ReportTypeEnum } from '@powerbi/enums/bi-reports.enum'
+import { AmplitudePowerBIDepositMethod, AmplitudePowerBIDepositType } from '@powerbi/enums/amplitude-tracking.enum'
+import { AMPLITUDE_DEPOSIT_TYPE_MAPPING } from '@powerbi/constants/amplitude-tracking.const'
 import type { ReportType, ReportInfo } from '@powerbi/types/bi-reports.types'
 
 import UploadBIReport from '@powerbi/components/UploadBIReport/UploadBIReport.vue'
@@ -113,6 +117,13 @@ const isReportFormIncomplete = computed(() => {
   return !reportFile.value || !accountId || !reportTypeId || !reportLabel
 })
 
+const getDepositType = (reportTypeId: number): AmplitudePowerBIDepositType => {
+  const reportType = reportTypes.value.find((type) => type.reportTypeId === reportTypeId)
+  const typeName = reportType?.name?.toLowerCase() as ReportTypeEnum
+
+  return AMPLITUDE_DEPOSIT_TYPE_MAPPING[typeName] ?? AmplitudePowerBIDepositType.PERSONNALISE
+}
+
 // Event listeners
 const handleReportUpload = (report: File) => {
   reportFile.value = report
@@ -141,6 +152,10 @@ const handleUploadBIReport = async () => {
         reportLabel,
         reportId,
       )
+      AmplitudeService.track('Power BI Deposit Completed', {
+        powerbi_deposit_type: getDepositType(reportTypeId),
+        powerbi_deposit_method: AmplitudePowerBIDepositMethod.MANUAL,
+      })
       isUploaded.value = true
     }
   } catch (error) {

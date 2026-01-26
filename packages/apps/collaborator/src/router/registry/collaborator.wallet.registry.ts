@@ -25,7 +25,7 @@ export function registerCollaboratorWalletTabs() {
     title: 'entities.wallet.uploadPowerBIReport',
     route: RouteName.POWER_BI,
     isDisplayed: (context) =>
-      context.hasPermission(GLOBAL_PERMISSIONS.POWERBI_REPORT) &&
+      context.hasPermission(GLOBAL_PERMISSIONS.POWERBI_REPORT_UPLOAD) &&
       context.hasFeatureFlag(Feature.LEGACY_BI_REPORT_DEPOSIT),
     order: 3,
   })
@@ -34,7 +34,7 @@ export function registerCollaboratorWalletTabs() {
     id: WalletTab.BI_REPORTS_LIST,
     title: 'entities.wallet.biReportsList',
     route: RouteName.BI_REPORTS_LIST,
-    isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.POWERBI_REPORT),
+    isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.POWERBI_REPORT_ADMIN),
     order: 4,
   })
 
