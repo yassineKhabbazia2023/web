@@ -1,11 +1,15 @@
 {
-    "applinks": {
-        "apps": [],
-        "details": [
-            {
-                "appID": "J8GPHW3KRU.fr.rydge.app",
-                "paths": [ "*", "*/*" ]
-            }
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "J8GPHW3KRU.fr.rydge.app",
+        "paths": [
+          "NOT /login*",
+          "NOT /login/*",
+          "*"
         ]
-    }
+      }
+    ]
+  }
 }
