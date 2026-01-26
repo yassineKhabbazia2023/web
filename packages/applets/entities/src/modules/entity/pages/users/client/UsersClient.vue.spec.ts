@@ -61,7 +61,7 @@ function createWrapper(entityId?: number) {
           template: '<div></div>',
           props: ['modelValue', 'userId', 'entityId', 'hasDrawerOpened', 'editMode'],
         },
-        'TableData': true,
+        'UsersList': true,
       },
     },
   })
@@ -70,7 +70,7 @@ function createWrapper(entityId?: number) {
 let wrapper: VueWrapper<any>
 
 const getPaginationComponent = () => wrapper.findComponent({ name: 'PPagination' })
-const getTableDataComponent = () => wrapper.findComponent({ name: 'TableData' })
+const getUsersListComponent = () => wrapper.findComponent({ name: 'UsersList' })
 
 describe('test UsersClient', () => {
   let mockGatewayGet: MockInstance
@@ -85,12 +85,12 @@ describe('test UsersClient', () => {
   })
 
   describe('rendering', () => {
-    it('set TableData props properly', async () => {
+    it('set UsersList props properly', async () => {
       await flushPromises()
 
-      const tableData = getTableDataComponent()
-      const data = tableData.props('data')
-      const isInAnEntityPage = tableData.props('isInAnEntityPage')
+      const usersList = getUsersListComponent()
+      const data = usersList.props('data')
+      const isInAnEntityPage = usersList.props('isInAnEntityPage')
 
       await expect(data).toMatchFileSnapshot('__snap__/UserClient.tableData.snap')
       expect(isInAnEntityPage).toBeFalsy()
@@ -105,7 +105,7 @@ describe('test UsersClient', () => {
     })
 
     it('should handle the removal of a user', async () => {
-      getTableDataComponent().vm.$emit('remove-user', mockUser)
+      getUsersListComponent().vm.$emit('remove-user', mockUser)
       await nextTick()
 
       expect(wrapper.vm.state.userToRemove).toStrictEqual(mockUser)
@@ -113,7 +113,7 @@ describe('test UsersClient', () => {
     })
 
     it('should select the user and display the Manage Rights drawer', async () => {
-      getTableDataComponent().vm.$emit('display-manage-rights', mockUser.id)
+      getUsersListComponent().vm.$emit('display-manage-rights', mockUser.id)
       await nextTick()
 
       expect(wrapper.vm.state.isManageRightsDrawerOpened).toBeTruthy()
@@ -121,7 +121,7 @@ describe('test UsersClient', () => {
     })
 
     it('should select the user and display the User Details drawer', async () => {
-      getTableDataComponent().vm.$emit('click-view-information', mockUser.id)
+      getUsersListComponent().vm.$emit('click-view-information', mockUser.id)
       await nextTick()
 
       expect(wrapper.vm.state.isDrawerViewDetailsOpened).toBeTruthy()

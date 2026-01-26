@@ -117,9 +117,9 @@ import {
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { computed, reactive } from 'vue'
+import { computed } from 'vue'
 import { CurrentUserManager } from '@pulse/common/managers'
-import type { Props } from './types'
+import type { UsersListProps } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
@@ -134,7 +134,7 @@ const { d, t } = useI18n({
   datetimeFormats,
 })
 
-const props = defineProps<Props>()
+const props = defineProps<UsersListProps>()
 const emit = defineEmits<{
   'click-view-information': [number]
   'display-manage-rights': [number]
@@ -181,12 +181,7 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
     })) as PToolboxItemProps[],
 )
 
-const state = reactive({
-  rowData: {} as ExtendedUser,
-})
-
-const handleToolboxItemClick = (action: string, row: any) => {
-  state.rowData = row
+const handleToolboxItemClick = (action: string, row: ExtendedUser) => {
   if (action === UserActions.MODIFY_RIGHTS) {
     emit('display-manage-rights', row.contactId)
   }

@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 import { CustomerBootManager } from '@customer/managers/customer.boot.manager'
-import { featureFlagGuard, currentEntityGuard, seoGuard } from '@pulse/shared/guards'
+import { featureFlagGuard, currentEntityGuard, seoGuard, scrollResetGuard } from '@pulse/shared/guards'
 import { customerAuthenticationGuard } from './guards/customer.authentication.guard'
 import { customerPermissionGuard } from './guards/customer.permission.guard'
 import { customerSsoGuard } from './guards/customer.sso.guard'
@@ -54,5 +54,6 @@ router.beforeEach(featureFlagGuard)
 router.beforeEach(currentEntityGuard)
 router.beforeEach(customerPermissionGuard)
 router.afterEach(seoGuard)
+router.afterEach(scrollResetGuard)
 
 export default router

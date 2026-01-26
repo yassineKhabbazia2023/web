@@ -1,4 +1,4 @@
-export interface TableDataProps {
+export interface EntitiesListProps {
   data: any
   handleAddFavorite?: Function
   isAccountManagement?: boolean

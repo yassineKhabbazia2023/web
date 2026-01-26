@@ -16,7 +16,7 @@
     </div>
     <div v-show="isLoading === false">
       <NoResult v-show="searchResult.items.length === 0" />
-      <TableData
+      <EntitiesList
         v-show="searchResult.items.length > 0"
         data-testid="accounts-table"
         :data="searchResult.items"
@@ -65,7 +65,7 @@ import {
 } from '@pulse/styleguide/components'
 import NoResult from '@entities/components/NoResult'
 import FormSearch from '@entities/components/FormSearch'
-import TableData from '../../components/TableData'
+import EntitiesList from '../../components/entities-list'
 import AccountRightsDrawer from './components/AccountRightsDrawer'
 import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
 import { fetchWalletData } from '../folders/FoldersUtils'

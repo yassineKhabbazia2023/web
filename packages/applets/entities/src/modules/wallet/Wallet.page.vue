@@ -4,6 +4,12 @@
       {{ t('entities.wallet.hello') }} {{ user?.firstName }}
     </h3>
 
+    <PTitle
+      v-if="isMobile"
+      :pTitle="t('entities.wallet.allEntities')"
+      class="margin-bottom--4"
+    />
+
     <PTabs
       :modelValue="activeTab"
       @tab-click="handleTabClick"
@@ -25,7 +31,8 @@ import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
-import { PTabs, PTabPane } from '@pulse/styleguide/components'
+import { PTabs, PTabPane, PTitle } from '@pulse/styleguide/components'
+import { useResponsive } from '@pulse/styleguide'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { usePermissionsStore, useUserStore } from '@pulse/common/stores'
 import { WalletManager } from './managers'
@@ -41,6 +48,7 @@ const router = useRouter()
 const userStore = useUserStore()
 
 const { user, isCollab } = storeToRefs(userStore)
+const { isMobile } = useResponsive()
 
 const activeTab = computed(() => route.name as string)
 
@@ -55,10 +63,16 @@ const handleTabClick = (tab: TabsPaneContext) => {
   }
 }
 
-const tabs = ref(WalletManager.getTabsForUser(isCollab.value ?? false))
-
 const permissionsStore = usePermissionsStore()
-watch(() => permissionsStore.userPermissions, async () => {
-  tabs.value = WalletManager.getTabsForUser(isCollab.value ?? false)
+
+const getFilteredTabs = () => {
+  const allTabs = WalletManager.getTabsForUser(isCollab.value ?? false)
+  return allTabs.filter(tab => isMobile.value === false || tab.showInMobile)
+}
+
+const tabs = ref(getFilteredTabs())
+
+watch([() => permissionsStore.userPermissions, isCollab, isMobile], () => {
+  tabs.value = getFilteredTabs()
 })
 </script>

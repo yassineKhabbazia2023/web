@@ -11,6 +11,7 @@ export interface WalletTabConfig {
   route: RouteName
   isDisplayed: (context: WalletContext) => boolean
   order: number
+  showInMobile?: boolean // Whether to show in mobile view
 }
 
 /**
@@ -30,4 +31,5 @@ export interface WalletTabItem {
   title: string // i18n key
   route: RouteName
   display: boolean
+  showInMobile: boolean
 }

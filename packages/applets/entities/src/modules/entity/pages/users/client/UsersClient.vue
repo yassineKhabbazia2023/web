@@ -46,7 +46,7 @@
       </div>
 
       <div v-show="state.isLoading === false">
-        <TableData
+        <UsersList
           v-if="state.data.length"
           :data="state.data"
           :isInAnEntityPage="!!entityId"
@@ -114,7 +114,7 @@ import { PAGE_SIZES, ACTION_PERMISSIONS } from '@pulse/common/constants'
 import NoResult from '@entities/components/NoResult'
 import FormSearch from '@entities/components/FormSearch'
 import ManageRightsDrawer from '@entities/components/ManageRightsDrawer'
-import TableData from './components/TableData'
+import UsersList from './components/users-list'
 import DrawerUserDetails from './components/DrawerUserDetails'
 import RemoveUserDialog from './components/RemoveUserDialog'
 import AddCustomerDrawer from './components/add-customer-drawer'

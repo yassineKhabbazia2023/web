@@ -45,6 +45,7 @@ export class WalletManager {
         title: tab.title,
         route: tab.route,
         display: true,
+        showInMobile: tab.showInMobile ?? false,
       }))
   }
 
@@ -54,5 +55,19 @@ export class WalletManager {
   static getTabsForUser(isCollab: boolean): WalletTabItem[] {
     const context = this.buildContext(isCollab)
     return this.getTabs(context)
+  }
+
+  /**
+   * Clear all registered tabs (for testing purposes)
+   */
+  static clear(): void {
+    this.tabs.clear()
+  }
+
+  /**
+   * Get the number of registered tabs (for testing purposes)
+   */
+  static getTabCount(): number {
+    return this.tabs.size
   }
 }

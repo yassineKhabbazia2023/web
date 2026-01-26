@@ -1,13 +1,13 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { SortDirection, ContactType } from '@pulse/common/enums'
 import { mockedUsersClient } from '@entities/__mocks__/users-client.mocks'
 import { getInitials } from '@entities/helper'
 import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
 import { UserActions } from '@entities/modules/entity/enums'
 import { nextTick } from 'vue'
-import { ContactType } from '@pulse/common/enums'
 
-import TableData from './'
+import UsersList from './'
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
@@ -29,7 +29,7 @@ const toolBoxElementsWithoutPermissions = [
 ]
 
 const createWrapper = (): VueWrapper<any> =>
-  shallowMount(TableData, {
+  shallowMount(UsersList, {
     props: {
       data: mockedUsersClient.data.items.map(({ firstName, lastName, ...rest }) => ({
         initials: getInitials(firstName, lastName),
@@ -83,7 +83,7 @@ const createWrapper = (): VueWrapper<any> =>
     },
   })
 
-describe('tableData', () => {
+describe('users-list', () => {
   beforeEach(() => {
     wrapper = createWrapper()
   })
@@ -147,6 +147,36 @@ describe('tableData', () => {
       await nextTick()
 
       expect(wrapper.emitted('display-manage-rights')).toBeTruthy()
+    })
+  })
+
+  describe('handleSelectUser', () => {
+    it('should emit select-user with contactIds', () => {
+      const users = [{ contactId: 1 }, { contactId: 2 }]
+
+      wrapper.vm.handleSelectUser(users)
+
+      expect(wrapper.emitted('select-user')).toStrictEqual([[[1, 2]]])
+    })
+  })
+
+  describe('handleSort', () => {
+    it('should emit sort-user with descending false for ascending order', () => {
+      wrapper.vm.handleSort({ prop: 'name', order: SortDirection.ASCENDING })
+
+      expect(wrapper.emitted('sort-user')).toStrictEqual([[{
+        field: 'name',
+        descending: false,
+      }]])
+    })
+
+    it('should emit sort-user with descending true for descending order', () => {
+      wrapper.vm.handleSort({ prop: 'name', order: SortDirection.DESCENDING })
+
+      expect(wrapper.emitted('sort-user')).toStrictEqual([[{
+        field: 'name',
+        descending: true,
+      }]])
     })
   })
 })

@@ -74,7 +74,7 @@
       <FormSearch
         ref="searchBar"
         :forcedValue="searchCriteria.search"
-        :placeholder="t('search')"
+        :placeholder="searchPlaceholder"
         class="width--100 max-width-500"
         @search-value-submitted="handleSearchValueSubmitted"
       />
@@ -122,7 +122,7 @@
     </div>
     <div v-show="isLoading === false">
       <NoResult v-if="searchResult.items.length === 0" />
-      <TableData
+      <EntitiesList
         v-if="searchResult.items.length > 0"
         data-testid="folders-table"
         :data="searchResult.items"
@@ -139,7 +139,7 @@
         class="margin-top--6"
         :pCurrentPage="searchResult.currentPage"
         :pTotal="searchResult.totalItems"
-        :pPageSizes="PAGE_SIZES"
+        :pPageSizes="pageSizes"
         pPageSizeSelectorSuffix=""
         pShowTotalPageCounter
         @on-page-range-changed="handlePageRangeChanged"
@@ -200,6 +200,7 @@ import {
   PPagination,
   PIcon,
 } from '@pulse/styleguide/components'
+import { useResponsive } from '@pulse/styleguide'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager } from '@pulse/common/managers'
@@ -211,7 +212,7 @@ import FormSearch from '@entities/components/FormSearch'
 import OffersDrawer from '@entities/components/OffersDrawer'
 import { getPaginationLabel } from '@pulse/common/utils'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
-import { PAGE_SIZES, ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
+import { PAGE_SIZES, MOBILE_PAGE_SIZES, ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import { fetchWalletData } from './FoldersUtils'
 import type {
@@ -221,7 +222,7 @@ import type {
   WalletData,
 } from '@entities/modules/wallet/types'
 import Filters from '../../components/Filters'
-import TableData from '../../components/TableData'
+import EntitiesList from '../../components/entities-list'
 import DelegationDrawer from './components/DelegationDrawer'
 import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
@@ -245,6 +246,16 @@ const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 const { isCollab, user } = storeToRefs(userStore)
+const { isMobile } = useResponsive()
+
+const searchPlaceholder = computed(() =>
+  isMobile.value ? t('searchShort') : t('search'),
+)
+
+const pageSizes = computed(() =>
+  isMobile.value ? [5, ...MOBILE_PAGE_SIZES, ...PAGE_SIZES] : PAGE_SIZES,
+)
+const currentPageSize = computed((): number => pageSizes.value[0])
 
 const searchBar = ref()
 const isLoading = ref(true)
@@ -360,7 +371,7 @@ const onEntityCreatorDrawerOpen = () => isEntityCreatorDrawerOpen.value = true
 
 const searchCriteria = ref<SearchCriteria>({
   currentPage: 0,
-  limit: PAGE_SIZES[0],
+  limit: currentPageSize.value,
   search: '',
   sorting: {
     field: '',
@@ -595,6 +606,7 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
 <i18n lang="yaml">
 en-US:
   search: 'Search by company name, folder ID, first name, last name, and email of the executive'
+  searchShort: 'Search...'
   toDeploy: 'To Deploy'
   inProgress: 'In progress'
   connected: 'Connected'
@@ -606,6 +618,7 @@ en-US:
   manageAccess: 'Manage access'
 fr-FR:
   search: 'Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant'
+  searchShort: 'Rechercher...'
   toDeploy: 'A déployer'
   inProgress: 'En cours'
   connected: 'Connecté'

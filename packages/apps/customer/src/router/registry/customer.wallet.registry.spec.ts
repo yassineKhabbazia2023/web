@@ -5,14 +5,12 @@ import { registerCustomerWalletTabs } from './customer.wallet.registry'
 
 describe('registerCustomerWalletTabs', () => {
   beforeEach(() => {
-    // @ts-expect-error - Accessing private static field for test cleanup
-    WalletManager.tabs.clear()
+    WalletManager.clear()
     registerCustomerWalletTabs()
   })
 
   it('should register 2 wallet tabs', () => {
-    // @ts-expect-error - Accessing private static field for test
-    expect(WalletManager.tabs.size).toBe(2)
+    expect(WalletManager.getTabCount()).toBe(2)
   })
 
   it.each([
@@ -26,34 +24,37 @@ describe('registerCustomerWalletTabs', () => {
   describe('isDisplayed behavior - CUSTOMER_ENTITIES tab', () => {
     it('should always display CUSTOMER_ENTITIES tab', () => {
       const context = {
+        isCollab: false,
         hasPermission: () => false,
         hasFeatureFlag: () => false,
       }
 
       const config = WalletManager.getTab(WalletTab.CUSTOMER_ENTITIES)
-      expect(config?.isDisplayed(context as any)).toBe(true)
+      expect(config?.isDisplayed(context)).toBe(true)
     })
   })
 
   describe('isDisplayed behavior - ALL_USERS tab', () => {
     it('should display ALL_USERS tab when user has USERS permission', () => {
       const context = {
+        isCollab: false,
         hasPermission: () => true,
         hasFeatureFlag: () => false,
       }
 
       const config = WalletManager.getTab(WalletTab.ALL_USERS)
-      expect(config?.isDisplayed(context as any)).toBe(true)
+      expect(config?.isDisplayed(context)).toBe(true)
     })
 
     it('should hide ALL_USERS tab when user lacks USERS permission', () => {
       const context = {
+        isCollab: false,
         hasPermission: () => false,
         hasFeatureFlag: () => false,
       }
 
       const config = WalletManager.getTab(WalletTab.ALL_USERS)
-      expect(config?.isDisplayed(context as any)).toBe(false)
+      expect(config?.isDisplayed(context)).toBe(false)
     })
   })
 })

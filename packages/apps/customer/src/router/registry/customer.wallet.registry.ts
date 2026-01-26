@@ -13,6 +13,7 @@ export function registerCustomerWalletTabs() {
     title: 'entities.wallet.allEntities',
     route: RouteName.CUSTOMER_ENTITIES,
     isDisplayed: () => true,
+    showInMobile: false,
     order: 10,
   })
 
@@ -21,6 +22,7 @@ export function registerCustomerWalletTabs() {
     title: 'entities.wallet.allUsers',
     route: RouteName.ALL_USERS,
     isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.USERS),
+    showInMobile: false,
     order: 11,
   })
 }

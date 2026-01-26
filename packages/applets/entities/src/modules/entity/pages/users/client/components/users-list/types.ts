@@ -1,6 +1,6 @@
 import type { ExtendedUser } from './../../UsersClientTypes'
 
-export interface Props {
+export interface UsersListProps {
   data: ExtendedUser[]
   // Controls which menu items are enabled (modify rights, remove user)
   isInAnEntityPage?: boolean

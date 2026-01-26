@@ -192,7 +192,7 @@ describe('deploy', () => {
     await flushPromises()
 
     const button = wrapper.findComponent({ name: 'PButton' })
-    const tableData = wrapper.findComponent({ name: 'tableData' })
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
 
     expect(button.text()).toBe('Delegate my wallet')
 
@@ -212,7 +212,7 @@ describe('deploy', () => {
     await flushPromises()
 
     expect(mockFetchWalletData).toHaveBeenCalledOnce()
-    expect(wrapper.findComponent({ name: 'TableData' }).exists()).toBeTruthy()
+    expect(wrapper.findComponent('[data-testid=folders-table]').exists()).toBeTruthy()
   })
 
   it("should send a request to manage favorite entities when 'handleAddFavorite' is called", async () => {
@@ -307,7 +307,7 @@ describe('deploy', () => {
     const wrapper = createWrapper()
     await flushPromises()
 
-    const table = wrapper.findComponent({ name: 'TableData' })
+    const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
     table.vm.$emit('click-deploy', 1, 'a', 'b')
     await flushPromises()
 

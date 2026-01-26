@@ -1,14 +1,18 @@
 <template>
-  <PTable
+  <PResponsiveTable
     ref="selectedRow"
     :pData="props.data"
-    :highlightCurrentRow="!isAccountManagement"
+    pRowKey="accountId"
+    :highlightCurrentRow="isAccountManagement === false"
     showOverflowTooltip
-    :rowClassName="!isAccountManagement ? 'cursor-pointer' : ''"
+    :rowClassName="isAccountManagement === false ? 'cursor-pointer' : ''"
     pStripe
     tableLayout="fixed"
     class="wallet-table"
+    :pCardClickable="isAccountManagement === false"
+    :pIsRowSelected="isRowSelected"
     @sort-change="handleSort"
+    @row-click="onMobileRowClick"
   >
     <PTableColumn
       v-if="isAccountManagement === false"
@@ -171,7 +175,48 @@
         </template>
       </PTableColumn>
     </template>
-  </PTable>
+
+    <!-- Mobile card -->
+    <template #mobile-title="{ row }">
+      <div class="flex flex--align-items-center overflow-hidden">
+        <PAvatar
+          :pColor="row.owner.avatarColor"
+          class="margin-right--4"
+        >
+          <PIcon pName="pulse" />
+        </PAvatar>
+        <div class="overflow-hidden">
+          <p
+            class="
+              font-semibold
+              overflow-hidden
+              text-overflow--ellipsis
+            "
+          >
+            {{ row.name }}
+          </p>
+          <p class="text-color--gray-500 font-small overflow-hidden text-overflow--ellipsis">
+            {{ row.accountNumber }}
+          </p>
+        </div>
+      </div>
+    </template>
+
+    <!-- Mobile card actions slot -->
+    <template
+      v-if="isAccountManagement === false"
+      #mobile-actions="{ row }"
+    >
+      <PButton
+        pSize="small"
+        pIconOnly
+        :data-testid="row.isFavorite ? 'wallet-add-favorite' : 'wallet-remove-favorite'"
+        @click.stop="callHandleAddFavorite(row.accountId, !row.isFavorite)"
+      >
+        <PIcon :pName="row.isFavorite ? 'starFill' : 'star'" />
+      </PButton>
+    </template>
+  </PResponsiveTable>
 </template>
 
 <script setup lang="ts">
@@ -181,10 +226,10 @@ import {
   PButton,
   PIcon,
   PTag,
-  PTable,
   PTableColumn,
   PToolbox,
   PCheckbox,
+  PResponsiveTable,
 } from '@pulse/styleguide/components'
 import {
   onMounted,
@@ -194,15 +239,15 @@ import {
 } from 'vue'
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
-import type { TableDataProps } from './types'
+import type { EntitiesListProps } from './types'
 import { AvatarRoles } from '@pulse/styleguide'
 import type { AccessibleMenuItem, AccountRow } from '@entities/types'
+import type { SortChangeEventData, SortingCriteria } from '@pulse/common/types'
 import { filterAccessibleMenuItems } from '@entities/utils'
 import type { SelectedFolder } from '../../pages/folders/components/DelegationDrawer/DelegationDrawerTypes'
 import { ACTION_PERMISSIONS, GLOBAL_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
-import type { SortChangeEventData, SortingCriteria } from '@pulse/common/types'
 import { SortDirection } from '@pulse/common/enums'
 
 
@@ -211,7 +256,7 @@ const { t } = useI18n({
   useScope: 'local',
 })
 
-const props = withDefaults(defineProps<TableDataProps>(), {
+const props = withDefaults(defineProps<EntitiesListProps>(), {
   data: [],
   isAccountManagement: false,
 })
@@ -286,6 +331,10 @@ const menuElementsCollaborator = (status: string) => {
 const currentEntityStore = useCurrentEntityStore()
 const { currentEntity } = storeToRefs(currentEntityStore)
 
+const isRowSelected = (row: Record<string, any>) => {
+  return row.accountId === currentEntity.value?.accountId
+}
+
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
 
@@ -354,6 +403,12 @@ const onSelectedFolder = (row: any) => {
     name: row.name,
     avatarColor: row.owner?.avatarColor,
   })
+}
+
+const onMobileRowClick = (row: any) => {
+  if (props.isAccountManagement === false) {
+    emit('access', row.accountId)
+  }
 }
 </script>
 

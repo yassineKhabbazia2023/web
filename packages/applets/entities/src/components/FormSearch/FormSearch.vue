@@ -9,11 +9,11 @@
       <PInput
         v-model="formValues.search"
         :pPlaceholder="placeholder"
+        :pAutofocus="isDesktop"
         pPrefixIconName="search"
         pName="search"
         pSize="small"
         pType="search"
-        pAutofocus
         @keyup="handleSearchSubmit"
       />
     </PFormItem>
@@ -27,6 +27,7 @@ import {
   PFormItem,
   PInput,
 } from '@pulse/styleguide/components'
+import { useResponsive } from '@pulse/styleguide'
 import type { FormInstance, FormRules } from '@pulse/styleguide/types'
 import type { Props } from './types'
 import { watch, reactive, ref } from 'vue'
@@ -35,6 +36,8 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+const { isDesktop } = useResponsive()
 
 const props = withDefaults(defineProps<Props>(), {
   placeholder: '',
