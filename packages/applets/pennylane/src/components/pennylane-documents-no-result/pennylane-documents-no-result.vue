@@ -41,10 +41,10 @@ const message = computed(() => props.isError === true ? t('errorMessage') : t('n
 
 <i18n lang="yaml">
   en-US:
-    noDocuments: 'No documents received yet'
+    noDocuments: 'No documents have been submitted by RYDGE Conseil yet'
     errorMessage: 'An error occurred while retrieving documents'
   fr-FR:
-    noDocuments: 'Aucun document reçu pour le moment'
+    noDocuments: "Aucun document n'a encore été déposé par RYDGE Conseil"
     errorMessage: 'Une erreur est survenue lors de la récupération des documents'
 </i18n>
 

@@ -51,6 +51,7 @@
 
       <PennylaneDocumentsNoResult
         v-if="pennylaneDocuments.length === 0"
+        class="margin-top--6"
         :isError="apiCallStatus === APICallStatus.ERROR"
       />
     </template>

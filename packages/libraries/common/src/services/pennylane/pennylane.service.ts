@@ -49,11 +49,13 @@ export class PennylaneService {
     accountId: number,
     page?: number,
     pageSize?: number,
+    search?: string,
   ) {
     const queryParams = {
       accountNumber,
       page,
       pageSize,
+      search,
     }
     const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/documents/currentuser`
 

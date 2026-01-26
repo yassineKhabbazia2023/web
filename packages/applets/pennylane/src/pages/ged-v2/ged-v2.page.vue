@@ -2,6 +2,20 @@
   <div
     class="flex flex--direction-column"
   >
+    <div class="margin-bottom--4 margin-top--2 search-container">
+      <PFormSearch
+        v-model:pSearch="searchTerm"
+        :pMinLength="1"
+        :pSearchInvalidMessage="t('searchInvalidMessage')"
+        :pPlaceholder="t('searchPlaceholder')"
+        :pDebounceDelay="300"
+        pSize="small"
+        pClearable
+        data-testid="pennylane-ged-v2-search"
+        @update:p-search="onUpdateSearchDocument"
+      />
+    </div>
+
     <PennylaneDocumentsWrapper
       :accountId
       :accountNumber
@@ -29,6 +43,7 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { ref, computed, watch, onMounted } from 'vue'
 import PennylaneDocumentsWrapper from '@pennylane/components/pennylane-documents-wrapper/pennylane-documents-wrapper.vue'
 import { PennylaneService } from '@pulse/common/services/pennylane'
@@ -38,10 +53,15 @@ import { APICallStatus } from '@pulse/common/enums'
 import { PennylaneDocumentWrapperDisplayMode } from '@pennylane/enums/pennylane-documents-wrapper.enum'
 import { logger } from '@pulse/toolbox'
 import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-documents.helper'
-import { PPagination } from '@pulse/styleguide/components'
+import { PPagination, PFormSearch } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { PAGE_SIZES, MOBILE_PAGE_SIZES } from '@pulse/common/constants'
 import { getPaginationLabel } from '@pulse/common/utils'
+
+const { t } = useI18n({
+  inheritLocale: true,
+  useScope: 'local',
+})
 
 const currentEntityStore = useCurrentEntityStore()
 const { isMobile } = useResponsive()
@@ -49,6 +69,7 @@ const { isMobile } = useResponsive()
 const pennylaneDocuments = ref<FormattedPennylaneDocument[]>([])
 const apiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
 const totalDocuments = ref<number>(0)
+const searchTerm = ref<string>('')
 
 const accountId = computed(() => currentEntityStore.currentEntityId ?? 0)
 const accountName = computed(() => currentEntityStore.currentEntity?.legalName ?? '')
@@ -74,11 +95,11 @@ const fetchDocuments = async () => {
       accountId.value,
       currentPage.value,
       currentPageSize.value,
+      searchTerm.value.trim() || undefined,
     )
 
     pennylaneDocuments.value = getFormattedPennylaneDocuments(documentQueryResult.items, pathPrefix)
     totalDocuments.value = documentQueryResult.totalItems
-    currentPage.value = documentQueryResult.currentPage
     apiCallStatus.value = APICallStatus.SUCCESS
   } catch (e) {
     logger.error('Error while loading pennylane documents', e)
@@ -86,8 +107,28 @@ const fetchDocuments = async () => {
   }
 }
 
+function onUpdateSearchDocument() {
+  currentPage.value = 1
+  fetchDocuments()
+}
+
 watch([currentPage, currentPageSize], fetchDocuments)
 
 onMounted(fetchDocuments)
 </script>
+
+<i18n lang="yaml">
+  en-US:
+    searchPlaceholder: 'Search for a document name'
+    searchInvalidMessage: 'Search term is invalid'
+  fr-FR:
+    searchPlaceholder: 'Rechercher un nom de document'
+    searchInvalidMessage: 'Le terme de recherche est invalide'
+</i18n>
+
+<style scoped lang="scss">
+.search-container {
+  max-width: 20%;
+}
+</style>
 
