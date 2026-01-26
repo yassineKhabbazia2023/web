@@ -1,6 +1,7 @@
 <template>
   <PTable
     :pData="pennylaneDocuments"
+    :empty-text="t('noResult')"
     @cell-click="onClickCell"
   >
     <PTableColumn
@@ -142,6 +143,7 @@ async function onToolboxItemClick(
       download-in-progress: 'Download in progress'
       download-success: 'Document downloaded successfully'
       download-error: 'A technical error occurred while downloading the document'
+    noResult: 'No result'
   fr-FR:
     fields:
       name: 'Nom'
@@ -153,4 +155,5 @@ async function onToolboxItemClick(
       download-in-progress: 'Téléchargement en cours'
       download-success: 'Document téléchargé avec succès'
       download-error: 'Une erreur technique est survenue lors du téléchargement du document'
+    noResult: 'Aucun résultat'
 </i18n>

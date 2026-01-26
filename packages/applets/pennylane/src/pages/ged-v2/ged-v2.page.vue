@@ -16,6 +16,18 @@
       />
     </div>
 
+    <PAlert
+      v-if="shouldDisplayAlert"
+      pType="information"
+      class="margin-bottom--4"
+      data-testid="pennylane-ged-v2-search-alert"
+    >
+      <template #bold-text>
+        {{ t('searchResults.count', { count: totalDocuments }) }}
+      </template>
+      {{ t('searchResults.description') }}
+    </PAlert>
+
     <PennylaneDocumentsWrapper
       :accountId
       :accountNumber
@@ -23,6 +35,7 @@
       :accountName
       :displayMode="PennylaneDocumentWrapperDisplayMode.IN_TABLE"
       :pennylaneDocuments
+      :isSearchActive
       amplitudeLocalisation="documents rydge conseil"
     />
 
@@ -53,7 +66,7 @@ import { APICallStatus } from '@pulse/common/enums'
 import { PennylaneDocumentWrapperDisplayMode } from '@pennylane/enums/pennylane-documents-wrapper.enum'
 import { logger } from '@pulse/toolbox'
 import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-documents.helper'
-import { PPagination, PFormSearch } from '@pulse/styleguide/components'
+import { PPagination, PFormSearch, PAlert } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { PAGE_SIZES, MOBILE_PAGE_SIZES } from '@pulse/common/constants'
 import { getPaginationLabel } from '@pulse/common/utils'
@@ -85,6 +98,12 @@ const paginationLabel = computed(() => getPaginationLabel('sur', {
   data: pennylaneDocuments.value,
   totalItems: totalDocuments.value,
 }))
+
+const isSearchActive = computed<boolean>(() => searchTerm.value.trim().length > 0)
+
+const shouldDisplayAlert = computed<boolean>(() =>
+  isSearchActive.value === true && apiCallStatus.value === APICallStatus.SUCCESS,
+)
 
 const fetchDocuments = async () => {
   const pathPrefix = 'Pennylane'
@@ -121,9 +140,15 @@ onMounted(fetchDocuments)
   en-US:
     searchPlaceholder: 'Search for a document name'
     searchInvalidMessage: 'Search term is invalid'
+    searchResults:
+      count: '{count} résultats'
+      description: 'dans ce dossier et les sous-dossiers'
   fr-FR:
     searchPlaceholder: 'Rechercher un nom de document'
     searchInvalidMessage: 'Le terme de recherche est invalide'
+    searchResults:
+      count: '{count} résultats'
+      description: 'dans ce dossier et les sous-dossiers'
 </i18n>
 
 <style scoped lang="scss">

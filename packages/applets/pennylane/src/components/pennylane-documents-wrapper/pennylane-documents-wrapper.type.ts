@@ -11,4 +11,5 @@ export interface PennylaneDocumentWrapperProps {
   amplitudeLocalisation: 'homepage' | 'documents rydge conseil'
   accountNumber: string
   accountId: number
+  isSearchActive?: boolean
 }

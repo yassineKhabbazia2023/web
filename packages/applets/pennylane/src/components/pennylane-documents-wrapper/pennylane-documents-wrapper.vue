@@ -29,7 +29,7 @@
 
     <template v-if="apiCallStatus !== APICallStatus.LOADING">
       <template
-        v-if="pennylaneDocuments.length > 0"
+        v-if="pennylaneDocuments.length > 0 || isSearchActive === true"
       >
         <PennylaneDocumentsWithResult
           v-if="displayMode === PennylaneDocumentWrapperDisplayMode.IN_LIST"
@@ -48,9 +48,8 @@
           @open-document="onOpenDocument"
         />
       </template>
-
       <PennylaneDocumentsNoResult
-        v-if="pennylaneDocuments.length === 0"
+        v-if="pennylaneDocuments.length === 0 && isSearchActive === false"
         class="margin-top--6"
         :isError="apiCallStatus === APICallStatus.ERROR"
       />
@@ -71,7 +70,9 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { PennylaneDocumentWrapperProps } from './pennylane-documents-wrapper.type'
 import { PennylaneDocumentWrapperDisplayMode } from '@pennylane/enums/pennylane-documents-wrapper.enum'
 
-const props = defineProps<PennylaneDocumentWrapperProps>()
+const props = withDefaults(defineProps<PennylaneDocumentWrapperProps>(), {
+  isSearchActive: false,
+})
 
 const pennylaneViewerDocument = ref<FormattedPennylaneDocument>()
 const hasOpenedPennylaneDocumentsViewer = ref<boolean>()
