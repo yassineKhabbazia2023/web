@@ -37,6 +37,15 @@
         {{ t('privacyPolicy') }}
       </a>
     </li>
+    <li class="legal-links__item flex flex--align-items-center">
+      <button
+        class="legal-links__link"
+        type="button"
+        @click="openAxeptioCookies"
+      >
+        {{ t('cookiesParameters') }}
+      </button>
+    </li>
   </ul>
 </template>
 
@@ -45,6 +54,7 @@ import { useI18n } from 'vue-i18n'
 import { ref, onMounted } from 'vue'
 import { fetchUrlTerms } from '@pulse/common'
 import { LEGAL_NOTICE_URL, PRIVACY_POLICY_URL } from '@pulse/common/constants'
+import { openAxeptioCookies } from '../../plugins/axeptio/axeptio.plugin'
 import type { LegalLinksProps } from './legal-links.types'
 
 const { t } = useI18n({

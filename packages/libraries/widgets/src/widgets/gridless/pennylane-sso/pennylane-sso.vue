@@ -7,11 +7,11 @@
     <div
       v-if="isMobile === true"
       class="
+        widget-sso__mobile-card
         bg--gray-50
         hover-bg--jungle-75
-        padding--6
+        padding--3
         cursor-pointer
-        width--100
       "
       @click="onSSOConnection"
     >
@@ -21,29 +21,44 @@
           flex--direction-column
           flex--align-items-center
           flex--justify-content-center
-          flex-gap--3
         "
       >
         <PLoader
           v-if="isCheckingPennylaneAccess === true"
           pSize="24"
           pType="primary"
+          class="margin-bottom--2"
         />
         <PImage
           v-else
           pName="pennylane-color"
-          class="widget-sso__mobile-image"
+          class="widget-sso__mobile-image margin-bottom--2"
         />
         <span
           class="
-            font-xsmall
+            font-size--18
             font-semibold
             text-center
             text-color--gray-900
           "
         >
-          {{ t('widgets.pennylaneSSO.accessToPennylane') }}
+          Pennylane
         </span>
+        <span
+          class="
+            font-size--16
+            font-normal
+            text-center
+            text-color--gray-400
+          "
+        >
+          {{ t('widgets.pennylaneSSO.accounting') }}
+        </span>
+        <PIcon
+          pName="arrowRight"
+          pSize="16"
+          class="margin-top--2"
+        />
       </div>
     </div>
 
@@ -89,7 +104,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PButton, PIcon, PLoader, PImage } from '@pulse/styleguide/components'
+import { PButton, PIcon, PImage, PLoader } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { useRoute } from 'vue-router'
 import { RouterHelpers } from '@pulse/common/helpers'
@@ -217,8 +232,13 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+.widget-sso__mobile-card {
+  width: 132px;
+  height: 132px;
+}
+
 .widget-sso__mobile-image {
-  height: 48px;
-  width: auto;
+  height: 32px;
+  width: 32px;
 }
 </style>

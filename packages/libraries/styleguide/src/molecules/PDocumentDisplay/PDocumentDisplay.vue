@@ -90,11 +90,13 @@ iframe.preview {
 
 .preview-section {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   overflow: hidden;
   position: relative;
   height: inherit;
+  padding: 25px 0;
+  box-sizing: border-box;
 
   &_image {
     max-width: 70%;

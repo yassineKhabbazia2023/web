@@ -94,6 +94,12 @@ h4 {
   @extend %h4;
 }
 
+@for $i from 10 through 32 {
+  .font-size--#{$i} {
+    @include fontToRem($i);
+  }
+}
+
 .font-large {
   font-weight: 600;
 

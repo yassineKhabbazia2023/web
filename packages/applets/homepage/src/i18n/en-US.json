@@ -1,5 +1,8 @@
 {
   "homepage": {
+    "topBar": {
+      "managementTools": "My management tools"
+    },
     "legacy": {
       "entityWelcomeTitle": "As of January 13, 2025, KPMG Pulse becomes",
       "brandName": "RYDGE Conseil",

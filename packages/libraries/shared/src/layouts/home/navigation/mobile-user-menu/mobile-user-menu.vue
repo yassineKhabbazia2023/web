@@ -55,6 +55,12 @@
           :label="t('privacyPolicy')"
           :href="PRIVACY_POLICY_URL"
         />
+        <MobileUserMenuItem
+          :label="t('manageCookies')"
+          is-action
+          icon-name="sliders"
+          @click="openAxeptioCookies"
+        />
       </nav>
     </div>
 
@@ -74,6 +80,7 @@ import { RouteName } from '@pulse/common/enums'
 import { LEGAL_NOTICE_URL, PRIVACY_POLICY_URL } from '@pulse/common/constants'
 import { fetchUrlTerms } from '@pulse/common'
 import { useUserStore } from '@pulse/common/stores'
+import { openAxeptioCookies } from '@pulse/shared/plugins'
 import LogoutButton from '../../user-profile/components/logout-button'
 import MobileUserMenuItem from './mobile-user-menu-item.vue'
 
@@ -135,7 +142,8 @@ onMounted(async () => {
     "password": "Password",
     "legalNotice": "Legal Notice",
     "cgu": "CGU",
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy Policy",
+    "manageCookies": "Manage cookies"
   },
   "fr-FR": {
     "menu": "Menu",
@@ -145,7 +153,8 @@ onMounted(async () => {
     "password": "Mot de passe",
     "legalNotice": "Mentions légales",
     "cgu": "CGU",
-    "privacyPolicy": "Politique de confidentialité"
+    "privacyPolicy": "Politique de confidentialité",
+    "manageCookies": "Gérer mes cookies"
   }
 }
 </i18n>

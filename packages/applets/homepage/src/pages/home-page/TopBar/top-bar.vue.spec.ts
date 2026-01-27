@@ -22,7 +22,8 @@ vi.mock('@pulse/common/managers', () => ({
   },
 }))
 
-vi.mock('@pulse/styleguide', () => ({
+vi.mock('@pulse/styleguide', async (importOriginal) => ({
+  ...await importOriginal(),
   useResponsive: () => ({
     isMobile: isMobileRef,
   }),

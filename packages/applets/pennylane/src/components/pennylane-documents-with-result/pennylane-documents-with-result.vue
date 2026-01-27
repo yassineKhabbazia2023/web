@@ -59,6 +59,7 @@
             text-overflow--ellipsis
             no-wrap
             font-small
+            margin-top--1
           "
         >
           {{ pennylaneDocument.path }}

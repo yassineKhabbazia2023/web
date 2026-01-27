@@ -113,7 +113,7 @@ const internalIsOpened = computed({
 })
 
 function onClose() {
-  internalIsOpened.value = false
+  errorStatus.value = undefined
 }
 
 const {

@@ -1,9 +1,10 @@
 <template>
   <PDialog
-    v-model="internalIsOpened"
-    pWidth="420"
+    :modelValue="isOpened"
+    :pWidth="isMobile === true ? '80%' : '40%'"
     pCenter
     pCloseIconName="x"
+    @close="onClickClose"
   >
     <div
       class="
@@ -44,25 +45,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { PIcon, PButton, PDialog } from '@pulse/styleguide/components'
+import { useResponsive } from '@pulse/styleguide'
 import type { PennylaneDialogProps } from './pennylane-dialog.type'
 
-const props = defineProps<PennylaneDialogProps>()
+const { isMobile } = useResponsive()
+defineProps<PennylaneDialogProps>()
 const emit = defineEmits<{
   close: []
 }>()
 
-const internalIsOpened = computed({
-  get: () => props.isOpened,
-  set: (isOpened: boolean) => {
-    if (isOpened === false) {
-      emit('close')
-    }
-  },
-})
-
 function onClickClose() {
-  internalIsOpened.value = false
+  emit('close')
 }
 </script>

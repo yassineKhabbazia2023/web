@@ -21,7 +21,8 @@
       "joinAction": "Join the DiGiLAB"
     },
     "pennylaneSSO": {
-      "accessToPennylane": "Access to Pennylane"
+      "accessToPennylane": "Access to Pennylane",
+      "accounting": "Accounting"
     },
     "pennylaneAccessBlocked": {
       "title": "Validation required for your company",

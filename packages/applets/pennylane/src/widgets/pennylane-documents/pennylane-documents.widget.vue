@@ -9,7 +9,6 @@
   >
     <PennylaneDocumentsHeader
       :lastSynchroDate="pennylaneLastSynchroDate"
-      class="margin-bottom--2"
     />
     <PennylaneDocumentsWrapper
       data-testid="pennylane-documents-widget"

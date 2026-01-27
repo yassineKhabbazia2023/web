@@ -143,6 +143,7 @@ $mobile-bottom-nav-height: v-bind('`${MOBILE_BOTTOM_NAV_HEIGHT}px`');
   padding-bottom: env(safe-area-inset-bottom);
 
   &__item {
+    flex: 1;
     padding: 8px 12px;
     text-decoration: none;
     background: none;

@@ -6,7 +6,7 @@
       pIconName="pulse"
       pIconSize="30"
       :pIconColor="AppColors.JUNGLE_400"
-      :pTitle="t('title')"
+      :pTitle="title"
     />
 
     <div
@@ -38,7 +38,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { AppColors } from '@pulse/styleguide'
+import { AppColors, useResponsive } from '@pulse/styleguide'
 import { PIcon, PTitle } from '@pulse/styleguide/components'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/constants'
 import { PennylaneDocumentsHeaderProps } from './pennylane-documents-header.type'
@@ -51,6 +51,10 @@ const { t, d } = useI18n({
 })
 
 const props = defineProps<PennylaneDocumentsHeaderProps>()
+
+const { isMobile } = useResponsive()
+
+const title = computed(() => isMobile.value ? t('titleMobile') : t('title'))
 
 const dayLabel = computed(() => {
   const lastSynchroDate = props.lastSynchroDate
@@ -70,12 +74,14 @@ const dayLabel = computed(() => {
 <i18n lang="yaml">
   en-US:
     title: 'Last RYDGE Conseil documents'
+    titleMobile: 'Last documents'
     lastSynchroDate: 'Last synchronization'
     at: 'at'
     today: 'Today'
     on: 'On'
   fr-FR:
     title: 'Derniers documents RYDGE Conseil'
+    titleMobile: 'Derniers documents'
     lastSynchroDate: 'Dernière synchronisation'
     at: 'à'
     today: "Aujourd'hui"

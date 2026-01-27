@@ -2,7 +2,8 @@ import { logger } from '@pulse/toolbox'
 import { VITE_AXEPTIO_KEY } from 'env-vars'
 
 declare let window: {
-  axeptioSettings: any // Axeptio
+  axeptioSettings: any
+  openAxeptioCookies: any
 } & Window
 
 export function initAxeptio() {
@@ -17,4 +18,10 @@ export function initAxeptio() {
   firstScriptElement?.parentNode?.insertBefore(element, firstScriptElement)
 
   logger.trace('Axeptio Plugin - initialized')
+}
+
+export function openAxeptioCookies() {
+  if (typeof window.openAxeptioCookies === 'function') {
+    window.openAxeptioCookies()
+  }
 }

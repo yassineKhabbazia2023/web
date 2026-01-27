@@ -245,7 +245,6 @@ div.el-overlay:not(.p-drawer--mini) {
 
     @include media(xs) {
       flex-direction: column;
-      height: auto;
       overflow-y: auto;
     }
   }
@@ -256,8 +255,7 @@ div.el-overlay:not(.p-drawer--mini) {
 
     @include media(xs) {
       width: 100%;
-      height: 80vh;
-      flex-shrink: 0;
+      max-height: 80vh;
     }
   }
 
@@ -268,7 +266,7 @@ div.el-overlay:not(.p-drawer--mini) {
 
     @include media(xs) {
       width: 100%;
-      height: auto;
+      flex-grow: 1;
       overflow-y: visible;
     }
   }

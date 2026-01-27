@@ -8,12 +8,13 @@
       flex--align-items-center
       flex--justify-content-space-between
       padding-y--4
+      padding-x--0
     "
     @click="emit('click')"
   >
     <span class="mobile-user-menu-item__label font-small font-semibold">{{ label }}</span>
     <PIcon
-      :pName="href ? 'link45deg' : 'arrowRight'"
+      :pName="computedIconName"
       class="mobile-user-menu-item__icon"
     />
   </component>
@@ -27,9 +28,20 @@ import type { MobileUserMenuItemProps } from './mobile-user-menu-item.type'
 
 const props = defineProps<MobileUserMenuItemProps>()
 
-const componentType = computed(() => props.to ? RouterLink : 'a')
+const componentType = computed(() => {
+  if (props.isAction) {
+    return 'button'
+  }
+  if (props.to) {
+    return RouterLink
+  }
+  return 'a'
+})
 
 const linkAttributes = computed(() => {
+  if (props.isAction) {
+    return { type: 'button' }
+  }
   if (props.to) {
     return { to: props.to }
   }
@@ -38,6 +50,16 @@ const linkAttributes = computed(() => {
     target: '_blank',
     rel: 'noopener',
   }
+})
+
+const computedIconName = computed(() => {
+  if (props.iconName) {
+    return props.iconName
+  }
+  if (props.href) {
+    return 'link45deg'
+  }
+  return 'arrowRight'
 })
 
 const emit = defineEmits<{
@@ -57,5 +79,12 @@ const emit = defineEmits<{
   &__icon {
     color: var(--p-gray-300);
   }
+}
+
+button.mobile-user-menu-item {
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 </style>
