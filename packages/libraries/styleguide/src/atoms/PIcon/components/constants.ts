@@ -1113,6 +1113,12 @@ export const pulseGeneratedIcons: {
     category: 'Others',
   },
   {
+    name: 'lockDuotone',
+    componentName: 'PILockDuotone',
+    fileName: 'lock-duotone.svg',
+    category: 'Polychrome',
+  },
+  {
     name: 'loopColor',
     componentName: 'PILoopColor',
     fileName: 'loop-color.svg',
@@ -1131,9 +1137,21 @@ export const pulseGeneratedIcons: {
     category: 'Polychrome',
   },
   {
+    name: 'shieldLockDuotone',
+    componentName: 'PIShieldLockDuotone',
+    fileName: 'shield-lock-duotone.svg',
+    category: 'Polychrome',
+  },
+  {
     name: 'silaeColor',
     componentName: 'PISilaeColor',
     fileName: 'silae-color.svg',
+    category: 'Polychrome',
+  },
+  {
+    name: 'thumbUpDuotone',
+    componentName: 'PIThumbUpDuotone',
+    fileName: 'thumb-up-duotone.svg',
     category: 'Polychrome',
   },
   {
@@ -1188,6 +1206,12 @@ export const pulseGeneratedIcons: {
     name: 'exclamationTriangle',
     componentName: 'PIExclamationTriangle',
     fileName: 'exclamation-triangle.svg',
+    category: 'Status',
+  },
+  {
+    name: 'infoCircleFilled',
+    componentName: 'PIInfoCircleFilled',
+    fileName: 'info-circle-filled.svg',
     category: 'Status',
   },
   {

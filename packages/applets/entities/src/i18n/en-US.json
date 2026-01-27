@@ -13,6 +13,60 @@
       "uploadPowerBIReport": "Upload a BI report",
       "biReportsList": "BI Reports",
       "offersCatalog": "Offers catalog"
+    },
+    "invoices": {
+      "title": "Dematerialization of RYDGE Conseil invoices",
+      "description": "With RYDGE Conseil, benefit {noExtraCost} from the issuance of Firm invoices in {electronicFormat} and access to {digitalVault} containing all dematerialized invoices and credit notes, hosted with a trusted third party.",
+      "descriptionBold": {
+        "noExtraCost": "at no extra cost",
+        "electronicFormat": "electronic format",
+        "digitalVault": "a digital vault"
+      },
+      "benefitsTitle": "The benefits:",
+      "benefit1": "The digital vault is a key step towards {mandatoryInvoice} and facilitates {digitalTransition} and compliance with upcoming legal obligations.",
+      "benefit1Bold": {
+        "mandatoryInvoice": "mandatory electronic invoicing",
+        "digitalTransition": "digital transition"
+      },
+      "benefit2": "Documents are stored in a {secure} environment that guarantees {durability}, {integrity} and {traceability} of invoices.",
+      "benefit2Bold": {
+        "secure": "secure",
+        "durability": "durability",
+        "integrity": "integrity",
+        "traceability": "traceability"
+      },
+      "benefit3": "Reduction of printing and contribution to our {csrPolicy}.",
+      "benefit3Bold": {
+        "csrPolicy": "CSR policy"
+      },
+      "helpCenterLink": "Help center: everything you need to know about your Rydge invoice Read the FAQ article",
+      "alertText1": "Dematerialization of invoices is essential to anticipate {reform}, which will require all companies to issue and receive secure digital invoices via approved platforms from 2026.",
+      "alertText2": "To learn everything about {electronicInvoice}, listen to our {podcast}.",
+      "alertBold": {
+        "reform": "the electronic invoice reform",
+        "electronicInvoice": "electronic invoicing",
+        "podcast": "Podcast"
+      },
+      "step1": {
+        "title": "Subscribe to dematerialized {highlight}",
+        "titleHighlight": "invoices"
+      },
+      "step2": {
+        "title": "{highlight}",
+        "titleHighlight": "Confirmation"
+      },
+      "formSubtitle": "Please enter the email address where you want to receive your dematerialized invoices.",
+      "emailLabel": "Email address to receive your invoices",
+      "emailPlaceholder": "Enter an email address",
+      "checkboxLabel": "I consent to the dematerialization of my invoices",
+      "assistanceButton": "Need assistance?",
+      "nextButton": "Next",
+      "step2Placeholder": "Step 2 content - Coming soon",
+      "backButton": "Back",
+      "submitButton": "Submit",
+      "emailRequired": "Email address is required",
+      "emailInvalid": "Please enter a valid email address",
+      "acceptTermsRequired": "You must accept the terms to continue"
     }
   }
 }

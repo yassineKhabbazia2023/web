@@ -27,3 +27,5 @@ export const PENNYLANE_MOBILE_APP_URL = 'https://www.pennylane.com/fr/applicatio
 export const PENNYLANE_GETTING_STARTED_URL = 'https://help.pennylane.com/fr/collections/4143-debuter-sur-pennylane'
 export const AKUITEO_URL = 'https://akuiteo.rydge.fr/akuiteo/login.html'
 export const COLLABORATOR_BASE_PATH = '/collaborateur'
+export const HELP_CENTER_URL = 'https://aide.rydge.fr/'
+export const PODCAST_URL = 'https://www.rydge.fr/podcast'

@@ -134,6 +134,7 @@ export type IconName =
 'locationDot' |
 'locationDotSlash' |
 'lock' |
+'lockDuotone' |
 'loopColor' |
 'megColor' |
 'megaphone' |
@@ -173,6 +174,7 @@ export type IconName =
 'send' |
 'shield' |
 'shieldLock' |
+'shieldLockDuotone' |
 'shop' |
 'silaeColor' |
 'slashCircle' |
@@ -185,6 +187,7 @@ export type IconName =
 'sun' |
 'telephone' |
 'threeDots' |
+'thumbUpDuotone' |
 'trash' |
 'truck' |
 'truckFront' |

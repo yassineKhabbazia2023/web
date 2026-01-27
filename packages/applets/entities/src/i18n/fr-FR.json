@@ -13,6 +13,60 @@
       "uploadPowerBIReport": "Déposer un rapport BI",
       "biReportsList": "Rapports BI",
       "offersCatalog": "Catalogue des offres"
+    },
+    "invoices": {
+      "title": "Dématérialisation des factures RYDGE Conseil",
+      "description": "Avec RYDGE Conseil, bénéficiez {noExtraCost} de l'émission des factures Cabinet au {electronicFormat} et de l'accès à {digitalVault} contenant l'ensemble des factures et avoirs dématérialisés, hébergé auprès d'un tiers de confiance.",
+      "descriptionBold": {
+        "noExtraCost": "sans frais supplémentaires",
+        "electronicFormat": "format électronique",
+        "digitalVault": "un coffre-fort numérique"
+      },
+      "benefitsTitle": "Les avantages :",
+      "benefit1": "Le coffre-fort constitue une étape clé vers la {mandatoryInvoice} et facilite la {digitalTransition} et la conformité aux prochaines obligations légales.",
+      "benefit1Bold": {
+        "mandatoryInvoice": "facture électronique obligatoire",
+        "digitalTransition": "transition numérique"
+      },
+      "benefit2": "Les documents sont stockés dans un environnement {secure} qui garantit la {durability}, l'{integrity} et la {traceability} des factures.",
+      "benefit2Bold": {
+        "secure": "sécurisé",
+        "durability": "pérennité",
+        "integrity": "intégrité",
+        "traceability": "traçabilité"
+      },
+      "benefit3": "Réduction des impressions et contribution à notre {csrPolicy}.",
+      "benefit3Bold": {
+        "csrPolicy": "politique RSE"
+      },
+      "helpCenterLink": "Centre d'aide : tout savoir sur votre facture Rydge Lire l'article FAQ",
+      "alertText1": "La dématérialisation des factures est essentielle pour anticiper {reform}, qui imposera à toutes les entreprises d'émettre et recevoir des factures numériques sécurisées via des plateformes agréées dès 2026.",
+      "alertText2": "Pour tout savoir sur la {electronicInvoice}, écoutez notre {podcast}.",
+      "alertBold": {
+        "reform": "la réforme de la facture électronique",
+        "electronicInvoice": "facture électronique",
+        "podcast": "Podcast"
+      },
+      "step1": {
+        "title": "Souscrire aux factures {highlight}",
+        "titleHighlight": "dématérialisées"
+      },
+      "step2": {
+        "title": "Accéder au coffre-fort {highlight}",
+        "titleHighlight": "dématérialisé"
+      },
+      "formSubtitle": "Veuillez renseigner la boite mail sur laquelle recevoir vos factures dématérialisées.",
+      "emailLabel": "Adresse e-mail pour recevoir vos factures",
+      "emailPlaceholder": "Saisissez une adresse e-mail",
+      "checkboxLabel": "Je consens à la dématérialisation de mes factures",
+      "assistanceButton": "Besoin d'assistance ?",
+      "nextButton": "Suivant",
+      "step2Placeholder": "Contenu de l'étape 2 - À venir",
+      "backButton": "Retour",
+      "submitButton": "Valider",
+      "emailRequired": "L'adresse email est requise",
+      "emailInvalid": "Veuillez entrer une adresse email valide",
+      "acceptTermsRequired": "Votre consentement est requis pour continuer"
     }
   }
 }
