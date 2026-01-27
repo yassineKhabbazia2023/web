@@ -48,6 +48,7 @@ export function useAddAppSettingDialog(options: UseAddAppSettingDialogOptions) {
   function buildApiPayload(): CreateAppSettingApiPayload {
     return {
       name: form.value.name,
+      type: form.value.isSecret ? 'secret' : 'string',
       targets: buildTargetsFromValues(form.value.valuesByTarget),
     }
   }

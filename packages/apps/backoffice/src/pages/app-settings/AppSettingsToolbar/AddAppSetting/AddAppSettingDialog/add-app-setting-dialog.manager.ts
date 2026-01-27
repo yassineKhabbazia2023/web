@@ -12,6 +12,7 @@ export class AddAppSettingDialogManager {
   static createInitialFormState(): CreateAppSettingFormData {
     return {
       name: '',
+      isSecret: false,
       valuesByTarget: {},
     }
   }

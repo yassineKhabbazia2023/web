@@ -4,6 +4,7 @@ export interface AddAppSettingDialogProps {
 
 export interface CreateAppSettingFormData {
   name: string
+  isSecret: boolean
   valuesByTarget: Record<string, string>
 }
 

@@ -37,6 +37,7 @@ export interface CreateAppSettingTarget {
 
 export interface CreateAppSettingApiPayload {
   name: string
+  type: 'secret' | 'string'
   targets: CreateAppSettingTarget[]
 }
 

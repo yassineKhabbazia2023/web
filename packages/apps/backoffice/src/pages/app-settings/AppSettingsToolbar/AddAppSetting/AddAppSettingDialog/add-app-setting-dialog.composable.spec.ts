@@ -1,6 +1,5 @@
 import { useAddAppSettingDialog } from './add-app-setting-dialog.composable'
 import { AppSettingsListService } from '@backoffice/services/app-settings-list/app-settings-list.service'
-import * as styleguide from '@pulse/styleguide'
 
 vi.mock('@backoffice/services/app-settings-list/app-settings-list.service', () => ({
   AppSettingsListService: {
@@ -29,11 +28,14 @@ describe('useAddAppSettingDialog - extra branches', () => {
     const { form, handleCreate, errors } = useAddAppSettingDialog({ onSuccess, onClose })
 
     form.value.name = 'InvalidName'
+    form.value.isSecret = false
     form.value.valuesByTarget = { ITG: 'v' }
 
     await handleCreate()
 
-    expect(errors.value.name).toBe('Le nom de la clé doit respecter le format : Domain_xxx_nomdomain_nomcle')
+    expect(errors.value.name).toBe(
+      'Le nom de la clé doit respecter le format : Domain_xxx_nomdomain_nomcle',
+    )
     expect(AppSettingsListService.createAppSetting).not.toHaveBeenCalled()
   })
 
@@ -41,11 +43,14 @@ describe('useAddAppSettingDialog - extra branches', () => {
     const { form, handleCreate, errors } = useAddAppSettingDialog({ onSuccess, onClose })
 
     form.value.name = 'Domain_abc_account_key'
+    form.value.isSecret = false
     form.value.valuesByTarget = { ITG: '   ' } // only spaces => should count as empty
 
     await handleCreate()
 
-    expect(errors.value.valuesByTarget).toBe('Renseignez au moins une valeur pour un environnement ou un label')
+    expect(errors.value.valuesByTarget).toBe(
+      'Renseignez au moins une valeur pour un environnement ou un label',
+    )
     expect(AppSettingsListService.createAppSetting).not.toHaveBeenCalled()
   })
 
@@ -74,10 +79,48 @@ describe('useAddAppSettingDialog - extra branches', () => {
     const { form, isFormValid } = useAddAppSettingDialog({ onSuccess, onClose })
 
     form.value.name = 'Domain_abc_account_key'
+    form.value.isSecret = false
+
     // force undefined for coverage of "?? {}"
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(form.value as any).valuesByTarget = undefined
 
     expect(isFormValid.value).toBe(false)
+  })
+
+  it('handleCreate should send type="secret" when isSecret=true', async () => {
+    vi.mocked(AppSettingsListService.createAppSetting).mockResolvedValue()
+
+    const { form, handleCreate } = useAddAppSettingDialog({ onSuccess, onClose })
+
+    form.value.name = 'Domain_abc_account_key'
+    form.value.isSecret = true
+    form.value.valuesByTarget = { ITG: 'v' }
+
+    await handleCreate()
+
+    expect(AppSettingsListService.createAppSetting).toHaveBeenCalledWith({
+      name: 'Domain_abc_account_key',
+      type: 'secret',
+      targets: [{ environment: 'ITG', label: '', value: 'v' }],
+    })
+  })
+
+  it('handleCreate should send type="string" when isSecret=false', async () => {
+    vi.mocked(AppSettingsListService.createAppSetting).mockResolvedValue()
+
+    const { form, handleCreate } = useAddAppSettingDialog({ onSuccess, onClose })
+
+    form.value.name = 'Domain_abc_account_key'
+    form.value.isSecret = false
+    form.value.valuesByTarget = { ITG: 'v' }
+
+    await handleCreate()
+
+    expect(AppSettingsListService.createAppSetting).toHaveBeenCalledWith({
+      name: 'Domain_abc_account_key',
+      type: 'string',
+      targets: [{ environment: 'ITG', label: '', value: 'v' }],
+    })
   })
 })

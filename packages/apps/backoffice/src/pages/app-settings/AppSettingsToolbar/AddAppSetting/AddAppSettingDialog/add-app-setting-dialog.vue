@@ -35,6 +35,24 @@
       </PFormItem>
     </PForm>
 
+    <div class="background-color--neutral-gray-50 border-radius--2 margin-bottom--5">
+      <div class="flex flex--align-items-center flex--justify-content-space-between margin-bottom--">
+        <div>
+          <p class="font-small font-semibold text-color--neutral-gray-900 margin--0">
+            Variable secrète
+          </p>
+          <p class="font-small text-color--neutral-gray-600 margin--0 margin-top--1">
+            Les valeurs seront masquées dans l'interface
+          </p>
+        </div>
+        <PSwitch
+          v-model="form.isSecret"
+          data-testid="add-app-setting-is-secret-switch"
+          pSize="small"
+        />
+      </div>
+    </div>
+
     <div>
       <p class="font-small font-semibold text-color--neutral-gray-900 margin--0 margin-y--3">
         Saisir les valeurs par environnement
@@ -113,6 +131,7 @@ import {
   PInput,
   PIcon,
   PForm,
+  PSwitch,
   PFormItem,
   PAlert,
   PLoader,

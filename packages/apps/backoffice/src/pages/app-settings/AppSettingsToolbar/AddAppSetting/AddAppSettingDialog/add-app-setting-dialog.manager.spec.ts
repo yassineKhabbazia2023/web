@@ -5,6 +5,7 @@ describe('AddAppSettingDialogManager', () => {
     it('should return form data with default values', () => {
       expect(AddAppSettingDialogManager.createInitialFormState()).toEqual({
         name: '',
+        isSecret: false,
         valuesByTarget: {},
       })
     })
