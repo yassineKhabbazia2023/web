@@ -181,7 +181,7 @@ const getStateColor = (state: string): TagColor => {
 }
 
 const getTagColor = (tag: string): TagColor => {
-  if (tag.startsWith('MEP.')) {
+  if (tag.startsWith('MEP')) {
     return 'dark-blue'
   }
   return 'gray'

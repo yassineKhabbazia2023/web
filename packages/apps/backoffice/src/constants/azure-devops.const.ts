@@ -32,7 +32,7 @@ export const WORK_ITEM_STATE_COLORS = {
   'In Progress': 'warning',
   'Resolved': 'success',
   'Validated': 'success',
-  'Closed': 'success',
+  'Closed': 'dark-green',
   'Released': 'success',
   'Done': 'success',
   'Removed': 'danger',
