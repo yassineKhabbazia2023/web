@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PTable
+    <PResponsiveTable
       :pData="data"
       showOverflowTooltip
       pStripe
@@ -33,7 +33,7 @@
                 }"
               >
                 <span v-if="scope.row.isLoggedUser">{{ t('you') }}</span>
-                <span v-if="!scope.row.isLoggedUser">
+                <span v-if="scope.row.isLoggedUser === false">
                   {{ scope.row.firstName }}
                   <span class="text-uppercase"> {{ scope.row.lastName }}</span>
                 </span>
@@ -48,7 +48,7 @@
         pSortable="custom"
         :pSortOrders="SORT_ORDERS"
       />
-      <template v-if="!isAccountManagement">
+      <template v-if="isAccountManagement === false">
         <PTableColumn
           :pLabel="t('dateAdded')"
           pProp="creationDate"
@@ -100,7 +100,55 @@
           pType="selection"
         />
       </template>
-    </PTable>
+
+      <!-- Mobile card -->
+      <template #mobile-title="{ row }">
+        <div class="flex flex--align-items-center overflow-hidden">
+          <PAvatar
+            :pRole="AvatarRoles.CLIENT"
+            class="margin-right--4"
+          >
+            {{ row.initials }}
+          </PAvatar>
+          <div class="overflow-hidden">
+            <p
+              class="
+                text-capitalize
+                overflow-hidden
+                text-overflow--ellipsis
+                no-wrap
+              "
+              :class="{
+                'font-bold': row.isSignatory,
+              }"
+            >
+              <span v-if="row.isLoggedUser">{{ t('you') }}</span>
+              <span v-if="row.isLoggedUser === false">
+                {{ row.firstName }}
+                <span class="text-uppercase"> {{ row.lastName }}</span>
+              </span>
+            </p>
+            <p
+              class="
+                text-color--gray-500
+                font-small
+                overflow-hidden
+                text-overflow--ellipsis
+                no-wrap
+              "
+            >
+              {{ row.email }}
+            </p>
+            <p
+              v-if="isAccountManagement === false"
+              class="text-color--gray-500 font-small"
+            >
+              {{ t('dateAdded') }} : {{ d(row.creationDate, 'short') }}
+            </p>
+          </div>
+        </div>
+      </template>
+    </PResponsiveTable>
   </div>
 </template>
 
@@ -110,7 +158,7 @@ import {
   PAvatar,
   PButton,
   PIcon,
-  PTable,
+  PResponsiveTable,
   PTableColumn,
   PToolbox,
   PTag,

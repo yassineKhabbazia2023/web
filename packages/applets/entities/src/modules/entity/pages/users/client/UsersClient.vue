@@ -66,7 +66,7 @@
       v-model:p-current-page="state.currentPage"
       v-model:p-page-size="state.limit"
       :pTotal="state.totalItems"
-      :pPageSizes="PAGE_SIZES"
+      :pPageSizes="pageSizes"
       pPageSizeSelectorSuffix=""
       pShowTotalPageCounter
       class="flex--grow-0 flex--shrink-0 margin-negative-x--2"
@@ -110,7 +110,8 @@ import { useRoute } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon } from '@pulse/styleguide/components'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { removeFalsyValues } from '@pulse/toolbox/utils/object'
-import { PAGE_SIZES, ACTION_PERMISSIONS } from '@pulse/common/constants'
+import { PAGE_SIZES, MOBILE_PAGE_SIZES, ACTION_PERMISSIONS } from '@pulse/common/constants'
+import { useResponsive } from '@pulse/styleguide'
 import NoResult from '@entities/components/NoResult'
 import FormSearch from '@entities/components/FormSearch'
 import ManageRightsDrawer from '@entities/components/ManageRightsDrawer'
@@ -138,10 +139,16 @@ const { t } = useI18n({
 const route = useRoute()
 const userStore = useUserStore()
 
+const { isMobile } = useResponsive()
+const pageSizes = computed(() =>
+  isMobile.value ? [5, ...MOBILE_PAGE_SIZES, ...PAGE_SIZES] : PAGE_SIZES,
+)
+const currentPageSize = ref(pageSizes.value[0])
+
 const state: State = reactive({
   data: [],
   currentPage: 1,
-  limit: 15,
+  limit: currentPageSize.value,
   totalPages: undefined,
   totalItems: undefined,
   search: undefined,
@@ -270,7 +277,8 @@ const isAddUserButtonVisible = computed(() =>
   currentEntityId.value &&
   isMounted.value &&
   canAddUser.value &&
-  route.name === RouteName.USERS,
+  route.name === RouteName.USERS &&
+  isMobile.value === false,
 )
 
 onMounted(async () => {

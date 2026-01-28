@@ -49,8 +49,8 @@ const createWrapper = (): VueWrapper<any> =>
     },
     global: {
       stubs: {
-        PTable: {
-          name: 'PTable',
+        PResponsiveTable: {
+          name: 'PResponsiveTable',
           template: '<div><slot /></div>',
         },
         PTableColumn: {
@@ -89,6 +89,8 @@ describe('users-list', () => {
   })
 
   it('has a menu with 3 items if the route name is users', () => {
+    hasPermissionMock.mockReturnValue(true)
+    wrapper = createWrapper()
     const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
 
     expect(pToolbox.props('pElements')).toHaveLength(3)

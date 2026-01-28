@@ -25,7 +25,7 @@
     >
       <PLoader pType="primary" pSize="50" />
     </div>
-    <PTable
+    <PResponsiveTable
       v-else
       :pData="activeOffers"
       tableLayout="fixed"
@@ -54,7 +54,7 @@
       <PTableColumn :pLabel="t('status')">
         <template #default="{ row: { status: offerActivationStatus } }">
           <OfferActivationStatus
-            v-if="user"
+            v-if="user !== undefined"
             :currentUser="user"
             :status="offerActivationStatus"
           />
@@ -70,10 +70,33 @@
           </PTooltip>
         </template>
       </PTableColumn>
-    </PTable>
+
+      <!-- Mobile card -->
+      <template #mobile-title="{ row }">
+        <div class="overflow-hidden">
+          <div class="flex flex--align-items-center overflow-hidden">
+            <PImage
+              pType="logos"
+              :pName="row.offer.logoName"
+              class="offers-table__offer-logo--mobile margin-right--4"
+            />
+            <p class="font-semibold text-capitalize flex--grow-1 overflow-hidden">
+              {{ getOfferNameWithPlan(row.offer) }}
+            </p>
+          </div>
+          <div class="flex flex--justify-content-flex-end margin-top--1">
+            <OfferActivationStatus
+              v-if="user !== undefined"
+              :currentUser="user"
+              :status="row.status"
+            />
+          </div>
+        </div>
+      </template>
+    </PResponsiveTable>
   </div>
   <OffersDrawer
-    v-if="hasOffersDrawer && currentEntity && user"
+    v-if="hasOffersDrawer === true && currentEntity !== undefined && user !== undefined"
     ref="offersDrawer"
     v-model="isOffersDrawerOpened"
     :selectedCompanyName="currentEntity.legalName"
@@ -97,7 +120,7 @@ import {
   PButton,
   PIcon,
   PLoader,
-  PTable,
+  PResponsiveTable,
   PTableColumn,
   PImage,
   PTooltip,
@@ -189,6 +212,12 @@ async function onOfferSaved() {
   &__offer-logo {
     width: 24px;
     height: 24px;
+
+    &--mobile {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+    }
   }
 }
 </style>

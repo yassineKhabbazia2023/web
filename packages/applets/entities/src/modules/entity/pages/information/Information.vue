@@ -159,9 +159,15 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
 .entity-information {
   &__form-section-fields {
     gap: 0px 20px;
+
+    @include breakpoints.media(xs) {
+      flex-direction: column;
+    }
   }
 }
 </style>
