@@ -89,7 +89,7 @@ const accountName = computed(() => currentEntityStore.currentEntity?.legalName ?
 const accountNumber = computed(() => currentEntityStore.currentEntityAccountNumber)
 
 const currentPage = ref(1)
-const pageSizes = computed(() => isMobile.value ? [...MOBILE_PAGE_SIZES, ...PAGE_SIZES] : PAGE_SIZES)
+const pageSizes = computed(() => isMobile.value ? [5, ...MOBILE_PAGE_SIZES, ...PAGE_SIZES] : PAGE_SIZES)
 const currentPageSize = ref(pageSizes.value[0])
 
 const paginationLabel = computed(() => getPaginationLabel('sur', {
@@ -153,7 +153,11 @@ onMounted(fetchDocuments)
 
 <style scoped lang="scss">
 .search-container {
-  max-width: 20%;
+  max-width: 100%;
+
+  @media (min-width: 768px) {
+    max-width: 20%;
+  }
 }
 </style>
 

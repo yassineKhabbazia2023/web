@@ -32,7 +32,7 @@
       >
         <PIcon
           :pName="pennylaneDocument.iconName"
-          pSize="16"
+          pSize="32"
         />
       </div>
       <ul

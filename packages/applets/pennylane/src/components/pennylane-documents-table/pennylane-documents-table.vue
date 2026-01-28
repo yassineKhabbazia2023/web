@@ -1,8 +1,11 @@
 <template>
-  <PTable
+  <PResponsiveTable
     :pData="pennylaneDocuments"
     :empty-text="t('noResult')"
+    pStripe
+    pCardClickable
     @cell-click="onClickCell"
+    @row-click="onRowClick"
   >
     <PTableColumn
       v-for="({ label, prop, sortable }, index) in columns"
@@ -42,14 +45,50 @@
         </span>
       </template>
     </PTableColumn>
-  </PTable>
+
+    <template #mobile-title="{ row }">
+      <div class="flex flex--align-items-center overflow-hidden">
+        <PIcon
+          :pName="row.iconName"
+          pSize="32"
+          class="margin-right--3"
+        />
+        <div class="overflow-hidden">
+          <p
+            class="
+              font-bold
+              overflow-hidden
+              no-wrap
+              text-overflow--ellipsis
+            "
+          >
+            {{ row.name }}
+          </p>
+          <p
+            class="
+              font-small
+              text-color--gray-500
+              overflow-hidden
+              no-wrap
+              text-overflow--ellipsis
+            "
+          >
+            {{ row.path }}
+          </p>
+          <p class="font-small text-color--gray-500">
+            {{ t('fields.updatedAt') }} : {{ d(row.updatedAt) }}
+          </p>
+        </div>
+      </div>
+    </template>
+  </PResponsiveTable>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { TableColumnCtx } from 'element-plus'
 import { logger } from '@pulse/toolbox'
-import { PTable, PTableColumn, PIcon, PToolbox, PButton } from '@pulse/styleguide/components'
+import { PResponsiveTable, PTableColumn, PIcon, PToolbox, PButton } from '@pulse/styleguide/components'
 import type {
   PennylaneDocumentsTableFieldKeys,
   PennylaneDocumentsTableProps,
@@ -83,6 +122,10 @@ const columns = getPennylaneDocumentsFieldsColumns(labels)
 const emit = defineEmits<{
   'open-document': [FormattedPennylaneDocument],
 }>()
+
+function onRowClick(row: Record<string, any>) {
+  emit('open-document', row as FormattedPennylaneDocument)
+}
 
 function onClickCell(
   pennylaneDocument: FormattedPennylaneDocument,
