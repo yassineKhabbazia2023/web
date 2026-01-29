@@ -1,28 +1,30 @@
 <template>
-  <PEntityHeader
-    :pLegalName
-    :pAccountNumber
-    class="margin-bottom--4"
-  />
-  <AccountingHeader
-    v-if="hideAccountingHeader === false"
-    @close="onClickCloseAccountingHeader"
-  />
-  <PTabs
-    data-testid="accounting-tabs"
-    :modelValue="currentTabName"
-    pSmartWidth
-    @tab-click="onTabClick"
-  >
-    <PTabPane
-      v-for="tab in tabs"
-      :key="tab.name"
-      :label="tab.label"
-      :name="tab.name"
+  <div>
+    <PEntityHeader
+      :pLegalName
+      :pAccountNumber
+      class="margin-bottom--4"
     />
-  </PTabs>
+    <AccountingHeader
+      v-if="hideAccountingHeader === false"
+      @close="onClickCloseAccountingHeader"
+    />
+    <PTabs
+      data-testid="accounting-tabs"
+      :modelValue="currentTabName"
+      pSmartWidth
+      @tab-click="onTabClick"
+    >
+      <PTabPane
+        v-for="tab in tabs"
+        :key="tab.name"
+        :label="tab.label"
+        :name="tab.name"
+      />
+    </PTabs>
 
-  <RouterView />
+    <RouterView />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -36,14 +38,11 @@ import { APICallStatus, RouteName } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
 import { getFormattedPennylaneDocuments } from '@pennylane/helpers/pennylane-documents.helper'
 import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
-import { useResponsive } from '@pulse/styleguide'
 import { AccountingTab } from './accounting.page.enum'
 import AccountingHeader from '@pennylane/components/accounting-header/accounting-header.vue'
 import { useRouter } from 'vue-router'
 import { persistHideAccountingHeader, getHideAccountingHeader } from './accounting.helper'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
-
-const { isMobile } = useResponsive()
 
 const router = useRouter()
 
@@ -78,11 +77,7 @@ const tabs = computed<Tab[]>(() => {
     })
   }
 
-  const showArchivesTab = PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true
-    && isMobile.value === false
-
-  // show archives on desktop only
-  if (showArchivesTab) {
+  if (PennylanePermissionsManager.hasPennylaneAccountingGedLegacyPermission() === true) {
     result.push({
       name: AccountingTab.GED_LEGACY,
       label: t('tabs.ged-legacy'),

@@ -33,14 +33,22 @@ const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 vi.mock('@ged/models/AccountingHubConnection', () => accountingHubConnectionServiceMock)
 
 const spyPNotification = vi.hoisted(() => vi.fn())
-vi.mock('@pulse/styleguide', () => ({
-  PNotification: spyPNotification,
-  AppColors: {
-    RED: 'RED',
-    PRIMARY: 'PRIMARY',
-    GREY_300: 'GREY_300',
-  },
-}))
+vi.mock('@pulse/styleguide', async (importOriginal) => {
+  const { ref } = await import('vue')
+  const actual = await importOriginal<typeof import('@pulse/styleguide')>()
+  return {
+    ...actual,
+    PNotification: spyPNotification,
+    AppColors: {
+      RED: 'RED',
+      PRIMARY: 'PRIMARY',
+      GREY_300: 'GREY_300',
+    },
+    useResponsive: () => ({
+      isMobile: ref(false),
+    }),
+  }
+})
 
 vi.mock('@ged/services/Folder', () => ({
   fetchServicesFolders: fetchServicesFoldersSuccessMock,

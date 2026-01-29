@@ -1,6 +1,13 @@
 <template>
   <PRow v-if="accountNumber">
-    <PCol :span="6">
+    <PCol
+      v-if="shouldDisplayGED === false"
+      :span="24"
+      class="padding--4"
+    >
+      <MobileNotAvailableAlert />
+    </PCol>
+    <PCol v-if="shouldDisplayGED === true" :span="6">
       <Treeview
         :entityServices="entityServices"
         :currentService="currentService ?? ''"
@@ -23,13 +30,13 @@
       />
     </PCol>
 
-    <!-- This is not a computed because of typescript type narrowing with possibly null value and props binding -->
     <PCol
-      v-if="currentService !== null &&
+      v-if="shouldDisplayGED === true &&
+        currentService !== null &&
         currentServiceName !== null &&
         isCurrentServiceReadOnly !== null &&
         currentServiceFolder !== undefined &&
-        !currentBinService"
+        currentBinService === null"
       :span="18"
     >
       <Documents
@@ -49,7 +56,7 @@
         @change-selected-folder="setCurrentFolderAndService"
       />
     </PCol>
-    <PCol v-else-if="currentBinService" :span="18">
+    <PCol v-else-if="shouldDisplayGED === true && currentBinService !== null" :span="18">
       <BinDocuments
         :currentBinService="currentBinService"
         :currentEntity="accountNumber"
@@ -81,9 +88,10 @@ import {
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import { PCol, PRow } from '@pulse/styleguide/components'
-import { PNotification } from '@pulse/styleguide'
+import { PNotification, useResponsive } from '@pulse/styleguide'
+import { MobileNotAvailableAlert } from '@pulse/shared/components'
 import { logger } from '@pulse/toolbox'
-import { useCurrentEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { GedManager } from '@ged/ged.manager'
 import { GedContext } from '@pulse/common/enums'
 import { GED_CONTEXT_META } from '@pulse/common/constants'
@@ -93,6 +101,18 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
 })
+
+const { isMobile } = useResponsive()
+
+const userStore = useUserStore()
+const { isCollab } = storeToRefs(userStore)
+
+const shouldDisplayGED = computed(() =>
+  // no GED on mobile
+  isMobile.value === false ||
+  // unless user is collaborator
+ isCollab.value === true,
+)
 // Folders scope
 const isLoadingServicesOrFolders = ref(true)
 const currentFolder = ref<null | Folder>(null)
