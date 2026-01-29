@@ -5,6 +5,9 @@ import type { BaseEvent } from '@amplitude/analytics-types'
 import { logger } from '@pulse/toolbox'
 import { AmplitudeUserType, AmplitudeDeviceSize } from '@pulse/common/enums'
 
+// Breakpoint mobile (duplicated from styleguide to avoid circular dependency)
+const MOBILE_BREAKPOINT = 768
+
 /**
  * Service for managing Amplitude analytics integration
  * Provides methods to initialize, track events, and manage user properties
@@ -62,6 +65,35 @@ export class AmplitudeService {
       },
     )
     logger.trace('Amplitude - initialized')
+
+    AmplitudeService.addDeviceSizePlugin()
+  }
+
+  private static getDeviceSize(): AmplitudeDeviceSize {
+    if (globalThis.window === undefined) {
+      return AmplitudeDeviceSize.DESKTOP
+    }
+    return globalThis.window.innerWidth < MOBILE_BREAKPOINT
+      ? AmplitudeDeviceSize.MOBILE
+      : AmplitudeDeviceSize.DESKTOP
+  }
+
+  private static addDeviceSizePlugin() {
+    const deviceSize = AmplitudeService.getDeviceSize()
+
+    const deviceSizePlugin = {
+      name: 'device-size-enrichment',
+      type: 'enrichment' as const,
+      execute: async (event: BaseEvent) => {
+        event.event_properties = {
+          ...event.event_properties,
+          device_size: deviceSize,
+        }
+        return event
+      },
+    }
+    amplitude.add(deviceSizePlugin)
+    logger.trace('Amplitude - added dynamic device size: ', deviceSize)
   }
 
   /**
@@ -145,27 +177,6 @@ export class AmplitudeService {
       return
     }
     AmplitudeService.setNewUserProperty('email', email)
-  }
-
-  static addDeviceSizePlugin(deviceSize: AmplitudeDeviceSize) {
-    if (AmplitudeService.isInitialized() === false) {
-      return
-    }
-
-    const deviceSizePlugin = {
-      name: 'device-size-enrichment',
-      type: 'enrichment' as const,
-      execute: async (event: BaseEvent) => {
-        event.event_properties = {
-          ...event.event_properties,
-          device_size: deviceSize,
-        }
-        return event
-      },
-    }
-
-    amplitude.add(deviceSizePlugin)
-    logger.trace('Amplitude - added device size plugin:', deviceSize)
   }
 
   /**

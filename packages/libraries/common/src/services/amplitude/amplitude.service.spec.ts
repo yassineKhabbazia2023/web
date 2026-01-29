@@ -136,33 +136,42 @@ describe('amplitude', () => {
     expect(identifySpy).toHaveBeenCalledExactlyOnceWith(identifyEvent)
   })
 
-  it('addDeviceSizePlugin adds an enrichment plugin', () => {
+  it('init adds dynamic device size enrichment plugin', () => {
     AmplitudeService.init(FAKE_API_KEY)
 
-    addSpy.mockClear() // clear the session replay plugin call from init
-
-    AmplitudeService.addDeviceSizePlugin(AmplitudeDeviceSize.MOBILE)
-
-    expect(addSpy).toHaveBeenCalledOnce()
-    const plugin = addSpy.mock.calls[0][0]
-    expect(plugin.name).toBe('device-size-enrichment')
-    expect(plugin.type).toBe('enrichment')
+    // Should have been called twice: once for session replay, once for device size
+    expect(addSpy).toHaveBeenCalledTimes(2)
+    const deviceSizePlugin = addSpy.mock.calls[1][0]
+    expect(deviceSizePlugin.name).toBe('device-size-enrichment')
+    expect(deviceSizePlugin.type).toBe('enrichment')
   })
 
-  it('addDeviceSizePlugin enriches event with device_size', async () => {
+  it('dynamic device size plugin enriches event based on window.innerWidth', async () => {
+    Object.defineProperty(window, 'innerWidth', { value: 767, writable: true, configurable: true })
+
     AmplitudeService.init(FAKE_API_KEY)
 
-    addSpy.mockClear()
-
-    AmplitudeService.addDeviceSizePlugin(AmplitudeDeviceSize.MOBILE)
-
-    const plugin = addSpy.mock.calls[0][0]
+    const deviceSizePlugin = addSpy.mock.calls[1][0]
     const testEvent = { event_type: 'test', event_properties: { existing: 'prop' } }
-    const enrichedEvent = await plugin.execute(testEvent)
+    const enrichedEvent = await deviceSizePlugin.execute(testEvent)
 
     expect(enrichedEvent.event_properties).toEqual({
       existing: 'prop',
       device_size: AmplitudeDeviceSize.MOBILE,
+    })
+  })
+
+  it('dynamic device size plugin returns DESKTOP for width >= 768', async () => {
+    Object.defineProperty(window, 'innerWidth', { value: 768, writable: true, configurable: true })
+
+    AmplitudeService.init(FAKE_API_KEY)
+
+    const deviceSizePlugin = addSpy.mock.calls[1][0]
+    const testEvent = { event_type: 'test', event_properties: {} }
+    const enrichedEvent = await deviceSizePlugin.execute(testEvent)
+
+    expect(enrichedEvent.event_properties).toEqual({
+      device_size: AmplitudeDeviceSize.DESKTOP,
     })
   })
 
@@ -208,12 +217,6 @@ describe('amplitude', () => {
       AmplitudeService.setUserEmail('john@example.com')
 
       expect(identifySpy).not.toHaveBeenCalled()
-    })
-
-    it('addDeviceSizePlugin should not operate', () => {
-      AmplitudeService.addDeviceSizePlugin(AmplitudeDeviceSize.MOBILE)
-
-      expect(addSpy).not.toHaveBeenCalled()
     })
 
     it('reset should not operate', () => {
