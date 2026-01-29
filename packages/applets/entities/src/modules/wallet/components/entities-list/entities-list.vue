@@ -2,6 +2,7 @@
   <PResponsiveTable
     ref="selectedRow"
     :pData="props.data"
+    :pDisableResponsive="isCollab"
     pRowKey="accountId"
     :highlightCurrentRow="isAccountManagement === false"
     showOverflowTooltip

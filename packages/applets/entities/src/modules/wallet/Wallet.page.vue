@@ -65,10 +65,7 @@ const handleTabClick = (tab: TabsPaneContext) => {
 
 const permissionsStore = usePermissionsStore()
 
-const getFilteredTabs = () => {
-  const allTabs = WalletManager.getTabsForUser(isCollab.value ?? false)
-  return allTabs.filter(tab => isMobile.value === false || tab.showInMobile)
-}
+const getFilteredTabs = () => WalletManager.getTabsForUser(isCollab.value ?? false, isMobile.value)
 
 const tabs = ref(getFilteredTabs())
 

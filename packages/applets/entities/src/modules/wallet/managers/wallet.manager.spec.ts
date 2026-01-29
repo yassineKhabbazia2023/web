@@ -435,5 +435,110 @@ describe('WalletManager', () => {
 
       expect(tabs).toHaveLength(0)
     })
+
+    it('should filter tabs by showInMobile for customers on mobile', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      const mobileTab = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        isDisplayed: () => true,
+        showInMobile: true,
+        order: 1,
+      })
+
+      const desktopOnlyTab = createMockWalletTabConfig({
+        id: WalletTab.COLLABORATORS,
+        isDisplayed: () => true,
+        showInMobile: false,
+        order: 2,
+      })
+
+      WalletManager.register(mobileTab)
+      WalletManager.register(desktopOnlyTab)
+
+      const tabs = WalletManager.getTabsForUser(false, true)
+
+      expect(tabs).toHaveLength(1)
+      expect(tabs[0].name).toBe(WalletTab.FOLDERS)
+    })
+
+    it('should show all tabs for customers on desktop', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      const mobileTab = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        isDisplayed: () => true,
+        showInMobile: true,
+        order: 1,
+      })
+
+      const desktopOnlyTab = createMockWalletTabConfig({
+        id: WalletTab.COLLABORATORS,
+        isDisplayed: () => true,
+        showInMobile: false,
+        order: 2,
+      })
+
+      WalletManager.register(mobileTab)
+      WalletManager.register(desktopOnlyTab)
+
+      const tabs = WalletManager.getTabsForUser(false, false)
+
+      expect(tabs).toHaveLength(2)
+    })
+
+    it('should show all tabs for collaborators on mobile (no filtering)', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      const mobileTab = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        isDisplayed: () => true,
+        showInMobile: true,
+        order: 1,
+      })
+
+      const desktopOnlyTab = createMockWalletTabConfig({
+        id: WalletTab.COLLABORATORS,
+        isDisplayed: () => true,
+        showInMobile: false,
+        order: 2,
+      })
+
+      WalletManager.register(mobileTab)
+      WalletManager.register(desktopOnlyTab)
+
+      const tabs = WalletManager.getTabsForUser(true, true)
+
+      expect(tabs).toHaveLength(2)
+    })
+
+    it('should show all tabs for collaborators on desktop', () => {
+      vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
+      vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
+
+      const mobileTab = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        isDisplayed: () => true,
+        showInMobile: true,
+        order: 1,
+      })
+
+      const desktopOnlyTab = createMockWalletTabConfig({
+        id: WalletTab.COLLABORATORS,
+        isDisplayed: () => true,
+        showInMobile: false,
+        order: 2,
+      })
+
+      WalletManager.register(mobileTab)
+      WalletManager.register(desktopOnlyTab)
+
+      const tabs = WalletManager.getTabsForUser(true, false)
+
+      expect(tabs).toHaveLength(2)
+    })
   })
 })

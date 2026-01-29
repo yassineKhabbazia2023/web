@@ -9,4 +9,5 @@ export interface PResponsiveTableProps {
   pCardClickable?: boolean
   pIsRowSelected?: (row: Record<string, any>) => boolean
   pRowKey?: string
+  pDisableResponsive?: boolean
 }

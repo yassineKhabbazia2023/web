@@ -51,10 +51,19 @@ export class WalletManager {
 
   /**
    * Get tabs for current user (convenience method)
+   * For customers on mobile, only shows tabs with showInMobile: true
+   * For collaborators, shows all tabs regardless of device
    */
-  static getTabsForUser(isCollab: boolean): WalletTabItem[] {
+  static getTabsForUser(isCollab: boolean, isMobile: boolean = false): WalletTabItem[] {
     const context = this.buildContext(isCollab)
-    return this.getTabs(context)
+    const tabs = this.getTabs(context)
+
+    const shouldFilterForMobile = isMobile && isCollab === false
+    if (shouldFilterForMobile) {
+      return tabs.filter(tab => tab.showInMobile)
+    }
+
+    return tabs
   }
 
   /**

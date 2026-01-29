@@ -7,7 +7,7 @@
       :pFit="pFit"
       :pHeaderCellStyle="pHeaderCellStyle"
       :pCellStyle="pCellStyle"
-      :class="{ 'p-responsive-table--hidden': isMobile }"
+      :class="{ 'p-responsive-table--hidden': shouldDisplayResponsiveCard === true }"
       v-bind="$attrs"
     >
       <slot />
@@ -15,7 +15,7 @@
 
     <!-- Mobile: Card list -->
     <div
-      v-if="isMobile"
+      v-if="shouldDisplayResponsiveCard === true"
       class="p-responsive-table__mobile-list flex flex--direction-column"
     >
       <PResponsiveTableCard
@@ -61,18 +61,21 @@ import { useResponsive } from '../../composables/use-responsive.composable'
 import PTable from '../../atoms/PTable'
 import PResponsiveTableCard from '../../atoms/PResponsiveTableCard'
 import type { PResponsiveTableProps } from './PResponsiveTableTypes'
+import { computed } from 'vue'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-withDefaults(defineProps<PResponsiveTableProps>(), {
+const props = withDefaults(defineProps<PResponsiveTableProps>(), {
   pStripe: false,
   pFit: true,
   pCardClickable: false,
+  pDisableResponsive: false,
 })
 
 const { isMobile } = useResponsive()
+const shouldDisplayResponsiveCard = computed(() => props.pDisableResponsive === false && isMobile.value === true)
 
 const emit = defineEmits<{
   'row-click': [row: Record<string, any>]

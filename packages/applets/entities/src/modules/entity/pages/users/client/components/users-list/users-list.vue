@@ -2,6 +2,7 @@
   <div>
     <PResponsiveTable
       :pData="data"
+      :pDisableResponsive="isCollab"
       showOverflowTooltip
       pStripe
       tableLayout="fixed"
@@ -167,6 +168,8 @@ import { AvatarRoles } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { computed } from 'vue'
 import { CurrentUserManager } from '@pulse/common/managers'
+import { useUserStore } from '@pulse/common/stores'
+import { storeToRefs } from 'pinia'
 import type { UsersListProps } from './types'
 import { MENU_ACTIONS_NAME } from './constants'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
@@ -181,6 +184,9 @@ const { d, t } = useI18n({
   useScope: 'local',
   datetimeFormats,
 })
+
+const userStore = useUserStore()
+const { isCollab } = storeToRefs(userStore)
 
 const props = defineProps<UsersListProps>()
 const emit = defineEmits<{
