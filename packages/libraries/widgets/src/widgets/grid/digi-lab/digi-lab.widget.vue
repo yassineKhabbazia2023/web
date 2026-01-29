@@ -40,7 +40,8 @@
 
     <PButton
       class="flex--align-self-flex-start"
-      :href="sanitizeUrl(DIGILAB_JOIN_FORM_URL)"
+      :href="buttonHref"
+      :pDisabled="buttonHref === undefined"
       pSize="small"
       pTag="a"
       pType="secondary"
@@ -57,16 +58,26 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 import { PButton, PImage } from '@pulse/styleguide/components'
 import { DIGILAB_JOIN_FORM_URL } from '@pulse/common/constants'
 import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { widgetClick } from '@pulse/widgets/utils'
 import { WidgetName } from '@pulse/widgets/enums'
 import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
+import { useUserStore } from '@pulse/common/stores'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'global',
 })
+
+const userStore = useUserStore()
+const { isCollab } = storeToRefs(userStore)
+
+const buttonHref = computed(() =>
+  isCollab.value === true ? undefined : sanitizeUrl(DIGILAB_JOIN_FORM_URL),
+)
 </script>
