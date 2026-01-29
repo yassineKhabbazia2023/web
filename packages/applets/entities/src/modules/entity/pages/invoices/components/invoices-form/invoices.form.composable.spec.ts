@@ -1,110 +1,121 @@
+import { InvoicesFormStep } from '../../invoices.enums'
 import { useInvoicesForm } from './invoices.form.composable'
-import type { InvoicesFormModel } from '@entities/modules/entity/types'
 
 describe('useInvoicesForm', () => {
   describe('initial state', () => {
-    it('should return currentStep with initial value of 1', () => {
+    it('should return currentStep with initial value of EMAIL_AND_TERMS', () => {
       const { currentStep } = useInvoicesForm()
 
-      expect(currentStep.value).toBe(1)
+      expect(currentStep.value).toBe(InvoicesFormStep.EMAIL_AND_TERMS)
     })
 
-    it('should return formData with initial value of null', () => {
+    it('should return formData with initial empty values', () => {
       const { formData } = useInvoicesForm()
 
-      expect(formData.value).toBeNull()
-    })
-
-    it('should return handleNext function', () => {
-      const { handleNext } = useInvoicesForm()
-
-      expect(handleNext).toBeInstanceOf(Function)
-    })
-
-    it('should return handleBack function', () => {
-      const { handleBack } = useInvoicesForm()
-
-      expect(handleBack).toBeInstanceOf(Function)
-    })
-  })
-
-  describe('handleNext', () => {
-    it('should set formData with provided data', () => {
-      const { formData, handleNext } = useInvoicesForm()
-      const data: InvoicesFormModel = {
-        email: 'test@example.com',
-        acceptTerms: true,
-      }
-
-      handleNext(data)
-
-      expect(formData.value).toEqual(data)
-    })
-
-    it('should set currentStep to 2', () => {
-      const { currentStep, handleNext } = useInvoicesForm()
-      const data: InvoicesFormModel = {
-        email: 'test@example.com',
-        acceptTerms: true,
-      }
-
-      handleNext(data)
-
-      expect(currentStep.value).toBe(2)
-    })
-
-    it('should preserve previous formData when called again', () => {
-      const { formData, handleNext } = useInvoicesForm()
-      const firstData: InvoicesFormModel = {
-        email: 'first@example.com',
-        acceptTerms: true,
-      }
-      const secondData: InvoicesFormModel = {
-        email: 'second@example.com',
+      expect(formData.value).toEqual({
+        email: '',
         acceptTerms: false,
-      }
+        selectedContactId: null,
+      })
+    })
 
-      handleNext(firstData)
-      handleNext(secondData)
+    it('should return goToNextStep function', () => {
+      const { goToNextStep } = useInvoicesForm()
 
-      expect(formData.value).toEqual(secondData)
+      expect(goToNextStep).toBeInstanceOf(Function)
+    })
+
+    it('should return goToPreviousStep function', () => {
+      const { goToPreviousStep } = useInvoicesForm()
+
+      expect(goToPreviousStep).toBeInstanceOf(Function)
+    })
+
+    it('should return goToVaultBeingCreated function', () => {
+      const { goToVaultBeingCreated } = useInvoicesForm()
+
+      expect(goToVaultBeingCreated).toBeInstanceOf(Function)
     })
   })
 
-  describe('handleBack', () => {
-    it('should set currentStep to 1', () => {
-      const { currentStep, handleNext, handleBack } = useInvoicesForm()
-      const data: InvoicesFormModel = {
-        email: 'test@example.com',
-        acceptTerms: true,
-      }
+  describe('goToNextStep', () => {
+    it('should set currentStep to SELECT_CONTACT', () => {
+      const { currentStep, goToNextStep } = useInvoicesForm()
 
-      handleNext(data)
-      expect(currentStep.value).toBe(2)
+      goToNextStep()
 
-      handleBack()
-      expect(currentStep.value).toBe(1)
+      expect(currentStep.value).toBe(InvoicesFormStep.SELECT_CONTACT)
     })
 
-    it('should not change formData when going back', () => {
-      const { formData, handleNext, handleBack } = useInvoicesForm()
-      const data: InvoicesFormModel = {
-        email: 'test@example.com',
-        acceptTerms: true,
-      }
+    it('should not go beyond the last step', () => {
+      const { currentStep, goToNextStep } = useInvoicesForm()
 
-      handleNext(data)
-      handleBack()
+      goToNextStep()
+      goToNextStep()
 
-      expect(formData.value).toEqual(data)
+      expect(currentStep.value).toBe(InvoicesFormStep.SELECT_CONTACT)
+    })
+  })
+
+  describe('goToPreviousStep', () => {
+    it('should set currentStep to EMAIL_AND_TERMS', () => {
+      const { currentStep, goToNextStep, goToPreviousStep } = useInvoicesForm()
+
+      goToNextStep()
+      expect(currentStep.value).toBe(InvoicesFormStep.SELECT_CONTACT)
+
+      goToPreviousStep()
+      expect(currentStep.value).toBe(InvoicesFormStep.EMAIL_AND_TERMS)
     })
 
-    it('should work even when already on step 1', () => {
-      const { currentStep, handleBack } = useInvoicesForm()
+    it('should not go below the first step', () => {
+      const { currentStep, goToPreviousStep } = useInvoicesForm()
 
-      handleBack()
+      goToPreviousStep()
 
-      expect(currentStep.value).toBe(1)
+      expect(currentStep.value).toBe(InvoicesFormStep.EMAIL_AND_TERMS)
+    })
+  })
+
+  describe('goToVaultBeingCreated', () => {
+    it('should set currentStep to VAULT_BEING_CREATED', () => {
+      const { currentStep, goToVaultBeingCreated } = useInvoicesForm()
+
+      goToVaultBeingCreated()
+
+      expect(currentStep.value).toBe(InvoicesFormStep.VAULT_BEING_CREATED)
+    })
+
+    it('should set currentStep to VAULT_BEING_CREATED from any step', () => {
+      const { currentStep, goToNextStep, goToVaultBeingCreated } = useInvoicesForm()
+
+      goToNextStep()
+      expect(currentStep.value).toBe(InvoicesFormStep.SELECT_CONTACT)
+
+      goToVaultBeingCreated()
+
+      expect(currentStep.value).toBe(InvoicesFormStep.VAULT_BEING_CREATED)
+    })
+  })
+
+  describe('formData persistence', () => {
+    it('should preserve formData when navigating between steps', () => {
+      const { formData, goToNextStep, goToPreviousStep } = useInvoicesForm()
+
+      formData.value.email = 'test@example.com'
+      formData.value.acceptTerms = true
+
+      goToNextStep()
+
+      formData.value.selectedContactId = 12345
+
+      goToPreviousStep()
+
+      expect(formData.value).toEqual({
+        email: 'test@example.com',
+        acceptTerms: true,
+        selectedContactId: 12345,
+      })
     })
   })
 })

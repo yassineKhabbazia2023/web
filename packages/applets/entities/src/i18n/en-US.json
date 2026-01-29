@@ -52,8 +52,16 @@
         "titleHighlight": "invoices"
       },
       "step2": {
-        "title": "{highlight}",
-        "titleHighlight": "Confirmation"
+        "title": "Access the dematerialized {highlight}",
+        "titleHighlight": "digital vault",
+        "subtitle": "Choose the contact who will be able to log in to your digital vault to find your invoices.",
+        "contactLabel": "Contact to choose for digital vault access",
+        "contactPlaceholder": "Select a contact",
+        "contactRequired": "Please select a contact"
+      },
+      "spaceCreationStep": {
+        "title": "Your digital vault is being created...",
+        "estimated-time": "The estimated time to activate your digital vault is: 3 days"
       },
       "formSubtitle": "Please enter the email address where you want to receive your dematerialized invoices.",
       "emailLabel": "Email address to receive your invoices",

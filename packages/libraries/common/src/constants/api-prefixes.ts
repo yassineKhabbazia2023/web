@@ -11,4 +11,5 @@ export const API_PREFIXES = {
   REGISTRY: 'registry/api',
   REPORTING: 'reporting/api',
   WALLET: 'wallet/api',
+  INVOICES: 'ventya/api',
 }

@@ -53,7 +53,15 @@
       },
       "step2": {
         "title": "Accéder au coffre-fort {highlight}",
-        "titleHighlight": "dématérialisé"
+        "titleHighlight": "dématérialisé",
+        "subtitle": "Choisissez le contact qui pourra se connecter à votre coffre-fort numérique pour retrouver vos factures.",
+        "contactLabel": "Contact à choisir pour l'accès au coffre-fort numérique",
+        "contactPlaceholder": "Sélectionnez un contact",
+        "contactRequired": "Veuillez sélectionner un contact"
+      },
+      "spaceCreationStep": {
+        "title": "Votre espace est en cours de création...",
+        "estimated-time": "La durée d'activation de votre espace est estimée à : 3 jours"
       },
       "formSubtitle": "Veuillez renseigner la boite mail sur laquelle recevoir vos factures dématérialisées.",
       "emailLabel": "Adresse e-mail pour recevoir vos factures",

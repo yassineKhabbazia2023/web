@@ -3,6 +3,7 @@
     <div class="invoices-form__card">
       <div class="invoices-form__content padding--8">
         <div
+          v-if="currentStep !== InvoicesFormStep.VAULT_BEING_CREATED"
           class="
             flex
             flex--justify-content-space-between
@@ -23,15 +24,27 @@
           </span>
         </div>
 
-        <InvoicesFirstStepForm
-          v-if="currentStep === 1"
-          @next="handleNext"
-        />
+        <Transition
+          name="slide-fade"
+          mode="out-in"
+        >
+          <InvoicesFirstStepForm
+            v-if="currentStep === InvoicesFormStep.EMAIL_AND_TERMS"
+            v-model="formData"
+            @next="goToNextStep"
+          />
 
-        <InvoicesSecondStepForm
-          v-else-if="currentStep === 2"
-          @back="handleBack"
-        />
+          <InvoicesSecondStepForm
+            v-else-if="currentStep === InvoicesFormStep.SELECT_CONTACT"
+            v-model="formData"
+            @back="goToPreviousStep"
+            @submit="goToVaultBeingCreated"
+          />
+
+          <InvoicesVaultBeingCreatedStep
+            v-else-if="currentStep === InvoicesFormStep.VAULT_BEING_CREATED"
+          />
+        </Transition>
       </div>
     </div>
   </div>
@@ -41,16 +54,14 @@
 import { useI18n } from 'vue-i18n'
 import InvoicesFirstStepForm from '../invoices-first-step-form/invoices-first-step.form.vue'
 import InvoicesSecondStepForm from '../invoices-second-step-form/invoices-second-step.form.vue'
+import InvoicesVaultBeingCreatedStep from '../invoices-vault-being-created-step/invoices-vault-being-created-step.vue'
+import { TOTAL_STEPS } from '../../invoices.constants'
+import { InvoicesFormStep } from '../../invoices.enums'
 import { useInvoicesForm } from './invoices.form.composable'
 
 const { t } = useI18n()
 
-const {
-  currentStep,
-  handleNext,
-  handleBack,
-  TOTAL_STEPS,
-} = useInvoicesForm()
+const { currentStep, formData, goToNextStep, goToPreviousStep, goToVaultBeingCreated } = useInvoicesForm()
 </script>
 
 <style scoped lang="scss">

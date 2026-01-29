@@ -29,4 +29,30 @@ describe('InvoicesTracking', () => {
       )
     })
   })
+
+  describe('trackInvoiceDigitizationRequestSuccess', () => {
+    it('should track invoice digitization requested with success result', () => {
+      InvoicesTracking.trackInvoiceDigitizationRequestSuccess()
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Invoice Digitization Requested',
+        {
+          invoice_digitization_requested_result: 'success',
+        },
+      )
+    })
+  })
+
+  describe('trackInvoiceDigitizationRequestFail', () => {
+    it('should track invoice digitization requested with failed result', () => {
+      InvoicesTracking.trackInvoiceDigitizationRequestFail()
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Invoice Digitization Requested',
+        {
+          invoice_digitization_requested_result: 'failed',
+        },
+      )
+    })
+  })
 })

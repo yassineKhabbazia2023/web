@@ -1,28 +1,24 @@
 import { ref, shallowRef } from 'vue'
 import type { FormInstance } from 'element-plus'
+import type { InvoicesFullFormModel } from '@entities/modules/entity/types'
 import { useInvoicesFirstStepForm } from './invoices-first-step.form.composable'
 
 const createFormRefMock = () => shallowRef<FormInstance | null>(null)
 
+const createFormModelMock = () => ref<InvoicesFullFormModel>({
+  email: '',
+  acceptTerms: false,
+  selectedContactId: null,
+})
+
 describe('useInvoicesFirstStepForm', () => {
   describe('initial state', () => {
-    it('should return formModel with initial values', () => {
-      const formRef = createFormRefMock()
-      const isReadOnly = ref(false)
-
-      const { formModel } = useInvoicesFirstStepForm({ formRef, isReadOnly })
-
-      expect(formModel.value).toEqual({
-        email: '',
-        acceptTerms: false,
-      })
-    })
-
     it('should return acceptTermsModel', () => {
       const formRef = createFormRefMock()
       const isReadOnly = ref(false)
+      const formModel = createFormModelMock()
 
-      const { acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly })
+      const { acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly, formModel })
 
       expect(acceptTermsModel).toBeDefined()
     })
@@ -30,42 +26,22 @@ describe('useInvoicesFirstStepForm', () => {
     it('should return the same formRef that was passed', () => {
       const formRef = createFormRefMock()
       const isReadOnly = ref(false)
+      const formModel = createFormModelMock()
 
-      const result = useInvoicesFirstStepForm({ formRef, isReadOnly })
+      const result = useInvoicesFirstStepForm({ formRef, isReadOnly, formModel })
 
       expect(result.formRef).toBe(formRef)
     })
   })
 
-  describe('formModel', () => {
-    it('should allow updating email', () => {
-      const formRef = createFormRefMock()
-      const isReadOnly = ref(false)
-
-      const { formModel } = useInvoicesFirstStepForm({ formRef, isReadOnly })
-      formModel.value.email = 'test@example.com'
-
-      expect(formModel.value.email).toBe('test@example.com')
-    })
-
-    it('should allow updating acceptTerms', () => {
-      const formRef = createFormRefMock()
-      const isReadOnly = ref(false)
-
-      const { formModel } = useInvoicesFirstStepForm({ formRef, isReadOnly })
-      formModel.value.acceptTerms = true
-
-      expect(formModel.value.acceptTerms).toBe(true)
-    })
-  })
-
   describe('acceptTermsModel', () => {
-    it('should return a computed that gets acceptTerms value', () => {
+    it('should return a computed that gets acceptTerms value from formModel', () => {
       const formRef = createFormRefMock()
       const isReadOnly = ref(false)
-
-      const { formModel, acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly })
+      const formModel = createFormModelMock()
       formModel.value.acceptTerms = true
+
+      const { acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly, formModel })
 
       expect(acceptTermsModel.value).toBe(true)
     })
@@ -73,8 +49,9 @@ describe('useInvoicesFirstStepForm', () => {
     it('should allow setting acceptTerms when not read only', () => {
       const formRef = createFormRefMock()
       const isReadOnly = ref(false)
+      const formModel = createFormModelMock()
 
-      const { formModel, acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly })
+      const { acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly, formModel })
       acceptTermsModel.value = true
 
       expect(formModel.value.acceptTerms).toBe(true)
@@ -83,9 +60,10 @@ describe('useInvoicesFirstStepForm', () => {
     it('should not allow setting acceptTerms when read only', () => {
       const formRef = createFormRefMock()
       const isReadOnly = ref(true)
-
-      const { formModel, acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly })
+      const formModel = createFormModelMock()
       formModel.value.acceptTerms = false
+
+      const { acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly, formModel })
       acceptTermsModel.value = true
 
       expect(formModel.value.acceptTerms).toBe(false)
@@ -94,8 +72,9 @@ describe('useInvoicesFirstStepForm', () => {
     it('should react to isReadOnly changes', () => {
       const formRef = createFormRefMock()
       const isReadOnly = ref(true)
+      const formModel = createFormModelMock()
 
-      const { formModel, acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly })
+      const { acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly, formModel })
 
       acceptTermsModel.value = true
       expect(formModel.value.acceptTerms).toBe(false)

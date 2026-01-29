@@ -1,64 +1,126 @@
 <template>
-  <div>
-    <div
-      class="
-        invoices-form-step__placeholder
-        flex
-        flex--justify-content-center
-        flex--align-items-center
-        margin-top--6
-      "
+  <PForm
+    ref="formRef"
+    :pModel="formModel"
+    :pRules="rules"
+    pLabelPosition="top"
+    pRequireAsteriskPosition="right"
+  >
+    <p class="invoices-form-step__subtitle margin-top--4">
+      {{ t('entities.invoices.step2.subtitle') }}
+    </p>
+
+    <PFormItem
+      pProp="selectedContactId"
+      :pLabel="t('entities.invoices.step2.contactLabel')"
+      pRequired
+      class="margin-top--8"
     >
-      <p class="invoices-form-step__placeholder-text">
-        {{ t('entities.invoices.step2Placeholder') }}
-      </p>
-    </div>
+      <PDropdown
+        v-model="formModel.selectedContactId"
+        :pOptions="customerOptions"
+        :pPlaceholder="t('entities.invoices.step2.contactPlaceholder')"
+        :pLoading="isLoadingCustomers"
+        :pDisabled="isReadOnly"
+        pFilterable
+      />
+    </PFormItem>
 
     <div
       class="
         flex
-        flex--justify-content-flex-end
+        flex--justify-content-space-between
         flex-gap--3
-        margin-top--6
+        margin-top--8
       "
     >
       <PButton
-        pType="default"
-        @click="$emit('back')"
+        pType="tertiary"
+        @click="handleBack"
       >
         {{ t('entities.invoices.backButton') }}
       </PButton>
       <PButton
         pType="primary"
-        pDisabled
+        :pDisabled="isReadOnly"
+        @click="handleSubmit"
       >
         {{ t('entities.invoices.submitButton') }}
       </PButton>
     </div>
-  </div>
+  </PForm>
 </template>
 
 <script setup lang="ts">
+import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PButton } from '@pulse/styleguide/components'
+import type { FormInstance } from 'element-plus'
+import {
+  PButton,
+  PDropdown,
+  PForm,
+  PFormItem,
+} from '@pulse/styleguide/components'
+import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
+import { useInvoicesSecondStepForm } from './invoices-second-step.form.composable'
+import { createInvoicesSecondStepFormRules } from './invoices-second-step.form.validation'
+import type { InvoicesFullFormModel } from '@entities/modules/entity/types'
+import { InvoicesTracking } from '@entities/services/invoices/invoices.tracking.service'
 
-defineEmits<{
-  'back': []
+const emit = defineEmits<{
+  back: []
+  submit: [formData: InvoicesFullFormModel]
 }>()
 
+const formModel = defineModel<InvoicesFullFormModel>({ required: true })
+
 const { t } = useI18n()
+
+const userStore = useUserStore()
+const currentEntityStore = useCurrentEntityStore()
+
+const isReadOnly = computed(() => userStore.isCollab === true)
+const accountId = computed(() => currentEntityStore.currentEntityId)
+
+const formRef = useTemplateRef<FormInstance>('formRef')
+const {
+  customerOptions,
+  isLoadingCustomers,
+} = useInvoicesSecondStepForm({ formRef, isReadOnly, accountId })
+
+const rules = ref(createInvoicesSecondStepFormRules({
+  contactRequired: t('entities.invoices.step2.contactRequired'),
+}))
+
+const handleBack = () => {
+  formModel.value.selectedContactId = null
+  emit('back')
+}
+
+const handleSubmit = async () => {
+  try {
+    await formRef.value?.validate()
+    InvoicesTracking.trackInvoiceDigitizationRequestSuccess()
+    emit('submit', formModel.value)
+  } catch {
+    InvoicesTracking.trackInvoiceDigitizationRequestFail()
+  }
+}
 </script>
 
 <style scoped lang="scss">
-.invoices-form-step {
-  &__placeholder {
-    min-height: 150px;
-    border: 2px dashed var(--p-gray-300);
-    border-radius: 8px;
-  }
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
 
-  &__placeholder-text {
-    color: var(--p-gray-500);
+.invoices-form-step {
+  &__subtitle {
+    width: 65%;
+    font-size: 14px;
+    color: var(--p-gray-900);
+    margin: 0;
+
+    @include breakpoints.media(md2) {
+      width: 80%;
+    }
   }
 }
 </style>

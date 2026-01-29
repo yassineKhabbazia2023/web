@@ -74,12 +74,14 @@ import {
 import { useUserStore } from '@pulse/common/stores'
 import { useInvoicesFirstStepForm } from './invoices-first-step.form.composable'
 import { createInvoicesFormRules } from './invoices-first-step.form.validation'
-import type { InvoicesFormModel } from '@entities/modules/entity/types'
+import type { InvoicesFullFormModel } from '@entities/modules/entity/types'
 import { InvoicesFirstStepFormManager } from './invoices-first-step.form.manager'
 
 const emit = defineEmits<{
-  next: [formData: InvoicesFormModel]
+  next: []
 }>()
+
+const formModel = defineModel<InvoicesFullFormModel>({ required: true })
 
 const { t } = useI18n()
 
@@ -87,7 +89,7 @@ const userStore = useUserStore()
 const isReadOnly = computed(() => userStore.isCollab === true)
 
 const formRef = useTemplateRef<FormInstance>('formRef')
-const { formModel, acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly })
+const { acceptTermsModel } = useInvoicesFirstStepForm({ formRef, isReadOnly, formModel })
 
 const rules = ref(createInvoicesFormRules({
   emailRequired: t('entities.invoices.emailRequired'),
@@ -96,9 +98,9 @@ const rules = ref(createInvoicesFormRules({
 }))
 
 const handleNext = async () => {
-  const result = await InvoicesFirstStepFormManager.submitForm(formRef.value, formModel.value)
-  if (result.success && result.data) {
-    emit('next', result.data)
+  const result = await InvoicesFirstStepFormManager.submitForm(formRef.value)
+  if (result.success) {
+    emit('next')
   }
 }
 </script>

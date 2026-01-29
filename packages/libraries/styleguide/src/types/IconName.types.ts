@@ -120,6 +120,7 @@ export type IconName =
 'headWithGear' |
 'hotel' |
 'hourglass' |
+'hourglassDuotone' |
 'house' |
 'image' |
 'inbox' |

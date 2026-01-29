@@ -1,19 +1,15 @@
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import type { Ref, ShallowRef } from 'vue'
 import type { FormInstance } from 'element-plus'
-import type { InvoicesFormModel } from '@entities/modules/entity/types'
+import type { InvoicesFullFormModel } from '@entities/modules/entity/types'
 
 interface UseInvoicesFirstStepFormParams {
   formRef: Readonly<ShallowRef<FormInstance | null>>
   isReadOnly: Ref<boolean>
+  formModel: Ref<InvoicesFullFormModel>
 }
 
-export function useInvoicesFirstStepForm({ formRef, isReadOnly }: UseInvoicesFirstStepFormParams) {
-  const formModel = ref<InvoicesFormModel>({
-    email: '',
-    acceptTerms: false,
-  })
-
+export function useInvoicesFirstStepForm({ formRef, isReadOnly, formModel }: UseInvoicesFirstStepFormParams) {
   const acceptTermsModel = computed({
     get: () => formModel.value.acceptTerms,
     set: (value: boolean) => {
@@ -25,7 +21,6 @@ export function useInvoicesFirstStepForm({ formRef, isReadOnly }: UseInvoicesFir
 
   return {
     formRef,
-    formModel,
     acceptTermsModel,
   }
 }
