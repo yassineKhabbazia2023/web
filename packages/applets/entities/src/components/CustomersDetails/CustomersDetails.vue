@@ -21,6 +21,7 @@
       >
         <PrincipalContact
           :principalContact="principalContact"
+          :currentSubscriptionOffer
           data-testid="subscription-details-principal-contact"
         />
       </li>

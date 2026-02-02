@@ -31,6 +31,7 @@ export interface ClientContact {
   firstName: string
   lastName: string
   email: string
+  mobilePhone?: string
   creationDate?: string
   personaName?: string
   status?: string

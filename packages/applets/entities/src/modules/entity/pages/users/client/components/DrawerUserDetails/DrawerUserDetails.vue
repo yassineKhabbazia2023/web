@@ -70,9 +70,9 @@
         :pLabel="t('mobilePhone')"
       >
         <PInput
-          v-model="formValues.mobilePhone"
-          :readonly="!editMode"
+          :value="mobilePhone"
           pName="mobilePhone"
+          pDisabled
         />
       </PFormItem>
     </PForm>
@@ -138,6 +138,7 @@ const drawerModel = computed({
 })
 
 const userInfo = ref<Contact>()
+const mobilePhone = ref<string | undefined>()
 const fullName = computed(() => `${userInfo.value?.firstName ?? ''} ${userInfo.value?.lastName ?? ''}`)
 // Form part
 const formRef = ref<FormInstance>()
@@ -145,7 +146,6 @@ const formValues = reactive<PatchContactPayload>({
   firstName: undefined,
   lastName: undefined,
   landPhone: undefined as string | undefined,
-  mobilePhone: undefined as string | undefined,
 })
 
 const handleSubmit = async (formEl: FormInstance | undefined) => {
@@ -183,7 +183,7 @@ const initialiseForms = () => {
   formValues.firstName = userInfo.value?.firstName
   formValues.lastName = userInfo.value?.lastName
   formValues.landPhone = userInfo.value?.landPhone
-  formValues.mobilePhone = userInfo.value?.mobilePhone
+  mobilePhone.value = userInfo.value?.mobilePhone
 }
 
 const closeDrawer = () => {
@@ -219,7 +219,7 @@ onMounted(async () => {
     youCanModify: "Vous pouvez modifier les informations suivantes:"
     lastName: 'Nom'
     firstName: "Prénom"
-    mobilePhone: "Téléphone portable"
+    mobilePhone: "Téléphone mobile"
     landPhone: "Téléphone fixe"
     cancel: 'Annuler'
     submit: 'Valider'

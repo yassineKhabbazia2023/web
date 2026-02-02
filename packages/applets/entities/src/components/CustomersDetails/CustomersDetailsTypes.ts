@@ -1,5 +1,6 @@
-import type { ClientContact } from '@entities/types'
+import type { ClientContact, SubscriptionOfferServices } from '@entities/types'
 
 export interface CustomersDetailsProps {
   principalContacts: ClientContact[]
+  currentSubscriptionOffer?: SubscriptionOfferServices
 }

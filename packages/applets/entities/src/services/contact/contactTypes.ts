@@ -19,7 +19,6 @@ export interface Contact {
 export interface PatchContactPayload {
   firstName?: string
   lastName?: string
-  mobilePhone?: string
   landPhone?: string
 }
 

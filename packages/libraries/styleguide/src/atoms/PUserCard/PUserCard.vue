@@ -48,9 +48,16 @@
       <p v-if="pSubtitle" class="p-user-card__subtitle">
         {{ pSubtitle }}
       </p>
-      <p v-if="pDescription" class="p-user-card__description">
+      <p v-if="pDescription && slots['description'] === undefined" class="p-user-card__description">
         {{ pDescription }}
       </p>
+      <div
+        v-if="slots['description'] !== undefined"
+        class="margin-y--1"
+        data-testid="user-card-description"
+      >
+        <slot name="description" />
+      </div>
     </div>
   </div>
 </template>

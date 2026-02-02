@@ -30,12 +30,17 @@ const createWrapper = async (editMode: boolean = false): Promise<VueWrapper<any>
   return wrapper
 }
 let wrapper: VueWrapper<any>
-const inputs = [
+const editableInputs = [
   { name: 'firstName', value: mockUser.firstName },
   { name: 'lastName', value: mockUser.lastName },
   { name: 'landPhone', value: mockUser.landPhone },
+]
+
+const disabledInputs = [
   { name: 'mobilePhone', value: mockUser.mobilePhone },
 ]
+
+const allInputs = [...editableInputs, ...disabledInputs]
 
 const getInputs = () => wrapper.findAll('input')
 const getCancelBtn = () => wrapper.find('[data-testid=cancel-btn]')
@@ -56,11 +61,16 @@ describe('drawerUserDetails', () => {
       expect(personaTag.text()).toBe(mockUser.persona?.name)
     })
 
-    it.each(inputs)('should prefill the input $name with $value', (input) => {
-      expect((getInputs()[inputs.indexOf(input)].element as HTMLInputElement).value).toBe(input.value)
+    it.each(allInputs)('should prefill the input $name with $value', (input) => {
+      expect((getInputs()[allInputs.indexOf(input)].element as HTMLInputElement).value).toBe(input.value)
     })
-    it.each(inputs)('should mark the input $name as readonly', (input) => {
-      expect(getInputs()[inputs.indexOf(input)].attributes().readonly).toBeDefined()
+
+    it.each(editableInputs)('should mark the input $name as readonly', (input) => {
+      expect(getInputs()[allInputs.indexOf(input)].attributes().readonly).toBeDefined()
+    })
+
+    it.each(disabledInputs)('should mark the input $name as disabled', (input) => {
+      expect(getInputs()[allInputs.indexOf(input)].attributes().disabled).toBeDefined()
     })
   })
 
@@ -68,9 +78,14 @@ describe('drawerUserDetails', () => {
     beforeEach(async () => {
       wrapper = await createWrapper(true)
     })
-    it.each(inputs)('input $name should not be mark as readonly', (input) => {
-      const inputElement = getInputs()[inputs.indexOf(input)]
+    it.each(editableInputs)('input $name should not be marked as readonly', (input) => {
+      const inputElement = getInputs()[allInputs.indexOf(input)]
       expect(inputElement.attributes().readonly).toBeUndefined()
+    })
+
+    it.each(disabledInputs)('input $name should remain disabled', (input) => {
+      const inputElement = getInputs()[allInputs.indexOf(input)]
+      expect(inputElement.attributes().disabled).toBeDefined()
     })
     it('should display the submit and cancel button', () => {
       const submit = wrapper.find('[data-testid=submit-btn]')
@@ -81,12 +96,10 @@ describe('drawerUserDetails', () => {
       const expectedPatchedContact = {
         firstName: 'newFirstName',
         lastName: 'newLastName',
-        mobilePhone: 'newMobilePhone',
         landPhone: 'newLandPhone',
       } as Contact
       await wrapper.find('[name="firstName"]').setValue(expectedPatchedContact.firstName)
       await wrapper.find('[name="lastName"]').setValue(expectedPatchedContact.lastName)
-      await wrapper.find('[name="mobilePhone"]').setValue(expectedPatchedContact.mobilePhone)
       await wrapper.find('[name="landPhone"]').setValue(expectedPatchedContact.landPhone)
       // Simulate form submission
       await wrapper.find('[data-testid=submit-btn]').trigger('click')

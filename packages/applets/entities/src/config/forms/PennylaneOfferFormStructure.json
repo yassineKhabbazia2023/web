@@ -31,24 +31,6 @@
     ]
   },
   {
-    "title": "Coordonnées de l'entreprise",
-    "fields": [
-      {
-        "modelValue": "",
-        "pCssClass": "min-width--4 flex--basis-30",
-        "pDisabled": true,
-        "pFieldKey": "phone[0].phoneNumber",
-        "pFieldType": "input",
-        "pLabel": "Numéro de téléphone",
-        "pRules": [{ 
-          "required": true, 
-          "message": "Veuillez saisir dans le CRM Akuiteo", 
-          "trigger": "change"
-        }]
-      }
-    ]
-  },
-  {
     "title": "Informations générales de l’entreprise",
     "fields": [
       {
@@ -69,36 +51,6 @@
   {
     "title": "",
     "fields": [
-      {
-        "modelValue": "",
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
-        "pDisabled": false,
-        "pFieldKey": "turnover",
-        "pFieldType": "input",
-        "pType":"number",
-        "pSuffixIconName":"currencyEuro",
-        "pLabel": "Chiffre d’affaires de l’année précédente",
-        "pRules": [{ 
-          "required": true, 
-          "message": "Veuillez saisir une valeur", 
-          "trigger": "change"
-        }]
-      },
-      {
-        "modelValue": "",
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
-        "pDisabled": false,
-        "pFieldKey": "legal.staffSizeRange",
-        "pFieldType": "dropdown",
-        "pLabel": "Effectifs",
-        "pTestId": "offer-staff-size-range",
-        "referentialKey": "staffSizeRange",
-        "pRules": [{ 
-          "required": true, 
-          "message": "Veuillez saisir une valeur", 
-          "trigger": "change"
-        }]
-      },
       {
         "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
         "pDisabled": false,

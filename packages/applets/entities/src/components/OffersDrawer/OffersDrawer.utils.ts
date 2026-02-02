@@ -3,6 +3,7 @@ import { ClientContact, SubscriptionOfferServices } from '@entities/types'
 import { OffersDrawerStep } from '@entities/enums'
 import { get, setWith } from 'lodash-es'
 import { addPathValue } from '@entities/services/PatchRecordService/PatchRecordService'
+import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { type Account } from '@entities/services/account'
 import { type PatchValue } from '@entities/services/PatchRecordService'
 
@@ -14,6 +15,20 @@ export function getHasNoSignatory(
   const needSignatory = currentStep === OffersDrawerStep.CUSTOMERS || !currentSubscriptionOffer.approvalRequired
 
   return needSignatory && principalContacts.length === 0
+}
+
+export function signatoryMissingPhone(
+  currentStep: OffersDrawerStep,
+  principalContacts: ClientContact[],
+  currentSubscriptionOffer: SubscriptionOfferServices,
+) {
+  const isCustomersStep = currentStep === OffersDrawerStep.CUSTOMERS
+  const isPennylaneOffer = currentSubscriptionOffer.offerCode === SubscriptionOfferCode.PENNYLANE
+  const hasMissingPhone = principalContacts.some(
+    (c) => c.mobilePhone === '' || c.mobilePhone === undefined || c.mobilePhone === null,
+  )
+
+  return isCustomersStep && isPennylaneOffer && hasMissingPhone
 }
 
 export function getIsNoCollaboratorSelected(
@@ -69,7 +84,10 @@ export function getIsNextButtonDisabled({
     principalContacts,
     currentSubscriptionOffer,
   )
-  if (hasNoSignatory) {
+
+  const hasSignatoryWithMissingPhone = signatoryMissingPhone(currentStep, principalContacts, currentSubscriptionOffer)
+
+  if (hasNoSignatory || hasSignatoryWithMissingPhone) {
     return true
   }
 

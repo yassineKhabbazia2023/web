@@ -1,13 +1,15 @@
 import { getSubscriptionOffersServiceMock } from '@entities/__mocks__/offer-subscription.mocks'
 import { OffersDrawerStep } from '@entities/enums'
-import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
+import { getClientContactMock, getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 import { ClientContact } from '@entities/types'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { type PatchValue } from '@entities/services/PatchRecordService'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
+import { SubscriptionOfferCode } from '@pulse/common/enums'
 
 import {
   getHasNoSignatory,
+  signatoryMissingPhone,
   getIsNoCollaboratorSelected,
   getIsAllCollaboratorRoleSelected,
   getIsMissingCollaboratorRole,
@@ -106,6 +108,159 @@ describe('test OffersDrawer.utils', () => {
           expect(hasNoSignatory).toBe(expected)
 
         })
+    })
+  })
+
+  describe('signatoryMissingPhone', () => {
+    describe('when principal contact has missing phone (empty string)', () => {
+      const principalContactsWithMissingPhone: ClientContact[] = [
+        getClientContactMock({ mobilePhone: '' }),
+      ]
+
+      it('should return true when offerCode is PENNYLANE and currentStep is CUSTOMERS', () => {
+        const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
+          offerCode: SubscriptionOfferCode.PENNYLANE,
+        })
+        const hasMissingPhone = signatoryMissingPhone(
+          OffersDrawerStep.CUSTOMERS,
+          principalContactsWithMissingPhone,
+          currentSubscriptionOffer,
+        )
+        expect(hasMissingPhone).toBe(true)
+      })
+
+      it('should return false when offerCode is PENNYLANE but currentStep is not CUSTOMERS', () => {
+        const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
+          offerCode: SubscriptionOfferCode.PENNYLANE,
+        })
+        const hasMissingPhone = signatoryMissingPhone(
+          OffersDrawerStep.SERVICES,
+          principalContactsWithMissingPhone,
+          currentSubscriptionOffer,
+        )
+        expect(hasMissingPhone).toBe(false)
+      })
+
+      it('should return false when offerCode is not PENNYLANE', () => {
+        const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
+          offerCode: 'MEG Smart',
+        })
+        const hasMissingPhone = signatoryMissingPhone(
+          OffersDrawerStep.CUSTOMERS,
+          principalContactsWithMissingPhone,
+          currentSubscriptionOffer,
+        )
+        expect(hasMissingPhone).toBe(false)
+      })
+    })
+
+    describe('when principal contact has phone number', () => {
+      const principalContactsWithPhone: ClientContact[] = [
+        getClientContactMock({ mobilePhone: '0612345678' }),
+      ]
+
+      it('should return false even when offerCode is PENNYLANE and currentStep is CUSTOMERS', () => {
+        const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
+          offerCode: SubscriptionOfferCode.PENNYLANE,
+        })
+        const hasMissingPhone = signatoryMissingPhone(
+          OffersDrawerStep.CUSTOMERS,
+          principalContactsWithPhone,
+          currentSubscriptionOffer,
+        )
+        expect(hasMissingPhone).toBe(false)
+      })
+
+      it('should return false when offerCode is not PENNYLANE', () => {
+        const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
+          offerCode: 'MEG Smart',
+        })
+        const hasMissingPhone = signatoryMissingPhone(
+          OffersDrawerStep.CUSTOMERS,
+          principalContactsWithPhone,
+          currentSubscriptionOffer,
+        )
+        expect(hasMissingPhone).toBe(false)
+      })
+    })
+
+    describe('when no principal contacts', () => {
+      const principalContacts: ClientContact[] = []
+
+      it('should return false when no contacts exist even for PENNYLANE offer', () => {
+        const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
+          offerCode: SubscriptionOfferCode.PENNYLANE,
+        })
+        const hasMissingPhone = signatoryMissingPhone(
+          OffersDrawerStep.CUSTOMERS,
+          principalContacts,
+          currentSubscriptionOffer,
+        )
+        expect(hasMissingPhone).toBe(false)
+      })
+    })
+
+    describe('when some contacts have missing phone and some have phone', () => {
+      const mixedPrincipalContacts: ClientContact[] = [
+        getClientContactMock({ contactId: 1, mobilePhone: '0612345678' }),
+        getClientContactMock({ contactId: 2, mobilePhone: '' }),
+      ]
+
+      it('should return true when offerCode is PENNYLANE, currentStep is CUSTOMERS and at least one contact has missing phone', () => {
+        const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
+          offerCode: SubscriptionOfferCode.PENNYLANE,
+        })
+        const hasMissingPhone = signatoryMissingPhone(
+          OffersDrawerStep.CUSTOMERS,
+          mixedPrincipalContacts,
+          currentSubscriptionOffer,
+        )
+        expect(hasMissingPhone).toBe(true)
+      })
+
+      it('should return false when offerCode is not PENNYLANE even if contact has missing phone', () => {
+        const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
+          offerCode: 'MEG Smart',
+        })
+        const hasMissingPhone = signatoryMissingPhone(
+          OffersDrawerStep.CUSTOMERS,
+          mixedPrincipalContacts,
+          currentSubscriptionOffer,
+        )
+        expect(hasMissingPhone).toBe(false)
+      })
+    })
+
+    describe('when mobilePhone is undefined or null', () => {
+      it('should return true when mobilePhone is undefined and offerCode is PENNYLANE on CUSTOMERS step', () => {
+        const principalContactsWithUndefinedPhone: ClientContact[] = [
+          getClientContactMock({ mobilePhone: undefined }),
+        ]
+        const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
+          offerCode: SubscriptionOfferCode.PENNYLANE,
+        })
+        const hasMissingPhone = signatoryMissingPhone(
+          OffersDrawerStep.CUSTOMERS,
+          principalContactsWithUndefinedPhone,
+          currentSubscriptionOffer,
+        )
+        expect(hasMissingPhone).toBe(true)
+      })
+
+      it('should return true when mobilePhone is null and offerCode is PENNYLANE on CUSTOMERS step', () => {
+        const principalContactsWithNullPhone: ClientContact[] = [
+          getClientContactMock({ mobilePhone: null as unknown as string }),
+        ]
+        const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
+          offerCode: SubscriptionOfferCode.PENNYLANE,
+        })
+        const hasMissingPhone = signatoryMissingPhone(
+          OffersDrawerStep.CUSTOMERS,
+          principalContactsWithNullPhone,
+          currentSubscriptionOffer,
+        )
+        expect(hasMissingPhone).toBe(true)
+      })
     })
   })
 
@@ -244,6 +399,13 @@ describe('test OffersDrawer.utils', () => {
       principalContacts: [],
       expected: true,
       reason: 'has no signatory',
+    }, {
+      currentSubscriptionOffer: getSubscriptionOffersServiceMock({ offerCode: SubscriptionOfferCode.PENNYLANE }),
+      currentStep: OffersDrawerStep.CUSTOMERS,
+      selectedCollaboratorsWithRoles: selectedCollaboratorIdsMock,
+      principalContacts: [getClientContactMock({ mobilePhone: '' })],
+      expected: true,
+      reason: 'signatory has missing phone number for PENNYLANE offer',
     }, {
       currentSubscriptionOffer: currentSubscriptionOfferMock,
       currentStep: OffersDrawerStep.COLLABORATORS,

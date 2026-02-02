@@ -88,6 +88,7 @@
               currentStep === OffersDrawerStep.CUSTOMERS
             "
             :principalContacts="principalContacts"
+            :currentSubscriptionOffer
             data-testid="customers-step"
           />
           <ManageCollaborators

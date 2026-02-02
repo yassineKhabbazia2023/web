@@ -7,7 +7,7 @@
     class="user-profile-drawer"
     @close-drawer-button="isDrawerOpened = false"
   >
-    <PTabs v-model="activeTab">
+    <PTabs v-model="activeTab" p-stretch>
       <PTabPane
         pName="information"
         :pLabel="t('tabInformation')"

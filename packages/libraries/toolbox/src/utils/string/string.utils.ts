@@ -17,3 +17,11 @@ export function getAlphanumericString(text?: string): string {
     .replace(/ +/g, ' ') // Replace multiple whitespaces with a single whitespaces
     .trim()
 }
+
+export function formatPhoneNumber(phone?: string | null): string {
+  if (phone === undefined || phone === null) {
+    return ''
+  }
+
+  return phone.replace(/(\d{2})(?=\d)/g, '$1 ')
+}
