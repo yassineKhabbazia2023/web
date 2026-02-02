@@ -1,3 +1,4 @@
+import type { UserInfo } from '@pulse/common/types'
 export interface InvoicesFormModel {
   email: string
   acceptTerms: boolean
@@ -27,3 +28,12 @@ export interface DigitalSafeCustomer {
   actionLevel: number
   labels: string[]
 }
+
+export interface BillingSubmissionInputRequest {
+  dematerializationEmail: string
+  firstName: string
+  lastName: string
+  vaultEmail: string
+  requesterEmail: UserInfo['email']
+}
+

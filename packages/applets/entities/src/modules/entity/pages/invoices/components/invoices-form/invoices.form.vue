@@ -38,7 +38,7 @@
             v-else-if="currentStep === InvoicesFormStep.SELECT_CONTACT"
             v-model="formData"
             @back="goToPreviousStep"
-            @submit="goToVaultBeingCreated"
+            @submit="handleSubmit"
           />
 
           <InvoicesVaultBeingCreatedStep
@@ -61,7 +61,19 @@ import { useInvoicesForm } from './invoices.form.composable'
 
 const { t } = useI18n()
 
-const { currentStep, formData, goToNextStep, goToPreviousStep, goToVaultBeingCreated } = useInvoicesForm()
+const {
+  currentStep,
+  formData,
+  submitIntegration,
+  goToNextStep,
+  goToPreviousStep,
+  goToVaultBeingCreated,
+} = useInvoicesForm()
+
+const handleSubmit = async () => {
+  await submitIntegration()
+  goToVaultBeingCreated()
+}
 </script>
 
 <style scoped lang="scss">

@@ -1,7 +1,8 @@
 import { commonApi as api } from '@pulse/common'
 import { API_PREFIXES } from '@pulse/common/constants'
-import type { DigitalSafeCustomer } from '@entities/modules/entity/types'
+import type { BillingSubmissionInputRequest, DigitalSafeCustomer } from '@entities/modules/entity/types'
 import type { PaginationResponse } from '@pulse/common/types'
+import { logger } from '@pulse/toolbox'
 
 export class InvoicesService {
 
@@ -10,5 +11,15 @@ export class InvoicesService {
     const { data } = await api().gateway.get<PaginationResponse<DigitalSafeCustomer>>(url)
 
     return data.items
+  }
+
+  static async submitIntegration(accountNumber: string, payload: BillingSubmissionInputRequest): Promise<void> {
+    const url = `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/hubspot/submissions/currentuser`
+
+    try {
+      await api().gateway.post(url, payload)
+    } catch (error) {
+      logger.error('Unmanaged case', error)
+    }
   }
 }
