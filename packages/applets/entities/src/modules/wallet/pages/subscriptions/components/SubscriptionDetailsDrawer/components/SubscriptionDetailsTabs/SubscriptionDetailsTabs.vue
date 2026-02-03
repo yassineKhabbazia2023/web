@@ -13,6 +13,7 @@
       />
       <CustomersDetails
         v-if="activeTab === RecapTabs.CUSTOMER_USERS"
+        :currentSubscriptionOffer
         :principalContacts="subscriptionDetails?.clients"
       />
       <CollaboratorsDetails

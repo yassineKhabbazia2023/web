@@ -37,7 +37,7 @@
     "title": "",
     "fields": [
       {
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-35",
         "pDisabled": false,
         "pFieldType": "dropdown",
         "pFieldKey": "missionType",
@@ -46,17 +46,7 @@
         "referentialKey": "missionType"
       },
       {
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-45",
-        "pFilterable": true,
-        "pDisabled": false,
-        "pFieldKey": "officeId",
-        "pFieldType": "dropdown",
-        "pLabel": "Bureau RYDGE de rattachement",
-        "pTestId": "offer-office-name-list",
-        "referentialKey": "officeName"
-      },
-      {
-        "pCssClass": "flex--grow-1 min-width--4 flex--basis-20",
+        "pCssClass": "flex--grow-1 min-width--4 flex--basis-35",
         "pDisabled": false,
         "pFieldKey": "hub.hubId",
         "pFieldType": "dropdown",
