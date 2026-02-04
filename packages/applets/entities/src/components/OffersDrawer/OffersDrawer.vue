@@ -394,6 +394,7 @@ async function saveOffer() {
     selectedProducts: selectedProducts.value,
     notes: notes.value,
     selectedPlanId: selectedPlanId.value,
+    hasNoSiren: account.value?.legal?.hasNoSiren,
   })
   if (postSubscriptionRequest) {
     await createSubscriptionRequest(postSubscriptionRequest)

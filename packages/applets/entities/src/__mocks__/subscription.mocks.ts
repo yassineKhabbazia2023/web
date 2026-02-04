@@ -208,6 +208,7 @@ export function getMockedSubscriptionDetails(override: Partial<SubscriptionDetai
         stepNote: 'Information Note Test',
       },
     ],
+    hasNoSiren: false,
   }
 
   return {

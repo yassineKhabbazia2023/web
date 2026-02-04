@@ -36,6 +36,18 @@
           :pFields="section.fields"
           class="information-details__form-section-fields"
         />
+        <div
+          v-if="shouldShowNoSirenToggle(section)"
+          class="information-details__no-siren-switch"
+        >
+          <PSwitch
+            :modelValue="hasNoSiren"
+            :pActiveColor="AppColors.JUNGLE_400"
+            pDisabled
+            data-testid="has-no-siren-switch-readonly"
+          />
+          <span class="margin-left--2">{{ t('hasNoSirenLabel') }}</span>
+        </div>
       </section>
     </PForm>
   </div>
@@ -45,13 +57,15 @@
 import { logger } from '@pulse/toolbox'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
+import { PAlert, PForm, PFieldSet, PLoader, PSwitch } from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
 import type { FormSection } from '@entities/types'
 import { ProviderName } from '@entities/enums'
 import { SubscriptionDetailsContext } from '@entities/modules/wallet/enums'
 import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
+import { SIREN_FIELD_KEY } from '@entities/modules/entity/components/CompanyInformation/CompanyInformation.const'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -84,6 +98,18 @@ const providerName = computed(() => {
   return resolveProviderName(firstFilteredProviders?.providerName, pageContext.value)
 })
 
+const isPennylaneOffer = computed(() =>
+  providerName.value === ProviderName.PENNYLANE || providerName.value === ProviderName.PENNYLANE_MOD,
+)
+
+function hasSirenField(section: FormSection): boolean {
+  return section.fields.some((field) => field.pFieldKey === SIREN_FIELD_KEY)
+}
+
+function shouldShowNoSirenToggle(section: FormSection): boolean {
+  return isPennylaneOffer.value && hasSirenField(section) && props.hasNoSiren
+}
+
 onMounted(async () => {
   try {
     const forceDisabled = true
@@ -105,11 +131,18 @@ onMounted(async () => {
   &__form-section-fields {
     gap: 0px 20px;
   }
+  &__no-siren-switch {
+    display: flex;
+    align-items: center;
+    margin-top: -4px;
+  }
 }
 </style>
 <i18n lang="yaml">
 en-US:
   alertInstruction: 'If any information is incorrect, please update it in the CRM'
+  hasNoSirenLabel: "The company does not have a SIREN yet"
 fr-FR:
   alertInstruction: 'Si des informations sont incorrectes, veuillez les mettre à jour dans le CRM'
+  hasNoSirenLabel: "L'entreprise n'a pas encore de SIREN"
 </i18n>

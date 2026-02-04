@@ -24,6 +24,7 @@ export interface Legal {
   legalFormCode?: string
   staffSizeRange?: string
   naf?: Naf[]
+  hasNoSiren?: boolean
 }
 
 export interface Phone {

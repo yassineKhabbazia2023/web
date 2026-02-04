@@ -25,7 +25,7 @@
     "fields": [
       {
         "modelValue": "",
-        "pCssClass": "min-width--4 flex--basis-30",
+        "pCssClass": "min-width--4 flex--basis-45",
         "pDisabled": true,
         "pFieldKey": "legal.siren",
         "pFieldType": "input",

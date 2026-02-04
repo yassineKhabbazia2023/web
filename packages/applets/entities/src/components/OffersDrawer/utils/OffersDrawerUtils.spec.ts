@@ -136,6 +136,7 @@ describe('offersDrawerUtils', () => {
         contactFunctions: undefined,
         planId: undefined,
         hubName: undefined,
+        hasNoSiren: undefined,
       }
       expect(postSubscriptionRequest).toStrictEqual(
         expectedPostSubscriptionRequest,
@@ -170,6 +171,7 @@ describe('offersDrawerUtils', () => {
         contactFunctions,
         planId: undefined,
         hubName: undefined,
+        hasNoSiren: undefined,
       }
       expect(postSubscriptionRequest).toStrictEqual(
         expectedPostSubscriptionRequest,
@@ -206,6 +208,7 @@ describe('offersDrawerUtils', () => {
         contactFunctions,
         planId: selectedPlanId,
         hubName: undefined,
+        hasNoSiren: undefined,
       }
       expect(postSubscriptionRequest).toStrictEqual(
         expectedPostSubscriptionRequest,
@@ -242,6 +245,7 @@ describe('offersDrawerUtils', () => {
         contactFunctions,
         planId: undefined,
         hubName,
+        hasNoSiren: undefined,
       }
       expect(postSubscriptionRequest).toStrictEqual(
         expectedPostSubscriptionRequest,
@@ -259,6 +263,25 @@ describe('offersDrawerUtils', () => {
         notes,
       })
       expect(postSubscriptionRequest).toBeUndefined()
+    })
+
+    it('should include hasNoSiren when provided', () => {
+      const currentSubscriptionOfferWithoutCollaboratorRoles = {
+        ...getMockedSubscriptionOffersServices().at(0)!,
+        functions: [],
+      }
+      const postSubscriptionRequest = getPostSubscriptionRequest({
+        accountId,
+        userEmail,
+        collaboratorsWithRoles: selectedCollaboratorIds,
+        clients,
+        currentSubscriptionOffer: currentSubscriptionOfferWithoutCollaboratorRoles,
+        selectedProducts,
+        notes,
+        hasNoSiren: true,
+      })
+
+      expect(postSubscriptionRequest?.hasNoSiren).toBe(true)
     })
   })
 

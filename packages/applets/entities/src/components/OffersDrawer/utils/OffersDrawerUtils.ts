@@ -88,6 +88,7 @@ interface GetPostSubscriptionRequestParams {
   selectedProducts: SelectedProduct[]
   notes: Note[]
   selectedPlanId?: number
+  hasNoSiren?: boolean
 }
 
 export function getFormattedContactFunctions(collaboratorsWithRoles: ContactWithRoles[]) {
@@ -109,6 +110,7 @@ export function getPostSubscriptionRequest({
   selectedProducts,
   notes,
   selectedPlanId,
+  hasNoSiren,
 }: GetPostSubscriptionRequestParams): PostSubscriptionRequest | undefined {
   if (currentSubscriptionOffer === undefined) {
     return
@@ -136,6 +138,7 @@ export function getPostSubscriptionRequest({
     notes,
     planId: selectedPlanId,
     hubName: hubName,
+    hasNoSiren,
   }
 
   return request

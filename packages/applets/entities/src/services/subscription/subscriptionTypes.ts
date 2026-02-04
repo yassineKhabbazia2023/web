@@ -69,6 +69,7 @@ export interface PostSubscriptionRequest {
   applicant: string
   contactFunctions?: ContactFunction[]
   planId?: number
+  hasNoSiren?: boolean
 }
 
 export interface SubscriptionContact {
@@ -87,4 +88,5 @@ export interface SubscriptionDetails {
   clients: SubscriptionContact[]
   collaborators: SubscriptionContact[]
   notes: Note[]
+  hasNoSiren?: boolean
 }

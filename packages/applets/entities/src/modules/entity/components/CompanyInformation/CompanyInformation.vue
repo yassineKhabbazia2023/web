@@ -67,7 +67,7 @@
       aria-describedby="company-info-note company-info-alert"
     >
       <section
-        v-for="(section, index) in formStructure"
+        v-for="(section, index) in dynamicFormStructure"
         :key="`section-${index}`"
         class="
         company-information__form-section
@@ -88,6 +88,19 @@
               handleUpdateAccountModel(fieldKey, fieldValue)
           "
         />
+        <div
+          v-if="shouldShowNoSirenToggle(section)"
+          class="company-information__no-siren-switch"
+        >
+          <PSwitch
+            :modelValue="hasNoSiren"
+            :pDisabled="isSirenFilled"
+            :pActiveColor="AppColors.JUNGLE_400"
+            data-testid="has-no-siren-switch"
+            @update:model-value="onHasNoSirenChange"
+          />
+          <span class="margin-left--2">{{ t('hasNoSirenLabel') }}</span>
+        </div>
       </section>
     </PForm>
   </div>
@@ -98,14 +111,16 @@ import { logger } from '@pulse/toolbox'
 import { AKUITEO_URL } from '@pulse/common/constants'
 import { ref, onMounted, useTemplateRef, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { cloneDeep, setWith } from 'lodash-es'
-import { PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
+import { cloneDeep, setWith, get } from 'lodash-es'
+import { PAlert, PForm, PFieldSet, PLoader, PSwitch } from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
 import { type Account } from '@entities/services/account'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
 import type { FormSection } from '@entities/types'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
-import { PENNYLANE_REQUIRED_FIELDS } from './CompanyInformation.const'
+import { PENNYLANE_REQUIRED_FIELDS, SIREN_FIELD_KEY, HAS_NO_SIREN_FIELD_KEY } from './CompanyInformation.const'
 import type { FormInstance } from '@pulse/styleguide/types'
 
 const PFieldSetAccount = PFieldSet<Account>
@@ -125,6 +140,62 @@ const internalAccount = ref<Account | undefined>()
 const isLoading = ref<boolean>(true)
 const companyFormRef = useTemplateRef<FormInstance>('companyForm')
 const areRequiredFieldsValid = ref<boolean>(true)
+const hasNoSiren = ref<boolean>(false)
+
+const isSirenFilled = computed(() => {
+  const sirenValue = get(internalAccount.value, SIREN_FIELD_KEY)
+  return isNotNullNorEmpty(sirenValue)
+})
+
+const dynamicFormStructure = computed(() => {
+  if (formStructure.value === undefined) {
+    return []
+  }
+
+  if (hasNoSiren.value === false) {
+    return formStructure.value
+  }
+
+  return formStructure.value.map((section) => ({
+    ...section,
+    fields: section.fields.map((field) => {
+      if (field.pFieldKey === SIREN_FIELD_KEY) {
+        return {
+          ...field,
+          pRules: [],
+        }
+      }
+      return field
+    }),
+  }))
+})
+
+const dynamicRequiredFields = computed(() => {
+  if (hasNoSiren.value === true) {
+    return PENNYLANE_REQUIRED_FIELDS.filter((field) => field !== SIREN_FIELD_KEY)
+  }
+  return PENNYLANE_REQUIRED_FIELDS
+})
+
+function hasSirenField(section: FormSection): boolean {
+  return section.fields.some((field) => field.pFieldKey === SIREN_FIELD_KEY)
+}
+
+const isPennylaneOffer = computed(() => props.offerCode === SubscriptionOfferCode.PENNYLANE)
+
+function shouldShowNoSirenToggle(section: FormSection): boolean {
+  return isPennylaneOffer.value && hasSirenField(section)
+}
+
+async function onHasNoSirenChange(value: boolean) {
+  hasNoSiren.value = value
+  emit('input', HAS_NO_SIREN_FIELD_KEY, value)
+  await nextTick()
+  if (value === true) {
+    companyFormRef.value?.clearValidate([SIREN_FIELD_KEY])
+  }
+  await validateRequiredFieldsForPennylane()
+}
 
 const handleUpdateAccountModel = (fieldKey: string, fieldValue: any) => {
   if (internalAccount.value === undefined) {
@@ -184,7 +255,7 @@ async function validateRequiredFieldsForPennylane(): Promise<void> {
     return
   }
 
-  const validationResult = await isValidFields(PENNYLANE_REQUIRED_FIELDS)
+  const validationResult = await isValidFields(dynamicRequiredFields.value)
   areRequiredFieldsValid.value = validationResult
 }
 
@@ -229,6 +300,11 @@ defineExpose({
   &__alert-line {
     margin: 0.25rem 0;
   }
+  &__no-siren-switch {
+    display: flex;
+    align-items: center;
+    margin-top: -4px;
+  }
 }
 </style>
 
@@ -245,6 +321,7 @@ en-US:
     updatedInForm48h: "updated in the form below within 48h"
     warningNotActivated: "If the information is not provided, the offer cannot be activated."
   formInstruction: 'Please provide the following necessary information for activation :'
+  hasNoSirenLabel: "The company does not have a SIREN yet"
 fr-FR:
   alertInstruction:
     line1: "Si certaines {a}, vous devez les {b}"
@@ -258,4 +335,5 @@ fr-FR:
     updatedInForm48h: "mises à jour dans le formulaire ci-dessous sous 48h"
     warningNotActivated: "Si les informations ne sont pas renseignées, l’offre ne pourra pas être activée."
   formInstruction: "Veuillez renseigner les informations suivantes nécessaires pour l'activation :"
+  hasNoSirenLabel: "L'entreprise n'a pas encore de SIREN"
 </i18n>

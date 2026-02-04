@@ -24,6 +24,7 @@
       <InformationDetails
         v-if="activeTab === RecapTabs.INFORMATION"
         :subscriptionOfferDetails="subscriptionDetails?.offer"
+        :hasNoSiren="subscriptionDetails?.hasNoSiren"
         :accountId="subscriptionDetails.account.accountId"
         :pageContext="pageContext"
       />

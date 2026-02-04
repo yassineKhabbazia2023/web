@@ -455,6 +455,10 @@ describe('test OffersDrawer.utils', () => {
   })
 
   describe('updateAccountOnInput', () => {
+    beforeEach(() => {
+      addPathValueMock.mockClear()
+    })
+
     it('should update account.value and call addPathValue properly', () => {
       const accountMock = getMockedAccount()
 
@@ -482,6 +486,23 @@ describe('test OffersDrawer.utils', () => {
       )
       expect(addPathValueMock).toHaveBeenCalledExactlyOnceWith(...expectedParams)
       expect(updatedAccount).toStrictEqual(expectedAccount)
+    })
+
+    it('should NOT call addPathValue when fieldKey is hasNoSiren but should still update account', () => {
+      const accountMock = getMockedAccount()
+      const fieldKey = 'legal.hasNoSiren'
+      const fieldValue = true
+      const patchValues: PatchValue[] = []
+
+      const updatedAccount = updateAccountOnInput(
+        fieldKey,
+        fieldValue,
+        patchValues,
+        accountMock,
+      )
+
+      expect(addPathValueMock).not.toHaveBeenCalled()
+      expect(updatedAccount?.legal?.hasNoSiren).toBe(true)
     })
   })
 })

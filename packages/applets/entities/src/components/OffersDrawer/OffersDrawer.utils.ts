@@ -6,6 +6,7 @@ import { addPathValue } from '@entities/services/PatchRecordService/PatchRecordS
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { type Account } from '@entities/services/account'
 import { type PatchValue } from '@entities/services/PatchRecordService'
+import { HAS_NO_SIREN_FIELD_KEY } from '@entities/modules/entity/components/CompanyInformation/CompanyInformation.const'
 
 export function getHasNoSignatory(
   currentStep: OffersDrawerStep,
@@ -123,6 +124,13 @@ export function updateAccountOnInput(
   patchValues: PatchValue[],
   account?: Account,
 ) {
+  if (fieldKey === HAS_NO_SIREN_FIELD_KEY) {
+    if (account !== undefined) {
+      setWith(account, fieldKey, fieldValue, Object)
+    }
+    return account
+  }
+
   const previousValue = get(account, fieldKey)
   addPathValue(patchValues, fieldKey, previousValue, fieldValue)
   if (account !== undefined) {

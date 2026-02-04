@@ -4,7 +4,7 @@ import type { VueWrapper } from '@vue/test-utils'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import type { CompanyInformationProps } from './CompanyInformationTypes'
-import { PENNYLANE_REQUIRED_FIELDS } from './CompanyInformation.const'
+import { PENNYLANE_REQUIRED_FIELDS, SIREN_FIELD_KEY, HAS_NO_SIREN_FIELD_KEY } from './CompanyInformation.const'
 import type { Account } from '@entities/services/account'
 import { ProviderName } from '@entities/enums'
 import { getFormStructure } from '@entities/utils/referential'
@@ -225,6 +225,97 @@ describe('CompanyInformation', () => {
       expect(wrapper.vm.isValidFields).toBeDefined()
       expect(wrapper.vm.areRequiredFieldsValid).toBeDefined()
       expect(wrapper.vm.getSelectedHubName).toBeDefined()
+    })
+  })
+
+  describe('hasNoSiren toggle', () => {
+    const mockFormStructureWithSiren = [{
+      title: 'Test Section',
+      fields: [{
+        pFieldKey: SIREN_FIELD_KEY,
+        pFieldType: 'text',
+        pRules: [{ required: true }],
+      }],
+    }] as any
+
+    it('should show toggle only for Pennylane offer when SIREN field exists', async () => {
+      getFormStructureMock.mockResolvedValueOnce(mockFormStructureWithSiren)
+      const wrapper = createWrapper({
+        offerCode: SubscriptionOfferCode.PENNYLANE,
+      })
+      await flushPromises()
+
+      const toggle = wrapper.find('[data-testid="has-no-siren-switch"]')
+      expect(toggle.exists()).toBe(true)
+    })
+
+    it('should NOT show toggle for non-Pennylane offers', async () => {
+      getFormStructureMock.mockResolvedValueOnce(mockFormStructureWithSiren)
+      const wrapper = createWrapper({
+        offerCode: SubscriptionOfferCode.FORMS,
+      })
+      await flushPromises()
+
+      const toggle = wrapper.find('[data-testid="has-no-siren-switch"]')
+      expect(toggle.exists()).toBe(false)
+    })
+
+    it('should disable toggle when SIREN is filled', async () => {
+      getFormStructureMock.mockResolvedValueOnce(mockFormStructureWithSiren)
+      const wrapper = createWrapper({
+        modelValue: {
+          ...mockAccount,
+          legal: {
+            legalName: 'Test Company',
+            siren: '123456789',
+          },
+        } as Account,
+        offerCode: SubscriptionOfferCode.PENNYLANE,
+      })
+      await flushPromises()
+
+      const toggle = wrapper.findComponent({ name: 'PSwitch' })
+      expect(toggle.props('pDisabled')).toBe(true)
+    })
+
+    it('should enable toggle when SIREN is empty', async () => {
+      getFormStructureMock.mockResolvedValueOnce(mockFormStructureWithSiren)
+      const wrapper = createWrapper({
+        modelValue: {
+          ...mockAccount,
+          legal: {
+            legalName: 'Test Company',
+            siren: '',
+          },
+        } as Account,
+        offerCode: SubscriptionOfferCode.PENNYLANE,
+      })
+      await flushPromises()
+
+      const toggle = wrapper.findComponent({ name: 'PSwitch' })
+      expect(toggle.props('pDisabled')).toBe(false)
+    })
+
+    it('should emit input event with hasNoSiren key when toggle changes', async () => {
+      getFormStructureMock.mockResolvedValueOnce(mockFormStructureWithSiren)
+      const wrapper = createWrapper({
+        modelValue: {
+          ...mockAccount,
+          legal: {
+            legalName: 'Test Company',
+            siren: '',
+          },
+        } as Account,
+        offerCode: SubscriptionOfferCode.PENNYLANE,
+      })
+      await flushPromises()
+
+      const toggle = wrapper.findComponent({ name: 'PSwitch' })
+      await toggle.vm.$emit('update:model-value', true)
+      await nextTick()
+
+      expect(wrapper.emitted('input')).toBeTruthy()
+      expect(wrapper.emitted('input')![0]).toEqual([HAS_NO_SIREN_FIELD_KEY, true])
     })
   })
 })

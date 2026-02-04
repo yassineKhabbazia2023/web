@@ -5,4 +5,5 @@ export interface InformationDetailsProps {
   subscriptionOfferDetails: SubscriptionOfferServices
   accountId: number
   pageContext?: SubscriptionDetailsContext
+  hasNoSiren?: boolean
 }
