@@ -1,4 +1,5 @@
 import { commonApi as api } from '@pulse/common'
+import { API_PREFIXES } from '@pulse/common/constants'
 import type { AxiosResponse } from 'axios'
 import type {
   Document,
@@ -23,9 +24,9 @@ export const fetchFolderDocuments = async (
   }: FetchDocumentsParams,
 ): Promise<DocumentsWithTableStructure> => {
 
-  const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}/currentuser`
-  const apiObject = api().ds
-
+  const fetchFolderDocumentsUrl =
+    `${API_PREFIXES.GED}/${serviceId}/${entityId}/documents/folder/${folderId}/currentuser`
+  const apiObject = api().gateway
   return (
     await apiObject.get(fetchFolderDocumentsUrl, {
       headers: { 'Account-Id': accountId },
@@ -46,9 +47,9 @@ export const downloadDocument = async (
   documentId: Document['id'],
   accountId: number,
 ): Promise<Blob> => {
-  const downloadDocumentUrl = `${serviceId}/${accountNumber}/documents/${documentId}/content`
-  const apiObject = api().ds
-
+  const downloadDocumentUrl =
+    `${API_PREFIXES.GED}/${serviceId}/${accountNumber}/documents/${documentId}/content`
+  const apiObject = api().gateway
   return (await apiObject.get(downloadDocumentUrl, {
     headers: { 'Account-Id': accountId },
     responseType: 'blob',
@@ -61,8 +62,8 @@ export const downloadDocuments = async (
   documentsIds: Document['id'][],
   accountId: number,
 ): Promise<void> => {
-  const downloadDocumentsUrl = `${serviceId}/${accountNumber}/archive`
-  const apiObject = api().ds
+  const downloadDocumentsUrl = `${API_PREFIXES.GED}/${serviceId}/${accountNumber}/archive`
+  const apiObject = api().gateway
 
   return (await apiObject.post(
     downloadDocumentsUrl,
@@ -81,13 +82,13 @@ export const renameDocument = async (
   newDocumentName: string,
   accountId: number,
 ): Promise<void> => {
-  const renameDocumentUrl = `${serviceId}/${entityId}/documents/${documentId}`
+  const renameDocumentUrl = `${API_PREFIXES.GED}/${serviceId}/${entityId}/documents/${documentId}`
   const requestBody = [{
     op: 'replace',
     path: '/name',
     value: newDocumentName,
   }]
-  return await api().ds.patch(renameDocumentUrl, requestBody, {
+  return await api().gateway.patch(renameDocumentUrl, requestBody, {
     headers: { 'Account-Id': accountId },
   })
 }
@@ -98,8 +99,9 @@ export const deleteDocuments = async (
   documentIds: string[],
   accountId: number,
 ) => {
-  const deleteFolderUrl = `${serviceId}/${entityId}/documents`
-  const apiObject = api().ds
+  const deleteFolderUrl = `${API_PREFIXES.GED}/${serviceId}/${entityId}/documents`
+  const apiObject = api().gateway
+
   await apiObject.delete(deleteFolderUrl, {
     headers: { 'Account-Id': accountId },
     data: { ids: documentIds } })
@@ -114,10 +116,10 @@ export const uploadDocument = async (
 ): Promise<Document> => {
   const formData = new FormData()
   formData.append('file', file)
-  const apiObject = api().ds
+  const apiObject = api().gateway
 
   return await apiObject.post(
-    `${serviceId}/${entityId}/folders/${folderId}/currentuser/documents?notify=true&source=User`,
+    `${API_PREFIXES.GED}/${serviceId}/${entityId}/folders/${folderId}/currentuser/documents?notify=true&source=User`,
     formData,
     {
       headers: {
@@ -134,9 +136,10 @@ export const moveDocuments = async (
   fileMove: MoveDocumentsRequest,
   accountId: number,
 ): Promise<void> => {
-  const apiObject = api().ds
+  const apiObject = api().gateway
+
   return await apiObject.post(
-    `${serviceId}/${entityId}/documents/move`,
+    `${API_PREFIXES.GED}/${serviceId}/${entityId}/documents/move`,
     JSON.stringify(fileMove),
     {
       headers: {
@@ -153,9 +156,10 @@ export const transmitDocuments = async (
   documentsIds: string[],
   accountId: number,
 ): Promise<void> => {
-  const apiObject = api().ds
+  const apiObject = api().gateway
+
   return await apiObject.post(
-    `${serviceId}/${entityId}/documents/pia-speedup-transfer`,
+    `${API_PREFIXES.GED}/${serviceId}/${entityId}/documents/pia-speedup-transfer`,
     { ids: documentsIds },
     {
       headers: {
@@ -176,9 +180,10 @@ export const previewDocument = async (
   documentId: Document['id'],
   accountId: number,
 ): Promise<DocumentPreviewResponse> => {
-  const apiObject = api().ds
+  const apiObject = api().gateway
+
   const response: AxiosResponse<ArrayBuffer> = await apiObject.get(
-    `${serviceId}/${entityId}/documents/${documentId}/preview`,
+    `${API_PREFIXES.GED}/${serviceId}/${entityId}/documents/${documentId}/preview`,
     {
       responseType: 'arraybuffer',
       headers: { 'Account-Id': accountId },
@@ -211,8 +216,9 @@ export const fetchDocumentsByKeyWord = async (
   }: FetchDocumentsByKeyWordParams,
 ): Promise<DocumentsWithTableStructure> => {
 
-  const fetchFolderDocumentsUrl = `${serviceId}/${entityId}/documents/folder/${folderId}/currentuser`
-  const apiObject = api().ds
+  const fetchFolderDocumentsUrl =
+    `${API_PREFIXES.GED}/${serviceId}/${entityId}/documents/folder/${folderId}/currentuser`
+  const apiObject = api().gateway
 
   return (
     await apiObject.get(fetchFolderDocumentsUrl, {

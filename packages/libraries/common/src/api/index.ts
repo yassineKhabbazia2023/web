@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { VITE_API_GATEWAY, VITE_API_DS } from 'env-vars'
+import { VITE_API_GATEWAY } from 'env-vars'
 import { requestTokenInterceptor } from './interceptors/request-token.interceptor'
 import { responseInterceptorSuccess } from './interceptors/response-success.interceptor'
 import { responseInterceptorError } from './interceptors/response-error.interceptor'
@@ -26,9 +26,8 @@ const createAxiosInstance = (domain: string) => {
 
 const api = {
   gateway: createAxiosInstance(VITE_API_GATEWAY),
-  ds: createAxiosInstance(VITE_API_DS),
 }
 
-export default () => {
+export default function commonApi() {
   return api
 }

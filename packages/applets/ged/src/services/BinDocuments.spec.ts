@@ -1,7 +1,10 @@
-import { it, expect, beforeEach, describe } from 'vitest'
-import { commonApiDsGetSpy, commonApiDsPostSpy } from '@ged/__mocks__/common.import.mocks'
+import {
+  commonApiGatewayGetSpy,
+  commonApiGatewayPostSpy,
+} from '@ged/__mocks__/common.import.mocks'
 import { accountId, accountNumber } from '@ged/__mocks__/files.mocks'
 import type { Service } from '@ged/models/Service'
+import { API_PREFIXES } from '@pulse/common/constants'
 
 import {
   fetchBinDocuments,
@@ -10,26 +13,27 @@ import {
 
 describe('bin documents service', () => {
   beforeEach(() => {
-    commonApiDsGetSpy.mockResolvedValue({
+    commonApiGatewayGetSpy.mockResolvedValue({
       data: {
         documents: 'fetched',
       },
     })
-    commonApiDsPostSpy.mockResolvedValue(() => ({
+    commonApiGatewayPostSpy.mockResolvedValue({
       data: {
         documents: 'posted',
       },
-    }))
+    })
   })
+
   it('should fetsh bin documents when fetchBinDocuments is called', async () => {
     expect.hasAssertions()
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
 
     await fetchBinDocuments(service.ServiceId, accountNumber, accountId)
 
-    expect(commonApiDsGetSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/trash/mapped/currentuser',
+    expect(commonApiGatewayGetSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(
+      `${API_PREFIXES.GED}/service-1/${accountNumber}/trash/mapped/currentuser`,
       {
         headers: { 'Account-Id': accountId },
         params: {
@@ -47,9 +51,9 @@ describe('bin documents service', () => {
 
     await restoreDocuments(service.ServiceId, accountNumber, ['doc-id'], accountId)
 
-    expect(commonApiDsPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiDsPostSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/trash/restore',
+    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/trash/restore`,
       {
         ids: ['doc-id'],
       },

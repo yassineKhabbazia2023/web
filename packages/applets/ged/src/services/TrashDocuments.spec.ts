@@ -1,7 +1,7 @@
-import { it, expect, describe } from 'vitest'
-import { commonApiDsGetSpy } from '@ged/__mocks__/common.import.mocks'
+import { commonApiGatewayGetSpy } from '@ged/__mocks__/common.import.mocks'
 import { accountId, accountNumber } from '@ged/__mocks__/files.mocks'
 import type { Service } from '@ged/models/Service'
+import { API_PREFIXES } from '@pulse/common/constants'
 
 import {
   fetchTrashDocuments,
@@ -12,20 +12,23 @@ describe('trash documents service', () => {
     const service: Service = { ServiceId: 'service-1', ServiceName: 'A', IsReadOnly: false }
     const trashedDocumentValue = 'trashed-document'
 
-    commonApiDsGetSpy.mockResolvedValueOnce({
+    commonApiGatewayGetSpy.mockResolvedValueOnce({
       data: trashedDocumentValue,
     })
 
     const trashed = await fetchTrashDocuments(service.ServiceId, accountNumber, accountId)
 
-    expect(commonApiDsGetSpy).toHaveBeenCalledExactlyOnceWith('service-1/my-account-id/trash/mapped/currentuser', {
-      headers: { 'Account-Id': accountId },
-      params: {
-        limit: 10,
-        skip: 0,
-        sort: '-deleted',
+    expect(commonApiGatewayGetSpy).toHaveBeenCalledExactlyOnceWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/trash/mapped/currentuser`,
+      {
+        headers: { 'Account-Id': accountId },
+        params: {
+          limit: 10,
+          skip: 0,
+          sort: '-deleted',
+        },
       },
-    })
+    )
     expect(trashed).toBe(trashedDocumentValue)
   })
 })

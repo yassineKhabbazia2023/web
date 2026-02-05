@@ -1,15 +1,16 @@
 import { it, expect, describe, beforeEach } from 'vitest'
 import {
-  commonApiDsGetSpy,
-  commonApiDsPostSpy,
-  commonApiDsDeleteSpy,
-  commonApiDsPatchSpy,
+  commonApiGatewayGetSpy,
+  commonApiGatewayPostSpy,
+  commonApiGatewayDeleteSpy,
+  commonApiGatewayPatchSpy,
 } from '@ged/__mocks__/common.import.mocks'
 import { accountId, accountNumber } from '@ged/__mocks__/files.mocks'
 import type { Service } from '@ged/models/Service'
 import type { Document } from '@ged/models/Document'
 import type { Folder } from '@ged/models/Folder'
 import type { MoveDocumentsRequest } from '@ged/modules/Documents/components/DocumentsMove/DocumentsMoveTypes'
+import { API_PREFIXES } from '@pulse/common/constants'
 
 import {
   downloadDocument,
@@ -26,7 +27,7 @@ import {
 
 describe('documents service', () => {
   beforeEach(() => {
-    commonApiDsGetSpy.mockImplementation((url: string) => {
+    commonApiGatewayGetSpy.mockImplementation((url: string) => {
       const returnValue = url.includes('preview')
         ? {
           data: new ArrayBuffer(1),
@@ -37,7 +38,7 @@ describe('documents service', () => {
         }
       return Promise.resolve(returnValue)
     })
-    commonApiDsPostSpy.mockImplementation(() => ({
+    commonApiGatewayPostSpy.mockImplementation(() => ({
       data: {
         documents: 'posted',
       },
@@ -56,16 +57,19 @@ describe('documents service', () => {
       accountId,
     })
 
-    expect(commonApiDsGetSpy).toHaveBeenCalledExactlyOnceWith('service-1/my-account-id/documents/folder/123/currentuser', {
-      headers: { 'Account-Id': accountId },
-      params: {
-        createdEnd: null,
-        createdStart: null,
-        limit: 10,
-        skip: 0,
-        sort: '-created',
+    expect(commonApiGatewayGetSpy).toHaveBeenCalledExactlyOnceWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/folder/${folderId}/currentuser`,
+      {
+        headers: { 'Account-Id': accountId },
+        params: {
+          createdEnd: null,
+          createdStart: null,
+          limit: 10,
+          skip: 0,
+          sort: '-created',
+        },
       },
-    })
+    )
   })
 
   it('should fetsh documents with the keyword  when fetchDocumentsByKeyWord is called', async () => {
@@ -84,16 +88,19 @@ describe('documents service', () => {
       search: 'test',
     })
 
-    expect(commonApiDsGetSpy).toHaveBeenCalledExactlyOnceWith('service-1/my-account-id/documents/folder/123/currentuser', {
-      headers: { 'Account-Id': accountId },
-      params: {
-        limit: 10,
-        skip: 0,
-        sort: '-created',
-        search: 'test',
-        findInChildFolders: true,
+    expect(commonApiGatewayGetSpy).toHaveBeenCalledExactlyOnceWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/folder/${folderId}/currentuser`,
+      {
+        headers: { 'Account-Id': accountId },
+        params: {
+          limit: 10,
+          skip: 0,
+          sort: '-created',
+          search: 'test',
+          findInChildFolders: true,
+        },
       },
-    })
+    )
   })
 
   it('should fetch documents with appropriate parameters when specified', async () => {
@@ -120,9 +127,10 @@ describe('documents service', () => {
       },
     })
 
-    expect(commonApiDsGetSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents/folder/123/currentuser', {
+    expect(commonApiGatewayGetSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/folder/${folderId}/currentuser`,
+      {
         headers: { 'Account-Id': accountId },
         params: {
           limit: 10,
@@ -141,9 +149,9 @@ describe('documents service', () => {
 
       await downloadDocument(service.ServiceId, accountNumber, '1234', accountId)
 
-      expect(commonApiDsGetSpy).toHaveBeenCalledTimes(1)
-      expect(commonApiDsGetSpy).toHaveBeenCalledWith(
-        'service-1/my-account-id/documents/1234/content',
+      expect(commonApiGatewayGetSpy).toHaveBeenCalledTimes(1)
+      expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(
+        `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/1234/content`,
         {
           headers: { 'Account-Id': accountId },
           responseType: 'blob',
@@ -156,9 +164,9 @@ describe('documents service', () => {
 
     await downloadDocuments(service.ServiceId, accountNumber, ['1234', '4567'], accountId)
 
-    expect(commonApiDsPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiDsPostSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/archive',
+    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/archive`,
       { ids: ['1234', '4567'] },
       {
         headers: { 'Account-Id': accountId },
@@ -180,11 +188,13 @@ describe('documents service', () => {
       accountId,
     )
 
-    expect(commonApiDsDeleteSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiDsDeleteSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents', {
+    expect(commonApiGatewayDeleteSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiGatewayDeleteSpy).toHaveBeenCalledWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents`,
+      {
         headers: { 'Account-Id': accountId },
-        data: { ids: documentIds } },
+        data: { ids: documentIds },
+      },
     )
   })
 
@@ -202,9 +212,9 @@ describe('documents service', () => {
       accountId,
     )
 
-    expect(commonApiDsPatchSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiDsPatchSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents/1234',
+    expect(commonApiGatewayPatchSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiGatewayPatchSpy).toHaveBeenCalledWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/1234`,
       [{
         op: 'replace',
         path: '/name',
@@ -232,9 +242,9 @@ describe('documents service', () => {
     const expectedPayload = new FormData()
     expectedPayload.append('file', file)
 
-    expect(commonApiDsPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiDsPostSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/folders/1234/currentuser/documents?notify=true&source=User',
+    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/folders/${folderId}/currentuser/documents?notify=true&source=User`,
       expectedPayload,
       {
         headers: {
@@ -260,9 +270,9 @@ describe('documents service', () => {
 
     await moveDocuments(service.ServiceId, accountNumber, fileMove, accountId)
 
-    expect(commonApiDsPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiDsPostSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents/move',
+    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/move`,
       expectedPayload,
       {
         headers: {
@@ -280,9 +290,9 @@ describe('documents service', () => {
 
     await transmitDocuments(service.ServiceId, accountNumber, documentIds, accountId)
 
-    expect(commonApiDsPostSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiDsPostSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents/pia-speedup-transfer',
+    expect(commonApiGatewayPostSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiGatewayPostSpy).toHaveBeenCalledWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/pia-speedup-transfer`,
       { ids: documentIds },
       {
         headers: {
@@ -298,9 +308,9 @@ describe('documents service', () => {
 
     const data = await previewDocument(service.ServiceId, accountNumber, '1234', accountId)
 
-    expect(commonApiDsGetSpy).toHaveBeenCalledTimes(1)
-    expect(commonApiDsGetSpy).toHaveBeenCalledWith(
-      'service-1/my-account-id/documents/1234/preview',
+    expect(commonApiGatewayGetSpy).toHaveBeenCalledTimes(1)
+    expect(commonApiGatewayGetSpy).toHaveBeenCalledWith(
+      `${API_PREFIXES.GED}/${service.ServiceId}/${accountNumber}/documents/1234/preview`,
       {
         responseType: 'arraybuffer',
         headers: {

@@ -17,6 +17,16 @@ export const commonApiPortalGetSpy: Mock = vi.fn().mockResolvedValue({
 export const commonApiGatewayGetSpy: Mock = vi.fn().mockResolvedValue({
   data: {},
 })
+export const commonApiGatewayPostSpy: Mock = vi.fn().mockResolvedValue({
+  data: {},
+})
+export const commonApiGatewayPatchSpy: Mock = vi.fn().mockResolvedValue({
+  data: {},
+})
+export const commonApiGatewayDeleteSpy: Mock = vi.fn().mockResolvedValue({
+  data: {},
+})
+
 export const amplitudeTrackSpy: Mock = vi.fn()
 
 export const defaultEntityMock: Entity = {
@@ -39,6 +49,9 @@ vi.mock('@pulse/common', () => ({
     },
     gateway: {
       get: commonApiGatewayGetSpy,
+      post: commonApiGatewayPostSpy,
+      patch: commonApiGatewayPatchSpy,
+      delete: commonApiGatewayDeleteSpy,
     },
   }),
   DataStreamHubConnection: vi.fn(() => ({
