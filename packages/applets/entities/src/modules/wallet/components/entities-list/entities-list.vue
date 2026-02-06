@@ -385,7 +385,7 @@ const onToolboxItemClicked = (action: string, row: any) => {
   const { accountId, name, accountNumber, isCustomerRelation } = row
 
   if (action === 'deploy') {
-    emit('click-deploy', accountId ?? 5, accountNumber, name)
+    emit('click-deploy', accountId, accountNumber, name)
   } else if (action === 'access') {
     emit('access', accountId)
   } else if (action === 'manageAccountRights') {
