@@ -19,6 +19,7 @@ describe('test entity-helper', () => {
       expectedAuthorisations: {
         collab: true,
         delegationsHistory: true,
+        history: true,
         info: true,
         offers: true,
         invoices: true,
@@ -32,6 +33,7 @@ describe('test entity-helper', () => {
       expectedAuthorisations: {
         collab: false,
         delegationsHistory: false,
+        history: false,
         info: true,
         offers: true,
         invoices: true,
@@ -45,6 +47,7 @@ describe('test entity-helper', () => {
       expectedAuthorisations: {
         collab: false,
         delegationsHistory: false,
+        history: true,
         info: false,
         offers: false,
         invoices: true,
@@ -58,6 +61,7 @@ describe('test entity-helper', () => {
       expectedAuthorisations: {
         collab: false,
         delegationsHistory: false,
+        history: false,
         info: false,
         offers: false,
         invoices: true,
@@ -142,6 +146,7 @@ describe('test entity-helper', () => {
       const tabAuthorisations: Record<TabName, boolean> = {
         collab: true,
         delegationsHistory: false,
+        history: true,
         info: true,
         offers: true,
         invoices: true,
@@ -153,6 +158,7 @@ describe('test entity-helper', () => {
         offers: 'Offres',
         invoices: 'Factures RYDGE Conseil',
         info: 'Informations',
+        history: 'Historique du dossier',
         delegationsHistory: 'Historique des délégations',
       }
       const tabs = getTabs(tabAuthorisations, titles)
@@ -171,6 +177,9 @@ describe('test entity-helper', () => {
       }, {
         name: 'info',
         title: 'Informations',
+      }, {
+        name: 'history',
+        title: 'Historique du dossier',
       }]
 
       expect(tabs).toStrictEqual(expectedTabs)

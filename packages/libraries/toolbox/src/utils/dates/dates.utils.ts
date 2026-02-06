@@ -23,3 +23,17 @@ export function getMostRecentDate(dateStr1?: string, dateStr2?: string): string 
 
   return dayjs(dateStr1).isAfter(dayjs(dateStr2)) ? dateStr1 : dateStr2
 }
+
+/**
+ * Formats a date string to display only the time in HH:mm format.
+ * @param dateString - ISO date string or any valid date string
+ * @param locale - Locale for formatting (default: 'fr-FR')
+ * @returns Formatted time string (e.g., "14:30")
+ */
+export function formatTime(dateString: string, locale: string = 'fr-FR'): string {
+  const date = dayjs(dateString)
+  if (date.isValid() === false) {
+    return ''
+  }
+  return date.toDate().toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
+}

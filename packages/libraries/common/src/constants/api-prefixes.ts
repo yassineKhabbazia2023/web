@@ -6,6 +6,7 @@ export const API_PREFIXES = {
   CONTACT: 'contact/api',
   CUSTOMER_WALLET: 'customer-wallet/api',
   ENTITY_CREATOR: 'entitycreator/api',
+  HISTORY: 'history/api',
   OFFER: 'offer/api',
   PENNYLANE: 'pennylane/api/pennylane',
   REGISTRY: 'registry/api',

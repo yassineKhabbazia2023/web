@@ -49,6 +49,11 @@ export const entityOverviewCollaboratorRoutes: RouteRecordRaw[] = [
         name: COLLABORATOR_ROUTES.entity.overview.delegationsHistory.name,
         component: () => import('@pulse/entities/entity-pages').then(pages => pages.DelegationsHistory),
       },
+      {
+        path: COLLABORATOR_ROUTES.entity.overview.history.path,
+        name: COLLABORATOR_ROUTES.entity.overview.history.name,
+        component: () => import('@pulse/entities/entity-pages').then(pages => pages.History),
+      },
     ],
   },
 ]

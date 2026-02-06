@@ -10,6 +10,7 @@ export enum RouteName {
   CREATE_PASSWORD = 'createPassword',
   CUSTOMER_ENTITIES = 'customer-entities',
   DELEGATIONS_HISTORY = 'delegationsHistory',
+  FOLDER_HISTORY = 'history',
   ENTITY = 'entity',
   ENTITY_OVERVIEW = 'entity-overview',
   ERROR_ROOT = 'ErrorRoot',

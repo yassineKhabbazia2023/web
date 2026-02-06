@@ -59,6 +59,7 @@ const tabTitles: Record<TabName, string> = {
   invoices: t('invoices'),
   users: t('users'),
   collab: t('collab'),
+  history: t('history'),
   delegationsHistory: t('delegationsHistory'),
 }
 const tabAuthorisations = computed(() =>
@@ -94,6 +95,7 @@ en-US:
   offers: 'Offers'
   info: 'Information'
   invoices: 'RYDGE Conseil invoices'
+  history: 'Folder history'
   delegationsHistory: 'Delegations history'
 fr-FR:
   users: 'Utilisateurs'
@@ -101,5 +103,6 @@ fr-FR:
   offers: 'Offres'
   info: 'Informations'
   invoices: 'Factures RYDGE Conseil'
+  history: 'Historique du dossier'
   delegationsHistory: 'Historique des délégations'
 </i18n>

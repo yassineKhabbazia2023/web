@@ -1,4 +1,4 @@
-import { getMostRecentDate } from './dates.utils'
+import { formatTime, getMostRecentDate } from './dates.utils'
 
 describe('getMostRecentDate', () => {
   it.each([
@@ -29,5 +29,19 @@ describe('getMostRecentDate', () => {
     ['', undefined],
   ])('should return undefined when both dates are invalid: "%s" and "%s"', (date1, date2) => {
     expect(getMostRecentDate(date1, date2)).toBeUndefined()
+  })
+})
+
+describe('formatTime', () => {
+  it('should format ISO date string to time HH:mm', () => {
+    expect(formatTime('2024-03-15T14:30:00')).toBe('14:30')
+  })
+
+  it('should return empty string for invalid date', () => {
+    expect(formatTime('invalid')).toBe('')
+  })
+
+  it('should use custom locale', () => {
+    expect(formatTime('2024-03-15T14:30:00', 'en-US')).toBe('02:30 PM')
   })
 })
