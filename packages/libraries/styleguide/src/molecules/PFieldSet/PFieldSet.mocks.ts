@@ -24,7 +24,7 @@ export function getMockedFields(
     return [
       getMockedInputField(
         'contact.email',
-        'E-mail de contact',
+        'E-mail de dématérialisation',
         'contact@test.fr',
         45,
         false,
