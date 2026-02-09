@@ -3,7 +3,7 @@
     <div class="invoices-form__card">
       <div class="invoices-form__content padding--8">
         <div
-          v-if="currentStep !== InvoicesFormStep.VAULT_BEING_CREATED"
+          v-if="shouldShowVaultBeingCreated === false"
           class="
             flex
             flex--justify-content-space-between
@@ -42,7 +42,7 @@
           />
 
           <InvoicesVaultBeingCreatedStep
-            v-else-if="currentStep === InvoicesFormStep.VAULT_BEING_CREATED"
+            v-else-if="shouldShowVaultBeingCreated"
           />
         </Transition>
       </div>
@@ -56,7 +56,7 @@ import InvoicesFirstStepForm from '../invoices-first-step-form/invoices-first-st
 import InvoicesSecondStepForm from '../invoices-second-step-form/invoices-second-step.form.vue'
 import InvoicesVaultBeingCreatedStep from '../invoices-vault-being-created-step/invoices-vault-being-created-step.vue'
 import { TOTAL_STEPS } from '../../invoices.constants'
-import { InvoicesFormStep } from '../../invoices.enums'
+import { InvoicesFormStep } from '@entities/modules/entity/enums'
 import { useInvoicesForm } from './invoices.form.composable'
 
 const { t } = useI18n()
@@ -64,6 +64,7 @@ const { t } = useI18n()
 const {
   currentStep,
   formData,
+  shouldShowVaultBeingCreated,
   submitIntegration,
   goToNextStep,
   goToPreviousStep,

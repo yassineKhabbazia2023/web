@@ -1,7 +1,7 @@
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import type { BillingSubmissionInputRequest, InvoicesFullFormModel } from '@entities/modules/entity/types'
-import { InvoicesFormStep } from '../../invoices.enums'
-import { INVOICES_STEPS_ORDER, TOTAL_STEPS } from '../../invoices.constants'
+import { InvoicesFormStep, DigitalSafeStatus } from '@entities/modules/entity/enums'
+import { INVOICES_STEPS_ORDER, TOTAL_STEPS, DIGITAL_SAFE_STATUS_TO_STEP } from '../../invoices.constants'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
@@ -16,8 +16,27 @@ export function useInvoicesForm() {
   const { user } = storeToRefs(userStore)
   const { currentEntityAccountNumber } = storeToRefs(currentEntityStore)
 
+  const userDigitalSafeSubscriptionStatus = ref<DigitalSafeStatus>(DigitalSafeStatus.NOT_SUBSCRIBED)
+  onMounted(async () => {
+    try {
+      const status = await InvoicesService.getSubscriptionStatus(currentEntityAccountNumber.value)
+      userDigitalSafeSubscriptionStatus.value = status
+
+      const mappedStep = DIGITAL_SAFE_STATUS_TO_STEP[status]
+      if (mappedStep !== null) {
+        currentStep.value = mappedStep
+      }
+    } catch (error) {
+      logger.error('can\'t get digital safe subscription status', error)
+    }
+  })
   const currentStepIndex = computed(() =>
     INVOICES_STEPS_ORDER.indexOf(currentStep.value),
+  )
+
+  const shouldShowVaultBeingCreated = computed(() =>
+    currentStep.value === InvoicesFormStep.VAULT_BEING_CREATED ||
+    userDigitalSafeSubscriptionStatus.value === DigitalSafeStatus.SUBMITTED,
   )
 
   const formData = ref<InvoicesFullFormModel>({
@@ -76,6 +95,8 @@ export function useInvoicesForm() {
 
   return {
     TOTAL_STEPS,
+    userDigitalSafeSubscriptionStatus,
+    shouldShowVaultBeingCreated,
     currentStep,
     formData,
     submitIntegration,

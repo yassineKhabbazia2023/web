@@ -3,6 +3,7 @@ import { API_PREFIXES } from '@pulse/common/constants'
 import type { BillingSubmissionInputRequest, DigitalSafeCustomer } from '@entities/modules/entity/types'
 import type { PaginationResponse } from '@pulse/common/types'
 import { logger } from '@pulse/toolbox'
+import type { DigitalSafeStatus } from '../enums/invoices.enums'
 
 export class InvoicesService {
 
@@ -21,5 +22,12 @@ export class InvoicesService {
     } catch (error) {
       logger.error('Unmanaged case', error)
     }
+  }
+
+  static async getSubscriptionStatus(accountNumber: string) {
+    const url = `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/hubspot/submissions/currentuser`
+    const { data } = await api().gateway.get<DigitalSafeStatus>(url)
+
+    return data
   }
 }

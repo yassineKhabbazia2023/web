@@ -1,10 +1,10 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { flushPromises } from '@vue/test-utils'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { withSetup } from '@pulse/toolbox/utils/test'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { InvoicesService } from '@entities/modules/entity/services/invoices.service'
 import { getContactById } from '@entities/services/contact'
-import { InvoicesFormStep } from '../../invoices.enums'
+import { DigitalSafeStatus, InvoicesFormStep } from '@entities/modules/entity/enums'
 import { useInvoicesForm } from './invoices.form.composable'
 
 vi.mock('@entities/modules/entity/services/invoices.service')
@@ -121,7 +121,89 @@ describe('useInvoicesForm', () => {
 
       expect(currentStep.value).toBe(InvoicesFormStep.VAULT_BEING_CREATED)
     })
+  })
 
+  describe('onMounted status to step mapping', () => {
+    it('should set currentStep to VAULT_BEING_CREATED when status is SUBMITTED', async () => {
+      vi.mocked(InvoicesService.getSubscriptionStatus).mockResolvedValueOnce(DigitalSafeStatus.SUBMITTED)
+
+      const [result, app] = withSetup(() => useInvoicesForm())
+      await flushPromises()
+
+      expect(result.currentStep.value).toBe(InvoicesFormStep.VAULT_BEING_CREATED)
+
+      app.unmount()
+    })
+
+    it('should set currentStep to VAULT_BEING_CREATED when status is COMPLETED', async () => {
+      vi.mocked(InvoicesService.getSubscriptionStatus).mockResolvedValueOnce(DigitalSafeStatus.COMPLETED)
+
+      const [result, app] = withSetup(() => useInvoicesForm())
+      await flushPromises()
+
+      expect(result.currentStep.value).toBe(InvoicesFormStep.VAULT_BEING_CREATED)
+
+      app.unmount()
+    })
+
+    it('should keep currentStep at EMAIL_AND_TERMS when status is NOT_SUBSCRIBED', async () => {
+      vi.mocked(InvoicesService.getSubscriptionStatus).mockResolvedValueOnce(DigitalSafeStatus.NOT_SUBSCRIBED)
+
+      const [result, app] = withSetup(() => useInvoicesForm())
+      await flushPromises()
+
+      expect(result.currentStep.value).toBe(InvoicesFormStep.EMAIL_AND_TERMS)
+
+      app.unmount()
+    })
+  })
+
+  describe('shouldShowVaultBeingCreated', () => {
+    it('should return false when currentStep is EMAIL_AND_TERMS and status is NOT_SUBSCRIBED', () => {
+      const { shouldShowVaultBeingCreated } = useInvoicesForm()
+
+      expect(shouldShowVaultBeingCreated.value).toBe(false)
+    })
+
+    it('should return true when currentStep is VAULT_BEING_CREATED', () => {
+      const { shouldShowVaultBeingCreated, goToVaultBeingCreated } = useInvoicesForm()
+
+      goToVaultBeingCreated()
+
+      expect(shouldShowVaultBeingCreated.value).toBe(true)
+    })
+
+    it('should return true when userDigitalSafeSubscriptionStatus is SUBMITTED', async () => {
+      vi.mocked(InvoicesService.getSubscriptionStatus).mockResolvedValueOnce(DigitalSafeStatus.SUBMITTED)
+
+      const [result, app] = withSetup(() => useInvoicesForm())
+      await flushPromises()
+
+      expect(result.shouldShowVaultBeingCreated.value).toBe(true)
+
+      app.unmount()
+    })
+
+    it('should return false when currentStep is SELECT_CONTACT and status is NOT_SUBSCRIBED', () => {
+      const { shouldShowVaultBeingCreated, goToNextStep } = useInvoicesForm()
+
+      goToNextStep()
+
+      expect(shouldShowVaultBeingCreated.value).toBe(false)
+    })
+
+    it('should return true when currentStep is SELECT_CONTACT and status is SUBMITTED', async () => {
+      vi.mocked(InvoicesService.getSubscriptionStatus).mockResolvedValueOnce(DigitalSafeStatus.SUBMITTED)
+
+      const [result, app] = withSetup(() => useInvoicesForm())
+      await flushPromises()
+
+      result.goToNextStep()
+
+      expect(result.shouldShowVaultBeingCreated.value).toBe(true)
+
+      app.unmount()
+    })
   })
 
   describe('submitIntegration', () => {
