@@ -102,9 +102,9 @@
       },
       "step3": {
         "title": "2/3 New Terms and Conditions of RYDGE Conseil",
-        "subtitle": "Full consultation of the document is mandatory. Please scroll to the bottom of the text to continue.",
+        "subtitle": "To continue, please scroll to the bottom to review the full document. The \"Continue\" button will then become active to proceed to the next step.",
         "noPdfAvailable": "The document is not currently available.",
-        "scrollToBottom": "Go to bottom",
+        "scrollToBottom": "Scroll down the document",
         "errorLoadingDocument": "Unable to load document. Please try again.",
         "openInNewTab": "Open in new tab",
         "viewerFallbackMessage": "The document could not be displayed. Please download it to view the terms and conditions.",

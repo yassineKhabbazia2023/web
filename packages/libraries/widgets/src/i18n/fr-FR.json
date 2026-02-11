@@ -102,9 +102,9 @@
       },
       "step3": {
         "title": "2/3 Les nouvelles conditions de RYDGE Conseil",
-        "subtitle": "La consultation complète du document est obligatoire, veuillez aller jusqu'en bas du texte pour continuer.",
+        "subtitle": "Avant de continuer, vous devez consulter l'intégralité du document en le faisant défiler jusqu'en bas. Le bouton \"Continuer\" sera alors activé pour passer à l'étape suivante.",
         "noPdfAvailable": "Le document n'est pas disponible actuellement.",
-        "scrollToBottom": "Aller en bas du texte",
+        "scrollToBottom": "Faire défiler le document",
         "errorLoadingDocument": "Impossible de charger le document. Veuillez réessayer.",
         "openInNewTab": "Ouvrir dans un nouvel onglet",
         "viewerFallbackMessage": "Le document n'a pas pu s'afficher. Veuillez le télécharger pour consulter les conditions générales.",
