@@ -28,3 +28,64 @@
   opacity: 0;
   transform: translateX(-20px);
 }
+
+/* Fade with vertical drop and subtle scale */
+.fade-drop-enter-active,
+.fade-drop-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.fade-drop-enter-from {
+  opacity: 0;
+  transform: translateY(-8px) scale(0.98);
+}
+
+.fade-drop-leave-to {
+  opacity: 0;
+  transform: translateY(4px) scale(0.98);
+}
+
+/* Fade in while sliding up from below */
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Rotate with wobble, scale and fade in */
+@keyframes wobble-in {
+  0% {
+    transform: rotate(-15deg) scale(0.8);
+    opacity: 0;
+  }
+
+  50% {
+    transform: rotate(10deg) scale(1.1);
+  }
+
+  100% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Subtle scale pop effect */
+@keyframes scale-pop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

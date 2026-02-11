@@ -10,16 +10,25 @@
       :pHasMargin="false"
     >
       <PInput
+        ref="inputRef"
         :modelValue="formValues.search"
         :pAutofocus="pAutofocus"
         :pPlaceholder="pPlaceholder"
         :pClearable="pClearable"
         :pSize="pSize"
+        :pDisabled="pDisabled"
         pPrefixIconName="search"
         pName="search"
         pType="search"
         @input="onInput"
-      />
+      >
+        <template
+          v-if="$slots.append !== undefined"
+          #append
+        >
+          <slot name="append" />
+        </template>
+      </PInput>
     </PFormItem>
   </PForm>
 </template>
@@ -41,6 +50,7 @@ const props = withDefaults(defineProps<PFormSearchProps>(), {
   pPlaceholder: '',
   pSearch: '',
   pAutofocus: false,
+  pDisabled: false,
   pDebounceDelay: DEFAULT_DEBOUNCE_DELAY_MS,
 })
 
@@ -49,6 +59,7 @@ const emit = defineEmits<{
 }>()
 
 const formRef = useTemplateRef('form')
+const inputRef = useTemplateRef('inputRef')
 const formValues = ref<{
   search: string
 }>({
@@ -88,7 +99,12 @@ const clearSearch = () => {
   setSearchValue('')
 }
 
+const focus = () => {
+  inputRef.value?.focus()
+}
+
 defineExpose({
   clearSearch,
+  focus,
 })
 </script>

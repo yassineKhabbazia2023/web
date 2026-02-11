@@ -6,5 +6,6 @@ export interface PFormSearchProps {
   pAutofocus?: boolean
   pDebounceDelay?: number
   pClearable?: boolean
+  pDisabled?: boolean
   pSize?: 'large' | 'default' | 'small'
 }
