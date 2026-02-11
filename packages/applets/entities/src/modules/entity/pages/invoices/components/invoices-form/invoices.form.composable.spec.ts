@@ -208,7 +208,7 @@ describe('useInvoicesForm', () => {
 
   describe('submitIntegration', () => {
     it('should submit integration with contact and requester details', async () => {
-      const { formData, submitIntegration } = useInvoicesForm()
+      const { formData, submitIntegration, hasIntegrationError } = useInvoicesForm()
 
       formData.value.email = 'billing@example.com'
       formData.value.selectedContactId = 123
@@ -216,6 +216,7 @@ describe('useInvoicesForm', () => {
       await submitIntegration()
       await flushPromises()
 
+      expect(hasIntegrationError.value).toBe(false)
       expect(vi.mocked(getContactById)).toHaveBeenCalledWith(123)
       expect(vi.mocked(InvoicesService.submitIntegration)).toHaveBeenCalledWith('ACC-123', {
         dematerializationEmail: 'billing@example.com',
@@ -224,49 +225,6 @@ describe('useInvoicesForm', () => {
         vaultEmail: 'vault@example.com',
         requesterEmail: 'requester@example.com',
       })
-    })
-
-    it('should not submit integration when accountNumber is missing', async () => {
-      currentEntityStoreMock.currentEntity = undefined
-
-      const { formData, submitIntegration } = useInvoicesForm()
-
-      formData.value.email = 'billing@example.com'
-      formData.value.selectedContactId = 123
-
-      await submitIntegration()
-      await flushPromises()
-
-      expect(vi.mocked(getContactById)).not.toHaveBeenCalled()
-      expect(vi.mocked(InvoicesService.submitIntegration)).not.toHaveBeenCalled()
-    })
-
-    it('should not submit integration when selectedContactId is missing', async () => {
-      const { formData, submitIntegration } = useInvoicesForm()
-
-      formData.value.email = 'billing@example.com'
-      formData.value.selectedContactId = null
-
-      await submitIntegration()
-      await flushPromises()
-
-      expect(vi.mocked(getContactById)).not.toHaveBeenCalled()
-      expect(vi.mocked(InvoicesService.submitIntegration)).not.toHaveBeenCalled()
-    })
-
-    it('should not submit integration when requester email is missing', async () => {
-      userStoreMock.user = {} as any
-
-      const { formData, submitIntegration } = useInvoicesForm()
-
-      formData.value.email = 'billing@example.com'
-      formData.value.selectedContactId = 123
-
-      await submitIntegration()
-      await flushPromises()
-
-      expect(vi.mocked(getContactById)).not.toHaveBeenCalled()
-      expect(vi.mocked(InvoicesService.submitIntegration)).not.toHaveBeenCalled()
     })
 
     it('should not submit integration when contact is missing', async () => {
@@ -282,6 +240,20 @@ describe('useInvoicesForm', () => {
 
       expect(vi.mocked(getContactById)).toHaveBeenCalledWith(123)
       expect(vi.mocked(InvoicesService.submitIntegration)).not.toHaveBeenCalled()
+    })
+
+    it('should set integration error when submission fails', async () => {
+      vi.mocked(InvoicesService.submitIntegration).mockRejectedValueOnce(new Error('Boom'))
+
+      const { formData, submitIntegration, hasIntegrationError } = useInvoicesForm()
+
+      formData.value.email = 'billing@example.com'
+      formData.value.selectedContactId = 123
+
+      await submitIntegration()
+      await flushPromises()
+
+      expect(hasIntegrationError.value).toBe(true)
     })
   })
 

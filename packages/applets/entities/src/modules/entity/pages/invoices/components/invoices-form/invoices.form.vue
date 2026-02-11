@@ -37,6 +37,7 @@
           <InvoicesSecondStepForm
             v-else-if="currentStep === InvoicesFormStep.SELECT_CONTACT"
             v-model="formData"
+            :has-integration-error="hasIntegrationError"
             @back="goToPreviousStep"
             @submit="handleSubmit"
           />
@@ -65,6 +66,7 @@ const {
   currentStep,
   formData,
   shouldShowVaultBeingCreated,
+  hasIntegrationError,
   submitIntegration,
   goToNextStep,
   goToPreviousStep,
@@ -73,7 +75,9 @@ const {
 
 const handleSubmit = async () => {
   await submitIntegration()
-  goToVaultBeingCreated()
+  if (hasIntegrationError.value === false) {
+    goToVaultBeingCreated()
+  }
 }
 </script>
 

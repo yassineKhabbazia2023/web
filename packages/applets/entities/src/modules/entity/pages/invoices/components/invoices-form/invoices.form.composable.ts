@@ -5,7 +5,6 @@ import { INVOICES_STEPS_ORDER, TOTAL_STEPS, DIGITAL_SAFE_STATUS_TO_STEP } from '
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
-import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { InvoicesService } from '@entities/modules/entity/services/invoices.service'
 import { getContactById } from '@entities/services/contact'
 
@@ -45,7 +44,11 @@ export function useInvoicesForm() {
     selectedContactId: null,
   })
 
+  const hasIntegrationError = ref(false)
+
   const goToNextStep = () => {
+    hasIntegrationError.value = false
+
     const nextIndex = currentStepIndex.value + 1
     if (nextIndex < INVOICES_STEPS_ORDER.length) {
       currentStep.value = INVOICES_STEPS_ORDER[nextIndex]
@@ -53,6 +56,8 @@ export function useInvoicesForm() {
   }
 
   const goToPreviousStep = () => {
+    hasIntegrationError.value = false
+
     const prevIndex = currentStepIndex.value - 1
     if (prevIndex >= 0) {
       currentStep.value = INVOICES_STEPS_ORDER[prevIndex]
@@ -60,17 +65,7 @@ export function useInvoicesForm() {
   }
 
   const submitIntegration = async () => {
-    if (
-      isNotNullNorEmpty(currentEntityAccountNumber.value) === false ||
-      isNotNullNorEmpty(formData.value?.selectedContactId) === false
-    ) {
-      return
-    }
-
-    if (isNotNullNorEmpty(user.value?.email) === false) {
-      logger.error('Unmanaged case, requester email is not set')
-      return
-    }
+    hasIntegrationError.value = false
 
     const contact = await getContactById(formData.value.selectedContactId!)
     if (contact === undefined || contact === null) {
@@ -86,7 +81,12 @@ export function useInvoicesForm() {
       requesterEmail: user.value!.email,
     }
 
-    await InvoicesService.submitIntegration(currentEntityAccountNumber.value, payload)
+    try {
+      await InvoicesService.submitIntegration(currentEntityAccountNumber.value, payload)
+    } catch (error) {
+      logger.error('Unable to submit digital vault integration', error)
+      hasIntegrationError.value = true
+    }
   }
 
   const goToVaultBeingCreated = () => {
@@ -99,6 +99,7 @@ export function useInvoicesForm() {
     shouldShowVaultBeingCreated,
     currentStep,
     formData,
+    hasIntegrationError,
     submitIntegration,
     goToNextStep,
     goToPreviousStep,

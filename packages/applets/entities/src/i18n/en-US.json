@@ -57,7 +57,8 @@
         "subtitle": "Choose the contact who will be able to log in to your digital vault to find your invoices.",
         "contactLabel": "Contact to choose for digital vault access",
         "contactPlaceholder": "Select a contact",
-        "contactRequired": "Please select a contact"
+        "contactRequired": "Please select a contact",
+        "submitError": "An error occurred while validating. Please try again."
       },
       "spaceCreationStep": {
         "title": "Your digital vault is being created...",

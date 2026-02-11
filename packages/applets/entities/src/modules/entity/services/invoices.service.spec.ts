@@ -1,5 +1,4 @@
 import { API_PREFIXES } from '@pulse/common/constants'
-import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import type { BillingSubmissionInputRequest } from '@entities/modules/entity/types'
 import { DigitalSafeStatus } from '@entities/modules/entity/enums'
 import { getDigitalSafeCustomerMock } from '@entities/__mocks__/invoices.mocks'
@@ -16,8 +15,6 @@ vi.mock('@pulse/common', () => ({
     },
   }),
 }))
-
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 describe('InvoicesService', () => {
   describe('getAvailableCustomersForDigitalSafe', () => {
@@ -62,10 +59,9 @@ describe('InvoicesService', () => {
         `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/hubspot/submissions/currentuser`,
         payload,
       )
-      expect(loggerErrorSpy).not.toHaveBeenCalled()
     })
 
-    it('should log error when api call fails', async () => {
+    it('should throw when api call fails', async () => {
       const accountNumber = 'ACC-123'
       const payload: BillingSubmissionInputRequest = {
         dematerializationEmail: 'billing@example.com',
@@ -77,13 +73,12 @@ describe('InvoicesService', () => {
       const error = new Error('Boom')
       commonApiPostMock.mockRejectedValueOnce(error)
 
-      await InvoicesService.submitIntegration(accountNumber, payload)
+      await expect(InvoicesService.submitIntegration(accountNumber, payload)).rejects.toThrow('Boom')
 
       expect(commonApiPostMock).toHaveBeenCalledWith(
         `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/hubspot/submissions/currentuser`,
         payload,
       )
-      expect(loggerErrorSpy).toHaveBeenCalledWith('Unmanaged case', error)
     })
   })
 

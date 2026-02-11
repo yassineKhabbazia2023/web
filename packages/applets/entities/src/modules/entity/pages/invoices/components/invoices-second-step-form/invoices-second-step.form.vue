@@ -25,6 +25,13 @@
         pFilterable
       />
     </PFormItem>
+    <PAlert
+      v-if="hasIntegrationError === true"
+      class="margin-top--4"
+      pType="danger"
+    >
+      {{ t('entities.invoices.step2.submitError') }}
+    </PAlert>
 
     <div
       class="
@@ -52,12 +59,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, useTemplateRef } from 'vue'
+import { computed, ref, useTemplateRef, toRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { FormInstance } from 'element-plus'
 import {
   PButton,
   PDropdown,
+  PAlert,
   PForm,
   PFormItem,
 } from '@pulse/styleguide/components'
@@ -71,6 +79,13 @@ const emit = defineEmits<{
   back: []
   submit: [formData: InvoicesFullFormModel]
 }>()
+
+const props = withDefaults(defineProps<{
+  hasIntegrationError?: boolean
+}>(), {
+  hasIntegrationError: false,
+})
+const hasIntegrationError = toRef(props, 'hasIntegrationError')
 
 const formModel = defineModel<InvoicesFullFormModel>({ required: true })
 
