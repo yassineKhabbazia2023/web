@@ -209,7 +209,7 @@ export const figmaProxyTokens = {
   'icon': {
     'primary': pegaseColors.white,
     'secondary': pegaseColors['black-rock']['900'],
-    'neutral': pegaseColors.gray['300'],
+    'neutral': pegaseColors.gray['400'],
     'disabled': pegaseColors.white,
     'disabled-reverse': pegaseColors.gray['100'],
     'error': pegaseColors.red['800'],
