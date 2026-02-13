@@ -84,13 +84,10 @@ import type { FormRules, FormInstance } from 'element-plus'
 import {
   fetchUrlTerms,
   createNewPassword,
-  login,
 } from '@pulse/common'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { useUserStore } from '@pulse/common/stores'
-import { type UserInfo } from '@pulse/common/types'
 import { BackEndErrors } from '@pulse/common/constants'
-import { CurrentUserManager } from '@pulse/common/managers'
+import { LoginManager } from '@pulse/common/managers'
 import { RouteName } from '@pulse/common/enums'
 import {
   reactive,
@@ -128,8 +125,6 @@ const { contactId, accountNumber, token, email: emailQuery } = route.query as {
   token: string
   email: string
 }
-
-const userStore = useUserStore()
 
 const email = emailQuery?.toString().trim().replace(' ', '+')
 const formRef = ref<FormInstance>()
@@ -183,7 +178,7 @@ const rules = reactive<FormRules<typeof formValue>>({
 })
 
 const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) {
+  if (formEl === undefined || email === undefined || email.trim() === '') {
     return
   }
 
@@ -203,34 +198,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   try {
     isLoading.value = true
     await createNewPassword(data)
-    const loginPayload = {
-      email: email ?? '',
-      password: formValue.newPassword,
-    }
-
-    const {
-      userId: id,
-      webToken: token,
-    } = await login(loginPayload) as any // this is temporary, we need to fix the type when refact userStore
-
-    CurrentUserManager.persistToken(token)
+    await LoginManager.authenticateCustomer(email, formValue.newPassword)
     await updateTermsByCurrentUser(termsId.value as number)
     AmplitudeService.track('Onboarding Completed', {
       onboarding_result: 'succeeded',
     })
-    const user: UserInfo = {
-      id,
-      firstName: '',
-      lastName: '',
-      occupation: '',
-      email: '',
-      entities: {
-        default: undefined,
-      },
-      isCollab: false,
-      gigyaUserId: '',
-    }
-    userStore.setUser(user)
     router.push({ name: RouteName.LANDING })
   } catch (error: any) {
     AmplitudeService.track('Onboarding Completed', {

@@ -69,22 +69,16 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { logger } from '@pulse/toolbox'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { login } from '@pulse/common'
 import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/components'
-import { LoginManager, CurrentUserManager } from '@pulse/common/managers'
+import { LoginManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { BackEndErrors } from '@pulse/common/constants'
 import { RouteName } from '@pulse/common/enums'
 import { getEmailError, getPasswordError } from './LoginClient.utils'
-
-declare let window: {
-  gigya: any
-} & Window
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -170,36 +164,8 @@ async function onSubmit() {
   isLoading.value = true
 
   try {
-    // Authentication
-    const payload = {
-      email: email.value,
-      password: password.value,
-    }
-    const {
-      webToken: token,
-      userId,
-    } = await login(payload)
-    if (!token) {
-      throw new Error('No token received')
-    }
-
-    CurrentUserManager.persistToken(token)
-
-    // Set currentuser data
-    await LoginManager.initAuthClient()
-    LoginManager.setStoreGigyaUserId(userId)
-
-    // Activate Gigya SSO
-    if (VITE_GIGYA_SSO_ACTIVATED === 'true') {
-      try {
-        window.gigya.accounts.login({
-          loginID: email.value,
-          password: password.value,
-        })
-      } catch (error) {
-        logger.error('Error during Gigya SSO login: ', error)
-      }
-    }
+    // Authentication, user init and Gigya SSO
+    await LoginManager.authenticateCustomer(email.value, password.value)
 
     // Get currentuser terms
     const { isCurrent, terms } = await getTermsByCurrentUser()

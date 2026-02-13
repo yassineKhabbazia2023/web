@@ -3,19 +3,11 @@ import { CurrentUserManager } from '@pulse/common/managers'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { MsalService } from '@pulse/common/services/msal'
+import { login } from '@pulse/common'
+import { GigyaManager } from '../gigya/gigya.manager'
 
 export class LoginManager {
-  static setStoreGigyaUserId(gigyaUserId: string) {
-    const tokenStore = useTokenStore()
-    const token = tokenStore.getToken()
-
-    if (token) {
-      const userStore = useUserStore()
-      userStore.setGigyaUserId(gigyaUserId)
-    }
-  }
-
-  static async initAuthClient() {
+  private static async initAuthClient() {
     const tokenStore = useTokenStore()
     const token = tokenStore.getToken()
 
@@ -66,6 +58,19 @@ export class LoginManager {
     }
 
     return success
+  }
+
+  static async authenticateCustomer(email: string, password: string) {
+    const { webToken, userId } = await login({ email, password })
+
+    if (webToken === undefined || webToken === null || webToken.trim() === '') {
+      throw new Error('No token received')
+    }
+
+    CurrentUserManager.persistToken(webToken)
+    await this.initAuthClient()
+    GigyaManager.setStoreGigyaUserId(userId)
+    GigyaManager.loginSSO(email, password)
   }
 
   private static async fetchAndStoreCurrentUser(): Promise<void> {

@@ -4,6 +4,8 @@ import { getStoreMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { MsalService } from '@pulse/common/services/msal'
+import { login } from '@pulse/common'
+import { GigyaManager } from '../gigya/gigya.manager'
 
 import { LoginManager } from './login.manager'
 
@@ -28,6 +30,9 @@ vi.mock('@pulse/common/managers', () => ({
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
 }))
+
+vi.mock('../gigya/gigya.manager')
+vi.mock('@pulse/common')
 
 const userMock = getMockedUser()
 const tokenMock = 'mock-token'
@@ -85,41 +90,35 @@ describe('LoginManager', () => {
     })
   })
 
-  describe('initAuthClient', () => {
-    it('should init auth when user is client', async () => {
+  describe('authenticateCustomer', () => {
+    it('should login, persist token, fetch user, set gigya userId and login SSO', async () => {
       // Setup
+      vi.mocked(login).mockResolvedValue({ webToken: tokenMock, userId: 'gigya-user-id' })
       vi.spyOn(CurrentUserService, 'getCurrentUser').mockResolvedValue(userMock)
       tokenStoreMock.getToken.mockReturnValue(tokenMock)
       userStoreMock.getUserId.mockReturnValue(userMock.id)
 
       // Act
-      await LoginManager.initAuthClient()
+      await LoginManager.authenticateCustomer('test@email.com', 'password123')
 
       // Assert
-      expect(tokenStoreMock.getToken).toHaveBeenCalledOnce()
+      expect(vi.mocked(login)).toHaveBeenCalledWith({ email: 'test@email.com', password: 'password123' })
+      expect(CurrentUserManager.persistToken).toHaveBeenCalledWith(tokenMock)
       expect(userStoreMock.setUser).toHaveBeenCalledExactlyOnceWith(userMock)
-    })
-
-    it('should not update state if the token is not present', async () => {
-      // Setup
-      tokenStoreMock.getToken.mockReturnValue('')
-
-      // Act
-      await LoginManager.initAuthClient()
-
-      // Assert
-      expect(userStoreMock.setUser).not.toHaveBeenCalled()
+      expect(vi.mocked(GigyaManager.setStoreGigyaUserId)).toHaveBeenCalledWith('gigya-user-id')
+      expect(vi.mocked(GigyaManager.loginSSO)).toHaveBeenCalledWith('test@email.com', 'password123')
     })
 
     it('should track amplitude events when user has valid ID', async () => {
       // Setup
+      vi.mocked(login).mockResolvedValue({ webToken: tokenMock, userId: 'gigya-user-id' })
       vi.spyOn(CurrentUserService, 'getCurrentUser').mockResolvedValue(userMock)
       tokenStoreMock.getToken.mockReturnValue(tokenMock)
       userStoreMock.getUserId.mockReturnValue(userMock.id)
       userStoreMock.getUserEmail.mockReturnValue(userMock.email)
 
       // Act
-      await LoginManager.initAuthClient()
+      await LoginManager.authenticateCustomer('test@email.com', 'password123')
 
       // Assert
       expect(AmplitudeServiceMock.identifyCustomer).toHaveBeenCalledOnce()
@@ -130,31 +129,15 @@ describe('LoginManager', () => {
         sign_in_result: 'succeeded',
       })
     })
-  })
 
-  describe('setStoreGigyaUserId', () => {
-    it('should not set gigyaUserId given that the token is not available', () => {
+    it('should throw when no token is received', async () => {
       // Setup
-      tokenStoreMock.getToken.mockReturnValue('')
-      const mockGigyaUserId = 'gigya-user-id'
+      vi.mocked(login).mockResolvedValue({ webToken: '', userId: 'gigya-user-id' })
 
-      // Act
-      LoginManager.setStoreGigyaUserId(mockGigyaUserId)
-
-      // Assert
-      expect(userStoreMock.setGigyaUserId).not.toHaveBeenCalled()
-    })
-
-    it('should set gigyaUserId given that the token is available', () => {
-      // Setup
-      tokenStoreMock.getToken.mockReturnValue(tokenMock)
-      const mockGigyaUserId = 'gigya-user-id'
-
-      // Act
-      LoginManager.setStoreGigyaUserId(mockGigyaUserId)
-
-      // Assert
-      expect(userStoreMock.setGigyaUserId).toHaveBeenCalledExactlyOnceWith(mockGigyaUserId)
+      // Act & Assert
+      await expect(LoginManager.authenticateCustomer('test@email.com', 'password123'))
+        .rejects.toThrow('No token received')
     })
   })
+
 })

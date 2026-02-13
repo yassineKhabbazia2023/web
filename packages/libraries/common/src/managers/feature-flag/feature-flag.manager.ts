@@ -11,6 +11,10 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.MAIL_TO_GED)
   }
 
+  static isGigyaSsoActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.GIGYA_SSO)
+  }
+
   static isFeedCenterActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.FEED_CENTER)
   }
