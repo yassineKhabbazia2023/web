@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url'
-import { mergeConfig, UserConfig } from 'vite'
+import { mergeConfig } from 'vite'
+import type { ConfigEnv, UserConfig } from 'vite'
 import { defineConfig } from 'vitest/config'
 
 /**
@@ -19,7 +20,7 @@ import { defineConfig } from 'vitest/config'
  * ```
  */
 export function createVitestConfig(
-  viteConfigFunction: (configEnv: any) => UserConfig,
+  viteConfigFunction: (configEnv: ConfigEnv) => UserConfig,
   rootDir: string,
 ) {
   return defineConfig((configEnv) =>
@@ -27,9 +28,6 @@ export function createVitestConfig(
       viteConfigFunction(configEnv) as UserConfig,
       defineConfig({
         test: {
-          clearMocks: true,
-          environment: 'jsdom',
-          globals: true,
           root: fileURLToPath(new URL('./', rootDir)),
         },
       }),

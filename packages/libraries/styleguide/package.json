@@ -29,6 +29,7 @@
     "serve:assets": "tsx ./scripts/assets"
   },
   "dependencies": {
-    "@pulse/toolbox": "1.0.0"
+    "@pulse/toolbox": "1.0.0",
+    "element-plus": "2.4.3"
   }
 }

@@ -5,30 +5,6 @@
     "./src/**/*",
     "tests/**/*",
     "__mocks__",
-    "./vitest.setup.ts",
     "src/**/*.json"
-  ],
-  "compilerOptions": {
-    "baseUrl": ".",
-    "declarationDir": "./dist/types",
-    "outDir": "./dist/types",
-    "paths": {
-      "@common/*": [
-        "../../libraries/common/src/*"
-      ],
-      "@styleguide/*": [
-        "../../libraries/styleguide/src/*"
-      ],
-      "@pennylane/*": [
-        "src/*"
-      ]
-    },
-    "types": [
-      "@pinia/testing",
-      "vitest/globals",
-      "vitest/importMeta",
-      "vite/client",
-      "node"
-    ]
-  }
+  ]
 }

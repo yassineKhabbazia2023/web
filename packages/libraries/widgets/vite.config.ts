@@ -1,57 +1,11 @@
-import { defineConfig, mergeConfig } from 'vite'
-import path from 'path'
-import vue from '@vitejs/plugin-vue'
-import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
-import terser from '@rollup/plugin-terser'
-import { viteConfigBase } from '../../@config/vite.config.base.ts'
-import { name } from './package.json'
+import type { ConfigEnv } from 'vite'
+import { createLibraryConfig } from '../../@config/vite.config.library.ts'
 
-const APP_NAME = name.split('/')[1]
-
-export default ({ mode }: any) =>
-  defineConfig(
-    mergeConfig(viteConfigBase({ mode }), {
-      plugins: [
-        vue(),
-        VueI18nPlugin({}),
-      ],
-      build: {
-        lib: {
-          entry: path.resolve(__dirname, 'src/main.ts'),
-          formats: ['es'],
-          fileName: () => `${APP_NAME}.js`,
-        },
-        rollupOptions: {
-          input: 'src/main.ts',
-          preserveEntrySignatures: 'strict',
-          output: {
-            format: 'system',
-          },
-          plugins: [terser()],
-        },
-      },
-      test: {
-        setupFiles: 'vitest.setup.ts',
-        alias: [
-          {
-            find: /^element-plus$/,
-            replacement: path.resolve(
-              __dirname,
-              '../../../',
-              'node_modules',
-              'element-plus/dist/index.full.mjs',
-            ),
-          },
-        ],
-        deps: {
-          optimizer: {
-            web: {
-              enabled: true,
-              include: ['element-plus'],
-              exclude: ['@pulse/styleguide'],
-            },
-          },
-        },
-      },
-    }),
-  )
+export default ({ mode }: ConfigEnv) =>
+  createLibraryConfig({
+    mode,
+    packageName: '@pulse/widgets',
+    rootDir: import.meta.url,
+    setupFiles: ['vitest.setup.ts'],
+    minify: true,
+  })

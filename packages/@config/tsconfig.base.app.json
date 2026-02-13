@@ -1,7 +1,6 @@
 {
-  "extends": "./tsconfig.base",
+  "extends": ["./tsconfig.base", "./tsconfig.paths"],
   "compilerOptions": {
-    "baseUrl": ".",
     "types": [
       "@pinia/testing",
       "vitest/globals",
@@ -10,112 +9,6 @@
       "node"
     ],
     "declarationDir": "./dist/types",
-    "outDir": "./dist/types",
-    "paths": {
-      "@collaborator/*": [
-        "../apps/collaborator/src/*"
-      ],
-      "@customer/*": [
-        "../apps/customer/src/*"
-      ],
-      "@common/*": [
-        "../libraries/common/src/*"
-      ],
-      "@toolbox/*": [
-        "../libraries/toolbox/src/*"
-      ],
-      "@booking/*": [
-        "../applets/booking/src/*"
-      ],
-      "@entities/*": [
-        "../applets/entities/src/*"
-      ],
-      "@feed-center/*": [
-        "../applets/feed-center/src/*"
-      ],
-      "@ged/*": [
-        "../applets/ged/src/*"
-      ],
-      "@homepage/*": [
-        "../applets/homepage/src/*"
-      ],
-      "@launcher/*": [
-        "../applets/launcher/src/*"
-      ],
-      "@login/*": [
-        "../applets/login/src/*"
-      ],
-      "@mandate/*": [
-        "../applets/mandate/src/*"
-      ],
-      "@offers-catalog/*": [
-        "../applets/offers-catalog/src/*"
-      ],
-      "@pennylane/*": [
-        "../applets/pennylane/src/*"
-      ],
-      "@powerbi/*": [
-        "../applets/powerbi/src/*"
-      ],
-      "@shared/*": [
-        "../libraries/shared/src/*"
-      ],
-      "@styleguide/*": [
-        "../libraries/styleguide/src/*"
-      ],
-      "@widgets/*": [
-        "../libraries/widgets/src/*"
-      ]
-    }
-  },
-  "references": [
-    {
-      "path": "./packages/applets/booking"
-    },
-    {
-      "path": "./packages/applets/entities"
-    },
-    {
-      "path": "./packages/applets/feed-center"
-    },
-    {
-      "path": "./packages/applets/ged"
-    },
-    {
-      "path": "./packages/applets/homepage"
-    },
-    {
-      "path": "./packages/applets/launcher"
-    },
-    {
-      "path": "./packages/applets/login"
-    },
-    {
-      "path": "./packages/applets/mandate"
-    },
-    {
-      "path": "./packages/applets/offers-catalog"
-    },
-    {
-      "path": "./packages/applets/pennylane"
-    },
-    {
-      "path": "./packages/applets/powerbi"
-    },
-    {
-      "path": "./packages/libraries/common"
-    },
-    {
-      "path": "./packages/libraries/shared"
-    },
-    {
-      "path": "./packages/libraries/toolbox"
-    },
-    {
-      "path": "./packages/libraries/styleguide"
-    },
-    {
-      "path": "./packages/libraries/widgets"
-    }
-  ],
+    "outDir": "./dist/types"
+  }
 }

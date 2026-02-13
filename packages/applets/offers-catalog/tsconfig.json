@@ -5,9 +5,7 @@
     "./src/**/*",
     "tests/**/*",
     "__mocks__",
-    "./vitest.setup.ts",
     "src/**/*.json",
     "./package.json"
-  ],
-  "compilerOptions": {}
+  ]
 }

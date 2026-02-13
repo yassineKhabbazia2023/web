@@ -3,11 +3,9 @@
   "include": [
     "env.d.ts",
     "./src/**/*",
-    "tests/**/*",
+    "./tests/**/*",
     "__mocks__",
-    "./vitest.setup.ts",
-    "src/**/*.json",
+    "./src/**/*.json",
     "./package.json"
-  ],
-  "compilerOptions": {}
+  ]
 }

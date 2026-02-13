@@ -2,11 +2,10 @@
   "extends": "../../@config/tsconfig.base.app",
   "include": [
     "env.d.ts",
-    "src/**/*",
-    "tests/**/*",
+    "./src/**/*",
+    "./tests/**/*",
     "__mocks__",
-    "src/**/*.json",
-    "./package.json",
-  ],
-  "compilerOptions": {},
+    "./src/**/*.json",
+    "./package.json"
+  ]
 }

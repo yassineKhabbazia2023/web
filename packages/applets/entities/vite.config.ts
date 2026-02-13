@@ -1,10 +1,11 @@
+import type { ConfigEnv } from 'vite'
 import { createAppletConfig } from '../../@config/vite.config.applet.ts'
 import { name } from './package.json'
 
-export default ({ mode }: any) =>
+export default ({ mode }: ConfigEnv) =>
   createAppletConfig({
     mode,
     packageName: name,
-    aliasName: 'entities',
     rootDir: import.meta.url,
+    pages: ['entity-pages.index.ts', 'wallet-pages.index.ts'],
   })

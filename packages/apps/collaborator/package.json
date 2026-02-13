@@ -19,16 +19,19 @@
   "dependencies": {
     "@pulse/booking": "1.0.0",
     "@pulse/common": "1.0.0",
-    "@pulse/toolbox": "1.0.0",
     "@pulse/entities": "1.0.0",
+    "@pulse/feed-center": "1.0.0",
     "@pulse/ged": "1.0.0",
+    "@pulse/homepage": "1.0.0",
     "@pulse/launcher": "1.0.0",
     "@pulse/login": "1.0.0",
     "@pulse/mandate": "1.0.0",
     "@pulse/offers-catalog": "1.0.0",
     "@pulse/pennylane": "1.0.0",
     "@pulse/powerbi": "1.0.0",
+    "@pulse/shared": "1.0.0",
     "@pulse/styleguide": "3.1.0",
-    "@pulse/shared": "1.0.0"
+    "@pulse/toolbox": "1.0.0",
+    "@pulse/widgets": "1.0.0"
   }
 }

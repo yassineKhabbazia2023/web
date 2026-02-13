@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "baseUrl": "..",
+    "paths": {
+      "@backoffice/*": ["apps/backoffice/src/*"],
+      "@collaborator/*": ["apps/collaborator/src/*"],
+      "@customer/*": ["apps/customer/src/*"],
+      "@booking/*": ["applets/booking/src/*"],
+      "@entities/*": ["applets/entities/src/*"],
+      "@feed-center/*": ["applets/feed-center/src/*"],
+      "@ged/*": ["applets/ged/src/*"],
+      "@homepage/*": ["applets/homepage/src/*"],
+      "@launcher/*": ["applets/launcher/src/*"],
+      "@login/*": ["applets/login/src/*"],
+      "@mandate/*": ["applets/mandate/src/*"],
+      "@offers-catalog/*": ["applets/offers-catalog/src/*"],
+      "@pennylane/*": ["applets/pennylane/src/*"],
+      "@powerbi/*": ["applets/powerbi/src/*"],
+      "@common/*": ["libraries/common/src/*"],
+      "@shared/*": ["libraries/shared/src/*"],
+      "@styleguide/*": ["libraries/styleguide/src/*"],
+      "@toolbox/*": ["libraries/toolbox/src/*"],
+      "@widgets/*": ["libraries/widgets/src/*"]
+    }
+  },
+  "references": [
+    { "path": "../apps/backoffice" },
+    { "path": "../apps/collaborator" },
+    { "path": "../apps/customer" },
+    { "path": "../applets/booking" },
+    { "path": "../applets/entities" },
+    { "path": "../applets/feed-center" },
+    { "path": "../applets/ged" },
+    { "path": "../applets/homepage" },
+    { "path": "../applets/launcher" },
+    { "path": "../applets/login" },
+    { "path": "../applets/mandate" },
+    { "path": "../applets/offers-catalog" },
+    { "path": "../applets/pennylane" },
+    { "path": "../applets/powerbi" },
+    { "path": "../libraries/common" },
+    { "path": "../libraries/shared" },
+    { "path": "../libraries/styleguide" },
+    { "path": "../libraries/toolbox" },
+    { "path": "../libraries/widgets" }
+  ]
+}
