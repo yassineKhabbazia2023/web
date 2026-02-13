@@ -1,8 +1,9 @@
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { BillingSubmissionInputRequest, InvoicesFullFormModel } from '@entities/modules/entity/types'
-import { InvoicesFormStep, DigitalSafeStatus } from '@entities/modules/entity/enums'
-import { INVOICES_STEPS_ORDER, TOTAL_STEPS, DIGITAL_SAFE_STATUS_TO_STEP } from '../../invoices.constants'
-import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
+import { InvoicesFormStep } from '@entities/modules/entity/enums'
+import { InvoicesTabState } from '@pulse/common/services/invoices-access'
+import { INVOICES_STEPS_ORDER, TOTAL_STEPS, TAB_STATE_TO_STEP } from '../../invoices.constants'
+import { useUserStore, useCurrentEntityStore, useInvoicesAccessStore } from '@pulse/common/stores'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
 import { InvoicesService } from '@entities/modules/entity/services/invoices.service'
@@ -15,27 +16,32 @@ export function useInvoicesForm() {
   const { user } = storeToRefs(userStore)
   const { currentEntityAccountNumber } = storeToRefs(currentEntityStore)
 
-  const userDigitalSafeSubscriptionStatus = ref<DigitalSafeStatus>(DigitalSafeStatus.NOT_SUBSCRIBED)
-  onMounted(async () => {
-    try {
-      const status = await InvoicesService.getSubscriptionStatus(currentEntityAccountNumber.value)
-      userDigitalSafeSubscriptionStatus.value = status
+  const invoicesAccessStore = useInvoicesAccessStore()
+  const { tabState, contactWithAccess } = storeToRefs(invoicesAccessStore)
 
-      const mappedStep = DIGITAL_SAFE_STATUS_TO_STEP[status]
-      if (mappedStep !== null) {
-        currentStep.value = mappedStep
-      }
-    } catch (error) {
-      logger.error('can\'t get digital safe subscription status', error)
+  const isAllowedToAccessVault = computed(() => tabState.value === InvoicesTabState.CONNECTION_READY_UNLOCKED)
+
+  watch(tabState, (state) => {
+    if (state !== null) {
+      currentStep.value = TAB_STATE_TO_STEP[state]
     }
-  })
+  }, { immediate: true })
+
   const currentStepIndex = computed(() =>
     INVOICES_STEPS_ORDER.indexOf(currentStep.value),
   )
 
+  // currentStep is the single source of truth: set by the watch (from tabState via TAB_STATE_TO_STEP) or by local navigation
   const shouldShowVaultBeingCreated = computed(() =>
-    currentStep.value === InvoicesFormStep.VAULT_BEING_CREATED ||
-    userDigitalSafeSubscriptionStatus.value === DigitalSafeStatus.SUBMITTED,
+    currentStep.value === InvoicesFormStep.VAULT_BEING_CREATED,
+  )
+
+  const shouldHideFormHeader = computed(() =>
+    shouldShowVaultBeingCreated.value || currentStep.value === InvoicesFormStep.ACCESS_VAULT,
+  )
+
+  const shouldShowVaultAccessDenied = computed(() =>
+    isAllowedToAccessVault.value === false && currentStep.value === InvoicesFormStep.ACCESS_VAULT,
   )
 
   const formData = ref<InvoicesFullFormModel>({
@@ -95,8 +101,12 @@ export function useInvoicesForm() {
 
   return {
     TOTAL_STEPS,
-    userDigitalSafeSubscriptionStatus,
+    tabState,
+    isAllowedToAccessVault,
+    contactWithAccess,
     shouldShowVaultBeingCreated,
+    shouldHideFormHeader,
+    shouldShowVaultAccessDenied,
     currentStep,
     formData,
     hasIntegrationError,

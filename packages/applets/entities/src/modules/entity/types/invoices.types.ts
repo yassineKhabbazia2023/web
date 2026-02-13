@@ -36,4 +36,3 @@ export interface BillingSubmissionInputRequest {
   vaultEmail: string
   requesterEmail: UserInfo['email']
 }
-

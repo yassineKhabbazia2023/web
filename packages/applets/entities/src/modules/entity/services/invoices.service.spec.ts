@@ -1,6 +1,5 @@
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { BillingSubmissionInputRequest } from '@entities/modules/entity/types'
-import { DigitalSafeStatus } from '@entities/modules/entity/enums'
 import { getDigitalSafeCustomerMock } from '@entities/__mocks__/invoices.mocks'
 import { InvoicesService } from './invoices.service'
 
@@ -79,38 +78,6 @@ describe('InvoicesService', () => {
         `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/hubspot/submissions/currentuser`,
         payload,
       )
-    })
-  })
-
-  describe('getSubscriptionStatus', () => {
-    it('should return the subscription status from the API', async () => {
-      const accountNumber = 'ACC-789'
-      commonApiGetMock.mockResolvedValueOnce({ data: DigitalSafeStatus.SUBMITTED })
-
-      const result = await InvoicesService.getSubscriptionStatus(accountNumber)
-
-      expect(commonApiGetMock).toHaveBeenCalledWith(
-        `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/hubspot/submissions/currentuser`,
-      )
-      expect(result).toBe(DigitalSafeStatus.SUBMITTED)
-    })
-
-    it('should return NOT_SUBSCRIBED status', async () => {
-      const accountNumber = 'ACC-456'
-      commonApiGetMock.mockResolvedValueOnce({ data: DigitalSafeStatus.NOT_SUBSCRIBED })
-
-      const result = await InvoicesService.getSubscriptionStatus(accountNumber)
-
-      expect(result).toBe(DigitalSafeStatus.NOT_SUBSCRIBED)
-    })
-
-    it('should return COMPLETED status', async () => {
-      const accountNumber = 'ACC-999'
-      commonApiGetMock.mockResolvedValueOnce({ data: DigitalSafeStatus.COMPLETED })
-
-      const result = await InvoicesService.getSubscriptionStatus(accountNumber)
-
-      expect(result).toBe(DigitalSafeStatus.COMPLETED)
     })
   })
 })

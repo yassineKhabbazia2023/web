@@ -64,6 +64,14 @@
         "title": "Votre espace est en cours de création...",
         "estimated-time": "La durée d'activation de votre espace est estimée à : 3 jours"
       },
+      "accessVault": {
+        "title": "Bienvenue sur {highlight}",
+        "titleHighlight": "votre coffre-fort sécurisé",
+        "description": "Accès à vos factures RYDGE Conseil sous format dématérialisé.",
+        "loginButton": "Se connecter",
+        "notAllowedAccess": "Vous n'êtes pas désigné pour accéder au coffre-fort des factures dématérialisées. L'accès est réservé exclusivement à l'utilisateur associé à l'adresse : {email}.",
+        "notAllowedReason": "Pour des raisons de sécurité, un seul utilisateur peut être habilité à se connecter au coffre-fort."
+      },
       "formSubtitle": "Veuillez renseigner la boite mail sur laquelle recevoir vos factures dématérialisées.",
       "emailLabel": "Adresse e-mail pour recevoir vos factures",
       "emailPlaceholder": "Saisissez une adresse e-mail",

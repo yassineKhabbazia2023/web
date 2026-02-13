@@ -32,7 +32,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
+import { useUserStore, useCurrentEntityStore, useInvoicesAccessStore } from '@pulse/common/stores'
 import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
 import { getTabAuthorisations, getTabs } from './entity-helper'
 import type { TabName, Tab } from './types'
@@ -52,6 +52,9 @@ const activeTab = computed(() => route.name as string)
 const { currentEntity } = storeToRefs(currentEntityStore)
 const { isCollab } = storeToRefs(userStore)
 
+const invoicesAccessStore = useInvoicesAccessStore()
+const { isTabVisible } = storeToRefs(invoicesAccessStore)
+
 // Computed
 const tabTitles: Record<TabName, string> = {
   offers: t('offers'),
@@ -63,7 +66,10 @@ const tabTitles: Record<TabName, string> = {
   delegationsHistory: t('delegationsHistory'),
 }
 const tabAuthorisations = computed(() =>
-  getTabAuthorisations(isCollab.value ?? false, currentEntity.value?.isSignatory === true),
+  getTabAuthorisations(
+    isCollab.value ?? false,
+    isTabVisible.value,
+  ),
 )
 
 const tabsList = computed<Tab[]>(() => getTabs(tabAuthorisations.value, tabTitles))

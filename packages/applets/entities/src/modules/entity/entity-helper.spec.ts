@@ -15,7 +15,7 @@ describe('test entity-helper', () => {
       isCollab: true,
       hasPermission: true,
       featureFlagEnabled: true,
-      isSignatory: false,
+      isInvoicesTabVisible: true,
       expectedAuthorisations: {
         collab: true,
         delegationsHistory: true,
@@ -29,7 +29,7 @@ describe('test entity-helper', () => {
       isCollab: false,
       hasPermission: true,
       featureFlagEnabled: true,
-      isSignatory: true,
+      isInvoicesTabVisible: true,
       expectedAuthorisations: {
         collab: false,
         delegationsHistory: false,
@@ -43,7 +43,7 @@ describe('test entity-helper', () => {
       isCollab: true,
       hasPermission: false,
       featureFlagEnabled: true,
-      isSignatory: false,
+      isInvoicesTabVisible: true,
       expectedAuthorisations: {
         collab: false,
         delegationsHistory: false,
@@ -57,14 +57,14 @@ describe('test entity-helper', () => {
       isCollab: false,
       hasPermission: false,
       featureFlagEnabled: true,
-      isSignatory: true,
+      isInvoicesTabVisible: false,
       expectedAuthorisations: {
         collab: false,
         delegationsHistory: false,
         history: false,
         info: false,
         offers: false,
-        invoices: true,
+        invoices: false,
         users: false,
       },
     }]
@@ -74,12 +74,12 @@ describe('test entity-helper', () => {
         isCollab,
         hasPermission,
         featureFlagEnabled,
-        isSignatory,
+        isInvoicesTabVisible,
         expectedAuthorisations,
       }) => {
         hasPermissionMock.mockReturnValue(hasPermission)
         isFeatureActivatedMock.mockReturnValue(featureFlagEnabled)
-        const tabAuthorisations = getTabAuthorisations(isCollab, isSignatory)
+        const tabAuthorisations = getTabAuthorisations(isCollab, isInvoicesTabVisible)
 
         expect(tabAuthorisations).toStrictEqual(expectedAuthorisations)
       })
@@ -94,48 +94,48 @@ describe('test entity-helper', () => {
 
     it.each([
       {
-        description: 'returns true for collab when feature flag is enabled',
+        description: 'returns true when tab is visible and feature flag is enabled',
         isCollab: true,
         hasPermission: true,
         featureFlagEnabled: true,
-        isSignatory: false,
+        isInvoicesTabVisible: true,
         expected: true,
       },
       {
-        description: 'returns true for customer signatory when feature flag is enabled',
-        isCollab: false,
+        description: 'returns false when tab is not visible even with feature flag enabled',
+        isCollab: true,
         hasPermission: true,
         featureFlagEnabled: true,
-        isSignatory: true,
-        expected: true,
-      },
-      {
-        description: 'returns false for customer without signatory status',
-        isCollab: false,
-        hasPermission: true,
-        featureFlagEnabled: true,
-        isSignatory: false,
+        isInvoicesTabVisible: false,
         expected: false,
       },
       {
-        description: 'returns false when feature flag is disabled',
+        description: 'returns false when feature flag is disabled even with tab visible',
         isCollab: true,
         hasPermission: true,
         featureFlagEnabled: false,
-        isSignatory: false,
+        isInvoicesTabVisible: true,
+        expected: false,
+      },
+      {
+        description: 'returns false when both feature flag disabled and tab not visible',
+        isCollab: false,
+        hasPermission: true,
+        featureFlagEnabled: false,
+        isInvoicesTabVisible: false,
         expected: false,
       },
     ])('$description', ({
       isCollab,
       hasPermission,
       featureFlagEnabled,
-      isSignatory,
+      isInvoicesTabVisible,
       expected,
     }) => {
       hasPermissionMock.mockReturnValue(hasPermission)
       isFeatureActivatedMock.mockReturnValue(featureFlagEnabled)
 
-      const result = getTabAuthorisations(isCollab, isSignatory).invoices
+      const result = getTabAuthorisations(isCollab, isInvoicesTabVisible).invoices
 
       expect(result).toBe(expected)
     })

@@ -14,7 +14,15 @@ vi.mock('vue-router', () => ({
 }))
 
 vi.mock('@pulse/common/services/amplitude')
-vi.mock('@pulse/common/managers')
+vi.mock('@pulse/common/managers', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@pulse/common/managers')>()
+  return {
+    ...actual,
+    CurrentUserManager: {
+      logout: vi.fn(),
+    },
+  }
+})
 
 describe('useLogout', () => {
   it('should call CurrentUserManager.logout on handleLogout', async () => {

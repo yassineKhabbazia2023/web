@@ -23,7 +23,20 @@ vi.mock('@pulse/common/services/current-user')
 vi.mock('@pulse/common/services/permissions')
 vi.mock('@customer/services/entities/entity.service')
 vi.mock('@pulse/common/services/entities')
-vi.mock('@pulse/common/managers')
+vi.mock('@pulse/common/managers', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@pulse/common/managers')>()
+  return {
+    ...actual,
+    CurrentEntityManager: {
+      initializeCurrentEntity: vi.fn(),
+      getLocalStorageEntityId: vi.fn(),
+      setLocalStorageEntityId: vi.fn(),
+      clearLocalStorageEntityId: vi.fn(),
+      clearCurrentEntity: vi.fn(),
+      fetchInvoicesAccess: vi.fn(),
+    },
+  }
+})
 vi.mock('@pulse/common/services/cgu')
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/amplitude', () => ({

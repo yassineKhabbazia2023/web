@@ -3,7 +3,7 @@
     <div class="invoices-form__card">
       <div class="invoices-form__content padding--8">
         <div
-          v-if="shouldShowVaultBeingCreated === false"
+          v-if="shouldHideFormHeader === false"
           class="
             flex
             flex--justify-content-space-between
@@ -45,9 +45,24 @@
           <InvoicesVaultBeingCreatedStep
             v-else-if="shouldShowVaultBeingCreated"
           />
+
+          <AccessVault
+            v-else-if="currentStep === InvoicesFormStep.ACCESS_VAULT"
+            :is-allowed-to-access-vault="isAllowedToAccessVault"
+          />
         </Transition>
       </div>
     </div>
+
+    <PAlert
+      v-if="shouldShowVaultAccessDenied"
+      pType="warning"
+      class="margin-top--4"
+    >
+      {{ t('entities.invoices.accessVault.notAllowedAccess', { email: contactWithAccess }) }}
+      <br>
+      {{ t('entities.invoices.accessVault.notAllowedReason') }}
+    </PAlert>
   </div>
 </template>
 
@@ -56,6 +71,8 @@ import { useI18n } from 'vue-i18n'
 import InvoicesFirstStepForm from '../invoices-first-step-form/invoices-first-step.form.vue'
 import InvoicesSecondStepForm from '../invoices-second-step-form/invoices-second-step.form.vue'
 import InvoicesVaultBeingCreatedStep from '../invoices-vault-being-created-step/invoices-vault-being-created-step.vue'
+import AccessVault from '../access-vault/access-vault.vue'
+import { PAlert } from '@pulse/styleguide/components'
 import { TOTAL_STEPS } from '../../invoices.constants'
 import { InvoicesFormStep } from '@entities/modules/entity/enums'
 import { useInvoicesForm } from './invoices.form.composable'
@@ -65,12 +82,16 @@ const { t } = useI18n()
 const {
   currentStep,
   formData,
+  isAllowedToAccessVault,
+  contactWithAccess,
   shouldShowVaultBeingCreated,
-  hasIntegrationError,
+  shouldHideFormHeader,
+  shouldShowVaultAccessDenied,
   submitIntegration,
   goToNextStep,
   goToPreviousStep,
   goToVaultBeingCreated,
+  hasIntegrationError,
 } = useInvoicesForm()
 
 const handleSubmit = async () => {
@@ -85,14 +106,15 @@ const handleSubmit = async () => {
 @use '@pulse/styleguide/scss/breakpoints' as breakpoints;
 
 .invoices-form {
-  flex: 0 0 40%;
+  flex: 0 0 37%;
   background-color: var(--p-jungle-600);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
   @include breakpoints.media(md2) {
-    flex: 0 0 45%;
+    flex: 0 0 42%;
   }
 
   &__card {

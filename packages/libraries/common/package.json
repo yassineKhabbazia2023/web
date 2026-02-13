@@ -17,6 +17,7 @@
     "./services/permissions": "./src/services/permissions/index.ts",
     "./services/entities": "./src/services/entities/index.ts",
     "./services/msal": "./src/services/msal/index.ts",
+    "./services/invoices-access": "./src/services/invoices-access/index.ts",
     "./services/pennylane": "./src/services/pennylane/index.ts",
     "./services/storage": "./src/services/storage/index.ts",
     "./services/html": "./src/services/html/index.ts",

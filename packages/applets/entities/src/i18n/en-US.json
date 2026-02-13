@@ -64,6 +64,14 @@
         "title": "Your digital vault is being created...",
         "estimated-time": "The estimated time to activate your digital vault is: 3 days"
       },
+      "accessVault": {
+        "title": "Welcome to {highlight}",
+        "titleHighlight": "your secure digital vault",
+        "description": "Access to your RYDGE Conseil invoices in dematerialized format.",
+        "loginButton": "Log in",
+        "notAllowedAccess": "You are not authorized to access the dematerialized invoices vault. Access is exclusively reserved for the user associated with the address: {email}.",
+        "notAllowedReason": "For security reasons, only one user can be authorized to log in to the vault."
+      },
       "formSubtitle": "Please enter the email address where you want to receive your dematerialized invoices.",
       "emailLabel": "Email address to receive your invoices",
       "emailPlaceholder": "Enter an email address",

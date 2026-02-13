@@ -5,21 +5,17 @@ import type { TabName, Tab } from './types'
 
 const TAB_NAMES: TabName[] = ['users', 'collab', 'offers', 'invoices', 'info', 'history', 'delegationsHistory']
 
-const canAccessInvoices = (isCollab: boolean, isSignatory: boolean): boolean => {
+const canAccessInvoices = (isInvoicesTabVisible: boolean): boolean => {
   const isFeatureActive = FeatureFlagManager.isFeatureActivated(Feature.RYDGE_INVOICES)
   if (isFeatureActive === false) {
     return false
   }
 
-  if (isCollab === true) {
-    return true
-  }
-
-  return isSignatory
+  return isInvoicesTabVisible
 }
 
-export function getTabAuthorisations(isCollab: boolean, isSignatory: boolean): Record<TabName, boolean> {
-  const hasInvoicesAccess = canAccessInvoices(isCollab, isSignatory)
+export function getTabAuthorisations(isCollab: boolean, isInvoicesTabVisible: boolean): Record<TabName, boolean> {
+  const hasInvoicesAccess = canAccessInvoices(isInvoicesTabVisible)
 
   return {
     offers: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.OFFER),

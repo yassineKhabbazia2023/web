@@ -1,14 +1,30 @@
+import { ref } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
-import { withSetup } from '@pulse/toolbox/utils/test'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { InvoicesService } from '@entities/modules/entity/services/invoices.service'
 import { getContactById } from '@entities/services/contact'
-import { DigitalSafeStatus, InvoicesFormStep } from '@entities/modules/entity/enums'
+import { InvoicesFormStep } from '@entities/modules/entity/enums'
+import { InvoicesTabState } from '@pulse/common/services/invoices-access'
 import { useInvoicesForm } from './invoices.form.composable'
 
 vi.mock('@entities/modules/entity/services/invoices.service')
 vi.mock('@entities/services/contact')
+
+const mockTabState = ref<InvoicesTabState | null>(null)
+const mockContactWithAccess = ref<string | null>(null)
+
+// Manual mock needed: useInvoicesAccessStore returns reactive refs that must be controlled from tests (getStoreMock does not support refs)
+vi.mock('@pulse/common/stores', async (importOriginal) => {
+  const original = await importOriginal<typeof import('@pulse/common/stores')>()
+  return {
+    ...original,
+    useInvoicesAccessStore: () => ({
+      tabState: mockTabState,
+      contactWithAccess: mockContactWithAccess,
+    }),
+  }
+})
 
 const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
@@ -18,6 +34,8 @@ describe('useInvoicesForm', () => {
     vi.clearAllMocks()
     userStoreMock.user = { email: 'requester@example.com' } as any
     currentEntityStoreMock.currentEntity = { accountNumber: 'ACC-123' } as any
+    mockTabState.value = null
+    mockContactWithAccess.value = null
     vi.mocked(InvoicesService.submitIntegration).mockResolvedValue()
     vi.mocked(getContactById).mockResolvedValue({
       id: 123,
@@ -123,43 +141,50 @@ describe('useInvoicesForm', () => {
     })
   })
 
-  describe('onMounted status to step mapping', () => {
-    it('should set currentStep to VAULT_BEING_CREATED when status is SUBMITTED', async () => {
-      vi.mocked(InvoicesService.getSubscriptionStatus).mockResolvedValueOnce(DigitalSafeStatus.SUBMITTED)
+  describe('status to step mapping via store', () => {
+    it('should set currentStep to EMAIL_AND_TERMS when tabState is form-start', () => {
+      mockTabState.value = InvoicesTabState.FORM_START
 
-      const [result, app] = withSetup(() => useInvoicesForm())
-      await flushPromises()
+      const { currentStep } = useInvoicesForm()
 
-      expect(result.currentStep.value).toBe(InvoicesFormStep.VAULT_BEING_CREATED)
-
-      app.unmount()
+      expect(currentStep.value).toBe(InvoicesFormStep.EMAIL_AND_TERMS)
     })
 
-    it('should set currentStep to VAULT_BEING_CREATED when status is COMPLETED', async () => {
-      vi.mocked(InvoicesService.getSubscriptionStatus).mockResolvedValueOnce(DigitalSafeStatus.COMPLETED)
+    it('should set currentStep to VAULT_BEING_CREATED when tabState is form-submitted', () => {
+      mockTabState.value = InvoicesTabState.FORM_SUBMITTED
 
-      const [result, app] = withSetup(() => useInvoicesForm())
-      await flushPromises()
+      const { currentStep } = useInvoicesForm()
 
-      expect(result.currentStep.value).toBe(InvoicesFormStep.VAULT_BEING_CREATED)
-
-      app.unmount()
+      expect(currentStep.value).toBe(InvoicesFormStep.VAULT_BEING_CREATED)
     })
 
-    it('should keep currentStep at EMAIL_AND_TERMS when status is NOT_SUBSCRIBED', async () => {
-      vi.mocked(InvoicesService.getSubscriptionStatus).mockResolvedValueOnce(DigitalSafeStatus.NOT_SUBSCRIBED)
+    it('should set currentStep to ACCESS_VAULT when tabState is connection-ready-locked', () => {
+      mockTabState.value = InvoicesTabState.CONNECTION_READY_LOCKED
 
-      const [result, app] = withSetup(() => useInvoicesForm())
-      await flushPromises()
+      const { currentStep } = useInvoicesForm()
 
-      expect(result.currentStep.value).toBe(InvoicesFormStep.EMAIL_AND_TERMS)
+      expect(currentStep.value).toBe(InvoicesFormStep.ACCESS_VAULT)
+    })
 
-      app.unmount()
+    it('should set currentStep to ACCESS_VAULT when tabState is connection-ready-unlocked', () => {
+      mockTabState.value = InvoicesTabState.CONNECTION_READY_UNLOCKED
+
+      const { currentStep } = useInvoicesForm()
+
+      expect(currentStep.value).toBe(InvoicesFormStep.ACCESS_VAULT)
+    })
+
+    it('should keep currentStep at EMAIL_AND_TERMS when tabState is null', () => {
+      mockTabState.value = null
+
+      const { currentStep } = useInvoicesForm()
+
+      expect(currentStep.value).toBe(InvoicesFormStep.EMAIL_AND_TERMS)
     })
   })
 
   describe('shouldShowVaultBeingCreated', () => {
-    it('should return false when currentStep is EMAIL_AND_TERMS and status is NOT_SUBSCRIBED', () => {
+    it('should return false when currentStep is EMAIL_AND_TERMS and tabState is null', () => {
       const { shouldShowVaultBeingCreated } = useInvoicesForm()
 
       expect(shouldShowVaultBeingCreated.value).toBe(false)
@@ -173,36 +198,110 @@ describe('useInvoicesForm', () => {
       expect(shouldShowVaultBeingCreated.value).toBe(true)
     })
 
-    it('should return true when userDigitalSafeSubscriptionStatus is SUBMITTED', async () => {
-      vi.mocked(InvoicesService.getSubscriptionStatus).mockResolvedValueOnce(DigitalSafeStatus.SUBMITTED)
+    it('should return true when tabState is FORM_SUBMITTED (mapped to VAULT_BEING_CREATED via watch)', () => {
+      mockTabState.value = InvoicesTabState.FORM_SUBMITTED
 
-      const [result, app] = withSetup(() => useInvoicesForm())
-      await flushPromises()
+      const { shouldShowVaultBeingCreated } = useInvoicesForm()
 
-      expect(result.shouldShowVaultBeingCreated.value).toBe(true)
-
-      app.unmount()
+      expect(shouldShowVaultBeingCreated.value).toBe(true)
     })
 
-    it('should return false when currentStep is SELECT_CONTACT and status is NOT_SUBSCRIBED', () => {
+    it('should return false when currentStep is SELECT_CONTACT and tabState is null', () => {
       const { shouldShowVaultBeingCreated, goToNextStep } = useInvoicesForm()
 
       goToNextStep()
 
       expect(shouldShowVaultBeingCreated.value).toBe(false)
     })
+  })
 
-    it('should return true when currentStep is SELECT_CONTACT and status is SUBMITTED', async () => {
-      vi.mocked(InvoicesService.getSubscriptionStatus).mockResolvedValueOnce(DigitalSafeStatus.SUBMITTED)
+  describe('shouldHideFormHeader', () => {
+    it('should return false when currentStep is EMAIL_AND_TERMS and tabState is null', () => {
+      const { shouldHideFormHeader } = useInvoicesForm()
 
-      const [result, app] = withSetup(() => useInvoicesForm())
-      await flushPromises()
+      expect(shouldHideFormHeader.value).toBe(false)
+    })
 
-      result.goToNextStep()
+    it('should return true when currentStep is VAULT_BEING_CREATED', () => {
+      const { shouldHideFormHeader, goToVaultBeingCreated } = useInvoicesForm()
 
-      expect(result.shouldShowVaultBeingCreated.value).toBe(true)
+      goToVaultBeingCreated()
 
-      app.unmount()
+      expect(shouldHideFormHeader.value).toBe(true)
+    })
+
+    it('should return true when currentStep is ACCESS_VAULT', () => {
+      mockTabState.value = InvoicesTabState.CONNECTION_READY_LOCKED
+
+      const { shouldHideFormHeader } = useInvoicesForm()
+
+      expect(shouldHideFormHeader.value).toBe(true)
+    })
+
+    it('should return true when tabState is FORM_SUBMITTED (mapped to VAULT_BEING_CREATED via watch)', () => {
+      mockTabState.value = InvoicesTabState.FORM_SUBMITTED
+
+      const { shouldHideFormHeader } = useInvoicesForm()
+
+      expect(shouldHideFormHeader.value).toBe(true)
+    })
+
+    it('should return false when currentStep is SELECT_CONTACT and tabState is null', () => {
+      const { shouldHideFormHeader, goToNextStep } = useInvoicesForm()
+
+      goToNextStep()
+
+      expect(shouldHideFormHeader.value).toBe(false)
+    })
+  })
+
+  describe('isAllowedToAccessVault', () => {
+    it('should return false by default when tabState is null', () => {
+      const { isAllowedToAccessVault } = useInvoicesForm()
+
+      expect(isAllowedToAccessVault.value).toBe(false)
+    })
+
+    it('should return true when tabState is connection-ready-unlocked', () => {
+      mockTabState.value = InvoicesTabState.CONNECTION_READY_UNLOCKED
+
+      const { isAllowedToAccessVault } = useInvoicesForm()
+
+      expect(isAllowedToAccessVault.value).toBe(true)
+    })
+
+    it('should return false when tabState is connection-ready-locked with contactWithAccess', () => {
+      mockTabState.value = InvoicesTabState.CONNECTION_READY_LOCKED
+      mockContactWithAccess.value = 'jean.soto@gmail.com'
+
+      const { isAllowedToAccessVault, contactWithAccess } = useInvoicesForm()
+
+      expect(isAllowedToAccessVault.value).toBe(false)
+      expect(contactWithAccess.value).toBe('jean.soto@gmail.com')
+    })
+  })
+
+  describe('shouldShowVaultAccessDenied', () => {
+    it('should return false by default', () => {
+      const { shouldShowVaultAccessDenied } = useInvoicesForm()
+
+      expect(shouldShowVaultAccessDenied.value).toBe(false)
+    })
+
+    it('should return true when access is denied and step is ACCESS_VAULT', () => {
+      mockTabState.value = InvoicesTabState.CONNECTION_READY_LOCKED
+
+      const { shouldShowVaultAccessDenied } = useInvoicesForm()
+
+      expect(shouldShowVaultAccessDenied.value).toBe(true)
+    })
+
+    it('should return false when access is granted and step is ACCESS_VAULT', () => {
+      mockTabState.value = InvoicesTabState.CONNECTION_READY_UNLOCKED
+
+      const { shouldShowVaultAccessDenied } = useInvoicesForm()
+
+      expect(shouldShowVaultAccessDenied.value).toBe(false)
     })
   })
 
