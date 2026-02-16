@@ -61,8 +61,8 @@
           "subscription": "Abonnement Pennylane**",
           "perMonth": "mois",
           "free": "Offert",
-          "complianceNote": "* facturation en juin 2026",
-          "subscriptionNote": "** facturation à partir de septembre 2026"
+          "complianceNote": "* facturation en septembre 2026",
+          "subscriptionNote": "** facturation à partir de juillet 2026"
         },
         "freeAccessNotice": {
           "title": "Accès gratuit",
