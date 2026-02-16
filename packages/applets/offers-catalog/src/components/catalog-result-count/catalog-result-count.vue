@@ -9,7 +9,6 @@
   >
     <p class="h2">
       {{ t('resultCount', { resultCount }, resultCount) }}
-      {{ t('forSearchTerm', { searchTerm }) }}
     </p>
     <PButton
       class="
@@ -50,11 +49,9 @@ const emit = defineEmits<{
 
 <i18n lang="yaml">
   en-US:
-    resultCount: 'No results|1 result|{resultCount} results'
-    forSearchTerm: 'for "{searchTerm}"'
+    resultCount: '0 result for your search|1 result|{resultCount} results'
     clearSearch: 'Clear search'
   fr-FR:
-    resultCount: 'Aucun résultat|1 résultat|{resultCount} résultats'
-    forSearchTerm: 'pour "{searchTerm}"'
+    resultCount: '0 résultat pour votre recherche|1 résultat|{resultCount} résultats'
     clearSearch: 'Effacer la recherche'
 </i18n>
