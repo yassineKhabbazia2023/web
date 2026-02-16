@@ -13,6 +13,8 @@ export const MockEntityId = {
   LEGACY_GED: 602,
   /** Global Services Inc - Entity with Pennylane subscription */
   PENNYLANE: 603,
+  /** Le Beau Prospect - Prospect entity */
+  PROSPECT: 701,
 } as const
 
 /**
@@ -43,6 +45,13 @@ export const MockEntityData = {
     accountNumber: 'V900000545',
     legalName: 'Global Services Inc',
     color: 'cyan' as const,
+  },
+  PROSPECT: {
+    accountId: MockEntityId.PROSPECT,
+    accountGlobalUniqueId: '5f85e793-57c0-4da6-b821-3b2888567253',
+    accountNumber: 'V900000544',
+    legalName: 'Le Beau Prospect',
+    color: 'green' as const,
   },
 } as const
 
@@ -81,6 +90,16 @@ export function getMockSignatory(entityKey: MockEntityKey): Signatory {
       personaName: 'Dirigeant',
       creationDate: '2024-01-01',
     },
+    PROSPECT: {
+      contactId: 44,
+      globalContactId: 'global-contact-4',
+      firstName: 'Claire',
+      lastName: 'Dupuis',
+      email: 'claire.dupuis@lebeauprospect.com',
+      status: 'active',
+      personaName: 'Dirigeant',
+      creationDate: '2024-01-01',
+    },
   }
   return signatories[entityKey]
 }
@@ -95,7 +114,7 @@ export function getMockAccountRow(entityKey: MockEntityKey): AccountRow {
     accountGlobalUniqueId: entity.accountGlobalUniqueId,
     accountNumber: entity.accountNumber,
     legalName: entity.legalName,
-    isFavorite: entityKey === 'LEGACY_GED',
+    isFavorite: entityKey === 'LEGACY_GED' || entityKey === 'PROSPECT',
     address: getMockAddress(entityKey),
     hub: getMockHub(entityKey),
     signatory: getMockSignatory(entityKey),
@@ -111,6 +130,7 @@ export function getAllMockAccountRows(): AccountRow[] {
     getMockAccountRow('BASIC'),
     getMockAccountRow('LEGACY_GED'),
     getMockAccountRow('PENNYLANE'),
+    getMockAccountRow('PROSPECT'),
   ]
 }
 
@@ -146,6 +166,15 @@ export function getMockAddress(entityKey: MockEntityKey): Address {
       zipCode: '13001',
       country: 'France',
     },
+    PROSPECT: {
+      addressId: 14,
+      addressLine1: '10 Rue de la Paix',
+      addressLine2: '',
+      addressType: 'billing',
+      city: 'Bordeaux',
+      zipCode: '33000',
+      country: 'France',
+    },
   }
   return addresses[entityKey]
 }
@@ -166,6 +195,10 @@ export function getMockHub(entityKey: MockEntityKey): Hub {
     PENNYLANE: {
       hubId: 23,
       hubName: 'Hub PACA',
+    },
+    PROSPECT: {
+      hubId: 24,
+      hubName: 'Hub Nouvelle-Aquitaine',
     },
   }
   return hubs[entityKey]
@@ -189,6 +222,11 @@ export function getMockDeployment(entityKey: MockEntityKey): Deployment {
     PENNYLANE: {
       deploymentId: 33,
       deploymentDate: '2024-03-01',
+      status: 1,
+    },
+    PROSPECT: {
+      deploymentId: 34,
+      deploymentDate: '2024-04-01',
       status: 1,
     },
   }
@@ -288,6 +326,12 @@ export const getMockedEntities = (): Entity[] => [
     accountNumber: MockEntityData.PENNYLANE.accountNumber,
     legalName: MockEntityData.PENNYLANE.legalName,
     color: MockEntityData.PENNYLANE.color,
+  },
+  {
+    accountId: MockEntityData.PROSPECT.accountId,
+    accountNumber: MockEntityData.PROSPECT.accountNumber,
+    legalName: MockEntityData.PROSPECT.legalName,
+    color: MockEntityData.PROSPECT.color,
   },
 ]
 

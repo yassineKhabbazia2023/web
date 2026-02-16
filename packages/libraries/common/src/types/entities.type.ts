@@ -1,4 +1,5 @@
 import type { Deployment, Address, Office, Subscription } from '@common/types'
+import type { EntityType } from '../enums/entity.enum'
 import type { Permission } from './permission.type'
 
 export type EntityColor =
@@ -30,6 +31,7 @@ export type Entities = {
 
 export interface EntitySummary extends Entity {
   accountGlobalUniqueId: string
+  entityType: EntityType
   missionType: string
   officeId: number
   office: Office
@@ -38,7 +40,7 @@ export interface EntitySummary extends Entity {
   subscriptions: Subscription[]
 }
 
-export type MockEntityKey = 'BASIC' | 'LEGACY_GED' | 'PENNYLANE'
+export type MockEntityKey = 'BASIC' | 'LEGACY_GED' | 'PENNYLANE' | 'PROSPECT'
 
 export interface MockUserContact {
   contactId: number

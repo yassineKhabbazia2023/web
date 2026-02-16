@@ -24,7 +24,7 @@ import {
   MockEntityData,
   getMockSignatory,
 } from '@pulse/common/mocks'
-import { CustomerPermission } from '@pulse/common/enums'
+import { CustomerPermission, EntityType } from '@pulse/common/enums'
 
 function getOperationsPaginatedResponse() {
   const operations = getMockedOperations()
@@ -96,19 +96,29 @@ const entitySummariesMap: Record<number, ReturnType<typeof getMockedEntitySummar
     accountId: MockEntityId.BASIC,
     accountNumber: MockEntityData.BASIC.accountNumber,
     legalName: MockEntityData.BASIC.legalName,
+    entityType: EntityType.REGULAR,
     subscriptions: [],
   }),
   [MockEntityId.LEGACY_GED]: getMockedEntitySummary({
     accountId: MockEntityId.LEGACY_GED,
     accountNumber: MockEntityData.LEGACY_GED.accountNumber,
     legalName: MockEntityData.LEGACY_GED.legalName,
+    entityType: EntityType.REGULAR,
     subscriptions: [],
   }),
   [MockEntityId.PENNYLANE]: getMockedEntitySummary({
     accountId: MockEntityId.PENNYLANE,
     accountNumber: MockEntityData.PENNYLANE.accountNumber,
     legalName: MockEntityData.PENNYLANE.legalName,
+    entityType: EntityType.REGULAR,
     subscriptions: [pennylaneSubscription],
+  }),
+  [MockEntityId.PROSPECT]: getMockedEntitySummary({
+    accountId: MockEntityId.PROSPECT,
+    accountNumber: MockEntityData.PROSPECT.accountNumber,
+    legalName: MockEntityData.PROSPECT.legalName,
+    entityType: EntityType.PROSPECT,
+    subscriptions: [],
   }),
 }
 

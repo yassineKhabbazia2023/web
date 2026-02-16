@@ -1,4 +1,5 @@
 import type { Office, Deployment, Subscription, Address, EntitySummary } from '@common/types'
+import { EntityType } from '../enums/entity.enum'
 import { MockEntityData } from './entities.mocks'
 
 const address: Address = {
@@ -75,6 +76,7 @@ export const entitySummaryMock: EntitySummary = {
   accountGlobalUniqueId: MockEntityData.BASIC.accountGlobalUniqueId,
   accountNumber: MockEntityData.BASIC.accountNumber,
   legalName: MockEntityData.BASIC.legalName,
+  entityType: EntityType.REGULAR,
   missionType: 'Revision',
   officeId: 100,
   office,
