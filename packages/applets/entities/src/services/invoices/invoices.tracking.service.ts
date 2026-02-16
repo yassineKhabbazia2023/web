@@ -25,4 +25,8 @@ export class InvoicesTracking {
       invoice_digitization_requested_result: 'failed',
     })
   }
+
+  static trackInvoiceLoginButtonClick() {
+    AmplitudeService.track('Invoice Digitization Vault Access')
+  }
 }

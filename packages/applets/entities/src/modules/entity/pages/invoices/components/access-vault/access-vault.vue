@@ -30,7 +30,11 @@
     <div class="margin-top--10 flex--align-self-center">
       <PButton
         pType="primary"
+        pTag="a"
+        target="_blank"
+        :href="accessVaultUrl"
         :disabled="isAllowedToAccessVault === false"
+        @click="handleLoginClick"
       >
         {{ t('entities.invoices.accessVault.loginButton') }}
       </PButton>
@@ -39,14 +43,27 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
+import { VITE_RYDGE_INVOICES_LOGIN_URL } from 'env-vars'
 import { PImage, PButton } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
-
-defineProps<{
+import { sanitizeUrl } from '@pulse/toolbox/utils/url'
+import { InvoicesTracking } from '@entities/services/invoices/invoices.tracking.service'
+const props = defineProps<{
   isAllowedToAccessVault: boolean
 }>()
 
 const { t } = useI18n()
+
+function handleLoginClick() {
+  if (props.isAllowedToAccessVault === true) {
+    InvoicesTracking.trackInvoiceLoginButtonClick()
+  }
+}
+
+const accessVaultUrl = computed(() => {
+  return props.isAllowedToAccessVault === true ? sanitizeUrl(VITE_RYDGE_INVOICES_LOGIN_URL) : undefined
+})
 </script>
 
 <style scoped lang="scss">
