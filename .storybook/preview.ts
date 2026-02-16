@@ -90,6 +90,8 @@ const preview: Preview = {
           'Guidelines',
           'Apps',
           'Applets',
+          'Libraries',
+          'Laboratory',
         ],
       },
     },
