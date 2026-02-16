@@ -7,6 +7,8 @@ import type {
   OfferCatalogReferent,
   OfferCatalogDocument,
   OfferCatalogDetailsResponse,
+  OfferRecommendation,
+  OffersRecommendationsResponse,
 } from '../types/offers-catalog.types'
 
 export function getOfferMock(
@@ -193,6 +195,41 @@ export function getOfferCatalogDetailsResponseMock(
     tags: [],
     referents: [],
     attachments: [],
+  }
+
+  return {
+    ...defaultMock,
+    ...override,
+  }
+}
+
+export function getOfferRecommendationMock(
+  override: Partial<OfferRecommendation> = {},
+): OfferRecommendation {
+  const defaultMock: OfferRecommendation = {
+    id: '1',
+    similarity_score: 85,
+    title: 'Offer Title',
+    short_description: 'Offer Description',
+    search_keywords: 'keyword1, keyword2',
+  }
+
+  return {
+    ...defaultMock,
+    ...override,
+  }
+}
+
+export function getOffersRecommendationsResponseMock(
+  override: Partial<OffersRecommendationsResponse> = {},
+): OffersRecommendationsResponse {
+  const defaultMock: OffersRecommendationsResponse = {
+    recommendations: [
+      getOfferRecommendationMock({ id: '1', similarity_score: 95 }),
+      getOfferRecommendationMock({ id: '2', similarity_score: 80 }),
+    ],
+    total_count: 2,
+    id_offer_response: 'response-123',
   }
 
   return {

@@ -14,4 +14,5 @@ export const API_PREFIXES = {
   WALLET: 'wallet/api',
   INVOICES: 'ventya/api',
   GED: 'ged/api',
+  AI_SERVICES: 'aiservices/api',
 }

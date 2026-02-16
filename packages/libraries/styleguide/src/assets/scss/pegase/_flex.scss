@@ -44,17 +44,17 @@ $align_attrs: baseline, flex-start, flex-end, stretch, center, end, start;
             flex-shrink: $i;
         }
     }
+    
     @for $i from 0 through 100 {
         &--basis-#{$i} {
             flex-basis: #{$i + "%"};
         }
     }
 
-    &--basis-300px {
-        flex-basis: 300px;
-    }
-
-    &--basis-450px {
-        flex-basis: 450px;
+    @for $i from 1 through 16 {
+        $px: $i * 50;
+        &--basis-#{$px}px {
+            flex-basis: #{$px}px;
+        }
     }
 }

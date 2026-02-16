@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 import type { OfferDescription, OfferCatalogReferent, OfferCatalogDocument, OfferWithSearchTerms } from '../../types/offers-catalog.types'
-import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails } from '../../services/offers-catalog.service'
+import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails, getOffersRecommendations } from '../../services/offers-catalog.service'
 import { normalizeSearchTerm, getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
 import { logger } from '@pulse/toolbox'
 import { filterRecordByKeyCallback } from '@pulse/toolbox/utils/array'
@@ -17,6 +17,7 @@ export function useOffersCatalog() {
   const pdfApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
   const offerReferentsApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
   const catalogApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
+  const aiSearchApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
   const catalogDocumentViewerIsOpened = ref(false)
   const offerPdf = ref<Blob|string>('')
 
@@ -89,6 +90,31 @@ export function useOffersCatalog() {
     }
   }
 
+  async function searchOffersWithAi(question: string) {
+    aiSearchApiCallStatus.value = APICallStatus.LOADING
+    try {
+      const { recommendations } = await getOffersRecommendations(question)
+      const offersById = new Map(offers.value.map((o) => [o.id, o]))
+
+      filteredOffers.value = recommendations.flatMap(({ id, similarity_score }) => {
+        const offer = offersById.get(Number(id))
+        if (offer === undefined) {
+          return []
+        }
+        return [{ ...offer, similarityScore: similarity_score }]
+      })
+
+      aiSearchApiCallStatus.value = APICallStatus.SUCCESS
+    } catch (e) {
+      logger.error('Error while searching offers with AI', e)
+      aiSearchApiCallStatus.value = APICallStatus.ERROR
+    }
+  }
+
+  function resetAiSearch() {
+    aiSearchApiCallStatus.value = APICallStatus.IDLE
+  }
+
   return {
     searchTerm,
     filteredOffers,
@@ -100,11 +126,14 @@ export function useOffersCatalog() {
     pdfApiCallStatus,
     offerReferentsApiCallStatus,
     catalogApiCallStatus,
+    aiSearchApiCallStatus,
     catalogDocumentViewerIsOpened,
     loadOffersCatalog,
     setSelectedOffer,
     loadOfferPdf,
     loadOfferReferents,
     filterOffersCatalog,
+    searchOffersWithAi,
+    resetAiSearch,
   }
 }

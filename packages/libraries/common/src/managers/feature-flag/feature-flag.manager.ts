@@ -60,4 +60,8 @@ export class FeatureFlagManager {
   static isPennylaneAmendmentFlowActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.PENNYLANE_AMENDMENT_FLOW)
   }
+
+  static isSmartSearchOfferCatalogActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.SMART_SEARCH_OFFER_CATALOG)
+  }
 }

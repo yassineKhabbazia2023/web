@@ -1,8 +1,8 @@
-import { getOffersCatalogResponseMock, getOfferMock, getOfferCatalogReferentListMock } from '../mocks/offers-catalog.service.mocks'
+import { getOffersCatalogResponseMock, getOfferMock, getOfferCatalogReferentListMock, getOffersRecommendationsResponseMock } from '../mocks/offers-catalog.service.mocks'
 import { apiGatewayMock } from '@pulse/common/mocks/vitest'
 import { API_PREFIXES } from '@pulse/common/constants'
 
-import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails } from './offers-catalog.service'
+import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails, getOffersRecommendations } from './offers-catalog.service'
 
 const offersCatalogMock = getOffersCatalogResponseMock()
 
@@ -68,6 +68,23 @@ describe('offers-catalog.service', () => {
 
       expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
       expect(offersCatalogDetails).toStrictEqual(offersCatalogDetailsMock)
+    })
+  })
+
+  describe('getOffersRecommendations', () => {
+    it('should call api properly', async () => {
+      const recommendationsResponseMock = getOffersRecommendationsResponseMock()
+      apiGatewayMock.post.mockResolvedValue({
+        data: recommendationsResponseMock,
+      })
+      const questionMock = 'How to manage accounting?'
+
+      const recommendations = await getOffersRecommendations(questionMock)
+      const expectedUrl = `${API_PREFIXES.AI_SERVICES}/recommendations/offers`
+      const expectedBody = { question: questionMock }
+
+      expect(apiGatewayMock.post).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedBody)
+      expect(recommendations).toStrictEqual(recommendationsResponseMock)
     })
   })
 })

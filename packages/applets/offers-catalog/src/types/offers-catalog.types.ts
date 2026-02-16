@@ -23,6 +23,7 @@ export interface OfferDescription {
   internalLink: string
   subCategory: OfferSubCategory,
   tags: string[]
+  similarityScore?: number
 }
 
 export interface OfferWithSearchTerms extends OfferDescription {
@@ -63,4 +64,18 @@ export interface CatalogCard {
   title: string
   subtitle: string
   tags: string[]
+}
+
+export interface OfferRecommendation {
+  id: string
+  similarity_score: number
+  title: string
+  short_description: string
+  search_keywords: string
+}
+
+export interface OffersRecommendationsResponse {
+  recommendations: OfferRecommendation[]
+  total_count: number
+  id_offer_response: string
 }

@@ -22,11 +22,12 @@
     </POverlay>
 
     <CatalogCard
-      v-for="({ id, title , shortDescription, tags }, index) in offers"
+      v-for="({ id, title, shortDescription, tags, similarityScore }, index) in offers"
       :key="index"
       :title="title"
       :subtitle="shortDescription"
       :tags="tags"
+      :similarityScore="similarityScore"
       class="cursor-pointer"
       @click="onCardClick(id)"
     />

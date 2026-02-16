@@ -27,6 +27,9 @@ export const GLOBAL_PERMISSIONS: Record<string, Permission[]> = {
   POWERBI_REPORT_ADMIN: [
     CollaboratorPermission.ADMINISTRER_RAPPORT_BI,
   ],
+  SMART_SEARCH_OFFER_CATALOG: [
+    CollaboratorPermission.ACCEDER_RECHERCHE_INTELLIGENTE_CATALOGUE_OFFRES,
+  ],
   SUBSCRIPTIONS: [
     CollaboratorPermission.ONGLET_DEMANDES_MOD,
   ],

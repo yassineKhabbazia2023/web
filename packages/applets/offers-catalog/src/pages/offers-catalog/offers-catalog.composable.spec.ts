@@ -1,5 +1,5 @@
 import type { OfferDescription } from '../../types/offers-catalog.types'
-import { getOffersCatalogResponseMock, getOfferCatalogDetailsResponseMock, getOfferCatalogReferentListMock } from '../../mocks/offers-catalog.service.mocks'
+import { getOffersCatalogResponseMock, getOfferCatalogDetailsResponseMock, getOfferCatalogReferentListMock, getOffersRecommendationsResponseMock } from '../../mocks/offers-catalog.service.mocks'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { APICallStatus } from '@pulse/common/enums'
 import { getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
@@ -15,6 +15,7 @@ const referentsMock = getOfferCatalogReferentListMock()
 const getOffersCatalogMock = vi.hoisted(() => vi.fn())
 const getOfferCatalogPdfMock = vi.hoisted(() => vi.fn())
 const getOfferCatalogDetailsMock = vi.hoisted(() => vi.fn())
+const getOffersRecommendationsMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
@@ -24,6 +25,7 @@ vi.mock('../../services/offers-catalog.service', () => ({
   getOffersCatalog: getOffersCatalogMock,
   getOfferCatalogPdf: getOfferCatalogPdfMock,
   getOfferCatalogDetails: getOfferCatalogDetailsMock,
+  getOffersRecommendations: getOffersRecommendationsMock,
 }))
 
 vi.mock('@pulse/toolbox/utils/array')
@@ -286,6 +288,71 @@ describe('offers-catalog.composable', () => {
       expect(offerReferents.value).toHaveLength(0)
 
       expect(loggerMock.error).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
+    })
+  })
+
+  describe('searchOffersWithAi', () => {
+    it('should filter offers with similarity scores when api call succeeds', async () => {
+      const recommendationsResponseMock = getOffersRecommendationsResponseMock()
+      getOffersCatalogMock.mockResolvedValue(offersCatalogResponseMock)
+      getOffersRecommendationsMock.mockResolvedValue(recommendationsResponseMock)
+
+      const {
+        filteredOffers,
+        aiSearchApiCallStatus,
+        loadOffersCatalog,
+        searchOffersWithAi,
+      } = useOffersCatalog()
+
+      await loadOffersCatalog()
+      await searchOffersWithAi('How to manage accounting?')
+
+      expect(aiSearchApiCallStatus.value).toBe(APICallStatus.SUCCESS)
+      expect(filteredOffers.value.length).toBeGreaterThan(0)
+      expect(filteredOffers.value[0].similarityScore).toBeDefined()
+      expect(loggerMock.error).not.toHaveBeenCalled()
+    })
+
+    it('should call logger.error when api call fails', async () => {
+      const errorMock = 'error mock'
+      getOffersCatalogMock.mockResolvedValue(offersCatalogResponseMock)
+      getOffersRecommendationsMock.mockRejectedValue(errorMock)
+
+      const {
+        aiSearchApiCallStatus,
+        loadOffersCatalog,
+        searchOffersWithAi,
+      } = useOffersCatalog()
+
+      await loadOffersCatalog()
+      await searchOffersWithAi('How to manage accounting?')
+
+      expect(aiSearchApiCallStatus.value).toBe(APICallStatus.ERROR)
+      expect(loggerMock.error).toHaveBeenCalledExactlyOnceWith('Error while searching offers with AI', errorMock)
+    })
+  })
+
+  describe('resetAiSearch', () => {
+    it('should reset aiSearchApiCallStatus to IDLE', async () => {
+      const recommendationsResponseMock = getOffersRecommendationsResponseMock()
+      getOffersCatalogMock.mockResolvedValue(offersCatalogResponseMock)
+      getOffersRecommendationsMock.mockResolvedValue(recommendationsResponseMock)
+
+      const {
+        aiSearchApiCallStatus,
+        loadOffersCatalog,
+        searchOffersWithAi,
+        resetAiSearch,
+      } = useOffersCatalog()
+
+      await loadOffersCatalog()
+      await searchOffersWithAi('test question')
+
+      expect(aiSearchApiCallStatus.value).toBe(APICallStatus.SUCCESS)
+
+      resetAiSearch()
+
+      expect(aiSearchApiCallStatus.value).toBe(APICallStatus.IDLE)
     })
   })
 })

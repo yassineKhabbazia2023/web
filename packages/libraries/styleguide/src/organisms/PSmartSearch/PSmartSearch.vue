@@ -26,7 +26,10 @@
           class="p-smart-search__form-search"
           data-testid="p-smart-search-input"
         >
-          <template #append>
+          <template
+            v-if="props.pShowSmartSearchToggle === true"
+            #append
+          >
             <div class="flex flex--align-items-center flex-gap--2 padding-y--4">
               <PSwitch
                 v-model="aiEnabled"
@@ -60,14 +63,13 @@
           <slot name="header" />
         </div>
         <div
-          :class="[
-            'p-smart-search__ai-content',
-            'flex',
-            'flex--direction-column',
-            'bg--jungle-50',
-            'padding--4',
-            { 'p-smart-search__ai-content--no-header': $slots.header === undefined }
-          ]"
+          class="
+            p-smart-search__ai-content
+            flex
+            flex--direction-column
+            bg--jungle-50
+            padding--4
+          "
           data-testid="p-smart-search-ai-content"
         >
           <div class="p-smart-search__ai-row flex flex-gap--2 min-width--full flex--align-items-stretch">
@@ -86,6 +88,7 @@
             />
             <div class="flex flex--direction-column flex--justify-content-space-between flex--shrink-0">
               <PSwitch
+                v-if="props.pShowSmartSearchToggle === true"
                 v-model="aiEnabled"
                 :pDisabled="pDisabled"
                 :pActiveColor="AppColors.JUNGLE_500"
@@ -138,6 +141,7 @@ const props = withDefaults(defineProps<PSmartSearchProps>(), {
   pMinLength: 3,
   pSearchInvalidMessage: '',
   pAutofocus: false,
+  pShowSmartSearchToggle: true,
 })
 
 const emit = defineEmits<{
@@ -224,10 +228,6 @@ defineExpose({
     &:focus-within {
       border-color: var(--p-jungle-300);
       box-shadow: 0 0 0 3px rgba(26, 171, 142, 0.15);
-    }
-
-    &--no-header {
-      border-radius: var(--el-border-radius-base);
     }
   }
 

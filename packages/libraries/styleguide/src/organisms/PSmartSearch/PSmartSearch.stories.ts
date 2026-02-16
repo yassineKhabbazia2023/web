@@ -52,6 +52,10 @@ const meta: Meta<typeof PSmartSearch> = {
       control: 'number',
       description: 'Minimum length required for search validation',
     },
+    pShowSmartSearchToggle: {
+      control: 'boolean',
+      description: 'Whether to show the smart search toggle switch. When false, the component stays in classic mode without the toggle.',
+    },
   },
   tags: ['autodocs'],
 }
@@ -356,6 +360,49 @@ export const Disabled: Story = {
   args: {
     pPlaceholder: 'Renseignez un ou plusieurs mots-clés',
     pAiPlaceholder: 'Recherche intelligente...',
+  },
+}
+
+export const WithoutSmartSearchToggle: Story = {
+  render: (args) => ({
+    components: { PSmartSearch },
+    setup() {
+      const searchValue = ref('')
+
+      const onUpdateSearch = (value: string) => {
+        searchValue.value = value
+      }
+
+      return {
+        args,
+        searchValue,
+        onUpdateSearch,
+      }
+    },
+    template: `
+      <div style="padding: 20px; width: 600px;">
+        <h3 style="margin-bottom: 16px;">Classic Mode Only (Smart Search Toggle Hidden)</h3>
+        <p style="margin-bottom: 16px; color: #666;">
+          When pShowSmartSearchToggle is false, the toggle switch is hidden and the component stays in classic search mode.
+          This is useful when the smart search feature is controlled by a feature flag.
+        </p>
+        <PSmartSearch
+          v-bind="args"
+          :pSearch="searchValue"
+          @update:p-search="onUpdateSearch"
+        />
+        <div style="margin-top: 16px;">
+          <strong>Current value:</strong> "{{ searchValue }}"
+        </div>
+      </div>
+    `,
+  }),
+  args: {
+    pPlaceholder: 'Renseignez un ou plusieurs mots-clés',
+    pShowSmartSearchToggle: false,
+    pClearable: true,
+    pMinLength: 3,
+    pSearchInvalidMessage: 'Minimum 3 caractères',
   },
 }
 

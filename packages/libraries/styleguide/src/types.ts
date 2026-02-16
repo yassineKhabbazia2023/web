@@ -85,6 +85,7 @@ export * from './molecules/PUserAction/PUserActionTypes'
 export * from './organisms/PDocumentViewer/PDocumentViewerTypes'
 export * from './organisms/PError/PErrorTypes'
 export * from './organisms/PTree/PTreeTypes'
+export * from './organisms/PSmartSearch/PSmartSearch.types'
 
 export * from './types/AppTypes'
 export * from './types/IconName.types'

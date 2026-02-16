@@ -77,14 +77,6 @@ describe('PSmartSearch', () => {
       expect(wrapper.find('[data-testid="p-smart-search-disclaimer"]').text()).toBe('AI disclaimer')
     })
 
-    it('applies no-header class when header slot is missing', () => {
-      const wrapper = mount(PSmartSearch, {
-        props: { pAiEnabled: true },
-      })
-
-      expect(wrapper.find('[data-testid="p-smart-search-ai-content"]').classes()).toContain('p-smart-search__ai-content--no-header')
-    })
-
     it('emits search event on submit click when textarea has value', async () => {
       const wrapper = mount(PSmartSearch, {
         props: { pAiEnabled: true },
@@ -150,6 +142,42 @@ describe('PSmartSearch', () => {
 
       const textarea = wrapper.find('[data-testid="p-smart-search-textarea"]')
       expect((textarea.element as HTMLTextAreaElement).value).toBe('preserved text')
+    })
+  })
+
+  describe('Smart Search Toggle Visibility', () => {
+    it('shows switch in classic mode by default', () => {
+      const wrapper = mount(PSmartSearch)
+
+      expect(wrapper.find('[data-testid="p-smart-search-switch"]').exists()).toBe(true)
+    })
+
+    it('hides switch in classic mode when pShowSmartSearchToggle is false', () => {
+      const wrapper = mount(PSmartSearch, {
+        props: { pShowSmartSearchToggle: false },
+      })
+
+      expect(wrapper.find('[data-testid="p-smart-search-switch"]').exists()).toBe(false)
+      expect(wrapper.find('[data-testid="p-smart-search-switch-label"]').exists()).toBe(false)
+    })
+
+    it('shows switch in AI mode by default', () => {
+      const wrapper = mount(PSmartSearch, {
+        props: { pAiEnabled: true },
+      })
+
+      expect(wrapper.find('[data-testid="p-smart-search-ai-switch"]').exists()).toBe(true)
+    })
+
+    it('hides switch in AI mode when pShowSmartSearchToggle is false', () => {
+      const wrapper = mount(PSmartSearch, {
+        props: {
+          pAiEnabled: true,
+          pShowSmartSearchToggle: false,
+        },
+      })
+
+      expect(wrapper.find('[data-testid="p-smart-search-ai-switch"]').exists()).toBe(false)
     })
   })
 
