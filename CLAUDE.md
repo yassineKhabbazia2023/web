@@ -385,6 +385,12 @@ When you execute a plan, follow these rules:
 
 - Think hard and write elegant code that completes the plan
 - Do not add backwards compatibility unless explicitly requested
-- When you lint, build and run tests, scope them to the workspace you edited (e.g., `npm run lint --workspace=@pulse/customer`, `npm run test --workspace=@pulse/common`)
 - After every code block you write, lint:fix, build and write corresponding tests and run them before writing the next code block
 - Do not install or add any new package/dependency without explicitly asking for approval first. Explain why it is needed and what benefits it brings before installing
+- Always scope `lint`, `build`, and `test` commands to the workspace(s) you edited — never run them on the entire repository (to prevent long execution times)
+  - ✅ `npm run lint --workspace=@pulse/customer`
+  - ❌ `npm run lint`
+  - ✅ `npm run build --workspace=@pulse/shared`
+  - ❌ `npm run build`
+  - ✅ `npm run test --workspace=@pulse/common`
+  - ❌ `npm run test`
