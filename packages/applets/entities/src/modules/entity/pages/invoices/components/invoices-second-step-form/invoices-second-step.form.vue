@@ -47,13 +47,16 @@
       >
         {{ t('entities.invoices.backButton') }}
       </PButton>
-      <PButton
-        pType="primary"
-        :pDisabled="isReadOnly"
-        @click="handleSubmit"
-      >
-        {{ t('entities.invoices.submitButton') }}
-      </PButton>
+      <div class="flex flex-gap--3">
+        <InvoicesAssistance :step="InvoicesFormStep.SELECT_CONTACT" />
+        <PButton
+          pType="primary"
+          :pDisabled="isReadOnly"
+          @click="handleSubmit"
+        >
+          {{ t('entities.invoices.submitButton') }}
+        </PButton>
+      </div>
     </div>
   </PForm>
 </template>
@@ -74,6 +77,8 @@ import { useInvoicesSecondStepForm } from './invoices-second-step.form.composabl
 import { createInvoicesSecondStepFormRules } from './invoices-second-step.form.validation'
 import type { InvoicesFullFormModel } from '@entities/modules/entity/types'
 import { InvoicesTracking } from '@entities/services/invoices/invoices.tracking.service'
+import InvoicesAssistance from '../invoices-assistance/invoices-assistance.vue'
+import { InvoicesFormStep } from '@entities/modules/entity/enums'
 
 const emit = defineEmits<{
   back: []

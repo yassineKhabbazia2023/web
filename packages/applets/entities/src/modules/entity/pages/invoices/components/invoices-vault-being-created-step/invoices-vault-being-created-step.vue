@@ -28,12 +28,16 @@
     >
       {{ t('entities.invoices.spaceCreationStep.estimated-time') }}
     </p>
+
+    <InvoicesAssistance :step="InvoicesFormStep.VAULT_BEING_CREATED" />
   </div>
 </template>
 
 <script lang="ts" setup>
 import { PIcon } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
+import InvoicesAssistance from '../invoices-assistance/invoices-assistance.vue'
+import { InvoicesFormStep } from '@entities/modules/entity/enums'
 
 const { t } = useI18n()
 </script>

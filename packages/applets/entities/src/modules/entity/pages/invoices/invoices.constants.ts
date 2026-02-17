@@ -14,3 +14,5 @@ export const TAB_STATE_TO_STEP: Record<InvoicesTabState, InvoicesFormStep> = {
   [InvoicesTabState.CONNECTION_READY_LOCKED]: InvoicesFormStep.ACCESS_VAULT,
   [InvoicesTabState.CONNECTION_READY_UNLOCKED]: InvoicesFormStep.ACCESS_VAULT,
 }
+
+export const INVOICES_ASSISTANCE_FORM_URL = 'https://2dpyhn.share-eu1.hsforms.com/2-bh4OP7VSJSgBFWMFlGjxw'

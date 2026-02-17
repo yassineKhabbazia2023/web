@@ -1,5 +1,6 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { InvoicesTracking } from './invoices.tracking.service'
+import { InvoicesFormStep } from '@entities/modules/entity/enums'
 
 vi.mock('@pulse/common/services/amplitude')
 
@@ -51,6 +52,19 @@ describe('InvoicesTracking', () => {
         'Invoice Digitization Requested',
         {
           invoice_digitization_requested_result: 'failed',
+        },
+      )
+    })
+  })
+
+  describe('trackAssistanceButtonClick', () => {
+    it('should track assistance button click with the given step', () => {
+      InvoicesTracking.trackAssistanceButtonClick(InvoicesFormStep.EMAIL_AND_TERMS)
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Invoice Digitization Get Help',
+        {
+          invoice_digitization_get_help_step: InvoicesFormStep.EMAIL_AND_TERMS,
         },
       )
     })

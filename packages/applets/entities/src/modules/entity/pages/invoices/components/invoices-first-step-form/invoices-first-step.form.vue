@@ -41,14 +41,7 @@
         margin-top--6
       "
     >
-      <!-- This will be usefull soon, commenting it until then
-      <PButton
-        pType="secondary"
-        :pDisabled="isReadOnly"
-        @click="handleAssistance"
-      >
-        {{ t('entities.invoices.assistanceButton') }}
-      </PButton> -->
+      <InvoicesAssistance :step="InvoicesFormStep.EMAIL_AND_TERMS" />
       <PButton
         pType="primary"
         :pDisabled="isReadOnly"
@@ -76,6 +69,8 @@ import { useInvoicesFirstStepForm } from './invoices-first-step.form.composable'
 import { createInvoicesFormRules } from './invoices-first-step.form.validation'
 import type { InvoicesFullFormModel } from '@entities/modules/entity/types'
 import { InvoicesFirstStepFormManager } from './invoices-first-step.form.manager'
+import InvoicesAssistance from '../invoices-assistance/invoices-assistance.vue'
+import { InvoicesFormStep } from '@entities/modules/entity/enums'
 
 const emit = defineEmits<{
   next: []

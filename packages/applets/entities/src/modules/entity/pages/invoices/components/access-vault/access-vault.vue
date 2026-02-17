@@ -27,7 +27,15 @@
       {{ t('entities.invoices.accessVault.description') }}
     </p>
 
-    <div class="margin-top--10 flex--align-self-center">
+    <div
+      class="
+        margin-top--10
+        flex--align-self-center
+        flex
+        flex-gap--3
+      "
+    >
+      <InvoicesAssistance :step="InvoicesFormStep.ACCESS_VAULT" />
       <PButton
         pType="primary"
         pTag="a"
@@ -49,7 +57,10 @@ import { PImage, PButton } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import { InvoicesTracking } from '@entities/services/invoices/invoices.tracking.service'
-const props = defineProps<{
+import InvoicesAssistance from '../invoices-assistance/invoices-assistance.vue'
+import { InvoicesFormStep } from '@entities/modules/entity/enums'
+
+const props =defineProps<{
   isAllowedToAccessVault: boolean
 }>()
 
