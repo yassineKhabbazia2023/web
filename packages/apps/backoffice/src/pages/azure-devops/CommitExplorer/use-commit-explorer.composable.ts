@@ -12,6 +12,7 @@ import type {
 } from '@backoffice/types/azure-devops.type'
 
 const SHORT_COMMIT_ID_LENGTH = 7
+const PR_FETCH_CONCURRENCY = 5
 
 const buildTagsMap = (tags: AzureDevOpsRef[]): Map<string, string[]> => {
   const map = new Map<string, string[]>()
@@ -37,44 +38,46 @@ const buildWorkItemsMap = (workItems: WorkItem[]): Map<number, WorkItem> => {
   return map
 }
 
+const toWorkItemInfo = (workItem: WorkItem): CommitWorkItemInfo => ({
+  id: workItem.id,
+  webUrl: workItem.webUrl,
+  state: workItem.state,
+  title: workItem.title,
+  team: workItem.team,
+})
+
+const resolveWorkItemInfos = (
+  commitWorkItemIds: number[],
+  prWorkItemIds: number[],
+  workItemsMap: Map<number, WorkItem>,
+): CommitWorkItemInfo[] => {
+  const uniqueIds = [...new Set([...commitWorkItemIds, ...prWorkItemIds])]
+  return uniqueIds
+    .filter((id) => workItemsMap.has(id))
+    .map((id) => toWorkItemInfo(workItemsMap.get(id)!))
+}
+
 const enrichCommits = (
   commits: AzureDevOpsCommit[],
   tagsMap: Map<string, string[]>,
   workItemsMap: Map<number, WorkItem>,
+  prWorkItemIdsByCommit: Map<string, number[]>,
 ): CommitWithDetails[] => {
-  return commits.map((commit) => {
-    const workItemInfos: CommitWorkItemInfo[] = []
-
-    if (commit.workItems !== undefined) {
-      for (const wiRef of commit.workItems) {
-        const id = Number.parseInt(wiRef.url.split('/').pop() ?? '', 10)
-        if (Number.isNaN(id) === false) {
-          const workItem = workItemsMap.get(id)
-          if (workItem !== undefined) {
-            workItemInfos.push({
-              id: workItem.id,
-              webUrl: workItem.webUrl,
-              state: workItem.state,
-              title: workItem.title,
-              team: workItem.team,
-            })
-          }
-        }
-      }
-    }
-
-    return {
-      commitId: commit.commitId,
-      shortCommitId: commit.commitId.substring(0, SHORT_COMMIT_ID_LENGTH),
-      comment: commit.comment,
-      author: {
-        name: commit.author.name,
-        date: commit.author.date,
-      },
-      workItems: workItemInfos,
-      tags: tagsMap.get(commit.commitId) ?? [],
-    }
-  })
+  return commits.map((commit) => ({
+    commitId: commit.commitId,
+    shortCommitId: commit.commitId.substring(0, SHORT_COMMIT_ID_LENGTH),
+    comment: commit.comment,
+    author: {
+      name: commit.author.name,
+      date: commit.author.date,
+    },
+    workItems: resolveWorkItemInfos(
+      AzureDevOpsService.extractWorkItemIdsFromRefs(commit.workItems ?? []),
+      prWorkItemIdsByCommit.get(commit.commitId) ?? [],
+      workItemsMap,
+    ),
+    tags: tagsMap.get(commit.commitId) ?? [],
+  }))
 }
 
 export const useCommitExplorer = () => {
@@ -84,6 +87,7 @@ export const useCommitExplorer = () => {
   const isLoading = ref(false)
   const isLoadingMore = ref(false)
   const error = ref<string | null>(null)
+  const warnings = ref<string[]>([])
   const tagsCache = ref<Map<string, string[]> | null>(null)
   const hasMore = ref(true)
 
@@ -100,6 +104,40 @@ export const useCommitExplorer = () => {
   interface FetchResult {
     commits: CommitWithDetails[]
     fetchedCount: number
+    failedPrCount: number
+  }
+
+  const fetchPrWorkItems = async (
+    commits: AzureDevOpsCommit[],
+  ): Promise<{ prWorkItemIdsByCommit: Map<string, number[]>; failedPrCount: number }> => {
+    const prWorkItemIdsByCommit = new Map<string, number[]>()
+    let failedPrCount = 0
+
+    const mergeCommits: Array<{ commitId: string; prId: number }> = []
+    for (const commit of commits) {
+      const prId = AzureDevOpsService.extractPrId(commit.comment)
+      if (prId !== null) {
+        mergeCommits.push({ commitId: commit.commitId, prId })
+      }
+    }
+
+    for (let i = 0; i < mergeCommits.length; i += PR_FETCH_CONCURRENCY) {
+      const batch = mergeCommits.slice(i, i + PR_FETCH_CONCURRENCY)
+      await Promise.all(
+        batch.map(({ commitId, prId }) =>
+          AzureDevOpsService.getPullRequestWorkItemIds(store.pat, store.selectedRepository, prId)
+            .then((ids) => {
+              prWorkItemIdsByCommit.set(commitId, ids)
+            })
+            .catch((err) => {
+              failedPrCount++
+              logger.warn(`Failed to fetch work items for PR ${prId}:`, err)
+            }),
+        ),
+      )
+    }
+
+    return { prWorkItemIdsByCommit, failedPrCount }
   }
 
   const fetchAndEnrichCommits = async (skip: number): Promise<FetchResult> => {
@@ -108,13 +146,23 @@ export const useCommitExplorer = () => {
       loadTags(),
     ])
 
-    const workItemIds = AzureDevOpsService.extractWorkItemIds(pageResult.commits)
-    const workItems = await AzureDevOpsService.getWorkItemsByIds(store.pat, workItemIds)
+    const { prWorkItemIdsByCommit, failedPrCount } = await fetchPrWorkItems(pageResult.commits)
+
+    const commitWorkItemIds = AzureDevOpsService.extractWorkItemIds(pageResult.commits)
+    const allWorkItemIds = new Set(commitWorkItemIds)
+    for (const ids of prWorkItemIdsByCommit.values()) {
+      for (const id of ids) {
+        allWorkItemIds.add(id)
+      }
+    }
+
+    const workItems = await AzureDevOpsService.getWorkItemsByIds(store.pat, Array.from(allWorkItemIds))
     const workItemsMap = buildWorkItemsMap(workItems)
 
     return {
-      commits: enrichCommits(pageResult.commits, tagsMap, workItemsMap),
+      commits: enrichCommits(pageResult.commits, tagsMap, workItemsMap, prWorkItemIdsByCommit),
       fetchedCount: pageResult.commits.length,
+      failedPrCount,
     }
   }
 
@@ -126,12 +174,16 @@ export const useCommitExplorer = () => {
 
     isLoading.value = true
     error.value = null
+    warnings.value = []
     hasMore.value = true
 
     try {
       const result = await fetchAndEnrichCommits(0)
       commits.value = result.commits
       hasMore.value = result.fetchedCount >= EXPLORER_PAGE_SIZE
+      if (result.failedPrCount > 0) {
+        warnings.value.push(`${result.failedPrCount} pull request(s) n'ont pas pu être analysées pour les work items`)
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue'
       error.value = `Erreur lors du chargement des commits: ${errorMessage}`
@@ -152,6 +204,9 @@ export const useCommitExplorer = () => {
       const result = await fetchAndEnrichCommits(commits.value.length)
       commits.value = [...commits.value, ...result.commits]
       hasMore.value = result.fetchedCount >= EXPLORER_PAGE_SIZE
+      if (result.failedPrCount > 0) {
+        warnings.value.push(`${result.failedPrCount} pull request(s) n'ont pas pu être analysées pour les work items`)
+      }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue'
       error.value = `Erreur lors du chargement des commits: ${errorMessage}`
@@ -166,6 +221,7 @@ export const useCommitExplorer = () => {
     isLoading.value = false
     isLoadingMore.value = false
     error.value = null
+    warnings.value = []
     tagsCache.value = null
     hasMore.value = true
   }
@@ -175,6 +231,7 @@ export const useCommitExplorer = () => {
     isLoading,
     isLoadingMore,
     error,
+    warnings,
     hasMore,
     load,
     loadMore,

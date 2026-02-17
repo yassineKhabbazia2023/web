@@ -11,6 +11,10 @@ vi.mock('@backoffice/services/azure-devops/azure-devops.service')
 const mockedFetchCommitsForExplorer = vi.mocked(AzureDevOpsService.fetchCommitsForExplorer)
 const mockedGetAllTags = vi.mocked(AzureDevOpsService.getAllTags)
 const mockedGetWorkItemsByIds = vi.mocked(AzureDevOpsService.getWorkItemsByIds)
+const mockedExtractWorkItemIds = vi.mocked(AzureDevOpsService.extractWorkItemIds)
+const mockedExtractWorkItemIdsFromRefs = vi.mocked(AzureDevOpsService.extractWorkItemIdsFromRefs)
+const mockedExtractPrId = vi.mocked(AzureDevOpsService.extractPrId)
+const mockedGetPullRequestWorkItemIds = vi.mocked(AzureDevOpsService.getPullRequestWorkItemIds)
 
 const mockCommits: AzureDevOpsCommit[] = [
   {
@@ -39,6 +43,8 @@ describe('useCommitExplorer', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
+    mockedExtractPrId.mockReturnValue(null)
+    mockedExtractWorkItemIdsFromRefs.mockReturnValue([])
   })
 
   it('should initialize with default values', () => {
@@ -116,6 +122,10 @@ describe('useCommitExplorer', () => {
 
       mockedFetchCommitsForExplorer.mockResolvedValueOnce({ commits: mockCommits, totalCount: 2 })
       mockedGetAllTags.mockResolvedValueOnce([])
+      mockedExtractWorkItemIds.mockReturnValueOnce([1])
+      mockedExtractWorkItemIdsFromRefs
+        .mockReturnValueOnce([1])
+        .mockReturnValueOnce([])
       mockedGetWorkItemsByIds.mockResolvedValueOnce(mockWorkItems)
 
       const composable = useCommitExplorer()
@@ -127,6 +137,102 @@ describe('useCommitExplorer', () => {
       expect(composable.commits.value[0].workItems[0].title).toBe('Fix login button not working')
       expect(composable.commits.value[0].workItems[0].team).toBe('Team A')
       expect(composable.commits.value[1].workItems).toEqual([])
+    })
+
+    it('should enrich merge commits with work items from PR API', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const mergeCommit: AzureDevOpsCommit[] = [
+        {
+          commitId: 'abc123def456789',
+          comment: 'Merged PR 1234: Feature',
+          author: { name: 'John Doe', email: 'john@example.com', date: '2024-01-15T10:00:00Z' },
+          workItems: [{ id: '1', url: 'https://dev.azure.com/workitems/1' }],
+        },
+      ]
+
+      const prWorkItems: WorkItem[] = [
+        { id: 1, title: 'Story 1', type: 'User Story', state: 'Active', team: 'Team A', webUrl: 'https://dev.azure.com/wi/1' },
+        { id: 2, title: 'Story 2', type: 'User Story', state: 'Active', team: 'Team A', webUrl: 'https://dev.azure.com/wi/2' },
+        { id: 3, title: 'Story 3', type: 'User Story', state: 'Active', team: 'Team B', webUrl: 'https://dev.azure.com/wi/3' },
+      ]
+
+      mockedFetchCommitsForExplorer.mockResolvedValueOnce({ commits: mergeCommit, totalCount: 1 })
+      mockedGetAllTags.mockResolvedValueOnce([])
+      mockedExtractWorkItemIds.mockReturnValueOnce([1])
+      mockedExtractWorkItemIdsFromRefs.mockReturnValueOnce([1])
+      mockedExtractPrId.mockReturnValue(1234)
+      mockedGetPullRequestWorkItemIds.mockResolvedValueOnce([1, 2, 3])
+      mockedGetWorkItemsByIds.mockResolvedValueOnce(prWorkItems)
+
+      const composable = useCommitExplorer()
+      await composable.load()
+
+      expect(composable.commits.value[0].workItems).toHaveLength(3)
+      const ids = composable.commits.value[0].workItems.map((wi) => wi.id)
+      expect(ids).toEqual([1, 2, 3])
+    })
+
+    it('should not duplicate work items from commit API and PR API', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const mergeCommit: AzureDevOpsCommit[] = [
+        {
+          commitId: 'abc123def456789',
+          comment: 'Merged PR 1234: Feature',
+          author: { name: 'John Doe', email: 'john@example.com', date: '2024-01-15T10:00:00Z' },
+          workItems: [{ id: '1', url: 'https://dev.azure.com/workitems/1' }],
+        },
+      ]
+
+      const allWorkItems: WorkItem[] = [
+        { id: 1, title: 'Story 1', type: 'User Story', state: 'Active', team: 'Team A', webUrl: 'https://dev.azure.com/wi/1' },
+        { id: 2, title: 'Story 2', type: 'User Story', state: 'Active', team: 'Team A', webUrl: 'https://dev.azure.com/wi/2' },
+      ]
+
+      mockedFetchCommitsForExplorer.mockResolvedValueOnce({ commits: mergeCommit, totalCount: 1 })
+      mockedGetAllTags.mockResolvedValueOnce([])
+      mockedExtractWorkItemIds.mockReturnValueOnce([1])
+      mockedExtractWorkItemIdsFromRefs.mockReturnValueOnce([1])
+      mockedExtractPrId.mockReturnValue(1234)
+      mockedGetPullRequestWorkItemIds.mockResolvedValueOnce([1, 2])
+      mockedGetWorkItemsByIds.mockResolvedValueOnce(allWorkItems)
+
+      const composable = useCommitExplorer()
+      await composable.load()
+
+      expect(composable.commits.value[0].workItems).toHaveLength(2)
+      expect(composable.commits.value[0].workItems[0].id).toBe(1)
+      expect(composable.commits.value[0].workItems[1].id).toBe(2)
+    })
+
+    it('should surface warning when PR work item fetch fails', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const mergeCommit: AzureDevOpsCommit[] = [
+        {
+          commitId: 'abc123def456789',
+          comment: 'Merged PR 1234: Feature',
+          author: { name: 'John Doe', email: 'john@example.com', date: '2024-01-15T10:00:00Z' },
+        },
+      ]
+
+      mockedFetchCommitsForExplorer.mockResolvedValueOnce({ commits: mergeCommit, totalCount: 1 })
+      mockedGetAllTags.mockResolvedValueOnce([])
+      mockedExtractWorkItemIds.mockReturnValueOnce([])
+      mockedExtractPrId.mockReturnValue(1234)
+      mockedGetPullRequestWorkItemIds.mockRejectedValueOnce(new Error('PR not found'))
+      mockedGetWorkItemsByIds.mockResolvedValueOnce([])
+
+      const composable = useCommitExplorer()
+      await composable.load()
+
+      expect(composable.warnings.value).toHaveLength(1)
+      expect(composable.warnings.value[0]).toContain('1 pull request(s)')
+      expect(composable.error.value).toBeNull()
     })
 
     it('should handle API errors', async () => {
@@ -222,6 +328,7 @@ describe('useCommitExplorer', () => {
       expect(composable.commits.value).toEqual([])
       expect(composable.isLoading.value).toBe(false)
       expect(composable.error.value).toBeNull()
+      expect(composable.warnings.value).toEqual([])
     })
 
     it('should clear tags cache on reset', async () => {

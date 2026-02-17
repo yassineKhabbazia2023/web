@@ -452,6 +452,62 @@ describe('AzureDevOpsService', () => {
     })
   })
 
+  describe('extractPrId', () => {
+    it('extracts PR ID from merge commit comment', () => {
+      const result = AzureDevOpsService.extractPrId('Merged PR 1234: Title of the PR')
+
+      expect(result).toBe(1234)
+    })
+
+    it('returns null for non-merge commit comments', () => {
+      const result = AzureDevOpsService.extractPrId('feat: add new feature')
+
+      expect(result).toBeNull()
+    })
+
+    it('returns null for empty comment', () => {
+      const result = AzureDevOpsService.extractPrId('')
+
+      expect(result).toBeNull()
+    })
+
+    it('extracts PR ID from multiline merge commit comment', () => {
+      const result = AzureDevOpsService.extractPrId('Merged PR 5678: Title\n\nRelated work items: #123')
+
+      expect(result).toBe(5678)
+    })
+  })
+
+  describe('extractWorkItemIdsFromRefs', () => {
+    it('extracts numeric IDs from work item refs', () => {
+      const refs = [
+        { id: '123', url: 'https://dev.azure.com/.../123' },
+        { id: '456', url: 'https://dev.azure.com/.../456' },
+      ]
+
+      const result = AzureDevOpsService.extractWorkItemIdsFromRefs(refs)
+
+      expect(result).toEqual([123, 456])
+    })
+
+    it('returns empty array for empty refs', () => {
+      const result = AzureDevOpsService.extractWorkItemIdsFromRefs([])
+
+      expect(result).toEqual([])
+    })
+
+    it('skips refs with invalid URLs', () => {
+      const refs = [
+        { id: '123', url: 'https://dev.azure.com/.../123' },
+        { id: 'bad', url: 'https://dev.azure.com/.../' },
+      ]
+
+      const result = AzureDevOpsService.extractWorkItemIdsFromRefs(refs)
+
+      expect(result).toEqual([123])
+    })
+  })
+
   describe('extractWorkItemIds', () => {
     it('extracts unique work item IDs from commits', () => {
       const commits: AzureDevOpsCommit[] = [
@@ -510,6 +566,39 @@ describe('AzureDevOpsService', () => {
 
       expect(result).toHaveLength(1)
       expect(result).toContain(123)
+    })
+  })
+
+  describe('getPullRequestWorkItemIds', () => {
+    it('returns work item IDs from PR API', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          value: [
+            { id: '123', url: 'https://dev.azure.com/_apis/wit/workItems/123' },
+            { id: '456', url: 'https://dev.azure.com/_apis/wit/workItems/456' },
+            { id: '789', url: 'https://dev.azure.com/_apis/wit/workItems/789' },
+          ],
+          count: 3,
+        },
+      })
+
+      const result = await AzureDevOpsService.getPullRequestWorkItemIds(mockPat, mockRepository, 1234)
+
+      expect(result).toEqual([123, 456, 789])
+      expect(mockedAxiosGet).toHaveBeenCalledWith(
+        expect.stringContaining('pullRequests/1234/workitems'),
+        expect.any(Object),
+      )
+    })
+
+    it('returns empty array when PR has no work items', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: { value: [], count: 0 },
+      })
+
+      const result = await AzureDevOpsService.getPullRequestWorkItemIds(mockPat, mockRepository, 1234)
+
+      expect(result).toEqual([])
     })
   })
 

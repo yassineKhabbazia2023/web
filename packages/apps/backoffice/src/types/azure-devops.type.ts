@@ -126,6 +126,11 @@ export interface CommitWithDetails {
   tags: string[]
 }
 
+export interface AzureDevOpsPullRequestWorkItemsResponse {
+  value: AzureDevOpsWorkItemRef[]
+  count: number
+}
+
 export interface CommitExplorerPageResult {
   commits: AzureDevOpsCommit[]
   totalCount: number

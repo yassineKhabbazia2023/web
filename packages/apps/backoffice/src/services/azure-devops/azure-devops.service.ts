@@ -3,10 +3,12 @@ import { logger } from '@pulse/toolbox'
 import type {
   AzureDevOpsCommit,
   AzureDevOpsCommitsResponse,
+  AzureDevOpsPullRequestWorkItemsResponse,
   AzureDevOpsRef,
   AzureDevOpsRefsResponse,
   AzureDevOpsRepository,
   AzureDevOpsRepositoriesResponse,
+  AzureDevOpsWorkItemRef,
   AzureDevOpsWorkItemResponse,
   AzureDevOpsWorkItemsBatchResponse,
   CommitExplorerPageResult,
@@ -44,6 +46,11 @@ export class AzureDevOpsService {
   private static buildWorkItemsBatchUrl(): string {
     const { organization, project } = AZURE_DEVOPS_CONFIG
     return `${organization}/${project}/_apis/wit/workitemsbatch`
+  }
+
+  private static buildPullRequestWorkItemsUrl(repository: string, prId: number): string {
+    const { organization, project } = AZURE_DEVOPS_CONFIG
+    return `${organization}/${project}/_apis/git/repositories/${repository}/pullRequests/${prId}/workitems`
   }
 
   private static buildWorkItemWebUrl(workItemId: number): string {
@@ -268,23 +275,51 @@ export class AzureDevOpsService {
     return { commits: allCommits, warnings }
   }
 
+  static extractPrId(comment: string): number | null {
+    const match = /^Merged PR (\d+)/.exec(comment)
+    if (match === null) {
+      return null
+    }
+    return Number.parseInt(match[1], 10)
+  }
+
+  static extractWorkItemIdsFromRefs(refs: AzureDevOpsWorkItemRef[]): number[] {
+    return refs
+      .map((ref) => Number.parseInt(ref.url.split('/').pop() ?? '', 10))
+      .filter((id) => Number.isNaN(id) === false)
+  }
+
   static extractWorkItemIds(commits: AzureDevOpsCommit[]): number[] {
     const ids = new Set<number>()
 
     for (const commit of commits) {
-      if (commit.workItems === undefined) {
-        continue
-      }
-
-      for (const workItem of commit.workItems) {
-        const id = Number.parseInt(workItem.url.split('/').pop() ?? '', 10)
-        if (Number.isNaN(id) === false) {
-          ids.add(id)
-        }
+      for (const id of this.extractWorkItemIdsFromRefs(commit.workItems ?? [])) {
+        ids.add(id)
       }
     }
 
     return Array.from(ids)
+  }
+
+  static async getPullRequestWorkItemIds(
+    pat: string,
+    repository: string,
+    prId: number,
+  ): Promise<number[]> {
+    const params = new URLSearchParams({
+      'api-version': AZURE_DEVOPS_API_VERSION,
+    })
+
+    const response = await axios.get<AzureDevOpsPullRequestWorkItemsResponse>(
+      `${this.buildPullRequestWorkItemsUrl(repository, prId)}?${params}`,
+      { headers: { Authorization: this.getAuthHeader(pat) } },
+    )
+
+    this.validateResponse(response, 'pullRequestWorkItems')
+
+    return response.data.value
+      .map((ref) => Number.parseInt(ref.id, 10))
+      .filter((id) => Number.isNaN(id) === false)
   }
 
   private static async fetchWorkItemsBatch(
