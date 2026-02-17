@@ -79,3 +79,10 @@ export interface OffersRecommendationsResponse {
   total_count: number
   id_offer_response: string
 }
+
+export interface OfferEvaluationRequest {
+  offer_id: string
+  type: string
+  satisfaction: boolean,
+  id_offer_response: string
+}

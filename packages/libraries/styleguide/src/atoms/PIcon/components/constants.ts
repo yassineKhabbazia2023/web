@@ -627,6 +627,18 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
+    name: 'thumbsDown',
+    componentName: 'PIThumbsDown',
+    fileName: 'thumbs-down.svg',
+    category: 'Essentials',
+  },
+  {
+    name: 'thumbsUp',
+    componentName: 'PIThumbsUp',
+    fileName: 'thumbs-up.svg',
+    category: 'Essentials',
+  },
+  {
     name: 'trash',
     componentName: 'PITrash',
     fileName: 'trash.svg',

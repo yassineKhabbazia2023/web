@@ -300,6 +300,7 @@ describe('offers-catalog.composable', () => {
       const {
         filteredOffers,
         aiSearchApiCallStatus,
+        isSmartSearchEnabled,
         loadOffersCatalog,
         searchOffersWithAi,
       } = useOffersCatalog()
@@ -311,6 +312,7 @@ describe('offers-catalog.composable', () => {
       expect(filteredOffers.value.length).toBeGreaterThan(0)
       expect(filteredOffers.value[0].similarityScore).toBeDefined()
       expect(loggerMock.error).not.toHaveBeenCalled()
+      expect(isSmartSearchEnabled.value).toBe(true)
     })
 
     it('should call logger.error when api call fails', async () => {
@@ -340,6 +342,7 @@ describe('offers-catalog.composable', () => {
 
       const {
         aiSearchApiCallStatus,
+        isSmartSearchEnabled,
         loadOffersCatalog,
         searchOffersWithAi,
         resetAiSearch,
@@ -353,6 +356,7 @@ describe('offers-catalog.composable', () => {
       resetAiSearch()
 
       expect(aiSearchApiCallStatus.value).toBe(APICallStatus.IDLE)
+      expect(isSmartSearchEnabled.value).toBe(false)
     })
   })
 })

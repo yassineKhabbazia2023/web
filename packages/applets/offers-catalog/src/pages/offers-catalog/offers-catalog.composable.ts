@@ -20,6 +20,8 @@ export function useOffersCatalog() {
   const aiSearchApiCallStatus = ref<APICallStatus>(APICallStatus.IDLE)
   const catalogDocumentViewerIsOpened = ref(false)
   const offerPdf = ref<Blob|string>('')
+  const offerRecommendationsId = ref<string>('')
+  const isSmartSearchEnabled = ref<boolean>(false)
 
   async function loadOffersCatalog() {
     catalogApiCallStatus.value = APICallStatus.LOADING
@@ -91,10 +93,12 @@ export function useOffersCatalog() {
   }
 
   async function searchOffersWithAi(question: string) {
+    isSmartSearchEnabled.value = true
     aiSearchApiCallStatus.value = APICallStatus.LOADING
     try {
-      const { recommendations } = await getOffersRecommendations(question)
+      const { recommendations, id_offer_response } = await getOffersRecommendations(question)
       const offersById = new Map(offers.value.map((o) => [o.id, o]))
+      offerRecommendationsId.value = id_offer_response
 
       filteredOffers.value = recommendations.flatMap(({ id, similarity_score }) => {
         const offer = offersById.get(Number(id))
@@ -112,6 +116,7 @@ export function useOffersCatalog() {
   }
 
   function resetAiSearch() {
+    isSmartSearchEnabled.value = false
     aiSearchApiCallStatus.value = APICallStatus.IDLE
   }
 
@@ -128,6 +133,8 @@ export function useOffersCatalog() {
     catalogApiCallStatus,
     aiSearchApiCallStatus,
     catalogDocumentViewerIsOpened,
+    isSmartSearchEnabled,
+    offerRecommendationsId,
     loadOffersCatalog,
     setSelectedOffer,
     loadOfferPdf,

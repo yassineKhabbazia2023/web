@@ -51,6 +51,8 @@
     <CatalogCardList
       :offers="filteredOffers"
       :apiCallStatus="catalogApiCallStatus"
+      :isSmartSearchEnabled="isSmartSearchEnabled"
+      :offerRecommendationsId="offerRecommendationsId"
       @select-offer="onSelectOffer"
     />
   </template>
@@ -88,6 +90,8 @@ const {
   catalogApiCallStatus,
   aiSearchApiCallStatus,
   catalogDocumentViewerIsOpened,
+  offerRecommendationsId,
+  isSmartSearchEnabled,
   loadOffersCatalog,
   setSelectedOffer,
   loadOfferPdf,

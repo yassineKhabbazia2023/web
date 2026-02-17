@@ -189,6 +189,8 @@ export type IconName =
 'telephone' |
 'threeDots' |
 'thumbUpDuotone' |
+'thumbsDown' |
+'thumbsUp' |
 'trash' |
 'truck' |
 'truckFront' |

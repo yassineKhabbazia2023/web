@@ -24,10 +24,13 @@
     <CatalogCard
       v-for="({ id, title, shortDescription, tags, similarityScore }, index) in offers"
       :key="index"
+      :offerId="id.toString()"
       :title="title"
       :subtitle="shortDescription"
       :tags="tags"
       :similarityScore="similarityScore"
+      :isSmartSearchEnabled="isSmartSearchEnabled"
+      :offerRecommendationsId="offerRecommendationsId"
       class="cursor-pointer"
       @click="onCardClick(id)"
     />
@@ -44,6 +47,7 @@ import CatalogCard from '../../components/catalog-card/catalog-card.vue'
 defineProps<CatalogCardListProps>()
 const emit = defineEmits<{
   'select-offer': [number]
+  'rate-offer-recommendation': [string, boolean]
 }>()
 
 function onCardClick(id: number) {

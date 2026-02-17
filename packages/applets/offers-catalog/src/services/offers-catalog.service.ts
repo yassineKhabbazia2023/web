@@ -4,6 +4,7 @@ import type {
   OffersCatalogResponse,
   OfferCatalogDetailsResponse,
   OffersRecommendationsResponse,
+  OfferEvaluationRequest,
 } from '../types/offers-catalog.types'
 
 export async function getOffersCatalog() {
@@ -35,4 +36,10 @@ export async function getOffersRecommendations(question: string) {
   const { data } = await commonApi().gateway.post<OffersRecommendationsResponse>(url, { question })
 
   return data
+}
+
+export async function rateOfferRecommendation(request : OfferEvaluationRequest) {
+  const url = `${API_PREFIXES.AI_SERVICES}/recommendations/validation`
+
+  await commonApi().gateway.put(url, request)
 }

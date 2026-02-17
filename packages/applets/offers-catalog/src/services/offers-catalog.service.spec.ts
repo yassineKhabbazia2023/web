@@ -2,7 +2,7 @@ import { getOffersCatalogResponseMock, getOfferMock, getOfferCatalogReferentList
 import { apiGatewayMock } from '@pulse/common/mocks/vitest'
 import { API_PREFIXES } from '@pulse/common/constants'
 
-import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails, getOffersRecommendations } from './offers-catalog.service'
+import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails, getOffersRecommendations, rateOfferRecommendation } from './offers-catalog.service'
 
 const offersCatalogMock = getOffersCatalogResponseMock()
 
@@ -85,6 +85,23 @@ describe('offers-catalog.service', () => {
 
       expect(apiGatewayMock.post).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedBody)
       expect(recommendations).toStrictEqual(recommendationsResponseMock)
+    })
+  })
+
+  describe('rateOfferResults', () => {
+    it('should call api properly', async () => {
+      apiGatewayMock.put.mockResolvedValue(null)
+      const requestMock = {
+        offer_id: 'id',
+        type: 'offer',
+        satisfaction: true,
+        id_offer_response: 'idResponse',
+      }
+
+      await rateOfferRecommendation(requestMock)
+      const expectedUrl = `${API_PREFIXES.AI_SERVICES}/recommendations/validation`
+
+      expect(apiGatewayMock.put).toHaveBeenCalledExactlyOnceWith(expectedUrl, requestMock)
     })
   })
 })

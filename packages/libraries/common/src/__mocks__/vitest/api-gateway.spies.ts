@@ -4,10 +4,12 @@ export const apiGatewayGetMock: Mock = vi.fn()
 export const apiGatewayPatchMock: Mock = vi.fn()
 export const apiGatewayDeleteMock: Mock = vi.fn()
 export const apiGatewayPostMock: Mock = vi.fn()
+export const apiGatewayPutMock: Mock = vi.fn()
 
 export const apiGatewayMock = {
   get: apiGatewayGetMock,
   delete: apiGatewayDeleteMock,
   patch: apiGatewayPatchMock,
   post: apiGatewayPostMock,
+  put: apiGatewayPutMock,
 }
