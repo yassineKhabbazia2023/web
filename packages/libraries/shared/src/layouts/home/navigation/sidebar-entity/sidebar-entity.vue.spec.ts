@@ -1,3 +1,4 @@
+import { ref } from 'vue'
 import type { VueWrapper } from '@vue/test-utils'
 import { flushPromises, mount } from '@vue/test-utils'
 import { getMockedFavoriteEntities, getHasPermissionMocked } from '@pulse/common/mocks'
@@ -5,23 +6,40 @@ import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/v
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { CustomerPermission } from '@pulse/common/enums'
 
-import type { SidebarEntityMenuProps } from './sidebar-entity-menu.type'
-import SidebarEntityMenu from '.'
+import SidebarEntity from '.'
 
 const favoriteEntityId: number = getMockedFavoriteEntities()[0].accountId
 
-const defaultProps: SidebarEntityMenuProps = {
-  currentEntityId: favoriteEntityId,
-  isCollab: false,
-  isSingleEntity: false,
-}
+const isCollabMock = vi.hoisted(() => ({ value: false }))
+
+vi.mock('@pulse/common/stores', () => ({
+  useUserStore: () => ({
+    get isCollab() {
+      return isCollabMock.value
+    },
+  }),
+}))
+
+const isEntityViewRef = ref(true)
+const currentEntityIdRef = ref<number>(0)
+
+vi.mock('@pulse/shared/composables', async (importOriginal) => {
+  const original = await importOriginal<Record<string, unknown>>()
+  return {
+    ...original,
+    useCurrentEntity: () => ({
+      isEntityView: isEntityViewRef,
+      currentEntityId: currentEntityIdRef,
+    }),
+  }
+})
 
 const resolveSpy = vi.hoisted(() => vi.fn())
 vi.mock('vue-router', () => ({
   useRoute: () => ({
     fullPath: '/launcher',
     name: 'homepage',
-    params: {},
+    params: { entityId: String(favoriteEntityId) },
   }),
   useRouter: () => ({
     resolve: resolveSpy,
@@ -56,17 +74,16 @@ vi.mock('@pulse/shared/managers', () => ({
   },
 }))
 
-const createWrapper = (props = defaultProps) => {
-  const wrapper = mount(SidebarEntityMenu, {
-    props,
-  })
-
-  return wrapper
+const createWrapper = () => {
+  return mount(SidebarEntity)
 }
 
-describe('sidebarEntityMenu', () => {
+describe('sidebarEntity', () => {
   let wrapper: VueWrapper<any>
   beforeEach(() => {
+    isCollabMock.value = false
+    isEntityViewRef.value = true
+    currentEntityIdRef.value = favoriteEntityId
     resolveSpy.mockResolvedValue({
       path: '',
     })
@@ -78,6 +95,19 @@ describe('sidebarEntityMenu', () => {
       title: 'shared.sidebar.entity',
       iconLeftName: 'building',
       display: true,
+    })
+  })
+
+  describe('visibility', () => {
+    it('should not render when isEntityView is false', () => {
+      isEntityViewRef.value = false
+      wrapper = createWrapper()
+      expect(wrapper.find('[data-testid="sidenav-entity-menu"]').exists()).toBe(false)
+    })
+
+    it('should render when isEntityView is true', () => {
+      wrapper = createWrapper()
+      expect(wrapper.find('[data-testid="sidenav-entity-menu"]').exists()).toBe(true)
     })
   })
 
@@ -142,40 +172,18 @@ describe('sidebarEntityMenu', () => {
   describe('classes behavior', () => {
     describe('user is a collab', () => {
       it('should display the collab classes for collab user', () => {
-        const props = {
-          ...defaultProps,
-          isCollab: true,
-        }
-        wrapper = createWrapper(props)
-        expect(wrapper.classes()).toContain('sidenav-entity-menu--is-collab')
-      })
-      it('should NOT display as a single-entity navbar when the collab user is single entity', () => {
-        const props = {
-          ...defaultProps,
-          isCollab: true,
-          isSingleEntity: true,
-        }
-        wrapper = createWrapper(props)
-        expect(wrapper.classes()).not.toContain('sidenav-entity-menu--is-single-entity')
+        isCollabMock.value = true
+        wrapper = createWrapper()
+        const menu = wrapper.find('[data-testid="sidenav-entity-menu"]')
+        expect(menu.classes()).toContain('sidebar-entity--is-collab')
       })
     })
     describe('user is NOT a collab', () => {
       it('should NOT display the collab classes for customer', () => {
-        const props = {
-          ...defaultProps,
-          isCollab: false,
-        }
-        wrapper = createWrapper(props)
-        expect(wrapper.classes()).not.toContain('sidenav-entity-menu--is-collab')
-      })
-      it('should display as a single-entity navbar when the customer user is single entity', () => {
-        const props = {
-          ...defaultProps,
-          isCollab: false,
-          isSingleEntity: true,
-        }
-        wrapper = createWrapper(props)
-        expect(wrapper.classes()).toContain('sidenav-entity-menu--is-single-entity')
+        isCollabMock.value = false
+        wrapper = createWrapper()
+        const menu = wrapper.find('[data-testid="sidenav-entity-menu"]')
+        expect(menu.classes()).not.toContain('sidebar-entity--is-collab')
       })
     })
   })

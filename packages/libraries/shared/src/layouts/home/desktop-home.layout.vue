@@ -24,12 +24,14 @@
       </PCHeader>
       <PContainer class="aside-main-container">
         <PAside class="aside-container">
-          <Sidebar
-            class="sidebar-container"
-            :current-entity="currentEntity"
-            :favorite-entities="favoriteEntities"
-            :user-config="userConfig"
-          />
+          <div class="sidebar-container flex position--relative">
+            <Sidebar
+              :current-entity="currentEntity"
+              :favorite-entities="favoriteEntities"
+              :user-config="userConfig"
+            />
+            <SidebarEntity />
+          </div>
         </PAside>
         <PContainer
           class="main-container"
@@ -51,7 +53,7 @@ import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import UserProfile from './user-profile'
 import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 import { DesktopHeader } from './header'
-import { Sidebar } from './navigation'
+import { Sidebar, SidebarEntity } from './navigation'
 import type { HomeLayoutProps } from './home.layout.types'
 
 const router = useRouter()
@@ -88,9 +90,7 @@ const shouldRemovePadding = computed(() => {
 
   .aside-container .sidebar-container {
     height: 100vh;
-    padding-right: 50px;
-    position: relative;
-      z-index: 10;
+    z-index: 10;
   }
 
   .main-container {

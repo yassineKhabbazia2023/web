@@ -1,6 +1,6 @@
 <template>
   <div class="entity-wrapper flex flex--align-items-center">
-    <SidebarEntityItem
+    <EntityItem
       :tooltipContent="entityTooltipContent"
       :tooltipDisabled="hideTooltip"
       :class="{ 'entity-wrapper--selected': selected }"
@@ -29,7 +29,7 @@
           </p>
         </div>
       </template>
-    </SidebarEntityItem>
+    </EntityItem>
   </div>
 </template>
 
@@ -39,7 +39,7 @@ import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import type { EntityAvatarProps } from './entity-avatar.type'
 import type { Entity } from '@pulse/common/types'
 import { RouteName, RouteParam } from '@pulse/common/enums'
-import SidebarEntityItem from '../sidebar-entity-item'
+import EntityItem from '../entity-item'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 const props = defineProps<EntityAvatarProps>()

@@ -1,10 +1,13 @@
 <template>
   <div
+    v-if="isEntityView"
     :class="[
-      'sidenav-entity-menu',
-      { 'sidenav-entity-menu--collapsed': isMenuCollapsed },
-      { 'sidenav-entity-menu--is-collab': isCollab },
-      { 'sidenav-entity-menu--is-single-entity': canBeConsideredSingleEntity },
+      'sidebar-entity',
+      'position--relative',
+      'flex--shrink-0',
+      'height--100',
+      { 'sidebar-entity--collapsed': isMenuCollapsed },
+      { 'sidebar-entity--is-collab': userStore.isCollab === true },
     ]"
     data-testid="sidenav-entity-menu"
     @mouseover="isMenuCollapsed = false"
@@ -14,10 +17,9 @@
       :pDefaultActive="isMenuItemActive"
       :pCollapse="isMenuCollapsed"
       pRouter
-      class="sidenav-entity-menu__main-menu"
+      class="sidebar-entity__main-menu"
       data-testid="sidenav-menu"
     >
-      <!-- Home menu item -->
       <PMenuItem
         :pIndex="RouteName.HOMEPAGE"
         :pRoute="{ name: RouteName.HOMEPAGE }"
@@ -28,20 +30,18 @@
           {{ t('shared.sidebar.home') }}
         </template>
       </PMenuItem>
-      <!-- Entity overview menu item -->
       <PMenuItem
         v-if="entityOverviewMenuItem"
         :pIndex="entityOverviewMenuItem.routeName"
         :pRoute="{ name: entityOverviewMenuItem.routeName, params: { entityId: currentEntityId } }"
         :pIconLeftName="entityOverviewMenuItem.icon"
         data-testid="menu-item"
-        :class="{ 'sidenav-entity-menu__item-menu': entityOverviewPath }"
+        :class="{ 'sidebar-entity__item-menu': entityOverviewPath }"
       >
         <template #title>
           {{ t(entityOverviewMenuItem.title) }}
         </template>
       </PMenuItem>
-      <!-- Other registered menu items -->
       <PMenuItem
         v-for="menuItem in menuItems"
         :key="menuItem.routeName"
@@ -49,7 +49,7 @@
         :pRoute="{ name: menuItem.routeName, params: { entityId: currentEntityId } }"
         :pIconLeftName="menuItem.icon"
         data-testid="menu-item"
-        :class="{ 'sidenav-entity-menu__item-menu': menuItem.hasSubmenuSelected === true }"
+        :class="{ 'sidebar-entity__item-menu': menuItem.hasSubmenuSelected === true }"
         @click="trackNavigationFeature(menuItem)"
       >
         <template #title>
@@ -61,101 +61,74 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { RouteName } from '@pulse/common/enums'
 import { PMenuItem, PMenu } from '@pulse/styleguide/components'
-import type { SidebarEntityMenuProps } from './sidebar-entity-menu.type'
 import { NavigationManager } from '@pulse/shared/managers'
-import { useMenuContext, useNavigationTracking } from '@pulse/shared/composables'
+import { useCurrentEntity, useMenuContext, useNavigationTracking } from '@pulse/shared/composables'
 import { RouterHelpers } from '@pulse/common/helpers'
+import { useUserStore } from '@pulse/common/stores'
 
 const route = useRoute()
+const userStore = useUserStore()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'global',
 })
 
-const props = defineProps<SidebarEntityMenuProps>()
-
 const isMenuCollapsed = ref(true)
+const { currentEntityId, isEntityView } = useCurrentEntity()
 
 const isMenuItemActive = computed<string>(() => route.name as string)
 const entityOverviewPath = computed(
   () => RouterHelpers.hasProvidedAncestor({ route, ancestorName: RouteName.ENTITY_OVERVIEW }),
 )
 
-const canBeConsideredSingleEntity = computed(() => {
-  return props.isSingleEntity === true
-  // collab can't be considered single entity users, even if they have only one entity
-  && props.isCollab === false
-})
-
-const { menuContext, refreshBIReports } = useMenuContext(() => props.currentEntityId)
+const { menuContext, refreshBIReports } = useMenuContext(currentEntityId)
 const { trackNavigationFeature } = useNavigationTracking()
 
-// Refresh BI reports permission on mount and when entity changes
-watch(() => route.params[RouteParam.ENTITY_ID], () => {
-  refreshBIReports()
-})
-
-onMounted(() => {
-  refreshBIReports()
-})
-
-// Get menu items from the manager
 const menuItems = computed(() => NavigationManager.getMenuItems(menuContext.value))
-
-// Get folder or entity menu item from the manager
 const entityOverviewMenuItem = computed(() => NavigationManager.getEntityOverviewMenuItem(menuContext.value))
+
+// Refresh BI reports permission on mount and when entity changes
+watch(currentEntityId, () => {
+  refreshBIReports()
+}, { immediate: true })
 </script>
 
 <style lang="scss" scoped>
 $sidenav-collapsed-width: 50px;
 $sidenav-opened-width: 200px;
 
-.sidenav-entity-menu {
-  $self: &;
+.sidebar-entity {
   --smooth-transition: 0.3s ease;
 
   z-index: 8;
-  position: absolute;
-  // 100% is the full width of .sidebar-container
-  // That way the sidenav always sticks to the right part of the nav menu
-  left: calc(100% - #{$sidenav-collapsed-width});
-  top: 0;
   width: $sidenav-opened-width;
-  height: 100%;
+  margin-right: calc($sidenav-collapsed-width - $sidenav-opened-width);
   background-color: var(--p-tranquil-50);
-  transition: width var(--smooth-transition);
+  transition: width var(--smooth-transition), margin-right var(--smooth-transition);
 
   &--collapsed {
     width: $sidenav-collapsed-width;
+    margin-right: 0;
   }
 
   &__main-menu {
-    // Same margin as left sidebar
-    // section - left section gap - left section first item height  - left section item margin-top
     margin-top: calc(var(--p-header-height) + 50px);
   }
 
   &__item-menu {
-    // customer colors (collab have their own class .sidenav-entity-menu--is-collab below)
     background-color: var(--p-jungle-100);
-    // we need to override the default border color with !important
     border-color: var(--p-jungle-400) !important;
-  }
-
-  &--is-single-entity {
-    left: 0;
   }
 }
 </style>
 
 <style lang="scss">
-// context specific design system overrides
-.sidenav-entity-menu--is-collab {
+.sidebar-entity--is-collab {
   background-color: var(--p-persian-100) !important;
 
   .p-menu.el-menu {
@@ -167,14 +140,11 @@ $sidenav-opened-width: 200px;
       }
 
       &.is-active,
-      &.sidenav-entity-menu__item-menu
-       {
+      &.sidebar-entity__item-menu {
         background-color: rgba(var(--p-black-rock-700-rgb), 0.2);
-        // we need to override the default and customer border color with !important
         border-color: var(--p-black-rock-700) !important;
       }
     }
   }
 }
 </style>
-

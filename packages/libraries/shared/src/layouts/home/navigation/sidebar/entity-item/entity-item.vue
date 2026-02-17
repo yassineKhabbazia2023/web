@@ -17,11 +17,11 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { PButton, PTooltip } from '@pulse/styleguide/components'
-import type { SidebarEntityItemProps } from './sidebar-entity-item.type'
+import type { EntityItemProps } from './entity-item.type'
 
 const router = useRouter()
 
-const props = defineProps<SidebarEntityItemProps>()
+const props = defineProps<EntityItemProps>()
 const emit = defineEmits<{
   'item-clicked': []
 }>()
