@@ -24,7 +24,8 @@
       </PCHeader>
 
       <PContainer class="mobile-home-layout__main padding--4">
-        <router-view />
+        <ContentLoader v-show="isContentLoading === true" />
+        <router-view v-show="isContentLoading === false" />
       </PContainer>
     </PContainer>
 
@@ -37,12 +38,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { storeToRefs } from 'pinia'
 import { PCHeader, PContainer } from '@pulse/styleguide/components'
+import { ContentLoader } from '@pulse/shared/components'
+import { useLoadingStore } from '@pulse/common/stores'
 import { MobileHeader } from './header'
 import { MobileBottomNav, MobileUserMenu } from './navigation'
 import type { MobileHomeLayoutProps } from './home.layout.types'
 import { MOBILE_BOTTOM_NAV_HEIGHT } from './mobile-home.const'
 
+const { isContentLoading } = storeToRefs(useLoadingStore())
 const hasUserMenuOpened = ref(false)
 
 defineProps<MobileHomeLayoutProps>()

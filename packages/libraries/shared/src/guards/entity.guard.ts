@@ -3,7 +3,7 @@ import type { NavigationGuard } from 'vue-router'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { fetchEntityById } from '@pulse/common/services/entities'
 import type { AccountRow, Entity } from '@pulse/common/types'
-import { useCurrentEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useLoadingStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 
@@ -27,6 +27,9 @@ export const currentEntityGuard: NavigationGuard = async (to, from, next) => {
   }
 
   if (toEntityId !== fromEntityId) {
+    const loadingStore = useLoadingStore()
+    loadingStore.startContentLoading()
+
     try {
       logger.trace('Entity Router Guard - Fetching entity in guard')
       const entity = await fetchEntityById(toEntityId)
@@ -40,6 +43,8 @@ export const currentEntityGuard: NavigationGuard = async (to, from, next) => {
     } catch (error) {
       logger.error(`Entity Router Guard - Error while trying to fetch user entity (${toEntityId})`, error)
       return next({ name: RouteName.ERROR403 })
+    } finally {
+      loadingStore.stopContentLoading()
     }
   }
 

@@ -39,7 +39,8 @@
             'main-container--no-paddings': shouldRemovePadding,
           }"
         >
-          <router-view />
+          <ContentLoader v-show="isContentLoading === true" />
+          <router-view v-show="isContentLoading === false" />
         </PContainer>
       </PContainer>
     </PContainer>
@@ -49,7 +50,10 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
+import { ContentLoader } from '@pulse/shared/components'
+import { useLoadingStore } from '@pulse/common/stores'
 import UserProfile from './user-profile'
 import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 import { DesktopHeader } from './header'
@@ -57,6 +61,7 @@ import { Sidebar, SidebarEntity } from './navigation'
 import type { HomeLayoutProps } from './home.layout.types'
 
 const router = useRouter()
+const { isContentLoading } = storeToRefs(useLoadingStore())
 
 const hasUserProfileDrawerOpened = ref(false)
 

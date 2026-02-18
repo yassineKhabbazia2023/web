@@ -14,7 +14,7 @@ const accountRows = getAllMockAccountRows()
 const entities = getMockedEntities()
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 
-import { useCurrentEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useLoadingStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { RouteLocationNormalizedGeneric } from 'vue-router'
@@ -80,6 +80,55 @@ describe('verify entity change', () => {
 
     expect(fetchEntityByIdMock).toHaveBeenCalled()
     expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalled()
+  })
+
+  it('calls startContentLoading and stopContentLoading when fetching entity', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
+    const loadingStoreMock = getStoreMock(useLoadingStore)
+
+    const from = createMockedRoute('')
+    const to = createMockedRoute(entities[0].accountId.toString())
+    await currentEntityGuard(to, from, nextMock)
+
+    expect(loadingStoreMock.startContentLoading).toHaveBeenCalled()
+    expect(loadingStoreMock.stopContentLoading).toHaveBeenCalled()
+  })
+
+  it('does not call content loading when route does not have entity id', async () => {
+    const loadingStoreMock = getStoreMock(useLoadingStore)
+
+    const from = createMockedRoute('123')
+    const to = createMockedRoute('')
+    await currentEntityGuard(to, from, nextMock)
+
+    expect(loadingStoreMock.startContentLoading).not.toHaveBeenCalled()
+  })
+
+  it('does not call content loading when entity is already selected', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
+    const loadingStoreMock = getStoreMock(useLoadingStore)
+
+    const from = createMockedRoute(entities[0].accountId.toString())
+    const to = createMockedRoute(entities[1].accountId.toString())
+    await currentEntityGuard(to, from, nextMock)
+
+    expect(loadingStoreMock.startContentLoading).not.toHaveBeenCalled()
+  })
+
+  it('calls stopContentLoading when entity fetch fails', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
+    const loadingStoreMock = getStoreMock(useLoadingStore)
+    fetchEntityByIdMock.mockRejectedValueOnce(new Error('Network error'))
+
+    const from = createMockedRoute('')
+    const to = createMockedRoute(entities[0].accountId.toString())
+    await currentEntityGuard(to, from, nextMock)
+
+    expect(loadingStoreMock.startContentLoading).toHaveBeenCalled()
+    expect(loadingStoreMock.stopContentLoading).toHaveBeenCalled()
   })
 })
 

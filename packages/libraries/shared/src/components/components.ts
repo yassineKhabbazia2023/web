@@ -1,4 +1,5 @@
 export { default as ErrorFooterContent } from './error-footer-content/error-footer-content.vue'
+export { default as ContentLoader } from './content-loader/content-loader.vue'
 export { default as FullPageLoader } from './full-page-loader/full-page-loader.vue'
 export { default as LegalLinks } from './legal-links/legal-links.vue'
 export { default as PasswordFields } from './password-fields'
