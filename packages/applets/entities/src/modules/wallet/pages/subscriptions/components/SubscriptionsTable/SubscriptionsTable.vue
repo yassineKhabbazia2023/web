@@ -199,7 +199,7 @@ const getStatusDetails = (status: string): StatusDetails => {
   }
 }
 
-const validateSubscription = async (subscriptionId: number, offer: SubscriptionRequest['offer']) => {
+const validateSubscription = async (subscriptionId: number, offer: SubscriptionRequest['offer'], statusText: string) => {
   const selectedPlan = OfferPlanManager.getSelectedPlan(offer.plans)
 
   isActionInProgress.value = true
@@ -211,6 +211,7 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'succeeded',
       subscription_complete_plan: selectedPlan?.planName,
+      subscription_complete_statut: statusText,
     })
     AmplitudeService.track('Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',
@@ -225,6 +226,7 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'failed',
       subscription_complete_plan: selectedPlan?.planName,
+      subscription_complete_statut: statusText,
     })
     AmplitudeService.track('Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',
@@ -236,12 +238,12 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
 }
 
 const onClickToolboxItem = async (action: string, row: any) => {
-  const { subscriptionId, offer } = row
+  const { subscriptionId, offer, status } = row
 
   if (action === 'consult') {
     emit('consult', subscriptionId)
   } else if (action === 'validate') {
-    await validateSubscription(subscriptionId, offer)
+    await validateSubscription(subscriptionId, offer, getStatusDetails(status).text)
   }
 }
 

@@ -12,7 +12,7 @@ import SubscriptionsTable from '.'
 
 const userStoreMock = getStoreMock(useUserStore)
 
-const { subscriptionId, offer } = subscriptionRequestMock[0]
+const { subscriptionId, offer, status } = subscriptionRequestMock[0]
 const { mockValidateSubscriptionRequest, mockFetchSubscriptionRequests } = vi.hoisted(() => ({
   mockValidateSubscriptionRequest: vi.fn(() => Promise.resolve()),
   mockFetchSubscriptionRequests: vi.fn(() => Promise.resolve(subscriptionRequestMock)),
@@ -134,7 +134,7 @@ describe('subscriptionsTable', () => {
     wrapper = mount(SubscriptionsTable)
     await flushPromises()
 
-    wrapper.vm.onClickToolboxItem('validate', { subscriptionId, offer })
+    wrapper.vm.onClickToolboxItem('validate', { subscriptionId, offer, status })
     await flushPromises()
 
     expect(mockValidateSubscriptionRequest).toHaveBeenCalledOnce()
@@ -144,6 +144,7 @@ describe('subscriptionsTable', () => {
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'succeeded',
       subscription_complete_plan: 'MEG Premium',
+      subscription_complete_statut: 'To validate',
     })
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',
@@ -160,7 +161,7 @@ describe('subscriptionsTable', () => {
     wrapper = mount(SubscriptionsTable)
     await flushPromises()
 
-    wrapper.vm.onClickToolboxItem('validate', { subscriptionId, offer })
+    wrapper.vm.onClickToolboxItem('validate', { subscriptionId, offer, status })
     await flushPromises()
 
     expect(spyTrackAmplitude).toHaveBeenCalledTimes(2)
@@ -169,6 +170,7 @@ describe('subscriptionsTable', () => {
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'failed',
       subscription_complete_plan: 'MEG Premium',
+      subscription_complete_statut: 'To validate',
     })
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Started', {
       onboarding_start_localisation: 'MOD screen',
