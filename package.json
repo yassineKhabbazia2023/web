@@ -11,10 +11,10 @@
     "packages/apps/*"
   ],
   "engines": {
-    "node": ">=20",
-    "npm": ">=10"
+    "node": ">=24",
+    "npm": ">=11"
   },
-  "packageManager": "npm@10.0.0",
+  "packageManager": "npm@11.0.0",
   "scripts": {
     "audit": "npm audit --registry=https://registry.npmjs.org/ --audit-level=high --omit=dev",
     "audit:fix": "npm audit fix --registry=https://registry.npmjs.org/ --audit-level=high --omit=dev",
