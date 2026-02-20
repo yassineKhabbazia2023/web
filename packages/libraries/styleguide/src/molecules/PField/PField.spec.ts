@@ -9,7 +9,7 @@ import PField from '.'
 
 function createWrapper<T>(props: PFieldProps<T>) {
   return shallowMount(PField, {
-    props,
+    props: props as any,
     global: {
       stubs: {
         PDatePicker: {

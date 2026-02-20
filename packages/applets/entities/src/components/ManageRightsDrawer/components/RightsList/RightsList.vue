@@ -21,7 +21,7 @@
         class="margin-bottom--3"
         data-testid="rights-list-category-switch"
         @update:model-value="
-          (state) =>
+          (state: boolean) =>
             handleAuthorizationCategoryUpdate(state, { category, actions })
         "
       />
@@ -30,7 +30,7 @@
         class="rights-list__authorizations"
         data-testid="rights-list-authorizations-checkbox-group"
         @update:model-value="
-          (authorizationActions) =>
+          (authorizationActions: string[]) =>
             handleAuthorizationActionUpdate(authorizationActions, {
               category,
               actions,

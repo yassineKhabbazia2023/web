@@ -12,7 +12,7 @@ export const fetchDocumentsByKeyWordMock: Mock = vi.fn(() => {
   return documentsResponsePayload
 })
 
-export const documentsServiceMock = {
+export const documentsServiceMock: Record<string, Mock> = {
   deleteDocument: vi.fn(),
   deleteDocuments: vi.fn(),
   downloadDocument: vi.fn(),

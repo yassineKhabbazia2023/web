@@ -23,7 +23,9 @@
         <PCheckbox
           v-if="scope.row.emailValue !== null"
           :modelValue="scope.row.emailValue"
-          @update:model-value="(isChecked) => emitUpdateSetting(isChecked, scope.row.id, SettingsType.EMAIL)"
+          @update:model-value="
+            (isChecked: boolean) => emitUpdateSetting(isChecked, scope.row.id, SettingsType.EMAIL)
+          "
         />
         <span v-if="scope.row.emailValue === null">-</span>
       </template>
@@ -38,7 +40,9 @@
         <PCheckbox
           v-if="scope.row.feedcenterValue !== null"
           :modelValue="scope.row.feedcenterValue === true"
-          @update:model-value="(isChecked) => emitUpdateSetting(isChecked, scope.row.id, SettingsType.FEED_CENTER)"
+          @update:model-value="
+            (isChecked: boolean) => emitUpdateSetting(isChecked, scope.row.id, SettingsType.FEED_CENTER)
+          "
         />
         <span v-if="scope.row.feedcenterValue === null">-</span>
       </template>

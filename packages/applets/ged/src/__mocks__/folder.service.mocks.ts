@@ -31,7 +31,7 @@ export const renameFolderFailMock: Mock = vi.fn(() => {
 
 export const tokenValueMock = 'mocked token'
 
-export const folderServiceMock = {
+export const folderServiceMock: Record<string, Mock | string> = {
   tokenValue: tokenValueMock,
   fetchServicesFolders: vi.fn(),
   fetchServicesFoldersSuccess: vi.fn(),

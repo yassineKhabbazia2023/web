@@ -10,7 +10,7 @@ type T = Record<string, any>
 
 function createWrapper(props: PFieldSetProps<T>) {
   return mount(PFieldSet, {
-    props,
+    props: props as any,
   })
 }
 

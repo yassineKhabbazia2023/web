@@ -15,7 +15,7 @@ function getWrapper(specificProps: Partial<PUserActionProps> = {}) {
     ...defaultProps,
     ...specificProps,
   }
-  const wrapper = mount(PUserAction, { props })
+  const wrapper = mount(PUserAction, { props: props as any })
 
   return wrapper
 }
