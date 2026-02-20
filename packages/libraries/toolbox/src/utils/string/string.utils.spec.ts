@@ -1,4 +1,4 @@
-import { formatPhoneNumber, getAlphanumericString } from './string.utils'
+import { formatFrenchPhoneNumber, formatPhoneNumber, getAlphanumericString } from './string.utils'
 
 describe('string.utils', () => {
   describe('getAlphanumericString', () => {
@@ -26,6 +26,36 @@ describe('string.utils', () => {
         expected,
       }) => {
         const result = getAlphanumericString(input)
+        expect(result).toBe(expected)
+      },
+    )
+  })
+
+  describe('formatFrenchPhoneNumber', () => {
+    const testCases = [{
+      input: '0612345678',
+      expected: '+33612345678',
+    }, {
+      input: '0123456789',
+      expected: '+33123456789',
+    }, {
+      input: '+33612345678',
+      expected: '+33612345678',
+    }, {
+      input: undefined,
+      expected: '',
+    }, {
+      input: '',
+      expected: '',
+    }]
+
+    it.each(testCases)(
+      'should format phone number "$input" to "$expected"',
+      ({
+        input,
+        expected,
+      }) => {
+        const result = formatFrenchPhoneNumber(input)
         expect(result).toBe(expected)
       },
     )

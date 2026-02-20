@@ -25,3 +25,18 @@ export function formatPhoneNumber(phone?: string | null): string {
 
   return phone.replace(/(\d{2})(?=\d)/g, '$1 ')
 }
+
+export function formatFrenchPhoneNumber(phone?: string): string {
+  if (phone === undefined || phone === '') {
+    return ''
+  }
+
+  if (phone.startsWith('+33')) {
+    return phone
+  }
+
+  const digits = phone.replaceAll(/\D/g, '')
+  const withoutLeadingZero = digits.startsWith('0') ? digits.slice(1) : digits
+
+  return `+33${withoutLeadingZero}`
+}

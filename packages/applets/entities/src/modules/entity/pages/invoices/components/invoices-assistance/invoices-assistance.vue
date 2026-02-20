@@ -13,21 +13,17 @@
     :pDestroyOnClose="true"
   >
     <iframe
-      :src="sanitizedIframeUrl"
+      :src="iframeUrl"
       class="invoices-assistance__iframe"
     />
   </PDialog>
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton, PDialog } from '@pulse/styleguide/components'
-import { sanitizeUrl } from '@pulse/toolbox/utils/url'
-import { INVOICES_ASSISTANCE_FORM_URL } from '../../invoices.constants'
-import { InvoicesTracking } from '@entities/services/invoices/invoices.tracking.service'
 import type { InvoicesFormStep } from '@entities/modules/entity/enums'
-import { useUserStore } from '@pulse/common/stores'
+import { useInvoicesAssistance } from './invoices-assistance.composable'
 
 const props = defineProps<{
   step: InvoicesFormStep
@@ -35,21 +31,7 @@ const props = defineProps<{
 
 const { t } = useI18n()
 
-const isDialogOpen = ref(false)
-const sanitizedIframeUrl = sanitizeUrl(INVOICES_ASSISTANCE_FORM_URL)
-
-function handleOpenDialog() {
-  if (isCollab.value === true) {
-    return
-  }
-
-  InvoicesTracking.trackAssistanceButtonClick(props.step)
-  isDialogOpen.value = true
-}
-
-const userStore = useUserStore()
-const isCollab = computed(() => userStore.isCollab)
-
+const { isCollab, iframeUrl, isDialogOpen, handleOpenDialog } = useInvoicesAssistance(props.step)
 </script>
 
 <style lang="scss" scoped>
