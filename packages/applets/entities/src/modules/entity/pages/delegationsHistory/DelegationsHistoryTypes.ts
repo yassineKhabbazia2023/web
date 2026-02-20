@@ -1,5 +1,5 @@
 import type { Contact } from '@entities/services/contact/contactTypes'
-import type { Legal } from '@entities/services/account/accountTypes'
+import type { Legal } from '@entities/services/account/account.type'
 
 interface DelegationContact {
   id: Contact['id']

@@ -24,7 +24,7 @@ const mockedPatchGateway = vi.fn(() => {
   })
 })
 
-vi.mock('@entities/services/wallet', () => ({
+vi.mock('@entities/services/collaborator', () => ({
   updateCollaborator: vi.fn(),
 }))
 const spyPNotification = vi.hoisted(() => vi.fn())

@@ -5,7 +5,8 @@ import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedSubscriptionOffers, getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
 import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
 import { getMockedStepNotes } from '@entities/__mocks__/step-notes.mocks'
-import type { SubscriptionOffer, SubscriptionOfferServices, ClientContact } from '@entities/types'
+import type { SubscriptionOffer, SubscriptionOfferServices } from '@entities/types'
+import type { AccountSignatories } from '@entities/services/account/account.type'
 import * as ServicesAccount from '@entities/services/account'
 import * as subscriptionService from '@entities/services/subscription/subscriptionService'
 import {
@@ -16,7 +17,7 @@ import {
 } from '@entities/__mocks__/account-row.mocks'
 import type { UserInfo } from '@pulse/common/types'
 import type { Note, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
-import type { PatchValue } from '@entities/services/PatchRecordService'
+import type { PatchValue } from '@entities/services/patch-record'
 import { AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
@@ -42,7 +43,7 @@ vi.mock('./OffersDrawer.utils', () => ({
   updateAccountOnInput: updateAccountOnInputMock,
 }))
 
-const principalContacts: ClientContact[] = getMockedPrincipalContacts()
+const principalContacts: AccountSignatories[] = getMockedPrincipalContacts()
 const currentUser: UserInfo = getMockedUser()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const notes: Note[] = getMockedStepNotes()
@@ -67,7 +68,7 @@ function getMockedSanitized(url: string) {
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const getAllOffersMock = vi.hoisted(() => vi.fn(() => Promise.resolve(subscriptionOffers)))
-const getPrincipalContactsMock = vi.hoisted(() => vi.fn(() => Promise.resolve(principalContacts)))
+const getAccountSignatoriesMock = vi.hoisted(() => vi.fn(() => Promise.resolve(principalContacts)))
 vi.mock('@entities/services/offer', () => ({
   getAllOffers: getAllOffersMock,
   getOffer: vi.fn((offerId) =>
@@ -76,7 +77,6 @@ vi.mock('@entities/services/offer', () => ({
     ),
   ),
   getOffersBookLink: vi.fn(() => offersBookTestLink),
-  getPrincipalContacts: getPrincipalContactsMock,
 }))
 
 const fetchAccountMock = vi.hoisted(() => vi.fn(() => Promise.resolve(mockedAccount)))
@@ -85,6 +85,7 @@ vi.mock('@entities/services/account', () => ({
   fetchReferentialHubs: vi.fn(() => getMockedReferentialHubs()),
   fetchAccount: fetchAccountMock,
   patchAccount: vi.fn(() => Promise.resolve({})),
+  getAccountSignatories: getAccountSignatoriesMock,
 }))
 
 vi.mock('@pulse/toolbox/utils/url', () => ({
@@ -93,7 +94,7 @@ vi.mock('@pulse/toolbox/utils/url', () => ({
 
 const addPathValueMock = vi.hoisted(() => vi.fn())
 const getPatchOperationsMock = vi.hoisted(() => vi.fn())
-vi.mock('@entities/services/PatchRecordService/PatchRecordService', () => ({
+vi.mock('@entities/services/patch-record/patch-record.service', () => ({
   addPathValue: addPathValueMock,
   getPatchOperations: getPatchOperationsMock,
 }))
@@ -404,7 +405,7 @@ describe('offersDrawer', () => {
       expect(offers.exists()).toBe(true)
       expect(offerSubscription.exists()).toBe(false)
 
-      expect(getPrincipalContactsMock).not.toHaveBeenCalled()
+      expect(getAccountSignatoriesMock).not.toHaveBeenCalled()
       expect(fetchAccountSubscriptionsMock).not.toHaveBeenCalled()
       expect(fetchAccountMock).not.toHaveBeenCalled()
 
@@ -415,7 +416,7 @@ describe('offersDrawer', () => {
 
       expect(offerSubscription.exists()).toBe(false)
 
-      expect(getPrincipalContactsMock).toHaveBeenCalledExactlyOnceWith(mockedAccount.accountId)
+      expect(getAccountSignatoriesMock).toHaveBeenCalledExactlyOnceWith(mockedAccount.accountId)
 
       expect(fetchAccountSubscriptionsMock).toHaveBeenCalledExactlyOnceWith(mockedAccount.accountId)
 

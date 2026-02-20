@@ -90,7 +90,7 @@ import DelegationPreviewList from './components/DelegationPreviewList'
 import CollapsableFoldersList from './components/CollapsableFoldersList'
 import SelectedFoldersList from './components/SelectedFoldersList'
 import type { DelegationDetails } from './models/Delegation'
-import type { AccountsDelegationDetails, AccountsDelegation } from '@entities/services/account/accountTypes'
+import type { AccountsDelegationDetails, AccountsDelegation } from '@entities/services/account/account.type'
 
 const props = defineProps<DelegationDrawerProps>()
 const emit = defineEmits<{

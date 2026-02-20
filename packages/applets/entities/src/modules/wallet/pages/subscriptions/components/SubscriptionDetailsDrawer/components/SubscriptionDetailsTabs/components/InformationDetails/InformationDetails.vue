@@ -65,7 +65,7 @@ import type { FormSection } from '@entities/types'
 import { ProviderName } from '@entities/enums'
 import { SubscriptionDetailsContext } from '@entities/modules/wallet/enums'
 import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
-import { SIREN_FIELD_KEY } from '@entities/modules/entity/components/CompanyInformation/CompanyInformation.const'
+import { SIREN_FIELD_KEY } from '@entities/constants'
 
 const { t } = useI18n({
   inheritLocale: true,

@@ -1,7 +1,7 @@
 import { flushPromises, shallowMount } from '@vue/test-utils'
 import { nextTick } from 'vue'
 import { mockCollabsData } from '@entities/__mocks__/collab-data.mocks'
-import * as walletServices from '@entities/services/wallet'
+import * as collaboratorServices from '@entities/services/collaborator'
 import * as contactServices from '@entities/services/contact'
 import type { ComponentWrapper } from '@entities/types'
 import { CurrentUserManagerMock, getStoreMock } from '@pulse/common/mocks/vitest'
@@ -35,7 +35,7 @@ vi.mock('@entities/services/contact', () => ({
   getContactById: vi.fn(() => Promise.resolve({})),
 }))
 
-vi.mock('@entities/services/wallet', () => ({
+vi.mock('@entities/services/collaborator', () => ({
   getCollaboratorsByIdEntity: vi.fn(() =>
     Promise.resolve({
       items: mockCollabsData,
@@ -111,7 +111,7 @@ describe('collaborators', () => {
     expect(getAddCollaboratorDrawer().props('entityId')).toBe(ENTITY_ID)
 
     const getCollaboratorsSpy = vi.spyOn(
-      walletServices,
+      collaboratorServices,
       'getCollaboratorsByIdEntity',
     )
     // Clear previous calls (from component mount in beforeEach)

@@ -1,9 +1,9 @@
 import { getSubscriptionOffersServiceMock } from '@entities/__mocks__/offer-subscription.mocks'
 import { OffersDrawerStep } from '@entities/enums'
 import { getClientContactMock, getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
-import { ClientContact } from '@entities/types'
+import type { AccountSignatories } from '@entities/services/account/account.type'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
-import { type PatchValue } from '@entities/services/PatchRecordService'
+import { type PatchValue } from '@entities/services/patch-record'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 
@@ -18,7 +18,7 @@ import {
 } from './OffersDrawer.utils'
 
 const addPathValueMock = vi.hoisted(() => vi.fn())
-vi.mock('@entities/services/PatchRecordService/PatchRecordService', () => ({
+vi.mock('@entities/services/patch-record/patch-record.service', () => ({
   addPathValue: addPathValueMock,
 }))
 
@@ -35,7 +35,7 @@ const currentSubscriptionOfferMock = getSubscriptionOffersServiceMock()
 describe('test OffersDrawer.utils', () => {
   describe('getHasNoSignatory', () => {
     describe('when no principal contacts', () => {
-      const principalContacts: ClientContact[] = []
+      const principalContacts: AccountSignatories[] = []
       const tests = [{
         currentStep: OffersDrawerStep.CUSTOMERS,
         approvalRequired: false,
@@ -113,7 +113,7 @@ describe('test OffersDrawer.utils', () => {
 
   describe('signatoryMissingPhone', () => {
     describe('when principal contact has missing phone (empty string)', () => {
-      const principalContactsWithMissingPhone: ClientContact[] = [
+      const principalContactsWithMissingPhone: AccountSignatories[] = [
         getClientContactMock({ mobilePhone: '' }),
       ]
 
@@ -155,7 +155,7 @@ describe('test OffersDrawer.utils', () => {
     })
 
     describe('when principal contact has phone number', () => {
-      const principalContactsWithPhone: ClientContact[] = [
+      const principalContactsWithPhone: AccountSignatories[] = [
         getClientContactMock({ mobilePhone: '0612345678' }),
       ]
 
@@ -185,7 +185,7 @@ describe('test OffersDrawer.utils', () => {
     })
 
     describe('when no principal contacts', () => {
-      const principalContacts: ClientContact[] = []
+      const principalContacts: AccountSignatories[] = []
 
       it('should return false when no contacts exist even for PENNYLANE offer', () => {
         const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
@@ -201,7 +201,7 @@ describe('test OffersDrawer.utils', () => {
     })
 
     describe('when some contacts have missing phone and some have phone', () => {
-      const mixedPrincipalContacts: ClientContact[] = [
+      const mixedPrincipalContacts: AccountSignatories[] = [
         getClientContactMock({ contactId: 1, mobilePhone: '0612345678' }),
         getClientContactMock({ contactId: 2, mobilePhone: '' }),
       ]
@@ -233,7 +233,7 @@ describe('test OffersDrawer.utils', () => {
 
     describe('when mobilePhone is undefined or null', () => {
       it('should return true when mobilePhone is undefined and offerCode is PENNYLANE on CUSTOMERS step', () => {
-        const principalContactsWithUndefinedPhone: ClientContact[] = [
+        const principalContactsWithUndefinedPhone: AccountSignatories[] = [
           getClientContactMock({ mobilePhone: undefined }),
         ]
         const currentSubscriptionOffer = getSubscriptionOffersServiceMock({
@@ -248,7 +248,7 @@ describe('test OffersDrawer.utils', () => {
       })
 
       it('should return true when mobilePhone is null and offerCode is PENNYLANE on CUSTOMERS step', () => {
-        const principalContactsWithNullPhone: ClientContact[] = [
+        const principalContactsWithNullPhone: AccountSignatories[] = [
           getClientContactMock({ mobilePhone: null as unknown as string }),
         ]
         const currentSubscriptionOffer = getSubscriptionOffersServiceMock({

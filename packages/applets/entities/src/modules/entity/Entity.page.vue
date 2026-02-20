@@ -34,7 +34,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore, useCurrentEntityStore, useInvoicesAccessStore } from '@pulse/common/stores'
 import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
-import { getTabAuthorisations, getTabs } from './entity-helper'
+import { getTabAuthorizations, getTabs } from './entity-helper'
 import type { TabName, Tab } from './types'
 
 const { t } = useI18n({
@@ -65,14 +65,14 @@ const tabTitles: Record<TabName, string> = {
   history: t('history'),
   delegationsHistory: t('delegationsHistory'),
 }
-const tabAuthorisations = computed(() =>
-  getTabAuthorisations(
+const tabAuthorizations = computed(() =>
+  getTabAuthorizations(
     isCollab.value ?? false,
     isTabVisible.value,
   ),
 )
 
-const tabsList = computed<Tab[]>(() => getTabs(tabAuthorisations.value, tabTitles))
+const tabsList = computed<Tab[]>(() => getTabs(tabAuthorizations.value, tabTitles))
 
 // Functions
 const handleTabClick = (tab: any) => {

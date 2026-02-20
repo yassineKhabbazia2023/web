@@ -25,18 +25,6 @@ export type contactsRequest = {
   currentPage: number
 }
 
-export interface ClientContact {
-  contactId: number
-  globalContactId?: string
-  firstName: string
-  lastName: string
-  email: string
-  mobilePhone?: string
-  creationDate?: string
-  personaName?: string
-  status?: string
-}
-
 export interface Collab {
   globalContactId: string
   firstName: string

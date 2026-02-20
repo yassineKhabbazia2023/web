@@ -14,8 +14,8 @@ import { getMockedWalletQueryResult, getMockedSearchCriteria } from '@entities/_
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
 import type { ComponentWrapper } from '@entities/types'
 import { loggerMock } from '@pulse/toolbox/mocks'
-import { contactServiceMock, fetchAccountOperationsMock } from '@entities/__mocks__/vitest'
-import type { AccountOperations } from '@entities/services/contact/contactTypes'
+import { registryServiceMock, fetchAccountOperationsMock } from '@entities/__mocks__/vitest'
+import type { AccountOperations } from '@entities/services/registry'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 import { TrackingLocalisation } from '@entities/enums'
 import type { Entity } from '@pulse/common/types'
@@ -34,7 +34,7 @@ vi.mock('@pulse/toolbox', () => ({
   FeatureFlagManager: featureFlagManagerMock,
 }))
 
-vi.mock('@entities/services/contact', () => contactServiceMock)
+vi.mock('@entities/services/registry', () => registryServiceMock)
 
 const putFavoriteMock = vi.fn()
 const getFavoritesMock = vi.fn()
@@ -45,7 +45,7 @@ vi.mock('@pulse/toolbox', () => ({
   FeatureFlagManager: featureFlagManagerMock,
 }))
 
-vi.mock('@entities/services/contact', () => contactServiceMock)
+vi.mock('@entities/services/registry', () => registryServiceMock)
 
 const mockedQueryResult = getMockedWalletQueryResult()
 

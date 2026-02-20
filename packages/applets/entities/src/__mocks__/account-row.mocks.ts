@@ -1,4 +1,4 @@
-import type { PatchOperation } from '@entities/services/PatchRecordService'
+import type { PatchOperation } from '@entities/services/patch-record'
 import type {
   Account,
   AccountRow,
@@ -8,7 +8,7 @@ import type {
   Hub,
   AccountsDelegationDetails,
   AccountsDelegation,
-} from '@entities/services/account/accountTypes'
+} from '@entities/services/account/account.type'
 import { AddressType } from '@entities/enums'
 import type { Address, Office, QueryResult, MockEntityKey } from '@pulse/common/types'
 import {

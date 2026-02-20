@@ -1,10 +1,7 @@
 import { getMockedSubscriptionOffers, getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
-import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
-import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { envVarsMock } from '@pulse/common/mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type {
-  ClientContact,
   SubscriptionOffer,
   SubscriptionOfferServices,
 } from '@entities/types'
@@ -13,12 +10,8 @@ import {
   getAllOffers,
   getOffer,
   getOffersBookLink,
-  getPrincipalContacts,
-  fetchCollaborators,
 } from '.'
 
-const mockedCollaborators = getMockedCollaborators()
-const mockedPrincipalContacts: ClientContact[] = getMockedPrincipalContacts()
 const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
@@ -40,12 +33,6 @@ vi.mock('@pulse/common', () => {
           if (url === `${API_PREFIXES.OFFER}/offers`) {
             return getAllOffersImplementation()
           }
-          if (/\bsignatory\b/i.test(url)) {
-            return getPrincipalContactsImplementation()
-          }
-          if (url === `${API_PREFIXES.OFFER}/contacts`) {
-            return getfetchCollaboratorsImplementation()
-          }
         }),
       },
     }),
@@ -55,20 +42,6 @@ vi.mock('@pulse/common', () => {
 const getAllOffersImplementation = () => {
   return Promise.resolve({
     data: subscriptionOffers,
-  })
-}
-
-const getfetchCollaboratorsImplementation = () => {
-  return Promise.resolve({
-    data: {
-      items: mockedCollaborators,
-    },
-  })
-}
-
-const getPrincipalContactsImplementation = () => {
-  return Promise.resolve({
-    data: mockedPrincipalContacts,
   })
 }
 
@@ -108,14 +81,6 @@ describe('getOffer', () => {
   })
 })
 
-describe('fetchCollaborators', () => {
-  it('should return list of collaborators', async () => {
-    const collaborators = await fetchCollaborators()
-
-    expect(collaborators).toStrictEqual(mockedCollaborators)
-  })
-})
-
 describe('getOffersBookLink', () => {
   it('should return offers book link', async () => {
     const offersBookLink = await getOffersBookLink()
@@ -124,11 +89,3 @@ describe('getOffersBookLink', () => {
   })
 })
 
-describe('getPrincipalContact', () => {
-  it('should return principal contact details', async () => {
-    const accountId = 5
-    const principalContacts = await getPrincipalContacts(accountId)
-
-    expect(principalContacts).toStrictEqual(mockedPrincipalContacts)
-  })
-})

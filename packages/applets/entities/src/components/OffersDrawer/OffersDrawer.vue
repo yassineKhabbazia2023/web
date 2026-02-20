@@ -156,15 +156,15 @@ import {
   getAllOffers,
   getOffer,
   getOffersBookLink,
-  getPrincipalContacts,
 } from '@entities/services/offer'
-import { getPatchOperations } from '@entities/services/PatchRecordService/PatchRecordService'
-import { type PatchValue } from '@entities/services/PatchRecordService'
+import { getPatchOperations } from '@entities/services/patch-record/patch-record.service'
+import { type PatchValue } from '@entities/services/patch-record'
 import { OffersDrawerStep, ProviderName } from '@entities/enums'
 import { OFFERS_DRAWER_STEPS } from './OffersDrawer.const'
 import type { OffersDrawerProps } from './OffersDrawerTypes'
-import type { SelectedProduct, ClientContact, SubscriptionOffer, SubscriptionOfferServices, SubscriptionOfferProvider } from '@entities/types'
-import { fetchAccount, patchAccount, type Account } from '@entities/services/account'
+import type { SelectedProduct, SubscriptionOffer, SubscriptionOfferServices, SubscriptionOfferProvider } from '@entities/types'
+import { fetchAccount, patchAccount, getAccountSignatories, type Account } from '@entities/services/account'
+import type { AccountSignatories } from '@entities/services/account/account.type'
 import {
   addSelectedProduct,
   removeSelectedProduct,
@@ -242,7 +242,7 @@ const selectedPlanId = ref<number | undefined>()
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const knownCollaborators = ref<Contact[]>([])
 const selectedCollaboratorsWithRoles = ref<ContactWithRoles[]>([])
-const principalContacts = ref<ClientContact[]>([])
+const principalContacts = ref<AccountSignatories[]>([])
 const account = ref<Account | undefined>()
 const notes = ref<Note[]>([])
 const isLoadingOffers = ref<boolean>()
@@ -519,7 +519,7 @@ async function initDrawerForCurrentAccount() {
   isLoadingAccount.value = true
   await setSelectedOffer()
   currentStepIndex.value = 0
-  principalContacts.value = await getPrincipalContacts(props.accountId)
+  principalContacts.value = await getAccountSignatories(props.accountId)
   const activeOffers = await fetchAccountSubscriptions(props.accountId)
   activeOfferCodes.value = activeOffers.map((activeOffer) => activeOffer.offer.offerCode)
   account.value = await fetchAccount(props.accountId)

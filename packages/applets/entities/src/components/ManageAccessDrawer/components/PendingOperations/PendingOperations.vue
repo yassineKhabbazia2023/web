@@ -91,7 +91,7 @@ import { OperationStatus } from '@entities/enums'
 import ConfirmActionModal from './components/ConfirmActionModal'
 import PendingOperationsTable from './components/PendingOperationsTable'
 import AccountHeader from './components/AccountHeader'
-import { patchOperationStatus } from '@entities/services/contact'
+import { patchOperationStatus } from '@entities/services/registry'
 import { PendingOperationProps } from './PendingOperations.types'
 import {
   getTrackStartedApprovalEventProperty,

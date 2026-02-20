@@ -105,6 +105,7 @@ export interface AccountSignatories {
   personaName: string
   office: string
   creationDate: string
+  mobilePhone?: string
 }
 
 export interface AccountsDelegationDetails {

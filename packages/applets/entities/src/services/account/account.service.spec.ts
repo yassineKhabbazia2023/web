@@ -22,7 +22,7 @@ import {
   updateCustomerRelation,
   fetchAccountContactsByEmail,
 } from '.'
-import type { Hub } from './accountTypes'
+import type { Hub } from './account.type'
 import {
   getMockedAccount,
   getMockedAccountRow,

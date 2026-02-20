@@ -1,6 +1,6 @@
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { getMockedOperations } from '@entities/__mocks__/operations.mocks'
-import { contactServiceMock } from '@entities/__mocks__/vitest'
+import { registryServiceMock } from '@entities/__mocks__/vitest'
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
 import { dataFromApi } from '@entities/__mocks__/api.mocks'
 import { fetchAccountCustomers } from '@entities/services/wallet'
@@ -47,7 +47,7 @@ const MOCKED_USER = {
 
 const mockedAccount = getMockedAccount()
 
-vi.mock('@entities/services/contact', () => contactServiceMock)
+vi.mock('@entities/services/registry', () => registryServiceMock)
 vi.mock('@entities/services/wallet')
 
 const apiMocks = vi.hoisted(() => ({
@@ -252,7 +252,7 @@ describe('usersCollab', () => {
     it("should display the 'Manage Access' drawer when the 'Manage Access' button is clicked", async () => {
       hasPermissionMock.mockReturnValue(true)
       const operationsMock = getMockedOperations()
-      contactServiceMock.fetchOperationsForAccount.mockResolvedValue(operationsMock)
+      registryServiceMock.fetchOperationsForAccount.mockResolvedValue(operationsMock)
 
       const expectedPendingOperations = getPendingOperations(operationsMock)
       const accountNumber = expectedPendingOperations?.at(0)?.accountNumber

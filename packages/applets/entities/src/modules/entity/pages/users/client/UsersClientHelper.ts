@@ -1,4 +1,5 @@
-import type { ClientContact, Contact } from '@entities/types'
+import type { Contact } from '@entities/types'
+import type { AccountSignatories } from '@entities/services/account/account.type'
 import type { ExtendedUser } from './UsersClientTypes'
 
 import { getInitials } from '@entities/helper'
@@ -6,7 +7,7 @@ import { getInitials } from '@entities/helper'
 export function formatItemsFromApi(
   items: Contact[],
   currentUserId?: number | undefined,
-  principalContacts: ClientContact[] = [],
+  principalContacts: AccountSignatories[] = [],
 ) {
   return items.map<ExtendedUser>((item) => {
     const { firstName, lastName, email, personaName, contactId, status } = item

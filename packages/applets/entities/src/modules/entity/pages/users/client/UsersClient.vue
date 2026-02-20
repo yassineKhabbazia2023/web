@@ -122,8 +122,8 @@ import AddCustomerDrawer from './components/add-customer-drawer'
 import type { User } from '@entities/modules/entity/types'
 import { formatItemsFromApi } from './UsersClientHelper'
 import type { UsersClientProps, State } from './UsersClientTypes'
-import { getPrincipalContacts } from '@entities/services/offer'
-import type { ClientContact } from '@entities/types'
+import { getAccountSignatories } from '@entities/services/account'
+import type { AccountSignatories } from '@entities/services/account/account.type'
 import { fetchAccountContacts, fetchCustomers } from '@entities/services/wallet'
 import { storeToRefs } from 'pinia'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
@@ -271,7 +271,7 @@ const currentEntityName = computed(() => currentEntity.value?.legalName)
 const currentEntityNumber = computed(() => currentEntity.value?.accountNumber)
 
 const isAddCustomerDrawerOpened = ref(false)
-const principalContacts = ref<ClientContact[]>([])
+const principalContacts = ref<AccountSignatories[]>([])
 
 const isAddUserButtonVisible = computed(() =>
   currentEntityId.value &&
@@ -304,7 +304,7 @@ watch(currentEntityId, async () => await loadPrincipalContacts())
 
 async function loadPrincipalContacts() {
   if (currentEntityId.value) {
-    principalContacts.value = await getPrincipalContacts(currentEntityId.value) ?? []
+    principalContacts.value = await getAccountSignatories(currentEntityId.value) ?? []
   }
 }
 </script>

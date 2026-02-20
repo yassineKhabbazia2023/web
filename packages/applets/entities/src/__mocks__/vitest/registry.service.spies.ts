@@ -13,7 +13,7 @@ export const fetchAccountOperationsMock = vi.fn(() => {
 })
 
 const fetchOperationsForAccountMock = vi.fn(() => getMockedOperations())
-export const contactServiceMock = {
+export const registryServiceMock = {
   fetchOperationsForAccount: fetchOperationsForAccountMock,
   fetchAccountOperations: fetchAccountOperationsMock,
 }

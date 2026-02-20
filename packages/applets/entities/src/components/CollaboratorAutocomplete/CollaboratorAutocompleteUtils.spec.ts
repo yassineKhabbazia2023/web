@@ -1,6 +1,6 @@
 import { expect, describe, it, vi, type MockInstance, beforeEach } from 'vitest'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
-import * as OfferService from '@entities/services/offer'
+import * as CollaboratorService from '@entities/services/collaborator'
 
 import { getAutocompleteContacts } from './CollaboratorAutocompleteUtils'
 
@@ -8,14 +8,14 @@ const mockedCollaborators = getMockedCollaborators()
 const selectedCollaboratorIds = mockedCollaborators.slice(1, 2).map(({ id }) => id)
 const searchExpression = 'search'
 
-vi.mock('@entities/services/offer', () => ({
+vi.mock('@entities/services/collaborator', () => ({
   fetchCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators)),
 }))
 
 describe('test CollaboratorAutocompleteUtils', () => {
   let fetchCollaboratorsSpy: MockInstance
   beforeEach(() => {
-    fetchCollaboratorsSpy = vi.spyOn(OfferService, 'fetchCollaborators')
+    fetchCollaboratorsSpy = vi.spyOn(CollaboratorService, 'fetchCollaborators')
   })
 
   it('should call getCollaboratorsSpy with proper arguments', async () => {

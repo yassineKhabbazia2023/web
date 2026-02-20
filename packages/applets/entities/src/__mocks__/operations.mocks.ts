@@ -1,5 +1,5 @@
 import { Operation } from '@entities/types/OperationTypes'
-import { AccountOperations } from '@entities/services/contact/contactTypes'
+import { AccountOperations } from '@entities/services/registry'
 
 export const getMockedOperations = (): Operation[] => {
   return [

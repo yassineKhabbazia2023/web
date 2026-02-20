@@ -234,7 +234,7 @@ import ManageAccessDrawerGlobal from '@entities/components/ManageAccessDrawer/Ma
 import { TrackingLocalisation } from '@entities/enums'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
-import { fetchAccountOperations } from '@entities/services/contact'
+import { fetchAccountOperations } from '@entities/services/registry'
 import { useSort } from '@pulse/common/composables/sort'
 
 const { t } = useI18n({

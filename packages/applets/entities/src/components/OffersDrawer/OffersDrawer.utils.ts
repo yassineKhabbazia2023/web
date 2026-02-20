@@ -1,16 +1,17 @@
 import { ContactWithRoles } from '@entities/modules/entity/components/ManageCollaborators/ManageCollaboratorsTypes'
-import { ClientContact, SubscriptionOfferServices } from '@entities/types'
+import type { SubscriptionOfferServices } from '@entities/types'
+import type { AccountSignatories } from '@entities/services/account/account.type'
 import { OffersDrawerStep } from '@entities/enums'
 import { get, setWith } from 'lodash-es'
-import { addPathValue } from '@entities/services/PatchRecordService/PatchRecordService'
+import { addPathValue } from '@entities/services/patch-record/patch-record.service'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { type Account } from '@entities/services/account'
-import { type PatchValue } from '@entities/services/PatchRecordService'
-import { HAS_NO_SIREN_FIELD_KEY } from '@entities/modules/entity/components/CompanyInformation/CompanyInformation.const'
+import { type PatchValue } from '@entities/services/patch-record'
+import { HAS_NO_SIREN_FIELD_KEY } from '@entities/constants'
 
 export function getHasNoSignatory(
   currentStep: OffersDrawerStep,
-  principalContacts: ClientContact[],
+  principalContacts: AccountSignatories[],
   currentSubscriptionOffer: SubscriptionOfferServices,
 ) {
   const needSignatory = currentStep === OffersDrawerStep.CUSTOMERS || !currentSubscriptionOffer.approvalRequired
@@ -20,7 +21,7 @@ export function getHasNoSignatory(
 
 export function signatoryMissingPhone(
   currentStep: OffersDrawerStep,
-  principalContacts: ClientContact[],
+  principalContacts: AccountSignatories[],
   currentSubscriptionOffer: SubscriptionOfferServices,
 ) {
   const isCustomersStep = currentStep === OffersDrawerStep.CUSTOMERS
@@ -74,7 +75,7 @@ export function getIsNextButtonDisabled({
   currentSubscriptionOffer?: SubscriptionOfferServices,
   currentStep: OffersDrawerStep,
   selectedCollaboratorsWithRoles: ContactWithRoles[],
-  principalContacts: ClientContact[],
+  principalContacts: AccountSignatories[],
 }) {
   if (currentSubscriptionOffer === undefined) {
     return true

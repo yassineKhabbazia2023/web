@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
-import type { AccountOperations } from '@entities/services/contact/contactTypes'
-import { fetchAccountOperations } from '@entities/services/contact'
+import type { AccountOperations } from '@entities/services/registry'
+import { fetchAccountOperations } from '@entities/services/registry'
 import type { PaginationResponse } from '@pulse/common/types'
 
 export function useManageAccessOperations(pageSize: number) {

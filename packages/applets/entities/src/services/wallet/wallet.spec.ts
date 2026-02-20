@@ -1,9 +1,6 @@
 import { API_PREFIXES } from '@pulse/common/constants'
 import {
   fetchFavoriteEntities,
-  getCollaborators,
-  getCollaboratorsByIdEntity,
-  fetchContactRoles,
   manageFavoriteEntities,
   fetchEntitiesStatistics,
   fetchAccountCustomers,
@@ -12,18 +9,13 @@ import {
 } from '.'
 import { ContactType } from '@pulse/common/enums'
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
-import { getMockedCollabRoles } from '@entities/__mocks__/collab-roles.mocks'
 import { getMockedEntitiesStatistics } from '@entities/__mocks__/filters.mocks'
-import { mockCollabsData } from '@entities/__mocks__/collab-data.mocks'
 import type { Entity } from '@pulse/common/types'
 import * as Common from '@pulse/common'
-import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 
 const accountId = 5
 const mockedEntitiesStatistics = getMockedEntitiesStatistics()
 const mockedCustomersCollab = getMockedCustomersCollab()
-const mockedCollaborators = getMockedCollaborators()
-const mockedCollabRoles = getMockedCollabRoles()
 
 const TEST_ENTITIES: Entity[] = [
   {
@@ -45,13 +37,7 @@ const mockedFavoriteEntityPatch = vi.fn()
 vi.mock('@pulse/common', () => ({
   commonApi: () => ({
     gateway: {
-      /**
-       * 🛠️ TODO: Need to refactor all of this code; many 'if' statements is not a good practice
-       */
       get: vi.fn().mockImplementation((url) => {
-        if (url.startsWith(`${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator`)) {
-          return getCollaboratorsByIdEntityImplementation()
-        }
         if (
           url ===
           `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?Type=customer`
@@ -63,12 +49,6 @@ vi.mock('@pulse/common', () => ({
         }
         if (url === `${API_PREFIXES.WALLET}/favorites/currentuser`) {
           return fetchEntitiesImplementation()
-        }
-        if (url === `${API_PREFIXES.WALLET}/contacts`) {
-          return fetchCollabsImplementation()
-        }
-        if (url === `${API_PREFIXES.WALLET}/personas/Collaborator`) {
-          return fetchRoles()
         }
       }),
       patch: mockedFavoriteEntityPatch,
@@ -86,18 +66,6 @@ const fetchEntitiesImplementation = () => {
     data: TEST_ENTITIES,
   })
 }
-const fetchRoles = () => {
-  return Promise.resolve({
-    data: mockedCollabRoles,
-  })
-}
-const getCollaboratorsByIdEntityImplementation = () => {
-  return Promise.resolve({
-    data: {
-      items: mockCollabsData,
-    },
-  })
-}
 const fetchAccountCustomersImplementation = () => {
   return Promise.resolve({
     data: {
@@ -105,21 +73,8 @@ const fetchAccountCustomersImplementation = () => {
     },
   })
 }
-const fetchCollabsImplementation = () => {
-  return Promise.resolve({
-    data: {
-      items: mockedCollaborators,
-    },
-  })
-}
-describe('collaborateurs/admin', () => {
-  describe('getCollaboratorsByIdEntity', () => {
-    it('should return list of collaborators', async () => {
-      const { items } = await getCollaboratorsByIdEntity(accountId)
 
-      expect(items).toStrictEqual(mockCollabsData)
-    })
-  })
+describe('wallet service', () => {
   describe('fetchAccountCustomers', () => {
     it('should return list of customers', async () => {
       const { items } = await fetchAccountCustomers(accountId)
@@ -203,19 +158,6 @@ describe('collaborateurs/admin', () => {
 
       expect(mockedFavoriteEntityPatch).toHaveBeenCalledOnce()
       expect(mockedFavoriteEntityPatch).toHaveBeenNthCalledWith(1, expectedUrl)
-    })
-  })
-  describe('getCollaborators', () => {
-    it('should return list of collaborators', async () => {
-      const collaborators = await getCollaborators()
-
-      expect(collaborators?.items).toStrictEqual(mockedCollaborators)
-    })
-
-    it('should return list of roles', async () => {
-      const roles = await fetchContactRoles(ContactType.COLLABORATOR)
-
-      expect(roles).toStrictEqual(mockedCollabRoles)
     })
   })
 })

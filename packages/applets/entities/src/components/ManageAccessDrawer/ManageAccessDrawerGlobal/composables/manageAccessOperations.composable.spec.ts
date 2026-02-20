@@ -1,11 +1,11 @@
-import { contactServiceMock } from '@entities/__mocks__/vitest'
-import type { AccountOperations } from '@entities/services/contact/contactTypes'
+import { registryServiceMock } from '@entities/__mocks__/vitest'
+import type { AccountOperations } from '@entities/services/registry'
 import { getPaginationMock } from '@pulse/common/mocks'
 import { getAccountOperationsListMock } from '@entities/__mocks__/operations.mocks'
 
 import { useManageAccessOperations } from './manageAccessOperations.composable'
 
-vi.mock('@entities/services/contact', () => contactServiceMock)
+vi.mock('@entities/services/registry', () => registryServiceMock)
 
 const MANAGE_ACCESS_PAGE_SIZE_MOCK = 5
 const accountOperationsListMock = getAccountOperationsListMock()
@@ -78,8 +78,8 @@ describe('manageAccessOperation.composable', () => {
         expectedSearchResult,
       }) => {
         // Reset mock completely before each test
-        contactServiceMock.fetchAccountOperations.mockReset()
-        contactServiceMock.fetchAccountOperations
+        registryServiceMock.fetchAccountOperations.mockReset()
+        registryServiceMock.fetchAccountOperations
           .mockResolvedValueOnce(searchResultMock1)
           .mockResolvedValueOnce(searchResultMock2)
           .mockResolvedValueOnce(searchResultMock3)
@@ -101,9 +101,9 @@ describe('manageAccessOperation.composable', () => {
           page: pageSecondCall,
         })
 
-        expect(contactServiceMock.fetchAccountOperations).toHaveBeenCalledTimes(expectedCallTimes)
-        expect(contactServiceMock.fetchAccountOperations).toHaveBeenNthCalledWith(1, ...expectedParametersFirstCall)
-        expect(contactServiceMock.fetchAccountOperations).toHaveBeenNthCalledWith(expectedCallTimes, ...expectedParametersSecondCall)
+        expect(registryServiceMock.fetchAccountOperations).toHaveBeenCalledTimes(expectedCallTimes)
+        expect(registryServiceMock.fetchAccountOperations).toHaveBeenNthCalledWith(1, ...expectedParametersFirstCall)
+        expect(registryServiceMock.fetchAccountOperations).toHaveBeenNthCalledWith(expectedCallTimes, ...expectedParametersSecondCall)
         expect(searchResult.value).toStrictEqual(expectedSearchResult)
         expect(showPagination.value).toStrictEqual(true)
       })
@@ -141,8 +141,8 @@ describe('manageAccessOperation.composable', () => {
       expectedshowNoOperation,
     }) => {
       // Reset mock completely before each test
-      contactServiceMock.fetchAccountOperations.mockReset()
-      contactServiceMock.fetchAccountOperations
+      registryServiceMock.fetchAccountOperations.mockReset()
+      registryServiceMock.fetchAccountOperations
         .mockResolvedValueOnce(hasResult ? searchResultMock : searchNoResultResultMock)
 
       // Create fresh instance for each test
@@ -157,7 +157,7 @@ describe('manageAccessOperation.composable', () => {
 
       await refreshManageAccessOperations({ page })
       expect(showNoOperation.value).toBe(expectedshowNoOperation)
-      expect(contactServiceMock.fetchAccountOperations).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
+      expect(registryServiceMock.fetchAccountOperations).toHaveBeenCalledExactlyOnceWith(...expectedParameters)
     })
   })
 })

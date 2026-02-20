@@ -20,8 +20,8 @@ vi.mock('@entities/services/contact', () => ({
   patchContact: vi.fn((_id: number, _accountId: number, contact: PatchContactPayload) => Promise.resolve(contact)),
 }))
 
-vi.mock('@entities/services/offer', () => ({
-  getPrincipalContacts: vi.fn(),
+vi.mock('@entities/services/account', () => ({
+  getAccountSignatories: vi.fn(),
 }))
 
 vi.mock('vue-router', () => ({

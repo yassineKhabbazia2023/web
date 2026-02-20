@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { formatItemsFromApi } from './UsersClientHelper'
 import { generateContactsMock } from '@entities/__mocks__/contact.mocks'
-import type { ClientContact } from '@entities/types'
+import type { AccountSignatories } from '@entities/services/account/account.type'
 import { ContactType } from '@pulse/common/enums'
 
 const expectedItems = [{
@@ -64,14 +64,15 @@ describe('test UsersClientHelper', () => {
       const { data: mockedData } = contactsList
       const { items } = mockedData
 
-      const principalContacts: ClientContact[] = [{
+      const principalContacts: AccountSignatories[] = [{
         contactId: items[1].contactId,
-        globalContactId: '231231-34234',
+        contactGlobalUniqueId: '231231-34234',
         firstName: 'Signa',
         lastName: 'Tory',
         email: 'sign@test.fr',
         status: 'status',
         personaName: 'person Name',
+        office: 'Paris',
         creationDate: '2024-03-25',
       }]
 

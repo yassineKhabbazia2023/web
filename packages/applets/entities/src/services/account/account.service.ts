@@ -3,8 +3,8 @@ import type { Contact } from '@entities/services/contact/contactTypes'
 import { commonApi } from '@pulse/common'
 import type { Entity, QueryResult, UserInfoApi, Office } from '@pulse/common/types'
 import { API_PREFIXES } from '@pulse/common/constants'
-import type { PatchOperation } from '@entities/services/PatchRecordService'
-import type { AccountRow, ReferentialStructure, Hub, AccountsDelegation } from './accountTypes'
+import type { PatchOperation } from '@entities/services/patch-record'
+import type { AccountRow, ReferentialStructure, Hub, AccountsDelegation } from './account.type'
 import { ContactType } from '@pulse/common/enums'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {

@@ -1,5 +1,6 @@
 import { SubscriptionPriceType } from '@entities/enums'
-import type { SelectedProduct, SubscriptionOfferServices, ClientContact } from '@entities/types'
+import type { SelectedProduct, SubscriptionOfferServices } from '@entities/types'
+import type { AccountSignatories } from '@entities/services/account/account.type'
 import type { ContactFunction, Note, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
 import type { ContactWithRoles } from '@entities/modules/entity/components/ManageCollaborators/ManageCollaboratorsTypes'
 
@@ -83,7 +84,7 @@ interface GetPostSubscriptionRequestParams {
   hubName?: string
   userEmail: string | undefined
   collaboratorsWithRoles: ContactWithRoles[]
-  clients: ClientContact[] | undefined
+  clients: AccountSignatories[] | undefined
   currentSubscriptionOffer: SubscriptionOfferServices | undefined
   selectedProducts: SelectedProduct[]
   notes: Note[]

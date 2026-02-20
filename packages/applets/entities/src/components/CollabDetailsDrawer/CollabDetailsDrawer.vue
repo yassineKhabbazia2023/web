@@ -118,7 +118,7 @@ import type { FormInstance, FormRules } from '@pulse/styleguide/types'
 import type CollabDetailsDrawerProps from './CollabDetailsDrawerTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { validPhoneNumberPattern } from '@entities/utils/helpers/forms'
-import { updateCollaborator } from '@entities/services/wallet'
+import { updateCollaborator } from '@entities/services/collaborator'
 import { displayNotification } from '@pulse/styleguide'
 
 const { t } = useI18n({

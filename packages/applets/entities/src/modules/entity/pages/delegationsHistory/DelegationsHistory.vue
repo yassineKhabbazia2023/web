@@ -102,7 +102,7 @@ import {
 import { PNotification } from '@pulse/styleguide'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteParam } from '@pulse/common/enums'
-import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/accountServices'
+import { deleteAccountDelegation, fetchAccountDelegationsHistory } from '@entities/services/account/account.service'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { removeFalsyValues } from '@pulse/toolbox/utils/object'
 import FormSearch from '@entities/components/FormSearch'

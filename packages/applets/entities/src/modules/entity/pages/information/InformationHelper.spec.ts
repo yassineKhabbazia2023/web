@@ -1,6 +1,6 @@
 import { ACTION_PERMISSIONS } from '@pulse/common/constants'
 import { loggerMock } from '@pulse/toolbox/mocks'
-import type { PatchOperation, PatchValue } from '@entities/services/PatchRecordService'
+import type { PatchOperation, PatchValue } from '@entities/services/patch-record'
 import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
 
 import { getCanEdit, savePatchedAccount } from './InformationHelper'
@@ -12,7 +12,7 @@ vi.mock('@pulse/common/managers', () => ({
 }))
 
 const mockedGetPatchOperations = vi.hoisted(() => vi.fn(() => (mockedPatchOperations)))
-vi.mock('@entities/services/PatchRecordService/PatchRecordService', () => ({
+vi.mock('@entities/services/patch-record/patch-record.service', () => ({
   getPatchOperations: mockedGetPatchOperations,
 }))
 

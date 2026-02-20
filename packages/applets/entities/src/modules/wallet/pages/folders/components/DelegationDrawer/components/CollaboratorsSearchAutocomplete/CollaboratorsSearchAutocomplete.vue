@@ -32,7 +32,7 @@ import { PAutocomplete } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import type { CollaboratorsSearchAutocompleteProps } from './CollaboratorsSearchAutocompleteTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
-import { getCollaborators } from '@entities/services/wallet'
+import { getCollaborators } from '@entities/services/collaborator'
 
 const props = defineProps<CollaboratorsSearchAutocompleteProps>()
 const emit = defineEmits<{

@@ -8,7 +8,7 @@ import { mockedCollaboratorsList1 } from '@entities/__mocks__/collaborators.mock
 import { getMockedCollabRoles } from '@entities/__mocks__/collab-roles.mocks'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import * as walletServices from '@entities/services/wallet'
+import * as collaboratorServices from '@entities/services/collaborator'
 import type { CollabRightsDrawerProps } from './CollabRightsDrawerTypes'
 import CollabRightsDrawer from '.'
 import { createTestingPinia } from '@pinia/testing'
@@ -30,7 +30,7 @@ vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
   FeatureFlagManager: featureFlagManagerMock,
 }))
-vi.mock('@entities/services/wallet')
+vi.mock('@entities/services/collaborator')
 vi.mock('@entities/components/ManageRightsDrawer/utils', () => rightDrawerUtilsMocks)
 
 vi.mock('vue-router', () => ({
@@ -63,7 +63,7 @@ const createWrapper = (
 describe('collabRightsDrawer', () => {
   let wrapper: VueWrapper<any>
   beforeEach(async () => {
-    vi.mocked(walletServices.fetchContactRoles).mockResolvedValue(getMockedCollabRoles())
+    vi.mocked(collaboratorServices.fetchContactRoles).mockResolvedValue(getMockedCollabRoles())
     wrapper = createWrapper()
     await flushPromises()
   })
@@ -181,7 +181,7 @@ describe('collabRightsDrawer', () => {
     })
     it('should call the wallet API with the correct parameters to update collaborator role', () => {
       const spyUpdateCollaborator = vi.spyOn(
-        walletServices,
+        collaboratorServices,
         'updateCollaborator',
       )
 
@@ -201,7 +201,7 @@ describe('collabRightsDrawer', () => {
       vi.clearAllMocks()
 
       const expectedErrorMessage = 'API Error: 503 Service Unavailable'
-      vi.spyOn(walletServices, 'fetchContactRoles').mockRejectedValue(
+      vi.spyOn(collaboratorServices, 'fetchContactRoles').mockRejectedValue(
         expectedErrorMessage,
       )
       createWrapper()

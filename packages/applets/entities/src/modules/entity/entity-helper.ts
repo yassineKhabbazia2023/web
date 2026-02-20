@@ -14,7 +14,7 @@ const canAccessInvoices = (isInvoicesTabVisible: boolean): boolean => {
   return isInvoicesTabVisible
 }
 
-export function getTabAuthorisations(isCollab: boolean, isInvoicesTabVisible: boolean): Record<TabName, boolean> {
+export function getTabAuthorizations(isCollab: boolean, isInvoicesTabVisible: boolean): Record<TabName, boolean> {
   const hasInvoicesAccess = canAccessInvoices(isInvoicesTabVisible)
 
   return {
@@ -29,11 +29,11 @@ export function getTabAuthorisations(isCollab: boolean, isInvoicesTabVisible: bo
 }
 
 export function getTabs(
-  tabAuthorisations: Record<TabName, boolean>,
+  tabAuthorizations: Record<TabName, boolean>,
   titles: Record<TabName, string>,
 ): Tab[] {
   return TAB_NAMES
-    .filter(name => tabAuthorisations[name])
+    .filter(name => tabAuthorizations[name])
     .map(name => ({
       name,
       title: titles[name],

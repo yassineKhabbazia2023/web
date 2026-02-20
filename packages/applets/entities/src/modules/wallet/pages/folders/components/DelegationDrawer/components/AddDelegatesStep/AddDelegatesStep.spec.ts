@@ -6,7 +6,7 @@ import { getMockedCollaborators2 } from '@entities/__mocks__/collaborators.mocks
 import AddDelegatesStep from '.'
 
 const mockedCollaborators = getMockedCollaborators2()
-vi.mock('@entities/services/wallet', () => ({
+vi.mock('@entities/services/collaborator', () => ({
   getCollaborators: vi.fn(() => Promise.resolve({
     items: mockedCollaborators,
   })),

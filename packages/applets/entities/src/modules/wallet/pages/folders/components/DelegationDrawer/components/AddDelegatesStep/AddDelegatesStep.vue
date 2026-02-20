@@ -78,7 +78,7 @@ import { PCheckbox, PAlert, PBlockHeader, PUserAction } from '@pulse/styleguide/
 import { useI18n } from 'vue-i18n'
 import type { DelegatorsAddStepProps } from './AddDelegatesStepTypes'
 import CollaboratorsSearchAutocomplete from '../CollaboratorsSearchAutocomplete'
-import { getCollaborators } from '@entities/services/wallet'
+import { getCollaborators } from '@entities/services/collaborator'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { getInitials } from '@entities/helper/helper'
 import { getFullNameWithUppercaseLastName } from '@entities/utils/helpers'

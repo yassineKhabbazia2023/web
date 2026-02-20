@@ -1,7 +1,7 @@
 import { CurrentUserManagerMock, featureFlagManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
 import type { TabName, Tab } from './types'
 
-import { getTabAuthorisations, getTabs } from './entity-helper'
+import { getTabAuthorizations, getTabs } from './entity-helper'
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: CurrentUserManagerMock,
@@ -9,14 +9,14 @@ vi.mock('@pulse/common/managers', () => ({
 }))
 
 describe('test entity-helper', () => {
-  describe('getTabAuthorisations', () => {
+  describe('getTabAuthorizations', () => {
     const isFeatureActivatedMock = vi.mocked(featureFlagManagerMock.isFeatureActivated)
     const tests = [{
       isCollab: true,
       hasPermission: true,
       featureFlagEnabled: true,
       isInvoicesTabVisible: true,
-      expectedAuthorisations: {
+      expectedAuthorizations: {
         collab: true,
         delegationsHistory: true,
         history: true,
@@ -30,7 +30,7 @@ describe('test entity-helper', () => {
       hasPermission: true,
       featureFlagEnabled: true,
       isInvoicesTabVisible: true,
-      expectedAuthorisations: {
+      expectedAuthorizations: {
         collab: false,
         delegationsHistory: false,
         history: false,
@@ -44,7 +44,7 @@ describe('test entity-helper', () => {
       hasPermission: false,
       featureFlagEnabled: true,
       isInvoicesTabVisible: true,
-      expectedAuthorisations: {
+      expectedAuthorizations: {
         collab: false,
         delegationsHistory: false,
         history: true,
@@ -58,7 +58,7 @@ describe('test entity-helper', () => {
       hasPermission: false,
       featureFlagEnabled: true,
       isInvoicesTabVisible: false,
-      expectedAuthorisations: {
+      expectedAuthorizations: {
         collab: false,
         delegationsHistory: false,
         history: false,
@@ -69,23 +69,23 @@ describe('test entity-helper', () => {
       },
     }]
     it.each(tests)(
-      'should return proper authorisations when isCollab is $isCollab and hasPermission returns $hasPermission',
+      'should return proper authorizations when isCollab is $isCollab and hasPermission returns $hasPermission',
       ({
         isCollab,
         hasPermission,
         featureFlagEnabled,
         isInvoicesTabVisible,
-        expectedAuthorisations,
+        expectedAuthorizations,
       }) => {
         hasPermissionMock.mockReturnValue(hasPermission)
         isFeatureActivatedMock.mockReturnValue(featureFlagEnabled)
-        const tabAuthorisations = getTabAuthorisations(isCollab, isInvoicesTabVisible)
+        const tabAuthorizations = getTabAuthorizations(isCollab, isInvoicesTabVisible)
 
-        expect(tabAuthorisations).toStrictEqual(expectedAuthorisations)
+        expect(tabAuthorizations).toStrictEqual(expectedAuthorizations)
       })
   })
 
-  describe('getTabAuthorisations - invoices access', () => {
+  describe('getTabAuthorizations - invoices access', () => {
     const isFeatureActivatedMock = vi.mocked(featureFlagManagerMock.isFeatureActivated)
 
     beforeEach(() => {
@@ -135,7 +135,7 @@ describe('test entity-helper', () => {
       hasPermissionMock.mockReturnValue(hasPermission)
       isFeatureActivatedMock.mockReturnValue(featureFlagEnabled)
 
-      const result = getTabAuthorisations(isCollab, isInvoicesTabVisible).invoices
+      const result = getTabAuthorizations(isCollab, isInvoicesTabVisible).invoices
 
       expect(result).toBe(expected)
     })
@@ -143,7 +143,7 @@ describe('test entity-helper', () => {
 
   describe('getTabs', () => {
     it('should return proper tabs', () => {
-      const tabAuthorisations: Record<TabName, boolean> = {
+      const tabAuthorizations: Record<TabName, boolean> = {
         collab: true,
         delegationsHistory: false,
         history: true,
@@ -161,7 +161,7 @@ describe('test entity-helper', () => {
         history: 'Historique du dossier',
         delegationsHistory: 'Historique des délégations',
       }
-      const tabs = getTabs(tabAuthorisations, titles)
+      const tabs = getTabs(tabAuthorizations, titles)
       const expectedTabs: Tab[] = [{
         name: 'users',
         title: 'Utilisateurs',

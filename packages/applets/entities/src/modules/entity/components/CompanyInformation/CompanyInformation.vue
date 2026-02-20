@@ -120,7 +120,7 @@ import type { CompanyInformationProps } from './CompanyInformationTypes'
 import type { FormSection } from '@entities/types'
 import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
-import { PENNYLANE_REQUIRED_FIELDS, SIREN_FIELD_KEY, HAS_NO_SIREN_FIELD_KEY } from './CompanyInformation.const'
+import { PENNYLANE_REQUIRED_FIELDS, SIREN_FIELD_KEY, HAS_NO_SIREN_FIELD_KEY } from '@entities/constants'
 import type { FormInstance } from '@pulse/styleguide/types'
 
 const PFieldSetAccount = PFieldSet<Account>

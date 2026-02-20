@@ -7,7 +7,7 @@ import CollaboratorsSearchAutocomplete from '.'
 import type { CollaboratorsSearchAutocompleteProps } from './CollaboratorsSearchAutocompleteTypes'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 
-vi.mock('@entities/services/wallet', () => ({
+vi.mock('@entities/services/collaborator', () => ({
   getCollaborators: vi.fn(() => Promise.resolve(mockedCollaborators)),
 }))
 
