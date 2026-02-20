@@ -18,8 +18,8 @@ vi.mock('env-vars', () => ({
 describe('InvoicesAccessService', () => {
   describe('fetchInvoicesAccess', () => {
     it('should return mapped access data on successful response', async () => {
-      const accountNumber = '123456'
-      const expectedUrl = `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/currentuser`
+      const accountId = 123456
+      const expectedUrl = `${API_PREFIXES.INVOICES}/accounts/${accountId}/currentuser`
       const apiResponse = {
         'tab-state': 'form-start',
         contactWithAccess: 'contact@example.com',
@@ -28,14 +28,14 @@ describe('InvoicesAccessService', () => {
 
       apiGatewayMock.get.mockResolvedValueOnce({ data: apiResponse })
 
-      const result = await InvoicesAccessService.fetchInvoicesAccess(accountNumber)
+      const result = await InvoicesAccessService.fetchInvoicesAccess(accountId)
 
       expect(result).toStrictEqual(getInvoicesAccessResponseMock())
       expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
     })
 
     it('should return null on 404 error', async () => {
-      const accountNumber = '123456'
+      const accountId = 123456
       const error = new AxiosError('Not Found', '404', undefined, undefined, {
         status: 404,
         data: null,
@@ -46,13 +46,13 @@ describe('InvoicesAccessService', () => {
 
       apiGatewayMock.get.mockRejectedValueOnce(error)
 
-      const result = await InvoicesAccessService.fetchInvoicesAccess(accountNumber)
+      const result = await InvoicesAccessService.fetchInvoicesAccess(accountId)
 
       expect(result).toBeNull()
     })
 
     it('should rethrow non-404 errors', async () => {
-      const accountNumber = '123456'
+      const accountId = 123456
       const error = new AxiosError('Server Error', '500', undefined, undefined, {
         status: 500,
         data: null,
@@ -63,7 +63,7 @@ describe('InvoicesAccessService', () => {
 
       apiGatewayMock.get.mockRejectedValueOnce(error)
 
-      await expect(InvoicesAccessService.fetchInvoicesAccess(accountNumber)).rejects.toThrow(error)
+      await expect(InvoicesAccessService.fetchInvoicesAccess(accountId)).rejects.toThrow(error)
     })
   })
 })

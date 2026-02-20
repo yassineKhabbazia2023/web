@@ -33,7 +33,7 @@ describe('useInvoicesForm', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     userStoreMock.user = { email: 'requester@example.com' } as any
-    currentEntityStoreMock.currentEntity = { accountNumber: 'ACC-123' } as any
+    currentEntityStoreMock.currentEntityId = 123
     mockTabState.value = null
     mockContactWithAccess.value = null
     vi.mocked(InvoicesService.submitIntegration).mockResolvedValue()
@@ -317,7 +317,7 @@ describe('useInvoicesForm', () => {
 
       expect(hasIntegrationError.value).toBe(false)
       expect(vi.mocked(getContactById)).toHaveBeenCalledWith(123)
-      expect(vi.mocked(InvoicesService.submitIntegration)).toHaveBeenCalledWith('ACC-123', {
+      expect(vi.mocked(InvoicesService.submitIntegration)).toHaveBeenCalledWith(123, {
         dematerializationEmail: 'billing@example.com',
         firstName: 'Jane',
         lastName: 'Doe',

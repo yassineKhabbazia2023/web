@@ -5,8 +5,8 @@ import { API_PREFIXES } from '../../constants/api-prefixes'
 import type { InvoicesAccessApiResponse, InvoicesAccessResponse } from './invoices-access.service.types'
 
 export class InvoicesAccessService {
-  static async fetchInvoicesAccess(accountNumber: string): Promise<InvoicesAccessResponse | null> {
-    const url = `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/currentuser`
+  static async fetchInvoicesAccess(accountId: number): Promise<InvoicesAccessResponse | null> {
+    const url = `${API_PREFIXES.INVOICES}/accounts/${accountId}/currentuser`
 
     try {
       const { data } = await commonApi().gateway.get<InvoicesAccessApiResponse>(url)

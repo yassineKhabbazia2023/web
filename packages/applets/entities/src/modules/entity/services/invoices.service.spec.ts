@@ -42,7 +42,7 @@ describe('InvoicesService', () => {
 
   describe('submitIntegration', () => {
     it('should call the API with correct URL and payload', async () => {
-      const accountNumber = 'ACC-123'
+      const entityId = 123
       const payload: BillingSubmissionInputRequest = {
         dematerializationEmail: 'billing@example.com',
         firstName: 'Jane',
@@ -52,16 +52,16 @@ describe('InvoicesService', () => {
       }
       commonApiPostMock.mockResolvedValueOnce({})
 
-      await InvoicesService.submitIntegration(accountNumber, payload)
+      await InvoicesService.submitIntegration(entityId, payload)
 
       expect(commonApiPostMock).toHaveBeenCalledWith(
-        `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/hubspot/submissions/currentuser`,
+        `${API_PREFIXES.INVOICES}/accounts/${entityId}/hubspot/submissions/currentuser`,
         payload,
       )
     })
 
     it('should throw when api call fails', async () => {
-      const accountNumber = 'ACC-123'
+      const entityId = 123
       const payload: BillingSubmissionInputRequest = {
         dematerializationEmail: 'billing@example.com',
         firstName: 'Jane',
@@ -72,10 +72,10 @@ describe('InvoicesService', () => {
       const error = new Error('Boom')
       commonApiPostMock.mockRejectedValueOnce(error)
 
-      await expect(InvoicesService.submitIntegration(accountNumber, payload)).rejects.toThrow('Boom')
+      await expect(InvoicesService.submitIntegration(entityId, payload)).rejects.toThrow('Boom')
 
       expect(commonApiPostMock).toHaveBeenCalledWith(
-        `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/hubspot/submissions/currentuser`,
+        `${API_PREFIXES.INVOICES}/accounts/${entityId}/hubspot/submissions/currentuser`,
         payload,
       )
     })

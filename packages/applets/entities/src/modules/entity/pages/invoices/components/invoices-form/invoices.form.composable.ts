@@ -14,7 +14,7 @@ export function useInvoicesForm() {
   const userStore = useUserStore()
   const currentEntityStore = useCurrentEntityStore()
   const { user } = storeToRefs(userStore)
-  const { currentEntityAccountNumber } = storeToRefs(currentEntityStore)
+  const { currentEntityId } = storeToRefs(currentEntityStore)
 
   const invoicesAccessStore = useInvoicesAccessStore()
   const { tabState, contactWithAccess } = storeToRefs(invoicesAccessStore)
@@ -88,7 +88,7 @@ export function useInvoicesForm() {
     }
 
     try {
-      await InvoicesService.submitIntegration(currentEntityAccountNumber.value, payload)
+      await InvoicesService.submitIntegration(currentEntityId.value!, payload)
     } catch (error) {
       logger.error('Unable to submit digital vault integration', error)
       hasIntegrationError.value = true

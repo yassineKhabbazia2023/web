@@ -12,8 +12,8 @@ export class InvoicesService {
     return data.items
   }
 
-  static async submitIntegration(accountNumber: string, payload: BillingSubmissionInputRequest): Promise<void> {
-    const url = `${API_PREFIXES.INVOICES}/accounts/${accountNumber}/hubspot/submissions/currentuser`
+  static async submitIntegration(entityId: number, payload: BillingSubmissionInputRequest): Promise<void> {
+    const url = `${API_PREFIXES.INVOICES}/accounts/${entityId}/hubspot/submissions/currentuser`
 
     await api().gateway.post(url, payload)
   }

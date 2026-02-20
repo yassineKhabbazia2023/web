@@ -40,7 +40,7 @@ describe('test current-entity.manager', () => {
 
       expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledExactlyOnceWith(permissionsMock)
 
-      expect(vi.mocked(InvoicesAccessService.fetchInvoicesAccess)).toHaveBeenCalledExactlyOnceWith(entityMock.accountNumber.toString())
+      expect(vi.mocked(InvoicesAccessService.fetchInvoicesAccess)).toHaveBeenCalledExactlyOnceWith(entityMock.accountId)
       expect(invoicesAccessStoreMock.setAccessData).toHaveBeenCalledExactlyOnceWith(accessMock)
     })
 

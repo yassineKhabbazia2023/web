@@ -26,7 +26,7 @@ export class CurrentEntityManager {
     const invoicesAccessStore = useInvoicesAccessStore()
 
     try {
-      const accessData = await InvoicesAccessService.fetchInvoicesAccess(entity.accountNumber.toString())
+      const accessData = await InvoicesAccessService.fetchInvoicesAccess(entity.accountId)
       invoicesAccessStore.setAccessData(accessData)
     } catch (error) {
       logger.error('Failed to fetch invoices access data', error)
