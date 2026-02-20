@@ -187,7 +187,7 @@ export function generateActionBarLeftSideButtons(
   leftSideButtons.CAN_SEARCH_DOCUMENT.actionbarButton.pIsSearchShrinkable =
     isSearchShrinkable
   leftSideButtons.CAN_SEARCH_DOCUMENT.actionbarButton.pIsSearchOpen =
-        isSearchOpen
+    isSearchOpen
   toolboxBasicData.push(leftSideButtons.CAN_SEARCH_DOCUMENT)
 
   return toolboxBasicData

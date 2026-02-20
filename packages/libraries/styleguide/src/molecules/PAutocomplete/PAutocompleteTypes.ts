@@ -7,7 +7,7 @@ export interface PAutocompleteProps {
   pPlacement?: 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end'
   pFetchSuggestions?: (
     _queryString: string,
-    _callback: (_data: Record<string, any>[]) => void
+    _callback: (_data: Record<string, any>[]) => void,
   ) => void
   pTriggerOnFocus?: boolean
   pSelectWhenUnmatched?: boolean

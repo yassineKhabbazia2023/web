@@ -13,4 +13,4 @@ export type PennylaneDocumentsTableFieldKeys =
 'actions'
 
 export type PennylaneDocumentsTableActionName =
-'download'
+  'download'

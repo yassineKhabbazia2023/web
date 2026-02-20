@@ -130,7 +130,7 @@ const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = com
 })
 
 const { handleDownloadDocumentsEvent } =
-useDownloadDocuments(downloadDocumentsProps)
+  useDownloadDocuments(downloadDocumentsProps)
 
 const tagTypeProps = (piaStatus: string): PiaStatusTag => {
   switch (piaStatus) {

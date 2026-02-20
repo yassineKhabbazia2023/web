@@ -17,7 +17,7 @@ const beforeEnterGuards = landingRoute.beforeEnter as NavigationGuard[]
 const redirectionGuard = beforeEnterGuards[2] as (
   to: RouteLocationNormalized,
   from: RouteLocationNormalized,
-  next: NavigationGuardNext
+  next: NavigationGuardNext,
 ) => void
 
 describe('landingCustomerRoutes', () => {

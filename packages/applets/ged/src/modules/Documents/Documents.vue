@@ -288,7 +288,7 @@ const canPerformSearch = computed(() =>
   searchContent.value.trim() !== '' &&
   validInputMaxLength(searchContent.value))
 const isInSearchScope =
-computed<boolean>(() => isSearchExpanded.value && canPerformSearch.value)
+  computed<boolean>(() => isSearchExpanded.value && canPerformSearch.value)
 const canDisplaySearchResultAlert = computed(() =>
   isInSearchScope.value && canPerformSearch.value && !isSearchLoading.value)
 const isPreviewDrawerOpened = ref(false)
@@ -435,10 +435,10 @@ const handleDocumentPreview = (document: TableRowDocument) => {
 }
 
 const { handleDownloadDocumentsEvent } =
-useDownloadDocuments(downloadDocumentsProps)
+  useDownloadDocuments(downloadDocumentsProps)
 
 const { handleTransmitDocumentsEvent } =
-useTransmitDocuments(transmitDocumentsProps)
+  useTransmitDocuments(transmitDocumentsProps)
 
 const handleTransmitDocuments = async () => {
   isTransmitDocumentsLoading.value = true

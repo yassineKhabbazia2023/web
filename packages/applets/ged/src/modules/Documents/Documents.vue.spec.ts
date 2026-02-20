@@ -271,7 +271,7 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayloadMoreThanOneDoc
       componentInstance.selectedDocuments =
-          documentsResponsePayloadMoreThanOneDoc.documentsPage.items
+        documentsResponsePayloadMoreThanOneDoc.documentsPage.items
 
       await nextTick()
 

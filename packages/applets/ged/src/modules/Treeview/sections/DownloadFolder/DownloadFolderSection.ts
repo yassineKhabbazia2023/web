@@ -11,8 +11,8 @@ import { downloadFile } from '@pulse/common/helpers'
 export function useDownloadFolder(
   downloadFolderProps: ComputedRef<DownloadFolderComposableProps>,
 ): {
-    handleDownloadFolderEvent: () => Promise<void>
-  } {
+  handleDownloadFolderEvent: () => Promise<void>
+} {
   const { t } = useI18n({
     inheritLocale: true,
     useScope: 'global',
@@ -63,7 +63,7 @@ export function useDownloadFolder(
       downloadFolderProps.accountId,
     )
     const fileName =
-    `${downloadFolderProps.selectedFolderName}_${formatDate(new Date(), '_')}.zip`
+      `${downloadFolderProps.selectedFolderName}_${formatDate(new Date(), '_')}.zip`
     downloadFile(folderBlob, fileName.replaceAll(' ', '_'))
   }
 

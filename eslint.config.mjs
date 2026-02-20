@@ -7,8 +7,6 @@ import tseslint from 'typescript-eslint'
 import pluginVue from 'eslint-plugin-vue'
 import vitest from '@vitest/eslint-plugin'
 import stylistic from '@stylistic/eslint-plugin'
-import importPlugin from 'eslint-plugin-import'
-
 import { includeIgnoreFile } from '@eslint/compat'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -29,10 +27,10 @@ export default [
   {
     plugins: {
       '@stylistic': stylistic,
-      'import': importPlugin,
     },
     rules: {
       'no-console': 'error',
+      'preserve-caught-error': 'off',
       // TODO: temporary rules to delete after eslint migration
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unsafe-function-type': 'off',
@@ -57,7 +55,7 @@ export default [
       // Format rules
       '@stylistic/comma-dangle': ['error', 'always-multiline'],
       '@stylistic/array-bracket-spacing': ['error', 'never', { singleValue: false }],
-      '@stylistic/func-call-spacing': ['error', 'never'],
+      '@stylistic/function-call-spacing': ['error', 'never'],
       '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
       '@stylistic/key-spacing': ['error', { beforeColon: false }],
       '@stylistic/max-len': ['warn', {
@@ -70,7 +68,6 @@ export default [
         ignoreRegExpLiterals: true,
         ignorePattern: '^\\s*<path|^\\s*"[\\w-]+": ".*",?\\s*$',
       }],
-      'import/no-duplicates': 'error',
       '@stylistic/no-multi-spaces': ['error', { ignoreEOLComments: true }],
       '@stylistic/comma-spacing': ['error', { before: false, after: true }],
       '@stylistic/no-multiple-empty-lines': ['error', { max: 2, maxBOF: 0, maxEOF: 1 }],

@@ -18,7 +18,6 @@ describe('utils helpers', () => {
     const createObjectURLMock = vi.fn()
     const revokeObjectURLMock = vi.fn()
     const appendChildMock = vi.fn()
-    const removeChildMock = vi.fn()
     const clickMock = vi.fn()
     const setAttributeMock = vi.fn()
     window.URL = {
@@ -26,14 +25,15 @@ describe('utils helpers', () => {
       revokeObjectURL: revokeObjectURLMock,
     }
 
+    const removeMock = vi.fn()
     const createElementSpy: any = vi.spyOn(document, 'createElement')
     createElementSpy.mockImplementation(() => ({
       setAttribute: setAttributeMock,
       click: clickMock,
+      remove: removeMock,
     }))
-    // Mock document.body.appendChild and removeChild
+    // Mock document.body.appendChild
     document.body.appendChild = appendChildMock
-    document.body.removeChild = removeChildMock
 
     // Execute the function
     const filename = 'testfile.txt'
@@ -47,6 +47,7 @@ describe('utils helpers', () => {
     expect(appendChildMock).toHaveBeenCalledOnce()
     expect(clickMock).toHaveBeenCalledOnce()
 
+    expect(removeMock).toHaveBeenCalledOnce()
     expect(revokeObjectURLMock).toHaveBeenCalledOnce()
   })
   it('saves file with a prompt folder selection', async () => {

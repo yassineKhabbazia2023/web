@@ -221,7 +221,7 @@ const displayFailureNotification = (message: string) => {
 }
 
 const handleDisplayNotification = (isSuccess:boolean, numberOfSelectedFolders: number) => {
-  let message = ''
+  let message
   switch (flowType.value) {
     case DelegationFlowType.FULL:
       message = isSuccess

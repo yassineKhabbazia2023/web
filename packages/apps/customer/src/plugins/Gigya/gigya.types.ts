@@ -1,6 +1,6 @@
 export type GigyaSamlContinueSSOFn = (
   params: Record<string, unknown>,
-  shouldRedirectToProxy: boolean
+  shouldRedirectToProxy: boolean,
 ) => void
 
 export interface GigyaSaml {

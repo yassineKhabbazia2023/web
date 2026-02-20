@@ -11,7 +11,7 @@
     :explorerUnauthorizedGivenActionMessage="t('folderList.explorerUnauthorizedGivenActionMessage')"
     :foldersListEmptyFolderLabel="t('folderList.foldersListEmptyFolderLabel')"
     :documents="explorerDocumentsForUploadFlow"
-    :modalActionsButtonsList="modalActionsbuttons"
+    :modalActionsButtonsList="modalActionsButtons"
     :headerTitle="t('header.title')"
     :modalTitle="
       t(
@@ -57,16 +57,16 @@ const emit = defineEmits([
 ])
 
 const currentExplorerFolder = ref<Folder>(props.folder)
-const modalActionsbuttons =
+const modalActionsButtons =
   ref(generateActionsForModal(['CAN_ADD_DOCUMENT', 'CANCEL_ADD_DOCUMENT'], modalButtonsUpload))
 
 watch(
   () => props.isUploadModalOpened,
   () => {
-    modalActionsbuttons.value.filter(d => d.buttonActionName ===
+    modalActionsButtons.value.filter(d => d.buttonActionName ===
       'modal-add-document-action-click')[0].disabled = false
     if (!explorerDocuments.value.some(d => d.givenActionState === 'TO_DO')) {
-      modalActionsbuttons.value.filter(d => d.buttonActionName ===
+      modalActionsButtons.value.filter(d => d.buttonActionName ===
       'modal-add-document-action-click')[0].disabled = true
     }
   }, { deep: true },
@@ -120,7 +120,7 @@ const propagateUpdateSourceFolders = (createdFolder: Folder) => {
 
 const handleUploadDocumentClicked = async (action: string) => {
   if (action === 'modal-add-document-action-click') {
-    modalActionsbuttons.value = generateActionsForModal(['DEPOT_IN_PROGRESS'], modalButtonsUpload)
+    modalActionsButtons.value = generateActionsForModal(['DEPOT_IN_PROGRESS'], modalButtonsUpload)
     const selectedDocuments = explorerDocuments.value.filter(d => d.isSelected) || []
     selectedDocuments.forEach((d) => {
       d.givenActionState = 'IN_PROGRESS'
@@ -205,14 +205,14 @@ async function uploadDocumentsInBatches(documents: ExplorerUploadDocument[]) {
   }
   if (documents.length === uploadedDocumentCount &&
     explorerDocuments.value.filter(d => !d.isSelected)) {
-    modalActionsbuttons.value =
-    generateActionsForModal(['CAN_ADD_DOCUMENT', 'CANCEL_ADD_DOCUMENT'], modalButtonsUpload)
+    modalActionsButtons.value =
+      generateActionsForModal(['CAN_ADD_DOCUMENT', 'CANCEL_ADD_DOCUMENT'], modalButtonsUpload)
   }
 
   if (!explorerDocuments.value.some(d => d.givenActionState === 'TO_DO')) {
-    modalActionsbuttons.value =
-    generateActionsForModal(['CAN_ADD_DOCUMENT', 'CANCEL_ADD_DOCUMENT'], modalButtonsUpload)
-    modalActionsbuttons.value.filter(d => d.buttonActionName ===
+    modalActionsButtons.value =
+      generateActionsForModal(['CAN_ADD_DOCUMENT', 'CANCEL_ADD_DOCUMENT'], modalButtonsUpload)
+    modalActionsButtons.value.filter(d => d.buttonActionName ===
       'modal-add-document-action-click')[0].disabled = true
   }
 }
@@ -230,7 +230,7 @@ const handleClose = () => {
     emit('refresh-documents-list')
   }
   explorerDocuments.value = []
-  modalActionsbuttons.value.filter(d => d.buttonActionName ===
+  modalActionsButtons.value.filter(d => d.buttonActionName ===
       'modal-add-document-action-click')[0].disabled = false
   currentExplorerFolder.value = props.folder
   emit('close-upload-documents-modal')

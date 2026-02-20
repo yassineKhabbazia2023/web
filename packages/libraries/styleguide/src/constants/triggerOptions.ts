@@ -13,5 +13,5 @@ export default triggerOptions
 export type TriggerOptionsType = EpPropMergeType<
 (new () => 'contextmenu' | 'click' | 'hover' | 'focus' | TooltipTriggerType[])
 | (() => Arrayable<TooltipTriggerType>)
-  , unknown, unknown
+, unknown, unknown
 > | undefined

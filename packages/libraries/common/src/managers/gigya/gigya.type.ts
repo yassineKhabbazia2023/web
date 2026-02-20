@@ -3,7 +3,7 @@ export interface GigyaAccounts {
 }
 
 declare global {
-  // eslint-disable-next-line no-var
+
   var gigya: {
     accounts: GigyaAccounts
   }
