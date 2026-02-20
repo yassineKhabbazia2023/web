@@ -125,6 +125,7 @@ function onSelectOffer(offerId: number) {
   }
   AmplitudeService.track('Offer Consulted', {
     offer_name: selectedOffer?.title ?? '',
+    offer_consulted_method: isSmartSearchEnabled.value ? 'IA' : 'manual',
   })
 }
 
@@ -134,12 +135,6 @@ function onOpenPdf() {
 
 function onUpdateSearchTerm(newSearchTerm: string) {
   searchTerm.value = newSearchTerm
-
-  if (newSearchTerm !== '') {
-    AmplitudeService.track('Offer Searched', {
-      offer_search: searchTerm.value,
-    })
-  }
 
   filterOffersCatalog()
 }

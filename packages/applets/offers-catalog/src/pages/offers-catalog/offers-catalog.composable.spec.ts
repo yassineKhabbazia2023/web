@@ -1,6 +1,7 @@
 import type { OfferDescription } from '../../types/offers-catalog.types'
 import { getOffersCatalogResponseMock, getOfferCatalogDetailsResponseMock, getOfferCatalogReferentListMock, getOffersRecommendationsResponseMock } from '../../mocks/offers-catalog.service.mocks'
 import { loggerMock } from '@pulse/toolbox/mocks'
+import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 import { APICallStatus } from '@pulse/common/enums'
 import { getOffersWithSearchTerms } from '../../utils/offers-catalog.utils'
 import { filterRecordByKeyCallback } from '@pulse/toolbox/utils/array'
@@ -20,6 +21,8 @@ const getOffersRecommendationsMock = vi.hoisted(() => vi.fn())
 vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
 }))
+
+vi.mock('@pulse/common/services/amplitude')
 
 vi.mock('../../services/offers-catalog.service', () => ({
   getOffersCatalog: getOffersCatalogMock,
@@ -65,6 +68,7 @@ describe('offers-catalog.composable', () => {
 
       expect(filteredOffers.value).toStrictEqual(expectedCards)
       expect(loggerMock.error).not.toHaveBeenCalled()
+      expect(AmplitudeServiceMock.track).not.toHaveBeenCalled()
     })
 
     it('should filter offers properly when any search term', async () => {
@@ -91,6 +95,11 @@ describe('offers-catalog.composable', () => {
       expect(filteredOffers.value).toStrictEqual(expectedOffers)
       expect(loggerMock.error).not.toHaveBeenCalled()
       expect(filterRecordByKeyCallbackMock).toHaveBeenCalledTimes(offersCatalogResponseMock.offers.length)
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledExactlyOnceWith('Offer Searched', {
+        offer_search: searchTerm.value,
+        offer_searched_method: 'manual',
+        offer_searched_IA_result: 'succeeded',
+      })
     })
 
     it('should call logger.error when getOffersCatalog fails', async () => {
@@ -305,14 +314,21 @@ describe('offers-catalog.composable', () => {
         searchOffersWithAi,
       } = useOffersCatalog()
 
+      const searchTerm = 'How to manage accounting?'
+
       await loadOffersCatalog()
-      await searchOffersWithAi('How to manage accounting?')
+      await searchOffersWithAi(searchTerm)
 
       expect(aiSearchApiCallStatus.value).toBe(APICallStatus.SUCCESS)
       expect(filteredOffers.value.length).toBeGreaterThan(0)
       expect(filteredOffers.value[0].similarityScore).toBeDefined()
       expect(loggerMock.error).not.toHaveBeenCalled()
       expect(isSmartSearchEnabled.value).toBe(true)
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledExactlyOnceWith('Offer Searched', {
+        offer_search: searchTerm,
+        offer_searched_method: 'IA',
+        offer_searched_IA_result: 'succeeded',
+      })
     })
 
     it('should call logger.error when api call fails', async () => {
@@ -326,11 +342,18 @@ describe('offers-catalog.composable', () => {
         searchOffersWithAi,
       } = useOffersCatalog()
 
+      const searchTerm = 'How to manage accounting?'
+
       await loadOffersCatalog()
-      await searchOffersWithAi('How to manage accounting?')
+      await searchOffersWithAi(searchTerm)
 
       expect(aiSearchApiCallStatus.value).toBe(APICallStatus.ERROR)
       expect(loggerMock.error).toHaveBeenCalledExactlyOnceWith('Error while searching offers with AI', errorMock)
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledExactlyOnceWith('Offer Searched', {
+        offer_search: searchTerm,
+        offer_searched_method: 'IA',
+        offer_searched_IA_result: 'failed',
+      })
     })
   })
 

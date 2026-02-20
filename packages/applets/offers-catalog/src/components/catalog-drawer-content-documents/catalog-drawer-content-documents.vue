@@ -78,9 +78,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { POverlay, PIcon, PImage } from '@pulse/styleguide/components'
 import type { CatalogDrawerContentDocumentsProps, InternalCategory } from './catalog-drawer-content-documents.types'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const props = defineProps<CatalogDrawerContentDocumentsProps>()
 
@@ -99,6 +100,12 @@ const internalCategories = computed(() => {
 
       return categories
     }, [] as InternalCategory[])
+})
+
+onMounted(() => {
+  AmplitudeService.track('Offer Detail Consulted', {
+    offer_detail_consulted_tab: "Document de l'offre",
+  })
 })
 </script>
 

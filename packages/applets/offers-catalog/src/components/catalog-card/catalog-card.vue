@@ -79,6 +79,7 @@ import { rateOfferRecommendation } from '../../services/offers-catalog.service'
 import { logger } from '@pulse/toolbox'
 import { AppColors } from '@pulse/styleguide'
 import { PButtonProps } from '@pulse/styleguide/types'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -126,6 +127,11 @@ async function handleResultValidation(satisfaction: boolean) {
   try {
     await rateOfferRecommendation(request)
     isOfferRated.value = satisfaction
+
+    AmplitudeService.track('Offer IA Evaluation', {
+      offer_IA_result: satisfaction ? 'good' : 'bad',
+      offer_IA_localisation: 'research',
+    })
   } catch (e) {
     logger.error('Error while rating offer result from AI search', e)
   }

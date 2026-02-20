@@ -58,6 +58,8 @@ import { CatalogDrawerContentPdfProps } from './catalog-drawer-content-pdf.types
 import { PButton, PDocumentDisplay, PLoader, POverlay } from '@pulse/styleguide/components'
 import { APICallStatus } from '@pulse/common/enums'
 import CatalogStatusError from '../catalog-status-error/catalog-status-error.vue'
+import { onMounted } from 'vue'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -72,6 +74,12 @@ const emit = defineEmits<{
 function onClickOpenPdf() {
   emit('open-pdf')
 }
+
+onMounted(() => {
+  AmplitudeService.track('Offer Detail Consulted', {
+    offer_detail_consulted_tab: "Fiche de l'offre",
+  })
+})
 </script>
 
 <i18n lang="yaml">

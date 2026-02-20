@@ -5,6 +5,7 @@ import { normalizeSearchTerm, getOffersWithSearchTerms } from '../../utils/offer
 import { logger } from '@pulse/toolbox'
 import { filterRecordByKeyCallback } from '@pulse/toolbox/utils/array'
 import { APICallStatus } from '@pulse/common/enums'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 export function useOffersCatalog() {
   const searchTerm = ref('')
@@ -37,11 +38,18 @@ export function useOffersCatalog() {
 
   function filterOffersCatalog() {
     const normalizedSearchTerm = normalizeSearchTerm(searchTerm.value)
+
     if (normalizedSearchTerm === '') {
       filteredOffers.value = offers.value
     } else {
       filteredOffers.value = offers.value
         .filter((offer) => filterRecordByKeyCallback(offer, 'searchTerms', normalizedSearchTerm))
+
+      AmplitudeService.track('Offer Searched', {
+        offer_search: searchTerm.value,
+        offer_searched_method: 'manual',
+        offer_searched_IA_result: 'succeeded',
+      })
     }
   }
 
@@ -109,9 +117,21 @@ export function useOffersCatalog() {
       })
 
       aiSearchApiCallStatus.value = APICallStatus.SUCCESS
+
+      AmplitudeService.track('Offer Searched', {
+        offer_search: question,
+        offer_searched_method: 'IA',
+        offer_searched_IA_result: 'succeeded',
+      })
     } catch (e) {
       logger.error('Error while searching offers with AI', e)
       aiSearchApiCallStatus.value = APICallStatus.ERROR
+
+      AmplitudeService.track('Offer Searched', {
+        offer_search: question,
+        offer_searched_method: 'IA',
+        offer_searched_IA_result: 'failed',
+      })
     }
   }
 

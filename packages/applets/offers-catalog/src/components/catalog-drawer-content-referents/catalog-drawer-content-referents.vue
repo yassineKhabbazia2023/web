@@ -89,7 +89,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { PTable, PTableColumn, PAvatar, POverlay, PLoader, PButton, PIcon, PTooltip } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import { CatalogDrawerContentReferentsProps } from './catalog-drawer-content-referents.types'
@@ -97,6 +97,7 @@ import { getTableReferentsColumns, getFormattedReferents, copyColumnContent } fr
 import { APICallStatus } from '@pulse/common/enums'
 import CatalogStatusError from '../catalog-status-error/catalog-status-error.vue'
 import CatalogStatusMessage from '../catalog-status-message/catalog-status-message.vue'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -124,6 +125,12 @@ function onClickCopy(value: string) {
     t('copy.error'),
   )
 }
+
+onMounted(() => {
+  AmplitudeService.track('Offer Detail Consulted', {
+    offer_detail_consulted_tab: 'Contacts référents',
+  })
+})
 </script>
 
 <i18n lang="yaml">
