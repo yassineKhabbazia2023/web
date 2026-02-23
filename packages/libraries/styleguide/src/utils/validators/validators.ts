@@ -1,4 +1,5 @@
 import type { FormItemRule } from 'element-plus'
+import { getEmailIsValid } from '@pulse/toolbox/utils/validator'
 
 /**
  * Generic validation rules for Element Plus forms
@@ -41,8 +42,8 @@ export const validationRules = {
    */
   email: (errorMessage: string): FormItemRule => ({
     validator: (_rule, value, callback) => {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-      if (value && !emailRegex.test(value)) {
+      const email = typeof value === 'string' ? value.trim() : ''
+      if (email && !getEmailIsValid(email)) {
         callback(new Error(errorMessage))
       } else {
         callback()

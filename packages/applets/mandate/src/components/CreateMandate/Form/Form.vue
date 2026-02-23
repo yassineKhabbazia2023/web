@@ -290,6 +290,7 @@
 
 <script setup lang='ts'>
 import { logger } from '@pulse/toolbox'
+import { getEmailIsValid } from '@pulse/toolbox/utils/validator'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { Feature } from '@pulse/common/enums'
 import { useI18n } from 'vue-i18n'
@@ -650,8 +651,8 @@ const createValidator = (
 })
 
 const validateEmail = (_: any, value: string, callback: any) => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  if (!value || emailRegex.test(value)) {
+  const email = value.trim()
+  if (!email || getEmailIsValid(email)) {
     callback()
     // FIXME: this call will erase other validation errors
     // and make the user be able to go to the next step

@@ -224,6 +224,32 @@ describe('form.vue', () => {
     expect(wrapper.exists()).toBeTruthy()
   })
 
+  describe('email validation', () => {
+    const runEmailRule = async (wrapper: any, value: string) =>
+      new Promise<Error | undefined>((resolve) => {
+        const rule = wrapper.vm.rules.email[1]
+        rule.validator({}, value, (error: Error | undefined) => {
+          resolve(error)
+        })
+      })
+
+    const cases = [
+      { value: 'test@example.com', expectedError: false, reason: 'valid email' },
+      { value: '  test@example.com  ', expectedError: false, reason: 'valid email with spaces' },
+      { value: 'tést@example.com', expectedError: true, reason: 'non-ascii local part' },
+    ]
+
+    it.each(cases)('should validate $reason', async ({ value, expectedError }) => {
+      const wrapper = createWrapper({ step: 2 })
+      const error = await runEmailRule(wrapper, value)
+      if (expectedError) {
+        expect(error).toBeInstanceOf(Error)
+      } else {
+        expect(error).toBeUndefined()
+      }
+    })
+  })
+
   it('validateIBS when ibs length is equal to 10', async () => {
     const wrapper = createWrapper({ step: 1 })
     vi.spyOn(wrapper.vm, 'validateIBS').mockImplementation(() => true)

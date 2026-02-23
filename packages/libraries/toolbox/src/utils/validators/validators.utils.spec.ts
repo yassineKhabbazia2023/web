@@ -11,9 +11,17 @@ describe('test validators.utils', () => {
       expectedIsValid: false,
       reason: 'not conform',
     }, {
+      email: '  abc@test.fr  ',
+      expectedIsValid: true,
+      reason: 'conform with spaces',
+    }, {
       email: 'abc@test.fr',
       expectedIsValid: true,
       reason: 'conform',
+    }, {
+      email: 'tést@test.fr',
+      expectedIsValid: false,
+      reason: 'non-ascii',
     }, {
       email: 'a-b.c@test-test.co.fr',
       expectedIsValid: true,
@@ -26,6 +34,29 @@ describe('test validators.utils', () => {
       const isValid = getEmailIsValid(email)
 
       expect(isValid).toBe(expectedIsValid)
+    })
+
+    const tooLongTldBase = 'toolongtldddddddddddddddddddddddddddddddddd'
+    const tooLongTld = `test@domain.${tooLongTldBase}${'d'.repeat(Math.max(0, 64 - tooLongTldBase.length))}`
+    const invalidEmails = [
+      '.test@gmail.com',
+      'test@.com.fs',
+      'test.@gmail.com',
+      'test..email@gmail.com',
+      'test@gmail..com',
+      'test@domain.c',
+      'test@domain.123',
+      tooLongTld,
+      'tést@gmail.com',
+      '用户@domain.com',
+      'test@dömain.com',
+      'test@gmail.com<script>',
+      'test@gmail.com;',
+      'test@gmail.com--',
+    ]
+
+    it.each(invalidEmails)('should return false for invalid email %s', (email) => {
+      expect(getEmailIsValid(email)).toBe(false)
     })
   })
   describe('getNameIsValid', () => {

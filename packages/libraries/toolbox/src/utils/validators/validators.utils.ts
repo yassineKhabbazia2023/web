@@ -1,7 +1,9 @@
-import { EMAIL_REG_EXP, NAME_REG_EXP } from './validators.utils.const'
+import { NAME_REG_EXP } from './validators.utils.const'
+import { validateEmail } from './email.validator'
 
 export function getEmailIsValid(email: string) {
-  return EMAIL_REG_EXP.test(email)
+  const trimmedEmail = email?.trim() ?? ''
+  return validateEmail(trimmedEmail)
 }
 
 export function getNameIsValid(name: string) {

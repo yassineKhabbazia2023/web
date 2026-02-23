@@ -133,38 +133,41 @@ describe('validators', () => {
   })
 
   describe('email', () => {
-    it('should pass validation for valid email', () => {
-      return new Promise<void>((resolve) => {
-        const rule = validationRules.email('Invalid email')
-        if (rule.validator) {
-          rule.validator({}, 'test@example.com', (error) => {
-            expect(error).toBeUndefined()
-            resolve()
-          }, {}, {})
-        }
-      })
-    })
+    const tooLongTldBase = 'toolongtldddddddddddddddddddddddddddddddddd'
+    const tooLongTld = `test@domain.${tooLongTldBase}${'d'.repeat(Math.max(0, 64 - tooLongTldBase.length))}`
+    const tests = [
+      { value: 'test@example.com', expectedError: false, reason: 'valid email' },
+      { value: '  test@example.com  ', expectedError: false, reason: 'valid email with spaces' },
+      { value: '', expectedError: false, reason: 'empty value' },
+      { value: 'invalid-email', expectedError: true, reason: 'invalid email' },
+      { value: 'tést@example.com', expectedError: true, reason: 'non-ascii local part' },
+      { value: '.test@gmail.com', expectedError: true, reason: 'dot at start' },
+      { value: 'test@.com.fs', expectedError: true, reason: 'dot after at' },
+      { value: 'test.@gmail.com', expectedError: true, reason: 'dot at end of local part' },
+      { value: 'test..email@gmail.com', expectedError: true, reason: 'double dot local part' },
+      { value: 'test@gmail..com', expectedError: true, reason: 'double dot domain' },
+      { value: 'test@domain.c', expectedError: true, reason: 'short tld' },
+      { value: 'test@domain.123', expectedError: true, reason: 'numeric tld' },
+      { value: tooLongTld, expectedError: true, reason: 'too long tld' },
+      { value: '用户@domain.com', expectedError: true, reason: 'unicode local part' },
+      { value: 'test@dömain.com', expectedError: true, reason: 'unicode domain part' },
+      { value: 'test@gmail.com<script>', expectedError: true, reason: 'script injection' },
+      { value: 'test@gmail.com;', expectedError: true, reason: 'trailing semicolon' },
+      { value: 'test@gmail.com--', expectedError: true, reason: 'trailing hyphens' },
+    ]
 
-    it('should pass validation for empty value', () => {
+    it.each(tests)('should handle $reason', ({ value, expectedError }) => {
       return new Promise<void>((resolve) => {
         const rule = validationRules.email('Invalid email')
         if (rule.validator) {
-          rule.validator({}, '', (error) => {
-            expect(error).toBeUndefined()
-            resolve()
-          }, {}, {})
-        }
-      })
-    })
-
-    it('should fail validation for invalid email', () => {
-      return new Promise<void>((resolve) => {
-        const rule = validationRules.email('Invalid email')
-        if (rule.validator) {
-          rule.validator({}, 'invalid-email', (error) => {
-            expect(error).toBeInstanceOf(Error)
-            if (error instanceof Error) {
-              expect(error.message).toBe('Invalid email')
+          rule.validator({}, value, (error) => {
+            if (expectedError) {
+              expect(error).toBeInstanceOf(Error)
+              if (error instanceof Error) {
+                expect(error.message).toBe('Invalid email')
+              }
+            } else {
+              expect(error).toBeUndefined()
             }
             resolve()
           }, {}, {})
