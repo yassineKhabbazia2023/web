@@ -1,4 +1,5 @@
 import { apiGatewayMock } from '@pulse/common/mocks/vitest'
+import { loggerMock } from '@pulse/toolbox/mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { BookingService } from './booking.service'
 import type { BookingConfigurationResponse, BookingConfigurationPayload } from '../types/booking.types'
@@ -9,6 +10,8 @@ vi.mock('@pulse/common', () => ({
     gateway: apiGatewayMock,
   }),
 }))
+
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const bookingServiceConfigurationMock = getMockedBookingServiceConfiguration()
 
@@ -80,6 +83,37 @@ describe('booking.service', () => {
 
       expect(apiGatewayMock.post).toHaveBeenCalledExactlyOnceWith(expectedUrl, payload)
       expect(result).toStrictEqual(mockResponse)
+    })
+  })
+
+  describe('getBookingEnabledFlag', () => {
+    const expectedUrl = `${API_PREFIXES.BOOKING}/enabled/currentuser`
+
+    it('should return true when API returns hasAccess true', async () => {
+      apiGatewayMock.get.mockResolvedValueOnce({ data: { hasAccess: true } })
+
+      const result = await BookingService.getBookingEnabledFlag()
+
+      expect(result).toBe(true)
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+    })
+
+    it('should return false when API returns hasAccess false', async () => {
+      apiGatewayMock.get.mockResolvedValueOnce({ data: { hasAccess: false } })
+
+      const result = await BookingService.getBookingEnabledFlag()
+
+      expect(result).toBe(false)
+    })
+
+    it('should return false on API error', async () => {
+      const error = new Error('Network error')
+      apiGatewayMock.get.mockRejectedValueOnce(error)
+
+      const result = await BookingService.getBookingEnabledFlag()
+
+      expect(result).toBe(false)
+      expect(loggerMock.error).toHaveBeenCalledWith(error)
     })
   })
 })

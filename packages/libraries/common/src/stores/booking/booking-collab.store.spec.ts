@@ -12,6 +12,7 @@ describe('useBookingCollabStore', () => {
 
       expect(store.hasBookingDrawerBeenOpened).toBe(false)
       expect(store.isBookingDrawerOpened).toBe(false)
+      expect(store.getIsBookingEnabled()).toBe(false)
     })
   })
 
@@ -34,11 +35,25 @@ describe('useBookingCollabStore', () => {
       const store = useBookingCollabStore()
 
       store.openBookingDrawer()
+      store.setIsBookingEnabled(true)
 
       store.reset()
 
       expect(store.hasBookingDrawerBeenOpened).toBe(false)
       expect(store.isBookingDrawerOpened).toBe(false)
+      expect(store.getIsBookingEnabled()).toBe(false)
+    })
+  })
+
+  describe('bookingEnabled', () => {
+    it('should set booking enabled state', () => {
+      const store = useBookingCollabStore()
+
+      store.setIsBookingEnabled(true)
+      expect(store.getIsBookingEnabled()).toBe(true)
+
+      store.setIsBookingEnabled(false)
+      expect(store.getIsBookingEnabled()).toBe(false)
     })
   })
 })

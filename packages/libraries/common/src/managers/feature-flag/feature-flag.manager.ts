@@ -35,10 +35,6 @@ export class FeatureFlagManager {
     return FeatureFlagManager.isFeatureActivated(Feature.NOTIFICATION_SETTINGS_DRAWER)
   }
 
-  static isCustomerBookingActivated() {
-    return FeatureFlagManager.isFeatureActivated(Feature.CUSTOMER_BOOKING)
-  }
-
   static isFeatureActivated(feature: Feature) {
     const value = window.EnvVars?.[feature]
 

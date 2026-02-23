@@ -3,8 +3,8 @@ import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises } from '@vue/test-utils'
 import { useBookingAppointmentDrawer } from './booking-appointment-drawer.composable'
 import { BookingAppointmentDrawerTabs } from './booking-appointment-drawer.enum'
-import { useBookingCustomerStore } from '../../../stores'
-import { BookingManager } from '../../../shared/managers/booking.manager'
+import { useBookingCustomerStore } from '@booking/stores'
+import { BookingManager } from '@booking/shared/managers/booking.manager'
 import { getBookingServiceExpert } from '../../../__mocks__'
 
 vi.mock('vue-i18n', () => ({
@@ -14,11 +14,12 @@ vi.mock('vue-i18n', () => ({
   }),
 }))
 
-vi.mock('../../../shared/managers/booking.manager')
+vi.mock('@booking/shared/managers/booking.manager')
 
 describe('useBookingAppointmentDrawer', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    vi.mocked(BookingManager.refreshAvailableExperts).mockReset()
   })
 
   describe('initial state', () => {
@@ -133,11 +134,13 @@ describe('useBookingAppointmentDrawer', () => {
   })
 
   describe('watcher on isOpened', () => {
-    it('should reset drawer and load experts when drawer opens', async () => {
+    it('should reset drawer and load experts when drawer opens and booking is enabled', async () => {
       vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
       const isOpened = ref(false)
-      const { currentStep, selectedExpertId, isLoadingExperts } = useBookingAppointmentDrawer(isOpened)
+      const store = useBookingCustomerStore()
+      const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
 
+      store.setIsBookingEnabled(true)
       currentStep.value = BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT
       selectedExpertId.value = 99
 
@@ -146,44 +149,40 @@ describe('useBookingAppointmentDrawer', () => {
 
       expect(currentStep.value).toBe(BookingAppointmentDrawerTabs.CHOOSE_EXPERT)
       expect(selectedExpertId.value).toBeUndefined()
-      expect(vi.mocked(BookingManager.refreshAvailableExperts)).toHaveBeenCalled()
-      expect(isLoadingExperts.value).toBe(false)
+      expect(vi.mocked(BookingManager.refreshAvailableExperts)).toHaveBeenCalledOnce()
     })
 
-    it('should set isLoadingExperts to true while loading', async () => {
-      let resolvePromise: () => void
-      const loadingPromise = new Promise<void>((resolve) => {
-        resolvePromise = resolve
-      })
-      vi.mocked(BookingManager.refreshAvailableExperts).mockReturnValueOnce(loadingPromise)
-
+    it('should reset drawer and load experts even when booking is disabled', async () => {
+      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
       const isOpened = ref(false)
-      const { isLoadingExperts } = useBookingAppointmentDrawer(isOpened)
+      const store = useBookingCustomerStore()
+      const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
+
+      store.setIsBookingEnabled(false)
+      currentStep.value = BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT
+      selectedExpertId.value = 99
 
       isOpened.value = true
       await flushPromises()
 
-      expect(isLoadingExperts.value).toBe(true)
-
-      resolvePromise!()
-      await flushPromises()
-
-      expect(isLoadingExperts.value).toBe(false)
+      expect(currentStep.value).toBe(BookingAppointmentDrawerTabs.CHOOSE_EXPERT)
+      expect(selectedExpertId.value).toBeUndefined()
+      expect(vi.mocked(BookingManager.refreshAvailableExperts)).toHaveBeenCalledOnce()
     })
 
-    it('should not trigger watcher when drawer closes', async () => {
-      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValue(undefined)
-
+    it('should not reset drawer when drawer closes', async () => {
       const isOpened = ref(true)
-      useBookingAppointmentDrawer(isOpened)
-      await flushPromises()
+      const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
 
-      vi.mocked(BookingManager.refreshAvailableExperts).mockClear()
+      currentStep.value = BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT
+      selectedExpertId.value = 99
 
       isOpened.value = false
       await flushPromises()
 
-      expect(vi.mocked(BookingManager.refreshAvailableExperts)).not.toHaveBeenCalled()
+      expect(currentStep.value).toBe(BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT)
+      expect(selectedExpertId.value).toBe(99)
     })
   })
 })
+

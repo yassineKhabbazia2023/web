@@ -12,6 +12,7 @@ describe('useBookingCustomerStore', () => {
 
       expect(store.getAvailableExperts()).toEqual([])
       expect(store.isAppointmentDrawerOpen).toBe(false)
+      expect(store.getIsBookingEnabled()).toBe(false)
       expect(store.hasAvailableExperts()).toBe(false)
     })
   })
@@ -43,6 +44,18 @@ describe('useBookingCustomerStore', () => {
     })
   })
 
+  describe('bookingEnabled', () => {
+    it('should set booking enabled state', () => {
+      const store = useBookingCustomerStore()
+
+      store.setIsBookingEnabled(true)
+      expect(store.getIsBookingEnabled()).toBe(true)
+
+      store.setIsBookingEnabled(false)
+      expect(store.getIsBookingEnabled()).toBe(false)
+    })
+  })
+
   describe('reset', () => {
     it('should reset all state', () => {
       const store = useBookingCustomerStore()
@@ -50,11 +63,13 @@ describe('useBookingCustomerStore', () => {
 
       store.setAvailableExperts(mockExperts as any)
       store.openAppointmentDrawer()
+      store.setIsBookingEnabled(true)
 
       store.reset()
 
       expect(store.getAvailableExperts()).toEqual([])
       expect(store.isAppointmentDrawerOpen).toBe(false)
+      expect(store.getIsBookingEnabled()).toBe(false)
     })
   })
 })

@@ -13,6 +13,7 @@ import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { RouteName } from '@pulse/common/enums'
+import { BookingManager } from '@pulse/booking/shared/managers/booking'
 
 import { CollaboratorAuthenticatedFlowManager } from './collaborator.authenticated.flow.manager'
 
@@ -35,6 +36,12 @@ vi.mock('@pulse/common/managers', async (importOriginal) => {
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
+}))
+
+vi.mock('@pulse/booking/shared/managers/booking', () => ({
+  BookingManager: {
+    setupBookingForCollab: vi.fn(),
+  },
 }))
 
 vi.mock('@pulse/shared/plugins', () => ({
@@ -64,6 +71,7 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
     it('should init current user, user entities and third parties', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(BookingManager.setupBookingForCollab).mockResolvedValue(undefined)
 
       await CollaboratorAuthenticatedFlowManager.enterAuthenticatedFlow()
 
@@ -71,6 +79,7 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
       expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock.contact)
       expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(userMock.permissions)
       expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(userMock.favoriteEntities)
+      expect(BookingManager.setupBookingForCollab).toHaveBeenCalled()
     })
   })
 

@@ -16,6 +16,7 @@ import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
+import { BookingManager } from '@pulse/booking/shared/managers/booking'
 
 import { CustomerAuthenticatedFlowManager } from './customer.authenticated.flow.manager'
 
@@ -41,6 +42,13 @@ vi.mock('@pulse/common/services/cgu')
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
+}))
+
+vi.mock('@pulse/booking/shared/managers/booking', () => ({
+  BookingManager: {
+    setupBookingForCustomer: vi.fn(),
+    refreshAvailableExperts: vi.fn(),
+  },
 }))
 
 vi.mock('@pulse/shared/plugins', () => ({
@@ -72,6 +80,7 @@ describe('CustomerAuthenticatedFlowManager', () => {
     it('should init current user, user entities and third parties', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(BookingManager.setupBookingForCustomer).mockResolvedValue(undefined)
 
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
 
@@ -80,6 +89,8 @@ describe('CustomerAuthenticatedFlowManager', () => {
       expect(userStoreMock.setIsSingleEntity).toHaveBeenCalledWith(true)
       expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(userMock.permissions)
       expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(userMock.favoriteEntities)
+      expect(BookingManager.setupBookingForCustomer).toHaveBeenCalled()
+      expect(BookingManager.refreshAvailableExperts).not.toHaveBeenCalled()
     })
   })
 
@@ -433,3 +444,4 @@ describe('CustomerAuthenticatedFlowManager', () => {
     })
   })
 })
+

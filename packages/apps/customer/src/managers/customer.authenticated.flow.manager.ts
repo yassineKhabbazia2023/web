@@ -32,7 +32,8 @@ export class CustomerAuthenticatedFlowManager {
 
     this.initAuthenticatedThirdParties()
     await this.initEntities()
-    await BookingManager.refreshAvailableExperts()
+    // Silent eligibility check: UI reads store state without a loading indicator.
+    await BookingManager.setupBookingForCustomer()
   }
 
   // #region setup
@@ -218,3 +219,4 @@ export class CustomerAuthenticatedFlowManager {
   }
   // #endregion landing pages
 }
+

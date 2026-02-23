@@ -1,8 +1,8 @@
 import type { Ref } from 'vue'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useBookingCustomerStore } from '../../../stores'
-import { BookingManager } from '../../../shared/managers/booking.manager'
+import { useBookingCustomerStore } from '@booking/stores'
+import { BookingManager } from '@booking/shared/managers/booking.manager'
 import { BookingAppointmentDrawerTabs } from './booking-appointment-drawer.enum'
 
 export function useBookingAppointmentDrawer(isOpened: Ref<boolean>) {
@@ -68,3 +68,4 @@ export function useBookingAppointmentDrawer(isOpened: Ref<boolean>) {
     onSelectExpert,
   }
 }
+

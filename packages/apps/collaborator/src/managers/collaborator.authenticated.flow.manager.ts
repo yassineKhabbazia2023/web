@@ -16,6 +16,7 @@ import { CurrentEntityManager } from '@pulse/common/managers'
 import { Entity } from '@pulse/common/types'
 import { RouteName } from '@pulse/common/enums'
 import { COLLABORATOR_BASE_PATH } from '@pulse/common/constants'
+import { BookingManager } from '@pulse/booking/shared/managers/booking'
 
 export class CollaboratorAuthenticatedFlowManager {
   static async enterAuthenticatedFlow() {
@@ -29,6 +30,8 @@ export class CollaboratorAuthenticatedFlowManager {
 
     this.initAuthenticatedThirdParties()
     await this.initEntities()
+    // Silent eligibility check: UI reads store state without a loading indicator.
+    await BookingManager.setupBookingForCollab()
   }
 
   // #region setup

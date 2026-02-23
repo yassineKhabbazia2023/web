@@ -5,6 +5,7 @@ import type { BookingServiceExpert } from '../types/booking.types'
 export const useBookingCustomerStore = defineStore('booking-customer', () => {
   const availableExperts = ref<BookingServiceExpert[]>([])
   const isAppointmentDrawerOpen = ref(false)
+  const isBookingEnabled = ref(false)
 
   function setAvailableExperts(experts: BookingServiceExpert[]) {
     availableExperts.value = experts
@@ -18,9 +19,18 @@ export const useBookingCustomerStore = defineStore('booking-customer', () => {
     return availableExperts.value.length > 0
   }
 
+  function getIsBookingEnabled() {
+    return isBookingEnabled.value
+  }
+
+  function setIsBookingEnabled(value: boolean) {
+    isBookingEnabled.value = value
+  }
+
   function reset() {
     setAvailableExperts([])
     isAppointmentDrawerOpen.value = false
+    setIsBookingEnabled(false)
   }
 
   function openAppointmentDrawer() {
@@ -34,7 +44,9 @@ export const useBookingCustomerStore = defineStore('booking-customer', () => {
   return {
     isAppointmentDrawerOpen,
     getAvailableExperts,
+    getIsBookingEnabled,
     setAvailableExperts,
+    setIsBookingEnabled,
     hasAvailableExperts,
     reset,
     openAppointmentDrawer,

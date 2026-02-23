@@ -1,11 +1,13 @@
 import { commonApi as api } from '@pulse/common'
 import { API_PREFIXES } from '@pulse/common/constants'
+import { logger } from '@pulse/toolbox'
 import type {
   BookingConfigurationPayload,
   BookingServiceConfiguration,
   BookingServiceExpert,
   BookingConfigurationResponse,
 } from '../types/booking.types'
+import type { BookingEnabledResponse } from '../types/booking-enabled.type'
 
 export class BookingService {
   private static readonly bookingApiUrl = `${API_PREFIXES.BOOKING}/booking-link/currentuser`
@@ -69,5 +71,17 @@ export class BookingService {
     const { data } = await api().gateway.post<BookingConfigurationResponse>(url, payload)
 
     return data
+  }
+
+  static async getBookingEnabledFlag(): Promise<boolean> {
+    const url = `${API_PREFIXES.BOOKING}/enabled/currentuser`
+
+    try {
+      const { data } = await api().gateway.get<BookingEnabledResponse>(url)
+      return data.hasAccess === true
+    } catch (error) {
+      logger.error(error)
+      return false
+    }
   }
 }

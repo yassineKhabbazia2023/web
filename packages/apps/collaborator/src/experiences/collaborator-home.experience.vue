@@ -19,14 +19,14 @@ import type { UserConfig } from '@pulse/shared/types'
 import { FeedCenterHeaderWidget } from '@pulse/feed-center/widgets/feed-center-header'
 import { BookingHeaderWidget } from '@pulse/booking/collab/widgets/header-widget'
 import { FeatureFlagManager } from '@pulse/common/managers'
-import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
-import { Feature } from '@pulse/common/enums'
+import { useUserStore, useCurrentEntityStore, useBookingCollabStore } from '@pulse/common/stores'
 
 const currentEntityStore = useCurrentEntityStore()
 const userStore = useUserStore()
+const bookingStore = useBookingCollabStore()
 
 const shouldShowFeedCenter = FeatureFlagManager.isFeedCenterActivated() === true
-const shouldShowBooking = FeatureFlagManager.isFeatureActivated(Feature.BOOKING) === true
+const shouldShowBooking = computed(() => bookingStore.getIsBookingEnabled() === true)
 
 const { favoriteEntities } = storeToRefs(userStore)
 const currentEntity = computed(() => currentEntityStore.currentEntity)

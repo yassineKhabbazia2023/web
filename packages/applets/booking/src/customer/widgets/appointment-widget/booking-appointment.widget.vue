@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="FeatureFlagManager.isCustomerBookingActivated()"
+    v-if="isBookingEnabled === true"
     class="
         flex
         flex--direction-column
@@ -50,17 +50,18 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { AppColors } from '@pulse/styleguide'
 import { PIcon, PButton } from '@pulse/styleguide/components'
-import { useBookingCustomerStore } from '../../../stores'
-import BookingAppointmentNoResult from '../../components/no-result/booking-appointment-no-result.vue'
-import BookingAppointmentDrawer from '../../components/appointment-drawer/booking-appointment-drawer.vue'
-import { FeatureFlagManager } from '@pulse/common/managers'
+import { useBookingCustomerStore } from '@booking/stores'
+import BookingAppointmentNoResult from '@booking/customer/components/no-result/booking-appointment-no-result.vue'
+import BookingAppointmentDrawer from '@booking/customer/components/appointment-drawer/booking-appointment-drawer.vue'
 
 const customerStore = useBookingCustomerStore()
 const { isAppointmentDrawerOpen } = storeToRefs(customerStore)
+const isBookingEnabled = computed(() => customerStore.getIsBookingEnabled() === true)
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -81,3 +82,4 @@ function onClickTakeAppointment() {
     title: 'Rendez-vous avec votre expert'
     takeAppointment: 'Prendre rendez-vous'
 </i18n>
+
