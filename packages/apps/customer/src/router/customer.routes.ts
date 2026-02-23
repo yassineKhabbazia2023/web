@@ -38,6 +38,11 @@ export const CUSTOMER_ROUTES = {
     pennylaneSocialManagement: { path: 'gestion-sociale', name: RouteName.PENNYLANE_SOCIAL_MANAGEMENT },
     launcher: { path: 'launcher', name: RouteName.LAUNCHER },
   },
+  prospect: {
+    root: { path: `/contact/:${RouteParam.PROSPECT_ID}`, name: RouteName.PROSPECT },
+    homepage: { path: 'accueil', name: RouteName.PROSPECT_HOMEPAGE },
+    stepper: { path: 'suivi-de-dossier', name: RouteName.PROSPECT_STEPPER },
+  },
   wallet: {
     root: { path: 'portefeuille', name: RouteName.WALLET },
     landingCustomer: { path: 'mes-entites', name: RouteName.CUSTOMER_ENTITIES },
