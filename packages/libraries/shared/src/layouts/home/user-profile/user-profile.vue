@@ -7,7 +7,11 @@
     class="user-profile-drawer"
     @close-drawer-button="isDrawerOpened = false"
   >
-    <PTabs v-model="activeTab" p-stretch>
+    <PTabs
+      v-if="shouldShowTabs"
+      v-model="activeTab"
+      p-stretch
+    >
       <PTabPane
         pName="information"
         :pLabel="t('tabInformation')"
@@ -15,17 +19,24 @@
         <MyInformation />
       </PTabPane>
       <PTabPane
-        v-if="isCollab === false"
+        v-if="hasPasswordTab"
         pName="password"
         :pLabel="t('tabPassword')"
       >
         <UpdatePassword />
       </PTabPane>
     </PTabs>
+    <MyInformation v-else />
 
     <template #footer>
-      <div v-show="activeTab === 'information'" id="my-information__footer-drawer" />
-      <div v-show="activeTab === 'password'" id="update-password__footer-drawer" />
+      <div
+        v-show="shouldShowTabs ? activeTab === 'information' : true"
+        id="my-information__footer-drawer"
+      />
+      <div
+        v-show="shouldShowTabs && activeTab === 'password'"
+        id="update-password__footer-drawer"
+      />
     </template>
   </PDrawer>
 </template>
@@ -48,6 +59,8 @@ const userStore = useUserStore()
 const isDrawerOpened = defineModel<boolean>('isDrawerOpened', { default: false })
 const activeTab = ref<string>('information')
 const isCollab = computed(() => userStore.isCollab)
+const hasPasswordTab = computed(() => isCollab.value === false)
+const shouldShowTabs = computed(() => hasPasswordTab.value)
 </script>
 
 <i18n lang="yaml">
