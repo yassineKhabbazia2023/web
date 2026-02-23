@@ -1,9 +1,8 @@
 import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import { ACCOUNT_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
-import { Feature } from '@pulse/common/enums'
+import { Feature, RouteName } from '@pulse/common/enums'
 import type { TabName, Tab } from './types'
-
-const TAB_NAMES: TabName[] = ['users', 'collab', 'offers', 'invoices', 'info', 'history', 'delegationsHistory']
+import { ENTITY_OVERVIEW_TAB_ROUTE_NAMES } from './types'
 
 const canAccessInvoices = (isInvoicesTabVisible: boolean): boolean => {
   const isFeatureActive = FeatureFlagManager.isFeatureActivated(Feature.RYDGE_INVOICES)
@@ -18,13 +17,13 @@ export function getTabAuthorizations(isCollab: boolean, isInvoicesTabVisible: bo
   const hasInvoicesAccess = canAccessInvoices(isInvoicesTabVisible)
 
   return {
-    offers: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.OFFER),
-    info: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.INFORMATION),
-    users: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.USERS),
-    collab: isCollab && CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.COLLABORATORS),
-    history: isCollab,
-    delegationsHistory: isCollab && CurrentUserManager.hasPermission(GLOBAL_PERMISSIONS.HISTORY),
-    invoices: hasInvoicesAccess,
+    [RouteName.OFFERS]: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.OFFER),
+    [RouteName.INFO]: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.INFORMATION),
+    [RouteName.USERS]: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.USERS),
+    [RouteName.COLLAB]: isCollab && CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.COLLABORATORS),
+    [RouteName.FOLDER_HISTORY]: isCollab,
+    [RouteName.DELEGATIONS_HISTORY]: isCollab && CurrentUserManager.hasPermission(GLOBAL_PERMISSIONS.HISTORY),
+    [RouteName.RYDGE_INVOICES]: hasInvoicesAccess,
   }
 }
 
@@ -32,7 +31,7 @@ export function getTabs(
   tabAuthorizations: Record<TabName, boolean>,
   titles: Record<TabName, string>,
 ): Tab[] {
-  return TAB_NAMES
+  return ENTITY_OVERVIEW_TAB_ROUTE_NAMES
     .filter(name => tabAuthorizations[name])
     .map(name => ({
       name,

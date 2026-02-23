@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { useRouter } from 'vue-router'
 import { useCurrentEntityStore, useUserStore, usePermissionsStore } from '@pulse/common/stores'
 import { getMockedUser, getMockedEntitySummary } from '@pulse/common/mocks'
-import { CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
+import { CollaboratorPermission, CustomerPermission, RouteName } from '@pulse/common/enums'
 import Entity from './Entity.page.vue'
 import Offers from './pages/offers/Offers.vue'
 import Invoices from './pages/invoices/invoices.vue'
@@ -28,15 +28,15 @@ const MOCK_ENTITY_ID = '602'
 
 const parentRoute = {
   path: '/entity/:entityId',
-  name: 'entityOverview',
+  name: RouteName.ENTITY_OVERVIEW,
   component: { template: '<router-view />' },
   children: [
-    { path: 'offers', name: 'offers', component: Offers },
-    { path: 'factures-rydge-conseil', name: 'invoices', component: Invoices },
-    { path: 'info', name: 'info', component: Information },
-    { path: 'users', name: 'users', component: Users },
-    { path: 'collab', name: 'collab', component: Collaborators },
-    { path: 'delegations', name: 'delegationsHistory', component: DelegationsHistory },
+    { path: 'offers', name: RouteName.OFFERS, component: Offers },
+    { path: 'factures-rydge-conseil', name: RouteName.RYDGE_INVOICES, component: Invoices },
+    { path: 'info', name: RouteName.INFO, component: Information },
+    { path: 'users', name: RouteName.USERS, component: Users },
+    { path: 'collab', name: RouteName.COLLAB, component: Collaborators },
+    { path: 'delegations', name: RouteName.DELEGATIONS_HISTORY, component: DelegationsHistory },
   ],
 }
 
@@ -76,7 +76,7 @@ function useStorySetup(isCollab: boolean) {
   }
 
   onMounted(async () => {
-    await router.push({ name: 'users', params: { entityId: MOCK_ENTITY_ID } })
+    await router.push({ name: RouteName.USERS, params: { entityId: MOCK_ENTITY_ID } })
     isReady.value = true
   })
 

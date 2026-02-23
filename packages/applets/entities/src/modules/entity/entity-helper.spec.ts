@@ -1,3 +1,4 @@
+import { RouteName } from '@pulse/common/enums'
 import { CurrentUserManagerMock, featureFlagManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
 import type { TabName, Tab } from './types'
 
@@ -17,13 +18,13 @@ describe('test entity-helper', () => {
       featureFlagEnabled: true,
       isInvoicesTabVisible: true,
       expectedAuthorizations: {
-        collab: true,
-        delegationsHistory: true,
-        history: true,
-        info: true,
-        offers: true,
-        invoices: true,
-        users: true,
+        [RouteName.COLLAB]: true,
+        [RouteName.DELEGATIONS_HISTORY]: true,
+        [RouteName.FOLDER_HISTORY]: true,
+        [RouteName.INFO]: true,
+        [RouteName.OFFERS]: true,
+        [RouteName.RYDGE_INVOICES]: true,
+        [RouteName.USERS]: true,
       },
     }, {
       isCollab: false,
@@ -31,13 +32,13 @@ describe('test entity-helper', () => {
       featureFlagEnabled: true,
       isInvoicesTabVisible: true,
       expectedAuthorizations: {
-        collab: false,
-        delegationsHistory: false,
-        history: false,
-        info: true,
-        offers: true,
-        invoices: true,
-        users: true,
+        [RouteName.COLLAB]: false,
+        [RouteName.DELEGATIONS_HISTORY]: false,
+        [RouteName.FOLDER_HISTORY]: false,
+        [RouteName.INFO]: true,
+        [RouteName.OFFERS]: true,
+        [RouteName.RYDGE_INVOICES]: true,
+        [RouteName.USERS]: true,
       },
     }, {
       isCollab: true,
@@ -45,13 +46,13 @@ describe('test entity-helper', () => {
       featureFlagEnabled: true,
       isInvoicesTabVisible: true,
       expectedAuthorizations: {
-        collab: false,
-        delegationsHistory: false,
-        history: true,
-        info: false,
-        offers: false,
-        invoices: true,
-        users: false,
+        [RouteName.COLLAB]: false,
+        [RouteName.DELEGATIONS_HISTORY]: false,
+        [RouteName.FOLDER_HISTORY]: true,
+        [RouteName.INFO]: false,
+        [RouteName.OFFERS]: false,
+        [RouteName.RYDGE_INVOICES]: true,
+        [RouteName.USERS]: false,
       },
     }, {
       isCollab: false,
@@ -59,13 +60,13 @@ describe('test entity-helper', () => {
       featureFlagEnabled: true,
       isInvoicesTabVisible: false,
       expectedAuthorizations: {
-        collab: false,
-        delegationsHistory: false,
-        history: false,
-        info: false,
-        offers: false,
-        invoices: false,
-        users: false,
+        [RouteName.COLLAB]: false,
+        [RouteName.DELEGATIONS_HISTORY]: false,
+        [RouteName.FOLDER_HISTORY]: false,
+        [RouteName.INFO]: false,
+        [RouteName.OFFERS]: false,
+        [RouteName.RYDGE_INVOICES]: false,
+        [RouteName.USERS]: false,
       },
     }]
     it.each(tests)(
@@ -135,7 +136,7 @@ describe('test entity-helper', () => {
       hasPermissionMock.mockReturnValue(hasPermission)
       isFeatureActivatedMock.mockReturnValue(featureFlagEnabled)
 
-      const result = getTabAuthorizations(isCollab, isInvoicesTabVisible).invoices
+      const result = getTabAuthorizations(isCollab, isInvoicesTabVisible)[RouteName.RYDGE_INVOICES]
 
       expect(result).toBe(expected)
     })
@@ -143,42 +144,42 @@ describe('test entity-helper', () => {
 
   describe('getTabs', () => {
     it('should return proper tabs', () => {
-      const tabAuthorizations: Record<TabName, boolean> = {
-        collab: true,
-        delegationsHistory: false,
-        history: true,
-        info: true,
-        offers: true,
-        invoices: true,
-        users: true,
+      const tabAuthorisations: Record<TabName, boolean> = {
+        [RouteName.COLLAB]: true,
+        [RouteName.DELEGATIONS_HISTORY]: false,
+        [RouteName.FOLDER_HISTORY]: true,
+        [RouteName.INFO]: true,
+        [RouteName.OFFERS]: true,
+        [RouteName.RYDGE_INVOICES]: true,
+        [RouteName.USERS]: true,
       }
       const titles: Record<TabName, string> = {
-        users: 'Utilisateurs',
-        collab: 'Collaborateurs',
-        offers: 'Offres',
-        invoices: 'Factures RYDGE Conseil',
-        info: 'Informations',
-        history: 'Historique du dossier',
-        delegationsHistory: 'Historique des délégations',
+        [RouteName.USERS]: 'Utilisateurs',
+        [RouteName.COLLAB]: 'Collaborateurs',
+        [RouteName.OFFERS]: 'Offres',
+        [RouteName.RYDGE_INVOICES]: 'Factures RYDGE Conseil',
+        [RouteName.INFO]: 'Informations',
+        [RouteName.FOLDER_HISTORY]: 'Historique du dossier',
+        [RouteName.DELEGATIONS_HISTORY]: 'Historique des délégations',
       }
-      const tabs = getTabs(tabAuthorizations, titles)
+      const tabs = getTabs(tabAuthorisations, titles)
       const expectedTabs: Tab[] = [{
-        name: 'users',
+        name: RouteName.USERS,
         title: 'Utilisateurs',
       }, {
-        name: 'collab',
+        name: RouteName.COLLAB,
         title: 'Collaborateurs',
       }, {
-        name: 'offers',
+        name: RouteName.OFFERS,
         title: 'Offres',
       }, {
-        name: 'invoices',
+        name: RouteName.RYDGE_INVOICES,
         title: 'Factures RYDGE Conseil',
       }, {
-        name: 'info',
+        name: RouteName.INFO,
         title: 'Informations',
       }, {
-        name: 'history',
+        name: RouteName.FOLDER_HISTORY,
         title: 'Historique du dossier',
       }]
 

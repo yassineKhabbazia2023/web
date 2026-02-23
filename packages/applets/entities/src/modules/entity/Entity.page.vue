@@ -32,6 +32,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { RouteName } from '@pulse/common/enums'
 import { useUserStore, useCurrentEntityStore, useInvoicesAccessStore } from '@pulse/common/stores'
 import { PTabs, PTabPane, PEntityHeader } from '@pulse/styleguide/components'
 import { getTabAuthorizations, getTabs } from './entity-helper'
@@ -47,7 +48,7 @@ const route = useRoute()
 const router = useRouter()
 const userStore = useUserStore()
 const currentEntityStore = useCurrentEntityStore()
-const activeTab = computed(() => route.name as string)
+const activeTab = computed(() => route.name as TabName)
 
 const { currentEntity } = storeToRefs(currentEntityStore)
 const { isCollab } = storeToRefs(userStore)
@@ -57,13 +58,13 @@ const { isTabVisible } = storeToRefs(invoicesAccessStore)
 
 // Computed
 const tabTitles: Record<TabName, string> = {
-  offers: t('offers'),
-  info: t('info'),
-  invoices: t('invoices'),
-  users: t('users'),
-  collab: t('collab'),
-  history: t('history'),
-  delegationsHistory: t('delegationsHistory'),
+  [RouteName.OFFERS]: t('offers'),
+  [RouteName.INFO]: t('info'),
+  [RouteName.RYDGE_INVOICES]: t('invoices'),
+  [RouteName.USERS]: t('users'),
+  [RouteName.COLLAB]: t('collab'),
+  [RouteName.FOLDER_HISTORY]: t('history'),
+  [RouteName.DELEGATIONS_HISTORY]: t('delegationsHistory'),
 }
 const tabAuthorizations = computed(() =>
   getTabAuthorizations(

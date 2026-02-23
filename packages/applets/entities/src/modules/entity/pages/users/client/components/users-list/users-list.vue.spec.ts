@@ -1,6 +1,6 @@
 import { shallowMount, type VueWrapper } from '@vue/test-utils'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { SortDirection, ContactType } from '@pulse/common/enums'
+import { RouteName, SortDirection, ContactType } from '@pulse/common/enums'
 import { mockedUsersClient } from '@entities/__mocks__/users-client.mocks'
 import { getInitials } from '@entities/helper'
 import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
@@ -14,7 +14,7 @@ vi.mock('@pulse/common/managers', () => ({
 }))
 
 vi.mock('vue-router', () => ({
-  useRoute: () => ({ name: 'users' }),
+  useRoute: () => ({ name: RouteName.USERS }),
 }))
 
 let wrapper: VueWrapper<any>
