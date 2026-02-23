@@ -251,7 +251,7 @@ const searchContactByEmail = useDebounce(async (contactEmail: string) => {
     disableContactFields()
   }
   isLookingForExistingUser.value = false
-}, 600)
+})
 
 onMounted(async () => {
   isLoading.value = true

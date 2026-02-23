@@ -45,7 +45,6 @@ const meta: Meta<typeof PAutocomplete> = {
     pClearable: true,
     pDisabled: false,
     pValueKey: 'value',
-    pDebounce: 300,
     pPlacement: 'bottom-start',
     pTriggerOnFocus: false,
     pSelectWhenUnmatched: false,

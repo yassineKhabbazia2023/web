@@ -14,7 +14,6 @@ const propsValue: PAutocompleteProps = {
   pClearable: true,
   pDisabled: false,
   pValueKey: 'value',
-  pDebounce: 10,
   pPlacement: 'bottom',
   pFetchSuggestions: () => suggestionsData,
   pTriggerOnFocus: true,

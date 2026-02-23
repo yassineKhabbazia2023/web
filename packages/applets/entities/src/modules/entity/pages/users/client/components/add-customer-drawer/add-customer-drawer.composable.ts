@@ -16,13 +16,11 @@ function amplitudeTrack(result: 'failed' | 'succeeded') {
   })
 }
 export function useAddCustomerDrawer({
-  debounceDelay,
   invalidEmailAdresseMessage,
   alreadyAddedToAccountMessage,
   addCustomerDrawerSteps,
   requiredInputMessage,
 }: {
-  debounceDelay: number
   invalidEmailAdresseMessage: string
   alreadyAddedToAccountMessage: string
   addCustomerDrawerSteps: AddCustomerDrawerStep[],
@@ -217,9 +215,9 @@ export function useAddCustomerDrawer({
     amplitudeTrack('succeeded')
   }
 
-  const debouncedCheckEmail = useDebounce(checkEmail, debounceDelay)
-  const debouncedCheckFirstName = useDebounce(checkFirstName, debounceDelay)
-  const debouncedCheckLastName = useDebounce(checkLastName, debounceDelay)
+  const debouncedCheckEmail = useDebounce(checkEmail)
+  const debouncedCheckFirstName = useDebounce(checkFirstName)
+  const debouncedCheckLastName = useDebounce(checkLastName)
 
   return {
     addCustomerDrawerStepIndex,

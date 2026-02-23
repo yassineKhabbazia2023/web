@@ -38,7 +38,6 @@ withDefaults(defineProps<PAutocompleteProps>(), {
   pClearable: false,
   pDisabled: false,
   pValueKey: 'value',
-  pDebounce: 300,
   pPlacement: 'bottom-start',
   pTriggerOnFocus: true,
   pSelectWhenUnmatched: false,

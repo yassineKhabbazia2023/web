@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useDebounce } from '@pulse/toolbox'
+import { useDebounce, DEBOUNCE_TIMING } from '@pulse/toolbox'
 import type { ActionBarLoadingButtonsState } from './helpers/DocumentsActionsHelpers'
 import {
   generateActionBarLeftSideButtons,
@@ -62,7 +62,7 @@ const handleUploadFilesSelected = (files:File[]) => {
 
 const debounceFunction = useDebounce((value: string) => {
   emit('p-search-input', value)
-}, 1000)
+}, DEBOUNCE_TIMING.SLOW)
 
 const handleSearch = (value: string) => {
   debounceFunction(value)

@@ -111,7 +111,7 @@ async function onUpdateSearchParams(override: Partial<SearchMandateParams>) {
 const debouncedRefreshData = useDebounce(() => {
   refreshData()
   trackMandateSearch(searchParams.value.searchTerm)
-}, 500)
+})
 
 onMounted(() => {
   refreshData()

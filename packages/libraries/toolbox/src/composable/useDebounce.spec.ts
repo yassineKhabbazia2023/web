@@ -1,9 +1,11 @@
 import { useDebounce } from './useDebounce'
+import { DEBOUNCE_TIMING } from '../constants'
 
 describe('useDebounce', () => {
   it('should debounce calls correctly', async () => {
+    vi.useFakeTimers()
     const fn = vi.fn()
-    const debouncedFn = useDebounce(fn, 100)
+    const debouncedFn = useDebounce(fn)
 
     debouncedFn('call1')
     debouncedFn('call2')
@@ -11,10 +13,10 @@ describe('useDebounce', () => {
 
     expect(fn).not.toHaveBeenCalled()
 
-    // attend un peu plus que le délai (100ms)
-    await new Promise((r) => setTimeout(r, 150))
+    await vi.advanceTimersByTimeAsync(DEBOUNCE_TIMING.DEFAULT + 1)
 
     expect(fn).toHaveBeenCalledTimes(1)
     expect(fn).toHaveBeenCalledWith('call3')
+    vi.useRealTimers()
   })
 })

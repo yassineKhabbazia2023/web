@@ -43,7 +43,6 @@ import PInput from '../../atoms/PInput/PInput.vue'
 import PForm from '../../molecules/PForm/PForm.vue'
 import type { PFormSearchProps } from './PFormSearch.types'
 
-const DEFAULT_DEBOUNCE_DELAY_MS = 500
 
 const props = withDefaults(defineProps<PFormSearchProps>(), {
   pMinLength: 3,
@@ -51,7 +50,6 @@ const props = withDefaults(defineProps<PFormSearchProps>(), {
   pSearch: '',
   pAutofocus: false,
   pDisabled: false,
-  pDebounceDelay: DEFAULT_DEBOUNCE_DELAY_MS,
 })
 
 const emit = defineEmits<{

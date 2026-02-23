@@ -81,7 +81,7 @@ import { AppColors } from '@pulse/styleguide'
 import type { AddCustomerDrawerProps } from './add-customer-drawer.types'
 import NextPreviousButtons from '@entities/components/NextPreviousButtons'
 import AddCustomerContent from './components/add-customer-content/add-customer-content.vue'
-import { DEBOUNCE_DELAY, ADD_CUSTOMER_DRAWER_STEPS } from './add-customer-drawer.const'
+import { ADD_CUSTOMER_DRAWER_STEPS } from './add-customer-drawer.const'
 import { useAddCustomerDrawer } from './add-customer-drawer.composable'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/enums'
 
@@ -119,7 +119,6 @@ const {
   submitForm,
   goNextStep,
 } = useAddCustomerDrawer({
-  debounceDelay: DEBOUNCE_DELAY,
   invalidEmailAdresseMessage: t('incorrectEmail'),
   requiredInputMessage: t('requiredInput'),
   alreadyAddedToAccountMessage: t('alreadyAddedToAccount'),

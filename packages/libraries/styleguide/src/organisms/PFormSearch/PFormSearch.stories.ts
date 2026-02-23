@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import PFormSearch from './PFormSearch.vue'
 import { PFormSearchProps } from './PFormSearch.types'
+import { DEBOUNCE_TIMING } from '@pulse/toolbox'
 
 const meta: Meta<typeof PFormSearch> = {
   title: 'Organisms/PFormSearch',
@@ -121,7 +122,6 @@ export const Default: Story = {
     pMinLength: 3,
     pSize: 'default',
     pClearable: false,
-    pDebounceDelay: 100,
     pSearchInvalidMessage: 'Minimum 3 caractères',
   },
 }
@@ -163,7 +163,6 @@ export const WithClearButton: Story = {
     pMinLength: 2,
     pSize: 'default',
     pClearable: true,
-    pDebounceDelay: 200,
     pSearchInvalidMessage: 'Please enter at least 2 characters',
   },
 }
@@ -206,7 +205,6 @@ export const AutofocusEnabled: Story = {
     pMinLength: 1,
     pSize: 'default',
     pClearable: true,
-    pDebounceDelay: 150,
     pSearchInvalidMessage: 'At least 1 character required',
   },
 }
@@ -339,7 +337,7 @@ export const CustomDebounce: Story = {
     pMinLength: 1,
     pSize: 'default',
     pClearable: true,
-    pDebounceDelay: 1000,
+    pDebounceDelay: DEBOUNCE_TIMING.SLOW,
     pSearchInvalidMessage: 'Please enter at least 1 character',
   },
 }

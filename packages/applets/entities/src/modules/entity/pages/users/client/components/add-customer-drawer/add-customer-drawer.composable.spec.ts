@@ -1,4 +1,4 @@
-import { DEBOUNCE_DELAY, ADD_CUSTOMER_DRAWER_STEPS } from './add-customer-drawer.const'
+import { ADD_CUSTOMER_DRAWER_STEPS } from './add-customer-drawer.const'
 import { hasContactRoleOnCommonAccount } from '@entities/services/account'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/enums'
 import { saveUserPermissions } from '@entities/components/ManageRightsDrawer/utils'
@@ -16,7 +16,6 @@ const hasContactRoleOnCommonAccountMock = vi.mocked(hasContactRoleOnCommonAccoun
 const saveUserPermissionsMock = vi.mocked(saveUserPermissions)
 
 const initializationParamaters = {
-  debounceDelay: DEBOUNCE_DELAY,
   invalidEmailAdresseMessage: 'incorrectEmail',
   alreadyAddedToAccountMessage: 'alreadyAddedToAccount',
   addCustomerDrawerSteps: ADD_CUSTOMER_DRAWER_STEPS,

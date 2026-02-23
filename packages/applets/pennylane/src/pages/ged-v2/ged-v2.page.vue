@@ -8,7 +8,6 @@
         :pMinLength="1"
         :pSearchInvalidMessage="t('searchInvalidMessage')"
         :pPlaceholder="t('searchPlaceholder')"
-        :pDebounceDelay="300"
         pSize="small"
         pClearable
         data-testid="pennylane-ged-v2-search"
