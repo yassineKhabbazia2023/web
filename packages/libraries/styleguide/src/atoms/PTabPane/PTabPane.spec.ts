@@ -56,7 +56,7 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
         PTabPane,
         ElTabPane: {
           name: 'ElTabPane',
-          template: '<div><slot /><slot name="label" /></div>',
+          template: '<div v-bind="$attrs"><slot /><slot name="label" /></div>',
           props: [
             'label',
             'disabled',
@@ -86,15 +86,19 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
 
 describe('pTabPane', () => {
   it('should render correctly', () => {
-    const wrapper: VueWrapper<any> = createWrapper(propsValue, 'content')
+    const propsWithoutIcon: PTabPaneProps = {
+      ...propsValue,
+      pIconName: undefined,
+    }
+    const wrapper: VueWrapper<any> = createWrapper(propsWithoutIcon, 'content')
     const component = wrapper.findComponent({ name: 'ElTabPane' })
 
     const expectedProps = {
-      label: propsValue.pLabel,
-      disabled: propsValue.pDisabled,
-      name: propsValue.pName,
-      closable: propsValue.pClosable,
-      lazy: propsValue.pLazy,
+      label: propsWithoutIcon.pLabel,
+      disabled: propsWithoutIcon.pDisabled,
+      name: propsWithoutIcon.pName,
+      closable: propsWithoutIcon.pClosable,
+      lazy: propsWithoutIcon.pLazy,
     }
     expect(component.props()).toMatchObject(expectedProps)
 

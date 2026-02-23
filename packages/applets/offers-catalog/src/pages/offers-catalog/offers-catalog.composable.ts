@@ -5,7 +5,7 @@ import { normalizeSearchTerm, getOffersWithSearchTerms } from '../../utils/offer
 import { logger } from '@pulse/toolbox'
 import { filterRecordByKeyCallback } from '@pulse/toolbox/utils/array'
 import { APICallStatus } from '@pulse/common/enums'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { OffersCatalogTrackingManager } from '../../managers/offers-catalog-tracking/offers-catalog-tracking.manager'
 
 export function useOffersCatalog() {
   const searchTerm = ref('')
@@ -45,11 +45,7 @@ export function useOffersCatalog() {
       filteredOffers.value = offers.value
         .filter((offer) => filterRecordByKeyCallback(offer, 'searchTerms', normalizedSearchTerm))
 
-      AmplitudeService.track('Offer Searched', {
-        offer_search: searchTerm.value,
-        offer_searched_method: 'manual',
-        offer_searched_IA_result: 'succeeded',
-      })
+      OffersCatalogTrackingManager.trackSearch(searchTerm.value, 'manual', 'succeeded')
     }
   }
 
@@ -104,11 +100,11 @@ export function useOffersCatalog() {
     isSmartSearchEnabled.value = true
     aiSearchApiCallStatus.value = APICallStatus.LOADING
     try {
-      const { recommendations, id_offer_response } = await getOffersRecommendations(question)
+      const response = await getOffersRecommendations(question)
       const offersById = new Map(offers.value.map((o) => [o.id, o]))
-      offerRecommendationsId.value = id_offer_response
+      offerRecommendationsId.value = response.id_offer_response
 
-      filteredOffers.value = recommendations.flatMap(({ id, similarity_score }) => {
+      filteredOffers.value = response.recommendations.flatMap(({ id, similarity_score }) => {
         const offer = offersById.get(Number(id))
         if (offer === undefined) {
           return []
@@ -118,20 +114,12 @@ export function useOffersCatalog() {
 
       aiSearchApiCallStatus.value = APICallStatus.SUCCESS
 
-      AmplitudeService.track('Offer Searched', {
-        offer_search: question,
-        offer_searched_method: 'IA',
-        offer_searched_IA_result: 'succeeded',
-      })
+      OffersCatalogTrackingManager.trackSearch(question, 'IA', 'succeeded')
     } catch (e) {
       logger.error('Error while searching offers with AI', e)
       aiSearchApiCallStatus.value = APICallStatus.ERROR
 
-      AmplitudeService.track('Offer Searched', {
-        offer_search: question,
-        offer_searched_method: 'IA',
-        offer_searched_IA_result: 'failed',
-      })
+      OffersCatalogTrackingManager.trackSearch(question, 'IA', 'failed')
     }
   }
 

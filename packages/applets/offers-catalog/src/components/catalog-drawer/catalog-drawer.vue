@@ -13,6 +13,12 @@
         :key="tab.name"
         :pLabel="tab.label"
         :pName="tab.name"
+        :pIconName="tab.iconName"
+      />
+      <CatalogDrawerContentRecommendation
+        v-if="currentTab === CatalogDrawerTabs.RECOMMENDATION"
+        :offerId="offer.id"
+        :offerResponseId="offerResponseId"
       />
       <CatalogDrawerContentPdf
         v-if="currentTab === CatalogDrawerTabs.PDF"
@@ -52,11 +58,13 @@
 import { useI18n } from 'vue-i18n'
 import { computed, ref } from 'vue'
 import { CatalogDrawerTabs } from './catalog-drawer.enums'
-import { CatalogDrawerProps } from './catalog-drawer.types'
+import type { CatalogDrawerProps } from './catalog-drawer.types'
+import { CatalogDrawerManager } from './catalog-drawer.manager'
 import { PDrawer, PButton, PTabs, PTabPane } from '@pulse/styleguide/components'
 import CatalogDrawerContentPdf from '../catalog-drawer-content-pdf/catalog-drawer-content-pdf.vue'
 import CatalogDrawerContentReferents from '../catalog-drawer-content-referents/catalog-drawer-content-referents.vue'
 import CatalogDrawerContentDocuments from '../catalog-drawer-content-documents/catalog-drawer-content-documents.vue'
+import CatalogDrawerContentRecommendation from '../catalog-drawer-content-recommendation/catalog-drawer-content-recommendation.vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -73,16 +81,15 @@ function closeDrawer() {
   internalIsOpened.value = false
 }
 
-const tabs = [{
-  name: CatalogDrawerTabs.PDF,
-  label: t('tabs.pdf'),
-}, {
-  name: CatalogDrawerTabs.CONTACTS,
-  label: t('tabs.contacts'),
-}, {
-  name: CatalogDrawerTabs.DOCUMENTS,
-  label: t('tabs.documents'),
-}]
+const tabs = computed(() => CatalogDrawerManager.getTabs(
+  {
+    pdf: t('tabs.pdf'),
+    contacts: t('tabs.contacts'),
+    documents: t('tabs.documents'),
+    recommendation: t('tabs.recommendation'),
+  },
+  props.isSmartSearchEnabled,
+))
 const currentTab = ref<CatalogDrawerTabs>(CatalogDrawerTabs.PDF)
 
 const internalIsOpened = computed({
@@ -99,7 +106,7 @@ function onOpenPdf() {
 }
 
 function openFirstTab() {
-  currentTab.value = tabs[0].name
+  currentTab.value = tabs.value[0].name
 }
 
 defineExpose({
@@ -111,12 +118,14 @@ defineExpose({
   en-US:
     close: 'Close'
     tabs:
+      recommendation: 'Recommendation'
       pdf: 'Offer Sheet'
       contacts: 'Reference Contacts'
       documents: "Offer's documents"
   fr-FR:
     close: 'Fermer'
     tabs:
+      recommendation: 'Recommandation'
       pdf: "Fiche de l'offre"
       contacts: 'Contacts référents'
       documents: "Documents de l'offre"

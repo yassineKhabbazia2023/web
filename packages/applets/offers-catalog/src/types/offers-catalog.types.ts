@@ -86,3 +86,8 @@ export interface OfferEvaluationRequest {
   satisfaction: boolean,
   id_offer_response: string
 }
+
+export interface SalesPitchResponse {
+  reason: string
+  sale: string
+}

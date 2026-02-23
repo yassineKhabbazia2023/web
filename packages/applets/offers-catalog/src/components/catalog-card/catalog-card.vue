@@ -45,41 +45,27 @@
         v-bind="tagProps"
       />
     </li>
-    <li v-if="isSmartSearchEnabled" class="margin-top--2">
-      <div class="flex flex--align-items-center flex-gap--2">
-        {{ t('rateResultSentence') }}
-        <PButton
-          :pType="thumbsDownProperties.type"
-          pSize="small"
-          :pDisabled="isOfferRated !== null"
-          @click.stop="negativeEvaluation"
-        >
-          <PIcon pName="thumbsDown" :pColor="thumbsDownProperties.color" />
-        </PButton>
-        <PButton
-          :pType="thumbsUpProperties.type"
-          pSize="small"
-          :pDisabled="isOfferRated !== null"
-          @click.stop="positiveEvaluation"
-        >
-          <PIcon pName="thumbsUp" :pColor="thumbsUpProperties.color" />
-        </PButton>
-      </div>
-    </li>
+    <ThumbsRating
+      v-if="isSmartSearchEnabled"
+      v-model="isOfferRated"
+      :label="t('rateResultSentence')"
+      class="margin-top--2"
+      @rate="handleResultValidation"
+    />
   </ul>
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { logger } from '@pulse/toolbox'
 import type { CatalogCardProps } from './catalog-card.types'
 import { getCatalogTagProps } from '../../utils/offers-catalog.utils'
-import { PTag, PTooltip, PButton, PIcon } from '@pulse/styleguide/components'
+import { PTag, PTooltip } from '@pulse/styleguide/components'
 import { rateOfferRecommendation } from '../../services/offers-catalog.service'
-import { logger } from '@pulse/toolbox'
-import { AppColors } from '@pulse/styleguide'
-import { PButtonProps } from '@pulse/styleguide/types'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { OfferEvaluationType } from '../../services/offers-catalog.service.enum'
+import { OffersCatalogTrackingManager } from '../../managers/offers-catalog-tracking/offers-catalog-tracking.manager'
+import ThumbsRating from '../thumbs-rating/thumbs-rating.vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -119,7 +105,7 @@ async function handleResultValidation(satisfaction: boolean) {
 
   const request = {
     offer_id: props.offerId,
-    type: 'offer',
+    type: OfferEvaluationType.OFFER,
     satisfaction: satisfaction,
     id_offer_response: props.offerRecommendationsId,
   }
@@ -127,41 +113,11 @@ async function handleResultValidation(satisfaction: boolean) {
   try {
     await rateOfferRecommendation(request)
     isOfferRated.value = satisfaction
-
-    AmplitudeService.track('Offer IA Evaluation', {
-      offer_IA_result: satisfaction ? 'good' : 'bad',
-      offer_IA_localisation: 'research',
-    })
+    OffersCatalogTrackingManager.trackEvaluation(satisfaction === true ? 'good' : 'bad', 'research')
   } catch (e) {
     logger.error('Error while rating offer result from AI search', e)
   }
 }
-
-function positiveEvaluation() {
-  handleResultValidation(true)
-}
-
-function negativeEvaluation() {
-  handleResultValidation(false)
-}
-
-const thumbsDownProperties = computed(() => {
-  const isActive = isOfferRated.value === false
-
-  return {
-    color: isActive ? AppColors.RED_500 : AppColors.WHITE,
-    type: isActive ? 'default' : 'primary' as PButtonProps['pType'],
-  }
-})
-
-const thumbsUpProperties = computed(() => {
-  const isActive = isOfferRated.value === true
-
-  return {
-    color: isActive ? AppColors.JUNGLE_400 : AppColors.WHITE,
-    type: isActive ? 'default' : 'primary' as PButtonProps['pType'],
-  }
-})
 </script>
 
 <style lang="scss" scoped>

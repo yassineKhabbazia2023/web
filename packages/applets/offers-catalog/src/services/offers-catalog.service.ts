@@ -5,7 +5,9 @@ import type {
   OfferCatalogDetailsResponse,
   OffersRecommendationsResponse,
   OfferEvaluationRequest,
+  SalesPitchResponse,
 } from '../types/offers-catalog.types'
+import type { SalesPitchSection } from './offers-catalog.service.enum'
 
 export async function getOffersCatalog() {
   const url = `${API_PREFIXES.OFFER}/catalog/offers`
@@ -42,4 +44,19 @@ export async function rateOfferRecommendation(request : OfferEvaluationRequest) 
   const url = `${API_PREFIXES.AI_SERVICES}/recommendations/validation`
 
   await commonApi().gateway.put(url, request)
+}
+
+export async function getSalesPitch(
+  offerResponseId: string,
+  offerId: string,
+  section: SalesPitchSection,
+) {
+  const url = `${API_PREFIXES.AI_SERVICES}/recommendations/sales-pitch`
+  const { data } = await commonApi().gateway.post<SalesPitchResponse>(url, {
+    id_offer_response: offerResponseId,
+    offer_id: offerId,
+    section,
+  })
+
+  return data
 }

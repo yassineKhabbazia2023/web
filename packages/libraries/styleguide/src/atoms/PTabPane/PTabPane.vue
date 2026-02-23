@@ -15,8 +15,7 @@
         v-bind="pTooltip"
       >
         <PIcon
-          v-if="pIconName"
-          class="p-tab-pane__icon"
+          class="p-tab-pane__icon margin-right--2"
           data-testid="tooltip-icon"
           size="14px"
           :pName="pIconName"
@@ -24,11 +23,12 @@
       </PTooltip>
       <PIcon
         v-else-if="pIconName"
-        class="p-tab-pane__icon"
+        class="p-tab-pane__icon margin-right--2"
         size="14px"
         :pName="pIconName"
       />
-      <slot v-else name="label" />
+      <span v-if="pIconName && pLabel">{{ pLabel }}</span>
+      <slot v-if="pIconName === undefined" name="label" />
     </template>
   </ElTabPane>
 </template>

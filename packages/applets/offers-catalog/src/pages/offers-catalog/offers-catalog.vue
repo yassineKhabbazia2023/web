@@ -15,6 +15,8 @@
     :offerDocuments="offerDocuments"
     :pdfApiCallStatus="pdfApiCallStatus"
     :offerReferentsApiCallStatus="offerReferentsApiCallStatus"
+    :isSmartSearchEnabled="isSmartSearchEnabled"
+    :offerResponseId="offerRecommendationsId"
     @open-pdf="onOpenPdf"
   />
   <OffersCatalogHeader
@@ -68,7 +70,7 @@ import OffersCatalogHeader from '../../components/offers-catalog-header/offers-c
 import CatalogDocumentViewer from '../../components/catalog-document-viewer/catalog-document-viewer.vue'
 import CatalogResultCount from '../../components/catalog-result-count/catalog-result-count.vue'
 import { useOffersCatalog } from './offers-catalog.composable'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { OffersCatalogTrackingManager } from '../../managers/offers-catalog-tracking/offers-catalog-tracking.manager'
 import { APICallStatus } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
 
@@ -123,10 +125,10 @@ function onSelectOffer(offerId: number) {
     logger.error(`Offer not found ${offerId}`)
     return
   }
-  AmplitudeService.track('Offer Consulted', {
-    offer_name: selectedOffer?.title ?? '',
-    offer_consulted_method: isSmartSearchEnabled.value ? 'IA' : 'manual',
-  })
+  OffersCatalogTrackingManager.trackConsulted(
+    selectedOffer.title,
+    isSmartSearchEnabled.value ? 'IA' : 'manual',
+  )
 }
 
 function onOpenPdf() {
