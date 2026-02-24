@@ -4,6 +4,7 @@ import { useUserStore } from '../user/user.store'
 import { useCurrentEntityStore } from '../current-entity/current-entity.store'
 import { InvoicesTabState } from '../../services/invoices-access/invoices-access.service.types'
 import type { InvoicesAccessResponse } from '../../services/invoices-access/invoices-access.service.types'
+import { useResponsive } from '@pulse/styleguide'
 
 const CONNECTION_READY_STATES = new Set<InvoicesTabState>([
   InvoicesTabState.CONNECTION_READY_LOCKED,
@@ -11,12 +12,17 @@ const CONNECTION_READY_STATES = new Set<InvoicesTabState>([
 ])
 
 export const useInvoicesAccessStore = defineStore('invoices-access', () => {
+  const { isMobile } = useResponsive()
   const tabState = ref<InvoicesTabState | null>(null)
   const contactWithAccess = ref<string | null>(null)
   const externalDematMail = ref<string | null>(null)
 
   const isTabVisible = computed(() => {
     if (tabState.value === null) {
+      return false
+    }
+
+    if (isMobile.value === true) {
       return false
     }
 

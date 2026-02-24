@@ -1,9 +1,16 @@
+import { ref } from 'vue'
 import { setActivePinia, createPinia } from 'pinia'
 import { getInvoicesAccessResponseMock, getMockedUser, getMockedEntitySummary } from '../../__mocks__'
 import { InvoicesTabState } from '../../services/invoices-access/invoices-access.service.types'
-import { useInvoicesAccessStore } from './invoices-access.store'
 import { useUserStore } from '../user/user.store'
 import { useCurrentEntityStore } from '../current-entity/current-entity.store'
+import { useInvoicesAccessStore } from './invoices-access.store'
+
+const isMobileRef = ref(false)
+
+vi.mock('@pulse/styleguide', () => ({
+  useResponsive: () => ({ isMobile: isMobileRef }),
+}))
 
 
 const USER_EMAIL = 'contact@example.com'
@@ -31,6 +38,7 @@ function setUpNonSignatoryEntity() {
 describe('useInvoicesAccessStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    isMobileRef.value = false
   })
 
   describe('initial state', () => {
@@ -221,6 +229,53 @@ describe('useInvoicesAccessStore', () => {
       // User data arrives later (simulating initCurrentUser completing)
       setUpCollabUser()
       expect(store.isTabVisible).toBe(true)
+    })
+  })
+
+  describe('mobile visibility', () => {
+    it('should set isTabVisible to false when isMobile is true even for collab user', () => {
+      isMobileRef.value = true
+      const store = useInvoicesAccessStore()
+      setUpCollabUser()
+      setUpNonSignatoryEntity()
+      const response = getInvoicesAccessResponseMock({
+        contactWithAccess: null,
+        tabState: InvoicesTabState.FORM_START,
+      })
+
+      store.setAccessData(response)
+
+      expect(store.isTabVisible).toBe(false)
+    })
+
+    it('should set isTabVisible to false when isMobile is true even for signatory user', () => {
+      isMobileRef.value = true
+      const store = useInvoicesAccessStore()
+      setUpCustomerUser()
+      setUpSignatoryEntity()
+      const response = getInvoicesAccessResponseMock({
+        contactWithAccess: null,
+        tabState: InvoicesTabState.FORM_START,
+      })
+
+      store.setAccessData(response)
+
+      expect(store.isTabVisible).toBe(false)
+    })
+
+    it('should set isTabVisible to false when isMobile is true even for client with access', () => {
+      isMobileRef.value = true
+      const store = useInvoicesAccessStore()
+      setUpCustomerUser()
+      setUpNonSignatoryEntity()
+      const response = getInvoicesAccessResponseMock({
+        contactWithAccess: USER_EMAIL,
+        tabState: InvoicesTabState.CONNECTION_READY_LOCKED,
+      })
+
+      store.setAccessData(response)
+
+      expect(store.isTabVisible).toBe(false)
     })
   })
 
