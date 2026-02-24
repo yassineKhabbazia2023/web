@@ -1,4 +1,5 @@
 import type { AppSettingsListResponse } from '@backoffice/types/app-settings-list.type'
+import type { UpdateAppSettingApiPayload } from '@backoffice/services/app-settings-list/app-settings-list.service.type'
 import type {
   DeleteAppSettingResponse,
   DomainItem,
@@ -112,5 +113,15 @@ export class AppSettingsListService {
    */
   static async refreshAppSettingsList(): Promise<void> {
     await api.post('/keys/refresh')
+  }
+
+   /**
+   * Update an existing environment variable values.
+   * Sends updated values for specific environments/labels.
+   * @param payload - The update payload containing the key name and targets to update
+   * @returns Promise that resolves when the update is complete
+   */
+  static async updateAppSetting(payload: UpdateAppSettingApiPayload): Promise<void> {
+    await api.put(`/keys`, payload)
   }
 }

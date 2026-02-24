@@ -47,13 +47,14 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue'
 import { PDropdown, PButton, PTooltip, PIcon } from '@pulse/styleguide/components'
 import SearchAppSetting from './SearchAppSetting/search-app-setting.vue'
 import AddAppSetting from './AddAppSetting/add-app-setting.vue'
 import type { AppSettingsToolbarProps } from './app-settings-toolbar.type'
 import { useAppSettingsToolbar } from './app-settings-toolbar.composable'
 
-defineProps<AppSettingsToolbarProps>()
+const props = defineProps<AppSettingsToolbarProps>()
 
 const emit = defineEmits<{
   refresh: []
@@ -67,7 +68,11 @@ const refreshListHandler = () => {
   emit('reload-list')
 }
 
-const { domainOptions, isLoadingDomains } = useAppSettingsToolbar()
+const { domainOptions, isLoadingDomains, fetchDomains } = useAppSettingsToolbar()
+
+watch(() => props.domainsRefreshToken, () => {
+  fetchDomains()
+})
 </script>
 
 <style lang="scss" scoped>

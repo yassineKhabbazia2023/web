@@ -88,19 +88,35 @@
       fixed="right"
     >
       <template #default="{ row }">
-        <PTooltip pContent="Supprimer la variable">
-          <PButton
-            data-testid="app-settings-table-delete-button"
-            pSize="small"
-            pIconOnly
-            @click="handleOpenDeleteDialog(row)"
-          >
-            <PIcon
-              pName="trash"
-              :color="AppColors.RED_500"
-            />
-          </PButton>
-        </PTooltip>
+        <div class="flex flex--align-items-center flex--gap-2">
+          <PTooltip pContent="Modifier la variable">
+            <PButton
+              data-testid="app-settings-table-edit-button"
+              pSize="small"
+              pIconOnly
+              @click="handleOpenModifyDialog(row)"
+            >
+              <PIcon
+                pName="pencilSquare"
+                :color="AppColors.YELLOW_800" />
+            </PButton>
+          </PTooltip>
+
+
+          <PTooltip pContent="Supprimer la variable">
+            <PButton
+              data-testid="app-settings-table-delete-button"
+              pSize="small"
+              pIconOnly
+              @click="handleOpenDeleteDialog(row)"
+            >
+              <PIcon
+                pName="trash"
+                :color="AppColors.RED_500"
+              />
+            </PButton>
+          </PTooltip>
+        </div>
       </template>
     </PTableColumn>
   </PTable>
@@ -112,6 +128,14 @@
     :availableEnvironments="getAvailableEnvironments(appSettingToDelete)"
     @app-setting-deleted="handleAppSettingDeleted"
   />
+
+  <ModifyAppSetting
+    v-if="isModifyDialogOpened && appSettingToModify"
+    v-model="isModifyDialogOpened"
+    :appSetting="appSettingToModify"
+    @app-setting-updated="handleAppSettingUpdated"
+  />
+
 
   <PPagination
     v-if="appSettings.length > 0"
@@ -140,6 +164,7 @@ import type { AppSettingsTableProps } from './app-settings-table.type'
 import type { EnvironmentOption } from './DeleteAppSettingDialog/delete-app-setting-dialog.type'
 import AppSettingValueDisplayer from './AppSettingValueDisplayer/app-setting-value-displayer.vue'
 import DeleteAppSettingDialog from './DeleteAppSettingDialog/delete-app-setting-dialog.vue'
+import ModifyAppSetting from './ModifyAppSetting/modify-app-setting.vue'
 
 const props = defineProps<AppSettingsTableProps>()
 
@@ -147,10 +172,14 @@ const emit = defineEmits<{
   'page-change': [page: number]
   'page-size-change': [pageSize: number]
   'app-setting-deleted': []
+  'app-setting-updated': []
 }>()
 
 const isDeleteDialogOpened = ref(false)
 const appSettingToDelete = ref<AppSettingItem | null>(null)
+
+const isModifyDialogOpened = ref(false)
+const appSettingToModify = ref<AppSettingItem | null>(null)
 
 // Extract all unique environment labels dynamically
 const envLabels = computed(() => {
@@ -197,7 +226,7 @@ const getAvailableEnvironments = (item: AppSettingItem): EnvironmentOption[] => 
       groupedMap.set(val.environment, new Set())
     }
 
-    if (val.envLabel !== undefined) {
+    if (val.envLabel !== undefined && val.envLabel !== val.environment) {
       groupedMap.get(val.environment)!.add(val.envLabel)
     }
   }
@@ -218,6 +247,18 @@ const handleAppSettingDeleted = () => {
   emit('app-setting-deleted')
   appSettingToDelete.value = null
 }
+
+const handleOpenModifyDialog = (item: AppSettingItem) => {
+  appSettingToModify.value = item
+  isModifyDialogOpened.value = true
+}
+
+const handleAppSettingUpdated = async () => {
+  emit('app-setting-updated')
+  appSettingToModify.value = null
+  isModifyDialogOpened.value = false
+}
+
 </script>
 
 <style scoped lang="scss">

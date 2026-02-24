@@ -41,3 +41,17 @@ export interface CreateAppSettingApiPayload {
   targets: CreateAppSettingTarget[]
 }
 
+export interface UpdateAppSettingTargetApiPayload {
+  environment: string
+  label: string
+  envLabel?: string
+  value: string
+  eTag: string
+}
+
+export interface UpdateAppSettingApiPayload {
+  name: string
+  targets: UpdateAppSettingTargetApiPayload[]
+}
+
+

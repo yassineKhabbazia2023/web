@@ -21,12 +21,14 @@
     </div>
 
     <AppSettingsToolbar
+      v-if="isListReloading === false"
       v-model:searchQuery="searchQuery"
       v-model:selectedDomains="selectedDomains"
       :isRefreshing
+      :domainsRefreshToken="domainsRefreshToken"
       class="margin-top--6"
       @refresh="handleRefresh"
-      @reload-list="initialize"
+      @reload-list="reloadList"
     />
 
     <div
@@ -67,16 +69,18 @@
         :pageSize="pagination.pageSize"
         @page-change="handlePageChange"
         @page-size-change="handlePageSizeChange"
-        @app-setting-deleted="initialize"
+        @app-setting-deleted="reloadList"
+        @app-setting-updated="reloadList"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { PLoader, PTag, PFilterGroup } from '@pulse/styleguide/components'
 import type { FilterOption } from '@pulse/styleguide/types'
+import { logger } from '@pulse/toolbox'
 import { useAppSettingsList } from '@backoffice/composables/use-app-settings-list.composable'
 import { FilterCode } from '@backoffice/types/app-settings-list.type'
 import AppSettingsTable from './AppSettingsTable/app-settings-table.vue'
@@ -93,11 +97,48 @@ const {
   variablesCountLabel,
   handlePageChange,
   handlePageSizeChange,
-  handleRefresh,
-  initialize,
+  handleRefresh: handleRefreshList,
+  initialize: initializeList,
 } = useAppSettingsList()
 
-const shouldShowCount = computed(() => isLoading.value === false && pagination.value.totalCount > 0)
+const domainsRefreshToken = ref(0)
+const isListReloading = ref(false)
+
+const shouldShowCount = computed(() =>
+  isLoading.value === false &&
+  isListReloading.value === false &&
+  isRefreshing.value === false &&
+  pagination.value.totalCount > 0,
+)
+
+const refreshDomains = () => {
+  domainsRefreshToken.value += 1
+}
+
+const initialize = async () => {
+  await initializeList()
+}
+
+const reloadList = async () => {
+  isListReloading.value = true
+  try {
+    await initializeList()
+    refreshDomains()
+  } catch (error) {
+    logger.error('Failed to reload app settings list', error)
+  } finally {
+    isListReloading.value = false
+  }
+}
+
+const handleRefresh = async () => {
+  try {
+    await handleRefreshList()
+    refreshDomains()
+  } catch (error) {
+    logger.error('Failed to refresh app settings list', error)
+  }
+}
 
 // Define filter options for PFilterGroup
 const filterOptions: FilterOption<FilterCode>[] = [
