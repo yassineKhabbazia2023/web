@@ -26,7 +26,6 @@ export class WidgetsHomeManager {
 
         // Business rule: Check if the widget is in scope for the current user type
         if (this.isInScope(widgetGridDefinition.scope, isCustomer) === false) {
-          logger.warn(`Widget ${widgetName} will not be displayed due to scope restrictions.`)
           return undefined
         }
 

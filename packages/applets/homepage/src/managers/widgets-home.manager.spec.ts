@@ -122,9 +122,6 @@ describe('WidgetsHomeManager', () => {
       const result = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets, isCustomer)
 
       expect(result).toEqual([mockWidgetGridDefinitionsWithScope[validWidgetNames.sso]])
-      expect(logger.warn).toHaveBeenCalledWith(
-        `Widget ${validWidgetNames.bookingAppointment} will not be displayed due to scope restrictions.`,
-      )
     })
 
     it('should exclude COLLAB-only widgets when user is a customer', () => {
@@ -138,9 +135,6 @@ describe('WidgetsHomeManager', () => {
       const result = WidgetsHomeManager.getWidgetGridDefinitions(mockWidgets, isCustomer)
 
       expect(result).toEqual([mockWidgetGridDefinitionsWithScope[validWidgetNames.sso]])
-      expect(logger.warn).toHaveBeenCalledWith(
-        `Widget ${validWidgetNames.digilab} will not be displayed due to scope restrictions.`,
-      )
     })
 
     it('should include widgets with both CUSTOMER and COLLAB scope for all users', () => {
