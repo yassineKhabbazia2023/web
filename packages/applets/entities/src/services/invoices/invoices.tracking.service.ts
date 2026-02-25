@@ -1,4 +1,5 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { InvoicesTabState } from '@pulse/common/services/invoices-access'
 import type { InvoicesFormStep } from '@entities/modules/entity/enums'
 
 export class InvoicesTracking {
@@ -33,6 +34,19 @@ export class InvoicesTracking {
   static trackAssistanceButtonClick(step: InvoicesFormStep) {
     AmplitudeService.track('Invoice Digitization Get Help', {
       invoice_digitization_get_help_step: step,
+    })
+  }
+
+  static trackDigitizationValidated(tabState: InvoicesTabState | null): void {
+    if (
+      tabState !== InvoicesTabState.CONNECTION_READY_UNLOCKED &&
+      tabState !== InvoicesTabState.CONNECTION_READY_LOCKED
+    ) {
+      return
+    }
+
+    AmplitudeService.track('Invoice Digitization Validated', {
+      invoice_digitization_validated_persona: tabState === InvoicesTabState.CONNECTION_READY_UNLOCKED ? 'contactVault' : '',
     })
   }
 }

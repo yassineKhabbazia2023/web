@@ -1,4 +1,5 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { InvoicesTabState } from '@pulse/common/services/invoices-access'
 import { InvoicesTracking } from './invoices.tracking.service'
 import { InvoicesFormStep } from '@entities/modules/entity/enums'
 
@@ -67,6 +68,42 @@ describe('InvoicesTracking', () => {
           invoice_digitization_get_help_step: InvoicesFormStep.EMAIL_AND_TERMS,
         },
       )
+    })
+  })
+
+  describe('trackDigitizationValidated', () => {
+    it('should track with persona "contactVault" when tabState is CONNECTION_READY_UNLOCKED', () => {
+      InvoicesTracking.trackDigitizationValidated(InvoicesTabState.CONNECTION_READY_UNLOCKED)
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Invoice Digitization Validated',
+        {
+          invoice_digitization_validated_persona: 'contactVault',
+        },
+      )
+    })
+
+    it('should track with empty persona when tabState is CONNECTION_READY_LOCKED', () => {
+      InvoicesTracking.trackDigitizationValidated(InvoicesTabState.CONNECTION_READY_LOCKED)
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Invoice Digitization Validated',
+        {
+          invoice_digitization_validated_persona: '',
+        },
+      )
+    })
+
+    it('should not track when tabState is another state', () => {
+      InvoicesTracking.trackDigitizationValidated(InvoicesTabState.FORM_START)
+
+      expect(vi.mocked(AmplitudeService.track)).not.toHaveBeenCalled()
+    })
+
+    it('should not track when tabState is null', () => {
+      InvoicesTracking.trackDigitizationValidated(null)
+
+      expect(vi.mocked(AmplitudeService.track)).not.toHaveBeenCalled()
     })
   })
 })
