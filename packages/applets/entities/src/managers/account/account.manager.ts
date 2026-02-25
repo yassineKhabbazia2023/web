@@ -1,5 +1,5 @@
 import { createCustomer, addContactToEntity, fetchAccountContactsByEmail } from '../../services/account/account.service'
-import { type createCustomerBody } from '../../services/account/account.service'
+import type { createCustomerBody } from '../../services/account/account.service'
 import { logger } from '@pulse/toolbox'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
 

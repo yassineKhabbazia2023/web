@@ -59,7 +59,14 @@ vi.mock('@pulse/common/managers', () => ({
 const PResponsiveTableStub = defineComponent({
   name: 'PResponsiveTable',
   inheritAttrs: false,
-  props: ['pData', 'pStripe', 'pFit', 'pHeaderCellStyle', 'pCellStyle', 'pCardClickable'],
+  props: {
+    pData: { type: Array, default: () => [] },
+    pStripe: { type: Boolean, default: false },
+    pFit: { type: Boolean, default: true },
+    pHeaderCellStyle: { type: [Object, Function], default: undefined },
+    pCellStyle: { type: [Object, Function], default: undefined },
+    pCardClickable: { type: Boolean, default: false },
+  },
   emits: ['row-click', 'sort-change'],
   setup(_props, { slots, attrs, emit }) {
     return () => h('div', {

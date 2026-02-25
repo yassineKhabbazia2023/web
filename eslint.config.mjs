@@ -50,6 +50,7 @@ export default [
           'ignoreRestSiblings': true,
         },
       ],
+      'no-duplicate-imports': ['error', { 'includeExports': false, 'allowSeparateTypeImports': true }],
       'curly': 'error',
       // 'max-params': ['error', 3], // TODO: uncomment after eslint migration
       // Format rules
