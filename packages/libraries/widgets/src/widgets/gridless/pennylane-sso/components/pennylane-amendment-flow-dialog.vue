@@ -30,6 +30,7 @@
         <StepAccountsPricing
           v-else-if="currentStep === PennylaneAmendmentStep.ACCOUNTS_PRICING"
           :accounts
+          :free-trial-info
         />
 
         <StepTermsPreview

@@ -111,6 +111,8 @@ export const getMockedPennylaneAccessResponse = (
     canAccess: true,
     isPennylaneSignatory: false,
     details: getMockedPennylaneAccessDetails(),
+    freeTrialEndDate: '2026-10-31T00:00:00.00',
+    billingMonth: 'novembre 2026',
   }
 
   return {

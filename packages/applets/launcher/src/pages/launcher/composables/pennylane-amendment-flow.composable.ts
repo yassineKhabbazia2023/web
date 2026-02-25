@@ -1,7 +1,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { PennylaneService } from '@pulse/common/services/pennylane'
-import type { PennylaneAccessDetails } from '@pulse/common/services/pennylane'
+import type { PennylaneAccessDetails, PennylaneFreeTrialInfo } from '@pulse/common/services/pennylane'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 
 export function usePennylaneAmendmentFlow() {
@@ -11,6 +11,7 @@ export function usePennylaneAmendmentFlow() {
   const canAccess = ref<boolean | undefined>(undefined)
   const isPennylaneSignatory = ref<boolean | undefined>(undefined)
   const accessDetails = ref<PennylaneAccessDetails | undefined>(undefined)
+  const freeTrialInfo = ref<PennylaneFreeTrialInfo>()
 
   const isAccessBlockedDialogOpen = ref(false)
   const isAmendmentFlowDialogOpen = ref(false)
@@ -62,6 +63,7 @@ export function usePennylaneAmendmentFlow() {
       canAccess.value = response.canAccess
       isPennylaneSignatory.value = response.isPennylaneSignatory
       accessDetails.value = response.details
+      freeTrialInfo.value = { freeTrialEndDate: response.freeTrialEndDate, billingMonth: response.billingMonth }
     } catch {
       canAccess.value = undefined
       isPennylaneSignatory.value = undefined
@@ -108,14 +110,12 @@ export function usePennylaneAmendmentFlow() {
     canAccess,
     accessDetails,
     currentAccountId,
-
     isAccessBlockedDialogOpen,
     isAmendmentFlowDialogOpen,
     isSuccessDialogOpen,
     isDeclineDialogOpen,
-
     shouldBlockAccess,
-
+    freeTrialInfo,
     checkPennylaneAccess,
     handlePennylaneClick,
     handleAmendmentFlowContinue,

@@ -88,10 +88,11 @@
     <PennylaneAccessBlockedDialog v-model="isAccessBlockedDialogOpen" />
 
     <PennylaneAmendmentFlowDialog
-      v-if="isAmendmentFlowDialogOpen && currentAccountId"
+      v-if="isAmendmentFlowDialogOpen && currentAccountId && freeTrialInfo !== undefined"
       v-model="isAmendmentFlowDialogOpen"
       :access-details="accessDetails"
       :current-account-id="currentAccountId"
+      :free-trial-info="freeTrialInfo"
       @accept-success="handleAcceptSuccess"
       @decline="handleDecline"
     />
@@ -110,7 +111,7 @@ import { useRoute } from 'vue-router'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { FeatureFlagManager, PennylaneSsoManager } from '@pulse/common/managers'
-import type { PennylaneAccessDetails } from '@pulse/common/services/pennylane'
+import type { PennylaneAccessDetails, PennylaneFreeTrialInfo } from '@pulse/common/services/pennylane'
 import { PennylaneSSOProps } from './pennylane-sso.types'
 import { SsoTracking } from './pennylane-sso.enums'
 import { AmplitudeTrackingLocation, RouteParam } from '@pulse/common/enums'
@@ -141,6 +142,7 @@ const isCheckingPennylaneAccess = ref(false)
 const canAccess = ref<boolean | undefined>(undefined)
 const isPennylaneSignatory = ref<boolean | undefined>(undefined)
 const accessDetails = ref<PennylaneAccessDetails | undefined>(undefined)
+const freeTrialInfo = ref<PennylaneFreeTrialInfo>()
 
 const currentAccountId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
 
@@ -217,6 +219,7 @@ const checkPennylaneAccess = async () => {
     canAccess.value = accessResponse.canAccess
     isPennylaneSignatory.value = accessResponse.isPennylaneSignatory
     accessDetails.value = accessResponse.details
+    freeTrialInfo.value = { freeTrialEndDate: accessResponse.freeTrialEndDate, billingMonth: accessResponse.billingMonth }
   } catch {
     canAccess.value = undefined
     isPennylaneSignatory.value = undefined

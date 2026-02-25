@@ -140,7 +140,9 @@
         {{ t('widgets.pennylaneAmendmentFlow.step2.table.complianceNote') }}
       </p>
       <p class="font-base margin--0">
-        {{ t('widgets.pennylaneAmendmentFlow.step2.table.subscriptionNote') }}
+        {{ t('widgets.pennylaneAmendmentFlow.step2.table.subscriptionNote', {
+          billingMonth: freeTrialInfo.billingMonth
+        }) }}
       </p>
     </div>
 
@@ -150,7 +152,10 @@
     >
       {{ t('widgets.pennylaneAmendmentFlow.step2.freeAccessNotice.descriptionPart1') }}
       <span class="font-bold">{{ t('widgets.pennylaneAmendmentFlow.step2.freeAccessNotice.descriptionBold') }}</span>
-      {{ t('widgets.pennylaneAmendmentFlow.step2.freeAccessNotice.descriptionPart2') }}
+      {{ t('widgets.pennylaneAmendmentFlow.step2.freeAccessNotice.descriptionPart2', {
+        freeTrialEndDate:
+          formatDate(freeTrialInfo.freeTrialEndDate)
+      }) }}
     </PAlert>
 
     <Teleport to="#pennylane-amendment-flow-dialog-footer">
@@ -170,10 +175,12 @@ import { useI18n } from 'vue-i18n'
 import { useResponsive } from '@pulse/styleguide'
 import { PAlert, PIcon, PTable, PTableColumn, PTooltip } from '@pulse/styleguide/components'
 import type { StepAccountsPricingProps } from './step-accounts-pricing.types'
+import { DATE_TIME_FORMATS } from '@pulse/common/i18n'
 
-const { t } = useI18n({
+const { d, t } = useI18n({
   inheritLocale: true,
   useScope: 'global',
+  datetimeFormats: DATE_TIME_FORMATS,
 })
 
 const { isMobile } = useResponsive()
@@ -223,6 +230,10 @@ function cellStyle() {
   return {
     borderBottom: '1px solid var(--p-black-rock-900)',
   }
+}
+
+const formatDate = (dateString: string): string => {
+  return d(new Date(dateString), 'longText')
 }
 </script>
 

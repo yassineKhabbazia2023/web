@@ -50,10 +50,11 @@
     <PennylaneAccessBlockedDialog v-model="isAccessBlockedDialogOpen" />
 
     <PennylaneAmendmentFlowDialog
-      v-if="isAmendmentFlowDialogOpen === true && currentAccountId !== undefined"
+      v-if="isAmendmentFlowDialogOpen === true && currentAccountId !== undefined && freeTrialInfo !== undefined"
       v-model="isAmendmentFlowDialogOpen"
       :access-details="accessDetails"
       :current-account-id="currentAccountId"
+      :free-trial-info="freeTrialInfo"
       @accept-success="handleAcceptSuccess"
       @decline="handleDecline"
     />
@@ -102,6 +103,7 @@ const {
   accessDetails,
   currentAccountId,
   shouldBlockAccess,
+  freeTrialInfo,
   handlePennylaneClick,
   handleAcceptSuccess,
   handleDecline,

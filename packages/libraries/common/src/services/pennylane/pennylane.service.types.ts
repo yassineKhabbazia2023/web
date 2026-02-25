@@ -48,9 +48,13 @@ export interface PennylaneAccessResponse {
   canAccess: boolean
   isPennylaneSignatory?: boolean
   details?: PennylaneAccessDetails
+  freeTrialEndDate: string
+  billingMonth: string
 }
 
 export interface PennylaneValidationPayload {
   accountNumbers: string[]
   status: boolean
 }
+
+export type PennylaneFreeTrialInfo = Pick<PennylaneAccessResponse, 'freeTrialEndDate' | 'billingMonth'>

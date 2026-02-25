@@ -62,13 +62,13 @@
           "perMonth": "month",
           "free": "Free",
           "complianceNote": "* billing in September 2026",
-          "subscriptionNote": "** billing from July 2026 onwards"
+          "subscriptionNote": "** billing from {billingMonth} onwards"
         },
         "freeAccessNotice": {
           "title": "Free access",
           "descriptionPart1": "Access to ",
           "descriptionBold": "Pennylane",
-          "descriptionPart2": " is free until June 30, 2026."
+          "descriptionPart2": " is free until {freeTrialEndDate}."
         },
         "supportNotice": {
           "title": "Need help?",

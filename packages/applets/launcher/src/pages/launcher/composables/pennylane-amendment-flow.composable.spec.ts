@@ -140,6 +140,8 @@ describe('usePennylaneAmendmentFlow', () => {
         canAccess: false,
         isPennylaneSignatory: false,
         details: undefined,
+        freeTrialEndDate: '2026-10-31T00:00:00.00',
+        billingMonth: 'novembre 2026',
       })
 
       const [result, app] = withSetup(() => usePennylaneAmendmentFlow())
@@ -179,6 +181,8 @@ describe('usePennylaneAmendmentFlow', () => {
         canAccess: false,
         isPennylaneSignatory: false,
         details: undefined,
+        freeTrialEndDate: '2026-10-31T00:00:00.00',
+        billingMonth: 'novembre 2026',
       })
 
       const [result, app] = withSetup(() => usePennylaneAmendmentFlow())
@@ -197,6 +201,8 @@ describe('usePennylaneAmendmentFlow', () => {
         canAccess: false,
         isPennylaneSignatory: true,
         details: undefined,
+        freeTrialEndDate: '2026-10-31T00:00:00.00',
+        billingMonth: 'novembre 2026',
       })
 
       const [result, app] = withSetup(() => usePennylaneAmendmentFlow())
@@ -217,6 +223,8 @@ describe('usePennylaneAmendmentFlow', () => {
         canAccess: false,
         isPennylaneSignatory: true,
         details: undefined,
+        freeTrialEndDate: '2026-10-31T00:00:00.00',
+        billingMonth: 'novembre 2026',
       })
 
       const [result, app] = withSetup(() => usePennylaneAmendmentFlow())

@@ -62,13 +62,13 @@
           "perMonth": "mois",
           "free": "Offert",
           "complianceNote": "* facturation en septembre 2026",
-          "subscriptionNote": "** facturation à partir de juillet 2026"
+          "subscriptionNote": "** facturation à partir de {billingMonth}"
         },
         "freeAccessNotice": {
           "title": "Accès gratuit",
           "descriptionPart1": "L'accès à ",
           "descriptionBold": "Pennylane",
-          "descriptionPart2": " est gratuit jusqu'au 30 juin 2026."
+          "descriptionPart2": " est gratuit jusqu'au {freeTrialEndDate}."
         },
         "supportNotice": {
           "title": "Besoin d'aide ?",
