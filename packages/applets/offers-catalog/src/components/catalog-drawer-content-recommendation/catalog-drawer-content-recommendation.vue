@@ -144,8 +144,10 @@
 </template>
 
 <script lang="ts" setup>
+import { onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PAlert, PButton, PIcon, PLoader } from '@pulse/styleguide/components'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { CatalogDrawerContentRecommendationProps } from './catalog-drawer-content-recommendation.types'
 import { useCatalogDrawerContentRecommendation } from './catalog-drawer-content-recommendation.composable'
 import ThumbsRating from '../thumbs-rating/thumbs-rating.vue'
@@ -173,6 +175,12 @@ const {
   handleReasonRating,
   handleSaleRating,
 } = useCatalogDrawerContentRecommendation(props.offerId, props.offerResponseId)
+
+onMounted(() => {
+  AmplitudeService.track('Offer Detail Consulted', {
+    offer_detail_consulted_tab: 'Recommandation',
+  })
+})
 </script>
 
 <style lang="scss" scoped>

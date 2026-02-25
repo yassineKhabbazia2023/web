@@ -19,7 +19,7 @@
       :pSearchInvalidMessage="t('invalidSearch')"
       :pPlaceholder="t('searchPlaceholder')"
       pSize="small"
-      class="margin-top--2 max-width-300"
+      class="margin-y--3 max-width-400"
       @update:p-search="onUpdateSearchTerm"
     />
   </div>
@@ -228,7 +228,7 @@ en-US:
   accessGrantedForUser: 'Access has been validated for the user'
   technicalError: 'The operation failed due to a technical error. Please try again later.'
   accessNote: 'These users are awaiting validation of access to the entity.Validate access?'
-  searchPlaceholder: 'Company name or folder ID'
+  searchPlaceholder: 'Search by company name, client code or client email'
   invalidSearch: 'Minimum three characters required'
   no-demand-for-search-term: 'No access management requests found for "{searchTerm}""'
 fr-FR:
@@ -242,7 +242,7 @@ fr-FR:
   accessGrantedForUser: "L'accès a été validé pour l'utilisateur"
   technicalError: "L'opération a échoué suite à une erreur technique. Veuillez réessayer plus tard."
   accessNote: "Ces utilisateurs sont en attente de validation d'accès à l'entité. Valider l'accès ?"
-  searchPlaceholder: 'Raison sociale ou code client'
+  searchPlaceholder: 'Rechercher par raison sociale, code client ou email client'
   invalidSearch: 'Trois caractères minimum requis'
   no-demand-for-search-term: 'Aucune demande de gestion d’accès trouvée pour "{searchTerm}"'
 </i18n>
