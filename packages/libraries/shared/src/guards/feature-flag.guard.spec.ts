@@ -4,7 +4,6 @@ import { featureFlagManagerMock } from '@pulse/common/mocks/vitest'
 import { Feature, RouteName } from '@pulse/common/enums'
 import type { RouteLocationNormalizedGeneric } from 'vue-router'
 
-
 import { featureFlagGuard } from './feature-flag.guard'
 
 vi.mock('@pulse/toolbox', () => ({
@@ -15,8 +14,6 @@ vi.mock('@pulse/common/managers', () => ({
   FeatureFlagManager: featureFlagManagerMock,
 }))
 
-const fromRouteMock = { name: RouteName.HOMEPAGE } as RouteLocationNormalizedGeneric
-const nextMock = vi.fn(() => true)
 const toNameMock = RouteName.INFO
 
 describe('feature-flag.guard', () => {
@@ -53,10 +50,7 @@ describe('feature-flag.guard', () => {
       },
     } as unknown as RouteLocationNormalizedGeneric
 
-    const response = featureFlagGuard(toRouteMock, fromRouteMock, nextMock)
-
-    expect(response).toBe(true)
-    expect(nextMock).toHaveBeenCalledOnce()
+    const result = featureFlagGuard(toRouteMock)
 
     if (expectedLoggerMock === undefined) {
       expect(loggerMock.trace).not.toHaveBeenCalled()
@@ -65,11 +59,9 @@ describe('feature-flag.guard', () => {
     }
 
     if (expectedRouteName === undefined) {
-      expect(nextMock).toHaveBeenCalledWith(/* no args */)
+      expect(result).toBeUndefined()
     } else {
-      const expectedParameters = { name: expectedRouteName }
-
-      expect(nextMock).toHaveBeenCalledWith(expectedParameters)
+      expect(result).toEqual({ name: expectedRouteName })
     }
   })
 })

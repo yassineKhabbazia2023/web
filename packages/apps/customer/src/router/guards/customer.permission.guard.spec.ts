@@ -49,12 +49,14 @@ describe('customerPermissionGuard', () => {
     },
   ])('should react depend on the permissions',
     async ({ to, target, hasPermission }) => {
-      const next = vi.fn()
-
       hasPermissionMock.mockReturnValue(hasPermission)
 
-      await customerPermissionGuard(to as any, {} as any, next)
-      const expectedCall = target !== undefined ? [target] : []
-      expect(next).toHaveBeenCalledWith(...expectedCall)
+      const result = await customerPermissionGuard(to as any)
+
+      if (target !== undefined) {
+        expect(result).toEqual(target)
+      } else {
+        expect(result).toBeUndefined()
+      }
     })
 })

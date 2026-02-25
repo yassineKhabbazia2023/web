@@ -1,4 +1,4 @@
-import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 import { NotificationKindEnum, RouteName } from '@pulse/common/enums'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
 import { logger } from '@pulse/toolbox'
@@ -9,8 +9,6 @@ import { logger } from '@pulse/toolbox'
  */
 export function gedLegacyRouteUpdate(
   to: RouteLocationNormalized,
-  _from: RouteLocationNormalized,
-  next: NavigationGuardNext,
 ) {
   // Only handle redirections when there's a notification type in query params
   const notificationType = to.query?.notificationType
@@ -28,13 +26,11 @@ export function gedLegacyRouteUpdate(
       const { notificationType: _, ...queryWithoutNotificationType } = to.query
       logger.trace(`[RouteUpdate] redirection to ${routeName} instead legacy GED, notificationType equals '${notificationType}'`)
 
-      return next({
+      return {
         name: routeName,
         params: to.params,
         query: queryWithoutNotificationType,
-      })
+      }
     }
   }
-
-  next()
 }

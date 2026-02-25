@@ -21,14 +21,7 @@ function createMockedRoute(query: LocationQuery = {}): RouteLocationNormalizedGe
   }
 }
 
-const nextMock = vi.fn()
-const from = createMockedRoute()
-
 describe('GedContextNavigationGuard', () => {
-  beforeEach(() => {
-    nextMock.mockClear()
-  })
-
   describe('Given GED UX V2 is enabled', () => {
     beforeEach(() => {
       vi.mocked(PennylanePermissionsManager.isGedUxV2).mockReturnValue(true)
@@ -41,7 +34,7 @@ describe('GedContextNavigationGuard', () => {
           additionalParam: 'value',
         })
 
-        gedLegacyRouteUpdate(to, from, nextMock)
+        const result = gedLegacyRouteUpdate(to)
 
         expect(logger.trace).toHaveBeenCalledWith(
           expect.stringContaining('[RouteUpdate]'),
@@ -49,7 +42,7 @@ describe('GedContextNavigationGuard', () => {
         expect(logger.trace).toHaveBeenCalledWith(
           expect.stringContaining(RouteName.PENNYLANE_SOCIAL_MANAGEMENT),
         )
-        expect(nextMock).toHaveBeenCalledWith({
+        expect(result).toEqual({
           name: RouteName.PENNYLANE_SOCIAL_MANAGEMENT,
           query: { additionalParam: 'value' },
           params: to.params,
@@ -64,7 +57,7 @@ describe('GedContextNavigationGuard', () => {
           entityId: '123',
         })
 
-        gedLegacyRouteUpdate(to, from, nextMock)
+        const result = gedLegacyRouteUpdate(to)
 
         expect(logger.trace).toHaveBeenCalledWith(
           expect.stringContaining('[RouteUpdate]'),
@@ -72,7 +65,7 @@ describe('GedContextNavigationGuard', () => {
         expect(logger.trace).toHaveBeenCalledWith(
           expect.stringContaining(RouteName.PENNYLANE_GED_LEGACY),
         )
-        expect(nextMock).toHaveBeenCalledWith({
+        expect(result).toEqual({
           name: RouteName.PENNYLANE_GED_LEGACY,
           query: { entityId: '123' },
           params: to.params,
@@ -84,9 +77,9 @@ describe('GedContextNavigationGuard', () => {
       it('should proceed with navigation without redirection', () => {
         const to = createMockedRoute({ notificationType: 'UNSUPPORTED_NOTIFICATION_TYPE' })
 
-        gedLegacyRouteUpdate(to, from, nextMock)
+        const result = gedLegacyRouteUpdate(to)
 
-        expect(nextMock).toHaveBeenCalledWith()
+        expect(result).toBeUndefined()
         expect(logger.trace).not.toHaveBeenCalled()
       })
     })
@@ -95,9 +88,9 @@ describe('GedContextNavigationGuard', () => {
       it('should proceed with navigation without redirection', () => {
         const to = createMockedRoute()
 
-        gedLegacyRouteUpdate(to, from, nextMock)
+        const result = gedLegacyRouteUpdate(to)
 
-        expect(nextMock).toHaveBeenCalledWith()
+        expect(result).toBeUndefined()
         expect(logger.trace).not.toHaveBeenCalled()
       })
     })
@@ -112,9 +105,9 @@ describe('GedContextNavigationGuard', () => {
       it('should bypass context-based redirection and continue navigation', () => {
         const to = createMockedRoute({ notificationType: NotificationKindEnum.GSDocumentUploaded })
 
-        gedLegacyRouteUpdate(to, from, nextMock)
+        const result = gedLegacyRouteUpdate(to)
 
-        expect(nextMock).toHaveBeenCalledWith()
+        expect(result).toBeUndefined()
         expect(logger.trace).not.toHaveBeenCalled()
       })
     })
@@ -123,9 +116,9 @@ describe('GedContextNavigationGuard', () => {
       it('should continue navigation without any side effects', () => {
         const to = createMockedRoute()
 
-        gedLegacyRouteUpdate(to, from, nextMock)
+        const result = gedLegacyRouteUpdate(to)
 
-        expect(nextMock).toHaveBeenCalledWith()
+        expect(result).toBeUndefined()
         expect(logger.trace).not.toHaveBeenCalled()
       })
     })

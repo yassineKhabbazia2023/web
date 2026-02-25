@@ -1,12 +1,12 @@
 import { logger } from '@pulse/toolbox'
-import type { NavigationGuard } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { SessionStorageService } from '@pulse/common/services/storage'
 import { CustomerBootManager } from '@customer/managers/customer.boot.manager'
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
 import { RouteName } from '@pulse/common/enums'
 
-export const customerAuthenticationGuard: NavigationGuard = async (to, _from, next) => {
+export async function customerAuthenticationGuard(to: RouteLocationNormalized) {
   const hasToken = CurrentUserManager.hasToken()
   const isAuthenticated = CurrentUserManager.isAuthenticated()
   const allowAnonymous = to.meta?.[ALLOW_ANONYMOUS_META] === true
@@ -15,7 +15,7 @@ export const customerAuthenticationGuard: NavigationGuard = async (to, _from, ne
 
   if (allowAnonymous === true && allowAuthenticated === true) {
     // no need to check authentication, route is open for all
-    return next()
+    return
   }
 
   // user is authenticated and tries to access a route that does not allow authenticated users
@@ -25,7 +25,7 @@ export const customerAuthenticationGuard: NavigationGuard = async (to, _from, ne
     logger.trace(
       `Authenticated user tries to access forbidden anonymous route '${toName}', redirect to route '${authenticatedRoute.name}'`,
     )
-    return next({ name: authenticatedRoute.name })
+    return { name: authenticatedRoute.name }
   }
 
   // user is NOT authenticated (anonymous) and tries to access a route that does not allow anonymous users
@@ -38,7 +38,7 @@ export const customerAuthenticationGuard: NavigationGuard = async (to, _from, ne
     if (hasToken === true) {
       // User has a token but is not authenticated, likely due to token expiration
       logger.trace('User has a token but is not authenticated. Go back to login.')
-      return next({ name: RouteName.LOGIN_CLIENT, query: { sessionExpired: 'true' } })
+      return { name: RouteName.LOGIN_CLIENT, query: { sessionExpired: 'true' } }
     }
 
     // redirect to anonymous path
@@ -47,7 +47,7 @@ export const customerAuthenticationGuard: NavigationGuard = async (to, _from, ne
     logger.trace(
       `NOT authenticated user tries to access forbidden authenticated route '${toName}', redirect to route '${anonymousRoute.name}'`,
     )
-    return next({ name: anonymousRoute.name })
+    return { name: anonymousRoute.name }
   }
 
   // Handle unauthenticated access to the root route (e.g., '/') and redirect to appropriate login page
@@ -55,11 +55,10 @@ export const customerAuthenticationGuard: NavigationGuard = async (to, _from, ne
     const targetRoute = RouteName.LOGIN_CLIENT
 
     logger.trace(`Unauthenticated access to Root, user origin redirects to '${targetRoute}'.`)
-    return next({ name: targetRoute })
+    return { name: targetRoute }
   }
 
   // go to next route in case we didn't catch a use case
   // for example, if user is anonymous and route allows anonymous access
   // or if user is authenticated and route allows authenticated access
-  return next()
 }

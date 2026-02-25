@@ -21,8 +21,6 @@ vi.mock('@pulse/common/services/storage', () => ({
   },
 }))
 
-const nextMock = vi.fn()
-const fromRouteMock: any = { name: 'some-route' }
 
 describe('customerSsoGuard', () => {
   beforeEach(() => {
@@ -43,10 +41,10 @@ describe('customerSsoGuard', () => {
         },
       }
 
-      customerSsoGuard(toRoute, fromRouteMock, nextMock)
+      const result = customerSsoGuard(toRoute)
 
       expect(SessionStorageService.setSamlSsoContext).not.toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalled()
+      expect(result).toBeUndefined()
     })
   })
 
@@ -64,14 +62,14 @@ describe('customerSsoGuard', () => {
         },
       }
 
-      customerSsoGuard(toRoute, fromRouteMock, nextMock)
+      const result = customerSsoGuard(toRoute)
 
       expect(SessionStorageService.setSamlSsoContext).toHaveBeenCalledWith({
         spName: 'pennylane',
         samlContext: 'test-saml-context',
         mode: 'login',
       })
-      expect(nextMock).toHaveBeenCalledWith()
+      expect(result).toBeUndefined()
     })
 
     it('should not store SSO context when samlContext is missing', () => {
@@ -82,10 +80,10 @@ describe('customerSsoGuard', () => {
         },
       }
 
-      customerSsoGuard(toRoute, fromRouteMock, nextMock)
+      const result = customerSsoGuard(toRoute)
 
       expect(SessionStorageService.setSamlSsoContext).not.toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalled()
+      expect(result).toBeUndefined()
     })
 
     it('should not store SSO context when mode is missing', () => {
@@ -96,10 +94,10 @@ describe('customerSsoGuard', () => {
         },
       }
 
-      customerSsoGuard(toRoute, fromRouteMock, nextMock)
+      const result = customerSsoGuard(toRoute)
 
       expect(SessionStorageService.setSamlSsoContext).not.toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalled()
+      expect(result).toBeUndefined()
     })
   })
 
@@ -109,10 +107,10 @@ describe('customerSsoGuard', () => {
         query: {},
       }
 
-      customerSsoGuard(toRoute, fromRouteMock, nextMock)
+      const result = customerSsoGuard(toRoute)
 
       expect(FeatureFlagManager.isPennylaneSsoRedirectActivated).not.toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalled()
+      expect(result).toBeUndefined()
     })
 
     it('should not store SSO context when spName is not pennylane', () => {
@@ -124,11 +122,11 @@ describe('customerSsoGuard', () => {
         },
       }
 
-      customerSsoGuard(toRoute, fromRouteMock, nextMock)
+      const result = customerSsoGuard(toRoute)
 
       expect(FeatureFlagManager.isPennylaneSsoRedirectActivated).not.toHaveBeenCalled()
       expect(SessionStorageService.setSamlSsoContext).not.toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalled()
+      expect(result).toBeUndefined()
     })
   })
 })

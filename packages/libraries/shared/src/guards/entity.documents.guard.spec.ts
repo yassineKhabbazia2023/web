@@ -26,9 +26,6 @@ function createMockedRoute(query: LocationQuery = {}): RouteLocationNormalizedGe
   }
 }
 
-const nextMock = vi.fn()
-const from = createMockedRoute()
-
 describe('gedLegacyBeforeEnter', () => {
   describe('when user has GED UX V2', () => {
     beforeEach(() => {
@@ -38,12 +35,12 @@ describe('gedLegacyBeforeEnter', () => {
     it('should redirect to social management when notificationType is GSDocumentUploaded', () => {
       const to = createMockedRoute({ notificationType: NotificationKindEnum.GSDocumentUploaded })
 
-      gedLegacyBeforeEnter(to, from, nextMock)
+      const result = gedLegacyBeforeEnter(to)
 
       expect(logger.trace).toHaveBeenCalledWith(
         expect.stringContaining(RouteName.PENNYLANE_SOCIAL_MANAGEMENT),
       )
-      expect(nextMock).toHaveBeenCalledWith({
+      expect(result).toEqual({
         name: RouteName.PENNYLANE_SOCIAL_MANAGEMENT,
         query: to.query,
         params: to.params,
@@ -53,12 +50,12 @@ describe('gedLegacyBeforeEnter', () => {
     it('should redirect to pennylane accounting ged legacy when notificationType is AccountingDocumentUploaded', () => {
       const to = createMockedRoute({ notificationType: NotificationKindEnum.AccountingDocumentUploaded })
 
-      gedLegacyBeforeEnter(to, from, nextMock)
+      const result = gedLegacyBeforeEnter(to)
 
       expect(logger.trace).toHaveBeenCalledWith(
         expect.stringContaining(RouteName.PENNYLANE_GED_LEGACY),
       )
-      expect(nextMock).toHaveBeenCalledWith({
+      expect(result).toEqual({
         name: RouteName.PENNYLANE_GED_LEGACY,
         query: to.query,
         params: to.params,
@@ -68,19 +65,19 @@ describe('gedLegacyBeforeEnter', () => {
     it('should not redirect when notificationType is unknown', () => {
       const to = createMockedRoute({ notificationType: 'OTHER_TYPE' })
 
-      gedLegacyBeforeEnter(to, from, nextMock)
+      const result = gedLegacyBeforeEnter(to)
 
       // Should fall through to the second check (Pennylane permissions)
-      expect(nextMock).toHaveBeenCalled()
+      expect(result).toBeUndefined()
     })
 
     it('should not redirect when no notificationType is provided', () => {
       const to = createMockedRoute()
 
-      gedLegacyBeforeEnter(to, from, nextMock)
+      const result = gedLegacyBeforeEnter(to)
 
       // Should fall through to the second check (Pennylane permissions)
-      expect(nextMock).toHaveBeenCalled()
+      expect(result).toBeUndefined()
     })
   })
 
@@ -94,9 +91,9 @@ describe('gedLegacyBeforeEnter', () => {
       vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(false)
       const to = createMockedRoute()
 
-      gedLegacyBeforeEnter(to, from, nextMock)
+      const result = gedLegacyBeforeEnter(to)
 
-      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
+      expect(result).toEqual({ name: RouteName.ERROR404 })
     })
 
     it('should deny access when user has Social Management V2 permission', () => {
@@ -104,9 +101,9 @@ describe('gedLegacyBeforeEnter', () => {
       vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(true)
       const to = createMockedRoute()
 
-      gedLegacyBeforeEnter(to, from, nextMock)
+      const result = gedLegacyBeforeEnter(to)
 
-      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
+      expect(result).toEqual({ name: RouteName.ERROR404 })
     })
 
     it('should deny access when user has both Pennylane permissions', () => {
@@ -114,9 +111,9 @@ describe('gedLegacyBeforeEnter', () => {
       vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(true)
       const to = createMockedRoute()
 
-      gedLegacyBeforeEnter(to, from, nextMock)
+      const result = gedLegacyBeforeEnter(to)
 
-      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
+      expect(result).toEqual({ name: RouteName.ERROR404 })
     })
 
     it('should allow access when user has no Pennylane permissions', () => {
@@ -124,81 +121,63 @@ describe('gedLegacyBeforeEnter', () => {
       vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(false)
       const to = createMockedRoute()
 
-      gedLegacyBeforeEnter(to, from, nextMock)
+      const result = gedLegacyBeforeEnter(to)
 
-      expect(nextMock).toHaveBeenCalledWith()
+      expect(result).toBeUndefined()
     })
   })
 })
 
 describe('pennylaneSocialManagementBeforeEnter', () => {
-  beforeEach(() => {
-    nextMock.mockClear()
-  })
-
   it('should allow access when user has Social Management V2 permission', () => {
     vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(true)
-    const to = createMockedRoute()
 
-    pennylaneSocialManagementBeforeEnter(to, from, nextMock)
+    const result = pennylaneSocialManagementBeforeEnter()
 
-    expect(nextMock).toHaveBeenCalledWith()
+    expect(result).toBeUndefined()
   })
 
   it('should deny access when user does not have Social Management V2 permission', () => {
     vi.mocked(PennylanePermissionsManager.hasSocialManagementV2).mockReturnValue(false)
-    const to = createMockedRoute()
 
-    pennylaneSocialManagementBeforeEnter(to, from, nextMock)
+    const result = pennylaneSocialManagementBeforeEnter()
 
-    expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
+    expect(result).toEqual({ name: RouteName.ERROR404 })
   })
 })
 
 describe('pennylaneAccountingBeforeEnter', () => {
-  beforeEach(() => {
-    nextMock.mockClear()
-  })
-
   it('should allow access when user has Pennylane Accounting permission', () => {
     vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingPermission).mockReturnValue(true)
-    const to = createMockedRoute()
 
-    pennylaneAccountingBeforeEnter(to, from, nextMock)
+    const result = pennylaneAccountingBeforeEnter()
 
-    expect(nextMock).toHaveBeenCalledWith()
+    expect(result).toBeUndefined()
   })
 
   it('should deny access when user does not have Pennylane Accounting permission', () => {
     vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingPermission).mockReturnValue(false)
-    const to = createMockedRoute()
 
-    pennylaneAccountingBeforeEnter(to, from, nextMock)
+    const result = pennylaneAccountingBeforeEnter()
 
-    expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
+    expect(result).toEqual({ name: RouteName.ERROR404 })
   })
 })
 
 describe('pennylaneGedV2BeforeEnter', () => {
-  beforeEach(() => {
-    nextMock.mockClear()
-  })
-
   it('should allow access when user has Pennylane Accounting GED V2 permission', () => {
     vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission).mockReturnValue(true)
-    const to = createMockedRoute()
 
-    pennylaneGedV2BeforeEnter(to, from, nextMock)
+    const result = pennylaneGedV2BeforeEnter()
 
-    expect(nextMock).toHaveBeenCalledWith()
+    expect(result).toBeUndefined()
   })
 
   it('should deny access when user does not have Pennylane Accounting GED V2 permission', () => {
     vi.mocked(PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission).mockReturnValue(false)
-    const to = createMockedRoute()
 
-    pennylaneGedV2BeforeEnter(to, from, nextMock)
+    const result = pennylaneGedV2BeforeEnter()
 
-    expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ERROR404 })
+    expect(result).toEqual({ name: RouteName.ERROR404 })
   })
 })

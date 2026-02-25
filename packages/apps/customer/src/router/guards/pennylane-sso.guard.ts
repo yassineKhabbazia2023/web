@@ -1,12 +1,11 @@
-import type { NavigationGuard } from 'vue-router'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { SessionStorageService, SsoProvider, CookieService } from '@pulse/common/services/storage'
 import { RouteName } from '@pulse/common/enums'
 import { SSO_ORIGIN_COOKIE, SSO_ORIGIN_RYDGE } from '@pulse/common/constants'
 
-export const pennylaneSsoGuard: NavigationGuard = (_to, _from, next) => {
+export function pennylaneSsoGuard() {
   if (FeatureFlagManager.isPennylaneSsoRedirectActivated() === false) {
-    return next()
+    return
   }
 
   // Check SSO connection origin
@@ -14,14 +13,14 @@ export const pennylaneSsoGuard: NavigationGuard = (_to, _from, next) => {
   const isFromRydge = ssoOrigin === SSO_ORIGIN_RYDGE
 
   if (isFromRydge === false) {
-    return next()
+    return
   }
 
   // Check if SAML context exists
   const ssoContext = SessionStorageService.getSamlSsoContext(SsoProvider.PENNYLANE)
 
   if (ssoContext === undefined) {
-    return next()
+    return
   }
 
   CookieService.remove(SSO_ORIGIN_COOKIE)
@@ -29,8 +28,8 @@ export const pennylaneSsoGuard: NavigationGuard = (_to, _from, next) => {
 
   const { spName, samlContext, mode } = ssoContext
 
-  return next({
+  return {
     name: RouteName.PENNYLANE_SSO_PROXY,
     query: { spName, samlContext, mode },
-  })
+  }
 }

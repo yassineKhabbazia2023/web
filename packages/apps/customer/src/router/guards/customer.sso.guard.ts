@@ -1,11 +1,11 @@
-import type { NavigationGuard } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { SessionStorageService, SsoProvider, SsoQueryParam } from '@pulse/common/services/storage'
 
-export const customerSsoGuard: NavigationGuard = (to, _from, next) => {
+export function customerSsoGuard(to: RouteLocationNormalized) {
   const spName = to.query[SsoQueryParam.SP_NAME] as SsoProvider | undefined
   if (spName === undefined) {
-    return next()
+    return
   }
 
   const samlContext = to.query[SsoQueryParam.SAML_CONTEXT] as string | undefined
@@ -17,6 +17,4 @@ export const customerSsoGuard: NavigationGuard = (to, _from, next) => {
       SessionStorageService.setSamlSsoContext({ spName, samlContext, mode })
     }
   }
-
-  return next()
 }

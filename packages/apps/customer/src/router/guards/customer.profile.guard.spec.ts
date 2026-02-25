@@ -10,8 +10,6 @@ vi.mock('@pulse/styleguide', () => ({
   getIsMobile: mockGetIsMobile,
 }))
 
-const nextMock = vi.fn()
-
 describe('customerProfileGuard', () => {
   const accessTests = [
     {
@@ -42,12 +40,12 @@ describe('customerProfileGuard', () => {
     mockGetIsMobile.mockReturnValue(isMobile)
 
     const toRoute = { name: routeName } as unknown as RouteLocationNormalizedGeneric
-    customerProfileGuard(toRoute, {} as RouteLocationNormalizedGeneric, nextMock)
+    const result = customerProfileGuard(toRoute)
 
     if (expectedRedirect) {
-      expect(nextMock).toHaveBeenCalledWith({ name: expectedRedirect })
+      expect(result).toEqual({ name: expectedRedirect })
     } else {
-      expect(nextMock).toHaveBeenCalledWith()
+      expect(result).toBeUndefined()
     }
   })
 })

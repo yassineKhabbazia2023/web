@@ -20,12 +20,12 @@ import { CurrentEntityManager } from '@pulse/common/managers'
 import { RouteLocationNormalizedGeneric } from 'vue-router'
 vi.mock('@pulse/common/managers')
 
-function createMockedRoute(entityId: string): RouteLocationNormalizedGeneric {
+function createMockedRoute(entityId?: string): RouteLocationNormalizedGeneric {
   return {
     path: 'route/path',
     name: 'routeName',
     params: {
-      [RouteParam.ENTITY_ID]: entityId,
+      ...(entityId !== undefined ? { [RouteParam.ENTITY_ID]: entityId } : {}),
     },
     // necessary properties to satisfy the RouteLocationNormalizedGeneric type
     matched: [],
@@ -36,7 +36,6 @@ function createMockedRoute(entityId: string): RouteLocationNormalizedGeneric {
     meta: {},
   }
 }
-const nextMock = vi.fn()
 
 const fetchEntityByIdMock = vi.hoisted(() => vi.fn(() => entitiesServiceMocks.fetchEntityById))
 vi.mock('@pulse/common/services/entities', () => ({
@@ -44,30 +43,33 @@ vi.mock('@pulse/common/services/entities', () => ({
 }))
 
 describe('verify entity change', () => {
-  it('directly calls next without fetching entities if target route doesn\'t contain an entity id in the route params', async () => {
+  it('allows navigation without fetching entities if target route doesn\'t contain an entity id in the route params', async () => {
     const from = createMockedRoute('123')
-    const to = createMockedRoute('')
-    await currentEntityGuard(to, from, nextMock)
+    const to = createMockedRoute()
+    const result = await currentEntityGuard(to, from)
 
     expect(fetchEntityByIdMock).not.toHaveBeenCalled()
+    expect(result).toBeUndefined()
   })
 
-  it('directly calls next without fetching entities if entityId param is the same between TO and FROM', async () => {
+  it('allows navigation without fetching entities if entityId param is the same between TO and FROM', async () => {
     const routeWithEntityId = createMockedRoute('123')
-    await currentEntityGuard(routeWithEntityId, routeWithEntityId, nextMock)
+    const result = await currentEntityGuard(routeWithEntityId, routeWithEntityId)
 
     expect(fetchEntityByIdMock).not.toHaveBeenCalled()
+    expect(result).toBeUndefined()
   })
 
-  it('directly calls next without fetching entities if entityId param from TO is the same as stored currentEntityId', async () => {
+  it('allows navigation without fetching entities if entityId param from TO is the same as stored currentEntityId', async () => {
     const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
     currentEntityStoreMock.currentEntityId = entities[1].accountId
 
     const from = createMockedRoute(entities[0].accountId.toString())
     const to = createMockedRoute(entities[1].accountId.toString())
-    await currentEntityGuard(to, from, nextMock)
+    const result = await currentEntityGuard(to, from)
 
     expect(fetchEntityByIdMock).not.toHaveBeenCalled()
+    expect(result).toBeUndefined()
   })
 
   it('fetches entities when entityId from TO is different than stored currentEntityId', async () => {
@@ -76,7 +78,7 @@ describe('verify entity change', () => {
 
     const from = createMockedRoute('')
     const to = createMockedRoute(entities[0].accountId.toString())
-    await currentEntityGuard(to, from, nextMock)
+    await currentEntityGuard(to, from)
 
     expect(fetchEntityByIdMock).toHaveBeenCalled()
     expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalled()
@@ -89,7 +91,7 @@ describe('verify entity change', () => {
 
     const from = createMockedRoute('')
     const to = createMockedRoute(entities[0].accountId.toString())
-    await currentEntityGuard(to, from, nextMock)
+    await currentEntityGuard(to, from)
 
     expect(loadingStoreMock.startContentLoading).toHaveBeenCalled()
     expect(loadingStoreMock.stopContentLoading).toHaveBeenCalled()
@@ -99,8 +101,8 @@ describe('verify entity change', () => {
     const loadingStoreMock = getStoreMock(useLoadingStore)
 
     const from = createMockedRoute('123')
-    const to = createMockedRoute('')
-    await currentEntityGuard(to, from, nextMock)
+    const to = createMockedRoute()
+    await currentEntityGuard(to, from)
 
     expect(loadingStoreMock.startContentLoading).not.toHaveBeenCalled()
   })
@@ -112,7 +114,7 @@ describe('verify entity change', () => {
 
     const from = createMockedRoute(entities[0].accountId.toString())
     const to = createMockedRoute(entities[1].accountId.toString())
-    await currentEntityGuard(to, from, nextMock)
+    await currentEntityGuard(to, from)
 
     expect(loadingStoreMock.startContentLoading).not.toHaveBeenCalled()
   })
@@ -125,7 +127,7 @@ describe('verify entity change', () => {
 
     const from = createMockedRoute('')
     const to = createMockedRoute(entities[0].accountId.toString())
-    await currentEntityGuard(to, from, nextMock)
+    await currentEntityGuard(to, from)
 
     expect(loadingStoreMock.startContentLoading).toHaveBeenCalled()
     expect(loadingStoreMock.stopContentLoading).toHaveBeenCalled()

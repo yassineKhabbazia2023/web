@@ -1,22 +1,15 @@
 import { PERMISSIONS_META } from '@pulse/common/constants'
-import { NavigationGuard } from 'vue-router'
+import type { RouteLocationNormalizedGeneric } from 'vue-router'
 import { logger } from '@pulse/toolbox'
 import { CustomerAuthenticatedFlowManager } from '@customer/managers/customer.authenticated.flow.manager'
 import { CurrentUserManager } from '@pulse/common/managers'
-import type { RouteLocationNormalizedGeneric } from 'vue-router'
 
-export const customerPermissionGuard: NavigationGuard = async (
-  to: RouteLocationNormalizedGeneric,
-  _from: RouteLocationNormalizedGeneric,
-  next: Function,
-) => {
+export async function customerPermissionGuard(to: RouteLocationNormalizedGeneric) {
   const permissions = to.meta?.[PERMISSIONS_META]
   const toName = to.name as string
   if (permissions !== undefined && CurrentUserManager.hasPermission(permissions) === false) {
     const targetRoute = CustomerAuthenticatedFlowManager.getLandingPage()
     logger.trace(`Unauthorized access to page '${toName}', redirects to landing page.`)
-    return next({ name: targetRoute?.name })
+    return { name: targetRoute?.name }
   }
-
-  return next()
 }

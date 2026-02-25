@@ -17,10 +17,8 @@ vi.mock('@pulse/common/services/storage', () => ({
     setRedirectContext: vi.fn(),
   },
 }))
-const nextMock = vi.fn()
 
 const authenticatedRoot: any = { name: RouteName.AUTHENTICATED }
-const fromRouteMock: any = { name: RouteName.HOMEPAGE }
 const toRootRoute: any = {
   path: '/',
   meta: { [ALLOW_ANONYMOUS_META]: true },
@@ -49,43 +47,36 @@ const toError404RouteMock: any = {
 }
 
 describe('collaboratorAuthenticationGuard', () => {
-  beforeEach(() => {
-    nextMock.mockClear()
-  })
-
   describe('when user is authenticated', () => {
     beforeEach(() => {
       vi.spyOn(CurrentUserManager, 'isAuthenticated').mockReturnValue(true)
       vi.spyOn(CurrentUserManager, 'hasToken').mockReturnValue(true)
     })
 
-    it('should proceed if route allows anonymous access and authenticated access', () => {
-      collaboratorAuthenticationGuard(toAllowAllRouteMock, fromRouteMock, nextMock)
+    it('should proceed if route allows anonymous access and authenticated access', async () => {
+      const result = await collaboratorAuthenticationGuard(toAllowAllRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
-    it('should proceed if route allows anonymous access', () => {
-      collaboratorAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock, fromRouteMock, nextMock)
+    it('should proceed if route allows anonymous access', async () => {
+      const result = await collaboratorAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
-    it('should redirect to authenticated if route only allows anonymous access', () => {
-      collaboratorAuthenticationGuard(toOnlyAllowAnonymousRouteMock, fromRouteMock, nextMock)
+    it('should redirect to authenticated if route only allows anonymous access', async () => {
+      const result = await collaboratorAuthenticationGuard(toOnlyAllowAnonymousRouteMock)
 
-      expect(nextMock).toHaveBeenCalledWith(authenticatedRoot)
+      expect(result).toEqual(authenticatedRoot)
     })
 
-    it('should default redirect to authenticated if no specific access is defined', () => {
+    it('should default redirect to authenticated if no specific access is defined', async () => {
       const toRouteMock = { name: RouteName.ERROR500 } as any
-      const nextMock = vi.fn()
 
-      collaboratorAuthenticationGuard(toRouteMock, fromRouteMock, nextMock)
+      const result = await collaboratorAuthenticationGuard(toRouteMock)
 
-      expect(nextMock).toHaveBeenCalledWith(authenticatedRoot)
+      expect(result).toEqual(authenticatedRoot)
     })
   })
 
@@ -95,47 +86,45 @@ describe('collaboratorAuthenticationGuard', () => {
       vi.spyOn(CurrentUserManager, 'hasToken').mockReturnValue(false)
     })
 
-    it('should proceed if route allows anonymous access and authenticated access', () => {
-      collaboratorAuthenticationGuard(toAllowAllRouteMock, fromRouteMock, nextMock)
+    it('should proceed if route allows anonymous access and authenticated access', async () => {
+      const result = await collaboratorAuthenticationGuard(toAllowAllRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
-    it('should proceed if route allows anonymous access', () => {
-      collaboratorAuthenticationGuard(toOnlyAllowAnonymousRouteMock, fromRouteMock, nextMock)
+    it('should proceed if route allows anonymous access', async () => {
+      const result = await collaboratorAuthenticationGuard(toOnlyAllowAnonymousRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
     it('should redirect to LOGIN_COLLAB', async () => {
-      await collaboratorAuthenticationGuard(toRootRoute, fromRouteMock, nextMock)
+      const result = await collaboratorAuthenticationGuard(toRootRoute)
 
-      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.LOGIN_COLLAB })
+      expect(result).toEqual({ name: RouteName.LOGIN_COLLAB })
     })
 
     it('does NOT redirect if path is not root and allowAnonymous is true', async () => {
-      await collaboratorAuthenticationGuard(toNotAnonymousRoute, fromRouteMock, nextMock)
+      const result = await collaboratorAuthenticationGuard(toNotAnonymousRoute)
 
       expect(loggerMock.trace).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ANONYMOUS })
+      expect(result).toEqual({ name: RouteName.ANONYMOUS })
     })
 
     it('should redirect to login with sessionExpired query when user has token but is not authenticated', async () => {
       vi.spyOn(CurrentUserManager, 'hasToken').mockReturnValue(true)
 
-      await collaboratorAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock, fromRouteMock, nextMock)
+      const result = await collaboratorAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock)
 
       expect(loggerMock.trace).toHaveBeenCalledWith('User has a token but is not authenticated. Go back to login.')
-      expect(nextMock).toHaveBeenCalledWith({
+      expect(result).toEqual({
         name: RouteName.LOGIN_COLLAB,
         query: { sessionExpired: 'true' },
       })
     })
 
     it('should save redirect context when redirecting unauthenticated user to login', async () => {
-      await collaboratorAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock, fromRouteMock, nextMock)
+      await collaboratorAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock)
 
       expect(SessionStorageService.setRedirectContext).toHaveBeenCalledWith('/dossier/123?mode=notification&type=success')
     })
@@ -143,7 +132,7 @@ describe('collaboratorAuthenticationGuard', () => {
     it('should not save redirect context when accessing 404 page to avoid redirecting to error page after login', async () => {
       vi.mocked(SessionStorageService.setRedirectContext).mockClear()
 
-      await collaboratorAuthenticationGuard(toError404RouteMock, fromRouteMock, nextMock)
+      await collaboratorAuthenticationGuard(toError404RouteMock)
 
       expect(SessionStorageService.setRedirectContext).not.toHaveBeenCalled()
     })

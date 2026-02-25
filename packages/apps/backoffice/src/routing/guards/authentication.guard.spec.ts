@@ -8,7 +8,6 @@ import { authenticationGuard } from './authentication.guard'
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 const authenticatedRoot: any = { name: AdminRouteNames.AUTHENTICATED }
-const fromRouteMock: any = { name: AdminRouteNames.ROOT }
 
 const toNotAnonymousRoute: any = {
   path: 'not-anonymous',
@@ -27,8 +26,6 @@ const toOnlyAllowAuthenticatedRouteMock: any = {
   meta: { [ALLOW_ANONYMOUS_META]: false, [ALLOW_AUTHENTICATED_META]: true },
 }
 
-const nextMock = vi.fn()
-
 describe('authenticationGuard', () => {
   describe('when user is authenticated', () => {
     beforeEach(() => {
@@ -36,32 +33,29 @@ describe('authenticationGuard', () => {
     })
 
     it('should proceed if route allows anonymous access and authenticated access', async () => {
-      await authenticationGuard(toAllowAllRouteMock, fromRouteMock, nextMock)
+      const result = await authenticationGuard(toAllowAllRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledExactlyOnceWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
     it('should proceed if route allows anonymous access', async () => {
-      await authenticationGuard(toOnlyAllowAuthenticatedRouteMock, fromRouteMock, nextMock)
+      const result = await authenticationGuard(toOnlyAllowAuthenticatedRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledExactlyOnceWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
     it('should redirect to authenticated if route only allows anonymous access', async () => {
-      await authenticationGuard(toOnlyAllowAnonymousRouteMock, fromRouteMock, nextMock)
+      const result = await authenticationGuard(toOnlyAllowAnonymousRouteMock)
 
-      expect(nextMock).toHaveBeenCalledExactlyOnceWith(authenticatedRoot)
+      expect(result).toEqual(authenticatedRoot)
     })
 
     it('should default redirect to authenticated if no specific access is defined', async () => {
       const toRouteMock = { name: AdminRouteNames.ROOT } as any
-      const nextMock = vi.fn()
 
-      await authenticationGuard(toRouteMock, fromRouteMock, nextMock)
+      const result = await authenticationGuard(toRouteMock)
 
-      expect(nextMock).toHaveBeenCalledExactlyOnceWith(authenticatedRoot)
+      expect(result).toEqual(authenticatedRoot)
     })
   })
 
@@ -71,23 +65,21 @@ describe('authenticationGuard', () => {
     })
 
     it('should proceed if route allows anonymous access and authenticated access', async () => {
-      await authenticationGuard(toAllowAllRouteMock, fromRouteMock, nextMock)
+      const result = await authenticationGuard(toAllowAllRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledExactlyOnceWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
     it('should proceed if route allows anonymous access', async () => {
-      await authenticationGuard(toOnlyAllowAnonymousRouteMock, fromRouteMock, nextMock)
+      const result = await authenticationGuard(toOnlyAllowAnonymousRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledExactlyOnceWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
     it('does NOT redirect if path is not root and allowAnonymous is true', async () => {
-      await authenticationGuard(toNotAnonymousRoute, fromRouteMock, nextMock)
+      const result = await authenticationGuard(toNotAnonymousRoute)
 
-      expect(nextMock).toHaveBeenCalledExactlyOnceWith({ name: AdminRouteNames.LOGIN })
+      expect(result).toEqual({ name: AdminRouteNames.LOGIN })
     })
   })
 
@@ -96,9 +88,9 @@ describe('authenticationGuard', () => {
       const error = new Error('Auth check failed')
       vi.spyOn(AdminMsalService, 'isUserAuthenticated').mockRejectedValue(error)
 
-      await authenticationGuard(toOnlyAllowAuthenticatedRouteMock, fromRouteMock, nextMock)
+      const result = await authenticationGuard(toOnlyAllowAuthenticatedRouteMock)
 
-      expect(nextMock).toHaveBeenCalledExactlyOnceWith({ name: AdminRouteNames.LOGIN })
+      expect(result).toEqual({ name: AdminRouteNames.LOGIN })
     })
   })
 })

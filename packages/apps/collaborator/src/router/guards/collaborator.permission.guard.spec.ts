@@ -49,15 +49,14 @@ describe('collaboratorPermissionGuard', () => {
     },
   ])('should react depend on the permissions',
     async ({ to, target, hasPermission }) => {
-      const next = vi.fn()
-
       hasPermissionMock.mockReturnValue(hasPermission)
 
-      await collaboratorPermissionGuard(to as any, {} as any, next)
+      const result = await collaboratorPermissionGuard(to as any)
+
       if (target !== undefined) {
-        expect(next).toHaveBeenCalledWith(target)
+        expect(result).toEqual(target)
       } else {
-        expect(next).toHaveBeenCalledWith()
+        expect(result).toBeUndefined()
       }
     })
 })

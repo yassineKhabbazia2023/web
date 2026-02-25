@@ -9,28 +9,25 @@ vi.mock('@pulse/common/services/storage', () => ({
 }))
 
 describe('deepLinkGuard', () => {
-  const nextMock = vi.fn()
-  const fromRoute = {} as RouteLocationNormalized
-
   it('should redirect to saved path when redirect context exists and differs from current path', () => {
     const savedPath = '/dossier/123?mode=notification'
     const toRoute = { fullPath: '/landing' } as RouteLocationNormalized
     vi.mocked(SessionStorageService.consumeRedirectContext).mockReturnValue(savedPath)
 
-    deepLinkGuard(toRoute, fromRoute, nextMock)
+    const result = deepLinkGuard(toRoute)
 
     expect(SessionStorageService.consumeRedirectContext).toHaveBeenCalled()
-    expect(nextMock).toHaveBeenCalledWith(savedPath)
+    expect(result).toBe(savedPath)
   })
 
   it('should not redirect when no redirect context exists', () => {
     const toRoute = { fullPath: '/landing' } as RouteLocationNormalized
     vi.mocked(SessionStorageService.consumeRedirectContext).mockReturnValue(undefined)
 
-    deepLinkGuard(toRoute, fromRoute, nextMock)
+    const result = deepLinkGuard(toRoute)
 
     expect(SessionStorageService.consumeRedirectContext).toHaveBeenCalled()
-    expect(nextMock).toHaveBeenCalledWith()
+    expect(result).toBeUndefined()
   })
 
   it('should not redirect when saved path equals current path to avoid unnecessary navigation', () => {
@@ -38,9 +35,9 @@ describe('deepLinkGuard', () => {
     const toRoute = { fullPath: currentPath } as RouteLocationNormalized
     vi.mocked(SessionStorageService.consumeRedirectContext).mockReturnValue(currentPath)
 
-    deepLinkGuard(toRoute, fromRoute, nextMock)
+    const result = deepLinkGuard(toRoute)
 
     expect(SessionStorageService.consumeRedirectContext).toHaveBeenCalled()
-    expect(nextMock).toHaveBeenCalledWith()
+    expect(result).toBeUndefined()
   })
 })

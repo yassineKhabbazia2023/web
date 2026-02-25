@@ -1,7 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { pennylaneSsoGuard } from './pennylane-sso.guard'
-import type { RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
-
 const mockCookieGet = vi.fn()
 const mockCookieRemove = vi.fn()
 const mockGetSamlSsoContext = vi.fn()
@@ -40,15 +38,8 @@ vi.mock('@pulse/common/constants', () => ({
 }))
 
 describe('pennylaneSsoGuard', () => {
-  let nextMock: NavigationGuardNext
-  let toRouteMock: RouteLocationNormalized
-  let fromRouteMock: RouteLocationNormalized
-
   beforeEach(() => {
     vi.clearAllMocks()
-    nextMock = vi.fn()
-    toRouteMock = {} as RouteLocationNormalized
-    fromRouteMock = {} as RouteLocationNormalized
     mockIsPennylaneSsoRedirectActivated.mockReturnValue(true)
   })
 
@@ -57,35 +48,35 @@ describe('pennylaneSsoGuard', () => {
       mockIsPennylaneSsoRedirectActivated.mockReturnValue(false)
     })
 
-    it('should call next() without checking cookie', () => {
-      pennylaneSsoGuard(toRouteMock, fromRouteMock, nextMock)
+    it('should return undefined without checking cookie', () => {
+      const result = pennylaneSsoGuard()
 
-      expect(nextMock).toHaveBeenCalledWith()
+      expect(result).toBeUndefined()
       expect(mockCookieGet).not.toHaveBeenCalled()
     })
   })
 
   describe('when feature flag is enabled', () => {
     describe('when cookie indicates origin is NOT from Rydge', () => {
-      it('should call next() and not consume anything when no cookie', () => {
+      it('should return undefined and not consume anything when no cookie', () => {
         mockCookieGet.mockReturnValue(undefined)
 
-        pennylaneSsoGuard(toRouteMock, fromRouteMock, nextMock)
+        const result = pennylaneSsoGuard()
 
         expect(mockCookieGet).toHaveBeenCalledWith('sso-origin')
         expect(mockGetSamlSsoContext).not.toHaveBeenCalled()
         expect(mockCookieRemove).not.toHaveBeenCalled()
-        expect(nextMock).toHaveBeenCalledWith()
+        expect(result).toBeUndefined()
       })
 
-      it('should call next() and not consume anything when cookie has wrong value', () => {
+      it('should return undefined and not consume anything when cookie has wrong value', () => {
         mockCookieGet.mockReturnValue('other-value')
 
-        pennylaneSsoGuard(toRouteMock, fromRouteMock, nextMock)
+        const result = pennylaneSsoGuard()
 
         expect(mockGetSamlSsoContext).not.toHaveBeenCalled()
         expect(mockCookieRemove).not.toHaveBeenCalled()
-        expect(nextMock).toHaveBeenCalledWith()
+        expect(result).toBeUndefined()
       })
     })
 
@@ -94,16 +85,16 @@ describe('pennylaneSsoGuard', () => {
         mockCookieGet.mockReturnValue('rydge')
       })
 
-      it('should call next() and not consume cookie when no SSO context in sessionStorage', () => {
+      it('should return undefined and not consume cookie when no SSO context in sessionStorage', () => {
         mockGetSamlSsoContext.mockReturnValue(undefined)
 
-        pennylaneSsoGuard(toRouteMock, fromRouteMock, nextMock)
+        const result = pennylaneSsoGuard()
 
         expect(mockCookieGet).toHaveBeenCalledWith('sso-origin')
         expect(mockGetSamlSsoContext).toHaveBeenCalledWith('pennylane')
         expect(mockCookieRemove).not.toHaveBeenCalled()
         expect(mockRemoveSamlSsoContext).not.toHaveBeenCalled()
-        expect(nextMock).toHaveBeenCalledWith()
+        expect(result).toBeUndefined()
       })
 
       it('should consume both and redirect when cookie and SSO context exist', () => {
@@ -113,13 +104,13 @@ describe('pennylaneSsoGuard', () => {
           mode: 'login',
         })
 
-        pennylaneSsoGuard(toRouteMock, fromRouteMock, nextMock)
+        const result = pennylaneSsoGuard()
 
         expect(mockCookieGet).toHaveBeenCalledWith('sso-origin')
         expect(mockGetSamlSsoContext).toHaveBeenCalledWith('pennylane')
         expect(mockCookieRemove).toHaveBeenCalledWith('sso-origin')
         expect(mockRemoveSamlSsoContext).toHaveBeenCalledWith('pennylane')
-        expect(nextMock).toHaveBeenCalledWith({
+        expect(result).toEqual({
           name: 'pennylane-sso-proxy',
           query: {
             spName: 'pennylane',

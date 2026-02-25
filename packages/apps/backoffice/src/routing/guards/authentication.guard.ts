@@ -1,11 +1,11 @@
 import { logger } from '@pulse/toolbox'
-import type { NavigationGuard } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
 import { AdminMsalService } from '@backoffice/services/admin-msal/admin-msal.service'
 import { AdminRouteNames } from '@backoffice/constants/backoffice-route-names.enum'
 
-export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
-  let isAuthenticated = false
+export async function authenticationGuard(to: RouteLocationNormalized) {
+  let isAuthenticated: boolean
 
   try {
     isAuthenticated = await AdminMsalService.isUserAuthenticated()
@@ -23,7 +23,7 @@ export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
 
   if (allowAnonymous === true && allowAuthenticated === true) {
     // no need to check authentication, route is open for all
-    return next()
+    return
   }
 
   // user is authenticated and tries to access a route that does not allow authenticated users
@@ -32,7 +32,7 @@ export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
     logger.trace(
       `Authenticated user tries to access forbidden anonymous route '${toName}', redirect to route '${authenticatedRouteName}'`,
     )
-    return next({ name: authenticatedRouteName })
+    return { name: authenticatedRouteName }
   }
 
   // user is NOT authenticated (anonymous) and tries to access a route that does not allow anonymous users
@@ -41,11 +41,10 @@ export const authenticationGuard: NavigationGuard = async (to, _from, next) => {
     logger.trace(
       `NOT authenticated user tries to access forbidden authenticated route '${toName}', redirect to route '${anonymousRouteName}'`,
     )
-    return next({ name: anonymousRouteName })
+    return { name: anonymousRouteName }
   }
 
   // go to next route in case we didn't catch a use case
   // for example, if user is anonymous and route allows anonymous access
   // or if user is authenticated and route allows authenticated access
-  return next()
 }

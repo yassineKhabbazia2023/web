@@ -1,4 +1,4 @@
-import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
+import type { RouteLocationNormalized } from 'vue-router'
 import { NotificationKindEnum, RouteName } from '@pulse/common/enums'
 import { PennylanePermissionsManager } from '@pulse/common/managers'
 import { logger } from '@pulse/toolbox'
@@ -9,8 +9,6 @@ import { logger } from '@pulse/toolbox'
  */
 export function gedLegacyBeforeEnter(
   to: RouteLocationNormalized,
-  _from: RouteLocationNormalized,
-  next: NavigationGuardNext,
 ) {
   // First, check if we need to redirect to new GED routes (V2)
   if (PennylanePermissionsManager.isGedUxV2() === true) {
@@ -26,11 +24,11 @@ export function gedLegacyBeforeEnter(
     if (routeName) {
       logger.trace(`redirection to ${routeName} instead legacy GED, notificationType equals '${notificationType}'`)
 
-      return next({
+      return {
         name: routeName,
         query: to.query,
         params: to.params,
-      })
+      }
     }
   }
 
@@ -40,54 +38,38 @@ export function gedLegacyBeforeEnter(
     PennylanePermissionsManager.hasSocialManagementV2() === true
   ) {
     // DENY access to Legacy GED when we have access to Pennylane Accounting page or SocialManagement V2
-    return next({ name: RouteName.ERROR404 })
+    return { name: RouteName.ERROR404 }
   }
-  return next()
 }
 
 /**
  * Guard for Pennylane Social Management route
  * Blocks access if user does not have Social Management V2 permission
  */
-export function pennylaneSocialManagementBeforeEnter(
-  _to: RouteLocationNormalized,
-  _from: RouteLocationNormalized,
-  next: NavigationGuardNext,
-) {
+export function pennylaneSocialManagementBeforeEnter() {
   if (PennylanePermissionsManager.hasSocialManagementV2() === false) {
     // DENY access Social Management when we DO NOT have access to Social Management V2
-    return next({ name: RouteName.ERROR404 })
+    return { name: RouteName.ERROR404 }
   }
-  return next()
 }
 
 /**
  * Guard for Pennylane Accounting route
  * Blocks access if user does not have Pennylane Accounting permission
  */
-export function pennylaneAccountingBeforeEnter(
-  _to: RouteLocationNormalized,
-  _from: RouteLocationNormalized,
-  next: NavigationGuardNext,
-) {
+export function pennylaneAccountingBeforeEnter() {
   if (PennylanePermissionsManager.hasPennylaneAccountingPermission() === false) {
     // Can not access to Pennylane Accounting page when we don't have those specific permissions
-    return next({ name: RouteName.ERROR404 })
+    return { name: RouteName.ERROR404 }
   }
-  return next()
 }
 
 /**
  * Guard for GED V2 route within Pennylane Accounting
  * Blocks access if user does not have GED V2 permission
  */
-export function pennylaneGedV2BeforeEnter(
-  _to: RouteLocationNormalized,
-  _from: RouteLocationNormalized,
-  next: NavigationGuardNext,
-) {
+export function pennylaneGedV2BeforeEnter() {
   if (PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === false) {
-    return next({ name: RouteName.ERROR404 })
+    return { name: RouteName.ERROR404 }
   }
-  return next()
 }

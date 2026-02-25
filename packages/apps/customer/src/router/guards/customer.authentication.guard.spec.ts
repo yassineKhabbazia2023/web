@@ -17,10 +17,8 @@ vi.mock('@pulse/common/services/storage', () => ({
     setRedirectContext: vi.fn(),
   },
 }))
-const nextMock = vi.fn()
 
 const authenticatedRoot: any = { name: RouteName.AUTHENTICATED }
-const fromRouteMock: any = { name: RouteName.HOMEPAGE }
 const toRootRoute: any = {
   path: '/',
   meta: { [ALLOW_ANONYMOUS_META]: true },
@@ -49,43 +47,36 @@ const toError404RouteMock: any = {
 }
 
 describe('customerAuthenticationGuard', () => {
-  beforeEach(() => {
-    nextMock.mockClear()
-  })
-
   describe('when user is authenticated', () => {
     beforeEach(() => {
       vi.spyOn(CurrentUserManager, 'isAuthenticated').mockReturnValue(true)
       vi.spyOn(CurrentUserManager, 'hasToken').mockReturnValue(true)
     })
 
-    it('should proceed if route allows anonymous access and authenticated access', () => {
-      customerAuthenticationGuard(toAllowAllRouteMock, fromRouteMock, nextMock)
+    it('should proceed if route allows anonymous access and authenticated access', async () => {
+      const result = await customerAuthenticationGuard(toAllowAllRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
-    it('should proceed if route allows anonymous access', () => {
-      customerAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock, fromRouteMock, nextMock)
+    it('should proceed if route allows anonymous access', async () => {
+      const result = await customerAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
-    it('should redirect to authenticated if route only allows anonymous access', () => {
-      customerAuthenticationGuard(toOnlyAllowAnonymousRouteMock, fromRouteMock, nextMock)
+    it('should redirect to authenticated if route only allows anonymous access', async () => {
+      const result = await customerAuthenticationGuard(toOnlyAllowAnonymousRouteMock)
 
-      expect(nextMock).toHaveBeenCalledWith(authenticatedRoot)
+      expect(result).toEqual(authenticatedRoot)
     })
 
-    it('should default redirect to authenticated if no specific access is defined', () => {
+    it('should default redirect to authenticated if no specific access is defined', async () => {
       const toRouteMock = { name: RouteName.ERROR500 } as any
-      const nextMock = vi.fn()
 
-      customerAuthenticationGuard(toRouteMock, fromRouteMock, nextMock)
+      const result = await customerAuthenticationGuard(toRouteMock)
 
-      expect(nextMock).toHaveBeenCalledWith(authenticatedRoot)
+      expect(result).toEqual(authenticatedRoot)
     })
   })
 
@@ -95,47 +86,45 @@ describe('customerAuthenticationGuard', () => {
       vi.spyOn(CurrentUserManager, 'hasToken').mockReturnValue(false)
     })
 
-    it('should proceed if route allows anonymous access and authenticated access', () => {
-      customerAuthenticationGuard(toAllowAllRouteMock, fromRouteMock, nextMock)
+    it('should proceed if route allows anonymous access and authenticated access', async () => {
+      const result = await customerAuthenticationGuard(toAllowAllRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
-    it('should proceed if route allows anonymous access', () => {
-      customerAuthenticationGuard(toOnlyAllowAnonymousRouteMock, fromRouteMock, nextMock)
+    it('should proceed if route allows anonymous access', async () => {
+      const result = await customerAuthenticationGuard(toOnlyAllowAnonymousRouteMock)
 
-      expect(nextMock).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledWith(/* nothing */)
+      expect(result).toBeUndefined()
     })
 
     it('should redirect to LOGIN_CLIENT when accessing root route', async () => {
-      await customerAuthenticationGuard(toRootRoute, fromRouteMock, nextMock)
+      const result = await customerAuthenticationGuard(toRootRoute)
 
-      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.LOGIN_CLIENT })
+      expect(result).toEqual({ name: RouteName.LOGIN_CLIENT })
     })
 
     it('does NOT redirect if path is not root and allowAnonymous is true', async () => {
-      await customerAuthenticationGuard(toNotAnonymousRoute, fromRouteMock, nextMock)
+      const result = await customerAuthenticationGuard(toNotAnonymousRoute)
 
       expect(loggerMock.trace).toHaveBeenCalled()
-      expect(nextMock).toHaveBeenCalledWith({ name: RouteName.ANONYMOUS })
+      expect(result).toEqual({ name: RouteName.ANONYMOUS })
     })
 
     it('should redirect to login with sessionExpired query when user has token but is not authenticated', async () => {
       vi.spyOn(CurrentUserManager, 'hasToken').mockReturnValue(true)
 
-      await customerAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock, fromRouteMock, nextMock)
+      const result = await customerAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock)
 
       expect(loggerMock.trace).toHaveBeenCalledWith('User has a token but is not authenticated. Go back to login.')
-      expect(nextMock).toHaveBeenCalledWith({
+      expect(result).toEqual({
         name: RouteName.LOGIN_CLIENT,
         query: { sessionExpired: 'true' },
       })
     })
 
     it('should save redirect context when redirecting unauthenticated user to login', async () => {
-      await customerAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock, fromRouteMock, nextMock)
+      await customerAuthenticationGuard(toOnlyAllowAuthenticatedRouteMock)
 
       expect(SessionStorageService.setRedirectContext).toHaveBeenCalledWith('/dossier/123?mode=notification')
     })
@@ -143,7 +132,7 @@ describe('customerAuthenticationGuard', () => {
     it('should not save redirect context when accessing 404 page', async () => {
       vi.mocked(SessionStorageService.setRedirectContext).mockClear()
 
-      await customerAuthenticationGuard(toError404RouteMock, fromRouteMock, nextMock)
+      await customerAuthenticationGuard(toError404RouteMock)
 
       expect(SessionStorageService.setRedirectContext).not.toHaveBeenCalled()
     })
