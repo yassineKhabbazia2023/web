@@ -39,12 +39,10 @@
         "csrPolicy": "politique RSE"
       },
       "helpCenterLink": "Centre d'aide : tout savoir sur votre facture Rydge Lire l'article FAQ",
-      "alertText1": "La dématérialisation des factures est essentielle pour anticiper {reform}, qui imposera à toutes les entreprises d'émettre et recevoir des factures numériques sécurisées via des plateformes agréées dès 2026.",
-      "alertText2": "Pour tout savoir sur la {electronicInvoice}, écoutez notre {podcast}.",
+      "alertText1": "La réception {dematerializedFormat} des factures et l'accès au {digitalVault} constituent des éléments essentiels pour adopter les bons réflexes digitaux et assurer une centralisation efficace et sécurisée de l'ensemble des documents du cabinet.",
       "alertBold": {
-        "reform": "la réforme de la facture électronique",
-        "electronicInvoice": "facture électronique",
-        "podcast": "Podcast"
+        "dematerializedFormat": "sous format dématérialisé",
+        "digitalVault": "coffre-fort"
       },
       "step1": {
         "title": "Souscrire aux factures {highlight}",

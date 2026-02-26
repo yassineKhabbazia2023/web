@@ -39,12 +39,10 @@
         "csrPolicy": "CSR policy"
       },
       "helpCenterLink": "Help center: everything you need to know about your Rydge invoice Read the FAQ article",
-      "alertText1": "Dematerialization of invoices is essential to anticipate {reform}, which will require all companies to issue and receive secure digital invoices via approved platforms from 2026.",
-      "alertText2": "To learn everything about {electronicInvoice}, listen to our {podcast}.",
+      "alertText1": "Receiving invoices {dematerializedFormat} and accessing the {digitalVault} are essential elements for adopting good digital practices and ensuring an efficient and secure centralization of all the firm's documents.",
       "alertBold": {
-        "reform": "the electronic invoice reform",
-        "electronicInvoice": "electronic invoicing",
-        "podcast": "Podcast"
+        "dematerializedFormat": "in dematerialized format",
+        "digitalVault": "digital vault"
       },
       "step1": {
         "title": "Subscribe to dematerialized {highlight}",

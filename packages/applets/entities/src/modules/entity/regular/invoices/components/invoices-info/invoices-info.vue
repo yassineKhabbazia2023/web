@@ -115,27 +115,13 @@
         class="margin-top--4"
         pType="information"
       >
-        <p class="margin-bottom--2">
-          <i18n-t keypath="entities.invoices.alertText1">
-            <template #reform>
-              <strong>{{ t('entities.invoices.alertBold.reform') }}</strong>
-            </template>
-          </i18n-t>
-        </p>
         <p>
-          <i18n-t keypath="entities.invoices.alertText2">
-            <template #electronicInvoice>
-              <strong>{{ t('entities.invoices.alertBold.electronicInvoice') }}</strong>
+          <i18n-t keypath="entities.invoices.alertText1">
+            <template #dematerializedFormat>
+              <strong>{{ t('entities.invoices.alertBold.dematerializedFormat') }}</strong>
             </template>
-            <template #podcast>
-              <a
-                :href="PODCAST_URL"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="invoices-info__podcast-link text-underline"
-              >
-                <strong>{{ t('entities.invoices.alertBold.podcast') }}</strong>
-              </a>
+            <template #digitalVault>
+              <strong>{{ t('entities.invoices.alertBold.digitalVault') }}</strong>
             </template>
           </i18n-t>
         </p>
@@ -147,7 +133,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PAlert, PIcon } from '@pulse/styleguide/components'
-import { HELP_CENTER_URL, PODCAST_URL } from '@pulse/common/constants'
+import { HELP_CENTER_URL } from '@pulse/common/constants'
 
 const { t } = useI18n()
 </script>
@@ -169,9 +155,6 @@ const { t } = useI18n()
     font-size: 16px;
   }
 
-  &__podcast-link {
-    color: var(--p-jungle-600);
-  }
 }
 
 .invoices-benefits {
