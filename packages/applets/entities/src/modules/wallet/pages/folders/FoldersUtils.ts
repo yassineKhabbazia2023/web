@@ -1,7 +1,7 @@
 import type { WalletData, SearchCriteria, DeploymentStatus } from '@entities/modules/wallet/types'
 import type { AccountRow } from '@entities/services/account'
 import { fetchAccounts } from '@entities/services/account'
-import { getInitials } from '@entities/helper'
+import { getInitials } from '@entities/helpers'
 import type { QueryResult } from '@pulse/common/types'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 import { getSearchParams } from '@pulse/common/utils'

@@ -5,7 +5,7 @@ import type {
 } from '@entities/types'
 import { VITE_CONFIG_OFFERS_BOOK } from 'env-vars'
 import { API_PREFIXES } from '@pulse/common/constants'
-import { handleRequestError } from '@entities/helper/helper'
+import { handleRequestError } from '@entities/helpers'
 
 export const getAllOffers = async (): Promise<SubscriptionOffer[]> => {
   try {

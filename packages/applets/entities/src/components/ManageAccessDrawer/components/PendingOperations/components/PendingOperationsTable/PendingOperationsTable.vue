@@ -87,9 +87,9 @@ import {
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import { getFullNameWithUppercaseLastName } from '@entities/utils'
-import type { Operation } from '@entities/types/OperationTypes'
+import type { Operation } from '@entities/types'
 import { OperationStatus } from '@entities/enums'
-import { getInitials } from '@entities/helper'
+import { getInitials } from '@entities/helpers'
 import { PendingOperationTableProps } from './PendingOperationsTable.types'
 
 const datetimeFormats = {

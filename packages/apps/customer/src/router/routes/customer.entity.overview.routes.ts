@@ -13,7 +13,7 @@ export const entityOverviewCustomerRoutes: RouteRecordRaw[] = [
     meta: {
       [IS_UNITARY_VIEW_META]: true,
     },
-    component: () => import('@pulse/entities/entity-pages').then(pages => pages.EntityRoot),
+    component: () => import('@pulse/entities/entity-pages').then(pages => pages.EntityOverview),
     redirect: { name: CUSTOMER_ROUTES.entity.homepage.name },
     children: [
       {

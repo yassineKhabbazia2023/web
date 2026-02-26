@@ -12,7 +12,7 @@ export const entityCustomerRoutes = [
   {
     path: CUSTOMER_ROUTES.entity.root.path,
     name: CUSTOMER_ROUTES.entity.root.name,
-    component: () => import('@customer/pages/Entity/CustomerEntity.root.vue'),
+    component: () => import('@pulse/entities/entity-pages').then(pages => pages.EntityRoot),
     meta: {
       [IS_UNITARY_VIEW_META]: true,
     },

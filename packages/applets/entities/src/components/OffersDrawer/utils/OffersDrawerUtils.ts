@@ -1,8 +1,7 @@
 import { SubscriptionPriceType } from '@entities/enums'
-import type { SelectedProduct, SubscriptionOfferServices } from '@entities/types'
+import type { ContactWithRoles, SelectedProduct, SubscriptionOfferServices } from '@entities/types'
 import type { AccountSignatories } from '@entities/services/account/account.type'
 import type { ContactFunction, Note, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
-import type { ContactWithRoles } from '@entities/modules/entity/components/ManageCollaborators/ManageCollaboratorsTypes'
 
 export function getSelectedProductIndex(
   selectedProducts: SelectedProduct[],

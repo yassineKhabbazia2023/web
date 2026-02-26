@@ -11,7 +11,7 @@ import {
 const subscriptionPutMock = vi.fn()
 const subscriptionPostMock = vi.fn()
 
-vi.mock('@entities/helper/helper', () => ({
+vi.mock('@entities/helpers/entity.helper', () => ({
   handleRequestError: vi.fn(),
 }))
 

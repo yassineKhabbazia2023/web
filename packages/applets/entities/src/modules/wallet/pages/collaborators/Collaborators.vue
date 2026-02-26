@@ -22,7 +22,7 @@
         & re render else there is a bug with the caret.
       -->
       <div v-show="!state.isLoading">
-        <TableData
+        <CollaboratorsList
           v-if="state.data.length"
           :data="state.data"
           @update-collaborator-details="handleUpdateCollaborateurDetails"
@@ -58,14 +58,14 @@ import {
   PLoader,
   PPagination,
 } from '@pulse/styleguide/components'
-import { getInitials, returnSortQueryField } from '@entities/helper'
+import { getInitials, returnSortQueryField } from '@entities/helpers'
 import { getPaginationLabel } from '@pulse/common/utils'
 import { removeFalsyValues } from '@pulse/toolbox/utils/object'
 import { PAGE_SIZES } from '@pulse/common/constants'
 import NoResult from '@entities/components/NoResult'
 import FormSearch from '@entities/components/FormSearch'
 import type { ExtendedCollab, CollaboratorsState } from '@entities/modules/wallet/types'
-import TableData from './components/TableData'
+import CollaboratorsList from './components/collaborators-list/collaborators-list.vue'
 import { getCollaborators } from '@entities/services/collaborator'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { SortingCriteria } from '@pulse/common/types'

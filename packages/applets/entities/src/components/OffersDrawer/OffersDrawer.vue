@@ -148,10 +148,10 @@ import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import StepNote from '@entities/components/StepNote'
 import CustomersDetails from '@entities/components/CustomersDetails'
-import CompanyInformation from '@entities/modules/entity/components/CompanyInformation'
+import CompanyInformation from '@entities/components/CompanyInformation'
 import NextPreviousButtons from '@entities/components/NextPreviousButtons'
 import ConfirmationModal from '@entities/components/ConfirmationModal'
-import ManageCollaborators from '@entities/modules/entity/components/ManageCollaborators'
+import ManageCollaborators from '@entities/components/ManageCollaborators'
 import {
   getAllOffers,
   getOffer,
@@ -162,7 +162,7 @@ import { type PatchValue } from '@entities/services/patch-record'
 import { OffersDrawerStep, ProviderName } from '@entities/enums'
 import { OFFERS_DRAWER_STEPS } from './OffersDrawer.const'
 import type { OffersDrawerProps } from './OffersDrawerTypes'
-import type { SelectedProduct, SubscriptionOffer, SubscriptionOfferServices, SubscriptionOfferProvider } from '@entities/types'
+import type { SelectedProduct, SubscriptionOffer, SubscriptionOfferServices, SubscriptionOfferProvider, ContactWithRoles } from '@entities/types'
 import { fetchAccount, patchAccount, getAccountSignatories, type Account } from '@entities/services/account'
 import type { AccountSignatories } from '@entities/services/account/account.type'
 import {
@@ -176,7 +176,6 @@ import { createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/
 import { type Contact } from '@entities/services/contact/contactTypes'
 import { ContactType, APICallStatus } from '@pulse/common/enums'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import type { ContactWithRoles } from '@entities/modules/entity/components/ManageCollaborators/ManageCollaboratorsTypes'
 import { getIsNextButtonDisabled, updateAccountOnInput } from './OffersDrawer.utils'
 import { OfferPlanManager } from '../OfferSubscription/components/OfferPlanSubscription/offer-plan.manager'
 

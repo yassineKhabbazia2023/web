@@ -1,11 +1,10 @@
 import { describe, it, expect, beforeEach } from 'vitest'
 import { getMockedStepNotes } from '@entities/__mocks__/step-notes.mocks'
-import type { SelectedProduct } from '@entities/types'
+import type { SelectedProduct, ContactWithRoles } from '@entities/types'
 import type { ContactFunction, PostSubscriptionRequest } from '@entities/services/subscription/subscriptionTypes'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { getMockedPrincipalContacts } from '@entities/__mocks__/principal-contact.mocks'
 import { getMockedSubscriptionOffersServices } from '@entities/__mocks__/offer-subscription.mocks'
-import type { ContactWithRoles } from '@entities/modules/entity/components/ManageCollaborators/ManageCollaboratorsTypes'
 
 import {
   addSelectedProduct,

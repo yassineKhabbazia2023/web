@@ -1,5 +1,4 @@
-import { ContactWithRoles } from '@entities/modules/entity/components/ManageCollaborators/ManageCollaboratorsTypes'
-import type { SubscriptionOfferServices } from '@entities/types'
+import type { ContactWithRoles, SubscriptionOfferServices } from '@entities/types'
 import type { AccountSignatories } from '@entities/services/account/account.type'
 import { OffersDrawerStep } from '@entities/enums'
 import { get, setWith } from 'lodash-es'

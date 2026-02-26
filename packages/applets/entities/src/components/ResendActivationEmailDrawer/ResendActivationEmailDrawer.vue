@@ -76,12 +76,11 @@ import type { ResendActivationEmailDrawerProps } from './ResendActivationEmailDr
 import { fetchAccountContacts } from '@entities/services/wallet'
 import { inviteCustomers } from '@entities/services/contact'
 import { displayNotification } from '@pulse/styleguide'
-import { formatItemsFromApi } from '@entities/modules/entity/pages/users/client/UsersClientHelper'
-import UsersList from '@entities/modules/entity/pages/users/client/components/users-list'
+import { formatItemsFromApi } from '@entities/helpers'
+import UsersList from '@entities/components/users-list'
 import NoResult from '@entities/components/NoResult'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import type { ExtendedUser } from '@entities/modules/entity/pages/users/client/UsersClientTypes'
-import type { UserStatus } from '@entities/types'
+import type { ExtendedUser, UserStatus } from '@entities/types'
 import { ContactType } from '@pulse/common/enums'
 
 const { t } = useI18n({

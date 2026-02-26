@@ -1,5 +1,5 @@
 import { commonApi } from '@pulse/common'
-import { handleRequestError } from '@entities/helper'
+import { handleRequestError } from '@entities/helpers'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { Contact, PatchContactPayload } from './contactTypes'
 

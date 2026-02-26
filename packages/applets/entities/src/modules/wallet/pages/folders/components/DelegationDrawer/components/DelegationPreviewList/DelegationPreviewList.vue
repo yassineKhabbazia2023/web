@@ -74,7 +74,7 @@ import {
   PCheckbox,
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
-import { getInitials } from '@entities/helper'
+import { getInitials } from '@entities/helpers'
 
 // Definitions
 const { t } = useI18n({

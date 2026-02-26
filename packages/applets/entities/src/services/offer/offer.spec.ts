@@ -16,7 +16,7 @@ const subscriptionOffers: SubscriptionOffer[] = getMockedSubscriptionOffers()
 const subscriptionOffersServices: SubscriptionOfferServices[] =
   getMockedSubscriptionOffersServices()
 
-vi.mock('@entities/helper/helper', () => ({
+vi.mock('@entities/helpers/entity.helper', () => ({
   handleRequestError: vi.fn(),
 }))
 

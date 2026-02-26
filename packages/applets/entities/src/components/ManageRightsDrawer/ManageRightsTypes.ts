@@ -1,5 +1,5 @@
 import type { Entity, Permission } from '@pulse/common/types'
-import type { User } from '@entities/modules/entity/types'
+import type { User } from '@entities/types'
 
 export interface AuthorizationState {
   actions: Permission[]

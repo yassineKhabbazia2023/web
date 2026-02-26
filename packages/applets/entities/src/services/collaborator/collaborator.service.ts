@@ -1,5 +1,5 @@
 import type { Collab, Role } from '@entities/types'
-import { handleRequestError } from '@entities/helper/helper'
+import { handleRequestError } from '@entities/helpers'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { commonApi } from '@pulse/common'
 import type { Contact } from '../contact/contactTypes'

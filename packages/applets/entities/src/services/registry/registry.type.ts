@@ -1,4 +1,4 @@
-import type { Operation } from '@entities/types/OperationTypes'
+import type { Operation } from '@entities/types'
 
 export interface AccountOperations {
   accountNumber: string,

@@ -1,7 +1,0 @@
-import { AddCustomerDrawerStep } from '@entities/modules/entity/enums'
-
-export const ADD_CUSTOMER_DRAWER_STEPS: AddCustomerDrawerStep[] = [
-  AddCustomerDrawerStep.ADD_EMAIL,
-  AddCustomerDrawerStep.MANAGE_RIGHTS,
-  AddCustomerDrawerStep.FORM_SENT,
-]
