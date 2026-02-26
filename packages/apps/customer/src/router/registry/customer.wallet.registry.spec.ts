@@ -9,16 +9,13 @@ describe('registerCustomerWalletTabs', () => {
     registerCustomerWalletTabs()
   })
 
-  it('should register 2 wallet tabs', () => {
-    expect(WalletManager.getTabCount()).toBe(2)
+  it('should register 1 wallet tab', () => {
+    expect(WalletManager.getTabCount()).toBe(1)
   })
 
-  it.each([
-    { tab: WalletTab.CUSTOMER_ENTITIES, route: RouteName.CUSTOMER_ENTITIES },
-    { tab: WalletTab.ALL_USERS, route: RouteName.ALL_USERS },
-  ])('should register $tab tab correctly', ({ tab, route }) => {
-    const config = WalletManager.getTab(tab)
-    expect(config?.route).toBe(route)
+  it('should register CUSTOMER_ENTITIES tab correctly', () => {
+    const config = WalletManager.getTab(WalletTab.CUSTOMER_ENTITIES)
+    expect(config?.route).toBe(RouteName.CUSTOMER_ENTITIES)
   })
 
   describe('isDisplayed behavior - CUSTOMER_ENTITIES tab', () => {
@@ -31,30 +28,6 @@ describe('registerCustomerWalletTabs', () => {
 
       const config = WalletManager.getTab(WalletTab.CUSTOMER_ENTITIES)
       expect(config?.isDisplayed(context)).toBe(true)
-    })
-  })
-
-  describe('isDisplayed behavior - ALL_USERS tab', () => {
-    it('should display ALL_USERS tab when user has USERS permission', () => {
-      const context = {
-        isCollab: false,
-        hasPermission: () => true,
-        hasFeatureFlag: () => false,
-      }
-
-      const config = WalletManager.getTab(WalletTab.ALL_USERS)
-      expect(config?.isDisplayed(context)).toBe(true)
-    })
-
-    it('should hide ALL_USERS tab when user lacks USERS permission', () => {
-      const context = {
-        isCollab: false,
-        hasPermission: () => false,
-        hasFeatureFlag: () => false,
-      }
-
-      const config = WalletManager.getTab(WalletTab.ALL_USERS)
-      expect(config?.isDisplayed(context)).toBe(false)
     })
   })
 })

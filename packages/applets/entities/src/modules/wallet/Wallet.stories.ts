@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { useRouter } from 'vue-router'
 import { useUserStore, usePermissionsStore } from '@pulse/common/stores'
 import { getMockedUser } from '@pulse/common/mocks'
-import { CollaboratorPermission, CustomerPermission, RouteName } from '@pulse/common/enums'
+import { CollaboratorPermission, RouteName } from '@pulse/common/enums'
 import { WalletManager } from './managers'
 import { WalletTab } from './enums'
 import Wallet from './Wallet.page.vue'
@@ -11,7 +11,6 @@ import Folders from './pages/folders/Folders.vue'
 import WalletCollaborators from './pages/collaborators/Collaborators.vue'
 import AccountManagement from './pages/accountManagement/AccountManagement.vue'
 import Subscriptions from './pages/subscriptions/Subscriptions.vue'
-import Users from '../entity/pages/users/Users.vue'
 
 const meta: Meta<typeof Wallet> = {
   title: 'Applets/Entities/Pages/Wallet',
@@ -37,7 +36,6 @@ const parentRoute = {
     { path: 'subscriptions', name: 'subscriptions', component: Subscriptions },
     // Customer routes
     { path: 'customer-entities', name: 'customer-entities', component: Folders },
-    { path: 'all-users', name: 'allUsers', component: Users },
   ],
 }
 
@@ -93,14 +91,6 @@ function registerCustomerTabs() {
     isDisplayed: (context) => context.isCollab === false,
     order: 10,
   })
-
-  WalletManager.register({
-    id: WalletTab.ALL_USERS,
-    title: 'entities.wallet.allUsers',
-    route: 'allUsers' as RouteName,
-    isDisplayed: (context) => context.isCollab === false && context.hasPermission([CustomerPermission.CONSULTER_UTILISATEURS]),
-    order: 11,
-  })
 }
 
 function useStorySetup(isCollab: boolean) {
@@ -120,9 +110,7 @@ function useStorySetup(isCollab: boolean) {
       CollaboratorPermission.ONGLET_DEMANDES_MOD,
     ])
   } else {
-    permissionsStore.setUserPermissions([
-      CustomerPermission.CONSULTER_UTILISATEURS,
-    ])
+    permissionsStore.setUserPermissions([])
   }
 
   registerCollaboratorTabs()

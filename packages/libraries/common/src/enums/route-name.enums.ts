@@ -1,6 +1,5 @@
 export enum RouteName {
   ACCOUNT_MANAGEMENT = 'accountManagement',
-  ALL_USERS = 'allUsers',
   ANONYMOUS = 'anonymous',
   AUTHENTICATED = 'authenticated',
   BANK = 'bank',

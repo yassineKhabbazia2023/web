@@ -63,7 +63,7 @@ describe('WalletManager', () => {
     it('should allow registering multiple tabs', () => {
       const tab1 = createMockWalletTabConfig({ id: WalletTab.FOLDERS, order: 1 })
       const tab2 = createMockWalletTabConfig({ id: WalletTab.COLLABORATORS, order: 2 })
-      const tab3 = createMockWalletTabConfig({ id: WalletTab.ALL_USERS, order: 3 })
+      const tab3 = createMockWalletTabConfig({ id: WalletTab.SUBSCRIPTIONS, order: 3 })
 
       WalletManager.register(tab1)
       WalletManager.register(tab2)
@@ -105,7 +105,7 @@ describe('WalletManager', () => {
     it('should return the correct tab when multiple tabs are registered', () => {
       const tab1 = createMockWalletTabConfig({ id: WalletTab.FOLDERS, title: 'entities.wallet.folders' })
       const tab2 = createMockWalletTabConfig({ id: WalletTab.COLLABORATORS, title: 'entities.wallet.collaborators' })
-      const tab3 = createMockWalletTabConfig({ id: WalletTab.ALL_USERS, title: 'entities.wallet.allUsers' })
+      const tab3 = createMockWalletTabConfig({ id: WalletTab.SUBSCRIPTIONS, title: 'entities.wallet.subscriptions' })
 
       WalletManager.register(tab1)
       WalletManager.register(tab2)
@@ -162,7 +162,7 @@ describe('WalletManager', () => {
         order: 1,
       })
       const tab3 = createMockWalletTabConfig({
-        id: WalletTab.ALL_USERS,
+        id: WalletTab.SUBSCRIPTIONS,
         title: 'entities.wallet.second',
         order: 2,
       })

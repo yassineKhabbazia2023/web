@@ -1,7 +1,6 @@
 import { WalletManager } from '@pulse/entities/wallet-managers'
 import { WalletTab } from '@pulse/entities/enums'
 import { RouteName } from '@pulse/common/enums'
-import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 
 /**
  * Register all wallet tabs for this app
@@ -15,14 +14,5 @@ export function registerCustomerWalletTabs() {
     isDisplayed: () => true,
     showInMobile: false,
     order: 10,
-  })
-
-  WalletManager.register({
-    id: WalletTab.ALL_USERS,
-    title: 'entities.wallet.allUsers',
-    route: RouteName.ALL_USERS,
-    isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.USERS),
-    showInMobile: false,
-    order: 11,
   })
 }

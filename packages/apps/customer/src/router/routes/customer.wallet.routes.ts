@@ -16,12 +16,6 @@ export const walletCustomerRoutes = [
         name: CUSTOMER_ROUTES.wallet.landingCustomer.name,
         component: () => import('@pulse/entities/wallet-pages').then(pages => pages.Folders),
       },
-      // All users management
-      {
-        path: CUSTOMER_ROUTES.wallet.allUsers.path,
-        name: CUSTOMER_ROUTES.wallet.allUsers.name,
-        component: () => import('@pulse/entities/entity-pages').then(pages => pages.Users),
-      },
     ],
   },
 ] as RouteRecordRaw[]

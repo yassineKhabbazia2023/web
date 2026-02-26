@@ -46,7 +46,6 @@ export const CUSTOMER_ROUTES = {
   wallet: {
     root: { path: 'portefeuille', name: RouteName.WALLET },
     landingCustomer: { path: 'mes-entites', name: RouteName.CUSTOMER_ENTITIES },
-    allUsers: { path: 'gestion-utilisateurs', name: RouteName.ALL_USERS },
   },
   profile: {
     information: { path: 'profil/informations', name: RouteName.PROFILE_INFORMATION },

@@ -1,6 +1,5 @@
 export enum WalletTab {
   ACCOUNT_MANAGEMENT = 'accountManagement',
-  ALL_USERS = 'allUsers',
   BI_REPORTS_LIST = 'biReportsList',
   COLLABORATORS = 'collaborators',
   CUSTOMER_ENTITIES = 'customer-entities',

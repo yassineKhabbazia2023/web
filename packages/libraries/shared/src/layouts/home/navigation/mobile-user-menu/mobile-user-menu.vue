@@ -18,11 +18,6 @@
           :to="{ name: RouteName.CUSTOMER_ENTITIES }"
           @click="closeDrawer"
         />
-        <MobileUserMenuItem
-          :label="t('allUsers')"
-          :to="{ name: RouteName.ALL_USERS }"
-          @click="closeDrawer"
-        />
       </nav>
 
       <!-- User Profile -->
@@ -137,7 +132,6 @@ onMounted(async () => {
   "en-US": {
     "menu": "Menu",
     "myPortfolio": "My entities",
-    "allUsers": "All users",
     "myInformation": "My information",
     "password": "Password",
     "legalNotice": "Legal Notice",
@@ -148,7 +142,6 @@ onMounted(async () => {
   "fr-FR": {
     "menu": "Menu",
     "myPortfolio": "Mes entités",
-    "allUsers": "Tous les utilisateurs",
     "myInformation": "Mes informations",
     "password": "Mot de passe",
     "legalNotice": "Mentions légales",
