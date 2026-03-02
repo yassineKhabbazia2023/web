@@ -103,7 +103,7 @@
       </div>
 
       <a
-        :href="HELP_CENTER_URL"
+        :href="INVOICES_HELP_CENTER_URL"
         target="_blank"
         rel="noopener noreferrer"
         class="invoices-info__help-link margin-y--6 text-underline"
@@ -133,7 +133,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PAlert, PIcon } from '@pulse/styleguide/components'
-import { HELP_CENTER_URL } from '@pulse/common/constants'
+import { INVOICES_HELP_CENTER_URL } from '@pulse/common/constants'
 
 const { t } = useI18n()
 </script>
