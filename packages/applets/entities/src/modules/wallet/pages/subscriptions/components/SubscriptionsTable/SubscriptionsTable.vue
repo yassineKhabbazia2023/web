@@ -136,6 +136,7 @@ import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { logger } from '@pulse/toolbox'
 import { OfferPlanManager } from '@entities/components/OfferSubscription/components/OfferPlanSubscription/offer-plan.manager'
+import { FeatureFlagManager } from '@pulse/common/managers'
 
 const { t, d } = useI18n({
   inheritLocale: true,
@@ -187,6 +188,9 @@ const getStatusDetails = (status: string): StatusDetails => {
     case SubscriptionStatusCode.VALIDATED:
       return { text: t('validated'), color: 'success', iconName: 'checkCircle' }
     case SubscriptionStatusCode.PENDING:
+      if (FeatureFlagManager.isModscreenV2Activated() === true) {
+        return { text: t('toCreate'), color: 'info', iconName: 'infoCircle' }
+      }
       return { text: t('pending'), color: 'info', iconName: 'infoCircle' }
     case SubscriptionStatusCode.PENNYLANE_CREATED:
       return { text: t('pennylaneCreated'), color: 'light-green', iconName: 'checkCircle' }
@@ -292,6 +296,7 @@ en-US:
   consult: 'Consult'
   validated: 'Activated'
   pending: 'To validate'
+  toCreate: 'To create'
   pennylaneCreated: 'Update plan'
   pennylaneNotCreated: 'To create'
   pennylaneToVerify: 'To verify'
@@ -310,6 +315,7 @@ fr-FR:
   consult: 'Consulter'
   validated: 'Activée'
   pending: 'A valider'
+  toCreate: 'À créer'
   pennylaneCreated: 'Modifier le plan'
   pennylaneNotCreated: 'A créer'
   pennylaneToVerify: 'À vérifier'

@@ -40,9 +40,9 @@ window.EnvVars = envVars
 | VITE_API_MSAL_TENANT | Configuration de l'autorité d’authentification utilisateur (Collab) |
 | VITE_ASSETS_BASE_URL | URL des assets Front (images, fonts) |
 | VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
-| VITE_CUSTOMER_BOOKING_ACTIVATED | Si booking est activé pour les clients. |
 | VITE_CLARITY_OFFER_ACTIVATED | Feature flag de la fonctionnalité Clarity Offer |
 | VITE_CONFIG_OFFERS_BOOK | URL d'un site web à partager aux utilisateurs |
+| VITE_CUSTOMER_BOOKING_ACTIVATED | Si booking est activé pour les clients. |
 | VITE_FEED_CENTER_ACTIVATED | Feature-flag du Feed Center |
 | VITE_GED_V2_ENABLED | Affichage de la page Ged Comptabilité de Pennylane |
 | VITE_GESTION_MEG | URL de connexion SSO MEG |
@@ -51,11 +51,12 @@ window.EnvVars = envVars
 | VITE_LEGACY_BI_REPORT_DEPOSIT_ACTIVATED | Feature flag permettant d'activer l'ancien flux de dépôt de rapports |
 | VITE_MAIL_TO_GED_ACTIVATED | Feature flag de la fonctionnalité Mail2GED |
 | VITE_MANDATE_REDIRECTION_TOOL_ACTIVATED | Feature flag de la fonctionnalité Mandate Redirection Tool
+| VITE_MODSCREEN_V2_ACTIVATED | Affichage de la nouvelle version de la page de demandes MOD |
 | VITE_PASSWORD_RESET_MAX_ATTEMPTS | Nombre maximal de tentatives de réinitialisation du mot de passe |
+| VITE_PENNYLANE_AMENDMENT_FLOW_ACTIVATED | Feature-flag du flow de validation d'accès Pennylane (avenant) |
 | VITE_PENNYLANE_COLLAB_SSO_URL | URL de connexion SSO Pennylane pour les collaborateurs |
 | VITE_PENNYLANE_PRICING_TABLE_URL | URL de l'image de la grille tarifaire Pennylane affichée lors de l'activation d'offre |
 | VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |
-| VITE_PENNYLANE_AMENDMENT_FLOW_ACTIVATED | Feature-flag du flow de validation d'accès Pennylane (avenant) |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY | Clé du workspace ProductFruit Collab anonyme (login collab) |
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT | Clé du workspace ProductFruit Client anonyme (login client et maintenance) |
 | VITE_PRODUCT_FRUITS_KEY | Clé du workspace ProductFruit Collab connecté |

@@ -68,4 +68,16 @@ describe('FeatureFlagManager', () => {
         expect(FeatureFlagManager.isPennylaneAmendmentFlowActivated()).toBe(expected)
       })
     })
+
+  describe.each(tests)(
+    'isModscreenV2Activated',
+    ({
+      value,
+      expected,
+    }) => {
+      it('should return $expected when value is $value', () => {
+        window.EnvVars[Feature.MODSCREEN_V2] = value
+        expect(FeatureFlagManager.isModscreenV2Activated()).toBe(expected)
+      })
+    })
 })

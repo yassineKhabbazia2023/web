@@ -60,4 +60,8 @@ export class FeatureFlagManager {
   static isSmartSearchOfferCatalogActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.SMART_SEARCH_OFFER_CATALOG)
   }
+
+  static isModscreenV2Activated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.MODSCREEN_V2)
+  }
 }
