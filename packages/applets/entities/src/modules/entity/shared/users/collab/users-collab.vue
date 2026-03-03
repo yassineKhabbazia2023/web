@@ -97,7 +97,7 @@
                     {{ scope.row.initials }}
                   </PAvatar>
                 </div>
-                <p :class="{ 'font-semibold': isContactSignatory(scope.row.contactId)}">
+                <p>
                   {{ scope.row.fullName }}
                 </p>
               </div>
@@ -137,6 +137,17 @@
           >
             <template #default="scope">
               {{ scope.row.firstDateAccess }}
+            </template>
+          </PTableColumn>
+          <PTableColumn
+            :p-label="t('roles')"
+          >
+            <template #default="scope">
+              <PTag
+                v-if="isContactSignatory(scope.row.contactId)"
+                :pContent="t('signatoryRoleName')"
+                pColor="light-blue"
+              />
             </template>
           </PTableColumn>
           <PTableColumn
@@ -608,7 +619,6 @@ onMounted(async () => {
     await loadOperations()
   }
 })
-
 </script>
 
 <!-- eslint-disable-next-line vue/enforce-style-attribute -->
@@ -650,6 +660,8 @@ en-US:
   signatoryRemoved: "The user {userFullName} is no longer a signatory on the account."
   deleteSignatoryTooltip: 'A folder should have at least one signatory'
   technicalError: 'The operation failed due to a technical error. Please try again later.'
+  roles: 'Role(s)'
+  signatoryRoleName: 'Engagement letter signatory'
 fr-FR:
   user: 'Utilisateur'
   status: 'Statut'
@@ -671,4 +683,6 @@ fr-FR:
   deleteSignatoryTooltip: 'Un dossier doit avoir au moins un signataire'
   technicalError: "L'opération a échoué suite à une erreur technique. Veuillez réessayer plus tard."
   on: 'sur'
+  roles: 'Rôle(s)'
+  signatoryRoleName: 'Signataire lettre de mission'
 </i18n>
