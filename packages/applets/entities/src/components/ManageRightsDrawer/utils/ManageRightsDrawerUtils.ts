@@ -1,8 +1,14 @@
 import type { AuthorizationState, LabelByPermission } from '../ManageRightsTypes'
 import { logger } from '@pulse/toolbox'
-import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants/rights-management.const'
+import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
 import { PennylaneService } from '@pulse/common/services/pennylane'
-import type { Permission } from '@pulse/common/types'
+import type { Permission, PennylaneAvailableRole } from '@pulse/common/types'
+import {
+  PennylaneCustomerAccessRightsTrackingManager,
+} from '@entities/managers/pennylane-customer-access-rights-tracking/pennylane-customer-access-rights-tracking.manager'
+import type {
+  PennylaneCustomerAccessRightsLocalisation,
+} from '@entities/managers/pennylane-customer-access-rights-tracking/pennylane-customer-access-rights-tracking.types'
 
 import { updateUserPermissions } from '@entities/services/authorization'
 
@@ -21,26 +27,61 @@ export const getPermissionCodes = (
   return permissionCodes
 }
 
+/**
+ * Get the Pennylane role label from its code
+ */
+export function getPennylaneRoleLabelByCode(
+  roleCode: string | undefined,
+  availableRoles: PennylaneAvailableRole[],
+): string | undefined {
+  if (roleCode === undefined || roleCode === '') {
+    return undefined
+  }
+  return availableRoles.find((role) => role.code === roleCode)?.label
+}
+
 export async function saveActionAdditionalOption({
   accountId,
   contactId,
   additionalOptionByActionCode,
   additionalOptionByActionCodeOrigin,
+  localisation,
+  roleLabel,
 }: {
   accountId: number,
   contactId: number,
   additionalOptionByActionCode?: Record<string, string>
   additionalOptionByActionCodeOrigin?: Record<string, string>
+  localisation?: PennylaneCustomerAccessRightsLocalisation
+  roleLabel?: string
 }) {
   const pennylaneRole = additionalOptionByActionCode?.[PERMISSION_PENNYLANE_CUSTOMER]
   const pennylaneRoleOrigin = additionalOptionByActionCodeOrigin?.[PERMISSION_PENNYLANE_CUSTOMER]
 
   if (pennylaneRole !== undefined && pennylaneRole !== pennylaneRoleOrigin) {
-    await PennylaneService.createRole({
-      accountId,
-      contactId,
-      role: pennylaneRole,
-    })
+    try {
+      await PennylaneService.createRole({
+        accountId,
+        contactId,
+        role: pennylaneRole,
+      })
+      if (localisation !== undefined && roleLabel !== undefined) {
+        PennylaneCustomerAccessRightsTrackingManager.track({
+          localisation,
+          roleLabel,
+          result: 'succeeded',
+        })
+      }
+    } catch (error) {
+      if (localisation !== undefined && roleLabel !== undefined) {
+        PennylaneCustomerAccessRightsTrackingManager.track({
+          localisation,
+          roleLabel,
+          result: 'failed',
+        })
+      }
+      throw error
+    }
   }
 }
 
@@ -92,12 +133,16 @@ export async function saveUserPermissions({
   authorizationsState,
   additionalOptionByActionCode,
   additionalOptionByActionCodeOrigin,
+  localisation,
+  roleLabel,
 }: {
   contactId: number,
   entityId: number | null
   authorizationsState: Record<string, AuthorizationState>
   additionalOptionByActionCode?: Record<string, string>
   additionalOptionByActionCodeOrigin?: Record<string, string>
+  localisation?: PennylaneCustomerAccessRightsLocalisation
+  roleLabel?: string
 }) {
   try {
     /**
@@ -117,6 +162,8 @@ export async function saveUserPermissions({
         accountId: entityId,
         additionalOptionByActionCode,
         additionalOptionByActionCodeOrigin,
+        localisation,
+        roleLabel,
       })
     }
 

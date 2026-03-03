@@ -1,7 +1,7 @@
 import { getMockedAuthorizationsConfig, getMockedAuthorizationState } from '@entities/__mocks__/permissions.mocks'
 import type { Action } from '@entities/types'
 import type { PDropdownOption } from '@pulse/styleguide/types'
-import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants/rights-management.const'
+import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
 import { CollaboratorPermission, CustomerPermission } from '@pulse/common/enums'
 
 import {

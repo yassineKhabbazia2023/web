@@ -1,10 +1,13 @@
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedAuthorizationState } from '@entities/__mocks__/permissions.mocks'
-import { getMockedPennylaneRole } from '@pulse/common/mocks'
+import { getMockedPennylaneRole, getMockedPennylaneAvailableRole } from '@pulse/common/mocks'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { CustomerPermission } from '@pulse/common/enums'
-import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants/rights-management.const'
+import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
 import { updateUserPermissions } from '@entities/services/authorization'
+import {
+  PennylaneCustomerAccessRightsTrackingManager,
+} from '@entities/managers/pennylane-customer-access-rights-tracking/pennylane-customer-access-rights-tracking.manager'
 
 import {
   getPermissionCodes,
@@ -12,6 +15,7 @@ import {
   getAdditionalOptionByActionCode,
   saveUserPermissions,
   getIsFormValid,
+  getPennylaneRoleLabelByCode,
 } from '../utils'
 
 // Mocks
@@ -21,6 +25,7 @@ vi.mock('@pulse/toolbox', () => ({
 
 vi.mock('@pulse/common/services/pennylane')
 vi.mock('@entities/services/authorization')
+vi.mock('@entities/managers/pennylane-customer-access-rights-tracking/pennylane-customer-access-rights-tracking.manager')
 
 const updateUserPermissionsMock = vi.mocked(updateUserPermissions)
 
@@ -111,6 +116,136 @@ describe('manageRightsDrawerUtils', () => {
       })
 
       expect(PennylaneService.createRole).not.toHaveBeenCalled()
+    })
+
+    describe('tracking', () => {
+      beforeEach(() => {
+        vi.mocked(PennylaneService.createRole).mockResolvedValue()
+      })
+
+      it('should track success when createRole succeeds and tracking params are provided', async () => {
+        await saveActionAdditionalOption({
+          accountId: 1,
+          contactId: 2,
+          additionalOptionByActionCode: adminAdditionalOptionByActionCode,
+          additionalOptionByActionCodeOrigin: comptaAdditionalOptionByActionCode,
+          localisation: 'modification de droits client',
+          roleLabel: 'Admin',
+        })
+
+        expect(PennylaneCustomerAccessRightsTrackingManager.track).toHaveBeenCalledExactlyOnceWith({
+          localisation: 'modification de droits client',
+          roleLabel: 'Admin',
+          result: 'succeeded',
+        })
+      })
+
+      it('should track failure when createRole fails and tracking params are provided', async () => {
+        const errorMock = new Error('API error')
+        vi.mocked(PennylaneService.createRole).mockRejectedValue(errorMock)
+
+        await expect(saveActionAdditionalOption({
+          accountId: 1,
+          contactId: 2,
+          additionalOptionByActionCode: adminAdditionalOptionByActionCode,
+          additionalOptionByActionCodeOrigin: comptaAdditionalOptionByActionCode,
+          localisation: 'ajout nouvel utilisateur client',
+          roleLabel: 'Gestionnaire',
+        })).rejects.toThrow(errorMock)
+
+        expect(PennylaneCustomerAccessRightsTrackingManager.track).toHaveBeenCalledExactlyOnceWith({
+          localisation: 'ajout nouvel utilisateur client',
+          roleLabel: 'Gestionnaire',
+          result: 'failed',
+        })
+      })
+
+      it('should NOT track when localisation is undefined', async () => {
+        await saveActionAdditionalOption({
+          accountId: 1,
+          contactId: 2,
+          additionalOptionByActionCode: adminAdditionalOptionByActionCode,
+          additionalOptionByActionCodeOrigin: comptaAdditionalOptionByActionCode,
+          roleLabel: 'Admin',
+        })
+
+        expect(PennylaneCustomerAccessRightsTrackingManager.track).not.toHaveBeenCalled()
+      })
+
+      it('should NOT track when roleLabel is undefined', async () => {
+        await saveActionAdditionalOption({
+          accountId: 1,
+          contactId: 2,
+          additionalOptionByActionCode: adminAdditionalOptionByActionCode,
+          additionalOptionByActionCodeOrigin: comptaAdditionalOptionByActionCode,
+          localisation: 'modification de droits client',
+        })
+
+        expect(PennylaneCustomerAccessRightsTrackingManager.track).not.toHaveBeenCalled()
+      })
+
+      it('should throw error without tracking when createRole fails and localisation is undefined', async () => {
+        const errorMock = new Error('API error')
+        vi.mocked(PennylaneService.createRole).mockRejectedValue(errorMock)
+
+        await expect(saveActionAdditionalOption({
+          accountId: 1,
+          contactId: 2,
+          additionalOptionByActionCode: adminAdditionalOptionByActionCode,
+          additionalOptionByActionCodeOrigin: comptaAdditionalOptionByActionCode,
+          roleLabel: 'Admin',
+        })).rejects.toThrow(errorMock)
+
+        expect(PennylaneCustomerAccessRightsTrackingManager.track).not.toHaveBeenCalled()
+      })
+
+      it('should throw error without tracking when createRole fails and roleLabel is undefined', async () => {
+        const errorMock = new Error('API error')
+        vi.mocked(PennylaneService.createRole).mockRejectedValue(errorMock)
+
+        await expect(saveActionAdditionalOption({
+          accountId: 1,
+          contactId: 2,
+          additionalOptionByActionCode: adminAdditionalOptionByActionCode,
+          additionalOptionByActionCodeOrigin: comptaAdditionalOptionByActionCode,
+          localisation: 'modification de droits client',
+        })).rejects.toThrow(errorMock)
+
+        expect(PennylaneCustomerAccessRightsTrackingManager.track).not.toHaveBeenCalled()
+      })
+    })
+  })
+
+  describe('getPennylaneRoleLabelByCode', () => {
+    const availableRoles = [
+      getMockedPennylaneAvailableRole({ code: 'admin', label: 'Administrateur' }),
+      getMockedPennylaneAvailableRole({ code: 'manager', label: 'Gestionnaire' }),
+      getMockedPennylaneAvailableRole({ code: 'employee', label: 'Employé' }),
+    ]
+
+    it('should return the role label when roleCode matches', () => {
+      const result = getPennylaneRoleLabelByCode('admin', availableRoles)
+      expect(result).toBe('Administrateur')
+    })
+
+    it('should return undefined when roleCode is undefined', () => {
+      const result = getPennylaneRoleLabelByCode(undefined, availableRoles)
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when roleCode is empty string', () => {
+      const result = getPennylaneRoleLabelByCode('', availableRoles)
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when roleCode does not match any role', () => {
+      const result = getPennylaneRoleLabelByCode('unknown', availableRoles)
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when availableRoles is empty', () => {
+      const result = getPennylaneRoleLabelByCode('admin', [])
+      expect(result).toBeUndefined()
     })
   })
 
@@ -241,6 +376,10 @@ describe('manageRightsDrawerUtils', () => {
         entityId,
         expectedPermissionCodeList,
       ]
+
+      beforeEach(() => {
+        vi.mocked(PennylaneService.createRole).mockResolvedValue()
+      })
 
       it('should return true in nominal case', async () => {
         const expectedIsSuccess = true

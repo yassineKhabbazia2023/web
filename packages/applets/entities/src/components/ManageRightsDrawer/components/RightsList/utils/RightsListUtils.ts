@@ -6,7 +6,7 @@ import type {
 } from '../RightsListTypes'
 import type { PennylaneAvailableRole, Permission } from '@pulse/common/types'
 import type { PDropdownOption } from '@pulse/styleguide/types'
-import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants/rights-management.const'
+import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
 import { CustomerPermission } from '@pulse/common/enums'
 
 export const getAuthorizationsConfigMapped = ({

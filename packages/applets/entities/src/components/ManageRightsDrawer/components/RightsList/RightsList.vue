@@ -94,9 +94,9 @@ import type { AuthorizationState, LabelByPermission } from '../../ManageRightsTy
 import type { AuthorizationConfigMapped, RightsListProps } from './RightsListTypes'
 import type { AuthorizationConfig, Action } from '@entities/types'
 import { RouterHelpers } from '@pulse/common/helpers'
-import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants/rights-management.const'
+import { PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
 import { PennylaneService } from '@pulse/common/services/pennylane'
-import { PennylaneAvailableRole } from '@pulse/common/types'
+import type { PennylaneAvailableRole } from '@pulse/common/types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -107,6 +107,7 @@ const props = defineProps<RightsListProps>()
 const emit = defineEmits<{
   'update:modelValue': [Record<string, AuthorizationState>]
   'update:additionalOptionByActionCode': [Record<string, string>]
+  'update:pennylaneAvailableRoles': [PennylaneAvailableRole[]]
 }>()
 
 // Mapping with the code is required to obtain the translated label
@@ -144,7 +145,17 @@ const CLGEDPEN01_CUSTOM_ACTION_LABELS: Record<string, string> = {
 const route = useRoute()
 const isLoading = ref(true)
 const authorizationsConfig = ref<AuthorizationConfigMapped[]>([])
-const pennylaneAvailableRoles = ref<PennylaneAvailableRole[]>([])
+const internalPennylaneAvailableRoles = ref<PennylaneAvailableRole[]>([])
+
+const pennylaneAvailableRoles = computed({
+  get() {
+    return props.pennylaneAvailableRoles ?? internalPennylaneAvailableRoles.value
+  },
+  set(roles: PennylaneAvailableRole[]) {
+    internalPennylaneAvailableRoles.value = roles
+    emit('update:pennylaneAvailableRoles', roles)
+  },
+})
 
 const internalAuthorizationState = computed({
   get() {

@@ -10,6 +10,7 @@
     v-if="authorizationsState !== undefined"
     v-model="authorizationsState"
     v-model:additionalOptionByActionCode="additionalOptionByActionCode"
+    v-model:pennylaneAvailableRoles="pennylaneAvailableRoles"
     :contactId="contactId"
     :contactType="ContactType.CUSTOMER"
     :accountNumber="accountNumber"
@@ -26,11 +27,13 @@ import { getFullName } from '@entities/utils'
 import { ContactType } from '@pulse/common/enums'
 import { PUserCard } from '@pulse/styleguide/components'
 import { getAdditionalOptionByActionCode } from '@entities/components/ManageRightsDrawer/utils'
+import type { PennylaneAvailableRole } from '@pulse/common/types'
 
 const props = defineProps<AddCustomerStepManageRightsProps>()
 const authorizationsState = defineModel<Record<string, AuthorizationState>>('authorizationsState')
 const additionalOptionByActionCode = defineModel<Record<string, string>>('additionalOptionByActionCode')
 const additionalOptionByActionCodeOrigin = defineModel<Record<string, string>>('additionalOptionByActionCodeOrigin')
+const pennylaneAvailableRoles = defineModel<PennylaneAvailableRole[]>('pennylaneAvailableRoles')
 
 const fullname = computed(() => getFullName(
   props.newContact.firstname,

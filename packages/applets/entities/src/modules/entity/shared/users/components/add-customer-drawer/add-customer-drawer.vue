@@ -31,6 +31,7 @@
       v-model:authorizationsState="authorizationsState"
       v-model:additionalOptionByActionCode="additionalOptionByActionCode"
       v-model:additionalOptionByActionCodeOrigin="additionalOptionByActionCodeOrigin"
+      v-model:pennylaneAvailableRoles="pennylaneAvailableRoles"
       :newContact="newContact"
       :entityId="targetEntityId"
       :accountNumber="targetEntityNumber"
@@ -113,6 +114,7 @@ const {
   authorizationsState,
   additionalOptionByActionCode,
   additionalOptionByActionCodeOrigin,
+  pennylaneAvailableRoles,
   debouncedCheckEmail,
   debouncedCheckFirstName,
   debouncedCheckLastName,

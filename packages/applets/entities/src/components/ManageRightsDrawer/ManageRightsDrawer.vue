@@ -32,6 +32,7 @@
       v-if="isLoading === false"
       v-model="authorizationsState"
       v-model:additionalOptionByActionCode="additionalOptionByActionCode"
+      v-model:pennylaneAvailableRoles="pennylaneAvailableRoles"
       :contactId="selectedUser.contactId"
       :accountNumber="currentEntity.accountNumber"
     />
@@ -72,8 +73,10 @@ import RightsList from './components/RightsList'
 import { RouteParam } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
 import { RouterHelpers } from '@pulse/common/helpers'
-import { saveUserPermissions, getAdditionalOptionByActionCode, getIsFormValid } from './utils'
+import { saveUserPermissions, getAdditionalOptionByActionCode, getIsFormValid, getPennylaneRoleLabelByCode } from './utils'
 import { refreshPageWhenCurrentUserPermissionChange } from '@entities/composables/permission.composable'
+import { TRACKING_LOCALISATION, PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
+import type { PennylaneAvailableRole } from '@pulse/common/types'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -88,6 +91,7 @@ const emit = defineEmits<{
 const route = useRoute()
 const isLoading = ref(false)
 const authorizationsState = ref<Record<string, AuthorizationState>>({})
+const pennylaneAvailableRoles = ref<PennylaneAvailableRole[]>([])
 
 const isManageRightsDrawerVisible = computed({
   get() {
@@ -107,12 +111,15 @@ const handleUpdateUserPermissions = async () => {
   isLoading.value = true
   // If it's a collab, the entityId will be null and that's fine
   const entityId = getEntityId()
+  const roleLabel = getPennylaneRoleLabel()
   const isSuccess = await saveUserPermissions({
     contactId: props.selectedUser.contactId,
     entityId,
     authorizationsState: authorizationsState.value,
     additionalOptionByActionCode: additionalOptionByActionCode.value,
     additionalOptionByActionCodeOrigin: additionalOptionByActionCodeOrigin.value,
+    localisation: TRACKING_LOCALISATION.MODIFY_RIGHTS,
+    roleLabel,
   })
   const notificationMessage = isSuccess === true
     ? t('rightsModificationSucceeded', { userFullName: props.selectedUser.fullName })
@@ -131,6 +138,11 @@ const handleUpdateUserPermissions = async () => {
   )
 
   isLoading.value = false
+}
+
+function getPennylaneRoleLabel(): string | undefined {
+  const roleCode = additionalOptionByActionCode.value?.[PERMISSION_PENNYLANE_CUSTOMER]
+  return getPennylaneRoleLabelByCode(roleCode, pennylaneAvailableRoles.value)
 }
 
 const additionalOptionByActionCode = ref<LabelByPermission >()

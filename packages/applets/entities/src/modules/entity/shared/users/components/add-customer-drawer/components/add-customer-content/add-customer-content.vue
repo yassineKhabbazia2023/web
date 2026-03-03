@@ -20,6 +20,7 @@
     v-model:authorizationsState="authorizationsState"
     v-model:additionalOptionByActionCode="additionalOptionByActionCode"
     v-model:additionalOptionByActionCodeOrigin="additionalOptionByActionCodeOrigin"
+    v-model:pennylaneAvailableRoles="pennylaneAvailableRoles"
     :newContact="newContact"
     :contactId="contactId"
     :entityId="entityId"
@@ -40,11 +41,13 @@ import AddCustomerStepFormSent from '../add-customer-step-form-sent/add-customer
 import AddCustomerStepManageRights from '../add-customer-step-manage-rights/add-customer-step-manage-rights.vue'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enums'
 import type { AuthorizationState } from '@entities/components/ManageRightsDrawer/ManageRightsTypes'
+import type { PennylaneAvailableRole } from '@pulse/common/types'
 
 defineProps<AddCustomerContentProps>()
 const authorizationsState = defineModel<Record<string, AuthorizationState>>('authorizationsState')
 const additionalOptionByActionCode = defineModel<Record<string, string>>('additionalOptionByActionCode')
 const additionalOptionByActionCodeOrigin = defineModel<Record<string, string>>('additionalOptionByActionCodeOrigin')
+const pennylaneAvailableRoles = defineModel<PennylaneAvailableRole[]>('pennylaneAvailableRoles')
 
 const emit = defineEmits<{
   'update:email': [string]

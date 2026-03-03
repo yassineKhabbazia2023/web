@@ -6,8 +6,10 @@ import { useDebounce, logger } from '@pulse/toolbox'
 import { getEmailIsValid, getNameIsValid } from '@pulse/toolbox/utils/validator'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enums'
 import type { Contact } from './add-customer-drawer.types'
-import { saveUserPermissions } from '@entities/components/ManageRightsDrawer/utils'
+import { saveUserPermissions, getPennylaneRoleLabelByCode } from '@entities/components/ManageRightsDrawer/utils'
 import type { AuthorizationState } from '@entities/components/ManageRightsDrawer/ManageRightsTypes'
+import { TRACKING_LOCALISATION, PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
+import type { PennylaneAvailableRole } from '@pulse/common/types'
 
 function amplitudeTrack(result: 'failed' | 'succeeded') {
   AmplitudeService.track('Onboarding Started', {
@@ -37,6 +39,7 @@ export function useAddCustomerDrawer({
   const contactId = ref<number>()
   const authorizationsState = ref<Record<string, AuthorizationState>>({})
   const shouldEnableNames = ref(false)
+  const pennylaneAvailableRoles = ref<PennylaneAvailableRole[]>([])
 
   const newContact = ref<Contact>({
     firstname: '',
@@ -147,14 +150,22 @@ export function useAddCustomerDrawer({
       logger.error('Unmanaged case, contactId is not set')
       return false
     }
+    const roleLabel = getPennylaneRoleLabel()
     await saveUserPermissions({
       contactId: contactId.value,
       entityId: targetEntityId,
       authorizationsState,
       additionalOptionByActionCode: additionalOptionByActionCode.value,
       additionalOptionByActionCodeOrigin: additionalOptionByActionCodeOrigin.value,
+      localisation: TRACKING_LOCALISATION.ADD_NEW_USER,
+      roleLabel,
     })
     return true
+  }
+
+  function getPennylaneRoleLabel(): string | undefined {
+    const roleCode = additionalOptionByActionCode.value?.[PERMISSION_PENNYLANE_CUSTOMER]
+    return getPennylaneRoleLabelByCode(roleCode, pennylaneAvailableRoles.value)
   }
 
   async function submitFormEmail(
@@ -236,6 +247,7 @@ export function useAddCustomerDrawer({
     additionalOptionByActionCode,
     additionalOptionByActionCodeOrigin,
     shouldEnableNames,
+    pennylaneAvailableRoles,
     checkEmail,
     debouncedCheckEmail,
     debouncedCheckFirstName,
