@@ -40,6 +40,13 @@
             >
               Azure DevOps
             </router-link>
+            <router-link
+              :to="{ name: AdminRouteNames.AI_MONITORING }"
+              class="dashboard-layout__nav-link"
+              :class="{ 'dashboard-layout__nav-link--active': isAiMonitoringActive }"
+            >
+              Dashboard Monitoring IA
+            </router-link>
           </nav>
         </div>
 
@@ -125,6 +132,7 @@ const firstName = computed(() => getFirstName(userInfo.value?.name))
 const userInitials = computed(() => getUserInitials(userInfo.value?.name))
 const isAppSettingsActive = computed(() => route.name === AdminRouteNames.APP_SETTINGS)
 const isAzureDevopsActive = computed(() => route.name === AdminRouteNames.AZURE_DEVOPS)
+const isAiMonitoringActive = computed(() => route.name === AdminRouteNames.AI_MONITORING)
 
 const handleLogout = async () => {
   isLoading.value = true

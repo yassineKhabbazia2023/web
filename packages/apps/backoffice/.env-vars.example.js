@@ -13,4 +13,5 @@ window.EnvVars = {
 
   // API Configuration
   VITE_API_BASE_URL: 'https://backoffice.itg.pulse.rydge.fr/back', // REC: backoffice.rec, PRD: backoffice.rydge.fr
+  VITE_API_GATEWAY: 'https://api-itg01.itg.pulse.rydge.fr/desktop/gtw/', // Gateway API for AI monitoring
 }

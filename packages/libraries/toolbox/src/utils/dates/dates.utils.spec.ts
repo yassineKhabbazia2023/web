@@ -1,4 +1,4 @@
-import { formatTime, getMostRecentDate } from './dates.utils'
+import { formatDateTime, formatTime, getMostRecentDate } from './dates.utils'
 
 describe('getMostRecentDate', () => {
   it.each([
@@ -43,5 +43,24 @@ describe('formatTime', () => {
 
   it('should use custom locale', () => {
     expect(formatTime('2024-03-15T14:30:00', 'en-US')).toBe('02:30 PM')
+  })
+})
+
+describe('formatDateTime', () => {
+  it('should format ISO date string to date and time', () => {
+    expect(formatDateTime('2024-03-15T14:30:00')).toBe('15/03/2024 14:30')
+  })
+
+  it('should return empty string for invalid date', () => {
+    expect(formatDateTime('invalid')).toBe('')
+  })
+
+  it('should use custom locale', () => {
+    expect(formatDateTime('2024-03-15T14:30:00', 'en-US')).toMatch(/3\/15\/2024/)
+  })
+
+  it('should handle timezone in ISO string', () => {
+    const result = formatDateTime('2024-03-15T14:30:00Z')
+    expect(result).toContain('15/03/2024')
   })
 })

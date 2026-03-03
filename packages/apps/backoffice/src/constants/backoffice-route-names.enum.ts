@@ -4,4 +4,5 @@ export enum AdminRouteNames {
   AUTHENTICATED = 'authenticated',
   APP_SETTINGS = 'app-settings',
   AZURE_DEVOPS = 'azure-devops',
+  AI_MONITORING = 'ai-monitoring',
 }

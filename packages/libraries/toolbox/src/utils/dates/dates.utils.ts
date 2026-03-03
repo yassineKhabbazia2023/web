@@ -37,3 +37,23 @@ export function formatTime(dateString: string, locale: string = 'fr-FR'): string
   }
   return date.toDate().toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })
 }
+
+/**
+ * Formats a date string to display date and time in locale format.
+ * @param dateString - ISO date string or any valid date string
+ * @param locale - Locale for formatting (default: 'fr-FR')
+ * @returns Formatted date and time string (e.g., "15/03/2024 14:30")
+ */
+export function formatDateTime(dateString: string, locale: string = 'fr-FR'): string {
+  const date = dayjs(dateString)
+  if (date.isValid() === false) {
+    return ''
+  }
+  return date.toDate().toLocaleString(locale, {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}

@@ -1,0 +1,158 @@
+import { AiMonitoringService } from './ai-monitoring.service'
+import gatewayApi from '@backoffice/api/gateway-api'
+import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@backoffice/constants/backoffice.const'
+import type { AiSearchHistoryResponse } from '@backoffice/types/ai-monitoring.type'
+
+vi.mock('@backoffice/api/gateway-api', () => ({
+  default: {
+    get: vi.fn(),
+  },
+}))
+
+describe('AiMonitoringService', () => {
+  const mockResponse: AiSearchHistoryResponse = {
+    history: [
+      {
+        feature: 'GED',
+        sub_feature: 'Recherche',
+        user: {
+          email: 'test@example.com',
+          first_name: 'John',
+          last_name: 'Doe',
+        },
+        date: '2024-01-15T10:30:00Z',
+        evaluation: true,
+        cost: 0.0025,
+        time: 1500,
+      },
+    ],
+    page: 1,
+    page_size: 25,
+    total_items: 100,
+    total_pages: 4,
+  }
+
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  afterEach(() => {
+    vi.resetAllMocks()
+  })
+
+  describe('getHistory', () => {
+    it('should fetch history with default pagination parameters', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockResponse })
+
+      const result = await AiMonitoringService.getHistory()
+
+      expect(gatewayApi.get).toHaveBeenCalledWith(
+        'aiservices/api/monitoring/details',
+        {
+          params: {
+            page: DEFAULT_PAGE_NUMBER,
+            page_size: DEFAULT_PAGE_SIZE,
+          },
+        },
+      )
+      expect(result).toEqual(mockResponse)
+    })
+
+    it('should fetch history with custom pagination parameters', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockResponse })
+
+      const result = await AiMonitoringService.getHistory({ page: 2, pageSize: 50 })
+
+      expect(gatewayApi.get).toHaveBeenCalledWith(
+        'aiservices/api/monitoring/details',
+        {
+          params: {
+            page: 2,
+            page_size: 50,
+          },
+        },
+      )
+      expect(result).toEqual(mockResponse)
+    })
+
+    it('should include filters in query params when provided', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockResponse })
+
+      const result = await AiMonitoringService.getHistory({
+        page: 1,
+        pageSize: 25,
+        startDate: '2024-01-01',
+        endDate: '2024-01-31',
+        features: ['GED'],
+        subFeatures: ['Recherche'],
+        users: ['user@example.com'],
+      })
+
+      expect(gatewayApi.get).toHaveBeenCalledWith(
+        'aiservices/api/monitoring/details',
+        {
+          params: {
+            page: 1,
+            page_size: 25,
+            start_date: '2024-01-01',
+            end_date: '2024-01-31',
+            features: 'GED',
+            sub_features: 'Recherche',
+            users: 'user@example.com',
+          },
+        },
+      )
+      expect(result).toEqual(mockResponse)
+    })
+
+    it('should join multiple array values with commas', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockResponse })
+
+      await AiMonitoringService.getHistory({
+        features: ['GED', 'Autre'],
+        subFeatures: ['Recherche', 'Explication'],
+        users: ['user1@example.com', 'user2@example.com'],
+      })
+
+      expect(gatewayApi.get).toHaveBeenCalledWith(
+        'aiservices/api/monitoring/details',
+        {
+          params: {
+            page: DEFAULT_PAGE_NUMBER,
+            page_size: DEFAULT_PAGE_SIZE,
+            features: 'GED,Autre',
+            sub_features: 'Recherche,Explication',
+            users: 'user1@example.com,user2@example.com',
+          },
+        },
+      )
+    })
+
+    it('should not include empty arrays in query params', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockResponse })
+
+      await AiMonitoringService.getHistory({
+        features: [],
+        subFeatures: [],
+        users: [],
+      })
+
+      expect(gatewayApi.get).toHaveBeenCalledWith(
+        'aiservices/api/monitoring/details',
+        {
+          params: {
+            page: DEFAULT_PAGE_NUMBER,
+            page_size: DEFAULT_PAGE_SIZE,
+          },
+        },
+      )
+    })
+
+    it('should throw error when API call fails', async () => {
+      const error = new Error('Network error')
+      vi.mocked(gatewayApi.get).mockRejectedValue(error)
+
+      await expect(AiMonitoringService.getHistory()).rejects.toThrow('Network error')
+    })
+  })
+})

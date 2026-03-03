@@ -44,6 +44,14 @@ const routes: RouteRecordRaw[] = [
               title: 'Azure DevOps - Pulse Back Office',
             },
           },
+          {
+            path: BACKOFFICE_ROUTES.authenticated.aiMonitoring.path,
+            name: BACKOFFICE_ROUTES.authenticated.aiMonitoring.name,
+            component: () => import('@backoffice/pages/ai-monitoring/ai-monitoring.page.vue'),
+            meta: {
+              title: 'Dashboard Monitoring IA - Pulse Back Office',
+            },
+          },
         ],
       },
     ],

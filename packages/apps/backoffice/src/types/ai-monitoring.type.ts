@@ -1,0 +1,45 @@
+export interface AiSearchHistoryUser {
+  email: string
+  first_name: string | null
+  last_name: string | null
+}
+
+export type SubFeatureType = 'Recherche' | 'Explication' | 'Vente' | 'Autres'
+
+export interface AiSearchHistoryItem {
+  feature: string
+  sub_feature: SubFeatureType
+  user: AiSearchHistoryUser
+  date: string
+  evaluation: boolean | null
+  cost: number
+  time: number
+}
+
+export interface AiSearchHistoryResponse {
+  history: AiSearchHistoryItem[]
+  page: number
+  page_size: number
+  total_items: number
+  total_pages: number
+}
+
+export interface AiSearchHistoryQueryParams {
+  start_date?: string
+  end_date?: string
+  features?: string
+  sub_features?: string
+  users?: string
+  page: number
+  page_size: number
+}
+
+export interface GetAiHistoryParams {
+  page?: number
+  pageSize?: number
+  startDate?: string
+  endDate?: string
+  features?: string[]
+  subFeatures?: string[]
+  users?: string[]
+}
