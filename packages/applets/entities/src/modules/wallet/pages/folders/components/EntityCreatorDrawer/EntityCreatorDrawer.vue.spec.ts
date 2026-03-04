@@ -9,6 +9,7 @@ import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ComponentWrapper } from '@entities/types'
 import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
 import type { UserInfo } from '@pulse/common/types'
+import { CollaboratorRole } from '@entities/enums'
 import EntityCreatorDrawer from '.'
 
 // Mocks
@@ -96,7 +97,18 @@ const createWrapper = (props: EntityCreatorDrawerProps = defaultProps) => {
         PLoader: true,
         PUserCard: true,
         PFieldSet: { name: 'PFieldSet', template: '<div></div>', events: ['update:pModel'] },
-        PUserAction: true,
+        PUserActionWithRoles: {
+          name: 'PUserActionWithRoles',
+          template: '<div></div>',
+          props: {
+            pShowOptions: { type: Boolean },
+            pOptionsMultiple: { type: Boolean },
+            pOptions: { type: Array },
+            pOptionsValue: { type: Array },
+            pOptionsPlaceholder: { type: String },
+          },
+          emits: ['click-delete', 'update:p-options-value'],
+        },
         PForm: { name: 'PForm', template: '<div><slot/></div>', props: ['pModel'] },
         PFormItem: { name: 'PFormItem', template: '<div><slot/></div>' },
         PButton: { name: 'PButton', template: '<button><slot/></button>', props: ['pDisabled'] },
@@ -140,7 +152,7 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
       const entityCreatorForm = wrapper.findComponent({ name: 'PForm' })
       const entityCreatorDrawer = wrapper.findComponent({ name: 'PDrawer' })
       const entityCreatorUserCard = wrapper.findComponent({ name: 'PUserCard' })
-      const entityCreatorUserAction = wrapper.findComponent({ name: 'PUserAction' })
+      const entityCreatorUserAction = wrapper.findComponent({ name: 'PUserActionWithRoles' })
 
       expect(entityCreatorForm.exists()).toBeTruthy()
       expect(entityCreatorDrawer.exists()).toBeTruthy()
@@ -197,7 +209,7 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
     it('should disable the create button when no collaborator is selected', async () => {
       const createButton = getCreateTestAccountButton(wrapper)
 
-      wrapper.vm.onClickDelete(0)
+      wrapper.vm.onClickDelete(userMock.id)
       await nextTick()
 
       expect(createButton.props('pDisabled')).toBeTruthy()
@@ -252,6 +264,98 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
         isSignatory: true,
         existingContactGuid: '',
       })
+    })
+  })
+
+  describe('role assignments', () => {
+    it('should display a role dropdown for each collaborator', () => {
+      const userActions = wrapper.findAllComponents({ name: 'PUserActionWithRoles' })
+
+      expect(userActions).toHaveLength(1)
+      expect(userActions[0].props('pShowOptions')).toBeTruthy()
+      expect(userActions[0].props('pOptionsMultiple')).toBeTruthy()
+    })
+
+    it('should initialize role assignments for the default collaborator', () => {
+      expect(wrapper.vm.collaboratorRoleAssignments.get(userMock.id)).toStrictEqual([])
+    })
+
+    it('should initialize role assignments when a collaborator is added', async () => {
+      const collaboratorAutocomplete = wrapper.findComponent({ name: 'CollaboratorAutocomplete' })
+      await collaboratorAutocomplete.vm.$emit('add-contact', entityCreatorCollaboratorMock)
+
+      expect(wrapper.vm.collaboratorRoleAssignments.get(entityCreatorCollaboratorMock.id)).toStrictEqual([])
+    })
+
+    it('should assign "Resp compte" role to a collaborator', async () => {
+      const userAction = wrapper.findComponent({ name: 'PUserActionWithRoles' })
+      await userAction.vm.$emit('update:p-options-value', [CollaboratorRole.CLP])
+
+      expect(wrapper.vm.collaboratorRoleAssignments.get(userMock.id)).toStrictEqual([CollaboratorRole.CLP])
+    })
+
+    it('should assign "Maitre dossier" role to a collaborator', async () => {
+      const userAction = wrapper.findComponent({ name: 'PUserActionWithRoles' })
+      await userAction.vm.$emit('update:p-options-value', [CollaboratorRole.AM])
+
+      expect(wrapper.vm.collaboratorRoleAssignments.get(userMock.id)).toStrictEqual([CollaboratorRole.AM])
+    })
+
+    it('should allow a single collaborator to hold both roles', async () => {
+      const userAction = wrapper.findComponent({ name: 'PUserActionWithRoles' })
+      await userAction.vm.$emit('update:p-options-value', [CollaboratorRole.CLP, CollaboratorRole.AM])
+
+      expect(wrapper.vm.collaboratorRoleAssignments.get(userMock.id)).toStrictEqual([
+        CollaboratorRole.CLP,
+        CollaboratorRole.AM,
+      ])
+    })
+
+    it('should include role GUIDs in the API payload on create', async () => {
+      const userAction = wrapper.findComponent({ name: 'PUserActionWithRoles' })
+      await userAction.vm.$emit('update:p-options-value', [CollaboratorRole.CLP, CollaboratorRole.AM])
+
+      const createButton = getCreateTestAccountButton(wrapper)
+      await createButton.trigger('click')
+      await flushPromises()
+
+      expect(createTestAccountMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          accountLeadGuid: userMock.oldId,
+          masterGuid: userMock.oldId,
+        }),
+      )
+    })
+
+    it('should clear role assignments when a collaborator is deleted', async () => {
+      const collaboratorAutocomplete = wrapper.findComponent({ name: 'CollaboratorAutocomplete' })
+      await collaboratorAutocomplete.vm.$emit('add-contact', entityCreatorCollaboratorMock)
+
+      const userActions = wrapper.findAllComponents({ name: 'PUserActionWithRoles' })
+      const secondUserAction = userActions[1]
+      await secondUserAction.vm.$emit('update:p-options-value', [CollaboratorRole.CLP])
+
+      expect(wrapper.vm.collaboratorRoleAssignments.get(entityCreatorCollaboratorMock.id)).toStrictEqual([
+        CollaboratorRole.CLP,
+      ])
+
+      wrapper.vm.onClickDelete(entityCreatorCollaboratorMock.id)
+      await nextTick()
+
+      expect(wrapper.vm.collaboratorRoleAssignments.has(entityCreatorCollaboratorMock.id)).toBe(false)
+    })
+
+    it('should send undefined role GUIDs when no roles are assigned', async () => {
+      const createButton = getCreateTestAccountButton(wrapper)
+      await createButton.trigger('click')
+      await flushPromises()
+
+      expect(createTestAccountMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          accountLeadGuid: undefined,
+          masterGuid: undefined,
+        }),
+      )
     })
   })
 })

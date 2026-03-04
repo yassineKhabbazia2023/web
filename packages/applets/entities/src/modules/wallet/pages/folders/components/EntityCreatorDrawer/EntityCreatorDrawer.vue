@@ -75,9 +75,9 @@
         </PFormItem>
       </section>
       <div class="margin-bottom--6">
-        <PUserAction
-          v-for="(selectedCollaborator, index) in selectedCollaborators"
-          :key="index"
+        <PUserActionWithRoles
+          v-for="selectedCollaborator in selectedCollaborators"
+          :key="selectedCollaborator.id"
           :pProfile="getInitials(selectedCollaborator?.firstName, selectedCollaborator?.lastName)"
           :pTitle="getFullName(selectedCollaborator?.firstName, selectedCollaborator?.lastName)"
           :pDescription="selectedCollaborator.email"
@@ -85,7 +85,13 @@
           :pShowDelete="canDelete"
           :data-testid="`entity-collaborator-selected-collaborator-${selectedCollaborator.email}`"
           :pAvatarRole="AvatarRoles.COLLAB"
-          @click-delete="onClickDelete(index)"
+          pShowOptions
+          pOptionsMultiple
+          :pOptions="getRoleOptionsForCollaborator(selectedCollaborator.id)"
+          :pOptionsValue="collaboratorRoleAssignments.get(selectedCollaborator.id) ?? []"
+          :pOptionsPlaceholder="t('selectRoles')"
+          @click-delete="onClickDelete(selectedCollaborator.id)"
+          @update:p-options-value="onUpdateCollaboratorRoles(selectedCollaborator.id, $event)"
         />
       </div>
       <div class="flex flex--justify-content-flex-end">
@@ -119,7 +125,7 @@ import { useI18n } from 'vue-i18n'
 import { setWith } from 'lodash-es'
 import { logger, useDebounce } from '@pulse/toolbox'
 import { getInitials } from '@pulse/common'
-import type { FormInstance } from '@pulse/styleguide/types'
+import type { FormInstance, PDropdownOption } from '@pulse/styleguide/types'
 import { AvatarRoles, displayNotification } from '@pulse/styleguide'
 import {
   PDrawer,
@@ -138,6 +144,7 @@ import CollaboratorAutocomplete from '@entities/components/CollaboratorAutocompl
 import type { FormSection } from '@entities/types'
 import type { EntityCreatorDrawerProps, OnboardingDetails } from '@entities/modules/wallet/types'
 import { getAccountUserByEmail } from '@entities/services/account'
+import { CollaboratorRole } from '@entities/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -153,11 +160,14 @@ const isLoading = ref(false)
 const isTestAccountCreating = ref(false)
 const isLookingForExistingUser = ref(false)
 
+const PUserActionWithRoles = PUserAction<string[]>
+
 const entityCreatorForm = ref<FormInstance>()
 const entityCreatorFormFieldSet = ref()
 const selectedCollaborators = ref<Contact[]>([])
 const entityCreatorFormStructure = ref<FormSection[]>()
 const newTestAccount = ref<OnboardingDetails>({ isSignatory: true } as OnboardingDetails)
+const collaboratorRoleAssignments = ref<Map<number, string[]>>(new Map())
 
 const canDelete = computed(() => selectedCollaborators.value.length >= 1)
 const isEntityCreatorDrawerVisible = computed({
@@ -173,12 +183,16 @@ const selectedCollaboratorIds = computed(() => selectedCollaborators.value.map((
 const onCloseDrawer = () => {
   isEntityCreatorDrawerVisible.value = false
 }
-const onClickDelete = (index: number) => {
-  if (!canDelete.value) {
+const onClickDelete = (collaboratorId: number) => {
+  if (canDelete.value === false) {
     logger.warn('Can not delete collaborator')
     return
   }
-  selectedCollaborators.value.splice(index, 1)
+  const index = selectedCollaborators.value.findIndex((c) => c.id === collaboratorId)
+  if (index !== -1) {
+    selectedCollaborators.value.splice(index, 1)
+  }
+  collaboratorRoleAssignments.value.delete(collaboratorId)
 }
 const onInputAccount = (fieldKey: string, value: any) => {
   setWith(newTestAccount.value, fieldKey, value, Object)
@@ -193,6 +207,41 @@ const onInputAccount = (fieldKey: string, value: any) => {
 }
 const onAddCollaborator = (contact: Contact) => {
   selectedCollaborators.value.push(contact)
+  collaboratorRoleAssignments.value.set(contact.id, [])
+}
+
+const roleOptions: PDropdownOption[] = [
+  { pValue: CollaboratorRole.CLP, pLabel: t('accountManager') },
+  { pValue: CollaboratorRole.AM, pLabel: t('accountMaster') },
+]
+
+const findRoleHolder = (role: string): number | undefined => {
+  for (const [collaboratorId, roles] of collaboratorRoleAssignments.value) {
+    if (roles.includes(role)) {
+      return collaboratorId
+    }
+  }
+  return undefined
+}
+
+const getRoleOptionsForCollaborator = (collaboratorId: number): PDropdownOption[] => {
+  return roleOptions.map((option) => {
+    const holder = findRoleHolder(option.pValue as string)
+    const isTakenByOther = holder !== undefined && holder !== collaboratorId
+    return { ...option, pDisabled: isTakenByOther }
+  })
+}
+
+const findCollaboratorByRole = (role: string): Contact | undefined => {
+  const holderId = findRoleHolder(role)
+  if (holderId === undefined) {
+    return undefined
+  }
+  return selectedCollaborators.value.find((c) => c.id === holderId)
+}
+
+const onUpdateCollaboratorRoles = (collaboratorId: number, newRoles: string[]) => {
+  collaboratorRoleAssignments.value.set(collaboratorId, newRoles)
 }
 const onCreateClick = async () => {
   // Validate the form, return early if validation fails
@@ -204,6 +253,10 @@ const onCreateClick = async () => {
 
   try {
     newTestAccount.value.collaboratorGuids = selectedCollaborators.value.map((collab) => collab.oldId ?? '')
+    const accountLead = findCollaboratorByRole(CollaboratorRole.CLP)
+    const master = findCollaboratorByRole(CollaboratorRole.AM)
+    newTestAccount.value.accountLeadGuid = accountLead?.oldId
+    newTestAccount.value.masterGuid = master?.oldId
     isTestAccountCreating.value = true
     await createTestAccount(newTestAccount.value)
     displayNotification('success', t('testAccountCreated'))
@@ -267,6 +320,7 @@ onMounted(async () => {
       oldId,
       persona,
     })
+    collaboratorRoleAssignments.value.set(id, [])
     entityCreatorFormStructure.value = await getFormStructure('EntityCreator')
     newTestAccount.value.accountNumber = await generateAccountNumber() ?? ''
   } catch (error) {
@@ -280,6 +334,7 @@ defineExpose({
   selectedCollaborators,
   entityCreatorForm,
   onClickDelete,
+  collaboratorRoleAssignments,
 })
 </script>
 
@@ -304,6 +359,9 @@ en-US:
   userCollaborator: 'User collaborator'
   testAccountCreated: 'The test account has been successfully created.'
   testAccountCreationFailed: 'Test account creation failed. Please try again.'
+  accountManager: 'Account Manager'
+  accountMaster: 'File Master'
+  selectRoles: 'Select role(s)'
 fr-FR:
   newTestAccount: 'Nouveau compte de test'
   createTestAccount: "Création d'une entité de test"
@@ -317,4 +375,7 @@ fr-FR:
   userCollaborator: 'Utilisateur collaborateur'
   testAccountCreated: 'Le compte de test a été créé avec succès.'
   testAccountCreationFailed: 'La création du compte de test a échoué. Veuillez réessayer.'
+  accountManager: 'Resp compte'
+  accountMaster: 'Maître dossier'
+  selectRoles: 'Choisir le(s) rôle(s)'
 </i18n>

@@ -10,6 +10,8 @@ export interface OnboardingDetails {
   isSignatory: boolean
   existingContactGuid?: string
   collaboratorGuids: string[]
+  accountLeadGuid?: string
+  masterGuid?: string
 }
 
 export interface EntityCreatorDrawerProps {
