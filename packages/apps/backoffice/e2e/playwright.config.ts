@@ -1,12 +1,13 @@
 import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
+  globalSetup: './global-setup.config',
   testDir: './tests',
   testMatch: '**/*.e2e.ts',
   fullyParallel: true,
   forbidOnly: Boolean(process.env.CI),
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : 2, // limit workers to avoid cold vite start
   reporter: [
     ['html', { open: 'never' }],
     ['list'],

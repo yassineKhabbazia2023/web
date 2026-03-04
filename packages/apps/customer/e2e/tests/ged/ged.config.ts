@@ -4,9 +4,7 @@ import { tokenMock, MockEntityId } from '@pulse/common/mocks'
 export const GED_URL = `/dossier/${MockEntityId.LEGACY_GED}/ged`
 
 export async function setupGedPage(page: Page) {
-  await page.goto('/')
-  await page.waitForFunction(() => (globalThis as any).__MSW_READY__ === true, { timeout: 5000 })
-  await page.evaluate((token) => localStorage.setItem('token', token), tokenMock)
+  await page.addInitScript((token) => localStorage.setItem('token', token), tokenMock)
 }
 
 export async function navigateToGed(page: Page) {
@@ -67,14 +65,13 @@ export async function waitForPreviewDrawer(page: Page) {
 }
 
 export async function openSearchInput(page: Page) {
-  const searchButton = page.locator('.p-expandable-search button').first()
-  await searchButton.click()
-  const searchInput = page.locator('.p-expandable-search').getByRole('searchbox')
-  await expect(searchInput).toBeVisible({ timeout: 1000 })
+  const search = page.getByTestId('expandable-search')
+  await search.locator('button').first().click()
+  await expect(search.getByRole('searchbox')).toBeVisible({ timeout: 1000 })
 }
 
 export async function searchDocuments(page: Page, searchTerm: string) {
-  const searchInput = page.locator('.p-expandable-search').getByRole('searchbox')
+  const searchInput = page.getByTestId('expandable-search').getByRole('searchbox')
   const isVisible = await searchInput.isVisible().catch(() => false)
   if (isVisible === false) {
     await openSearchInput(page)
@@ -83,7 +80,7 @@ export async function searchDocuments(page: Page, searchTerm: string) {
 }
 
 export async function clearSearch(page: Page) {
-  const searchInput = page.locator('.p-expandable-search').getByRole('searchbox')
+  const searchInput = page.getByTestId('expandable-search').getByRole('searchbox')
   await searchInput.clear()
 }
 
@@ -102,7 +99,7 @@ export async function sortByColumn(page: Page, columnName: string) {
 }
 
 export async function clickBreadcrumbItem(page: Page, itemText: string) {
-  const breadcrumbItem = page.locator('.el-breadcrumb__item').filter({ hasText: itemText })
+  const breadcrumbItem = page.getByTestId('breadcrumb-item').filter({ hasText: itemText })
   await breadcrumbItem.click()
 }
 

@@ -10,6 +10,7 @@
     <router-link
       :to="{ name: RouteName.LANDING }"
       class="line-height--0"
+      data-testid="header-logo"
       @click="amplitudeTrack"
     >
       <PImage

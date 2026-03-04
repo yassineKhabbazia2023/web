@@ -2,6 +2,7 @@
   <PDrawer
     v-model="isDrawerOpened"
     class="feed-center-drawer"
+    data-testid="feed-center-drawer"
     :pType="isMobile ? 'fullscreen' : 'mini'"
     :pTitle="t('title')"
     modal

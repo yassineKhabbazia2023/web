@@ -76,6 +76,8 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
         '@microsoft/signalr': path.resolve(shimsPath, 'signalr-shim.ts'),
         'powerbi-client': path.resolve(shimsPath, 'powerbi-shim.ts'),
         'powerbi-models': path.resolve(shimsPath, 'powerbi-models-shim.ts'),
+        '@amplitude/analytics-browser': path.resolve(shimsPath, 'amplitude-shim.ts'),
+        '@amplitude/plugin-session-replay-browser': path.resolve(shimsPath, 'amplitude-session-replay-shim.ts'),
       }
 
       // Add MSAL shim for backoffice app

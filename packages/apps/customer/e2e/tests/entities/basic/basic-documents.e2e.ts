@@ -3,9 +3,7 @@ import { tokenMock, MockEntityId } from '@pulse/common/mocks'
 
 test.describe('Basic Entity - Documents', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/')
-    await page.waitForFunction(() => (globalThis as any).__MSW_READY__ === true, { timeout: 5000 })
-    await page.evaluate((token) => localStorage.setItem('token', token), tokenMock)
+    await page.addInitScript((token) => localStorage.setItem('token', token), tokenMock)
   })
 
   test('should not have access to /ged', async ({ page }) => {

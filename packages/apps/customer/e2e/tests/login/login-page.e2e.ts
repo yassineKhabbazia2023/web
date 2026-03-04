@@ -5,7 +5,6 @@ const PAGE_URL = '/login'
 test.describe('Login Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(PAGE_URL)
-    await page.waitForFunction(() => (globalThis as any).__MSW_READY__ === true, { timeout: 5000 })
   })
 
   test('should display login page with form elements', async ({ page }) => {
@@ -71,7 +70,13 @@ test.describe('Login Page', () => {
   })
 
   test('should show error with invalid credentials', async ({ page }) => {
-    // Override the login handler to return an error
+    const emailInput = page.getByTestId('login-input-email')
+    const passwordInput = page.getByTestId('login-input-password')
+    const submitButtonWrapper = page.getByTestId('login-submit-button')
+    const submitButton = submitButtonWrapper.locator('button')
+
+    // Wait for the form to render (guarantees MSW is ready) before overriding the handler
+    await expect(emailInput).toBeVisible()
     await page.evaluate(() => {
       const worker = (globalThis as any).__MSW_WORKER__
       if (worker) {
@@ -86,11 +91,6 @@ test.describe('Login Page', () => {
         )
       }
     })
-
-    const emailInput = page.getByTestId('login-input-email')
-    const passwordInput = page.getByTestId('login-input-password')
-    const submitButtonWrapper = page.getByTestId('login-submit-button')
-    const submitButton = submitButtonWrapper.locator('button')
 
     await emailInput.fill('wrong@example.com')
     await passwordInput.fill('wrongpassword')

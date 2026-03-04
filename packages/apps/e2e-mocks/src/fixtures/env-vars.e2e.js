@@ -32,8 +32,8 @@ const envVars = {
   VITE_RESPONSIVE_ACTIVATED: 'true',
 
   // Third-party services - disabled for E2E
-  VITE_AMPLITUDE_ACTIVATED: 'false',
-  VITE_AMPLITUDE_API_KEY: '',
+  VITE_AMPLITUDE_ACTIVATED: 'true',
+  VITE_AMPLITUDE_API_KEY: 'e2e-fake-key',
   VITE_AMPLITUDE_SERVER_URL: '',
   VITE_AXEPTIO_KEY: '',
   VITE_HUBSPOT_ACTIVATED: 'false',

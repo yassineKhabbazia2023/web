@@ -19,6 +19,8 @@
     "./shims/powerbi": "./src/shims/powerbi-shim.ts",
     "./shims/powerbi-models": "./src/shims/powerbi-models-shim.ts",
     "./shims/msal": "./src/shims/msal-shim.ts",
+    "./shims/amplitude": "./src/shims/amplitude-shim.ts",
+    "./shims/amplitude-session-replay": "./src/shims/amplitude-session-replay-shim.ts",
     "./fixtures/env-vars": "./src/fixtures/env-vars.e2e.js",
     "./fixtures/env-vars-backoffice": "./src/fixtures/env-vars.backoffice.e2e.js",
     "./fixtures/styles": "./src/fixtures/styles.e2e.css"

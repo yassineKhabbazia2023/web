@@ -44,13 +44,8 @@ async function addMonoEntityInitScript(page: Page) {
 
 test.describe('Mono Entity User - Navigation & Sidebar', () => {
   test.beforeEach(async ({ page }) => {
-    // Add init script that will override MSW on every page load
     await addMonoEntityInitScript(page)
-    // Navigate to login page to initialize MSW
-    await page.goto('/login')
-    await page.waitForFunction(() => (globalThis as any).__MSW_READY__ === true, { timeout: 5000 })
-    // Set token for authenticated access
-    await page.evaluate((token) => localStorage.setItem('token', token), tokenMock)
+    await page.addInitScript((token) => localStorage.setItem('token', token), tokenMock)
   })
 
   test('should not display sidebar for single entity user', async ({ page }) => {
@@ -79,11 +74,8 @@ test.describe('Mono Entity User - Navigation & Sidebar', () => {
 
 test.describe('Mono Entity User - Login Redirect', () => {
   test('should redirect to entity homepage after login', async ({ page }) => {
-    // Add init script that will override MSW on every page load
     await addMonoEntityInitScript(page)
-    // Go to login page
     await page.goto('/login')
-    await page.waitForFunction(() => (globalThis as any).__MSW_READY__ === true, { timeout: 5000 })
 
     // Perform login
     await page.getByTestId('login-input-email').fill('test@example.com')

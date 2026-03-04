@@ -6,9 +6,7 @@ import { tokenMock, MockEntityId } from '@pulse/common/mocks'
  */
 test.describe('Multi Entity User - Navigation & Sidebar', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/')
-    await page.waitForFunction(() => (globalThis as any).__MSW_READY__ === true, { timeout: 5000 })
-    await page.evaluate((token) => localStorage.setItem('token', token), tokenMock)
+    await page.addInitScript((token) => localStorage.setItem('token', token), tokenMock)
   })
 
   test('should display sidebar for multi entity user', async ({ page }) => {
@@ -58,9 +56,7 @@ test.describe('Multi Entity User - Navigation & Sidebar', () => {
 
 test.describe('Multi Entity User - Login Redirect', () => {
   test('should redirect to wallet after login', async ({ page }) => {
-    // Wait for MSW without pre-setting the token
     await page.goto('/login')
-    await page.waitForFunction(() => (globalThis as any).__MSW_READY__ === true, { timeout: 5000 })
 
     // Now perform login
     await page.getByTestId('login-input-email').fill('test@example.com')

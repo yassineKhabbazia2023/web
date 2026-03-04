@@ -5,7 +5,6 @@ const PAGE_URL = '/createPassword?token=test-token&email=test@example.com'
 test.describe('Create Password Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(PAGE_URL)
-    await page.waitForFunction(() => (globalThis as any).__MSW_READY__ === true, { timeout: 5000 })
   })
 
   test('should display create password page with form elements', async ({ page }) => {

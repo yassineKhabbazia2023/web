@@ -3,6 +3,7 @@
     <ElBreadcrumbItem
       v-for="(item, index) in items"
       :key="index"
+      data-testid="breadcrumb-item"
       @click="breadcrumbItemClicked(item.pId)"
     >
       <PTooltip
