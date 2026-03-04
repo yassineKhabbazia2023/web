@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { AzureDevOpsRepository } from '@backoffice/types/azure-devops.type'
+import type { AzureDevOpsRepository, AzureDevOpsUserProfile } from '@backoffice/types/azure-devops.type'
 import { AZURE_DEVOPS_CONFIG } from '@backoffice/constants/azure-devops.const'
 
 export const useAzureDevOpsStore = defineStore('azure-devops', () => {
@@ -8,6 +8,7 @@ export const useAzureDevOpsStore = defineStore('azure-devops', () => {
   const repositories = ref<AzureDevOpsRepository[]>([])
   const selectedRepository = ref<string>(AZURE_DEVOPS_CONFIG.repository)
   const isLoadingRepositories = ref<boolean>(false)
+  const currentUserProfile = ref<AzureDevOpsUserProfile | null>(null)
 
   const hasPat = computed(() => pat.value.length > 0)
   const hasRepositories = computed(() => repositories.value.length > 0)
@@ -33,6 +34,10 @@ export const useAzureDevOpsStore = defineStore('azure-devops', () => {
     selectedRepository.value = AZURE_DEVOPS_CONFIG.repository
   }
 
+  const setCurrentUserProfile = (profile: AzureDevOpsUserProfile) => {
+    currentUserProfile.value = profile
+  }
+
   return {
     pat,
     hasPat,
@@ -45,5 +50,7 @@ export const useAzureDevOpsStore = defineStore('azure-devops', () => {
     isLoadingRepositories,
     setIsLoadingRepositories,
     resetRepositories,
+    currentUserProfile,
+    setCurrentUserProfile,
   }
 })

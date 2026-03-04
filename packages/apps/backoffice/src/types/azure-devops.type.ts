@@ -135,3 +135,19 @@ export interface CommitExplorerPageResult {
   commits: AzureDevOpsCommit[]
   totalCount: number
 }
+
+export interface AzureDevOpsUserProfile {
+  displayName: string
+  emailAddress: string
+  id: string
+}
+
+export interface ContributionCommit extends Pick<AzureDevOpsCommit, 'commitId' | 'comment' | 'author'> {
+  repositoryName: string
+}
+
+export interface EnrichedContributionCommit extends ContributionCommit {
+  shortCommitId: string
+  firstLine: string
+  formattedDate: string
+}

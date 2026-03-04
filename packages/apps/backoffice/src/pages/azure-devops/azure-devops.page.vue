@@ -149,6 +149,14 @@
             />
           </div>
         </PTabPane>
+
+        <PTabPane
+          pLabel="Contribution Graph"
+          pName="contribution-graph"
+          pLazy
+        >
+          <ContributionGraphTab />
+        </PTabPane>
       </PTabs>
     </div>
 
@@ -182,6 +190,7 @@ import WorkItemsResults from './WorkItemsResults/work-items-results.vue'
 import CommitExplorerModal from './CommitExplorerModal/commit-explorer-modal.vue'
 import CommitExplorerList from './CommitExplorer/commit-explorer-list.vue'
 import { useCommitExplorer } from './CommitExplorer/use-commit-explorer.composable'
+import ContributionGraphTab from './ContributionGraph/contribution-graph-tab.vue'
 
 const azureDevOpsStore = useAzureDevOpsStore()
 

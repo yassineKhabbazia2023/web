@@ -5,6 +5,7 @@ import type {
   AzureDevOpsCommit,
   AzureDevOpsCommitsResponse,
   AzureDevOpsRefsResponse,
+  AzureDevOpsRepository,
   AzureDevOpsWorkItemsBatchResponse,
 } from '@backoffice/types/azure-devops.type'
 
@@ -129,6 +130,24 @@ describe('AzureDevOpsService', () => {
       const result = await AzureDevOpsService.getHeadInfo(mockPat, mockRepository)
 
       expect(result.tagName).toBe('V2.0.0')
+    })
+
+    it('returns null when version tag points to a different commit', async () => {
+      const headCommitId = 'abc123'
+      mockedAxiosGet
+        .mockResolvedValueOnce({
+          data: { value: [{ name: 'refs/heads/main', objectId: headCommitId }], count: 1 },
+        })
+        .mockResolvedValueOnce({
+          data: {
+            value: [{ name: 'refs/tags/V1.0.0', objectId: 'different-commit' }],
+            count: 1,
+          },
+        })
+
+      const result = await AzureDevOpsService.getHeadInfo(mockPat, mockRepository)
+
+      expect(result.tagName).toBeNull()
     })
   })
 
@@ -714,6 +733,326 @@ describe('AzureDevOpsService', () => {
       mockedAxiosGet.mockResolvedValueOnce({ data: undefined })
 
       await expect(AzureDevOpsService.getRepositories(mockPat)).rejects.toThrow('Personal Access Token')
+    })
+  })
+
+  describe('getCurrentUserProfile', () => {
+    it('returns user profile with display name and email', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          authenticatedUser: {
+            id: 'user-guid',
+            providerDisplayName: 'John Doe',
+            properties: {
+              Account: { $value: 'john.doe@example.com' },
+            },
+          },
+        },
+      })
+
+      const result = await AzureDevOpsService.getCurrentUserProfile(mockPat)
+
+      expect(result).toEqual({
+        displayName: 'John Doe',
+        emailAddress: 'john.doe@example.com',
+        id: 'user-guid',
+      })
+      expect(mockedAxiosGet).toHaveBeenCalledWith(
+        expect.stringContaining('vssps.dev.azure.com'),
+        expect.any(Object),
+      )
+    })
+
+    it('throws error when authenticatedUser is undefined', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({ data: {} })
+
+      await expect(AzureDevOpsService.getCurrentUserProfile(mockPat)).rejects.toThrow(
+        'Impossible de récupérer le profil utilisateur',
+      )
+    })
+
+    it('throws error when email is empty', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          authenticatedUser: {
+            id: 'user-guid',
+            providerDisplayName: 'John Doe',
+            properties: {
+              Account: { $value: '' },
+            },
+          },
+        },
+      })
+
+      await expect(AzureDevOpsService.getCurrentUserProfile(mockPat)).rejects.toThrow(
+        "Impossible de récupérer l'email",
+      )
+    })
+
+    it('handles missing providerDisplayName gracefully', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          authenticatedUser: {
+            id: 'user-guid',
+            properties: {
+              Account: { $value: 'john@example.com' },
+            },
+          },
+        },
+      })
+
+      const result = await AzureDevOpsService.getCurrentUserProfile(mockPat)
+
+      expect(result.displayName).toBe('')
+      expect(result.emailAddress).toBe('john@example.com')
+    })
+
+    it('handles missing Account property gracefully', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          authenticatedUser: {
+            id: 'user-guid',
+            providerDisplayName: 'John Doe',
+            properties: {},
+          },
+        },
+      })
+
+      await expect(AzureDevOpsService.getCurrentUserProfile(mockPat)).rejects.toThrow(
+        "Impossible de récupérer l'email",
+      )
+    })
+
+    it('handles missing id gracefully', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          authenticatedUser: {
+            providerDisplayName: 'John Doe',
+            properties: {
+              Account: { $value: 'john@example.com' },
+            },
+          },
+        },
+      })
+
+      const result = await AzureDevOpsService.getCurrentUserProfile(mockPat)
+
+      expect(result.id).toBe('')
+    })
+  })
+
+  describe('getCommitsByAuthorAcrossRepos', () => {
+    const mockRepos: AzureDevOpsRepository[] = [
+      { id: '1', name: 'Repo.Web', defaultBranch: 'refs/heads/main' },
+      { id: '2', name: 'Repo.Api', defaultBranch: 'refs/heads/main' },
+    ]
+    const fromDate = new Date('2024-01-01')
+    const toDate = new Date('2024-01-31')
+
+    it('returns commits sorted by date descending across multiple repos', async () => {
+      mockedAxiosGet
+        .mockResolvedValueOnce({
+          data: {
+            value: [
+              {
+                commitId: 'abc',
+                comment: 'Fix bug',
+                author: { name: 'John', email: 'john@example.com', date: '2024-01-10T10:00:00Z' },
+              },
+            ],
+            count: 1,
+          },
+        })
+        .mockResolvedValueOnce({
+          data: {
+            value: [
+              {
+                commitId: 'def',
+                comment: 'Add feature',
+                author: { name: 'John', email: 'john@example.com', date: '2024-01-15T10:00:00Z' },
+              },
+            ],
+            count: 1,
+          },
+        })
+
+      const result = await AzureDevOpsService.getCommitsByAuthorAcrossRepos(
+        mockPat,
+        mockRepos,
+        'john@example.com',
+        fromDate,
+        toDate,
+      )
+
+      expect(result).toHaveLength(2)
+      expect(result[0].commitId).toBe('def')
+      expect(result[0].repositoryName).toBe('Repo.Api')
+      expect(result[1].commitId).toBe('abc')
+      expect(result[1].repositoryName).toBe('Repo.Web')
+    })
+
+    it('calls onProgress callback during loading', async () => {
+      mockedAxiosGet
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      const onProgress = vi.fn()
+
+      await AzureDevOpsService.getCommitsByAuthorAcrossRepos(
+        mockPat,
+        mockRepos,
+        'john@example.com',
+        fromDate,
+        toDate,
+        onProgress,
+      )
+
+      expect(onProgress).toHaveBeenCalledWith(2, 2)
+    })
+
+    it('handles repo fetch failures gracefully', async () => {
+      mockedAxiosGet
+        .mockRejectedValueOnce(new Error('Network error'))
+        .mockResolvedValueOnce({
+          data: {
+            value: [
+              {
+                commitId: 'abc',
+                comment: 'Fix',
+                author: { name: 'John', email: 'john@example.com', date: '2024-01-10T10:00:00Z' },
+              },
+            ],
+            count: 1,
+          },
+        })
+
+      const result = await AzureDevOpsService.getCommitsByAuthorAcrossRepos(
+        mockPat,
+        mockRepos,
+        'john@example.com',
+        fromDate,
+        toDate,
+      )
+
+      expect(result).toHaveLength(1)
+      expect(result[0].repositoryName).toBe('Repo.Api')
+    })
+
+    it('returns empty array when all repos have no commits', async () => {
+      mockedAxiosGet
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      const result = await AzureDevOpsService.getCommitsByAuthorAcrossRepos(
+        mockPat,
+        mockRepos,
+        'john@example.com',
+        fromDate,
+        toDate,
+      )
+
+      expect(result).toEqual([])
+    })
+
+    it('paginates commits within a single repo', async () => {
+      const page1Commits = Array.from({ length: 100 }, (_, i) => ({
+        commitId: `commit-p1-${i}`,
+        comment: `Commit ${i}`,
+        author: { name: 'John', email: 'john@example.com', date: '2024-01-10T10:00:00Z' },
+      }))
+      const page2Commits = [
+        {
+          commitId: 'commit-p2-0',
+          comment: 'Last commit',
+          author: { name: 'John', email: 'john@example.com', date: '2024-01-09T10:00:00Z' },
+        },
+      ]
+
+      // Repo.Web: 2 pages
+      mockedAxiosGet
+        .mockResolvedValueOnce({ data: { value: page1Commits, count: 100 } })
+        .mockResolvedValueOnce({ data: { value: page2Commits, count: 1 } })
+        // Repo.Api: empty
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      const result = await AzureDevOpsService.getCommitsByAuthorAcrossRepos(
+        mockPat,
+        mockRepos,
+        'john@example.com',
+        fromDate,
+        toDate,
+      )
+
+      expect(result).toHaveLength(101)
+    })
+
+    it('handles undefined response data when fetching commits for repo', async () => {
+      mockedAxiosGet
+        .mockResolvedValueOnce({ data: { value: undefined } })
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      const result = await AzureDevOpsService.getCommitsByAuthorAcrossRepos(
+        mockPat,
+        mockRepos,
+        'john@example.com',
+        fromDate,
+        toDate,
+      )
+
+      expect(result).toEqual([])
+    })
+
+    it('respects concurrency batching with many repos', async () => {
+      const manyRepos: AzureDevOpsRepository[] = Array.from({ length: 7 }, (_, i) => ({
+        id: String(i),
+        name: `Repo${i}`,
+        defaultBranch: 'refs/heads/main',
+      }))
+
+      // Each repo returns empty
+      for (let i = 0; i < 7; i++) {
+        mockedAxiosGet.mockResolvedValueOnce({ data: { value: [], count: 0 } })
+      }
+
+      const onProgress = vi.fn()
+
+      await AzureDevOpsService.getCommitsByAuthorAcrossRepos(
+        mockPat,
+        manyRepos,
+        'john@example.com',
+        fromDate,
+        toDate,
+        onProgress,
+      )
+
+      // With CONTRIBUTION_REPO_CONCURRENCY=5, should be called twice (batch of 5, then batch of 2)
+      expect(onProgress).toHaveBeenCalledTimes(2)
+      expect(onProgress).toHaveBeenCalledWith(5, 7)
+      expect(onProgress).toHaveBeenCalledWith(7, 7)
+    })
+  })
+
+  describe('getWorkItemsForCommitRange - safety limit warning', () => {
+    it('generates safety limit warning when max commits reached', async () => {
+      // Mock 51 pages to exhaust MAX_COMMITS_SAFETY_LIMIT (5000) with COMMITS_PAGE_SIZE (100)
+      // skip goes: 0, 100, 200, ..., 5000 (51 iterations), then exits
+      for (let i = 0; i <= 50; i++) {
+        mockedAxiosGet.mockResolvedValueOnce({
+          data: {
+            value: [{
+              commitId: i === 0 ? 'to' : `page-${i}`,
+              comment: `Commit ${i}`,
+              author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' },
+            }],
+            count: 1,
+          },
+        })
+      }
+
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'non-existent-from', 'to')
+
+      expect(result.warnings.some((w) => w.includes('Limite de sécurité'))).toBe(true)
+      expect(result.warnings.some((w) => w.includes('non-exis'))).toBe(true)
     })
   })
 })

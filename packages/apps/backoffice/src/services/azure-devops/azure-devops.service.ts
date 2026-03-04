@@ -8,11 +8,13 @@ import type {
   AzureDevOpsRefsResponse,
   AzureDevOpsRepository,
   AzureDevOpsRepositoriesResponse,
+  AzureDevOpsUserProfile,
   AzureDevOpsWorkItemRef,
   AzureDevOpsWorkItemResponse,
   AzureDevOpsWorkItemsBatchResponse,
   CommitExplorerPageResult,
   CommitsInRangeResult,
+  ContributionCommit,
   HeadInfo,
   MepTag,
   WorkItem,
@@ -23,6 +25,7 @@ import {
   AZURE_DEVOPS_API_VERSION,
   AZURE_DEVOPS_CONFIG,
   COMMITS_PAGE_SIZE,
+  CONTRIBUTION_REPO_CONCURRENCY,
   EXPLORER_PAGE_SIZE,
   MAX_COMMITS_SAFETY_LIMIT,
 } from '@backoffice/constants/azure-devops.const'
@@ -41,6 +44,13 @@ export class AzureDevOpsService {
   private static buildCommitsUrl(repository: string): string {
     const { organization, project } = AZURE_DEVOPS_CONFIG
     return `${organization}/${project}/_apis/git/repositories/${repository}/commits`
+  }
+
+  private static buildConnectionDataUrl(): string {
+    const { organization } = AZURE_DEVOPS_CONFIG
+    const url = new URL(organization)
+    url.hostname = `vssps.${url.hostname}`
+    return `${url.origin}${url.pathname}/_apis/connectionData`
   }
 
   private static buildWorkItemsBatchUrl(): string {
@@ -285,7 +295,7 @@ export class AzureDevOpsService {
 
   static extractWorkItemIdsFromRefs(refs: AzureDevOpsWorkItemRef[]): number[] {
     return refs
-      .map((ref) => Number.parseInt(ref.url.split('/').pop() ?? '', 10))
+      .map((ref) => Number.parseInt(ref.url.split('/').at(-1) ?? '', 10))
       .filter((id) => Number.isNaN(id) === false)
   }
 
@@ -479,5 +489,123 @@ export class AzureDevOpsService {
 
     const batchResponse = await this.fetchWorkItemsBatch(pat, workItemIds)
     return batchResponse.value.map((response) => this.normalizeWorkItem(response))
+  }
+
+  static async getCurrentUserProfile(pat: string): Promise<AzureDevOpsUserProfile> {
+    const response = await axios.get(
+      this.buildConnectionDataUrl(),
+      { headers: { Authorization: this.getAuthHeader(pat) } },
+    )
+
+    const authenticatedUser = response.data?.authenticatedUser
+    if (authenticatedUser === undefined) {
+      throw new Error('Impossible de récupérer le profil utilisateur. Vérifiez votre PAT.')
+    }
+
+    const displayName: string = authenticatedUser.providerDisplayName ?? ''
+    const emailAddress: string = authenticatedUser.properties?.Account?.$value ?? ''
+
+    if (emailAddress === '') {
+      throw new Error('Impossible de récupérer l\'email de l\'utilisateur.')
+    }
+
+    return {
+      displayName,
+      emailAddress,
+      id: authenticatedUser.id ?? '',
+    }
+  }
+
+  static async getCommitsByAuthorAcrossRepos(
+    pat: string,
+    repositories: AzureDevOpsRepository[],
+    authorEmail: string,
+    fromDate: Date,
+    toDate: Date,
+    onProgress?: (loaded: number, total: number) => void,
+  ): Promise<ContributionCommit[]> {
+    const allCommits: ContributionCommit[] = []
+    let loadedCount = 0
+    const totalCount = repositories.length
+
+    for (let i = 0; i < repositories.length; i += CONTRIBUTION_REPO_CONCURRENCY) {
+      const batch = repositories.slice(i, i + CONTRIBUTION_REPO_CONCURRENCY)
+
+      const batchResults = await Promise.all(
+        batch.map(async (repo) => {
+          try {
+            return await this.fetchCommitsByAuthorForRepo(pat, repo, authorEmail, fromDate, toDate)
+          } catch (err) {
+            logger.warn(`Failed to fetch commits for repo ${repo.name}:`, err)
+            return []
+          }
+        }),
+      )
+
+      for (const commits of batchResults) {
+        allCommits.push(...commits)
+      }
+
+      loadedCount += batch.length
+      if (onProgress !== undefined) {
+        onProgress(loadedCount, totalCount)
+      }
+    }
+
+    allCommits.sort((a, b) => new Date(b.author.date).getTime() - new Date(a.author.date).getTime())
+    return allCommits
+  }
+
+  private static async fetchCommitsByAuthorForRepo(
+    pat: string,
+    repo: AzureDevOpsRepository,
+    authorEmail: string,
+    fromDate: Date,
+    toDate: Date,
+  ): Promise<ContributionCommit[]> {
+    const commits: ContributionCommit[] = []
+    let skip = 0
+
+    while (skip < MAX_COMMITS_SAFETY_LIMIT) {
+      // Azure DevOps REST API expects flat query params with dot notation (e.g. searchCriteria.author)
+      const params = new URLSearchParams({
+        'searchCriteria.author': authorEmail,
+        'searchCriteria.fromDate': fromDate.toISOString(),
+        'searchCriteria.toDate': toDate.toISOString(),
+        'searchCriteria.$top': COMMITS_PAGE_SIZE.toString(),
+        'searchCriteria.$skip': skip.toString(),
+        'api-version': AZURE_DEVOPS_API_VERSION,
+      })
+
+      const response = await axios.get<AzureDevOpsCommitsResponse>(
+        `${this.buildCommitsUrl(repo.name)}?${params}`,
+        { headers: { Authorization: this.getAuthHeader(pat) } },
+      )
+
+      if (response.data?.value === undefined || response.data.value.length === 0) {
+        break
+      }
+
+      for (const commit of response.data.value) {
+        commits.push({
+          commitId: commit.commitId,
+          comment: commit.comment,
+          repositoryName: repo.name,
+          author: {
+            name: commit.author.name,
+            email: commit.author.email,
+            date: commit.author.date,
+          },
+        })
+      }
+
+      if (response.data.value.length < COMMITS_PAGE_SIZE) {
+        break
+      }
+
+      skip += COMMITS_PAGE_SIZE
+    }
+
+    return commits
   }
 }
