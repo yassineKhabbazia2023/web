@@ -329,7 +329,7 @@ describe('deploy', () => {
 
     expect(mockRouterPush).toHaveBeenCalledTimes(1)
     expect(mockRouterPush).toHaveBeenCalledWith({
-      name: RouteName.ENTITY_OVERVIEW,
+      name: RouteName.ENTITY_REDIRECT,
       params: { [RouteParam.ENTITY_ID]: '8126f51d-c834-4fda-82ea-00d51ee11983' },
     })
   })

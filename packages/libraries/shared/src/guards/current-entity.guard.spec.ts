@@ -1,21 +1,19 @@
 import {
   currentEntityGuard,
-  findEntityWithId,
   isEntityAlreadySelected,
-} from './entity.guard'
+  navigateToCurrentEntityHomepage,
+} from './current-entity.guard'
 
 import {
-  getAllMockAccountRows,
   getMockedEntities,
   entitiesServiceMocks,
 } from '@pulse/common/mocks'
 
-const accountRows = getAllMockAccountRows()
 const entities = getMockedEntities()
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 
 import { useCurrentEntityStore, useLoadingStore } from '@pulse/common/stores'
-import { RouteParam } from '@pulse/common/enums'
+import { AccountType, RouteParam, RouteName } from '@pulse/common/enums'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { RouteLocationNormalizedGeneric } from 'vue-router'
 vi.mock('@pulse/common/managers')
@@ -47,14 +45,6 @@ describe('verify entity change', () => {
     const from = createMockedRoute('123')
     const to = createMockedRoute()
     const result = await currentEntityGuard(to, from)
-
-    expect(fetchEntityByIdMock).not.toHaveBeenCalled()
-    expect(result).toBeUndefined()
-  })
-
-  it('allows navigation without fetching entities if entityId param is the same between TO and FROM', async () => {
-    const routeWithEntityId = createMockedRoute('123')
-    const result = await currentEntityGuard(routeWithEntityId, routeWithEntityId)
 
     expect(fetchEntityByIdMock).not.toHaveBeenCalled()
     expect(result).toBeUndefined()
@@ -134,21 +124,50 @@ describe('verify entity change', () => {
   })
 })
 
-describe('find entity with id', () => {
-  it.each([
-    {
-      accountRowsList: accountRows,
-      entityToFind: entities[0].accountId,
-      expectedResult: accountRows[0],
-    },
-    {
-      accountRowsList: accountRows,
-      entityToFind: 9999, // Non-existent entity ID
-      expectedResult: undefined,
-    },
-  ])('return the entity when it exists among a list of entities', ({ accountRowsList, entityToFind, expectedResult }) => {
-    const result = findEntityWithId(accountRowsList, entityToFind)
-    expect(result).toBe(expectedResult)
+describe('verify entity change - edge cases', () => {
+  it('redirects to ERROR403 when entityId param is not a valid number', async () => {
+    const from = createMockedRoute('')
+    const to = createMockedRoute('not-a-number')
+    const result = await currentEntityGuard(to, from)
+
+    expect(result).toEqual({ name: RouteName.ERROR403 })
+    expect(fetchEntityByIdMock).not.toHaveBeenCalled()
+  })
+
+  it('redirects to ERROR403 when fetchEntityById returns null', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
+    fetchEntityByIdMock.mockResolvedValueOnce(null as never)
+
+    const from = createMockedRoute('')
+    const to = createMockedRoute(entities[0].accountId.toString())
+    const result = await currentEntityGuard(to, from)
+
+    expect(result).toEqual({ name: RouteName.ERROR403 })
+  })
+
+  it('redirects to ERROR403 when fetchEntityById returns undefined', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
+    fetchEntityByIdMock.mockResolvedValueOnce(undefined as never)
+
+    const from = createMockedRoute('')
+    const to = createMockedRoute(entities[0].accountId.toString())
+    const result = await currentEntityGuard(to, from)
+
+    expect(result).toEqual({ name: RouteName.ERROR403 })
+  })
+
+  it('redirects to ERROR403 when fetchEntityById throws an error', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[1].accountId
+    fetchEntityByIdMock.mockRejectedValueOnce(new Error('API Error'))
+
+    const from = createMockedRoute('')
+    const to = createMockedRoute(entities[0].accountId.toString())
+    const result = await currentEntityGuard(to, from)
+
+    expect(result).toEqual({ name: RouteName.ERROR403 })
   })
 })
 
@@ -172,5 +191,52 @@ describe('is entity already selected', () => {
     const result = isEntityAlreadySelected(givenEntityId)
 
     expect(result).toBe(expectedResult)
+  })
+})
+
+describe('navigateToCurrentEntityHomepage', () => {
+  it('returns prospect homepage route when account type is PROSPECT', () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[0].accountId
+    currentEntityStoreMock.currentAccountType = AccountType.PROSPECT
+
+    const result = navigateToCurrentEntityHomepage()
+
+    expect(result).toEqual({
+      name: RouteName.PROSPECT_HOMEPAGE,
+      params: { [RouteParam.ENTITY_ID]: entities[0].accountId },
+    })
+  })
+
+  it('returns regular homepage route when account type is REGULAR', () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[0].accountId
+    currentEntityStoreMock.currentAccountType = AccountType.REGULAR
+
+    const result = navigateToCurrentEntityHomepage()
+
+    expect(result).toEqual({
+      name: RouteName.HOMEPAGE,
+      params: { [RouteParam.ENTITY_ID]: entities[0].accountId },
+    })
+  })
+
+  it('returns ERROR403 when current entity ID is undefined', () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = undefined
+
+    const result = navigateToCurrentEntityHomepage()
+
+    expect(result).toEqual({ name: RouteName.ERROR403 })
+  })
+
+  it('returns ERROR403 when account type is unknown', () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[0].accountId
+    currentEntityStoreMock.currentAccountType = 'unknown' as AccountType
+
+    const result = navigateToCurrentEntityHomepage()
+
+    expect(result).toEqual({ name: RouteName.ERROR403 })
   })
 })

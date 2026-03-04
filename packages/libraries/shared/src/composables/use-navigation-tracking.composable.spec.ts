@@ -33,6 +33,23 @@ describe('useNavigationTracking', () => {
       })
     })
 
+    it('should not track when doNotTrack is true', () => {
+      const { trackNavigationFeature } = useNavigationTracking()
+
+      const menuItem: NavigationItem = {
+        routeName: RouteName.HOMEPAGE,
+        title: 'shared.menu.dashboard',
+        icon: 'house',
+        featureName: 'dashboard',
+        activeRoutes: [RouteName.HOMEPAGE],
+        doNotTrack: true,
+      }
+
+      trackNavigationFeature(menuItem)
+
+      expect(AmplitudeService.track).not.toHaveBeenCalled()
+    })
+
     it('should track with translated title lowercase when featureName is undefined', () => {
       const { trackNavigationFeature } = useNavigationTracking()
 
@@ -52,15 +69,4 @@ describe('useNavigationTracking', () => {
     })
   })
 
-  describe('trackFeature', () => {
-    it('should track with the provided feature name', () => {
-      const { trackFeature } = useNavigationTracking()
-
-      trackFeature('entity')
-
-      expect(AmplitudeService.track).toHaveBeenCalledWith('Feature Consulted', {
-        feature_name: 'entity',
-      })
-    })
-  })
 })

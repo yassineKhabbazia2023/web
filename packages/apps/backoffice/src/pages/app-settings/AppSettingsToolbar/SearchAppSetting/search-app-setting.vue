@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { PFormSearch } from '@pulse/styleguide/components'
-import { useDebounce } from '@toolbox/main'
+import { useDebounce } from '@pulse/toolbox'
 
 const modelValue = defineModel<string>({ default: '' })
 

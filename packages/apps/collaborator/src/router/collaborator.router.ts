@@ -49,6 +49,7 @@ const router = createRouter({
 // Inject the guards
 router.beforeEach(collaboratorAuthenticationGuard)
 router.beforeEach(featureFlagGuard)
+// currentEntityGuard is added as global guard: cannot use beforeEnter because it doesn't re-trigger on param changes (e.g. switching entities)
 router.beforeEach(currentEntityGuard)
 router.beforeEach(collaboratorPermissionGuard)
 router.afterEach(seoGuard)

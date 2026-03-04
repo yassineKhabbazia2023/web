@@ -1,5 +1,6 @@
 import type { Mock } from 'vitest'
 import type { Entity } from '@pulse/common/types'
+import { AccountType } from '@pulse/common/enums'
 
 export const commonApiDsGetSpy: Mock = vi.fn()
 export const commonApiDsPostSpy: Mock = vi.fn().mockResolvedValue({
@@ -34,6 +35,7 @@ export const defaultEntityMock: Entity = {
   accountId: 93012,
   accountNumber: '256',
   color: 'orange',
+  accountType: AccountType.REGULAR,
 }
 
 vi.mock('@pulse/common', () => ({

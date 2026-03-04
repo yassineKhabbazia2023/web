@@ -4,7 +4,7 @@
       :tooltipContent="entityTooltipContent"
       :tooltipDisabled="hideTooltip"
       :class="{ 'entity-wrapper--selected': selected }"
-      :route="{ name: RouteName.HOMEPAGE, params: { [RouteParam.ENTITY_ID]: entity.accountId } }"
+      :route="{ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entity.accountId } }"
       @item-clicked="$emit('entity-selected', entity)"
     >
       <PAvatar

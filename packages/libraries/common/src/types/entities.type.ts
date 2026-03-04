@@ -1,5 +1,5 @@
 import type { Deployment, Address, Office, Subscription } from '@common/types'
-import type { EntityType } from '../enums/entity.enum'
+import type { AccountType } from '../enums/account-type.enum'
 import type { Permission } from './permission.type'
 
 export type EntityColor =
@@ -14,6 +14,7 @@ export type EntityColor =
 
 export interface Entity {
   accountId: number
+  accountType: AccountType
   accountNumber: string
   legalName: string
   isClarityVisible?: boolean
@@ -31,7 +32,7 @@ export type Entities = {
 
 export interface EntitySummary extends Entity {
   accountGlobalUniqueId: string
-  entityType: EntityType
+  accountType: AccountType
   missionType: string
   officeId: number
   office: Office

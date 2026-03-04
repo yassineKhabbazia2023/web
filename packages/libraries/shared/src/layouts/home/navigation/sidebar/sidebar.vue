@@ -119,7 +119,7 @@ import { RouterHelpers } from '@pulse/common/helpers'
 import { PIcon } from '@pulse/styleguide/components'
 import { RouteName } from '@pulse/common/enums'
 import { AppColors } from '@pulse/styleguide'
-import { useCurrentEntity } from '@pulse/shared/composables'
+import { useCurrentEntityRouting } from '@pulse/shared/composables'
 import type { EntityItemProps } from './entity-item/entity-item.type'
 import type { SidebarProps } from './sidebar.type'
 import EntityItem from './entity-item'
@@ -127,7 +127,7 @@ import EntityAvatar from './entity-avatar'
 import AppVersion from './app-version'
 
 const route = useRoute()
-const { currentEntityId, isEntityView } = useCurrentEntity()
+const { currentEntityId, isEntityView } = useCurrentEntityRouting()
 
 const { t } = useI18n({
   inheritLocale: true,

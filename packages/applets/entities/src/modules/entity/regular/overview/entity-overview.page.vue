@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useRouter, useRoute } from 'vue-router'
@@ -75,7 +75,21 @@ const tabAuthorizations = computed(() =>
 
 const tabsList = computed<Tab[]>(() => getTabs(tabAuthorizations.value, tabTitles))
 
-// Functions
+const navigateToDefaultTab = () => {
+  const hasActiveTab = tabsList.value.some(tab => tab.name === activeTab.value)
+  const firstAuthorizedTab = tabsList.value[0]
+  if (firstAuthorizedTab === undefined) {
+    // if there is no tab in the list of authorized tabs
+    // we redirect to entity redirect page
+    return router.replace({ name: RouteName.ENTITY_REDIRECT })
+  }
+  // if there is no active tabs
+  // we redirect to the first authorized tab
+  if (hasActiveTab === false) {
+    return router.replace({ name: firstAuthorizedTab.name })
+  }
+}
+
 const handleTabClick = (tab: any) => {
   AmplitudeService.track('Feature Consulted', {
     feature_name: tab.props.label.toLowerCase(),
@@ -84,6 +98,16 @@ const handleTabClick = (tab: any) => {
     name: tab.paneName,
   })
 }
+
+watch(
+  () => route.name,
+  (routeName) => {
+    if (routeName === RouteName.ENTITY_OVERVIEW) {
+      navigateToDefaultTab()
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <style lang="scss" scoped>

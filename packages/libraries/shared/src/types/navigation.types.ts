@@ -1,28 +1,30 @@
 import type { IconName } from '@pulse/styleguide/types'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
-import type { RouteName, PennylanePermission } from '@pulse/common/enums'
+import type { RouteName, PennylanePermission, AccountType } from '@pulse/common/enums'
 import type { Permission } from '@pulse/common/types'
 
 /**
- * Represents a menu item configuration for registration
+ * Represents a navigation item configuration for registration
  */
-export interface MenuItemConfig {
+export interface NavigationItemConfig {
   id: string
-  title: string // i18n key
+  accountType: AccountType
+  title: (context: NavigationContext) => string
   icon: IconName
   routeName: RouteName
-  shouldDisplay: (context: MenuContext) => boolean
+  shouldDisplay: (context: NavigationContext) => boolean
   order: number
   featureName?: string // For Amplitude tracking
-  hasSubmenuSelected?: (context: MenuContext) => boolean
+  hasSubmenuSelected?: (context: NavigationContext) => boolean
   showInMobile?: boolean // Whether to show in mobile bottom navigation
   activeRoutes?: RouteName[] // Routes that should mark this item as active
+  doNotTrack?: boolean // Whether to skip Amplitude tracking for this item
 }
 
 /**
- * Context information needed to evaluate menu items
+ * Context information needed to evaluate navigation items
  */
-export interface MenuContext {
+export interface NavigationContext {
   entityId: number
   isCollab: boolean
   currentRoute: RouteLocationNormalizedLoaded
@@ -45,5 +47,6 @@ export interface NavigationItem {
   activeRoutes: RouteName[]
   hasSubmenuSelected?: boolean
   showInMobile?: boolean
+  doNotTrack?: boolean
 }
 

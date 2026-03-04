@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="isEntityView"
     :class="[
       'sidebar-entity',
       'position--relative',
@@ -20,28 +19,6 @@
       class="sidebar-entity__main-menu"
       data-testid="sidenav-menu"
     >
-      <PMenuItem
-        :pIndex="RouteName.HOMEPAGE"
-        :pRoute="{ name: RouteName.HOMEPAGE }"
-        pIconLeftName="house"
-        data-testid="menu-item"
-      >
-        <template #title>
-          {{ t('shared.sidebar.home') }}
-        </template>
-      </PMenuItem>
-      <PMenuItem
-        v-if="entityOverviewMenuItem"
-        :pIndex="entityOverviewMenuItem.routeName"
-        :pRoute="{ name: entityOverviewMenuItem.routeName, params: { entityId: currentEntityId } }"
-        :pIconLeftName="entityOverviewMenuItem.icon"
-        data-testid="menu-item"
-        :class="{ 'sidebar-entity__item-menu': entityOverviewPath }"
-      >
-        <template #title>
-          {{ t(entityOverviewMenuItem.title) }}
-        </template>
-      </PMenuItem>
       <PMenuItem
         v-for="menuItem in menuItems"
         :key="menuItem.routeName"
@@ -64,33 +41,30 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { RouteName } from '@pulse/common/enums'
 import { PMenuItem, PMenu } from '@pulse/styleguide/components'
 import { NavigationManager } from '@pulse/shared/managers'
-import { useCurrentEntity, useMenuContext, useNavigationTracking } from '@pulse/shared/composables'
-import { RouterHelpers } from '@pulse/common/helpers'
-import { useUserStore } from '@pulse/common/stores'
+import { useNavigationContext, useNavigationTracking } from '@pulse/shared/composables'
+import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
+import { storeToRefs } from 'pinia'
 
-const route = useRoute()
-const userStore = useUserStore()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'global',
 })
 
+const route = useRoute()
+const userStore = useUserStore()
+const currentEntityStore = useCurrentEntityStore()
+const { currentEntityId, currentAccountType } = storeToRefs(currentEntityStore)
+
 const isMenuCollapsed = ref(true)
-const { currentEntityId, isEntityView } = useCurrentEntity()
 
 const isMenuItemActive = computed<string>(() => route.name as string)
-const entityOverviewPath = computed(
-  () => RouterHelpers.hasProvidedAncestor({ route, ancestorName: RouteName.ENTITY_OVERVIEW }),
-)
 
-const { menuContext, refreshBIReports } = useMenuContext(currentEntityId)
+const { navigationContext, refreshBIReports } = useNavigationContext(currentEntityId)
 const { trackNavigationFeature } = useNavigationTracking()
 
-const menuItems = computed(() => NavigationManager.getMenuItems(menuContext.value))
-const entityOverviewMenuItem = computed(() => NavigationManager.getEntityOverviewMenuItem(menuContext.value))
+const menuItems = computed(() => NavigationManager.getNavigationItems(navigationContext.value, currentAccountType.value))
 
 // Refresh BI reports permission on mount and when entity changes
 watch(currentEntityId, () => {

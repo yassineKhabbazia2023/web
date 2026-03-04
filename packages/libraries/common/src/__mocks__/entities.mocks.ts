@@ -2,6 +2,7 @@ import type { AccountRow, Signatory, Hub, Deployment, Address } from '../types/a
 import type { Entity, CurrentEntity, MockEntityKey, MockUserContact } from '../types/entities.type'
 import type { Permission } from '../types/permission.type'
 import { CollaboratorPermission } from '../enums/permission.enum'
+import { AccountType } from '@common/enums'
 
 /**
  * Mock entity IDs used across all tests
@@ -299,6 +300,7 @@ export const MOCKED_ENTITY_DEFAULTS = {
   accountNumber: MockEntityData.BASIC.accountNumber,
   legalName: MockEntityData.BASIC.legalName,
   color: MockEntityData.BASIC.color,
+  accountType: AccountType.REGULAR,
 } as const
 
 export const getMockedEntity = (overridden: Partial<Entity> = {}): Entity => {
@@ -314,24 +316,28 @@ export const getMockedEntities = (): Entity[] => [
     accountNumber: MockEntityData.BASIC.accountNumber,
     legalName: MockEntityData.BASIC.legalName,
     color: MockEntityData.BASIC.color,
+    accountType: AccountType.REGULAR,
   },
   {
     accountId: MockEntityData.LEGACY_GED.accountId,
     accountNumber: MockEntityData.LEGACY_GED.accountNumber,
     legalName: MockEntityData.LEGACY_GED.legalName,
     color: MockEntityData.LEGACY_GED.color,
+    accountType: AccountType.REGULAR,
   },
   {
     accountId: MockEntityData.PENNYLANE.accountId,
     accountNumber: MockEntityData.PENNYLANE.accountNumber,
     legalName: MockEntityData.PENNYLANE.legalName,
     color: MockEntityData.PENNYLANE.color,
+    accountType: AccountType.REGULAR,
   },
   {
     accountId: MockEntityData.PROSPECT.accountId,
     accountNumber: MockEntityData.PROSPECT.accountNumber,
     legalName: MockEntityData.PROSPECT.legalName,
     color: MockEntityData.PROSPECT.color,
+    accountType: AccountType.PROSPECT,
   },
 ]
 

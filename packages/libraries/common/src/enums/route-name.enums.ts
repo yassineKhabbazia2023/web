@@ -11,6 +11,7 @@ export enum RouteName {
   DELEGATIONS_HISTORY = 'delegationsHistory',
   FOLDER_HISTORY = 'history',
   ENTITY = 'entity',
+  ENTITY_REDIRECT = 'entity-redirect',
   ENTITY_OVERVIEW = 'entity-overview',
   ERROR_ROOT = 'ErrorRoot',
   ERROR403 = 'Error403',

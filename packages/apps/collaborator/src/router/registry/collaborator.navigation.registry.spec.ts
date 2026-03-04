@@ -1,42 +1,43 @@
 import { NavigationManager } from '@pulse/shared/managers'
-import { RouteName } from '@pulse/common/enums'
+import { AccountType, RouteName } from '@pulse/common/enums'
 import { createNavigationContext } from '@pulse/shared/mocks'
 import { registerCollaboratorNavigationItems } from './collaborator.navigation.registry'
 
-// Items that are always available when user has the basic permission
-const BASIC_ITEMS = [
-  'bi-reports',
-]
-
-// Document management items (mutually exclusive based on configuration)
-const DOCUMENT_ITEMS = {
-  LEGACY_GED: 'documents-legacy',
-  PENNYLANE_V2: 'pennylane-accounting-v2',
-  PENNYLANE_LEGACY: 'pennylane-accounting-legacy',
-  SOCIAL_MANAGEMENT: 'social-management',
-}
-
 describe('registerCollaboratorNavigationItems', () => {
   beforeEach(() => {
-    NavigationManager.resetMenuItems()
+    NavigationManager.resetNavigationItems()
     registerCollaboratorNavigationItems()
   })
 
-  it('should add five sidebar items', () => {
-    // @ts-expect-error - Accessing private static field for test
-    expect(NavigationManager.menuItems.size).toBe(5)
-  })
+  it('should register all expected routeNames across contexts', () => {
+    const gedContext = createNavigationContext({
+      shouldShowBIReports: true,
+      hasGed: true,
+      hasPennylaneAccounting: false,
+      hasSocialManagementV2: false,
+    })
 
-  it.each([
-    { itemKey: 'bi-reports', expectedRouteName: RouteName.REPORTS },
-    { itemKey: 'documents-legacy', expectedRouteName: RouteName.GED },
-    { itemKey: 'pennylane-accounting-v2', expectedRouteName: RouteName.PENNYLANE_GED_V2 },
-    { itemKey: 'pennylane-accounting-legacy', expectedRouteName: RouteName.PENNYLANE_GED_LEGACY },
-    { itemKey: 'social-management', expectedRouteName: RouteName.PENNYLANE_SOCIAL_MANAGEMENT },
-  ])('should register $itemKey sidebar item with correct routeName', ({ itemKey, expectedRouteName }) => {
-    const config = NavigationManager.getMenuItem(itemKey)
+    const pennylaneContext = createNavigationContext({
+      shouldShowBIReports: true,
+      hasGed: true,
+      hasPennylaneAccounting: true,
+      hasPennylaneAccountingGedV2: true,
+      hasSocialManagementV2: true,
+    })
 
-    expect(config?.routeName).toBe(expectedRouteName)
+    const gedItems = NavigationManager.getNavigationItems(gedContext)
+    const pennylaneItems = NavigationManager.getNavigationItems(pennylaneContext)
+    const allRouteNames = [
+      ...gedItems.map(item => item.routeName),
+      ...pennylaneItems.map(item => item.routeName),
+    ]
+
+    expect(allRouteNames).toContain(RouteName.HOMEPAGE)
+    expect(allRouteNames).toContain(RouteName.ENTITY_OVERVIEW)
+    expect(allRouteNames).toContain(RouteName.REPORTS)
+    expect(allRouteNames).toContain(RouteName.GED)
+    expect(allRouteNames).toContain(RouteName.PENNYLANE_GED_V2)
+    expect(allRouteNames).toContain(RouteName.PENNYLANE_SOCIAL_MANAGEMENT)
   })
 
   describe('shouldDisplay behavior - User with legacy GED only', () => {
@@ -47,29 +48,23 @@ describe('registerCollaboratorNavigationItems', () => {
       hasSocialManagementV2: false,
     })
 
-    it('should display basic items and legacy GED', () => {
-      const visibleItems = [
-        'bi-reports',
-        'documents-legacy',
-      ]
+    it('should display home, overview, BI reports and legacy GED', () => {
+      const items = NavigationManager.getNavigationItems(context)
+      const routeNames = items.map(item => item.routeName)
 
-      visibleItems.forEach(itemKey => {
-        const config = NavigationManager.getMenuItem(itemKey)
-        expect(config?.shouldDisplay(context as any)).toBe(true)
-      })
+      expect(routeNames).toContain(RouteName.HOMEPAGE)
+      expect(routeNames).toContain(RouteName.ENTITY_OVERVIEW)
+      expect(routeNames).toContain(RouteName.REPORTS)
+      expect(routeNames).toContain(RouteName.GED)
     })
 
     it('should hide Pennylane and Social Management items', () => {
-      const hiddenItems = [
-        'pennylane-accounting-v2',
-        'pennylane-accounting-legacy',
-        'social-management',
-      ]
+      const items = NavigationManager.getNavigationItems(context)
+      const routeNames = items.map(item => item.routeName)
 
-      hiddenItems.forEach(itemKey => {
-        const config = NavigationManager.getMenuItem(itemKey)
-        expect(config?.shouldDisplay(context as any)).toBe(false)
-      })
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_GED_V2)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_GED_LEGACY)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_SOCIAL_MANAGEMENT)
     })
   })
 
@@ -82,29 +77,23 @@ describe('registerCollaboratorNavigationItems', () => {
       hasSocialManagementV2: false,
     })
 
-    it('should display basic items and Pennylane V2', () => {
-      const visibleItems = [
-        'bi-reports',
-        'pennylane-accounting-v2',
-      ]
+    it('should display home, overview, BI reports and Pennylane V2', () => {
+      const items = NavigationManager.getNavigationItems(context)
+      const routeNames = items.map(item => item.routeName)
 
-      visibleItems.forEach(itemKey => {
-        const config = NavigationManager.getMenuItem(itemKey)
-        expect(config?.shouldDisplay(context as any)).toBe(true)
-      })
+      expect(routeNames).toContain(RouteName.HOMEPAGE)
+      expect(routeNames).toContain(RouteName.ENTITY_OVERVIEW)
+      expect(routeNames).toContain(RouteName.REPORTS)
+      expect(routeNames).toContain(RouteName.PENNYLANE_GED_V2)
     })
 
     it('should hide legacy GED, legacy Pennylane and Social Management', () => {
-      const hiddenItems = [
-        'documents-legacy',
-        'pennylane-accounting-legacy',
-        'social-management',
-      ]
+      const items = NavigationManager.getNavigationItems(context)
+      const routeNames = items.map(item => item.routeName)
 
-      hiddenItems.forEach(itemKey => {
-        const config = NavigationManager.getMenuItem(itemKey)
-        expect(config?.shouldDisplay(context as any)).toBe(false)
-      })
+      expect(routeNames).not.toContain(RouteName.GED)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_GED_LEGACY)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_SOCIAL_MANAGEMENT)
     })
   })
 
@@ -118,29 +107,23 @@ describe('registerCollaboratorNavigationItems', () => {
       hasSocialManagementV2: false,
     })
 
-    it('should display basic items and Pennylane legacy', () => {
-      const visibleItems = [
-        'bi-reports',
-        'pennylane-accounting-legacy',
-      ]
+    it('should display home, overview, BI reports and Pennylane legacy', () => {
+      const items = NavigationManager.getNavigationItems(context)
+      const routeNames = items.map(item => item.routeName)
 
-      visibleItems.forEach(itemKey => {
-        const config = NavigationManager.getMenuItem(itemKey)
-        expect(config?.shouldDisplay(context as any)).toBe(true)
-      })
+      expect(routeNames).toContain(RouteName.HOMEPAGE)
+      expect(routeNames).toContain(RouteName.ENTITY_OVERVIEW)
+      expect(routeNames).toContain(RouteName.REPORTS)
+      expect(routeNames).toContain(RouteName.PENNYLANE_GED_LEGACY)
     })
 
     it('should hide legacy GED, Pennylane V2 and Social Management', () => {
-      const hiddenItems = [
-        'documents-legacy',
-        'pennylane-accounting-v2',
-        'social-management',
-      ]
+      const items = NavigationManager.getNavigationItems(context)
+      const routeNames = items.map(item => item.routeName)
 
-      hiddenItems.forEach(itemKey => {
-        const config = NavigationManager.getMenuItem(itemKey)
-        expect(config?.shouldDisplay(context as any)).toBe(false)
-      })
+      expect(routeNames).not.toContain(RouteName.GED)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_GED_V2)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_SOCIAL_MANAGEMENT)
     })
   })
 
@@ -152,29 +135,23 @@ describe('registerCollaboratorNavigationItems', () => {
       hasSocialManagementV2: true,
     })
 
-    it('should display basic items and Social Management', () => {
-      const visibleItems = [
-        'bi-reports',
-        'social-management',
-      ]
+    it('should display home, overview, BI reports and Social Management', () => {
+      const items = NavigationManager.getNavigationItems(context)
+      const routeNames = items.map(item => item.routeName)
 
-      visibleItems.forEach(itemKey => {
-        const config = NavigationManager.getMenuItem(itemKey)
-        expect(config?.shouldDisplay(context as any)).toBe(true)
-      })
+      expect(routeNames).toContain(RouteName.HOMEPAGE)
+      expect(routeNames).toContain(RouteName.ENTITY_OVERVIEW)
+      expect(routeNames).toContain(RouteName.REPORTS)
+      expect(routeNames).toContain(RouteName.PENNYLANE_SOCIAL_MANAGEMENT)
     })
 
     it('should hide legacy GED and Pennylane items', () => {
-      const hiddenItems = [
-        'documents-legacy',
-        'pennylane-accounting-v2',
-        'pennylane-accounting-legacy',
-      ]
+      const items = NavigationManager.getNavigationItems(context)
+      const routeNames = items.map(item => item.routeName)
 
-      hiddenItems.forEach(itemKey => {
-        const config = NavigationManager.getMenuItem(itemKey)
-        expect(config?.shouldDisplay(context as any)).toBe(false)
-      })
+      expect(routeNames).not.toContain(RouteName.GED)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_GED_V2)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_GED_LEGACY)
     })
   })
 
@@ -186,18 +163,50 @@ describe('registerCollaboratorNavigationItems', () => {
       hasSocialManagementV2: false,
     })
 
-    it('should hide all basic items', () => {
-      BASIC_ITEMS.forEach(itemKey => {
-        const config = NavigationManager.getMenuItem(itemKey)
-        expect(config?.shouldDisplay(context as any)).toBe(false)
-      })
+    it('should only display always-visible items', () => {
+      const items = NavigationManager.getNavigationItems(context)
+      const routeNames = items.map(item => item.routeName)
+
+      expect(routeNames).toContain(RouteName.HOMEPAGE)
+      expect(routeNames).toContain(RouteName.ENTITY_OVERVIEW)
     })
 
-    it('should hide all document items', () => {
-      Object.values(DOCUMENT_ITEMS).forEach(itemKey => {
-        const config = NavigationManager.getMenuItem(itemKey)
-        expect(config?.shouldDisplay(context as any)).toBe(false)
-      })
+    it('should hide all permission-dependent items', () => {
+      const items = NavigationManager.getNavigationItems(context)
+      const routeNames = items.map(item => item.routeName)
+
+      expect(routeNames).not.toContain(RouteName.REPORTS)
+      expect(routeNames).not.toContain(RouteName.GED)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_GED_V2)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_GED_LEGACY)
+      expect(routeNames).not.toContain(RouteName.PENNYLANE_SOCIAL_MANAGEMENT)
+    })
+  })
+
+  describe('prospect entity navigation items', () => {
+    const context = createNavigationContext({})
+
+    it('should register prospect homepage and stepper items', () => {
+      const items = NavigationManager.getNavigationItems(context, AccountType.PROSPECT)
+      const routeNames = items.map(item => item.routeName)
+
+      expect(routeNames).toContain(RouteName.PROSPECT_HOMEPAGE)
+      expect(routeNames).toContain(RouteName.PROSPECT_STEPPER)
+    })
+
+    it('should return prospect items sorted by order', () => {
+      const items = NavigationManager.getNavigationItems(context, AccountType.PROSPECT)
+
+      expect(items[0].routeName).toBe(RouteName.PROSPECT_HOMEPAGE)
+      expect(items[1].routeName).toBe(RouteName.PROSPECT_STEPPER)
+    })
+
+    it('should not include regular entity items in prospect context', () => {
+      const items = NavigationManager.getNavigationItems(context, AccountType.PROSPECT)
+      const routeNames = items.map(item => item.routeName)
+
+      expect(routeNames).not.toContain(RouteName.HOMEPAGE)
+      expect(routeNames).not.toContain(RouteName.ENTITY_OVERVIEW)
     })
   })
 })

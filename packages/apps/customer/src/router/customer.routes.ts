@@ -19,29 +19,32 @@ export const CUSTOMER_ROUTES = {
     resetPasswordForm: { path: 'resetPasswordForm', name: RouteName.RESET_PASSWORD_FORM },
   },
   entity: {
-    root: { path: `/dossier/:${RouteParam.ENTITY_ID}`, name: RouteName.ENTITY },
-    homepage: { path: 'accueil', name: RouteName.HOMEPAGE },
-    overview: {
-      root: { path: '', name: RouteName.ENTITY_OVERVIEW },
-      users: { path: 'gestion-utilisateurs', name: RouteName.USERS },
-      offers: { path: 'offres', name: RouteName.OFFERS },
-      invoices: { path: 'factures-rydge-conseil', name: RouteName.RYDGE_INVOICES },
-      info: { path: 'informations', name: RouteName.INFO },
+    redirect: { path: `entity/:${RouteParam.ENTITY_ID}`, name: RouteName.ENTITY_REDIRECT },
+    regular: {
+      root: { path: `/dossier/:${RouteParam.ENTITY_ID}`, name: RouteName.ENTITY },
+      homepage: { path: 'accueil', name: RouteName.HOMEPAGE },
+      overview: {
+        root: { path: '', name: RouteName.ENTITY_OVERVIEW },
+        users: { path: 'gestion-utilisateurs', name: RouteName.USERS },
+        offers: { path: 'offres', name: RouteName.OFFERS },
+        invoices: { path: 'factures-rydge-conseil', name: RouteName.RYDGE_INVOICES },
+        info: { path: 'informations', name: RouteName.INFO },
+      },
+      powerbi: { path: 'rapports-bi', name: RouteName.REPORTS },
+      ged: { path: 'ged', name: RouteName.GED },
+      pennylaneAccounting: {
+        root: { path: 'comptabilite', name: RouteName.PENNYLANE_ACCOUNTING },
+        gedV2: { path: 'rydge', name: RouteName.PENNYLANE_GED_V2 },
+        gedLegacy: { path: 'archive', name: RouteName.PENNYLANE_GED_LEGACY },
+      },
+      pennylaneSocialManagement: { path: 'gestion-sociale', name: RouteName.PENNYLANE_SOCIAL_MANAGEMENT },
+      launcher: { path: 'launcher', name: RouteName.LAUNCHER },
     },
-    powerbi: { path: 'rapports-bi', name: RouteName.REPORTS },
-    ged: { path: 'ged', name: RouteName.GED },
-    pennylaneAccounting: {
-      root: { path: 'comptabilite', name: RouteName.PENNYLANE_ACCOUNTING },
-      gedV2: { path: 'rydge', name: RouteName.PENNYLANE_GED_V2 },
-      gedLegacy: { path: 'archive', name: RouteName.PENNYLANE_GED_LEGACY },
+    prospect: {
+      root: { path: `/contact/:${RouteParam.ENTITY_ID}`, name: RouteName.PROSPECT },
+      homepage: { path: 'accueil', name: RouteName.PROSPECT_HOMEPAGE },
+      stepper: { path: 'suivi-de-dossier', name: RouteName.PROSPECT_STEPPER },
     },
-    pennylaneSocialManagement: { path: 'gestion-sociale', name: RouteName.PENNYLANE_SOCIAL_MANAGEMENT },
-    launcher: { path: 'launcher', name: RouteName.LAUNCHER },
-  },
-  prospect: {
-    root: { path: `/contact/:${RouteParam.PROSPECT_ID}`, name: RouteName.PROSPECT },
-    homepage: { path: 'accueil', name: RouteName.PROSPECT_HOMEPAGE },
-    stepper: { path: 'suivi-de-dossier', name: RouteName.PROSPECT_STEPPER },
   },
   wallet: {
     root: { path: 'portefeuille', name: RouteName.WALLET },

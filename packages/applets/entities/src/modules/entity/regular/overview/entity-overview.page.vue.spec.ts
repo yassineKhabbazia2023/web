@@ -56,9 +56,12 @@ const useRouteSpy = vi.hoisted(() => vi.fn(() => ({
   name: RouteName.WALLET,
 })))
 
+const mockRouterReplace = vi.fn()
+
 vi.mock('vue-router', () => ({
   useRouter: () => ({
     push: mockRouterPush,
+    replace: mockRouterReplace,
   }),
   useRoute: useRouteSpy,
 }))

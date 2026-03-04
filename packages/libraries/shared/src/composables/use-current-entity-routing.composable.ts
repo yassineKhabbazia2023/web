@@ -4,7 +4,7 @@ import { RouterHelpers } from '@pulse/common/helpers'
 import { RouteParam } from '@pulse/common/enums'
 import { IS_UNITARY_VIEW_META } from '@pulse/common/constants'
 
-export function useCurrentEntity() {
+export function useCurrentEntityRouting() {
   const route = useRoute()
 
   const currentEntityId = computed(() => {

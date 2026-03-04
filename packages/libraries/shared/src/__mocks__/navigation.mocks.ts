@@ -1,14 +1,12 @@
-import type { MenuContext, MenuItemConfig } from '../types/navigation.types'
+import type { NavigationContext, NavigationItemConfig } from '../types/navigation.types'
 import type { RouteLocationNormalizedLoaded } from 'vue-router'
-import { PennylanePermission } from '@pulse/common/enums'
+import { AccountType, PennylanePermission } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
-import type { Permission } from '@pulse/common/types'
-
 /**
- * Factory to create a mock MenuContext with customizable overrides
+ * Factory to create a mock NavigationContext with customizable overrides
  */
-export function createMockMenuContext(overrides?: Partial<MenuContext>): MenuContext {
-  const defaultContext: MenuContext = {
+export function createMockNavigationContext(overrides?: Partial<NavigationContext>): NavigationContext {
+  const defaultContext: NavigationContext = {
     entityId: 123,
     isCollab: false,
     currentRoute: {
@@ -34,26 +32,7 @@ export function createMockMenuContext(overrides?: Partial<MenuContext>): MenuCon
 }
 
 /**
- * Factory to create a mock MenuContext with customizable permission functions
- */
-export function createMockMenuContextWithPermissions(options: {
-  entityId?: number
-  isCollab?: boolean
-  hasPermission?: (permission: Permission[]) => boolean
-  hasPennylanePermission?: (type: PennylanePermission) => boolean
-  shouldShowBIReports?: boolean
-}): MenuContext {
-  return createMockMenuContext({
-    entityId: options.entityId,
-    isCollab: options.isCollab,
-    hasPermission: options.hasPermission ?? (() => false),
-    hasPennylanePermission: options.hasPennylanePermission ?? (() => false),
-    shouldShowBIReports: options.shouldShowBIReports ?? false,
-  })
-}
-
-/**
- * Factory to create a mock MenuContext with boolean permission flags
+ * Factory to create a mock NavigationContext with boolean permission flags
  * Useful for navigation registry tests
  */
 export function createNavigationContext(options: {
@@ -64,8 +43,21 @@ export function createNavigationContext(options: {
   hasPennylaneAccountingGedLegacy?: boolean
   hasSocialManagementV2?: boolean
   hasApps?: boolean
-}): Partial<MenuContext> {
+}): NavigationContext {
   return {
+    entityId: 601,
+    isCollab: false,
+    currentRoute: {
+      path: '/',
+      fullPath: '/',
+      name: 'homepage',
+      params: {},
+      query: {},
+      hash: '',
+      matched: [],
+      meta: {},
+      redirectedFrom: undefined,
+    } as RouteLocationNormalizedLoaded,
     shouldShowBIReports: options.shouldShowBIReports ?? false,
     hasPermission: (permission) => {
       if (permission === ACCOUNT_PERMISSIONS.GED) {
@@ -82,18 +74,20 @@ export function createNavigationContext(options: {
         case PennylanePermission.GED_V2: return options.hasPennylaneAccountingGedV2 ?? false
         case PennylanePermission.GED_LEGACY: return options.hasPennylaneAccountingGedLegacy ?? false
         case PennylanePermission.SOCIAL_V2: return options.hasSocialManagementV2 ?? false
+        default: return false
       }
     },
   }
 }
 
 /**
- * Factory to create a mock MenuItemConfig with customizable overrides
+ * Factory to create a mock NavigationItemConfig with customizable overrides
  */
-export function createMockMenuItem(overrides?: Partial<MenuItemConfig>): MenuItemConfig {
-  const defaultItem: MenuItemConfig = {
+export function createMockNavigationItemConfig(overrides?: Partial<NavigationItemConfig>): NavigationItemConfig {
+  const defaultItem: NavigationItemConfig = {
     id: 'test-item',
-    title: 'shared.sidebar.testItem',
+    accountType: AccountType.REGULAR,
+    title: () => 'shared.sidebar.testItem',
     icon: 'house',
     routeName: 'homepage' as any, // Default test route name
     shouldDisplay: () => true,

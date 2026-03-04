@@ -1,6 +1,6 @@
 export * from './deep-link.guard'
 export * from './entity.documents.guard'
-export * from './entity.guard'
+export * from './current-entity.guard'
 export * from './feature-flag.guard'
 export * from './scroll-reset.guard'
 export * from './seo.guard'

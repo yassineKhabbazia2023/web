@@ -1,7 +1,7 @@
 import { setActivePinia, createPinia } from 'pinia'
 import { useCurrentEntityStore } from './current-entity.store'
 import { getMockedEntitySummary, getMockedSubscription } from '@common/__mocks__'
-import { SubscriptionOfferCode } from '@pulse/common/enums'
+import { AccountType, SubscriptionOfferCode } from '@pulse/common/enums'
 
 const currentEntityMock = getMockedEntitySummary()
 
@@ -44,6 +44,24 @@ describe('test currentEntityStore', () => {
 
     currentEntityStore.reset()
     expect(currentEntityStore.currentEntity).toBeUndefined()
+  })
+
+  describe('currentAccountType', () => {
+    it('should return REGULAR by default when no entity is set', () => {
+      expect(currentEntityStore.currentAccountType).toBe(AccountType.REGULAR)
+    })
+
+    it('should return REGULAR when entity has REGULAR type', () => {
+      currentEntityStore.setCurrentEntity(getMockedEntitySummary({ accountType: AccountType.REGULAR }))
+
+      expect(currentEntityStore.currentAccountType).toBe(AccountType.REGULAR)
+    })
+
+    it('should return PROSPECT when entity has PROSPECT type', () => {
+      currentEntityStore.setCurrentEntity(getMockedEntitySummary({ accountType: AccountType.PROSPECT }))
+
+      expect(currentEntityStore.currentAccountType).toBe(AccountType.PROSPECT)
+    })
   })
 
   describe('hasOffer', () => {

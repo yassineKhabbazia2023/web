@@ -541,7 +541,7 @@ const onClickDeploy = async (accountId: number, accountNumber: string, companyNa
   openOffersDrawer.value = true
 }
 const onClickFolder = (entityId: string) => {
-  router.push({ name: RouteName.ENTITY_OVERVIEW, params: { [RouteParam.ENTITY_ID]: entityId } })
+  router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
 const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
   searchCriteria.value = {

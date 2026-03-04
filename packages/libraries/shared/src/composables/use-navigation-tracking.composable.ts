@@ -16,6 +16,10 @@ export const useNavigationTracking = () => {
    * Uses featureName if defined, otherwise translates the title
    */
   const trackNavigationFeature = (menuItem: NavigationItem) => {
+    if (menuItem.doNotTrack === true) {
+      return
+    }
+
     const { featureName, title } = menuItem
 
     AmplitudeService.track('Feature Consulted', {
@@ -23,18 +27,7 @@ export const useNavigationTracking = () => {
     })
   }
 
-  /**
-   * Track a feature directly by name
-   * Used for static navigation items that don't have a NavigationItem object
-   */
-  const trackFeature = (featureName: string) => {
-    AmplitudeService.track('Feature Consulted', {
-      feature_name: featureName,
-    })
-  }
-
   return {
     trackNavigationFeature,
-    trackFeature,
   }
 }

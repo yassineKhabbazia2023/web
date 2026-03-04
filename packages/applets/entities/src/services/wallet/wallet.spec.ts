@@ -7,7 +7,7 @@ import {
   fetchAccountContacts,
   fetchCustomers,
 } from '.'
-import { ContactType } from '@pulse/common/enums'
+import { ContactType, AccountType } from '@pulse/common/enums'
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
 import { getMockedEntitiesStatistics } from '@entities/__mocks__/filters.mocks'
 import type { Entity } from '@pulse/common/types'
@@ -23,12 +23,14 @@ const TEST_ENTITIES: Entity[] = [
     accountNumber: '2024643902',
     legalName: 'Test 1',
     color: 'orange',
+    accountType: AccountType.REGULAR,
   },
   {
     accountId: 2,
     accountNumber: '3524433298',
     legalName: 'Test 2',
     color: 'cyan',
+    accountType: AccountType.REGULAR,
   },
 ]
 

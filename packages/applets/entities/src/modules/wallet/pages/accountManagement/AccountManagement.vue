@@ -171,7 +171,7 @@ const handlePageChange = (currentPage: number) => {
   searchCriteria.value.currentPage = currentPage
 }
 const handleOpenFolder = (entityId: string) => {
-  router.push({ name: RouteName.ENTITY_OVERVIEW, params: { [RouteParam.ENTITY_ID]: entityId } })
+  router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
 const handleSort = (param: SortingCriteria) => {
   const { handleSortCriteria } = useSort()

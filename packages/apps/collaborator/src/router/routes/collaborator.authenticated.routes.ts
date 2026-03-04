@@ -6,7 +6,7 @@ import { logger } from '@pulse/toolbox'
 import { useLoadingStore } from '@pulse/common/stores'
 import { CollaboratorAuthenticatedFlowManager } from '@collaborator/managers/collaborator.authenticated.flow.manager'
 
-import { entityCollaboratorRoutes } from './collaborator.entity.routes'
+import { entityCollaboratorRoutes } from './entity/collaborator.entity.routes'
 import { walletCollaboratorRoutes } from './collaborator.wallet.routes'
 import { landingCollaboratorRoutes } from './collaborator.landing.routes'
 

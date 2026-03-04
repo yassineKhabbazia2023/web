@@ -4,7 +4,7 @@ import type { MaybeRefOrGetter } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager, PennylanePermissionsManager, ReportingManager } from '@pulse/common/managers'
-import type { MenuContext } from '@shared/types/navigation.types'
+import type { NavigationContext } from '@shared/types/navigation.types'
 import type { Permission } from '@pulse/common/types'
 
 /**
@@ -15,18 +15,18 @@ function hasPermission(permission: Permission[]): boolean {
 }
 
 /**
- * Composable for building the MenuContext used by NavigationManager
+ * Composable for building the NavigationContext used by NavigationManager
  *
  * @param entityId - The current entity ID (ref or getter)
- * @returns An object containing the menuContext computed and refreshBIReports function
+ * @returns An object containing the navigationContext computed and refreshBIReports function
  *
  * @example
- * const { menuContext, refreshBIReports } = useMenuContext(() => props.currentEntityId)
+ * const { navigationContext, refreshBIReports } = useNavigationContext(() => props.currentEntityId)
  *
  * // Call refreshBIReports when you need to update BI reports permission
  * onMounted(() => refreshBIReports())
  */
-export function useMenuContext(entityId: MaybeRefOrGetter<number | undefined>) {
+export function useNavigationContext(entityId: MaybeRefOrGetter<number | undefined>) {
   const route = useRoute()
   const userStore = useUserStore()
 
@@ -36,7 +36,7 @@ export function useMenuContext(entityId: MaybeRefOrGetter<number | undefined>) {
     shouldShowBIReportsInternal.value = await ReportingManager.canShowBIReports()
   }
 
-  const menuContext = computed<MenuContext>(() => {
+  const navigationContext = computed<NavigationContext>(() => {
     return {
       entityId: toValue(entityId) ?? 0,
       isCollab: userStore.isCollab ?? false,
@@ -48,7 +48,7 @@ export function useMenuContext(entityId: MaybeRefOrGetter<number | undefined>) {
   })
 
   return {
-    menuContext,
+    navigationContext,
     refreshBIReports,
   }
 }

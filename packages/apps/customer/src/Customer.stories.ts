@@ -2,7 +2,7 @@ import { ref, onMounted, computed } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import type { RouteRecordRaw } from 'vue-router'
 import { useRouter } from 'vue-router'
-import { RouteParam, CustomerPermission, RouteName, Layout } from '@pulse/common/enums'
+import { RouteParam, CustomerPermission, RouteName, Layout, AccountType } from '@pulse/common/enums'
 import { useUserStore, useCurrentEntityStore, usePermissionsStore } from '@pulse/common/stores'
 import { getMockedUser, getMockedEntitySummary, getMockedSubscription } from '@pulse/common/mocks'
 import { LAYOUT_META } from '@pulse/common/constants'
@@ -12,7 +12,7 @@ import type { UserConfig } from '@pulse/shared/types'
 import CustomerHomeExperience from './experiences/customer-home.experience.vue'
 
 // Import existing routes from customer app
-import { entityCustomerRoutes } from './router/routes/customer.entity.routes'
+import { entityCustomerRoutes } from './router/routes/entity/customer.entity.routes'
 import { walletCustomerRoutes } from './router/routes/customer.wallet.routes'
 import { landingCustomerRoutes } from './router/routes/customer.landing.routes'
 import { registerCustomerNavigationItems } from './router/registry/customer.navigation.registry'
@@ -117,6 +117,7 @@ function toEntity(entity: ReturnType<typeof getMockedEntitySummary>): Entity {
     accountId: entity.accountId,
     accountNumber: entity.accountNumber,
     legalName: entity.legalName,
+    accountType: AccountType.REGULAR,
   }
 }
 

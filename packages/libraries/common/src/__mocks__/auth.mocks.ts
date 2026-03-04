@@ -1,5 +1,5 @@
 import type { UserInfoApi, UserContextInfo } from '../types/user.type'
-import { CustomerPermission } from '../enums/permission.enum'
+import { CustomerPermission, AccountType } from '../enums'
 import { tokenMock } from './token.mocks'
 import { getMockedUserApi, getMockedUserContext } from './user.mocks'
 import { MockEntityId, MockEntityData } from './entities.mocks'
@@ -49,16 +49,19 @@ export function getUserContextResponseMock(override: Partial<UserContextInfo> = 
         accountId: MockEntityId.BASIC,
         accountNumber: MockEntityData.BASIC.accountNumber,
         legalName: MockEntityData.BASIC.legalName,
+        accountType: AccountType.REGULAR,
       },
       {
         accountId: MockEntityId.LEGACY_GED,
         accountNumber: MockEntityData.LEGACY_GED.accountNumber,
         legalName: MockEntityData.LEGACY_GED.legalName,
+        accountType: AccountType.REGULAR,
       },
       {
         accountId: MockEntityId.PENNYLANE,
         accountNumber: MockEntityData.PENNYLANE.accountNumber,
         legalName: MockEntityData.PENNYLANE.legalName,
+        accountType: AccountType.REGULAR,
       },
     ],
     ...override,

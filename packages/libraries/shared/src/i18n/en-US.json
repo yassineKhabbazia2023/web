@@ -17,7 +17,8 @@
       "open": "Open",
       "close": "Close",
       "favorites": "Favorites",
-      "globalView": "Global view"
+      "globalView": "Global view",
+      "stepper": "Stepper"
     }
   },
   "modals": {

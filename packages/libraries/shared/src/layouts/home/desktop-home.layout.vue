@@ -30,7 +30,7 @@
               :favorite-entities="favoriteEntities"
               :user-config="userConfig"
             />
-            <SidebarEntity />
+            <SidebarEntity v-if="isEntityView" />
           </div>
         </PAside>
         <PContainer
@@ -53,6 +53,7 @@ import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { PCHeader, PAside, PContainer } from '@pulse/styleguide/components'
 import { ContentLoader } from '@pulse/shared/components'
+import { useCurrentEntityRouting } from '@pulse/shared/composables'
 import { useLoadingStore } from '@pulse/common/stores'
 import UserProfile from './user-profile'
 import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
@@ -62,6 +63,7 @@ import type { HomeLayoutProps } from './home.layout.types'
 
 const router = useRouter()
 const { isContentLoading } = storeToRefs(useLoadingStore())
+const { isEntityView } = useCurrentEntityRouting()
 
 const hasUserProfileDrawerOpened = ref(false)
 
