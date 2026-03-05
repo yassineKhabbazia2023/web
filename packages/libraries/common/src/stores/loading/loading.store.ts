@@ -27,7 +27,12 @@ export const useLoadingStore = defineStore('loading', () => {
     loadingRef.value = false
   }
 
-  function startGlobalLoading() {
+  function startGlobalLoading(options: { immediate?: boolean } = {}) {
+    if (options.immediate === true) {
+      isGlobalLoading.value = true
+      return
+    }
+
     startLoading(isGlobalLoading)
   }
 

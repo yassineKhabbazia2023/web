@@ -1,7 +1,7 @@
 import { useLogout } from './use-logout.composable'
 import { RouteName } from '@pulse/common/enums'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
-import { useUserStore } from '@pulse/common/stores'
+import { useLoadingStore, useUserStore } from '@pulse/common/stores'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager } from '@pulse/common/managers'
 
@@ -31,6 +31,15 @@ describe('useLogout', () => {
     await handleLogout()
 
     expect(CurrentUserManager.logout).toHaveBeenCalled()
+  })
+
+  it('should start global loading on handleLogout', async () => {
+    const loadingStoreMock = getStoreMock(useLoadingStore)
+    const { handleLogout } = useLogout()
+
+    await handleLogout()
+
+    expect(loadingStoreMock.startGlobalLoading).toHaveBeenCalledWith({ immediate: true })
   })
 
   it('should track successful logout event', async () => {
@@ -80,6 +89,21 @@ describe('useLogout', () => {
     vi.advanceTimersByTime(250)
 
     expect(mockPush).toHaveBeenCalledWith({ name: RouteName.LOGIN_COLLAB })
+    vi.useRealTimers()
+  })
+
+  it('should stop global loading when router navigation fails', async () => {
+    vi.useFakeTimers()
+    mockPush.mockRejectedValueOnce(new Error('Navigation failed'))
+    const loadingStoreMock = getStoreMock(useLoadingStore)
+
+    const { handleLogout } = useLogout()
+
+    await handleLogout()
+    vi.advanceTimersByTime(250)
+    await Promise.resolve()
+
+    expect(loadingStoreMock.stopGlobalLoading).toHaveBeenCalled()
     vi.useRealTimers()
   })
 })

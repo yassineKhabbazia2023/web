@@ -61,6 +61,27 @@ describe('useLoadingStore', () => {
 
       expect(store.isGlobalLoading).toBe(true)
     })
+
+    it('should set isGlobalLoading to true immediately when delay is skipped', () => {
+      const store = useLoadingStore()
+
+      store.startGlobalLoading({ immediate: true })
+
+      expect(store.isGlobalLoading).toBe(true)
+    })
+
+    it('should show loading immediately when delay is skipped after delayed start', () => {
+      const store = useLoadingStore()
+
+      store.startGlobalLoading()
+      vi.advanceTimersByTime(100)
+
+      store.startGlobalLoading({ immediate: true })
+
+      expect(store.isGlobalLoading).toBe(true)
+      vi.advanceTimersByTime(250)
+      expect(store.isGlobalLoading).toBe(true)
+    })
   })
 
   describe('stopGlobalLoading', () => {
