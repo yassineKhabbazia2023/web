@@ -10,6 +10,6 @@ export function getNameIsValid(name: string) {
   return NAME_REG_EXP.test(name)
 }
 
-export function isNotNullNorEmpty(value: unknown) {
+export function isNotNullNorEmpty<T>(value: T): value is Exclude<T, null | undefined | ''> {
   return value !== undefined && value !== null && value !== ''
 }

@@ -1,7 +1,7 @@
 import { AiMonitoringService } from './ai-monitoring.service'
 import gatewayApi from '@backoffice/api/gateway-api'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@backoffice/constants/backoffice.const'
-import type { AiSearchHistoryResponse } from '@backoffice/types/ai-monitoring.type'
+import type { AiSearchHistoryResponse, AiMonitoringFiltersResponse } from '@backoffice/types/ai-monitoring.type'
 
 vi.mock('@backoffice/api/gateway-api', () => ({
   default: {
@@ -153,6 +153,40 @@ describe('AiMonitoringService', () => {
       vi.mocked(gatewayApi.get).mockRejectedValue(error)
 
       await expect(AiMonitoringService.getHistory()).rejects.toThrow('Network error')
+    })
+  })
+
+  describe('getFilters', () => {
+    const mockFiltersResponse: AiMonitoringFiltersResponse = {
+      features: [
+        {
+          value: 'Catalogue des offres',
+          label: 'Catalogue des offres',
+          sub_features: [
+            { value: 'Recherche', label: 'Recherche' },
+            { value: 'Vente', label: 'Vente' },
+          ],
+        },
+      ],
+      users: [
+        { value: 'john.doe@example.com', label: 'John Doe (john.doe@example.com)' },
+      ],
+    }
+
+    it('should fetch filters successfully', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockFiltersResponse })
+
+      const result = await AiMonitoringService.getFilters()
+
+      expect(gatewayApi.get).toHaveBeenCalledWith('aiservices/api/monitoring/filters')
+      expect(result).toEqual(mockFiltersResponse)
+    })
+
+    it('should throw error when API call fails', async () => {
+      const error = new Error('Network error')
+      vi.mocked(gatewayApi.get).mockRejectedValue(error)
+
+      await expect(AiMonitoringService.getFilters()).rejects.toThrow('Network error')
     })
   })
 })

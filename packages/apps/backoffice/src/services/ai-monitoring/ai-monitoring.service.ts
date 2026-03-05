@@ -1,4 +1,4 @@
-import type { AiSearchHistoryResponse, AiSearchHistoryQueryParams, GetAiHistoryParams } from '@backoffice/types/ai-monitoring.type'
+import type { AiSearchHistoryResponse, AiSearchHistoryQueryParams, GetAiHistoryParams, AiMonitoringFiltersResponse } from '@backoffice/types/ai-monitoring.type'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@backoffice/constants/backoffice.const'
 import { API_PREFIXES } from '@pulse/common/constants'
 import gatewayApi from '@backoffice/api/gateway-api'
@@ -43,6 +43,11 @@ export class AiMonitoringService {
     }
 
     const response = await gatewayApi.get<AiSearchHistoryResponse>(`${API_PREFIXES.AI_SERVICES}/monitoring/details`, { params: queryParams })
+    return response.data
+  }
+
+  static async getFilters(): Promise<AiMonitoringFiltersResponse> {
+    const response = await gatewayApi.get<AiMonitoringFiltersResponse>(`${API_PREFIXES.AI_SERVICES}/monitoring/filters`)
     return response.data
   }
 }

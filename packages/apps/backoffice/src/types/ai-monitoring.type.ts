@@ -43,3 +43,26 @@ export interface GetAiHistoryParams {
   subFeatures?: string[]
   users?: string[]
 }
+
+export interface AiMonitoringFilterOption {
+  value: string
+  label: string
+}
+
+export interface AiMonitoringFeatureOption {
+  value: string
+  label: string
+  sub_features: AiMonitoringFilterOption[]
+}
+
+export interface AiMonitoringFiltersResponse {
+  features: AiMonitoringFeatureOption[]
+  users: AiMonitoringFilterOption[]
+}
+
+export interface AiMonitoringFiltersState {
+  dateRange: [Date, Date] | null
+  feature: string | null
+  subFeature: string | null
+  user: string | null
+}

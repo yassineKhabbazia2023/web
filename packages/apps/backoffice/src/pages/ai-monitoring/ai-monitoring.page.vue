@@ -1,8 +1,18 @@
 <template>
   <div class="ai-monitoring-page">
-    <div class="padding-y--2 padding-x--6 padding-bottom--0">
+    <div
+      class="
+        padding-y--2
+        padding-x--6
+        padding-bottom--0
+      "
+    >
       <h1
-        class="font-large font-bold text-color--black-rock-900"
+        class="
+          font-large
+          font-bold
+          text-color--black-rock-900
+        "
         data-testid="ai-monitoring-page-title"
       >
         Dashboard Monitoring IA
@@ -13,6 +23,15 @@
     </div>
 
     <div class="padding--6">
+      <AiMonitoringFilters
+        v-model:filters="filters"
+        :features="filterFeatures"
+        :users="filterUsers"
+        :isLoading="isLoadingFilters"
+        @filter-change="handleFilterChange"
+        @reset-filters="resetFilters"
+      />
+
       <AiMonitoringTable
         :history="history"
         :totalItems="pagination.totalItems"
@@ -29,14 +48,21 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useAiMonitoring } from '@backoffice/composables/use-ai-monitoring.composable'
+import AiMonitoringFilters from './ai-monitoring-filters/ai-monitoring-filters.vue'
 import AiMonitoringTable from './ai-monitoring-table/ai-monitoring-table.vue'
 
 const {
   history,
   isLoading,
+  isLoadingFilters,
   pagination,
+  filters,
+  filterFeatures,
+  filterUsers,
   handlePageChange,
   handlePageSizeChange,
+  handleFilterChange,
+  resetFilters,
   initialize,
 } = useAiMonitoring()
 

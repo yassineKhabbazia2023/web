@@ -1,4 +1,44 @@
 import dayjs from 'dayjs'
+import { TIMEZONE } from '../../constants/timezone.const'
+
+interface DateParts {
+  year: string
+  month: string
+  day: string
+}
+
+/**
+ * Extracts date parts (year, month, day) from a Date object in Paris timezone.
+ * Uses fr-CA locale for ISO-like formatting (YYYY-MM-DD).
+ */
+export function getParisDateParts(date: Date): DateParts {
+  const formatter = new Intl.DateTimeFormat('fr-CA', {
+    timeZone: TIMEZONE.PARIS,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+  const [year, month, day] = formatter.format(date).split('-')
+  return { year, month, day }
+}
+
+/**
+ * Formats a Date to an ISO string representing the start of the day (00:00:00) in Paris timezone.
+ * Example: 2024-01-15 -> "2024-01-15T00:00:00"
+ */
+export function formatStartDateToISO(date: Date): string {
+  const { year, month, day } = getParisDateParts(date)
+  return `${year}-${month}-${day}T00:00:00`
+}
+
+/**
+ * Formats a Date to an ISO string representing the end of the day (23:59:59) in Paris timezone.
+ * Example: 2024-01-15 -> "2024-01-15T23:59:59"
+ */
+export function formatEndDateToISO(date: Date): string {
+  const { year, month, day } = getParisDateParts(date)
+  return `${year}-${month}-${day}T23:59:59`
+}
 
 /**
  * Compares two date strings and returns the more recent one.

@@ -1,4 +1,65 @@
-import { formatDateTime, formatTime, getMostRecentDate } from './dates.utils'
+import {
+  formatDateTime,
+  formatEndDateToISO,
+  formatStartDateToISO,
+  formatTime,
+  getMostRecentDate,
+  getParisDateParts,
+} from './dates.utils'
+
+describe('getParisDateParts', () => {
+  it('should return correct date parts for a given date', () => {
+    const date = new Date('2024-03-15T10:30:00Z')
+    const result = getParisDateParts(date)
+
+    expect(result.year).toBe('2024')
+    expect(result.month).toBe('03')
+    expect(result.day).toBe('15')
+  })
+
+  it('should handle dates at midnight UTC', () => {
+    const date = new Date('2024-01-01T00:00:00Z')
+    const result = getParisDateParts(date)
+
+    expect(result.year).toBe('2024')
+    expect(result.month).toBe('01')
+    expect(result.day).toBe('01')
+  })
+})
+
+describe('formatStartDateToISO', () => {
+  it('should format date with start of day time', () => {
+    const date = new Date('2024-03-15T14:30:00')
+    const result = formatStartDateToISO(date)
+
+    expect(result).toMatch(/^\d{4}-\d{2}-\d{2}T00:00:00$/)
+    expect(result).toContain('T00:00:00')
+  })
+
+  it('should handle end of year dates', () => {
+    const date = new Date('2024-12-31T23:59:59')
+    const result = formatStartDateToISO(date)
+
+    expect(result).toContain('T00:00:00')
+  })
+})
+
+describe('formatEndDateToISO', () => {
+  it('should format date with end of day time', () => {
+    const date = new Date('2024-03-15T14:30:00')
+    const result = formatEndDateToISO(date)
+
+    expect(result).toMatch(/^\d{4}-\d{2}-\d{2}T23:59:59$/)
+    expect(result).toContain('T23:59:59')
+  })
+
+  it('should handle start of year dates', () => {
+    const date = new Date('2024-01-01T00:00:00')
+    const result = formatEndDateToISO(date)
+
+    expect(result).toContain('T23:59:59')
+  })
+})
 
 describe('getMostRecentDate', () => {
   it.each([
