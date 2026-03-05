@@ -110,9 +110,12 @@ export class AzureDevOpsService {
     return response.data.value
   }
 
-  private static parseMepTagDate(tagName: string): Date | null {
+  private static parseMepTagDate(tagName: string, backofficeOnly: boolean = false): Date | null {
     const name = tagName.replace('refs/tags/', '')
-    const match = /^MEP\.(\d{4})\.(\d{2})\.(\d{2})-(\d{2}).(\d{2})$/.exec(name)
+    const pattern = backofficeOnly
+      ? /^MEP-BackOffice\.(\d{4})\.(\d{2})\.(\d{2})-(\d{2}).(\d{2})$/
+      : /^MEP\.(\d{4})\.(\d{2})\.(\d{2})-(\d{2}).(\d{2})$/
+    const match = pattern.exec(name)
 
     if (match === null) {
       return null
@@ -128,15 +131,16 @@ export class AzureDevOpsService {
     )
   }
 
-  private static findLatestMepTag(tags: AzureDevOpsRef[]): MepTag | null {
+  private static findLatestMepTag(tags: AzureDevOpsRef[], backofficeOnly: boolean = false): MepTag | null {
     const mepTags: MepTag[] = []
+    const tagPattern = backofficeOnly ? /\/MEP-BackOffice\./ : /\/MEP\.\d/
 
     for (const tag of tags) {
-      if (tag.name.includes('/MEP.') === false) {
+      if (tagPattern.test(tag.name) === false) {
         continue
       }
 
-      const date = this.parseMepTagDate(tag.name)
+      const date = this.parseMepTagDate(tag.name, backofficeOnly)
       if (date === null) {
         continue
       }
@@ -285,6 +289,21 @@ export class AzureDevOpsService {
     return { commits: allCommits, warnings }
   }
 
+  static isBackofficeCommit(comment: string): boolean {
+    return /backoffice/i.test(comment)
+  }
+
+  // When backofficeOnly is true, keep only commits from backoffice PRs.
+  // When backofficeOnly is false, exclude commits from backoffice PRs to show only standard MEP work items.
+  private static filterCommitsByBackoffice(
+    commits: AzureDevOpsCommit[],
+    backofficeOnly: boolean,
+  ): AzureDevOpsCommit[] {
+    return commits.filter((commit) =>
+      backofficeOnly === this.isBackofficeCommit(commit.comment),
+    )
+  }
+
   static extractPrId(comment: string): number | null {
     const match = /^Merged PR (\d+)/.exec(comment)
     if (match === null) {
@@ -412,9 +431,13 @@ export class AzureDevOpsService {
     return { commitId, tagName }
   }
 
-  static async getLatestMepTag(pat: string, repository: string): Promise<MepTag | null> {
+  static async getLatestMepTag(
+    pat: string,
+    repository: string,
+    backofficeOnly: boolean = false,
+  ): Promise<MepTag | null> {
     const tags = await this.fetchAllTags(pat, repository)
-    return this.findLatestMepTag(tags)
+    return this.findLatestMepTag(tags, backofficeOnly)
   }
 
   static async getWorkItemsForCommitRange(
@@ -422,14 +445,17 @@ export class AzureDevOpsService {
     repository: string,
     fromCommitId: string,
     toCommitId: string,
+    backofficeOnly: boolean = false,
   ): Promise<WorkItemsResult> {
     const { commits, warnings } = await this.fetchCommitsInRange(pat, repository, fromCommitId, toCommitId)
 
-    if (commits.length === 0) {
+    const filteredCommits = this.filterCommitsByBackoffice(commits, backofficeOnly)
+
+    if (filteredCommits.length === 0) {
       return { workItemsByTeam: {}, failedIds: [], warnings }
     }
 
-    const workItemIds = this.extractWorkItemIds(commits)
+    const workItemIds = this.extractWorkItemIds(filteredCommits)
     if (workItemIds.length === 0) {
       return { workItemsByTeam: {}, failedIds: [], warnings }
     }

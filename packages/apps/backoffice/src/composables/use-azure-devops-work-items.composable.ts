@@ -20,6 +20,7 @@ export function useAzureDevOpsWorkItems() {
   const isLoadingMepTag = ref<boolean>(false)
   const headInfo = ref<HeadInfo | null>(null)
   const isLoadingHead = ref<boolean>(false)
+  const backofficeOnly = ref<boolean>(false)
 
   // Repository selection computed
   const selectedRepository = computed(() => azureDevOpsStore.selectedRepository)
@@ -101,6 +102,7 @@ export function useAzureDevOpsWorkItems() {
         selectedRepository.value,
         fromCommitId.value.trim(),
         toCommitId.value.trim(),
+        backofficeOnly.value,
       )
 
       workItemsByTeam.value = result.workItemsByTeam
@@ -132,6 +134,7 @@ export function useAzureDevOpsWorkItems() {
       latestMepTag.value = await AzureDevOpsService.getLatestMepTag(
         azureDevOpsStore.pat,
         selectedRepository.value,
+        backofficeOnly.value,
       )
     } catch (err) {
       logger.error('Failed to fetch latest MEP tag:', err)
@@ -221,6 +224,7 @@ export function useAzureDevOpsWorkItems() {
   return {
     fromCommitId,
     toCommitId,
+    backofficeOnly,
     workItemsByTeam,
     failedWorkItemIds,
     warnings,
@@ -240,6 +244,7 @@ export function useAzureDevOpsWorkItems() {
     headInfo,
     isLoadingHead,
     fetchWorkItems,
+    fetchLatestMepTag,
     applyMepTagToFromCommit,
     applyHeadToToCommit,
   }

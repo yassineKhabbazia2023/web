@@ -19,12 +19,11 @@
           <div class="flex flex-gap--1 flex--align-items-center">
             <PInput
               id="from-commit-input"
-              :modelValue="fromCommitId"
+              v-model="fromCommitId"
               data-testid="work-items-from-commit-input"
               pPlaceholder="abc123..."
               :pDisabled="isLoading"
               :pStatus="fromCommitIdError ? 'error' : undefined"
-              @update:model-value="$emit('update:fromCommitId', $event)"
             />
             <PButton
               pType="tertiary"
@@ -51,12 +50,11 @@
           <div class="flex flex-gap--1 flex--align-items-center">
             <PInput
               id="to-commit-input"
-              :modelValue="toCommitId"
+              v-model="toCommitId"
               data-testid="work-items-to-commit-input"
               pPlaceholder="def456..."
               :pDisabled="isLoading"
               :pStatus="toCommitIdError ? 'error' : undefined"
-              @update:model-value="$emit('update:toCommitId', $event)"
             />
             <PButton
               pType="tertiary"
@@ -74,21 +72,29 @@
           </div>
         </PFormItem>
 
-        <PButton
-          pType="primary"
-          pSize="default"
-          data-testid="work-items-search-button"
-          :pDisabled="canSearch === false"
-          :pLoading="isLoading"
-          @click="$emit('search')"
-        >
-          <PIcon
-            pName="search"
-            pSize="16"
-            class="el-button__icon--left"
-          />
-          Rechercher
-        </PButton>
+        <div class="flex flex--direction-column flex-gap--2">
+          <PButton
+            pType="primary"
+            pSize="default"
+            data-testid="work-items-search-button"
+            :pDisabled="canSearch === false"
+            :pLoading="isLoading"
+            @click="$emit('search')"
+          >
+            <PIcon
+              pName="search"
+              pSize="16"
+              class="el-button__icon--left"
+            />
+            Rechercher
+          </PButton>
+          <PCheckbox
+            v-model="backofficeOnly"
+            data-testid="backoffice-only-checkbox"
+          >
+            BackOffice only
+          </PCheckbox>
+        </div>
       </div>
 
       <div class="flex flex-gap--4 margin-top--1">
@@ -134,12 +140,14 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PForm, PFormItem, PInput, PButton, PIcon, PTag, PLoader } from '@pulse/styleguide/components'
+import { PForm, PFormItem, PInput, PButton, PIcon, PTag, PLoader, PCheckbox } from '@pulse/styleguide/components'
 import type { MepTag, HeadInfo } from '@backoffice/types/azure-devops.type'
 
+const fromCommitId = defineModel<string>('fromCommitId', { required: true })
+const toCommitId = defineModel<string>('toCommitId', { required: true })
+const backofficeOnly = defineModel<boolean>('backofficeOnly', { required: true })
+
 const props = defineProps<{
-  fromCommitId: string
-  toCommitId: string
   isLoading: boolean
   canSearch: boolean
   latestMepTag: MepTag | null
@@ -151,8 +159,6 @@ const props = defineProps<{
 }>()
 
 defineEmits<{
-  'update:fromCommitId': [value: string]
-  'update:toCommitId': [value: string]
   'search': []
   'applyMepTag': []
   'applyHead': []

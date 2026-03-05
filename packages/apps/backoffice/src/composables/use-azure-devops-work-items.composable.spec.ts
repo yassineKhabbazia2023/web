@@ -152,6 +152,68 @@ describe('useAzureDevOpsWorkItems', () => {
     })
   })
 
+  describe('backofficeOnly', () => {
+    it('should initialize backofficeOnly to false', () => {
+      const composable = useAzureDevOpsWorkItems()
+
+      expect(composable.backofficeOnly.value).toBe(false)
+    })
+
+    it('should pass backofficeOnly to service when fetching work items', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      mockedGetWorkItemsForCommitRange.mockResolvedValueOnce({
+        workItemsByTeam: {},
+        failedIds: [],
+        warnings: [],
+      })
+
+      const composable = useAzureDevOpsWorkItems()
+      composable.fromCommitId.value = 'a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2'
+      composable.toCommitId.value = 'b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3'
+      composable.backofficeOnly.value = true
+
+      await composable.fetchWorkItems()
+
+      expect(mockedGetWorkItemsForCommitRange).toHaveBeenCalledWith(
+        'valid-pat',
+        expect.any(String),
+        expect.any(String),
+        expect.any(String),
+        true,
+      )
+    })
+
+    it('should re-fetch MEP tag when fetchLatestMepTag is called after backofficeOnly changes', async () => {
+      mockedGetLatestMepTag.mockResolvedValue(null)
+      mockedGetHeadInfo.mockResolvedValue({ commitId: 'head', tagName: null })
+      mockedGetRepositories.mockResolvedValue([])
+
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+
+      const composable = useAzureDevOpsWorkItems()
+      await nextTick()
+
+      await vi.waitFor(() => {
+        expect(mockedGetLatestMepTag).toHaveBeenCalledWith('valid-pat', expect.any(String), false)
+      })
+
+      mockedGetLatestMepTag.mockClear()
+      mockedGetLatestMepTag.mockResolvedValue({
+        name: 'MEP-BackOffice.2024.01.01-10.00',
+        commitId: 'bo-mep-commit',
+        date: new Date(),
+      })
+
+      composable.backofficeOnly.value = true
+      await composable.fetchLatestMepTag()
+
+      expect(mockedGetLatestMepTag).toHaveBeenCalledWith('valid-pat', expect.any(String), true)
+    })
+  })
+
   describe('sortedTeamNames', () => {
     it('should sort teams by work item count descending', () => {
       const composable = useAzureDevOpsWorkItems()

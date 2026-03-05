@@ -211,6 +211,53 @@ describe('AzureDevOpsService', () => {
 
       expect(result?.name).toBe('MEP.2024.01.01-10.00')
     })
+
+    it('ignores MEP-BackOffice tags when backofficeOnly is false', async () => {
+      const mockRefs: AzureDevOpsRefsResponse = {
+        value: [
+          { name: 'refs/tags/MEP.2024.01.01-10.00', objectId: 'standard-commit' },
+          { name: 'refs/tags/MEP-BackOffice.2024.02.15-14.30', objectId: 'bo-commit' },
+        ],
+        count: 2,
+      }
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockRefs })
+
+      const result = await AzureDevOpsService.getLatestMepTag(mockPat, mockRepository, false)
+
+      expect(result?.name).toBe('MEP.2024.01.01-10.00')
+      expect(result?.commitId).toBe('standard-commit')
+    })
+
+    it('returns the latest MEP-BackOffice tag when backofficeOnly is true', async () => {
+      const mockRefs: AzureDevOpsRefsResponse = {
+        value: [
+          { name: 'refs/tags/MEP.2024.03.01-10.00', objectId: 'standard-commit' },
+          { name: 'refs/tags/MEP-BackOffice.2024.01.01-10.00', objectId: 'older-bo-commit' },
+          { name: 'refs/tags/MEP-BackOffice.2024.02.15-14.30', objectId: 'newer-bo-commit' },
+        ],
+        count: 3,
+      }
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockRefs })
+
+      const result = await AzureDevOpsService.getLatestMepTag(mockPat, mockRepository, true)
+
+      expect(result?.name).toBe('MEP-BackOffice.2024.02.15-14.30')
+      expect(result?.commitId).toBe('newer-bo-commit')
+    })
+
+    it('returns null when backofficeOnly is true but no MEP-BackOffice tags exist', async () => {
+      const mockRefs: AzureDevOpsRefsResponse = {
+        value: [
+          { name: 'refs/tags/MEP.2024.01.01-10.00', objectId: 'standard-commit' },
+        ],
+        count: 1,
+      }
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockRefs })
+
+      const result = await AzureDevOpsService.getLatestMepTag(mockPat, mockRepository, true)
+
+      expect(result).toBeNull()
+    })
   })
 
   describe('getWorkItemsForCommitRange', () => {
@@ -468,6 +515,137 @@ describe('AzureDevOpsService', () => {
       const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'non-existent-from', 'to')
 
       expect(result.warnings.some((w) => w.includes('non-exis'))).toBe(true)
+    })
+  })
+
+  describe('isBackofficeCommit', () => {
+    it('returns true for commit with BackOffice in comment', () => {
+      expect(AzureDevOpsService.isBackofficeCommit('Merged PR 1234: BackOffice Fix admin page')).toBe(true)
+    })
+
+    it('returns true for commit with backoffice in lowercase', () => {
+      expect(AzureDevOpsService.isBackofficeCommit('Merged PR 1234: backoffice Fix admin page')).toBe(true)
+    })
+
+    it('returns true for commit with BACKOFFICE in uppercase', () => {
+      expect(AzureDevOpsService.isBackofficeCommit('Merged PR 1234: BACKOFFICE Fix admin page')).toBe(true)
+    })
+
+    it('returns true for commit with [BackOffice] in brackets', () => {
+      expect(AzureDevOpsService.isBackofficeCommit('Merged PR 1234: [BackOffice] Fix')).toBe(true)
+    })
+
+    it('returns false for commit without backoffice', () => {
+      expect(AzureDevOpsService.isBackofficeCommit('Merged PR 1234: Fix regular feature')).toBe(false)
+    })
+
+    it('returns false for empty comment', () => {
+      expect(AzureDevOpsService.isBackofficeCommit('')).toBe(false)
+    })
+  })
+
+  describe('getWorkItemsForCommitRange with backofficeOnly', () => {
+    it('returns only backoffice work items when backofficeOnly is true', async () => {
+      const mockCommits: AzureDevOpsCommitsResponse = {
+        value: [
+          {
+            commitId: 'to',
+            comment: 'Merged PR 1: [BackOffice] Fix admin',
+            author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' },
+            workItems: [{ id: '100', url: 'https://dev.azure.com/.../100' }],
+          },
+          {
+            commitId: 'mid',
+            comment: 'Merged PR 2: Regular feature',
+            author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' },
+            workItems: [{ id: '200', url: 'https://dev.azure.com/.../200' }],
+          },
+          { commitId: 'from', comment: 'fix', author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' } },
+        ],
+        count: 3,
+      }
+      const mockWorkItems: AzureDevOpsWorkItemsBatchResponse = {
+        count: 1,
+        value: [{
+          id: 100,
+          fields: {
+            'System.Title': 'BO Work Item',
+            'System.WorkItemType': 'Task',
+            'System.State': 'Active',
+            'System.AreaPath': 'Pulse\\Team',
+          },
+          url: 'https://dev.azure.com/.../100',
+        }],
+      }
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
+      mockedAxiosPost.mockResolvedValueOnce({ data: mockWorkItems })
+
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to', true)
+
+      expect(result.workItemsByTeam['Team']).toHaveLength(1)
+      expect(result.workItemsByTeam['Team'][0].id).toBe(100)
+    })
+
+    it('excludes backoffice work items when backofficeOnly is false', async () => {
+      const mockCommits: AzureDevOpsCommitsResponse = {
+        value: [
+          {
+            commitId: 'to',
+            comment: 'Merged PR 1: [BackOffice] Fix admin',
+            author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' },
+            workItems: [{ id: '100', url: 'https://dev.azure.com/.../100' }],
+          },
+          {
+            commitId: 'mid',
+            comment: 'Merged PR 2: Regular feature',
+            author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' },
+            workItems: [{ id: '200', url: 'https://dev.azure.com/.../200' }],
+          },
+          { commitId: 'from', comment: 'fix', author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' } },
+        ],
+        count: 3,
+      }
+      const mockWorkItems: AzureDevOpsWorkItemsBatchResponse = {
+        count: 1,
+        value: [{
+          id: 200,
+          fields: {
+            'System.Title': 'Regular Work Item',
+            'System.WorkItemType': 'Task',
+            'System.State': 'Active',
+            'System.AreaPath': 'Pulse\\Team',
+          },
+          url: 'https://dev.azure.com/.../200',
+        }],
+      }
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
+      mockedAxiosPost.mockResolvedValueOnce({ data: mockWorkItems })
+
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to', false)
+
+      expect(result.workItemsByTeam['Team']).toHaveLength(1)
+      expect(result.workItemsByTeam['Team'][0].id).toBe(200)
+    })
+
+    it('returns empty result when backofficeOnly is true but no backoffice commits exist', async () => {
+      const mockCommits: AzureDevOpsCommitsResponse = {
+        value: [
+          {
+            commitId: 'to',
+            comment: 'Merged PR 1: Regular feature',
+            author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' },
+            workItems: [{ id: '100', url: 'https://dev.azure.com/.../100' }],
+          },
+          { commitId: 'from', comment: 'fix', author: { name: 'Dev', email: 'dev@test.com', date: '2024-01-01' } },
+        ],
+        count: 2,
+      }
+      mockedAxiosGet.mockResolvedValueOnce({ data: mockCommits })
+
+      const result = await AzureDevOpsService.getWorkItemsForCommitRange(mockPat, mockRepository, 'from', 'to', true)
+
+      expect(result.workItemsByTeam).toEqual({})
+      expect(mockedAxiosPost).not.toHaveBeenCalled()
     })
   })
 

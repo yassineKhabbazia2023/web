@@ -101,6 +101,7 @@
             <WorkItemsSearch
               v-model:fromCommitId="fromCommitId"
               v-model:toCommitId="toCommitId"
+              v-model:backofficeOnly="backofficeOnly"
               :isLoading="isLoading"
               :canSearch="canSearch"
               :latestMepTag="latestMepTag"
@@ -113,6 +114,7 @@
               @apply-mep-tag="applyMepTagToFromCommit"
               @apply-head="applyHeadToToCommit"
               @open-explorer="openExplorer"
+              @update:backoffice-only="fetchLatestMepTag"
             />
 
             <WorkItemsResults
@@ -325,6 +327,7 @@ const handleCommitSelected = (commitId: string): void => {
 const {
   fromCommitId,
   toCommitId,
+  backofficeOnly,
   workItemsByTeam,
   failedWorkItemIds,
   warnings,
@@ -343,6 +346,7 @@ const {
   headInfo,
   isLoadingHead,
   fetchWorkItems,
+  fetchLatestMepTag,
   applyMepTagToFromCommit,
   applyHeadToToCommit,
 } = useAzureDevOpsWorkItems()
