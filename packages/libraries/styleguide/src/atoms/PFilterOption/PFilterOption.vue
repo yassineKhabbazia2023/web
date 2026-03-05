@@ -82,6 +82,16 @@ const colorMapper = computed(() => {
   padding-bottom: 5px;
   transition: border-color var(--el-transition-duration) ease, background-color var(--el-transition-duration) ease;
 
+  &--color-default {
+    &:hover {
+      border-color: var(--p-jungle-700);
+    }
+    background-color: var(--p-jungle-100);
+    #{$self}__icon {
+      color: var(--p-jungle-700);
+    }
+  }
+
   &--color-success {
     &:hover {
       border-color: var(--p-green-500);
@@ -112,6 +122,26 @@ const colorMapper = computed(() => {
     }
   }
 
+  &--color-danger {
+    &:hover {
+      border-color: var(--p-red-500);
+    }
+    background-color: var(--p-red-100);
+    #{$self}__icon {
+      color: var(--p-red-800);
+    }
+  }
+
+  &--color-light-green {
+    &:hover {
+      border-color: var(--p-jungle-700);
+    }
+    background-color: var(--p-jungle-50);
+    #{$self}__icon {
+      color: var(--p-jungle-700);
+    }
+  }
+
   &--color-light-blue {
     &:hover {
       border-color: var(--p-teal-800);
@@ -119,6 +149,16 @@ const colorMapper = computed(() => {
     background-color: var(--p-teal-100);
     #{$self}__icon {
       color: var(--p-teal-800);
+    }
+  }
+
+  &--color-blue {
+    &:hover {
+      border-color: var(--p-black-rock-800);
+    }
+    background-color: var(--p-black-rock-100);
+    #{$self}__icon {
+      color: var(--p-black-rock-800);
     }
   }
 
@@ -132,21 +172,14 @@ const colorMapper = computed(() => {
     }
   }
 
-  &--color-danger {
+  &--color-purple {
     &:hover {
-      border-color: var(--p-red-500);
+      border-color: var(--p-persian-500);
     }
-    background-color: var(--p-red-100);
+    background-color: var(--p-persian-100);
     #{$self}__icon {
-      color: var(--p-red-800);
+      color: var(--p-persian-500);
     }
-  }
-
-  &--color-light-gray {
-    &:hover {
-      border-color: var(--p-black-rock-900);
-    }
-    background-color: var(--p-gray-50);
   }
 
   &--color-disabled {
@@ -154,6 +187,13 @@ const colorMapper = computed(() => {
       border-color: var(--p-text-disabled);
     }
     background-color: var(--p-surface-state-disabled);
+  }
+
+  &--color-light-gray {
+    &:hover {
+      border-color: var(--p-black-rock-900);
+    }
+    background-color: var(--p-gray-50);
   }
 
   &--color-gray {
@@ -164,6 +204,11 @@ const colorMapper = computed(() => {
   }
 
   &--selected {
+    &#{$self}--color-default {
+      background-color: var(--p-jungle-100);
+      border-color: var(--p-jungle-700);
+    }
+
     &#{$self}--color-success {
       background-color: var(--p-green-100);
       border-color: var(--p-green-500);
@@ -184,15 +229,36 @@ const colorMapper = computed(() => {
       border-color: var(--p-red-500);
     }
 
+    &#{$self}--color-light-green {
+      background-color: var(--p-jungle-50);
+      border-color: var(--p-jungle-700);
+    }
+
+    &#{$self}--color-light-blue {
+      background-color: var(--p-teal-100);
+      border-color: var(--p-teal-800);
+    }
+
+    &#{$self}--color-blue {
+      background-color: var(--p-black-rock-100);
+      border-color: var(--p-black-rock-800);
+    }
+
     &#{$self}--color-tranquil {
       background-color: var(--p-tranquil-50);
       border-color: var(--p-mint-tulip-800);
+    }
+
+    &#{$self}--color-purple {
+      background-color: var(--p-persian-100);
+      border-color: var(--p-persian-500);
     }
 
     &#{$self}--color-disabled {
       background-color: var(--p-surface-state-disabled);
       border-color: var(--p-text-disabled);
     }
+
   }
 
   &--disabled {
