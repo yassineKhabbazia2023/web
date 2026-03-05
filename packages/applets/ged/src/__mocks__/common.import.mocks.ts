@@ -38,8 +38,8 @@ export const defaultEntityMock: Entity = {
   accountType: AccountType.REGULAR,
 }
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     ds: {
       get: commonApiDsGetSpy,
       post: commonApiDsPostSpy,

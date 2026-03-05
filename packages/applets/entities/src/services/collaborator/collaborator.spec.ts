@@ -14,8 +14,8 @@ const accountId = 5
 const mockedCollaborators = getMockedCollaborators()
 const mockedCollabRoles = getMockedCollabRoles()
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       get: vi.fn().mockImplementation((url) => {
         if (url.startsWith(`${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator`)) {

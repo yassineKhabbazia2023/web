@@ -29,4 +29,12 @@ export class GigyaManager {
       logger.error('Error during Gigya SSO login: ', error)
     }
   }
+
+  static logoutSSO() {
+    try {
+      globalThis.gigya.accounts.logout()
+    } catch (error) {
+      logger.error('Error during Gigya SSO logout: ', error)
+    }
+  }
 }

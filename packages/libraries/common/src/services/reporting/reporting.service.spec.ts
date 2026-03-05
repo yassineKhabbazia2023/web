@@ -2,8 +2,8 @@ import { describe, it, expect, vi } from 'vitest'
 import { apiGatewayGetMock } from '../../__mocks__/vitest'
 import { ReportingService } from './reporting.service'
 
-vi.mock('../../api', () => ({
-  default: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       get: apiGatewayGetMock,
     },

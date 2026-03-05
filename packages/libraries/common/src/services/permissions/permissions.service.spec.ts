@@ -8,9 +8,9 @@ import {
 import { getPermissionsMock } from '@common/__mocks__'
 
 vi.mock('../../api', () => ({
-  default: () => ({
+  api: {
     gateway: apiGatewayMock,
-  }),
+  },
 }))
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))

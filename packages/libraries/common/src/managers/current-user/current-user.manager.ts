@@ -2,7 +2,9 @@ import type { UserInfo } from '../../types/user.type'
 import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useUserStore } from '../../stores/user/user.store'
 import { arrayIncludes } from '@pulse/toolbox/utils/array'
-import { logoutCollaborator, logoutGigyaSSO, logoutUser } from '../../utils/user.utils'
+import { logoutUser } from '../../services/authentication.service'
+import { MsalService } from '../../services/msal'
+import { GigyaManager } from '../gigya/gigya.manager'
 import { CurrentUserService } from '../../services/current-user/current-user.service'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
@@ -38,11 +40,11 @@ export class CurrentUserManager {
     await logoutUser()
 
     if (isCollab) {
-      await logoutCollaborator()
+      await MsalService.logout()
     }
 
     if (VITE_GIGYA_SSO_ACTIVATED === 'true') {
-      logoutGigyaSSO()
+      GigyaManager.logoutSSO()
     }
 
     // clean localStorage

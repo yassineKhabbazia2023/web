@@ -1,4 +1,4 @@
-import { commonApi as api } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import type {
   FeedCenterNotification,
   UnreadNotificationCountResponse,
@@ -16,7 +16,7 @@ const NOTIFICATION_API_PARAMS = {
 }
 
 export async function fetchUnreadNotificationsCount(): Promise<UnreadNotificationCountResponse> {
-  const { data } = await api().gateway.get(
+  const { data } = await api.gateway.get(
     `${NOTIFICATION_API_PREFIX}/currentuser/unread/count`,
     {
       params: {
@@ -28,7 +28,7 @@ export async function fetchUnreadNotificationsCount(): Promise<UnreadNotificatio
 }
 
 export async function fetchNotifications(): Promise<FetchNotificationsResponse> {
-  const { data } = await api().gateway.get(
+  const { data } = await api.gateway.get(
     `${NOTIFICATION_API_PREFIX}/currentuser`,
     NOTIFICATION_API_PARAMS,
   )
@@ -39,7 +39,7 @@ export async function patchNotificationReadStatus(notificationId: FeedCenterNoti
   const requestBody = {
     notificationId,
   }
-  await api().gateway.put(`${NOTIFICATION_API_PREFIX}/read/currentUser`, requestBody)
+  await api.gateway.put(`${NOTIFICATION_API_PREFIX}/read/currentUser`, requestBody)
 }
 
 export function patchAllNotificationsReadStatus(userId: number) {
@@ -47,11 +47,11 @@ export function patchAllNotificationsReadStatus(userId: number) {
     notificationReceiverId: userId,
     deviceType: 'desktop',
   }
-  return api().gateway.put(`${NOTIFICATION_API_PREFIX}/read/currentUser`, requestBody)
+  return api.gateway.put(`${NOTIFICATION_API_PREFIX}/read/currentUser`, requestBody)
 }
 
 export async function getNotificationSettings() {
-  const { data } = await api().gateway.get<NotificationSettingsConfiguration>(
+  const { data } = await api.gateway.get<NotificationSettingsConfiguration>(
     `${SETTINGS_API_PREFIX}/currentUser`,
     {
       ...NOTIFICATION_API_PARAMS,
@@ -62,7 +62,7 @@ export async function getNotificationSettings() {
 }
 
 export async function saveNotificationSettings(settingsToSave: NotificationSettingsSavePayload) {
-  await api().gateway.post(
+  await api.gateway.post(
     `${SETTINGS_API_PREFIX}/currentUser`,
     settingsToSave,
   )

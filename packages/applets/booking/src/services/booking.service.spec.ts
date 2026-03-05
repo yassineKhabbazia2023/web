@@ -5,8 +5,8 @@ import { BookingService } from './booking.service'
 import type { BookingConfigurationResponse, BookingConfigurationPayload } from '../types/booking.types'
 import { getMockedBookingServiceConfiguration } from '../__mocks__'
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: apiGatewayMock,
   }),
 }))

@@ -1,4 +1,4 @@
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import { logger } from '@pulse/toolbox'
 import type { AxiosResponse } from 'axios'
 
@@ -17,7 +17,7 @@ export class PennylaneService {
     }
 
     if (PennylaneService.availableRolesByCompanyId[companyId] === undefined) {
-      const apiCall = commonApi().gateway.get<PennylaneAvailableRole[]>(url, { params })
+      const apiCall = api.gateway.get<PennylaneAvailableRole[]>(url, { params })
       PennylaneService.availableRolesByCompanyId[companyId] = apiCall
     }
 
@@ -33,13 +33,13 @@ export class PennylaneService {
   static async createRole(role: PennylaneRole) {
     const url = `${API_PREFIXES.PENNYLANE}/role`
 
-    await commonApi().gateway.post(url, role, { params: { accountId: role.accountId, contactId: role.contactId } })
+    await api.gateway.post(url, role, { params: { accountId: role.accountId, contactId: role.contactId } })
   }
 
   static async getAccountContactRole(accountId: number, contactId: number) {
     const url = `${API_PREFIXES.PENNYLANE}/role/accounts/${accountId}/contacts/${contactId}`
 
-    const { data } = await commonApi().gateway.get<PennylaneRole>(url)
+    const { data } = await api.gateway.get<PennylaneRole>(url)
 
     return data
   }
@@ -59,7 +59,7 @@ export class PennylaneService {
     }
     const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/documents/currentuser`
 
-    const { data } = await commonApi().gateway.get<PennylaneDocumentQueryResult>(url, {
+    const { data } = await api.gateway.get<PennylaneDocumentQueryResult>(url, {
       params: queryParams,
     })
 
@@ -72,7 +72,7 @@ export class PennylaneService {
     }
     const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/documents/${documentId}/content/currentuser`
 
-    const { data } = await commonApi().gateway.get(url, {
+    const { data } = await api.gateway.get(url, {
       params: queryParams,
       responseType: 'arraybuffer',
     })
@@ -83,7 +83,7 @@ export class PennylaneService {
   static async checkPennylaneAccess(accountId: number): Promise<PennylaneAccessResponse> {
     const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/access/currentuser`
 
-    const { data } = await commonApi().gateway.get<PennylaneAccessResponse>(url)
+    const { data } = await api.gateway.get<PennylaneAccessResponse>(url)
 
     return data
   }
@@ -94,7 +94,7 @@ export class PennylaneService {
       accountId,
     }
 
-    const { data } = await commonApi().gateway.get(url, {
+    const { data } = await api.gateway.get(url, {
       params: queryParams,
       responseType: 'arraybuffer',
     })
@@ -105,7 +105,7 @@ export class PennylaneService {
   static async validatePennylaneAmendment(accountId: number, details: PennylaneValidationPayload) {
     const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/validation/currentuser`
 
-    const { data } = await commonApi().gateway.post(url, details)
+    const { data } = await api.gateway.post(url, details)
 
     return data
   }

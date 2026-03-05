@@ -1,11 +1,11 @@
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { PaginationResponse } from '@pulse/common/types'
 import type { OperationStatus } from '@entities/enums'
 import type { AccountOperations } from './registry.type'
 
 export const fetchOperationsForAccount = async (accountId: number) => {
-  const response = await commonApi().gateway.get(
+  const response = await api.gateway.get(
     `${API_PREFIXES.REGISTRY}/operations`,
     {
       params: {
@@ -18,7 +18,7 @@ export const fetchOperationsForAccount = async (accountId: number) => {
 }
 
 export async function fetchAccountOperations(page: number, pageSize: number, search?: string) {
-  const response = await commonApi().gateway.get<PaginationResponse<AccountOperations>>(
+  const response = await api.gateway.get<PaginationResponse<AccountOperations>>(
     `${API_PREFIXES.REGISTRY}/currentuser/operations`,
     {
       params: {
@@ -36,7 +36,7 @@ export const patchOperationStatus = async (
   operationId: number,
   status: OperationStatus.APPROVED | OperationStatus.REJECTED,
 ) => {
-  await commonApi().gateway.patch(
+  await api.gateway.patch(
     `${API_PREFIXES.REGISTRY}/operations/${operationId}/currentuser`,
     [
       {

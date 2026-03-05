@@ -12,8 +12,8 @@ vi.mock('@entities/helpers/entity.helper', () => ({
   handleRequestError: vi.fn(),
 }))
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       get: vi.fn().mockImplementation((url) => {
         if (url === `${API_PREFIXES.WALLET}/contacts`) {

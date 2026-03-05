@@ -1,14 +1,17 @@
 import { vi, describe, it, expect } from 'vitest'
+import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { apiGatewayMock, apiGatewayPostMock } from '../__mocks__/vitest'
-import { refreshClientToken, createNewPassword, updatePassword, login } from './authentication.service'
+import { refreshClientToken, createNewPassword, updatePassword, login, logoutUser } from './authentication.service'
 
 import type { CreateNewPasswordPayload, UpdatePasswordPayload, LoginPayload, LoginData } from './authentication.service.types'
 
 vi.mock('../api', () => ({
-  default: () => ({
+  api: {
     gateway: apiGatewayMock,
-  }),
+  },
 }))
+
+vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
 describe('test authentication.service', () => {
   describe('refreshClientToken', () => {
@@ -88,6 +91,26 @@ describe('test authentication.service', () => {
 
       expect(response).toStrictEqual(loginResponseMock)
       expect(apiGatewayPostMock).toHaveBeenCalledExactlyOnceWith(expectedUrl, loginPayload)
+    })
+  })
+  describe('logoutUser', () => {
+    it('should call gateway properly', async () => {
+      const expectedUrl = 'authentication/api/logout'
+
+      apiGatewayPostMock.mockResolvedValue(undefined as any)
+
+      await logoutUser()
+
+      expect(apiGatewayPostMock).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+    })
+
+    it('should log an error when the API call fails', async () => {
+      const expectedErrorMessage = 'API Error: 503 Service Unavailable'
+      apiGatewayPostMock.mockRejectedValue(expectedErrorMessage)
+
+      await logoutUser()
+
+      expect(loggerErrorSpy).toHaveBeenCalledExactlyOnceWith('Error during client logout: ', expectedErrorMessage)
     })
   })
 })

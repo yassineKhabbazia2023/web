@@ -6,8 +6,8 @@ import { getOffersCatalog, getOfferCatalogPdf, getOfferCatalogDetails, getOffers
 
 const offersCatalogMock = getOffersCatalogResponseMock()
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: apiGatewayMock,
   }),
 }))

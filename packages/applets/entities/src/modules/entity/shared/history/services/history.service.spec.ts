@@ -5,9 +5,9 @@ import { HistoryService } from './history.service'
 
 const commonApiGetMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/common', () => {
+vi.mock('@pulse/common/api', () => {
   return {
-    commonApi: () => ({
+    api: ({
       gateway: {
         get: commonApiGetMock,
       },

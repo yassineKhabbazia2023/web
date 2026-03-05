@@ -1,12 +1,12 @@
 import { logger } from '@pulse/toolbox'
-import api from '../../api'
+import { api } from '../../api'
 import type { UserContextInfo, UserInfo } from '../../types/user.type'
 
 export class CurrentUserService {
   static async getCurrentUserContext(): Promise<UserContextInfo | undefined> {
     try {
       const url = 'connect/api/get-user-information'
-      const { data } = await api().gateway.get(url)
+      const { data } = await api.gateway.get(url)
       const {
         contact,
         permissions,
@@ -31,7 +31,7 @@ export class CurrentUserService {
   static async getCurrentUser(): Promise<UserInfo | undefined> {
     try {
       const url = 'contact/me'
-      const { data } = await api().gateway.get(url)
+      const { data } = await api.gateway.get(url)
       const { firstName, lastName, id, email, officeMobile, isCustomer, oldId, persona } = data
 
       const user: UserInfo = {

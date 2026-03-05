@@ -50,14 +50,14 @@ const mockedReferentialHubs = getMockedReferentialHubs()
 const mockedReferentialOffices = getMockedReferentialOffices()
 const mockedAccountRow = getMockedAccountRow()
 const mockedPatchOperations = getMockedPatchOperations()
-const mockedAccountApiPatch = vi.fn()
+const mockedAccountApiPatch = vi.hoisted(() => vi.fn())
 const mockedCollaborators = getMockedCollaborators()
-const postSpy = vi.fn()
+const postSpy = vi.hoisted(() => vi.fn())
 const commonApiGetMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/common', () => {
+vi.mock('@pulse/common/api', () => {
   return {
-    commonApi: () => ({
+    api: ({
       gateway: {
         get: commonApiGetMock,
         patch: mockedAccountApiPatch,

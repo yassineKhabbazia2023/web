@@ -32,8 +32,8 @@ vi.mock('@pulse/styleguide', () => ({
   PNotification: spyPNotification,
 }))
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       patch: mockedPatchGateway,
     },

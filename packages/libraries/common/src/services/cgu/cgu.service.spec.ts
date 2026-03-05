@@ -21,9 +21,9 @@ const termsMock = {
 const cguMessageDone = { message: 'Done !' }
 
 vi.mock('../../api', () => ({
-  default: () => ({
+  api: {
     gateway: apiGatewayMock,
-  }),
+  },
 }))
 
 describe('getTermsByCurrentUser', () => {

@@ -18,8 +18,8 @@ vi.mock('./feed-center-drawer.manager', () => feedCenterDrawerManagerMock)
 getStoreMock(useUserStore)
 getStoreMock(useFeedCenterStore)
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       get: () => vi.fn(),
     },

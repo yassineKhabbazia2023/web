@@ -15,10 +15,10 @@ export const onboardingDetailsMock: OnboardingDetails = {
 }
 
 const entityCreatorGetMock = vi.hoisted(() => vi.fn(() => Promise.resolve({ data: onboardingDetailsMock.accountNumber })))
-const entityCreatorPostMock = vi.fn()
+const entityCreatorPostMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       post: entityCreatorPostMock,
       get: entityCreatorGetMock,

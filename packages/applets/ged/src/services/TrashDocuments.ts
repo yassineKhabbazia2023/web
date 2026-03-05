@@ -1,4 +1,4 @@
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import type { DocumentsWithTableStructure } from '@ged/models/Document'
 import type { Service } from '@ged/models/Service'
 import { API_PREFIXES } from '@pulse/common/constants'
@@ -13,7 +13,7 @@ export const fetchTrashDocuments = async (
 ): Promise<DocumentsWithTableStructure> => {
   const fetchTrashDocumentsUrl = `${API_PREFIXES.GED}/${serviceId}/${entityId}/trash/mapped/currentuser`
 
-  const response = await commonApi()
+  const response = await api
     .gateway
     .get(fetchTrashDocumentsUrl, {
       headers: { 'Account-Id': accountId },

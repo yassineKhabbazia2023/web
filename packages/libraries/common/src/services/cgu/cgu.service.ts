@@ -1,11 +1,11 @@
-import api from '../../api'
+import { api } from '../../api'
 import { CguTerms, UpdateTermsResponse } from './cgu.service.types'
 
 const CONTACT_API = 'contact/api'
 
 export const getTermsByCurrentUser = async () => {
   const url = `${CONTACT_API}/contacts/currentuser/terms`
-  const { data } = await api().gateway.get<CguTerms>(url)
+  const { data } = await api.gateway.get<CguTerms>(url)
 
   return data
 }
@@ -13,14 +13,14 @@ export const getTermsByCurrentUser = async () => {
 export const updateTermsByCurrentUser = async (termsId: number) => {
   const url = `${CONTACT_API}/contacts/currentuser/terms?termsId=${termsId}`
 
-  return await api().gateway.patch<UpdateTermsResponse>(url)
+  return await api.gateway.patch<UpdateTermsResponse>(url)
 }
 
 
 export const getLatestTerms = async () => {
   const url = `${CONTACT_API}/terms/latest`
 
-  const { data } = await api().gateway.get<CguTerms['terms']>(url)
+  const { data } = await api.gateway.get<CguTerms['terms']>(url)
 
   return data
 }

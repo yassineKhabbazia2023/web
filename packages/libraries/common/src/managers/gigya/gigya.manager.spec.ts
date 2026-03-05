@@ -72,4 +72,28 @@ describe('GigyaManager', () => {
       expect(loggerMock.error).toHaveBeenCalledWith('Error during Gigya SSO login: ', error)
     })
   })
+  describe('logoutSSO', () => {
+    const gigyaLogoutMock = vi.fn()
+
+    beforeEach(() => {
+      ;(window as any).gigya = { accounts: { logout: gigyaLogoutMock } }
+    })
+
+    it('should call gigya logout', () => {
+      GigyaManager.logoutSSO()
+
+      expect(gigyaLogoutMock).toHaveBeenCalledOnce()
+    })
+
+    it('should log error when gigya logout throws', () => {
+      const error = new Error('Gigya error')
+      gigyaLogoutMock.mockImplementation(() => {
+        throw error
+      })
+
+      GigyaManager.logoutSSO()
+
+      expect(loggerMock.error).toHaveBeenCalledWith('Error during Gigya SSO logout: ', error)
+    })
+  })
 })

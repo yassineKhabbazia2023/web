@@ -37,8 +37,8 @@ vi.mock('@pulse/toolbox', () => ({
 
 vi.mock('@entities/services/registry', () => registryServiceMock)
 
-const putFavoriteMock = vi.fn()
-const getFavoritesMock = vi.fn()
+const putFavoriteMock = vi.hoisted(() => vi.fn())
+const getFavoritesMock = vi.hoisted(() => vi.fn())
 const accountOperationsListMock = getAccountOperationsListMock()
 
 vi.mock('@pulse/toolbox', () => ({
@@ -67,8 +67,8 @@ vi.mock('@entities/services/wallet', () => ({
   manageFavoriteEntities: manageFavoriteEntitiesMock,
 }))
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     wallet: {
       put: putFavoriteMock,
       get: () => getFavoritesMock(),

@@ -4,8 +4,8 @@ import { API_PREFIXES } from '../../constants/api-prefixes'
 
 import { PennylaneService } from './pennylane.service'
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: apiGatewayMock,
   }),
 }))
@@ -20,7 +20,7 @@ const documentsMock = [documentMock]
 
 describe('PennylaneService', () => {
   describe('getAvailableRoles', () => {
-    it('should call properly commonApi.gateway.get only once when several call', async () => {
+    it('should call properly api.gateway.get only once when several call', async () => {
       const rolesMock = [
         getMockedPennylaneAvailableRole(),
         getMockedPennylaneAvailableRole({
@@ -51,7 +51,7 @@ describe('PennylaneService', () => {
   })
 
   describe('getAccountContactRole', () => {
-    it('should call properly commonApi.gateway.get only once when several call', async () => {
+    it('should call properly api.gateway.get only once when several call', async () => {
       const accountIdMock = 23
       const contactIdMock = 756
       const expectedUrl = `${API_PREFIXES.PENNYLANE}/role/accounts/${accountIdMock}/contacts/${contactIdMock}`
@@ -67,7 +67,7 @@ describe('PennylaneService', () => {
   })
 
   describe('getDocuments', () => {
-    it('should call properly commonApi.gateway.get without pagination params', async () => {
+    it('should call properly api.gateway.get without pagination params', async () => {
       const accountNumberMock = '2025546345'
       const accountIdMock = 26
       const expectedUrl = `${API_PREFIXES.PENNYLANE}/accounts/${accountIdMock}/documents/currentuser`
@@ -92,7 +92,7 @@ describe('PennylaneService', () => {
       expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, expectedParams)
     })
 
-    it('should call properly commonApi.gateway.get with pagination params', async () => {
+    it('should call properly api.gateway.get with pagination params', async () => {
       const accountNumberMock = '2025546345'
       const accountIdMock = 26
       const pageMock = 2
@@ -121,7 +121,7 @@ describe('PennylaneService', () => {
   })
 
   describe('getDocumentContent', () => {
-    it('should call properly commonApi.gateway.get', async () => {
+    it('should call properly api.gateway.get', async () => {
       const documentContentMock = 'document content mock'
       const accountNumberMock = '2025546345'
       const accountIdMock = 26
@@ -145,7 +145,7 @@ describe('PennylaneService', () => {
   })
 
   describe('createRole', () => {
-    it('should call properly commonApi.gateway.post', async () => {
+    it('should call properly api.gateway.post', async () => {
       const expectedUrl = `${API_PREFIXES.PENNYLANE}/role`
 
       await PennylaneService.createRole(roleMock)
@@ -159,7 +159,7 @@ describe('PennylaneService', () => {
   })
 
   describe('checkPennylaneAccess', () => {
-    it('should call properly commonApi.gateway.get with account number', async () => {
+    it('should call properly api.gateway.get with account number', async () => {
       const accountIdMock = 602
       const expectedUrl = `${API_PREFIXES.PENNYLANE}/accounts/${accountIdMock}/access/currentuser`
       const accessResponseMock = getMockedPennylaneAccessResponse()
@@ -194,7 +194,7 @@ describe('PennylaneService', () => {
   })
 
   describe('getTermsContent', () => {
-    it('should call properly commonApi.gateway.get with accountId', async () => {
+    it('should call properly api.gateway.get with accountId', async () => {
       const accountIdMock = 123
       const termsContentMock = new ArrayBuffer(8)
       const expectedUrl = `${API_PREFIXES.PENNYLANE}/terms/content`
@@ -216,7 +216,7 @@ describe('PennylaneService', () => {
   })
 
   describe('validatePennylaneAmendment', () => {
-    it('should call properly commonApi.gateway.post with accountId and details', async () => {
+    it('should call properly api.gateway.post with accountId and details', async () => {
       const accountIdMock = 456
       const detailsMock = {
         accountNumbers: ['123456', '789012'],

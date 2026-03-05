@@ -1,7 +1,7 @@
 import { logger } from '@pulse/toolbox'
 import type { Contact as userContact } from '@entities/types'
 import { API_PREFIXES } from '@pulse/common/constants'
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import type { Entity } from '@pulse/common/types'
 import { EntitiesStatistics } from './serviceWalletTypes'
 import type { GenericPageResponse } from '../collaborator/collaborator.type'
@@ -22,21 +22,21 @@ export async function fetchAccountContacts(
   searchParams: URLSearchParams,
 ): Promise<GenericPageResponse<userContact>> {
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?${searchParams}`
-  const response = await commonApi().gateway.get(url)
+  const response = await api.gateway.get(url)
 
   return response?.data
 }
 
 export async function fetchCustomers(searchParams: URLSearchParams) {
   const url = `${API_PREFIXES.CUSTOMER_WALLET}/customers/currentuser?${searchParams}`
-  const { data } = await commonApi().gateway.get(url)
+  const { data } = await api.gateway.get(url)
 
   return data
 }
 
 export const fetchEntitiesStatistics = async () => {
   try {
-    const response = await commonApi().gateway.get<EntitiesStatistics>(`${API_PREFIXES.WALLET}/statistics/currentuser`)
+    const response = await api.gateway.get<EntitiesStatistics>(`${API_PREFIXES.WALLET}/statistics/currentuser`)
 
     return response.data
   } catch (error) {
@@ -48,7 +48,7 @@ export const fetchFavoriteEntities = async (): Promise<
   Entity[] | undefined
 > => {
   try {
-    const response = await commonApi().gateway.get(
+    const response = await api.gateway.get(
       `${API_PREFIXES.WALLET}/favorites/currentuser`,
     )
 
@@ -65,7 +65,7 @@ export const manageFavoriteEntities = async (
   isFavorite: boolean,
 ): Promise<void> => {
   try {
-    await commonApi().gateway.patch(
+    await api.gateway.patch(
       `${API_PREFIXES.WALLET}/favorites/currentuser?accountId=${accountId}&isFavorite=${isFavorite}`,
     )
   } catch (error) {

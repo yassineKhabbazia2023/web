@@ -1,11 +1,3 @@
-import { logger } from '@pulse/toolbox'
-import { MsalService } from '../services/msal/msal.service'
-import api from '../api'
-
-declare let window: {
-  gigya: any
-} & Window
-
 /**
  * Function to get initials
  * @param {string} firstName
@@ -17,29 +9,4 @@ export const getInitials = (firstName: string | undefined, lastName: string | un
   const secondInitial = lastName?.at(0)?.toUpperCase() ?? ''
 
   return `${firstInitial}${secondInitial}`
-}
-
-export const logoutCollaborator = async () => {
-  try {
-    await MsalService.logout()
-  } catch (error) {
-    logger.error('Error during collaborator logout: ', error)
-  }
-}
-
-export const logoutGigyaSSO = () => {
-  try {
-    window.gigya.accounts.logout()
-  } catch (error) {
-    logger.error('Error during Gigya SSO logout: ', error)
-  }
-}
-
-export const logoutUser = async () => {
-  try {
-    const urlLogout = 'authentication/api/logout'
-    await api().gateway.post(urlLogout)
-  } catch (error) {
-    logger.error('Error during client logout: ', error)
-  }
 }

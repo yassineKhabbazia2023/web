@@ -21,8 +21,8 @@ vi.mock('@pulse/styleguide', () => ({
   PNotification: PNotificationMocked,
 }))
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       post: mockAuthPost,
     },

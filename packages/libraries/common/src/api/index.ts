@@ -24,10 +24,6 @@ const createAxiosInstance = (domain: string) => {
   return instance
 }
 
-const api = {
+export const api = {
   gateway: createAxiosInstance(VITE_API_GATEWAY),
-}
-
-export default function commonApi() {
-  return api
 }

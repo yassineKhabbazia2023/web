@@ -1,4 +1,4 @@
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { BinDocumentsWithTableStructure, RestoredDocument } from '@ged/models/Document'
 import type { Service } from '@ged/models/Service'
@@ -13,7 +13,7 @@ export const fetchBinDocuments = async (
 ): Promise<BinDocumentsWithTableStructure> => {
   const fetchBinDocumentsUrl =
     `${API_PREFIXES.GED}/${serviceId}/${entityId}/trash/mapped/currentuser`
-  const response = await commonApi().gateway.get(fetchBinDocumentsUrl, {
+  const response = await api.gateway.get(fetchBinDocumentsUrl, {
     headers: {
       'Account-Id': accountId,
     },
@@ -35,7 +35,7 @@ export const restoreDocuments = async (
 ): Promise<RestoredDocument[]> => {
   const fetchBinDocumentsUrl =
     `${API_PREFIXES.GED}/${serviceId}/${entityId}/trash/restore`
-  const response = await commonApi().gateway.post(
+  const response = await api.gateway.post(
     fetchBinDocumentsUrl,
     {
       ids: docIds,

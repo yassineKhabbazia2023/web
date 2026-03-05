@@ -10,6 +10,7 @@
     "./constants": "./src/constants.ts",
     "./enums": "./src/enums.ts",
     "./managers": "./src/managers/index.ts",
+    "./api": "./src/api/index.ts",
     "./helpers": "./src/helpers/index.ts",
     "./services/amplitude": "./src/services/amplitude/index.ts",
     "./services/cgu": "./src/services/cgu/index.ts",

@@ -1,5 +1,5 @@
 import { logger } from '@pulse/toolbox'
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import type { Service } from '@ged/models/Service'
 import type { Folder } from '@ged/models/Folder'
 import { GedServiceError } from './ged-service-error.exception'
@@ -12,7 +12,7 @@ export const fetchServiceFolders = async (
 ): Promise<Folder[]> => {
   const fetchFolderUrl = `${API_PREFIXES.GED}/${service.ServiceId}/${entityId}/folders/currentuser`
   try {
-    const response = await commonApi().gateway.get(fetchFolderUrl, {
+    const response = await api.gateway.get(fetchFolderUrl, {
       headers: {
         'Account-Id': accountId,
       },
@@ -64,7 +64,7 @@ export const CreateFolder = async (
   accountId: number,
 ) => {
   const createFolderUrl = `${API_PREFIXES.GED}/${serviceId}/${entityId}/folders/currentuser`
-  const response = await commonApi().gateway.post(createFolderUrl, {
+  const response = await api.gateway.post(createFolderUrl, {
     parentId: parentFolderId,
     name: folderName,
   }, {
@@ -81,7 +81,7 @@ export const RenameFolder = async (
   serviceId: null | Service['ServiceId'],
 ) => {
   const renameFolderUrl = `${API_PREFIXES.GED}/${serviceId}/${entityId}/folders/${folderId}/currentuser`
-  const response = await commonApi().gateway.patch(renameFolderUrl, [
+  const response = await api.gateway.patch(renameFolderUrl, [
     { op: 'replace', path: '/name', value: folderName },
   ], {
     headers: { 'Account-Id': accountId },
@@ -99,7 +99,7 @@ export const deleteFolder = async (
 ) => {
   const deleteFolderUrl = `${API_PREFIXES.GED}/${serviceId}/${entityId}/folders/currentuser/${folderId}?keepFolder=${keepFolder}`
 
-  await commonApi().gateway.delete(deleteFolderUrl, { headers: { 'Account-Id': accountId } })
+  await api.gateway.delete(deleteFolderUrl, { headers: { 'Account-Id': accountId } })
 }
 
 export const downloadFolder = async (
@@ -109,7 +109,7 @@ export const downloadFolder = async (
   accountId: number,
 ) : Promise<void> => {
   const downloadFolderUrl = `${API_PREFIXES.GED}/${serviceId}/${entityId}/folders/${folderId}/archive`
-  const response = await commonApi().gateway.get(
+  const response = await api.gateway.get(
     downloadFolderUrl,
     {
       headers: { 'Account-Id': accountId },
@@ -128,7 +128,7 @@ export const moveFolderAsync = async (
   accountId: number,
 ): Promise<void> => {
   const moveFolderUrl = `${API_PREFIXES.GED}/${serviceId}/${entityId}/folders/${folderId}/currentuser`
-  const apiObject = commonApi().gateway
+  const apiObject = api.gateway
   return (
     await apiObject.patch(moveFolderUrl, [
       { op: 'replace', path: '/parent/id', value: destinationFolderId.toString() },

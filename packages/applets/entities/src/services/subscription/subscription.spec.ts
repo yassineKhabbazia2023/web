@@ -8,15 +8,15 @@ import {
   fetchAccountSubscriptions,
 } from '.'
 
-const subscriptionPutMock = vi.fn()
-const subscriptionPostMock = vi.fn()
+const subscriptionPutMock = vi.hoisted(() => vi.fn())
+const subscriptionPostMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@entities/helpers/entity.helper', () => ({
   handleRequestError: vi.fn(),
 }))
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       get: vi.fn().mockResolvedValue({ data: subscriptionRequestMock }),
       post: subscriptionPostMock,

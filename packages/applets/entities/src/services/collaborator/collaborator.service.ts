@@ -1,7 +1,7 @@
 import type { Collab, Role } from '@entities/types'
 import { handleRequestError } from '@entities/helpers'
 import { API_PREFIXES } from '@pulse/common/constants'
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import type { Contact } from '../contact/contactTypes'
 import type { GenericPageResponse } from './collaborator.type'
 import { ContactType } from '@pulse/common/enums'
@@ -12,7 +12,7 @@ export const getCollaboratorsByIdEntity = async (
   accountId: number,
   queryParams?: URLSearchParams,
 ): Promise<GenericPageResponse<Collab>> => {
-  const response = await commonApi().gateway.get(
+  const response = await api.gateway.get(
     `${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts?Type=Collaborator&${queryParams}`,
   )
 
@@ -27,7 +27,7 @@ export const getCollaborators = async (
   sort: string | undefined = undefined,
 ): Promise<GenericPageResponse<Contact>> => {
   try {
-    const response = await commonApi().gateway.get(
+    const response = await api.gateway.get(
       `${API_PREFIXES.WALLET}/contacts`,
       {
         params: {
@@ -66,7 +66,7 @@ export const updateCollaborator = async (
     'Content-Type': 'application/json-patch+json',
   }
   const requestBodyJson = JSON.stringify(requestBody)
-  const response = await commonApi().gateway.patch(updateCollaboratorUrl, requestBodyJson, { headers })
+  const response = await api.gateway.patch(updateCollaboratorUrl, requestBodyJson, { headers })
   return response.data
 }
 
@@ -74,7 +74,7 @@ export const fetchContactRoles = async (
   contactType: string,
 ): Promise<Role[]> => {
   try {
-    const response = await commonApi().gateway.get(`${API_PREFIXES.WALLET}/personas/${contactType}`)
+    const response = await api.gateway.get(`${API_PREFIXES.WALLET}/personas/${contactType}`)
     return response?.data
   } catch (error) {
     handleRequestError('fetching roles', error)
@@ -87,7 +87,7 @@ export const fetchCollaborators = async (
   pageSize?: number,
 ): Promise<Contact[] | undefined> => {
   try {
-    const response = await commonApi().gateway.get(
+    const response = await api.gateway.get(
       `${API_PREFIXES.OFFER}/contacts`,
       {
         params: {

@@ -22,9 +22,9 @@ vi.mock('@entities/helpers/entity.helper', () => ({
 
 vi.mock('env-vars', () => envVarsMock)
 
-vi.mock('@pulse/common', () => {
+vi.mock('@pulse/common/api', () => {
   return {
-    commonApi: () => ({
+    api: ({
       gateway: {
         get: vi.fn((url, _) => {
           if (/\b(offers)\/[\d]+/.test(url)) {

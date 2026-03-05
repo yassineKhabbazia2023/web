@@ -1,5 +1,5 @@
 import { logger } from '@pulse/toolbox'
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import type { EntitySummary, Entity, QueryResult } from '@pulse/common/types'
 import { API_PREFIXES } from '@pulse/common/constants'
 
@@ -12,7 +12,7 @@ export const DEFAULT_ENTITIES = {
 
 export const fetchEntities = async (pageSize?: number): Promise<QueryResult<Entity>> => {
   try {
-    const response = await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/accounts/currentuser`, {
+    const response = await api.gateway.get(`${API_PREFIXES.ACCOUNT}/accounts/currentuser`, {
       params: {
         pageSize,
       },
@@ -27,7 +27,7 @@ export const fetchEntities = async (pageSize?: number): Promise<QueryResult<Enti
 }
 
 export async function fetchEntityById(entityId: number) {
-  const { data } = await commonApi().gateway.get<EntitySummary>(`connect/api/accounts/${entityId}/summary`)
+  const { data } = await api.gateway.get<EntitySummary>(`connect/api/accounts/${entityId}/summary`)
 
   return data
 }

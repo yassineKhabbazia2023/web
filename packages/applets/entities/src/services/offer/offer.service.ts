@@ -1,4 +1,4 @@
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import type {
   SubscriptionOffer,
   SubscriptionOfferServices,
@@ -9,7 +9,7 @@ import { handleRequestError } from '@entities/helpers'
 
 export const getAllOffers = async (): Promise<SubscriptionOffer[]> => {
   try {
-    const response = await commonApi().gateway.get(`${API_PREFIXES.OFFER}/offers`)
+    const response = await api.gateway.get(`${API_PREFIXES.OFFER}/offers`)
 
     if (response?.data?.length > 0) {
       return response.data
@@ -25,7 +25,7 @@ export const getOffer = async (
   offerId: number,
 ): Promise<SubscriptionOfferServices | undefined> => {
   try {
-    const response = await commonApi().gateway.get(`${API_PREFIXES.OFFER}/offers/${offerId}`)
+    const response = await api.gateway.get(`${API_PREFIXES.OFFER}/offers/${offerId}`)
 
     return response.data
   } catch (error) {

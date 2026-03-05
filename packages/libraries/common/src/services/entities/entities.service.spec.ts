@@ -7,8 +7,8 @@ import { DEFAULT_ENTITIES, fetchEntities, fetchEntityById } from './entities.ser
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
-vi.mock('../../api', () => ({
-  default: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: apiGatewayMock,
   }),
 }))

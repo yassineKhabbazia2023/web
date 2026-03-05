@@ -1,11 +1,10 @@
-import { getMockedEntitySummary, getPermissionsMock, getInvoicesAccessResponseMock } from '../../__mocks__'
+import { getMockedEntitySummary, getPermissionsMock, getInvoicesAccessResponseMock, LocalStorageMock } from '../../__mocks__'
 import { getStoreMock, permissionServiceMock, fetchUserAccountPermissionsMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '../../stores/current-entity/current-entity.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useInvoicesAccessStore } from '../../stores/invoices-access/invoices-access.store'
 import { InvoicesAccessService } from '../../services/invoices-access/invoices-access.service'
 import { CurrentEntityManager } from './current-entity.manager'
-
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const permissionsStoreMock = getStoreMock(usePermissionsStore)
 const invoicesAccessStoreMock = getStoreMock(useInvoicesAccessStore)
@@ -14,6 +13,12 @@ vi.mock('../../services/permissions/permissions.service', () => permissionServic
 vi.mock('../../services/invoices-access/invoices-access.service')
 
 describe('test current-entity.manager', () => {
+  beforeEach(() => {
+    Object.defineProperty(globalThis, 'localStorage', {
+      value: new LocalStorageMock(),
+      configurable: true,
+    })
+  })
   describe('CurrentEntityManager', () => {
     it('should set currentEntity properly', async () => {
       const permissionsMock = getPermissionsMock()

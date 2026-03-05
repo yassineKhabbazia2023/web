@@ -61,7 +61,7 @@ import { useI18n } from 'vue-i18n'
 import { reactive, computed, ref, toRaw } from 'vue'
 import type { FormInstance, FormRules } from 'element-plus'
 import { useRouter } from 'vue-router'
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import { PForm, PFormItem, PInput, PButton } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
@@ -123,7 +123,7 @@ const handleSubmit = async (formEl: FormInstance | undefined) => {
   }
   try {
     isLoading.value = true
-    await commonApi().gateway.post('authentication/api/sendResetPasswordLink', toRaw(formValues))
+    await api.gateway.post('authentication/api/sendResetPasswordLink', toRaw(formValues))
     router.push({
       name: RouteName.RESET_PASSWORD_SUCCESS,
       query: {

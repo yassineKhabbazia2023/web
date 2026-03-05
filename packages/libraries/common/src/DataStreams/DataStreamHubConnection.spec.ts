@@ -2,6 +2,7 @@ import { setActivePinia, createPinia } from 'pinia'
 import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import * as DataStreamHubConnectionHelper from './DataStreamHubConnectionHelper'
 import type { HubConnection } from '@microsoft/signalr'
+import { LocalStorageMock } from '../__mocks__'
 
 import { DataStreamHubConnection } from './DataStreamHubConnection'
 
@@ -20,6 +21,11 @@ describe('dataStreamHubConnection', () => {
   const mockHubUrl = 'https://mockurl.com'
 
   beforeEach(() => {
+    Object.defineProperty(globalThis, 'localStorage', {
+      value: new LocalStorageMock(),
+      configurable: true,
+    })
+    loggerErrorSpy.mockClear()
     setActivePinia(createPinia())
     dataStreamHubConnection = new DataStreamHubConnection(mockHubUrl)
   })

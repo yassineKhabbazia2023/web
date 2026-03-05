@@ -31,15 +31,15 @@ const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const userStoreMock = getStoreMock(useUserStore)
 
 const handleFavorites = vi.fn()
-const postMock = vi.fn()
+const postMock = vi.hoisted(() => vi.fn())
 const testEntity = {
   accountId: mockTableData[0].accountId,
   legalName: mockTableData[0].name,
   accountNumber: mockTableData[0].accountNumber,
 }
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       post: postMock,
     },

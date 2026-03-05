@@ -6,8 +6,8 @@ import { InvoicesService } from './invoices.service'
 const commonApiGetMock = vi.hoisted(() => vi.fn())
 const commonApiPostMock = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       get: commonApiGetMock,
       post: commonApiPostMock,

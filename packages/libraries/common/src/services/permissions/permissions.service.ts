@@ -1,12 +1,12 @@
 import { logger } from '@pulse/toolbox'
-import api from '../../api'
+import { api } from '../../api'
 
 const AUTH_API = 'authorization/api'
 
 export async function fetchUserPermissions() {
   try {
     const url = `${AUTH_API}/authorization/currentuser`
-    const { data } = await api().gateway.get(url)
+    const { data } = await api.gateway.get(url)
 
     return data
   } catch (error) {
@@ -17,7 +17,7 @@ export async function fetchUserPermissions() {
 export async function fetchUserAccountPermissions(accountId: number) {
   try {
     const url = `${AUTH_API}/authorization/currentuser?accountId=${accountId}`
-    const { data } = await api().gateway.get(url)
+    const { data } = await api.gateway.get(url)
 
     return data
   } catch (error) {

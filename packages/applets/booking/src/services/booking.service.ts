@@ -1,4 +1,4 @@
-import { commonApi as api } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { logger } from '@pulse/toolbox'
 import type {
@@ -17,11 +17,11 @@ export class BookingService {
       link: configurationLink,
       isActive: true,
     }
-    await api().gateway.post(BookingService.bookingApiUrl, payload)
+    await api.gateway.post(BookingService.bookingApiUrl, payload)
   }
 
   static async getBookingConfiguration() {
-    const { data } = await api().gateway.get<BookingServiceConfiguration>(BookingService.bookingApiUrl)
+    const { data } = await api.gateway.get<BookingServiceConfiguration>(BookingService.bookingApiUrl)
 
     return data
   }
@@ -68,7 +68,7 @@ export class BookingService {
     payload: BookingConfigurationPayload,
   ): Promise<BookingConfigurationResponse> {
     const url = `${API_PREFIXES.BOOKING}/booking-link/currentuser/configuration`
-    const { data } = await api().gateway.post<BookingConfigurationResponse>(url, payload)
+    const { data } = await api.gateway.post<BookingConfigurationResponse>(url, payload)
 
     return data
   }
@@ -77,7 +77,7 @@ export class BookingService {
     const url = `${API_PREFIXES.BOOKING}/enabled/currentuser`
 
     try {
-      const { data } = await api().gateway.get<BookingEnabledResponse>(url)
+      const { data } = await api.gateway.get<BookingEnabledResponse>(url)
       return data.hasAccess === true
     } catch (error) {
       logger.error(error)

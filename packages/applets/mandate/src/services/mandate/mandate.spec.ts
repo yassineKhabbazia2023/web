@@ -25,12 +25,12 @@ const validateIbanImplementation = ({ params }: any) => {
   return Promise.resolve({ data: { valid: false } })
 }
 
-const gatewayGetSpy = vi.fn()
-const gatewayPostSpy = vi.fn()
+const gatewayGetSpy = vi.hoisted(() => vi.fn())
+const gatewayPostSpy = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/common', () => {
+vi.mock('@pulse/common/api', () => {
   return {
-    commonApi: () => ({
+    api: ({
       gateway: {
         get: gatewayGetSpy,
         post: gatewayPostSpy,

@@ -11,7 +11,6 @@ import { ContactType, AccountType } from '@pulse/common/enums'
 import { getMockedCustomersCollab } from '@entities/__mocks__/contact.mocks'
 import { getMockedEntitiesStatistics } from '@entities/__mocks__/filters.mocks'
 import type { Entity } from '@pulse/common/types'
-import * as Common from '@pulse/common'
 
 const accountId = 5
 const mockedEntitiesStatistics = getMockedEntitiesStatistics()
@@ -34,25 +33,13 @@ const TEST_ENTITIES: Entity[] = [
   },
 ]
 
-const mockedFavoriteEntityPatch = vi.fn()
+const mockedFavoriteEntityPatch = vi.hoisted(() => vi.fn())
+const mockedGatewayGet = vi.hoisted(() => vi.fn())
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
-      get: vi.fn().mockImplementation((url) => {
-        if (
-          url ===
-          `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?Type=customer`
-        ) {
-          return fetchAccountCustomersImplementation()
-        }
-        if (url === `${API_PREFIXES.WALLET}/statistics/currentuser`) {
-          return fetchEntitiesStatisticsImplementation()
-        }
-        if (url === `${API_PREFIXES.WALLET}/favorites/currentuser`) {
-          return fetchEntitiesImplementation()
-        }
-      }),
+      get: mockedGatewayGet,
       patch: mockedFavoriteEntityPatch,
     },
   }),
@@ -77,6 +64,23 @@ const fetchAccountCustomersImplementation = () => {
 }
 
 describe('wallet service', () => {
+  beforeEach(() => {
+    mockedGatewayGet.mockImplementation((url) => {
+      if (
+        url ===
+        `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?Type=customer`
+      ) {
+        return fetchAccountCustomersImplementation()
+      }
+      if (url === `${API_PREFIXES.WALLET}/statistics/currentuser`) {
+        return fetchEntitiesStatisticsImplementation()
+      }
+      if (url === `${API_PREFIXES.WALLET}/favorites/currentuser`) {
+        return fetchEntitiesImplementation()
+      }
+    })
+  })
+
   describe('fetchAccountCustomers', () => {
     it('should return list of customers', async () => {
       const { items } = await fetchAccountCustomers(accountId)
@@ -90,14 +94,7 @@ describe('wallet service', () => {
       const mockedData = {
         items: [],
       }
-      const getSpy = vi.fn().mockResolvedValue({ data: mockedData })
-      vi
-        .spyOn(Common, 'commonApi')
-        .mockReturnValue({
-          gateway: {
-            get: getSpy,
-          },
-        } as any)
+      mockedGatewayGet.mockResolvedValueOnce({ data: mockedData })
       const params = {
         Type: ContactType.CUSTOMER,
         limit: '50',
@@ -106,8 +103,8 @@ describe('wallet service', () => {
       const contacts = await fetchAccountContacts(accountId, searchParams)
       const expectedArguments = 'account/api/accounts/5/contacts?Type=Customer&limit=50'
 
-      expect(getSpy).toHaveBeenCalledOnce()
-      expect(getSpy).toHaveBeenNthCalledWith(1, expectedArguments)
+      expect(mockedGatewayGet).toHaveBeenCalledOnce()
+      expect(mockedGatewayGet).toHaveBeenNthCalledWith(1, expectedArguments)
       expect(contacts).toStrictEqual(mockedData)
     })
   })
@@ -117,14 +114,7 @@ describe('wallet service', () => {
       const mockedData = {
         items: [],
       }
-      const getSpy = vi.fn().mockResolvedValue({ data: mockedData })
-      vi
-        .spyOn(Common, 'commonApi')
-        .mockReturnValue({
-          gateway: {
-            get: getSpy,
-          },
-        } as any)
+      mockedGatewayGet.mockResolvedValueOnce({ data: mockedData })
       const params = {
         searchTerm: 'search term',
         limit: '50',
@@ -133,8 +123,8 @@ describe('wallet service', () => {
       const contacts = await fetchCustomers(searchParams)
       const expectedArguments = 'customer-wallet/api/customers/currentuser?searchTerm=search+term&limit=50'
 
-      expect(getSpy).toHaveBeenCalledOnce()
-      expect(getSpy).toHaveBeenNthCalledWith(1, expectedArguments)
+      expect(mockedGatewayGet).toHaveBeenCalledOnce()
+      expect(mockedGatewayGet).toHaveBeenNthCalledWith(1, expectedArguments)
       expect(contacts).toStrictEqual(mockedData)
     })
   })

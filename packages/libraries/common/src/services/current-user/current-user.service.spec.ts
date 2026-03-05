@@ -6,9 +6,9 @@ import { getMockedUser, getMockedUserContext } from '../../__mocks__'
 import { CurrentUserService } from './current-user.service'
 
 vi.mock('../../api', () => ({
-  default: () => ({
+  api: {
     gateway: apiGatewayMock,
-  }),
+  },
 }))
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))

@@ -1,4 +1,4 @@
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import { handleRequestError } from '@entities/helpers'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { Contact, PatchContactPayload } from './contactTypes'
@@ -7,7 +7,7 @@ export const getContactById = async (
   id: number,
 ): Promise<Contact | undefined> => {
   try {
-    const response = await commonApi().gateway.get(`${API_PREFIXES.CUSTOMER_WALLET}/contacts/${id}`)
+    const response = await api.gateway.get(`${API_PREFIXES.CUSTOMER_WALLET}/contacts/${id}`)
     return response?.data
   } catch (error) {
     handleRequestError('fetching contacts', error)
@@ -21,7 +21,7 @@ export const patchContact = async (
   const patchDocument = Object.entries(contact)
     .filter(([_, value]) => value !== undefined)
     .map(([key, value]) => ({ op: 'replace', path: `/${key}`, value }))
-  const response = await commonApi().gateway.patch(
+  const response = await api.gateway.patch(
     `${API_PREFIXES.CUSTOMER_WALLET}/contacts/${id}`,
     patchDocument,
     {
@@ -38,7 +38,7 @@ export const inviteCustomers = async (
   customerIDs: number[],
   accountNumber: string,
 ): Promise<number[] | undefined> => {
-  const response = await commonApi().gateway.post(
+  const response = await api.gateway.post(
     `${API_PREFIXES.CONTACT}/customers/bulk-invite/${accountNumber}`,
     customerIDs,
   )

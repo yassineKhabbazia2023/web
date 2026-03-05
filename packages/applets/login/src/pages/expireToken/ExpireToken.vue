@@ -30,7 +30,7 @@ import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { logger } from '@pulse/toolbox'
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import { RouteName } from '@pulse/common/enums'
 import { PButton } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
@@ -48,9 +48,9 @@ const resendLink = async () => {
     isLoading.value = true
     if (contactEmail) {
       const email = contactEmail.toString().trim().replace(' ', '+')
-      await commonApi().gateway.post('authentication/api/sendResetPasswordLink', { email })
+      await api.gateway.post('authentication/api/sendResetPasswordLink', { email })
     } else {
-      await commonApi().gateway.post(`account/api/customers/invite/${contactId}`, null, { params: { accountNumber } })
+      await api.gateway.post(`account/api/customers/invite/${contactId}`, null, { params: { accountNumber } })
     }
     router.push({ name: RouteName.RESEND_EMAIL_SUCCESS })
   } catch (error) {

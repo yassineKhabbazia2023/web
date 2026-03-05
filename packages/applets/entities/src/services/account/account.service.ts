@@ -1,6 +1,6 @@
 import type { Account, AccountSignatories } from '.'
 import type { Contact } from '@entities/services/contact/contactTypes'
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import type { Entity, QueryResult, UserInfoApi, Office } from '@pulse/common/types'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { PatchOperation } from '@entities/services/patch-record'
@@ -20,7 +20,7 @@ export async function fetchAccounts(searchParams: string) {
 }
 
 export async function fetchGatewayApi<T>(url: string) {
-  const response = await commonApi().gateway.get<T>(url)
+  const response = await api.gateway.get<T>(url)
 
   return response?.data
 }
@@ -50,7 +50,7 @@ export async function fetchAccountReferential() {
 export async function patchAccount(accountId: number, patchOperations: PatchOperation[]): Promise<void> {
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/currentuser`
 
-  await commonApi().gateway.patch(url, patchOperations)
+  await api.gateway.patch(url, patchOperations)
 }
 
 export async function fetchAccountDelegationsHistory(
@@ -63,7 +63,7 @@ export async function fetchAccountDelegationsHistory(
 
 export async function deleteAccountDelegation(delegationId: number, delegatorId: number, delegateeId: number) {
   const url = `${API_PREFIXES.ACCOUNT}/delegations/currentuser`
-  return await commonApi().gateway.delete(url, {
+  return await api.gateway.delete(url, {
     params: {
       delegationId,
       delegatorId,
@@ -75,7 +75,7 @@ export async function deleteAccountDelegation(delegationId: number, delegatorId:
 export async function delegateAccounts(delegationRequest: AccountsDelegation) {
   const url = `${API_PREFIXES.WALLET}/delegations/currentuser`
 
-  return await commonApi().gateway.post(url, delegationRequest)
+  return await api.gateway.post(url, delegationRequest)
 }
 
 export async function addContactToEntity(
@@ -83,7 +83,7 @@ export async function addContactToEntity(
   email: string,
 ) {
   const url = `${API_PREFIXES.ACCOUNT}/roles`
-  const result = await commonApi().gateway.post(url, {
+  const result = await api.gateway.post(url, {
     email,
     isSignatory: false,
     isFavorite: false,
@@ -111,7 +111,7 @@ export async function updateSignatoryStatus(
     contactId,
     isSignatory,
   }
-  return await commonApi().gateway.patch(url, null, { params: queryParameters })
+  return await api.gateway.patch(url, null, { params: queryParameters })
 }
 
 export async function fetchContactsFromSameHub(
@@ -119,7 +119,7 @@ export async function fetchContactsFromSameHub(
   pageSize: number = 100,
 ): Promise<Contact[]> {
   const url = `${API_PREFIXES.ACCOUNT}/roles/currentuser/hub/contact`
-  const { data } = await commonApi().gateway.get(url, {
+  const { data } = await api.gateway.get(url, {
     params: {
       search,
       pageSize,
@@ -130,7 +130,7 @@ export async function fetchContactsFromSameHub(
 
 export async function getAccountSignatories(accountId: Account['accountId']): Promise<AccountSignatories[]> {
   const url = `${API_PREFIXES.ACCOUNT}/roles/signatory`
-  const { data } = await commonApi().gateway.get(url, {
+  const { data } = await api.gateway.get(url, {
     params: {
       accountId,
     },
@@ -145,7 +145,7 @@ export async function deleteContactFromAccount(
 ) {
   const URL = `${API_PREFIXES.ACCOUNT}/roles`
 
-  return await commonApi().gateway.delete(URL, {
+  return await api.gateway.delete(URL, {
     params: {
       accountId,
       contactId,
@@ -162,12 +162,12 @@ export type createCustomerBody = {
 
 export async function createCustomer(customerInformation: createCustomerBody, accountNumber: string) {
   const url = `${API_PREFIXES.ACCOUNT}/customers`
-  const { data } = await commonApi().gateway.post<UserInfoApi>(url, customerInformation, { params: { accountNumber } })
+  const { data } = await api.gateway.post<UserInfoApi>(url, customerInformation, { params: { accountNumber } })
   return data
 }
 
 export async function getAccountUserByEmail(email: string): Promise<Contact | null> {
-  const { data, status } = await commonApi().gateway.get(`${API_PREFIXES.ACCOUNT}/contacts`,
+  const { data, status } = await api.gateway.get(`${API_PREFIXES.ACCOUNT}/contacts`,
     {
       params: {
         email,
@@ -178,7 +178,7 @@ export async function getAccountUserByEmail(email: string): Promise<Contact | nu
 }
 
 export async function hasContactRoleOnCommonAccount(email: string, accountId?: number) : Promise<boolean> {
-  const { data } = await commonApi().gateway.get(
+  const { data } = await api.gateway.get(
     `${API_PREFIXES.ACCOUNT}/roles/check`, {
       params: {
         accountId, // Optional: If not provided, we'll check the role across all accounts of the current user
@@ -191,7 +191,7 @@ export async function hasContactRoleOnCommonAccount(email: string, accountId?: n
 }
 
 export const updateCustomerRelation = async (accountId: number, contactId: number, isCustomerRelation: boolean) => {
-  await commonApi().gateway.patch(`${API_PREFIXES.ACCOUNT}/roles/customer-relation`, null, {
+  await api.gateway.patch(`${API_PREFIXES.ACCOUNT}/roles/customer-relation`, null, {
     params: {
       accountId,
       contactId,
@@ -211,7 +211,7 @@ export async function fetchAccountContactsByEmail(
   }
   const searchParams: URLSearchParams = new URLSearchParams(queryParameters)
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/contacts?${searchParams}`
-  const response = await commonApi().gateway.get(url)
+  const response = await api.gateway.get(url)
 
   return response?.data
 }

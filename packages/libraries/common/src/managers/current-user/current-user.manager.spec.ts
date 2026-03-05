@@ -1,5 +1,5 @@
 import { getMockedUserInfo, envVarsMock, getMockedCurrentEntity, getPermissionsMock } from '../../__mocks__'
-import { getStoreMock, utilsMock, logoutCollaboratorMock, logoutGigyaSSOMock, logoutUserMock } from '../../__mocks__/vitest'
+import { getStoreMock } from '../../__mocks__/vitest'
 import { useUserStore } from '../../stores/user/user.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
@@ -20,8 +20,25 @@ const currentEntityPermissionsMock = currentEntityMock.permissions ?? []
 vi.mock('env-vars', () => envVarsMock)
 envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
 
-vi.mock('../../utils/user.utils', () => utilsMock)
+const logoutUserMock = vi.hoisted(() => vi.fn())
+const msalLogoutMock = vi.hoisted(() => vi.fn())
+const logoutGigyaSSOMock = vi.hoisted(() => vi.fn())
 
+vi.mock('../../services/authentication.service', () => ({
+  logoutUser: logoutUserMock,
+}))
+
+vi.mock('../../services/msal', () => ({
+  MsalService: {
+    logout: msalLogoutMock,
+  },
+}))
+
+vi.mock('../gigya/gigya.manager', () => ({
+  GigyaManager: {
+    logoutSSO: logoutGigyaSSOMock,
+  },
+}))
 const getCurrentUserMock = vi.hoisted((() => vi.fn()))
 vi.mock('../../services/current-user/current-user.service', () => ({
   CurrentUserService: {
@@ -65,7 +82,7 @@ describe('test current-user.manager', () => {
       expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenNthCalledWith(1, [])
 
       expect(logoutUserMock).toHaveBeenCalledOnce()
-      expect(logoutCollaboratorMock).not.toHaveBeenCalled()
+      expect(msalLogoutMock).not.toHaveBeenCalled()
       expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
     })
 
@@ -75,7 +92,7 @@ describe('test current-user.manager', () => {
       await CurrentUserManager.logout()
 
       expect(logoutUserMock).toHaveBeenCalledOnce()
-      expect(logoutCollaboratorMock).toHaveBeenCalledExactlyOnceWith()
+      expect(msalLogoutMock).toHaveBeenCalledExactlyOnceWith()
 
       expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
     })
@@ -86,7 +103,7 @@ describe('test current-user.manager', () => {
       await CurrentUserManager.logout()
 
       expect(logoutUserMock).toHaveBeenCalledOnce()
-      expect(logoutCollaboratorMock).not.toHaveBeenCalled()
+      expect(msalLogoutMock).not.toHaveBeenCalled()
       expect(logoutGigyaSSOMock).toHaveBeenCalledExactlyOnceWith()
     })
 
@@ -96,7 +113,7 @@ describe('test current-user.manager', () => {
       await CurrentUserManager.logout()
 
       expect(logoutUserMock).toHaveBeenCalledOnce()
-      expect(logoutCollaboratorMock).toHaveBeenCalledExactlyOnceWith()
+      expect(msalLogoutMock).toHaveBeenCalledExactlyOnceWith()
       expect(logoutGigyaSSOMock).toHaveBeenCalledExactlyOnceWith()
     })
   })

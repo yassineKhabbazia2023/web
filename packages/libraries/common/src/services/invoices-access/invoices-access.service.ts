@@ -1,4 +1,4 @@
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import { AxiosError } from 'axios'
 
 import { API_PREFIXES } from '../../constants/api-prefixes'
@@ -9,7 +9,7 @@ export class InvoicesAccessService {
     const url = `${API_PREFIXES.INVOICES}/accounts/${accountId}/currentuser`
 
     try {
-      const { data } = await commonApi().gateway.get<InvoicesAccessApiResponse>(url)
+      const { data } = await api.gateway.get<InvoicesAccessApiResponse>(url)
 
 
       return {

@@ -21,9 +21,9 @@ const mocks = vi.hoisted(() => ({
   patch: vi.fn(),
 }))
 
-vi.mock('@pulse/common', () => {
+vi.mock('@pulse/common/api', () => {
   return {
-    commonApi: () => ({
+    api: ({
       gateway: {
         get: mocks.get,
         patch: mocks.patch,

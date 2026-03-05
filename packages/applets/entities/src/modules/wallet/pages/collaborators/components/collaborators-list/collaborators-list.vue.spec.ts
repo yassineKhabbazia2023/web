@@ -12,14 +12,14 @@ import CollaboratorsList from './collaborators-list.vue'
 
 let wrapper: VueWrapper<any>
 
-const mockGatewayGet = vi.fn(() => {
+const mockGatewayGet = vi.hoisted(() => vi.fn(() => {
   return Promise.resolve({
     data: mockedCollaboratorsList2,
   })
-})
+}))
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       get: mockGatewayGet,
     },

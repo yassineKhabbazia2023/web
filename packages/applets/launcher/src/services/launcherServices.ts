@@ -1,11 +1,11 @@
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import { saveAs } from 'file-saver'
 import type { AxiosResponse, AxiosProgressEvent } from 'axios'
 import { EXTRACT_DOWNLOADED_FILENAME_REGEXP, DEFAULT_APPLICATION_FILENAME, ApiRoutes }
   from './launcherServiceConsts'
 
 export async function downloadApplication(progressPercentCallback: (_: number) => void) {
-  const response = await commonApi().gateway.get(ApiRoutes.SILAE_SSO_FILE, {
+  const response = await api.gateway.get(ApiRoutes.SILAE_SSO_FILE, {
     responseType: 'blob',
     onDownloadProgress: (progressEvent: AxiosProgressEvent) => {
       const { progress } = progressEvent
@@ -24,7 +24,7 @@ export function getFileName(disposition: string) {
   const filename = matches?.at(1)
 
   return filename
-    ? filename.replace(/['"]/g, '')
+    ? filename.replaceAll(/['"]/g, '')
     : DEFAULT_APPLICATION_FILENAME
 }
 
@@ -40,7 +40,7 @@ export function saveApplication(response: AxiosResponse) {
 }
 
 export async function getSsoSilaeUrl() {
-  const response = await commonApi().gateway
+  const response = await api.gateway
     .post<{ redirectUrl: string }>(ApiRoutes.SILAE_SSO, { wrapRedirect: true })
 
   const { data } = response || {}

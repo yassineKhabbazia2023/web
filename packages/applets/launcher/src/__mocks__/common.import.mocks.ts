@@ -2,8 +2,8 @@ import { commonApiDsDeleteSpy, commonApiDsGetSpy, commonApiDsPatchSpy, commonApi
 import { CurrentUserManagerMock } from '@pulse/common/mocks/vitest'
 import { envVarsMock } from '@pulse/common/mocks'
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       get: commonApiGatewayGetSpy,
       post: commonApiGatewayPostSpy,

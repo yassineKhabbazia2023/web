@@ -36,8 +36,8 @@ const mockPatchBIReport = vi.hoisted(() => vi.fn())
 const mockDeleteBIReport = vi.hoisted(() => vi.fn())
 const mockGetBIReport = vi.hoisted(() => vi.fn(() => Promise.resolve({ data: {} })))
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: {
       get: mockGetBIReport,
       post: mockPostBIReport,

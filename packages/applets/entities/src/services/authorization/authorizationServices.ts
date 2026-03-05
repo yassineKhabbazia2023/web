@@ -1,4 +1,4 @@
-import { commonApi } from '@pulse/common'
+import { api } from '@pulse/common/api'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { ContactType } from '@pulse/common/enums'
 import type { AuthorizationConfig } from '@entities/types'
@@ -8,7 +8,7 @@ export const fetchAuthorizationsConfig = async (
   contactId: number,
   accountId: number | null,
 ): Promise<AuthorizationConfig[]> => {
-  const { data } = await commonApi().gateway.get(
+  const { data } = await api.gateway.get(
     `${API_PREFIXES.AUTHORIZATION}/authorizations/configuration`,
     {
       params: {
@@ -26,7 +26,7 @@ export const updateUserPermissions = async (
   accountId: number | null,
   permissionCodes: string[],
 ) => {
-  await commonApi().gateway.post(
+  await api.gateway.post(
     `${API_PREFIXES.AUTHORIZATION}/authorizations/configuration`,
     permissionCodes,
     {
@@ -43,7 +43,7 @@ export const fetchAccountAuthorizationsConfig = async (
   accountId: number | null,
   type: ContactType,
 ): Promise<AuthorizationConfig[]> => {
-  const { data } = await commonApi().gateway.get(
+  const { data } = await api.gateway.get(
     `${API_PREFIXES.AUTHORIZATION}/authorizations/configuration/account`,
     {
       params: {
@@ -62,7 +62,7 @@ export const updateAccountPermissions = async (
   type: ContactType,
   permissionCodes: string[],
 ) => {
-  await commonApi().gateway.post(
+  await api.gateway.post(
     `${API_PREFIXES.AUTHORIZATION}/authorizations/configuration/account`,
     permissionCodes,
     {

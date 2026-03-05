@@ -5,8 +5,8 @@ import { getInvoicesAccessResponseMock } from '../../__mocks__'
 
 import { InvoicesAccessService } from './invoices-access.service'
 
-vi.mock('@pulse/common', () => ({
-  commonApi: () => ({
+vi.mock('@pulse/common/api', () => ({
+  api: ({
     gateway: apiGatewayMock,
   }),
 }))
