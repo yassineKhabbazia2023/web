@@ -2,18 +2,25 @@ import { computed, ref, watch, onBeforeUnmount } from 'vue'
 import type { Ref } from 'vue'
 import type { Document } from '@ged/models/Document'
 import type { DocumentsListProps } from '../documents-list.types'
-import { trackDocumentMoveFlowStart } from '@ged/services/tracking/tracking.service'
-import { TriggerSource } from '@ged/services/tracking/tracking.types'
 import { Permissions } from '@ged/models/Permissions'
+
+function getDocumentsRowElements() {
+  return document.getElementsByClassName('document-row')
+}
+
+// When I am watching selected documents, I use the newly selected document to bind drag attributes.
+// However, there is also the case when I click the "select all documents" button.
+// This function is useful to know that I added multiple documents in a single click and that I need to bind
+// multiple drag events instead of just one.
+function hasLengthDifferenceMoreThanOne(firstArray: any[], secondArray: any[]) {
+  return Math.abs(firstArray.length - secondArray.length) > 1
+}
 
 export function useDocumentsDragAndDrop(
   selectedFolders: Ref<Document[]>,
   currentService: Ref<DocumentsListProps['currentService']>,
   draggedDocuments: Ref<Document[]>,
 ) {
-  function getDocumentsRowElements() {
-    return document.getElementsByClassName('document-row')
-  }
 
   function bindDragProperties() {
     const documentRowElements = getDocumentsRowElements() as HTMLCollectionOf<HTMLElement>
@@ -58,7 +65,6 @@ export function useDocumentsDragAndDrop(
       JSON.stringify(documentsToMove.value),
     )
     event.dataTransfer.setData(String(currentService.value), 'serviceId')
-    trackDocumentMoveFlowStart(TriggerSource.DRAG_AND_DROP)
   }
 
   // There's nothing to handle Drag & Drop in the Table component nativaly (Element Plus)
@@ -131,14 +137,6 @@ export function useDocumentsDragAndDrop(
     isDragging.value = false
     draggedDocuments.value = []
     document.body.classList.remove('grabbing')
-  }
-
-  // When I am watching selected documents, I use the newly selected document to bind drag attributes.
-  // However, there is also the case when I click the "select all documents" button.
-  // This function is useful to know that I added multiple documents in a single click and that I need to bind
-  // multiple drag events instead of just one.
-  function hasLengthDifferenceMoreThanOne(firstArray: any[], secondArray: any[]) {
-    return Math.abs(firstArray.length - secondArray.length) > 1
   }
 
   return {

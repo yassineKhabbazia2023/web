@@ -1,21 +1,16 @@
 import { describe } from 'vitest'
-import { TriggerSource, DocumentConsultationSource } from './tracking.types'
+import { DocumentConsultationSource } from './tracking.types'
 import { AmplitudeService as AmplitudeServiceMock } from '@pulse/common/services/amplitude'
 import { GedContext } from '@pulse/common/enums'
 
 import {
   trackDepositedDocument,
   trackDocumentDelete,
-  trackDocumentDeleteFlowStart,
   trackDocumentDownload,
-  trackDocumentDownloadFlowStart,
   trackDocumentMove,
-  trackDocumentMoveFlowStart,
   trackDocumentRename,
-  trackDocumentRenameFlowStart,
   trackDocumentSearch,
   trackDocumentTransmit,
-  trackDocumentTransmitFlowStart,
   trackDocumentConsulted,
 } from '@ged/services/tracking/tracking.service'
 
@@ -50,15 +45,6 @@ describe('document deposit tracking', () => {
 })
 
 describe('document move tracking', () => {
-  it('tracks the document move flow start and its originq', () => {
-    const triggerSource = TriggerSource.ACTION_BAR
-    trackDocumentMoveFlowStart(triggerSource)
-
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Moved Started', {
-      document_move_start: triggerSource,
-    })
-  })
-
   it.each([
     {
       hasSucceeded: { isMoveSuccessful: true },
@@ -77,15 +63,6 @@ describe('document move tracking', () => {
 })
 
 describe('document rename tracking', () => {
-  it('tracks the document rename flow start and its origin', () => {
-    const triggerSource = TriggerSource.ACTION_BAR
-    trackDocumentRenameFlowStart(triggerSource)
-
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Rename Started', {
-      document_rename_start: triggerSource,
-    })
-  })
-
   it.each([
     {
       hasSucceeded: { isRenameSuccessful: true },
@@ -104,15 +81,6 @@ describe('document rename tracking', () => {
 })
 
 describe('document delete tracking', () => {
-  it('track the document delete flow start and its origin', () => {
-    const triggerSource = TriggerSource.ACTION_BAR
-    trackDocumentDeleteFlowStart(triggerSource)
-
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Delete Started', {
-      document_delete_start: triggerSource,
-    })
-  })
-
   it.each([
     {
       hasSucceeded: { isDeleteSuccessful: true },
@@ -131,15 +99,6 @@ describe('document delete tracking', () => {
 })
 
 describe('document download tracking', () => {
-  it('track the document download flow start and its origin', () => {
-    const triggerSource = TriggerSource.ACTION_BAR
-    trackDocumentDownloadFlowStart(triggerSource)
-
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Download Started', {
-      document_download_start: triggerSource,
-    })
-  })
-
   it.each([
     {
       hasSucceeded: { isDownloadSuccessful: true },
@@ -158,15 +117,6 @@ describe('document download tracking', () => {
 })
 
 describe('document transmit tracking', () => {
-  it('track the document transmit flow start and its origin', () => {
-    const triggerSource = TriggerSource.ACTION_BAR
-    trackDocumentTransmitFlowStart(triggerSource)
-
-    expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Document Transmit Started', {
-      document_transmit_start: triggerSource,
-    })
-  })
-
   it.each([
     {
       hasSucceeded: { isTransmitSuccessful: true },

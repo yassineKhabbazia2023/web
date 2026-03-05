@@ -258,15 +258,8 @@ import DocumentsDropModal from './components/DocumentsDropModal'
 import { Permissions } from '@ged/models/Permissions'
 import {
   trackDocumentConsulted,
-  trackDocumentMoveFlowStart,
-  trackDocumentRenameFlowStart,
-  trackDocumentDeleteFlowStart,
-  trackDocumentDownloadFlowStart,
-  trackDocumentTransmitFlowStart,
   trackDocumentSearch,
-  trackBreadcrumbUsage,
 } from '@ged/services/tracking/tracking.service'
-import { TriggerSource } from '@ged/services/tracking/tracking.types'
 
 /* The more features we add the more this component becomes bloated.
 We created a refactor task, which, unfortunately has been placed far back in the backlog.
@@ -337,7 +330,6 @@ const breadcrumbItems = computed(() => {
 })
 
 function handleBreadcrumbClick(id: number) {
-  trackBreadcrumbUsage()
   handleFolderNavigation(id)
 }
 
@@ -610,23 +602,18 @@ const handleToolboxActionTriggered = async (action: string) => {
   switch (action) {
     case 'download-document':
       handleDownloadDocumentsEvent()
-      trackDocumentDownloadFlowStart(TriggerSource.CONTEXT_MENU)
       break
     case 'rename-document':
       handleRenameDocumentEvent()
-      trackDocumentRenameFlowStart(TriggerSource.CONTEXT_MENU)
       break
     case 'delete-document':
       isDeletePopupVisible.value = true
-      trackDocumentDeleteFlowStart(TriggerSource.CONTEXT_MENU)
       break
     case 'move-document':
       handleMoveDocumentEvent()
-      trackDocumentMoveFlowStart(TriggerSource.CONTEXT_MENU)
       break
     case 'transmit-document':
       await handleTransmitDocuments()
-      trackDocumentTransmitFlowStart(TriggerSource.CONTEXT_MENU)
       break
     case 'go-to-document':
       handleGoToSearchedDocument()
@@ -640,7 +627,6 @@ const handleActionBarButtonClick = async (actionName: string) => {
       if (selectedDocuments.value.length === 0) {
         break
       }
-      trackDocumentDownloadFlowStart(TriggerSource.ACTION_BAR)
       handleDownloadDocumentsEvent()
       break
     case 'actionbar-delete-action-click':
@@ -648,27 +634,23 @@ const handleActionBarButtonClick = async (actionName: string) => {
         break
       }
       isDeletePopupVisible.value = true
-      trackDocumentDeleteFlowStart(TriggerSource.ACTION_BAR)
       break
     case 'actionbar-rename-action-click':
       if (selectedDocuments.value.length === 0) {
         break
       }
-      trackDocumentRenameFlowStart(TriggerSource.ACTION_BAR)
       handleRenameDocumentEvent()
       break
     case 'actionbar-move-action-click':
       if (selectedDocuments.value.length === 0) {
         break
       }
-      trackDocumentMoveFlowStart(TriggerSource.ACTION_BAR)
       handleMoveDocumentEvent()
       break
     case 'actionbar-transmit-action-click':
       if (selectedDocuments.value.length === 0) {
         break
       }
-      trackDocumentTransmitFlowStart(TriggerSource.ACTION_BAR)
       await handleTransmitDocuments()
       break
     case 'actionbar-filter-action-click':

@@ -28,12 +28,6 @@ export interface TrackDocumentTransmitParams {
   isTransmitSuccessful: boolean
 }
 
-export enum TriggerSource {
-  ACTION_BAR = 'Action bar',
-  CONTEXT_MENU = 'Context menu',
-  DRAG_AND_DROP = 'Drag Drop',
-}
-
 export enum DocumentConsultationSource {
   ARCHIVES = 'archives',
   DEPOSIT_HISTORY = 'historique de dépôts',

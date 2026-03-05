@@ -1,7 +1,6 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type {
   TrackDepositedDocumentParams,
-  TriggerSource,
   TrackDocumentMoveParams,
   TrackDocumentRenameParams,
   TrackDocumentDeleteParams,
@@ -39,21 +38,9 @@ export function trackDocumentConsulted(gedContext: GedContext) {
   })
 }
 
-export function trackDocumentMoveFlowStart(triggerSource: TriggerSource) {
-  AmplitudeService.track('Document Moved Started', {
-    document_move_start: triggerSource,
-  })
-}
-
 export function trackDocumentMove({ isMoveSuccessful }: TrackDocumentMoveParams) {
   AmplitudeService.track('Document Moved Completed', {
     document_move_result: isMoveSuccessful ? 'succeeded' : 'failed',
-  })
-}
-
-export function trackDocumentRenameFlowStart(triggerSource: TriggerSource) {
-  AmplitudeService.track('Document Rename Started', {
-    document_rename_start: triggerSource,
   })
 }
 
@@ -63,33 +50,15 @@ export function trackDocumentRename({ isRenameSuccessful }: TrackDocumentRenameP
   })
 }
 
-export function trackDocumentDeleteFlowStart(triggerSource: TriggerSource) {
-  AmplitudeService.track('Document Delete Started', {
-    document_delete_start: triggerSource,
-  })
-}
-
 export function trackDocumentDelete({ isDeleteSuccessful }: TrackDocumentDeleteParams) {
   AmplitudeService.track('Document Deleted', {
     document_delete: isDeleteSuccessful ? 'succeeded' : 'failed',
   })
 }
 
-export function trackDocumentDownloadFlowStart(triggerSource: TriggerSource) {
-  AmplitudeService.track('Document Download Started', {
-    document_download_start: triggerSource,
-  })
-}
-
 export function trackDocumentDownload({ isDownloadSuccessful }: TrackDocumentDownloadParams) {
   AmplitudeService.track('Document Downloaded', {
     document_download: isDownloadSuccessful ? 'succeeded' : 'failed',
-  })
-}
-
-export function trackDocumentTransmitFlowStart(triggerSource: TriggerSource) {
-  AmplitudeService.track('Document Transmit Started', {
-    document_transmit_start: triggerSource,
   })
 }
 
@@ -102,11 +71,5 @@ export function trackDocumentTransmit({ isTransmitSuccessful }: TrackDocumentTra
 export function trackDocumentSearch(searchValue: string) {
   AmplitudeService.track('Document Searched', {
     document_search: searchValue,
-  })
-}
-
-export function trackBreadcrumbUsage() {
-  AmplitudeService.track('Breadcrumb clicked', {
-    breadcrumb_clicked: '',
   })
 }
