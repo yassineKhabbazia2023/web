@@ -87,6 +87,7 @@ type ReportItem = Report & {
   pLabel: string
 }
 const reportList = ref<ReportItem[]>([])
+const selectedAccountLegalName = ref<string>()
 
 // Computed
 const internalReportUploadInfo = computed({
@@ -110,11 +111,14 @@ const fetchReportNames = async () => {
           pValue: item.reportId,
           pLabel: item.reportLabel,
         }))
+
+      internalReportUploadInfo.value.reportLabel = items.length === 0 ? `${selectedAccountLegalName.value}` : `${selectedAccountLegalName.value} V${items.length}`
     }
   } catch (error) {
     logger.error('Unable to fetch report names: ', error)
   }
 }
+
 const handleResetOtherFields = () => {
   const { reportTypeId, accountId, accountLabel } =
     internalReportUploadInfo.value
@@ -123,6 +127,7 @@ const handleResetOtherFields = () => {
     accountId,
     accountLabel,
   }
+
   fetchReportNames()
 }
 const handleSearchAccount = async (queryString: string, callback: any) => {
@@ -140,6 +145,8 @@ const handleSearchAccount = async (queryString: string, callback: any) => {
 const handleSelectAccount = (account: Entity) => {
   internalReportUploadInfo.value.accountId = account.accountId
   internalReportUploadInfo.value.accountLabel = `${account.legalName} (${account.accountNumber})`
+  selectedAccountLegalName.value = account.legalName
+
   fetchReportNames()
 }
 const handleSelectReportName = (reportId: number) => {

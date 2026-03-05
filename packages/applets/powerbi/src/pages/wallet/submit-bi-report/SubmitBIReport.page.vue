@@ -174,6 +174,11 @@ const handleUploadBIReport = async () => {
 onMounted(async () => {
   try {
     reportTypes.value = await fetchBIReportTypes()
+    const { reportTypeId } = reportTypes.value.find((r) => r.name === ReportTypeEnum.FORMS) as ReportInfo
+
+    reportUploadInfo.value = {
+      reportTypeId,
+    }
   } catch (error) {
     logger.error('Unable to fetch report types: ', error)
   } finally {
