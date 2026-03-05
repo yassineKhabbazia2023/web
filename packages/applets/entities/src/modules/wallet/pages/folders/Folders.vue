@@ -202,7 +202,7 @@ import {
 } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { AmplitudeService, TrackingCenter } from '@pulse/common/services/amplitude'
 import { CurrentUserManager } from '@pulse/common/managers'
 import type { Entity, SortingCriteria } from '@pulse/common/types'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
@@ -541,6 +541,7 @@ const onClickDeploy = async (accountId: number, accountNumber: string, companyNa
   openOffersDrawer.value = true
 }
 const onClickFolder = (entityId: string) => {
+  TrackingCenter.trackHomepageConsulted()
   router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
 const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {

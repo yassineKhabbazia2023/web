@@ -1,4 +1,4 @@
-import { RouteName, PennylanePermission, AccountType } from '@pulse/common/enums'
+import { RouteName, PennylanePermission, AccountType, AmplitudeFeatureName } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 import { RouterHelpers } from '@pulse/common/helpers'
 import type { NavigationItemConfig } from '@shared/types'
@@ -12,7 +12,7 @@ export const REGULAR_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
     shouldDisplay: () => true,
     accountType: AccountType.REGULAR,
     order: 1,
-    doNotTrack: true, // track is in onMounted of the homepage
+    featureName: AmplitudeFeatureName.HOMEPAGE,
   },
   {
     id: 'regular-entity-overview',

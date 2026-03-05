@@ -1,6 +1,7 @@
 import { getPaginationMock, getMockedUserInfo, getMockedEntities } from '@pulse/common/mocks'
 import {
   AmplitudeServiceMock,
+  TrackingCenterMock,
   CurrentEntityManagerMock,
   hasPermissionMock,
   CurrentUserManagerMock,
@@ -80,6 +81,7 @@ vi.mock('@pulse/common', () => ({
 
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
+  TrackingCenter: TrackingCenterMock,
 }))
 
 const mockRouterPush = vi.fn()
@@ -332,6 +334,16 @@ describe('deploy', () => {
       name: RouteName.ENTITY_REDIRECT,
       params: { [RouteParam.ENTITY_ID]: '8126f51d-c834-4fda-82ea-00d51ee11983' },
     })
+  })
+
+  it('should track homepage consulted when clicking on access folder', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    const table = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    table.vm.$emit('access', '8126f51d-c834-4fda-82ea-00d51ee11983')
+    await nextTick()
+
+    expect(TrackingCenterMock.trackHomepageConsulted).toHaveBeenCalledOnce()
   })
 
   it("should open the activation email drawer when the 'Resend Activation Mail' button is clicked", async () => {

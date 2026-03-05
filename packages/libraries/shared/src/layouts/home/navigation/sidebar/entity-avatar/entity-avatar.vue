@@ -5,7 +5,7 @@
       :tooltipDisabled="hideTooltip"
       :class="{ 'entity-wrapper--selected': selected }"
       :route="{ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entity.accountId } }"
-      @item-clicked="$emit('entity-selected', entity)"
+      @item-clicked="onEntitySelected(entity)"
     >
       <PAvatar
         pShape="circle"
@@ -39,13 +39,19 @@ import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import type { EntityAvatarProps } from './entity-avatar.type'
 import type { Entity } from '@pulse/common/types'
 import { RouteName, RouteParam } from '@pulse/common/enums'
+import { TrackingCenter } from '@pulse/common/services/amplitude'
 import EntityItem from '../entity-item'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 const props = defineProps<EntityAvatarProps>()
-defineEmits<{
+const emit = defineEmits<{
   'entity-selected': [Entity]
 }>()
+
+const onEntitySelected = (entity: Entity) => {
+  TrackingCenter.trackHomepageConsulted()
+  emit('entity-selected', entity)
+}
 
 const entityTooltipContent = computed(() => {
   return `${props.entity.legalName} \n ${props.entity.accountNumber}`

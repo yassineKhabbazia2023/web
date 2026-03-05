@@ -74,6 +74,7 @@ import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { PAGE_SIZES } from '@pulse/common/constants'
 import type { AccountRow } from '@entities/types'
 import { RouteName, RouteParam } from '@pulse/common/enums'
+import { TrackingCenter } from '@pulse/common/services/amplitude'
 import type {
   SearchCriteria,
   SearchResult,
@@ -171,6 +172,7 @@ const handlePageChange = (currentPage: number) => {
   searchCriteria.value.currentPage = currentPage
 }
 const handleOpenFolder = (entityId: string) => {
+  TrackingCenter.trackHomepageConsulted()
   router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
 const handleSort = (param: SortingCriteria) => {

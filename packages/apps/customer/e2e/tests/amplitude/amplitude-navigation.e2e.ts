@@ -13,8 +13,12 @@ test.describe('Amplitude Navigation Tracking - Basic Entity', () => {
     await setupAmplitudePage(page)
   })
 
-  test('should track "homepage" on homepage mount', async ({ page }) => {
-    await page.goto(`/dossier/${MockEntityId.BASIC}/accueil`)
+  test('should track "homepage" when clicking on an entity from wallet', async ({ page }) => {
+    await page.goto('/portefeuille/mes-entites')
+    await expect(page.getByTestId('folders-table')).toBeVisible({ timeout: 15000 })
+    await clearAmplitudeEvents(page)
+
+    await page.getByTestId('account-access-link').first().click()
     await expect(page.getByTestId('home-page')).toBeVisible({ timeout: 15000 })
     await expectFeatureConsulted(page, 'homepage')
   })

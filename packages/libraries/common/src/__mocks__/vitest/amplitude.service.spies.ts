@@ -19,3 +19,9 @@ export const AmplitudeServiceMock: {
   identifyCustomer: vi.fn(),
   identifyCollaborator: vi.fn(),
 }
+
+export const TrackingCenterMock: {
+  trackHomepageConsulted: Mock
+} = {
+  trackHomepageConsulted: vi.fn(),
+}

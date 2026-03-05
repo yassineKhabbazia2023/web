@@ -1,4 +1,4 @@
-import { RouteName, AccountType } from '@pulse/common/enums'
+import { RouteName, AccountType, AmplitudeFeatureName } from '@pulse/common/enums'
 import type { NavigationItemConfig } from '@shared/types'
 
 export const PROSPECT_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
@@ -10,7 +10,7 @@ export const PROSPECT_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
     shouldDisplay: () => true,
     accountType: AccountType.PROSPECT,
     order: 1,
-    doNotTrack: true, // track is in onMounted of the homepage
+    featureName: AmplitudeFeatureName.HOMEPAGE,
   },
   {
     id: 'prospect-entity-stepper',
