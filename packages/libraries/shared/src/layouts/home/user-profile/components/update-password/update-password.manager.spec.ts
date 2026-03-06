@@ -1,6 +1,6 @@
 import { PStrengthLevel } from '@pulse/styleguide/types'
 import { UpdatePasswordManager } from './update-password.manager'
-import { SKIP_CALLBACK_CODES, INVALID_CREDENTIALS, ALREADY_USED_PASSWORD } from '@pulse/common/constants'
+import { SKIP_CALLBACK_CODES, BackEndErrors } from '@pulse/common/constants'
 
 vi.mock('@pulse/styleguide', () => ({
   PNotification: vi.fn(),
@@ -117,11 +117,11 @@ describe('UpdatePasswordManager', () => {
       passwordAlreadyUsed: 'Already used',
     }
 
-    it('should return wrongCurrentPassword message for INVALID_CREDENTIALS error', () => {
+    it('should return wrongCurrentPassword message for BackEndErrors.INVALID_LOGIN_CREDENTIALS error', () => {
       const error = {
         response: {
           data: {
-            errorCode: INVALID_CREDENTIALS,
+            errorCode: BackEndErrors.INVALID_LOGIN_CREDENTIALS,
           },
         },
       }
@@ -131,11 +131,11 @@ describe('UpdatePasswordManager', () => {
       expect(result).toBe(translations.wrongCurrentPassword)
     })
 
-    it('should return passwordAlreadyUsed message for ALREADY_USED_PASSWORD error', () => {
+    it('should return passwordAlreadyUsed message for BackEndErrors.ALREADY_USED_PASSWORD error', () => {
       const error = {
         response: {
           data: {
-            errorCode: ALREADY_USED_PASSWORD,
+            errorCode: BackEndErrors.ALREADY_USED_PASSWORD,
           },
         },
       }
@@ -215,7 +215,7 @@ describe('UpdatePasswordManager', () => {
   })
 
   describe('isInvalidCredentialsError', () => {
-    it('should return true when error code is INVALID_CREDENTIALS', () => {
+    it('should return true when error code is BackEndErrors.INVALID_LOGIN_CREDENTIALS', () => {
       const error = {
         response: {
           data: {
@@ -229,7 +229,7 @@ describe('UpdatePasswordManager', () => {
       expect(result).toBe(true)
     })
 
-    it('should return false when error code is not INVALID_CREDENTIALS', () => {
+    it('should return false when error code is not BackEndErrors.INVALID_LOGIN_CREDENTIALS', () => {
       const error = {
         response: {
           data: {
@@ -257,11 +257,11 @@ describe('UpdatePasswordManager', () => {
   })
 
   describe('isPasswordAlreadyUsedError', () => {
-    it('should return true when error code is ALREADY_USED_PASSWORD', () => {
+    it('should return true when error code is BackEndErrors.ALREADY_USED_PASSWORD', () => {
       const error = {
         response: {
           data: {
-            errorCode: ALREADY_USED_PASSWORD,
+            errorCode: BackEndErrors.ALREADY_USED_PASSWORD,
           },
         },
       }
@@ -271,7 +271,7 @@ describe('UpdatePasswordManager', () => {
       expect(result).toBe(true)
     })
 
-    it('should return false when error code is not ALREADY_USED_PASSWORD', () => {
+    it('should return false when error code is not BackEndErrors.ALREADY_USED_PASSWORD', () => {
       const error = {
         response: {
           data: {

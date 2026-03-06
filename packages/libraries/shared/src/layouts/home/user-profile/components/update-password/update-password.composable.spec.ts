@@ -114,7 +114,7 @@ describe('useUpdatePassword', () => {
     expect(UpdatePasswordManager.updateUserPassword).not.toHaveBeenCalled()
   })
 
-  it('should handle INVALID_CREDENTIALS error during password update', async () => {
+  it('should handle INVALID_LOGIN_CODE error during password update', async () => {
     const composable = useUpdatePassword(mockTranslations)
 
     composable.formRef.value = {

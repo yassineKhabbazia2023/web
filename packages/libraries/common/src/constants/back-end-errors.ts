@@ -5,3 +5,8 @@ export enum BackEndErrors {
   TOKEN_EXPIRED = '403025',
   other = 'other',
 }
+
+export const SKIP_CALLBACK_CODES: string[] = [
+  BackEndErrors.INVALID_LOGIN_CREDENTIALS,
+  BackEndErrors.ALREADY_USED_PASSWORD,
+]

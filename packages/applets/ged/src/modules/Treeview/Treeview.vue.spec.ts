@@ -8,7 +8,7 @@ import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type TreeviewProps } from '@ged/modules/Treeview/TreeviewTypes'
 import type { Service } from '@ged/models/Service'
 import { downloadFolder } from '@ged/services/Folder'
-import type { ComponentWrapper } from '@ged/__mocks__/component.wrapper'
+import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
 import { GedServiceId } from '@ged/enums/ged.enum'
 

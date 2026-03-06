@@ -3,7 +3,7 @@ import { documentMock, documentsResponsePayload, documentsResponsePayloadMoreTha
 import { generateTestFiles, validDestination } from '@ged/__mocks__/files.mocks'
 import { documentsServiceMock, fetchDocumentsByKeyWordMock, previewDocumentMock } from '@ged/__mocks__/documents.service.mocks'
 import { getConnectionDocumentPiaStatusChangedMock, onConnectedAsyncMock, onDisconnectedAsyncMock } from '@ged/__mocks__/accounting-hub-connection.service.mocks'
-import type { ComponentWrapper } from '@ged/__mocks__/component.wrapper'
+import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { flushPromises, mount } from '@vue/test-utils'
 import type { DocumentsProps } from './DocumentsTypes'
 import {

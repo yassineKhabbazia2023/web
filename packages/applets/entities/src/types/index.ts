@@ -1,7 +1,6 @@
 export * from './offer.types'
 export * from './account.types'
 export * from './contact.types'
-export * from './unit-test.types'
 export * from './common.types'
 export * from './authorization.types'
 export * from './operation.types'

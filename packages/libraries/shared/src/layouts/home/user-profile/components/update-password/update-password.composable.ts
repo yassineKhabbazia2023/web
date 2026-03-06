@@ -140,7 +140,7 @@ export function useUpdatePassword(translations: UpdatePasswordTranslations) {
     } catch (error: any) {
       UpdatePasswordManager.logPasswordUpdateError(error)
 
-      // Handle INVALID_CREDENTIALS error by showing error on current password field
+      // Handle INVALID_LOGIN_CODE error by showing error on current password field
       if (UpdatePasswordManager.isInvalidCredentialsError(error)) {
         serverCurrentPasswordError.value = translations.wrongCurrentPassword
         formRef.value?.validateField('currentPassword')

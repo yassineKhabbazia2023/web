@@ -3,6 +3,6 @@ import type { IconName } from '../../types/IconName.types'
 
 export type PAlertProps = {
   pType?: Omit<'default', GlobalStates> | 'main'
-  pIconName?: IconName // @TODO find out if this props is really used (only one occurrence)
+  pIconName?: IconName
   pClosable?: boolean
 }

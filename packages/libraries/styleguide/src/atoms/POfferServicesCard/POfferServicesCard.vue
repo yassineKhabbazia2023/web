@@ -28,8 +28,6 @@
             :disabled="service.pDisabled"
             @change="$emit('changeServiceStatus', service)"
           />
-          <!-- @TODO : change this by the active text of the switch
-              when the component will be available -->
           <p class="p-offer-services-card__service-name font-semibold margin-left--4">
             {{ service.pName }}
           </p>

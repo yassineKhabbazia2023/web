@@ -5,7 +5,7 @@ import type { Tab } from './types'
 import * as EntityHelper from './helpers/entity-overview.helper'
 import { getMockedEntitySummary, getMockedEntity } from '@pulse/common/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
-import type { ComponentWrapper } from '@entities/types'
+import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 
 import EntityOverview from './entity-overview.page.vue'

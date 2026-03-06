@@ -223,7 +223,6 @@ import {
   PAvatar,
   PPagination,
 } from '@pulse/styleguide/components'
-// TODO should move this component to a common folder
 import RemoveUserDialog from '../components/remove-user-dialog'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { AvatarRoles, PNotification } from '@pulse/styleguide'
@@ -395,9 +394,6 @@ const formatAndFillUsersCollabTable = async () => {
       // entityId can't be null here, so we use non-null assertion
     } = await fetchAccountCustomers(entityId!, queryParamsWithoutUndefined)
 
-    /**
-     * 🛠️ TODO: Need to create a function format inside utils folder
-     */
     const formattedData: User[] = items.map((userFromApi) => {
       return {
         contactId: userFromApi.contactId,
@@ -423,9 +419,6 @@ const formatAndFillUsersCollabTable = async () => {
   }
 }
 
-/**
- * 🛠️ TODO: Need to add a global function for retrieving status instead of creating it each time
- */
 const getStatus = (status: string): UserStatus => {
   switch (status) {
     case 'Declared':

@@ -4,7 +4,7 @@ import { updatePassword } from '@pulse/common'
 import { PStrengthLevel } from '@pulse/styleguide/types'
 import type { UserInfo, UpdatePasswordPayload } from '@pulse/common/types'
 import type { PasswordValidationTranslations } from '@pulse/shared/types'
-import { INVALID_CREDENTIALS, ALREADY_USED_PASSWORD } from '@pulse/common/constants'
+import { BackEndErrors } from '@pulse/common/constants'
 
 type ValidationCallback = (error?: Error | string) => void
 
@@ -65,9 +65,9 @@ export class UpdatePasswordManager {
   ): string {
     const errorCode = error?.response?.data?.errorCode
 
-    if (errorCode === INVALID_CREDENTIALS) {
+    if (errorCode === BackEndErrors.INVALID_LOGIN_CREDENTIALS) {
       return translations.wrongCurrentPassword
-    } else if (errorCode === ALREADY_USED_PASSWORD) {
+    } else if (errorCode === BackEndErrors.ALREADY_USED_PASSWORD) {
       return translations.passwordAlreadyUsed
     }
 
@@ -113,19 +113,19 @@ export class UpdatePasswordManager {
   /**
    * Checks if error is an invalid credentials error
    * @param error - Error object from API
-   * @returns True if error is INVALID_CREDENTIALS
+   * @returns True if error is BackEndErrors.INVALID_LOGIN_CREDENTIALS
    */
   static isInvalidCredentialsError(error: any): boolean {
-    return error?.response?.data?.errorCode === INVALID_CREDENTIALS
+    return error?.response?.data?.errorCode === BackEndErrors.INVALID_LOGIN_CREDENTIALS
   }
 
   /**
    * Checks if error is a password already used error
    * @param error - Error object from API
-   * @returns True if error is ALREADY_USED_PASSWORD
+   * @returns True if error is BackEndErrors.ALREADY_USED_PASSWORD
    */
   static isPasswordAlreadyUsedError(error: any): boolean {
-    return error?.response?.data?.errorCode === ALREADY_USED_PASSWORD
+    return error?.response?.data?.errorCode === BackEndErrors.ALREADY_USED_PASSWORD
   }
 
   /**

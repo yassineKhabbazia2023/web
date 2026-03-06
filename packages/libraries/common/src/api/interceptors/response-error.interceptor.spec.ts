@@ -45,7 +45,7 @@ describe('responseInterceptorError', () => {
     expect(unauthorizedCallbackMock).toHaveBeenCalledTimes(2)
   })
 
-  it('should NOT call unauthorizedCallback when 401 occurs with INVALID_CREDENTIALS error code', async () => {
+  it('should NOT call unauthorizedCallback when 401 occurs with INVALID_LOGIN_CODE error code', async () => {
     const error: AxiosError<ApiErrorResponse> = {
       name: 'error',
       message: 'error message',

@@ -6,7 +6,7 @@ import EntityCreatorFormStructure from '@entities/config/forms/EntityCreatorForm
 import { EntityCreatorDrawerProps } from '@entities/modules/wallet/types'
 import { PButton } from '@pulse/styleguide/components'
 import type { Contact } from '@entities/services/contact/contactTypes'
-import type { ComponentWrapper } from '@entities/types'
+import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
 import type { UserInfo } from '@pulse/common/types'
 import { CollaboratorRole } from '@entities/enums'

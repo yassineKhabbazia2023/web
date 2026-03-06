@@ -1,9 +1,9 @@
-import type { VueWrapper } from '@vue/test-utils'
 import { shallowMount } from '@vue/test-utils'
 import { describe, it, expect } from 'vitest'
 import { type PConfirmationPopupProps } from './PConfirmationPopupTypes'
-import { nextTick, type ComponentPublicInstance } from 'vue'
+import { nextTick } from 'vue'
 import PConfirmationPopup from '.'
+import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 
 const defaultProps: PConfirmationPopupProps = {
   pIsVisible: true,
@@ -14,9 +14,6 @@ const defaultProps: PConfirmationPopupProps = {
   pNoCloseButton: false,
   pAlignCenter: false,
 }
-
-// TODO should export it in @pulse/toolbox
-type ComponentWrapper<T> = VueWrapper<ComponentPublicInstance & T>
 
 function createWrapper(
   overriddenProps: Partial<PConfirmationPopupProps> = {},

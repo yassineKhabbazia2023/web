@@ -1,7 +1,7 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import { subscriptionRequestMock } from '@entities/__mocks__/subscription.mocks'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import type { ComponentWrapper } from '@entities/types'
+import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { nextTick } from 'vue'
 import { getMockedUserInfo } from '@pulse/common/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
