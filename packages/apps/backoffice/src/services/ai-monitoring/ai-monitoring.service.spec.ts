@@ -1,7 +1,7 @@
 import { AiMonitoringService } from './ai-monitoring.service'
 import gatewayApi from '@backoffice/api/gateway-api'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@backoffice/constants/backoffice.const'
-import type { AiSearchHistoryResponse, AiMonitoringFiltersResponse } from '@backoffice/types/ai-monitoring.type'
+import type { AiSearchHistoryResponse, AiMonitoringFiltersResponse, AiMonitoringSummary } from '@backoffice/types/ai-monitoring.type'
 
 vi.mock('@backoffice/api/gateway-api', () => ({
   default: {
@@ -187,6 +187,116 @@ describe('AiMonitoringService', () => {
       vi.mocked(gatewayApi.get).mockRejectedValue(error)
 
       await expect(AiMonitoringService.getFilters()).rejects.toThrow('Network error')
+    })
+  })
+
+  describe('getSummary', () => {
+    const mockSummaryResponse: AiMonitoringSummary = {
+      total_calls: 251,
+      total_cost: 0.99,
+      average_time: 2.21,
+      satisfaction_rate: 75,
+    }
+
+    it('should fetch summary without parameters', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockSummaryResponse })
+
+      const result = await AiMonitoringService.getSummary()
+
+      expect(gatewayApi.get).toHaveBeenCalledWith(
+        'aiservices/api/monitoring/summary',
+        { params: {} },
+      )
+      expect(result).toEqual(mockSummaryResponse)
+    })
+
+    it('should include date range in query params when provided', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockSummaryResponse })
+
+      const result = await AiMonitoringService.getSummary({
+        startDate: '2024-01-01',
+        endDate: '2024-01-31',
+      })
+
+      expect(gatewayApi.get).toHaveBeenCalledWith(
+        'aiservices/api/monitoring/summary',
+        {
+          params: {
+            start_date: '2024-01-01',
+            end_date: '2024-01-31',
+          },
+        },
+      )
+      expect(result).toEqual(mockSummaryResponse)
+    })
+
+    it('should include all filters in query params when provided', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockSummaryResponse })
+
+      const result = await AiMonitoringService.getSummary({
+        startDate: '2024-01-01',
+        endDate: '2024-01-31',
+        features: ['GED'],
+        subFeatures: ['Recherche'],
+        users: ['user@example.com'],
+      })
+
+      expect(gatewayApi.get).toHaveBeenCalledWith(
+        'aiservices/api/monitoring/summary',
+        {
+          params: {
+            start_date: '2024-01-01',
+            end_date: '2024-01-31',
+            features: 'GED',
+            sub_features: 'Recherche',
+            users: 'user@example.com',
+          },
+        },
+      )
+      expect(result).toEqual(mockSummaryResponse)
+    })
+
+    it('should join multiple array values with commas', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockSummaryResponse })
+
+      await AiMonitoringService.getSummary({
+        features: ['GED', 'Autre'],
+        subFeatures: ['Recherche', 'Explication'],
+        users: ['user1@example.com', 'user2@example.com'],
+      })
+
+      expect(gatewayApi.get).toHaveBeenCalledWith(
+        'aiservices/api/monitoring/summary',
+        {
+          params: {
+            features: 'GED,Autre',
+            sub_features: 'Recherche,Explication',
+            users: 'user1@example.com,user2@example.com',
+          },
+        },
+      )
+    })
+
+    it('should not include empty arrays in query params', async () => {
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockSummaryResponse })
+
+      await AiMonitoringService.getSummary({
+        features: [],
+        subFeatures: [],
+        users: [],
+      })
+
+      expect(gatewayApi.get).toHaveBeenCalledWith(
+        'aiservices/api/monitoring/summary',
+        { params: {} },
+      )
+    })
+
+    it('should throw error when API call fails', async () => {
+      const error = new Error('Network error')
+      vi.mocked(gatewayApi.get).mockRejectedValue(error)
+
+      await expect(AiMonitoringService.getSummary()).rejects.toThrow('Network error')
     })
   })
 })

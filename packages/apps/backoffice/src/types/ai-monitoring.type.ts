@@ -66,3 +66,18 @@ export interface AiMonitoringFiltersState {
   subFeature: string | null
   user: string | null
 }
+
+export interface AiMonitoringSummary {
+  total_calls: number
+  total_cost: number
+  average_time: number
+  satisfaction_rate: number
+}
+
+export interface GetAiSummaryParams {
+  startDate?: string
+  endDate?: string
+  features?: string[]
+  subFeatures?: string[]
+  users?: string[]
+}

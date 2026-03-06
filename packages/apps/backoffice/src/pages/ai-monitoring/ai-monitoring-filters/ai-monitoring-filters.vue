@@ -5,7 +5,6 @@
       flex
       flex--align-items-end
       flex-gap--4
-      margin-bottom--8
     "
   >
     <div class="ai-monitoring-filters__field">
@@ -106,7 +105,7 @@
 
     <PButton
       data-testid="ai-monitoring-filters-reset"
-      pType="secondary"
+      pType="primary"
       pPlain
       :pDisabled="props.isLoading === true || hasActiveFilters === false"
       @click="handleReset"

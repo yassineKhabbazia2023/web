@@ -8,6 +8,8 @@ import type {
   AiMonitoringFiltersState,
   AiMonitoringFeatureOption,
   AiMonitoringFilterOption,
+  AiMonitoringSummary,
+  GetAiSummaryParams,
 } from '@backoffice/types/ai-monitoring.type'
 import { AiMonitoringService } from '@backoffice/services/ai-monitoring/ai-monitoring.service'
 import { DEFAULT_PAGE_NUMBER, PAGE_SIZE_OPTIONS } from '@backoffice/constants/backoffice.const'
@@ -21,8 +23,10 @@ const getDefaultFilters = (): AiMonitoringFiltersState => ({
 
 export function useAiMonitoring() {
   const history = ref<AiSearchHistoryItem[]>([])
+  const summary = ref<AiMonitoringSummary | null>(null)
   const isLoading = ref<boolean>(false)
   const isLoadingFilters = ref<boolean>(false)
+  const isLoadingSummary = ref<boolean>(false)
 
   const pagination = ref({
     totalItems: 0,
@@ -88,6 +92,38 @@ export function useAiMonitoring() {
     }
   }
 
+  const fetchSummary = async () => {
+    isLoadingSummary.value = true
+
+    try {
+      const params: GetAiSummaryParams = {}
+
+      if (filters.value.dateRange !== null) {
+        params.startDate = formatStartDateToISO(filters.value.dateRange[0])
+        params.endDate = formatEndDateToISO(filters.value.dateRange[1])
+      }
+
+      if (isNotNullNorEmpty(filters.value.feature)) {
+        params.features = [filters.value.feature]
+      }
+
+      if (isNotNullNorEmpty(filters.value.subFeature)) {
+        params.subFeatures = [filters.value.subFeature]
+      }
+
+      if (isNotNullNorEmpty(filters.value.user)) {
+        params.users = [filters.value.user]
+      }
+
+      summary.value = await AiMonitoringService.getSummary(params)
+    } catch (error) {
+      logger.error('Failed to load AI monitoring summary:', error)
+      displayNotification('error', 'Une erreur est survenue lors du chargement des statistiques')
+    } finally {
+      isLoadingSummary.value = false
+    }
+  }
+
   const handlePageChange = async (page: number) => {
     pagination.value.currentPage = page
     await fetchHistory()
@@ -101,23 +137,25 @@ export function useAiMonitoring() {
 
   const handleFilterChange = async () => {
     pagination.value.currentPage = DEFAULT_PAGE_NUMBER
-    await fetchHistory()
+    await Promise.all([fetchHistory(), fetchSummary()])
   }
 
   const resetFilters = async () => {
     filters.value = getDefaultFilters()
     pagination.value.currentPage = DEFAULT_PAGE_NUMBER
-    await fetchHistory()
+    await Promise.all([fetchHistory(), fetchSummary()])
   }
 
   const initialize = async () => {
-    await Promise.all([fetchFilters(), fetchHistory()])
+    await Promise.all([fetchFilters(), fetchHistory(), fetchSummary()])
   }
 
   return {
     history,
+    summary,
     isLoading,
     isLoadingFilters,
+    isLoadingSummary,
     pagination,
     filters,
     filterFeatures,
