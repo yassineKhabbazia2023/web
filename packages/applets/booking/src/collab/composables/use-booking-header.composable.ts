@@ -1,15 +1,15 @@
 import { computed } from 'vue'
 import { useBookingCollabStore } from '@pulse/common/stores'
-import { BookingTrackingManager } from '@pulse/booking/shared/managers/booking-tracking'
-import { useBookingCustomerStore } from '../../stores'
+import { useBookingCustomerStore } from '@booking/stores'
+import { BookingTrackingService } from '@booking/services/booking-tracking.service'
 
 export function useBookingHeader() {
   const collabStore = useBookingCollabStore()
   const customerStore = useBookingCustomerStore()
 
   function openDrawer() {
-    BookingTrackingManager.trackBookingConfigurationViewStarted()
     collabStore.openBookingDrawer()
+    BookingTrackingService.trackCollaboratorWidgetOpened()
   }
 
   const isOpenedBookingAppointmentDrawer = computed({

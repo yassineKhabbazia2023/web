@@ -96,7 +96,7 @@
     }
   },
   "notifications": {
-    "submit-success": "Your time slots settings have been saved",
+    "submit-success": "Your appointment slots have been saved and are now available to your customers",
     "submit-error": "Error saving your time slots, please try again later"
   },
   "booking-appointment-drawer": {

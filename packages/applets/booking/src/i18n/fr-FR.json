@@ -96,7 +96,7 @@
     }
   },
   "notifications": {
-    "submit-success": "Le paramétrage de vos créneaux a bien été pris en compte",
+    "submit-success": "Vos créneaux de rendez-vous ont bien été enregistrés et à la disposition de vos clients",
     "submit-error": "Erreur lors de l'enregistrement de vos créneaux, veuillez ressayer plus tard"
   },
   "booking-appointment-drawer": {

@@ -6,9 +6,9 @@ import type { BookingConfigurationResponse, BookingConfigurationPayload } from '
 import { getMockedBookingServiceConfiguration } from '../__mocks__'
 
 vi.mock('@pulse/common/api', () => ({
-  api: ({
+  api: {
     gateway: apiGatewayMock,
-  }),
+  },
 }))
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
@@ -71,7 +71,7 @@ describe('booking.service', () => {
         duration: 30,
         availability: [],
       }
-      const expectedUrl = `${API_PREFIXES.BOOKING}/booking-link/currentuser/configuration`
+      const expectedUrl = `${API_PREFIXES.BOOKING}/booking/provisioning/currentuser`
       const mockResponse: BookingConfigurationResponse = {
         id: '123',
         displayName: 'Test Meeting',

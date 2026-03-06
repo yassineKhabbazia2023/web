@@ -67,7 +67,7 @@ export class BookingService {
   static async submitBookingConfiguration(
     payload: BookingConfigurationPayload,
   ): Promise<BookingConfigurationResponse> {
-    const url = `${API_PREFIXES.BOOKING}/booking-link/currentuser/configuration`
+    const url = `${API_PREFIXES.BOOKING}/booking/provisioning/currentuser`
     const { data } = await api.gateway.post<BookingConfigurationResponse>(url, payload)
 
     return data
