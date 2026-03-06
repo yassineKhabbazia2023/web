@@ -76,7 +76,7 @@
     "@intlify/unplugin-vue-i18n": "^6.0.0",
     "@pinia/testing": "^1.0.3",
     "@playwright/test": "^1.49.0",
-    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-terser": "^1.0.0",
     "@rollup/plugin-typescript": "^11.1.6",
     "@storybook/addon-a11y": "^10.2.9",
     "@storybook/addon-docs": "^10.2.9",
@@ -95,8 +95,7 @@
     "eslint-plugin-storybook": "^10.2.9",
     "eslint-plugin-vue": "^10.0.0",
     "globals": "^15.10.0",
-    "vue-eslint-parser": "^10.0.0",
-    "jsdom": "^22.1.0",
+    "jsdom": "^28.1.0",
     "license-checker": "^25.0.1",
     "lightningcss": "^1.25.0",
     "msw": "^2.12.4",
@@ -114,6 +113,7 @@
     "vite-tsconfig-paths": "^6.0.5",
     "vitepress": "^2.0.0-alpha.15",
     "vitest": "^4.0.0",
+    "vue-eslint-parser": "^10.0.0",
     "vue-tsc": "^3.2.4"
   }
 }

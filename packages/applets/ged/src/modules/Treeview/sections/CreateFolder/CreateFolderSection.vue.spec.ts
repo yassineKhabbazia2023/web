@@ -78,7 +78,7 @@ describe('createFolderSection', () => {
 
       const mainCreateButton = wrapper.find('[data-testid=treeview__new-folder]')
 
-      expect(mainCreateButton.attributes('ariadisabled')).toBe('true')
+      expect(mainCreateButton.attributes('aria-disabled')).toBe('true')
     })
 
     it('should disable main create folder button when opening bin tree', () => {
@@ -91,7 +91,7 @@ describe('createFolderSection', () => {
 
       const mainCreateButton = wrapper.find('[data-testid=treeview__new-folder]')
 
-      expect(mainCreateButton.attributes('ariadisabled')).toBe('true')
+      expect(mainCreateButton.attributes('aria-disabled')).toBe('true')
     })
 
     it('should enable main create folder button when permission  available', () => {
@@ -99,7 +99,7 @@ describe('createFolderSection', () => {
 
       const mainCreateButton = wrapper.find('[data-testid=treeview__new-folder]')
 
-      expect(mainCreateButton.attributes('ariadisabled')).toBe('false')
+      expect(mainCreateButton.attributes('aria-disabled')).toBe('false')
     })
 
     describe('binding with create folder modal', () => {
