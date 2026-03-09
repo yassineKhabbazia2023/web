@@ -91,7 +91,7 @@
         <template #default="scope">
           <PToolbox
             trigger="click"
-            :pElements="requestMenu"
+            :pElements="requestMenu(scope.row.status)"
             data-testid="subscription-actions-toolbox"
             @p-toolbox-item-clicked="($event: string) => onClickToolboxItem($event, scope.row)"
           >
@@ -157,20 +157,27 @@ const { user } = storeToRefs(userStore)
 const offerTypeSelection = ref<string[]>([])
 const subscriptions = ref<SubscriptionRequest[]>([])
 const filteredSubscriptions = ref<SubscriptionRequest[]>([])
-const requestMenu: PToolboxItemProps[] = [
-  {
-    pIconName: 'eye',
-    pValue: t('consult'),
-    pActionName: 'consult',
-    pState: 'default',
-  },
-  {
-    pIconName: 'check',
-    pValue: t('validate'),
-    pActionName: 'validate',
-    pState: 'default',
-  },
-]
+const requestMenu = (offerState: SubscriptionStatusCode): PToolboxItemProps[] => {
+  const menuItems: PToolboxItemProps[] = [
+    {
+      pIconName: 'eye',
+      pValue: t('consult'),
+      pActionName: 'consult',
+      pState: 'default',
+    }]
+
+  if (offerState !== SubscriptionStatusCode.VALIDATED) {
+    menuItems.push({
+      pIconName: 'check',
+      pValue: t('validate'),
+      pActionName: 'validate',
+      pState: 'default',
+
+    })
+  }
+
+  return menuItems
+}
 
 const fetchSubscriptions = async () => {
   subscriptions.value = await fetchSubscriptionRequests()
@@ -294,7 +301,7 @@ en-US:
   dateRequest: 'Date'
   validate: 'Validate request'
   consult: 'Consult'
-  validated: 'Activated'
+  validated: 'Validated'
   pending: 'To validate'
   toCreate: 'To create'
   pennylaneCreated: 'Update plan'
@@ -313,7 +320,7 @@ fr-FR:
   dateRequest: 'Date'
   validate: 'Valider la demande'
   consult: 'Consulter'
-  validated: 'Activée'
+  validated: 'Validée'
   pending: 'A valider'
   toCreate: 'À créer'
   pennylaneCreated: 'Modifier le plan'

@@ -1,5 +1,5 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { subscriptionRequestMock } from '@entities/__mocks__/subscription.mocks'
+import { subscriptionRequestMock, validatedSubscriptionRequestMock } from '@entities/__mocks__/subscription.mocks'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { nextTick } from 'vue'
@@ -28,7 +28,7 @@ vi.mock('@entities/services/subscription', async () => {
 
 vi.mock('@pulse/common/services/amplitude')
 
-const requestMenu = [
+const pendingRequestMenu = [
   {
     pIconName: 'eye',
     pValue: 'Consult',
@@ -39,6 +39,15 @@ const requestMenu = [
     pIconName: 'check',
     pValue: 'Validate request',
     pActionName: 'validate',
+    pState: 'default',
+  },
+]
+
+const validatedRequestMenu = [
+  {
+    pIconName: 'eye',
+    pValue: 'Consult',
+    pActionName: 'consult',
     pState: 'default',
   },
 ]
@@ -102,10 +111,31 @@ describe('subscriptionsTable', () => {
     expect(cellsText).toMatchObject(expected)
   })
 
-  it('should display subscription toolbox items', () => {
-    const pToolbox = wrapper.findComponent({ name: 'PToolbox' })
+  it('should display both consult and validate toolbox items for pending subscriptions', () => {
+    const pToolboxes = wrapper.findAllComponents({ name: 'PToolbox' })
 
-    expect(pToolbox.props('pElements')).toStrictEqual(requestMenu)
+    expect(pToolboxes[0].props('pElements')).toStrictEqual(pendingRequestMenu)
+  })
+
+  it('should display only consult toolbox item for validated subscriptions', async () => {
+    mockFetchSubscriptionRequests.mockResolvedValueOnce([validatedSubscriptionRequestMock])
+
+    wrapper = mount(SubscriptionsTable, {
+      global: {
+        stubs: {
+          PLoader: true,
+          SubscriptionsFilter: true,
+          PToolbox: true,
+          PButton: true,
+          PIcon: true,
+        },
+      },
+    })
+    await flushPromises()
+
+    const pToolboxes = wrapper.findAllComponents({ name: 'PToolbox' })
+
+    expect(pToolboxes.at(-1)?.props('pElements')).toStrictEqual(validatedRequestMenu)
   })
 
   it('should display the subscriptions table filtered by offer type', async () => {

@@ -6,7 +6,7 @@ import { API_PREFIXES } from '@pulse/common/constants'
 export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]> {
   try {
     const response = await api.gateway.get(
-      `${API_PREFIXES.OFFER}/subscription?status=pending`,
+      `${API_PREFIXES.OFFER}/subscription`,
     )
 
     return response.data

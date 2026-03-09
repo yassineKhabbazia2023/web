@@ -8,6 +8,51 @@ import { ProviderName, SubscriptionPriceType } from '@entities/enums'
 
 import { ContactType } from '@pulse/common/enums'
 
+export const validatedSubscriptionRequestMock: SubscriptionRequest = {
+  subscriptionId: 13,
+  account: {
+    accountId: 5,
+    accountNumber: '1000265308',
+    accountLegalName: 'JOHN SMITH',
+  },
+  applicant: 'test-03@test.fr',
+  offer: {
+    offerId: 6,
+    offerCode: 'Pennylane',
+    offerLabel: "Mise à disposition de l'outil Pennylane alliée à l'expertise de RYDGE",
+    offerName: 'RYDGE Conseil x Pennylane',
+    logoName: 'pennylane-color',
+    plans: [
+      {
+        planId: 10,
+        planCode: 'PENNYLANE_BASIQUE',
+        planName: 'Basique',
+        isDefault: true,
+        isSelected: true,
+      },
+      {
+        planId: 11,
+        planCode: 'PENNYLANE_ESSENTIEL',
+        planName: 'Essentiel',
+        isDefault: false,
+        isSelected: false,
+      },
+    ],
+  },
+  clients: [
+    {
+      id: 2,
+      firstName: 'John',
+      lastName: 'Doe',
+      email: 'test-05@test.onmicrosoft.com',
+      mobilePhone: '1234567P',
+    },
+  ],
+  subscriptionDate: '2023-03-30T12:32:29.9400933',
+  creationDate: '2023-03-30T12:32:29.9400933',
+  status: SubscriptionStatusCode.VALIDATED,
+}
+
 export const subscriptionRequestMock: SubscriptionRequest[] = [
   {
     subscriptionId: 11,
