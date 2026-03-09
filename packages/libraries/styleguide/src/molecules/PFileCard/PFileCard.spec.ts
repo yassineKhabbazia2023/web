@@ -78,10 +78,10 @@ describe('pFileCard', () => {
           pHasIcon: true,
         },
         {
-          icon: '<p data-test-id="icon-test">Icon Text</p>',
+          icon: '<p data-testid="icon-test">Icon Text</p>',
         },
       )
-      expect(wrapper.find('[data-test-id="icon-test"]').exists()).toBeTruthy()
+      expect(wrapper.find('[data-testid="icon-test"]').exists()).toBeTruthy()
     })
 
     it('should renders the text values of the component', () => {

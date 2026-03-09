@@ -1,0 +1,56 @@
+import { test, expect, type Page } from '@playwright/test'
+import { tokenMock } from '@pulse/common/mocks'
+
+const FOLDERS_URL = 'portefeuille/dossiers'
+
+async function navigateToFolders(page: Page) {
+  await page.addInitScript((token) => localStorage.setItem('token', token), tokenMock)
+  await page.goto(FOLDERS_URL)
+  await expect(page.getByTestId('folders-table')).toBeVisible({ timeout: 15000 })
+}
+
+async function clickToolboxAction(page: Page, actionText: string) {
+  await page.getByTestId('wallet-actions-toolbox').first().click()
+  await page.locator('button.p-toolbox-item').filter({ hasText: actionText }).first().click()
+}
+
+test.describe('Folder page - Drawers', () => {
+  test.beforeEach(async ({ page }) => {
+    await navigateToFolders(page)
+  })
+
+  test('should open the Account Filters drawer', async ({ page }) => {
+    await page.getByTestId('account-deploy__filter-button').click()
+    await expect(page.getByTestId('account-filters-drawer__apply-button')).toBeVisible()
+  })
+
+  test('should open the Delegation drawer', async ({ page }) => {
+    await page.getByRole('button', { name: /Déléguer/ }).click()
+    await expect(page.locator('[role="dialog"]').filter({ hasText: 'Ajout des collaborateurs' })).toBeVisible()
+  })
+
+  test('should open the Entity Creator drawer', async ({ page }) => {
+    await page.getByRole('button', { name: /Créer un compte de test/ }).click()
+    await expect(page.getByTestId('entity-creator-user-card')).toBeVisible()
+  })
+
+  test('should open the Manage Access drawer', async ({ page }) => {
+    await page.getByTestId('manage-access-button').click()
+    await expect(page.locator('[role="dialog"]').filter({ hasText: "Valider l'accès utilisateur" })).toBeVisible()
+  })
+
+  test('should open the Offers drawer via deploy action', async ({ page }) => {
+    await clickToolboxAction(page, 'Déployer ce dossier')
+    await expect(page.getByTestId('offers')).toBeVisible()
+  })
+
+  test('should open the Declare Customer Relation drawer', async ({ page }) => {
+    await clickToolboxAction(page, 'Se déclarer en relation client')
+    await expect(page.getByTestId('declare-customer-relation-entity-card')).toBeVisible()
+  })
+
+  test('should open the Resend Activation Email drawer', async ({ page }) => {
+    await clickToolboxAction(page, "Relancer le mail d'activation")
+    await expect(page.getByTestId('account-rights-company-card')).toBeVisible()
+  })
+})

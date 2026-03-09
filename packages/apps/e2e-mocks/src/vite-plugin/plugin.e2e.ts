@@ -64,8 +64,14 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
     '/assets/sample.pdf': { file: 'sample.pdf', contentType: 'application/pdf', basePath: assetsPath },
   }
 
+  // Resolved base path from Vite config (set by configResolved hook)
+  let resolvedBase = '/'
+
   return {
     name: 'plugin-e2e',
+    configResolved(config) {
+      resolvedBase = config.base
+    },
     config() {
       if (isE2E === false) {
         return
@@ -80,8 +86,8 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
         '@amplitude/plugin-session-replay-browser': path.resolve(shimsPath, 'amplitude-session-replay-shim.ts'),
       }
 
-      // Add MSAL shim for backoffice app
-      if (appType === 'backoffice') {
+      // Add MSAL shim for apps using MSAL SSO (collaborator and backoffice)
+      if (appType === 'collaborator' || appType === 'backoffice') {
         aliases['@azure/msal-browser'] = path.resolve(shimsPath, 'msal-shim.ts')
       }
 
@@ -100,7 +106,8 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
       // The inline script sets the app type before the bootstrap module loads
       const appTypeScript = `<script>window.__MSW_APP_TYPE__ = '${appType}';</script>`
       // Use /@fs/ prefix for direct file access - Vite will transform and serve this TypeScript file
-      const mswScript = `<script type="module" src="/@fs${bootstrapPath}"></script>`
+      // Prefix with resolvedBase so the path works with non-root base paths (e.g. /collaborateur/)
+      const mswScript = `<script type="module" src="${resolvedBase}@fs${bootstrapPath}"></script>`
       return html.replace('<head>', `<head>${appTypeScript}${mswScript}`)
     },
     configureServer(server: ViteDevServer) {
@@ -112,8 +119,14 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
       server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: () => void) => {
         const url = req.url || ''
 
+        // Strip Vite base path from URL for matching (e.g. /collaborateur/env-vars.js → /env-vars.js)
+        const base = server.config.base || '/'
+        const normalizedUrl = base !== '/' && url.startsWith(base)
+          ? '/' + url.slice(base.length)
+          : url
+
         // Handle specific E2E public files
-        const e2eFile = e2ePublicFiles[url]
+        const e2eFile = e2ePublicFiles[normalizedUrl] || e2ePublicFiles[url]
         if (e2eFile) {
           const e2eFilePath = path.join(e2eFile.basePath, e2eFile.file)
 
@@ -128,8 +141,8 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
         }
 
         // Serve styleguide assets (images, icons, fonts, etc.)
-        if (url.startsWith('/assets/images/')) {
-          const relativePath = url.replace('/assets/images/', '')
+        if (normalizedUrl.startsWith('/assets/images/')) {
+          const relativePath = normalizedUrl.replace('/assets/images/', '')
           const filePath = path.join(styleguideAssetsPath, 'images', relativePath)
 
           if (fs.existsSync(filePath)) {

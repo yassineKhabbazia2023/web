@@ -32,7 +32,7 @@
     <div
       v-if="!doesCurrentFolderContainsChildren"
       class="folder-list__empty-folder"
-      data-test-id="folders-list-empty-folder-label"
+      data-testid="folders-list-empty-folder-label"
     >
       <div class="folder-list__no-subfolder-image">
         <PImage pName="empty-subfolder" />

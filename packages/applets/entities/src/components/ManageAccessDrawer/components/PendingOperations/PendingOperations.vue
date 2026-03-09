@@ -42,7 +42,7 @@
       pSize="32"
     />
     <div
-      data-test-id="no-demand-for-search-term"
+      data-testid="no-demand-for-search-term"
       class="font-semibold"
     >
       {{ t('no-demand-for-search-term', { searchTerm: props.searchTerm }) }}

@@ -49,7 +49,7 @@ describe('foldersList', () => {
       const lines = wrapper.findAllComponents({ name: 'PFolderLineNavigationItem' })
       expect(lines).toHaveLength(0)
 
-      const emptyFolderLabel = wrapper.find('[data-test-id="folders-list-empty-folder-label"]')
+      const emptyFolderLabel = wrapper.find('[data-testid="folders-list-empty-folder-label"]')
       expect(emptyFolderLabel.exists()).toBeTruthy()
     })
 
@@ -81,7 +81,7 @@ describe('foldersList', () => {
       expect(lines[0].props('pIconLeftName')).toBe('folder')
       expect(lines[0].props('pDisabled')).toBeFalsy()
 
-      const emptyFolderLabel = wrapper.find('[data-test-id="folders-list-empty-folder-label"]')
+      const emptyFolderLabel = wrapper.find('[data-testid="folders-list-empty-folder-label"]')
       expect(emptyFolderLabel.exists()).toBeFalsy()
     })
   })

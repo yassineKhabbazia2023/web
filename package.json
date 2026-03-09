@@ -44,7 +44,9 @@
     "storybook:preview": "vite preview --outDir dist-storybook --base=/storybook/",
     "e2e": "npm run e2e --workspaces --if-present",
     "e2e:customer": "npm run e2e --workspace=@pulse/customer",
-    "e2e:customer:report": "npm run e2e:report --workspace=@pulse/customer"
+    "e2e:customer:report": "npm run e2e:report --workspace=@pulse/customer",
+    "e2e:collaborator": "npm run e2e --workspace=@pulse/collaborator",
+    "e2e:collaborator:report": "npm run e2e:report --workspace=@pulse/collaborator"
   },
   "dependencies": {
     "@amplitude/analytics-browser": "^2.11.7",

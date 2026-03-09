@@ -7,6 +7,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "dev:e2e": "VITE_E2E_MODE=true vite --port 1338",
     "build": "npm run build:vite --",
     "preview": "vite preview",
     "build:vite": "vite build --emptyOutDir",
@@ -14,7 +15,10 @@
     "lint": "eslint .",
     "lint:fix": "npm run lint -- --fix",
     "test": "vitest run",
-    "test:ci": "vitest run --coverage"
+    "test:ci": "vitest run --coverage",
+    "e2e": "playwright test --config=e2e/playwright.config.ts",
+    "e2e:debug": "playwright test --config=e2e/playwright.config.ts --debug",
+    "e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@pulse/booking": "1.0.0",

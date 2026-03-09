@@ -10,9 +10,9 @@
       {{ pTitle }}
     </p>
     <p class="p-task-item__numb-tasks flex--shrink-0 font-semibold font-xsmall">
-      <span data-test-id="task-item-completed">{{ pCompletedTasks }}</span>
+      <span data-testid="task-item-completed">{{ pCompletedTasks }}</span>
       /
-      <span data-test-id="task-item-total">{{ pTotalTasks }}</span>
+      <span data-testid="task-item-total">{{ pTotalTasks }}</span>
     </p>
   </div>
 </template>

@@ -1,9 +1,10 @@
 /**
  * Supported application types for E2E testing
- * - 'customer': Customer/Collaborator apps with standard handlers
+ * - 'customer': Customer app with standard handlers (isCustomer: true)
+ * - 'collaborator': Collaborator app with standard handlers (isCustomer: false)
  * - 'backoffice': Backoffice app with app-settings handlers and MSAL shim
  */
-export type AppType = 'customer' | 'backoffice'
+export type AppType = 'customer' | 'collaborator' | 'backoffice'
 
 /**
  * Options for the E2E Vite plugin

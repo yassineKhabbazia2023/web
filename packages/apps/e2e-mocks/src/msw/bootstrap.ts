@@ -33,6 +33,10 @@ try {
   console.log(`${logPrefix} Starting worker...`)
   await worker.start({
     onUnhandledRequest: 'bypass',
+    serviceWorker: {
+      // Use absolute URL to bypass <base> tag in apps with non-root base paths (e.g. /collaborateur/)
+      url: '/mockServiceWorker.js',
+    },
   })
 
   /* eslint-disable-next-line no-console */

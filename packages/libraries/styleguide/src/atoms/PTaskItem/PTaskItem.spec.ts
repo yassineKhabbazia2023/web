@@ -26,8 +26,8 @@ describe('pTaskItem', () => {
       })
 
       expect(wrapper.find('.p-task-item__title').text()).toContain(title)
-      expect(wrapper.find('[data-test-id=task-item-completed]').text()).toContain(completedTasks)
-      expect(wrapper.find('[data-test-id=task-item-total]').text()).toContain(totalTasks)
+      expect(wrapper.find('[data-testid=task-item-completed]').text()).toContain(completedTasks)
+      expect(wrapper.find('[data-testid=task-item-total]').text()).toContain(totalTasks)
     })
     it('should render correctly with all passed props', () => {
       const wrapper = createWrapper()
