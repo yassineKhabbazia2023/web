@@ -76,8 +76,10 @@ When using more than 2 CSS classes, use multi-line format:
 - Use **Composition API** with `<script setup lang="ts">`
 - Prefer `ref` over `reactive` for primitive values
 - Use `defineProps` and `defineEmits` with TypeScript generics
-- Use `v-model` with `defineModel()` (Vue 3.4+)
+- Use `defineModel()` (Vue 3.4+) for two-way bindings — never use the manual `:modelValue` + `@update:model-value` + `defineEmits` pattern
 - Prefer template refs with `useTemplateRef()` (Vue 3.5+)
+- **Prefer `@change` (or other template events) over `watch`** when a reactive value only changes from a single source (e.g. a checkbox, an input). Use `watch` only when the value can be modified from multiple sources. A template event is more explicit and avoids unnecessary watchers.
+- **Use `@pulse/toolbox` utility helpers** instead of reinventing common checks. For example, use `isNotNullNorEmpty` from `@pulse/toolbox/utils/validator` instead of writing manual `value !== null && value !== undefined && value !== ''` checks. Always check what helpers already exist in toolbox before writing your own.
 
 ### Import Restrictions
 

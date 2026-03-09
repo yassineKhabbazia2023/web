@@ -18,6 +18,10 @@ description: Unit testing requirements, Vitest guidelines, mock patterns, and te
 - Test what the function **does** (return values, side effects, emitted events), not **how** it does it.
 - Avoid asserting on internal state or private methods.
 
+## Testing Attributes
+
+- Use `data-testid` for test selectors (not `data-test-id`)
+
 ## Testing Guidelines
 
 - Use Vitest for all testing
