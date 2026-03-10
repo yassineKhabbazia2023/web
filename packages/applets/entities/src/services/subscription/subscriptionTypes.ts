@@ -90,3 +90,7 @@ export interface SubscriptionDetails {
   notes: Note[]
   hasNoSiren?: boolean
 }
+
+export interface SubscriptionStats {
+  statuses: Partial<Record<SubscriptionStatusCode, number>>
+}

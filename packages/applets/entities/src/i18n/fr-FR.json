@@ -11,7 +11,14 @@
       "accountManagement": "Administration dossiers",
       "uploadPowerBIReport": "Déposer un rapport BI",
       "biReportsList": "Rapports BI",
-      "offersCatalog": "Catalogue des offres"
+      "offersCatalog": "Catalogue des offres",
+      "subscriptionStatusFilters": {
+        "activateOffers": "Activation des offres",
+        "toCreate": "À créer",
+        "toVerify": "À vérifier",
+        "created": "Modifier le plan",
+        "validated": "Validé"
+      }
     },
     "invoices": {
       "title": "Dématérialisation des factures RYDGE Conseil",

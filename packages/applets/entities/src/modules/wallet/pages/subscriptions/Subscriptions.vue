@@ -1,5 +1,6 @@
 <template>
   <div class="margin-top--4">
+    <SubscriptionStatusFilters class="margin-bottom--4" />
     <SubscriptionsTable @consult="onClickConsult" />
     <SubscriptionDetailsDrawer
       v-if="displaySubscriptionDrawer && selectedSubscriptionId"
@@ -12,6 +13,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { SubscriptionStatusFilters } from './components/SubscriptionStatusFilters'
 import SubscriptionsTable from './components/SubscriptionsTable'
 import SubscriptionDetailsDrawer from './components/SubscriptionDetailsDrawer'
 import { SubscriptionDetailsContext } from '../../enums'

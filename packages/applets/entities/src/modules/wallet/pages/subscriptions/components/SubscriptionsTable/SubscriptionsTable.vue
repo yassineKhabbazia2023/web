@@ -196,13 +196,13 @@ const getStatusDetails = (status: string): StatusDetails => {
       return { text: t('validated'), color: 'success', iconName: 'checkCircle' }
     case SubscriptionStatusCode.PENDING:
       if (FeatureFlagManager.isModscreenV2Activated() === true) {
-        return { text: t('toCreate'), color: 'info', iconName: 'infoCircle' }
+        return { text: t('toCreate'), color: 'orange', iconName: 'arrowUpCircle' }
       }
       return { text: t('pending'), color: 'info', iconName: 'infoCircle' }
     case SubscriptionStatusCode.PENNYLANE_CREATED:
-      return { text: t('pennylaneCreated'), color: 'light-green', iconName: 'checkCircle' }
+      return { text: t('pennylaneCreated'), color: 'purple', iconName: 'arrowRepeat' }
     case SubscriptionStatusCode.PENNYLANE_NOT_CREATED:
-      return { text: t('pennylaneNotCreated'), color: 'orange', iconName: 'exclamationTriangle' }
+      return { text: t('pennylaneNotCreated'), color: 'orange', iconName: 'arrowUpCircle' }
     case SubscriptionStatusCode.PENNYLANE_TO_VERIFY:
       return { text: t('pennylaneToVerify'), color: 'blue', iconName: 'search' }
     default:
@@ -324,7 +324,7 @@ fr-FR:
   pending: 'A valider'
   toCreate: 'À créer'
   pennylaneCreated: 'Modifier le plan'
-  pennylaneNotCreated: 'A créer'
+  pennylaneNotCreated: 'À créer'
   pennylaneToVerify: 'À vérifier'
   offerActivated: "L'offre a été activée"
   offerNotActivated: "L'offre n'a pas pu être activée"

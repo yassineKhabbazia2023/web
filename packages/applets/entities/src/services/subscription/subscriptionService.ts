@@ -1,6 +1,6 @@
 import { api } from '@pulse/common/api'
 import { handleRequestError } from '@entities/helpers'
-import type { SubscriptionRequest, PostSubscriptionRequest, SubscriptionDetails } from './subscriptionTypes'
+import type { SubscriptionRequest, PostSubscriptionRequest, SubscriptionDetails, SubscriptionStats } from './subscriptionTypes'
 import { API_PREFIXES } from '@pulse/common/constants'
 
 export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]> {
@@ -63,4 +63,17 @@ export async function fetchSubscriptionDetails(
   )
 
   return response.data
+}
+
+export async function fetchSubscriptionStats(): Promise<SubscriptionStats> {
+  try {
+    const response = await api.gateway.get(
+      `${API_PREFIXES.OFFER}/subscription/stats`,
+    )
+
+    return response.data
+  } catch (error) {
+    handleRequestError('fetching subscription stats', error)
+    return { statuses: {} }
+  }
 }

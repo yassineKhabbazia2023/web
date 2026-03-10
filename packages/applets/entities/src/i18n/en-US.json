@@ -11,7 +11,14 @@
       "accountManagement": "Folder administration",
       "uploadPowerBIReport": "Upload a BI report",
       "biReportsList": "BI Reports",
-      "offersCatalog": "Offers catalog"
+      "offersCatalog": "Offers catalog",
+      "subscriptionStatusFilters": {
+        "activateOffers": "Offer activation",
+        "toCreate": "To create",
+        "toVerify": "To verify",
+        "created": "Created",
+        "validated": "Validated"
+      }
     },
     "invoices": {
       "title": "Dematerialization of RYDGE Conseil invoices",
