@@ -38,20 +38,25 @@ describe('pCompletionTracker', () => {
     })
   })
 
-  describe('slots', () => {
-    it('should render header slot when provided', () => {
-      const wrapper = createWrapper(defaultProps, {
-        header: '<h3>Etapes</h3>',
-      })
+  describe('header', () => {
+    it('should render title and description when props are provided', () => {
+      const wrapper = createWrapper({ ...defaultProps, pTitle: 'Etapes', pDescription: 'Description text' })
 
       expect(wrapper.find('.p-completion-tracker__header').exists()).toBe(true)
-      expect(wrapper.find('.p-completion-tracker__header').text()).toContain('Etapes')
+      expect(wrapper.find('.p-completion-tracker__title').text()).toBe('Etapes')
+      expect(wrapper.find('.p-completion-tracker__description').text()).toBe('Description text')
     })
 
-    it('should not render header section when slot is empty', () => {
+    it('should not render header section when pTitle is not provided', () => {
       const wrapper = createWrapper()
 
       expect(wrapper.find('.p-completion-tracker__header').exists()).toBe(false)
+    })
+
+    it('should not render description when pDescription is not provided', () => {
+      const wrapper = createWrapper({ ...defaultProps, pTitle: 'Etapes' })
+
+      expect(wrapper.find('.p-completion-tracker__description').exists()).toBe(false)
     })
 
     it('should render default slot content', () => {

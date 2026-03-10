@@ -1215,6 +1215,12 @@ export const pulseGeneratedIcons: {
     category: 'Spatiotemporal',
   },
   {
+    name: 'checkCircleFill',
+    componentName: 'PICheckCircleFill',
+    fileName: 'check-circle-fill.svg',
+    category: 'Status',
+  },
+  {
     name: 'checkCircle',
     componentName: 'PICheckCircle',
     fileName: 'check-circle.svg',

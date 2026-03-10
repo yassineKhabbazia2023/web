@@ -19,18 +19,11 @@ describe('pCompletionTrackerListItem', () => {
       expect(wrapper.find('[data-testid=completion-tracker-list-item-label]').text()).toContain('Informations dirigeant')
     })
 
-    it('should default to pending status', () => {
+    it('should default to incomplete status', () => {
       const wrapper = createWrapper()
       const item = wrapper.find('[data-testid=completion-tracker-list-item]')
 
-      expect(item.classes()).toContain('p-completion-tracker-list-item--pending')
-    })
-
-    it('should apply in-progress status class', () => {
-      const wrapper = createWrapper({ ...defaultProps, pStatus: 'in-progress' })
-      const item = wrapper.find('[data-testid=completion-tracker-list-item]')
-
-      expect(item.classes()).toContain('p-completion-tracker-list-item--in-progress')
+      expect(item.classes()).toContain('p-completion-tracker-list-item--incomplete')
     })
 
     it('should apply completed status class', () => {

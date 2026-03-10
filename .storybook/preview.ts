@@ -87,11 +87,11 @@ const preview: Preview = {
     options: {
       storySort: {
         order: [
+          'Laboratory',
           'Guidelines',
           'Apps',
           'Applets',
           'Libraries',
-          'Laboratory',
         ],
       },
     },

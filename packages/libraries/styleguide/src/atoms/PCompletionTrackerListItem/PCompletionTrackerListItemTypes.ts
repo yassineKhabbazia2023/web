@@ -1,4 +1,4 @@
-export type PCompletionTrackerListItemStatus = 'pending' | 'in-progress' | 'completed'
+export type PCompletionTrackerListItemStatus = 'incomplete' | 'completed'
 
 export interface PCompletionTrackerListItemProps {
   pLabel: string

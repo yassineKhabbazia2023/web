@@ -20,16 +20,18 @@ const meta: Meta<typeof PCompletionTracker> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Composant de suivi d\'etapes avec barre de progression et listes d\'actions.',
+        component: 'Composant de suivi d\'étapes avec barre de progression et listes d\'actions.',
       },
     },
   },
   argTypes: {
-    pCurrent: { control: 'number', description: 'Nombre d\'etapes completees' },
-    pTotal: { control: 'number', description: 'Nombre total d\'etapes' },
-    pProgressionLabel: { control: 'text', description: 'Libelle de la barre de progression' },
+    pCurrent: { control: 'number', description: 'Nombre d\'étapes complétées' },
+    pTotal: { control: 'number', description: 'Nombre total d\'étapes' },
+    pProgressionLabel: { control: 'text', description: 'Libellé de la barre de progression' },
   },
   args: {
+    pTitle: 'Étapes',
+    pDescription: 'Cet espace vous permet de suivre simplement votre accompagnement, de compléter les informations nécessaires et d\'avancer étape par étape avec votre expert.',
     pCurrent: 3,
     pTotal: 7,
   },
@@ -46,17 +48,14 @@ export const Default: Story = {
       const selectedId = ref('director-info')
 
       const steps = ref<StepItem[]>([
-        { id: 'director-info', label: 'Informations dirigeant', baseStatus: 'pending', secondaryText: 'CNI manquante', section: 'bases' },
+        { id: 'director-info', label: 'Informations dirigeant', baseStatus: 'incomplete', secondaryText: 'CNI manquante', section: 'bases' },
         { id: 'entity-info', label: 'Informations Entité(s)', baseStatus: 'completed', section: 'bases' },
-        { id: 'admin-docs', label: 'Vos documents administratifs', baseStatus: 'pending', section: 'documents' },
-        { id: 'sepa', label: 'Mandat SEPA', baseStatus: 'pending', secondaryText: 'A réaliser', section: 'documents' },
+        { id: 'admin-docs', label: 'Vos documents administratifs', baseStatus: 'incomplete', section: 'documents' },
+        { id: 'sepa', label: 'Mandat SEPA', baseStatus: 'incomplete', secondaryText: 'A réaliser', section: 'documents' },
       ])
 
       const getStatus = (step: StepItem): PCompletionTrackerListItemStatus => {
-        if (step.baseStatus === 'completed') {
-          return 'completed'
-        }
-        return selectedId.value === step.id ? 'in-progress' : 'pending'
+        return step.baseStatus
       }
 
       const baseSteps = computed(() => steps.value.filter((s) => s.section === 'bases'))
@@ -67,11 +66,6 @@ export const Default: Story = {
     template: `
       <div style="width: 440px;">
         <PCompletionTracker v-bind="args">
-          <template #header>
-            <h3 style="margin: 0;">Etapes</h3>
-            <p style="margin: 4px 0 0;">Suivez votre accompagnement etape par etape.</p>
-          </template>
-
           <PCompletionTrackerList pTitle="Les bases">
             <PCompletionTrackerListItem
               v-for="step in baseSteps"

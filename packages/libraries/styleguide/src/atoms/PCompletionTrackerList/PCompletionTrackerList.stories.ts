@@ -34,9 +34,9 @@ export const Default: Story = {
     template: `
       <div style="width: 400px;">
         <PCompletionTrackerList v-bind="args">
-          <PCompletionTrackerListItem pLabel="Informations dirigeant" pStatus="in-progress" pSecondaryText="CNI manquante" />
+          <PCompletionTrackerListItem pLabel="Informations dirigeant" pStatus="incomplete" pSecondaryText="CNI manquante" :pSelected="true" />
           <PCompletionTrackerListItem pLabel="Informations Entite(s)" pStatus="completed" />
-          <PCompletionTrackerListItem pLabel="Vos documents administratifs" pStatus="pending" />
+          <PCompletionTrackerListItem pLabel="Vos documents administratifs" pStatus="incomplete" />
         </PCompletionTrackerList>
       </div>
     `,

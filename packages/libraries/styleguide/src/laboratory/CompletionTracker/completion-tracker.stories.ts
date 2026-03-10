@@ -35,12 +35,12 @@ export const WithScrollableContent: Story = {
     components: { PCompletionTracker, PCompletionTrackerList, PCompletionTrackerListItem },
     setup() {
       const steps = ref<StepItem[]>([
-        { id: 'director-info', label: 'Informations dirigeant', baseStatus: 'completed', section: 'bases' },
-        { id: 'entity-info', label: 'Informations entité', baseStatus: 'completed', section: 'bases' },
-        { id: 'bank-info', label: 'Coordonnées bancaires', baseStatus: 'in-progress', secondaryText: 'IBAN manquant', section: 'bases' },
-        { id: 'admin-docs', label: 'Documents administratifs', baseStatus: 'pending', section: 'documents' },
-        { id: 'supporting-docs', label: 'Justificatifs', baseStatus: 'pending', section: 'documents' },
-        { id: 'signature', label: 'Signature', baseStatus: 'pending', section: 'documents' },
+        { id: 'director-info', label: 'Informations dirigeants', baseStatus: 'incomplete', section: 'bases' },
+        { id: 'entity-info', label: 'Information entité', baseStatus: 'completed', section: 'bases' },
+        { id: 'supporting-docs', label: 'Documents justificatifs', baseStatus: 'incomplete', secondaryText: '0/3', section: 'documents' },
+        { id: 'commercial-proposal', label: 'Proposition commerciale', baseStatus: 'incomplete', secondaryText: 'à venir', section: 'documents' },
+        { id: 'sepa', label: 'Mandat SEPA', baseStatus: 'incomplete', secondaryText: 'à réaliser', section: 'documents' },
+        { id: 'mission-letter', label: 'Lettre de mission', baseStatus: 'incomplete', secondaryText: 'à venir', section: 'relation' },
       ])
 
       const getTopWindow = (): Window => {
@@ -65,14 +65,12 @@ export const WithScrollableContent: Story = {
       })
 
       const getStatus = (step: StepItem): PCompletionTrackerListItemStatus => {
-        if (step.baseStatus === 'completed') {
-          return 'completed'
-        }
-        return selectedId.value === step.id ? 'in-progress' : 'pending'
+        return step.baseStatus
       }
 
       const baseSteps = computed(() => steps.value.filter((s) => s.section === 'bases'))
       const documentSteps = computed(() => steps.value.filter((s) => s.section === 'documents'))
+      const relationSteps = computed(() => steps.value.filter((s) => s.section === 'relation'))
 
       const pCurrent = computed(() => steps.value.filter((s) => s.baseStatus === 'completed').length)
       const pTotal = computed(() => steps.value.length)
@@ -86,16 +84,17 @@ export const WithScrollableContent: Story = {
         }
       }
 
-      return { selectedId, steps, baseSteps, documentSteps, getStatus, pCurrent, pTotal, onStepClick }
+      return { selectedId, steps, baseSteps, documentSteps, relationSteps, getStatus, pCurrent, pTotal, onStepClick }
     },
     template: `
       <div style="display: flex; height: 100vh; overflow: hidden;">
         <div style="width: 340px; flex-shrink: 0; overflow-y: auto;">
-          <PCompletionTracker :pCurrent="pCurrent" :pTotal="pTotal">
-            <template #header>
-              <h3 style="margin: 0;">Étapes</h3>
-              <p style="margin: 4px 0 0;">Suivez votre accompagnement etape par etape.</p>
-            </template>
+          <PCompletionTracker
+            :pCurrent="pCurrent"
+            :pTotal="pTotal"
+            pTitle="Étapes"
+            pDescription="Cet espace vous permet de suivre simplement votre accompagnement, de compléter les informations nécessaires et d'avancer étape par étape avec votre expert."
+          >
 
             <PCompletionTrackerList pTitle="Les bases">
               <PCompletionTrackerListItem
@@ -112,6 +111,18 @@ export const WithScrollableContent: Story = {
             <PCompletionTrackerList pTitle="Les documents">
               <PCompletionTrackerListItem
                 v-for="step in documentSteps"
+                :key="step.id"
+                :pLabel="step.label"
+                :pStatus="getStatus(step)"
+                :pSelected="selectedId === step.id"
+                :pSecondaryText="step.secondaryText"
+                @select="onStepClick(step.id)"
+              />
+            </PCompletionTrackerList>
+
+            <PCompletionTrackerList pTitle="Commencer la relation">
+              <PCompletionTrackerListItem
+                v-for="step in relationSteps"
                 :key="step.id"
                 :pLabel="step.label"
                 :pStatus="getStatus(step)"

@@ -4,17 +4,37 @@
       p-completion-tracker
       flex
       flex--direction-column
+      flex-gap--6
       padding--4
     "
   >
     <div
-      v-if="$slots.header !== undefined"
-      class="p-completion-tracker__header margin-bottom--3"
+      v-if="pTitle !== undefined"
+      class="p-completion-tracker__header"
     >
-      <slot name="header" />
+      <h3
+        class="
+          p-completion-tracker__title
+          font-size--21
+          font-semibold
+          margin--0
+        "
+      >
+        {{ pTitle }}
+      </h3>
+      <p
+        v-if="pDescription !== undefined"
+        class="
+          p-completion-tracker__description
+          font-size--14
+          margin-top--1
+        "
+      >
+        {{ pDescription }}
+      </p>
     </div>
     <PProgress
-      class="margin-bottom--3"
+      class="p-completion-tracker__progress"
       :pLabel="pProgressionLabel"
       :pPercentage="percentage"
     />
@@ -23,7 +43,7 @@
         p-completion-tracker__content
         flex
         flex--direction-column
-        flex-gap--4
+        flex-gap--6
       "
     >
       <slot />
@@ -45,3 +65,11 @@ const percentage = computed(() => {
   return Math.round((props.pCurrent / props.pTotal) * 100)
 })
 </script>
+
+<style lang="scss" scoped>
+.p-completion-tracker {
+  &__description {
+    color: var(--p-text-neutral);
+  }
+}
+</style>

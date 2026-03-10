@@ -7,6 +7,9 @@
       flex--align-items-center
       flex--justify-content-space-between
       width--100
+      height--12
+      padding-y--0
+      padding-x--4
       text-left
       cursor-pointer
     "
@@ -16,9 +19,11 @@
   >
     <div
       class="
+        p-completion-tracker-list-item__content
         flex
         flex--align-items-center
         flex-gap--2
+        min-width--0
       "
     >
       <span
@@ -30,41 +35,40 @@
         "
       >
         <PIcon
-          pName="checkCircle"
-          class="p-completion-tracker-list-item__check-icon font-size--20"
+          pName="checkCircleFill"
+          class="p-completion-tracker-list-item__check-icon font-size--14"
         />
       </span>
       <span
         v-else
         class="p-completion-tracker-list-item__circle flex--shrink-0"
       />
-      <span
-        class="
-          p-completion-tracker-list-item__label
-          font-size--14
-          font-bold
-        "
-        data-testid="completion-tracker-list-item-label"
-      >
-        {{ pLabel }}
-      </span>
-      <template v-if="pSecondaryText !== undefined">
+      <span class="p-completion-tracker-list-item__text min-width--0">
         <span
           class="
             p-completion-tracker-list-item__label
             font-size--14
-            font-bold
+            font-semibold
+            line-height--inherit
           "
+          data-testid="completion-tracker-list-item-label"
         >
-          -
+          {{ pLabel }}
         </span>
         <span
-          class="p-completion-tracker-list-item__secondary-text font-size--14"
+          v-if="pSecondaryText !== undefined"
+          class="
+            p-completion-tracker-list-item__secondary-text
+            font-size--14
+            font-semibold
+            line-height--inherit
+            margin-left--1
+          "
           data-testid="completion-tracker-list-item-secondary"
         >
           {{ pSecondaryText }}
         </span>
-      </template>
+      </span>
     </div>
     <PIcon
       pName="arrowRight"
@@ -72,6 +76,7 @@
         p-completion-tracker-list-item__arrow
         flex--shrink-0
         font-size--16
+        margin-left--2
       "
     />
   </button>
@@ -83,7 +88,7 @@ import PIcon from '../PIcon'
 import type { PCompletionTrackerListItemProps } from './PCompletionTrackerListItemTypes'
 
 const props = withDefaults(defineProps<PCompletionTrackerListItemProps>(), {
-  pStatus: 'pending',
+  pStatus: 'incomplete',
   pSelected: false,
 })
 
@@ -100,99 +105,79 @@ const classNames = computed(() => ({
 <style lang="scss" scoped>
 .p-completion-tracker-list-item {
   $self: &;
-  padding: 12px 16px;
   border: 2px solid transparent;
+  border-radius: 0;
   background: none;
   font-family: inherit;
   transition: all 200ms ease;
 
   &__circle {
-    width: 20px;
-    height: 20px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    border: 2px solid var(--p-gray-300);
+    border: 2px solid var(--p-stroke-secondary);
     box-sizing: border-box;
   }
 
-  &__icon {
-    width: 20px;
-    height: 20px;
-  }
-
   &__check-icon {
-    color: var(--p-green-800);
+    color: var(--p-icon-success);
   }
 
-  &__label {
-    line-height: 1.2;
+  &__text {
+    line-height: 1.15;
   }
 
   &__secondary-text {
-    line-height: 1.5;
+    color: var(--p-jungle-400);
   }
 
   &__arrow {
-    margin-left: 8px;
     color: var(--p-gray-500);
   }
 
-  // Status: pending
-  &--pending {
+  // Status: incomplete (unselected)
+  &--incomplete {
     background-color: var(--p-gray-50);
 
     #{$self}__label {
-      color: var(--p-gray-900);
+      color: var(--p-text-heading);
     }
 
-    #{$self}__secondary-text {
-      color: var(--p-gray-500);
+    #{$self}__arrow {
+      color: var(--p-icon-secondary);
     }
   }
 
-  // Status: in-progress and selected (non-completed) share background/text colors.
-  // Selected additionally gets a border via &--selected below.
-  &--in-progress,
-  &--selected:not(#{$self}--completed) {
+  // Status: incomplete + selected
+  &--incomplete#{$self}--selected {
     background-color: var(--p-jungle-75);
+    border-color: var(--p-jungle-400);
 
     #{$self}__circle {
       border-color: var(--p-jungle-400);
     }
 
-    #{$self}__label {
-      color: var(--p-gray-900);
-    }
-
-    #{$self}__secondary-text {
-      color: var(--p-jungle-400);
-    }
-
     #{$self}__arrow {
       color: var(--p-jungle-400);
     }
   }
 
-  // Status: completed
+  // Status: completed (unselected)
   &--completed {
-    background-color: var(--p-green-100);
+    background-color: var(--p-surface-success);
 
     #{$self}__label {
-      color: var(--p-green-800);
-    }
-
-    #{$self}__secondary-text {
-      color: var(--p-green-800);
+      color: var(--p-text-success);
     }
 
     #{$self}__arrow {
-      color: var(--p-green-800);
+      color: var(--p-icon-success);
     }
   }
 
-  // Selected state: adds border on top of the status colors
-  &--selected {
+  // Status: completed + selected
+  &--completed#{$self}--selected {
     border-color: var(--p-jungle-400);
-    box-shadow: 0 0 0 2px var(--p-jungle-100);
   }
 }
 </style>

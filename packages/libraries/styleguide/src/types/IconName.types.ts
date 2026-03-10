@@ -47,6 +47,7 @@ export type IconName =
 'chatSquareText' |
 'check' |
 'checkCircle' |
+'checkCircleFill' |
 'checklist' |
 'chevronDoubleLeft' |
 'chevronDown' |

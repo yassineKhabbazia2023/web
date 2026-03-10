@@ -4,7 +4,8 @@
       class="
         p-completion-tracker-list__title
         font-bold
-        margin-bottom--2
+        font-size--14
+        margin-bottom--4
       "
       data-testid="completion-tracker-list-title"
     >
@@ -33,7 +34,6 @@ defineProps<PCompletionTrackerListProps>()
 .p-completion-tracker-list {
   &__title {
     color: var(--p-gray-900);
-    font-size: 14px;
     line-height: 1.5;
   }
 }

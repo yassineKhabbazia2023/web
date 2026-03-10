@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import PCompletionTrackerListItem from './PCompletionTrackerListItem.vue'
+import type { PCompletionTrackerListItemStatus } from './PCompletionTrackerListItemTypes'
+
+const statusOptions: PCompletionTrackerListItemStatus[] = ['incomplete', 'completed']
 
 const meta: Meta<typeof PCompletionTrackerListItem> = {
   title: 'Atoms/PCompletionTrackerListItem',
@@ -8,18 +11,19 @@ const meta: Meta<typeof PCompletionTrackerListItem> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Element d\'une liste d\'etapes avec statut visuel (en attente, en cours, termine).',
+        component: 'Élément d\'une liste d\'étapes avec statut visuel (incomplete, completed) et état sélectionné.',
       },
     },
   },
   argTypes: {
-    pLabel: { control: 'text', description: 'Libelle de l\'etape' },
-    pStatus: { control: 'select', options: ['pending', 'in-progress', 'completed'], description: 'Statut de l\'etape' },
-    pSecondaryText: { control: 'text', description: 'Texte secondaire affiche a cote du libelle' },
+    pLabel: { control: 'text', description: 'Libellé de l\'étape' },
+    pStatus: { control: 'select', options: statusOptions, description: 'Statut de l\'étape' },
+    pSelected: { control: 'boolean', description: 'Si l\'étape est sélectionnée' },
+    pSecondaryText: { control: 'text', description: 'Texte secondaire affiché à côté du libellé' },
   },
   args: {
     pLabel: 'Informations dirigeant',
-    pStatus: 'pending',
+    pStatus: 'incomplete',
   },
 }
 
@@ -42,11 +46,13 @@ export const AllStatuses: Story = {
     components: { PCompletionTrackerListItem },
     template: `
       <div style="display: flex; flex-direction: column; gap: 8px; width: 400px;">
-        <PCompletionTrackerListItem pLabel="Informations dirigeant" pStatus="pending" />
-        <PCompletionTrackerListItem pLabel="Informations dirigeant" pSecondaryText="Et texte secondaire sur deux lignes" pStatus="pending" />
-        <PCompletionTrackerListItem pLabel="Informations dirigeant" pStatus="in-progress" pSecondaryText="CNI manquante" />
-        <PCompletionTrackerListItem pLabel="Longue information qui prend de la place" pSecondaryText="Et en plus j'ai pas tous les papiers prévus" pStatus="in-progress" />
+        <PCompletionTrackerListItem pLabel="Informations dirigeant" pStatus="incomplete" />
+        <PCompletionTrackerListItem pLabel="Informations dirigeant" pStatus="incomplete" :pSelected="true" />
+        <PCompletionTrackerListItem pLabel="Informations dirigeant" pSecondaryText="CNI manquante" pStatus="incomplete" />
+        <PCompletionTrackerListItem pLabel="Informations dirigeant" pSecondaryText="CNI manquante" pStatus="incomplete" :pSelected="true" />
         <PCompletionTrackerListItem pLabel="Informations Entité(s)" pStatus="completed" />
+        <PCompletionTrackerListItem pLabel="Informations Entité(s)" pStatus="completed" :pSelected="true" />
+        <PCompletionTrackerListItem pLabel="Longue information qui prend de la place" pSecondaryText="Et en plus j'ai pas tous les papiers prévus" pStatus="incomplete" :pSelected="true" />
       </div>
     `,
   }),

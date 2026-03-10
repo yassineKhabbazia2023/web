@@ -6,17 +6,17 @@
         flex
         flex--justify-content-space-between
         flex--align-items-center
-        margin-bottom--2
+        margin-bottom--1
       "
     >
       <span
-        class="p-progress__label font-semibold"
+        class="p-progress__label font-size--12 font-bold"
         data-testid="progress-label"
       >
         {{ pLabel }}
       </span>
       <span
-        class="p-progress__percentage"
+        class="p-progress__percentage font-size--12 font-bold"
         data-testid="progress-percentage"
       >
         {{ pPercentage }}%
@@ -48,14 +48,11 @@ withDefaults(defineProps<PProgressProps>(), {
 
   &__label {
     color: var(--p-gray-900);
-    font-size: 14px;
     line-height: 1.5;
   }
 
   &__percentage {
     color: var(--p-gray-500);
-    font-size: 14px;
-    font-weight: 600;
     line-height: 1.5;
   }
 }
