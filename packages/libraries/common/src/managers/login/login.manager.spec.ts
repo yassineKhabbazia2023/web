@@ -4,7 +4,7 @@ import { getStoreMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { MsalService } from '@pulse/common/services/msal'
-import { login } from '@pulse/common'
+import { login } from '@pulse/common/services/authentication'
 import { GigyaManager } from '../gigya/gigya.manager'
 
 import { LoginManager } from './login.manager'
@@ -32,7 +32,7 @@ vi.mock('@pulse/common/services/amplitude', () => ({
 }))
 
 vi.mock('../gigya/gigya.manager')
-vi.mock('@pulse/common')
+vi.mock('@pulse/common/services/authentication')
 
 const userMock = getMockedUser()
 const tokenMock = 'mock-token'

@@ -81,10 +81,7 @@ import { logger } from '@pulse/toolbox'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { FormRules, FormInstance } from 'element-plus'
-import {
-  fetchUrlTerms,
-  createNewPassword,
-} from '@pulse/common'
+import { createNewPassword } from '@pulse/common/services/authentication'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { BackEndErrors } from '@pulse/common/constants'
 import { LoginManager } from '@pulse/common/managers'
@@ -110,7 +107,7 @@ import type {
   PasswordFieldsExposed,
   PasswordValidationTranslations,
 } from '@pulse/shared/types'
-import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
+import { fetchUrlTerms, getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -210,7 +207,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     })
     const { data } = error?.response ?? {}
 
-    if (data.errorCode === BackEndErrors.TOKEN_EXPIRED) {
+    if (data?.errorCode === BackEndErrors.TOKEN_EXPIRED) {
       router.push({ name: RouteName.EXPIRE_TOKEN, query: { contactId, accountNumber } })
     }
   } finally {

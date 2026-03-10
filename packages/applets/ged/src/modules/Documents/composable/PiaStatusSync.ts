@@ -14,33 +14,29 @@ export function usePiaStatusSync(
 ) {
   // Changing the listened folder when on selected folder change
   watch(selectedFolder, (newSelectedFolderId, oldSelectedFolderId) => {
-    initializedAccountingDataStreamInstance.then((instance) => {
-      if (oldSelectedFolderId) {
-        instance.OnDisconnectedAsync(oldSelectedFolderId.id)
-      }
+    if (oldSelectedFolderId) {
+      initializedAccountingDataStreamInstance.OnDisconnectedAsync(oldSelectedFolderId.id)
+    }
 
-      if (newSelectedFolderId) {
-        instance.OnConnectedAsync(newSelectedFolderId?.id)
-      }
-    })
+    if (newSelectedFolderId) {
+      initializedAccountingDataStreamInstance.OnConnectedAsync(newSelectedFolderId.id)
+    }
   })
 
   onMounted(() => {
-    initializedAccountingDataStreamInstance.then((instance) => {
-      instance
-        .getConnection()
-        .on(
-          'DocumentPiaStatusChanged',
-          (response) => {
-            if (!documents.value) {
-              return
-            }
-            // folderId response is returned as number in data streams
-            const document: DocumentStatusUpdateResponse = JSON.parse(response)
-            updateDocumentSyncStatusAndPermissions(documents, document)
-          },
-        )
-    })
+    initializedAccountingDataStreamInstance
+      .getConnection()
+      .on(
+        'DocumentPiaStatusChanged',
+        (response) => {
+          if (!documents.value) {
+            return
+          }
+          // folderId response is returned as number in data streams
+          const document: DocumentStatusUpdateResponse = JSON.parse(response)
+          updateDocumentSyncStatusAndPermissions(documents, document)
+        },
+      )
   })
 
   function updateDocumentSyncStatusAndPermissions(

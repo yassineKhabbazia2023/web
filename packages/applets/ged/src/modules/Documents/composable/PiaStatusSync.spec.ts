@@ -14,13 +14,13 @@ import { usePiaStatusSync } from './PiaStatusSync'
 const getConnectionOnMocked = vi.hoisted(() => vi.fn())
 
 vi.mock('@ged/models/AccountingHubConnection', () => ({
-  initializedAccountingDataStreamInstance: Promise.resolve({
+  initializedAccountingDataStreamInstance: {
     OnConnectedAsync: onConnectedAsyncMock,
     OnDisconnectedAsync: onDisconnectedAsyncMock,
     getConnection: vi.fn(() => ({
       on: getConnectionOnMocked,
     })),
-  }),
+  },
 }))
 
 const testComponent = defineComponent({

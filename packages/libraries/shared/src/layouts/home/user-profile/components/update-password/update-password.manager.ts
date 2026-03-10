@@ -1,6 +1,6 @@
 import { PNotification } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
-import { updatePassword } from '@pulse/common'
+import { updatePassword } from '@pulse/common/services/authentication'
 import { PStrengthLevel } from '@pulse/styleguide/types'
 import type { UserInfo, UpdatePasswordPayload } from '@pulse/common/types'
 import type { PasswordValidationTranslations } from '@pulse/shared/types'

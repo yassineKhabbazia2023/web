@@ -75,7 +75,7 @@
 import { logger } from '@pulse/toolbox'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { createNewPassword } from '@pulse/common'
+import { createNewPassword } from '@pulse/common/services/authentication'
 import { BackEndErrors } from '@pulse/common/constants'
 import { RouteName } from '@pulse/common/enums'
 import {
@@ -192,7 +192,7 @@ const submitForm = async () => {
   } catch (error: any) {
     logger.error(error)
     const { data } = error?.response ?? {}
-    if (data.errorCode === BackEndErrors.TOKEN_EXPIRED) {
+    if (data?.errorCode === BackEndErrors.TOKEN_EXPIRED) {
       router.push({ name: RouteName.EXPIRE_TOKEN, query: { contactEmail } })
     }
     const errorMessage = getApiErrorMessage(

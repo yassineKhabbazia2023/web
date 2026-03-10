@@ -13,13 +13,13 @@ vi.mock('@pulse/toolbox', () => ({
   },
 }))
 
-vi.mock('@pulse/common', () => ({
+vi.mock('@pulse/common/services/authentication', () => ({
   updatePassword: vi.fn(),
 }))
 
 const PNotification = vi.mocked((await import('@pulse/styleguide')).PNotification)
 const logger = vi.mocked((await import('@pulse/toolbox')).logger)
-const updatePassword = vi.mocked((await import('@pulse/common')).updatePassword)
+const updatePassword = vi.mocked((await import('@pulse/common/services/authentication')).updatePassword)
 
 describe('UpdatePasswordManager', () => {
   describe('validatePasswordForm', () => {

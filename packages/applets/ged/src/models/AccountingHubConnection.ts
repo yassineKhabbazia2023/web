@@ -1,5 +1,5 @@
 import { logger } from '@pulse/toolbox'
-import { DataStreamHubConnection } from '@pulse/common'
+import { DataStreamHubConnection } from './DataStreamHubConnection'
 import { VITE_ACCOUNTING_HUB_URL } from 'env-vars'
 
 export const DOCUMENT_PIA_STATUS_CHANGED = 'DocumentPiaStatusChanged'
@@ -24,7 +24,8 @@ const AccountingDataStreamInstance = new AccountingHubConnection(
   VITE_ACCOUNTING_HUB_URL,
 )
 
-const initializedAccountingDataStreamInstance = AccountingDataStreamInstance.startConnection()
-  .then(() => AccountingDataStreamInstance)
+await AccountingDataStreamInstance.startConnection()
+
+const initializedAccountingDataStreamInstance = AccountingDataStreamInstance
 
 export { initializedAccountingDataStreamInstance }

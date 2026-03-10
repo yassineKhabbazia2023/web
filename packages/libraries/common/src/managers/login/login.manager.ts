@@ -3,7 +3,7 @@ import { CurrentUserManager } from '@pulse/common/managers'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { MsalService } from '@pulse/common/services/msal'
-import { login } from '@pulse/common'
+import { login } from '@pulse/common/services/authentication'
 import { GigyaManager } from '../gigya/gigya.manager'
 
 export class LoginManager {

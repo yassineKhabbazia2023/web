@@ -1,34 +1,30 @@
 import { mount, flushPromises } from '@vue/test-utils'
-import { getStoreMock, cguServiceMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
+import { cguServiceMock, AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { getLatestTerms, updateTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { BackEndErrors } from '@pulse/common/constants'
 import { RouteName } from '@pulse/common/enums'
 import type { FormInstance } from 'element-plus'
-import { useUserStore, useTokenStore } from '@pulse/common/stores'
 
 import CreatePassword from './CreatePassword.vue'
 
-getStoreMock(useUserStore)
-const tokenStoreMock = getStoreMock(useTokenStore)
+const createNewPasswordMock = vi.hoisted(() => vi.fn())
+const authenticateCustomerMock = vi.hoisted(() => vi.fn())
 
-const mockToken = 'token'
 const VALID_PASSWORD = 'aaAA11@@'
-
-const postMock = vi.fn(() => ({ data: { webToken: mockToken } }))
-const CGU_URL = 'https://custom-CGU.com'
 
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/cgu', () => cguServiceMock)
 
-const createNewPasswordMock = vi.hoisted(() => vi.fn())
-const loginMock = vi.hoisted(() => vi.fn())
-
-vi.mock('@pulse/common', () => ({
+vi.mock('@pulse/common/services/authentication', () => ({
   createNewPassword: createNewPasswordMock,
-  login: loginMock,
-  fetchUrlTerms: vi.fn(() => CGU_URL),
+}))
+
+vi.mock('@pulse/common/managers', () => ({
+  LoginManager: {
+    authenticateCustomer: authenticateCustomerMock,
+  },
 }))
 
 vi.mock('@pulse/common/services/amplitude', () => ({
@@ -63,6 +59,8 @@ function createWrapper() {
 describe('page creation password', () => {
   let wrapper: ReturnType<typeof createWrapper>
   beforeEach(() => {
+    vi.clearAllMocks()
+    vi.mocked(getLatestTerms).mockResolvedValue({ termsId: 1 } as any)
     wrapper = createWrapper()
   })
 
@@ -156,7 +154,6 @@ describe('page creation password', () => {
       status: 500,
       response: { data: { errorCode: BackEndErrors.TOKEN_EXPIRED } },
     })
-    postMock.mockRejectedValue('API Error: 503 Service Unavailable')
 
     wrapper = createWrapper()
     await flushPromises()
@@ -186,11 +183,6 @@ describe('page creation password', () => {
   })
 
   it('should call API when the button is clicked and track an Amplitude when the login succeeds', async () => {
-    const loginDataMock = {
-      userId: 'user-id',
-      webToken: mockToken,
-    }
-    loginMock.mockResolvedValue(loginDataMock)
     wrapper.findAll('.el-input__inner')[0].setValue(VALID_PASSWORD)
     wrapper.findAll('.el-input__inner')[1].setValue(VALID_PASSWORD)
     wrapper.find('.el-checkbox__original').setValue('true')
@@ -211,9 +203,7 @@ describe('page creation password', () => {
     expect(updateTermsByCurrentUser).toHaveBeenCalledTimes(1)
     expect(createNewPasswordMock).toHaveBeenCalledExactlyOnceWith(data)
 
-    expect(loginMock).toHaveBeenCalledExactlyOnceWith(dataLogin)
-
-    expect(tokenStoreMock.setToken).toHaveBeenCalledWith(mockToken)
+    expect(authenticateCustomerMock).toHaveBeenCalledExactlyOnceWith(dataLogin.email, dataLogin.password)
     expect(routerPushMock).toHaveBeenCalledOnce()
   })
 
@@ -234,17 +224,15 @@ describe('page creation password', () => {
   it('do not call mockAuthPost when not form given to submitForm', async () => {
     wrapper = createWrapper()
     await wrapper.vm.submitForm(undefined)
-    expect(postMock).not.toHaveBeenCalled()
+    expect(createNewPasswordMock).not.toHaveBeenCalled()
   })
 
   it('do not call postMock when form is not valid', async () => {
     wrapper = createWrapper()
     const mockedForm = {
-      validate: (done: any) => {
-        done(false)
-      },
+      validate: vi.fn().mockRejectedValue(new Error('invalid form')),
     } as unknown as FormInstance
     await wrapper.vm.submitForm(mockedForm)
-    expect(postMock).not.toHaveBeenCalled()
+    expect(createNewPasswordMock).not.toHaveBeenCalled()
   })
 })

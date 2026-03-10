@@ -52,7 +52,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n'
 import { ref, onMounted } from 'vue'
-import { fetchUrlTerms } from '@pulse/common'
+import { fetchUrlTerms } from '@pulse/common/services/cgu'
 import { LEGAL_NOTICE_URL, PRIVACY_POLICY_URL } from '@pulse/common/constants'
 import { openAxeptioCookies } from '../../plugins/axeptio/axeptio.plugin'
 import type { LegalLinksProps } from './legal-links.types'

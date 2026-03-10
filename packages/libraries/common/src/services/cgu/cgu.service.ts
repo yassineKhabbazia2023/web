@@ -1,4 +1,5 @@
 import { api } from '../../api'
+import { VITE_API_GATEWAY } from 'env-vars'
 import { CguTerms, UpdateTermsResponse } from './cgu.service.types'
 
 const CONTACT_API = 'contact/api'
@@ -24,3 +25,8 @@ export const getLatestTerms = async () => {
 
   return data
 }
+
+export const fetchUrlTerms = (
+  lang: string = 'fr',
+): Promise<string> =>
+  Promise.resolve(`${VITE_API_GATEWAY}${CONTACT_API}/terms/latest/content?language=${lang}`)

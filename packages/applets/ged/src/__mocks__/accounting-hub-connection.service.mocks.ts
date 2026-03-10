@@ -29,11 +29,11 @@ export const getConnectionDocumentPiaStatusChangedMock: Mock = vi.fn(() => ({
     ),
 }))
 
-export const initializedAccountingDataStreamInstanceMock = Promise.resolve({
+export const initializedAccountingDataStreamInstanceMock = {
   getConnection: getConnectionMock,
   OnConnectedAsync: onConnectedAsyncMock,
   OnDisconnectedAsync: onDisconnectedAsyncMock,
-})
+}
 
 export const accountingHubConnectionServiceMock = {
   initializedAccountingDataStreamInstance: initializedAccountingDataStreamInstanceMock,

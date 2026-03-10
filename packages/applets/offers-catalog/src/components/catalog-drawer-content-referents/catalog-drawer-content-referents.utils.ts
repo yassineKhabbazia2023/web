@@ -3,7 +3,7 @@ import { logger } from '@pulse/toolbox'
 import { PNotification } from '@pulse/styleguide'
 import type { IconName } from '@pulse/styleguide/types'
 import type { OfferCatalogReferent } from '../../types/offers-catalog.types'
-import { getInitials } from '@pulse/common'
+import { getInitials } from '@pulse/common/utils'
 
 export function getTableReferentsColumns(columnLabels: Record<string, string>) {
   return [{

@@ -47,7 +47,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { storeToRefs } from 'pinia'
-import { getInitials } from '@pulse/common'
+import { getInitials } from '@pulse/common/utils'
 import { useUserStore } from '@pulse/common/stores'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { RouteName } from '@pulse/common/enums'

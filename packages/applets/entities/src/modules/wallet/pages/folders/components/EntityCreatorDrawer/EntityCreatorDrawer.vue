@@ -124,8 +124,8 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { setWith } from 'lodash-es'
 import { logger, useDebounce } from '@pulse/toolbox'
-import { getInitials } from '@pulse/common'
 import type { FormInstance, PDropdownOption } from '@pulse/styleguide/types'
+import { getInitials } from '@pulse/common/utils'
 import { AvatarRoles, displayNotification } from '@pulse/styleguide'
 import {
   PDrawer,

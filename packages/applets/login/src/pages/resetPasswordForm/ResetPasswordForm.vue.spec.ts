@@ -13,7 +13,7 @@ const createNewPasswordMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 
-vi.mock('@pulse/common', () => ({
+vi.mock('@pulse/common/services/authentication', () => ({
   createNewPassword: createNewPasswordMock,
 }))
 
@@ -115,7 +115,7 @@ describe('page reset password form', () => {
 
     const pButton = wrapper.findComponent({ name: 'PButton' })
     pButton.vm.$emit('click')
-    await nextTick()
+    await flushPromises()
 
     const data = {
       token: 'token',
@@ -135,13 +135,7 @@ describe('page reset password form', () => {
 
   it('do not call mockAuthPost when form is not valid', async () => {
     wrapper = createWrapper()
-    const mockedForm = {
-      validate: (done: any) => {
-        done(false)
-      },
-    }
-    const wrapperVm = wrapper.vm as any
-    await wrapperVm.submitForm(mockedForm)
+    await wrapper.vm.submitForm()
     expect(createNewPasswordMock).not.toHaveBeenCalled()
   })
 })

@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, defineAsyncComponent } from 'vue'
-import { setUnauthorizedCallback } from '@pulse/common'
+import { setUnauthorizedCallback } from '@pulse/common/unauthorized-callback'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { HTMLService } from '@pulse/common/services/html'
 import { useRoute, useRouter } from 'vue-router'

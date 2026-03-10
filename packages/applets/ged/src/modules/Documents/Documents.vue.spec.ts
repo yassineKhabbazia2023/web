@@ -62,11 +62,11 @@ vi.mock('@ged/services/Documents', () => ({
 vi.mock('@pulse/common/helpers')
 
 vi.mock('@ged/models/AccountingHubConnection', () => ({
-  initializedAccountingDataStreamInstance: Promise.resolve({
+  initializedAccountingDataStreamInstance: {
     OnConnectedAsync: onConnectedAsyncMock,
     OnDisconnectedAsync: onDisconnectedAsyncMock,
     getConnection: getConnectionDocumentPiaStatusChangedMock,
-  }),
+  },
 }))
 
 const generateTestString = (stringLength: number) => {
