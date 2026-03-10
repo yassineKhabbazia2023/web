@@ -6,17 +6,39 @@
     "
   >
     <div class="faq-section margin-y--8">
-      <div class="faq-section__header flex flex--align-items-center margin-bottom--3">
+      <div
+        class="
+          faq-section__header
+          flex
+          flex--align-items-center
+          margin-bottom--3
+        "
+      >
         <PIcon
           pName="scales"
           pSize="20"
           class="text-color--base-white margin-right--2"
         />
-        <h3 class="font-bold font-large text-color--base-white margin--0">
+        <h3
+          class="
+            font-bold
+            font-large
+            text-color--base-white
+            margin--0
+          "
+        >
           {{ t('widgets.pennylaneAmendmentFlow.step2.faq.risks.title') }}
         </h3>
       </div>
-      <ul class="list-style-none font-base font-normal margin-left--2 padding--0">
+      <ul
+        class="
+          list-style-none
+          font-base
+          font-normal
+          margin-left--2
+          padding--0
+        "
+      >
         <li
           v-for="(item, index) in RISK_ITEMS"
           :key="index"
@@ -27,63 +49,102 @@
       </ul>
     </div>
 
-    <div class="faq-section">
-      <div class="faq-section__header flex flex--align-items-center margin-bottom--3">
-        <PIcon
-          pName="currencyEuro"
-          pSize="20"
-          class="text-color--base-white margin-right--2"
-        />
-        <h3 class="font-bold font-large text-color--base-white margin--0">
-          {{ t('widgets.pennylaneAmendmentFlow.step2.faq.reform.title') }}
-        </h3>
-      </div>
-      <ul class="list-style-none font-base font-normal margin-left--2 padding--0">
-        <li
-          v-for="(item, index) in REFORM_ITEMS"
-          :key="index"
-          class="faq-section__item text-color--text-white"
-        >
-          {{ item }}
-        </li>
-      </ul>
-    </div>
-
     <div class="faq-section margin-y--8">
-      <div class="faq-section__header flex flex--align-items-center margin-bottom--3">
+      <div
+        class="
+          faq-section__header
+          flex
+          flex--align-items-center
+          margin-bottom--3
+        "
+      >
         <PIcon
           pName="pennylane"
           pSize="20"
           class="text-color--base-white margin-right--2"
         />
-        <h3 class="font-bold font-large text-color--base-white margin--0">
+        <h3
+          class="
+            font-bold
+            font-large
+            text-color--base-white
+            margin--0
+          "
+        >
           {{ t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.title') }}
         </h3>
       </div>
-      <ul class="list-style-none font-base font-normal margin-left--2 padding--0">
-        <li class="faq-section__item text-color--text-white">
-          <span class="font-bold">
-            {{ t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item1Bold') }}
-          </span>
-          {{ t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item1') }}
+      <ul
+        class="
+          list-style-none
+          font-base
+          font-normal
+          margin-left--2
+          padding--0
+        "
+      >
+        <li
+          v-for="(item, index) in PENNYLANE_ITEMS"
+          :key="index"
+          class="faq-section__item text-color--text-white"
+        >
+          <span class="font-bold">{{ item.bold }}</span>{{ item.text }}
         </li>
-        <li class="faq-section__item text-color--text-white">
-          <span class="font-bold">
-            {{ t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item2Bold') }}
-          </span>
-          {{ t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item2') }}
-        </li>
-        <li class="faq-section__item text-color--text-white">
-          <span class="font-bold">
-            {{ t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item3Bold') }}
-          </span>
-          {{ t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item3') }}
-        </li>
-        <li class="faq-section__item text-color--text-white">
-          <span class="font-bold">
-            {{ t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item4Bold') }}
-          </span>
-          {{ t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item4') }}
+      </ul>
+    </div>
+
+    <div class="faq-section margin-y--8">
+      <div
+        class="
+          faq-section__header
+          flex
+          flex--align-items-center
+          margin-bottom--3
+        "
+      >
+        <PIcon
+          pName="currencyEuro"
+          pSize="20"
+          class="text-color--base-white margin-right--2"
+        />
+        <h3
+          class="
+            font-bold
+            font-large
+            text-color--base-white
+            margin--0
+          "
+        >
+          {{ t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.title') }}
+        </h3>
+      </div>
+      <ul
+        class="
+          list-style-none
+          font-base
+          font-normal
+          margin-left--2
+          padding--0
+        "
+      >
+        <li
+          v-for="(item, index) in COMPLIANCE_ITEMS"
+          :key="index"
+          class="faq-section__item text-color--text-white"
+        >
+          <template
+            v-for="(segment, segmentIndex) in item.segments"
+            :key="segmentIndex"
+          >
+            <span
+              v-if="segment.bold === true"
+              class="font-bold"
+            >{{ segment.text }}
+            </span>
+            <template v-else>
+              {{ segment.text }}
+            </template>
+          </template>
         </li>
       </ul>
     </div>
@@ -100,16 +161,48 @@ const { t } = useI18n({
   useScope: 'global',
 })
 
+const PENNYLANE_ITEMS = computed(() => [
+  {
+    bold: t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item1Bold'),
+    text: t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item1'),
+  },
+  {
+    bold: t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item2Bold'),
+    text: t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item2'),
+  },
+  {
+    bold: t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item3Bold'),
+    text: t('widgets.pennylaneAmendmentFlow.step2.faq.pennylane.item3'),
+  },
+])
+
+const COMPLIANCE_ITEMS = computed(() => [
+  {
+    segments: [
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description1Prefix'), bold: false },
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description1Bold1'), bold: true },
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description1Middle'), bold: false },
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description1Bold2'), bold: true },
+    ],
+  },
+  {
+    segments: [
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Prefix'), bold: false },
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Bold1'), bold: true },
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Middle1'), bold: false },
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Bold2'), bold: true },
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Middle2'), bold: false },
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Bold3'), bold: true },
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Middle3'), bold: false },
+      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Bold4'), bold: true },
+    ],
+  },
+])
+
 const RISK_ITEMS = computed(() => [
   t('widgets.pennylaneAmendmentFlow.step2.faq.risks.item1'),
   t('widgets.pennylaneAmendmentFlow.step2.faq.risks.item2'),
   t('widgets.pennylaneAmendmentFlow.step2.faq.risks.item3'),
-])
-
-const REFORM_ITEMS = computed(() => [
-  t('widgets.pennylaneAmendmentFlow.step2.faq.reform.item1'),
-  t('widgets.pennylaneAmendmentFlow.step2.faq.reform.item2'),
-  t('widgets.pennylaneAmendmentFlow.step2.faq.reform.item3'),
 ])
 </script>
 

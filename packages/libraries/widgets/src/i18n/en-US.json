@@ -54,7 +54,7 @@
       },
       "step2": {
         "title": "1/3 Your support towards the reform",
-        "reformDescription": "The Electronic Invoicing reform requires a mandatory upgrade for every company. This step includes the compliance of your invoicing as well as the activation of the Pennylane platform. The subscription amount varies according to your company's needs.",
+        "reformDescription": "The electronic invoicing reform requires a mandatory upgrade for every company. It involves the control and compliance of data as well as the activation of the Pennylane platform. The subscription amount varies according to your company's needs.",
         "table": {
           "company": "Company",
           "compliance": "Compliance setup*",
@@ -81,22 +81,29 @@
             "item2": "Payment delays",
             "item3": "Financial penalties and fines"
           },
-          "reform": {
-            "title": "Why this reform?",
-            "item1": "Fight against VAT fraud",
-            "item2": "Simplification of exchanges",
-            "item3": "Real-time traceability"
-          },
           "pennylane": {
             "title": "Why Pennylane?",
-            "item1Bold": "A solution compliant with electronic invoicing ",
-            "item1": "authorized to process electronic invoices",
+            "item1Bold": "A solution compliant with electronic invoicing",
+            "item1": " authorized to process electronic invoices.",
             "item2Bold": "An all-in-one solution",
             "item2": " that brings together your accounting, financial management, your business account and your Approved Platform.",
-            "item3Bold": "Optimized collaboration:",
-            "item3": " your Approved Platform, integrated with your financial management solution, allows you to centralize your operations and ensure optimal fluidity between your accounting and management processes.",
-            "item4Bold": "Centralization of your invoices",
-            "item4": " and real-time visibility of their status"
+            "item3Bold": "Simplified collaboration",
+            "item3": " with RYDGE Conseil."
+          },
+          "compliance": {
+            "title": "Why a compliance package?",
+            "description1Prefix": "The reform requires ",
+            "description1Bold1": "compliance of customer and supplier data",
+            "description1Middle": ", without which you risk not being able to ",
+            "description1Bold2": "invoice your clients or pay a fraudulent invoice.",
+            "description2Prefix": "Our analysis ",
+            "description2Bold1": "highlights the data to be brought into compliance",
+            "description2Middle1": " in your repositories. It is therefore the assurance of ",
+            "description2Bold2": "covering you against fraud risk",
+            "description2Middle2": " for the ",
+            "description2Bold3": "receipt of invoices",
+            "description2Middle3": " and ensuring ",
+            "description2Bold4": "the issuance of invoices."
           }
         }
       },

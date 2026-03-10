@@ -54,7 +54,7 @@
       },
       "step2": {
         "title": "1/3 Votre accompagnement vers la réforme",
-        "reformDescription": "La réforme de la Facture Électronique impose une mise à niveau obligatoire pour chaque entreprise. Cette étape inclut la mise en conformité de votre facturation ainsi que l'activation de la plateforme Pennylane. Le montant de l'abonnement varie selon les besoins de votre structure.",
+        "reformDescription": "La réforme de la facturation électronique impose une mise à niveau obligatoire pour chaque entreprise. Elle implique le contrôle et la mise en conformité des données ainsi que l'activation de la plateforme Pennylane. Le montant de l'abonnement varie selon les besoins de votre structure.",
         "table": {
           "company": "Entreprise",
           "compliance": "Mise en conformité*",
@@ -81,22 +81,29 @@
             "item2": "Retard de paiement",
             "item3": "Sanctions pécuniaires et amendes"
           },
-          "reform": {
-            "title": "Pourquoi cette réforme ?",
-            "item1": "Lutte contre la fraude à la TVA",
-            "item2": "Simplification des échanges",
-            "item3": "Traçabilité en temps réel"
-          },
           "pennylane": {
             "title": "Pourquoi Pennylane ?",
-            "item1Bold": "Une solution conforme à la facturation électronique ",
-            "item1": "habilité pour traiter des factures électronique",
+            "item1Bold": "Une solution conforme à la facturation électronique",
+            "item1": " habilitée pour traiter des factures électroniques.",
             "item2Bold": "Une solution tout-en-un",
             "item2": " qui rassemble votre comptabilité, votre gestion financière, votre compte pro et votre Plateforme Agréée.",
-            "item3Bold": "Une collaboration optimisée :",
-            "item3": " votre Plateforme Agréée, intégrée à votre solution de gestion financière, vous permet de centraliser vos opérations et d'assurer une fluidité optimale entre vos processus de comptabilité et de gestion.",
-            "item4Bold": "Une centralisation de vos factures",
-            "item4": " et visibilité en temps réel de leur statut"
+            "item3Bold": "Une collaboration simplifiée",
+            "item3": " avec RYDGE Conseil."
+          },
+          "compliance": {
+            "title": "Pourquoi un forfait de mise en conformité ?",
+            "description1Prefix": "La réforme impose de ",
+            "description1Bold1": "mettre en conformité les données clients et fournisseurs",
+            "description1Middle": ", sans quoi vous prenez le risque de ne pas pouvoir ",
+            "description1Bold2": "facturer vos clients ou de payer une fausse facture.",
+            "description2Prefix": "Notre analyse ",
+            "description2Bold1": "met en évidence les données à mettre en conformité",
+            "description2Middle1": " dans vos référentiels. C'est donc l'assurance de vous ",
+            "description2Bold2": "couvrir contre le risque de fraude",
+            "description2Middle2": " pour la ",
+            "description2Bold3": "réception des factures",
+            "description2Middle3": " et assurer ",
+            "description2Bold4": "l'émission des factures."
           }
         }
       },
