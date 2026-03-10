@@ -19,6 +19,7 @@ export interface AppSettingItem {
   type: 'string' | 'secret'
   domain: string
   values: AppSettingValue[]
+  isDynamic?: boolean
 }
 
 /**

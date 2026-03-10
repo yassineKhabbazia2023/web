@@ -57,6 +57,7 @@
         />
         <div v-else class="flex flex--align-items-center">
           <PTooltip
+            v-if="shouldShowMissingEnvIcon(row)"
             pContent="Cette variable n'existe pas dans cet environnement"
             pPlacement="top"
           >
@@ -162,6 +163,7 @@ import { getPaginationLabel } from '@pulse/common/utils'
 import type { AppSettingItem, AppSettingValue } from '@backoffice/types/app-settings-list.type'
 import type { AppSettingsTableProps } from './app-settings-table.type'
 import type { EnvironmentOption } from './DeleteAppSettingDialog/delete-app-setting-dialog.type'
+import { shouldShowMissingEnvIcon } from './app-settings-table.utils'
 import AppSettingValueDisplayer from './AppSettingValueDisplayer/app-setting-value-displayer.vue'
 import DeleteAppSettingDialog from './DeleteAppSettingDialog/delete-app-setting-dialog.vue'
 import ModifyAppSetting from './ModifyAppSetting/modify-app-setting.vue'
