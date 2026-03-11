@@ -1,7 +1,9 @@
 <template>
   <div class="booking-appointment-choose-time-slot margin-top--4">
+    <PLoader v-if="isLoading" />
     <iframe
-      :src="BookingAppointmentChooseTimeSlotManager.getSanitizedIframeUrl(iframeUrl)"
+      v-else
+      :src="iframeUrl"
       class="
         height--100
         width--100
@@ -12,10 +14,13 @@
 </template>
 
 <script setup lang="ts">
-import { BookingAppointmentChooseTimeSlotManager } from './booking-appointment-choose-time-slot.manager'
+import { PLoader } from '@pulse/styleguide/components'
 import type { BookingAppointmentChooseTimeSlotProps } from './booking-appointment-choose-time-slot.types'
+import { useBookingAppointmentChooseTimeSlot } from './booking-appointment-choose-time-slot.composable'
 
-defineProps<BookingAppointmentChooseTimeSlotProps>()
+const props = defineProps<BookingAppointmentChooseTimeSlotProps>()
+
+const { iframeUrl, isLoading } = useBookingAppointmentChooseTimeSlot(props.collaboratorId)
 </script>
 
 <style scoped>

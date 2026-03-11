@@ -2,10 +2,11 @@ import { api } from '@pulse/common/api'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { logger } from '@pulse/toolbox'
 import type {
+  BookingAvailableExpertsResponse,
   BookingConfigurationPayload,
   BookingServiceConfiguration,
-  BookingServiceExpert,
   BookingConfigurationResponse,
+  BookingServiceExpert,
 } from '../types/booking.types'
 import type { BookingEnabledResponse } from '../types/booking-enabled.type'
 
@@ -27,41 +28,16 @@ export class BookingService {
   }
 
   static async getBookingAvailableExperts() {
-    // TODO: Remove mock data and restore API call
-    const sharedPageUrl = 'https://outlook.office.com/book/BookingAmauryLinde@conseilescgs.com/?ismsaljsauthenabled&lang=fr-FR'
-    const mockedExperts: BookingServiceExpert[] = [
-      {
-        contactId: 1,
-        iframeUrl: sharedPageUrl,
-        fullName: 'Amaury Linde',
-        email: 'amaury.linde@conseilescgs.com',
-      },
-      {
-        contactId: 2,
-        iframeUrl: sharedPageUrl,
-        fullName: 'Jean Dupont',
-        email: 'jean.dupont@conseilescgs.com',
-      },
-      {
-        contactId: 3,
-        iframeUrl: sharedPageUrl,
-        fullName: 'Marie Martin',
-        email: 'marie.martin@conseilescgs.com',
-      },
-    ]
+    const url = `${API_PREFIXES.BOOKING}/collaborators/currentuser`
+    const { data } = await api.gateway.get<BookingAvailableExpertsResponse>(url)
+    return data.collaborators
+  }
 
-    return mockedExperts
+  static async getBookingIframeUrl(collaboratorId: BookingServiceExpert['id']) {
+    const url = `${API_PREFIXES.BOOKING}/collaborators/${collaboratorId}/booking-link/currentuser`
+    const { data } = await api.gateway.get<string>(url)
 
-    // Original API call (commented out for now)
-    // const url = `${API_PREFIXES.BOOKING}/accounts/${accountId}/booking-link/currentuser/experts`
-    // const params = {
-    //   page,
-    //   pageSize,
-    // }
-    // const { data } = await api().gateway.get<QueryResult<BookingServiceExpert>>(url, {
-    //   params,
-    // })
-    // return data.items ?? []
+    return data
   }
 
   static async submitBookingConfiguration(

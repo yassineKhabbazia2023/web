@@ -3,13 +3,11 @@ import type { BookingServiceExpert } from '../../../types/booking.types'
 
 export function getFormattedExperts(experts: BookingServiceExpert[]) {
   return experts.map((expert) => {
-    const { contactId, fullName } = expert
-
-    const nameParts = fullName.split(' ')
-    const [firstName, lastName] = nameParts
+    const { id, firstName, lastName } = expert
+    const fullName = `${firstName} ${lastName}`
 
     return {
-      contactId,
+      id,
       fullName,
       initials: getInitials(firstName, lastName),
     }

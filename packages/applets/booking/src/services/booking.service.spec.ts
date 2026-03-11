@@ -3,7 +3,7 @@ import { loggerMock } from '@pulse/toolbox/mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { BookingService } from './booking.service'
 import type { BookingConfigurationResponse, BookingConfigurationPayload } from '../types/booking.types'
-import { getMockedBookingServiceConfiguration } from '../__mocks__'
+import { getMockedBookingServiceConfiguration, getMockExperts } from '../__mocks__'
 
 vi.mock('@pulse/common/api', () => ({
   api: {
@@ -47,18 +47,34 @@ describe('booking.service', () => {
     })
   })
 
-  // TODO: Restore API tests when removing mock data from service
   describe('getBookingAvailableExperts', () => {
-    it('should return mocked experts', async () => {
+    it('should call api and return collaborators', async () => {
+      const expectedUrl = `${API_PREFIXES.BOOKING}/collaborators/currentuser`
+      const mockExperts = getMockExperts()
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: { collaborators: mockExperts },
+      })
+
       const experts = await BookingService.getBookingAvailableExperts()
 
-      expect(experts).toHaveLength(3)
-      expect(experts[0]).toEqual({
-        contactId: 1,
-        iframeUrl: 'https://outlook.office.com/book/BookingAmauryLinde@conseilescgs.com/?ismsaljsauthenabled&lang=fr-FR',
-        fullName: 'Amaury Linde',
-        email: 'amaury.linde@conseilescgs.com',
-      })
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+      expect(experts).toEqual(mockExperts)
+    })
+  })
+
+  describe('getBookingIframeUrl', () => {
+    it('should call api and return iframe url', async () => {
+      const collaboratorId = 42
+      const expectedUrl = `${API_PREFIXES.BOOKING}/collaborators/${collaboratorId}/booking-link/currentuser`
+      const mockIframeUrl = 'https://outlook.office.com/booking/test'
+
+      apiGatewayMock.get.mockResolvedValue({ data: mockIframeUrl })
+
+      const result = await BookingService.getBookingIframeUrl(collaboratorId)
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+      expect(result).toBe(mockIframeUrl)
     })
   })
 

@@ -24,12 +24,18 @@ export function getMockedBookingServiceConfiguration(overridden: Partial<Booking
   }
 }
 
+export function getMockExperts() {
+  return [
+    getBookingServiceExpert({ id: 1, firstName: 'John', lastName: 'Doe' }),
+    getBookingServiceExpert({ id: 2, firstName: 'Jane', lastName: 'Smith' }),
+  ]
+}
+
 export function getBookingServiceExpert(overridden: Partial<BookingServiceExpert> = {}) {
   const bookingServiceExpert: BookingServiceExpert = {
-    contactId: 0,
-    iframeUrl: bookingLinkMock,
-    fullName: 'Hugh Laurie',
-    email: 'hl@test.ng',
+    id: 0,
+    firstName: 'Hugh',
+    lastName: 'Laurie',
   }
 
   return {

@@ -20,11 +20,12 @@
       v-if="currentStep === BookingAppointmentDrawerTabs.CHOOSE_EXPERT"
       :experts="availableExperts"
       :selectedExpertId="selectedExpertId"
+      :isLoading="isLoadingExperts"
       @update:selected-expert-id="onSelectExpert"
     />
     <BookingAppointmentChooseTimeSlot
-      v-if="currentStep === BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT"
-      :iframeUrl="expertIframeUrl"
+      v-if="currentStep === BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT && selectedExpertId !== undefined"
+      :collaboratorId="selectedExpertId"
     />
 
     <template
@@ -60,7 +61,7 @@ const isOpened = defineModel<boolean>('isOpened', { required: true })
 const {
   availableExperts,
   selectedExpertId,
-  expertIframeUrl,
+  isLoadingExperts,
   steps,
   currentStep,
   closeDrawer,

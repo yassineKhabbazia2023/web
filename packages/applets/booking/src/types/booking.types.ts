@@ -12,10 +12,13 @@ export interface BookingServiceConfiguration {
 }
 
 export interface BookingServiceExpert {
-  contactId: number
-  iframeUrl: string
-  fullName: string
-  email: string
+  id: number
+  firstName: string
+  lastName: string
+}
+
+export interface BookingAvailableExpertsResponse {
+  collaborators: BookingServiceExpert[]
 }
 
 export interface BookingConfigurationResponse {

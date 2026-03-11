@@ -5,7 +5,7 @@ import { useBookingAppointmentDrawer } from './booking-appointment-drawer.compos
 import { BookingAppointmentDrawerTabs } from './booking-appointment-drawer.enum'
 import { useBookingCustomerStore } from '@booking/stores'
 import { BookingManager } from '@booking/shared/managers/booking.manager'
-import { getBookingServiceExpert } from '../../../__mocks__'
+import { getMockExperts } from '../../../__mocks__'
 
 vi.mock('vue-i18n', () => ({
   createI18n: vi.fn(() => ({})),
@@ -121,10 +121,7 @@ describe('useBookingAppointmentDrawer', () => {
     it('should return experts from store', () => {
       const isOpened = ref(false)
       const store = useBookingCustomerStore()
-      const mockExperts = [
-        getBookingServiceExpert({ contactId: 1, fullName: 'Expert 1' }),
-        getBookingServiceExpert({ contactId: 2, fullName: 'Expert 2' }),
-      ]
+      const mockExperts = getMockExperts()
       store.setAvailableExperts(mockExperts)
 
       const { availableExperts } = useBookingAppointmentDrawer(isOpened)

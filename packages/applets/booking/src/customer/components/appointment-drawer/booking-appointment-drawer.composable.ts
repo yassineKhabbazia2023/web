@@ -40,10 +40,6 @@ export function useBookingAppointmentDrawer(isOpened: Ref<boolean>) {
     currentStep.value = BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT
   }
 
-  const expertIframeUrl = computed(() => {
-    return availableExperts.value.find(expert => expert.contactId === selectedExpertId.value)?.iframeUrl || ''
-  })
-
   // Drawer lifecycle
   function resetDrawer() {
     currentStep.value = BookingAppointmentDrawerTabs.CHOOSE_EXPERT
@@ -63,7 +59,6 @@ export function useBookingAppointmentDrawer(isOpened: Ref<boolean>) {
     steps,
     currentStep,
     isLoadingExperts,
-    expertIframeUrl,
     closeDrawer,
     onSelectExpert,
   }

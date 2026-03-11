@@ -1,3 +1,3 @@
 export interface BookingAppointmentChooseTimeSlotProps {
-  iframeUrl: string | null
+  collaboratorId: number
 }

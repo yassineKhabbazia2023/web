@@ -5,12 +5,9 @@ import { useUserStore, useCurrentEntityStore, useBookingCollabStore } from '@pul
 import { logger } from '@pulse/toolbox'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useBookingCustomerStore } from '../../stores'
-import { getBookingServiceExpert } from '../../__mocks__'
+import { getMockExperts } from '../../__mocks__'
 
-const mockExperts = [
-  getBookingServiceExpert({ contactId: 1, fullName: 'John Doe', email: 'john.doe@example.com' }),
-  getBookingServiceExpert({ contactId: 2, fullName: 'Jane Smith', email: 'jane.smith@example.com' }),
-]
+const mockExperts = getMockExperts()
 
 const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
