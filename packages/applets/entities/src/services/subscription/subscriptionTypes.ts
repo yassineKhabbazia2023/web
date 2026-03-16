@@ -94,3 +94,12 @@ export interface SubscriptionDetails {
 export interface SubscriptionStats {
   statuses: Partial<Record<SubscriptionStatusCode, number>>
 }
+
+export interface FetchSubscriptionRequestsParams {
+  statusCodes?: SubscriptionStatusCode[]
+  offerCodes?: string[]
+  page?: number
+  pageSize?: number
+  sortField?: string
+  sortDescending?: boolean
+}

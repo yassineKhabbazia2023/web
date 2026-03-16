@@ -1,5 +1,5 @@
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import { subscriptionRequestMock, validatedSubscriptionRequestMock } from '@entities/__mocks__/subscription.mocks'
+import { getMockedSubscriptionPaginationResponse, subscriptionRequestMock, validatedSubscriptionRequestMock } from '@entities/__mocks__/subscription.mocks'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { nextTick } from 'vue'
@@ -7,19 +7,21 @@ import { getMockedUserInfo } from '@pulse/common/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import * as styleguide from '@pulse/styleguide'
+import { PAGE_SIZES } from '@pulse/common/constants'
 
 import { SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
 import { SubscriptionStatusFiltersManager } from '../SubscriptionStatusFilters/subscription-status-filters.manager'
 import SubscriptionsTable from '.'
 
 const defaultActiveStatusCodes = SubscriptionStatusFiltersManager.getDefaultActiveStatusCodes()
+const paginationResponseMock = getMockedSubscriptionPaginationResponse()
 
 const userStoreMock = getStoreMock(useUserStore)
 
 const { subscriptionId, offer, status } = subscriptionRequestMock[0]
 const { mockValidateSubscriptionRequest, mockFetchSubscriptionRequests } = vi.hoisted(() => ({
   mockValidateSubscriptionRequest: vi.fn(() => Promise.resolve()),
-  mockFetchSubscriptionRequests: vi.fn(() => Promise.resolve(subscriptionRequestMock)),
+  mockFetchSubscriptionRequests: vi.fn(() => Promise.resolve(getMockedSubscriptionPaginationResponse())),
 }))
 vi.mock('@entities/services/subscription', async () => {
   const actual = await vi.importActual('@entities/services/subscription')
@@ -68,9 +70,19 @@ const pTableColumnsLabel: { [key: number]: string } = {
 
 const emailMock = 'email-mock'
 
+const defaultStubs = {
+  PLoader: true,
+  SubscriptionsFilter: true,
+  PToolbox: true,
+  PButton: true,
+  PIcon: true,
+  PPagination: true,
+}
+
 describe('subscriptionsTable', () => {
   let wrapper: ComponentWrapper<InstanceType<typeof SubscriptionsTable>>
   beforeEach(async () => {
+    mockFetchSubscriptionRequests.mockResolvedValue(paginationResponseMock)
     userStoreMock.user = getMockedUserInfo({
       email: emailMock,
     })
@@ -79,16 +91,16 @@ describe('subscriptionsTable', () => {
         activeStatusCodes: defaultActiveStatusCodes,
       },
       global: {
-        stubs: {
-          PLoader: true,
-          SubscriptionsFilter: true,
-          PToolbox: true,
-          PButton: true,
-          PIcon: true,
-        },
+        stubs: defaultStubs,
       },
     })
+    // Simulate SubscriptionsFilter mount emission (stubbed component doesn't emit)
+    await wrapper.vm.handleOfferFiltered()
     await flushPromises()
+  })
+
+  afterEach(() => {
+    wrapper.unmount()
   })
   it('should render the subscription table correctly', () => {
     const pTable = wrapper.findComponent('[data-testid="subscriptions-table"]') as VueWrapper
@@ -125,22 +137,19 @@ describe('subscriptionsTable', () => {
   })
 
   it('should display only consult toolbox item for validated subscriptions', async () => {
-    mockFetchSubscriptionRequests.mockResolvedValueOnce([validatedSubscriptionRequestMock])
+    mockFetchSubscriptionRequests.mockResolvedValueOnce(
+      getMockedSubscriptionPaginationResponse({ items: [validatedSubscriptionRequestMock] }),
+    )
 
     wrapper = mount(SubscriptionsTable, {
       props: {
         activeStatusCodes: defaultActiveStatusCodes,
       },
       global: {
-        stubs: {
-          PLoader: true,
-          SubscriptionsFilter: true,
-          PToolbox: true,
-          PButton: true,
-          PIcon: true,
-        },
+        stubs: defaultStubs,
       },
     })
+    await wrapper.vm.handleOfferFiltered()
     await flushPromises()
 
     const pToolboxes = wrapper.findAllComponents({ name: 'PToolbox' })
@@ -148,14 +157,13 @@ describe('subscriptionsTable', () => {
     expect(pToolboxes.at(-1)?.props('pElements')).toStrictEqual(validatedRequestMenu)
   })
 
-  it('should display the subscriptions table filtered by offer type', async () => {
+  it('should update searchCriteria offerCodes and reset page when offer filter is applied', async () => {
     wrapper.vm.offerTypeSelection = ['MEG Smart']
     wrapper.vm.handleOfferFiltered()
     await nextTick()
-    const subscriptionsTable = wrapper.findComponent('[data-testid="subscriptions-table"]') as VueWrapper
-    const subscriptionRows = subscriptionsTable.findAll('tr.el-table__row')
 
-    expect(subscriptionRows).toHaveLength(1)
+    expect(wrapper.vm.searchCriteria.offerCodes).toEqual(['MEG Smart'])
+    expect(wrapper.vm.searchCriteria.currentPage).toBe(1)
   })
 
   it("should emit 'consult' event when the 'consult' button is clicked", async () => {
@@ -173,7 +181,9 @@ describe('subscriptionsTable', () => {
 
     wrapper = mount(SubscriptionsTable, {
       props: { activeStatusCodes: defaultActiveStatusCodes },
+      global: { stubs: defaultStubs },
     })
+    await wrapper.vm.handleOfferFiltered()
     await flushPromises()
 
     wrapper.vm.onClickToolboxItem('validate', { subscriptionId, offer, status })
@@ -202,7 +212,9 @@ describe('subscriptionsTable', () => {
 
     wrapper = mount(SubscriptionsTable, {
       props: { activeStatusCodes: defaultActiveStatusCodes },
+      global: { stubs: defaultStubs },
     })
+    await wrapper.vm.handleOfferFiltered()
     await flushPromises()
 
     wrapper.vm.onClickToolboxItem('validate', { subscriptionId, offer, status })
@@ -223,14 +235,22 @@ describe('subscriptionsTable', () => {
     expect(spyDisplayNotification).toHaveBeenCalledOnce()
   })
 
-  it('should re-fetch subscriptions with correct status params when activeStatusCodes changes', async () => {
+  it('should re-fetch subscriptions with correct params when activeStatusCodes changes', async () => {
     mockFetchSubscriptionRequests.mockClear()
 
     const newStatusCodes = [SubscriptionStatusCode.PENDING]
     await wrapper.setProps({ activeStatusCodes: newStatusCodes })
     await flushPromises()
 
-    expect(mockFetchSubscriptionRequests).toHaveBeenCalledWith(newStatusCodes)
+    expect(mockFetchSubscriptionRequests).toHaveBeenCalledWith(
+      expect.objectContaining({
+        statusCodes: newStatusCodes,
+        page: 1,
+        pageSize: PAGE_SIZES[0],
+        sortField: 'creationDate',
+        sortDescending: true,
+      }),
+    )
   })
 
   it('should clear the table without API call when activeStatusCodes becomes empty', async () => {
@@ -240,8 +260,31 @@ describe('subscriptionsTable', () => {
     await flushPromises()
 
     expect(mockFetchSubscriptionRequests).not.toHaveBeenCalled()
-    const pTable = wrapper.findComponent('[data-testid="subscriptions-table"]') as VueWrapper
-    const dataRows = pTable.findAll('tr.el-table__row')
-    expect(dataRows).toHaveLength(0)
+  })
+
+  it('should reset pagination to page 1 when activeStatusCodes changes', async () => {
+    wrapper.vm.searchCriteria.currentPage = 3
+    await flushPromises()
+
+    await wrapper.setProps({ activeStatusCodes: [SubscriptionStatusCode.VALIDATED] })
+    await nextTick()
+
+    expect(wrapper.vm.searchCriteria.currentPage).toBe(1)
+  })
+
+  it('should reset pagination to page 1 when offer filter is applied', () => {
+    wrapper.vm.searchCriteria.currentPage = 3
+    wrapper.vm.offerTypeSelection = ['Pennylane']
+    wrapper.vm.handleOfferFiltered()
+
+    expect(wrapper.vm.searchCriteria.currentPage).toBe(1)
+    expect(wrapper.vm.searchCriteria.offerCodes).toEqual(['Pennylane'])
+  })
+
+  it('should initialize searchCriteria with default sorting by creationDate descending', () => {
+    expect(wrapper.vm.searchCriteria.sorting).toEqual({
+      field: 'creationDate',
+      descending: true,
+    })
   })
 })

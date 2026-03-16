@@ -90,6 +90,28 @@ describe('SubscriptionStatusFiltersManager', () => {
     })
   })
 
+  describe('getActiveCodesOnValidatedSelected', () => {
+    it('should return only VALIDATED status code', () => {
+      const codes = SubscriptionStatusFiltersManager.getActiveCodesOnValidatedSelected()
+
+      expect(codes).toHaveLength(1)
+      expect(codes).toEqual([SubscriptionStatusCode.VALIDATED])
+    })
+  })
+
+  describe('getActiveCodesOnValidatedDeselected', () => {
+    it('should return the same codes as getDefaultActiveStatusCodes', () => {
+      const codes = SubscriptionStatusFiltersManager.getActiveCodesOnValidatedDeselected()
+
+      expect(codes).toHaveLength(3)
+      expect(codes).toEqual([
+        SubscriptionStatusCode.PENDING,
+        SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
+        SubscriptionStatusCode.PENNYLANE_CREATED,
+      ])
+    })
+  })
+
   describe('getValidatedFilters', () => {
     it('should return 1 filter for VALIDATED status', () => {
       const filters = SubscriptionStatusFiltersManager.getValidatedFilters(statsMock)

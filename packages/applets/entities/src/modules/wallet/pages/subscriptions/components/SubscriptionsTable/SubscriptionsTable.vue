@@ -1,4 +1,8 @@
 <template>
+  <SubscriptionsFilter
+    v-model:offerTypeSelection="offerTypeSelection"
+    @apply-offer-filter="handleOfferFiltered"
+  />
   <div
     v-if="isLoading"
     class="loader flex flex--justify-content-center flex--align-items-center"
@@ -6,13 +10,9 @@
     <PLoader pType="primary" pSize="50" />
   </div>
   <div v-else>
-    <SubscriptionsFilter
-      v-model:offerTypeSelection="offerTypeSelection"
-      @apply-offer-filter="handleOfferFiltered"
-    />
     <PTable
       pStripe
-      :pData="filteredSubscriptions"
+      :pData="searchResult.items"
       data-testid="subscriptions-table"
     >
       <PTableColumn :pLabel="t('legalName')">
@@ -106,12 +106,26 @@
         </template>
       </PTableColumn>
     </PTable>
+    <PPagination
+      v-model:p-page-size="searchCriteria.limit"
+      class="margin-top--6"
+      data-testid="subscriptions-table-pagination"
+      :pCurrentPage="searchResult.currentPage"
+      :pTotal="searchResult.totalItems"
+      :pPageSizes="PAGE_SIZES"
+      pPageSizeSelectorSuffix=""
+      pShowTotalPageCounter
+      @on-page-range-changed="handlePageRangeChange"
+      @update:p-current-page="handlePageChange"
+    >
+      <p>{{ paginationLabel }}</p>
+    </PPagination>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import {
   PButton,
@@ -120,13 +134,14 @@ import {
   PTableColumn,
   PToolbox,
   PIcon,
+  PPagination,
   PTag,
   PText,
   PLoader,
 } from '@pulse/styleguide/components'
 import { AvatarRoles, displayNotification } from '@pulse/styleguide'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import type { StatusDetails } from './subscriptions-table.types'
+import type { StatusDetails, SubscriptionSearchCriteria } from './subscriptions-table.types'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
@@ -135,7 +150,9 @@ import { getInitials } from '@entities/helpers'
 import SubscriptionsFilter from './components/SubscriptionsFilter'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import type { Contact } from '@entities/services/contact/contactTypes'
-import { logger } from '@pulse/toolbox'
+import type { PaginationResponse } from '@pulse/common/types'
+import { PAGE_SIZES } from '@pulse/common/constants'
+import { getPaginationLabel } from '@pulse/common/utils'
 import { OfferPlanManager } from '@entities/components/OfferSubscription/components/OfferPlanSubscription/offer-plan.manager'
 import { FeatureFlagManager } from '@pulse/common/managers'
 
@@ -160,8 +177,32 @@ const clickedRow = ref<number>()
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
 const offerTypeSelection = ref<string[]>([])
-const subscriptions = ref<SubscriptionRequest[]>([])
-const filteredSubscriptions = ref<SubscriptionRequest[]>([])
+
+const searchCriteria = ref<SubscriptionSearchCriteria>({
+  currentPage: 1,
+  limit: PAGE_SIZES[0],
+  statusCodes: props.activeStatusCodes,
+  offerCodes: [],
+  sorting: {
+    field: 'creationDate',
+    descending: true,
+  },
+})
+
+const searchResult = ref<PaginationResponse<SubscriptionRequest>>({
+  items: [],
+  currentPage: 1,
+  totalItems: 0,
+  totalPages: 0,
+})
+
+const paginationLabel = computed(() => getPaginationLabel(t('on'), {
+  currentPage: searchCriteria.value.currentPage,
+  limit: searchCriteria.value.limit,
+  data: searchResult.value.items,
+  totalItems: searchResult.value.totalItems,
+}))
+
 const requestMenu = (offerState: SubscriptionStatusCode): PToolboxItemProps[] => {
   const menuItems: PToolboxItemProps[] = [
     {
@@ -185,19 +226,48 @@ const requestMenu = (offerState: SubscriptionStatusCode): PToolboxItemProps[] =>
 }
 
 const fetchSubscriptions = async () => {
-  subscriptions.value = await fetchSubscriptionRequests(props.activeStatusCodes)
-  filteredSubscriptions.value = subscriptions.value
+  const { currentPage, limit, statusCodes, offerCodes, sorting } = searchCriteria.value
+  searchResult.value = await fetchSubscriptionRequests({
+    statusCodes,
+    offerCodes,
+    page: currentPage,
+    pageSize: limit,
+    sortField: sorting.field,
+    sortDescending: sorting.descending,
+  })
 }
 
-watch(() => props.activeStatusCodes, async (newStatusCodes) => {
-  if (newStatusCodes.length === 0) {
-    subscriptions.value = []
-    filteredSubscriptions.value = []
+const loadSubscriptions = async () => {
+  if (searchCriteria.value.statusCodes.length === 0) {
+    searchResult.value = { items: [], currentPage: 1, totalItems: 0, totalPages: 0 }
     return
   }
-  await fetchSubscriptions()
-  handleOfferFiltered()
-}, { deep: true })
+  isLoading.value = true
+  try {
+    await fetchSubscriptions()
+  } finally {
+    isLoading.value = false
+  }
+}
+
+const handlePageChange = async (page: number) => {
+  searchCriteria.value.currentPage = page
+  await loadSubscriptions()
+}
+
+const handlePageRangeChange = async (pageSize: number) => {
+  searchCriteria.value.limit = pageSize
+  searchCriteria.value.currentPage = 1
+  await loadSubscriptions()
+}
+
+const handleStatusCodesChange = async (newStatusCodes: SubscriptionStatusCode[]) => {
+  searchCriteria.value.statusCodes = newStatusCodes
+  searchCriteria.value.currentPage = 1
+  await loadSubscriptions()
+}
+
+watch(() => props.activeStatusCodes, handleStatusCodesChange, { deep: true })
 
 const getStatusDetails = (status: string): StatusDetails => {
   switch (status) {
@@ -213,7 +283,7 @@ const getStatusDetails = (status: string): StatusDetails => {
     case SubscriptionStatusCode.PENNYLANE_NOT_CREATED:
       return { text: t('pennylaneNotCreated'), color: 'orange', iconName: 'arrowUpCircle' }
     case SubscriptionStatusCode.PENNYLANE_TO_VERIFY:
-      return { text: t('pennylaneToVerify'), color: 'blue', iconName: 'search' }
+      return { text: t('pennylaneToVerify'), color: 'light-blue', iconName: 'search' }
     default:
       return { text: status, color: 'info', iconName: 'infoCircle' }
   }
@@ -239,7 +309,6 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
     })
     displayNotification('success', t('offerActivated'))
     await fetchSubscriptions()
-    handleOfferFiltered()
   } catch {
     AmplitudeService.track('Subscription Completed', {
       subscription_complete_offer_name: offer.offerCode,
@@ -275,26 +344,18 @@ const title = (clients: Contact[]) =>
 
 const content = (clients: Contact[]) => clients[0]?.email
 
-const handleOfferFiltered = () => {
-  filteredSubscriptions.value = subscriptions.value.filter((subscription) =>
-    offerTypeSelection.value.includes(subscription.offer.offerCode),
-  )
+const handleOfferFiltered = async () => {
+  searchCriteria.value.offerCodes = offerTypeSelection.value
+  searchCriteria.value.currentPage = 1
+  await loadSubscriptions()
 }
-
-onMounted(async () => {
-  try {
-    await fetchSubscriptions()
-  } catch (e) {
-    logger.error(e)
-  } finally {
-    isLoading.value = false
-  }
-})
 
 defineExpose({
   onClickToolboxItem,
   handleOfferFiltered,
   offerTypeSelection,
+  searchCriteria,
+  searchResult,
 })
 </script>
 
@@ -318,6 +379,7 @@ en-US:
   pennylaneToVerify: 'To verify'
   offerActivated: 'The offer has been activated'
   offerNotActivated: 'The offer could not be activated'
+  on: 'on'
 fr-FR:
   customerCode: 'Code client'
   legalName: 'Raison sociale'
@@ -337,4 +399,5 @@ fr-FR:
   pennylaneToVerify: 'À vérifier'
   offerActivated: "L'offre a été activée"
   offerNotActivated: "L'offre n'a pas pu être activée"
+  on: 'sur'
 </i18n>

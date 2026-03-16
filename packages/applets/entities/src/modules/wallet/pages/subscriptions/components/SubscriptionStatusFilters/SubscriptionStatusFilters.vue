@@ -12,14 +12,13 @@
     </div>
     <div class="flex">
       <PFilterGroupSubscriptionStatus
-        v-model="activeStatusCodes"
-        :pFilters="offerActivationFilters"
+        v-model="standardCodesModel"
+        :pFilters="styledOfferActivationFilters"
         class="subscription-status-filters__filter-group--with-separator padding-right--3"
       />
-      <!-- Validated filter is not yet interactive - will be implemented in a future iteration -->
       <PFilterGroupSubscriptionStatus
-        :modelValue="[]"
-        :pFilters="validatedFilters"
+        v-model="validatedCodesModel"
+        :pFilters="styledValidatedFilters"
         class="padding-left--3"
       />
     </div>
@@ -35,6 +34,7 @@ import type { FilterOption } from '@pulse/styleguide/types'
 import { SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
 import { fetchSubscriptionStats } from '@entities/services/subscription'
 import { SubscriptionStatusFiltersManager } from './subscription-status-filters.manager'
+import { useSubscriptionStatusFilters } from './subscription-status-filters.composable'
 
 const { t } = useI18n()
 
@@ -44,6 +44,17 @@ const PFilterGroupSubscriptionStatus = PFilterGroup<SubscriptionStatusCode>
 
 const offerActivationFilters = ref<FilterOption<SubscriptionStatusCode>[]>([])
 const validatedFilters = ref<FilterOption<SubscriptionStatusCode>[]>([])
+
+const {
+  standardCodesModel,
+  validatedCodesModel,
+  styledOfferActivationFilters,
+  styledValidatedFilters,
+} = useSubscriptionStatusFilters({
+  activeStatusCodes,
+  offerActivationFilters,
+  validatedFilters,
+})
 
 onMounted(async () => {
   try {

@@ -4,6 +4,7 @@ import {
   type SubscriptionRequest,
   SubscriptionStatusCode,
 } from '@entities/services/subscription/subscriptionTypes'
+import type { PaginationResponse } from '@pulse/common/types'
 import { ProviderName, SubscriptionPriceType } from '@entities/enums'
 
 import { ContactType } from '@pulse/common/enums'
@@ -258,6 +259,18 @@ export function getMockedSubscriptionDetails(override: Partial<SubscriptionDetai
 
   return {
     ...defaultSubscriptionDetails,
+    ...override,
+  }
+}
+
+export function getMockedSubscriptionPaginationResponse(
+  override: Partial<PaginationResponse<SubscriptionRequest>> = {},
+): PaginationResponse<SubscriptionRequest> {
+  return {
+    items: subscriptionRequestMock,
+    currentPage: 1,
+    totalItems: subscriptionRequestMock.length,
+    totalPages: 1,
     ...override,
   }
 }

@@ -45,6 +45,14 @@ export class SubscriptionStatusFiltersManager {
     ]
   }
 
+  static getActiveCodesOnValidatedSelected(): SubscriptionStatusCode[] {
+    return [SubscriptionStatusCode.VALIDATED]
+  }
+
+  static getActiveCodesOnValidatedDeselected(): SubscriptionStatusCode[] {
+    return SubscriptionStatusFiltersManager.getDefaultActiveStatusCodes()
+  }
+
   static getValidatedFilters(
     stats: SubscriptionStats,
   ): FilterOption<SubscriptionStatusCode>[] {

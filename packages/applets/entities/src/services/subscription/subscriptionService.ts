@@ -1,24 +1,50 @@
 import { api } from '@pulse/common/api'
 import { handleRequestError } from '@entities/helpers'
 import type {
-  SubscriptionRequest,
   PostSubscriptionRequest,
+  SubscriptionRequest,
   SubscriptionDetails,
   SubscriptionStats,
-  SubscriptionStatusCode,
+  FetchSubscriptionRequestsParams,
 } from './subscriptionTypes'
+import type { PaginationResponse } from '@pulse/common/types'
 import { API_PREFIXES } from '@pulse/common/constants'
 
-export async function fetchSubscriptionRequests(
-  statusCodes?: SubscriptionStatusCode[],
-): Promise<SubscriptionRequest[]> {
-  try {
-    const params = new URLSearchParams()
-    statusCodes?.forEach(code => params.append('status', code))
+const EMPTY_PAGINATION_RESPONSE: PaginationResponse<SubscriptionRequest> = {
+  items: [],
+  currentPage: 1,
+  totalItems: 0,
+  totalPages: 0,
+}
 
-    const response = await api.gateway.get(
+export async function fetchSubscriptionRequests(
+  params: FetchSubscriptionRequestsParams = {},
+): Promise<PaginationResponse<SubscriptionRequest>> {
+  try {
+    const searchParams = new URLSearchParams()
+    params.statusCodes?.forEach(code => searchParams.append('status', code))
+    if (params.offerCodes !== undefined && params.offerCodes.length === 0) {
+      searchParams.append('offerCode', 'null')
+    } else {
+      params.offerCodes?.forEach(code => searchParams.append('offerCode', code))
+    }
+
+    if (params.page !== undefined) {
+      searchParams.append('page', String(params.page))
+    }
+    if (params.pageSize !== undefined) {
+      searchParams.append('pageSize', String(params.pageSize))
+    }
+    if (params.sortField !== undefined) {
+      searchParams.append('sorting.field', params.sortField)
+    }
+    if (params.sortDescending !== undefined) {
+      searchParams.append('sorting.descending', String(params.sortDescending))
+    }
+
+    const response = await api.gateway.get<PaginationResponse<SubscriptionRequest>>(
       `${API_PREFIXES.OFFER}/subscription`,
-      { params },
+      { params: searchParams },
     )
 
     return response.data
@@ -26,7 +52,7 @@ export async function fetchSubscriptionRequests(
     handleRequestError('fetching subscriptions', error)
   }
 
-  return []
+  return EMPTY_PAGINATION_RESPONSE
 }
 
 export async function validateSubscriptionRequest(
