@@ -20,6 +20,19 @@ const statsMock: SubscriptionStats = {
 }
 
 describe('SubscriptionStatusFiltersManager', () => {
+  describe('getDefaultActiveStatusCodes', () => {
+    it('should return the 3 standard status codes: PENDING, PENNYLANE_TO_VERIFY, PENNYLANE_CREATED', () => {
+      const codes = SubscriptionStatusFiltersManager.getDefaultActiveStatusCodes()
+
+      expect(codes).toHaveLength(3)
+      expect(codes).toEqual([
+        SubscriptionStatusCode.PENDING,
+        SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
+        SubscriptionStatusCode.PENNYLANE_CREATED,
+      ])
+    })
+  })
+
   describe('getOfferActivationFilters', () => {
     it('should return 3 filters in the correct order: PENDING, PENNYLANE_TO_VERIFY, PENNYLANE_CREATED', () => {
       const filters = SubscriptionStatusFiltersManager.getOfferActivationFilters(statsMock)

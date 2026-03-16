@@ -6,6 +6,14 @@ import { SUBSCRIPTION_STATUS_COLOR, SUBSCRIPTION_STATUS_ICON } from './subscript
 
 export class SubscriptionStatusFiltersManager {
 
+  static getDefaultActiveStatusCodes(): SubscriptionStatusCode[] {
+    return [
+      SubscriptionStatusCode.PENDING,
+      SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
+      SubscriptionStatusCode.PENNYLANE_CREATED,
+    ]
+  }
+
   static getOfferActivationFilters(
     stats: SubscriptionStats,
   ): FilterOption<SubscriptionStatusCode>[] {

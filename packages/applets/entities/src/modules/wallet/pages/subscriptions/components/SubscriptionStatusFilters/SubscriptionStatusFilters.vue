@@ -12,10 +12,11 @@
     </div>
     <div class="flex">
       <PFilterGroupSubscriptionStatus
-        :modelValue="[]"
+        v-model="activeStatusCodes"
         :pFilters="offerActivationFilters"
         class="subscription-status-filters__filter-group--with-separator padding-right--3"
       />
+      <!-- Validated filter is not yet interactive - will be implemented in a future iteration -->
       <PFilterGroupSubscriptionStatus
         :modelValue="[]"
         :pFilters="validatedFilters"
@@ -36,6 +37,8 @@ import { fetchSubscriptionStats } from '@entities/services/subscription'
 import { SubscriptionStatusFiltersManager } from './subscription-status-filters.manager'
 
 const { t } = useI18n()
+
+const activeStatusCodes = defineModel<SubscriptionStatusCode[]>({ required: true })
 
 const PFilterGroupSubscriptionStatus = PFilterGroup<SubscriptionStatusCode>
 

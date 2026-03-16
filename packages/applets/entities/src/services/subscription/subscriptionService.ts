@@ -1,12 +1,24 @@
 import { api } from '@pulse/common/api'
 import { handleRequestError } from '@entities/helpers'
-import type { SubscriptionRequest, PostSubscriptionRequest, SubscriptionDetails, SubscriptionStats } from './subscriptionTypes'
+import type {
+  SubscriptionRequest,
+  PostSubscriptionRequest,
+  SubscriptionDetails,
+  SubscriptionStats,
+  SubscriptionStatusCode,
+} from './subscriptionTypes'
 import { API_PREFIXES } from '@pulse/common/constants'
 
-export async function fetchSubscriptionRequests(): Promise<SubscriptionRequest[]> {
+export async function fetchSubscriptionRequests(
+  statusCodes?: SubscriptionStatusCode[],
+): Promise<SubscriptionRequest[]> {
   try {
+    const params = new URLSearchParams()
+    statusCodes?.forEach(code => params.append('status', code))
+
     const response = await api.gateway.get(
       `${API_PREFIXES.OFFER}/subscription`,
+      { params },
     )
 
     return response.data

@@ -111,7 +111,7 @@
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import {
   PButton,
@@ -125,7 +125,8 @@ import {
   PLoader,
 } from '@pulse/styleguide/components'
 import { AvatarRoles, displayNotification } from '@pulse/styleguide'
-import type { PToolboxItemProps, IconName, PTagProps } from '@pulse/styleguide/types'
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
+import type { StatusDetails } from './subscriptions-table.types'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
@@ -143,6 +144,10 @@ const { t, d } = useI18n({
   useScope: 'local',
   datetimeFormats,
 })
+
+const props = defineProps<{
+  activeStatusCodes: SubscriptionStatusCode[]
+}>()
 
 const emit = defineEmits<{
   consult: [number]
@@ -180,15 +185,19 @@ const requestMenu = (offerState: SubscriptionStatusCode): PToolboxItemProps[] =>
 }
 
 const fetchSubscriptions = async () => {
-  subscriptions.value = await fetchSubscriptionRequests()
+  subscriptions.value = await fetchSubscriptionRequests(props.activeStatusCodes)
   filteredSubscriptions.value = subscriptions.value
 }
 
-interface StatusDetails {
-  text: string
-  color: PTagProps['pColor']
-  iconName: IconName
-}
+watch(() => props.activeStatusCodes, async (newStatusCodes) => {
+  if (newStatusCodes.length === 0) {
+    subscriptions.value = []
+    filteredSubscriptions.value = []
+    return
+  }
+  await fetchSubscriptions()
+  handleOfferFiltered()
+}, { deep: true })
 
 const getStatusDetails = (status: string): StatusDetails => {
   switch (status) {
@@ -248,7 +257,7 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
   isActionInProgress.value = false
 }
 
-const onClickToolboxItem = async (action: string, row: any) => {
+const onClickToolboxItem = async (action: string, row: Pick<SubscriptionRequest, 'subscriptionId' | 'offer' | 'status'>) => {
   const { subscriptionId, offer, status } = row
 
   if (action === 'consult') {

@@ -8,7 +8,11 @@ import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import * as styleguide from '@pulse/styleguide'
 
+import { SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
+import { SubscriptionStatusFiltersManager } from '../SubscriptionStatusFilters/subscription-status-filters.manager'
 import SubscriptionsTable from '.'
+
+const defaultActiveStatusCodes = SubscriptionStatusFiltersManager.getDefaultActiveStatusCodes()
 
 const userStoreMock = getStoreMock(useUserStore)
 
@@ -71,6 +75,9 @@ describe('subscriptionsTable', () => {
       email: emailMock,
     })
     wrapper = mount(SubscriptionsTable, {
+      props: {
+        activeStatusCodes: defaultActiveStatusCodes,
+      },
       global: {
         stubs: {
           PLoader: true,
@@ -121,6 +128,9 @@ describe('subscriptionsTable', () => {
     mockFetchSubscriptionRequests.mockResolvedValueOnce([validatedSubscriptionRequestMock])
 
     wrapper = mount(SubscriptionsTable, {
+      props: {
+        activeStatusCodes: defaultActiveStatusCodes,
+      },
       global: {
         stubs: {
           PLoader: true,
@@ -161,7 +171,9 @@ describe('subscriptionsTable', () => {
     const spyTrackAmplitude = vi.spyOn(AmplitudeService, 'track')
     const spyDisplayNotification = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
 
-    wrapper = mount(SubscriptionsTable)
+    wrapper = mount(SubscriptionsTable, {
+      props: { activeStatusCodes: defaultActiveStatusCodes },
+    })
     await flushPromises()
 
     wrapper.vm.onClickToolboxItem('validate', { subscriptionId, offer, status })
@@ -188,7 +200,9 @@ describe('subscriptionsTable', () => {
     const spyTrackAmplitude = vi.spyOn(AmplitudeService, 'track')
     const spyDisplayNotification = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
 
-    wrapper = mount(SubscriptionsTable)
+    wrapper = mount(SubscriptionsTable, {
+      props: { activeStatusCodes: defaultActiveStatusCodes },
+    })
     await flushPromises()
 
     wrapper.vm.onClickToolboxItem('validate', { subscriptionId, offer, status })
@@ -207,5 +221,27 @@ describe('subscriptionsTable', () => {
       onboarding_start_result: 'failed',
     })
     expect(spyDisplayNotification).toHaveBeenCalledOnce()
+  })
+
+  it('should re-fetch subscriptions with correct status params when activeStatusCodes changes', async () => {
+    mockFetchSubscriptionRequests.mockClear()
+
+    const newStatusCodes = [SubscriptionStatusCode.PENDING]
+    await wrapper.setProps({ activeStatusCodes: newStatusCodes })
+    await flushPromises()
+
+    expect(mockFetchSubscriptionRequests).toHaveBeenCalledWith(newStatusCodes)
+  })
+
+  it('should clear the table without API call when activeStatusCodes becomes empty', async () => {
+    mockFetchSubscriptionRequests.mockClear()
+
+    await wrapper.setProps({ activeStatusCodes: [] })
+    await flushPromises()
+
+    expect(mockFetchSubscriptionRequests).not.toHaveBeenCalled()
+    const pTable = wrapper.findComponent('[data-testid="subscriptions-table"]') as VueWrapper
+    const dataRows = pTable.findAll('tr.el-table__row')
+    expect(dataRows).toHaveLength(0)
   })
 })
