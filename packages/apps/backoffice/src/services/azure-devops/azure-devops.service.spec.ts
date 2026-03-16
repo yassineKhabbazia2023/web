@@ -6,6 +6,7 @@ import type {
   AzureDevOpsCommitsResponse,
   AzureDevOpsRefsResponse,
   AzureDevOpsRepository,
+  AzureDevOpsWiqlResponse,
   AzureDevOpsWorkItemsBatchResponse,
 } from '@backoffice/types/azure-devops.type'
 
@@ -24,9 +25,9 @@ describe('AzureDevOpsService', () => {
       mockedAxiosGet.mockResolvedValueOnce({
         data: {
           value: [
-            { id: '2', name: 'Zulu', defaultBranch: 'main' },
-            { id: '1', name: 'Alpha', defaultBranch: 'main' },
-            { id: '3', name: 'Beta', defaultBranch: 'develop' },
+            { id: '2', name: 'Zulu', defaultBranch: 'main', isDisabled: false },
+            { id: '1', name: 'Alpha', defaultBranch: 'main', isDisabled: false },
+            { id: '3', name: 'Beta', defaultBranch: 'develop', isDisabled: false },
           ],
           count: 3,
         },
@@ -1021,8 +1022,8 @@ describe('AzureDevOpsService', () => {
 
   describe('getCommitsByAuthorAcrossRepos', () => {
     const mockRepos: AzureDevOpsRepository[] = [
-      { id: '1', name: 'Repo.Web', defaultBranch: 'refs/heads/main' },
-      { id: '2', name: 'Repo.Api', defaultBranch: 'refs/heads/main' },
+      { id: '1', name: 'Repo.Web', defaultBranch: 'refs/heads/main', isDisabled: false },
+      { id: '2', name: 'Repo.Api', defaultBranch: 'refs/heads/main', isDisabled: false },
     ]
     const fromDate = new Date('2024-01-01')
     const toDate = new Date('2024-01-31')
@@ -1185,6 +1186,7 @@ describe('AzureDevOpsService', () => {
         id: String(i),
         name: `Repo${i}`,
         defaultBranch: 'refs/heads/main',
+        isDisabled: false,
       }))
 
       // Each repo returns empty
@@ -1207,6 +1209,319 @@ describe('AzureDevOpsService', () => {
       expect(onProgress).toHaveBeenCalledTimes(2)
       expect(onProgress).toHaveBeenCalledWith(5, 7)
       expect(onProgress).toHaveBeenCalledWith(7, 7)
+    })
+  })
+
+  describe('getWorkItemsForUser', () => {
+    const fromDate = new Date('2024-01-01')
+    const toDate = new Date('2024-01-31')
+    const userEmail = 'john.doe@example.com'
+
+    const buildWiqlResponse = (ids: number[]): { data: AzureDevOpsWiqlResponse } => ({
+      data: {
+        queryType: 'flat',
+        queryResultType: 'workItem',
+        asOf: '2024-01-31T00:00:00Z',
+        columns: [],
+        workItems: ids.map((id) => ({ id, url: `https://dev.azure.com/_apis/wit/workItems/${id}` })),
+      },
+    })
+
+    const buildBatchResponse = (items: AzureDevOpsWorkItemsBatchResponse['value']): { data: AzureDevOpsWorkItemsBatchResponse } => ({
+      data: { count: items.length, value: items },
+    })
+
+    it('should return empty array when WIQL returns no work items', async () => {
+      mockedAxiosPost.mockResolvedValueOnce(buildWiqlResponse([]))
+
+      const result = await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      expect(result).toEqual([])
+      expect(mockedAxiosPost).toHaveBeenCalledTimes(1)
+    })
+
+    it('should send WIQL query with correct email and date range', async () => {
+      mockedAxiosPost.mockResolvedValueOnce(buildWiqlResponse([]))
+
+      await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      const wiqlCall = mockedAxiosPost.mock.calls[0]
+      const body = wiqlCall[1] as { query: string }
+      expect(body.query).toContain(userEmail)
+      expect(body.query).toContain('2024-01-01')
+      expect(body.query).toContain('2024-01-31')
+    })
+
+    it('should map created work items correctly', async () => {
+      mockedAxiosPost
+        .mockResolvedValueOnce(buildWiqlResponse([100]))
+        .mockResolvedValueOnce(buildBatchResponse([
+          {
+            id: 100,
+            url: '',
+            fields: {
+              'System.Title': 'Login page',
+              'System.WorkItemType': 'User Story',
+              'System.State': 'Active',
+              'System.AreaPath': 'PULSE\\Team Alpha',
+              'System.CreatedDate': '2024-01-10T09:00:00Z',
+              'System.CreatedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+            },
+          },
+        ]))
+
+      const result = await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      expect(result).toHaveLength(1)
+      expect(result[0]).toEqual({
+        id: 100,
+        title: 'Login page',
+        type: 'User Story',
+        state: 'Active',
+        team: 'Team Alpha',
+        createdDate: '2024-01-10T09:00:00Z',
+        reason: 'created',
+        webUrl: expect.stringContaining('100'),
+      })
+    })
+
+    it('should detect resolved reason when resolved by user but not created by user', async () => {
+      mockedAxiosPost
+        .mockResolvedValueOnce(buildWiqlResponse([200]))
+        .mockResolvedValueOnce(buildBatchResponse([
+          {
+            id: 200,
+            url: '',
+            fields: {
+              'System.Title': 'Fix crash',
+              'System.WorkItemType': 'Bug',
+              'System.State': 'Resolved',
+              'System.AreaPath': 'PULSE\\Team Beta',
+              'System.CreatedDate': '2024-01-05T08:00:00Z',
+              'System.CreatedBy': { displayName: 'Alice', uniqueName: 'alice@example.com' },
+              'Microsoft.VSTS.Common.ResolvedDate': '2024-01-15T14:00:00Z',
+              'Microsoft.VSTS.Common.ResolvedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+            },
+          },
+        ]))
+
+      const result = await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      expect(result[0].reason).toBe('resolved')
+      expect(result[0].createdDate).toBe('2024-01-15T14:00:00Z')
+    })
+
+    it('should detect activated reason when activated by user but not created by user', async () => {
+      mockedAxiosPost
+        .mockResolvedValueOnce(buildWiqlResponse([300]))
+        .mockResolvedValueOnce(buildBatchResponse([
+          {
+            id: 300,
+            url: '',
+            fields: {
+              'System.Title': 'Setup CI',
+              'System.WorkItemType': 'Task',
+              'System.State': 'Active',
+              'System.AreaPath': 'PULSE\\Team Gamma',
+              'System.CreatedDate': '2024-01-02T10:00:00Z',
+              'System.CreatedBy': { displayName: 'Bob', uniqueName: 'bob@example.com' },
+              'Microsoft.VSTS.Common.ActivatedDate': '2024-01-20T11:00:00Z',
+              'Microsoft.VSTS.Common.ActivatedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+            },
+          },
+        ]))
+
+      const result = await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      expect(result[0].reason).toBe('activated')
+      expect(result[0].createdDate).toBe('2024-01-20T11:00:00Z')
+    })
+
+    it('should default to created reason when user both created and resolved', async () => {
+      mockedAxiosPost
+        .mockResolvedValueOnce(buildWiqlResponse([400]))
+        .mockResolvedValueOnce(buildBatchResponse([
+          {
+            id: 400,
+            url: '',
+            fields: {
+              'System.Title': 'Self resolved item',
+              'System.WorkItemType': 'Bug',
+              'System.State': 'Resolved',
+              'System.AreaPath': 'PULSE\\Team Alpha',
+              'System.CreatedDate': '2024-01-08T09:00:00Z',
+              'System.CreatedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+              'Microsoft.VSTS.Common.ResolvedDate': '2024-01-12T16:00:00Z',
+              'Microsoft.VSTS.Common.ResolvedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+            },
+          },
+        ]))
+
+      const result = await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      expect(result[0].reason).toBe('created')
+      expect(result[0].createdDate).toBe('2024-01-08T09:00:00Z')
+    })
+
+    it('should handle CreatedBy as plain string', async () => {
+      mockedAxiosPost
+        .mockResolvedValueOnce(buildWiqlResponse([500]))
+        .mockResolvedValueOnce(buildBatchResponse([
+          {
+            id: 500,
+            url: '',
+            fields: {
+              'System.Title': 'String author item',
+              'System.WorkItemType': 'User Story',
+              'System.State': 'New',
+              'System.AreaPath': 'PULSE',
+              'System.CreatedDate': '2024-01-18T10:00:00Z',
+              'System.CreatedBy': 'john.doe@example.com',
+            },
+          },
+        ]))
+
+      const result = await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      expect(result[0].reason).toBe('created')
+      expect(result[0].team).toBe('PULSE')
+    })
+
+    it('should extract team from last segment of AreaPath', async () => {
+      mockedAxiosPost
+        .mockResolvedValueOnce(buildWiqlResponse([600]))
+        .mockResolvedValueOnce(buildBatchResponse([
+          {
+            id: 600,
+            url: '',
+            fields: {
+              'System.Title': 'Deep path item',
+              'System.WorkItemType': 'Task',
+              'System.State': 'Active',
+              'System.AreaPath': 'PULSE\\Area\\SubArea\\DeepTeam',
+              'System.CreatedDate': '2024-01-22T10:00:00Z',
+              'System.CreatedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+            },
+          },
+        ]))
+
+      const result = await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      expect(result[0].team).toBe('DeepTeam')
+    })
+
+    it('should handle multiple work items in a single call', async () => {
+      mockedAxiosPost
+        .mockResolvedValueOnce(buildWiqlResponse([10, 20, 30]))
+        .mockResolvedValueOnce(buildBatchResponse([
+          {
+            id: 10,
+            url: '',
+            fields: {
+              'System.Title': 'Item 1',
+              'System.WorkItemType': 'Bug',
+              'System.State': 'Active',
+              'System.AreaPath': 'PULSE\\Team1',
+              'System.CreatedDate': '2024-01-10T10:00:00Z',
+              'System.CreatedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+            },
+          },
+          {
+            id: 20,
+            url: '',
+            fields: {
+              'System.Title': 'Item 2',
+              'System.WorkItemType': 'User Story',
+              'System.State': 'New',
+              'System.AreaPath': 'PULSE\\Team2',
+              'System.CreatedDate': '2024-01-15T10:00:00Z',
+              'System.CreatedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+            },
+          },
+          {
+            id: 30,
+            url: '',
+            fields: {
+              'System.Title': 'Item 3',
+              'System.WorkItemType': 'Task',
+              'System.State': 'Resolved',
+              'System.AreaPath': 'PULSE\\Team1',
+              'System.CreatedDate': '2024-01-20T10:00:00Z',
+              'System.CreatedBy': { displayName: 'Bob', uniqueName: 'bob@example.com' },
+              'Microsoft.VSTS.Common.ResolvedDate': '2024-01-25T10:00:00Z',
+              'Microsoft.VSTS.Common.ResolvedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+            },
+          },
+        ]))
+
+      const result = await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      expect(result).toHaveLength(3)
+      expect(result[0].reason).toBe('created')
+      expect(result[1].reason).toBe('created')
+      expect(result[2].reason).toBe('resolved')
+    })
+
+    it('should pass work item IDs from WIQL to batch request', async () => {
+      mockedAxiosPost
+        .mockResolvedValueOnce(buildWiqlResponse([42, 99]))
+        .mockResolvedValueOnce(buildBatchResponse([
+          {
+            id: 42,
+            url: '',
+            fields: {
+              'System.Title': 'WI 42',
+              'System.WorkItemType': 'Bug',
+              'System.State': 'Active',
+              'System.AreaPath': 'PULSE\\Team',
+              'System.CreatedDate': '2024-01-10T10:00:00Z',
+              'System.CreatedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+            },
+          },
+          {
+            id: 99,
+            url: '',
+            fields: {
+              'System.Title': 'WI 99',
+              'System.WorkItemType': 'Task',
+              'System.State': 'New',
+              'System.AreaPath': 'PULSE\\Team',
+              'System.CreatedDate': '2024-01-12T10:00:00Z',
+              'System.CreatedBy': { displayName: 'John', uniqueName: 'john.doe@example.com' },
+            },
+          },
+        ]))
+
+      await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      const batchCall = mockedAxiosPost.mock.calls[1]
+      const batchBody = batchCall[1] as { ids: number[] }
+      expect(batchBody.ids).toEqual([42, 99])
+    })
+
+    it('should perform case-insensitive email comparison for reason detection', async () => {
+      mockedAxiosPost
+        .mockResolvedValueOnce(buildWiqlResponse([700]))
+        .mockResolvedValueOnce(buildBatchResponse([
+          {
+            id: 700,
+            url: '',
+            fields: {
+              'System.Title': 'Case test',
+              'System.WorkItemType': 'Bug',
+              'System.State': 'Resolved',
+              'System.AreaPath': 'PULSE\\Team',
+              'System.CreatedDate': '2024-01-05T10:00:00Z',
+              'System.CreatedBy': { displayName: 'Alice', uniqueName: 'alice@example.com' },
+              'Microsoft.VSTS.Common.ResolvedDate': '2024-01-10T10:00:00Z',
+              'Microsoft.VSTS.Common.ResolvedBy': { displayName: 'John', uniqueName: 'John.Doe@Example.COM' },
+            },
+          },
+        ]))
+
+      const result = await AzureDevOpsService.getWorkItemsForUser(mockPat, userEmail, fromDate, toDate)
+
+      expect(result[0].reason).toBe('resolved')
     })
   })
 

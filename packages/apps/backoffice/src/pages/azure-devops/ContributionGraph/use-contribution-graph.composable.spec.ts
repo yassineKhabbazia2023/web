@@ -3,13 +3,19 @@ import { loggerMock } from '@pulse/toolbox/mocks'
 import { useContributionGraph } from './use-contribution-graph.composable'
 import { AzureDevOpsService } from '@backoffice/services/azure-devops/azure-devops.service'
 import { useAzureDevOpsStore } from '@backoffice/stores/azure-devops.store'
-import type { AzureDevOpsRepository, AzureDevOpsUserProfile, ContributionCommit } from '@backoffice/types/azure-devops.type'
+import type {
+  AzureDevOpsRepository,
+  AzureDevOpsUserProfile,
+  ContributionCommit,
+  ContributionWorkItem,
+} from '@backoffice/types/azure-devops.type'
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@backoffice/services/azure-devops/azure-devops.service')
 
 const mockedGetCurrentUserProfile = vi.mocked(AzureDevOpsService.getCurrentUserProfile)
 const mockedGetCommitsByAuthorAcrossRepos = vi.mocked(AzureDevOpsService.getCommitsByAuthorAcrossRepos)
+const mockedGetWorkItemsForUser = vi.mocked(AzureDevOpsService.getWorkItemsForUser)
 
 const mockProfile: AzureDevOpsUserProfile = {
   displayName: 'John Doe',
@@ -18,8 +24,8 @@ const mockProfile: AzureDevOpsUserProfile = {
 }
 
 const mockRepositories: AzureDevOpsRepository[] = [
-  { id: '1', name: 'Repo.Web', defaultBranch: 'refs/heads/main' },
-  { id: '2', name: 'Repo.Api', defaultBranch: 'refs/heads/main' },
+  { id: '1', name: 'Repo.Web', defaultBranch: 'refs/heads/main', isDisabled: false },
+  { id: '2', name: 'Repo.Api', defaultBranch: 'refs/heads/main', isDisabled: false },
 ]
 
 const mockContributionCommits: ContributionCommit[] = [
@@ -37,17 +43,31 @@ const mockContributionCommits: ContributionCommit[] = [
   },
 ]
 
+const mockWorkItems: ContributionWorkItem[] = [
+  {
+    id: 12345,
+    title: 'Implement login page',
+    type: 'User Story',
+    state: 'Active',
+    team: 'Team Alpha',
+    createdDate: '2024-01-15T09:00:00Z',
+    reason: 'created',
+    webUrl: 'https://dev.azure.com/org/project/_workitems/edit/12345',
+  },
+]
+
 describe('useContributionGraph', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
+    mockedGetWorkItemsForUser.mockResolvedValue([])
   })
 
   it('should initialize with default values', () => {
     const composable = useContributionGraph()
 
     expect(composable.contributionsByDate.value.size).toBe(0)
-    expect(composable.recentCommits.value).toEqual([])
+    expect(composable.recentActivity.value).toEqual([])
     expect(composable.isLoading.value).toBe(false)
     expect(composable.error.value).toBeNull()
     expect(composable.currentUserDisplayName.value).toBeNull()
@@ -94,7 +114,7 @@ describe('useContributionGraph', () => {
       )
       expect(composable.contributionsByDate.value.get('2024-01-15')).toBe(1)
       expect(composable.contributionsByDate.value.get('2024-01-14')).toBe(1)
-      expect(composable.recentCommits.value).toHaveLength(2)
+      expect(composable.recentActivity.value).toHaveLength(2)
       expect(composable.isLoading.value).toBe(false)
       expect(composable.currentUserDisplayName.value).toBe('John Doe')
     })
@@ -154,7 +174,7 @@ describe('useContributionGraph', () => {
       expect(composable.contributionsByDate.value.get('2024-01-15')).toBe(3)
     })
 
-    it('should limit recent commits to 10', async () => {
+    it('should limit recent activity to 10', async () => {
       const store = useAzureDevOpsStore()
       store.setPat('valid-pat')
       store.setRepositories(mockRepositories)
@@ -171,7 +191,7 @@ describe('useContributionGraph', () => {
       const composable = useContributionGraph()
       await composable.load()
 
-      expect(composable.recentCommits.value).toHaveLength(10)
+      expect(composable.recentActivity.value).toHaveLength(10)
     })
 
     it('should exclude PR merge evaluation commits', async () => {
@@ -205,8 +225,9 @@ describe('useContributionGraph', () => {
       const composable = useContributionGraph()
       await composable.load()
 
-      expect(composable.recentCommits.value).toHaveLength(2)
-      expect(composable.recentCommits.value.every((c) => c.comment.startsWith('Merge pull request') === false)).toBe(true)
+      const commitItems = composable.recentActivity.value.filter((item) => item.kind === 'commit')
+      expect(commitItems).toHaveLength(2)
+      expect(commitItems.every((c) => c.kind === 'commit' && c.comment.startsWith('Merge pull request') === false)).toBe(true)
       expect(composable.contributionsByDate.value.get('2024-01-15')).toBe(1)
     })
 
@@ -235,12 +256,17 @@ describe('useContributionGraph', () => {
       const composable = useContributionGraph()
       await composable.load()
 
-      const first = composable.recentCommits.value[0]
-      expect(first.firstLine).toBe('Merge refs/heads/feature/login into refs/heads/main')
+      const first = composable.recentActivity.value[0]
+      expect(first.kind).toBe('commit')
+      if (first.kind === 'commit') {
+        expect(first.firstLine).toBe('Merge refs/heads/feature/login into refs/heads/main')
+      }
       expect(first.formattedDate).toBeTruthy()
 
-      const second = composable.recentCommits.value[1]
-      expect(second.firstLine).toBe('Fix login bug')
+      const second = composable.recentActivity.value[1]
+      if (second.kind === 'commit') {
+        expect(second.firstLine).toBe('Fix login bug')
+      }
     })
 
     it('should handle profile API errors', async () => {
@@ -269,10 +295,92 @@ describe('useContributionGraph', () => {
       expect(composable.error.value).toContain('Erreur lors du chargement des contributions')
       expect(composable.isLoading.value).toBe(false)
     })
+
+    it('should include created work items in contributions', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+      mockedGetWorkItemsForUser.mockResolvedValueOnce(mockWorkItems)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      // 1 commit + 1 work item on 2024-01-15
+      expect(composable.contributionsByDate.value.get('2024-01-15')).toBe(2)
+      expect(composable.contributionsByDate.value.get('2024-01-14')).toBe(1)
+
+      // Activity should include both commits and work items
+      expect(composable.recentActivity.value).toHaveLength(3)
+      const workItemActivity = composable.recentActivity.value.find((item) => item.kind === 'workitem')
+      expect(workItemActivity).toBeDefined()
+      if (workItemActivity !== undefined && workItemActivity.kind === 'workitem') {
+        expect(workItemActivity.workItemId).toBe(12345)
+        expect(workItemActivity.title).toBe('Implement login page')
+        expect(workItemActivity.workItemType).toBe('User Story')
+      }
+    })
+
+    it('should fetch work items using email address', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce([])
+      mockedGetWorkItemsForUser.mockResolvedValueOnce([])
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      expect(mockedGetWorkItemsForUser).toHaveBeenCalledWith(
+        'valid-pat',
+        'john.doe@example.com',
+        expect.any(Date),
+        expect.any(Date),
+      )
+    })
+
+    it('should sort activity items by date descending', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+
+      const commits: ContributionCommit[] = [
+        {
+          commitId: 'aaa',
+          comment: 'Early commit',
+          repositoryName: 'Repo.Web',
+          author: { name: 'John', email: 'john@example.com', date: '2024-01-14T08:00:00Z' },
+        },
+      ]
+      const workItems: ContributionWorkItem[] = [
+        {
+          id: 99,
+          title: 'Later work item',
+          type: 'Bug',
+          state: 'New',
+          team: 'Team',
+          createdDate: '2024-01-15T12:00:00Z',
+          reason: 'created',
+          webUrl: 'https://example.com',
+        },
+      ]
+
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(commits)
+      mockedGetWorkItemsForUser.mockResolvedValueOnce(workItems)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      expect(composable.recentActivity.value[0].kind).toBe('workitem')
+      expect(composable.recentActivity.value[1].kind).toBe('commit')
+    })
   })
 
-  describe('loadMoreCommits', () => {
-    it('should show more commits when loadMoreCommits is called', async () => {
+  describe('loadMoreActivity', () => {
+    it('should show more activity when loadMoreActivity is called', async () => {
       const store = useAzureDevOpsStore()
       store.setPat('valid-pat')
       store.setRepositories(mockRepositories)
@@ -289,21 +397,21 @@ describe('useContributionGraph', () => {
       const composable = useContributionGraph()
       await composable.load()
 
-      expect(composable.recentCommits.value).toHaveLength(10)
-      expect(composable.hasMoreCommits.value).toBe(true)
+      expect(composable.recentActivity.value).toHaveLength(10)
+      expect(composable.hasMoreActivity.value).toBe(true)
 
-      composable.loadMoreCommits()
+      composable.loadMoreActivity()
 
-      expect(composable.recentCommits.value).toHaveLength(20)
-      expect(composable.hasMoreCommits.value).toBe(true)
+      expect(composable.recentActivity.value).toHaveLength(20)
+      expect(composable.hasMoreActivity.value).toBe(true)
 
-      composable.loadMoreCommits()
+      composable.loadMoreActivity()
 
-      expect(composable.recentCommits.value).toHaveLength(25)
-      expect(composable.hasMoreCommits.value).toBe(false)
+      expect(composable.recentActivity.value).toHaveLength(25)
+      expect(composable.hasMoreActivity.value).toBe(false)
     })
 
-    it('should report hasMoreCommits as false when all commits are visible', async () => {
+    it('should report hasMoreActivity as false when all items are visible', async () => {
       const store = useAzureDevOpsStore()
       store.setPat('valid-pat')
       store.setRepositories(mockRepositories)
@@ -313,8 +421,8 @@ describe('useContributionGraph', () => {
       const composable = useContributionGraph()
       await composable.load()
 
-      expect(composable.recentCommits.value).toHaveLength(2)
-      expect(composable.hasMoreCommits.value).toBe(false)
+      expect(composable.recentActivity.value).toHaveLength(2)
+      expect(composable.hasMoreActivity.value).toBe(false)
     })
   })
 
@@ -331,6 +439,20 @@ describe('useContributionGraph', () => {
       store.setRepositories(mockRepositories)
       store.setCurrentUserProfile(mockProfile)
       mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      expect(composable.hasContributions.value).toBe(true)
+    })
+
+    it('should return true when only work items are loaded', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce([])
+      mockedGetWorkItemsForUser.mockResolvedValueOnce(mockWorkItems)
 
       const composable = useContributionGraph()
       await composable.load()
@@ -412,11 +534,10 @@ describe('useContributionGraph', () => {
       composable.reset()
 
       expect(composable.contributionsByDate.value.size).toBe(0)
-      expect(composable.recentCommits.value).toEqual([])
+      expect(composable.recentActivity.value).toEqual([])
       expect(composable.error.value).toBeNull()
       // Profile should still be cached in the store
       expect(store.currentUserProfile).toEqual(mockProfile)
     })
   })
-
 })

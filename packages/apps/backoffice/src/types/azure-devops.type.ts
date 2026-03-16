@@ -35,6 +35,12 @@ export interface AzureDevOpsWorkItemFields {
   'System.WorkItemType': string
   'System.State': string
   'System.AreaPath': string
+  'System.CreatedDate'?: string
+  'System.CreatedBy'?: string | { displayName?: string; uniqueName?: string }
+  'Microsoft.VSTS.Common.ResolvedDate'?: string
+  'Microsoft.VSTS.Common.ResolvedBy'?: string | { displayName?: string; uniqueName?: string }
+  'Microsoft.VSTS.Common.ActivatedDate'?: string
+  'Microsoft.VSTS.Common.ActivatedBy'?: string | { displayName?: string; uniqueName?: string }
 }
 
 export interface AzureDevOpsWorkItemResponse {
@@ -93,6 +99,7 @@ export interface AzureDevOpsRepository {
   id: string
   name: string
   defaultBranch: string
+  isDisabled: boolean
 }
 
 export interface AzureDevOpsRepositoriesResponse {
@@ -146,8 +153,46 @@ export interface ContributionCommit extends Pick<AzureDevOpsCommit, 'commitId' |
   repositoryName: string
 }
 
-export interface EnrichedContributionCommit extends ContributionCommit {
-  shortCommitId: string
-  firstLine: string
-  formattedDate: string
+export interface AzureDevOpsWiqlResponse {
+  queryType: string
+  queryResultType: string
+  asOf: string
+  columns: Array<{ referenceName: string; name: string; url: string }>
+  workItems: Array<{ id: number; url: string }>
 }
+
+export interface ContributionWorkItem {
+  id: number
+  title: string
+  type: string
+  state: string
+  team: string
+  createdDate: string
+  reason: 'created' | 'resolved' | 'activated'
+  webUrl: string
+}
+
+export interface CommitActivityItem {
+  kind: 'commit'
+  date: string
+  formattedDate: string
+  commitId: string
+  shortCommitId: string
+  comment: string
+  firstLine: string
+  repositoryName: string
+}
+
+export interface WorkItemActivityItem {
+  kind: 'workitem'
+  date: string
+  formattedDate: string
+  workItemId: number
+  title: string
+  workItemType: string
+  state: string
+  reason: 'created' | 'resolved' | 'activated'
+  webUrl: string
+}
+
+export type ContributionActivityItem = CommitActivityItem | WorkItemActivityItem

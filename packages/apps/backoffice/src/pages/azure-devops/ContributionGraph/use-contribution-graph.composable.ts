@@ -4,29 +4,59 @@ import { AzureDevOpsService } from '@backoffice/services/azure-devops/azure-devo
 import { useAzureDevOpsStore } from '@backoffice/stores/azure-devops.store'
 import {
   CONTRIBUTION_GRAPH_WEEKS,
-  CONTRIBUTION_RECENT_COMMITS_COUNT,
+  CONTRIBUTION_RECENT_ACTIVITY_COUNT,
 } from '@backoffice/constants/azure-devops.const'
-import type { AzureDevOpsUserProfile, ContributionCommit, EnrichedContributionCommit } from '@backoffice/types/azure-devops.type'
+import type {
+  AzureDevOpsUserProfile,
+  ContributionCommit,
+  ContributionWorkItem,
+  ContributionActivityItem,
+} from '@backoffice/types/azure-devops.type'
 import { toDateKey, formatCommitDate, isMergePullRequest } from './contribution-graph.helper'
+
+type ActivityFilter = 'commits' | 'workitems'
 
 export const useContributionGraph = () => {
   const store = useAzureDevOpsStore()
 
-  const contributionsByDate = ref<Map<string, number>>(new Map())
-  const allFilteredCommits = ref<EnrichedContributionCommit[]>([])
-  const visibleCommitsCount = ref(CONTRIBUTION_RECENT_COMMITS_COUNT)
+  const allActivityItems = ref<ContributionActivityItem[]>([])
+  const visibleActivityCount = ref(CONTRIBUTION_RECENT_ACTIVITY_COUNT)
   const isLoading = ref(false)
   const loadingProgress = ref<{ loaded: number; total: number }>({ loaded: 0, total: 0 })
   const error = ref<string | null>(null)
+  const activeFilters = ref<ActivityFilter[]>(['commits', 'workitems'])
 
   const startDate = ref<Date>(new Date())
   const endDate = ref<Date>(new Date())
 
-  const hasContributions = computed(() => contributionsByDate.value.size > 0)
   const currentUserDisplayName = ref<string | null>(null)
 
-  const recentCommits = computed(() => allFilteredCommits.value.slice(0, visibleCommitsCount.value))
-  const hasMoreCommits = computed(() => visibleCommitsCount.value < allFilteredCommits.value.length)
+  const commitsCount = computed(() => allActivityItems.value.filter((item) => item.kind === 'commit').length)
+  const workItemsCount = computed(() => allActivityItems.value.filter((item) => item.kind === 'workitem').length)
+
+  const filteredActivityItems = computed(() => {
+    return allActivityItems.value.filter((item) => {
+      if (item.kind === 'commit') {
+        return activeFilters.value.includes('commits')
+      }
+      return activeFilters.value.includes('workitems')
+    })
+  })
+
+  const contributionsByDate = computed(() => {
+    const map = new Map<string, number>()
+    for (const item of filteredActivityItems.value) {
+      const dateKey = toDateKey(new Date(item.date))
+      const current = map.get(dateKey) ?? 0
+      map.set(dateKey, current + 1)
+    }
+    return map
+  })
+
+  const hasContributions = computed(() => contributionsByDate.value.size > 0)
+
+  const recentActivity = computed(() => filteredActivityItems.value.slice(0, visibleActivityCount.value))
+  const hasMoreActivity = computed(() => visibleActivityCount.value < filteredActivityItems.value.length)
 
   const computeDateRange = () => {
     const now = new Date()
@@ -46,26 +76,36 @@ export const useContributionGraph = () => {
     endDate.value = end
   }
 
-  const buildContributionsByDate = (commits: ContributionCommit[]): Map<string, number> => {
-    const map = new Map<string, number>()
-
-    for (const commit of commits) {
-      const date = new Date(commit.author.date)
-      const dateKey = toDateKey(date)
-      const current = map.get(dateKey) ?? 0
-      map.set(dateKey, current + 1)
-    }
-
-    return map
-  }
-
-  const enrichCommits = (commits: ContributionCommit[]): EnrichedContributionCommit[] => {
-    return commits.map((commit) => ({
-      ...commit,
-      shortCommitId: commit.commitId.substring(0, 7),
-      firstLine: commit.comment.split('\n')[0],
+  const buildActivityItems = (
+    commits: ContributionCommit[],
+    workItems: ContributionWorkItem[],
+  ): ContributionActivityItem[] => {
+    const commitItems: ContributionActivityItem[] = commits.map((commit) => ({
+      kind: 'commit' as const,
+      date: commit.author.date,
       formattedDate: formatCommitDate(commit.author.date),
+      commitId: commit.commitId,
+      shortCommitId: commit.commitId.substring(0, 7),
+      comment: commit.comment,
+      firstLine: commit.comment.split('\n')[0],
+      repositoryName: commit.repositoryName,
     }))
+
+    const workItemItems: ContributionActivityItem[] = workItems.map((wi) => ({
+      kind: 'workitem' as const,
+      date: wi.createdDate,
+      formattedDate: formatCommitDate(wi.createdDate),
+      workItemId: wi.id,
+      title: wi.title,
+      workItemType: wi.type,
+      state: wi.state,
+      reason: wi.reason,
+      webUrl: wi.webUrl,
+    }))
+
+    const allItems = [...commitItems, ...workItemItems]
+    allItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    return allItems
   }
 
   const loadCurrentUserProfile = async (): Promise<AzureDevOpsUserProfile> => {
@@ -91,9 +131,8 @@ export const useContributionGraph = () => {
 
     isLoading.value = true
     error.value = null
-    contributionsByDate.value = new Map()
-    allFilteredCommits.value = []
-    visibleCommitsCount.value = CONTRIBUTION_RECENT_COMMITS_COUNT
+    allActivityItems.value = []
+    visibleActivityCount.value = CONTRIBUTION_RECENT_ACTIVITY_COUNT
     loadingProgress.value = { loaded: 0, total: store.repositories.length }
     computeDateRange()
 
@@ -101,23 +140,30 @@ export const useContributionGraph = () => {
       const profile = await loadCurrentUserProfile()
       currentUserDisplayName.value = profile.displayName
 
-      const allCommits = await AzureDevOpsService.getCommitsByAuthorAcrossRepos(
-        store.pat,
-        store.repositories,
-        profile.emailAddress,
-        startDate.value,
-        endDate.value,
-        (loaded, total) => {
-          loadingProgress.value = { loaded, total }
-        },
-      )
+      const [allCommits, createdWorkItems] = await Promise.all([
+        AzureDevOpsService.getCommitsByAuthorAcrossRepos(
+          store.pat,
+          store.repositories,
+          profile.emailAddress,
+          startDate.value,
+          endDate.value,
+          (loaded, total) => {
+            loadingProgress.value = { loaded, total }
+          },
+        ),
+        AzureDevOpsService.getWorkItemsForUser(
+          store.pat,
+          profile.emailAddress,
+          startDate.value,
+          endDate.value,
+        ),
+      ])
 
       // Exclude PR merge evaluation commits generated by Azure DevOps under refs/pull/*/merge
       const filteredCommits = allCommits.filter((commit) => isMergePullRequest(commit.comment) === false)
 
-      contributionsByDate.value = buildContributionsByDate(filteredCommits)
-      allFilteredCommits.value = enrichCommits(filteredCommits)
-      visibleCommitsCount.value = CONTRIBUTION_RECENT_COMMITS_COUNT
+      allActivityItems.value = buildActivityItems(filteredCommits, createdWorkItems)
+      visibleActivityCount.value = CONTRIBUTION_RECENT_ACTIVITY_COUNT
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue'
       error.value = `Erreur lors du chargement des contributions: ${errorMessage}`
@@ -127,14 +173,37 @@ export const useContributionGraph = () => {
     }
   }
 
-  const loadMoreCommits = (): void => {
-    visibleCommitsCount.value += CONTRIBUTION_RECENT_COMMITS_COUNT
+  const toggleFilter = (filter: ActivityFilter, value: boolean): void => {
+    if (value) {
+      if (activeFilters.value.includes(filter) === false) {
+        activeFilters.value = [...activeFilters.value, filter]
+      }
+    } else {
+      // Prevent unchecking both
+      if (activeFilters.value.length > 1) {
+        activeFilters.value = activeFilters.value.filter((f) => f !== filter)
+      }
+    }
+  }
+
+  const showCommits = computed({
+    get: () => activeFilters.value.includes('commits'),
+    set: (value: boolean) => toggleFilter('commits', value),
+  })
+
+  const showWorkItems = computed({
+    get: () => activeFilters.value.includes('workitems'),
+    set: (value: boolean) => toggleFilter('workitems', value),
+  })
+
+  const loadMoreActivity = (): void => {
+    visibleActivityCount.value += CONTRIBUTION_RECENT_ACTIVITY_COUNT
   }
 
   const reset = (): void => {
-    contributionsByDate.value = new Map()
-    allFilteredCommits.value = []
-    visibleCommitsCount.value = CONTRIBUTION_RECENT_COMMITS_COUNT
+    allActivityItems.value = []
+    visibleActivityCount.value = CONTRIBUTION_RECENT_ACTIVITY_COUNT
+    activeFilters.value = ['commits', 'workitems']
     isLoading.value = false
     loadingProgress.value = { loaded: 0, total: 0 }
     error.value = null
@@ -142,8 +211,8 @@ export const useContributionGraph = () => {
 
   return {
     contributionsByDate,
-    recentCommits,
-    hasMoreCommits,
+    recentActivity,
+    hasMoreActivity,
     isLoading,
     loadingProgress,
     error,
@@ -151,8 +220,12 @@ export const useContributionGraph = () => {
     endDate,
     hasContributions,
     currentUserDisplayName,
+    showCommits,
+    showWorkItems,
+    commitsCount,
+    workItemsCount,
     load,
-    loadMoreCommits,
+    loadMoreActivity,
     reset,
   }
 }

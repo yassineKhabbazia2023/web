@@ -27,7 +27,7 @@
         <PTooltip
           v-for="(cell, index) in cells"
           :key="index"
-          :pContent="`${cell.count} commit${cell.count !== 1 ? 's' : ''} le ${cell.label}`"
+          :pContent="`${cell.count} contribution${cell.count !== 1 ? 's' : ''} le ${cell.label}`"
           pPlacement="right"
         >
           <div

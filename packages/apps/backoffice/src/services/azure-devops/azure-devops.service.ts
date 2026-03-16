@@ -9,12 +9,14 @@ import type {
   AzureDevOpsRepository,
   AzureDevOpsRepositoriesResponse,
   AzureDevOpsUserProfile,
+  AzureDevOpsWiqlResponse,
   AzureDevOpsWorkItemRef,
   AzureDevOpsWorkItemResponse,
   AzureDevOpsWorkItemsBatchResponse,
   CommitExplorerPageResult,
   CommitsInRangeResult,
   ContributionCommit,
+  ContributionWorkItem,
   HeadInfo,
   MepTag,
   WorkItem,
@@ -58,6 +60,11 @@ export class AzureDevOpsService {
     return `${organization}/${project}/_apis/wit/workitemsbatch`
   }
 
+  private static buildWiqlUrl(): string {
+    const { organization, project } = AZURE_DEVOPS_CONFIG
+    return `${organization}/${project}/_apis/wit/wiql`
+  }
+
   private static buildPullRequestWorkItemsUrl(repository: string, prId: number): string {
     const { organization, project } = AZURE_DEVOPS_CONFIG
     return `${organization}/${project}/_apis/git/repositories/${repository}/pullRequests/${prId}/workitems`
@@ -70,7 +77,9 @@ export class AzureDevOpsService {
 
   private static getAuthHeader(pat: string): string {
     const credentials = ':' + pat
-    return 'Basic ' + btoa(credentials)
+    const encoded = new TextEncoder().encode(credentials)
+    const binary = Array.from(encoded, (byte) => String.fromCodePoint(byte)).join('')
+    return 'Basic ' + btoa(binary)
   }
 
   private static validateResponse<T extends { value?: unknown }>(response: { data?: T }, context: string): void {
@@ -91,7 +100,9 @@ export class AzureDevOpsService {
     )
 
     this.validateResponse(response, 'repositories')
-    return response.data.value.sort((a, b) => a.name.localeCompare(b.name))
+    return response.data.value
+      .filter((repo) => repo.isDisabled === false)
+      .sort((a, b) => a.name.localeCompare(b.name))
   }
 
   private static async fetchAllTags(pat: string, repository: string): Promise<AzureDevOpsRef[]> {
@@ -580,6 +591,101 @@ export class AzureDevOpsService {
 
     allCommits.sort((a, b) => new Date(b.author.date).getTime() - new Date(a.author.date).getTime())
     return allCommits
+  }
+
+  static async getWorkItemsForUser(
+    pat: string,
+    userEmail: string,
+    fromDate: Date,
+    toDate: Date,
+  ): Promise<ContributionWorkItem[]> {
+    const params = new URLSearchParams({
+      'api-version': AZURE_DEVOPS_API_VERSION,
+    })
+
+    const fromDateStr = fromDate.toISOString().split('T')[0]
+    const toDateStr = toDate.toISOString().split('T')[0]
+
+    const query = `SELECT [System.Id] FROM workitems WHERE ([System.CreatedBy] = '${userEmail}' AND [System.CreatedDate] >= '${fromDateStr}' AND [System.CreatedDate] <= '${toDateStr}') OR ([Microsoft.VSTS.Common.ResolvedBy] = '${userEmail}' AND [Microsoft.VSTS.Common.ResolvedDate] >= '${fromDateStr}' AND [Microsoft.VSTS.Common.ResolvedDate] <= '${toDateStr}') OR ([Microsoft.VSTS.Common.ActivatedBy] = '${userEmail}' AND [Microsoft.VSTS.Common.ActivatedDate] >= '${fromDateStr}' AND [Microsoft.VSTS.Common.ActivatedDate] <= '${toDateStr}') ORDER BY [System.ChangedDate] DESC`
+
+    const wiqlResponse = await axios.post<AzureDevOpsWiqlResponse>(
+      `${this.buildWiqlUrl()}?${params}`,
+      { query },
+      {
+        headers: {
+          Authorization: this.getAuthHeader(pat),
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+
+    const workItemIds = wiqlResponse.data.workItems.map((wi) => wi.id)
+    if (workItemIds.length === 0) {
+      return []
+    }
+
+    const batchResponse = await axios.post<AzureDevOpsWorkItemsBatchResponse>(
+      `${this.buildWorkItemsBatchUrl()}?${params}`,
+      {
+        ids: workItemIds,
+        fields: [
+          'System.Title',
+          'System.WorkItemType',
+          'System.State',
+          'System.AreaPath',
+          'System.CreatedDate',
+          'System.CreatedBy',
+          'Microsoft.VSTS.Common.ResolvedDate',
+          'Microsoft.VSTS.Common.ResolvedBy',
+          'Microsoft.VSTS.Common.ActivatedDate',
+          'Microsoft.VSTS.Common.ActivatedBy',
+        ],
+      },
+      {
+        headers: {
+          Authorization: this.getAuthHeader(pat),
+          'Content-Type': 'application/json',
+        },
+      },
+    )
+
+    return batchResponse.data.value.map((response) => {
+      const areaPath = response.fields['System.AreaPath']
+      const team = areaPath.split('\\').at(-1) ?? areaPath
+      const emailLower = userEmail.toLowerCase()
+      const getUniqueEmail = (field: unknown): string => {
+        if (typeof field === 'string') {
+          return field
+        }
+        return (field as { uniqueName?: string })?.uniqueName ?? ''
+      }
+
+      const createdByUser = getUniqueEmail(response.fields['System.CreatedBy']).toLowerCase() === emailLower
+      const resolvedByUser = getUniqueEmail(response.fields['Microsoft.VSTS.Common.ResolvedBy']).toLowerCase() === emailLower
+      const activatedByUser = getUniqueEmail(response.fields['Microsoft.VSTS.Common.ActivatedBy']).toLowerCase() === emailLower
+
+      let reason: 'created' | 'resolved' | 'activated' = 'created'
+      let activityDate = response.fields['System.CreatedDate'] ?? ''
+
+      if (resolvedByUser && createdByUser === false) {
+        reason = 'resolved'
+        activityDate = response.fields['Microsoft.VSTS.Common.ResolvedDate'] ?? activityDate
+      } else if (activatedByUser && createdByUser === false) {
+        reason = 'activated'
+        activityDate = response.fields['Microsoft.VSTS.Common.ActivatedDate'] ?? activityDate
+      }
+
+      return {
+        id: response.id,
+        title: response.fields['System.Title'],
+        type: response.fields['System.WorkItemType'],
+        state: response.fields['System.State'],
+        team,
+        createdDate: activityDate,
+        reason,
+        webUrl: this.buildWorkItemWebUrl(response.id),
+      }
+    })
   }
 
   private static async fetchCommitsByAuthorForRepo(

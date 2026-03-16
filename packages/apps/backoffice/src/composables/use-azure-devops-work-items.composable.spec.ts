@@ -322,8 +322,8 @@ describe('useAzureDevOpsWorkItems', () => {
   describe('fetchRepositories', () => {
     it('should fetch repositories when PAT becomes available', async () => {
       const mockRepos = [
-        { id: '1', name: 'Repo1', defaultBranch: 'main' },
-        { id: '2', name: 'Repo2', defaultBranch: 'main' },
+        { id: '1', name: 'Repo1', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'Repo2', defaultBranch: 'main', isDisabled: false },
       ]
       mockedGetRepositories.mockResolvedValueOnce(mockRepos)
       mockedGetLatestMepTag.mockResolvedValueOnce(null)
@@ -358,7 +358,7 @@ describe('useAzureDevOpsWorkItems', () => {
     })
 
     it('should reset repositories when PAT is cleared', async () => {
-      mockedGetRepositories.mockResolvedValueOnce([{ id: '1', name: 'Repo1', defaultBranch: 'main' }])
+      mockedGetRepositories.mockResolvedValueOnce([{ id: '1', name: 'Repo1', defaultBranch: 'main', isDisabled: false }])
       mockedGetLatestMepTag.mockResolvedValueOnce(null)
       mockedGetHeadInfo.mockResolvedValueOnce({ commitId: 'head', tagName: null })
 

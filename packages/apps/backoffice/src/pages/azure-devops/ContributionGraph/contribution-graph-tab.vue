@@ -30,6 +30,19 @@
         Contributions de {{ currentUserDisplayName }}
       </h3>
 
+      <div class="flex flex--align-items-center flex-gap--4 margin-bottom--4">
+        <div class="contribution-graph-tab__filter">
+          <PCheckbox v-model="showCommits">
+            Commits ({{ commitsCount }})
+          </PCheckbox>
+        </div>
+        <div class="contribution-graph-tab__filter contribution-graph-tab__color--workitem">
+          <PCheckbox v-model="showWorkItems">
+            Work Items ({{ workItemsCount }})
+          </PCheckbox>
+        </div>
+      </div>
+
       <ContributionHeatmap
         :contributionsByDate="contributionsByDate"
         :startDate="startDate"
@@ -46,40 +59,66 @@
       </div>
 
       <div
-        v-if="recentCommits.length > 0"
+        v-if="recentActivity.length > 0"
         class="margin-top--6"
       >
         <h4 class="font-small font-bold margin-bottom--3">
-          Derniers commits
+          Activité récente
         </h4>
-        <div class="contribution-graph-tab__commits-list">
+        <div class="contribution-graph-tab__activity-list">
           <div
-            v-for="commit in recentCommits"
-            :key="commit.commitId"
-            class="contribution-graph-tab__commit-item"
+            v-for="item in recentActivity"
+            :key="item.kind === 'commit' ? item.commitId : `wi-${item.workItemId}`"
+            :class="[
+              'contribution-graph-tab__activity-item',
+              item.kind === 'workitem' ? 'contribution-graph-tab__color--workitem' : '',
+            ]"
           >
-            <div class="flex flex--align-items-center flex-gap--2">
-              <code class="contribution-graph-tab__commit-id">{{ commit.shortCommitId }}</code>
-              <span class="contribution-graph-tab__repo-badge">{{ commit.repositoryName }}</span>
-            </div>
-            <p class="contribution-graph-tab__commit-comment">
-              {{ commit.firstLine }}
-            </p>
+            <template v-if="item.kind === 'commit'">
+              <div class="flex flex--align-items-center flex-gap--2">
+                <code class="contribution-graph-tab__commit-id">{{ item.shortCommitId }}</code>
+                <span class="contribution-graph-tab__repo-badge">{{ item.repositoryName }}</span>
+                <span class="contribution-graph-tab__reason-badge--created">Commit</span>
+              </div>
+              <p class="contribution-graph-tab__commit-comment">
+                {{ item.firstLine }}
+              </p>
+            </template>
+            <template v-else>
+              <div class="flex flex--align-items-center flex-gap--2">
+                <span class="contribution-graph-tab__workitem-badge">{{ item.workItemType }}</span>
+                <a
+                  :href="item.webUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="contribution-graph-tab__workitem-link"
+                >
+                  #{{ item.workItemId }}
+                </a>
+                <span class="contribution-graph-tab__workitem-state">{{ item.state }}</span>
+                <span :class="'contribution-graph-tab__reason-badge--' + item.reason">
+                  {{ { created: 'Créé', resolved: 'Résolu', activated: 'Activé' }[item.reason] }}
+                </span>
+              </div>
+              <p class="contribution-graph-tab__commit-comment">
+                {{ item.title }}
+              </p>
+            </template>
             <span class="text-color--neutral-gray-400 font-small">
-              {{ commit.formattedDate }}
+              {{ item.formattedDate }}
             </span>
           </div>
         </div>
         <div
-          v-if="hasMoreCommits"
+          v-if="hasMoreActivity"
           class="contribution-graph-tab__load-more"
         >
           <PButton
             pType="tertiary"
             pSize="small"
-            @click="loadMoreCommits"
+            @click="loadMoreActivity"
           >
-            Charger plus de commits
+            Charger plus d'activité
           </PButton>
         </div>
       </div>
@@ -88,15 +127,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
-import { PAlert, PButton } from '@pulse/styleguide/components'
+import { computed } from 'vue'
+import { PAlert, PButton, PCheckbox } from '@pulse/styleguide/components'
 import ContributionHeatmap from './contribution-heatmap.vue'
 import { useContributionGraph } from './use-contribution-graph.composable'
 
 const {
   contributionsByDate,
-  recentCommits,
-  hasMoreCommits,
+  recentActivity,
+  hasMoreActivity,
   isLoading,
   loadingProgress,
   error,
@@ -104,8 +143,12 @@ const {
   endDate,
   hasContributions,
   currentUserDisplayName,
+  showCommits,
+  showWorkItems,
+  commitsCount,
+  workItemsCount,
   load,
-  loadMoreCommits,
+  loadMoreActivity,
 } = useContributionGraph()
 
 const progressPercentage = computed(() => {
@@ -115,22 +158,29 @@ const progressPercentage = computed(() => {
   return Math.round((loadingProgress.value.loaded / loadingProgress.value.total) * 100)
 })
 
-onMounted(() => {
-  load()
-})
+load()
 </script>
 
 <style scoped>
-.contribution-graph-tab__commits-list {
+.contribution-graph-tab__activity-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.contribution-graph-tab__commit-item {
+.contribution-graph-tab__activity-item {
   padding: 12px;
   border: 1px solid var(--el-border-color-lighter, #ebeef5);
   border-radius: 6px;
+}
+
+.contribution-graph-tab__filter {
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.contribution-graph-tab__color--workitem {
+  background-color: var(--p-black-rock-50);
 }
 
 .contribution-graph-tab__commit-id {
@@ -146,6 +196,57 @@ onMounted(() => {
   padding: 1px 6px;
   background-color: var(--el-color-primary-light-9, #ecf5ff);
   color: var(--el-color-primary, #409eff);
+  border-radius: 4px;
+}
+
+.contribution-graph-tab__workitem-badge {
+  font-size: 11px;
+  padding: 1px 6px;
+  background-color: var(--el-color-success-light-9, #f0f9eb);
+  color: var(--el-color-success, #67c23a);
+  border-radius: 4px;
+}
+
+.contribution-graph-tab__workitem-link {
+  font-size: 12px;
+  font-family: monospace;
+  color: var(--el-color-primary, #409eff);
+  text-decoration: none;
+}
+
+.contribution-graph-tab__workitem-link:hover {
+  text-decoration: underline;
+}
+
+.contribution-graph-tab__workitem-state {
+  font-size: 11px;
+  padding: 1px 6px;
+  background-color: var(--el-fill-color-light, #f5f7fa);
+  color: var(--el-text-color-secondary, #909399);
+  border-radius: 4px;
+}
+
+.contribution-graph-tab__reason-badge--created {
+  font-size: 11px;
+  padding: 1px 6px;
+  background-color: var(--el-color-primary-light-9, #ecf5ff);
+  color: var(--el-color-primary, #409eff);
+  border-radius: 4px;
+}
+
+.contribution-graph-tab__reason-badge--resolved {
+  font-size: 11px;
+  padding: 1px 6px;
+  background-color: var(--el-color-warning-light-9, #fdf6ec);
+  color: var(--el-color-warning, #e6a23c);
+  border-radius: 4px;
+}
+
+.contribution-graph-tab__reason-badge--activated {
+  font-size: 11px;
+  padding: 1px 6px;
+  background-color: var(--el-color-success-light-9, #f0f9eb);
+  color: var(--el-color-success, #67c23a);
   border-radius: 4px;
 }
 

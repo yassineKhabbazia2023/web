@@ -13,7 +13,7 @@ export const EXPLORER_PAGE_SIZE = 30
 // Contribution graph
 export const CONTRIBUTION_GRAPH_WEEKS = 13
 export const CONTRIBUTION_REPO_CONCURRENCY = 5
-export const CONTRIBUTION_RECENT_COMMITS_COUNT = 10
+export const CONTRIBUTION_RECENT_ACTIVITY_COUNT = 10
 
 // Work item states considered as completed
 export const WORK_ITEM_COMPLETED_STATES = ['Validated', 'Closed', 'Released', 'Resolved'] as const

@@ -43,8 +43,8 @@ describe('useAzureDevOpsStore', () => {
     it('should set repositories', () => {
       const store = useAzureDevOpsStore()
       const mockRepos = [
-        { id: '1', name: 'Repo1', defaultBranch: 'main' },
-        { id: '2', name: 'Repo2', defaultBranch: 'main' },
+        { id: '1', name: 'Repo1', defaultBranch: 'main', isDisabled: false },
+        { id: '2', name: 'Repo2', defaultBranch: 'main', isDisabled: false },
       ]
 
       store.setRepositories(mockRepos)
@@ -73,7 +73,7 @@ describe('useAzureDevOpsStore', () => {
 
     it('should reset repositories to default state', () => {
       const store = useAzureDevOpsStore()
-      store.setRepositories([{ id: '1', name: 'Repo1', defaultBranch: 'main' }])
+      store.setRepositories([{ id: '1', name: 'Repo1', defaultBranch: 'main', isDisabled: false }])
       store.setSelectedRepository('Repo1')
 
       store.resetRepositories()
