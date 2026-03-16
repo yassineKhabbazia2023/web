@@ -77,7 +77,14 @@ describe('subscriptionService', () => {
   })
   describe('fetchAccountSubscriptions', () => {
     it('should return account subscriptions', async () => {
-      subscriptionGetMock.mockResolvedValueOnce({ data: subscriptionRequestMock })
+      subscriptionGetMock.mockResolvedValueOnce({
+        data: {
+          items: subscriptionRequestMock,
+          currentPage: 1,
+          totalItems: subscriptionRequestMock.length,
+          totalPages: 1,
+        },
+      })
       const accountSubscriptions = await fetchAccountSubscriptions(5)
 
       expect(accountSubscriptions).toHaveLength(subscriptionRequestMock.length)

@@ -23,7 +23,7 @@ export async function fetchSubscriptionRequests(
   try {
     const searchParams = new URLSearchParams()
     params.statusCodes?.forEach(code => searchParams.append('status', code))
-    if (params.offerCodes !== undefined && params.offerCodes.length === 0) {
+    if (params.offerCodes?.length === 0) {
       searchParams.append('offerCode', 'null')
     } else {
       params.offerCodes?.forEach(code => searchParams.append('offerCode', code))
@@ -86,11 +86,11 @@ export async function createSubscriptionRequest(
 export async function fetchAccountSubscriptions(
   accountId: number,
 ): Promise<SubscriptionRequest[]> {
-  const response = await api.gateway.get(
+  const response = await api.gateway.get<PaginationResponse<SubscriptionRequest>>(
     `${API_PREFIXES.OFFER}/subscription?accountId=${accountId}`,
   )
 
-  return response.data
+  return response.data.items
 }
 
 export async function fetchSubscriptionDetails(
