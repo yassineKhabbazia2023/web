@@ -69,7 +69,7 @@ const config: StorybookConfig = {
 
     // Configure Vite to resolve workspace packages according to their package.json exports
     config.resolve = config.resolve || {}
-    config.resolve.conditions = ['development', 'module', 'import', 'default']
+    config.resolve.conditions = ['browser', 'development', 'module', 'import', 'default']
     config.resolve.extensions = ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json', '.vue']
 
     // Add path aliases for shims only (pulse aliases are handled by the plugin)
