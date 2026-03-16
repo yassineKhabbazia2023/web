@@ -12,6 +12,20 @@ describe('createGlobalSetup', () => {
     fetchSpy.mockRestore()
   })
 
+  it('should also fetch additional routes when provided', async () => {
+    const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response())
+
+    const globalSetup = createGlobalSetup('http://localhost:3000', ['/app-settings', '/dashboard'])
+    await globalSetup()
+
+    expect(fetchSpy).toHaveBeenCalledTimes(3)
+    expect(fetchSpy).toHaveBeenCalledWith('http://localhost:3000')
+    expect(fetchSpy).toHaveBeenCalledWith('http://localhost:3000/app-settings')
+    expect(fetchSpy).toHaveBeenCalledWith('http://localhost:3000/dashboard')
+
+    fetchSpy.mockRestore()
+  })
+
   it('should propagate fetch errors', async () => {
     const fetchSpy = vi.spyOn(globalThis, 'fetch').mockRejectedValue(new Error('Network error'))
 

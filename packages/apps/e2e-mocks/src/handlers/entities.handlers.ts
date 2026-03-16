@@ -326,7 +326,12 @@ export const entitiesHandlers = [
   }),
 
   http.get('*/offer/api/subscription', () => {
-    return HttpResponse.json(subscriptionRequestMock)
+    return HttpResponse.json({
+      items: subscriptionRequestMock,
+      currentPage: 1,
+      totalPages: 1,
+      totalItems: subscriptionRequestMock.length,
+    })
   }),
 
   http.get('*/offer/api/subscriptions', () => {
