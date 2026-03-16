@@ -24,6 +24,7 @@
     "./services/pennylane": "./src/services/pennylane/index.ts",
     "./services/storage": "./src/services/storage/index.ts",
     "./services/html": "./src/services/html/index.ts",
+    "./services/open-feature": "./src/services/open-feature/index.ts",
     "./services/widgets": "./src/services/widgets/index.ts",
     "./composables/sort": "./src/composables/sort.composable.ts",
     "./i18n": "./src/i18n/index.ts",

@@ -12,7 +12,7 @@ export const prospectCustomerRoutes: RouteRecordRaw[] = [
     name: CUSTOMER_ROUTES.entity.prospect.root.name,
     component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectRoot),
     meta: {
-      [FEATURE_FLAG_META]: Feature.PROSPECT,
+      [FEATURE_FLAG_META]: Feature.PROSPECT_EXPERIENCE,
       [IS_UNITARY_VIEW_META]: true,
     },
     redirect: { name: CUSTOMER_ROUTES.entity.prospect.homepage.name },

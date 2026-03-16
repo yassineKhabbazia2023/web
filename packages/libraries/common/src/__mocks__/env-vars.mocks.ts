@@ -36,4 +36,5 @@ export const envVarsMock = {
   VITE_SMART_OFFER_DIFFERENT_RATE_ACCOUNTS: 'ACC123,ACC456',
   VITE_GED_V2_ENABLED: 'true',
   VITE_RYDGE_INVOICES_ACTIVATED: 'true',
+  VITE_CONFIGCAT_SDK_KEY: 'mocked-configcat-sdk-key',
 }

@@ -57,6 +57,29 @@ Copiez ensuite ce fichier dans le dossier public de l'app souhaitée :
 - `./packages/apps/customer/public/env-vars.js` pour Customer
 - `./packages/apps/collaborator/public/env-vars.js` pour Collaborator
 
+### feature-flags.local.json (optionnel)
+
+Ce fichier permet de **surcharger localement les feature flags OpenFeature/ConfigCat** avant même qu'ils n'existent à distance. Il est ignoré par git — chaque développeur peut avoir le sien.
+
+Créez le fichier dans le dossier public de l'app souhaitée :
+- `./packages/apps/customer/public/feature-flags.local.json`
+- `./packages/apps/collaborator/public/feature-flags.local.json`
+
+Le fichier est un simple objet JSON dont les clés correspondent aux identifiants de flags ConfigCat :
+
+```json title="./packages/apps/[customer|collaborator]/public/feature-flags.local.json"
+{
+  "isProspectExperienceEnabled": true,
+  "myNewFlagNotYetInConfigCat": true
+}
+```
+
+Le comportement est `LocalOverRemote` : les valeurs définies localement priment sur celles de ConfigCat. Si un flag n'est pas dans le fichier, la valeur distante est utilisée normalement.
+
+::: tip
+Ce fichier n'est chargé qu'en mode `dev` (`npm run dev`). En build ou en production, seul ConfigCat est utilisé.
+:::
+
 ### styles.css
 
 Ce fichier est un simple wrapper pour les ressources de polices de caractères, permettant au navigateur de les mettre en cache.

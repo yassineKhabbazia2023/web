@@ -42,6 +42,7 @@ window.EnvVars = envVars
 | VITE_AXEPTIO_KEY | Clé d'API Axeptio (gestion des cookies) |
 | VITE_CLARITY_OFFER_ACTIVATED | Feature flag de la fonctionnalité Clarity Offer |
 | VITE_CONFIG_OFFERS_BOOK | URL d'un site web à partager aux utilisateurs |
+| VITE_CONFIGCAT_SDK_KEY | Clé SDK ConfigCat pour les feature flags distants via OpenFeature |
 | VITE_CUSTOMER_BOOKING_ACTIVATED | Si booking est activé pour les clients. |
 | VITE_FEED_CENTER_ACTIVATED | Feature-flag du Feed Center |
 | VITE_GED_V2_ENABLED | Affichage de la page Ged Comptabilité de Pennylane |
@@ -61,7 +62,6 @@ window.EnvVars = envVars
 | VITE_PRODUCT_FRUITS_ANONYMOUS_KEY_CLIENT | Clé du workspace ProductFruit Client anonyme (login client et maintenance) |
 | VITE_PRODUCT_FRUITS_KEY | Clé du workspace ProductFruit Collab connecté |
 | VITE_PRODUCT_FRUITS_KEY_CLIENT | Clé du workspace ProductFruit Client connecté |
-| VITE_PROSPECT_ACTIVATED | Feature flag pour activer l'expérience Prospect |
 | VITE_RESPONSIVE_ACTIVATED | Feature flag pour activer le layout mobile responsive |
 | VITE_SMART_OFFER_DIFFERENT_RATE_ACCOUNTS | Liste des dossiers ayant un tarif différent pour l'offre Smart (usage temporaire). |
 | VITE_SMART_OFFER_DIFFERENT_RATE_PRICE | Prix de l'offre Smart pour les dossiers ayant un tarif différent(usage temporaire). |

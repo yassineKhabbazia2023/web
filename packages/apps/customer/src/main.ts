@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { VITE_ASSETS_BASE_URL } from 'env-vars'
+import { VITE_ASSETS_BASE_URL, VITE_CONFIGCAT_SDK_KEY } from 'env-vars'
 import { AppVersionManager } from '@pulse/toolbox'
 // import libraries first for CSS resolution
 import commonLibrary from '@pulse/common'
@@ -21,6 +21,9 @@ import powerBiApplet from '@pulse/powerbi'
 import gigyaPlugin from '@customer/plugins/Gigya/gigya.plugin'
 import { axeptioPlugin, productFruitsPlugin, hubspotPlugin } from '@pulse/shared/plugins'
 
+import { OpenFeatureService } from '@pulse/common/services/open-feature'
+import type { OpenFeatureInitOptions } from '@pulse/common/services/open-feature'
+
 import App from './Customer.app.vue'
 import router from './router/customer.router'
 import { registerCustomerNavigationItems } from './router/registry/customer.navigation.registry'
@@ -40,6 +43,28 @@ window.branch = AppVersionManager.getBranchName()
 if (import.meta.env.VITE_E2E_MODE === 'true') {
   const { waitForMsw } = await import('@pulse/e2e-mocks/helpers')
   await waitForMsw()
+}
+
+if (VITE_CONFIGCAT_SDK_KEY !== undefined && VITE_CONFIGCAT_SDK_KEY !== '') {
+  let initOptions: OpenFeatureInitOptions | undefined
+
+  if (import.meta.env.DEV === true) {
+    try {
+      const { createFlagOverridesFromMap, OverrideBehaviour } = await import('@configcat/sdk')
+      const response = await fetch(`${import.meta.env.BASE_URL}feature-flags.local.json`)
+      if (response.ok === false) {
+        throw new Error('Local feature flags file not found')
+      }
+      const localFlags = await response.json()
+      initOptions = {
+        flagOverrides: createFlagOverridesFromMap(localFlags, OverrideBehaviour.LocalOverRemote),
+      }
+    } catch {
+      // No local override file found — using remote flags only
+    }
+  }
+
+  await OpenFeatureService.init(VITE_CONFIGCAT_SDK_KEY, initOptions)
 }
 
 const isProd = import.meta.env.PROD

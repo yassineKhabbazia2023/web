@@ -1,5 +1,12 @@
 import { type EnvVars, FeatureFlagManager } from './feature-flag.manager'
 import { Feature } from '../../enums/feature.enums'
+import { OpenFeatureService } from '../../services/open-feature/open-feature.service'
+
+vi.mock('../../services/open-feature/open-feature.service', () => ({
+  OpenFeatureService: {
+    getBooleanValue: vi.fn(),
+  },
+}))
 
 declare let window: {
   EnvVars: EnvVars
@@ -80,4 +87,23 @@ describe('FeatureFlagManager', () => {
         expect(FeatureFlagManager.isModscreenV2Activated()).toBe(expected)
       })
     })
+
+  describe('isFeatureActivated with OpenFeature flag', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue for PROSPECT_EXPERIENCE', () => {
+      vi.mocked(OpenFeatureService.getBooleanValue).mockReturnValue(true)
+
+      const result = FeatureFlagManager.isFeatureActivated(Feature.PROSPECT_EXPERIENCE)
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.PROSPECT_EXPERIENCE, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false when OpenFeatureService returns false', () => {
+      vi.mocked(OpenFeatureService.getBooleanValue).mockReturnValue(false)
+
+      const result = FeatureFlagManager.isFeatureActivated(Feature.PROSPECT_EXPERIENCE)
+
+      expect(result).toBe(false)
+    })
+  })
 })

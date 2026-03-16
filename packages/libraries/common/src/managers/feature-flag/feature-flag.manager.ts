@@ -1,6 +1,13 @@
 import { Feature } from '../../enums/feature.enums'
+import { OpenFeatureService } from '../../services/open-feature/open-feature.service'
 
 export type EnvVars = Record<Feature, 'true' | 'false'>
+
+// Features evaluated via OpenFeature/ConfigCat instead of environment variables.
+// This list is internal to the manager and is meant to disappear once all flags are migrated.
+const OPEN_FEATURE_FLAGS = new Set<Feature>([
+  Feature.PROSPECT_EXPERIENCE,
+])
 
 declare let window: {
   EnvVars: EnvVars
@@ -36,6 +43,10 @@ export class FeatureFlagManager {
   }
 
   static isFeatureActivated(feature: Feature) {
+    if (OPEN_FEATURE_FLAGS.has(feature) === true) {
+      return OpenFeatureService.getBooleanValue(feature, false)
+    }
+
     const value = window.EnvVars?.[feature]
 
     return value === 'true'

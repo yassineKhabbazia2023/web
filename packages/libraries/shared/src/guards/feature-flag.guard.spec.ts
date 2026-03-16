@@ -35,6 +35,18 @@ describe('feature-flag.guard', () => {
     expectedRouteName: undefined,
     expectedLoggerMock: undefined,
     reason: 'keep the route because the no feature flag is required',
+  }, {
+    featureFlag: Feature.PROSPECT_EXPERIENCE,
+    featureFlagIsActivatedMock: false,
+    expectedRouteName: 'Error404',
+    expectedLoggerMock: `feature flag '${Feature.PROSPECT_EXPERIENCE}' is not activated for route '${toNameMock}'`,
+    reason: 'redirect to Error404 when feature flag is NOT activated',
+  }, {
+    featureFlag: Feature.PROSPECT_EXPERIENCE,
+    featureFlagIsActivatedMock: true,
+    expectedRouteName: undefined,
+    expectedLoggerMock: undefined,
+    reason: 'keep the route when feature flag is activated',
   }]
   it.each(tests)('$reason', ({
     featureFlag,
@@ -51,6 +63,10 @@ describe('feature-flag.guard', () => {
     } as unknown as RouteLocationNormalizedGeneric
 
     const result = featureFlagGuard(toRouteMock)
+
+    if (featureFlag !== undefined) {
+      expect(featureFlagManagerMock.isFeatureActivated).toHaveBeenCalledWith(featureFlag)
+    }
 
     if (expectedLoggerMock === undefined) {
       expect(loggerMock.trace).not.toHaveBeenCalled()

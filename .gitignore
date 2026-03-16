@@ -132,6 +132,7 @@ stats.html
 ## public
 **/public/env-vars.js
 **/public/styles.css
+**/public/feature-flags.local.json
 ## version
 version.json
 ## build
