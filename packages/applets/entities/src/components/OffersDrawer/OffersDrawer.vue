@@ -76,6 +76,7 @@
           <OfferSubscription
             v-if="currentStep === OffersDrawerStep.SERVICES"
             v-model:selectedPlanId="selectedPlanId"
+            v-model:selectedPricingId="selectedPricingId"
             data-testid="offer"
             :accountId="props.accountId"
             :subscriptionOffer="currentSubscriptionOffer"
@@ -108,7 +109,7 @@
             @input="onInputAccount"
           />
           <StepNote
-            v-if="currentSubscriptionOffer?.approvalRequired"
+            v-if="currentSubscriptionOffer?.approvalRequired && shouldShowStepNote"
             :key="currentStep"
             v-model="notes[currentStepIndex]"
             class="margin-top--6"
@@ -218,6 +219,21 @@ const isNextButtonDisabled = computed(() => {
     return true
   }
 
+  // Check plan selection on SERVICES step for offers with plans
+  const hasPlans = (currentSubscriptionOffer.value?.plans?.length ?? 0) > 0
+  if (currentStep.value === OffersDrawerStep.SERVICES && hasPlans && selectedPlanId.value === undefined) {
+    return true
+  }
+
+  // Check pricing selection on SERVICES step for selected plan with pricings
+  if (currentStep.value === OffersDrawerStep.SERVICES && selectedPlanId.value !== undefined) {
+    const selectedPlan = currentSubscriptionOffer.value?.plans?.find(p => p.planId === selectedPlanId.value)
+    const hasPricings = (selectedPlan?.pricings?.length ?? 0) > 0
+    if (hasPricings && selectedPricingId.value === undefined) {
+      return true
+    }
+  }
+
   return getIsNextButtonDisabled({
     currentSubscriptionOffer: currentSubscriptionOffer.value,
     currentStep: currentStep.value,
@@ -238,6 +254,7 @@ const activeOfferCodes = ref<string[]>([])
 const patchValues: PatchValue[] = []
 const selectedProducts = ref<SelectedProduct[]>([])
 const selectedPlanId = ref<number | undefined>()
+const selectedPricingId = ref<number | undefined>()
 const subscriptionOffers = ref<SubscriptionOffer[]>([])
 const knownCollaborators = ref<Contact[]>([])
 const selectedCollaboratorsWithRoles = ref<ContactWithRoles[]>([])
@@ -304,6 +321,7 @@ const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
     }
   }
   selectedPlanId.value = undefined
+  selectedPricingId.value = undefined
   selectedProducts.value = getInitialSelectedProducts(
     currentSubscriptionOffer.value,
   )
@@ -393,6 +411,7 @@ async function saveOffer() {
     selectedProducts: selectedProducts.value,
     notes: notes.value,
     selectedPlanId: selectedPlanId.value,
+    selectedPricingId: selectedPricingId.value,
     hasNoSiren: account.value?.legal?.hasNoSiren,
   })
   if (postSubscriptionRequest) {
@@ -506,6 +525,18 @@ const providerName = computed(() => {
   const firstFilteredProviders = filteredProviders?.at(0)
 
   return firstFilteredProviders?.providerName
+})
+
+const isPennylaneOffer = computed(() => {
+  return providerName.value === ProviderName.PENNYLANE || providerName.value === ProviderName.PENNYLANE_MOD
+})
+
+const shouldShowStepNote = computed(() => {
+  // For Pennylane offers on SERVICES step, show note only when Next button is active (plan selected)
+  if (currentStep.value === OffersDrawerStep.SERVICES && isPennylaneOffer.value === true) {
+    return isNextButtonDisabled.value === false
+  }
+  return true
 })
 
 const offerSanitizedUrl = computed(() => {

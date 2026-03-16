@@ -13,6 +13,7 @@
   <OfferPlanSubscription
     v-if="subscriptionOfferDetails.plans !== undefined && subscriptionOfferDetails.plans.length > 0"
     :selected-plan-id="selectedPlanId"
+    :selected-pricing-id="selectedPricingId"
     :plans="subscriptionOfferDetails.plans"
     class="margin-y--6"
     isRecap
@@ -35,6 +36,11 @@ const selectedProducts = ref<SelectedProduct[]>([])
 const selectedPlanId = computed(() => {
   const selectedPlan = OfferPlanManager.getSelectedPlan(props.subscriptionOfferDetails.plans)
   return selectedPlan?.planId
+})
+
+const selectedPricingId = computed(() => {
+  const selectedPricing = OfferPlanManager.getSelectedPricing(props.subscriptionOfferDetails.plans)
+  return selectedPricing?.planPricingId
 })
 
 onMounted(() => {

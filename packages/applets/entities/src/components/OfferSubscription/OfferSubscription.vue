@@ -17,6 +17,7 @@
     <OfferPlanSubscription
       v-if="subscriptionOffer.plans !== undefined && subscriptionOffer.plans.length > 0"
       v-model:selected-plan-id="selectedPlanId"
+      v-model:selected-pricing-id="selectedPricingId"
       :plans="subscriptionOffer.plans"
       class="margin-bottom--6"
     />
@@ -36,6 +37,7 @@ const { t } = useI18n({
 defineProps<OfferSubscriptionProps>()
 
 const selectedPlanId = defineModel<number>('selectedPlanId')
+const selectedPricingId = defineModel<number>('selectedPricingId')
 
 const emit = defineEmits<{
   'select-product': [number, number]

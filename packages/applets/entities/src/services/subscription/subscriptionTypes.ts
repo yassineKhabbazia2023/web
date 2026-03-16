@@ -69,6 +69,7 @@ export interface PostSubscriptionRequest {
   applicant: string
   contactFunctions?: ContactFunction[]
   planId?: number
+  planPricingId?: number
   hasNoSiren?: boolean
 }
 

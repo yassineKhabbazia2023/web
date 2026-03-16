@@ -88,6 +88,7 @@ interface GetPostSubscriptionRequestParams {
   selectedProducts: SelectedProduct[]
   notes: Note[]
   selectedPlanId?: number
+  selectedPricingId?: number
   hasNoSiren?: boolean
 }
 
@@ -110,6 +111,7 @@ export function getPostSubscriptionRequest({
   selectedProducts,
   notes,
   selectedPlanId,
+  selectedPricingId,
   hasNoSiren,
 }: GetPostSubscriptionRequestParams): PostSubscriptionRequest | undefined {
   if (currentSubscriptionOffer === undefined) {
@@ -137,6 +139,7 @@ export function getPostSubscriptionRequest({
     applicant: userEmail ?? '',
     notes,
     planId: selectedPlanId,
+    planPricingId: selectedPricingId,
     hubName: hubName,
     hasNoSiren,
   }

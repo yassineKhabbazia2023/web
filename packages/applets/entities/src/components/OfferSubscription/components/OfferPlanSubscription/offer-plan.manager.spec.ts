@@ -173,4 +173,149 @@ describe('OfferPlanManager', () => {
       expect(result).toBeUndefined()
     })
   })
+
+  describe('getPricingLabel', () => {
+    const plans: OfferPlan[] = [
+      getOfferPlanMock({
+        planId: 1,
+        planCode: 'BASIC',
+        planName: 'Basique',
+        pricings: [
+          { planPricingId: 1, price: 14, priceType: 'mois HT', label: '1 utilisateur' },
+          { planPricingId: 2, price: 29, priceType: 'mois HT', label: '5 utilisateurs' },
+        ],
+      }),
+      getOfferPlanMock({
+        planId: 2,
+        planCode: 'PREMIUM',
+        planName: 'Premium',
+        pricings: [
+          { planPricingId: 3, price: 49, priceType: 'mois HT', label: '1 utilisateur' },
+        ],
+      }),
+    ]
+
+    it('should return pricing label when pricing exists in plan', () => {
+      const result = OfferPlanManager.getPricingLabel(1, 1, plans)
+
+      expect(result).toBe('1 utilisateur')
+    })
+
+    it('should return correct pricing label for different pricing in same plan', () => {
+      const result = OfferPlanManager.getPricingLabel(2, 1, plans)
+
+      expect(result).toBe('5 utilisateurs')
+    })
+
+    it('should return pricing label from different plan', () => {
+      const result = OfferPlanManager.getPricingLabel(3, 2, plans)
+
+      expect(result).toBe('1 utilisateur')
+    })
+
+    it('should return undefined when pricingId does not exist in plan', () => {
+      const result = OfferPlanManager.getPricingLabel(999, 1, plans)
+
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when planId does not exist', () => {
+      const result = OfferPlanManager.getPricingLabel(1, 999, plans)
+
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when plans is empty', () => {
+      const result = OfferPlanManager.getPricingLabel(1, 1, [])
+
+      expect(result).toBeUndefined()
+    })
+  })
+
+  describe('getSelectedPricing', () => {
+    it('should return selected pricing when one exists', () => {
+      const plans: OfferPlan[] = [
+        getOfferPlanMock({
+          planId: 1,
+          isSelected: true,
+          pricings: [
+            { planPricingId: 1, price: 14, priceType: 'mois HT', label: '1 utilisateur', isSelected: false },
+            { planPricingId: 2, price: 29, priceType: 'mois HT', label: '5 utilisateurs', isSelected: true },
+          ],
+        }),
+      ]
+
+      const result = OfferPlanManager.getSelectedPricing(plans)
+
+      expect(result).toEqual({ planPricingId: 2, price: 29, priceType: 'mois HT', label: '5 utilisateurs', isSelected: true })
+    })
+
+    it('should return undefined when no pricing is selected in selected plan', () => {
+      const plans: OfferPlan[] = [
+        getOfferPlanMock({
+          planId: 1,
+          isSelected: true,
+          pricings: [
+            { planPricingId: 1, price: 14, priceType: 'mois HT', label: '1 utilisateur', isSelected: false },
+          ],
+        }),
+      ]
+
+      const result = OfferPlanManager.getSelectedPricing(plans)
+
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when no plan is selected', () => {
+      const plans: OfferPlan[] = [
+        getOfferPlanMock({
+          planId: 1,
+          isSelected: false,
+          pricings: [
+            { planPricingId: 1, price: 14, priceType: 'mois HT', label: '1 utilisateur', isSelected: true },
+          ],
+        }),
+      ]
+
+      const result = OfferPlanManager.getSelectedPricing(plans)
+
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when plans is undefined', () => {
+      const result = OfferPlanManager.getSelectedPricing(undefined)
+
+      expect(result).toBeUndefined()
+    })
+
+    it('should return undefined when plans is empty', () => {
+      const result = OfferPlanManager.getSelectedPricing([])
+
+      expect(result).toBeUndefined()
+    })
+
+    it('should return pricing from the selected plan only', () => {
+      const plans: OfferPlan[] = [
+        getOfferPlanMock({
+          planId: 1,
+          isSelected: false,
+          pricings: [
+            { planPricingId: 1, price: 14, priceType: 'mois HT', label: 'Wrong pricing', isSelected: true },
+          ],
+        }),
+        getOfferPlanMock({
+          planId: 2,
+          isSelected: true,
+          pricings: [
+            { planPricingId: 2, price: 49, priceType: 'mois HT', label: 'Correct pricing', isSelected: true },
+          ],
+        }),
+      ]
+
+      const result = OfferPlanManager.getSelectedPricing(plans)
+
+      expect(result?.label).toBe('Correct pricing')
+      expect(result?.planPricingId).toBe(2)
+    })
+  })
 })

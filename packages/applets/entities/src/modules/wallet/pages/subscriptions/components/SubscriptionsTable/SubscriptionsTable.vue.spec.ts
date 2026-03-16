@@ -196,6 +196,7 @@ describe('subscriptionsTable', () => {
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'succeeded',
       subscription_complete_plan: 'MEG Premium',
+      subscription_complete_forfait: '1 utilisateur',
       subscription_complete_statut: 'To validate',
     })
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Started', {
@@ -226,6 +227,7 @@ describe('subscriptionsTable', () => {
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'failed',
       subscription_complete_plan: 'MEG Premium',
+      subscription_complete_forfait: '1 utilisateur',
       subscription_complete_statut: 'To validate',
     })
     expect(spyTrackAmplitude).toHaveBeenNthCalledWith(2, 'Onboarding Started', {

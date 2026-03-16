@@ -30,6 +30,15 @@ export const validatedSubscriptionRequestMock: SubscriptionRequest = {
         planName: 'Basique',
         isDefault: true,
         isSelected: true,
+        pricings: [
+          {
+            planPricingId: 10,
+            price: 0,
+            priceType: 'mois HT',
+            label: 'Gratuit',
+            isSelected: true,
+          },
+        ],
       },
       {
         planId: 11,
@@ -37,6 +46,15 @@ export const validatedSubscriptionRequestMock: SubscriptionRequest = {
         planName: 'Essentiel',
         isDefault: false,
         isSelected: false,
+        pricings: [
+          {
+            planPricingId: 11,
+            price: 29,
+            priceType: 'mois HT',
+            label: '1 utilisateur',
+            isSelected: false,
+          },
+        ],
       },
     ],
   },
@@ -76,6 +94,15 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
           planName: 'MEG Basic',
           isDefault: true,
           isSelected: false,
+          pricings: [
+            {
+              planPricingId: 1,
+              price: 0,
+              priceType: 'mois HT',
+              label: 'Gratuit',
+              isSelected: false,
+            },
+          ],
         },
         {
           planId: 2,
@@ -83,6 +110,22 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
           planName: 'MEG Premium',
           isDefault: false,
           isSelected: true,
+          pricings: [
+            {
+              planPricingId: 2,
+              price: 49,
+              priceType: 'mois HT',
+              label: '1 utilisateur',
+              isSelected: true,
+            },
+            {
+              planPricingId: 3,
+              price: 99,
+              priceType: 'mois HT',
+              label: '3 utilisateurs',
+              isSelected: false,
+            },
+          ],
         },
       ],
     },
@@ -120,6 +163,15 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
           planName: 'Basique',
           isDefault: true,
           isSelected: true,
+          pricings: [
+            {
+              planPricingId: 10,
+              price: 0,
+              priceType: 'mois HT',
+              label: 'Gratuit',
+              isSelected: true,
+            },
+          ],
         },
         {
           planId: 11,
@@ -127,6 +179,15 @@ export const subscriptionRequestMock: SubscriptionRequest[] = [
           planName: 'Essentiel',
           isDefault: false,
           isSelected: false,
+          pricings: [
+            {
+              planPricingId: 11,
+              price: 29,
+              priceType: 'mois HT',
+              label: '1 utilisateur',
+              isSelected: false,
+            },
+          ],
         },
       ],
     },

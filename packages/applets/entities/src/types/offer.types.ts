@@ -44,12 +44,21 @@ export interface CollaboratorRole {
   functionName: string
 }
 
+export interface OfferPlanPricing {
+  planPricingId: number
+  price: number
+  priceType: string
+  label: string
+  isSelected?: boolean
+}
+
 export interface OfferPlan {
   planId: number
   planCode: string
   planName: string
-  isDefault?: boolean
+  isDefault: boolean
   isSelected?: boolean
+  pricings: OfferPlanPricing[]
 }
 
 export interface SubscriptionOfferServices extends SubscriptionOffer {

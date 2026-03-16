@@ -23,18 +23,92 @@
 
     <PRadioGroup
       v-model="selectedPlanId"
-      :disabled="isRecap"
+      class="
+        grid
+        grid-cols--3
+        grid-gap--4
+        offer-plan-subscription__radio-grid
+      "
       data-testid="offer-plan-subscription-radio-group"
     >
       <PRadioCard
-        v-for="{ planId, planName } in plans"
-        :key="planId"
-        :pLabel="planId"
-        :pTitle="planName"
-        :pDisabled="isRecap"
+        v-for="plan in plans"
+        :key="plan.planId"
+        :pLabel="plan.planId"
+        :pTitle="plan.planName"
+        :pDisabled="isRecap && plan.isSelected !== true"
         data-testid="offer-plan-subscription-radio-card"
       />
     </PRadioGroup>
+
+    <!-- Pricing Selection Section -->
+    <div
+      v-if="selectedPlanPricings.length > 0"
+      class="margin-top--6"
+      data-testid="offer-plan-subscription-pricing-section"
+    >
+      <p
+        class="font-semibold margin-bottom--4"
+        data-testid="offer-plan-subscription-pricing-note"
+      >
+        {{ pricingHeaderText }}
+      </p>
+
+      <PRadioGroup
+        v-model="selectedPricingId"
+        :class="[
+          'grid',
+          'grid-gap--4',
+          'offer-plan-subscription__pricing-grid',
+          pricingGridClass,
+        ]"
+        data-testid="offer-plan-subscription-pricing-radio-group"
+      >
+        <PRadioCard
+          v-for="pricing in selectedPlanPricings"
+          :key="pricing.planPricingId"
+          :pLabel="pricing.planPricingId"
+          :pDisabled="isRecap && pricing.isSelected !== true"
+          pTitle=""
+          data-testid="offer-plan-subscription-pricing-radio-card"
+        >
+          <template #default>
+            <div>
+              <!-- Free pricing: display only "Gratuit" -->
+              <template v-if="pricing.price === 0">
+                <span class="font-size--24 font-semibold">
+                  {{ t('free') }}
+                </span>
+              </template>
+              <!-- Paid pricing: display price, type and label -->
+              <template v-else>
+                <span class="font-size--24 font-semibold">
+                  {{ pricing.price }}€
+                </span>
+                <span class="font-size--14 font-semibold text-color--gray-400">
+                  /{{ pricing.priceType }}
+                </span>
+                <p class="font-size--14 margin-top--1">
+                  {{ pricing.label }}
+                </p>
+              </template>
+            </div>
+          </template>
+        </PRadioCard>
+      </PRadioGroup>
+
+      <PAlert
+        v-if="isPremiumInternalise && isRecap === false"
+        pType="info"
+        pShowIcon
+        :pClosable="false"
+        class="margin-y--6"
+        data-testid="offer-plan-subscription-premium-internalise-alert"
+      >
+        {{ t('premiumInternaliseInfoStart') }}
+        <span class="font-semibold">{{ t('premiumInternaliseInfoBold') }}</span>
+      </PAlert>
+    </div>
 
     <PDialog
       v-model="isPricingTableDialogVisible"
@@ -48,7 +122,7 @@
       >
         <img
           :src="sanitizedPricingTableUrl"
-          class="offer-plan-subscription__pricing-image"
+          class="max-width-full offer-plan-subscription__pricing-image"
           data-testid="offer-plan-subscription-pricing-image"
         >
       </div>
@@ -57,13 +131,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, toRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@pulse/toolbox/utils/url'
-import { PButton, PRadioCard, PRadioGroup, PDialog } from '@pulse/styleguide/components'
+import { PAlert, PButton, PRadioCard, PRadioGroup, PDialog } from '@pulse/styleguide/components'
 import { VITE_PENNYLANE_PRICING_TABLE_URL } from 'env-vars'
 import type { OfferPlanSubscriptionProps } from './OfferPlanSubscription.type'
-import { OfferPlanManager } from './offer-plan.manager'
+import { useOfferPlanSubscription } from './use-offer-plan-subscription.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -75,48 +149,117 @@ const props = withDefaults(defineProps<OfferPlanSubscriptionProps>(), {
 })
 
 const selectedPlanId = defineModel<number>('selectedPlanId')
+const selectedPricingId = defineModel<number>('selectedPricingId')
 const isPricingTableDialogVisible = ref(false)
 
 const sanitizedPricingTableUrl = computed(() => sanitizeUrl(VITE_PENNYLANE_PRICING_TABLE_URL))
 
-function openDialog() {
-  isPricingTableDialogVisible.value = true
-}
+const {
+  selectedPlanPricings,
+  pricingGridClass,
+  isPremiumInternalise,
+} = useOfferPlanSubscription({
+  plans: toRef(props, 'plans'),
+  isRecap: toRef(props, 'isRecap'),
+  selectedPlanId,
+  selectedPricingId,
+})
 
 const headerText = computed(() =>
   props.isRecap === true ? t('planSelectionRecap') : t('planSelectionNote'),
 )
 
-function initializeSelectedPlan() {
-  // Early return if already selected
-  if (selectedPlanId.value != null) {
-    return
-  }
+const pricingHeaderText = computed(() =>
+  props.isRecap === true ? t('pricingSelectionRecap') : t('pricingSelectionNote'),
+)
 
-  // Use manager to get the default plan ID
-  selectedPlanId.value = OfferPlanManager.getDefaultSelectedPlan(props.plans)
+function openDialog() {
+  isPricingTableDialogVisible.value = true
 }
-
-onMounted(() => {
-  initializeSelectedPlan()
-})
 </script>
 
 <style lang="scss" scoped>
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
+.offer-plan-subscription__radio-grid {
+  grid-auto-rows: 1fr;
+
+  @include breakpoints.media(md) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // PRadioCard has default margin-bottom, remove it for grid layout
+  :deep(.p-radio-card) {
+    margin-bottom: 0;
+    height: 100%;
+  }
+
+  // Increase padding for better visual spacing inside cards
+  :deep(.p-radio-card__content) {
+    padding: 24px !important;
+    height: 100%;
+  }
+}
+
 .offer-plan-subscription__pricing-image {
-  max-width: 100%;
   max-height: 600px;
   object-fit: contain;
+}
+
+.offer-plan-subscription__pricing-grid {
+  grid-auto-rows: 1fr;
+
+  &.grid-cols--2 {
+    @include breakpoints.media(sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &.grid-cols--3 {
+    @include breakpoints.media(md) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include breakpoints.media(sm) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // PRadioCard has default margin-bottom, remove it for grid layout
+  :deep(.p-radio-card) {
+    margin-bottom: 0;
+    height: 100%;
+  }
+
+  // Align pricing content to the left instead of default center
+  :deep(.p-radio-card .el-radio__label > div) {
+    justify-content: flex-start;
+  }
+
+  // Increase padding for better visual spacing inside cards
+  :deep(.p-radio-card__content) {
+    padding: 24px !important;
+  }
 }
 </style>
 
 <i18n lang="yaml">
 en-US:
-  planSelectionNote: 'Select the plan to activate for this customer'
+  planSelectionNote: '1. Select the subscription to activate for this customer'
   viewPricingTable: 'View pricing table'
-  planSelectionRecap: 'Activated plan :'
+  planSelectionRecap: '1. Activated subscription'
+  pricingSelectionNote: '2. Choose the associated plan'
+  pricingSelectionRecap: '2. Associated plan'
+  free: 'Free'
+  premiumInternaliseInfoStart: "By default, the subscription will be activated as Premium,"
+  premiumInternaliseInfoBold: "please contact your Super User to switch the subscription to Premium Internalized."
 fr-FR:
-  planSelectionNote: "Sélectionnez le plan à activer pour ce client"
+  planSelectionNote: "1. Sélectionnez l'abonnement à activer pour ce client"
   viewPricingTable: "Voir la grille tarifaire"
-  planSelectionRecap: "Plan activé :"
+  planSelectionRecap: "1. Abonnement activé"
+  pricingSelectionNote: "2. Choisissez le forfait associé"
+  pricingSelectionRecap: "2. Forfait associé"
+  free: "Gratuit"
+  premiumInternaliseInfoStart: "Par défaut l'abonnement sera activé en Premium,"
+  premiumInternaliseInfoBold: "veuillez contacter votre Super User pour passer l'abonnement en Premium Internalisé."
 </i18n>

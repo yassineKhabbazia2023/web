@@ -22,6 +22,26 @@ export function getOfferPlanMock(override: Partial<OfferPlan> = {}): OfferPlan {
     planCode: 'BASIC',
     planName: 'Basique',
     isDefault: false,
+    pricings: [
+      {
+        planPricingId: 1,
+        price: 14,
+        priceType: 'mois HT',
+        label: '1 utilisateur',
+      },
+      {
+        planPricingId: 2,
+        price: 29,
+        priceType: 'mois HT',
+        label: '5 utilisateurs',
+      },
+      {
+        planPricingId: 3,
+        price: 49,
+        priceType: 'mois HT',
+        label: '10 utilisateurs',
+      },
+    ],
     ...override,
   }
 }
@@ -59,9 +79,37 @@ export function getSubscriptionOffersServiceMock(override: Partial<SubscriptionO
       getCollaboratorRoleMock(),
     ],
     plans: [
-      getOfferPlanMock({ planId: 1, planCode: 'BASIC', planName: 'Basique' }),
-      getOfferPlanMock({ planId: 2, planCode: 'ESSENTIAL', planName: 'Essentiel', isDefault: true }),
-      getOfferPlanMock({ planId: 3, planCode: 'PREMIUM', planName: 'Premium' }),
+      getOfferPlanMock({
+        planId: 1,
+        planCode: 'BASIC',
+        planName: 'Basique',
+        pricings: [
+          { planPricingId: 1, price: 14, priceType: 'mois HT', label: '1 utilisateur' },
+          { planPricingId: 2, price: 29, priceType: 'mois HT', label: '5 utilisateurs' },
+          { planPricingId: 3, price: 49, priceType: 'mois HT', label: '10 utilisateurs' },
+        ],
+      }),
+      getOfferPlanMock({
+        planId: 2,
+        planCode: 'ESSENTIAL',
+        planName: 'Essentiel',
+        isDefault: true,
+        pricings: [
+          { planPricingId: 4, price: 24, priceType: 'mois HT', label: '1 utilisateur' },
+          { planPricingId: 5, price: 49, priceType: 'mois HT', label: '5 utilisateurs' },
+          { planPricingId: 6, price: 99, priceType: 'mois HT', label: '10 utilisateurs' },
+        ],
+      }),
+      getOfferPlanMock({
+        planId: 3,
+        planCode: 'PREMIUM',
+        planName: 'Premium',
+        pricings: [
+          { planPricingId: 7, price: 49, priceType: 'mois HT', label: '1 utilisateur' },
+          { planPricingId: 8, price: 79, priceType: 'mois HT', label: '5 utilisateurs' },
+          { planPricingId: 9, price: 199, priceType: 'mois HT', label: '10 utilisateurs' },
+        ],
+      }),
     ],
     providers: [
       {

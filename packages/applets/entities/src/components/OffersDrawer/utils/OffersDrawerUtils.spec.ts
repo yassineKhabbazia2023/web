@@ -134,6 +134,7 @@ describe('offersDrawerUtils', () => {
         applicant: 'user@email.com',
         contactFunctions: undefined,
         planId: undefined,
+        planPricingId: undefined,
         hubName: undefined,
         hasNoSiren: undefined,
       }
@@ -169,6 +170,7 @@ describe('offersDrawerUtils', () => {
         applicant: 'user@email.com',
         contactFunctions,
         planId: undefined,
+        planPricingId: undefined,
         hubName: undefined,
         hasNoSiren: undefined,
       }
@@ -206,6 +208,47 @@ describe('offersDrawerUtils', () => {
         applicant: 'user@email.com',
         contactFunctions,
         planId: selectedPlanId,
+        planPricingId: undefined,
+        hubName: undefined,
+        hasNoSiren: undefined,
+      }
+      expect(postSubscriptionRequest).toStrictEqual(
+        expectedPostSubscriptionRequest,
+      )
+    })
+
+    it('should include planPricingId when selectedPricingId is provided', () => {
+      const selectedPlanId = 2
+      const selectedPricingId = 5
+      const postSubscriptionRequest = getPostSubscriptionRequest({
+        accountId,
+        userEmail,
+        collaboratorsWithRoles: selectedCollaboratorIds,
+        clients,
+        currentSubscriptionOffer,
+        selectedProducts,
+        notes,
+        selectedPlanId,
+        selectedPricingId,
+      })
+      const collaboratorsIds = collaborators.map(({ id }) => id)
+      const clientsIds = clients.map(({ contactId }) => contactId)
+      const contacts = [...clientsIds, ...collaboratorsIds]
+      const contactFunctions = selectedCollaboratorIds.map(({ contactId }) => ({
+        contactId,
+        functionId: roleIdMock,
+      }))
+
+      const expectedPostSubscriptionRequest: PostSubscriptionRequest = {
+        accountId,
+        offerId: 1,
+        productConfigurations: [1, 2, 3, 4],
+        contacts,
+        notes,
+        applicant: 'user@email.com',
+        contactFunctions,
+        planId: selectedPlanId,
+        planPricingId: selectedPricingId,
         hubName: undefined,
         hasNoSiren: undefined,
       }
@@ -243,6 +286,7 @@ describe('offersDrawerUtils', () => {
         applicant: 'user@email.com',
         contactFunctions,
         planId: undefined,
+        planPricingId: undefined,
         hubName,
         hasNoSiren: undefined,
       }

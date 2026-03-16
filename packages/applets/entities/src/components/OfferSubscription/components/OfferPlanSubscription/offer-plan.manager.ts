@@ -1,4 +1,4 @@
-import type { OfferPlan } from '@entities/types'
+import type { OfferPlan, OfferPlanPricing } from '@entities/types'
 
 /**
  * Manager responsible for offer plan selection logic
@@ -53,5 +53,42 @@ export class OfferPlanManager {
 
     const plan = plans.find(p => p.planId === planId)
     return plan?.planName
+  }
+
+  /**
+   * Retrieves the pricing label for a given pricing ID within a plan
+   *
+   * @param pricingId - The pricing ID to look up
+   * @param planId - The plan ID containing the pricing
+   * @param plans - Array of available offer plans
+   * @returns The pricing label if found, or undefined if not found
+   */
+  static getPricingLabel(pricingId: number, planId: number, plans: OfferPlan[]): string | undefined {
+    const plan = plans.find(p => p.planId === planId)
+    if (plan === undefined) {
+      return undefined
+    }
+
+    const pricing = plan.pricings.find(p => p.planPricingId === pricingId)
+    return pricing?.label
+  }
+
+  /**
+   * Finds the selected pricing from a plan's pricings array
+   *
+   * @param plans - Array of available offer plans (can be undefined)
+   * @returns The selected pricing (where isSelected === true), or undefined if no pricing is selected
+   */
+  static getSelectedPricing(plans: OfferPlan[] | undefined): OfferPlanPricing | undefined {
+    if (plans === undefined || plans.length === 0) {
+      return undefined
+    }
+
+    const selectedPlan = plans.find(plan => plan.isSelected === true)
+    if (selectedPlan === undefined) {
+      return undefined
+    }
+
+    return selectedPlan.pricings.find(pricing => pricing.isSelected === true)
   }
 }
