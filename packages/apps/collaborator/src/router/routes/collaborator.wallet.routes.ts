@@ -16,6 +16,12 @@ export const walletCollaboratorRoutes = [
         name: COLLABORATOR_ROUTES.wallet.landing.name,
         component: () => import('@pulse/entities/wallet-pages').then(pages => pages.Folders),
       },
+      // Prospects
+      {
+        path: COLLABORATOR_ROUTES.wallet.prospects.path,
+        name: COLLABORATOR_ROUTES.wallet.prospects.name,
+        component: () => import('@pulse/entities/wallet-pages').then(pages => pages.Prospects),
+      },
       // Collaborators management
       {
         path: COLLABORATOR_ROUTES.wallet.collaborators.path,

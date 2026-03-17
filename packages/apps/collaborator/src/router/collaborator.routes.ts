@@ -42,6 +42,7 @@ export const COLLABORATOR_ROUTES = {
   wallet: {
     root: { path: 'portefeuille', name: RouteName.WALLET },
     landing: { path: 'dossiers', name: RouteName.FOLDERS },
+    prospects: { path: 'dossiers-en-cours', name: RouteName.PROSPECTS },
     collaborators: { path: 'collaborateurs', name: RouteName.COLLABORATORS },
     accountManagement: { path: 'administration-dossiers', name: RouteName.ACCOUNT_MANAGEMENT },
     subscriptions: { path: 'demandes-mod', name: RouteName.SUBSCRIPTIONS },

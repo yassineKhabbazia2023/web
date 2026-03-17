@@ -9,6 +9,11 @@ const BASIC_COLLAB_TABS = [
   WalletTab.OFFERS_CATALOG,
 ]
 
+// Collaborator tabs that require only a feature flag
+const FEATURE_FLAG_COLLAB_TABS = [
+  WalletTab.PROSPECTS,
+]
+
 // Collaborator tabs that require permissions
 const PERMISSION_BASED_COLLAB_TABS = [
   WalletTab.MANDATES,
@@ -27,13 +32,14 @@ describe('registerCollaboratorWalletTabs', () => {
     registerCollaboratorWalletTabs()
   })
 
-  it('should register all 9 wallet tabs', () => {
+  it('should register all 10 wallet tabs', () => {
     // @ts-expect-error - Accessing private static field for test
-    expect(WalletManager.tabs.size).toBe(9)
+    expect(WalletManager.tabs.size).toBe(10)
   })
 
   it.each([
     { tab: WalletTab.FOLDERS, route: RouteName.FOLDERS },
+    { tab: WalletTab.PROSPECTS, route: RouteName.PROSPECTS },
     { tab: WalletTab.MANDATES, route: RouteName.MANDATES },
     { tab: WalletTab.POWER_BI, route: RouteName.POWER_BI },
     { tab: WalletTab.BI_REPORTS_LIST, route: RouteName.BI_REPORTS_LIST },
@@ -93,6 +99,32 @@ describe('registerCollaboratorWalletTabs', () => {
       }
 
       PERMISSION_BASED_COLLAB_TABS.forEach(tab => {
+        const config = WalletManager.getTab(tab)
+        expect(config?.isDisplayed(context)).toBe(false)
+      })
+    })
+
+    it('should display feature-flag tabs when feature flag is enabled', () => {
+      const context = {
+        isCollab: true,
+        hasPermission: () => false,
+        hasFeatureFlag: () => true,
+      }
+
+      FEATURE_FLAG_COLLAB_TABS.forEach(tab => {
+        const config = WalletManager.getTab(tab)
+        expect(config?.isDisplayed(context)).toBe(true)
+      })
+    })
+
+    it('should hide feature-flag tabs when feature flag is disabled', () => {
+      const context = {
+        isCollab: true,
+        hasPermission: () => false,
+        hasFeatureFlag: () => false,
+      }
+
+      FEATURE_FLAG_COLLAB_TABS.forEach(tab => {
         const config = WalletManager.getTab(tab)
         expect(config?.isDisplayed(context)).toBe(false)
       })

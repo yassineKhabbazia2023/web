@@ -16,6 +16,11 @@ export const walletCustomerRoutes = [
         name: CUSTOMER_ROUTES.wallet.landingCustomer.name,
         component: () => import('@pulse/entities/wallet-pages').then(pages => pages.Folders),
       },
+      {
+        path: CUSTOMER_ROUTES.wallet.prospects.path,
+        name: CUSTOMER_ROUTES.wallet.prospects.name,
+        component: () => import('@pulse/entities/wallet-pages').then(pages => pages.Prospects),
+      },
     ],
   },
 ] as RouteRecordRaw[]

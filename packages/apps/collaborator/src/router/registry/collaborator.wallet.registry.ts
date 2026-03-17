@@ -13,11 +13,19 @@ export function registerCollaboratorWalletTabs() {
   })
 
   WalletManager.register({
+    id: WalletTab.PROSPECTS,
+    title: 'entities.wallet.prospects',
+    route: RouteName.PROSPECTS,
+    isDisplayed: (context) => context.hasFeatureFlag(Feature.PROSPECT_EXPERIENCE),
+    order: 2,
+  })
+
+  WalletManager.register({
     id: WalletTab.MANDATES,
     title: 'entities.wallet.mandate',
     route: RouteName.MANDATES,
     isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.MANDATE),
-    order: 2,
+    order: 3,
   })
 
   WalletManager.register({
@@ -27,7 +35,7 @@ export function registerCollaboratorWalletTabs() {
     isDisplayed: (context) =>
       context.hasPermission(GLOBAL_PERMISSIONS.POWERBI_REPORT_UPLOAD) &&
       context.hasFeatureFlag(Feature.LEGACY_BI_REPORT_DEPOSIT),
-    order: 3,
+    order: 4,
   })
 
   WalletManager.register({
@@ -35,7 +43,7 @@ export function registerCollaboratorWalletTabs() {
     title: 'entities.wallet.biReportsList',
     route: RouteName.BI_REPORTS_LIST,
     isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.POWERBI_REPORT_ADMIN),
-    order: 4,
+    order: 5,
   })
 
   WalletManager.register({
@@ -43,7 +51,7 @@ export function registerCollaboratorWalletTabs() {
     title: 'entities.wallet.subscriptions',
     route: RouteName.SUBSCRIPTIONS,
     isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.SUBSCRIPTIONS),
-    order: 5,
+    order: 6,
   })
 
   WalletManager.register({
@@ -51,7 +59,7 @@ export function registerCollaboratorWalletTabs() {
     title: 'entities.wallet.collaborators',
     route: RouteName.COLLABORATORS,
     isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.COLLABORATORS),
-    order: 6,
+    order: 7,
   })
 
   WalletManager.register({
@@ -59,7 +67,7 @@ export function registerCollaboratorWalletTabs() {
     title: 'entities.wallet.launcher',
     route: RouteName.WALLET_LAUNCHER,
     isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.LAUNCHER),
-    order: 7,
+    order: 8,
   })
 
   WalletManager.register({
@@ -67,7 +75,7 @@ export function registerCollaboratorWalletTabs() {
     title: 'entities.wallet.accountManagement',
     route: RouteName.ACCOUNT_MANAGEMENT,
     isDisplayed: (context) => context.hasPermission(GLOBAL_PERMISSIONS.ACCOUNT_MANAGEMENT),
-    order: 8,
+    order: 9,
   })
 
   WalletManager.register({
@@ -75,6 +83,6 @@ export function registerCollaboratorWalletTabs() {
     title: 'entities.wallet.offersCatalog',
     route: RouteName.OFFERS_CATALOG,
     isDisplayed: () => true,
-    order: 9,
+    order: 10,
   })
 }

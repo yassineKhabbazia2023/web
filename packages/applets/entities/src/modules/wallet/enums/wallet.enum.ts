@@ -9,4 +9,5 @@ export enum WalletTab {
   OFFERS_CATALOG = 'offers-catalog',
   POWER_BI = 'powerbi',
   SUBSCRIPTIONS = 'subscriptions',
+  PROSPECTS = 'prospects',
 }
