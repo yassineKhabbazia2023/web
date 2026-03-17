@@ -57,6 +57,20 @@ import InformationDetails from './components/InformationDetails'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      services: 'Services',
+      customerUsers: 'Customer Users',
+      collaborators: 'RYDGE Conseil Collaborators',
+      information: 'Information',
+    },
+    'fr-FR': {
+      services: 'Services',
+      customerUsers: 'Utilisateurs Clients',
+      collaborators: 'Collaborateurs RYDGE Conseil',
+      information: 'Informations',
+    },
+  },
 })
 
 const props = defineProps<SubscriptionDetailsTabsProps>()
@@ -100,15 +114,3 @@ const subscriptionDetailsTabsList: SubscriptionDetailsTab[] = [
 const collaboratorRoles = computed(() => props.currentSubscriptionOffer?.functions ?? [])
 </script>
 
-<i18n lang="yaml">
-en-US:
-  services: 'Services'
-  customerUsers: 'Customer Users'
-  collaborators: 'RYDGE Conseil Collaborators'
-  information: 'Information'
-fr-FR:
-  services: 'Services'
-  customerUsers: 'Utilisateurs Clients'
-  collaborators: 'Collaborateurs RYDGE Conseil'
-  information: 'Informations'
-</i18n>

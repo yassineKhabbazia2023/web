@@ -168,6 +168,16 @@ const emit = defineEmits([
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      dropSuccessNotification: '{droppedDocumentsCount} document has been moved in {folderName} folder | {droppedDocumentsCount} documents have been moved in {folderName} folder\n',
+      dropErrorNotification: 'Connection has been interrupted with {droppedDocumentsCount} document concerned | Connection has been interrupted with {droppedDocumentsCount} documents concerned\n',
+    },
+    'fr-FR': {
+      dropSuccessNotification: '{droppedDocumentsCount} document a été déplacé dans le dossier {folderName} | {droppedDocumentsCount} documents ont été déplacés dans le dossier {folderName}\n',
+      dropErrorNotification: 'Connexion au serveur interrompue pour {droppedDocumentsCount} document | Connexion au serveur interrompue pour {droppedDocumentsCount} documents\n',
+    },
+  },
 })
 
 const downloadFolderProps: ComputedRef<DownloadFolderComposableProps> =
@@ -658,19 +668,3 @@ defineExpose({
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  dropSuccessNotification: >
-    {droppedDocumentsCount} document has been moved in {folderName} folder |
-    {droppedDocumentsCount} documents have been moved in {folderName} folder
-  dropErrorNotification: >
-    Connection has been interrupted with {droppedDocumentsCount} document concerned |
-    Connection has been interrupted with {droppedDocumentsCount} documents concerned
-fr-FR:
-  dropSuccessNotification: >
-    {droppedDocumentsCount} document a été déplacé dans le dossier {folderName} |
-    {droppedDocumentsCount} documents ont été déplacés dans le dossier {folderName}
-  dropErrorNotification: >
-    Connexion au serveur interrompue pour {droppedDocumentsCount} document |
-    Connexion au serveur interrompue pour {droppedDocumentsCount} documents
-</i18n>

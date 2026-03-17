@@ -61,6 +61,18 @@ const emit = defineEmits<{
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      newCollaborators: 'New collaborators',
+      addCollaboratorsToFolder: 'You can add collaborators to this folder.',
+      searchLabel: 'Please search for a collaborator:',
+    },
+    'fr-FR': {
+      newCollaborators: 'Nouveaux collaborateurs',
+      addCollaboratorsToFolder: 'Vous pouvez ajouter des collaborateurs à ce dossier.',
+      searchLabel: 'Veuillez rechercher un collaborateur :',
+    },
+  },
 })
 
 const entityUsers = ref<Contact[]>([])
@@ -102,13 +114,3 @@ function emitCollaboratorSelection() {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    newCollaborators: 'New collaborators'
-    addCollaboratorsToFolder: 'You can add collaborators to this folder.'
-    searchLabel: 'Please search for a collaborator:'
-  fr-FR:
-    newCollaborators: 'Nouveaux collaborateurs'
-    addCollaboratorsToFolder: 'Vous pouvez ajouter des collaborateurs à ce dossier.'
-    searchLabel: 'Veuillez rechercher un collaborateur :'
-</i18n>

@@ -51,6 +51,14 @@ import { storeToRefs } from 'pinia'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      biReportsUnavailable: 'There\'s a technical issue with fetching BI reports. Please check back later.',
+    },
+    'fr-FR': {
+      biReportsUnavailable: 'Un problème technique empêche la récupération des rapports BI. Merci de vérifier plus tard.',
+    },
+  },
 })
 
 const isLoading = ref(true)
@@ -148,9 +156,3 @@ onMounted(() => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  biReportsUnavailable: "There's a technical issue with fetching BI reports. Please check back later."
-fr-FR:
-  biReportsUnavailable: 'Un problème technique empêche la récupération des rapports BI. Merci de vérifier plus tard.'
-</i18n>

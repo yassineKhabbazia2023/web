@@ -46,6 +46,14 @@ const searchExpression = ref('')
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      selectCollaborator: 'Select one or more collaborators',
+    },
+    'fr-FR': {
+      selectCollaborator: 'Sélectionnez un ou plusieurs collaborateurs',
+    },
+  },
 })
 
 const props = defineProps<CollaboratorAutocompleteProps>()
@@ -73,9 +81,3 @@ function onSelect(contact: Contact) {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    selectCollaborator: 'Select one or more collaborators'
-  fr-FR:
-    selectCollaborator: 'Sélectionnez un ou plusieurs collaborateurs'
-</i18n>

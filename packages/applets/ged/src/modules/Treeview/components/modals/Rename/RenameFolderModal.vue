@@ -35,6 +35,22 @@ import { type RenameFolderModalProps }
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      validations: {
+        alphaNumerique: 'Enter a name that does not contain any of the following characters: “ * : {\'<\'} {\'>\'} ? / \\ {\'|\'}\n',
+        folderNameExists: 'A folder with the name {folderName} already exists',
+        maxLength: 'The number of characters allowed ({maxLength}) is exceeded',
+      },
+    },
+    'fr-FR': {
+      validations: {
+        alphaNumerique: 'Entrez un nom qui ne contient aucun des caractères suivants : “ * : {\'<\'} {\'>\'} ? / \\ {\'|\'}\n',
+        folderNameExists: 'Un dossier avec le nom {folderName} existe déjà',
+        maxLength: 'Le nombre de caractères autorisés ({maxLength}) est dépassé',
+      },
+    },
+  },
 })
 
 const props = defineProps<RenameFolderModalProps>()
@@ -125,20 +141,3 @@ watch(isDialogRenameVisible, () => {
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  validations:
-    alphaNumerique: >
-      Enter a name that does not contain any of the following characters:
-      “ * : {'<'} {'>'} ? / \ {'|'}
-    folderNameExists: 'A folder with the name {folderName} already exists'
-    maxLength: 'The number of characters allowed ({maxLength}) is exceeded'
-
-fr-FR:
-  validations:
-    alphaNumerique: >
-      Entrez un nom qui ne contient aucun des caractères suivants :
-      “ * : {'<'} {'>'} ? / \ {'|'}
-    folderNameExists: 'Un dossier avec le nom {folderName} existe déjà'
-    maxLength: 'Le nombre de caractères autorisés ({maxLength}) est dépassé'
-</i18n>

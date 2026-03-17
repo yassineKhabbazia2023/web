@@ -60,6 +60,24 @@ import type { LegalLinksProps } from './legal-links.types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      legalNotice: 'Legal Notice',
+      cookiesNotices: 'Cookies notices',
+      cookiesParameters: 'Cookies parameters',
+      CGU: 'CGU',
+      privacyPolicy: 'Privacy Policy',
+      close: 'Close',
+    },
+    'fr-FR': {
+      legalNotice: 'Mentions légales',
+      cookiesNotices: 'Notices de cookies',
+      cookiesParameters: 'Paramètres de cookies',
+      CGU: 'CGU',
+      privacyPolicy: 'Politique de confidentialité',
+      close: 'Fermer',
+    },
+  },
 })
 
 defineProps<LegalLinksProps>()
@@ -113,19 +131,3 @@ onMounted(async () => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  legalNotice: 'Legal Notice'
-  cookiesNotices: 'Cookies notices'
-  cookiesParameters: 'Cookies parameters'
-  CGU: 'CGU'
-  privacyPolicy: 'Privacy Policy'
-  close: 'Close'
-fr-FR:
-  legalNotice: 'Mentions légales'
-  cookiesNotices: 'Notices de cookies'
-  cookiesParameters: 'Paramètres de cookies'
-  CGU: 'CGU'
-  privacyPolicy: 'Politique de confidentialité'
-  close: 'Fermer'
-</i18n>

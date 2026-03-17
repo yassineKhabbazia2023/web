@@ -37,6 +37,22 @@ import type { NoNotificationsPlaceholderProps } from './no-notifications-placeho
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      empty: 'You don\'t have any notifications yet',
+      'additional-information': {
+        'notification-here': 'Here you can find all the notifications from your entities.',
+        'unread-notifications-here': 'Here you can find all the unread notifications from your entities.',
+      },
+    },
+    'fr-FR': {
+      empty: 'Vous n\'avez pas encore de notifications',
+      'additional-information': {
+        'notification-here': 'Retrouvez ici toutes les notifications de vos entités',
+        'unread-notifications-here': 'Retrouvez ici toutes les notifications non lues de vos entités',
+      },
+    },
+  },
 })
 
 defineProps<NoNotificationsPlaceholderProps>()
@@ -51,15 +67,3 @@ defineProps<NoNotificationsPlaceholderProps>()
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  empty: "You don't have any notifications yet"
-  additional-information:
-    notification-here: 'Here you can find all the notifications from your entities.'
-    unread-notifications-here: 'Here you can find all the unread notifications from your entities.'
-fr-FR:
-  empty: "Vous n'avez pas encore de notifications"
-  additional-information:
-    notification-here: 'Retrouvez ici toutes les notifications de vos entités'
-    unread-notifications-here: 'Retrouvez ici toutes les notifications non lues de vos entités'
-</i18n>

@@ -35,16 +35,18 @@ import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      folderName: 'Folder',
+      IBSCode: 'Customer Code',
+    },
+    'fr-FR': {
+      folderName: 'Dossier',
+      IBSCode: 'Code Client',
+    },
+  },
 })
 
 defineProps<SelectedFoldersListProps>()
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    folderName: 'Folder'
-    IBSCode: 'Customer Code'
-  fr-FR:
-    folderName: 'Dossier'
-    IBSCode: 'Code Client'
-</i18n>

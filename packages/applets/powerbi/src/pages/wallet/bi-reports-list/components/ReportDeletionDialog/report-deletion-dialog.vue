@@ -68,6 +68,30 @@ import { REPORT_DELETE_OPTIONS } from './constants/report-deletion-dialog.const'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      deleteDialogTitle: 'Delete BI Report',
+      deleteDialogMessage: 'Where do you want to delete the report "{reportName}" :',
+      cancel: 'Cancel',
+      confirm: 'Confirm',
+      irreversibleWarning: 'This action will be irreversible.',
+      deleteOptions: {
+        all: 'Platform and Power BI Services Workspace',
+        platformOnly: 'Platform (only)',
+      },
+    },
+    'fr-FR': {
+      deleteDialogTitle: 'Suppression d\'un rapport BI',
+      deleteDialogMessage: 'D\'où voulez-vous supprimer le rapport  "{reportName}" :',
+      cancel: 'Annuler',
+      confirm: 'Confirmer',
+      irreversibleWarning: 'Cette action sera irréversible.',
+      deleteOptions: {
+        all: 'Plateforme et Workspace Power BI Services',
+        platformOnly: 'Plateforme (uniquement)',
+      },
+    },
+  },
 })
 
 defineProps<ReportDeletionDialogProps>()
@@ -115,23 +139,3 @@ const handleDeleteConfirmation = () => {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    deleteDialogTitle: 'Delete BI Report'
-    deleteDialogMessage: 'Where do you want to delete the report "{reportName}" :'
-    cancel: 'Cancel'
-    confirm: 'Confirm'
-    irreversibleWarning: 'This action will be irreversible.'
-    deleteOptions:
-      all: 'Platform and Power BI Services Workspace'
-      platformOnly: 'Platform (only)'
-  fr-FR:
-    deleteDialogTitle: "Suppression d'un rapport BI"
-    deleteDialogMessage: 'D''où voulez-vous supprimer le rapport  "{reportName}" :'
-    cancel: 'Annuler'
-    confirm: 'Confirmer'
-    irreversibleWarning: 'Cette action sera irréversible.'
-    deleteOptions:
-      all: 'Plateforme et Workspace Power BI Services'
-      platformOnly: 'Plateforme (uniquement)'
-</i18n>

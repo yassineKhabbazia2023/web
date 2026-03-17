@@ -15,12 +15,14 @@ import ProfilePageLayout from './profile-page.layout.vue'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      title: 'Password',
+    },
+    'fr-FR': {
+      title: 'Mot de passe',
+    },
+  },
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  title: 'Password'
-fr-FR:
-  title: 'Mot de passe'
-</i18n>

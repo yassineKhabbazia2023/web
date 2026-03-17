@@ -19,6 +19,16 @@ import type { AddCustomerStepsProps } from './add-customer-steps.types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      'add-email': 'User information',
+      'manage-rights': 'User rights',
+    },
+    'fr-FR': {
+      'add-email': 'Informations de l’utilisateur',
+      'manage-rights': 'Droits de l’utilisateur',
+    },
+  },
 })
 
 defineProps<AddCustomerStepsProps>()
@@ -29,11 +39,3 @@ const stepTitles = [
 ]
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    add-email: 'User information'
-    manage-rights: 'User rights'
-  fr-FR:
-    add-email: 'Informations de l’utilisateur'
-    manage-rights: 'Droits de l’utilisateur'
-</i18n>

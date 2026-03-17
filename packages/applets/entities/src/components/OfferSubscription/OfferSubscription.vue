@@ -32,6 +32,14 @@ import type { OfferSubscriptionProps } from './OfferSubscriptionTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      servicesNotes: 'Enable or disable the services you want to provide for this folder',
+    },
+    'fr-FR': {
+      servicesNotes: 'Activez ou désactivez les services que vous souhaitez donner à ce dossier',
+    },
+  },
 })
 
 defineProps<OfferSubscriptionProps>()
@@ -53,9 +61,3 @@ function onDeselectProduct(offerId: number, productId: number) {
 }
 
 </script>
-<i18n lang="yaml">
-en-US:
-  servicesNotes: 'Enable or disable the services you want to provide for this folder'
-fr-FR:
-  servicesNotes: 'Activez ou désactivez les services que vous souhaitez donner à ce dossier'
-</i18n>

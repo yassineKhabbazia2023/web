@@ -54,6 +54,28 @@ import type { SearchMandateParams } from '@mandate/services/mandate/ServiceManda
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      'bank-mandates': 'Collection Status',
+      'new-mandate': 'New mandate',
+      'technical-incident': 'Technical Incident',
+      'business-incident': 'Business Incident',
+      'to-do': 'To do',
+      'in-progress': 'In progress',
+      active: 'Active',
+      inactive: 'Inactive',
+    },
+    'fr-FR': {
+      'bank-mandates': 'Statut des collectes',
+      'new-mandate': 'Nouveau mandat',
+      'technical-incident': 'Incident Technique',
+      'business-incident': 'Incident Métier',
+      'to-do': 'À déposer',
+      'in-progress': 'En cours',
+      active: 'Actif',
+      inactive: 'Résilié',
+    },
+  },
 })
 
 const PFilterGroupNumber = PFilterGroup<number>
@@ -154,23 +176,3 @@ const filters: FilterOption<number>[] = [
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    bank-mandates: 'Collection Status'
-    new-mandate: 'New mandate'
-    technical-incident: 'Technical Incident'
-    business-incident: 'Business Incident'
-    to-do: 'To do'
-    in-progress: 'In progress'
-    active: 'Active'
-    inactive: 'Inactive'
-  fr-FR:
-    bank-mandates: 'Statut des collectes'
-    new-mandate: 'Nouveau mandat'
-    technical-incident: 'Incident Technique'
-    business-incident: 'Incident Métier'
-    to-do: 'À déposer'
-    in-progress: 'En cours'
-    active: 'Actif'
-    inactive: 'Résilié'
-</i18n>

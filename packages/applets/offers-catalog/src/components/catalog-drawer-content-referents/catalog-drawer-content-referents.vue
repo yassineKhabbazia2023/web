@@ -102,6 +102,30 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      name: 'First Name Last Name',
+      hub: 'Hub',
+      email: 'Email Address',
+      noResult: 'The referents are not specified for this offer, we apologize.',
+      copy: {
+        tooltip: 'Copy the referent\'s email address',
+        success: 'The email address has been successfully copied.',
+        error: 'Failed to copy the email address.',
+      },
+    },
+    'fr-FR': {
+      name: 'Prénom Nom',
+      hub: 'Hub',
+      email: 'Adresse e-mail',
+      noResult: 'Les référents ne sont pas spécifiés pour cette offre, nous vous prions de nous excuser.',
+      copy: {
+        tooltip: 'Copier l\'adresse email du référent',
+        success: 'L’adresse e-mail a bien été copiée.',
+        error: 'Échec lors de la copie de l’adresse e-mail.',
+      },
+    },
+  },
 })
 
 const props = defineProps<CatalogDrawerContentReferentsProps>()
@@ -133,23 +157,3 @@ onMounted(() => {
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    name: 'First Name Last Name'
-    hub: 'Hub'
-    email: 'Email Address'
-    noResult: 'The referents are not specified for this offer, we apologize.'
-    copy:
-      tooltip: "Copy the referent's email address"
-      success: 'The email address has been successfully copied.'
-      error: 'Failed to copy the email address.'
-  fr-FR:
-    name: 'Prénom Nom'
-    hub: 'Hub'
-    email: 'Adresse e-mail'
-    noResult: 'Les référents ne sont pas spécifiés pour cette offre, nous vous prions de nous excuser.'
-    copy:
-      tooltip: "Copier l'adresse email du référent"
-      success: 'L’adresse e-mail a bien été copiée.'
-      error: 'Échec lors de la copie de l’adresse e-mail.'
-</i18n>

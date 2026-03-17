@@ -39,6 +39,14 @@ const { d, t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   datetimeFormats: DATE_TIME_FORMATS,
+  messages: {
+    'en-US': {
+      updatedOn: 'Updated on',
+    },
+    'fr-FR': {
+      updatedOn: 'Actualisé le',
+    },
+  },
 })
 
 const props = withDefaults(defineProps<ReportCardProps>(), {
@@ -111,9 +119,3 @@ const handleReportSelection = () => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  updatedOn: 'Updated on'
-fr-FR:
-  updatedOn: 'Actualisé le'
-</i18n>

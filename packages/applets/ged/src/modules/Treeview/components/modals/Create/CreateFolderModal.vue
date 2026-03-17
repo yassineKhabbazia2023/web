@@ -36,6 +36,22 @@ import { type CreateFolderModalProps }
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      validations: {
+        alphaNumerique: 'Entrez un nom qui ne contient aucun des caractères suivants : “ * : {\'<\'} {\'>\'} ? / \\ {\'|\'}\n',
+        folderNameExists: 'A folder with the name {folderName} already exists',
+        maxLength: 'The number of characters allowed ({maxLength}) is exceeded',
+      },
+    },
+    'fr-FR': {
+      validations: {
+        alphaNumerique: 'Entrez un nom qui ne contient aucun des caractères suivants : “ * : {\'<\'} {\'>\'} ? / \\ {\'|\'}\n',
+        folderNameExists: 'Un dossier avec le nom {folderName} existe déjà',
+        maxLength: 'Le nombre de caractères autorisés ({maxLength}) est dépassé',
+      },
+    },
+  },
 })
 
 const props = withDefaults(defineProps<CreateFolderModalProps>(), {
@@ -141,20 +157,3 @@ watch(inputContent, () => {
   folderNameExists.value = false
 })
 </script>
-<i18n lang="yaml">
-en-US:
-  validations:
-    alphaNumerique: >
-      Entrez un nom qui ne contient aucun des caractères suivants :
-      “ * : {'<'} {'>'} ? / \ {'|'}
-    folderNameExists: 'A folder with the name {folderName} already exists'
-    maxLength: 'The number of characters allowed ({maxLength}) is exceeded'
-
-fr-FR:
-  validations:
-    alphaNumerique: >
-      Entrez un nom qui ne contient aucun des caractères suivants :
-      “ * : {'<'} {'>'} ? / \ {'|'}
-    folderNameExists: 'Un dossier avec le nom {folderName} existe déjà'
-    maxLength: 'Le nombre de caractères autorisés ({maxLength}) est dépassé'
-</i18n>

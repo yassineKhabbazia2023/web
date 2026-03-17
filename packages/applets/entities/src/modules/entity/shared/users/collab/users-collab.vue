@@ -256,6 +256,56 @@ const { d, t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   datetimeFormats,
+  messages: {
+    'en-US': {
+      user: 'User',
+      status: 'Status',
+      actions: 'Actions',
+      email: 'Email',
+      manageAccess: 'Manage access',
+      addCustomer: 'Add a customer',
+      dateAccess: 'First date access',
+      assignSignatory: 'Designate as signatory',
+      removeSignatory: 'Revoke signatory status',
+      modifyRights: 'Change the rights',
+      removeUser: 'Remove user',
+      searchUsers: 'Search by name, first name, email, status',
+      statusConnect: 'Connected',
+      statusInvite: 'Invited',
+      statusDeclared: 'Declared',
+      on: 'on',
+      signatoryAdded: 'User {userFullName} has been successfully designated as a signatory of the entity',
+      signatoryRemoved: 'The user {userFullName} is no longer a signatory on the account.',
+      deleteSignatoryTooltip: 'A folder should have at least one signatory',
+      technicalError: 'The operation failed due to a technical error. Please try again later.',
+      roles: 'Role(s)',
+      signatoryRoleName: 'Engagement letter signatory',
+    },
+    'fr-FR': {
+      user: 'Utilisateur',
+      status: 'Statut',
+      actions: 'Actions',
+      email: 'E-mail',
+      manageAccess: 'Gérer les accès',
+      addCustomer: 'Ajouter un utilisateur',
+      dateAccess: 'Date d\'ajout',
+      assignSignatory: 'Désigner en tant que signataire',
+      removeSignatory: 'Retirer le statut de signataire',
+      modifyRights: 'Modifier les droits',
+      removeUser: 'Retirer l\'utilisateur',
+      searchUsers: 'Rechercher par nom, prénom, e-mail, statut',
+      statusConnect: 'Connecté',
+      statusInvite: 'Invité',
+      statusDeclared: 'Déclaré',
+      signatoryAdded: 'L\'utilisateur {userFullName} a été désigné en tant que signataire de l\'entité avec succès',
+      signatoryRemoved: 'L\'utilisateur {userFullName} n\'est plus signataire du dossier.',
+      deleteSignatoryTooltip: 'Un dossier doit avoir au moins un signataire',
+      technicalError: 'L\'opération a échoué suite à une erreur technique. Veuillez réessayer plus tard.',
+      on: 'sur',
+      roles: 'Rôle(s)',
+      signatoryRoleName: 'Signataire lettre de mission',
+    },
+  },
 })
 
 const userStore = useUserStore()
@@ -630,51 +680,3 @@ onMounted(async () => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  user: 'User'
-  status: 'Status'
-  actions: 'Actions'
-  email: 'Email'
-  manageAccess: 'Manage access'
-  addCustomer: 'Add a customer'
-  dateAccess: 'First date access'
-  assignSignatory: 'Designate as signatory'
-  removeSignatory: 'Revoke signatory status'
-  modifyRights: 'Change the rights'
-  removeUser: 'Remove user'
-  searchUsers: 'Search by name, first name, email, status'
-  statusConnect: 'Connected'
-  statusInvite: 'Invited'
-  statusDeclared: 'Declared'
-  on: 'on'
-  signatoryAdded: "User {userFullName} has been successfully designated as a signatory of the entity"
-  signatoryRemoved: "The user {userFullName} is no longer a signatory on the account."
-  deleteSignatoryTooltip: 'A folder should have at least one signatory'
-  technicalError: 'The operation failed due to a technical error. Please try again later.'
-  roles: 'Role(s)'
-  signatoryRoleName: 'Engagement letter signatory'
-fr-FR:
-  user: 'Utilisateur'
-  status: 'Statut'
-  actions: 'Actions'
-  email: 'E-mail'
-  manageAccess: 'Gérer les accès'
-  addCustomer: 'Ajouter un utilisateur'
-  dateAccess: "Date d'ajout"
-  assignSignatory: 'Désigner en tant que signataire'
-  removeSignatory: 'Retirer le statut de signataire'
-  modifyRights: 'Modifier les droits'
-  removeUser: "Retirer l'utilisateur"
-  searchUsers: 'Rechercher par nom, prénom, e-mail, statut'
-  statusConnect: 'Connecté'
-  statusInvite: 'Invité'
-  statusDeclared: 'Déclaré'
-  signatoryAdded: "L'utilisateur {userFullName} a été désigné en tant que signataire de l'entité avec succès"
-  signatoryRemoved: "L'utilisateur {userFullName} n'est plus signataire du dossier."
-  deleteSignatoryTooltip: 'Un dossier doit avoir au moins un signataire'
-  technicalError: "L'opération a échoué suite à une erreur technique. Veuillez réessayer plus tard."
-  on: 'sur'
-  roles: 'Rôle(s)'
-  signatoryRoleName: 'Signataire lettre de mission'
-</i18n>

@@ -3,7 +3,6 @@ import type { UserConfig, Plugin } from 'vite'
 import { defineConfig } from 'vitest/config'
 import { visualizer } from 'rollup-plugin-visualizer'
 import vue from '@vitejs/plugin-vue'
-import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
 import { viteVirtualModule } from './vite-virtual-module'
 
@@ -28,7 +27,6 @@ export const viteConfigBase = ({ mode }: { mode: string }): UserConfig =>
     },
     plugins: [
       vue(),
-      VueI18nPlugin({}),
       // All workspace path aliases are loaded globally from tsconfig.paths.json.
       // This is simpler but means any package can import from any other without declaring it as a dependency.
       tsconfigPaths({ projects: [fileURLToPath(new URL('tsconfig.paths.json', import.meta.url))] }),

@@ -124,6 +124,38 @@ import { displayNotification } from '@pulse/styleguide'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      informationsAboutCollaborator: 'Collaborator information',
+      youCanModify: 'As an {administrator}, you can modify the name, first name and email of your colleague directly in Akuiteo.\n',
+      administrator: 'administrator',
+      lastName: 'Last name',
+      firstName: 'First name',
+      email: 'Email',
+      mobilePhone: 'Mobile phone',
+      landPhone: 'Land phone',
+      cancel: 'Cancel',
+      submit: 'Submit',
+      notificationSuccess: '{fullName}\'s information has been successfully updated.',
+      notificationError: '{fullName}\'s information was not been successfully updated due to a technical error.',
+      incorrectPhoneNumberFormat: 'Phone number format is incorrect',
+    },
+    'fr-FR': {
+      informationsAboutCollaborator: 'Informations du collaborateur',
+      youCanModify: 'En tant qu\'{administrator}, vous pouvez modifier le nom, le prénom et le mail de votre collaborateur directement dans Akuiteo.\n',
+      administrator: 'administrateur',
+      lastName: 'Nom',
+      firstName: 'Prénom',
+      email: 'Mail',
+      mobilePhone: 'Téléphone mobile',
+      landPhone: 'Téléphone fixe',
+      cancel: 'Annuler',
+      submit: 'Valider',
+      notificationSuccess: 'Les informations de {fullName} ont bien été mises à jour.',
+      notificationError: 'Les informations de {fullName} n\'ont pas bien été mises à jour a cause d\'une erreur technique.',
+      incorrectPhoneNumberFormat: 'Le format du numéro est incorrect',
+    },
+  },
 })
 
 const props = defineProps<CollabDetailsDrawerProps>()
@@ -200,37 +232,3 @@ function debouncedShouldSubmitButtonBeDisabled() {
 watch(formValues, debouncedShouldSubmitButtonBeDisabled())
 </script>
 
-<i18n lang="yaml">
-en-US:
-  informationsAboutCollaborator: 'Collaborator information'
-  youCanModify: >
-    As an {administrator}, you can modify the name,
-    first name and email of your colleague directly in Akuiteo.
-  administrator: 'administrator'
-  lastName: 'Last name'
-  firstName: 'First name'
-  email: 'Email'
-  mobilePhone: 'Mobile phone'
-  landPhone: 'Land phone'
-  cancel: 'Cancel'
-  submit: 'Submit'
-  notificationSuccess: "{fullName}'s information has been successfully updated."
-  notificationError: "{fullName}'s information was not been successfully updated due to a technical error."
-  incorrectPhoneNumberFormat: 'Phone number format is incorrect'
-fr-FR:
-  informationsAboutCollaborator: 'Informations du collaborateur'
-  youCanModify: >
-    En tant qu'{administrator}, vous pouvez modifier le nom,
-    le prénom et le mail de votre collaborateur directement dans Akuiteo.
-  administrator: 'administrateur'
-  lastName: 'Nom'
-  firstName: 'Prénom'
-  email: 'Mail'
-  mobilePhone: 'Téléphone mobile'
-  landPhone: 'Téléphone fixe'
-  cancel: 'Annuler'
-  submit: 'Valider'
-  notificationSuccess: 'Les informations de {fullName} ont bien été mises à jour.'
-  notificationError: "Les informations de {fullName} n'ont pas bien été mises à jour a cause d'une erreur technique."
-  incorrectPhoneNumberFormat: 'Le format du numéro est incorrect'
-</i18n>

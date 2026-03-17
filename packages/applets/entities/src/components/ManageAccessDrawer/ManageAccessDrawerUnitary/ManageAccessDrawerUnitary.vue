@@ -61,6 +61,16 @@ import NoOperation from '../components/NoOperation'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      close: 'Close',
+      manageAccess: 'Manage Access',
+    },
+    'fr-FR': {
+      close: 'Fermer',
+      manageAccess: 'Gérer les accès',
+    },
+  },
 })
 
 const props = defineProps<ManageAccessDrawerUnitaryProps>()
@@ -90,11 +100,3 @@ const handleOperationTableUpdate = () => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  close: 'Close'
-  manageAccess: 'Manage Access'
-fr-FR:
-  close: 'Fermer'
-  manageAccess: 'Gérer les accès'
-</i18n>

@@ -31,6 +31,16 @@ import type { PennylaneDocumentsNoResultProps } from './pennylane-documents-no-r
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      noDocuments: 'No documents have been submitted by RYDGE Conseil yet',
+      errorMessage: 'An error occurred while retrieving documents',
+    },
+    'fr-FR': {
+      noDocuments: 'Aucun document n\'a encore été déposé par RYDGE Conseil',
+      errorMessage: 'Une erreur est survenue lors de la récupération des documents',
+    },
+  },
 })
 
 const props = defineProps<PennylaneDocumentsNoResultProps>()
@@ -39,14 +49,6 @@ const iconName = computed(() => props.isError === true ? 'exclamationTriangle' :
 const message = computed(() => props.isError === true ? t('errorMessage') : t('noDocuments'))
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    noDocuments: 'No documents have been submitted by RYDGE Conseil yet'
-    errorMessage: 'An error occurred while retrieving documents'
-  fr-FR:
-    noDocuments: "Aucun document n'a encore été déposé par RYDGE Conseil"
-    errorMessage: 'Une erreur est survenue lors de la récupération des documents'
-</i18n>
 
 <style scoped lang="scss">
 @use '@pulse/styleguide/scss/breakpoints' as breakpoints;

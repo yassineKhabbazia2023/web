@@ -27,6 +27,34 @@ import { PNotification } from '@pulse/styleguide'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      popup: {
+        title: 'Supprimer ce dossier ?',
+        controls: {
+          confirm: 'Confirmer',
+          cancel: 'Annuler',
+        },
+      },
+      notifications: {
+        error: 'Connexion au serveur interrompue.',
+        success: 'Dossier "{folderName}" supprimé.',
+      },
+    },
+    'fr-FR': {
+      popup: {
+        title: 'Supprimer ce dossier ?',
+        controls: {
+          confirm: 'Confirmer',
+          cancel: 'Annuler',
+        },
+      },
+      notifications: {
+        error: 'Connexion au serveur interrompue.',
+        success: 'Dossier "{folderName}" supprimé.',
+      },
+    },
+  },
 })
 
 const emit = defineEmits([
@@ -96,24 +124,3 @@ const triggerSuccessNotification = () => {
   })
 }
 </script>
-<i18n lang="yaml">
-en-US:
-  popup:
-    title: 'Supprimer ce dossier ?'
-    controls:
-      confirm: 'Confirmer'
-      cancel: 'Annuler'
-  notifications:
-    error: 'Connexion au serveur interrompue.'
-    success: 'Dossier "{folderName}" supprimé.'
-
-fr-FR:
-  popup:
-    title: 'Supprimer ce dossier ?'
-    controls:
-      confirm: 'Confirmer'
-      cancel: 'Annuler'
-  notifications:
-    error: 'Connexion au serveur interrompue.'
-    success: 'Dossier "{folderName}" supprimé.'
-</i18n>

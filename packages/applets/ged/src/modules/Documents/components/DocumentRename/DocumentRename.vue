@@ -23,6 +23,20 @@ const emit = defineEmits(['update:modelValue', 'document-rename'])
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      toaster: {
+        success: 'Document has been successfully renamed !',
+        error: 'Connection with server has  been lost',
+      },
+    },
+    'fr-FR': {
+      toaster: {
+        success: 'Le document a été renommé avec succès !',
+        error: 'Connexion au serveur interrompue',
+      },
+    },
+  },
 })
 
 const isRenameDocumentModalOpened = computed({
@@ -71,14 +85,3 @@ const handleDocumentRename = async (documentName: string) => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  toaster:
-    success: Document has been successfully renamed !
-    error: Connection with server has  been lost
-
-fr-FR:
-  toaster:
-    success: Le document a été renommé avec succès !
-    error: Connexion au serveur interrompue
-</i18n>

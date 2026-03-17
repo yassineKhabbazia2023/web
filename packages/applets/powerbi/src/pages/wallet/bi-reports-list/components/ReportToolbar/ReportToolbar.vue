@@ -114,6 +114,28 @@ import { displayNotification } from '@pulse/styleguide'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      showErrors: 'Show errors',
+      searchBy: 'Search by company name, customer code...',
+      filter: 'Filter',
+      clearAll: 'Clear all',
+      invalidSearch: '3 characters minimum required',
+      errors: {
+        reportErrorsFetch: 'We couldn\'t load the report errors. Please check your connection or try again shortly.\n',
+      },
+    },
+    'fr-FR': {
+      showErrors: 'Voir anomalies',
+      searchBy: 'Rechercher par raison sociale, code client...',
+      filter: 'Filtrer',
+      clearAll: 'Tout effacer',
+      invalidSearch: '3 caractères minimum requis',
+      errors: {
+        reportErrorsFetch: 'Nous n\'avons pas pu charger les erreurs de rapport. Veuillez vérifier votre connexion ou réessayer dans un instant.\n',
+      },
+    },
+  },
 })
 
 const emit = defineEmits<{
@@ -238,24 +260,3 @@ onMounted(() => {
   opacity: 0;
 }
 </style>
-<i18n lang="yaml">
-en-US:
-  showErrors: 'Show errors'
-  searchBy: 'Search by company name, customer code...'
-  filter: 'Filter'
-  clearAll: 'Clear all'
-  invalidSearch: '3 characters minimum required'
-  errors:
-    reportErrorsFetch: >
-      We couldn't load the report errors. Please check your connection or try again shortly.
-fr-FR:
-  showErrors: 'Voir anomalies'
-  searchBy: 'Rechercher par raison sociale, code client...'
-  filter: 'Filtrer'
-  clearAll: 'Tout effacer'
-  invalidSearch: '3 caractères minimum requis'
-  errors:
-    reportErrorsFetch: >
-      Nous n'avons pas pu charger les erreurs de rapport.
-      Veuillez vérifier votre connexion ou réessayer dans un instant.
-</i18n>

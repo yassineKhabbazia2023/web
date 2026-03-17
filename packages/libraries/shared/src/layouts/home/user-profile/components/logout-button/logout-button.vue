@@ -44,6 +44,14 @@ withDefaults(defineProps<LogoutButtonProps>(), {
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      logout: 'Logout',
+    },
+    'fr-FR': {
+      logout: 'Se déconnecter',
+    },
+  },
 })
 
 const { handleLogout } = useLogout()
@@ -66,9 +74,3 @@ const { handleLogout } = useLogout()
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  logout: 'Logout'
-fr-FR:
-  logout: 'Se déconnecter'
-</i18n>

@@ -17,17 +17,17 @@ import { APP_COPYRIGHT, SUPPORT_PHONE_CLIENT, SUPPORT_PHONE_COLLAB } from '@puls
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      contactSupport: 'Support contact:',
+    },
+    'fr-FR': {
+      contactSupport: 'Contact Support :',
+    },
+  },
 })
 
 const userStore = useUserStore()
 
 const supportPhoneNumber = userStore.isCollab ? SUPPORT_PHONE_COLLAB : SUPPORT_PHONE_CLIENT
 </script>
-
-
-<i18n lang="yaml">
-  en-US:
-    contactSupport: 'Support contact:'
-  fr-FR:
-    contactSupport: 'Contact Support :'
-  </i18n>

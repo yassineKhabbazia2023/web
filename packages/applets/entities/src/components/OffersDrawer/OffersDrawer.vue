@@ -183,6 +183,48 @@ import { OfferPlanManager } from '../OfferSubscription/components/OfferPlanSubsc
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      drawerTitle: 'Offers available on this folder',
+      previousLabel: 'Previous',
+      nextLabel: 'Next',
+      submitLabel: 'Submit',
+      services: 'Services',
+      customers: 'Customers',
+      collaborators: 'Collaborators',
+      information: 'Information',
+      offerIntranet: 'Offer Intranet',
+      offersBook: 'Offers Book',
+      confirm: 'Confirm',
+      cancel: 'Cancel',
+      confirmationTitle: 'Attention',
+      subscriptionCreated: 'The subscription was created',
+      subscriptionNotCreated: 'The subscription could not be created',
+      offerActivated: 'The offer has been activated',
+      offerNotActivated: 'The offer could not be activated',
+      confirmationContent: 'After confirmation, the offer activation request will be submitted, and there will be no option to revert. Please review your information carefully before proceeding.\n',
+    },
+    'fr-FR': {
+      drawerTitle: 'Offres activables sur ce dossier',
+      previousLabel: 'Précédent',
+      nextLabel: 'Suivant',
+      submitLabel: 'Valider',
+      confirm: 'Confirmer',
+      cancel: 'Annuler',
+      services: 'Services',
+      customers: 'Clients',
+      collaborators: 'Collaborateurs',
+      information: 'Informations',
+      offerIntranet: 'Intranet de l\'offre',
+      offersBook: 'Book des offres',
+      confirmationTitle: 'Attention',
+      subscriptionCreated: 'La souscription a été créée',
+      subscriptionNotCreated: 'La souscription n\'a pas pu être créée',
+      offerActivated: 'L\'offre a été activée',
+      offerNotActivated: 'L\'offre n\'a pas pu être activée',
+      confirmationContent: 'Une fois confirmée, la demande d\'activation d\'offre sera créée et vous ne pourrez plus revenir en arrière. Veuillez donc vérifier vos informations avant de valider.\n',
+    },
+  },
 })
 
 const currentStepIndex = ref(0)
@@ -602,49 +644,3 @@ defineExpose({
   }
 }
 </style>
-<i18n lang="yaml">
-en-US:
-  drawerTitle: 'Offers available on this folder'
-  previousLabel: 'Previous'
-  nextLabel: 'Next'
-  submitLabel: 'Submit'
-  services: 'Services'
-  customers: 'Customers'
-  collaborators: 'Collaborators'
-  information: 'Information'
-  offerIntranet: 'Offer Intranet'
-  offersBook: 'Offers Book'
-  confirm: 'Confirm'
-  cancel: 'Cancel'
-  confirmationTitle: 'Attention'
-  subscriptionCreated: 'The subscription was created'
-  subscriptionNotCreated: 'The subscription could not be created'
-  offerActivated: 'The offer has been activated'
-  offerNotActivated: 'The offer could not be activated'
-  confirmationContent: >
-    After confirmation, the offer activation request will be submitted,
-    and there will be no option to revert. Please review your information
-    carefully before proceeding.
-fr-FR:
-  drawerTitle: 'Offres activables sur ce dossier'
-  previousLabel: 'Précédent'
-  nextLabel: 'Suivant'
-  submitLabel: 'Valider'
-  confirm: 'Confirmer'
-  cancel: 'Annuler'
-  services: 'Services'
-  customers: 'Clients'
-  collaborators: 'Collaborateurs'
-  information: 'Informations'
-  offerIntranet: "Intranet de l'offre"
-  offersBook: 'Book des offres'
-  confirmationTitle: 'Attention'
-  subscriptionCreated: 'La souscription a été créée'
-  subscriptionNotCreated: "La souscription n'a pas pu être créée"
-  offerActivated: "L'offre a été activée"
-  offerNotActivated: "L'offre n'a pas pu être activée"
-  confirmationContent: >
-    Une fois confirmée, la demande d'activation d'offre sera créée
-    et vous ne pourrez plus revenir en arrière.
-    Veuillez donc vérifier vos informations avant de valider.
-</i18n>

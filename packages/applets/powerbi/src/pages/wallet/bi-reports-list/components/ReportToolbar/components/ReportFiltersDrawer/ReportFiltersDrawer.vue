@@ -84,6 +84,32 @@ import { ReportStatus } from '@powerbi/enums/bi-reports.enum'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      filters: 'Filters',
+      online: 'Online',
+      apply: 'Apply',
+      offline: 'Offline',
+      reset: 'Reset',
+      initialized: 'Initialized',
+      failed: 'Failure',
+      reportStatus: 'Report status',
+      labelTypeReport: 'Report type',
+      placeholderTypeReport: 'Select a type',
+    },
+    'fr-FR': {
+      filters: 'Filtres',
+      online: 'En ligne',
+      offline: 'Hors ligne',
+      apply: 'Appliquer',
+      reset: 'Réinitialiser',
+      initialized: 'Initialisé',
+      failed: 'Incident',
+      reportStatus: 'Statut de rapport',
+      labelTypeReport: 'Type de rapport',
+      placeholderTypeReport: 'Sélectionnez un type',
+    },
+  },
 })
 
 const props = defineProps<ReportFiltersDrawerProps>()
@@ -171,27 +197,3 @@ onMounted(async () => {
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  filters: 'Filters'
-  online: 'Online'
-  apply: 'Apply'
-  offline: 'Offline'
-  reset: 'Reset'
-  initialized: 'Initialized'
-  failed: 'Failure'
-  reportStatus: 'Report status'
-  labelTypeReport: 'Report type'
-  placeholderTypeReport: 'Select a type'
-fr-FR:
-  filters: 'Filtres'
-  online: 'En ligne'
-  offline: 'Hors ligne'
-  apply: 'Appliquer'
-  reset: 'Réinitialiser'
-  initialized: 'Initialisé'
-  failed: 'Incident'
-  reportStatus: 'Statut de rapport'
-  labelTypeReport: 'Type de rapport'
-  placeholderTypeReport: 'Sélectionnez un type'
-</i18n>

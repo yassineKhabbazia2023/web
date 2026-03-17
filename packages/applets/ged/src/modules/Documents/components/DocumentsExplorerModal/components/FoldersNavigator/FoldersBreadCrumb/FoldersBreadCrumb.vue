@@ -40,6 +40,14 @@ import type { BreadcrumbItems } from '@pulse/styleguide/types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      newFolder: 'Create folder',
+    },
+    'fr-FR': {
+      newFolder: 'Nouveau dossier',
+    },
+  },
 })
 
 const props = defineProps<FoldersBreadCrumbProps>()
@@ -121,9 +129,3 @@ const handleCreateFolderButtonClick = () => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  newFolder: 'Create folder'
-fr-FR:
-  newFolder: 'Nouveau dossier'
-</i18n>

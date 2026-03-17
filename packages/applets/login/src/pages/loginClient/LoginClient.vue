@@ -83,6 +83,42 @@ import { getEmailError, getPasswordError } from './LoginClient.utils'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      welcomeTo: 'Welcome to your',
+      yourSpace: 'Customer Space!',
+      formTitle: 'Please login to access all your services.',
+      email: 'E-mail address',
+      emailPlaceholder: 'Enter your e-mail address',
+      password: 'Password',
+      passwordPlaceholder: 'Enter your password',
+      login: 'Log in',
+      loading: 'Loading...',
+      emailOrPasswordError: 'The e-mail address and password combination is incorrect',
+      technicalError: 'A technical error occurred.',
+      forgotPassword: 'Forgot your password?',
+      alertPasswordRequired: 'Please enter your password',
+      alertMailRequired: 'Please enter your e-mail address',
+      alertMailInvalid: 'Please enter a valid e-mail address',
+    },
+    'fr-FR': {
+      welcomeTo: 'Bienvenue sur votre',
+      yourSpace: 'espace client !',
+      formTitle: 'Veuillez vous connecter pour accéder à tous vos services.',
+      email: 'Adresse e-mail',
+      emailPlaceholder: 'Saisissez votre adresse e-mail',
+      password: 'Mot de passe',
+      passwordPlaceholder: 'Saisissez votre mot de passe',
+      login: 'Se connecter',
+      loading: 'Chargement en cours',
+      emailOrPasswordError: 'La combinaison de l\'adresse e-mail et du mot de passe est incorrecte',
+      technicalError: 'Une erreur technique est survenue.',
+      forgotPassword: 'Mot de passe oublié ?',
+      alertPasswordRequired: 'Veuillez saisir votre mot de passe',
+      alertMailRequired: 'Veuillez saisir votre adresse e-mail',
+      alertMailInvalid: 'Veuillez saisir une adresse e-mail valide',
+    },
+  },
 })
 
 const router = useRouter()
@@ -222,37 +258,3 @@ async function onSubmit() {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    welcomeTo: 'Welcome to your'
-    yourSpace: 'Customer Space!'
-    formTitle: 'Please login to access all your services.'
-    email: 'E-mail address'
-    emailPlaceholder: 'Enter your e-mail address'
-    password: 'Password'
-    passwordPlaceholder: 'Enter your password'
-    login: 'Log in'
-    loading: 'Loading...'
-    emailOrPasswordError: 'The e-mail address and password combination is incorrect'
-    technicalError: 'A technical error occurred.'
-    forgotPassword: 'Forgot your password?'
-    alertPasswordRequired: 'Please enter your password'
-    alertMailRequired: 'Please enter your e-mail address'
-    alertMailInvalid: 'Please enter a valid e-mail address'
-  fr-FR:
-    welcomeTo: 'Bienvenue sur votre'
-    yourSpace: 'espace client !'
-    formTitle: 'Veuillez vous connecter pour accéder à tous vos services.'
-    email: 'Adresse e-mail'
-    emailPlaceholder: 'Saisissez votre adresse e-mail'
-    password: 'Mot de passe'
-    passwordPlaceholder: 'Saisissez votre mot de passe'
-    login: 'Se connecter'
-    loading: 'Chargement en cours'
-    emailOrPasswordError: "La combinaison de l'adresse e-mail et du mot de passe est incorrecte"
-    technicalError: 'Une erreur technique est survenue.'
-    forgotPassword: 'Mot de passe oublié ?'
-    alertPasswordRequired: 'Veuillez saisir votre mot de passe'
-    alertMailRequired: 'Veuillez saisir votre adresse e-mail'
-    alertMailInvalid: 'Veuillez saisir une adresse e-mail valide'
-</i18n>

@@ -35,6 +35,16 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      errorMsgTitle: 'Preview unavailable',
+      errorMsgText: 'The document format is not supported',
+    },
+    'fr-FR': {
+      errorMsgTitle: 'Aperçu indisponible',
+      errorMsgText: 'Le format de document n\'est pas supporté',
+    },
+  },
 })
 
 const props = defineProps<CatalogDocumentViewerProps>()
@@ -50,11 +60,3 @@ const internalIsOpened = computed({
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-    errorMsgTitle: 'Preview unavailable'
-    errorMsgText: "The document format is not supported"
-fr-FR:
-    errorMsgTitle: 'Aperçu indisponible'
-    errorMsgText: "Le format de document n'est pas supporté"
-</i18n>

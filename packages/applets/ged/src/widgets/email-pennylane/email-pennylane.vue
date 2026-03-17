@@ -38,6 +38,14 @@ import { GedContext } from '@pulse/common/enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      uploadDocumentByEmail: 'Upload document using email address',
+    },
+    'fr-FR': {
+      uploadDocumentByEmail: 'Déposer un document par e-mail',
+    },
+  },
 })
 
 const isModalOpen = ref(false)
@@ -91,9 +99,3 @@ watch(currentEntityAccountNumber, async () => {
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  uploadDocumentByEmail: 'Upload document using email address'
-fr-FR:
-  uploadDocumentByEmail: 'Déposer un document par e-mail'
-</i18n>

@@ -32,6 +32,14 @@ import type { SubscriptionOffersProps } from './SubscriptionOffersTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      subtitle: 'Select the offer you whish to activate for this folder',
+    },
+    'fr-FR': {
+      subtitle: 'Sélectionnez l\'offre que vous souhaitez activer pour ce dossier',
+    },
+  },
 })
 
 const emit = defineEmits<{
@@ -56,9 +64,3 @@ function onSelectOffer(selectedOfferId: number) {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    subtitle: 'Select the offer you whish to activate for this folder'
-  fr-FR:
-    subtitle: "Sélectionnez l'offre que vous souhaitez activer pour ce dossier"
-</i18n>

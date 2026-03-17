@@ -70,6 +70,16 @@ import ThumbsRating from '../thumbs-rating/thumbs-rating.vue'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      similarityTooltip: '{score} match with your search',
+      rateResultSentence: 'Rate this result :',
+    },
+    'fr-FR': {
+      similarityTooltip: '{score} de compatibilité avec votre recherche',
+      rateResultSentence: 'Noter ce résultat :',
+    },
+  },
 })
 
 const MAX_SUBTITLE_LENGTH = 100
@@ -132,11 +142,3 @@ async function handleResultValidation(satisfaction: boolean) {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    similarityTooltip: '{score} match with your search'
-    rateResultSentence: 'Rate this result :'
-  fr-FR:
-    similarityTooltip: '{score} de compatibilité avec votre recherche'
-    rateResultSentence: 'Noter ce résultat :'
-</i18n>

@@ -22,14 +22,16 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      oops: 'Oops',
+      noResult: 'It looks like there are no results for your search.',
+    },
+    'fr-FR': {
+      oops: 'Oups',
+      noResult: 'Il semblerait qu\'il n\'y ait pas de résultats à votre recherche.',
+    },
+  },
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  oops: 'Oops'
-  noResult: 'It looks like there are no results for your search.'
-fr-FR:
-  oops: 'Oups'
-  noResult: "Il semblerait qu'il n'y ait pas de résultats à votre recherche."
-</i18n>

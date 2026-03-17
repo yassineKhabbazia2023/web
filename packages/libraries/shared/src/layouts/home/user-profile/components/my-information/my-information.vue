@@ -88,6 +88,18 @@ withDefaults(defineProps<MyInformationProps>(), {
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      role: 'Role',
+      email: 'Email',
+      mobilePhone: 'Mobile phone',
+    },
+    'fr-FR': {
+      role: 'Rôle',
+      email: 'Adresse mail',
+      mobilePhone: 'Téléphone mobile',
+    },
+  },
 })
 
 const isCollab = ref(false)
@@ -124,13 +136,3 @@ $gap: 12px;
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  role: 'Role'
-  email: 'Email'
-  mobilePhone: 'Mobile phone'
-fr-FR:
-  role: 'Rôle'
-  email: 'Adresse mail'
-  mobilePhone: 'Téléphone mobile'
-</i18n>

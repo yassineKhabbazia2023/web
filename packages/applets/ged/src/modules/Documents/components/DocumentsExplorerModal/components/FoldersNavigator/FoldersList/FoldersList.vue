@@ -77,6 +77,14 @@ const emit = defineEmits([
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      cantMoveToSameFolder: 'You can\'t move into the folder you are currently moving.',
+    },
+    'fr-FR': {
+      cantMoveToSameFolder: 'Vous ne pouvez pas déplacer dans le dossier en cours de déplacement',
+    },
+  },
 })
 
 const getIconMapping = (iconName: string | undefined): IconName => {
@@ -187,9 +195,3 @@ const propagateUpdateSourceFolders = (createdFolder: Folder) => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  cantMoveToSameFolder: "You can't move into the folder you are currently moving."
-fr-FR:
-  cantMoveToSameFolder: 'Vous ne pouvez pas déplacer dans le dossier en cours de déplacement'
-</i18n>

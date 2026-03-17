@@ -70,6 +70,16 @@ import { SIREN_FIELD_KEY } from '@entities/constants'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      alertInstruction: 'If any information is incorrect, please update it in the CRM',
+      hasNoSirenLabel: 'The company does not have a SIREN yet',
+    },
+    'fr-FR': {
+      alertInstruction: 'Si des informations sont incorrectes, veuillez les mettre à jour dans le CRM',
+      hasNoSirenLabel: 'L\'entreprise n\'a pas encore de SIREN',
+    },
+  },
 })
 
 const props = defineProps<InformationDetailsProps>()
@@ -138,11 +148,3 @@ onMounted(async () => {
   }
 }
 </style>
-<i18n lang="yaml">
-en-US:
-  alertInstruction: 'If any information is incorrect, please update it in the CRM'
-  hasNoSirenLabel: "The company does not have a SIREN yet"
-fr-FR:
-  alertInstruction: 'Si des informations sont incorrectes, veuillez les mettre à jour dans le CRM'
-  hasNoSirenLabel: "L'entreprise n'a pas encore de SIREN"
-</i18n>

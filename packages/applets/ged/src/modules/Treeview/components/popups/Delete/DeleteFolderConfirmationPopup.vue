@@ -26,6 +26,14 @@ import { type DeleteFolderConfirmationPopupProps }
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      message: 'Si vous cliquez sur "Confirmer", tous les fichiers et sous dossiers à partir du dossier "{folderName}" seront supprimés et envoyés à la corbeille.\n',
+    },
+    'fr-FR': {
+      message: 'Si vous cliquez sur "Confirmer", tous les fichiers et sous dossiers à partir du dossier "{folderName}" seront supprimés et envoyés à la corbeille.\n',
+    },
+  },
 })
 
 const props = defineProps<DeleteFolderConfirmationPopupProps>()
@@ -57,16 +65,3 @@ const handleCancelDeleteFolder = () => {
   emit('cancel-delete-folder')
 }
 </script>
-<i18n lang="yaml">
-en-US:
-  message: >
-    Si vous cliquez sur "Confirmer",
-    tous les fichiers et sous dossiers à partir du dossier "{folderName}"
-    seront supprimés et envoyés à la corbeille.
-
-fr-FR:
-  message: >
-    Si vous cliquez sur "Confirmer",
-    tous les fichiers et sous dossiers à partir du dossier "{folderName}"
-    seront supprimés et envoyés à la corbeille.
-</i18n>

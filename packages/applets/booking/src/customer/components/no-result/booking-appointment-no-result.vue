@@ -34,16 +34,14 @@ import { PIcon } from '@pulse/styleguide/components'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      message: 'No appointments are currently scheduled. Book an appointment with your expert whenever you want.\n',
+    },
+    'fr-FR': {
+      message: 'Aucun rendez-vous programmé actuellement. Prenez rendez-vous avec votre expert quand vous le souhaitez.\n',
+    },
+  },
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    message: >
-      No appointments are currently scheduled.
-      Book an appointment with your expert whenever you want.
-  fr-FR:
-    message: >
-      Aucun rendez-vous programmé actuellement.
-      Prenez rendez-vous avec votre expert quand vous le souhaitez.
-</i18n>

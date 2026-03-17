@@ -45,6 +45,48 @@ import { trackDepositedDocument } from '@ged/services/tracking/tracking.service'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      modalTitle: 'Déposer 0 document dans {folderName} | Déposer 1 document dans {folderName} | Déposer {count} documents dans {folderName}',
+      folderList: {
+        explorerUnauthorizedGivenActionMessage: 'Vous n\'êtes pas autorisé à déposer dans ce dossier',
+        foldersListEmptyFolderLabel: 'There is no subfolder',
+      },
+      documentsList: {
+        noDeposableDocumentsLabel: 'Aucun document ne peut être déposé dans votre espace documentaire.',
+      },
+      notifications: {
+        successMsg: {
+          plural: 'Les {documentCount} documents ont été déposés dans le dossier {folderName}',
+          single: '1 document a été déposé dans le dossier {folderName}',
+        },
+        errorMsg: '1 document n\'a pas pu être déposé : {errorDetails}.|{failedCount} documents n\'ont pas pu être déposés : {errorDetails}.',
+      },
+      header: {
+        title: 'Certains documents ne peuvent pas être déposés dans votre espace documentaire',
+      },
+    },
+    'fr-FR': {
+      modalTitle: 'Déposer 0 document dans {folderName} | Déposer 1 document dans {folderName} | Déposer {count} documents dans {folderName}',
+      folderList: {
+        explorerUnauthorizedGivenActionMessage: 'Vous n\'êtes pas autorisé à déposer dans ce dossier',
+        foldersListEmptyFolderLabel: 'Aucun sous-dossier',
+      },
+      documentsList: {
+        noDeposableDocumentsLabel: 'Aucun document ne peut être déposé dans votre espace documentaire.',
+      },
+      notifications: {
+        successMsg: {
+          plural: 'Les {documentCount} documents ont été déposés dans le dossier {folderName}',
+          single: '1 document a été déposé dans le dossier {folderName}',
+        },
+        errorMsg: '1 document n\'a pas pu être déposé : {errorDetails}.|{failedCount} documents n\'ont pas pu être déposés : {errorDetails}.',
+      },
+      header: {
+        title: 'Certains documents ne peuvent pas être déposés dans votre espace documentaire',
+      },
+    },
+  },
 })
 
 const props = defineProps<DocumentUploadProps>()
@@ -264,48 +306,3 @@ const triggerErrorNotification = (failedCount : number, errorDetails : string) =
 </script>
 
 <!-- eslint-disable max-len -->
-<i18n lang="json">
-{
-  "en-US": {
-    "modalTitle": "Déposer 0 document dans {folderName} | Déposer 1 document dans {folderName} | Déposer {count} documents dans {folderName}",
-    "folderList": {
-      "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déposer dans ce dossier",
-      "foldersListEmptyFolderLabel": "There is no subfolder"
-    },
-    "documentsList": {
-      "noDeposableDocumentsLabel": "Aucun document ne peut être déposé dans votre espace documentaire."
-    },
-    "notifications": {
-      "successMsg": {
-        "plural": "Les {documentCount} documents ont été déposés dans le dossier {folderName}",
-        "single": "1 document a été déposé dans le dossier {folderName}"
-      },
-      "errorMsg": "1 document n'a pas pu être déposé : {errorDetails}.|{failedCount} documents n'ont pas pu être déposés : {errorDetails}."
-
-    },
-    "header": {
-      "title": "Certains documents ne peuvent pas être déposés dans votre espace documentaire"
-    }
-  },
-  "fr-FR": {
-    "modalTitle": "Déposer 0 document dans {folderName} | Déposer 1 document dans {folderName} | Déposer {count} documents dans {folderName}",
-    "folderList": {
-      "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déposer dans ce dossier",
-      "foldersListEmptyFolderLabel": "Aucun sous-dossier"
-    },
-    "documentsList": {
-      "noDeposableDocumentsLabel": "Aucun document ne peut être déposé dans votre espace documentaire."
-    },
-    "notifications": {
-      "successMsg": {
-        "plural": "Les {documentCount} documents ont été déposés dans le dossier {folderName}",
-        "single": "1 document a été déposé dans le dossier {folderName}"
-      },
-      "errorMsg": "1 document n'a pas pu être déposé : {errorDetails}.|{failedCount} documents n'ont pas pu être déposés : {errorDetails}."
-    },
-    "header": {
-      "title": "Certains documents ne peuvent pas être déposés dans votre espace documentaire"
-    }
-  }
-}
-</i18n>

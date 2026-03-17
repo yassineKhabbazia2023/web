@@ -37,6 +37,16 @@ import type { ServiceMailToGedInformation } from '@ged/models/Service'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      title: 'Upload document using email address',
+      description: 'Copy the email address and add it as an email recipient\nto drop off a document.\n',
+    },
+    'fr-FR': {
+      title: 'Déposer un document par e-mail',
+      description: 'Copiez l\'adresse e-mail et ajoutez-la en destinataire d\'un email\nafin de déposer un document.\n',
+    },
+  },
 })
 
 const mailModalProps = defineProps<EmailPennylaneModalProps>()
@@ -69,15 +79,3 @@ const handleClosePopup = ()=>{
   emit('on-close-popup')
 }
 </script>
-<i18n lang="yaml">
-en-US:
-  title: "Upload document using email address"
-  description: |
-    Copy the email address and add it as an email recipient
-    to drop off a document.
-fr-FR:
-  title: "Déposer un document par e-mail"
-  description: |
-    Copiez l'adresse e-mail et ajoutez-la en destinataire d'un email
-    afin de déposer un document.
-</i18n>

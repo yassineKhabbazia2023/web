@@ -85,6 +85,52 @@ import { activateSmartOfferTrial } from '@powerbi/services/reporting.service'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      financialIndicatorsIntro: 'The financial indicators presented will be:',
+      technicalError: 'A technical error occurred. Please try again later.',
+      smartOfferActivatedSuccess: 'The offer has been successfully activated. You will be redirected to your SMART dashboard.\n',
+      financialIndicators: {
+        cashFlow: 'Cash flow: receipts, disbursements, outstanding amounts, debts, etc.',
+        performance: 'Performance: revenue, payroll, etc.',
+        hr: 'HR: FTE, absenteeism, etc.',
+      },
+      missionDescription: 'Mission description',
+      dashboardAccess: {
+        overview: 'From this dynamic BI dashboard, you will have the ability to access a detailed view of the desired items.\n',
+        limitation: 'Potential requests for enrichment in terms of indicators and analytical axes are not covered by this proposal.\n',
+        trialOffer: 'Try our solution free for 3 months, then continue enjoying it for only €{price}/month with no commitment.\n',
+      },
+      biDashboardSupport: 'To support you in managing your business, we offer — in addition to our current engagement — services for providing key performance indicators on a dynamic BI dashboard. Our work will consist of delivering management indicators via a Business Intelligence (BI) tool integrated with your RYDGE platform.\n',
+      acceptOffer: {
+        text: 'I accept the conditions related to the SMART offer,',
+        seeConditions: 'see conditions',
+      },
+      acceptTerms: 'I have read and accept the conditions related to the offer',
+    },
+    'fr-FR': {
+      financialIndicatorsIntro: 'Les indicateurs financiers présentés seront :',
+      technicalError: 'Une erreur technique est survenue. Veuillez réessayer plus tard.',
+      smartOfferActivatedSuccess: 'L\'offre a été activée avec succès. Vous serez redirigé vers votre tableau de bord SMART.',
+      missionDescription: 'Description de la mission',
+      financialIndicators: {
+        cashFlow: 'Trésorerie : encaissements, décaissements, encours, dettes, etc.',
+        performance: 'Performance : chiffre d\'affaires, masse salariale, etc.',
+        hr: 'RH : ETP, absentéisme, etc.',
+      },
+      dashboardAccess: {
+        overview: 'Depuis ce tableau de bord BI dynamique, vous aurez la possibilité d\'accéder à une vision détaillée des postes souhaités.\n',
+        limitation: 'Les potentielles demandes d\'enrichissement en matière d\'indicateurs et d\'axes analytiques ne sont pas couvertes par la présente proposition.\n',
+        trialOffer: 'Testez notre solution gratuitement pendant 3 mois, puis continuez à en profiter pour seulement {price} €/mois sans engagement.\n',
+      },
+      biDashboardSupport: 'Pour vous accompagner dans la gestion de votre activité, nous vous proposons en complément de notre mission actuelle les prestations de mise à disposition d\'indicateurs sur un tableau de bord BI dynamique. Nos travaux consisteront à vous proposer la mise à disposition d\'indicateurs de gestion via un outil de BI (Business Intelligence) depuis votre plateforme RYDGE.\n',
+      acceptOffer: {
+        text: 'J\'accepte les conditions liées à l\'offre SMART,',
+        seeConditions: 'voir les conditions',
+      },
+      acceptTerms: 'J\'ai lu et j\'accepte les conditions liées à l\'offre',
+    },
+  },
 })
 
 const props = defineProps<ActivateTrialOfferDialogProps>()
@@ -129,60 +175,3 @@ const handleSmartOfferActivation = async () => {
 // #endregion
 </script>
 
-<i18n lang="yaml">
-en-US:
-  financialIndicatorsIntro: "The financial indicators presented will be:"
-  technicalError: "A technical error occurred. Please try again later."
-  smartOfferActivatedSuccess: >
-    The offer has been successfully activated. You will be redirected to your SMART dashboard.
-  financialIndicators:
-    cashFlow: "Cash flow: receipts, disbursements, outstanding amounts, debts, etc."
-    performance: "Performance: revenue, payroll, etc."
-    hr: "HR: FTE, absenteeism, etc."
-  missionDescription: "Mission description"
-  dashboardAccess:
-    overview: >
-      From this dynamic BI dashboard, you will have the ability to access a detailed view of the desired items.
-    limitation: >
-      Potential requests for enrichment in terms of indicators and analytical axes are not covered by this proposal.
-    trialOffer: >
-      Try our solution free for 3 months, then continue enjoying it for only €{price}/month with no commitment.
-  biDashboardSupport: >
-    To support you in managing your business, we offer — in addition to our current engagement —
-    services for providing key performance indicators on a dynamic BI dashboard.
-    Our work will consist of delivering management indicators via a Business Intelligence (BI) tool
-    integrated with your RYDGE platform.
-  acceptOffer:
-    text: "I accept the conditions related to the SMART offer,"
-    seeConditions: "see conditions"
-  acceptTerms: "I have read and accept the conditions related to the offer"
-
-fr-FR:
-  financialIndicatorsIntro: "Les indicateurs financiers présentés seront :"
-  technicalError: "Une erreur technique est survenue. Veuillez réessayer plus tard."
-  smartOfferActivatedSuccess: "L'offre a été activée avec succès. Vous serez redirigé vers votre tableau de bord SMART."
-  missionDescription: "Description de la mission"
-  financialIndicators:
-    cashFlow: "Trésorerie : encaissements, décaissements, encours, dettes, etc."
-    performance: "Performance : chiffre d'affaires, masse salariale, etc."
-    hr: "RH : ETP, absentéisme, etc."
-  dashboardAccess:
-    overview: >
-      Depuis ce tableau de bord BI dynamique, vous aurez la possibilité
-      d'accéder à une vision détaillée des postes souhaités.
-    limitation: >
-      Les potentielles demandes d'enrichissement en matière d'indicateurs et
-      d'axes analytiques ne sont pas couvertes par la présente proposition.
-    trialOffer: >
-      Testez notre solution gratuitement pendant 3 mois,
-      puis continuez à en profiter pour seulement {price} €/mois sans engagement.
-  biDashboardSupport: >
-    Pour vous accompagner dans la gestion de votre activité, nous vous proposons en complément de notre
-    mission actuelle les prestations de mise à disposition d'indicateurs sur un tableau de bord BI dynamique.
-    Nos travaux consisteront à vous proposer la mise à disposition d'indicateurs de gestion via un outil
-    de BI (Business Intelligence) depuis votre plateforme RYDGE.
-  acceptOffer:
-    text: "J'accepte les conditions liées à l'offre SMART,"
-    seeConditions: "voir les conditions"
-  acceptTerms: "J'ai lu et j'accepte les conditions liées à l'offre"
-</i18n>

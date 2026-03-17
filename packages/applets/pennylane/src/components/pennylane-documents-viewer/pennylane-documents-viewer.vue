@@ -93,6 +93,37 @@ import { HTTP_RESPONSES } from '@pulse/common/constants'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      errorMsgTitle: 'Preview unavailable',
+      errorMsgText: 'The document format is not supported',
+      errorWhileLoading: 'An error occurred while loading the document content. Please try again later.\n',
+      label: {
+        download: 'Download',
+      },
+      messages: {
+        'download-success': 'Document downloaded successfully',
+        'download-error': 'A technical error occurred while downloading the document',
+      },
+    },
+    'fr-FR': {
+      errorMsgTitle: 'Aperçu indisponible',
+      errorMsgText: 'Le format de document n\'est pas supporté',
+      errorWhileLoading: 'Une erreur est survenue lors du chargement du contenu du document. Veuillez réessayer ultérieurement s\'il vous plaît.\n',
+      label: {
+        download: 'Télécharger',
+      },
+      messages: {
+        'download-success': 'Document téléchargé avec succès',
+        'download-error': 'Une erreur technique est survenue lors du téléchargement du document',
+      },
+      documentUnavailable: {
+        title: 'Aperçu indisponible',
+        documentHasBeenDeleted: 'Le document a été supprimé dans Pennylane',
+        understood: 'C’est compris',
+      },
+    },
+  },
 })
 
 const props = defineProps<PennylaneDocumentsViewerProps>()
@@ -160,31 +191,3 @@ const isDownloadButtonDisabled = computed(() => (
 ))
 </script>
 
-<i18n lang="yaml">
-en-US:
-    errorMsgTitle: 'Preview unavailable'
-    errorMsgText: "The document format is not supported"
-    errorWhileLoading: >
-      An error occurred while loading the document content.
-      Please try again later.
-    label:
-      download: 'Download'
-    messages:
-      download-success: 'Document downloaded successfully'
-      download-error: 'A technical error occurred while downloading the document'
-fr-FR:
-    errorMsgTitle: 'Aperçu indisponible'
-    errorMsgText: "Le format de document n'est pas supporté"
-    errorWhileLoading: >
-      Une erreur est survenue lors du chargement du contenu du document.
-      Veuillez réessayer ultérieurement s'il vous plaît.
-    label:
-      download: 'Télécharger'
-    messages:
-      download-success: 'Document téléchargé avec succès'
-      download-error: 'Une erreur technique est survenue lors du téléchargement du document'
-    documentUnavailable:
-      title: 'Aperçu indisponible'
-      documentHasBeenDeleted: 'Le document a été supprimé dans Pennylane'
-      understood: 'C’est compris'
-</i18n>

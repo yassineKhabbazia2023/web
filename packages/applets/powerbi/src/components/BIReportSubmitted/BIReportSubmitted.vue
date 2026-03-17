@@ -24,6 +24,16 @@ import type { BIReportSubmittedProps } from './bi-report-submitted.types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      successText: 'The BI report has been successfully submitted to ',
+      uploadNewReport: 'Upload a new report',
+    },
+    'fr-FR': {
+      successText: 'Le rapport BI a été déposé avec succès chez ',
+      uploadNewReport: 'Déposer un nouveau rapport',
+    },
+  },
 })
 
 defineProps<BIReportSubmittedProps>()
@@ -41,11 +51,3 @@ const emit = defineEmits<{
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  successText: 'The BI report has been successfully submitted to '
-  uploadNewReport: 'Upload a new report'
-fr-FR:
-  successText: 'Le rapport BI a été déposé avec succès chez '
-  uploadNewReport: 'Déposer un nouveau rapport'
-</i18n>

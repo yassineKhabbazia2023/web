@@ -128,6 +128,32 @@ import { SortDirection } from '@pulse/common/enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      collaborators: 'Collaborators',
+      email: 'E-mail',
+      phoneNumber: 'Phone number',
+      crmRole: 'CRM Role',
+      role: 'Role',
+      office: 'Office',
+      actions: 'Actions',
+      collaboratorInformation: 'Collaborator information',
+      detailsOfDelegations: 'Details of delegations',
+      manageAccessRights: 'Manage access rights',
+    },
+    'fr-FR': {
+      collaborators: 'Collaborateurs',
+      email: 'E-mail',
+      phoneNumber: 'Téléphone',
+      crmRole: 'Fonction CRM',
+      role: 'Rôle',
+      office: 'Bureau',
+      actions: 'Actions',
+      collaboratorInformation: 'Informations du collaborateur',
+      detailsOfDelegations: 'Détails des délégations',
+      manageAccessRights: 'Gérer les droits d’accès',
+    },
+  },
 })
 
 const emit = defineEmits<{
@@ -204,27 +230,3 @@ const handleSortChange = (data: any) => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  collaborators: 'Collaborators'
-  email: 'E-mail'
-  phoneNumber: 'Phone number'
-  crmRole: 'CRM Role'
-  role: 'Role'
-  office: 'Office'
-  actions: 'Actions'
-  collaboratorInformation: 'Collaborator information'
-  detailsOfDelegations: 'Details of delegations'
-  manageAccessRights: 'Manage access rights'
-fr-FR:
-  collaborators: 'Collaborateurs'
-  email: 'E-mail'
-  phoneNumber: 'Téléphone'
-  crmRole: 'Fonction CRM'
-  role: 'Rôle'
-  office: 'Bureau'
-  actions: 'Actions'
-  collaboratorInformation: 'Informations du collaborateur'
-  detailsOfDelegations: 'Détails des délégations'
-  manageAccessRights: "Gérer les droits d’accès"
-</i18n>

@@ -82,6 +82,28 @@ import MobileUserMenuItem from './mobile-user-menu-item.vue'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      menu: 'Menu',
+      myPortfolio: 'My entities',
+      myInformation: 'My information',
+      password: 'Password',
+      legalNotice: 'Legal Notice',
+      cgu: 'CGU',
+      privacyPolicy: 'Privacy Policy',
+      manageCookies: 'Manage cookies',
+    },
+    'fr-FR': {
+      menu: 'Menu',
+      myPortfolio: 'Mes entités',
+      myInformation: 'Mes informations',
+      password: 'Mot de passe',
+      legalNotice: 'Mentions légales',
+      cgu: 'CGU',
+      privacyPolicy: 'Politique de confidentialité',
+      manageCookies: 'Gérer mes cookies',
+    },
+  },
 })
 
 const userStore = useUserStore()
@@ -127,27 +149,3 @@ onMounted(async () => {
 }
 </style>
 
-<i18n lang="json">
-{
-  "en-US": {
-    "menu": "Menu",
-    "myPortfolio": "My entities",
-    "myInformation": "My information",
-    "password": "Password",
-    "legalNotice": "Legal Notice",
-    "cgu": "CGU",
-    "privacyPolicy": "Privacy Policy",
-    "manageCookies": "Manage cookies"
-  },
-  "fr-FR": {
-    "menu": "Menu",
-    "myPortfolio": "Mes entités",
-    "myInformation": "Mes informations",
-    "password": "Mot de passe",
-    "legalNotice": "Mentions légales",
-    "cgu": "CGU",
-    "privacyPolicy": "Politique de confidentialité",
-    "manageCookies": "Gérer mes cookies"
-  }
-}
-</i18n>

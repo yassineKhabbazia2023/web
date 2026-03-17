@@ -29,6 +29,22 @@ defineProps<DocumentTabsProps>()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      tabs: {
+        detail: {
+          label: 'Détails',
+        },
+      },
+    },
+    'fr-FR': {
+      tabs: {
+        detail: {
+          label: 'Détails',
+        },
+      },
+    },
+  },
 })
 
 const tabSetting = reactive({
@@ -48,13 +64,3 @@ const tabSettingsActiveName = computed({
   },
 })
 </script>
-<i18n lang="yaml">
-  en-US:
-    tabs:
-      detail:
-        label: 'Détails'
-  fr-FR:
-    tabs:
-      detail:
-        label: 'Détails'
-</i18n>

@@ -30,6 +30,16 @@ import type { CatalogResultCountProps } from './catalog-result-count.types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      resultCount: '0 result for your search|1 result|{resultCount} results',
+      clearSearch: 'Clear search',
+    },
+    'fr-FR': {
+      resultCount: '0 résultat pour votre recherche|1 résultat|{resultCount} résultats',
+      clearSearch: 'Effacer la recherche',
+    },
+  },
 })
 
 defineProps<CatalogResultCountProps>()
@@ -47,11 +57,3 @@ const emit = defineEmits<{
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    resultCount: '0 result for your search|1 result|{resultCount} results'
-    clearSearch: 'Clear search'
-  fr-FR:
-    resultCount: '0 résultat pour votre recherche|1 résultat|{resultCount} résultats'
-    clearSearch: 'Effacer la recherche'
-</i18n>

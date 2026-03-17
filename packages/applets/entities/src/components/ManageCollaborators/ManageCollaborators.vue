@@ -98,6 +98,26 @@ const props = defineProps<ManageCollaboratorsProps>()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      addCollaborators: 'Add collaborators',
+      addCollaboratorsWithRoles: 'Add up to {count} collaborators and assign the following roles:| Add up to {count} collaborators and assign the following roles:\n',
+      searchCollaborator: 'Please search for a collaborator :',
+      description: 'You can add collaborators to this offer.',
+      descriptionWithRoles: 'A collaborator must have at least 1 role and can fulfill several roles\n',
+      optionsPlaceholder: 'Select role(s)',
+      optionsNoDataText: 'Remove a role from another collaborator',
+    },
+    'fr-FR': {
+      addCollaborators: 'Ajoutez des collaborateurs',
+      addCollaboratorsWithRoles: 'Ajouter au maximum {count} collaborateur et affecter le rôle ci-dessous :| Ajouter au maximum {count} collaborateurs et affecter les {count} rôles ci-dessous :\n',
+      searchCollaborator: 'Veuillez rechercher un collaborateur :',
+      description: 'Vous pouvez ajouter des collaborateurs sur cette offre.',
+      descriptionWithRoles: 'Un collaborateur doit avoir au minimum 1 rôle et peut remplir plusieurs rôles\n',
+      optionsPlaceholder: 'Choisir le(s) rôle(s)',
+      optionsNoDataText: 'Supprimez un rôle d’un autre collaborateur',
+    },
+  },
 })
 
 const hasCollaboratorRole = computed(() => props.collaboratorRoles.length > 0)
@@ -172,27 +192,3 @@ function onUpdateCollaboratorRoles(index: number, roleIds: number[]) {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  addCollaborators: 'Add collaborators'
-  addCollaboratorsWithRoles: >
-    Add up to {count} collaborators and assign the following roles:|
-    Add up to {count} collaborators and assign the following roles:
-  searchCollaborator: 'Please search for a collaborator :'
-  description: 'You can add collaborators to this offer.'
-  descriptionWithRoles: >
-    A collaborator must have at least 1 role and can fulfill several roles
-  optionsPlaceholder: 'Select role(s)'
-  optionsNoDataText: 'Remove a role from another collaborator'
-fr-FR:
-  addCollaborators: 'Ajoutez des collaborateurs'
-  addCollaboratorsWithRoles: >
-    Ajouter au maximum {count} collaborateur et affecter le rôle ci-dessous :|
-    Ajouter au maximum {count} collaborateurs et affecter les {count} rôles ci-dessous :
-  searchCollaborator: 'Veuillez rechercher un collaborateur :'
-  description: 'Vous pouvez ajouter des collaborateurs sur cette offre.'
-  descriptionWithRoles: >
-    Un collaborateur doit avoir au minimum 1 rôle et peut remplir plusieurs rôles
-  optionsPlaceholder: 'Choisir le(s) rôle(s)'
-  optionsNoDataText: 'Supprimez un rôle d’un autre collaborateur'
-</i18n>

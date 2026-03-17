@@ -128,6 +128,38 @@ const { t, d } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   datetimeFormats,
+  messages: {
+    'en-US': {
+      status: 'Status',
+      actions: 'Actions',
+      updatedOn: 'Updated on',
+      clientCode: 'Client code',
+      reportType: 'Report type',
+      viewReport: 'View Report',
+      companyName: 'Company name',
+      customerLabel: 'Customer label:',
+      initializedOn: 'Initialized on',
+      manualUpload: 'Upload Manually',
+      deleteReport: 'Delete Report',
+      activateReport: 'Activate Report',
+      deactivateReport: 'Deactivate Report',
+    },
+    'fr-FR': {
+      status: 'Statut',
+      actions: 'Actions',
+      updatedOn: 'Mis à jour le',
+      clientCode: 'Code client',
+      reportType: 'Type de rapport',
+      viewReport: 'Voir le rapport',
+      companyName: 'Raison sociale',
+      customerLabel: 'Libellé client:',
+      initializedOn: 'Initialisé le',
+      manualUpload: 'Déposer manuellement',
+      deleteReport: 'Supprimer le rapport',
+      activateReport: 'Activer le rapport',
+      deactivateReport: 'Désactiver le rapport',
+    },
+  },
 })
 
 defineProps<ReportTableProps>()
@@ -213,33 +245,3 @@ const handleSort = (sortChangeEventData: SortChangeEventData) => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  status: 'Status'
-  actions: 'Actions'
-  updatedOn: 'Updated on'
-  clientCode: 'Client code'
-  reportType: 'Report type'
-  viewReport: 'View Report'
-  companyName: 'Company name'
-  customerLabel: 'Customer label:'
-  initializedOn: 'Initialized on'
-  manualUpload: 'Upload Manually'
-  deleteReport: 'Delete Report'
-  activateReport: 'Activate Report'
-  deactivateReport: 'Deactivate Report'
-fr-FR:
-  status: 'Statut'
-  actions: 'Actions'
-  updatedOn: 'Mis à jour le'
-  clientCode: 'Code client'
-  reportType: 'Type de rapport'
-  viewReport: 'Voir le rapport'
-  companyName: 'Raison sociale'
-  customerLabel: 'Libellé client:'
-  initializedOn: 'Initialisé le'
-  manualUpload: 'Déposer manuellement'
-  deleteReport: 'Supprimer le rapport'
-  activateReport: 'Activer le rapport'
-  deactivateReport: 'Désactiver le rapport'
-</i18n>

@@ -149,6 +149,38 @@ import { CollaboratorRole } from '@entities/enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      newTestAccount: 'New test account',
+      createTestAccount: 'Creation of a test entity',
+      fillInInformationForDemoSpace: 'Fill in the following information to generate a demo space. Never use real customer information.\n',
+      cancel: 'Cancel',
+      create: 'Create test account',
+      searchCollaborator: 'Collaborator(s) associated with the entity',
+      setAsSignatory: 'Set as signatory',
+      userCollaborator: 'User collaborator',
+      testAccountCreated: 'The test account has been successfully created.',
+      testAccountCreationFailed: 'Test account creation failed. Please try again.',
+      accountManager: 'Account Manager',
+      accountMaster: 'File Master',
+      selectRoles: 'Select role(s)',
+    },
+    'fr-FR': {
+      newTestAccount: 'Nouveau compte de test',
+      createTestAccount: 'Création d\'une entité de test',
+      fillInInformationForDemoSpace: 'Remplissez les informations suivantes pour générer un espace de démo. Ne jamais utiliser des informations clients réelles.\n',
+      cancel: 'Annuler',
+      create: 'Créer un compte de test',
+      searchCollaborator: 'Collaborateur(s) associé(s) à l’entité',
+      setAsSignatory: 'Définir comme signataire',
+      userCollaborator: 'Utilisateur collaborateur',
+      testAccountCreated: 'Le compte de test a été créé avec succès.',
+      testAccountCreationFailed: 'La création du compte de test a échoué. Veuillez réessayer.',
+      accountManager: 'Resp compte',
+      accountMaster: 'Maître dossier',
+      selectRoles: 'Choisir le(s) rôle(s)',
+    },
+  },
 })
 
 const props = defineProps<EntityCreatorDrawerProps>()
@@ -346,36 +378,3 @@ defineExpose({
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  newTestAccount: 'New test account'
-  createTestAccount: 'Creation of a test entity'
-  fillInInformationForDemoSpace: >
-    Fill in the following information to generate a demo space. Never use real customer information.
-  cancel: 'Cancel'
-  create: 'Create test account'
-  searchCollaborator: 'Collaborator(s) associated with the entity'
-  setAsSignatory: 'Set as signatory'
-  userCollaborator: 'User collaborator'
-  testAccountCreated: 'The test account has been successfully created.'
-  testAccountCreationFailed: 'Test account creation failed. Please try again.'
-  accountManager: 'Account Manager'
-  accountMaster: 'File Master'
-  selectRoles: 'Select role(s)'
-fr-FR:
-  newTestAccount: 'Nouveau compte de test'
-  createTestAccount: "Création d'une entité de test"
-  fillInInformationForDemoSpace: >
-    Remplissez les informations suivantes pour générer un espace de démo.
-    Ne jamais utiliser des informations clients réelles.
-  cancel: 'Annuler'
-  create: 'Créer un compte de test'
-  searchCollaborator: 'Collaborateur(s) associé(s) à l’entité'
-  setAsSignatory: 'Définir comme signataire'
-  userCollaborator: 'Utilisateur collaborateur'
-  testAccountCreated: 'Le compte de test a été créé avec succès.'
-  testAccountCreationFailed: 'La création du compte de test a échoué. Veuillez réessayer.'
-  accountManager: 'Resp compte'
-  accountMaster: 'Maître dossier'
-  selectRoles: 'Choisir le(s) rôle(s)'
-</i18n>

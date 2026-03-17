@@ -19,6 +19,26 @@ import { type PTagProps } from '@pulse/styleguide/types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      creating: 'Creating',
+      'technical-incident': 'Technical Incident',
+      'business-incident': 'Business Incident',
+      'to-do': 'To do',
+      'in-progress': 'In progress',
+      active: 'Active',
+      inactive: 'Inactive',
+    },
+    'fr-FR': {
+      creating: 'En création',
+      'technical-incident': 'Incident technique',
+      'business-incident': 'Incident métier',
+      'to-do': 'À déposer',
+      'in-progress': 'En cours',
+      active: 'Actif',
+      inactive: 'Résilié',
+    },
+  },
 })
 
 type TagProps = {
@@ -46,21 +66,3 @@ const statusMap = new Map<number, StatusMap>([
 const tagProperties = computed(() => statusMap.get(Number(props.status)))
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    creating: 'Creating'
-    technical-incident: 'Technical Incident'
-    business-incident: 'Business Incident'
-    to-do: 'To do'
-    in-progress: 'In progress'
-    active: 'Active'
-    inactive: 'Inactive'
-  fr-FR:
-    creating: 'En création'
-    technical-incident: 'Incident technique'
-    business-incident: 'Incident métier'
-    to-do: 'À déposer'
-    in-progress: 'En cours'
-    active: 'Actif'
-    inactive: 'Résilié'
-</i18n>

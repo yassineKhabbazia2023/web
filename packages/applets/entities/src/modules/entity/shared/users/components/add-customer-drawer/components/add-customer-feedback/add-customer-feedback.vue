@@ -37,6 +37,20 @@ import type { AddCustomerFeedbackProps } from './add-customer-feedback.types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      contactInvited: 'User has been invited!',
+      ifContactDoesNotExist: 'If your contact is a new user, he will receive his welcome email to create his account',
+      ifContactExists: 'If your contact already has an account on the platform then it can connect directly to it.\n',
+      technicalError: 'Your contact was not added due to a technical error. Please try again later.',
+    },
+    'fr-FR': {
+      contactInvited: 'Votre contact a bien été invité !',
+      ifContactDoesNotExist: 'Si votre contact est un nouvel utilisateur, il va recevoir son e-mail de bienvenue pour créer son compte.\n',
+      ifContactExists: 'Si votre contact a déjà un compte sur la plateforme alors il peut s\'y connecter directement.\n',
+      technicalError: 'Votre contact n\'a pas été ajouté suite à une erreur technique. Veuillez réessayer plus tard.',
+    },
+  },
 })
 
 withDefaults(defineProps<AddCustomerFeedbackProps>(), {
@@ -56,18 +70,3 @@ withDefaults(defineProps<AddCustomerFeedbackProps>(), {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    contactInvited: 'User has been invited!'
-    ifContactDoesNotExist: 'If your contact is a new user, he will receive his welcome email to create his account'
-    ifContactExists: >
-      If your contact already has an account on the platform then it can connect directly to it.
-    technicalError: 'Your contact was not added due to a technical error. Please try again later.'
-  fr-FR:
-    contactInvited: 'Votre contact a bien été invité !'
-    ifContactDoesNotExist: >
-      Si votre contact est un nouvel utilisateur, il va recevoir son e-mail de bienvenue pour créer son compte.
-    ifContactExists: >
-      Si votre contact a déjà un compte sur la plateforme alors il peut s'y connecter directement.
-    technicalError: "Votre contact n'a pas été ajouté suite à une erreur technique. Veuillez réessayer plus tard."
-</i18n>

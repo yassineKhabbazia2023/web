@@ -47,14 +47,16 @@ import { PIcon } from '@pulse/styleguide/components'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      title: 'You have managed all access requests',
+      description: 'You will be notified when you have new access requests.',
+    },
+    'fr-FR': {
+      title: 'Vous avez géré toutes les demandes d’accès',
+      description: 'Vous serez notifié.e quand vous aurez de nouvelles demandes d’accès',
+    },
+  },
 })
 </script>
 
-<i18n lang="yaml">
-    en-US:
-      title: 'You have managed all access requests'
-      description: 'You will be notified when you have new access requests.'
-    fr-FR:
-      title: 'Vous avez géré toutes les demandes d’accès'
-      description: 'Vous serez notifié.e quand vous aurez de nouvelles demandes d’accès'
-</i18n>

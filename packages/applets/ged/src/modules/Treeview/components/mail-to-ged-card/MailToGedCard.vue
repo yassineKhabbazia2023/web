@@ -44,6 +44,14 @@ import { logger } from '@pulse/toolbox'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      sendDocumentsByMail: 'Would you like to send your documents by email?',
+    },
+    'fr-FR': {
+      sendDocumentsByMail: 'Vous souhaitez envoyer vos documents par e‑mail ?',
+    },
+  },
 })
 
 const props = defineProps<MailToGedProps>()
@@ -77,11 +85,3 @@ onMounted(async () => {
   }
 }
 </style>
-
-
-<i18n lang="yaml">
-en-US:
-  sendDocumentsByMail: 'Would you like to send your documents by email?'
-fr-FR:
-  sendDocumentsByMail: 'Vous souhaitez envoyer vos documents par e‑mail ?'
-</i18n>

@@ -52,6 +52,18 @@ import { useUserStore } from '@pulse/common/stores'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      profileSettings: 'Profile Settings',
+      tabInformation: 'My information',
+      tabPassword: 'Password',
+    },
+    'fr-FR': {
+      profileSettings: 'Paramètres du profil',
+      tabInformation: 'Mes informations',
+      tabPassword: 'Mot de passe',
+    },
+  },
 })
 
 const userStore = useUserStore()
@@ -63,13 +75,3 @@ const hasPasswordTab = computed(() => isCollab.value === false)
 const shouldShowTabs = computed(() => hasPasswordTab.value)
 </script>
 
-<i18n lang="yaml">
-en-US:
-  profileSettings: 'Profile Settings'
-  tabInformation: 'My information'
-  tabPassword: 'Password'
-fr-FR:
-  profileSettings: 'Paramètres du profil'
-  tabInformation: 'Mes informations'
-  tabPassword: 'Mot de passe'
-</i18n>

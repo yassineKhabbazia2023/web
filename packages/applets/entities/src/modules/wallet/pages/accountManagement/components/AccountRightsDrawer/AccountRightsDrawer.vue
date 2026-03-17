@@ -93,6 +93,28 @@ import RightsList from '@entities/components/ManageRightsDrawer/components/Right
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      submit: 'Submit',
+      clients: 'clients',
+      collaborators: 'collaborators',
+      clientCompany: 'Client Company',
+      clientPermissions: 'Client permissions',
+      modifyAccountRights: 'Modify account rights',
+      collabPermissions: 'Collaborator permissions',
+      rightsModificationSucceeded: 'The rights associated with dossier {accountName} for {contactType} have been modified.',
+    },
+    'fr-FR': {
+      submit: 'Valider',
+      clients: 'clients',
+      collaborators: 'collaborateurs',
+      clientCompany: 'Société cliente',
+      clientPermissions: 'Permissions client',
+      collabPermissions: 'Permissions collaborateur',
+      modifyAccountRights: 'Modifier les droits du dossier',
+      rightsModificationSucceeded: 'Les droits relatifs au dossier {accountName} pour les {contactType} ont été modifiés.',
+    },
+  },
 })
 
 const props = defineProps<AccountRightsDrawerProps>()
@@ -165,23 +187,3 @@ const handleUpdateAccountPermissions = async () => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  submit: 'Submit'
-  clients: 'clients'
-  collaborators: 'collaborators'
-  clientCompany: 'Client Company'
-  clientPermissions: 'Client permissions'
-  modifyAccountRights: 'Modify account rights'
-  collabPermissions: 'Collaborator permissions'
-  rightsModificationSucceeded: "The rights associated with dossier {accountName} for {contactType} have been modified."
-fr-FR:
-  submit: 'Valider'
-  clients: 'clients'
-  collaborators: 'collaborateurs'
-  clientCompany: 'Société cliente'
-  clientPermissions: 'Permissions client'
-  collabPermissions: 'Permissions collaborateur'
-  modifyAccountRights: 'Modifier les droits du dossier'
-  rightsModificationSucceeded: 'Les droits relatifs au dossier {accountName} pour les {contactType} ont été modifiés.'
-</i18n>

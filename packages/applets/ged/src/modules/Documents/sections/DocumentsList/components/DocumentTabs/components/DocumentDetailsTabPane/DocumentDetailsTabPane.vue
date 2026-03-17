@@ -118,6 +118,32 @@ const props = defineProps<DocumentDetailsTabPaneProps>()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      label: {
+        type: 'Type du document',
+        size: 'Taille du document',
+        path: 'Emplacement du document',
+        createdBy: 'Déposé par',
+        date: 'Date du dépôt',
+        modification: 'Dernière modification',
+        status: 'Etat de transmission',
+        download: 'Télécharger',
+      },
+    },
+    'fr-FR': {
+      label: {
+        type: 'Type du document',
+        size: 'Taille du document',
+        path: 'Emplacement du document',
+        createdBy: 'Déposé par',
+        date: 'Date du dépôt',
+        modification: 'Dernière modification',
+        status: 'Etat de transmission',
+        download: 'Télécharger',
+      },
+    },
+  },
 })
 
 const downloadDocumentsProps:ComputedRef<DownloadDocumentsComposableProps> = computed(() => {
@@ -233,25 +259,3 @@ const isInPIASyncedFolder = computed(() => {
   }
 }
 </style>
-<i18n lang="yaml">
-  en-US:
-    label:
-      type: 'Type du document'
-      size: 'Taille du document'
-      path: 'Emplacement du document'
-      createdBy: 'Déposé par'
-      date: 'Date du dépôt'
-      modification: 'Dernière modification'
-      status: 'Etat de transmission'
-      download: 'Télécharger'
-  fr-FR:
-    label:
-      type: 'Type du document'
-      size: 'Taille du document'
-      path: 'Emplacement du document'
-      createdBy: 'Déposé par'
-      date: 'Date du dépôt'
-      modification: 'Dernière modification'
-      status: 'Etat de transmission'
-      download: 'Télécharger'
-</i18n>

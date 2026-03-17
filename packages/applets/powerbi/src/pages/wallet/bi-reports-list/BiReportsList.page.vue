@@ -88,6 +88,62 @@ import { useSort } from '@pulse/common/composables/sort'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      on: 'on',
+      online: 'Online',
+      offline: 'Offline',
+      pendingValidation: 'Pending validation',
+      initialized: 'Initialized',
+      failed: 'Failure',
+      activated: 'activated',
+      deactivated: 'deactivated',
+      manualUpload: 'Upload Manually',
+      statusChange: 'The report {reportName} has been successfully {action}.',
+      biReportLoadingError: 'The BI report can\'t be loaded at the moment. Please try again later.',
+      notification: {
+        reportDeleted: '{reportName} has been deleted {destination}.',
+        deleteOptions: {
+          all: 'from the Platform and Power BI Services Workspace',
+          platformOnly: 'from the Platform only',
+        },
+        reportDeletionError: 'An error occurred while deleting the report. Please try again later.',
+      },
+      errors: {
+        reportErrorsFetch: 'We couldn\'t load the report errors. Please check your connection or try again shortly.\n',
+        reportActivation: 'An error occurred while activating the report. Please try again or contact support if the issue continues.\n',
+        reportDeactivation: 'An error occurred while deactivating the report. Please try again later or contact our support team.\n',
+        reportFetch: 'We couldn\'t load the reports. Please check your connection or try again shortly.\n',
+      },
+    },
+    'fr-FR': {
+      on: 'sur',
+      online: 'En ligne',
+      offline: 'Hors ligne',
+      pendingValidation: 'À valider',
+      initialized: 'Initialisé',
+      failed: 'Incident',
+      activated: 'activé',
+      deactivated: 'désactivé',
+      manualUpload: 'Déposer manuellement',
+      statusChange: 'Le rapport {reportName} a été {action} avec succès.',
+      biReportLoadingError: 'Le rapport BI ne peut pas être chargé pour le moment. Merci de réessayer plus tard.',
+      notification: {
+        reportDeleted: '{reportName} a été supprimé {destination}.',
+        deleteOptions: {
+          all: 'de la Plateforme et le Workspace Power BI Services',
+          platformOnly: 'de la Plateforme uniquement',
+        },
+        reportDeletionError: 'Une erreur est survenue lors de la suppression du rapport. Veuillez réessayer plus tard.',
+      },
+      errors: {
+        reportErrorsFetch: 'Nous n\'avons pas pu charger les erreurs de rapport. Veuillez vérifier votre connexion ou réessayer dans un instant.\n',
+        reportActivation: 'Une erreur est survenue lors de l\'activation du rapport. Veuillez réessayer ou contacter le support si le problème persiste.\n',
+        reportDeactivation: 'Une erreur est survenue lors de la désactivation du rapport. Merci de réessayer ultérieurement ou de contacter notre équipe d\'assistance.\n',
+        reportFetch: 'Nous n\'avons pas pu charger les rapports. Vérifiez votre connexion ou réessayez dans quelques instants.\n',
+      },
+    },
+  },
 })
 
 const isLoading = ref(false)
@@ -328,63 +384,3 @@ onMounted(() => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  on: 'on'
-  online: 'Online'
-  offline: 'Offline'
-  pendingValidation: 'Pending validation'
-  initialized: 'Initialized'
-  failed: 'Failure'
-  activated: 'activated'
-  deactivated: 'deactivated'
-  manualUpload: 'Upload Manually'
-  statusChange: 'The report {reportName} has been successfully {action}.'
-  biReportLoadingError: "The BI report can't be loaded at the moment. Please try again later."
-  notification:
-    reportDeleted: "{reportName} has been deleted {destination}."
-    deleteOptions:
-      all: "from the Platform and Power BI Services Workspace"
-      platformOnly: "from the Platform only"
-    reportDeletionError: "An error occurred while deleting the report. Please try again later."
-  errors:
-    reportErrorsFetch: >
-      We couldn't load the report errors. Please check your connection or try again shortly.
-    reportActivation: >
-      An error occurred while activating the report. Please try again or contact support if the issue
-      continues.
-    reportDeactivation: >
-      An error occurred while deactivating the report. Please try again later or contact our support team.
-    reportFetch: >
-      We couldn't load the reports. Please check your connection or try again shortly.
-fr-FR:
-  on: 'sur'
-  online: 'En ligne'
-  offline: 'Hors ligne'
-  pendingValidation: 'À valider'
-  initialized: 'Initialisé'
-  failed: 'Incident'
-  activated: 'activé'
-  deactivated: 'désactivé'
-  manualUpload: 'Déposer manuellement'
-  statusChange: 'Le rapport {reportName} a été {action} avec succès.'
-  biReportLoadingError: 'Le rapport BI ne peut pas être chargé pour le moment. Merci de réessayer plus tard.'
-  notification:
-    reportDeleted: "{reportName} a été supprimé {destination}."
-    deleteOptions:
-      all: "de la Plateforme et le Workspace Power BI Services"
-      platformOnly: "de la Plateforme uniquement"
-    reportDeletionError: "Une erreur est survenue lors de la suppression du rapport. Veuillez réessayer plus tard."
-  errors:
-    reportErrorsFetch: >
-      Nous n'avons pas pu charger les erreurs de rapport.
-      Veuillez vérifier votre connexion ou réessayer dans un instant.
-    reportActivation: >
-      Une erreur est survenue lors de l'activation du rapport. Veuillez réessayer ou contacter le support
-      si le problème persiste.
-    reportDeactivation: >
-      Une erreur est survenue lors de la désactivation du rapport. Merci de réessayer ultérieurement ou de
-      contacter notre équipe d'assistance.
-    reportFetch: >
-      Nous n'avons pas pu charger les rapports. Vérifiez votre connexion ou réessayez dans quelques instants.
-</i18n>

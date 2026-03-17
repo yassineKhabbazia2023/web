@@ -69,6 +69,40 @@ const props = defineProps<DocumentSearchFilterProps>()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      title: 'Filtres',
+      reset: 'Réinitialiser',
+      apply: 'Appliquer',
+      dropdownLabel: 'Période',
+      dropdownPlaceholder: 'Sélectionner une période',
+      dropdownItems: {
+        today: 'Les dernières 24h',
+        week: 'Les 7 derniers jours',
+        month: 'Les 30 derniers jours',
+      },
+      datePickerLabel: 'Période personnalisée',
+      datePickerSeparator: 'À',
+      datePickerStartDate: 'Date de début',
+      datePickerEndDate: 'Date de fin',
+    },
+    'fr-FR': {
+      title: 'Filtres',
+      reset: 'Réinitialiser',
+      apply: 'Appliquer',
+      dropdownLabel: 'Période',
+      dropdownPlaceholder: 'Sélectionner une période',
+      dropdownItems: {
+        today: 'Les dernières 24h',
+        week: 'Les 7 derniers jours',
+        month: 'Les 30 derniers jours',
+      },
+      datePickerLabel: 'Période personnalisée',
+      datePickerSeparator: 'À',
+      datePickerStartDate: 'Date de début',
+      datePickerEndDate: 'Date de fin',
+    },
+  },
 })
 
 const emit = defineEmits<{
@@ -169,34 +203,3 @@ onMounted(() => {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    title: Filtres
-    reset: Réinitialiser
-    apply: Appliquer
-    dropdownLabel: Période
-    dropdownPlaceholder: Sélectionner une période
-    dropdownItems:
-      today: Les dernières 24h
-      week: Les 7 derniers jours
-      month: Les 30 derniers jours
-    datePickerLabel: Période personnalisée
-    datePickerSeparator: À
-    datePickerStartDate: Date de début
-    datePickerEndDate: Date de fin
-
-  fr-FR:
-    title: Filtres
-    reset: Réinitialiser
-    apply: Appliquer
-    dropdownLabel: Période
-    dropdownPlaceholder: Sélectionner une période
-    dropdownItems:
-      today: Les dernières 24h
-      week: Les 7 derniers jours
-      month: Les 30 derniers jours
-    datePickerLabel: Période personnalisée
-    datePickerSeparator: À
-    datePickerStartDate: Date de début
-    datePickerEndDate: Date de fin
-  </i18n>

@@ -79,6 +79,44 @@ withDefaults(defineProps<PasswordFieldsProps>(), {
 
 const { t } = useI18n({
   inheritLocale: true,
+  messages: {
+    'en-US': {
+      currentPassword: 'Current password',
+      currentPasswordPlaceholder: 'Enter your current password',
+      newPassword: 'New password',
+      newPasswordPlaceholder: 'Enter your new password',
+      confirmPassword: 'Confirm password',
+      confirmPasswordPlaceholder: 'Re-enter your new password',
+      currentPasswordRequired: 'Current password is required',
+      newPasswordRequired: 'New password is required',
+      newPasswordWeak: 'Password must contain at least 8 characters with uppercase, lowercase, number and special character',
+      confirmPasswordRequired: 'Password confirmation is required',
+      confirmPasswordMismatch: 'Passwords do not match',
+      strengthEmpty: '',
+      strengthWeak: 'Weak',
+      strengthPoor: 'Poor',
+      strengthMedium: 'Medium',
+      strengthStrong: 'Strong',
+    },
+    'fr-FR': {
+      currentPassword: 'Mot de passe actuel',
+      currentPasswordPlaceholder: 'Saisissez votre mot de passe actuel',
+      newPassword: 'Nouveau mot de passe',
+      newPasswordPlaceholder: 'Saisissez votre nouveau mot de passe',
+      confirmPassword: 'Confirmer le mot de passe',
+      confirmPasswordPlaceholder: 'Ressaisissez votre nouveau mot de passe',
+      currentPasswordRequired: 'Le mot de passe actuel est requis',
+      newPasswordRequired: 'Le nouveau mot de passe est requis',
+      newPasswordWeak: 'Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule, chiffre et caractère spécial',
+      confirmPasswordRequired: 'La confirmation du mot de passe est requise',
+      confirmPasswordMismatch: 'Les mots de passe ne correspondent pas',
+      strengthEmpty: '',
+      strengthWeak: 'Faible',
+      strengthPoor: 'Moyen',
+      strengthMedium: 'Bon',
+      strengthStrong: 'Fort',
+    },
+  },
 })
 
 // Values - using defineModel for two-way binding
@@ -126,39 +164,3 @@ defineExpose({
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  currentPassword: 'Current password'
-  currentPasswordPlaceholder: 'Enter your current password'
-  newPassword: 'New password'
-  newPasswordPlaceholder: 'Enter your new password'
-  confirmPassword: 'Confirm password'
-  confirmPasswordPlaceholder: 'Re-enter your new password'
-  currentPasswordRequired: 'Current password is required'
-  newPasswordRequired: 'New password is required'
-  newPasswordWeak: 'Password must contain at least 8 characters with uppercase, lowercase, number and special character'
-  confirmPasswordRequired: 'Password confirmation is required'
-  confirmPasswordMismatch: 'Passwords do not match'
-  strengthEmpty: ''
-  strengthWeak: 'Weak'
-  strengthPoor: 'Poor'
-  strengthMedium: 'Medium'
-  strengthStrong: 'Strong'
-fr-FR:
-  currentPassword: 'Mot de passe actuel'
-  currentPasswordPlaceholder: 'Saisissez votre mot de passe actuel'
-  newPassword: 'Nouveau mot de passe'
-  newPasswordPlaceholder: 'Saisissez votre nouveau mot de passe'
-  confirmPassword: 'Confirmer le mot de passe'
-  confirmPasswordPlaceholder: 'Ressaisissez votre nouveau mot de passe'
-  currentPasswordRequired: 'Le mot de passe actuel est requis'
-  newPasswordRequired: 'Le nouveau mot de passe est requis'
-  newPasswordWeak: 'Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule, chiffre et caractère spécial'
-  confirmPasswordRequired: 'La confirmation du mot de passe est requise'
-  confirmPasswordMismatch: 'Les mots de passe ne correspondent pas'
-  strengthEmpty: ''
-  strengthWeak: 'Faible'
-  strengthPoor: 'Moyen'
-  strengthMedium: 'Bon'
-  strengthStrong: 'Fort'
-</i18n>

@@ -114,6 +114,36 @@ const { d, t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   datetimeFormats,
+  messages: {
+    'en-US': {
+      searchByName: 'Search by name',
+      description: '{delegator} delegated the folder{delegatee}.',
+      you: 'you',
+      have: '',
+      has: '',
+      to: ' to ',
+      delegation: 'Delegation',
+      successNotification: 'The delegation made to {delegatee} has been deleted.',
+      errorNotification: 'The delegation made to {delegatee} has not been deleted.',
+      deleteTheDelegation: 'Remove delegation',
+      alreadyDeleted: 'You have already deleted the delegation',
+      notYourDelegation: 'This is not your delegation',
+    },
+    'fr-FR': {
+      searchByName: 'Rechercher par nom',
+      description: '{delegator} délégué le dossier{delegatee}.',
+      you: 'vous',
+      have: 'avez',
+      has: 'a',
+      to: ' à ',
+      delegation: 'Délégation',
+      successNotification: 'La délégation faite à {delegatee} a bien été supprimée.',
+      errorNotification: 'La délégation faite à {delegatee} n\'a pas été supprimée.',
+      deleteTheDelegation: 'Supprimer la délégation',
+      alreadyDeleted: 'Vous avez déja supprimé la délégation',
+      notYourDelegation: 'Ce n\'est pas votre délégation',
+    },
+  },
 })
 
 const userStore = useUserStore()
@@ -247,31 +277,3 @@ watch(search, async () => {
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  searchByName: 'Search by name'
-  description: '{delegator} delegated the folder{delegatee}.'
-  you: 'you'
-  have: ''
-  has: ''
-  to: ' to '
-  delegation: 'Delegation'
-  successNotification: 'The delegation made to {delegatee} has been deleted.'
-  errorNotification: 'The delegation made to {delegatee} has not been deleted.'
-  deleteTheDelegation: 'Remove delegation'
-  alreadyDeleted: 'You have already deleted the delegation'
-  notYourDelegation: 'This is not your delegation'
-fr-FR:
-  searchByName: 'Rechercher par nom'
-  description: '{delegator} délégué le dossier{delegatee}.'
-  you: 'vous'
-  have: 'avez'
-  has: 'a'
-  to: ' à '
-  delegation: 'Délégation'
-  successNotification: 'La délégation faite à {delegatee} a bien été supprimée.'
-  errorNotification: "La délégation faite à {delegatee} n'a pas été supprimée."
-  deleteTheDelegation: 'Supprimer la délégation'
-  alreadyDeleted: 'Vous avez déja supprimé la délégation'
-  notYourDelegation: "Ce n'est pas votre délégation"
-</i18n>

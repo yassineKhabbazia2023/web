@@ -237,6 +237,38 @@ import { useSort } from '@pulse/common/composables/sort'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      actions: 'Actions',
+      collaboratorName: 'Collaborator',
+      collaboratorEmail: 'E-mail',
+      collaboratorFunction: 'Function',
+      collaboratorOffice: 'Office',
+      on: 'on',
+      addCollaborator: 'Add collaborator',
+      removeCollaborator: 'Remove collaborator',
+      searchCollaborator: 'Search by name, email, function, etc...',
+      collaboratorInformation: 'Collaborator information',
+      collaboratorHasBeenRemoved: 'The collaborator has been removed from the entity',
+      collaboratorWasNotRemoved: 'The collaborator was not removed from the entity due to a technical error',
+      customerRelationship: 'Customer relationship',
+    },
+    'fr-FR': {
+      actions: 'Actions',
+      collaboratorName: 'Collaborateur',
+      collaboratorEmail: 'E-mail',
+      collaboratorFunction: 'Fonction',
+      collaboratorOffice: 'Bureau',
+      on: 'sur',
+      addCollaborator: 'Ajouter un collaborateur',
+      removeCollaborator: 'Retirer le collaborateur',
+      searchCollaborator: 'Recherche par nom, prénom, e-mail, fonction, bureau',
+      collaboratorInformation: 'Informations du collaborateur',
+      collaboratorHasBeenRemoved: 'Le collaborateur a bien été retiré de l\'entité',
+      collaboratorWasNotRemoved: 'Le collaborateur n\'a pas été retiré de l\'entité a cause d\'une erreur technique',
+      customerRelationship: 'Relation client',
+    },
+  },
 })
 
 const userStore = useUserStore()
@@ -515,33 +547,3 @@ watch(() => [
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  actions: 'Actions'
-  collaboratorName: 'Collaborator'
-  collaboratorEmail: 'E-mail'
-  collaboratorFunction: 'Function'
-  collaboratorOffice: 'Office'
-  on: 'on'
-  addCollaborator: 'Add collaborator'
-  removeCollaborator: 'Remove collaborator'
-  searchCollaborator: 'Search by name, email, function, etc...'
-  collaboratorInformation: 'Collaborator information'
-  collaboratorHasBeenRemoved: 'The collaborator has been removed from the entity'
-  collaboratorWasNotRemoved: 'The collaborator was not removed from the entity due to a technical error'
-  customerRelationship: 'Customer relationship'
-fr-FR:
-  actions: 'Actions'
-  collaboratorName: 'Collaborateur'
-  collaboratorEmail: 'E-mail'
-  collaboratorFunction: 'Fonction'
-  collaboratorOffice: 'Bureau'
-  on: 'sur'
-  addCollaborator: 'Ajouter un collaborateur'
-  removeCollaborator: 'Retirer le collaborateur'
-  searchCollaborator: 'Recherche par nom, prénom, e-mail, fonction, bureau'
-  collaboratorInformation: 'Informations du collaborateur'
-  collaboratorHasBeenRemoved: "Le collaborateur a bien été retiré de l'entité"
-  collaboratorWasNotRemoved: "Le collaborateur n'a pas été retiré de l'entité a cause d'une erreur technique"
-  customerRelationship: 'Relation client'
-</i18n>

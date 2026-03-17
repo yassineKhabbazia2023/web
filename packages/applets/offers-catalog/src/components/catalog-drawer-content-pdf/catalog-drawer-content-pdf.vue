@@ -64,6 +64,18 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      openPdf: 'Show',
+      errorMsgTitle: 'Preview unavailable',
+      errorMsgText: 'The document format is not supported',
+    },
+    'fr-FR': {
+      openPdf: 'Agrandir',
+      errorMsgTitle: 'Aperçu indisponible',
+      errorMsgText: 'Le format de document n\'est pas supporté',
+    },
+  },
 })
 
 defineProps<CatalogDrawerContentPdfProps>()
@@ -82,13 +94,3 @@ onMounted(() => {
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    openPdf: 'Show'
-    errorMsgTitle: 'Preview unavailable'
-    errorMsgText: "The document format is not supported"
-  fr-FR:
-    openPdf: 'Agrandir'
-    errorMsgTitle: 'Aperçu indisponible'
-    errorMsgText: "Le format de document n'est pas supporté"
-</i18n>

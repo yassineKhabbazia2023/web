@@ -37,6 +37,24 @@ import {
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      popupTitle: 'Password strength level :',
+      levelPasswordStrengthStrong: 'Strong',
+      levelPasswordStrengthAverage: 'Average',
+      levelPasswordStrengthWeak: 'Weak',
+      conditionValidPassword: 'Password must contain at least 8 characters in total and 4 of the following :',
+      groupsCharacter: 'an uppercase letter, a lowercase letter, a number, a special character',
+    },
+    'fr-FR': {
+      popupTitle: 'Niveau de sécurité du mot de passe :',
+      levelPasswordStrengthStrong: 'Fort',
+      levelPasswordStrengthAverage: 'Moyen',
+      levelPasswordStrengthWeak: 'Faible',
+      conditionValidPassword: 'Le mot de passe doit contenir au moins 8 caractères au total et 4 parmi ce qui suit: ',
+      groupsCharacter: 'une lettre majuscule, une lettre minuscule, un chiffre, un caractère spécial',
+    },
+  },
 })
 
 const props = defineProps<{
@@ -94,19 +112,3 @@ const levelPasswordStrengthClass = computed(() => {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    popupTitle: 'Password strength level :'
-    levelPasswordStrengthStrong: 'Strong'
-    levelPasswordStrengthAverage: 'Average'
-    levelPasswordStrengthWeak: 'Weak'
-    conditionValidPassword: 'Password must contain at least 8 characters in total and 4 of the following :'
-    groupsCharacter: 'an uppercase letter, a lowercase letter, a number, a special character'
-  fr-FR:
-    popupTitle: 'Niveau de sécurité du mot de passe :'
-    levelPasswordStrengthStrong: 'Fort'
-    levelPasswordStrengthAverage: 'Moyen'
-    levelPasswordStrengthWeak: 'Faible'
-    conditionValidPassword: 'Le mot de passe doit contenir au moins 8 caractères au total et 4 parmi ce qui suit: '
-    groupsCharacter: 'une lettre majuscule, une lettre minuscule, un chiffre, un caractère spécial'
-</i18n>

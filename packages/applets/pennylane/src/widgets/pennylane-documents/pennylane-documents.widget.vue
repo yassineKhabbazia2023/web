@@ -63,6 +63,14 @@ const router = useRouter()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      'see-all-documents': 'See all documents',
+    },
+    'fr-FR': {
+      'see-all-documents': 'Voir tous les documents',
+    },
+  },
 })
 
 const currentEntityStore = useCurrentEntityStore()
@@ -105,11 +113,3 @@ function onClickSeeAllDocuments() {
   })
 }
 </script>
-
-
-<i18n lang="yaml">
-  en-US:
-    see-all-documents: 'See all documents'
-  fr-FR:
-    see-all-documents: 'Voir tous les documents'
-</i18n>

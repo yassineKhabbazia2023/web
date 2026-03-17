@@ -54,6 +54,26 @@ import { getOnboardingFilters, getUserConnexionFilters } from './FiltersUtils'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      fileBoardingRate: 'File boarding',
+      toDeploy: 'To Deploy',
+      inProgress: 'In progress',
+      connected: 'Connected',
+      userConnectionRate: 'User connection',
+      declared: 'Declared',
+      guests: 'Guest(s)',
+    },
+    'fr-FR': {
+      fileBoardingRate: 'Embarquement dossier',
+      toDeploy: 'A déployer',
+      inProgress: 'En cours',
+      connected: 'Connecté(s)',
+      userConnectionRate: 'Connexion utilisateur',
+      declared: 'Déclaré(s)',
+      guests: 'Invité(s)',
+    },
+  },
 })
 
 const activeFilters = ref<EntityStatus[]>([])
@@ -110,21 +130,3 @@ onMounted(async () => {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    fileBoardingRate: 'File boarding'
-    toDeploy: 'To Deploy'
-    inProgress: 'In progress'
-    connected: 'Connected'
-    userConnectionRate: 'User connection'
-    declared: 'Declared'
-    guests: 'Guest(s)'
-  fr-FR:
-    fileBoardingRate: "Embarquement dossier"
-    toDeploy: 'A déployer'
-    inProgress: 'En cours'
-    connected: 'Connecté(s)'
-    userConnectionRate: 'Connexion utilisateur'
-    declared: 'Déclaré(s)'
-    guests: 'Invité(s)'
-</i18n>

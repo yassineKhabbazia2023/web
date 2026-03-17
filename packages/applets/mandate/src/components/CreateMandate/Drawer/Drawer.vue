@@ -206,6 +206,42 @@ const mandateId = ref('')
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      'new-collection': 'New collection',
+      next: 'Next',
+      previous: 'Previous',
+      validate: 'Validate',
+      entity: 'Entity',
+      signatory: 'Signatory',
+      infos: 'Infos',
+      'banking-data': 'Banking data',
+      'bank-identity-statement': 'Bank identity statement',
+      tooltip: 'The customer code entered must be part of your portfolio and have an active commitment.',
+      'close-button': 'Close page',
+      'title-popup': 'Exit mandate creation ?',
+      'text-popup': 'You are about to exit the mandate creation path, all progress will be lost. Do you want to leave the course?',
+      'cancel-popup': 'Cancel',
+      'exit-popup': 'Exit',
+    },
+    'fr-FR': {
+      'new-collection': 'Nouvelle collecte',
+      next: 'Suivant',
+      previous: 'Précédent',
+      validate: 'Valider',
+      entity: 'Entité',
+      signatory: 'Signataire',
+      infos: 'Infos',
+      'banking-data': 'Données bancaires',
+      'bank-identity-statement': 'Relevé d’identité bancaire',
+      tooltip: 'Le code client saisi doit faire parti de votre portefeuille et avoir un engagement actif.',
+      'close-button': 'Fermer la page',
+      'title-popup': 'Quitter la création de mandat ?',
+      'text-popup': 'Vous êtes sur le point de quitter le parcours de création de mandat, toute progression sera perdue. Souhaitez-vous quitter le parcours ?',
+      'cancel-popup': 'Annuler',
+      'exit-popup': 'Quitter',
+    },
+  },
 })
 
 const pDialogControl = reactive({
@@ -336,41 +372,3 @@ defineExpose({
   }
 }
 </style>
-<i18n lang="yaml">
-  en-US:
-    new-collection: 'New collection'
-    next: 'Next'
-    previous: 'Previous'
-    validate: 'Validate'
-    entity: 'Entity'
-    signatory: 'Signatory'
-    infos: 'Infos'
-    banking-data: 'Banking data'
-    bank-identity-statement: 'Bank identity statement'
-    tooltip: 'The customer code entered must be part of your
-      portfolio and have an active commitment.'
-    close-button: 'Close page'
-    title-popup: 'Exit mandate creation ?'
-    text-popup: 'You are about to exit the mandate creation path,
-      all progress will be lost. Do you want to leave the course?'
-    cancel-popup: 'Cancel'
-    exit-popup: 'Exit'
-  fr-FR:
-    new-collection: 'Nouvelle collecte'
-    next: 'Suivant'
-    previous: 'Précédent'
-    validate: 'Valider'
-    entity: 'Entité'
-    signatory: 'Signataire'
-    infos: 'Infos'
-    banking-data: 'Données bancaires'
-    bank-identity-statement: "Relevé d’identité bancaire"
-    tooltip: "Le code client saisi doit faire parti de
-      votre portefeuille et avoir un engagement actif."
-    close-button: 'Fermer la page'
-    title-popup: 'Quitter la création de mandat ?'
-    text-popup: 'Vous êtes sur le point de quitter le parcours de création de mandat,
-      toute progression sera perdue. Souhaitez-vous quitter le parcours ?'
-    cancel-popup: 'Annuler'
-    exit-popup: 'Quitter'
-</i18n>

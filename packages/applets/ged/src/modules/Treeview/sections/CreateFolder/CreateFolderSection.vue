@@ -45,6 +45,40 @@ import { PNotification } from '@pulse/styleguide'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      newFolder: 'Nouveau dossier',
+      notifications: {
+        errorMsg: 'Connexion au serveur interrompue.',
+        successMsg: 'Le dossier a été créé avec succès.',
+      },
+      modal: {
+        title: 'Nouveau dossier',
+        inputLabel: 'Nom du dossier',
+        inputPlaceHolder: 'Entrez le nom de votre dossier',
+        controls: {
+          confirm: 'Créer',
+          cancel: 'Annuler',
+        },
+      },
+    },
+    'fr-FR': {
+      newFolder: 'Nouveau dossier',
+      notifications: {
+        errorMsg: 'Connexion au serveur interrompue.',
+        successMsg: 'Le dossier a été créé avec succès.',
+      },
+      modal: {
+        title: 'Nouveau dossier',
+        inputLabel: 'Nom du dossier',
+        inputPlaceHolder: 'Entrez le nom de votre dossier',
+        controls: {
+          confirm: 'Créer',
+          cancel: 'Annuler',
+        },
+      },
+    },
+  },
 })
 
 const props = withDefaults(defineProps<CreateFolderSectionProps>(), {
@@ -124,30 +158,3 @@ const triggerErrorNotification = () => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  newFolder: 'Nouveau dossier'
-  notifications:
-    errorMsg: 'Connexion au serveur interrompue.'
-    successMsg: 'Le dossier a été créé avec succès.'
-  modal:
-    title: 'Nouveau dossier'
-    inputLabel: 'Nom du dossier'
-    inputPlaceHolder: 'Entrez le nom de votre dossier'
-    controls:
-      confirm: 'Créer'
-      cancel: 'Annuler'
-
-fr-FR:
-  newFolder: 'Nouveau dossier'
-  notifications:
-    errorMsg: 'Connexion au serveur interrompue.'
-    successMsg: 'Le dossier a été créé avec succès.'
-  modal:
-    title: 'Nouveau dossier'
-    inputLabel: 'Nom du dossier'
-    inputPlaceHolder: 'Entrez le nom de votre dossier'
-    controls:
-      confirm: 'Créer'
-      cancel: 'Annuler'
-</i18n>

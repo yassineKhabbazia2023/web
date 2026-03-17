@@ -74,6 +74,16 @@ import { useSort } from '@pulse/common/composables/sort'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      on: 'on',
+      search: 'Search by lastname, firstname, email, phone, role, office',
+    },
+    'fr-FR': {
+      on: 'sur',
+      search: 'Rechercher par nom, prénom, e-mail, téléphone, rôle ou bureau',
+    },
+  },
 })
 
 const state: CollaboratorsState = reactive({
@@ -199,11 +209,3 @@ onMounted(async () => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  on: 'on'
-  search: 'Search by lastname, firstname, email, phone, role, office'
-fr-FR:
-  on: 'sur'
-  search: 'Rechercher par nom, prénom, e-mail, téléphone, rôle ou bureau'
-</i18n>

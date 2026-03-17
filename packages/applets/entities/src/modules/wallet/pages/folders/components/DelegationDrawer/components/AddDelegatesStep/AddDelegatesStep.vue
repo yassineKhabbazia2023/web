@@ -95,6 +95,32 @@ const emit = defineEmits<{
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      folders: '1 folder | {count} folders',
+      numberOfFolders: 'There are {amount} in your portfolio',
+      addDelegator: 'Add delegators',
+      addDelegatorDescription: 'Choose collaborators to delegate your portfolio to.',
+      searchLabel: 'Please search for a collaborator:',
+      pennylaneAccess: {
+        checkboxLabel: 'Give these collaborator access to Pennylane | Give these collaborators access to Pennylane',
+        adviseTitle: 'By enabling this option',
+        adviseMessage: 'A Pennylane account will be created for these collaborators, allowing them to access the delegated folders.\n',
+      },
+    },
+    'fr-FR': {
+      folders: '1 dossier | {count} dossiers',
+      numberOfFolders: 'Il y a {amount} dans votre portefeuille',
+      addDelegator: 'Ajouter des délégataires',
+      addDelegatorDescription: 'Choisissez des collaborateurs à qui déléguer votre portefeuille',
+      searchLabel: 'Veuillez rechercher un collaborateur :',
+      pennylaneAccess: {
+        checkboxLabel: 'Donner l’accès à ce collaborateur sur Pennylane | Donner l’accès à ces collaborateurs sur Pennylane',
+        adviseTitle: 'En activant cette option',
+        adviseMessage: 'Un compte Pennylane sera créé pour ces collaborateurs, qui pourront accéder aux dossiers délégués.\n',
+      },
+    },
+  },
 })
 
 const hasPennylaneCheckbox = computed(() => {
@@ -139,29 +165,3 @@ function emitCollaboratorSelection() {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    folders: 1 folder | {count} folders
-    numberOfFolders: 'There are {amount} in your portfolio'
-    addDelegator: 'Add delegators'
-    addDelegatorDescription: 'Choose collaborators to delegate your portfolio to.'
-    searchLabel: 'Please search for a collaborator:'
-    pennylaneAccess:
-      checkboxLabel: Give these collaborator access to Pennylane | Give these collaborators access to Pennylane
-      adviseTitle: By enabling this option
-      adviseMessage: >
-        A Pennylane account will be created for these collaborators,
-        allowing them to access the delegated folders.
-  fr-FR:
-    folders: 1 dossier | {count} dossiers
-    numberOfFolders: 'Il y a {amount} dans votre portefeuille'
-    addDelegator: 'Ajouter des délégataires'
-    addDelegatorDescription: 'Choisissez des collaborateurs à qui déléguer votre portefeuille'
-    searchLabel: 'Veuillez rechercher un collaborateur :'
-    pennylaneAccess:
-      checkboxLabel: Donner l’accès à ce collaborateur sur Pennylane | Donner l’accès à ces collaborateurs sur Pennylane
-      adviseTitle: En activant cette option
-      adviseMessage: >
-        Un compte Pennylane sera créé pour ces collaborateurs,
-        qui pourront accéder aux dossiers délégués.
-</i18n>

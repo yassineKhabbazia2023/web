@@ -36,6 +36,32 @@ import { ROLE_COLORS } from '../../constants/collaborators.const'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      collaboratorRoles: 'Role(s)',
+      rolesAndColorCodes: 'Roles and color codes',
+      roleSource: 'These roles are determined by Akuiteo or our partners (external tools).',
+      role: {
+        crossFunctional: 'Cross-functional',
+        esc: 'ESC',
+        consulting: 'Consulting',
+        legal: 'Legal',
+        socialManagement: 'Social Management',
+      },
+    },
+    'fr-FR': {
+      collaboratorRoles: 'Rôle(s)',
+      rolesAndColorCodes: 'Rôles et codes couleurs',
+      roleSource: 'Ces rôles sont déterminés par Akuiteo ou nos partenaires (outils externes).',
+      role: {
+        crossFunctional: 'Transverse',
+        esc: 'ESC',
+        consulting: 'Conseil',
+        legal: 'Juridique',
+        socialManagement: 'Gestion sociale',
+      },
+    },
+  },
 })
 
 </script>
@@ -56,27 +82,3 @@ const { t } = useI18n({
   }
 }
 </style>
-
-
-<i18n lang="yaml">
-en-US:
-  collaboratorRoles: 'Role(s)'
-  rolesAndColorCodes: 'Roles and color codes'
-  roleSource: 'These roles are determined by Akuiteo or our partners (external tools).'
-  role:
-    crossFunctional: "Cross-functional"
-    esc: "ESC"
-    consulting: "Consulting"
-    legal: "Legal"
-    socialManagement: "Social Management"
-fr-FR:
-  collaboratorRoles: 'Rôle(s)'
-  rolesAndColorCodes: 'Rôles et codes couleurs'
-  roleSource: 'Ces rôles sont déterminés par Akuiteo ou nos partenaires (outils externes).'
-  role:
-    crossFunctional: "Transverse"
-    esc: "ESC"
-    consulting: "Conseil"
-    legal: "Juridique"
-    socialManagement: "Gestion sociale"
-</i18n>

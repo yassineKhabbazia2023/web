@@ -48,6 +48,20 @@ import { RouteName } from '@pulse/common/enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      backToLogin: 'Back to login',
+      verifyMailTitle: 'Check your email address.',
+      sendEmailDescription: 'We will send an email to ',
+      associatedAccount: ' if it is associated with your account to reset your password.',
+    },
+    'fr-FR': {
+      backToLogin: 'Revenir à la connexion',
+      verifyMailTitle: 'Vérifiez votre boite mail.',
+      sendEmailDescription: 'Si l\'adresse ',
+      associatedAccount: 'est bien associée à votre compte, vous recevrez un lien par e-mail pour réinitialiser votre mot de passe.\n',
+    },
+  },
 })
 
 const router = useRouter()
@@ -117,16 +131,3 @@ const email = route.query.email
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    backToLogin: 'Back to login'
-    verifyMailTitle: 'Check your email address.'
-    sendEmailDescription: 'We will send an email to '
-    associatedAccount: ' if it is associated with your account to reset your password.'
-  fr-FR:
-    backToLogin: 'Revenir à la connexion'
-    verifyMailTitle: 'Vérifiez votre boite mail.'
-    sendEmailDescription: 'Si l''adresse '
-    associatedAccount: >
-      est bien associée à votre compte, vous recevrez un lien par e-mail pour réinitialiser votre mot de passe.
-</i18n>

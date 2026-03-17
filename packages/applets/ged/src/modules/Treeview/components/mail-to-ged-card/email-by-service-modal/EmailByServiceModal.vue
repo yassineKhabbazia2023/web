@@ -29,6 +29,16 @@ import ServiceEmailInformationLine from '../service-email-information-line'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      sendDocumentsFromMailInbox: 'Upload your documents from your email inbox',
+      sendToExpertsWithEmail: 'Send your documents directly by email to your experts at the following addresses:',
+    },
+    'fr-FR': {
+      sendDocumentsFromMailInbox: 'Déposez vos documents depuis votre boite mail',
+      sendToExpertsWithEmail: 'Envoyez directement vos documents par e-mail à vos experts aux adresses suivantes :',
+    },
+  },
 })
 
 const props = defineProps<EmailByServiceProps>()
@@ -46,11 +56,3 @@ function closeModal() {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  sendDocumentsFromMailInbox: 'Upload your documents from your email inbox'
-  sendToExpertsWithEmail: 'Send your documents directly by email to your experts at the following addresses:'
-fr-FR:
-  sendDocumentsFromMailInbox: 'Déposez vos documents depuis votre boite mail'
-  sendToExpertsWithEmail: 'Envoyez directement vos documents par e-mail à vos experts aux adresses suivantes :'
-</i18n>

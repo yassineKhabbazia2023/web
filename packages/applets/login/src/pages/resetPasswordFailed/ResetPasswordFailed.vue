@@ -44,6 +44,18 @@ import { VITE_PASSWORD_RESET_MAX_ATTEMPTS } from 'env-vars'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      backToLogin: 'Back to login',
+      passwordChangeDenied: 'Password change denied',
+      passwordChangeLimitExceeded: 'You cannot change your password more than {maxAttempts} times in the same day',
+    },
+    'fr-FR': {
+      backToLogin: 'Revenir à la connexion',
+      passwordChangeDenied: 'Changement de mot de passe refusé',
+      passwordChangeLimitExceeded: 'Vous ne pouvez pas modifier votre mot de passe plus de {maxAttempts} fois dans la même journée.\n',
+    },
+  },
 })
 
 const router = useRouter()
@@ -62,14 +74,3 @@ const maxAttempts = computed(() => VITE_PASSWORD_RESET_MAX_ATTEMPTS || 5)
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  backToLogin: 'Back to login'
-  passwordChangeDenied: 'Password change denied'
-  passwordChangeLimitExceeded: 'You cannot change your password more than {maxAttempts} times in the same day'
-fr-FR:
-  backToLogin: 'Revenir à la connexion'
-  passwordChangeDenied: 'Changement de mot de passe refusé'
-  passwordChangeLimitExceeded: >
-    Vous ne pouvez pas modifier votre mot de passe plus de {maxAttempts} fois dans la même journée.
-</i18n>

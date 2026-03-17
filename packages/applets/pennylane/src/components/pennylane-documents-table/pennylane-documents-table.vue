@@ -103,6 +103,40 @@ import { PNotification, displayNotification } from '@pulse/styleguide'
 const { t, d } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      fields: {
+        name: 'Name',
+        path: 'Location',
+        updatedAt: 'Uploaded on',
+      },
+      actions: {
+        download: 'Download',
+      },
+      messages: {
+        'download-in-progress': 'Download in progress',
+        'download-success': 'Document downloaded successfully',
+        'download-error': 'A technical error occurred while downloading the document',
+      },
+      noResult: 'No result',
+    },
+    'fr-FR': {
+      fields: {
+        name: 'Nom',
+        path: 'Emplacement',
+        updatedAt: 'Déposé le',
+      },
+      actions: {
+        download: 'Télécharger',
+      },
+      messages: {
+        'download-in-progress': 'Téléchargement en cours',
+        'download-success': 'Document téléchargé avec succès',
+        'download-error': 'Une erreur technique est survenue lors du téléchargement du document',
+      },
+      noResult: 'Aucun résultat',
+    },
+  },
 })
 
 const props = defineProps<PennylaneDocumentsTableProps>()
@@ -174,29 +208,3 @@ async function onToolboxItemClick(
 }
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    fields:
-      name: 'Name'
-      path: 'Location'
-      updatedAt: 'Uploaded on'
-    actions:
-      download: 'Download'
-    messages:
-      download-in-progress: 'Download in progress'
-      download-success: 'Document downloaded successfully'
-      download-error: 'A technical error occurred while downloading the document'
-    noResult: 'No result'
-  fr-FR:
-    fields:
-      name: 'Nom'
-      path: 'Emplacement'
-      updatedAt: 'Déposé le'
-    actions:
-      download: 'Télécharger'
-    messages:
-      download-in-progress: 'Téléchargement en cours'
-      download-success: 'Document téléchargé avec succès'
-      download-error: 'Une erreur technique est survenue lors du téléchargement du document'
-    noResult: 'Aucun résultat'
-</i18n>

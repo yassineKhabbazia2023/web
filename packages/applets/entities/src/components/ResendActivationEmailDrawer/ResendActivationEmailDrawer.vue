@@ -86,6 +86,34 @@ import { ContactType } from '@pulse/common/enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      submit: 'Submit',
+      statusInvite: 'Invited',
+      statusConnect: 'Connected',
+      statusDeclared: 'Declared',
+      clientCompany: 'Client Company',
+      selectClientUsers: 'Select client users',
+      resendTheActivationEmail: 'Resend the activation email',
+      customersInvitationFailed: 'There was an issue inviting all selected customers.',
+      customerInvitationSucceeded: 'The selected customer has been successfully invited.',
+      customersInvitationSucceeded: 'All {customerCount} selected customers have been successfully invited.',
+      pleaseSelectUsers: 'Please select the users for whom you wish to send a RYDGE Conseil account activation email.',
+    },
+    'fr-FR': {
+      submit: 'Valider',
+      statusInvite: 'Invité',
+      statusConnect: 'Connecté',
+      statusDeclared: 'Déclaré',
+      clientCompany: 'Société cliente',
+      selectClientUsers: 'Sélectionnez des utilisateurs clients',
+      resendTheActivationEmail: 'Relancer le mail d\'activation',
+      customerInvitationSucceeded: 'Le client sélectionné a été invité avec succès.',
+      customersInvitationFailed: 'Il y a eu un problème pour inviter tous les clients sélectionnés.',
+      customersInvitationSucceeded: 'Tous les {customerCount} clients sélectionnés ont été invités avec succès.',
+      pleaseSelectUsers: 'Veuillez sélectionner les utilisateurs pour lesquels vous souhaitez envoyer un e-mail d\'activation du compte RYDGE Conseil.',
+    },
+  },
 })
 
 const props = defineProps<ResendActivationEmailDrawerProps>()
@@ -178,31 +206,3 @@ onMounted(async () => {
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    submit: 'Submit'
-    statusInvite: 'Invited'
-    statusConnect: 'Connected'
-    statusDeclared: 'Declared'
-    clientCompany: 'Client Company'
-    selectClientUsers: 'Select client users'
-    resendTheActivationEmail: 'Resend the activation email'
-    customersInvitationFailed: 'There was an issue inviting all selected customers.'
-    customerInvitationSucceeded: 'The selected customer has been successfully invited.'
-    customersInvitationSucceeded: 'All {customerCount} selected customers have been successfully invited.'
-    pleaseSelectUsers: 'Please select the users for whom you wish to send a RYDGE Conseil account activation email.'
-  fr-FR:
-    submit: 'Valider'
-    statusInvite: 'Invité'
-    statusConnect: 'Connecté'
-    statusDeclared: 'Déclaré'
-    clientCompany: 'Société cliente'
-    selectClientUsers: 'Sélectionnez des utilisateurs clients'
-    resendTheActivationEmail: "Relancer le mail d'activation"
-    customerInvitationSucceeded: 'Le client sélectionné a été invité avec succès.'
-    customersInvitationFailed: 'Il y a eu un problème pour inviter tous les clients sélectionnés.'
-    customersInvitationSucceeded: 'Tous les {customerCount} clients sélectionnés ont été invités avec succès.'
-    pleaseSelectUsers: >-
-      Veuillez sélectionner les utilisateurs pour lesquels vous souhaitez envoyer un e-mail
-      d'activation du compte RYDGE Conseil.
-  </i18n>

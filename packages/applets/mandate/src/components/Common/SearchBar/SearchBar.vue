@@ -36,12 +36,14 @@ const searchModel = computed({
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      search: 'Search',
+    },
+    'fr-FR': {
+      search: 'Rechercher par raison sociale, code client, n° de compte ou banque',
+    },
+  },
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    search: 'Search'
-  fr-FR:
-    search: 'Rechercher par raison sociale, code client, n° de compte ou banque'
-</i18n>

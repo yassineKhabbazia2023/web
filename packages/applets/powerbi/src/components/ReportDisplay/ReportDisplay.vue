@@ -40,6 +40,14 @@ import ReportActions from '@powerbi/components/ReportActions/ReportActions.vue'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      biReportLoadingError: 'The BI report can\'t be loaded at the moment. Please try again later.',
+    },
+    'fr-FR': {
+      biReportLoadingError: 'Le rapport BI ne peut pas être chargé pour le moment. Merci de réessayer plus tard.',
+    },
+  },
 })
 
 const props = defineProps<ReportDisplayProps>()
@@ -105,9 +113,3 @@ onMounted(() => {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    biReportLoadingError: "The BI report can't be loaded at the moment. Please try again later."
-  fr-FR:
-    biReportLoadingError: "Le rapport BI ne peut pas être chargé pour le moment. Merci de réessayer plus tard."
-</i18n>

@@ -43,6 +43,18 @@ const emit = defineEmits<{
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      searchPlaceholder: 'First name, last name, office, city, service, role',
+      hyphen: '-',
+      comma: ',',
+    },
+    'fr-FR': {
+      searchPlaceholder: 'Nom, prénom, bureau, ville, service, rôle',
+      hyphen: '-',
+      comma: ',',
+    },
+  },
 })
 
 const searchAutocompleteQuery = ref('')
@@ -98,13 +110,3 @@ function resetSearchAutocompleteQuery() {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    searchPlaceholder: 'First name, last name, office, city, service, role'
-    hyphen: '-'
-    comma: ','
-  fr-FR:
-    searchPlaceholder: 'Nom, prénom, bureau, ville, service, rôle'
-    hyphen: '-'
-    comma: ','
-</i18n>

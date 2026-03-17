@@ -38,18 +38,19 @@ import type { CustomersDetailsProps } from './CustomersDetailsTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      noSignatory: 'You have no signatory on this file!',
+      atLeastOneSignatory: 'You must have at least one signatory to activate the offer.',
+      assignSignatory: 'In the folder (users tab), you can designate a user as a signatory.',
+    },
+    'fr-FR': {
+      noSignatory: 'Vous n\'avez aucun signataire sur ce dossier !',
+      atLeastOneSignatory: 'Vous devez obligatoirement avoir au moins un signataire pour activer l\'offre.',
+      assignSignatory: 'Dans le dossier (onglet utilisateurs), vous pouvez désigner un utilisateur en tant que signataire.\n',
+    },
+  },
 })
 
 defineProps<CustomersDetailsProps>()
 </script>
-<i18n lang="yaml">
-  en-US:
-    noSignatory: 'You have no signatory on this file!'
-    atLeastOneSignatory: 'You must have at least one signatory to activate the offer.'
-    assignSignatory: 'In the folder (users tab), you can designate a user as a signatory.'
-  fr-FR:
-    noSignatory: "Vous n'avez aucun signataire sur ce dossier !"
-    atLeastOneSignatory: "Vous devez obligatoirement avoir au moins un signataire pour activer l'offre."
-    assignSignatory: >
-      Dans le dossier (onglet utilisateurs), vous pouvez désigner un utilisateur en tant que signataire.
-</i18n>

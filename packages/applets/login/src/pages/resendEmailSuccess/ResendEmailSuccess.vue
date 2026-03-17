@@ -32,6 +32,18 @@ import { RouteName } from '@pulse/common/enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      verifyEmail: 'Verify your mail box',
+      msgInfo: 'A new link activation has been send to you. This link will expire in 1h30, please active your account before this delay.\n',
+      returnLoginPage: 'Back to the login page',
+    },
+    'fr-FR': {
+      verifyEmail: 'Vérifier votre adresse mail',
+      msgInfo: 'Le nouveau lien d\'activation vient de vous être envoyé. Ce lien expire dans 1h30, veuillez activer votre compte avant ce délai.\n',
+      returnLoginPage: 'Revenir à la connexion',
+    },
+  },
 })
 
 const router = useRouter()
@@ -78,17 +90,3 @@ const router = useRouter()
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    verifyEmail: 'Verify your mail box'
-    msgInfo: >
-      A new link activation has been send to you.
-      This link will expire in 1h30, please active your account before this delay.
-    returnLoginPage: 'Back to the login page'
-  fr-FR:
-    verifyEmail: 'Vérifier votre adresse mail'
-    msgInfo: >
-      Le nouveau lien d'activation vient de vous être envoyé.
-      Ce lien expire dans 1h30, veuillez activer votre compte avant ce délai.
-    returnLoginPage: 'Revenir à la connexion'
-</i18n>

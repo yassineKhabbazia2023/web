@@ -67,6 +67,32 @@ import { storeToRefs } from 'pinia'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      filters: 'Filters',
+      online: 'Online',
+      apply: 'Apply',
+      offline: 'Offline',
+      reset: 'Reset',
+      initialized: 'Initialized',
+      failed: 'Failure',
+      placeholderTypeReport: 'Select a type',
+      favorites: 'Favorites',
+      customerRelationship: 'Customer Relationship',
+    },
+    'fr-FR': {
+      filters: 'Filtres',
+      online: 'En ligne',
+      offline: 'Hors ligne',
+      apply: 'Appliquer',
+      reset: 'Réinitialiser',
+      initialized: 'Initialisé',
+      failed: 'Incident',
+      placeholderTypeReport: 'Sélectionnez un type',
+      favorites: 'Favoris',
+      customerRelationship: 'Relation client',
+    },
+  },
 })
 
 const props = defineProps<AccountFiltersDrawerProps>()
@@ -114,27 +140,3 @@ const closeAccountFiltersDrawer = () => {
 }
 // #endregion
 </script>
-<i18n lang="yaml">
-en-US:
-  filters: 'Filters'
-  online: 'Online'
-  apply: 'Apply'
-  offline: 'Offline'
-  reset: 'Reset'
-  initialized: 'Initialized'
-  failed: 'Failure'
-  placeholderTypeReport: 'Select a type'
-  favorites: 'Favorites'
-  customerRelationship: 'Customer Relationship'
-fr-FR:
-  filters: 'Filtres'
-  online: 'En ligne'
-  offline: 'Hors ligne'
-  apply: 'Appliquer'
-  reset: 'Réinitialiser'
-  initialized: 'Initialisé'
-  failed: 'Incident'
-  placeholderTypeReport: 'Sélectionnez un type'
-  favorites: 'Favoris'
-  customerRelationship: 'Relation client'
-</i18n>

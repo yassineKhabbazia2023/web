@@ -96,6 +96,54 @@ import { getPasswordStrength } from '@pulse/shared/components'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      createAccount: 'Your ',
+      '1step': 'new password.',
+      defPassword: 'Please enter and confirm your new password',
+      labelPassword: 'New password',
+      labelConfirmPassword: 'Password confirmation',
+      placeholderPassword: 'Enter your new password',
+      placeholderConfirmPassword: 'Enter your new password',
+      alertConfirmPass: 'Please confirm the password',
+      alertPasswordNotMatch: 'The passwords are different',
+      alertPasswordRequired: 'Please enter the password',
+      alertPasswordLevelLow: 'Your password is not valid',
+      btnSubmit: 'Submit',
+      isPasswordAlreadyUsed: 'You have already used this password before.',
+      technicalError: 'A technical error occurred',
+      passwordStrengthLabels: {
+        'level-0': '',
+        'level-1': 'Weak',
+        'level-2': 'Poor',
+        'level-3': 'Medium',
+        'level-4': 'Strong',
+      },
+    },
+    'fr-FR': {
+      createAccount: 'Votre ',
+      '1step': 'nouveau mot de passe.',
+      defPassword: 'Veuillez définir votre mot de passe et le confirmer.',
+      labelPassword: 'Nouveau mot de passe',
+      labelConfirmPassword: 'Confirmation du mot de passe',
+      placeholderPassword: 'Saisissez votre nouveau mot de passe',
+      placeholderConfirmPassword: 'Saisissez votre nouveau mot de passe',
+      alertConfirmPass: 'Veuillez confirmer votre nouveau mot de passe',
+      alertPasswordNotMatch: 'Les mots de passe sont différents',
+      alertPasswordRequired: 'Veuillez saisir votre nouveau mot de passe',
+      alertPasswordLevelLow: 'Votre mot de passe n\'est pas valide',
+      btnSubmit: 'Valider',
+      isPasswordAlreadyUsed: 'Vous avez déjà utilisé ce mot de passé précédemment.',
+      technicalError: 'Une erreur technique est survenue',
+      passwordStrengthLabels: {
+        'level-0': '',
+        'level-1': 'Faible',
+        'level-2': 'Insuffisant',
+        'level-3': 'Moyen',
+        'level-4': 'Fort',
+      },
+    },
+  },
 })
 const route = useRoute()
 const router = useRouter()
@@ -241,47 +289,3 @@ defineExpose({ submitForm })
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    createAccount: 'Your '
-    1step: 'new password.'
-    defPassword: 'Please enter and confirm your new password'
-    labelPassword: 'New password'
-    labelConfirmPassword: 'Password confirmation'
-    placeholderPassword: 'Enter your new password'
-    placeholderConfirmPassword: 'Enter your new password'
-    alertConfirmPass: 'Please confirm the password'
-    alertPasswordNotMatch: "The passwords are different"
-    alertPasswordRequired: 'Please enter the password'
-    alertPasswordLevelLow: 'Your password is not valid'
-    btnSubmit: 'Submit'
-    isPasswordAlreadyUsed: You have already used this password before.
-    technicalError: A technical error occurred
-    passwordStrengthLabels:
-      level-0: ''
-      level-1: 'Weak'
-      level-2: 'Poor'
-      level-3: 'Medium'
-      level-4: 'Strong'
-  fr-FR:
-    createAccount: 'Votre '
-    1step: 'nouveau mot de passe.'
-    defPassword: 'Veuillez définir votre mot de passe et le confirmer.'
-    labelPassword: 'Nouveau mot de passe'
-    labelConfirmPassword: 'Confirmation du mot de passe'
-    placeholderPassword: 'Saisissez votre nouveau mot de passe'
-    placeholderConfirmPassword: 'Saisissez votre nouveau mot de passe'
-    alertConfirmPass: 'Veuillez confirmer votre nouveau mot de passe'
-    alertPasswordNotMatch: 'Les mots de passe sont différents'
-    alertPasswordRequired: 'Veuillez saisir votre nouveau mot de passe'
-    alertPasswordLevelLow: "Votre mot de passe n'est pas valide"
-    btnSubmit: 'Valider'
-    isPasswordAlreadyUsed: Vous avez déjà utilisé ce mot de passé précédemment.
-    technicalError: Une erreur technique est survenue
-    passwordStrengthLabels:
-      level-0: ''
-      level-1: 'Faible'
-      level-2: 'Insuffisant'
-      level-3: 'Moyen'
-      level-4: 'Fort'
-</i18n>

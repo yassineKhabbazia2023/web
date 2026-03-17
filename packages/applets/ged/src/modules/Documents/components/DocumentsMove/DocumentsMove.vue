@@ -53,6 +53,46 @@ import { trackDocumentMove } from '@ged/services/tracking/tracking.service'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      modalTitle: 'Déplacer 0 document dans {folderName} | Déplacer 1 document dans {folderName} | Déplacer {count} documents dans {folderName}',
+      folderList: {
+        explorerUnauthorizedGivenActionMessage: 'Vous n\'êtes pas autorisé à déplacer dans ce dossier',
+        foldersListEmptyFolderLabel: 'There is no subfolder',
+      },
+      documentsList: {
+        noMovableDocumentsLabel: 'Aucun document ne peut être déplacé dans votre espace documentaire.',
+      },
+      notifications: {
+        successMsg: {
+          plural: 'Les {documentCount} documents ont été déplacés dans le dossier {folderName}',
+          single: '1 document a été déplacé dans le dossier {folderName}',
+        },
+      },
+      header: {
+        title: 'Certains documents ne peuvent pas être déplacés dans votre espace documentaire',
+      },
+    },
+    'fr-FR': {
+      modalTitle: 'Déplacer 0 document dans {folderName} | Déplacer 1 document dans {folderName} | Déplacer {count} documents dans {folderName}',
+      folderList: {
+        explorerUnauthorizedGivenActionMessage: 'Vous n\'êtes pas autorisé à déplacer dans ce dossier',
+        foldersListEmptyFolderLabel: 'Aucun sous-dossier',
+      },
+      documentsList: {
+        noMovableDocumentsLabel: 'Aucun document ne peut être déplacé dans votre espace documentaire.',
+      },
+      notifications: {
+        successMsg: {
+          plural: 'Les {documentCount} documents ont été déplacés dans le dossier {folderName}',
+          single: '1 document a été déplacé dans le dossier {folderName}',
+        },
+      },
+      header: {
+        title: 'Certains documents ne peuvent pas être déplacés dans votre espace documentaire',
+      },
+    },
+  },
 })
 
 const props = defineProps<DocumentMoveProps>()
@@ -257,45 +297,3 @@ const triggerSuccessNotification = (
 </script>
 
 <!-- eslint-disable max-len -->
-<i18n lang="json">
-{
-  "en-US": {
-    "modalTitle": "Déplacer 0 document dans {folderName} | Déplacer 1 document dans {folderName} | Déplacer {count} documents dans {folderName}",
-    "folderList": {
-      "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déplacer dans ce dossier",
-      "foldersListEmptyFolderLabel": "There is no subfolder"
-    },
-    "documentsList": {
-      "noMovableDocumentsLabel": "Aucun document ne peut être déplacé dans votre espace documentaire."
-    },
-    "notifications": {
-      "successMsg": {
-        "plural": "Les {documentCount} documents ont été déplacés dans le dossier {folderName}",
-        "single": "1 document a été déplacé dans le dossier {folderName}"
-      }
-    },
-    "header": {
-      "title": "Certains documents ne peuvent pas être déplacés dans votre espace documentaire"
-    }
-  },
-  "fr-FR": {
-    "modalTitle": "Déplacer 0 document dans {folderName} | Déplacer 1 document dans {folderName} | Déplacer {count} documents dans {folderName}",
-    "folderList": {
-      "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déplacer dans ce dossier",
-      "foldersListEmptyFolderLabel": "Aucun sous-dossier"
-    },
-    "documentsList": {
-      "noMovableDocumentsLabel": "Aucun document ne peut être déplacé dans votre espace documentaire."
-    },
-    "notifications": {
-      "successMsg": {
-        "plural": "Les {documentCount} documents ont été déplacés dans le dossier {folderName}",
-        "single": "1 document a été déplacé dans le dossier {folderName}"
-      }
-    },
-    "header": {
-      "title": "Certains documents ne peuvent pas être déplacés dans votre espace documentaire"
-    }
-  }
-}
-</i18n>

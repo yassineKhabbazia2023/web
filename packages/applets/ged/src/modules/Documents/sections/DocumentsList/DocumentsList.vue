@@ -86,6 +86,14 @@ import type { DocumentAction } from '@ged/modules/Documents/DocumentsTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      noSearchData: 'Aucun résultat',
+    },
+    'fr-FR': {
+      noSearchData: 'Aucun résultat',
+    },
+  },
 })
 const tableToolbox = useTemplateRef('tableToolbox')
 const toolboxCoordinates = ref<Coordinate>({
@@ -295,13 +303,3 @@ const setToolboxStyle = (clientX: number, clientY: number) => {
   }
 }
 </style>
-<i18n lang="json">
-{
-  "en-US": {
-    "noSearchData": "Aucun résultat"
-  },
-  "fr-FR": {
-    "noSearchData": "Aucun résultat"
-  }
-}
-</i18n>

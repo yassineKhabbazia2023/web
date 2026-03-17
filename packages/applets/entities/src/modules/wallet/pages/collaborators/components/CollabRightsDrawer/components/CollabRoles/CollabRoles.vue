@@ -47,6 +47,18 @@ import type { CollabRolesProps } from './CollabRolesTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      personalize: 'Personalize',
+      youCanModify: 'As an {administrator}, you can modify the role of your colleague.',
+      administrator: 'administrator',
+    },
+    'fr-FR': {
+      personalize: 'Personnaliser',
+      youCanModify: 'En tant qu\'{administrator}, vous pouvez modifier le rôle de votre collaborateur.',
+      administrator: 'administrateur',
+    },
+  },
 })
 
 const props = defineProps<CollabRolesProps>()
@@ -65,13 +77,3 @@ const internalSelectedRoleId = computed({
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    personalize: 'Personalize'
-    youCanModify: 'As an {administrator}, you can modify the role of your colleague.'
-    administrator: 'administrator'
-  fr-FR:
-    personalize: 'Personnaliser'
-    youCanModify: "En tant qu'{administrator}, vous pouvez modifier le rôle de votre collaborateur."
-    administrator: 'administrateur'
-</i18n>

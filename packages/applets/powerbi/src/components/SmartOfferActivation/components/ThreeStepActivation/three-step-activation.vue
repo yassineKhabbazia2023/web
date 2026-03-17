@@ -30,6 +30,14 @@ import SmartOfferCard from '../SmartOfferCard/smart-offer-card.vue'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      activationStepsTitle: 'Activation in 3 simple steps',
+    },
+    'fr-FR': {
+      activationStepsTitle: 'Activation en 3 étapes simples',
+    },
+  },
 })
 
 // POC: Static demo data for Smart offer cards. No translation planned yet.
@@ -65,9 +73,3 @@ const activationCards: SmartOfferCardProps[] = [
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    activationStepsTitle: "Activation in 3 simple steps"
-  fr-FR:
-    activationStepsTitle: "Activation en 3 étapes simples"
-</i18n>

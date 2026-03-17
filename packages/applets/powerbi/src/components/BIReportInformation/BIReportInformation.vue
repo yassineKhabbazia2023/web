@@ -75,6 +75,28 @@ import type { Entity } from '@pulse/common/types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      labelTypeReport: 'Report type',
+      placeholderTypeReport: 'Select a report type',
+      labelDestinationFolder: 'Destination folder',
+      placeholderDestinationFolder: 'Search by: name, customer code',
+      labelNameReport: 'Name of the report',
+      placeholderNameReport: 'Select or enter a name to be displayed on the client side',
+      fieldRequired: '* Fields required',
+      uploadInfo: 'You can either create a new report or update an existing one',
+    },
+    'fr-FR': {
+      labelTypeReport: 'Type de rapport',
+      placeholderTypeReport: 'Sélectionnez un type de rapport',
+      labelDestinationFolder: 'Dossier de destination',
+      placeholderDestinationFolder: 'Rechercher par : nom, code client',
+      labelNameReport: 'Nom du rapport',
+      placeholderNameReport: 'Choisir ou saisir un nom qui s\'affichera coté client',
+      fieldRequired: '* Champs obligatoires',
+      uploadInfo: 'Vous pouvez soit créer un nouveau rapport soit mettre à jour un rapport existant',
+    },
+  },
 })
 
 const props = defineProps<BIReportInformationProps>()
@@ -160,23 +182,3 @@ const handleSelectReportName = (reportId: number) => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  labelTypeReport: 'Report type'
-  placeholderTypeReport: 'Select a report type'
-  labelDestinationFolder: 'Destination folder'
-  placeholderDestinationFolder: 'Search by: name, customer code'
-  labelNameReport: 'Name of the report'
-  placeholderNameReport: 'Select or enter a name to be displayed on the client side'
-  fieldRequired: '* Fields required'
-  uploadInfo: 'You can either create a new report or update an existing one'
-fr-FR:
-  labelTypeReport: 'Type de rapport'
-  placeholderTypeReport: 'Sélectionnez un type de rapport'
-  labelDestinationFolder: 'Dossier de destination'
-  placeholderDestinationFolder: 'Rechercher par : nom, code client'
-  labelNameReport: 'Nom du rapport'
-  placeholderNameReport: "Choisir ou saisir un nom qui s'affichera coté client"
-  fieldRequired: '* Champs obligatoires'
-  uploadInfo: 'Vous pouvez soit créer un nouveau rapport soit mettre à jour un rapport existant'
-</i18n>

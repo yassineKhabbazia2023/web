@@ -48,6 +48,24 @@ const { t, d } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   datetimeFormats,
+  messages: {
+    'en-US': {
+      title: 'Last RYDGE Conseil documents',
+      titleMobile: 'Last documents',
+      lastSynchroDate: 'Last synchronization',
+      at: 'at',
+      today: 'Today',
+      on: 'On',
+    },
+    'fr-FR': {
+      title: 'Derniers documents RYDGE Conseil',
+      titleMobile: 'Derniers documents',
+      lastSynchroDate: 'Dernière synchronisation',
+      at: 'à',
+      today: 'Aujourd\'hui',
+      on: 'Le',
+    },
+  },
 })
 
 const props = defineProps<PennylaneDocumentsHeaderProps>()
@@ -71,22 +89,6 @@ const dayLabel = computed(() => {
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    title: 'Last RYDGE Conseil documents'
-    titleMobile: 'Last documents'
-    lastSynchroDate: 'Last synchronization'
-    at: 'at'
-    today: 'Today'
-    on: 'On'
-  fr-FR:
-    title: 'Derniers documents RYDGE Conseil'
-    titleMobile: 'Derniers documents'
-    lastSynchroDate: 'Dernière synchronisation'
-    at: 'à'
-    today: "Aujourd'hui"
-    on: 'Le'
-</i18n>
 
 <style scoped lang="scss">
 @use '@pulse/styleguide/scss/breakpoints' as breakpoints;

@@ -39,6 +39,20 @@ import type { UploadBIReportProps } from './upload-bi-report.types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      uploadReport: 'Please file BI report',
+      prefixLabelFileLine: 'Drag file or',
+      suffixLabelFileLine: 'browse computer',
+      deleteButtonTitle: 'Delete document',
+    },
+    'fr-FR': {
+      uploadReport: 'Veuillez déposer le rapport BI',
+      prefixLabelFileLine: 'Glisser le fichier ou',
+      suffixLabelFileLine: 'parcourir l\'ordinateur',
+      deleteButtonTitle: 'Supprimer le document',
+    },
+  },
 })
 
 withDefaults(defineProps<UploadBIReportProps>(), {
@@ -74,15 +88,3 @@ defineExpose({
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  uploadReport: 'Please file BI report'
-  prefixLabelFileLine: 'Drag file or'
-  suffixLabelFileLine: 'browse computer'
-  deleteButtonTitle: 'Delete document'
-fr-FR:
-  uploadReport: 'Veuillez déposer le rapport BI'
-  prefixLabelFileLine: 'Glisser le fichier ou'
-  suffixLabelFileLine: "parcourir l'ordinateur"
-  deleteButtonTitle: 'Supprimer le document'
-</i18n>

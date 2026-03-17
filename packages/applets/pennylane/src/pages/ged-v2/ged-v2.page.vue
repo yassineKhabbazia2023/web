@@ -73,6 +73,24 @@ import { getPaginationLabel } from '@pulse/common/utils'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      searchPlaceholder: 'Search for a document name',
+      searchInvalidMessage: 'Search term is invalid',
+      searchResults: {
+        count: '{count} résultats',
+        description: 'dans ce dossier et les sous-dossiers',
+      },
+    },
+    'fr-FR': {
+      searchPlaceholder: 'Rechercher un nom de document',
+      searchInvalidMessage: 'Le terme de recherche est invalide',
+      searchResults: {
+        count: '{count} résultats',
+        description: 'dans ce dossier et les sous-dossiers',
+      },
+    },
+  },
 })
 
 const currentEntityStore = useCurrentEntityStore()
@@ -135,20 +153,6 @@ watch([currentPage, currentPageSize], fetchDocuments)
 onMounted(fetchDocuments)
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    searchPlaceholder: 'Search for a document name'
-    searchInvalidMessage: 'Search term is invalid'
-    searchResults:
-      count: '{count} résultats'
-      description: 'dans ce dossier et les sous-dossiers'
-  fr-FR:
-    searchPlaceholder: 'Rechercher un nom de document'
-    searchInvalidMessage: 'Le terme de recherche est invalide'
-    searchResults:
-      count: '{count} résultats'
-      description: 'dans ce dossier et les sous-dossiers'
-</i18n>
 
 <style scoped lang="scss">
 .search-container {

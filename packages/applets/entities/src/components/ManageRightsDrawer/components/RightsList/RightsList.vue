@@ -101,6 +101,50 @@ import type { PennylaneAvailableRole } from '@pulse/common/types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      PennylaneAdditionalInfos: '● By checking this box and confirming, a Pennylane account will be created for the user,\n  who will be able to access it via the "Applications" tab on the RYDGE Conseil platform.\n\n● By unchecking, access to Pennylane will be blocked for the user on this company.\n',
+      management: 'Management tools',
+      accountingManagement: 'Accounting management tools',
+      socialManagement: 'Social management tools',
+      accountingGed: 'Document space – Accounting',
+      socialGed: 'Document space – Social management',
+      administration: 'Administration',
+      offer: 'Offer and subscription',
+      reports: 'Reports',
+      mirrorView: 'Customer mirror view',
+      manage: 'File management',
+      prod: 'Business production',
+      thisAccount: 'this folder',
+      thisUser: 'this user',
+      rightsNote: 'Select the rights you want to grant to {rightsType}:',
+      PennylaneDropdownPlaceholder: 'Choose a role',
+      accountingGedArchiveLabel: 'Access the archives of the Accounting document space',
+      accountingGedDepositArchiveLabel: 'Access the folder Accounting/Deposit in the archives',
+      accountingGedRydgeArchiveLabel: 'Access the folder Accounting/RYDGE Conseil in the archives',
+    },
+    'fr-FR': {
+      PennylaneAdditionalInfos: '● En cochant cette case et en validant, un compte\n  Pennylane sera créé pour l’utilisateur, qui pourra y\n  accéder via l\'onglet "Applications" sur la plateforme\n  RYDGE Conseil.\n\n● En décochant, l’accès à Pennylane sera bloqué sur cette\n  entreprise pour l\'utilisateur.\n',
+      management: 'Outil de pilotage',
+      accountingManagement: 'Outil de gestion Comptable',
+      socialManagement: 'Outil de gestion Sociale',
+      accountingGed: 'Espace documentaire – Comptabilité',
+      socialGed: 'Espace documentaire – Gestion Sociale',
+      administration: 'Administration',
+      offer: 'Offre et souscription',
+      reports: 'Rapports',
+      mirrorView: 'Vue miroir client',
+      manage: 'Gestion des dossiers',
+      prod: 'Production métier',
+      thisAccount: 'ce dossier',
+      thisUser: 'cet utilisateur',
+      rightsNote: 'Sélectionnez les droits que vous souhaitez accorder à {rightsType} :',
+      PennylaneDropdownPlaceholder: 'Choisir un rôle',
+      accountingGedArchiveLabel: 'Accéder aux archives de l\'espace documentaire Comptabilité',
+      accountingGedDepositArchiveLabel: 'Accéder au dossier Comptabilité/Dépôt dans les archives',
+      accountingGedRydgeArchiveLabel: 'Accéder au dossier Comptabilité/RYDGE Conseil dans les archives',
+    },
+  },
 })
 
 const props = defineProps<RightsListProps>()
@@ -301,56 +345,3 @@ const handleInfoIconClick = (event: MouseEvent) => {
 <!-- Note : désactivation uniquement dans la section YAML afin de permettre un contenu formaté -->
 <!-- avec des retours à la ligne -->
 <!-- eslint-disable no-trailing-spaces -->
-<i18n lang="yaml">
-en-US:
-  PennylaneAdditionalInfos: |
-    ● By checking this box and confirming, a Pennylane account will be created for the user,
-      who will be able to access it via the "Applications" tab on the RYDGE Conseil platform.
-
-    ● By unchecking, access to Pennylane will be blocked for the user on this company.
-  management: 'Management tools'
-  accountingManagement: 'Accounting management tools'
-  socialManagement: 'Social management tools'
-  accountingGed: 'Document space – Accounting'
-  socialGed: 'Document space – Social management'
-  administration: 'Administration'
-  offer: 'Offer and subscription'
-  reports: 'Reports'
-  mirrorView: 'Customer mirror view'
-  manage: 'File management'
-  prod: 'Business production'
-  thisAccount: 'this folder'
-  thisUser: 'this user'
-  rightsNote: 'Select the rights you want to grant to {rightsType}:'
-  PennylaneDropdownPlaceholder: 'Choose a role'
-  accountingGedArchiveLabel: "Access the archives of the Accounting document space"
-  accountingGedDepositArchiveLabel: "Access the folder Accounting/Deposit in the archives"
-  accountingGedRydgeArchiveLabel: "Access the folder Accounting/RYDGE Conseil in the archives"
-fr-FR:
-  PennylaneAdditionalInfos: |
-    ● En cochant cette case et en validant, un compte
-      Pennylane sera créé pour l’utilisateur, qui pourra y
-      accéder via l'onglet "Applications" sur la plateforme
-      RYDGE Conseil.
-
-    ● En décochant, l’accès à Pennylane sera bloqué sur cette
-      entreprise pour l'utilisateur.
-  management: 'Outil de pilotage'
-  accountingManagement: 'Outil de gestion Comptable'
-  socialManagement: 'Outil de gestion Sociale'
-  accountingGed: 'Espace documentaire – Comptabilité'
-  socialGed: 'Espace documentaire – Gestion Sociale'
-  administration: 'Administration'
-  offer: 'Offre et souscription'
-  reports: 'Rapports'
-  mirrorView: 'Vue miroir client'
-  manage: 'Gestion des dossiers'
-  prod: 'Production métier'
-  thisAccount: 'ce dossier'
-  thisUser: 'cet utilisateur'
-  rightsNote: 'Sélectionnez les droits que vous souhaitez accorder à {rightsType} :'
-  PennylaneDropdownPlaceholder: 'Choisir un rôle'
-  accountingGedArchiveLabel: "Accéder aux archives de l'espace documentaire Comptabilité"
-  accountingGedDepositArchiveLabel: "Accéder au dossier Comptabilité/Dépôt dans les archives"
-  accountingGedRydgeArchiveLabel: "Accéder au dossier Comptabilité/RYDGE Conseil dans les archives"
-</i18n>

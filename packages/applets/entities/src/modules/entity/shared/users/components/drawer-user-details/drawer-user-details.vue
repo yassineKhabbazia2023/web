@@ -123,6 +123,34 @@ import { handleRequestError } from '@entities/helpers'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      informationsAboutUser: 'User information',
+      youCanModify: 'You can modify the following information:',
+      lastName: 'Last name',
+      firstName: 'First name',
+      mobilePhone: 'Mobile phone',
+      landPhone: 'Land phone',
+      cancel: 'Cancel',
+      submit: 'Submit',
+      patchSuccess: '{fullName}\'s information has been successfully updated.',
+      requiredField: 'mandatory field',
+      patchFailed: '{fullName}\'s information was not updated due to a technical error.',
+    },
+    'fr-FR': {
+      informationsAboutUser: 'Information de l\'utilisateur',
+      youCanModify: 'Vous pouvez modifier les informations suivantes:',
+      lastName: 'Nom',
+      firstName: 'Prénom',
+      mobilePhone: 'Téléphone mobile',
+      landPhone: 'Téléphone fixe',
+      cancel: 'Annuler',
+      submit: 'Valider',
+      patchSuccess: 'Les informations de {fullName} ont bien été mises à jour.',
+      requiredField: 'Champ obligatoire',
+      patchFailed: 'Les informations de {fullName} n\'ont pas été mises à jour suite à une erreur technique.',
+    },
+  },
 })
 
 const emits = defineEmits<{
@@ -201,29 +229,3 @@ onMounted(async () => {
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    informationsAboutUser: 'User information'
-    youCanModify: 'You can modify the following information:'
-    lastName: 'Last name'
-    firstName: 'First name'
-    mobilePhone: 'Mobile phone'
-    landPhone: 'Land phone'
-    cancel: 'Cancel'
-    submit: 'Submit'
-    patchSuccess: "{fullName}'s information has been successfully updated."
-    requiredField: 'mandatory field'
-    patchFailed: "{fullName}'s information was not updated due to a technical error."
-  fr-FR:
-    informationsAboutUser: "Information de l'utilisateur"
-    youCanModify: "Vous pouvez modifier les informations suivantes:"
-    lastName: 'Nom'
-    firstName: "Prénom"
-    mobilePhone: "Téléphone mobile"
-    landPhone: "Téléphone fixe"
-    cancel: 'Annuler'
-    submit: 'Valider'
-    patchSuccess: 'Les informations de {fullName} ont bien été mises à jour.'
-    requiredField: 'Champ obligatoire'
-    patchFailed: "Les informations de {fullName} n'ont pas été mises à jour suite à une erreur technique."
-  </i18n>

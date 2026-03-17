@@ -46,7 +46,6 @@ const config: StorybookConfig = {
   viteFinal: async (config) => {
     // Add Vue plugin if not already present
     const vue = await import('@vitejs/plugin-vue')
-    const VueI18nPlugin = await import('@intlify/unplugin-vue-i18n/vite')
 
     if (!config.plugins?.find(plugin =>
       plugin && typeof plugin === 'object' && 'name' in plugin && plugin.name === 'vite:vue',
@@ -56,10 +55,6 @@ const config: StorybookConfig = {
     }
 
     config.base = '/storybook/'
-
-    // Add Vue i18n plugin for YAML support
-    config.plugins = config.plugins || []
-    config.plugins.push(VueI18nPlugin.default())
 
     // Add viteExternalsPlugin to transform env-vars imports to window.EnvVars
     config.plugins.push(viteExternalsPlugin({ 'env-vars': 'EnvVars' }))

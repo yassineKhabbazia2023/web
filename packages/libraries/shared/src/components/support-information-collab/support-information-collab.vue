@@ -23,6 +23,14 @@ import { APP_COPYRIGHT, SUPPORT_PHONE_COLLAB, SUPPORT_PHONE_COLLAB_LINK } from '
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      contactSupport: 'Support contact: ',
+    },
+    'fr-FR': {
+      contactSupport: 'Contact support : ',
+    },
+  },
 })
 
 const phoneSanitizedUrl = computed(() => {
@@ -46,9 +54,3 @@ const phoneSanitizedUrl = computed(() => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  contactSupport: 'Support contact: '
-fr-FR:
-  contactSupport: 'Contact support : '
-</i18n>

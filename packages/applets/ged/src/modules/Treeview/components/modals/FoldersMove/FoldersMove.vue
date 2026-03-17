@@ -52,6 +52,42 @@ import { moveFolderAsync } from '@ged/services/Folder'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      modalTitle: 'Déplacer 0 dossier dans {folderName} | Déplacer 1 dossier dans {folderName} | Déplacer {count} dossiers dans {folderName}',
+      folderList: {
+        explorerUnauthorizedGivenActionMessage: 'Vous n\'êtes pas autorisé à déposer dans ce dossier. Sélectionnez un des dossiers ci-dessous',
+        foldersListEmptyFolderLabel: 'There is no subfolder',
+      },
+      documentsList: {
+        noMovableDocumentsLabel: 'Aucun dossier ne peut être déplacé dans votre espace documentaire.',
+      },
+      header: {
+        title: 'Certains dossiers ne peuvent pas être déplacés dans votre espace documentaire',
+      },
+      notifications: {
+        successMsg: 'Le dossier { movedFolderName } a été déplacé dans le dossier { targetFolderName }',
+        failureMsg: 'Connexion au serveur interrompue',
+      },
+    },
+    'fr-FR': {
+      modalTitle: 'Déplacer 0 dossier dans {folderName} | Déplacer 1 dossier dans {folderName} | Déplacer {count} dossiers dans {folderName}',
+      folderList: {
+        explorerUnauthorizedGivenActionMessage: 'Vous n\'êtes pas autorisé à déposer dans ce dossier. Sélectionnez un des dossiers ci-dessous',
+        foldersListEmptyFolderLabel: 'Aucun sous-dossier',
+      },
+      documentsList: {
+        noMovableDocumentsLabel: 'Aucun dossier ne peut être déplacé dans votre espace documentaire.',
+      },
+      header: {
+        title: 'Certains dossiers ne peuvent pas être déplacés dans votre espace documentaire',
+      },
+      notifications: {
+        successMsg: 'Le dossier {movedFolderName} a été déplacé dans le dossier {targetFolderName}',
+        failureMsg: 'Connexion au serveur interrompue',
+      },
+    },
+  },
 })
 
 const props = defineProps<FoldersMoveProps>()
@@ -236,41 +272,3 @@ const triggerFailureNotification = (
 </script>
 
 <!-- eslint-disable max-len -->
-<i18n lang="json">
-{
-  "en-US": {
-    "modalTitle": "Déplacer 0 dossier dans {folderName} | Déplacer 1 dossier dans {folderName} | Déplacer {count} dossiers dans {folderName}",
-    "folderList": {
-      "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déposer dans ce dossier. Sélectionnez un des dossiers ci-dessous",
-      "foldersListEmptyFolderLabel": "There is no subfolder"
-    },
-    "documentsList": {
-      "noMovableDocumentsLabel": "Aucun dossier ne peut être déplacé dans votre espace documentaire."
-    },
-    "header": {
-      "title": "Certains dossiers ne peuvent pas être déplacés dans votre espace documentaire"
-    },
-    "notifications": {
-      "successMsg": "Le dossier { movedFolderName } a été déplacé dans le dossier { targetFolderName }",
-      "failureMsg": "Connexion au serveur interrompue"
-    }
-  },
-  "fr-FR": {
-    "modalTitle": "Déplacer 0 dossier dans {folderName} | Déplacer 1 dossier dans {folderName} | Déplacer {count} dossiers dans {folderName}",
-    "folderList": {
-      "explorerUnauthorizedGivenActionMessage": "Vous n'êtes pas autorisé à déposer dans ce dossier. Sélectionnez un des dossiers ci-dessous",
-      "foldersListEmptyFolderLabel": "Aucun sous-dossier"
-    },
-    "documentsList": {
-      "noMovableDocumentsLabel": "Aucun dossier ne peut être déplacé dans votre espace documentaire."
-    },
-    "header": {
-      "title": "Certains dossiers ne peuvent pas être déplacés dans votre espace documentaire"
-    },
-    "notifications": {
-      "successMsg": "Le dossier {movedFolderName} a été déplacé dans le dossier {targetFolderName}",
-      "failureMsg": "Connexion au serveur interrompue"
-    }
-  }
-}
-</i18n>

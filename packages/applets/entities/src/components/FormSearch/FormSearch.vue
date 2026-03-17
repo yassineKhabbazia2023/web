@@ -35,6 +35,14 @@ import { watch, reactive, ref } from 'vue'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      errorSearchInvalid: 'Minimum three characters required',
+    },
+    'fr-FR': {
+      errorSearchInvalid: 'Trois caractères minimum requis',
+    },
+  },
 })
 
 const { isDesktop } = useResponsive()
@@ -82,9 +90,3 @@ defineExpose({
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    errorSearchInvalid: 'Minimum three characters required'
-  fr-FR:
-    errorSearchInvalid: 'Trois caractères minimum requis'
-</i18n>

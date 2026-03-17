@@ -59,6 +59,28 @@ import type { PennylaneDocumentsDetailsLabels } from './pennylane-documents-deta
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      details: 'Details',
+      pathPrefix: 'Pennylane',
+      fields: {
+        name: 'Document name',
+        path: 'Document localisation',
+        createdAt: 'Filing date',
+        updatedAt: 'Last update',
+      },
+    },
+    'fr-FR': {
+      details: 'Détails',
+      pathPrefix: 'Pennylane',
+      fields: {
+        name: 'Nom du document',
+        path: 'Emplacement du document',
+        createdAt: 'Date de dépôt',
+        updatedAt: 'Dernière modification',
+      },
+    },
+  },
 })
 
 const props = defineProps<PennylaneDocumentsDetailsProps>()
@@ -72,21 +94,3 @@ const labels: PennylaneDocumentsDetailsLabels = {
 const displayData = computed(() => getDisplayData(labels, props.pennylaneDocument))
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    details: 'Details'
-    pathPrefix: 'Pennylane'
-    fields:
-      name: 'Document name'
-      path: 'Document localisation'
-      createdAt: 'Filing date'
-      updatedAt: 'Last update'
-  fr-FR:
-    details: 'Détails'
-    pathPrefix: 'Pennylane'
-    fields:
-      name: 'Nom du document'
-      path: 'Emplacement du document'
-      createdAt: 'Date de dépôt'
-      updatedAt: 'Dernière modification'
-</i18n>

@@ -80,6 +80,30 @@ import type { OffersCatalogHeaderProps } from './offers-catalog-header.types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      sentence: 'Got a customer {need}? Find {theOffer}!',
+      need: 'need',
+      theOffer: 'the right offer',
+      invalidSearch: 'search term is invalid',
+      searchPlaceholder: 'Describe a need',
+      aiSearchPlaceholder: 'Smart search: Enter a keyword, phrase, or describe what you are looking for...',
+      smartSearch: 'Smart search',
+      smartSearchEnabled: 'Smart search enabled',
+      aiDisclaimer: 'Verify relevance before presenting to the client. AI-generated content may be incorrect.',
+    },
+    'fr-FR': {
+      sentence: 'Un {need} client ? Trouvez {theOffer} correspondante !',
+      need: 'besoin',
+      theOffer: 'l\'offre',
+      invalidSearch: 'les critères de recherche sont invalides',
+      searchPlaceholder: 'Renseignez un ou plusieurs mots-clés',
+      aiSearchPlaceholder: 'Recherche intelligente : Renseignez un mot clé, une phrase, ou votre besoin "je cherche ..."',
+      smartSearch: 'Recherche intelligente',
+      smartSearchEnabled: 'Recherche intelligente activée',
+      aiDisclaimer: 'Vérifiez la pertinence avant de proposer au client. Le contenu généré par l\'IA peut être incorrect.',
+    },
+  },
 })
 
 const props = defineProps<OffersCatalogHeaderProps>()
@@ -133,25 +157,3 @@ defineExpose({
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    sentence: 'Got a customer {need}? Find {theOffer}!'
-    need: 'need'
-    theOffer: 'the right offer'
-    invalidSearch: 'search term is invalid'
-    searchPlaceholder: 'Describe a need'
-    aiSearchPlaceholder: 'Smart search: Enter a keyword, phrase, or describe what you are looking for...'
-    smartSearch: 'Smart search'
-    smartSearchEnabled: 'Smart search enabled'
-    aiDisclaimer: 'Verify relevance before presenting to the client. AI-generated content may be incorrect.'
-  fr-FR:
-    sentence: 'Un {need} client ? Trouvez {theOffer} correspondante !'
-    need: 'besoin'
-    theOffer: "l'offre"
-    invalidSearch: 'les critères de recherche sont invalides'
-    searchPlaceholder: 'Renseignez un ou plusieurs mots-clés'
-    aiSearchPlaceholder: 'Recherche intelligente : Renseignez un mot clé, une phrase, ou votre besoin "je cherche ..."'
-    smartSearch: 'Recherche intelligente'
-    smartSearchEnabled: 'Recherche intelligente activée'
-    aiDisclaimer: 'Vérifiez la pertinence avant de proposer au client. Le contenu généré par l''IA peut être incorrect.'
-</i18n>

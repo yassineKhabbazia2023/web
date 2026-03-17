@@ -255,6 +255,38 @@ import { SortDirection } from '@pulse/common/enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      companyName: 'Company name',
+      customerCode: 'Customer code',
+      leader: 'Leader',
+      city: 'City',
+      email: 'Email',
+      status: 'Status',
+      option: 'Options',
+      deployThisFolder: 'Deploy this folder',
+      accessThisFolder: 'Access this folder',
+      resendActivationEmail: 'Resend activation email',
+      toDeploy: 'To Deploy',
+      manageAccountRights: 'Manage folder permissions',
+      declareCustomerRelation: 'Declare customer relationship',
+    },
+    'fr-FR': {
+      companyName: 'Raison sociale',
+      customerCode: 'Code client',
+      leader: 'Dirigeant',
+      city: 'Ville',
+      email: 'E-mail',
+      status: 'Statut',
+      option: 'Actions',
+      deployThisFolder: 'Déployer ce dossier',
+      accessThisFolder: 'Accéder au dossier',
+      resendActivationEmail: 'Relancer le mail d\'activation',
+      toDeploy: 'A déployer',
+      manageAccountRights: 'Gérer les droits du dossier',
+      declareCustomerRelation: 'Se déclarer en relation client',
+    },
+  },
 })
 
 const props = withDefaults(defineProps<EntitiesListProps>(), {
@@ -422,33 +454,3 @@ const onMobileRowClick = (row: any) => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  companyName: 'Company name'
-  customerCode: 'Customer code'
-  leader: 'Leader'
-  city: 'City'
-  email: 'Email'
-  status: 'Status'
-  option: 'Options'
-  deployThisFolder: 'Deploy this folder'
-  accessThisFolder: 'Access this folder'
-  resendActivationEmail: 'Resend activation email'
-  toDeploy: 'To Deploy'
-  manageAccountRights: 'Manage folder permissions'
-  declareCustomerRelation: 'Declare customer relationship'
-fr-FR:
-  companyName: 'Raison sociale'
-  customerCode: 'Code client'
-  leader: 'Dirigeant'
-  city: 'Ville'
-  email: 'E-mail'
-  status: 'Statut'
-  option: 'Actions'
-  deployThisFolder: 'Déployer ce dossier'
-  accessThisFolder: 'Accéder au dossier'
-  resendActivationEmail: "Relancer le mail d'activation"
-  toDeploy: 'A déployer'
-  manageAccountRights: 'Gérer les droits du dossier'
-  declareCustomerRelation: 'Se déclarer en relation client'
-</i18n>

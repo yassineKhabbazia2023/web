@@ -33,6 +33,20 @@ const onBoardingFilters = ref<FilterOption<ReportStatus | undefined>[]>([])
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      online: 'Online',
+      offline: 'Offline',
+      failed: 'Failure',
+      reportStatuses: 'BI Reports Status',
+    },
+    'fr-FR': {
+      online: 'En ligne',
+      offline: 'Hors ligne',
+      failed: 'Incident',
+      reportStatuses: 'Statut des rapports BI',
+    },
+  },
 })
 
 const emit = defineEmits<{
@@ -84,15 +98,3 @@ watch(
 )
 </script>
 
-<i18n lang="yaml">
-en-US:
-  online: 'Online'
-  offline: 'Offline'
-  failed: 'Failure'
-  reportStatuses: 'BI Reports Status'
-fr-FR:
-  online: 'En ligne'
-  offline: 'Hors ligne'
-  failed: 'Incident'
-  reportStatuses: 'Statut des rapports BI'
-</i18n>

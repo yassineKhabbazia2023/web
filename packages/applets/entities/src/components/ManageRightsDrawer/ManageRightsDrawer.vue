@@ -81,6 +81,20 @@ import type { PennylaneAvailableRole } from '@pulse/common/types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      submit: 'Submit',
+      modifyUserRights: 'Modify user rights',
+      rightsModificationSucceeded: '{userFullName}\'s rights have indeed been modified',
+      rightsModificationFailed: 'A technical error has occurred',
+    },
+    'fr-FR': {
+      submit: 'Valider',
+      modifyUserRights: 'Modifier les droits utilisateur',
+      rightsModificationSucceeded: 'Les droits de {userFullName} ont bien été modifiés',
+      rightsModificationFailed: 'Une erreur technique est survenue',
+    },
+  },
 })
 
 const props = defineProps<ManageRightsDrawerProps>()
@@ -185,15 +199,3 @@ async function initAdditionalOptionByActionCodeOrigin() {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  submit: 'Submit'
-  modifyUserRights: 'Modify user rights'
-  rightsModificationSucceeded: "{userFullName}'s rights have indeed been modified"
-  rightsModificationFailed: 'A technical error has occurred'
-fr-FR:
-  submit: 'Valider'
-  modifyUserRights: 'Modifier les droits utilisateur'
-  rightsModificationSucceeded: 'Les droits de {userFullName} ont bien été modifiés'
-  rightsModificationFailed: 'Une erreur technique est survenue'
-</i18n>

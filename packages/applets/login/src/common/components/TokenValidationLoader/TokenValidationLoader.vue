@@ -23,14 +23,16 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      loading: 'Loading...',
+      stayOnPage: 'Please do not close this page',
+    },
+    'fr-FR': {
+      loading: 'Chargement en cours...',
+      stayOnPage: 'Merci de ne pas fermer cette page',
+    },
+  },
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  loading: "Loading..."
-  stayOnPage: "Please do not close this page"
-fr-FR:
-  loading: "Chargement en cours..."
-  stayOnPage: "Merci de ne pas fermer cette page"
-</i18n>

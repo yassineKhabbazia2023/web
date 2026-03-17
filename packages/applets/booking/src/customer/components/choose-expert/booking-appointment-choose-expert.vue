@@ -45,7 +45,25 @@ import type { BookingAppointmentChooseExpertProps } from './booking-appointment-
 import { AvatarRoles } from '@pulse/styleguide'
 import { getFormattedExperts } from './booking-appointment-choose-expert.utils'
 
-const { t } = useI18n({ useScope: 'global' })
+const { t } = useI18n({
+  useScope: 'global',
+  messages: {
+    'en-US': {
+      close: 'Close',
+      tabs: {
+        'choose-expert': 'Choose an expert',
+        'choose-time-slot': 'Choose a time slot',
+      },
+    },
+    'fr-FR': {
+      close: 'Fermer',
+      tabs: {
+        'choose-expert': 'Choisissez un expert',
+        'choose-time-slot': 'Choisissez un créneau',
+      },
+    },
+  },
+})
 
 const props = defineProps<BookingAppointmentChooseExpertProps>()
 
@@ -63,15 +81,3 @@ const formattedExperts = computed(() => getFormattedExperts(props.experts))
 }
 </style>
 
-  <i18n lang="yaml">
-    en-US:
-      close: 'Close'
-      tabs:
-        choose-expert: 'Choose an expert'
-        choose-time-slot: 'Choose a time slot'
-    fr-FR:
-      close: 'Fermer'
-      tabs:
-        choose-expert: 'Choisissez un expert'
-        choose-time-slot: 'Choisissez un créneau'
-  </i18n>

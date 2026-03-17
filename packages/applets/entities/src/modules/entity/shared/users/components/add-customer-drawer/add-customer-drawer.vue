@@ -89,6 +89,32 @@ import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enu
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      close: 'Close',
+      nextLabel: 'Next',
+      addUser: 'Add a user',
+      previousLabel: 'Cancel',
+      userAdded: 'User added',
+      incorrectEmail: 'Email format is not valid',
+      alreadyAddedToAccount: 'This user has already been added to this account',
+      noRights: 'Do not grant any rights',
+      grantSelectedRights: 'Grant selected rights',
+      requiredInput: 'This field is required',
+    },
+    'fr-FR': {
+      close: 'Fermer',
+      nextLabel: 'Suivant',
+      addUser: 'Ajouter un utilisateur',
+      previousLabel: 'Annuler',
+      userAdded: 'Utilisateur ajouté',
+      incorrectEmail: 'L\'adresse mail n\'est pas conforme',
+      alreadyAddedToAccount: 'Cet utilisateur a déjà été ajouté sur cette entité',
+      noRights: 'Ne pas donner de droit',
+      grantSelectedRights: 'Donner les droits sélectionnés',
+      requiredInput: 'Ce champ est obligatoire',
+    },
+  },
 })
 
 const props = defineProps<AddCustomerDrawerProps>()
@@ -192,27 +218,3 @@ function onUpdateLastName(lastName: string) {
 }
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    close: 'Close'
-    nextLabel: 'Next'
-    addUser: 'Add a user'
-    previousLabel: 'Cancel'
-    userAdded: 'User added'
-    incorrectEmail: "Email format is not valid"
-    alreadyAddedToAccount: 'This user has already been added to this account'
-    noRights: 'Do not grant any rights'
-    grantSelectedRights: 'Grant selected rights'
-    requiredInput: 'This field is required'
-  fr-FR:
-    close: 'Fermer'
-    nextLabel: 'Suivant'
-    addUser: 'Ajouter un utilisateur'
-    previousLabel: 'Annuler'
-    userAdded: 'Utilisateur ajouté'
-    incorrectEmail: "L'adresse mail n'est pas conforme"
-    alreadyAddedToAccount: 'Cet utilisateur a déjà été ajouté sur cette entité'
-    noRights: 'Ne pas donner de droit'
-    grantSelectedRights: 'Donner les droits sélectionnés'
-    requiredInput: 'Ce champ est obligatoire'
-</i18n>

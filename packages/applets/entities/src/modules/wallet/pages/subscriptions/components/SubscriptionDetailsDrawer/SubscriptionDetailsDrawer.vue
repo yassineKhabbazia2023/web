@@ -42,6 +42,14 @@ import { SubscriptionDetailsContext } from '@entities/modules/wallet/enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      number: 'No.',
+    },
+    'fr-FR': {
+      number: 'Nº',
+    },
+  },
 })
 
 const props = defineProps<SubscriptionDetailsDrawerProps>()
@@ -98,9 +106,3 @@ onMounted(async () => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  number: 'No.'
-fr-FR:
-  number: 'Nº'
-</i18n>

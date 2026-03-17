@@ -29,6 +29,38 @@ import { PNotification } from '@pulse/styleguide'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      modal: {
+        title: 'Renommer',
+        inputLabel: 'Renommer votre dossier',
+        inputPlaceHolder: 'Entrez le nom de votre dossier',
+        controls: {
+          confirm: 'Modifier',
+          cancel: 'Annuler',
+        },
+      },
+      notifications: {
+        errorMsg: 'Connexion au serveur interrompue.',
+        successMsg: 'Le dossier a été renommé avec succès.',
+      },
+    },
+    'fr-FR': {
+      modal: {
+        title: 'Renommer',
+        inputLabel: 'Renommer votre dossier',
+        inputPlaceHolder: 'Entrez le nom de votre dossier',
+        controls: {
+          confirm: 'Modifier',
+          cancel: 'Annuler',
+        },
+      },
+      notifications: {
+        errorMsg: 'Connexion au serveur interrompue.',
+        successMsg: 'Le dossier a été renommé avec succès.',
+      },
+    },
+  },
 })
 
 const isConfirmButtonLoading = ref(false)
@@ -91,27 +123,3 @@ const closeRenameFolderModal = () => {
   isDialogRenameVisible.value = false
 }
 </script>
-<i18n lang="yaml">
-en-US:
-  modal:
-    title: 'Renommer'
-    inputLabel: 'Renommer votre dossier'
-    inputPlaceHolder: 'Entrez le nom de votre dossier'
-    controls:
-      confirm: 'Modifier'
-      cancel: 'Annuler'
-  notifications:
-    errorMsg: 'Connexion au serveur interrompue.'
-    successMsg: 'Le dossier a été renommé avec succès.'
-fr-FR:
-  modal:
-    title: 'Renommer'
-    inputLabel: 'Renommer votre dossier'
-    inputPlaceHolder: 'Entrez le nom de votre dossier'
-    controls:
-      confirm: 'Modifier'
-      cancel: 'Annuler'
-  notifications:
-    errorMsg: 'Connexion au serveur interrompue.'
-    successMsg: 'Le dossier a été renommé avec succès.'
-</i18n>

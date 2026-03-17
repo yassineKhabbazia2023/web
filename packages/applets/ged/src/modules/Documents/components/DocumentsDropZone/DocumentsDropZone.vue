@@ -44,6 +44,18 @@ defineProps<DocumentsDropZoneProps>()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      dropYourFiles: 'Drop your file',
+      maxSize: '(max. 50MB)',
+      dropNotAllowed: 'Drag and drop is not allowed, you don\'t have the appropriate rights.',
+    },
+    'fr-FR': {
+      dropYourFiles: 'Glisser-déposer le ou les fichiers ici',
+      maxSize: '(max. 50MB)',
+      dropNotAllowed: 'Glisser-déposer non autorisé, vous n\'avez pas les droits.',
+    },
+  },
 })
 </script>
 
@@ -72,13 +84,3 @@ const { t } = useI18n({
   }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    dropYourFiles: 'Drop your file'
-    maxSize: '(max. 50MB)'
-    dropNotAllowed: "Drag and drop is not allowed, you don't have the appropriate rights."
-  fr-FR:
-    dropYourFiles: 'Glisser-déposer le ou les fichiers ici'
-    maxSize: '(max. 50MB)'
-    dropNotAllowed: "Glisser-déposer non autorisé, vous n'avez pas les droits."
-</i18n>

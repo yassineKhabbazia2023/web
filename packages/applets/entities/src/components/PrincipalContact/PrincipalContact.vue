@@ -31,6 +31,18 @@ import type { PTagProps } from '@pulse/styleguide/types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      signatoryCustomer: 'Signatory customer',
+      contactDescription: 'This signatory user will be the first client embarked on the file.',
+      missingPhoneNumber: 'No phone number associated, please enter it in the Akuitéo CRM',
+    },
+    'fr-FR': {
+      signatoryCustomer: 'Client signataire',
+      contactDescription: 'Cet utilisateur signataire sera le premier client embarqué sur le dossier.',
+      missingPhoneNumber: 'Aucun téléphone associé, veuillez le saisir dans le CRM Akuitéo',
+    },
+  },
 })
 
 const props = defineProps<PrincipalContactProps>()
@@ -65,13 +77,3 @@ const formattedPhone = computed(() =>
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  signatoryCustomer: 'Signatory customer'
-  contactDescription: 'This signatory user will be the first client embarked on the file.'
-  missingPhoneNumber: 'No phone number associated, please enter it in the Akuitéo CRM'
-fr-FR:
-  signatoryCustomer: 'Client signataire'
-  contactDescription: 'Cet utilisateur signataire sera le premier client embarqué sur le dossier.'
-  missingPhoneNumber: 'Aucun téléphone associé, veuillez le saisir dans le CRM Akuitéo'
-</i18n>

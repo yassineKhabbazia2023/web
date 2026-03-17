@@ -83,6 +83,28 @@ import { refreshPageWhenCurrentUserPermissionChange } from '@entities/composable
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      submitLabel: 'Submit',
+      cancelLabel: 'Cancel',
+      previousLabel: 'Previous',
+      modifyRightsSucceeded: '{userFullName}\'s rights have indeed been modified',
+      modifyRightsFailed: 'The update of {fullName}\'s access rights failed.',
+      manageAccessRights: 'Manage access rights',
+      successNotification: 'The role of {fullName} has been successfully updated.',
+      errorNotification: 'The role of {fullName} was not updated due to a technical error.',
+    },
+    'fr-FR': {
+      submitLabel: 'Valider',
+      cancelLabel: 'Annuler',
+      previousLabel: 'Précédent',
+      modifyRightsSucceeded: 'Les droits de {fullName} ont bien été modifiés',
+      modifyRightsFailed: 'La mise à jour des droits d\'accès de {fullName} a échoué',
+      manageAccessRights: 'Gérer les droits d\'accès',
+      successNotification: 'Le rôle de {fullName} a bien été mis à jour.',
+      errorNotification: 'Le rôle de {fullName} n\'a pas été mis à jour suite à une erreur technique.',
+    },
+  },
 })
 const emit = defineEmits<{
   'update:modelValue': [boolean]
@@ -208,23 +230,3 @@ onMounted(async () => {
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  submitLabel: 'Submit'
-  cancelLabel: 'Cancel'
-  previousLabel: 'Previous'
-  modifyRightsSucceeded: "{userFullName}'s rights have indeed been modified"
-  modifyRightsFailed: "The update of {fullName}'s access rights failed."
-  manageAccessRights: 'Manage access rights'
-  successNotification: 'The role of {fullName} has been successfully updated.'
-  errorNotification: 'The role of {fullName} was not updated due to a technical error.'
-fr-FR:
-  submitLabel: 'Valider'
-  cancelLabel: 'Annuler'
-  previousLabel: 'Précédent'
-  modifyRightsSucceeded: 'Les droits de {fullName} ont bien été modifiés'
-  modifyRightsFailed: "La mise à jour des droits d'accès de {fullName} a échoué"
-  manageAccessRights: "Gérer les droits d'accès"
-  successNotification: 'Le rôle de {fullName} a bien été mis à jour.'
-  errorNotification: "Le rôle de {fullName} n'a pas été mis à jour suite à une erreur technique."
-</i18n>

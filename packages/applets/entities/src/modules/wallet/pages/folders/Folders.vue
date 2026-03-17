@@ -240,6 +240,34 @@ import { useSort } from '@pulse/common/composables/sort'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      search: 'Search by company name, folder ID, first name, last name, and email of the executive',
+      searchShort: 'Search...',
+      toDeploy: 'To Deploy',
+      inProgress: 'In progress',
+      connected: 'Connected',
+      clearAll: 'Clear all',
+      filter: 'Filter',
+      on: 'on',
+      delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders',
+      createTestAccount: 'Create a test account',
+      manageAccess: 'Manage access',
+    },
+    'fr-FR': {
+      search: 'Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant',
+      searchShort: 'Rechercher...',
+      toDeploy: 'A déployer',
+      inProgress: 'En cours',
+      connected: 'Connecté',
+      clearAll: 'Tout effacer',
+      filter: 'Filtrer',
+      on: 'sur',
+      delegation: 'Déléguer mon portefeuille | Déléguer le dossier | Déléguer les dossiers',
+      createTestAccount: 'Créer un compte de test',
+      manageAccess: 'Gérer les accès',
+    },
+  },
 })
 
 const router = useRouter()
@@ -604,29 +632,3 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  search: 'Search by company name, folder ID, first name, last name, and email of the executive'
-  searchShort: 'Search...'
-  toDeploy: 'To Deploy'
-  inProgress: 'In progress'
-  connected: 'Connected'
-  clearAll: 'Clear all'
-  filter: 'Filter'
-  on: 'on'
-  delegation: 'Delegate my wallet | Delegate my folder | Delegate my folders'
-  createTestAccount: 'Create a test account'
-  manageAccess: 'Manage access'
-fr-FR:
-  search: 'Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant'
-  searchShort: 'Rechercher...'
-  toDeploy: 'A déployer'
-  inProgress: 'En cours'
-  connected: 'Connecté'
-  clearAll: 'Tout effacer'
-  filter: 'Filtrer'
-  on: 'sur'
-  delegation: 'Déléguer mon portefeuille | Déléguer le dossier | Déléguer les dossiers'
-  createTestAccount: 'Créer un compte de test'
-  manageAccess: 'Gérer les accès'
-</i18n>

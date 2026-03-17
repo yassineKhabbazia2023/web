@@ -112,6 +112,18 @@ const {
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      title: 'Applications',
+      'active-section-title': 'Active applications',
+      'no-launcher': 'You do not have the necessary permissions to access these applications.',
+    },
+    'fr-FR': {
+      title: 'Applications',
+      'active-section-title': 'Applications activées',
+      'no-launcher': 'Vous n\'avez pas les permissions nécessaires pour accéder à ces applications.',
+    },
+  },
 })
 
 const isDownloading = ref(false)
@@ -168,13 +180,3 @@ const launchCards = computed<ExtendedLaunchCard[]>(() => {
 
 </script>
 
-<i18n lang="yaml">
-en-US:
-  title: 'Applications'
-  active-section-title: 'Active applications'
-  no-launcher: 'You do not have the necessary permissions to access these applications.'
-fr-FR:
-  title: 'Applications'
-  active-section-title: 'Applications activées'
-  no-launcher: "Vous n'avez pas les permissions nécessaires pour accéder à ces applications."
-</i18n>

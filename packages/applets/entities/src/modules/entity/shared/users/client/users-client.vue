@@ -134,6 +134,18 @@ import { useSort } from '@pulse/common/composables/sort'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      addCustomer: 'Add a customer',
+      searchUsers: 'Search by name, first name, email',
+      on: 'on',
+    },
+    'fr-FR': {
+      addCustomer: 'Ajouter un utilisateur',
+      searchUsers: 'Rechercher par nom, prénom, e-mail',
+      on: 'sur',
+    },
+  },
 })
 
 const route = useRoute()
@@ -321,13 +333,3 @@ async function loadPrincipalContacts() {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  addCustomer: "Add a customer"
-  searchUsers: 'Search by name, first name, email'
-  on: 'on'
-fr-FR:
-  addCustomer: "Ajouter un utilisateur"
-  searchUsers: 'Rechercher par nom, prénom, e-mail'
-  on: 'sur'
-</i18n>

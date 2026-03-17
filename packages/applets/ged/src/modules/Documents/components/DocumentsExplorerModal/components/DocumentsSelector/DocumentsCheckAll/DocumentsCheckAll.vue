@@ -19,6 +19,14 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      selectAllLabel: 'Tout sélectionner',
+    },
+    'fr-FR': {
+      selectAllLabel: 'Tout sélectionner',
+    },
+  },
 })
 
 const props = defineProps<DocumentsCheckAllProps>()
@@ -41,10 +49,3 @@ watch(
 )
 </script>
 
-<i18n lang="yaml">
-en-US:
-  selectAllLabel: Tout sélectionner
-
-fr-FR:
-  selectAllLabel: Tout sélectionner
-</i18n>

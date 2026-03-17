@@ -37,6 +37,14 @@ import type { NotificationProps } from './notification.types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      additionalEntitiesNames: 'and {count} other | and {count} others',
+    },
+    'fr-FR': {
+      additionalEntitiesNames: 'et {count} autre | et {count} autres',
+    },
+  },
 })
 
 const props = defineProps<NotificationProps>()
@@ -56,9 +64,3 @@ const notificationTitle = computed(() => {
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  additionalEntitiesNames: 'and {count} other | and {count} others'
-fr-FR:
-  additionalEntitiesNames: 'et {count} autre | et {count} autres'
-</i18n>

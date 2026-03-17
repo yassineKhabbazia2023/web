@@ -25,6 +25,14 @@ import type { SearchMandateParams } from '@mandate/services/mandate/ServiceManda
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      on: 'on',
+    },
+    'fr-FR': {
+      on: 'sur',
+    },
+  },
 })
 
 const emit = defineEmits<{
@@ -66,9 +74,3 @@ function updateListDisplay(currentPage: number, limit: number) {
 }
 </script>
 
-<i18n lang="yaml">
-  en-US:
-      on: 'on'
-  fr-FR:
-    on: 'sur'
-</i18n>

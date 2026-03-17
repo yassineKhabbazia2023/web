@@ -21,6 +21,22 @@ import type { PService } from '@pulse/styleguide/types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      included: 'Included',
+      additionalPrice: 'Additional price',
+      platform: 'Platform services',
+      provider: 'Partner\'s services',
+      services: 'Services',
+    },
+    'fr-FR': {
+      included: 'Inclus',
+      additionalPrice: 'Prix additionnel',
+      platform: 'Les services de la plateforme',
+      provider: 'Les services du partenaire',
+      services: 'Les services',
+    },
+  },
 })
 
 const emit = defineEmits<{
@@ -77,17 +93,3 @@ function onChangeServiceStatus(service: PService) {
 }
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    included: 'Included'
-    additionalPrice: 'Additional price'
-    platform: 'Platform services'
-    provider: "Partner's services"
-    services: 'Services'
-  fr-FR:
-    included: 'Inclus'
-    additionalPrice: 'Prix additionnel'
-    platform: 'Les services de la plateforme'
-    provider: 'Les services du partenaire'
-    services: 'Les services'
-</i18n>

@@ -38,6 +38,20 @@ import { PNotification } from '@pulse/styleguide'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      expireMsg: 'Unfortunately, your link expired...',
+      helpMsg: 'Please click here to receive a new link by mail.',
+      btnReceiveLink: 'Receive my link',
+      technicalErrorMessage: 'A technical error has occurred. Please try again in a few moments.',
+    },
+    'fr-FR': {
+      expireMsg: 'Malheureusement, votre lien a expiré...',
+      helpMsg: 'Cliquez ici afin de recevoir un nouveau lien par mail.',
+      btnReceiveLink: 'Recevoir mon lien',
+      technicalErrorMessage: 'Une erreur technique est survenue. Veuillez réessayer dans quelques instants.',
+    },
+  },
 })
 const route = useRoute()
 const router = useRouter()
@@ -109,15 +123,3 @@ const resendLink = async () => {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    expireMsg: 'Unfortunately, your link expired...'
-    helpMsg: 'Please click here to receive a new link by mail.'
-    btnReceiveLink: 'Receive my link'
-    technicalErrorMessage: 'A technical error has occurred. Please try again in a few moments.'
-  fr-FR:
-    expireMsg: 'Malheureusement, votre lien a expiré...'
-    helpMsg: 'Cliquez ici afin de recevoir un nouveau lien par mail.'
-    btnReceiveLink: 'Recevoir mon lien'
-    technicalErrorMessage: 'Une erreur technique est survenue. Veuillez réessayer dans quelques instants.'
-</i18n>

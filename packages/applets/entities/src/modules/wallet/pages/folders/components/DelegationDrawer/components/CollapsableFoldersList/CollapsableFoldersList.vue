@@ -19,12 +19,14 @@ import { useI18n } from 'vue-i18n'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      selectedFolders: 'Selected Folders',
+    },
+    'fr-FR': {
+      selectedFolders: 'Dossiers sélectionnés',
+    },
+  },
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    selectedFolders: 'Selected Folders'
-  fr-FR:
-    selectedFolders: 'Dossiers sélectionnés'
-</i18n>

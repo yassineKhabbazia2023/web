@@ -100,6 +100,14 @@ import { gedLegacyRouteUpdate } from '@ged/guard/ged-context-navigation.guard'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      unavailableService: 'The {serviceName} document management service is temporarily unavailable.',
+    },
+    'fr-FR': {
+      unavailableService: 'Le service GED {serviceName} est momentanément indisponible',
+    },
+  },
 })
 
 const { isMobile } = useResponsive()
@@ -337,9 +345,3 @@ onMounted(async () => {
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    unavailableService: 'The {serviceName} document management service is temporarily unavailable.'
-  fr-FR:
-    unavailableService: "Le service GED {serviceName} est momentanément indisponible"
-  </i18n>

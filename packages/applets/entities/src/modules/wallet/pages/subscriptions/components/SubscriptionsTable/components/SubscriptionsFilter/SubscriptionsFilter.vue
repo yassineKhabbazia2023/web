@@ -21,6 +21,16 @@ import type { SubscriptionsFilterProps } from './SubscriptionsFilterTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      allOffers: 'All offers',
+      chooseAnOffer: 'Choose an offer',
+    },
+    'fr-FR': {
+      allOffers: 'Toutes les offres',
+      chooseAnOffer: 'Choisir une offre',
+    },
+  },
 })
 
 const props = defineProps<SubscriptionsFilterProps>()
@@ -72,11 +82,3 @@ onMounted(() => {
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  allOffers: 'All offers'
-  chooseAnOffer: 'Choose an offer'
-fr-FR:
-  allOffers: 'Toutes les offres'
-  chooseAnOffer: 'Choisir une offre'
-</i18n>

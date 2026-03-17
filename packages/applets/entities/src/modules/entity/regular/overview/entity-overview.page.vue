@@ -41,6 +41,26 @@ import type { TabName, Tab } from './types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      users: 'Users',
+      collab: 'Collaborators',
+      offers: 'Offers',
+      info: 'Information',
+      invoices: 'RYDGE Conseil invoices',
+      history: 'Folder history',
+      delegationsHistory: 'Delegations history',
+    },
+    'fr-FR': {
+      users: 'Utilisateurs',
+      collab: 'Collaborateurs',
+      offers: 'Offres',
+      info: 'Informations',
+      invoices: 'Factures RYDGE Conseil',
+      history: 'Historique du dossier',
+      delegationsHistory: 'Historique des délégations',
+    },
+  },
 })
 
 // Variables
@@ -119,21 +139,3 @@ watch(
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  users: 'Users'
-  collab: 'Collaborators'
-  offers: 'Offers'
-  info: 'Information'
-  invoices: 'RYDGE Conseil invoices'
-  history: 'Folder history'
-  delegationsHistory: 'Delegations history'
-fr-FR:
-  users: 'Utilisateurs'
-  collab: 'Collaborateurs'
-  offers: 'Offres'
-  info: 'Informations'
-  invoices: 'Factures RYDGE Conseil'
-  history: 'Historique du dossier'
-  delegationsHistory: 'Historique des délégations'
-</i18n>

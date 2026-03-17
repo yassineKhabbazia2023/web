@@ -28,6 +28,40 @@ import { PNotification } from '@pulse/styleguide'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      restore: {
+        title: 'Restaurer ce document ?',
+        titleLoading: 'Un instant...',
+        message: 'Si vous cliquez sur "Confirmer", le document sera restauré dans son dossier d\'origine.',
+        messageLoading: 'Le document est en train d\'être restauré dans son dossier d\'origine.',
+        controls: {
+          confirm: 'Confirmer',
+          cancel: 'Annuler',
+        },
+        notifications: {
+          error: 'Connexion au serveur interrompue.',
+          success: '1 document restauré dans le dossier {folder} - Voir le document',
+        },
+      },
+    },
+    'fr-FR': {
+      restore: {
+        title: 'Restaurer ce document ?',
+        titleLoading: 'Un instant...',
+        message: 'Si vous cliquez sur "Confirmer", le document sera restauré dans son dossier d\'origine.',
+        messageLoading: 'Le document est en train d\'être restauré dans son dossier d\'origine.',
+        controls: {
+          confirm: 'Confirmer',
+          cancel: 'Annuler',
+        },
+        notifications: {
+          error: 'Connexion au serveur interrompue.',
+          success: '1 document restauré dans le dossier {folder} - Voir le document',
+        },
+      },
+    },
+  },
 })
 
 const props = defineProps<DocumentRestoreModalTypesProps>()
@@ -126,31 +160,3 @@ const triggerSuccessNotification = (folderId: number, path: string) => {
   })
 }
 </script>
-<i18n lang="yaml">
-  en-US:
-    restore:
-      title: 'Restaurer ce document ?'
-      titleLoading: 'Un instant...'
-      message: 'Si vous cliquez sur "Confirmer", le document
-       sera restauré dans son dossier d''origine.'
-      messageLoading: 'Le document est en train d''être restauré dans son dossier d''origine.'
-      controls:
-        confirm: 'Confirmer'
-        cancel: 'Annuler'
-      notifications:
-        error: 'Connexion au serveur interrompue.'
-        success: '1 document restauré dans le dossier {folder} - Voir le document'
-  fr-FR:
-    restore:
-      title: 'Restaurer ce document ?'
-      titleLoading: 'Un instant...'
-      message: 'Si vous cliquez sur "Confirmer", le document
-       sera restauré dans son dossier d''origine.'
-      messageLoading: 'Le document est en train d''être restauré dans son dossier d''origine.'
-      controls:
-        confirm: 'Confirmer'
-        cancel: 'Annuler'
-      notifications:
-        error: 'Connexion au serveur interrompue.'
-        success: '1 document restauré dans le dossier {folder} - Voir le document'
-</i18n>

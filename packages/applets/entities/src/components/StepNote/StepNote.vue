@@ -32,6 +32,16 @@ import type { Note } from '@entities/services/subscription/subscriptionTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      modNote: 'Note for the Middle Office (MOD)',
+      notePlaceholder: 'Write your comment',
+    },
+    'fr-FR': {
+      modNote: 'Note à destination du Middle Office (MOD)',
+      notePlaceholder: 'Écrivez votre commentaire',
+    },
+  },
 })
 
 const props = withDefaults(defineProps<StepNoteProps>(), {
@@ -52,11 +62,3 @@ const internalModel = computed({
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  modNote: 'Note for the Middle Office (MOD)'
-  notePlaceholder: 'Write your comment'
-fr-FR:
-  modNote: 'Note à destination du Middle Office (MOD)'
-  notePlaceholder: 'Écrivez votre commentaire'
-</i18n>

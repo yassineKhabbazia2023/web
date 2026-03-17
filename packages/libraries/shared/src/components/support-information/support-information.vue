@@ -31,6 +31,16 @@ import { APP_COPYRIGHT, SUPPORT_PHONE_CLIENT, SUPPORT_PHONE_CLIENT_LINK, SUPPORT
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      contactSupport: 'Support contact: ',
+      emailLabel: ' — email : ',
+    },
+    'fr-FR': {
+      contactSupport: 'Contact support : ',
+      emailLabel: ' — email : ',
+    },
+  },
 })
 
 const phoneSanitizedUrl = computed(() => {
@@ -57,11 +67,3 @@ const emailSanitizedUrl = computed(() => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  contactSupport: 'Support contact: '
-  emailLabel: ' — email : '
-fr-FR:
-  contactSupport: 'Contact support : '
-  emailLabel: ' — email : '
-</i18n>

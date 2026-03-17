@@ -80,6 +80,32 @@ import { getInitials } from '@entities/helpers'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'fr-FR': {
+      headerBlock: {
+        title: 'Délégation automatique',
+        description: 'Les nouveaux dossiers de votre portefeuille seront automatiquement synchronisés chez vos délégataires.',
+      },
+      table: {
+        header: {
+          collabName: 'Nom du collaborateur',
+          enableAutomaticDelegation: 'Activer la délégation automatique',
+        },
+      },
+    },
+    'en-US': {
+      headerBlock: {
+        title: 'Délégation automatique',
+        description: 'Les nouveaux dossiers de votre portefeuille seront automatiquement synchronisés chez vos délégataires.',
+      },
+      table: {
+        header: {
+          collabName: 'Nom du collaborateur',
+          enableAutomaticDelegation: 'Activer la délégation automatique',
+        },
+      },
+    },
+  },
 })
 
 const props = defineProps<DelegationPreviewListProps>()
@@ -108,33 +134,3 @@ const handleToggleAllAutomaticDelegation = () => {
 }
 </script>
 
-<i18n lang="json">
-{
-  "fr-FR": {
-    "headerBlock": {
-      "title": "Délégation automatique",
-      "description":
-      "Les nouveaux dossiers de votre portefeuille seront automatiquement synchronisés chez vos délégataires."
-    },
-    "table": {
-      "header": {
-        "collabName": "Nom du collaborateur",
-        "enableAutomaticDelegation": "Activer la délégation automatique"
-      }
-    }
-  },
-  "en-US": {
-    "headerBlock": {
-      "title": "Délégation automatique",
-      "description":
-      "Les nouveaux dossiers de votre portefeuille seront automatiquement synchronisés chez vos délégataires."
-    },
-    "table": {
-      "header": {
-        "collabName": "Nom du collaborateur",
-        "enableAutomaticDelegation": "Activer la délégation automatique"
-      }
-    }
-  }
-}
-</i18n>

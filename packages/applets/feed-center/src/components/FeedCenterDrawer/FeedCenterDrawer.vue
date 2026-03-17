@@ -94,6 +94,28 @@ const { isMobile } = useResponsive()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      title: 'Notifications',
+      'mark-all-as-read': 'Mark all as read',
+      'notification-settings': 'Access notifications settings',
+      tabs: {
+        'all-notifications': 'All',
+        'unread-notifications': 'Unread',
+      },
+      favorites: 'Favorites',
+    },
+    'fr-FR': {
+      title: 'Notifications',
+      'mark-all-as-read': 'Tout marquer comme lu',
+      'notification-settings': 'Accéder aux paramètres des notifications',
+      tabs: {
+        'all-notifications': 'Tout',
+        'unread-notifications': 'Non lu',
+      },
+      favorites: 'Favoris',
+    },
+  },
 })
 
 const emit = defineEmits<{
@@ -163,24 +185,6 @@ const {
 
 </script>
 
-<i18n lang="yaml">
-en-US:
-  title: 'Notifications'
-  mark-all-as-read: 'Mark all as read'
-  notification-settings: 'Access notifications settings'
-  tabs:
-    all-notifications: 'All'
-    unread-notifications: 'Unread'
-  favorites: 'Favorites'
-fr-FR:
-  title: 'Notifications'
-  mark-all-as-read: 'Tout marquer comme lu'
-  notification-settings: 'Accéder aux paramètres des notifications'
-  tabs:
-    all-notifications: 'Tout'
-    unread-notifications: 'Non lu'
-  favorites: 'Favoris'
-</i18n>
 
 <style lang="scss" scoped>
 .feed-center-drawer__mobile-overlay {

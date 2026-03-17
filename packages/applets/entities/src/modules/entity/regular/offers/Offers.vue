@@ -143,6 +143,28 @@ const currentEntityStore = useCurrentEntityStore()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      collabHeaderTitle: 'Offer activation',
+      clientHeaderTitle: 'Activated offers',
+      collabHeaderSubtitle: 'Manage the offers enabled and activatable for this folder.',
+      clientHeaderSubtitle: 'Digital offers activated for this entity.',
+      activateOffer: 'Activate an offer',
+      offer: 'Offer',
+      status: 'Status',
+      failedMigrationAdditionalInfos: '● Nos équipes travaillent activement à résoudre la situation. Vous serez informé(e) par email dès que la migration\n  sera terminée avec succès.\n● En attendant la réussite de la migration, vous pouvez redéposer des documents dans l’espace documentaire\n  de la plateforme RYDGE Conseil.\n',
+    },
+    'fr-FR': {
+      collabHeaderTitle: 'Activation d\'offres',
+      clientHeaderTitle: 'Offres activées',
+      collabHeaderSubtitle: 'Gérez les offres activées et activables pour ce dossier',
+      clientHeaderSubtitle: 'Les offres digitales activées pour cette entité',
+      activateOffer: 'Activer une offre',
+      offer: 'Offre',
+      status: 'Statut',
+      failedMigrationAdditionalInfos: '● Nos équipes travaillent activement à résoudre la situation. Vous serez informé(e) par email dès que la migration\n  sera terminée avec succès.\n● En attendant la réussite de la migration, vous pouvez redéposer des documents dans l’espace documentaire\n  de la plateforme RYDGE Conseil.\n',
+    },
+  },
 })
 
 defineEmits<{
@@ -221,31 +243,3 @@ async function onOfferSaved() {
   }
 }
 </style>
-<i18n lang="yaml">
-en-US:
-  collabHeaderTitle: 'Offer activation'
-  clientHeaderTitle: 'Activated offers'
-  collabHeaderSubtitle: 'Manage the offers enabled and activatable for this folder.'
-  clientHeaderSubtitle: 'Digital offers activated for this entity.'
-  activateOffer: 'Activate an offer'
-  offer: 'Offer'
-  status: 'Status'
-  failedMigrationAdditionalInfos: |
-    ● Nos équipes travaillent activement à résoudre la situation. Vous serez informé(e) par email dès que la migration
-      sera terminée avec succès.
-    ● En attendant la réussite de la migration, vous pouvez redéposer des documents dans l’espace documentaire
-      de la plateforme RYDGE Conseil.
-fr-FR:
-  collabHeaderTitle: "Activation d'offres"
-  clientHeaderTitle: 'Offres activées'
-  collabHeaderSubtitle: 'Gérez les offres activées et activables pour ce dossier'
-  clientHeaderSubtitle: 'Les offres digitales activées pour cette entité'
-  activateOffer: 'Activer une offre'
-  offer: 'Offre'
-  status: 'Statut'
-  failedMigrationAdditionalInfos: |
-    ● Nos équipes travaillent activement à résoudre la situation. Vous serez informé(e) par email dès que la migration
-      sera terminée avec succès.
-    ● En attendant la réussite de la migration, vous pouvez redéposer des documents dans l’espace documentaire
-      de la plateforme RYDGE Conseil.
-</i18n>

@@ -70,6 +70,24 @@ const router = useRouter()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      suffixes: {
+        minute: 'min',
+        hour: 'h',
+        day: 'd',
+        week: 'w',
+      },
+    },
+    'fr-FR': {
+      suffixes: {
+        minute: 'min',
+        hour: 'h',
+        day: 'j',
+        week: 'sem',
+      },
+    },
+  },
 })
 
 const shouldContentBeCentered = computed(() => props.notifications.length === 0 || props.isLoading)
@@ -92,17 +110,3 @@ function handleNotificationClick(notification: FeedCenterNotification) {
   }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  suffixes:
-    minute: 'min'
-    hour: 'h'
-    day: 'd'
-    week: 'w'
-fr-FR:
-  suffixes:
-    minute: 'min'
-    hour: 'h'
-    day: 'j'
-    week: 'sem'
-</i18n>

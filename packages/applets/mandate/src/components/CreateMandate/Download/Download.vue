@@ -221,6 +221,42 @@ const downloadMandate = async () => {
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      'creating-mandate': 'The mandate is being created !',
+      'keep-open-or-close': 'You have the option to keep this window open on your screen, or if you prefer, you can close it and refer to the mandate page later to retrieve the mandate.\n',
+      'generated-mandate': 'The mandate is generated !',
+      'manual-sign': 'manual sign.',
+      download: 'Download the mandate for',
+      deposit: 'Once signed, upload the mandate to RYDGE Conseil to activate the collection.',
+      help: 'Need help?',
+      'help-label-prefix': 'Consult the ',
+      'help-label-link': 'practical guide',
+      'help-label-suffix': ' to ensure that the collection is active',
+      notification: {
+        downloading: 'The download is in preparation',
+        'downloading-error': 'There was an error during preparation',
+        'technical-error': 'A technical issue has occurred, please try again later',
+      },
+    },
+    'fr-FR': {
+      'creating-mandate': 'Le mandat est en cours de création.',
+      'keep-open-or-close': 'Vous avez le choix de garder cette fenêtre ouverte sur votre écran, ou si vous le préférez, vous pouvez la fermer et consulter la page mandat ultérieurement pour récupérer le mandat\n',
+      'generated-mandate': 'Le mandat est généré !',
+      'manual-sign': 'signature manuscrite.',
+      download: 'Téléchargez dès maintenant le mandat pour',
+      deposit: 'Une fois signé, déposez le mandat sur RYDGE Conseil pour activer la collecte.',
+      help: 'Besoin d\'aide ?',
+      'help-label-prefix': 'Consultez le ',
+      'help-label-link': 'guide pratique',
+      'help-label-suffix': ' pour garantir l\'activation de la collecte',
+      notification: {
+        downloading: 'Le téléchargement est en cours de préparation',
+        'downloading-error': 'Il y\'a eu une erreur lors de la préparation',
+        'technical-error': 'Un incident technique est survenu, merci de réessayer ultérieurement.',
+      },
+    },
+  },
 })
 
 </script>
@@ -280,39 +316,3 @@ const { t } = useI18n({
   }
 }
 </style>
-<i18n lang="yaml">
-  en-US:
-    creating-mandate: 'The mandate is being created !'
-    keep-open-or-close: >
-      You have the option to keep this window open on your screen, or if you prefer,
-      you can close it and refer to the mandate page later to retrieve the mandate.
-    generated-mandate: 'The mandate is generated !'
-    manual-sign: 'manual sign.'
-    download: 'Download the mandate for'
-    deposit: 'Once signed, upload the mandate to RYDGE Conseil to activate the collection.'
-    help: 'Need help?'
-    help-label-prefix: 'Consult the '
-    help-label-link: 'practical guide'
-    help-label-suffix: ' to ensure that the collection is active'
-    notification:
-      downloading: 'The download is in preparation'
-      downloading-error: 'There was an error during preparation'
-      technical-error: 'A technical issue has occurred, please try again later'
-  fr-FR:
-    creating-mandate: 'Le mandat est en cours de création.'
-    keep-open-or-close: >
-      Vous avez le choix de garder cette fenêtre ouverte sur votre écran,
-      ou si vous le préférez, vous pouvez la fermer et consulter la page mandat ultérieurement pour récupérer le mandat
-    generated-mandate: 'Le mandat est généré !'
-    manual-sign: 'signature manuscrite.'
-    download: 'Téléchargez dès maintenant le mandat pour'
-    deposit: 'Une fois signé, déposez le mandat sur RYDGE Conseil pour activer la collecte.'
-    help: "Besoin d'aide ?"
-    help-label-prefix: 'Consultez le '
-    help-label-link: 'guide pratique'
-    help-label-suffix: " pour garantir l'activation de la collecte"
-    notification:
-      downloading: 'Le téléchargement est en cours de préparation'
-      downloading-error: "Il y'a eu une erreur lors de la préparation"
-      technical-error: "Un incident technique est survenu, merci de réessayer ultérieurement."
-</i18n>

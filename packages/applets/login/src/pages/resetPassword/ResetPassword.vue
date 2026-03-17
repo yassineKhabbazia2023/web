@@ -70,6 +70,30 @@ import { RouteName } from '@pulse/common/enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      email: 'E-mail address',
+      submitBtn: 'Send the reset link',
+      forgotPasswordTitle: 'Forgot your password ?',
+      resetPasswordMsg: 'Please enter the email address associated with your account, we will send you a link to reset your password.\n',
+      emailPlaceholder: 'Enter your e-mail address',
+      backToLogin: 'Back to login',
+      alertMailRequired: 'Please enter your e-mail address',
+      alertMailInvalid: 'Please enter a valid e-mail address',
+      technicalError: 'The operation failed due to a technical error. Please try again later.',
+    },
+    'fr-FR': {
+      email: 'Adresse e-mail',
+      submitBtn: 'Envoyer le lien de réinitialisation',
+      forgotPasswordTitle: 'Vous avez oublié votre mot de passe ?',
+      resetPasswordMsg: 'Veuillez entrer l\'adresse e-mail associée à votre compte, nous vous enverrons un lien pour réinitialiser votre mot de passe.\n',
+      emailPlaceholder: 'Saisissez votre adresse e-mail',
+      backToLogin: 'Revenir à la connexion',
+      alertMailRequired: 'Veuillez saisir votre adresse e-mail',
+      alertMailInvalid: 'Veuillez saisir une adresse e-mail valide',
+      technicalError: 'L’opération a échoué suite à une erreur technique. Veuillez réessayer plus tard.',
+    },
+  },
 })
 
 const formRef = ref<FormInstance>()
@@ -202,29 +226,3 @@ defineExpose({ handleSubmit })
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    email: 'E-mail address'
-    submitBtn: 'Send the reset link'
-    forgotPasswordTitle: 'Forgot your password ?'
-    resetPasswordMsg: >
-      Please enter the email address associated with your account,
-      we will send you a link to reset your password.
-    emailPlaceholder: 'Enter your e-mail address'
-    backToLogin: 'Back to login'
-    alertMailRequired: 'Please enter your e-mail address'
-    alertMailInvalid: 'Please enter a valid e-mail address'
-    technicalError: 'The operation failed due to a technical error. Please try again later.'
-  fr-FR:
-    email: 'Adresse e-mail'
-    submitBtn: 'Envoyer le lien de réinitialisation'
-    forgotPasswordTitle: 'Vous avez oublié votre mot de passe ?'
-    resetPasswordMsg: >
-      Veuillez entrer l'adresse e-mail associée à votre compte,
-      nous vous enverrons un lien pour réinitialiser votre mot de passe.
-    emailPlaceholder: 'Saisissez votre adresse e-mail'
-    backToLogin: 'Revenir à la connexion'
-    alertMailRequired: 'Veuillez saisir votre adresse e-mail'
-    alertMailInvalid: 'Veuillez saisir une adresse e-mail valide'
-    technicalError: 'L’opération a échoué suite à une erreur technique. Veuillez réessayer plus tard.'
-</i18n>

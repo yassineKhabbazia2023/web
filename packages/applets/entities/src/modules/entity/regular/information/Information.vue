@@ -90,6 +90,26 @@ import { RouteParam } from '@pulse/common/enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      billing: 'Company billing address',
+      delivery: 'Company delivery address',
+      addressFallback: 'Company address',
+      save: 'Save modifications',
+      'save-succeeded': 'Save succeeded',
+      'save-failed': 'Save failed',
+      alertInstruction: 'If any information is incorrect, please update it in the CRM',
+    },
+    'fr-FR': {
+      billing: 'Adresse de facturation de l\'entreprise',
+      delivery: 'Adresse de livraison de l\'entreprise',
+      addressFallback: 'Adresse de l\'entreprise',
+      save: 'Enregistrer les modifications',
+      'save-succeeded': 'Enregistrement des modifications avec succès',
+      'save-failed': 'L\'enregistrement des modifications a échoué',
+      alertInstruction: 'Si des informations sont incorrectes, veuillez les mettre à jour dans le CRM',
+    },
+  },
 })
 
 const userStore = useUserStore()
@@ -171,21 +191,3 @@ onMounted(async () => {
   }
 }
 </style>
-<i18n lang="yaml">
-en-US:
-  billing: 'Company billing address'
-  delivery: 'Company delivery address'
-  addressFallback: 'Company address'
-  save: 'Save modifications'
-  save-succeeded: 'Save succeeded'
-  save-failed: 'Save failed'
-  alertInstruction: 'If any information is incorrect, please update it in the CRM'
-fr-FR:
-  billing: "Adresse de facturation de l'entreprise"
-  delivery: "Adresse de livraison de l'entreprise"
-  addressFallback: "Adresse de l'entreprise"
-  save: 'Enregistrer les modifications'
-  save-succeeded: 'Enregistrement des modifications avec succès'
-  save-failed: "L'enregistrement des modifications a échoué"
-  alertInstruction: 'Si des informations sont incorrectes, veuillez les mettre à jour dans le CRM'
-</i18n>

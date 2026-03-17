@@ -71,6 +71,30 @@ import DrawerActionButtons from '@entities/components/DrawerActionButtons/Drawer
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      cancel: 'Cancel',
+      submit: 'Submit',
+      entity: 'Entity',
+      declareStatus: 'Declare if you are',
+      customerRelationUpdated: 'Customer relation was successfully updated.',
+      customerRelationUpdateFail: 'Failed to update customer relation. Please try again.',
+      inClientRelationship: 'In client relationship',
+      declareCustomerRelationship: 'Declare customer relationship on the entity',
+      clientRelationshipInfo: 'By declaring yourself as involved in the client relationship, you make it easier to connect with your client. You will be visible in the client portal, and the client will recognize you as their point of contact.\n',
+    },
+    'fr-FR': {
+      cancel: 'Annuler',
+      submit: 'Valider',
+      entity: 'Entité',
+      declareStatus: 'Déclarez si vous êtes',
+      customerRelationUpdated: 'La relation client a été mise à jour avec succès.',
+      customerRelationUpdateFail: 'Échec de la mise à jour de la relation client. Veuillez réessayer.',
+      inClientRelationship: 'En relation client',
+      declareCustomerRelationship: 'Se déclarer en relation client sur le dossier',
+      clientRelationshipInfo: 'En vous déclarant en relation client vous facilitez la relation entre vous et votre client. En effet vous serez visible sur l\'espace client et le client vous identifiera comme interlocuteur à contacter.\n',
+    },
+  },
 })
 const userStore = useUserStore()
 
@@ -112,29 +136,3 @@ onMounted(() => {
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    cancel: 'Cancel'
-    submit: 'Submit'
-    entity: 'Entity'
-    declareStatus: 'Declare if you are'
-    customerRelationUpdated: 'Customer relation was successfully updated.'
-    customerRelationUpdateFail: 'Failed to update customer relation. Please try again.'
-    inClientRelationship: 'In client relationship'
-    declareCustomerRelationship: 'Declare customer relationship on the entity'
-    clientRelationshipInfo: >
-      By declaring yourself as involved in the client relationship, you make it easier to connect with your client.
-      You will be visible in the client portal, and the client will recognize you as their point of contact.
-  fr-FR:
-    cancel: 'Annuler'
-    submit: 'Valider'
-    entity: 'Entité'
-    declareStatus: 'Déclarez si vous êtes'
-    customerRelationUpdated: 'La relation client a été mise à jour avec succès.'
-    customerRelationUpdateFail: 'Échec de la mise à jour de la relation client. Veuillez réessayer.'
-    inClientRelationship: 'En relation client'
-    declareCustomerRelationship: 'Se déclarer en relation client sur le dossier'
-    clientRelationshipInfo: >
-      En vous déclarant en relation client vous facilitez la relation entre vous et votre client.
-      En effet vous serez visible sur l'espace client et le client vous identifiera comme interlocuteur à contacter.
-</i18n>

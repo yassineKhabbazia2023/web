@@ -43,6 +43,14 @@ const mostRecentDate = (updateDate?: string, dataUpdateDate?: string) => {
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      reportsDeposited: 'BI reports deposited',
+    },
+    'fr-FR': {
+      reportsDeposited: 'Rapports BI déposés',
+    },
+  },
 })
 
 defineProps<ReportsListProps>()
@@ -64,9 +72,3 @@ const handleReportSelection = (reportId: number) => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  reportsDeposited: 'BI reports deposited'
-fr-FR:
-  reportsDeposited: 'Rapports BI déposés'
-</i18n>

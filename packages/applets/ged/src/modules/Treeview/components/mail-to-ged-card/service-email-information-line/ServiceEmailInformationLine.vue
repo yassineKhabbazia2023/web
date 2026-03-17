@@ -55,6 +55,14 @@ import { copyServiceEmailToClipboard } from './service-email-information-line.ma
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      sendEmail: 'Send an e-mail',
+    },
+    'fr-FR': {
+      sendEmail: 'Envoyer un e-mail',
+    },
+  },
 })
 
 defineProps<ServiceEmailInformationLineProps>()
@@ -77,9 +85,3 @@ defineProps<ServiceEmailInformationLineProps>()
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  sendEmail: 'Send an e-mail'
-fr-FR:
-  sendEmail: 'Envoyer un e-mail'
-</i18n>

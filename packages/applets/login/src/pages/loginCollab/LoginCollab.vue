@@ -35,6 +35,22 @@ const router = useRouter()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      welcomeTo: 'Welcome to your',
+      collaboratorSpace: 'your collaborator space !',
+      login: 'Login',
+      loading: 'Loading...',
+      formTitle: 'Welcome to your RYDGE Conseil platform.\n Please log in to access to all your services.',
+    },
+    'fr-FR': {
+      welcomeTo: 'Bienvenue sur votre',
+      collaboratorSpace: 'espace collaborateur !',
+      login: 'Se connecter',
+      loading: 'Chargement en cours',
+      formTitle: 'Bienvenue sur votre plateforme RYDGE Conseil.\n Veuillez vous connecter pour accéder à tous vos services.',
+    },
+  },
 })
 
 const isLoading = ref(false)
@@ -106,21 +122,3 @@ p {
 </style>
 
 <!-- eslint-disable max-len -->
-<i18n lang="json">
-{
-  "en-US": {
-    "welcomeTo": "Welcome to your",
-    "collaboratorSpace": "your collaborator space !",
-    "login": "Login",
-    "loading": "Loading...",
-    "formTitle": "Welcome to your RYDGE Conseil platform.\n Please log in to access to all your services."
-  },
-  "fr-FR": {
-    "welcomeTo": "Bienvenue sur votre",
-    "collaboratorSpace": "espace collaborateur !",
-    "login": "Se connecter",
-    "loading": "Chargement en cours",
-    "formTitle": "Bienvenue sur votre plateforme RYDGE Conseil.\n Veuillez vous connecter pour accéder à tous vos\u202Fservices."
-  }
-}
-</i18n>

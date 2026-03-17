@@ -142,6 +142,28 @@ import { useOfferPlanSubscription } from './use-offer-plan-subscription.composab
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      planSelectionNote: '1. Select the subscription to activate for this customer',
+      viewPricingTable: 'View pricing table',
+      planSelectionRecap: '1. Activated subscription',
+      pricingSelectionNote: '2. Choose the associated plan',
+      pricingSelectionRecap: '2. Associated plan',
+      free: 'Free',
+      premiumInternaliseInfoStart: 'By default, the subscription will be activated as Premium,',
+      premiumInternaliseInfoBold: 'please contact your Super User to switch the subscription to Premium Internalized.',
+    },
+    'fr-FR': {
+      planSelectionNote: '1. Sélectionnez l\'abonnement à activer pour ce client',
+      viewPricingTable: 'Voir la grille tarifaire',
+      planSelectionRecap: '1. Abonnement activé',
+      pricingSelectionNote: '2. Choisissez le forfait associé',
+      pricingSelectionRecap: '2. Forfait associé',
+      free: 'Gratuit',
+      premiumInternaliseInfoStart: 'Par défaut l\'abonnement sera activé en Premium,',
+      premiumInternaliseInfoBold: 'veuillez contacter votre Super User pour passer l\'abonnement en Premium Internalisé.',
+    },
+  },
 })
 
 const props = withDefaults(defineProps<OfferPlanSubscriptionProps>(), {
@@ -243,23 +265,3 @@ function openDialog() {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  planSelectionNote: '1. Select the subscription to activate for this customer'
-  viewPricingTable: 'View pricing table'
-  planSelectionRecap: '1. Activated subscription'
-  pricingSelectionNote: '2. Choose the associated plan'
-  pricingSelectionRecap: '2. Associated plan'
-  free: 'Free'
-  premiumInternaliseInfoStart: "By default, the subscription will be activated as Premium,"
-  premiumInternaliseInfoBold: "please contact your Super User to switch the subscription to Premium Internalized."
-fr-FR:
-  planSelectionNote: "1. Sélectionnez l'abonnement à activer pour ce client"
-  viewPricingTable: "Voir la grille tarifaire"
-  planSelectionRecap: "1. Abonnement activé"
-  pricingSelectionNote: "2. Choisissez le forfait associé"
-  pricingSelectionRecap: "2. Forfait associé"
-  free: "Gratuit"
-  premiumInternaliseInfoStart: "Par défaut l'abonnement sera activé en Premium,"
-  premiumInternaliseInfoBold: "veuillez contacter votre Super User pour passer l'abonnement en Premium Internalisé."
-</i18n>

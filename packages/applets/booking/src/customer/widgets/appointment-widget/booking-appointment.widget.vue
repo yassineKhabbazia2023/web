@@ -66,20 +66,19 @@ const isBookingEnabled = computed(() => customerStore.getIsBookingEnabled() === 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      title: 'Appointment with your expert',
+      takeAppointment: 'Book appointment',
+    },
+    'fr-FR': {
+      title: 'Rendez-vous avec votre expert',
+      takeAppointment: 'Prendre rendez-vous',
+    },
+  },
 })
 
 function onClickTakeAppointment() {
   customerStore.openAppointmentDrawer()
 }
 </script>
-
-
-<i18n lang="yaml">
-  en-US:
-    title: 'Appointment with your expert'
-    takeAppointment: 'Book appointment'
-  fr-FR:
-    title: 'Rendez-vous avec votre expert'
-    takeAppointment: 'Prendre rendez-vous'
-</i18n>
-

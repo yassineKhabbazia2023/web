@@ -41,6 +41,30 @@ const emit = defineEmits([
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      validations: {
+        alphaNumerique: 'Enter a name that does not contain any of the following characters: “ * : {\'<\'} {\'>\'} ? / \\ {\'|\'}\n',
+        maxLength: 'The number of characters allowed ({maxLength}) is exceeded',
+      },
+      title: 'Rename',
+      inputLabel: 'Rename document',
+      inputPlaceHolder: 'Enter a new document name',
+      cancelButtonLabel: 'Cancel',
+      updateButtonLabel: 'Update',
+    },
+    'fr-FR': {
+      validations: {
+        alphaNumerique: 'Entrez un nom qui ne contient aucun des caractères suivants : “ * : {\'<\'} {\'>\'} ? / \\ {\'|\'}\n',
+        maxLength: 'Le nombre de caractères autorisés ({maxLength}) est dépassé',
+      },
+      title: 'Renommer',
+      inputLabel: 'Renommez votre document',
+      inputPlaceHolder: 'Entrez un nouveau nom',
+      cancelButtonLabel: 'Annuler',
+      updateButtonLabel: 'Modifier',
+    },
+  },
 })
 
 const documentBaseName = ref(getDocumentNameWithoutExtension(props.document.name))
@@ -91,28 +115,3 @@ const handleConfirmAction = () => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  validations:
-    alphaNumerique: >
-      Enter a name that does not contain any of the following characters:
-      “ * : {'<'} {'>'} ? / \ {'|'}
-    maxLength: 'The number of characters allowed ({maxLength}) is exceeded'
-  title: Rename
-  inputLabel: Rename document
-  inputPlaceHolder: Enter a new document name
-  cancelButtonLabel: Cancel
-  updateButtonLabel: Update
-
-fr-FR:
-  validations:
-    alphaNumerique: >
-      Entrez un nom qui ne contient aucun des caractères suivants :
-      “ * : {'<'} {'>'} ? / \ {'|'}
-    maxLength: 'Le nombre de caractères autorisés ({maxLength}) est dépassé'
-  title: Renommer
-  inputLabel: Renommez votre document
-  inputPlaceHolder: Entrez un nouveau nom
-  cancelButtonLabel: Annuler
-  updateButtonLabel: Modifier
-</i18n>

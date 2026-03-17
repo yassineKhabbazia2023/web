@@ -19,23 +19,21 @@ import type { DocumentsDropModalProps } from './DocumentsDropModalTypes'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      oneMoment: 'One moment...',
+      uploadingDocuments: 'Document is being uploaded to the "{folderName}" folder | Documents are being uploaded to the "{folderName}" folder\n',
+      currentlyUploading: 'Uploading',
+    },
+    'fr-FR': {
+      oneMoment: 'Un instant...',
+      uploadingDocuments: 'Le document est en cours de dépôt dans le dossier "{folderName}" | Les documents sont en cours de dépôt dans le dossier “{folderName}”.\n',
+      currentlyUploading: 'Dépôt en cours',
+    },
+  },
 })
 
 defineProps<DocumentsDropModalProps>()
 
 </script>
 
-<i18n lang="yaml">
-en-US:
-  oneMoment: 'One moment...'
-  uploadingDocuments: >
-    Document is being uploaded to the "{folderName}" folder |
-    Documents are being uploaded to the "{folderName}" folder
-  currentlyUploading: 'Uploading'
-fr-FR:
-  oneMoment: 'Un instant...'
-  uploadingDocuments: >
-    Le document est en cours de dépôt dans le dossier "{folderName}" |
-    Les documents sont en cours de dépôt dans le dossier “{folderName}”.
-  currentlyUploading: 'Dépôt en cours'
-</i18n>

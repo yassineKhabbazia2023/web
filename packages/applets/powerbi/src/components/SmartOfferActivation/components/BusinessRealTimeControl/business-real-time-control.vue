@@ -28,6 +28,14 @@ import SmartOfferCard from '../SmartOfferCard/smart-offer-card.vue'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      dashboardTitle: 'Manage your business in real time',
+    },
+    'fr-FR': {
+      dashboardTitle: 'Pilotez votre entreprise en temps réel',
+    },
+  },
 })
 
 // POC: Static demo data for Smart offer cards. No translation planned yet.
@@ -60,9 +68,3 @@ const businessRealTimeCards: SmartOfferCardProps[] = [
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    dashboardTitle: "Manage your business in real time"
-  fr-FR:
-    dashboardTitle: "Pilotez votre entreprise en temps réel"
-</i18n>

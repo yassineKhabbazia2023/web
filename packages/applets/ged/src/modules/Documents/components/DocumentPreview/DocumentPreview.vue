@@ -55,6 +55,18 @@ const props = defineProps<DocumentsPreviewProps>()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      errorTitle: 'Aperçu indisponible',
+      errorMessageExtension: 'Le format de document n\'est pas supporté',
+      errorMessageNotAvailable: 'La prévisualisation du document n\'est pas disponible pour le moment',
+    },
+    'fr-FR': {
+      errorTitle: 'Aperçu indisponible',
+      errorMessageExtension: 'Le format de document n\'est pas supporté',
+      errorMessageNotAvailable: 'La prévisualisation du document n\'est pas disponible pour le moment',
+    },
+  },
 })
 
 const isLoadingDocument = ref(true)
@@ -144,14 +156,3 @@ const iconName = computed(() => getIconFileName(documentExtension.value, 'fileTe
   max-width:100%
 }
 </style>
-<i18n lang="yaml">
-en-US:
-  errorTitle: Aperçu indisponible
-  errorMessageExtension: Le format de document n'est pas supporté
-  errorMessageNotAvailable: La prévisualisation du document n'est pas disponible pour le moment
-
-fr-FR:
-  errorTitle: Aperçu indisponible
-  errorMessageExtension: Le format de document n'est pas supporté
-  errorMessageNotAvailable: La prévisualisation du document n'est pas disponible pour le moment
-</i18n>

@@ -46,6 +46,28 @@ import { useUserStore } from '@pulse/common/stores'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      activateTrial: 'Activate the trial offer',
+      smartDashboardCTA: 'Try the SMART dashboard for free',
+      features: {
+        measurePerformance: 'Measure your company\'s performance',
+        manageCashFlow: 'Proactively manage your cash flow to secure your business\'s sustainability',
+        anticipateFinancialNeeds: 'Anticipate financial needs',
+        analyzeOrganization: 'Analyze your company\'s organizational dynamics and HR structure',
+      },
+    },
+    'fr-FR': {
+      activateTrial: 'Activez l\'offre d\'essai',
+      smartDashboardCTA: 'Testez gratuitement le tableau de bord SMART',
+      features: {
+        measurePerformance: 'Mesurez la performance de votre entreprise',
+        manageCashFlow: 'Pilotez votre trésorerie de manière proactive pour sécuriser la pérennité de votre activité',
+        anticipateFinancialNeeds: 'Anticipez les besoins financiers',
+        analyzeOrganization: 'Analysez la dynamique organisationnelle et la structure RH de votre entreprise',
+      },
+    },
+  },
 })
 
 const emits = defineEmits<{
@@ -100,21 +122,3 @@ const activateSmartOffer = () => {
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    activateTrial: "Activate the trial offer"
-    smartDashboardCTA: "Try the SMART dashboard for free"
-    features:
-      measurePerformance: "Measure your company's performance"
-      manageCashFlow: "Proactively manage your cash flow to secure your business's sustainability"
-      anticipateFinancialNeeds: "Anticipate financial needs"
-      analyzeOrganization: "Analyze your company's organizational dynamics and HR structure"
-  fr-FR:
-    activateTrial: "Activez l'offre d'essai"
-    smartDashboardCTA: "Testez gratuitement le tableau de bord SMART"
-    features:
-      measurePerformance: "Mesurez la performance de votre entreprise"
-      manageCashFlow: "Pilotez votre trésorerie de manière proactive pour sécuriser la pérennité de votre activité"
-      anticipateFinancialNeeds: "Anticipez les besoins financiers"
-      analyzeOrganization: "Analysez la dynamique organisationnelle et la structure RH de votre entreprise"
-</i18n>

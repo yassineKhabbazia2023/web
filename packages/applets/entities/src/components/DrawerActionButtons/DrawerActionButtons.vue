@@ -37,6 +37,16 @@ import type { DrawerActionButtonsProps } from './drawer-action-buttons.types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      cancel: 'Cancel',
+      submit: 'Submit',
+    },
+    'fr-FR': {
+      cancel: 'Annuler',
+      submit: 'Valider',
+    },
+  },
 })
 
 defineProps<DrawerActionButtonsProps>()
@@ -56,11 +66,3 @@ const onSubmit = () => {
 
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    cancel: 'Cancel'
-    submit: 'Submit'
-  fr-FR:
-    cancel: 'Annuler'
-    submit: 'Valider'
-</i18n>

@@ -112,6 +112,40 @@ import { fetchUrlTerms, getLatestTerms, updateTermsByCurrentUser } from '@pulse/
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      createAccount: 'Create your account ',
+      '1step': 'in 1 step.',
+      defPassword: 'Please enter and confirm your new password',
+      validCgu: 'Please valid the General Terms and Conditions of use',
+      cguMessagePartOne: 'By checking this box, I confirm that I have read and accepted the ',
+      cguLink: 'general terms and conditions of use ',
+      cguMessagePartTwo: 'of RYDGE Conseil.',
+      alertCgu: 'Please accept the general terms and conditions of use',
+      btnSubmit: 'Activate my account',
+      currentPasswordRequired: 'Current password is required',
+      newPasswordRequired: 'New password is required',
+      newPasswordWeak: 'Password must contain at least 8 characters with uppercase, lowercase, number and special character',
+      confirmPasswordRequired: 'Password confirmation is required',
+      confirmPasswordMismatch: 'Passwords do not match',
+    },
+    'fr-FR': {
+      createAccount: 'Créez votre compte',
+      '1step': 'en une étape.',
+      defPassword: 'Veuillez définir votre mot de passe et le confirmer.',
+      validCgu: 'Validez les conditions générales d\'utilisation.',
+      cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté les',
+      cguLink: 'conditions générales d\'utilisation ',
+      cguMessagePartTwo: 'de RYDGE Conseil.',
+      alertCgu: 'Veuillez accepter les conditions générales d\'utilisation',
+      btnSubmit: 'Activer mon compte',
+      currentPasswordRequired: 'Le mot de passe actuel est requis',
+      newPasswordRequired: 'Le nouveau mot de passe est requis',
+      newPasswordWeak: 'Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule, chiffre et caractère spécial',
+      confirmPasswordRequired: 'La confirmation du mot de passe est requise',
+      confirmPasswordMismatch: 'Les mots de passe ne correspondent pas',
+    },
+  },
 })
 
 const route = useRoute()
@@ -274,35 +308,3 @@ defineExpose({ submitForm })
 }
 </style>
 
-<i18n lang="yaml">
-  en-US:
-    createAccount: 'Create your account '
-    1step: 'in 1 step.'
-    defPassword: 'Please enter and confirm your new password'
-    validCgu: 'Please valid the General Terms and Conditions of use'
-    cguMessagePartOne: 'By checking this box, I confirm that I have read and accepted the '
-    cguLink: 'general terms and conditions of use '
-    cguMessagePartTwo: 'of RYDGE Conseil.'
-    alertCgu: 'Please accept the general terms and conditions of use'
-    btnSubmit: 'Activate my account'
-    currentPasswordRequired: 'Current password is required'
-    newPasswordRequired: 'New password is required'
-    newPasswordWeak: 'Password must contain at least 8 characters with uppercase, lowercase, number and special character'
-    confirmPasswordRequired: 'Password confirmation is required'
-    confirmPasswordMismatch: 'Passwords do not match'
-  fr-FR:
-    createAccount: 'Créez votre compte'
-    1step: 'en une étape.'
-    defPassword: 'Veuillez définir votre mot de passe et le confirmer.'
-    validCgu: "Validez les conditions générales d'utilisation."
-    cguMessagePartOne: 'En cochant cette case, je confirme avoir lu et accepté les'
-    cguLink: "conditions générales d'utilisation "
-    cguMessagePartTwo: 'de RYDGE Conseil.'
-    alertCgu: "Veuillez accepter les conditions générales d'utilisation"
-    btnSubmit: 'Activer mon compte'
-    currentPasswordRequired: 'Le mot de passe actuel est requis'
-    newPasswordRequired: 'Le nouveau mot de passe est requis'
-    newPasswordWeak: 'Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule, chiffre et caractère spécial'
-    confirmPasswordRequired: 'La confirmation du mot de passe est requise'
-    confirmPasswordMismatch: 'Les mots de passe ne correspondent pas'
-</i18n>

@@ -64,6 +64,32 @@ withDefaults(defineProps<{ standalone?: boolean }>(), {
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      saveChanges: 'Save changes',
+      notificationSuccess: 'Your password has been successfully updated',
+      notificationError: 'An error occurred while updating your password',
+      wrongCurrentPassword: 'Current password is incorrect',
+      passwordAlreadyUsed: 'This password has already been used',
+      currentPasswordRequired: 'Current password is required',
+      newPasswordRequired: 'New password is required',
+      newPasswordWeak: 'Password must contain at least 8 characters with uppercase, lowercase, number and special character',
+      confirmPasswordRequired: 'Password confirmation is required',
+      confirmPasswordMismatch: 'Passwords do not match',
+    },
+    'fr-FR': {
+      saveChanges: 'Enregistrer les modifications',
+      notificationSuccess: 'Votre mot de passe a été mis à jour avec succès',
+      notificationError: 'Une erreur est survenue lors de la mise à jour de votre mot de passe',
+      wrongCurrentPassword: 'Le mot de passe actuel est incorrect',
+      passwordAlreadyUsed: 'Vous avez déjà utilisé ce mot de passe précédemment',
+      currentPasswordRequired: 'Le mot de passe actuel est requis',
+      newPasswordRequired: 'Le nouveau mot de passe est requis',
+      newPasswordWeak: 'Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule, chiffre et caractère spécial',
+      confirmPasswordRequired: 'La confirmation du mot de passe est requise',
+      confirmPasswordMismatch: 'Les mots de passe ne correspondent pas',
+    },
+  },
 })
 
 const {
@@ -93,27 +119,3 @@ const {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  saveChanges: 'Save changes'
-  notificationSuccess: 'Your password has been successfully updated'
-  notificationError: 'An error occurred while updating your password'
-  wrongCurrentPassword: 'Current password is incorrect'
-  passwordAlreadyUsed: 'This password has already been used'
-  currentPasswordRequired: 'Current password is required'
-  newPasswordRequired: 'New password is required'
-  newPasswordWeak: 'Password must contain at least 8 characters with uppercase, lowercase, number and special character'
-  confirmPasswordRequired: 'Password confirmation is required'
-  confirmPasswordMismatch: 'Passwords do not match'
-fr-FR:
-  saveChanges: 'Enregistrer les modifications'
-  notificationSuccess: 'Votre mot de passe a été mis à jour avec succès'
-  notificationError: 'Une erreur est survenue lors de la mise à jour de votre mot de passe'
-  wrongCurrentPassword: 'Le mot de passe actuel est incorrect'
-  passwordAlreadyUsed: 'Vous avez déjà utilisé ce mot de passe précédemment'
-  currentPasswordRequired: 'Le mot de passe actuel est requis'
-  newPasswordRequired: 'Le nouveau mot de passe est requis'
-  newPasswordWeak: 'Le mot de passe doit contenir au moins 8 caractères avec majuscule, minuscule, chiffre et caractère spécial'
-  confirmPasswordRequired: 'La confirmation du mot de passe est requise'
-  confirmPasswordMismatch: 'Les mots de passe ne correspondent pas'
-</i18n>

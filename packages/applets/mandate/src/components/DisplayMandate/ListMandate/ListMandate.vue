@@ -159,6 +159,68 @@ declare let window: any
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      'ibs-code': 'Customer code',
+      'company-name': 'Company name',
+      'account-number': 'Account number',
+      bank: 'Bank',
+      'created-on': 'Created on',
+      'modified-on': 'Modified on',
+      status: 'Status',
+      actions: 'Actions',
+      'download-signed-mandate': 'Download signed mandate',
+      'download-pre-filled-mandate': 'Download pre-filled mandate',
+      'submit-signed-mandate': 'Submit the signed mandate',
+      'cancel-telecollection': 'Cancel telecollection',
+      'no-data': 'No data',
+      'title-popup': 'Cancel the collection',
+      'alert-popup': 'Warning! This action is irreversible.',
+      'text-one-popup-part1': 'You are about to cancel the collection of bank flows for account No. ',
+      'text-one-popup-part2': ' for the ',
+      'text-one-popup-part3': ' file.',
+      'text-one-popup-part4': 'This action is irreversible, you will no longer have access to the bank movements of this account.',
+      'cancel-popup': 'Cancel',
+      'terminate-mandate-popup': 'Terminate',
+      notification: {
+        loading: 'The signed mandate is being transmitted...',
+        success: 'The signed mandate has been submitted!',
+        error: 'There was an error during transmission',
+        downloading: 'The download is in preparation',
+        'downloading-error': 'There was an error during preparation',
+      },
+    },
+    'fr-FR': {
+      'ibs-code': 'Code client',
+      'company-name': 'Raison sociale',
+      'account-number': 'N° de compte',
+      bank: 'Banque',
+      'created-on': 'Créé le',
+      'modified-on': 'Modifié le',
+      status: 'Statut',
+      actions: 'Actions',
+      'download-signed-mandate': 'Télécharger le mandat signé',
+      'download-pre-filled-mandate': 'Télécharger le mandat pré-rempli',
+      'submit-signed-mandate': 'Déposer le mandat signé',
+      'cancel-telecollection': 'Résilier la télécollecte',
+      'no-data': 'Aucun résultat',
+      'title-popup': 'Résilier la collecte',
+      'alert-popup': 'Attention ! Cette action est irréversible.',
+      'text-one-popup-part1': 'Vous êtes sur le point de résilier la collecte des flux bancaires pour le compte N° ',
+      'text-one-popup-part2': ' pour le dossier ',
+      'text-one-popup-part3': '.',
+      'text-one-popup-part4': 'Cette action est irréversible, vous n’aurez plus accès aux mouvements bancaires de ce compte.',
+      'cancel-popup': 'Annuler',
+      'terminate-mandate-popup': 'Résilier',
+      notification: {
+        loading: 'Le mandat signé est en cours de transmission...',
+        success: 'Le mandat signé a bien été déposé !',
+        error: 'Il y a eu une erreur lors de la transmission',
+        downloading: 'Le téléchargement est en cours de préparation',
+        'downloading-error': 'Il y\'a eu une erreur lors de la préparation',
+      },
+    },
+  },
 })
 
 const emit = defineEmits<{
@@ -409,65 +471,3 @@ defineExpose({
 })
 </script>
 
-<i18n lang="yaml">
-    en-US:
-        ibs-code: 'Customer code'
-        company-name: 'Company name'
-        account-number: 'Account number'
-        bank: 'Bank'
-        created-on: 'Created on'
-        modified-on: 'Modified on'
-        status: 'Status'
-        actions: 'Actions'
-        download-signed-mandate: 'Download signed mandate'
-        download-pre-filled-mandate: 'Download pre-filled mandate'
-        submit-signed-mandate: 'Submit the signed mandate'
-        cancel-telecollection: 'Cancel telecollection'
-        no-data: 'No data'
-        title-popup: 'Cancel the collection'
-        alert-popup: 'Warning! This action is irreversible.'
-        text-one-popup-part1: "You are about to cancel the collection of bank flows
-          for account No. "
-        text-one-popup-part2: " for the "
-        text-one-popup-part3: " file."
-        text-one-popup-part4: 'This action is irreversible, you will no longer have access to
-          the bank movements of this account.'
-        cancel-popup: 'Cancel'
-        terminate-mandate-popup: 'Terminate'
-        notification:
-          loading: 'The signed mandate is being transmitted...'
-          success: 'The signed mandate has been submitted!'
-          error: 'There was an error during transmission'
-          downloading: 'The download is in preparation'
-          downloading-error: 'There was an error during preparation'
-    fr-FR:
-        ibs-code: 'Code client'
-        company-name: 'Raison sociale'
-        account-number: 'N° de compte'
-        bank: 'Banque'
-        created-on: 'Créé le'
-        modified-on: 'Modifié le'
-        status: 'Statut'
-        actions: 'Actions'
-        download-signed-mandate: 'Télécharger le mandat signé'
-        download-pre-filled-mandate: 'Télécharger le mandat pré-rempli'
-        submit-signed-mandate: 'Déposer le mandat signé'
-        cancel-telecollection: 'Résilier la télécollecte'
-        no-data: 'Aucun résultat'
-        title-popup: 'Résilier la collecte'
-        alert-popup: 'Attention ! Cette action est irréversible.'
-        text-one-popup-part1: "Vous êtes sur le point de résilier la collecte des flux
-          bancaires pour le compte N° "
-        text-one-popup-part2: " pour le dossier "
-        text-one-popup-part3: "."
-        text-one-popup-part4: 'Cette action est irréversible, vous n’aurez plus accès aux
-          mouvements bancaires de ce compte.'
-        cancel-popup: 'Annuler'
-        terminate-mandate-popup: 'Résilier'
-        notification:
-          loading: 'Le mandat signé est en cours de transmission...'
-          success: 'Le mandat signé a bien été déposé !'
-          error: 'Il y a eu une erreur lors de la transmission'
-          downloading: 'Le téléchargement est en cours de préparation'
-          downloading-error: "Il y'a eu une erreur lors de la préparation"
-</i18n>

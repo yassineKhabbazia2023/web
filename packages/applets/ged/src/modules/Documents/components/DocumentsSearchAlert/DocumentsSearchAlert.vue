@@ -24,6 +24,22 @@ import { PAlert } from '@pulse/styleguide/components'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      documentsFound: {
+        highlightedText: '{count} résultats',
+        normalText: 'dans ce dossier et ses sous-dossiers',
+      },
+      documentsNotFound: 'Résultats dans ce dossier et les sous-dossiers',
+    },
+    'fr-FR': {
+      documentsFound: {
+        highlightedText: '{count} résultats',
+        normalText: 'dans ce dossier et ses sous-dossiers',
+      },
+      documentsNotFound: 'Résultats dans ce dossier et les sous-dossiers',
+    },
+  },
 })
 
 defineProps<DocumentsSearchAlertProps>()
@@ -42,21 +58,3 @@ defineProps<DocumentsSearchAlertProps>()
 }
 </style>
 
-<i18n lang="json">
-{
-  "en-US": {
-    "documentsFound": {
-      "highlightedText": "{count} résultats",
-      "normalText": "dans ce dossier et ses sous-dossiers"
-    },
-    "documentsNotFound": "Résultats dans ce dossier et les sous-dossiers"
-  },
-  "fr-FR": {
-    "documentsFound": {
-      "highlightedText": "{count} résultats",
-      "normalText": "dans ce dossier et ses sous-dossiers"
-    },
-    "documentsNotFound": "Résultats dans ce dossier et les sous-dossiers"
-  }
-}
-</i18n>

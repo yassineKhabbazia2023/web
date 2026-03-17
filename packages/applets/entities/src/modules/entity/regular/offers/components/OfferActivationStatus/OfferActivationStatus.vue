@@ -19,6 +19,22 @@ import { OfferActivationStatus } from '../../enums'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      activated: 'Activated',
+      rejected: 'Rejected',
+      pending: 'In the process of activation',
+      pendingMigrationCollab: 'In the process of validation',
+      failedMigration: 'Failed migration',
+    },
+    'fr-FR': {
+      activated: 'Activée',
+      rejected: 'Rejetée',
+      pending: 'En cours d\'activation',
+      pendingMigrationCollab: 'En cours de validation',
+      failedMigration: 'Migration échouée',
+    },
+  },
 })
 
 const props = defineProps<OfferActivationStatusProps>()
@@ -49,18 +65,3 @@ const pendingMigrationStatus = computed((): ActivationStatus => {
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  activated: 'Activated'
-  rejected: 'Rejected'
-  pending: 'In the process of activation'
-  pendingMigrationCollab: 'In the process of validation'
-  failedMigration: 'Failed migration'
-
-fr-FR:
-  activated: 'Activée'
-  rejected: 'Rejetée'
-  pending: "En cours d'activation"
-  pendingMigrationCollab: 'En cours de validation'
-  failedMigration: 'Migration échouée'
-</i18n>

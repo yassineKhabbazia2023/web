@@ -128,6 +128,40 @@ const PFieldSetAccount = PFieldSet<Account>
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      alertInstruction: {
+        line1: 'If certain {a}, you must {b}',
+        line2: 'After updating in Akuiteo, the data will be automatically {c}',
+        line3: '{warning}',
+      },
+      alertParts: {
+        infos: 'immutable information are incorrect or missing',
+        crmName: 'Akuiteo CRM',
+        fillInCrm: 'complete them directly in the {crmName}',
+        updatedInForm48h: 'updated in the form below within 48h',
+        warningNotActivated: 'If the information is not provided, the offer cannot be activated.',
+      },
+      formInstruction: 'Please provide the following necessary information for activation :',
+      hasNoSirenLabel: 'The company does not have a SIREN yet',
+    },
+    'fr-FR': {
+      alertInstruction: {
+        line1: 'Si certaines {a}, vous devez les {b}',
+        line2: 'Après modification dans Akuiteo, les données seront automatiquement {c}',
+        line3: '{warning}',
+      },
+      alertParts: {
+        infos: 'informations non modifiables sont incorrectes ou manquantes',
+        crmName: 'CRM Akuiteo',
+        fillInCrm: 'compléter directement dans le {crmName}',
+        updatedInForm48h: 'mises à jour dans le formulaire ci-dessous sous 48h',
+        warningNotActivated: 'Si les informations ne sont pas renseignées, l’offre ne pourra pas être activée.',
+      },
+      formInstruction: 'Veuillez renseigner les informations suivantes nécessaires pour l\'activation :',
+      hasNoSirenLabel: 'L\'entreprise n\'a pas encore de SIREN',
+    },
+  },
 })
 
 const props = defineProps<CompanyInformationProps>()
@@ -308,32 +342,3 @@ defineExpose({
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  alertInstruction:
-    line1: "If certain {a}, you must {b}"
-    line2: "After updating in Akuiteo, the data will be automatically {c}"
-    line3: "{warning}"
-  alertParts:
-    infos: "immutable information are incorrect or missing"
-    crmName: "Akuiteo CRM"
-    fillInCrm: "complete them directly in the {crmName}"
-    updatedInForm48h: "updated in the form below within 48h"
-    warningNotActivated: "If the information is not provided, the offer cannot be activated."
-  formInstruction: 'Please provide the following necessary information for activation :'
-  hasNoSirenLabel: "The company does not have a SIREN yet"
-fr-FR:
-  alertInstruction:
-    line1: "Si certaines {a}, vous devez les {b}"
-    line2: "Après modification dans Akuiteo, les données seront automatiquement {c}"
-    line3: "{warning}"
-
-  alertParts:
-    infos: "informations non modifiables sont incorrectes ou manquantes"
-    crmName: "CRM Akuiteo"
-    fillInCrm: "compléter directement dans le {crmName}"
-    updatedInForm48h: "mises à jour dans le formulaire ci-dessous sous 48h"
-    warningNotActivated: "Si les informations ne sont pas renseignées, l’offre ne pourra pas être activée."
-  formInstruction: "Veuillez renseigner les informations suivantes nécessaires pour l'activation :"
-  hasNoSirenLabel: "L'entreprise n'a pas encore de SIREN"
-</i18n>

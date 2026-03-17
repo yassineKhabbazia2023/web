@@ -41,6 +41,14 @@ const props = defineProps<CollaboratorsDetailsProps>()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      collaboratorsSubscription: 'The collaborators added to the offer :',
+    },
+    'fr-FR': {
+      collaboratorsSubscription: 'Les collaborateurs ajoutés sur l\'offre :',
+    },
+  },
 })
 
 const hasCollaboratorRole = computed(() => props.collaboratorRoles.length > 0)
@@ -54,9 +62,3 @@ const formattedCollaborators = computed(() => getFormattedCollaborators(props.co
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  collaboratorsSubscription: 'The collaborators added to the offer :'
-fr-FR:
-  collaboratorsSubscription: "Les collaborateurs ajoutés sur l'offre :"
-</i18n>

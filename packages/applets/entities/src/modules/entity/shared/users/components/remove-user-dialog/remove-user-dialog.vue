@@ -63,6 +63,30 @@ import { RouterHelpers } from '@pulse/common/helpers'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      removeUser: 'Remove user',
+      confirmation: 'You are about to remove the user from {thisAccount},\n he will no longer be able to access it. Are you sure you want to continue?',
+      thisAccount: {
+        collab: 'this folder',
+        client: 'this entity',
+      },
+      cancel: 'Cancel',
+      userHasBeenRemoved: 'The user {fullName} has been removed.',
+      userWasNotRemoved: 'User {fullName} was not removed from the site due to a technical error.',
+    },
+    'fr-FR': {
+      removeUser: 'Retirer l\'utilisateur',
+      confirmation: 'Vous êtes sur le point de retirer l\'utilisateur de {thisAccount},\n il ne pourra plus y accéder. Êtes-vous sûr de vouloir continuer ?',
+      cancel: 'Annuler',
+      thisAccount: {
+        collab: 'ce dossier',
+        client: 'cette entité',
+      },
+      userHasBeenRemoved: 'L\'utilisateur {fullName} a bien été retiré.',
+      userWasNotRemoved: 'L\'utilisateur {fullName} n\'a pas été retiré de l\'entité suite à une erreur technique.',
+    },
+  },
 })
 
 const route = useRoute()
@@ -127,27 +151,3 @@ const handleRemoveUser = async () => {
 }
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    removeUser: 'Remove user'
-    confirmation: >-
-      You are about to remove the user from {thisAccount},
-       he will no longer be able to access it. Are you sure you want to continue?
-    thisAccount:
-      collab: 'this folder'
-      client: 'this entity'
-    cancel: 'Cancel'
-    userHasBeenRemoved: 'The user {fullName} has been removed.'
-    userWasNotRemoved: 'User {fullName} was not removed from the site due to a technical error.'
-  fr-FR:
-    removeUser: "Retirer l'utilisateur"
-    confirmation: >-
-      Vous êtes sur le point de retirer l'utilisateur de {thisAccount},
-       il ne pourra plus y accéder. Êtes-vous sûr de vouloir continuer ?
-    cancel: 'Annuler'
-    thisAccount:
-      collab: 'ce dossier'
-      client: 'cette entité'
-    userHasBeenRemoved: "L'utilisateur {fullName} a bien été retiré."
-    userWasNotRemoved: "L'utilisateur {fullName} n'a pas été retiré de l'entité suite à une erreur technique."
-</i18n>

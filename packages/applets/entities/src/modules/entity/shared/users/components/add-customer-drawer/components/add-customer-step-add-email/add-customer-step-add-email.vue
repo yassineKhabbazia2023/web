@@ -89,6 +89,36 @@ import type { AddCustomerStepAddEmailProps } from './add-customer-step-add-email
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      lastName: {
+        label: 'Last name',
+      },
+      firstName: {
+        label: 'First name',
+      },
+      email: {
+        address: 'E-mail',
+        placeholder: 'lastName.firstName{\'@\'}example.fr',
+      },
+      newUser: 'New user',
+      setUserEmail: 'Please enter the email address of the user to be added',
+    },
+    'fr-FR': {
+      lastName: {
+        label: 'Nom',
+      },
+      firstName: {
+        label: 'Prénom',
+      },
+      email: {
+        address: 'E-mail',
+        placeholder: 'nom.prenom{\'@\'}exemple.fr',
+      },
+      newUser: 'Nouvel utilisateur',
+      setUserEmail: 'Veuillez saisir l\'adresse e-mail de l\'utilisateur à ajouter',
+    },
+  },
 })
 
 defineProps<AddCustomerStepAddEmailProps>()
@@ -110,25 +140,3 @@ function onUpdateLastName(lastName: string) {
 }
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    lastName:
-      label: 'Last name'
-    firstName:
-      label: 'First name'
-    email:
-      address: 'E-mail'
-      placeholder: "lastName.firstName{'@'}example.fr"
-    newUser: 'New user'
-    setUserEmail: "Please enter the email address of the user to be added"
-  fr-FR:
-    lastName:
-      label: 'Nom'
-    firstName:
-      label: 'Prénom'
-    email:
-      address: 'E-mail'
-      placeholder: "nom.prenom{'@'}exemple.fr"
-    newUser: 'Nouvel utilisateur'
-    setUserEmail: "Veuillez saisir l'adresse e-mail de l'utilisateur à ajouter"
-</i18n>

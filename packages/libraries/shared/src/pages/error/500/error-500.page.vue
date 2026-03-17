@@ -24,6 +24,22 @@ import { ErrorFooterContent } from '@pulse/shared/components'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      title: 'There is an error in our system.',
+      description: 'A problem has occurred on our end',
+      textButton: 'Back to home page',
+      errorName: '500',
+      errorText: 'Internal server error',
+    },
+    'fr-FR': {
+      title: 'Erreur dans notre système',
+      description: 'Un problème est survenu de notre côté, nous travaillons à sa résolution.',
+      textButton: 'Retour à la page d\'accueil',
+      errorName: '500',
+      errorText: 'Erreur serveur interne',
+    },
+  },
 })
 
 const router = useRouter()
@@ -33,17 +49,3 @@ const redirectToHome = () => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  title: 'There is an error in our system.'
-  description: 'A problem has occurred on our end'
-  textButton: 'Back to home page'
-  errorName: '500'
-  errorText: 'Internal server error'
-fr-FR:
-  title: 'Erreur dans notre système'
-  description: 'Un problème est survenu de notre côté, nous travaillons à sa résolution.'
-  textButton: "Retour à la page d'accueil"
-  errorName: '500'
-  errorText: 'Erreur serveur interne'
-</i18n>

@@ -160,6 +160,50 @@ const { t, d } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   datetimeFormats,
+  messages: {
+    'en-US': {
+      customerCode: 'Customer code',
+      legalName: 'Legal name',
+      user: 'User',
+      requester: 'Requester',
+      offer: 'Offer',
+      status: 'Status',
+      actions: 'Actions',
+      dateRequest: 'Date',
+      validate: 'Validate request',
+      consult: 'Consult',
+      validated: 'Validated',
+      pending: 'To validate',
+      toCreate: 'To create',
+      pennylaneCreated: 'Update plan',
+      pennylaneNotCreated: 'To create',
+      pennylaneToVerify: 'To verify',
+      offerActivated: 'The offer has been activated',
+      offerNotActivated: 'The offer could not be activated',
+      on: 'on',
+    },
+    'fr-FR': {
+      customerCode: 'Code client',
+      legalName: 'Raison sociale',
+      user: 'Utilisateur',
+      requester: 'Demandeur',
+      offer: 'Offre',
+      status: 'Statut',
+      actions: 'Actions',
+      dateRequest: 'Date',
+      validate: 'Valider la demande',
+      consult: 'Consulter',
+      validated: 'Validée',
+      pending: 'A valider',
+      toCreate: 'À créer',
+      pennylaneCreated: 'Modifier le plan',
+      pennylaneNotCreated: 'À créer',
+      pennylaneToVerify: 'À vérifier',
+      offerActivated: 'L\'offre a été activée',
+      offerNotActivated: 'L\'offre n\'a pas pu être activée',
+      on: 'sur',
+    },
+  },
 })
 
 const props = defineProps<{
@@ -362,45 +406,3 @@ defineExpose({
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  customerCode: 'Customer code'
-  legalName: 'Legal name'
-  user: 'User'
-  requester: 'Requester'
-  offer: 'Offer'
-  status: 'Status'
-  actions: 'Actions'
-  dateRequest: 'Date'
-  validate: 'Validate request'
-  consult: 'Consult'
-  validated: 'Validated'
-  pending: 'To validate'
-  toCreate: 'To create'
-  pennylaneCreated: 'Update plan'
-  pennylaneNotCreated: 'To create'
-  pennylaneToVerify: 'To verify'
-  offerActivated: 'The offer has been activated'
-  offerNotActivated: 'The offer could not be activated'
-  on: 'on'
-fr-FR:
-  customerCode: 'Code client'
-  legalName: 'Raison sociale'
-  user: 'Utilisateur'
-  requester: 'Demandeur'
-  offer: 'Offre'
-  status: 'Statut'
-  actions: 'Actions'
-  dateRequest: 'Date'
-  validate: 'Valider la demande'
-  consult: 'Consulter'
-  validated: 'Validée'
-  pending: 'A valider'
-  toCreate: 'À créer'
-  pennylaneCreated: 'Modifier le plan'
-  pennylaneNotCreated: 'À créer'
-  pennylaneToVerify: 'À vérifier'
-  offerActivated: "L'offre a été activée"
-  offerNotActivated: "L'offre n'a pas pu être activée"
-  on: 'sur'
-</i18n>

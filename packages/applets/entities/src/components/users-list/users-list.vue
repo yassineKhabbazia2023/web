@@ -183,6 +183,30 @@ const { d, t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   datetimeFormats,
+  messages: {
+    'en-US': {
+      user: 'User',
+      email: 'Email',
+      dateAdded: 'Date added',
+      options: 'Options',
+      status: 'Status',
+      userInformation: 'User information',
+      modifyRights: 'Modify rights',
+      removeUser: 'Remove User',
+      you: 'You',
+    },
+    'fr-FR': {
+      user: 'Utilisateur',
+      email: 'E-Mail',
+      dateAdded: 'Date d\'ajout',
+      options: 'Options',
+      status: 'Statut',
+      userInformation: 'Informations de l\'utilisateur',
+      modifyRights: 'Modifier les droits',
+      removeUser: 'Retirer l\'utilisateur',
+      you: 'Vous',
+    },
+  },
 })
 
 const userStore = useUserStore()
@@ -258,25 +282,3 @@ const handleSort = (data: SortChangeEventData) => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  user: 'User'
-  email: 'Email'
-  dateAdded: 'Date added'
-  options: 'Options'
-  status: 'Status'
-  userInformation: 'User information'
-  modifyRights: 'Modify rights'
-  removeUser: 'Remove User'
-  you: 'You'
-fr-FR:
-  user: 'Utilisateur'
-  email: 'E-Mail'
-  dateAdded: "Date d'ajout"
-  options: 'Options'
-  status: 'Statut'
-  userInformation: "Informations de l'utilisateur"
-  modifyRights: 'Modifier les droits'
-  removeUser: "Retirer l'utilisateur"
-  you: 'Vous'
-</i18n>

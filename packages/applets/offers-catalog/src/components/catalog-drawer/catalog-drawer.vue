@@ -69,6 +69,26 @@ import CatalogDrawerContentRecommendation from '../catalog-drawer-content-recomm
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      close: 'Close',
+      tabs: {
+        recommendation: 'Recommendation',
+        pdf: 'Offer Sheet',
+        contacts: 'Reference Contacts',
+        documents: 'Offer\'s documents',
+      },
+    },
+    'fr-FR': {
+      close: 'Fermer',
+      tabs: {
+        recommendation: 'Recommandation',
+        pdf: 'Fiche de l\'offre',
+        contacts: 'Contacts référents',
+        documents: 'Documents de l\'offre',
+      },
+    },
+  },
 })
 
 const props = defineProps<CatalogDrawerProps>()
@@ -114,19 +134,3 @@ defineExpose({
 })
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    close: 'Close'
-    tabs:
-      recommendation: 'Recommendation'
-      pdf: 'Offer Sheet'
-      contacts: 'Reference Contacts'
-      documents: "Offer's documents"
-  fr-FR:
-    close: 'Fermer'
-    tabs:
-      recommendation: 'Recommandation'
-      pdf: "Fiche de l'offre"
-      contacts: 'Contacts référents'
-      documents: "Documents de l'offre"
-</i18n>

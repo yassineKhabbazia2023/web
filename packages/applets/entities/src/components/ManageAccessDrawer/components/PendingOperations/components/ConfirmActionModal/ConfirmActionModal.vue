@@ -96,6 +96,32 @@ import ConfirmationModal from '@entities/components/ConfirmationModal'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      cancel: 'Cancel',
+      refuse: 'Refuse',
+      validate: 'Validate',
+      refuseAccess: 'Refuse access',
+      reasonRequired: 'This field is required. Please fill it out.',
+      refuseAccessDescription: 'If you refuse, the user {fullName} will not have access to the {accountName} ({accountNumber}) entity.\n',
+      validateAccess: 'Validate access',
+      validateAccessDescription: 'After validation, user {fullName} will be able to access the entity {accountName} ({accountNumber}) within 30 minutes.\n',
+      accessError: 'There was an error.This user should not have access to this entity',
+      reasonForRefusal: 'Reason for Refusal',
+    },
+    'fr-FR': {
+      cancel: 'Annuler',
+      refuse: 'Refuser',
+      validate: 'Valider',
+      refuseAccess: 'Refuser l\'accès',
+      reasonRequired: 'Ce champ est obligatoire. Veuillez le remplir',
+      refuseAccessDescription: 'Si vous refusez, l\'utilisateur {fullName} n\'aura pas accès à l\'entité {accountName} ({accountNumber}).\n',
+      validateAccess: 'Valider l\'accès',
+      validateAccessDescription: 'Après la validation, l’utilisateur {fullName} pourra accéder à l’entité {accountName} ({accountNumber}) dans les 30 minutes suivantes.\n',
+      accessError: 'Il y a eu une erreur. Cet utilisateur ne devrait pas avoir accès à cette entité',
+      reasonForRefusal: 'Motif du refus',
+    },
+  },
 })
 
 const props = defineProps<ConfirmActionModalProps>()
@@ -147,35 +173,3 @@ const handleConfirm = () => {
 }
 </script>
 
-<i18n lang="yaml">
-en-US:
-  cancel: 'Cancel'
-  refuse: 'Refuse'
-  validate: 'Validate'
-  refuseAccess: 'Refuse access'
-  reasonRequired: 'This field is required. Please fill it out.'
-  refuseAccessDescription: >
-    If you refuse, the user {fullName} will not have access to the {accountName} ({accountNumber}) entity.
-  validateAccess: 'Validate access'
-  validateAccessDescription: >
-    After validation, user {fullName}
-    will be able to access the entity {accountName} ({accountNumber})
-    within 30 minutes.
-  accessError: 'There was an error.This user should not have access to this entity'
-  reasonForRefusal: 'Reason for Refusal'
-fr-FR:
-  cancel: 'Annuler'
-  refuse: 'Refuser'
-  validate: 'Valider'
-  refuseAccess: "Refuser l'accès"
-  reasonRequired: 'Ce champ est obligatoire. Veuillez le remplir'
-  refuseAccessDescription: >
-    Si vous refusez, l'utilisateur {fullName} n'aura pas accès à l'entité {accountName} ({accountNumber}).
-  validateAccess: "Valider l'accès"
-  validateAccessDescription: >
-    Après la validation, l’utilisateur {fullName}
-    pourra accéder à l’entité {accountName} ({accountNumber})
-    dans les 30 minutes suivantes.
-  accessError: 'Il y a eu une erreur. Cet utilisateur ne devrait pas avoir accès à cette entité'
-  reasonForRefusal: 'Motif du refus'
-</i18n>

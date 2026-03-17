@@ -77,6 +77,14 @@ import { logger } from '@pulse/toolbox'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      aiSearchError: 'An error occurred while loading the results, please try a new search. If the problem persists, please contact support.',
+    },
+    'fr-FR': {
+      aiSearchError: 'Une erreur est survenue dans le chargement des réponses, veuillez lancer une nouvelle génération. Si le problème persiste veuillez contacter le support.',
+    },
+  },
 })
 
 const {
@@ -159,13 +167,3 @@ function onClearSearch() {
 }
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    aiSearchError: >-
-      An error occurred while loading the results, please try a new search.
-      If the problem persists, please contact support.
-  fr-FR:
-    aiSearchError: >-
-      Une erreur est survenue dans le chargement des réponses, veuillez lancer une nouvelle génération.
-      Si le problème persiste veuillez contacter le support.
-</i18n>

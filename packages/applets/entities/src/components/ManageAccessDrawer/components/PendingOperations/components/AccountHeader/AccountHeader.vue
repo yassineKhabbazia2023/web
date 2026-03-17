@@ -33,6 +33,16 @@ import { AccountHeaderProps } from './AccountHeader.types'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      customerCode: 'Customer code',
+      tagContent: '{count} demand | {count} demands',
+    },
+    'fr-FR': {
+      customerCode: 'Code client',
+      tagContent: '{count} demande | {count} demandes',
+    },
+  },
 })
 
 const props = defineProps<AccountHeaderProps>()
@@ -43,11 +53,3 @@ const tagContent = computed(() => {
 })
 </script>
 
-<i18n lang="yaml">
-en-US:
-  customerCode: Customer code
-  tagContent: '{count} demand | {count} demands'
-fr-FR:
-  customerCode: Code client
-  tagContent: '{count} demande | {count} demandes'
-</i18n>

@@ -24,6 +24,14 @@ import type { ReportErrorDrawerProps } from './report-error-drawer.type'
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      manageError: 'Show errors',
+    },
+    'fr-FR': {
+      manageError: 'Afficher les anomalies',
+    },
+  },
 })
 
 defineProps<ReportErrorDrawerProps>()
@@ -39,9 +47,3 @@ const handleCloseDrawer = () => {
 // #endregion
 </script>
 
-<i18n lang="yaml">
-en-US:
-  manageError: 'Show errors'
-fr-FR:
-  manageError: 'Afficher les anomalies'
-</i18n>

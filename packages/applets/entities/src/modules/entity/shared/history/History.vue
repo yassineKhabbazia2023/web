@@ -108,6 +108,14 @@ const { d, t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   datetimeFormats,
+  messages: {
+    'en-US': {
+      on: 'on',
+    },
+    'fr-FR': {
+      on: 'sur',
+    },
+  },
 })
 
 const route = useRoute()
@@ -157,9 +165,3 @@ const formatDate = (dateString: string): string => {
 }
 </style>
 
-<i18n lang="yaml">
-en-US:
-  on: 'on'
-fr-FR:
-  on: 'sur'
-</i18n>

@@ -49,6 +49,20 @@ const router = useRouter()
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      tabs: {
+        'ged-v2': 'RYDGE Conseil documents ',
+        'ged-legacy': 'Archives',
+      },
+    },
+    'fr-FR': {
+      tabs: {
+        'ged-v2': 'Documents RYDGE Conseil',
+        'ged-legacy': 'Archives',
+      },
+    },
+  },
 })
 
 const currentEntityStore = useCurrentEntityStore()
@@ -133,13 +147,3 @@ function onTabClick(tabPane: TabsPaneContext) {
 }
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    tabs:
-      ged-v2: 'RYDGE Conseil documents '
-      ged-legacy: 'Archives'
-  fr-FR:
-    tabs:
-      ged-v2: 'Documents RYDGE Conseil'
-      ged-legacy: 'Archives'
-</i18n>

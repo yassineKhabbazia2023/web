@@ -109,6 +109,32 @@ const { t, d } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   datetimeFormats,
+  messages: {
+    'en-US': {
+      user: 'User',
+      actions: 'Actions',
+      requestDate: 'Request date',
+      refuseAccess: 'Refuse access',
+      validateAccess: 'Validate access',
+      validateUserAccess: 'Validate user access',
+      accessDeniedForUser: 'Access has been refused for the user',
+      accessGrantedForUser: 'Access has been validated for the user',
+      technicalError: 'The operation failed due to a technical error. Please try again later.',
+      accessNote: 'These users are awaiting validation of access to the entity.Validate access?',
+    },
+    'fr-FR': {
+      user: 'Utilisateur',
+      actions: 'Actions',
+      requestDate: 'Date de la demande',
+      refuseAccess: 'Refuser l\'accès',
+      validateAccess: 'Valider l\'accès',
+      validateUserAccess: 'Valider l\'accès utilisateur',
+      accessDeniedForUser: 'L\'accès a été refusé pour l\'utilisateur',
+      accessGrantedForUser: 'L\'accès a été validé pour l\'utilisateur',
+      technicalError: 'L\'opération a échoué suite à une erreur technique. Veuillez réessayer plus tard.',
+      accessNote: 'Ces utilisateurs sont en attente de validation d\'accès à l\'entité. Valider l\'accès ?',
+    },
+  },
 })
 
 defineProps<PendingOperationTableProps>()
@@ -118,27 +144,3 @@ defineEmits<{
 }>()
 </script>
 
-<i18n lang="yaml">
-en-US:
-  user: 'User'
-  actions: 'Actions'
-  requestDate: 'Request date'
-  refuseAccess: 'Refuse access'
-  validateAccess: 'Validate access'
-  validateUserAccess: 'Validate user access'
-  accessDeniedForUser: 'Access has been refused for the user'
-  accessGrantedForUser: 'Access has been validated for the user'
-  technicalError: 'The operation failed due to a technical error. Please try again later.'
-  accessNote: 'These users are awaiting validation of access to the entity.Validate access?'
-fr-FR:
-  user: 'Utilisateur'
-  actions: 'Actions'
-  requestDate: 'Date de la demande'
-  refuseAccess: "Refuser l'accès"
-  validateAccess: "Valider l'accès"
-  validateUserAccess: "Valider l'accès utilisateur"
-  accessDeniedForUser: "L'accès a été refusé pour l'utilisateur"
-  accessGrantedForUser: "L'accès a été validé pour l'utilisateur"
-  technicalError: "L'opération a échoué suite à une erreur technique. Veuillez réessayer plus tard."
-  accessNote: "Ces utilisateurs sont en attente de validation d'accès à l'entité. Valider l'accès ?"
-</i18n>

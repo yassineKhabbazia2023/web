@@ -57,6 +57,22 @@ const emit = defineEmits<{
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
+  messages: {
+    'en-US': {
+      addCollaborators: 'Add collaborators',
+      previousLabel: 'Close',
+      nextLabel: 'Submit',
+      addCollaboratorsSuccess: 'The collaborator has been added to folder successfuly | {amountOfAddedPeople} collaborators have been added to folder successfuly\n',
+      addCollaboratorsError: 'The collaborator {collaboratorFullName} has not been added to the folder due to a technical problem.\n',
+    },
+    'fr-FR': {
+      addCollaborators: 'Ajouter des collaborateurs',
+      previousLabel: 'Fermer',
+      nextLabel: 'Valider',
+      addCollaboratorsSuccess: 'Le collaborateur a été ajouté au dossier avec succès | {amountOfAddedPeople} collaborateurs ont été ajoutés au dossier avec succès\n',
+      addCollaboratorsError: 'Le collaborateur {collaboratorFullName} n\'a pas pas pu être ajouté au dossier suite à un problème technique.\n',
+    },
+  },
 })
 
 const isNextButtonLoading = ref(false)
@@ -145,23 +161,3 @@ function handleCollaboratorSelection(event: Contact[]) {
 
 </script>
 
-<i18n lang="yaml">
-  en-US:
-    addCollaborators: "Add collaborators"
-    previousLabel: 'Close'
-    nextLabel: 'Submit'
-    addCollaboratorsSuccess: >
-      The collaborator has been added to folder successfuly |
-      {amountOfAddedPeople} collaborators have been added to folder successfuly
-    addCollaboratorsError: >
-      The collaborator {collaboratorFullName} has not been added to the folder due to a technical problem.
-  fr-FR:
-    addCollaborators: 'Ajouter des collaborateurs'
-    previousLabel: 'Fermer'
-    nextLabel: 'Valider'
-    addCollaboratorsSuccess: >
-      Le collaborateur a été ajouté au dossier avec succès |
-      {amountOfAddedPeople} collaborateurs ont été ajoutés au dossier avec succès
-    addCollaboratorsError: >
-      Le collaborateur {collaboratorFullName} n'a pas pas pu être ajouté au dossier suite à un problème technique.
-</i18n>
