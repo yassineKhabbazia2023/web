@@ -61,6 +61,42 @@ div.el-textarea {
   &:hover {
     border-bottom: 2px solid var(--p-stroke-hover);
   }
+
+  .el-input__icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &.el-input--small {
+    .el-input__icon {
+      width: 14px;
+      height: 14px;
+      font-size: 14px;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+
+  .el-input__suffix .el-input__password,
+  .el-input__suffix .el-input__password:hover {
+    color: var(--p-icon-secondary);
+  }
+
+  &:has(.el-input__inner[type='search']) {
+    .el-input__prefix {
+      color: var(--p-icon-secondary);
+    }
+  }
+
   div {
     &#{$self}__wrapper {
       &.is-focus {
@@ -85,5 +121,9 @@ div.el-textarea {
 }
 
 .el-autocomplete {
-  width: 100%
+  width: 100%;
+
+  .el-input__prefix {
+    color: var(--p-icon-secondary);
+  }
 }
