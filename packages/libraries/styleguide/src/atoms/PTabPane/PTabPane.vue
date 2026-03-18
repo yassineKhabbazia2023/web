@@ -30,6 +30,16 @@
       <span v-if="pIconName && pLabel">{{ pLabel }}</span>
       <slot v-if="pIconName === undefined" name="label" />
     </template>
+    <template v-else-if="pCount !== undefined" #label>
+      {{ pLabel }}
+      <PPastille
+        class="margin-left--2"
+        pSize="small"
+        pType="default"
+      >
+        {{ pCount }}
+      </PPastille>
+    </template>
   </ElTabPane>
 </template>
 
@@ -39,7 +49,7 @@ import { useSlots } from 'vue'
 import PTooltip from '../../atoms/PTooltip'
 import PIcon from '../../atoms/PIcon'
 import type { PTabPaneProps } from './PTabPaneTypes'
-
+import PPastille from '../PPastille'
 // @ts-ignore
 const slots = useSlots()
 

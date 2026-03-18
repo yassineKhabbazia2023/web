@@ -9,4 +9,5 @@ export interface PTabPaneProps {
   pLazy?: boolean
   pIconName?: IconName
   pTooltip?: PTooltipProps
+  pCount?: number | string
 }

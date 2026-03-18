@@ -33,6 +33,7 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
           :pLazy="props.pLazy"
           :pIconName="props.pIconName"
           :pTooltip="props.pTooltip"
+          :pCount="props.pCount"
         >
           <template
             name="label"
@@ -78,6 +79,11 @@ function createWrapper(props: PTabPaneProps, slotContent: string): VueWrapper {
           name: 'PTooltip',
           template: '<div class="p-tooltip"><slot /></div>',
           props: ['pContent', 'disabled'],
+        },
+        PPastille: {
+          name: 'PPastille',
+          template: '<span class="p-pastille"><slot /></span>',
+          props: ['pSize', 'pType'],
         },
       },
     },
@@ -166,4 +172,69 @@ describe('pTabPane', () => {
       expect(wrapper.findComponent({ name: pIconName as string })).toBeTruthy()
     },
   )
+  const tests3: {
+    pCount?: number | string
+    pIconName?: IconName
+    shouldHavePastille: boolean
+    description: string
+  }[] = [{
+    pCount: 42,
+    pIconName: undefined,
+    shouldHavePastille: true,
+    description: 'pCount is provided without icon',
+  }, {
+    pCount: '0',
+    pIconName: undefined,
+    shouldHavePastille: true,
+    description: 'pCount is "0" (string)',
+  }, {
+    pCount: 0,
+    pIconName: undefined,
+    shouldHavePastille: true,
+    description: 'pCount is 0 (number)',
+  }, {
+    pCount: undefined,
+    pIconName: undefined,
+    shouldHavePastille: false,
+    description: 'pCount is undefined',
+  }]
+  it.each(tests3)('should have PPastille when $description : $shouldHavePastille',
+    async ({ pCount, pIconName, shouldHavePastille }) => {
+      const wrapper: VueWrapper<any> = createWrapper({
+        ...propsValue,
+        pIconName,
+        pCount,
+      }, '')
+      await flushPromises()
+      const pastille = wrapper.findComponent({ name: 'PPastille' })
+      expect(pastille.exists()).toBe(shouldHavePastille)
+      if (shouldHavePastille) {
+        expect(pastille.text()).toContain(String(pCount))
+      }
+    },
+  )
+  it('should display pLabel text next to PPastille when pCount is provided', async () => {
+    const wrapper: VueWrapper<any> = createWrapper({
+      ...propsValue,
+      pIconName: undefined,
+      pCount: 5,
+      pLabel: 'My Tab',
+    }, '')
+    await flushPromises()
+    const tabPane = wrapper.find('[data-testid="p-tab-pane"]')
+    expect(tabPane.text()).toContain('My Tab')
+    expect(tabPane.text()).toContain('5')
+  })
+  it('should prioritize pIconName over pCount when both are provided', async () => {
+    const wrapper: VueWrapper<any> = createWrapper({
+      ...propsValue,
+      pIconName: 'calendarEvent',
+      pCount: 10,
+    }, '')
+    await flushPromises()
+    const pastille = wrapper.findComponent({ name: 'PPastille' })
+    expect(pastille.exists()).toBe(false)
+    const icon = wrapper.findComponent({ name: 'PIcon' })
+    expect(icon.exists()).toBe(true)
+  })
 })

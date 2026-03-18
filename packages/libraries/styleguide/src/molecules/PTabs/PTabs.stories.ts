@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import PTabs from './PTabs.vue'
 import PTabPane from '../../atoms/PTabPane'
-import PPastille from '../../atoms/PPastille'
 import { PTabsProps } from './PTabsTypes'
 
 const meta: Meta<typeof PTabs> = {
@@ -64,7 +63,7 @@ export const Basic: Story = {
 // Tabs with counter
 export const WithCounter: Story = {
   render: (args) => ({
-    components: { PPastille, PTabs, PTabPane },
+    components: { PTabs, PTabPane },
     setup() {
       const active = ref(args.modelValue)
       const onUpdate = (v: string) => (active.value = v)
@@ -73,45 +72,9 @@ export const WithCounter: Story = {
     template: `
       <div style="width: 640px;">
         <PTabs v-bind="args" v-model="active" @update:model-value="onUpdate">
-          <PTabPane pLabel="Onglet A" pName="1">
-            <template #label>
-              <span>Option A</span>
-              <PPastille
-                size="small"
-                kind="persian"
-                class="margin-left--2"
-              >
-                12
-              </PPastille>
-            </template>
-            Option A
-          </PTabPane>
-          <PTabPane pLabel="Onglet B" pName="2">
-            <template #label>
-              <span>Option B</span>
-              <PPastille
-                size="small"
-                kind="persian"
-                class="margin-left--2"
-              >
-                123
-              </PPastille>
-            </template>
-            Option B
-          </PTabPane>
-          <PTabPane pLabel="Onglet C" pName="3">          
-            <template #label>
-              <span>Option C</span>
-              <PPastille
-                size="small"
-                kind="persian"
-                class="margin-left--2"
-              >
-                1
-              </PPastille>
-            </template>
-            Option C
-          </PTabPane>
+          <PTabPane pLabel="Option A" pName="1" :pCount="12">Option A</PTabPane>
+          <PTabPane pLabel="Option B" pName="2" :pCount="123">Option B</PTabPane>
+          <PTabPane pLabel="Option C" pName="3" :pCount="1">Option C</PTabPane>
         </PTabs>
       </div>
     `,
