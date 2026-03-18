@@ -1525,6 +1525,196 @@ describe('AzureDevOpsService', () => {
     })
   })
 
+  describe('getPullRequestsAcrossRepos', () => {
+    const mockRepos: AzureDevOpsRepository[] = [
+      { id: '1', name: 'Pulse.Web', defaultBranch: 'refs/heads/main', isDisabled: false },
+      { id: '2', name: 'Pulse.Api', defaultBranch: 'refs/heads/main', isDisabled: false },
+    ]
+    const fromDate = new Date('2024-01-01')
+    const toDate = new Date('2024-01-31')
+
+    const buildMockPrResponse = (prs: Array<{ pullRequestId: number; closedDate?: string | null; isDraft?: boolean; status?: string }>) => ({
+      data: {
+        value: prs.map((pr) => ({
+          pullRequestId: pr.pullRequestId,
+          title: `PR ${pr.pullRequestId}`,
+          creationDate: '2024-01-10T10:00:00Z',
+          closedDate: pr.closedDate ?? '2024-01-15T14:00:00Z',
+          status: pr.status ?? 'completed',
+          isDraft: pr.isDraft ?? false,
+          repository: { id: '1', name: 'Pulse.Web' },
+          createdBy: { displayName: 'John', uniqueName: 'john@test.com' },
+          sourceRefName: 'refs/heads/feature/test',
+          targetRefName: 'refs/heads/main',
+        })),
+        count: prs.length,
+      },
+    })
+
+    const emptyPrResponse = { data: { value: [], count: 0 } }
+
+    it('should return completed PRs from all repos when includeActive is false', async () => {
+      // Repo 1: 1 completed PR
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([{ pullRequestId: 1 }]))
+      // Repo 2: 1 completed PR
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([{ pullRequestId: 2 }]))
+
+      const result = await AzureDevOpsService.getPullRequestsAcrossRepos(
+        mockPat, mockRepos, fromDate, toDate, false,
+      )
+
+      expect(result).toHaveLength(2)
+      // Only 2 API calls (one per repo for completed only)
+      expect(mockedAxiosGet).toHaveBeenCalledTimes(2)
+    })
+
+    it('should return completed and active non-draft PRs when includeActive is true', async () => {
+      // Repo 1: completed call + active call (both repos in same batch due to concurrency=5)
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([{ pullRequestId: 1 }]))
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([
+        { pullRequestId: 10, closedDate: null, status: 'active', isDraft: false },
+        { pullRequestId: 11, closedDate: null, status: 'active', isDraft: true },
+      ]))
+      // Repo 2: completed call + active call
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([{ pullRequestId: 2 }]))
+      mockedAxiosGet.mockResolvedValueOnce(emptyPrResponse)
+
+      const result = await AzureDevOpsService.getPullRequestsAcrossRepos(
+        mockPat, mockRepos, fromDate, toDate, true,
+      )
+
+      // PR 1 (completed) + PR 10 (active non-draft) + PR 2 (completed) = 3
+      // PR 11 (draft) is filtered out by getActivePullRequestsForRepo
+      expect(result).toHaveLength(3)
+      // 4 API calls: 2 repos × (completed + active)
+      expect(mockedAxiosGet).toHaveBeenCalledTimes(4)
+    })
+
+    it('should filter out draft PRs from active results', async () => {
+      // Only 1 repo for simplicity
+      const singleRepo = [mockRepos[0]]
+      // Completed PRs
+      mockedAxiosGet.mockResolvedValueOnce(emptyPrResponse)
+      // Active PRs: 1 draft, 1 non-draft
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([
+        { pullRequestId: 5, closedDate: null, status: 'active', isDraft: true },
+        { pullRequestId: 6, closedDate: null, status: 'active', isDraft: false },
+      ]))
+
+      const result = await AzureDevOpsService.getPullRequestsAcrossRepos(
+        mockPat, singleRepo, fromDate, toDate, true,
+      )
+
+      expect(result).toHaveLength(1)
+      expect(result[0].pullRequestId).toBe(6)
+    })
+
+    it('should sort results by closedDate descending with active PRs first', async () => {
+      const singleRepo = [mockRepos[0]]
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([
+        { pullRequestId: 1, closedDate: '2024-01-10T10:00:00Z' },
+        { pullRequestId: 2, closedDate: '2024-01-20T10:00:00Z' },
+        { pullRequestId: 3, closedDate: '2024-01-15T10:00:00Z' },
+      ]))
+
+      const result = await AzureDevOpsService.getPullRequestsAcrossRepos(
+        mockPat, singleRepo, fromDate, toDate, false,
+      )
+
+      expect(result[0].pullRequestId).toBe(2)
+      expect(result[1].pullRequestId).toBe(3)
+      expect(result[2].pullRequestId).toBe(1)
+    })
+
+    it('should sort active PRs (null closedDate) before completed PRs', async () => {
+      const singleRepo = [mockRepos[0]]
+      // Completed
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([
+        { pullRequestId: 1, closedDate: '2024-01-10T10:00:00Z' },
+      ]))
+      // Active
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([
+        { pullRequestId: 2, closedDate: null, status: 'active', isDraft: false },
+      ]))
+
+      const result = await AzureDevOpsService.getPullRequestsAcrossRepos(
+        mockPat, singleRepo, fromDate, toDate, true,
+      )
+
+      // Active PR (null closedDate → Date.now()) should be first (most recent)
+      expect(result[0].pullRequestId).toBe(2)
+      expect(result[1].pullRequestId).toBe(1)
+    })
+
+    it('should call onProgress callback during loading', async () => {
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([{ pullRequestId: 1 }]))
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([{ pullRequestId: 2 }]))
+
+      const onProgress = vi.fn()
+
+      await AzureDevOpsService.getPullRequestsAcrossRepos(
+        mockPat, mockRepos, fromDate, toDate, false, onProgress,
+      )
+
+      expect(onProgress).toHaveBeenCalledWith(2, 2)
+    })
+
+    it('should handle repo fetch failures gracefully', async () => {
+      // Repo 1 fails
+      mockedAxiosGet.mockRejectedValueOnce(new Error('Network error'))
+      // Repo 2 succeeds
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([{ pullRequestId: 2 }]))
+
+      const result = await AzureDevOpsService.getPullRequestsAcrossRepos(
+        mockPat, mockRepos, fromDate, toDate, false,
+      )
+
+      expect(result).toHaveLength(1)
+      expect(result[0].pullRequestId).toBe(2)
+    })
+
+    it('should return empty array when no repos have PRs', async () => {
+      mockedAxiosGet.mockResolvedValueOnce(emptyPrResponse)
+      mockedAxiosGet.mockResolvedValueOnce(emptyPrResponse)
+
+      const result = await AzureDevOpsService.getPullRequestsAcrossRepos(
+        mockPat, mockRepos, fromDate, toDate, false,
+      )
+
+      expect(result).toEqual([])
+    })
+
+    it('should paginate PRs within a single repo', async () => {
+      const singleRepo = [mockRepos[0]]
+      // First page: full page (100 items) → triggers pagination
+      const fullPage = Array.from({ length: 100 }, (_, i) => ({
+        pullRequestId: i + 1,
+        closedDate: '2024-01-15T14:00:00Z',
+      }))
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse(fullPage))
+      // Second page: partial (less than 100) → stops pagination
+      mockedAxiosGet.mockResolvedValueOnce(buildMockPrResponse([{ pullRequestId: 101 }]))
+
+      const result = await AzureDevOpsService.getPullRequestsAcrossRepos(
+        mockPat, singleRepo, fromDate, toDate, false,
+      )
+
+      expect(result).toHaveLength(101)
+      expect(mockedAxiosGet).toHaveBeenCalledTimes(2)
+    })
+
+    it('should stop pagination when response data value is null', async () => {
+      const singleRepo = [mockRepos[0]]
+      mockedAxiosGet.mockResolvedValueOnce({ data: { value: null } })
+
+      const result = await AzureDevOpsService.getPullRequestsAcrossRepos(
+        mockPat, singleRepo, fromDate, toDate, false,
+      )
+
+      expect(result).toEqual([])
+    })
+  })
+
   describe('getWorkItemsForCommitRange - safety limit warning', () => {
     it('generates safety limit warning when max commits reached', async () => {
       // Mock 51 pages to exhaust MAX_COMMITS_SAFETY_LIMIT (5000) with COMMITS_PAGE_SIZE (100)

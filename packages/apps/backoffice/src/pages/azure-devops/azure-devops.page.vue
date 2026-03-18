@@ -159,6 +159,14 @@
         >
           <ContributionGraphTab />
         </PTabPane>
+
+        <PTabPane
+          pLabel="Temps de complétion PR"
+          pName="pr-completion-time"
+          pLazy
+        >
+          <PrCompletionTimeTab />
+        </PTabPane>
       </PTabs>
     </div>
 
@@ -193,6 +201,7 @@ import CommitExplorerModal from './CommitExplorerModal/commit-explorer-modal.vue
 import CommitExplorerList from './CommitExplorer/commit-explorer-list.vue'
 import { useCommitExplorer } from './CommitExplorer/use-commit-explorer.composable'
 import ContributionGraphTab from './ContributionGraph/contribution-graph-tab.vue'
+import PrCompletionTimeTab from './PrCompletionTime/pr-completion-time-tab.vue'
 
 const azureDevOpsStore = useAzureDevOpsStore()
 

@@ -196,3 +196,44 @@ export interface WorkItemActivityItem {
 }
 
 export type ContributionActivityItem = CommitActivityItem | WorkItemActivityItem
+
+// PR Completion Time types
+
+export interface AzureDevOpsPullRequest {
+  pullRequestId: number
+  title: string
+  creationDate: string
+  closedDate: string | null
+  status: 'active' | 'abandoned' | 'completed'
+  isDraft: boolean
+  repository: {
+    id: string
+    name: string
+  }
+  createdBy: {
+    displayName: string
+    uniqueName: string
+  }
+  sourceRefName: string
+  targetRefName: string
+}
+
+export interface AzureDevOpsPullRequestsResponse {
+  value: AzureDevOpsPullRequest[]
+  count: number
+}
+
+export interface PrCompletionItem {
+  pullRequestId: number
+  title: string
+  repositoryName: string
+  author: string
+  authorEmail: string
+  creationDate: string
+  closedDate: string | null
+  durationHours: number
+  durationFormatted: string
+  sourceRefName: string
+  targetRefName: string
+  status: 'active' | 'completed'
+}

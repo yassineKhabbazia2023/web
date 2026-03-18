@@ -28,6 +28,12 @@ export const WORK_ITEM_TYPE_COLORS = {
   'Epic': 'purple',
 } as const
 
+// PR Completion Time
+export const PR_COMPLETION_PAGE_SIZE = 100
+export const PR_COMPLETION_REPO_CONCURRENCY = 5
+export const PR_COMPLETION_MAX_PRS_PER_REPO = 1000
+export const FRONT_REPO_NAME = 'Pulse.Web'
+
 // Work item state colors for display
 export const WORK_ITEM_STATE_COLORS = {
   'New': 'warning',

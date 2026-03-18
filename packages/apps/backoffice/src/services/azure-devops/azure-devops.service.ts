@@ -3,6 +3,8 @@ import { logger } from '@pulse/toolbox'
 import type {
   AzureDevOpsCommit,
   AzureDevOpsCommitsResponse,
+  AzureDevOpsPullRequest,
+  AzureDevOpsPullRequestsResponse,
   AzureDevOpsPullRequestWorkItemsResponse,
   AzureDevOpsRef,
   AzureDevOpsRefsResponse,
@@ -30,6 +32,9 @@ import {
   CONTRIBUTION_REPO_CONCURRENCY,
   EXPLORER_PAGE_SIZE,
   MAX_COMMITS_SAFETY_LIMIT,
+  PR_COMPLETION_PAGE_SIZE,
+  PR_COMPLETION_REPO_CONCURRENCY,
+  PR_COMPLETION_MAX_PRS_PER_REPO,
 } from '@backoffice/constants/azure-devops.const'
 
 export class AzureDevOpsService {
@@ -686,6 +691,126 @@ export class AzureDevOpsService {
         webUrl: this.buildWorkItemWebUrl(response.id),
       }
     })
+  }
+
+  // PR Completion Time methods
+
+  private static buildPullRequestsUrl(repository: string): string {
+    const { organization, project } = AZURE_DEVOPS_CONFIG
+    return `${organization}/${project}/_apis/git/repositories/${repository}/pullrequests`
+  }
+
+  private static async fetchPullRequestsForRepo(
+    pat: string,
+    repository: string,
+    status: 'completed' | 'active',
+    fromDate?: Date,
+    toDate?: Date,
+  ): Promise<AzureDevOpsPullRequest[]> {
+    const allPrs: AzureDevOpsPullRequest[] = []
+    let skip = 0
+
+    while (skip < PR_COMPLETION_MAX_PRS_PER_REPO) {
+      const params = new URLSearchParams({
+        'searchCriteria.status': status,
+        'searchCriteria.targetRefName': 'refs/heads/main',
+        '$top': PR_COMPLETION_PAGE_SIZE.toString(),
+        '$skip': skip.toString(),
+        'api-version': AZURE_DEVOPS_API_VERSION,
+      })
+
+      if (fromDate != null && toDate != null) {
+        params.set('searchCriteria.minTime', fromDate.toISOString())
+        params.set('searchCriteria.maxTime', toDate.toISOString())
+      }
+
+      const response = await axios.get<AzureDevOpsPullRequestsResponse>(
+        `${this.buildPullRequestsUrl(repository)}?${params}`,
+        { headers: { Authorization: this.getAuthHeader(pat) } },
+      )
+
+      if (response.data?.value == null || response.data.value.length === 0) {
+        break
+      }
+
+      allPrs.push(...response.data.value)
+
+      if (response.data.value.length < PR_COMPLETION_PAGE_SIZE) {
+        break
+      }
+
+      skip += PR_COMPLETION_PAGE_SIZE
+    }
+
+    return allPrs
+  }
+
+  private static async getCompletedPullRequestsForRepo(
+    pat: string,
+    repository: string,
+    fromDate: Date,
+    toDate: Date,
+  ): Promise<AzureDevOpsPullRequest[]> {
+    return this.fetchPullRequestsForRepo(pat, repository, 'completed', fromDate, toDate)
+  }
+
+  private static async getActivePullRequestsForRepo(
+    pat: string,
+    repository: string,
+  ): Promise<AzureDevOpsPullRequest[]> {
+    const prs = await this.fetchPullRequestsForRepo(pat, repository, 'active')
+    return prs.filter((pr) => pr.isDraft === false)
+  }
+
+  static async getPullRequestsAcrossRepos(
+    pat: string,
+    repositories: AzureDevOpsRepository[],
+    fromDate: Date,
+    toDate: Date,
+    includeActive: boolean,
+    onProgress?: (loaded: number, total: number) => void,
+  ): Promise<AzureDevOpsPullRequest[]> {
+    const allPrs: AzureDevOpsPullRequest[] = []
+    let loadedCount = 0
+    const totalCount = repositories.length
+
+    for (let i = 0; i < repositories.length; i += PR_COMPLETION_REPO_CONCURRENCY) {
+      const batch = repositories.slice(i, i + PR_COMPLETION_REPO_CONCURRENCY)
+
+      const batchResults = await Promise.all(
+        batch.map(async (repo) => {
+          try {
+            if (includeActive) {
+              const [completed, active] = await Promise.all([
+                this.getCompletedPullRequestsForRepo(pat, repo.name, fromDate, toDate),
+                this.getActivePullRequestsForRepo(pat, repo.name),
+              ])
+              return [...completed, ...active]
+            }
+            return await this.getCompletedPullRequestsForRepo(pat, repo.name, fromDate, toDate)
+          } catch (err) {
+            logger.warn(`Failed to fetch PRs for repo ${repo.name}:`, err)
+            return []
+          }
+        }),
+      )
+
+      for (const prs of batchResults) {
+        allPrs.push(...prs)
+      }
+
+      loadedCount += batch.length
+      if (onProgress !== undefined) {
+        onProgress(loadedCount, totalCount)
+      }
+    }
+
+    allPrs.sort((a, b) => {
+      const dateA = a.closedDate != null ? new Date(a.closedDate).getTime() : Date.now()
+      const dateB = b.closedDate != null ? new Date(b.closedDate).getTime() : Date.now()
+      return dateB - dateA
+    })
+    return allPrs
   }
 
   private static async fetchCommitsByAuthorForRepo(
