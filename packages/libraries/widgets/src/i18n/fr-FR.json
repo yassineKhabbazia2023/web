@@ -26,23 +26,27 @@
     },
     "pennylaneAccessBlocked": {
       "title": "Validation requise pour votre entreprise",
-      "complianceRequirement": "Votre entreprise doit accepter la mise en conformité de sa facturation et finaliser son parcours d'adhésion à la plateforme Pennylane.",
-      "authorizedRepresentativeOnly": "Cette étape ne peut être validée que par un mandataire habilité, car elle engage l'entreprise dans ce nouveau cadre réglementaire.",
+      "complianceRequirement": "Votre entreprise doit accepter le forfait d'accompagnement à la réforme de la facturation électronique et finaliser son parcours d'adhésion à la plateforme Pennylane.",
+      "authorizedRepresentativeOnlyPart1": "Cette étape ne peut être validée que ",
+      "authorizedRepresentativeOnlyBold": "par un mandataire habilité,",
+      "authorizedRepresentativeOnlyPart2": " car elle engage l'entreprise dans ce nouveau cadre réglementaire.",
       "connectionInstructions": "Merci de demander à cette personne de se connecter à son espace RYDGE Conseil pour effectuer cette validation.",
       "conclusion": "Une fois les nouvelles conditions de RYDGE Conseil validées, vous pourrez continuer à utiliser la plateforme Pennylane.",
+      "supportNotice": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)",
       "understood": "C'est compris"
     },
     "pennylaneAmendmentFlow": {
       "step1": {
-        "title": "Accédez à Pennylane et assurez votre mise en conformité avec la réforme de la facturation électronique",
-        "subtitlePart1": "Nous mettons à jour votre facturation et votre environnement comptable pour ",
-        "subtitleGreen": "anticiper la réforme de la facture.",
+        "title": "Réforme de la facturation électronique : soyez prêts pour le 1er septembre 2026",
         "reform": {
-          "title": "Réforme de la facture électronique",
-          "description1": "La réforme de la facturation électronique va généraliser progressivement les échanges électroniques des factures dès 2026. Cette réforme impacte notre organisation, c'est pourquoi nous avons choisi de l'anticiper dès maintenant pour garantir votre conformité et assurer la poursuite de nos missions.",
-          "description2Part1": "Pour recevoir et émettre des factures conformes ",
-          "description2Bold": "à compter de septembre 2026,",
-          "description2Part2": " un travail complémentaire de mise à jour des fiches clients et fournisseurs est nécessaire par nos équipes (fiches fournisseurs uniquement pour les sociétés qui réalisent des opérations de vente exonérées de TVA)."
+          "title": "Accompagnement à la réforme",
+          "description": "Les échanges électroniques de facture seront généralisés progressivement à partir de septembre 2026. Nous anticipons dès à présent la réforme pour garantir votre conformité et assurer la poursuite de nos missions.",
+          "listIntroBold": "Pour recevoir et émettre des factures conformes,",
+          "listIntro": " nous vous accompagnons grâce à :",
+          "listItem1": "la mise en qualité de vos référentiels fournisseurs",
+          "listItem2": "un rapport complet identifiant les données de factures de vente non conformes, à mettre en conformité pour septembre 2027",
+          "listItem3": "la prise en main de la plateforme agréée",
+          "listItem4": "une réponse à toutes vos questions relatives à la facturation électronique, jusqu'au 30 septembre 2026"
         },
         "pennylane": {
           "title": "Pennylane",
@@ -54,10 +58,10 @@
       },
       "step2": {
         "title": "1/3 Votre accompagnement vers la réforme",
-        "reformDescription": "La réforme de la facturation électronique impose une mise à niveau obligatoire pour chaque entreprise. Elle implique le contrôle et la mise en conformité des données ainsi que l'activation de la plateforme Pennylane. Le montant de l'abonnement varie selon les besoins de votre structure.",
+        "reformDescription": "La réforme de la facturation électronique (RFE) impose une mise à niveau obligatoire pour chaque entreprise. Elle implique le contrôle et la mise en conformité des données ainsi que l'activation de la plateforme Pennylane. Le montant de l'abonnement varie selon les besoins de votre structure.",
         "table": {
           "company": "Entreprise",
-          "compliance": "Mise en conformité*",
+          "compliance": "Accompagnement RFE*",
           "subscription": "Abonnement Pennylane**",
           "perMonth": "mois",
           "free": "Offert",
@@ -91,19 +95,13 @@
             "item3": " avec RYDGE Conseil."
           },
           "compliance": {
-            "title": "Pourquoi un forfait de mise en conformité ?",
-            "description1Prefix": "La réforme impose de ",
-            "description1Bold1": "mettre en conformité les données clients et fournisseurs",
-            "description1Middle": ", sans quoi vous prenez le risque de ne pas pouvoir ",
-            "description1Bold2": "facturer vos clients ou de payer une fausse facture.",
-            "description2Prefix": "Notre analyse ",
-            "description2Bold1": "met en évidence les données à mettre en conformité",
-            "description2Middle1": " dans vos référentiels. C'est donc l'assurance de vous ",
-            "description2Bold2": "couvrir contre le risque de fraude",
-            "description2Middle2": " pour la ",
-            "description2Bold3": "réception des factures",
-            "description2Middle3": " et assurer ",
-            "description2Bold4": "l'émission des factures."
+            "title": "Pourquoi un forfait d'accompagnement ?",
+            "item1Bold": "Conformité des données",
+            "item1": " – Sans mise à jour de vos référentiels, vous ne pourrez plus émettre ni recevoir de factures valides.",
+            "item2Bold": "Audit & sécurisation",
+            "item2": " – Nous identifions les données non conformes et vous protégeons contre la fraude.",
+            "item3Bold": "Accompagnement clé en main",
+            "item3": " – Nous vous guidons vers une adoption fluide et sécurisée de la Plateforme Agréée."
           }
         }
       },
@@ -123,7 +121,7 @@
         "checkboxLabelPrefix": "J'ai lu ",
         "checkboxLinkText": "les nouvelles conditions de RYDGE Conseil",
         "checkboxLabelSuffix": " et j'accepte :",
-        "listItem1": "de confier à RYDGE Conseil la mission d'accompagnement relative aux fiches clients et fournisseurs dans le cadre de la réforme de la facturation électronique (fiches fournisseurs uniquement pour les sociétés qui réalisent des opérations de vente exonérées de TVA)",
+        "listItem1": "de confier à RYDGE Conseil la mission d'accompagnement à la réforme de la facturation électronique (mise en qualité des référentiels fournisseurs, réponse à toutes vos questions jusqu'au 30 septembre 2026, préparation du rapport identifiant les données de factures de vente non conformes, prise en main de la plateforme agréée)",
         "listItem2": "le ou les plan(s) proposé(s) par RYDGE Conseil pour l'utilisation de l'outil Pennylane en sachant que je peux choisir à tout moment un autre plan, durant la période de gratuité ou après celle-ci selon les modalités prévues dans ce formulaire et de modifier ou compléter en conséquence la lettre de mission que j'ai signée avec RYDGE Conseil.",
         "supportNotice": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)",
         "buttonRefuse": "Refuser",
@@ -139,8 +137,8 @@
         "title": "Merci de votre acceptation",
         "descriptionPart1": "Vous pouvez maintenant accéder à ",
         "pennylane": "Pennylane.",
-        "descriptionPart2": " Afin de vous laisser le temps de vous approprier ces nouvelles fonctionnalités, vous avez accès à ",
-        "descriptionPart3": " gratuitement jusqu'au 30 juin 2026.",
+        "descriptionPart2": " Afin de vous laisser le temps de vous approprier ces nouvelles fonctionnalités, ",
+        "boldAccessPart": "vous avez accès à Pennylane gratuitement jusqu'au ",
         "buttonClose": "Fermer"
       },
       "decline": {

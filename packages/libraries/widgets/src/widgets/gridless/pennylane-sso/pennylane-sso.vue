@@ -97,7 +97,10 @@
       @decline="handleDecline"
     />
 
-    <PennylaneAmendmentSuccessDialog v-model="isSuccessDialogOpen" />
+    <PennylaneAmendmentSuccessDialog
+      v-model="isSuccessDialogOpen"
+      :free-trial-end-date="freeTrialInfo?.freeTrialEndDate"
+    />
     <PennylaneAmendmentDeclineDialog v-model="isDeclineDialogOpen" />
   </div>
 </template>
@@ -171,7 +174,7 @@ const shouldShowAmendmentFlowDialog = computed(() => {
 })
 
 const onSSOConnection = () => {
-  if (isCheckingPennylaneAccess.value === true) {
+  if (isCheckingPennylaneAccess.value === true || canAccess.value === undefined) {
     return
   }
 
@@ -219,7 +222,10 @@ const checkPennylaneAccess = async () => {
     canAccess.value = accessResponse.canAccess
     isPennylaneSignatory.value = accessResponse.isPennylaneSignatory
     accessDetails.value = accessResponse.details
-    freeTrialInfo.value = { freeTrialEndDate: accessResponse.freeTrialEndDate, billingMonth: accessResponse.billingMonth }
+    freeTrialInfo.value = {
+      freeTrialEndDate: accessResponse.freeTrialEndDate,
+      billingMonth: accessResponse.billingMonth,
+    }
   } catch {
     canAccess.value = undefined
     isPennylaneSignatory.value = undefined

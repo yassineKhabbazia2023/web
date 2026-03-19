@@ -132,19 +132,7 @@
           :key="index"
           class="faq-section__item text-color--text-white"
         >
-          <template
-            v-for="(segment, segmentIndex) in item.segments"
-            :key="segmentIndex"
-          >
-            <span
-              v-if="segment.bold === true"
-              class="font-bold"
-            >{{ segment.text }}
-            </span>
-            <template v-else>
-              {{ segment.text }}
-            </template>
-          </template>
+          <span class="font-bold">{{ item.bold }}</span>{{ item.text }}
         </li>
       </ul>
     </div>
@@ -178,24 +166,16 @@ const PENNYLANE_ITEMS = computed(() => [
 
 const COMPLIANCE_ITEMS = computed(() => [
   {
-    segments: [
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description1Prefix'), bold: false },
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description1Bold1'), bold: true },
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description1Middle'), bold: false },
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description1Bold2'), bold: true },
-    ],
+    bold: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.item1Bold'),
+    text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.item1'),
   },
   {
-    segments: [
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Prefix'), bold: false },
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Bold1'), bold: true },
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Middle1'), bold: false },
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Bold2'), bold: true },
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Middle2'), bold: false },
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Bold3'), bold: true },
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Middle3'), bold: false },
-      { text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.description2Bold4'), bold: true },
-    ],
+    bold: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.item2Bold'),
+    text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.item2'),
+  },
+  {
+    bold: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.item3Bold'),
+    text: t('widgets.pennylaneAmendmentFlow.step2.faq.compliance.item3'),
   },
 ])
 

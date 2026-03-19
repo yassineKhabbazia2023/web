@@ -1,15 +1,8 @@
 <template>
   <div>
-    <h2 class="font-bold margin-bottom--4">
+    <h2 class="font-bold margin-bottom--6">
       {{ t('widgets.pennylaneAmendmentFlow.step1.title') }}
     </h2>
-
-    <p class="margin-bottom--6">
-      {{ t('widgets.pennylaneAmendmentFlow.step1.subtitlePart1') }}
-      <span class="text-color--jungle-400 font-semibold">
-        {{ t('widgets.pennylaneAmendmentFlow.step1.subtitleGreen') }}
-      </span>
-    </p>
 
     <PNoticeCard
       :pTitle="t('widgets.pennylaneAmendmentFlow.step1.reform.title')"
@@ -19,15 +12,20 @@
       class="margin-bottom--4 font-base"
     >
       <p class="margin-bottom--3">
-        {{ t('widgets.pennylaneAmendmentFlow.step1.reform.description1') }}
+        {{ t('widgets.pennylaneAmendmentFlow.step1.reform.description') }}
       </p>
-      <p class="margin--0">
-        {{ t('widgets.pennylaneAmendmentFlow.step1.reform.description2Part1') }}
+      <p class="margin-bottom--2">
         <span class="font-bold">
-          {{ t('widgets.pennylaneAmendmentFlow.step1.reform.description2Bold') }}
+          {{ t('widgets.pennylaneAmendmentFlow.step1.reform.listIntroBold') }}
         </span>
-        {{ t('widgets.pennylaneAmendmentFlow.step1.reform.description2Part2') }}
+        {{ t('widgets.pennylaneAmendmentFlow.step1.reform.listIntro') }}
       </p>
+      <ul class="margin--0 padding-left--6">
+        <li>{{ t('widgets.pennylaneAmendmentFlow.step1.reform.listItem1') }}</li>
+        <li>{{ t('widgets.pennylaneAmendmentFlow.step1.reform.listItem2') }}</li>
+        <li>{{ t('widgets.pennylaneAmendmentFlow.step1.reform.listItem3') }}</li>
+        <li>{{ t('widgets.pennylaneAmendmentFlow.step1.reform.listItem4') }}</li>
+      </ul>
     </PNoticeCard>
 
     <PNoticeCard

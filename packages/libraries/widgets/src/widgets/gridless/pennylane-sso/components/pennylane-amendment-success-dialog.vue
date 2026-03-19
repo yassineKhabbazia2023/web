@@ -24,8 +24,9 @@
           {{ t('widgets.pennylaneAmendmentFlow.success.pennylane') }}
         </span>
         {{ t('widgets.pennylaneAmendmentFlow.success.descriptionPart2') }}
-        <span class="font-bold">{{ t('widgets.pennylaneAmendmentFlow.success.pennylane') }}</span>
-        {{ t('widgets.pennylaneAmendmentFlow.success.descriptionPart3') }}
+        <span class="font-bold">
+          {{ t('widgets.pennylaneAmendmentFlow.success.boldAccessPart') }}{{ formattedFreeTrialEndDate }}.
+        </span>
       </p>
 
       <PButton
@@ -46,7 +47,7 @@ import { useResponsive } from '@pulse/styleguide'
 import { PDialog, PButton, PIcon } from '@pulse/styleguide/components'
 import type { PennylaneAmendmentSuccessDialogProps } from './pennylane-amendment-success-dialog.type'
 
-const { t } = useI18n({
+const { t, d } = useI18n({
   inheritLocale: true,
   useScope: 'global',
 })
@@ -62,6 +63,13 @@ const emit = defineEmits<{
 const isVisible = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
+})
+
+const formattedFreeTrialEndDate = computed(() => {
+  if (!props.freeTrialEndDate) {
+    return ''
+  }
+  return d(new Date(props.freeTrialEndDate), 'longText')
 })
 
 const handleClose = () => {

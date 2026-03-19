@@ -36,7 +36,11 @@
         </p>
 
         <p class="pennylane-access-blocked-dialog__text margin-bottom--4">
-          {{ t('widgets.pennylaneAccessBlocked.authorizedRepresentativeOnly') }}
+          {{ t('widgets.pennylaneAccessBlocked.authorizedRepresentativeOnlyPart1') }}
+          <span class="font-bold">
+            {{ t('widgets.pennylaneAccessBlocked.authorizedRepresentativeOnlyBold') }}
+          </span>
+          {{ t('widgets.pennylaneAccessBlocked.authorizedRepresentativeOnlyPart2') }}
         </p>
 
         <p class="pennylane-access-blocked-dialog__text margin-bottom--4">
@@ -47,10 +51,19 @@
           class="
             pennylane-access-blocked-dialog__text
             font-bold
+            margin-bottom--4
           "
         >
           {{ t('widgets.pennylaneAccessBlocked.conclusion') }}
         </p>
+
+        <PAlert
+          pType="info"
+          :pClosable="false"
+          class="margin-bottom--4"
+        >
+          {{ t('widgets.pennylaneAccessBlocked.supportNotice') }}
+        </PAlert>
 
         <PButton
           class="
@@ -116,7 +129,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDialog, PButton, PImage } from '@pulse/styleguide/components'
+import { PDialog, PButton, PImage, PAlert } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import type { PennylaneAccessBlockedDialogProps } from './pennylane-access-blocked-dialog.type'
 
