@@ -58,7 +58,7 @@ export interface OfferPlan {
   planName: string
   isDefault: boolean
   isSelected?: boolean
-  pricings: OfferPlanPricing[]
+  pricings?: OfferPlanPricing[]
 }
 
 export interface SubscriptionOfferServices extends SubscriptionOffer {

@@ -41,7 +41,12 @@ export function useOfferPlanSubscription({
 
     selectedPlanId.value = selectedPlan.value.planId
 
-    const apiSelectedPricing = selectedPlan.value.pricings.find(
+    const pricings = selectedPlan.value.pricings
+    if (pricings === undefined || pricings.length === 0) {
+      return
+    }
+
+    const apiSelectedPricing = pricings.find(
       pricing => pricing.isSelected === true,
     )
     if (apiSelectedPricing !== undefined) {
@@ -55,9 +60,10 @@ export function useOfferPlanSubscription({
     }
 
     const plan = plans.value.find(p => p.planId === newPlanId)
+    const pricings = plan?.pricings
 
-    if (plan?.pricings?.length === 1) {
-      selectedPricingId.value = plan.pricings[0].planPricingId
+    if (pricings !== undefined && pricings.length === 1) {
+      selectedPricingId.value = pricings[0].planPricingId
     } else {
       selectedPricingId.value = undefined
     }

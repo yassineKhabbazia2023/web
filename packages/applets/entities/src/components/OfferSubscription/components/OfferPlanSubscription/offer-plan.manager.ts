@@ -65,7 +65,7 @@ export class OfferPlanManager {
    */
   static getPricingLabel(pricingId: number, planId: number, plans: OfferPlan[]): string | undefined {
     const plan = plans.find(p => p.planId === planId)
-    if (plan === undefined) {
+    if (plan === undefined || plan.pricings === undefined || plan.pricings.length === 0) {
       return undefined
     }
 
@@ -85,7 +85,7 @@ export class OfferPlanManager {
     }
 
     const selectedPlan = plans.find(plan => plan.isSelected === true)
-    if (selectedPlan === undefined) {
+    if (selectedPlan === undefined || selectedPlan.pricings === undefined || selectedPlan.pricings.length === 0) {
       return undefined
     }
 

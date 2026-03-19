@@ -162,6 +162,54 @@ describe('useOfferPlanSubscription', () => {
       expect(selectedPlanId.value).toBeUndefined()
       expect(selectedPricingId.value).toBeUndefined()
     })
+
+    it('should set planId but not pricingId when selected plan has undefined pricings', () => {
+      const plansWithSelection = [
+        {
+          ...PLAN_BASIC,
+          isSelected: true,
+          pricings: undefined,
+        },
+      ]
+      const selectedPlanId = ref<number | undefined>(undefined)
+      const selectedPricingId = ref<number | undefined>(undefined)
+
+      const { initializeRecapMode } = useOfferPlanSubscription({
+        plans: ref(plansWithSelection),
+        isRecap: ref(true),
+        selectedPlanId,
+        selectedPricingId,
+      })
+
+      initializeRecapMode()
+
+      expect(selectedPlanId.value).toBe(1)
+      expect(selectedPricingId.value).toBeUndefined()
+    })
+
+    it('should set planId but not pricingId when selected plan has empty pricings array', () => {
+      const plansWithSelection = [
+        {
+          ...PLAN_BASIC,
+          isSelected: true,
+          pricings: [],
+        },
+      ]
+      const selectedPlanId = ref<number | undefined>(undefined)
+      const selectedPricingId = ref<number | undefined>(undefined)
+
+      const { initializeRecapMode } = useOfferPlanSubscription({
+        plans: ref(plansWithSelection),
+        isRecap: ref(true),
+        selectedPlanId,
+        selectedPricingId,
+      })
+
+      initializeRecapMode()
+
+      expect(selectedPlanId.value).toBe(1)
+      expect(selectedPricingId.value).toBeUndefined()
+    })
   })
 
   describe('handlePlanChange', () => {
@@ -208,6 +256,48 @@ describe('useOfferPlanSubscription', () => {
       handlePlanChange(2)
 
       expect(selectedPricingId.value).toBe(1)
+    })
+
+    it('should clear pricing when plan has undefined pricings', () => {
+      const plansWithUndefinedPricings = [
+        {
+          ...PLAN_BASIC,
+          pricings: undefined,
+        },
+      ]
+      const selectedPricingId = ref<number | undefined>(999)
+
+      const { handlePlanChange } = useOfferPlanSubscription({
+        plans: ref(plansWithUndefinedPricings),
+        isRecap: ref(false),
+        selectedPlanId: ref(undefined),
+        selectedPricingId,
+      })
+
+      handlePlanChange(1)
+
+      expect(selectedPricingId.value).toBeUndefined()
+    })
+
+    it('should clear pricing when plan has empty pricings array', () => {
+      const plansWithEmptyPricings = [
+        {
+          ...PLAN_BASIC,
+          pricings: [],
+        },
+      ]
+      const selectedPricingId = ref<number | undefined>(999)
+
+      const { handlePlanChange } = useOfferPlanSubscription({
+        plans: ref(plansWithEmptyPricings),
+        isRecap: ref(false),
+        selectedPlanId: ref(undefined),
+        selectedPricingId,
+      })
+
+      handlePlanChange(1)
+
+      expect(selectedPricingId.value).toBeUndefined()
     })
   })
 })
