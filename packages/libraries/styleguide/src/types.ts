@@ -61,6 +61,7 @@ export * from './atoms/PUploadFileLine/PUploadFileLineTypes'
 export * from './atoms/PUserCard/PUserCardTypes'
 
 export * from './molecules/PActionBar/PActionBarTypes'
+export * from './molecules/PAppointmentCard/PAppointmentCardTypes'
 export * from './molecules/PAutocomplete/PAutocompleteTypes'
 export * from './molecules/PBlockHeader/PBlockHeaderTypes'
 export * from './molecules/PBreadcrumb/PBreadcrumbTypes'

@@ -255,6 +255,12 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
+    name: 'cameraVideo',
+    componentName: 'PICameraVideo',
+    fileName: 'camera-video.svg',
+    category: 'Essentials',
+  },
+  {
     name: 'camera',
     componentName: 'PICamera',
     fileName: 'camera.svg',

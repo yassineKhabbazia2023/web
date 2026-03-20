@@ -34,6 +34,7 @@ export type IconName =
 'calendarNone' |
 'calendarPlus' |
 'camera' |
+'cameraVideo' |
 'carFront' |
 'cardList' |
 'caretDown' |

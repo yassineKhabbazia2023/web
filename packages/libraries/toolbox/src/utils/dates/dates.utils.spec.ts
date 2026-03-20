@@ -1,6 +1,7 @@
 import {
   formatDateTime,
   formatEndDateToISO,
+  formatShortDate,
   formatStartDateToISO,
   formatTime,
   getMostRecentDate,
@@ -104,6 +105,24 @@ describe('formatTime', () => {
 
   it('should use custom locale', () => {
     expect(formatTime('2024-03-15T14:30:00', 'en-US')).toBe('02:30 PM')
+  })
+})
+
+describe('formatShortDate', () => {
+  it('should format ISO date string to DD/MM format', () => {
+    expect(formatShortDate('2024-03-15T14:30:00')).toBe('15/03')
+  })
+
+  it('should return empty string for invalid date', () => {
+    expect(formatShortDate('invalid')).toBe('')
+  })
+
+  it('should handle single digit day and month with zero padding', () => {
+    expect(formatShortDate('2024-01-05T10:00:00')).toBe('05/01')
+  })
+
+  it('should handle end of year date', () => {
+    expect(formatShortDate('2024-12-31T23:59:59')).toBe('31/12')
   })
 })
 

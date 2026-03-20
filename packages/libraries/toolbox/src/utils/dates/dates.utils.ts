@@ -79,6 +79,19 @@ export function formatTime(dateString: string, locale: string = 'fr-FR'): string
 }
 
 /**
+ * Formats a date string to display only day and month in DD/MM format.
+ * @param dateString - ISO date string or any valid date string
+ * @returns Formatted short date string (e.g., "15/03")
+ */
+export function formatShortDate(dateString: string): string {
+  const date = dayjs(dateString)
+  if (date.isValid() === false) {
+    return ''
+  }
+  return date.format('DD/MM')
+}
+
+/**
  * Formats a date string to display date and time in locale format.
  * @param dateString - ISO date string or any valid date string
  * @param locale - Locale for formatting (default: 'fr-FR')
