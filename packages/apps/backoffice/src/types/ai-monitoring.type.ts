@@ -14,6 +14,8 @@ export interface AiSearchHistoryItem {
   evaluation: boolean | null
   cost: number
   time: number
+  question: string | null
+  response: string[] | null
 }
 
 export interface AiSearchHistoryResponse {

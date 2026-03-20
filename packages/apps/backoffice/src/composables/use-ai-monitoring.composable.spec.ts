@@ -41,6 +41,8 @@ describe('useAiMonitoring', () => {
         evaluation: true,
         cost: 0.0025,
         time: 1500,
+        question: 'Comment créer une entreprise ?',
+        response: ['Voici les étapes pour créer une entreprise...'],
       },
     ],
     page: 1,

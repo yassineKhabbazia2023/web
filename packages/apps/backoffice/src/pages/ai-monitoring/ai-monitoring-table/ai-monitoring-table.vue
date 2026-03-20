@@ -25,10 +25,85 @@
       data-testid="ai-monitoring-table"
       :pData="props.history"
       empty-text="Aucun historique de recherche IA disponible"
-      class="width--100 border-radius--2"
+      class="width--100 border-radius--2 ai-monitoring-table"
       pStripe
       :pCellStyle="{ padding: '12px 0px' }"
+      :pRowKey="getRowKey"
     >
+      <PTableColumn pType="expand" pWidth="50px">
+        <template #default="{ row }">
+          <div
+            class="
+              flex
+              flex--direction-column
+              flex-gap--4
+              padding-y--4
+            "
+          >
+            <div
+              v-if="row.question !== null && row.question !== ''"
+              class="
+                bg--gray-50
+                border-radius--2
+                padding--4
+                shadow--1
+              "
+            >
+              <div
+                class="
+                  flex
+                  flex--align-items-center
+                  flex-gap--2
+                  margin-bottom--2
+                "
+              >
+                <PIcon
+                  pName="chatSquareText"
+                  pSize="16"
+                  :color="AppColors.ICON_NEUTRAL"
+                />
+                <span class="ai-monitoring-table__section-title">QUESTION DEMANDÉE</span>
+              </div>
+              <p class="ai-monitoring-table__question-text">"{{ row.question }}"</p>
+            </div>
+
+            <div
+              v-if="row.response !== null && row.response.length > 0"
+              class="
+                bg--teal-100
+                border-radius--2
+                padding--4
+                shadow--1
+              "
+            >
+              <div
+                class="
+                  flex
+                  flex--align-items-center
+                  flex-gap--2
+                  margin-bottom--2
+                "
+              >
+                <PIcon
+                  pName="stars"
+                  pSize="16"
+                  :color="AppColors.ICON_NEUTRAL"
+                />
+                <span class="ai-monitoring-table__section-title">RÉPONSE DE L'IA</span>
+              </div>
+              <div class="flex flex--direction-column flex-gap--2">
+                <p
+                  v-for="(responseLine, index) in row.response"
+                  :key="index"
+                  class="ai-monitoring-table__response-text"
+                >
+                  {{ responseLine }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </template>
+      </PTableColumn>
       <PTableColumn
         data-testid="ai-monitoring-table-feature-column"
         pLabel="Fonctionnalité"
@@ -184,9 +259,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PTable, PTableColumn, PIcon, PTag, PPagination, PLoader } from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import { getPaginationLabel } from '@pulse/common/utils'
 import { formatDateTime } from '@pulse/toolbox/utils/dates'
 import type { AiMonitoringTableProps } from './ai-monitoring-table.type'
+import type { AiSearchHistoryItem } from '../../../types/ai-monitoring.type'
 import {
   formatCost,
   formatDurationInSeconds,
@@ -199,6 +276,10 @@ import {
 } from './ai-monitoring-table.utils'
 
 const props = defineProps<AiMonitoringTableProps>()
+
+const getRowKey = (row: AiSearchHistoryItem) => {
+  return `${row.date}-${row.user.email}-${row.feature}`
+}
 
 const emit = defineEmits<{
   'page-change': [page: number]
@@ -226,5 +307,22 @@ const handlePageSizeChange = (pageSize: number) => {
 <style lang="scss" scoped>
 .ai-monitoring-table__loader {
   min-height: 400px;
+}
+
+.ai-monitoring-table__section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--el-text-color-secondary);
+  letter-spacing: 0.5px;
+}
+
+.ai-monitoring-table__question-text {
+  margin: 0;
+  font-style: italic;
+}
+
+.ai-monitoring-table__response-text {
+  margin: 0;
+  line-height: 1.5;
 }
 </style>

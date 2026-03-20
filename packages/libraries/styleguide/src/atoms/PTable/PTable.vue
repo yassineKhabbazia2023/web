@@ -7,6 +7,7 @@
     :fit="pFit"
     :header-cell-style="pHeaderCellStyle"
     :cell-style="pCellStyle"
+    :row-key="pRowKey"
   >
     <slot />
   </ElTable>
@@ -24,6 +25,7 @@ const table = ref<any>()
 withDefaults(defineProps<PTableProps>(), {
   pStripe: false,
   pFit: true,
+  pRowKey: undefined,
 })
 
 // handle row selection background color not implemented by element plus
