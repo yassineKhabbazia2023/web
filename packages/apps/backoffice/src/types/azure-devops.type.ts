@@ -195,7 +195,34 @@ export interface WorkItemActivityItem {
   webUrl: string
 }
 
-export type ContributionActivityItem = CommitActivityItem | WorkItemActivityItem
+export interface PrReviewActivityItem {
+  kind: 'prreview'
+  date: string
+  formattedDate: string
+  pullRequestId: number
+  title: string
+  repositoryName: string
+  author: string
+  webUrl: string
+}
+
+export type ContributionActivityItem = CommitActivityItem | WorkItemActivityItem | PrReviewActivityItem
+
+export interface AzureDevOpsPrThread {
+  id: number
+  publishedDate: string
+  properties?: {
+    CodeReviewThreadType?: { $value: string }
+    CodeReviewVotedByIdentity?: { $value: string }
+    CodeReviewVoteResult?: { $value: string }
+  }
+  identities?: Record<string, { id: string; displayName: string }> | null
+}
+
+export interface AzureDevOpsPrThreadsResponse {
+  value: AzureDevOpsPrThread[]
+  count: number
+}
 
 // PR Completion Time types
 
@@ -211,6 +238,7 @@ export interface AzureDevOpsPullRequest {
     name: string
   }
   createdBy: {
+    id: string
     displayName: string
     uniqueName: string
   }

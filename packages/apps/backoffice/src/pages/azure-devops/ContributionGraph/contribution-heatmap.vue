@@ -32,8 +32,12 @@
         >
           <div
             class="contribution-heatmap__cell"
-            :class="`contribution-heatmap__cell--level-${getColorLevel(cell.count)}`"
+            :class="[
+              `contribution-heatmap__cell--level-${getColorLevel(cell.count)}`,
+              { 'contribution-heatmap__cell--selected': cell.dateKey === props.selectedDate },
+            ]"
             :style="{ gridColumn: cell.column, gridRow: cell.row }"
+            @click="emit('selectDate', cell.dateKey)"
           />
         </PTooltip>
       </div>
@@ -55,10 +59,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PTooltip } from '@pulse/styleguide/components'
-import { DAY_LABELS, MONTH_NAMES, toDateKey, toUtcDays, formatDate, getColorLevel } from './contribution-graph.helper'
+import {
+  DAY_LABELS, MONTH_NAMES, toDateKey, toUtcDays, formatDate, getColorLevel,
+} from './contribution-graph.helper'
 
 interface HeatmapCell {
-  date: Date
+  dateKey: string
   count: number
   label: string
   column: number
@@ -74,6 +80,11 @@ const props = defineProps<{
   contributionsByDate: Map<string, number>
   startDate: Date
   endDate: Date
+  selectedDate?: string | null
+}>()
+
+const emit = defineEmits<{
+  selectDate: [dateKey: string]
 }>()
 
 const cells = computed((): HeatmapCell[] => {
@@ -91,7 +102,7 @@ const cells = computed((): HeatmapCell[] => {
     const count = props.contributionsByDate.get(dateKey) ?? 0
 
     result.push({
-      date: new Date(current),
+      dateKey,
       count,
       label: formatDate(current),
       column,
@@ -187,6 +198,12 @@ const monthLabels = computed((): MonthLabel[] => {
   width: 12px;
   height: 12px;
   border-radius: 2px;
+  cursor: pointer;
+}
+
+.contribution-heatmap__cell--selected {
+  outline: 2px solid var(--el-color-primary, #409eff);
+  outline-offset: 1px;
 }
 
 .contribution-heatmap__cell--level-0 {

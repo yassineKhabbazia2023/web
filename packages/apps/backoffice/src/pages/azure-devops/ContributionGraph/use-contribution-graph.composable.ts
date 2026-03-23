@@ -8,13 +8,16 @@ import {
 } from '@backoffice/constants/azure-devops.const'
 import type {
   AzureDevOpsUserProfile,
+  AzureDevOpsPullRequest,
   ContributionCommit,
   ContributionWorkItem,
   ContributionActivityItem,
 } from '@backoffice/types/azure-devops.type'
-import { toDateKey, formatCommitDate, isMergePullRequest } from './contribution-graph.helper'
+import {
+  toDateKey, formatDate, formatCommitDate, isMergePullRequest,
+} from './contribution-graph.helper'
 
-type ActivityFilter = 'commits' | 'workitems'
+type ActivityFilter = 'commits' | 'workitems' | 'prreviews'
 
 export const useContributionGraph = () => {
   const store = useAzureDevOpsStore()
@@ -30,14 +33,19 @@ export const useContributionGraph = () => {
   const endDate = ref<Date>(new Date())
 
   const currentUserDisplayName = ref<string | null>(null)
+  const selectedDate = ref<string | null>(null)
 
   const commitsCount = computed(() => allActivityItems.value.filter((item) => item.kind === 'commit').length)
   const workItemsCount = computed(() => allActivityItems.value.filter((item) => item.kind === 'workitem').length)
+  const prReviewsCount = computed(() => allActivityItems.value.filter((item) => item.kind === 'prreview').length)
 
   const filteredActivityItems = computed(() => {
     return allActivityItems.value.filter((item) => {
       if (item.kind === 'commit') {
         return activeFilters.value.includes('commits')
+      }
+      if (item.kind === 'prreview') {
+        return activeFilters.value.includes('prreviews')
       }
       return activeFilters.value.includes('workitems')
     })
@@ -55,8 +63,26 @@ export const useContributionGraph = () => {
 
   const hasContributions = computed(() => contributionsByDate.value.size > 0)
 
-  const recentActivity = computed(() => filteredActivityItems.value.slice(0, visibleActivityCount.value))
-  const hasMoreActivity = computed(() => visibleActivityCount.value < filteredActivityItems.value.length)
+  const dateFilteredActivityItems = computed(() => {
+    if (selectedDate.value === null) {
+      return filteredActivityItems.value
+    }
+    return filteredActivityItems.value.filter(
+      (item) => toDateKey(new Date(item.date)) === selectedDate.value,
+    )
+  })
+
+  const recentActivity = computed(() => dateFilteredActivityItems.value.slice(0, visibleActivityCount.value))
+  const recentActivityTotal = computed(() => dateFilteredActivityItems.value.length)
+  const hasMoreActivity = computed(() => visibleActivityCount.value < dateFilteredActivityItems.value.length)
+
+  const formattedSelectedDate = computed(() => {
+    if (selectedDate.value === null) {
+      return ''
+    }
+    const [year, month, day] = selectedDate.value.split('-').map(Number)
+    return formatDate(new Date(year, month - 1, day))
+  })
 
   const computeDateRange = () => {
     const now = new Date()
@@ -79,6 +105,8 @@ export const useContributionGraph = () => {
   const buildActivityItems = (
     commits: ContributionCommit[],
     workItems: ContributionWorkItem[],
+    prReviews: AzureDevOpsPullRequest[],
+    prVoteDates: Map<number, string>,
   ): ContributionActivityItem[] => {
     const commitItems: ContributionActivityItem[] = commits.map((commit) => ({
       kind: 'commit' as const,
@@ -103,7 +131,23 @@ export const useContributionGraph = () => {
       webUrl: wi.webUrl,
     }))
 
-    const allItems = [...commitItems, ...workItemItems]
+    const prReviewItems: ContributionActivityItem[] = prReviews.map((pr) => {
+      const voteDate = prVoteDates.get(pr.pullRequestId)
+      const reviewDate = voteDate ?? pr.closedDate ?? pr.creationDate
+
+      return {
+        kind: 'prreview' as const,
+        date: reviewDate,
+        formattedDate: formatCommitDate(reviewDate),
+        pullRequestId: pr.pullRequestId,
+        title: pr.title,
+        repositoryName: pr.repository.name,
+        author: pr.createdBy.displayName,
+        webUrl: AzureDevOpsService.buildPrWebUrl(pr.repository.name, pr.pullRequestId),
+      }
+    })
+
+    const allItems = [...commitItems, ...workItemItems, ...prReviewItems]
     allItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     return allItems
   }
@@ -140,7 +184,7 @@ export const useContributionGraph = () => {
       const profile = await loadCurrentUserProfile()
       currentUserDisplayName.value = profile.displayName
 
-      const [allCommits, createdWorkItems] = await Promise.all([
+      const [allCommits, createdWorkItems, prReviews] = await Promise.all([
         AzureDevOpsService.getCommitsByAuthorAcrossRepos(
           store.pat,
           store.repositories,
@@ -157,12 +201,30 @@ export const useContributionGraph = () => {
           startDate.value,
           endDate.value,
         ),
+        AzureDevOpsService.getPrReviewsForUserAcrossRepos(
+          store.pat,
+          store.repositories,
+          profile.id,
+          startDate.value,
+          endDate.value,
+        ),
       ])
 
       // Exclude PR merge evaluation commits generated by Azure DevOps under refs/pull/*/merge
-      const filteredCommits = allCommits.filter((commit) => isMergePullRequest(commit.comment) === false)
+      const filteredCommits = allCommits.filter(
+        (commit) => isMergePullRequest(commit.comment) === false,
+      )
 
-      allActivityItems.value = buildActivityItems(filteredCommits, createdWorkItems)
+      // Fetch actual vote dates for each PR review
+      const prVoteDates = prReviews.length > 0
+        ? await AzureDevOpsService.enrichPrReviewsWithVoteDates(
+          store.pat, prReviews, profile.id,
+        )
+        : new Map<number, string>()
+
+      allActivityItems.value = buildActivityItems(
+        filteredCommits, createdWorkItems, prReviews, prVoteDates,
+      )
       visibleActivityCount.value = CONTRIBUTION_RECENT_ACTIVITY_COUNT
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Erreur inconnue'
@@ -196,6 +258,25 @@ export const useContributionGraph = () => {
     set: (value: boolean) => toggleFilter('workitems', value),
   })
 
+  const showPrReviews = computed({
+    get: () => activeFilters.value.includes('prreviews'),
+    set: (value: boolean) => toggleFilter('prreviews', value),
+  })
+
+  const selectDate = (dateKey: string): void => {
+    if (selectedDate.value === dateKey) {
+      selectedDate.value = null
+    } else {
+      selectedDate.value = dateKey
+    }
+    visibleActivityCount.value = CONTRIBUTION_RECENT_ACTIVITY_COUNT
+  }
+
+  const clearSelectedDate = (): void => {
+    selectedDate.value = null
+    visibleActivityCount.value = CONTRIBUTION_RECENT_ACTIVITY_COUNT
+  }
+
   const loadMoreActivity = (): void => {
     visibleActivityCount.value += CONTRIBUTION_RECENT_ACTIVITY_COUNT
   }
@@ -222,10 +303,17 @@ export const useContributionGraph = () => {
     currentUserDisplayName,
     showCommits,
     showWorkItems,
+    showPrReviews,
     commitsCount,
     workItemsCount,
+    prReviewsCount,
+    selectedDate,
+    formattedSelectedDate,
+    recentActivityTotal,
     load,
     loadMoreActivity,
+    selectDate,
+    clearSelectedDate,
     reset,
   }
 }

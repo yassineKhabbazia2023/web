@@ -15,6 +15,7 @@ import type {
   AzureDevOpsWorkItemRef,
   AzureDevOpsWorkItemResponse,
   AzureDevOpsWorkItemsBatchResponse,
+  AzureDevOpsPrThreadsResponse,
   CommitExplorerPageResult,
   CommitsInRangeResult,
   ContributionCommit,
@@ -73,6 +74,16 @@ export class AzureDevOpsService {
   private static buildPullRequestWorkItemsUrl(repository: string, prId: number): string {
     const { organization, project } = AZURE_DEVOPS_CONFIG
     return `${organization}/${project}/_apis/git/repositories/${repository}/pullRequests/${prId}/workitems`
+  }
+
+  private static buildPrThreadsUrl(repository: string, prId: number): string {
+    const { organization, project } = AZURE_DEVOPS_CONFIG
+    return `${organization}/${project}/_apis/git/repositories/${repository}/pullRequests/${prId}/threads`
+  }
+
+  static buildPrWebUrl(repository: string, prId: number): string {
+    const { organization, project } = AZURE_DEVOPS_CONFIG
+    return `${organization}/${project}/_git/${repository}/pullrequest/${prId}`
   }
 
   private static buildWorkItemWebUrl(workItemId: number): string {
@@ -811,6 +822,167 @@ export class AzureDevOpsService {
       return dateB - dateA
     })
     return allPrs
+  }
+
+  private static async fetchPrReviewsForRepo(
+    pat: string,
+    repository: string,
+    reviewerId: string,
+    fromDate: Date,
+    toDate: Date,
+  ): Promise<AzureDevOpsPullRequest[]> {
+    const allPrs: AzureDevOpsPullRequest[] = []
+    let skip = 0
+
+    while (skip < PR_COMPLETION_MAX_PRS_PER_REPO) {
+      const params = new URLSearchParams({
+        'searchCriteria.status': 'completed',
+        'searchCriteria.reviewerId': reviewerId,
+        '$top': PR_COMPLETION_PAGE_SIZE.toString(),
+        '$skip': skip.toString(),
+        'searchCriteria.minTime': fromDate.toISOString(),
+        'searchCriteria.maxTime': toDate.toISOString(),
+        'api-version': AZURE_DEVOPS_API_VERSION,
+      })
+
+      const response = await axios.get<AzureDevOpsPullRequestsResponse>(
+        `${this.buildPullRequestsUrl(repository)}?${params}`,
+        { headers: { Authorization: this.getAuthHeader(pat) } },
+      )
+
+      if (response.data?.value == null || response.data.value.length === 0) {
+        break
+      }
+
+      allPrs.push(...response.data.value)
+
+      if (response.data.value.length < PR_COMPLETION_PAGE_SIZE) {
+        break
+      }
+
+      skip += PR_COMPLETION_PAGE_SIZE
+    }
+
+    return allPrs
+  }
+
+  static async getPrReviewsForUserAcrossRepos(
+    pat: string,
+    repositories: AzureDevOpsRepository[],
+    reviewerId: string,
+    fromDate: Date,
+    toDate: Date,
+  ): Promise<AzureDevOpsPullRequest[]> {
+    const allPrs: AzureDevOpsPullRequest[] = []
+
+    for (let i = 0; i < repositories.length; i += PR_COMPLETION_REPO_CONCURRENCY) {
+      const batch = repositories.slice(i, i + PR_COMPLETION_REPO_CONCURRENCY)
+
+      const batchResults = await Promise.all(
+        batch.map(async (repo) => {
+          try {
+            return await this.fetchPrReviewsForRepo(
+              pat, repo.name, reviewerId, fromDate, toDate,
+            )
+          } catch (err) {
+            logger.warn(`Failed to fetch PR reviews for repo ${repo.name}:`, err)
+            return []
+          }
+        }),
+      )
+
+      for (const prs of batchResults) {
+        allPrs.push(...prs)
+      }
+    }
+
+    // Exclude PRs created by the reviewer (self-reviews)
+    const filtered = allPrs.filter((pr) => pr.createdBy.id !== reviewerId)
+
+    filtered.sort((a, b) => {
+      const dateA = a.closedDate != null ? new Date(a.closedDate).getTime() : Date.now()
+      const dateB = b.closedDate != null ? new Date(b.closedDate).getTime() : Date.now()
+      return dateB - dateA
+    })
+
+    return filtered
+  }
+
+  static async getUserVoteDateForPr(
+    pat: string,
+    repository: string,
+    prId: number,
+    userId: string,
+  ): Promise<string | null> {
+    try {
+      const params = new URLSearchParams({
+        'api-version': AZURE_DEVOPS_API_VERSION,
+      })
+
+      const response = await axios.get<AzureDevOpsPrThreadsResponse>(
+        `${this.buildPrThreadsUrl(repository, prId)}?${params}`,
+        { headers: { Authorization: this.getAuthHeader(pat) } },
+      )
+
+      const threads = response.data?.value ?? []
+
+      // Find VoteUpdate threads from this user, take the latest one
+      let latestVoteDate: string | null = null
+      for (const thread of threads) {
+        if (thread.properties?.CodeReviewThreadType?.$value !== 'VoteUpdate') {
+          continue
+        }
+
+        // Resolve identity reference: CodeReviewVotedByIdentity.$value is an index into identities map
+        const identityRef = thread.properties?.CodeReviewVotedByIdentity?.$value
+        if (identityRef === undefined || thread.identities == null) {
+          continue
+        }
+
+        const resolvedIdentity = thread.identities[identityRef]
+        if (resolvedIdentity?.id !== userId) {
+          continue
+        }
+
+        if (latestVoteDate === null || thread.publishedDate > latestVoteDate) {
+          latestVoteDate = thread.publishedDate
+        }
+      }
+
+      return latestVoteDate
+    } catch (err) {
+      logger.warn(`Failed to fetch threads for PR ${prId}:`, err)
+      return null
+    }
+  }
+
+  static async enrichPrReviewsWithVoteDates(
+    pat: string,
+    prs: AzureDevOpsPullRequest[],
+    userId: string,
+  ): Promise<Map<number, string>> {
+    const dateMap = new Map<number, string>()
+
+    for (let i = 0; i < prs.length; i += CONTRIBUTION_REPO_CONCURRENCY) {
+      const batch = prs.slice(i, i + CONTRIBUTION_REPO_CONCURRENCY)
+
+      const results = await Promise.all(
+        batch.map(async (pr) => {
+          const voteDate = await this.getUserVoteDateForPr(
+            pat, pr.repository.name, pr.pullRequestId, userId,
+          )
+          return { prId: pr.pullRequestId, voteDate }
+        }),
+      )
+
+      for (const { prId, voteDate } of results) {
+        if (voteDate !== null) {
+          dateMap.set(prId, voteDate)
+        }
+      }
+    }
+
+    return dateMap
   }
 
   private static async fetchCommitsByAuthorForRepo(

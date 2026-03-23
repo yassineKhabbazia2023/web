@@ -4,6 +4,7 @@ import { useContributionGraph } from './use-contribution-graph.composable'
 import { AzureDevOpsService } from '@backoffice/services/azure-devops/azure-devops.service'
 import { useAzureDevOpsStore } from '@backoffice/stores/azure-devops.store'
 import type {
+  AzureDevOpsPullRequest,
   AzureDevOpsRepository,
   AzureDevOpsUserProfile,
   ContributionCommit,
@@ -16,6 +17,9 @@ vi.mock('@backoffice/services/azure-devops/azure-devops.service')
 const mockedGetCurrentUserProfile = vi.mocked(AzureDevOpsService.getCurrentUserProfile)
 const mockedGetCommitsByAuthorAcrossRepos = vi.mocked(AzureDevOpsService.getCommitsByAuthorAcrossRepos)
 const mockedGetWorkItemsForUser = vi.mocked(AzureDevOpsService.getWorkItemsForUser)
+const mockedGetPrReviewsForUserAcrossRepos = vi.mocked(AzureDevOpsService.getPrReviewsForUserAcrossRepos)
+const mockedEnrichPrReviewsWithVoteDates = vi.mocked(AzureDevOpsService.enrichPrReviewsWithVoteDates)
+const mockedBuildPrWebUrl = vi.mocked(AzureDevOpsService.buildPrWebUrl)
 
 const mockProfile: AzureDevOpsUserProfile = {
   displayName: 'John Doe',
@@ -57,10 +61,28 @@ const mockWorkItems: ContributionWorkItem[] = [
 ]
 
 describe('useContributionGraph', () => {
+const mockPrReviews: AzureDevOpsPullRequest[] = [
+    {
+      pullRequestId: 500,
+      title: 'Fix styling issues',
+      creationDate: '2024-01-13T08:00:00Z',
+      closedDate: '2024-01-14T16:00:00Z',
+      status: 'completed',
+      isDraft: false,
+      repository: { id: '1', name: 'Repo.Web' },
+      createdBy: { id: 'other-user', displayName: 'Alice', uniqueName: 'alice@test.com' },
+      sourceRefName: 'refs/heads/feature/style',
+      targetRefName: 'refs/heads/main',
+    },
+  ]
+
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.clearAllMocks()
     mockedGetWorkItemsForUser.mockResolvedValue([])
+    mockedGetPrReviewsForUserAcrossRepos.mockResolvedValue([])
+    mockedEnrichPrReviewsWithVoteDates.mockResolvedValue(new Map())
+    mockedBuildPrWebUrl.mockImplementation((repo, prId) => `https://dev.azure.com/org/project/_git/${repo}/pullrequest/${prId}`)
   })
 
   it('should initialize with default values', () => {
@@ -517,6 +539,316 @@ describe('useContributionGraph', () => {
       expect(composable.startDate.value.getDay()).toBe(1)
 
       vi.useRealTimers()
+    })
+  })
+
+  describe('PR reviews', () => {
+    it('should include PR reviews in contributions', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+      mockedGetPrReviewsForUserAcrossRepos.mockResolvedValueOnce(mockPrReviews)
+      mockedEnrichPrReviewsWithVoteDates.mockResolvedValueOnce(new Map())
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      composable.showPrReviews.value = true
+
+      const prItems = composable.recentActivity.value.filter((item) => item.kind === 'prreview')
+      expect(prItems).toHaveLength(1)
+      if (prItems[0].kind === 'prreview') {
+        expect(prItems[0].pullRequestId).toBe(500)
+        expect(prItems[0].title).toBe('Fix styling issues')
+        expect(prItems[0].repositoryName).toBe('Repo.Web')
+        expect(prItems[0].author).toBe('Alice')
+      }
+    })
+
+    it('should count PR reviews separately', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+      mockedGetWorkItemsForUser.mockResolvedValueOnce(mockWorkItems)
+      mockedGetPrReviewsForUserAcrossRepos.mockResolvedValueOnce(mockPrReviews)
+      mockedEnrichPrReviewsWithVoteDates.mockResolvedValueOnce(new Map())
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      expect(composable.commitsCount.value).toBe(2)
+      expect(composable.workItemsCount.value).toBe(1)
+      expect(composable.prReviewsCount.value).toBe(1)
+    })
+
+    it('should use vote date from enrichPrReviewsWithVoteDates when available', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce([])
+      mockedGetPrReviewsForUserAcrossRepos.mockResolvedValueOnce(mockPrReviews)
+      mockedEnrichPrReviewsWithVoteDates.mockResolvedValueOnce(
+        new Map([[500, '2024-01-15T10:00:00Z']]),
+      )
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      composable.showPrReviews.value = true
+
+      expect(composable.contributionsByDate.value.get('2024-01-15')).toBe(1)
+    })
+
+    it('should use closedDate when vote date is not available', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce([])
+      mockedGetPrReviewsForUserAcrossRepos.mockResolvedValueOnce(mockPrReviews)
+      mockedEnrichPrReviewsWithVoteDates.mockResolvedValueOnce(new Map())
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      composable.showPrReviews.value = true
+
+      // closedDate is 2024-01-14T16:00:00Z
+      expect(composable.contributionsByDate.value.get('2024-01-14')).toBe(1)
+    })
+
+    it('should skip enrichPrReviewsWithVoteDates when no PR reviews', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+      mockedGetPrReviewsForUserAcrossRepos.mockResolvedValueOnce([])
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      expect(mockedEnrichPrReviewsWithVoteDates).not.toHaveBeenCalled()
+    })
+
+    it('should call getPrReviewsForUserAcrossRepos with profile id', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce([])
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      expect(mockedGetPrReviewsForUserAcrossRepos).toHaveBeenCalledWith(
+        'valid-pat',
+        mockRepositories,
+        'user-guid',
+        expect.any(Date),
+        expect.any(Date),
+      )
+    })
+  })
+
+  describe('showPrReviews filter', () => {
+    it('should filter out PR reviews when showPrReviews is false', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+      mockedGetPrReviewsForUserAcrossRepos.mockResolvedValueOnce(mockPrReviews)
+      mockedEnrichPrReviewsWithVoteDates.mockResolvedValueOnce(new Map())
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      // PR reviews are not in default filters
+      expect(composable.showPrReviews.value).toBe(false)
+      const prItems = composable.recentActivity.value.filter((item) => item.kind === 'prreview')
+      expect(prItems).toHaveLength(0)
+    })
+
+    it('should include PR reviews when showPrReviews is toggled on', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+      mockedGetPrReviewsForUserAcrossRepos.mockResolvedValueOnce(mockPrReviews)
+      mockedEnrichPrReviewsWithVoteDates.mockResolvedValueOnce(new Map())
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      composable.showPrReviews.value = true
+
+      const prItems = composable.recentActivity.value.filter((item) => item.kind === 'prreview')
+      expect(prItems).toHaveLength(1)
+    })
+
+    it('should not allow unchecking the last active filter', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      // Default: commits + workitems
+      composable.showWorkItems.value = false
+      // Only commits left, try to uncheck it
+      composable.showCommits.value = false
+      // Should still have commits
+      expect(composable.showCommits.value).toBe(true)
+    })
+  })
+
+  describe('selectDate and clearSelectedDate', () => {
+    it('should filter activity by selected date', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      composable.selectDate('2024-01-15')
+
+      expect(composable.selectedDate.value).toBe('2024-01-15')
+      expect(composable.recentActivity.value).toHaveLength(1)
+      expect(composable.recentActivity.value[0].kind).toBe('commit')
+    })
+
+    it('should toggle off when selecting the same date', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      composable.selectDate('2024-01-15')
+      composable.selectDate('2024-01-15')
+
+      expect(composable.selectedDate.value).toBeNull()
+      expect(composable.recentActivity.value).toHaveLength(2)
+    })
+
+    it('should reset visible count when selecting a date', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+
+      const manyCommits: ContributionCommit[] = Array.from({ length: 25 }, (_, i) => ({
+        commitId: `commit${i}`,
+        comment: `Commit ${i}`,
+        repositoryName: 'Repo.Web',
+        author: { name: 'John', email: 'john@example.com', date: '2024-01-15T10:00:00Z' },
+      }))
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(manyCommits)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      composable.loadMoreActivity()
+      expect(composable.recentActivity.value).toHaveLength(20)
+
+      composable.selectDate('2024-01-15')
+      expect(composable.recentActivity.value).toHaveLength(10)
+    })
+
+    it('should clear selected date and reset visible count', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      composable.selectDate('2024-01-15')
+      composable.clearSelectedDate()
+
+      expect(composable.selectedDate.value).toBeNull()
+      expect(composable.recentActivity.value).toHaveLength(2)
+    })
+  })
+
+  describe('formattedSelectedDate', () => {
+    it('should return empty string when no date is selected', () => {
+      const composable = useContributionGraph()
+
+      expect(composable.formattedSelectedDate.value).toBe('')
+    })
+
+    it('should return formatted date when a date is selected', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      composable.selectDate('2024-01-15')
+
+      expect(composable.formattedSelectedDate.value).toBeTruthy()
+      expect(composable.formattedSelectedDate.value.length).toBeGreaterThan(0)
+    })
+  })
+
+  describe('recentActivityTotal', () => {
+    it('should return total count of filtered activity items', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+
+      const manyCommits: ContributionCommit[] = Array.from({ length: 25 }, (_, i) => ({
+        commitId: `commit${i}`,
+        comment: `Commit ${i}`,
+        repositoryName: 'Repo.Web',
+        author: { name: 'John', email: 'john@example.com', date: '2024-01-15T10:00:00Z' },
+      }))
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(manyCommits)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      // recentActivity is limited to 10 but recentActivityTotal reflects all
+      expect(composable.recentActivity.value).toHaveLength(10)
+      expect(composable.recentActivityTotal.value).toBe(25)
+    })
+
+    it('should reflect date-filtered count', async () => {
+      const store = useAzureDevOpsStore()
+      store.setPat('valid-pat')
+      store.setRepositories(mockRepositories)
+      store.setCurrentUserProfile(mockProfile)
+      mockedGetCommitsByAuthorAcrossRepos.mockResolvedValueOnce(mockContributionCommits)
+
+      const composable = useContributionGraph()
+      await composable.load()
+
+      composable.selectDate('2024-01-15')
+
+      expect(composable.recentActivityTotal.value).toBe(1)
     })
   })
 

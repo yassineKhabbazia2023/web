@@ -4,6 +4,8 @@ import { AzureDevOpsService } from './azure-devops.service'
 import type {
   AzureDevOpsCommit,
   AzureDevOpsCommitsResponse,
+  AzureDevOpsPrThreadsResponse,
+  AzureDevOpsPullRequest,
   AzureDevOpsRefsResponse,
   AzureDevOpsRepository,
   AzureDevOpsWiqlResponse,
@@ -1712,6 +1714,355 @@ describe('AzureDevOpsService', () => {
       )
 
       expect(result).toEqual([])
+    })
+  })
+
+  describe('buildPrWebUrl', () => {
+    it('returns correct PR web URL', () => {
+      const result = AzureDevOpsService.buildPrWebUrl('Pulse.Web', 1234)
+
+      expect(result).toContain('_git/Pulse.Web/pullrequest/1234')
+    })
+  })
+
+  describe('getPrReviewsForUserAcrossRepos', () => {
+    const mockRepos: AzureDevOpsRepository[] = [
+      { id: '1', name: 'Pulse.Web', defaultBranch: 'refs/heads/main', isDisabled: false },
+      { id: '2', name: 'Pulse.Api', defaultBranch: 'refs/heads/main', isDisabled: false },
+    ]
+    const fromDate = new Date('2024-01-01')
+    const toDate = new Date('2024-01-31')
+    const reviewerId = 'reviewer-guid'
+
+    const buildMockPr = (overrides: Partial<AzureDevOpsPullRequest> & { pullRequestId: number }): AzureDevOpsPullRequest => ({
+      title: `PR ${overrides.pullRequestId}`,
+      creationDate: '2024-01-10T10:00:00Z',
+      closedDate: '2024-01-15T14:00:00Z',
+      status: 'completed',
+      isDraft: false,
+      repository: { id: '1', name: 'Pulse.Web' },
+      createdBy: { id: 'other-user', displayName: 'Alice', uniqueName: 'alice@test.com' },
+      sourceRefName: 'refs/heads/feature/test',
+      targetRefName: 'refs/heads/main',
+      ...overrides,
+    })
+
+    it('returns PR reviews from all repos', async () => {
+      mockedAxiosGet
+        .mockResolvedValueOnce({ data: { value: [buildMockPr({ pullRequestId: 1 })], count: 1 } })
+        .mockResolvedValueOnce({ data: { value: [buildMockPr({ pullRequestId: 2, repository: { id: '2', name: 'Pulse.Api' } })], count: 1 } })
+
+      const result = await AzureDevOpsService.getPrReviewsForUserAcrossRepos(
+        mockPat, mockRepos, reviewerId, fromDate, toDate,
+      )
+
+      expect(result).toHaveLength(2)
+    })
+
+    it('excludes self-reviews where reviewer is PR author', async () => {
+      mockedAxiosGet
+        .mockResolvedValueOnce({
+          data: {
+            value: [
+              buildMockPr({ pullRequestId: 1, createdBy: { id: reviewerId, displayName: 'Me', uniqueName: 'me@test.com' } }),
+              buildMockPr({ pullRequestId: 2 }),
+            ],
+            count: 2,
+          },
+        })
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      const result = await AzureDevOpsService.getPrReviewsForUserAcrossRepos(
+        mockPat, mockRepos, reviewerId, fromDate, toDate,
+      )
+
+      expect(result).toHaveLength(1)
+      expect(result[0].pullRequestId).toBe(2)
+    })
+
+    it('sorts results by closedDate descending', async () => {
+      mockedAxiosGet
+        .mockResolvedValueOnce({
+          data: {
+            value: [
+              buildMockPr({ pullRequestId: 1, closedDate: '2024-01-10T10:00:00Z' }),
+              buildMockPr({ pullRequestId: 2, closedDate: '2024-01-20T10:00:00Z' }),
+            ],
+            count: 2,
+          },
+        })
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      const result = await AzureDevOpsService.getPrReviewsForUserAcrossRepos(
+        mockPat, mockRepos, reviewerId, fromDate, toDate,
+      )
+
+      expect(result[0].pullRequestId).toBe(2)
+      expect(result[1].pullRequestId).toBe(1)
+    })
+
+    it('handles repo fetch failures gracefully', async () => {
+      mockedAxiosGet
+        .mockRejectedValueOnce(new Error('Network error'))
+        .mockResolvedValueOnce({ data: { value: [buildMockPr({ pullRequestId: 2 })], count: 1 } })
+
+      const result = await AzureDevOpsService.getPrReviewsForUserAcrossRepos(
+        mockPat, mockRepos, reviewerId, fromDate, toDate,
+      )
+
+      expect(result).toHaveLength(1)
+      expect(result[0].pullRequestId).toBe(2)
+    })
+
+    it('returns empty array when no repos have reviews', async () => {
+      mockedAxiosGet
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      const result = await AzureDevOpsService.getPrReviewsForUserAcrossRepos(
+        mockPat, mockRepos, reviewerId, fromDate, toDate,
+      )
+
+      expect(result).toEqual([])
+    })
+
+    it('stops pagination when response data value is null', async () => {
+      mockedAxiosGet
+        .mockResolvedValueOnce({ data: { value: null } })
+        .mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      const result = await AzureDevOpsService.getPrReviewsForUserAcrossRepos(
+        mockPat, mockRepos, reviewerId, fromDate, toDate,
+      )
+
+      expect(result).toEqual([])
+    })
+
+    it('paginates PR reviews within a single repo', async () => {
+      const singleRepo = [mockRepos[0]]
+      const fullPage = Array.from({ length: 100 }, (_, i) => buildMockPr({ pullRequestId: i + 1 }))
+      mockedAxiosGet
+        .mockResolvedValueOnce({ data: { value: fullPage, count: 100 } })
+        .mockResolvedValueOnce({ data: { value: [buildMockPr({ pullRequestId: 101 })], count: 1 } })
+
+      const result = await AzureDevOpsService.getPrReviewsForUserAcrossRepos(
+        mockPat, singleRepo, reviewerId, fromDate, toDate,
+      )
+
+      expect(result).toHaveLength(101)
+      expect(mockedAxiosGet).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('getUserVoteDateForPr', () => {
+    const userId = 'user-guid'
+
+    it('returns the latest vote date for the user', async () => {
+      const threadsResponse: AzureDevOpsPrThreadsResponse = {
+        value: [
+          {
+            id: 1,
+            publishedDate: '2024-01-10T10:00:00Z',
+            properties: {
+              CodeReviewThreadType: { $value: 'VoteUpdate' },
+              CodeReviewVotedByIdentity: { $value: '1' },
+            },
+            identities: { '1': { id: userId, displayName: 'John' } },
+          },
+          {
+            id: 2,
+            publishedDate: '2024-01-12T14:00:00Z',
+            properties: {
+              CodeReviewThreadType: { $value: 'VoteUpdate' },
+              CodeReviewVotedByIdentity: { $value: '1' },
+            },
+            identities: { '1': { id: userId, displayName: 'John' } },
+          },
+        ],
+        count: 2,
+      }
+      mockedAxiosGet.mockResolvedValueOnce({ data: threadsResponse })
+
+      const result = await AzureDevOpsService.getUserVoteDateForPr(mockPat, mockRepository, 100, userId)
+
+      expect(result).toBe('2024-01-12T14:00:00Z')
+    })
+
+    it('returns null when no VoteUpdate threads exist', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          value: [
+            {
+              id: 1,
+              publishedDate: '2024-01-10T10:00:00Z',
+              properties: { CodeReviewThreadType: { $value: 'Comment' } },
+            },
+          ],
+          count: 1,
+        },
+      })
+
+      const result = await AzureDevOpsService.getUserVoteDateForPr(mockPat, mockRepository, 100, userId)
+
+      expect(result).toBeNull()
+    })
+
+    it('returns null when vote is from a different user', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          value: [
+            {
+              id: 1,
+              publishedDate: '2024-01-10T10:00:00Z',
+              properties: {
+                CodeReviewThreadType: { $value: 'VoteUpdate' },
+                CodeReviewVotedByIdentity: { $value: '1' },
+              },
+              identities: { '1': { id: 'other-user', displayName: 'Alice' } },
+            },
+          ],
+          count: 1,
+        },
+      })
+
+      const result = await AzureDevOpsService.getUserVoteDateForPr(mockPat, mockRepository, 100, userId)
+
+      expect(result).toBeNull()
+    })
+
+    it('returns null when API call fails', async () => {
+      mockedAxiosGet.mockRejectedValueOnce(new Error('Network error'))
+
+      const result = await AzureDevOpsService.getUserVoteDateForPr(mockPat, mockRepository, 100, userId)
+
+      expect(result).toBeNull()
+    })
+
+    it('returns null when response data value is undefined', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({ data: {} })
+
+      const result = await AzureDevOpsService.getUserVoteDateForPr(mockPat, mockRepository, 100, userId)
+
+      expect(result).toBeNull()
+    })
+
+    it('skips threads with missing identityRef or null identities', async () => {
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          value: [
+            {
+              id: 1,
+              publishedDate: '2024-01-10T10:00:00Z',
+              properties: {
+                CodeReviewThreadType: { $value: 'VoteUpdate' },
+              },
+              identities: { '1': { id: userId, displayName: 'John' } },
+            },
+            {
+              id: 2,
+              publishedDate: '2024-01-11T10:00:00Z',
+              properties: {
+                CodeReviewThreadType: { $value: 'VoteUpdate' },
+                CodeReviewVotedByIdentity: { $value: '1' },
+              },
+              identities: null,
+            },
+          ],
+          count: 2,
+        },
+      })
+
+      const result = await AzureDevOpsService.getUserVoteDateForPr(mockPat, mockRepository, 100, userId)
+
+      expect(result).toBeNull()
+    })
+  })
+
+  describe('enrichPrReviewsWithVoteDates', () => {
+    const userId = 'user-guid'
+
+    const buildMockPr = (prId: number, repoName: string): AzureDevOpsPullRequest => ({
+      pullRequestId: prId,
+      title: `PR ${prId}`,
+      creationDate: '2024-01-10T10:00:00Z',
+      closedDate: '2024-01-15T14:00:00Z',
+      status: 'completed',
+      isDraft: false,
+      repository: { id: '1', name: repoName },
+      createdBy: { id: 'other-user', displayName: 'Alice', uniqueName: 'alice@test.com' },
+      sourceRefName: 'refs/heads/feature/test',
+      targetRefName: 'refs/heads/main',
+    })
+
+    it('returns a map of PR IDs to vote dates', async () => {
+      const prs = [buildMockPr(1, 'Pulse.Web'), buildMockPr(2, 'Pulse.Api')]
+
+      // PR 1: has vote
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          value: [{
+            id: 1,
+            publishedDate: '2024-01-12T10:00:00Z',
+            properties: {
+              CodeReviewThreadType: { $value: 'VoteUpdate' },
+              CodeReviewVotedByIdentity: { $value: '1' },
+            },
+            identities: { '1': { id: userId, displayName: 'John' } },
+          }],
+          count: 1,
+        },
+      })
+      // PR 2: no vote
+      mockedAxiosGet.mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      const result = await AzureDevOpsService.enrichPrReviewsWithVoteDates(mockPat, prs, userId)
+
+      expect(result.size).toBe(1)
+      expect(result.get(1)).toBe('2024-01-12T10:00:00Z')
+      expect(result.has(2)).toBe(false)
+    })
+
+    it('returns empty map when no PRs have vote dates', async () => {
+      const prs = [buildMockPr(1, 'Pulse.Web')]
+      mockedAxiosGet.mockResolvedValueOnce({ data: { value: [], count: 0 } })
+
+      const result = await AzureDevOpsService.enrichPrReviewsWithVoteDates(mockPat, prs, userId)
+
+      expect(result.size).toBe(0)
+    })
+
+    it('returns empty map for empty PR list', async () => {
+      const result = await AzureDevOpsService.enrichPrReviewsWithVoteDates(mockPat, [], userId)
+
+      expect(result.size).toBe(0)
+      expect(mockedAxiosGet).not.toHaveBeenCalled()
+    })
+
+    it('handles API failures gracefully for individual PRs', async () => {
+      const prs = [buildMockPr(1, 'Pulse.Web'), buildMockPr(2, 'Pulse.Api')]
+
+      // PR 1: API fails → getUserVoteDateForPr returns null
+      mockedAxiosGet.mockRejectedValueOnce(new Error('Network error'))
+      // PR 2: has vote
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          value: [{
+            id: 1,
+            publishedDate: '2024-01-14T10:00:00Z',
+            properties: {
+              CodeReviewThreadType: { $value: 'VoteUpdate' },
+              CodeReviewVotedByIdentity: { $value: '1' },
+            },
+            identities: { '1': { id: userId, displayName: 'John' } },
+          }],
+          count: 1,
+        },
+      })
+
+      const result = await AzureDevOpsService.enrichPrReviewsWithVoteDates(mockPat, prs, userId)
+
+      expect(result.size).toBe(1)
+      expect(result.get(2)).toBe('2024-01-14T10:00:00Z')
     })
   })
 
