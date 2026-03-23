@@ -1,0 +1,128 @@
+schedules:
+- cron: '0 7 * * *'
+  displayName: 'Daily 7 AM UTC (8h hiver CET / 9h été CEST)'
+  branches:
+    include:
+    - main
+  always: true
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  npmCacheFolder: $(Agent.HomeDirectory)/.npm
+  branchName: 'fix/npm-audit-fix-$(Build.BuildId)'
+
+stages:
+- stage: AuditFix
+  displayName: 'Npm Audit Fix'
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  jobs:
+  - job: RunAuditFix
+    displayName: 'Run npm audit fix'
+    steps:
+    - checkout: self
+
+    - task: UseNode@1
+      inputs:
+        version: '24.x'
+      displayName: 'Install Node.js'
+
+    - task: Cache@2
+      inputs:
+        key: 'npm | "$(Agent.OS)" | package-lock.json'
+        restoreKeys: |
+          npm | "$(Agent.OS)"
+        path: $(npmCacheFolder)
+      displayName: 'Cache npm packages'
+
+    - script: npm ci --cache=$(npmCacheFolder)
+      displayName: 'Install dependencies'
+
+    - script: npm audit fix
+      displayName: 'Run audit fix'
+      continueOnError: true
+
+    - script: |
+        changedFiles=$(git diff --name-only)
+        if [ -n "$changedFiles" ]; then
+          echo "Vulnerabilities have been patched:"
+          echo "$changedFiles"
+          echo "##vso[task.setvariable variable=hasChanges;isOutput=true]true"
+        else
+          echo "No vulnerabilities to fix."
+          echo "##vso[task.setvariable variable=hasChanges;isOutput=true]false"
+        fi
+      name: detectChanges
+      displayName: 'Detect changes'
+
+    - pwsh: |
+        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "user",$env:SYSTEM_ACCESSTOKEN)))
+        $headers = @{Authorization=("Basic {0}" -f $base64AuthInfo)}
+        $baseUrl = '$(System.CollectionUri)$(System.TeamProject)/_apis/git/repositories/$(Build.Repository.ID)'
+
+        # Get source branch HEAD (main on schedule, chosen branch on manual run)
+        $sourceBranch = '$(Build.SourceBranch)' -replace '^refs/heads/', ''
+        $refsUrl = "$baseUrl/refs?filter=heads/$sourceBranch&api-version=7.1"
+        $sourceRef = (Invoke-RestMethod -Uri $refsUrl -Headers $headers).value[0]
+        $sourceCommitId = $sourceRef.objectId
+
+        # Create branch from source branch
+        $createRefUrl = "$baseUrl/refs?api-version=7.1"
+        $refBody = ConvertTo-Json @(@{
+            name        = 'refs/heads/$(branchName)'
+            oldObjectId = '0000000000000000000000000000000000000000'
+            newObjectId = $sourceCommitId
+        })
+        Invoke-RestMethod -Uri $createRefUrl -Headers $headers -Method Post -ContentType 'application/json' -Body $refBody
+
+        # Build changes from git diff
+        $changedFiles = (git diff --name-only) -split "`n" | Where-Object { $_.Trim() }
+        $changes = @()
+        foreach ($file in $changedFiles) {
+            $bytes = [System.IO.File]::ReadAllBytes($file)
+            $content = [Convert]::ToBase64String($bytes)
+            $changes += @{
+                changeType = 'edit'
+                item       = @{ path = "/$file" }
+                newContent = @{ content = $content; contentType = 'base64encoded' }
+            }
+        }
+
+        # Push commit to new branch
+        $pushUrl = "$baseUrl/pushes?api-version=7.1"
+        $pushBody = @{
+            refUpdates = @(@{
+                name        = 'refs/heads/$(branchName)'
+                oldObjectId = $sourceCommitId
+            })
+            commits = @(@{
+                comment = 'fix(security): corriger les vulnérabilités npm (audit fix automatique)'
+                changes = $changes
+            })
+        } | ConvertTo-Json -Depth 10
+
+        Invoke-RestMethod -Uri $pushUrl -Headers $headers -Method Post -ContentType 'application/json' -Body $pushBody
+      condition: eq(variables['detectChanges.hasChanges'], 'true')
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      displayName: 'Create branch and push changes'
+
+    - pwsh: |
+        $base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f "user",$env:SYSTEM_ACCESSTOKEN)))
+        $headers = @{Authorization=("Basic {0}" -f $base64AuthInfo)}
+        $url = '$(System.CollectionUri)$(System.TeamProject)/_apis/git/repositories/$(Build.Repository.ID)/pullrequests?api-version=7.1'
+        $body = @{
+          sourceRefName = 'refs/heads/$(branchName)'
+          targetRefName = '$(Build.SourceBranch)'
+          title         = 'fix(security): corriger les vulnérabilités npm (audit fix automatique)'
+          description   = 'This PR is automatically created by the daily npm audit fix pipeline to patch detected vulnerabilities.'
+          workItemRefs  = @(@{ id = '59819' })
+        } | ConvertTo-Json -Depth 5
+
+        Invoke-RestMethod -Uri $url -Headers $headers -Method Post -ContentType 'application/json' -Body $body
+      env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      displayName: 'Create Pull Request'
