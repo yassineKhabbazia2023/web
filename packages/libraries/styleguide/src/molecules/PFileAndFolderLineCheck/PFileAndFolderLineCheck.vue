@@ -31,7 +31,7 @@
       :pName="fileExtensionIconName"
     />
     <div class="p-file-and-folder-line-check__details">
-      <div class="ellipsed-text">
+      <div class="p-file-and-folder-line-check__title ellipsed-text">
         {{ pFileName }}
       </div>
       <div
@@ -125,16 +125,21 @@ const stateIconName = computed<IconName | undefined>(() => {
     margin-right: 12px;
   }
 
+  &__file-icon,
+  &__icon {
+    color: var(--p-black-rock-900);
+  }
+
   &__checkbox.el-checkbox {
     height: auto;
   }
 
   &__icon {
     &--success {
-      color: var(--p-green-500);
+      color: var(--p-text-success);
     }
     &--error {
-      color: var(--p-orange-500);
+      color: var(--p-text-error);
     }
   }
 
@@ -155,33 +160,31 @@ const stateIconName = computed<IconName | undefined>(() => {
       max-width: 100%;
     }
 
+    #{$self}__title {
+      color: var(--p-gray-900);
+    }
+
     &__additional-text {
       font-size: 1.2rem;
       margin-top: 4px;
-      color: var(--p-gray-500);
+      color: var(--p-gray-400);
     }
   }
 
   &--default {
     &:hover {
-      background: var(--p-jungle-75);
+      background: var(--p-tranquil-50);
       cursor: pointer;
-    }
-
-    #{$self}__file-icon {
-      color: var(--p-gray-300);
     }
   }
 
   &--selected {
-    color: var(--p-black-rock-900);
-    font-weight: 600;
-    background-color: var(--p-jungle-75);
+    background-color: var(--p-jungle-50);
     cursor: pointer;
-  }
 
-  &--error #{$self}__file-icon {
-    color: var(--p-gray-300);
+    #{$self}__title {
+      color: var(--p-jungle-400);
+    }
   }
 }
 </style>

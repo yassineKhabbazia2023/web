@@ -31,6 +31,7 @@ describe('pFileAndFolderLineCheck', () => {
         expectedComponentToExistSelector: `.${componenRootCSSClass}__loader`,
         expectedIconCount: 1,
         expectedIconName: 'filetypePdf',
+        expectedStateIconCssClass: undefined,
       },
       {
         pState: 'error',
@@ -38,6 +39,7 @@ describe('pFileAndFolderLineCheck', () => {
         expectedComponentToExistSelector: `.${componenRootCSSClass}__icon`,
         expectedIconCount: 2,
         expectedIconName: 'exclamationTriangle',
+        expectedStateIconCssClass: `${componenRootCSSClass}__icon--error`,
       },
       {
         pState: 'success',
@@ -45,10 +47,18 @@ describe('pFileAndFolderLineCheck', () => {
         expectedComponentToExistSelector: `.${componenRootCSSClass}__icon`,
         expectedIconCount: 2,
         expectedIconName: 'checkCircle',
+        expectedStateIconCssClass: `${componenRootCSSClass}__icon--success`,
       },
     ])(
       'should always bind class based on current state $pState',
-      ({ pState, expectedClassBinding, expectedComponentToExistSelector, expectedIconCount, expectedIconName }) => {
+      ({
+        pState,
+        expectedClassBinding,
+        expectedComponentToExistSelector,
+        expectedIconCount,
+        expectedIconName,
+        expectedStateIconCssClass,
+      }) => {
         const wrapper = createWrapper({
           ...defaultProps,
           pState: pState as PFileAndFolderLineCheckState,
@@ -61,8 +71,22 @@ describe('pFileAndFolderLineCheck', () => {
         const pIcon = pIcons.at(0)
         expect(pIcons).toHaveLength(expectedIconCount)
         expect(pIcon?.props('pName')).toBe(expectedIconName)
+        if (expectedStateIconCssClass !== undefined) {
+          expect(elToExist.classes()).toContain(expectedStateIconCssClass)
+        }
       },
     )
+
+    it('should render the title and additional text only for success or error states', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pState: 'success',
+        pAdditionalText: 'Accountancy > Deposit > Purchases',
+      })
+
+      expect(wrapper.find(`.${componenRootCSSClass}__title`).text()).toBe(defaultProps.pFileName)
+      expect(wrapper.find(`.${componenRootCSSClass}__details__additional-text`).text()).toBe('Accountancy > Deposit > Purchases')
+    })
   })
 
   describe('interactions', () => {
