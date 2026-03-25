@@ -26,7 +26,7 @@ describe('test NotificationHelper', () => {
     type: 'loading',
     autoClose: false,
     duration: 0,
-    iconName: 'loader',
+    iconName: 'loaderGradient',
   }, {
     type: 'success',
     autoClose: true,
@@ -68,7 +68,7 @@ describe('test NotificationHelper', () => {
     const expectedParams1 = {
       customClass: 'loading',
       duration: undefined,
-      iconName: 'loader',
+      iconName: 'loaderGradient',
       message: 'is loading',
       position: 'bottom-right',
       showClose: true,
@@ -76,7 +76,7 @@ describe('test NotificationHelper', () => {
     const expectedParams2 = {
       customClass: 'loading',
       duration: 0,
-      iconName: 'loader',
+      iconName: 'loaderGradient',
       message: 'is loading',
       position: 'bottom-right',
       showClose: true,

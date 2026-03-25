@@ -77,7 +77,7 @@ export const Loading: Story = {
       const openLoading = () => {
         PNotification({
           message: 'Processing your request, please wait...',
-          iconName: 'loader',
+          iconName: 'loaderGradient',
           showClose: false,
           customClass: 'loading',
           duration: 0, // Keep open until manually closed
@@ -195,35 +195,6 @@ export const UsingDisplayNotificationHelper: Story = {
           Error Helper
         </PButton>
       </div>
-    `,
-  }),
-}
-
-export const Interactive: Story = {
-  render: () => ({
-    components: { PButton },
-    setup() {
-      const openInteractive = () => {
-        PNotification({
-          message: 'Click this notification to trigger an action.',
-          iconName: 'infoCircle',
-          showClose: true,
-          customClass: 'info',
-          duration: 0,
-          onClick: () => {
-            alert('Notification clicked!')
-          },
-          onClose: () => {
-            console.log('Notification closed')
-          },
-        })
-      }
-      return { openInteractive }
-    },
-    template: `
-      <PButton pPlain @click="openInteractive">
-        Show Interactive Notification
-      </PButton>
     `,
   }),
 }

@@ -113,7 +113,7 @@ export function useDownloadDocuments(
   const triggerInProgressNotification = () => {
     inProgressNotification.value = PNotification({
       message: t('notifications.inProgress'),
-      iconName: 'loader',
+      iconName: 'loaderGradient',
       showClose: true,
       customClass: 'loading',
       position: 'bottom-right',

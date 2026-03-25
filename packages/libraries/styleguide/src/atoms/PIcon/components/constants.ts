@@ -429,12 +429,6 @@ export const pulseGeneratedIcons: {
     category: 'Essentials',
   },
   {
-    name: 'loaderGradient',
-    componentName: 'PILoaderGradient',
-    fileName: 'loader-gradient.svg',
-    category: 'Essentials',
-  },
-  {
     name: 'loader',
     componentName: 'PILoader',
     fileName: 'loader.svg',
@@ -1134,6 +1128,12 @@ export const pulseGeneratedIcons: {
     name: 'hourglassDuotone',
     componentName: 'PIHourglassDuotone',
     fileName: 'hourglass-duotone.svg',
+    category: 'Polychrome',
+  },
+  {
+    name: 'loaderGradient',
+    componentName: 'PILoaderGradient',
+    fileName: 'loader-gradient.svg',
     category: 'Polychrome',
   },
   {

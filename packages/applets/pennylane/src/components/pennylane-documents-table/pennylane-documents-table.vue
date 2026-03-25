@@ -178,7 +178,7 @@ async function onToolboxItemClick(
   if (actionName === 'download') {
     const inProgressNotification = PNotification({
       message: t('messages.download-in-progress'),
-      iconName: 'loader',
+      iconName: 'loaderGradient',
       showClose: true,
       customClass: 'loading',
       position: 'bottom-right',

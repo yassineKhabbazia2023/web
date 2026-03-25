@@ -53,7 +53,7 @@ export const displayNotification = (
       break
     case 'error':
     default:
-      iconName = 'x'
+      iconName = 'exclamationTriangle'
       break
   }
 

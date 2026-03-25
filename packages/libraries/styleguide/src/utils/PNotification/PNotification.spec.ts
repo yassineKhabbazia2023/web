@@ -56,15 +56,15 @@ describe('test displayNotification', () => {
     }))
   })
 
-  it('should display error notification with x icon', () => {
-    const mockedIconComponent = 'PIX'
+  it('should display error notification with exclamationTriangle icon', () => {
+    const mockedIconComponent = 'PIExclamationTriangle'
     const message = 'Une erreur est survenue'
 
     getIconComponentMock.mockReturnValue(mockedIconComponent)
 
     displayNotification('error', message)
 
-    expect(getIconComponentMock).toHaveBeenCalledWith('x')
+    expect(getIconComponentMock).toHaveBeenCalledWith('exclamationTriangle')
     expect(ElNotificationMock).toHaveBeenCalledExactlyOnceWith(expect.objectContaining({
       message,
       icon: mockedIconComponent,

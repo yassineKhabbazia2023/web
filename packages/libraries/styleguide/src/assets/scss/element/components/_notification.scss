@@ -1,3 +1,4 @@
+@use "sass:map";
 @use "element-plus/theme-chalk/src/mixins/function" as *;
 
 
@@ -64,10 +65,23 @@ $notification: (
   }
 
   #{$self}__icon.el-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     flex-grow: 0;
     flex-shrink: 0;
+    width: map.get($notification, 'icon-size');
+    height: map.get($notification, 'icon-size');
     border-radius: var(--el-border-radius-circle);
     font-size: 18px;
+    line-height: 1;
+
+    > svg {
+      display: block;
+      width: 1em;
+      height: 1em;
+      flex-shrink: 0;
+    }
   }
 
   #{$self}__title {

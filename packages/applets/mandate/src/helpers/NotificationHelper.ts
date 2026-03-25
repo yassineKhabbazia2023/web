@@ -5,10 +5,10 @@ import type { NotificationMessagesByType, NotificationHandle } from './Notificat
 type NoticationsType = 'loading' | 'success' | 'error' | 'downloading'
 
 const ICONS_BY_TYPE: Record<NoticationsType, IconName> = {
-  loading: 'loader',
+  loading: 'loaderGradient',
   success: 'check',
   error: 'exclamationTriangle',
-  downloading: 'loader',
+  downloading: 'loaderGradient',
 }
 
 export function showNotification(
