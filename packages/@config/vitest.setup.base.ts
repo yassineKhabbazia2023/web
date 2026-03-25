@@ -3,6 +3,14 @@ import styleguideLibrary from '@pulse/styleguide'
 import { createI18n } from 'vue-i18n'
 import { config } from '@vue/test-utils'
 
+// Polyfill requestAnimationFrame/cancelAnimationFrame for jsdom/happy-dom environments
+// Required by element-plus (e.g. doLayout debounce)
+if (typeof globalThis.requestAnimationFrame === 'undefined') {
+  globalThis.requestAnimationFrame =
+    (callback: FrameRequestCallback): number => setTimeout(callback, 0) as unknown as number
+  globalThis.cancelAnimationFrame = (id: number): void => clearTimeout(id)
+}
+
 export interface VitestSetupOptions {
   i18nMessages?: Record<string, any>
   additionalPlugins?: (Plugin | [Plugin, ...unknown[]])[]
