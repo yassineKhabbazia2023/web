@@ -21,6 +21,12 @@ export const authenticatedCustomerRoutes: RouteRecordRaw[] = [
       [ALLOW_AUTHENTICATED_META]: true,
     },
     beforeEnter: async (to, _from, next) => {
+      // If directly navigating to authenticated root, redirect to landing page
+      // before running the flow to avoid executing it twice
+      if (to.name === RouteName.AUTHENTICATED) {
+        return next({ name: RouteName.LANDING })
+      }
+
       const loadingStore = useLoadingStore()
       loadingStore.startGlobalLoading() // will stop in Authenticated.root.vue
 
@@ -32,11 +38,6 @@ export const authenticatedCustomerRoutes: RouteRecordRaw[] = [
         const cguRedirection = await CustomerAuthenticatedFlowManager.getCGURedirection()
         if (cguRedirection && to.name !== cguRedirection.name) {
           return next(cguRedirection)
-        }
-
-        // Redirect to landing page if navigating to authenticated root
-        if (to.name === RouteName.AUTHENTICATED) {
-          return next({ name: RouteName.LANDING })
         }
 
         // No redirection needed, continue to route

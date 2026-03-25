@@ -76,6 +76,11 @@ const permissionsStoreMock = getStoreMock(usePermissionsStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 describe('CustomerAuthenticatedFlowManager', () => {
+  beforeEach(() => {
+    // Reset the flow guard between tests
+    CustomerAuthenticatedFlowManager.exitAuthenticatedFlow()
+  })
+
   describe('enterAuthenticatedFlow', () => {
     it('should init current user, user entities and third parties', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
@@ -91,6 +96,43 @@ describe('CustomerAuthenticatedFlowManager', () => {
       expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(userMock.favoriteEntities)
       expect(BookingManager.setupBookingForCustomer).toHaveBeenCalled()
       expect(BookingManager.refreshAvailableExperts).not.toHaveBeenCalled()
+    })
+
+    it('should not re-execute when called a second time', async () => {
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
+      vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(BookingManager.setupBookingForCustomer).mockResolvedValue(undefined)
+
+      await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
+      await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
+
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(1)
+      expect(fetchEntities).toHaveBeenCalledTimes(1)
+    })
+
+    it('should allow re-execution after exitAuthenticatedFlow', async () => {
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
+      vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(BookingManager.setupBookingForCustomer).mockResolvedValue(undefined)
+
+      await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
+      CustomerAuthenticatedFlowManager.exitAuthenticatedFlow()
+      await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
+
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
+    })
+
+    it('should allow retry after a failure', async () => {
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
+      vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(BookingManager.setupBookingForCustomer)
+        .mockRejectedValueOnce(new Error('booking error'))
+        .mockResolvedValueOnce(undefined)
+
+      await expect(CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()).rejects.toThrow('booking error')
+      await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
+
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
     })
   })
 

@@ -19,7 +19,23 @@ import { COLLABORATOR_BASE_PATH } from '@pulse/common/constants'
 import { BookingManager } from '@pulse/booking/shared/managers/booking'
 
 export class CollaboratorAuthenticatedFlowManager {
-  static async enterAuthenticatedFlow() {
+  // Guard preventing the authenticated flow from running more than once per session.
+  // Vue Router's beforeEnter guard can fire multiple times during a single authentication cycle
+  // (e.g. when a child guard like deepLinkGuard triggers a redirect, Vue Router cancels the
+  // current navigation and starts a new one, re-entering the parent guard).
+  // Reset by exitAuthenticatedFlow() when the user leaves the authenticated area.
+  private static hasFlowExecuted = false
+
+  static async enterAuthenticatedFlow(): Promise<void> {
+    if (this.hasFlowExecuted === true) {
+      return
+    }
+
+    await this.executeAuthenticatedFlow()
+    this.hasFlowExecuted = true
+  }
+
+  private static async executeAuthenticatedFlow() {
     await this.initCurrentUser()
 
     if (this.shouldRedirectWrongUserType()) {
@@ -134,6 +150,8 @@ export class CollaboratorAuthenticatedFlowManager {
   }
 
   static exitAuthenticatedFlow() {
+    this.hasFlowExecuted = false
+
     try {
       // we stop the ProductFruits plugin but we will start it again
       // within the anonymous workspace

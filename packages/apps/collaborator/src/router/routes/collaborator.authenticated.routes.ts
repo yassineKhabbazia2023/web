@@ -20,18 +20,19 @@ export const authenticatedCollaboratorRoutes: RouteRecordRaw[] = [
       [ALLOW_AUTHENTICATED_META]: true,
     },
     beforeEnter: async (to, _from, next) => {
+      // If directly navigating to authenticated root, redirect to landing page
+      // before running the flow to avoid executing it twice
+      if (to.name === RouteName.AUTHENTICATED) {
+        const redirection = CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage()
+        return next(redirection)
+      }
+
       const loadingStore = useLoadingStore()
       loadingStore.startGlobalLoading() // will stop in Authenticated.root.vue
 
       try {
         // Initialize authenticated flow (stores, third parties, entities)
         await CollaboratorAuthenticatedFlowManager.enterAuthenticatedFlow()
-
-        // If directly navigating to authenticated root, redirect to landing page
-        if (to.name === RouteName.AUTHENTICATED) {
-          const redirection = CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage()
-          return next(redirection)
-        }
 
         // No redirection needed, continue to route
         return next()
