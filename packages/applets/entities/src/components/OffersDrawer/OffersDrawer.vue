@@ -23,14 +23,14 @@
       @close-drawer-button="onCloseOffersDrawer"
     >
       <template #header-prefix>
-        <p class="offers-drawer__company-name font-base">
+        <p class="offers-drawer__company-name">
           {{ selectedCompanyName }}
         </p>
       </template>
       <template #header-suffix>
         <div
           v-if="offerSanitizedUrl"
-          class="offers-drawer__details"
+          class="offers-drawer__details margin-left--3"
         >
           <PIcon
             :color="AppColors.JUNGLE_400"
@@ -38,7 +38,7 @@
             pName="link45deg"
           />
           <a
-            class="offers-drawer__details-link font-base link margin-left--1"
+            class="offers-drawer__details-link margin-left--1"
             :href="offerSanitizedUrl"
             target="_blank"
           >
@@ -617,21 +617,25 @@ defineExpose({
 <style lang="scss" scoped>
 .offers-drawer {
   &__company-name {
+    font-size: 1.2rem;
+    line-height: 1.2;
     color: var(--p-gray-400);
   }
+
   &__details {
     display: flex;
     align-items: center;
     flex: 0 0 auto;
-    margin-left: 16px;
+    font-size: 1.2rem;
+    line-height: 1.2;
 
-    @media screen and (max-width: 1200px) {
-      width: 100%;
-      margin-left: 0;
-      margin-top: 8px;
+    .el-icon {
+      font-size: 1.6rem;
     }
 
     &-link {
+      font-size: inherit;
+      line-height: inherit;
       color: var(--p-jungle-400);
       font-weight: 600;
       text-decoration: none;

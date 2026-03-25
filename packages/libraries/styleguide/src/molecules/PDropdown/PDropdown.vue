@@ -75,7 +75,7 @@
             :pLabel="internalValue"
             class="
               p-dropdown--with-radio-button__option-item__radio
-              margin-left--2
+              margin-x--2
             "
           />
           <ul
@@ -203,7 +203,6 @@ const internalOptions = computed(() => getInternalOptions(props.pOptions))
   &--with-radio-button {
     &__option-item {
       &__radio {
-        margin-right: 8px;
         color: red;
         :deep(.el-radio__label) {
           display: none;

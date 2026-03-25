@@ -17,6 +17,8 @@ div.el-overlay:not(.p-drawer--mini) {
 }
 
 .p-drawer {
+  color: var(--p-text-body);
+
   @include media(md) {
     width: 50% !important;
   }
@@ -85,11 +87,13 @@ div.el-overlay:not(.p-drawer--mini) {
   }
   .el-drawer__body {
     padding: 0 2.4rem 1.6rem;
+    color: var(--p-text-body);
   }
 
   .el-drawer__footer {
     position: relative;
     padding: 2.4rem;
+    color: var(--p-text-body);
 
     &:before {
       content: '';
@@ -108,7 +112,7 @@ div.el-overlay:not(.p-drawer--mini) {
     display: flex;
     justify-content: space-between;
     min-width: 0;
-    color: var(--p-gray-900);
+    color: var(--p-text-body);
 
     > div {
       display: flex;
@@ -118,6 +122,7 @@ div.el-overlay:not(.p-drawer--mini) {
 
     &-prefix {
       justify-content: space-between;
+      color: var(--p-text-neutral);
     }
 
     &-suffix {
@@ -127,6 +132,12 @@ div.el-overlay:not(.p-drawer--mini) {
       &--column {
         flex-direction: column;
         align-items: flex-start !important;
+        gap: 12px;
+
+        > :not(:first-child) {
+          width: 100%;
+          margin: 0 !important;
+        }
       }
     }
   }
@@ -138,6 +149,7 @@ div.el-overlay:not(.p-drawer--mini) {
     text-overflow: ellipsis;
     display: flex;
     align-items: center;
+    color: var(--p-text-body);
   }
 
   &__step-back-button {
