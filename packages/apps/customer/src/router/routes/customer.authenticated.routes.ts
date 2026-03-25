@@ -20,11 +20,11 @@ export const authenticatedCustomerRoutes: RouteRecordRaw[] = [
       [LAYOUT_META]: Layout.MAIN,
       [ALLOW_AUTHENTICATED_META]: true,
     },
-    beforeEnter: async (to, _from, next) => {
+    beforeEnter: async (to) => {
       // If directly navigating to authenticated root, redirect to landing page
       // before running the flow to avoid executing it twice
       if (to.name === RouteName.AUTHENTICATED) {
-        return next({ name: RouteName.LANDING })
+        return { name: RouteName.LANDING }
       }
 
       const loadingStore = useLoadingStore()
@@ -37,17 +37,13 @@ export const authenticatedCustomerRoutes: RouteRecordRaw[] = [
         // Check CGU redirection (must be done for ALL routes, not just LANDING)
         const cguRedirection = await CustomerAuthenticatedFlowManager.getCGURedirection()
         if (cguRedirection && to.name !== cguRedirection.name) {
-          return next(cguRedirection)
+          return cguRedirection
         }
-
-        // No redirection needed, continue to route
-        return next()
       } catch (error) {
         logger.error('Error while entering authenticated flow', error)
         // Stop loading on error
         loadingStore.stopGlobalLoading()
-        //  and continue anyway (graceful degradation)
-        return next()
+        // Continue anyway (graceful degradation)
       }
     },
     children: [

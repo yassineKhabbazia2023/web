@@ -83,7 +83,7 @@ export const computeStatsByRepository = (items: PrCompletionItem[]): RepoComplet
   return stats
 }
 
-export const getDurationColor = (hours: number): string => {
+export const getDurationColor = (hours: number): 'success' | 'warning' | 'danger' => {
   if (hours < 24) {
     return 'success'
   }

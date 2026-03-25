@@ -64,7 +64,9 @@ const isMenuItemActive = computed<string>(() => route.name as string)
 const { navigationContext, refreshBIReports } = useNavigationContext(currentEntityId)
 const { trackNavigationFeature } = useNavigationTracking()
 
-const menuItems = computed(() => NavigationManager.getNavigationItems(navigationContext.value, currentAccountType.value))
+const menuItems = computed(() =>
+  NavigationManager.getNavigationItems(navigationContext.value, currentAccountType.value),
+)
 
 // Refresh BI reports permission on mount and when entity changes
 watch(currentEntityId, () => {

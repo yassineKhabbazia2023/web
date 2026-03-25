@@ -191,9 +191,9 @@ describe('usePrCompletionTime', () => {
       setupStoreWithProfile()
 
       const mockPrs = [
-        buildMockPr({ pullRequestId: 1, createdBy: { displayName: 'John Doe', uniqueName: 'john@example.com' } }),
-        buildMockPr({ pullRequestId: 2, createdBy: { displayName: 'Jane Smith', uniqueName: 'jane@example.com' } }),
-        buildMockPr({ pullRequestId: 3, createdBy: { displayName: 'John Doe', uniqueName: 'john@example.com' } }),
+        buildMockPr({ pullRequestId: 1, createdBy: { id: 'user-1', displayName: 'John Doe', uniqueName: 'john@example.com' } }),
+        buildMockPr({ pullRequestId: 2, createdBy: { id: 'user-2', displayName: 'Jane Smith', uniqueName: 'jane@example.com' } }),
+        buildMockPr({ pullRequestId: 3, createdBy: { id: 'user-1', displayName: 'John Doe', uniqueName: 'john@example.com' } }),
       ]
       mockedGetPullRequestsAcrossRepos.mockResolvedValueOnce(mockPrs)
 
@@ -209,8 +209,8 @@ describe('usePrCompletionTime', () => {
       setupStoreWithProfile()
 
       const mockPrs = [
-        buildMockPr({ pullRequestId: 1, createdBy: { displayName: 'John Doe', uniqueName: 'john@example.com' } }),
-        buildMockPr({ pullRequestId: 2, createdBy: { displayName: 'Jane Smith', uniqueName: 'jane@example.com' } }),
+        buildMockPr({ pullRequestId: 1, createdBy: { id: 'user-1', displayName: 'John Doe', uniqueName: 'john@example.com' } }),
+        buildMockPr({ pullRequestId: 2, createdBy: { id: 'user-2', displayName: 'Jane Smith', uniqueName: 'jane@example.com' } }),
       ]
       mockedGetPullRequestsAcrossRepos.mockResolvedValueOnce(mockPrs)
 

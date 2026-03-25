@@ -1,9 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 import type { UserConfig, Plugin } from 'vite'
 import { defineConfig } from 'vitest/config'
-import { visualizer } from 'rollup-plugin-visualizer'
 import vue from '@vitejs/plugin-vue'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { viteVirtualModule } from './vite-virtual-module'
 
 export const DEFAULT_PORT = 9000
@@ -27,12 +25,16 @@ export const viteConfigBase = ({ mode }: { mode: string }): UserConfig =>
     },
     plugins: [
       vue(),
-      // All workspace path aliases are loaded globally from tsconfig.paths.json.
-      // This is simpler but means any package can import from any other without declaring it as a dependency.
-      tsconfigPaths({ projects: [fileURLToPath(new URL('tsconfig.paths.json', import.meta.url))] }),
-      visualizer(),
       viteVirtualModule(),
     ] as Plugin[],
+    resolve: {
+      // Replaces vite-tsconfig-paths plugin — Vite 8 natively resolves paths from each workspace's tsconfig.json
+      // (which inherits from tsconfig.paths.json via tsconfig.base.app.json)
+      tsconfigPaths: true,
+    },
+    css: {
+      transformer: 'lightningcss',
+    },
     optimizeDeps: {
       include: [
         'vue',
@@ -44,7 +46,6 @@ export const viteConfigBase = ({ mode }: { mode: string }): UserConfig =>
       ],
     },
     build: {
-      target: 'esnext',
       sourcemap: mode === 'development',
     },
     test: {

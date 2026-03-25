@@ -30,7 +30,7 @@ vi.mock('@pulse/styleguide', async (importOriginal) => ({
 }))
 
 describe('TopBar', () => {
-  describe('PennylaneSSO display', async () => {
+  describe('PennylaneSSO display', () => {
     it.each([
       {
         testName: 'should display PennylaneSSO properly when customer has PennylaneOffer',
@@ -70,7 +70,7 @@ describe('TopBar', () => {
     })
   })
 
-  describe('EmailPennylane display', async () => {
+  describe('EmailPennylane display', () => {
     beforeEach(() => {
       isMobileRef.value = false
     })

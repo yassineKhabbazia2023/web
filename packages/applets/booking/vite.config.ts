@@ -6,5 +6,4 @@ export default ({ mode }: ConfigEnv) =>
   createAppletConfig({
     mode,
     packageName: name,
-    rootDir: import.meta.url,
   })

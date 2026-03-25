@@ -14,13 +14,11 @@ export const maintenanceCustomerRoutes: RouteRecordRaw[] = [
       [ALLOW_ANONYMOUS_META]: true,
       [ALLOW_AUTHENTICATED_META]: true,
     },
-    beforeEnter: (_to, _from, next) => {
+    beforeEnter: () => {
       const isMaintenanceMode = CustomerBootManager.checkMaintenanceMode()
-      if (isMaintenanceMode) {
-        next()
-      } else {
+      if (isMaintenanceMode === false) {
         // if not in maintenance mode, redirect to root
-        next({ name: CUSTOMER_ROUTES.root.name })
+        return { name: CUSTOMER_ROUTES.root.name }
       }
     },
   },

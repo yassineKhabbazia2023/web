@@ -11,7 +11,7 @@ export const anonymousCollaboratorRoutes: RouteRecordRaw[] = [
     path: COLLABORATOR_ROUTES.anonymous.path,
     name: COLLABORATOR_ROUTES.anonymous.name,
     component: () => import('@collaborator/pages/CollaboratorAnonymous.root.vue'),
-    beforeEnter: (to, _from, next) => {
+    beforeEnter: (to) => {
       const loadingStore = useLoadingStore()
       try {
         CollaboratorAnonymousFlowManager.enterAnonymousFlow()
@@ -19,15 +19,11 @@ export const anonymousCollaboratorRoutes: RouteRecordRaw[] = [
         // Check if redirection is needed (landing page)
         const redirection = CollaboratorAnonymousFlowManager.getAnonymousRedirection(to)
         if (redirection) {
-          return next(redirection)
+          return redirection
         }
-
-        // No redirection needed, continue to route
-        next()
       } catch (error) {
         logger.error('Error while entering anonymous flow', error)
         // Continue anyway (graceful degradation)
-        next()
       } finally {
         // stop any loading
         loadingStore.stopGlobalLoading()

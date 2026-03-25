@@ -82,6 +82,7 @@ const defaultStubs = {
 describe('subscriptionsTable', () => {
   let wrapper: ComponentWrapper<InstanceType<typeof SubscriptionsTable>>
   beforeEach(async () => {
+    vi.useFakeTimers()
     mockFetchSubscriptionRequests.mockResolvedValue(paginationResponseMock)
     userStoreMock.user = getMockedUserInfo({
       email: emailMock,
@@ -100,7 +101,11 @@ describe('subscriptionsTable', () => {
   })
 
   afterEach(() => {
+    // Flush any pending debounced timers (e.g. element-plus doLayout) before unmount
+    // to prevent "requestAnimationFrame is not defined" errors after environment teardown
+    vi.runAllTimers()
     wrapper.unmount()
+    vi.useRealTimers()
   })
   it('should render the subscription table correctly', () => {
     const pTable = wrapper.findComponent('[data-testid="subscriptions-table"]') as VueWrapper

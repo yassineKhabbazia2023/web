@@ -18,14 +18,12 @@ const customerRoutes: RouteRecordRaw[] = [
   {
     path: CUSTOMER_ROUTES.root.path,
     name: CUSTOMER_ROUTES.root.name,
-    beforeEnter: (_to, _from, next) => {
+    beforeEnter: () => {
       const isMaintenanceMode = CustomerBootManager.checkMaintenanceMode()
       if (isMaintenanceMode) {
-        next({ name: CUSTOMER_ROUTES.maintenance.name })
-      } else {
-        CustomerBootManager.initAmplitude()
-        next()
+        return { name: CUSTOMER_ROUTES.maintenance.name }
       }
+      CustomerBootManager.initAmplitude()
     },
     redirect: () => {
       const destination = CustomerBootManager.getDefaultRedirection()

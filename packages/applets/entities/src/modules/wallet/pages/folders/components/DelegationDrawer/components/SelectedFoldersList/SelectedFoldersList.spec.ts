@@ -1,4 +1,3 @@
-import { describe, it, expect, beforeEach } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'
 import { PTable } from '@pulse/styleguide/components'
@@ -44,7 +43,13 @@ let wrapper = createWrapper()
 
 describe('selected folders list', () => {
   beforeEach(() => {
+    vi.useFakeTimers()
     wrapper = createWrapper()
+  })
+
+  afterEach(() => {
+    wrapper.unmount()
+    vi.useRealTimers()
   })
 
   describe('props', () => {

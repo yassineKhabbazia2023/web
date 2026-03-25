@@ -17,14 +17,12 @@ const appRoutes: RouteRecordRaw[] = [
   {
     path: COLLABORATOR_ROUTES.root.path,
     name: COLLABORATOR_ROUTES.root.name,
-    beforeEnter: (_to, _from, next) => {
+    beforeEnter: () => {
       const isMaintenanceMode = CollaboratorBootManager.checkMaintenanceMode()
       if (isMaintenanceMode) {
-        next({ name: COLLABORATOR_ROUTES.maintenance.name })
-      } else {
-        CollaboratorBootManager.initAmplitude()
-        next()
+        return { name: COLLABORATOR_ROUTES.maintenance.name }
       }
+      CollaboratorBootManager.initAmplitude()
     },
     redirect: () => {
       const destination = CollaboratorBootManager.getDefaultRedirection()

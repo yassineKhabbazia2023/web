@@ -10,7 +10,7 @@ vi.mock('@pulse/styleguide/components', () => ({
   },
   PInput: {
     name: 'PInput',
-    template: '<input v-model="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" :disabled="pDisabled" />',
+    template: '<input :value="modelValue" @input="$emit(\'update:modelValue\', $event.target.value)" :disabled="pDisabled" />',
     props: ['modelValue', 'pType', 'pShowPassword', 'pPlaceholder', 'pDisabled', 'pAutocomplete'],
     emits: ['update:modelValue'],
   },

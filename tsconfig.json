@@ -4,5 +4,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {}
-  }
+  },
+  "references": [
+    { "path": "./packages/@config/tsconfig.paths.json" }
+  ]
 }

@@ -22,6 +22,11 @@ import {
   findFolderDeepById,
 } from '@ged/modules/Treeview/helpers/folderArrayHelper'
 import { createMemoryHistory, createRouter } from 'vue-router'
+
+vi.mock('vue-router', async (importOriginal) => ({
+  ...await importOriginal<typeof import('vue-router')>(),
+  onBeforeRouteUpdate: vi.fn(),
+}))
 import { getMockedEntitySummary } from '@pulse/common/mocks'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '@pulse/common/stores'

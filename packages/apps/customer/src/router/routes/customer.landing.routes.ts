@@ -17,10 +17,10 @@ export const landingCustomerRoutes: RouteRecordRaw[] = [
     beforeEnter: [
       pennylaneSsoGuard,
       deepLinkGuard,
-      (_to, _from, next) => {
+      () => {
         const redirection = CustomerAuthenticatedFlowManager.getLandingPage()
         // Fallback to folders route if no landing page found
-        return next(redirection ?? { name: RouteName.CUSTOMER_ENTITIES })
+        return redirection ?? { name: RouteName.CUSTOMER_ENTITIES }
       },
     ],
   },

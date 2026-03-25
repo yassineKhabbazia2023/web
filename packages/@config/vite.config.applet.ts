@@ -1,19 +1,14 @@
-import type { PreRenderedChunk } from 'rollup'
 import { defineConfig, mergeConfig } from 'vitest/config'
-import path from 'path'
-import terser from '@rollup/plugin-terser'
 import { viteConfigBase, DEFAULT_EXTERNALS } from './vite.config.base'
 
 export interface AppletConfigOptions {
   mode: string
   packageName: string
-  rootDir: string
   pages?: string[]
 }
 
-export const createAppletConfig = ({ mode, packageName, rootDir, pages = [] }: AppletConfigOptions) => {
+export const createAppletConfig = ({ mode, packageName, pages = [] }: AppletConfigOptions) => {
   const APP_NAME = packageName.split('/')[1]
-  const rootPath = path.dirname(new URL(rootDir).pathname)
 
   const input: Record<string, string> = { main: 'src/main.ts' }
   for (const file of pages) {
@@ -27,13 +22,13 @@ export const createAppletConfig = ({ mode, packageName, rootDir, pages = [] }: A
       },
       build: {
         chunkSizeWarningLimit: 1000,
-        rollupOptions: {
+        rolldownOptions: {
           input,
           preserveEntrySignatures: 'strict',
           external: DEFAULT_EXTERNALS,
           output: {
-            format: 'system',
-            entryFileNames: (chunkInfo: PreRenderedChunk) => {
+            format: 'es',
+            entryFileNames: (chunkInfo: { name: string }) => {
               // main.ts → offers-catalog.js
               // pages.index.ts → offers-catalog.pages.js
               if (chunkInfo.name === 'main') {
@@ -42,7 +37,6 @@ export const createAppletConfig = ({ mode, packageName, rootDir, pages = [] }: A
               return `${APP_NAME}.[name].js`
             },
           },
-          plugins: [terser()],
         },
       },
     }),

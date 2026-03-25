@@ -55,15 +55,14 @@ describe('App Router', () => {
     it('should redirect to maintenance when maintenance mode is active', () => {
       vi.mocked(CollaboratorBootManager.checkMaintenanceMode).mockReturnValue(true)
 
-      const mockNext = vi.fn()
       const rootRoute = router.getRoutes().find(route => route.name === COLLABORATOR_ROUTES.root.name)
       const beforeEnterGuard = rootRoute?.beforeEnter as Function
 
       expect(beforeEnterGuard).toBeDefined()
-      beforeEnterGuard({}, {}, mockNext)
+      const result = beforeEnterGuard({}, {})
 
       expect(CollaboratorBootManager.checkMaintenanceMode).toHaveBeenCalled()
-      expect(mockNext).toHaveBeenCalledWith({ name: COLLABORATOR_ROUTES.maintenance.name })
+      expect(result).toEqual({ name: COLLABORATOR_ROUTES.maintenance.name })
     })
   })
 
@@ -112,16 +111,16 @@ describe('App Router', () => {
 
   describe('Route Configuration Edge Cases', () => {
     it('should handle beforeEnter guard with undefined parameters', () => {
-      const mockNext = vi.fn()
       vi.mocked(CollaboratorBootManager.checkMaintenanceMode).mockReturnValue(false)
 
       const rootRoute = router.getRoutes().find(route => route.name === COLLABORATOR_ROUTES.root.name)
       const beforeEnterGuard = rootRoute?.beforeEnter as Function
 
-      // Test with undefined to and from parameters
-      beforeEnterGuard(undefined, undefined, mockNext)
+      // Test with undefined to and from parameters — should not redirect
+      const result = beforeEnterGuard(undefined, undefined)
 
-      expect(mockNext).toHaveBeenCalledWith()
+      expect(result).toBeUndefined()
+      expect(CollaboratorBootManager.initAmplitude).toHaveBeenCalled()
     })
 
     it('should have proper route hierarchy', () => {

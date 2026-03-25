@@ -151,7 +151,7 @@ function useMonoEntitySetup() {
   currentEntityStore.setCurrentEntity(monoEntity)
 
   // Entity guard for Storybook
-  router.beforeEach((to, _from, next) => {
+  router.beforeEach((to) => {
     const entityIdParam = to.params[RouteParam.ENTITY_ID]
     if (entityIdParam !== undefined) {
       const entityId = Number(entityIdParam)
@@ -159,7 +159,6 @@ function useMonoEntitySetup() {
         currentEntityStore.setCurrentEntity(monoEntity)
       }
     }
-    return next()
   })
 
   // Setup permissions for GED, PowerBI and MEG
@@ -274,7 +273,7 @@ function useMultiEntitySetup() {
   currentEntityStore.setCurrentEntity(multiEntityFirst)
 
   // Entity guard for Storybook - handle entity switching and permissions
-  router.beforeEach((to, _from, next) => {
+  router.beforeEach((to) => {
     const entityIdParam = to.params[RouteParam.ENTITY_ID]
     if (entityIdParam !== undefined) {
       const entityId = Number(entityIdParam)
@@ -286,7 +285,6 @@ function useMultiEntitySetup() {
         permissionsStore.setCurrentEntityPermissions(entityPermissions)
       }
     }
-    return next()
   })
 
   // Setup initial permissions (first entity without Pennylane)

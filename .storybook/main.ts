@@ -1,8 +1,7 @@
 import { dirname } from 'node:path'
 import type { StorybookConfig } from '@storybook/vue3-vite'
 import { fileURLToPath } from 'url'
-import { viteExternalsPlugin } from 'vite-plugin-externals'
-import tsconfigPaths from 'vite-tsconfig-paths'
+import { viteVirtualModule } from '../packages/@config/vite-virtual-module.ts'
 
 const config: StorybookConfig = {
   core: {
@@ -15,12 +14,7 @@ const config: StorybookConfig = {
     return head
   },
   stories: [
-    '../stories/**/*.mdx',
-    '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/applets/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../packages/libraries/common/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../packages/libraries/toolbox/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../packages/libraries/widgets/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/libraries/shared/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/libraries/styleguide/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/apps/**/*.stories.@(js|jsx|mjs|ts|tsx)',
@@ -56,19 +50,29 @@ const config: StorybookConfig = {
 
     config.base = '/storybook/'
 
-    // Add viteExternalsPlugin to transform env-vars imports to window.EnvVars
-    config.plugins.push(viteExternalsPlugin({ 'env-vars': 'EnvVars' }))
+    // Workaround: Rolldown code splitting breaks Storybook's __STORYBOOK_MODULE_*__ globals.
+    // strictExecutionOrder preserves module execution order so globals are defined before use.
+    // https://github.com/vitejs/rolldown-vite/issues/562
+    config.build = config.build || {}
+    config.build.rolldownOptions = config.build.rolldownOptions || {}
+    config.build.rolldownOptions.output = {
+      ...config.build.rolldownOptions.output,
+      strictExecutionOrder: true,
+    }
 
-    // Add tsconfig paths plugin for automatic alias resolution
-    config.plugins.push(tsconfigPaths({ projects: ['./packages/@config/tsconfig.paths.json'] }))
+    // Transform env-vars imports to globalThis.EnvVars destructuring
+    config.plugins = config.plugins || []
+    config.plugins.push(viteVirtualModule())
+
+    // Native Vite 8 tsconfig paths resolution
+    config.resolve = config.resolve || {}
+    config.resolve.tsconfigPaths = true
 
     // Configure Vite to resolve workspace packages according to their package.json exports
-    config.resolve = config.resolve || {}
     config.resolve.conditions = ['browser', 'development', 'module', 'import', 'default']
     config.resolve.extensions = ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json', '.vue']
 
     // Add path aliases for shims only (pulse aliases are handled by the plugin)
-    config.resolve = config.resolve || {}
     const existingAliases = Array.isArray(config.resolve.alias)
       ? config.resolve.alias
       : []

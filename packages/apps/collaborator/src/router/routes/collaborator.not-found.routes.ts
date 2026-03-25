@@ -11,7 +11,7 @@ export const notFoundCollaboratorRoutes: RouteRecordRaw[] = [
     path: '/:pathMatch(.*)*', // specific catch all
     name: COLLABORATOR_ROUTES.error.error404.name,
     component: () => import('@pulse/shared/pages').then(m => ({ default: m.Error404Page })),
-    beforeEnter: async (to, _from, next) => {
+    beforeEnter: async (to) => {
       const loadingStore = useLoadingStore()
 
       // Check if user is on the wrong app and redirect if needed
@@ -34,9 +34,7 @@ export const notFoundCollaboratorRoutes: RouteRecordRaw[] = [
       loadingStore.stopGlobalLoading()
 
       if (matches) {
-        next({ path: to.path })
-      } else {
-        next()
+        return { path: to.path }
       }
     },
     meta: {

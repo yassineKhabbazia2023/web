@@ -6,5 +6,4 @@ export default ({ mode }: ConfigEnv) =>
     mode,
     packageName: '@pulse/toolbox',
     rootDir: import.meta.url,
-    generateTypes: true,
   })

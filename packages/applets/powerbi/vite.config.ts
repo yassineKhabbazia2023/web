@@ -6,6 +6,5 @@ export default ({ mode }: ConfigEnv) =>
   createAppletConfig({
     mode,
     packageName: name,
-    rootDir: import.meta.url,
     pages: ['entity-pages.index.ts', 'wallet-pages.index.ts'],
   })

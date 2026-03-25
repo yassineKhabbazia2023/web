@@ -32,7 +32,7 @@ export interface DocumentsProps {
   // selected entity corresponds to accountNumber, this will be changed
   currentEntity: string
   accountId: number
-  currentEntityAvatarColor: Entity['color']
+  currentEntityAvatarColor?: Entity['color']
   currentEntityName: Entity['legalName']
   selectedFolder: null | Folder
   currentServiceFolder: Folder[]

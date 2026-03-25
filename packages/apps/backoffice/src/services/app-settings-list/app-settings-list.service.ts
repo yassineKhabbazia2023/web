@@ -3,10 +3,10 @@ import type { UpdateAppSettingApiPayload } from '@backoffice/services/app-settin
 import type {
   DeleteAppSettingResponse,
   DomainItem,
-  EnvironmentOption,
   GetAppSettingsListParams,
   CreateAppSettingApiPayload,
 } from './app-settings-list.service.type'
+import type { EnvironmentOption } from '@backoffice/types/environment-option.type'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@backoffice/constants/backoffice.const'
 import api from '@backoffice/api/api'
 

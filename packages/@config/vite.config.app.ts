@@ -1,6 +1,5 @@
 import type { Plugin } from 'vite'
 import { defineConfig, mergeConfig } from 'vitest/config'
-import { viteExternalsPlugin } from 'vite-plugin-externals'
 import { viteConfigBase, DEFAULT_PORT } from './vite.config.base'
 
 export interface AppConfigOptions {
@@ -23,16 +22,12 @@ export function createAppConfig(options: AppConfigOptions) {
   return defineConfig(
     mergeConfig(viteConfigBase({ mode }), {
       base,
-      plugins: [
-        viteExternalsPlugin({ 'env-vars': 'EnvVars' }, { disableInServe: mode === 'test' }),
-        ...plugins,
-      ],
+      plugins,
       server: {
         port,
         strictPort: true,
         open: true,
         origin: `http://localhost:${port}`,
-        https: false,
       },
       preview: {
         port,
@@ -44,26 +39,16 @@ export function createAppConfig(options: AppConfigOptions) {
       },
       build: {
         outDir,
-        chunkSizeWarningLimit: 500,
-        minify: mode === 'production' ? 'terser' : false,
-        terserOptions: {
-          compress: {
-            drop_debugger: true,
-          },
-        },
+        minify: mode === 'production',
         reportCompressedSize: false,
         sourcemap: mode === 'development' ? 'inline' : false,
-        rollupOptions: {
-          external: './env-vars.js',
-          preserveEntrySignatures: 'exports-only',
+        rolldownOptions: {
           output: {
             chunkFileNames: 'js/[name]-[hash].js',
             entryFileNames: 'js/[name]-[hash].js',
             assetFileNames: 'assets/[name]-[hash][extname]',
           },
         },
-        cssCodeSplit: true,
-        cssMinify: mode === 'production' ? 'lightningcss' : false,
         modulePreload: { polyfill: false },
       },
     }),

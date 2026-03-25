@@ -15,7 +15,7 @@ vi.mock('@pulse/toolbox', () => ({
 
 describe('useDeleteAppSettingDialog', () => {
   let appSettingKey: string
-  let onDeletedCallback: ReturnType<typeof vi.fn>
+  let onDeletedCallback: ReturnType<typeof vi.fn<() => void>>
 
   beforeEach(() => {
     appSettingKey = 'TEST_KEY'

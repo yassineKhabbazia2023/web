@@ -8,7 +8,7 @@ export const buildMockPr = (overrides: Partial<AzureDevOpsPullRequest> = {}): Az
   status: 'completed',
   isDraft: false,
   repository: { id: 'repo-1', name: 'Pulse.Web' },
-  createdBy: { displayName: 'John Doe', uniqueName: 'john@example.com' },
+  createdBy: { id: 'user-guid', displayName: 'John Doe', uniqueName: 'john@example.com' },
   sourceRefName: 'refs/heads/feature/test',
   targetRefName: 'refs/heads/main',
   ...overrides,

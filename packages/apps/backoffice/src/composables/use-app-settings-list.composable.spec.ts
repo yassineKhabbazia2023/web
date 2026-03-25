@@ -11,7 +11,7 @@ vi.mock('@pulse/styleguide', () => ({
   displayNotification: vi.fn(),
 }))
 
-const mockedAppSettingsListService = vi.mocked(AppSettingsListService)
+const mockedAppSettingsListService = vi.mocked(AppSettingsListService, { deep: true })
 const mockedDisplayNotification = vi.mocked(displayNotification)
 
 describe('useAppSettingsList', () => {

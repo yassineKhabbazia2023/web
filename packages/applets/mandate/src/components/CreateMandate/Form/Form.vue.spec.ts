@@ -2,7 +2,7 @@ import { expect, describe, it, vi } from 'vitest'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { featureFlagManagerMock } from '@pulse/common/mocks/vitest'
 import wrapperFactory from '@mandate/__mocks__/wrapper.factory'
-import { getCompany } from '@mandate/services/mandate'
+import { getCompany, validateIban, getBankDetail } from '@mandate/services/mandate'
 import CreateMandateForm from '.'
 
 function mockMandateService(
@@ -305,34 +305,35 @@ function mockMandateServiceGetBankDetailThrowError(
 }
 
 const mockGetBankDetailThrowError = () => {
-  vi.mock('@mandate/services/mandate', () => {
-    return mockMandateServiceGetBankDetailThrowError(
-      {
-        data: {
-          id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
-          name: 'Mike',
-          siretNumber: '123456789',
-          erpId: '1234567891',
-          signatory: {
-            title: 'M',
-            firstName: 'maroo',
-            lastName: 'elleuch',
-            email: 'elleuch@email.com',
-          },
-          address: {
-            street: 'RUE DU COMMERCE',
-            addressComplement: '',
-            zipCode: '59590',
-            city: 'RAISMES',
-            country: 'FRANCE',
-          },
+  const mock = mockMandateServiceGetBankDetailThrowError(
+    {
+      data: {
+        id: 'e4ec92f2-a375-4574-b6de-235a9fe13028',
+        name: 'Mike',
+        siretNumber: '123456789',
+        erpId: '1234567891',
+        signatory: {
+          title: 'M',
+          firstName: 'maroo',
+          lastName: 'elleuch',
+          email: 'elleuch@email.com',
+        },
+        address: {
+          street: 'RUE DU COMMERCE',
+          addressComplement: '',
+          zipCode: '59590',
+          city: 'RAISMES',
+          country: 'FRANCE',
         },
       },
-      {
-        valid: false,
-      },
-    )
-  })
+    },
+    {
+      valid: false,
+    },
+  )
+  vi.mocked(getCompany).mockImplementation(mock.getCompany)
+  vi.mocked(validateIban).mockImplementation(mock.validateIban)
+  vi.mocked(getBankDetail).mockImplementation(mock.getBankDetail)
 }
 
 describe('form.vue mock getBankDetail to throw error', () => {

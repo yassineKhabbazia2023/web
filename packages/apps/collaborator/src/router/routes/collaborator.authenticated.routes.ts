@@ -19,12 +19,11 @@ export const authenticatedCollaboratorRoutes: RouteRecordRaw[] = [
       [LAYOUT_META]: Layout.MAIN,
       [ALLOW_AUTHENTICATED_META]: true,
     },
-    beforeEnter: async (to, _from, next) => {
+    beforeEnter: async (to) => {
       // If directly navigating to authenticated root, redirect to landing page
       // before running the flow to avoid executing it twice
       if (to.name === RouteName.AUTHENTICATED) {
-        const redirection = CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage()
-        return next(redirection)
+        return CollaboratorAuthenticatedFlowManager.getCollaboratorLandingPage()
       }
 
       const loadingStore = useLoadingStore()
@@ -33,15 +32,11 @@ export const authenticatedCollaboratorRoutes: RouteRecordRaw[] = [
       try {
         // Initialize authenticated flow (stores, third parties, entities)
         await CollaboratorAuthenticatedFlowManager.enterAuthenticatedFlow()
-
-        // No redirection needed, continue to route
-        return next()
       } catch (error) {
         logger.error('Error while entering authenticated flow', error)
         // Stop loading on error
         loadingStore.stopGlobalLoading()
-        //  and continue anyway (graceful degradation)
-        return next()
+        // Continue anyway (graceful degradation)
       }
     },
     children: [

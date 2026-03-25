@@ -17,6 +17,8 @@ export function setupVitest(options: VitestSetupOptions = {}): void {
   const i18n = createI18n({
     locale: 'en-US',
     legacy: false,
+    missingWarn: false,
+    fallbackWarn: false,
     ...(i18nMessages && { messages: i18nMessages }),
   })
 

@@ -4,6 +4,10 @@ import { HistoryService } from '../services/history.service'
 import { getMockedActivity, getMockedActivitiesResponse } from '../__mocks__/history.mocks'
 import { useHistory } from './history.composable'
 
+vi.mock('vue', async (importOriginal) => ({
+  ...await importOriginal<typeof import('vue')>(),
+  onMounted: vi.fn(),
+}))
 vi.mock('../services/history.service')
 vi.mock('@pulse/toolbox')
 

@@ -4,6 +4,11 @@ import { getOfferPlanMock } from '@entities/__mocks__/offer-subscription.mocks'
 import type { OfferPlan } from '@entities/types'
 import { PlanCode } from '@entities/enums'
 
+vi.mock('vue', async (importOriginal) => ({
+  ...await importOriginal<typeof import('vue')>(),
+  onMounted: vi.fn(),
+}))
+
 const PLAN_BASIC = getOfferPlanMock({
   planId: 1,
   planCode: PlanCode.BASIC,

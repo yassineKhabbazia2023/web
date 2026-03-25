@@ -22,6 +22,7 @@ import { defineConfig } from 'vitest/config'
 export function createVitestConfig(
   viteConfigFunction: (configEnv: ConfigEnv) => UserConfig,
   rootDir: string,
+  testOverrides?: Record<string, unknown>,
 ) {
   return defineConfig((configEnv) =>
     mergeConfig(
@@ -29,6 +30,7 @@ export function createVitestConfig(
       defineConfig({
         test: {
           root: fileURLToPath(new URL('./', rootDir)),
+          ...testOverrides,
         },
       }),
     ),
