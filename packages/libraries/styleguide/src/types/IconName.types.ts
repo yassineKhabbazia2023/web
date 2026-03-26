@@ -30,6 +30,7 @@ export type IconName =
 'building' |
 'buildingSupport' |
 'calculatorEuro' |
+'calendarDuotone' |
 'calendarEvent' |
 'calendarNone' |
 'calendarPlus' |

@@ -2,13 +2,15 @@ import { api } from '@pulse/common/api'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { logger } from '@pulse/toolbox'
 import type {
+  AppointmentCountResponse,
+  AppointmentResponse,
   BookingAvailableExpertsResponse,
   BookingConfigurationPayload,
   BookingServiceConfiguration,
   BookingConfigurationResponse,
   BookingServiceExpert,
+  BookingEnabledResponse,
 } from '../types/booking.types'
-import type { BookingEnabledResponse } from '../types/booking-enabled.type'
 
 export class BookingService {
   private static readonly bookingApiUrl = `${API_PREFIXES.BOOKING}/booking-link/currentuser`
@@ -59,5 +61,27 @@ export class BookingService {
       logger.error(error)
       return false
     }
+  }
+
+  static async getUpcomingAppointments(limit = 10): Promise<AppointmentResponse[]> {
+    const url = `${API_PREFIXES.BOOKING}/appointments/upcoming/currentuser`
+    const { data } = await api.gateway.get<AppointmentResponse[]>(url, {
+      params: { limit },
+    })
+    return data
+  }
+
+  static async getPastAppointments(limit = 10): Promise<AppointmentResponse[]> {
+    const url = `${API_PREFIXES.BOOKING}/appointments/past/currentuser`
+    const { data } = await api.gateway.get<AppointmentResponse[]>(url, {
+      params: { limit },
+    })
+    return data
+  }
+
+  static async getUpcomingAppointmentsCount(): Promise<number> {
+    const url = `${API_PREFIXES.BOOKING}/appointments/upcoming/count/currentuser`
+    const { data } = await api.gateway.get<AppointmentCountResponse>(url)
+    return data.count
   }
 }

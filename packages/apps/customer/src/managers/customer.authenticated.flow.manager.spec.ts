@@ -16,7 +16,7 @@ import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
-import { BookingManager } from '@pulse/booking/shared/managers/booking'
+import { BookingManager } from '@pulse/booking/managers'
 
 import { CustomerAuthenticatedFlowManager } from './customer.authenticated.flow.manager'
 
@@ -44,7 +44,7 @@ vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
 }))
 
-vi.mock('@pulse/booking/shared/managers/booking', () => ({
+vi.mock('@pulse/booking/managers', () => ({
   BookingManager: {
     setupBookingForCustomer: vi.fn(),
     refreshAvailableExperts: vi.fn(),

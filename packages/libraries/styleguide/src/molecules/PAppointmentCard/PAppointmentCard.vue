@@ -71,14 +71,14 @@ const cardClasses = computed(() => [
   'flex--justify-content-space-between',
   'padding-y--3',
   'padding-right--4',
-  'bg--white',
   { 'p-appointment-card--active': props.pIsActive },
 ])
 
 const dateTimeClasses = computed(() => [
+  'p-appointment-card__date',
   'font-small',
   'font-semibold',
-  props.pIsActive ? 'text-color--jungle-400' : 'text-color--neutral-gray-400',
+  { 'p-appointment-card__date--inactive': props.pIsActive === false },
 ])
 
 const isJoinDisabled = computed(() => props.pIsActive === false)
@@ -93,15 +93,39 @@ const formattedTime = computed(() => formatTime(props.pStartDateTime))
   height: 56px;
   border: none;
   border-left: 4px solid var(--p-gray-300);
+  background-color: var(--p-white);
+  transition: background-color 0.2s ease;
 
   &--active {
     border-left-color: var(--p-jungle-400);
+
+    &:hover {
+      background-color: rgba(var(--p-jungle-400-rgb), 0.1);
+
+      .p-appointment-card__date {
+        color: var(--p-jungle-400);
+      }
+
+      .p-appointment-card__join {
+        color: var(--p-black-rock-900);
+      }
+    }
+  }
+
+  &__date {
+    color: var(--p-black-rock-900);
+    transition: color 0.2s ease;
+
+    &--inactive {
+      color: var(--p-neutral-gray-400);
+    }
   }
 
   &__join {
     background: none;
     border: none;
-    color: var(--p-jungle-400);
+    color: var(--p-gray-400);
+    transition: color 0.2s ease;
 
     &:disabled {
       cursor: not-allowed;

@@ -1125,6 +1125,12 @@ export const pulseGeneratedIcons: {
     category: 'Others',
   },
   {
+    name: 'calendarDuotone',
+    componentName: 'PICalendarDuotone',
+    fileName: 'calendar-duotone.svg',
+    category: 'Polychrome',
+  },
+  {
     name: 'hourglassDuotone',
     componentName: 'PIHourglassDuotone',
     fileName: 'hourglass-duotone.svg',

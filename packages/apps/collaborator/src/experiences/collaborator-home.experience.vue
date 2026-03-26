@@ -5,7 +5,7 @@
     :userConfig
   >
     <template #header-actions>
-      <BookingHeaderWidget v-if="shouldShowBooking === true" />
+      <BookingCollabHeaderWidget v-if="shouldShowBooking === true" />
       <FeedCenterHeaderWidget v-if="shouldShowFeedCenter === true" />
     </template>
   </HomeLayout>
@@ -17,7 +17,7 @@ import { storeToRefs } from 'pinia'
 import { HomeLayout } from '@pulse/shared/layouts'
 import type { UserConfig } from '@pulse/shared/types'
 import { FeedCenterHeaderWidget } from '@pulse/feed-center/widgets/feed-center-header'
-import { BookingHeaderWidget } from '@pulse/booking/collab/widgets/header-widget'
+import { BookingCollabHeaderWidget } from '@pulse/booking/widgets'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { useUserStore, useCurrentEntityStore, useBookingCollabStore } from '@pulse/common/stores'
 

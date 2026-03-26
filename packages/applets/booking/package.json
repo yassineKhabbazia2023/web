@@ -9,8 +9,9 @@
   "exports": {
     ".": "./src/main.ts",
     "./stores": "./src/stores/index.ts",
-    "./shared/managers/booking": "./src/shared/managers/booking.manager.ts",
-    "./collab/widgets/header-widget": "./src/collab/widgets/header-widget/widget.ts"
+    "./types": "./src/types/index.ts",
+    "./managers": "./src/managers/index.ts",
+    "./widgets": "./src/widgets/index.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

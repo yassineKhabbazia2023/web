@@ -3,7 +3,8 @@ import type {
   BookingServiceExpert,
   BookingConfigurationPayload,
   BookingConfigurationResponse,
-} from '@booking/types/booking.types'
+  AppointmentResponse,
+} from '@booking/types'
 import type { TimeSlotsConfiguration } from '@booking/collab/components/booking-time-slots-configuration/booking-time-slots-configuration.types'
 import type { AppointmentDetails } from '@booking/collab/components/booking-appointment-configuration/booking-appointment-configuration.types'
 
@@ -99,5 +100,39 @@ export function getMockedAppointmentDetails(overridden: Partial<AppointmentDetai
   return {
     ...appointmentDetails,
     ...overridden,
+  }
+}
+
+
+export function getMockedAppointment(overridden: Partial<AppointmentResponse> = {}): AppointmentResponse {
+  const appointment: AppointmentResponse = {
+    id: 1,
+    startDateTime: '2025-01-01T10:00:00Z',
+    endDateTime: '2025-01-01T10:30:00Z',
+    subject: 'Test Meeting',
+    counterpartName: 'John Doe',
+    isOnlineMeeting: true,
+    joinWebUrl: 'https://teams.microsoft.com/l/meetup-join/test',
+    locationName: null,
+  }
+
+  return {
+    ...appointment,
+    ...overridden,
+  }
+}
+
+export function getMockedAppointments(count = 2): AppointmentResponse[] {
+  return Array.from({ length: count }, (_, index) =>
+    getMockedAppointment({
+      id: index + 1,
+      subject: `Test Meeting ${index + 1}`,
+    }),
+  )
+}
+
+export function getMockedAppointmentCount(count = 5) {
+  return {
+    count,
   }
 }

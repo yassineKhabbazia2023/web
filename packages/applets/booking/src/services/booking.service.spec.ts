@@ -3,7 +3,7 @@ import { loggerMock } from '@pulse/toolbox/mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { BookingService } from './booking.service'
 import type { BookingConfigurationResponse, BookingConfigurationPayload } from '../types/booking.types'
-import { getMockedBookingServiceConfiguration, getMockExperts } from '../__mocks__'
+import { getMockedAppointmentCount, getMockedAppointments, getMockedBookingServiceConfiguration, getMockExperts } from '../__mocks__'
 
 vi.mock('@pulse/common/api', () => ({
   api: {
@@ -130,6 +130,92 @@ describe('booking.service', () => {
 
       expect(result).toBe(false)
       expect(loggerMock.error).toHaveBeenCalledWith(error)
+    })
+  })
+
+  describe('getUpcomingAppointments', () => {
+    it('should call api with default limit and return appointments', async () => {
+      const expectedUrl = `${API_PREFIXES.BOOKING}/appointments/upcoming/currentuser`
+      const mockAppointments = getMockedAppointments(2)
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: mockAppointments,
+      })
+
+      const result = await BookingService.getUpcomingAppointments()
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, {
+        params: { limit: 10 },
+      })
+      expect(result).toStrictEqual(mockAppointments)
+    })
+
+    it('should call api with custom limit', async () => {
+      const expectedUrl = `${API_PREFIXES.BOOKING}/appointments/upcoming/currentuser`
+      const mockAppointments = getMockedAppointments(1)
+      const limit = 5
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: mockAppointments,
+      })
+
+      const result = await BookingService.getUpcomingAppointments(limit)
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, {
+        params: { limit },
+      })
+      expect(result).toStrictEqual(mockAppointments)
+    })
+  })
+
+  describe('getPastAppointments', () => {
+    it('should call api with default limit and return appointments', async () => {
+      const expectedUrl = `${API_PREFIXES.BOOKING}/appointments/past/currentuser`
+      const mockAppointments = getMockedAppointments(3)
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: mockAppointments,
+      })
+
+      const result = await BookingService.getPastAppointments()
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, {
+        params: { limit: 10 },
+      })
+      expect(result).toStrictEqual(mockAppointments)
+    })
+
+    it('should call api with custom limit', async () => {
+      const expectedUrl = `${API_PREFIXES.BOOKING}/appointments/past/currentuser`
+      const mockAppointments = getMockedAppointments(1)
+      const limit = 3
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: mockAppointments,
+      })
+
+      const result = await BookingService.getPastAppointments(limit)
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl, {
+        params: { limit },
+      })
+      expect(result).toStrictEqual(mockAppointments)
+    })
+  })
+
+  describe('getUpcomingAppointmentsCount', () => {
+    it('should call api and return count', async () => {
+      const expectedUrl = `${API_PREFIXES.BOOKING}/appointments/upcoming/count/currentuser`
+      const mockResponse = getMockedAppointmentCount(7)
+
+      apiGatewayMock.get.mockResolvedValue({
+        data: mockResponse,
+      })
+
+      const result = await BookingService.getUpcomingAppointmentsCount()
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+      expect(result).toBe(mockResponse.count)
     })
   })
 })

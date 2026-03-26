@@ -1,1 +1,1 @@
-export { default as BookingHeaderWidget } from './booking-header.widget.vue'
+export { default as BookingCollabHeaderWidget } from './booking-header.widget.vue'

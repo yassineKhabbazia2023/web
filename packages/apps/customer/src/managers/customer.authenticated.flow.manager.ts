@@ -18,7 +18,7 @@ import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import type { RouteLocationNamedRaw } from 'vue-router'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { Entity } from '@pulse/common/types'
-import { BookingManager } from '@pulse/booking/shared/managers/booking'
+import { BookingManager } from '@pulse/booking/managers'
 
 export class CustomerAuthenticatedFlowManager {
   // Guard preventing the authenticated flow from running more than once per session.

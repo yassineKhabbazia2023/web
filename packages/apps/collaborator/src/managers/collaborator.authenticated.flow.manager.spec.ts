@@ -13,7 +13,7 @@ import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { RouteName } from '@pulse/common/enums'
-import { BookingManager } from '@pulse/booking/shared/managers/booking'
+import { BookingManager } from '@pulse/booking/managers'
 
 import { CollaboratorAuthenticatedFlowManager } from './collaborator.authenticated.flow.manager'
 
@@ -38,7 +38,7 @@ vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
 }))
 
-vi.mock('@pulse/booking/shared/managers/booking', () => ({
+vi.mock('@pulse/booking/managers', () => ({
   BookingManager: {
     setupBookingForCollab: vi.fn(),
   },

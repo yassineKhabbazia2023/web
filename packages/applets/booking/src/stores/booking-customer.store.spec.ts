@@ -11,9 +11,7 @@ describe('useBookingCustomerStore', () => {
       const store = useBookingCustomerStore()
 
       expect(store.getAvailableExperts()).toEqual([])
-      expect(store.isAppointmentDrawerOpen).toBe(false)
       expect(store.getIsBookingEnabled()).toBe(false)
-      expect(store.hasAvailableExperts()).toBe(false)
     })
   })
 
@@ -28,19 +26,6 @@ describe('useBookingCustomerStore', () => {
       store.setAvailableExperts(mockExperts as any)
 
       expect(store.getAvailableExperts()).toEqual(mockExperts)
-      expect(store.hasAvailableExperts()).toBe(true)
-    })
-  })
-
-  describe('appointmentDrawer', () => {
-    it('should open and close drawer', () => {
-      const store = useBookingCustomerStore()
-
-      store.openAppointmentDrawer()
-      expect(store.isAppointmentDrawerOpen).toBe(true)
-
-      store.closeAppointmentDrawer()
-      expect(store.isAppointmentDrawerOpen).toBe(false)
     })
   })
 
@@ -57,18 +42,19 @@ describe('useBookingCustomerStore', () => {
   })
 
   describe('reset', () => {
-    it('should reset all state', () => {
+    it('should reset all state to initial values', () => {
       const store = useBookingCustomerStore()
       const mockExperts = [{ contactId: 1, fullName: 'John Doe' }]
 
       store.setAvailableExperts(mockExperts as any)
-      store.openAppointmentDrawer()
       store.setIsBookingEnabled(true)
+
+      expect(store.getAvailableExperts()).toEqual(mockExperts)
+      expect(store.getIsBookingEnabled()).toBe(true)
 
       store.reset()
 
       expect(store.getAvailableExperts()).toEqual([])
-      expect(store.isAppointmentDrawerOpen).toBe(false)
       expect(store.getIsBookingEnabled()).toBe(false)
     })
   })

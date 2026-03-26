@@ -6,7 +6,7 @@ import { BookingConfigurationSteps } from './booking-configuration.enums'
 import { displayNotification } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
 import { getInitialTimeSlotsConfiguration } from '../booking-time-slots-configuration/booking-time-slots-configuration.composable'
-import type { BookingConfigurationResponse } from '@booking/types/booking.types'
+import type { BookingConfigurationResponse } from '@booking/types'
 import {
   getMockedTimeSlotsConfiguration,
   getMockedBookingConfigurationPayload,

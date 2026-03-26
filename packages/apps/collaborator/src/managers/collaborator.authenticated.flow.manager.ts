@@ -16,7 +16,7 @@ import { CurrentEntityManager } from '@pulse/common/managers'
 import { Entity } from '@pulse/common/types'
 import { RouteName } from '@pulse/common/enums'
 import { COLLABORATOR_BASE_PATH } from '@pulse/common/constants'
-import { BookingManager } from '@pulse/booking/shared/managers/booking'
+import { BookingManager } from '@pulse/booking/managers'
 
 export class CollaboratorAuthenticatedFlowManager {
   // Guard preventing the authenticated flow from running more than once per session.

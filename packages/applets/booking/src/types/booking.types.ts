@@ -44,3 +44,22 @@ export interface BookingConfigurationPayload {
   duration: number // minutes (30, 60, 90, 120)
   availability: DayAvailability[]
 }
+
+export interface AppointmentResponse {
+  id: number
+  startDateTime: string
+  endDateTime: string
+  subject: string
+  counterpartName: string
+  isOnlineMeeting: boolean
+  joinWebUrl: string | null
+  locationName: string | null
+}
+
+export interface AppointmentCountResponse {
+  count: number
+}
+
+export interface BookingEnabledResponse {
+  hasAccess: boolean
+}
