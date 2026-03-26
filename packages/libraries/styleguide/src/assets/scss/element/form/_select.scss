@@ -14,7 +14,7 @@ $select-option: (
   'disabled-color': var(--el-text-color-placeholder),
   'height': 32px,
   'hover-background':  var(--p-jungle-50),
-  'selected-text-color': var(--p-black-rock-900),
+  'selected-text-color': var(--p-text-active),
 );
 
 $select-group: (
@@ -44,8 +44,10 @@ $select-tags-prefix-padding: (
   }
   .el-input {
     .el-select__caret.el-icon {
+      color: var(--p-icon-secondary);
+
       &.is-reverse {
-        color: var(--p-jungle-400);
+        color: var(--p-icon-secondary);
       }
     }
   }
@@ -78,6 +80,25 @@ $select-tags-prefix-padding: (
   }
   .el-select-dropdown {
     box-shadow: none;
+
+    &__header {
+      padding: 10px 16px;
+
+      .el-checkbox {
+        --el-checkbox-height: auto;
+        height: auto;
+        margin-right: 0;
+      }
+
+      .el-checkbox__label {
+        line-height: 1.2;
+      }
+    }
+
+    &__header + .el-scrollbar .el-select-dropdown__list {
+      padding-top: 0;
+    }
+
     .el-select-dropdown__item {
       padding-left: 16px;
       padding-right: 28px;
@@ -90,6 +111,20 @@ $select-tags-prefix-padding: (
 
       &.is-disabled.selected {
         color: var(--el-text-color-placeholder);
+      }
+    }
+
+    &.is-multiple {
+      .el-select-dropdown__item {
+        padding-right: 16px;
+
+        &.selected {
+          color: var(--p-text-active);
+
+          &::after {
+            content: none;
+          }
+        }
       }
     }
   }

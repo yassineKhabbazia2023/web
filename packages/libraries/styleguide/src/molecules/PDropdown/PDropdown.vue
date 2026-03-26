@@ -63,6 +63,23 @@
         }"
       >
         <div
+          v-if="pMultiple === true && pHasRadioButton === false"
+          class="
+            p-dropdown__option-item
+            flex
+            flex--align-items-center
+          "
+        >
+          <PCheckbox
+            :model-value="getIsOptionSelected(internalValue)"
+            :pChecked="getIsOptionSelected(internalValue)"
+            class="p-dropdown__option-item__checkbox margin-right--2"
+          />
+          <span class="p-dropdown__option-item__label">
+            {{ pLabel }}
+          </span>
+        </div>
+        <div
           v-if="pHasRadioButton === true"
           class="
             flex
@@ -115,7 +132,25 @@
           :value="pValue"
           :label="pLabel"
           :disabled="pDisabled"
-        />
+        >
+          <div
+            v-if="pMultiple === true && pHasRadioButton === false"
+            class="
+              p-dropdown__option-item
+              flex
+              flex--align-items-center
+            "
+          >
+            <PCheckbox
+              :model-value="getIsOptionSelected(pValue)"
+              :pChecked="getIsOptionSelected(pValue)"
+              class="p-dropdown__option-item__checkbox margin-right--2"
+            />
+            <span class="p-dropdown__option-item__label">
+              {{ pLabel }}
+            </span>
+          </div>
+        </ElOption>
       </ElOptionGroup>
     </template>
   </ElSelect>
@@ -196,14 +231,45 @@ const internalModelValue = computed({
 })
 
 const internalOptions = computed(() => getInternalOptions(props.pOptions))
+
+function getIsOptionSelected(optionInternalValue: unknown) {
+  if (props.pMultiple === false || Array.isArray(internalModelValue.value) === false) {
+    return false
+  }
+
+  return internalModelValue.value.some((selectedOptionValue) => {
+    if (typeof selectedOptionValue === 'object' && selectedOptionValue !== null) {
+      return selectedOptionValue[props.pValueKey] === optionInternalValue
+    }
+
+    return selectedOptionValue === optionInternalValue
+  })
+}
 </script>
 
 <style lang="scss" scoped>
 .p-dropdown {
+  &__option-item {
+    height: 100%;
+
+    &__checkbox {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    &__label {
+      display: flex;
+      align-items: center;
+      min-height: 100%;
+      line-height: 1.2;
+    }
+  }
+
   &--with-radio-button {
     &__option-item {
       &__radio {
-        color: red;
         :deep(.el-radio__label) {
           display: none;
         }

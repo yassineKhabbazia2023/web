@@ -73,6 +73,22 @@ describe('test PDropdown', () => {
       expect(options).toHaveLength(pOptions.length)
       expect(options?.at(0)?.text()).toBe(pOptions.at(0)?.pLabel)
     })
+    it('should display one checkbox per option when multiple is enabled', () => {
+      const wrapper = createWrapper({ ...propsValue, pMultiple: true })
+      const optionCheckboxes = wrapper.findAll('.p-dropdown__option-item__checkbox')
+
+      expect(optionCheckboxes).toHaveLength(pOptions.length)
+    })
+    it('should display selected option checkbox as checked when multiple is enabled', () => {
+      const wrapper = createWrapper({
+        ...propsValue,
+        pMultiple: true,
+        modelValue: ['a'],
+      })
+      const checkedCheckboxes = wrapper.findAll('.p-dropdown__option-item__checkbox .is-checked')
+
+      expect(checkedCheckboxes).toHaveLength(1)
+    })
     it('should render correctly', () => {
       const component = wrapper.findComponent({ name: 'ElSelect' })
       const expectedProps = {
