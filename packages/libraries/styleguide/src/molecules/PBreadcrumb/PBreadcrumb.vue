@@ -1,21 +1,33 @@
 <template>
-  <ElBreadcrumb :separatorIcon="ArrowRight" :class="breadCrumpSize">
+  <ElBreadcrumb :separatorIcon="ArrowRight" :class="['p-breadcrumb', breadCrumpSize]">
     <ElBreadcrumbItem
       v-for="(item, index) in items"
       :key="index"
       data-testid="breadcrumb-item"
-      @click="breadcrumbItemClicked(item.pId)"
+      @click="breadcrumbItemClicked(item)"
     >
       <PTooltip
-        :pContent="getFullPathBreadcrumItem(item.pId)"
+        :pContent="getFullPathBreadcrumItem(item)"
         :pPlacement="placementOptions[0].value"
-        :disabled="item.pId === -1"
+        :disabled="isTooltipDisabled(item)"
       >
         <span
-          class="cursor-pointer"
-          :class="{ 'font-semibold text-color--neutral-gray-900': index === items.length - 1 }"
+          v-if="item.isEllipsis !== true"
+          data-testid="breadcrumb-item-text"
+          class="p-breadcrumb__text"
+          :class="{ 'p-breadcrumb__text--current': isCurrentItem(item, index) }"
         >
           {{ item.pText }}
+        </span>
+        <span
+          v-else
+          data-testid="breadcrumb-ellipsis-trigger"
+          class="p-breadcrumb__trigger"
+        >
+          <PIcon
+            pName="threeDots"
+            class="p-breadcrumb__trigger-icon"
+          />
         </span>
       </PTooltip>
     </ElBreadcrumbItem>
@@ -26,9 +38,10 @@
 import { computed } from 'vue'
 import { ElBreadcrumb, ElBreadcrumbItem } from 'element-plus'
 import { ArrowRight } from '@element-plus/icons-vue'
+import PIcon from '../../atoms/PIcon'
 import PTooltip from '../../atoms/PTooltip'
 import placementOptions from '../../constants/placementOptions'
-import type { PBreadcrumbProps } from './PBreadcrumbTypes'
+import type { DisplayBreadcrumbItem, PBreadcrumbProps } from './PBreadcrumbTypes'
 
 const props = defineProps<PBreadcrumbProps>()
 const emit = defineEmits([
@@ -36,11 +49,11 @@ const emit = defineEmits([
   'folder-creation-initiated',
 ])
 
-const items = computed(() => {
+const items = computed<DisplayBreadcrumbItem[]>(() => {
   if (props.pElements.length > 6) {
     return [
       ...props.pElements.slice(0, 3),
-      { pId: -1, pText: '...' },
+      { pId: -1, pText: '...', isEllipsis: true },
       ...props.pElements.slice(-3),
     ]
   } else {
@@ -48,18 +61,26 @@ const items = computed(() => {
   }
 })
 
-const breadcrumbItemClicked = (id: number) => {
-  if (id !== -1) {
-    emit('p-breadcrumb-item-click', id)
+const breadcrumbItemClicked = (item: DisplayBreadcrumbItem) => {
+  if (item.pId !== -1 && item.isEllipsis !== true) {
+    emit('p-breadcrumb-item-click', item.pId)
   }
 }
 
-const getFullPathBreadcrumItem = (id: number) => {
-  if (id === -1) {
+const isTooltipDisabled = (item: DisplayBreadcrumbItem) => {
+  if (item.isEllipsis === true || item.pId === -1) {
+    return true
+  }
+
+  return false
+}
+
+const getFullPathBreadcrumItem = (item: DisplayBreadcrumbItem) => {
+  if (item.isEllipsis === true || item.pId === -1) {
     return ''
   }
 
-  const element = props.pElements.find((item) => item.pId === id)
+  const element = props.pElements.find((breadcrumbItem) => breadcrumbItem.pId === item.pId)
 
   if (!element) {
     return ''
@@ -69,8 +90,16 @@ const getFullPathBreadcrumItem = (id: number) => {
 
   return props.pElements
     .slice(0, index + 1)
-    .map((item) => item.pText)
+    .map((breadcrumbItem) => breadcrumbItem.pText)
     .join(' > ')
+}
+
+const isCurrentItem = (item: DisplayBreadcrumbItem, index: number) => {
+  if (item.isEllipsis === true || item.pId === -1) {
+    return false
+  }
+
+  return index === items.value.length - 1
 }
 
 const breadCrumpSize = computed(() => {

@@ -3,6 +3,10 @@ export interface BreadcrumbItems {
   readonly pText: string
 }
 
+export interface DisplayBreadcrumbItem extends BreadcrumbItems {
+  isEllipsis?: boolean
+}
+
 export interface PBreadcrumbProps {
   pElements: BreadcrumbItems[]
   pSize?: string
