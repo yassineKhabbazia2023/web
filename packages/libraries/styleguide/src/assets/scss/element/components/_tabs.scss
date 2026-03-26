@@ -7,7 +7,7 @@
     overflow: visible;
   }
 
-  &:not(.p-tabs--type-card, .p-tabs--type-icon) {
+  &:not(.p-tabs--card, .p-tabs--type-icon) {
     > #{$self}__header {
       --el-tabs-header-height: 45px;
       
@@ -22,6 +22,14 @@
         padding: 0 16px;
         box-sizing: content-box;
         margin-left: -16px;
+      }
+
+      &.is-left,
+      &.is-right {
+        #{$self}__active-bar {
+          padding: 0;
+          margin-left: 0;
+        }
       }
 
       #{$self}__item {
@@ -48,22 +56,26 @@
     }
   }
 
-  &.p-tabs--type-card {
+  &.p-tabs--card {
     > #{$self}__header {
-      border-color: var(--p-gray-100);
+      border: none;
 
       #{$self}__nav {
-        border-radius: var(--el-border-radius-base) var(--el-border-radius-base) 0 0;
-        border-color: var(--p-gray-100);
+        border: none;
+        border-radius: var(--el-border-radius-base);
       }
 
       #{$self}__item {
         padding: 0 16px;
-        margin-bottom: -1px;
-        border-color: var(--p-gray-100);
+        margin-bottom: 0;
+        border: none;
+        background: var(--p-surface-neutral-lighter);
+        color: var(--p-text-heading);
         font-weight: 400;
 
         &.is-active {
+          background: var(--p-surface-state-active);
+          color: var(--p-text-white);
           font-weight: 600;
         }
       }

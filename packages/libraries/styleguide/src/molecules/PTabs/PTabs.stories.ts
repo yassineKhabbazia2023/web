@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import PTabs from './PTabs.vue'
 import PTabPane from '../../atoms/PTabPane'
-import { PTabsProps } from './PTabsTypes'
+import type { PTabsProps } from './PTabsTypes'
 
 const meta: Meta<typeof PTabs> = {
   title: 'Molecules/PTabs',
@@ -18,9 +18,6 @@ const meta: Meta<typeof PTabs> = {
   argTypes: {
     modelValue: { control: 'text', description: 'Nom de l’onglet actif' },
     pType: { control: 'select', options: ['', 'card', 'icon'], description: 'Style des onglets' },
-    pClosable: { control: 'boolean', description: 'Active la fermeture des onglets' },
-    pAddable: { control: 'boolean', description: 'Affiche le bouton d’ajout' },
-    pEditable: { control: 'boolean', description: 'Active l’édition (ajout/suppression)' },
     pTabPosition: { control: 'select', options: ['top', 'right', 'bottom', 'left'], description: 'Position des onglets' },
     pStretch: { control: 'boolean', description: 'Etire les onglets pour occuper toute la largeur' },
     pBeforeLeave: { control: false, description: 'Hook asynchrone avant de quitter un onglet' },
@@ -28,9 +25,6 @@ const meta: Meta<typeof PTabs> = {
   args: {
     modelValue: '1',
     pType: '',
-    pClosable: false,
-    pAddable: false,
-    pEditable: false,
     pTabPosition: 'top',
     pStretch: false,
   },

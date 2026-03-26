@@ -3,9 +3,6 @@
     v-model="selectedTabName"
     :type="tab.type"
     :class="cssClasses"
-    :closable="pClosable"
-    :addable="pAddable"
-    :editable="pEditable"
     :tabPosition="pTabPosition"
     :stretch="pStretch"
     :beforeLeave="pBeforeLeave"
@@ -23,9 +20,6 @@ const nativeTypes = ['card', 'border-card']
 
 const props = withDefaults(defineProps<PTabsProps>(), {
   pType: '',
-  pClosable: false,
-  pAddable: false,
-  pEditable: false,
   pTabPosition: 'top',
   pStretch: false,
   pBeforeLeave: undefined,

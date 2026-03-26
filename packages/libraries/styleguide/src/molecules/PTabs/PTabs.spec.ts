@@ -8,9 +8,6 @@ import { nextTick } from 'vue'
 const propsValue: PTabsProps = {
   modelValue: 'a tab',
   pType: 'card',
-  pClosable: true,
-  pAddable: true,
-  pEditable: true,
   pTabPosition: 'top',
   pStretch: false,
   pBeforeLeave: vi.fn(),
@@ -28,12 +25,7 @@ describe('pTabs', () => {
     const expectedProps = {
       modelValue: propsValue.modelValue,
       type: propsValue.pType,
-      closable: propsValue.pClosable,
-
-      addable: propsValue.pAddable,
-      editable: propsValue.pEditable,
       tabPosition: propsValue.pTabPosition,
-
       stretch: propsValue.pStretch,
       beforeLeave: propsValue.pBeforeLeave,
     }
