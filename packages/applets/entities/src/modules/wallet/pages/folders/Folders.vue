@@ -202,7 +202,7 @@ import {
 } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
-import { AmplitudeService, TrackingCenter } from '@pulse/common/services/amplitude'
+import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager } from '@pulse/common/managers'
 import type { Entity, SortingCriteria } from '@pulse/common/types'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
@@ -236,6 +236,7 @@ import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import { fetchAccountOperations } from '@entities/services/registry'
 import { useSort } from '@pulse/common/composables/sort'
+import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -454,6 +455,7 @@ const handleSearchValueSubmitted = (searchValue: string) => {
 }
 
 const handlePageRangeChanged = (pageRange: number) => {
+  WalletTrackingManager.trackPaginationSizeChanged(pageRange)
   searchCriteria.value.currentPage = 1
   searchCriteria.value.limit = pageRange
 }
@@ -512,6 +514,7 @@ const handleAddFavorite = async (accountId: number, isFavorite: boolean) => {
 }
 
 function onUpdateCurrentPage(currentPage: number) {
+  WalletTrackingManager.trackPaginationPageClicked(currentPage)
   searchCriteria.value.currentPage = currentPage
 }
 
@@ -569,7 +572,6 @@ const onClickDeploy = async (accountId: number, accountNumber: string, companyNa
   openOffersDrawer.value = true
 }
 const onClickFolder = (entityId: string) => {
-  TrackingCenter.trackHomepageConsulted()
   router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
 const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {

@@ -1,4 +1,4 @@
-import { AmplitudeEvent, AmplitudeFeatureName } from '@pulse/common/enums'
+import { AmplitudeEvent, AmplitudeFeatureName, AmplitudeFeatureLocalisation } from '@pulse/common/enums'
 import { AmplitudeService } from './amplitude.service'
 
 /**
@@ -9,9 +9,15 @@ export class TrackingCenter {
   /**
    * Track homepage consultation event (Feature Consulted / homepage)
    */
-  static trackHomepageConsulted() {
-    AmplitudeService.track(AmplitudeEvent.FEATURE_CONSULTED, {
+  static trackHomepageConsulted(localisation?: AmplitudeFeatureLocalisation) {
+    const properties: Record<string, string> = {
       feature_name: AmplitudeFeatureName.HOMEPAGE,
-    })
+    }
+
+    if (localisation !== undefined) {
+      properties.feature_localisation_consultation = localisation
+    }
+
+    AmplitudeService.track(AmplitudeEvent.FEATURE_CONSULTED, properties)
   }
 }

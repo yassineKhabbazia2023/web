@@ -50,6 +50,8 @@ import { type FilterOption } from '@pulse/styleguide/types'
 import { fetchEntitiesStatistics } from '@entities/services/wallet'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import { getOnboardingFilters, getUserConnexionFilters } from './FiltersUtils'
+import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
+import { STATUS_TRACKING_LABELS } from './filters.const'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -96,7 +98,11 @@ const FILTER_LABELS: Record<string, string> = {
 }
 
 function onToggleFilter(filterKey: EntityStatus | undefined, isSelected: boolean) {
-  if (isSelected && filterKey) {
+  if (isSelected && filterKey !== undefined) {
+    const trackingLabel = STATUS_TRACKING_LABELS[filterKey]
+    if (trackingLabel !== undefined) {
+      WalletTrackingManager.trackStatusClicked(trackingLabel)
+    }
     activeFilters.value = [filterKey]
     emit('filterByStatus', filterKey)
   } else {

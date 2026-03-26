@@ -38,7 +38,7 @@ import { computed } from 'vue'
 import { PAvatar, PIcon } from '@pulse/styleguide/components'
 import type { EntityAvatarProps } from './entity-avatar.type'
 import type { Entity } from '@pulse/common/types'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam, AmplitudeFeatureLocalisation } from '@pulse/common/enums'
 import { TrackingCenter } from '@pulse/common/services/amplitude'
 import EntityItem from '../entity-item'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
@@ -49,7 +49,7 @@ const emit = defineEmits<{
 }>()
 
 const onEntitySelected = (entity: Entity) => {
-  TrackingCenter.trackHomepageConsulted()
+  TrackingCenter.trackHomepageConsulted(AmplitudeFeatureLocalisation.NAVIGATION)
   emit('entity-selected', entity)
 }
 

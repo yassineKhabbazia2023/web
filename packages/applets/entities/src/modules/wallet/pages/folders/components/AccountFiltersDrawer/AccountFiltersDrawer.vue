@@ -63,6 +63,7 @@ import type { AccountFiltersDrawerProps } from './account-filters-drawer.types'
 import { useUserStore } from '@pulse/common/stores'
 import type { AccountFilters } from '@entities/types'
 import { storeToRefs } from 'pinia'
+import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -113,6 +114,7 @@ const hasActiveFilters = defineModel<boolean>('hasActiveFilters', {
   default: false,
 })
 const applyAccountFilters = () => {
+  WalletTrackingManager.trackCustomFilterValidated(internalFilters.value)
   hasActiveFilters.value = true
   emit('apply-filters', internalFilters.value)
 }

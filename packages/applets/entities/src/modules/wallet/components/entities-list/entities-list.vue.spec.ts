@@ -7,8 +7,10 @@ import {
   CurrentEntityManagerMock,
   getStoreMock,
   CurrentUserManagerMock,
+  TrackingCenterMock,
 } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
+import { AmplitudeFeatureLocalisation } from '@pulse/common/enums'
 
 import EntitiesList from '.'
 
@@ -48,11 +50,22 @@ vi.mock('@pulse/common/api', () => ({
 
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
+  TrackingCenter: TrackingCenterMock,
 }))
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentEntityManager: CurrentEntityManagerMock,
   CurrentUserManager: CurrentUserManagerMock,
+}))
+
+const walletTrackingManagerMock = vi.hoisted(() => ({
+  trackFavoriteRequest: vi.fn(),
+  trackColumnSortRequested: vi.fn(),
+  trackFolderMenuAction: vi.fn(),
+}))
+
+vi.mock('@entities/managers/wallet-tracking/wallet-tracking.manager', () => ({
+  WalletTrackingManager: walletTrackingManagerMock,
 }))
 
 // Create a stub for PResponsiveTable that renders content in desktop mode
@@ -139,6 +152,10 @@ describe('entities-list', () => {
   afterEach(() => {
     postMock.mockReset()
     postMock.mockClear()
+    walletTrackingManagerMock.trackFavoriteRequest.mockClear()
+    walletTrackingManagerMock.trackColumnSortRequested.mockClear()
+    walletTrackingManagerMock.trackFolderMenuAction.mockClear()
+    TrackingCenterMock.trackHomepageConsulted.mockClear()
     if (wrapper) {
       wrapper.unmount()
     }
@@ -148,11 +165,12 @@ describe('entities-list', () => {
     expect(wrapper.findComponent({ name: 'PResponsiveTable' }).exists()).toBe(true)
   })
 
-  it('calls handleAddFavorite when favorite button is clicked', async () => {
+  it('calls handleAddFavorite and tracks favorite request when favorite button is clicked', async () => {
     const btnFavorite = wrapper.find('[data-testid="wallet-remove-favorite"]')
     expect(btnFavorite.exists()).toBe(true)
     await btnFavorite.trigger('click')
     expect(handleFavorites).toHaveBeenCalled()
+    expect(walletTrackingManagerMock.trackFavoriteRequest).toHaveBeenCalledExactlyOnceWith(true)
   })
 
   it('emits click-deploy when toolbox deploy action is triggered', async () => {
@@ -167,7 +185,7 @@ describe('entities-list', () => {
     ])
   })
 
-  it('emits access when toolbox access action is triggered', async () => {
+  it('emits access when toolbox access action is triggered without Feature Consulted tracking', async () => {
     const walletToolbox = wrapper.findComponent({ name: 'PToolbox' })
     expect(walletToolbox.exists()).toBe(true)
     walletToolbox.vm.$emit('p-toolbox-item-clicked', 'access')
@@ -175,13 +193,16 @@ describe('entities-list', () => {
 
     const { accountId } = mockTableData[0]
     expect(wrapper.emitted('access')).toStrictEqual([[accountId]])
+    expect(TrackingCenterMock.trackHomepageConsulted).not.toHaveBeenCalled()
+    expect(walletTrackingManagerMock.trackFolderMenuAction).toHaveBeenCalledOnce()
   })
 
-  it('emits access when company name link is clicked', async () => {
+  it('emits access and tracks Feature Consulted when company name link is clicked', async () => {
     const accessLink = wrapper.find('[data-testid=account-access-link]')
     expect(accessLink.exists()).toBe(true)
     await accessLink.trigger('click')
     expect(wrapper.emitted('access')).toStrictEqual([[testEntity.accountId]])
+    expect(TrackingCenterMock.trackHomepageConsulted).toHaveBeenCalledExactlyOnceWith(AmplitudeFeatureLocalisation.PORTEFEUILLE)
   })
 
   it('emits selectedFolder when checkbox is changed', async () => {

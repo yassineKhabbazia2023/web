@@ -60,7 +60,7 @@
               text-overflow--ellipsis
             "
             data-testid="account-access-link"
-            @click="onToolboxItemClicked('access', scope.row)"
+            @click="onDirectFolderAccess(scope.row.accountId)"
           >
             {{ scope.row.name }}
           </a>
@@ -152,6 +152,7 @@
             :disabled="isToolboxDisabled"
             :pElements="menuElementsCollaborator(scope.row.deploymentStatus.text)"
             data-testid="wallet-actions-toolbox"
+            @visible-change="onToolboxVisibleChange"
             @p-toolbox-item-clicked="($event: string) => onToolboxItemClicked($event, scope.row)"
           >
             <PButton
@@ -249,7 +250,11 @@ import type { SelectedFolder } from '../../pages/folders/components/DelegationDr
 import { ACTION_PERMISSIONS, GLOBAL_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { CurrentUserManager } from '@pulse/common/managers'
-import { SortDirection } from '@pulse/common/enums'
+import { SortDirection, AmplitudeFeatureLocalisation } from '@pulse/common/enums'
+import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
+import { WalletMenuActionValue } from '@entities/managers/wallet-tracking/wallet-tracking.enum'
+import { TrackingCenter } from '@pulse/common/services/amplitude'
+import { SORT_COLUMN_TRACKING_MAP, MENU_ACTION_TRACKING_MAP } from './entities-list.const'
 
 
 const { t } = useI18n({
@@ -296,6 +301,7 @@ const props = withDefaults(defineProps<EntitiesListProps>(), {
 
 const callHandleAddFavorite = (accountId: number, isFavorite: boolean) => {
   if (props.handleAddFavorite) {
+    WalletTrackingManager.trackFavoriteRequest(isFavorite)
     props.handleAddFavorite(accountId, isFavorite)
   }
 }
@@ -384,6 +390,11 @@ const emit = defineEmits<{
 }>()
 
 const handleSort = (data: SortChangeEventData) => {
+  const trackingColumn = SORT_COLUMN_TRACKING_MAP[data.prop]
+  if (trackingColumn !== undefined) {
+    WalletTrackingManager.trackColumnSortRequested(trackingColumn)
+  }
+
   emit('sort-account', {
     field: data.prop,
     descending: data.order === SortDirection.DESCENDING,
@@ -413,8 +424,24 @@ watch(() => props.data, () => {
   selectRowWhenTableFullyLoaded(rowToSelect)
 })
 
+const onToolboxVisibleChange = (isVisible: boolean) => {
+  if (isVisible) {
+    WalletTrackingManager.trackFolderMenuAction(WalletMenuActionValue.MENU_OPENED)
+  }
+}
+
+const onDirectFolderAccess = (accountId: string) => {
+  TrackingCenter.trackHomepageConsulted(AmplitudeFeatureLocalisation.PORTEFEUILLE)
+  emit('access', accountId)
+}
+
 const onToolboxItemClicked = (action: string, row: any) => {
   const { accountId, name, accountNumber, isCustomerRelation } = row
+
+  const trackingAction = MENU_ACTION_TRACKING_MAP[action]
+  if (trackingAction !== undefined) {
+    WalletTrackingManager.trackFolderMenuAction(trackingAction)
+  }
 
   if (action === 'deploy') {
     emit('click-deploy', accountId, accountNumber, name)
