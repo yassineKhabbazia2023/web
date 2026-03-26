@@ -35,8 +35,8 @@ describe('pPastille', () => {
         expectedClassBinding: `${componenRootCSSClass}--type-warning`,
       },
       {
-        pType: 'persian',
-        expectedClassBinding: `${componenRootCSSClass}--type-persian`,
+        pType: 'dark-green',
+        expectedClassBinding: `${componenRootCSSClass}--type-dark-green`,
       },
     ])(
       'should always bind class based on current type : $pType',

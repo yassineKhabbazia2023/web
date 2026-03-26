@@ -208,40 +208,47 @@ $tag-padding: (
 
 // CSS for component Pastille
 .el-tag.p-pastille {
-  background: var(--p-jungle-50);
-  color: var(--p-jungle-400);
-  border: var(--p-jungle-75);
   font-weight: 600;
   padding: 4px;
   min-width: 22px;
 
   &--type-warning,
-  &--type-persian,
+  &--type-dark-green,
   &--type-white,
   &--type-default {
     &.p-pastille--disabled {
       background: var(--p-gray-50);
-      border: var(--p-gray-100);
+      border-color: var(--p-gray-100);
       color: var(--p-gray-300);
     }
   }
 
+  &--type-default {
+    background: var(--p-surface-state-press);
+    border-color: var(--p-surface-state-press);
+    color: var(--p-surface-state-action-hover);
+  }
+
   &--type-warning {
     background: var(--p-red-500);
-    border: var(--p-red-500);
+    border-color: var(--p-red-500);
     color: var(--p-white);
   }
 
-  &--type-persian {
+  &--type-dark-green {
     background: var(--p-jungle-400);
-    border: var(--p-jungle-400);
+    border-color: var(--p-jungle-400);
     color: var(--p-white);
   }
 
   &--type-white {
     background: var(--p-white);
     border: none;
-    color: inherit;
+    color: var(--p-text-body);
+
+    .p-icon {
+      color: var(--p-icon-secondary);
+    }
   }
 
   &--size-small {

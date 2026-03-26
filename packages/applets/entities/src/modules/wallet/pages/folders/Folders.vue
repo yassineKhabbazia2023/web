@@ -89,7 +89,7 @@
         <Transition name="fade">
           <PPastille
             v-if="accountFiltersCount > 0"
-            pType="persian"
+            pType="dark-green"
             pSize="small"
             class="margin-left--2"
             data-testid="account-deploy__filter-count"

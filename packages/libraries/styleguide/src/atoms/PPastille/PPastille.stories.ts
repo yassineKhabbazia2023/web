@@ -16,7 +16,7 @@ const meta: Meta<typeof PPastille> = {
   argTypes: {
     pType: {
       control: 'select',
-      options: ['default', 'warning', 'persian', 'white'],
+      options: ['default', 'warning', 'dark-green', 'white'],
       description: 'Type de style de la pastille',
     },
     pSize: {
@@ -71,7 +71,7 @@ export const DifferentTypes: Story = {
       <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
         <PPastille pType="default">1</PPastille>
         <PPastille pType="warning">12</PPastille>
-        <PPastille pType="persian">1234</PPastille>
+        <PPastille pType="dark-green">1234</PPastille>
         <PPastille pType="white">1</PPastille>
       </div>
     `,
@@ -115,7 +115,7 @@ export const WithIcons: Story = {
       <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
         <PPastille pIconName="check" pType="default" />
         <PPastille pIconName="exclamationTriangle" pType="warning" />
-        <PPastille pIconName="x" pType="persian" />
+        <PPastille pIconName="x" pType="dark-green" />
         <PPastille pIconName="infoCircle" pType="white" />
       </div>
     `,
@@ -145,8 +145,8 @@ export const States: Story = {
           <PPastille pType="warning" :pDisabled="true">2</PPastille>
         </div>
         <div style="display: flex; gap: 16px; align-items: center;">
-          <PPastille pIconName="check" pType="persian"></PPastille>
-          <PPastille pIconName="check" pType="persian" :pDisabled="true"></PPastille>
+          <PPastille pIconName="check" pType="dark-green"></PPastille>
+          <PPastille pIconName="check" pType="dark-green" :pDisabled="true"></PPastille>
         </div>
         <div style="display: flex; gap: 16px; align-items: center;">
           <PPastille pIconName="check" pType="white">3</PPastille>
