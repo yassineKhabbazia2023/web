@@ -1,5 +1,5 @@
 {
-  "extends": "../packages/@config/tsconfig.base.json",
+  "extends": "../packages/@config/tsconfig.base.app",
   "include": [
     "**/*.ts",
     "**/*.vue",
@@ -21,54 +21,6 @@
     "types": [
       "vite/client",
       "vitest/globals"
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "@common/*": [
-        "../packages/libraries/common/src/*"
-      ],
-      "@toolbox/*": [
-        "../packages/libraries/toolbox/src/*"
-      ],
-      "@entities/*": [
-        "../packages/applets/entities/src/*"
-      ],
-      "@ged/*": [
-        "../packages/applets/ged/src/*"
-      ],
-      "@launcher/*": [
-        "../packages/applets/launcher/src/*"
-      ],
-      "@login/*": [
-        "../packages/applets/login/src/*"
-      ],
-      "@mandate/*": [
-        "../packages/applets/mandate/src/*"
-      ],
-      "@offers-catalog/*": [
-        "../packages/applets/offers-catalog/src/*"
-      ],
-      "@pennylane/*": [
-        "../packages/applets/pennylane/src/*"
-      ],
-      "@powerbi/*": [
-        "../packages/applets/powerbi/src/*"
-      ],
-      "@styleguide/*": [
-        "../packages/libraries/styleguide/src/*"
-      ],
-      "@widgets/*": [
-        "../packages/libraries/widgets/src/*"
-      ],
-      "@pulse/styleguide": [
-        "../packages/libraries/styleguide/src/main.ts"
-      ],
-      "@pulse/styleguide/*": [
-        "../packages/libraries/styleguide/src/*"
-      ],
-      "~storybook/*": [
-        "./*"
-      ]
-    }
+    ]
   }
 }

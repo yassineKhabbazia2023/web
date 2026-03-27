@@ -4,7 +4,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { useRouter } from 'vue-router'
 import { RouteParam, CustomerPermission, RouteName, Layout, AccountType } from '@pulse/common/enums'
 import { useUserStore, useCurrentEntityStore, usePermissionsStore } from '@pulse/common/stores'
-import { getMockedUser, getMockedEntitySummary, getMockedSubscription } from '@pulse/common/mocks'
+import { getMockedUser, getMockedEntitySummary, getMockedSubscription, MockEntityData } from '@pulse/common/mocks'
 import { LAYOUT_META } from '@pulse/common/constants'
 import type { Entity } from '@pulse/common/types'
 import type { UserConfig } from '@pulse/shared/types'
@@ -16,9 +16,11 @@ import { entityCustomerRoutes } from './router/routes/entity/customer.entity.rou
 import { walletCustomerRoutes } from './router/routes/customer.wallet.routes'
 import { landingCustomerRoutes } from './router/routes/customer.landing.routes'
 import { registerCustomerNavigationItems } from './router/registry/customer.navigation.registry'
+import { registerCustomerWalletTabs } from './router/registry/customer.wallet.registry'
 
-// Register navigation items once for all stories
+// Register navigation items and wallet tabs once for all stories
 registerCustomerNavigationItems()
+registerCustomerWalletTabs()
 
 const meta: Meta<typeof CustomerHomeExperience> = {
   title: 'Apps/Customer',
@@ -46,20 +48,25 @@ function stripGuards(routes: RouteRecordRaw[]): RouteRecordRaw[] {
   })
 }
 
+function ensureLeadingSlash(path: string): string {
+  return path.startsWith('/') ? path : `/${path}`
+}
+
 // Build customer routes for Storybook (without guards)
 const storyRoutes: RouteRecordRaw[] = [
   ...stripGuards(landingCustomerRoutes).map(route => ({
     ...route,
-    path: `/${route.path}`,
+    path: ensureLeadingSlash(route.path),
     meta: { ...route.meta, [LAYOUT_META]: Layout.MAIN },
   })),
   ...stripGuards(entityCustomerRoutes).map(route => ({
     ...route,
+    path: ensureLeadingSlash(route.path),
     meta: { ...route.meta, [LAYOUT_META]: Layout.MAIN },
   })),
   ...stripGuards(walletCustomerRoutes).map(route => ({
     ...route,
-    path: `/${route.path}`,
+    path: ensureLeadingSlash(route.path),
     meta: { ...route.meta, [LAYOUT_META]: Layout.MAIN },
   })),
 ]
@@ -74,20 +81,20 @@ const monoEntity = getMockedEntitySummary({
   isSignatory: true,
 })
 
-// Multiple entities for multi-entity customer (IDs match mock handlers)
+// Multiple entities for multi-entity customer - IDs must match MockEntityData used by MSW handlers
 const multiEntityFirst = getMockedEntitySummary({
-  accountId: 1,
-  accountNumber: 'V900000547',
-  legalName: 'Acme Corp',
+  accountId: MockEntityData.BASIC.accountId,
+  accountNumber: MockEntityData.BASIC.accountNumber,
+  legalName: MockEntityData.BASIC.legalName,
   subscriptions: [],
   isClarityVisible: false,
   isSignatory: true,
 })
 
 const multiEntitySecond = getMockedEntitySummary({
-  accountId: 2,
-  accountNumber: 'V900000546',
-  legalName: 'Tech Solutions Ltd',
+  accountId: MockEntityData.LEGACY_GED.accountId,
+  accountNumber: MockEntityData.LEGACY_GED.accountNumber,
+  legalName: MockEntityData.LEGACY_GED.legalName,
   subscriptions: [],
   isClarityVisible: true,
   isSignatory: false,
@@ -98,15 +105,15 @@ const pennylaneSubscription = getMockedSubscription({
   subscriptionId: 504,
   offerId: 8,
   status: 'validated',
-  accountId: 3,
+  accountId: MockEntityData.PENNYLANE.accountId,
   offerCode: 'Pennylane',
   offerName: 'RYDGE Conseil x Pennylane',
 })
 
 const multiEntityThird = getMockedEntitySummary({
-  accountId: 3,
-  accountNumber: 'V900000545',
-  legalName: 'Global Services Inc',
+  accountId: MockEntityData.PENNYLANE.accountId,
+  accountNumber: MockEntityData.PENNYLANE.accountNumber,
+  legalName: MockEntityData.PENNYLANE.legalName,
   subscriptions: [pennylaneSubscription],
   isClarityVisible: false,
   isSignatory: true,
@@ -145,6 +152,7 @@ function useMonoEntitySetup() {
       default: toEntity(monoEntity),
     },
   }))
+  userStore.setIsSingleEntity(true)
   userStore.setFavoriteEntities([toEntity(monoEntity)])
 
   // Setup current entity store
@@ -240,9 +248,9 @@ const pennylanePermissions = [
 
 // Permissions per entity
 const multiEntityPermissionsMap: Record<number, CustomerPermission[]> = {
-  1: baseMultiEntityPermissions,
-  2: baseMultiEntityPermissions,
-  3: [...baseMultiEntityPermissions, ...pennylanePermissions],
+  [MockEntityData.BASIC.accountId]: baseMultiEntityPermissions,
+  [MockEntityData.LEGACY_GED.accountId]: baseMultiEntityPermissions,
+  [MockEntityData.PENNYLANE.accountId]: [...baseMultiEntityPermissions, ...pennylanePermissions],
 }
 
 const allMultiEntities = [multiEntityFirst, multiEntitySecond, multiEntityThird]
