@@ -1,3 +1,11 @@
+## Source Control
+
+- This project is hosted on **Azure DevOps**, NOT GitHub
+- **Never use the `gh` CLI** — it is not installed and will always fail
+- **Never use GitHub-specific APIs or tools** (gh pr, gh issue, gh api, etc.)
+- To inspect branch changes, use only **git commands** (`git log`, `git diff`, `git show`, etc.)
+- To identify PR details, rely on the current branch name and git history — do not attempt to query any external PR API
+
 ## Architecture Overview
 
 ### Monorepo Structure
