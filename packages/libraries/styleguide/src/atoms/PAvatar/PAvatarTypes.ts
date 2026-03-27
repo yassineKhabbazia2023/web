@@ -18,6 +18,7 @@ export interface PAvatarProps {
     | 'persian-light'
     | 'persian-600'
     | 'persian-400'
+    | 'prospect'
   pFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down'
   pSrc?: string
   pShape?: 'circle' | 'square'

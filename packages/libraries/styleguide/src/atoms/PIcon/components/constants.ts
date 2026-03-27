@@ -1167,6 +1167,12 @@ export const pulseGeneratedIcons: {
     category: 'Polychrome',
   },
   {
+    name: 'rydgeMonogram',
+    componentName: 'PIRydgeMonogram',
+    fileName: 'rydge-monogram.svg',
+    category: 'Polychrome',
+  },
+  {
     name: 'shieldLockDuotone',
     componentName: 'PIShieldLockDuotone',
     fileName: 'shield-lock-duotone.svg',

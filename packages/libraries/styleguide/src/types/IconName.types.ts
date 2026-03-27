@@ -172,6 +172,7 @@ export type IconName =
 'pulse' |
 'questionCircle' |
 'rocket' |
+'rydgeMonogram' |
 'scales' |
 'scissors' |
 'search' |

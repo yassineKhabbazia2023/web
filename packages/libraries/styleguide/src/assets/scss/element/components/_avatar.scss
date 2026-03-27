@@ -159,6 +159,12 @@ $avatar-size: (
       color: var(--p-white);
     }
 
+    &--color-prospect {
+      border-color: var(--p-jungle-100);
+      background: var(--p-jungle-100);
+      color: var(--p-black-rock-900);
+    }
+
     &--selected {
       opacity: 0.6;
     }

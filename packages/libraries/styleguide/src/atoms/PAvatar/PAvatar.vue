@@ -17,7 +17,11 @@
       :shape="pShape"
       data-testid="avatar"
     >
-      <slot />
+      <PIcon
+        v-if="pRole === AvatarRoles.PROSPECT"
+        pName="rydgeMonogram"
+      />
+      <slot v-else />
     </ElAvatar>
   </div>
 </template>
@@ -53,6 +57,7 @@ const pClassMapper = computed(() => {
 const AVATAR_ROLES_COLORS: Record<AvatarRoles, PAvatarProps['pColor']> = {
   [AvatarRoles.COLLAB]: 'fuschia',
   [AvatarRoles.CLIENT]: 'persian-600',
+  [AvatarRoles.PROSPECT]: 'prospect',
 }
 
 const getAvatarColor = () => {

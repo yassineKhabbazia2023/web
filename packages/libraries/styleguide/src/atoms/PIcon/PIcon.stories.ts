@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { computed, ref } from 'vue'
 import PIcon from './PIcon.vue'
 import type { IconName } from '../../types/IconName.types'
 import { pulseGeneratedIcons } from './components/constants'
@@ -210,53 +211,102 @@ export const AllAvailableIcons: Story = {
   render: () => ({
     components: { PIcon },
     setup() {
-      // Group icons by category
-      const iconsByCategory = pulseGeneratedIcons.reduce((acc, icon) => {
-        if (!acc[icon.category]) {
-          acc[icon.category] = []
-        }
-        acc[icon.category].push(icon)
-        return acc
-      }, {} as Record<string, typeof pulseGeneratedIcons>)
+      const search = ref('')
 
-      // Sort categories alphabetically, but put "Essentials" first
-      const sortedCategories = Object.keys(iconsByCategory).sort((a, b) => {
-        if (a === 'Essentials') {
-          return -1
+      const filteredIcons = computed(() => {
+        const query = search.value.toLowerCase()
+        if (query === '') {
+          return pulseGeneratedIcons
         }
-        if (b === 'Essentials') {
-          return 1
-        }
-        return a.localeCompare(b)
+        return pulseGeneratedIcons.filter(icon => icon.name.toLowerCase().includes(query))
       })
 
-      return { iconsByCategory, sortedCategories, totalIcons: pulseGeneratedIcons.length }
+      // Group icons by category
+      const iconsByCategory = computed(() => {
+        return filteredIcons.value.reduce((acc, icon) => {
+          if (acc[icon.category] === undefined) {
+            acc[icon.category] = []
+          }
+          acc[icon.category].push(icon)
+          return acc
+        }, {} as Record<string, typeof pulseGeneratedIcons>)
+      })
+
+      // Sort categories alphabetically, but put "Essentials" first
+      const sortedCategories = computed(() => {
+        return Object.keys(iconsByCategory.value).sort((a, b) => {
+          if (a === 'Essentials') {
+            return -1
+          }
+          if (b === 'Essentials') {
+            return 1
+          }
+          return a.localeCompare(b)
+        })
+      })
+
+      const copiedIcon = ref<string | null>(null)
+
+      function copyIconName(name: string) {
+        navigator.clipboard.writeText(name)
+        copiedIcon.value = name
+        setTimeout(() => {
+          if (copiedIcon.value === name) {
+            copiedIcon.value = null
+          }
+        }, 1500)
+      }
+
+      return { search, iconsByCategory, sortedCategories, filteredIcons, totalIcons: pulseGeneratedIcons.length, copiedIcon, copyIconName }
     },
     template: `
       <div style="padding: 20px;">
         <h2 style="margin-bottom: 24px; color: #333; font-family: system-ui;">
           Toutes les icônes disponibles ({{ totalIcons }} icônes)
         </h2>
-        
+
+        <div style="margin-bottom: 24px; position: sticky; top: 0; z-index: 10; background: white; padding: 12px 0;">
+          <input
+            v-model="search"
+            type="text"
+            placeholder="Rechercher une icône..."
+            style="width: 100%; max-width: 400px; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; font-family: system-ui;"
+          />
+          <br>
+          <span style="margin-left: 12px; color: #64748b; font-size: 14px; font-family: system-ui;">
+            {{ filteredIcons.length }} / {{ totalIcons }} icônes
+          </span>
+        </div>
+
         <div v-for="category in sortedCategories" :key="category" style="margin-bottom: 48px;">
           <h3 style="margin-bottom: 16px; color: #1f2937; font-size: 18px; border-bottom: 2px solid #e5e7eb; padding-bottom: 8px;">
             {{ category }} ({{ iconsByCategory[category].length }} icônes)
           </h3>
-          
+
           <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px;">
-            <div 
-              v-for="icon in iconsByCategory[category]" 
+            <div
+              v-for="icon in iconsByCategory[category]"
               :key="icon.name"
-              style="display: flex; flex-direction: column; align-items: center; padding: 16px 8px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fafafa; transition: all 0.2s ease; cursor: pointer;"
-              @mouseover="$event.currentTarget.style.background = '#f1f5f9'; $event.currentTarget.style.borderColor = '#cbd5e1'"
-              @mouseleave="$event.currentTarget.style.background = '#fafafa'; $event.currentTarget.style.borderColor = '#e2e8f0'"
+              :style="{
+                display: 'flex', flexDirection: 'column', alignItems: 'center',
+                padding: '16px 8px', border: copiedIcon === icon.name ? '1px solid #1AAB8E' : '1px solid #e2e8f0',
+                borderRadius: '8px', background: copiedIcon === icon.name ? '#e6f9f4' : '#fafafa',
+                transition: 'all 0.2s ease', cursor: 'pointer',
+              }"
+              @click="copyIconName(icon.name)"
+              @mouseover="if (copiedIcon !== icon.name) { $event.currentTarget.style.background = '#f1f5f9'; $event.currentTarget.style.borderColor = '#cbd5e1' }"
+              @mouseleave="if (copiedIcon !== icon.name) { $event.currentTarget.style.background = '#fafafa'; $event.currentTarget.style.borderColor = '#e2e8f0' }"
             >
               <PIcon :pName="icon.name" pSize="24px" style="margin-bottom: 8px;" />
               <small style="font-size: 10px; text-align: center; word-break: break-word; color: #64748b; font-family: monospace;">
-                {{ icon.name }}
+                {{ copiedIcon === icon.name ? '✓ Copié !' : icon.name }}
               </small>
             </div>
           </div>
+        </div>
+
+        <div v-if="filteredIcons.length === 0" style="text-align: center; padding: 48px 0; color: #94a3b8; font-family: system-ui;">
+          Aucune icône trouvée pour "{{ search }}"
         </div>
       </div>
     `,

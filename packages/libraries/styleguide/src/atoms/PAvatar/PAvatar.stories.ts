@@ -60,7 +60,7 @@ const meta: Meta<typeof PAvatar> = {
     },
     pRole: {
       control: 'select',
-      options: ['COLLAB', 'CLIENT'],
+      options: ['COLLAB', 'CLIENT', 'PROSPECT'],
       description: 'Rôle qui détermine la couleur automatiquement',
     },
   },
@@ -316,6 +316,11 @@ export const RoleBasedColors: Story = {
           <div style="margin-top: 4px; font-size: 10px; color: #666;">Role: CLIENT</div>
         </div>
         <div style="text-align: center;">
+          <PAvatar pRole="${ AvatarRoles.PROSPECT }" pType="large" />
+          <div style="margin-top: 8px; font-size: 12px;">Prospect</div>
+          <div style="margin-top: 4px; font-size: 10px; color: #666;">Role: PROSPECT</div>
+        </div>
+        <div style="text-align: center;">
           <PAvatar pType="large">
             DE
           </PAvatar>
@@ -404,6 +409,7 @@ export const AllVariants: Story = {
           <div style="display: flex; align-items: center; gap: 16px;">
             <PAvatar pRole="${AvatarRoles.COLLAB}">CO</PAvatar>
             <PAvatar pRole="${AvatarRoles.CLIENT}">CL</PAvatar>
+            <PAvatar pRole="${AvatarRoles.PROSPECT}" />
             <PAvatar>DE</PAvatar>
           </div>
         </div>

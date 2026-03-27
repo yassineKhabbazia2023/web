@@ -19,6 +19,11 @@ const meta: Meta<typeof PEntityHeader> = {
       control: 'select',
       options: ['small', 'default'],
     },
+    pAccountType: {
+      control: 'select',
+      options: ['REGULAR', 'PROSPECT'],
+      description: 'Account type (PROSPECT forces rydge monogramme icon)',
+    },
   },
   args: {
     pAccountNumber: 'AccountNumber',
@@ -34,5 +39,14 @@ export const Basic: Story = {
   args: {
     pAccountNumber: 'EC1291233',
     pLegalName: 'legal name',
+  },
+}
+
+// Prospect variant
+export const Prospect: Story = {
+  args: {
+    pAccountNumber: 'EC1291233',
+    pLegalName: 'Prospect Entity',
+    pAccountType: 'PROSPECT',
   },
 }
