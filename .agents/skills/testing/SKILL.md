@@ -1,4 +1,5 @@
 ---
+name: testing
 description: Unit testing requirements, Vitest guidelines, mock patterns, and testing utilities for composables, managers, and validation files. Use when writing or modifying tests, or when creating/modifying a .manager.ts, .composable.ts, or .validation.ts file.
 ---
 

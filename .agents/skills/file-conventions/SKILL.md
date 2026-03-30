@@ -1,4 +1,5 @@
 ---
+name: file-conventions
 description: File naming conventions, folder structure, type naming, file responsibilities (managers, composables, etc.), SFC structure, and component splitting guidelines. Use when creating a new file, a new component, organizing code, or deciding where to place types, enums, or constants.
 ---
 

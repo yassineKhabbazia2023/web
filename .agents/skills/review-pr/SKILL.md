@@ -1,4 +1,5 @@
 ---
+name: review-pr
 description: PR review skill. Reviews all changed files in the current branch against project conventions and proposes interactive fixes. Use when the user asks to review a PR, review changes, or check code quality on a branch.
 ---
 
