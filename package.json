@@ -17,7 +17,7 @@
   "packageManager": "npm@11.0.0",
   "scripts": {
     "audit": "npm audit --registry=https://registry.npmjs.org/ --audit-level=high --omit=dev",
-    "audit:fix": "npm audit fix --registry=https://registry.npmjs.org/ --audit-level=high --omit=dev",
+    "audit:fix": "npm audit fix --registry=https://registry.npmjs.org/",
     "backoffice:dev": "npm run dev --workspace=@pulse/backoffice",
     "customer:dev": "npm run dev --workspace=@pulse/customer",
     "collaborator:dev": "npm run dev --workspace=@pulse/collaborator",
