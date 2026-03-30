@@ -16,6 +16,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('@backoffice/pages/login.page.vue'),
         meta: {
           [ALLOW_ANONYMOUS_META]: true,
+          [ALLOW_AUTHENTICATED_META]: true,
           title: 'Connexion - Pulse Back Office',
         },
       },

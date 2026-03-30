@@ -80,14 +80,36 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { PButton, PLoader, PIcon, PAlert } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
+import { CurrentUserManager } from '@pulse/common/managers'
+import { AdminMsalService } from '@backoffice/services/admin-msal/admin-msal.service'
+import { AdminRouteNames } from '@backoffice/constants/backoffice-route-names.enum'
 import { LoginManager } from '@backoffice/managers/login.manager'
 
+const router = useRouter()
 const isLoading = ref(false)
 const errorMessage = ref<string>('')
+
+const handleMSALRedirectionAfterLogin = async () => {
+  isLoading.value = true
+  try {
+    const msalToken = await AdminMsalService.getMSALToken()
+
+    if (msalToken !== null) {
+      CurrentUserManager.persistToken(msalToken)
+      router.push({ name: AdminRouteNames.AUTHENTICATED })
+      return
+    }
+  } catch (error) {
+    logger.error('Failed to handle MSAL redirect:', error)
+  } finally {
+    isLoading.value = false
+  }
+}
 
 const handleLogin = async () => {
   isLoading.value = true
@@ -102,6 +124,12 @@ const handleLogin = async () => {
     isLoading.value = false
   }
 }
+
+onMounted(() => {
+  // MSAL redirects to this page after SSO login
+  // We need to handle the redirection and check if the user is successfully authenticated
+  handleMSALRedirectionAfterLogin()
+})
 </script>
 
 <style lang="scss" scoped>

@@ -8,7 +8,7 @@ import type {
 } from './app-settings-list.service.type'
 import type { EnvironmentOption } from '@backoffice/types/environment-option.type'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@backoffice/constants/backoffice.const'
-import api from '@backoffice/api/api'
+import { api } from '@pulse/common/api'
 
 export class AppSettingsListService {
   /**
@@ -51,7 +51,7 @@ export class AppSettingsListService {
       urlParams.append('hasIncoherence', 'true')
     }
 
-    const response = await api.get<AppSettingsListResponse>(`/keys?${urlParams.toString()}`)
+    const response = await api.backofficeApi.get<AppSettingsListResponse>(`/keys?${urlParams.toString()}`)
     return response.data
   }
 
@@ -60,7 +60,7 @@ export class AppSettingsListService {
    * @returns Promise with array of domain items containing domain name and keys count
    */
   static async getDomains(): Promise<DomainItem[]> {
-    const response = await api.get<DomainItem[]>('/domains')
+    const response = await api.backofficeApi.get<DomainItem[]>('/domains')
     return response.data
   }
 
@@ -85,7 +85,7 @@ export class AppSettingsListService {
       }
     }
 
-    const response = await api.delete<DeleteAppSettingResponse>(`/keys?${params.toString()}`)
+    const response = await api.backofficeApi.delete<DeleteAppSettingResponse>(`/keys?${params.toString()}`)
     return response.data
   }
 
@@ -94,7 +94,7 @@ export class AppSettingsListService {
    * @returns Promise with array of environments and their labels
    */
   static async getAvailableEnvironments(): Promise<EnvironmentOption[]> {
-    const response = await api.get<EnvironmentOption[]>('/environments')
+    const response = await api.backofficeApi.get<EnvironmentOption[]>('/environments')
     return response.data
   }
 
@@ -104,7 +104,7 @@ export class AppSettingsListService {
    * @returns Promise that resolves when creation is complete
    */
   static async createAppSetting(payload: CreateAppSettingApiPayload): Promise<void> {
-    await api.post('/keys', payload)
+    await api.backofficeApi.post('/keys', payload)
   }
 
   /**
@@ -112,16 +112,16 @@ export class AppSettingsListService {
    * @returns Promise that resolves when refresh is complete
    */
   static async refreshAppSettingsList(): Promise<void> {
-    await api.post('/keys/refresh')
+    await api.backofficeApi.post('/keys/refresh')
   }
 
-   /**
+  /**
    * Update an existing environment variable values.
    * Sends updated values for specific environments/labels.
    * @param payload - The update payload containing the key name and targets to update
    * @returns Promise that resolves when the update is complete
    */
   static async updateAppSetting(payload: UpdateAppSettingApiPayload): Promise<void> {
-    await api.put(`/keys`, payload)
+    await api.backofficeApi.put('/keys', payload)
   }
 }

@@ -1,21 +1,22 @@
 import { logger } from '@pulse/toolbox'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import {
-  AccountInfo,
-  AuthenticationResult,
-  Configuration,
+  type AccountInfo,
+  type AuthenticationResult,
+  type Configuration,
   PublicClientApplication,
-  RedirectRequest,
-  SilentRequest,
+  type RedirectRequest,
+  type SilentRequest,
 } from '@azure/msal-browser'
 import {
-  VITE_MSAL_CLIENT_ID,
-  VITE_MSAL_REDIRECT_URI,
-  VITE_MSAL_POST_LOGOUT_REDIRECT_URI,
   VITE_MSAL_AUTHORITY,
+  VITE_MSAL_BACK_CLIENT_ID,
+  VITE_MSAL_CLIENT_ID,
+  VITE_MSAL_POST_LOGOUT_REDIRECT_URI,
+  VITE_MSAL_REDIRECT_URI,
 } from 'env-vars'
-import {
-  MSAL_SCOPES,
-} from '@backoffice/constants/backoffice.const'
+
+const MSAL_BACKOFFICE_SCOPES = [`api://${VITE_MSAL_BACK_CLIENT_ID}/AppConfig.ReadWrite`]
 
 export class AdminMsalService {
   private static instance: PublicClientApplication | null = null
@@ -42,12 +43,11 @@ export class AdminMsalService {
   }
 
   private static async getInstance(): Promise<PublicClientApplication | null> {
-    // If initialization already failed, return null immediately
     if (AdminMsalService.initializationFailed === true) {
       return null
     }
 
-    if (AdminMsalService.instance === null || AdminMsalService.instance === undefined) {
+    if (AdminMsalService.instance === null) {
       try {
         const msal = new PublicClientApplication(AdminMsalService.getConfiguration())
         await msal.initialize()
@@ -73,8 +73,9 @@ export class AdminMsalService {
     if (instance === null) {
       return null
     }
+
     const accounts = instance.getAllAccounts()
-    return accounts[0] || null
+    return accounts[0] ?? null
   }
 
   static async loginRedirect(request?: RedirectRequest): Promise<void> {
@@ -83,13 +84,12 @@ export class AdminMsalService {
       logger.warn('Cannot login: MSAL is not initialized')
       return
     }
-    /**
-     * remove this key msal.interaction.status to prevent error when page was restored from bfcache
-     */
+
     const status = sessionStorage.getItem(AdminMsalService.interactionKey)
-    if (status) {
+    if (status !== null) {
       sessionStorage.removeItem(AdminMsalService.interactionKey)
     }
+
     await instance.loginRedirect(request)
   }
 
@@ -99,6 +99,7 @@ export class AdminMsalService {
       logger.warn('Cannot logout: MSAL is not initialized')
       return
     }
+
     instance.logoutRedirect()
   }
 
@@ -112,6 +113,7 @@ export class AdminMsalService {
     if (instance === null) {
       return false
     }
+
     return instance.getActiveAccount() !== null
   }
 
@@ -121,6 +123,7 @@ export class AdminMsalService {
       logger.warn('Cannot acquire token: MSAL is not initialized')
       return null
     }
+
     return await instance.acquireTokenSilent(userRequest)
   }
 
@@ -132,7 +135,7 @@ export class AdminMsalService {
 
     const silentRequest: SilentRequest = {
       account,
-      scopes: MSAL_SCOPES,
+      scopes: MSAL_BACKOFFICE_SCOPES,
       forceRefresh,
     }
 
@@ -140,9 +143,10 @@ export class AdminMsalService {
     if (instance === null) {
       return null
     }
+
     try {
       const response = await instance.acquireTokenSilent(silentRequest)
-      if (response?.accessToken) {
+      if (isNotNullNorEmpty(response?.accessToken)) {
         return response.accessToken
       }
     } catch (error) {

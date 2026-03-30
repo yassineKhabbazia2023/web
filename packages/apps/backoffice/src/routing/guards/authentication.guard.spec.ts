@@ -6,6 +6,7 @@ import { AdminRouteNames } from '@backoffice/constants/backoffice-route-names.en
 import { authenticationGuard } from './authentication.guard'
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
+vi.mock('@backoffice/services/admin-msal/admin-msal.service')
 
 const authenticatedRoot: any = { name: AdminRouteNames.AUTHENTICATED }
 
@@ -57,6 +58,7 @@ describe('authenticationGuard', () => {
 
       expect(result).toEqual(authenticatedRoot)
     })
+
   })
 
   describe('when user is NOT authenticated', () => {
@@ -81,6 +83,7 @@ describe('authenticationGuard', () => {
 
       expect(result).toEqual({ name: AdminRouteNames.LOGIN })
     })
+
   })
 
   describe('when authentication check fails', () => {

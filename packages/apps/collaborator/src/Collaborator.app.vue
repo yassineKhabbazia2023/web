@@ -9,15 +9,14 @@
 
 <script setup lang="ts">
 import { computed, onMounted, defineAsyncComponent } from 'vue'
-import { setUnauthorizedCallback } from '@pulse/common/unauthorized-callback'
-import { CurrentUserManager } from '@pulse/common/managers'
 import { HTMLService } from '@pulse/common/services/html'
 import { useRoute, useRouter } from 'vue-router'
 import { PConfigProvider } from '@pulse/styleguide/components'
 import { useLoadingStore } from '@pulse/common/stores'
 import { LAYOUT_META } from '@pulse/common/constants'
-import { Layout, RouteName } from '@pulse/common/enums'
+import { Layout } from '@pulse/common/enums'
 import { FullPageLoader } from '@pulse/shared/components'
+import { CollaboratorAuthService } from './services/collaborator.auth.service'
 
 const route = useRoute()
 const router = useRouter()
@@ -47,21 +46,9 @@ const currentExperience = computed(() => {
 })
 // #endregion
 
-// #region 401 handling
-async function unauthorizedCallback() {
-  CurrentUserManager.persistToken('')
-
-  // logout user everywhere but the login layout
-  if (currentLayout.value !== Layout.LOGIN) {
-    router.replace({ name: RouteName.LOGIN_COLLAB, query: { sessionExpired: 'true' } })
-  }
-}
-// #endregion
-
 onMounted(() => {
   HTMLService.setDocumentTitle()
-  CurrentUserManager.initToken()
-  setUnauthorizedCallback(unauthorizedCallback)
+  CollaboratorAuthService.init(router, currentLayout)
 })
 </script>
 

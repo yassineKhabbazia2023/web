@@ -1,11 +1,19 @@
 import { logger } from '@pulse/toolbox'
-import { refreshClientToken } from './authentication.service'
-import { MsalService } from './msal'
-import { useUserStore } from '../stores/user/user.store'
 import { tokenIsValid } from '../stores/token/token.store.utils'
+
+type RefreshStrategy = () => Promise<string>
 
 export class TokenRefreshService {
   private static refreshPromise?: Promise<string>
+  private static refreshStrategy?: RefreshStrategy
+
+  static registerRefreshStrategy(strategy: RefreshStrategy): void {
+    this.refreshStrategy = strategy
+  }
+
+  static resetRefreshStrategy(): void {
+    this.refreshStrategy = undefined
+  }
 
   static async refreshToken(): Promise<string> {
     // If already in progress, return existing promise
@@ -24,35 +32,18 @@ export class TokenRefreshService {
   }
 
   private static async performRefresh(): Promise<string> {
-    const userStore = useUserStore()
-
-    if (userStore.isCollab) {
-      return await this.refreshMsalToken()
-    } else {
-      return await this.refreshGigyaToken()
+    if (this.refreshStrategy === undefined) {
+      throw new Error('No token refresh strategy registered. Call TokenRefreshService.registerRefreshStrategy() at app startup.')
     }
-  }
 
-  private static async refreshGigyaToken(): Promise<string> {
-    logger.info('Refreshing Gigya token silently')
-    const newToken = await refreshClientToken()
+    logger.info('Refreshing token silently')
+    const newToken = await this.refreshStrategy()
 
     if (tokenIsValid(newToken)) {
       return newToken
     }
 
-    throw new Error('Invalid token received from Gigya refresh')
-  }
-
-  private static async refreshMsalToken(): Promise<string> {
-    logger.info('Refreshing MSAL token silently')
-    const newToken = await MsalService.getFreshMSALToken()
-
-    if (tokenIsValid(newToken)) {
-      return newToken
-    }
-
-    throw new Error('Invalid token received from MSAL refresh')
+    throw new Error('Invalid token received from refresh strategy')
   }
 
   static getRefreshPromise(): Promise<string> | undefined {

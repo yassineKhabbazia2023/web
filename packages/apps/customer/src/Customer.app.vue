@@ -9,8 +9,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted, defineAsyncComponent } from 'vue'
-import { setUnauthorizedCallback } from '@pulse/common/unauthorized-callback'
-import { CurrentUserManager } from '@pulse/common/managers'
 import { HTMLService } from '@pulse/common/services/html'
 import { useRoute, useRouter } from 'vue-router'
 import { PConfigProvider } from '@pulse/styleguide/components'
@@ -18,7 +16,7 @@ import { useLoadingStore } from '@pulse/common/stores'
 import { LAYOUT_META } from '@pulse/common/constants'
 import { Layout } from '@pulse/common/enums'
 import { FullPageLoader } from '@pulse/shared/components'
-import { CustomerAnonymousFlowManager } from './managers/customer.anonymous.flow.manager'
+import { CustomerAuthService } from './services/customer.auth.service'
 
 const route = useRoute()
 const loadingStore = useLoadingStore()
@@ -48,23 +46,9 @@ const currentExperience = computed(() => {
 })
 // #endregion
 
-// #region 401 handling
-async function unauthorizedCallback() {
-  CurrentUserManager.persistToken('')
-
-  // logout user everywhere but the login layout
-  if (currentLayout.value !== Layout.LOGIN) {
-    await CurrentUserManager.logout()
-    const anonymousLandingPage = CustomerAnonymousFlowManager.getLandingPage()
-    router.replace({ ...anonymousLandingPage, query: { sessionExpired: 'true' } })
-  }
-}
-// #endregion
-
 onMounted(() => {
   HTMLService.setDocumentTitle()
-  CurrentUserManager.initToken()
-  setUnauthorizedCallback(unauthorizedCallback)
+  CustomerAuthService.init(router, currentLayout)
 })
 </script>
 
