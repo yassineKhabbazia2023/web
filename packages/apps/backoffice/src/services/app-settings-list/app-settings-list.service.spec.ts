@@ -1,25 +1,21 @@
 import { AppSettingsListService } from './app-settings-list.service'
 import type { AppSettingsListResponse } from '@backoffice/types/app-settings-list.type'
-import type { CreateAppSettingApiPayload, DomainItem } from './app-settings-list.service.type'
+import type { DomainItem } from './app-settings-list.service.type'
 
 // Mock must be hoisted - define the mock inside the factory
-vi.mock('@pulse/common/api', () => ({
-  api: {
-    backofficeApi: {
-      get: vi.fn(),
-      delete: vi.fn(),
-      post: vi.fn(),
-      put: vi.fn(),
-    },
+vi.mock('@backoffice/api/api', () => ({
+  default: {
+    get: vi.fn(),
+    delete: vi.fn(),
+    post: vi.fn(),
   },
 }))
 
 // Import the mocked API to access the mock function
-import { api } from '@pulse/common/api'
-const mockGet = vi.mocked(api.backofficeApi.get)
-const mockDelete = vi.mocked(api.backofficeApi.delete)
-const mockPost = vi.mocked(api.backofficeApi.post)
-const mockPut = vi.mocked(api.backofficeApi.put)
+import api from '@backoffice/api/api'
+const mockGet = vi.mocked(api.get)
+const mockDelete = vi.mocked(api.delete)
+const mockPost = vi.mocked(api.post)
 
 describe('AppSettingsListService', () => {
   describe('getAppSettingsList', () => {
@@ -399,93 +395,6 @@ describe('AppSettingsListService', () => {
       mockPost.mockRejectedValue(error)
 
       await expect(AppSettingsListService.refreshAppSettingsList()).rejects.toThrow('Refresh failed')
-    })
-  })
-
-  describe('getAvailableEnvironments', () => {
-    it('should fetch available environments successfully', async () => {
-      const environments = [
-        { value: 'ITG', label: 'Integration' },
-        { value: 'REC', label: 'Recette' },
-      ]
-      mockGet.mockResolvedValue({ data: environments })
-
-      const result = await AppSettingsListService.getAvailableEnvironments()
-
-      expect(mockGet).toBeCalledWith('/environments')
-      expect(result).toEqual(environments)
-    })
-
-    it('should throw when getAvailableEnvironments fails', async () => {
-      const error = new Error('Environments failed')
-      mockGet.mockRejectedValue(error)
-
-      await expect(AppSettingsListService.getAvailableEnvironments()).rejects.toThrow('Environments failed')
-    })
-  })
-
-  describe('createAppSetting', () => {
-    it('should create app setting with payload', async () => {
-      const payload: CreateAppSettingApiPayload = {
-        name: 'VITE_EXAMPLE_KEY',
-        type: 'string',
-        targets: [
-          {
-            environment: 'ITG',
-            label: 'Integration',
-            value: 'https://itg.example.com',
-          },
-        ],
-      }
-      mockPost.mockResolvedValue({ data: null })
-
-      await AppSettingsListService.createAppSetting(payload)
-
-      expect(mockPost).toBeCalledWith('/keys', payload)
-    })
-
-    it('should throw when createAppSetting fails', async () => {
-      const payload: CreateAppSettingApiPayload = {
-        name: 'VITE_EXAMPLE_KEY',
-        type: 'string',
-        targets: [],
-      }
-      const error = new Error('Create failed')
-      mockPost.mockRejectedValue(error)
-
-      await expect(AppSettingsListService.createAppSetting(payload)).rejects.toThrow('Create failed')
-    })
-  })
-
-  describe('updateAppSetting', () => {
-    it('should update app setting with payload', async () => {
-      const payload = {
-        name: 'VITE_EXAMPLE_KEY',
-        targets: [
-          {
-            environment: 'ITG',
-            label: 'Integration',
-            value: 'https://itg.example.com',
-            eTag: 'etag-1',
-          },
-        ],
-      }
-      mockPut.mockResolvedValue({ data: null })
-
-      await AppSettingsListService.updateAppSetting(payload)
-
-      expect(mockPut).toBeCalledWith('/keys', payload)
-    })
-
-    it('should throw when updateAppSetting fails', async () => {
-      const payload = {
-        name: 'VITE_EXAMPLE_KEY',
-        targets: [],
-      }
-      const error = new Error('Update failed')
-      mockPut.mockRejectedValue(error)
-
-      await expect(AppSettingsListService.updateAppSetting(payload)).rejects.toThrow('Update failed')
     })
   })
 })

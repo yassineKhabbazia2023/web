@@ -7,8 +7,8 @@ import type {
   GetAiSummaryParams,
 } from '@backoffice/types/ai-monitoring.type'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@backoffice/constants/backoffice.const'
-import { api } from '@pulse/common/api'
 import { API_PREFIXES } from '@pulse/common/constants'
+import gatewayApi from '@backoffice/api/gateway-api'
 
 export class AiMonitoringService {
   static async getHistory(
@@ -49,12 +49,12 @@ export class AiMonitoringService {
       queryParams.users = users.join(',')
     }
 
-    const response = await api.backofficeGateway.get<AiSearchHistoryResponse>(`${API_PREFIXES.AI_SERVICES}/monitoring/details`, { params: queryParams })
+    const response = await gatewayApi.get<AiSearchHistoryResponse>(`${API_PREFIXES.AI_SERVICES}/monitoring/details`, { params: queryParams })
     return response.data
   }
 
   static async getFilters(): Promise<AiMonitoringFiltersResponse> {
-    const response = await api.backofficeGateway.get<AiMonitoringFiltersResponse>(`${API_PREFIXES.AI_SERVICES}/monitoring/filters`)
+    const response = await gatewayApi.get<AiMonitoringFiltersResponse>(`${API_PREFIXES.AI_SERVICES}/monitoring/filters`)
     return response.data
   }
 
@@ -83,7 +83,7 @@ export class AiMonitoringService {
       queryParams.users = users.join(',')
     }
 
-    const response = await api.backofficeGateway.get<AiMonitoringSummary>(`${API_PREFIXES.AI_SERVICES}/monitoring/summary`, { params: queryParams })
+    const response = await gatewayApi.get<AiMonitoringSummary>(`${API_PREFIXES.AI_SERVICES}/monitoring/summary`, { params: queryParams })
     return response.data
   }
 }

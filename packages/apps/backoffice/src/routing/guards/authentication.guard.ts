@@ -11,7 +11,7 @@ export async function authenticationGuard(to: RouteLocationNormalized) {
     isAuthenticated = await AdminMsalService.isUserAuthenticated()
   } catch (error) {
     logger.error('Failed to verify authentication', error)
-    // On error, treat user as not authenticated
+    // En cas d'erreur, on considère l'utilisateur comme non authentifié
     isAuthenticated = false
   }
 

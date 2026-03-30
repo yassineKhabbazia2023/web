@@ -1,13 +1,11 @@
 import { AiMonitoringService } from './ai-monitoring.service'
-import { api } from '@pulse/common/api'
+import gatewayApi from '@backoffice/api/gateway-api'
 import { DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE } from '@backoffice/constants/backoffice.const'
 import type { AiSearchHistoryResponse, AiMonitoringFiltersResponse, AiMonitoringSummary } from '@backoffice/types/ai-monitoring.type'
 
-vi.mock('@pulse/common/api', () => ({
-  api: {
-    backofficeGateway: {
-      get: vi.fn(),
-    },
+vi.mock('@backoffice/api/gateway-api', () => ({
+  default: {
+    get: vi.fn(),
   },
 }))
 
@@ -46,11 +44,11 @@ describe('AiMonitoringService', () => {
 
   describe('getHistory', () => {
     it('should fetch history with default pagination parameters', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockResponse })
 
       const result = await AiMonitoringService.getHistory()
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith(
+      expect(gatewayApi.get).toHaveBeenCalledWith(
         'aiservices/api/monitoring/details',
         {
           params: {
@@ -63,11 +61,11 @@ describe('AiMonitoringService', () => {
     })
 
     it('should fetch history with custom pagination parameters', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockResponse })
 
       const result = await AiMonitoringService.getHistory({ page: 2, pageSize: 50 })
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith(
+      expect(gatewayApi.get).toHaveBeenCalledWith(
         'aiservices/api/monitoring/details',
         {
           params: {
@@ -80,7 +78,7 @@ describe('AiMonitoringService', () => {
     })
 
     it('should include filters in query params when provided', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockResponse })
 
       const result = await AiMonitoringService.getHistory({
         page: 1,
@@ -92,7 +90,7 @@ describe('AiMonitoringService', () => {
         users: ['user@example.com'],
       })
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith(
+      expect(gatewayApi.get).toHaveBeenCalledWith(
         'aiservices/api/monitoring/details',
         {
           params: {
@@ -110,7 +108,7 @@ describe('AiMonitoringService', () => {
     })
 
     it('should join multiple array values with commas', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockResponse })
 
       await AiMonitoringService.getHistory({
         features: ['GED', 'Autre'],
@@ -118,7 +116,7 @@ describe('AiMonitoringService', () => {
         users: ['user1@example.com', 'user2@example.com'],
       })
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith(
+      expect(gatewayApi.get).toHaveBeenCalledWith(
         'aiservices/api/monitoring/details',
         {
           params: {
@@ -133,7 +131,7 @@ describe('AiMonitoringService', () => {
     })
 
     it('should not include empty arrays in query params', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockResponse })
 
       await AiMonitoringService.getHistory({
         features: [],
@@ -141,7 +139,7 @@ describe('AiMonitoringService', () => {
         users: [],
       })
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith(
+      expect(gatewayApi.get).toHaveBeenCalledWith(
         'aiservices/api/monitoring/details',
         {
           params: {
@@ -154,7 +152,7 @@ describe('AiMonitoringService', () => {
 
     it('should throw error when API call fails', async () => {
       const error = new Error('Network error')
-      vi.mocked(api.backofficeGateway.get).mockRejectedValue(error)
+      vi.mocked(gatewayApi.get).mockRejectedValue(error)
 
       await expect(AiMonitoringService.getHistory()).rejects.toThrow('Network error')
     })
@@ -178,17 +176,17 @@ describe('AiMonitoringService', () => {
     }
 
     it('should fetch filters successfully', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockFiltersResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockFiltersResponse })
 
       const result = await AiMonitoringService.getFilters()
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith('aiservices/api/monitoring/filters')
+      expect(gatewayApi.get).toHaveBeenCalledWith('aiservices/api/monitoring/filters')
       expect(result).toEqual(mockFiltersResponse)
     })
 
     it('should throw error when API call fails', async () => {
       const error = new Error('Network error')
-      vi.mocked(api.backofficeGateway.get).mockRejectedValue(error)
+      vi.mocked(gatewayApi.get).mockRejectedValue(error)
 
       await expect(AiMonitoringService.getFilters()).rejects.toThrow('Network error')
     })
@@ -203,11 +201,11 @@ describe('AiMonitoringService', () => {
     }
 
     it('should fetch summary without parameters', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockSummaryResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockSummaryResponse })
 
       const result = await AiMonitoringService.getSummary()
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith(
+      expect(gatewayApi.get).toHaveBeenCalledWith(
         'aiservices/api/monitoring/summary',
         { params: {} },
       )
@@ -215,14 +213,14 @@ describe('AiMonitoringService', () => {
     })
 
     it('should include date range in query params when provided', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockSummaryResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockSummaryResponse })
 
       const result = await AiMonitoringService.getSummary({
         startDate: '2024-01-01',
         endDate: '2024-01-31',
       })
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith(
+      expect(gatewayApi.get).toHaveBeenCalledWith(
         'aiservices/api/monitoring/summary',
         {
           params: {
@@ -235,7 +233,7 @@ describe('AiMonitoringService', () => {
     })
 
     it('should include all filters in query params when provided', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockSummaryResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockSummaryResponse })
 
       const result = await AiMonitoringService.getSummary({
         startDate: '2024-01-01',
@@ -245,7 +243,7 @@ describe('AiMonitoringService', () => {
         users: ['user@example.com'],
       })
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith(
+      expect(gatewayApi.get).toHaveBeenCalledWith(
         'aiservices/api/monitoring/summary',
         {
           params: {
@@ -261,7 +259,7 @@ describe('AiMonitoringService', () => {
     })
 
     it('should join multiple array values with commas', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockSummaryResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockSummaryResponse })
 
       await AiMonitoringService.getSummary({
         features: ['GED', 'Autre'],
@@ -269,7 +267,7 @@ describe('AiMonitoringService', () => {
         users: ['user1@example.com', 'user2@example.com'],
       })
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith(
+      expect(gatewayApi.get).toHaveBeenCalledWith(
         'aiservices/api/monitoring/summary',
         {
           params: {
@@ -282,7 +280,7 @@ describe('AiMonitoringService', () => {
     })
 
     it('should not include empty arrays in query params', async () => {
-      vi.mocked(api.backofficeGateway.get).mockResolvedValue({ data: mockSummaryResponse })
+      vi.mocked(gatewayApi.get).mockResolvedValue({ data: mockSummaryResponse })
 
       await AiMonitoringService.getSummary({
         features: [],
@@ -290,7 +288,7 @@ describe('AiMonitoringService', () => {
         users: [],
       })
 
-      expect(api.backofficeGateway.get).toHaveBeenCalledWith(
+      expect(gatewayApi.get).toHaveBeenCalledWith(
         'aiservices/api/monitoring/summary',
         { params: {} },
       )
@@ -298,10 +296,9 @@ describe('AiMonitoringService', () => {
 
     it('should throw error when API call fails', async () => {
       const error = new Error('Network error')
-      vi.mocked(api.backofficeGateway.get).mockRejectedValue(error)
+      vi.mocked(gatewayApi.get).mockRejectedValue(error)
 
       await expect(AiMonitoringService.getSummary()).rejects.toThrow('Network error')
     })
   })
 })
-

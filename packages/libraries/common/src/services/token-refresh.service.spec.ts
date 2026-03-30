@@ -1,53 +1,64 @@
 import { TokenRefreshService } from './token-refresh.service'
+import { refreshClientToken } from './authentication.service'
+import { MsalService } from './msal'
+import { useUserStore } from '../stores/user/user.store'
 import { tokenIsValid } from '../stores/token/token.store.utils'
 
+vi.mock('./authentication.service')
+vi.mock('./msal')
+vi.mock('../stores/user/user.store')
 vi.mock('../stores/token/token.store.utils')
 vi.mock('@pulse/toolbox')
 
 describe('TokenRefreshService', () => {
   beforeEach(() => {
+    // Reset static properties
     TokenRefreshService['refreshPromise'] = undefined
-    TokenRefreshService.resetRefreshStrategy()
   })
 
   describe('refreshToken', () => {
-    it('should call the registered refresh strategy and return the token', async () => {
-      const mockToken = 'new-token'
-      const mockStrategy = vi.fn().mockResolvedValue(mockToken)
+    it('should refresh Gigya token for client users', async () => {
+      const mockToken = 'new-gigya-token'
 
-      TokenRefreshService.registerRefreshStrategy(mockStrategy)
+      vi.mocked(useUserStore).mockReturnValue({
+        isCollab: false,
+      } as any)
+
+      vi.mocked(refreshClientToken).mockResolvedValue(mockToken)
       vi.mocked(tokenIsValid).mockReturnValue(true)
 
       const result = await TokenRefreshService.refreshToken()
 
       expect(result).toBe(mockToken)
-      expect(mockStrategy).toHaveBeenCalled()
+      expect(refreshClientToken).toHaveBeenCalled()
       expect(tokenIsValid).toHaveBeenCalledWith(mockToken)
     })
 
-    it('should throw if no refresh strategy is registered', async () => {
-      await expect(TokenRefreshService.refreshToken()).rejects.toThrow(
-        'No token refresh strategy registered. Call TokenRefreshService.registerRefreshStrategy() at app startup.',
-      )
-    })
+    it('should refresh MSAL token for collaborator users', async () => {
+      const mockToken = 'new-msal-token'
 
-    it('should throw if the strategy returns an invalid token', async () => {
-      const mockStrategy = vi.fn().mockResolvedValue('invalid-token')
+      vi.mocked(useUserStore).mockReturnValue({
+        isCollab: true,
+      } as any)
 
-      TokenRefreshService.registerRefreshStrategy(mockStrategy)
-      vi.mocked(tokenIsValid).mockReturnValue(false)
+      vi.mocked(MsalService.getFreshMSALToken).mockResolvedValue(mockToken)
+      vi.mocked(tokenIsValid).mockReturnValue(true)
 
-      await expect(TokenRefreshService.refreshToken()).rejects.toThrow(
-        'Invalid token received from refresh strategy',
-      )
-      expect(tokenIsValid).toHaveBeenCalledWith('invalid-token')
+      const result = await TokenRefreshService.refreshToken()
+
+      expect(result).toBe(mockToken)
+      expect(MsalService.getFreshMSALToken).toHaveBeenCalled()
+      expect(tokenIsValid).toHaveBeenCalledWith(mockToken)
     })
 
     it('should return shared promise if refresh is already in progress', async () => {
       const mockToken = 'shared-token'
-      const mockStrategy = vi.fn().mockResolvedValue(mockToken)
 
-      TokenRefreshService.registerRefreshStrategy(mockStrategy)
+      vi.mocked(useUserStore).mockReturnValue({
+        isCollab: false,
+      } as any)
+
+      vi.mocked(refreshClientToken).mockResolvedValue(mockToken)
       vi.mocked(tokenIsValid).mockReturnValue(true)
 
       // Launch two simultaneous refreshes
@@ -58,39 +69,32 @@ describe('TokenRefreshService', () => {
 
       expect(result1).toBe(mockToken)
       expect(result2).toBe(mockToken)
-      // Strategy should only be called once
-      expect(mockStrategy).toHaveBeenCalledTimes(1)
+      // refreshClientToken should only be called once
+      expect(refreshClientToken).toHaveBeenCalledTimes(1)
     })
-  })
 
-  describe('registerRefreshStrategy', () => {
-    it('should allow overriding the refresh strategy', async () => {
-      const firstStrategy = vi.fn().mockResolvedValue('first-token')
-      const secondStrategy = vi.fn().mockResolvedValue('second-token')
+    it('should throw error if invalid token is received from Gigya', async () => {
+      vi.mocked(useUserStore).mockReturnValue({
+        isCollab: false,
+      } as any)
 
-      vi.mocked(tokenIsValid).mockReturnValue(true)
+      vi.mocked(refreshClientToken).mockResolvedValue('invalid-token')
+      vi.mocked(tokenIsValid).mockReturnValue(false)
 
-      TokenRefreshService.registerRefreshStrategy(firstStrategy)
-      TokenRefreshService.registerRefreshStrategy(secondStrategy)
-
-      const result = await TokenRefreshService.refreshToken()
-
-      expect(result).toBe('second-token')
-      expect(firstStrategy).not.toHaveBeenCalled()
-      expect(secondStrategy).toHaveBeenCalled()
+      await expect(TokenRefreshService.refreshToken()).rejects.toThrow('Invalid token received from Gigya refresh')
+      expect(tokenIsValid).toHaveBeenCalledWith('invalid-token')
     })
-  })
 
-  describe('resetRefreshStrategy', () => {
-    it('should clear the registered strategy', async () => {
-      const mockStrategy = vi.fn().mockResolvedValue('token')
+    it('should throw error if invalid token is received from MSAL', async () => {
+      vi.mocked(useUserStore).mockReturnValue({
+        isCollab: true,
+      } as any)
 
-      TokenRefreshService.registerRefreshStrategy(mockStrategy)
-      TokenRefreshService.resetRefreshStrategy()
+      vi.mocked(MsalService.getFreshMSALToken).mockResolvedValue('invalid-token')
+      vi.mocked(tokenIsValid).mockReturnValue(false)
 
-      await expect(TokenRefreshService.refreshToken()).rejects.toThrow(
-        'No token refresh strategy registered',
-      )
+      await expect(TokenRefreshService.refreshToken()).rejects.toThrow('Invalid token received from MSAL refresh')
+      expect(tokenIsValid).toHaveBeenCalledWith('invalid-token')
     })
   })
 
@@ -100,12 +104,15 @@ describe('TokenRefreshService', () => {
     })
 
     it('should return promise when refresh is in progress', async () => {
+      vi.mocked(useUserStore).mockReturnValue({
+        isCollab: false,
+      } as any)
+
       // Mock that takes time to execute and returns a valid token
-      const mockStrategy = vi.fn().mockImplementation(() =>
+      vi.mocked(refreshClientToken).mockImplementation(() =>
         new Promise(resolve => setTimeout(() => resolve('valid-token'), 100)),
       )
 
-      TokenRefreshService.registerRefreshStrategy(mockStrategy)
       vi.mocked(tokenIsValid).mockReturnValue(true)
 
       // Launch refresh without waiting

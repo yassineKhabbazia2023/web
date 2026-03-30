@@ -1,23 +1,9 @@
 import { AdminMsalService } from '@backoffice/services/admin-msal/admin-msal.service'
-import { CurrentUserManager } from '@pulse/common/managers'
 import { logger } from '@pulse/toolbox'
 
 export class LoginManager {
   static async initAuthSSO(): Promise<void> {
-    const isAuthenticated = await AdminMsalService.handleRedirectResult()
-
-    if (isAuthenticated === true) {
-      const msalToken = await AdminMsalService.getMSALToken()
-
-      if (msalToken === null) {
-        await AdminMsalService.loginRedirect()
-        return
-      }
-
-      CurrentUserManager.persistToken(msalToken)
-      return
-    }
-
+    await AdminMsalService.handleRedirectResult()
     await AdminMsalService.loginRedirect()
   }
 

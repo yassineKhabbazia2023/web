@@ -14,7 +14,6 @@
     "./helpers": "./src/helpers/index.ts",
     "./unauthorized-callback": "./src/unauthorized-callback/index.ts",
     "./services/authentication": "./src/services/authentication.service.ts",
-    "./services/token-refresh": "./src/services/token-refresh.service.ts",
     "./services/amplitude": "./src/services/amplitude/index.ts",
     "./services/cgu": "./src/services/cgu/index.ts",
     "./services/current-user": "./src/services/current-user/index.ts",

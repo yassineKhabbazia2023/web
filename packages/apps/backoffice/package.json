@@ -15,9 +15,9 @@
     "e2e:report": "playwright show-report"
   },
   "dependencies": {
+    "@pulse/toolbox": "1.0.0",
     "@pulse/common": "1.0.0",
-    "@pulse/e2e-mocks": "1.0.0",
     "@pulse/styleguide": "3.1.0",
-    "@pulse/toolbox": "1.0.0"
+    "@pulse/e2e-mocks": "1.0.0"
   }
 }

@@ -1,3 +1,8 @@
+import { VITE_MSAL_BACK_CLIENT_ID } from 'env-vars'
+
+// MSAL Configuration
+export const MSAL_SCOPES = [`api://${VITE_MSAL_BACK_CLIENT_ID}/AppConfig.ReadWrite`]
+
 // Application Information
 export const APP_COPYRIGHT = '© 2026 RYDGE Conseil. Tous droits réservés.'
 

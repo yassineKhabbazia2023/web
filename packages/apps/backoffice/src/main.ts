@@ -5,7 +5,7 @@ import '@pulse/styleguide/fonts'
 
 import router from './routing/backoffice.routes'
 
-import App from './Backoffice.app.vue'
+import App from './App.vue'
 
 // Wait for MSW to be ready in E2E mode before initializing the app
 if (import.meta.env.VITE_E2E_MODE === 'true') {
