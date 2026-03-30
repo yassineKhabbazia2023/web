@@ -37,6 +37,7 @@ export function useOffersCatalog() {
   }
 
   function filterOffersCatalog() {
+    offerRecommendationsId.value = ''
     const normalizedSearchTerm = normalizeSearchTerm(searchTerm.value)
 
     if (normalizedSearchTerm === '') {

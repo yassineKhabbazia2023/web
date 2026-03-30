@@ -101,6 +101,10 @@ function closeDrawer() {
   internalIsOpened.value = false
 }
 
+const currentTab = ref<CatalogDrawerTabs>(CatalogDrawerTabs.PDF)
+
+const shouldShowRecommendationTab = computed(() => props.isSmartSearchEnabled && props.offerResponseId !== '')
+
 const tabs = computed(() => CatalogDrawerManager.getTabs(
   {
     pdf: t('tabs.pdf'),
@@ -108,9 +112,8 @@ const tabs = computed(() => CatalogDrawerManager.getTabs(
     documents: t('tabs.documents'),
     recommendation: t('tabs.recommendation'),
   },
-  props.isSmartSearchEnabled,
+  shouldShowRecommendationTab.value,
 ))
-const currentTab = ref<CatalogDrawerTabs>(CatalogDrawerTabs.PDF)
 
 const internalIsOpened = computed({
   get() {

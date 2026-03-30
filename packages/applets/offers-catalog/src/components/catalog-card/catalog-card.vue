@@ -46,7 +46,7 @@
       />
     </li>
     <ThumbsRating
-      v-if="isSmartSearchEnabled"
+      v-if="isSmartSearchEvaluationVisible"
       v-model="isOfferRated"
       :label="t('rateResultSentence')"
       class="margin-top--2"
@@ -106,6 +106,9 @@ const tooltipContent = computed(() => {
   return t('similarityTooltip', { score: formattedSimilarityScore.value })
 })
 
+const isSmartSearchEvaluationVisible = computed(() =>
+  props.isSmartSearchEnabled && props.offerRecommendationsId !== '',
+)
 const isOfferRated = ref<boolean | null>(null)
 
 async function handleResultValidation(satisfaction: boolean) {

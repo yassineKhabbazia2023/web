@@ -2,7 +2,7 @@ import { CatalogDrawerTabs } from './catalog-drawer.enums'
 import type { CatalogDrawerTab, CatalogDrawerTabsLabels } from './catalog-drawer.types'
 
 export class CatalogDrawerManager {
-  static getTabs(labels: CatalogDrawerTabsLabels, isSmartSearchEnabled: boolean): CatalogDrawerTab[] {
+  static getTabs(labels: CatalogDrawerTabsLabels, shouldShowRecommendationTab: boolean): CatalogDrawerTab[] {
     const pdfTab: CatalogDrawerTab = {
       name: CatalogDrawerTabs.PDF,
       label: labels.pdf,
@@ -19,7 +19,7 @@ export class CatalogDrawerManager {
       iconName: undefined,
     }
 
-    if (isSmartSearchEnabled === true) {
+    if (shouldShowRecommendationTab) {
       const recommendationTab: CatalogDrawerTab = {
         name: CatalogDrawerTabs.RECOMMENDATION,
         label: labels.recommendation,
