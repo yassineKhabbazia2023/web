@@ -13,7 +13,7 @@
     :pCardClickable="isAccountManagement === false"
     :pIsRowSelected="isRowSelected"
     @sort-change="handleSort"
-    @row-click="onMobileRowClick"
+    @row-click="onRowClick"
   >
     <PTableColumn
       v-if="isAccountManagement === false"
@@ -242,7 +242,7 @@ import {
 import type { ElTable } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import type { EntitiesListProps } from './types'
-import { AvatarRoles } from '@pulse/styleguide'
+import { AvatarRoles, useResponsive } from '@pulse/styleguide'
 import type { AccessibleMenuItem, AccountRow } from '@entities/types'
 import type { SortChangeEventData, SortingCriteria } from '@pulse/common/types'
 import { filterAccessibleMenuItems } from '@entities/utils'
@@ -255,6 +255,8 @@ import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet
 import { WalletMenuActionValue } from '@entities/managers/wallet-tracking/wallet-tracking.enum'
 import { TrackingCenter } from '@pulse/common/services/amplitude'
 import { SORT_COLUMN_TRACKING_MAP, MENU_ACTION_TRACKING_MAP } from './entities-list.const'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
+import { containsIgnoreCase } from '@pulse/toolbox/utils/string'
 
 
 const { t } = useI18n({
@@ -294,9 +296,12 @@ const { t } = useI18n({
   },
 })
 
+const { isMobile } = useResponsive()
+
 const props = withDefaults(defineProps<EntitiesListProps>(), {
   data: [],
   isAccountManagement: false,
+  searchValue: '',
 })
 
 const callHandleAddFavorite = (accountId: number, isFavorite: boolean) => {
@@ -465,9 +470,34 @@ const onSelectedFolder = (row: any) => {
   })
 }
 
-const onMobileRowClick = (row: any) => {
-  if (props.isAccountManagement === false) {
+const onRowClick = (row: any) => {
+  if (props.isAccountManagement === false && isMobile.value) {
     emit('access', row.accountId)
+  }
+
+  trackWalletSearch(row)
+}
+
+const trackWalletSearch = (row: any) => {
+  if (isNotNullNorEmpty(props.searchValue)) {
+    const search = props.searchValue.trim()
+    const matches: string[] = []
+
+    const fieldsToCheck = [
+      { value: row.name, label: 'raison sociale' },
+      { value: row.accountNumber, label: 'code client' },
+      { value: row.owner?.lastName, label: 'nom' },
+      { value: row.owner?.firstName, label: 'prenom' },
+      { value: row.owner?.email, label: 'email' },
+    ]
+
+    fieldsToCheck.forEach(({ value, label }) => {
+      if (containsIgnoreCase(value, search)) {
+        matches.push(label)
+      }
+    })
+
+    WalletTrackingManager.trackWalletSearched(props.searchValue, matches)
   }
 }
 </script>

@@ -127,6 +127,7 @@
         data-testid="folders-table"
         :data="searchResult.items"
         :handleAddFavorite="handleAddFavorite"
+        :searchValue="searchCriteria.search"
         @click-deploy="onClickDeploy"
         @access="onClickFolder"
         @selected-folder="onSelectedFolder"

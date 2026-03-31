@@ -18,6 +18,7 @@ export enum AmplitudeEvent {
   WALLET_ACTION_PAGINATION_REQUESTED = 'Wallet Action Pagination Requested',
   WALLET_ACTION_PAGINATION_CONSULTED = 'Wallet Action Pagination Consulted',
   WALLET_ACTION_COLUMN_SORT_REQUESTED = 'Wallet Action Column Sort Requested',
+  WALLET_ACTION_ACCOUNTS_SEARCHED = 'Wallet Action Search Researched',
 }
 
 export enum AmplitudeFeatureName {

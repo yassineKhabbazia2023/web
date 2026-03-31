@@ -4,6 +4,13 @@ import { WalletFilterValue, WalletMenuActionValue, WalletFavoriteActivation } fr
 import type { WalletCustomFilterParams } from './wallet-tracking.types'
 
 export class WalletTrackingManager {
+  static trackWalletSearched(searchValue: string, typeValues: string[]) {
+    AmplitudeService.track(AmplitudeEvent.WALLET_ACTION_ACCOUNTS_SEARCHED, {
+      wallet_action_search_term: searchValue,
+      wallet_action_search_type: typeValues,
+    })
+  }
+
   static trackCustomFilterValidated(filters: WalletCustomFilterParams) {
     const activeFilters = this.getActiveFilters(filters)
 

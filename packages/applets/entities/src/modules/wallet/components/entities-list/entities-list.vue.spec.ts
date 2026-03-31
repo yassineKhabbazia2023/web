@@ -62,6 +62,7 @@ const walletTrackingManagerMock = vi.hoisted(() => ({
   trackFavoriteRequest: vi.fn(),
   trackColumnSortRequested: vi.fn(),
   trackFolderMenuAction: vi.fn(),
+  trackWalletSearched: vi.fn(),
 }))
 
 vi.mock('@entities/managers/wallet-tracking/wallet-tracking.manager', () => ({
@@ -242,5 +243,61 @@ describe('entities-list', () => {
     expect(wrapper.emitted('displayResendActivationEmailDrawer')).toStrictEqual([
       [{ accountId, name, accountNumber }],
     ])
+  })
+})
+
+describe('trackWalletSearch', () => {
+  let wrapper: VueWrapper<any>
+  const baseRow = {
+    name: 'Société ABC',
+    accountNumber: '12345',
+    owner: {
+      lastName: 'Dupont',
+      firstName: 'Jean',
+      email: 'jean.dupont@email.com',
+      avatarColor: 'blue',
+      initials: 'JD',
+    },
+    accountId: 'id-1',
+    deploymentStatus: { text: '', color: '', iconName: '' }, // <-- Ajouté partout
+  }
+
+  beforeEach(() => {
+    walletTrackingManagerMock.trackWalletSearched.mockClear()
+  })
+
+  it('send type for several matches', () => {
+    const row = { ...baseRow, name: 'Société ABC', accountNumber: '12345', owner: { ...baseRow.owner, email: 'abc@email.com' } }
+    const searchValue = 'abc'
+
+    wrapper = mount(EntitiesList, { props: { data: [row], searchValue } })
+    wrapper.vm.trackWalletSearch(row)
+    expect(walletTrackingManagerMock.trackWalletSearched).toHaveBeenCalledWith('abc', expect.arrayContaining(['raison sociale', 'email']))
+  })
+
+  it('send one type for a single match', () => {
+    const row = { ...baseRow, name: 'Société ABC', accountNumber: '12345', owner: { ...baseRow.owner, lastName: 'Dupont', email: 'abc@email.fr' } }
+    const searchValue = 'dupont'
+
+    wrapper = mount(EntitiesList, { props: { data: [row], searchValue } })
+    wrapper.vm.trackWalletSearch(row)
+    expect(walletTrackingManagerMock.trackWalletSearched).toHaveBeenCalledWith('dupont', ['nom'])
+  })
+
+  it('does not call tracking if searchValue is empty', () => {
+    const row = { ...baseRow }
+
+    wrapper = mount(EntitiesList, { props: { data: [row], searchValue: '' } })
+    wrapper.vm.trackWalletSearch(row)
+    expect(walletTrackingManagerMock.trackWalletSearched).not.toHaveBeenCalled()
+  })
+
+  it('sends an empty array if no fields match', () => {
+    const row = { ...baseRow, name: 'Société XYZ', accountNumber: '99999', owner: { ...baseRow.owner, firstName: 'Sousou', lastName: 'Martin', email: 'martin@email.com' } }
+    const searchValue = 'foobar'
+
+    wrapper = mount(EntitiesList, { props: { data: [row], searchValue } })
+    wrapper.vm.trackWalletSearch(row)
+    expect(walletTrackingManagerMock.trackWalletSearched).toHaveBeenCalledWith('foobar', [])
   })
 })

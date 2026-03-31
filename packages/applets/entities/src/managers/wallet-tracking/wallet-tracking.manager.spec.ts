@@ -138,4 +138,39 @@ describe('WalletTrackingManager', () => {
       )
     })
   })
+
+  describe('trackSearchResearched', () => {
+    it('should track search event with term and type list', () => {
+      WalletTrackingManager.trackWalletSearched('test', ['raison sociale', 'email'])
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Wallet Action Search Researched',
+        {
+          wallet_action_search_term: 'test',
+          wallet_action_search_type: ['raison sociale', 'email'],
+        },
+      )
+    })
+
+    it('should track search event with empty type list', () => {
+      WalletTrackingManager.trackWalletSearched('foo', [])
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Wallet Action Search Researched',
+        {
+          wallet_action_search_term: 'foo',
+          wallet_action_search_type: [],
+        },
+      )
+    })
+
+    it('should track search event with empty string as term', () => {
+      WalletTrackingManager.trackWalletSearched('', ['code client'])
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Wallet Action Search Researched',
+        {
+          wallet_action_search_term: '',
+          wallet_action_search_type: ['code client'],
+        },
+      )
+    })
+  })
 })

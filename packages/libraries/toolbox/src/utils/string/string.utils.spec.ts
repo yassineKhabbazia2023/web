@@ -1,4 +1,4 @@
-import { formatFrenchPhoneNumber, formatPhoneNumber, getAlphanumericString } from './string.utils'
+import { formatFrenchPhoneNumber, formatPhoneNumber, getAlphanumericString, containsIgnoreCase } from './string.utils'
 
 describe('string.utils', () => {
   describe('getAlphanumericString', () => {
@@ -89,5 +89,26 @@ describe('string.utils', () => {
         expect(result).toBe(expected)
       },
     )
+  })
+
+  describe('containsIgnoreCase', () => {
+    it('should return true if substring is present (case-insensitive)', () => {
+      expect(containsIgnoreCase('Hello World', 'hello')).toBe(true)
+      expect(containsIgnoreCase('Hello World', 'WORLD')).toBe(true)
+      expect(containsIgnoreCase('Hello World', 'o w')).toBe(true)
+    })
+
+    it('should return false if substring is not present', () => {
+      expect(containsIgnoreCase('Hello World', 'foo')).toBe(false)
+      expect(containsIgnoreCase('Hello World', 'HELLOWORLD')).toBe(false)
+    })
+
+    it('should return true if searchValue is empty string', () => {
+      expect(containsIgnoreCase('Hello World', '')).toBe(true)
+    })
+
+    it('should return false if text is empty string and searchValue is not', () => {
+      expect(containsIgnoreCase('', 'hello')).toBe(false)
+    })
   })
 })

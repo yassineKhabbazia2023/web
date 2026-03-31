@@ -9,6 +9,7 @@
       :pCellStyle="pCellStyle"
       :class="{ 'p-responsive-table--hidden': shouldDisplayResponsiveCard === true }"
       v-bind="$attrs"
+      @row-click="$emit('row-click', $event)"
     >
       <slot />
     </PTable>
