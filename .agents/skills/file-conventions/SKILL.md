@@ -166,6 +166,21 @@ export function useBookingForm(bookingId: string) {
 
 **Enums (`.enum.ts`)** — TypeScript enums and union types (e.g., `type Status = 'pending' | 'done'`)
 
+## Import Conventions
+
+Always separate type imports from value imports using `import type`:
+
+```typescript
+// Good: types on dedicated import type lines
+import { ref, computed, onMounted } from 'vue'
+import { BookingManager } from './booking-form.manager'
+import type { BookingItem } from './booking-form.type'
+
+// Bad: mixing values and types in the same import
+import { ref, computed, onMounted, type Ref } from 'vue'
+import { BookingManager, type BookingResponse } from './booking-form.manager'
+```
+
 ## SFC Section Order
 
 Always keep SFC sections in this order:
