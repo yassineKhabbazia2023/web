@@ -311,6 +311,71 @@ describe('validators', () => {
     })
   })
 
+  describe('phoneNumber', () => {
+    it('should pass validation for a valid E.164 phone number', () => {
+      return new Promise<void>((resolve) => {
+        const rule = validationRules.phoneNumber('Invalid phone')
+        if (rule.validator) {
+          rule.validator({}, '+33612345678', (error) => {
+            expect(error).toBeUndefined()
+            resolve()
+          }, {}, {})
+        }
+      })
+    })
+
+    it('should pass validation for empty value', () => {
+      return new Promise<void>((resolve) => {
+        const rule = validationRules.phoneNumber('Invalid phone')
+        if (rule.validator) {
+          rule.validator({}, '', (error) => {
+            expect(error).toBeUndefined()
+            resolve()
+          }, {}, {})
+        }
+      })
+    })
+
+    it('should pass validation for null value', () => {
+      return new Promise<void>((resolve) => {
+        const rule = validationRules.phoneNumber('Invalid phone')
+        if (rule.validator) {
+          rule.validator({}, null, (error) => {
+            expect(error).toBeUndefined()
+            resolve()
+          }, {}, {})
+        }
+      })
+    })
+
+    it('should fail validation for an incomplete phone number', () => {
+      return new Promise<void>((resolve) => {
+        const rule = validationRules.phoneNumber('Invalid phone')
+        if (rule.validator) {
+          rule.validator({}, '+3361', (error) => {
+            expect(error).toBeInstanceOf(Error)
+            if (error instanceof Error) {
+              expect(error.message).toBe('Invalid phone')
+            }
+            resolve()
+          }, {}, {})
+        }
+      })
+    })
+
+    it('should fail validation for random text', () => {
+      return new Promise<void>((resolve) => {
+        const rule = validationRules.phoneNumber('Invalid phone')
+        if (rule.validator) {
+          rule.validator({}, 'not-a-phone', (error) => {
+            expect(error).toBeInstanceOf(Error)
+            resolve()
+          }, {}, {})
+        }
+      })
+    })
+  })
+
   describe('custom', () => {
     it('should pass validation when custom validator returns true', () => {
       return new Promise<void>((resolve) => {

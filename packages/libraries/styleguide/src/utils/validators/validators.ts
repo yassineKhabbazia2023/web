@@ -1,4 +1,5 @@
 import type { FormItemRule } from 'element-plus'
+import { isValidPhoneNumber } from 'libphonenumber-js'
 import { getEmailIsValid } from '@pulse/toolbox/utils/validator'
 
 /**
@@ -97,6 +98,23 @@ export const validationRules = {
       }
     },
     trigger: 'blur',
+  }),
+
+  /**
+   * Phone number validation (E.164 format)
+   * Uses libphonenumber-js to validate international phone numbers
+   */
+  phoneNumber: (errorMessage: string): FormItemRule => ({
+    validator: (_rule, value, callback) => {
+      if (value === null || value === undefined || value === '') {
+        callback()
+      } else if (isValidPhoneNumber(value) === false) {
+        callback(new Error(errorMessage))
+      } else {
+        callback()
+      }
+    },
+    trigger: 'change',
   }),
 
   /**
