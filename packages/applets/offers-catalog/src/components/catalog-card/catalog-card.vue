@@ -61,11 +61,9 @@ const { t } = useI18n({
   useScope: 'local',
   messages: {
     'en-US': {
-      similarityTooltip: '{score} match with your search',
       rateResultSentence: 'Rate this result :',
     },
     'fr-FR': {
-      similarityTooltip: '{score} de compatibilité avec votre recherche',
       rateResultSentence: 'Noter ce résultat :',
     },
   },
