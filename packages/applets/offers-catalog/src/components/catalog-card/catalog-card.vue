@@ -7,21 +7,10 @@
       position--relative
     "
   >
-    <li class="flex flex--align-items-center flex--justify-content-space-between flex-gap--2">
+    <li>
       <span class="catalog-card__title font-large">
         {{ title }}
       </span>
-      <PTooltip
-        v-if="similarityScore !== undefined"
-        :pContent="tooltipContent"
-      >
-        <PTag
-          :pContent="formattedSimilarityScore"
-          pIconLeftName="stars"
-          pColor="purple"
-          pSize="small"
-        />
-      </PTooltip>
     </li>
     <li
       class="
@@ -61,7 +50,7 @@ import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
 import type { CatalogCardProps } from './catalog-card.types'
 import { getCatalogTagProps } from '../../utils/offers-catalog.utils'
-import { PTag, PTooltip } from '@pulse/styleguide/components'
+import { PTag } from '@pulse/styleguide/components'
 import { rateOfferRecommendation } from '../../services/offers-catalog.service'
 import { OfferEvaluationType } from '../../services/offers-catalog.service.enum'
 import { OffersCatalogTrackingManager } from '../../managers/offers-catalog-tracking/offers-catalog-tracking.manager'
@@ -97,14 +86,6 @@ const internalTags = computed(() => {
 const internalSubtitle = computed(() => props.subtitle.length > MAX_SUBTITLE_LENGTH
   ? `${props.subtitle.slice(0, MAX_SUBTITLE_LENGTH).trim()}${ELLIPSIS}`
   : props.subtitle)
-
-const formattedSimilarityScore = computed(() => {
-  return `${props.similarityScore}%`
-})
-
-const tooltipContent = computed(() => {
-  return t('similarityTooltip', { score: formattedSimilarityScore.value })
-})
 
 const isSmartSearchEvaluationVisible = computed(() =>
   props.isSmartSearchEnabled && props.offerRecommendationsId !== '',
