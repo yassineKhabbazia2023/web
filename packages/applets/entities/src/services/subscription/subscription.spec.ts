@@ -7,6 +7,7 @@ import {
   validateSubscriptionRequest,
   createSubscriptionRequest,
   fetchAccountSubscriptions,
+  fetchSubscriptionStats,
 } from '.'
 
 const subscriptionGetMock = vi.hoisted(() => vi.fn())
@@ -75,6 +76,7 @@ describe('subscriptionService', () => {
       expect(params.get('offerCode')).toBe('null')
     })
   })
+
   describe('fetchAccountSubscriptions', () => {
     it('should return account subscriptions', async () => {
       subscriptionGetMock.mockResolvedValueOnce({
@@ -90,6 +92,7 @@ describe('subscriptionService', () => {
       expect(accountSubscriptions).toHaveLength(subscriptionRequestMock.length)
     })
   })
+
   describe('validateSubscriptionRequest', () => {
     it('should call subscription.put()', async () => {
       const subscriptionId = 1
@@ -100,6 +103,7 @@ describe('subscriptionService', () => {
       )
     })
   })
+
   describe('createSubscriptionRequest', () => {
     it('should call subscription.post()', async () => {
       const expectedUrl = 'offer/api/subscription/create'
@@ -110,6 +114,42 @@ describe('subscriptionService', () => {
       await createSubscriptionRequest(subscriptionDemandMock)
 
       expect(subscriptionPostMock).toHaveBeenCalledExactlyOnceWith(...expectedParams)
+    })
+  })
+
+  describe('fetchSubscriptionStats', () => {
+    it('should call API with offerCode=null if offerCodes is an empty array', async () => {
+      await fetchSubscriptionStats([])
+      const callArgs = subscriptionGetMock.mock.calls.at(-1)!
+      const params = callArgs[1].params as URLSearchParams
+      expect(params.get('offerCode')).toBe('null')
+    })
+
+    it('should call API with offerCode params if offerCodes is provided', async () => {
+      await fetchSubscriptionStats(['A', 'B'])
+      const callArgs = subscriptionGetMock.mock.calls.at(-1)!
+      const params = callArgs[1].params as URLSearchParams
+      expect(params.getAll('offerCode')).toEqual(['A', 'B'])
+    })
+
+    it('should call API with no offerCode param if offerCodes is undefined', async () => {
+      await fetchSubscriptionStats()
+      const callArgs = subscriptionGetMock.mock.calls.at(-1)!
+      const params = callArgs[1].params as URLSearchParams
+      expect(params.getAll('offerCode')).toEqual([])
+    })
+
+    it('should return data from API', async () => {
+      const statsMock = { statuses: { pending: 2 } }
+      subscriptionGetMock.mockResolvedValueOnce({ data: statsMock })
+      const result = await fetchSubscriptionStats(['A'])
+      expect(result).toEqual(statsMock)
+    })
+
+    it('should return { statuses: {} } on error', async () => {
+      subscriptionGetMock.mockRejectedValueOnce(new Error('fail'))
+      const result = await fetchSubscriptionStats(['A'])
+      expect(result).toEqual({ statuses: {} })
     })
   })
 })

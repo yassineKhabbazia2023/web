@@ -210,6 +210,10 @@ const props = defineProps<{
   activeStatusCodes: SubscriptionStatusCode[]
 }>()
 
+const offerCodes = defineModel<string[]>('offerCodes', {
+  default: [],
+})
+
 const emit = defineEmits<{
   consult: [number]
   validate: [string]
@@ -220,6 +224,7 @@ const isActionInProgress = ref(false)
 const clickedRow = ref<number>()
 const userStore = useUserStore()
 const { user } = storeToRefs(userStore)
+
 const offerTypeSelection = ref<string[]>([])
 
 const searchCriteria = ref<SubscriptionSearchCriteria>({
@@ -393,6 +398,7 @@ const content = (clients: Contact[]) => clients[0]?.email
 
 const handleOfferFiltered = async () => {
   searchCriteria.value.offerCodes = offerTypeSelection.value
+  offerCodes.value = offerTypeSelection.value
   searchCriteria.value.currentPage = 1
   await loadSubscriptions()
 }

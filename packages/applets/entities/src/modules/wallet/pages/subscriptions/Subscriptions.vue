@@ -1,12 +1,20 @@
 <template>
   <div class="margin-top--4">
-    <SubscriptionStatusFilters v-model="activeStatusCodes" class="margin-bottom--4" />
-    <SubscriptionsTable :activeStatusCodes="activeStatusCodes" @consult="onClickConsult" />
+    <SubscriptionStatusFilters
+      v-model="activeStatusCodes"
+      :offer-codes="offerCodes"
+      class="margin-bottom--4"
+    />
+    <SubscriptionsTable
+      v-model:offerCodes="offerCodes"
+      :active-status-codes="activeStatusCodes"
+      @consult="onClickConsult"
+    />
     <SubscriptionDetailsDrawer
       v-if="displaySubscriptionDrawer && selectedSubscriptionId"
       v-model="displaySubscriptionDrawer"
-      :selectedSubscriptionId="selectedSubscriptionId"
-      :pageContext="SubscriptionDetailsContext.MOD_APPROVALS"
+      :selected-subscription-id="selectedSubscriptionId"
+      :page-context="SubscriptionDetailsContext.MOD_APPROVALS"
     />
   </div>
 </template>
@@ -21,6 +29,7 @@ import { SubscriptionStatusFiltersManager } from './components/SubscriptionStatu
 import type { SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
 
 const activeStatusCodes = ref<SubscriptionStatusCode[]>(SubscriptionStatusFiltersManager.getDefaultActiveStatusCodes())
+const offerCodes = ref<string[]>([])
 const displaySubscriptionDrawer = ref<boolean>(false)
 const selectedSubscriptionId = ref<number | undefined>(undefined)
 

@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
 import { PFilterGroup } from '@pulse/styleguide/components'
@@ -37,6 +37,10 @@ import { SubscriptionStatusFiltersManager } from './subscription-status-filters.
 import { useSubscriptionStatusFilters } from './subscription-status-filters.composable'
 
 const { t } = useI18n()
+
+const props = defineProps<{
+  offerCodes?: string[]
+}>()
 
 const activeStatusCodes = defineModel<SubscriptionStatusCode[]>({ required: true })
 
@@ -56,15 +60,22 @@ const {
   validatedFilters,
 })
 
-onMounted(async () => {
+async function updateStats() {
   try {
-    const stats = await fetchSubscriptionStats()
+    const stats = await fetchSubscriptionStats(props.offerCodes)
     offerActivationFilters.value = SubscriptionStatusFiltersManager.getOfferActivationFilters(stats)
     validatedFilters.value = SubscriptionStatusFiltersManager.getValidatedFilters(stats)
   } catch (err) {
     logger.error(err)
   }
-})
+}
+
+watch(
+  () => props.offerCodes,
+  () => {
+    updateStats()
+  },
+)
 </script>
 
 <style lang="scss" scoped>

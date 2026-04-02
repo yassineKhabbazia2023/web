@@ -103,10 +103,19 @@ export async function fetchSubscriptionDetails(
   return response.data
 }
 
-export async function fetchSubscriptionStats(): Promise<SubscriptionStats> {
+export async function fetchSubscriptionStats(offerCodes?: string[]): Promise<SubscriptionStats> {
   try {
+    const statsParams = new URLSearchParams()
+
+    if (offerCodes?.length === 0) {
+      statsParams.append('offerCode', 'null')
+    } else {
+      offerCodes?.forEach(code => statsParams.append('offerCode', code))
+    }
+
     const response = await api.gateway.get(
       `${API_PREFIXES.OFFER}/subscription/stats`,
+      { params: statsParams },
     )
 
     return response.data
