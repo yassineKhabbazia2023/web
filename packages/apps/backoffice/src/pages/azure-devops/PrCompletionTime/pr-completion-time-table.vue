@@ -76,7 +76,7 @@
       pWidth="160px"
     >
       <template #default="{ row }">
-        <template v-if="row.closedDate != null">
+        <template v-if="row.closedDate !== null">
           {{ formatCommitDate(row.closedDate) }}
         </template>
         <span

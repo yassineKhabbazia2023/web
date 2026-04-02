@@ -1,4 +1,4 @@
-import { copyWorkItemsAsTeamsExport, copyWorkItemsOnly } from './work-items-clipboard.utils'
+import { copyWorkItemsAsTeamsExport, copyWorkItemsOnly, extractWorkItemIdsFromClipboard } from './work-items-clipboard.utils'
 import { displayNotification } from '@pulse/styleguide'
 import type { WorkItemsByTeam } from '@backoffice/types/azure-devops.type'
 
@@ -17,6 +17,132 @@ const mockWorkItemsByTeam: WorkItemsByTeam = {
 }
 
 const mockSortedTeamNames = ['Team Alpha', 'Team Beta']
+
+const createDataTransfer = (data: Record<string, string>): DataTransfer => ({
+  getData: (type: string) => data[type] ?? '',
+}) as DataTransfer
+
+describe('extractWorkItemIdsFromClipboard', () => {
+  describe('from HTML (Azure DevOps URLs)', () => {
+    it('should extract a single work item ID from an Azure DevOps URL', () => {
+      const dt = createDataTransfer({
+        'text/html': '<a href="https://dev.azure.com/org/project/_workitems/edit/12345">WI 12345</a>',
+        'text': 'WI 12345',
+      })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['12345'])
+    })
+
+    it('should extract multiple work item IDs from several URLs', () => {
+      const dt = createDataTransfer({
+        'text/html': `
+          <a href="https://dev.azure.com/org/project/_workitems/edit/111">WI</a>
+          <a href="https://dev.azure.com/org/project/_workitems/edit/222">WI</a>
+          <a href="https://dev.azure.com/org/project/_workitems/edit/333">WI</a>
+        `,
+        'text': '',
+      })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['111', '222', '333'])
+    })
+
+    it('should deduplicate IDs from HTML URLs', () => {
+      const dt = createDataTransfer({
+        'text/html': `
+          <a href="/_workitems/edit/100">WI</a>
+          <a href="/_workitems/edit/100">WI</a>
+        `,
+        'text': '',
+      })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['100'])
+    })
+
+    it('should prioritize HTML extraction over text when HTML contains valid URLs', () => {
+      const dt = createDataTransfer({
+        'text/html': '<a href="/_workitems/edit/999">WI</a>',
+        'text': 'Bug 12345 #67890',
+      })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['999'])
+    })
+  })
+
+  describe('from plain text (work item patterns)', () => {
+    it('should extract IDs from "User Story XXXXX" pattern', () => {
+      const dt = createDataTransfer({ 'text': 'User Story 60109' })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['60109'])
+    })
+
+    it('should extract IDs from "Bug XXXXX" pattern', () => {
+      const dt = createDataTransfer({ 'text': 'Bug 42000' })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['42000'])
+    })
+
+    it('should extract IDs from "Enabler Story XXXXX" pattern', () => {
+      const dt = createDataTransfer({ 'text': 'Enabler Story 55555' })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['55555'])
+    })
+
+    it.each([
+      'Task', 'Feature', 'Epic', 'Issue', 'Incident',
+    ])('should extract IDs from "%s XXXXX" pattern', (type) => {
+      const dt = createDataTransfer({ 'text': `${type} 77777` })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['77777'])
+    })
+
+    it('should be case-insensitive for work item types', () => {
+      const dt = createDataTransfer({ 'text': 'user story 60109 BUG 12345' })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['60109', '12345'])
+    })
+
+    it('should extract IDs from hash notation (#XXXXX)', () => {
+      const dt = createDataTransfer({ 'text': '#12345 #67890' })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['12345', '67890'])
+    })
+
+    it('should extract IDs from mixed patterns', () => {
+      const dt = createDataTransfer({ 'text': 'User Story 60109 and #42000 plus Bug 12345' })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['60109', '12345', '42000'])
+    })
+
+    it('should deduplicate IDs from text patterns', () => {
+      const dt = createDataTransfer({ 'text': '#100 User Story 100' })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['100'])
+    })
+  })
+
+  describe('edge cases', () => {
+    it('should return an empty array when no data is available', () => {
+      const dt = createDataTransfer({})
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual([])
+    })
+
+    it('should return an empty array when text contains no matching patterns', () => {
+      const dt = createDataTransfer({ 'text': 'no work items here' })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual([])
+    })
+
+    it('should fall back to text when HTML is present but contains no URLs', () => {
+      const dt = createDataTransfer({
+        'text/html': '<p>Just some text without URLs</p>',
+        'text': 'Bug 55555',
+      })
+
+      expect(extractWorkItemIdsFromClipboard(dt)).toEqual(['55555'])
+    })
+  })
+})
 
 describe('copyWorkItemsAsTeamsExport', () => {
   let capturedHtml = ''

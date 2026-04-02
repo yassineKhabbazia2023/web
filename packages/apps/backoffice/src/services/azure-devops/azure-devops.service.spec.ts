@@ -2066,6 +2066,85 @@ describe('AzureDevOpsService', () => {
     })
   })
 
+  describe('findVersionTagForCommit', () => {
+    it('returns version tag name for matching commit', () => {
+      const tags = [
+        { name: 'refs/tags/V1.2.3', objectId: 'abc123' },
+        { name: 'refs/tags/V1.3.0', objectId: 'def456' },
+      ]
+
+      const result = AzureDevOpsService.findVersionTagForCommit(tags, 'abc123')
+
+      expect(result).toBe('V1.2.3')
+    })
+
+    it('returns null when no version tag matches the commit', () => {
+      const tags = [
+        { name: 'refs/tags/V1.2.3', objectId: 'abc123' },
+      ]
+
+      const result = AzureDevOpsService.findVersionTagForCommit(tags, 'other-commit')
+
+      expect(result).toBeNull()
+    })
+
+    it('uses peeledObjectId for annotated tags', () => {
+      const tags = [
+        { name: 'refs/tags/V2.0.0', objectId: 'tag-object-id', peeledObjectId: 'real-commit-id' },
+      ]
+
+      const result = AzureDevOpsService.findVersionTagForCommit(tags, 'real-commit-id')
+
+      expect(result).toBe('V2.0.0')
+    })
+
+    it('ignores non-version tags', () => {
+      const tags = [
+        { name: 'refs/tags/MEP-2026-03-01', objectId: 'abc123' },
+        { name: 'refs/tags/release-candidate', objectId: 'abc123' },
+      ]
+
+      const result = AzureDevOpsService.findVersionTagForCommit(tags, 'abc123')
+
+      expect(result).toBeNull()
+    })
+
+    it('returns null for empty tags array', () => {
+      const result = AzureDevOpsService.findVersionTagForCommit([], 'abc123')
+
+      expect(result).toBeNull()
+    })
+  })
+
+  describe('getCommitIdsAfterTag', () => {
+    it('returns commit IDs between tag and HEAD including HEAD', async () => {
+      // getMainBranchHead
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: { value: [{ name: 'refs/heads/main', objectId: 'head-commit' }], count: 1 },
+      })
+      // fetchCommitPage — must include both endpoints so collectCommitsInRange finds them
+      mockedAxiosGet.mockResolvedValueOnce({
+        data: {
+          value: [
+            { commitId: 'head-commit', comment: 'head', author: { name: 'A', email: 'a@b.c', date: '2026-01-03' } },
+            { commitId: 'commit-2', comment: 'second', author: { name: 'A', email: 'a@b.c', date: '2026-01-02' } },
+            { commitId: 'commit-1', comment: 'first', author: { name: 'A', email: 'a@b.c', date: '2026-01-01' } },
+            { commitId: 'tag-commit', comment: 'tag', author: { name: 'A', email: 'a@b.c', date: '2025-12-31' } },
+          ],
+          count: 4,
+        },
+      })
+
+      const result = await AzureDevOpsService.getCommitIdsAfterTag(mockPat, mockRepository, 'tag-commit')
+
+      expect(result).toBeInstanceOf(Set)
+      expect(result.has('commit-1')).toBe(true)
+      expect(result.has('commit-2')).toBe(true)
+      expect(result.has('head-commit')).toBe(true)
+      expect(result.has('tag-commit')).toBe(false)
+    })
+  })
+
   describe('getWorkItemsForCommitRange - safety limit warning', () => {
     it('generates safety limit warning when max commits reached', async () => {
       // Mock 51 pages to exhaust MAX_COMMITS_SAFETY_LIMIT (5000) with COMMITS_PAGE_SIZE (100)

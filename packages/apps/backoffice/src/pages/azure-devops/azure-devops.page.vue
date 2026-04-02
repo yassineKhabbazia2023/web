@@ -167,6 +167,14 @@
         >
           <PrCompletionTimeTab />
         </PTabPane>
+
+        <PTabPane
+          pLabel="MEP Planner"
+          pName="mep-planner"
+          pLazy
+        >
+          <MepPlannerTab />
+        </PTabPane>
       </PTabs>
     </div>
 
@@ -202,6 +210,7 @@ import CommitExplorerList from './CommitExplorer/commit-explorer-list.vue'
 import { useCommitExplorer } from './CommitExplorer/use-commit-explorer.composable'
 import ContributionGraphTab from './ContributionGraph/contribution-graph-tab.vue'
 import PrCompletionTimeTab from './PrCompletionTime/pr-completion-time-tab.vue'
+import MepPlannerTab from './mep-planner/mep-planner-tab.vue'
 
 const azureDevOpsStore = useAzureDevOpsStore()
 

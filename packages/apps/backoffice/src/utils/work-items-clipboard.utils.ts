@@ -3,6 +3,26 @@ import type { CopyWorkItemsToClipboardOptions, WorkItem } from '@backoffice/type
 import { WORK_ITEM_COMPLETED_STATES } from '@backoffice/constants/azure-devops.const'
 import { escapeHtml } from '@pulse/toolbox/utils/html'
 
+export const extractWorkItemIdsFromClipboard = (clipboardData: DataTransfer): string[] => {
+  const html = clipboardData.getData('text/html')
+  if (html !== '') {
+    const urlMatches = [...html.matchAll(/_workitems\/edit\/(\d+)/gi)]
+    if (urlMatches.length > 0) {
+      return [...new Set(urlMatches.map((match) => match[1]))]
+    }
+  }
+
+  const text = clipboardData.getData('text')
+  const workItemPattern = /(?:User Story|Bug|Task|Feature|Epic|Issue|Enabler Story|Incident)\s+(\d+)/gi
+  const hashPattern = /#(\d+)/g
+  const matches = [
+    ...text.matchAll(workItemPattern),
+    ...text.matchAll(hashPattern),
+  ].map((match) => match[1])
+
+  return [...new Set(matches)]
+}
+
 const isWorkItemCompleted = (state: string): boolean => {
   return (WORK_ITEM_COMPLETED_STATES as readonly string[]).includes(state)
 }

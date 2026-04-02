@@ -244,6 +244,9 @@ export interface AzureDevOpsPullRequest {
   }
   sourceRefName: string
   targetRefName: string
+  lastMergeCommit?: {
+    commitId: string
+  }
 }
 
 export interface AzureDevOpsPullRequestsResponse {
@@ -264,4 +267,68 @@ export interface PrCompletionItem {
   sourceRefName: string
   targetRefName: string
   status: 'active' | 'completed'
+}
+
+// MEP Planner API types
+
+export interface AzureDevOpsWorkItemRelation {
+  rel: string
+  url: string
+  attributes: {
+    name: string
+  }
+}
+
+export interface AzureDevOpsWorkItemWithRelationsResponse {
+  id: number
+  fields: AzureDevOpsWorkItemFields
+  relations: AzureDevOpsWorkItemRelation[] | null
+  url: string
+}
+
+export interface AzureDevOpsBuildDefinition {
+  id: number
+  name: string
+  path: string
+  repository: {
+    id: string
+    name: string
+    type: string
+  }
+}
+
+export interface AzureDevOpsBuildDefinitionsResponse {
+  value: AzureDevOpsBuildDefinition[]
+  count: number
+}
+
+export interface AzureDevOpsBuild {
+  id: number
+  buildNumber: string
+  sourceVersion: string
+  status: string
+  result: string
+  startTime: string
+  finishTime: string
+  definition: {
+    id: number
+    name: string
+  }
+}
+
+export interface AzureDevOpsBuildsResponse {
+  value: AzureDevOpsBuild[]
+  count: number
+}
+
+export interface AzureDevOpsBuildTimelineRecord {
+  id: string
+  type: string
+  name: string
+  state: string
+  result: string | null
+}
+
+export interface AzureDevOpsBuildTimelineResponse {
+  records: AzureDevOpsBuildTimelineRecord[]
 }

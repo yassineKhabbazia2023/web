@@ -39,6 +39,14 @@ import {
 } from '@backoffice/constants/azure-devops.const'
 
 export class AzureDevOpsService {
+  private static sortByClosedDateDesc(prs: AzureDevOpsPullRequest[]): void {
+    prs.sort((a, b) => {
+      const dateA = a.closedDate === null ? Date.now() : new Date(a.closedDate).getTime()
+      const dateB = b.closedDate === null ? Date.now() : new Date(b.closedDate).getTime()
+      return dateB - dateA
+    })
+  }
+
   private static buildRepositoriesUrl(): string {
     const { organization, project } = AZURE_DEVOPS_CONFIG
     return `${organization}/${project}/_apis/git/repositories`
@@ -91,14 +99,14 @@ export class AzureDevOpsService {
     return `${organization}/${project}/_workitems/edit/${workItemId}`
   }
 
-  private static getAuthHeader(pat: string): string {
+  static getAuthHeader(pat: string): string {
     const credentials = ':' + pat
     const encoded = new TextEncoder().encode(credentials)
     const binary = Array.from(encoded, (byte) => String.fromCodePoint(byte)).join('')
     return 'Basic ' + btoa(binary)
   }
 
-  private static validateResponse<T extends { value?: unknown }>(response: { data?: T }, context: string): void {
+  static validateResponse<T extends { value?: unknown }>(response: { data?: T }, context: string): void {
     if (response.data?.value === undefined) {
       logger.error(`Invalid API response for ${context} - PAT may be invalid`)
       throw new Error('Le Personal Access Token (PAT) Azure DevOps est invalide ou a expiré')
@@ -187,7 +195,7 @@ export class AzureDevOpsService {
     return mepTags[0]
   }
 
-  private static findVersionTagForCommit(tags: AzureDevOpsRef[], commitId: string): string | null {
+  static findVersionTagForCommit(tags: AzureDevOpsRef[], commitId: string): string | null {
     const versionTagRegex = /refs\/tags\/V\d+\.\d+\.\d+/
 
     for (const tag of tags) {
@@ -508,6 +516,19 @@ export class AzureDevOpsService {
     return this.fetchAllTags(pat, repository)
   }
 
+  static async getCommitIdsAfterTag(
+    pat: string,
+    repository: string,
+    tagCommitId: string,
+  ): Promise<Set<string>> {
+    const headCommitId = await this.getMainBranchHead(pat, repository)
+    const { commits } = await this.fetchCommitsInRange(pat, repository, tagCommitId, headCommitId)
+    const ids = new Set(commits.map((c) => c.commitId))
+    // fetchCommitsInRange excludes both endpoints — add HEAD since it's after the tag
+    ids.add(headCommitId)
+    return ids
+  }
+
   static async fetchCommitsForExplorer(
     pat: string,
     repository: string,
@@ -816,11 +837,7 @@ export class AzureDevOpsService {
       }
     }
 
-    allPrs.sort((a, b) => {
-      const dateA = a.closedDate != null ? new Date(a.closedDate).getTime() : Date.now()
-      const dateB = b.closedDate != null ? new Date(b.closedDate).getTime() : Date.now()
-      return dateB - dateA
-    })
+    this.sortByClosedDateDesc(allPrs)
     return allPrs
   }
 
@@ -899,11 +916,7 @@ export class AzureDevOpsService {
     // Exclude PRs created by the reviewer (self-reviews)
     const filtered = allPrs.filter((pr) => pr.createdBy.id !== reviewerId)
 
-    filtered.sort((a, b) => {
-      const dateA = a.closedDate != null ? new Date(a.closedDate).getTime() : Date.now()
-      const dateB = b.closedDate != null ? new Date(b.closedDate).getTime() : Date.now()
-      return dateB - dateA
-    })
+    this.sortByClosedDateDesc(filtered)
 
     return filtered
   }
@@ -1037,4 +1050,5 @@ export class AzureDevOpsService {
 
     return commits
   }
+
 }
