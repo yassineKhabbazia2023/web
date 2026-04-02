@@ -18,6 +18,7 @@
     <template #footer>
       <LegalLinks
         :hasCgu="false"
+        dark
         class="margin-right--4"
       />
       <ErrorFooterContent />
