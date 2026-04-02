@@ -40,6 +40,7 @@ const { t } = useI18n()
 
 const props = defineProps<{
   offerCodes?: string[]
+  search?: string
 }>()
 
 const activeStatusCodes = defineModel<SubscriptionStatusCode[]>({ required: true })
@@ -62,7 +63,7 @@ const {
 
 async function updateStats() {
   try {
-    const stats = await fetchSubscriptionStats(props.offerCodes)
+    const stats = await fetchSubscriptionStats(props.offerCodes, props.search)
     offerActivationFilters.value = SubscriptionStatusFiltersManager.getOfferActivationFilters(stats)
     validatedFilters.value = SubscriptionStatusFiltersManager.getValidatedFilters(stats)
   } catch (err) {
@@ -71,7 +72,7 @@ async function updateStats() {
 }
 
 watch(
-  () => props.offerCodes,
+  () => [props.offerCodes, props.search],
   () => {
     updateStats()
   },

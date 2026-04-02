@@ -3,10 +3,12 @@
     <SubscriptionStatusFilters
       v-model="activeStatusCodes"
       :offer-codes="offerCodes"
-      class="margin-bottom--4"
+      :search="search"
+      class="margin-bottom--6"
     />
     <SubscriptionsTable
       v-model:offerCodes="offerCodes"
+      v-model:search="search"
       :active-status-codes="activeStatusCodes"
       @consult="onClickConsult"
     />
@@ -30,6 +32,7 @@ import type { SubscriptionStatusCode } from '@entities/services/subscription/sub
 
 const activeStatusCodes = ref<SubscriptionStatusCode[]>(SubscriptionStatusFiltersManager.getDefaultActiveStatusCodes())
 const offerCodes = ref<string[]>([])
+const search = ref<string>('')
 const displaySubscriptionDrawer = ref<boolean>(false)
 const selectedSubscriptionId = ref<number | undefined>(undefined)
 

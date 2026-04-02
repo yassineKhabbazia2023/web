@@ -103,4 +103,5 @@ export interface FetchSubscriptionRequestsParams {
   pageSize?: number
   sortField?: string
   sortDescending?: boolean
+  search?: string
 }

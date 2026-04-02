@@ -75,6 +75,28 @@ describe('subscriptionService', () => {
 
       expect(params.get('offerCode')).toBe('null')
     })
+
+    it('should pass search param to the API when provided', async () => {
+      await fetchSubscriptionRequests({
+        search: 'test search',
+      })
+
+      const callArgs = subscriptionGetMock.mock.calls.at(-1)!
+      const params = callArgs[1].params as URLSearchParams
+
+      expect(params.get('search')).toBe('test search')
+    })
+
+    it('should not pass search param when search is empty', async () => {
+      await fetchSubscriptionRequests({
+        search: '',
+      })
+
+      const callArgs = subscriptionGetMock.mock.calls.at(-1)!
+      const params = callArgs[1].params as URLSearchParams
+
+      expect(params.get('search')).toBeNull()
+    })
   })
 
   describe('fetchAccountSubscriptions', () => {
@@ -150,6 +172,20 @@ describe('subscriptionService', () => {
       subscriptionGetMock.mockRejectedValueOnce(new Error('fail'))
       const result = await fetchSubscriptionStats(['A'])
       expect(result).toEqual({ statuses: {} })
+    })
+
+    it('should pass search param to the API when provided', async () => {
+      await fetchSubscriptionStats(['A'], 'test search')
+      const callArgs = subscriptionGetMock.mock.calls.at(-1)!
+      const params = callArgs[1].params as URLSearchParams
+      expect(params.get('search')).toBe('test search')
+    })
+
+    it('should not pass search param when search is empty', async () => {
+      await fetchSubscriptionStats(['A'], '')
+      const callArgs = subscriptionGetMock.mock.calls.at(-1)!
+      const params = callArgs[1].params as URLSearchParams
+      expect(params.get('search')).toBeNull()
     })
   })
 })

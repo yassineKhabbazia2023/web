@@ -41,6 +41,9 @@ export async function fetchSubscriptionRequests(
     if (params.sortDescending !== undefined) {
       searchParams.append('sorting.descending', String(params.sortDescending))
     }
+    if (params.search !== undefined && params.search !== '') {
+      searchParams.append('search', params.search)
+    }
 
     const response = await api.gateway.get<PaginationResponse<SubscriptionRequest>>(
       `${API_PREFIXES.OFFER}/subscription`,
@@ -103,7 +106,7 @@ export async function fetchSubscriptionDetails(
   return response.data
 }
 
-export async function fetchSubscriptionStats(offerCodes?: string[]): Promise<SubscriptionStats> {
+export async function fetchSubscriptionStats(offerCodes?: string[], search?: string): Promise<SubscriptionStats> {
   try {
     const statsParams = new URLSearchParams()
 
@@ -111,6 +114,10 @@ export async function fetchSubscriptionStats(offerCodes?: string[]): Promise<Sub
       statsParams.append('offerCode', 'null')
     } else {
       offerCodes?.forEach(code => statsParams.append('offerCode', code))
+    }
+
+    if (search !== undefined && search !== '') {
+      statsParams.append('search', search)
     }
 
     const response = await api.gateway.get(

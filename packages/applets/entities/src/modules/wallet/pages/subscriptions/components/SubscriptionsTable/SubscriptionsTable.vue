@@ -1,14 +1,24 @@
 <template>
-  <SubscriptionsFilter
-    v-model:offerTypeSelection="offerTypeSelection"
-    @apply-offer-filter="handleOfferFiltered"
-  />
+  <div class="subscriptions-table__filters flex flex--align-items-center margin-bottom--4">
+    <SubscriptionsSearch
+      v-model:search="search"
+      class="subscriptions-table__search margin-right--4"
+    />
+    <SubscriptionsFilter
+      v-model:offerTypeSelection="offerTypeSelection"
+      @apply-offer-filter="handleOfferFiltered"
+    />
+  </div>
   <div
     v-if="isLoading"
     class="loader flex flex--justify-content-center flex--align-items-center"
   >
     <PLoader pType="primary" pSize="50" />
   </div>
+  <NoResult
+    v-else-if="hasNoResults"
+    data-testid="subscriptions-no-result"
+  />
   <div v-else>
     <PTable
       pStripe
@@ -147,7 +157,9 @@ import { useUserStore } from '@pulse/common/stores'
 import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
 import { fetchSubscriptionRequests, validateSubscriptionRequest } from '@entities/services/subscription'
 import { getInitials } from '@entities/helpers'
+import NoResult from '@entities/components/NoResult'
 import SubscriptionsFilter from './components/SubscriptionsFilter'
+import SubscriptionsSearch from './components/SubscriptionsSearch/SubscriptionsSearch.vue'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { PaginationResponse } from '@pulse/common/types'
@@ -214,6 +226,10 @@ const offerCodes = defineModel<string[]>('offerCodes', {
   default: [],
 })
 
+const search = defineModel<string>('search', {
+  default: '',
+})
+
 const emit = defineEmits<{
   consult: [number]
   validate: [string]
@@ -252,6 +268,10 @@ const paginationLabel = computed(() => getPaginationLabel(t('on'), {
   totalItems: searchResult.value.totalItems,
 }))
 
+const hasNoResults = computed(() =>
+  search.value !== '' && searchResult.value.items.length === 0,
+)
+
 const requestMenu = (offerState: SubscriptionStatusCode): PToolboxItemProps[] => {
   const menuItems: PToolboxItemProps[] = [
     {
@@ -283,6 +303,7 @@ const fetchSubscriptions = async () => {
     pageSize: limit,
     sortField: sorting.field,
     sortDescending: sorting.descending,
+    search: search.value,
   })
 }
 
@@ -317,6 +338,11 @@ const handleStatusCodesChange = async (newStatusCodes: SubscriptionStatusCode[])
 }
 
 watch(() => props.activeStatusCodes, handleStatusCodesChange, { deep: true })
+
+watch(search, async () => {
+  searchCriteria.value.currentPage = 1
+  await loadSubscriptions()
+})
 
 const getStatusDetails = (status: string): StatusDetails => {
   switch (status) {
@@ -412,3 +438,8 @@ defineExpose({
 })
 </script>
 
+<style scoped>
+.subscriptions-table__search {
+  width: 500px;
+}
+</style>

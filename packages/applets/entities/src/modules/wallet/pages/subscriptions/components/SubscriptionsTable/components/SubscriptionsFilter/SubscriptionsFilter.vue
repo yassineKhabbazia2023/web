@@ -1,15 +1,15 @@
 <template>
-  <div class="subscription-filter-options margin-y--6">
-    <PDropdown
-      v-model="selectedOfferType"
-      :pPlaceholder="t('chooseAnOffer')"
-      :pCheckAllLabel="t('allOffers')"
-      :pOptions="offerTypeDropdown"
-      pFilterable
-      pMultiple
-      data-testid="subscription-filter-offers-dropdown"
-    />
-  </div>
+  <PDropdown
+    v-model="selectedOfferType"
+    class="subscriptions-filter__dropdown"
+    :pPlaceholder="t('chooseAnOffer')"
+    :pCheckAllLabel="t('allOffers')"
+    :pOptions="offerTypeDropdown"
+    pFilterable
+    pMultiple
+    pCollapseTags
+    data-testid="subscription-filter-offers-dropdown"
+  />
 </template>
 
 <script setup lang="ts">
@@ -82,3 +82,8 @@ onMounted(() => {
 })
 </script>
 
+<style scoped>
+.subscriptions-filter__dropdown {
+  width: 240px;
+}
+</style>

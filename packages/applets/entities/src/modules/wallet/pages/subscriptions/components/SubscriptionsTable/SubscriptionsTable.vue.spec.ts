@@ -73,6 +73,8 @@ const emailMock = 'email-mock'
 const defaultStubs = {
   PLoader: true,
   SubscriptionsFilter: true,
+  SubscriptionsSearch: true,
+  NoResult: true,
   PToolbox: true,
   PButton: true,
   PIcon: true,
@@ -293,5 +295,69 @@ describe('subscriptionsTable', () => {
       field: 'creationDate',
       descending: true,
     })
+  })
+
+  it('should update search value and reset page when search changes', async () => {
+    wrapper.vm.searchCriteria.currentPage = 3
+    mockFetchSubscriptionRequests.mockClear()
+
+    await wrapper.setProps({ search: 'test search' })
+    await flushPromises()
+
+    expect(wrapper.vm.search).toBe('test search')
+    expect(wrapper.vm.searchCriteria.currentPage).toBe(1)
+    expect(mockFetchSubscriptionRequests).toHaveBeenCalledWith(
+      expect.objectContaining({
+        search: 'test search',
+      }),
+    )
+  })
+
+  it('should pass search param to fetchSubscriptionRequests', async () => {
+    mockFetchSubscriptionRequests.mockClear()
+
+    await wrapper.setProps({ search: 'raison sociale' })
+    await flushPromises()
+
+    expect(mockFetchSubscriptionRequests).toHaveBeenCalledWith(
+      expect.objectContaining({
+        search: 'raison sociale',
+      }),
+    )
+  })
+
+  it('should display NoResult component when search has no results', async () => {
+    wrapper = mount(SubscriptionsTable, {
+      props: { activeStatusCodes: defaultActiveStatusCodes },
+      global: { stubs: defaultStubs },
+    })
+    await wrapper.vm.handleOfferFiltered()
+    await flushPromises()
+
+    mockFetchSubscriptionRequests.mockResolvedValueOnce(
+      getMockedSubscriptionPaginationResponse({ items: [] }),
+    )
+
+    await wrapper.setProps({ search: 'test search' })
+    await flushPromises()
+
+    const noResult = wrapper.findComponent('[data-testid="subscriptions-no-result"]')
+    expect(noResult.exists()).toBe(true)
+  })
+
+  it('should not display NoResult component when search is empty and no results', async () => {
+    mockFetchSubscriptionRequests.mockResolvedValueOnce(
+      getMockedSubscriptionPaginationResponse({ items: [] }),
+    )
+
+    wrapper = mount(SubscriptionsTable, {
+      props: { activeStatusCodes: defaultActiveStatusCodes },
+      global: { stubs: defaultStubs },
+    })
+    await wrapper.vm.handleOfferFiltered()
+    await flushPromises()
+
+    const noResult = wrapper.findComponent('[data-testid="subscriptions-no-result"]')
+    expect(noResult.exists()).toBe(false)
   })
 })
