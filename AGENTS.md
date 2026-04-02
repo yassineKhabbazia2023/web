@@ -57,6 +57,7 @@ This is an npm workspaces monorepo with three main package categories:
 - Never write CSS classes for basic styles (flex, margin, etc.) unless they don't exist in the StyleGuide
 - ESLint configuration enforces formatting rules (2-space indentation, no semicolons, single quotes)
 - No falsy values: use `test === false` instead of `!test`, same with `true`. For nullish checks, use `value === null || value === undefined` (or `value == null`) instead of `!value`
+- **Always use `String#replaceAll()` instead of `String#replace()`** with global regex flags. For literal replacements, use `replaceAll('x', 'y')` instead of `replace(/x/g, 'y')`. This avoids regex backtracking vulnerabilities and improves readability
 
 ### CSS Class Formatting
 

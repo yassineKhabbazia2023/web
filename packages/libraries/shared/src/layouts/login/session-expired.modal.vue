@@ -1,6 +1,7 @@
 <template>
   <PDialog
     v-model="isVisible"
+    data-testid="session-expired-modal"
     :pTitle="t('modals.sessionExpired.title')"
     :pShowClose="false"
     pWidth="350px"

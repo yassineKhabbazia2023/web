@@ -35,6 +35,16 @@ export const authHandlers = [
     return HttpResponse.json(getLoginResponseMock())
   }),
 
+  // Token refresh endpoint - returns a new valid JWT string
+  http.post('*/authentication/api/refreshToken', () => {
+    return HttpResponse.json(getLoginResponseMock().webToken)
+  }),
+
+  // Logout endpoint
+  http.post('*/authentication/api/logout', () => {
+    return new HttpResponse(null, { status: 200 })
+  }),
+
   // Current user (contact/me) - called by LoginManager.initAuthClient
   http.get('*/contact/me', () => {
     return HttpResponse.json(getCurrentUserResponseMock())

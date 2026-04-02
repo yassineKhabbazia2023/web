@@ -1,15 +1,15 @@
-// JWT token with 1 year expiration from now
+// JWT token with configurable expiration (defaults to 1 year)
 // Header: {"alg":"HS256","typ":"JWT"}
 // Payload: {"sub":"test-user-123","exp":<future_timestamp>,"iat":<now>}
 // To regenerate: use jwt.io with secret "test-secret"
-function createMockJwt(): string {
+export function createMockJwt(expiresInSeconds: number = 365 * 24 * 60 * 60): string {
   const now = Math.floor(Date.now() / 1000)
-  const oneYearFromNow = now + 365 * 24 * 60 * 60
+  const exp = now + expiresInSeconds
 
   // Base64url encode header and payload
   const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
-  const payload = btoa(JSON.stringify({ sub: 'test-user-123', exp: oneYearFromNow, iat: now }))
+  const payload = btoa(JSON.stringify({ sub: 'test-user-123', exp, iat: now }))
     .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '')
 
   // Fake signature (not verified in mocks)
