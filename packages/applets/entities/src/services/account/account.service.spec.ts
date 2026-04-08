@@ -13,7 +13,6 @@ import {
   fetchContactsFromSameHub,
   createCustomer,
   getAccountUserByEmail,
-  updateSignatoryStatus,
   getAccountSignatories,
   fetchGatewayApi,
   fetchReferentialOffices,
@@ -301,47 +300,6 @@ describe('test accountServices', () => {
         { params: { accountNumber: mockedAccount.accountNumber } },
       )
       expect(id).toBe(newId)
-    })
-
-    it.each([
-      {
-        isSignatory: true,
-      },
-      {
-        isSignatory: false,
-      },
-    ])('should patch user', async ({ isSignatory }) => {
-      const accountId = mockedAccount.accountId
-      const contactId = mockedCollaborators[0].id
-      const patchParams = {
-        accountId,
-        contactId,
-        isSignatory,
-      }
-
-      await updateSignatoryStatus(accountId, contactId, isSignatory)
-      expect(mockedAccountApiPatch).toHaveBeenCalledWith(
-        `${API_PREFIXES.ACCOUNT}/roles`,
-        null,
-        { params: patchParams },
-      )
-    })
-
-    it("should update the signatory's status and reflect the change accurately", async () => {
-      const accountId = mockedAccount.accountId
-      const contactId = mockedCollaborators[0].id
-      const patchParams = {
-        accountId,
-        contactId,
-      }
-
-      await updateSignatoryStatus(accountId, contactId)
-
-      expect(mockedAccountApiPatch).toHaveBeenCalledWith(
-        `${API_PREFIXES.ACCOUNT}/roles`,
-        null,
-        { params: { ...patchParams, isSignatory: true } },
-      )
     })
 
     it('should get signatories contacts', async () => {
