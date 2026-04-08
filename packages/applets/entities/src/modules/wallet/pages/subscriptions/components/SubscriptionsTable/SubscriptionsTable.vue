@@ -377,7 +377,7 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'succeeded',
       subscription_complete_plan: selectedPlan?.planName,
-      subscription_complete_forfait: selectedPricing?.label,
+      subscription_complete_forfait: selectedPricing?.price,
       subscription_complete_statut: statusText,
     })
     AmplitudeService.track('Onboarding Started', {
@@ -392,7 +392,7 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
       subscription_complete_localisation: 'MOD screen',
       subscription_complete_result: 'failed',
       subscription_complete_plan: selectedPlan?.planName,
-      subscription_complete_forfait: selectedPricing?.label,
+      subscription_complete_forfait: selectedPricing?.price,
       subscription_complete_statut: statusText,
     })
     AmplitudeService.track('Onboarding Started', {
