@@ -45,7 +45,8 @@ import BookingAppointmentsListDrawer from '@booking/shared/components/booking-ap
 import BookingAppointmentDrawer from '@booking/customer/components/appointment-drawer/booking-appointment-drawer.vue'
 import { useDisplayCount } from '@booking/shared/composables/use-display-count.composable'
 import { AppointmentTab } from '@booking/types'
-
+import { BookingTrackingService } from '@booking/services/booking-tracking.service'
+import { BookingSourceEvent } from '@booking/services/booking-tracking.enum'
 const appointmentsStore = useBookingAppointmentsStore()
 const customerStore = useBookingCustomerStore()
 
@@ -65,6 +66,8 @@ const { displayCount } = useDisplayCount(upcomingAppointmentsCount)
 function openDrawer() {
   appointmentsStore.openBookingAppointmentsListDrawer()
   appointmentsStore.fetchUpcomingAppointments()
+
+  BookingTrackingService.trackBookingConsulted()
 }
 
 function onTakeAppointment() {
@@ -75,8 +78,10 @@ function onTakeAppointment() {
 function onTabChanged(tab: string) {
   if (tab === AppointmentTab.PAST) {
     appointmentsStore.fetchPastAppointments()
+    BookingTrackingService.trackPastMeetingsConsulted()
   } else if (tab === AppointmentTab.UPCOMING) {
     appointmentsStore.fetchUpcomingAppointments()
+    BookingTrackingService.trackBookingMeetingConsulted(BookingSourceEvent.HEADER)
   }
 }
 

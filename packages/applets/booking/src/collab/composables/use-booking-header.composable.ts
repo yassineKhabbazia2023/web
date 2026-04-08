@@ -12,7 +12,7 @@ export function useBookingHeader() {
 
   function openDrawer() {
     collabStore.openBookingDrawer()
-    BookingTrackingService.trackCollaboratorWidgetOpened()
+    BookingTrackingService.trackConfigurationOpened()
   }
 
   const hasBookingDrawerBeenOpened = computed(() => collabStore.hasBookingDrawerBeenOpened)

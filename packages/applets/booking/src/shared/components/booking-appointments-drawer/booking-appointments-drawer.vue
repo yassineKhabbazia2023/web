@@ -139,6 +139,8 @@ import type { PDrawerProps, PToolboxItemProps } from '@pulse/styleguide/types'
 import type { BookingAppointmentsListDrawerProps } from './booking-appointments-list-drawer.types'
 import NoAppointmentsPlaceholder from './components/no-appointments-placeholder.vue'
 import { AppointmentTab } from '@booking/types'
+import { BookingTrackingService } from '@booking/services/booking-tracking.service'
+import { BookingSourceEvent } from '@booking/services/booking-tracking.enum'
 
 const props = withDefaults(defineProps<BookingAppointmentsListDrawerProps>(), {
   isCollaborator: false,
@@ -217,11 +219,14 @@ function getAppointmentLabel(appointment: AppointmentResponse): string {
 function onJoinMeeting(appointment: AppointmentResponse) {
   if (appointment.joinWebUrl !== null) {
     window.open(appointment.joinWebUrl, '_blank')
+    BookingTrackingService.trackMeetingJoinRequested(BookingSourceEvent.HEADER)
   }
 }
 
 function onTakeAppointment() {
   emit('take-appointment')
+
+  BookingTrackingService.trackCustomerBookingFlowStarted()
 }
 
 function handleToolboxItemClick(actionName: string) {

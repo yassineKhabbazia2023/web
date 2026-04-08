@@ -132,6 +132,7 @@ import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
 import { AppColors } from '@pulse/styleguide'
+import { BookingTrackingService } from '@booking/services/booking-tracking.service'
 import { PIcon, PButton, PAppointmentCard, PLoader, PTabs, PTabPane } from '@pulse/styleguide/components'
 import { useBookingAppointmentsStore, useBookingCustomerStore } from '@booking/stores'
 import type { AppointmentResponse } from '@booking/types'
@@ -140,6 +141,7 @@ import { BookingService } from '@booking/services'
 import BookingAppointmentDrawer from '@booking/customer/components/appointment-drawer/booking-appointment-drawer.vue'
 import NoAppointmentsPlaceholder from '@booking/shared/components/booking-appointments-drawer/components/no-appointments-placeholder.vue'
 import { MAX_APPOINTMENTS_DISPLAY } from '@booking/constants'
+import { BookingSourceEvent } from '@booking/services/booking-tracking.enum'
 
 const appointmentsStore = useBookingAppointmentsStore()
 const customerStore = useBookingCustomerStore()
@@ -227,18 +229,23 @@ function isAppointmentActive(appointment: AppointmentResponse): boolean {
 function onJoinMeeting(appointment: AppointmentResponse) {
   if (appointment.joinWebUrl !== null) {
     window.open(appointment.joinWebUrl, '_blank')
+    BookingTrackingService.trackMeetingJoinRequested(BookingSourceEvent.HOME)
   }
 }
 
 function onClickScheduleAppointment() {
   appointmentsStore.openBookingAppointmentDrawer()
+
+  BookingTrackingService.trackCustomerBookingFlowStarted()
 }
 
 watch(activeTab, (newTab) => {
   if (newTab === AppointmentTab.PAST) {
     fetchWidgetPastAppointments()
+    BookingTrackingService.trackPastMeetingsConsulted()
   } else if (newTab === AppointmentTab.UPCOMING) {
     fetchWidgetUpcomingAppointments()
+    BookingTrackingService.trackBookingMeetingConsulted(BookingSourceEvent.HOME)
   }
 })
 
