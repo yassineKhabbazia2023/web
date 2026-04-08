@@ -7,7 +7,14 @@
       position--relative
     "
   >
-    <li>
+    <li
+      class="
+        flex
+        flex--align-items-center
+        flex--justify-content-space-between
+        flex-gap--2
+      "
+    >
       <span class="catalog-card__title font-large">
         {{ title }}
       </span>
