@@ -26,14 +26,25 @@
     <BookingAppointmentChooseTimeSlot
       v-if="currentStep === BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT && selectedExpertId !== undefined"
       :collaboratorId="selectedExpertId"
+      @previous-step="goToPreviousStep"
     />
 
-    <template
-      v-if="currentStep !== BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT"
-      #footer
-    >
+    <template #footer>
+      <div class="flex flex--justify-content-flex-start">
+        <template v-if="currentStep === BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT">
+          <PButton
+            pType="secondary"
+            pPlain
+            class="margin-right--4"
+            @click="goToPreviousStep"
+          >
+            {{ t('booking-configuration.buttons.previous') }}
+          </PButton>
+        </template>
+      </div>
       <div class="flex flex--justify-content-flex-end">
         <PButton
+          v-if="currentStep !== BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT"
           pType="primary"
           pPlain
           data-testid="catalog-drawer-close-button"
@@ -67,4 +78,10 @@ const {
   closeDrawer,
   onSelectExpert,
 } = useBookingAppointmentDrawer(isOpened)
+
+function goToPreviousStep() {
+  if (currentStep.value === BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT) {
+    currentStep.value = BookingAppointmentDrawerTabs.CHOOSE_EXPERT
+  }
+}
 </script>
