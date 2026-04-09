@@ -165,7 +165,7 @@
                   pSize="small"
                   class="margin-left--1"
                   data-testid="folder-users-collab-action"
-                  @click="handleToolboxClick"
+                  @click="handleToolboxClick(scope.row)"
                 >
                   <PIcon pName="threeDots" />
                 </PButton>
@@ -225,7 +225,7 @@ import {
 } from '@pulse/styleguide/components'
 import RemoveUserDialog from '../components/remove-user-dialog'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
-import { AvatarRoles } from '@pulse/styleguide'
+import { AvatarRoles, PNotification } from '@pulse/styleguide'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { getInitials, getPaginationLabel } from '@pulse/common/utils'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
@@ -235,7 +235,7 @@ import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { getFullName } from '@entities/utils'
 import { fetchAccountCustomers } from '@entities/services/wallet'
 import { removeFalsyValues } from '@pulse/toolbox/utils/object'
-import { getAccountSignatories } from '@entities/services/account'
+import { updateSignatoryStatus, getAccountSignatories } from '@entities/services/account'
 import type { AccountSignatories } from '@entities/services/account/account.type'
 import type { StateUser } from '../types/users-collab.types'
 import type { User, UserStatus } from '@entities/types'
@@ -265,6 +265,8 @@ const { d, t } = useI18n({
       manageAccess: 'Manage access',
       addCustomer: 'Add a customer',
       dateAccess: 'First date access',
+      assignSignatory: 'Designate as signatory',
+      removeSignatory: 'Revoke signatory status',
       modifyRights: 'Change the rights',
       removeUser: 'Remove user',
       searchUsers: 'Search by name, first name, email, status',
@@ -272,6 +274,10 @@ const { d, t } = useI18n({
       statusInvite: 'Invited',
       statusDeclared: 'Declared',
       on: 'on',
+      signatoryAdded: 'User {userFullName} has been successfully designated as a signatory of the entity',
+      signatoryRemoved: 'The user {userFullName} is no longer a signatory on the account.',
+      deleteSignatoryTooltip: 'A folder should have at least one signatory',
+      technicalError: 'The operation failed due to a technical error. Please try again later.',
       roles: 'Role(s)',
       signatoryRoleName: 'Engagement letter signatory',
     },
@@ -283,12 +289,18 @@ const { d, t } = useI18n({
       manageAccess: 'Gérer les accès',
       addCustomer: 'Ajouter un utilisateur',
       dateAccess: 'Date d\'ajout',
+      assignSignatory: 'Désigner en tant que signataire',
+      removeSignatory: 'Retirer le statut de signataire',
       modifyRights: 'Modifier les droits',
       removeUser: 'Retirer l\'utilisateur',
       searchUsers: 'Rechercher par nom, prénom, e-mail, statut',
       statusConnect: 'Connecté',
       statusInvite: 'Invité',
       statusDeclared: 'Déclaré',
+      signatoryAdded: 'L\'utilisateur {userFullName} a été désigné en tant que signataire de l\'entité avec succès',
+      signatoryRemoved: 'L\'utilisateur {userFullName} n\'est plus signataire du dossier.',
+      deleteSignatoryTooltip: 'Un dossier doit avoir au moins un signataire',
+      technicalError: 'L\'opération a échoué suite à une erreur technique. Veuillez réessayer plus tard.',
       on: 'sur',
       roles: 'Rôle(s)',
       signatoryRoleName: 'Signataire lettre de mission',
@@ -367,7 +379,7 @@ const state: StateUser = reactive({
 })
 
 const toolboxItems = ref<PToolboxItemProps[]>([])
-function handleToolboxClick() {
+function handleToolboxClick(userRow: any) {
   toolboxItems.value.length = 0
   const items: PToolboxItemProps[] = [
     {
@@ -384,6 +396,31 @@ function handleToolboxClick() {
       pActionName: UserActions.REMOVE_USER,
       pState: 'default',
     })
+  }
+
+  if (!isContactSignatory(userRow.contactId)) {
+    items.unshift(
+      {
+        pIconName: 'patchCheck',
+        pValue: t('assignSignatory'),
+        pActionName: UserActions.ASSIGN_SIGNATORY,
+        pState: 'default',
+      },
+    )
+  }
+
+  if (isContactSignatory(userRow.contactId)) {
+    const tooltipContent = !hasMultipleSignatories() ? t('deleteSignatoryTooltip') : undefined
+    items.unshift(
+      {
+        pIconName: 'patchCheck',
+        pValue: t('removeSignatory'),
+        pActionName: UserActions.UNASSIGN_SIGNATORY,
+        pState: 'default',
+        disabled: !hasMultipleSignatories(),
+        pContentTooltip: tooltipContent,
+      },
+    )
   }
 
   toolboxItems.value.push(...items)
@@ -474,18 +511,62 @@ const handleSortChange = ({ prop, order }: { prop: string, order: string }) => {
 }
 
 const handleUserAction = (action: string, row: any) => {
+  const { contactId, fullName, email } = row
   selectedRow.value = row
 
   if (action === UserActions.MODIFY_RIGHTS) {
     isManageRightsDrawerOpened.value = true
   }
-
+  if (action === UserActions.ASSIGN_SIGNATORY) {
+    handleAddSignatory(contactId, fullName, email)
+  }
+  if (action === UserActions.UNASSIGN_SIGNATORY) {
+    handleRemoveSignatory(contactId, fullName, email)
+  }
   if (action === UserActions.REMOVE_USER) {
     handleRemoveUser(row)
   }
 }
 
+// Signatory addition scope
 const { currentEntity } = storeToRefs(currentEntityStore)
+
+async function handleAddSignatory(contactId: User['contactId'], contactFullName: string, email: string) {
+  if (!currentEntity.value) {
+    return
+  }
+
+  try {
+    await updateSignatoryStatus(currentEntity.value.accountId, contactId)
+    showAddSignatorySuccess(contactFullName)
+    setAccountSignatories()
+    AmplitudeService.track('Signatory Updated', {
+      signatory_status_after_update: 'On',
+      signatory_target_mail: email,
+    })
+  } catch (error) {
+    logger.error(error)
+    showTechnicalError()
+  }
+}
+
+async function handleRemoveSignatory(contactId: User['contactId'], contactFullName: string, email: string) {
+  if (!currentEntity.value) {
+    return
+  }
+  try {
+    await updateSignatoryStatus(currentEntity.value.accountId, contactId, false)
+    showSuccessNotification('signatoryRemoved', contactFullName)
+    setAccountSignatories()
+    AmplitudeService.track('Signatory Updated', {
+      signatory_status_after_update: 'Off',
+      signatory_target_mail: email,
+    })
+  } catch (error) {
+    logger.error(error)
+    showTechnicalError()
+  }
+}
 
 const isRemoveUserDialogOpened = ref(false)
 const userToRemove = ref<User>()
@@ -505,6 +586,10 @@ function isContactSignatory(contactId: User['contactId']) {
   return !!accountSignatories.value.find((signatory) => signatory.contactId === contactId)
 }
 
+function hasMultipleSignatories() {
+  return accountSignatories.value.length > 1
+}
+
 async function setAccountSignatories() {
   if (!currentEntity.value) {
     return
@@ -519,6 +604,36 @@ async function setAccountSignatories() {
   }
 
   state.isLoading = false
+}
+
+function showAddSignatorySuccess(userFullName: string) {
+  PNotification({
+    message: t('signatoryAdded', { userFullName }),
+    iconName: 'check',
+    showClose: true,
+    customClass: 'success',
+    position: 'bottom-right',
+  })
+}
+
+function showSuccessNotification(messageKey: string, userFullName: string) {
+  PNotification({
+    message: t(messageKey, { userFullName }),
+    iconName: 'check',
+    showClose: true,
+    customClass: 'success',
+    position: 'bottom-right',
+  })
+}
+
+function showTechnicalError() {
+  PNotification({
+    message: t('technicalError'),
+    iconName: 'exclamationTriangle',
+    showClose: true,
+    customClass: 'error',
+    position: 'bottom-right',
+  })
 }
 
 const getQueryParams = () => ({
