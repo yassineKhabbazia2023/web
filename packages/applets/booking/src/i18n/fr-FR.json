@@ -3,18 +3,26 @@
     "steps": {
       "intro": "Présentation",
       "customize-meeting": "Configuration",
-      "configure-slots": "Jours"
+      "configure-slots": "Jours",
+      "confirmation": "Confirmation"
     },
     "drawer-titles": {
       "intro": "Vos disponibilités Clients",
       "customize-meeting": "Paramétrage de vos rendez-vous",
-      "configure-slots": "Vos horaires ouverts aux rendez-vous"
+      "configure-slots": "Vos horaires ouverts aux rendez-vous",
+      "confirmation-loading": "Création de votre page de réservation",
+      "confirmation-success": "Partagez le lien de votre page de réservation"
     },
     "buttons": {
       "previous": "Précédent",
       "next": "Suivant",
       "validate": "Valider",
-      "finish": "Terminer"
+      "finish": "Terminer",
+      "close": "Fermer"
+    },
+    "notifications": {
+      "submit-success": "Vos créneaux de rendez-vous ont bien été enregistrés et sont à la disposition de vos client·e·s.",
+      "submit-error": "Une erreur est survenue dans la création de vos créneaux de rendez-vous. Veuillez recommencer ultérieurement."
     }
   },
   "booking-configuration-text": {
@@ -109,5 +117,21 @@
   },
   "booking-appointment-choose-expert": {
     "description": "Choisissez votre expert pour accéder à ses disponibilités et réserver un rendez-vous."
+  },
+  "booking-confirmation": {
+    "loading": {
+      "title": "Votre page de réservation est en cours de création.",
+      "subtitle": "Veuillez patienter quelques instants."
+    },
+    "success": {
+      "title": "Votre page est créée !",
+      "subtitle": "Vos clients peuvent maintenant prendre rendez-vous via votre page de réservation Booking."
+    },
+    "share-link": {
+      "title": "Partager votre lien de réservation",
+      "description": "Ajouter ce lien dans votre signature email pour que vos clients puissent prendre rendez-vous en un clic.",
+      "copy-button": "Copier le lien",
+      "copied": "Lien copié !"
+    }
   }
 }

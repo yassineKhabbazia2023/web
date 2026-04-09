@@ -1,5 +1,4 @@
 export enum RouteName {
-
   ACCOUNT_MANAGEMENT = 'accountManagement',
   ANONYMOUS = 'anonymous',
   AUTHENTICATED = 'authenticated',

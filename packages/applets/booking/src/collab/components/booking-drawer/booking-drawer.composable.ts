@@ -11,13 +11,6 @@ export function useBookingDrawer() {
 
   // State
   const isLoading = ref(false)
-  const hasSharedPage = ref<boolean>(false)
-  const isDrawerOpen = ref(false)
-
-  // Methods
-  function openDrawer() {
-    isDrawerOpen.value = true
-  }
 
   const drawerTitle = ref(t('booking-drawer.drawerTitle'))
   function updateDrawerTitle(newTitle: string) {
@@ -27,11 +20,9 @@ export function useBookingDrawer() {
   return {
     // State
     drawerTitle,
-    hasSharedPage,
     isBookingDrawerOpened,
     isLoading,
     // Methods
-    openDrawer,
     closeBookingDrawer,
     updateDrawerTitle,
   }

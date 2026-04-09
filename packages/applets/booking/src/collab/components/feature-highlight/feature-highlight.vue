@@ -11,7 +11,7 @@
     <PIcon
       :pName="iconName"
       pSize="16px"
-      pColor="#126778"
+      :pColor="AppColors.TEAL_800"
     />
     <div class="padding-left--2">
       <slot />
@@ -21,6 +21,7 @@
 
 <script lang="ts" setup>
 import { PIcon } from '@pulse/styleguide/components'
+import { AppColors } from '@pulse/styleguide'
 import type { FeatureHighlightProps } from './feature-highlight.types'
 
 defineProps<FeatureHighlightProps>()

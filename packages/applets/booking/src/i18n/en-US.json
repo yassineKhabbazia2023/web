@@ -3,18 +3,26 @@
     "steps": {
       "intro": "Introduction",
       "customize-meeting": "Configuration",
-      "configure-slots": "Days"
+      "configure-slots": "Days",
+      "confirmation": "Confirmation"
     },
     "drawer-titles": {
       "intro": "Your customer availability",
       "customize-meeting": "Setting up your appointments",
-      "configure-slots": "Your appointment availability hours"
+      "configure-slots": "Your appointment availability hours",
+      "confirmation-loading": "Creating your booking page",
+      "confirmation-success": "Share your booking page link"
     },
     "buttons": {
       "previous": "Previous",
       "next": "Next",
       "validate": "Validate",
-      "finish": "Finish"
+      "finish": "Finish",
+      "close": "Close"
+    },
+    "notifications": {
+      "submit-success": "Your appointment slots have been successfully recorded and are now available to your clients.",
+      "submit-error": "An error occurred while creating your appointment slots. Please try again later."
     }
   },
   "booking-configuration-text": {
@@ -109,5 +117,21 @@
   },
   "booking-appointment-choose-expert": {
     "description": "Choose your expert to access their availability and book an appointment."
+  },
+  "booking-confirmation": {
+    "loading": {
+      "title": "Your booking page is being created.",
+      "subtitle": "Please wait a moment."
+    },
+    "success": {
+      "title": "Your page is created!",
+      "subtitle": "Your clients can now book appointments via your Booking page."
+    },
+    "share-link": {
+      "title": "Share your booking link",
+      "description": "Add this link to your email signature so your clients can book appointments in one click.",
+      "copy-button": "Copy link",
+      "copied": "Link copied!"
+    }
   }
 }

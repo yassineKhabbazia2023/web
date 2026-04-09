@@ -58,10 +58,6 @@ import { PAlert, PButton } from '@pulse/styleguide/components'
 import { useI18n } from 'vue-i18n'
 import FeatureHighlight from '../feature-highlight/feature-highlight.vue'
 
-defineProps<{
-  isLoading?: boolean
-}>()
-
 const emit = defineEmits<{
   'next-step': []
 }>()

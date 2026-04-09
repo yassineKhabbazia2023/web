@@ -129,10 +129,9 @@
 
         <PButton
           pType="primary"
-          :pLoading="props.isSubmitting"
           @click="emit('next-step')"
         >
-          {{ t('booking-configuration.buttons.finish') }}
+          {{ t('booking-configuration.buttons.next') }}
         </PButton>
       </div>
     </Teleport>
@@ -144,10 +143,6 @@ import { useI18n } from 'vue-i18n'
 import { PAlert, PButton, PDropdown, PIcon } from '@pulse/styleguide/components'
 import type { TimeSlotsConfiguration } from './booking-time-slots-configuration.types'
 import { useBookingTimeSlotsConfiguration } from './booking-time-slots-configuration.composable'
-
-const props = defineProps<{
-  isSubmitting?: boolean
-}>()
 
 const timeSlotsFormData = defineModel<TimeSlotsConfiguration>({ required: true })
 

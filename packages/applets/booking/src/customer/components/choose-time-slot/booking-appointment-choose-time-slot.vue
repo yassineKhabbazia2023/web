@@ -1,6 +1,17 @@
 <template>
   <div class="booking-appointment-choose-time-slot margin-top--4">
-    <PLoader v-if="isLoading" />
+    <div
+      v-if="isLoading"
+      class="
+        flex
+        flex--justify-content-center
+        flex--align-items-center
+        height--100
+        padding--10
+      "
+    >
+      <PLoader pSize="48" />
+    </div>
     <iframe
       v-else
       :src="iframeUrl"

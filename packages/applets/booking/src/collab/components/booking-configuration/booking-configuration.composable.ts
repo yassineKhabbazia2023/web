@@ -1,10 +1,18 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { displayNotification } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
+import { useUserStore } from '@pulse/common/stores'
+import { displayNotification } from '@pulse/styleguide'
 import { BookingService } from '@booking/services'
 import { BookingConfigurationSteps } from './booking-configuration.enums'
-import { BOOKING_CONFIGURATION_STEP_TITLE_KEYS } from './booking-configuration.constants'
+import {
+  BOOKING_CONFIGURATION_STEP_TITLE_KEYS,
+  BOOKING_CONFIGURATION_SUBMIT_SUCCESS_NOTIFICATION_KEY,
+  BOOKING_CONFIRMATION_SUCCESS_TITLE_KEY,
+  BOOKING_CONFIGURATION_SUBMIT_ERROR_NOTIFICATION_KEY,
+  BOOKING_QUERY_PARAM_WIDGET,
+  BOOKING_QUERY_PARAM_COLLABORATOR_ID,
+} from './booking-configuration.consts'
 import { BookingConfigurationManager } from './booking-configuration.manager'
 import type { AppointmentDetails } from '../booking-appointment-configuration/booking-appointment-configuration.types'
 import type { TimeSlotsConfiguration } from '../booking-time-slots-configuration/booking-time-slots-configuration.types'
@@ -14,6 +22,7 @@ import { BookingTrackingService } from '@booking/services/booking-tracking.servi
 
 export function useBookingConfiguration() {
   const { t } = useI18n({ useScope: 'global' })
+  const userStore = useUserStore()
   const currentStep = ref<BookingConfigurationSteps>(BookingConfigurationSteps.INTRO)
   const bookingDrawer = useBookingDrawer()
 
@@ -21,6 +30,7 @@ export function useBookingConfiguration() {
     BookingConfigurationSteps.INTRO,
     BookingConfigurationSteps.CUSTOMIZE_MEETING,
     BookingConfigurationSteps.CONFIGURE_SLOTS,
+    BookingConfigurationSteps.CONFIRMATION,
   ]
 
   // Map enum to step index for PSteps component
@@ -29,22 +39,39 @@ export function useBookingConfiguration() {
       [BookingConfigurationSteps.INTRO]: 0,
       [BookingConfigurationSteps.CUSTOMIZE_MEETING]: 1,
       [BookingConfigurationSteps.CONFIGURE_SLOTS]: 2,
+      [BookingConfigurationSteps.CONFIRMATION]: 3,
     }
     return stepMap[currentStep.value]
   })
 
-  const isLastStep = computed(() => currentStepIndex.value === steps.length - 1)
+  const isConfirmationStep = computed(() => currentStep.value === BookingConfigurationSteps.CONFIRMATION)
   const isSubmitting = ref(false)
+  const isSubmitSuccess = ref(false)
 
   async function goToNextStep() {
-    if (isLastStep.value) {
+    const nextStepIndex = currentStepIndex.value + 1
+
+    // When moving from CONFIGURE_SLOTS to CONFIRMATION, submit the configuration
+    if (currentStep.value === BookingConfigurationSteps.CONFIGURE_SLOTS) {
+      currentStep.value = steps[nextStepIndex]
       await submitConfiguration()
       return
     }
-    currentStep.value = steps[currentStepIndex.value + 1]
+
+    // Cannot go further than CONFIRMATION
+    if (isConfirmationStep.value === true) {
+      return
+    }
+
+    currentStep.value = steps[nextStepIndex]
   }
 
   function goToPreviousStep() {
+    // Cannot go back from CONFIRMATION step
+    if (isConfirmationStep.value === true) {
+      return
+    }
+
     if (currentStepIndex.value === 0) {
       return
     }
@@ -53,6 +80,7 @@ export function useBookingConfiguration() {
 
   async function submitConfiguration() {
     isSubmitting.value = true
+    isSubmitSuccess.value = false
 
     try {
       const payload = BookingConfigurationManager.prepareMeetingTemplatePayload(
@@ -60,22 +88,25 @@ export function useBookingConfiguration() {
         timeSlotsConfiguration.value,
       )
 
-      const result = await BookingService.submitBookingConfiguration(payload)
-      bookingDrawer.closeBookingDrawer()
-      displayNotification('success', t('notifications.submit-success'))
+      await BookingService.submitBookingConfiguration(payload)
+      isSubmitSuccess.value = true
+      displayNotification('success', t(BOOKING_CONFIGURATION_SUBMIT_SUCCESS_NOTIFICATION_KEY))
       BookingTrackingService.trackCollaboratorConfigurationSubmitted(true)
-
-      return result
     } catch (error) {
       logger.error('Failed to submit booking configuration', error)
-
-      displayNotification('error', t('notifications.submit-error'))
+      displayNotification('error', t(BOOKING_CONFIGURATION_SUBMIT_ERROR_NOTIFICATION_KEY))
       BookingTrackingService.trackCollaboratorConfigurationSubmitted(false)
 
-      throw error
+      // Go back to previous step on error
+      currentStep.value = BookingConfigurationSteps.CONFIGURE_SLOTS
+      isSubmitSuccess.value = false
     } finally {
       isSubmitting.value = false
     }
+  }
+
+  function closeDrawer() {
+    bookingDrawer.closeBookingDrawer()
   }
 
   const appointmentDetails = ref<AppointmentDetails>({
@@ -88,7 +119,23 @@ export function useBookingConfiguration() {
 
   const timeSlotsConfiguration = ref<TimeSlotsConfiguration>(getInitialTimeSlotsConfiguration())
 
+  // Build booking URL for sharing (query params based URL for client booking)
+  const bookingUrl = computed(() => {
+    const userId = userStore.user?.id
+    if (userId === undefined) {
+      return ''
+    }
+    const params = new URLSearchParams()
+    params.set(BOOKING_QUERY_PARAM_WIDGET, 'true')
+    params.set(BOOKING_QUERY_PARAM_COLLABORATOR_ID, String(userId))
+    return `${globalThis.window.location.origin}?${params.toString()}`
+  })
+
+  // Drawer title changes based on step and submission status
   const drawerTitle = computed(() => {
+    if (currentStep.value === BookingConfigurationSteps.CONFIRMATION && isSubmitSuccess.value === true) {
+      return t(BOOKING_CONFIRMATION_SUCCESS_TITLE_KEY)
+    }
     return t(BOOKING_CONFIGURATION_STEP_TITLE_KEYS[currentStep.value])
   })
 
@@ -100,9 +147,13 @@ export function useBookingConfiguration() {
     timeSlotsConfiguration,
     drawerTitle,
     isSubmitting,
+    isSubmitSuccess,
+    isConfirmationStep,
+    bookingUrl,
     // Methods
     goToNextStep,
     goToPreviousStep,
     submitConfiguration,
+    closeDrawer,
   }
 }

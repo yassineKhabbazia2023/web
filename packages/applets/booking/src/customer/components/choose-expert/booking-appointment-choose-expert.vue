@@ -1,5 +1,16 @@
 <template>
-  <PLoader v-if="isLoading" />
+  <div
+    v-if="isLoading"
+    class="
+      flex
+      flex--justify-content-center
+      flex--align-items-center
+      height--100
+      padding--10
+    "
+  >
+    <PLoader pSize="48" />
+  </div>
   <template v-else>
     <p class="margin-top--10">
       {{ t('booking-appointment-choose-expert.description') }}
@@ -45,25 +56,7 @@ import type { BookingAppointmentChooseExpertProps } from './booking-appointment-
 import { AvatarRoles } from '@pulse/styleguide'
 import { getFormattedExperts } from './booking-appointment-choose-expert.utils'
 
-const { t } = useI18n({
-  useScope: 'global',
-  messages: {
-    'en-US': {
-      close: 'Close',
-      tabs: {
-        'choose-expert': 'Choose an expert',
-        'choose-time-slot': 'Choose a time slot',
-      },
-    },
-    'fr-FR': {
-      close: 'Fermer',
-      tabs: {
-        'choose-expert': 'Choisissez un expert',
-        'choose-time-slot': 'Choisissez un créneau',
-      },
-    },
-  },
-})
+const { t } = useI18n({ useScope: 'global' })
 
 const props = defineProps<BookingAppointmentChooseExpertProps>()
 

@@ -6,25 +6,26 @@
     @close="closeDrawer"
     @close-drawer-button="closeDrawer"
   >
-    <PSteps
-      :pActive="currentStep"
-      pAlignCenter
-    >
-      <PStep
-        v-for="(step, index) in steps"
-        :key="index"
-        :pTitle="step.label"
-      />
-    </PSteps>
+    <div class="padding-x--4 padding-y--1">
+      <PSteps
+        :pActive="currentStep"
+      >
+        <PStep
+          v-for="(step, index) in steps"
+          :key="index"
+          :pTitle="step.label"
+        />
+      </PSteps>
+    </div>
     <BookingAppointmentChooseExpert
-      v-if="currentStep === BookingAppointmentDrawerTabs.CHOOSE_EXPERT"
+      v-if="isExpertStep"
       :experts="availableExperts"
       :selectedExpertId="selectedExpertId"
       :isLoading="isLoadingExperts"
       @update:selected-expert-id="onSelectExpert"
     />
     <BookingAppointmentChooseTimeSlot
-      v-if="currentStep === BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT && selectedExpertId !== undefined"
+      v-if="isTimeSlotStep && selectedExpertId !== undefined"
       :collaboratorId="selectedExpertId"
       @previous-step="goToPreviousStep"
     />
@@ -75,6 +76,8 @@ const {
   isLoadingExperts,
   steps,
   currentStep,
+  isExpertStep,
+  isTimeSlotStep,
   closeDrawer,
   onSelectExpert,
 } = useBookingAppointmentDrawer(isOpened)

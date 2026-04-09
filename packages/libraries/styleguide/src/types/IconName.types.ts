@@ -59,6 +59,7 @@ export type IconName =
 'circleArrowDown' |
 'circleArrowLeft' |
 'circleArrowRight' |
+'circleCheckDuotone' |
 'clipboardData' |
 'clipboardDataAdd' |
 'clock' |
@@ -77,6 +78,7 @@ export type IconName =
 'emojiFrown' |
 'emojiSunglasses' |
 'envelope' |
+'envelopeDuotone' |
 'exclamationTriangle' |
 'eye' |
 'eyeGlasses' |

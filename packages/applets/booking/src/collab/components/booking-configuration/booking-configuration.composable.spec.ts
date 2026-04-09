@@ -1,8 +1,13 @@
+import { ref } from 'vue'
 import { useBookingConfiguration } from './booking-configuration.composable'
 import { BookingService } from '@booking/services'
 import { BookingConfigurationManager } from './booking-configuration.manager'
 import { BookingTrackingService } from '@booking/services/booking-tracking.service'
 import { BookingConfigurationSteps } from './booking-configuration.enums'
+import {
+  BOOKING_CONFIGURATION_SUBMIT_SUCCESS_NOTIFICATION_KEY,
+  BOOKING_CONFIGURATION_SUBMIT_ERROR_NOTIFICATION_KEY,
+} from './booking-configuration.consts'
 import { displayNotification } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
 import { getInitialTimeSlotsConfiguration } from '../booking-time-slots-configuration/booking-time-slots-configuration.composable'
@@ -13,8 +18,14 @@ import {
   getMockedBookingConfigurationResponse,
   getMockedAppointmentDetails,
 } from '@booking/__mocks__/booking.mock'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { useUserStore } from '@pulse/common/stores'
+import { getMockedUser } from '@pulse/common/mocks'
 
 const closeBookingDrawerMock = vi.fn()
+const isBookingDrawerOpenedMock = ref(false)
+
+const userStoreMock = getStoreMock(useUserStore)
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({ t: (key: string) => key }),
@@ -30,11 +41,13 @@ vi.mock('@booking/services/booking-tracking.service')
 vi.mock('../booking-drawer/booking-drawer.composable', () => ({
   useBookingDrawer: () => ({
     closeBookingDrawer: closeBookingDrawerMock,
+    isBookingDrawerOpened: isBookingDrawerOpenedMock,
   }),
 }))
 
 describe('useBookingConfiguration', () => {
   beforeEach(() => {
+    userStoreMock.user = getMockedUser()
     vi.mocked(getInitialTimeSlotsConfiguration).mockReturnValue(getMockedTimeSlotsConfiguration())
     vi.mocked(BookingConfigurationManager.prepareMeetingTemplatePayload).mockReturnValue(getMockedBookingConfigurationPayload())
   })
@@ -102,18 +115,19 @@ describe('useBookingConfiguration', () => {
 
       const { submitConfiguration } = useBookingConfiguration()
 
-      await expect(submitConfiguration()).rejects.toThrow('API Error')
+      await submitConfiguration()
+
       expect(vi.mocked(BookingTrackingService.trackCollaboratorConfigurationSubmitted)).toHaveBeenCalledWith(false)
     })
 
-    it('should close booking drawer on success', async () => {
+    it('should set isSubmitSuccess to true on success', async () => {
       vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
-      const { submitConfiguration } = useBookingConfiguration()
+      const { submitConfiguration, isSubmitSuccess } = useBookingConfiguration()
 
       await submitConfiguration()
 
-      expect(closeBookingDrawerMock).toHaveBeenCalled()
+      expect(isSubmitSuccess.value).toBe(true)
     })
 
     it('should display success notification on successful submission', async () => {
@@ -123,7 +137,7 @@ describe('useBookingConfiguration', () => {
 
       await submitConfiguration()
 
-      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('success', 'notifications.submit-success')
+      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('success', BOOKING_CONFIGURATION_SUBMIT_SUCCESS_NOTIFICATION_KEY)
     })
 
     it('should display error notification on failed submission', async () => {
@@ -131,9 +145,9 @@ describe('useBookingConfiguration', () => {
 
       const { submitConfiguration } = useBookingConfiguration()
 
-      await expect(submitConfiguration()).rejects.toThrow()
+      await submitConfiguration()
 
-      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', 'notifications.submit-error')
+      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', BOOKING_CONFIGURATION_SUBMIT_ERROR_NOTIFICATION_KEY)
     })
 
     it('should log error on failed submission', async () => {
@@ -142,9 +156,19 @@ describe('useBookingConfiguration', () => {
 
       const { submitConfiguration } = useBookingConfiguration()
 
-      await expect(submitConfiguration()).rejects.toThrow()
+      await submitConfiguration()
 
       expect(vi.mocked(logger.error)).toHaveBeenCalledWith('Failed to submit booking configuration', error)
+    })
+
+    it('should go back to CONFIGURE_SLOTS step on error', async () => {
+      vi.mocked(BookingService.submitBookingConfiguration).mockRejectedValueOnce(new Error('API Error'))
+
+      const { submitConfiguration, currentStep } = useBookingConfiguration()
+
+      await submitConfiguration()
+
+      expect(currentStep.value).toBe(BookingConfigurationSteps.CONFIGURE_SLOTS)
     })
 
     it('should prepare payload with appointment details and time slots configuration', async () => {
@@ -186,24 +210,128 @@ describe('useBookingConfiguration', () => {
 
       const { submitConfiguration, isSubmitting } = useBookingConfiguration()
 
-      await expect(submitConfiguration()).rejects.toThrow()
+      await submitConfiguration()
 
       expect(isSubmitting.value).toBe(false)
     })
+
+    it('should set isSubmitSuccess to false on error', async () => {
+      vi.mocked(BookingService.submitBookingConfiguration).mockRejectedValueOnce(new Error('API Error'))
+
+      const { submitConfiguration, isSubmitSuccess } = useBookingConfiguration()
+
+      await submitConfiguration()
+
+      expect(isSubmitSuccess.value).toBe(false)
+    })
   })
 
-  describe('goToNextStep on last step', () => {
-    it('should submit configuration when on last step', async () => {
+  describe('goToNextStep with confirmation step', () => {
+    it('should move to CONFIRMATION step and submit when on CONFIGURE_SLOTS', async () => {
       vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
 
-      const { goToNextStep } = useBookingConfiguration()
+      const { goToNextStep, currentStep } = useBookingConfiguration()
 
       await goToNextStep() // INTRO -> CUSTOMIZE_MEETING
       await goToNextStep() // CUSTOMIZE_MEETING -> CONFIGURE_SLOTS
-      await goToNextStep() // CONFIGURE_SLOTS -> submit
+      await goToNextStep() // CONFIGURE_SLOTS -> CONFIRMATION + submit
 
+      expect(currentStep.value).toBe(BookingConfigurationSteps.CONFIRMATION)
       expect(vi.mocked(BookingService.submitBookingConfiguration)).toHaveBeenCalled()
       expect(vi.mocked(BookingTrackingService.trackCollaboratorConfigurationSubmitted)).toHaveBeenCalledWith(true)
+    })
+
+    it('should not go further than CONFIRMATION step', async () => {
+      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+
+      const { goToNextStep, currentStep } = useBookingConfiguration()
+
+      await goToNextStep() // INTRO -> CUSTOMIZE_MEETING
+      await goToNextStep() // CUSTOMIZE_MEETING -> CONFIGURE_SLOTS
+      await goToNextStep() // CONFIGURE_SLOTS -> CONFIRMATION
+      await goToNextStep() // Should stay at CONFIRMATION
+
+      expect(currentStep.value).toBe(BookingConfigurationSteps.CONFIRMATION)
+    })
+
+    it('should not go back from CONFIRMATION step', async () => {
+      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+
+      const { goToNextStep, goToPreviousStep, currentStep } = useBookingConfiguration()
+
+      await goToNextStep() // INTRO -> CUSTOMIZE_MEETING
+      await goToNextStep() // CUSTOMIZE_MEETING -> CONFIGURE_SLOTS
+      await goToNextStep() // CONFIGURE_SLOTS -> CONFIRMATION
+      goToPreviousStep() // Should stay at CONFIRMATION
+
+      expect(currentStep.value).toBe(BookingConfigurationSteps.CONFIRMATION)
+    })
+  })
+
+  describe('isConfirmationStep', () => {
+    it('should return false initially', () => {
+      const { isConfirmationStep } = useBookingConfiguration()
+
+      expect(isConfirmationStep.value).toBe(false)
+    })
+
+    it('should return true when on CONFIRMATION step', async () => {
+      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+
+      const { goToNextStep, isConfirmationStep } = useBookingConfiguration()
+
+      await goToNextStep() // INTRO -> CUSTOMIZE_MEETING
+      await goToNextStep() // CUSTOMIZE_MEETING -> CONFIGURE_SLOTS
+      await goToNextStep() // CONFIGURE_SLOTS -> CONFIRMATION
+
+      expect(isConfirmationStep.value).toBe(true)
+    })
+  })
+
+  describe('closeDrawer', () => {
+    it('should call closeBookingDrawer from booking drawer composable', () => {
+      const { closeDrawer } = useBookingConfiguration()
+
+      closeDrawer()
+
+      expect(closeBookingDrawerMock).toHaveBeenCalled()
+    })
+  })
+
+  describe('bookingUrl', () => {
+    it('should return correct booking URL with user id', () => {
+      const { bookingUrl } = useBookingConfiguration()
+
+      expect(bookingUrl.value).toContain('bookingWidget=true')
+      expect(bookingUrl.value).toContain('collaboratorId=123')
+    })
+
+    it('should return empty string when user id is undefined', () => {
+      userStoreMock.user = undefined
+
+      const { bookingUrl } = useBookingConfiguration()
+
+      expect(bookingUrl.value).toBe('')
+    })
+  })
+
+  describe('drawerTitle', () => {
+    it('should return success title when on CONFIRMATION step with isSubmitSuccess true', async () => {
+      vi.mocked(BookingService.submitBookingConfiguration).mockResolvedValueOnce(getMockedBookingConfigurationResponse())
+
+      const { goToNextStep, drawerTitle } = useBookingConfiguration()
+
+      await goToNextStep() // INTRO -> CUSTOMIZE_MEETING
+      await goToNextStep() // CUSTOMIZE_MEETING -> CONFIGURE_SLOTS
+      await goToNextStep() // CONFIGURE_SLOTS -> CONFIRMATION + submit success
+
+      expect(drawerTitle.value).toBe('booking-configuration.drawer-titles.confirmation-success')
+    })
+
+    it('should return step title when not on confirmation step', () => {
+      const { drawerTitle } = useBookingConfiguration()
+
+      expect(drawerTitle.value).toBe('booking-configuration.drawer-titles.intro')
     })
   })
 })

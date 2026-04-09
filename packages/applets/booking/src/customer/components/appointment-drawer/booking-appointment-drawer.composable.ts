@@ -20,6 +20,8 @@ export function useBookingAppointmentDrawer(isOpened: Ref<boolean>) {
     { label: t('booking-appointment-drawer.steps.choose-expert') },
     { label: t('booking-appointment-drawer.steps.choose-time-slot') },
   ])
+  const isExpertStep = computed(() => currentStep.value === BookingAppointmentDrawerTabs.CHOOSE_EXPERT)
+  const isTimeSlotStep = computed(() => currentStep.value === BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT)
 
   // Expert selection
   const selectedExpertId = ref<number | undefined>()
@@ -58,6 +60,8 @@ export function useBookingAppointmentDrawer(isOpened: Ref<boolean>) {
     selectedExpertId,
     steps,
     currentStep,
+    isExpertStep,
+    isTimeSlotStep,
     isLoadingExperts,
     closeDrawer,
     onSelectExpert,

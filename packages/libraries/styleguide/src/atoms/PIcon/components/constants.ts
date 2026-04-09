@@ -1131,6 +1131,18 @@ export const pulseGeneratedIcons: {
     category: 'Polychrome',
   },
   {
+    name: 'circleCheckDuotone',
+    componentName: 'PICircleCheckDuotone',
+    fileName: 'circle-check-duotone.svg',
+    category: 'Polychrome',
+  },
+  {
+    name: 'envelopeDuotone',
+    componentName: 'PIEnvelopeDuotone',
+    fileName: 'envelope-duotone.svg',
+    category: 'Polychrome',
+  },
+  {
     name: 'hourglassDuotone',
     componentName: 'PIHourglassDuotone',
     fileName: 'hourglass-duotone.svg',

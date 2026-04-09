@@ -21,12 +21,6 @@ describe('booking-drawer.composable', () => {
       expect(isLoading.value).toBe(false)
     })
 
-    it('should return hasSharedPage as false initially', () => {
-      const { hasSharedPage } = useBookingDrawer()
-
-      expect(hasSharedPage.value).toBe(false)
-    })
-
     it('should return drawerTitle with translation key', () => {
       const { drawerTitle } = useBookingDrawer()
 
@@ -46,16 +40,6 @@ describe('booking-drawer.composable', () => {
       const { isBookingDrawerOpened } = useBookingDrawer()
 
       expect(isBookingDrawerOpened.value).toBe(true)
-    })
-  })
-
-  describe('openDrawer', () => {
-    it('should be defined and callable', () => {
-      const { openDrawer } = useBookingDrawer()
-
-      expect(openDrawer).toBeDefined()
-      expect(typeof openDrawer).toBe('function')
-      openDrawer()
     })
   })
 
