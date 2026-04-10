@@ -1,4 +1,5 @@
 import { RouteName, AccountType, AmplitudeFeatureName } from '@pulse/common/enums'
+import { RouterHelpers } from '@pulse/common/helpers'
 import type { NavigationItemConfig } from '@shared/types'
 
 export const PROSPECT_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
@@ -13,12 +14,24 @@ export const PROSPECT_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
     featureName: AmplitudeFeatureName.HOMEPAGE,
   },
   {
+    id: 'prospect-entity-overview',
+    title: (ctx) => ctx.isCollab === true ? 'shared.sidebar.folder' : 'shared.sidebar.entity',
+    icon: 'building',
+    routeName: RouteName.PROSPECT_OVERVIEW,
+    shouldDisplay: () => true,
+    hasSubmenuSelected: (ctx) =>
+      RouterHelpers.hasProvidedAncestor({ route: ctx.currentRoute, ancestorName: RouteName.PROSPECT_OVERVIEW }),
+    accountType: AccountType.PROSPECT,
+    order: 2,
+    doNotTrack: true,
+  },
+  {
     id: 'prospect-entity-stepper',
     title: () => 'shared.sidebar.stepper',
     icon: 'checklist',
     routeName: RouteName.PROSPECT_STEPPER,
     shouldDisplay: () => true,
     accountType: AccountType.PROSPECT,
-    order: 2,
+    order: 3,
   },
 ]

@@ -29,6 +29,24 @@ export const prospectCollaboratorRoutes: RouteRecordRaw[] = [
         name: COLLABORATOR_ROUTES.entity.prospect.stepper.name,
         component: () => import('@pulse/entities/entity-pages').then(pages => pages.Stepper),
       },
+      // PROSPECT OVERVIEW (TAB VIEW)
+      {
+        path: COLLABORATOR_ROUTES.entity.prospect.overview.root.path,
+        name: COLLABORATOR_ROUTES.entity.prospect.overview.root.name,
+        component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectOverview),
+        children: [
+          {
+            path: COLLABORATOR_ROUTES.entity.prospect.overview.users.path,
+            name: COLLABORATOR_ROUTES.entity.prospect.overview.users.name,
+            component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectUsers),
+          },
+          {
+            path: COLLABORATOR_ROUTES.entity.prospect.overview.collab.path,
+            name: COLLABORATOR_ROUTES.entity.prospect.overview.collab.name,
+            component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectCollaborators),
+          },
+        ],
+      },
     ],
   },
 ]

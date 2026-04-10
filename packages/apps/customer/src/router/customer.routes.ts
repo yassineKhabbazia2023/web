@@ -44,6 +44,10 @@ export const CUSTOMER_ROUTES = {
       root: { path: `/contact/:${RouteParam.ENTITY_ID}`, name: RouteName.PROSPECT },
       homepage: { path: 'accueil', name: RouteName.PROSPECT_HOMEPAGE },
       stepper: { path: 'suivi-de-dossier', name: RouteName.PROSPECT_STEPPER },
+      overview: {
+        root: { path: '', name: RouteName.PROSPECT_OVERVIEW },
+        users: { path: 'gestion-utilisateurs', name: RouteName.PROSPECT_USERS },
+      },
     },
   },
   wallet: {

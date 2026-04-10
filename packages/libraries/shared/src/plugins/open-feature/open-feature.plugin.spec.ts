@@ -1,5 +1,4 @@
-import type { App } from 'vue'
-import { initOpenFeature, openFeaturePlugin } from './open-feature.plugin'
+import { initOpenFeature } from './open-feature.plugin'
 import { OpenFeatureService } from '@pulse/common/services/open-feature'
 
 vi.mock('@pulse/common/services/open-feature', () => ({
@@ -76,21 +75,5 @@ describe('initOpenFeature', () => {
 
       vi.unstubAllGlobals()
     })
-  })
-})
-
-describe('openFeaturePlugin install', () => {
-  it('should call initOpenFeature with the provided sdkKey', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockRejectedValue(new Error('no file')))
-    const app = {} as App
-
-    openFeaturePlugin.install(app, { sdkKey: 'my-sdk-key' })
-
-    // install is fire-and-forget — flush microtask queue
-    await vi.waitFor(() => {
-      expect(OpenFeatureService.init).toHaveBeenCalledWith('my-sdk-key', undefined)
-    })
-
-    vi.unstubAllGlobals()
   })
 })

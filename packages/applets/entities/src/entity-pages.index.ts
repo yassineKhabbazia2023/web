@@ -12,3 +12,6 @@ export { default as Information } from './modules/entity/regular/information/Inf
 // Entity - Prospects
 export { default as ProspectRoot } from './modules/entity/prospect/prospect.root.vue'
 export { default as Stepper } from './modules/entity/prospect/stepper/prospect.stepper.vue'
+export { default as ProspectOverview } from './modules/entity/prospect/overview/prospect-overview.page.vue'
+export { default as ProspectUsers } from './modules/entity/prospect/users/prospect-users.page.vue'
+export { default as ProspectCollaborators } from './modules/entity/prospect/collaborators/prospect-collaborators.page.vue'

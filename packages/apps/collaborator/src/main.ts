@@ -19,7 +19,7 @@ import bookingApplet from '@pulse/booking'
 import feedCenterApplet from '@pulse/feed-center'
 import powerBiApplet from '@pulse/powerbi'
 // then import plugins and misc
-import { axeptioPlugin, openFeaturePlugin, productFruitsPlugin, hubspotPlugin } from '@pulse/shared/plugins'
+import { axeptioPlugin, initOpenFeature, productFruitsPlugin, hubspotPlugin } from '@pulse/shared/plugins'
 
 import App from './Collaborator.app.vue'
 import router from './router/collaborator.router'
@@ -43,11 +43,14 @@ async function bootstrap() {
     await waitForMsw()
   }
 
+  // Await feature flags before creating the app so that route guards
+  // can evaluate them synchronously on the first navigation.
+  await initOpenFeature(VITE_CONFIGCAT_SDK_KEY)
+
   const isProd = import.meta.env.PROD
 
   const app = createApp(App)
     // install plugins
-    .use(openFeaturePlugin, { sdkKey: VITE_CONFIGCAT_SDK_KEY })
     .use(axeptioPlugin, { isActive: isProd })
     .use(productFruitsPlugin, { isActive: isProd })
     .use(hubspotPlugin, { isActive: isProd })

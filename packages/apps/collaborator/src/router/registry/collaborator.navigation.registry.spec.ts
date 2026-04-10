@@ -186,11 +186,12 @@ describe('registerCollaboratorNavigationItems', () => {
   describe('prospect entity navigation items', () => {
     const context = createNavigationContext({})
 
-    it('should register prospect homepage and stepper items', () => {
+    it('should register prospect homepage, overview and stepper items', () => {
       const items = NavigationManager.getNavigationItems(context, AccountType.PROSPECT)
       const routeNames = items.map(item => item.routeName)
 
       expect(routeNames).toContain(RouteName.PROSPECT_HOMEPAGE)
+      expect(routeNames).toContain(RouteName.PROSPECT_OVERVIEW)
       expect(routeNames).toContain(RouteName.PROSPECT_STEPPER)
     })
 
@@ -198,7 +199,8 @@ describe('registerCollaboratorNavigationItems', () => {
       const items = NavigationManager.getNavigationItems(context, AccountType.PROSPECT)
 
       expect(items[0].routeName).toBe(RouteName.PROSPECT_HOMEPAGE)
-      expect(items[1].routeName).toBe(RouteName.PROSPECT_STEPPER)
+      expect(items[1].routeName).toBe(RouteName.PROSPECT_OVERVIEW)
+      expect(items[2].routeName).toBe(RouteName.PROSPECT_STEPPER)
     })
 
     it('should not include regular entity items in prospect context', () => {

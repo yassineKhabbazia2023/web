@@ -1,8 +1,5 @@
-import type { App } from 'vue'
 import { OpenFeatureService } from '@pulse/common/services/open-feature'
 import type { OpenFeatureInitOptions } from '@pulse/common/services/open-feature'
-
-import type { OpenFeaturePluginOptions } from './open-feature.plugin.types'
 
 async function loadDevOverrides(): Promise<OpenFeatureInitOptions | undefined> {
   if (import.meta.env.DEV !== true) {
@@ -32,10 +29,4 @@ export async function initOpenFeature(sdkKey: string | undefined): Promise<void>
 
   const initOptions = await loadDevOverrides()
   await OpenFeatureService.init(sdkKey, initOptions)
-}
-
-export const openFeaturePlugin = {
-  install(_app: App, options: OpenFeaturePluginOptions) {
-    initOpenFeature(options.sdkKey)
-  },
 }
