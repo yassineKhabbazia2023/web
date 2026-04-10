@@ -23,7 +23,9 @@
     "./shims/amplitude-session-replay": "./src/shims/amplitude-session-replay-shim.ts",
     "./fixtures/env-vars": "./src/fixtures/env-vars.e2e.js",
     "./fixtures/env-vars-backoffice": "./src/fixtures/env-vars.backoffice.e2e.js",
-    "./fixtures/styles": "./src/fixtures/styles.e2e.css"
+    "./fixtures/styles": "./src/fixtures/styles.e2e.css",
+    "./dev-mocks": "./src/dev-mocks/dev.handlers.ts",
+    "./dev-mocks/bootstrap": "./src/dev-mocks/bootstrap.ts"
   },
   "scripts": {
     "lint": "eslint .",

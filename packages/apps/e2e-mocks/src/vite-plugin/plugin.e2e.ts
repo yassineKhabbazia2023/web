@@ -27,6 +27,61 @@ const contentTypeMap: Record<string, string> = {
   '.eot': 'application/vnd.ms-fontobject',
 }
 
+interface E2EFileMapping {
+  file: string
+  contentType: string
+  basePath: string
+}
+
+function normalizeUrl(url: string, base: string): string {
+  if (base !== '/' && url.startsWith(base)) {
+    return '/' + url.slice(base.length)
+  }
+  return url
+}
+
+function serveFile(res: ServerResponse, filePath: string, contentType: string, binary: boolean): boolean {
+  if (fs.existsSync(filePath) === false) {
+    return false
+  }
+  res.setHeader('Content-Type', contentType)
+  res.end(fs.readFileSync(filePath, binary ? undefined : 'utf-8'))
+  return true
+}
+
+function serveServiceWorker(url: string, normalizedUrl: string, staticFilesPath: string, res: ServerResponse): boolean {
+  if (normalizedUrl !== '/mockServiceWorker.js' && url !== '/mockServiceWorker.js') {
+    return false
+  }
+  return serveFile(res, path.join(staticFilesPath, 'mockServiceWorker.js'), 'application/javascript', false)
+}
+
+function serveE2EFixture(
+  url: string,
+  normalizedUrl: string,
+  publicFiles: Record<string, E2EFileMapping>,
+  res: ServerResponse,
+): boolean {
+  const e2eFile = publicFiles[normalizedUrl] || publicFiles[url]
+  if (e2eFile === undefined) {
+    return false
+  }
+  const isBinary = e2eFile.contentType.startsWith('application/') &&
+    e2eFile.contentType !== 'application/javascript'
+  return serveFile(res, path.join(e2eFile.basePath, e2eFile.file), e2eFile.contentType, isBinary)
+}
+
+function serveStyleguideAsset(normalizedUrl: string, assetsBasePath: string, res: ServerResponse): boolean {
+  if (normalizedUrl.startsWith('/assets/images/') === false) {
+    return false
+  }
+  const relativePath = normalizedUrl.replaceAll('/assets/images/', '')
+  const filePath = path.join(assetsBasePath, 'images', relativePath)
+  const contentType = contentTypeMap[path.extname(filePath).toLowerCase()] || 'application/octet-stream'
+  const isBinary = contentType.startsWith('image/') || contentType.startsWith('font/')
+  return serveFile(res, filePath, contentType, isBinary)
+}
+
 /**
  * Vite plugin for E2E testing with MSW
  * - Injects MSW initialization script in E2E mode
@@ -37,6 +92,7 @@ const contentTypeMap: Record<string, string> = {
  */
 export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
   const isE2E = process.env.VITE_E2E_MODE === 'true'
+  const isDevMocks = process.env.VITE_DEV_MOCKS === 'true'
   const appType = options.app || 'customer'
 
   // Path to fixtures in this library
@@ -46,6 +102,9 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
 
   // Path to the bootstrap file for direct /@fs/ access
   const bootstrapPath = path.resolve(__dirname, '../msw/bootstrap.ts')
+
+  // Path to the dev-mocks bootstrap file
+  const devMocksBootstrapPath = path.resolve(__dirname, '../dev-mocks/bootstrap.ts')
 
   // Path to static assets
   const assetsPath = path.resolve(staticPath, 'assets')
@@ -57,7 +116,7 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
   const envVarsFile = appType === 'backoffice' ? 'env-vars.backoffice.e2e.js' : 'env-vars.e2e.js'
 
   // Map of public files to their E2E mock equivalents
-  const e2ePublicFiles: Record<string, { file: string; contentType: string; basePath: string }> = {
+  const e2ePublicFiles: Record<string, E2EFileMapping> = {
     '/env-vars.js': { file: envVarsFile, contentType: 'application/javascript', basePath: fixturesPath },
     '/styles.css': { file: 'styles.e2e.css', contentType: 'text/css', basePath: fixturesPath },
     '/mockServiceWorker.js': { file: 'mockServiceWorker.js', contentType: 'application/javascript', basePath: staticPath },
@@ -98,61 +157,42 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
       }
     },
     transformIndexHtml(html) {
-      if (isE2E === false) {
-        return html
+      if (isE2E) {
+        // Inject MSW app type and bootstrap script
+        // The inline script sets the app type before the bootstrap module loads
+        const appTypeScript = `<script>window.__MSW_APP_TYPE__ = '${appType}';</script>`
+        // Use /@fs/ prefix for direct file access - Vite will transform and serve this TypeScript file
+        // Prefix with resolvedBase so the path works with non-root base paths (e.g. /collaborateur/)
+        const mswScript = `<script type="module" src="${resolvedBase}@fs${bootstrapPath}"></script>`
+        return html.replace('<head>', `<head>${appTypeScript}${mswScript}`)
       }
 
-      // Inject MSW app type and bootstrap script
-      // The inline script sets the app type before the bootstrap module loads
-      const appTypeScript = `<script>window.__MSW_APP_TYPE__ = '${appType}';</script>`
-      // Use /@fs/ prefix for direct file access - Vite will transform and serve this TypeScript file
-      // Prefix with resolvedBase so the path works with non-root base paths (e.g. /collaborateur/)
-      const mswScript = `<script type="module" src="${resolvedBase}@fs${bootstrapPath}"></script>`
-      return html.replace('<head>', `<head>${appTypeScript}${mswScript}`)
+      if (isDevMocks) {
+        // Inject only the dev-mocks bootstrap — no shims, no env-var overrides
+        const mswScript = `<script type="module" src="${resolvedBase}@fs${devMocksBootstrapPath}"></script>`
+        return html.replace('<head>', `<head>${mswScript}`)
+      }
+
+      return html
     },
     configureServer(server: ViteDevServer) {
-      if (isE2E === false) {
+      if (isE2E === false && isDevMocks === false) {
         return
       }
 
-      // Serve E2E mock files if the public ones don't exist (CI environment)
       server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: () => void) => {
         const url = req.url || ''
-
-        // Strip Vite base path from URL for matching (e.g. /collaborateur/env-vars.js → /env-vars.js)
         const base = server.config.base || '/'
-        const normalizedUrl = base !== '/' && url.startsWith(base)
-          ? '/' + url.slice(base.length)
-          : url
+        const normalizedUrl = normalizeUrl(url, base)
 
-        // Handle specific E2E public files
-        const e2eFile = e2ePublicFiles[normalizedUrl] || e2ePublicFiles[url]
-        if (e2eFile) {
-          const e2eFilePath = path.join(e2eFile.basePath, e2eFile.file)
-
-          if (fs.existsSync(e2eFilePath)) {
-            res.setHeader('Content-Type', e2eFile.contentType)
-            // Read binary files without encoding, text files with utf-8
-            const isBinary = e2eFile.contentType.startsWith('application/') &&
-              e2eFile.contentType !== 'application/javascript'
-            res.end(fs.readFileSync(e2eFilePath, isBinary ? undefined : 'utf-8'))
-            return
-          }
+        if (serveServiceWorker(url, normalizedUrl, staticPath, res)) {
+          return
         }
-
-        // Serve styleguide assets (images, icons, fonts, etc.)
-        if (normalizedUrl.startsWith('/assets/images/')) {
-          const relativePath = normalizedUrl.replace('/assets/images/', '')
-          const filePath = path.join(styleguideAssetsPath, 'images', relativePath)
-
-          if (fs.existsSync(filePath)) {
-            const ext = path.extname(filePath).toLowerCase()
-            const contentType = contentTypeMap[ext] || 'application/octet-stream'
-            const isBinary = contentType.startsWith('image/') || contentType.startsWith('font/')
-            res.setHeader('Content-Type', contentType)
-            res.end(fs.readFileSync(filePath, isBinary ? undefined : 'utf-8'))
-            return
-          }
+        if (isE2E === true && serveE2EFixture(url, normalizedUrl, e2ePublicFiles, res)) {
+          return
+        }
+        if (isE2E === true && serveStyleguideAsset(normalizedUrl, styleguideAssetsPath, res)) {
+          return
         }
 
         next()
