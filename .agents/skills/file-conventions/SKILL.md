@@ -12,27 +12,27 @@ Always use **kebab-case** for files and folders. Files should be separated by re
 | Suffix | Purpose | Example |
 |--------|---------|---------|
 | `.vue` | Vue component (template + minimal script setup) | `booking-form.vue` |
-| `.story.vue` | Component story | `booking-form.story.vue` |
+| `.stories.vue` | Component story | `booking-form.stories.vue` |
 | `.vue.spec.ts` | Component test | `booking-form.vue.spec.ts` |
 | `.page.vue` | Page component | `booking.page.vue` |
 | `.composable.ts` | Vue reactive logic, event handling, lifecycle hooks | `booking.composable.ts` |
 | `.directive.ts` | Directive | `booking.directive.ts` |
 | `.spec.ts` | Test file | `booking.manager.spec.ts` |
 | `.mocks.ts` | Mock data | `booking.mocks.ts` |
-| `.type.ts` | TypeScript interfaces and type definitions | `booking.type.ts` |
-| `.enum.ts` | TypeScript enums and union types | `booking.enum.ts` |
-| `.const.ts` | Static values, configuration, default values | `booking.const.ts` |
+| `.types.ts` | TypeScript interfaces and type definitions | `booking.types.ts` |
+| `.enums.ts` | TypeScript enums and union types | `booking.enums.ts` |
+| `.consts.ts` | Static values, configuration, default values | `booking.consts.ts` |
 | `.service.ts` | Service | `booking.service.ts` |
 | `.manager.ts` | Business logic, API calls, state transformations | `booking.manager.ts` |
-| `.helper.ts` | Helper | `booking.helper.ts` |
-| `.util.ts` | Utility | `booking.util.ts` |
+| `.helpers.ts` | Helper | `booking.helpers.ts` |
+| `.utils.ts` | Utility | `booking.utils.ts` |
 | `.store.ts` | Pinia store | `booking.store.ts` |
-| `.route.ts` | Route definitions | `booking.route.ts` |
+| `.routes.ts` | Route definitions | `booking.routes.ts` |
 | `.guard.ts` | Navigation guard | `booking.guard.ts` |
 | `.interceptor.ts` | HTTP interceptor | `booking.interceptor.ts` |
 | `.validation.ts` | Form validation rules and schemas | `booking.validation.ts` |
 
-**Important**: Interfaces and types must NEVER be declared inside `.manager.ts`, `.composable.ts`, or other files. They must always be in a dedicated `.type.ts` file in the same folder.
+**Important**: Interfaces and types must NEVER be declared inside `.manager.ts`, `.composable.ts`, or other files. They must always be in a dedicated `.types.ts` file in the same folder.
 
 ## Type Naming Conventions
 
@@ -49,10 +49,10 @@ Use **PascalCase** for all types and interfaces. Follow these naming patterns:
 | `[Feature]State` | Store/composable state | `BookingState` |
 | `[Feature]Options` | Configuration options | `BookingOptions` |
 
-**Example `.type.ts` file**:
+**Example `.types.ts` file**:
 
 ```typescript
-// booking-form.type.ts
+// booking-form.types.ts
 
 export interface BookingFormProps {
   bookingId: string
@@ -68,7 +68,7 @@ export interface BookingItem {
   id: string
   title: string
   date: Date
-  status: BookingStatus // from booking-form.enum.ts
+  status: BookingStatus // from booking-form.enums.ts
 }
 
 export interface BookingResponse {
@@ -89,9 +89,9 @@ components/
     booking-form.manager.spec.ts
     booking-form.composable.ts
     booking-form.composable.spec.ts
-    booking-form.const.ts
-    booking-form.enum.ts
-    booking-form.type.ts
+    booking-form.consts.ts
+    booking-form.enums.ts
+    booking-form.types.ts
     booking-form.validation.ts
     booking-form.validation.spec.ts
   booking-list/
@@ -135,7 +135,7 @@ export function calculateTotal(items: BookingItem[]) { /* ... */ }
 // booking-form.composable.ts
 import { ref, computed, onMounted } from 'vue'
 import { BookingManager } from './booking-form.manager'
-import type { BookingItem } from './booking-form.type'
+import type { BookingItem } from './booking-form.types'
 
 export function useBookingForm(bookingId: string) {
   const booking = ref<BookingItem | null>(null)
@@ -162,9 +162,9 @@ export function useBookingForm(bookingId: string) {
 }
 ```
 
-**Constants (`.const.ts`)** — Static configuration values, default values, magic strings/numbers
+**Constants (`.consts.ts`)** — Static configuration values, default values, magic strings/numbers
 
-**Enums (`.enum.ts`)** — TypeScript enums and union types (e.g., `type Status = 'pending' | 'done'`)
+**Enums (`.enums.ts`)** — TypeScript enums and union types (e.g., `type Status = 'pending' | 'done'`)
 
 ## Import Conventions
 
@@ -174,7 +174,7 @@ Always separate type imports from value imports using `import type`:
 // Good: types on dedicated import type lines
 import { ref, computed, onMounted } from 'vue'
 import { BookingManager } from './booking-form.manager'
-import type { BookingItem } from './booking-form.type'
+import type { BookingItem } from './booking-form.types'
 
 // Bad: mixing values and types in the same import
 import { ref, computed, onMounted, type Ref } from 'vue'
