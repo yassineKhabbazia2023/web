@@ -40,7 +40,7 @@ This is an npm workspaces monorepo with three main package categories:
 - **API Integration**: Centralized through API Gateway with axios interceptors
 - **Authentication**: MSAL for collaborator SSO, Gigya for client authentication, token management in authentication service
 - **Routing**: Vue Router with guards for authentication, permissions, and feature flags
-- **Component Architecture**: Atomic design (atoms, molecules, organisms), Composition API with TypeScript, story-driven development with Histoire/Storybook
+- **Component Architecture**: Atomic design (atoms, molecules, organisms), Composition API with TypeScript, story-driven development with Storybook
 - **Build System**: Vite with custom configurations per workspace
 
 ## Code Conventions

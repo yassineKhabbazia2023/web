@@ -26,6 +26,7 @@
 @use './components/pagination';
 @use './components/popper';
 @use './components/popover';
+@use './components/skeleton';
 @use './components/steps';
 @use './components/table';
 @use './components/tabs';
@@ -88,6 +89,7 @@
   $select-option: select.$select-option,
   $select-tags-prefix-padding: select.$select-tags-prefix-padding,
   $select: select.$select,
+  $skeleton: skeleton.$skeleton,
   $switch: switch.$switch,
   $table-cell-padding: table.$table-cell-padding,
   $table-font-size: table.$table-font-size,
@@ -154,6 +156,8 @@
 @use 'element-plus/theme-chalk/src/scrollbar.scss' as *;
 @use 'element-plus/theme-chalk/src/select-dropdown.scss' as *;
 @use 'element-plus/theme-chalk/src/select.scss' as *;
+@use 'element-plus/theme-chalk/src/skeleton.scss' as *;
+@use 'element-plus/theme-chalk/src/skeleton-item.scss' as *;
 @use 'element-plus/theme-chalk/src/step.scss' as *;
 @use 'element-plus/theme-chalk/src/steps.scss' as *;
 @use 'element-plus/theme-chalk/src/switch.scss' as *;

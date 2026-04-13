@@ -224,7 +224,7 @@ import { useCopyClipboard } from '../../utils/clipboard'
 
 const isColumnDirection = ref(false)
 
-// Helper functions from histoireHelpers
+// Helper functions for class list generation
 const stringToClassList = (prefix: string, suffixes: string) => {
   return suffixes
     .split(',')
