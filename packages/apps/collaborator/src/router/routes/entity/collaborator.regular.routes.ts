@@ -20,7 +20,6 @@ export const regularCollaboratorRoutes = [
     meta: {
       [IS_UNITARY_VIEW_META]: true,
     },
-    redirect: { name: COLLABORATOR_ROUTES.entity.regular.homepage.name },
     children: [
       // HOMEPAGE
       {

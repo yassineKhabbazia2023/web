@@ -15,7 +15,6 @@ export const prospectCustomerRoutes: RouteRecordRaw[] = [
       [FEATURE_FLAG_META]: Feature.PROSPECT_EXPERIENCE,
       [IS_UNITARY_VIEW_META]: true,
     },
-    redirect: { name: CUSTOMER_ROUTES.entity.prospect.homepage.name },
     children: [
       // HOMEPAGE
       {
