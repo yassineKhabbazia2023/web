@@ -123,6 +123,7 @@ stages:
         } | ConvertTo-Json -Depth 5
 
         Invoke-RestMethod -Uri $url -Headers $headers -Method Post -ContentType 'application/json' -Body $body
+      condition: eq(variables['detectChanges.hasChanges'], 'true')
       env:
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       displayName: 'Create Pull Request'
