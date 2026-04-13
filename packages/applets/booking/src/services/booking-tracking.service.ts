@@ -1,16 +1,29 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 
 export class BookingTrackingService {
-  static trackConfigurationOpened() {
-    AmplitudeService.track('Booking Configuration View Started')
+  static trackConfigurationOpened(source: string) {
+    AmplitudeService.track('Booking Configuration View Started', {
+      booking_configuration_start_source: source,
+    })
   }
 
-  static trackCollaboratorConfigurationSubmitted(hasBeenSuccessful: boolean) {
+  static trackCollaboratorConfigurationSubmitted(hasBeenSuccessful: boolean, enabledDays?: string[]) {
     AmplitudeService.track(
       'Booking Configuration View Completed',
       {
-        booking_config_view_completed_result: hasBeenSuccessful ? 'succeeded' : 'failed',
+        booking_configuration_completed_result: hasBeenSuccessful ? 'succeeded' : 'failed',
+        booking_configuration_completed_days: enabledDays,
       })
+  }
+
+  static trackLinkSignatureConsulted() {
+    AmplitudeService.track('Booking Link Signature Consulted')
+  }
+
+  static trackLinkSignatureCopied(hasBeenSuccessful: boolean) {
+    AmplitudeService.track('Booking Link Signature Copied', {
+      booking_link_signature_copied_result: hasBeenSuccessful ? 'succeeded' : 'failed',
+    })
   }
 
   static trackBookingConsulted() {

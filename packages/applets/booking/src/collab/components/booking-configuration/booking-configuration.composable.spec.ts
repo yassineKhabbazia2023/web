@@ -107,7 +107,7 @@ describe('useBookingConfiguration', () => {
 
       await submitConfiguration()
 
-      expect(vi.mocked(BookingTrackingService.trackCollaboratorConfigurationSubmitted)).toHaveBeenCalledWith(true)
+      expect(vi.mocked(BookingTrackingService.trackCollaboratorConfigurationSubmitted)).toHaveBeenCalledWith(true, [])
     })
 
     it('should call BookingTrackingService.trackCollaboratorConfigurationSubmitted with false on failure', async () => {
@@ -238,7 +238,7 @@ describe('useBookingConfiguration', () => {
 
       expect(currentStep.value).toBe(BookingConfigurationSteps.CONFIRMATION)
       expect(vi.mocked(BookingService.submitBookingConfiguration)).toHaveBeenCalled()
-      expect(vi.mocked(BookingTrackingService.trackCollaboratorConfigurationSubmitted)).toHaveBeenCalledWith(true)
+      expect(vi.mocked(BookingTrackingService.trackCollaboratorConfigurationSubmitted)).toHaveBeenCalledWith(true, [])
     })
 
     it('should not go further than CONFIRMATION step', async () => {

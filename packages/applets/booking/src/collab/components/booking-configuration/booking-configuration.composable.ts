@@ -88,10 +88,16 @@ export function useBookingConfiguration() {
         timeSlotsConfiguration.value,
       )
 
+      // Extract unique enabled days from time slots
+      const enabledDays = [...new Set(
+        timeSlotsConfiguration.value.timeSlots.map(slot => slot.day),
+      )]
+
       await BookingService.submitBookingConfiguration(payload)
       isSubmitSuccess.value = true
       displayNotification('success', t(BOOKING_CONFIGURATION_SUBMIT_SUCCESS_NOTIFICATION_KEY))
-      BookingTrackingService.trackCollaboratorConfigurationSubmitted(true)
+      BookingTrackingService.trackCollaboratorConfigurationSubmitted(true, enabledDays)
+      BookingTrackingService.trackLinkSignatureConsulted()
     } catch (error) {
       logger.error('Failed to submit booking configuration', error)
       displayNotification('error', t(BOOKING_CONFIGURATION_SUBMIT_ERROR_NOTIFICATION_KEY))

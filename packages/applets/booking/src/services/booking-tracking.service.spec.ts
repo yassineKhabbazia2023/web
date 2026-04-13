@@ -5,10 +5,19 @@ vi.mock('@pulse/common/services/amplitude')
 
 describe('BookingTrackingService', () => {
   describe('trackConfigurationOpened', () => {
-    it('should track Booking Configuration View Started event', () => {
-      BookingTrackingService.trackConfigurationOpened()
+    it('should track Booking Configuration View Started event with source parameter', () => {
+      BookingTrackingService.trackConfigurationOpened('header')
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
         'Booking Configuration View Started',
+        { booking_configuration_start_source: 'header' },
+      )
+    })
+
+    it('should track with home source', () => {
+      BookingTrackingService.trackConfigurationOpened('home')
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Booking Configuration View Started',
+        { booking_configuration_start_source: 'home' },
       )
     })
   })
@@ -18,7 +27,10 @@ describe('BookingTrackingService', () => {
       BookingTrackingService.trackCollaboratorConfigurationSubmitted(true)
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
         'Booking Configuration View Completed',
-        { booking_config_view_completed_result: 'succeeded' },
+        {
+          booking_configuration_completed_result: 'succeeded',
+          booking_configuration_completed_days: undefined,
+        },
       )
     })
 
@@ -26,7 +38,49 @@ describe('BookingTrackingService', () => {
       BookingTrackingService.trackCollaboratorConfigurationSubmitted(false)
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
         'Booking Configuration View Completed',
-        { booking_config_view_completed_result: 'failed' },
+        {
+          booking_configuration_completed_result: 'failed',
+          booking_configuration_completed_days: undefined,
+        },
+      )
+    })
+
+    it('should track with enabled days when provided', () => {
+      const enabledDays = ['monday', 'wednesday', 'friday']
+      BookingTrackingService.trackCollaboratorConfigurationSubmitted(true, enabledDays)
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Booking Configuration View Completed',
+        {
+          booking_configuration_completed_result: 'succeeded',
+          booking_configuration_completed_days: enabledDays,
+        },
+      )
+    })
+  })
+
+  describe('trackLinkSignatureConsulted', () => {
+    it('should track Booking Link Signature Consulted event', () => {
+      BookingTrackingService.trackLinkSignatureConsulted()
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Booking Link Signature Consulted',
+      )
+    })
+  })
+
+  describe('trackLinkSignatureCopied', () => {
+    it('should track succeeded result when hasBeenSuccessful is true', () => {
+      BookingTrackingService.trackLinkSignatureCopied(true)
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Booking Link Signature Copied',
+        { booking_link_signature_copied_result: 'succeeded' },
+      )
+    })
+
+    it('should track failed result when hasBeenSuccessful is false', () => {
+      BookingTrackingService.trackLinkSignatureCopied(false)
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Booking Link Signature Copied',
+        { booking_link_signature_copied_result: 'failed' },
       )
     })
   })

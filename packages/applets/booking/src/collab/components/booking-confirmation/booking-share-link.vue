@@ -62,6 +62,7 @@ import { useI18n } from 'vue-i18n'
 import { PButton, PIcon, PInput } from '@pulse/styleguide/components'
 import type { BookingShareLinkProps } from './booking-confirmation.types'
 import { COPY_FEEDBACK_TIMEOUT_MS } from '@booking/constants'
+import { BookingTrackingService } from '@booking/services/booking-tracking.service'
 
 const props = defineProps<BookingShareLinkProps>()
 
@@ -86,8 +87,13 @@ function showCopyFeedback() {
 }
 
 async function copyToClipboard() {
-  await navigator.clipboard.writeText(props.bookingUrl)
-  showCopyFeedback()
+  try {
+    await navigator.clipboard.writeText(props.bookingUrl)
+    showCopyFeedback()
+    BookingTrackingService.trackLinkSignatureCopied(true)
+  } catch {
+    BookingTrackingService.trackLinkSignatureCopied(false)
+  }
 }
 </script>
 

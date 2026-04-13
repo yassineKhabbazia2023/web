@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useBookingCollabStore } from '@pulse/common/stores'
 import { useBookingAppointmentsStore } from '@booking/stores'
 import { BookingTrackingService } from '@booking/services/booking-tracking.service'
+import { BookingSourceEvent } from '@booking/services/booking-tracking.enum'
 
 export function useBookingHeader() {
   const collabStore = useBookingCollabStore()
@@ -12,7 +13,7 @@ export function useBookingHeader() {
 
   function openDrawer() {
     collabStore.openBookingDrawer()
-    BookingTrackingService.trackConfigurationOpened()
+    BookingTrackingService.trackConfigurationOpened(BookingSourceEvent.HEADER)
   }
 
   const hasBookingDrawerBeenOpened = computed(() => collabStore.hasBookingDrawerBeenOpened)
