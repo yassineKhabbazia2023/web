@@ -57,4 +57,14 @@ export interface ActivitySearchCriteria {
   accountId: number
   page: number
   pageSize: number
+  search?: string
+}
+
+export interface FetchActivitiesParams {
+  accountId: number
+  pageNumber: number
+  pageSize: number
+  'Sorting.Field': 'createDate'
+  'Sorting.Descending': boolean
+  search?: string
 }

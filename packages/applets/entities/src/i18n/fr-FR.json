@@ -90,6 +90,10 @@
       "emailRequired": "L'adresse email est requise",
       "emailInvalid": "Veuillez entrer une adresse email valide",
       "acceptTermsRequired": "Votre consentement est requis pour continuer"
+    },
+    "history": {
+      "searchPlaceholder": "Rechercher dans libellé et détail de l'activité",
+      "searchInvalidMessage": "3 caractères minimum requis"
     }
   }
 }

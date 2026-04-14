@@ -1,5 +1,7 @@
 <template>
   <div class="margin-top--6">
+    <HistorySearch v-model:search="search" class="max-width-800 margin-bottom--6" />
+
     <div
       v-if="isLoading"
       class="loader flex flex--justify-content-center flex--align-items-center"
@@ -69,7 +71,7 @@
           class="margin-top--6"
           :pCurrentPage="currentPage"
           :pTotal="totalItems"
-          :pPageSizes="pageSizes"
+          :pPageSizes="PAGE_SIZES"
           pPageSizeSelectorSuffix=""
           pShowTotalPageCounter
           @update:p-current-page="onUpdateCurrentPage"
@@ -84,7 +86,7 @@
 
 <script setup lang="ts">
 import { formatTime } from '@pulse/toolbox/utils/dates'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import {
@@ -103,6 +105,7 @@ import { RouterHelpers } from '@pulse/common/helpers'
 import NoResult from '@entities/components/NoResult'
 import { getBulletPoints, getIntroText, hasBulletPoints, hasDetails } from './utils/history.utils'
 import { useHistory } from './composable/history.composable'
+import HistorySearch from './components/HistorySearch.vue'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -120,6 +123,7 @@ const { d, t } = useI18n({
 
 const route = useRoute()
 const currentAccountId = computed(() => RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID))
+const search = ref('')
 
 const {
   isLoading,
@@ -129,9 +133,7 @@ const {
   totalItems,
   onUpdateCurrentPage,
   onPageRangeChanged,
-} = useHistory(currentAccountId)
-
-const pageSizes = PAGE_SIZES
+} = useHistory(currentAccountId, search)
 
 const paginationLabel = computed(() => getPaginationLabel(t('on'), {
   currentPage: currentPage.value,

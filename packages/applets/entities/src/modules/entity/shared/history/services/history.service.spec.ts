@@ -105,5 +105,86 @@ describe('HistoryService', () => {
 
       await expect(HistoryService.fetchActivities(criteria)).rejects.toThrow(errorMessage)
     })
+
+    it('should include search parameter when provided', async () => {
+      const mockResponse = getMockedActivitiesResponse([], 0)
+      commonApiGetMock.mockResolvedValue({ data: mockResponse })
+
+      const criteria = {
+        accountId: 123,
+        page: 1,
+        pageSize: 10,
+        search: 'test search',
+      }
+
+      await HistoryService.fetchActivities(criteria)
+
+      expect(commonApiGetMock).toHaveBeenCalledWith(
+        `${API_PREFIXES.HISTORY}/activities/currentuser`,
+        {
+          params: {
+            accountId: 123,
+            pageNumber: 1,
+            pageSize: 10,
+            'Sorting.Field': 'createDate',
+            'Sorting.Descending': true,
+            search: 'test search',
+          },
+        },
+      )
+    })
+
+    it('should not include search parameter when empty string', async () => {
+      const mockResponse = getMockedActivitiesResponse([], 0)
+      commonApiGetMock.mockResolvedValue({ data: mockResponse })
+
+      const criteria = {
+        accountId: 123,
+        page: 1,
+        pageSize: 10,
+        search: '',
+      }
+
+      await HistoryService.fetchActivities(criteria)
+
+      expect(commonApiGetMock).toHaveBeenCalledWith(
+        `${API_PREFIXES.HISTORY}/activities/currentuser`,
+        {
+          params: {
+            accountId: 123,
+            pageNumber: 1,
+            pageSize: 10,
+            'Sorting.Field': 'createDate',
+            'Sorting.Descending': true,
+          },
+        },
+      )
+    })
+
+    it('should not include search parameter when undefined', async () => {
+      const mockResponse = getMockedActivitiesResponse([], 0)
+      commonApiGetMock.mockResolvedValue({ data: mockResponse })
+
+      const criteria = {
+        accountId: 123,
+        page: 1,
+        pageSize: 10,
+      }
+
+      await HistoryService.fetchActivities(criteria)
+
+      expect(commonApiGetMock).toHaveBeenCalledWith(
+        `${API_PREFIXES.HISTORY}/activities/currentuser`,
+        {
+          params: {
+            accountId: 123,
+            pageNumber: 1,
+            pageSize: 10,
+            'Sorting.Field': 'createDate',
+            'Sorting.Descending': true,
+          },
+        },
+      )
+    })
   })
 })

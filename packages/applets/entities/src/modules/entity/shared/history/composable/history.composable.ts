@@ -1,10 +1,10 @@
 import { logger } from '@pulse/toolbox'
-import { onMounted, ref, type Ref } from 'vue'
+import { onMounted, ref, watch, type Ref } from 'vue'
 import { PAGE_SIZES } from '@pulse/common/constants'
 import { HistoryService } from '../services/history.service'
 import type { Activity } from '../types/history.types'
 
-export const useHistory = (currentAccountId: Ref<number | null>) => {
+export const useHistory = (currentAccountId: Ref<number | null>, searchQuery: Ref<string>) => {
   const isLoading = ref(true)
   const activities = ref<Activity[]>([])
   const currentPage = ref(1)
@@ -23,6 +23,7 @@ export const useHistory = (currentAccountId: Ref<number | null>) => {
         accountId: currentAccountId.value,
         page: currentPage.value,
         pageSize: pageSize.value,
+        search: searchQuery.value,
       })
 
       activities.value = response.items
@@ -44,6 +45,11 @@ export const useHistory = (currentAccountId: Ref<number | null>) => {
     currentPage.value = 1
     await loadActivities()
   }
+
+  watch(searchQuery, async () => {
+    currentPage.value = 1
+    await loadActivities()
+  })
 
   onMounted(async () => {
     await loadActivities()

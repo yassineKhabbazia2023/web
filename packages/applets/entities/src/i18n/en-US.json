@@ -90,6 +90,10 @@
       "emailRequired": "Email address is required",
       "emailInvalid": "Please enter a valid email address",
       "acceptTermsRequired": "You must accept the terms to continue"
+    },
+    "history": {
+      "searchPlaceholder": "Search in label and activity details",
+      "searchInvalidMessage": "Minimum 3 characters required"
     }
   }
 }
