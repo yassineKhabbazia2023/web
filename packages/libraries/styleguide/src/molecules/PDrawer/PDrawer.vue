@@ -21,8 +21,9 @@
           <slot name="header-prefix" />
           <PButton
             v-if="!pHeaderToolbox"
-            pPlain
+            pType="secondary"
             pIconOnly
+            pSize="small"
             class="p-drawer__close-button"
             @click="$emit('close-drawer-button')"
           >

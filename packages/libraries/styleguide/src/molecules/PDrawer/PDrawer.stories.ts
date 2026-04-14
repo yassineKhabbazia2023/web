@@ -10,12 +10,8 @@ const meta: Meta<typeof PDrawer> = {
   component: PDrawer,
   parameters: {
     layout: 'centered',
-    docs: {
-      description: {
-        component: 'Tiroir latéral avec en-tête personnalisable, navigation et pied de page optionnel.',
-      },
-    },
   },
+  tags: ['!autodocs'],
   argTypes: {
     modelValue: { control: 'boolean', description: 'État ouvert/fermé' },
     pTitle: { control: 'text', description: 'Titre affiché dans l’en-tête' },
@@ -27,7 +23,6 @@ const meta: Meta<typeof PDrawer> = {
     pType: { control: 'select', options: ['mini', 'fullscreen'], description: 'Variante visuelle' },
     pSuffixUnderTitle: { control: 'boolean', description: 'Place le suffixe sous le titre' },
     pHeaderToolbox: { control: false, description: 'Configuration de la toolbox dans l’en-tête' },
-    pBreadcrumb: { control: false, description: 'Liste de fil d’Ariane (PBreadcrumb)' },
   },
   args: {
     modelValue: true,
@@ -53,22 +48,17 @@ export const Basic: Story = {
       const open = ref(args.modelValue)
       const close = () => (open.value = false)
       const openIt = () => (open.value = true)
-      const breadcrumb = [
-        { pId: 1, pText: 'Accueil' },
-        { pId: 2, pText: 'Dossiers' },
-        { pId: 3, pText: 'Sélection' },
-      ]
-      return { args, open, openIt, close, breadcrumb }
+      return { args, open, openIt, close }
     },
     template: `
       <div>
         <PButton pType="primary" @click="openIt">Ouvrir le tiroir</PButton>
-        <PDrawer v-bind="args" v-model="open" :pBreadcrumb="breadcrumb">
+        <PDrawer v-bind="args" v-model="open" @close-drawer-button="close">
           <div style="padding: 16px;">
             Contenu du tiroir. Ajoutez vos composants ici.
           </div>
           <template #footer>
-            <div style="display:flex; justify-content:flex-end; gap: 8px; padding: 12px 16px; border-top: 1px solid var(--el-border-color);">
+            <div style="display:flex; justify-content:flex-end; gap: 8px; padding: 12px 16px;">
               <PButton pType="secondary" @click="open = false">Annuler</PButton>
               <PButton pType="primary">Valider</PButton>
             </div>
@@ -90,6 +80,9 @@ export const TopMini: Story = {
     },
     template: `
       <div>
+        <div style="position: fixed; top: 0; left: 0; right: 0; height: 56px; background-color: var(--p-gray-700); z-index: 100; display: flex; align-items: center; padding: 0 16px; color: white; font-size: 14px;">
+          Simulated navbar
+        </div>
         <PDrawer v-bind="args" v-model="open">
           <div style="padding: 16px;">Tiroir compact en haut de page</div>
         </PDrawer>
