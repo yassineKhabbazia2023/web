@@ -100,20 +100,6 @@ export async function addContactToEntity(
   return result
 }
 
-export async function updateSignatoryStatus(
-  accountId: Account['accountId'],
-  contactId: Contact['id'],
-  isSignatory: boolean = true,
-) {
-  const url = `${API_PREFIXES.ACCOUNT}/roles`
-  const queryParameters = {
-    accountId,
-    contactId,
-    isSignatory,
-  }
-  return await api.gateway.patch(url, null, { params: queryParameters })
-}
-
 export async function fetchContactsFromSameHub(
   search: string | null,
   pageSize: number = 100,

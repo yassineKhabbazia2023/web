@@ -6,11 +6,11 @@
       class="margin-bottom--2"
     >
       <template #bold-text>
-        <p>{{ t('noSignatory') }}</p>
+        <p>{{ t('noMandateSignatoryTitle') }}</p>
       </template>
-      <span> {{ t('atLeastOneSignatory') }} </span>
+      <span> {{ t('mandateSignatoryRequired') }} </span>
       <p class="font-italic">
-        {{ t('assignSignatory') }}
+        {{ t('assignSignatoryInstructions') }}
       </p>
     </PAlert>
     <ul class="list-style-none">
@@ -40,14 +40,14 @@ const { t } = useI18n({
   useScope: 'local',
   messages: {
     'en-US': {
-      noSignatory: 'You have no signatory on this file!',
-      atLeastOneSignatory: 'You must have at least one signatory to activate the offer.',
-      assignSignatory: 'In the folder (users tab), you can designate a user as a signatory.',
+      noMandateSignatoryTitle: 'No client contact is designated as a signatory for the engagement letter on this file',
+      mandateSignatoryRequired: 'To activate the offer on this file, you must designate a client contact as a signatory for the engagement letter.',
+      assignSignatoryInstructions: 'To do this, open the contact\'s profile in Akuiteo, then select the role "Engagement letter/mandate signatory" in the "Contact type" section.',
     },
     'fr-FR': {
-      noSignatory: 'Vous n\'avez aucun signataire sur ce dossier !',
-      atLeastOneSignatory: 'Vous devez obligatoirement avoir au moins un signataire pour activer l\'offre.',
-      assignSignatory: 'Dans le dossier (onglet utilisateurs), vous pouvez désigner un utilisateur en tant que signataire.\n',
+      noMandateSignatoryTitle: 'Aucun contact client est désigné comme signataire de la lettre de mission sur le dossier',
+      mandateSignatoryRequired: 'Pour activer l\'offre sur ce dossier, vous devez désigner un contact client comme signataire de la lettre de mission.',
+      assignSignatoryInstructions: 'Pour cela, ouvrez la fiche du contact concerné dans Akuiteo, puis sélectionnez le rôle « Signataire lettre de mission / mandat » dans la rubrique « Type de contact ».',
     },
   },
 })
