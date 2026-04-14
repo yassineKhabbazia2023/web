@@ -17,10 +17,12 @@ describe('useProspectCreationDrawer', () => {
     expect(isLastStep.value).toBe(false)
   })
 
-  it('should initialize formData with empty values', () => {
+  it('should initialize formData with default values', () => {
     const { formData } = useProspectCreationDrawer(steps)
 
-    expect(formData.value).toEqual({ information: '', company: '', contact: '' })
+    expect(formData.value.siret).toBe('12345678912345')
+    expect(formData.value.legalForm).toBe('SAS')
+    expect(formData.value.signatory.lastName).toBe('Martin')
   })
 
   it('should go to next step', () => {

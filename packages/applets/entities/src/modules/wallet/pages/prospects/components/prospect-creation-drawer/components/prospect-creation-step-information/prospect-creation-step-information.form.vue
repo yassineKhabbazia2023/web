@@ -1,10 +1,10 @@
 <template>
   <PForm pLabelPosition="top">
-    <PFormItem :pLabel="t('label')">
+    <PFormItem :pLabel="t('siretLabel')">
       <PInput
-        v-model="model"
-        :pPlaceholder="t('placeholder')"
-        data-testid="prospect-information-input"
+        v-model="model.siret"
+        :pPlaceholder="t('siretPlaceholder')"
+        data-testid="prospect-siret-input"
       />
     </PFormItem>
   </PForm>
@@ -13,21 +13,22 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PForm, PFormItem, PInput } from '@pulse/styleguide/components'
+import type { ProspectFormData } from '../../prospect-creation-drawer.types'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   messages: {
     'en-US': {
-      label: 'Information',
-      placeholder: 'Enter information',
+      siretLabel: 'SIRET',
+      siretPlaceholder: 'Enter SIRET number',
     },
     'fr-FR': {
-      label: 'Information',
-      placeholder: 'Saisir une information',
+      siretLabel: 'SIRET',
+      siretPlaceholder: 'Saisir le numéro SIRET',
     },
   },
 })
 
-const model = defineModel<string>()
+const model = defineModel<ProspectFormData>({ required: true })
 </script>

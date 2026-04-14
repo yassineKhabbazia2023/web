@@ -1,10 +1,17 @@
 <template>
   <PForm pLabelPosition="top">
-    <PFormItem :pLabel="t('label')">
+    <PFormItem :pLabel="t('legalFormLabel')">
       <PInput
-        v-model="model"
-        :pPlaceholder="t('placeholder')"
-        data-testid="prospect-company-input"
+        v-model="model.legalForm"
+        :pPlaceholder="t('legalFormPlaceholder')"
+        data-testid="prospect-legal-form-input"
+      />
+    </PFormItem>
+    <PFormItem :pLabel="t('legalStructureLabel')">
+      <PInput
+        v-model="model.legalStructure"
+        :pPlaceholder="t('legalStructurePlaceholder')"
+        data-testid="prospect-legal-structure-input"
       />
     </PFormItem>
   </PForm>
@@ -13,21 +20,26 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PForm, PFormItem, PInput } from '@pulse/styleguide/components'
+import type { ProspectFormData } from '../../prospect-creation-drawer.types'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'local',
   messages: {
     'en-US': {
-      label: 'Company',
-      placeholder: 'Enter company name',
+      legalFormLabel: 'Legal form',
+      legalFormPlaceholder: 'Enter legal form',
+      legalStructureLabel: 'Legal structure',
+      legalStructurePlaceholder: 'Enter legal structure',
     },
     'fr-FR': {
-      label: 'Entreprise',
-      placeholder: 'Saisir le nom de l\'entreprise',
+      legalFormLabel: 'Forme juridique',
+      legalFormPlaceholder: 'Saisir la forme juridique',
+      legalStructureLabel: 'Structure juridique',
+      legalStructurePlaceholder: 'Saisir la structure juridique',
     },
   },
 })
 
-const model = defineModel<string>()
+const model = defineModel<ProspectFormData>({ required: true })
 </script>

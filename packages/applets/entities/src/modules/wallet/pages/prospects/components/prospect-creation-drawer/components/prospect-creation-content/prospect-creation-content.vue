@@ -5,15 +5,15 @@
   />
   <ProspectCreationStepInformation
     v-if="currentStep === ProspectCreationDrawerStep.INFORMATION"
-    v-model="formData.information"
+    v-model="formData"
   />
   <ProspectCreationStepCompany
     v-if="currentStep === ProspectCreationDrawerStep.COMPANY"
-    v-model="formData.company"
+    v-model="formData"
   />
   <ProspectCreationStepContact
     v-if="currentStep === ProspectCreationDrawerStep.CONTACT"
-    v-model="formData.contact"
+    v-model="formData"
   />
 </template>
 
@@ -21,7 +21,7 @@
 import { computed } from 'vue'
 import { ProspectCreationDrawerStep } from '@entities/modules/wallet/enums'
 import type { ProspectCreationContentProps } from './prospect-creation-content.type'
-import type { ProspectFormData } from '../../prospect-creation-drawer.type'
+import type { ProspectFormData } from '../../prospect-creation-drawer.types'
 import { PROSPECT_CREATION_DRAWER_STEPS } from '../../prospect-creation-drawer.const'
 import ProspectCreationSteps from '../prospect-creation-steps/prospect-creation-steps.vue'
 import ProspectCreationStepInformation from '../prospect-creation-step-information/prospect-creation-step-information.form.vue'

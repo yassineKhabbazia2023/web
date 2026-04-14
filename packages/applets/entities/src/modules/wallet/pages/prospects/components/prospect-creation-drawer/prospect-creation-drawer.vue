@@ -30,7 +30,7 @@ import NextPreviousButtons from '@entities/components/NextPreviousButtons'
 import ProspectCreationContent from './components/prospect-creation-content/prospect-creation-content.vue'
 import { PROSPECT_CREATION_DRAWER_STEPS } from './prospect-creation-drawer.const'
 import { useProspectCreationDrawer } from './prospect-creation-drawer.composable'
-import type { ProspectFormData } from './prospect-creation-drawer.type'
+import type { ProspectFormData } from './prospect-creation-drawer.types'
 
 const emit = defineEmits<{
   submit: [formData: ProspectFormData]

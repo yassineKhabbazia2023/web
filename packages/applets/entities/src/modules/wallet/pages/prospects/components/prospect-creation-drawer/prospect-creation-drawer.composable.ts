@@ -1,14 +1,28 @@
 import { ref, computed } from 'vue'
 import type { ProspectCreationDrawerStep } from '@entities/modules/wallet/enums'
-import type { ProspectFormData } from './prospect-creation-drawer.type'
+import type { ProspectFormData } from './prospect-creation-drawer.types'
 
 export function useProspectCreationDrawer(steps: ProspectCreationDrawerStep[]) {
   const stepIndex = ref(0)
 
+  // Temporary Mock
   const formData = ref<ProspectFormData>({
-    information: '',
-    company: '',
-    contact: '',
+    siret: '12345678912345',
+    legalForm: 'SAS',
+    legalStructure: 'Société commerciale',
+    caseManagerContactId: '10042',
+    accountManagerContactId: '10087',
+    signatory: {
+      title: 'Mme',
+      lastName: 'Martin',
+      firstName: 'Élodie',
+      jobTitle: 'Directrice générale',
+      department: 'Direction',
+      companyRole: 'PRESIDENT_GERANT',
+      contactTypes: 'SIGNATAIRE, COFFRE_FORT_NUMERIQUE',
+      email: 'elodie.martin@example.com',
+      mobilePhone: '06 12 34 56 78',
+    },
   })
 
   const currentStep = computed(() => steps[stepIndex.value])

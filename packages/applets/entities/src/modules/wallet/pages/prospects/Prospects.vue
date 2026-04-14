@@ -33,7 +33,7 @@ import { PButton, PIcon } from '@pulse/styleguide/components'
 import { useUserStore } from '@pulse/common/stores'
 import { logger } from '@pulse/toolbox'
 import ProspectCreationDrawer from './components/prospect-creation-drawer'
-import type { ProspectFormData } from './components/prospect-creation-drawer/prospect-creation-drawer.type'
+import type { ProspectFormData } from './components/prospect-creation-drawer/prospect-creation-drawer.types'
 
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
