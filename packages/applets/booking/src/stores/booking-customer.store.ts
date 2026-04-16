@@ -28,8 +28,13 @@ export const useBookingCustomerStore = defineStore('booking-customer', () => {
   }
 
   return {
+    // Reactive refs
+    isBookingEnabled,
+    availableExperts,
+    // Getters
     getAvailableExperts,
     getIsBookingEnabled,
+    // Setters
     setAvailableExperts,
     setIsBookingEnabled,
     reset,

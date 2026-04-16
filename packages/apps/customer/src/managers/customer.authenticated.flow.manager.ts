@@ -15,10 +15,8 @@ import {
 import { logger } from '@pulse/toolbox'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import type { RouteLocationNamedRaw } from 'vue-router'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { RouteName } from '@pulse/common/enums'
 import { Entity } from '@pulse/common/types'
-import { BookingManager } from '@pulse/booking/managers'
 
 export class CustomerAuthenticatedFlowManager {
   // Guard preventing the authenticated flow from running more than once per session.
@@ -48,8 +46,6 @@ export class CustomerAuthenticatedFlowManager {
 
     this.initAuthenticatedThirdParties()
     await this.initEntities()
-    // Silent eligibility check: UI reads store state without a loading indicator.
-    await BookingManager.setupBookingForCustomer()
   }
 
   // #region setup
@@ -211,30 +207,5 @@ export class CustomerAuthenticatedFlowManager {
     return userStore.getHasAcceptedCGU()
   }
   // #endregion redirections
-
-  // #region landing pages
-  static getLandingPage(): RouteLocationNamedRaw | null {
-    return this.getCustomerLandingPage()
-  }
-
-  static getCustomerLandingPage() {
-    const userStore = useUserStore()
-    const isSingleEntity = userStore.getIsSingleEntity()
-
-    if (isSingleEntity) {
-      const currentEntityStore = useCurrentEntityStore()
-      const entityAccountId = currentEntityStore.currentEntity?.accountId
-      const entityLandingPage = {
-        name: RouteName.HOMEPAGE,
-        params: { [RouteParam.ENTITY_ID]: entityAccountId },
-      }
-
-      return entityLandingPage
-    }
-
-    const walletLandingPage = { name: RouteName.CUSTOMER_ENTITIES }
-    return walletLandingPage
-  }
-  // #endregion landing pages
 }
 

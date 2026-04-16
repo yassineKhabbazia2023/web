@@ -1,4 +1,10 @@
-import { sanitizeUrl } from './url.utils'
+import {
+  sanitizeUrl,
+  parsePositiveInteger,
+  extractSingleQueryParam,
+  isQueryParamTrue,
+  extractIntegerQueryParam,
+} from './url.utils'
 
 describe('sanitizeUrl', () => {
   describe('valid URLs without options', () => {
@@ -274,6 +280,221 @@ describe('sanitizeUrl', () => {
     it('should handle help center article URL with slug', () => {
       const url = 'https://help.example.com/fr/articles/123456-article-title-with-slug'
       expect(sanitizeUrl(url)).toBe(url)
+    })
+  })
+})
+
+describe('parsePositiveInteger', () => {
+  describe('valid positive integers', () => {
+    const validCases = [
+      { input: '1', expected: 1, reason: 'single digit' },
+      { input: '42', expected: 42, reason: 'two digits' },
+      { input: '123', expected: 123, reason: 'three digits' },
+      { input: '999999', expected: 999999, reason: 'large number' },
+    ]
+
+    it.each(validCases)('should parse $input ($reason)', ({ input, expected }) => {
+      expect(parsePositiveInteger(input)).toBe(expected)
+    })
+  })
+
+  describe('invalid inputs - partial numbers', () => {
+    const partialNumberCases = [
+      { input: '123abc', reason: 'number followed by letters' },
+      { input: '123.45', reason: 'decimal number' },
+      { input: '12.5', reason: 'decimal with single decimal place' },
+      { input: '123 ', reason: 'number with trailing space' },
+      { input: ' 123', reason: 'number with leading space' },
+      { input: '12 34', reason: 'number with space in middle' },
+      { input: '1e5', reason: 'scientific notation' },
+      { input: '0x1A', reason: 'hexadecimal notation' },
+    ]
+
+    it.each(partialNumberCases)('should reject $input ($reason)', ({ input }) => {
+      expect(parsePositiveInteger(input)).toBeUndefined()
+    })
+  })
+
+  describe('invalid inputs - negatives and zero', () => {
+    const negativeAndZeroCases = [
+      { input: '0', reason: 'zero' },
+      { input: '-1', reason: 'negative single digit' },
+      { input: '-42', reason: 'negative number' },
+      { input: '-999', reason: 'large negative' },
+    ]
+
+    it.each(negativeAndZeroCases)('should reject $input ($reason)', ({ input }) => {
+      expect(parsePositiveInteger(input)).toBeUndefined()
+    })
+  })
+
+  describe('invalid inputs - non-numeric', () => {
+    const nonNumericCases = [
+      { input: '', reason: 'empty string' },
+      { input: 'abc', reason: 'letters only' },
+      { input: 'hello', reason: 'word' },
+      { input: '   ', reason: 'whitespace only' },
+      { input: 'NaN', reason: 'string NaN' },
+      { input: 'Infinity', reason: 'string Infinity' },
+    ]
+
+    it.each(nonNumericCases)('should reject $input ($reason)', ({ input }) => {
+      expect(parsePositiveInteger(input)).toBeUndefined()
+    })
+  })
+})
+
+describe('extractSingleQueryParam', () => {
+  describe('single string values', () => {
+    it('should return the string value', () => {
+      expect(extractSingleQueryParam('hello')).toBe('hello')
+    })
+
+    it('should trim whitespace from string', () => {
+      expect(extractSingleQueryParam('  value  ')).toBe('value')
+    })
+
+    it('should handle URL-encoded values', () => {
+      expect(extractSingleQueryParam('hello%20world')).toBe('hello%20world')
+    })
+  })
+
+  describe('array values', () => {
+    it('should extract first element from array', () => {
+      expect(extractSingleQueryParam(['first', 'second'])).toBe('first')
+    })
+
+    it('should extract and trim first element', () => {
+      expect(extractSingleQueryParam(['  first  ', 'second'])).toBe('first')
+    })
+
+    it('should return undefined for empty array', () => {
+      expect(extractSingleQueryParam([])).toBeUndefined()
+    })
+
+    it('should return undefined if first element is undefined', () => {
+      expect(extractSingleQueryParam([undefined as any, 'second'])).toBeUndefined()
+    })
+  })
+
+  describe('invalid values', () => {
+    it('should return undefined for null', () => {
+      expect(extractSingleQueryParam(null)).toBeUndefined()
+    })
+
+    it('should return undefined for empty string', () => {
+      expect(extractSingleQueryParam('')).toBeUndefined()
+    })
+
+    it('should return undefined for whitespace-only string', () => {
+      expect(extractSingleQueryParam('   ')).toBeUndefined()
+    })
+
+    it('should return undefined for array with empty string', () => {
+      expect(extractSingleQueryParam([''])).toBeUndefined()
+    })
+
+    it('should return undefined for array with whitespace-only string', () => {
+      expect(extractSingleQueryParam(['   '])).toBeUndefined()
+    })
+
+    it('should return undefined for array with null element', () => {
+      expect(extractSingleQueryParam([null as any])).toBeUndefined()
+    })
+  })
+})
+
+describe('isQueryParamTrue', () => {
+  describe('valid true values', () => {
+    it('should return true for string "true"', () => {
+      expect(isQueryParamTrue('true')).toBe(true)
+    })
+
+    it('should return true for array with "true"', () => {
+      expect(isQueryParamTrue(['true'])).toBe(true)
+    })
+
+    it('should return true for array with "true" as first element', () => {
+      expect(isQueryParamTrue(['true', 'false'])).toBe(true)
+    })
+
+    it('should handle trimming for "true" with spaces', () => {
+      expect(isQueryParamTrue('  true  ')).toBe(true)
+    })
+  })
+
+  describe('false values', () => {
+    const falseCases = [
+      { input: 'false', reason: 'string "false"' },
+      { input: 'TRUE', reason: 'uppercase (case-sensitive)' },
+      { input: 'True', reason: 'capitalized (case-sensitive)' },
+      { input: '1', reason: 'number as string' },
+      { input: 'yes', reason: 'alternative boolean string' },
+      { input: '', reason: 'empty string' },
+      { input: '   ', reason: 'whitespace only' },
+      { input: undefined, reason: 'undefined' },
+      { input: null, reason: 'null' },
+    ]
+
+    it.each(falseCases)('should return false for $reason', ({ input }) => {
+      expect(isQueryParamTrue(input as any)).toBe(false)
+    })
+
+    it('should return false for empty array', () => {
+      expect(isQueryParamTrue([])).toBe(false)
+    })
+
+    it('should return false for array with non-true value', () => {
+      expect(isQueryParamTrue(['false'])).toBe(false)
+    })
+  })
+})
+
+describe('extractIntegerQueryParam', () => {
+  describe('valid integer query params', () => {
+    it('should extract and parse valid integer string', () => {
+      expect(extractIntegerQueryParam('123')).toBe(123)
+    })
+
+    it('should extract and parse from array', () => {
+      expect(extractIntegerQueryParam(['456'])).toBe(456)
+    })
+
+    it('should handle trimming', () => {
+      expect(extractIntegerQueryParam('  789  ')).toBe(789)
+    })
+
+    it('should extract from array with multiple values (takes first)', () => {
+      expect(extractIntegerQueryParam(['42', '43'])).toBe(42)
+    })
+  })
+
+  describe('invalid integer query params', () => {
+    const invalidCases = [
+      { input: '123abc', reason: 'partial number' },
+      { input: '-5', reason: 'negative number' },
+      { input: '0', reason: 'zero' },
+      { input: '12.5', reason: 'decimal' },
+      { input: 'abc', reason: 'non-numeric' },
+      { input: '', reason: 'empty string' },
+      { input: '   ', reason: 'whitespace only' },
+      { input: undefined, reason: 'undefined' },
+    ]
+
+    it.each(invalidCases)('should return undefined for $reason', ({ input }) => {
+      expect(extractIntegerQueryParam(input as any)).toBeUndefined()
+    })
+
+    it('should return undefined for empty array', () => {
+      expect(extractIntegerQueryParam([])).toBeUndefined()
+    })
+
+    it('should return undefined for array with invalid value', () => {
+      expect(extractIntegerQueryParam(['abc'])).toBeUndefined()
+    })
+
+    it('should return undefined for array with partial number', () => {
+      expect(extractIntegerQueryParam(['123abc'])).toBeUndefined()
     })
   })
 })

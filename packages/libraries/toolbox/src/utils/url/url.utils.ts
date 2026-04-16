@@ -1,3 +1,5 @@
+import type { LocationQueryValue } from 'vue-router'
+
 export interface SanitizeUrlOptions {
   readonly allowedSchemes?: readonly string[]
 }
@@ -125,4 +127,79 @@ export function sanitizeUrl(
   }
 
   return cleaned
+}
+
+/**
+ * Safely parses a string to a positive integer
+ * Rejects partial numbers, negatives, decimals, and non-numeric strings
+ */
+export function parsePositiveInteger(value: string): number | undefined {
+  if (value === '') {
+    return undefined
+  }
+
+  const parsed = Number.parseInt(value, 10)
+
+  if (Number.isNaN(parsed) === true) {
+    return undefined
+  }
+
+  if (parsed <= 0) {
+    return undefined
+  }
+
+  if (parsed.toString() !== value) {
+    return undefined
+  }
+
+  return parsed
+}
+
+/**
+ * Extracts a single string value from a Vue Router query parameter
+ * Handles arrays by taking the first element
+ * Trims whitespace and validates non-empty
+ */
+export function extractSingleQueryParam(param: LocationQueryValue | LocationQueryValue[]): string | undefined {
+  if (param === undefined || param === null) {
+    return undefined
+  }
+
+  const value = Array.isArray(param) === true ? param[0] : param
+
+  if (value === undefined || value === null) {
+    return undefined
+  }
+
+  const trimmed = value.trim()
+
+  if (trimmed === '') {
+    return undefined
+  }
+
+  return trimmed
+}
+
+/**
+ * Validates that a query parameter is exactly 'true' (case-sensitive)
+ * Handles arrays by checking the first element
+ */
+export function isQueryParamTrue(param: LocationQueryValue | LocationQueryValue[]): boolean {
+  const extracted = extractSingleQueryParam(param)
+  return extracted === 'true'
+}
+
+/**
+ * Extracts and parses a positive integer from a Vue Router query parameter
+ * Combines extraction and parsing with full validation
+ * Handles arrays by taking the first element
+ */
+export function extractIntegerQueryParam(param: LocationQueryValue | LocationQueryValue[]): number | undefined {
+  const extracted = extractSingleQueryParam(param)
+
+  if (extracted === undefined) {
+    return undefined
+  }
+
+  return parsePositiveInteger(extracted)
 }

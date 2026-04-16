@@ -13,6 +13,7 @@ export const useBookingAppointmentsStore = defineStore('booking-appointments', (
   const isLoadingPastAppointments = ref(false)
   const isBookingAppointmentDrawerOpen = ref(false)
   const isBookingAppointmentsListDrawerOpen = ref(false)
+  const preselectedCollaboratorId = ref<number | undefined>(undefined)
 
   async function fetchUpcomingAppointments(limit = DEFAULT_UPCOMING_LIMIT) {
     isLoadingUpcomingAppointments.value = true
@@ -57,8 +58,25 @@ export const useBookingAppointmentsStore = defineStore('booking-appointments', (
     isBookingAppointmentsListDrawerOpen.value = false
   }
 
-  function openBookingAppointmentDrawer() {
+  function isValidCollaboratorId(collaboratorId?: number): boolean {
+    if (collaboratorId === undefined) {
+      return false
+    }
+    return Number.isFinite(collaboratorId) === true && collaboratorId > 0
+  }
+
+  function openBookingAppointmentDrawer(collaboratorId?: number) {
+    if (isValidCollaboratorId(collaboratorId)) {
+      preselectedCollaboratorId.value = collaboratorId
+    } else if (collaboratorId !== undefined) {
+      logger.warn('Invalid collaboratorId provided to openBookingAppointmentDrawer', { collaboratorId })
+    }
+
     isBookingAppointmentDrawerOpen.value = true
+  }
+
+  function clearPreselectedCollaboratorId() {
+    preselectedCollaboratorId.value = undefined
   }
 
   function closeBookingAppointmentDrawer() {
@@ -73,6 +91,7 @@ export const useBookingAppointmentsStore = defineStore('booking-appointments', (
     isLoadingPastAppointments.value = false
     isBookingAppointmentDrawerOpen.value = false
     isBookingAppointmentsListDrawerOpen.value = false
+    preselectedCollaboratorId.value = undefined
   }
 
   return {
@@ -83,11 +102,13 @@ export const useBookingAppointmentsStore = defineStore('booking-appointments', (
     isLoadingPastAppointments,
     isBookingAppointmentDrawerOpen,
     isBookingAppointmentsListDrawerOpen,
+    preselectedCollaboratorId,
     fetchUpcomingAppointments,
     fetchPastAppointments,
     fetchUpcomingAppointmentsCount,
     hasUpcomingAppointments,
     openBookingAppointmentDrawer,
+    clearPreselectedCollaboratorId,
     closeBookingAppointmentDrawer,
     openBookingAppointmentsListDrawer,
     closeBookingAppointmentsListDrawer,

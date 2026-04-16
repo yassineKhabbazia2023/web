@@ -16,10 +16,3 @@ export const BOOKING_CONFIGURATION_STEP_TITLE_KEYS: Record<BookingConfigurationS
 export const BOOKING_CONFIRMATION_SUCCESS_TITLE_KEY = 'booking-configuration.drawer-titles.confirmation-success'
 export const BOOKING_CONFIGURATION_SUBMIT_SUCCESS_NOTIFICATION_KEY = 'booking-configuration.notifications.submit-success'
 export const BOOKING_CONFIGURATION_SUBMIT_ERROR_NOTIFICATION_KEY = 'booking-configuration.notifications.submit-error'
-
-/**
- * Query param names for the customer booking link.
- * Used to generate a shareable booking link for clients.
- */
-export const BOOKING_QUERY_PARAM_WIDGET = 'bookingWidget'
-export const BOOKING_QUERY_PARAM_COLLABORATOR_ID = 'collaboratorId'

@@ -47,6 +47,7 @@ import { useDisplayCount } from '@booking/shared/composables/use-display-count.c
 import { AppointmentTab } from '@booking/types'
 import { BookingTrackingService } from '@booking/services/booking-tracking.service'
 import { BookingSourceEvent } from '@booking/services/booking-tracking.enum'
+
 const appointmentsStore = useBookingAppointmentsStore()
 const customerStore = useBookingCustomerStore()
 

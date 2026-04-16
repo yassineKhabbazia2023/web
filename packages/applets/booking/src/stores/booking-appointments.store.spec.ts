@@ -2,8 +2,15 @@ import { createPinia, setActivePinia } from 'pinia'
 import { useBookingAppointmentsStore } from './booking-appointments.store'
 import { BookingService } from '../services/booking.service'
 import type { AppointmentResponse } from '../types/booking.types'
+import { logger } from '@pulse/toolbox'
 
 vi.mock('../services/booking.service')
+vi.mock('@pulse/toolbox', () => ({
+  logger: {
+    error: vi.fn(),
+    warn: vi.fn(),
+  },
+}))
 
 const mockAppointments: AppointmentResponse[] = [
   {
@@ -46,6 +53,7 @@ describe('useBookingAppointmentsStore', () => {
       expect(store.isLoadingPastAppointments).toBe(false)
       expect(store.isBookingAppointmentDrawerOpen).toBe(false)
       expect(store.isBookingAppointmentsListDrawerOpen).toBe(false)
+      expect(store.preselectedCollaboratorId).toBeUndefined()
     })
   })
 
@@ -236,6 +244,76 @@ describe('useBookingAppointmentsStore', () => {
 
       store.closeBookingAppointmentsListDrawer()
       expect(store.isBookingAppointmentsListDrawerOpen).toBe(false)
+    })
+
+    it('should open drawer with preselected collaborator', () => {
+      const store = useBookingAppointmentsStore()
+
+      store.openBookingAppointmentDrawer(123)
+
+      expect(store.isBookingAppointmentDrawerOpen).toBe(true)
+      expect(store.preselectedCollaboratorId).toBe(123)
+    })
+
+    it('should open drawer without preselected collaborator', () => {
+      const store = useBookingAppointmentsStore()
+
+      store.openBookingAppointmentDrawer()
+
+      expect(store.isBookingAppointmentDrawerOpen).toBe(true)
+      expect(store.preselectedCollaboratorId).toBeUndefined()
+    })
+
+    it('should reject invalid collaborator IDs with warning', () => {
+      const store = useBookingAppointmentsStore()
+
+      // Test NaN
+      store.openBookingAppointmentDrawer(Number.NaN)
+      expect(store.preselectedCollaboratorId).toBeUndefined()
+      expect(logger.warn).toHaveBeenCalled()
+
+      vi.mocked(logger.warn).mockClear()
+
+      // Test negative
+      store.openBookingAppointmentDrawer(-5)
+      expect(store.preselectedCollaboratorId).toBeUndefined()
+      expect(logger.warn).toHaveBeenCalled()
+
+      vi.mocked(logger.warn).mockClear()
+
+      // Test zero
+      store.openBookingAppointmentDrawer(0)
+      expect(store.preselectedCollaboratorId).toBeUndefined()
+      expect(logger.warn).toHaveBeenCalled()
+
+      vi.mocked(logger.warn).mockClear()
+
+      // Test Infinity
+      store.openBookingAppointmentDrawer(Number.POSITIVE_INFINITY)
+      expect(store.preselectedCollaboratorId).toBeUndefined()
+      expect(logger.warn).toHaveBeenCalled()
+
+      vi.mocked(logger.warn).mockClear()
+    })
+
+    it('should clear preselected collaborator id', () => {
+      const store = useBookingAppointmentsStore()
+
+      store.openBookingAppointmentDrawer(456)
+      expect(store.preselectedCollaboratorId).toBe(456)
+
+      store.clearPreselectedCollaboratorId()
+      expect(store.preselectedCollaboratorId).toBeUndefined()
+    })
+
+    it('should reset preselected collaborator id on reset', () => {
+      const store = useBookingAppointmentsStore()
+
+      store.openBookingAppointmentDrawer(789)
+      expect(store.preselectedCollaboratorId).toBe(789)
+
+      store.reset()
+      expect(store.preselectedCollaboratorId).toBeUndefined()
     })
   })
 })

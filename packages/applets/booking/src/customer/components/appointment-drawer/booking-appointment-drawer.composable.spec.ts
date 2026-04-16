@@ -3,7 +3,7 @@ import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises } from '@vue/test-utils'
 import { useBookingAppointmentDrawer } from './booking-appointment-drawer.composable'
 import { BookingAppointmentDrawerTabs } from './booking-appointment-drawer.enum'
-import { useBookingCustomerStore } from '@booking/stores'
+import { useBookingCustomerStore, useBookingAppointmentsStore } from '@booking/stores'
 import { BookingManager } from '@booking/shared/managers/booking.manager'
 import { getMockExperts } from '../../../__mocks__'
 
@@ -179,6 +179,77 @@ describe('useBookingAppointmentDrawer', () => {
 
       expect(currentStep.value).toBe(BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT)
       expect(selectedExpertId.value).toBe(99)
+    })
+
+    it('should auto-select preselected collaborator when drawer opens and expert exists', async () => {
+      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      const isOpened = ref(false)
+      const appointmentsStore = useBookingAppointmentsStore()
+      const customerStore = useBookingCustomerStore()
+
+      // Set up available experts including the one we'll preselect
+      const mockExperts = getMockExperts()
+      customerStore.setAvailableExperts(mockExperts)
+      const preselectedExpertId = mockExperts[0].id
+
+      const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
+
+      // Set preselected collaborator before opening drawer
+      appointmentsStore.openBookingAppointmentDrawer(preselectedExpertId)
+
+      // Drawer should be open now
+      expect(appointmentsStore.isBookingAppointmentDrawerOpen).toBe(true)
+
+      // Simulate the drawer receiving the open state
+      isOpened.value = true
+      await flushPromises()
+
+      // Should have auto-selected the expert and moved to time slot step
+      expect(selectedExpertId.value).toBe(preselectedExpertId)
+      expect(currentStep.value).toBe(BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT)
+      // Preselected ID should be cleared after consumption
+      expect(appointmentsStore.preselectedCollaboratorId).toBeUndefined()
+    })
+
+    it('should not auto-select when preselected collaborator does not exist in available experts', async () => {
+      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      const isOpened = ref(false)
+      const appointmentsStore = useBookingAppointmentsStore()
+      const customerStore = useBookingCustomerStore()
+
+      // Set up available experts that do NOT include the preselected ID
+      const mockExperts = getMockExperts()
+      customerStore.setAvailableExperts(mockExperts)
+      const nonExistentExpertId = 99999
+
+      const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
+
+      // Set preselected collaborator that doesn't exist
+      appointmentsStore.openBookingAppointmentDrawer(nonExistentExpertId)
+      isOpened.value = true
+      await flushPromises()
+
+      // Should NOT have selected the expert, stay on choose expert step
+      expect(selectedExpertId.value).toBeUndefined()
+      expect(currentStep.value).toBe(BookingAppointmentDrawerTabs.CHOOSE_EXPERT)
+      // Preselected ID should still be cleared
+      expect(appointmentsStore.preselectedCollaboratorId).toBeUndefined()
+    })
+
+    it('should not auto-select when no preselected collaborator', async () => {
+      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      const isOpened = ref(false)
+      const appointmentsStore = useBookingAppointmentsStore()
+      const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
+
+      // Open drawer without preselected collaborator
+      appointmentsStore.openBookingAppointmentDrawer()
+      isOpened.value = true
+      await flushPromises()
+
+      // Should stay on choose expert step
+      expect(selectedExpertId.value).toBeUndefined()
+      expect(currentStep.value).toBe(BookingAppointmentDrawerTabs.CHOOSE_EXPERT)
     })
   })
 })

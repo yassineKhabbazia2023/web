@@ -10,9 +10,11 @@ import {
   BOOKING_CONFIGURATION_SUBMIT_SUCCESS_NOTIFICATION_KEY,
   BOOKING_CONFIRMATION_SUCCESS_TITLE_KEY,
   BOOKING_CONFIGURATION_SUBMIT_ERROR_NOTIFICATION_KEY,
+} from './booking-configuration.consts'
+import {
   BOOKING_QUERY_PARAM_WIDGET,
   BOOKING_QUERY_PARAM_COLLABORATOR_ID,
-} from './booking-configuration.consts'
+} from '@booking/constants'
 import { BookingConfigurationManager } from './booking-configuration.manager'
 import type { AppointmentDetails } from '../booking-appointment-configuration/booking-appointment-configuration.types'
 import type { TimeSlotsConfiguration } from '../booking-time-slots-configuration/booking-time-slots-configuration.types'

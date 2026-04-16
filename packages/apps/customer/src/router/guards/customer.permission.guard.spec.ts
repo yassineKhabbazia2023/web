@@ -7,8 +7,8 @@ createTestingPinia()
 
 vi.mock('@pulse/toolbox')
 
-vi.mock('@customer/managers/customer.authenticated.flow.manager', () => ({
-  CustomerAuthenticatedFlowManager: {
+vi.mock('@customer/managers/customer-landing.manager', () => ({
+  CustomerLandingManager: {
     getLandingPage: () => ({ name: 'home' }),
   },
 }))

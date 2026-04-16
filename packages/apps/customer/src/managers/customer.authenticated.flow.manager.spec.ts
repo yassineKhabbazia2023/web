@@ -15,8 +15,7 @@ import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
-import { RouteName, RouteParam } from '@pulse/common/enums'
-import { BookingManager } from '@pulse/booking/managers'
+import { RouteName } from '@pulse/common/enums'
 
 import { CustomerAuthenticatedFlowManager } from './customer.authenticated.flow.manager'
 
@@ -42,13 +41,6 @@ vi.mock('@pulse/common/services/cgu')
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
-}))
-
-vi.mock('@pulse/booking/managers', () => ({
-  BookingManager: {
-    setupBookingForCustomer: vi.fn(),
-    refreshAvailableExperts: vi.fn(),
-  },
 }))
 
 vi.mock('@pulse/shared/plugins', () => ({
@@ -85,7 +77,6 @@ describe('CustomerAuthenticatedFlowManager', () => {
     it('should init current user, user entities and third parties', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
-      vi.mocked(BookingManager.setupBookingForCustomer).mockResolvedValue(undefined)
 
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
 
@@ -94,14 +85,11 @@ describe('CustomerAuthenticatedFlowManager', () => {
       expect(userStoreMock.setIsSingleEntity).toHaveBeenCalledWith(true)
       expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(userMock.permissions)
       expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(userMock.favoriteEntities)
-      expect(BookingManager.setupBookingForCustomer).toHaveBeenCalled()
-      expect(BookingManager.refreshAvailableExperts).not.toHaveBeenCalled()
     })
 
     it('should not re-execute when called a second time', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
-      vi.mocked(BookingManager.setupBookingForCustomer).mockResolvedValue(undefined)
 
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
@@ -113,23 +101,9 @@ describe('CustomerAuthenticatedFlowManager', () => {
     it('should allow re-execution after exitAuthenticatedFlow', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
-      vi.mocked(BookingManager.setupBookingForCustomer).mockResolvedValue(undefined)
 
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
       CustomerAuthenticatedFlowManager.exitAuthenticatedFlow()
-      await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
-
-      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
-    })
-
-    it('should allow retry after a failure', async () => {
-      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
-      vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
-      vi.mocked(BookingManager.setupBookingForCustomer)
-        .mockRejectedValueOnce(new Error('booking error'))
-        .mockResolvedValueOnce(undefined)
-
-      await expect(CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()).rejects.toThrow('booking error')
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
 
       expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
@@ -433,56 +407,6 @@ describe('CustomerAuthenticatedFlowManager', () => {
       const result = CustomerAuthenticatedFlowManager.hasUserAcceptedCGUStored()
 
       expect(result).toBe(true)
-    })
-  })
-
-  describe('getLandingPage', () => {
-    it('should return the customer landing page for single entity user', () => {
-      userStoreMock.getIsSingleEntity.mockReturnValue(true)
-      currentEntityStoreMock.currentEntity = entitySummaryMock
-      const accountId = entityMock.accountId
-
-      const result = CustomerAuthenticatedFlowManager.getLandingPage()
-
-      expect(result).toEqual({
-        name: RouteName.HOMEPAGE,
-        params: { [RouteParam.ENTITY_ID]: accountId },
-      })
-    })
-
-    it('should return wallet page for multiple entities user', () => {
-      userStoreMock.getIsSingleEntity.mockReturnValue(false)
-
-      const result = CustomerAuthenticatedFlowManager.getLandingPage()
-
-      expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
-    })
-  })
-
-  describe('getCustomerLandingPage', () => {
-    describe('user is a single entity user', () => {
-      it('should return the entity landing page', () => {
-        userStoreMock.getIsSingleEntity.mockReturnValue(true)
-        currentEntityStoreMock.currentEntity = entitySummaryMock
-        const accountId = entityMock.accountId
-
-        const result = CustomerAuthenticatedFlowManager.getCustomerLandingPage()
-
-        expect(result).toEqual({
-          name: RouteName.HOMEPAGE,
-          params: { [RouteParam.ENTITY_ID]: accountId },
-        })
-      })
-    })
-
-    describe('user is a multiple entities user', () => {
-      it('should return the wallet page', () => {
-        userStoreMock.getIsSingleEntity.mockReturnValue(false)
-
-        const result = CustomerAuthenticatedFlowManager.getCustomerLandingPage()
-
-        expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
-      })
     })
   })
 })

@@ -8,10 +8,12 @@
   "type": "module",
   "exports": {
     ".": "./src/main.ts",
+    "./constants": "./src/constants/index.ts",
     "./stores": "./src/stores/index.ts",
     "./types": "./src/types/index.ts",
     "./managers": "./src/managers/index.ts",
-    "./widgets": "./src/widgets/index.ts"
+    "./widgets": "./src/widgets/index.ts",
+    "./customer/composables": "./src/customer/composables/index.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",
