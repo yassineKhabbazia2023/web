@@ -13,7 +13,7 @@ describe('BookingConfigurationManager', () => {
 
     it('should group a single slot correctly', () => {
       const slots: TimeSlot[] = [
-        { id: '1', day: 'monday' as DayOfWeek, start: '09:00', end: '12:00' },
+        { day: 'monday' as DayOfWeek, start: '09:00', end: '12:00' },
       ]
 
       const result = BookingConfigurationManager.groupTimeSlotsByDay(slots)
@@ -27,8 +27,8 @@ describe('BookingConfigurationManager', () => {
 
     it('should group multiple slots for the same day', () => {
       const slots: TimeSlot[] = [
-        { id: '1', day: 'monday' as DayOfWeek, start: '09:00', end: '12:00' },
-        { id: '2', day: 'monday' as DayOfWeek, start: '14:00', end: '17:00' },
+        { day: 'monday' as DayOfWeek, start: '09:00', end: '12:00' },
+        { day: 'monday' as DayOfWeek, start: '14:00', end: '17:00' },
       ]
 
       const result = BookingConfigurationManager.groupTimeSlotsByDay(slots)
@@ -44,9 +44,9 @@ describe('BookingConfigurationManager', () => {
 
     it('should group slots by different days', () => {
       const slots: TimeSlot[] = [
-        { id: '1', day: 'monday' as DayOfWeek, start: '09:00', end: '12:00' },
-        { id: '2', day: 'tuesday' as DayOfWeek, start: '10:00', end: '11:00' },
-        { id: '3', day: 'monday' as DayOfWeek, start: '14:00', end: '17:00' },
+        { day: 'monday' as DayOfWeek, start: '09:00', end: '12:00' },
+        { day: 'tuesday' as DayOfWeek, start: '10:00', end: '11:00' },
+        { day: 'monday' as DayOfWeek, start: '14:00', end: '17:00' },
       ]
 
       const result = BookingConfigurationManager.groupTimeSlotsByDay(slots)
@@ -134,8 +134,8 @@ describe('BookingConfigurationManager', () => {
     it('should include time slots in availability', () => {
       const timeSlotsConfig: TimeSlotsConfiguration = {
         timeSlots: [
-          { id: '1', day: 'monday' as DayOfWeek, start: '09:00', end: '12:00' },
-          { id: '2', day: 'tuesday' as DayOfWeek, start: '14:00', end: '17:00' },
+          { day: 'monday' as DayOfWeek, start: '09:00', end: '12:00' },
+          { day: 'tuesday' as DayOfWeek, start: '14:00', end: '17:00' },
         ],
       }
 

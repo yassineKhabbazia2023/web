@@ -26,6 +26,16 @@ export class BookingTrackingService {
     })
   }
 
+  static trackSlotModificationStarted() {
+    AmplitudeService.track('Booking Slot Modification Started')
+  }
+
+  static trackSlotModificationValidated(hasBeenSuccessful: boolean) {
+    AmplitudeService.track('Booking Slot Modification Validated', {
+      booking_slot_modification_validated_result: hasBeenSuccessful ? 'succeeded' : 'failed',
+    })
+  }
+
   static trackBookingConsulted() {
     AmplitudeService.track('Feature consulted', {
       feature_name: 'rdv',

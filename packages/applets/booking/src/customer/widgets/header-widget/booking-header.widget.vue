@@ -73,6 +73,7 @@ function openDrawer() {
 function onTakeAppointment() {
   appointmentsStore.closeBookingAppointmentsListDrawer()
   appointmentsStore.openBookingAppointmentDrawer()
+  BookingTrackingService.trackConfigurationOpened(BookingSourceEvent.HEADER)
 }
 
 function onTabChanged(tab: string) {

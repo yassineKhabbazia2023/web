@@ -27,39 +27,39 @@ describe('booking-drawer.composable', () => {
       expect(drawerTitle.value).toBe('booking-drawer.drawerTitle')
     })
 
-    it('should return isBookingDrawerOpened as false initially', () => {
-      const { isBookingDrawerOpened } = useBookingDrawer()
+    it('should return isBookingCreationDrawerOpened as false initially', () => {
+      const { isBookingCreationDrawerOpened } = useBookingDrawer()
 
-      expect(isBookingDrawerOpened.value).toBe(false)
+      expect(isBookingCreationDrawerOpened.value).toBe(false)
     })
 
-    it('should return isBookingDrawerOpened as true when store drawer is opened', () => {
+    it('should return isBookingCreationDrawerOpened as true when store drawer is opened', () => {
       const store = useBookingCollabStore()
-      store.openBookingDrawer()
+      store.openBookingCreationDrawer()
 
-      const { isBookingDrawerOpened } = useBookingDrawer()
+      const { isBookingCreationDrawerOpened } = useBookingDrawer()
 
-      expect(isBookingDrawerOpened.value).toBe(true)
+      expect(isBookingCreationDrawerOpened.value).toBe(true)
     })
   })
 
-  describe('closeBookingDrawer', () => {
-    it('should expose closeBookingDrawer from store', () => {
-      const { closeBookingDrawer } = useBookingDrawer()
+  describe('closeBookingCreationDrawer', () => {
+    it('should expose closeBookingCreationDrawer from store', () => {
+      const { closeBookingCreationDrawer } = useBookingDrawer()
 
-      expect(closeBookingDrawer).toBeDefined()
-      expect(typeof closeBookingDrawer).toBe('function')
+      expect(closeBookingCreationDrawer).toBeDefined()
+      expect(typeof closeBookingCreationDrawer).toBe('function')
     })
 
     it('should close the drawer when called', () => {
       const store = useBookingCollabStore()
-      store.openBookingDrawer()
+      store.openBookingCreationDrawer()
 
-      const { closeBookingDrawer, isBookingDrawerOpened } = useBookingDrawer()
+      const { closeBookingCreationDrawer, isBookingCreationDrawerOpened } = useBookingDrawer()
 
-      expect(isBookingDrawerOpened.value).toBe(true)
-      closeBookingDrawer()
-      expect(isBookingDrawerOpened.value).toBe(false)
+      expect(isBookingCreationDrawerOpened.value).toBe(true)
+      closeBookingCreationDrawer()
+      expect(isBookingCreationDrawerOpened.value).toBe(false)
     })
   })
 

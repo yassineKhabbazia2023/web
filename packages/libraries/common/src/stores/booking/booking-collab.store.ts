@@ -1,41 +1,66 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import { BookingBusinessStatusResponse } from '@pulse/booking/types'
 
 export const useBookingCollabStore = defineStore('booking-collab', () => {
-  const hasBookingDrawerBeenOpened = ref(false)
-  const isBookingDrawerOpened = ref(false)
+  const hasBookingCreationDrawerBeenOpened = ref(false)
+  const isBookingCreationDrawerOpened = ref(false)
   const isBookingEnabled = ref(false)
+  const isBookingEditDrawerOpened = ref(false)
+  const editConfigurationId = ref<number | null>(null)
+  const bookingBusinessStatus = ref<BookingBusinessStatusResponse | null>(null)
 
-  function openBookingDrawer() {
-    hasBookingDrawerBeenOpened.value = true
-    isBookingDrawerOpened.value = true
+  function openBookingCreationDrawer() {
+    hasBookingCreationDrawerBeenOpened.value = true
+    isBookingCreationDrawerOpened.value = true
   }
 
-  function closeBookingDrawer() {
-    isBookingDrawerOpened.value = false
+  function closeBookingCreationDrawer() {
+    isBookingCreationDrawerOpened.value = false
   }
 
-  function getIsBookingEnabled() {
-    return isBookingEnabled.value
+  function openBookingEditDrawer(configurationId: number) {
+    editConfigurationId.value = configurationId
+    isBookingEditDrawerOpened.value = true
+  }
+
+  function closeBookingEditDrawer() {
+    isBookingEditDrawerOpened.value = false
+    editConfigurationId.value = null
   }
 
   function setIsBookingEnabled(value: boolean) {
     isBookingEnabled.value = value
   }
 
+  function setBookingBusinessStatus(status: BookingBusinessStatusResponse | null) {
+    bookingBusinessStatus.value = status
+  }
+
   function reset() {
-    hasBookingDrawerBeenOpened.value = false
-    isBookingDrawerOpened.value = false
+    hasBookingCreationDrawerBeenOpened.value = false
+    isBookingCreationDrawerOpened.value = false
     isBookingEnabled.value = false
+    isBookingEditDrawerOpened.value = false
+    editConfigurationId.value = null
+    bookingBusinessStatus.value = null
   }
 
   return {
-    hasBookingDrawerBeenOpened,
-    isBookingDrawerOpened,
-    openBookingDrawer,
-    closeBookingDrawer,
-    getIsBookingEnabled,
+    // State
+    hasBookingCreationDrawerBeenOpened,
+    isBookingCreationDrawerOpened,
+    isBookingEditDrawerOpened,
+    editConfigurationId,
+    bookingBusinessStatus,
+    isBookingEnabled,
+    // Actions
+    openBookingCreationDrawer,
+    closeBookingCreationDrawer,
+    openBookingEditDrawer,
+    closeBookingEditDrawer,
     setIsBookingEnabled,
+    setBookingBusinessStatus,
     reset,
   }
 })

@@ -85,6 +85,33 @@ describe('BookingTrackingService', () => {
     })
   })
 
+  describe('trackSlotModificationStarted', () => {
+    it('should track Booking Slot Modification Started event', () => {
+      BookingTrackingService.trackSlotModificationStarted()
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Booking Slot Modification Started',
+      )
+    })
+  })
+
+  describe('trackSlotModificationValidated', () => {
+    it('should track succeeded result when hasBeenSuccessful is true', () => {
+      BookingTrackingService.trackSlotModificationValidated(true)
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Booking Slot Modification Validated',
+        { booking_slot_modification_validated_result: 'succeeded' },
+      )
+    })
+
+    it('should track failed result when hasBeenSuccessful is false', () => {
+      BookingTrackingService.trackSlotModificationValidated(false)
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
+        'Booking Slot Modification Validated',
+        { booking_slot_modification_validated_result: 'failed' },
+      )
+    })
+  })
+
   describe('trackBookingConsulted', () => {
     it('should track Feature consulted event with feature_name rdv', () => {
       BookingTrackingService.trackBookingConsulted()

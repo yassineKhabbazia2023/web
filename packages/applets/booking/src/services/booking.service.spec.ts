@@ -2,7 +2,13 @@ import { apiGatewayMock } from '@pulse/common/mocks/vitest'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { BookingService } from './booking.service'
-import type { BookingConfigurationResponse, BookingConfigurationPayload } from '../types/booking.types'
+import type {
+  BookingConfigurationResponse,
+  BookingConfigurationPayload,
+  BookingBusinessStatusResponse,
+  BookingConfigurationDetails,
+  BookingConfigurationUpdatePayload,
+} from '../types/booking.types'
 import { getMockedAppointmentCount, getMockedAppointments, getMockedBookingServiceConfiguration, getMockExperts } from '../__mocks__'
 
 vi.mock('@pulse/common/api', () => ({
@@ -216,6 +222,89 @@ describe('booking.service', () => {
 
       expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
       expect(result).toBe(mockResponse.count)
+    })
+  })
+
+  describe('getBookingBusinessStatus', () => {
+    it('should call api and return business status', async () => {
+      const expectedUrl = `${API_PREFIXES.BOOKING}/booking/businesses/status/currentuser`
+      const mockResponse: BookingBusinessStatusResponse = {
+        configurationId: 123,
+        status: 'Completed',
+      }
+
+      apiGatewayMock.get.mockResolvedValue({ data: mockResponse })
+
+      const result = await BookingService.getBookingBusinessStatus()
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+      expect(result).toStrictEqual(mockResponse)
+    })
+
+    it('should return null configurationId when not configured', async () => {
+      const expectedUrl = `${API_PREFIXES.BOOKING}/booking/businesses/status/currentuser`
+      const mockResponse: BookingBusinessStatusResponse = {
+        configurationId: null,
+        status: 'NotConfigured',
+      }
+
+      apiGatewayMock.get.mockResolvedValue({ data: mockResponse })
+
+      const result = await BookingService.getBookingBusinessStatus()
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+      expect(result.configurationId).toBeNull()
+    })
+  })
+
+  describe('getBookingConfigurationDetails', () => {
+    it('should call api with configuration id and return details', async () => {
+      const configurationId = 456
+      const expectedUrl = `${API_PREFIXES.BOOKING}/businesses/${configurationId}/currentuser`
+      const mockResponse: BookingConfigurationDetails = {
+        displayName: 'Test Meeting',
+        description: 'Test description',
+        duration: 30,
+        isOnline: true,
+        availability: [
+          {
+            day: 'monday',
+            timeSlots: [{ start: '09:00', end: '17:00' }],
+          },
+        ],
+      }
+
+      apiGatewayMock.get.mockResolvedValue({ data: mockResponse })
+
+      const result = await BookingService.getBookingConfigurationDetails(configurationId)
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+      expect(result).toStrictEqual(mockResponse)
+    })
+  })
+
+  describe('updateBookingConfiguration', () => {
+    it('should call api with configuration id and payload', async () => {
+      const configurationId = 789
+      const expectedUrl = `${API_PREFIXES.BOOKING}/booking/businesses/${configurationId}/services/currentuser`
+      const payload: BookingConfigurationUpdatePayload = {
+        displayName: 'Updated Meeting',
+        description: 'Updated description',
+        isOnline: false,
+        duration: 60,
+        availability: [
+          {
+            day: 'tuesday',
+            timeSlots: [{ start: '10:00', end: '16:00' }],
+          },
+        ],
+      }
+
+      apiGatewayMock.patch.mockResolvedValue({})
+
+      await BookingService.updateBookingConfiguration(configurationId, payload)
+
+      expect(apiGatewayMock.patch).toHaveBeenCalledExactlyOnceWith(expectedUrl, payload)
     })
   })
 })

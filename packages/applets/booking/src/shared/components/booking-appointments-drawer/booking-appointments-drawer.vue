@@ -1,5 +1,6 @@
 <template>
   <PDrawer
+    :key="`drawer-${hasExistingConfiguration}`"
     v-model="isDrawerOpened"
     class="booking-appointments-drawer"
     data-testid="booking-appointments-drawer"
@@ -8,7 +9,7 @@
     modal
     :pDirection="isMobile ? undefined : 'ttb'"
     destroyOnClose
-    :pHeaderToolbox="showToolbox ? toolboxParams() : undefined"
+    :pHeaderToolbox="showToolbox ? toolboxParams : undefined"
     @close-drawer-button="closeDrawer"
     @p-toolbox-item-clicked="handleToolboxItemClick"
   >
@@ -25,7 +26,7 @@
             :label="t('tabs.upcoming')"
             :name="AppointmentTab.UPCOMING"
           >
-            <div class="booking-appointments-drawer__content">
+            <div class="padding--4 height--100 overflow--auto">
               <div
                 v-if="isLoadingUpcoming"
                 class="
@@ -61,7 +62,7 @@
             :label="t('tabs.past')"
             :name="AppointmentTab.PAST"
           >
-            <div class="booking-appointments-drawer__content">
+            <div class="padding--4 height--100 overflow--auto">
               <div
                 v-if="isLoadingPast"
                 class="
@@ -122,8 +123,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
 import {
   PDrawer,
   PTabs,
@@ -134,13 +136,16 @@ import {
   PLoader,
 } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
+import { logger } from '@pulse/toolbox'
+import { useBookingCollabStore } from '@pulse/common/stores'
 import type { AppointmentResponse } from '@booking/types'
+import { AppointmentTab } from '@booking/types'
 import type { PDrawerProps, PToolboxItemProps } from '@pulse/styleguide/types'
 import type { BookingAppointmentsListDrawerProps } from './booking-appointments-list-drawer.types'
 import NoAppointmentsPlaceholder from './components/no-appointments-placeholder.vue'
-import { AppointmentTab } from '@booking/types'
 import { BookingTrackingService } from '@booking/services/booking-tracking.service'
 import { BookingSourceEvent } from '@booking/services/booking-tracking.enum'
+import { BookingService } from '@booking/services'
 
 const props = withDefaults(defineProps<BookingAppointmentsListDrawerProps>(), {
   isCollaborator: false,
@@ -154,10 +159,14 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean]
   'take-appointment': []
   'open-booking-config': []
+  'edit-booking-config': [configurationId: number]
   'tab-changed': [tab: string]
 }>()
 
 const { isMobile } = useResponsive()
+
+const collabStore = useBookingCollabStore()
+const { bookingBusinessStatus } = storeToRefs(collabStore)
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -174,6 +183,7 @@ const { t } = useI18n({
       noUpcoming: 'No upcoming appointments',
       noPast: 'No past appointments',
       openBookingConfig: 'Configure booking',
+      editBookingConfig: 'Edit booking',
       appointmentWith: 'Appointment with {name}',
     },
     'fr-FR': {
@@ -187,29 +197,68 @@ const { t } = useI18n({
       noUpcoming: 'Aucun rendez-vous à venir',
       noPast: 'Aucun rendez-vous passé',
       openBookingConfig: 'Configurer les rendez-vous',
+      editBookingConfig: 'Modifier les rendez-vous',
       appointmentWith: 'RDV avec {name}',
     },
   },
 })
 
 const activeTab = ref(AppointmentTab.UPCOMING)
+const isLoadingConfigurationStatus = ref(false)
+const hasLoadedConfigurationStatus = ref(false)
 
 const isDrawerOpened = defineModel<boolean>({ default: false })
 
-const showToolbox = computed(() => props.isCollaborator && isMobile.value === false)
+const showToolbox = computed(() => {
+  return props.isCollaborator &&
+    isMobile.value === false &&
+    isLoadingConfigurationStatus.value === false
+})
 
 const hasUpcomingAppointments = computed(() => props.upcomingAppointments.length > 0)
 const hasPastAppointments = computed(() => props.pastAppointments.length > 0)
 
-const toolboxParams = (): PDrawerProps['pHeaderToolbox'] => {
+const hasExistingConfiguration = computed(() => {
+  return bookingBusinessStatus.value !== null &&
+    bookingBusinessStatus.value.configurationId !== null
+})
+
+const toolboxParams = computed<PDrawerProps['pHeaderToolbox']>(() => {
   const pElements: PToolboxItemProps[] = [
     {
-      pValue: t('openBookingConfig'),
+      pValue: hasExistingConfiguration.value
+        ? t('editBookingConfig')
+        : t('openBookingConfig'),
       pIconName: 'gear',
-      pActionName: 'open-booking-config',
+      pActionName: hasExistingConfiguration.value === true
+        ? 'edit-booking-config'
+        : 'open-booking-config',
     },
   ]
   return { pElements }
+})
+
+async function fetchBookingBusinessStatus() {
+  if (props.isCollaborator === false) {
+    return
+  }
+
+  // Skip if already loading or loaded
+  if (isLoadingConfigurationStatus.value || hasLoadedConfigurationStatus.value) {
+    return
+  }
+
+  isLoadingConfigurationStatus.value = true
+  try {
+    const status = await BookingService.getBookingBusinessStatus()
+    collabStore.setBookingBusinessStatus(status)
+    hasLoadedConfigurationStatus.value = true
+  } catch (error) {
+    logger.error(error)
+    collabStore.setBookingBusinessStatus(null)
+  } finally {
+    isLoadingConfigurationStatus.value = false
+  }
 }
 
 function getAppointmentLabel(appointment: AppointmentResponse): string {
@@ -232,6 +281,11 @@ function onTakeAppointment() {
 function handleToolboxItemClick(actionName: string) {
   if (actionName === 'open-booking-config') {
     emit('open-booking-config')
+  } else if (actionName === 'edit-booking-config') {
+    const configurationId = bookingBusinessStatus.value?.configurationId
+    if (configurationId !== null && configurationId !== undefined) {
+      emit('edit-booking-config', configurationId)
+    }
   }
 }
 
@@ -241,5 +295,9 @@ function closeDrawer() {
 
 watch(activeTab, (newTab) => {
   emit('tab-changed', newTab)
+})
+
+onMounted(() => {
+  fetchBookingBusinessStatus()
 })
 </script>

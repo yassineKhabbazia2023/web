@@ -10,6 +10,9 @@ import type {
   BookingConfigurationResponse,
   BookingServiceExpert,
   BookingEnabledResponse,
+  BookingBusinessStatusResponse,
+  BookingConfigurationDetails,
+  BookingConfigurationUpdatePayload,
 } from '../types/booking.types'
 
 export class BookingService {
@@ -83,5 +86,25 @@ export class BookingService {
     const url = `${API_PREFIXES.BOOKING}/appointments/upcoming/count/currentuser`
     const { data } = await api.gateway.get<AppointmentCountResponse>(url)
     return data.count
+  }
+
+  static async getBookingBusinessStatus(): Promise<BookingBusinessStatusResponse> {
+    const url = `${API_PREFIXES.BOOKING}/booking/businesses/status/currentuser`
+    const { data } = await api.gateway.get<BookingBusinessStatusResponse>(url)
+    return data
+  }
+
+  static async getBookingConfigurationDetails(configurationId: number): Promise<BookingConfigurationDetails> {
+    const url = `${API_PREFIXES.BOOKING}/businesses/${configurationId}/currentuser`
+    const { data } = await api.gateway.get<BookingConfigurationDetails>(url)
+    return data
+  }
+
+  static async updateBookingConfiguration(
+    configurationId: number,
+    payload: BookingConfigurationUpdatePayload,
+  ): Promise<void> {
+    const url = `${API_PREFIXES.BOOKING}/booking/businesses/${configurationId}/services/currentuser`
+    await api.gateway.patch(url, payload)
   }
 }

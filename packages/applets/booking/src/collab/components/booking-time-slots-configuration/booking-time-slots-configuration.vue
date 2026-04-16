@@ -76,8 +76,8 @@
 
             <TransitionGroup name="slot-fade">
               <div
-                v-for="(slot) in getSlotsByDay(day)"
-                :key="slot.id"
+                v-for="(slot, index) in getSlotsByDay(day)"
+                :key="`${day}-${index}`"
                 class="
                   flex
                   flex--align-items-center

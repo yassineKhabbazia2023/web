@@ -10,14 +10,16 @@
         :isLoadingPast="isLoadingPastAppointments"
         @take-appointment="onTakeAppointment"
         @open-booking-config="onOpenBookingConfig"
+        @edit-booking-config="onEditBookingConfig"
         @tab-changed="onTabChanged"
       />
       <BookingDrawer
-        v-if="hasBookingDrawerBeenOpened"
+        v-if="hasBookingCreationDrawerBeenOpened"
       />
       <BookingAppointmentDrawer
         v-model:isOpened="isBookingAppointmentDrawerOpen"
       />
+      <BookingEditDrawer />
     </Teleport>
 
     <PButton
@@ -42,13 +44,15 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { nextTick, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { PButton, PIcon, PPastille } from '@pulse/styleguide/components'
 import { useBookingAppointmentsStore } from '@booking/stores'
+import { useBookingCollabStore } from '@pulse/common/stores'
 import BookingAppointmentsListDrawer from '@booking/shared/components/booking-appointments-drawer/booking-appointments-drawer.vue'
 import BookingDrawer from '../../components/booking-drawer/booking-drawer.vue'
 import BookingAppointmentDrawer from '../../../customer/components/appointment-drawer/booking-appointment-drawer.vue'
+import BookingEditDrawer from '../../components/booking-edit-drawer/booking-edit-drawer.vue'
 import { useBookingHeader } from '../../composables/use-booking-header.composable'
 import { useDisplayCount } from '@booking/shared/composables/use-display-count.composable'
 import { AppointmentTab } from '@booking/types'
@@ -56,6 +60,7 @@ import { BookingSourceEvent } from '@booking/services/booking-tracking.enum'
 import { BookingTrackingService } from '@booking/services/booking-tracking.service'
 
 const appointmentsStore = useBookingAppointmentsStore()
+const collabStore = useBookingCollabStore()
 
 const {
   upcomingAppointments,
@@ -64,12 +69,12 @@ const {
   isLoadingUpcomingAppointments,
   isLoadingPastAppointments,
   isBookingAppointmentsListDrawerOpen,
+  isBookingAppointmentDrawerOpen,
   hasUpcomingAppointments,
 } = storeToRefs(appointmentsStore)
 
 const {
-  hasBookingDrawerBeenOpened,
-  isBookingAppointmentDrawerOpen,
+  hasBookingCreationDrawerBeenOpened,
   openDrawer: openBookingConfigDrawer,
 } = useBookingHeader()
 
@@ -90,6 +95,12 @@ function onTakeAppointment() {
 function onOpenBookingConfig() {
   appointmentsStore.closeBookingAppointmentsListDrawer()
   openBookingConfigDrawer()
+}
+
+async function onEditBookingConfig(configurationId: number) {
+  appointmentsStore.closeBookingAppointmentsListDrawer()
+  await nextTick()
+  collabStore.openBookingEditDrawer(configurationId)
 }
 
 function onTabChanged(tab: string) {

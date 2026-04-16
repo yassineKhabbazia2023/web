@@ -133,5 +133,11 @@
       "copy-button": "Copy link",
       "copied": "Link copied!"
     }
+  },
+  "booking-edit-confirmation-modal": {
+    "title": "Unsaved changes",
+    "content": "You are about to leave this page. Changes made to your booking slot have not been saved and will be lost if you continue.",
+    "exitButton": "Exit",
+    "confirmButton": "Save"
   }
 }

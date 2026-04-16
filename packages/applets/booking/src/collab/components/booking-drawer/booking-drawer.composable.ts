@@ -6,8 +6,8 @@ import { useBookingCollabStore } from '@pulse/common/stores'
 export function useBookingDrawer() {
   const { t } = useI18n()
   const bookingCollabStore = useBookingCollabStore()
-  const { isBookingDrawerOpened } = storeToRefs(bookingCollabStore)
-  const { closeBookingDrawer } = bookingCollabStore
+  const { isBookingCreationDrawerOpened } = storeToRefs(bookingCollabStore)
+  const { closeBookingCreationDrawer } = bookingCollabStore
 
   // State
   const isLoading = ref(false)
@@ -20,10 +20,10 @@ export function useBookingDrawer() {
   return {
     // State
     drawerTitle,
-    isBookingDrawerOpened,
+    isBookingCreationDrawerOpened,
     isLoading,
     // Methods
-    closeBookingDrawer,
+    closeBookingCreationDrawer,
     updateDrawerTitle,
   }
 }

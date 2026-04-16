@@ -26,7 +26,7 @@ const userStore = useUserStore()
 const bookingStore = useBookingCollabStore()
 
 const shouldShowFeedCenter = FeatureFlagManager.isFeedCenterActivated() === true
-const shouldShowBooking = computed(() => bookingStore.getIsBookingEnabled() === true)
+const shouldShowBooking = computed(() => bookingStore.isBookingEnabled === true)
 
 const { favoriteEntities } = storeToRefs(userStore)
 const currentEntity = computed(() => currentEntityStore.currentEntity)

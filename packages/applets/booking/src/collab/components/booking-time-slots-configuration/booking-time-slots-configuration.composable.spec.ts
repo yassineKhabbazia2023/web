@@ -36,13 +36,6 @@ describe('booking-time-slots-configuration.composable', () => {
       expect(mondaySlots[1].end).toBe(DEFAULT_AFTERNOON_SLOT_END)
     })
 
-    it('should generate unique ids for each slot', () => {
-      const config = getInitialTimeSlotsConfiguration()
-      const ids = config.timeSlots.map(slot => slot.id)
-      const uniqueIds = new Set(ids)
-
-      expect(uniqueIds.size).toBe(ids.length)
-    })
   })
 
   describe('useBookingTimeSlotsConfiguration', () => {
@@ -83,22 +76,22 @@ describe('booking-time-slots-configuration.composable', () => {
     describe('getSlotsByDay', () => {
       it('should return slots for a specific day', () => {
         const formData = createFormData([
-          { id: '1', day: 'monday', start: '09:00', end: '12:00' },
-          { id: '2', day: 'tuesday', start: '09:00', end: '12:00' },
-          { id: '3', day: 'monday', start: '14:00', end: '18:00' },
+          { day: 'monday', start: '09:00', end: '12:00' },
+          { day: 'tuesday', start: '09:00', end: '12:00' },
+          { day: 'monday', start: '14:00', end: '18:00' },
         ])
         const { getSlotsByDay } = useBookingTimeSlotsConfiguration(formData)
 
         const mondaySlots = getSlotsByDay('monday')
 
         expect(mondaySlots).toHaveLength(2)
-        expect(mondaySlots[0].id).toBe('1')
-        expect(mondaySlots[1].id).toBe('3')
+        expect(mondaySlots[0].start).toBe('09:00')
+        expect(mondaySlots[1].start).toBe('14:00')
       })
 
       it('should return empty array when no slots for day', () => {
         const formData = createFormData([
-          { id: '1', day: 'monday', start: '09:00', end: '12:00' },
+          { day: 'monday', start: '09:00', end: '12:00' },
         ])
         const { getSlotsByDay } = useBookingTimeSlotsConfiguration(formData)
 
@@ -111,9 +104,9 @@ describe('booking-time-slots-configuration.composable', () => {
     describe('getDaySlotsCount', () => {
       it('should return count of slots for a specific day', () => {
         const formData = createFormData([
-          { id: '1', day: 'monday', start: '09:00', end: '12:00' },
-          { id: '2', day: 'monday', start: '14:00', end: '18:00' },
-          { id: '3', day: 'tuesday', start: '09:00', end: '12:00' },
+          { day: 'monday', start: '09:00', end: '12:00' },
+          { day: 'monday', start: '14:00', end: '18:00' },
+          { day: 'tuesday', start: '09:00', end: '12:00' },
         ])
         const { getDaySlotsCount } = useBookingTimeSlotsConfiguration(formData)
 
@@ -124,26 +117,27 @@ describe('booking-time-slots-configuration.composable', () => {
     })
 
     describe('getSlotIndex', () => {
-      it('should return index of slot by id', () => {
+      it('should return index of slot by object reference', () => {
         const formData = createFormData([
-          { id: '1', day: 'monday', start: '09:00', end: '12:00' },
-          { id: '2', day: 'tuesday', start: '09:00', end: '12:00' },
-          { id: '3', day: 'monday', start: '14:00', end: '18:00' },
+          { day: 'monday', start: '09:00', end: '12:00' },
+          { day: 'tuesday', start: '09:00', end: '12:00' },
+          { day: 'monday', start: '14:00', end: '18:00' },
         ])
         const { getSlotIndex } = useBookingTimeSlotsConfiguration(formData)
 
-        expect(getSlotIndex({ id: '1', day: 'monday', start: '09:00', end: '12:00' })).toBe(0)
-        expect(getSlotIndex({ id: '2', day: 'tuesday', start: '09:00', end: '12:00' })).toBe(1)
-        expect(getSlotIndex({ id: '3', day: 'monday', start: '14:00', end: '18:00' })).toBe(2)
+        expect(getSlotIndex(formData.value.timeSlots[0])).toBe(0)
+        expect(getSlotIndex(formData.value.timeSlots[1])).toBe(1)
+        expect(getSlotIndex(formData.value.timeSlots[2])).toBe(2)
       })
 
       it('should return -1 when slot not found', () => {
         const formData = createFormData([
-          { id: '1', day: 'monday', start: '09:00', end: '12:00' },
+          { day: 'monday', start: '09:00', end: '12:00' },
         ])
         const { getSlotIndex } = useBookingTimeSlotsConfiguration(formData)
 
-        expect(getSlotIndex({ id: 'unknown', day: 'monday', start: '09:00', end: '12:00' })).toBe(-1)
+        const unknownSlot = { day: 'monday' as const, start: '09:00', end: '12:00' }
+        expect(getSlotIndex(unknownSlot)).toBe(-1)
       })
     })
 
@@ -160,14 +154,15 @@ describe('booking-time-slots-configuration.composable', () => {
         expect(formData.value.timeSlots[0].end).toBe(DEFAULT_MORNING_SLOT_END)
       })
 
-      it('should generate unique id for new slot', () => {
+      it('should add multiple slots for the same day', () => {
         const formData = createFormData()
         const { addSingleSlot } = useBookingTimeSlotsConfiguration(formData)
 
         addSingleSlot('monday')
         addSingleSlot('monday')
 
-        expect(formData.value.timeSlots[0].id).not.toBe(formData.value.timeSlots[1].id)
+        expect(formData.value.timeSlots).toHaveLength(2)
+        expect(formData.value.timeSlots[0]).not.toBe(formData.value.timeSlots[1])
       })
     })
 
@@ -191,22 +186,22 @@ describe('booking-time-slots-configuration.composable', () => {
     describe('removeSlot', () => {
       it('should remove slot at given index', () => {
         const formData = createFormData([
-          { id: '1', day: 'monday', start: '09:00', end: '12:00' },
-          { id: '2', day: 'tuesday', start: '09:00', end: '12:00' },
-          { id: '3', day: 'wednesday', start: '09:00', end: '12:00' },
+          { day: 'monday', start: '09:00', end: '12:00' },
+          { day: 'tuesday', start: '09:00', end: '12:00' },
+          { day: 'wednesday', start: '09:00', end: '12:00' },
         ])
         const { removeSlot } = useBookingTimeSlotsConfiguration(formData)
 
         removeSlot(1)
 
         expect(formData.value.timeSlots).toHaveLength(2)
-        expect(formData.value.timeSlots[0].id).toBe('1')
-        expect(formData.value.timeSlots[1].id).toBe('3')
+        expect(formData.value.timeSlots[0].day).toBe('monday')
+        expect(formData.value.timeSlots[1].day).toBe('wednesday')
       })
 
       it('should not remove anything when index is -1', () => {
         const formData = createFormData([
-          { id: '1', day: 'monday', start: '09:00', end: '12:00' },
+          { day: 'monday', start: '09:00', end: '12:00' },
         ])
         const { removeSlot } = useBookingTimeSlotsConfiguration(formData)
 

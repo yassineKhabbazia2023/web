@@ -10,15 +10,8 @@ import {
   TIME_SLOT_INTERVAL_MINUTES,
 } from './booking-time-slots-configuration.constants'
 
-let slotIdCounter = 0
-
-function generateSlotId(): string {
-  return `slot-${++slotIdCounter}`
-}
-
 function createSingleSlot(day: DayOfWeek): TimeSlot {
   return {
-    id: generateSlotId(),
     day,
     start: DEFAULT_MORNING_SLOT_START,
     end: DEFAULT_MORNING_SLOT_END,
@@ -28,13 +21,11 @@ function createSingleSlot(day: DayOfWeek): TimeSlot {
 function createDefaultDaySlots(day: DayOfWeek): TimeSlot[] {
   return [
     {
-      id: generateSlotId(),
       day,
       start: DEFAULT_MORNING_SLOT_START,
       end: DEFAULT_MORNING_SLOT_END,
     },
     {
-      id: generateSlotId(),
       day,
       start: DEFAULT_AFTERNOON_SLOT_START,
       end: DEFAULT_AFTERNOON_SLOT_END,
@@ -93,7 +84,7 @@ export function useBookingTimeSlotsConfiguration(
   }
 
   function getSlotIndex(slot: TimeSlot): number {
-    return timeSlotsFormData.value.timeSlots.findIndex(timeSlot => timeSlot.id === slot.id)
+    return timeSlotsFormData.value.timeSlots.indexOf(slot)
   }
 
   return {

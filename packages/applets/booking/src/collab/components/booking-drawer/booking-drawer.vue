@@ -1,10 +1,10 @@
 <template>
   <PDrawer
-    v-model="isBookingDrawerOpened"
+    v-model="isBookingCreationDrawerOpened"
     :pTitle="drawerTitle"
     pSize="33%"
     destroyOnClose
-    @close-drawer-button="closeBookingDrawer"
+    @close-drawer-button="closeBookingCreationDrawer"
   >
     <!-- This is the container of all booking flows drawer flows -->
     <BookingConfiguration
@@ -25,8 +25,8 @@ import { useBookingDrawer } from './booking-drawer.composable'
 
 const {
   drawerTitle,
-  isBookingDrawerOpened,
-  closeBookingDrawer,
+  isBookingCreationDrawerOpened,
+  closeBookingCreationDrawer,
   updateDrawerTitle,
   isLoading,
 } = useBookingDrawer()

@@ -63,3 +63,18 @@ export interface AppointmentCountResponse {
 export interface BookingEnabledResponse {
   hasAccess: boolean
 }
+
+export interface BookingBusinessStatusResponse {
+  configurationId: number | null
+  status: string
+}
+
+export interface BookingConfigurationDetails {
+  displayName: string
+  description: string
+  duration: number
+  isOnline: boolean
+  availability: DayAvailability[]
+}
+
+export type BookingConfigurationUpdatePayload = BookingConfigurationDetails

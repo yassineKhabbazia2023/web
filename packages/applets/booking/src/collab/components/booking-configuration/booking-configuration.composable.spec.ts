@@ -22,8 +22,8 @@ import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
 import { getMockedUser } from '@pulse/common/mocks'
 
-const closeBookingDrawerMock = vi.fn()
-const isBookingDrawerOpenedMock = ref(false)
+const closeBookingCreationDrawerMock = vi.fn()
+const isBookingCreationDrawerOpenedMock = ref(false)
 
 const userStoreMock = getStoreMock(useUserStore)
 
@@ -40,8 +40,8 @@ vi.mock('../booking-time-slots-configuration/booking-time-slots-configuration.co
 vi.mock('@booking/services/booking-tracking.service')
 vi.mock('../booking-drawer/booking-drawer.composable', () => ({
   useBookingDrawer: () => ({
-    closeBookingDrawer: closeBookingDrawerMock,
-    isBookingDrawerOpened: isBookingDrawerOpenedMock,
+    closeBookingCreationDrawer: closeBookingCreationDrawerMock,
+    isBookingCreationDrawerOpened: isBookingCreationDrawerOpenedMock,
   }),
 }))
 
@@ -289,12 +289,12 @@ describe('useBookingConfiguration', () => {
   })
 
   describe('closeDrawer', () => {
-    it('should call closeBookingDrawer from booking drawer composable', () => {
+    it('should call closeBookingCreationDrawer from booking drawer composable', () => {
       const { closeDrawer } = useBookingConfiguration()
 
       closeDrawer()
 
-      expect(closeBookingDrawerMock).toHaveBeenCalled()
+      expect(closeBookingCreationDrawerMock).toHaveBeenCalled()
     })
   })
 

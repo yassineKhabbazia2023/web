@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
-import { useUserStore } from '@pulse/common/stores'
+import { useUserStore, useBookingCollabStore } from '@pulse/common/stores'
 import { displayNotification } from '@pulse/styleguide'
 import { BookingService } from '@booking/services'
 import { BookingConfigurationSteps } from './booking-configuration.enums'
@@ -23,6 +23,7 @@ import { BookingTrackingService } from '@booking/services/booking-tracking.servi
 export function useBookingConfiguration() {
   const { t } = useI18n({ useScope: 'global' })
   const userStore = useUserStore()
+  const collabStore = useBookingCollabStore()
   const currentStep = ref<BookingConfigurationSteps>(BookingConfigurationSteps.INTRO)
   const bookingDrawer = useBookingDrawer()
 
@@ -98,6 +99,14 @@ export function useBookingConfiguration() {
       displayNotification('success', t(BOOKING_CONFIGURATION_SUBMIT_SUCCESS_NOTIFICATION_KEY))
       BookingTrackingService.trackCollaboratorConfigurationSubmitted(true, enabledDays)
       BookingTrackingService.trackLinkSignatureConsulted()
+
+      try {
+        const bookingStatus = await BookingService.getBookingBusinessStatus()
+        collabStore.setBookingBusinessStatus(bookingStatus)
+      } catch (error) {
+        logger.error('Failed to refresh booking business status', error)
+        collabStore.setBookingBusinessStatus(null)
+      }
     } catch (error) {
       logger.error('Failed to submit booking configuration', error)
       displayNotification('error', t(BOOKING_CONFIGURATION_SUBMIT_ERROR_NOTIFICATION_KEY))
@@ -112,7 +121,7 @@ export function useBookingConfiguration() {
   }
 
   function closeDrawer() {
-    bookingDrawer.closeBookingDrawer()
+    bookingDrawer.closeBookingCreationDrawer()
   }
 
   const appointmentDetails = ref<AppointmentDetails>({

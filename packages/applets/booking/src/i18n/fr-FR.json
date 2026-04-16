@@ -133,5 +133,11 @@
       "copy-button": "Copier le lien",
       "copied": "Lien copié !"
     }
+  },
+  "booking-edit-confirmation-modal": {
+    "title": "Modifications non enregistrées",
+    "content": "Vous êtes sur le point de quitter cette page. Les modifications apportées à votre créneau de rendez-vous n'ont pas été enregistrées et seront perdues si vous continuez.",
+    "exitButton": "Quitter",
+    "confirmButton": "Enregistrer"
   }
 }
