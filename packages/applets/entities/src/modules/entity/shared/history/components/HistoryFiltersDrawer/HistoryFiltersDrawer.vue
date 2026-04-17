@@ -1,7 +1,7 @@
 <template>
   <PDrawer
     v-model="isDrawerOpened"
-    :pTitle="t('filters.title')"
+    :pTitle="t('entities.history.filters.title')"
     pSize="35%"
     pDirection="rtl"
     @close-drawer-button="handleClose"
@@ -11,18 +11,16 @@
         class="
           font-semibold
           margin-bottom--2
-          color--jungle-900
-          font-size--12
         "
       >
-        {{ t('filters.periodLabel') }}
+        {{ t('entities.history.filters.periodLabel') }}
       </p>
       <PDatePicker
         v-model="localDateRange"
         pType="daterange"
-        :pRangeSeparator="t('filters.dateRangeSeparator')"
-        :pStartPlaceholder="t('filters.startDatePlaceholder')"
-        :pEndPlaceholder="t('filters.endDatePlaceholder')"
+        :pRangeSeparator="t('entities.history.filters.dateRangeSeparator')"
+        :pStartPlaceholder="t('entities.history.filters.startDatePlaceholder')"
+        :pEndPlaceholder="t('entities.history.filters.endDatePlaceholder')"
         class="width--100 margin-bottom--4"
         pClearable
       />
@@ -33,7 +31,7 @@
       :key="theme.themeId"
       class="margin-top--4"
     >
-      <p class="font-semibold color--jungle-900 font-size--12 margin-bottom--2">
+      <p class="font-semibold margin-bottom--2">
         {{ theme.name }}
       </p>
       <PCheckboxGroup v-model="localSelectedCategoryIds" class="flex flex--direction-column">
@@ -57,7 +55,7 @@
           data-testid="history-drawer-reset-button"
           @click="handleResetClick"
         >
-          {{ t('filters.reset') }}
+          {{ t('entities.history.filters.reset') }}
         </PButton>
         <PButton
           pType="primary"
@@ -65,7 +63,7 @@
           data-testid="history-drawer-apply-button"
           @click="handleApplyClick"
         >
-          {{ t('filters.apply') }}
+          {{ t('entities.history.filters.apply') }}
         </PButton>
       </div>
     </template>
