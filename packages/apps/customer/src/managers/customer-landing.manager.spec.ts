@@ -1,45 +1,54 @@
 import { getStoreMock } from '@pulse/common/mocks/vitest'
-import { getMockedEntity } from '@pulse/common/mocks'
-import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
+import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import {
   BOOKING_QUERY_PARAM_WIDGET,
   BOOKING_QUERY_PARAM_COLLABORATOR_ID,
 } from '@pulse/booking/constants'
+import { navigateToCurrentEntityHomepage } from '@pulse/shared/guards'
 
 import { CustomerLandingManager } from './customer-landing.manager'
 
-const entityMock = getMockedEntity()
+vi.mock('@pulse/shared/guards', () => ({
+  navigateToCurrentEntityHomepage: vi.fn(),
+}))
+
+const homepageRouteMock = {
+  name: RouteName.HOMEPAGE,
+  params: { [RouteParam.ENTITY_ID]: 1 },
+}
+const prospectHomepageRouteMock = {
+  name: RouteName.PROSPECT_HOMEPAGE,
+  params: { [RouteParam.ENTITY_ID]: 2 },
+}
 
 // Stores mocks
 const userStoreMock = getStoreMock(useUserStore)
-const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 describe('CustomerLandingManager', () => {
   describe('getLandingPage', () => {
-    it('should return the customer landing page for single entity user', () => {
-      userStoreMock.getIsSingleEntity.mockReturnValue(true)
-      currentEntityStoreMock.currentEntity = entityMock as any
-      const accountId = entityMock.accountId
+    it('should return the homepage route for single entity user', () => {
+      userStoreMock.hasSingleEntity = true
+      vi.mocked(navigateToCurrentEntityHomepage).mockReturnValue(homepageRouteMock as any)
 
       const result = CustomerLandingManager.getLandingPage()
 
-      expect(result).toEqual({
-        name: RouteName.HOMEPAGE,
-        params: { [RouteParam.ENTITY_ID]: accountId },
-      })
+      expect(result).toEqual(homepageRouteMock)
     })
 
-    it('should return wallet page for multiple entities user', () => {
-      userStoreMock.getIsSingleEntity.mockReturnValue(false)
+    it('should return wallet entities tab for multi-entity user with regular entities', () => {
+      userStoreMock.hasSingleEntity = false
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(2)
+      userStoreMock.getProspectEntitiesCount.mockReturnValue(0)
 
       const result = CustomerLandingManager.getLandingPage()
 
       expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
     })
 
-    it('should forward booking params to landing page', () => {
-      userStoreMock.getIsSingleEntity.mockReturnValue(false)
+    it('should forward booking params to wallet landing page', () => {
+      userStoreMock.hasSingleEntity = false
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(2)
       const query = {
         [BOOKING_QUERY_PARAM_WIDGET]: 'true',
         [BOOKING_QUERY_PARAM_COLLABORATOR_ID]: '123',
@@ -57,20 +66,20 @@ describe('CustomerLandingManager', () => {
   describe('getCustomerLandingPage', () => {
     describe('single entity user', () => {
       beforeEach(() => {
-        userStoreMock.getIsSingleEntity.mockReturnValue(true)
-        currentEntityStoreMock.currentEntity = entityMock as any
+        userStoreMock.hasSingleEntity = true
       })
 
-      it('should return entity landing page without query when no booking params', () => {
+      it('should return the regular homepage route without query when no booking params', () => {
+        vi.mocked(navigateToCurrentEntityHomepage).mockReturnValue(homepageRouteMock as any)
+
         const result = CustomerLandingManager.getCustomerLandingPage({})
 
-        expect(result).toEqual({
-          name: RouteName.HOMEPAGE,
-          params: { [RouteParam.ENTITY_ID]: entityMock.accountId },
-        })
+        expect(navigateToCurrentEntityHomepage).toHaveBeenCalled()
+        expect(result).toEqual(homepageRouteMock)
       })
 
-      it('should return entity landing page with booking params when present', () => {
+      it('should return the regular homepage route with booking params when present', () => {
+        vi.mocked(navigateToCurrentEntityHomepage).mockReturnValue(homepageRouteMock as any)
         const query = {
           [BOOKING_QUERY_PARAM_WIDGET]: 'true',
           [BOOKING_QUERY_PARAM_COLLABORATOR_ID]: '123',
@@ -79,13 +88,25 @@ describe('CustomerLandingManager', () => {
         const result = CustomerLandingManager.getCustomerLandingPage(query)
 
         expect(result).toEqual({
-          name: RouteName.HOMEPAGE,
-          params: { [RouteParam.ENTITY_ID]: entityMock.accountId },
+          ...homepageRouteMock,
           query,
         })
       })
 
+      it('should NOT forward booking params to a prospect homepage', () => {
+        vi.mocked(navigateToCurrentEntityHomepage).mockReturnValue(prospectHomepageRouteMock as any)
+        const query = {
+          [BOOKING_QUERY_PARAM_WIDGET]: 'true',
+          [BOOKING_QUERY_PARAM_COLLABORATOR_ID]: '123',
+        }
+
+        const result = CustomerLandingManager.getCustomerLandingPage(query)
+
+        expect(result).toEqual(prospectHomepageRouteMock)
+      })
+
       it('should only include booking params, not other query params', () => {
+        vi.mocked(navigateToCurrentEntityHomepage).mockReturnValue(homepageRouteMock as any)
         const query = {
           [BOOKING_QUERY_PARAM_WIDGET]: 'true',
           otherParam: 'ignored',
@@ -94,8 +115,7 @@ describe('CustomerLandingManager', () => {
         const result = CustomerLandingManager.getCustomerLandingPage(query)
 
         expect(result).toEqual({
-          name: RouteName.HOMEPAGE,
-          params: { [RouteParam.ENTITY_ID]: entityMock.accountId },
+          ...homepageRouteMock,
           query: { [BOOKING_QUERY_PARAM_WIDGET]: 'true' },
         })
       })
@@ -103,16 +123,38 @@ describe('CustomerLandingManager', () => {
 
     describe('multiple entities user', () => {
       beforeEach(() => {
-        userStoreMock.getIsSingleEntity.mockReturnValue(false)
+        userStoreMock.hasSingleEntity = false
       })
 
-      it('should return wallet page without query when no booking params', () => {
+      it('should return wallet entities tab when regular entities exist', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(2)
+        userStoreMock.getProspectEntitiesCount.mockReturnValue(0)
+
         const result = CustomerLandingManager.getCustomerLandingPage({})
 
         expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
       })
 
-      it('should return wallet page with booking params when present', () => {
+      it('should return wallet prospects tab when only prospects exist', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(0)
+        userStoreMock.getProspectEntitiesCount.mockReturnValue(2)
+
+        const result = CustomerLandingManager.getCustomerLandingPage({})
+
+        expect(result).toEqual({ name: RouteName.CUSTOMER_PROSPECTS })
+      })
+
+      it('should return wallet entities tab as fallback when both counts are 0', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(0)
+        userStoreMock.getProspectEntitiesCount.mockReturnValue(0)
+
+        const result = CustomerLandingManager.getCustomerLandingPage({})
+
+        expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
+      })
+
+      it('should return wallet entities tab with booking params when present', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(2)
         const query = {
           [BOOKING_QUERY_PARAM_WIDGET]: 'true',
           [BOOKING_QUERY_PARAM_COLLABORATOR_ID]: '456',
@@ -126,7 +168,24 @@ describe('CustomerLandingManager', () => {
         })
       })
 
+      it('should return wallet prospects tab with booking params when present', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(0)
+        userStoreMock.getProspectEntitiesCount.mockReturnValue(2)
+        const query = {
+          [BOOKING_QUERY_PARAM_WIDGET]: 'true',
+          [BOOKING_QUERY_PARAM_COLLABORATOR_ID]: '456',
+        }
+
+        const result = CustomerLandingManager.getCustomerLandingPage(query)
+
+        expect(result).toEqual({
+          name: RouteName.CUSTOMER_PROSPECTS,
+          query,
+        })
+      })
+
       it('should ignore empty bookingWidget param', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(2)
         const query = { [BOOKING_QUERY_PARAM_WIDGET]: '' }
 
         const result = CustomerLandingManager.getCustomerLandingPage(query)
@@ -135,6 +194,7 @@ describe('CustomerLandingManager', () => {
       })
 
       it('should handle array bookingWidget param by extracting first value', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(2)
         const query = {
           [BOOKING_QUERY_PARAM_WIDGET]: ['true'],
           [BOOKING_QUERY_PARAM_COLLABORATOR_ID]: '123',
@@ -149,6 +209,7 @@ describe('CustomerLandingManager', () => {
       })
 
       it('should handle array collaboratorId param by extracting first value', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(2)
         const query = {
           [BOOKING_QUERY_PARAM_WIDGET]: 'true',
           [BOOKING_QUERY_PARAM_COLLABORATOR_ID]: ['42', '43'],
@@ -163,6 +224,7 @@ describe('CustomerLandingManager', () => {
       })
 
       it('should ignore bookingWidget=false', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(2)
         const query = { [BOOKING_QUERY_PARAM_WIDGET]: 'false' }
 
         const result = CustomerLandingManager.getCustomerLandingPage(query)
@@ -171,6 +233,7 @@ describe('CustomerLandingManager', () => {
       })
 
       it('should ignore bookingWidget=TRUE (case-sensitive)', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(2)
         const query = { [BOOKING_QUERY_PARAM_WIDGET]: 'TRUE' }
 
         const result = CustomerLandingManager.getCustomerLandingPage(query)
@@ -179,6 +242,7 @@ describe('CustomerLandingManager', () => {
       })
 
       it('should ignore whitespace-only collaboratorId', () => {
+        userStoreMock.getRegularEntitiesCount.mockReturnValue(2)
         const query = {
           [BOOKING_QUERY_PARAM_WIDGET]: 'true',
           [BOOKING_QUERY_PARAM_COLLABORATOR_ID]: '   ',
@@ -191,6 +255,34 @@ describe('CustomerLandingManager', () => {
           query: { [BOOKING_QUERY_PARAM_WIDGET]: 'true' },
         })
       })
+    })
+  })
+
+  describe('getWalletDefaultTab', () => {
+    it('should return entities tab when regular entities exist', () => {
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(1)
+
+      const result = CustomerLandingManager.getWalletDefaultTab()
+
+      expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
+    })
+
+    it('should return prospects tab when no regular entities but prospects exist', () => {
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(0)
+      userStoreMock.getProspectEntitiesCount.mockReturnValue(1)
+
+      const result = CustomerLandingManager.getWalletDefaultTab()
+
+      expect(result).toEqual({ name: RouteName.CUSTOMER_PROSPECTS })
+    })
+
+    it('should fallback to entities tab when both counts are 0', () => {
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(0)
+      userStoreMock.getProspectEntitiesCount.mockReturnValue(0)
+
+      const result = CustomerLandingManager.getWalletDefaultTab()
+
+      expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
     })
   })
 })

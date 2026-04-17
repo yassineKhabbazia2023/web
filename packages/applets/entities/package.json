@@ -12,6 +12,7 @@
     "./wallet-managers": "./src/modules/wallet/managers/index.ts",
     "./wallet-pages": "./src/wallet-pages.index.ts",
     "./entity-pages": "./src/entity-pages.index.ts",
+    "./services/prospect": "./src/services/prospects/prospects.service.ts",
     "./mocks": "./src/__mocks__/index.ts"
   },
   "scripts": {

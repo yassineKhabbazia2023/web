@@ -1,10 +1,12 @@
-import type { WalletData, SearchCriteria, DeploymentStatus } from '@entities/modules/wallet/types'
+import type { RegularWalletData, SearchCriteria, DeploymentStatus } from '@entities/modules/wallet/types'
 import type { AccountRow } from '@entities/services/account'
 import { fetchAccounts } from '@entities/services/account'
 import { getInitials } from '@entities/helpers'
 import type { QueryResult } from '@pulse/common/types'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 import { getSearchParams } from '@pulse/common/utils'
+import { CurrentUserService } from '@pulse/common/services/current-user'
+import { useUserStore } from '@pulse/common/stores'
 
 export async function fetchWalletData(
   deploymentStatuses: DeploymentStatus[],
@@ -16,12 +18,15 @@ export async function fetchWalletData(
   const items = queryResult.items
     .map((account, index) => getMappedAccount(deploymentStatuses, account, index))
 
-  const walletResult: QueryResult<WalletData> = {
+  const walletResult: QueryResult<RegularWalletData> = {
     items,
     currentPage: queryResult.currentPage,
     totalItems: queryResult.totalItems,
     totalPage: queryResult.totalPage,
   }
+
+  const newCount = await CurrentUserService.getUserWalletInformation()
+  useUserStore().setWalletInformation(newCount)
 
   return walletResult
 }
@@ -30,7 +35,7 @@ export function getMappedAccount(
   deploymentStatuses: DeploymentStatus[],
   account: AccountRow,
   _index: number,
-): WalletData {
+): RegularWalletData {
   const {
     accountGlobalUniqueId: id,
     accountId,
@@ -51,7 +56,7 @@ export function getMappedAccount(
   const initials = getInitials(firstName, lastName)
   const avatarColor = getAvatarColorFromKey(accountNumber) as string
 
-  const mappedAccount: WalletData = {
+  const mappedAccount: RegularWalletData = {
     owner: {
       contactId,
       firstName,

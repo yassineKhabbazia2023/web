@@ -309,6 +309,50 @@ describe('WalletManager', () => {
       expect(tabsWithFeature).toHaveLength(1)
       expect(tabsWithFeature[0].name).toBe(WalletTab.POWER_BI)
     })
+
+    it('should return count from getCount when defined', () => {
+      const tabWithCount = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        getCount: () => 42,
+        order: 1,
+      })
+
+      WalletManager.register(tabWithCount)
+
+      const context = createMockWalletContext()
+      const tabs = WalletManager.getTabs(context)
+
+      expect(tabs[0].count).toBe(42)
+    })
+
+    it('should return undefined count when getCount is not defined', () => {
+      const tabWithoutCount = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        order: 1,
+      })
+
+      WalletManager.register(tabWithoutCount)
+
+      const context = createMockWalletContext()
+      const tabs = WalletManager.getTabs(context)
+
+      expect(tabs[0].count).toBeUndefined()
+    })
+
+    it('should return string count from getCount', () => {
+      const tabWithStringCount = createMockWalletTabConfig({
+        id: WalletTab.FOLDERS,
+        getCount: () => '99+',
+        order: 1,
+      })
+
+      WalletManager.register(tabWithStringCount)
+
+      const context = createMockWalletContext()
+      const tabs = WalletManager.getTabs(context)
+
+      expect(tabs[0].count).toBe('99+')
+    })
   })
 
   describe('getTabsForUser()', () => {

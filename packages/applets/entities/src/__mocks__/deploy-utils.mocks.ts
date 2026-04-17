@@ -1,4 +1,4 @@
-import type { DeploymentStatus, State, WalletData, SearchCriteria } from '@entities/modules/wallet/types'
+import type { DeploymentStatus, State, RegularWalletData, SearchCriteria } from '@entities/modules/wallet/types'
 import type { QueryResult, SortingCriteria } from '@pulse/common/types'
 import { MockEntityData, getMockSignatory, getMockAddress, getMockHub } from '@pulse/common/mocks'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
@@ -59,12 +59,12 @@ export function getMockedDeploymentStatus(override: Partial<DeploymentStatus> = 
 }
 
 export function getMockedMappedAccount(
-  override: Partial<WalletData> = {},
-): WalletData {
+  override: Partial<RegularWalletData> = {},
+): RegularWalletData {
   const accountNumber = override.accountNumber ?? MockEntityData.BASIC.accountNumber
   const avatarColor = getAvatarColorFromKey(accountNumber) as string
 
-  const defaultMappedAccount: WalletData = {
+  const defaultMappedAccount: RegularWalletData = {
     accountId: MockEntityData.BASIC.accountId,
     accountNumber: MockEntityData.BASIC.accountNumber,
     city: basicAddress.city ?? '',
@@ -91,10 +91,10 @@ export function getMockedMappedAccount(
 }
 
 export function getMockedWalletQueryResult(
-  override: Partial<QueryResult<WalletData>> = {},
-): QueryResult<WalletData> {
+  override: Partial<QueryResult<RegularWalletData>> = {},
+): QueryResult<RegularWalletData> {
   const legacyData = MockEntityData.LEGACY_GED
-  const defaultWalletQueryResult: QueryResult<WalletData> = {
+  const defaultWalletQueryResult: QueryResult<RegularWalletData> = {
     currentPage: 0,
     items: [
       getMockedMappedAccount(),

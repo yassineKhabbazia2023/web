@@ -15,8 +15,10 @@ import {
 import { logger } from '@pulse/toolbox'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { RouteName } from '@pulse/common/enums'
-import { Entity } from '@pulse/common/types'
+import { AccountType, RouteName } from '@pulse/common/enums'
+import { BookingManager } from '@pulse/booking/managers'
+import { ProspectsService } from '@pulse/entities/services/prospect'
+import type { Entity } from '@pulse/common/types'
 
 export class CustomerAuthenticatedFlowManager {
   // Guard preventing the authenticated flow from running more than once per session.
@@ -46,12 +48,15 @@ export class CustomerAuthenticatedFlowManager {
 
     this.initAuthenticatedThirdParties()
     await this.initEntities()
+    // Silent eligibility check: UI reads store state without a loading indicator.
+    await BookingManager.setupBookingForCustomer()
   }
 
   // #region setup
   static async initCurrentUser() {
     try {
       const currentUserContext = await CurrentUserService.getCurrentUserContext()
+
       if (currentUserContext === undefined) {
         throw new Error('unable to fetch users\'s context')
       }
@@ -62,6 +67,12 @@ export class CustomerAuthenticatedFlowManager {
 
       const permissionsStore = usePermissionsStore()
       permissionsStore.setUserPermissions(currentUserContext.permissions ?? [])
+
+      // Set count for wallet tabs
+      // Putting this after permissions so if fails we still have all the wallet context
+      const currentUserWalletInformation = await CurrentUserService.getUserWalletInformation()
+      userStore.setWalletInformation(currentUserWalletInformation)
+
     } catch (error) {
       logger.error('unable to fetch user information nor its permissions', error)
     }
@@ -102,26 +113,37 @@ export class CustomerAuthenticatedFlowManager {
 
   static async initEntities() {
     try {
-      const { items: entities } = await fetchEntities(2)
+      const userStore = useUserStore()
+      const regularCount = userStore.getRegularEntitiesCount()
+      const prospectCount = userStore.getProspectEntitiesCount()
 
-      if (entities.length === 0) {
-        logger.warn('No entities found for the user.')
+      if (regularCount > 0) {
+        const { items: entities } = await fetchEntities(1)
+        if (entities.length === 0) {
+          logger.warn('No regular entity returned while regular count > 0.')
+          return
+        }
+        await CustomerAuthenticatedFlowManager.setUserCurrentEntity(entities[0])
         return
       }
 
-      CustomerAuthenticatedFlowManager.setUserIsSingleEntity(entities)
-      await CustomerAuthenticatedFlowManager.setUserCurrentEntity(entities[0])
+      if (prospectCount > 0) {
+        const { items: prospects } = await ProspectsService.fetchProspectsAccounts(
+          new URLSearchParams({ pageSize: '1' }),
+        )
 
+        if (prospects.length === 0) {
+          logger.warn('No prospect returned while prospect count > 0.')
+          return
+        }
+        await CustomerAuthenticatedFlowManager.setUserCurrentEntity(prospects[0])
+        return
+      }
+
+      logger.warn('No entities found for the user.')
     } catch (error) {
       logger.error('unable to fetch and set entities', error)
     }
-  }
-
-  private static setUserIsSingleEntity(entities: Entity[]) {
-    const userStore = useUserStore()
-
-    const isSingleEntity = entities.length === 1
-    userStore.setIsSingleEntity(isSingleEntity)
   }
 
   private static async setUserCurrentEntity(defaultEntity: Entity) {
@@ -136,8 +158,12 @@ export class CustomerAuthenticatedFlowManager {
       const entityToPersistId = (localStorageEntityId === undefined || localStorageEntityId === 0)
         ? defaultEntity.accountId
         : localStorageEntityId
-      const entityToPersist = await fetchEntityById(entityToPersistId)
 
+      if (defaultEntity.accountType === AccountType.PROSPECT) {
+        throw new Error('not implemented')
+      }
+
+      const entityToPersist = await fetchEntityById(entityToPersistId)
       return CurrentEntityManager.initializeCurrentEntity(entityToPersist)
     }
   }

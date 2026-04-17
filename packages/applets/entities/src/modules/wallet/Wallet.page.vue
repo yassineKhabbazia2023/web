@@ -16,9 +16,10 @@
     >
       <PTabPane
         v-for="tab in tabs"
-        :key="tab.name"
+        :key="tab.route"
         :pLabel="t(tab.title)"
-        :name="tab.name"
+        :pCount="tab.count"
+        :name="tab.route"
         class="margin-bottom--6"
       />
       <router-view />
@@ -53,7 +54,7 @@ const { isMobile } = useResponsive()
 const activeTab = computed(() => route.name as string)
 
 const handleTabClick = (tab: TabsPaneContext) => {
-  const clickedTab = tabs.value.find(t => t.name === tab.paneName)
+  const clickedTab = tabs.value.find(t => t.route === tab.paneName)
 
   if (clickedTab) {
     AmplitudeService.track('Feature Consulted', {
@@ -69,7 +70,7 @@ const getFilteredTabs = () => WalletManager.getTabsForUser(isCollab.value ?? fal
 
 const tabs = ref(getFilteredTabs())
 
-watch([() => permissionsStore.userPermissions, isCollab, isMobile], () => {
+watch([() => permissionsStore.userPermissions, () => userStore.walletInformation, isCollab, isMobile], () => {
   tabs.value = getFilteredTabs()
 })
 </script>

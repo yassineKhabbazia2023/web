@@ -1,7 +1,7 @@
 import type { QueryResult, SortingCriteria, PaginationData } from '@pulse/common/types'
-import type { WalletData } from './wallet-data.types'
+import type { RegularWalletData } from './wallet-data.types'
 
-export interface State extends PaginationData<WalletData> {
+export interface State extends PaginationData<RegularWalletData> {
   totalPage: number | undefined
   search: string | undefined
   isLoading: boolean | undefined

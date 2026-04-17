@@ -14,6 +14,53 @@
       "uploadPowerBIReport": "Déposer un rapport BI",
       "biReportsList": "Rapports BI",
       "offersCatalog": "Catalogue des offres",
+      "entitiesList": {
+        "companyName": "Raison sociale",
+        "customerCode": "Code client",
+        "leader": "Dirigeant",
+        "email": "E-mail",
+        "yes": "Oui",
+        "no": "Non"
+      },
+      "entitiesListRegular": {
+        "city": "Ville",
+        "status": "Statut",
+        "option": "Actions",
+        "deployThisFolder": "Déployer ce dossier",
+        "accessThisFolder": "Accéder au dossier",
+        "resendActivationEmail": "Relancer le mail d'activation",
+        "toDeploy": "A déployer",
+        "manageAccountRights": "Gérer les droits du dossier",
+        "declareCustomerRelation": "Se déclarer en relation client"
+      },
+      "entitiesListProspects": {
+        "step": "Etape",
+        "cacFolder": "Dossier CAC",
+        "option": "Actions",
+        "archiveThisProspectAccount": "Archiver ce compte prospect"
+      },
+      "prospectDelete": {
+        "title": "Archiver ce dossier prospect ?",
+        "message": "Vous vous apprêtez à archiver définitivement ce dossier.",
+        "cancel": "Annuler",
+        "confirm": "Archiver le dossier prospect",
+        "success": "Le dossier prospect a bien été archivé",
+        "error": "Echec de l'archivage du prospect"
+      },
+      "prospectSteps": {
+        "leaderInfo": "Informations Dirigeant",
+        "entityInfo": "Informations Entité(s)",
+        "supportingDocuments": "Vos documents justificatifs",
+        "commercialProposal": "Proposition commerciale",
+        "sepaMandate": "Mandat SEPA",
+        "generalAssembly": "Procès verbal d'assemblée générale",
+        "engagementLetter": "Lettre de mission"
+      },
+      "prospectsPage": {
+        "search": "Rechercher par nom de dossier",
+        "searchShort": "Rechercher...",
+        "on": "sur"
+      },
       "subscriptionStatusFilters": {
         "activateOffers": "Activation des offres",
         "toCreate": "À créer",

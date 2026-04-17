@@ -16,11 +16,10 @@
     </div>
     <div v-show="isLoading === false">
       <NoResult v-show="searchResult.items.length === 0" />
-      <EntitiesList
+      <EntitiesManagementList
         v-show="searchResult.items.length > 0"
         data-testid="accounts-table"
         :data="searchResult.items"
-        isAccountManagement
         @sort-account="handleSort"
         @access="handleOpenFolder"
         @display-account-rights-drawer="handleDisplayAccountRightsDrawer"
@@ -65,7 +64,7 @@ import {
 } from '@pulse/styleguide/components'
 import NoResult from '@entities/components/NoResult'
 import FormSearch from '@entities/components/FormSearch'
-import EntitiesList from '../../components/entities-list'
+import EntitiesManagementList from '../../components/entities-list/entities-management/entities-management.list.vue'
 import AccountRightsDrawer from './components/AccountRightsDrawer'
 import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
 import { fetchWalletData } from '../folders/FoldersUtils'
@@ -79,7 +78,7 @@ import type {
   SearchCriteria,
   SearchResult,
   DeploymentStatus,
-  WalletData,
+  RegularWalletData,
 } from '@entities/modules/wallet/types'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import { SortingCriteria } from '@pulse/common/types'
@@ -90,14 +89,14 @@ const { t } = useI18n({
   useScope: 'local',
   messages: {
     'en-US': {
-      search: 'Search by client code or email',
+      search: 'Search by client code',
       toDeploy: 'To Deploy',
       inProgress: 'In progress',
       connected: 'Connected',
       on: 'on',
     },
     'fr-FR': {
-      search: 'Rechercher par code client ou email',
+      search: 'Rechercher par code client',
       toDeploy: 'A déployer',
       inProgress: 'En cours',
       connected: 'Connecté',
@@ -141,7 +140,7 @@ const searchCriteria = ref<SearchCriteria>({
   },
   filterByDeploymentStatus: '',
 })
-const searchResult = ref<SearchResult<WalletData>>({
+const searchResult = ref<SearchResult<RegularWalletData>>({
   currentPage: 0,
   items: [],
   totalPage: 0,
@@ -187,7 +186,7 @@ const fetchAccountList = async () => {
 const handlePageChange = (currentPage: number) => {
   searchCriteria.value.currentPage = currentPage
 }
-const handleOpenFolder = (entityId: string) => {
+const handleOpenFolder = (entityId: number) => {
   TrackingCenter.trackHomepageConsulted()
   router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entityId } })
 }

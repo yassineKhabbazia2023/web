@@ -1,4 +1,4 @@
-import { WalletManager } from '@pulse/entities/wallet-managers'
+import { WalletManager, WalletCountManager } from '@pulse/entities/wallet-managers'
 import { WalletTab } from '@pulse/entities/enums'
 import { RouteName, Feature } from '@pulse/common/enums'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
@@ -9,6 +9,7 @@ export function registerCollaboratorWalletTabs() {
     title: 'entities.wallet.folders',
     route: RouteName.FOLDERS,
     isDisplayed: () => true,
+    getCount: () => WalletCountManager.getCount(WalletTab.FOLDERS),
     order: 1,
   })
 
@@ -17,6 +18,7 @@ export function registerCollaboratorWalletTabs() {
     title: 'entities.wallet.prospects',
     route: RouteName.PROSPECTS,
     isDisplayed: (context) => context.hasFeatureFlag(Feature.PROSPECT_EXPERIENCE),
+    getCount: () => WalletCountManager.getCount(WalletTab.PROSPECTS),
     order: 2,
   })
 

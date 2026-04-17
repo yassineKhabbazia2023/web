@@ -21,6 +21,9 @@ export const walletCollaboratorRoutes = [
         path: COLLABORATOR_ROUTES.wallet.prospects.path,
         name: COLLABORATOR_ROUTES.wallet.prospects.name,
         component: () => import('@pulse/entities/wallet-pages').then(pages => pages.Prospects),
+        meta: {
+          [FEATURE_FLAG_META]: Feature.PROSPECT_EXPERIENCE,
+        },
       },
       // Collaborators management
       {

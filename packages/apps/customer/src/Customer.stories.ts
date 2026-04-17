@@ -152,7 +152,6 @@ function useMonoEntitySetup() {
       default: toEntity(monoEntity),
     },
   }))
-  userStore.setIsSingleEntity(true)
   userStore.setFavoriteEntities([toEntity(monoEntity)])
 
   // Setup current entity store
@@ -274,7 +273,6 @@ function useMultiEntitySetup() {
       default: toEntity(multiEntityFirst),
     },
   }))
-  userStore.setIsSingleEntity(false)
   userStore.setFavoriteEntities(allMultiEntities.map(toEntity))
 
   // Setup current entity store (default to first entity)

@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import type { Entity } from '../../types/entities.type'
-import type { UserInfo } from '../../types/user.type'
+import type { UserInfo, UserWalletInformation } from '../../types/user.type'
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<UserInfo>()
@@ -33,16 +33,33 @@ export const useUserStore = defineStore('user', () => {
     gigyaUserId.value = gigyaUserIdArg
   }
 
+  /* #region wallet */
+  const walletInformation = ref<UserWalletInformation>(
+    {
+      prospectEntitiesCount: 0,
+      regularEntitiesCount: 0,
+    },
+  )
+
+  function setWalletInformation(newUserWalletInformation: UserWalletInformation) {
+    walletInformation.value = newUserWalletInformation
+  }
+
+  function getProspectEntitiesCount() {
+    return walletInformation.value.prospectEntitiesCount
+  }
+
+  function getRegularEntitiesCount() {
+    return walletInformation.value.regularEntitiesCount
+  }
+  /* #endregion */
+
   /* #region curent entity */
-  const isSingleEntity = ref(false)
 
-  function setIsSingleEntity(newIsSingleEntity: boolean) {
-    isSingleEntity.value = newIsSingleEntity
-  }
+  const hasSingleEntity = computed(() => {
+    return (getProspectEntitiesCount() + getRegularEntitiesCount()) === 1
+  })
 
-  function getIsSingleEntity() {
-    return isSingleEntity.value
-  }
   /* #endregion */
 
   /* #region favorite entities */
@@ -68,8 +85,11 @@ export const useUserStore = defineStore('user', () => {
     user.value = undefined
     gigyaUserId.value = undefined
     hasAcceptedCGU.value = false
-    isSingleEntity.value = false
     favoriteEntities.value = []
+    setWalletInformation({
+      prospectEntitiesCount: 0,
+      regularEntitiesCount: 0,
+    })
   }
 
   return {
@@ -83,11 +103,14 @@ export const useUserStore = defineStore('user', () => {
     getUserEmail,
     setGigyaUserId,
     reset,
-    setIsSingleEntity,
-    getIsSingleEntity,
+    hasSingleEntity,
     favoriteEntities,
     setFavoriteEntities,
     getHasAcceptedCGU,
     setHasAcceptedCGU,
+    walletInformation,
+    setWalletInformation,
+    getProspectEntitiesCount,
+    getRegularEntitiesCount,
   }
 })

@@ -38,3 +38,8 @@ export interface UserInfoApi {
   oldId: string
   persona: Persona
 }
+
+export interface UserWalletInformation {
+  prospectEntitiesCount: number
+  regularEntitiesCount: number
+}

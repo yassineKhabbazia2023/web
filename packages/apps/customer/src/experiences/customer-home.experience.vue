@@ -56,7 +56,7 @@ const shouldShowFeedCenter = computed(() => FeatureFlagManager.isFeedCenterActiv
 const shouldShowBooking = computed(() => bookingStore.getIsBookingEnabled() === true)
 
 const { favoriteEntities } = storeToRefs(userStore)
-const isSingleEntity = computed(() => userStore.getIsSingleEntity())
+const isSingleEntity = computed(() => userStore.hasSingleEntity)
 const currentEntity = computed(() => currentEntityStore.currentEntity)
 
 const userConfig = computed((): UserConfig => ({

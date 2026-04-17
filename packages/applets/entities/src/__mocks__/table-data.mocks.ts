@@ -1,10 +1,10 @@
-import type { WalletData } from '@entities/modules/wallet/types'
+import type { RegularWalletData } from '@entities/modules/wallet/types'
 import { MockEntityData, getMockSignatory } from '@pulse/common/mocks'
 
 const basicSignatory = getMockSignatory('BASIC')
 const legacySignatory = getMockSignatory('LEGACY_GED')
 
-export const mockTableData: WalletData[] = [
+export const mockTableData: RegularWalletData[] = [
   {
     owner: {
       contactId: basicSignatory.contactId,

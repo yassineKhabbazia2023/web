@@ -31,6 +31,12 @@ async function addMonoEntityInitScript(page: Page) {
             http.get('*/account/api/accounts/currentuser', () => {
               return HttpResponse.json(monoResponse)
             }),
+            http.get('*/wallet/api/infos/currentuser', () => {
+              return HttpResponse.json({
+                prospectEntitiesCount: 0,
+                regularEntitiesCount: 1,
+              })
+            }),
           )
         }
       } else {
@@ -43,6 +49,9 @@ async function addMonoEntityInitScript(page: Page) {
 }
 
 test.describe('Mono Entity User - Navigation & Sidebar', () => {
+  // Run tests sequentially so the first test absorbs Vite's cold start compilation
+  test.describe.configure({ mode: 'serial' })
+
   test.beforeEach(async ({ page }) => {
     await addMonoEntityInitScript(page)
     await page.addInitScript((token) => localStorage.setItem('token', token), tokenMock)

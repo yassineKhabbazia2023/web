@@ -14,6 +14,53 @@
       "uploadPowerBIReport": "Upload a BI report",
       "biReportsList": "BI Reports",
       "offersCatalog": "Offers catalog",
+      "entitiesList": {
+        "companyName": "Company name",
+        "customerCode": "Customer code",
+        "leader": "Leader",
+        "email": "Email",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "entitiesListRegular": {
+        "city": "City",
+        "status": "Status",
+        "option": "Options",
+        "deployThisFolder": "Deploy this folder",
+        "accessThisFolder": "Access this folder",
+        "resendActivationEmail": "Resend activation email",
+        "toDeploy": "To Deploy",
+        "manageAccountRights": "Manage folder permissions",
+        "declareCustomerRelation": "Declare customer relationship"
+      },
+      "entitiesListProspects": {
+        "step": "Step",
+        "cacFolder": "CAC Folder",
+        "option": "Options",
+        "archiveThisProspectAccount": "Archive this prospect account"
+      },
+      "prospectArchive": {
+        "title": "Archive this prospect account?",
+        "message": "You are about to permanently archive this account.",
+        "cancel": "Cancel",
+        "confirm": "Archive prospect account",
+        "success": "The prospect account has been successfully archived",
+        "error": "Prospect archiving failed"
+      },
+      "prospectSteps": {
+        "leaderInfo": "Leader information",
+        "entityInfo": "Entity(ies) information",
+        "supportingDocuments": "Supporting documents",
+        "commercialProposal": "Commercial proposal",
+        "sepaMandate": "SEPA mandate",
+        "generalAssembly": "General assembly minutes",
+        "engagementLetter": "Engagement letter"
+      },
+      "prospectsPage": {
+        "search": "Search by folder name",
+        "searchShort": "Search...",
+        "on": "on"
+      },
       "subscriptionStatusFilters": {
         "activateOffers": "Offer activation",
         "toCreate": "To create",

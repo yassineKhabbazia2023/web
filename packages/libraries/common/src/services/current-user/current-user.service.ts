@@ -1,6 +1,7 @@
 import { logger } from '@pulse/toolbox'
 import { api } from '../../api'
-import type { UserContextInfo, UserInfo } from '../../types/user.type'
+import type { UserContextInfo, UserInfo, UserWalletInformation } from '../../types/user.type'
+import { API_PREFIXES } from '@pulse/common/constants'
 
 export class CurrentUserService {
   static async getCurrentUserContext(): Promise<UserContextInfo | undefined> {
@@ -53,6 +54,16 @@ export class CurrentUserService {
       return user
     } catch (error) {
       logger.error('Unable to retrieve current-user', error)
+    }
+  }
+
+  static async getUserWalletInformation() {
+    const url = `${API_PREFIXES.WALLET}/infos/currentuser`
+    const { data } = await api.gateway.get<UserWalletInformation>(url)
+
+    return {
+      prospectEntitiesCount: data.prospectEntitiesCount,
+      regularEntitiesCount: data.regularEntitiesCount,
     }
   }
 }

@@ -46,6 +46,7 @@ export class WalletManager {
         route: tab.route,
         display: true,
         showInMobile: tab.showInMobile ?? false,
+        count: tab.getCount?.(),
       }))
   }
 

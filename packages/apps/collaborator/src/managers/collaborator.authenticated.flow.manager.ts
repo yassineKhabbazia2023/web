@@ -54,6 +54,7 @@ export class CollaboratorAuthenticatedFlowManager {
   static async initCurrentUser() {
     try {
       const currentUserContext = await CurrentUserService.getCurrentUserContext()
+
       if (currentUserContext === undefined) {
         throw new Error('unable to fetch users\'s context')
       }
@@ -64,6 +65,12 @@ export class CollaboratorAuthenticatedFlowManager {
 
       const permissionsStore = usePermissionsStore()
       permissionsStore.setUserPermissions(currentUserContext.permissions ?? [])
+
+      // Set count for wallet tabs
+      // Putting this after permissions so if fails we still have all the wallet context
+      const currentUserWalletInformation = await CurrentUserService.getUserWalletInformation()
+      userStore.setWalletInformation(currentUserWalletInformation)
+
     } catch (error) {
       logger.error('unable to fetch user information nor its permissions', error)
     }

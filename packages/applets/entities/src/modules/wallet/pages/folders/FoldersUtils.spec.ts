@@ -16,6 +16,13 @@ import {
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import { MockEntityId, MockEntityData } from '@pulse/common/mocks'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { useUserStore } from '@pulse/common/stores'
+import { CurrentUserService } from '@pulse/common/services/current-user'
+
+vi.mock('@pulse/common/services/current-user')
+
+getStoreMock(useUserStore)
 
 const deploymentStatuses: DeploymentStatus[] = [
   {
@@ -47,6 +54,7 @@ describe('test FoldersUtils', () => {
   let searchCriteria: SearchCriteria
   beforeEach(() => {
     searchCriteria = getMockedSearchCriteria()
+    vi.mocked(CurrentUserService.getUserWalletInformation).mockResolvedValue({} as any)
   })
 
   describe('fetchWalletData', () => {

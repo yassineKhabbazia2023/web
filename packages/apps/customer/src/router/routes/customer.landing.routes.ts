@@ -19,7 +19,8 @@ export const landingCustomerRoutes: RouteRecordRaw[] = [
       deepLinkGuard,
       (to) => {
         const redirection = CustomerLandingManager.getLandingPage(to.query)
-        return redirection ?? { name: RouteName.CUSTOMER_ENTITIES }
+        // Fallback to wallet route (which will redirect to the appropriate default tab)
+        return redirection ?? { name: RouteName.WALLET }
       },
     ],
   },

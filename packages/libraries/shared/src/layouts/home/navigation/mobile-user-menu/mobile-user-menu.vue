@@ -114,7 +114,7 @@ const urlTerms = ref('')
 
 const showPassword = computed(() => userStore.isCollab === false)
 const showCgu = computed(() => userStore.isCollab === false)
-const isMultiEntity = computed(() => userStore.getIsSingleEntity() === false)
+const isMultiEntity = computed(() => userStore.hasSingleEntity === false)
 
 const closeDrawer = () => {
   isDrawerOpened.value = false

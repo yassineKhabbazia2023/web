@@ -10,6 +10,7 @@ export interface WalletTabConfig {
   title: string // i18n key (e.g., 'entities.wallet.folders')
   route: RouteName
   isDisplayed: (context: WalletContext) => boolean
+  getCount?: () => number | string | undefined
   order: number
   showInMobile?: boolean // Whether to show in mobile view
 }
@@ -32,4 +33,5 @@ export interface WalletTabItem {
   route: RouteName
   display: boolean
   showInMobile: boolean
+  count?: number | string
 }

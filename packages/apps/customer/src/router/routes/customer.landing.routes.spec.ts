@@ -36,17 +36,26 @@ describe('landingCustomerRoutes', () => {
       const mockLandingPage = { name: RouteName.ENTITY }
       vi.mocked(CustomerLandingManager.getLandingPage).mockReturnValue(mockLandingPage)
 
-      const result = redirectionGuard({} as RouteLocationNormalized, {} as RouteLocationNormalized)
+      const result = redirectionGuard({ query: {} } as RouteLocationNormalized, {} as RouteLocationNormalized)
 
       expect(result).toEqual(mockLandingPage)
     })
 
-    it('should redirect to CUSTOMER_ENTITIES as fallback when no landing page found', () => {
+    it('should forward the incoming query to the landing manager', () => {
+      vi.mocked(CustomerLandingManager.getLandingPage).mockReturnValue({ name: RouteName.ENTITY })
+      const query = { bookingWidget: 'true' }
+
+      redirectionGuard({ query } as unknown as RouteLocationNormalized, {} as RouteLocationNormalized)
+
+      expect(CustomerLandingManager.getLandingPage).toHaveBeenCalledWith(query)
+    })
+
+    it('should redirect to WALLET as fallback when no landing page found', () => {
       vi.mocked(CustomerLandingManager.getLandingPage).mockReturnValue(null)
 
-      const result = redirectionGuard({} as RouteLocationNormalized, {} as RouteLocationNormalized)
+      const result = redirectionGuard({ query: {} } as RouteLocationNormalized, {} as RouteLocationNormalized)
 
-      expect(result).toEqual({ name: RouteName.CUSTOMER_ENTITIES })
+      expect(result).toEqual({ name: RouteName.WALLET })
     })
   })
 })

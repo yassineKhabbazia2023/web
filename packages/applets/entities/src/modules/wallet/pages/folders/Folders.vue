@@ -122,12 +122,12 @@
     </div>
     <div v-show="isLoading === false">
       <NoResult v-if="searchResult.items.length === 0" />
-      <EntitiesList
+      <RegularEntityList
         v-if="searchResult.items.length > 0"
         data-testid="folders-table"
         :data="searchResult.items"
-        :handleAddFavorite="handleAddFavorite"
         :searchValue="searchCriteria.search"
+        @add-favorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
         @access="onClickFolder"
         @selected-folder="onSelectedFolder"
@@ -220,10 +220,10 @@ import type {
   SearchCriteria,
   SearchResult,
   DeploymentStatus,
-  WalletData,
+  RegularWalletData,
 } from '@entities/modules/wallet/types'
 import Filters from '../../components/Filters'
-import EntitiesList from '../../components/entities-list'
+import RegularEntityList from '../../components/entities-list/regular-entity/regular-entity.list.vue'
 import DelegationDrawer from './components/DelegationDrawer'
 import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
@@ -412,7 +412,7 @@ const searchCriteria = ref<SearchCriteria>({
   isCustomerRelationFilter: false,
 })
 
-const searchResult = ref<SearchResult<WalletData>>({
+const searchResult = ref<SearchResult<RegularWalletData>>({
   currentPage: 0,
   items: [],
   totalPage: 0,
@@ -482,6 +482,7 @@ async function fetchAccountList() {
   isLoading.value = true
   try {
     const queryResult = await fetchWalletData(DEPLOYMENT_STATUSES, searchCriteria.value)
+
     searchResult.value.items = queryResult.items
     searchResult.value.currentPage = queryResult.currentPage
     searchResult.value.totalPage = queryResult.totalPage
@@ -572,7 +573,7 @@ const onClickDeploy = async (accountId: number, accountNumber: string, companyNa
   offersDrawerRef.value?.initDrawerForCurrentAccount()
   openOffersDrawer.value = true
 }
-const onClickFolder = (entityId: string) => {
+const onClickFolder = (entityId: number) => {
   router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entityId } })
 }
 const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {

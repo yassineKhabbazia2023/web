@@ -1,0 +1,100 @@
+import type { PToolboxItemProps } from '@pulse/styleguide/types'
+import type { MenuTranslations } from './regular-entity.list.types'
+import { CurrentUserManagerMock, hasPermissionMock } from '@pulse/common/mocks/vitest'
+import { filterAccessibleMenuItems } from '@entities/utils'
+import { ACTION_PERMISSIONS } from '@pulse/common/constants'
+import { RegularEntitiesListManager } from './regular-entity.list.manager'
+import { RegularEntityAction } from './regular-entity.list.enums'
+
+vi.mock('@pulse/common/managers', () => ({
+  CurrentUserManager: CurrentUserManagerMock,
+}))
+vi.mock('@entities/utils')
+
+vi.mocked(filterAccessibleMenuItems).mockImplementation((items) => items as PToolboxItemProps[])
+
+const translations: MenuTranslations = {
+  accessThisFolder: 'Access this folder',
+  deployThisFolder: 'Deploy this folder',
+  resendActivationEmail: 'Resend activation email',
+  declareCustomerRelation: 'Declare customer relation',
+  toDeploy: 'To deploy',
+}
+
+describe('RegularEntitiesListManager', () => {
+  describe('buildDefaultMenuElements', () => {
+    it('should return 3 menu items with correct action names', () => {
+      const result = RegularEntitiesListManager.buildDefaultMenuElements(translations)
+
+      expect(result).toHaveLength(3)
+      expect(result[0].pActionName).toBe(RegularEntityAction.ACCESS)
+      expect(result[1].pActionName).toBe(RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL)
+      expect(result[2].pActionName).toBe(RegularEntityAction.DECLARE_CUSTOMER_RELATION)
+    })
+
+    it('should check ACTIVATE_OFFER permission for resend email item', () => {
+      RegularEntitiesListManager.buildDefaultMenuElements(translations)
+
+      expect(hasPermissionMock).toHaveBeenCalledWith(ACTION_PERMISSIONS.ACTIVATE_OFFER)
+    })
+
+    it('should use translation values for menu labels', () => {
+      const result = RegularEntitiesListManager.buildDefaultMenuElements(translations)
+
+      expect(result[0].pValue).toBe('Access this folder')
+      expect(result[1].pValue).toBe('Resend activation email')
+      expect(result[2].pValue).toBe('Declare customer relation')
+    })
+  })
+
+  describe('buildMenuToDeployElements', () => {
+    it('should return 4 items with deploy action first', () => {
+      const result = RegularEntitiesListManager.buildMenuToDeployElements(translations)
+
+      expect(result).toHaveLength(4)
+      expect(result[0].pActionName).toBe(RegularEntityAction.DEPLOY)
+    })
+
+    it('should include default menu items after deploy', () => {
+      const result = RegularEntitiesListManager.buildMenuToDeployElements(translations)
+
+      expect(result[1].pActionName).toBe(RegularEntityAction.ACCESS)
+      expect(result[2].pActionName).toBe(RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL)
+      expect(result[3].pActionName).toBe(RegularEntityAction.DECLARE_CUSTOMER_RELATION)
+    })
+  })
+
+  describe('getMenuElementsForRow', () => {
+    it('should return deploy menu elements when deploymentStatusText matches toDeployLabel', () => {
+      const result = RegularEntitiesListManager.getMenuElementsForRow(
+        translations.toDeploy,
+        translations.toDeploy,
+        translations,
+      )
+
+      expect(result).toHaveLength(4)
+      expect(result[0].pActionName).toBe(RegularEntityAction.DEPLOY)
+    })
+
+    it('should return default menu elements when deploymentStatusText does not match toDeployLabel', () => {
+      const result = RegularEntitiesListManager.getMenuElementsForRow(
+        'Active',
+        translations.toDeploy,
+        translations,
+      )
+
+      expect(result).toHaveLength(3)
+      expect(result[0].pActionName).toBe(RegularEntityAction.ACCESS)
+    })
+
+    it('should pass menu items through filterAccessibleMenuItems', () => {
+      RegularEntitiesListManager.getMenuElementsForRow(
+        'Active',
+        translations.toDeploy,
+        translations,
+      )
+
+      expect(filterAccessibleMenuItems).toHaveBeenCalled()
+    })
+  })
+})

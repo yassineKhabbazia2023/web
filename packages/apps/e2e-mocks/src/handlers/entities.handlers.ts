@@ -230,6 +230,14 @@ export const entitiesHandlers = [
     })
   }),
 
+  http.get('*/wallet/api/infos/currentuser', () => {
+    const accountRows = getAllMockAccountRows()
+    return HttpResponse.json({
+      prospectEntitiesCount: 1,
+      regularEntitiesCount: accountRows.length - 1,
+    })
+  }),
+
   http.get('*/wallet/api/statistics/currentuser', () => {
     return HttpResponse.json({
       toDeploy: 5,

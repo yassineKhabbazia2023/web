@@ -15,7 +15,9 @@ import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
-import { RouteName } from '@pulse/common/enums'
+import { AccountType, RouteName } from '@pulse/common/enums'
+import { BookingManager } from '@pulse/booking/managers'
+import { ProspectsService } from '@pulse/entities/services/prospect'
 
 import { CustomerAuthenticatedFlowManager } from './customer.authenticated.flow.manager'
 
@@ -49,6 +51,19 @@ vi.mock('@pulse/shared/plugins', () => ({
   stopProductFruits: vi.fn(),
 }))
 
+vi.mock('@pulse/booking/managers', () => ({
+  BookingManager: {
+    setupBookingForCustomer: vi.fn(),
+    refreshAvailableExperts: vi.fn(),
+  },
+}))
+
+vi.mock('@pulse/entities/services/prospect', () => ({
+  ProspectsService: {
+    fetchProspectsAccounts: vi.fn(),
+  },
+}))
+
 const userMock = getMockedUserContext()
 const permissionsMock = getPermissionsMock()
 const entityMock = getMockedEntity()
@@ -58,7 +73,6 @@ const entitiesMock = {
   totalItems: 1,
   totalPage: 1,
 }
-const storedEntityMock = getMockedCurrentEntity()
 const defaultEntityMock = getMockedCurrentEntity()
 const entitySummaryMock = getMockedEntitySummary(entityMock)
 
@@ -74,22 +88,30 @@ describe('CustomerAuthenticatedFlowManager', () => {
   })
 
   describe('enterAuthenticatedFlow', () => {
+    beforeEach(() => {
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(1)
+      userStoreMock.getProspectEntitiesCount.mockReturnValue(0)
+    })
+
     it('should init current user, user entities and third parties', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(BookingManager.setupBookingForCustomer).mockResolvedValue(undefined)
 
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
 
       expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalled()
       expect(userStoreMock.setUser).toHaveBeenCalledWith(userMock.contact)
-      expect(userStoreMock.setIsSingleEntity).toHaveBeenCalledWith(true)
       expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledWith(userMock.permissions)
       expect(userStoreMock.setFavoriteEntities).toHaveBeenCalledWith(userMock.favoriteEntities)
+      expect(BookingManager.setupBookingForCustomer).toHaveBeenCalled()
+      expect(BookingManager.refreshAvailableExperts).not.toHaveBeenCalled()
     })
 
     it('should not re-execute when called a second time', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(BookingManager.setupBookingForCustomer).mockResolvedValue(undefined)
 
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
@@ -101,9 +123,23 @@ describe('CustomerAuthenticatedFlowManager', () => {
     it('should allow re-execution after exitAuthenticatedFlow', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(BookingManager.setupBookingForCustomer).mockResolvedValue(undefined)
 
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
       CustomerAuthenticatedFlowManager.exitAuthenticatedFlow()
+      await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
+
+      expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
+    })
+
+    it('should allow retry after a failure', async () => {
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
+      vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(BookingManager.setupBookingForCustomer)
+        .mockRejectedValueOnce(new Error('booking error'))
+        .mockResolvedValueOnce(undefined)
+
+      await expect(CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()).rejects.toThrow('booking error')
       await CustomerAuthenticatedFlowManager.enterAuthenticatedFlow()
 
       expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
@@ -149,55 +185,81 @@ describe('CustomerAuthenticatedFlowManager', () => {
   })
 
   describe('initEntities', () => {
-    it('should initialize user as a single or multiple entities', async () => {
+    it('should initialize current entity from a regular when regular count > 0', async () => {
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(1)
+      userStoreMock.getProspectEntitiesCount.mockReturnValue(0)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
       vi.mocked(fetchEntityById).mockResolvedValue(entitySummaryMock)
       vi.mocked(CurrentEntityManager.initializeCurrentEntity).mockResolvedValue(undefined)
 
       await CustomerAuthenticatedFlowManager.initEntities()
 
-      expect(userStoreMock.setIsSingleEntity).toHaveBeenCalledWith(true)
+      expect(fetchEntities).toHaveBeenCalledWith(1)
+      expect(ProspectsService.fetchProspectsAccounts).not.toHaveBeenCalled()
       expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledWith(entitySummaryMock)
     })
 
-    it('should handle the case when no entities are found', async () => {
+    it('should initialize current entity from a prospect when regular count is 0 and prospect count > 0', async () => {
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(0)
+      userStoreMock.getProspectEntitiesCount.mockReturnValue(1)
+      vi.mocked(ProspectsService.fetchProspectsAccounts).mockResolvedValue({
+        items: [{ accountId: 42 }] as any,
+        currentPage: 1,
+        totalItems: 1,
+        totalPages: 1,
+      })
+      vi.mocked(fetchEntityById).mockResolvedValue(entitySummaryMock)
+      vi.mocked(CurrentEntityManager.initializeCurrentEntity).mockResolvedValue(undefined)
+
+      await CustomerAuthenticatedFlowManager.initEntities()
+
+      expect(ProspectsService.fetchProspectsAccounts).toHaveBeenCalledOnce()
+      expect(fetchEntities).not.toHaveBeenCalled()
+      expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledWith(entitySummaryMock)
+    })
+
+    it('should do nothing when both regular and prospect counts are 0', async () => {
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(0)
+      userStoreMock.getProspectEntitiesCount.mockReturnValue(0)
+
+      await CustomerAuthenticatedFlowManager.initEntities()
+
+      expect(fetchEntities).not.toHaveBeenCalled()
+      expect(ProspectsService.fetchProspectsAccounts).not.toHaveBeenCalled()
+      expect(CurrentEntityManager.initializeCurrentEntity).not.toHaveBeenCalled()
+    })
+
+    it('should warn when regular count > 0 but API returns no entity', async () => {
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(1)
       vi.mocked(fetchEntities).mockResolvedValue({ items: [], currentPage: 1, totalItems: 0, totalPage: 0 })
 
       await CustomerAuthenticatedFlowManager.initEntities()
 
-      // Should not call entity-related methods when no entities found
-      expect(userStoreMock.setIsSingleEntity).not.toHaveBeenCalled()
+      expect(CurrentEntityManager.initializeCurrentEntity).not.toHaveBeenCalled()
+    })
+
+    it('should warn when prospect count > 0 but API returns no prospect', async () => {
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(0)
+      userStoreMock.getProspectEntitiesCount.mockReturnValue(1)
+      vi.mocked(ProspectsService.fetchProspectsAccounts).mockResolvedValue({
+        items: [],
+        currentPage: 1,
+        totalItems: 0,
+        totalPages: 0,
+      })
+
+      await CustomerAuthenticatedFlowManager.initEntities()
+
       expect(CurrentEntityManager.initializeCurrentEntity).not.toHaveBeenCalled()
     })
 
     it('should handle errors gracefully when fetching entities', async () => {
+      userStoreMock.getRegularEntitiesCount.mockReturnValue(1)
       vi.mocked(fetchEntities).mockRejectedValue(new Error('Entities fetch error'))
 
       await CustomerAuthenticatedFlowManager.initEntities()
 
-      // Should not throw and should not call entity-related methods
-      expect(userStoreMock.setIsSingleEntity).not.toHaveBeenCalled()
       expect(CurrentEntityManager.initializeCurrentEntity).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('setUserIsSingleEntity', () => {
-    it('should set the user as single entity if they have only one entity', () => {
-      const entities = [entityMock]
-
-      // @ts-ignore - accessing private method for testing
-      CustomerAuthenticatedFlowManager.setUserIsSingleEntity(entities)
-
-      expect(userStoreMock.setIsSingleEntity).toHaveBeenCalledWith(true)
-    })
-
-    it('should set the user as multiple entities if they have more than one entity', () => {
-      const entities = [entityMock, storedEntityMock]
-
-      // @ts-ignore - accessing private method for testing
-      CustomerAuthenticatedFlowManager.setUserIsSingleEntity(entities)
-
-      expect(userStoreMock.setIsSingleEntity).toHaveBeenCalledWith(false)
     })
   })
 
@@ -224,6 +286,7 @@ describe('CustomerAuthenticatedFlowManager', () => {
       // @ts-ignore - accessing private method for testing
       await CustomerAuthenticatedFlowManager.setUserCurrentEntity(defaultEntityMock)
 
+      expect(fetchEntityById).toHaveBeenCalledWith(defaultEntityMock.accountId)
       expect(CurrentEntityManager.initializeCurrentEntity).toHaveBeenCalledWith(entitySummaryMock)
     })
 
@@ -249,6 +312,16 @@ describe('CustomerAuthenticatedFlowManager', () => {
       expect(CurrentEntityManager.getLocalStorageEntityId).not.toHaveBeenCalled()
       expect(fetchEntityById).not.toHaveBeenCalled()
       expect(CurrentEntityManager.initializeCurrentEntity).not.toHaveBeenCalled()
+    })
+
+    it('should throw an error for prospect entities (not implemented)', async () => {
+      const prospectMock = { ...defaultEntityMock, accountType: AccountType.PROSPECT }
+      currentEntityStoreMock.currentEntityId = undefined
+
+      // @ts-ignore - accessing private method for testing
+      await expect(CustomerAuthenticatedFlowManager.setUserCurrentEntity(prospectMock as any)).rejects.toThrow(
+        'not implemented',
+      )
     })
   })
 
