@@ -93,7 +93,16 @@
     },
     "history": {
       "searchPlaceholder": "Rechercher dans libellé et détail de l'activité",
-      "searchInvalidMessage": "3 caractères minimum requis"
+      "searchInvalidMessage": "3 caractères minimum requis",
+      "filters" : {
+        "title": "Paramètres de filtrage",
+        "periodLabel": "Période",
+        "dateRangeSeparator": "à",
+        "startDatePlaceholder": "Date de début",
+        "endDatePlaceholder": "Date de fin",
+        "reset": "Réinitialiser",
+        "apply": "Appliquer"
+      }
     }
   }
 }

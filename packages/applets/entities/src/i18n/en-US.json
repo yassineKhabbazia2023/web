@@ -93,7 +93,16 @@
     },
     "history": {
       "searchPlaceholder": "Search in label and activity details",
-      "searchInvalidMessage": "Minimum 3 characters required"
+      "searchInvalidMessage": "Minimum 3 characters required",
+      "filters" :{
+        "title": "Filter Parameters",
+        "periodLabel": "Period",
+        "dateRangeSeparator": "to",
+        "startDatePlaceholder": "Start date",
+        "endDatePlaceholder": "End date",
+        "reset": "Reset",
+        "apply": "Apply"
+      }
     }
   }
 }

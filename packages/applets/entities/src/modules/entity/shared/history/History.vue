@@ -1,6 +1,42 @@
 <template>
   <div class="margin-top--6">
-    <HistorySearch v-model:search="search" class="max-width-800 margin-bottom--6" />
+    <div
+      class="
+        flex
+        flex--align-items-flex-end
+        flex--gap-4
+        margin-bottom--6
+      "
+    >
+      <HistorySearch v-model:search="search" class="flex--grow-1 max-width-800" />
+      <PButton
+        class="flex--shrink-0 margin-left--4"
+        pType="secondary"
+        pSize="small"
+        data-testid="history-filter-button"
+        @click="handleOpenFiltersDrawer"
+      >
+        <PPastille
+          v-if="activeFiltersCount > 0"
+          pType="white"
+          pSize="small"
+          class="margin-right--2"
+        >
+          {{ activeFiltersCount }}
+        </PPastille>
+        <PIcon pName="sliders" class="margin-right--2" />
+        {{ t('filterButton') }}
+      </PButton>
+      <PButton
+        class="flex--shrink-0 margin-left--1"
+        pPlain
+        pSize="small"
+        data-testid="history-reset-button"
+        @click="resetFilters"
+      >
+        {{ t('resetButton') }}
+      </PButton>
+    </div>
 
     <div
       v-if="isLoading"
@@ -81,22 +117,34 @@
         </PPagination>
       </template>
     </div>
+
+    <HistoryFiltersDrawer
+      v-model:is-opened="isFiltersDrawerOpened"
+      :themes="themes"
+      :selected-category-ids="selectedCategoryIds"
+      :date-range="dateRange"
+      @apply="applyFilters"
+      @reset="resetFilters"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { formatTime } from '@pulse/toolbox/utils/dates'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import {
+  PButton,
   PHistoryCard,
+  PIcon,
   PLoader,
   PPagination,
+  PPastille,
   PScrollbar,
   PTimeline,
   PTimelineItem,
 } from '@pulse/styleguide/components'
+import { formatTime } from '@pulse/toolbox/utils/dates'
 import { RouteParam } from '@pulse/common/enums'
 import { PAGE_SIZES } from '@pulse/common/constants'
 import { getPaginationLabel } from '@pulse/common/utils'
@@ -106,6 +154,7 @@ import NoResult from '@entities/components/NoResult'
 import { getBulletPoints, getIntroText, hasBulletPoints, hasDetails } from './utils/history.utils'
 import { useHistory } from './composable/history.composable'
 import HistorySearch from './components/HistorySearch.vue'
+import HistoryFiltersDrawer from './components/HistoryFiltersDrawer/HistoryFiltersDrawer.vue'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -114,9 +163,13 @@ const { d, t } = useI18n({
   messages: {
     'en-US': {
       on: 'on',
+      filterButton: 'Filter',
+      resetButton: 'Reset',
     },
     'fr-FR': {
       on: 'sur',
+      filterButton: 'Filtrer',
+      resetButton: 'Réinitialiser',
     },
   },
 })
@@ -124,6 +177,7 @@ const { d, t } = useI18n({
 const route = useRoute()
 const currentAccountId = computed(() => RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID))
 const search = ref('')
+const isFiltersDrawerOpened = ref(false)
 
 const {
   isLoading,
@@ -131,9 +185,19 @@ const {
   currentPage,
   pageSize,
   totalItems,
+  themes,
+  selectedCategoryIds,
+  dateRange,
+  activeFiltersCount,
+  applyFilters,
+  resetFilters,
   onUpdateCurrentPage,
   onPageRangeChanged,
 } = useHistory(currentAccountId, search)
+
+const handleOpenFiltersDrawer = () => {
+  isFiltersDrawerOpened.value = true
+}
 
 const paginationLabel = computed(() => getPaginationLabel(t('on'), {
   currentPage: currentPage.value,

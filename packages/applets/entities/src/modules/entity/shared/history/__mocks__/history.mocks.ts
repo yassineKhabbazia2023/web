@@ -1,4 +1,4 @@
-import type { Activity, ActivitiesResponse } from '../types/history.types'
+import type { Activity, ActivitiesResponse, ThemeWithCategories } from '../types/history.types'
 
 export function getMockedActivity(id: number): Activity {
   return {
@@ -49,4 +49,24 @@ export function getMockedActivitiesResponse(items: Activity[], totalItems: numbe
     currentPage: 1,
     totalPages: Math.ceil(totalItems / 10),
   }
+}
+
+export function getMockedThemes(): ThemeWithCategories[] {
+  return [
+    {
+      themeId: 1,
+      name: 'Theme 1',
+      categories: [
+        { categoryId: 1, name: 'Category 1', themeId: 1 },
+        { categoryId: 2, name: 'Category 2', themeId: 1 },
+      ],
+    },
+    {
+      themeId: 2,
+      name: 'Theme 2',
+      categories: [
+        { categoryId: 3, name: 'Category 3', themeId: 2 },
+      ],
+    },
+  ]
 }

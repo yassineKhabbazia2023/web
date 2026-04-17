@@ -53,18 +53,40 @@ export interface ActivitiesResponse {
   totalPages: number
 }
 
+export interface Theme {
+  themeId: number
+  name: string
+}
+
+export interface Category {
+  categoryId: number
+  name: string
+  themeId: number
+}
+
+export interface ThemeWithCategories {
+  themeId: number
+  name: string
+  categories: Category[]
+}
+
 export interface ActivitySearchCriteria {
   accountId: number
   page: number
   pageSize: number
   search?: string
+  categoryIds?: number[]
+  themeIds?: number[]
+  fromDate?: string
+  toDate?: string
 }
 
-export interface FetchActivitiesParams {
-  accountId: number
-  pageNumber: number
-  pageSize: number
-  'Sorting.Field': 'createDate'
-  'Sorting.Descending': boolean
-  search?: string
+export interface ActivityFiltersRequest {
+  categoryIds?: number[]
+  themeIds?: number[]
+}
+
+export interface ApplyFiltersPayload {
+  categoryIds: number[]
+  dateRange: [Date, Date] | null
 }
