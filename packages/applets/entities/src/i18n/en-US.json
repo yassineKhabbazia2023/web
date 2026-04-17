@@ -22,6 +22,29 @@
         "validated": "Validated"
       }
     },
+    "permanentDelegations": {
+      "infoBannerTitle": "By removing a permanent delegation:",
+      "infoBannerDescription": "You will stop future automatic assignments. Previously delegated folders remain assigned to the collaborator.",
+      "listTitle": "Here is the list of collaborators to whom you have granted a permanent delegation.",
+      "listDescription": "Thanks to this configuration, each new folder added to your portfolio will be automatically assigned to them. These collaborators will also see these folders appear in their own portfolio.",
+      "table": {
+        "collaborator": "Collaborator",
+        "email": "E-mail",
+        "startDate": "Start",
+        "options": "Options"
+      },
+      "confirmation": {
+        "title": "Confirm the deletion of the permanent delegation of collaborator {name}.",
+        "content": "This action will prevent the collaborator from automatically receiving the folders assigned to you. The folders they have already received will remain unchanged.",
+        "confirm": "Confirm",
+        "cancel": "Cancel",
+        "question": "Do you confirm this deletion?"
+      },
+      "notification": {
+        "deleteSuccess": "The permanent delegation of {name} has been deleted.",
+        "deleteError": "The permanent delegation of {name} could not be deleted."
+      }
+    },
     "invoices": {
       "title": "Dematerialization of RYDGE Conseil invoices",
       "description": "With RYDGE Conseil, benefit {noExtraCost} from the issuance of Firm invoices in {electronicFormat} and access to {digitalVault} containing all dematerialized invoices and credit notes, hosted with a trusted third party.",

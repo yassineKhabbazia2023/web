@@ -25,7 +25,7 @@ test.describe('Folder page - Drawers', () => {
   })
 
   test('should open the Delegation drawer', async ({ page }) => {
-    await page.getByRole('button', { name: /Déléguer/ }).click()
+    await page.getByRole('button', { name: /Mes délégations/ }).click()
     await expect(page.locator('[role="dialog"]').filter({ hasText: 'Ajout des collaborateurs' })).toBeVisible()
   })
 

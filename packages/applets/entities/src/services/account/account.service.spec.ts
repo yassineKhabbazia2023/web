@@ -9,6 +9,7 @@ import {
   fetchAccountDelegationsHistory,
   deleteAccountDelegation,
   delegateAccounts,
+  fetchPermanentDelegations,
   addContactToEntity,
   fetchContactsFromSameHub,
   createCustomer,
@@ -133,6 +134,11 @@ describe('test accountServices', () => {
           data: true,
         })
       }
+      if (url === `${API_PREFIXES.WALLET}/delegations/currentuser/delegator`) {
+        return Promise.resolve({
+          data: { items: [], currentPage: 1, totalPage: 0, totalItems: 0 },
+        })
+      }
 
       return url.includes(SEARCH_CURRENT_USER)
         ? Promise.resolve({ data: [mockedAccountRow] })
@@ -254,6 +260,14 @@ describe('test accountServices', () => {
 
       expect(postSpy).toHaveBeenCalledExactlyOnceWith(expectedUrl, delegationRequestMock)
       expect(response).toStrictEqual(responseMock)
+    })
+
+    it('fetch permanent delegations', async () => {
+      const result = await fetchPermanentDelegations()
+      const expectedUrl = `${API_PREFIXES.WALLET}/delegations/currentuser/delegator`
+
+      expect(commonApiGetMock).toHaveBeenCalledWith(expectedUrl)
+      expect(result).toStrictEqual({ items: [], currentPage: 1, totalPage: 0, totalItems: 0 })
     })
   })
 

@@ -18,6 +18,7 @@ export * from './subscription.mocks'
 export * from './table-data.mocks'
 export * from './users-client.mocks'
 export * from './wallet.manager.mocks'
+export * from './permanent-delegations.mocks'
 
 // JSON mocks
 export { default as delegationsHistoryMock } from './json/delegationsHistory.json'

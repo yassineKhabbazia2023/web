@@ -194,7 +194,7 @@ describe('deploy', () => {
     const button = wrapper.findComponent({ name: 'PButton' })
     const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
 
-    expect(button.text()).toBe('Delegate my wallet')
+    expect(button.text()).toBe('My delegations')
 
     tableData.vm.$emit('selected-folder', mockedQueryResult.items.at(0))
     await nextTick()

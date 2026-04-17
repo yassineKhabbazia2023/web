@@ -1,5 +1,6 @@
 export * from './wallet.enum'
 export * from './delegation-flow-type.enum'
+export * from './delegation-tab.enums'
 export * from './collab-rights-drawer-steps.enum'
 export * from './recap-tabs.enum'
 export * from './entity-status.enum'

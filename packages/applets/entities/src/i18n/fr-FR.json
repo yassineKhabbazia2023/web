@@ -22,6 +22,29 @@
         "validated": "Validée"
       }
     },
+    "permanentDelegations": {
+      "infoBannerTitle": "En supprimant une délégation permanente :",
+      "infoBannerDescription": "Vous mettez fin aux prochaines attributions automatiques. Les dossiers déjà délégués restent assignés au collaborateur.",
+      "listTitle": "Voici la liste des collaborateurs auxquels vous avez accordé une délégation permanente.",
+      "listDescription": "Grâce à cette configuration, chaque nouveau dossier ajouté à votre portefeuille leur sera automatiquement attribué. Ces collaborateurs verront donc également ces dossiers apparaître dans leur propre portefeuille.",
+      "table": {
+        "collaborator": "Collaborateur",
+        "email": "E-mail",
+        "startDate": "Début",
+        "options": "Options"
+      },
+      "confirmation": {
+        "title": "Confirmer la suppression de délégation permanente du collaborateur {name}.",
+        "content": "Cette action empêchera le collaborateur de recevoir automatiquement les dossiers qui vous sont attribués. Les dossiers qu'il a déjà reçu resteront inchangés.",
+        "confirm": "Confirmer",
+        "cancel": "Annuler",
+        "question": "Confirmez-vous cette suppression ?"
+      },
+      "notification": {
+        "deleteSuccess": "La délégation permanente de {name} a été supprimée.",
+        "deleteError": "La délégation permanente de {name} n'a pas été supprimée."
+      }
+    },
     "invoices": {
       "title": "Dématérialisation des factures RYDGE Conseil",
       "description": "Avec RYDGE Conseil, bénéficiez {noExtraCost} de l'émission des factures Cabinet au {electronicFormat} et de l'accès à {digitalVault} contenant l'ensemble des factures et avoirs dématérialisés, hébergé auprès d'un tiers de confiance.",

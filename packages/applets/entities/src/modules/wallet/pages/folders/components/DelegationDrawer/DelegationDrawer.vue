@@ -2,6 +2,7 @@
   <PDrawer
     v-model="isDelegationDrawerOpened"
     class="delegation-drawer"
+    pSize="50%"
     @close-drawer-button="handleCloseDrawer"
     @close="handleCloseDrawer"
   >
@@ -12,56 +13,79 @@
           :pColor="AppColors.JUNGLE_400"
           pSize="30"
         />
-        <h3 v-if="!isSpecificDelegationFlowType" class="margin-left--1 font-semibold">
-          {{ t('walletDelegation') }}
+        <h3 v-if="isSpecificDelegationFlowType" class="margin-left--1 font-semibold">
+          {{ t('folderDelegation', selectedFolders.length) }}
         </h3>
         <h3 v-else class="margin-left--1 font-semibold">
-          {{ t('folderDelegation', selectedFolders.length) }}
+          {{ t('myDelegations') }}
         </h3>
       </h3>
     </template>
 
-    <PSteps
-      v-if="!isSpecificDelegationFlowType"
-      class="margin-bottom--6"
-      :pActive="activeStep"
-      pFinishStatus="success"
-    >
-      <PStep :title="t('addCollaborator')" />
-      <PStep :title="t('automaticDelegation')" />
-    </PSteps>
-
-    <div
-      v-if="isSpecificDelegationFlowType"
+    <PTabs
+      v-if="isSpecificDelegationFlowType === false && hasPermanentDelegations"
+      v-model="activeTab"
       class="margin-bottom--6"
     >
-      <CollapsableFoldersList
-        v-if="selectedFolders.length > 1"
-      >
-        <SelectedFoldersList :folders="selectedFolders" />
-      </CollapsableFoldersList>
-
-      <SelectedFoldersList
-        v-else
-        :folders="selectedFolders"
+      <PTabPane
+        :pLabel="t('walletDelegation')"
+        :pName="DelegationTab.DELEGATE_WALLET"
       />
-    </div>
+      <PTabPane
+        :pLabel="t('permanentDelegations')"
+        :pName="DelegationTab.PERMANENT_DELEGATIONS"
+      />
+    </PTabs>
 
-    <AddDelegatesStep
-      v-if="activeStep === 0"
-      v-model:hasPennylaneAccess="hasPennylaneAccess"
-      :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
-      :shouldDisplayNumberOfFoldersInPortfolio="!isSpecificDelegationFlowType"
-      @collaborator-selection="handleCollaboratorSelection"
-    />
+    <template v-if="activeTab === DelegationTab.DELEGATE_WALLET || isSpecificDelegationFlowType">
+      <PSteps
+        v-if="!isSpecificDelegationFlowType"
+        class="margin-bottom--6"
+        :pActive="activeStep"
+        pFinishStatus="success"
+      >
+        <PStep :title="t('addCollaborator')" />
+        <PStep :title="t('automaticDelegation')" />
+      </PSteps>
 
-    <DelegationPreviewList
-      v-else-if="activeStep === 1"
-      v-model="delegationDetails"
+      <div
+        v-if="isSpecificDelegationFlowType"
+        class="margin-bottom--6"
+      >
+        <CollapsableFoldersList
+          v-if="selectedFolders.length > 1"
+        >
+          <SelectedFoldersList :folders="selectedFolders" />
+        </CollapsableFoldersList>
+
+        <SelectedFoldersList
+          v-else
+          :folders="selectedFolders"
+        />
+      </div>
+
+      <AddDelegatesStep
+        v-if="activeStep === 0"
+        v-model:hasPennylaneAccess="hasPennylaneAccess"
+        :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
+        :shouldDisplayNumberOfFoldersInPortfolio="!isSpecificDelegationFlowType"
+        @collaborator-selection="handleCollaboratorSelection"
+      />
+
+      <DelegationPreviewList
+        v-else-if="activeStep === 1"
+        v-model="delegationDetails"
+      />
+    </template>
+
+    <PermanentDelegationsTab
+      v-else-if="activeTab === DelegationTab.PERMANENT_DELEGATIONS"
+      :initialData="initialPermanentDelegations"
     />
 
     <template #footer>
       <NextPreviousButtons
+        v-if="activeTab === DelegationTab.DELEGATE_WALLET || isSpecificDelegationFlowType"
         :previousLabel="previousButtonLabel"
         :nextLabel="isSpecificDelegationFlowType ? t('submitButtonLabel') : nextButtonLabel"
         :isNextButtonDisabled="!selectedCollaborators.length"
@@ -75,12 +99,12 @@
 
 <script setup lang="ts">
 import { logger } from '@pulse/toolbox'
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PSteps, PStep, PIcon } from '@pulse/styleguide/components'
+import { PDrawer, PSteps, PStep, PIcon, PTabs, PTabPane } from '@pulse/styleguide/components'
 import { AppColors, PNotification } from '@pulse/styleguide'
-import { delegateAccounts } from '@entities/services/account'
-import { DelegationFlowType } from '@entities/modules/wallet/enums'
+import { delegateAccounts, fetchPermanentDelegations } from '@entities/services/account'
+import { DelegationFlowType, DelegationTab } from '@entities/modules/wallet/enums'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 
 import NextPreviousButtons from '@entities/components/NextPreviousButtons'
@@ -89,8 +113,9 @@ import type { Contact } from '@entities/services/contact/contactTypes'
 import DelegationPreviewList from './components/DelegationPreviewList'
 import CollapsableFoldersList from './components/CollapsableFoldersList'
 import SelectedFoldersList from './components/SelectedFoldersList'
+import PermanentDelegationsTab from './components/permanent-delegations/permanent-delegations.vue'
 import type { DelegationDetails } from './models/Delegation'
-import type { AccountsDelegationDetails, AccountsDelegation } from '@entities/services/account/account.type'
+import type { AccountsDelegationDetails, AccountsDelegation, PermanentDelegationApiItem } from '@entities/services/account/account.type'
 
 const props = defineProps<DelegationDrawerProps>()
 const emit = defineEmits<{
@@ -102,8 +127,10 @@ const { t } = useI18n({
   useScope: 'local',
   messages: {
     'en-US': {
+      myDelegations: 'My delegations',
       walletDelegation: 'Delegate my wallet',
       folderDelegation: 'Delegate a folder | Delegate multiple folders',
+      permanentDelegations: 'Permanent delegations',
       addCollaborator: 'Add a collaborator',
       automaticDelegation: 'Automatic delegation',
       cancelButtonLabel: 'Cancel',
@@ -122,8 +149,10 @@ const { t } = useI18n({
       },
     },
     'fr-FR': {
+      myDelegations: 'Mes délégations',
       walletDelegation: 'Déléguer mon portefeuille',
       folderDelegation: 'Déléguer un dossier | Déléguer plusieurs dossiers',
+      permanentDelegations: 'Délégations permanentes',
       addCollaborator: 'Ajout des collaborateurs',
       automaticDelegation: 'Délégation automatique',
       cancelButtonLabel: 'Annuler',
@@ -144,6 +173,9 @@ const { t } = useI18n({
   },
 })
 
+const activeTab = ref<DelegationTab>(DelegationTab.DELEGATE_WALLET)
+const hasPermanentDelegations = ref(false)
+const initialPermanentDelegations = ref<PermanentDelegationApiItem[]>([])
 const activeStep = ref<number>(0)
 const hasPennylaneAccess = ref(false)
 const delegationDetails = ref<DelegationDetails[]>([])
@@ -289,5 +321,21 @@ const handleDisplayNotification = (isSuccess:boolean, numberOfSelectedFolders: n
 const handleCloseDrawer = () => {
   emit('update:modelValue', false)
 }
+
+async function loadInitialPermanentDelegations() {
+  try {
+    const response = await fetchPermanentDelegations()
+    initialPermanentDelegations.value = response?.items ?? []
+    hasPermanentDelegations.value = initialPermanentDelegations.value.length > 0
+  } catch {
+    hasPermanentDelegations.value = false
+  }
+}
+
+onMounted(() => {
+  if (isSpecificDelegationFlowType.value === false) {
+    loadInitialPermanentDelegations()
+  }
+})
 </script>
 

@@ -120,3 +120,16 @@ export interface AccountsDelegation {
   delegationDetails: AccountsDelegationDetails[]
   accountIds: number[]
 }
+
+export interface PermanentDelegationDelegatee {
+  contactId: number
+  firstName: string
+  lastName: string
+  email: string
+}
+
+export interface PermanentDelegationApiItem {
+  delegationId: number
+  startDate: string
+  delegatee: PermanentDelegationDelegatee
+}

@@ -4,7 +4,7 @@ import { api } from '@pulse/common/api'
 import type { Entity, QueryResult, UserInfoApi, Office } from '@pulse/common/types'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { PatchOperation } from '@entities/services/patch-record'
-import type { AccountRow, ReferentialStructure, Hub, AccountsDelegation } from './account.type'
+import type { AccountRow, ReferentialStructure, Hub, AccountsDelegation, PermanentDelegationApiItem } from './account.type'
 import { ContactType } from '@pulse/common/enums'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
@@ -76,6 +76,12 @@ export async function delegateAccounts(delegationRequest: AccountsDelegation) {
   const url = `${API_PREFIXES.WALLET}/delegations/currentuser`
 
   return await api.gateway.post(url, delegationRequest)
+}
+
+export async function fetchPermanentDelegations() {
+  const url = `${API_PREFIXES.WALLET}/delegations/currentuser/delegator`
+
+  return await fetchGatewayApi<QueryResult<PermanentDelegationApiItem>>(url)
 }
 
 export async function addContactToEntity(

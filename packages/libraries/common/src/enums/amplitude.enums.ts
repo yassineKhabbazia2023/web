@@ -19,6 +19,8 @@ export enum AmplitudeEvent {
   WALLET_ACTION_PAGINATION_CONSULTED = 'Wallet Action Pagination Consulted',
   WALLET_ACTION_COLUMN_SORT_REQUESTED = 'Wallet Action Column Sort Requested',
   WALLET_ACTION_ACCOUNTS_SEARCHED = 'Wallet Action Search Researched',
+  DELEGATION_PERMANENT_DELETE_REQUESTED = 'Delegation Permanent Delete Requested',
+  DELEGATION_PERMANENT_DELETE_COMPLETED = 'Delegation Permanent Delete Completed',
 }
 
 export enum AmplitudeFeatureName {
