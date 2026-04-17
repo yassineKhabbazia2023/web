@@ -10,7 +10,7 @@ import type { TimeSlotsConfiguration } from '../booking-time-slots-configuration
 import {
   BOOKING_QUERY_PARAM_WIDGET,
   BOOKING_QUERY_PARAM_COLLABORATOR_ID,
-} from '../booking-configuration/booking-configuration.consts'
+} from '@booking/constants/booking.const'
 import type { UseBookingEditDrawerOptions } from './booking-edit-drawer.types'
 import { BookingEditDrawerTab } from './booking-edit-drawer.enums'
 import {
