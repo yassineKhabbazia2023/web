@@ -8,6 +8,12 @@
 .p-form-line {
   .el-form-item, .el-form-inline .el-form-item  {
     margin-right: 0;
+    flex-grow: 1;
+
+    &--fixed-width {
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
   }
 }
 </style>

@@ -16,6 +16,7 @@ const propsValue: PFormItemProps = {
   pSize: 'small',
   pFor: 'for',
   pValidateStatus: 'error',
+  pWidth: '300px',
 }
 const createWrapper = () => shallowMount(PFormItem, {
   props: propsValue,

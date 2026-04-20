@@ -84,7 +84,7 @@ export const WithFixedSize: Story = {
       <div style="padding: 20px;">
         <PForm :pModel="formValues" pLabelPosition="top" style="max-width: 720px;">
           <PFormLine>
-            <PFormItem pLabel="Owner" pProp="owner" style="width: 300px;" >
+            <PFormItem pLabel="Owner" pProp="owner" pWidth="300px">
               <PDropdown
                 v-model="formValues.owner"
                 :pOptions="dropdownOptions"
@@ -94,7 +94,7 @@ export const WithFixedSize: Story = {
             <PFormItem pLabel="First name" pProp="firstName">
               <PInput v-model="formValues.firstName" pPlaceholder="First name" />
             </PFormItem>
-            <PFormItem pLabel="Last name" pProp="lastName" style="width: 500px;">
+            <PFormItem pLabel="Last name" pProp="lastName" :pWidth="500">
               <PInput v-model="formValues.lastName" pPlaceholder="Last name" />
             </PFormItem>
           </PFormLine>

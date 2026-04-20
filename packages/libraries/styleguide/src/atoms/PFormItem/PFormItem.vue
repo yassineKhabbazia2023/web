@@ -2,7 +2,9 @@
   <ElFormItem
     :class="{
       'el-form-item--no-margin': !pHasMargin,
+      'el-form-item--fixed-width': pWidth !== undefined,
     }"
+    :style="fixedWidthStyle"
     :prop="pProp"
     :label="pLabel"
     :labelWidth="pLabelWidth"
@@ -26,10 +28,11 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { ElFormItem } from 'element-plus'
 import type { PFormItemProps } from './PFormItemTypes'
 
-withDefaults(defineProps<PFormItemProps>(), {
+const props = withDefaults(defineProps<PFormItemProps>(), {
   pProp: undefined,
   pLabel: undefined,
   pLabelWidth: '',
@@ -42,5 +45,14 @@ withDefaults(defineProps<PFormItemProps>(), {
   pFor: undefined,
   pValidateStatus: undefined,
   pHasMargin: true,
+  pWidth: undefined,
+})
+
+const fixedWidthStyle = computed(() => {
+  if (props.pWidth === undefined) {
+    return undefined
+  }
+  const width = typeof props.pWidth === 'number' ? `${props.pWidth}px` : props.pWidth
+  return { width }
 })
 </script>
