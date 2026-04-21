@@ -31,10 +31,11 @@ const stubs = {
     props: ['modelValue', 'pActiveText', 'pActiveColor'],
     emits: ['update:modelValue'],
   },
-  PButton: {
-    name: 'PButton',
-    template: '<button><slot /></button>',
-    props: ['pType', 'pPlain', 'pDisabled'],
+  PDrawerActions: {
+    name: 'PDrawerActions',
+    template: '<div></div>',
+    props: ['pBackCTA', 'pPrimaryCTA'],
+    emits: ['click-back-cta', 'click-primary-cta'],
   },
 }
 
@@ -74,7 +75,7 @@ describe('AccountFiltersDrawer.vue', () => {
     expect(isCustomerRelationFilterSwitch.props('modelValue')).toBe(false)
   })
 
-  it('emits "reset-filters" and disables reset button if no active filters', async () => {
+  it('emits "reset-filters" when reset is clicked', async () => {
     const filters: AccountFilters = {
       isFavoriteFilter: true,
       isCustomerRelationFilter: false,
@@ -82,10 +83,10 @@ describe('AccountFiltersDrawer.vue', () => {
 
     const wrapper = createWrapper({ accountFilters: filters, hasActiveFilters: true })
 
-    const resetBtn = wrapper.findComponent({ name: 'PButton' })
-    expect(resetBtn.props('pDisabled')).toBe(false)
+    const drawerActions = wrapper.findComponent({ name: 'PDrawerActions' })
+    expect(drawerActions.props('pBackCTA').pDisabled).toBe(false)
 
-    await resetBtn.trigger('click')
+    await drawerActions.vm.$emit('click-back-cta')
     expect(wrapper.emitted('reset-filters')).toBeTruthy()
   })
 
@@ -99,8 +100,8 @@ describe('AccountFiltersDrawer.vue', () => {
     await isFavoriteFilterSwitch.vm.$emit('update:modelValue', true)
     await isCustomerRelationFilterSwitch.vm.$emit('update:modelValue', true)
 
-    const applyBtn = wrapper.find('[data-testid="account-filters-drawer__apply-button"]')
-    await applyBtn.trigger('click')
+    const drawerActions = wrapper.findComponent({ name: 'PDrawerActions' })
+    await drawerActions.vm.$emit('click-primary-cta')
 
     expect(wrapper.emitted('apply-filters')).toBeTruthy()
     expect(wrapper.emitted('apply-filters')![0][0]).toEqual({

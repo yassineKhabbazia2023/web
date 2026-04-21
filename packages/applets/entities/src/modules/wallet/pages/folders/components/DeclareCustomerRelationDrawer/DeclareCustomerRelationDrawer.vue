@@ -44,14 +44,11 @@
       </div>
     </section>
     <template #footer>
-      <DrawerActionButtons
-        cancelTestId="declare-customer-relation-reset-button"
-        submitTestId="declare-customer-relation-submit-button"
-        :loading="isLoading"
-        :cancelDisabled="isLoading"
-        :submitDisabled="hasCustomerRelationStatusNotChanged"
-        @close-drawer="handleCloseDrawer"
-        @submit-action="handleUpdateCustomerRelation"
+      <PDrawerActions
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
+        @click-back-cta="handleCloseDrawer"
+        @click-primary-cta="handleUpdateCustomerRelation"
       />
     </template>
   </PDrawer>
@@ -62,11 +59,11 @@ import { logger } from '@pulse/toolbox'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { AppColors, displayNotification } from '@pulse/styleguide'
-import { PDrawer, PUserCard, PSwitch, PTag } from '@pulse/styleguide/components'
+import { PDrawer, PDrawerActions, PUserCard, PSwitch, PTag } from '@pulse/styleguide/components'
+import type { PDrawerActionButton } from '@pulse/styleguide/types'
 import { DeclareCustomerRelationDrawerProps } from './DeclareCustomerRelationDrawer.types'
 import { updateCustomerRelation } from '@entities/services/account'
 import { useUserStore } from '@pulse/common/stores'
-import DrawerActionButtons from '@entities/components/DrawerActionButtons/DrawerActionButtons.vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -109,6 +106,18 @@ const isLoading = ref(false)
 const hasCustomerRelationStatus = ref(false)
 const isDeclareCustomerRelationDrawerOpened = defineModel<boolean>({ default: false })
 const hasCustomerRelationStatusNotChanged = computed(() => props.isCustomerRelation === hasCustomerRelationStatus.value)
+
+const backCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('cancel'),
+  pDisabled: isLoading.value,
+  pTestId: 'declare-customer-relation-reset-button',
+}))
+const primaryCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('submit'),
+  pDisabled: hasCustomerRelationStatusNotChanged.value,
+  pLoading: isLoading.value,
+  pTestId: 'declare-customer-relation-submit-button',
+}))
 
 const handleCloseDrawer = () => {
   isDeclareCustomerRelationDrawerOpened.value = false

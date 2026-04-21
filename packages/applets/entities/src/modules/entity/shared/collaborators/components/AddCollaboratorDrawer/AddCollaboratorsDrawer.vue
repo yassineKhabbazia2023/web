@@ -24,13 +24,11 @@
     </div>
 
     <template #footer>
-      <NextPreviousButtons
-        :previousLabel="t('previousLabel')"
-        :nextLabel="t('nextLabel')"
-        :isNextButtonDisabled="!selectedCollaborators.length"
-        :isNextButtonLoading="isNextButtonLoading"
-        @click-previous="handleCloseDrawer"
-        @click-next="handleSubmit"
+      <PDrawerActions
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
+        @click-back-cta="handleCloseDrawer"
+        @click-primary-cta="handleSubmit"
       />
     </template>
   </PDrawer>
@@ -39,9 +37,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PIcon } from '@pulse/styleguide/components'
+import { PDrawer, PDrawerActions, PIcon } from '@pulse/styleguide/components'
 import { AppColors, PNotification } from '@pulse/styleguide'
-import NextPreviousButtons from '@entities/components/NextPreviousButtons'
 import type { AddCollaboratorsDrawerProps } from './AddCollaboratorsDrawerTypes'
 import AddCollaboratorsCard from './components/AddCollaboratorsCard'
 import type { Contact } from '@entities/services/contact/contactTypes'
@@ -154,6 +151,14 @@ function displayAddCollaboratorErrorNotifications(failedResponses: any[]) {
 }
 
 const selectedCollaborators = ref<Contact[]>([])
+
+const backCTA = computed(() => ({ pLabel: t('previousLabel'), pTestId: 'previousButton' }))
+const primaryCTA = computed(() => ({
+  pLabel: t('nextLabel'),
+  pDisabled: selectedCollaborators.value.length === 0,
+  pLoading: isNextButtonLoading.value,
+  pTestId: 'nextButton',
+}))
 
 function handleCollaboratorSelection(event: Contact[]) {
   selectedCollaborators.value = event

@@ -48,14 +48,12 @@
       @update:last-name="onUpdateLastName"
     />
     <template #footer>
-      <NextPreviousButtons
+      <PDrawerActions
         v-if="isLastStep === false"
-        :previousLabel="t(previousLabelKey)"
-        :nextLabel="t(nextLabelKey)"
-        :isNextButtonDisabled="isNextButtonDisabled"
-        :isNextButtonLoading="isNextButtonLoading"
-        @click-next="onClickNext"
-        @click-previous="onClickPrevious"
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
+        @click-primary-cta="onClickNext"
+        @click-back-cta="onClickPrevious"
       />
       <PButton
         v-if="isLastStep === true"
@@ -75,12 +73,12 @@ import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 import {
   PDrawer,
+  PDrawerActions,
   PButton,
   PIcon,
 } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import type { AddCustomerDrawerProps } from './add-customer-drawer.types'
-import NextPreviousButtons from '@entities/components/NextPreviousButtons'
 import AddCustomerContent from './components/add-customer-content/add-customer-content.vue'
 import { ADD_CUSTOMER_DRAWER_STEPS } from './add-customer-drawer.const'
 import { useAddCustomerDrawer } from './add-customer-drawer.composable'
@@ -172,6 +170,14 @@ const previousLabelKey = computed(() => {
       return 'previousLabel'
   }
 })
+
+const backCTA = computed(() => ({ pLabel: t(previousLabelKey.value), pTestId: 'previousButton' }))
+const primaryCTA = computed(() => ({
+  pLabel: t(nextLabelKey.value),
+  pDisabled: isNextButtonDisabled.value,
+  pLoading: isNextButtonLoading.value,
+  pTestId: 'nextButton',
+}))
 
 const isDrawerOpened = computed({
   get() {

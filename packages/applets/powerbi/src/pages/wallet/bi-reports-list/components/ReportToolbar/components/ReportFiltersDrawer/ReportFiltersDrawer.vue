@@ -47,26 +47,12 @@
     </PForm>
 
     <template #footer>
-      <div class="margin-left--auto">
-        <PButton
-          class="margin-right--4"
-          pType="secondary"
-          pPlain
-          :pDisabled="hasActiveFilters === false"
-          data-testid="report-filters-drawer__reset-button"
-          @click="resetReportFilters"
-        >
-          {{ t('reset') }}
-        </PButton>
-
-        <PButton
-          pType="primary"
-          data-testid="report-filters-drawer__apply-button"
-          @click="applyReportFilters"
-        >
-          {{ t('apply') }}
-        </PButton>
-      </div>
+      <PDrawerActions
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
+        @click-back-cta="resetReportFilters"
+        @click-primary-cta="applyReportFilters"
+      />
     </template>
   </PDrawer>
 </template>
@@ -75,7 +61,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
-import { PDrawer, PForm, PFormItem, PDropdown, PCheckboxGroup, PCheckbox, PButton } from '@pulse/styleguide/components'
+import { PDrawer, PDrawerActions, PForm, PFormItem, PDropdown, PCheckboxGroup, PCheckbox } from '@pulse/styleguide/components'
+import type { PDrawerActionButton } from '@pulse/styleguide/types'
 import type { ReportFiltersDrawerProps } from './report-filters-drawer.types'
 import type { ReportType, ReportFilters } from '@powerbi/types/bi-reports.types'
 import { fetchBIReportTypes } from '@powerbi/services/reporting.service'
@@ -144,6 +131,16 @@ const reportTypeOptions = computed(() =>
   })),
 )
 // #endregion
+
+const backCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('reset'),
+  pDisabled: hasActiveFilters.value === false,
+  pTestId: 'report-filters-drawer__reset-button',
+}))
+const primaryCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('apply'),
+  pTestId: 'report-filters-drawer__apply-button',
+}))
 
 // #region Actions Related to Filters
 const internalFilters = ref<ReportFilters>({

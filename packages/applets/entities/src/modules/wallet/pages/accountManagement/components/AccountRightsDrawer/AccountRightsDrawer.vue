@@ -54,15 +54,10 @@
       </template>
     </PTabs>
     <template #footer>
-      <div class="margin-left--auto">
-        <PButton
-          pType="primary"
-          data-testid="account-rights-submit-button"
-          @click="handleUpdateAccountPermissions"
-        >
-          {{ t('submit') }}
-        </PButton>
-      </div>
+      <PDrawerActions
+        :pPrimaryCTA="primaryCTA"
+        @click-primary-cta="handleUpdateAccountPermissions"
+      />
     </template>
   </PDrawer>
 </template>
@@ -73,13 +68,14 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
   PDrawer,
+  PDrawerActions,
   PUserCard,
   PTag,
-  PButton,
   PTabPane,
   PTabs,
   PLoader,
 } from '@pulse/styleguide/components'
+import type { PDrawerActionButton } from '@pulse/styleguide/types'
 import { PNotification } from '@pulse/styleguide'
 import type {
   AuthorizationState,
@@ -122,6 +118,11 @@ const props = defineProps<AccountRightsDrawerProps>()
 const emit = defineEmits<{
   'update:modelValue': [boolean]
 }>()
+
+const primaryCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('submit'),
+  pTestId: 'account-rights-submit-button',
+}))
 
 const isLoading = ref(false)
 const activeTab = ref<PermissionType>('clientPermissions')

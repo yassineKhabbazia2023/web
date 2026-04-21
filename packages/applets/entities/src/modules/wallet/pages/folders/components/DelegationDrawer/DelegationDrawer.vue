@@ -84,14 +84,12 @@
     />
 
     <template #footer>
-      <NextPreviousButtons
+      <PDrawerActions
         v-if="activeTab === DelegationTab.DELEGATE_WALLET || isSpecificDelegationFlowType"
-        :previousLabel="previousButtonLabel"
-        :nextLabel="isSpecificDelegationFlowType ? t('submitButtonLabel') : nextButtonLabel"
-        :isNextButtonDisabled="!selectedCollaborators.length"
-        :isNextButtonLoading="isNextButtonLoading"
-        @click-previous="handlePreviousClick"
-        @click-next="handleNextClick"
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
+        @click-back-cta="handlePreviousClick"
+        @click-primary-cta="handleNextClick"
       />
     </template>
   </PDrawer>
@@ -101,13 +99,11 @@
 import { logger } from '@pulse/toolbox'
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PSteps, PStep, PIcon, PTabs, PTabPane } from '@pulse/styleguide/components'
+import { PDrawer, PDrawerActions, PSteps, PStep, PIcon, PTabs, PTabPane } from '@pulse/styleguide/components'
 import { AppColors, PNotification } from '@pulse/styleguide'
 import { delegateAccounts, fetchPermanentDelegations } from '@entities/services/account'
 import { DelegationFlowType, DelegationTab } from '@entities/modules/wallet/enums'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
-
-import NextPreviousButtons from '@entities/components/NextPreviousButtons'
 import AddDelegatesStep from './components/AddDelegatesStep'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import DelegationPreviewList from './components/DelegationPreviewList'
@@ -134,8 +130,8 @@ const { t } = useI18n({
       addCollaborator: 'Add a collaborator',
       automaticDelegation: 'Automatic delegation',
       cancelButtonLabel: 'Cancel',
-      previousButtonLabel: 'Cancel',
-      nextButtonLabel: 'Next',
+      backButtonLabel: 'Cancel',
+      primaryButtonLabel: 'Next',
       submitButtonLabel: 'Submit',
       notificationMessages: {
         flowTypeFull: {
@@ -156,8 +152,8 @@ const { t } = useI18n({
       addCollaborator: 'Ajout des collaborateurs',
       automaticDelegation: 'Délégation automatique',
       cancelButtonLabel: 'Annuler',
-      previousButtonLabel: 'Précedent',
-      nextButtonLabel: 'Suivant',
+      backButtonLabel: 'Précedent',
+      primaryButtonLabel: 'Suivant',
       submitButtonLabel: 'Valider',
       notificationMessages: {
         flowTypeFull: {
@@ -195,8 +191,18 @@ const flowType = computed(() => props.selectedFolders.length
 )
 const isSpecificDelegationFlowType = computed(() => flowType.value === DelegationFlowType.SPECIFIC)
 
-const previousButtonLabel = computed(() => activeStep.value ? t('previousButtonLabel') : t('cancelButtonLabel'))
-const nextButtonLabel = computed(() => activeStep.value === 1 ? t('submitButtonLabel') : t('nextButtonLabel'))
+const backButtonLabel = computed(() => activeStep.value ? t('backButtonLabel') : t('cancelButtonLabel'))
+const primaryButtonLabel = computed(() => activeStep.value === 1 ? t('submitButtonLabel') : t('primaryButtonLabel'))
+
+const isNextButtonLoading = ref<boolean>(false)
+
+const backCTA = computed(() => ({ pLabel: backButtonLabel.value, pTestId: 'previousButton' }))
+const primaryCTA = computed(() => ({
+  pLabel: isSpecificDelegationFlowType.value ? t('submitButtonLabel') : primaryButtonLabel.value,
+  pDisabled: selectedCollaborators.value.length === 0,
+  pLoading: isNextButtonLoading.value,
+  pTestId: 'nextButton',
+}))
 
 function handlePreviousClick() {
   if (!activeStep.value) {
@@ -205,8 +211,6 @@ function handlePreviousClick() {
     activeStep.value--
   }
 }
-
-const isNextButtonLoading = ref<boolean>(false)
 
 async function handleNextClick() {
   if (activeStep.value === 0) {

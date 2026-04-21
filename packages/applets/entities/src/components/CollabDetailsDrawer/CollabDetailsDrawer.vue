@@ -77,25 +77,12 @@
       </PFormItem>
     </PForm>
     <template #footer>
-      <div class="margin-left--auto">
-        <PButton
-          class="margin-right--4"
-          pType="secondary"
-          pPlain
-          data-testid="collab-form-cancel-button"
-          @click="handleCloseDrawer"
-        >
-          {{ t('cancel') }}
-        </PButton>
-        <PButton
-          :pDisabled="isSubmitButtonDisabled"
-          pType="primary"
-          data-testid="collab-form-submit-button"
-          @click="handleCollaboratorUpdate"
-        >
-          {{ t('submit') }}
-        </PButton>
-      </div>
+      <PDrawerActions
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
+        @click-back-cta="handleCloseDrawer"
+        @click-primary-cta="handleCollaboratorUpdate"
+      />
     </template>
   </PDrawer>
 </template>
@@ -105,8 +92,8 @@ import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref, watch } from 'vue'
 import { useDebounce } from '@pulse/toolbox'
 import {
-  PButton,
   PDrawer,
+  PDrawerActions,
   PForm,
   PFormItem,
   PInput,
@@ -114,7 +101,7 @@ import {
   PUserCard,
   PLoader,
 } from '@pulse/styleguide/components'
-import type { FormInstance, FormRules } from '@pulse/styleguide/types'
+import type { FormInstance, FormRules, PDrawerActionButton } from '@pulse/styleguide/types'
 import type CollabDetailsDrawerProps from './CollabDetailsDrawerTypes'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { validPhoneNumberPattern } from '@entities/utils/helpers/forms'
@@ -169,6 +156,16 @@ const isCollabDetailsDrawerVisible = computed({
   get: () => props.modelValue,
   set: (isOpened: boolean) => emit('update:modelValue', isOpened),
 })
+
+const backCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('cancel'),
+  pTestId: 'collab-form-cancel-button',
+}))
+const primaryCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('submit'),
+  pDisabled: isSubmitButtonDisabled.value,
+  pTestId: 'collab-form-submit-button',
+}))
 
 // Form part
 const isLoading = ref(false)

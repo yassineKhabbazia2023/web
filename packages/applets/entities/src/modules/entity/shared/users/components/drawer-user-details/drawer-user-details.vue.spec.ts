@@ -22,7 +22,6 @@ const createWrapper = async (editMode: boolean = false): Promise<VueWrapper<any>
     global: {
       stubs: {
         PFormItem: { template: '<div><slot /></div>' },
-        PButton: true,
       },
     },
   })

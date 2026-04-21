@@ -3,7 +3,6 @@
     <PField
       v-for="(field, index) in internalFields"
       :key="index"
-      :ref="(fieldRef: any) => registerFieldRef(fieldRef, field)"
       v-bind="field"
       @update:model-value="(value: any) => onUpdateModelValue(field.pFieldKey, value)"
     />
@@ -13,7 +12,6 @@
 <script setup lang="ts" generic="T">
 import { computed, ref } from 'vue'
 import PField from '../PField'
-import type { PFieldProps } from '../PField/PFieldTypes'
 import type { PFieldSetProps } from './PFieldSetTypes'
 import { getInternalFields } from './PFieldSetUtils'
 
@@ -22,7 +20,6 @@ const props = withDefaults(defineProps<PFieldSetProps<T>>(), {
 })
 
 const disabledFields = ref<string[]>([])
-const fieldRefs = ref<Record<string, typeof PField | null>>({})
 
 const internalFields = computed(() =>
   getInternalFields<T>(props.pFields, props.pModel, props.pReadonly, disabledFields.value),
@@ -34,10 +31,6 @@ const emit = defineEmits<{
 
 function onUpdateModelValue(fieldKey: string, fieldValue: any) {
   emit('update:pModel', fieldKey, fieldValue)
-}
-
-function registerFieldRef(fieldRef: any, field: PFieldProps<T>) {
-  fieldRefs.value[field.pFieldKey] = fieldRef
 }
 
 function enableField(fieldKey: string) {

@@ -100,8 +100,8 @@ describe('delegationDrawer', () => {
       const wrapper = createFullDelegationWrapper()
       await nextTick()
 
-      const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'NextPreviousButtons' })
-      await nextPreviousButtonsWrapper.vm.$emit('click-next')
+      const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'PDrawerActions' })
+      await nextPreviousButtonsWrapper.vm.$emit('click-primary-cta')
 
       const pStepsWrapper = wrapper.findComponent({ name: 'PSteps' })
       expect(pStepsWrapper.props('pActive')).toBe(1)
@@ -138,16 +138,16 @@ describe('delegationDrawer', () => {
       it('should set selectedCollaborators on collaborator-selection', async () => {
         const wrapper = createWrapper()
         const addDelegatesStepWrapper = wrapper.findComponent({ name: 'AddDelegatesStep' })
-        const nextPreviousButtonWrapper = wrapper.findComponent({ name: 'NextPreviousButtons' })
+        const nextPreviousButtonWrapper = wrapper.findComponent({ name: 'PDrawerActions' })
         expect(
-          nextPreviousButtonWrapper.props('isNextButtonDisabled'),
+          nextPreviousButtonWrapper.props('pPrimaryCTA').pDisabled,
         ).toBeTruthy()
 
         await addDelegatesStepWrapper.vm.$emit('collaborator-selection', [1, 2, 3])
         // The only use case in this component is enabling or disabling the next button
-        // so i'm checking isNextButtonDisabled state to check if data has been updated
+        // so i'm checking pPrimaryCTA.pDisabled state to check if data has been updated
         expect(
-          nextPreviousButtonWrapper.props('isNextButtonDisabled'),
+          nextPreviousButtonWrapper.props('pPrimaryCTA').pDisabled,
         ).toBeFalsy()
       })
     })
@@ -155,24 +155,22 @@ describe('delegationDrawer', () => {
     describe('nextPreviousButtons', () => {
       it('should close drawer if current step is 0', async () => {
         const wrapper = createWrapper()
-        const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'NextPreviousButtons' })
-        await nextPreviousButtonsWrapper.vm.$emit('click-previous')
+        const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'PDrawerActions' })
+        await nextPreviousButtonsWrapper.vm.$emit('click-back-cta')
 
         expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
       })
 
       it('should call api to complete delegation process when active step is 1', async () => {
-        const expectedNextPreviousButtonPropsBefore = {
-          'isNextButtonDisabled': false,
-          'isNextButtonLoading': false,
-          'nextLabel': 'Next',
-          'previousLabel': 'Cancel',
+        const expectedPropsBefore = {
+          pBackCTA: { pLabel: 'Cancel', pTestId: 'previousButton' },
+          pSecondaryCTA: undefined,
+          pPrimaryCTA: { pLabel: 'Next', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
         }
-        const expectedNextPreviousButtonPropsAfter = {
-          'isNextButtonDisabled': false,
-          'isNextButtonLoading': false,
-          'nextLabel': 'Submit',
-          'previousLabel': 'Cancel',
+        const expectedPropsAfter = {
+          pBackCTA: { pLabel: 'Cancel', pTestId: 'previousButton' },
+          pSecondaryCTA: undefined,
+          pPrimaryCTA: { pLabel: 'Submit', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
         }
         const wrapper = createFullDelegationWrapper()
         await nextTick()
@@ -182,12 +180,12 @@ describe('delegationDrawer', () => {
 
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
 
-        const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'NextPreviousButtons' })
+        const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'PDrawerActions' })
 
-        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedNextPreviousButtonPropsBefore)
+        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedPropsBefore)
 
-        await nextPreviousButtonsWrapper.vm.$emit('click-next')
-        await nextPreviousButtonsWrapper.vm.$emit('click-next')
+        await nextPreviousButtonsWrapper.vm.$emit('click-primary-cta')
+        await nextPreviousButtonsWrapper.vm.$emit('click-primary-cta')
 
         expect(delegateAccountsMock).toHaveBeenCalledExactlyOnceWith({
           accountIds: [],
@@ -214,7 +212,7 @@ describe('delegationDrawer', () => {
 
         await flushPromises()
 
-        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedNextPreviousButtonPropsAfter)
+        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedPropsAfter)
 
         expect(PNotificationMock).toHaveBeenCalledOnce()
       })
@@ -230,9 +228,9 @@ describe('delegationDrawer', () => {
 
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
 
-        const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'NextPreviousButtons' })
-        await nextPreviousButtonsWrapper.vm.$emit('click-next')
-        await nextPreviousButtonsWrapper.vm.$emit('click-next')
+        const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'PDrawerActions' })
+        await nextPreviousButtonsWrapper.vm.$emit('click-primary-cta')
+        await nextPreviousButtonsWrapper.vm.$emit('click-primary-cta')
 
         expect(delegateAccountsMock).toHaveBeenCalledOnce()
 
@@ -243,12 +241,11 @@ describe('delegationDrawer', () => {
       it('should directly post user on "specific" delegation flow type', async () => {
         const wrapper = createWrapper()
         const hasPennylaneAccessMock = true
-        const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'NextPreviousButtons' })
-        const expectedNextPreviousButtonProps = {
-          'isNextButtonDisabled': false,
-          'isNextButtonLoading': false,
-          'nextLabel': 'Submit',
-          'previousLabel': 'Cancel',
+        const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'PDrawerActions' })
+        const expectedProps = {
+          pBackCTA: { pLabel: 'Cancel', pTestId: 'previousButton' },
+          pSecondaryCTA: undefined,
+          pPrimaryCTA: { pLabel: 'Submit', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
         }
 
         expect(PNotificationMock).not.toHaveBeenCalled()
@@ -257,9 +254,9 @@ describe('delegationDrawer', () => {
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
         await addDelegatesStepWrapper.vm.$emit('update:hasPennylaneAccess', hasPennylaneAccessMock)
 
-        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedNextPreviousButtonProps)
+        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedProps)
 
-        await nextPreviousButtonsWrapper.vm.$emit('click-next')
+        await nextPreviousButtonsWrapper.vm.$emit('click-primary-cta')
 
         expect(delegateAccountsMock).toHaveBeenCalledWith(
           {
@@ -288,7 +285,7 @@ describe('delegationDrawer', () => {
 
         await flushPromises()
 
-        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedNextPreviousButtonProps)
+        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedProps)
 
         expect(PNotificationMock).toHaveBeenCalledOnce()
       })

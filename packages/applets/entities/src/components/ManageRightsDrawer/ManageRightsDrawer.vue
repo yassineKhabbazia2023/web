@@ -37,16 +37,10 @@
       :accountNumber="currentEntity.accountNumber"
     />
     <template #footer>
-      <div class="margin-left--auto">
-        <PButton
-          :pDisabled="isFormValid === false"
-          pType="primary"
-          data-testid="manage-rights-submit-button"
-          @click="handleUpdateUserPermissions"
-        >
-          {{ t('submit') }}
-        </PButton>
-      </div>
+      <PDrawerActions
+        :pPrimaryCTA="primaryCTA"
+        @click-primary-cta="handleUpdateUserPermissions"
+      />
     </template>
   </PDrawer>
 </template>
@@ -57,11 +51,12 @@ import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
 import {
   PDrawer,
+  PDrawerActions,
   PUserCard,
   PTag,
-  PButton,
   PLoader,
 } from '@pulse/styleguide/components'
+import type { PDrawerActionButton } from '@pulse/styleguide/types'
 
 import { displayNotification } from '@pulse/styleguide'
 import type {
@@ -106,6 +101,12 @@ const route = useRoute()
 const isLoading = ref(false)
 const authorizationsState = ref<Record<string, AuthorizationState>>({})
 const pennylaneAvailableRoles = ref<PennylaneAvailableRole[]>([])
+
+const primaryCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('submit'),
+  pDisabled: isFormValid.value === false,
+  pTestId: 'manage-rights-submit-button',
+}))
 
 const isManageRightsDrawerVisible = computed({
   get() {

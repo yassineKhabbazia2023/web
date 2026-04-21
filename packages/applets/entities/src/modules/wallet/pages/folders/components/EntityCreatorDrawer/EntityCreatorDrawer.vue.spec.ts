@@ -4,7 +4,7 @@ import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
 import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import EntityCreatorFormStructure from '@entities/config/forms/EntityCreatorFormStructure.json'
 import { EntityCreatorDrawerProps } from '@entities/modules/wallet/types'
-import { PButton } from '@pulse/styleguide/components'
+import { PDrawerActions } from '@pulse/styleguide/components'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
@@ -78,9 +78,9 @@ const defaultProps: EntityCreatorDrawerProps = {
   currentUser: userMock,
 }
 
-const getCreateTestAccountButton = (wrapper: VueWrapper) =>
-  wrapper.findComponent('[data-testid="entity-creator-create-button"]') as ComponentWrapper<
-    InstanceType<typeof PButton>
+const getDrawerActions = (wrapper: VueWrapper) =>
+  wrapper.findComponent({ name: 'PDrawerActions' }) as ComponentWrapper<
+    InstanceType<typeof PDrawerActions>
   >
 
 const createWrapper = (props: EntityCreatorDrawerProps = defaultProps) => {
@@ -88,7 +88,7 @@ const createWrapper = (props: EntityCreatorDrawerProps = defaultProps) => {
     props,
     global: {
       stubs: {
-        PDrawer: { name: 'PDrawer', template: '<div><slot/></div>', events: ['close-drawer-button'] },
+        PDrawer: { name: 'PDrawer', template: '<div><slot/><slot name="footer"/></div>', events: ['close-drawer-button'] },
         CollaboratorAutocomplete: {
           name: 'CollaboratorAutocomplete',
           template: '<div></div>',
@@ -111,7 +111,12 @@ const createWrapper = (props: EntityCreatorDrawerProps = defaultProps) => {
         },
         PForm: { name: 'PForm', template: '<div><slot/></div>', props: ['pModel'] },
         PFormItem: { name: 'PFormItem', template: '<div><slot/></div>' },
-        PButton: { name: 'PButton', template: '<button><slot/></button>', props: ['pDisabled'] },
+        PDrawerActions: {
+          name: 'PDrawerActions',
+          template: '<div></div>',
+          props: ['pBackCTA', 'pPrimaryCTA'],
+          emits: ['click-back-cta', 'click-primary-cta'],
+        },
       },
     },
   })
@@ -198,21 +203,21 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
     })
 
     it("should emit the 'update:modelValue' event when the cancel button is clicked", async () => {
-      const cancelButton = wrapper.findComponent('[data-testid="entity-creator-cancel-button"]')
+      const drawerActions = getDrawerActions(wrapper)
 
-      cancelButton.trigger('click')
+      drawerActions.vm.$emit('click-back-cta')
       await nextTick()
 
       expect(wrapper.emitted('update:modelValue')).toStrictEqual([[false]])
     })
 
     it('should disable the create button when no collaborator is selected', async () => {
-      const createButton = getCreateTestAccountButton(wrapper)
+      const drawerActions = getDrawerActions(wrapper)
 
       wrapper.vm.onClickDelete(userMock.id)
       await nextTick()
 
-      expect(createButton.props('pDisabled')).toBeTruthy()
+      expect(drawerActions.props('pPrimaryCTA')!.pDisabled).toBeTruthy()
     })
 
     it('should call API when email is typed', async () => {
@@ -315,8 +320,8 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
       const userAction = wrapper.findComponent({ name: 'PUserActionWithRoles' })
       await userAction.vm.$emit('update:p-options-value', [CollaboratorRole.CLP, CollaboratorRole.AM])
 
-      const createButton = getCreateTestAccountButton(wrapper)
-      await createButton.trigger('click')
+      const drawerActions = getDrawerActions(wrapper)
+      await drawerActions.vm.$emit('click-primary-cta')
       await flushPromises()
 
       expect(createTestAccountMock).toHaveBeenCalledWith(
@@ -346,8 +351,8 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
     })
 
     it('should send undefined role GUIDs when no roles are assigned', async () => {
-      const createButton = getCreateTestAccountButton(wrapper)
-      await createButton.trigger('click')
+      const drawerActions = getDrawerActions(wrapper)
+      await drawerActions.vm.$emit('click-primary-cta')
       await flushPromises()
 
       expect(createTestAccountMock).toHaveBeenCalledWith(

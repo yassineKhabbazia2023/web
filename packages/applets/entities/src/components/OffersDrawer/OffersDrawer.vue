@@ -124,14 +124,13 @@
         />
       </template>
       <template #footer>
-        <NextPreviousButtons
+        <PDrawerActions
           v-if="!!currentSubscriptionOffer"
           data-testid="next-previous-buttons"
-          :previousLabel="t('previousLabel')"
-          :nextLabel="nextLabel"
-          :isNextButtonDisabled="isNextButtonDisabled"
-          @click-previous="onClickPrevious"
-          @click-next="onClickNext"
+          :pBackCTA="backCTA"
+          :pPrimaryCTA="primaryCTA"
+          @click-back-cta="onClickPrevious"
+          @click-primary-cta="onClickNext"
         />
       </template>
     </PDrawer>
@@ -143,14 +142,13 @@ import { logger } from '@pulse/toolbox'
 import { computed, ref, onMounted, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@pulse/toolbox/utils/url'
-import { PDrawer, PSteps, PStep, PIcon, PLoader } from '@pulse/styleguide/components'
+import { PDrawer, PDrawerActions, PSteps, PStep, PIcon, PLoader } from '@pulse/styleguide/components'
 import { AppColors, displayNotification } from '@pulse/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
 import StepNote from '@entities/components/StepNote'
 import CustomersDetails from '@entities/components/CustomersDetails'
 import CompanyInformation from '@entities/components/CompanyInformation'
-import NextPreviousButtons from '@entities/components/NextPreviousButtons'
 import ConfirmationModal from '@entities/components/ConfirmationModal'
 import ManageCollaborators from '@entities/components/ManageCollaborators'
 import {
@@ -393,6 +391,13 @@ const initNoteSteps = () => {
 const nextLabel = computed((): string => {
   return isSubmitButton.value ? t('submitLabel') : t('nextLabel')
 })
+
+const backCTA = computed(() => ({ pLabel: t('previousLabel'), pTestId: 'previousButton' }))
+const primaryCTA = computed(() => ({
+  pLabel: nextLabel.value,
+  pDisabled: isNextButtonDisabled.value,
+  pTestId: 'nextButton',
+}))
 
 const offersDrawerTitle = computed((): string => {
   if (currentSubscriptionOffer.value) {

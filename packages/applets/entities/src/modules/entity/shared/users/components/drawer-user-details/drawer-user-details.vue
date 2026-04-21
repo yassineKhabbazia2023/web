@@ -78,25 +78,12 @@
     </PForm>
 
     <template #footer>
-      <div class="margin-left--auto">
-        <PButton
-          pType="secondary"
-          pPlain
-          data-testid="cancel-btn"
-          @click="closeDrawer"
-        >
-          {{ t('cancel') }}
-        </PButton>
-        <PButton
-          v-if="editMode"
-          class="margin-left--4"
-          pType="primary"
-          data-testid="submit-btn"
-          @click="handleSubmit(formRef)"
-        >
-          {{ t('submit') }}
-        </PButton>
-      </div>
+      <PDrawerActions
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
+        @click-back-cta="closeDrawer"
+        @click-primary-cta="handleSubmit(formRef)"
+      />
     </template>
   </PDrawer>
 </template>
@@ -105,8 +92,8 @@
 import { useI18n } from 'vue-i18n'
 import { computed, reactive, ref, onMounted } from 'vue'
 import {
-  PButton,
   PDrawer,
+  PDrawerActions,
   PForm,
   PFormItem,
   PInput,
@@ -114,7 +101,7 @@ import {
   PTag,
 } from '@pulse/styleguide/components'
 import { PNotification } from '@pulse/styleguide'
-import type { FormInstance, FormRules } from '@pulse/styleguide/types'
+import type { FormInstance, FormRules, PDrawerActionButton } from '@pulse/styleguide/types'
 import type { Props } from './drawer-user-details.types'
 import { getContactById, patchContact } from '@entities/services/contact'
 import type { Contact, PatchContactPayload } from '@entities/services/contact/contactTypes'
@@ -164,6 +151,14 @@ const drawerModel = computed({
   get: () => props.hasDrawerOpened,
   set: value => emits('update:modelValue', value),
 })
+
+const backCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('cancel'),
+  pTestId: 'cancel-btn',
+}))
+const primaryCTA = computed<PDrawerActionButton | undefined>(() =>
+  props.editMode ? { pLabel: t('submit'), pTestId: 'submit-btn' } : undefined,
+)
 
 const userInfo = ref<Contact>()
 const mobilePhone = ref<string | undefined>()

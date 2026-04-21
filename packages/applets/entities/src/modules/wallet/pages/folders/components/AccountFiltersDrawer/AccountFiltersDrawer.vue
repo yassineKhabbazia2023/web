@@ -32,33 +32,21 @@
       </PFormItem>
     </PForm>
     <template #footer>
-      <div class="margin-left--auto">
-        <PButton
-          class="margin-right--4"
-          pType="secondary"
-          pPlain
-          :pDisabled="hasActiveFilters === false"
-          data-testid="account-filters-drawer__reset-button"
-          @click="resetAccountFilters"
-        >
-          {{ t('reset') }}
-        </PButton>
-        <PButton
-          pType="primary"
-          data-testid="account-filters-drawer__apply-button"
-          @click="applyAccountFilters"
-        >
-          {{ t('apply') }}
-        </PButton>
-      </div>
+      <PDrawerActions
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
+        @click-back-cta="resetAccountFilters"
+        @click-primary-cta="applyAccountFilters"
+      />
     </template>
   </PDrawer>
 </template>
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { AppColors } from '@pulse/styleguide'
-import { PDrawer, PForm, PFormItem, PButton, PSwitch } from '@pulse/styleguide/components'
+import { PDrawer, PDrawerActions, PForm, PFormItem, PSwitch } from '@pulse/styleguide/components'
+import type { PDrawerActionButton } from '@pulse/styleguide/types'
 import type { AccountFiltersDrawerProps } from './account-filters-drawer.types'
 import { useUserStore } from '@pulse/common/stores'
 import type { AccountFilters } from '@entities/types'
@@ -104,6 +92,16 @@ const emit = defineEmits<{
 
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
+
+const backCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('reset'),
+  pDisabled: hasActiveFilters.value === false,
+  pTestId: 'account-filters-drawer__reset-button',
+}))
+const primaryCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('apply'),
+  pTestId: 'account-filters-drawer__apply-button',
+}))
 
 // #region Actions Related to Filters
 const internalFilters = ref<AccountFilters>({

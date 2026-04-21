@@ -112,11 +112,11 @@ describe('collabRightsDrawer', () => {
     it('should have a preselected role ID, and the validate button should be disabled', () => {
       const collabRoles = wrapper.findComponent({ name: 'CollabRoles' })
       const nextPreviousButtons = wrapper.findComponent({
-        name: 'NextPreviousButtons',
+        name: 'PDrawerActions',
       })
 
       expect(collabRoles.props('selectedRoleId')).toBe(mockedSelectedRoleId)
-      expect(nextPreviousButtons.props('isNextButtonDisabled')).toBeTruthy()
+      expect(nextPreviousButtons.props('pPrimaryCTA').pDisabled).toBeTruthy()
     })
     it("should show caollaborator roles when viewing the rights list and clicking 'Previous'", async () => {
       let collabRoles = wrapper.findComponent({ name: 'CollabRoles' })
@@ -130,9 +130,9 @@ describe('collabRightsDrawer', () => {
       expect(rightsList.exists()).toBeTruthy()
 
       const nextPreviousButtons = wrapper.findComponent({
-        name: 'NextPreviousButtons',
+        name: 'PDrawerActions',
       })
-      nextPreviousButtons.vm.$emit('click-previous')
+      nextPreviousButtons.vm.$emit('click-back-cta')
       await nextTick()
       collabRoles = wrapper.findComponent({ name: 'CollabRoles' })
 
@@ -144,10 +144,10 @@ describe('collabRightsDrawer', () => {
       collabRoles.vm.$emit('update:selectedRoleId', mockedCollabRoles[0].id)
       await nextTick()
       const nextPreviousButtons = wrapper.findComponent({
-        name: 'NextPreviousButtons',
+        name: 'PDrawerActions',
       })
 
-      expect(nextPreviousButtons.props('isNextButtonDisabled')).toBeFalsy()
+      expect(nextPreviousButtons.props('pPrimaryCTA').pDisabled).toBeFalsy()
       expect(collabRoles.props('selectedRoleId')).toBe(mockedCollabRoles[0].id)
     })
     it('should call the auth API with the correct parameters to update collaborator permissions', () => {
@@ -155,9 +155,9 @@ describe('collabRightsDrawer', () => {
       collabRoles.vm.$emit('display-manage-rights')
 
       const nextPreviousButtons = wrapper.findComponent({
-        name: 'NextPreviousButtons',
+        name: 'PDrawerActions',
       })
-      nextPreviousButtons.vm.$emit('click-next')
+      nextPreviousButtons.vm.$emit('click-primary-cta')
 
       expect(mockUpdateUserPermission).toHaveBeenCalledExactlyOnceWith(1, null, mockedPermissionCodes)
     })
@@ -172,9 +172,9 @@ describe('collabRightsDrawer', () => {
       collabRoles.vm.$emit('display-manage-rights')
 
       const nextPreviousButtons = wrapper.findComponent({
-        name: 'NextPreviousButtons',
+        name: 'PDrawerActions',
       })
-      nextPreviousButtons.vm.$emit('click-next')
+      nextPreviousButtons.vm.$emit('click-primary-cta')
       await flushPromises()
 
       expect(loggerErrorSpy).toHaveBeenCalledExactlyOnceWith('Permission update unsuccessful: ', expectedErrorMessage)
@@ -189,9 +189,9 @@ describe('collabRightsDrawer', () => {
       collabRoles.vm.$emit('update:selectedRoleId', mockedCollabRoles[0].id)
 
       const nextPreviousButtons = wrapper.findComponent({
-        name: 'NextPreviousButtons',
+        name: 'PDrawerActions',
       })
-      nextPreviousButtons.vm.$emit('click-next')
+      nextPreviousButtons.vm.$emit('click-primary-cta')
 
       expect(spyUpdateCollaborator).toHaveBeenCalledExactlyOnceWith(1, {
         personaId: mockedCollabRoles[0].id,

@@ -12,11 +12,11 @@
       :stepIndex="stepIndex"
     />
     <template #footer>
-      <NextPreviousButtons
-        :previousLabel="previousLabel"
-        :nextLabel="nextLabel"
-        @click-next="onClickNext"
-        @click-previous="onClickPrevious"
+      <PDrawerActions
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
+        @click-primary-cta="onClickNext"
+        @click-back-cta="onClickPrevious"
       />
     </template>
   </PDrawer>
@@ -25,8 +25,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PTitle } from '@pulse/styleguide/components'
-import NextPreviousButtons from '@entities/components/NextPreviousButtons'
+import { PDrawer, PDrawerActions, PTitle } from '@pulse/styleguide/components'
 import ProspectCreationContent from './components/prospect-creation-content/prospect-creation-content.vue'
 import { PROSPECT_CREATION_DRAWER_STEPS } from './prospect-creation-drawer.const'
 import { useProspectCreationDrawer } from './prospect-creation-drawer.composable'
@@ -70,6 +69,9 @@ const {
 
 const previousLabel = computed(() => isFirstStep.value ? t('cancel') : t('previous'))
 const nextLabel = computed(() => isLastStep.value ? t('submit') : t('next'))
+
+const backCTA = computed(() => ({ pLabel: previousLabel.value, pTestId: 'previousButton' }))
+const primaryCTA = computed(() => ({ pLabel: nextLabel.value, pTestId: 'nextButton' }))
 
 function closeDrawer() {
   isDrawerOpened.value = false

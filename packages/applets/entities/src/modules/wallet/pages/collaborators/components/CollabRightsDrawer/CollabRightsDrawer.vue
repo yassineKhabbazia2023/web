@@ -43,13 +43,12 @@
       />
     </template>
     <template #footer>
-      <NextPreviousButtons
-        :previousLabel="previousLabel"
-        :nextLabel="t('submitLabel')"
-        :isNextButtonDisabled="isSelectedRoleNotChanged"
+      <PDrawerActions
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
         data-testid="next-previous-buttons"
-        @click-previous="handlePreviousClick"
-        @click-next="handleNextClick"
+        @click-back-cta="handlePreviousClick"
+        @click-primary-cta="handleNextClick"
       />
     </template>
   </PDrawer>
@@ -61,6 +60,7 @@ import { useI18n } from 'vue-i18n'
 import { computed, ref, onMounted } from 'vue'
 import {
   PDrawer,
+  PDrawerActions,
   PTag,
   PUserCard,
   PLoader,
@@ -68,7 +68,6 @@ import {
 import { PNotification } from '@pulse/styleguide'
 import CollabRoles from './components/CollabRoles'
 import RightsList from '@entities/components/ManageRightsDrawer/components/RightsList'
-import NextPreviousButtons from '@entities/components/NextPreviousButtons'
 import { updateCollaborator, fetchContactRoles } from '@entities/services/collaborator'
 import type { AuthorizationState } from '@entities/components/ManageRightsDrawer/ManageRightsTypes'
 import { updateUserPermissions } from '@entities/services/authorization'
@@ -133,6 +132,13 @@ const isSelectedRoleNotChanged = computed(
     selectedRoleId.value === preSelectedRoleId.value &&
     currentStep.value !== CollabRightsDrawerSteps.MANAGE_RIGHTS,
 )
+
+const backCTA = computed(() => ({ pLabel: previousLabel.value, pTestId: 'previousButton' }))
+const primaryCTA = computed(() => ({
+  pLabel: t('submitLabel'),
+  pDisabled: isSelectedRoleNotChanged.value,
+  pTestId: 'nextButton',
+}))
 
 const handleNextClick = () => {
   if (currentStep.value === CollabRightsDrawerSteps.MANAGE_RIGHTS) {

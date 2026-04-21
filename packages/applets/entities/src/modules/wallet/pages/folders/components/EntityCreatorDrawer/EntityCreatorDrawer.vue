@@ -94,28 +94,15 @@
           @update:p-options-value="onUpdateCollaboratorRoles(selectedCollaborator.id, $event)"
         />
       </div>
-      <div class="flex flex--justify-content-flex-end">
-        <PButton
-          class="margin-right--4"
-          pType="secondary"
-          pSize="default"
-          data-testid="entity-creator-cancel-button"
-          @click="onCloseDrawer"
-        >
-          {{ t('cancel') }}
-        </PButton>
-        <PButton
-          pType="primary"
-          pSize="default"
-          :pLoading="isTestAccountCreating"
-          :pDisabled="!canDelete"
-          data-testid="entity-creator-create-button"
-          @click="onCreateClick"
-        >
-          {{ t('create') }}
-        </PButton>
-      </div>
     </PForm>
+    <template #footer>
+      <PDrawerActions
+        :pBackCTA="backCTA"
+        :pPrimaryCTA="primaryCTA"
+        @click-back-cta="onCloseDrawer"
+        @click-primary-cta="onCreateClick"
+      />
+    </template>
   </PDrawer>
 </template>
 
@@ -124,15 +111,15 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { setWith } from 'lodash-es'
 import { logger, useDebounce } from '@pulse/toolbox'
-import type { FormInstance, PDropdownOption } from '@pulse/styleguide/types'
+import type { FormInstance, PDropdownOption, PDrawerActionButton } from '@pulse/styleguide/types'
 import { getInitials } from '@pulse/common/utils'
 import { AvatarRoles, displayNotification } from '@pulse/styleguide'
 import {
   PDrawer,
+  PDrawerActions,
   PUserCard,
   PForm,
   PFieldSet,
-  PButton,
   PFormItem,
   PUserAction,
   PLoader,
@@ -202,6 +189,17 @@ const newTestAccount = ref<OnboardingDetails>({ isSignatory: true } as Onboardin
 const collaboratorRoleAssignments = ref<Map<number, string[]>>(new Map())
 
 const canDelete = computed(() => selectedCollaborators.value.length >= 1)
+
+const backCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('cancel'),
+  pTestId: 'entity-creator-cancel-button',
+}))
+const primaryCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('create'),
+  pLoading: isTestAccountCreating.value,
+  pDisabled: canDelete.value === false || isLoading.value,
+  pTestId: 'entity-creator-create-button',
+}))
 const isEntityCreatorDrawerVisible = computed({
   get() {
     return props.modelValue

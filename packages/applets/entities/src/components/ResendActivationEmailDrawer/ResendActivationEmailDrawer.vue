@@ -47,16 +47,10 @@
       </div>
     </div>
     <template #footer>
-      <div class="margin-left--auto">
-        <PButton
-          pType="primary"
-          data-testid="resend-activation-email-submit-button"
-          :pDisabled="selectedUsersIds.length === 0"
-          @click="handleRetryMassActivationEmail"
-        >
-          {{ t('submit') }}
-        </PButton>
-      </div>
+      <PDrawerActions
+        :pPrimaryCTA="primaryCTA"
+        @click-primary-cta="handleRetryMassActivationEmail"
+      />
     </template>
   </PDrawer>
 </template>
@@ -67,11 +61,12 @@ import { useI18n } from 'vue-i18n'
 import { computed, ref, onMounted } from 'vue'
 import {
   PDrawer,
+  PDrawerActions,
   PUserCard,
-  PButton,
   PTag,
   PLoader,
 } from '@pulse/styleguide/components'
+import type { PDrawerActionButton } from '@pulse/styleguide/types'
 import type { ResendActivationEmailDrawerProps } from './ResendActivationEmailDrawerTypes'
 import { fetchAccountContacts } from '@entities/services/wallet'
 import { inviteCustomers } from '@entities/services/contact'
@@ -125,6 +120,12 @@ const emit = defineEmits<{
 const isLoading = ref(true)
 const usersClientAccount = ref<ExtendedUser[]>([])
 const selectedUsersIds = ref<number[]>([])
+
+const primaryCTA = computed<PDrawerActionButton>(() => ({
+  pLabel: t('submit'),
+  pDisabled: selectedUsersIds.value.length === 0,
+  pTestId: 'resend-activation-email-submit-button',
+}))
 
 const isResendActivationEmailDrawerVisible = computed({
   get() {

@@ -38,11 +38,11 @@ const createWrapper = (props?: DeclareCustomerRelationDrawerProps) => {
           props: ['modelValue'],
           events: ['close-drawer-button'],
         },
-        DrawerActionButtons: {
-          name: 'DrawerActionButtons',
+        PDrawerActions: {
+          name: 'PDrawerActions',
           template: '<button></button>',
-          props: ['submitDisabled'],
-          events: ['submit-action'],
+          props: ['pBackCTA', 'pPrimaryCTA'],
+          emits: ['click-back-cta', 'click-primary-cta'],
         },
       },
     },
@@ -72,8 +72,8 @@ describe('DeclareCustomerRelationDrawer', () => {
 
   it('should call updateCustomerRelation and emit event on successful submit', async () => {
     const displayNotificationMock = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
-    const drawerActions = wrapper.findComponent({ name: 'DrawerActionButtons' })
-    drawerActions.vm.$emit('submit-action')
+    const drawerActions = wrapper.findComponent({ name: 'PDrawerActions' })
+    drawerActions.vm.$emit('click-primary-cta')
 
     await nextTick()
 
@@ -85,8 +85,8 @@ describe('DeclareCustomerRelationDrawer', () => {
   it('should display error notification on failed update', async () => {
     const displayNotificationMock = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
     updateCustomerRelationMock.mockRejectedValue(new Error('Error API'))
-    const drawerActions = wrapper.findComponent({ name: 'DrawerActionButtons' })
-    drawerActions.vm.$emit('submit-action')
+    const drawerActions = wrapper.findComponent({ name: 'PDrawerActions' })
+    drawerActions.vm.$emit('click-primary-cta')
 
     await nextTick()
 
@@ -94,9 +94,9 @@ describe('DeclareCustomerRelationDrawer', () => {
   })
 
   it('should disable submit button if status did not change', async () => {
-    const drawerActions = wrapper.findComponent({ name: 'DrawerActionButtons' })
+    const drawerActions = wrapper.findComponent({ name: 'PDrawerActions' })
     await nextTick()
 
-    expect(drawerActions.props('submitDisabled')).toBe(true)
+    expect(drawerActions.props('pPrimaryCTA').pDisabled).toBe(true)
   })
 })

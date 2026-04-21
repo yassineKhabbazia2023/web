@@ -167,16 +167,16 @@ describe('offersDrawer', () => {
       expect(offer.exists()).toBe(true)
     })
 
-    it('should hide current offer when click on previousButton', async () => {
+    it('should hide current offer when click on backButton', async () => {
       const wrapper = await getWrapper(true)
 
       const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
       subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
       await flushPromises()
 
-      const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
 
-      nextPreviousButtons.vm.$emit('click-previous')
+      nextPreviousButtons.vm.$emit('click-back-cta')
       await nextTick()
 
       const offers = wrapper.findComponent({ name: 'SubscriptionOffers' })
@@ -367,14 +367,14 @@ describe('offersDrawer', () => {
         subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
         await flushPromises()
 
-        const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
+        const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
         const STEP_TO_REACH = 3
         for (let i = 0; i < STEP_TO_REACH; i++) {
           if (i === STEP_TO_REACH - 1) {
             const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
             manageCollaboratorsComponent.vm.$emit('update:selectedCollaboratorsWithRoles', mockedCollaboratorIds)
           }
-          nextPreviousButtons.vm.$emit('click-next')
+          nextPreviousButtons.vm.$emit('click-primary-cta')
           await nextTick()
         }
 
@@ -446,9 +446,9 @@ describe('offersDrawer', () => {
       subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
       await flushPromises()
 
-      const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
 
-      await nextPreviousButtons.vm.$emit('click-next')
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
 
       const customersStep = wrapper.find('[data-testid=customers-step]')
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
@@ -456,7 +456,7 @@ describe('offersDrawer', () => {
       expect(customersNoteStep.props()).toStrictEqual({ disabled: false, modelValue: notes[1] })
       expect(customersStep.exists()).toBe(true)
 
-      await nextPreviousButtons.vm.$emit('click-next')
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
       const collaboratorsStep = wrapper.find('[data-testid=collaborators-step]')
       expect(collaboratorsStep.exists()).toBe(true)
     })
@@ -468,23 +468,23 @@ describe('offersDrawer', () => {
       subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
       await flushPromises()
 
-      const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
 
-      await nextPreviousButtons.vm.$emit('click-next')
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
-      await nextPreviousButtons.vm.$emit('click-next')
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
 
       const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
       manageCollaboratorsComponent.vm.$emit('update:selectedCollaboratorsWithRoles', mockedCollaboratorIds)
 
-      await nextPreviousButtons.vm.$emit('click-next')
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
       const informationStep = wrapper.find('[data-testid=information-step]')
       expect(informationStep.exists()).toBe(true)
 
-      nextPreviousButtons.vm.$emit('click-previous')
-      nextPreviousButtons.vm.$emit('click-previous')
+      nextPreviousButtons.vm.$emit('click-back-cta')
+      nextPreviousButtons.vm.$emit('click-back-cta')
       await nextTick()
 
       const customersStep2 = wrapper.find('[data-testid=customers-step]')
@@ -492,13 +492,13 @@ describe('offersDrawer', () => {
       expect(customersNoteStep2.props('modelValue')).toStrictEqual(notes[1])
       expect(customersStep2.exists()).toBe(true)
 
-      nextPreviousButtons.vm.$emit('click-previous')
+      nextPreviousButtons.vm.$emit('click-back-cta')
       await nextTick()
 
       const offer = wrapper.findComponent({ name: 'OfferSubscription' })
       expect(offer.exists()).toBe(true)
 
-      nextPreviousButtons.vm.$emit('click-previous')
+      nextPreviousButtons.vm.$emit('click-back-cta')
       await nextTick()
 
       subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
@@ -525,14 +525,14 @@ describe('offersDrawer', () => {
       subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
       await flushPromises()
 
-      const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
 
-      await nextPreviousButtons.vm.$emit('click-next')
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
 
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
-      await nextPreviousButtons.vm.$emit('click-next')
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
 
       const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
 
@@ -550,20 +550,20 @@ describe('offersDrawer', () => {
       subscriptionOffers.vm.$emit('select-offer', firstOffer.offerId)
       await flushPromises()
 
-      const nextPreviousButtons = wrapper.findComponent({ name: 'NextPreviousButtons' })
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
 
-      await nextPreviousButtons.vm.$emit('click-next')
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
 
       const customersNoteStep = wrapper.findComponent({ name: 'StepNote' })
       await customersNoteStep.vm.$emit('update:modelValue', notes[1])
 
-      await nextPreviousButtons.vm.$emit('click-next')
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
 
       const manageCollaboratorsComponent = wrapper.findComponent({ name: 'ManageCollaborators' })
       manageCollaboratorsComponent.vm.$emit('update:selectedCollaboratorsWithRoles', [])
       await nextTick()
 
-      expect(nextPreviousButtons.props('isNextButtonDisabled')).toBe(true)
+      expect(nextPreviousButtons.props('pPrimaryCTA').pDisabled).toBe(true)
     })
 
     it('should not display the note textarea when the validation is not required', async () => {
