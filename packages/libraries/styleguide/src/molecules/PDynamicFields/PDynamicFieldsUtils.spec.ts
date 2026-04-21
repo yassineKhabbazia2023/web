@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest'
-import { getMockedFields } from './PFieldSet.mocks'
-import { getInternalFields } from './PFieldSetUtils'
+import { getMockedFields } from './PDynamicFields.mocks'
+import { getInternalFields } from './PDynamicFieldsUtils'
 
-describe('pFieldSetUtils', () => {
+describe('pDynamicFieldsUtils', () => {
   describe('getInternalFields', () => {
     const model = {
       person: {

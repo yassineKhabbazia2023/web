@@ -96,7 +96,7 @@ const createWrapper = (props: EntityCreatorDrawerProps = defaultProps) => {
         },
         PLoader: true,
         PUserCard: true,
-        PFieldSet: { name: 'PFieldSet', template: '<div></div>', events: ['update:pModel'] },
+        PDynamicFields: { name: 'PDynamicFields', template: '<div></div>', events: ['update:pModel'] },
         PUserActionWithRoles: {
           name: 'PUserActionWithRoles',
           template: '<div></div>',
@@ -141,15 +141,15 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
       wrapper.vm.entityCreatorForm.validateField = validateFieldMock
       wrapper.vm.entityCreatorForm.validate = entityCreatorFormValidateMock
     }
-    // If 'any' is not used, it would be necessary to expose the 'entityCreatorFormFieldSet' ref from the EntityCreatorDrawer component to access it.
+    // If 'any' is not used, it would be necessary to expose the 'entityCreatorFormDynamicFields' ref from the EntityCreatorDrawer component to access it.
     const wrapperVm = wrapper.vm as any
-    if (wrapperVm.$refs.entityCreatorFormFieldSet && wrapperVm.$refs.entityCreatorFormFieldSet[1]) {
-      wrapperVm.$refs.entityCreatorFormFieldSet[1].enableField = enableFieldMock
-      wrapperVm.$refs.entityCreatorFormFieldSet[1].disableField = disableFieldMock
+    if (wrapperVm.$refs.entityCreatorFormDynamicFields && wrapperVm.$refs.entityCreatorFormDynamicFields[1]) {
+      wrapperVm.$refs.entityCreatorFormDynamicFields[1].enableField = enableFieldMock
+      wrapperVm.$refs.entityCreatorFormDynamicFields[1].disableField = disableFieldMock
     }
-    if (wrapperVm.$refs.entityCreatorFormFieldSet && wrapperVm.$refs.entityCreatorFormFieldSet[0]) {
-      wrapperVm.$refs.entityCreatorFormFieldSet[0].enableField = enableFieldMock
-      wrapperVm.$refs.entityCreatorFormFieldSet[0].disableField = disableFieldMock
+    if (wrapperVm.$refs.entityCreatorFormDynamicFields && wrapperVm.$refs.entityCreatorFormDynamicFields[0]) {
+      wrapperVm.$refs.entityCreatorFormDynamicFields[0].enableField = enableFieldMock
+      wrapperVm.$refs.entityCreatorFormDynamicFields[0].disableField = disableFieldMock
     }
   })
   describe('display', () => {
@@ -222,28 +222,28 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
 
     it('should call API when email is typed', async () => {
       const emailSuffix = 'john'
-      const pFieldSet = wrapper.findComponent({ name: 'PFieldSet' })
+      const pDynamicFields = wrapper.findComponent({ name: 'PDynamicFields' })
 
-      await pFieldSet.vm.$emit('update:pModel', 'email', emailSuffix)
+      await pDynamicFields.vm.$emit('update:pModel', 'email', emailSuffix)
       await flushPromises()
 
       expect(getAccountUserByEmailMock).toHaveBeenCalledExactlyOnceWith(emailSuffix)
     })
 
     it('should populate form data when search contact API returns a response', async () => {
-      const pFieldSet = wrapper.findComponent({ name: 'PFieldSet' })
+      const pDynamicFields = wrapper.findComponent({ name: 'PDynamicFields' })
       const pForm = wrapper.findComponent({ name: 'pForm' })
 
-      await pFieldSet.vm.$emit('update:pModel', 'email', expectedExistingClient.email)
+      await pDynamicFields.vm.$emit('update:pModel', 'email', expectedExistingClient.email)
       await flushPromises()
 
       expect(pForm.props('pModel')).toMatchObject(expectedExistingClient)
     })
 
     it('should validate and toggle fields when existingContactGuid is filled', async () => {
-      const pFieldSet = wrapper.findComponent({ name: 'PFieldSet' })
+      const pDynamicFields = wrapper.findComponent({ name: 'PDynamicFields' })
 
-      await pFieldSet.vm.$emit('update:pModel', 'email', expectedExistingClient.email)
+      await pDynamicFields.vm.$emit('update:pModel', 'email', expectedExistingClient.email)
       await flushPromises()
 
       expect(disableFieldMock).toHaveBeenCalledTimes(2)
@@ -251,15 +251,15 @@ describe('EntityCreatorDrawer Component - Unit Tests', () => {
     })
 
     it('should clear contact data before making another API call', async () => {
-      const pFieldSet = wrapper.findComponent({ name: 'PFieldSet' })
+      const pDynamicFields = wrapper.findComponent({ name: 'PDynamicFields' })
       const pForm = wrapper.findComponent({ name: 'pForm' })
 
-      await pFieldSet.vm.$emit('update:pModel', 'email', expectedExistingClient.email)
+      await pDynamicFields.vm.$emit('update:pModel', 'email', expectedExistingClient.email)
       await flushPromises()
       expect(pForm.props('pModel')).toMatchObject(expectedExistingClient)
 
       getAccountUserByEmailMock.mockResolvedValue(null)
-      await pFieldSet.vm.$emit('update:pModel', 'email', 'ljack')
+      await pDynamicFields.vm.$emit('update:pModel', 'email', 'ljack')
       await flushPromises()
 
       expect(enableFieldMock).toHaveBeenCalledTimes(2)

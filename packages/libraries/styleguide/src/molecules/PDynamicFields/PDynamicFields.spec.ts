@@ -1,27 +1,27 @@
 import type { VueWrapper } from '@vue/test-utils'
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, beforeEach } from 'vitest'
-import type { PFieldSetProps } from './PFieldSetTypes'
-import { getMockedFields } from './PFieldSet.mocks'
+import type { PDynamicFieldsProps } from './PDynamicFieldsTypes'
+import { getMockedFields } from './PDynamicFields.mocks'
 import { nextTick } from 'vue'
-import PFieldSet from '.'
+import PDynamicFields from '.'
 
 type T = Record<string, any>
 
-function createWrapper(props: PFieldSetProps<T>) {
-  return mount(PFieldSet, {
+function createWrapper(props: PDynamicFieldsProps<T>) {
+  return mount(PDynamicFields, {
     props: props as any,
   })
 }
 
 const pFields = getMockedFields('companyIdentification') ?? []
 
-const props: PFieldSetProps<T> = {
+const props: PDynamicFieldsProps<T> = {
   pModel: {},
   pFields,
 }
 
-describe('test PFieldSet', () => {
+describe('test PDynamicFields', () => {
   let wrapper: ReturnType<typeof createWrapper>
 
   let pFieldComponents: ReturnType<typeof wrapper.findAllComponents>

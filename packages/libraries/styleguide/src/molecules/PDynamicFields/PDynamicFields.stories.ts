@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import { setWith } from 'lodash-es'
-import PFieldSet from './PFieldSet.vue'
+import PDynamicFields from './PDynamicFields.vue'
 import PForm from '../PForm'
-import { getMockedFields } from './PFieldSet.mocks'
-import { PFieldSetProps } from './PFieldSetTypes'
+import { getMockedFields } from './PDynamicFields.mocks'
+import type { PDynamicFieldsProps } from './PDynamicFieldsTypes'
 
 interface CustomModel {
   person: {
@@ -28,13 +28,13 @@ interface CustomModel {
   activityType?: string[]
 }
 
-const meta: Meta<typeof PFieldSet> = {
-  title: 'Molecules/PFieldSet',
-  component: PFieldSet as any,
+const meta: Meta<typeof PDynamicFields> = {
+  title: 'Molecules/PDynamicFields',
+  component: PDynamicFields as any,
   parameters: {
     docs: {
       description: {
-        component: 'A fieldset component that renders multiple fields based on a field configuration array. Supports various field types and automatic model binding.',
+        component: 'A dynamic fields component that renders multiple fields based on a field configuration array. Supports various field types and automatic model binding.',
       },
     },
     layout: 'fullscreen',
@@ -67,11 +67,11 @@ const meta: Meta<typeof PFieldSet> = {
 }
 
 export default meta
-type Story = StoryObj<PFieldSetProps<CustomModel>>
+type Story = StoryObj<PDynamicFieldsProps<CustomModel>>
 
 export const CompanyIdentification: Story = {
   render: (args) => ({
-    components: { PFieldSet, PForm },
+    components: { PDynamicFields, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -100,7 +100,7 @@ export const CompanyIdentification: Story = {
       <div style="padding: 20px;">
         <h2>Company Identification</h2>
         <PForm pLabelPosition="top">
-          <PFieldSet
+          <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />
@@ -119,7 +119,7 @@ export const CompanyIdentification: Story = {
 
 export const CompanyContact: Story = {
   render: (args) => ({
-    components: { PFieldSet, PForm },
+    components: { PDynamicFields, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -148,7 +148,7 @@ export const CompanyContact: Story = {
       <div style="padding: 20px;">
         <h2>Company Contact Information</h2>
         <PForm pLabelPosition="top">
-          <PFieldSet
+          <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />
@@ -167,7 +167,7 @@ export const CompanyContact: Story = {
 
 export const CompanyAddress: Story = {
   render: (args) => ({
-    components: { PFieldSet, PForm },
+    components: { PDynamicFields, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -200,7 +200,7 @@ export const CompanyAddress: Story = {
       <div style="padding: 20px;">
         <h2>Company Address</h2>
         <PForm pLabelPosition="top">
-          <PFieldSet
+          <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />
@@ -219,7 +219,7 @@ export const CompanyAddress: Story = {
 
 export const AccountingInformation: Story = {
   render: (args) => ({
-    components: { PFieldSet, PForm },
+    components: { PDynamicFields, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -254,7 +254,7 @@ export const AccountingInformation: Story = {
       <div style="padding: 20px;">
         <h2>Accounting and Tax Information</h2>
         <PForm pLabelPosition="top">
-          <PFieldSet
+          <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />
@@ -273,7 +273,7 @@ export const AccountingInformation: Story = {
 
 export const ReadonlyMode: Story = {
   render: (args) => ({
-    components: { PFieldSet, PForm },
+    components: { PDynamicFields, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -302,7 +302,7 @@ export const ReadonlyMode: Story = {
       <div style="padding: 20px;">
         <h2>Readonly Mode</h2>
         <PForm pLabelPosition="top">
-          <PFieldSet
+          <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />
@@ -322,7 +322,7 @@ export const ReadonlyMode: Story = {
 
 export const CompleteForm: Story = {
   render: (args) => ({
-    components: { PFieldSet, PForm },
+    components: { PDynamicFields, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -371,7 +371,7 @@ export const CompleteForm: Story = {
           <div v-for="(section, index) in sections" :key="index" 
                style="margin-bottom: 32px; padding: 24px; border: 1px solid #e0e0e0; border-radius: 8px;">
             <h3 style="margin: 0 0 20px 0; color: #333;">{{ section.title }}</h3>
-            <PFieldSet
+            <PDynamicFields
               :pModel="model"
               :pFields="section.fields"
               :pReadonly="args.pReadonly"
@@ -391,9 +391,9 @@ export const CompleteForm: Story = {
   },
 }
 
-export const EmptyFieldSet: Story = {
+export const EmptyDynamicFields: Story = {
   render: (args) => ({
-    components: { PFieldSet, PForm },
+    components: { PDynamicFields, PForm },
     setup() {
       const model = ref<CustomModel>({
         person: {
@@ -419,9 +419,9 @@ export const EmptyFieldSet: Story = {
     },
     template: `
       <div style="padding: 20px;">
-        <h2>Empty FieldSet</h2>
+        <h2>Empty Dynamic Fields</h2>
         <PForm pLabelPosition="top">
-          <PFieldSet
+          <PDynamicFields
             v-bind="args"
             @update:p-model="onUpdatePModel"
           />

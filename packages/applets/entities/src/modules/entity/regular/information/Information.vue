@@ -42,7 +42,7 @@
             {{ section.title }}
           </span>
         </p>
-        <PFieldSet
+        <PDynamicFields
           :pModel="currentAccount"
           :pFields="section.fields"
           class="entity-information__form-section-fields"
@@ -76,7 +76,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useUserStore } from '@pulse/common/stores'
-import { PButton, PAlert, PForm, PFieldSet, PLoader } from '@pulse/styleguide/components'
+import { PButton, PAlert, PForm, PDynamicFields, PLoader } from '@pulse/styleguide/components'
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { FormSection } from '@entities/types'
 import { getFormStructure, cleanRecordStructure } from '@entities/utils/referential'

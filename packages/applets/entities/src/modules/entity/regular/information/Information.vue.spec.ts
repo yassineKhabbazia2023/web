@@ -59,7 +59,7 @@ const getWrapper = () => shallowMount(Information, {
       PAlert: {
         template: '<div><slot /></div>',
       },
-      PFieldSet: true,
+      PDynamicFields: true,
       PButton: {
         template: '<div><slot /></div>',
       },

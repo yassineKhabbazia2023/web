@@ -35,7 +35,7 @@ const getWrapper = (pageContext?: SubscriptionDetailsContext) => shallowMount(In
       PForm: {
         template: '<form><slot /></form>',
       },
-      PFieldSet: true,
+      PDynamicFields: true,
       PLoader: true,
     },
   },

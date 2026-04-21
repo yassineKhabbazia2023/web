@@ -79,7 +79,7 @@
         >
           {{ section.title }}
         </p>
-        <PFieldSetAccount
+        <PDynamicFieldsAccount
           :pModel="internalAccount"
           :pFields="section.fields"
           class="company-information__form-section-fields"
@@ -112,7 +112,7 @@ import { AKUITEO_URL } from '@pulse/common/constants'
 import { ref, onMounted, useTemplateRef, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith, get } from 'lodash-es'
-import { PAlert, PForm, PFieldSet, PLoader, PSwitch } from '@pulse/styleguide/components'
+import { PAlert, PForm, PDynamicFields, PLoader, PSwitch } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
 import { type Account } from '@entities/services/account'
@@ -123,7 +123,7 @@ import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { PENNYLANE_REQUIRED_FIELDS, SIREN_FIELD_KEY, HAS_NO_SIREN_FIELD_KEY } from '@entities/constants'
 import type { FormInstance } from '@pulse/styleguide/types'
 
-const PFieldSetAccount = PFieldSet<Account>
+const PDynamicFieldsAccount = PDynamicFields<Account>
 
 const { t } = useI18n({
   inheritLocale: true,

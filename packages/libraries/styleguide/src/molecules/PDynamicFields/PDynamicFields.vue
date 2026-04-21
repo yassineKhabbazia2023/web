@@ -12,10 +12,10 @@
 <script setup lang="ts" generic="T">
 import { computed, ref } from 'vue'
 import PField from '../PField'
-import type { PFieldSetProps } from './PFieldSetTypes'
-import { getInternalFields } from './PFieldSetUtils'
+import type { PDynamicFieldsProps } from './PDynamicFieldsTypes'
+import { getInternalFields } from './PDynamicFieldsUtils'
 
-const props = withDefaults(defineProps<PFieldSetProps<T>>(), {
+const props = withDefaults(defineProps<PDynamicFieldsProps<T>>(), {
   pReadonly: false,
 })
 

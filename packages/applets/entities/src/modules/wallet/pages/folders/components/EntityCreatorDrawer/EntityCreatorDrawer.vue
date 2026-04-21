@@ -50,8 +50,8 @@
             />
           </span>
         </p>
-        <PFieldSet
-          ref="entityCreatorFormFieldSet"
+        <PDynamicFields
+          ref="entityCreatorFormDynamicFields"
           :pModel="newTestAccount"
           :pFields="section.fields"
           class="entity-creator__form-section-fields"
@@ -119,7 +119,7 @@ import {
   PDrawerActions,
   PUserCard,
   PForm,
-  PFieldSet,
+  PDynamicFields,
   PFormItem,
   PUserAction,
   PLoader,
@@ -182,7 +182,7 @@ const isLookingForExistingUser = ref(false)
 const PUserActionWithRoles = PUserAction<string[]>
 
 const entityCreatorForm = ref<FormInstance>()
-const entityCreatorFormFieldSet = ref()
+const entityCreatorFormDynamicFields = ref()
 const selectedCollaborators = ref<Contact[]>([])
 const entityCreatorFormStructure = ref<FormSection[]>()
 const newTestAccount = ref<OnboardingDetails>({ isSignatory: true } as OnboardingDetails)
@@ -302,13 +302,13 @@ const onCreateClick = async () => {
 }
 
 const disableContactFields = () => {
-  entityCreatorFormFieldSet.value[1].disableField('contactLastName')
-  entityCreatorFormFieldSet.value[1].disableField('contactFirstName')
+  entityCreatorFormDynamicFields.value[1].disableField('contactLastName')
+  entityCreatorFormDynamicFields.value[1].disableField('contactFirstName')
 }
 
 const enableContactFields = () => {
-  entityCreatorFormFieldSet.value[1].enableField('contactLastName')
-  entityCreatorFormFieldSet.value[1].enableField('contactFirstName')
+  entityCreatorFormDynamicFields.value[1].enableField('contactLastName')
+  entityCreatorFormDynamicFields.value[1].enableField('contactFirstName')
 }
 
 const validateContactFields = () => {

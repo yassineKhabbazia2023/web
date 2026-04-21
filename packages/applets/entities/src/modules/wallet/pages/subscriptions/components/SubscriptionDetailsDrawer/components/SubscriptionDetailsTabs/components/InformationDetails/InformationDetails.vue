@@ -31,7 +31,7 @@
         >
           {{ section.title }}
         </p>
-        <PFieldSet
+        <PDynamicFields
           :pModel="accountModel"
           :pFields="section.fields"
           class="information-details__form-section-fields"
@@ -57,7 +57,7 @@
 import { logger } from '@pulse/toolbox'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PAlert, PForm, PFieldSet, PLoader, PSwitch } from '@pulse/styleguide/components'
+import { PAlert, PForm, PDynamicFields, PLoader, PSwitch } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { fetchAccount, type Account } from '@entities/services/account'
 import type { InformationDetailsProps } from './InformationDetailsTypes'
