@@ -141,12 +141,19 @@
           </PTableColumn>
           <PTableColumn
             :p-label="t('roles')"
+            pWidth="340"
           >
             <template #default="scope">
               <PTag
                 v-if="isContactSignatory(scope.row.contactId)"
                 :pContent="t('signatoryRoleName')"
                 pColor="light-blue"
+                class="margin-right--2"
+              />
+              <PTag
+                v-if="scope.row.contactFlagPortailFactures"
+                :pContent="t('digitalVaultContactName')"
+                pColor="warning"
               />
             </template>
           </PTableColumn>
@@ -274,6 +281,7 @@ const { d, t } = useI18n({
       on: 'on',
       roles: 'Role(s)',
       signatoryRoleName: 'Engagement letter signatory',
+      digitalVaultContactName: 'Digital vault contact',
     },
     'fr-FR': {
       user: 'Utilisateur',
@@ -292,6 +300,7 @@ const { d, t } = useI18n({
       on: 'sur',
       roles: 'Rôle(s)',
       signatoryRoleName: 'Signataire lettre de mission',
+      digitalVaultContactName: 'Contact coffre fort',
     },
   },
 })
@@ -417,6 +426,7 @@ const formatAndFillUsersCollabTable = async () => {
         email: userFromApi.email,
         firstDateAccess: d(new Date(userFromApi.creationDate), 'short'),
         isOwner: user.value?.id === userFromApi.contactId,
+        contactFlagPortailFactures: userFromApi.contactFlagPortailFactures,
       }
     })
 

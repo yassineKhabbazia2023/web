@@ -11,6 +11,7 @@ export interface User {
   role?: string
   status?: string | UserStatus
   firstDateAccess?: string
+  contactFlagPortailFactures?: boolean
 }
 
 export interface ExtendedUser extends Contact {

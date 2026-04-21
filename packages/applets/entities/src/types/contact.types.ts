@@ -10,6 +10,7 @@ export interface Contact {
   status: string
   personaName: string
   creationDate: string
+  contactFlagPortailFactures?: boolean
 }
 
 export interface UserStatus {
