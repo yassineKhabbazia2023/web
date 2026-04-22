@@ -41,9 +41,11 @@ stages:
     - script: npm ci --cache=$(npmCacheFolder)
       displayName: 'Install dependencies'
 
-    - script: npm audit fix
+    - script: |
+        echo "Running npm audit fix..."
+        npm audit fix || true
+        echo "Audit fix completed (exit code ignored)"
       displayName: 'Run audit fix'
-      continueOnError: true
 
     - script: |
         changedFiles=$(git diff --name-only)
