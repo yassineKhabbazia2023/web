@@ -9,7 +9,6 @@
         :isLoadingUpcoming="isLoadingUpcomingAppointments"
         :isLoadingPast="isLoadingPastAppointments"
         @take-appointment="onTakeAppointment"
-        @open-booking-config="onOpenBookingConfig"
         @edit-booking-config="onEditBookingConfig"
         @tab-changed="onTabChanged"
       />
@@ -81,6 +80,10 @@ const {
 const { displayCount } = useDisplayCount(upcomingAppointmentsCount)
 
 function openAppointmentsDrawer() {
+  if (collabStore.bookingBusinessStatus === null) {
+    openBookingConfigDrawer()
+    return
+  }
   appointmentsStore.openBookingAppointmentsListDrawer()
   appointmentsStore.fetchUpcomingAppointments()
 
@@ -90,11 +93,6 @@ function openAppointmentsDrawer() {
 function onTakeAppointment() {
   appointmentsStore.closeBookingAppointmentsListDrawer()
   appointmentsStore.openBookingAppointmentDrawer()
-}
-
-function onOpenBookingConfig() {
-  appointmentsStore.closeBookingAppointmentsListDrawer()
-  openBookingConfigDrawer()
 }
 
 async function onEditBookingConfig(configurationId: number) {
@@ -121,6 +119,6 @@ onMounted(() => {
 <style lang="scss" scoped>
 .header-section__x-small-pastille {
   right: 0;
-  top: 0;
+  top: -1px;
 }
 </style>

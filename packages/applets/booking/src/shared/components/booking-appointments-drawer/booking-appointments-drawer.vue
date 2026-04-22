@@ -158,7 +158,6 @@ const props = withDefaults(defineProps<BookingAppointmentsListDrawerProps>(), {
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
   'take-appointment': []
-  'open-booking-config': []
   'edit-booking-config': [configurationId: number]
   'tab-changed': [tab: string]
 }>()
@@ -182,7 +181,6 @@ const { t } = useI18n({
       takeAppointment: 'Book appointment',
       noUpcoming: 'No upcoming appointments',
       noPast: 'No past appointments',
-      openBookingConfig: 'Configure booking',
       editBookingConfig: 'Edit booking',
       appointmentWith: 'Appointment with {name}',
     },
@@ -196,7 +194,6 @@ const { t } = useI18n({
       takeAppointment: 'Prendre rendez-vous',
       noUpcoming: 'Aucun rendez-vous à venir',
       noPast: 'Aucun rendez-vous passé',
-      openBookingConfig: 'Configurer les rendez-vous',
       editBookingConfig: 'Modifier les rendez-vous',
       appointmentWith: 'RDV avec {name}',
     },
@@ -226,13 +223,9 @@ const hasExistingConfiguration = computed(() => {
 const toolboxParams = computed<PDrawerProps['pHeaderToolbox']>(() => {
   const pElements: PToolboxItemProps[] = [
     {
-      pValue: hasExistingConfiguration.value
-        ? t('editBookingConfig')
-        : t('openBookingConfig'),
+      pValue: t('editBookingConfig'),
       pIconName: 'gear',
-      pActionName: hasExistingConfiguration.value === true
-        ? 'edit-booking-config'
-        : 'open-booking-config',
+      pActionName: 'edit-booking-config',
     },
   ]
   return { pElements }
@@ -279,9 +272,7 @@ function onTakeAppointment() {
 }
 
 function handleToolboxItemClick(actionName: string) {
-  if (actionName === 'open-booking-config') {
-    emit('open-booking-config')
-  } else if (actionName === 'edit-booking-config') {
+  if (actionName === 'edit-booking-config') {
     const configurationId = bookingBusinessStatus.value?.configurationId
     if (configurationId !== null && configurationId !== undefined) {
       emit('edit-booking-config', configurationId)
