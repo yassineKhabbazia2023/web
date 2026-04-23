@@ -8,6 +8,7 @@ export enum WidgetName {
   RSS_NEWS = 'RssNews',
   SMART_INTRO = 'SmartIntro',
   SSO = 'SSO',
+  WORKSPACE_INTRO = 'WorkspaceIntro',
 }
 
 /**

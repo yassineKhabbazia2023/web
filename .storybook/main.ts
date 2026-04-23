@@ -15,8 +15,7 @@ const config: StorybookConfig = {
   },
   stories: [
     '../packages/applets/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../packages/libraries/shared/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    '../packages/libraries/styleguide/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../packages/libraries/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../packages/apps/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   staticDirs: [

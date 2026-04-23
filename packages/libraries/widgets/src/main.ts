@@ -5,6 +5,7 @@ import pennylaneIntroWidget from './widgets/grid/pennylane-intro/pennylane-intro
 import smartIntroWidget from './widgets/grid/smart-intro/smart-intro.widget'
 import powerBIIntroWidget from './widgets/grid/power-bi-intro/power-bi-intro.widget'
 import rssNewsWidget from './widgets/grid/rss-news/rss-news.widget'
+import workspaceIntroWidget from './widgets/grid/workspace-intro/workspace-intro.widget'
 import frFR from './i18n/fr-FR.json'
 import enUS from './i18n/en-US.json'
 
@@ -20,5 +21,6 @@ export default {
     app.use(powerBIIntroWidget, {})
     app.use(rssNewsWidget, {})
     app.use(smartIntroWidget, {})
+    app.use(workspaceIntroWidget, {})
   },
 }
