@@ -3,6 +3,12 @@ import { XMLParser } from 'fast-xml-parser'
 import { RSS_NEWS_FEED_URL } from '@pulse/common/constants'
 import { RssNewsItem } from '../types/rss-news.types'
 
+const RSS_NEWS_XML_PARSER_OPTIONS = {
+  processEntities: {
+    allowedTags: ['title', 'guid', 'pubDate'],
+  },
+}
+
 export class RSSNewsService {
   static async getNews(): Promise<RssNewsItem[]> {
     try {
@@ -21,8 +27,9 @@ export class RSSNewsService {
       return undefined
     }
 
+    const decodedDescription = RSSNewsService.decodeEscapedHtml(description)
     const imgRegex = /<img[^>]+src="([^">]+)"/
-    const match = new RegExp(imgRegex).exec(description)
+    const match = new RegExp(imgRegex).exec(decodedDescription)
 
     if (match?.[1]) {
       return match[1]
@@ -32,7 +39,7 @@ export class RSSNewsService {
   }
 
   private static parseXmlToJson(xmlData: string): any {
-    const parser = new XMLParser()
+    const parser = new XMLParser(RSS_NEWS_XML_PARSER_OPTIONS)
     const jsonObj = parser.parse(xmlData)
 
     return jsonObj
@@ -45,5 +52,15 @@ export class RSSNewsService {
 
     const items = jsonData.rss.channel.item
     return Array.isArray(items) ? items : [items]
+  }
+
+  private static decodeEscapedHtml(content: string): string {
+    return content
+      .replaceAll('&lt;', '<')
+      .replaceAll('&gt;', '>')
+      .replaceAll('&quot;', '"')
+      .replaceAll('&apos;', '\'')
+      .replaceAll('&#39;', '\'')
+      .replaceAll('&amp;', '&')
   }
 }

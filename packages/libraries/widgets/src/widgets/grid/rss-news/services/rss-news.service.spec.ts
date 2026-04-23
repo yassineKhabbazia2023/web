@@ -14,6 +14,30 @@ describe('RSSNewsService', () => {
   })
 
   describe('getNews', () => {
+    it('should parse rss feed when description contains more than 1000 escaped entities', async () => {
+      const repeatedEntities = '&amp;'.repeat(1044)
+      const mockData = `
+        <rss>
+          <channel>
+            <item>
+              <title>News 1</title>
+              <guid>https://example.com/news1</guid>
+              <description>Description 1 ${repeatedEntities}</description>
+              <pubDate>Tue, 22 Apr 2026 10:00:00 +0000</pubDate>
+            </item>
+          </channel>
+        </rss>
+      `
+
+      vi.mocked(axios.get).mockResolvedValueOnce({ data: mockData })
+
+      const result = await RSSNewsService.getNews()
+
+      expect(result).toHaveLength(1)
+      expect(result[0].title).toBe('News 1')
+      expect(result[0].guid).toBe('https://example.com/news1')
+    })
+
     it('should return news items when fetch is successful', async () => {
       const mockData = `
         <rss>
@@ -98,6 +122,14 @@ describe('RSSNewsService', () => {
       const result = RSSNewsService.extractImageUrl(description)
 
       expect(result).toBeUndefined()
+    })
+
+    it('should extract image URL when description contains escaped image tag', () => {
+      const description = '&lt;img src=&quot;https://example.com/image-escaped.jpg&quot; alt=&quot;Image&quot;&gt;'
+
+      const result = RSSNewsService.extractImageUrl(description)
+
+      expect(result).toBe('https://example.com/image-escaped.jpg')
     })
 
     it('should return undefined when description is undefined', () => {
