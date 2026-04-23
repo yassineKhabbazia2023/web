@@ -5,6 +5,9 @@ export const GLOBAL_PERMISSIONS: Record<string, Permission[]> = {
   ACCOUNT_MANAGEMENT: [
     CollaboratorPermission.GERER_DOSSIERS,
   ],
+  BOOKING: [
+    CollaboratorPermission.GERER_PAGE_RENDEZ_VOUS,
+  ],
   COLLABORATORS: [
     CollaboratorPermission.ACCEDER_ONGLET_COLLABORATEURS_ADMIN,
   ],

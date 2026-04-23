@@ -12,10 +12,10 @@ import {
   stopProductFruits,
 } from '@pulse/shared/plugins'
 import { logger } from '@pulse/toolbox'
-import { CurrentEntityManager } from '@pulse/common/managers'
+import { CurrentEntityManager, CurrentUserManager } from '@pulse/common/managers'
 import { Entity } from '@pulse/common/types'
 import { RouteName } from '@pulse/common/enums'
-import { COLLABORATOR_BASE_PATH } from '@pulse/common/constants'
+import { COLLABORATOR_BASE_PATH, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { BookingManager } from '@pulse/booking/managers'
 
 export class CollaboratorAuthenticatedFlowManager {
@@ -47,7 +47,9 @@ export class CollaboratorAuthenticatedFlowManager {
     this.initAuthenticatedThirdParties()
     await this.initEntities()
     // Silent eligibility check: UI reads store state without a loading indicator.
-    await BookingManager.setupBookingForCollab()
+    if (CurrentUserManager.hasGlobalPermission(GLOBAL_PERMISSIONS.BOOKING)) {
+      await BookingManager.setupBookingForCollab()
+    }
   }
 
   // #region setup

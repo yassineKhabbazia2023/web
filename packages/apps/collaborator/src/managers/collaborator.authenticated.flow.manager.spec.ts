@@ -10,9 +10,10 @@ import { initProductFruitsAuthenticatedCollab, stopProductFruits, getProductFrui
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserService } from '@pulse/common/services/current-user'
 import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
-import { CurrentEntityManager } from '@pulse/common/managers'
+import { CurrentEntityManager, CurrentUserManager } from '@pulse/common/managers'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { RouteName } from '@pulse/common/enums'
+import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { BookingManager } from '@pulse/booking/managers'
 
 import { CollaboratorAuthenticatedFlowManager } from './collaborator.authenticated.flow.manager'
@@ -30,6 +31,9 @@ vi.mock('@pulse/common/managers', async (importOriginal) => {
       clearLocalStorageEntityId: vi.fn(),
       clearCurrentEntity: vi.fn(),
       fetchInvoicesAccess: vi.fn(),
+    },
+    CurrentUserManager: {
+      hasGlobalPermission: vi.fn(),
     },
   }
 })
@@ -77,6 +81,7 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
       vi.mocked(BookingManager.setupBookingForCollab).mockResolvedValue(undefined)
+      vi.mocked(CurrentUserManager.hasGlobalPermission).mockReturnValue(true)
 
       await CollaboratorAuthenticatedFlowManager.enterAuthenticatedFlow()
 
@@ -91,6 +96,7 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
       vi.mocked(BookingManager.setupBookingForCollab).mockResolvedValue(undefined)
+      vi.mocked(CurrentUserManager.hasGlobalPermission).mockReturnValue(true)
 
       await CollaboratorAuthenticatedFlowManager.enterAuthenticatedFlow()
       await CollaboratorAuthenticatedFlowManager.enterAuthenticatedFlow()
@@ -103,6 +109,7 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
       vi.mocked(BookingManager.setupBookingForCollab).mockResolvedValue(undefined)
+      vi.mocked(CurrentUserManager.hasGlobalPermission).mockReturnValue(true)
 
       await CollaboratorAuthenticatedFlowManager.enterAuthenticatedFlow()
       CollaboratorAuthenticatedFlowManager.exitAuthenticatedFlow()
@@ -114,6 +121,7 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
     it('should allow retry after a failure', async () => {
       vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
       vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(CurrentUserManager.hasGlobalPermission).mockReturnValue(true)
       vi.mocked(BookingManager.setupBookingForCollab)
         .mockRejectedValueOnce(new Error('booking error'))
         .mockResolvedValueOnce(undefined)
@@ -122,6 +130,32 @@ describe('CollaboratorAuthenticatedFlowManager', () => {
       await CollaboratorAuthenticatedFlowManager.enterAuthenticatedFlow()
 
       expect(CurrentUserService.getCurrentUserContext).toHaveBeenCalledTimes(2)
+    })
+  })
+
+  describe('executeAuthenticatedFlow - booking permission check', () => {
+    it('should call setupBookingForCollab when user has BOOKING permission', async () => {
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
+      vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(CurrentUserManager.hasGlobalPermission).mockReturnValue(true)
+      vi.mocked(BookingManager.setupBookingForCollab).mockResolvedValue(undefined)
+
+      await CollaboratorAuthenticatedFlowManager.enterAuthenticatedFlow()
+
+      expect(CurrentUserManager.hasGlobalPermission).toHaveBeenCalledWith(GLOBAL_PERMISSIONS.BOOKING)
+      expect(BookingManager.setupBookingForCollab).toHaveBeenCalled()
+    })
+
+    it('should NOT call setupBookingForCollab when user does not have BOOKING permission', async () => {
+      vi.mocked(CurrentUserService.getCurrentUserContext).mockResolvedValue(userMock as any)
+      vi.mocked(fetchEntities).mockResolvedValue(entitiesMock)
+      vi.mocked(CurrentUserManager.hasGlobalPermission).mockReturnValue(false)
+      vi.mocked(BookingManager.setupBookingForCollab).mockResolvedValue(undefined)
+
+      await CollaboratorAuthenticatedFlowManager.enterAuthenticatedFlow()
+
+      expect(CurrentUserManager.hasGlobalPermission).toHaveBeenCalledWith(GLOBAL_PERMISSIONS.BOOKING)
+      expect(BookingManager.setupBookingForCollab).not.toHaveBeenCalled()
     })
   })
 
