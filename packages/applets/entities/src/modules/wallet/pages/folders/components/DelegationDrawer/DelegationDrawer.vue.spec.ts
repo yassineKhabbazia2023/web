@@ -69,14 +69,6 @@ describe('delegationDrawer', () => {
   })
 
   describe('rendering', () => {
-    it('should display the folder delegation header for specific flow', () => {
-      const wrapper = createWrapper()
-      const header = wrapper.find('.delegation-drawer__header')
-      expect(header.exists()).toBeTruthy()
-      // The header contains the folderDelegation translation text
-      expect(header.text()).toContain('folders')
-    })
-
     it('should display the correct steps when DelegationFlowType.FULL', async () => {
       const wrapper = createFullDelegationWrapper()
 

@@ -3,25 +3,10 @@
     v-model="isDelegationDrawerOpened"
     class="delegation-drawer"
     pSize="50%"
+    :pTitle="drawerTitle"
     @close-drawer-button="handleCloseDrawer"
     @close="handleCloseDrawer"
   >
-    <template #header-prefix>
-      <h3 class="delegation-drawer__header flex flex--align-items-center">
-        <PIcon
-          pName="pulse"
-          :pColor="AppColors.JUNGLE_400"
-          pSize="30"
-        />
-        <h3 v-if="isSpecificDelegationFlowType" class="margin-left--1 font-semibold">
-          {{ t('folderDelegation', selectedFolders.length) }}
-        </h3>
-        <h3 v-else class="margin-left--1 font-semibold">
-          {{ t('myDelegations') }}
-        </h3>
-      </h3>
-    </template>
-
     <PTabs
       v-if="isSpecificDelegationFlowType === false && hasPermanentDelegations"
       v-model="activeTab"
@@ -99,8 +84,8 @@
 import { logger } from '@pulse/toolbox'
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PDrawerActions, PSteps, PStep, PIcon, PTabs, PTabPane } from '@pulse/styleguide/components'
-import { AppColors, PNotification } from '@pulse/styleguide'
+import { PDrawer, PDrawerActions, PSteps, PStep, PTabs, PTabPane } from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import { delegateAccounts, fetchPermanentDelegations } from '@entities/services/account'
 import { DelegationFlowType, DelegationTab } from '@entities/modules/wallet/enums'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
@@ -190,6 +175,11 @@ const flowType = computed(() => props.selectedFolders.length
   : DelegationFlowType.FULL,
 )
 const isSpecificDelegationFlowType = computed(() => flowType.value === DelegationFlowType.SPECIFIC)
+
+const drawerTitle = computed(() => isSpecificDelegationFlowType.value
+  ? t('folderDelegation', props.selectedFolders.length)
+  : t('myDelegations'),
+)
 
 const backButtonLabel = computed(() => activeStep.value ? t('backButtonLabel') : t('cancelButtonLabel'))
 const primaryButtonLabel = computed(() => activeStep.value === 1 ? t('submitButtonLabel') : t('primaryButtonLabel'))

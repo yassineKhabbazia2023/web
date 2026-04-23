@@ -2,30 +2,19 @@
   <PDrawer
     v-model="isDrawerOpened"
     pSize="50%"
+    :pTitle="drawerTitle"
     @close-drawer-button="isDrawerOpened = false"
   >
     <template #header-prefix>
-      <div>
-        <p
-          class="
-            text-color--neutral-gray-300
-            margin-left--1
-            margin-bottom--2
-          "
-        >
-          {{ targetEntityName }}
-        </p>
-        <div class="flex flex--align-items-center">
-          <PIcon
-            pName="pulse"
-            :pColor="AppColors.JUNGLE_400"
-            pSize="30"
-          />
-          <h3 class="margin-left--1 font-semibold">
-            {{ isAddContactSucceeded ? t('userAdded') : t('addUser') }}
-          </h3>
-        </div>
-      </div>
+      <p
+        class="
+          text-color--neutral-gray-300
+          margin-left--1
+          margin-bottom--2
+        "
+      >
+        {{ targetEntityName }}
+      </p>
     </template>
     <AddCustomerContent
       v-model:authorizationsState="authorizationsState"
@@ -75,9 +64,7 @@ import {
   PDrawer,
   PDrawerActions,
   PButton,
-  PIcon,
 } from '@pulse/styleguide/components'
-import { AppColors } from '@pulse/styleguide'
 import type { AddCustomerDrawerProps } from './add-customer-drawer.types'
 import AddCustomerContent from './components/add-customer-content/add-customer-content.vue'
 import { ADD_CUSTOMER_DRAWER_STEPS } from './add-customer-drawer.const'
@@ -150,6 +137,8 @@ const {
   alreadyAddedToAccountMessage: t('alreadyAddedToAccount'),
   addCustomerDrawerSteps: ADD_CUSTOMER_DRAWER_STEPS,
 })
+
+const drawerTitle = computed(() => isAddContactSucceeded.value ? t('userAdded') : t('addUser'))
 
 const nextLabelKey = computed(() => {
   switch (addCustomerDrawerStep.value) {

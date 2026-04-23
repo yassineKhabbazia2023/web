@@ -3,22 +3,10 @@
     v-model="isAddCollaboratorsDrawerOpened"
     data-testid="add-collaborator-drawer"
     pSize="50%"
+    :pTitle="t('addCollaborators')"
     @close-drawer-button="handleCloseDrawer"
     @close="handleCloseDrawer"
   >
-    <template #header-prefix>
-      <div class="flex flex--align-items-center">
-        <PIcon
-          pName="pulse"
-          :pColor="AppColors.JUNGLE_400"
-          pSize="30"
-        />
-        <h3 class="margin-left--1 font-semibold">
-          {{ t('addCollaborators') }}
-        </h3>
-      </div>
-    </template>
-
     <div class="margin-bottom--6">
       <AddCollaboratorsCard @collaborator-selection="handleCollaboratorSelection" />
     </div>
@@ -37,8 +25,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PDrawerActions, PIcon } from '@pulse/styleguide/components'
-import { AppColors, PNotification } from '@pulse/styleguide'
+import { PDrawer, PDrawerActions } from '@pulse/styleguide/components'
+import { PNotification } from '@pulse/styleguide'
 import type { AddCollaboratorsDrawerProps } from './AddCollaboratorsDrawerTypes'
 import AddCollaboratorsCard from './components/AddCollaboratorsCard'
 import type { Contact } from '@entities/services/contact/contactTypes'
