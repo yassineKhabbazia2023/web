@@ -12,8 +12,11 @@ export class BookingManager {
 
   static async setupBookingForCustomer() {
     const bookingCustomerStore = useBookingCustomerStore()
-    const hasAccess = await BookingService.getBookingEnabledFlag()
-    bookingCustomerStore.setIsBookingEnabled(hasAccess)
+    const isEligibleForBooking = await BookingService.getBookingEligibility()
+    if (isEligibleForBooking) {
+      const hasAccess = await BookingService.getBookingEnabledFlag()
+      bookingCustomerStore.setIsBookingEnabled(hasAccess)
+    }
   }
 
   private static async loadAvailableExperts() {

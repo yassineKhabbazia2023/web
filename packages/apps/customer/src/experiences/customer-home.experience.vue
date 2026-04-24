@@ -24,12 +24,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { UserConfig } from '@pulse/shared/types'
 import { FeedCenterHeaderWidget } from '@pulse/feed-center/widgets/feed-center-header'
 import { BookingCustomerHeaderWidget } from '@pulse/booking/widgets'
-import { BookingManager } from '@pulse/booking/managers'
 import { FeatureFlagManager } from '@pulse/common/managers'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { useBookingCustomerStore } from '@pulse/booking/stores'
@@ -67,10 +66,4 @@ const userConfig = computed((): UserConfig => ({
 
 // Setup query params watchers (automatic via reactive watchers)
 useCustomerQueryParams()
-
-onMounted(async () => {
-  // Silent eligibility check for booking feature
-  // The watcher will automatically react when booking becomes enabled
-  await BookingManager.setupBookingForCustomer()
-})
 </script>

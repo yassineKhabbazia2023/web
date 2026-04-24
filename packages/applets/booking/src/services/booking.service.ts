@@ -10,6 +10,7 @@ import type {
   BookingConfigurationResponse,
   BookingServiceExpert,
   BookingEnabledResponse,
+  BookingEligibilityResponse,
   BookingBusinessStatusResponse,
   BookingConfigurationDetails,
   BookingConfigurationUpdatePayload,
@@ -98,6 +99,12 @@ export class BookingService {
     const url = `${API_PREFIXES.BOOKING}/businesses/${configurationId}/currentuser`
     const { data } = await api.gateway.get<BookingConfigurationDetails>(url)
     return data
+  }
+
+  static async getBookingEligibility(): Promise<boolean> {
+    const url = `${API_PREFIXES.BOOKING}/booking/eligibility/currentuser`
+    const { data } = await api.gateway.get<BookingEligibilityResponse>(url)
+    return data.isEligible === true
   }
 
   static async updateBookingConfiguration(

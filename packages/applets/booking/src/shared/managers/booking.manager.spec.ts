@@ -25,6 +25,7 @@ describe('BookingManager', () => {
 
     vi.spyOn(BookingService, 'getBookingAvailableExperts')
     vi.spyOn(BookingService, 'getBookingEnabledFlag')
+    vi.spyOn(BookingService, 'getBookingEligibility')
     vi.spyOn(logger, 'error')
   })
 
@@ -50,22 +51,38 @@ describe('BookingManager', () => {
   })
 
   describe('setupBookingForCustomer', () => {
-    it('should set customer booking enabled when API returns true', async () => {
+    it('should set customer booking enabled to true when user is eligible and has access', async () => {
+      vi.mocked(BookingService.getBookingEligibility).mockResolvedValue(true)
       vi.mocked(BookingService.getBookingEnabledFlag).mockResolvedValue(true)
 
       await BookingManager.setupBookingForCustomer()
 
+      expect(BookingService.getBookingEligibility).toHaveBeenCalled()
       expect(BookingService.getBookingEnabledFlag).toHaveBeenCalled()
       expect(bookingCustomerStoreMock.setIsBookingEnabled).toHaveBeenCalledWith(true)
       expect(bookingCollabStoreMock.setIsBookingEnabled).not.toHaveBeenCalled()
     })
 
-    it('should set customer booking enabled when API returns false', async () => {
+    it('should set customer booking enabled to false when user is eligible but has no access', async () => {
+      vi.mocked(BookingService.getBookingEligibility).mockResolvedValue(true)
       vi.mocked(BookingService.getBookingEnabledFlag).mockResolvedValue(false)
 
       await BookingManager.setupBookingForCustomer()
 
+      expect(BookingService.getBookingEligibility).toHaveBeenCalled()
+      expect(BookingService.getBookingEnabledFlag).toHaveBeenCalled()
       expect(bookingCustomerStoreMock.setIsBookingEnabled).toHaveBeenCalledWith(false)
+      expect(bookingCollabStoreMock.setIsBookingEnabled).not.toHaveBeenCalled()
+    })
+
+    it('should not check enabled flag nor update store when user is not eligible', async () => {
+      vi.mocked(BookingService.getBookingEligibility).mockResolvedValue(false)
+
+      await BookingManager.setupBookingForCustomer()
+
+      expect(BookingService.getBookingEligibility).toHaveBeenCalled()
+      expect(BookingService.getBookingEnabledFlag).not.toHaveBeenCalled()
+      expect(bookingCustomerStoreMock.setIsBookingEnabled).not.toHaveBeenCalled()
       expect(bookingCollabStoreMock.setIsBookingEnabled).not.toHaveBeenCalled()
     })
   })

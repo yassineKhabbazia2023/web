@@ -64,6 +64,10 @@ export interface BookingEnabledResponse {
   hasAccess: boolean
 }
 
+export interface BookingEligibilityResponse {
+  isEligible: boolean
+}
+
 export interface BookingBusinessStatusResponse {
   configurationId: number | null
   status: string

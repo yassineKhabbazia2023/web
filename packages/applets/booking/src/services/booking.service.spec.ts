@@ -283,6 +283,30 @@ describe('booking.service', () => {
     })
   })
 
+  describe('getBookingEligibility', () => {
+    it('should call api and return true when user is eligible', async () => {
+      const expectedUrl = `${API_PREFIXES.BOOKING}/booking/eligibility/currentuser`
+
+      apiGatewayMock.get.mockResolvedValue({ data: { isEligible: true } })
+
+      const result = await BookingService.getBookingEligibility()
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+      expect(result).toBe(true)
+    })
+
+    it('should call api and return false when user is not eligible', async () => {
+      const expectedUrl = `${API_PREFIXES.BOOKING}/booking/eligibility/currentuser`
+
+      apiGatewayMock.get.mockResolvedValue({ data: { isEligible: false } })
+
+      const result = await BookingService.getBookingEligibility()
+
+      expect(apiGatewayMock.get).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+      expect(result).toBe(false)
+    })
+  })
+
   describe('updateBookingConfiguration', () => {
     it('should call api with configuration id and payload', async () => {
       const configurationId = 789
