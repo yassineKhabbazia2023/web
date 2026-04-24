@@ -1,6 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import PSteps from './PSteps.vue'
-import PStep from '../../atoms/PStep'
+import { PStepStatus } from './PSteps.enums'
+import type { PStepsItem } from './PStepsTypes'
+
+const stepStatusOptions = [
+  PStepStatus.WAIT,
+  PStepStatus.PROCESS,
+  PStepStatus.ERROR,
+  PStepStatus.SUCCESS,
+]
 
 const meta: Meta<typeof PSteps> = {
   title: 'Molecules/Steps',
@@ -29,12 +37,12 @@ const meta: Meta<typeof PSteps> = {
     },
     pProcessStatus: {
       control: { type: 'select' },
-      options: ['wait', 'process', 'finish', 'error', 'success'],
+      options: stepStatusOptions,
       description: 'Status of the current process step',
     },
     pFinishStatus: {
       control: { type: 'select' },
-      options: ['wait', 'process', 'finish', 'error', 'success'],
+      options: stepStatusOptions,
       description: 'Status of finished steps',
     },
     pAlignCenter: {
@@ -45,31 +53,36 @@ const meta: Meta<typeof PSteps> = {
       control: { type: 'boolean' },
       description: 'Use simple style',
     },
+    pSteps: {
+      control: { type: 'object' },
+      description: 'List of step items',
+    },
   },
 }
 
 export default meta
 type Story = StoryObj<typeof PSteps>
 
+const defaultSteps: PStepsItem[] = [
+  { pTitle: 'Step 1' },
+  { pTitle: 'Step 2' },
+  { pTitle: 'Step 3' },
+]
+
 export const Default: Story = {
   args: {
     pActive: 0,
     pDirection: 'horizontal',
-    pProcessStatus: 'process',
-    pFinishStatus: 'finish',
+    pProcessStatus: PStepStatus.PROCESS,
+    pFinishStatus: PStepStatus.SUCCESS,
+    pSteps: defaultSteps,
   },
   render: (args) => ({
-    components: { PSteps, PStep },
+    components: { PSteps },
     setup() {
       return { args }
     },
-    template: `
-      <PSteps v-bind="args">
-        <PStep pTitle="Step 1" />
-        <PStep pTitle="Step 2" />
-        <PStep pTitle="Step 3" />
-      </PSteps>
-    `,
+    template: '<PSteps v-bind="args" />',
   }),
 }
 
@@ -77,21 +90,20 @@ export const Vertical: Story = {
   args: {
     pActive: 1,
     pDirection: 'vertical',
-    pProcessStatus: 'process',
-    pFinishStatus: 'finish',
+    pProcessStatus: PStepStatus.PROCESS,
+    pFinishStatus: PStepStatus.SUCCESS,
+    pSteps: [
+      { pTitle: 'Registration' },
+      { pTitle: 'Verification' },
+      { pTitle: 'Complete' },
+    ],
   },
   render: (args) => ({
-    components: { PSteps, PStep },
+    components: { PSteps },
     setup() {
       return { args }
     },
-    template: `
-      <PSteps v-bind="args">
-        <PStep pTitle="Registration" />
-        <PStep pTitle="Verification" />
-        <PStep pTitle="Complete" />
-      </PSteps>
-    `,
+    template: '<PSteps v-bind="args" />',
   }),
 }
 
@@ -99,22 +111,21 @@ export const WithError: Story = {
   args: {
     pActive: 2,
     pDirection: 'horizontal',
-    pProcessStatus: 'error',
-    pFinishStatus: 'finish',
+    pProcessStatus: PStepStatus.ERROR,
+    pFinishStatus: PStepStatus.SUCCESS,
+    pSteps: [
+      { pTitle: 'Start' },
+      { pTitle: 'Process' },
+      { pTitle: 'Error Step' },
+      { pTitle: 'Final' },
+    ],
   },
   render: (args) => ({
-    components: { PSteps, PStep },
+    components: { PSteps },
     setup() {
       return { args }
     },
-    template: `
-      <PSteps v-bind="args">
-        <PStep pTitle="Start" />
-        <PStep pTitle="Process" />
-        <PStep pTitle="Error Step" />
-        <PStep pTitle="Final" />
-      </PSteps>
-    `,
+    template: '<PSteps v-bind="args" />',
   }),
 }
 
@@ -122,22 +133,21 @@ export const Success: Story = {
   args: {
     pActive: 3,
     pDirection: 'horizontal',
-    pProcessStatus: 'success',
-    pFinishStatus: 'success',
+    pProcessStatus: PStepStatus.SUCCESS,
+    pFinishStatus: PStepStatus.SUCCESS,
+    pSteps: [
+      { pTitle: 'Step 1' },
+      { pTitle: 'Step 2' },
+      { pTitle: 'Step 3' },
+      { pTitle: 'Complete' },
+    ],
   },
   render: (args) => ({
-    components: { PSteps, PStep },
+    components: { PSteps },
     setup() {
       return { args }
     },
-    template: `
-      <PSteps v-bind="args">
-        <PStep pTitle="Step 1" />
-        <PStep pTitle="Step 2" />
-        <PStep pTitle="Step 3" />
-        <PStep pTitle="Complete" />
-      </PSteps>
-    `,
+    template: '<PSteps v-bind="args" />',
   }),
 }
 
@@ -145,21 +155,20 @@ export const Simple: Story = {
   args: {
     pActive: 1,
     pDirection: 'horizontal',
-    pProcessStatus: 'process',
-    pFinishStatus: 'finish',
+    pProcessStatus: PStepStatus.PROCESS,
+    pFinishStatus: PStepStatus.SUCCESS,
     pSimple: true,
+    pSteps: [
+      { pTitle: 'Simple Step 1' },
+      { pTitle: 'Simple Step 2' },
+      { pTitle: 'Simple Step 3' },
+    ],
   },
   render: (args) => ({
-    components: { PSteps, PStep },
+    components: { PSteps },
     setup() {
       return { args }
     },
-    template: `
-      <PSteps v-bind="args">
-        <PStep pTitle="Simple Step 1" />
-        <PStep pTitle="Simple Step 2" />
-        <PStep pTitle="Simple Step 3" />
-      </PSteps>
-    `,
+    template: '<PSteps v-bind="args" />',
   }),
 }

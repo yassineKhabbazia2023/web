@@ -60,14 +60,10 @@
             :pDirection="offerStepperConfig.direction"
             :pProcessStatus="offerStepperConfig.processStatus"
             :pFinishStatus="offerStepperConfig.finishStatus"
+            :pSteps="offerStepItems"
             class="padding-y--3 margin-bottom--9"
             data-testid="offer-stepper"
-          >
-            <PStep :pTitle="offerStepTitles.services" />
-            <PStep :pTitle="offerStepTitles.customers" />
-            <PStep :pTitle="offerStepTitles.collaborators" />
-            <PStep :pTitle="offerStepTitles.information" />
-          </PSteps>
+          />
           <CustomersDetails
             v-if="!currentSubscriptionOffer?.approvalRequired"
             :principalContacts="principalContacts"
@@ -142,7 +138,8 @@ import { logger } from '@pulse/toolbox'
 import { computed, ref, onMounted, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { sanitizeUrl } from '@pulse/toolbox/utils/url'
-import { PDrawer, PDrawerActions, PSteps, PStep, PIcon, PLoader } from '@pulse/styleguide/components'
+import { PDrawer, PDrawerActions, PSteps, PIcon, PLoader } from '@pulse/styleguide/components'
+import { PStepStatus, type PStepsItem } from '@pulse/styleguide/types'
 import { AppColors, displayNotification } from '@pulse/styleguide'
 import SubscriptionOffers from '../SubscriptionOffers'
 import OfferSubscription from '../OfferSubscription'
@@ -232,8 +229,8 @@ const isSaveOfferInProgress = computed(() => saveOfferApiCallStatus.value === AP
 
 const offerStepperConfig: any = {
   direction: 'horizontal',
-  processStatus: 'process',
-  finishStatus: 'success',
+  processStatus: PStepStatus.PROCESS,
+  finishStatus: PStepStatus.SUCCESS,
 }
 
 const offerStepTitles = {
@@ -242,6 +239,13 @@ const offerStepTitles = {
   collaborators: t('collaborators'),
   information: t('information'),
 }
+
+const offerStepItems = computed<PStepsItem[]>(() => [
+  { pTitle: offerStepTitles.services },
+  { pTitle: offerStepTitles.customers },
+  { pTitle: offerStepTitles.collaborators },
+  { pTitle: offerStepTitles.information },
+])
 
 const isSubmitButton = computed((): boolean => {
   return (

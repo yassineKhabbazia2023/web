@@ -27,11 +27,9 @@
         v-if="!isSpecificDelegationFlowType"
         class="margin-bottom--6"
         :pActive="activeStep"
-        pFinishStatus="success"
-      >
-        <PStep :title="t('addCollaborator')" />
-        <PStep :title="t('automaticDelegation')" />
-      </PSteps>
+        :pFinishStatus="PStepStatus.SUCCESS"
+        :pSteps="delegationStepItems"
+      />
 
       <div
         v-if="isSpecificDelegationFlowType"
@@ -84,7 +82,8 @@
 import { logger } from '@pulse/toolbox'
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PDrawerActions, PSteps, PStep, PTabs, PTabPane } from '@pulse/styleguide/components'
+import { PDrawer, PDrawerActions, PSteps, PTabs, PTabPane } from '@pulse/styleguide/components'
+import { PStepStatus, type PStepsItem } from '@pulse/styleguide/types'
 import { PNotification } from '@pulse/styleguide'
 import { delegateAccounts, fetchPermanentDelegations } from '@entities/services/account'
 import { DelegationFlowType, DelegationTab } from '@entities/modules/wallet/enums'
@@ -193,6 +192,11 @@ const primaryCTA = computed(() => ({
   pLoading: isNextButtonLoading.value,
   pTestId: 'nextButton',
 }))
+
+const delegationStepItems = computed<PStepsItem[]>(() => [
+  { pTitle: t('addCollaborator') },
+  { pTitle: t('automaticDelegation') },
+])
 
 function handlePreviousClick() {
   if (!activeStep.value) {

@@ -1,19 +1,15 @@
 <template>
   <PSteps
     :pActive="addCustomerDrawerStepIndex"
-  >
-    <PStep
-      v-for="(stepTitle, index) in stepTitles"
-      :key="index"
-      :pTitle="t(stepTitle)"
-      class="flex--basis-40"
-    />
-  </PSteps>
+    :pSteps="stepItems"
+  />
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PSteps, PStep } from '@pulse/styleguide/components'
+import { PSteps } from '@pulse/styleguide/components'
+import type { PStepsItem } from '@pulse/styleguide/types'
 import type { AddCustomerStepsProps } from './add-customer-steps.types'
 
 const { t } = useI18n({
@@ -37,5 +33,12 @@ const stepTitles = [
   'add-email',
   'manage-rights',
 ]
+
+const stepItems = computed<PStepsItem[]>(() => {
+  return stepTitles.map((stepTitle) => ({
+    pTitle: t(stepTitle),
+    class: 'flex--basis-40',
+  }))
+})
 </script>
 

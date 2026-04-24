@@ -28,10 +28,6 @@ div.el-step {
 
       &__icon {
         margin-right: 12px;
-
-        .el-step__icon-inner.is-status {
-          transform: none;
-        }
       }
 
       &__main {
@@ -69,7 +65,59 @@ div.el-step {
     }
   }
 
+  &.is-simple {
+    --p-step-simple-icon-size: 16px;
+    --p-step-simple-icon-font-size: 12px;
+    --p-step-simple-icon-gap: 10px;
+
+    .el-step__head {
+      width: auto;
+      font-size: 0;
+      padding-right: var(--p-step-simple-icon-gap);
+    }
+
+    .el-step__icon {
+      width: var(--p-step-simple-icon-size);
+      height: var(--p-step-simple-icon-size);
+      margin-right: var(--p-step-simple-icon-gap);
+      border: none;
+      border-radius: 50%;
+      font-size: var(--p-step-simple-icon-font-size);
+    }
+
+    .el-step__main {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+      flex-grow: 1;
+      width: auto;
+    }
+
+    .el-step__icon.is-icon {
+      .el-step__icon-inner {
+        svg {
+          width: 13px;
+          height: 13px;
+        }
+      }
+    }
+
+    .el-step__title {
+      display: block;
+      width: auto;
+      padding-right: 0;
+      font-size: 1.6rem;
+      line-height: 2rem;
+      white-space: nowrap;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
   .el-step {
+
     &__head {
       &.is-process {
         .el-step__icon {
@@ -91,6 +139,8 @@ div.el-step {
       &.is-error {
         .el-step__icon {
           background: var(--p-red-100);
+          border: none;
+          color: var(--p-icon-error);
         }
       }
 
@@ -105,6 +155,25 @@ div.el-step {
 
     &__icon {
       margin-right: 12px;
+
+      &.is-icon {
+        width: var(--p-step-simple-icon-size, 24px);
+        height: var(--p-step-simple-icon-size, 24px);
+        border-radius: 50%;
+        font-size: var(--p-step-simple-icon-font-size, 18px);
+
+        .el-step__icon-inner {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: inherit;
+
+          svg {
+            width: 1em;
+            height: 1em;
+          }
+        }
+      }
 
       &.is-text {
         font-weight: 700;
@@ -126,7 +195,7 @@ div.el-step {
 
       &.is-process {
         font-weight: 600;
-        color: var(--p-black-rock-900);
+        color: var(--p-text-active);
       }
 
       &.is-success,

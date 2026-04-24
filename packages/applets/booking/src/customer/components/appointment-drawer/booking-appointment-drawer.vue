@@ -9,13 +9,8 @@
     <div class="padding-x--4 padding-y--1">
       <PSteps
         :pActive="currentStep"
-      >
-        <PStep
-          v-for="(step, index) in steps"
-          :key="index"
-          :pTitle="step.label"
-        />
-      </PSteps>
+        :pSteps="stepItems"
+      />
     </div>
     <BookingAppointmentChooseExpert
       v-if="isExpertStep"
@@ -59,8 +54,10 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PButton, PSteps, PStep } from '@pulse/styleguide/components'
+import { PDrawer, PButton, PSteps } from '@pulse/styleguide/components'
+import type { PStepsItem } from '@pulse/styleguide/types'
 import { BookingAppointmentDrawerTabs } from './booking-appointment-drawer.enum'
 import { useBookingAppointmentDrawer } from './booking-appointment-drawer.composable'
 import BookingAppointmentChooseExpert from '../choose-expert/booking-appointment-choose-expert.vue'
@@ -81,6 +78,10 @@ const {
   closeDrawer,
   onSelectExpert,
 } = useBookingAppointmentDrawer(isOpened)
+
+const stepItems = computed<PStepsItem[]>(() => {
+  return steps.value.map((step) => ({ pTitle: step.label }))
+})
 
 function goToPreviousStep() {
   if (currentStep.value === BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT) {

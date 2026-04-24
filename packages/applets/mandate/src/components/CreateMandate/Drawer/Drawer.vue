@@ -12,16 +12,13 @@
     >
       <PSteps
         v-if="currentStep <= 3"
-        :active="currentStep - 1"
-        direction="horizontal"
-        processStatus="process"
-        finishStatus="success"
+        :pActive="currentStep - 1"
+        pDirection="horizontal"
+        :pProcessStatus="PStepStatus.PROCESS"
+        :pFinishStatus="PStepStatus.SUCCESS"
+        :pSteps="mandateStepItems"
         class="margin-bottom--6"
-      >
-        <PStep :title="t('entity')" />
-        <PStep :title="t('infos')" />
-        <PStep :title="t('banking-data')" />
-      </PSteps>
+      />
       <div
         v-if="currentStep <= 3"
         class="drawer-create-mandate__title margin-bottom--4 padding-x--0 padding-y--1"
@@ -162,10 +159,10 @@ import {
   PDrawer,
   PDialog,
   PIcon,
-  PStep,
   PSteps,
   PTooltip,
 } from '@pulse/styleguide/components'
+import { PStepStatus, type PStepsItem } from '@pulse/styleguide/types'
 import { AppColors } from '@pulse/styleguide'
 import { createMandate } from '@mandate/services/mandate'
 import Form from '@mandate/components/CreateMandate/Form'
@@ -274,6 +271,12 @@ const drawerModel = computed({
     emit('update:modelValue', value)
   },
 })
+
+const mandateStepItems = computed<PStepsItem[]>(() => [
+  { pTitle: t('entity') },
+  { pTitle: t('infos') },
+  { pTitle: t('banking-data') },
+])
 
 const goToNextStep = () => {
   if (currentStep.value === 1) {
