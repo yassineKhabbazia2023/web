@@ -112,7 +112,7 @@ import { useI18n } from 'vue-i18n'
 import { setWith } from 'lodash-es'
 import { logger, useDebounce } from '@pulse/toolbox'
 import type { FormInstance, PDropdownOption, PDrawerActionButton } from '@pulse/styleguide/types'
-import { getInitials } from '@pulse/common/utils'
+import { getInitials, getFullName } from '@pulse/common/utils'
 import { AvatarRoles, displayNotification } from '@pulse/styleguide'
 import {
   PDrawer,
@@ -124,7 +124,7 @@ import {
   PUserAction,
   PLoader,
 } from '@pulse/styleguide/components'
-import { getFormStructure, getFullName } from '@entities/utils'
+import { getFormStructure } from '@entities/utils'
 import { createTestAccount, generateAccountNumber } from '@entities/services/entity-creator'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import CollaboratorAutocomplete from '@entities/components/CollaboratorAutocomplete'

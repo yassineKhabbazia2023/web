@@ -11,7 +11,7 @@
 import { computed } from 'vue'
 import type { AddCustomerStepFormSentProps } from './add-customer-step-form-sent.types'
 import AddCustomerFeedback from '../add-customer-feedback/add-customer-feedback.vue'
-import { getFullName } from '@entities/utils'
+import { getFullName } from '@pulse/common/utils'
 
 const props = defineProps<AddCustomerStepFormSentProps>()
 const fullname = computed(() => getFullName(

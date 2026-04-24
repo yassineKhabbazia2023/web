@@ -52,7 +52,7 @@ import AddCollaboratorsAutocomplete from '../AddCollaboratorsAutocomplete'
 import { fetchContactsFromSameHub } from '@entities/services/account'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { getInitials } from '@entities/helpers'
-import { getFullNameWithUppercaseLastName } from '@entities/utils/helpers/helpers'
+import { getFullNameWithUppercaseLastName } from '@pulse/common/utils'
 
 const emit = defineEmits<{
   'collaborator-selection': [Contact[]]

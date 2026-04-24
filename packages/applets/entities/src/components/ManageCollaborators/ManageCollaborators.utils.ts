@@ -2,7 +2,7 @@ import { getInitials } from '@entities/helpers'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import type { CollaboratorRole, ContactWithRoles } from '@entities/types'
 import type { PDropdownOption } from '@pulse/styleguide/types'
-import { getFullName } from '@entities/utils'
+import { getFullName } from '@pulse/common/utils'
 
 export function getUserActionOptions(
   collaboratorRoles: CollaboratorRole[],

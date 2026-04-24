@@ -1,5 +1,13 @@
 {
   "widgets": {
+    "contacts": {
+      "title": "Contacts RYDGE Conseil",
+      "supportFirstname": "Support",
+      "supportLastname": "Client",
+      "supportSubtitle": "Besoin d'aide ?",
+      "copied": "Copié !",
+      "copyError": "Impossible de copier dans le presse-papiers."
+    },
     "rssNews": {
       "title": "Actualités",
       "seeMore": "Voir plus",

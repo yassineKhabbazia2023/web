@@ -112,7 +112,7 @@ import {
 import { AvatarRoles, displayNotification } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import { getInitials, formatDateToLocale } from '@entities/helpers'
-import { getFullNameWithUppercaseLastName } from '@entities/utils/helpers'
+import { getFullNameWithUppercaseLastName } from '@pulse/common/utils'
 import { usePermanentDelegations } from './permanent-delegations.composable'
 import DeleteDelegationModal from './components/delete-delegation-modal/delete-delegation-modal.vue'
 import { DelegationTrackingManager } from '@entities/managers/delegation-tracking/delegation-tracking.manager'

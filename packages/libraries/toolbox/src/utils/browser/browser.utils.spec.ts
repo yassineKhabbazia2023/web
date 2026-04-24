@@ -1,6 +1,43 @@
-import { getBrowserName, isMobileDevice } from './browser.utils.js'
+import { copyToClipboard, getBrowserName, isMobileDevice } from './browser.utils.js'
+import { logger } from '../../logger/logger'
 
 describe('browser.utils', () => {
+  describe('copyToClipboard', () => {
+    const writeTextMock = vi.fn()
+
+    beforeAll(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: { writeText: writeTextMock },
+      })
+    })
+
+    beforeEach(() => {
+      writeTextMock.mockReset()
+    })
+
+    it('returns true and calls writeText when the copy succeeds', async () => {
+      writeTextMock.mockResolvedValueOnce(undefined)
+
+      const result = await copyToClipboard('hello')
+
+      expect(result).toBe(true)
+      expect(writeTextMock).toHaveBeenCalledWith('hello')
+    })
+
+    it('returns false and logs when writeText throws', async () => {
+      const error = new Error('nope')
+      writeTextMock.mockRejectedValueOnce(error)
+      const loggerSpy = vi.spyOn(logger, 'error').mockImplementation(() => undefined)
+
+      const result = await copyToClipboard('hello')
+
+      expect(result).toBe(false)
+      expect(loggerSpy).toHaveBeenCalledWith('Failed to copy to clipboard', error)
+    })
+  })
+
+
   describe('getBrowserName', () => {
     it.each([
       {

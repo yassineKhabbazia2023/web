@@ -18,21 +18,27 @@
         <slot name="avatar" />
       </PAvatar>
       <div>
-        <p class="font-bold font-size--14">{{ pTopLeftSectionText }}</p>
-        <p class="font-size--12 text-color--text-neutral">{{ pTopLeftSubText }}</p>
+        <p class="font-bold font-size--14">
+          {{ pTopLeftSectionText }}
+        </p>
+        <p class="font-size--12 text-color--text-neutral">
+          {{ pTopLeftSubText }}
+        </p>
       </div>
     </div>
 
     <div>
-      <PButton
-        v-if="pIsTrashIconVisible"
-        pIconOnly
-        pType="default"
-        pSize="small"
-        @click="emit('trash-clicked')"
-      >
-        <PIcon pName="trash" />
-      </PButton>
+      <slot name="actions">
+        <PButton
+          v-if="pIsTrashIconVisible"
+          pIconOnly
+          pType="default"
+          pSize="small"
+          @click="emit('trash-clicked')"
+        >
+          <PIcon pName="trash" />
+        </PButton>
+      </slot>
     </div>
   </div>
 </template>

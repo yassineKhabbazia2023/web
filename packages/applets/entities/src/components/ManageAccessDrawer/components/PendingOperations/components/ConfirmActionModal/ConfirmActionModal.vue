@@ -89,7 +89,7 @@ import {
   PFormItem,
 } from '@pulse/styleguide/components'
 import type { FormRules } from '@pulse/styleguide/types'
-import { getFullNameWithUppercaseLastName } from '@entities/utils'
+import { getFullNameWithUppercaseLastName } from '@pulse/common/utils'
 import type { ConfirmActionModalProps } from './ConfirmActionModalTypes'
 import ConfirmationModal from '@entities/components/ConfirmationModal'
 

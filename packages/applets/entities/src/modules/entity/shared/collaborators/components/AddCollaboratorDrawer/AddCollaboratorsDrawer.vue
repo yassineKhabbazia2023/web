@@ -31,7 +31,7 @@ import type { AddCollaboratorsDrawerProps } from './AddCollaboratorsDrawerTypes'
 import AddCollaboratorsCard from './components/AddCollaboratorsCard'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { addContactToEntity } from '@entities/services/account'
-import { getFullNameWithUppercaseLastName } from '@entities/utils/helpers/helpers'
+import { getFullNameWithUppercaseLastName } from '@pulse/common/utils'
 
 const props = defineProps<AddCollaboratorsDrawerProps>()
 const emit = defineEmits<{

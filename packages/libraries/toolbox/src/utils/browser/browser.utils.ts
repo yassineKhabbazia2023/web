@@ -1,3 +1,21 @@
+import { logger } from '../../logger/logger'
+
+/**
+ * Copies a string to the system clipboard.
+ * Returns `true` when the copy succeeded and `false` otherwise (unsupported
+ * browser, insecure context, denied permission, ...). The underlying error is
+ * logged via the toolbox logger so callers only have to deal with the boolean.
+ */
+export const copyToClipboard = async (value: string): Promise<boolean> => {
+  try {
+    await navigator.clipboard.writeText(value)
+    return true
+  } catch (error) {
+    logger.error('Failed to copy to clipboard', error)
+    return false
+  }
+}
+
 /**
  * This helper is created to get the current user's browser name
  * @returns string

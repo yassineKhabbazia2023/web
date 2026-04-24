@@ -86,7 +86,7 @@ import {
   PTableColumn,
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
-import { getFullNameWithUppercaseLastName } from '@entities/utils'
+import { getFullNameWithUppercaseLastName } from '@pulse/common/utils'
 import type { Operation } from '@entities/types'
 import { OperationStatus } from '@entities/enums'
 import { getInitials } from '@entities/helpers'

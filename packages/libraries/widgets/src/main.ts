@@ -1,5 +1,6 @@
 import type { App } from 'vue'
 import { i18n } from '@pulse/common/i18n'
+import contactsWidget from './widgets/grid/contacts/contacts.widget'
 import digilabWidget from './widgets/grid/digi-lab/digi-lab.widget'
 import pennylaneIntroWidget from './widgets/grid/pennylane-intro/pennylane-intro.widget'
 import smartIntroWidget from './widgets/grid/smart-intro/smart-intro.widget'
@@ -16,6 +17,7 @@ export default {
 
     // Register all widgets here
     // Consumers will pick the widgets they want to use through the widget grid manager
+    app.use(contactsWidget, {})
     app.use(digilabWidget, {})
     app.use(pennylaneIntroWidget, {})
     app.use(powerBIIntroWidget, {})

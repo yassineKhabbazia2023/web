@@ -123,6 +123,7 @@ export type IconName =
 'grid' |
 'handbag' |
 'headWithGear' |
+'headset' |
 'hotel' |
 'hourglass' |
 'hourglassDuotone' |

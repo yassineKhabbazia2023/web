@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
-import { getFullNameWithUppercaseLastName } from '@entities/utils'
+import { getFullNameWithUppercaseLastName } from '@pulse/common/utils'
 import { PUserCard } from '@pulse/styleguide/components'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { formatPhoneNumber } from '@pulse/toolbox/utils/string'

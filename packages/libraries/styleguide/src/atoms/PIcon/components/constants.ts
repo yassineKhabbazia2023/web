@@ -75,6 +75,12 @@ export const pulseGeneratedIcons: {
     category: 'Communication',
   },
   {
+    name: 'headset',
+    componentName: 'PIHeadset',
+    fileName: 'headset.svg',
+    category: 'Communication',
+  },
+  {
     name: 'send',
     componentName: 'PISend',
     fileName: 'send.svg',
