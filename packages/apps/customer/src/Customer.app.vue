@@ -1,10 +1,8 @@
 <template>
-  <Suspense>
-    <PConfigProvider>
-      <FullPageLoader v-show="isGlobalLoading === true" />
-      <component :is="currentExperience" v-show="isGlobalLoading === false" />
-    </PConfigProvider>
-  </Suspense>
+  <PConfigProvider>
+    <FullPageLoader v-show="isGlobalLoading === true" />
+    <component :is="currentExperience" v-show="isGlobalLoading === false" />
+  </PConfigProvider>
 </template>
 
 <script setup lang="ts">

@@ -86,7 +86,7 @@ export function useBookingAppointmentDrawer(isOpened: Ref<boolean>) {
     }
 
     handlePreselectedExpert()
-  })
+  }, { immediate: true })
 
   return {
     availableExperts,

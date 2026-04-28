@@ -47,6 +47,7 @@ export enum RouteName {
   PROSPECT_STEPPER = 'prospect-stepper',
   PROSPECT_USERS = 'prospect-users',
   PROSPECTS = 'prospects',
+  REDIRECT_ACTION = 'redirect-action',
   REPORTS = 'reports',
   RESEND_EMAIL_SUCCESS = 'resendEmailSuccess',
   RESET_PASSWORD = 'resetPassword',

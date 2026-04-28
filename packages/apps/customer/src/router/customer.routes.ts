@@ -6,6 +6,7 @@ export const CUSTOMER_ROUTES = {
   anonymous: { path: '', name: RouteName.ANONYMOUS },
   authenticated: { path: '', name: RouteName.AUTHENTICATED },
   landing: { path: 'landing', name: RouteName.LANDING },
+  redirectAction: { path: 'redirect', name: RouteName.REDIRECT_ACTION },
   pennylaneSsoProxy: { path: 'pennylane-sso-proxy', name: RouteName.PENNYLANE_SSO_PROXY },
   login: {
     client: { path: 'login', name: RouteName.LOGIN_CLIENT },

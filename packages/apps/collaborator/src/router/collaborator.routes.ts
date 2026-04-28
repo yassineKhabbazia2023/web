@@ -6,6 +6,7 @@ export const COLLABORATOR_ROUTES = {
   anonymous: { path: '', name: RouteName.ANONYMOUS },
   authenticated: { path: '', name: RouteName.AUTHENTICATED },
   landing: { path: 'landing', name: RouteName.LANDING },
+  redirectAction: { path: 'redirect', name: RouteName.REDIRECT_ACTION },
   login: { path: '', name: RouteName.LOGIN_COLLAB },
   loginRedirect: { path: '/login', name: RouteName.LOGIN_REDIRECT },
   entity: {

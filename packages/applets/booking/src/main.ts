@@ -1,6 +1,7 @@
 import type { App } from 'vue'
 import { i18n } from '@pulse/common/i18n'
 import BookingAppointmentWidget from './customer/widgets/appointment-widget/booking-appointment.widget'
+import { BookingRedirectActionManager } from './managers/redirect-action/booking-redirect-action.manager'
 import frFR from './i18n/fr-FR.json'
 import enUS from './i18n/en-US.json'
 
@@ -13,5 +14,7 @@ export default {
     // Booking applet plugin
     // Install the booking widget
     app.use(BookingAppointmentWidget, {})
+
+    BookingRedirectActionManager.registerResolvers()
   },
 }

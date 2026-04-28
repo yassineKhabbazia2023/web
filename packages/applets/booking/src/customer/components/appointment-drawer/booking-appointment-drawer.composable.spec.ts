@@ -168,17 +168,56 @@ describe('useBookingAppointmentDrawer', () => {
     })
 
     it('should not reset drawer when drawer closes', async () => {
-      const isOpened = ref(true)
+      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      const isOpened = ref(false)
       const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
 
+      // Open drawer first
+      isOpened.value = true
+      await flushPromises()
+
+      // Modify state
       currentStep.value = BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT
       selectedExpertId.value = 99
 
+      // Close drawer
       isOpened.value = false
       await flushPromises()
 
+      // State should not be reset when closing
       expect(currentStep.value).toBe(BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT)
       expect(selectedExpertId.value).toBe(99)
+    })
+
+    it('should load experts immediately when composable initialized with drawer already open', async () => {
+      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      const isOpened = ref(true)
+
+      useBookingAppointmentDrawer(isOpened)
+      await flushPromises()
+
+      expect(vi.mocked(BookingManager.refreshAvailableExperts)).toHaveBeenCalledOnce()
+    })
+
+    it('should handle preselected expert when drawer already open on initialization', async () => {
+      vi.mocked(BookingManager.refreshAvailableExperts).mockResolvedValueOnce(undefined)
+      const appointmentsStore = useBookingAppointmentsStore()
+      const customerStore = useBookingCustomerStore()
+
+      const mockExperts = getMockExperts()
+      customerStore.setAvailableExperts(mockExperts)
+      const preselectedExpertId = mockExperts[0].id
+
+      // Set preselected collaborator and open drawer BEFORE composable initialization
+      appointmentsStore.openBookingAppointmentDrawer(preselectedExpertId)
+      const isOpened = ref(true)
+
+      const { currentStep, selectedExpertId } = useBookingAppointmentDrawer(isOpened)
+      await flushPromises()
+
+      expect(selectedExpertId.value).toBe(preselectedExpertId)
+      expect(currentStep.value).toBe(BookingAppointmentDrawerTabs.CHOOSE_TIME_SLOT)
+      expect(appointmentsStore.preselectedCollaboratorId).toBeUndefined()
     })
 
     it('should auto-select preselected collaborator when drawer opens and expert exists', async () => {
