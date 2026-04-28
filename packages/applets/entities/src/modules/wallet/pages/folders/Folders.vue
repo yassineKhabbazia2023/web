@@ -213,7 +213,7 @@ import FormSearch from '@entities/components/FormSearch'
 import OffersDrawer from '@entities/components/OffersDrawer'
 import { getPaginationLabel } from '@pulse/common/utils'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
-import { PAGE_SIZES, MOBILE_PAGE_SIZES, ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
+import { PAGE_SIZES, LARGE_PAGE_SIZES, MOBILE_PAGE_SIZES, ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 import { EntityStatus } from '@entities/modules/wallet/enums'
 import { fetchWalletData } from './FoldersUtils'
 import type {
@@ -283,9 +283,9 @@ const searchPlaceholder = computed(() =>
 )
 
 const pageSizes = computed(() =>
-  isMobile.value ? [5, ...MOBILE_PAGE_SIZES, ...PAGE_SIZES] : PAGE_SIZES,
+  isMobile.value ? [5, ...MOBILE_PAGE_SIZES, ...PAGE_SIZES] : LARGE_PAGE_SIZES,
 )
-const currentPageSize = computed((): number => pageSizes.value[0])
+const currentPageSize = computed((): number => pageSizes.value[2])
 
 const searchBar = ref()
 const isLoading = ref(true)
@@ -579,7 +579,7 @@ const onClickFolder = (entityId: number) => {
 const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
   searchCriteria.value = {
     currentPage: 0,
-    limit: PAGE_SIZES[0],
+    limit: pageSizes.value[0],
     filterByDeploymentStatus: filterValue.toString(),
     sorting: {
       field: '',
@@ -591,7 +591,7 @@ const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
 const handleRemoveFilter = () => {
   searchCriteria.value = {
     currentPage: 0,
-    limit: PAGE_SIZES[0],
+    limit: pageSizes.value[0],
     sorting: {
       field: '',
       descending: false,

@@ -40,11 +40,6 @@ const putFavoriteMock = vi.hoisted(() => vi.fn())
 const getFavoritesMock = vi.hoisted(() => vi.fn())
 const accountOperationsListMock = getAccountOperationsListMock()
 
-vi.mock('@pulse/toolbox', () => ({
-  logger: loggerMock,
-  FeatureFlagManager: featureFlagManagerMock,
-}))
-
 vi.mock('@entities/services/registry', () => registryServiceMock)
 
 const mockedQueryResult = getMockedWalletQueryResult()
@@ -247,7 +242,7 @@ describe('deploy', () => {
       filterByDeploymentStatus: '',
       isCustomerRelationFilter: false,
       isFavoriteFilter: false,
-      limit: 15,
+      limit: 90,
       search: SEARCH_VALUE,
       sorting: {
         descending: false,
@@ -385,7 +380,7 @@ describe('deploy', () => {
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 0,
       filterByDeploymentStatus: '1',
-      limit: 15,
+      limit: 30,
     })
     // base call + filter call
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
@@ -408,7 +403,7 @@ describe('deploy', () => {
 
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 0,
-      limit: 15,
+      limit: 30,
     })
 
     expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
@@ -452,7 +447,7 @@ describe('deploy', () => {
       filterByDeploymentStatus: '',
       isCustomerRelationFilter: false,
       isFavoriteFilter: false,
-      limit: 15,
+      limit: 90,
       search: expectedSearchValue,
       sorting: {
         descending: false,
@@ -605,7 +600,7 @@ describe('deploy', () => {
         filterByDeploymentStatus: '',
         isCustomerRelationFilter: true,
         isFavoriteFilter: false,
-        limit: 15,
+        limit: 90,
         search: '',
         sorting: {
           descending: false,
@@ -663,7 +658,7 @@ describe('deploy', () => {
         filterByDeploymentStatus: '',
         isCustomerRelationFilter: false,
         isFavoriteFilter: false,
-        limit: 15,
+        limit: 90,
         search: '',
         sorting: {
           descending: false,
