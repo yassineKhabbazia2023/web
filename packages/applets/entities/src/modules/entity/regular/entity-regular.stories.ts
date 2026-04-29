@@ -10,7 +10,6 @@ import Invoices from './invoices/invoices.vue'
 import Information from './information/Information.vue'
 import Users from '../shared/users/users.vue'
 import Collaborators from '../shared/collaborators/Collaborators.vue'
-import DelegationsHistory from '../shared/delegationsHistory/DelegationsHistory.vue'
 
 const meta: Meta<typeof EntityOverview> = {
   title: 'Applets/Entities/Pages/EntityOverview',
@@ -36,7 +35,6 @@ const parentRoute = {
     { path: 'info', name: RouteName.INFO, component: Information },
     { path: 'users', name: RouteName.USERS, component: Users },
     { path: 'collab', name: RouteName.COLLAB, component: Collaborators },
-    { path: 'delegations', name: RouteName.DELEGATIONS_HISTORY, component: DelegationsHistory },
   ],
 }
 

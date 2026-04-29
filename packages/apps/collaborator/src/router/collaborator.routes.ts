@@ -21,7 +21,6 @@ export const COLLABORATOR_ROUTES = {
         offers: { path: 'offres', name: RouteName.OFFERS },
         invoices: { path: 'factures-rydge-conseil', name: RouteName.RYDGE_INVOICES },
         info: { path: 'informations', name: RouteName.INFO },
-        delegationsHistory: { path: 'historique-delegations', name: RouteName.DELEGATIONS_HISTORY },
         history: { path: 'historique-dossier', name: RouteName.FOLDER_HISTORY },
       },
       powerbi: { path: 'rapports-bi', name: RouteName.REPORTS },

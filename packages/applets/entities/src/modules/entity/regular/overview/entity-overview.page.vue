@@ -49,7 +49,6 @@ const { t } = useI18n({
       info: 'Information',
       invoices: 'RYDGE Conseil invoices',
       history: 'Folder history',
-      delegationsHistory: 'Delegations history',
     },
     'fr-FR': {
       users: 'Utilisateurs',
@@ -58,7 +57,6 @@ const { t } = useI18n({
       info: 'Informations',
       invoices: 'Factures RYDGE Conseil',
       history: 'Historique du dossier',
-      delegationsHistory: 'Historique des délégations',
     },
   },
 })
@@ -84,7 +82,6 @@ const tabTitles: Record<TabName, string> = {
   [RouteName.USERS]: t('users'),
   [RouteName.COLLAB]: t('collab'),
   [RouteName.FOLDER_HISTORY]: t('history'),
-  [RouteName.DELEGATIONS_HISTORY]: t('delegationsHistory'),
 }
 const tabAuthorizations = computed(() =>
   getTabAuthorizations(

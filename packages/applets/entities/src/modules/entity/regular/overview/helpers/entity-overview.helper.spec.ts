@@ -19,7 +19,6 @@ describe('test entity-helper', () => {
       isInvoicesTabVisible: true,
       expectedAuthorizations: {
         [RouteName.COLLAB]: true,
-        [RouteName.DELEGATIONS_HISTORY]: true,
         [RouteName.FOLDER_HISTORY]: true,
         [RouteName.INFO]: true,
         [RouteName.OFFERS]: true,
@@ -33,7 +32,6 @@ describe('test entity-helper', () => {
       isInvoicesTabVisible: true,
       expectedAuthorizations: {
         [RouteName.COLLAB]: false,
-        [RouteName.DELEGATIONS_HISTORY]: false,
         [RouteName.FOLDER_HISTORY]: false,
         [RouteName.INFO]: true,
         [RouteName.OFFERS]: true,
@@ -47,7 +45,6 @@ describe('test entity-helper', () => {
       isInvoicesTabVisible: true,
       expectedAuthorizations: {
         [RouteName.COLLAB]: false,
-        [RouteName.DELEGATIONS_HISTORY]: false,
         [RouteName.FOLDER_HISTORY]: true,
         [RouteName.INFO]: false,
         [RouteName.OFFERS]: false,
@@ -61,7 +58,6 @@ describe('test entity-helper', () => {
       isInvoicesTabVisible: false,
       expectedAuthorizations: {
         [RouteName.COLLAB]: false,
-        [RouteName.DELEGATIONS_HISTORY]: false,
         [RouteName.FOLDER_HISTORY]: false,
         [RouteName.INFO]: false,
         [RouteName.OFFERS]: false,
@@ -146,7 +142,6 @@ describe('test entity-helper', () => {
     it('should return proper tabs', () => {
       const tabAuthorisations: Record<TabName, boolean> = {
         [RouteName.COLLAB]: true,
-        [RouteName.DELEGATIONS_HISTORY]: false,
         [RouteName.FOLDER_HISTORY]: true,
         [RouteName.INFO]: true,
         [RouteName.OFFERS]: true,
@@ -160,7 +155,6 @@ describe('test entity-helper', () => {
         [RouteName.RYDGE_INVOICES]: 'Factures RYDGE Conseil',
         [RouteName.INFO]: 'Informations',
         [RouteName.FOLDER_HISTORY]: 'Historique du dossier',
-        [RouteName.DELEGATIONS_HISTORY]: 'Historique des délégations',
       }
       const tabs = getTabs(tabAuthorisations, titles)
       const expectedTabs: Tab[] = [{

@@ -1,12 +1,10 @@
 import { describe, it, vi, expect } from 'vitest'
-import delegationsHistoryMock from '@entities/__mocks__/json/delegationsHistory.json'
 import {
   fetchAccount,
   fetchAccounts,
   patchAccount,
   fetchAccountReferential,
   fetchReferentialHubs,
-  fetchAccountDelegationsHistory,
   deleteAccountDelegation,
   delegateAccounts,
   fetchPermanentDelegations,
@@ -105,9 +103,6 @@ describe('test accountServices', () => {
         return Promise.resolve({
           data: mockedAccount,
         })
-      }
-      if (url === `account/api/delegations/currentuser/${accountId}/history?`) {
-        return Promise.resolve({ data: delegationsHistoryMock })
       }
       if (url === 'account/api/roles/currentuser/hub/contact') {
         return Promise.resolve({
@@ -240,11 +235,6 @@ describe('test accountServices', () => {
   })
 
   describe('delegations', () => {
-    it('fetch the historical of all delegations for an account', async () => {
-      const delegationsHistoryFetched = await fetchAccountDelegationsHistory(accountId, new URLSearchParams())
-      expect(delegationsHistoryFetched).toMatchObject(delegationsHistoryMock)
-    })
-
     it('delete a delegation', async () => {
       const response = await deleteAccountDelegation(delegationId, contactId, 1)
 

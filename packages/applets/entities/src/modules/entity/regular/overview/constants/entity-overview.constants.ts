@@ -7,5 +7,4 @@ export const ENTITY_OVERVIEW_TAB_ROUTE_NAMES = [
   RouteName.RYDGE_INVOICES,
   RouteName.INFO,
   RouteName.FOLDER_HISTORY,
-  RouteName.DELEGATIONS_HISTORY,
 ] as const

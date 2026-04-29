@@ -9,7 +9,6 @@ import {
   getMockedSubscriptionDetails,
   getMockedOperations,
   getMockedCollabRoles,
-  delegationsHistoryMock,
   referentialHubsMock,
   referentialOfficesMock,
   accountReferentialInformationMock,
@@ -165,10 +164,6 @@ export const entitiesHandlers = [
 
   http.patch('*/account/api/accounts/:accountId/currentuser', () => {
     return HttpResponse.json({ success: true })
-  }),
-
-  http.get('*/account/api/delegations/currentuser/:accountId/history', () => {
-    return HttpResponse.json(delegationsHistoryMock)
   }),
 
   http.delete('*/account/api/delegations/currentuser', () => {

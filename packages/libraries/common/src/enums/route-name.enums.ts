@@ -9,7 +9,6 @@ export enum RouteName {
   CREATE_PASSWORD = 'createPassword',
   CUSTOMER_ENTITIES = 'customer-entities',
   CUSTOMER_PROSPECTS = 'customer-prospects',
-  DELEGATIONS_HISTORY = 'delegationsHistory',
   ENTITY = 'entity',
   ENTITY_OVERVIEW = 'entity-overview',
   ENTITY_REDIRECT = 'entity-redirect',

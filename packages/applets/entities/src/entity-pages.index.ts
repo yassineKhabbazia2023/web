@@ -1,7 +1,6 @@
 // Shared
 export { default as Users } from './modules/entity/shared/users/users.vue'
 export { default as Collaborators } from './modules/entity/shared/collaborators/Collaborators.vue'
-export { default as DelegationsHistory } from './modules/entity/shared/delegationsHistory/DelegationsHistory.vue'
 export { default as History } from './modules/entity/shared/history/History.vue'
 // Entity - Regular
 export { default as RegularRoot } from './modules/entity/regular/regular.root.vue'

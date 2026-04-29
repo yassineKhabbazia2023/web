@@ -62,11 +62,6 @@ export const regularCollaboratorRoutes = [
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.Information),
           },
           {
-            path: COLLABORATOR_ROUTES.entity.regular.overview.delegationsHistory.path,
-            name: COLLABORATOR_ROUTES.entity.regular.overview.delegationsHistory.name,
-            component: () => import('@pulse/entities/entity-pages').then(pages => pages.DelegationsHistory),
-          },
-          {
             path: COLLABORATOR_ROUTES.entity.regular.overview.history.path,
             name: COLLABORATOR_ROUTES.entity.regular.overview.history.name,
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.History),

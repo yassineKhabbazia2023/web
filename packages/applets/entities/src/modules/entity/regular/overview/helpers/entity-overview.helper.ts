@@ -1,5 +1,5 @@
 import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
-import { ACCOUNT_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
+import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 import { Feature, RouteName } from '@pulse/common/enums'
 import type { TabName, Tab } from '../types'
 import { ENTITY_OVERVIEW_TAB_ROUTE_NAMES } from '../constants/entity-overview.constants'
@@ -22,7 +22,6 @@ export function getTabAuthorizations(isCollab: boolean, isInvoicesTabVisible: bo
     [RouteName.USERS]: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.USERS),
     [RouteName.COLLAB]: isCollab && CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.COLLABORATORS),
     [RouteName.FOLDER_HISTORY]: isCollab,
-    [RouteName.DELEGATIONS_HISTORY]: isCollab && CurrentUserManager.hasPermission(GLOBAL_PERMISSIONS.HISTORY),
     [RouteName.RYDGE_INVOICES]: hasInvoicesAccess,
   }
 }

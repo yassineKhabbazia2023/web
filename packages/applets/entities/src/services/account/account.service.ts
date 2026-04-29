@@ -1,7 +1,7 @@
 import type { Account, AccountSignatories } from '.'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { api } from '@pulse/common/api'
-import type { Entity, QueryResult, UserInfoApi, Office } from '@pulse/common/types'
+import type { QueryResult, UserInfoApi, Office } from '@pulse/common/types'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { PatchOperation } from '@entities/services/patch-record'
 import type { AccountRow, ReferentialStructure, Hub, AccountsDelegation, PermanentDelegationApiItem } from './account.type'
@@ -51,14 +51,6 @@ export async function patchAccount(accountId: number, patchOperations: PatchOper
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/currentuser`
 
   await api.gateway.patch(url, patchOperations)
-}
-
-export async function fetchAccountDelegationsHistory(
-  accountId: Entity['accountId'],
-  searchParams: URLSearchParams,
-) {
-  const url = `${API_PREFIXES.ACCOUNT}/delegations/currentuser/${accountId}/history?${searchParams}`
-  return await fetchGatewayApi(url)
 }
 
 export async function deleteAccountDelegation(delegationId: number, delegatorId: number, delegateeId: number) {

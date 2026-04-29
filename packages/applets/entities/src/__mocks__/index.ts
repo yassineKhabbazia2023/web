@@ -22,7 +22,6 @@ export * from './wallet.manager.mocks'
 export * from './permanent-delegations.mocks'
 
 // JSON mocks
-export { default as delegationsHistoryMock } from './json/delegationsHistory.json'
 export { default as referentialHubsMock } from './json/referentialHubs.json'
 export { default as referentialOfficesMock } from './json/referentialOffices.json'
 export { default as accountReferentialInformationMock } from './json/accountReferentialInformation.json'
