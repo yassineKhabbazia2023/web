@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { logger } from '@pulse/toolbox'
-import { useUserStore, useBookingCollabStore } from '@pulse/common/stores'
+import { useBookingCollabStore } from '@pulse/common/stores'
 import { displayNotification } from '@pulse/styleguide'
 import { BookingService } from '@booking/services'
 import { BookingConfigurationSteps } from './booking-configuration.enums'
@@ -11,10 +11,6 @@ import {
   BOOKING_CONFIRMATION_SUCCESS_TITLE_KEY,
   BOOKING_CONFIGURATION_SUBMIT_ERROR_NOTIFICATION_KEY,
 } from './booking-configuration.consts'
-import {
-  BOOKING_QUERY_PARAM_WIDGET,
-  BOOKING_QUERY_PARAM_COLLABORATOR_ID,
-} from '@booking/constants'
 import { BookingConfigurationManager } from './booking-configuration.manager'
 import type { AppointmentDetails } from '../booking-appointment-configuration/booking-appointment-configuration.types'
 import type { TimeSlotsConfiguration } from '../booking-time-slots-configuration/booking-time-slots-configuration.types'
@@ -24,7 +20,6 @@ import { BookingTrackingService } from '@booking/services/booking-tracking.servi
 
 export function useBookingConfiguration() {
   const { t } = useI18n({ useScope: 'global' })
-  const userStore = useUserStore()
   const collabStore = useBookingCollabStore()
   const currentStep = ref<BookingConfigurationSteps>(BookingConfigurationSteps.INTRO)
   const bookingDrawer = useBookingDrawer()
@@ -136,18 +131,6 @@ export function useBookingConfiguration() {
 
   const timeSlotsConfiguration = ref<TimeSlotsConfiguration>(getInitialTimeSlotsConfiguration())
 
-  // Build booking URL for sharing (query params based URL for client booking)
-  const bookingUrl = computed(() => {
-    const userId = userStore.user?.id
-    if (userId === undefined) {
-      return ''
-    }
-    const params = new URLSearchParams()
-    params.set(BOOKING_QUERY_PARAM_WIDGET, 'true')
-    params.set(BOOKING_QUERY_PARAM_COLLABORATOR_ID, String(userId))
-    return `${globalThis.window.location.origin}?${params.toString()}`
-  })
-
   // Drawer title changes based on step and submission status
   const drawerTitle = computed(() => {
     if (currentStep.value === BookingConfigurationSteps.CONFIRMATION && isSubmitSuccess.value === true) {
@@ -166,7 +149,6 @@ export function useBookingConfiguration() {
     isSubmitting,
     isSubmitSuccess,
     isConfirmationStep,
-    bookingUrl,
     // Methods
     goToNextStep,
     goToPreviousStep,

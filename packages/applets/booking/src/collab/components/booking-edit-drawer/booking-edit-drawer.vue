@@ -48,7 +48,7 @@
           :pName="BookingEditDrawerTab.EMAIL_SIGNATURE"
         >
           <div class="padding--4">
-            <BookingShareLink :bookingUrl="builtBookingUrl" />
+            <BookingShareLink :bookingUrl="bookingUrl" />
           </div>
         </PTabPane>
       </PTabs>
@@ -108,6 +108,7 @@ import BookingShareLink from '../booking-confirmation/booking-share-link.vue'
 import BookingEditConfirmationModal from './booking-edit-confirmation-modal.vue'
 import { useBookingEditDrawer } from './booking-edit-drawer.composable'
 import { BookingEditDrawerTab } from './booking-edit-drawer.enums'
+import { useBookingUrl } from '@booking/composables/use-booking-url.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -157,7 +158,6 @@ const {
   configurationDetails,
   appointmentDetails,
   timeSlotsConfiguration,
-  builtBookingUrl,
   handleBeforeClose,
   handleDiscardChanges,
   handleSave,
@@ -166,4 +166,6 @@ const {
   onSuccess: () => displayNotification('success', t('notifications.success')),
   onError: () => displayNotification('error', t('notifications.error')),
 })
+
+const { bookingUrl } = useBookingUrl()
 </script>

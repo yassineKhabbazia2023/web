@@ -1,16 +1,12 @@
 import { ref, computed, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useBookingCollabStore, useUserStore } from '@pulse/common/stores'
+import { useBookingCollabStore } from '@pulse/common/stores'
 import { logger } from '@pulse/toolbox'
 import { BookingService } from '@booking/services'
 import { BookingTrackingService } from '@booking/services/booking-tracking.service'
 import type { BookingConfigurationDetails, BookingConfigurationUpdatePayload } from '@booking/types'
 import type { AppointmentDetails } from '../booking-appointment-configuration/booking-appointment-configuration.types'
 import type { TimeSlotsConfiguration } from '../booking-time-slots-configuration/booking-time-slots-configuration.types'
-import {
-  BOOKING_QUERY_PARAM_WIDGET,
-  BOOKING_QUERY_PARAM_COLLABORATOR_ID,
-} from '@booking/constants/booking.const'
 import type { UseBookingEditDrawerOptions } from './booking-edit-drawer.types'
 import { BookingEditDrawerTab } from './booking-edit-drawer.enums'
 import {
@@ -21,7 +17,6 @@ import {
 
 export function useBookingEditDrawer(options: UseBookingEditDrawerOptions) {
   const collabStore = useBookingCollabStore()
-  const userStore = useUserStore()
   const { isBookingEditDrawerOpened, editConfigurationId } = storeToRefs(collabStore)
   const { closeBookingEditDrawer } = collabStore
 
@@ -44,17 +39,6 @@ export function useBookingEditDrawer(options: UseBookingEditDrawerOptions) {
   })
 
   const initialPayload = ref<BookingConfigurationUpdatePayload | null>(null)
-
-  const builtBookingUrl = computed(() => {
-    const userId = userStore.user?.id
-    if (userId === undefined) {
-      return ''
-    }
-    const params = new URLSearchParams()
-    params.set(BOOKING_QUERY_PARAM_WIDGET, 'true')
-    params.set(BOOKING_QUERY_PARAM_COLLABORATOR_ID, String(userId))
-    return `${globalThis.window.location.origin}?${params.toString()}`
-  })
 
   const currentPayload = computed(() => {
     return mapToUpdatePayload(appointmentDetails.value, timeSlotsConfiguration.value)
@@ -167,7 +151,6 @@ export function useBookingEditDrawer(options: UseBookingEditDrawerOptions) {
     configurationDetails,
     appointmentDetails,
     timeSlotsConfiguration,
-    builtBookingUrl,
     hasUnsavedChanges,
 
     // Actions

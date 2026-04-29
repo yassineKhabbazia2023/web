@@ -1,4 +1,5 @@
 import { ref } from 'vue'
+import { setActivePinia, createPinia } from 'pinia'
 import { useBookingConfiguration } from './booking-configuration.composable'
 import { BookingService } from '@booking/services'
 import { BookingConfigurationManager } from './booking-configuration.manager'
@@ -18,14 +19,9 @@ import {
   getMockedBookingConfigurationResponse,
   getMockedAppointmentDetails,
 } from '@booking/__mocks__/booking.mock'
-import { getStoreMock } from '@pulse/common/mocks/vitest'
-import { useUserStore } from '@pulse/common/stores'
-import { getMockedUser } from '@pulse/common/mocks'
 
 const closeBookingCreationDrawerMock = vi.fn()
 const isBookingCreationDrawerOpenedMock = ref(false)
-
-const userStoreMock = getStoreMock(useUserStore)
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({ t: (key: string) => key }),
@@ -47,7 +43,7 @@ vi.mock('../booking-drawer/booking-drawer.composable', () => ({
 
 describe('useBookingConfiguration', () => {
   beforeEach(() => {
-    userStoreMock.user = getMockedUser()
+    setActivePinia(createPinia())
     vi.mocked(getInitialTimeSlotsConfiguration).mockReturnValue(getMockedTimeSlotsConfiguration())
     vi.mocked(BookingConfigurationManager.prepareMeetingTemplatePayload).mockReturnValue(getMockedBookingConfigurationPayload())
   })
@@ -295,23 +291,6 @@ describe('useBookingConfiguration', () => {
       closeDrawer()
 
       expect(closeBookingCreationDrawerMock).toHaveBeenCalled()
-    })
-  })
-
-  describe('bookingUrl', () => {
-    it('should return correct booking URL with user id', () => {
-      const { bookingUrl } = useBookingConfiguration()
-
-      expect(bookingUrl.value).toContain('bookingWidget=true')
-      expect(bookingUrl.value).toContain('collaboratorId=123')
-    })
-
-    it('should return empty string when user id is undefined', () => {
-      userStoreMock.user = undefined
-
-      const { bookingUrl } = useBookingConfiguration()
-
-      expect(bookingUrl.value).toBe('')
     })
   })
 

@@ -59,6 +59,7 @@ import BookingAppointmentConfiguration from '../booking-appointment-configuratio
 import BookingTimeSlotsConfiguration from '../booking-time-slots-configuration/booking-time-slots-configuration.vue'
 import BookingConfirmation from '../booking-confirmation/booking-confirmation.vue'
 import type { PStepsItem } from '@pulse/styleguide/types'
+import { useBookingUrl } from '@booking/composables/use-booking-url.composable'
 
 const { t } = useI18n({ useScope: 'global' })
 
@@ -70,11 +71,12 @@ const {
   drawerTitle,
   isSubmitting,
   isConfirmationStep,
-  bookingUrl,
   goToNextStep,
   goToPreviousStep,
   closeDrawer,
 } = useBookingConfiguration()
+
+const { bookingUrl } = useBookingUrl()
 
 const emit = defineEmits<{
   'update-title': [title: string]

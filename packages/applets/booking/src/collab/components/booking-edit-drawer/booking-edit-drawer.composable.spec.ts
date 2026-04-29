@@ -1,6 +1,6 @@
 import { nextTick } from 'vue'
 import { setActivePinia, createPinia } from 'pinia'
-import { useBookingCollabStore, useUserStore } from '@pulse/common/stores'
+import { useBookingCollabStore } from '@pulse/common/stores'
 import { BookingService } from '@booking/services'
 import { BookingTrackingService } from '@booking/services/booking-tracking.service'
 import type { BookingConfigurationDetails } from '@booking/types'
@@ -246,26 +246,6 @@ describe('useBookingEditDrawer', () => {
 
       expect(isConfirmationModalOpen.value).toBe(false)
       expect(collabStore.isBookingEditDrawerOpened).toBe(false)
-    })
-
-    it('should build booking URL with user ID', () => {
-      const userStore = useUserStore()
-      userStore.user = { id: 42 } as never
-
-      const originalLocation = globalThis.window.location
-      Object.defineProperty(globalThis.window, 'location', {
-        value: { origin: 'https://example.com' },
-        writable: true,
-      })
-
-      const { builtBookingUrl } = useBookingEditDrawer(mockOptions)
-
-      expect(builtBookingUrl.value).toBe('https://example.com?bookingWidget=true&collaboratorId=42')
-
-      Object.defineProperty(globalThis.window, 'location', {
-        value: originalLocation,
-        writable: true,
-      })
     })
   })
 })
