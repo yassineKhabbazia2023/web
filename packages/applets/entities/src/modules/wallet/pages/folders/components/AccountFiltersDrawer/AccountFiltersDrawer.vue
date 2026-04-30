@@ -19,7 +19,6 @@
         <PSwitch
           v-model="internalFilters.isFavoriteFilter"
           :pActiveText="t('favorites')"
-          :pActiveColor="AppColors.JUNGLE_400"
         />
       </PFormItem>
       <!-- Customer Relationship Switch -->
@@ -27,7 +26,6 @@
         <PSwitch
           v-model="internalFilters.isCustomerRelationFilter"
           :pActiveText="t('customerRelationship')"
-          :pActiveColor="AppColors.JUNGLE_400"
         />
       </PFormItem>
     </PForm>
@@ -44,7 +42,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { AppColors } from '@pulse/styleguide'
 import { PDrawer, PDrawerActions, PForm, PFormItem, PSwitch } from '@pulse/styleguide/components'
 import type { PDrawerActionButton } from '@pulse/styleguide/types'
 import type { AccountFiltersDrawerProps } from './account-filters-drawer.types'

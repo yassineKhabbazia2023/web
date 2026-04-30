@@ -95,7 +95,6 @@
           <PSwitch
             :modelValue="hasNoSiren"
             :pDisabled="isSirenFilled"
-            :pActiveColor="AppColors.JUNGLE_400"
             data-testid="has-no-siren-switch"
             @update:model-value="onHasNoSirenChange"
           />
@@ -113,7 +112,6 @@ import { ref, onMounted, useTemplateRef, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep, setWith, get } from 'lodash-es'
 import { PAlert, PForm, PDynamicFields, PLoader, PSwitch } from '@pulse/styleguide/components'
-import { AppColors } from '@pulse/styleguide'
 import { cleanRecordStructure, getFormStructure } from '@entities/utils/referential'
 import { type Account } from '@entities/services/account'
 import type { CompanyInformationProps } from './CompanyInformationTypes'

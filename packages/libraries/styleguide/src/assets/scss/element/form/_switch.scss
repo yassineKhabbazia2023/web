@@ -2,7 +2,7 @@
 @use 'element-plus/theme-chalk/src/mixins/function' as *;
 
 $switch: (
-  'on-color': var(--p-black-rock-900),
+  'on-color': var(--p-surface-state-active),
   'off-color': var(--p-gray-100),
 );
 
@@ -44,11 +44,11 @@ div.el-switch {
 
   &:not(.is-disabled) {
     &:hover {
-      --el-switch-on-color: var(--p-jungle-700);
+      --el-switch-on-color: var(--p-surface-state-action-hover);
     }
 
     &:focus {
-      --el-switch-on-color: var(--p-jungle-800);
+      --el-switch-on-color: var(--p-surface-state-active);
     }
   }
 

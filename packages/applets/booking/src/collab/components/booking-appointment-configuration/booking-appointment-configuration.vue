@@ -67,10 +67,7 @@
 
       <!-- Online switch (outside PFormItem because no validation is needed) -->
       <div class="flex flex--items-center flex-gap--3 margin-top--2">
-        <PSwitch
-          v-model="formData.isOnline"
-          :pActiveColor="AppColors.JUNGLE_400"
-        />
+        <PSwitch v-model="formData.isOnline" />
         <label
           class="
             flex
@@ -128,7 +125,6 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PAlert, PButton, PDropdown, PInput, PSwitch, PForm, PFormItem, PIcon, PTooltip } from '@pulse/styleguide/components'
 import type { FormInstance } from 'element-plus'
-import { AppColors } from '@pulse/styleguide'
 import type { AppointmentDetails } from './booking-appointment-configuration.types'
 import { useBookingAppointmentValidation } from './booking-appointment-configuration.validation'
 

@@ -28,7 +28,6 @@
       <div class="flex flex--align-items-center margin-top--3">
         <PSwitch
           v-model="hasCustomerRelationStatus"
-          :pActiveColor="AppColors.JUNGLE_400"
           aria-labelledby="relation-switch-label"
           data-testid="declare-customer-relation-switch"
         />
@@ -58,7 +57,7 @@
 import { logger } from '@pulse/toolbox'
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { AppColors, displayNotification } from '@pulse/styleguide'
+import { displayNotification } from '@pulse/styleguide'
 import { PDrawer, PDrawerActions, PUserCard, PSwitch, PTag } from '@pulse/styleguide/components'
 import type { PDrawerActionButton } from '@pulse/styleguide/types'
 import { DeclareCustomerRelationDrawerProps } from './DeclareCustomerRelationDrawer.types'

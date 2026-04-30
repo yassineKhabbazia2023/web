@@ -29,7 +29,7 @@
           margin-bottom--4
         "
         >
-          <PSwitch v-model="hasOnlyFavouritesDisplayed" :pActiveColor="AppColors.JUNGLE_400" />
+          <PSwitch v-model="hasOnlyFavouritesDisplayed" />
           <span class="text-color--neutral-gray-900 padding-left--4 font-semibold">
             {{ t('feedCenter.settingsDrawer.favouritesOnly') }}
           </span>
@@ -47,7 +47,6 @@
                 <!-- click.stop is here in order to prevent accordion to fold / unfold when clicking the switch -->
                 <PSwitch
                   :modelValue="NotificationSettingsManager.hasAtLeastOneSettingEnabled(domainSetting.settings)"
-                  :pActiveColor="AppColors.JUNGLE_400"
                   @click.stop
                   @update:model-value="(isEnabled: boolean) => handleDomainSettingsSwitch(isEnabled, index)"
                 />
@@ -115,7 +114,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { AppColors } from '@pulse/styleguide'
 import { PButton, PCollapse, PCollapseItem, PDrawer, PLoader, PSwitch } from '@pulse/styleguide/components'
 import { useNotificationSettings } from './notification-settings.composable'
 import { NotificationSettingsManager } from './notification-settings.manager'
