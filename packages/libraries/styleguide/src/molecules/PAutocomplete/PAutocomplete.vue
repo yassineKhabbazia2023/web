@@ -7,7 +7,7 @@
     :debounce="pDebounce"
     :placeholder="pPlaceholder"
     :triggerOnFocus="pTriggerOnFocus"
-    :fetchSuggestions="pFetchSuggestions"
+    :fetchSuggestions="fetchSuggestionsWithMinLength"
     :name="pName"
     :label="pLabel"
     :hideLoading="pHideLoading"
@@ -17,8 +17,8 @@
     :fitInputWidth="pFitInputWidth"
     :selectWhenUnmatched="pSelectWhenUnmatched"
   >
-    <template #default="props">
-      <slot v-bind="props" />
+    <template #default="slotProps">
+      <slot v-bind="slotProps" />
     </template>
     <template #prefix>
       <slot name="prefix" />
@@ -33,10 +33,11 @@
 import { ElAutocomplete } from 'element-plus'
 import type { PAutocompleteProps } from './PAutocompleteTypes'
 
-withDefaults(defineProps<PAutocompleteProps>(), {
+const props = withDefaults(defineProps<PAutocompleteProps>(), {
   pPlaceholder: undefined,
   pClearable: false,
   pDisabled: false,
+  pMinLength: 0,
   pValueKey: 'value',
   pPlacement: 'bottom-start',
   pTriggerOnFocus: true,
@@ -50,4 +51,18 @@ withDefaults(defineProps<PAutocompleteProps>(), {
   pHighlightFirstItem: false,
   pFitInputWidth: false,
 })
+
+// Element Plus does not natively support a minimum character threshold on autocomplete
+// (its `minlength` is only the native HTML input attribute), so we wrap fetchSuggestions
+// to short-circuit with empty results until the query reaches pMinLength.
+const fetchSuggestionsWithMinLength = (
+  queryString: string,
+  callback: (data: Record<string, any>[]) => void,
+) => {
+  if (queryString.length < props.pMinLength) {
+    callback([])
+    return
+  }
+  props.pFetchSuggestions?.(queryString, callback)
+}
 </script>

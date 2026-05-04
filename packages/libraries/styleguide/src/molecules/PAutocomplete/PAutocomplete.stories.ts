@@ -25,6 +25,7 @@ const meta: Meta<typeof PAutocomplete> = {
     pDisabled: { control: 'boolean', description: 'Désactive le composant' },
     pValueKey: { control: 'text', description: 'Clé pour accéder à la valeur dans les objets' },
     pDebounce: { control: 'number', description: 'Délai en ms pour le debounce' },
+    pMinLength: { control: 'number', description: 'Nombre minimum de caractères pour déclencher la recherche' },
     pPlacement: {
       control: 'select',
       options: ['top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end'],
@@ -177,6 +178,53 @@ export const TriggerOnFocus: Story = {
   args: {
     pPlaceholder: 'Focus to see suggestions',
     pTriggerOnFocus: true,
+    pClearable: true,
+  },
+  render: (args) => ({
+    components: { PAutocomplete, PIcon },
+    setup() {
+      const state = ref('')
+      const links = ref<LinkItem[]>([])
+
+      const querySearch = (queryString: string, cb: (results: LinkItem[]) => void) => {
+        const results = queryString
+          ? links.value.filter(createFilter(queryString))
+          : links.value
+        cb(results)
+      }
+
+      const handleSelect = (item: any) => {
+        console.log('Selected:', item)
+      }
+
+      onMounted(() => {
+        links.value = createMockData()
+      })
+
+      return { args, state, querySearch, handleSelect }
+    },
+    template: `
+      <div style="width: 400px;">
+        <PAutocomplete
+          v-bind="args"
+          v-model="state"
+          :pFetchSuggestions="querySearch"
+          @select="handleSelect"
+        >
+          <template #prefix>
+            <PIcon pName="search" />
+          </template>
+        </PAutocomplete>
+      </div>
+    `,
+  }),
+}
+
+// With minimum length to trigger search
+export const WithMinLength: Story = {
+  args: {
+    pPlaceholder: 'Tapez au moins 3 caractères...',
+    pMinLength: 3,
     pClearable: true,
   },
   render: (args) => ({

@@ -25,6 +25,7 @@ const propsValue: PAutocompleteProps = {
   pFitInputWidth: true,
   pTeleported: false,
   pHighlightFirstItem: true,
+  pMinLength: 0,
 }
 
 const defaultSlot = `
@@ -35,9 +36,9 @@ const defaultSlot = `
   </template>
   `
 
-const createWrapper = () =>
+const createWrapper = (overrides: Partial<PAutocompleteProps> = {}) =>
   shallowMount(PAutocomplete, {
-    props: propsValue,
+    props: { ...propsValue, ...overrides },
     attachTo: document.body,
     slots: {
       default: defaultSlot,
@@ -97,7 +98,6 @@ describe('pAutoComplete', () => {
         valueKey: propsValue.pValueKey,
         debounce: propsValue.pDebounce,
         triggerOnFocus: propsValue.pTriggerOnFocus,
-        fetchSuggestions: propsValue.pFetchSuggestions,
         name: propsValue.pName,
         label: propsValue.pLabel,
         hideLoading: propsValue.pHideLoading,
@@ -116,6 +116,40 @@ describe('pAutoComplete', () => {
       const elAutocomplete = wrapper.findComponent({ name: 'ElAutocomplete' })
 
       expect(elAutocomplete.props('placeholder')).toBe(propsValue.pPlaceholder)
+    })
+  })
+  describe('fetchSuggestions wrapping', () => {
+    it('should call pFetchSuggestions when query length is greater or equal to pMinLength', () => {
+      const fetchSpy = vi.fn((_query, cb) => cb(suggestionsData))
+      const callback = vi.fn()
+      const wrapperWithMin = createWrapper({ pMinLength: 3, pFetchSuggestions: fetchSpy })
+
+      const elAutocomplete = wrapperWithMin.findComponent({ name: 'ElAutocomplete' })
+      const wrappedFetch = elAutocomplete.props('fetchSuggestions') as (
+        _query: string,
+        _cb: (_data: Record<string, any>[]) => void,
+      ) => void
+
+      wrappedFetch('abc', callback)
+
+      expect(fetchSpy).toHaveBeenCalledWith('abc', callback)
+      expect(callback).toHaveBeenCalledWith(suggestionsData)
+    })
+    it('should return empty suggestions when query length is below pMinLength', () => {
+      const fetchSpy = vi.fn()
+      const callback = vi.fn()
+      const wrapperWithMin = createWrapper({ pMinLength: 3, pFetchSuggestions: fetchSpy })
+
+      const elAutocomplete = wrapperWithMin.findComponent({ name: 'ElAutocomplete' })
+      const wrappedFetch = elAutocomplete.props('fetchSuggestions') as (
+        _query: string,
+        _cb: (_data: Record<string, any>[]) => void,
+      ) => void
+
+      wrappedFetch('ab', callback)
+
+      expect(fetchSpy).not.toHaveBeenCalled()
+      expect(callback).toHaveBeenCalledWith([])
     })
   })
   describe('slots', () => {

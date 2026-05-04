@@ -4,6 +4,7 @@ export interface PAutocompleteProps {
   pDisabled?: boolean
   pValueKey?: string
   pDebounce?: number
+  pMinLength?: number
   pPlacement?: 'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end'
   pFetchSuggestions?: (
     _queryString: string,
