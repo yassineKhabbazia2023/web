@@ -59,7 +59,7 @@ stages:
 - stage: DeployToITG
   dependsOn: Build
   condition: succeeded()
-  pool: Pulse-itg
+  pool: Pulse-Linux-itg
   jobs:
   - deployment: DeployToStorage
     workspace:
