@@ -128,14 +128,18 @@ describe('subscriptionService', () => {
 
   describe('createSubscriptionRequest', () => {
     it('should call subscription.post()', async () => {
+      const mockResponse = { data: { id: 1, status: 'created' } }
+      subscriptionPostMock.mockResolvedValue(mockResponse)
+
       const expectedUrl = 'offer/api/subscription/create'
       const expectedParams = [
         expectedUrl,
         subscriptionDemandMock,
       ]
-      await createSubscriptionRequest(subscriptionDemandMock)
+      const result = await createSubscriptionRequest(subscriptionDemandMock)
 
       expect(subscriptionPostMock).toHaveBeenCalledExactlyOnceWith(...expectedParams)
+      expect(result).toEqual(mockResponse.data)
     })
   })
 

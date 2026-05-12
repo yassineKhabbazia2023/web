@@ -219,6 +219,7 @@ const apiErrorMessages: Record<BackEndErrors, string> = {
   [BackEndErrors.WRONG_LOGIN_PASSWORD]: '', // should centralize error messages
   [BackEndErrors.INVALID_LOGIN_CREDENTIALS]: '',
   [BackEndErrors.TOKEN_EXPIRED]: '',
+  [BackEndErrors.PENNYLANE_ACCOUNT_ATTACHMENT_MISSING]: '',
   [BackEndErrors.other]: t('technicalError'),
 }
 

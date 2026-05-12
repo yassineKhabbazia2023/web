@@ -173,6 +173,11 @@
         "reset": "Réinitialiser",
         "apply": "Appliquer"
       }
+    },
+    "pennylaneActivationPrerequisiteModal": {
+      "title": "Une étape est requise avant l'activation",
+      "description": "Ce dossier client n'est pas encore rattaché au cabinet RYDGE Conseil sur Pennylane. Consultez la démarche de rattachement pour la transmettre à votre client : une fois que le rattachement sera réalisé, vous pourrez faire votre demande d'activation sans délai.",
+      "button": "Consulter la démarche à suivre"
     }
   }
 }

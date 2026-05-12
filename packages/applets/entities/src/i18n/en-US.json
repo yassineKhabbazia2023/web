@@ -173,6 +173,11 @@
         "reset": "Reset",
         "apply": "Apply"
       }
+    },
+    "pennylaneActivationPrerequisiteModal": {
+      "title": "A step is required before activation",
+      "description": "This client folder is not yet linked to RYDGE Conseil firm on Pennylane. Consult the linking procedure to send it to your client: once the linking is completed, you will be able to make your activation request without delay.",
+      "button": "View the procedure to follow"
     }
   }
 }

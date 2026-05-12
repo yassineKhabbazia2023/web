@@ -83,6 +83,7 @@ export async function createSubscriptionRequest(
     return response.data
   } catch (error) {
     handleRequestError('creating subscription', error)
+    throw error
   }
 }
 

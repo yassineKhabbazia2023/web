@@ -55,6 +55,7 @@ window.EnvVars = envVars
 | VITE_MODSCREEN_V2_ACTIVATED | Affichage de la nouvelle version de la page de demandes MOD |
 | VITE_PASSWORD_RESET_MAX_ATTEMPTS | Nombre maximal de tentatives de réinitialisation du mot de passe |
 | VITE_PENNYLANE_AMENDMENT_FLOW_ACTIVATED | Feature-flag du flow de validation d'accès Pennylane (avenant) |
+| VITE_PENNYLANE_ATTACHMENT_HELP_URL | URL de l'article d'aide pour le rattachement d'un dossier client externe Pennylane |
 | VITE_PENNYLANE_COLLAB_SSO_URL | URL de connexion SSO Pennylane pour les collaborateurs |
 | VITE_PENNYLANE_PRICING_TABLE_URL | URL de l'image de la grille tarifaire Pennylane affichée lors de l'activation d'offre |
 | VITE_PENNYLANE_SSO_URL | URL de connexion SSO Pennylane |

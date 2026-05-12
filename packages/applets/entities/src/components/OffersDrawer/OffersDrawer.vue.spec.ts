@@ -582,4 +582,198 @@ describe('offersDrawer', () => {
       expect(offer.exists()).toBe(true)
     })
   })
+
+  describe('Error Handling - 409 Conflict Account Attachment Missing', () => {
+    beforeEach(() => {
+      vi.clearAllMocks()
+      getPatchOperationsMock.mockReturnValue([])
+    })
+
+    it('should return true on successful subscription creation', async () => {
+      const createSubscriptionRequestSpy = vi.spyOn(
+        subscriptionService,
+        'createSubscriptionRequest',
+      ).mockResolvedValue({})
+
+      const wrapper = await getWrapper(true)
+      await wrapper.vm.initDrawerForCurrentAccount()
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
+      await flushPromises()
+
+      const confirmationModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+      expect(confirmationModal.exists()).toBe(true)
+      expect(confirmationModal.props('modelValue')).toBe(false)
+
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
+      await flushPromises()
+
+      const confirmModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+      expect(confirmModal.props('modelValue')).toBe(true)
+
+      await confirmModal.vm.$emit('confirm')
+      await flushPromises()
+
+      expect(createSubscriptionRequestSpy).toHaveBeenCalledOnce()
+      expect(confirmModal.props('modelValue')).toBe(false)
+      expect(wrapper.emitted('offer-saved')).toBeTruthy()
+    })
+
+    it('should open prerequisite modal and close confirmation modal on 409 + GTW027 error', async () => {
+      const error409 = {
+        response: {
+          status: 409,
+          data: {
+            errorCode: 'GTW027',
+          },
+        },
+      }
+
+      const createSubscriptionRequestSpy = vi.spyOn(
+        subscriptionService,
+        'createSubscriptionRequest',
+      ).mockRejectedValue(error409)
+
+      const wrapper = await getWrapper(true)
+      await wrapper.vm.initDrawerForCurrentAccount()
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
+      await flushPromises()
+
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
+      await flushPromises()
+
+      const confirmModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+      expect(confirmModal.props('modelValue')).toBe(true)
+
+      const prerequisiteModalBefore = wrapper.findComponent({ name: 'PennylaneActivationPrerequisiteModal' })
+      expect(prerequisiteModalBefore.props('modelValue')).toBe(false)
+
+      await confirmModal.vm.$emit('confirm')
+      await flushPromises()
+
+      expect(createSubscriptionRequestSpy).toHaveBeenCalledOnce()
+
+      const prerequisiteModalAfter = wrapper.findComponent({ name: 'PennylaneActivationPrerequisiteModal' })
+      expect(prerequisiteModalAfter.props('modelValue')).toBe(true)
+
+      const confirmModalAfter = wrapper.findComponent({ name: 'ConfirmationModal' })
+      expect(confirmModalAfter.props('modelValue')).toBe(false)
+
+      expect(wrapper.emitted('offer-saved')).toBeFalsy()
+    })
+
+    it('should not open prerequisite modal on 409 with different error code', async () => {
+      const error409OtherCode = {
+        response: {
+          status: 409,
+          data: {
+            errorCode: 'OTHER_ERROR',
+          },
+        },
+      }
+
+      const createSubscriptionRequestSpy = vi.spyOn(
+        subscriptionService,
+        'createSubscriptionRequest',
+      ).mockRejectedValue(error409OtherCode)
+
+      const wrapper = await getWrapper(true)
+      await wrapper.vm.initDrawerForCurrentAccount()
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
+      await flushPromises()
+
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
+      await flushPromises()
+
+      const confirmModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+      await confirmModal.vm.$emit('confirm')
+      await flushPromises()
+
+      expect(createSubscriptionRequestSpy).toHaveBeenCalledOnce()
+
+      const prerequisiteModal = wrapper.findComponent({ name: 'PennylaneActivationPrerequisiteModal' })
+      expect(prerequisiteModal.props('modelValue')).toBe(false)
+
+      expect(wrapper.emitted('offer-saved')).toBeFalsy()
+    })
+
+    it('should not open prerequisite modal on 500 error', async () => {
+      const error500 = {
+        response: {
+          status: 500,
+          data: {
+            errorMessage: 'Internal Server Error',
+          },
+        },
+      }
+
+      const createSubscriptionRequestSpy = vi.spyOn(
+        subscriptionService,
+        'createSubscriptionRequest',
+      ).mockRejectedValue(error500)
+
+      const wrapper = await getWrapper(true)
+      await wrapper.vm.initDrawerForCurrentAccount()
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
+      await flushPromises()
+
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
+      await flushPromises()
+
+      const confirmModal = wrapper.findComponent({ name: 'ConfirmationModal' })
+      await confirmModal.vm.$emit('confirm')
+      await flushPromises()
+
+      expect(createSubscriptionRequestSpy).toHaveBeenCalledOnce()
+
+      const prerequisiteModal = wrapper.findComponent({ name: 'PennylaneActivationPrerequisiteModal' })
+      expect(prerequisiteModal.props('modelValue')).toBe(false)
+
+      expect(wrapper.emitted('offer-saved')).toBeFalsy()
+      expect(loggerErrorSpy).toHaveBeenCalled()
+    })
+
+    it('should close confirmation modal even on error', async () => {
+      const error500 = {
+        response: {
+          status: 500,
+        },
+      }
+
+      vi.spyOn(subscriptionService, 'createSubscriptionRequest').mockRejectedValue(error500)
+
+      const wrapper = await getWrapper(true)
+      await wrapper.vm.initDrawerForCurrentAccount()
+
+      const subscriptionOffers = wrapper.findComponent({ name: 'SubscriptionOffers' })
+      subscriptionOffers.vm.$emit('select-offer', secondOffer.offerId)
+      await flushPromises()
+
+      const nextPreviousButtons = wrapper.findComponent({ name: 'PDrawerActions' })
+      await nextPreviousButtons.vm.$emit('click-primary-cta')
+      await flushPromises()
+
+      const confirmModalBefore = wrapper.findComponent({ name: 'ConfirmationModal' })
+      expect(confirmModalBefore.props('modelValue')).toBe(true)
+
+      await confirmModalBefore.vm.$emit('confirm')
+      await flushPromises()
+
+      const confirmModalAfter = wrapper.findComponent({ name: 'ConfirmationModal' })
+      expect(confirmModalAfter.props('modelValue')).toBe(false)
+
+      expect(wrapper.emitted('offer-saved')).toBeFalsy()
+    })
+  })
 })

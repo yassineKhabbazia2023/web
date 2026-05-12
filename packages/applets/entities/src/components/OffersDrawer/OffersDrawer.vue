@@ -12,6 +12,10 @@
       data-testid="create-offer-confirmation-modal"
       @confirm="handleConfirm"
     />
+    <PennylaneActivationPrerequisiteModal
+      v-model="activationPrerequisiteModalOpen"
+      data-testid="pennylane-activation-prerequisite-modal"
+    />
     <PDrawer
       v-model="internalIsOpened"
       :pTitle="offersDrawerTitle"
@@ -170,10 +174,12 @@ import {
 import type { Note } from '@entities/services/subscription/subscriptionTypes'
 import { createSubscriptionRequest, fetchAccountSubscriptions } from '@entities/services/subscription'
 import { type Contact } from '@entities/services/contact/contactTypes'
+import { HTTP_RESPONSES, BackEndErrors } from '@pulse/common/constants'
 import { ContactType, APICallStatus } from '@pulse/common/enums'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { getIsNextButtonDisabled, updateAccountOnInput } from './OffersDrawer.utils'
 import { OfferPlanManager } from '../OfferSubscription/components/OfferPlanSubscription/offer-plan.manager'
+import PennylaneActivationPrerequisiteModal from '../PennylaneActivationPrerequisiteModal/pennylane-activation-prerequisite-modal.vue'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -309,6 +315,7 @@ const isLoadingOffers = ref<boolean>()
 const isLoadingAccount = ref<boolean>()
 const confirmationModalVisible = ref<boolean>(false)
 const companyInformationRef = useTemplateRef('companyInformation')
+const activationPrerequisiteModalOpen = ref(false)
 
 const isLoading = computed(() => isLoadingOffers.value === true || isLoadingAccount.value === true)
 
@@ -470,7 +477,7 @@ async function saveOffer() {
   }
 }
 
-async function validateOffer() {
+async function validateOffer(): Promise<boolean> {
   saveOfferApiCallStatus.value = APICallStatus.LOADING
   const patchOperations = getPatchOperations(patchValues)
   if (patchOperations.length > 0) {
@@ -512,39 +519,52 @@ async function validateOffer() {
         subscription_start_plan: planName,
       })
     }
-  } catch (error) {
+    return true
+  } catch (error: any) {
     saveOfferApiCallStatus.value = APICallStatus.ERROR
-    if (!currentSubscriptionOffer.value?.approvalRequired) {
-      displayNotification('error', t('offerNotActivated'))
-      AmplitudeService.track('Subscription Started', {
-        subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
-        subscription_start_result: 'failed',
-      })
-      AmplitudeService.track('Subscription Completed', {
-        subscription_complete_offer_name: currentSubscriptionOffer.value?.offerCode,
-        subscription_complete_localisation: 'offer activation screen',
-        subscription_complete_result: 'failed',
-      })
-      AmplitudeService.track('Onboarding Started', {
-        onboarding_start_localisation: 'Offer activation',
-        onboarding_start_result: 'failed',
-      })
+
+    if (
+      error?.response?.status === HTTP_RESPONSES.CONFLICT &&
+      error?.response?.data?.errorCode === BackEndErrors.PENNYLANE_ACCOUNT_ATTACHMENT_MISSING
+    ) {
+      activationPrerequisiteModalOpen.value = true
     } else {
-      displayNotification('error', t('subscriptionNotCreated'))
-      AmplitudeService.track('Subscription Started', {
-        subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
-        subscription_start_result: 'failed',
-        subscription_start_plan: planName,
-      })
+      if (!currentSubscriptionOffer.value?.approvalRequired) {
+        displayNotification('error', t('offerNotActivated'))
+        AmplitudeService.track('Subscription Started', {
+          subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
+          subscription_start_result: 'failed',
+        })
+        AmplitudeService.track('Subscription Completed', {
+          subscription_complete_offer_name: currentSubscriptionOffer.value?.offerCode,
+          subscription_complete_localisation: 'offer activation screen',
+          subscription_complete_result: 'failed',
+        })
+        AmplitudeService.track('Onboarding Started', {
+          onboarding_start_localisation: 'Offer activation',
+          onboarding_start_result: 'failed',
+        })
+      } else {
+        displayNotification('error', t('subscriptionNotCreated'))
+        AmplitudeService.track('Subscription Started', {
+          subscription_start_offer_name: currentSubscriptionOffer.value?.offerCode,
+          subscription_start_result: 'failed',
+          subscription_start_plan: planName,
+        })
+      }
     }
+
     logger.error(error)
+    return false
   }
 }
 
 const handleConfirm = async () => {
-  await validateOffer()
+  const isOfferValidated = await validateOffer()
   confirmationModalVisible.value = false
-  emit('offer-saved')
+  if (isOfferValidated) {
+    emit('offer-saved')
+  }
 }
 
 async function onClickNext() {

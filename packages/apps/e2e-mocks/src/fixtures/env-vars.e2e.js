@@ -49,6 +49,7 @@ const envVars = {
   VITE_CONFIG_OFFERS_BOOK: 'https://mock-offers.example.com',
   VITE_PENNYLANE_SSO_URL: 'https://mock-pennylane.example.com',
   VITE_PENNYLANE_COLLAB_SSO_URL: 'https://mock-pennylane-collab.example.com',
+  VITE_PENNYLANE_ATTACHMENT_HELP_URL: 'https://mock-pennylane-help.example.com',
 }
 
 globalThis.EnvVars = envVars
