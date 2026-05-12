@@ -1,6 +1,7 @@
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import type { ConfigEnv, PreviewServer } from 'vite'
 import { createAppConfig } from '../../@config/vite.config.app.ts'
+import { canarytokenPlugin } from '../../@config/vite.plugin.canarytoken.ts'
 import { e2ePlugin } from '@pulse/e2e-mocks/vite-plugin'
 
 const baseUrl = process.env.VITE_BASE_PATH || '/'
@@ -12,6 +13,7 @@ export default ({ mode }: ConfigEnv) =>
     base: baseUrl,
     plugins: [
       e2ePlugin(),
+      canarytokenPlugin(),
       {
         name: 'collaborator-spa-fallback',
         configurePreviewServer(server: PreviewServer) {

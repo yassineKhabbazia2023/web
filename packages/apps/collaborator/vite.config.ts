@@ -1,6 +1,7 @@
 import type { ConfigEnv, PreviewServer } from 'vite'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 import { createAppConfig } from '../../@config/vite.config.app.ts'
+import { canarytokenPlugin } from '../../@config/vite.plugin.canarytoken.ts'
 import { e2ePlugin } from '@pulse/e2e-mocks/vite-plugin'
 
 const baseUrl = `${process.env.VITE_BASE_PATH || '/'}collaborateur/`
@@ -12,6 +13,7 @@ export default ({ mode }: ConfigEnv) =>
     base: baseUrl,
     plugins: [
       e2ePlugin({ app: 'collaborator' }),
+      canarytokenPlugin(),
       {
         name: 'collaborator-html-transform',
         transformIndexHtml: {
