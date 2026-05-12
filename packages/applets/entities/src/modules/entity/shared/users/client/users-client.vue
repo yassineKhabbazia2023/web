@@ -51,6 +51,7 @@
           :data="state.data"
           :isInAnEntityPage="!!entityId"
           :canManageUsers="!!entityId"
+          :canModifyRights="route.name !== RouteName.PROSPECT_USERS"
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
           @remove-user="handleRemoveUser"
@@ -289,7 +290,6 @@ const isAddUserButtonVisible = computed(() =>
   currentEntityId.value &&
   isMounted.value &&
   canAddUser.value &&
-  route.name === RouteName.USERS &&
   isMobile.value === false,
 )
 

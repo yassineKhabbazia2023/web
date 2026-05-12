@@ -1,5 +1,5 @@
 import type { RequestHandler } from 'msw'
-// import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw'
 
 // Dev mock handlers — add your selective API mocks here.
 // These handlers only activate when VITE_DEV_MOCKS=true.
@@ -22,6 +22,17 @@ import type { RequestHandler } from 'msw'
 //     return HttpResponse.json(getCurrentUserResponseMock())
 //   }),
 
+const prospect = {
+  'accountId': 602,
+  'accountNumber': '2025546345',
+  'accountType': 'PROSPECT',
+  'legalName': 'Boulangerie Beau Prospect',
+  'isSignatory': false,
+}
+
 export const devMockHandlers: RequestHandler[] = [
   // Add your handlers here
+  http.get('*/connect/api/accounts/602/summary', () => {
+    return HttpResponse.json(prospect)
+  }),
 ]

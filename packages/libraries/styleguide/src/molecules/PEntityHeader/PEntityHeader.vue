@@ -13,7 +13,7 @@
       :pColor="entityAvatarColor"
       :pRole="entityAvatarRole"
     >
-      <PIcon pName="pulse" />
+      <PIcon :pName="entityAvatarIcon" />
     </PAvatar>
     <div
       class="
@@ -62,6 +62,8 @@ const props = defineProps<PEntityHeaderProps>()
 const isProspect = computed(() => props.pAccountType === 'PROSPECT')
 const entityAvatarColor = computed(() => isProspect.value ? undefined : getAvatarColorFromKey(props.pAccountNumber))
 const entityAvatarRole = computed(() => isProspect.value ? AvatarRoles.PROSPECT : undefined)
+const entityAvatarIcon = computed(() => isProspect.value ? 'rydgeMonogram' : 'pulse')
+
 const variant = computed(() => {
   switch (props.pSize) {
     case 'small':

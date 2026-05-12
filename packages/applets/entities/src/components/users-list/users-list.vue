@@ -212,7 +212,9 @@ const { d, t } = useI18n({
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
 
-const props = defineProps<UsersListProps>()
+const props = withDefaults(defineProps<UsersListProps>(), {
+  canModifyRights: true,
+})
 const emit = defineEmits<{
   'click-view-information': [number]
   'display-manage-rights': [number]
@@ -240,7 +242,9 @@ const menuElements = computed<PToolboxItemProps[]>(() =>
       pValue: t('modifyRights'),
       pActionName: modifyRights,
       pState: 'default',
-      display: CurrentUserManager.hasPermission(ACTION_PERMISSIONS.MODIFY_RIGHTS_USER) && props.isInAnEntityPage,
+      display: CurrentUserManager.hasPermission(ACTION_PERMISSIONS.MODIFY_RIGHTS_USER)
+        && props.isInAnEntityPage
+        && props.canModifyRights,
     },
     {
       pIconName: 'personRemove',

@@ -8,4 +8,6 @@ export interface UsersListProps {
   isAccountManagement?: boolean
   // Hides the entire "Options" column when false
   canManageUsers?: boolean
+  // Hides the "Modify rights" action when false (defaults to true)
+  canModifyRights?: boolean
 }

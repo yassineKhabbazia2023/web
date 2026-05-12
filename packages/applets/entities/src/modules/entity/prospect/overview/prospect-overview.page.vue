@@ -8,6 +8,7 @@
         v-if="currentEntity"
         :pLegalName="currentEntity.legalName"
         :pAccountNumber="currentEntity.accountNumber"
+        :pAccountType="currentEntity.accountType"
         class="margin-bottom--4"
       />
       <PTabs

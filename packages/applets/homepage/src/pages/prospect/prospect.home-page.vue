@@ -7,6 +7,7 @@
       v-if="currentEntity && isMobile === false"
       :pLegalName="currentEntity.legalName"
       :pAccountNumber="currentEntity.accountNumber"
+      :pAccountType="currentEntity.accountType"
       class="margin-bottom--4"
     />
     <div
@@ -34,31 +35,24 @@ import { storeToRefs } from 'pinia'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { PEntityHeader } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
-import { WidgetsGridManager } from '@pulse/widgets/managers'
-import { WidgetName } from '@pulse/widgets/enums'
+import { WidgetName, WidgetSize } from '@pulse/widgets/enums'
 import type { WidgetGridDefinition } from '@pulse/widgets/types'
 
-interface ProspectWidget extends WidgetGridDefinition {
-  spanClass: string
-}
-
-const PROSPECT_WIDGET_NAMES: WidgetName[] = [
-  WidgetName.WORKSPACE_INTRO,
-  WidgetName.CONTACTS,
+const PROSPECT_WIDGETS: WidgetGridDefinition[] = [
+  { name: WidgetName.WORKSPACE_INTRO, size: WidgetSize.TWO_SPANS },
+  { name: WidgetName.CONTACTS, size: WidgetSize.ONE_CELL },
+  { name: WidgetName.RSS_NEWS, size: WidgetSize.THREE_SPANS },
 ]
 
 const { isMobile } = useResponsive()
 const currentEntityStore = useCurrentEntityStore()
 const { currentEntity } = storeToRefs(currentEntityStore)
 
-const widgets = computed<ProspectWidget[]>(() =>
-  PROSPECT_WIDGET_NAMES
-    .map((widgetName) => WidgetsGridManager.getWidgetGridDefinition(widgetName))
-    .filter((widget): widget is WidgetGridDefinition => widget !== undefined)
-    .map((widget) => ({
-      ...widget,
-      spanClass: `prospect-home-page__grid-item--span-${widget.size}`,
-    })),
+const widgets = computed(() =>
+  PROSPECT_WIDGETS.map((widget) => ({
+    ...widget,
+    spanClass: `prospect-home-page__grid-item--span-${widget.size}`,
+  })),
 )
 </script>
 
