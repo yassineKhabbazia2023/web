@@ -43,7 +43,7 @@
 
     <!-- Pricing Selection Section -->
     <div
-      v-if="selectedPlanPricings.length > 0"
+      v-if="shouldDisplayPricingSelection"
       class="margin-top--6"
       data-testid="offer-plan-subscription-pricing-section"
     >
@@ -138,6 +138,7 @@ import { PAlert, PButton, PRadioCard, PRadioGroup, PDialog } from '@pulse/styleg
 import { VITE_PENNYLANE_PRICING_TABLE_URL } from 'env-vars'
 import type { OfferPlanSubscriptionProps } from './OfferPlanSubscription.type'
 import { useOfferPlanSubscription } from './use-offer-plan-subscription.composable'
+import { PLAN_CODE } from '@entities/constants'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -173,6 +174,15 @@ const props = withDefaults(defineProps<OfferPlanSubscriptionProps>(), {
 const selectedPlanId = defineModel<number>('selectedPlanId')
 const selectedPricingId = defineModel<number>('selectedPricingId')
 const isPricingTableDialogVisible = ref(false)
+
+const selectedPlanCode = computed(() => {
+  const selectedPlan = props.plans.find(plan => plan.planId === selectedPlanId.value)
+  return selectedPlan?.planCode
+})
+
+const shouldDisplayPricingSelection = computed(() => {
+  return selectedPlanPricings.value.length > 0 && selectedPlanCode.value !== PLAN_CODE.APPROVED_PLATFORM
+})
 
 const sanitizedPricingTableUrl = computed(() => sanitizeUrl(VITE_PENNYLANE_PRICING_TABLE_URL))
 

@@ -11,6 +11,7 @@ export class SubscriptionStatusFiltersManager {
       SubscriptionStatusCode.PENDING,
       SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
       SubscriptionStatusCode.PENNYLANE_CREATED,
+      SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
     ]
   }
 
@@ -40,6 +41,14 @@ export class SubscriptionStatusFiltersManager {
         pValue: stats.statuses[SubscriptionStatusCode.PENNYLANE_CREATED] ?? 0,
         pColor: SUBSCRIPTION_STATUS_COLOR[SubscriptionStatusCode.PENNYLANE_CREATED],
         pIconName: SUBSCRIPTION_STATUS_ICON[SubscriptionStatusCode.PENNYLANE_CREATED],
+        pDisabled: false,
+      },
+      {
+        pContent: i18n.global.t('entities.wallet.subscriptionStatusFilters.sendMandate'),
+        pCode: SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
+        pValue: stats.statuses[SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND] ?? 0,
+        pColor: SUBSCRIPTION_STATUS_COLOR[SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND],
+        pIconName: SUBSCRIPTION_STATUS_ICON[SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND],
         pDisabled: false,
       },
     ]

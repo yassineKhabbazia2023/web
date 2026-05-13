@@ -7,6 +7,7 @@ const defaultOfferActivationFilters: FilterOption<SubscriptionStatusCode>[] = [
   { pCode: SubscriptionStatusCode.PENDING, pContent: 'toCreate', pValue: 3, pColor: 'warning', pIconName: 'arrowUpCircle', pDisabled: false },
   { pCode: SubscriptionStatusCode.PENNYLANE_TO_VERIFY, pContent: 'toVerify', pValue: 1, pColor: 'light-blue', pIconName: 'search', pDisabled: false },
   { pCode: SubscriptionStatusCode.PENNYLANE_CREATED, pContent: 'created', pValue: 2, pColor: 'purple', pIconName: 'arrowRepeat', pDisabled: false },
+  { pCode: SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND, pContent: 'sendMandate', pValue: 0, pColor: 'tranquil', pIconName: 'arrowUp', pDisabled: false },
 ]
 
 const defaultValidatedFilters: FilterOption<SubscriptionStatusCode>[] = [
@@ -91,6 +92,7 @@ describe('useSubscriptionStatusFilters', () => {
         SubscriptionStatusCode.PENDING,
         SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
         SubscriptionStatusCode.PENNYLANE_CREATED,
+        SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
       ])
     })
   })

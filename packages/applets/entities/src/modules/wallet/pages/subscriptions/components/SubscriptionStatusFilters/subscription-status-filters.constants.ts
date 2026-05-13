@@ -6,6 +6,7 @@ type UsedSubscriptionStatusCode =
   | SubscriptionStatusCode.PENNYLANE_TO_VERIFY
   | SubscriptionStatusCode.PENNYLANE_CREATED
   | SubscriptionStatusCode.VALIDATED
+  | SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND
 
 type SubscriptionStatusColorMap = Record<UsedSubscriptionStatusCode, PFilterOptionProps['pColor']>
 type SubscriptionStatusIconMap = Record<UsedSubscriptionStatusCode, IconName>
@@ -15,6 +16,7 @@ export const SUBSCRIPTION_STATUS_COLOR: SubscriptionStatusColorMap = {
   [SubscriptionStatusCode.PENNYLANE_TO_VERIFY]: 'light-blue',
   [SubscriptionStatusCode.PENNYLANE_CREATED]: 'purple',
   [SubscriptionStatusCode.VALIDATED]: 'gray',
+  [SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND]: 'tranquil',
 }
 
 export const SUBSCRIPTION_STATUS_ICON: SubscriptionStatusIconMap = {
@@ -22,4 +24,5 @@ export const SUBSCRIPTION_STATUS_ICON: SubscriptionStatusIconMap = {
   [SubscriptionStatusCode.PENNYLANE_TO_VERIFY]: 'search',
   [SubscriptionStatusCode.PENNYLANE_CREATED]: 'arrowRepeat',
   [SubscriptionStatusCode.VALIDATED]: 'checkCircle',
+  [SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND]: 'arrowUp',
 }

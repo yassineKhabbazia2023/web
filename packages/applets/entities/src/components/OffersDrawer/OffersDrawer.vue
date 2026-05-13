@@ -102,6 +102,7 @@
           <CompanyInformation
             v-if="account && currentStep === OffersDrawerStep.INFORMATION"
             ref="companyInformation"
+            :selectedPlanCode="selectedPlanCode"
             :modelValue="account"
             :providerName="providerName"
             :offerCode="currentSubscriptionOffer?.offerCode"
@@ -329,6 +330,11 @@ const internalIsOpened = computed({
 })
 
 const collaboratorRoles = computed(() => currentSubscriptionOffer.value?.functions ?? [])
+
+const selectedPlanCode = computed(() => {
+  const selectedPlan = currentSubscriptionOffer.value?.plans?.find(plan => plan.planId === selectedPlanId.value)
+  return selectedPlan?.planCode
+})
 
 const setSelectedOffer = async (selectedOfferId?: number | undefined) => {
   if (selectedOfferId === undefined) {

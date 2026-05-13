@@ -21,7 +21,7 @@ export async function fetchSubscriptionRequests(
   params: FetchSubscriptionRequestsParams = {},
 ): Promise<PaginationResponse<SubscriptionRequest>> {
   try {
-    const searchParams = new URLSearchParams()
+    const searchParams = new URLSearchParams({ filterByMigration: 'true' })
     params.statusCodes?.forEach(code => searchParams.append('status', code))
     if (params.offerCodes?.length === 0) {
       searchParams.append('offerCode', 'null')
@@ -109,7 +109,7 @@ export async function fetchSubscriptionDetails(
 
 export async function fetchSubscriptionStats(offerCodes?: string[], search?: string): Promise<SubscriptionStats> {
   try {
-    const statsParams = new URLSearchParams()
+    const statsParams = new URLSearchParams({ filterByMigration: 'true' })
 
     if (offerCodes?.length === 0) {
       statsParams.append('offerCode', 'null')

@@ -118,7 +118,14 @@ import type { CompanyInformationProps } from './CompanyInformationTypes'
 import type { FormSection } from '@entities/types'
 import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
-import { PENNYLANE_REQUIRED_FIELDS, SIREN_FIELD_KEY, HAS_NO_SIREN_FIELD_KEY } from '@entities/constants'
+import {
+  PENNYLANE_REQUIRED_FIELDS,
+  SIREN_FIELD_KEY,
+  HAS_NO_SIREN_FIELD_KEY,
+  PLAN_CODE,
+  MISSION_TYPE,
+  MISSION_TYPE_FIELD_KEY,
+} from '@entities/constants'
 import type { FormInstance } from '@pulse/styleguide/types'
 
 const PDynamicFieldsAccount = PDynamicFields<Account>
@@ -237,6 +244,23 @@ const handleUpdateAccountModel = (fieldKey: string, fieldValue: any) => {
   emit('input', fieldKey, fieldValue)
 }
 
+function manageMissionTypeForPlan() {
+  if (internalAccount.value === undefined) {
+    return
+  }
+
+  const currentMissionType = get(internalAccount.value, MISSION_TYPE_FIELD_KEY)
+  if (props.selectedPlanCode === PLAN_CODE.APPROVED_PLATFORM) {
+    if (isNotNullNorEmpty(currentMissionType) === false) {
+      handleUpdateAccountModel(MISSION_TYPE_FIELD_KEY, MISSION_TYPE.REVISION)
+    }
+  } else {
+    if (isNotNullNorEmpty(currentMissionType)) {
+      handleUpdateAccountModel(MISSION_TYPE_FIELD_KEY, '')
+    }
+  }
+}
+
 async function loadCompanyInformation() {
   try {
     internalAccount.value = cloneDeep(props.modelValue)
@@ -245,6 +269,8 @@ async function loadCompanyInformation() {
       if (internalAccount.value !== undefined) {
         cleanRecordStructure(formStructure.value, internalAccount.value)
       }
+
+      manageMissionTypeForPlan()
     }
   } catch (e) {
     logger.error(e)

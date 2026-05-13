@@ -5,4 +5,5 @@ export interface CompanyInformationProps {
   modelValue?: Account
   providerName?: ProviderName
   offerCode?: string
+  selectedPlanCode?: string
 }

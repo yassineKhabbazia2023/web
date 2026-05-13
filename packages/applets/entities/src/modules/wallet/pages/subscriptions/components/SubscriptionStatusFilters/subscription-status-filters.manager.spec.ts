@@ -16,31 +16,34 @@ const statsMock: SubscriptionStats = {
     [SubscriptionStatusCode.PENNYLANE_TO_VERIFY]: 1,
     [SubscriptionStatusCode.PENNYLANE_CREATED]: 2,
     [SubscriptionStatusCode.VALIDATED]: 6,
+    [SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND]: 0,
   },
 }
 
 describe('SubscriptionStatusFiltersManager', () => {
   describe('getDefaultActiveStatusCodes', () => {
-    it('should return the 3 standard status codes: PENDING, PENNYLANE_TO_VERIFY, PENNYLANE_CREATED', () => {
+    it('should return the 4 standard status codes: PENDING, PENNYLANE_TO_VERIFY, PENNYLANE_CREATED, PENNYLANE_MANDATE_TO_SEND', () => {
       const codes = SubscriptionStatusFiltersManager.getDefaultActiveStatusCodes()
 
-      expect(codes).toHaveLength(3)
+      expect(codes).toHaveLength(4)
       expect(codes).toEqual([
         SubscriptionStatusCode.PENDING,
         SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
         SubscriptionStatusCode.PENNYLANE_CREATED,
+        SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
       ])
     })
   })
 
   describe('getOfferActivationFilters', () => {
-    it('should return 3 filters in the correct order: PENDING, PENNYLANE_TO_VERIFY, PENNYLANE_CREATED', () => {
+    it('should return 4 filters in the correct order: PENDING, PENNYLANE_TO_VERIFY, PENNYLANE_CREATED, PENNYLANE_MANDATE_TO_SEND', () => {
       const filters = SubscriptionStatusFiltersManager.getOfferActivationFilters(statsMock)
 
-      expect(filters).toHaveLength(3)
+      expect(filters).toHaveLength(4)
       expect(filters[0].pCode).toBe(SubscriptionStatusCode.PENDING)
       expect(filters[1].pCode).toBe(SubscriptionStatusCode.PENNYLANE_TO_VERIFY)
       expect(filters[2].pCode).toBe(SubscriptionStatusCode.PENNYLANE_CREATED)
+      expect(filters[3].pCode).toBe(SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND)
     })
 
     it('should use the correct i18n labels', () => {
@@ -49,6 +52,7 @@ describe('SubscriptionStatusFiltersManager', () => {
       expect(filters[0].pContent).toBe('entities.wallet.subscriptionStatusFilters.toCreate')
       expect(filters[1].pContent).toBe('entities.wallet.subscriptionStatusFilters.toVerify')
       expect(filters[2].pContent).toBe('entities.wallet.subscriptionStatusFilters.created')
+      expect(filters[3].pContent).toBe('entities.wallet.subscriptionStatusFilters.sendMandate')
     })
 
     it('should use the correct counts from stats', () => {
@@ -57,6 +61,7 @@ describe('SubscriptionStatusFiltersManager', () => {
       expect(filters[0].pValue).toBe(3)
       expect(filters[1].pValue).toBe(1)
       expect(filters[2].pValue).toBe(2)
+      expect(filters[3].pValue).toBe(0)
     })
 
     it('should set all filters as not disabled', () => {
@@ -87,6 +92,7 @@ describe('SubscriptionStatusFiltersManager', () => {
       expect(filters[0].pValue).toBe(5)
       expect(filters[1].pValue).toBe(0)
       expect(filters[2].pValue).toBe(0)
+      expect(filters[3].pValue).toBe(0)
     })
   })
 
@@ -103,11 +109,12 @@ describe('SubscriptionStatusFiltersManager', () => {
     it('should return the same codes as getDefaultActiveStatusCodes', () => {
       const codes = SubscriptionStatusFiltersManager.getActiveCodesOnValidatedDeselected()
 
-      expect(codes).toHaveLength(3)
+      expect(codes).toHaveLength(4)
       expect(codes).toEqual([
         SubscriptionStatusCode.PENDING,
         SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
         SubscriptionStatusCode.PENNYLANE_CREATED,
+        SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
       ])
     })
   })
