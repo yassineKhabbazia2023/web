@@ -254,10 +254,6 @@ function manageMissionTypeForPlan() {
     if (isNotNullNorEmpty(currentMissionType) === false) {
       handleUpdateAccountModel(MISSION_TYPE_FIELD_KEY, MISSION_TYPE.REVISION)
     }
-  } else {
-    if (isNotNullNorEmpty(currentMissionType)) {
-      handleUpdateAccountModel(MISSION_TYPE_FIELD_KEY, '')
-    }
   }
 }
 
