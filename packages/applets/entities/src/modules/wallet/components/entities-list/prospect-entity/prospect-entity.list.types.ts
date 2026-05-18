@@ -16,4 +16,5 @@ export interface EntitiesListProspectsProps {
 export type EntitiesListProspectsEmit = {
   (e: 'sort-account', sortingCriteria: SortingCriteria): void
   (e: 'prospect-archived'): void
+  (e: 'access', accountId: number): void
 }

@@ -30,16 +30,20 @@
           >
             <PIcon pName="pulse" />
           </PAvatar>
-          <span
+          <a
             class="
               font-semibold
               margin-left--2
+              link
+              text-color--base-blue-pulse
               overflow-hidden
               text-overflow--ellipsis
             "
+            data-testid="account-access-link"
+            @click="onDirectFolderAccess(scope.row.accountId)"
           >
             {{ scope.row.name }}
-          </span>
+          </a>
         </div>
       </template>
     </PTableColumn>
@@ -243,6 +247,7 @@ const {
   isArchiveDialogVisible,
   selectedProspect,
   handleSort,
+  onDirectFolderAccess,
   onToolboxItemClicked,
   onProspectArchived,
 } = useProspectsEntitiesList(props, emit)

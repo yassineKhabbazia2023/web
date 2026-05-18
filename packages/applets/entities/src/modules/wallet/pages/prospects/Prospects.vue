@@ -51,6 +51,7 @@
         :data="searchResult.items"
         @sort-account="handleSortAccount"
         @prospect-archived="fetchProspectsList"
+        @access="onClickFolder"
       />
       <PPagination
         class="margin-top--6"
@@ -73,6 +74,7 @@
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon } from '@pulse/styleguide/components'
 import ProspectEntityList from '../../components/entities-list/prospect-entity/prospect-entity.list.vue'
 import FormSearch from '@entities/components/FormSearch'
@@ -80,11 +82,13 @@ import NoResult from '@entities/components/NoResult'
 import { useProspects } from './prospects.composable'
 import { useUserStore } from '@pulse/common/stores'
 import { useSort } from '@pulse/common/composables/sort'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 import type { SortingCriteria } from '@pulse/common/types'
 import { logger } from '@pulse/toolbox'
 import ProspectCreationDrawer from './components/prospect-creation-drawer'
 import type { ProspectFormData } from './components/prospect-creation-drawer/prospect-creation-drawer.types'
 
+const router = useRouter()
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
 
@@ -129,5 +133,9 @@ const { handleSortCriteria } = useSort()
 
 function handleSortAccount(sortCriteria: SortingCriteria) {
   handleSortCriteria(sortCriteria, searchCriteria.value)
+}
+
+function onClickFolder(accountId: number) {
+  router.push({ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: accountId } })
 }
 </script>
