@@ -68,12 +68,10 @@ export function navigateToCurrentEntityHomepage() {
         params: { [RouteParam.ENTITY_ID]: currentEntityId },
       }
     case AccountType.REGULAR:
+    default:
       return {
         name: RouteName.HOMEPAGE,
         params: { [RouteParam.ENTITY_ID]: currentEntityId },
       }
-    default:
-      logger.error(`Entity Router Guard - Unknown account type (${currentAccountType})`)
-      return { name: RouteName.ERROR403 }
   }
 }

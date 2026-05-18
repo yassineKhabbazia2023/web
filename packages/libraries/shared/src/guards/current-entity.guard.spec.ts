@@ -230,13 +230,16 @@ describe('navigateToCurrentEntityHomepage', () => {
     expect(result).toEqual({ name: RouteName.ERROR403 })
   })
 
-  it('returns ERROR403 when account type is unknown', () => {
+  it('defaults to regular homepage route when account type is unknown', () => {
     const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
     currentEntityStoreMock.currentEntityId = entities[0].accountId
     currentEntityStoreMock.currentAccountType = 'unknown' as AccountType
 
     const result = navigateToCurrentEntityHomepage()
 
-    expect(result).toEqual({ name: RouteName.ERROR403 })
+    expect(result).toEqual({
+      name: RouteName.HOMEPAGE,
+      params: { [RouteParam.ENTITY_ID]: entities[0].accountId },
+    })
   })
 })

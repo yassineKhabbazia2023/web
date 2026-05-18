@@ -21,7 +21,7 @@ const meta: Meta<typeof PEntityHeader> = {
     },
     pAccountType: {
       control: 'select',
-      options: ['REGULAR', 'PROSPECT'],
+      options: ['REGULAR', 'PROSPECT'], // Assuming these are the possible values based on the AccountType enum
       description: 'Account type (PROSPECT forces rydge monogramme icon)',
     },
   },
