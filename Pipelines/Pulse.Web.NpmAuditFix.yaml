@@ -43,7 +43,7 @@ stages:
 
     - script: |
         echo "Running npm audit fix..."
-        npm audit fix || true
+        npm audit fix --min-release-age=0 || true
         echo "Audit fix completed (exit code ignored)"
       displayName: 'Run audit fix'
 
