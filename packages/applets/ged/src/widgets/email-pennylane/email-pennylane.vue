@@ -28,6 +28,7 @@ import { PButton, PIcon } from '@pulse/styleguide/components'
 import { computed, ref, watch, onMounted } from 'vue'
 import EmailPennylaneModal from './components/email-pennylane-modal.vue'
 import { useCurrentEntityStore } from '@pulse/common/stores'
+import { PennylanePermissionsManager } from '@pulse/common/managers'
 import { fetchUserEntityServices } from '@ged/services/Services'
 import type { Service } from '@ged/models/Service'
 import type { Folder } from '@ged/models/Folder'
@@ -56,8 +57,31 @@ const { currentEntity, currentEntityId, currentEntityAccountNumber } = storeToRe
 const entityServices = ref<Service[]>([])
 const servicesFolders = ref<Folder[][]>([])
 
+const hasPennylaneAccountingGedV2Permission = computed(() =>
+  PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true,
+)
+
+const hasSelectedEntity = computed(() =>
+  currentEntity.value !== null && currentEntity.value !== undefined,
+)
+
+const hasCurrentEntityAccountNumber = computed(() =>
+  currentEntityAccountNumber.value !== '',
+)
+
+const hasEntityGedServices = computed(() =>
+  entityServices.value.length > 0,
+)
+
+const hasEmailPennylaneDisplayPrerequisite = computed(() =>
+  hasPennylaneAccountingGedV2Permission.value === true ||
+  hasEntityGedServices.value === true,
+)
+
 const shouldDisplayEmailPennylane = computed(() => {
-  return currentEntity.value !== null && entityServices.value.length > 0 && currentEntityAccountNumber.value !== ''
+  return hasSelectedEntity.value === true &&
+    hasCurrentEntityAccountNumber.value === true &&
+    hasEmailPennylaneDisplayPrerequisite.value === true
 })
 
 const handleClose = () => {

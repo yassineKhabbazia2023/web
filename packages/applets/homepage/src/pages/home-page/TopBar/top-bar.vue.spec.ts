@@ -10,15 +10,11 @@ const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
 const hasCurrentEntityPermissionSpy = vi.hoisted(() => vi.fn())
-const hasPennylaneAccountingGedV2PermissionSpy = vi.hoisted(() => vi.fn())
 const isMobileRef = ref(false)
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: {
     hasCurrentEntityPermission: hasCurrentEntityPermissionSpy,
-  },
-  PennylanePermissionsManager: {
-    hasPennylaneAccountingGedV2Permission: hasPennylaneAccountingGedV2PermissionSpy,
   },
 }))
 
@@ -76,16 +72,19 @@ describe('TopBar', () => {
     })
 
     const tests = [{
-      hasPennylaneAccountingGedV2PermissionMock: true,
-      description: 'should display EmailPennylane when hasPennylaneAccountingGedV2Permission is true on desktop',
+      hasPennylaneOffer: false,
+      expectedDisplay: false,
+      description: 'should NOT display EmailPennylane when Pennylane offer is false on desktop',
     }, {
-      hasPennylaneAccountingGedV2PermissionMock: false,
-      description: 'should NOT display EmailPennylane when hasPennylaneAccountingGedV2Permission is false',
+      hasPennylaneOffer: true,
+      expectedDisplay: true,
+      description: 'should display EmailPennylane when Pennylane offer is true on desktop',
     }]
     it.each(tests)('$description', ({
-      hasPennylaneAccountingGedV2PermissionMock,
+      hasPennylaneOffer,
+      expectedDisplay,
     }) => {
-      hasPennylaneAccountingGedV2PermissionSpy.mockReturnValue(hasPennylaneAccountingGedV2PermissionMock)
+      currentEntityStoreMock.hasOffer.mockReturnValue(hasPennylaneOffer)
       const wrapper = shallowMount(TopBar, {
         global: {
           stubs: {
@@ -98,12 +97,12 @@ describe('TopBar', () => {
       })
 
       const emailPennylaneComponent = wrapper.findComponent({ name: 'EmailPennylane' })
-      expect(emailPennylaneComponent.exists()).toBe(hasPennylaneAccountingGedV2PermissionMock)
+      expect(emailPennylaneComponent.exists()).toBe(expectedDisplay)
     })
 
-    it('should NOT display EmailPennylane on mobile even with permission', () => {
+    it('should NOT display EmailPennylane on mobile even with Pennylane offer', () => {
       isMobileRef.value = true
-      hasPennylaneAccountingGedV2PermissionSpy.mockReturnValue(true)
+      currentEntityStoreMock.hasOffer.mockReturnValue(true)
 
       const wrapper = shallowMount(TopBar, {
         global: {

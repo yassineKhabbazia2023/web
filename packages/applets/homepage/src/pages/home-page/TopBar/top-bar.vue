@@ -33,7 +33,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PennylaneSSO } from '@pulse/widgets/gridless'
-import { PennylanePermissionsManager, CurrentUserManager } from '@pulse/common/managers'
+import { CurrentUserManager } from '@pulse/common/managers'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { SubscriptionOfferCode } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
@@ -54,7 +54,7 @@ const isPennylaneSSODisplayed = computed(() =>
 
 const showEmailPennylaneWidget = computed(() =>
   isMobile.value === false &&
-  PennylanePermissionsManager.hasPennylaneAccountingGedV2Permission() === true,
+  currentEntityStore.hasOffer(SubscriptionOfferCode.PENNYLANE) === true,
 )
 </script>
 
