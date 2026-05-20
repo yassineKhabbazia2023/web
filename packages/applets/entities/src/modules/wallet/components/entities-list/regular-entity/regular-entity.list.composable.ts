@@ -1,6 +1,6 @@
-import { computed } from 'vue'
+import { computed, type Ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import type { SortChangeEventData, EntityColor } from '@pulse/common/types'
+import type { SortChangeEventData } from '@pulse/common/types'
 import type { RegularWalletData } from '@entities/modules/wallet/types/wallet-data.types'
 import { useUserStore } from '@pulse/common/stores'
 import { SortDirection, AmplitudeFeatureLocalisation } from '@pulse/common/enums'
@@ -13,12 +13,20 @@ import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet
 import { WalletMenuActionValue } from '@entities/managers/wallet-tracking/wallet-tracking.enum'
 import { TrackingCenter } from '@pulse/common/services/amplitude'
 import { useI18n } from 'vue-i18n'
-import type { EntitiesListRegularProps, EntitiesListRegularEmit, MenuTranslations } from './regular-entity.list.types'
+import type {
+  EntitiesListRegularProps,
+  EntitiesListRegularEmit,
+  MenuTranslations,
+} from './regular-entity.list.types'
 import { RegularEntityAction } from './regular-entity.list.enums'
 
 const I18N_REGULAR_KEY = 'entities.wallet.entitiesListRegular'
 
-export function useRegularEntitiesList(props: EntitiesListRegularProps, emit: EntitiesListRegularEmit) {
+export function useRegularEntitiesList(
+  props: EntitiesListRegularProps,
+  emit: EntitiesListRegularEmit,
+  selectedFolderIds: Ref<number[]>,
+) {
   const { t } = useI18n()
   const { isMobile } = useResponsive()
 
@@ -86,13 +94,21 @@ export function useRegularEntitiesList(props: EntitiesListRegularProps, emit: En
     }
   }
 
-  const onSelectedFolder = (row: RegularWalletData) => {
-    emit('selectedFolder', {
-      accountNumber: row.accountNumber,
-      id: row.accountId,
-      name: row.name,
-      avatarColor: row.owner?.avatarColor as EntityColor,
-    })
+  const selectedFolderIdSet = computed(() => new Set(selectedFolderIds.value))
+
+  const isFolderSelected = (accountId: number) =>
+    selectedFolderIdSet.value.has(accountId)
+
+  const toggleSelectedFolder = (accountId: number) => {
+    const nextSelectedFolderIds = new Set(selectedFolderIdSet.value)
+
+    if (nextSelectedFolderIds.has(accountId) === true) {
+      nextSelectedFolderIds.delete(accountId)
+    } else {
+      nextSelectedFolderIds.add(accountId)
+    }
+
+    selectedFolderIds.value = [...nextSelectedFolderIds]
   }
 
   const trackWalletSearch = (row: RegularWalletData) => {
@@ -136,7 +152,8 @@ export function useRegularEntitiesList(props: EntitiesListRegularProps, emit: En
     onDirectFolderAccess,
     onToolboxVisibleChange,
     onToolboxItemClicked,
-    onSelectedFolder,
+    toggleSelectedFolder,
+    isFolderSelected,
     onRowClick,
     trackWalletSearch,
   }

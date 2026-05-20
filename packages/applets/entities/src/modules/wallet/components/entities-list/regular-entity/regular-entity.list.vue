@@ -190,8 +190,9 @@
       >
         <template #default="scope">
           <PCheckbox
+            :model-value="isFolderSelected(scope.row.accountId)"
             :disabled="false"
-            @change="onSelectedFolder(scope.row)"
+            @update:model-value="toggleSelectedFolder(scope.row.accountId)"
           />
         </template>
       </PTableColumn>
@@ -277,6 +278,9 @@ const props = withDefaults(defineProps<EntitiesListRegularProps>(), {
 })
 
 const emit = defineEmits<EntitiesListRegularEmit>()
+const selectedFolderIds = defineModel<number[]>('selectedFolderIds', {
+  default: () => [],
+})
 
 const {
   isCollab,
@@ -286,9 +290,10 @@ const {
   onDirectFolderAccess,
   onToolboxVisibleChange,
   onToolboxItemClicked,
-  onSelectedFolder,
+  toggleSelectedFolder,
+  isFolderSelected,
   onRowClick,
-} = useRegularEntitiesList(props, emit)
+} = useRegularEntitiesList(props, emit, selectedFolderIds)
 
 </script>
 

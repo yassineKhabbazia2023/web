@@ -72,7 +72,6 @@
         >
           <PCheckbox
             :model-value="getIsOptionSelected(internalValue)"
-            :pChecked="getIsOptionSelected(internalValue)"
             class="p-dropdown__option-item__checkbox margin-right--2"
           />
           <span class="p-dropdown__option-item__label">
@@ -143,7 +142,6 @@
           >
             <PCheckbox
               :model-value="getIsOptionSelected(pValue)"
-              :pChecked="getIsOptionSelected(pValue)"
               class="p-dropdown__option-item__checkbox margin-right--2"
             />
             <span class="p-dropdown__option-item__label">

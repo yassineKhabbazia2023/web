@@ -18,10 +18,10 @@
     />
     <PCheckbox
       v-if="pFieldType === 'checkbox'"
-      :pChecked="pChecked"
+      :model-value="pChecked"
       :pRounded="pRounded"
       :data-testid="pTestId"
-      @change="onCheckboxToggle"
+      @update:model-value="onCheckboxToggle"
     >
       {{ pLabel }}
     </PCheckbox>
@@ -95,8 +95,8 @@
       <PCheckbox
         v-for="({ isChecked, label }, index) in internalCheckboxOptions"
         :key="index"
-        :modelValue="isChecked"
-        @change="onCheckboxChange(index, $event)"
+        :model-value="isChecked"
+        @update:model-value="onCheckboxChange(index, $event)"
       >
         {{ label }}
       </PCheckbox>

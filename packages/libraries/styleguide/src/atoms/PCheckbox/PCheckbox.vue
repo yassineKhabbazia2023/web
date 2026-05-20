@@ -5,7 +5,8 @@
       'p-checkbox--rounded': pRounded
     }"
     :label="pLabel"
-    :checked="pChecked"
+    :model-value="model"
+    @update:model-value="onUpdateModelValue"
   >
     <template v-if="$slots.default">
       <slot />
@@ -14,11 +15,21 @@
 </template>
 
 <script setup lang="ts">
-import { ElCheckbox } from 'element-plus'
+import { ElCheckbox, type CheckboxValueType } from 'element-plus'
 import type { PCheckboxProps } from './PCheckboxTypes'
 
+const model = defineModel<boolean>({
+  default: false,
+})
 withDefaults(defineProps<PCheckboxProps>(), {
   pRounded: false,
-  pChecked: false,
 })
+
+const onUpdateModelValue = (value: CheckboxValueType) => {
+  if (typeof value !== 'boolean') {
+    return
+  }
+
+  model.value = value
+}
 </script>

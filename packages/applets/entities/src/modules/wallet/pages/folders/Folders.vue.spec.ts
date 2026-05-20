@@ -187,16 +187,19 @@ describe('deploy', () => {
     await flushPromises()
 
     const button = wrapper.findComponent({ name: 'PButton' })
-    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    const firstFolder = mockedQueryResult.items[0]
+    const secondFolder = mockedQueryResult.items[1]
 
     expect(button.text()).toBe('My delegations')
 
-    tableData.vm.$emit('selected-folder', mockedQueryResult.items.at(0))
+    let tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', [firstFolder.accountId])
     await nextTick()
 
     expect(button.text()).toBe('Delegate my folder')
 
-    tableData.vm.$emit('selected-folder', mockedQueryResult.items.at(1))
+    tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', [firstFolder.accountId, secondFolder.accountId])
     await nextTick()
 
     expect(button.text()).toBe('Delegate my folders')

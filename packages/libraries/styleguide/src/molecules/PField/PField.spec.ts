@@ -203,7 +203,7 @@ describe('test PField', () => {
     it('should emit update:model-value when enter value', () => {
       const otherValue = true
 
-      pCheckbox.vm.$emit('change', otherValue)
+      pCheckbox.vm.$emit('update:model-value', otherValue)
 
       expect(wrapper.emitted('update:model-value')).toStrictEqual([[otherValue]])
     })
@@ -269,7 +269,7 @@ describe('test PField', () => {
       await nextTick()
       expect(wrapper.emitted('update:model-value')).toBeUndefined()
 
-      pCheckboxes[optionIndex].vm.$emit('change', isChecked)
+      pCheckboxes[optionIndex].vm.$emit('update:model-value', isChecked)
       await nextTick()
 
       expect(wrapper.emitted('update:model-value')).toStrictEqual([[expected]])
@@ -288,7 +288,7 @@ describe('test PField', () => {
       optionIndex,
       isChecked,
     }) => {
-      pCheckboxes[optionIndex].vm.$emit('change', isChecked)
+      pCheckboxes[optionIndex].vm.$emit('update:model-value', isChecked)
       await nextTick()
 
       expect(wrapper.emitted('update:model-value')).toBeUndefined()

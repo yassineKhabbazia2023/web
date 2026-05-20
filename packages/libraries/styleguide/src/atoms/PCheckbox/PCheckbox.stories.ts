@@ -13,7 +13,7 @@ const meta: Meta<typeof PCheckbox> = {
     },
   },
   argTypes: {
-    pChecked: {
+    modelValue: {
       control: 'boolean',
       description: 'État coché de la checkbox',
     },
@@ -23,7 +23,7 @@ const meta: Meta<typeof PCheckbox> = {
     },
   },
   args: {
-    pChecked: false,
+    modelValue: false,
     pRounded: false,
   },
 }
@@ -38,7 +38,7 @@ export const Default: Story = {
     setup() {
       return { args }
     },
-    template: '<PCheckbox v-model="args.pChecked" v-bind="args">Accepter les conditions</PCheckbox>',
+    template: '<PCheckbox v-model="args.modelValue" :p-rounded="args.pRounded">Accepter les conditions</PCheckbox>',
   }),
   parameters: {
     docs: {
@@ -55,10 +55,10 @@ export const States: Story = {
     components: { PCheckbox },
     template: `
       <div style="display: flex; flex-direction: column; gap: 16px;">
-        <PCheckbox :pChecked="false">Non coché</PCheckbox>
-        <PCheckbox :pChecked="true">Coché</PCheckbox>
-        <PCheckbox :pChecked="false" disabled>Désactivé non coché</PCheckbox>
-        <PCheckbox :pChecked="true" disabled>Désactivé coché</PCheckbox>
+        <PCheckbox :model-value="false">Non coché</PCheckbox>
+        <PCheckbox :model-value="true">Coché</PCheckbox>
+        <PCheckbox :model-value="false" disabled>Désactivé non coché</PCheckbox>
+        <PCheckbox :model-value="true" disabled>Désactivé coché</PCheckbox>
       </div>
     `,
   }),
@@ -79,7 +79,7 @@ export const WithLabels: Story = {
     template: `
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <PCheckbox>Option 1</PCheckbox>
-        <PCheckbox :pChecked="true">Option 2</PCheckbox>
+        <PCheckbox :model-value="true">Option 2</PCheckbox>
         <PCheckbox>Très long texte qui permet de tester le comportement. Dans ce cas particulier la checkbox à droite doit être centrée verticalements et le texte ne doit pas être tronqué.</PCheckbox>
       </div>
     `,
@@ -102,7 +102,7 @@ export const Rounded: Story = {
       <div style="display: flex; flex-direction: column; gap: 16px;">
         <PCheckbox :pRounded="false">Checkbox normale</PCheckbox>
         <PCheckbox :pRounded="true">Checkbox arrondie</PCheckbox>
-        <PCheckbox :pRounded="true" :pChecked="true">Checkbox arrondie cochée</PCheckbox>
+        <PCheckbox :pRounded="true" :model-value="true">Checkbox arrondie cochée</PCheckbox>
       </div>
     `,
   }),
@@ -125,18 +125,18 @@ export const FormExamples: Story = {
         <div>
           <h3 style="margin-bottom: 12px;">Préférences de notification</h3>
           <div style="display: flex; flex-direction: column; gap: 8px;">
-            <PCheckbox :pChecked="true">Recevoir les notifications par email</PCheckbox>
-            <PCheckbox :pChecked="false">Recevoir les notifications SMS</PCheckbox>
-            <PCheckbox :pChecked="true">Notifications push sur mobile</PCheckbox>
+            <PCheckbox :model-value="true">Recevoir les notifications par email</PCheckbox>
+            <PCheckbox :model-value="false">Recevoir les notifications SMS</PCheckbox>
+            <PCheckbox :model-value="true">Notifications push sur mobile</PCheckbox>
           </div>
         </div>
         
         <div>
           <h3 style="margin-bottom: 12px;">Conditions légales</h3>
           <div style="display: flex; flex-direction: column; gap: 8px;">
-            <PCheckbox :pChecked="true">J'accepte les conditions générales d'utilisation</PCheckbox>
-            <PCheckbox :pChecked="true">J'accepte la politique de confidentialité</PCheckbox>
-            <PCheckbox :pChecked="false">Je souhaite recevoir la newsletter</PCheckbox>
+            <PCheckbox :model-value="true">J'accepte les conditions générales d'utilisation</PCheckbox>
+            <PCheckbox :model-value="true">J'accepte la politique de confidentialité</PCheckbox>
+            <PCheckbox :model-value="false">Je souhaite recevoir la newsletter</PCheckbox>
           </div>
         </div>
       </div>

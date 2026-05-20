@@ -1,14 +1,15 @@
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore } from '@pulse/common/stores'
+import { ref } from 'vue'
 import { SortDirection, AmplitudeFeatureLocalisation } from '@pulse/common/enums'
 import { TrackingCenter } from '@pulse/common/services/amplitude'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
 import { WalletMenuActionValue, WalletSortColumn } from '@entities/managers/wallet-tracking/wallet-tracking.enum'
 import { useRegularEntitiesList } from './regular-entity.list.composable'
+import type { RegularWalletData } from '@entities/modules/wallet/types'
 import type { EntitiesListRegularProps, EntitiesListRegularEmit } from './regular-entity.list.types'
 import { RegularEntityAction } from './regular-entity.list.enums'
-import type { RegularWalletData } from '@entities/modules/wallet/types/wallet-data.types'
 
 const isMobileMock = { value: false }
 
@@ -61,11 +62,12 @@ const createEmit = (): EntitiesListRegularEmit => vi.fn() as unknown as Entities
 const setupComposable = (
   propsOverride: Partial<EntitiesListRegularProps> = {},
   emit?: EntitiesListRegularEmit,
+  selectedFolderIds = ref<number[]>([]),
 ) => {
   const props = { ...defaultProps, ...propsOverride }
   const emitFn = emit ?? createEmit()
-  const [result, app] = withSetup(() => useRegularEntitiesList(props, emitFn))
-  return { result, app, emit: emitFn }
+  const [result, app] = withSetup(() => useRegularEntitiesList(props, emitFn, selectedFolderIds))
+  return { result, app, emit: emitFn, selectedFolderIds }
 }
 
 describe('useRegularEntitiesList', () => {
@@ -217,8 +219,8 @@ describe('useRegularEntitiesList', () => {
     })
   })
 
-  describe('onSelectedFolder', () => {
-    it('emits selectedFolder with correct data', () => {
+  describe('toggleSelectedFolder', () => {
+    it('adds selected folder id when folder is not selected', () => {
       const row = buildRow({
         accountId: 300,
         accountNumber: 'ACC-300',
@@ -229,20 +231,58 @@ describe('useRegularEntitiesList', () => {
           lastName: 'Doe',
           email: 'jane@test.com',
           initials: 'JD',
-          avatarColor: 'blue',
+          avatarColor: 'cyan',
         },
       })
 
-      const { result, app, emit } = setupComposable()
+      const { result, app, selectedFolderIds } = setupComposable()
 
-      result.onSelectedFolder(row)
+      result.toggleSelectedFolder(row.accountId)
 
-      expect(emit).toHaveBeenCalledWith('selectedFolder', {
-        accountNumber: 'ACC-300',
-        id: 300,
-        name: 'Selected Entity',
-        avatarColor: 'blue',
-      })
+      expect(selectedFolderIds.value).toStrictEqual([300])
+
+      app.unmount()
+    })
+
+    it('removes selected folder id when folder is already selected', () => {
+      const row = buildRow()
+      const { result, app, selectedFolderIds } = setupComposable()
+
+      result.toggleSelectedFolder(row.accountId)
+      result.toggleSelectedFolder(row.accountId)
+
+      expect(selectedFolderIds.value).toStrictEqual([])
+
+      app.unmount()
+    })
+
+    it('keeps other selected folder ids when toggling one folder', () => {
+      const row = buildRow()
+      const selectedFolderIds = ref<number[]>([200])
+      const { result, app } = setupComposable({}, undefined, selectedFolderIds)
+
+      result.toggleSelectedFolder(row.accountId)
+
+      expect(selectedFolderIds.value).toStrictEqual([200, 100])
+      app.unmount()
+    })
+  })
+
+  describe('isFolderSelected', () => {
+    it('returns true when row id is selected', () => {
+      const selectedFolderIds = ref<number[]>([100])
+      const { result, app } = setupComposable({}, undefined, selectedFolderIds)
+
+      expect(result.isFolderSelected(100)).toBe(true)
+
+      app.unmount()
+    })
+
+    it('returns false when row id is not selected', () => {
+      const selectedFolderIds = ref<number[]>([200])
+      const { result, app } = setupComposable({}, undefined, selectedFolderIds)
+
+      expect(result.isFolderSelected(100)).toBe(false)
 
       app.unmount()
     })
@@ -317,7 +357,7 @@ describe('useRegularEntitiesList', () => {
           lastName: 'Dupont',
           email: 'abc@email.com',
           initials: 'JD',
-          avatarColor: 'blue',
+          avatarColor: 'cyan',
         },
       })
       const { result, app } = setupComposable({ searchValue: 'abc' })
@@ -342,7 +382,7 @@ describe('useRegularEntitiesList', () => {
           lastName: 'Dupont',
           email: 'jean@email.com',
           initials: 'JD',
-          avatarColor: 'blue',
+          avatarColor: 'cyan',
         },
       })
       const { result, app } = setupComposable({ searchValue: 'dupont' })
@@ -364,7 +404,7 @@ describe('useRegularEntitiesList', () => {
           lastName: 'Martin',
           email: 'martin@email.com',
           initials: 'SM',
-          avatarColor: 'blue',
+          avatarColor: 'cyan',
         },
       })
       const { result, app } = setupComposable({ searchValue: 'foobar' })

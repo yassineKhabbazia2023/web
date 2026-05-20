@@ -124,13 +124,13 @@
       <NoResult v-if="searchResult.items.length === 0" />
       <RegularEntityList
         v-if="searchResult.items.length > 0"
+        v-model:selected-folder-ids="selectedFolderIds"
         data-testid="folders-table"
         :data="searchResult.items"
         :searchValue="searchCriteria.search"
         @add-favorite="handleAddFavorite"
         @click-deploy="onClickDeploy"
         @access="onClickFolder"
-        @selected-folder="onSelectedFolder"
         @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
         @display-declare-customer-relation-drawer="handleDeclareCustomerRelationDrawer"
         @sort-account="handleSortAccount"
@@ -222,6 +222,7 @@ import type {
   DeploymentStatus,
   RegularWalletData,
 } from '@entities/modules/wallet/types'
+import { useFolderSelection } from './folder-selection.composable'
 import Filters from '../../components/Filters'
 import RegularEntityList from '../../components/entities-list/regular-entity/regular-entity.list.vue'
 import DelegationDrawer from './components/DelegationDrawer'
@@ -229,7 +230,6 @@ import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
 import DeclareCustomerRelationDrawer from './components/DeclareCustomerRelationDrawer'
-import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 import type { AccountFilters, AccountRow } from '@entities/types'
 import ManageAccessDrawerGlobal from '@entities/components/ManageAccessDrawer/ManageAccessDrawerGlobal'
 import { TrackingLocalisation } from '@entities/enums'
@@ -418,6 +418,7 @@ const searchResult = ref<SearchResult<RegularWalletData>>({
   totalPage: 0,
   totalItems: 0,
 })
+const { selectedFolders, selectedFolderIds } = useFolderSelection(searchResult)
 
 function retrieveAndBindAccountsQuery() {
   const { accountNumbers } = route.query
@@ -598,17 +599,6 @@ const handleRemoveFilter = () => {
     },
   }
   searchBar.value.clearSearch()
-}
-
-const selectedFolders = ref<SelectedFolder[]>([])
-const onSelectedFolder = (newSelectedFolder: SelectedFolder) => {
-  const hasAlreadySelectedSameFolder = () =>
-    selectedFolders.value.some((selectedFolder: SelectedFolder) => selectedFolder.id === newSelectedFolder.id)
-
-  selectedFolders.value =
-    hasAlreadySelectedSameFolder()
-      ? selectedFolders.value.filter((selectedFolder: SelectedFolder) => selectedFolder.id !== newSelectedFolder.id)
-      : [...selectedFolders.value, newSelectedFolder]
 }
 
 const { handleSortCriteria } = useSort()
