@@ -67,7 +67,8 @@
         "toVerify": "À vérifier",
         "created": "Modifier le plan",
         "validated": "Validée",
-        "sendMandate": "Envoyer le mandat"
+        "sendMandate": "Envoyer le mandat",
+        "toTransfer": "À transférer"
       }
     },
     "permanentDelegations": {

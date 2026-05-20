@@ -191,6 +191,7 @@ const { t, d } = useI18n({
       pennylaneNotCreated: 'To create',
       pennylaneToVerify: 'To verify',
       pennylaneMandateToSend: 'Send mandate',
+      pennylaneToTransfer: 'To transfer',
       offerActivated: 'The offer has been activated',
       offerNotActivated: 'The offer could not be activated',
       on: 'on',
@@ -213,6 +214,7 @@ const { t, d } = useI18n({
       pennylaneNotCreated: 'À créer',
       pennylaneToVerify: 'À vérifier',
       pennylaneMandateToSend: 'Envoyer le mandat',
+      pennylaneToTransfer: 'À transférer',
       offerActivated: 'L\'offre a été activée',
       offerNotActivated: 'L\'offre n\'a pas pu être activée',
       on: 'sur',
@@ -363,6 +365,8 @@ const getStatusDetails = (status: string): StatusDetails => {
       return { text: t('pennylaneToVerify'), color: 'light-blue', iconName: 'search' }
     case SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND:
       return { text: t('pennylaneMandateToSend'), color: 'tranquil', iconName: 'arrowUp' }
+    case SubscriptionStatusCode.PENNYLANE_TO_TRANSFER:
+      return { text: t('pennylaneToTransfer'), color: 'light-green', iconName: 'arrowLeftRight' }
     default:
       return { text: status, color: 'info', iconName: 'infoCircle' }
   }

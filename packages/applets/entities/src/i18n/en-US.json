@@ -67,7 +67,8 @@
         "toVerify": "To verify",
         "created": "Created",
         "validated": "Validated",
-        "sendMandate": "Send mandate"
+        "sendMandate": "Send mandate",
+        "toTransfer": "To transfer"
       }
     },
     "permanentDelegations": {

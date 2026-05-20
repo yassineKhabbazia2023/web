@@ -9,6 +9,7 @@ export enum SubscriptionStatusCode {
   PENNYLANE_NOT_CREATED = 'pennylane-not-created',
   PENNYLANE_TO_VERIFY = 'pennylane-to-verify',
   PENNYLANE_MANDATE_TO_SEND = 'pennylane-mandate-to-send',
+  PENNYLANE_TO_TRANSFER = 'pennylane-to-transfer',
 }
 
 export interface Account {

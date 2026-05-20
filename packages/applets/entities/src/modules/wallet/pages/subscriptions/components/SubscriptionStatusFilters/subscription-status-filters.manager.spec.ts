@@ -17,33 +17,36 @@ const statsMock: SubscriptionStats = {
     [SubscriptionStatusCode.PENNYLANE_CREATED]: 2,
     [SubscriptionStatusCode.VALIDATED]: 6,
     [SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND]: 0,
+    [SubscriptionStatusCode.PENNYLANE_TO_TRANSFER]: 4,
   },
 }
 
 describe('SubscriptionStatusFiltersManager', () => {
   describe('getDefaultActiveStatusCodes', () => {
-    it('should return the 4 standard status codes: PENDING, PENNYLANE_TO_VERIFY, PENNYLANE_CREATED, PENNYLANE_MANDATE_TO_SEND', () => {
+    it('should return the 5 standard status codes: PENDING, PENNYLANE_TO_VERIFY, PENNYLANE_CREATED, PENNYLANE_MANDATE_TO_SEND, PENNYLANE_TO_TRANSFER', () => {
       const codes = SubscriptionStatusFiltersManager.getDefaultActiveStatusCodes()
 
-      expect(codes).toHaveLength(4)
+      expect(codes).toHaveLength(5)
       expect(codes).toEqual([
         SubscriptionStatusCode.PENDING,
         SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
         SubscriptionStatusCode.PENNYLANE_CREATED,
         SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
+        SubscriptionStatusCode.PENNYLANE_TO_TRANSFER,
       ])
     })
   })
 
   describe('getOfferActivationFilters', () => {
-    it('should return 4 filters in the correct order: PENDING, PENNYLANE_TO_VERIFY, PENNYLANE_CREATED, PENNYLANE_MANDATE_TO_SEND', () => {
+    it('should return 5 filters in the correct order: PENDING, PENNYLANE_TO_VERIFY, PENNYLANE_CREATED, PENNYLANE_MANDATE_TO_SEND, PENNYLANE_TO_TRANSFER', () => {
       const filters = SubscriptionStatusFiltersManager.getOfferActivationFilters(statsMock)
 
-      expect(filters).toHaveLength(4)
+      expect(filters).toHaveLength(5)
       expect(filters[0].pCode).toBe(SubscriptionStatusCode.PENDING)
       expect(filters[1].pCode).toBe(SubscriptionStatusCode.PENNYLANE_TO_VERIFY)
       expect(filters[2].pCode).toBe(SubscriptionStatusCode.PENNYLANE_CREATED)
       expect(filters[3].pCode).toBe(SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND)
+      expect(filters[4].pCode).toBe(SubscriptionStatusCode.PENNYLANE_TO_TRANSFER)
     })
 
     it('should use the correct i18n labels', () => {
@@ -53,6 +56,7 @@ describe('SubscriptionStatusFiltersManager', () => {
       expect(filters[1].pContent).toBe('entities.wallet.subscriptionStatusFilters.toVerify')
       expect(filters[2].pContent).toBe('entities.wallet.subscriptionStatusFilters.created')
       expect(filters[3].pContent).toBe('entities.wallet.subscriptionStatusFilters.sendMandate')
+      expect(filters[4].pContent).toBe('entities.wallet.subscriptionStatusFilters.toTransfer')
     })
 
     it('should use the correct counts from stats', () => {
@@ -62,6 +66,7 @@ describe('SubscriptionStatusFiltersManager', () => {
       expect(filters[1].pValue).toBe(1)
       expect(filters[2].pValue).toBe(2)
       expect(filters[3].pValue).toBe(0)
+      expect(filters[4].pValue).toBe(4)
     })
 
     it('should set all filters as not disabled', () => {
@@ -93,6 +98,7 @@ describe('SubscriptionStatusFiltersManager', () => {
       expect(filters[1].pValue).toBe(0)
       expect(filters[2].pValue).toBe(0)
       expect(filters[3].pValue).toBe(0)
+      expect(filters[4].pValue).toBe(0)
     })
   })
 
@@ -109,12 +115,13 @@ describe('SubscriptionStatusFiltersManager', () => {
     it('should return the same codes as getDefaultActiveStatusCodes', () => {
       const codes = SubscriptionStatusFiltersManager.getActiveCodesOnValidatedDeselected()
 
-      expect(codes).toHaveLength(4)
+      expect(codes).toHaveLength(5)
       expect(codes).toEqual([
         SubscriptionStatusCode.PENDING,
         SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
         SubscriptionStatusCode.PENNYLANE_CREATED,
         SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
+        SubscriptionStatusCode.PENNYLANE_TO_TRANSFER,
       ])
     })
   })

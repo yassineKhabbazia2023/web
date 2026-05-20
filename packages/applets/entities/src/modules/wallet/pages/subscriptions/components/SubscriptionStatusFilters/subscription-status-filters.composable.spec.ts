@@ -93,6 +93,7 @@ describe('useSubscriptionStatusFilters', () => {
         SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
         SubscriptionStatusCode.PENNYLANE_CREATED,
         SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
+        SubscriptionStatusCode.PENNYLANE_TO_TRANSFER,
       ])
     })
   })
