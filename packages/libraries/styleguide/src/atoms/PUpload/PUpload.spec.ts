@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest'
 import { shallowMount } from '@vue/test-utils'
 import PUpload from './'
 import type { UploadProps } from './PUploadTypes'
+import { PUploadType } from './PUpload.enums'
 import { nextTick } from 'vue'
 
 // Mocks
@@ -54,7 +55,17 @@ const createWrapper = (props = defaultProps) =>
         PUploadFileLine: {
           name: 'PUploadFileLine',
           template: '<div><slot /></div>',
-          props: ['pIconName'],
+          props: {
+            pIconName: { type: String },
+            pIsMultiLine: { type: Boolean, default: false },
+            pStatus: { type: String },
+            pFile: { type: Object },
+          },
+        },
+        PButton: {
+          name: 'PButton',
+          emits: ['click'],
+          template: '<button @click="$emit(\'click\', $event)"><slot /></button>',
         },
       },
     },
@@ -65,7 +76,7 @@ describe('pUpload', () => {
     it('should renders the upload file line with provided props', () => {
       const wrapper = createWrapper({
         ...defaultProps,
-        pUploadType: 'file-line',
+        pUploadType: PUploadType.FILE_LINE,
       })
       expect(wrapper.find('.p-upload--type-file-line').exists()).toBeTruthy()
       expect(wrapper.find('.p-upload__input').exists()).toBeTruthy()
@@ -73,7 +84,7 @@ describe('pUpload', () => {
     it('should renders the upload dragger with provided props', () => {
       const wrapper = createWrapper({
         ...defaultProps,
-        pUploadType: 'dragger',
+        pUploadType: PUploadType.DRAGGER,
       })
       expect(wrapper.find('.p-upload--type-dragger').exists()).toBeTruthy()
       expect(wrapper.find('.p-upload__input').exists()).toBeTruthy()
@@ -105,6 +116,66 @@ describe('pUpload', () => {
       firstUploadeFile.vm.$emit('on-click-file-action')
 
       expect(firstUploadeFile.props('pIconName')).toBe('filetypePng')
+      expect(wrapper.emitted('delete-file')).toBeTruthy()
+      expect(wrapper.emitted('delete-file')).toStrictEqual([[mockedFile]])
+    })
+  })
+
+  describe('single file uploaded display (file-line + mono)', () => {
+    it('should display the centered single-file block when file-line mono and a file is uploaded', async () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pUploadType: PUploadType.FILE_LINE,
+        pMultiple: false,
+      }) as any
+      wrapper.vm.files = [mockedFile]
+      await nextTick()
+
+      const uploadFileLine = wrapper.findComponent({ name: 'PUploadFileLine' })
+      expect(uploadFileLine.exists()).toBe(true)
+      expect(uploadFileLine.props('pIsMultiLine')).toBe(true)
+      expect(uploadFileLine.props('pStatus')).toBe('ready')
+      expect(wrapper.find('.p-upload__input').exists()).toBe(false)
+    })
+
+    it('should keep the original trigger when file-line multi even with a file', async () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pUploadType: PUploadType.FILE_LINE,
+        pMultiple: true,
+      }) as any
+      wrapper.vm.files = [mockedFile]
+      await nextTick()
+
+      expect(wrapper.find('[data-testid="upload-single-file"]').exists()).toBe(false)
+      expect(wrapper.find('.p-upload__input').exists()).toBe(true)
+    })
+
+    it('should not switch to centered block for dragger mono (out of scope)', async () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pUploadType: PUploadType.DRAGGER,
+        pMultiple: false,
+      }) as any
+      wrapper.vm.files = [mockedFile]
+      await nextTick()
+
+      expect(wrapper.find('[data-testid="upload-single-file"]').exists()).toBe(false)
+      expect(wrapper.find('.p-upload__input').exists()).toBe(true)
+    })
+
+    it('should emit delete-file when the centered block trash button is clicked', async () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pUploadType: PUploadType.FILE_LINE,
+        pMultiple: false,
+      }) as any
+      wrapper.vm.files = [mockedFile]
+      await nextTick()
+
+      const uploadFileLine = wrapper.findComponent({ name: 'PUploadFileLine' })
+      uploadFileLine.vm.$emit('on-click-file-action', mockedFile)
+
       expect(wrapper.emitted('delete-file')).toBeTruthy()
       expect(wrapper.emitted('delete-file')).toStrictEqual([[mockedFile]])
     })

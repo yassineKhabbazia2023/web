@@ -19,7 +19,7 @@
 
       <PUpload
         ref="uploadRef"
-        pUploadType="dragger"
+        :pUploadType="PUploadType.DRAGGER"
         pDrag
         pAccept=".pdf"
         pPrefixLabelFileLine="Glissez-déposez ou "
@@ -167,6 +167,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { GlobalWorkerOptions } from 'pdfjs-dist'
 import PUpload from '../../atoms/PUpload'
+import { PUploadType } from '../../atoms/PUpload/PUpload.enums'
 import PLoader from '../../atoms/PLoader'
 import PIcon from '../../atoms/PIcon'
 import PInput from '../../atoms/PInput'

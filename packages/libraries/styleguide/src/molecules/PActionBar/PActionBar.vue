@@ -8,7 +8,7 @@
           :pDisable="item.pButton.pDisabled"
           :pShowFileList="false"
           :pDrag="false"
-          pUploadType="slot"
+          :pUploadType="PUploadType.SLOT"
           pShouldClearPreviousFilesListOnUpload
           @files-selected="handleFilesSelected"
         >
@@ -103,6 +103,7 @@ import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
 import PExpandableSearch from '../../atoms/PExpandableSearch'
 import PUpload from '../../atoms/PUpload'
+import { PUploadType } from '../../atoms/PUpload/PUpload.enums'
 import PTooltip from '../../atoms/PTooltip'
 import type { PActionBarProps } from './PActionBarTypes'
 const props = withDefaults(defineProps<PActionBarProps>(), {

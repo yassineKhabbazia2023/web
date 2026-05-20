@@ -1,4 +1,6 @@
+import type { UploadFile } from 'element-plus'
 import type { PUploadFileLineProps } from '../../atoms/PUploadFileLine/PUploadFileLineTypes'
+import type { PUploadType } from './PUpload.enums'
 
 export interface UploadProps {
   pAction?: string
@@ -7,7 +9,7 @@ export interface UploadProps {
   pDisabled?: boolean
   pAccept?: string
   pShowFileList?: boolean
-  pUploadType?: 'slot' | 'file-line' | 'dragger'
+  pUploadType?: PUploadType
   pTextLimitSize?: string
   pPrefixLabelFileLine?: string
   pSuffixLabelFileLine?: string
@@ -15,4 +17,6 @@ export interface UploadProps {
   pAuthorizedFileFormat?: string
   pColorFileLine?: PUploadFileLineProps['pColor']
   pDeleteButtonTitle?: string
+  pLabel?: string
+  pInitialFiles?: UploadFile[]
 }

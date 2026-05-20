@@ -15,7 +15,7 @@
       class="p-upload-bi-report"
       pDrag
       pShowFileList
-      pUploadType="dragger"
+      :pUploadType="PUploadType.DRAGGER"
       :pPrefixLabelFileLine="t('prefixLabelFileLine')"
       :pSuffixLabelFileLine="t('suffixLabelFileLine')"
       :pDeleteButtonTitle="t('deleteButtonTitle')"
@@ -34,6 +34,7 @@ import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { PFormItem, PUpload, PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
+import { PUploadType } from '@pulse/styleguide/types'
 import type { UploadBIReportProps } from './upload-bi-report.types'
 
 const { t } = useI18n({

@@ -9,4 +9,5 @@ export interface PUploadFileLineProps {
   pFile: UploadFile | UploadRawFile
   pStatus: UploadStatus
   pColor?: 'persian' | 'white'
+  pIsMultiLine?: boolean
 }

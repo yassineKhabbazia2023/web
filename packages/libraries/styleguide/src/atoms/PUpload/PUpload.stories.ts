@@ -1,8 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import type { UploadFile } from 'element-plus'
 import { ref } from 'vue'
 import PUpload from './PUpload.vue'
+import { PUploadType } from './PUpload.enums'
 import PButton from '../PButton/PButton.vue'
 import PIcon from '../PIcon/PIcon.vue'
+
+const buildUploadFile = (name: string, uid: number, size: number): UploadFile => ({
+  name,
+  uid,
+  size,
+  status: 'success',
+  percentage: 100,
+})
 
 const meta: Meta<typeof PUpload> = {
   title: 'Atoms/PUpload',
@@ -15,6 +25,9 @@ const meta: Meta<typeof PUpload> = {
       },
     },
   },
+  decorators: [
+    () => ({ template: '<div style="min-width: 600px;"><story /></div>' }),
+  ],
 }
 
 export default meta
@@ -24,12 +37,14 @@ export const ButtonUpload: Story = {
   render: () => ({
     components: { PUpload, PButton, PIcon },
     template: `
-      <PUpload pMultiple :pDisabled="false" :pDrag="false">
-        <PButton type="primary" size="small">
-          <PIcon class="el-button__icon--left" pName="upload" />
-          Déposer un document
-        </PButton>
-      </PUpload>
+      <div style="display: flex; justify-content: center;">
+        <PUpload pMultiple :pDisabled="false" :pDrag="false">
+          <PButton type="primary" size="small">
+            <PIcon class="el-button__icon--left" pName="upload" />
+            Déposer un document
+          </PButton>
+        </PUpload>
+      </div>
     `,
   }),
 }
@@ -39,14 +54,62 @@ export const FileLine: Story = {
     components: { PUpload },
     setup() {
       const uploadDisabled = ref(false)
-      return { uploadDisabled }
+      return { uploadDisabled, PUploadType }
     },
     template: `
       <PUpload
         pMultiple
         pDrag
         pShowFileList
-        pUploadType="file-line"
+        :pUploadType="PUploadType.FILE_LINE"
+        pTextLimitSize="5MB"
+        pPrefixLabelFileLine="Déposer le fichier ou"
+        pSuffixLabelFileLine="parcourir l'ordinateur"
+        pColorFileLine="persian"
+        :pDisabled="uploadDisabled"
+      />
+    `,
+  }),
+}
+
+export const FileLineSingleFileUploaded: Story = {
+  render: () => ({
+    components: { PUpload },
+    setup() {
+      const initialFiles: UploadFile[] = [
+        buildUploadFile('carte-identite.pdf', 1, 256_000),
+      ]
+      return { initialFiles, PUploadType }
+    },
+    template: `
+      <PUpload
+        pDrag
+        pShowFileList
+        :pUploadType="PUploadType.FILE_LINE"
+        pTextLimitSize="5MB"
+        pPrefixLabelFileLine="Déposer le fichier ou"
+        pSuffixLabelFileLine="parcourir l'ordinateur"
+        pColorFileLine="persian"
+        :pInitialFiles="initialFiles"
+      />
+    `,
+  }),
+}
+
+export const FileLineWithLabel: Story = {
+  render: () => ({
+    components: { PUpload },
+    setup() {
+      const uploadDisabled = ref(false)
+      return { uploadDisabled, PUploadType }
+    },
+    template: `
+      <PUpload
+        pMultiple
+        pDrag
+        pShowFileList
+        :pUploadType="PUploadType.FILE_LINE"
+        pLabel="Pièce d'identité"
         pTextLimitSize="5MB"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
@@ -62,20 +125,74 @@ export const Dragger: Story = {
     components: { PUpload },
     setup() {
       const uploadDisabled = ref(false)
-      return { uploadDisabled }
+      return { uploadDisabled, PUploadType }
     },
     template: `
       <PUpload
         pMultiple
         pDrag
         pShowFileList
-        pUploadType="dragger"
+        :pUploadType="PUploadType.DRAGGER"
         pTextLimitSize="1GB"
         pPrefixLabelFileLine="Déposer le fichier ou"
         pSuffixLabelFileLine="parcourir l'ordinateur"
         pAuthorizedFileFormat="JPEG, PNG, PDF ou XLS"
         pColorFileLine="persian"
         :pDisabled="uploadDisabled"
+      />
+    `,
+  }),
+}
+
+export const DraggerWithSingleFile: Story = {
+  render: () => ({
+    components: { PUpload },
+    setup() {
+      const initialFiles: UploadFile[] = [
+        buildUploadFile('carte-identite.pdf', 1, 256_000),
+      ]
+      return { initialFiles, PUploadType }
+    },
+    template: `
+      <PUpload
+        pMultiple
+        pDrag
+        pShowFileList
+        :pUploadType="PUploadType.DRAGGER"
+        pTextLimitSize="1GB"
+        pPrefixLabelFileLine="Déposer le fichier ou"
+        pSuffixLabelFileLine="parcourir l'ordinateur"
+        pAuthorizedFileFormat="JPEG, PNG, PDF ou XLS"
+        pColorFileLine="persian"
+        :pInitialFiles="initialFiles"
+      />
+    `,
+  }),
+}
+
+export const DraggerWithMultipleFiles: Story = {
+  render: () => ({
+    components: { PUpload },
+    setup() {
+      const initialFiles: UploadFile[] = [
+        buildUploadFile('carte-identite.pdf', 1, 256_000),
+        buildUploadFile('justificatif-domicile.png', 2, 512_000),
+        buildUploadFile('rib.pdf', 3, 128_000),
+      ]
+      return { initialFiles, PUploadType }
+    },
+    template: `
+      <PUpload
+        pMultiple
+        pDrag
+        pShowFileList
+        :pUploadType="PUploadType.DRAGGER"
+        pTextLimitSize="1GB"
+        pPrefixLabelFileLine="Déposer le fichier ou"
+        pSuffixLabelFileLine="parcourir l'ordinateur"
+        pAuthorizedFileFormat="JPEG, PNG, PDF ou XLS"
+        pColorFileLine="persian"
+        :pInitialFiles="initialFiles"
       />
     `,
   }),
