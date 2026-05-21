@@ -36,6 +36,7 @@
         :key="plan.planId"
         :pLabel="plan.planId"
         :pTitle="plan.planName"
+        :pDescription="plan.planDescription"
         :pDisabled="isRecap && plan.isSelected !== true"
         data-testid="offer-plan-subscription-radio-card"
       />

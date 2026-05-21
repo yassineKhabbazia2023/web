@@ -56,6 +56,7 @@ export interface OfferPlan {
   planId: number
   planCode: string
   planName: string
+  planDescription?: string
   isDefault: boolean
   isSelected?: boolean
   pricings?: OfferPlanPricing[]
