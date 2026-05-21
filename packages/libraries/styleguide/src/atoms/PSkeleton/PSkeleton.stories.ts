@@ -109,11 +109,21 @@ export const CustomTemplate: Story = {
         <PSkeleton pAnimated :pLoading="true">
           <template #template>
             <div style="display: flex; align-items: center; gap: 16px;">
-              <PSkeletonItem pVariant="circle" style="--el-skeleton-circle-size: 48px;" />
+              <PSkeletonItem
+                pVariant="circle"
+                :pWidth="48"
+                :pHeight="48"
+              />
               <div style="flex: 1; display: flex; flex-direction: column; gap: 8px;">
-                <PSkeletonItem pVariant="h3" style="width: 50%;" />
+                <PSkeletonItem
+                  pVariant="h3"
+                  pWidth="50%"
+                />
                 <PSkeletonItem pVariant="text" />
-                <PSkeletonItem pVariant="text" style="width: 75%;" />
+                <PSkeletonItem
+                  pVariant="text"
+                  pWidth="75%"
+                />
               </div>
             </div>
           </template>
@@ -125,7 +135,54 @@ export const CustomTemplate: Story = {
     controls: { disable: true },
     docs: {
       description: {
-        story: 'Custom skeleton layout using the template slot with PSkeletonItem variants.',
+        story: 'Custom skeleton layout using the template slot with PSkeletonItem variants. Sizes are controlled via the `pWidth` / `pHeight` props (strings like `"50%"` or numbers interpreted as px).',
+      },
+    },
+  },
+}
+
+export const CustomSize: Story = {
+  render: () => ({
+    components: { PSkeleton, PSkeletonItem },
+    template: `
+      <div style="width: 400px; display: flex; flex-direction: column; gap: 16px;">
+        <PSkeleton pAnimated :pLoading="true">
+          <template #template>
+            <div style="display: flex; flex-direction: column; gap: 16px;">
+              <div>
+                <p style="margin-bottom: 4px; font-size: 12px; color: #6c757d;">pWidth="50%"</p>
+                <PSkeletonItem
+                  pVariant="text"
+                  pWidth="50%"
+                />
+              </div>
+              <div>
+                <p style="margin-bottom: 4px; font-size: 12px; color: #6c757d;">pWidth=120 pHeight=32 (px numbers)</p>
+                <PSkeletonItem
+                  pVariant="button"
+                  :pWidth="120"
+                  :pHeight="32"
+                />
+              </div>
+              <div>
+                <p style="margin-bottom: 4px; font-size: 12px; color: #6c757d;">pWidth=48 pHeight=48 (circle)</p>
+                <PSkeletonItem
+                  pVariant="circle"
+                  :pWidth="48"
+                  :pHeight="48"
+                />
+              </div>
+            </div>
+          </template>
+        </PSkeleton>
+      </div>
+    `,
+  }),
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story: 'PSkeletonItem accepts `pWidth` and `pHeight` props (string like `"50%"` or number in px) to size items inline without writing CSS.',
       },
     },
   },

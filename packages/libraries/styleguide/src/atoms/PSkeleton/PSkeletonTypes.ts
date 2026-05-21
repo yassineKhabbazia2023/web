@@ -8,4 +8,6 @@ export interface PSkeletonProps {
 
 export interface PSkeletonItemProps {
   pVariant?: 'text' | 'button' | 'circle' | 'caption' | 'image' | 'rect' | 'h1' | 'h3' | 'p'
+  pWidth?: string | number
+  pHeight?: string | number
 }

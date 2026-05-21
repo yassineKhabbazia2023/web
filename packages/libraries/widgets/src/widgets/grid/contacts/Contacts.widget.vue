@@ -18,6 +18,55 @@
         flex-gap--2
       "
     >
+      <template v-if="loading === true">
+        <div
+          v-for="index in props.skeletonPlaceholderCount"
+          :key="`contact-skeleton-${index}`"
+          class="padding--2"
+          data-testid="widget-contacts-skeleton"
+        >
+          <PSkeleton :pLoading="true">
+            <template #template>
+              <div
+                class="
+                  flex
+                  flex--align-items-center
+                  flex-gap--2
+                "
+              >
+                <PSkeletonItem pVariant="circle" />
+                <div
+                  class="
+                    flex
+                    flex--direction-column
+                    flex-gap--1
+                    flex--grow-1
+                  "
+                >
+                  <PSkeletonItem
+                    pVariant="text"
+                    pWidth="75%"
+                  />
+                  <PSkeletonItem
+                    pVariant="text"
+                    pWidth="45%"
+                  />
+                </div>
+                <PSkeletonItem
+                  pVariant="button"
+                  :pWidth="32"
+                  :pHeight="32"
+                />
+                <PSkeletonItem
+                  pVariant="button"
+                  :pWidth="32"
+                  :pHeight="32"
+                />
+              </div>
+            </template>
+          </PSkeleton>
+        </div>
+      </template>
       <PUserActionCard
         v-for="contact in cards"
         :key="contact.email"
@@ -48,17 +97,19 @@
                 pIconOnly
                 pType="default"
                 pSize="small"
+                :pDisabled="contact.phoneNumber === ''"
                 @click="copyValueToClipboard(contact.phoneNumber)"
               >
                 <PIcon pName="telephone" />
               </PButton>
             </PTooltip>
-            <PTooltip :pContent="tooltipContent(contact.email)">
+            <PTooltip :pContent="contact.email">
               <PButton
                 pIconOnly
                 pType="default"
                 pSize="small"
-                @click="copyValueToClipboard(contact.email)"
+                :pDisabled="contact.email === ''"
+                @click="openMailClient(contact.email)"
               >
                 <PIcon pName="send" />
               </PButton>
@@ -73,11 +124,12 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PButton, PIcon, PTitle, PTooltip, PUserActionCard } from '@pulse/styleguide/components'
+import { PButton, PIcon, PSkeleton, PSkeletonItem, PTitle, PTooltip, PUserActionCard } from '@pulse/styleguide/components'
 import { AvatarRoles, displayNotification } from '@pulse/styleguide'
 import { SUPPORT_EMAIL_CLIENT, SUPPORT_PHONE_CLIENT } from '@pulse/common/constants'
 import { getFullNameWithUppercaseLastName, getInitials } from '@pulse/common/utils'
 import { copyToClipboard } from '@pulse/toolbox/utils/browser'
+import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import type { PAvatarProps } from '@pulse/styleguide/types'
 import type { ContactsWidgetProps, WidgetContact } from './contact.widget.types'
 
@@ -112,15 +164,23 @@ const supportContact = computed<WidgetContact>(() => ({
 
 const props = withDefaults(defineProps<ContactsWidgetProps>(), {
   contacts: () => [],
+  loading: false,
+  skeletonPlaceholderCount: 2,
 })
 
-const cards = computed<WidgetContact[]>(() => [...props.contacts, supportContact.value])
+const cards = computed<WidgetContact[]>(() =>
+  (props.loading === true ? [supportContact.value] : [...props.contacts, supportContact.value]),
+)
 
 const lastCopiedValue = ref<string | null>(null)
 let copiedResetTimeoutId: ReturnType<typeof setTimeout> | null = null
 
 const tooltipContent = (value: string): string =>
   (lastCopiedValue.value === value ? t('widgets.contacts.copied') : value)
+
+const openMailClient = (email: string): void => {
+  window.location.href = sanitizeUrl(`mailto:${email}`, { allowedSchemes: ['mailto'] })
+}
 
 const copyValueToClipboard = async (value: string): Promise<void> => {
   const hasCopied = await copyToClipboard(value)

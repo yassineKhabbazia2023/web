@@ -23,7 +23,10 @@
         :key="widget.name"
         :class="['prospect-home-page__grid-item', widget.spanClass]"
       >
-        <component :is="widget.name" />
+        <component
+          :is="widget.name"
+          v-bind="widget.props"
+        />
       </div>
     </div>
   </div>
@@ -37,23 +40,31 @@ import { PEntityHeader } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { WidgetName, WidgetSize } from '@pulse/widgets/enums'
 import type { WidgetGridDefinition } from '@pulse/widgets/types'
-
-const PROSPECT_WIDGETS: WidgetGridDefinition[] = [
-  { name: WidgetName.WORKSPACE_INTRO, size: WidgetSize.TWO_SPANS },
-  { name: WidgetName.CONTACTS, size: WidgetSize.ONE_CELL },
-  { name: WidgetName.RSS_NEWS, size: WidgetSize.THREE_SPANS },
-]
+import { useProspectContacts } from './use-prospect-contacts.composable'
 
 const { isMobile } = useResponsive()
-const currentEntityStore = useCurrentEntityStore()
-const { currentEntity } = storeToRefs(currentEntityStore)
+const { currentEntity } = storeToRefs(useCurrentEntityStore())
+const { contacts, isContactsLoading } = useProspectContacts()
 
-const widgets = computed(() =>
-  PROSPECT_WIDGETS.map((widget) => ({
+const widgets = computed<(WidgetGridDefinition & { spanClass: string })[]>(() => {
+  const definitions: WidgetGridDefinition[] = [
+    { name: WidgetName.WORKSPACE_INTRO, size: WidgetSize.TWO_SPANS },
+    {
+      name: WidgetName.CONTACTS,
+      size: WidgetSize.ONE_CELL,
+      props: {
+        contacts: contacts.value,
+        loading: isContactsLoading.value,
+      },
+    },
+    { name: WidgetName.RSS_NEWS, size: WidgetSize.THREE_SPANS },
+  ]
+
+  return definitions.map((widget) => ({
     ...widget,
     spanClass: `prospect-home-page__grid-item--span-${widget.size}`,
-  })),
-)
+  }))
+})
 </script>
 
 <style lang="scss" scoped>

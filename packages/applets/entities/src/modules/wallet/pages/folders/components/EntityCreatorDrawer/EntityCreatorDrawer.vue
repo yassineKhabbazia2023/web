@@ -131,7 +131,7 @@ import CollaboratorAutocomplete from '@entities/components/CollaboratorAutocompl
 import type { FormSection } from '@entities/types'
 import type { EntityCreatorDrawerProps, OnboardingDetails } from '@entities/modules/wallet/types'
 import { getAccountUserByEmail } from '@entities/services/account'
-import { CollaboratorRole } from '@entities/enums'
+import { CollaboratorRole } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,

@@ -9,7 +9,7 @@ import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ComponentWrapper } from '@pulse/toolbox/utils/test'
 import { getMockedUser } from '@entities/__mocks__/users-client.mocks'
 import type { UserInfo } from '@pulse/common/types'
-import { CollaboratorRole } from '@entities/enums'
+import { CollaboratorRole } from '@pulse/common/enums'
 import EntityCreatorDrawer from '.'
 
 // Mocks
