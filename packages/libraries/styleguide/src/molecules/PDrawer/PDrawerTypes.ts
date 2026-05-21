@@ -2,6 +2,10 @@ import type { BreadcrumbItems } from '../../molecules/PBreadcrumb/PBreadcrumbTyp
 import type { PToolboxProps } from '@styleguide/molecules/PToolbox/PToolboxTypes'
 import { ElDrawer } from 'element-plus'
 
+// In order to match expected Element Plus before close signature
+type DoneFn = (cancel?: boolean) => void
+type PBeforeCloseFn = (done: DoneFn) => void
+
 export interface PDrawerProps {
   modelValue: boolean
   pTitle?: string
@@ -14,6 +18,7 @@ export interface PDrawerProps {
   pType?: 'mini' | 'fullscreen'
   pSuffixUnderTitle?: boolean
   pHeaderToolbox?: PToolboxProps
+  pBeforeClose?: PBeforeCloseFn
 }
 
 export type ElDrawerInstanceType = InstanceType<typeof ElDrawer>

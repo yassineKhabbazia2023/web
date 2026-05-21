@@ -1,7 +1,7 @@
 <template>
   <PDrawer
     v-model="isNotificationSettingsDrawerOpened"
-    :beforeClose="handleBeforeClose"
+    :pBeforeClose="handleBeforeClose"
     :pTitle="t('feedCenter.settingsDrawer.title')"
     destroyOnClose
     pSize="50%"

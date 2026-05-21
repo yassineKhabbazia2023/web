@@ -6,7 +6,7 @@
     :pTitle="t('drawerTitle')"
     pSize="33%"
     destroyOnClose
-    :beforeClose="handleBeforeClose"
+    :pBeforeClose="handleBeforeClose"
     @close-drawer-button="handleBeforeClose"
   >
     <div

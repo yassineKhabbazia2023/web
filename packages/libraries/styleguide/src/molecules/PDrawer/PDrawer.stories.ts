@@ -23,6 +23,7 @@ const meta: Meta<typeof PDrawer> = {
     pType: { control: 'select', options: ['mini', 'fullscreen'], description: 'Variante visuelle' },
     pSuffixUnderTitle: { control: 'boolean', description: 'Place le suffixe sous le titre' },
     pHeaderToolbox: { control: false, description: 'Configuration de la toolbox dans l’en-tête' },
+    pBeforeClose: { control: false, description: 'Callback invoqué avant la fermeture du tiroir' },
   },
   args: {
     modelValue: true,
@@ -85,6 +86,36 @@ export const TopMini: Story = {
         </div>
         <PDrawer v-bind="args" v-model="open">
           <div style="padding: 16px;">Tiroir compact en haut de page</div>
+        </PDrawer>
+      </div>
+    `,
+  }),
+}
+
+// With pBeforeClose interceptor
+export const WithBeforeClose: Story = {
+  render: (args) => ({
+    components: { PDrawer, PButton },
+    setup() {
+      const open = ref(args.modelValue)
+      const beforeClose = (done: (cancel?: boolean) => void) => {
+        alert('Le tiroir est sur le point de se fermer')
+        done()
+      }
+      return { args, open, beforeClose }
+    },
+    template: `
+      <div>
+        <PButton pType="primary" @click="open = true">Ouvrir le tiroir</PButton>
+        <PDrawer
+          v-bind="args"
+          v-model="open"
+          :pBeforeClose="beforeClose"
+          @close-drawer-button="open = false"
+        >
+          <div style="padding: 16px;">
+            Fermez ce tiroir pour déclencher l'alerte.
+          </div>
         </PDrawer>
       </div>
     `,

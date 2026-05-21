@@ -6,6 +6,7 @@
     :showClose="pShowClose"
     class="p-drawer"
     :class="componentUniqueId"
+    :beforeClose="pBeforeClose"
     :size="pSize"
     :modalClass="pModalClass"
     :withHeader="pWithHeader"

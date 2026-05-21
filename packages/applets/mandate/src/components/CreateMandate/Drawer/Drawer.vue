@@ -7,7 +7,7 @@
       pSize="50%"
       pDirection="rtl"
       class="drawer-create-mandate"
-      :beforeClose="drawerBeforeClose"
+      :pBeforeClose="drawerBeforeClose"
       @close-drawer-button="drawerBeforeClose(()=> {})"
     >
       <PSteps
