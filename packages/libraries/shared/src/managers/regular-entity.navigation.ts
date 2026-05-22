@@ -1,7 +1,22 @@
 import { RouteName, PennylanePermission, AccountType, AmplitudeFeatureName } from '@pulse/common/enums'
 import { ACCOUNT_PERMISSIONS } from '@pulse/common/constants'
 import { RouterHelpers } from '@pulse/common/helpers'
-import type { NavigationItemConfig } from '@shared/types'
+import type { NavigationContext, NavigationItemConfig } from '@shared/types'
+
+const REGULAR_ENTITY_OVERVIEW_CUSTOMER_PERMISSIONS = [
+  ACCOUNT_PERMISSIONS.USERS,
+  ACCOUNT_PERMISSIONS.OFFER,
+  ACCOUNT_PERMISSIONS.INFORMATION,
+]
+
+function canDisplayRegularEntityOverview(ctx: NavigationContext): boolean {
+  if (ctx.isCollab) {
+    return true
+  }
+
+  return REGULAR_ENTITY_OVERVIEW_CUSTOMER_PERMISSIONS.some(permission => ctx.hasPermission(permission)) ||
+    ctx.shouldShowRydgeInvoicesTab
+}
 
 export const REGULAR_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
   {
@@ -19,7 +34,7 @@ export const REGULAR_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
     title: (ctx) => ctx.isCollab ? 'shared.sidebar.folder' : 'shared.sidebar.entity',
     icon: 'building',
     routeName: RouteName.ENTITY_OVERVIEW,
-    shouldDisplay: () => true,
+    shouldDisplay: canDisplayRegularEntityOverview,
     hasSubmenuSelected: (ctx) =>
       RouterHelpers.hasProvidedAncestor({ route: ctx.currentRoute, ancestorName: RouteName.ENTITY_OVERVIEW }),
     accountType: AccountType.REGULAR,

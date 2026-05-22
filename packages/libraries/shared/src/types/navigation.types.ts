@@ -34,6 +34,8 @@ export interface NavigationContext {
   hasPennylanePermission: (type: PennylanePermission) => boolean
   /** Whether to show BI reports (async, pre-computed) */
   shouldShowBIReports: boolean
+  /** Whether to show the Rydge invoices tab for the current entity */
+  shouldShowRydgeInvoicesTab: boolean
 }
 
 /**

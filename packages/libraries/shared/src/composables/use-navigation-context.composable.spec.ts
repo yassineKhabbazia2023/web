@@ -11,10 +11,16 @@ vi.mock('vue-router', () => ({
 }))
 
 let isCollabMockValue = false
+let isInvoicesTabVisibleMockValue = false
 vi.mock('@pulse/common/stores', () => ({
   useUserStore: () => ({
     get isCollab() {
       return isCollabMockValue
+    },
+  }),
+  useInvoicesAccessStore: () => ({
+    get isTabVisible() {
+      return isInvoicesTabVisibleMockValue
     },
   }),
 }))
@@ -22,10 +28,14 @@ vi.mock('@pulse/common/stores', () => ({
 const hasPennylanePermissionSpy = vi.hoisted(() => vi.fn())
 const hasPermissionSpy = vi.hoisted(() => vi.fn())
 const canShowBIReportsSpy = vi.hoisted(() => vi.fn())
+const isFeatureActivatedSpy = vi.hoisted(() => vi.fn())
 
 vi.mock('@pulse/common/managers', () => ({
   CurrentUserManager: {
     hasPermission: hasPermissionSpy,
+  },
+  FeatureFlagManager: {
+    isFeatureActivated: isFeatureActivatedSpy,
   },
   PennylanePermissionsManager: {
     hasPermission: hasPennylanePermissionSpy,
@@ -40,7 +50,9 @@ describe('useNavigationContext', () => {
     hasPennylanePermissionSpy.mockReturnValue(false)
     hasPermissionSpy.mockReturnValue(false)
     canShowBIReportsSpy.mockResolvedValue(false)
+    isFeatureActivatedSpy.mockReturnValue(false)
     isCollabMockValue = false
+    isInvoicesTabVisibleMockValue = false
   })
 
   describe('return value', () => {
@@ -113,6 +125,24 @@ describe('useNavigationContext', () => {
       await nextTick()
 
       expect(navigationContext.value.shouldShowBIReports).toBe(true)
+    })
+  })
+
+  describe('shouldShowRydgeInvoicesTab', () => {
+    it('should be true when invoices tab is visible and feature flag is active', () => {
+      isInvoicesTabVisibleMockValue = true
+      isFeatureActivatedSpy.mockReturnValue(true)
+      const { navigationContext } = useNavigationContext(() => 123)
+
+      expect(navigationContext.value.shouldShowRydgeInvoicesTab).toBe(true)
+    })
+
+    it('should be false when invoices tab is visible but feature flag is inactive', () => {
+      isInvoicesTabVisibleMockValue = true
+      isFeatureActivatedSpy.mockReturnValue(false)
+      const { navigationContext } = useNavigationContext(() => 123)
+
+      expect(navigationContext.value.shouldShowRydgeInvoicesTab).toBe(false)
     })
   })
 

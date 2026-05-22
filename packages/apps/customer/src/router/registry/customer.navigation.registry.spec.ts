@@ -13,6 +13,7 @@ describe('registerCustomerNavigationItems', () => {
     const gedContext = createNavigationContext({
       shouldShowBIReports: true,
       hasGed: true,
+      hasUsers: true,
       hasPennylaneAccounting: false,
       hasSocialManagementV2: false,
       hasApps: true,
@@ -21,6 +22,7 @@ describe('registerCustomerNavigationItems', () => {
     const pennylaneContext = createNavigationContext({
       shouldShowBIReports: true,
       hasGed: true,
+      hasUsers: true,
       hasPennylaneAccounting: true,
       hasPennylaneAccountingGedV2: true,
       hasSocialManagementV2: true,
@@ -43,16 +45,22 @@ describe('registerCustomerNavigationItems', () => {
     expect(allRouteNames).toContain(RouteName.LAUNCHER)
   })
 
-  describe('always visible items', () => {
-    const context = createNavigationContext({
-      shouldShowBIReports: false,
-      hasGed: false,
-      hasPennylaneAccounting: false,
-      hasSocialManagementV2: false,
+  describe('entity overview item', () => {
+    it('should hide overview item for customer without any entity tab access', () => {
+      const items = NavigationManager.getNavigationItems(createNavigationContext({}))
+      const routeNames = items.map(item => item.routeName)
+
+      expect(routeNames).toContain(RouteName.HOMEPAGE)
+      expect(routeNames).not.toContain(RouteName.ENTITY_OVERVIEW)
     })
 
-    it('should always display home and overview items', () => {
-      const items = NavigationManager.getNavigationItems(context)
+    it.each([
+      ['users tab', { hasUsers: true }],
+      ['offers tab', { hasOffers: true }],
+      ['information tab', { hasInformation: true }],
+      ['Rydge invoices tab', { shouldShowRydgeInvoicesTab: true }],
+    ])('should display overview item when customer can access %s', (_, options) => {
+      const items = NavigationManager.getNavigationItems(createNavigationContext(options))
       const routeNames = items.map(item => item.routeName)
 
       expect(routeNames).toContain(RouteName.HOMEPAGE)
@@ -175,12 +183,12 @@ describe('registerCustomerNavigationItems', () => {
       hasSocialManagementV2: false,
     })
 
-    it('should only display always-visible items', () => {
+    it('should only display home item', () => {
       const items = NavigationManager.getNavigationItems(context)
       const routeNames = items.map(item => item.routeName)
 
       expect(routeNames).toContain(RouteName.HOMEPAGE)
-      expect(routeNames).toContain(RouteName.ENTITY_OVERVIEW)
+      expect(routeNames).not.toContain(RouteName.ENTITY_OVERVIEW)
     })
 
     it('should hide all permission-dependent items', () => {

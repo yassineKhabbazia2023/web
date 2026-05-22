@@ -11,6 +11,7 @@ describe('registerCollaboratorNavigationItems', () => {
 
   it('should register all expected routeNames across contexts', () => {
     const gedContext = createNavigationContext({
+      isCollab: true,
       shouldShowBIReports: true,
       hasGed: true,
       hasPennylaneAccounting: false,
@@ -18,6 +19,7 @@ describe('registerCollaboratorNavigationItems', () => {
     })
 
     const pennylaneContext = createNavigationContext({
+      isCollab: true,
       shouldShowBIReports: true,
       hasGed: true,
       hasPennylaneAccounting: true,
@@ -42,6 +44,7 @@ describe('registerCollaboratorNavigationItems', () => {
 
   describe('shouldDisplay behavior - User with legacy GED only', () => {
     const context = createNavigationContext({
+      isCollab: true,
       shouldShowBIReports: true,
       hasGed: true,
       hasPennylaneAccounting: false,
@@ -70,6 +73,7 @@ describe('registerCollaboratorNavigationItems', () => {
 
   describe('shouldDisplay behavior - User with Pennylane V2', () => {
     const context = createNavigationContext({
+      isCollab: true,
       shouldShowBIReports: true,
       hasGed: true,
       hasPennylaneAccounting: true,
@@ -99,6 +103,7 @@ describe('registerCollaboratorNavigationItems', () => {
 
   describe('shouldDisplay behavior - User with Pennylane legacy', () => {
     const context = createNavigationContext({
+      isCollab: true,
       shouldShowBIReports: true,
       hasGed: true,
       hasPennylaneAccounting: true,
@@ -129,6 +134,7 @@ describe('registerCollaboratorNavigationItems', () => {
 
   describe('shouldDisplay behavior - User with Social Management V2', () => {
     const context = createNavigationContext({
+      isCollab: true,
       shouldShowBIReports: true,
       hasGed: true,
       hasPennylaneAccounting: false,
@@ -157,6 +163,7 @@ describe('registerCollaboratorNavigationItems', () => {
 
   describe('shouldDisplay behavior - User with no permissions', () => {
     const context = createNavigationContext({
+      isCollab: true,
       shouldShowBIReports: false,
       hasGed: false,
       hasPennylaneAccounting: false,

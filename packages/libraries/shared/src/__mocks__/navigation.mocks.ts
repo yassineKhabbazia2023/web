@@ -23,6 +23,7 @@ export function createMockNavigationContext(overrides?: Partial<NavigationContex
     hasPermission: () => false,
     hasPennylanePermission: () => false,
     shouldShowBIReports: false,
+    shouldShowRydgeInvoicesTab: false,
   }
 
   return {
@@ -36,6 +37,7 @@ export function createMockNavigationContext(overrides?: Partial<NavigationContex
  * Useful for navigation registry tests
  */
 export function createNavigationContext(options: {
+  isCollab?: boolean
   shouldShowBIReports?: boolean
   hasGed?: boolean
   hasPennylaneAccounting?: boolean
@@ -43,10 +45,14 @@ export function createNavigationContext(options: {
   hasPennylaneAccountingGedLegacy?: boolean
   hasSocialManagementV2?: boolean
   hasApps?: boolean
+  hasUsers?: boolean
+  hasOffers?: boolean
+  hasInformation?: boolean
+  shouldShowRydgeInvoicesTab?: boolean
 }): NavigationContext {
   return {
     entityId: 601,
-    isCollab: false,
+    isCollab: options.isCollab ?? false,
     currentRoute: {
       path: '/',
       fullPath: '/',
@@ -59,12 +65,22 @@ export function createNavigationContext(options: {
       redirectedFrom: undefined,
     } as RouteLocationNormalizedLoaded,
     shouldShowBIReports: options.shouldShowBIReports ?? false,
+    shouldShowRydgeInvoicesTab: options.shouldShowRydgeInvoicesTab ?? false,
     hasPermission: (permission) => {
       if (permission === ACCOUNT_PERMISSIONS.GED) {
         return options.hasGed ?? false
       }
       if (permission === ACCOUNT_PERMISSIONS.APPS) {
         return options.hasApps ?? false
+      }
+      if (permission === ACCOUNT_PERMISSIONS.USERS) {
+        return options.hasUsers ?? false
+      }
+      if (permission === ACCOUNT_PERMISSIONS.OFFER) {
+        return options.hasOffers ?? false
+      }
+      if (permission === ACCOUNT_PERMISSIONS.INFORMATION) {
+        return options.hasInformation ?? false
       }
       return false
     },

@@ -2,8 +2,9 @@ import { computed, ref, toValue } from 'vue'
 import type { MaybeRefOrGetter } from 'vue'
 
 import { useRoute } from 'vue-router'
-import { useUserStore } from '@pulse/common/stores'
-import { CurrentUserManager, PennylanePermissionsManager, ReportingManager } from '@pulse/common/managers'
+import { useInvoicesAccessStore, useUserStore } from '@pulse/common/stores'
+import { CurrentUserManager, FeatureFlagManager, PennylanePermissionsManager, ReportingManager } from '@pulse/common/managers'
+import { Feature } from '@pulse/common/enums'
 import type { NavigationContext } from '@shared/types/navigation.types'
 import type { Permission } from '@pulse/common/types'
 
@@ -29,6 +30,7 @@ function hasPermission(permission: Permission[]): boolean {
 export function useNavigationContext(entityId: MaybeRefOrGetter<number | undefined>) {
   const route = useRoute()
   const userStore = useUserStore()
+  const invoicesAccessStore = useInvoicesAccessStore()
 
   const shouldShowBIReportsInternal = ref(false)
 
@@ -44,6 +46,9 @@ export function useNavigationContext(entityId: MaybeRefOrGetter<number | undefin
       hasPermission,
       hasPennylanePermission: PennylanePermissionsManager.hasPermission,
       shouldShowBIReports: shouldShowBIReportsInternal.value,
+      shouldShowRydgeInvoicesTab:
+        invoicesAccessStore.isTabVisible &&
+        FeatureFlagManager.isFeatureActivated(Feature.RYDGE_INVOICES),
     }
   })
 
