@@ -35,7 +35,7 @@
           pShape="circle"
           pType="small"
           :pRole="userRole"
-          data-ut="user-initials"
+          data-testid="user-initials"
         >
           {{ userInitials }}
         </PAvatar>
