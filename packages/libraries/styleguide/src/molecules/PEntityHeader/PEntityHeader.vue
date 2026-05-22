@@ -7,14 +7,12 @@
     "
     :class="variant"
   >
-    <PAvatar
+    <PEntityAvatar
       pShape="circle"
       pType="small"
+      :pAccountType="pAccountType"
       :pColor="entityAvatarColor"
-      :pRole="entityAvatarRole"
-    >
-      <PIcon :pName="entityAvatarIcon" />
-    </PAvatar>
+    />
     <div
       class="
         p-entity-header__content
@@ -54,15 +52,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PAvatar, PIcon } from '@pulse/styleguide/components'
+import { PEntityAvatar } from '@pulse/styleguide/components'
+import { getAvatarColorFromKey } from '@pulse/styleguide'
 import type { PEntityHeaderProps } from './PEntityHeader.types'
-import { getAvatarColorFromKey, AvatarRoles } from '@pulse/styleguide'
 
 const props = defineProps<PEntityHeaderProps>()
-const isProspect = computed(() => props.pAccountType === 'PROSPECT')
-const entityAvatarColor = computed(() => isProspect.value ? undefined : getAvatarColorFromKey(props.pAccountNumber))
-const entityAvatarRole = computed(() => isProspect.value ? AvatarRoles.PROSPECT : undefined)
-const entityAvatarIcon = computed(() => isProspect.value ? 'rydgeMonogram' : 'pulse')
+
+const entityAvatarColor = computed(() => props.pAccountType === 'PROSPECT' ? undefined : getAvatarColorFromKey(props.pAccountNumber))
 
 const variant = computed(() => {
   switch (props.pSize) {

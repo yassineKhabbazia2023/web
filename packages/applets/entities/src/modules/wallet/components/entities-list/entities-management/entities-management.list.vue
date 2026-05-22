@@ -23,12 +23,11 @@
             overflow-hidden
           "
         >
-          <PAvatar
+          <PEntityAvatar
+            pAccountType="REGULAR"
             :pColor="scope.row.owner.avatarColor"
             pType="xsmall"
-          >
-            <PIcon pName="pulse" />
-          </PAvatar>
+          />
           <a
             class="
               font-semibold
@@ -169,12 +168,11 @@
           overflow-hidden
         "
       >
-        <PAvatar
+        <PEntityAvatar
+          pAccountType="REGULAR"
           :pColor="row.owner.avatarColor"
           class="margin-right--4"
-        >
-          <PIcon pName="pulse" />
-        </PAvatar>
+        />
         <div class="overflow-hidden">
           <p
             class="
@@ -205,6 +203,7 @@
 import {
   PAvatar,
   PButton,
+  PEntityAvatar,
   PIcon,
   PTag,
   PTableColumn,

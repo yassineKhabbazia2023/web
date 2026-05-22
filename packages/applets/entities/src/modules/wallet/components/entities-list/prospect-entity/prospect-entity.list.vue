@@ -24,12 +24,10 @@
             overflow-hidden
           "
         >
-          <PAvatar
-            :pRole="AvatarRoles.PROSPECT"
+          <PEntityAvatar
+            pAccountType="PROSPECT"
             pType="xsmall"
-          >
-            <PIcon pName="pulse" />
-          </PAvatar>
+          />
           <a
             class="
               font-semibold
@@ -172,12 +170,10 @@
           overflow-hidden
         "
       >
-        <PAvatar
-          :pRole="AvatarRoles.PROSPECT"
+        <PEntityAvatar
+          pAccountType="PROSPECT"
           class="margin-right--4"
-        >
-          <PIcon pName="pulse" />
-        </PAvatar>
+        />
         <div class="overflow-hidden">
           <p
             class="
@@ -215,6 +211,7 @@
 import {
   PAvatar,
   PButton,
+  PEntityAvatar,
   PIcon,
   PTag,
   PTableColumn,

@@ -3,14 +3,13 @@
     class="smart-offer-activation__header bg--base-white flex flex--align-items-center padding-x--6 padding-y--4"
     role="banner"
   >
-    <PAvatar
+    <PEntityAvatar
       aria-label="Entity Avatar"
       pShape="circle"
       pType="small"
+      :pAccountType="currentEntity.accountType"
       :pColor="entityAvatarColor"
-    >
-      <PIcon pName="pulse" />
-    </PAvatar>
+    />
     <h4
       class="h4 margin-left--2"
     >
@@ -22,13 +21,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { SmartOfferHeaderProps } from './smart-offer-header.type'
-import { PAvatar, PIcon } from '@pulse/styleguide/components'
+import { PEntityAvatar } from '@pulse/styleguide/components'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 const props = defineProps<SmartOfferHeaderProps>()
 
 const entityAvatarColor = computed(() => getAvatarColorFromKey(props.currentEntity.accountNumber))
-
 </script>
 
 <style lang="scss" scoped>

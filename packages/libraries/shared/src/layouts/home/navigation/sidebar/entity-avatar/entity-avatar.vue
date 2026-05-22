@@ -7,15 +7,14 @@
       :route="{ name: RouteName.ENTITY_REDIRECT, params: { [RouteParam.ENTITY_ID]: entity.accountId } }"
       @item-clicked="onEntitySelected(entity)"
     >
-      <PAvatar
+      <PEntityAvatar
         pShape="circle"
         pType="small"
+        :pAccountType="entity.accountType"
         :pColor="entityAvatarColor"
         :pSelected="selected"
         class="entity-wrapper__avatar margin-right--2"
-      >
-        <PIcon pName="pulse" />
-      </PAvatar>
+      />
       <template #suffix-content>
         <div
           class="entity-wrapper__details text-left"
@@ -35,7 +34,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { PAvatar, PIcon } from '@pulse/styleguide/components'
+import { PEntityAvatar } from '@pulse/styleguide/components'
 import type { EntityAvatarProps } from './entity-avatar.type'
 import type { Entity } from '@pulse/common/types'
 import { RouteName, RouteParam, AmplitudeFeatureLocalisation } from '@pulse/common/enums'

@@ -15,12 +15,11 @@
     >
       <template #default="scope">
         <div class="flex flex--align-items-center overflow-hidden">
-          <PAvatar
+          <PEntityAvatar
+            pAccountType="REGULAR"
             :pColor="getAvatarColorFromKey(scope.row.accountNumber)"
             pType="xsmall"
-          >
-            <PIcon pName="pulse" />
-          </PAvatar>
+          />
           <PTooltip
             :pContent="scope.row.name"
             pPlacement="top"
@@ -113,7 +112,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
-import { PTable, PTableColumn, PTag, PAvatar, PButton, PIcon, PTooltip, PToolbox } from '@pulse/styleguide/components'
+import { PTable, PTableColumn, PTag, PButton, PEntityAvatar, PIcon, PTooltip, PToolbox } from '@pulse/styleguide/components'
 import type { PToolboxItemProps } from '@pulse/styleguide/types'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/constants'
