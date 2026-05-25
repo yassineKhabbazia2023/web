@@ -1,5 +1,18 @@
+import { flushPromises } from '@vue/test-utils'
+import { withSetup } from '@pulse/toolbox/utils/test'
 import { ProspectCreationDrawerStep } from '@entities/modules/wallet/enums'
+import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import { useProspectCreationDrawer } from './prospect-creation-drawer.composable'
+import {
+  getCollaboratorTargetRolesMock,
+  getDropdownsContentMock,
+  getEmptyDropdownsContentMock,
+} from './__mocks__'
+
+vi.mock('@entities/services/prospects/prospects.service')
+vi.mock('@pulse/toolbox', () => ({
+  logger: { error: vi.fn() },
+}))
 
 const steps = [
   ProspectCreationDrawerStep.INFORMATION,
@@ -8,8 +21,13 @@ const steps = [
 ]
 
 describe('useProspectCreationDrawer', () => {
+  beforeEach(() => {
+    vi.mocked(ProspectsService.fetchProspectCreationDropdownContent).mockResolvedValue(getDropdownsContentMock())
+    vi.mocked(ProspectsService.fetchCollaboratorTargetRoles).mockResolvedValue(getCollaboratorTargetRolesMock())
+  })
+
   it('should initialize with first step', () => {
-    const { stepIndex, currentStep, isFirstStep, isLastStep } = useProspectCreationDrawer(steps)
+    const [{ stepIndex, currentStep, isFirstStep, isLastStep }] = withSetup(() => useProspectCreationDrawer(steps))
 
     expect(stepIndex.value).toBe(0)
     expect(currentStep.value).toBe(ProspectCreationDrawerStep.INFORMATION)
@@ -17,16 +35,22 @@ describe('useProspectCreationDrawer', () => {
     expect(isLastStep.value).toBe(false)
   })
 
-  it('should initialize formData with default values', () => {
-    const { formData } = useProspectCreationDrawer(steps)
+  it('should initialize formData with empty values', () => {
+    const [{ formData }] = withSetup(() => useProspectCreationDrawer(steps))
 
-    expect(formData.value.siret).toBe('12345678912345')
-    expect(formData.value.legalForm).toBe('SAS')
-    expect(formData.value.signatory.lastName).toBe('Martin')
+    expect(formData.value.legalName).toBe('')
+    expect(formData.value.siret).toBe('')
+    expect(formData.value.legalForm).toBe('')
+    expect(formData.value.legalStructure).toBe('')
+    expect(formData.value.interlocutors).toEqual([])
+    expect(formData.value.interlocutorRoles).toEqual({})
+    expect(formData.value.signatory.lastName).toBe('')
+    expect(formData.value.signatory.firstName).toBe('')
+    expect(formData.value.signatory.contactTypes).toEqual([])
   })
 
   it('should go to next step', () => {
-    const { stepIndex, currentStep, goNextStep } = useProspectCreationDrawer(steps)
+    const [{ stepIndex, currentStep, goNextStep }] = withSetup(() => useProspectCreationDrawer(steps))
 
     goNextStep()
 
@@ -35,7 +59,7 @@ describe('useProspectCreationDrawer', () => {
   })
 
   it('should not go past last step', () => {
-    const { stepIndex, goNextStep } = useProspectCreationDrawer(steps)
+    const [{ stepIndex, goNextStep }] = withSetup(() => useProspectCreationDrawer(steps))
 
     goNextStep()
     goNextStep()
@@ -45,7 +69,7 @@ describe('useProspectCreationDrawer', () => {
   })
 
   it('should go to previous step', () => {
-    const { stepIndex, goNextStep, goPreviousStep } = useProspectCreationDrawer(steps)
+    const [{ stepIndex, goNextStep, goPreviousStep }] = withSetup(() => useProspectCreationDrawer(steps))
 
     goNextStep()
     goPreviousStep()
@@ -54,7 +78,7 @@ describe('useProspectCreationDrawer', () => {
   })
 
   it('should not go before first step', () => {
-    const { stepIndex, goPreviousStep } = useProspectCreationDrawer(steps)
+    const [{ stepIndex, goPreviousStep }] = withSetup(() => useProspectCreationDrawer(steps))
 
     goPreviousStep()
 
@@ -62,11 +86,67 @@ describe('useProspectCreationDrawer', () => {
   })
 
   it('should report isLastStep on last step', () => {
-    const { isLastStep, goNextStep } = useProspectCreationDrawer(steps)
+    const [{ isLastStep, goNextStep }] = withSetup(() => useProspectCreationDrawer(steps))
 
     goNextStep()
     goNextStep()
 
     expect(isLastStep.value).toBe(true)
+  })
+
+  it('should fetch dropdown content on mount and expose it', async () => {
+    const [{ dropdownsContent }] = withSetup(() => useProspectCreationDrawer(steps))
+
+    expect(dropdownsContent.value).toEqual(getEmptyDropdownsContentMock())
+    expect(vi.mocked(ProspectsService.fetchProspectCreationDropdownContent)).toHaveBeenCalled()
+
+    await flushPromises()
+
+    expect(dropdownsContent.value).toEqual(getDropdownsContentMock())
+  })
+
+  it('should keep dropdown content empty and log error when fetch fails', async () => {
+    const fetchError = new Error('Network error')
+    vi.mocked(ProspectsService.fetchProspectCreationDropdownContent).mockRejectedValueOnce(fetchError)
+
+    const { logger } = await import('@pulse/toolbox')
+
+    const [{ dropdownsContent }] = withSetup(() => useProspectCreationDrawer(steps))
+
+    await flushPromises()
+
+    expect(dropdownsContent.value).toEqual(getEmptyDropdownsContentMock())
+    expect(vi.mocked(logger.error)).toHaveBeenCalledWith(
+      'Failed to fetch prospect creation dropdown content',
+      fetchError,
+    )
+  })
+
+  it('should fetch collaborator target roles on mount and expose them', async () => {
+    const [{ collaboratorTargetRoles }] = withSetup(() => useProspectCreationDrawer(steps))
+
+    expect(collaboratorTargetRoles.value).toEqual([])
+    expect(vi.mocked(ProspectsService.fetchCollaboratorTargetRoles)).toHaveBeenCalled()
+
+    await flushPromises()
+
+    expect(collaboratorTargetRoles.value).toEqual(getCollaboratorTargetRolesMock())
+  })
+
+  it('should keep collaborator target roles empty and log error when fetch fails', async () => {
+    const fetchError = new Error('Network error')
+    vi.mocked(ProspectsService.fetchCollaboratorTargetRoles).mockRejectedValueOnce(fetchError)
+
+    const { logger } = await import('@pulse/toolbox')
+
+    const [{ collaboratorTargetRoles }] = withSetup(() => useProspectCreationDrawer(steps))
+
+    await flushPromises()
+
+    expect(collaboratorTargetRoles.value).toEqual([])
+    expect(vi.mocked(logger.error)).toHaveBeenCalledWith(
+      'Failed to fetch collaborator target roles',
+      fetchError,
+    )
   })
 })

@@ -1,4 +1,5 @@
 export const DEBOUNCE_TIMING = {
   DEFAULT: 300,
+  EXTERNAL_API: 500,
   SLOW: 1000,
 }

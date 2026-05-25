@@ -132,6 +132,71 @@ describe('validators', () => {
     })
   })
 
+  describe('requiredMultiSelect', () => {
+    it('should pass validation for a non-empty array', () => {
+      return new Promise<void>((resolve) => {
+        const rule = validationRules.requiredMultiSelect('Error message')
+        if (rule.validator) {
+          rule.validator({}, ['a', 'b'], (error) => {
+            expect(error).toBeUndefined()
+            resolve()
+          }, {}, {})
+        }
+      })
+    })
+
+    it('should fail validation for an empty array', () => {
+      return new Promise<void>((resolve) => {
+        const rule = validationRules.requiredMultiSelect('Error message')
+        if (rule.validator) {
+          rule.validator({}, [], (error) => {
+            expect(error).toBeInstanceOf(Error)
+            if (error instanceof Error) {
+              expect(error.message).toBe('Error message')
+            }
+            resolve()
+          }, {}, {})
+        }
+      })
+    })
+
+    it('should fail validation for null', () => {
+      return new Promise<void>((resolve) => {
+        const rule = validationRules.requiredMultiSelect('Error message')
+        if (rule.validator) {
+          rule.validator({}, null, (error) => {
+            expect(error).toBeInstanceOf(Error)
+            resolve()
+          }, {}, {})
+        }
+      })
+    })
+
+    it('should fail validation for undefined', () => {
+      return new Promise<void>((resolve) => {
+        const rule = validationRules.requiredMultiSelect('Error message')
+        if (rule.validator) {
+          rule.validator({}, undefined, (error) => {
+            expect(error).toBeInstanceOf(Error)
+            resolve()
+          }, {}, {})
+        }
+      })
+    })
+
+    it('should fail validation for a non-array value', () => {
+      return new Promise<void>((resolve) => {
+        const rule = validationRules.requiredMultiSelect('Error message')
+        if (rule.validator) {
+          rule.validator({}, 'string', (error) => {
+            expect(error).toBeInstanceOf(Error)
+            resolve()
+          }, {}, {})
+        }
+      })
+    })
+  })
+
   describe('email', () => {
     const tooLongTldBase = 'toolongtldddddddddddddddddddddddddddddddddd'
     const tooLongTld = `test@domain.${tooLongTldBase}${'d'.repeat(Math.max(0, 64 - tooLongTldBase.length))}`

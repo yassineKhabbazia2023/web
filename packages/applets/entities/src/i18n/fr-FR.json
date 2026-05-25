@@ -39,6 +39,57 @@
         "option": "Actions",
         "archiveThisProspectAccount": "Archiver ce compte prospect"
       },
+      "prospect": {
+        "form": {
+          "intro": "Si vous disposez déjà de certaines informations, vous pouvez les renseigner ci-dessous.\nElles seront automatiquement pré-remplies dans l’espace prospect.",
+          "leader": "Dirigeant",
+          "civility": "Civilité",
+          "lastName": "Nom",
+          "firstName": "Prénom",
+          "jobTitle": "Titre",
+          "department": "Service",
+          "companyRole": "Niveau hiérarchique",
+          "contactType": "Type de contact",
+          "email": "E-mail",
+          "mobilePhone": "Téléphone mobile",
+          "entityName": "Nom de l'entité",
+          "siret": "Numéro de SIRET associé",
+          "siretLabel": "SIRET : {siret}",
+          "entity": "Entité",
+          "entitySearchLabel": "Rechercher l'entité souhaitée",
+          "entitySearchPlaceholder": "via Entreprise, Association, N°SIRET",
+          "entitySearchError": "La recherche d'entité a échoué. Veuillez réessayer.",
+          "legalForm": "Forme juridique",
+          "legalStructure": "Structure juridique",
+          "requiredFieldError": "Champ requis",
+          "requiredFieldsAlert": "Un ou plusieurs champs présentent des erreurs.",
+          "siretAlreadyExistsAlert": "Ce numéro SIRET existe déjà sur Akuiteo",
+          "invalidSiretAlert": "Le numéro de SIRET est incorrect",
+          "eligibilityCheckError": "Une erreur est survenue, veuillez réessayer",
+          "company": {
+            "intro": "Certaines informations sur l’entreprise ont été récupérées automatiquement.\nMerci de compléter les champs restants.",
+            "identification": "Identification de l'entreprise",
+            "addressTitle": "Adresse de l'entreprise",
+            "callingName": "Nom d'appel",
+            "siren": "SIREN",
+            "siret": "SIRET",
+            "apeCode": "Code APE",
+            "address": "Adresse",
+            "zipCode": "Code postal",
+            "city": "Ville",
+            "department": "Département",
+            "region": "Région",
+            "country": "Pays"
+          },
+          "contact": {
+            "interlocutorsTitle": "Définissez le Responsable de compte RYDGE",
+            "interlocutorsSearchLabel": "Veuillez rechercher un collaborateur :",
+            "rolePlaceholder": "Indiquer un rôle",
+            "mandatoryRolesAlert": "Merci d'assigner un maître de dossier et un responsable de compte",
+            "missingInterlocutorRoleAlert": "Merci d'assigner un rôle à chaque interlocuteur"
+          }
+        }
+      },
       "prospectDelete": {
         "title": "Archiver ce dossier prospect ?",
         "message": "Vous vous apprêtez à archiver définitivement ce dossier.",
@@ -46,6 +97,16 @@
         "confirm": "Archiver le dossier prospect",
         "success": "Le dossier prospect a bien été archivé",
         "error": "Echec de l'archivage du prospect"
+      },
+      "prospectCreate": {
+        "success": "Le prospect a été correctement créé",
+        "error": "Impossible de créer le dossier dans Akuiteo. Veuillez réessayer dans quelques instants.",
+        "exitConfirmation": {
+          "title": "Quitter la création du prospect ?",
+          "text": "Vous êtes sur le point de quitter le parcours de création de prospect, toute progression sera perdue. Souhaitez-vous quitter le parcours ?",
+          "cancelButton": "Annuler",
+          "exitButton": "Quitter"
+        }
       },
       "prospectSteps": {
         "leaderInfo": "Informations Dirigeant",
@@ -166,7 +227,7 @@
     "history": {
       "searchPlaceholder": "Rechercher dans libellé et détail de l'activité",
       "searchInvalidMessage": "3 caractères minimum requis",
-      "filters" : {
+      "filters": {
         "title": "Paramètres de filtrage",
         "periodLabel": "Période",
         "dateRangeSeparator": "à",

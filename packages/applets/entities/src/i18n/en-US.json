@@ -39,6 +39,57 @@
         "option": "Options",
         "archiveThisProspectAccount": "Archive this prospect account"
       },
+      "prospect": {
+        "form": {
+          "intro": "If you already have some information, you can fill it in below.\nIt will be automatically pre-filled in the prospect space.",
+          "leader": "Leader",
+          "civility": "Civility",
+          "lastName": "Last name",
+          "firstName": "First name",
+          "jobTitle": "Title",
+          "department": "Department",
+          "companyRole": "Hierarchical level",
+          "contactType": "Contact type",
+          "email": "Email",
+          "mobilePhone": "Mobile phone",
+          "entityName": "Entity name",
+          "siret": "Associated SIRET number",
+          "siretLabel": "SIRET: {siret}",
+          "entity": "Entity",
+          "entitySearchLabel": "Search for the desired entity",
+          "entitySearchPlaceholder": "by Company, Association, SIRET number",
+          "entitySearchError": "Entity search failed. Please try again.",
+          "legalForm": "Legal form",
+          "legalStructure": "Legal structure",
+          "requiredFieldError": "Required field",
+          "requiredFieldsAlert": "One or more fields contain errors.",
+          "siretAlreadyExistsAlert": "This SIRET number already exists in Akuiteo",
+          "invalidSiretAlert": "The SIRET number is invalid",
+          "eligibilityCheckError": "An error occurred, please try again",
+          "company": {
+            "intro": "Some company information has been retrieved automatically.\nPlease fill in the remaining fields.",
+            "identification": "Company identification",
+            "addressTitle": "Company address",
+            "callingName": "Calling name",
+            "siren": "SIREN",
+            "siret": "SIRET",
+            "apeCode": "APE code",
+            "address": "Address",
+            "zipCode": "Zip code",
+            "city": "City",
+            "department": "Department",
+            "region": "Region",
+            "country": "Country"
+          },
+          "contact": {
+            "interlocutorsTitle": "Set the RYDGE account manager",
+            "interlocutorsSearchLabel": "Please search for a collaborator:",
+            "rolePlaceholder": "Select a role",
+            "mandatoryRolesAlert": "Please assign a case manager and an account manager",
+            "missingInterlocutorRoleAlert": "Please assign a role to each interlocutor"
+          }
+        }
+      },
       "prospectArchive": {
         "title": "Archive this prospect account?",
         "message": "You are about to permanently archive this account.",
@@ -46,6 +97,16 @@
         "confirm": "Archive prospect account",
         "success": "The prospect account has been successfully archived",
         "error": "Prospect archiving failed"
+      },
+      "prospectCreate": {
+        "success": "Prospect successfully created",
+        "error": "Unable to create the file in Akuiteo. Please try again in a few moments.",
+        "exitConfirmation": {
+          "title": "Exit prospect creation?",
+          "text": "You are about to leave the prospect creation flow, all progress will be lost. Do you want to leave?",
+          "cancelButton": "Cancel",
+          "exitButton": "Exit"
+        }
       },
       "prospectSteps": {
         "leaderInfo": "Leader information",
@@ -166,7 +227,7 @@
     "history": {
       "searchPlaceholder": "Search in label and activity details",
       "searchInvalidMessage": "Minimum 3 characters required",
-      "filters" :{
+      "filters": {
         "title": "Filter Parameters",
         "periodLabel": "Period",
         "dateRangeSeparator": "to",

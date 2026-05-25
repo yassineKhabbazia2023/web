@@ -76,8 +76,10 @@ function handleCollaboratorSelection(contact: Contact) {
 }
 
 async function getCollaboratorsSuggestions(searchValue: string, callback: any) {
-  const collaborators = await fetchContactsFromSameHub(searchValue, 100) ?? []
-  callback(collaborators)
+  const collaborators = props.pFetchCollaborators !== undefined
+    ? await props.pFetchCollaborators(searchValue)
+    : await fetchContactsFromSameHub(searchValue, 100)
+  callback(collaborators ?? [])
 }
 
 function resetSearchQuery() {

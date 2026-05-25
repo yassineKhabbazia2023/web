@@ -39,6 +39,22 @@ export const validationRules = {
   }),
 
   /**
+   * Required multi-select/dropdown validation
+   * Checks if value is a non-empty array
+   */
+  requiredMultiSelect: (errorMessage: string): FormItemRule => ({
+    required: true,
+    validator: (_rule, value, callback) => {
+      if (Array.isArray(value) === false || value.length === 0) {
+        callback(new Error(errorMessage))
+      } else {
+        callback()
+      }
+    },
+    trigger: 'change',
+  }),
+
+  /**
    * Email validation
    */
   email: (errorMessage: string): FormItemRule => ({

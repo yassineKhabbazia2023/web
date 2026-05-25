@@ -1,29 +1,54 @@
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { logger } from '@pulse/toolbox'
 import type { ProspectCreationDrawerStep } from '@entities/modules/wallet/enums'
-import type { ProspectFormData } from './prospect-creation-drawer.types'
+import { ProspectsService } from '@entities/services/prospects/prospects.service'
+import type {
+  CollaboratorTargetRole,
+  ProspectCreationDropdownContent,
+  ProspectFormData,
+} from '@entities/modules/wallet/types'
 
 export function useProspectCreationDrawer(steps: ProspectCreationDrawerStep[]) {
   const stepIndex = ref(0)
 
-  // Temporary Mock
   const formData = ref<ProspectFormData>({
-    siret: '12345678912345',
-    legalForm: 'SAS',
-    legalStructure: 'Société commerciale',
-    caseManagerContactId: '10042',
-    accountManagerContactId: '10087',
+    legalName: '',
+    siret: '',
+    siren: '',
+    address: '',
+    country: '',
+    region: '',
+    department: '',
+    zipCode: '',
+    city: '',
+    nafCode: '',
+    legalForm: '',
+    legalStructure: '',
+    interlocutors: [],
+    interlocutorRoles: {},
     signatory: {
-      title: 'Mme',
-      lastName: 'Martin',
-      firstName: 'Élodie',
-      jobTitle: 'Directrice générale',
-      department: 'Direction',
-      companyRole: 'PRESIDENT_GERANT',
-      contactTypes: 'SIGNATAIRE, COFFRE_FORT_NUMERIQUE',
-      email: 'elodie.martin@example.com',
-      mobilePhone: '06 12 34 56 78',
+      title: '',
+      lastName: '',
+      firstName: '',
+      jobTitle: '',
+      department: '',
+      companyRole: '',
+      contactTypes: [],
+      email: '',
+      mobilePhone: '',
     },
   })
+
+  const dropdownsContent = ref<ProspectCreationDropdownContent>({
+    contactTitle: {},
+    contactService: {},
+    contactHierarchicalLevel: {},
+    contactType: {},
+    legalForm: {},
+    legalStructure: {},
+  })
+
+  const collaboratorTargetRoles = ref<CollaboratorTargetRole[]>([])
 
   const currentStep = computed(() => steps[stepIndex.value])
   const isFirstStep = computed(() => stepIndex.value === 0)
@@ -43,9 +68,27 @@ export function useProspectCreationDrawer(steps: ProspectCreationDrawerStep[]) {
     stepIndex.value = stepIndex.value - 1
   }
 
+  onMounted(async () => {
+    try {
+      dropdownsContent.value = await ProspectsService.fetchProspectCreationDropdownContent()
+    } catch (error) {
+      logger.error('Failed to fetch prospect creation dropdown content', error)
+    }
+  })
+
+  onMounted(async () => {
+    try {
+      collaboratorTargetRoles.value = await ProspectsService.fetchCollaboratorTargetRoles()
+    } catch (error) {
+      logger.error('Failed to fetch collaborator target roles', error)
+    }
+  })
+
   return {
     stepIndex,
     formData,
+    dropdownsContent,
+    collaboratorTargetRoles,
     currentStep,
     isFirstStep,
     isLastStep,

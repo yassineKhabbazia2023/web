@@ -1,124 +1,136 @@
 <template>
-  <PForm pLabelPosition="top">
-    <PFormItem :pLabel="t('caseManagerLabel')">
-      <PInput
-        v-model="model.caseManagerContactId"
-        :pPlaceholder="t('caseManagerPlaceholder')"
-        data-testid="prospect-case-manager-input"
-      />
-    </PFormItem>
-    <PFormItem :pLabel="t('accountManagerLabel')">
-      <PInput
-        v-model="model.accountManagerContactId"
-        :pPlaceholder="t('accountManagerPlaceholder')"
-        data-testid="prospect-account-manager-input"
-      />
-    </PFormItem>
+  <div
+    class="
+      prospect-creation-step-contact__section
+      padding--4
+      width--100
+    "
+  >
+    <PBlockHeader
+      :pTitle="t('entities.wallet.prospect.form.contact.interlocutorsTitle')"
+      :pHasButton="false"
+      pColor="persian"
+      pSize="big"
+      :pImage="{
+        pFit: 'fill',
+        pName: 'user-add-duotone',
+      }"
+    >
+      <template #suffix>
+        <p class="margin-bottom--2 font-xsmall">
+          {{ t('entities.wallet.prospect.form.contact.interlocutorsSearchLabel') }}
+        </p>
+        <AddCollaboratorsAutocomplete
+          :selectedCollaborators="model.interlocutors"
+          :pFetchCollaborators="ProspectsService.fetchCollaborators"
+          @add-collaborator="onAddInterlocutor"
+          @remove-collaborator="onRemoveInterlocutor"
+        />
+      </template>
+    </PBlockHeader>
+  </div>
 
-    <h4 class="margin-top--5 margin-bottom--5">
-      {{ t('signatoryTitle') }}
-    </h4>
+  <ul
+    v-auto-animate
+    class="
+        prospect-creation-step-contact__list
+        margin-top--6
+        list-style-none
+        padding--0
+      "
+  >
+    <li
+      v-for="interlocutor in model.interlocutors"
+      :key="interlocutor.id"
+      class="margin-bottom--2"
+    >
+      <PUserActionCard
+        :pAvatarProps="{ pRole: AvatarRoles.COLLAB, pType: 'small' }"
+        :pTopLeftSectionText="getFullNameWithUppercaseLastName(interlocutor.firstName, interlocutor.lastName)"
+        :pTopLeftSubText="interlocutor.email"
+        :data-testid="`prospect-interlocutor-card-${interlocutor.id}`"
+        @trash-clicked="onRemoveInterlocutor(interlocutor.id)"
+      >
+        <template #avatar>
+          {{ getInitials(interlocutor.firstName, interlocutor.lastName) }}
+        </template>
+        <template #right-section>
+          <PDropdown
+            v-model="model.interlocutorRoles[interlocutor.id]"
+            class="prospect-creation-step-contact__dropdown"
+            :pOptions="getRoleOptionsFor(interlocutor.id)"
+            :pPlaceholder="t('entities.wallet.prospect.form.contact.rolePlaceholder')"
+            :data-testid="`prospect-interlocutor-role-dropdown-${interlocutor.id}`"
+          />
+        </template>
+      </PUserActionCard>
+    </li>
+  </ul>
 
-    <PFormItem :pLabel="t('titleLabel')">
-      <PInput
-        v-model="model.signatory.title"
-        data-testid="prospect-signatory-title-input"
-      />
-    </PFormItem>
-    <PFormItem :pLabel="t('lastNameLabel')">
-      <PInput
-        v-model="model.signatory.lastName"
-        data-testid="prospect-signatory-lastname-input"
-      />
-    </PFormItem>
-    <PFormItem :pLabel="t('firstNameLabel')">
-      <PInput
-        v-model="model.signatory.firstName"
-        data-testid="prospect-signatory-firstname-input"
-      />
-    </PFormItem>
-    <PFormItem :pLabel="t('jobTitleLabel')">
-      <PInput
-        v-model="model.signatory.jobTitle"
-        data-testid="prospect-signatory-jobtitle-input"
-      />
-    </PFormItem>
-    <PFormItem :pLabel="t('departmentLabel')">
-      <PInput
-        v-model="model.signatory.department"
-        data-testid="prospect-signatory-department-input"
-      />
-    </PFormItem>
-    <PFormItem :pLabel="t('companyRoleLabel')">
-      <PInput
-        v-model="model.signatory.companyRole"
-        data-testid="prospect-signatory-companyrole-input"
-      />
-    </PFormItem>
-    <PFormItem :pLabel="t('contactTypesLabel')">
-      <PInput
-        v-model="model.signatory.contactTypes"
-        data-testid="prospect-signatory-contacttypes-input"
-      />
-    </PFormItem>
-    <PFormItem :pLabel="t('emailLabel')">
-      <PInput
-        v-model="model.signatory.email"
-        data-testid="prospect-signatory-email-input"
-      />
-    </PFormItem>
-    <PFormItem :pLabel="t('mobilePhoneLabel')">
-      <PInput
-        v-model="model.signatory.mobilePhone"
-        data-testid="prospect-signatory-mobilephone-input"
-      />
-    </PFormItem>
-  </PForm>
+  <PAlert
+    v-if="validationErrorMessageKey !== null"
+    pType="danger"
+    class="margin-y--4 font-bold"
+  >
+    {{ t(validationErrorMessageKey) }}
+  </PAlert>
 </template>
 
 <script setup lang="ts">
+import { toRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PForm, PFormItem, PInput } from '@pulse/styleguide/components'
-import type { ProspectFormData } from '../../prospect-creation-drawer.types'
+import { PAlert, PBlockHeader, PUserActionCard, PDropdown } from '@pulse/styleguide/components'
+import { AvatarRoles } from '@pulse/styleguide'
+import { getFullNameWithUppercaseLastName, getInitials } from '@pulse/common/utils'
+import AddCollaboratorsAutocomplete from '@entities/modules/entity/shared/collaborators/components/AddCollaboratorDrawer/components/AddCollaboratorsAutocomplete'
+import { ProspectsService } from '@entities/services/prospects/prospects.service'
+import type { Contact } from '@entities/services/contact/contactTypes'
+import type { ProspectFormData } from '@entities/modules/wallet/types'
+import type { ProspectCreationStepContactProps } from './prospect-creation-step-contact.types'
+import { useProspectCreationStepContactValidation } from './prospect-creation-step-contact.form.validation'
 
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-  messages: {
-    'en-US': {
-      caseManagerLabel: 'Case Manager Contact ID',
-      caseManagerPlaceholder: 'Enter case manager contact ID',
-      accountManagerLabel: 'Account Manager Contact ID',
-      accountManagerPlaceholder: 'Enter account manager contact ID',
-      signatoryTitle: 'Signatory',
-      titleLabel: 'Title',
-      lastNameLabel: 'Last name',
-      firstNameLabel: 'First name',
-      jobTitleLabel: 'Job title',
-      departmentLabel: 'Department',
-      companyRoleLabel: 'Company role',
-      contactTypesLabel: 'Contact types (comma-separated)',
-      emailLabel: 'Email',
-      mobilePhoneLabel: 'Mobile phone',
-    },
-    'fr-FR': {
-      caseManagerLabel: 'Case Manager Contact ID',
-      caseManagerPlaceholder: 'Saisir le contact ID du case manager',
-      accountManagerLabel: 'Account Manager Contact ID',
-      accountManagerPlaceholder: 'Saisir le contact ID de l\'account manager',
-      signatoryTitle: 'Signataire',
-      titleLabel: 'Civilité',
-      lastNameLabel: 'Nom',
-      firstNameLabel: 'Prénom',
-      jobTitleLabel: 'Fonction',
-      departmentLabel: 'Service',
-      companyRoleLabel: 'Rôle dans la société',
-      contactTypesLabel: 'Types de contact (séparés par des virgules)',
-      emailLabel: 'Email',
-      mobilePhoneLabel: 'Téléphone mobile',
-    },
-  },
-})
+const props = defineProps<ProspectCreationStepContactProps>()
+
+const { t } = useI18n()
 
 const model = defineModel<ProspectFormData>({ required: true })
+
+const { validationErrorMessageKey, validate } = useProspectCreationStepContactValidation({
+  prospectFormData: model,
+  collaboratorTargetRoles: toRef(props, 'collaboratorTargetRoles'),
+})
+
+function getRoleOptionsFor(interlocutorId: Contact['id']) {
+  const takenByOthers = new Set<number>()
+  for (const [collabId, roleId] of Object.entries(model.value.interlocutorRoles)) {
+    if (Number(collabId) !== interlocutorId && roleId !== undefined && roleId !== null) {
+      takenByOthers.add(roleId)
+    }
+  }
+  return props.collaboratorTargetRoles
+    .filter((role) => takenByOthers.has(role.id) === false)
+    .map((role) => ({ pValue: role.id, pLabel: role.label }))
+}
+
+function onAddInterlocutor(contact: Contact): void {
+  model.value.interlocutors.push(contact)
+}
+
+function onRemoveInterlocutor(id: Contact['id']): void {
+  const index = model.value.interlocutors.findIndex((interlocutor) => interlocutor.id === id)
+  if (index !== -1) {
+    model.value.interlocutors.splice(index, 1)
+  }
+  delete model.value.interlocutorRoles[id]
+}
+
+defineExpose({ validate })
 </script>
+
+<style lang="scss" scoped>
+.prospect-creation-step-contact {
+  &__dropdown {
+    width: 280px;
+  }
+}
+</style>

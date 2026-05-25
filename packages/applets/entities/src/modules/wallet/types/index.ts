@@ -1,5 +1,6 @@
 export * from './collaborators.types'
 export * from './entity-creator-drawer.types'
+export * from './prospects.types'
 export * from './wallet-data.types'
 export * from './wallet-search.types'
 export * from './wallet-tab.types'

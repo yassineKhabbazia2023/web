@@ -4,7 +4,10 @@
       p-user-action-card
       flex
       flex--justify-content-space-between
-      flex--align-items-center
+      flex--align-items-stretch
+      bg--white
+      padding-x--4
+      padding-y--2
     "
   >
     <div
@@ -17,17 +20,30 @@
       <PAvatar v-bind="pAvatarProps">
         <slot name="avatar" />
       </PAvatar>
-      <div>
+      <div
+        class="
+          flex
+          flex--direction-column
+          flex--justify-content-space-between
+        "
+      >
         <p class="font-bold font-size--14">
           {{ pTopLeftSectionText }}
         </p>
-        <p class="font-size--12 text-color--text-neutral">
+        <p class="font-size--12 text-color--text-neutral margin-top--1">
           {{ pTopLeftSubText }}
         </p>
       </div>
     </div>
 
-    <div>
+    <div
+      class="
+        flex
+        flex--align-items-center
+        flex-gap--2
+      "
+    >
+      <slot name="right-section" />
       <slot name="actions">
         <PButton
           v-if="pIsTrashIconVisible"

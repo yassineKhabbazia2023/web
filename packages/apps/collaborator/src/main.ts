@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import { VITE_ASSETS_BASE_URL, VITE_CONFIGCAT_SDK_KEY } from 'env-vars'
 import { AppVersionManager } from '@pulse/toolbox'
 // import libraries first for CSS resolution
@@ -51,6 +52,8 @@ async function bootstrap() {
   const isProd = import.meta.env.PROD
 
   const app = createApp(App)
+    // CSS/animation plugin
+    .use(autoAnimatePlugin)
     // install plugins
     .use(msalPlugin)
     .use(axeptioPlugin, { isActive: isProd })

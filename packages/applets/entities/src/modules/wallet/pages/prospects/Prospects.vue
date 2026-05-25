@@ -21,6 +21,7 @@
     <ProspectCreationDrawer
       v-if="isProspectCreationDrawerOpened"
       v-model="isProspectCreationDrawerOpened"
+      :isSubmitting="isProspectSubmitting"
       @submit="onProspectCreationSubmit"
     />
     <FormSearch
@@ -76,6 +77,7 @@ import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon } from '@pulse/styleguide/components'
+import { displayNotification } from '@pulse/styleguide'
 import ProspectEntityList from '../../components/entities-list/prospect-entity/prospect-entity.list.vue'
 import FormSearch from '@entities/components/FormSearch'
 import NoResult from '@entities/components/NoResult'
@@ -86,7 +88,8 @@ import { RouteName, RouteParam } from '@pulse/common/enums'
 import type { SortingCriteria } from '@pulse/common/types'
 import { logger } from '@pulse/toolbox'
 import ProspectCreationDrawer from './components/prospect-creation-drawer'
-import type { ProspectFormData } from './components/prospect-creation-drawer/prospect-creation-drawer.types'
+import type { ProspectCreationPayload } from '@entities/modules/wallet/types'
+import { ProspectsService } from '@entities/services/prospects/prospects.service'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -111,10 +114,6 @@ function openProspectCreationDrawer() {
   isProspectCreationDrawerOpened.value = true
 }
 
-function onProspectCreationSubmit(formData: ProspectFormData) {
-  logger.trace('Prospect form data:', formData)
-}
-
 const {
   isLoading,
   searchCriteria,
@@ -128,6 +127,24 @@ const {
   handlePageRangeChanged,
   onUpdateCurrentPage,
 } = useProspects()
+
+const isProspectSubmitting = ref(false)
+
+async function onProspectCreationSubmit(payload: ProspectCreationPayload) {
+  isProspectSubmitting.value = true
+  try {
+    await ProspectsService.createProspect(payload)
+  } catch (error) {
+    logger.error('Failed to create prospect', error)
+    displayNotification('error', t('entities.wallet.prospectCreate.error'))
+    return
+  } finally {
+    isProspectSubmitting.value = false
+  }
+  isProspectCreationDrawerOpened.value = false
+  displayNotification('success', t('entities.wallet.prospectCreate.success'))
+  await fetchProspectsList()
+}
 
 const { handleSortCriteria } = useSort()
 

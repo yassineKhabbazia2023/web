@@ -2,14 +2,18 @@
   <PDrawer
     v-model="isDrawerOpened"
     pSize="50%"
-    @close-drawer-button="closeDrawer"
+    :beforeClose="requestExit"
+    @close-drawer-button="requestExit"
   >
     <template #header-prefix>
       <PTitle :pTitle="t('addProspect')" />
     </template>
     <ProspectCreationContent
-      v-model:formData="formData"
-      :stepIndex="stepIndex"
+      ref="contentRef"
+      v-model:form-data="formData"
+      :step-index="stepIndex"
+      :dropdowns-content="dropdownsContent"
+      :collaborator-target-roles="collaboratorTargetRoles"
     />
     <template #footer>
       <PDrawerActions
@@ -20,19 +24,30 @@
       />
     </template>
   </PDrawer>
+
+  <ProspectCreationExitConfirmationModal
+    v-model="isExitConfirmationOpen"
+    @confirm="confirmExit"
+  />
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer, PDrawerActions, PTitle } from '@pulse/styleguide/components'
 import ProspectCreationContent from './components/prospect-creation-content/prospect-creation-content.vue'
+import ProspectCreationExitConfirmationModal from './components/prospect-creation-exit-confirmation-modal/prospect-creation-exit-confirmation-modal.vue'
 import { PROSPECT_CREATION_DRAWER_STEPS } from './prospect-creation-drawer.const'
 import { useProspectCreationDrawer } from './prospect-creation-drawer.composable'
-import type { ProspectFormData } from './prospect-creation-drawer.types'
+import { ProspectCreationDrawerManager } from './prospect-creation-drawer.manager'
+import type { ProspectCreationPayload } from '@entities/modules/wallet/types'
+
+const props = defineProps<{
+  isSubmitting?: boolean
+}>()
 
 const emit = defineEmits<{
-  submit: [formData: ProspectFormData]
+  submit: [payload: ProspectCreationPayload]
 }>()
 
 const { t } = useI18n({
@@ -58,9 +73,13 @@ const { t } = useI18n({
 
 const isDrawerOpened = defineModel<boolean>({ required: true })
 
+const contentRef = useTemplateRef<{ validate: () => Promise<boolean> }>('contentRef')
+
 const {
   stepIndex,
   formData,
+  dropdownsContent,
+  collaboratorTargetRoles,
   isFirstStep,
   isLastStep,
   goNextStep,
@@ -70,25 +89,56 @@ const {
 const previousLabel = computed(() => isFirstStep.value ? t('cancel') : t('previous'))
 const nextLabel = computed(() => isLastStep.value ? t('submit') : t('next'))
 
-const backCTA = computed(() => ({ pLabel: previousLabel.value, pTestId: 'previousButton' }))
-const primaryCTA = computed(() => ({ pLabel: nextLabel.value, pTestId: 'nextButton' }))
+const isAwaitingValidation = ref(false)
 
-function closeDrawer() {
+const backCTA = computed(() => ({ pLabel: previousLabel.value, pTestId: 'previousButton' }))
+const primaryCTA = computed(() => ({
+  pLabel: nextLabel.value,
+  pTestId: 'nextButton',
+  pLoading: isAwaitingValidation.value || props.isSubmitting === true,
+}))
+
+const isExitConfirmationOpen = ref(false)
+
+// Intercepts every close attempt to ask for confirmation first.
+function requestExit() {
+  isExitConfirmationOpen.value = true
+}
+
+function confirmExit() {
+  isExitConfirmationOpen.value = false
   isDrawerOpened.value = false
 }
 
-function onClickNext() {
-  if (isLastStep.value) {
-    emit('submit', formData.value)
-    closeDrawer()
-  } else {
-    goNextStep()
+function submitProspect() {
+  const payload = ProspectCreationDrawerManager.toCreationPayload(
+    formData.value,
+    collaboratorTargetRoles.value,
+    dropdownsContent.value,
+  )
+  emit('submit', payload)
+}
+
+async function onClickNext() {
+  isAwaitingValidation.value = true
+  try {
+    const isValid = contentRef.value === null ? true : await contentRef.value.validate()
+    if (isValid === false) {
+      return
+    }
+    if (isLastStep.value) {
+      submitProspect()
+    } else {
+      goNextStep()
+    }
+  } finally {
+    isAwaitingValidation.value = false
   }
 }
 
 function onClickPrevious() {
   if (isFirstStep.value) {
-    closeDrawer()
+    requestExit()
   } else {
     goPreviousStep()
   }

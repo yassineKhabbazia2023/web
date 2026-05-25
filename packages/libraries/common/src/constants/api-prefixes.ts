@@ -15,4 +15,5 @@ export const API_PREFIXES = {
   INVOICES: 'ventya/api',
   GED: 'ged/api',
   AI_SERVICES: 'aiservices/api',
+  PROSPECT: 'prospect/api',
 }
