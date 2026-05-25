@@ -20,6 +20,7 @@ import feedCenterApplet from '@pulse/feed-center'
 import powerBiApplet from '@pulse/powerbi'
 // then import plugins and misc
 import { axeptioPlugin, initOpenFeature, productFruitsPlugin, hubspotPlugin } from '@pulse/shared/plugins'
+import msalPlugin from './plugins/msal/msal.plugin'
 
 import App from './Collaborator.app.vue'
 import router from './router/collaborator.router'
@@ -51,6 +52,7 @@ async function bootstrap() {
 
   const app = createApp(App)
     // install plugins
+    .use(msalPlugin)
     .use(axeptioPlugin, { isActive: isProd })
     .use(productFruitsPlugin, { isActive: isProd })
     .use(hubspotPlugin, { isActive: isProd })

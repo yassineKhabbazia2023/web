@@ -1,20 +1,20 @@
 import { getEmailIsValid } from '@pulse/toolbox/utils/validator'
 
-export function getEmailError(
-  email: string,
-  requiredErrorMessage: string,
-  invalidErrorMessage: string,
-) {
+export type LoginErrorKey =
+  | ''
+  | 'alertMailRequired'
+  | 'alertMailInvalid'
+  | 'alertPasswordRequired'
+  | 'emailOrPasswordError'
+  | 'technicalError'
+
+export function getEmailErrorKey(email: string): LoginErrorKey {
   if (email === '') {
-    return requiredErrorMessage
+    return 'alertMailRequired'
   }
-  const isValid = getEmailIsValid(email)
-  return isValid ? '' : invalidErrorMessage
+  return getEmailIsValid(email) ? '' : 'alertMailInvalid'
 }
 
-export function getPasswordError(
-  password: string,
-  requiredErrorMessage: string,
-) {
-  return password === '' ? requiredErrorMessage : ''
+export function getPasswordErrorKey(password: string): LoginErrorKey {
+  return password === '' ? 'alertPasswordRequired' : ''
 }

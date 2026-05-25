@@ -21,16 +21,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import { PSkewedButton } from '@pulse/styleguide/components'
-import { MsalService } from '@pulse/common/services/msal'
-import { logger } from '@pulse/toolbox'
-import { LoginManager } from '@pulse/common/managers'
-import { RouteName } from '@pulse/common/enums'
-
-const router = useRouter()
+import { useLoginCollab } from './login-collab.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -53,34 +47,8 @@ const { t } = useI18n({
   },
 })
 
-const isLoading = ref(false)
+const { isLoading, handleLoginCollab } = useLoginCollab()
 const submitButtonContent = computed(() => isLoading.value ? t('loading') : t('login'))
-
-const handleLoginCollab = () => {
-  isLoading.value = true
-  MsalService.loginRedirect()
-}
-
-const handleMSALRedirectionAfterLogin = async () => {
-  isLoading.value = true
-  try {
-    const successfullyAuth = await LoginManager.initAuthCollab()
-
-    if (successfullyAuth) {
-      return router.push({ name: RouteName.LANDING })
-    }
-  } catch (e) {
-    logger.error(e)
-  } finally {
-    isLoading.value = false
-  }
-}
-
-onMounted(async () => {
-  // MSAL redirects to this page after SSO login
-  // We need to handle the redirection and check if the user is successfully authenticated
-  handleMSALRedirectionAfterLogin()
-})
 </script>
 
 <style lang="scss">
@@ -120,5 +88,3 @@ p {
   width: 100%;
 }
 </style>
-
-<!-- eslint-disable max-len -->

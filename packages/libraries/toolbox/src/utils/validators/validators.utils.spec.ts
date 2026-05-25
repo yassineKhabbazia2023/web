@@ -1,4 +1,4 @@
-import { getEmailIsValid, isNotNullNorEmpty, getNameIsValid } from './validators.utils'
+import { getEmailIsValid, isNotNullNorEmpty, isNullOrEmpty, getNameIsValid } from './validators.utils'
 
 describe('test validators.utils', () => {
   describe('getEmailIsValid', () => {
@@ -107,6 +107,21 @@ describe('test validators.utils', () => {
       const isNotEmpty = isNotNullNorEmpty(value)
 
       expect(isNotEmpty).toBe(expected)
+    })
+  })
+
+  describe('isNullOrEmpty', () => {
+    const tests = [
+      { value: undefined, expected: true },
+      { value: null, expected: true },
+      { value: '', expected: true },
+      { value: 0, expected: false },
+      { value: false, expected: false },
+      { value: 'value', expected: false },
+    ]
+
+    it.each(tests)('should return $expected for value $value', ({ value, expected }) => {
+      expect(isNullOrEmpty(value)).toBe(expected)
     })
   })
 

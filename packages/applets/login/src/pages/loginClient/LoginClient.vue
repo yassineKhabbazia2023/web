@@ -68,17 +68,10 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
-import { logger } from '@pulse/toolbox'
-import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { PForm, PFormItem, PInput, PSkewedButton } from '@pulse/styleguide/components'
-import { LoginManager } from '@pulse/common/managers'
-import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { BackEndErrors } from '@pulse/common/constants'
-import { RouteName } from '@pulse/common/enums'
-import { getEmailError, getPasswordError } from './LoginClient.utils'
+import { useLoginClient } from './login-client.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -94,9 +87,9 @@ const { t } = useI18n({
       passwordPlaceholder: 'Enter your password',
       login: 'Log in',
       loading: 'Loading...',
+      forgotPassword: 'Forgot your password?',
       emailOrPasswordError: 'The e-mail address and password combination is incorrect',
       technicalError: 'A technical error occurred.',
-      forgotPassword: 'Forgot your password?',
       alertPasswordRequired: 'Please enter your password',
       alertMailRequired: 'Please enter your e-mail address',
       alertMailInvalid: 'Please enter a valid e-mail address',
@@ -111,9 +104,9 @@ const { t } = useI18n({
       passwordPlaceholder: 'Saisissez votre mot de passe',
       login: 'Se connecter',
       loading: 'Chargement en cours',
+      forgotPassword: 'Mot de passe oublié ?',
       emailOrPasswordError: 'La combinaison de l\'adresse e-mail et du mot de passe est incorrecte',
       technicalError: 'Une erreur technique est survenue.',
-      forgotPassword: 'Mot de passe oublié ?',
       alertPasswordRequired: 'Veuillez saisir votre mot de passe',
       alertMailRequired: 'Veuillez saisir votre adresse e-mail',
       alertMailInvalid: 'Veuillez saisir une adresse e-mail valide',
@@ -121,116 +114,24 @@ const { t } = useI18n({
   },
 })
 
-const router = useRouter()
+const {
+  email,
+  password,
+  emailErrorKey,
+  isEmailMessageVisible,
+  passwordErrorKey,
+  isPasswordMessageVisible,
+  isLoading,
+  isSubmitButtonEnabled,
+  checkEmail,
+  checkPassword,
+  handleKeypressAfterIncorrectCredentials,
+  onSubmit,
+} = useLoginClient()
 
-const email = ref('')
-const password = ref('')
-
-const emailError = ref('')
-const isEmailMessageVisible = ref(true)
-const passwordError = ref('')
-const isPasswordMessageVisible = ref(true)
-
-const isLoading = ref(false)
-
-const isSubmitButtonEnabled = computed(() => {
-  if (isLoading.value) {
-    return false
-  }
-  return isValidForm.value
-})
-
+const emailError = computed(() => emailErrorKey.value === '' ? '' : t(emailErrorKey.value))
+const passwordError = computed(() => passwordErrorKey.value === '' ? '' : t(passwordErrorKey.value))
 const submitButtonContent = computed(() => isLoading.value ? t('loading') : t('login'))
-
-function getIsValidForm() {
-  return emailError.value === '' && passwordError.value === ''
-}
-const isValidForm = computed(() => getIsValidForm())
-
-function setEmailError(message: string, showMessage = true) {
-  emailError.value = message
-  isEmailMessageVisible.value = showMessage
-}
-
-function setPasswordError(message: string, showMessage = true) {
-  passwordError.value = message
-  isPasswordMessageVisible.value = showMessage
-}
-
-function checkPassword() {
-  const confirmPasswordErrorMessage = getPasswordError(
-    password.value,
-    t('alertPasswordRequired'),
-  )
-  setPasswordError(confirmPasswordErrorMessage)
-}
-
-function checkEmail() {
-  const confirmPasswordErrorMessage = getEmailError(
-    email.value,
-    t('alertMailRequired'),
-    t('alertMailInvalid'),
-  )
-  setEmailError(confirmPasswordErrorMessage)
-}
-
-function checkValidity() {
-  checkEmail()
-  checkPassword()
-
-  return getIsValidForm()
-}
-
-function handleKeypressAfterIncorrectCredentials() {
-  // Only clear credential errors (not individual field validation errors)
-  const hasCredentialErrors = isEmailMessageVisible.value === false && isPasswordMessageVisible.value === true
-  if (!hasCredentialErrors) {
-    return
-  }
-
-  setEmailError('', false)
-  setPasswordError('')
-}
-
-async function onSubmit() {
-  const isValid = checkValidity()
-  if (!isValid) {
-    return false
-  }
-  isLoading.value = true
-
-  try {
-    // Authentication, user init and Gigya SSO
-    await LoginManager.authenticateCustomer(email.value, password.value)
-
-    // Get currentuser terms
-    const { isCurrent, terms } = await getTermsByCurrentUser()
-
-    if (isCurrent) {
-      return router.push({ name: RouteName.LANDING })
-    }
-    router.push({ name: RouteName.VALIDATION_CGU, params: { termsId: terms.termsId } })
-  } catch (error: any) {
-    logger.error('Error during login attempt: ', error)
-    isLoading.value = false
-    const invalidLoginErrorCodes = [
-      BackEndErrors.WRONG_LOGIN_PASSWORD,
-      BackEndErrors.INVALID_LOGIN_CREDENTIALS,
-    ]
-    const hasEmailOrPasswordInvalid = invalidLoginErrorCodes.includes(error.response?.data?.errorCode)
-    const errorMessage = hasEmailOrPasswordInvalid
-      ? t('emailOrPasswordError')
-      : t('technicalError')
-    setEmailError(errorMessage, false)
-    setPasswordError(errorMessage)
-
-    AmplitudeService.track('Sign In Completed', {
-      sign_in_method: 'email',
-      sign_in_result: 'failed',
-    })
-    return false
-  }
-}
 </script>
 
 <style lang="scss" scoped>
@@ -257,4 +158,3 @@ async function onSubmit() {
   }
 }
 </style>
-

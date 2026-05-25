@@ -13,3 +13,7 @@ export function getNameIsValid(name: string) {
 export function isNotNullNorEmpty<T>(value: T): value is Exclude<T, null | undefined | ''> {
   return value !== undefined && value !== null && value !== ''
 }
+
+export function isNullOrEmpty<T>(value: T): value is Extract<T, null | undefined | ''> {
+  return value === undefined || value === null || value === ''
+}

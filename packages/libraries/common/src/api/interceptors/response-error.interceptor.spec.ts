@@ -134,4 +134,26 @@ describe('responseInterceptorError', () => {
 
     expect(unauthorizedCallbackMock).toHaveBeenCalledOnce()
   })
+
+  it('should NOT call unauthorizedCallback when request config has skipUnauthorizedCallback set to true', async () => {
+    const error: AxiosError<ApiErrorResponse> = {
+      name: 'error',
+      message: 'error message',
+      status: 401,
+      isAxiosError: true,
+      toJSON: () => ({}),
+      config: { skipUnauthorizedCallback: true } as any,
+      response: {
+        data: {},
+        status: 401,
+        statusText: 'Unauthorized',
+        headers: {},
+        config: { skipUnauthorizedCallback: true } as any,
+      },
+    }
+
+    await expect(responseInterceptorError(error)).rejects.toStrictEqual(error)
+
+    expect(unauthorizedCallbackMock).not.toHaveBeenCalled()
+  })
 })

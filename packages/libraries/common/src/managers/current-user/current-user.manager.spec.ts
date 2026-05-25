@@ -18,27 +18,20 @@ const currentEntityMock = getMockedCurrentEntity()
 const currentEntityPermissionsMock = currentEntityMock.permissions ?? []
 
 vi.mock('env-vars', () => envVarsMock)
-envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
 
 const logoutUserMock = vi.hoisted(() => vi.fn())
-const msalLogoutMock = vi.hoisted(() => vi.fn())
-const logoutGigyaSSOMock = vi.hoisted(() => vi.fn())
+const logoutStrategyMock = vi.hoisted(() => vi.fn())
 
 vi.mock('../../services/authentication.service', () => ({
   logoutUser: logoutUserMock,
 }))
 
-vi.mock('../../services/msal', () => ({
-  MsalService: {
-    logout: msalLogoutMock,
+vi.mock('../../services/logout/logout.service', () => ({
+  LogoutService: {
+    logout: logoutStrategyMock,
   },
 }))
 
-vi.mock('../gigya/gigya.manager', () => ({
-  GigyaManager: {
-    logoutSSO: logoutGigyaSSOMock,
-  },
-}))
 const getCurrentUserMock = vi.hoisted((() => vi.fn()))
 vi.mock('../../services/current-user/current-user.service', () => ({
   CurrentUserService: {
@@ -65,9 +58,7 @@ describe('test current-user.manager', () => {
   })
 
   describe('logout', () => {
-    it('should process logout properly for non-collab users without SSO', async () => {
-      userStoreMock.isCollab = false
-      envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
+    it('should clear user/permissions, call API logout, run logout strategies, then clean storage', async () => {
       await CurrentUserManager.logout()
 
       expect(tokenStoreMock.removeToken).toHaveBeenCalledOnce()
@@ -82,40 +73,86 @@ describe('test current-user.manager', () => {
       expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenNthCalledWith(1, [])
 
       expect(logoutUserMock).toHaveBeenCalledOnce()
-      expect(msalLogoutMock).not.toHaveBeenCalled()
-      expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
+      expect(logoutStrategyMock).toHaveBeenCalledOnce()
     })
 
-    it('should call logoutCollaborator() when isCollab is true', async () => {
-      userStoreMock.isCollab = true
-      envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'false'
+    it('should still clean storage when the logout strategy throws', async () => {
+      logoutStrategyMock.mockRejectedValueOnce(new Error('SDK logout failed'))
+
+      await expect(CurrentUserManager.logout()).rejects.toThrow('SDK logout failed')
+
+      expect(tokenStoreMock.removeToken).toHaveBeenCalledOnce()
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledTimes(2)
+    })
+
+    it('should still clean storage and run the SDK cleanup when the backend logout call throws', async () => {
+      logoutUserMock.mockRejectedValueOnce(new Error('Network down'))
+
+      await expect(CurrentUserManager.logout()).rejects.toThrow('Network down')
+
+      expect(tokenStoreMock.removeToken).toHaveBeenCalledOnce()
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledTimes(2)
+      // SDK cleanup must run even when the backend logout failed, otherwise
+      // the MSAL/Gigya SSO session would survive and re-authenticate the user.
+      expect(logoutStrategyMock).toHaveBeenCalledOnce()
+    })
+
+    it('should still clean storage when both backend logout and SDK cleanup throw', async () => {
+      logoutUserMock.mockRejectedValueOnce(new Error('Network down'))
+      logoutStrategyMock.mockRejectedValueOnce(new Error('SDK logout failed'))
+
+      // The first error (backend) is surfaced to the caller.
+      await expect(CurrentUserManager.logout()).rejects.toThrow('Network down')
+
+      expect(tokenStoreMock.removeToken).toHaveBeenCalledOnce()
+      expect(logoutStrategyMock).toHaveBeenCalledOnce()
+    })
+
+    it('should dedup concurrent logout calls and run cleanup exactly once', async () => {
+      let resolveLogoutUser: () => void = () => {}
+      logoutUserMock.mockReturnValueOnce(new Promise<void>((res) => {
+        resolveLogoutUser = res
+      }))
+
+      const firstLogout = CurrentUserManager.logout()
+      const secondLogout = CurrentUserManager.logout()
+
+      // The second call must reuse the in-flight logout instead of starting a
+      // second one. Without this, parallel 401s would each trigger their own
+      // backend logout + SDK cleanup.
+      expect(logoutUserMock).toHaveBeenCalledOnce()
+      expect(userStoreMock.setUser).toHaveBeenCalledOnce()
+
+      resolveLogoutUser()
+
+      await Promise.all([firstLogout, secondLogout])
+
+      expect(logoutStrategyMock).toHaveBeenCalledOnce()
+      expect(tokenStoreMock.removeToken).toHaveBeenCalledOnce()
+    })
+
+    it('should allow a new logout once the previous one has settled', async () => {
+      await CurrentUserManager.logout()
       await CurrentUserManager.logout()
 
-      expect(logoutUserMock).toHaveBeenCalledOnce()
-      expect(msalLogoutMock).toHaveBeenCalledExactlyOnceWith()
-
-      expect(logoutGigyaSSOMock).not.toHaveBeenCalled()
+      // After the first logout settles, the in-flight guard is released so a
+      // subsequent call runs a full cleanup again.
+      expect(logoutUserMock).toHaveBeenCalledTimes(2)
+      expect(logoutStrategyMock).toHaveBeenCalledTimes(2)
     })
 
-    it('should call logoutGigyaSSO() when VITE_GIGYA_SSO_ACTIVATED is true', async () => {
-      userStoreMock.isCollab = false
-      envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'true'
+    it('should release the in-flight guard when the logout rejects, so a retry can run', async () => {
+      logoutUserMock.mockRejectedValueOnce(new Error('Network down'))
+
+      await expect(CurrentUserManager.logout()).rejects.toThrow('Network down')
+
+      // The failed logout must not leave the guard stuck — otherwise no
+      // logout could ever run again for the lifetime of the page.
       await CurrentUserManager.logout()
 
-      expect(logoutUserMock).toHaveBeenCalledOnce()
-      expect(msalLogoutMock).not.toHaveBeenCalled()
-      expect(logoutGigyaSSOMock).toHaveBeenCalledExactlyOnceWith()
+      expect(logoutUserMock).toHaveBeenCalledTimes(2)
     })
 
-    it('should call both logoutCollaborator() and logoutGigyaSSO() when isCollab is true and VITE_GIGYA_SSO_ACTIVATED is true', async () => {
-      userStoreMock.isCollab = true
-      envVarsMock.VITE_GIGYA_SSO_ACTIVATED = 'true'
-      await CurrentUserManager.logout()
-
-      expect(logoutUserMock).toHaveBeenCalledOnce()
-      expect(msalLogoutMock).toHaveBeenCalledExactlyOnceWith()
-      expect(logoutGigyaSSOMock).toHaveBeenCalledExactlyOnceWith()
-    })
   })
 
 
@@ -271,6 +308,17 @@ describe('test current-user.manager', () => {
       CurrentUserManager.persistToken(token)
 
       expect(tokenStoreMock.setToken).toHaveBeenCalledExactlyOnceWith(token)
+    })
+  })
+
+  describe('clearUser', () => {
+    it('should clear the token and reset the user and permissions stores', () => {
+      CurrentUserManager.clearUser()
+
+      expect(tokenStoreMock.removeToken).toHaveBeenCalledOnce()
+      expect(userStoreMock.setUser).toHaveBeenCalledExactlyOnceWith(undefined)
+      expect(permissionsStoreMock.setUserPermissions).toHaveBeenCalledExactlyOnceWith([])
+      expect(permissionsStoreMock.setCurrentEntityPermissions).toHaveBeenCalledExactlyOnceWith([])
     })
   })
 

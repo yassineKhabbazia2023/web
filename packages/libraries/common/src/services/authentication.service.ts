@@ -42,7 +42,16 @@ export async function login(payload: LoginPayload) {
 export async function logoutUser() {
   try {
     const urlLogout = `${API_PREFIXES.AUTHENTICATION}/logout`
-    await api.gateway.post(urlLogout)
+    // skipUnauthorizedCallback: a 401 from /logout (e.g. session already
+    // invalidated on the backend) must not re-trigger the unauthorized
+    // callback, otherwise the logout flow would recurse indefinitely.
+    // The middle `undefined` is the request body — axios signature is
+    // post(url, data, config) and /logout takes no payload.
+    await api.gateway.post(
+      urlLogout,
+      undefined, // no payload
+      { skipUnauthorizedCallback: true } as CustomAxiosRequestConfig,
+    )
   } catch (error) {
     logger.error('Error during client logout: ', error)
   }

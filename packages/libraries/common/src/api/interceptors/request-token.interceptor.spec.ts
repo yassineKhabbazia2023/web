@@ -1,6 +1,5 @@
 import { createPinia, setActivePinia } from 'pinia'
-import { TokenRefreshService } from '../../services/token-refresh.service'
-import { CurrentUserManager } from '../../managers/current-user/current-user.manager'
+import { TokenProviderService } from '../../services/token-provider/token-provider.service'
 import { nowInSeconds } from '../../stores/token/token.store.utils'
 
 import { requestTokenInterceptor } from './request-token.interceptor'
@@ -15,8 +14,7 @@ Object.defineProperty(window, 'localStorage', {
   value: localStorageMock,
 })
 
-vi.mock('../../services/token-refresh.service')
-vi.mock('../../managers/current-user/current-user.manager')
+vi.mock('../../services/token-provider/token-provider.service')
 vi.mock('@pulse/toolbox')
 
 
@@ -64,7 +62,7 @@ describe('requestTokenInterceptor', () => {
 
     const result = await requestTokenInterceptor(mockConfig)
 
-    expect(TokenRefreshService.refreshToken).not.toHaveBeenCalled()
+    expect(TokenProviderService.refreshToken).not.toHaveBeenCalled()
     expect(result.headers.Authorization).toBe(`Bearer ${mockToken}`)
   })
 
@@ -73,8 +71,8 @@ describe('requestTokenInterceptor', () => {
     const newToken = createTestToken({ exp: nowInSeconds() + 3600 }) // expires in 1 hour
 
     localStorageMock.getItem.mockReturnValue(oldToken)
-    vi.mocked(TokenRefreshService.getRefreshPromise).mockReturnValue(undefined)
-    vi.mocked(TokenRefreshService.refreshToken).mockResolvedValue(newToken)
+    vi.mocked(TokenProviderService.getRefreshPromise).mockReturnValue(undefined)
+    vi.mocked(TokenProviderService.refreshToken).mockResolvedValue(newToken)
 
     const mockConfig = {
       url: '/api/normal-request',
@@ -84,7 +82,7 @@ describe('requestTokenInterceptor', () => {
 
     const result = await requestTokenInterceptor(mockConfig)
 
-    expect(TokenRefreshService.refreshToken).toHaveBeenCalled()
+    expect(TokenProviderService.refreshToken).toHaveBeenCalled()
     expect(result.headers.Authorization).toBe(`Bearer ${newToken}`)
   })
 
@@ -96,7 +94,7 @@ describe('requestTokenInterceptor', () => {
 
     // Mock an existing refresh promise
     const refreshPromise = Promise.resolve(newToken)
-    vi.mocked(TokenRefreshService.getRefreshPromise).mockReturnValue(refreshPromise)
+    vi.mocked(TokenProviderService.getRefreshPromise).mockReturnValue(refreshPromise)
 
     const mockConfig = {
       url: '/api/normal-request',
@@ -105,9 +103,8 @@ describe('requestTokenInterceptor', () => {
 
     const result = await requestTokenInterceptor(mockConfig)
 
-    expect(TokenRefreshService.refreshToken).not.toHaveBeenCalled()
+    expect(TokenProviderService.refreshToken).not.toHaveBeenCalled()
     expect(result.headers.Authorization).toBe(`Bearer ${newToken}`)
-    expect(vi.mocked(CurrentUserManager.persistToken)).toHaveBeenCalledWith(newToken)
   })
 
   it('should refresh token when expiring within 5 minutes', async () => {
@@ -115,8 +112,8 @@ describe('requestTokenInterceptor', () => {
     const newToken = createTestToken({ exp: nowInSeconds() + 3600 }) // expires in 1 hour
 
     localStorageMock.getItem.mockReturnValue(oldToken)
-    vi.mocked(TokenRefreshService.getRefreshPromise).mockReturnValue(undefined)
-    vi.mocked(TokenRefreshService.refreshToken).mockResolvedValue(newToken)
+    vi.mocked(TokenProviderService.getRefreshPromise).mockReturnValue(undefined)
+    vi.mocked(TokenProviderService.refreshToken).mockResolvedValue(newToken)
 
     const mockConfig = {
       url: '/api/normal-request',
@@ -125,9 +122,26 @@ describe('requestTokenInterceptor', () => {
 
     const result = await requestTokenInterceptor(mockConfig)
 
-    expect(TokenRefreshService.refreshToken).toHaveBeenCalled()
-    expect(localStorageMock.setItem).toHaveBeenCalledWith('token', newToken)
-    expect(CurrentUserManager.persistToken).toHaveBeenCalledWith(newToken)
+    expect(TokenProviderService.refreshToken).toHaveBeenCalled()
+    expect(result.headers.Authorization).toBe(`Bearer ${newToken}`)
+  })
+
+  it('should refresh token when already expired (Gigya/MSAL strategies do not need a valid local token)', async () => {
+    const expiredToken = createTestToken({ exp: nowInSeconds() - 60 }) // expired 1 minute ago
+    const newToken = createTestToken({ exp: nowInSeconds() + 3600 }) // expires in 1 hour
+
+    localStorageMock.getItem.mockReturnValue(expiredToken)
+    vi.mocked(TokenProviderService.getRefreshPromise).mockReturnValue(undefined)
+    vi.mocked(TokenProviderService.refreshToken).mockResolvedValue(newToken)
+
+    const mockConfig = {
+      url: '/api/normal-request',
+      headers: {},
+    }
+
+    const result = await requestTokenInterceptor(mockConfig)
+
+    expect(TokenProviderService.refreshToken).toHaveBeenCalled()
     expect(result.headers.Authorization).toBe(`Bearer ${newToken}`)
   })
 
@@ -142,7 +156,7 @@ describe('requestTokenInterceptor', () => {
 
     const result = await requestTokenInterceptor(mockConfig)
 
-    expect(TokenRefreshService.refreshToken).not.toHaveBeenCalled()
+    expect(TokenProviderService.refreshToken).not.toHaveBeenCalled()
     expect(result.headers.Authorization).toBe(`Bearer ${mockToken}`)
   })
 
@@ -150,8 +164,8 @@ describe('requestTokenInterceptor', () => {
     const oldToken = createTestToken({ exp: nowInSeconds() + 180 }) // expires in 3 minutes
 
     localStorageMock.getItem.mockReturnValue(oldToken)
-    vi.mocked(TokenRefreshService.getRefreshPromise).mockReturnValue(undefined)
-    vi.mocked(TokenRefreshService.refreshToken).mockRejectedValue(new Error('Refresh failed'))
+    vi.mocked(TokenProviderService.getRefreshPromise).mockReturnValue(undefined)
+    vi.mocked(TokenProviderService.refreshToken).mockRejectedValue(new Error('Refresh failed'))
 
     const mockConfig = {
       url: '/api/normal-request',
@@ -160,7 +174,7 @@ describe('requestTokenInterceptor', () => {
 
     const result = await requestTokenInterceptor(mockConfig)
 
-    expect(TokenRefreshService.refreshToken).toHaveBeenCalled()
+    expect(TokenProviderService.refreshToken).toHaveBeenCalled()
     expect(result.headers.Authorization).toBe(`Bearer ${oldToken}`)
   })
 })

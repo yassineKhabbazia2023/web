@@ -1,10 +1,9 @@
 import type { UserInfo } from '../../types/user.type'
-import { VITE_GIGYA_SSO_ACTIVATED } from 'env-vars'
 import { useUserStore } from '../../stores/user/user.store'
 import { arrayIncludes } from '@pulse/toolbox/utils/array'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { logoutUser } from '../../services/authentication.service'
-import { MsalService } from '../../services/msal'
-import { GigyaManager } from '../gigya/gigya.manager'
+import { LogoutService } from '../../services/logout/logout.service'
 import { CurrentUserService } from '../../services/current-user/current-user.service'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useTokenStore } from '../../stores/token/token.store'
@@ -24,32 +23,71 @@ export class CurrentUserManager {
     permissionsStore.setCurrentEntityPermissions([])
   }
 
+  // Clears both the persisted token and the user/permissions store. Use this
+  // for rollback paths in login strategies/composables when partial state must
+  // be wiped after a failure (e.g. invalid userId, getCurrentUser throws).
+  static clearUser() {
+    this.persistToken('')
+    this.setCurrentUser()
+  }
+
   static async initializeCurrentUser() {
     const currentUser = await CurrentUserService.getCurrentUser()
     this.setCurrentUser(currentUser)
   }
 
+  private static logoutPromise: Promise<void> | null = null
+
   static async logout() {
-    const userStore = useUserStore()
+    // Dedup concurrent callers: when several in-flight requests hit 401 in
+    // parallel, each triggers the unauthorized callback and would otherwise
+    // start its own logout. They all await the same logout instead, so the
+    // backend /logout call and SDK cleanup run exactly once.
+    if (CurrentUserManager.logoutPromise !== null) {
+      return CurrentUserManager.logoutPromise
+    }
 
-    const isCollab = userStore.isCollab
+    CurrentUserManager.logoutPromise = CurrentUserManager.runLogout()
+      .finally(() => {
+        CurrentUserManager.logoutPromise = null
+      })
 
+    return CurrentUserManager.logoutPromise
+  }
+
+  private static async runLogout() {
     this.setCurrentUser()
 
-    // Logout User (Collab or Customer)
-    await logoutUser()
+    // Each cleanup step is isolated so a failure in one (e.g. backend down)
+    // does not skip the others. In particular, the SDK cleanup MUST run even
+    // if the backend logout failed, otherwise the MSAL/Gigya SSO session
+    // stays alive and the next page load re-authenticates the user.
+    const errors: unknown[] = []
 
-    if (isCollab) {
-      await MsalService.logout()
+    try {
+      await logoutUser()
+    } catch (error) {
+      errors.push(error)
     }
 
-    if (VITE_GIGYA_SSO_ACTIVATED === 'true') {
-      GigyaManager.logoutSSO()
+    try {
+      // Run app-specific cleanup strategies (e.g. MSAL logout for collaborator,
+      // Gigya logoutSSO for customer). Each app registers its strategy at boot.
+      await LogoutService.logout()
+    } catch (error) {
+      errors.push(error)
     }
 
-    // clean localStorage
+    // Always clean localStorage, otherwise a stale token would let the next
+    // page load look authenticated. The token-provider observes this clear
+    // to skip restoring after an in-flight refresh resolves.
     this.persistToken('')
     CurrentEntityManager.clearCurrentEntity()
+
+    if (errors.length > 0) {
+      // Surface the first error so the caller knows logout was partial.
+      throw errors[0]
+    }
   }
 
   private static readonly getCurrentPermissions = (
@@ -116,12 +154,8 @@ export class CurrentUserManager {
   }
 
   static persistToken(token: string) {
-    this.saveToken(token)
-  }
-
-  static saveToken(token: string) {
     const tokenStore = useTokenStore()
-    if (token) {
+    if (isNotNullNorEmpty(token)) {
       tokenStore.setToken(token)
     } else {
       tokenStore.removeToken()

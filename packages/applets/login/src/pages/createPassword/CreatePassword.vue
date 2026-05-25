@@ -84,7 +84,7 @@ import type { FormRules, FormInstance } from 'element-plus'
 import { createNewPassword } from '@pulse/common/services/authentication'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { BackEndErrors } from '@pulse/common/constants'
-import { LoginManager } from '@pulse/common/managers'
+import { LoginService } from '@pulse/common/services/login'
 import { RouteName } from '@pulse/common/enums'
 import {
   reactive,
@@ -229,7 +229,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   try {
     isLoading.value = true
     await createNewPassword(data)
-    await LoginManager.authenticateCustomer(email, formValue.newPassword)
+    await LoginService.authenticate(email, formValue.newPassword)
     await updateTermsByCurrentUser(termsId.value as number)
     AmplitudeService.track('Onboarding Completed', {
       onboarding_result: 'succeeded',

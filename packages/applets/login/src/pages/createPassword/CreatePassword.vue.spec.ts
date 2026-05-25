@@ -21,9 +21,9 @@ vi.mock('@pulse/common/services/authentication', () => ({
   createNewPassword: createNewPasswordMock,
 }))
 
-vi.mock('@pulse/common/managers', () => ({
-  LoginManager: {
-    authenticateCustomer: authenticateCustomerMock,
+vi.mock('@pulse/common/services/login', () => ({
+  LoginService: {
+    authenticate: authenticateCustomerMock,
   },
 }))
 

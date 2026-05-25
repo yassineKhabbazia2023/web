@@ -94,14 +94,16 @@ describe('test authentication.service', () => {
     })
   })
   describe('logoutUser', () => {
-    it('should call gateway properly', async () => {
+    it('should call gateway with skipUnauthorizedCallback to prevent the 401-from-logout loop', async () => {
       const expectedUrl = 'authentication/api/logout'
 
       apiGatewayPostMock.mockResolvedValue(undefined as any)
 
       await logoutUser()
 
-      expect(apiGatewayPostMock).toHaveBeenCalledExactlyOnceWith(expectedUrl)
+      expect(apiGatewayPostMock).toHaveBeenCalledExactlyOnceWith(expectedUrl, undefined, {
+        skipUnauthorizedCallback: true,
+      })
     })
 
     it('should log an error when the API call fails', async () => {

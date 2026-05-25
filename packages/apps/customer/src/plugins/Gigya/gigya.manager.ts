@@ -1,14 +1,15 @@
 import { logger } from '@pulse/toolbox'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { useUserStore, useTokenStore } from '@pulse/common/stores'
-import { FeatureFlagManager } from '../feature-flag/feature-flag.manager'
-import './gigya.type'
+import { FeatureFlagManager } from '@pulse/common/managers'
+import './gigya.types'
 
 export class GigyaManager {
   static setStoreGigyaUserId(gigyaUserId: string) {
     const tokenStore = useTokenStore()
     const token = tokenStore.getToken()
 
-    if (token) {
+    if (isNotNullNorEmpty(token)) {
       const userStore = useUserStore()
       userStore.setGigyaUserId(gigyaUserId)
     }
@@ -31,6 +32,10 @@ export class GigyaManager {
   }
 
   static logoutSSO() {
+    if (FeatureFlagManager.isGigyaSsoActivated() === false) {
+      return
+    }
+
     try {
       globalThis.gigya.accounts.logout()
     } catch (error) {
