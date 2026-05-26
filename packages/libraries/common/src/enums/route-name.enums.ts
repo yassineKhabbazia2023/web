@@ -43,7 +43,7 @@ export enum RouteName {
   PROSPECT_COLLAB = 'prospect-collab',
   PROSPECT_HOMEPAGE = 'prospect-homepage',
   PROSPECT_OVERVIEW = 'prospect-overview',
-  PROSPECT_STEPPER = 'prospect-stepper',
+  PROSPECT_CONFORMITY = 'prospect-conformity',
   PROSPECT_USERS = 'prospect-users',
   PROSPECTS = 'prospects',
   REDIRECT_ACTION = 'redirect-action',

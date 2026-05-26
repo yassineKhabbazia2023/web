@@ -10,7 +10,7 @@ export { default as Invoices } from './modules/entity/regular/invoices/invoices.
 export { default as Information } from './modules/entity/regular/information/Information.vue'
 // Entity - Prospects
 export { default as ProspectRoot } from './modules/entity/prospect/prospect.root.vue'
-export { default as Stepper } from './modules/entity/prospect/stepper/prospect.stepper.vue'
+export { default as Conformity } from './modules/entity/prospect/conformity/prospect.conformity.vue'
 export { default as ProspectOverview } from './modules/entity/prospect/overview/prospect-overview.page.vue'
 export { default as ProspectUsers } from './modules/entity/prospect/users/prospect-users.page.vue'
 export { default as ProspectCollaborators } from './modules/entity/prospect/collaborators/prospect-collaborators.page.vue'

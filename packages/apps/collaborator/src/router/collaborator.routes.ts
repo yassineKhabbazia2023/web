@@ -36,7 +36,7 @@ export const COLLABORATOR_ROUTES = {
     prospect: {
       root: { path: `/contact/:${RouteParam.ENTITY_ID}`, name: RouteName.PROSPECT },
       homepage: { path: 'accueil', name: RouteName.PROSPECT_HOMEPAGE },
-      stepper: { path: 'suivi-de-dossier', name: RouteName.PROSPECT_STEPPER },
+      conformity: { path: 'suivi-de-dossier', name: RouteName.PROSPECT_CONFORMITY },
       overview: {
         root: { path: '', name: RouteName.PROSPECT_OVERVIEW },
         users: { path: 'gestion-utilisateurs', name: RouteName.PROSPECT_USERS },

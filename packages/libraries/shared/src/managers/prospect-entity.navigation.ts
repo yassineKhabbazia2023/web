@@ -26,10 +26,10 @@ export const PROSPECT_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
     doNotTrack: true,
   },
   {
-    id: 'prospect-entity-stepper',
-    title: () => 'shared.sidebar.stepper',
+    id: 'prospect-entity-conformity',
+    title: () => 'shared.sidebar.conformity',
     icon: 'checklist',
-    routeName: RouteName.PROSPECT_STEPPER,
+    routeName: RouteName.PROSPECT_CONFORMITY,
     shouldDisplay: () => true,
     accountType: AccountType.PROSPECT,
     order: 3,

@@ -1,12 +1,7 @@
 <template>
-  <div>
-    <h1>Prospect Collaborators</h1>
-    <pre>{{ route.params }}</pre>
-  </div>
+  <Collaborators />
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-
-const route = useRoute()
+import Collaborators from '../../shared/collaborators/Collaborators.vue'
 </script>

@@ -22,11 +22,11 @@ export const prospectCollaboratorRoutes: RouteRecordRaw[] = [
         name: COLLABORATOR_ROUTES.entity.prospect.homepage.name,
         component: () => import('@pulse/homepage/pages').then(pages => pages.ProspectHomePage),
       },
-      // STEPPER
+      // CONFORMITY
       {
-        path: COLLABORATOR_ROUTES.entity.prospect.stepper.path,
-        name: COLLABORATOR_ROUTES.entity.prospect.stepper.name,
-        component: () => import('@pulse/entities/entity-pages').then(pages => pages.Stepper),
+        path: COLLABORATOR_ROUTES.entity.prospect.conformity.path,
+        name: COLLABORATOR_ROUTES.entity.prospect.conformity.name,
+        component: () => import('@pulse/entities/entity-pages').then(pages => pages.Conformity),
       },
       // PROSPECT OVERVIEW (TAB VIEW)
       {
