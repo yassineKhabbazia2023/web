@@ -1,7 +1,6 @@
 <template>
   <PResponsiveTable
     :pData="props.data"
-    :pDisableResponsive="isCollab"
     pRowKey="accountId"
     highlightCurrentRow
     showOverflowTooltip
@@ -237,14 +236,25 @@
 
     <!-- Mobile card actions slot -->
     <template #mobile-actions="{ row }">
-      <PButton
-        pSize="small"
-        pIconOnly
-        :data-testid="row.isFavorite ? 'wallet-add-favorite' : 'wallet-remove-favorite'"
-        @click.stop="callHandleAddFavorite(row.accountId, !row.isFavorite)"
+      <span
+        v-if="isCollab === true"
+        @click.stop
       >
-        <PIcon :pName="row.isFavorite ? 'starFill' : 'star'" />
-      </PButton>
+        <PToolbox
+          trigger="click"
+          :pElements="menuElementsCollaborator(row.deploymentStatus.text)"
+          data-testid="wallet-actions-toolbox-mobile"
+          @visible-change="onToolboxVisibleChange"
+          @p-toolbox-item-clicked="($event: RegularEntityAction) => onToolboxItemClicked($event, row)"
+        >
+          <PButton
+            pSize="small"
+            pIconOnly
+          >
+            <PIcon pName="threeDots" />
+          </PButton>
+        </PToolbox>
+      </span>
     </template>
   </PResponsiveTable>
 </template>

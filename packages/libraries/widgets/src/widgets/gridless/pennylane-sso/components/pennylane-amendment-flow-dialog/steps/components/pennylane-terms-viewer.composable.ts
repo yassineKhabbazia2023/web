@@ -85,7 +85,7 @@ export function usePennylaneTermsViewer(
     }
 
     const firstPage = pdfPages[0]
-    const isMobile = getIsMobile(window.innerWidth)
+    const isMobile = getIsMobile()
 
     if (isMobile) {
       baseScale.value = MOBILE_SCALE

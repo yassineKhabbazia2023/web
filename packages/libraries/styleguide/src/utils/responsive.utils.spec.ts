@@ -1,4 +1,4 @@
-import { getCurrentBreakpoint, getIsMobile, getIsDesktop } from './responsive.utils'
+import { getCurrentBreakpoint, getIsMobile, resolveIsMobile } from './responsive.utils'
 import { BREAKPOINT_SIZES } from '../constants/breakpoint.const'
 
 describe('getCurrentBreakpoint', () => {
@@ -31,30 +31,34 @@ describe('getCurrentBreakpoint', () => {
   )
 })
 
-describe('getIsMobile', () => {
-  it('returns true for width below sm breakpoint', () => {
-    expect(getIsMobile(BREAKPOINT_SIZES.sm - 1)).toBe(true)
+describe('resolveIsMobile', () => {
+  it('returns true below the sm breakpoint', () => {
+    expect(resolveIsMobile(BREAKPOINT_SIZES.sm - 1)).toBe(true)
   })
 
-  it('returns false for width at sm breakpoint', () => {
-    expect(getIsMobile(BREAKPOINT_SIZES.sm)).toBe(false)
+  it('returns false at the sm breakpoint', () => {
+    expect(resolveIsMobile(BREAKPOINT_SIZES.sm)).toBe(false)
   })
 
-  it('returns false for width above sm breakpoint', () => {
-    expect(getIsMobile(BREAKPOINT_SIZES.sm + 100)).toBe(false)
+  it('returns false above the sm breakpoint', () => {
+    expect(resolveIsMobile(BREAKPOINT_SIZES.sm + 500)).toBe(false)
   })
 })
 
-describe('getIsDesktop', () => {
-  it('returns true for width at md breakpoint', () => {
-    expect(getIsDesktop(BREAKPOINT_SIZES.sm)).toBe(true)
+describe('getIsMobile', () => {
+  afterEach(() => {
+    vi.unstubAllGlobals()
   })
 
-  it('returns true for width above md breakpoint', () => {
-    expect(getIsDesktop(BREAKPOINT_SIZES.sm + 100)).toBe(true)
+  it('returns true on a narrow window', () => {
+    vi.stubGlobal('innerWidth', BREAKPOINT_SIZES.sm - 1)
+
+    expect(getIsMobile()).toBe(true)
   })
 
-  it('returns false for width below md breakpoint', () => {
-    expect(getIsDesktop(BREAKPOINT_SIZES.sm - 1)).toBe(false)
+  it('returns false on a wide window', () => {
+    vi.stubGlobal('innerWidth', 1024)
+
+    expect(getIsMobile()).toBe(false)
   })
 })

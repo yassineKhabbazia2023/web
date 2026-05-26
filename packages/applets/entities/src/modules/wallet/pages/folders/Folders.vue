@@ -13,11 +13,18 @@
       "
     >
       <Filters
+        v-if="isMobile === false"
         data-testid="filters"
         @filter-by-status="handleFilterByDeploymentStatus"
         @remove-filter="handleRemoveFilter"
       />
-      <div>
+      <div
+        class="
+          flex
+          flex--wrap
+          flex-gap--2
+        "
+      >
         <PButton
           v-if="hasEntityCreatorPermission"
           pType="secondary"
@@ -28,7 +35,6 @@
           {{ t('createTestAccount') }}
         </PButton>
         <PButton
-          class="margin-left--2"
           pType="secondary"
           pSize="small"
           @click="isDelegationDrawerOpened = true"
@@ -38,7 +44,6 @@
         <PButton
           v-if="hasManageAccess"
           :pDisabled="isManageAccessButtonDisabled"
-          class="margin-left--2"
           pType="primary"
           pSize="small"
           data-testid="manage-access-button"
@@ -285,7 +290,7 @@ const searchPlaceholder = computed(() =>
 const pageSizes = computed(() =>
   isMobile.value ? [5, ...MOBILE_PAGE_SIZES, ...PAGE_SIZES] : LARGE_PAGE_SIZES,
 )
-const currentPageSize = computed((): number => pageSizes.value[2])
+const currentPageSize = computed((): number => isMobile.value === true ? pageSizes.value[0] : pageSizes.value[2])
 
 const searchBar = ref()
 const isLoading = ref(true)

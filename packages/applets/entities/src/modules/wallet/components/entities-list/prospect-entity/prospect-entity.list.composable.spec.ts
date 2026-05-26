@@ -9,6 +9,11 @@ import type { SortChangeEventData } from '@pulse/common/types'
 
 vi.mock('./prospect-entity.list.manager')
 
+const isMobileMock = { value: false }
+vi.mock('@pulse/styleguide', () => ({
+  useResponsive: () => ({ isMobile: isMobileMock }),
+}))
+
 const mockMenuElements = [{ pActionName: ProspectAction.ARCHIVE_PROSPECT, pValue: 'Delete', pIconName: 'trash', pState: 'default' }]
 vi.mocked(ProspectEntityListManager.getMenuElements).mockReturnValue(mockMenuElements as any)
 
@@ -115,6 +120,30 @@ describe('useProspectsEntitiesList', () => {
       result.onDirectFolderAccess(42)
 
       expect(emit).toHaveBeenCalledWith('access', 42)
+    })
+  })
+
+  describe('onRowClick', () => {
+    beforeEach(() => {
+      isMobileMock.value = false
+    })
+
+    it('should emit access with the row accountId on mobile', () => {
+      isMobileMock.value = true
+      const { emit, result } = createTestSetup()
+
+      result.onRowClick({ accountId: 77 })
+
+      expect(emit).toHaveBeenCalledWith('access', 77)
+    })
+
+    it('should not emit access on desktop', () => {
+      isMobileMock.value = false
+      const { emit, result } = createTestSetup()
+
+      result.onRowClick({ accountId: 77 })
+
+      expect(emit).not.toHaveBeenCalledWith('access', 77)
     })
   })
 

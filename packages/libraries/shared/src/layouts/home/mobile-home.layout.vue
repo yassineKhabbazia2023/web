@@ -30,8 +30,8 @@
     </PContainer>
 
     <MobileBottomNav
-      v-if="currentEntity"
-      :current-entity-id="currentEntity.accountId"
+      v-if="isCollab === true || currentEntity !== undefined"
+      :current-entity-id="currentEntity?.accountId"
     />
   </div>
 </template>
@@ -41,13 +41,14 @@ import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { PCHeader, PContainer } from '@pulse/styleguide/components'
 import { ContentLoader } from '@pulse/shared/components'
-import { useLoadingStore } from '@pulse/common/stores'
+import { useLoadingStore, useUserStore } from '@pulse/common/stores'
 import { MobileHeader } from './header'
 import { MobileBottomNav, MobileUserMenu } from './navigation'
 import type { MobileHomeLayoutProps } from './home.layout.types'
 import { MOBILE_BOTTOM_NAV_HEIGHT } from './mobile-home.const'
 
 const { isContentLoading } = storeToRefs(useLoadingStore())
+const { isCollab } = storeToRefs(useUserStore())
 const hasUserMenuOpened = ref(false)
 
 defineProps<MobileHomeLayoutProps>()

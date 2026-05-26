@@ -251,5 +251,16 @@ describe('registerCustomerNavigationItems', () => {
       expect(routeNames).not.toContain(RouteName.ENTITY_OVERVIEW)
       expect(routeNames).not.toContain(RouteName.LAUNCHER)
     })
+
+    it('should flag all prospect items as showInMobile', () => {
+      const items = NavigationManager.getNavigationItems(context, AccountType.PROSPECT)
+      const mobileRouteNames = items
+        .filter(item => item.showInMobile === true)
+        .map(item => item.routeName)
+
+      expect(mobileRouteNames).toContain(RouteName.PROSPECT_HOMEPAGE)
+      expect(mobileRouteNames).toContain(RouteName.PROSPECT_OVERVIEW)
+      expect(mobileRouteNames).toContain(RouteName.PROSPECT_CONFORMITY)
+    })
   })
 })

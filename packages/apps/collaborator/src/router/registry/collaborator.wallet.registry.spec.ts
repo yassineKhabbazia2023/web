@@ -1,7 +1,10 @@
 import { WalletManager } from '@pulse/entities/wallet-managers'
 import { WalletTab } from '@pulse/entities/enums'
 import { RouteName } from '@pulse/common/enums'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { registerCollaboratorWalletTabs } from './collaborator.wallet.registry'
+
+vi.mock('@pulse/common/managers')
 
 // Collaborator tabs that don't require permissions
 const BASIC_COLLAB_TABS = [
@@ -27,6 +30,8 @@ const PERMISSION_BASED_COLLAB_TABS = [
 
 describe('registerCollaboratorWalletTabs', () => {
   beforeEach(() => {
+    // Default to prospect experience enabled (folders hidden on mobile)
+    vi.mocked(FeatureFlagManager.isFeatureActivated).mockReturnValue(true)
     // @ts-expect-error - Accessing private static field for test cleanup
     WalletManager.tabs.clear()
     registerCollaboratorWalletTabs()
@@ -51,6 +56,30 @@ describe('registerCollaboratorWalletTabs', () => {
   ])('should register $tab tab correctly', ({ tab, route }) => {
     const config = WalletManager.getTab(tab)
     expect(config?.route).toBe(route)
+  })
+
+  describe('showInMobile behavior', () => {
+    it('should show only the PROSPECTS tab on mobile when the prospect experience is enabled', () => {
+      expect(WalletManager.getTab(WalletTab.PROSPECTS)?.showInMobile).toBe(true)
+      expect(WalletManager.getTab(WalletTab.FOLDERS)?.showInMobile).toBe(false)
+    })
+
+    it('should show only the FOLDERS tab on mobile when the prospect experience is disabled', () => {
+      vi.mocked(FeatureFlagManager.isFeatureActivated).mockReturnValue(false)
+      // @ts-expect-error - Accessing private static field for test cleanup
+      WalletManager.tabs.clear()
+      registerCollaboratorWalletTabs()
+
+      expect(WalletManager.getTab(WalletTab.PROSPECTS)?.showInMobile).toBe(false)
+      expect(WalletManager.getTab(WalletTab.FOLDERS)?.showInMobile).toBe(true)
+    })
+
+    it('should not flag permission-based or offers tabs as showInMobile', () => {
+      PERMISSION_BASED_COLLAB_TABS.forEach(tab => {
+        expect(WalletManager.getTab(tab)?.showInMobile).toBeUndefined()
+      })
+      expect(WalletManager.getTab(WalletTab.OFFERS_CATALOG)?.showInMobile).toBeUndefined()
+    })
   })
 
   describe('isDisplayed behavior', () => {

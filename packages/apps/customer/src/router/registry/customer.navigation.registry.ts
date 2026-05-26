@@ -32,9 +32,13 @@ function registerRegularEntity() {
   regularEntityNavigationItems.forEach(config => NavigationManager.register(config))
 }
 
+const prospectEntityNavigationItems: NavigationItemConfig[] = PROSPECT_ENTITY_NAVIGATION_ITEMS.map(config => ({
+  ...config,
+  showInMobile: true,
+}))
+
 function registerProspectEntity() {
-  PROSPECT_ENTITY_NAVIGATION_ITEMS
-    .forEach(config => NavigationManager.register(config))
+  prospectEntityNavigationItems.forEach(config => NavigationManager.register(config))
 }
 
 /**

@@ -14,8 +14,8 @@
         class="mobile-user-menu__section padding-y--2"
       >
         <MobileUserMenuItem
-          :label="t('myPortfolio')"
-          :to="{ name: RouteName.CUSTOMER_ENTITIES }"
+          :label="portfolioLabel"
+          :to="{ name: portfolioRouteName }"
           @click="closeDrawer"
         />
       </nav>
@@ -86,6 +86,7 @@ const { t } = useI18n({
     'en-US': {
       menu: 'Menu',
       myPortfolio: 'My entities',
+      myFolders: 'My portfolio',
       myInformation: 'My information',
       password: 'Password',
       legalNotice: 'Legal Notice',
@@ -96,6 +97,7 @@ const { t } = useI18n({
     'fr-FR': {
       menu: 'Menu',
       myPortfolio: 'Mes entités',
+      myFolders: 'Mon portefeuille',
       myInformation: 'Mes informations',
       password: 'Mot de passe',
       legalNotice: 'Mentions légales',
@@ -115,6 +117,13 @@ const urlTerms = ref('')
 const showPassword = computed(() => userStore.isCollab === false)
 const showCgu = computed(() => userStore.isCollab === false)
 const isMultiEntity = computed(() => userStore.hasSingleEntity === false)
+
+const portfolioRouteName = computed(() =>
+  userStore.isCollab === true ? RouteName.FOLDERS : RouteName.CUSTOMER_ENTITIES,
+)
+const portfolioLabel = computed(() =>
+  userStore.isCollab === true ? t('myFolders') : t('myPortfolio'),
+)
 
 const closeDrawer = () => {
   isDrawerOpened.value = false

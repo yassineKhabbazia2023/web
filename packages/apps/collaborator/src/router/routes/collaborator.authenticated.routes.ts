@@ -9,6 +9,7 @@ import { CollaboratorAuthenticatedFlowManager } from '@collaborator/managers/col
 import { entityCollaboratorRoutes } from './entity/collaborator.entity.routes'
 import { walletCollaboratorRoutes } from './collaborator.wallet.routes'
 import { landingCollaboratorRoutes } from './collaborator.landing.routes'
+import { profileCollaboratorRoutes } from './collaborator.profile.routes'
 
 export const authenticatedCollaboratorRoutes: RouteRecordRaw[] = [
   {
@@ -43,6 +44,7 @@ export const authenticatedCollaboratorRoutes: RouteRecordRaw[] = [
       ...landingCollaboratorRoutes,
       ...entityCollaboratorRoutes,
       ...walletCollaboratorRoutes,
+      ...profileCollaboratorRoutes,
     ],
   },
 ]

@@ -7,8 +7,14 @@ export const useCurrentEntityStore = defineStore('current-entity', () => {
   const currentEntity = ref<EntitySummary>()
   const currentEntityId = computed(() => currentEntity.value?.accountId)
   const currentEntityAccountNumber = computed(() => currentEntity.value?.accountNumber?.toString() ?? '')
-  // Default to REGULAR if the account type is not defined
-  const currentAccountType = computed(() => currentEntity.value?.accountType || AccountType.REGULAR)
+  // The backend may return account type values that are not part of the AccountType
+  // enum (e.g. 'client' for regular accounts). Anything that is not a prospect is
+  // normalized to REGULAR so navigation, guards, etc. match consistently.
+  const currentAccountType = computed(() =>
+    currentEntity.value?.accountType === AccountType.PROSPECT
+      ? AccountType.PROSPECT
+      : AccountType.REGULAR,
+  )
 
   function setCurrentEntity(currentEntityArg?: EntitySummary) {
     currentEntity.value = currentEntityArg

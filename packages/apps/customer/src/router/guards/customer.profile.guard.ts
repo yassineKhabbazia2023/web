@@ -12,7 +12,7 @@ import { logger } from '@pulse/toolbox'
  */
 export function customerProfileGuard(to: RouteLocationNormalizedGeneric) {
   const isResponsiveActivated = FeatureFlagManager.isResponsiveActivated()
-  const isMobile = getIsMobile(window.innerWidth)
+  const isMobile = getIsMobile()
 
   if (isResponsiveActivated === false || isMobile === false) {
     logger.trace(`Profile route '${String(to.name)}' is mobile-only, redirecting to landing page.`)

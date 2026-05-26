@@ -58,6 +58,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton, PIcon, PTag } from '@pulse/styleguide/components'
+import { useResponsive } from '@pulse/styleguide'
 
 interface WorkspaceIntroProps {
   tagText?: string
@@ -77,6 +78,8 @@ const { t } = useI18n({
   useScope: 'global',
 })
 
+const { isMobile } = useResponsive()
+
 const resolvedTagText = computed(() =>
   props.tagText === undefined ? t('widgets.workspaceIntro.tag') : props.tagText,
 )
@@ -86,7 +89,14 @@ const resolvedTitle = computed(() =>
 const resolvedDescription = computed(() =>
   props.description === undefined ? t('widgets.workspaceIntro.description') : props.description,
 )
-const resolvedPrimaryLabel = computed(() =>
-  props.primaryLabel === undefined ? t('widgets.workspaceIntro.primaryAction') : props.primaryLabel,
-)
+const resolvedPrimaryLabel = computed(() => {
+  if (props.primaryLabel !== undefined) {
+    return props.primaryLabel
+  }
+
+  // Use a shorter label on mobile so the button fits within the widget width
+  return isMobile.value === true
+    ? t('widgets.workspaceIntro.primaryActionMobile')
+    : t('widgets.workspaceIntro.primaryAction')
+})
 </script>

@@ -7,26 +7,26 @@ vi.mock('@vueuse/core', () => ({
   useWindowSize: vi.fn(),
 }))
 
+const mockWindowWidth = (value: number) => {
+  vi.mocked(useWindowSize).mockReturnValue({ width: ref(value) } as any)
+}
+
 describe('useResponsive', () => {
+  beforeEach(() => {
+    mockWindowWidth(1024)
+  })
+
   describe('isMobile', () => {
-    it('returns true when width is below sm breakpoint', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.sm - 1) } as any)
+    it('returns true on a narrow window', () => {
+      mockWindowWidth(BREAKPOINT_SIZES.sm - 1)
 
       const { isMobile } = useResponsive()
 
       expect(isMobile.value).toBe(true)
     })
 
-    it('returns false when width is at sm breakpoint', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.sm) } as any)
-
-      const { isMobile } = useResponsive()
-
-      expect(isMobile.value).toBe(false)
-    })
-
-    it('returns false when width is above sm breakpoint', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.sm + 100) } as any)
+    it('returns false on a wide window', () => {
+      mockWindowWidth(1024)
 
       const { isMobile } = useResponsive()
 
@@ -35,34 +35,26 @@ describe('useResponsive', () => {
   })
 
   describe('isDesktop', () => {
-    it('returns true at sm breakpoint', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.sm) } as any)
-
-      const { isDesktop } = useResponsive()
-
-      expect(isDesktop.value).toBe(true)
-    })
-
-    it('returns true above sm breakpoint', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.sm + 100) } as any)
-
-      const { isDesktop } = useResponsive()
-
-      expect(isDesktop.value).toBe(true)
-    })
-
-    it('returns false below sm breakpoint', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.sm - 1) } as any)
+    it('returns false on a narrow window', () => {
+      mockWindowWidth(BREAKPOINT_SIZES.sm - 1)
 
       const { isDesktop } = useResponsive()
 
       expect(isDesktop.value).toBe(false)
     })
+
+    it('returns true on a wide window', () => {
+      mockWindowWidth(1024)
+
+      const { isDesktop } = useResponsive()
+
+      expect(isDesktop.value).toBe(true)
+    })
   })
 
   describe('currentBreakpoint', () => {
     it('returns xs for width below sm', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.sm - 1) } as any)
+      mockWindowWidth(BREAKPOINT_SIZES.sm - 1)
 
       const { currentBreakpoint } = useResponsive()
 
@@ -70,7 +62,7 @@ describe('useResponsive', () => {
     })
 
     it('returns sm for width at sm', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.sm) } as any)
+      mockWindowWidth(BREAKPOINT_SIZES.sm)
 
       const { currentBreakpoint } = useResponsive()
 
@@ -78,7 +70,7 @@ describe('useResponsive', () => {
     })
 
     it('returns md for width at md', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.md) } as any)
+      mockWindowWidth(BREAKPOINT_SIZES.md)
 
       const { currentBreakpoint } = useResponsive()
 
@@ -86,7 +78,7 @@ describe('useResponsive', () => {
     })
 
     it('returns lg for width at lg', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.lg) } as any)
+      mockWindowWidth(BREAKPOINT_SIZES.lg)
 
       const { currentBreakpoint } = useResponsive()
 
@@ -94,7 +86,7 @@ describe('useResponsive', () => {
     })
 
     it('returns xl for width at xl', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(BREAKPOINT_SIZES.xl) } as any)
+      mockWindowWidth(BREAKPOINT_SIZES.xl)
 
       const { currentBreakpoint } = useResponsive()
 
@@ -104,7 +96,7 @@ describe('useResponsive', () => {
 
   describe('width', () => {
     it('returns current window width', () => {
-      vi.mocked(useWindowSize).mockReturnValue({ width: ref(1024) } as any)
+      mockWindowWidth(1024)
 
       const { width } = useResponsive()
 

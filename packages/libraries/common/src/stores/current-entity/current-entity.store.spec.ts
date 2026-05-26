@@ -62,6 +62,12 @@ describe('test currentEntityStore', () => {
 
       expect(currentEntityStore.currentAccountType).toBe(AccountType.PROSPECT)
     })
+
+    it('should normalize raw backend account types to REGULAR (e.g. "client")', () => {
+      currentEntityStore.setCurrentEntity(getMockedEntitySummary({ accountType: 'client' as unknown as AccountType }))
+
+      expect(currentEntityStore.currentAccountType).toBe(AccountType.REGULAR)
+    })
   })
 
   describe('hasOffer', () => {

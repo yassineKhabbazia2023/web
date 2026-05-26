@@ -11,10 +11,7 @@
       :pHasButton="false"
       pColor="persian"
       pSize="big"
-      :pImage="{
-        pFit: 'fill',
-        pName: 'user-add-duotone',
-      }"
+      :pImage="headerImage"
     >
       <template #suffix>
         <p class="margin-bottom--2 font-xsmall">
@@ -77,10 +74,11 @@
 </template>
 
 <script setup lang="ts">
-import { toRef } from 'vue'
+import { computed, toRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PAlert, PBlockHeader, PUserActionCard, PDropdown } from '@pulse/styleguide/components'
-import { AvatarRoles } from '@pulse/styleguide'
+import { AvatarRoles, useResponsive } from '@pulse/styleguide'
+import type { PImageProps } from '@pulse/styleguide/types'
 import { getFullNameWithUppercaseLastName, getInitials } from '@pulse/common/utils'
 import AddCollaboratorsAutocomplete from '@entities/modules/entity/shared/collaborators/components/AddCollaboratorDrawer/components/AddCollaboratorsAutocomplete'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
@@ -94,6 +92,18 @@ const props = defineProps<ProspectCreationStepContactProps>()
 const { t } = useI18n()
 
 const model = defineModel<ProspectFormData>({ required: true })
+
+const { isMobile } = useResponsive()
+
+// Hide the user icon on mobile: the header has too little room for it
+const headerImage = computed<PImageProps | undefined>(() =>
+  isMobile.value === true
+    ? undefined
+    : {
+      pFit: 'fill',
+      pName: 'user-add-duotone',
+    },
+)
 
 const { validationErrorMessageKey, validate } = useProspectCreationStepContactValidation({
   prospectFormData: model,

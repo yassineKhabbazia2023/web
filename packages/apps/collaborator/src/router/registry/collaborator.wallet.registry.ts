@@ -1,15 +1,21 @@
 import { WalletManager, WalletCountManager } from '@pulse/entities/wallet-managers'
 import { WalletTab } from '@pulse/entities/enums'
 import { RouteName, Feature } from '@pulse/common/enums'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { GLOBAL_PERMISSIONS } from '@pulse/common/constants'
 
 export function registerCollaboratorWalletTabs() {
+  // On mobile the collaborator wallet exposes a single tab: prospects when the
+  // prospect experience is enabled, otherwise the regular folders tab.
+  const isProspectExperienceActivated = FeatureFlagManager.isFeatureActivated(Feature.PROSPECT_EXPERIENCE)
+
   WalletManager.register({
     id: WalletTab.FOLDERS,
     title: 'entities.wallet.folders',
     route: RouteName.FOLDERS,
     isDisplayed: () => true,
     getCount: () => WalletCountManager.getCount(WalletTab.FOLDERS),
+    showInMobile: isProspectExperienceActivated === false,
     order: 1,
   })
 
@@ -19,6 +25,7 @@ export function registerCollaboratorWalletTabs() {
     route: RouteName.PROSPECTS,
     isDisplayed: (context) => context.hasFeatureFlag(Feature.PROSPECT_EXPERIENCE),
     getCount: () => WalletCountManager.getCount(WalletTab.PROSPECTS),
+    showInMobile: isProspectExperienceActivated === true,
     order: 2,
   })
 

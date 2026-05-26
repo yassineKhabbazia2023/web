@@ -42,6 +42,38 @@ describe('registerCollaboratorNavigationItems', () => {
     expect(allRouteNames).toContain(RouteName.PENNYLANE_SOCIAL_MANAGEMENT)
   })
 
+  describe('showInMobile flags', () => {
+    const context = createNavigationContext({
+      isCollab: true,
+      shouldShowBIReports: true,
+      hasGed: true,
+      hasPennylaneAccounting: true,
+      hasPennylaneAccountingGedV2: true,
+      hasSocialManagementV2: true,
+    })
+
+    it('should flag mobile-enabled items as showInMobile', () => {
+      const items = NavigationManager.getNavigationItems(context)
+      const mobileRouteNames = items
+        .filter(item => item.showInMobile === true)
+        .map(item => item.routeName)
+
+      expect(mobileRouteNames).toContain(RouteName.HOMEPAGE)
+      expect(mobileRouteNames).toContain(RouteName.ENTITY_OVERVIEW)
+      expect(mobileRouteNames).toContain(RouteName.PENNYLANE_GED_V2)
+    })
+
+    it('should not flag desktop-only items as showInMobile', () => {
+      const items = NavigationManager.getNavigationItems(context)
+      const mobileRouteNames = items
+        .filter(item => item.showInMobile === true)
+        .map(item => item.routeName)
+
+      expect(mobileRouteNames).not.toContain(RouteName.REPORTS)
+      expect(mobileRouteNames).not.toContain(RouteName.PENNYLANE_SOCIAL_MANAGEMENT)
+    })
+  })
+
   describe('shouldDisplay behavior - User with legacy GED only', () => {
     const context = createNavigationContext({
       isCollab: true,
@@ -216,6 +248,17 @@ describe('registerCollaboratorNavigationItems', () => {
 
       expect(routeNames).not.toContain(RouteName.HOMEPAGE)
       expect(routeNames).not.toContain(RouteName.ENTITY_OVERVIEW)
+    })
+
+    it('should flag all prospect items as showInMobile', () => {
+      const items = NavigationManager.getNavigationItems(context, AccountType.PROSPECT)
+      const mobileRouteNames = items
+        .filter(item => item.showInMobile === true)
+        .map(item => item.routeName)
+
+      expect(mobileRouteNames).toContain(RouteName.PROSPECT_HOMEPAGE)
+      expect(mobileRouteNames).toContain(RouteName.PROSPECT_OVERVIEW)
+      expect(mobileRouteNames).toContain(RouteName.PROSPECT_CONFORMITY)
     })
   })
 })

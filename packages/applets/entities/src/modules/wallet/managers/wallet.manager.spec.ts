@@ -533,7 +533,7 @@ describe('WalletManager', () => {
       expect(tabs).toHaveLength(2)
     })
 
-    it('should show all tabs for collaborators on mobile (no filtering)', () => {
+    it('should filter tabs by showInMobile for collaborators on mobile', () => {
       vi.spyOn(CurrentUserManager, 'hasPermission').mockReturnValue(true)
       vi.spyOn(FeatureFlagManager, 'isFeatureActivated').mockReturnValue(true)
 
@@ -556,7 +556,8 @@ describe('WalletManager', () => {
 
       const tabs = WalletManager.getTabsForUser(true, true)
 
-      expect(tabs).toHaveLength(2)
+      expect(tabs).toHaveLength(1)
+      expect(tabs[0].name).toBe(WalletTab.FOLDERS)
     })
 
     it('should show all tabs for collaborators on desktop', () => {

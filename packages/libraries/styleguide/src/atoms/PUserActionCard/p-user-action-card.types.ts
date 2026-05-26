@@ -5,5 +5,5 @@ export interface PUserActionCardProps {
   pTopLeftSectionText: string
   pTopLeftSubText: string
   pIsTrashIconVisible?: boolean
-
+  pIsAvatarVisible?: boolean
 }

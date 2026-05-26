@@ -5,8 +5,9 @@
     showOverflowTooltip
     pStripe
     tableLayout="fixed"
-    :pDisableResponsive="prospectListType === ProspectListType.PROSPECT_COLLAB"
+    pCardClickable
     @sort-change="handleSort"
+    @row-click="onRowClick"
   >
     <PTableColumn
       v-if="isColumnVisible(ProspectColumn.COMPANY_NAME)"
@@ -222,7 +223,6 @@ import { AvatarRoles } from '@pulse/styleguide'
 import { useI18n } from 'vue-i18n'
 import type { EntitiesListProspectsProps, EntitiesListProspectsEmit } from './prospect-entity.list.types'
 import { SORT_ORDERS } from '@pulse/common/constants'
-import { ProspectListType } from '@entities/modules/wallet/enums'
 import { useProspectsEntitiesList } from './prospect-entity.list.composable'
 import { ProspectEntityListManager } from './prospect-entity.list.manager'
 import { ProspectAction, ProspectColumn } from './prospect-entity.list.enums'
@@ -247,5 +247,6 @@ const {
   onDirectFolderAccess,
   onToolboxItemClicked,
   onProspectArchived,
+  onRowClick,
 } = useProspectsEntitiesList(props, emit)
 </script>

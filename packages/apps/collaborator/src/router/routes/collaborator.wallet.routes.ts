@@ -2,6 +2,7 @@ import type { RouteRecordRaw } from 'vue-router'
 import { FEATURE_FLAG_META } from '@pulse/common/constants'
 import { Feature } from '@pulse/common/enums'
 import { COLLABORATOR_ROUTES } from '@collaborator/router/collaborator.routes'
+import { collaboratorWalletFoldersGuard } from '@collaborator/router/guards/collaborator.wallet.guard'
 
 export const walletCollaboratorRoutes = [
   {
@@ -14,6 +15,7 @@ export const walletCollaboratorRoutes = [
       {
         path: COLLABORATOR_ROUTES.wallet.landing.path,
         name: COLLABORATOR_ROUTES.wallet.landing.name,
+        beforeEnter: collaboratorWalletFoldersGuard,
         component: () => import('@pulse/entities/wallet-pages').then(pages => pages.Folders),
       },
       // Prospects

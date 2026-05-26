@@ -1,4 +1,5 @@
-import { BREAKPOINT_SIZES, type breakpoint } from '../constants/breakpoint.const'
+import { BREAKPOINT_SIZES } from '../constants/breakpoint.const'
+import type { breakpoint } from '../constants/breakpoint.const'
 
 export function getCurrentBreakpoint(windowWidth: number): breakpoint {
   if (windowWidth >= BREAKPOINT_SIZES.xl) {
@@ -16,10 +17,18 @@ export function getCurrentBreakpoint(windowWidth: number): breakpoint {
   return 'xs'
 }
 
-export function getIsMobile(windowWidth: number): boolean {
+/**
+ * Resolves the mobile state from the window width: a viewport narrower than the
+ * `sm` breakpoint is considered mobile. Width-based so it can be exercised with
+ * the browser device toolbar or by simply resizing the window during dev.
+ */
+export function resolveIsMobile(windowWidth: number): boolean {
   return windowWidth < BREAKPOINT_SIZES.sm
 }
 
-export function getIsDesktop(windowWidth: number): boolean {
-  return windowWidth >= BREAKPOINT_SIZES.sm
+/**
+ * Detects mobile from the current window width.
+ */
+export function getIsMobile(): boolean {
+  return resolveIsMobile(globalThis.innerWidth)
 }

@@ -211,6 +211,7 @@
       <PUserActionCard
         v-if="prospectFormData.legalName !== ''"
         :pAvatarProps="{ pRole: AvatarRoles.PROSPECT, pType: 'small' }"
+        :pIsAvatarVisible="isMobile === false"
         :pTopLeftSectionText="prospectFormData.legalName"
         :pTopLeftSubText="t('entities.wallet.prospect.form.siretLabel', { siret: prospectFormData.siret })"
         data-testid="prospect-entity-card"
@@ -244,7 +245,7 @@ import {
   PPhoneInput,
   PUserActionCard,
 } from '@pulse/styleguide/components'
-import { AvatarRoles } from '@pulse/styleguide'
+import { AvatarRoles, useResponsive } from '@pulse/styleguide'
 import type { ProspectEntitySearchResult, ProspectFormData } from '@entities/modules/wallet/types'
 import { ProspectCreationDrawerManager } from '../../prospect-creation-drawer.manager'
 import type { ProspectCreationStepInformationProps } from './prospect-creation-step-information.types'
@@ -253,6 +254,7 @@ import { useProspectEntitySearch } from './prospect-creation-step-information.co
 import { DEBOUNCE_TIMING } from '@pulse/toolbox'
 
 const { t } = useI18n()
+const { isMobile } = useResponsive()
 
 const props = defineProps<ProspectCreationStepInformationProps>()
 const prospectFormData = defineModel<ProspectFormData>({ required: true })

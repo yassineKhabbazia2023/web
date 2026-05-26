@@ -18,7 +18,9 @@
       "close": "Close",
       "favorites": "Favorites",
       "globalView": "Global view",
-      "conformity": "Conformity"
+      "conformity": "Conformity",
+      "prospects": "Prospects",
+      "folders": "Wallet"
     }
   },
   "modals": {

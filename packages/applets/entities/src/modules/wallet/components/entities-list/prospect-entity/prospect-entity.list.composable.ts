@@ -2,12 +2,15 @@ import { computed, ref } from 'vue'
 import type { SortChangeEventData } from '@pulse/common/types'
 import type { ProspectWalletData } from '@entities/modules/wallet/types/wallet-data.types'
 import { SortDirection } from '@pulse/common/enums'
+import { useResponsive } from '@pulse/styleguide'
 import { PROSPECT_COLUMNS_BY_FLOW } from './prospect-entity.list.consts'
 import { ProspectAction, ProspectColumn } from './prospect-entity.list.enums'
 import { ProspectEntityListManager } from './prospect-entity.list.manager'
 import type { EntitiesListProspectsProps, EntitiesListProspectsEmit } from './prospect-entity.list.types'
 
 export function useProspectsEntitiesList(props: EntitiesListProspectsProps, emit: EntitiesListProspectsEmit) {
+  const { isMobile } = useResponsive()
+
   const visibleColumns = computed(() => PROSPECT_COLUMNS_BY_FLOW[props.prospectListType])
 
   const isColumnVisible = (column: ProspectColumn): boolean => visibleColumns.value.includes(column)
@@ -40,6 +43,12 @@ export function useProspectsEntitiesList(props: EntitiesListProspectsProps, emit
     emit('prospect-archived')
   }
 
+  const onRowClick = (row: Record<string, any>) => {
+    if (isMobile.value === true) {
+      emit('access', row.accountId)
+    }
+  }
+
   return {
     isColumnVisible,
     menuElements,
@@ -49,5 +58,6 @@ export function useProspectsEntitiesList(props: EntitiesListProspectsProps, emit
     onDirectFolderAccess,
     onToolboxItemClicked,
     onProspectArchived,
+    onRowClick,
   }
 }

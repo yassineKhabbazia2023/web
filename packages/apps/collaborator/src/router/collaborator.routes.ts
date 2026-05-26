@@ -57,6 +57,9 @@ export const COLLABORATOR_ROUTES = {
     launcher: { path: 'launcher', name: RouteName.WALLET_LAUNCHER },
     mandates: { path: 'mandats', name: RouteName.MANDATES },
   },
+  profile: {
+    information: { path: 'profil/informations', name: RouteName.PROFILE_INFORMATION },
+  },
   error: {
     root: { path: '/error', name: RouteName.ERROR_ROOT },
     error403: { path: '403', name: RouteName.ERROR403 },

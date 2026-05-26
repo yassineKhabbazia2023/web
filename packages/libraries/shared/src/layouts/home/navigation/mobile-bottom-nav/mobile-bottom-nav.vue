@@ -13,7 +13,7 @@
     <router-link
       v-for="menuItem in mobileMenuItems"
       :key="menuItem.routeName"
-      :to="{ name: menuItem.routeName, params: { entityId: currentEntityId } }"
+      :to="getMenuItemRoute(menuItem)"
       :class="[
         'mobile-bottom-nav__item',
         'flex',
@@ -39,17 +39,36 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { RouteName } from '@pulse/common/enums'
+import { Feature, RouteName } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
+import { FeatureFlagManager } from '@pulse/common/managers'
 import { PIcon } from '@pulse/styleguide/components'
 import { AppColors } from '@pulse/styleguide'
 import { NavigationManager } from '@pulse/shared/managers'
 import { useNavigationContext, useNavigationTracking } from '@pulse/shared/composables'
-import { useCurrentEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { storeToRefs } from 'pinia'
 import type { NavigationItem } from '@pulse/shared/types'
 import type { MobileBottomNavProps } from './mobile-bottom-nav.type'
 import { MOBILE_BOTTOM_NAV_HEIGHT } from '../../mobile-home.const'
+
+// Collaborators only ever see a single wallet entry in the mobile bottom nav:
+// prospects when the prospect experience is enabled, otherwise the regular folders.
+const COLLAB_PROSPECTS_MENU_ITEM: NavigationItem = {
+  routeName: RouteName.PROSPECTS,
+  title: 'shared.sidebar.prospects',
+  icon: 'building',
+  activeRoutes: [RouteName.PROSPECTS],
+  showInMobile: true,
+}
+
+const COLLAB_FOLDERS_MENU_ITEM: NavigationItem = {
+  routeName: RouteName.FOLDERS,
+  title: 'shared.sidebar.folders',
+  icon: 'building',
+  activeRoutes: [RouteName.FOLDERS],
+  showInMobile: true,
+}
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -61,14 +80,29 @@ const route = useRoute()
 const props = defineProps<MobileBottomNavProps>()
 
 const { currentAccountType } = storeToRefs(useCurrentEntityStore())
+const { isCollab } = storeToRefs(useUserStore())
 const { navigationContext } = useNavigationContext(() => props.currentEntityId)
 const { trackNavigationFeature } = useNavigationTracking()
 
-const mobileMenuItems = computed(() =>
-  NavigationManager
+const mobileMenuItems = computed<NavigationItem[]>(() => {
+  if (isCollab.value === true) {
+    return FeatureFlagManager.isFeatureActivated(Feature.PROSPECT_EXPERIENCE) === true
+      ? [COLLAB_PROSPECTS_MENU_ITEM]
+      : [COLLAB_FOLDERS_MENU_ITEM]
+  }
+
+  return NavigationManager
     .getNavigationItems(navigationContext.value, currentAccountType.value)
-    .filter(item => item.showInMobile === true),
-)
+    .filter(item => item.showInMobile === true)
+})
+
+const getMenuItemRoute = (menuItem: NavigationItem) => {
+  if (isCollab.value === true) {
+    return { name: menuItem.routeName }
+  }
+
+  return { name: menuItem.routeName, params: { entityId: props.currentEntityId } }
+}
 
 const isMenuItemActive = (menuItem: NavigationItem): boolean => {
   if (route.name === undefined || route.name === null) {
