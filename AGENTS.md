@@ -56,7 +56,9 @@ This is an npm workspaces monorepo with three main package categories:
 - Prioritize Styleguide CSS classes (based on element-plus)
 - Never write CSS classes for basic styles (flex, margin, etc.) unless they don't exist in the StyleGuide
 - ESLint configuration enforces formatting rules (2-space indentation, no semicolons, single quotes)
-- No falsy values: use `test === false` instead of `!test`, same with `true`. For nullish checks, use `value === null || value === undefined` instead of `!value`
+- No falsy values: always use `test === false` instead of `!test`, with no exception (e.g. `isLoading === false`, never `!isLoading`)
+- No truthy values: use `test === true` instead of a bare `test`. The only exception is the truthy check of `isXXX`/`hasXXX`/`shouldXXX` variables, which can be used bare (e.g. `if (isLoading)`, not `if (isLoading === true)`)
+- For nullish checks, use `value === null || value === undefined` instead of `!value`, use utils like `isNullOrEmpty` when appropriate
 - **Always use `String#replaceAll()` instead of `String#replace()`** with global regex flags. For literal replacements, use `replaceAll('x', 'y')` instead of `replace(/x/g, 'y')`. This avoids regex backtracking vulnerabilities and improves readability
 
 ### CSS Class Formatting
