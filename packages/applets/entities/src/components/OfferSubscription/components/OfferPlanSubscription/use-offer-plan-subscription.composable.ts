@@ -62,7 +62,7 @@ export function useOfferPlanSubscription({
     const plan = plans.value.find(p => p.planId === newPlanId)
     const pricings = plan?.pricings
 
-    if (pricings !== undefined && pricings.length === 1) {
+    if (pricings?.length === 1) {
       selectedPricingId.value = pricings[0].planPricingId
     } else {
       selectedPricingId.value = undefined

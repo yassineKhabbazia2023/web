@@ -14,11 +14,10 @@ https://learn.microsoft.com/en-us/javascript/api/@microsoft/signalr/hubconnectio
 export class DataStreamHubConnection {
   private readonly connection: HubConnection
   private readonly hubUrl: string
-  private isConnected: boolean
+  private isConnected = false
   private readonly userToken: string
 
   constructor(hubUrl: string) {
-    this.isConnected = false
     this.hubUrl = hubUrl
     const tokenStore = useTokenStore()
     this.userToken = tokenStore.getToken()

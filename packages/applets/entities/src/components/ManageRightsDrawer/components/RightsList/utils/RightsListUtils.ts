@@ -121,9 +121,9 @@ function mapActionsWithConfig({
 }) : Action[] {
 
   // Sort if an order is provided
-  const base = order !== undefined
-    ? getSortActionsByGivenOrder(actions, order)
-    : [...actions]
+  const base = order === undefined
+    ? [...actions]
+    : getSortActionsByGivenOrder(actions, order)
 
   // No labels config => nothing to change
   if (customLabels === undefined) {
@@ -138,8 +138,7 @@ function mapActionsWithConfig({
 
   return base
     .map(action => {
-      const customLabel = customLabels[action.code]
-      const label = customLabel === undefined ? action.label : customLabel
+      const label = customLabels[action.code] ?? action.label
       return {
         ...action,
         label,

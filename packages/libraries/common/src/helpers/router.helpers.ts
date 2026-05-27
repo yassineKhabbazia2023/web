@@ -53,7 +53,7 @@ export class RouterHelpers {
     // If the route parameter is a string, trim it and parse it as an integer
     if (typeof routeParamValue === 'string' && routeParamValue.trim() !== '') {
       const parsed = Number(routeParamValue)
-      return isNaN(parsed) ? null : parsed
+      return Number.isNaN(parsed) ? null : parsed
     }
 
     // If the route parameter is string[] or unexpected type, return null

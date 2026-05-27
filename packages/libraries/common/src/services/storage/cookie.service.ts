@@ -3,7 +3,7 @@
  */
 export class CookieService {
   private static escapeRegex(str: string): string {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    return str.replaceAll(/[.*+?^${}()|[\]\\]/g, String.raw`\$&`)
   }
 
   static set(name: string, value: string, maxAgeSeconds: number = 300): void {
@@ -12,8 +12,8 @@ export class CookieService {
 
   static get(name: string): string | undefined {
     const escapedName = this.escapeRegex(name)
-    const match = document.cookie.match(new RegExp(`(^| )${escapedName}=([^;]+)`))
-    return match !== null ? decodeURIComponent(match[2]) : undefined
+    const match = new RegExp(`(^| )${escapedName}=([^;]+)`).exec(document.cookie)
+    return match === null ? undefined : decodeURIComponent(match[2])
   }
 
   static remove(name: string): void {

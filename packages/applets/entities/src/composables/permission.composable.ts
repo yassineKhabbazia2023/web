@@ -9,7 +9,7 @@ export function refreshPageWhenCurrentUserPermissionChange(userId: number): void
   const userStore = useUserStore()
   if (userStore.getUserId() === userId) {
     setTimeout(() => {
-      window.location.reload()
+      globalThis.location.reload()
     }, 30)
   }
 }

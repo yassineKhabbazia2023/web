@@ -105,7 +105,7 @@ export const useHistory = (currentAccountId: Ref<number | null>, searchQuery: Re
   }
 
   const activeFiltersCount = computed(() => {
-    return selectedCategoryIds.value.length + (dateRange.value !== null ? 1 : 0)
+    return selectedCategoryIds.value.length + (dateRange.value === null ? 0 : 1)
   })
 
   watch(searchQuery, async () => {

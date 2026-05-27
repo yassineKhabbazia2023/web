@@ -240,11 +240,9 @@ export const useContributionGraph = () => {
       if (activeFilters.value.includes(filter) === false) {
         activeFilters.value = [...activeFilters.value, filter]
       }
-    } else {
+    } else if (activeFilters.value.length > 1) {
       // Prevent unchecking both
-      if (activeFilters.value.length > 1) {
-        activeFilters.value = activeFilters.value.filter((f) => f !== filter)
-      }
+      activeFilters.value = activeFilters.value.filter((f) => f !== filter)
     }
   }
 

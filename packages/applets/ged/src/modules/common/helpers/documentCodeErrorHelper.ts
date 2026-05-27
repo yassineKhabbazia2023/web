@@ -25,7 +25,7 @@ const codeErrorMapping: Record<string, ErrorDetail> = {
   UnauthorizedCharFileName: {
     message: 'Caractères interdit',
     description: 'Le nom ne doit contenir aucun des caractères suivants : ' +
-    '“ * : &lt; &gt; ? / \\ |.',
+    String.raw`“ * : &lt; &gt; ? / \ |.`,
   },
   FileNameLengthExceeded: {
     message: 'Nom du fichier trop long',

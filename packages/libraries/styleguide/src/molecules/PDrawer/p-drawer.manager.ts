@@ -22,13 +22,13 @@ export function trackOutsideClickMiniDrawer(
   }
 
   outsideClickHandlers.set(drawerUniqueId, handler)
-  window.addEventListener('click', handler)
+  globalThis.addEventListener('click', handler)
 }
 
 export function killTrackOutsideClick(drawerUniqueId: string) {
   const handler = outsideClickHandlers.get(drawerUniqueId)
   if (handler) {
-    window.removeEventListener('click', handler)
+    globalThis.removeEventListener('click', handler)
     outsideClickHandlers.delete(drawerUniqueId)
   }
 }

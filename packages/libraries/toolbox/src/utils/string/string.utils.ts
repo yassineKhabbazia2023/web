@@ -6,11 +6,11 @@ export function getAlphanumericString(text?: string): string {
   }
 
   return text
-    .replaceAll(/æ/g, 'ae') // Replace 'æ' with 'ae'
-    .replaceAll(/Æ/g, 'AE') // Replace 'Æ' with 'AE'
-    .replaceAll(/œ/g, 'oe') // Replace 'œ' with 'oe'
-    .replaceAll(/Œ/g, 'OE') // Replace 'Œ' with 'OE'
-    .replaceAll(/€/g, 'EURO') // Replace '€' with 'EURO'
+    .replaceAll('æ', 'ae') // Replace 'æ' with 'ae'
+    .replaceAll('Æ', 'AE') // Replace 'Æ' with 'AE'
+    .replaceAll('œ', 'oe') // Replace 'œ' with 'oe'
+    .replaceAll('Œ', 'OE') // Replace 'Œ' with 'OE'
+    .replaceAll('€', 'EURO') // Replace '€' with 'EURO'
     // see https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
     // and https://gist.github.com/codeguy/6684588?permalink_comment_id=3332719
     // and https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize

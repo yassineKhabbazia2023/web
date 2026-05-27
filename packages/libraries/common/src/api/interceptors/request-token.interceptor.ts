@@ -13,9 +13,7 @@ function tokenIsAboutToExpire() {
 }
 
 function setAuthorizationHeader(config: any, token: string) {
-  if (config.headers === undefined) {
-    config.headers = {}
-  }
+  config.headers ??= {}
   config.headers.Authorization = `Bearer ${token}`
 }
 

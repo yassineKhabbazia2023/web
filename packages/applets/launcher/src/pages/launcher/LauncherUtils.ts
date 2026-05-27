@@ -57,7 +57,7 @@ export function getSilaeDownloadLabel(silaeDownloadPercent: number | undefined =
 export async function openSilaeUrl() {
   const redirectUrl = await getSsoSilaeUrl()
   if (redirectUrl) {
-    window.location.href = `mypulse-launch://${redirectUrl}`
+    globalThis.location.href = `mypulse-launch://${redirectUrl}`
   } else {
     throw new Error('ssoSilaeUrl is empty')
   }

@@ -13,7 +13,7 @@ export function getIsDraggedDocument(document: Document, draggedDocuments: Docum
     return false
   }
 
-  return draggedDocuments.find((documentLine) => documentLine.id === document.id) !== undefined
+  return draggedDocuments.some((documentLine) => documentLine.id === document.id)
 }
 
 export function getStateClassWhenDragged(isDraggedDocument: boolean) {

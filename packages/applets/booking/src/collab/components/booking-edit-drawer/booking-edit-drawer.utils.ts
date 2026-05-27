@@ -53,7 +53,7 @@ export function mapToUpdatePayload(
   }
 
   const availability = Array.from(availabilityMap.values()).sort((a, b) => {
-    return DAY_ORDER.indexOf(a.day as typeof DAY_ORDER[number]) - DAY_ORDER.indexOf(b.day as typeof DAY_ORDER[number])
+    return DAY_ORDER.indexOf(a.day) - DAY_ORDER.indexOf(b.day)
   })
 
   for (const dayAvailability of availability) {

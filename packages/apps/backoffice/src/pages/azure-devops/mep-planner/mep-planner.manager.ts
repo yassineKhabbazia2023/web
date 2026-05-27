@@ -387,8 +387,7 @@ export class MepPlannerManager {
     const stages = timeline.filter((r) => r.type === 'Stage')
 
     const recetteStage = stages.find((r) => r.name === '[Deploy] rec')
-    const recetteDeployed = recetteStage !== undefined
-      && recetteStage.state === 'completed'
+    const recetteDeployed = recetteStage?.state === 'completed'
       && recetteStage.result === 'succeeded'
 
     const lastCompletedStage = [...stages]
@@ -409,8 +408,7 @@ export class MepPlannerManager {
 
         if (candidateStages.some((r) => r.name === '[Deploy] rec') === true) {
           const recStage = candidateStages.find((r) => r.name === '[Deploy] rec')
-          const recDeployed = recStage !== undefined
-            && recStage.state === 'completed'
+          const recDeployed = recStage?.state === 'completed'
             && recStage.result === 'succeeded'
           const lastStage = [...candidateStages]
             .reverse()
