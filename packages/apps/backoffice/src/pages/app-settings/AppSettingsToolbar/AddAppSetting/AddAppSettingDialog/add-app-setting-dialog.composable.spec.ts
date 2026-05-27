@@ -82,7 +82,7 @@ describe('useAddAppSettingDialog - extra branches', () => {
     form.value.isSecret = false
 
     // force undefined for coverage of "?? {}"
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     ;(form.value as any).valuesByTarget = undefined
 
     expect(isFormValid.value).toBe(false)

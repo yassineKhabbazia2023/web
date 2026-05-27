@@ -54,4 +54,3 @@ export interface UpdateAppSettingApiPayload {
   targets: UpdateAppSettingTargetApiPayload[]
 }
 
-

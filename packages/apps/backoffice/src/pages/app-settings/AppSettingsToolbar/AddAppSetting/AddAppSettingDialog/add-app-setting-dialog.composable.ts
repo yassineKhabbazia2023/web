@@ -16,7 +16,7 @@ export function useAddAppSettingDialog(options: UseAddAppSettingDialogOptions) {
   const isCreating = ref(false)
   const errors = ref<ValidationErrors>({})
 
- const isFormValid = computed(() => {
+  const isFormValid = computed(() => {
     const hasName = form.value.name.trim().length > 0
 
     const values = Object.values(form.value.valuesByTarget ?? {})
@@ -70,7 +70,7 @@ export function useAddAppSettingDialog(options: UseAddAppSettingDialogOptions) {
 
   async function handleCreate(): Promise<void> {
     if (validateForm() === false) {
-        return
+      return
     }
 
     const payload = buildApiPayload()

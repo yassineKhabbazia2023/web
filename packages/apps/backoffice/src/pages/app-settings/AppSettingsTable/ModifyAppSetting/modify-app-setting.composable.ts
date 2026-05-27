@@ -5,7 +5,7 @@ import { AppSettingsListService } from '@backoffice/services/app-settings-list/a
 import type { EnvironmentOption } from '@backoffice/types/environment-option.type'
 import type { AppSettingItem } from '@backoffice/types/app-settings-list.type'
 import type { UpdateAppSettingApiPayload } from '@backoffice/services/app-settings-list/app-settings-list.service.type'
-import type { ModifyFormData, ModifyValidationErrors, UseModifyAppSettingOptions} from './modify-app-setting.type'
+import type { ModifyFormData, ModifyValidationErrors, UseModifyAppSettingOptions } from './modify-app-setting.type'
 
 /**
  * Builds the internal key used by the form map:
@@ -129,7 +129,6 @@ export function useModifyAppSetting(options: UseModifyAppSettingOptions) {
     backendLabelByTarget.value = backendLabels
     errors.value = {}
   }
-
 
 
   /**

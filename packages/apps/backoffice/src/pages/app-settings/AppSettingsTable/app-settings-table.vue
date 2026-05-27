@@ -99,7 +99,8 @@
             >
               <PIcon
                 pName="pencilSquare"
-                :color="AppColors.YELLOW_800" />
+                :color="AppColors.YELLOW_800"
+              />
             </PButton>
           </PTooltip>
 

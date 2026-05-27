@@ -66,7 +66,7 @@
         :startDate="startDate"
         :endDate="endDate"
         :selectedDate="selectedDate"
-        @selectDate="handleSelectDate"
+        @select-date="handleSelectDate"
       />
 
       <div

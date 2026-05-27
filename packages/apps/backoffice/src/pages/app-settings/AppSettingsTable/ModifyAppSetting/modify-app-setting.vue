@@ -12,18 +12,18 @@
 
 
     <div
-        v-if="isLoadingEnvironments"
-        class="flex flex--justify-content-center padding--6"
-      >
-        <PLoader />
+      v-if="isLoadingEnvironments"
+      class="flex flex--justify-content-center padding--6"
+    >
+      <PLoader />
     </div>
 
     <PAlert
-        v-else-if="hasEnvironmentLoadError"
-        pType="error"
-        class="margin-bottom--3"
-      >
-        Impossible de charger les environnements disponibles
+      v-else-if="hasEnvironmentLoadError"
+      pType="error"
+      class="margin-bottom--3"
+    >
+      Impossible de charger les environnements disponibles
     </PAlert>
 
     <div v-else>
@@ -90,7 +90,11 @@
           :pLoading="isSaving"
           @click="handleSave"
         >
-          <PIcon pName="check" pSize="16" class="el-button__icon--left" />
+          <PIcon
+            pName="check"
+            pSize="16"
+            class="el-button__icon--left"
+          />
           Enregistrer
         </PButton>
       </div>
@@ -141,7 +145,9 @@ const {
   loadAvailableEnvironments,
 } = useModifyAppSetting({
   onSuccess: () => emit('app-setting-updated'),
-  onClose: () => { isDialogOpened.value = false },
+  onClose: () => {
+    isDialogOpened.value = false
+  },
 })
 
 const isSaveDisabled = computed(() => (

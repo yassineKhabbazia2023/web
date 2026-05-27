@@ -17,7 +17,6 @@
 
       <!-- Env input -->
       <div class="environment-value-editor__row margin-bottom--4 flex--align-items-center">
-
         <label
           class="font-medium"
           :for="inputId(group.environment)"

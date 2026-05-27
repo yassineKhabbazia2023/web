@@ -2,7 +2,7 @@
   "name": "@pulse/collaborator",
   "version": "1.0.0",
   "author": "Pulse Team",
-  "description": "Front of Pulse app",
+  "description": "Collaborator Front of Pulse app",
   "license": "UNLICENSED",
   "private": true,
   "scripts": {

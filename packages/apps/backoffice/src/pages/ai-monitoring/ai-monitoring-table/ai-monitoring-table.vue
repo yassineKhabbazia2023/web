@@ -64,7 +64,9 @@
                 />
                 <span class="ai-monitoring-table__section-title">QUESTION DEMANDÉE</span>
               </div>
-              <p class="ai-monitoring-table__question-text">"{{ row.question }}"</p>
+              <p class="ai-monitoring-table__question-text">
+                "{{ row.question }}"
+              </p>
             </div>
 
             <div

@@ -61,7 +61,7 @@ const mockWorkItems: ContributionWorkItem[] = [
 ]
 
 describe('useContributionGraph', () => {
-const mockPrReviews: AzureDevOpsPullRequest[] = [
+  const mockPrReviews: AzureDevOpsPullRequest[] = [
     {
       pullRequestId: 500,
       title: 'Fix styling issues',
