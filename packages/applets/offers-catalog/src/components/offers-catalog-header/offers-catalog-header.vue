@@ -90,7 +90,7 @@ const { t } = useI18n({
       aiSearchPlaceholder: 'Smart search: Enter a keyword, phrase, or describe what you are looking for...',
       smartSearch: 'Smart search',
       smartSearchEnabled: 'Smart search enabled',
-      aiDisclaimer: 'Verify relevance before presenting to the client. AI-generated content may be incorrect.',
+      aiDisclaimer: 'Verify the relevance of offers and content proposed before presenting to the client. AI responses may be incorrect.',
     },
     'fr-FR': {
       sentence: 'Un {need} client ? Trouvez {theOffer} correspondante !',
@@ -101,7 +101,7 @@ const { t } = useI18n({
       aiSearchPlaceholder: 'Recherche intelligente : Renseignez un mot clé, une phrase, ou votre besoin "je cherche ..."',
       smartSearch: 'Recherche intelligente',
       smartSearchEnabled: 'Recherche intelligente activée',
-      aiDisclaimer: 'Vérifiez la pertinence avant de proposer au client. Le contenu généré par l\'IA peut être incorrect.',
+      aiDisclaimer: 'Vérifiez la pertinence des offres et des contenus proposés avant présentation au client. Les réponses de l\'IA peuvent être incorrectes.',
     },
   },
 })
