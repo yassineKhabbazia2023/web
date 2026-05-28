@@ -40,6 +40,16 @@ describe('test tokenStore', () => {
 
       expect(localStorageServiceMock.setToken).toHaveBeenCalledWith('')
     })
+
+    it('should not persist the token to storage when persistence is disabled', () => {
+      tokenStore.setTokenPersistence(false)
+
+      tokenStore.setToken(tokenMock)
+
+      expect(localStorageServiceMock.setToken).not.toHaveBeenCalled()
+      expect(getTokenExpMock).toHaveBeenCalledExactlyOnceWith(tokenMock)
+      expect(tokenStore.getToken()).toBe(tokenMock)
+    })
   })
 
   describe('getToken', () => {
@@ -69,6 +79,15 @@ describe('test tokenStore', () => {
 
       expect(result).toBe('')
       expect(localStorageServiceMock.getToken).toHaveBeenCalledOnce()
+    })
+
+    it('should not read from storage when persistence is disabled and cache is empty', () => {
+      tokenStore.setTokenPersistence(false)
+
+      const result = tokenStore.getToken()
+
+      expect(result).toBe('')
+      expect(localStorageServiceMock.getToken).not.toHaveBeenCalled()
     })
   })
 

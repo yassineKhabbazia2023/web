@@ -6,10 +6,19 @@ import { LocalStorageService } from '../../services/storage'
 export const useTokenStore = defineStore('token', () => {
   const tokenExp = ref<number | undefined>(undefined)
   const cachedToken = ref<string | undefined>(undefined)
+  // When disabled, the token lives only in memory (no localStorage read/write).
+  // Apps handling sensitive data (e.g. the backoffice) opt out at startup.
+  const isPersistenceEnabled = ref(true)
 
   // #region Token Management
+  function setTokenPersistence(enabled: boolean) {
+    isPersistenceEnabled.value = enabled
+  }
+
   function setToken(token: string) {
-    LocalStorageService.setToken(token)
+    if (isPersistenceEnabled.value) {
+      LocalStorageService.setToken(token)
+    }
     cachedToken.value = token
 
     // Decode once and update store
@@ -24,6 +33,11 @@ export const useTokenStore = defineStore('token', () => {
     // Use cached token if available
     if (cachedToken.value) {
       return cachedToken.value
+    }
+
+    // In-memory only mode: never fall back to (potentially stale) storage
+    if (isPersistenceEnabled.value === false) {
+      return ''
     }
 
     // Otherwise get from storage
@@ -69,6 +83,7 @@ export const useTokenStore = defineStore('token', () => {
 
   return {
     setToken,
+    setTokenPersistence,
     getToken,
     removeToken,
     hasActiveToken,

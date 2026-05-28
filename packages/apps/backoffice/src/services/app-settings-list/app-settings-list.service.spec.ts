@@ -3,8 +3,8 @@ import type { AppSettingsListResponse } from '@backoffice/types/app-settings-lis
 import type { DomainItem } from './app-settings-list.service.type'
 
 // Mock must be hoisted - define the mock inside the factory
-vi.mock('@backoffice/api/api', () => ({
-  default: {
+vi.mock('@backoffice/api/backoffice.api', () => ({
+  backofficeApi: {
     get: vi.fn(),
     delete: vi.fn(),
     post: vi.fn(),
@@ -12,10 +12,10 @@ vi.mock('@backoffice/api/api', () => ({
 }))
 
 // Import the mocked API to access the mock function
-import api from '@backoffice/api/api'
-const mockGet = vi.mocked(api.get)
-const mockDelete = vi.mocked(api.delete)
-const mockPost = vi.mocked(api.post)
+import { backofficeApi } from '@backoffice/api/backoffice.api'
+const mockGet = vi.mocked(backofficeApi.get)
+const mockDelete = vi.mocked(backofficeApi.delete)
+const mockPost = vi.mocked(backofficeApi.post)
 
 describe('AppSettingsListService', () => {
   describe('getAppSettingsList', () => {

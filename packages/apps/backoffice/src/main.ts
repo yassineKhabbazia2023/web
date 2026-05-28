@@ -4,6 +4,7 @@ import styleguideLibrary from '@pulse/styleguide'
 import '@pulse/styleguide/fonts'
 
 import router from './routing/backoffice.routes'
+import authPlugin from './plugins/auth/auth.plugin'
 
 import App from './App.vue'
 
@@ -16,6 +17,7 @@ if (import.meta.env.VITE_E2E_MODE === 'true') {
 const app = createApp(App)
 
 app.use(createPinia())
+app.use(authPlugin)
 app.use(router)
 app.use(styleguideLibrary, {
   assetsBaseUrl: '', // no assets for backoffice

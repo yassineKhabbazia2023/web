@@ -3,6 +3,7 @@ import type { RouteLocationNormalized } from 'vue-router'
 import { ALLOW_ANONYMOUS_META, ALLOW_AUTHENTICATED_META } from '@pulse/common/constants'
 import { AdminMsalService } from '@backoffice/services/admin-msal/admin-msal.service'
 import { AdminRouteNames } from '@backoffice/constants/backoffice-route-names.enum'
+import { LoginManager } from '@backoffice/managers/login.manager'
 
 export async function authenticationGuard(to: RouteLocationNormalized) {
   let isAuthenticated: boolean
@@ -13,6 +14,12 @@ export async function authenticationGuard(to: RouteLocationNormalized) {
     logger.error('Failed to verify authentication', error)
     // En cas d'erreur, on considère l'utilisateur comme non authentifié
     isAuthenticated = false
+  }
+
+  // Keep the shared token store in sync with MSAL while authenticated, so the
+  // common request interceptor always has a token to attach and refresh.
+  if (isAuthenticated === true) {
+    await LoginManager.syncToken()
   }
 
   const allowAnonymous = to.meta?.[ALLOW_ANONYMOUS_META] === true
