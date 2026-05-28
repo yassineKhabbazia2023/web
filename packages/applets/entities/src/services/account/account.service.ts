@@ -4,7 +4,7 @@ import { api } from '@pulse/common/api'
 import type { QueryResult, UserInfoApi, Office } from '@pulse/common/types'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { PatchOperation } from '@entities/services/patch-record'
-import type { AccountRow, ReferentialStructure, Hub, AccountsDelegation, PermanentDelegationApiItem } from './account.type'
+import type { AccountRow, ReferentialStructure, Hub, AccountsDelegation, PermanentDelegationApiItem, SearchAccountItem } from './account.type'
 import { ContactType } from '@pulse/common/enums'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
@@ -17,6 +17,16 @@ export async function fetchAccounts(searchParams: string) {
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${searchParams}`
 
   return await fetchGatewayApi<QueryResult<AccountRow>>(url)
+}
+
+export async function searchAccounts(keyword: string): Promise<QueryResult<SearchAccountItem>> {
+  const url = `${API_PREFIXES.ACCOUNT}/accounts/search`
+  const { data } = await api.gateway.get<QueryResult<SearchAccountItem>>(url, {
+    params: {
+      keyword,
+    },
+  })
+  return data
 }
 
 export async function fetchGatewayApi<T>(url: string) {

@@ -6,6 +6,7 @@ export type EnvVars = Record<Feature, 'true' | 'false'>
 // Features evaluated via OpenFeature/ConfigCat instead of environment variables.
 // This list is internal to the manager and is meant to disappear once all flags are migrated.
 const OPEN_FEATURE_FLAGS = new Set<Feature>([
+  Feature.DELEGATION_REQUEST_TABS,
   Feature.PROSPECT_EXPERIENCE,
 ])
 
@@ -74,5 +75,9 @@ export class FeatureFlagManager {
 
   static isModscreenV2Activated() {
     return FeatureFlagManager.isFeatureActivated(Feature.MODSCREEN_V2)
+  }
+
+  static isDelegationRequestTabsActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.DELEGATION_REQUEST_TABS)
   }
 }

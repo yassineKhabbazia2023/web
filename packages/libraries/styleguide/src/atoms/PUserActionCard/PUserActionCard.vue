@@ -42,12 +42,14 @@
             flex--justify-content-space-between
           "
         >
-          <p class="font-bold font-size--14">
-            {{ pTopLeftSectionText }}
-          </p>
-          <p class="font-size--12 text-color--text-neutral margin-top--1">
-            {{ pTopLeftSubText }}
-          </p>
+          <slot name="content">
+            <p class="font-bold font-size--14">
+              {{ pTopLeftSectionText }}
+            </p>
+            <p class="font-size--12 text-color--text-neutral margin-top--1">
+              {{ pTopLeftSubText }}
+            </p>
+          </slot>
         </div>
       </div>
 

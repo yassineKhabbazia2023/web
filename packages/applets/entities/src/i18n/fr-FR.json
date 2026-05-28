@@ -41,7 +41,7 @@
       },
       "prospect": {
         "form": {
-          "intro": "Si vous disposez déjà de certaines informations, vous pouvez les renseigner ci-dessous.\nElles seront automatiquement pré-remplies dans l’espace prospect.",
+          "intro": "Si vous disposez déjà de certaines informations, vous pouvez les renseigner ci-dessous.\nElles seront automatiquement pré-remplies dans l'espace prospect.",
           "leader": "Dirigeant",
           "civility": "Civilité",
           "lastName": "Nom",
@@ -67,7 +67,7 @@
           "invalidSiretAlert": "Le numéro de SIRET est incorrect",
           "eligibilityCheckError": "Une erreur est survenue, veuillez réessayer",
           "company": {
-            "intro": "Certaines informations sur l’entreprise ont été récupérées automatiquement.\nMerci de compléter les champs restants.",
+            "intro": "Certaines informations sur l'entreprise ont été récupérées automatiquement.\nMerci de compléter les champs restants.",
             "identification": "Identification de l'entreprise",
             "addressTitle": "Adresse de l'entreprise",
             "callingName": "Nom d'appel",
@@ -153,6 +153,44 @@
       "notification": {
         "deleteSuccess": "La délégation permanente de {name} a été supprimée.",
         "deleteError": "La délégation permanente de {name} n'a pas été supprimée."
+      }
+    },
+    "requestDelegation": {
+      "selectFolder": "Sélectionner le dossier",
+      "selectCollaborators": "Collaborateurs",
+      "recap": "Récapitulatif",
+      "chooseFolderTitle": "Choisir le dossier qui vous intéresse",
+      "chooseFolderDescription": "Veuillez rechercher le dossier que vous souhaitez ajouter à votre portefeuille :",
+      "searchAccountLabel": "Raison sociale ou code client",
+      "searchAccountPlaceholder": "Raison sociale ou code client",
+      "newCollaborators": "Nouveaux collaborateurs",
+      "addCollaboratorsToFolder": "Ajouter des collaborateurs au dossier",
+      "searchLabel": "Rechercher",
+      "searchError": "Une erreur est survenue lors de la recherche. Veuillez réessayer ultérieurement.",
+      "hyphen": "-"
+    },
+    "delegationDrawer": {
+      "myDelegations": "Mes délégations",
+      "pendingRequests": "Demande(s) en attente",
+      "walletDelegation": "Déléguer mon portefeuille",
+      "folderDelegation": "Déléguer un dossier | Déléguer plusieurs dossiers",
+      "permanentDelegations": "Délégations permanentes",
+      "requestDelegation": "Demander délégation",
+      "addCollaborator": "Ajout des collaborateurs",
+      "automaticDelegation": "Délégation automatique",
+      "cancelButtonLabel": "Annuler",
+      "backButtonLabel": "Précédent",
+      "primaryButtonLabel": "Suivant",
+      "submitButtonLabel": "Valider",
+      "notificationMessages": {
+        "flowTypeFull": {
+          "successNotificationMessage": "Votre portefeuille a été délégué avec succès.",
+          "failureNotificationMessage": "Votre portefeuille n'a pas été délégué suite à une erreur technique."
+        },
+        "flowTypeSpecific": {
+          "successNotificationMessage": "Le dossier a été délégué avec succès. | Les dossiers ont été délégués avec succès.",
+          "failureNotificationMessage": "Le dossier n'a pas été délégué suite à une erreur technique. | Les dossiers n'ont pas été délégués suite à une erreur technique."
+        }
       }
     },
     "invoices": {

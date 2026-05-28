@@ -67,3 +67,14 @@ window.EnvVars = envVars
 | VITE_SMART_OFFER_DIFFERENT_RATE_ACCOUNTS | Liste des dossiers ayant un tarif différent pour l'offre Smart (usage temporaire). |
 | VITE_SMART_OFFER_DIFFERENT_RATE_PRICE | Prix de l'offre Smart pour les dossiers ayant un tarif différent(usage temporaire). |
 | VITE_TOKEN_EXPIRATION_BUFFER | Temps en minutes pour refresh le token avant son expiration |
+
+## Feature Flags ConfigCat
+
+Les feature flags ConfigCat sont gérés via OpenFeature et récupérés dynamiquement depuis ConfigCat. Ils ne nécessitent pas de redéploiement pour être modifiés.
+
+**Configuration**: Les feature flags ConfigCat sont listés dans `OPEN_FEATURE_FLAGS` dans `packages/libraries/common/src/managers/feature-flag/feature-flag.manager.ts`
+
+| Feature Flag ConfigCat | Description |
+|---|---|
+| isDelegationRequestTabsEnabled | Active les nouveaux onglets "Demande(s) en attente" et "Demander délégation" dans le drawer de délégation du portefeuille |
+| isProspectExperienceEnabled | Active l'expérience Prospect |

@@ -1,4 +1,4 @@
-import { formatFrenchPhoneNumber, formatPhoneNumber, getAlphanumericString, containsIgnoreCase } from './string.utils'
+import { formatFrenchPhoneNumber, formatPhoneNumber, getAlphanumericString, containsIgnoreCase, getStringInitials } from './string.utils'
 
 describe('string.utils', () => {
   describe('getAlphanumericString', () => {
@@ -109,6 +109,46 @@ describe('string.utils', () => {
 
     it('should return false if text is empty string and searchValue is not', () => {
       expect(containsIgnoreCase('', 'hello')).toBe(false)
+    })
+  })
+
+  describe('getStringInitials', () => {
+    const testCases = [{
+      input: 'John Doe',
+      length: 2,
+      expected: 'JO',
+    }, {
+      input: 'Société Anonyme',
+      length: 2,
+      expected: 'SO',
+    }, {
+      input: 'ABC Company',
+      length: 3,
+      expected: 'ABC',
+    }, {
+      input: 'x',
+      length: 2,
+      expected: 'X',
+    }, {
+      input: '',
+      length: 2,
+      expected: '',
+    }, {
+      input: 'lowercase',
+      length: 2,
+      expected: 'LO',
+    }]
+
+    it.each(testCases)(
+      'should extract $length characters from "$input" and return "$expected"',
+      ({ input, length, expected }) => {
+        const result = getStringInitials(input, length)
+        expect(result).toBe(expected)
+      },
+    )
+
+    it('should use default length of 2 when length is not provided', () => {
+      expect(getStringInitials('Hello World')).toBe('HE')
     })
   })
 })

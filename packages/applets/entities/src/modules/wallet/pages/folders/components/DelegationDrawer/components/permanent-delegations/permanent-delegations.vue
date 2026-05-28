@@ -4,7 +4,8 @@
       class="margin-bottom--6"
       data-testid="permanent-delegations-info"
     >
-      <span class="font-bold">{{ t('entities.permanentDelegations.infoBannerTitle') }}</span> {{ t('entities.permanentDelegations.infoBannerDescription') }}
+      <span class="font-bold">{{ t('entities.permanentDelegations.infoBannerTitle') }}</span>
+      {{ t('entities.permanentDelegations.infoBannerDescription') }}
     </PAlert>
 
     <div class="margin-bottom--6">

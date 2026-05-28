@@ -2,13 +2,18 @@ import { nextTick } from 'vue'
 import { loggerMock } from '@pulse/toolbox/mocks'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
-import { PNotification as PNotificationMock } from '@pulse/styleguide'
+import { displayNotification as displayNotificationMock } from '@pulse/styleguide'
 import { delegateAccounts } from '@entities/services/account'
 
 import DelegationDrawer from '.'
 
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@entities/services/account')
+vi.mock('vue-i18n', () => ({
+  useI18n: () => ({
+    t: (key: string) => key,
+  }),
+}))
 
 const COLLABORATORS_SELECTED = [{ id: 1 }, { id: 2 }, { id: 3 }]
 const FIRST_SELECTED_FOLDER = {
@@ -155,20 +160,20 @@ describe('delegationDrawer', () => {
 
       it('should call api to complete delegation process when active step is 1', async () => {
         const expectedPropsBefore = {
-          pBackCTA: { pLabel: 'Cancel', pTestId: 'previousButton' },
+          pBackCTA: { pLabel: 'entities.delegationDrawer.cancelButtonLabel', pTestId: 'previousButton' },
           pSecondaryCTA: undefined,
-          pPrimaryCTA: { pLabel: 'Next', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
+          pPrimaryCTA: { pLabel: 'entities.delegationDrawer.primaryButtonLabel', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
         }
         const expectedPropsAfter = {
-          pBackCTA: { pLabel: 'Cancel', pTestId: 'previousButton' },
+          pBackCTA: { pLabel: 'entities.delegationDrawer.backButtonLabel', pTestId: 'previousButton' },
           pSecondaryCTA: undefined,
-          pPrimaryCTA: { pLabel: 'Submit', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
+          pPrimaryCTA: { pLabel: 'entities.delegationDrawer.submitButtonLabel', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
         }
         const wrapper = createFullDelegationWrapper()
         await nextTick()
 
         const addDelegatesStepWrapper = wrapper.findComponent({ name: 'AddDelegatesStep' })
-        expect(PNotificationMock).not.toHaveBeenCalled()
+        expect(displayNotificationMock).not.toHaveBeenCalled()
 
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
 
@@ -206,7 +211,7 @@ describe('delegationDrawer', () => {
 
         expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedPropsAfter)
 
-        expect(PNotificationMock).toHaveBeenCalledOnce()
+        expect(displayNotificationMock).toHaveBeenCalledOnce()
       })
 
       it('should display failure notification when api call fails then close the drawer', async () => {
@@ -216,7 +221,7 @@ describe('delegationDrawer', () => {
         await nextTick()
 
         const addDelegatesStepWrapper = wrapper.findComponent({ name: 'AddDelegatesStep' })
-        expect(PNotificationMock).not.toHaveBeenCalled()
+        expect(displayNotificationMock).not.toHaveBeenCalled()
 
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
 
@@ -227,7 +232,7 @@ describe('delegationDrawer', () => {
         expect(delegateAccountsMock).toHaveBeenCalledOnce()
 
         await flushPromises()
-        expect(PNotificationMock).toHaveBeenCalledOnce()
+        expect(displayNotificationMock).toHaveBeenCalledOnce()
       })
 
       it('should directly post user on "specific" delegation flow type', async () => {
@@ -235,12 +240,12 @@ describe('delegationDrawer', () => {
         const hasPennylaneAccessMock = true
         const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'PDrawerActions' })
         const expectedProps = {
-          pBackCTA: { pLabel: 'Cancel', pTestId: 'previousButton' },
+          pBackCTA: { pLabel: 'entities.delegationDrawer.cancelButtonLabel', pTestId: 'previousButton' },
           pSecondaryCTA: undefined,
-          pPrimaryCTA: { pLabel: 'Submit', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
+          pPrimaryCTA: { pLabel: 'entities.delegationDrawer.submitButtonLabel', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
         }
 
-        expect(PNotificationMock).not.toHaveBeenCalled()
+        expect(displayNotificationMock).not.toHaveBeenCalled()
 
         const addDelegatesStepWrapper = wrapper.findComponent({ name: 'AddDelegatesStep' })
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
@@ -279,7 +284,7 @@ describe('delegationDrawer', () => {
 
         expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedProps)
 
-        expect(PNotificationMock).toHaveBeenCalledOnce()
+        expect(displayNotificationMock).toHaveBeenCalledOnce()
       })
     })
   })

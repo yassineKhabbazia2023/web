@@ -2,6 +2,7 @@ import { describe, it, vi, expect } from 'vitest'
 import {
   fetchAccount,
   fetchAccounts,
+  searchAccounts,
   patchAccount,
   fetchAccountReferential,
   fetchReferentialHubs,
@@ -29,6 +30,7 @@ import {
   getMockedReferentialHubs,
   getMockedReferentialOffices,
   getMockedAccountsDelegation,
+  getMockedSearchAccountItem,
 } from '@entities/__mocks__/account-row.mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
@@ -134,6 +136,16 @@ describe('test accountServices', () => {
           data: { items: [], currentPage: 1, totalPage: 0, totalItems: 0 },
         })
       }
+      if (url === `${API_PREFIXES.ACCOUNT}/accounts/search`) {
+        return Promise.resolve({
+          data: {
+            items: [getMockedSearchAccountItem()],
+            currentPage: 1,
+            totalPage: 1,
+            totalItems: 1,
+          },
+        })
+      }
 
       return url.includes(SEARCH_CURRENT_USER)
         ? Promise.resolve({ data: [mockedAccountRow] })
@@ -161,6 +173,24 @@ describe('test accountServices', () => {
 
       await expect(fetchAccounts(searchParams))
         .rejects.toThrow(expectedErrorMessage)
+    })
+  })
+
+  describe('searchAccounts', () => {
+    it('should search accounts by keyword and return results', async () => {
+      const keyword = 'test company'
+      const expectedUrl = `${API_PREFIXES.ACCOUNT}/accounts/search`
+      const result = await searchAccounts(keyword)
+
+      expect(commonApiGetMock).toHaveBeenCalledWith(expectedUrl, {
+        params: { keyword },
+      })
+      expect(result).toStrictEqual({
+        items: [getMockedSearchAccountItem()],
+        currentPage: 1,
+        totalPage: 1,
+        totalItems: 1,
+      })
     })
   })
 

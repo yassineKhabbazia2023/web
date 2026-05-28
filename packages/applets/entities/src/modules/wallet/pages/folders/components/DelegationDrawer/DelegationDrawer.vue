@@ -8,21 +8,41 @@
     @close="handleCloseDrawer"
   >
     <PTabs
-      v-if="isSpecificDelegationFlowType === false && hasPermanentDelegations"
+      v-if="isSpecificDelegationFlowType === false && (shouldShowDelegationRequestTabs || hasPermanentDelegations)"
       v-model="activeTab"
       class="margin-bottom--6"
     >
+      <template v-if="shouldShowDelegationRequestTabs">
+        <PTabPane
+          :pLabel="t('entities.delegationDrawer.pendingRequests')"
+          :pName="DelegationTab.PENDING_REQUESTS"
+          :pCount="pendingRequestsCount"
+        />
+        <PTabPane
+          :pLabel="t('entities.delegationDrawer.requestDelegation')"
+          :pName="DelegationTab.REQUEST_DELEGATION"
+        />
+      </template>
       <PTabPane
-        :pLabel="t('walletDelegation')"
+        :pLabel="t('entities.delegationDrawer.walletDelegation')"
         :pName="DelegationTab.DELEGATE_WALLET"
       />
       <PTabPane
-        :pLabel="t('permanentDelegations')"
+        :pLabel="t('entities.delegationDrawer.permanentDelegations')"
         :pName="DelegationTab.PERMANENT_DELEGATIONS"
       />
     </PTabs>
 
-    <template v-if="activeTab === DelegationTab.DELEGATE_WALLET || isSpecificDelegationFlowType">
+    <PendingRequestsTab v-if="activeTab === DelegationTab.PENDING_REQUESTS" />
+
+    <RequestDelegationTab
+      v-if="activeTab === DelegationTab.REQUEST_DELEGATION"
+      ref="requestDelegationRef"
+      v-model:activeStep="requestDelegationStep"
+      :selectedFolders="props.selectedFolders"
+    />
+
+    <template v-if="shouldShowDelegateWalletContent">
       <PSteps
         v-if="!isSpecificDelegationFlowType"
         class="margin-bottom--6"
@@ -68,7 +88,14 @@
 
     <template #footer>
       <PDrawerActions
-        v-if="activeTab === DelegationTab.DELEGATE_WALLET || isSpecificDelegationFlowType"
+        v-if="activeTab === DelegationTab.REQUEST_DELEGATION"
+        :pBackCTA="requestDelegationBackCTA"
+        :pPrimaryCTA="requestDelegationPrimaryCTA"
+        @click-back-cta="handleRequestDelegationPrevious"
+        @click-primary-cta="handleRequestDelegationNext"
+      />
+      <PDrawerActions
+        v-else-if="shouldShowDelegateWalletContent"
         :pBackCTA="backCTA"
         :pPrimaryCTA="primaryCTA"
         @click-back-cta="handlePreviousClick"
@@ -79,86 +106,56 @@
 </template>
 
 <script setup lang="ts">
-import { logger } from '@pulse/toolbox'
-import { computed, ref, onMounted } from 'vue'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PDrawerActions, PSteps, PTabs, PTabPane } from '@pulse/styleguide/components'
+import { PDrawer, PDrawerActions, PSteps, PTabPane, PTabs } from '@pulse/styleguide/components'
+import { displayNotification } from '@pulse/styleguide'
 import { PStepStatus, type PStepsItem } from '@pulse/styleguide/types'
-import { PNotification } from '@pulse/styleguide'
+import { FeatureFlagManager } from '@pulse/common/managers'
+import { logger } from '@pulse/toolbox'
 import { delegateAccounts, fetchPermanentDelegations } from '@entities/services/account'
+import type { AccountsDelegation, AccountsDelegationDetails, PermanentDelegationApiItem } from '@entities/services/account/account.type'
+import type { Contact } from '@entities/services/contact/contactTypes'
 import { DelegationFlowType, DelegationTab } from '@entities/modules/wallet/enums'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
-import AddDelegatesStep from './components/AddDelegatesStep'
-import type { Contact } from '@entities/services/contact/contactTypes'
-import DelegationPreviewList from './components/DelegationPreviewList'
-import CollapsableFoldersList from './components/CollapsableFoldersList'
-import SelectedFoldersList from './components/SelectedFoldersList'
-import PermanentDelegationsTab from './components/permanent-delegations/permanent-delegations.vue'
 import type { DelegationDetails } from './models/Delegation'
-import type { AccountsDelegationDetails, AccountsDelegation, PermanentDelegationApiItem } from '@entities/services/account/account.type'
+import AddDelegatesStep from './components/AddDelegatesStep'
+import CollapsableFoldersList from './components/CollapsableFoldersList'
+import DelegationPreviewList from './components/DelegationPreviewList'
+import PendingRequestsTab from './components/PendingRequests/pending-requests.vue'
+import PermanentDelegationsTab from './components/permanent-delegations/permanent-delegations.vue'
+import { REQUEST_DELEGATION_INITIAL_STEP } from './components/RequestDelegation/request-delegation.consts'
+import RequestDelegationTab from './components/RequestDelegation/request-delegation.vue'
+import SelectedFoldersList from './components/SelectedFoldersList'
+import { useRequestDelegation } from './composables/use-request-delegation.composable'
 
 const props = defineProps<DelegationDrawerProps>()
 const emit = defineEmits<{
   'update:modelValue': [boolean]
 }>()
 
-const { t } = useI18n({
-  inheritLocale: true,
-  useScope: 'local',
-  messages: {
-    'en-US': {
-      myDelegations: 'My delegations',
-      walletDelegation: 'Delegate my wallet',
-      folderDelegation: 'Delegate a folder | Delegate multiple folders',
-      permanentDelegations: 'Permanent delegations',
-      addCollaborator: 'Add a collaborator',
-      automaticDelegation: 'Automatic delegation',
-      cancelButtonLabel: 'Cancel',
-      backButtonLabel: 'Cancel',
-      primaryButtonLabel: 'Next',
-      submitButtonLabel: 'Submit',
-      notificationMessages: {
-        flowTypeFull: {
-          successNotificationMessage: 'Your wallet has been successfully delegated.',
-          failureNotificationMessage: 'Your wallet was not delegated due to a technical error.',
-        },
-        flowTypeSpecific: {
-          successNotificationMessage: 'The folder has been successfully delegated. | The folders have been successfully delegated.\n',
-          failureNotificationMessage: 'The folder was not delegated following a technical error. | The folders were not delegated following a technical error.\n',
-        },
-      },
-    },
-    'fr-FR': {
-      myDelegations: 'Mes délégations',
-      walletDelegation: 'Déléguer mon portefeuille',
-      folderDelegation: 'Déléguer un dossier | Déléguer plusieurs dossiers',
-      permanentDelegations: 'Délégations permanentes',
-      addCollaborator: 'Ajout des collaborateurs',
-      automaticDelegation: 'Délégation automatique',
-      cancelButtonLabel: 'Annuler',
-      backButtonLabel: 'Précedent',
-      primaryButtonLabel: 'Suivant',
-      submitButtonLabel: 'Valider',
-      notificationMessages: {
-        flowTypeFull: {
-          successNotificationMessage: 'Votre portefeuille a été délégué avec succès.',
-          failureNotificationMessage: 'Votre portefeuille n’a pas été délégué suite à une erreur technique.',
-        },
-        flowTypeSpecific: {
-          successNotificationMessage: 'Le dossier a été délégué avec succès. | Les dossiers ont été délégués avec succès.\n',
-          failureNotificationMessage: 'Le dossier n’a pas été délégué suite à une erreur technique. | Les dossiers n’ont pas été délégués suite à une erreur technique.\n',
-        },
-      },
-    },
-  },
-})
+const { t } = useI18n()
 
-const activeTab = ref<DelegationTab>(DelegationTab.DELEGATE_WALLET)
+const shouldShowDelegationRequestTabs = computed(() => FeatureFlagManager.isDelegationRequestTabsActivated())
+const pendingRequestsCount = ref<number>(0)
+
+const getDefaultTab = () => {
+  if (shouldShowDelegationRequestTabs.value === false) {
+    return DelegationTab.DELEGATE_WALLET
+  }
+  return pendingRequestsCount.value > 0
+    ? DelegationTab.PENDING_REQUESTS
+    : DelegationTab.REQUEST_DELEGATION
+}
+
+const activeTab = ref<DelegationTab>(getDefaultTab())
 const hasPermanentDelegations = ref(false)
 const initialPermanentDelegations = ref<PermanentDelegationApiItem[]>([])
 const activeStep = ref<number>(0)
 const hasPennylaneAccess = ref(false)
 const delegationDetails = ref<DelegationDetails[]>([])
+const requestDelegationStep = ref<number>(0)
+const requestDelegationRef = useTemplateRef<{ canGoNext: boolean } | null>('requestDelegationRef')
 
 const isDelegationDrawerOpened = computed({
   get() {
@@ -174,29 +171,43 @@ const flowType = computed(() => props.selectedFolders.length
   : DelegationFlowType.FULL,
 )
 const isSpecificDelegationFlowType = computed(() => flowType.value === DelegationFlowType.SPECIFIC)
-
-const drawerTitle = computed(() => isSpecificDelegationFlowType.value
-  ? t('folderDelegation', props.selectedFolders.length)
-  : t('myDelegations'),
+const shouldShowDelegateWalletContent = computed(() =>
+  activeTab.value === DelegationTab.DELEGATE_WALLET || isSpecificDelegationFlowType.value === true,
 )
 
-const backButtonLabel = computed(() => activeStep.value ? t('backButtonLabel') : t('cancelButtonLabel'))
-const primaryButtonLabel = computed(() => activeStep.value === 1 ? t('submitButtonLabel') : t('primaryButtonLabel'))
+const drawerTitle = computed(() => isSpecificDelegationFlowType.value
+  ? t('entities.delegationDrawer.folderDelegation', props.selectedFolders.length)
+  : t('entities.delegationDrawer.myDelegations'),
+)
+
+const backButtonLabel = computed(() => activeStep.value ? t('entities.delegationDrawer.backButtonLabel') : t('entities.delegationDrawer.cancelButtonLabel'))
+const primaryButtonLabel = computed(() => activeStep.value === 1 ? t('entities.delegationDrawer.submitButtonLabel') : t('entities.delegationDrawer.primaryButtonLabel'))
 
 const isNextButtonLoading = ref<boolean>(false)
 
 const backCTA = computed(() => ({ pLabel: backButtonLabel.value, pTestId: 'previousButton' }))
 const primaryCTA = computed(() => ({
-  pLabel: isSpecificDelegationFlowType.value ? t('submitButtonLabel') : primaryButtonLabel.value,
+  pLabel: isSpecificDelegationFlowType.value ? t('entities.delegationDrawer.submitButtonLabel') : primaryButtonLabel.value,
   pDisabled: selectedCollaborators.value.length === 0,
   pLoading: isNextButtonLoading.value,
   pTestId: 'nextButton',
 }))
 
 const delegationStepItems = computed<PStepsItem[]>(() => [
-  { pTitle: t('addCollaborator') },
-  { pTitle: t('automaticDelegation') },
+  { pTitle: t('entities.delegationDrawer.addCollaborator') },
+  { pTitle: t('entities.delegationDrawer.automaticDelegation') },
 ])
+
+const {
+  requestDelegationBackCTA,
+  requestDelegationPrimaryCTA,
+  handleRequestDelegationPrevious,
+  handleRequestDelegationNext,
+} = useRequestDelegation({
+  requestDelegationStep,
+  requestDelegationRef,
+  isDelegationDrawerOpened,
+})
 
 function handlePreviousClick() {
   if (!activeStep.value) {
@@ -266,57 +277,35 @@ const delegateFolder = async (delegationRequest: AccountsDelegation) => {
   try {
     await delegateAccounts(delegationRequest)
     handleDisplayNotification(true, delegationRequest.accountIds.length)
-  } catch (err) {
+  } catch (error) {
     handleDisplayNotification(false, delegationRequest.accountIds.length)
-    logger.error(err)
+    logger.error('Failed to delegate accounts', error)
   }
 }
 
-const displaySuccessNotification = (message:string) => {
-  PNotification({
-    message,
-    iconName: 'check',
-    showClose: true,
-    customClass: 'success',
-    position: 'bottom-right',
-  })
-}
-
-const displayFailureNotification = (message: string) => {
-  PNotification({
-    message,
-    iconName: 'x',
-    showClose: true,
-    customClass: 'error',
-    position: 'bottom-right',
-  })
-}
-
-const handleDisplayNotification = (isSuccess:boolean, numberOfSelectedFolders: number) => {
+const handleDisplayNotification = (isSuccess: boolean, numberOfSelectedFolders: number) => {
   let message
   switch (flowType.value) {
     case DelegationFlowType.FULL:
       message = isSuccess
-        ? t('notificationMessages.flowTypeFull.successNotificationMessage')
-        : t('notificationMessages.flowTypeFull.failureNotificationMessage')
+        ? t('entities.delegationDrawer.notificationMessages.flowTypeFull.successNotificationMessage')
+        : t('entities.delegationDrawer.notificationMessages.flowTypeFull.failureNotificationMessage')
       break
     case DelegationFlowType.SPECIFIC:
       message = isSuccess
-        ? t('notificationMessages.flowTypeSpecific.successNotificationMessage', numberOfSelectedFolders)
-        : t('notificationMessages.flowTypeSpecific.failureNotificationMessage', numberOfSelectedFolders)
+        ? t('entities.delegationDrawer.notificationMessages.flowTypeSpecific.successNotificationMessage', numberOfSelectedFolders)
+        : t('entities.delegationDrawer.notificationMessages.flowTypeSpecific.failureNotificationMessage', numberOfSelectedFolders)
       break
     default:
-      logger.warn('not supported')
+      logger.warn('Unsupported flow type')
       return
   }
-  if (isSuccess) {
-    displaySuccessNotification(message)
-  } else {
-    displayFailureNotification(message)
-  }
+
+  displayNotification(isSuccess ? 'success' : 'error', message)
 }
 
 const handleCloseDrawer = () => {
+  requestDelegationStep.value = REQUEST_DELEGATION_INITIAL_STEP
   emit('update:modelValue', false)
 }
 

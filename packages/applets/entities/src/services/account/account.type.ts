@@ -133,3 +133,11 @@ export interface PermanentDelegationApiItem {
   startDate: string
   delegatee: PermanentDelegationDelegatee
 }
+
+export interface SearchAccountItem {
+  accountId: number
+  legalName: string
+  accountNumber: string
+  siret?: string
+  directorEmail?: string
+}

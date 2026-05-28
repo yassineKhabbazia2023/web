@@ -8,6 +8,7 @@ import type {
   Hub,
   AccountsDelegationDetails,
   AccountsDelegation,
+  SearchAccountItem,
 } from '@entities/services/account/account.type'
 import { AddressType } from '@entities/enums'
 import type { Address, Office, QueryResult, MockEntityKey } from '@pulse/common/types'
@@ -195,4 +196,18 @@ export function getMockedAccountsDelegation(override: Partial<AccountsDelegation
   }
 
   return delegationRequest
+}
+
+export function getMockedSearchAccountItem(override: Partial<SearchAccountItem> = {}): SearchAccountItem {
+  const entity = MockEntityData.BASIC
+  const searchAccountItem: SearchAccountItem = {
+    accountId: entity.accountId,
+    legalName: entity.legalName,
+    accountNumber: entity.accountNumber,
+    siret: '12345678901234',
+    directorEmail: 'director@example.com',
+    ...override,
+  }
+
+  return searchAccountItem
 }

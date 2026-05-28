@@ -90,7 +90,7 @@
           }
         }
       },
-      "prospectArchive": {
+      "prospectDelete": {
         "title": "Archive this prospect account?",
         "message": "You are about to permanently archive this account.",
         "cancel": "Cancel",
@@ -153,6 +153,44 @@
       "notification": {
         "deleteSuccess": "The permanent delegation of {name} has been deleted.",
         "deleteError": "The permanent delegation of {name} could not be deleted."
+      }
+    },
+    "requestDelegation": {
+      "selectFolder": "Select folder",
+      "selectCollaborators": "Collaborators",
+      "recap": "Summary",
+      "chooseFolderTitle": "Choose the folder you are interested in",
+      "chooseFolderDescription": "Please search for the folder you want to add to your portfolio:",
+      "searchAccountLabel": "Company name or customer code",
+      "searchAccountPlaceholder": "Company name or customer code",
+      "newCollaborators": "New collaborators",
+      "addCollaboratorsToFolder": "Add collaborators to folder",
+      "searchLabel": "Search",
+      "searchError": "An error occurred while searching. Please try again later.",
+      "hyphen": "-"
+    },
+    "delegationDrawer": {
+      "myDelegations": "My delegations",
+      "pendingRequests": "Pending request(s)",
+      "walletDelegation": "Delegate my wallet",
+      "folderDelegation": "Delegate a folder | Delegate multiple folders",
+      "permanentDelegations": "Permanent delegations",
+      "requestDelegation": "Request delegation",
+      "addCollaborator": "Add a collaborator",
+      "automaticDelegation": "Automatic delegation",
+      "cancelButtonLabel": "Cancel",
+      "backButtonLabel": "Previous",
+      "primaryButtonLabel": "Next",
+      "submitButtonLabel": "Submit",
+      "notificationMessages": {
+        "flowTypeFull": {
+          "successNotificationMessage": "Your wallet has been successfully delegated.",
+          "failureNotificationMessage": "Your wallet was not delegated due to a technical error."
+        },
+        "flowTypeSpecific": {
+          "successNotificationMessage": "The folder has been successfully delegated. | The folders have been successfully delegated.",
+          "failureNotificationMessage": "The folder was not delegated following a technical error. | The folders were not delegated following a technical error."
+        }
       }
     },
     "invoices": {

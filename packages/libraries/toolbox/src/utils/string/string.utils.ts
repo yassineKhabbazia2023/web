@@ -46,3 +46,11 @@ export function formatFrenchPhoneNumber(phone?: string): string {
 export function containsIgnoreCase(text: string, searchValue: string): boolean {
   return isNotNullNorEmpty(text) && text.toLowerCase().includes(searchValue.toLowerCase())
 }
+
+export function getStringInitials(text: string, length = 2): string {
+  if (text === '') {
+    return ''
+  }
+
+  return text.substring(0, length).toUpperCase()
+}
