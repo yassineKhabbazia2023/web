@@ -1,9 +1,10 @@
 import { LoginService } from './login.service'
-import type { LoginStrategy } from './login.service.types'
+import type { LoginStrategy, SsoLoginStrategy } from './login.service.types'
 
 describe('LoginService', () => {
   beforeEach(() => {
     LoginService['strategy'] = undefined
+    LoginService['ssoStrategy'] = undefined
   })
 
   describe('authenticate', () => {
@@ -32,6 +33,41 @@ describe('LoginService', () => {
 
       expect(first.authenticate).not.toHaveBeenCalled()
       expect(second.authenticate).toHaveBeenCalledOnce()
+    })
+  })
+
+  describe('redirectToSso', () => {
+    it('should throw when redirectToSso is called without a registered SSO strategy', async () => {
+      await expect(LoginService.redirectToSso())
+        .rejects.toThrow('LoginService: no SSO strategy registered')
+    })
+
+    it('should delegate redirectToSso to the registered SSO strategy', async () => {
+      const redirect = vi.fn().mockResolvedValue(undefined)
+      const strategy: SsoLoginStrategy = { redirect, handleRedirectResult: vi.fn() }
+
+      LoginService.registerSsoStrategy(strategy)
+      await LoginService.redirectToSso()
+
+      expect(redirect).toHaveBeenCalledOnce()
+    })
+  })
+
+  describe('handleSsoRedirectResult', () => {
+    it('should throw when handleSsoRedirectResult is called without a registered SSO strategy', async () => {
+      await expect(LoginService.handleSsoRedirectResult())
+        .rejects.toThrow('LoginService: no SSO strategy registered')
+    })
+
+    it('should delegate handleSsoRedirectResult to the registered SSO strategy and return its result', async () => {
+      const handleRedirectResult = vi.fn().mockResolvedValue(true)
+      const strategy: SsoLoginStrategy = { redirect: vi.fn(), handleRedirectResult }
+
+      LoginService.registerSsoStrategy(strategy)
+      const result = await LoginService.handleSsoRedirectResult()
+
+      expect(handleRedirectResult).toHaveBeenCalledOnce()
+      expect(result).toBe(true)
     })
   })
 })

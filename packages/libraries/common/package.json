@@ -20,7 +20,6 @@
     "./services/permissions": "./src/services/permissions/index.ts",
     "./services/entities": "./src/services/entities/index.ts",
     "./services/contact": "./src/services/contact/index.ts",
-    "./services/msal": "./src/services/msal/index.ts",
     "./services/login": "./src/services/login/index.ts",
     "./services/logout": "./src/services/logout/index.ts",
     "./services/token-provider": "./src/services/token-provider/index.ts",
