@@ -23,6 +23,12 @@ export function createAppConfig(options: AppConfigOptions) {
     mergeConfig(viteConfigBase({ mode }), {
       base,
       plugins,
+      // Pin the dependency-scan entry to the app's own index.html. Vite's default
+      // (`**/*.html`) also crawls generated artifacts such as `stats.html` and
+      // `playwright-report/index.html`, which breaks the rolldown dep scan.
+      optimizeDeps: {
+        entries: ['index.html'],
+      },
       server: {
         port,
         strictPort: true,

@@ -47,7 +47,7 @@ stages:
         path: $(playwrightCacheFolder)
       displayName: 'Preparation - Cache Playwright browsers'
 
-    - script: npx playwright install --with-deps
+    - script: npx playwright install --with-deps chromium
       displayName: 'Preparation - Install Playwright browsers'
 
     # Check changes
