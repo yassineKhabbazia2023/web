@@ -1,6 +1,8 @@
 import type { Collab } from '@entities/types'
+
 export const mockCollabsData: Collab[] = [
   {
+    contactId: 1,
     globalContactId: '1',
     firstName: 'custom firstName',
     lastName: 'custom lastName',
@@ -9,8 +11,12 @@ export const mockCollabsData: Collab[] = [
     office: 'Paris',
     hasAccess: false,
     isCustomerRelation: true,
+    actionLevel: 0,
+    labels: [],
+    isActive: true,
   },
   {
+    contactId: 2,
     globalContactId: '2',
     firstName: 'another custom firstName',
     lastName: 'another custom lastName',
@@ -19,8 +25,12 @@ export const mockCollabsData: Collab[] = [
     office: 'Paris',
     hasAccess: true,
     isCustomerRelation: false,
+    actionLevel: 1,
+    labels: [],
+    isActive: true,
   },
   {
+    contactId: 3,
     globalContactId: '3',
     firstName: 'and another custom firstName',
     lastName: 'and another custom lastName',
@@ -29,5 +39,24 @@ export const mockCollabsData: Collab[] = [
     office: 'Paris',
     hasAccess: true,
     isCustomerRelation: false,
+    actionLevel: 2,
+    labels: [],
+    isActive: true,
   },
 ]
+
+export const createMockCollab = (overrides: Partial<Collab> = {}): Collab => ({
+  contactId: 9999,
+  globalContactId: 'global-9999',
+  firstName: 'Mock',
+  lastName: 'User',
+  email: 'mock@example.com',
+  personaName: 'Mock Persona',
+  office: 'Paris',
+  hasAccess: false,
+  isCustomerRelation: false,
+  actionLevel: 0,
+  labels: [],
+  isActive: true,
+  ...overrides,
+})

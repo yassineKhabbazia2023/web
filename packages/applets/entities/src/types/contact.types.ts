@@ -1,4 +1,5 @@
 import type { IconName, PTagProps } from '@pulse/styleguide/types'
+import type { RoleLabel } from '@entities/modules/entity/shared/collaborators/types/collaborators.types'
 
 export interface Contact {
   contactId: number
@@ -27,14 +28,18 @@ export type contactsRequest = {
 }
 
 export interface Collab {
+  contactId: number
   globalContactId: string
   firstName: string
   lastName: string
   email: string
-  personaName: string
+  personaName?: string
   office: string
   hasAccess: boolean
   isCustomerRelation: boolean
+  actionLevel: number
+  labels: RoleLabel[]
+  isActive: boolean
 }
 
 export interface Role {

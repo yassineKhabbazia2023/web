@@ -6,44 +6,39 @@
     :pSteps="delegationStepItems"
   />
 
-  <PBlockHeader
+  <SelectAccountStep
     v-if="isSelectFolderStep"
-    :pTitle="t('entities.requestDelegation.chooseFolderTitle')"
-    :pHasButton="false"
-    pColor="persian"
-    pSize="big"
-    :pImage="{
-      pName: 'building-duotone',
-    }"
-  >
-    <template #suffix>
-      <p v-if="showFolderDescription" class="margin-bottom--2 font-xsmall">
-        {{ t('entities.requestDelegation.chooseFolderDescription') }}
-      </p>
-      <SearchAccountAutocomplete
-        :selectedAccount="selectedAccount"
-        @select-account="handleSelectAccount"
-        @remove-account="handleRemoveAccount"
-      />
-    </template>
-  </PBlockHeader>
+    :selectedAccount="selectedAccount"
+    @select-account="handleSelectAccount"
+    @remove-account="handleRemoveAccount"
+  />
+
+  <SelectCollaboratorsStep
+    v-if="isSelectCollaboratorsStep && selectedAccount"
+    :key="selectedAccount.accountId"
+    :accountId="selectedAccount.accountId"
+    :initialSelectedCollaborators="selectedCollaborators"
+    @update:selected-collaborators="handleCollaboratorsSelected"
+  />
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PBlockHeader, PSteps } from '@pulse/styleguide/components'
+import { PSteps } from '@pulse/styleguide/components'
 import { PStepStatus, type PStepsItem } from '@pulse/styleguide/types'
-import type { Contact } from '@entities/services/contact/contactTypes'
+import type { Collab } from '@entities/types'
 import type { SearchAccountItem } from '@entities/services/account/account.type'
-import SearchAccountAutocomplete from './components/SearchAccountAutocomplete/search-account-autocomplete.vue'
+import SelectAccountStep from './components/SelectAccountStep/select-account-step.vue'
+import SelectCollaboratorsStep from './components/SelectCollaboratorsStep/select-collaborators-step.vue'
 import { REQUEST_DELEGATION_STEPS } from './request-delegation.consts'
+import { MAX_SELECTED_COLLABORATORS, MIN_SELECTED_COLLABORATORS } from './components/SelectCollaboratorsStep/select-collaborators-step.consts.js'
 
 const activeStep = defineModel<number>('activeStep', { default: 0 })
 
 const { t } = useI18n()
 const selectedAccount = ref<SearchAccountItem | null>(null)
-const selectedCollaborators = ref<Contact[]>([])
+const selectedCollaborators = ref<Collab[]>([])
 
 const delegationStepItems = computed<PStepsItem[]>(() => [
   { pTitle: t('entities.requestDelegation.selectFolder') },
@@ -52,7 +47,7 @@ const delegationStepItems = computed<PStepsItem[]>(() => [
 ])
 
 const isSelectFolderStep = computed(() => activeStep.value === REQUEST_DELEGATION_STEPS.SELECT_FOLDER)
-const showFolderDescription = computed(() => selectedAccount.value === null)
+const isSelectCollaboratorsStep = computed(() => activeStep.value === REQUEST_DELEGATION_STEPS.SELECT_COLLABORATORS)
 
 const canGoNext = computed(() => {
   if (activeStep.value === REQUEST_DELEGATION_STEPS.SELECT_FOLDER) {
@@ -60,7 +55,8 @@ const canGoNext = computed(() => {
   }
 
   if (activeStep.value === REQUEST_DELEGATION_STEPS.SELECT_COLLABORATORS) {
-    return selectedCollaborators.value.length > 0
+    return selectedCollaborators.value.length >= MIN_SELECTED_COLLABORATORS &&
+    selectedCollaborators.value.length <= MAX_SELECTED_COLLABORATORS
   }
 
   return false
@@ -68,10 +64,15 @@ const canGoNext = computed(() => {
 
 function handleSelectAccount(account: SearchAccountItem) {
   selectedAccount.value = account
+  selectedCollaborators.value = []
 }
 
 function handleRemoveAccount() {
   selectedAccount.value = null
+}
+
+function handleCollaboratorsSelected(collabs: Collab[]) {
+  selectedCollaborators.value = collabs
 }
 
 defineExpose({

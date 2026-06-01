@@ -165,9 +165,9 @@ describe('delegationDrawer', () => {
           pPrimaryCTA: { pLabel: 'entities.delegationDrawer.primaryButtonLabel', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
         }
         const expectedPropsAfter = {
-          pBackCTA: { pLabel: 'entities.delegationDrawer.backButtonLabel', pTestId: 'previousButton' },
+          pBackCTA: { pLabel: 'entities.delegationDrawer.cancelButtonLabel', pTestId: 'previousButton' },
           pSecondaryCTA: undefined,
-          pPrimaryCTA: { pLabel: 'entities.delegationDrawer.submitButtonLabel', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
+          pPrimaryCTA: { pLabel: 'entities.delegationDrawer.primaryButtonLabel', pDisabled: true, pLoading: false, pTestId: 'nextButton' },
         }
         const wrapper = createFullDelegationWrapper()
         await nextTick()
@@ -239,10 +239,17 @@ describe('delegationDrawer', () => {
         const wrapper = createWrapper()
         const hasPennylaneAccessMock = true
         const nextPreviousButtonsWrapper = wrapper.findComponent({ name: 'PDrawerActions' })
-        const expectedProps = {
+
+        const expectedPropsAfterEmit = {
           pBackCTA: { pLabel: 'entities.delegationDrawer.cancelButtonLabel', pTestId: 'previousButton' },
           pSecondaryCTA: undefined,
           pPrimaryCTA: { pLabel: 'entities.delegationDrawer.submitButtonLabel', pDisabled: false, pLoading: false, pTestId: 'nextButton' },
+        }
+
+        const expectedPropsAfterDelegation = {
+          pBackCTA: { pLabel: 'entities.delegationDrawer.cancelButtonLabel', pTestId: 'previousButton' },
+          pSecondaryCTA: undefined,
+          pPrimaryCTA: { pLabel: 'entities.delegationDrawer.submitButtonLabel', pDisabled: true, pLoading: false, pTestId: 'nextButton' },
         }
 
         expect(displayNotificationMock).not.toHaveBeenCalled()
@@ -251,7 +258,7 @@ describe('delegationDrawer', () => {
         await addDelegatesStepWrapper.vm.$emit('collaboratorSelection', COLLABORATORS_SELECTED)
         await addDelegatesStepWrapper.vm.$emit('update:hasPennylaneAccess', hasPennylaneAccessMock)
 
-        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedProps)
+        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedPropsAfterEmit)
 
         await nextPreviousButtonsWrapper.vm.$emit('click-primary-cta')
 
@@ -282,7 +289,7 @@ describe('delegationDrawer', () => {
 
         await flushPromises()
 
-        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedProps)
+        expect(nextPreviousButtonsWrapper.props()).toStrictEqual(expectedPropsAfterDelegation)
 
         expect(displayNotificationMock).toHaveBeenCalledOnce()
       })

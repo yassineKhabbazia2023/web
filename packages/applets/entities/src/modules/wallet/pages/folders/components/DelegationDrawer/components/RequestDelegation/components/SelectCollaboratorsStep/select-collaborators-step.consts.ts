@@ -1,0 +1,4 @@
+export const MIN_SELECTED_COLLABORATORS = 1
+export const MAX_SELECTED_COLLABORATORS = 3
+export const INITIAL_PAGE_SIZE = 6
+export const AUTO_SELECT_COUNT = 2

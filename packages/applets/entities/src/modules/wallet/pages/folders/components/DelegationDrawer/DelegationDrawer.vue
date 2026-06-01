@@ -7,57 +7,10 @@
     @close-drawer-button="handleCloseDrawer"
     @close="handleCloseDrawer"
   >
-    <PTabs
-      v-if="isSpecificDelegationFlowType === false && (shouldShowDelegationRequestTabs || hasPermanentDelegations)"
-      v-model="activeTab"
-      class="margin-bottom--6"
-    >
-      <template v-if="shouldShowDelegationRequestTabs">
-        <PTabPane
-          :pLabel="t('entities.delegationDrawer.pendingRequests')"
-          :pName="DelegationTab.PENDING_REQUESTS"
-          :pCount="pendingRequestsCount"
-        />
-        <PTabPane
-          :pLabel="t('entities.delegationDrawer.requestDelegation')"
-          :pName="DelegationTab.REQUEST_DELEGATION"
-        />
-      </template>
-      <PTabPane
-        :pLabel="t('entities.delegationDrawer.walletDelegation')"
-        :pName="DelegationTab.DELEGATE_WALLET"
-      />
-      <PTabPane
-        :pLabel="t('entities.delegationDrawer.permanentDelegations')"
-        :pName="DelegationTab.PERMANENT_DELEGATIONS"
-      />
-    </PTabs>
-
-    <PendingRequestsTab v-if="activeTab === DelegationTab.PENDING_REQUESTS" />
-
-    <RequestDelegationTab
-      v-if="activeTab === DelegationTab.REQUEST_DELEGATION"
-      ref="requestDelegationRef"
-      v-model:activeStep="requestDelegationStep"
-      :selectedFolders="props.selectedFolders"
-    />
-
-    <template v-if="shouldShowDelegateWalletContent">
-      <PSteps
-        v-if="!isSpecificDelegationFlowType"
-        class="margin-bottom--6"
-        :pActive="activeStep"
-        :pFinishStatus="PStepStatus.SUCCESS"
-        :pSteps="delegationStepItems"
-      />
-
-      <div
-        v-if="isSpecificDelegationFlowType"
-        class="margin-bottom--6"
-      >
-        <CollapsableFoldersList
-          v-if="selectedFolders.length > 1"
-        >
+    <!-- Specific Flow: Direct delegation for selected folders -->
+    <template v-if="isSpecificDelegationFlowType">
+      <div class="margin-bottom--6">
+        <CollapsableFoldersList v-if="selectedFolders.length > 1">
           <SelectedFoldersList :folders="selectedFolders" />
         </CollapsableFoldersList>
 
@@ -71,7 +24,7 @@
         v-if="activeStep === 0"
         v-model:hasPennylaneAccess="hasPennylaneAccess"
         :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
-        :shouldDisplayNumberOfFoldersInPortfolio="!isSpecificDelegationFlowType"
+        :shouldDisplayNumberOfFoldersInPortfolio="false"
         @collaborator-selection="handleCollaboratorSelection"
       />
 
@@ -81,26 +34,98 @@
       />
     </template>
 
-    <PermanentDelegationsTab
-      v-else-if="activeTab === DelegationTab.PERMANENT_DELEGATIONS"
-      :initialData="initialPermanentDelegations"
-    />
+    <!-- Full Flow: Tabs with all delegation options -->
+    <template v-else>
+      <PTabs
+        v-if="shouldShowDelegationRequestTabs || hasPermanentDelegations"
+        v-model="activeTab"
+        class="margin-bottom--6"
+        @tab-click="handleTabChange"
+      >
+        <template v-if="shouldShowDelegationRequestTabs">
+          <PTabPane
+            :pLabel="t('entities.delegationDrawer.pendingRequests')"
+            :pName="DelegationTab.PENDING_REQUESTS"
+            :pCount="pendingRequestsCount"
+          />
+          <PTabPane
+            :pLabel="t('entities.delegationDrawer.requestDelegation')"
+            :pName="DelegationTab.REQUEST_DELEGATION"
+          />
+        </template>
+        <PTabPane
+          :pLabel="t('entities.delegationDrawer.walletDelegation')"
+          :pName="DelegationTab.DELEGATE_WALLET"
+        />
+        <PTabPane
+          :pLabel="t('entities.delegationDrawer.permanentDelegations')"
+          :pName="DelegationTab.PERMANENT_DELEGATIONS"
+        />
+      </PTabs>
+
+      <PendingRequestsTab v-if="activeTab === DelegationTab.PENDING_REQUESTS" />
+
+      <RequestDelegationTab
+        v-if="activeTab === DelegationTab.REQUEST_DELEGATION"
+        ref="requestDelegationRef"
+        v-model:activeStep="requestDelegationStep"
+      />
+
+      <template v-if="activeTab === DelegationTab.DELEGATE_WALLET">
+        <PSteps
+          class="margin-bottom--6"
+          :pActive="activeStep"
+          :pFinishStatus="PStepStatus.SUCCESS"
+          :pSteps="delegationStepItems"
+        />
+
+        <AddDelegatesStep
+          v-if="activeStep === 0"
+          v-model:hasPennylaneAccess="hasPennylaneAccess"
+          :numberOfFoldersInPortfolio="numberOfFoldersInPortfolio"
+          shouldDisplayNumberOfFoldersInPortfolio
+          @collaborator-selection="handleCollaboratorSelection"
+        />
+
+        <DelegationPreviewList
+          v-else-if="activeStep === 1"
+          v-model="delegationDetails"
+        />
+      </template>
+
+      <PermanentDelegationsTab
+        v-else-if="activeTab === DelegationTab.PERMANENT_DELEGATIONS"
+        :initialData="initialPermanentDelegations"
+      />
+    </template>
 
     <template #footer>
+      <!-- Specific Flow Footer -->
       <PDrawerActions
-        v-if="activeTab === DelegationTab.REQUEST_DELEGATION"
-        :pBackCTA="requestDelegationBackCTA"
-        :pPrimaryCTA="requestDelegationPrimaryCTA"
-        @click-back-cta="handleRequestDelegationPrevious"
-        @click-primary-cta="handleRequestDelegationNext"
-      />
-      <PDrawerActions
-        v-else-if="shouldShowDelegateWalletContent"
+        v-if="isSpecificDelegationFlowType"
         :pBackCTA="backCTA"
         :pPrimaryCTA="primaryCTA"
         @click-back-cta="handlePreviousClick"
         @click-primary-cta="handleNextClick"
       />
+
+      <!-- Full Flow Footer -->
+      <template v-else>
+        <PDrawerActions
+          v-if="activeTab === DelegationTab.REQUEST_DELEGATION"
+          :pBackCTA="requestDelegationBackCTA"
+          :pPrimaryCTA="requestDelegationPrimaryCTA"
+          @click-back-cta="handleRequestDelegationPrevious"
+          @click-primary-cta="handleRequestDelegationNext"
+        />
+        <PDrawerActions
+          v-else-if="activeTab === DelegationTab.DELEGATE_WALLET"
+          :pBackCTA="backCTA"
+          :pPrimaryCTA="primaryCTA"
+          @click-back-cta="handlePreviousClick"
+          @click-primary-cta="handleNextClick"
+        />
+      </template>
     </template>
   </PDrawer>
 </template>
@@ -140,6 +165,10 @@ const shouldShowDelegationRequestTabs = computed(() => FeatureFlagManager.isDele
 const pendingRequestsCount = ref<number>(0)
 
 const getDefaultTab = () => {
+  if (props.selectedFolders.length > 0) {
+    return DelegationTab.DELEGATE_WALLET
+  }
+
   if (shouldShowDelegationRequestTabs.value === false) {
     return DelegationTab.DELEGATE_WALLET
   }
@@ -149,6 +178,7 @@ const getDefaultTab = () => {
 }
 
 const activeTab = ref<DelegationTab>(getDefaultTab())
+const previousTab = ref<DelegationTab>(getDefaultTab())
 const hasPermanentDelegations = ref(false)
 const initialPermanentDelegations = ref<PermanentDelegationApiItem[]>([])
 const activeStep = ref<number>(0)
@@ -171,9 +201,6 @@ const flowType = computed(() => props.selectedFolders.length
   : DelegationFlowType.FULL,
 )
 const isSpecificDelegationFlowType = computed(() => flowType.value === DelegationFlowType.SPECIFIC)
-const shouldShowDelegateWalletContent = computed(() =>
-  activeTab.value === DelegationTab.DELEGATE_WALLET || isSpecificDelegationFlowType.value === true,
-)
 
 const drawerTitle = computed(() => isSpecificDelegationFlowType.value
   ? t('entities.delegationDrawer.folderDelegation', props.selectedFolders.length)
@@ -304,8 +331,25 @@ const handleDisplayNotification = (isSuccess: boolean, numberOfSelectedFolders: 
   displayNotification(isSuccess ? 'success' : 'error', message)
 }
 
+function handleTabChange(clickedTab: DelegationTab) {
+  if (clickedTab !== previousTab.value) {
+    resetDelegationState()
+  }
+  previousTab.value = clickedTab
+}
+
+function resetDelegationState() {
+  activeStep.value = 0
+  requestDelegationStep.value = 0
+  selectedCollaborators.value = []
+  delegationDetails.value = []
+  hasPennylaneAccess.value = false
+}
+
 const handleCloseDrawer = () => {
   requestDelegationStep.value = REQUEST_DELEGATION_INITIAL_STEP
+  activeTab.value = getDefaultTab()
+  resetDelegationState()
   emit('update:modelValue', false)
 }
 
