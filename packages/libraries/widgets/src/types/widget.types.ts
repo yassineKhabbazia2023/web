@@ -8,6 +8,7 @@ export type WidgetGridDefinition = {
   customerPermission?: Permission[]
   scope?: WidgetScope[]
   props?: Record<string, unknown>
+  listeners?: Record<string, (...args: unknown[]) => void>
 }
 
 export type WidgetProp = {

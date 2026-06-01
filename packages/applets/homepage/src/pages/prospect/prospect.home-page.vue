@@ -26,6 +26,7 @@
         <component
           :is="widget.name"
           v-bind="widget.props"
+          v-on="widget.listeners"
         />
       </div>
     </div>
@@ -34,21 +35,41 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useCurrentEntityStore } from '@pulse/common/stores'
+import { RouteName, RouteParam } from '@pulse/common/enums'
 import { PEntityHeader } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { WidgetName, WidgetSize } from '@pulse/widgets/enums'
 import type { WidgetGridDefinition } from '@pulse/widgets/types'
 import { useProspectContacts } from './use-prospect-contacts.composable'
 
+const router = useRouter()
 const { isMobile } = useResponsive()
-const { currentEntity } = storeToRefs(useCurrentEntityStore())
+const { currentEntity, currentEntityId } = storeToRefs(useCurrentEntityStore())
 const { contacts, isContactsLoading } = useProspectContacts()
+
+function onWorkspaceIntroCta(): void {
+  if (currentEntityId.value === undefined) {
+    return
+  }
+
+  router.push({
+    name: RouteName.PROSPECT_CONFORMITY,
+    params: { [RouteParam.ENTITY_ID]: currentEntityId.value },
+  })
+}
 
 const widgets = computed<(WidgetGridDefinition & { spanClass: string })[]>(() => {
   const definitions: WidgetGridDefinition[] = [
-    { name: WidgetName.WORKSPACE_INTRO, size: WidgetSize.TWO_SPANS },
+    {
+      name: WidgetName.WORKSPACE_INTRO,
+      size: WidgetSize.TWO_SPANS,
+      listeners: {
+        'workspace-intro-cta': onWorkspaceIntroCta,
+      },
+    },
     {
       name: WidgetName.CONTACTS,
       size: WidgetSize.ONE_CELL,
@@ -63,6 +84,7 @@ const widgets = computed<(WidgetGridDefinition & { spanClass: string })[]>(() =>
   return definitions.map((widget) => ({
     ...widget,
     spanClass: `prospect-home-page__grid-item--span-${widget.size}`,
+    listeners: widget.listeners ?? {},
   }))
 })
 </script>

@@ -42,7 +42,7 @@
       <PButton
         pType="primary"
         data-testid="widget-workspace-intro-primary-action"
-        @click="$emit('complete-info')"
+        @click="$emit('workspace-intro-cta')"
       >
         {{ resolvedPrimaryLabel }}
         <PIcon
@@ -70,7 +70,7 @@ interface WorkspaceIntroProps {
 const props = defineProps<WorkspaceIntroProps>()
 
 defineEmits<{
-  'complete-info': []
+  'workspace-intro-cta': []
 }>()
 
 const { t } = useI18n({

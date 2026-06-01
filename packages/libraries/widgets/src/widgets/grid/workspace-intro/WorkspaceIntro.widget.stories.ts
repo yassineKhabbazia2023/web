@@ -29,8 +29,8 @@ const meta: Meta<typeof WorkspaceIntroWidget> = {
       control: 'text',
       description: 'Libellé du bouton primaire (par défaut widgets.workspaceIntro.primaryAction).',
     },
-    'onComplete-info': {
-      action: 'complete-info',
+    'onWorkspace-intro-cta': {
+      action: 'workspace-intro-cta',
       description: 'Émis au clic sur le bouton primaire.',
     },
   },
