@@ -9,7 +9,13 @@
       pLabelPosition="top"
       pRequireAsteriskPosition="right"
     >
-      <div class="flex flex--justify-content-space-between">
+      <div
+        class="
+          flex
+          flex--justify-content-space-between
+          fields-row
+        "
+      >
         <div class="half-width">
           <PFormItem
             :pLabel="t('role')"
@@ -129,10 +135,24 @@ onMounted(async () => {
 </script>
 
 <style lang="scss" scoped>
+@use '@pulse/styleguide/scss/breakpoints' as breakpoints;
+
 $gap: 12px;
 
 .half-width {
   width: calc(50% - $gap/2);
+}
+
+// On small screens, stack the side-by-side fields (role / mobile phone)
+// vertically and let them span the full width.
+@include breakpoints.media(xs) {
+  .fields-row {
+    flex-direction: column;
+  }
+
+  .half-width {
+    width: 100%;
+  }
 }
 </style>
 

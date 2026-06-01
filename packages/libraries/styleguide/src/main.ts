@@ -19,8 +19,14 @@ export { AppColors } from './utils/AppColorsEnum'
 export { AvatarRoles } from './utils/avatar.roles'
 export { BREAKPOINT_SIZES } from './constants/breakpoint.const'
 export { getIsMobile } from './utils/responsive.utils'
-export { useResponsive } from './composables/use-responsive.composable'
-export type { UseResponsiveReturn } from './composables/use-responsive.composable'
+export {
+  useResponsive,
+  getEffectiveIsMobile,
+  getForceDesktopMode,
+  enableForceDesktopMode,
+  disableForceDesktopMode,
+} from './composables/use-responsive.composable'
+export * from './composables/use-responsive.types'
 export * from './utils/avatar-colors.helper'
 export * from './utils/fileExtension'
 export * from './utils/scroll.utils'

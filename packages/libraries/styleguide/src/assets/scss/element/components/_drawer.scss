@@ -62,7 +62,10 @@ div.el-overlay:not(.p-drawer--mini) {
       left: auto;
       width: 654px;
       height: auto !important;
-      max-height: calc(100vh - 24px);
+      // Use the dynamic viewport height so the drawer footer stays inside the
+      // visible area even when a mobile browser's UI bars are shown. With 100vh
+      // the footer can slip behind the browser chrome and become unreachable.
+      max-height: calc(100dvh - 24px);
       padding-top: 6rem;
       box-shadow: 0px 0px 2px 0px rgba(32, 32, 32, 0.1), 0px 1px 2px 0px rgba(32, 32, 32, 0.05), 0px 2px 4px 0px rgba(32, 32, 32, 0.08), 0px 3px 4px 0px rgba(32, 32, 32, 0.1);
       z-index: 20;
@@ -72,6 +75,17 @@ div.el-overlay:not(.p-drawer--mini) {
       }
       @media screen and (max-width: 1440px) {
         width: 464px !important;
+      }
+
+      // Small screens: pin the drawer to the full visible viewport so its fixed
+      // width no longer overflows and the footer remains reachable. The top
+      // padding still clears the fixed app header (--p-header-height).
+      @include media(xs) {
+        right: 0;
+        left: 0;
+        width: 100% !important;
+        max-height: 100dvh;
+        padding-top: calc(var(--p-header-height) + 1.6rem);
       }
 
       .el-drawer__body {

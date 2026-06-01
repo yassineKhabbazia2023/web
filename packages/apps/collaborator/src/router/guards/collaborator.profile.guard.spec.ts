@@ -1,17 +1,18 @@
+import type { RouteLocationNormalizedGeneric } from 'vue-router'
 import { RouteName } from '@pulse/common/enums'
 import { FeatureFlagManager } from '@pulse/common/managers'
-import { getIsMobile } from '@pulse/styleguide'
+import { getEffectiveIsMobile } from '@pulse/styleguide'
 import { collaboratorProfileGuard } from './collaborator.profile.guard'
 
 vi.mock('@pulse/toolbox')
-vi.mock('@pulse/common/managers')
 vi.mock('@pulse/styleguide')
+vi.mock('@pulse/common/managers')
 
-const to = { name: RouteName.PROFILE_INFORMATION } as any
+const to = { name: RouteName.PROFILE_INFORMATION } as unknown as RouteLocationNormalizedGeneric
 
 const setup = (options: { responsive: boolean, mobile: boolean }) => {
   vi.mocked(FeatureFlagManager.isResponsiveActivated).mockReturnValue(options.responsive)
-  vi.mocked(getIsMobile).mockReturnValue(options.mobile)
+  vi.mocked(getEffectiveIsMobile).mockReturnValue(options.mobile)
 }
 
 describe('collaboratorProfileGuard', () => {

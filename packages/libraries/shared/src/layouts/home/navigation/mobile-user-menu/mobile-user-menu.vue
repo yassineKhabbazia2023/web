@@ -35,6 +35,17 @@
         />
       </nav>
 
+      <!-- Display mode -->
+      <nav class="mobile-user-menu__section padding-y--2">
+        <MobileUserMenuItem
+          :label="t('forceDesktopMode')"
+          is-action
+          icon-name="display"
+          data-testid="mobile-user-menu-force-desktop-mode"
+          @click="handleForceDesktopMode"
+        />
+      </nav>
+
       <!-- Legal stuff -->
       <nav class="mobile-user-menu__section mobile-user-menu__section--legal padding-y--2">
         <MobileUserMenuItem
@@ -71,6 +82,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDrawer } from '@pulse/styleguide/components'
+import { enableForceDesktopMode } from '@pulse/styleguide'
 import { RouteName } from '@pulse/common/enums'
 import { LEGAL_NOTICE_URL, PRIVACY_POLICY_URL } from '@pulse/common/constants'
 import { fetchUrlTerms } from '@pulse/common/services/cgu'
@@ -89,6 +101,7 @@ const { t } = useI18n({
       myFolders: 'My portfolio',
       myInformation: 'My information',
       password: 'Password',
+      forceDesktopMode: 'Switch to desktop mode',
       legalNotice: 'Legal Notice',
       cgu: 'CGU',
       privacyPolicy: 'Privacy Policy',
@@ -100,6 +113,7 @@ const { t } = useI18n({
       myFolders: 'Mon portefeuille',
       myInformation: 'Mes informations',
       password: 'Mot de passe',
+      forceDesktopMode: 'Passer en mode bureau',
       legalNotice: 'Mentions légales',
       cgu: 'CGU',
       privacyPolicy: 'Politique de confidentialité',
@@ -114,19 +128,25 @@ const isDrawerOpened = defineModel<boolean>('isDrawerOpened', { default: false }
 
 const urlTerms = ref('')
 
-const showPassword = computed(() => userStore.isCollab === false)
-const showCgu = computed(() => userStore.isCollab === false)
+const isCollab = computed(() => userStore.isCollab)
+const showPassword = computed(() => isCollab.value === false)
+const showCgu = computed(() => isCollab.value === false)
 const isMultiEntity = computed(() => userStore.hasSingleEntity === false)
 
 const portfolioRouteName = computed(() =>
-  userStore.isCollab === true ? RouteName.FOLDERS : RouteName.CUSTOMER_ENTITIES,
+  isCollab.value === true ? RouteName.FOLDERS : RouteName.CUSTOMER_ENTITIES,
 )
 const portfolioLabel = computed(() =>
-  userStore.isCollab === true ? t('myFolders') : t('myPortfolio'),
+  isCollab.value === true ? t('myFolders') : t('myPortfolio'),
 )
 
 const closeDrawer = () => {
   isDrawerOpened.value = false
+}
+
+const handleForceDesktopMode = () => {
+  enableForceDesktopMode()
+  closeDrawer()
 }
 
 onMounted(async () => {

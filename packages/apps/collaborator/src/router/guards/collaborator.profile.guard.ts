@@ -1,7 +1,7 @@
-import type { RouteLocationNormalizedGeneric } from 'vue-router'
+import type { RouteLocationNormalizedGeneric, RouteLocationRaw } from 'vue-router'
 import { RouteName } from '@pulse/common/enums'
 import { FeatureFlagManager } from '@pulse/common/managers'
-import { getIsMobile } from '@pulse/styleguide'
+import { getEffectiveIsMobile } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
 
 /**
@@ -10,9 +10,11 @@ import { logger } from '@pulse/toolbox'
  * - Responsive feature flag is not activated
  * - User is not on mobile device
  */
-export function collaboratorProfileGuard(to: RouteLocationNormalizedGeneric) {
+export function collaboratorProfileGuard(
+  to: RouteLocationNormalizedGeneric,
+): RouteLocationRaw | undefined {
   const isResponsiveActivated = FeatureFlagManager.isResponsiveActivated()
-  const isMobile = getIsMobile()
+  const isMobile = getEffectiveIsMobile()
 
   if (isResponsiveActivated === false || isMobile === false) {
     logger.trace(`Profile route '${String(to.name)}' is mobile-only, redirecting to landing page.`)

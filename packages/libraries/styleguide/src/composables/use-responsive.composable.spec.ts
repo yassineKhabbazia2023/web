@@ -1,11 +1,21 @@
 import { ref } from 'vue'
 import { useWindowSize } from '@vueuse/core'
-import { useResponsive } from './use-responsive.composable'
+import {
+  disableForceDesktopMode,
+  enableForceDesktopMode,
+  getEffectiveIsMobile,
+  getForceDesktopMode,
+  useResponsive,
+} from './use-responsive.composable'
 import { BREAKPOINT_SIZES } from '../constants/breakpoint.const'
 
-vi.mock('@vueuse/core', () => ({
-  useWindowSize: vi.fn(),
-}))
+vi.mock('@vueuse/core', async () => {
+  const actual = await vi.importActual<typeof import('@vueuse/core')>('@vueuse/core')
+  return {
+    ...actual,
+    useWindowSize: vi.fn(),
+  }
+})
 
 const mockWindowWidth = (value: number) => {
   vi.mocked(useWindowSize).mockReturnValue({ width: ref(value) } as any)
@@ -14,6 +24,7 @@ const mockWindowWidth = (value: number) => {
 describe('useResponsive', () => {
   beforeEach(() => {
     mockWindowWidth(1024)
+    disableForceDesktopMode()
   })
 
   describe('isMobile', () => {
@@ -27,6 +38,15 @@ describe('useResponsive', () => {
 
     it('returns false on a wide window', () => {
       mockWindowWidth(1024)
+
+      const { isMobile } = useResponsive()
+
+      expect(isMobile.value).toBe(false)
+    })
+
+    it('returns false on a narrow window when force-desktop mode is enabled', () => {
+      mockWindowWidth(BREAKPOINT_SIZES.sm - 1)
+      enableForceDesktopMode()
 
       const { isMobile } = useResponsive()
 
@@ -49,6 +69,48 @@ describe('useResponsive', () => {
       const { isDesktop } = useResponsive()
 
       expect(isDesktop.value).toBe(true)
+    })
+
+    it('returns true on a narrow window when force-desktop mode is enabled', () => {
+      mockWindowWidth(BREAKPOINT_SIZES.sm - 1)
+      enableForceDesktopMode()
+
+      const { isDesktop } = useResponsive()
+
+      expect(isDesktop.value).toBe(true)
+    })
+  })
+
+  describe('isViewportMobile', () => {
+    it('reflects the raw viewport regardless of force-desktop mode', () => {
+      mockWindowWidth(BREAKPOINT_SIZES.sm - 1)
+      enableForceDesktopMode()
+
+      const { isViewportMobile } = useResponsive()
+
+      expect(isViewportMobile.value).toBe(true)
+    })
+
+    it('returns false on a wide window', () => {
+      mockWindowWidth(1024)
+
+      const { isViewportMobile } = useResponsive()
+
+      expect(isViewportMobile.value).toBe(false)
+    })
+  })
+
+  describe('forceDesktopMode', () => {
+    it('reflects the current force-desktop state reactively', () => {
+      const { forceDesktopMode } = useResponsive()
+
+      expect(forceDesktopMode.value).toBe(false)
+
+      enableForceDesktopMode()
+      expect(forceDesktopMode.value).toBe(true)
+
+      disableForceDesktopMode()
+      expect(forceDesktopMode.value).toBe(false)
     })
   })
 
@@ -102,5 +164,54 @@ describe('useResponsive', () => {
 
       expect(width.value).toBe(1024)
     })
+  })
+})
+
+describe('force-desktop mode helpers', () => {
+  beforeEach(() => {
+    disableForceDesktopMode()
+  })
+
+  it('enableForceDesktopMode flips state to true', () => {
+    enableForceDesktopMode()
+
+    expect(getForceDesktopMode()).toBe(true)
+  })
+
+  it('disableForceDesktopMode flips state to false', () => {
+    enableForceDesktopMode()
+
+    disableForceDesktopMode()
+
+    expect(getForceDesktopMode()).toBe(false)
+  })
+})
+
+describe('getEffectiveIsMobile', () => {
+  beforeEach(() => {
+    disableForceDesktopMode()
+  })
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('returns true on a narrow window when force-desktop mode is off', () => {
+    vi.stubGlobal('innerWidth', BREAKPOINT_SIZES.sm - 1)
+
+    expect(getEffectiveIsMobile()).toBe(true)
+  })
+
+  it('returns false on a wide window', () => {
+    vi.stubGlobal('innerWidth', 1024)
+
+    expect(getEffectiveIsMobile()).toBe(false)
+  })
+
+  it('returns false on a narrow window when force-desktop mode is on', () => {
+    vi.stubGlobal('innerWidth', BREAKPOINT_SIZES.sm - 1)
+    enableForceDesktopMode()
+
+    expect(getEffectiveIsMobile()).toBe(false)
   })
 })

@@ -1,7 +1,7 @@
 import type { RouteLocationNormalizedGeneric, RouteLocationRaw } from 'vue-router'
 import { Feature, RouteName } from '@pulse/common/enums'
 import { FeatureFlagManager } from '@pulse/common/managers'
-import { getIsMobile } from '@pulse/styleguide'
+import { getEffectiveIsMobile } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
 
 /**
@@ -14,7 +14,7 @@ export function collaboratorWalletFoldersGuard(
   to: RouteLocationNormalizedGeneric,
 ): RouteLocationRaw | undefined {
   const isResponsiveActivated = FeatureFlagManager.isResponsiveActivated()
-  const isMobile = getIsMobile()
+  const isMobile = getEffectiveIsMobile()
   const isProspectExperienceActivated = FeatureFlagManager.isFeatureActivated(Feature.PROSPECT_EXPERIENCE)
 
   if (isResponsiveActivated === true && isMobile === true && isProspectExperienceActivated === true) {

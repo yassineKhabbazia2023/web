@@ -1,14 +1,12 @@
 import type { RouteLocationNormalizedGeneric } from 'vue-router'
 import { RouteName } from '@pulse/common/enums'
 import { FeatureFlagManager } from '@pulse/common/managers'
+import { getEffectiveIsMobile } from '@pulse/styleguide'
 import { customerProfileGuard } from './customer.profile.guard'
 
-const mockGetIsMobile = vi.hoisted(() => vi.fn())
-
+vi.mock('@pulse/toolbox')
 vi.mock('@pulse/common/managers')
-vi.mock('@pulse/styleguide', () => ({
-  getIsMobile: mockGetIsMobile,
-}))
+vi.mock('@pulse/styleguide')
 
 describe('customerProfileGuard', () => {
   const accessTests = [
@@ -37,7 +35,7 @@ describe('customerProfileGuard', () => {
 
   it.each(accessTests)('$reason', ({ isResponsive, isMobile, routeName, expectedRedirect }) => {
     vi.mocked(FeatureFlagManager.isResponsiveActivated).mockReturnValue(isResponsive)
-    mockGetIsMobile.mockReturnValue(isMobile)
+    vi.mocked(getEffectiveIsMobile).mockReturnValue(isMobile)
 
     const toRoute = { name: routeName } as unknown as RouteLocationNormalizedGeneric
     const result = customerProfileGuard(toRoute)
