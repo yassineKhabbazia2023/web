@@ -72,7 +72,7 @@
         :key="contact.email"
         :pAvatarProps="contact.pAvatarProps ?? DEFAULT_AVATAR_PROPS"
         :pTopLeftSectionText="getFullNameWithUppercaseLastName(contact.firstname, contact.lastname)"
-        :pTopLeftSubText="contact.role"
+        :pTopLeftSubText="t(contact.role)"
         class="padding--2"
       >
         <template #avatar>
@@ -155,7 +155,7 @@ const { t } = useI18n({
 const supportContact = computed<WidgetContact>(() => ({
   firstname: t('widgets.contacts.supportFirstname'),
   lastname: t('widgets.contacts.supportLastname'),
-  role: t('widgets.contacts.supportSubtitle'),
+  role: 'widgets.contacts.supportSubtitle',
   phoneNumber: SUPPORT_PHONE_CLIENT,
   email: SUPPORT_EMAIL_CLIENT,
   iconName: 'headset',

@@ -18,7 +18,7 @@ const buildApiItem = (overrides: Partial<ContactResponseItem> = {}): ContactResp
   email: 'john.doe@example.com',
   mobilePhone: '0600000000',
   personaName: 'Account manager',
-  labels: [{ code: CollaboratorRole.CLP }],
+  labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Maitre dossier' }],
   ...overrides,
 })
 
@@ -35,14 +35,18 @@ describe('EntityContactService', () => {
       )
     })
 
-    it('should keep only contacts having a CLP or AM label code and map them to EntityContact', async () => {
+    it('should keep only contacts having a CLP or AM label code and emit the front-forced role i18n key, ignoring the backend collaboratorLabel', async () => {
       const clpContact = buildApiItem({
         firstName: 'Anna',
         lastName: 'Smith',
         personaName: 'ESC',
         mobilePhone: '0611111111',
         email: 'anna@example.com',
-        labels: [{ code: 'HM' }, { code: CollaboratorRole.CLP }],
+        labels: [
+          { code: 'HM', collaboratorLabel: 'Hierarchical manager' },
+          // Intentionally inconsistent backend label: it must be overridden by the front-forced label
+          { code: CollaboratorRole.CLP, collaboratorLabel: 'Backend CLP label' },
+        ],
       })
       const amContact = buildApiItem({
         firstName: 'Bob',
@@ -50,12 +54,16 @@ describe('EntityContactService', () => {
         personaName: 'Account master',
         mobilePhone: '0622222222',
         email: 'bob@example.com',
-        labels: [{ code: CollaboratorRole.AM }],
+        // Intentionally inconsistent backend label: it must be overridden by the front-forced label
+        labels: [{ code: CollaboratorRole.AM, collaboratorLabel: 'Maitre dossier' }],
       })
       const otherCollab = buildApiItem({
         firstName: 'Eve',
         lastName: 'Doe',
-        labels: [{ code: 'HM' }, { code: 'AC' }],
+        labels: [
+          { code: 'HM', collaboratorLabel: 'Hierarchical manager' },
+          { code: 'AC', collaboratorLabel: 'Accountant' },
+        ],
       })
       const withoutLabels = buildApiItem({
         firstName: 'No',
@@ -73,17 +81,43 @@ describe('EntityContactService', () => {
         {
           firstname: 'Anna',
           lastname: 'Smith',
-          role: 'ESC',
+          role: 'widgets.contacts.roles.clp',
           phoneNumber: '0611111111',
           email: 'anna@example.com',
         },
         {
           firstname: 'Bob',
           lastname: 'Stone',
-          role: 'Account master',
+          role: 'widgets.contacts.roles.am',
           phoneNumber: '0622222222',
           email: 'bob@example.com',
         },
+      ])
+    })
+
+    it('should display the account manager (CLP) first then the account master (AM), whatever the API order', async () => {
+      const amContact = buildApiItem({
+        firstName: 'Bob',
+        lastName: 'Stone',
+        email: 'bob@example.com',
+        labels: [{ code: CollaboratorRole.AM, collaboratorLabel: 'Maitre dossier' }],
+      })
+      const clpContact = buildApiItem({
+        firstName: 'Anna',
+        lastName: 'Smith',
+        email: 'anna@example.com',
+        labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte' }],
+      })
+
+      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+        data: { items: [amContact, clpContact] },
+      })
+
+      const result = await EntityContactService.getProspectContacts(accountId)
+
+      expect(result.map(contact => contact.role)).toStrictEqual([
+        'widgets.contacts.roles.clp',
+        'widgets.contacts.roles.am',
       ])
     })
 
@@ -118,12 +152,27 @@ describe('EntityContactService', () => {
       expect(contact.phoneNumber).toBe('0140000000')
     })
 
-    it('should default role and phoneNumber to empty string when missing', async () => {
+    it('should emit the role i18n key from the code even when the backend collaboratorLabel is empty', async () => {
       vi.mocked(api.gateway.get).mockResolvedValueOnce({
         data: {
           items: [
             buildApiItem({
-              personaName: undefined,
+              labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: '' }],
+            }),
+          ],
+        },
+      })
+
+      const [contact] = await EntityContactService.getProspectContacts(accountId)
+
+      expect(contact.role).toBe('widgets.contacts.roles.clp')
+    })
+
+    it('should default phoneNumber to empty string when both phones are missing', async () => {
+      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+        data: {
+          items: [
+            buildApiItem({
               mobilePhone: undefined,
               landPhone: undefined,
             }),
@@ -133,7 +182,6 @@ describe('EntityContactService', () => {
 
       const [contact] = await EntityContactService.getProspectContacts(accountId)
 
-      expect(contact.role).toBe('')
       expect(contact.phoneNumber).toBe('')
     })
 

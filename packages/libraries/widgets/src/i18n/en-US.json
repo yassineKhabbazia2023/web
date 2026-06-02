@@ -6,7 +6,11 @@
       "supportLastname": "Support",
       "supportSubtitle": "Need help?",
       "copied": "Copied!",
-      "copyError": "Could not copy to clipboard."
+      "copyError": "Could not copy to clipboard.",
+      "roles": {
+        "clp": "Account Manager",
+        "am": "Case Manager"
+      }
     },
     "rssNews": {
       "title": "News",

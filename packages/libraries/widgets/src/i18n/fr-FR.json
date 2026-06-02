@@ -6,7 +6,11 @@
       "supportLastname": "Client",
       "supportSubtitle": "Besoin d'aide ?",
       "copied": "Copié !",
-      "copyError": "Impossible de copier dans le presse-papiers."
+      "copyError": "Impossible de copier dans le presse-papiers.",
+      "roles": {
+        "clp": "Responsable de compte",
+        "am": "Maître de dossier"
+      }
     },
     "rssNews": {
       "title": "Actualités",

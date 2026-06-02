@@ -21,7 +21,7 @@
       class="
         flex
         flex--direction-column
-        flex-gap--1
+        flex-gap--3
       "
     >
       <h1 class="h1 text-color--base-white">
