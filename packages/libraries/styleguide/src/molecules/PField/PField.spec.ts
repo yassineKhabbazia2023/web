@@ -36,6 +36,7 @@ function createWrapper<T>(props: PFieldProps<T>) {
         PCheckbox: {
           name: 'PCheckbox',
           template: '<div><slot /></div>',
+          props: ['modelValue'],
         },
         PEmailInputField: {
           name: 'PEmailInputField',
@@ -44,6 +45,10 @@ function createWrapper<T>(props: PFieldProps<T>) {
       },
     },
   })
+}
+
+function getPCheckboxModelValue(component: VueWrapper) {
+  return (component.props() as { modelValue: boolean }).modelValue
 }
 
 const pFieldKey = 'firstname'
@@ -194,6 +199,36 @@ describe('test PField', () => {
     })
     it('should render PCheckbox', () => {
       expect(pCheckbox.exists()).toBeTruthy()
+    })
+    it('should use modelValue as checkbox value', () => {
+      wrapper = createWrapper<boolean>({
+        ...props,
+        modelValue: true,
+        pChecked: false,
+      })
+      pCheckbox = wrapper.findComponent({ name: 'PCheckbox' })
+
+      expect(getPCheckboxModelValue(pCheckbox)).toBe(true)
+    })
+    it('should fallback to pChecked when modelValue is not a boolean', () => {
+      wrapper = createWrapper<boolean>({
+        ...props,
+        modelValue: undefined,
+        pChecked: true,
+      })
+      pCheckbox = wrapper.findComponent({ name: 'PCheckbox' })
+
+      expect(getPCheckboxModelValue(pCheckbox)).toBe(true)
+    })
+    it('should keep false modelValue over pChecked fallback', () => {
+      wrapper = createWrapper<boolean>({
+        ...props,
+        modelValue: false,
+        pChecked: true,
+      })
+      pCheckbox = wrapper.findComponent({ name: 'PCheckbox' })
+
+      expect(getPCheckboxModelValue(pCheckbox)).toBe(false)
     })
     it('should not show the label', () => {
       const pFormItem = wrapper.findComponent({ name: 'PFormItem' })

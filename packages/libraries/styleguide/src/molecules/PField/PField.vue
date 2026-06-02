@@ -18,7 +18,7 @@
     />
     <PCheckbox
       v-if="pFieldType === 'checkbox'"
-      :model-value="pChecked"
+      :model-value="internalCheckboxValue"
       :pRounded="pRounded"
       :data-testid="pTestId"
       @update:model-value="onCheckboxToggle"
@@ -136,7 +136,7 @@ const emit = defineEmits<{
 }>()
 
 const formItemLabel = computed(() => {
-  return props.pFieldType != 'checkbox' ? props.pLabel : ''
+  return props.pFieldType !== 'checkbox' ? props.pLabel : ''
 })
 
 const internalValue = computed({
@@ -149,6 +149,14 @@ const internalValue = computed({
 })
 
 const internalCheckboxOptions = computed(() => getInternalCheckboxOptions(props.modelValue, props.pOptions ?? []))
+
+const internalCheckboxValue = computed(() => {
+  if (typeof props.modelValue === 'boolean') {
+    return props.modelValue
+  }
+
+  return props.pChecked === true
+})
 
 const internalDate = computed({
   get() {

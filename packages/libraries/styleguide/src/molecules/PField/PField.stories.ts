@@ -333,7 +333,7 @@ export const CheckboxField: Story = {
   render: (args: any) => ({
     components: { PField, PForm },
     setup() {
-      const value = ref('')
+      const value = ref(false)
 
       return {
         args,
@@ -468,7 +468,7 @@ export const AllFieldTypes: Story = {
       const valueDate = ref('')
       const valueMail = ref('')
       const valueRadio = ref('')
-      const valueCheckbox = ref('')
+      const valueCheckbox = ref(false)
 
       return {
         args,
