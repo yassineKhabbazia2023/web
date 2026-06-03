@@ -16,7 +16,7 @@
       <template #default="scope">
         <div class="flex flex--align-items-center overflow-hidden">
           <PEntityAvatar
-            pAccountType="REGULAR"
+            :pAccountType="AccountType.REGULAR"
             :pColor="getAvatarColorFromKey(scope.row.accountNumber)"
             pType="xsmall"
           />
@@ -120,7 +120,7 @@ import type { ReportTableProps } from './report-table.types'
 import { REPORT_ACTIONS } from './constants/report-table.const'
 import { ReportStatus } from '@powerbi/enums/bi-reports.enum'
 import type { SortChangeEventData, SortingCriteria } from '@pulse/common/types'
-import { SortDirection } from '@pulse/common/enums'
+import { AccountType, SortDirection } from '@pulse/common/enums'
 import { getAvatarColorFromKey } from '@pulse/styleguide'
 
 const { t, d } = useI18n({

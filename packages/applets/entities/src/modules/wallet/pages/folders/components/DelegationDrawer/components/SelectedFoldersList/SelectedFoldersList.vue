@@ -8,7 +8,7 @@
       <template #default="scope">
         <div class="flex align--items-center">
           <PEntityAvatar
-            pAccountType="REGULAR"
+            :pAccountType="AccountType.REGULAR"
             :pColor="scope.row.avatarColor"
             pType="xsmall"
           />
@@ -28,6 +28,7 @@
 
 <script lang="ts" setup>
 import { PTable, PTableColumn, PEntityAvatar } from '@pulse/styleguide/components'
+import { AccountType } from '@pulse/common/enums'
 import { useI18n } from 'vue-i18n'
 import type { SelectedFoldersListProps } from './SelectedFoldersListTypes'
 

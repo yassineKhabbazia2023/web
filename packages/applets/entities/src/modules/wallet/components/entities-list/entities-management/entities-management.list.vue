@@ -24,7 +24,7 @@
           "
         >
           <PEntityAvatar
-            pAccountType="REGULAR"
+            :pAccountType="AccountType.REGULAR"
             :pColor="scope.row.owner.avatarColor"
             pType="xsmall"
           />
@@ -169,7 +169,7 @@
         "
       >
         <PEntityAvatar
-          pAccountType="REGULAR"
+          :pAccountType="AccountType.REGULAR"
           :pColor="row.owner.avatarColor"
           class="margin-right--4"
         />
@@ -212,6 +212,7 @@ import {
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import { SORT_ORDERS } from '@pulse/common/constants'
+import { AccountType } from '@pulse/common/enums'
 import { useI18n } from 'vue-i18n'
 import type { EntitiesManagementListProps, EntitiesManagementListEmit } from './entities-management.list.types'
 import { useEntitiesManagementList } from './entities-management.list.composable'

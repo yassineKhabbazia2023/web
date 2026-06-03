@@ -68,6 +68,18 @@ describe('test currentEntityStore', () => {
 
       expect(currentEntityStore.currentAccountType).toBe(AccountType.REGULAR)
     })
+
+    it.each(['Prospect', 'prospect'])('should normalize the case-inconsistent prospect value "%s" to PROSPECT', (rawAccountType) => {
+      currentEntityStore.setCurrentEntity(getMockedEntitySummary({ accountType: rawAccountType as unknown as AccountType }))
+
+      expect(currentEntityStore.currentAccountType).toBe(AccountType.PROSPECT)
+    })
+
+    it.each(['CLIENT', 'Client'])('should normalize the case-inconsistent client value "%s" to REGULAR', (rawAccountType) => {
+      currentEntityStore.setCurrentEntity(getMockedEntitySummary({ accountType: rawAccountType as unknown as AccountType }))
+
+      expect(currentEntityStore.currentAccountType).toBe(AccountType.REGULAR)
+    })
   })
 
   describe('hasOffer', () => {

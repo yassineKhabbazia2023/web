@@ -15,7 +15,7 @@ import {
 import { logger } from '@pulse/toolbox'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
-import { AccountType, RouteName } from '@pulse/common/enums'
+import { RouteName } from '@pulse/common/enums'
 import { BookingManager } from '@pulse/booking/managers'
 import { ProspectsService } from '@pulse/entities/services/prospect'
 import type { Entity } from '@pulse/common/types'
@@ -158,10 +158,6 @@ export class CustomerAuthenticatedFlowManager {
       const entityToPersistId = (localStorageEntityId === undefined || localStorageEntityId === 0)
         ? defaultEntity.accountId
         : localStorageEntityId
-
-      if (defaultEntity.accountType === AccountType.PROSPECT) {
-        throw new Error('not implemented')
-      }
 
       const entityToPersist = await fetchEntityById(entityToPersistId)
       return CurrentEntityManager.initializeCurrentEntity(entityToPersist)

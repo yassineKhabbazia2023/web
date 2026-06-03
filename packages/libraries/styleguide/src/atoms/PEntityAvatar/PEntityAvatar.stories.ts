@@ -8,20 +8,20 @@ const meta: Meta<typeof PEntityAvatar> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Avatar dédié aux entités. La couleur et l\'icône sont dérivées automatiquement à partir du `pAccountType` (PROSPECT ou REGULAR).',
+        component: 'Avatar dédié aux entités. La couleur et l\'icône sont dérivées automatiquement à partir du `pAccountType` (PROSPECT ou CLIENT).',
       },
     },
   },
   argTypes: {
     pAccountType: {
       control: 'select',
-      options: ['REGULAR', 'PROSPECT'],
+      options: ['CLIENT', 'PROSPECT'],
       description: 'Type de compte de l\'entité.',
     },
     pColor: {
       control: 'select',
       options: ['amethyste', 'persian-light', 'persian-400', 'orange', 'cyan', 'teal'],
-      description: 'Couleur pour les comptes REGULAR (ignorée pour les prospects).',
+      description: 'Couleur pour les comptes CLIENT (ignorée pour les prospects).',
     },
     pType: {
       control: 'select',
@@ -39,7 +39,7 @@ const meta: Meta<typeof PEntityAvatar> = {
     },
   },
   args: {
-    pAccountType: 'REGULAR',
+    pAccountType: 'CLIENT',
     pColor: 'amethyste',
     pType: 'default',
     pShape: 'circle',
@@ -95,11 +95,11 @@ export const AllSizes: Story = {
         <div>
           <h4 style="margin-bottom: 12px;">Regular</h4>
           <div style="display: flex; align-items: center; gap: 16px;">
-            <PEntityAvatar pAccountType="REGULAR" pType="xsmall" />
-            <PEntityAvatar pAccountType="REGULAR" pType="small" />
-            <PEntityAvatar pAccountType="REGULAR" pType="default" />
-            <PEntityAvatar pAccountType="REGULAR" pType="large" />
-            <PEntityAvatar pAccountType="REGULAR" pType="xlarge" />
+            <PEntityAvatar pAccountType="CLIENT" pType="xsmall" />
+            <PEntityAvatar pAccountType="CLIENT" pType="small" />
+            <PEntityAvatar pAccountType="CLIENT" pType="default" />
+            <PEntityAvatar pAccountType="CLIENT" pType="large" />
+            <PEntityAvatar pAccountType="CLIENT" pType="xlarge" />
           </div>
         </div>
         <div>

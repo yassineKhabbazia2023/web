@@ -1,4 +1,4 @@
 export enum AccountType {
-  REGULAR = 'REGULAR',
+  REGULAR = 'CLIENT',
   PROSPECT = 'PROSPECT',
 }

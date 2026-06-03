@@ -15,7 +15,7 @@ import { fetchEntities, fetchEntityById } from '@pulse/common/services/entities'
 import { CurrentEntityManager } from '@pulse/common/managers'
 import { getTermsByCurrentUser } from '@pulse/common/services/cgu'
 import { useUserStore, usePermissionsStore, useCurrentEntityStore } from '@pulse/common/stores'
-import { AccountType, RouteName } from '@pulse/common/enums'
+import { RouteName } from '@pulse/common/enums'
 import { BookingManager } from '@pulse/booking/managers'
 import { ProspectsService } from '@pulse/entities/services/prospect'
 
@@ -312,16 +312,6 @@ describe('CustomerAuthenticatedFlowManager', () => {
       expect(CurrentEntityManager.getLocalStorageEntityId).not.toHaveBeenCalled()
       expect(fetchEntityById).not.toHaveBeenCalled()
       expect(CurrentEntityManager.initializeCurrentEntity).not.toHaveBeenCalled()
-    })
-
-    it('should throw an error for prospect entities (not implemented)', async () => {
-      const prospectMock = { ...defaultEntityMock, accountType: AccountType.PROSPECT }
-      currentEntityStoreMock.currentEntityId = undefined
-
-      // @ts-ignore - accessing private method for testing
-      await expect(CustomerAuthenticatedFlowManager.setUserCurrentEntity(prospectMock as any)).rejects.toThrow(
-        'not implemented',
-      )
     })
   })
 
