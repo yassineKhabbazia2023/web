@@ -3,6 +3,7 @@ import type { ContactType } from '@pulse/common/enums'
 export interface ContactLabel {
   code: string
   collaboratorLabel?: string
+  customerLabel?: string
 }
 
 export interface ContactResponseItem {

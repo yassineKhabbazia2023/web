@@ -2,6 +2,8 @@ import { logger } from '@pulse/toolbox'
 import { api } from '@pulse/common/api'
 import { CollaboratorRole, ContactType } from '@pulse/common/enums'
 import { API_PREFIXES } from '@pulse/common/constants'
+import { useUserStore } from '@pulse/common/stores'
+import { getStoreMock } from '@pulse/common/mocks/vitest'
 import type { ContactResponseItem } from './contact.types'
 
 import { EntityContactService } from './entity-contact.service'
@@ -12,17 +14,24 @@ vi.mock('../../api/interceptors/request-token.interceptor')
 
 const accountId = 42
 
+const userStoreMock = getStoreMock(useUserStore)
+
 const buildApiItem = (overrides: Partial<ContactResponseItem> = {}): ContactResponseItem => ({
   firstName: 'John',
   lastName: 'Doe',
   email: 'john.doe@example.com',
   mobilePhone: '0600000000',
   personaName: 'Account manager',
-  labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Maitre dossier' }],
+  labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte', customerLabel: 'Mon conseiller' }],
   ...overrides,
 })
 
 describe('EntityContactService', () => {
+  beforeEach(() => {
+    // Default the viewer to a collaborator user; individual tests override when needed.
+    userStoreMock.isCollab = true
+  })
+
   describe('getProspectContacts', () => {
     it('should call the customer-wallet contacts endpoint filtered by Collaborator type', async () => {
       vi.mocked(api.gateway.get).mockResolvedValueOnce({ data: { items: [] } })
@@ -35,7 +44,7 @@ describe('EntityContactService', () => {
       )
     })
 
-    it('should keep only contacts having a CLP or AM label code and emit the front-forced role i18n key, ignoring the backend collaboratorLabel', async () => {
+    it('should keep only contacts having a CLP or AM label code and use the backend collaboratorLabel for a collaborator user', async () => {
       const clpContact = buildApiItem({
         firstName: 'Anna',
         lastName: 'Smith',
@@ -44,8 +53,7 @@ describe('EntityContactService', () => {
         email: 'anna@example.com',
         labels: [
           { code: 'HM', collaboratorLabel: 'Hierarchical manager' },
-          // Intentionally inconsistent backend label: it must be overridden by the front-forced label
-          { code: CollaboratorRole.CLP, collaboratorLabel: 'Backend CLP label' },
+          { code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte', customerLabel: 'Mon conseiller' },
         ],
       })
       const amContact = buildApiItem({
@@ -54,8 +62,7 @@ describe('EntityContactService', () => {
         personaName: 'Account master',
         mobilePhone: '0622222222',
         email: 'bob@example.com',
-        // Intentionally inconsistent backend label: it must be overridden by the front-forced label
-        labels: [{ code: CollaboratorRole.AM, collaboratorLabel: 'Maitre dossier' }],
+        labels: [{ code: CollaboratorRole.AM, collaboratorLabel: 'Maître de dossier', customerLabel: 'Mon gestionnaire' }],
       })
       const otherCollab = buildApiItem({
         firstName: 'Eve',
@@ -81,18 +88,36 @@ describe('EntityContactService', () => {
         {
           firstname: 'Anna',
           lastname: 'Smith',
-          role: 'widgets.contacts.roles.clp',
+          role: 'Responsable de compte',
           phoneNumber: '0611111111',
           email: 'anna@example.com',
         },
         {
           firstname: 'Bob',
           lastname: 'Stone',
-          role: 'widgets.contacts.roles.am',
+          role: 'Maître de dossier',
           phoneNumber: '0622222222',
           email: 'bob@example.com',
         },
       ])
+    })
+
+    it('should use the backend customerLabel for a customer user', async () => {
+      userStoreMock.isCollab = false
+
+      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+        data: {
+          items: [
+            buildApiItem({
+              labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: 'Responsable de compte', customerLabel: 'Mon conseiller' }],
+            }),
+          ],
+        },
+      })
+
+      const [contact] = await EntityContactService.getProspectContacts(accountId)
+
+      expect(contact.role).toBe('Mon conseiller')
     })
 
     it('should display the account manager (CLP) first then the account master (AM), whatever the API order', async () => {
@@ -100,7 +125,7 @@ describe('EntityContactService', () => {
         firstName: 'Bob',
         lastName: 'Stone',
         email: 'bob@example.com',
-        labels: [{ code: CollaboratorRole.AM, collaboratorLabel: 'Maitre dossier' }],
+        labels: [{ code: CollaboratorRole.AM, collaboratorLabel: 'Maître de dossier' }],
       })
       const clpContact = buildApiItem({
         firstName: 'Anna',
@@ -116,8 +141,8 @@ describe('EntityContactService', () => {
       const result = await EntityContactService.getProspectContacts(accountId)
 
       expect(result.map(contact => contact.role)).toStrictEqual([
-        'widgets.contacts.roles.clp',
-        'widgets.contacts.roles.am',
+        'Responsable de compte',
+        'Maître de dossier',
       ])
     })
 
@@ -152,12 +177,12 @@ describe('EntityContactService', () => {
       expect(contact.phoneNumber).toBe('0140000000')
     })
 
-    it('should emit the role i18n key from the code even when the backend collaboratorLabel is empty', async () => {
+    it('should default the role to an empty string when the label for the user type is missing', async () => {
       vi.mocked(api.gateway.get).mockResolvedValueOnce({
         data: {
           items: [
             buildApiItem({
-              labels: [{ code: CollaboratorRole.CLP, collaboratorLabel: '' }],
+              labels: [{ code: CollaboratorRole.CLP, customerLabel: 'Mon conseiller' }],
             }),
           ],
         },
@@ -165,7 +190,7 @@ describe('EntityContactService', () => {
 
       const [contact] = await EntityContactService.getProspectContacts(accountId)
 
-      expect(contact.role).toBe('widgets.contacts.roles.clp')
+      expect(contact.role).toBe('')
     })
 
     it('should default phoneNumber to empty string when both phones are missing', async () => {
