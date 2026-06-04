@@ -177,6 +177,40 @@ describe('EntityContactService', () => {
       expect(contact.phoneNumber).toBe('0140000000')
     })
 
+    it('should fall back to mobilePhone when landPhone is an empty string', async () => {
+      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+        data: {
+          items: [
+            buildApiItem({
+              landPhone: '',
+              mobilePhone: '0600000000',
+            }),
+          ],
+        },
+      })
+
+      const [contact] = await EntityContactService.getProspectContacts(accountId)
+
+      expect(contact.phoneNumber).toBe('0600000000')
+    })
+
+    it('should default phoneNumber to empty string when both phones are empty strings', async () => {
+      vi.mocked(api.gateway.get).mockResolvedValueOnce({
+        data: {
+          items: [
+            buildApiItem({
+              landPhone: '',
+              mobilePhone: '',
+            }),
+          ],
+        },
+      })
+
+      const [contact] = await EntityContactService.getProspectContacts(accountId)
+
+      expect(contact.phoneNumber).toBe('')
+    })
+
     it('should default the role to an empty string when the label for the user type is missing', async () => {
       vi.mocked(api.gateway.get).mockResolvedValueOnce({
         data: {

@@ -1,4 +1,5 @@
 import { logger } from '@pulse/toolbox'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { api } from '@pulse/common/api'
 import { API_PREFIXES } from '@pulse/common/constants'
 import { CollaboratorRole, ContactType } from '@pulse/common/enums'
@@ -26,7 +27,7 @@ export class EntityContactService {
       // collaboratorLabel for a collaborator user, customerLabel for a customer user.
       role: (isCollab ? prospectLabel.collaboratorLabel : prospectLabel.customerLabel) ?? '',
       // Rule: if landPhone is available, use it, otherwise use mobilePhone, if both are not available, return an empty string
-      phoneNumber: item.landPhone ?? item.mobilePhone ?? '',
+      phoneNumber: isNotNullNorEmpty(item.landPhone) ? item.landPhone : (item.mobilePhone ?? ''),
       email: item.email,
     }
   }
