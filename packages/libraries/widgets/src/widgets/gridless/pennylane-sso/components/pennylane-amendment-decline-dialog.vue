@@ -34,9 +34,16 @@
       </p>
 
       <p class="font-base margin-bottom--6 pennylane-amendment-decline-dialog__description text-center">
-        {{ t('widgets.pennylaneAmendmentFlow.decline.instructionPart1') }}
-        <span class="font-bold">{{ t('widgets.pennylaneAmendmentFlow.decline.instructionBold') }}</span>
-        {{ t('widgets.pennylaneAmendmentFlow.decline.instructionPart2') }}
+        <template v-if="isDelayedActivation">
+          {{ t('widgets.pennylaneAmendmentFlow.decline.instructionDelayedPart1') }}
+          <span class="font-bold">{{ t('widgets.pennylaneAmendmentFlow.decline.instructionDelayedBold') }}</span>
+          {{ t('widgets.pennylaneAmendmentFlow.decline.instructionDelayedPart2') }}
+        </template>
+        <template v-else>
+          {{ t('widgets.pennylaneAmendmentFlow.decline.instructionPart1') }}
+          <span class="font-bold">{{ t('widgets.pennylaneAmendmentFlow.decline.instructionBold') }}</span>
+          {{ t('widgets.pennylaneAmendmentFlow.decline.instructionPart2') }}
+        </template>
       </p>
 
       <PAlert
@@ -62,7 +69,8 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useResponsive } from '@pulse/styleguide'
 import { PDialog, PButton, PIcon, PAlert } from '@pulse/styleguide/components'
-import type { PennylaneAmendmentDeclineDialogProps } from './pennylane-amendment-decline-dialog.type'
+import type { PennylaneAmendmentDeclineDialogProps } from './pennylane-amendment-decline-dialog.types'
+import { DELAYED_ACTIVATION_DATE } from '../pennylane-amendment.consts'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -81,6 +89,8 @@ const isVisible = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 })
+
+const isDelayedActivation = computed(() => props.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
 
 const handleClose = () => {
   isVisible.value = false

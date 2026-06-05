@@ -26,6 +26,13 @@
         flex-gap--4
       "
     >
+      <PAlert
+        pType="warning"
+        class="margin-bottom--4"
+      >
+        {{ t('widgets.pennylaneAmendmentFlow.step3.noPdfAvailable') }}
+      </PAlert>
+
       <PIcon
         pName="filetypePdf"
         pSize="48"
@@ -55,7 +62,6 @@
         :zoom-percentage="zoomPercentage"
         :can-zoom-in="canZoomIn"
         :can-zoom-out="canZoomOut"
-        :account-id="props.accountId"
         @zoom-in="zoomIn"
         @zoom-out="zoomOut"
       />
@@ -101,14 +107,13 @@
 </template>
 
 <script setup lang="ts">
-import { toRef, computed } from 'vue'
+import { computed } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { GlobalWorkerOptions } from 'pdfjs-dist'
-import { PLoader, PButton, PIcon } from '@pulse/styleguide/components'
+import { PLoader, PButton, PIcon, PAlert } from '@pulse/styleguide/components'
 import { usePennylaneTermsViewer } from './pennylane-terms-viewer.composable'
 import PennylaneTermsViewerToolbar from './pennylane-terms-viewer-toolbar.vue'
-import type { PennylaneTermsViewerProps } from './pennylane-terms-viewer.types'
 
 GlobalWorkerOptions.workerPort = new Worker(
   new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url),
@@ -119,13 +124,9 @@ const { t } = useI18n({
   inheritLocale: true,
   useScope: 'global',
 })
-
-const props = defineProps<PennylaneTermsViewerProps>()
 const emit = defineEmits<{
   'scroll-complete': []
 }>()
-
-const accountIdRef = toRef(props, 'accountId')
 
 const {
   isLoading,
@@ -142,7 +143,7 @@ const {
   zoomIn,
   zoomOut,
   downloadAndContinue,
-} = usePennylaneTermsViewer(accountIdRef, () => emit('scroll-complete'))
+} = usePennylaneTermsViewer(() => emit('scroll-complete'))
 
 const shouldShowScrollButton = computed(() =>
   isLoading.value === false && isError.value === false && isAtBottom.value === false,
@@ -153,7 +154,14 @@ const shouldShowScrollButton = computed(() =>
  * Required because Vue ref callbacks receive Element | ComponentPublicInstance | null.
  */
 function handleCanvasRef(el: Element | ComponentPublicInstance | null, pageIndex: number) {
-  setCanvasRef(el as HTMLCanvasElement | null, pageIndex)
+  if (el === null || el === undefined) {
+    setCanvasRef(null, pageIndex)
+    return
+  }
+
+  if (el instanceof HTMLCanvasElement) {
+    setCanvasRef(el, pageIndex)
+  }
 }
 </script>
 

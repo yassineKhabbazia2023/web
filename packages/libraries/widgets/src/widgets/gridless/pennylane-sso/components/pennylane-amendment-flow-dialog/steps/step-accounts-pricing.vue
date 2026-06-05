@@ -141,7 +141,7 @@
       </p>
       <p class="font-base margin--0">
         {{ t('widgets.pennylaneAmendmentFlow.step2.table.subscriptionNote', {
-          billingMonth: freeTrialInfo.billingMonth
+          billingMonth: freeTrialInfo?.billingMonth
         }) }}
       </p>
     </div>
@@ -154,7 +154,7 @@
       <span class="font-bold">{{ t('widgets.pennylaneAmendmentFlow.step2.freeAccessNotice.descriptionBold') }}</span>
       {{ t('widgets.pennylaneAmendmentFlow.step2.freeAccessNotice.descriptionPart2', {
         freeTrialEndDate:
-          formatDate(freeTrialInfo.freeTrialEndDate)
+          freeTrialInfo?.freeTrialEndDate ? formatDate(freeTrialInfo.freeTrialEndDate) : ''
       }) }}
     </PAlert>
 
@@ -163,6 +163,9 @@
         pType="info"
         class="font-base margin-y--4"
       >
+        <div v-if="isDelayedActivation" class="margin-bottom--1">
+          {{ t('widgets.pennylaneAmendmentFlow.step2.supportNotice.descriptionDelayed') }}
+        </div>
         {{ t('widgets.pennylaneAmendmentFlow.step2.supportNotice.description') }}
       </PAlert>
     </Teleport>
@@ -176,6 +179,7 @@ import { useResponsive } from '@pulse/styleguide'
 import { PAlert, PIcon, PTable, PTableColumn, PTooltip } from '@pulse/styleguide/components'
 import type { StepAccountsPricingProps } from './step-accounts-pricing.types'
 import { DATE_TIME_FORMATS } from '@pulse/common/i18n'
+import { DELAYED_ACTIVATION_DATE } from '../../../pennylane-amendment.consts'
 
 const { d, t } = useI18n({
   inheritLocale: true,
@@ -186,6 +190,8 @@ const { d, t } = useI18n({
 const { isMobile } = useResponsive()
 
 const props = defineProps<StepAccountsPricingProps>()
+
+const isDelayedActivation = computed(() => props.freeTrialInfo?.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
 
 const tableData = computed(() => {
   return props.accounts.map((account) => ({

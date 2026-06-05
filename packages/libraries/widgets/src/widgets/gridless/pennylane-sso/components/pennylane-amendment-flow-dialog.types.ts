@@ -2,7 +2,7 @@ import type { PennylaneAccessDetails, PennylaneFreeTrialInfo } from '@pulse/comm
 
 export interface PennylaneAmendmentFlowDialogProps {
   modelValue: boolean
-  currentAccountId: number
+  currentAccountId?: number
   accessDetails?: PennylaneAccessDetails
-  freeTrialInfo: PennylaneFreeTrialInfo
+  freeTrialInfo?: PennylaneFreeTrialInfo
 }

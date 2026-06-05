@@ -79,52 +79,57 @@
         pType="primary"
       />
       <PIcon
-        v-else-if="canAccess === undefined"
+        v-else-if="canAccessPennylane === undefined"
         pName="exclamationTriangle"
       />
-      <PIcon v-else-if="canAccess !== undefined" pName="arrowRight" />
+      <PIcon v-else-if="canAccessPennylane !== undefined" pName="arrowRight" />
     </PButton>
 
-    <PennylaneAccessBlockedDialog v-model="isAccessBlockedDialogOpen" />
+    <PennylaneAccessBlockedDialog
+      v-model="showPennylaneAccessBlockedDialog"
+      :free-trial-end-date="pennylaneFreeTrialInfo?.freeTrialEndDate"
+    />
 
     <PennylaneAmendmentFlowDialog
-      v-if="isAmendmentFlowDialogOpen && currentAccountId && freeTrialInfo !== undefined"
-      v-model="isAmendmentFlowDialogOpen"
-      :access-details="accessDetails"
+      v-if="showPennylaneAmendmentDialog && currentAccountId && pennylaneFreeTrialInfo !== undefined"
+      v-model="showPennylaneAmendmentDialog"
+      :access-details="pennylaneAccessDetails"
       :current-account-id="currentAccountId"
-      :free-trial-info="freeTrialInfo"
+      :free-trial-info="pennylaneFreeTrialInfo"
       @accept-success="handleAcceptSuccess"
       @decline="handleDecline"
     />
 
     <PennylaneAmendmentSuccessDialog
-      v-model="isSuccessDialogOpen"
-      :free-trial-end-date="freeTrialInfo?.freeTrialEndDate"
+      v-model="showPennylaneAmendmentSuccessDialog"
+      :free-trial-end-date="pennylaneFreeTrialInfo?.freeTrialEndDate"
     />
-    <PennylaneAmendmentDeclineDialog v-model="isDeclineDialogOpen" />
+    <PennylaneAmendmentDeclineDialog
+      v-model="showPennylaneAmendmentDeclineDialog"
+      :free-trial-end-date="pennylaneFreeTrialInfo?.freeTrialEndDate"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PButton, PIcon, PImage, PLoader } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
 import { useRoute } from 'vue-router'
 import { RouterHelpers } from '@pulse/common/helpers'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { FeatureFlagManager, PennylaneSsoManager } from '@pulse/common/managers'
-import type { PennylaneAccessDetails, PennylaneFreeTrialInfo } from '@pulse/common/services/pennylane'
+import { PennylaneSsoManager } from '@pulse/common/managers'
 import { PennylaneSSOProps } from './pennylane-sso.types'
 import { SsoTracking } from './pennylane-sso.enums'
 import { AmplitudeTrackingLocation, RouteParam } from '@pulse/common/enums'
-import { PennylaneService } from '@pulse/common/services/pennylane'
 import PennylaneAccessBlockedDialog from './components/pennylane-access-blocked-dialog.vue'
 import PennylaneAmendmentFlowDialog from './components/pennylane-amendment-flow-dialog.vue'
 import PennylaneAmendmentSuccessDialog from './components/pennylane-amendment-success-dialog.vue'
 import PennylaneAmendmentDeclineDialog from './components/pennylane-amendment-decline-dialog.vue'
 import { PennylaneAmendmentTrackingManager } from './pennylane-amendment-tracking.manager'
 import { PennylaneAmendmentStep } from './components/pennylane-amendment-flow-dialog/pennylane-amendment-flow-dialog.enum'
+import { usePennylaneAmendment } from '../../../composables/pennylane-amendment.composable'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -137,44 +142,26 @@ const props = defineProps<PennylaneSSOProps>()
 
 const ssoUrl = computed(() => PennylaneSsoManager.getUrl(props.isCollab))
 
-const isAccessBlockedDialogOpen = ref(false)
-const isAmendmentFlowDialogOpen = ref(false)
-const isSuccessDialogOpen = ref(false)
-const isDeclineDialogOpen = ref(false)
-const isCheckingPennylaneAccess = ref(false)
-const canAccess = ref<boolean | undefined>(undefined)
-const isPennylaneSignatory = ref<boolean | undefined>(undefined)
-const accessDetails = ref<PennylaneAccessDetails | undefined>(undefined)
-const freeTrialInfo = ref<PennylaneFreeTrialInfo>()
-
 const currentAccountId = RouterHelpers.getRouteParamAsInt(route, RouteParam.ENTITY_ID)
 
-const shouldShowValidationDialog = computed(() => {
-  if (FeatureFlagManager.isPennylaneAmendmentFlowActivated() === false) {
-    return false
-  }
-
-  if (canAccess.value === undefined || isPennylaneSignatory.value === undefined) {
-    return false
-  }
-
-  return canAccess.value === false && isPennylaneSignatory.value === false
-})
-
-const shouldShowAmendmentFlowDialog = computed(() => {
-  if (FeatureFlagManager.isPennylaneAmendmentFlowActivated() === false) {
-    return false
-  }
-
-  if (canAccess.value === undefined || isPennylaneSignatory.value === undefined) {
-    return false
-  }
-
-  return canAccess.value === false && isPennylaneSignatory.value === true
-})
+const {
+  isCheckingPennylaneAccess,
+  canAccessPennylane,
+  pennylaneAccessDetails,
+  pennylaneFreeTrialInfo,
+  showPennylaneAmendmentDialog,
+  showPennylaneAmendmentSuccessDialog,
+  showPennylaneAmendmentDeclineDialog,
+  showPennylaneAccessBlockedDialog,
+  shouldShowPennylaneAmendmentDialog,
+  shouldShowPennylaneAccessBlockedDialog,
+  checkPennylaneAccess,
+  onPennylaneAmendmentAcceptSuccess,
+  onPennylaneAmendmentDecline,
+} = usePennylaneAmendment()
 
 const onSSOConnection = () => {
-  if (isCheckingPennylaneAccess.value === true || canAccess.value === undefined) {
+  if (isCheckingPennylaneAccess.value === true || canAccessPennylane.value === undefined) {
     return
   }
 
@@ -184,59 +171,32 @@ const onSSOConnection = () => {
   })
   PennylaneSsoManager.setSsoOrigin()
 
-  if (shouldShowValidationDialog.value === true) {
-    isAccessBlockedDialogOpen.value = true
+  if (shouldShowPennylaneAccessBlockedDialog.value === true) {
+    showPennylaneAccessBlockedDialog.value = true
     PennylaneAmendmentTrackingManager.trackNonSignataireDisplayed()
-  } else if (shouldShowAmendmentFlowDialog.value === true) {
-    isAmendmentFlowDialogOpen.value = true
+  } else if (shouldShowPennylaneAmendmentDialog.value === true) {
+    showPennylaneAmendmentDialog.value = true
     PennylaneAmendmentTrackingManager.trackStepDisplayed(PennylaneAmendmentStep.INFORMATION)
   } else {
     window.open(ssoUrl.value, '_blank')
   }
 }
 
-const handleAcceptSuccess = () => {
-  checkPennylaneAccess()
-  isSuccessDialogOpen.value = true
-  PennylaneAmendmentTrackingManager.trackOutroOK()
+const handleAcceptSuccess = async () => {
+  if (currentAccountId !== null) {
+    await checkPennylaneAccess(currentAccountId)
+  }
+  onPennylaneAmendmentAcceptSuccess()
 }
 
 const handleDecline = () => {
-  isDeclineDialogOpen.value = true
-  PennylaneAmendmentTrackingManager.trackOutroKO()
-}
-
-const checkPennylaneAccess = async () => {
-  if (FeatureFlagManager.isPennylaneAmendmentFlowActivated() === false) {
-    return
-  }
-
-  if (currentAccountId === null) {
-    return
-  }
-
-  isCheckingPennylaneAccess.value = true
-  try {
-    const accessResponse = await PennylaneService.checkPennylaneAccess(currentAccountId)
-
-    canAccess.value = accessResponse.canAccess
-    isPennylaneSignatory.value = accessResponse.isPennylaneSignatory
-    accessDetails.value = accessResponse.details
-    freeTrialInfo.value = {
-      freeTrialEndDate: accessResponse.freeTrialEndDate,
-      billingMonth: accessResponse.billingMonth,
-    }
-  } catch {
-    canAccess.value = undefined
-    isPennylaneSignatory.value = undefined
-    accessDetails.value = undefined
-  } finally {
-    isCheckingPennylaneAccess.value = false
-  }
+  onPennylaneAmendmentDecline()
 }
 
 onMounted(() => {
-  checkPennylaneAccess()
+  if (currentAccountId !== null) {
+    checkPennylaneAccess(currentAccountId)
+  }
 })
 </script>
 

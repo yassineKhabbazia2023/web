@@ -20,11 +20,31 @@
         <FeedCenterHeaderWidget v-if="shouldShowFeedCenter === true" />
       </template>
     </HomeLayout>
+
+    <!-- Global Pennylane amendment dialog -->
+    <GlobalPennylaneAmendmentDialog
+      v-if="shouldShowPennylaneAmendmentDialog"
+      v-model="showPennylaneAmendmentDialog"
+      :access-details="pennylaneAccessDetails"
+      :free-trial-info="pennylaneFreeTrialInfo"
+      @accept-success="onPennylaneAmendmentAcceptSuccess"
+      @decline="onPennylaneAmendmentDecline"
+    />
+
+    <PennylaneAmendmentSuccessDialog
+      v-model="showPennylaneAmendmentSuccessDialog"
+      :free-trial-end-date="pennylaneFreeTrialInfo?.freeTrialEndDate"
+    />
+
+    <PennylaneAmendmentDeclineDialog
+      v-model="showPennylaneAmendmentDeclineDialog"
+      :free-trial-end-date="pennylaneFreeTrialInfo?.freeTrialEndDate"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, onMounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import type { UserConfig } from '@pulse/shared/types'
 import { FeedCenterHeaderWidget } from '@pulse/feed-center/widgets/feed-center-header'
@@ -34,6 +54,9 @@ import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { useBookingCustomerStore } from '@pulse/booking/stores'
 import { useResponsive } from '@pulse/styleguide'
 import { useCustomerQueryParams } from '@customer/composables/use-customer-query-params.composable'
+import { usePennylaneAmendment } from '@pulse/widgets/composables'
+import GlobalPennylaneAmendmentDialog from '@customer/components/global-pennylane-amendment-dialog.vue'
+import { PennylaneAmendmentSuccessDialog, PennylaneAmendmentDeclineDialog } from '@pulse/widgets/pennylane-dialogs'
 
 const MobileHomeLayout = defineAsyncComponent(() =>
   import('@pulse/shared/layouts').then(m => m.MobileHomeLayout),
@@ -66,4 +89,24 @@ const userConfig = computed((): UserConfig => ({
 
 // Setup query params watchers (automatic via reactive watchers)
 useCustomerQueryParams()
+
+// Pennylane amendment
+const {
+  showPennylaneAmendmentDialog,
+  showPennylaneAmendmentSuccessDialog,
+  showPennylaneAmendmentDeclineDialog,
+  pennylaneAccessDetails,
+  pennylaneFreeTrialInfo,
+  shouldShowPennylaneAmendmentDialog,
+  checkPennylaneAccess,
+  onPennylaneAmendmentAcceptSuccess,
+  onPennylaneAmendmentDecline,
+} = usePennylaneAmendment()
+
+onMounted(async () => {
+  await checkPennylaneAccess()
+  if (shouldShowPennylaneAmendmentDialog.value) {
+    showPennylaneAmendmentDialog.value = true
+  }
+})
 </script>

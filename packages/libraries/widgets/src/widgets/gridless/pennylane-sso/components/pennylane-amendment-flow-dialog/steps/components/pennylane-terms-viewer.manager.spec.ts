@@ -1,4 +1,4 @@
-import type { PDFDocumentProxy, PDFPageProxy } from './pennylane-terms-viewer.types'
+import type { PDFDocumentProxy, PDFPageProxy } from 'pdfjs-dist'
 import * as pdfjsLib from 'pdfjs-dist'
 
 vi.mock('pdfjs-dist', () => ({

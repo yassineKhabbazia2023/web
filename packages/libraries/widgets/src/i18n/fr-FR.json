@@ -40,6 +40,7 @@
       "authorizedRepresentativeOnlyPart2": " car elle engage l'entreprise dans ce nouveau cadre réglementaire.",
       "connectionInstructions": "Merci de demander à cette personne de se connecter à son espace RYDGE Conseil pour effectuer cette validation.",
       "conclusion": "Une fois les nouvelles conditions de RYDGE Conseil validées, vous pourrez continuer à utiliser la plateforme Pennylane.",
+      "conclusionDelayed": "Une fois les nouvelles conditions de RYDGE Conseil validées, nous pourrons activer votre accès à la plateforme Pennylane.",
       "supportNotice": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)",
       "understood": "C'est compris"
     },
@@ -84,7 +85,8 @@
         },
         "supportNotice": {
           "title": "Besoin d'aide ?",
-          "description": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)"
+          "description": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)",
+          "descriptionDelayed": "Votre accès à Pennylane sera activé entre mi-juin et fin juillet 2026, après la mise à disposition de vos données comptables. Vous en serez informé par email."
         },
         "faq": {
           "risks": {
@@ -130,8 +132,11 @@
         "checkboxLinkText": "les nouvelles conditions de RYDGE Conseil",
         "checkboxLabelSuffix": " et j'accepte :",
         "listItem1": "de confier à RYDGE Conseil la mission d'accompagnement à la réforme de la facturation électronique (mise en qualité des référentiels fournisseurs, réponse à toutes vos questions jusqu'au 30 septembre 2026, préparation du rapport identifiant les données de factures de vente non conformes, prise en main de la plateforme agréée)",
-        "listItem2": "le ou les plan(s) proposé(s) par RYDGE Conseil pour l'utilisation de l'outil Pennylane en sachant que je peux choisir à tout moment un autre plan, durant la période de gratuité ou après celle-ci selon les modalités prévues dans ce formulaire et de modifier ou compléter en conséquence la lettre de mission que j'ai signée avec RYDGE Conseil.",
+        "listItem2": "le ou les plan(s) proposé(s) par RYDGE Conseil pour l'utilisation de l'outil Pennylane en sachant que je peux choisir à tout moment un autre plan, durant la période de gratuité ou après celle-ci selon les modalités prévues dans ce formulaire et de modifier ou compléter en conséquence la lettre de mission que j'ai signée avec RYDGE Conseil",
+        "listItem2Punctuation": ".",
+        "listItem2Delayed": "; j'ai noté que je recevrai un email lors de l'activation de mon accès à Pennylane.",
         "supportNotice": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)",
+        "supportNoticeDelayed": "Votre accès à Pennylane sera activé entre mi-juin et fin juillet 2026, après la mise à disposition de vos données comptables. Vous en serez informé par email.",
         "buttonRefuse": "Refuser",
         "buttonAccept": "Accepter",
         "refuseTooltip": "En cas de refus votre accès à Pennylane sera bloqué. Rapprochez vous de votre Expert avant de refuser"
@@ -147,6 +152,10 @@
         "pennylane": "Pennylane.",
         "descriptionPart2": " Afin de vous laisser le temps de vous approprier ces nouvelles fonctionnalités, ",
         "boldAccessPart": "vous avez accès à Pennylane gratuitement jusqu'au ",
+        "descriptionDelayedPart1": "Vous recevrez un email dès que votre accès à ",
+        "descriptionDelayedBold1": "Pennylane",
+        "descriptionDelayedPart2": " sera activé. Afin de vous laisser le temps de vous approprier ces nouvelles fonctionnalités, ",
+        "descriptionDelayedBold2": "vous aurez accès gratuitement à Pennylane jusqu'au ",
         "buttonClose": "Fermer"
       },
       "decline": {
@@ -162,6 +171,9 @@
         "instructionPart1": "Veuillez cliquer à nouveau sur ",
         "instructionBold": "« Accéder à Pennylane »",
         "instructionPart2": " pour accéder au formulaire d'acceptation.",
+        "instructionDelayedPart1": "Veuillez ",
+        "instructionDelayedBold": "à nouveau vous connecter à la plateforme RYDGE Conseil",
+        "instructionDelayedPart2": " pour accéder au formulaire d'acceptation.",
         "supportNotice": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)",
         "buttonClose": "Fermer"
       }

@@ -80,33 +80,29 @@ export class PennylaneService {
     return data
   }
 
-  static async checkPennylaneAccess(accountId: number): Promise<PennylaneAccessResponse> {
-    const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/access/currentuser`
+  static async checkPennylaneAccess(accountId?: number): Promise<PennylaneAccessResponse> {
+    const url = accountId
+      ? `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/access/currentuser`
+      : `${API_PREFIXES.PENNYLANE}/access/currentuser`
 
     const { data } = await api.gateway.get<PennylaneAccessResponse>(url)
 
     return data
   }
 
-  static async getTermsContent(accountId: number) {
+  static async getTermsContent() {
     const url = `${API_PREFIXES.PENNYLANE}/terms/content`
-    const queryParams = {
-      accountId,
-    }
 
     const { data } = await api.gateway.get(url, {
-      params: queryParams,
       responseType: 'arraybuffer',
     })
 
     return data
   }
 
-  static async validatePennylaneAmendment(accountId: number, details: PennylaneValidationPayload) {
-    const url = `${API_PREFIXES.PENNYLANE}/accounts/${accountId}/validation/currentuser`
+  static async validatePennylaneAmendment(details: PennylaneValidationPayload): Promise<void> {
+    const url = `${API_PREFIXES.PENNYLANE}/validation/currentuser`
 
-    const { data } = await api.gateway.post(url, details)
-
-    return data
+    await api.gateway.post(url, details)
   }
 }

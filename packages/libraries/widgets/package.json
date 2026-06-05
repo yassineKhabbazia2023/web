@@ -14,7 +14,9 @@
     "./install": "./src/install.ts",
     "./gridless": "./src/gridless.ts",
     "./utils": "./src/utils.ts",
-    "./pennylane-dialogs": "./src/widgets/gridless/pennylane-sso/components/index.ts"
+    "./composables": "./src/composables.ts",
+    "./pennylane-dialogs": "./src/widgets/gridless/pennylane-sso/components/index.ts",
+    "./pennylane-tracking": "./src/widgets/gridless/pennylane-sso/tracking.ts"
   },
   "scripts": {
     "build": "npm run build:types && npm run build:vite",

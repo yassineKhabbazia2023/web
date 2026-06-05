@@ -62,14 +62,14 @@
 import { useI18n } from 'vue-i18n'
 import { PButton, PIcon, PTooltip } from '@pulse/styleguide/components'
 import { downloadTermsPdf } from '../../pennylane-terms.helper'
-import type { PennylaneTermsViewerToolbarProps } from './pennylane-terms-viewer-toolbar.type'
+import type { PennylaneTermsViewerToolbarProps } from './pennylane-terms-viewer-toolbar.types'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'global',
 })
 
-const props = defineProps<PennylaneTermsViewerToolbarProps>()
+defineProps<PennylaneTermsViewerToolbarProps>()
 
 defineEmits<{
   'zoom-in': []
@@ -77,7 +77,7 @@ defineEmits<{
 }>()
 
 function downloadDocument() {
-  downloadTermsPdf(props.accountId)
+  downloadTermsPdf()
 }
 </script>
 

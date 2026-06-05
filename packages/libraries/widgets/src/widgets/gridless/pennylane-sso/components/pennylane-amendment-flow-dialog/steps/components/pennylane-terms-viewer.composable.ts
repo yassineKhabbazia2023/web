@@ -1,19 +1,17 @@
-import { ref, computed, onMounted, onUnmounted, watch, nextTick } from 'vue'
-import type { Ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { logger } from '@pulse/toolbox'
 import { getIsMobile } from '@pulse/styleguide'
 import { PennylaneTermsViewerManager } from './pennylane-terms-viewer.manager'
 import { downloadTermsPdf } from '../../pennylane-terms.helper'
-import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from './pennylane-terms-viewer.types'
-import { ZOOM_STEP, MIN_ZOOM, MAX_ZOOM, MOBILE_SCALE, DEFAULT_CONTAINER_WIDTH } from './pennylane-terms-viewer.types'
+import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from 'pdfjs-dist'
+import { ZOOM_STEP, MIN_ZOOM, MAX_ZOOM, MOBILE_SCALE, DEFAULT_CONTAINER_WIDTH } from './pennylane-terms-viewer.consts'
 
 /**
  * Composable for managing the Pennylane terms and conditions PDF viewer
  * Handles loading, page rendering, zoom controls and scroll detection
  */
 export function usePennylaneTermsViewer(
-  accountId: Ref<number>,
   emit: (event: 'scroll-complete') => void,
 ) {
   const isLoading = ref(true)
@@ -52,7 +50,7 @@ export function usePennylaneTermsViewer(
       cleanupObserverAndListeners()
       cancelAllRenderTasks()
 
-      const fetchedPdfData = await PennylaneService.getTermsContent(accountId.value)
+      const fetchedPdfData = await PennylaneService.getTermsContent()
 
       pdfDocument = await PennylaneTermsViewerManager.loadPdfDocument(fetchedPdfData)
       pdfPages = await PennylaneTermsViewerManager.getAllPages(pdfDocument)
@@ -291,10 +289,6 @@ export function usePennylaneTermsViewer(
     pdfPages = []
   })
 
-  watch(() => accountId.value, () => {
-    loadPdf()
-  })
-
   const isDownloading = ref(false)
 
   /**
@@ -304,7 +298,7 @@ export function usePennylaneTermsViewer(
   async function downloadAndContinue() {
     isDownloading.value = true
     try {
-      await downloadTermsPdf(accountId.value)
+      await downloadTermsPdf()
       emit('scroll-complete')
     } finally {
       isDownloading.value = false

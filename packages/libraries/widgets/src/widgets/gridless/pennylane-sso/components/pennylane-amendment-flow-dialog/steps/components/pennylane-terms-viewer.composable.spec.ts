@@ -1,11 +1,11 @@
-import { ref, nextTick } from 'vue'
+import { nextTick } from 'vue'
 import { flushPromises } from '@vue/test-utils'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { loggerErrorSpy, loggerMock } from '@pulse/toolbox/mocks'
 import { usePennylaneTermsViewer } from './pennylane-terms-viewer.composable'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { PennylaneTermsViewerManager } from './pennylane-terms-viewer.manager'
-import { MOBILE_SCALE } from './pennylane-terms-viewer.types'
+import { MOBILE_SCALE } from './pennylane-terms-viewer.consts'
 import { getIsMobile } from '@pulse/styleguide'
 import { downloadTermsPdf } from '../../pennylane-terms.helper'
 
@@ -50,16 +50,15 @@ describe('usePennylaneTermsViewer', () => {
   })
 
   it('should load PDF on mount', async () => {
-    const accountId = ref(123)
     const emit = vi.fn()
 
-    const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+    const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
     expect(result.isLoading.value).toBe(true)
 
     await waitForPdfLoad()
 
-    expect(PennylaneService.getTermsContent).toHaveBeenCalledWith(123)
+    expect(PennylaneService.getTermsContent).toHaveBeenCalled()
     expect(PennylaneTermsViewerManager.loadPdfDocument).toHaveBeenCalledWith(mockPdfData)
     expect(PennylaneTermsViewerManager.getAllPages).toHaveBeenCalledWith(mockPdfDocument)
     expect(result.numPages.value).toBe(2)
@@ -69,12 +68,11 @@ describe('usePennylaneTermsViewer', () => {
   })
 
   it('should set error when PDF loading fails', async () => {
-    const accountId = ref(123)
     const emit = vi.fn()
 
     vi.mocked(PennylaneService.getTermsContent).mockRejectedValueOnce(new Error('Network error'))
 
-    const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+    const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
     await flushPromises()
 
@@ -85,31 +83,10 @@ describe('usePennylaneTermsViewer', () => {
     app.unmount()
   })
 
-  it('should reload PDF when accountId changes', async () => {
-    const accountId = ref(123)
-    const emit = vi.fn()
-
-    const [_result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
-
-    await waitForPdfLoad()
-
-    expect(PennylaneService.getTermsContent).toHaveBeenCalledTimes(1)
-
-    accountId.value = 456
-    await nextTick()
-    await waitForPdfLoad()
-
-    expect(PennylaneService.getTermsContent).toHaveBeenCalledTimes(2)
-    expect(PennylaneService.getTermsContent).toHaveBeenCalledWith(456)
-
-    app.unmount()
-  })
-
   it('should emit scroll-complete when scrollToBottom is called', async () => {
-    const accountId = ref(123)
     const emit = vi.fn()
 
-    const [composableResult, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+    const [composableResult, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
     await waitForPdfLoad()
 
@@ -135,10 +112,9 @@ describe('usePennylaneTermsViewer', () => {
   })
 
   it('should cleanup resources on unmount', async () => {
-    const accountId = ref(123)
     const emit = vi.fn()
 
-    const [_result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+    const [_result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
     await waitForPdfLoad()
 
@@ -148,10 +124,9 @@ describe('usePennylaneTermsViewer', () => {
   })
 
   it('should initialize numPages with correct value', async () => {
-    const accountId = ref(123)
     const emit = vi.fn()
 
-    const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+    const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
     await waitForPdfLoad()
 
@@ -162,10 +137,9 @@ describe('usePennylaneTermsViewer', () => {
 
   describe('setCanvasRef', () => {
     it('should render page when canvas ref is set', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -178,10 +152,9 @@ describe('usePennylaneTermsViewer', () => {
     })
 
     it('should not render page twice for the same index', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -197,10 +170,9 @@ describe('usePennylaneTermsViewer', () => {
     })
 
     it('should do nothing when canvas is null', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -216,10 +188,9 @@ describe('usePennylaneTermsViewer', () => {
 
   describe('scrollToBottom', () => {
     it('should do nothing when pdfContainer is null', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await flushPromises()
 
@@ -234,7 +205,6 @@ describe('usePennylaneTermsViewer', () => {
 
   describe('render error handling', () => {
     it('should handle render error gracefully', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
       const renderError = new Error('Render failed')
@@ -246,7 +216,7 @@ describe('usePennylaneTermsViewer', () => {
         cancel: vi.fn(),
       } as any)
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -261,7 +231,6 @@ describe('usePennylaneTermsViewer', () => {
     })
 
     it('should not log error for RenderingCancelledException', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
       const cancelError = new Error('Cancelled')
@@ -274,7 +243,7 @@ describe('usePennylaneTermsViewer', () => {
         cancel: vi.fn(),
       } as any)
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -293,10 +262,9 @@ describe('usePennylaneTermsViewer', () => {
 
   describe('isAtBottom state', () => {
     it('should initialize isAtBottom as false', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       expect(result.isAtBottom.value).toBe(false)
 
@@ -306,10 +274,9 @@ describe('usePennylaneTermsViewer', () => {
 
   describe('zoom controls', () => {
     it('should allow zoom in when not at maximum', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -319,10 +286,9 @@ describe('usePennylaneTermsViewer', () => {
     })
 
     it('should allow zoom out when above minimum', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -332,12 +298,11 @@ describe('usePennylaneTermsViewer', () => {
     })
 
     it('should display correct zoom percentage', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
       vi.mocked(PennylaneTermsViewerManager.formatZoomPercentage).mockReturnValue('100%')
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       expect(result.zoomPercentage.value).toBe('100%')
 
@@ -345,10 +310,9 @@ describe('usePennylaneTermsViewer', () => {
     })
 
     it('should increase zoom and rerender pages when zoomIn is called', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -365,10 +329,9 @@ describe('usePennylaneTermsViewer', () => {
     })
 
     it('should decrease zoom and rerender pages when zoomOut is called', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -385,10 +348,9 @@ describe('usePennylaneTermsViewer', () => {
     })
 
     it('should not zoom in when already at maximum', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -407,10 +369,9 @@ describe('usePennylaneTermsViewer', () => {
     })
 
     it('should not zoom out when already at minimum', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -433,10 +394,9 @@ describe('usePennylaneTermsViewer', () => {
     it('should use mobile scale when on mobile device', async () => {
       vi.mocked(getIsMobile).mockReturnValue(true)
 
-      const accountId = ref(123)
       const emit = vi.fn()
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -458,7 +418,6 @@ describe('usePennylaneTermsViewer', () => {
 
   describe('render task cancellation', () => {
     it('should cancel existing render task when re-rendering same page', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
       const cancelMock = vi.fn()
 
@@ -467,7 +426,7 @@ describe('usePennylaneTermsViewer', () => {
         cancel: cancelMock,
       } as any)
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -484,12 +443,11 @@ describe('usePennylaneTermsViewer', () => {
 
   describe('scroll handling', () => {
     it('should update isAtBottom when scrolled to bottom', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
       vi.mocked(PennylaneTermsViewerManager.isScrolledToBottom).mockReturnValue(true)
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -499,12 +457,11 @@ describe('usePennylaneTermsViewer', () => {
     })
 
     it('should initialize isAtBottom as false', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
       vi.mocked(PennylaneTermsViewerManager.isScrolledToBottom).mockReturnValue(false)
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -516,12 +473,11 @@ describe('usePennylaneTermsViewer', () => {
 
   describe('calculateBaseScale', () => {
     it('should not calculate scale when no pages are loaded', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
       vi.mocked(PennylaneTermsViewerManager.getAllPages).mockResolvedValueOnce([])
 
-      const [_result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [_result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await waitForPdfLoad()
 
@@ -533,23 +489,21 @@ describe('usePennylaneTermsViewer', () => {
 
   describe('downloadAndContinue', () => {
     it('should download PDF and emit scroll-complete', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
       vi.mocked(downloadTermsPdf).mockResolvedValue(undefined)
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       await result.downloadAndContinue()
 
-      expect(downloadTermsPdf).toHaveBeenCalledWith(123)
+      expect(downloadTermsPdf).toHaveBeenCalled()
       expect(emit).toHaveBeenCalledWith('scroll-complete')
 
       app.unmount()
     })
 
     it('should set isDownloading to true while downloading', async () => {
-      const accountId = ref(123)
       const emit = vi.fn()
 
       let resolveDownload: () => void = () => {}
@@ -557,7 +511,7 @@ describe('usePennylaneTermsViewer', () => {
         resolveDownload = resolve
       }))
 
-      const [result, app] = withSetup(() => usePennylaneTermsViewer(accountId, emit))
+      const [result, app] = withSetup(() => usePennylaneTermsViewer(emit))
 
       const downloadPromise = result.downloadAndContinue()
 

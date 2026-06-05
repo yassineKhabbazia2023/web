@@ -40,6 +40,7 @@
       "authorizedRepresentativeOnlyPart2": " as it commits the company to this new regulatory framework.",
       "connectionInstructions": "Please ask this person to log in to their RYDGE Conseil account to complete this validation.",
       "conclusion": "Once the new RYDGE Conseil terms have been validated, you will be able to continue using the Pennylane platform.",
+      "conclusionDelayed": "Once the new RYDGE Conseil terms have been validated, we will be able to activate your access to the Pennylane platform.",
       "supportNotice": "For any questions, please contact your usual contact person or the customer relations department (accompagnement{'@'}rydge.fr)",
       "understood": "Understood"
     },
@@ -84,7 +85,8 @@
         },
         "supportNotice": {
           "title": "Need help?",
-          "description": "For any questions, please contact your usual contact person or the customer relations department (accompagnement{'@'}rydge.fr)"
+          "description": "For any questions, please contact your usual contact person or the customer relations department (accompagnement{'@'}rydge.fr)",
+          "descriptionDelayed": "Your access to Pennylane will be activated between mid-June and end of July 2026, after your accounting data is made available. You will be notified by email."
         },
         "faq": {
           "risks": {
@@ -130,8 +132,11 @@
         "checkboxLinkText": "the new terms and conditions of RYDGE Conseil",
         "checkboxLabelSuffix": " and I accept:",
         "listItem1": "to entrust RYDGE Conseil with the electronic invoicing reform support mission (quality improvement of supplier repositories, answers to all your questions until September 30, 2026, preparation of the report identifying non-compliant sales invoice data, onboarding to the approved platform)",
-        "listItem2": "the plan(s) proposed by RYDGE Conseil for the use of the Pennylane tool, knowing that I can choose another plan at any time, during the free period or after it according to the terms set out in this form and to modify or supplement the engagement letter I signed with RYDGE Conseil accordingly.",
+        "listItem2": "the plan(s) proposed by RYDGE Conseil for the use of the Pennylane tool, knowing that I can choose another plan at any time, during the free period or after it according to the terms set out in this form and to modify or supplement the engagement letter I signed with RYDGE Conseil accordingly",
+        "listItem2Punctuation": ".",
+        "listItem2Delayed": "; I have noted that I will receive an email when my access to Pennylane is activated.",
         "supportNotice": "For any questions, please contact your usual contact person or the customer relations department (accompagnement{'@'}rydge.fr)",
+        "supportNoticeDelayed": "Your access to Pennylane will be activated between mid-June and end of July 2026, after your accounting data is made available. You will be notified by email.",
         "buttonRefuse": "Refuse",
         "buttonAccept": "Accept",
         "refuseTooltip": "In case of refusal, your access to Pennylane will be blocked. Contact your Expert before refusing"
@@ -147,6 +152,10 @@
         "pennylane": "Pennylane.",
         "descriptionPart2": " To give you time to familiarize yourself with these new features, ",
         "boldAccessPart": "you have free access to Pennylane until ",
+        "descriptionDelayedPart1": "You will receive an email as soon as your access to ",
+        "descriptionDelayedBold1": "Pennylane",
+        "descriptionDelayedPart2": " is activated. To give you time to familiarize yourself with these new features, ",
+        "descriptionDelayedBold2": "you will have free access to Pennylane until ",
         "buttonClose": "Close"
       },
       "decline": {
@@ -162,6 +171,9 @@
         "instructionPart1": "Please click again on ",
         "instructionBold": "\"Access Pennylane\"",
         "instructionPart2": " to access the acceptance form.",
+        "instructionDelayedPart1": "Please ",
+        "instructionDelayedBold": "log in again to the RYDGE Conseil platform",
+        "instructionDelayedPart2": " to access the acceptance form.",
         "supportNotice": "For any questions, please contact your usual contact or the customer relations department (accompagnement{'@'}rydge.fr)",
         "buttonClose": "Close"
       }

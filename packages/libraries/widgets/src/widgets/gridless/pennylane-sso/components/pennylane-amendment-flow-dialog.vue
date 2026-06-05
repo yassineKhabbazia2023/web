@@ -35,15 +35,13 @@
 
         <StepTermsPreview
           v-else-if="currentStep === PennylaneAmendmentStep.TERMS_PREVIEW"
-          :account-id="props.currentAccountId"
           @scroll-complete="setTermsScrollComplete"
         />
 
         <StepAcceptance
           v-else-if="currentStep === PennylaneAmendmentStep.ACCEPTANCE"
-          :is-accepted="isTermsAccepted"
-          :account-id="props.currentAccountId"
-          @update:is-accepted="setTermsAccepted"
+          v-model:is-accepted="isTermsAccepted"
+          :free-trial-end-date="freeTrialInfo?.freeTrialEndDate"
         />
 
         <div class="margin-top--auto">
@@ -165,7 +163,7 @@ import { useI18n } from 'vue-i18n'
 import { useResponsive, scrollToTop } from '@pulse/styleguide'
 import { logger } from '@pulse/toolbox'
 import { PButton, PDialog, PImage, PTooltip, PIcon } from '@pulse/styleguide/components'
-import type { PennylaneAmendmentFlowDialogProps } from './pennylane-amendment-flow-dialog.type'
+import type { PennylaneAmendmentFlowDialogProps } from './pennylane-amendment-flow-dialog.types'
 import { PennylaneAmendmentStep } from './pennylane-amendment-flow-dialog/pennylane-amendment-flow-dialog.enum'
 import { usePennylaneAmendmentSteps } from './pennylane-amendment-flow-dialog/pennylane-amendment-flow-dialog.composable'
 import StepInformation from './pennylane-amendment-flow-dialog/steps/step-information.vue'
@@ -198,7 +196,6 @@ const {
   handlePrevious,
   reset,
   setTermsScrollComplete,
-  setTermsAccepted,
 } = usePennylaneAmendmentSteps()
 
 const isAcceptLoading = ref(false)
@@ -275,11 +272,11 @@ async function handleRefuse() {
       accountNumbers: accountNumbers.value,
       status: false,
     }
-    await PennylaneService.validatePennylaneAmendment(props.currentAccountId, payload)
+    await PennylaneService.validatePennylaneAmendment(payload)
     isVisible.value = false
     emit('decline')
   } catch {
-    logger.error('Error refusing pennylane amendement')
+    logger.error('Error refusing pennylane amendment')
   } finally {
     isRefuseLoading.value = false
   }
@@ -292,11 +289,11 @@ async function handleAccept() {
       accountNumbers: accountNumbers.value,
       status: true,
     }
-    await PennylaneService.validatePennylaneAmendment(props.currentAccountId, payload)
+    await PennylaneService.validatePennylaneAmendment(payload)
     isVisible.value = false
     emit('accept-success')
   } catch {
-    logger.error('Error validating pennylane amendement')
+    logger.error('Error validating pennylane amendment')
   } finally {
     isAcceptLoading.value = false
   }

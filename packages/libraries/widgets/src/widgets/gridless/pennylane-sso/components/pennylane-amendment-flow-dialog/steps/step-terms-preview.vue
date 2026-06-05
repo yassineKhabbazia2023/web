@@ -9,34 +9,20 @@
     </p>
 
     <PennylaneTermsViewer
-      v-if="props.accountId > 0"
-      :account-id="props.accountId"
       class="step-terms-preview__viewer margin-bottom--8"
       @scroll-complete="handleScrollComplete"
     />
-
-    <PAlert
-      v-else
-      pType="warning"
-      class="margin-top--4"
-    >
-      {{ t('widgets.pennylaneAmendmentFlow.step3.noPdfAvailable') }}
-    </PAlert>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { PAlert } from '@pulse/styleguide/components'
 import PennylaneTermsViewer from './components/pennylane-terms-viewer.vue'
-import type { StepTermsPreviewProps } from './step-terms-preview.types'
 
 const { t } = useI18n({
   inheritLocale: true,
   useScope: 'global',
 })
-
-const props = defineProps<StepTermsPreviewProps>()
 
 const emit = defineEmits<{
   'scroll-complete': []

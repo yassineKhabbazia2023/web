@@ -47,7 +47,10 @@
       />
     </div>
 
-    <PennylaneAccessBlockedDialog v-model="isAccessBlockedDialogOpen" />
+    <PennylaneAccessBlockedDialog
+      v-model="isAccessBlockedDialogOpen"
+      :free-trial-end-date="freeTrialInfo?.freeTrialEndDate"
+    />
 
     <PennylaneAmendmentFlowDialog
       v-if="isAmendmentFlowDialogOpen === true && currentAccountId !== undefined && freeTrialInfo !== undefined"
@@ -59,8 +62,14 @@
       @decline="handleDecline"
     />
 
-    <PennylaneAmendmentSuccessDialog v-model="isSuccessDialogOpen" />
-    <PennylaneAmendmentDeclineDialog v-model="isDeclineDialogOpen" />
+    <PennylaneAmendmentSuccessDialog
+      v-model="isSuccessDialogOpen"
+      :free-trial-end-date="freeTrialInfo?.freeTrialEndDate"
+    />
+    <PennylaneAmendmentDeclineDialog
+      v-model="isDeclineDialogOpen"
+      :free-trial-end-date="freeTrialInfo?.freeTrialEndDate"
+    />
   </div>
 </template>
 

@@ -2,8 +2,8 @@ import { APP_NAME } from '@pulse/common/constants'
 import { PennylaneService } from '@pulse/common/services/pennylane'
 import { isMobileDevice, logger } from '@pulse/toolbox'
 
-async function getTermsPdfBlob(accountId: number): Promise<Blob> {
-  const pdfData = await PennylaneService.getTermsContent(accountId)
+async function getTermsPdfBlob(): Promise<Blob> {
+  const pdfData = await PennylaneService.getTermsContent()
   return new Blob([pdfData], { type: 'application/pdf' })
 }
 
@@ -14,9 +14,9 @@ async function getTermsPdfBlob(accountId: number): Promise<Blob> {
  * On desktop, uses an embedded viewer for compatibility with Edge and other browsers
  * that delegate PDF display to external plugins.
  */
-export async function openTermsPdfInNewTab(accountId: number): Promise<void> {
+export async function openTermsPdfInNewTab(): Promise<void> {
   if (isMobileDevice()) {
-    await downloadTermsPdf(accountId)
+    await downloadTermsPdf()
     return
   }
 
@@ -28,7 +28,7 @@ export async function openTermsPdfInNewTab(accountId: number): Promise<void> {
   }
 
   try {
-    const blob = await getTermsPdfBlob(accountId)
+    const blob = await getTermsPdfBlob()
     const fileURL = URL.createObjectURL(blob)
 
     const doc = newTab.document
@@ -52,9 +52,9 @@ export async function openTermsPdfInNewTab(accountId: number): Promise<void> {
  * Downloads the Pennylane terms PDF file.
  * Errors are caught and logged but not propagated to avoid blocking the user flow.
  */
-export async function downloadTermsPdf(accountId: number): Promise<void> {
+export async function downloadTermsPdf(): Promise<void> {
   try {
-    const blob = await getTermsPdfBlob(accountId)
+    const blob = await getTermsPdfBlob()
     const link = document.createElement('a')
     link.href = URL.createObjectURL(blob)
     link.download = 'conditions-generales-rydge-conseil.pdf'

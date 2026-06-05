@@ -20,7 +20,6 @@ const mockLoggerError = vi.mocked(logger.error)
 const mockIsMobileDevice = vi.mocked(isMobileDevice)
 
 describe('pennylane-terms.helper', () => {
-  const mockAccountId = 123
   const mockPdfData = new ArrayBuffer(8)
 
   beforeEach(() => {
@@ -64,10 +63,10 @@ describe('pennylane-terms.helper', () => {
     it('should open a blank tab synchronously then create DOM with embedded PDF on desktop', async () => {
       mockGetTermsContent.mockResolvedValue(mockPdfData)
 
-      await openTermsPdfInNewTab(mockAccountId)
+      await openTermsPdfInNewTab()
 
       expect(mockWindowOpen).toHaveBeenCalledWith('', '_blank')
-      expect(mockGetTermsContent).toHaveBeenCalledWith(mockAccountId)
+      expect(mockGetTermsContent).toHaveBeenCalledWith()
       expect(URL.createObjectURL).toHaveBeenCalledWith(expect.any(Blob))
       expect(mockNewTab.document.createElement).toHaveBeenCalledWith('style')
       expect(mockNewTab.document.createElement).toHaveBeenCalledWith('embed')
@@ -80,7 +79,7 @@ describe('pennylane-terms.helper', () => {
     it('should create a Blob with correct PDF type', async () => {
       mockGetTermsContent.mockResolvedValue(mockPdfData)
 
-      await openTermsPdfInNewTab(mockAccountId)
+      await openTermsPdfInNewTab()
 
       const createObjectURLSpy = vi.mocked(URL.createObjectURL)
       const blobArg = createObjectURLSpy.mock.calls[0][0] as Blob
@@ -90,7 +89,7 @@ describe('pennylane-terms.helper', () => {
     it('should close the tab and log error when fetching PDF fails', async () => {
       mockGetTermsContent.mockRejectedValue(new Error('Network error'))
 
-      await openTermsPdfInNewTab(mockAccountId)
+      await openTermsPdfInNewTab()
 
       expect(mockNewTab.close).toHaveBeenCalled()
       expect(mockLoggerError).toHaveBeenCalledWith('Error opening terms PDF in new tab')
@@ -99,7 +98,7 @@ describe('pennylane-terms.helper', () => {
     it('should log error and return early if popup is blocked', async () => {
       mockWindowOpen.mockReturnValue(null)
 
-      await openTermsPdfInNewTab(mockAccountId)
+      await openTermsPdfInNewTab()
 
       expect(mockLoggerError).toHaveBeenCalledWith('Failed to open new tab - popup may be blocked')
       expect(mockGetTermsContent).not.toHaveBeenCalled()
@@ -117,7 +116,7 @@ describe('pennylane-terms.helper', () => {
       it('should trigger download instead of embed on mobile', async () => {
         mockGetTermsContent.mockResolvedValue(mockPdfData)
 
-        await openTermsPdfInNewTab(mockAccountId)
+        await openTermsPdfInNewTab()
 
         expect(mockWindowOpen).not.toHaveBeenCalled()
         expect(mockLink.download).toBe('conditions-generales-rydge-conseil.pdf')
@@ -143,9 +142,9 @@ describe('pennylane-terms.helper', () => {
       vi.useFakeTimers()
       mockGetTermsContent.mockResolvedValue(mockPdfData)
 
-      await downloadTermsPdf(mockAccountId)
+      await downloadTermsPdf()
 
-      expect(mockGetTermsContent).toHaveBeenCalledWith(mockAccountId)
+      expect(mockGetTermsContent).toHaveBeenCalledWith()
       expect(createElementSpy).toHaveBeenCalledWith('a')
       expect(mockLink.href).toBe('blob:mock-url')
       expect(mockLink.download).toBe('conditions-generales-rydge-conseil.pdf')
@@ -161,7 +160,7 @@ describe('pennylane-terms.helper', () => {
     it('should create a Blob with correct PDF type', async () => {
       mockGetTermsContent.mockResolvedValue(mockPdfData)
 
-      await downloadTermsPdf(mockAccountId)
+      await downloadTermsPdf()
 
       const createObjectURLSpy = vi.mocked(URL.createObjectURL)
       const blobArg = createObjectURLSpy.mock.calls[0][0] as Blob
@@ -171,7 +170,7 @@ describe('pennylane-terms.helper', () => {
     it('should log error when download fails', async () => {
       mockGetTermsContent.mockRejectedValue(new Error('Network error'))
 
-      await downloadTermsPdf(mockAccountId)
+      await downloadTermsPdf()
 
       expect(mockLoggerError).toHaveBeenCalledWith('Error downloading terms PDF')
     })

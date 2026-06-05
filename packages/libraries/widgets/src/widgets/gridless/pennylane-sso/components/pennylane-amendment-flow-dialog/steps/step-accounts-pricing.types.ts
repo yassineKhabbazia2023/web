@@ -2,5 +2,5 @@ import type { PennylaneAccessAccount, PennylaneFreeTrialInfo } from '@pulse/comm
 
 export interface StepAccountsPricingProps {
   accounts: PennylaneAccessAccount[]
-  freeTrialInfo: PennylaneFreeTrialInfo
+  freeTrialInfo?: PennylaneFreeTrialInfo
 }

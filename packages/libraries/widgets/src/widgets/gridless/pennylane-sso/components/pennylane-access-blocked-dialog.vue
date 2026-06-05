@@ -54,7 +54,12 @@
             margin-bottom--4
           "
         >
-          {{ t('widgets.pennylaneAccessBlocked.conclusion') }}
+          <template v-if="isDelayedActivation">
+            {{ t('widgets.pennylaneAccessBlocked.conclusionDelayed') }}
+          </template>
+          <template v-else>
+            {{ t('widgets.pennylaneAccessBlocked.conclusion') }}
+          </template>
         </p>
 
         <PAlert
@@ -131,7 +136,8 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PDialog, PButton, PImage, PAlert } from '@pulse/styleguide/components'
 import { useResponsive } from '@pulse/styleguide'
-import type { PennylaneAccessBlockedDialogProps } from './pennylane-access-blocked-dialog.type'
+import type { PennylaneAccessBlockedDialogProps } from './pennylane-access-blocked-dialog.types'
+import { DELAYED_ACTIVATION_DATE } from '../pennylane-amendment.consts'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -152,6 +158,8 @@ const isVisible = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 })
+
+const isDelayedActivation = computed(() => props.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
 
 const handleClose = () => {
   isVisible.value = false

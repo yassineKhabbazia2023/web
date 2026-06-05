@@ -19,14 +19,26 @@
       </h3>
 
       <p class="font-base margin-bottom--8 pennylane-amendment-success-dialog__description text-center">
-        {{ t('widgets.pennylaneAmendmentFlow.success.descriptionPart1') }}
-        <span class="font-bold">
-          {{ t('widgets.pennylaneAmendmentFlow.success.pennylane') }}
-        </span>
-        {{ t('widgets.pennylaneAmendmentFlow.success.descriptionPart2') }}
-        <span class="font-bold">
-          {{ t('widgets.pennylaneAmendmentFlow.success.boldAccessPart') }}{{ formattedFreeTrialEndDate }}.
-        </span>
+        <template v-if="isDelayedActivation">
+          {{ t('widgets.pennylaneAmendmentFlow.success.descriptionDelayedPart1') }}
+          <span class="font-bold">
+            {{ t('widgets.pennylaneAmendmentFlow.success.descriptionDelayedBold1') }}
+          </span>
+          {{ t('widgets.pennylaneAmendmentFlow.success.descriptionDelayedPart2') }}
+          <span class="font-bold">
+            {{ t('widgets.pennylaneAmendmentFlow.success.descriptionDelayedBold2') }}{{ formattedFreeTrialEndDate }}.
+          </span>
+        </template>
+        <template v-else>
+          {{ t('widgets.pennylaneAmendmentFlow.success.descriptionPart1') }}
+          <span class="font-bold">
+            {{ t('widgets.pennylaneAmendmentFlow.success.pennylane') }}
+          </span>
+          {{ t('widgets.pennylaneAmendmentFlow.success.descriptionPart2') }}
+          <span class="font-bold">
+            {{ t('widgets.pennylaneAmendmentFlow.success.boldAccessPart') }}{{ formattedFreeTrialEndDate }}.
+          </span>
+        </template>
       </p>
 
       <PButton
@@ -45,7 +57,8 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useResponsive } from '@pulse/styleguide'
 import { PDialog, PButton, PIcon } from '@pulse/styleguide/components'
-import type { PennylaneAmendmentSuccessDialogProps } from './pennylane-amendment-success-dialog.type'
+import type { PennylaneAmendmentSuccessDialogProps } from './pennylane-amendment-success-dialog.types'
+import { DELAYED_ACTIVATION_DATE } from '../pennylane-amendment.consts'
 
 const { t, d } = useI18n({
   inheritLocale: true,
@@ -64,6 +77,8 @@ const isVisible = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
 })
+
+const isDelayedActivation = computed(() => props.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
 
 const formattedFreeTrialEndDate = computed(() => {
   if (!props.freeTrialEndDate) {

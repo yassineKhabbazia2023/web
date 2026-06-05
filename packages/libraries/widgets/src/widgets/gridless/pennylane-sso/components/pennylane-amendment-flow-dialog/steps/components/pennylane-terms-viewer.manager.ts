@@ -1,5 +1,5 @@
 import * as pdfjsLib from 'pdfjs-dist'
-import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from './pennylane-terms-viewer.types'
+import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from 'pdfjs-dist'
 
 /**
  * Manager for handling PDF operations without Vue dependency

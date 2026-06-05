@@ -10,12 +10,11 @@
 
     <div
       class="radius--2 padding-x--2 padding-bottom--3"
-      :class="{ 'bg--black-rock-100': props.isAccepted }"
+      :class="{ 'bg--black-rock-100': isAccepted }"
     >
       <PCheckbox
-        :model-value="props.isAccepted"
+        v-model="isAccepted"
         class="step-acceptance__checkbox"
-        @update:model-value="emit('update:isAccepted', $event)"
       >
         <span class="step-acceptance__checkbox-label">
           {{ t('widgets.pennylaneAmendmentFlow.step4.checkboxLabelPrefix') }}
@@ -35,7 +34,11 @@
           {{ t('widgets.pennylaneAmendmentFlow.step4.listItem1') }}
         </li>
         <li>
-          {{ t('widgets.pennylaneAmendmentFlow.step4.listItem2') }}
+          {{ t('widgets.pennylaneAmendmentFlow.step4.listItem2') }}<template v-if="isDelayedActivation">
+            {{ t('widgets.pennylaneAmendmentFlow.step4.listItem2Delayed') }}
+          </template><template v-else>
+            {{ t('widgets.pennylaneAmendmentFlow.step4.listItem2Punctuation') }}
+          </template>
         </li>
       </ul>
     </div>
@@ -50,9 +53,11 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PCheckbox, PAlert } from '@pulse/styleguide/components'
 import { openTermsPdfInNewTab } from '../pennylane-terms.helper'
+import { DELAYED_ACTIVATION_DATE } from '../../../pennylane-amendment.consts'
 import type { StepAcceptanceProps } from './step-acceptance.types'
 
 const { t } = useI18n({
@@ -62,12 +67,12 @@ const { t } = useI18n({
 
 const props = defineProps<StepAcceptanceProps>()
 
-const emit = defineEmits<{
-  'update:isAccepted': [value: boolean]
-}>()
+const isAccepted = defineModel<boolean>('isAccepted', { required: true })
+
+const isDelayedActivation = computed(() => props.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
 
 function openTermsPdf() {
-  openTermsPdfInNewTab(props.accountId)
+  openTermsPdfInNewTab()
 }
 </script>
 
