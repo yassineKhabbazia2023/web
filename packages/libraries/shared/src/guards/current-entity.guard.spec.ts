@@ -15,10 +15,20 @@ import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore, useLoadingStore } from '@pulse/common/stores'
 import { AccountType, RouteParam, RouteName } from '@pulse/common/enums'
 import { CurrentEntityManager } from '@pulse/common/managers'
-import { RouteLocationNormalizedGeneric } from 'vue-router'
+import type { RouteLocationNormalizedGeneric, RouteRecordNormalized } from 'vue-router'
 vi.mock('@pulse/common/managers')
 
-function createMockedRoute(entityId?: string): RouteLocationNormalizedGeneric {
+function makeMatchedRecord(name: RouteName): RouteRecordNormalized {
+  return { name } as RouteRecordNormalized
+}
+
+function createMockedRoute(entityId?: string, entityRootRouteName?: RouteName): RouteLocationNormalizedGeneric {
+  // Mirror the real nested route structure: the authenticated wrapper is matched[0],
+  // and the ENTITY/PROSPECT root sits deeper in the chain.
+  const matched: RouteRecordNormalized[] = entityRootRouteName !== undefined
+    ? [makeMatchedRecord(RouteName.AUTHENTICATED), makeMatchedRecord(entityRootRouteName)]
+    : []
+
   return {
     path: 'route/path',
     name: 'routeName',
@@ -26,7 +36,7 @@ function createMockedRoute(entityId?: string): RouteLocationNormalizedGeneric {
       ...(entityId !== undefined ? { [RouteParam.ENTITY_ID]: entityId } : {}),
     },
     // necessary properties to satisfy the RouteLocationNormalizedGeneric type
-    matched: [],
+    matched,
     query: {},
     hash: '',
     fullPath: '',
@@ -237,6 +247,40 @@ describe('navigateToCurrentEntityHomepage', () => {
 
     const result = navigateToCurrentEntityHomepage()
 
+    expect(result).toEqual({
+      name: RouteName.HOMEPAGE,
+      params: { [RouteParam.ENTITY_ID]: entities[0].accountId },
+    })
+  })
+})
+
+describe('currentEntityGuard - account type mismatch on URL tampering', () => {
+  it('redirects to prospect homepage when /dossier/:id is accessed with a prospect entity (already selected)', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[0].accountId
+    currentEntityStoreMock.currentAccountType = AccountType.PROSPECT
+
+    const from = createMockedRoute('')
+    const to = createMockedRoute(entities[0].accountId.toString(), RouteName.ENTITY)
+    const result = await currentEntityGuard(to, from)
+
+    expect(fetchEntityByIdMock).not.toHaveBeenCalled()
+    expect(result).toEqual({
+      name: RouteName.PROSPECT_HOMEPAGE,
+      params: { [RouteParam.ENTITY_ID]: entities[0].accountId },
+    })
+  })
+
+  it('redirects to regular homepage when /contact/:id is accessed with a regular entity (already selected)', async () => {
+    const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
+    currentEntityStoreMock.currentEntityId = entities[0].accountId
+    currentEntityStoreMock.currentAccountType = AccountType.REGULAR
+
+    const from = createMockedRoute('')
+    const to = createMockedRoute(entities[0].accountId.toString(), RouteName.PROSPECT)
+    const result = await currentEntityGuard(to, from)
+
+    expect(fetchEntityByIdMock).not.toHaveBeenCalled()
     expect(result).toEqual({
       name: RouteName.HOMEPAGE,
       params: { [RouteParam.ENTITY_ID]: entities[0].accountId },

@@ -20,29 +20,42 @@ export async function currentEntityGuard(to: RouteLocationNormalized, _from: Rou
     return { name: RouteName.ERROR403 }
   }
 
-  if (isEntityAlreadySelected(toEntityId) === true) {
-    // everything is fine, the entity is already selected, proceed
-    return
+  if (isEntityAlreadySelected(toEntityId) === false) {
+    const loadingStore = useLoadingStore()
+    loadingStore.startContentLoading()
+
+    try {
+      logger.trace(`Entity Router Guard - Fetching entity ${toEntityId} in guard`)
+      const entity = await fetchEntityById(toEntityId)
+      if (entity === null || entity === undefined) {
+        logger.error(`Entity Router Guard - No entity (${toEntityId}) to load has been found`)
+        return { name: RouteName.ERROR403 }
+      }
+
+      await CurrentEntityManager.initializeCurrentEntity(entity)
+
+    } catch (error) {
+      logger.error(`Entity Router Guard - Error while trying to fetch user entity (${toEntityId})`, error)
+      return { name: RouteName.ERROR403 }
+    } finally {
+      loadingStore.stopContentLoading()
+    }
   }
 
-  const loadingStore = useLoadingStore()
-  loadingStore.startContentLoading()
+  // Prevents accessing /dossier/:id with a prospect id (and vice-versa) by URL tampering.
+  let expectedAccountType: AccountType | undefined
+  if (RouterHelpers.hasProvidedAncestor({ route: to, ancestorName: RouteName.ENTITY })) {
+    expectedAccountType = AccountType.REGULAR
+  } else if (RouterHelpers.hasProvidedAncestor({ route: to, ancestorName: RouteName.PROSPECT })) {
+    expectedAccountType = AccountType.PROSPECT
+  }
 
-  try {
-    logger.trace(`Entity Router Guard - Fetching entity ${toEntityId} in guard`)
-    const entity = await fetchEntityById(toEntityId)
-    if (entity === null || entity === undefined) {
-      logger.error(`Entity Router Guard - No entity (${toEntityId}) to load has been found`)
-      return { name: RouteName.ERROR403 }
-    }
-
-    await CurrentEntityManager.initializeCurrentEntity(entity)
-
-  } catch (error) {
-    logger.error(`Entity Router Guard - Error while trying to fetch user entity (${toEntityId})`, error)
-    return { name: RouteName.ERROR403 }
-  } finally {
-    loadingStore.stopContentLoading()
+  const currentAccountType = useCurrentEntityStore().currentAccountType
+  if (expectedAccountType !== undefined && currentAccountType !== expectedAccountType) {
+    logger.warn(
+      `Entity Router Guard - User tried to access wrong entity type (expected ${expectedAccountType}, got ${currentAccountType}) for entity ${toEntityId}`,
+    )
+    return navigateToCurrentEntityHomepage()
   }
 }
 
