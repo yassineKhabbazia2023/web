@@ -82,6 +82,7 @@ const {
   collaboratorTargetRoles,
   isFirstStep,
   isLastStep,
+  isDirty,
   goNextStep,
   goPreviousStep,
 } = useProspectCreationDrawer(PROSPECT_CREATION_DRAWER_STEPS)
@@ -100,8 +101,12 @@ const primaryCTA = computed(() => ({
 
 const isExitConfirmationOpen = ref(false)
 
-// Intercepts every close attempt to ask for confirmation first.
+// Intercepts every close attempt to ask for confirmation first when the form has been touched.
 function requestExit() {
+  if (isDirty.value === false) {
+    confirmExit()
+    return
+  }
   isExitConfirmationOpen.value = true
 }
 

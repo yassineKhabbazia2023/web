@@ -2,15 +2,12 @@
   <div class="flex flex--direction-column user-clients">
     <div class="flex--grow-1 padding--2">
       <AddCustomerDrawer
-        v-if="currentEntityId &&
-          currentEntityName &&
-          currentEntityNumber &&
-          isAddCustomerDrawerOpened
-        "
+        v-if="currentEntityId && currentEntityName && isAddCustomerDrawerOpened"
         v-model="isAddCustomerDrawerOpened"
         :targetEntityId="currentEntityId"
         :targetEntityName="currentEntityName"
-        :targetEntityNumber="currentEntityNumber"
+        :targetEntityNumber="currentEntityAccountNumber"
+        :targetEntityAccountType="currentAccountType"
         @refresh-customers-list="fetchUsers"
       />
       <div
@@ -51,7 +48,7 @@
           :data="state.data"
           :isInAnEntityPage="!!entityId"
           :canManageUsers="!!entityId"
-          :canModifyRights="route.name !== RouteName.PROSPECT_USERS"
+          :canModifyRights="currentAccountType !== AccountType.PROSPECT"
           @click-view-information="handleClickViewInformation"
           @display-manage-rights="handleDisplayManageRights"
           @remove-user="handleRemoveUser"
@@ -107,7 +104,6 @@
 import { logger } from '@pulse/toolbox'
 import { useI18n } from 'vue-i18n'
 import { computed, onMounted, reactive, watch, ref } from 'vue'
-import { useRoute } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon } from '@pulse/styleguide/components'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { removeFalsyValues } from '@pulse/toolbox/utils/object'
@@ -123,12 +119,10 @@ import AddCustomerDrawer from '../components/add-customer-drawer'
 import type { User } from '@entities/types'
 import { formatItemsFromApi } from '@entities/helpers'
 import type { UsersClientProps, State } from '../types/users-client.types'
-import { getAccountSignatories } from '@entities/services/account'
-import type { AccountSignatories } from '@entities/services/account/account.type'
 import { fetchAccountContacts, fetchCustomers } from '@entities/services/wallet'
 import { storeToRefs } from 'pinia'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
-import { ContactType, RouteName } from '@pulse/common/enums'
+import { AccountType, ContactType } from '@pulse/common/enums'
 import type { SortingCriteria } from '@pulse/common/types'
 import { useSort } from '@pulse/common/composables/sort'
 
@@ -149,7 +143,6 @@ const { t } = useI18n({
   },
 })
 
-const route = useRoute()
 const userStore = useUserStore()
 
 const { isMobile } = useResponsive()
@@ -242,7 +235,7 @@ async function fetchUsers() {
 
     const { items, currentPage, totalPages, totalItems } = data
 
-    state.data = formatItemsFromApi(items, userStore.user?.id, principalContacts.value)
+    state.data = formatItemsFromApi(items, userStore.user?.id)
     state.currentPage = currentPage
     state.totalPages = totalPages
     state.totalItems = totalItems
@@ -277,14 +270,15 @@ const handleSortUser = async (param: SortingCriteria) => {
 }
 
 const currentEntityStore = useCurrentEntityStore()
-const { currentEntity } = storeToRefs(currentEntityStore)
-
-const currentEntityId = computed(() => currentEntity.value?.accountId)
+const {
+  currentEntity,
+  currentEntityId,
+  currentEntityAccountNumber,
+  currentAccountType,
+} = storeToRefs(currentEntityStore)
 const currentEntityName = computed(() => currentEntity.value?.legalName)
-const currentEntityNumber = computed(() => currentEntity.value?.accountNumber)
 
 const isAddCustomerDrawerOpened = ref(false)
-const principalContacts = ref<AccountSignatories[]>([])
 
 const isAddUserButtonVisible = computed(() =>
   currentEntityId.value &&
@@ -295,7 +289,6 @@ const isAddUserButtonVisible = computed(() =>
 
 onMounted(async () => {
   isMounted.value = true
-  await loadPrincipalContacts()
   await fetchUsers()
 })
 
@@ -311,14 +304,6 @@ watch(
     await fetchUsers()
   },
 )
-
-watch(currentEntityId, async () => await loadPrincipalContacts())
-
-async function loadPrincipalContacts() {
-  if (currentEntityId.value) {
-    principalContacts.value = await getAccountSignatories(currentEntityId.value) ?? []
-  }
-}
 </script>
 
 <style lang="scss" scoped>

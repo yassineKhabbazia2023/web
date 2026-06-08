@@ -147,9 +147,10 @@ const { t } = useI18n({
 })
 const route = useRoute()
 const router = useRouter()
-const { contactEmail, token } = route.query as {
+const { contactEmail, token, contactId } = route.query as {
   contactEmail: string
   token: string
+  contactId: string
 }
 
 const password = ref('')
@@ -232,6 +233,7 @@ const submitForm = async () => {
   const data = {
     newPassword: password.value,
     token,
+    contactId,
     isCreatePasswordAction: false,
   }
   try {

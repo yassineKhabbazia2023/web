@@ -32,7 +32,9 @@ export function useProspectsEntitiesList(props: EntitiesListProspectsProps, emit
   }
 
   const onToolboxItemClicked = (action: ProspectAction, row: ProspectWalletData) => {
-    if (action === ProspectAction.ARCHIVE_PROSPECT) {
+    if (action === ProspectAction.RETRY_MASS_ACTIVATION_EMAIL) {
+      emit('displayResendActivationEmailDrawer', row)
+    } else if (action === ProspectAction.ARCHIVE_PROSPECT) {
       selectedProspect.value = row
       isArchiveDialogVisible.value = true
     }

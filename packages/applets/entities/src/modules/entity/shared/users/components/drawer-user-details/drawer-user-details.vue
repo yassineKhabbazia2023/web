@@ -125,8 +125,8 @@ const { t } = useI18n({
       patchFailed: '{fullName}\'s information was not updated due to a technical error.',
     },
     'fr-FR': {
-      informationsAboutUser: 'Information de l\'utilisateur',
-      youCanModify: 'Vous pouvez modifier les informations suivantes:',
+      informationsAboutUser: 'Informations de l\'utilisateur',
+      youCanModify: 'Vous pouvez modifier les informations suivantes :',
       lastName: 'Nom',
       firstName: 'Prénom',
       mobilePhone: 'Téléphone mobile',

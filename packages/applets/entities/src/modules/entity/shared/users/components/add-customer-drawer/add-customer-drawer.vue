@@ -32,6 +32,8 @@
       :shouldEnableNames="shouldEnableNames"
       :addCustomerDrawerStepIndex="addCustomerDrawerStepIndex"
       :addCustomerDrawerStep="addCustomerDrawerStep"
+      :stepperSteps="stepperSteps"
+      :isProspect="isProspect"
       @update:email="onUpdateEmail"
       @update:first-name="onUpdateFirstName"
       @update:last-name="onUpdateLastName"
@@ -67,9 +69,10 @@ import {
 } from '@pulse/styleguide/components'
 import type { AddCustomerDrawerProps } from './add-customer-drawer.types'
 import AddCustomerContent from './components/add-customer-content/add-customer-content.vue'
-import { ADD_CUSTOMER_DRAWER_STEPS } from './add-customer-drawer.const'
+import { ADD_CUSTOMER_USER_DRAWER_STEPS, ADD_PROSPECT_USER_DRAWER_STEPS } from './add-customer-drawer.const'
 import { useAddCustomerDrawer } from './add-customer-drawer.composable'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enums'
+import { AccountType } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -86,6 +89,7 @@ const { t } = useI18n({
       noRights: 'Do not grant any rights',
       grantSelectedRights: 'Grant selected rights',
       requiredInput: 'This field is required',
+      addCustomerFailed: 'Failed to add the user',
     },
     'fr-FR': {
       close: 'Fermer',
@@ -98,6 +102,7 @@ const { t } = useI18n({
       noRights: 'Ne pas donner de droit',
       grantSelectedRights: 'Donner les droits sélectionnés',
       requiredInput: 'Ce champ est obligatoire',
+      addCustomerFailed: 'L\'ajout de l\'utilisateur a échoué',
     },
   },
 })
@@ -107,6 +112,19 @@ const emit = defineEmits<{
   'update:modelValue': [boolean]
   'refresh-customers-list': [void]
 }>()
+
+const isProspect = computed(() => props.targetEntityAccountType === AccountType.PROSPECT)
+
+const addCustomerDrawerSteps = computed(() =>
+  isProspect.value
+    ? ADD_PROSPECT_USER_DRAWER_STEPS
+    : ADD_CUSTOMER_USER_DRAWER_STEPS,
+)
+
+// Steps shown in the stepper header (the final confirmation step is never displayed there)
+const stepperSteps = computed(() =>
+  addCustomerDrawerSteps.value.filter((step) => step !== AddCustomerDrawerStep.FORM_SENT),
+)
 
 const {
   addCustomerDrawerStepIndex,
@@ -135,7 +153,8 @@ const {
   invalidEmailAdresseMessage: t('incorrectEmail'),
   requiredInputMessage: t('requiredInput'),
   alreadyAddedToAccountMessage: t('alreadyAddedToAccount'),
-  addCustomerDrawerSteps: ADD_CUSTOMER_DRAWER_STEPS,
+  addCustomerFailedMessage: t('addCustomerFailed'),
+  addCustomerDrawerSteps,
 })
 
 const drawerTitle = computed(() => isAddContactSucceeded.value ? t('userAdded') : t('addUser'))
@@ -182,6 +201,7 @@ async function onClickNext() {
   const isSuccess = await submitForm(
     props.targetEntityId,
     props.targetEntityNumber,
+    props.targetEntityAccountType,
   )
   if (isSuccess === true && isFirstStep === true) {
     emit('refresh-customers-list')

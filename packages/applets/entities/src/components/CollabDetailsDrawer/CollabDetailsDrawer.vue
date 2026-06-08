@@ -43,28 +43,28 @@
       <PFormItem prop="lastName" :pLabel="t('lastName')">
         <PInput
           :value="collabDetails.lastName?.toUpperCase()"
-          disabled
+          pDisabled
           pName="lastName"
         />
       </PFormItem>
       <PFormItem prop="firstName" :pLabel="t('firstName')">
         <PInput
           :value="collabDetails.firstName"
-          disabled
+          pDisabled
           pName="firstName"
         />
       </PFormItem>
       <PFormItem prop="email" :pLabel="t('email')">
         <PInput
           :value="collabDetails.email"
-          disabled
+          pDisabled
           pName="email"
         />
       </PFormItem>
       <PFormItem prop="mobilePhone" :pLabel="t('mobilePhone')">
         <PInput
-          v-model="formValues.mobilePhone"
-          :pPlaceholder="t('mobilePhone')"
+          :value="collabDetails.mobilePhone"
+          pDisabled
           pName="mobilePhone"
         />
       </PFormItem>
@@ -172,17 +172,9 @@ const isLoading = ref(false)
 const formRef = ref<FormInstance>()
 const isSubmitButtonDisabled = ref(false)
 const formValues = reactive({
-  mobilePhone: props.collabDetails.mobilePhone,
   landPhone: props.collabDetails.landPhone,
 })
 const formRules = reactive<FormRules>({
-  mobilePhone: [
-    {
-      trigger: 'blur',
-      pattern: validPhoneNumberPattern,
-      message: t('incorrectPhoneNumberFormat'),
-    },
-  ],
   landPhone: [
     {
       trigger: 'blur',
@@ -202,7 +194,6 @@ const handleCollaboratorUpdate = async () => {
 
     const updates = {
       landphone: formValues.landPhone,
-      mobilephone: formValues.mobilePhone,
     }
     const contact = await updateCollaborator(props.collabDetails.id, updates)
     isCollabDetailsDrawerVisible.value = false

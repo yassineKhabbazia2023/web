@@ -225,8 +225,8 @@
       "tag": "Notre relation commence ici",
       "title": "Bienvenue dans votre espace RYDGE Conseil",
       "description": "Cet espace vous permet de suivre simplement votre accompagnement, de compléter les informations nécessaires et d'avancer étape par étape avec votre expert.",
-      "primaryAction": "Compléter vos informations personnelles",
-      "primaryActionMobile": "Compléter vos informations"
+      "primaryAction": "Démarrer votre vérification de conformité",
+      "primaryActionMobile": "Démarrer votre conformité"
     }
   }
 }

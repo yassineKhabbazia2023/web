@@ -2,6 +2,7 @@ import { loggerMock } from '@pulse/toolbox/mocks'
 import { getMockedUserApi } from '@pulse/common/mocks'
 import { createCustomer, addContactToEntity, fetchAccountContactsByEmail } from '../../services/account/account.service'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
+import { AccountType } from '@pulse/common/enums'
 
 import { AccountManager } from './account.manager'
 
@@ -17,6 +18,7 @@ describe('AccountManager', () => {
   describe('createOrAddCustomerToAccount', () => {
     const accountId = 234
     const accountNumberMock = '432101'
+    const accountTypeMock = AccountType.REGULAR
     const newCustomerMock = getMockedUserApi()
     const customer = {
       firstName: 'John',
@@ -29,10 +31,11 @@ describe('AccountManager', () => {
       const expectedParams = [
         customer,
         accountNumberMock,
+        accountTypeMock,
       ]
 
       createCustomerMock.mockResolvedValue(newCustomerMock)
-      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock)
+      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock, accountTypeMock)
 
       expect(createCustomerMock).toHaveBeenCalledExactlyOnceWith(...expectedParams)
 
@@ -56,7 +59,7 @@ describe('AccountManager', () => {
           contactId: contactIdMock,
         }],
       })
-      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock)
+      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock, accountTypeMock)
 
       expect(addContactToEntityMock).toHaveBeenCalledExactlyOnceWith(...expectedParams)
 
@@ -70,7 +73,7 @@ describe('AccountManager', () => {
 
       createCustomerMock.mockRejectedValue(errorMock)
 
-      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock)
+      const newCustomerId = await AccountManager.createOrAddCustomerToAccount(customer, accountId, accountNumberMock, accountTypeMock)
 
       expect(addContactToEntityMock).not.toHaveBeenCalled()
       expect(fetchAccountContactsByEmailMock).not.toHaveBeenCalled()

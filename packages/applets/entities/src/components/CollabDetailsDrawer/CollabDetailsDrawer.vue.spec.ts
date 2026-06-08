@@ -15,7 +15,7 @@ const mockedInputs = [
   { name: 'lastName', value: lastName.toUpperCase(), isDisabled: true },
   { name: 'firstName', value: firstName, isDisabled: true },
   { name: 'email', value: email, isDisabled: true },
-  { name: 'mobilePhone', value: mobilePhone, isDisabled: false },
+  { name: 'mobilePhone', value: mobilePhone, isDisabled: true },
   { name: 'landPhone', value: landPhone, isDisabled: false },
 ]
 const mockedPatchGateway = vi.fn(() => {

@@ -1,7 +1,8 @@
 <template>
   <AddCustomerSteps
-    v-if="addCustomerDrawerStep !== AddCustomerDrawerStep.FORM_SENT"
+    v-if="isStepperVisible"
     :addCustomerDrawerStepIndex="addCustomerDrawerStepIndex"
+    :steps="stepperSteps"
     class="margin-bottom--10"
   />
   <AddCustomerStepAddEmail
@@ -11,6 +12,7 @@
     :firstNameErrorMessage="firstNameErrorMessage"
     :lastNameErrorMessage="lastNameErrorMessage"
     :shouldEnableNames="shouldEnableNames"
+    :isProspect="isProspect"
     @update:email="emit('update:email', $event)"
     @update:first-name="emit('update:first-name', $event)"
     @update:last-name="emit('update:last-name', $event)"
@@ -34,6 +36,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { AddCustomerContentProps } from './add-customer-content.types'
 import AddCustomerSteps from '../add-customer-steps/add-customer-steps.vue'
 import AddCustomerStepAddEmail from '../add-customer-step-add-email/add-customer-step-add-email.vue'
@@ -43,7 +46,11 @@ import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enu
 import type { AuthorizationState } from '@entities/components/ManageRightsDrawer/ManageRightsTypes'
 import type { PennylaneAvailableRole } from '@pulse/common/types'
 
-defineProps<AddCustomerContentProps>()
+const props = defineProps<AddCustomerContentProps>()
+
+const isStepperVisible = computed(() =>
+  props.stepperSteps.length > 1 && props.addCustomerDrawerStep !== AddCustomerDrawerStep.FORM_SENT,
+)
 const authorizationsState = defineModel<Record<string, AuthorizationState>>('authorizationsState')
 const additionalOptionByActionCode = defineModel<Record<string, string>>('additionalOptionByActionCode')
 const additionalOptionByActionCodeOrigin = defineModel<Record<string, string>>('additionalOptionByActionCodeOrigin')

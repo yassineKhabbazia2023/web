@@ -11,6 +11,7 @@ export interface User {
   role?: string
   status?: string | UserStatus
   firstDateAccess?: string
+  isSignatory?: boolean
   contactFlagPortailFactures?: boolean
 }
 
@@ -19,6 +20,5 @@ export interface ExtendedUser extends Contact {
   fullName: string
   isLoggedUser: boolean
   isOwner: boolean
-  isSignatory: boolean
   statusTag?: UserStatus
 }

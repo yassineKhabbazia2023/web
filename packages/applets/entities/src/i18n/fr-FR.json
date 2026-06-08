@@ -37,6 +37,7 @@
         "step": "Etape",
         "cacFolder": "Dossier CAC",
         "option": "Actions",
+        "resendActivationEmail": "Relancer le mail d'activation",
         "archiveThisProspectAccount": "Archiver ce compte prospect"
       },
       "prospect": {

@@ -34,6 +34,7 @@
         v-if="isResendActivationEmailDrawerVisible && selectedAccount"
         v-model="isResendActivationEmailDrawerVisible"
         :selectedAccount="selectedAccount"
+        :accountType="AccountType.REGULAR"
       />
       <PPagination
         v-model:p-page-size="searchCriteria.limit"
@@ -72,7 +73,7 @@ import { getPaginationLabel } from '@pulse/common/utils'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { PAGE_SIZES } from '@pulse/common/constants'
 import type { AccountRow } from '@entities/types'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
 import { TrackingCenter } from '@pulse/common/services/amplitude'
 import type {
   SearchCriteria,

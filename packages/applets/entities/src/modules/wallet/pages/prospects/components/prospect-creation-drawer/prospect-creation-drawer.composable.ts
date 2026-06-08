@@ -1,4 +1,4 @@
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { logger } from '@pulse/toolbox'
 import type { ProspectCreationDrawerStep } from '@entities/modules/wallet/enums'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
@@ -54,6 +54,12 @@ export function useProspectCreationDrawer(steps: ProspectCreationDrawerStep[]) {
   const isFirstStep = computed(() => stepIndex.value === 0)
   const isLastStep = computed(() => stepIndex.value >= steps.length - 1)
 
+  const isDirty = ref(false)
+  // Flips on the first user mutation of formData and stays true for the drawer's lifetime.
+  watch(formData, () => {
+    isDirty.value = true
+  }, { deep: true, once: true })
+
   function goNextStep() {
     if (isLastStep.value) {
       return
@@ -92,6 +98,7 @@ export function useProspectCreationDrawer(steps: ProspectCreationDrawerStep[]) {
     currentStep,
     isFirstStep,
     isLastStep,
+    isDirty,
     goNextStep,
     goPreviousStep,
   }

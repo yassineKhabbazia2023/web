@@ -1,5 +1,13 @@
 <template>
   <div>
+    <PAlert
+      v-if="isProspect"
+      pType="warning"
+      class="margin-bottom--4"
+      data-testid="prospect-rights-warning-alert"
+    >
+      {{ t('prospectRightsWarning') }}
+    </PAlert>
     <PBlockHeader
       :pTitle="t('newUser')"
       :pDescription="t('setUserEmail')"
@@ -103,6 +111,7 @@ const { t } = useI18n({
       },
       newUser: 'New user',
       setUserEmail: 'Please enter the email address of the user to be added',
+      prospectRightsWarning: 'Warning: adding a user will grant them access to all compliance documents.',
     },
     'fr-FR': {
       lastName: {
@@ -117,6 +126,7 @@ const { t } = useI18n({
       },
       newUser: 'Nouvel utilisateur',
       setUserEmail: 'Veuillez saisir l\'adresse e-mail de l\'utilisateur à ajouter',
+      prospectRightsWarning: 'Attention, l\'ajout d\'un utilisateur lui donnera accès à tous les documents de conformité.',
     },
   },
 })

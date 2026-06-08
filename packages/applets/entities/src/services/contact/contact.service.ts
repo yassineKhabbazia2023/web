@@ -1,6 +1,7 @@
 import { api } from '@pulse/common/api'
 import { handleRequestError } from '@entities/helpers'
 import { API_PREFIXES } from '@pulse/common/constants'
+import type { AccountType } from '@pulse/common/enums'
 import type { Contact, PatchContactPayload } from './contactTypes'
 
 export const getContactById = async (
@@ -37,10 +38,14 @@ export const patchContact = async (
 export const inviteCustomers = async (
   customerIDs: number[],
   accountNumber: string,
+  entityType: AccountType,
 ): Promise<number[] | undefined> => {
   const response = await api.gateway.post(
     `${API_PREFIXES.CONTACT}/customers/bulk-invite/${accountNumber}`,
     customerIDs,
+    {
+      params: { entityType },
+    },
   )
 
   return response?.data

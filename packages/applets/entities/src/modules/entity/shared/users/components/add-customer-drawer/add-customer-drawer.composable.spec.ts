@@ -1,30 +1,36 @@
-import { ADD_CUSTOMER_DRAWER_STEPS } from './add-customer-drawer.const'
+import { ADD_CUSTOMER_USER_DRAWER_STEPS, ADD_PROSPECT_USER_DRAWER_STEPS } from './add-customer-drawer.const'
 import { hasContactRoleOnCommonAccount } from '@entities/services/account'
+import { AccountManager } from '@entities/managers/account/account.manager'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enums'
 import { saveUserPermissions } from '@entities/components/ManageRightsDrawer/utils'
+import { displayNotification } from '@pulse/styleguide'
 
 import { useAddCustomerDrawer } from './add-customer-drawer.composable'
-import { CollaboratorPermission } from '@pulse/common/enums'
+import { CollaboratorPermission, AccountType } from '@pulse/common/enums'
 
 vi.mock('@entities/services/account')
 vi.mock('@entities/managers/account/account.manager')
 vi.mock('@pulse/common/services/amplitude')
 vi.mock('@pulse/toolbox')
 vi.mock('@entities/components/ManageRightsDrawer/utils')
+vi.mock('@pulse/styleguide')
 
 const hasContactRoleOnCommonAccountMock = vi.mocked(hasContactRoleOnCommonAccount)
 const saveUserPermissionsMock = vi.mocked(saveUserPermissions)
+const createOrAddCustomerToAccountMock = vi.mocked(AccountManager.createOrAddCustomerToAccount)
+const displayNotificationMock = vi.mocked(displayNotification)
 
 const initializationParamaters = {
   invalidEmailAdresseMessage: 'incorrectEmail',
   alreadyAddedToAccountMessage: 'alreadyAddedToAccount',
-  addCustomerDrawerSteps: ADD_CUSTOMER_DRAWER_STEPS,
+  addCustomerDrawerSteps: ADD_CUSTOMER_USER_DRAWER_STEPS,
   requiredInputMessage: 'requiredInput',
-
+  addCustomerFailedMessage: 'addCustomerFailed',
 }
 const contactIdMock = 233
 const targetEntityIdMock = 2342
 const targetEntityNumberMock = '2342'
+const targetEntityAccountTypeMock = AccountType.REGULAR
 const wrongEmailMock = 'wrong email'
 const correctEmailMock = 'correct@email.test'
 
@@ -232,31 +238,51 @@ describe('add-customer-drawer.composable', () => {
         email: correctEmailMock,
         firstname: 'toto',
         lastname: 'toto',
+        createdContactId: contactIdMock,
         expectedIsSuccess: true,
         expectedAddCustomerDrawerStepIndex: 1,
+        expectedDisplayNotificationCalledWith: null,
         reason: 'form is valid',
       }, {
         email: wrongEmailMock,
         firstname: 'toto',
         lastname: 'toto',
+        createdContactId: contactIdMock,
         expectedIsSuccess: false,
         expectedAddCustomerDrawerStepIndex: 0,
+        expectedDisplayNotificationCalledWith: null,
         reason: 'email is invalid',
       }, {
         email: correctEmailMock,
         firstname: '',
         lastname: '',
+        createdContactId: contactIdMock,
         expectedIsSuccess: false,
         expectedAddCustomerDrawerStepIndex: 0,
+        expectedDisplayNotificationCalledWith: null,
         reason: 'firstname & lastname are empty',
+      }, {
+        email: correctEmailMock,
+        firstname: 'toto',
+        lastname: 'toto',
+        createdContactId: undefined,
+        expectedIsSuccess: false,
+        expectedAddCustomerDrawerStepIndex: 0,
+        expectedDisplayNotificationCalledWith: ['error', initializationParamaters.addCustomerFailedMessage] as const,
+        reason: 'user creation failed (e.g. forbidden email)',
       }]
-      it.each(tests)('should be $correctEmailMock when $reason', async ({
+      it.each(tests)('should be $expectedIsSuccess when $reason', async ({
         email,
         firstname,
         lastname,
+        createdContactId,
         expectedIsSuccess,
         expectedAddCustomerDrawerStepIndex,
+        expectedDisplayNotificationCalledWith,
       }) => {
+        createOrAddCustomerToAccountMock.mockResolvedValue(createdContactId)
+        displayNotificationMock.mockClear()
+
         const {
           newContact,
           addCustomerDrawerStepIndex,
@@ -267,9 +293,14 @@ describe('add-customer-drawer.composable', () => {
         newContact.value.firstname = firstname
         newContact.value.lastname = lastname
 
-        const isSuccess = await submitForm(targetEntityIdMock, targetEntityNumberMock)
+        const isSuccess = await submitForm(targetEntityIdMock, targetEntityNumberMock, targetEntityAccountTypeMock)
         expect(isSuccess).toBe(expectedIsSuccess)
         expect(addCustomerDrawerStepIndex.value).toBe(expectedAddCustomerDrawerStepIndex)
+        if (expectedDisplayNotificationCalledWith === null) {
+          expect(displayNotificationMock).not.toHaveBeenCalled()
+        } else {
+          expect(displayNotificationMock).toHaveBeenCalledExactlyOnceWith(...expectedDisplayNotificationCalledWith)
+        }
       })
     })
 
@@ -309,10 +340,41 @@ describe('add-customer-drawer.composable', () => {
         saveUserPermissionsMock.mockResolvedValue(updateUserPermissionsSuccessfully)
         addCustomerDrawerStepIndex.value = 1
 
-        const isSuccess = await submitForm(targetEntityIdMock, targetEntityNumberMock)
+        const isSuccess = await submitForm(targetEntityIdMock, targetEntityNumberMock, targetEntityAccountTypeMock)
         expect(addCustomerDrawerStepIndex.value).toBe(expectedAddCustomerDrawerStepIndex)
         expect(isSuccess).toBe(expectedIsSuccess)
       })
+    })
+  })
+
+  describe('prospect flow without the manage rights step', () => {
+    const prospectInitializationParameters = {
+      ...initializationParamaters,
+      addCustomerDrawerSteps: ADD_PROSPECT_USER_DRAWER_STEPS,
+    }
+
+    it('goes straight from ADD_EMAIL to FORM_SENT without saving any permissions', async () => {
+      hasContactRoleOnCommonAccountMock.mockResolvedValue(false)
+      createOrAddCustomerToAccountMock.mockResolvedValue(contactIdMock)
+      saveUserPermissionsMock.mockClear()
+
+      const {
+        newContact,
+        addCustomerDrawerStep,
+        isLastStep,
+        submitForm,
+      } = useAddCustomerDrawer(prospectInitializationParameters)
+
+      newContact.value.email = correctEmailMock
+      newContact.value.firstname = 'toto'
+      newContact.value.lastname = 'toto'
+
+      const isSuccess = await submitForm(targetEntityIdMock, targetEntityNumberMock, AccountType.PROSPECT)
+
+      expect(isSuccess).toBe(true)
+      expect(addCustomerDrawerStep.value).toBe(AddCustomerDrawerStep.FORM_SENT)
+      expect(isLastStep.value).toBe(true)
+      expect(saveUserPermissionsMock).not.toHaveBeenCalled()
     })
   })
 })

@@ -19,7 +19,7 @@ export async function refreshClientToken() {
 }
 
 export async function createNewPassword(payload: CreateNewPasswordPayload) {
-  const urlUpdatePassword = `${API_PREFIXES.AUTHENTICATION}/createNewPassword`
+  const urlUpdatePassword = `${API_PREFIXES.PASSWORD}/createNewPassword`
 
   return await api.gateway.post(urlUpdatePassword, payload)
 }

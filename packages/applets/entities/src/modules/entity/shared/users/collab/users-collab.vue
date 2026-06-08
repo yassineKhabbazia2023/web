@@ -1,15 +1,12 @@
 <template>
   <div class="margin-top--6">
     <AddCustomerDrawer
-      v-if="currentEntityId &&
-        currentEntityName &&
-        currentEntityNumber &&
-        isAddCustomerDrawerOpened
-      "
+      v-if="currentEntityId && currentEntityName && isAddCustomerDrawerOpened"
       v-model="isAddCustomerDrawerOpened"
       :targetEntityId="currentEntityId"
       :targetEntityName="currentEntityName"
-      :targetEntityNumber="currentEntityNumber"
+      :targetEntityNumber="currentEntityAccountNumber"
+      :targetEntityAccountType="currentAccountType"
       @refresh-customers-list="formatAndFillUsersCollabTable"
     />
     <RemoveUserDialog
@@ -145,7 +142,7 @@
           >
             <template #default="scope">
               <PTag
-                v-if="isContactSignatory(scope.row.contactId)"
+                v-if="scope.row.isSignatory"
                 :pContent="t('signatoryRoleName')"
                 pColor="light-blue"
                 class="margin-right--2"
@@ -163,6 +160,7 @@
           >
             <template #default="scope">
               <PToolbox
+                v-if="hasToolboxActions"
                 trigger="click"
                 popperClass="toolbox-container"
                 :pElements="toolboxItems"
@@ -241,8 +239,6 @@ import { PAGE_SIZES, ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/const
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { fetchAccountCustomers } from '@entities/services/wallet'
 import { removeFalsyValues } from '@pulse/toolbox/utils/object'
-import { getAccountSignatories } from '@entities/services/account'
-import type { AccountSignatories } from '@entities/services/account/account.type'
 import type { StateUser } from '../types/users-collab.types'
 import type { User, UserStatus } from '@entities/types'
 import { UserActions, TrackingLocalisation } from '@entities/enums'
@@ -253,7 +249,7 @@ import FormSearch from '@entities/components/FormSearch'
 import { fetchOperationsForAccount } from '@entities/services/registry'
 import type { AccountOperations } from '@entities/services/registry'
 import { getPendingOperations, getOperationsWithLegalName, getAccountOperationsList } from '../utils/operations.utils'
-import { RouteName, RouteParam, SortDirection } from '@pulse/common/enums'
+import { RouteName, RouteParam, SortDirection, AccountType } from '@pulse/common/enums'
 import { RouterHelpers } from '@pulse/common/helpers'
 import AddCustomerDrawer from '../components/add-customer-drawer'
 import { useSort } from '@pulse/common/composables/sort'
@@ -308,6 +304,15 @@ const userStore = useUserStore()
 const currentEntityStore = useCurrentEntityStore()
 
 const route = useRoute()
+const {
+  currentEntity,
+  currentEntityId,
+  currentEntityAccountNumber,
+  currentAccountType,
+} = storeToRefs(currentEntityStore)
+const currentEntityName = computed(() => currentEntity.value?.legalName)
+// Prospect entities cannot manage rights, so the "modify rights" action is hidden for them
+const isProspectEntity = computed(() => currentAccountType.value === AccountType.PROSPECT)
 const selectedRow = ref(undefined)
 const isManageRightsDrawerOpened = ref(false)
 const { user } = storeToRefs(userStore)
@@ -347,16 +352,13 @@ const isAccessButtonDisabled = computed(() => {
 // #region add customer user
 const isAddCustomerDrawerOpened = ref(false)
 
-const currentEntityId = computed(() => currentEntity.value?.accountId)
-const currentEntityName = computed(() => currentEntity.value?.legalName)
-const currentEntityNumber = computed(() => currentEntity.value?.accountNumber)
-
 const canAddUser = computed(() => CurrentUserManager.hasPermission(ACTION_PERMISSIONS.ADD_USERS))
+const routesAllowingUserCreation = [RouteName.USERS, RouteName.PROSPECT_USERS]
 
 const isAddUserButtonVisible = computed(() =>
   currentEntityId.value &&
   canAddUser.value &&
-  route.name === RouteName.USERS,
+  routesAllowingUserCreation.includes(route.name as RouteName),
 )
 // #endregion
 
@@ -375,16 +377,24 @@ const state: StateUser = reactive({
 })
 
 const toolboxItems = ref<PToolboxItemProps[]>([])
+
+// Hide the actions menu entirely when no action is available (e.g. a prospect user without the remove permission)
+const hasToolboxActions = computed(() =>
+  isProspectEntity.value === false ||
+  CurrentUserManager.hasPermission(ACTION_PERMISSIONS.COLLAB_REMOVE_USER),
+)
+
 function handleToolboxClick() {
   toolboxItems.value.length = 0
-  const items: PToolboxItemProps[] = [
-    {
+  const items: PToolboxItemProps[] = []
+  if (isProspectEntity.value === false) {
+    items.push({
       pIconName: 'pencilSquare',
       pValue: t('modifyRights'),
       pActionName: UserActions.MODIFY_RIGHTS,
       pState: 'default',
-    },
-  ]
+    })
+  }
   if (CurrentUserManager.hasPermission(ACTION_PERMISSIONS.COLLAB_REMOVE_USER)) {
     items.push({
       pIconName: 'personRemove',
@@ -425,6 +435,7 @@ const formatAndFillUsersCollabTable = async () => {
         email: userFromApi.email,
         firstDateAccess: d(new Date(userFromApi.creationDate), 'short'),
         isOwner: user.value?.id === userFromApi.contactId,
+        isSignatory: userFromApi.isSignatory,
         contactFlagPortailFactures: userFromApi.contactFlagPortailFactures,
       }
     })
@@ -494,8 +505,6 @@ const handleUserAction = (action: string, row: any) => {
   }
 }
 
-const { currentEntity } = storeToRefs(currentEntityStore)
-
 const isRemoveUserDialogOpened = ref(false)
 const userToRemove = ref<User>()
 
@@ -507,27 +516,6 @@ async function onUserRemoved() {
 async function handleRemoveUser(user: User) {
   userToRemove.value = user
   isRemoveUserDialogOpened.value = true
-}
-
-const accountSignatories = ref<AccountSignatories[]>([])
-function isContactSignatory(contactId: User['contactId']) {
-  return !!accountSignatories.value.find((signatory) => signatory.contactId === contactId)
-}
-
-async function setAccountSignatories() {
-  if (!currentEntity.value) {
-    return
-  }
-  state.isLoading = true
-  try {
-    const signatories = await getAccountSignatories(currentEntity.value.accountId)
-    accountSignatories.value.length = 0
-    accountSignatories.value.push(...signatories)
-  } catch (error) {
-    logger.error(error)
-  }
-
-  state.isLoading = false
 }
 
 const getQueryParams = () => ({
@@ -550,7 +538,6 @@ watch(() => [
 
 onMounted(async () => {
   await formatAndFillUsersCollabTable()
-  await setAccountSignatories()
   if (currentEntity.value?.accountId) {
     await loadOperations()
   }

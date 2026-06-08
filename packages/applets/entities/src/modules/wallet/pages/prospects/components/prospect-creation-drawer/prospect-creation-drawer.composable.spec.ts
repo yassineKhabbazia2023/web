@@ -1,4 +1,5 @@
 import { flushPromises } from '@vue/test-utils'
+import { nextTick } from 'vue'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { ProspectCreationDrawerStep } from '@entities/modules/wallet/enums'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
@@ -131,6 +132,47 @@ describe('useProspectCreationDrawer', () => {
     await flushPromises()
 
     expect(collaboratorTargetRoles.value).toEqual(getCollaboratorTargetRolesMock())
+  })
+
+  it('should start as not dirty', () => {
+    const [{ isDirty }] = withSetup(() => useProspectCreationDrawer(steps))
+
+    expect(isDirty.value).toBe(false)
+  })
+
+  it('should become dirty when a top-level form field is mutated', async () => {
+    const [{ isDirty, formData }] = withSetup(() => useProspectCreationDrawer(steps))
+
+    formData.value.legalName = 'Acme'
+    await nextTick()
+
+    expect(isDirty.value).toBe(true)
+  })
+
+  it('should become dirty when a nested form field is mutated', async () => {
+    const [{ isDirty, formData }] = withSetup(() => useProspectCreationDrawer(steps))
+
+    formData.value.signatory.email = 'john@acme.com'
+    await nextTick()
+
+    expect(isDirty.value).toBe(true)
+  })
+
+  it('should become dirty when an array field is mutated', async () => {
+    const [{ isDirty, formData }] = withSetup(() => useProspectCreationDrawer(steps))
+
+    formData.value.signatory.contactTypes.push('PRIMARY')
+    await nextTick()
+
+    expect(isDirty.value).toBe(true)
+  })
+
+  it('should not become dirty when only dropdown content arrives from the server', async () => {
+    const [{ isDirty }] = withSetup(() => useProspectCreationDrawer(steps))
+
+    await flushPromises()
+
+    expect(isDirty.value).toBe(false)
   })
 
   it('should keep collaborator target roles empty and log error when fetch fails', async () => {

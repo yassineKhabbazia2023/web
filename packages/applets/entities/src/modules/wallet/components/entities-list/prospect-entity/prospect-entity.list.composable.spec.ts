@@ -111,6 +111,15 @@ describe('useProspectsEntitiesList', () => {
       expect(result.selectedProspect.value).toEqual(row)
     })
 
+    it('should emit displayResendActivationEmailDrawer with the provided row when action is retryMassActivationEmail', () => {
+      const { emit, result } = createTestSetup()
+      const row = getMockedProspectWalletData({ accountId: 42 })
+
+      result.onToolboxItemClicked(ProspectAction.RETRY_MASS_ACTIVATION_EMAIL, row)
+
+      expect(emit).toHaveBeenCalledWith('displayResendActivationEmailDrawer', row)
+    })
+
   })
 
   describe('onDirectFolderAccess', () => {

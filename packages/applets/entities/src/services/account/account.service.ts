@@ -6,6 +6,7 @@ import { API_PREFIXES } from '@pulse/common/constants'
 import type { PatchOperation } from '@entities/services/patch-record'
 import type { AccountRow, ReferentialStructure, Hub, AccountsDelegation, PermanentDelegationApiItem, SearchAccountItem } from './account.type'
 import { ContactType } from '@pulse/common/enums'
+import type { AccountType } from '@pulse/common/enums'
 
 export async function fetchAccount(accountId: number): Promise<Account|undefined> {
   const url = `${API_PREFIXES.ACCOUNT}/accounts/${accountId}/currentuser`
@@ -154,9 +155,15 @@ export type createCustomerBody = {
   mobilePhone: Contact['mobilePhone']
 }
 
-export async function createCustomer(customerInformation: createCustomerBody, accountNumber: string) {
+export async function createCustomer(
+  customerInformation: createCustomerBody,
+  accountNumber: string,
+  accountType: AccountType,
+) {
   const url = `${API_PREFIXES.ACCOUNT}/customers`
-  const { data } = await api.gateway.post<UserInfoApi>(url, customerInformation, { params: { accountNumber } })
+  const { data } = await api.gateway.post<UserInfoApi>(url, customerInformation, {
+    params: { accountNumber, accountType },
+  })
   return data
 }
 

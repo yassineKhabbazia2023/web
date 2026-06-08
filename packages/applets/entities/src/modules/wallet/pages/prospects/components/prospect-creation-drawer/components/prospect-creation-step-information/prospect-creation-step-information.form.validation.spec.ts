@@ -47,8 +47,6 @@ describe('prospect-creation-step-information.form.validation', () => {
       'lastName',
       'firstName',
       'jobTitle',
-      'department',
-      'companyRole',
     ]
 
     textFields.forEach((field) => {
@@ -62,6 +60,51 @@ describe('prospect-creation-step-information.form.validation', () => {
         })
 
         it('should pass validation for a non-empty value', async () => {
+          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+          const rule = getRuleAt(rules.value[ruleKey])
+
+          const error = await runValidator(rule, 'some value')
+          expect(error).toBeUndefined()
+        })
+
+        it('should fail validation for an empty value', async () => {
+          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+          const rule = getRuleAt(rules.value[ruleKey])
+
+          const error = await runValidator(rule, '')
+          expect(error).toBeInstanceOf(Error)
+          if (error instanceof Error) {
+            expect(error.message).toBe(ERROR_KEY)
+          }
+        })
+      })
+    })
+  })
+
+  describe('required select fields', () => {
+    const selectFields: Array<keyof ProspectSignatory> = [
+      'department',
+      'companyRole',
+    ]
+
+    selectFields.forEach((field) => {
+      const ruleKey = `signatory.${field}` as const
+
+      describe(`${ruleKey} validation`, () => {
+        it('should have a rule defined', () => {
+          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+
+          expect(rules.value[ruleKey]).toBeDefined()
+        })
+
+        it('should trigger validation on change so dropdown errors clear when a value is selected', () => {
+          const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
+          const rule = getRuleAt(rules.value[ruleKey])
+
+          expect(rule?.trigger).toBe('change')
+        })
+
+        it('should pass validation for a selected value', async () => {
           const { rules } = useProspectCreationStepInformationValidation(getValidationParamsMock())
           const rule = getRuleAt(rules.value[ruleKey])
 

@@ -225,6 +225,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   const data = {
     token,
     newPassword: formValue.newPassword,
+    contactId,
   }
   try {
     isLoading.value = true

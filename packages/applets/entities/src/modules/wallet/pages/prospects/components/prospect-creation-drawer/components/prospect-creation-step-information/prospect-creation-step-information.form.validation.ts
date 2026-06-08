@@ -36,8 +36,8 @@ export function useProspectCreationStepInformationValidation(
     lastName: [validationRules.requiredTextInput(errorMessage)],
     firstName: [validationRules.requiredTextInput(errorMessage)],
     jobTitle: [validationRules.requiredTextInput(errorMessage)],
-    department: [validationRules.requiredTextInput(errorMessage)],
-    companyRole: [validationRules.requiredTextInput(errorMessage)],
+    department: [validationRules.requiredSelect(errorMessage)],
+    companyRole: [validationRules.requiredSelect(errorMessage)],
     contactTypes: [validationRules.requiredMultiSelect(errorMessage)],
     email: [
       validationRules.requiredTextInput(errorMessage),

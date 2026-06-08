@@ -1,15 +1,17 @@
-import { ref, computed } from 'vue'
+import { ref, computed, toValue } from 'vue'
 import { hasContactRoleOnCommonAccount } from '@entities/services/account'
 import { AccountManager } from '@entities/managers/account/account.manager'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { displayNotification } from '@pulse/styleguide'
 import { useDebounce, logger } from '@pulse/toolbox'
 import { getEmailIsValid, getNameIsValid } from '@pulse/toolbox/utils/validator'
 import { AddCustomerDrawerStep } from '@entities/modules/entity/shared/users/enums'
-import type { Contact } from './add-customer-drawer.types'
+import type { Contact, UseAddCustomerDrawerOptions } from './add-customer-drawer.types'
 import { saveUserPermissions, getPennylaneRoleLabelByCode } from '@entities/components/ManageRightsDrawer/utils'
 import type { AuthorizationState } from '@entities/components/ManageRightsDrawer/ManageRightsTypes'
 import { TRACKING_LOCALISATION, PERMISSION_PENNYLANE_CUSTOMER } from '@entities/constants'
 import type { PennylaneAvailableRole } from '@pulse/common/types'
+import type { AccountType } from '@pulse/common/enums'
 
 function amplitudeTrack(result: 'failed' | 'succeeded') {
   AmplitudeService.track('Onboarding Started', {
@@ -22,12 +24,8 @@ export function useAddCustomerDrawer({
   alreadyAddedToAccountMessage,
   addCustomerDrawerSteps,
   requiredInputMessage,
-}: {
-  invalidEmailAdresseMessage: string
-  alreadyAddedToAccountMessage: string
-  addCustomerDrawerSteps: AddCustomerDrawerStep[],
-  requiredInputMessage: string
-}) {
+  addCustomerFailedMessage,
+}: UseAddCustomerDrawerOptions) {
   const addCustomerDrawerStepIndex = ref(0)
   const isNextButtonLoading = ref(false)
   const hasFormSubmissionFailed = ref(false)
@@ -48,7 +46,7 @@ export function useAddCustomerDrawer({
   })
 
   const isLastStep = computed(() => {
-    return addCustomerDrawerStepIndex.value >= addCustomerDrawerSteps.length - 1
+    return addCustomerDrawerStepIndex.value >= toValue(addCustomerDrawerSteps).length - 1
   })
 
   const isAddContactSucceeded = computed(() => {
@@ -66,7 +64,7 @@ export function useAddCustomerDrawer({
      emailErrorMessage.value !== '' || firstNameErrorMessage.value !== '' || lastNameErrorMessage.value !== ''
   })
 
-  const addCustomerDrawerStep = computed(() => addCustomerDrawerSteps[addCustomerDrawerStepIndex.value])
+  const addCustomerDrawerStep = computed(() => toValue(addCustomerDrawerSteps)[addCustomerDrawerStepIndex.value])
 
   function checkFirstName() {
     const firstName = newContact.value.firstname
@@ -121,10 +119,11 @@ export function useAddCustomerDrawer({
   async function submitForm(
     targetEntityId: number,
     targetEntityNumber: string,
+    targetEntityAccountType: AccountType,
   ) {
     try {
       if (addCustomerDrawerStep.value === AddCustomerDrawerStep.ADD_EMAIL) {
-        const isSuccess = await submitFormEmail(targetEntityId, targetEntityNumber)
+        const isSuccess = await submitFormEmail(targetEntityId, targetEntityNumber, targetEntityAccountType)
         if (isSuccess) {
           goNextStep()
         }
@@ -171,6 +170,7 @@ export function useAddCustomerDrawer({
   async function submitFormEmail(
     targetEntityId: number,
     targetEntityNumber: string,
+    targetEntityAccountType: AccountType,
   ) {
     await checkEmail(targetEntityId)
 
@@ -180,6 +180,7 @@ export function useAddCustomerDrawer({
     const isSuccess = await addContactFormSubmission(
       targetEntityId,
       targetEntityNumber,
+      targetEntityAccountType,
     )
 
     return isSuccess
@@ -188,6 +189,7 @@ export function useAddCustomerDrawer({
   async function addContactFormSubmission(
     targetEntityId: number,
     targetEntityNumber: string,
+    targetEntityAccountType: AccountType,
   ) {
     let isSuccess = false
     isNextButtonLoading.value = true
@@ -199,9 +201,18 @@ export function useAddCustomerDrawer({
         email: newContact.value.email,
         accountNumber: targetEntityNumber,
       }
-      contactId.value = await AccountManager.createOrAddCustomerToAccount(customer, targetEntityId, targetEntityNumber)
-      onboardingSucceeded()
-      isSuccess = true
+      contactId.value = await AccountManager.createOrAddCustomerToAccount(
+        customer,
+        targetEntityId,
+        targetEntityNumber,
+        targetEntityAccountType,
+      )
+      if (contactId.value === undefined) {
+        onboardingFailed()
+      } else {
+        onboardingSucceeded()
+        isSuccess = true
+      }
     } catch (error) {
       logger.warn(error)
       onboardingFailed()
@@ -221,6 +232,7 @@ export function useAddCustomerDrawer({
   const onboardingFailed = () => {
     amplitudeTrack('failed')
     hasFormSubmissionFailed.value = true
+    displayNotification('error', addCustomerFailedMessage)
   }
   const onboardingSucceeded = () => {
     amplitudeTrack('succeeded')

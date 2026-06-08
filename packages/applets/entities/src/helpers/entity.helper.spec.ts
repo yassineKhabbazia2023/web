@@ -7,7 +7,6 @@ import {
   returnSortQueryField,
 } from './entity.helper'
 import { generateContactsMock } from '@entities/__mocks__/contact.mocks'
-import type { AccountSignatories } from '@entities/services/account/account.type'
 import { ContactType } from '@pulse/common/enums'
 
 describe('getInitials', () => {
@@ -127,24 +126,14 @@ describe('formatItemsFromApi', () => {
     const { data: mockedData } = contactsList
     const { items } = mockedData
 
-    const principalContacts: AccountSignatories[] = [{
-      contactId: items[1].contactId,
-      contactGlobalUniqueId: '231231-34234',
-      firstName: 'Signa',
-      lastName: 'Tory',
-      email: 'sign@test.fr',
-      status: 'status',
-      personaName: 'person Name',
-      office: 'Paris',
-      creationDate: '2024-03-25',
-    }]
+    items[1].isSignatory = true
 
     const currentUserId = items[2].contactId
-    const formattedItems = formatItemsFromApi(items, currentUserId, principalContacts)
+    const formattedItems = formatItemsFromApi(items, currentUserId)
     expect(formattedItems).toStrictEqual(expectedItems)
   })
 
-  it('returns formatted items when principalContact is empty and currentUser is undefined', () => {
+  it('returns formatted items when no contact is signatory and currentUser is undefined', () => {
     const contactsList = generateContactsMock({
       numberOfContactsToReturn: 1,
       contactsTotalCount: 16,

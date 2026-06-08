@@ -2,17 +2,19 @@ import { createCustomer, addContactToEntity, fetchAccountContactsByEmail } from 
 import type { createCustomerBody } from '../../services/account/account.service'
 import { logger } from '@pulse/toolbox'
 import { HTTP_RESPONSES } from '@pulse/common/constants'
+import type { AccountType } from '@pulse/common/enums'
 
 export class AccountManager {
   static async createOrAddCustomerToAccount(
     customer: createCustomerBody,
     accountId: number,
     accountNumber: string,
+    accountType: AccountType,
   ): Promise<number | undefined> {
     const { email } = customer
 
     try {
-      const user = await createCustomer(customer, accountNumber)
+      const user = await createCustomer(customer, accountNumber, accountType)
 
       return user.id
     } catch (error: any) {

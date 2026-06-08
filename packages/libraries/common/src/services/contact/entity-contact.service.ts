@@ -2,9 +2,8 @@ import { logger } from '@pulse/toolbox'
 import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { api } from '@pulse/common/api'
 import { API_PREFIXES } from '@pulse/common/constants'
-import { CollaboratorRole, ContactType } from '@pulse/common/enums'
+import { CollaboratorRole } from '@pulse/common/enums'
 import { useUserStore } from '@pulse/common/stores'
-import type { PaginationResponse } from '@pulse/common/types'
 import type { ContactLabel, ContactResponseItem, EntityContact, ProspectEntry } from './contact.types'
 
 // Rule: only CLP and AM contacts are considered as prospect contacts (identified during prospect creation).
@@ -36,16 +35,11 @@ export class EntityContactService {
     try {
       const isCollab = useUserStore().isCollab === true
 
-      const response = await api.gateway.get<PaginationResponse<ContactResponseItem>>(
-        `${API_PREFIXES.CUSTOMER_WALLET}/accounts/${accountId}/contacts`,
-        {
-          params: {
-            Type: ContactType.COLLABORATOR,
-          },
-        },
+      const response = await api.gateway.get<ContactResponseItem[]>(
+        `${API_PREFIXES.ACCOUNT}/prospects/${accountId}/contacts/currentuser`,
       )
 
-      const items = response.data.items ?? []
+      const items = response.data ?? []
       return items
         .map(item => ({ item, prospectLabel: EntityContactService.getProspectLabel(item) }))
         // Rule: only CLP and AM contacts are kept; the prospect label resolved here drives the role and the sort

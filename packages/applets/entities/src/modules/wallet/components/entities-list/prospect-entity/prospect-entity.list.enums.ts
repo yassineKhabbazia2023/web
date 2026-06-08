@@ -9,5 +9,6 @@ export enum ProspectColumn {
 }
 
 export enum ProspectAction {
+  RETRY_MASS_ACTIVATION_EMAIL = 'retryMassActivationEmail',
   ARCHIVE_PROSPECT = 'archiveProspect',
 }

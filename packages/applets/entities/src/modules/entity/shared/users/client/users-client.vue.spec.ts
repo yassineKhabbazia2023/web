@@ -20,16 +20,6 @@ vi.mock('@entities/services/contact', () => ({
   patchContact: vi.fn((_id: number, _accountId: number, contact: PatchContactPayload) => Promise.resolve(contact)),
 }))
 
-vi.mock('@entities/services/account', () => ({
-  getAccountSignatories: vi.fn(),
-}))
-
-vi.mock('vue-router', () => ({
-  useRoute: () => ({
-    name: '',
-  }),
-}))
-
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 const userStoreMock = getStoreMock(useUserStore)
 const userMock = getMockedUser({ id: 2 })
@@ -179,6 +169,7 @@ describe('test UsersClient', () => {
       globalContactId: 'global-contact-id',
       type: 'string',
       status: 'status',
+      isSignatory: false,
     }]
     const mockedResponse: WalletServices.GenericPageResponse<Contact> = {
       items: mockedItems,

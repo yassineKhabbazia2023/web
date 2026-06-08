@@ -27,16 +27,11 @@ const { t } = useI18n({
   },
 })
 
-defineProps<AddCustomerStepsProps>()
-
-const stepTitles = [
-  'add-email',
-  'manage-rights',
-]
+const props = defineProps<AddCustomerStepsProps>()
 
 const stepItems = computed<PStepsItem[]>(() => {
-  return stepTitles.map((stepTitle) => ({
-    pTitle: t(stepTitle),
+  return props.steps.map((step) => ({
+    pTitle: t(step),
     class: 'flex--basis-40',
   }))
 })

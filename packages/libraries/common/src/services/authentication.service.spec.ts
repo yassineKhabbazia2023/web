@@ -35,9 +35,10 @@ describe('test authentication.service', () => {
       const payload: CreateNewPasswordPayload = {
         token: 'fake-token',
         newPassword: 'new-password',
+        contactId: 'fake-contact-id',
         isCreatePasswordAction: false,
       }
-      const expectedUrl = 'authentication/api/createNewPassword'
+      const expectedUrl = 'password-experience/api/createNewPassword'
       const gatewayResponseMock = {}
 
       apiGatewayPostMock.mockResolvedValue(gatewayResponseMock)

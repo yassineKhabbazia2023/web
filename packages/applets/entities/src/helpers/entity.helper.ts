@@ -1,7 +1,6 @@
 import { logger } from '@pulse/toolbox'
 
 import type { Contact, ExtendedUser } from '@entities/types'
-import type { AccountSignatories } from '@entities/services/account/account.type'
 
 export const handleRequestError = (action: string, error: any) => {
   logger.error(`Error ${action}:`, error)
@@ -59,13 +58,9 @@ export const returnSortQueryField = (columnProp: string, descending: boolean) =>
 export function formatItemsFromApi(
   items: Contact[],
   currentUserId?: number | undefined,
-  principalContacts: AccountSignatories[] = [],
 ) {
   return items.map<ExtendedUser>((item) => {
     const { firstName, lastName, email, personaName, contactId, status } = item
-    const isSignatory = principalContacts.some(
-      ({ contactId }) => contactId === item.contactId,
-    )
 
     const extendedUser: ExtendedUser = {
       ...item,
@@ -77,7 +72,6 @@ export function formatItemsFromApi(
       status,
       isOwner: personaName === 'ADMIN/Dirigeant',
       isLoggedUser: contactId === currentUserId,
-      isSignatory,
     }
 
     return extendedUser

@@ -18,7 +18,7 @@
         pSize="default"
         pColor="gray"
         pIconLeftName="building"
-        :pContent="t('clientCompany')"
+        :pContent="companyTagLabel"
       />
     </PUserCard>
     <div class="margin-y--4">
@@ -76,7 +76,7 @@ import UsersList from '@entities/components/users-list'
 import NoResult from '@entities/components/NoResult'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import type { ExtendedUser, UserStatus } from '@entities/types'
-import { ContactType } from '@pulse/common/enums'
+import { ContactType, AccountType } from '@pulse/common/enums'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -88,6 +88,7 @@ const { t } = useI18n({
       statusConnect: 'Connected',
       statusDeclared: 'Declared',
       clientCompany: 'Client Company',
+      prospect: 'Prospect',
       selectClientUsers: 'Select client users',
       resendTheActivationEmail: 'Resend the activation email',
       customersInvitationFailed: 'There was an issue inviting all selected customers.',
@@ -101,6 +102,7 @@ const { t } = useI18n({
       statusConnect: 'Connecté',
       statusDeclared: 'Déclaré',
       clientCompany: 'Société cliente',
+      prospect: 'Prospect',
       selectClientUsers: 'Sélectionnez des utilisateurs clients',
       resendTheActivationEmail: 'Relancer le mail d\'activation',
       customerInvitationSucceeded: 'Le client sélectionné a été invité avec succès.',
@@ -127,6 +129,10 @@ const primaryCTA = computed<PDrawerActionButton>(() => ({
   pTestId: 'resend-activation-email-submit-button',
 }))
 
+const companyTagLabel = computed(() =>
+  props.accountType === AccountType.PROSPECT ? t('prospect') : t('clientCompany'),
+)
+
 const isResendActivationEmailDrawerVisible = computed({
   get() {
     return props.modelValue
@@ -145,7 +151,11 @@ const handleSelectUser = (userClientIds: number[]) => {
 const handleRetryMassActivationEmail = async () => {
   isLoading.value = true
   try {
-    const invitedCustomerIDs = await inviteCustomers(selectedUsersIds.value, props.selectedAccount.accountNumber)
+    const invitedCustomerIDs = await inviteCustomers(
+      selectedUsersIds.value,
+      props.selectedAccount.accountNumber,
+      props.accountType,
+    )
     if (invitedCustomerIDs && invitedCustomerIDs.length > 0) {
       const notificationMessage = invitedCustomerIDs.length === 1
         ? t('customerInvitationSucceeded')

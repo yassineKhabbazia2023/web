@@ -1,5 +1,6 @@
 import { describe, it, vi, expect } from 'vitest'
 import { API_PREFIXES } from '@pulse/common/constants'
+import { AccountType } from '@pulse/common/enums'
 import { omit } from 'lodash-es'
 import { getMockedCustomer } from '@entities/__mocks__/customer.mocks'
 import type { PatchContactPayload } from './contactTypes'
@@ -71,12 +72,15 @@ describe('contact', () => {
     })
   })
   describe('inviteCustomers', () => {
-    it('should return a list of invited customer IDs', async () => {
-      await inviteCustomers(mockedCustomerIDs, mockedAccountNumber)
+    it('should return a list of invited customer IDs and pass the entityType query param', async () => {
+      await inviteCustomers(mockedCustomerIDs, mockedAccountNumber, AccountType.PROSPECT)
 
       expect(mocks.post).toHaveBeenCalledWith(
         `contact/api/customers/bulk-invite/${mockedAccountNumber}`,
         mockedCustomerIDs,
+        {
+          params: { entityType: AccountType.PROSPECT },
+        },
       )
     })
   })

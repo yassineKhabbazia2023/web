@@ -192,6 +192,7 @@ describe('page creation password', () => {
     const data = {
       token: 'token',
       newPassword: VALID_PASSWORD,
+      contactId: 'contactId',
     }
     const dataLogin = {
       email: 'email',

@@ -34,6 +34,7 @@ import {
 } from '@entities/__mocks__/account-row.mocks'
 import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
 import { API_PREFIXES } from '@pulse/common/constants'
+import { AccountType } from '@pulse/common/enums'
 
 const delegationId = 3
 const accountId = 5
@@ -328,10 +329,10 @@ describe('test accountServices', () => {
         email: mockedCollaborators[0].email,
         mobilePhone: mockedCollaborators[0].mobilePhone,
       }
-      const id = await createCustomer(postRequestBody, mockedAccount.accountNumber)
+      const id = await createCustomer(postRequestBody, mockedAccount.accountNumber, AccountType.REGULAR)
       expect(postSpy).toHaveBeenCalledWith(`${API_PREFIXES.ACCOUNT}/customers`,
         postRequestBody,
-        { params: { accountNumber: mockedAccount.accountNumber } },
+        { params: { accountNumber: mockedAccount.accountNumber, accountType: AccountType.REGULAR } },
       )
       expect(id).toBe(newId)
     })

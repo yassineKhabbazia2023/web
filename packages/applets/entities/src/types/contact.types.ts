@@ -11,6 +11,7 @@ export interface Contact {
   status: string
   personaName: string
   creationDate: string
+  isSignatory: boolean
   contactFlagPortailFactures?: boolean
 }
 

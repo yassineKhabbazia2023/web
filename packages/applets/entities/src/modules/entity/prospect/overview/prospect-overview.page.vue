@@ -12,7 +12,6 @@
         class="margin-bottom--4"
       />
       <PTabs
-        v-if="hasMultipleTabs"
         :modelValue="activeTab"
         @tab-click="handleTabClick"
       >
@@ -74,7 +73,6 @@ const tabAuthorizations = computed(() =>
 )
 
 const tabsList = computed<ProspectTab[]>(() => getProspectTabs(tabAuthorizations.value, tabTitles.value))
-const hasMultipleTabs = computed(() => tabsList.value.length > 1)
 
 const navigateToDefaultTab = () => {
   const hasActiveTab = tabsList.value.some(tab => tab.name === activeTab.value)

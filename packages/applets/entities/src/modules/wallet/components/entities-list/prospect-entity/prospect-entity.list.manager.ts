@@ -21,6 +21,13 @@ export class ProspectEntityListManager {
   static buildMenu(): AccessibleMenuItem[] {
     return [
       {
+        pIconName: 'send',
+        pValue: i18n.global.t(`${I18N_KEY}.resendActivationEmail`),
+        pActionName: ProspectAction.RETRY_MASS_ACTIVATION_EMAIL,
+        pState: 'default',
+        display: true,
+      },
+      {
         pIconName: 'trash',
         pValue: i18n.global.t(`${I18N_KEY}.archiveThisProspectAccount`),
         pActionName: ProspectAction.ARCHIVE_PROSPECT,

@@ -37,6 +37,7 @@
         "step": "Step",
         "cacFolder": "CAC Folder",
         "option": "Options",
+        "resendActivationEmail": "Resend the activation email",
         "archiveThisProspectAccount": "Archive this prospect account"
       },
       "prospect": {

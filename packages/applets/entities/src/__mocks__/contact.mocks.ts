@@ -43,6 +43,7 @@ export const generateContactsMock = (
     status: 'Declared',
     personaName: 'Customer',
     creationDate: '2024-03-07',
+    isSignatory: false,
   }
 
   const contactsDataArray: Contact[] = []

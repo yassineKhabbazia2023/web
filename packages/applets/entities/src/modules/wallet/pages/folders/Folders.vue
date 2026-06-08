@@ -164,6 +164,7 @@
         v-if="isResendActivationEmailDrawerVisible && selectedAccount"
         v-model="isResendActivationEmailDrawerVisible"
         :selectedAccount="selectedAccount"
+        :accountType="AccountType.REGULAR"
       />
       <OffersDrawer
         v-if="hasOffersDrawer === true && selectedAccountId && user"
@@ -239,7 +240,7 @@ import type { AccountFilters, AccountRow } from '@entities/types'
 import ManageAccessDrawerGlobal from '@entities/components/ManageAccessDrawer/ManageAccessDrawerGlobal'
 import { TrackingLocalisation } from '@entities/enums'
 import { useUserStore } from '@pulse/common/stores'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
 import { fetchAccountOperations } from '@entities/services/registry'
 import { useSort } from '@pulse/common/composables/sort'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'

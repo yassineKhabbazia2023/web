@@ -13,4 +13,6 @@ export interface AddCustomerContentProps {
   shouldEnableNames: boolean
   addCustomerDrawerStepIndex: number
   addCustomerDrawerStep: AddCustomerDrawerStep
+  stepperSteps: AddCustomerDrawerStep[]
+  isProspect: boolean
 }

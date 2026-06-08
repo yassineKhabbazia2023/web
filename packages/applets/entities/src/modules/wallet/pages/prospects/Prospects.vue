@@ -53,6 +53,13 @@
         @sort-account="handleSortAccount"
         @prospect-archived="fetchProspectsList"
         @access="onClickFolder"
+        @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
+      />
+      <ResendActivationEmailDrawer
+        v-if="isResendActivationEmailDrawerVisible && selectedAccount"
+        v-model="isResendActivationEmailDrawerVisible"
+        :selectedAccount="selectedAccount"
+        :accountType="AccountType.PROSPECT"
       />
       <PPagination
         class="margin-top--6"
@@ -79,16 +86,17 @@ import { useRouter } from 'vue-router'
 import { PLoader, PPagination, PButton, PIcon } from '@pulse/styleguide/components'
 import { displayNotification } from '@pulse/styleguide'
 import ProspectEntityList from '../../components/entities-list/prospect-entity/prospect-entity.list.vue'
+import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
 import FormSearch from '@entities/components/FormSearch'
 import NoResult from '@entities/components/NoResult'
 import { useProspects } from './prospects.composable'
 import { useUserStore } from '@pulse/common/stores'
 import { useSort } from '@pulse/common/composables/sort'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { RouteName, RouteParam, AccountType } from '@pulse/common/enums'
 import type { SortingCriteria } from '@pulse/common/types'
 import { logger } from '@pulse/toolbox'
 import ProspectCreationDrawer from './components/prospect-creation-drawer'
-import type { ProspectCreationPayload } from '@entities/modules/wallet/types'
+import type { ProspectCreationPayload, ProspectWalletData } from '@entities/modules/wallet/types'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 
 const router = useRouter()
@@ -109,6 +117,14 @@ const { t } = useI18n({
 })
 
 const isProspectCreationDrawerOpened = ref(false)
+
+const selectedAccount = ref<ProspectWalletData>()
+const isResendActivationEmailDrawerVisible = ref(false)
+
+function handleDisplayResendActivationEmailDrawer(account: ProspectWalletData) {
+  selectedAccount.value = account
+  isResendActivationEmailDrawerVisible.value = true
+}
 
 function openProspectCreationDrawer() {
   isProspectCreationDrawerOpened.value = true

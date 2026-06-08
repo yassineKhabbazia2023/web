@@ -120,6 +120,7 @@ describe('page reset password form', () => {
     const data = {
       token: 'token',
       newPassword: 'aaAA11@@',
+      contactId: 'contactId',
       isCreatePasswordAction: false,
     }
     expect(createNewPasswordMock).toHaveBeenCalledExactlyOnceWith(data)

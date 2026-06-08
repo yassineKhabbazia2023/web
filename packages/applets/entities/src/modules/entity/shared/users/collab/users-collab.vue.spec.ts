@@ -12,7 +12,7 @@ import { getMockedEntity, getMockedUser, getMockedEntitySummary } from '@pulse/c
 import { CurrentUserManagerMock, hasPermissionMock, getStoreMock } from '@pulse/common/mocks/vitest'
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { getPendingOperations } from '../utils/operations.utils'
-import { RouteName, RouteParam } from '@pulse/common/enums'
+import { AccountType, RouteName, RouteParam } from '@pulse/common/enums'
 
 import UsersCollab from './users-collab.vue'
 
@@ -48,29 +48,13 @@ const mockedAccount = getMockedAccount()
 vi.mock('@entities/services/registry', () => registryServiceMock)
 vi.mock('@entities/services/wallet')
 
-const apiMocks = vi.hoisted(() => ({
-  singleAccountSignatory: vi.fn(() => Promise.resolve([
-    mockedCustomersCollab[0],
-  ])),
-  multipleAccountSignatories: vi.fn(() => Promise.resolve([
-    mockedCustomersCollab[0],
-    mockedCustomersCollab[1],
-  ])),
+const routeMock = vi.hoisted(() => ({
+  name: '' as string,
+  params: {} as Record<string, number>,
 }))
 
-vi.mock('@entities/services/account', () => {
-  return {
-    getAccountSignatories: apiMocks.singleAccountSignatory,
-  }
-})
-
 vi.mock('vue-router', () => ({
-  useRoute: () => ({
-    name: RouteName.USERS,
-    params: {
-      [RouteParam.ENTITY_ID]: DEFAULT_ROUTE_PARAMS_ID,
-    },
-  }),
+  useRoute: () => routeMock,
   useRouter: () => ({
     go: vi.fn(),
   }),
@@ -110,7 +94,7 @@ const createWrapper = (): VueWrapper<any> =>
         AddCustomerDrawer: {
           name: 'AddCustomerDrawer',
           template: '<div></div>',
-          props: ['modelValue', 'targetEntityId', 'targetEntityName', 'targetEntityNumber'],
+          props: ['modelValue', 'targetEntityId', 'targetEntityName', 'targetEntityNumber', 'targetEntityAccountType'],
           events: ['refresh-customers-list'],
         },
         PTable: {
@@ -151,13 +135,10 @@ const removeUserToolboxItem: PToolboxItemProps = {
 
 describe('usersCollab', () => {
   beforeEach(async () => {
-    // Reset API mocks
-    apiMocks.singleAccountSignatory.mockResolvedValue([mockedCustomersCollab[0]])
-    apiMocks.multipleAccountSignatories.mockResolvedValue([
-      mockedCustomersCollab[0],
-      mockedCustomersCollab[1],
-    ])
+    routeMock.name = RouteName.USERS
+    routeMock.params = { [RouteParam.ENTITY_ID]: DEFAULT_ROUTE_PARAMS_ID }
 
+    // Reset API mocks
     vi.mocked(fetchAccountCustomers).mockResolvedValue({
       items: mockedCustomersCollab as any,
       totalItems: mockedCustomersCollab.length,
@@ -167,6 +148,8 @@ describe('usersCollab', () => {
 
     userStoreMock.user = userMock
     currentEntityStoreMock.currentEntity = entitySummaryMock
+    // Reset account type to regular (prospect-specific tests override it)
+    currentEntityStoreMock.currentAccountType = AccountType.REGULAR
     hasPermissionMock.mockReturnValue(false)
     wrapper = createWrapper()
     await flushPromises()
@@ -305,18 +288,15 @@ describe('usersCollab', () => {
         expectedItems: [
           modifyToolboxItem,
         ],
-        getSignatoriesMockToUse: apiMocks.singleAccountSignatory,
       },
       {
         userToRemove: mockedCustomersCollab[1],
         expectedItems: [
           modifyToolboxItem,
         ],
-        getSignatoriesMockToUse: apiMocks.multipleAccountSignatories,
       },
-    ])('should allow signatory remove if user is signatory and account has at least another signatory',
-      async ({ userToRemove, expectedItems, getSignatoriesMockToUse }) => {
-        apiMocks.singleAccountSignatory.mockReturnValue(getSignatoriesMockToUse())
+    ])('should build the toolbox items for the user to remove',
+      async ({ userToRemove, expectedItems }) => {
         wrapper = createWrapper()
         await flushPromises()
 
@@ -324,6 +304,27 @@ describe('usersCollab', () => {
         const items = wrapper.vm.toolboxItems
         expect(items).toMatchObject(expectedItems)
       })
+
+    it('should hide the "modify rights" action for a prospect entity user', async () => {
+      currentEntityStoreMock.currentAccountType = AccountType.PROSPECT
+      hasPermissionMock.mockReturnValue(true)
+      wrapper = createWrapper()
+      await flushPromises()
+
+      wrapper.vm.handleToolboxClick(mockedCustomersCollab[0])
+      await nextTick()
+
+      expect(wrapper.vm.toolboxItems).toStrictEqual([removeUserToolboxItem])
+    })
+
+    it('should hide the actions menu entirely for a prospect user without the remove permission', async () => {
+      currentEntityStoreMock.currentAccountType = AccountType.PROSPECT
+      hasPermissionMock.mockReturnValue(false)
+      wrapper = createWrapper()
+      await flushPromises()
+
+      expect(wrapper.findComponent({ name: 'PToolbox' }).exists()).toBe(false)
+    })
 
     it('when click on REMOVE_USER action', async () => {
       hasPermissionMock.mockReturnValue(true)
