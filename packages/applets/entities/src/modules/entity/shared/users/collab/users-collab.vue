@@ -138,6 +138,9 @@
           </PTableColumn>
           <PTableColumn
             :p-label="t('roles')"
+            pProp="label"
+            pSortable="custom"
+            :pSortOrders="SORT_ORDERS"
             pWidth="340"
           >
             <template #default="scope">
