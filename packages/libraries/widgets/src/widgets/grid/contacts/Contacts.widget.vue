@@ -92,13 +92,13 @@
               flex-gap--2
             "
           >
-            <PTooltip :pContent="tooltipContent(contact.phoneNumber)">
+            <PTooltip :pContent="tooltipContent(formatPhoneNumber(contact.phoneNumber))">
               <PButton
                 pIconOnly
                 pType="default"
                 pSize="small"
                 :pDisabled="contact.phoneNumber === ''"
-                @click="copyValueToClipboard(contact.phoneNumber)"
+                @click="copyValueToClipboard(formatPhoneNumber(contact.phoneNumber))"
               >
                 <PIcon pName="telephone" />
               </PButton>
@@ -129,6 +129,7 @@ import { AvatarRoles, displayNotification } from '@pulse/styleguide'
 import { SUPPORT_EMAIL_CLIENT, SUPPORT_PHONE_CLIENT } from '@pulse/common/constants'
 import { getFullNameWithUppercaseLastName, getInitials } from '@pulse/common/utils'
 import { copyToClipboard } from '@pulse/toolbox/utils/browser'
+import { formatPhoneNumber } from '@pulse/toolbox/utils/string'
 import { sanitizeUrl } from '@pulse/toolbox/utils/url'
 import type { PAvatarProps } from '@pulse/styleguide/types'
 import type { ContactsWidgetProps, WidgetContact } from './contact.widget.types'

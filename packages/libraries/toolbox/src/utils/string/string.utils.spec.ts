@@ -1,6 +1,38 @@
-import { formatFrenchPhoneNumber, formatPhoneNumber, getAlphanumericString, containsIgnoreCase, getStringInitials } from './string.utils'
+import { formatFrenchPhoneNumber, formatPhoneNumber, getAlphanumericString, containsIgnoreCase, getStringInitials, removeDiacritics } from './string.utils'
 
 describe('string.utils', () => {
+  describe('removeDiacritics', () => {
+    const testCases = [{
+      input: 'connecté',
+      expected: 'connecte',
+    }, {
+      input: 'Déclaré',
+      expected: 'Declare',
+    }, {
+      input: 'Invité',
+      expected: 'Invite',
+    }, {
+      input: 'çÇ àâäÀÂÄ èéêëÈÉÊË îïÎÏ ôÔ ùûüÙÛÜ',
+      expected: 'cC aaaAAA eeeeEEEE iiII oO uuuUUU',
+    }, {
+      input: 'no accents here',
+      expected: 'no accents here',
+    }, {
+      input: '',
+      expected: '',
+    }, {
+      input: undefined,
+      expected: '',
+    }]
+
+    it.each(testCases)(
+      'should remove diacritics from "$input" and return "$expected"',
+      ({ input, expected }) => {
+        expect(removeDiacritics(input)).toBe(expected)
+      },
+    )
+  })
+
   describe('getAlphanumericString', () => {
     const testCases = [{
       input: 'ab\'c123!@#',
@@ -68,6 +100,21 @@ describe('string.utils', () => {
     }, {
       input: '0123456789',
       expected: '01 23 45 67 89',
+    }, {
+      input: '+33612345678',
+      expected: '+33 6 12 34 56 78',
+    }, {
+      input: '+33123456789',
+      expected: '+33 1 23 45 67 89',
+    }, {
+      input: '+33 6 12 34 56 78',
+      expected: '+33 6 12 34 56 78',
+    }, {
+      input: '09 73 73 3000',
+      expected: '09 73 73 30 00',
+    }, {
+      input: '+33',
+      expected: '+33',
     }, {
       input: undefined,
       expected: '',

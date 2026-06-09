@@ -239,6 +239,7 @@ import { PAGE_SIZES, ACTION_PERMISSIONS, SORT_ORDERS } from '@pulse/common/const
 import { DATE_TIME_FORMATS as datetimeFormats } from '@pulse/common/i18n'
 import { fetchAccountCustomers } from '@entities/services/wallet'
 import { removeFalsyValues } from '@pulse/toolbox/utils/object'
+import { removeDiacritics } from '@pulse/toolbox/utils/string'
 import type { StateUser } from '../types/users-collab.types'
 import type { User, UserStatus } from '@entities/types'
 import { UserActions, TrackingLocalisation } from '@entities/enums'
@@ -521,7 +522,7 @@ async function handleRemoveUser(user: User) {
 const getQueryParams = () => ({
   pageNumber: state.currentPage,
   pageSize: state.limit,
-  search: state.search,
+  search: removeDiacritics(state.search),
   'sorting.field': state.sorting.field,
   'sorting.descending': state.sorting.descending,
 })

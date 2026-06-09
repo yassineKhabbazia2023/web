@@ -107,6 +107,7 @@ import { computed, onMounted, reactive, watch, ref } from 'vue'
 import { PLoader, PPagination, PButton, PIcon } from '@pulse/styleguide/components'
 import { CurrentUserManager } from '@pulse/common/managers'
 import { removeFalsyValues } from '@pulse/toolbox/utils/object'
+import { removeDiacritics } from '@pulse/toolbox/utils/string'
 import { PAGE_SIZES, MOBILE_PAGE_SIZES, ACTION_PERMISSIONS } from '@pulse/common/constants'
 import { useResponsive } from '@pulse/styleguide'
 import NoResult from '@entities/components/NoResult'
@@ -212,7 +213,7 @@ function getQueryParams(type: string | undefined) {
   return {
     pageNumber: state.currentPage,
     pageSize: state.limit,
-    search: state.search,
+    search: removeDiacritics(state.search),
     'sorting.field': state.sorting.field,
     'sorting.descending': state.sorting.descending,
     Type: type,

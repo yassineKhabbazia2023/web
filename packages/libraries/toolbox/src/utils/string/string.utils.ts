@@ -1,4 +1,14 @@
-import { isNotNullNorEmpty } from '../validators'
+import { isNotNullNorEmpty, isNullOrEmpty } from '../validators'
+
+// see https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
+// and https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
+export function removeDiacritics(text?: string): string {
+  if (text === undefined) {
+    return ''
+  }
+
+  return text.normalize('NFD').replaceAll(/[\u0300-\u036f]/g, '')
+}
 
 export function getAlphanumericString(text?: string): string {
   if (text === undefined) {
@@ -21,11 +31,25 @@ export function getAlphanumericString(text?: string): string {
 }
 
 export function formatPhoneNumber(phone?: string | null): string {
-  if (phone === undefined || phone === null) {
+  if (isNullOrEmpty(phone)) {
     return ''
   }
 
-  return phone.replaceAll(/(\d{2})(?=\d)/g, '$1 ')
+  const cleaned = phone.replaceAll(/\s/g, '')
+
+  if (cleaned.startsWith('+33')) {
+    const digits = cleaned.slice(3)
+    if (digits.length === 0) {
+      return cleaned
+    }
+    if (digits.length === 1) {
+      return `+33 ${digits}`
+    }
+    const formattedRest = digits.slice(1).replaceAll(/(\d{2})(?=\d)/g, '$1 ')
+    return `+33 ${digits.charAt(0)} ${formattedRest}`
+  }
+
+  return cleaned.replaceAll(/(\d{2})(?=\d)/g, '$1 ')
 }
 
 export function formatFrenchPhoneNumber(phone?: string): string {
