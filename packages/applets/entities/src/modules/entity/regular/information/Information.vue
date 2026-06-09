@@ -112,6 +112,12 @@ const { t } = useI18n({
   },
 })
 
+const props = withDefaults(defineProps<{
+  pHiddenFieldKeys?: string[]
+}>(), {
+  pHiddenFieldKeys: () => [],
+})
+
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
 
@@ -159,11 +165,22 @@ async function onClickSave() {
   }
 }
 
+function filterHiddenFields(formStructure: FormSection[], hiddenFieldKeys: string[]): FormSection[] {
+  if (hiddenFieldKeys.length === 0) {
+    return formStructure
+  }
+  return formStructure.map(section => ({
+    ...section,
+    fields: section.fields.filter(field => hiddenFieldKeys.includes(field.pFieldKey) === false),
+  }))
+}
+
 onMounted(async () => {
   try {
     canEdit.value = getCanEdit(isCollab.value ?? false)
     const forceDisabled = !canEdit.value
-    informationFormStructure.value = await getFormStructure('CompanyProfile', forceDisabled)
+    const fetchedStructure = await getFormStructure('CompanyProfile', forceDisabled)
+    informationFormStructure.value = filterHiddenFields(fetchedStructure, props.pHiddenFieldKeys)
     const account = await fetchAccount(accountId)
     if (account !== undefined) {
       cleanRecordStructure(informationFormStructure.value, account)

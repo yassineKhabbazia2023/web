@@ -41,6 +41,7 @@ export const COLLABORATOR_ROUTES = {
         root: { path: '', name: RouteName.PROSPECT_OVERVIEW },
         users: { path: 'gestion-utilisateurs', name: RouteName.PROSPECT_USERS },
         collab: { path: 'collaborateurs', name: RouteName.PROSPECT_COLLAB },
+        info: { path: 'informations', name: RouteName.PROSPECT_INFO },
       },
     },
   },

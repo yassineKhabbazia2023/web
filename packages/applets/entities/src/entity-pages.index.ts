@@ -14,3 +14,4 @@ export { default as Conformity } from './modules/entity/prospect/conformity/pros
 export { default as ProspectOverview } from './modules/entity/prospect/overview/prospect-overview.page.vue'
 export { default as ProspectUsers } from './modules/entity/prospect/users/prospect-users.page.vue'
 export { default as ProspectCollaborators } from './modules/entity/prospect/collaborators/prospect-collaborators.page.vue'
+export { default as ProspectInformation } from './modules/entity/prospect/information/prospect-information.page.vue'

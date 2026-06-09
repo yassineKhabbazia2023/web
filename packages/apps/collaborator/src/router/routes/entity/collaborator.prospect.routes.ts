@@ -44,6 +44,11 @@ export const prospectCollaboratorRoutes: RouteRecordRaw[] = [
             name: COLLABORATOR_ROUTES.entity.prospect.overview.collab.name,
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectCollaborators),
           },
+          {
+            path: COLLABORATOR_ROUTES.entity.prospect.overview.info.path,
+            name: COLLABORATOR_ROUTES.entity.prospect.overview.info.name,
+            component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectInformation),
+          },
         ],
       },
     ],

@@ -48,6 +48,7 @@ export const CUSTOMER_ROUTES = {
       overview: {
         root: { path: '', name: RouteName.PROSPECT_OVERVIEW },
         users: { path: 'gestion-utilisateurs', name: RouteName.PROSPECT_USERS },
+        info: { path: 'informations', name: RouteName.PROSPECT_INFO },
       },
     },
   },

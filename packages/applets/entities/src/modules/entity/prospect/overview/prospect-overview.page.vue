@@ -46,10 +46,12 @@ const { t } = useI18n({
     'en-US': {
       users: 'Users',
       collab: 'Collaborators',
+      info: 'Information',
     },
     'fr-FR': {
       users: 'Utilisateurs',
       collab: 'Collaborateurs',
+      info: 'Informations',
     },
   },
 })
@@ -66,6 +68,7 @@ const { isCollab } = storeToRefs(userStore)
 const tabTitles = computed<Record<ProspectTabName, string>>(() => ({
   [RouteName.PROSPECT_USERS]: t('users'),
   [RouteName.PROSPECT_COLLAB]: t('collab'),
+  [RouteName.PROSPECT_INFO]: t('info'),
 }))
 
 const tabAuthorizations = computed(() =>

@@ -17,6 +17,7 @@ describe('prospect-overview-helper', () => {
         expectedAuthorizations: {
           [RouteName.PROSPECT_USERS]: true,
           [RouteName.PROSPECT_COLLAB]: true,
+          [RouteName.PROSPECT_INFO]: true,
         },
       },
       {
@@ -25,6 +26,7 @@ describe('prospect-overview-helper', () => {
         expectedAuthorizations: {
           [RouteName.PROSPECT_USERS]: true,
           [RouteName.PROSPECT_COLLAB]: false,
+          [RouteName.PROSPECT_INFO]: true,
         },
       },
       {
@@ -33,6 +35,7 @@ describe('prospect-overview-helper', () => {
         expectedAuthorizations: {
           [RouteName.PROSPECT_USERS]: false,
           [RouteName.PROSPECT_COLLAB]: false,
+          [RouteName.PROSPECT_INFO]: false,
         },
       },
       {
@@ -41,6 +44,7 @@ describe('prospect-overview-helper', () => {
         expectedAuthorizations: {
           [RouteName.PROSPECT_USERS]: false,
           [RouteName.PROSPECT_COLLAB]: false,
+          [RouteName.PROSPECT_INFO]: false,
         },
       },
     ])(
@@ -59,15 +63,18 @@ describe('prospect-overview-helper', () => {
       const tabAuthorizations: Record<ProspectTabName, boolean> = {
         [RouteName.PROSPECT_USERS]: true,
         [RouteName.PROSPECT_COLLAB]: true,
+        [RouteName.PROSPECT_INFO]: true,
       }
       const titles: Record<ProspectTabName, string> = {
         [RouteName.PROSPECT_USERS]: 'Utilisateurs',
         [RouteName.PROSPECT_COLLAB]: 'Collaborateurs',
+        [RouteName.PROSPECT_INFO]: 'Informations',
       }
       const tabs = getProspectTabs(tabAuthorizations, titles)
       const expectedTabs: ProspectTab[] = [
         { name: RouteName.PROSPECT_USERS, title: 'Utilisateurs' },
         { name: RouteName.PROSPECT_COLLAB, title: 'Collaborateurs' },
+        { name: RouteName.PROSPECT_INFO, title: 'Informations' },
       ]
 
       expect(tabs).toStrictEqual(expectedTabs)
@@ -77,10 +84,12 @@ describe('prospect-overview-helper', () => {
       const tabAuthorizations: Record<ProspectTabName, boolean> = {
         [RouteName.PROSPECT_USERS]: true,
         [RouteName.PROSPECT_COLLAB]: false,
+        [RouteName.PROSPECT_INFO]: false,
       }
       const titles: Record<ProspectTabName, string> = {
         [RouteName.PROSPECT_USERS]: 'Utilisateurs',
         [RouteName.PROSPECT_COLLAB]: 'Collaborateurs',
+        [RouteName.PROSPECT_INFO]: 'Informations',
       }
       const tabs = getProspectTabs(tabAuthorizations, titles)
 

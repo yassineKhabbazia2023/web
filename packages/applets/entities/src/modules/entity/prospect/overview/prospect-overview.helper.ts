@@ -8,6 +8,7 @@ export function getProspectTabAuthorizations(isCollab: boolean): Record<Prospect
   return {
     [RouteName.PROSPECT_USERS]: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.USERS),
     [RouteName.PROSPECT_COLLAB]: isCollab && CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.COLLABORATORS),
+    [RouteName.PROSPECT_INFO]: CurrentUserManager.hasPermission(ACCOUNT_PERMISSIONS.INFORMATION),
   }
 }
 

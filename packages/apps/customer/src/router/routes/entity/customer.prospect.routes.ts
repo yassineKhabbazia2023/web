@@ -40,6 +40,11 @@ export const prospectCustomerRoutes: RouteRecordRaw[] = [
             name: CUSTOMER_ROUTES.entity.prospect.overview.users.name,
             component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectUsers),
           },
+          {
+            path: CUSTOMER_ROUTES.entity.prospect.overview.info.path,
+            name: CUSTOMER_ROUTES.entity.prospect.overview.info.name,
+            component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectInformation),
+          },
         ],
       },
     ],
