@@ -66,6 +66,7 @@
 
   <PAlert
     v-if="validationErrorMessageKey !== null"
+    ref="alertRef"
     pType="danger"
     class="margin-y--4 font-bold"
   >
@@ -74,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, toRef } from 'vue'
+import { computed, toRef, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PAlert, PBlockHeader, PUserActionCard, PDropdown } from '@pulse/styleguide/components'
 import { AvatarRoles, useResponsive } from '@pulse/styleguide'
@@ -86,6 +87,7 @@ import type { Contact } from '@entities/services/contact/contactTypes'
 import type { ProspectFormData } from '@entities/modules/wallet/types'
 import type { ProspectCreationStepContactProps } from './prospect-creation-step-contact.types'
 import { useProspectCreationStepContactValidation } from './prospect-creation-step-contact.form.validation'
+import { useScrollToAlert } from '../../use-scroll-to-alert.composable'
 
 const props = defineProps<ProspectCreationStepContactProps>()
 
@@ -105,10 +107,22 @@ const headerImage = computed<PImageProps | undefined>(() =>
     },
 )
 
-const { validationErrorMessageKey, validate } = useProspectCreationStepContactValidation({
+const alertRef = useTemplateRef<HTMLElement>('alertRef')
+
+const { validationErrorMessageKey, validate: baseValidate } = useProspectCreationStepContactValidation({
   prospectFormData: model,
   collaboratorTargetRoles: toRef(props, 'collaboratorTargetRoles'),
 })
+
+const { scrollToAlert } = useScrollToAlert(alertRef)
+
+async function validate(): Promise<boolean> {
+  const isValid = await baseValidate()
+  if (isValid === false) {
+    await scrollToAlert()
+  }
+  return isValid
+}
 
 function getRoleOptionsFor(interlocutorId: Contact['id']) {
   const takenByOthers = new Set<number>()

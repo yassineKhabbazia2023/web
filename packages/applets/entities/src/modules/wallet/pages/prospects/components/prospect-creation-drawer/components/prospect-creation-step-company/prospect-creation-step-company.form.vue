@@ -91,6 +91,7 @@
             v-model="model.legalForm"
             :pOptions="legalFormOptions"
             pPlaceholder="-"
+            pFilterable
             data-testid="prospect-legal-form-input"
           />
         </PFormItem>
@@ -104,6 +105,7 @@
             v-model="model.legalStructure"
             :pOptions="legalStructureOptions"
             pPlaceholder="-"
+            pFilterable
             data-testid="prospect-legal-structure-input"
           />
         </PFormItem>
@@ -223,6 +225,7 @@
 
     <PAlert
       v-if="validationErrorMessageKey !== null"
+      ref="alertRef"
       pType="danger"
       class="margin-y--4 font-bold"
     >
@@ -248,6 +251,7 @@ import type { ProspectFormData } from '@entities/modules/wallet/types'
 import { ProspectCreationDrawerManager } from '../../prospect-creation-drawer.manager'
 import type { ProspectCreationStepCompanyProps } from './prospect-creation-step-company.types'
 import { useProspectCreationStepCompanyValidation } from './prospect-creation-step-company.form.validation'
+import { useScrollToAlert } from '../../use-scroll-to-alert.composable'
 
 const { t } = useI18n()
 
@@ -255,6 +259,7 @@ const props = defineProps<ProspectCreationStepCompanyProps>()
 const model = defineModel<ProspectFormData>({ required: true })
 
 const formRef = useTemplateRef<FormInstance>('formRef')
+const alertRef = useTemplateRef<HTMLElement>('alertRef')
 
 const legalFormOptions = computed(() =>
   ProspectCreationDrawerManager.convertRecordToDropdownOptions(props.dropdownsContent.legalForm),
@@ -263,9 +268,19 @@ const legalStructureOptions = computed(() =>
   ProspectCreationDrawerManager.convertRecordToDropdownOptions(props.dropdownsContent.legalStructure),
 )
 
-const { rules, validationErrorMessageKey, validate } = useProspectCreationStepCompanyValidation({
+const { rules, validationErrorMessageKey, validate: baseValidate } = useProspectCreationStepCompanyValidation({
   formRef,
 })
+
+const { scrollToAlert } = useScrollToAlert(alertRef)
+
+async function validate(): Promise<boolean> {
+  const isValid = await baseValidate()
+  if (isValid === false) {
+    await scrollToAlert()
+  }
+  return isValid
+}
 
 defineExpose({ validate })
 </script>

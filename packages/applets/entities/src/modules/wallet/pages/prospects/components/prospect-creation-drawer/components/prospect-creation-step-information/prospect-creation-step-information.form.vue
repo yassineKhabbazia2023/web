@@ -221,6 +221,7 @@
 
     <PAlert
       v-if="validationErrorMessageKey !== null"
+      ref="alertRef"
       pType="danger"
       class="margin-y--4 font-bold"
     >
@@ -251,6 +252,7 @@ import { ProspectCreationDrawerManager } from '../../prospect-creation-drawer.ma
 import type { ProspectCreationStepInformationProps } from './prospect-creation-step-information.types'
 import { useProspectCreationStepInformationValidation } from './prospect-creation-step-information.form.validation'
 import { useProspectEntitySearch } from './prospect-creation-step-information.composable'
+import { useScrollToAlert } from '../../use-scroll-to-alert.composable'
 import { DEBOUNCE_TIMING } from '@pulse/toolbox'
 
 const { t } = useI18n()
@@ -260,6 +262,7 @@ const props = defineProps<ProspectCreationStepInformationProps>()
 const prospectFormData = defineModel<ProspectFormData>({ required: true })
 
 const formRef = useTemplateRef<FormInstance>('formRef')
+const alertRef = useTemplateRef<HTMLElement>('alertRef')
 
 const {
   entitySearchQuery,
@@ -284,12 +287,22 @@ const contactTypeOptions = computed(() =>
   ProspectCreationDrawerManager.convertRecordToDropdownOptions(props.dropdownsContent.contactType),
 )
 
-const { rules, validationErrorMessageKey, validate } = useProspectCreationStepInformationValidation({
+const { rules, validationErrorMessageKey, validate: baseValidate } = useProspectCreationStepInformationValidation({
   prospectFormData,
   formRef,
   validateEntitySelection,
   checkEntityEligibility,
 })
+
+const { scrollToAlert } = useScrollToAlert(alertRef)
+
+async function validate(): Promise<boolean> {
+  const isValid = await baseValidate()
+  if (isValid === false) {
+    await scrollToAlert()
+  }
+  return isValid
+}
 
 defineExpose({ validate })
 </script>
