@@ -22,7 +22,7 @@ export class ProspectEntityListManager {
     return [
       {
         pIconName: 'send',
-        pValue: i18n.global.t(`${I18N_KEY}.resendActivationEmail`),
+        pValue: i18n.global.t(`${I18N_KEY}.inviteProspectToTheirSpace`),
         pActionName: ProspectAction.RETRY_MASS_ACTIVATION_EMAIL,
         pState: 'default',
         display: true,

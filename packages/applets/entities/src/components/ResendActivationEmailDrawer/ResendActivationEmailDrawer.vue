@@ -1,7 +1,7 @@
 <template>
   <PDrawer
     v-model="isResendActivationEmailDrawerVisible"
-    :pTitle="t('resendTheActivationEmail')"
+    :pTitle="drawerTitle"
     pSize="50%"
     destroyOnClose
     @close-drawer-button="handleCloseDrawer"
@@ -92,8 +92,7 @@ const { t } = useI18n({
       selectClientUsers: 'Select client users',
       resendTheActivationEmail: 'Resend the activation email',
       customersInvitationFailed: 'There was an issue inviting all selected customers.',
-      customerInvitationSucceeded: 'The selected customer has been successfully invited.',
-      customersInvitationSucceeded: 'All {customerCount} selected customers have been successfully invited.',
+      invitationEmailsSent: 'The user invitation email has been sent. | The user invitation emails have been sent.',
       pleaseSelectUsers: 'Please select the users for whom you wish to send a RYDGE Conseil account activation email.',
     },
     'fr-FR': {
@@ -105,9 +104,8 @@ const { t } = useI18n({
       prospect: 'Prospect',
       selectClientUsers: 'Sélectionnez des utilisateurs clients',
       resendTheActivationEmail: 'Relancer le mail d\'activation',
-      customerInvitationSucceeded: 'Le client sélectionné a été invité avec succès.',
       customersInvitationFailed: 'Il y a eu un problème pour inviter tous les clients sélectionnés.',
-      customersInvitationSucceeded: 'Tous les {customerCount} clients sélectionnés ont été invités avec succès.',
+      invitationEmailsSent: 'Le mail d\'invitation utilisateur a été envoyé | Les mails d\'invitation utilisateur ont été envoyés',
       pleaseSelectUsers: 'Veuillez sélectionner les utilisateurs pour lesquels vous souhaitez envoyer un e-mail d\'activation du compte RYDGE Conseil.',
     },
   },
@@ -131,6 +129,12 @@ const primaryCTA = computed<PDrawerActionButton>(() => ({
 
 const companyTagLabel = computed(() =>
   props.accountType === AccountType.PROSPECT ? t('prospect') : t('clientCompany'),
+)
+
+const drawerTitle = computed(() =>
+  props.accountType === AccountType.PROSPECT
+    ? t('entities.wallet.entitiesListProspects.inviteProspectToTheirSpace')
+    : t('resendTheActivationEmail'),
 )
 
 const isResendActivationEmailDrawerVisible = computed({
@@ -157,12 +161,7 @@ const handleRetryMassActivationEmail = async () => {
       props.accountType,
     )
     if (invitedCustomerIDs && invitedCustomerIDs.length > 0) {
-      const notificationMessage = invitedCustomerIDs.length === 1
-        ? t('customerInvitationSucceeded')
-        : t('customersInvitationSucceeded', {
-          customerCount: invitedCustomerIDs.length,
-        })
-      displayNotification('success', notificationMessage)
+      displayNotification('success', t('invitationEmailsSent', invitedCustomerIDs.length))
       AmplitudeService.track('Onboarding Relaunched', {
         onboarding_relaunch_result: 'succeeded',
       })
