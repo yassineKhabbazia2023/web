@@ -36,7 +36,6 @@ export const WithScrollableContent: Story = {
     setup() {
       const steps = ref<StepItem[]>([
         { id: 'director-info', label: 'Informations dirigeants', baseStatus: 'incomplete', section: 'bases' },
-        { id: 'entity-info', label: 'Information entité', baseStatus: 'completed', section: 'bases' },
         { id: 'supporting-docs', label: 'Documents justificatifs', baseStatus: 'incomplete', secondaryText: '0/3', section: 'documents' },
         { id: 'commercial-proposal', label: 'Proposition commerciale', baseStatus: 'incomplete', secondaryText: 'à venir', section: 'documents' },
         { id: 'sepa', label: 'Mandat SEPA', baseStatus: 'incomplete', secondaryText: 'à réaliser', section: 'documents' },

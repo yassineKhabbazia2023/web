@@ -34,4 +34,13 @@ export const PROSPECT_ENTITY_NAVIGATION_ITEMS: NavigationItemConfig[] = [
     accountType: AccountType.PROSPECT,
     order: 3,
   },
+  {
+    id: 'prospect-entity-documents',
+    title: () => 'shared.sidebar.documents',
+    icon: 'archive',
+    routeName: RouteName.PROSPECT_DOCUMENTS,
+    shouldDisplay: () => true,
+    accountType: AccountType.PROSPECT,
+    order: 4,
+  },
 ]

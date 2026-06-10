@@ -45,6 +45,7 @@ export const CUSTOMER_ROUTES = {
       root: { path: `/contact/:${RouteParam.ENTITY_ID}`, name: RouteName.PROSPECT },
       homepage: { path: 'accueil', name: RouteName.PROSPECT_HOMEPAGE },
       conformity: { path: 'suivi-de-dossier', name: RouteName.PROSPECT_CONFORMITY },
+      documents: { path: 'documents', name: RouteName.PROSPECT_DOCUMENTS },
       overview: {
         root: { path: '', name: RouteName.PROSPECT_OVERVIEW },
         users: { path: 'gestion-utilisateurs', name: RouteName.PROSPECT_USERS },

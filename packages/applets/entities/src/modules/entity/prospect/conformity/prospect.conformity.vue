@@ -54,34 +54,44 @@
           padding--6
         "
       >
-        <section
+        <template
           v-for="step in steps"
-          :id="`step-${step.id}`"
           :key="step.id"
-          class="prospect-conformity__step padding--8"
         >
-          <h2
+          <ConformityDocuments v-if="step.id === SUPPORTING_DOCS_STEP_ID" />
+          <section
+            v-else
+            :id="`step-${step.id}`"
             class="
-              prospect-conformity__step-title
-              font-size--21
-              font-semibold
-              margin--0
-              margin-bottom--3
+              prospect-conformity__step
+              flex
+              flex--direction-column
+              padding--8
             "
           >
-            {{ step.label }}
-          </h2>
-          <p
-            class="
-              prospect-conformity__step-description
-              font-size--14
-              margin--0
-            "
-          >
-            Ceci est l'écran de l'étape « {{ step.label }} ».<br>
-            Cliquez sur une étape dans le tracker à gauche pour naviguer ici.
-          </p>
-        </section>
+            <h2
+              class="
+                prospect-conformity__step-title
+                font-size--21
+                font-semibold
+                margin--0
+                margin-bottom--3
+              "
+            >
+              {{ step.label }}
+            </h2>
+            <p
+              class="
+                prospect-conformity__step-description
+                font-size--14
+                margin--0
+              "
+            >
+              Ceci est l'écran de l'étape « {{ step.label }} ».<br>
+              Cliquez sur une étape dans le tracker à gauche pour naviguer ici.
+            </p>
+          </section>
+        </template>
       </div>
     </div>
     <div
@@ -112,6 +122,7 @@ import {
   PCompletionTrackerListItem,
   PEntityHeader,
 } from '@pulse/styleguide/components'
+import ConformityDocuments from './conformity-documents/conformity-documents.vue'
 import { useProspectConformity } from './prospect-conformity.composable'
 import {
   PROSPECT_CONFORMITY_DESCRIPTION,
@@ -119,6 +130,7 @@ import {
   PROSPECT_CONFORMITY_SECTION_TITLES,
   PROSPECT_CONFORMITY_STEPS,
   PROSPECT_CONFORMITY_TITLE,
+  SUPPORTING_DOCS_STEP_ID,
 } from './prospect-conformity.consts'
 
 const { currentEntity } = storeToRefs(useCurrentEntityStore())

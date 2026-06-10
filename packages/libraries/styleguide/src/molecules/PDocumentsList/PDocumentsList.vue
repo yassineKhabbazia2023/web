@@ -5,6 +5,7 @@
     pRowKey="documentId"
   >
     <PTableColumn
+      v-if="isColumnVisible('name')"
       pLabel="Nom du document"
       pProp="documentName"
       pSortable
@@ -34,13 +35,23 @@
     </PTableColumn>
 
     <PTableColumn
+      v-if="isColumnVisible('depositedBy')"
+      pLabel="Déposé par"
+      pProp="documentDepositedBy"
+      pSortable
+    />
+
+    <PTableColumn
+      v-if="isColumnVisible('depositDate')"
       pLabel="Déposé le"
       pProp="documentDepositDate"
+      pWidth="100"
       pSortable
       :pSortMethod="sortByDepositDate"
     />
 
     <PTableColumn
+      v-if="isColumnVisible('options')"
       pLabel="Options"
       pAlign="right"
       pWidth="160"
@@ -83,11 +94,16 @@ import PTableColumn from '../../atoms/PTableColumn'
 import PIcon from '../../atoms/PIcon'
 import PButton from '../../atoms/PButton'
 import { getIconName } from '../../utils/fileExtension'
-import type { DocumentsListItem, PDocumentsListProps } from './PDocumentsListTypes'
+import { PDOCUMENTS_LIST_DEFAULT_COLUMNS } from './PDocumentsListTypes'
+import type { DocumentsListItem, PDocumentsListColumn, PDocumentsListProps } from './PDocumentsListTypes'
 
-withDefaults(defineProps<PDocumentsListProps>(), {
+const props = withDefaults(defineProps<PDocumentsListProps>(), {
   pStripe: false,
+  pVisibleColumns: () => PDOCUMENTS_LIST_DEFAULT_COLUMNS,
 })
+
+const isColumnVisible = (column: PDocumentsListColumn): boolean =>
+  props.pVisibleColumns.includes(column)
 
 const emit = defineEmits<{
   download: [documentId: string]

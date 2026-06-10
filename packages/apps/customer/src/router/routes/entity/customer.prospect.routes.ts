@@ -28,6 +28,12 @@ export const prospectCustomerRoutes: RouteRecordRaw[] = [
         name: CUSTOMER_ROUTES.entity.prospect.conformity.name,
         component: () => import('@pulse/entities/entity-pages').then(pages => pages.Conformity),
       },
+      // DOCUMENTS
+      {
+        path: CUSTOMER_ROUTES.entity.prospect.documents.path,
+        name: CUSTOMER_ROUTES.entity.prospect.documents.name,
+        component: () => import('@pulse/entities/entity-pages').then(pages => pages.ProspectDocuments),
+      },
       // PROSPECT OVERVIEW
       {
         path: CUSTOMER_ROUTES.entity.prospect.overview.root.path,

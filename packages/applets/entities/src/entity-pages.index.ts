@@ -13,5 +13,6 @@ export { default as ProspectRoot } from './modules/entity/prospect/prospect.root
 export { default as Conformity } from './modules/entity/prospect/conformity/prospect.conformity.vue'
 export { default as ProspectOverview } from './modules/entity/prospect/overview/prospect-overview.page.vue'
 export { default as ProspectUsers } from './modules/entity/prospect/users/prospect-users.page.vue'
+export { default as ProspectDocuments } from './modules/entity/prospect/documents/prospect-documents.page.vue'
 export { default as ProspectCollaborators } from './modules/entity/prospect/collaborators/prospect-collaborators.page.vue'
 export { default as ProspectInformation } from './modules/entity/prospect/information/prospect-information.page.vue'

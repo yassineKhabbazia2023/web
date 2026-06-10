@@ -4,7 +4,7 @@ import PTable from '../../atoms/PTable'
 import PTableColumn from '../../atoms/PTableColumn'
 import PButton from '../../atoms/PButton'
 import PIcon from '../../atoms/PIcon'
-import type { DocumentsListItem } from './PDocumentsListTypes'
+import type { DocumentsListItem, PDocumentsListProps } from './PDocumentsListTypes'
 
 const baseData: DocumentsListItem[] = [
   {
@@ -24,7 +24,7 @@ const baseData: DocumentsListItem[] = [
   },
 ]
 
-const createWrapper = (props: Partial<{ pData: DocumentsListItem[], pStripe: boolean }> = {}) =>
+const createWrapper = (props: Partial<PDocumentsListProps> = {}) =>
   mount(PDocumentsList, {
     props: {
       pData: baseData,
@@ -64,14 +64,24 @@ describe('PDocumentsList', () => {
       expect(table.props('pRowKey')).toBe('documentId')
     })
 
-    it('renders three columns: name, deposit date and options', () => {
+    it('renders four columns by default: name, deposited by, deposit date and options', () => {
       const wrapper = createWrapper()
       const columns = wrapper.findAllComponents(PTableColumn)
 
-      expect(columns).toHaveLength(3)
+      expect(columns).toHaveLength(4)
+      expect(columns[0].props('pLabel')).toBe('Nom du document')
+      expect(columns[1].props('pLabel')).toBe('Déposé par')
+      expect(columns[2].props('pLabel')).toBe('Déposé le')
+      expect(columns[3].props('pLabel')).toBe('Options')
+    })
+
+    it('renders only the visible columns when pVisibleColumns is provided', () => {
+      const wrapper = createWrapper({ pVisibleColumns: ['name', 'depositDate'] })
+      const columns = wrapper.findAllComponents(PTableColumn)
+
+      expect(columns).toHaveLength(2)
       expect(columns[0].props('pLabel')).toBe('Nom du document')
       expect(columns[1].props('pLabel')).toBe('Déposé le')
-      expect(columns[2].props('pLabel')).toBe('Options')
     })
 
     it('renders the document name with the matching extension icon', () => {

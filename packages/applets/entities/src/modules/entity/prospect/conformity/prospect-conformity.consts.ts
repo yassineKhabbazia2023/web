@@ -1,6 +1,8 @@
 import { ProspectConformitySection } from './prospect-conformity.enums'
 import type { ProspectConformityItem } from './prospect-conformity.types'
 
+export const SUPPORTING_DOCS_STEP_ID = 'supporting-docs'
+
 export const PROSPECT_CONFORMITY_TITLE = 'Étapes'
 
 export const PROSPECT_CONFORMITY_DESCRIPTION = 'Cet espace vous permet de suivre simplement votre accompagnement, de compléter les informations nécessaires et d\'avancer étape par étape avec votre expert.'
@@ -19,8 +21,7 @@ export const PROSPECT_CONFORMITY_SECTION_TITLES: Record<ProspectConformitySectio
 
 export const PROSPECT_CONFORMITY_STEPS: readonly ProspectConformityItem[] = [
   { id: 'director-info', label: 'Informations dirigeants', status: 'incomplete', section: ProspectConformitySection.Bases },
-  { id: 'entity-info', label: 'Information entité', status: 'completed', section: ProspectConformitySection.Bases },
-  { id: 'supporting-docs', label: 'Documents justificatifs', status: 'incomplete', section: ProspectConformitySection.Documents },
+  { id: SUPPORTING_DOCS_STEP_ID, label: 'Documents justificatifs', status: 'incomplete', section: ProspectConformitySection.Documents },
   { id: 'commercial-proposal', label: 'Proposition commerciale', status: 'incomplete', section: ProspectConformitySection.Documents },
   { id: 'sepa', label: 'Mandat SEPA', status: 'incomplete', section: ProspectConformitySection.Documents },
   { id: 'mission-letter', label: 'Lettre de mission', status: 'incomplete', section: ProspectConformitySection.Relation },

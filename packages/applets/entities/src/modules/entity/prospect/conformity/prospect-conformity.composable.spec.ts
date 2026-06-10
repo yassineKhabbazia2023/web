@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { withSetup } from '@pulse/toolbox/utils/test'
 import { useProspectConformity } from './prospect-conformity.composable'
 
-const KNOWN_STEP_ID = 'entity-info'
+const KNOWN_STEP_ID = 'commercial-proposal'
 const OTHER_STEP_ID = 'supporting-docs'
 const FIRST_STEP_ID = 'director-info'
 const LAST_STEP_ID = 'mission-letter'
