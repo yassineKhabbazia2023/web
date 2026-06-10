@@ -130,7 +130,7 @@ export const validationRules = {
         callback()
       }
     },
-    trigger: 'change',
+    trigger: 'blur',
   }),
 
   /**

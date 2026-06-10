@@ -439,6 +439,12 @@ describe('validators', () => {
         }
       })
     })
+
+    it('should use blur trigger', () => {
+      const rule = validationRules.phoneNumber('Invalid phone')
+
+      expect(rule.trigger).toBe('blur')
+    })
   })
 
   describe('custom', () => {
