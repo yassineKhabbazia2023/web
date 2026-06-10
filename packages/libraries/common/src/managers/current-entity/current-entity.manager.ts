@@ -1,5 +1,6 @@
 import type { EntitySummary } from '@pulse/common/types'
 import { useCurrentEntityStore } from '@pulse/common/stores'
+import { AccountType } from '@pulse/common/enums'
 import { logger } from '@pulse/toolbox'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
 import { useInvoicesAccessStore } from '../../stores/invoices-access/invoices-access.store'
@@ -24,6 +25,12 @@ export class CurrentEntityManager {
 
   static async fetchInvoicesAccess(entity: EntitySummary) {
     const invoicesAccessStore = useInvoicesAccessStore()
+
+    // Prospect entities have no invoicing folder
+    if (entity.accountType === AccountType.PROSPECT) {
+      invoicesAccessStore.reset()
+      return
+    }
 
     try {
       const accessData = await InvoicesAccessService.fetchInvoicesAccess(entity.accountId)

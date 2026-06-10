@@ -1,4 +1,5 @@
 import { getMockedEntitySummary, getPermissionsMock, getInvoicesAccessResponseMock, LocalStorageMock } from '../../__mocks__'
+import { AccountType } from '../../enums/account-type.enum'
 import { getStoreMock, permissionServiceMock, fetchUserAccountPermissionsMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '../../stores/current-entity/current-entity.store'
 import { usePermissionsStore } from '../../stores/permissions/permissions.store'
@@ -47,6 +48,18 @@ describe('test current-entity.manager', () => {
 
       expect(vi.mocked(InvoicesAccessService.fetchInvoicesAccess)).toHaveBeenCalledExactlyOnceWith(entityMock.accountId)
       expect(invoicesAccessStoreMock.setAccessData).toHaveBeenCalledExactlyOnceWith(accessMock)
+    })
+
+    it('should not fetch invoices access for a prospect entity', async () => {
+      const permissionsMock = getPermissionsMock()
+      const entityMock = getMockedEntitySummary({ accountType: AccountType.PROSPECT })
+
+      fetchUserAccountPermissionsMock.mockResolvedValueOnce(permissionsMock)
+
+      await CurrentEntityManager.initializeCurrentEntity(entityMock)
+
+      expect(vi.mocked(InvoicesAccessService.fetchInvoicesAccess)).not.toHaveBeenCalled()
+      expect(invoicesAccessStoreMock.reset).toHaveBeenCalledOnce()
     })
 
     it('should set access data to null when fetchInvoicesAccess fails', async () => {
