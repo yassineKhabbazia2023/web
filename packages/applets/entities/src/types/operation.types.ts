@@ -10,4 +10,6 @@ export interface Operation {
   lastName?: string
   accountNumber: string
   legalName?: string
+  isSignatory: boolean
+  mobilePhone?: string
 }

@@ -13,6 +13,8 @@ export const getMockedOperations = (): Operation[] => {
       status: 'APPROVED',
       creationDate: '2024-03-21T11:18:23.9366667',
       legalName: 'Entity Test',
+      isSignatory: true,
+      mobilePhone: '0512124423',
     },
     {
       operationId: 2,
@@ -24,6 +26,7 @@ export const getMockedOperations = (): Operation[] => {
       status: 'PENDING',
       creationDate: '2024-01-26T11:18:23.9366667',
       legalName: 'Entity Test',
+      isSignatory: true,
     },
     {
       operationId: 3,
@@ -35,6 +38,8 @@ export const getMockedOperations = (): Operation[] => {
       status: 'REJECTED',
       creationDate: '2024-05-26T11:18:23.9366667',
       legalName: 'account1',
+      isSignatory: false,
+      mobilePhone: '0612345678',
     },
     {
       operationId: 4,
@@ -46,6 +51,7 @@ export const getMockedOperations = (): Operation[] => {
       status: 'REJECTED',
       creationDate: '2024-06-26T11:18:23.9366667',
       legalName: 'account1',
+      isSignatory: false,
     },
     {
       operationId: 5,
@@ -57,6 +63,8 @@ export const getMockedOperations = (): Operation[] => {
       status: 'PENDING',
       creationDate: '2024-04-11T11:18:23.9366667',
       legalName: 'account1',
+      isSignatory: true,
+      mobilePhone: '0512124423',
     },
     {
       operationId: 6,
@@ -68,6 +76,7 @@ export const getMockedOperations = (): Operation[] => {
       status: 'APPROVED',
       creationDate: '2024-03-20T11:18:23.9366667',
       legalName: 'account1',
+      isSignatory: false,
     },
   ]
 }

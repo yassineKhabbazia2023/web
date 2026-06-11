@@ -8,36 +8,70 @@
     <PTableColumn
       pProp="email"
       :pLabel="t('user')"
+      :pMinWidth="240"
       pSortable
     >
       <template #default="scope">
         <div class="flex flex--align-items-center">
           <div class="margin-right--2">
-            <PDoubleText
-              pType="primary"
-              :pTitle="
-                getFullNameWithUppercaseLastName(scope.row.firstName, scope.row.lastName)
+            <PAvatar :pRole="AvatarRoles.COLLAB" pType="small">
+              {{ getInitials(scope.row.firstName, scope.row.lastName) }}
+            </PAvatar>
+          </div>
+          <div class="pending-operations-table__user">
+            <div>
+              {{ getFullNameWithUppercaseLastName(scope.row.firstName, scope.row.lastName) }}
+            </div>
+            <div
+              class="
+                pending-operations-table__user-contact
+                font-small
+                text-color--gray-500
               "
-              :pContent="scope.row.email"
-              :pDisabled="false"
-              :pSelected="false"
-              :pAvatarRole="AvatarRoles.COLLAB"
-              :pProfile="getInitials(scope.row.firstName, scope.row.lastName)"
-            />
+            >
+              <span class="pending-operations-table__user-email">{{ scope.row.email }}</span>
+              <span
+                v-if="isNotNullNorEmpty(scope.row.mobilePhone?.trim())"
+                data-testid="user-mobile-phone"
+              >
+                | {{ formatPhoneNumber(scope.row.mobilePhone) }}
+              </span>
+              <span
+                v-else
+                data-testid="user-missing-phone"
+              >
+                | <span class="text-color--red-800">{{ t('missingNumber') }}</span>
+              </span>
+            </div>
           </div>
         </div>
+      </template>
+    </PTableColumn>
+    <PTableColumn :pLabel="t('role')" :pMinWidth="110">
+      <template #default="scope">
+        <PTag
+          v-if="scope.row.isSignatory === true"
+          pColor="blue"
+          :pContent="t('signatory')"
+          data-testid="user-signatory-tag"
+        />
       </template>
     </PTableColumn>
     <PTableColumn
       pProp="creationDate"
       :pLabel="t('requestDate')"
+      :pMinWidth="150"
       pSortable
     >
       <template #default="scope">
         <p>{{ d(scope.row.creationDate) }}</p>
       </template>
     </PTableColumn>
-    <PTableColumn :pLabel="t('actions')" pAlign="right">
+    <PTableColumn
+      :pLabel="t('actions')"
+      :pMinWidth="90"
+      pAlign="right"
+    >
       <template #default="scope">
         <div class="flex flex--align-items-center">
           <PTooltip :pContent="t('refuseAccess')" :pHideAfter="0">
@@ -80,13 +114,16 @@ import { type DefineDateTimeFormat, useI18n } from 'vue-i18n'
 import {
   PTable,
   PIcon,
+  PTag,
   PButton,
   PTooltip,
-  PDoubleText,
+  PAvatar,
   PTableColumn,
 } from '@pulse/styleguide/components'
 import { AvatarRoles } from '@pulse/styleguide'
 import { getFullNameWithUppercaseLastName } from '@pulse/common/utils'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
+import { formatPhoneNumber } from '@pulse/toolbox/utils/string'
 import type { Operation } from '@entities/types'
 import { OperationStatus } from '@entities/enums'
 import { getInitials } from '@entities/helpers'
@@ -112,6 +149,9 @@ const { t, d } = useI18n({
   messages: {
     'en-US': {
       user: 'User',
+      role: 'Role',
+      signatory: 'Signatory',
+      missingNumber: 'Missing phone number',
       actions: 'Actions',
       requestDate: 'Request date',
       refuseAccess: 'Refuse access',
@@ -124,6 +164,9 @@ const { t, d } = useI18n({
     },
     'fr-FR': {
       user: 'Utilisateur',
+      role: 'Rôle',
+      signatory: 'Signataire',
+      missingNumber: 'Numéro de téléphone manquant',
       actions: 'Actions',
       requestDate: 'Date de la demande',
       refuseAccess: 'Refuser l\'accès',
@@ -143,4 +186,26 @@ defineEmits<{
   'approve-operation': [Operation]
 }>()
 </script>
+
+<style lang="scss" scoped>
+.pending-operations-table {
+  // Cells default to no-wrap; let the whole user block wrap instead so the
+  // name, email and phone always stay fully visible.
+  &__user {
+    white-space: normal;
+  }
+
+  // When narrow, the phone / "missing number" moves to the next line as a
+  // whole; the email itself only breaks as a last resort.
+  &__user-contact {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 4px;
+  }
+
+  &__user-email {
+    overflow-wrap: anywhere;
+  }
+}
+</style>
 
