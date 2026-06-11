@@ -237,7 +237,7 @@ function onClickScheduleAppointment() {
   appointmentsStore.openBookingAppointmentDrawer()
 
   BookingTrackingService.trackCustomerBookingFlowStarted()
-  BookingTrackingService.trackConfigurationOpened(BookingSourceEvent.HOME)
+  BookingTrackingService.trackBookingConsulted(BookingSourceEvent.HOME)
 }
 
 watch(activeTab, (newTab) => {

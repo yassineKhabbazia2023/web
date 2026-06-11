@@ -1,7 +1,8 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { BookingSourceEvent } from './booking-tracking.enum'
 
 export class BookingTrackingService {
-  static trackConfigurationOpened(source: string) {
+  static trackConfigurationOpened(source: BookingSourceEvent) {
     AmplitudeService.track('Booking Configuration View Started', {
       booking_configuration_start_source: source,
     })
@@ -36,9 +37,10 @@ export class BookingTrackingService {
     })
   }
 
-  static trackBookingConsulted() {
+  static trackBookingConsulted(location: BookingSourceEvent) {
     AmplitudeService.track('Feature consulted', {
       feature_name: 'rdv',
+      feature_consulted_localisation: location,
     })
   }
 
@@ -50,13 +52,13 @@ export class BookingTrackingService {
     AmplitudeService.track('Booking Appointment Started')
   }
 
-  static trackBookingMeetingConsulted(source: string) {
+  static trackBookingMeetingConsulted(source: BookingSourceEvent) {
     AmplitudeService.track('Booking Meeting Consulted', {
       booking_meeting_consulted_source: source,
     })
   }
 
-  static trackMeetingJoinRequested(source: string) {
+  static trackMeetingJoinRequested(source: BookingSourceEvent) {
     AmplitudeService.track('Booking Meeting Join Requested', {
       booking_meeting_join_source: source,
     })

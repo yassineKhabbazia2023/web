@@ -1,4 +1,5 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
+import { BookingSourceEvent } from './booking-tracking.enum'
 import { BookingTrackingService } from './booking-tracking.service'
 
 vi.mock('@pulse/common/services/amplitude')
@@ -6,7 +7,7 @@ vi.mock('@pulse/common/services/amplitude')
 describe('BookingTrackingService', () => {
   describe('trackConfigurationOpened', () => {
     it('should track Booking Configuration View Started event with source parameter', () => {
-      BookingTrackingService.trackConfigurationOpened('header')
+      BookingTrackingService.trackConfigurationOpened(BookingSourceEvent.HEADER)
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
         'Booking Configuration View Started',
         { booking_configuration_start_source: 'header' },
@@ -14,7 +15,7 @@ describe('BookingTrackingService', () => {
     })
 
     it('should track with home source', () => {
-      BookingTrackingService.trackConfigurationOpened('home')
+      BookingTrackingService.trackConfigurationOpened(BookingSourceEvent.HOME)
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
         'Booking Configuration View Started',
         { booking_configuration_start_source: 'home' },
@@ -114,10 +115,10 @@ describe('BookingTrackingService', () => {
 
   describe('trackBookingConsulted', () => {
     it('should track Feature consulted event with feature_name rdv', () => {
-      BookingTrackingService.trackBookingConsulted()
+      BookingTrackingService.trackBookingConsulted(BookingSourceEvent.HEADER)
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
         'Feature consulted',
-        { feature_name: 'rdv' },
+        { feature_name: 'rdv', feature_consulted_localisation: 'header' },
       )
     })
   })
@@ -142,20 +143,20 @@ describe('BookingTrackingService', () => {
 
   describe('trackBookingMeetingConsulted', () => {
     it('should track Booking Meeting Consulted event with source', () => {
-      BookingTrackingService.trackBookingMeetingConsulted('testSource')
+      BookingTrackingService.trackBookingMeetingConsulted(BookingSourceEvent.HOME)
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
         'Booking Meeting Consulted',
-        { booking_meeting_consulted_source: 'testSource' },
+        { booking_meeting_consulted_source: 'home' },
       )
     })
   })
 
   describe('trackMeetingJoinRequested', () => {
     it('should track Booking Meeting Join Requested event with source', () => {
-      BookingTrackingService.trackMeetingJoinRequested('testSource')
+      BookingTrackingService.trackMeetingJoinRequested(BookingSourceEvent.HOME)
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledWith(
         'Booking Meeting Join Requested',
-        { booking_meeting_join_source: 'testSource' },
+        { booking_meeting_join_source: 'home' },
       )
     })
   })

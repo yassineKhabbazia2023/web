@@ -87,7 +87,7 @@ function openAppointmentsDrawer() {
   appointmentsStore.openBookingAppointmentsListDrawer()
   appointmentsStore.fetchUpcomingAppointments()
 
-  BookingTrackingService.trackBookingConsulted()
+  BookingTrackingService.trackBookingConsulted(BookingSourceEvent.HEADER)
 }
 
 function onTakeAppointment() {
