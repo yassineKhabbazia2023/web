@@ -8,6 +8,8 @@ const defaultOfferActivationFilters: FilterOption<SubscriptionStatusCode>[] = [
   { pCode: SubscriptionStatusCode.PENNYLANE_TO_VERIFY, pContent: 'toVerify', pValue: 1, pColor: 'light-blue', pIconName: 'search', pDisabled: false },
   { pCode: SubscriptionStatusCode.PENNYLANE_CREATED, pContent: 'created', pValue: 2, pColor: 'purple', pIconName: 'arrowRepeat', pDisabled: false },
   { pCode: SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND, pContent: 'sendMandate', pValue: 0, pColor: 'tranquil', pIconName: 'arrowUp', pDisabled: false },
+  { pCode: SubscriptionStatusCode.PENNYLANE_TO_TRANSFER, pContent: 'toTransfer', pValue: 4, pColor: 'light-green', pIconName: 'arrowLeftRight', pDisabled: false },
+  { pCode: SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS, pContent: 'transferInProgress', pValue: 1, pColor: 'purple', pIconName: 'clockHistory', pDisabled: false },
 ]
 
 const defaultValidatedFilters: FilterOption<SubscriptionStatusCode>[] = [
@@ -94,6 +96,7 @@ describe('useSubscriptionStatusFilters', () => {
         SubscriptionStatusCode.PENNYLANE_CREATED,
         SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
         SubscriptionStatusCode.PENNYLANE_TO_TRANSFER,
+        SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS,
       ])
     })
   })

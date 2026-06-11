@@ -337,6 +337,21 @@ export const entitiesHandlers = [
     })
   }),
 
+  http.get('*/offer/api/subscription/stats', () => {
+    return HttpResponse.json({
+      statuses: {
+        pending: 1,
+        validated: 1,
+        'pennylane-to-transfer': 1,
+        'pennylane-transfer-in-progress': 1,
+      },
+    })
+  }),
+
+  http.put('*/offer/api/subscription/:subscriptionId/confirm-transfer', () => {
+    return HttpResponse.json({ success: true })
+  }),
+
   http.get('*/offer/api/subscriptions', () => {
     return HttpResponse.json(getSubscriptionsPaginatedResponse())
   }),

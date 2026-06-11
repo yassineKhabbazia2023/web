@@ -101,6 +101,7 @@
         <template #default="scope">
           <PToolbox
             trigger="click"
+            pPopperClass="subscriptions-table__actions-toolbox"
             :pElements="requestMenu(scope.row.status)"
             data-testid="subscription-actions-toolbox"
             @p-toolbox-item-clicked="($event: string) => onClickToolboxItem($event, scope.row)"
@@ -155,7 +156,7 @@ import type { StatusDetails, SubscriptionSearchCriteria } from './subscriptions-
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { useUserStore } from '@pulse/common/stores'
 import { type SubscriptionRequest, SubscriptionStatusCode } from '@entities/services/subscription/subscriptionTypes'
-import { fetchSubscriptionRequests, validateSubscriptionRequest } from '@entities/services/subscription'
+import { confirmSubscriptionTransfer, fetchSubscriptionRequests, validateSubscriptionRequest } from '@entities/services/subscription'
 import { getInitials } from '@entities/helpers'
 import NoResult from '@entities/components/NoResult'
 import SubscriptionsFilter from './components/SubscriptionsFilter'
@@ -192,6 +193,10 @@ const { t, d } = useI18n({
       pennylaneToVerify: 'To verify',
       pennylaneMandateToSend: 'Send mandate',
       pennylaneToTransfer: 'To transfer',
+      pennylaneTransferInProgress: 'Transfer in progress',
+      confirmTransferRequest: 'Confirm transfer request',
+      transferDeclarationSaved: 'The transfer declaration has been saved',
+      transferDeclarationNotSaved: 'The transfer declaration could not be saved',
       offerActivated: 'The offer has been activated',
       offerNotActivated: 'The offer could not be activated',
       on: 'on',
@@ -215,6 +220,10 @@ const { t, d } = useI18n({
       pennylaneToVerify: 'À vérifier',
       pennylaneMandateToSend: 'Envoyer le mandat',
       pennylaneToTransfer: 'À transférer',
+      pennylaneTransferInProgress: 'Transfert en cours',
+      confirmTransferRequest: 'Confirmer la demande de transfert',
+      transferDeclarationSaved: 'La déclaration de transfert a bien été enregistrée',
+      transferDeclarationNotSaved: 'La déclaration de transfert n\'a pas pu être enregistrée',
       offerActivated: 'L\'offre a été activée',
       offerNotActivated: 'L\'offre n\'a pas pu être activée',
       on: 'sur',
@@ -284,6 +293,15 @@ const requestMenu = (offerState: SubscriptionStatusCode): PToolboxItemProps[] =>
       pActionName: 'consult',
       pState: 'default',
     }]
+
+  if (offerState === SubscriptionStatusCode.PENNYLANE_TO_TRANSFER) {
+    menuItems.push({
+      pIconName: 'arrowLeftRight',
+      pValue: t('confirmTransferRequest'),
+      pActionName: 'confirm-transfer',
+      pState: 'default',
+    })
+  }
 
   if (offerState !== SubscriptionStatusCode.VALIDATED) {
     menuItems.push({
@@ -367,6 +385,8 @@ const getStatusDetails = (status: string): StatusDetails => {
       return { text: t('pennylaneMandateToSend'), color: 'tranquil', iconName: 'arrowUp' }
     case SubscriptionStatusCode.PENNYLANE_TO_TRANSFER:
       return { text: t('pennylaneToTransfer'), color: 'light-green', iconName: 'arrowLeftRight' }
+    case SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS:
+      return { text: t('pennylaneTransferInProgress'), color: 'purple', iconName: 'clockHistory' }
     default:
       return { text: status, color: 'info', iconName: 'infoCircle' }
   }
@@ -412,11 +432,27 @@ const validateSubscription = async (subscriptionId: number, offer: SubscriptionR
   isActionInProgress.value = false
 }
 
+const confirmTransferRequest = async (subscriptionId: number) => {
+  isActionInProgress.value = true
+  clickedRow.value = subscriptionId
+  try {
+    await confirmSubscriptionTransfer(subscriptionId)
+    displayNotification('success', t('transferDeclarationSaved'))
+    await fetchSubscriptions()
+  } catch {
+    displayNotification('error', t('transferDeclarationNotSaved'))
+  } finally {
+    isActionInProgress.value = false
+  }
+}
+
 const onClickToolboxItem = async (action: string, row: Pick<SubscriptionRequest, 'subscriptionId' | 'offer' | 'status'>) => {
   const { subscriptionId, offer, status } = row
 
   if (action === 'consult') {
     emit('consult', subscriptionId)
+  } else if (action === 'confirm-transfer') {
+    await confirmTransferRequest(subscriptionId)
   } else if (action === 'validate') {
     await validateSubscription(subscriptionId, offer, getStatusDetails(status).text)
   }
@@ -446,8 +482,13 @@ defineExpose({
 })
 </script>
 
-<style scoped>
+<style>
 .subscriptions-table__search {
   width: 500px;
+}
+
+.subscriptions-table__actions-toolbox .p-toolbox-item__text {
+  width: auto;
+  white-space: nowrap;
 }
 </style>

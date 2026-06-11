@@ -5,6 +5,7 @@ import { SubscriptionStatusCode } from './subscriptionTypes'
 import {
   fetchSubscriptionRequests,
   validateSubscriptionRequest,
+  confirmSubscriptionTransfer,
   createSubscriptionRequest,
   fetchAccountSubscriptions,
   fetchSubscriptionStats,
@@ -123,6 +124,24 @@ describe('subscriptionService', () => {
         1,
         `${API_PREFIXES.OFFER}/subscription/1?validator=test@test.fr`,
       )
+    })
+  })
+
+  describe('confirmSubscriptionTransfer', () => {
+    it('should call subscription.put()', async () => {
+      const subscriptionId = 1
+      await confirmSubscriptionTransfer(subscriptionId)
+      expect(subscriptionPutMock).toHaveBeenNthCalledWith(
+        1,
+        `${API_PREFIXES.OFFER}/subscription/1/confirm-transfer`,
+      )
+    })
+
+    it('should throw when subscription.put() fails', async () => {
+      const error = new Error('fail')
+      subscriptionPutMock.mockRejectedValueOnce(error)
+
+      await expect(confirmSubscriptionTransfer(1)).rejects.toThrow(error)
     })
   })
 

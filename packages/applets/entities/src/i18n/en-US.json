@@ -130,7 +130,8 @@
         "created": "Created",
         "validated": "Validated",
         "sendMandate": "Send mandate",
-        "toTransfer": "To transfer"
+        "toTransfer": "To transfer",
+        "transferInProgress": "Transfer in progress"
       }
     },
     "permanentDelegations": {

@@ -13,6 +13,7 @@ export class SubscriptionStatusFiltersManager {
       SubscriptionStatusCode.PENNYLANE_CREATED,
       SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
       SubscriptionStatusCode.PENNYLANE_TO_TRANSFER,
+      SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS,
     ]
   }
 
@@ -58,6 +59,14 @@ export class SubscriptionStatusFiltersManager {
         pValue: stats.statuses[SubscriptionStatusCode.PENNYLANE_TO_TRANSFER] ?? 0,
         pColor: SUBSCRIPTION_STATUS_COLOR[SubscriptionStatusCode.PENNYLANE_TO_TRANSFER],
         pIconName: SUBSCRIPTION_STATUS_ICON[SubscriptionStatusCode.PENNYLANE_TO_TRANSFER],
+        pDisabled: false,
+      },
+      {
+        pContent: i18n.global.t('entities.wallet.subscriptionStatusFilters.transferInProgress'),
+        pCode: SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS,
+        pValue: stats.statuses[SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS] ?? 0,
+        pColor: SUBSCRIPTION_STATUS_COLOR[SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS],
+        pIconName: SUBSCRIPTION_STATUS_ICON[SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS],
         pDisabled: false,
       },
     ]

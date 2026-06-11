@@ -10,6 +10,7 @@ export enum SubscriptionStatusCode {
   PENNYLANE_TO_VERIFY = 'pennylane-to-verify',
   PENNYLANE_MANDATE_TO_SEND = 'pennylane-mandate-to-send',
   PENNYLANE_TO_TRANSFER = 'pennylane-to-transfer',
+  PENNYLANE_TRANSFER_IN_PROGRESS = 'pennylane-transfer-in-progress',
 }
 
 export interface Account {

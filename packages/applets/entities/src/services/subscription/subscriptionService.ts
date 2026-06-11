@@ -71,6 +71,19 @@ export async function validateSubscriptionRequest(
   }
 }
 
+export async function confirmSubscriptionTransfer(
+  subscriptionId: number,
+): Promise<void> {
+  try {
+    await api.gateway.put(
+      `${API_PREFIXES.OFFER}/subscription/${subscriptionId}/confirm-transfer`,
+    )
+  } catch (error) {
+    handleRequestError('confirming subscription transfer', error)
+    throw error
+  }
+}
+
 export async function createSubscriptionRequest(
   request: PostSubscriptionRequest,
 ) {

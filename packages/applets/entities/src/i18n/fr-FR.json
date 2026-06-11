@@ -130,7 +130,8 @@
         "created": "Modifier le plan",
         "validated": "Validée",
         "sendMandate": "Envoyer le mandat",
-        "toTransfer": "À transférer"
+        "toTransfer": "À transférer",
+        "transferInProgress": "Transfert en cours"
       }
     },
     "permanentDelegations": {

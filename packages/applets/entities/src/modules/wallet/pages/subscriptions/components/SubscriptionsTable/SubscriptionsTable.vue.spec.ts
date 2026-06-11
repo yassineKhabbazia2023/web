@@ -19,9 +19,10 @@ const paginationResponseMock = getMockedSubscriptionPaginationResponse()
 const userStoreMock = getStoreMock(useUserStore)
 
 const { subscriptionId, offer, status } = subscriptionRequestMock[0]
-const { mockValidateSubscriptionRequest, mockFetchSubscriptionRequests } = vi.hoisted(() => ({
+const { mockValidateSubscriptionRequest, mockFetchSubscriptionRequests, mockConfirmSubscriptionTransfer } = vi.hoisted(() => ({
   mockValidateSubscriptionRequest: vi.fn(() => Promise.resolve()),
   mockFetchSubscriptionRequests: vi.fn(() => Promise.resolve(getMockedSubscriptionPaginationResponse())),
+  mockConfirmSubscriptionTransfer: vi.fn(() => Promise.resolve()),
 }))
 vi.mock('@entities/services/subscription', async () => {
   const actual = await vi.importActual('@entities/services/subscription')
@@ -29,6 +30,7 @@ vi.mock('@entities/services/subscription', async () => {
     ...(actual as object),
     validateSubscriptionRequest: mockValidateSubscriptionRequest,
     fetchSubscriptionRequests: mockFetchSubscriptionRequests,
+    confirmSubscriptionTransfer: mockConfirmSubscriptionTransfer,
   }
 })
 
@@ -57,6 +59,37 @@ const validatedRequestMenu = [
     pState: 'default',
   },
 ]
+
+const toTransferRequestMenu = [
+  {
+    pIconName: 'eye',
+    pValue: 'Consult',
+    pActionName: 'consult',
+    pState: 'default',
+  },
+  {
+    pIconName: 'arrowLeftRight',
+    pValue: 'Confirm transfer request',
+    pActionName: 'confirm-transfer',
+    pState: 'default',
+  },
+  {
+    pIconName: 'check',
+    pValue: 'Validate request',
+    pActionName: 'validate',
+    pState: 'default',
+  },
+]
+
+const toTransferSubscriptionRequestMock = {
+  ...subscriptionRequestMock[0],
+  status: SubscriptionStatusCode.PENNYLANE_TO_TRANSFER,
+}
+
+const transferInProgressSubscriptionRequestMock = {
+  ...subscriptionRequestMock[0],
+  status: SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS,
+}
 
 const pTableColumnsLabel: { [key: number]: string } = {
   0: 'Legal name',
@@ -164,6 +197,51 @@ describe('subscriptionsTable', () => {
     expect(pToolboxes.at(-1)?.props('pElements')).toStrictEqual(validatedRequestMenu)
   })
 
+  it('should display the confirm transfer toolbox item for subscriptions to transfer', async () => {
+    mockFetchSubscriptionRequests.mockResolvedValueOnce(
+      getMockedSubscriptionPaginationResponse({ items: [toTransferSubscriptionRequestMock] }),
+    )
+
+    wrapper = mount(SubscriptionsTable, {
+      props: {
+        activeStatusCodes: defaultActiveStatusCodes,
+      },
+      global: {
+        stubs: defaultStubs,
+      },
+    })
+    await wrapper.vm.handleOfferFiltered()
+    await flushPromises()
+
+    const pToolboxes = wrapper.findAllComponents({ name: 'PToolbox' })
+
+    expect(pToolboxes.at(-1)?.props('pElements')).toStrictEqual(toTransferRequestMenu)
+  })
+
+  it('should display the transfer in progress status with the expected icon', async () => {
+    mockFetchSubscriptionRequests.mockResolvedValueOnce(
+      getMockedSubscriptionPaginationResponse({ items: [transferInProgressSubscriptionRequestMock] }),
+    )
+
+    wrapper = mount(SubscriptionsTable, {
+      props: {
+        activeStatusCodes: defaultActiveStatusCodes,
+      },
+      global: {
+        stubs: defaultStubs,
+      },
+    })
+    await wrapper.vm.handleOfferFiltered()
+    await flushPromises()
+
+    expect(wrapper.text()).toContain('Transfer in progress')
+    const transferInProgressTag = wrapper
+      .findAllComponents({ name: 'PTag' })
+      .find(tag => tag.props('pContent') === 'Transfer in progress')
+
+    expect(transferInProgressTag?.props('pIconLeftName')).toBe('clockHistory')
+  })
+
   it('should update searchCriteria offerCodes and reset page when offer filter is applied', async () => {
     wrapper.vm.offerTypeSelection = ['MEG Smart']
     wrapper.vm.handleOfferFiltered()
@@ -211,6 +289,49 @@ describe('subscriptionsTable', () => {
       onboarding_start_result: 'succeeded',
     })
     expect(spyDisplayNotification).toHaveBeenCalledOnce()
+  })
+
+  it("should send a request to confirm transfer when the 'Confirm transfer request' button is clicked", async () => {
+    mockConfirmSubscriptionTransfer.mockClear()
+    const spyDisplayNotification = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
+
+    wrapper = mount(SubscriptionsTable, {
+      props: { activeStatusCodes: defaultActiveStatusCodes },
+      global: { stubs: defaultStubs },
+    })
+    await wrapper.vm.handleOfferFiltered()
+    await flushPromises()
+
+    wrapper.vm.onClickToolboxItem('confirm-transfer', toTransferSubscriptionRequestMock)
+    await flushPromises()
+
+    expect(mockConfirmSubscriptionTransfer).toHaveBeenCalledExactlyOnceWith(
+      toTransferSubscriptionRequestMock.subscriptionId,
+    )
+    expect(spyDisplayNotification).toHaveBeenCalledExactlyOnceWith(
+      'success',
+      'The transfer declaration has been saved',
+    )
+  })
+
+  it('should display an error notification when transfer confirmation fails', async () => {
+    mockConfirmSubscriptionTransfer.mockRejectedValueOnce('API Error: 503 Service Unavailable')
+    const spyDisplayNotification = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
+
+    wrapper = mount(SubscriptionsTable, {
+      props: { activeStatusCodes: defaultActiveStatusCodes },
+      global: { stubs: defaultStubs },
+    })
+    await wrapper.vm.handleOfferFiltered()
+    await flushPromises()
+
+    wrapper.vm.onClickToolboxItem('confirm-transfer', toTransferSubscriptionRequestMock)
+    await flushPromises()
+
+    expect(spyDisplayNotification).toHaveBeenCalledExactlyOnceWith(
+      'error',
+      'The transfer declaration could not be saved',
+    )
   })
 
   it('should track the amplitude event and display an error notification if the demand validation fails', async () => {
