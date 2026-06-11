@@ -39,6 +39,7 @@ const activeStep = defineModel<number>('activeStep', { default: 0 })
 const { t } = useI18n()
 const selectedAccount = ref<SearchAccountItem | null>(null)
 const selectedCollaborators = ref<Collab[]>([])
+const initiallySelectedCollaborators = ref<Collab[]>([])
 
 const delegationStepItems = computed<PStepsItem[]>(() => [
   { pTitle: t('entities.requestDelegation.selectFolder') },
@@ -65,6 +66,7 @@ const canGoNext = computed(() => {
 function handleSelectAccount(account: SearchAccountItem) {
   selectedAccount.value = account
   selectedCollaborators.value = []
+  initiallySelectedCollaborators.value = []
 }
 
 function handleRemoveAccount() {
@@ -72,10 +74,15 @@ function handleRemoveAccount() {
 }
 
 function handleCollaboratorsSelected(collabs: Collab[]) {
+  if (initiallySelectedCollaborators.value.length === 0) {
+    initiallySelectedCollaborators.value = [...collabs]
+  }
   selectedCollaborators.value = collabs
 }
 
 defineExpose({
   canGoNext,
+  selectedCollaborators,
+  initiallySelectedCollaborators,
 })
 </script>

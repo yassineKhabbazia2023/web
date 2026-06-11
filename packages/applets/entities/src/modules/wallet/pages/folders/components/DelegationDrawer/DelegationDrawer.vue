@@ -141,6 +141,7 @@ import { logger } from '@pulse/toolbox'
 import { delegateAccounts, fetchPermanentDelegations } from '@entities/services/account'
 import type { AccountsDelegation, AccountsDelegationDetails, PermanentDelegationApiItem } from '@entities/services/account/account.type'
 import type { Contact } from '@entities/services/contact/contactTypes'
+import type { Collab } from '@entities/types'
 import { DelegationFlowType, DelegationTab } from '@entities/modules/wallet/enums'
 import type { DelegationDrawerProps } from './DelegationDrawerTypes'
 import type { DelegationDetails } from './models/Delegation'
@@ -185,7 +186,7 @@ const activeStep = ref<number>(0)
 const hasPennylaneAccess = ref(false)
 const delegationDetails = ref<DelegationDetails[]>([])
 const requestDelegationStep = ref<number>(0)
-const requestDelegationRef = useTemplateRef<{ canGoNext: boolean } | null>('requestDelegationRef')
+const requestDelegationRef = useTemplateRef<{ canGoNext: boolean; selectedCollaborators: Collab[]; initiallySelectedCollaborators: Collab[] | null } | null>('requestDelegationRef')
 
 const isDelegationDrawerOpened = computed({
   get() {
