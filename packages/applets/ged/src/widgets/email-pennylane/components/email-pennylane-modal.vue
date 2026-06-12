@@ -26,7 +26,7 @@
 
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { PDialog } from '@pulse/styleguide/components'
 import { EmailPennylaneModalProps } from '../types/email-pennylane-modal-props'
 import { useI18n } from 'vue-i18n'
@@ -53,13 +53,32 @@ const mailModalProps = defineProps<EmailPennylaneModalProps>()
 
 const mailToGedInformation = ref<ServiceMailToGedInformation[]>([])
 
-onMounted(async () => {
+async function loadMailToGedInformation() {
+  if (
+    mailModalProps.accountNumber === '' ||
+    mailModalProps.accountId === 0 ||
+    mailModalProps.entityServices.length === 0
+  ) {
+    mailToGedInformation.value = []
+    return
+  }
+
   mailToGedInformation.value = await fetchServicesMailToGedInformation(
     mailModalProps.accountNumber,
     mailModalProps.entityServices,
     mailModalProps.accountId,
   )
-})
+}
+
+watch(
+  () => [
+    mailModalProps.accountNumber,
+    mailModalProps.accountId,
+    mailModalProps.entityServices,
+  ] as const,
+  loadMailToGedInformation,
+  { immediate: true },
+)
 
 const emit = defineEmits([
   'update:isVisible',
