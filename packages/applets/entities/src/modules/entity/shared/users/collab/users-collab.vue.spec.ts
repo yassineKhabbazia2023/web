@@ -13,8 +13,10 @@ import { CurrentUserManagerMock, hasPermissionMock, getStoreMock } from '@pulse/
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { getPendingOperations } from '../utils/operations.utils'
 import { AccountType, RouteName, RouteParam } from '@pulse/common/enums'
+import { ACTION_PERMISSIONS } from '@pulse/common/constants'
 
 import UsersCollab from './users-collab.vue'
+import { updateSignatoryStatus } from '@entities/services/account'
 
 const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
@@ -47,6 +49,23 @@ const mockedAccount = getMockedAccount()
 
 vi.mock('@entities/services/registry', () => registryServiceMock)
 vi.mock('@entities/services/wallet')
+
+const apiMocks = vi.hoisted(() => ({
+  singleAccountSignatory: vi.fn(() => Promise.resolve([
+    mockedCustomersCollab[0],
+  ])),
+  multipleAccountSignatories: vi.fn(() => Promise.resolve([
+    mockedCustomersCollab[0],
+    mockedCustomersCollab[1],
+  ])),
+}))
+
+vi.mock('@entities/services/account', () => {
+  return {
+    updateSignatoryStatus: vi.fn(() => Promise.resolve({})),
+    getAccountSignatories: apiMocks.singleAccountSignatory,
+  }
+})
 
 const routeMock = vi.hoisted(() => ({
   name: '' as string,
@@ -119,6 +138,31 @@ const createWrapper = (): VueWrapper<any> =>
 
 let wrapper: VueWrapper<any>
 
+const addSignatoryToolboxItem: PToolboxItemProps = {
+  pIconName: 'patchCheck',
+  pValue: 'Designate as signatory',
+  pActionName: 'assignSignatory',
+  pState: 'default',
+}
+
+const removeSignatoryToolboxItemEnabled: PToolboxItemProps = {
+  pIconName: 'patchCheck',
+  pValue: 'Revoke signatory status',
+  pActionName: 'unassignSignatory',
+  pState: 'default',
+  disabled: false,
+  pContentTooltip: undefined,
+}
+
+const removeSignatoryToolboxItemDisabled: PToolboxItemProps = {
+  pIconName: 'patchCheck',
+  pValue: 'Revoke signatory status',
+  pActionName: 'unassignSignatory',
+  pState: 'default',
+  disabled: true,
+  pContentTooltip: 'A folder should have at least one signatory',
+}
+
 const modifyToolboxItem: PToolboxItemProps = {
   pIconName: 'pencilSquare',
   pValue: 'Change the rights',
@@ -151,6 +195,8 @@ describe('usersCollab', () => {
     // Reset account type to regular (prospect-specific tests override it)
     currentEntityStoreMock.currentAccountType = AccountType.REGULAR
     hasPermissionMock.mockReturnValue(false)
+    // Reset signatory mock to single signatory (some tests override it with multiple)
+    apiMocks.singleAccountSignatory.mockResolvedValue([mockedCustomersCollab[0]])
     wrapper = createWrapper()
     await flushPromises()
   })
@@ -245,11 +291,27 @@ describe('usersCollab', () => {
         .toHaveLength(expectedPendingOperations.length)
     })
 
+    it("should add user as account signatory when the 'Designate as signatory action is clicked", async () => {
+      await wrapper.vm.handleUserAction('assignSignatory', mockedUser)
+
+      expect(updateSignatoryStatus).toHaveBeenCalledWith(mockedAccount.accountId, mockedUser.contactId)
+    })
+
+    it("should remove account signatory when the 'Revoke signatory status'", async () => {
+      apiMocks.singleAccountSignatory.mockReturnValue(apiMocks.multipleAccountSignatories())
+      wrapper = createWrapper()
+      await flushPromises()
+      await wrapper.vm.handleUserAction('unassignSignatory', mockedUser)
+
+      expect(updateSignatoryStatus).toHaveBeenCalledWith(mockedAccount.accountId, mockedUser.contactId, false)
+    })
+
     it.each([
       {
         userThatCanBeAdded: mockedCustomersCollab[0],
         hasRemoveUserPermission: false,
         expectedItems: [
+          removeSignatoryToolboxItemDisabled,
           modifyToolboxItem,
         ],
       },
@@ -257,6 +319,7 @@ describe('usersCollab', () => {
         userThatCanBeAdded: mockedCustomersCollab[1],
         hasRemoveUserPermission: false,
         expectedItems: [
+          addSignatoryToolboxItem,
           modifyToolboxItem,
         ],
       },
@@ -264,6 +327,7 @@ describe('usersCollab', () => {
         userThatCanBeAdded: mockedCustomersCollab[1],
         hasRemoveUserPermission: true,
         expectedItems: [
+          addSignatoryToolboxItem,
           modifyToolboxItem,
           removeUserToolboxItem,
         ],
@@ -273,7 +337,9 @@ describe('usersCollab', () => {
       hasRemoveUserPermission,
       expectedItems,
     }) => {
-      hasPermissionMock.mockReturnValue(hasRemoveUserPermission)
+      hasPermissionMock.mockImplementation((permission) =>
+        permission === ACTION_PERMISSIONS.ASSIGN_SIGNATORY || hasRemoveUserPermission,
+      )
       const wrapper = createWrapper()
       await flushPromises()
       wrapper.vm.handleToolboxClick(userThatCanBeAdded)
@@ -285,18 +351,28 @@ describe('usersCollab', () => {
     it.each([
       {
         userToRemove: mockedCustomersCollab[0],
+        useMultipleSignatories: false,
         expectedItems: [
+          removeSignatoryToolboxItemDisabled,
           modifyToolboxItem,
         ],
       },
       {
         userToRemove: mockedCustomersCollab[1],
+        useMultipleSignatories: true,
         expectedItems: [
+          removeSignatoryToolboxItemEnabled,
           modifyToolboxItem,
         ],
       },
     ])('should build the toolbox items for the user to remove',
-      async ({ userToRemove, expectedItems }) => {
+      async ({ userToRemove, useMultipleSignatories, expectedItems }) => {
+        if (useMultipleSignatories) {
+          apiMocks.singleAccountSignatory.mockReturnValue(apiMocks.multipleAccountSignatories())
+        }
+        hasPermissionMock.mockImplementation((permission) =>
+          permission === ACTION_PERMISSIONS.ASSIGN_SIGNATORY,
+        )
         wrapper = createWrapper()
         await flushPromises()
 

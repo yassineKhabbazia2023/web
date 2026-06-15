@@ -106,6 +106,9 @@ export const ACTION_PERMISSIONS: Record<string, Permission[]> = {
     CustomerPermission.AJOUTER_UTILISATEUR,
     CollaboratorPermission.AJOUTER_UTILISATEUR,
   ],
+  ASSIGN_SIGNATORY: [
+    CollaboratorPermission.GERER_DOSSIERS,
+  ],
   COLLAB_REMOVE_USER: [
     CollaboratorPermission.RETIRER_UTILISATEUR_CLIENT_DOSSIER,
   ],
@@ -135,5 +138,8 @@ export const ACTION_PERMISSIONS: Record<string, Permission[]> = {
   ],
   MODIFY_RIGHTS_USER: [
     CustomerPermission.GERER_DROITS_UTILISATEURS,
+  ],
+  UNASSIGN_SIGNATORY: [
+    CollaboratorPermission.GERER_DOSSIERS,
   ],
 }
