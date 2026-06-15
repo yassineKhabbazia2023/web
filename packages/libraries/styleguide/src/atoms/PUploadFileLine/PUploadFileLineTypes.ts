@@ -8,6 +8,7 @@ export interface PUploadFileLineProps {
   pTitleButton?: string
   pFile: UploadFile | UploadRawFile
   pStatus: UploadStatus
+  pMessage?: string
   pColor?: 'persian' | 'white'
   pIsMultiLine?: boolean
 }

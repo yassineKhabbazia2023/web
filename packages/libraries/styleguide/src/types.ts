@@ -59,7 +59,7 @@ export * from './atoms/PTooltip/PTooltipTypes'
 export * from './atoms/PUpload/PUploadTypes'
 export * from './atoms/PUpload/PUpload.enums'
 export * from './atoms/PUploadFileLine/PUploadFileLineTypes'
-export * from './atoms/PUploadFileLine/PUploadFileLine.enums'
+export * from './constants/uploadStatus.const'
 export * from './atoms/PUserActionCard/p-user-action-card.types'
 export * from './atoms/PUserCard/PUserCardTypes'
 

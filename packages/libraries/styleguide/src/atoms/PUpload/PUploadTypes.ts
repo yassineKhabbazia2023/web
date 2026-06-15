@@ -17,6 +17,14 @@ export interface UploadProps {
   pAuthorizedFileFormat?: string
   pColorFileLine?: PUploadFileLineProps['pColor']
   pDeleteButtonTitle?: string
+  pRejectedFileMessage?: string
+  pMaxFileSize?: number
   pLabel?: string
   pInitialFiles?: UploadFile[]
+}
+
+export interface FileRejectionOptions {
+  accept: string | undefined
+  maxFileSizeInMo: number | undefined
+  rejectedFileMessage: string | undefined
 }

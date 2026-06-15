@@ -14,8 +14,8 @@
     :showFileList="displayedFileList"
     :drag="pDrag"
     :disabled="pDisabled"
-    :accept="pAccept"
     :action="pAction"
+    :onChange="handleFileChange"
   >
     <slot v-if="pUploadType === PUploadType.SLOT" />
     <div
@@ -49,10 +49,12 @@
         </span>
       </span>
     </div>
+    <!-- File-list variant: one line per file, shown below the drop zone (which stays visible). -->
     <template v-if="displayedFileList" #file="{ file }">
       <PUploadFileLine
         :pFile="file"
         :pStatus="file.status"
+        :pMessage="getRejectionMessage(file)"
         :pIconName="getIconName(file.name, 'filetypeNone')"
         pHasButton
         pButtonIconName="trash"
@@ -62,10 +64,12 @@
       />
     </template>
   </ElUpload>
+  <!-- Single-file variant: replaces the drop zone entirely (FILE_LINE mono mode, see isSingleFileUploaded). -->
   <PUploadFileLine
     v-else
     pIsMultiLine
-    pStatus="ready"
+    :pStatus="singleFileDisplayedStatus"
+    :pMessage="getRejectionMessage(files[0])"
     :pFile="files[0]"
     :pIconName="getIconName(files[0].name, 'filetypeNone')"
     pHasButton
@@ -79,10 +83,13 @@
 
 <script setup lang="ts">
 import { ElUpload, type UploadFile, type UploadRawFile } from 'element-plus'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
 import { getIconName } from '../../utils/fileExtension'
+import { getFileRejectionMessage } from './PUploadUtils'
 import PIcon from '../../atoms/PIcon'
 import PUploadFileLine from '../../atoms/PUploadFileLine'
+import { UploadFileStatus } from '../../constants/uploadStatus.const'
 import type { UploadProps } from './PUploadTypes'
 import { AppColors } from '../../utils/AppColorsEnum'
 import { PUploadType } from './PUpload.enums'
@@ -103,6 +110,7 @@ const props = withDefaults(defineProps<UploadProps>(), {
   pAction: '#',
   pShouldClearPreviousFilesListOnUpload: false,
   pDeleteButtonTitle: 'Supprimer le document',
+  pRejectedFileMessage: 'Extension non supportée',
 })
 
 const emit = defineEmits<{
@@ -122,6 +130,13 @@ const displayedFileList = computed(() =>
   props.pShowFileList === true && isSingleFileUploaded.value === false,
 )
 
+// Neutral `ready` look for accepted files, error look only when rejected.
+const singleFileDisplayedStatus = computed(() =>
+  files.value[0]?.status === UploadFileStatus.FAIL
+    ? UploadFileStatus.FAIL
+    : UploadFileStatus.READY,
+)
+
 const pClassMapper = computed(() => ({
   [`p-upload--type-${props.pUploadType}`]: true,
   'p-upload--disabled': props.pDisabled,
@@ -135,12 +150,47 @@ defineExpose({
   clearFiles,
 })
 
+// `pAccept` is set on the native input (file picker pre-filtering) rather than
+// passed to ElUpload's `accept` prop, which would also make the dragger silently
+// drop non-matching files — we want them to reach handleFileChange and show an error.
+watch([uploadElement, () => props.pAccept], () => {
+  const acceptValue = props.pAccept
+  if (uploadElement.value === null || isNullOrEmpty(acceptValue)) {
+    return
+  }
+  const nativeInputElement = (uploadElement.value.$el as HTMLElement).querySelector('input.el-upload__input')
+  nativeInputElement?.setAttribute('accept', acceptValue)
+})
+
+const buildRejectionOptions = () => ({
+  accept: props.pAccept,
+  maxFileSizeInMo: props.pMaxFileSize,
+  rejectedFileMessage: props.pRejectedFileMessage,
+})
+
+// Runs on every change: the fake httpRequest flips rejected files to `success`,
+// so re-marking them as failed on each onChange is required.
+const handleFileChange = (uploadFile: UploadFile) => {
+  if (getFileRejectionMessage(uploadFile, buildRejectionOptions()) !== undefined) {
+    uploadFile.status = UploadFileStatus.FAIL
+  }
+}
+
+// Error-line message for a failed file (extension or size reason).
+const getRejectionMessage = (file: UploadFile) =>
+  file.status === UploadFileStatus.FAIL
+    ? getFileRejectionMessage(file, buildRejectionOptions())
+    : undefined
+
 const emitFilesEvent = () => {
-  const filesToUpload = files.value.map((file) => file.raw as File)
+  const filesToUpload = files.value
+    .filter((file) => file.status !== UploadFileStatus.FAIL)
+    .map((file) => file.raw as File)
   return new Promise((resolve) => {
     resolve(emit('files-selected', filesToUpload))
     if (props.pShouldClearPreviousFilesListOnUpload) {
-      files.value = []
+      // Keep failed files: they were not emitted, so their error lines must stay.
+      files.value = files.value.filter((file) => file.status === UploadFileStatus.FAIL)
     }
   })
 }

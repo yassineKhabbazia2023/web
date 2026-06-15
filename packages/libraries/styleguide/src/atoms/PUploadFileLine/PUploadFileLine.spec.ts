@@ -93,6 +93,29 @@ describe('pUploadFileLine', () => {
       expect(icon.props('pName')).toBe(pButtonIconName)
     })
 
+    it('should display the message when pMessage is provided', () => {
+      const wrapper = createWrapper({
+        pMessage: 'Extension non supportée',
+      })
+
+      expect(wrapper.find('[data-testid="upload-fileline-message"]').text()).toBe('Extension non supportée')
+    })
+
+    it('should not display the message when pMessage is not provided', () => {
+      const wrapper = createWrapper()
+
+      expect(wrapper.find('[data-testid="upload-fileline-message"]').exists()).toBeFalsy()
+    })
+
+    it('should display the message in multi-line mode', () => {
+      const wrapper = createWrapper({
+        pIsMultiLine: true,
+        pMessage: 'Extension non supportée',
+      })
+
+      expect(wrapper.find('[data-testid="upload-fileline-message"]').text()).toBe('Extension non supportée')
+    })
+
     it('should load the component Loader when status is Uploading', () => {
       const wrapper = createWrapper({
         pStatus: 'uploading',
@@ -117,7 +140,7 @@ describe('pUploadFileLine', () => {
       expect(getMainIconNameMock).toHaveBeenCalledOnce()
       expect(getMainIconNameMock).toHaveBeenNthCalledWith(1, ...expectedParams)
       expect(wrapper.findComponent({ name: 'PLoader' }).exists()).toBeFalsy()
-      expect(wrapper.find('[data-testid="upload-fileline-action"]').exists()).toBeFalsy()
+      expect(wrapper.find('[data-testid="upload-fileline-action"]').exists()).toBeTruthy()
       expect(pIcon.exists()).toBeTruthy()
       expect(pIcon.props('pName')).toBe('exclamationTriangle')
     })

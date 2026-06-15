@@ -96,6 +96,28 @@ export const FileLineSingleFileUploaded: Story = {
   }),
 }
 
+export const FileLineSingleFileWithAcceptedExtensions: Story = {
+  render: () => ({
+    components: { PUpload },
+    setup() {
+      return { PUploadType }
+    },
+    template: `
+      <PUpload
+        pDrag
+        pShowFileList
+        :pUploadType="PUploadType.FILE_LINE"
+        pTextLimitSize="5MB"
+        pAccept=".jpg"
+        pPrefixLabelFileLine="Déposer le fichier ou"
+        pSuffixLabelFileLine="parcourir l'ordinateur"
+        pAuthorizedFileFormat="JPG"
+        pColorFileLine="persian"
+      />
+    `,
+  }),
+}
+
 export const FileLineWithLabel: Story = {
   render: () => ({
     components: { PUpload },
@@ -120,6 +142,29 @@ export const FileLineWithLabel: Story = {
   }),
 }
 
+export const DraggerWithMaxFileSize: Story = {
+  render: () => ({
+    components: { PUpload },
+    setup() {
+      return { PUploadType }
+    },
+    template: `
+      <PUpload
+        pMultiple
+        pDrag
+        pShowFileList
+        :pUploadType="PUploadType.DRAGGER"
+        pTextLimitSize="0,5 Mo"
+        :pMaxFileSize="0.5"
+        pPrefixLabelFileLine="Déposer le fichier ou"
+        pSuffixLabelFileLine="parcourir l'ordinateur"
+        pAuthorizedFileFormat="Tous formats"
+        pColorFileLine="persian"
+      />
+    `,
+  }),
+}
+
 export const Dragger: Story = {
   render: () => ({
     components: { PUpload },
@@ -139,6 +184,29 @@ export const Dragger: Story = {
         pAuthorizedFileFormat="JPEG, PNG, PDF ou XLS"
         pColorFileLine="persian"
         :pDisabled="uploadDisabled"
+      />
+    `,
+  }),
+}
+
+export const DraggerWithAcceptedExtensions: Story = {
+  render: () => ({
+    components: { PUpload },
+    setup() {
+      return { PUploadType }
+    },
+    template: `
+      <PUpload
+        pMultiple
+        pDrag
+        pShowFileList
+        :pUploadType="PUploadType.DRAGGER"
+        pTextLimitSize="1GB"
+        pAccept=".jpeg, .jpg, .png, .pdf, .xls"
+        pPrefixLabelFileLine="Déposer le fichier ou"
+        pSuffixLabelFileLine="parcourir l'ordinateur"
+        pAuthorizedFileFormat="JPEG, PNG, PDF ou XLS"
+        pColorFileLine="persian"
       />
     `,
   }),

@@ -25,7 +25,7 @@
       </PTooltip>
       <span class="flex flex-grow--0 flex--shrink-0">
         <PLoader
-          v-if="pStatus === PUploadFileLineStatus.UPLOADING"
+          v-if="pStatus === UploadFileStatus.UPLOADING"
           pSize="24"
           pType="no-color"
         />
@@ -40,12 +40,19 @@
       <p class="p-upload-file-line__title margin-top--2">
         {{ pFile.name }}
       </p>
+      <span
+        v-if="isNotNullNorEmpty(pMessage)"
+        class="p-upload-file-line__message"
+        data-testid="upload-fileline-message"
+      >
+        {{ pMessage }}
+      </span>
     </template>
     <template v-else>
       <div class="flex flex--align-items-center overflow-hidden padding-y--2">
         <span class="flex margin-right--2 flex-grow--0 flex--shrink-0">
           <PLoader
-            v-if="pStatus === PUploadFileLineStatus.UPLOADING"
+            v-if="pStatus === UploadFileStatus.UPLOADING"
             pSize="16"
             pType="no-color"
           />
@@ -60,6 +67,17 @@
         <p class="p-upload-file-line__title overflow-hidden">
           {{ pFile.name }}
         </p>
+        <span
+          v-if="isNotNullNorEmpty(pMessage)"
+          class="
+            p-upload-file-line__message
+            flex--shrink-0
+            margin-left--2
+          "
+          data-testid="upload-fileline-message"
+        >
+          {{ pMessage }}
+        </span>
       </div>
       <PTooltip
         v-if="isActionButtonVisible"
@@ -85,13 +103,14 @@
 
 <script lang="ts" setup>
 import { computed } from 'vue'
+import { isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import PButton from '../../atoms/PButton'
 import PLoader from '../../atoms/PLoader'
 import PTooltip from '../../atoms/PTooltip'
 import PIcon from '../../atoms/PIcon'
 import type { PUploadFileLineProps } from './PUploadFileLineTypes'
 import { getMainIconName } from './PUploadFileLineUtils'
-import { PUploadFileLineStatus } from './PUploadFileLine.enums'
+import { UploadFileStatus } from '../../constants/uploadStatus.const'
 import { type UploadFile, type UploadRawFile } from 'element-plus'
 
 const props = withDefaults(defineProps<PUploadFileLineProps>(), {
@@ -103,8 +122,7 @@ const isActionButtonVisible = computed(() =>
   props.pHasButton === true
   && props.pTitleButton !== undefined
   && props.pTitleButton !== ''
-  && props.pStatus !== PUploadFileLineStatus.UPLOADING
-  && props.pStatus !== PUploadFileLineStatus.FAIL,
+  && props.pStatus !== UploadFileStatus.UPLOADING,
 )
 
 const emit = defineEmits<{
@@ -176,6 +194,10 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
       #{$self}__icon {
         color: var(--p-icon-error);
       }
+
+      #{$self}__message {
+        color: var(--p-text-error);
+      }
     }
 
     &-success {
@@ -210,6 +232,12 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
 
   &__icon {
     color: var(--p-black-rock-900);
+  }
+
+  &__message {
+    white-space: nowrap;
+    font-size: 1.2rem;
+    color: var(--p-text-neutral);
   }
 
   :deep(.p-loader__icon) {
