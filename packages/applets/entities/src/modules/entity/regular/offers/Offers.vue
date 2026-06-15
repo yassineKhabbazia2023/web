@@ -36,7 +36,7 @@
     >
       <PTableColumn
         :pLabel="t('offer')"
-        pWidth="480px"
+        pWidth="540px"
       >
         <template #default="{ row: { offer: offerActivation } }">
           <div class="flex">
@@ -191,8 +191,11 @@ const isActivateOffersButtonVisible = computed(
 
 const getOfferNameWithPlan = (offer: SubscriptionRequest['offer']): string => {
   const selectedPlan = OfferPlanManager.getSelectedPlan(offer.plans)
+  const selectedPricing = OfferPlanManager.getSelectedPricing(offer.plans)
   if (selectedPlan !== undefined && offer.offerCode === SubscriptionOfferCode.PENNYLANE) {
-    return `${offer.offerName} : Plan ${selectedPlan.planName}`
+    return selectedPricing !== undefined
+      ? `${offer.offerName} : Plan ${selectedPlan.planName} - ${selectedPricing?.label}`
+      : `${offer.offerName} : Plan ${selectedPlan.planName}`
   }
   return offer.offerName
 }
