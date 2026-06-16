@@ -6,6 +6,9 @@ import { LoginService } from '@pulse/common/services/login'
 import { useLoginCollab } from './login-collab.composable'
 
 const mockRouterPush = vi.hoisted(() => vi.fn())
+const mockRoute = vi.hoisted(() => ({
+  query: {} as Record<string, string>,
+}))
 
 vi.mock('@pulse/common/services/login', () => ({
   LoginService: {
@@ -14,10 +17,16 @@ vi.mock('@pulse/common/services/login', () => ({
   },
 }))
 vi.mock('vue-router', () => ({
+  useRoute: () => mockRoute,
   useRouter: () => ({ push: mockRouterPush }),
 }))
 
 describe('useLoginCollab', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+    mockRoute.query = {}
+  })
+
   it('should complete the SSO redirect and navigate to landing when authentication succeeds', async () => {
     vi.mocked(LoginService.handleSsoRedirectResult).mockResolvedValue(true)
 
@@ -35,6 +44,16 @@ describe('useLoginCollab', () => {
     await flushPromises()
 
     expect(LoginService.handleSsoRedirectResult).toHaveBeenCalledOnce()
+    expect(mockRouterPush).not.toHaveBeenCalled()
+  })
+
+  it('should not complete the SSO redirect when the login page is shown after session expiration', async () => {
+    mockRoute.query = { sessionExpired: 'true' }
+
+    withSetup(() => useLoginCollab())
+    await flushPromises()
+
+    expect(LoginService.handleSsoRedirectResult).not.toHaveBeenCalled()
     expect(mockRouterPush).not.toHaveBeenCalled()
   })
 
