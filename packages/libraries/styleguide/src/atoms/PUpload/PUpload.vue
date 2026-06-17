@@ -25,13 +25,6 @@
         flex flex--align-items-center flex--justify-content-center
       "
     >
-      <PIcon
-        v-if="pUploadType === PUploadType.FILE_LINE"
-        :color="AppColors.JUNGLE_400"
-        size="16"
-        class="margin-right--2"
-        pName="upload"
-      />
       <span data-testid="upload-input-content">
         {{ pPrefixLabelFileLine }}
         <span
@@ -87,11 +80,9 @@ import { ref, computed, watch } from 'vue'
 import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
 import { getIconName } from '../../utils/fileExtension'
 import { getFileRejectionMessage } from './PUploadUtils'
-import PIcon from '../../atoms/PIcon'
 import PUploadFileLine from '../../atoms/PUploadFileLine'
 import { UploadFileStatus } from '../../constants/uploadStatus.const'
 import type { UploadProps } from './PUploadTypes'
-import { AppColors } from '../../utils/AppColorsEnum'
 import { PUploadType } from './PUpload.enums'
 
 defineOptions({ inheritAttrs: false })

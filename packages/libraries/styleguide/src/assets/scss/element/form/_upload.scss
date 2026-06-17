@@ -34,27 +34,8 @@ $upload: (
   }
 
   &--type {
-    &-file-line {
-      width: 100%;
-      .el-upload {
-        position: relative;
-        z-index: 1;
-        background: var(--p-white);
-
-        &:focus {
-          color: inherit;
-        }
-      }
-      .el-upload-dragger {
-        border-style: dashed;
-        border-radius: var(--el-border-radius-small);
-        text-align: left;
-
-        &.is-dragover {
-          border-width: 1px;
-        }
-      }
-    }
+    // file-line (single) and dragger (multi) share the same empty drop-zone look.
+    &-file-line,
     &-dragger {
       width: 100%;
       .el-upload {
@@ -67,13 +48,13 @@ $upload: (
         }
       }
       .el-upload-dragger {
-        padding: 2.8rem 3.2rem;
+        padding: 2.4rem 3.2rem;
         border-radius: var(--el-border-radius-base);
         border-color: var(--p-gray-300);
         text-align: left;
 
         &.is-dragover {
-          padding: 2.8rem 3.2rem;
+          padding: 2.4rem 3.2rem;
           border-width: 1px;
           border-color: var(--p-jungle-700);
           background: var(--p-tranquil-50);

@@ -4,49 +4,51 @@
     :class="pClassMapper"
   >
     <template v-if="pIsMultiLine">
-      <PTooltip
-        v-if="isActionButtonVisible"
-        :pContent="pTitleButton"
-        data-testid="upload-fileline-action"
-      >
-        <PButton
-          class="p-upload-file-line__delete"
-          data-testid="upload-fileline-action-button"
-          pIconOnly
-          pSize="small"
-          @click="handleClickFileAction"
+      <div class="p-upload-file-line__content">
+        <PTooltip
+          v-if="isActionButtonVisible"
+          :pContent="pTitleButton"
+          data-testid="upload-fileline-action"
         >
-          <PIcon
-            v-if="pButtonIconName"
-            :pName="pButtonIconName"
-            pSize="12"
+          <PButton
+            class="p-upload-file-line__delete"
+            data-testid="upload-fileline-action-button"
+            pIconOnly
+            pSize="small"
+            @click="handleClickFileAction"
+          >
+            <PIcon
+              v-if="pButtonIconName"
+              :pName="pButtonIconName"
+              pSize="14"
+            />
+          </PButton>
+        </PTooltip>
+        <span class="flex flex-grow--0 flex--shrink-0">
+          <PLoader
+            v-if="pStatus === UploadFileStatus.UPLOADING"
+            pSize="24"
+            pType="no-color"
           />
-        </PButton>
-      </PTooltip>
-      <span class="flex flex-grow--0 flex--shrink-0">
-        <PLoader
-          v-if="pStatus === UploadFileStatus.UPLOADING"
-          pSize="24"
-          pType="no-color"
-        />
-        <PIcon
-          v-else
-          class="p-upload-file-line__icon"
-          data-testid="upload-fileline-icon"
-          pSize="24"
-          :pName="mainIconName"
-        />
-      </span>
-      <p class="p-upload-file-line__title margin-top--2">
-        {{ pFile.name }}
-      </p>
-      <span
-        v-if="isNotNullNorEmpty(pMessage)"
-        class="p-upload-file-line__message"
-        data-testid="upload-fileline-message"
-      >
-        {{ pMessage }}
-      </span>
+          <PIcon
+            v-else
+            class="p-upload-file-line__icon"
+            data-testid="upload-fileline-icon"
+            pSize="24"
+            :pName="mainIconName"
+          />
+        </span>
+        <p class="p-upload-file-line__title">
+          {{ pFile.name }}
+        </p>
+        <span
+          v-if="isNotNullNorEmpty(pMessage)"
+          class="p-upload-file-line__message"
+          data-testid="upload-fileline-message"
+        >
+          {{ pMessage }}
+        </span>
+      </div>
     </template>
     <template v-else>
       <div class="flex flex--align-items-center overflow-hidden padding-y--2">
@@ -210,16 +212,35 @@ const mainIconName = computed(() => getMainIconName(props.pStatus, props.pIconNa
   }
 
   &--multi-line {
-    position: relative;
     flex-direction: column;
+    justify-content: center;
+    height: 8.4rem;
     padding: 1.2rem;
     border: 1px dashed var(--el-border-color);
     border-radius: var(--el-border-radius-small);
 
+    #{$self}__content {
+      position: relative;
+      display: flex;
+      flex: 1 0 0;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      width: 100%;
+      min-height: 0;
+    }
+
+    // Trash button anchored to the top-right of the content block, not the global block.
     #{$self}__delete {
       position: absolute;
       top: 0;
       right: 0;
+    }
+
+    #{$self}__title {
+      max-width: 100%;
+      overflow: hidden;
     }
   }
 
