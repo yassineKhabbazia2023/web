@@ -294,7 +294,7 @@ const requestMenu = (offerState: SubscriptionStatusCode): PToolboxItemProps[] =>
       pState: 'default',
     }]
 
-  if (offerState === SubscriptionStatusCode.PENNYLANE_TO_TRANSFER) {
+  if ([SubscriptionStatusCode.PENNYLANE_TO_TRANSFER, SubscriptionStatusCode.PENNYLANE_TO_VERIFY].includes(offerState)) {
     menuItems.push({
       pIconName: 'arrowLeftRight',
       pValue: t('confirmTransferRequest'),

@@ -86,6 +86,20 @@ const toTransferSubscriptionRequestMock = {
   status: SubscriptionStatusCode.PENNYLANE_TO_TRANSFER,
 }
 
+const toVerifySubscriptionRequestMock = {
+  ...subscriptionRequestMock[1],
+  status: SubscriptionStatusCode.PENNYLANE_TO_VERIFY,
+}
+
+const toTransferDataTest = [
+  {
+    request: toTransferSubscriptionRequestMock,
+  },
+  {
+    request: toVerifySubscriptionRequestMock,
+  },
+]
+
 const transferInProgressSubscriptionRequestMock = {
   ...subscriptionRequestMock[0],
   status: SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS,
@@ -197,9 +211,9 @@ describe('subscriptionsTable', () => {
     expect(pToolboxes.at(-1)?.props('pElements')).toStrictEqual(validatedRequestMenu)
   })
 
-  it('should display the confirm transfer toolbox item for subscriptions to transfer', async () => {
+  it.each(toTransferDataTest)('should display the confirm transfer toolbox item for subscriptions to transfer', async ({ request }) => {
     mockFetchSubscriptionRequests.mockResolvedValueOnce(
-      getMockedSubscriptionPaginationResponse({ items: [toTransferSubscriptionRequestMock] }),
+      getMockedSubscriptionPaginationResponse({ items: [request] }),
     )
 
     wrapper = mount(SubscriptionsTable, {
