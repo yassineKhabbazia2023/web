@@ -16,12 +16,37 @@
       class-name="cursor-pointer"
     >
       <template #default="{ row, column }">
-        <PIcon
+        <div
           v-if="column.property === 'name'"
-          :pName="row.iconName"
-          pSize="16"
-          class="margin-right--2"
-        />
+          class="flex flex--align-items-center overflow-hidden"
+        >
+          <PIcon
+            :pName="row.iconName"
+            pSize="16"
+            class="margin-right--2"
+          />
+          <div
+            class="
+              flex--grow-1
+              flex--shrink-1
+              overflow-hidden
+            "
+          >
+            <PTooltip
+              :pContent="row.name"
+            >
+              <div
+                class="
+                  overflow-hidden
+                  no-wrap
+                  text-overflow--ellipsis
+                "
+              >
+                {{ row.name }}
+              </div>
+            </PTooltip>
+          </div>
+        </div>
         <span
           v-if="column.property === 'updatedAt'"
         >
@@ -41,7 +66,7 @@
           </PButton>
         </PToolbox>
         <span
-          v-if="column.property !== 'updatedAt' && column.property !== 'actions'"
+          v-if="column.property !== 'name' && column.property !== 'updatedAt' && column.property !== 'actions'"
         >
           {{ row[column.property] }}
         </span>
@@ -56,16 +81,20 @@
           class="margin-right--3"
         />
         <div class="overflow-hidden">
-          <p
-            class="
-              font-bold
-              overflow-hidden
-              no-wrap
-              text-overflow--ellipsis
-            "
+          <PTooltip
+            :pContent="row.name"
           >
-            {{ row.name }}
-          </p>
+            <p
+              class="
+                font-bold
+                overflow-hidden
+                no-wrap
+                text-overflow--ellipsis
+              "
+            >
+              {{ row.name }}
+            </p>
+          </PTooltip>
           <p
             class="
               font-small
@@ -90,7 +119,7 @@
 import { useI18n } from 'vue-i18n'
 import { TableColumnCtx } from 'element-plus'
 import { logger } from '@pulse/toolbox'
-import { PResponsiveTable, PTableColumn, PIcon, PToolbox, PButton } from '@pulse/styleguide/components'
+import { PResponsiveTable, PTableColumn, PIcon, PToolbox, PButton, PTooltip } from '@pulse/styleguide/components'
 import type {
   PennylaneDocumentsTableFieldKeys,
   PennylaneDocumentsTableProps,
@@ -209,4 +238,3 @@ async function onToolboxItemClick(
   }
 }
 </script>
-
