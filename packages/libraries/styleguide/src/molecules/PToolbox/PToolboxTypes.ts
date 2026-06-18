@@ -8,6 +8,7 @@ export interface PToolboxProps {
     | 'bottom'
     | 'bottom-start'
     | 'bottom-end'
+  pTrigger?: 'hover' | 'click' | 'contextmenu'
   pElementsTestId?: string
   pPopperClass?: string
   pCoordinates?: Coordinates

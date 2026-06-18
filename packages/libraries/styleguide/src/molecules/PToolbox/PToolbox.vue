@@ -6,6 +6,7 @@
     :popperClass="`p-toolbox shadow--3 ${pPopperClass}`"
     :placement="pPlacement"
     :style="computedStyle"
+    :trigger="pTrigger"
     @visible-change="$emit('visible-change', $event)"
   >
     <slot />
@@ -41,6 +42,7 @@ import type { PToolboxProps } from './PToolboxTypes'
 const props = withDefaults(defineProps<PToolboxProps>(), {
   pElements: () => [],
   pPlacement: 'bottom-start',
+  pTrigger: 'hover',
   pCoordinates: undefined,
   pPopperClass: '',
 })

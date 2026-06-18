@@ -30,10 +30,12 @@
         <PToolbox
           v-if="column.property === 'actions'"
           :pElements="toolboxElements"
+          pTrigger="click"
           @p-toolbox-item-clicked="onToolboxItemClick($event, row)"
         >
           <PButton
             class="margin-left--1"
+            @click.stop
           >
             <PIcon pName="threeDots" />
           </PButton>

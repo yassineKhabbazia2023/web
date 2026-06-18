@@ -59,6 +59,15 @@ describe('PToolbox', () => {
       expect(wrapper.findComponent(ElDropdown).exists()).toBe(true)
     })
 
+    it('should forward trigger prop to dropdown', () => {
+      const localWrapper = createWrapper({
+        ...defaultProps,
+        pTrigger: 'click',
+      })
+
+      expect(localWrapper.findComponent(ElDropdown).props('trigger')).toBe('click')
+    })
+
     it('should update xAxisOffset when pCoordinates.x changes', async () => {
       const xAxisOffsetMock = ref(0)
 
