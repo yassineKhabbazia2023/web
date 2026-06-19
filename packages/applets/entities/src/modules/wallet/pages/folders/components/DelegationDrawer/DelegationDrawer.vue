@@ -170,6 +170,10 @@ const getDefaultTab = () => {
     return DelegationTab.DELEGATE_WALLET
   }
 
+  if (props.initialTab !== undefined) {
+    return props.initialTab
+  }
+
   if (shouldShowDelegationRequestTabs.value === false) {
     return DelegationTab.DELEGATE_WALLET
   }

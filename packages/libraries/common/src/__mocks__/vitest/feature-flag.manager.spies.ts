@@ -7,6 +7,7 @@ export const isMailToGedActivatedMock = vi.fn(() => false)
 export const isAmplitudeActivatedMock = vi.fn(() => false)
 export const isNotificationSettingsDrawerActivatedMock = vi.fn(() => false)
 export const isPennylaneAmendmentFlowActivatedMock = vi.fn(() => false)
+export const isManageWalletMenuActivatedMock = vi.fn(() => false)
 
 export const featureFlagManagerMock = {
   isFeedCenterActivated: isFeedCenterActivatedMock,
@@ -14,5 +15,6 @@ export const featureFlagManagerMock = {
   isAmplitudeActivated: isAmplitudeActivatedMock,
   isNotificationSettingsDrawerActivated: isNotificationSettingsDrawerActivatedMock,
   isPennylaneAmendmentFlowActivated: isPennylaneAmendmentFlowActivatedMock,
+  isManageWalletMenuActivated: isManageWalletMenuActivatedMock,
   isFeatureActivated: vi.fn((_featureFlag: Feature) => false),
 }

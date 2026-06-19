@@ -88,6 +88,23 @@ describe('FeatureFlagManager', () => {
       })
     })
 
+  describe('isManageWalletMenuActivated', () => {
+    it('should delegate to OpenFeatureService.getBooleanValue', () => {
+      vi.mocked(OpenFeatureService.getBooleanValue).mockReturnValue(true)
+
+      const result = FeatureFlagManager.isManageWalletMenuActivated()
+
+      expect(OpenFeatureService.getBooleanValue).toHaveBeenCalledWith(Feature.MANAGE_WALLET_MENU, false)
+      expect(result).toBe(true)
+    })
+
+    it('should return false when OpenFeatureService returns false', () => {
+      vi.mocked(OpenFeatureService.getBooleanValue).mockReturnValue(false)
+
+      expect(FeatureFlagManager.isManageWalletMenuActivated()).toBe(false)
+    })
+  })
+
   describe('isFeatureActivated with OpenFeature flag', () => {
     it('should delegate to OpenFeatureService.getBooleanValue for PROSPECT_EXPERIENCE', () => {
       vi.mocked(OpenFeatureService.getBooleanValue).mockReturnValue(true)

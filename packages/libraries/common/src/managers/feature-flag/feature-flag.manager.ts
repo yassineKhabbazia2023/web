@@ -8,6 +8,7 @@ export type EnvVars = Record<Feature, 'true' | 'false'>
 const OPEN_FEATURE_FLAGS = new Set<Feature>([
   Feature.DELEGATION_REQUEST_TABS,
   Feature.PROSPECT_EXPERIENCE,
+  Feature.MANAGE_WALLET_MENU,
 ])
 
 declare let window: {
@@ -79,5 +80,9 @@ export class FeatureFlagManager {
 
   static isDelegationRequestTabsActivated() {
     return FeatureFlagManager.isFeatureActivated(Feature.DELEGATION_REQUEST_TABS)
+  }
+
+  static isManageWalletMenuActivated() {
+    return FeatureFlagManager.isFeatureActivated(Feature.MANAGE_WALLET_MENU)
   }
 }

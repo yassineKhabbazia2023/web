@@ -25,22 +25,29 @@
           flex-gap--2
         "
       >
-        <PButton
-          v-if="hasEntityCreatorPermission"
-          pType="secondary"
-          pSize="small"
-          @click="onEntityCreatorDrawerOpen"
-        >
-          <PIcon class="el-button__icon--left" pName="plusLg" />
-          {{ t('createTestAccount') }}
-        </PButton>
-        <PButton
-          pType="secondary"
-          pSize="small"
-          @click="isDelegationDrawerOpened = true"
-        >
-          {{ t('delegation', selectedFolders.length) }}
-        </PButton>
+        <ManageWalletButton
+          v-if="isManageWalletMenuActivated"
+          :selectedFoldersCount="selectedFolders.length"
+          @action-selected="onWalletAction"
+        />
+        <template v-else>
+          <PButton
+            v-if="hasEntityCreatorPermission"
+            pType="secondary"
+            pSize="small"
+            @click="onEntityCreatorDrawerOpen"
+          >
+            <PIcon class="el-button__icon--left" pName="plusLg" />
+            {{ t('createTestAccount') }}
+          </PButton>
+          <PButton
+            pType="secondary"
+            pSize="small"
+            @click="isDelegationDrawerOpened = true"
+          >
+            {{ t('delegation', selectedFolders.length) }}
+          </PButton>
+        </template>
         <PButton
           v-if="hasManageAccess"
           :pDisabled="isManageAccessButtonDisabled"
@@ -73,6 +80,7 @@
         v-model="isDelegationDrawerOpened"
         :selectedFolders="selectedFolders"
         :numberOfFoldersInPortfolio="totalAccounts"
+        :initialTab="delegationInitialTab"
       />
     </div>
     <div class="account-deploy__filters flex flex--align-items-center margin-bottom--3">
@@ -210,7 +218,7 @@ import {
 import { useResponsive } from '@pulse/styleguide'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { CurrentUserManager } from '@pulse/common/managers'
+import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import type { Entity, SortingCriteria } from '@pulse/common/types'
 import { useRouter, useRoute, onBeforeRouteUpdate } from 'vue-router'
 import { storeToRefs } from 'pinia'
@@ -220,7 +228,7 @@ import OffersDrawer from '@entities/components/OffersDrawer'
 import { getPaginationLabel } from '@pulse/common/utils'
 import { ENTITY_STATUS_COLOR } from '@entities/constants'
 import { PAGE_SIZES, LARGE_PAGE_SIZES, MOBILE_PAGE_SIZES, ACTION_PERMISSIONS, GLOBAL_PERMISSIONS } from '@pulse/common/constants'
-import { EntityStatus } from '@entities/modules/wallet/enums'
+import { EntityStatus, DelegationTab, ManageWalletAction } from '@entities/modules/wallet/enums'
 import { fetchWalletData } from './FoldersUtils'
 import type {
   SearchCriteria,
@@ -232,6 +240,7 @@ import { useFolderSelection } from './folder-selection.composable'
 import Filters from '../../components/Filters'
 import RegularEntityList from '../../components/entities-list/regular-entity/regular-entity.list.vue'
 import DelegationDrawer from './components/DelegationDrawer'
+import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
 import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
@@ -372,6 +381,22 @@ const clearAllAccountFilters = () => {
 
 // delegation part
 const isDelegationDrawerOpened = ref(false)
+const delegationInitialTab = ref<DelegationTab>()
+
+const openDelegationDrawerOnTab = (tab: DelegationTab) => {
+  delegationInitialTab.value = tab
+  isDelegationDrawerOpened.value = true
+}
+
+const WALLET_ACTION_HANDLERS: Record<ManageWalletAction, () => void> = {
+  [ManageWalletAction.DELEGATE_WALLET]: () => openDelegationDrawerOnTab(DelegationTab.DELEGATE_WALLET),
+  [ManageWalletAction.VIEW_PERMANENT_DELEGATIONS]: () => openDelegationDrawerOnTab(DelegationTab.PERMANENT_DELEGATIONS),
+  [ManageWalletAction.REQUEST_DELEGATION]: () => openDelegationDrawerOnTab(DelegationTab.REQUEST_DELEGATION),
+  [ManageWalletAction.PENDING_DELEGATIONS]: () => openDelegationDrawerOnTab(DelegationTab.PENDING_REQUESTS),
+  [ManageWalletAction.CREATE_TEST_ACCOUNT]: () => onEntityCreatorDrawerOpen(),
+}
+
+const onWalletAction = (action: ManageWalletAction) => WALLET_ACTION_HANDLERS[action]()
 
 // table part
 const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
@@ -391,6 +416,8 @@ const DEPLOYMENT_STATUSES: DeploymentStatus[] = [
     iconName: 'checkCircle',
   },
 ] as const
+
+const isManageWalletMenuActivated = computed(() => FeatureFlagManager.isManageWalletMenuActivated())
 
 // #region entity creator drawer
 const isEntityCreatorDrawerOpen = ref(false)

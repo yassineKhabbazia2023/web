@@ -6,9 +6,10 @@ import {
   CurrentUserManagerMock,
   getStoreMock,
   featureFlagManagerMock,
+  isManageWalletMenuActivatedMock,
 } from '@pulse/common/mocks/vitest'
 import { flushPromises, shallowMount, type VueWrapper } from '@vue/test-utils'
-import { EntityStatus } from '@entities/modules/wallet/enums'
+import { EntityStatus, DelegationTab, ManageWalletAction } from '@entities/modules/wallet/enums'
 import { nextTick, reactive } from 'vue'
 import { getMockedWalletQueryResult, getMockedSearchCriteria } from '@entities/__mocks__/deploy-utils.mocks'
 import { getMockedAccount } from '@entities/__mocks__/account-row.mocks'
@@ -22,6 +23,7 @@ import type { Entity } from '@pulse/common/types'
 import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
+import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
 
 import Folders from './Folders.vue'
 
@@ -113,6 +115,7 @@ vi.mock('./FoldersUtils', async () => ({
 vi.mock('@pulse/common/managers', () => ({
   CurrentEntityManager: CurrentEntityManagerMock,
   CurrentUserManager: CurrentUserManagerMock,
+  FeatureFlagManager: featureFlagManagerMock,
 }))
 
 const createWrapper = (): ComponentWrapper<InstanceType<typeof Folders>> =>
@@ -162,6 +165,7 @@ describe('deploy', () => {
     userStoreMock.user = userMock
     userStoreMock.isCollab = true
     hasPermissionMock.mockReturnValue(false)
+    isManageWalletMenuActivatedMock.mockReturnValue(true)
     mockedGatewayGet.mockResolvedValue(mockedAccount)
     mockFetchWalletData
       .mockResolvedValue(mockedQueryResult)
@@ -182,27 +186,78 @@ describe('deploy', () => {
     expect(userStoreMock.setFavoriteEntities).toHaveBeenNthCalledWith(1, expectedArguements)
   })
 
-  it('should display correct button by number of selected ibs', async () => {
+  it('forwards the number of selected folders to the manage wallet button', async () => {
     const wrapper = createWrapper()
     await flushPromises()
 
-    const button = wrapper.findComponent({ name: 'PButton' })
     const firstFolder = mockedQueryResult.items[0]
-    const secondFolder = mockedQueryResult.items[1]
+    const manageWalletButton = wrapper.findComponent(ManageWalletButton)
 
-    expect(button.text()).toBe('My delegations')
+    expect(manageWalletButton.props('selectedFoldersCount')).toBe(0)
 
-    let tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
     tableData.vm.$emit('update:selectedFolderIds', [firstFolder.accountId])
     await nextTick()
 
-    expect(button.text()).toBe('Delegate my folder')
+    expect(manageWalletButton.props('selectedFoldersCount')).toBe(1)
+  })
 
-    tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
-    tableData.vm.$emit('update:selectedFolderIds', [firstFolder.accountId, secondFolder.accountId])
+  it.each([
+    { action: ManageWalletAction.DELEGATE_WALLET, expectedTab: DelegationTab.DELEGATE_WALLET },
+    { action: ManageWalletAction.VIEW_PERMANENT_DELEGATIONS, expectedTab: DelegationTab.PERMANENT_DELEGATIONS },
+    { action: ManageWalletAction.REQUEST_DELEGATION, expectedTab: DelegationTab.REQUEST_DELEGATION },
+    { action: ManageWalletAction.PENDING_DELEGATIONS, expectedTab: DelegationTab.PENDING_REQUESTS },
+  ])('opens the delegation drawer on the $expectedTab tab for the $action action', async ({ action, expectedTab }) => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', action)
     await nextTick()
 
-    expect(button.text()).toBe('Delegate my folders')
+    const delegationDrawer = wrapper.findComponent({ name: 'DelegationDrawer' })
+    expect(delegationDrawer.exists()).toBe(true)
+    expect(delegationDrawer.props('initialTab')).toBe(expectedTab)
+  })
+
+  it('opens the entity creator drawer for the create test account action', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', ManageWalletAction.CREATE_TEST_ACCOUNT)
+    await nextTick()
+
+    expect(wrapper.findComponent({ name: 'EntityCreatorDrawer' }).exists()).toBe(true)
+  })
+
+  describe('manage wallet menu feature flag', () => {
+    it('renders the legacy delegation buttons and hides the dropdown when the flag is off', async () => {
+      isManageWalletMenuActivatedMock.mockReturnValue(false)
+      hasPermissionMock.mockReturnValue(true)
+
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      expect(wrapper.findComponent(ManageWalletButton).exists()).toBe(false)
+      expect(wrapper.text()).toContain('My delegations')
+      expect(wrapper.text()).toContain('Create a test account')
+    })
+
+    it('opens the delegation drawer when the legacy delegation button is clicked', async () => {
+      isManageWalletMenuActivatedMock.mockReturnValue(false)
+
+      const wrapper = createWrapper()
+      await flushPromises()
+
+      const delegationButton = wrapper
+        .findAllComponents({ name: 'PButton' })
+        .find((button) => button.text().includes('My delegations'))
+      delegationButton?.vm.$emit('click')
+      await nextTick()
+
+      const delegationDrawer = wrapper.findComponent({ name: 'DelegationDrawer' })
+      expect(delegationDrawer.exists()).toBe(true)
+      expect(delegationDrawer.props('initialTab')).toBeUndefined()
+    })
   })
 
   it('should call 2 api for get data', async () => {
@@ -489,9 +544,7 @@ describe('deploy', () => {
       hasManageAccessAuthorisation,
       expected,
     }) => {
-      hasPermissionMock
-        .mockReturnValueOnce(true)
-        .mockReturnValueOnce(hasManageAccessAuthorisation)
+      hasPermissionMock.mockReturnValue(hasManageAccessAuthorisation)
 
       const wrapper = createWrapper()
       await flushPromises()
@@ -543,7 +596,7 @@ describe('deploy', () => {
       await flushPromises()
 
       const buttons = wrapper.findAllComponents({ name: 'PButton' })
-      const manageAccessButton = buttons[2]
+      const manageAccessButton = buttons[0]
       const manageAccessCount = wrapper.find('[data-testid="manage-access-count"]')
       const expectedAmplitudeEventName = 'Registry Validation Initiated'
       const expectedAmplitudeParams = {
