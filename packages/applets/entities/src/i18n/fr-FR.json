@@ -1,5 +1,15 @@
 {
   "entities": {
+    "users": {
+      "signatory": {
+        "assign": "Désigner en tant que signataire",
+        "remove": "Retirer le statut de signataire",
+        "added": "L'utilisateur {userFullName} a été désigné en tant que signataire de l'entité avec succès",
+        "removed": "L'utilisateur {userFullName} n'est plus signataire du dossier.",
+        "deleteTooltip": "Un dossier doit avoir au moins un signataire",
+        "technicalError": "L'opération a échoué suite à une erreur technique. Veuillez réessayer plus tard."
+      }
+    },
     "wallet": {
       "folders": "Portefeuille",
       "hello": "Bonjour",

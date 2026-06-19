@@ -13,10 +13,9 @@ import { CurrentUserManagerMock, hasPermissionMock, getStoreMock } from '@pulse/
 import { useUserStore, useCurrentEntityStore } from '@pulse/common/stores'
 import { getPendingOperations } from '../utils/operations.utils'
 import { AccountType, RouteName, RouteParam } from '@pulse/common/enums'
-import { ACTION_PERMISSIONS } from '@pulse/common/constants'
 
 import UsersCollab from './users-collab.vue'
-import { updateSignatoryStatus } from '@entities/services/account'
+import { useAccountSignatories } from './account-signatories.composable'
 
 const userStoreMock = getStoreMock(useUserStore)
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
@@ -50,22 +49,15 @@ const mockedAccount = getMockedAccount()
 vi.mock('@entities/services/registry', () => registryServiceMock)
 vi.mock('@entities/services/wallet')
 
-const apiMocks = vi.hoisted(() => ({
-  singleAccountSignatory: vi.fn(() => Promise.resolve([
-    mockedCustomersCollab[0],
-  ])),
-  multipleAccountSignatories: vi.fn(() => Promise.resolve([
-    mockedCustomersCollab[0],
-    mockedCustomersCollab[1],
-  ])),
+const composableMocks = vi.hoisted(() => ({
+  loadAccountSignatories: vi.fn(() => Promise.resolve()),
+  getSignatoryToolboxItems: vi.fn((): PToolboxItemProps[] => []),
+  handleSignatoryAction: vi.fn(() => false),
 }))
 
-vi.mock('@entities/services/account', () => {
-  return {
-    updateSignatoryStatus: vi.fn(() => Promise.resolve({})),
-    getAccountSignatories: apiMocks.singleAccountSignatory,
-  }
-})
+vi.mock('./account-signatories.composable', () => ({
+  useAccountSignatories: vi.fn(() => composableMocks),
+}))
 
 const routeMock = vi.hoisted(() => ({
   name: '' as string,
@@ -138,29 +130,12 @@ const createWrapper = (): VueWrapper<any> =>
 
 let wrapper: VueWrapper<any>
 
-const addSignatoryToolboxItem: PToolboxItemProps = {
+// Returned by the mocked composable to verify the component prepends it to the toolbox
+const signatoryToolboxItem: PToolboxItemProps = {
   pIconName: 'patchCheck',
   pValue: 'Designate as signatory',
   pActionName: 'assignSignatory',
   pState: 'default',
-}
-
-const removeSignatoryToolboxItemEnabled: PToolboxItemProps = {
-  pIconName: 'patchCheck',
-  pValue: 'Revoke signatory status',
-  pActionName: 'unassignSignatory',
-  pState: 'default',
-  disabled: false,
-  pContentTooltip: undefined,
-}
-
-const removeSignatoryToolboxItemDisabled: PToolboxItemProps = {
-  pIconName: 'patchCheck',
-  pValue: 'Revoke signatory status',
-  pActionName: 'unassignSignatory',
-  pState: 'default',
-  disabled: true,
-  pContentTooltip: 'A folder should have at least one signatory',
 }
 
 const modifyToolboxItem: PToolboxItemProps = {
@@ -195,8 +170,10 @@ describe('usersCollab', () => {
     // Reset account type to regular (prospect-specific tests override it)
     currentEntityStoreMock.currentAccountType = AccountType.REGULAR
     hasPermissionMock.mockReturnValue(false)
-    // Reset signatory mock to single signatory (some tests override it with multiple)
-    apiMocks.singleAccountSignatory.mockResolvedValue([mockedCustomersCollab[0]])
+    // Reset the signatory composable mock between tests
+    composableMocks.getSignatoryToolboxItems.mockReturnValue([])
+    composableMocks.handleSignatoryAction.mockClear()
+    composableMocks.loadAccountSignatories.mockClear()
     wrapper = createWrapper()
     await flushPromises()
   })
@@ -291,95 +268,62 @@ describe('usersCollab', () => {
         .toHaveLength(expectedPendingOperations.length)
     })
 
-    it("should add user as account signatory when the 'Designate as signatory action is clicked", async () => {
-      await wrapper.vm.handleUserAction('assignSignatory', mockedUser)
-
-      expect(updateSignatoryStatus).toHaveBeenCalledWith(mockedAccount.accountId, mockedUser.contactId)
+    it('should initialize the signatory composable with a refreshUsers callback', () => {
+      expect(useAccountSignatories).toHaveBeenCalledWith({ refreshUsers: expect.any(Function) })
     })
 
-    it("should remove account signatory when the 'Revoke signatory status'", async () => {
-      apiMocks.singleAccountSignatory.mockReturnValue(apiMocks.multipleAccountSignatories())
+    it('should load the account signatories on mount when assignment is allowed', async () => {
+      hasPermissionMock.mockReturnValue(true)
+      currentEntityStoreMock.currentAccountType = AccountType.REGULAR
       wrapper = createWrapper()
       await flushPromises()
-      await wrapper.vm.handleUserAction('unassignSignatory', mockedUser)
 
-      expect(updateSignatoryStatus).toHaveBeenCalledWith(mockedAccount.accountId, mockedUser.contactId, false)
+      expect(composableMocks.loadAccountSignatories).toHaveBeenCalled()
     })
 
-    it.each([
-      {
-        userThatCanBeAdded: mockedCustomersCollab[0],
-        hasRemoveUserPermission: false,
-        expectedItems: [
-          removeSignatoryToolboxItemDisabled,
-          modifyToolboxItem,
-        ],
-      },
-      {
-        userThatCanBeAdded: mockedCustomersCollab[1],
-        hasRemoveUserPermission: false,
-        expectedItems: [
-          addSignatoryToolboxItem,
-          modifyToolboxItem,
-        ],
-      },
-      {
-        userThatCanBeAdded: mockedCustomersCollab[1],
-        hasRemoveUserPermission: true,
-        expectedItems: [
-          addSignatoryToolboxItem,
-          modifyToolboxItem,
-          removeUserToolboxItem,
-        ],
-      },
-    ])("should allow signatory add if user isn't already signatory", async ({
-      userThatCanBeAdded,
-      hasRemoveUserPermission,
-      expectedItems,
-    }) => {
-      hasPermissionMock.mockImplementation((permission) =>
-        permission === ACTION_PERMISSIONS.ASSIGN_SIGNATORY || hasRemoveUserPermission,
-      )
+    it('should NOT load the account signatories on mount for a prospect entity', async () => {
+      hasPermissionMock.mockReturnValue(true)
+      currentEntityStoreMock.currentAccountType = AccountType.PROSPECT
+      wrapper = createWrapper()
+      await flushPromises()
+
+      expect(composableMocks.loadAccountSignatories).not.toHaveBeenCalled()
+    })
+
+    it('should delegate signatory actions to the composable', async () => {
+      await wrapper.vm.handleUserAction('assignSignatory', mockedUser)
+
+      expect(composableMocks.handleSignatoryAction).toHaveBeenCalledWith('assignSignatory', mockedUser)
+    })
+
+    it('should prepend the signatory toolbox items when assignment is allowed', async () => {
+      composableMocks.getSignatoryToolboxItems.mockReturnValue([signatoryToolboxItem])
+      hasPermissionMock.mockReturnValue(true)
       const wrapper = createWrapper()
       await flushPromises()
-      wrapper.vm.handleToolboxClick(userThatCanBeAdded)
+
+      wrapper.vm.handleToolboxClick(mockedCustomersCollab[1])
       await nextTick()
-      const items = wrapper.vm.toolboxItems
-      expect(items).toStrictEqual(expectedItems)
+
+      expect(wrapper.vm.toolboxItems).toStrictEqual([
+        signatoryToolboxItem,
+        modifyToolboxItem,
+        removeUserToolboxItem,
+      ])
     })
 
-    it.each([
-      {
-        userToRemove: mockedCustomersCollab[0],
-        useMultipleSignatories: false,
-        expectedItems: [
-          removeSignatoryToolboxItemDisabled,
-          modifyToolboxItem,
-        ],
-      },
-      {
-        userToRemove: mockedCustomersCollab[1],
-        useMultipleSignatories: true,
-        expectedItems: [
-          removeSignatoryToolboxItemEnabled,
-          modifyToolboxItem,
-        ],
-      },
-    ])('should build the toolbox items for the user to remove',
-      async ({ userToRemove, useMultipleSignatories, expectedItems }) => {
-        if (useMultipleSignatories) {
-          apiMocks.singleAccountSignatory.mockReturnValue(apiMocks.multipleAccountSignatories())
-        }
-        hasPermissionMock.mockImplementation((permission) =>
-          permission === ACTION_PERMISSIONS.ASSIGN_SIGNATORY,
-        )
-        wrapper = createWrapper()
-        await flushPromises()
+    it('should NOT include signatory toolbox items for a prospect entity', async () => {
+      composableMocks.getSignatoryToolboxItems.mockReturnValue([signatoryToolboxItem])
+      hasPermissionMock.mockReturnValue(true)
+      currentEntityStoreMock.currentAccountType = AccountType.PROSPECT
+      const wrapper = createWrapper()
+      await flushPromises()
 
-        wrapper.vm.handleToolboxClick(userToRemove)
-        const items = wrapper.vm.toolboxItems
-        expect(items).toMatchObject(expectedItems)
-      })
+      wrapper.vm.handleToolboxClick(mockedCustomersCollab[1])
+      await nextTick()
+
+      expect(wrapper.vm.toolboxItems).toStrictEqual([removeUserToolboxItem])
+    })
 
     it('should hide the "modify rights" action for a prospect entity user', async () => {
       currentEntityStoreMock.currentAccountType = AccountType.PROSPECT

@@ -1,5 +1,15 @@
 {
   "entities": {
+    "users": {
+      "signatory": {
+        "assign": "Designate as signatory",
+        "remove": "Revoke signatory status",
+        "added": "User {userFullName} has been successfully designated as a signatory of the entity",
+        "removed": "The user {userFullName} is no longer a signatory on the account.",
+        "deleteTooltip": "A folder should have at least one signatory",
+        "technicalError": "The operation failed due to a technical error. Please try again later."
+      }
+    },
     "wallet": {
       "folders": "Wallet",
       "hello": "Hello",
