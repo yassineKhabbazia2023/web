@@ -7,6 +7,7 @@ export interface PButtonProps {
     | 'tertiary'
     | 'white'
     | 'danger'
+    | 'active'
   pCircle?: boolean
   pDisabled?: boolean
   pLoading?: boolean

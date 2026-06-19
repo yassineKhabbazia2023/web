@@ -16,7 +16,7 @@ const meta: Meta<typeof PButton> = {
   argTypes: {
     pType: {
       control: 'select',
-      options: ['default', 'primary', 'secondary', 'tertiary', 'white', 'danger'],
+      options: ['default', 'primary', 'secondary', 'tertiary', 'white', 'danger', 'active'],
       description: 'Le type/style du bouton',
     },
     pSize: {
@@ -144,6 +144,19 @@ export const Danger: Story = {
   },
 }
 
+export const Active: Story = {
+  render: (args) => ({
+    components: { PButton },
+    setup() {
+      return { args }
+    },
+    template: '<PButton v-bind="args">Bouton actif</PButton>',
+  }),
+  args: {
+    pType: 'active',
+  },
+}
+
 // Sizes
 export const Small: Story = {
   render: (args) => ({
@@ -185,20 +198,6 @@ export const Loading: Story = {
   args: {
     pType: 'primary',
     pLoading: true,
-  },
-}
-
-export const Active: Story = {
-  render: (args) => ({
-    components: { PButton },
-    setup() {
-      return { args }
-    },
-    template: '<PButton v-bind="args">Bouton actif</PButton>',
-  }),
-  args: {
-    pType: 'primary',
-    pIsActive: true,
   },
 }
 
@@ -294,6 +293,7 @@ export const AllVariants: Story = {
           <PButton pType="tertiary">Tertiary</PButton>
           <PButton pType="white">White</PButton>
           <PButton pType="danger">Danger</PButton>
+          <PButton pType="active">Active</PButton>
         </div>
         
         <div style="display: flex; gap: 8px; align-items: center;">
@@ -305,7 +305,7 @@ export const AllVariants: Story = {
           <PButton pType="primary">Normal</PButton>
           <PButton pType="primary" pDisabled>Disabled</PButton>
           <PButton pType="primary" pLoading>Loading</PButton>
-          <PButton pType="primary" pIsActive>Active</PButton>
+          <PButton pType="primary" pIsActive>Pressed</PButton>
         </div>
         
         <div style="display: flex; gap: 8px; align-items: center;">

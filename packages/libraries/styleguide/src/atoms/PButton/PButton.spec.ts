@@ -31,4 +31,13 @@ describe('test for PButton', () => {
     expect(pButtonAttributes.disabled).toBeTruthy()
     expect(pButtonAttributes.class).toBe('p-button p-button--icon p-button--is-active')
   })
+  it('applies the active type class', () => {
+    const wrapper = shallowMount(PButton, {
+      props: {
+        pType: 'active',
+      },
+    })
+
+    expect(wrapper.findComponent({ name: 'PButton' }).attributes('class')).toContain('p-button--active')
+  })
 })

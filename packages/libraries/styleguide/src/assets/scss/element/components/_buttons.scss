@@ -178,7 +178,34 @@ $button-padding-horizontal: (
       color: var(--p-button-disabled-text);
     }
   }
-  
+
+  &.p-button--active {
+    background: var(--p-surface-state-active);
+    border-color: var(--p-surface-state-active);
+    color: var(--p-white);
+
+    &:hover {
+      background: var(--p-surface-state-action-hover);
+      border-color: var(--p-surface-state-action-hover);
+      color: var(--p-white);
+    }
+
+    &:focus,
+    &.p-button--is-active {
+      background: var(--p-surface-state-action-press);
+      border-color: var(--p-surface-state-action-press);
+      color: var(--p-white);
+    }
+
+    &.is-disabled,
+    &.is-disabled:hover,
+    &.is-disabled:focus {
+      background: var(--p-surface-state-active-disabled);
+      border-color: var(--p-surface-state-active-disabled);
+      color: var(--p-white);
+    }
+  }
+
   &.p-button--secondary {
     background: var(--p-button-secondary-surface-default);
     border-color: var(--p-button-secondary-surface-default);
