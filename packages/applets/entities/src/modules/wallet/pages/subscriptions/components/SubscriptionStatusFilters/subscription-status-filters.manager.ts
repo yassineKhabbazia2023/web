@@ -38,14 +38,6 @@ export class SubscriptionStatusFiltersManager {
         pDisabled: false,
       },
       {
-        pContent: i18n.global.t('entities.wallet.subscriptionStatusFilters.created'),
-        pCode: SubscriptionStatusCode.PENNYLANE_CREATED,
-        pValue: stats.statuses[SubscriptionStatusCode.PENNYLANE_CREATED] ?? 0,
-        pColor: SUBSCRIPTION_STATUS_COLOR[SubscriptionStatusCode.PENNYLANE_CREATED],
-        pIconName: SUBSCRIPTION_STATUS_ICON[SubscriptionStatusCode.PENNYLANE_CREATED],
-        pDisabled: false,
-      },
-      {
         pContent: i18n.global.t('entities.wallet.subscriptionStatusFilters.sendMandate'),
         pCode: SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND,
         pValue: stats.statuses[SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND] ?? 0,

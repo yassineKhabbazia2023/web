@@ -40,16 +40,16 @@ describe('SubscriptionStatusFiltersManager', () => {
   })
 
   describe('getOfferActivationFilters', () => {
-    it('should return 6 filters in the correct order', () => {
+    it('should return 5 filters in the correct order without the update plan status', () => {
       const filters = SubscriptionStatusFiltersManager.getOfferActivationFilters(statsMock)
 
-      expect(filters).toHaveLength(6)
+      expect(filters).toHaveLength(5)
       expect(filters[0].pCode).toBe(SubscriptionStatusCode.PENDING)
       expect(filters[1].pCode).toBe(SubscriptionStatusCode.PENNYLANE_TO_VERIFY)
-      expect(filters[2].pCode).toBe(SubscriptionStatusCode.PENNYLANE_CREATED)
-      expect(filters[3].pCode).toBe(SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND)
-      expect(filters[4].pCode).toBe(SubscriptionStatusCode.PENNYLANE_TO_TRANSFER)
-      expect(filters[5].pCode).toBe(SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS)
+      expect(filters[2].pCode).toBe(SubscriptionStatusCode.PENNYLANE_MANDATE_TO_SEND)
+      expect(filters[3].pCode).toBe(SubscriptionStatusCode.PENNYLANE_TO_TRANSFER)
+      expect(filters[4].pCode).toBe(SubscriptionStatusCode.PENNYLANE_TRANSFER_IN_PROGRESS)
+      expect(filters.map(filter => filter.pCode)).not.toContain(SubscriptionStatusCode.PENNYLANE_CREATED)
     })
 
     it('should use the correct i18n labels', () => {
@@ -57,10 +57,9 @@ describe('SubscriptionStatusFiltersManager', () => {
 
       expect(filters[0].pContent).toBe('entities.wallet.subscriptionStatusFilters.toCreate')
       expect(filters[1].pContent).toBe('entities.wallet.subscriptionStatusFilters.toVerify')
-      expect(filters[2].pContent).toBe('entities.wallet.subscriptionStatusFilters.created')
-      expect(filters[3].pContent).toBe('entities.wallet.subscriptionStatusFilters.sendMandate')
-      expect(filters[4].pContent).toBe('entities.wallet.subscriptionStatusFilters.toTransfer')
-      expect(filters[5].pContent).toBe('entities.wallet.subscriptionStatusFilters.transferInProgress')
+      expect(filters[2].pContent).toBe('entities.wallet.subscriptionStatusFilters.sendMandate')
+      expect(filters[3].pContent).toBe('entities.wallet.subscriptionStatusFilters.toTransfer')
+      expect(filters[4].pContent).toBe('entities.wallet.subscriptionStatusFilters.transferInProgress')
     })
 
     it('should use the correct counts from stats', () => {
@@ -68,10 +67,9 @@ describe('SubscriptionStatusFiltersManager', () => {
 
       expect(filters[0].pValue).toBe(3)
       expect(filters[1].pValue).toBe(1)
-      expect(filters[2].pValue).toBe(2)
-      expect(filters[3].pValue).toBe(0)
-      expect(filters[4].pValue).toBe(4)
-      expect(filters[5].pValue).toBe(1)
+      expect(filters[2].pValue).toBe(0)
+      expect(filters[3].pValue).toBe(4)
+      expect(filters[4].pValue).toBe(1)
     })
 
     it('should set all filters as not disabled', () => {
@@ -104,7 +102,6 @@ describe('SubscriptionStatusFiltersManager', () => {
       expect(filters[2].pValue).toBe(0)
       expect(filters[3].pValue).toBe(0)
       expect(filters[4].pValue).toBe(0)
-      expect(filters[5].pValue).toBe(0)
     })
   })
 
