@@ -9,6 +9,7 @@ const baseUrl = `${process.env.VITE_BASE_PATH || '/'}collaborateur/`
 export default ({ mode }: ConfigEnv) =>
   createAppConfig({
     mode,
+    port: 9000,
     outDir: '../../../dist/collaborateur',
     base: baseUrl,
     plugins: [

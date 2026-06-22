@@ -1,11 +1,11 @@
 import type { Plugin } from 'vite'
 import { defineConfig, mergeConfig } from 'vitest/config'
-import { viteConfigBase, DEFAULT_PORT } from './vite.config.base'
+import { viteConfigBase } from './vite.config.base'
 
 export interface AppConfigOptions {
   mode: string
   outDir: string
-  port?: number
+  port: number
   base?: string
   plugins?: Plugin[]
 }
@@ -14,7 +14,7 @@ export function createAppConfig(options: AppConfigOptions) {
   const {
     mode,
     outDir,
-    port = DEFAULT_PORT,
+    port,
     base,
     plugins = [],
   } = options
@@ -60,5 +60,3 @@ export function createAppConfig(options: AppConfigOptions) {
     }),
   )
 }
-
-export { DEFAULT_PORT }

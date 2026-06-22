@@ -4,8 +4,6 @@ import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import { viteVirtualModule } from './vite-virtual-module'
 
-export const DEFAULT_PORT = 9000
-
 export const DEFAULT_EXTERNALS: (string | RegExp)[] = [
   /^vue/,
   /^pinia/,
