@@ -36,9 +36,10 @@ export interface EntitySummary extends Entity {
   missionType: string
   officeId: number
   office: Office
-  address: Address,
+  address: Address
   deployment: Deployment
   subscriptions: Subscription[]
+  prospectId: number | null
 }
 
 export type MockEntityKey = 'BASIC' | 'LEGACY_GED' | 'PENNYLANE' | 'PROSPECT'

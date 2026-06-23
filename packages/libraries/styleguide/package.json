@@ -11,6 +11,7 @@
     "./types": "./src/types.ts",
     "./fonts": "./src/assets/fonts/index.css",
     "./utils/validators": "./src/utils/validators/validators.ts",
+    "./utils/fileExtension": "./src/utils/fileExtension.ts",
     "./scss/breakpoints": "./src/assets/scss/pegase/_breakpoints.scss",
     ".": "./src/main.ts"
   },

@@ -1,5 +1,9 @@
 import { AccountType } from '@pulse/common/enums'
-import type { ProspectAccountRow, ProspectWalletData } from '@entities/modules/wallet/types'
+import type {
+  ProspectAccountRow,
+  ProspectCreationPayload,
+  ProspectWalletData,
+} from '@entities/modules/wallet/types'
 import { ProspectOnboardingStep } from '@entities/modules/wallet/enums'
 
 export function getMockedProspectAccountRow(override: Partial<ProspectAccountRow> = {}): ProspectAccountRow {
@@ -21,6 +25,33 @@ export function getMockedProspectAccountRow(override: Partial<ProspectAccountRow
     },
     stepCode: ProspectOnboardingStep.LEADER_INFO,
     dossierCAC: true,
+    ...override,
+  }
+}
+
+export function getProspectCreationPayloadMock(
+  override: Partial<ProspectCreationPayload> = {},
+): ProspectCreationPayload {
+  return {
+    siret: '12345678900001',
+    legalForm: 'SAS',
+    legalStructure: 'PersonneMorale',
+    caseManagerContactId: 5,
+    accountManagerContactId: 8,
+    department: 'Paris',
+    region: 'Île-de-France',
+    country: 'France',
+    signatory: {
+      title: 'M',
+      lastName: 'Dupont',
+      firstName: 'Jean',
+      jobTitle: 'CEO',
+      department: 'Direction',
+      companyRole: 'Dirigeant',
+      contactTypes: ['isMandateSignatory'],
+      email: 'jean.dupont@example.com',
+      mobilePhone: '0612345678',
+    },
     ...override,
   }
 }

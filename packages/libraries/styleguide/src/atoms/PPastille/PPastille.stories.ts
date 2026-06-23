@@ -16,7 +16,7 @@ const meta: Meta<typeof PPastille> = {
   argTypes: {
     pType: {
       control: 'select',
-      options: ['default', 'warning', 'dark-green', 'white'],
+      options: ['default', 'warning', 'error', 'dark-green', 'white'],
       description: 'Type de style de la pastille',
     },
     pSize: {
@@ -71,6 +71,7 @@ export const DifferentTypes: Story = {
       <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
         <PPastille pType="default">1</PPastille>
         <PPastille pType="warning">12</PPastille>
+        <PPastille pType="error">5</PPastille>
         <PPastille pType="dark-green">1234</PPastille>
         <PPastille pType="white">1</PPastille>
       </div>

@@ -2,26 +2,19 @@ import { describe, it, expect, vi } from 'vitest'
 import { shallowMount, flushPromises } from '@vue/test-utils'
 import PUploadFileLine from './'
 import type { PUploadFileLineProps } from './PUploadFileLineTypes'
-import type { UploadFile, UploadStatus } from 'element-plus'
 
 const getMainIconNameMock = vi.hoisted(() => vi.fn())
 vi.mock('./PUploadFileLineUtils', () => ({
   getMainIconName: getMainIconNameMock,
 }))
 
-const fileList = {
-  name: 'Nom du document.pdf',
-  status: 'success' as UploadStatus,
-  uid: 1,
-}
-
 const defaultProps: PUploadFileLineProps = {
   pIconName: 'filetypePdf',
   pHasButton: true,
   pButtonIconName: 'trash',
   pTitleButton: 'Supprimer',
-  pFile: fileList as UploadFile,
-  pStatus: fileList.status,
+  pFileName: 'Nom du document.pdf',
+  pStatus: 'success',
 }
 
 const createWrapper = (overriddenProps: Partial<PUploadFileLineProps> = {}) => {

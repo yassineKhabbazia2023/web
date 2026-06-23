@@ -1,0 +1,109 @@
+import {
+  BENEFICIARY_MAX_FILES_COUNT,
+  BENEFICIARY_REQUIRED_FILES_COUNT_BY_DOCUMENT_TYPE,
+} from './beneficiaries.constants'
+import { BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
+import type { Beneficiary, BeneficiaryDocument } from '@entities/modules/entity/prospect/types'
+import type { BeneficiaryFormState } from './beneficiaries.types'
+
+export class BeneficiariesManager {
+  static buildFormState(beneficiary: Beneficiary): BeneficiaryFormState {
+    return {
+      documentType: beneficiary.documentType ?? BeneficiaryDocumentType.CNI,
+      firstName: beneficiary.firstName,
+      lastName: beneficiary.lastName,
+      files: [],
+    }
+  }
+
+  /**
+   * Get which document corresponds to zone based on upload order
+   * For CNI: documents[0] = recto, documents[1] = verso
+   * For PASSPORT: documents[0] = passport
+   */
+  static getDocumentForZone(
+    beneficiary: Beneficiary,
+    zoneIndex: number,
+  ): BeneficiaryDocument | undefined {
+    return beneficiary.documents[zoneIndex]
+  }
+
+  /**
+   * Get number of required zones for document type
+   */
+  static getRequiredZonesCount(documentType: BeneficiaryDocumentType | null): number {
+    if (documentType === null) {
+      return 0
+    }
+    return BENEFICIARY_REQUIRED_FILES_COUNT_BY_DOCUMENT_TYPE[documentType]
+  }
+
+  static getAttachmentsCount(
+    beneficiary: Beneficiary,
+    formState: BeneficiaryFormState | undefined,
+  ): number {
+    return beneficiary.documents.length + (formState?.files.length ?? 0)
+  }
+
+  static canAddFiles(
+    beneficiary: Beneficiary,
+    formState: BeneficiaryFormState | undefined,
+  ): boolean {
+    return this.getAttachmentsCount(beneficiary, formState) < BENEFICIARY_MAX_FILES_COUNT
+  }
+
+  static isFormStateDirty(
+    beneficiary: Beneficiary,
+    formState: BeneficiaryFormState | undefined,
+  ): boolean {
+    if (formState === undefined) {
+      return false
+    }
+    return formState.files.length > 0
+      || formState.documentType !== beneficiary.documentType
+      || formState.firstName !== beneficiary.firstName
+      || formState.lastName !== beneficiary.lastName
+  }
+
+  // The required count applies to the total of already uploaded documents
+  // plus the locally selected files, so complementary uploads stay possible
+  static hasRequiredFilesCount(
+    beneficiary: Beneficiary,
+    formState: BeneficiaryFormState | undefined,
+  ): boolean {
+    const documentType = formState?.documentType
+    if (documentType === null || documentType === undefined) {
+      return false
+    }
+    return this.getAttachmentsCount(beneficiary, formState)
+      === BENEFICIARY_REQUIRED_FILES_COUNT_BY_DOCUMENT_TYPE[documentType]
+  }
+
+  /**
+   * Check if beneficiary can save documents
+   */
+  static canSaveDocuments(
+    beneficiary: Beneficiary,
+    formState: BeneficiaryFormState | undefined,
+  ): boolean {
+    if (formState?.documentType === null || formState?.documentType === undefined) {
+      return false
+    }
+    return (
+      formState.files.length > 0
+      && this.hasRequiredFilesCount(beneficiary, formState)
+      && this.isFormStateDirty(beneficiary, formState)
+    )
+  }
+
+  /**
+   * Check if beneficiary is complete (has all required documents uploaded)
+   */
+  static isBeneficiaryComplete(beneficiary: Beneficiary): boolean {
+    if (beneficiary.documentType === null) {
+      return false
+    }
+    const requiredCount = BENEFICIARY_REQUIRED_FILES_COUNT_BY_DOCUMENT_TYPE[beneficiary.documentType]
+    return beneficiary.documents.length === requiredCount
+  }
+}

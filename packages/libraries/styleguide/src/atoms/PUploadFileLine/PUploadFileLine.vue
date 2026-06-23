@@ -39,7 +39,7 @@
           />
         </span>
         <p class="p-upload-file-line__title">
-          {{ pFile.name }}
+          {{ pFileName }}
         </p>
         <span
           v-if="isNotNullNorEmpty(pMessage)"
@@ -67,7 +67,7 @@
           />
         </span>
         <p class="p-upload-file-line__title overflow-hidden">
-          {{ pFile.name }}
+          {{ pFileName }}
         </p>
         <span
           v-if="isNotNullNorEmpty(pMessage)"
@@ -113,7 +113,6 @@ import PIcon from '../../atoms/PIcon'
 import type { PUploadFileLineProps } from './PUploadFileLineTypes'
 import { getMainIconName } from './PUploadFileLineUtils'
 import { UploadFileStatus } from '../../constants/uploadStatus.const'
-import { type UploadFile, type UploadRawFile } from 'element-plus'
 
 const props = withDefaults(defineProps<PUploadFileLineProps>(), {
   pColor: 'white',
@@ -128,11 +127,11 @@ const isActionButtonVisible = computed(() =>
 )
 
 const emit = defineEmits<{
-  'on-click-file-action': [UploadFile | UploadRawFile]
+  'on-click-file-action': []
 }>()
 
 const handleClickFileAction = () => {
-  emit('on-click-file-action', props.pFile)
+  emit('on-click-file-action')
 }
 
 const pClassMapper = computed(() => ({

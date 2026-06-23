@@ -45,11 +45,11 @@
     <!-- File-list variant: one line per file, shown below the drop zone (which stays visible). -->
     <template v-if="displayedFileList" #file="{ file }">
       <PUploadFileLine
-        :pFile="file"
-        :pStatus="file.status"
+        :pFileName="file.name"
+        :pStatus="getDisplayedStatus(file)"
         :pMessage="getRejectionMessage(file)"
         :pIconName="getIconName(file.name, 'filetypeNone')"
-        pHasButton
+        :pHasButton="pShowDeleteButton"
         pButtonIconName="trash"
         :pTitleButton="pDeleteButtonTitle"
         :pColor="pColorFileLine"
@@ -63,9 +63,9 @@
     pIsMultiLine
     :pStatus="singleFileDisplayedStatus"
     :pMessage="getRejectionMessage(files[0])"
-    :pFile="files[0]"
+    :pFileName="files[0].name"
     :pIconName="getIconName(files[0].name, 'filetypeNone')"
-    pHasButton
+    :pHasButton="pShowDeleteButton"
     pButtonIconName="trash"
     :pTitleButton="pDeleteButtonTitle"
     data-testid="upload-single-file"
@@ -102,6 +102,7 @@ const props = withDefaults(defineProps<UploadProps>(), {
   pShouldClearPreviousFilesListOnUpload: false,
   pDeleteButtonTitle: 'Supprimer le document',
   pRejectedFileMessage: 'Extension non supportée',
+  pShowDeleteButton: true,
 })
 
 const emit = defineEmits<{
@@ -121,12 +122,13 @@ const displayedFileList = computed(() =>
   props.pShowFileList === true && isSingleFileUploaded.value === false,
 )
 
-// Neutral `ready` look for accepted files, error look only when rejected.
-const singleFileDisplayedStatus = computed(() =>
-  files.value[0]?.status === UploadFileStatus.FAIL
+// Pending files stay neutral (`ready`); only rejected ones look like errors.
+const getDisplayedStatus = (file: UploadFile) =>
+  file?.status === UploadFileStatus.FAIL
     ? UploadFileStatus.FAIL
-    : UploadFileStatus.READY,
-)
+    : UploadFileStatus.READY
+
+const singleFileDisplayedStatus = computed(() => getDisplayedStatus(files.value[0]))
 
 const pClassMapper = computed(() => ({
   [`p-upload--type-${props.pUploadType}`]: true,

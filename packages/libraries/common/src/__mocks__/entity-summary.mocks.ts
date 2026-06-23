@@ -83,6 +83,7 @@ export const entitySummaryMock: EntitySummary = {
   address,
   deployment,
   subscriptions,
+  prospectId: null,
 }
 
 export function getMockedEntitySummary(override: Partial<EntitySummary> = {}): EntitySummary {

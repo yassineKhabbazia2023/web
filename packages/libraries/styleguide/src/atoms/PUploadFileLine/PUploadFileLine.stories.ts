@@ -34,7 +34,7 @@ export const Ready: Story = {
       <div style="${wrapperStyle}">
         <PUploadFileLine
           pIconName="filetypePdf"
-          :pFile="file"
+          :pFileName="file.name"
           :pStatus="file.status"
           pHasButton
           pButtonIconName="trash"
@@ -43,7 +43,7 @@ export const Ready: Story = {
         <PUploadFileLine
           pIsMultiLine
           pIconName="filetypePdf"
-          :pFile="file"
+          :pFileName="file.name"
           :pStatus="file.status"
           pHasButton
           pButtonIconName="trash"
@@ -65,7 +65,7 @@ export const Success: Story = {
       <div style="${wrapperStyle}">
         <PUploadFileLine
           pIconName="filetypePng"
-          :pFile="file"
+          :pFileName="file.name"
           :pStatus="file.status"
           pHasButton
           pButtonIconName="trash"
@@ -74,7 +74,7 @@ export const Success: Story = {
         <PUploadFileLine
           pIsMultiLine
           pIconName="filetypePng"
-          :pFile="file"
+          :pFileName="file.name"
           :pStatus="file.status"
           pHasButton
           pButtonIconName="trash"
@@ -96,13 +96,13 @@ export const Uploading: Story = {
       <div style="${wrapperStyle}">
         <PUploadFileLine
           pIconName="filetypePdf"
-          :pFile="file"
+          :pFileName="file.name"
           :pStatus="file.status"
         />
         <PUploadFileLine
           pIsMultiLine
           pIconName="filetypePdf"
-          :pFile="file"
+          :pFileName="file.name"
           :pStatus="file.status"
         />
       </div>
@@ -121,13 +121,13 @@ export const Fail: Story = {
       <div style="${wrapperStyle}">
         <PUploadFileLine
           pIconName="filetypePdf"
-          :pFile="file"
+          :pFileName="file.name"
           :pStatus="file.status"
         />
         <PUploadFileLine
           pIsMultiLine
           pIconName="filetypePdf"
-          :pFile="file"
+          :pFileName="file.name"
           :pStatus="file.status"
         />
       </div>

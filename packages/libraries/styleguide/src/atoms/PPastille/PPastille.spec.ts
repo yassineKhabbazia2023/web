@@ -35,6 +35,10 @@ describe('pPastille', () => {
         expectedClassBinding: `${componenRootCSSClass}--type-warning`,
       },
       {
+        pType: 'error',
+        expectedClassBinding: `${componenRootCSSClass}--type-error`,
+      },
+      {
         pType: 'dark-green',
         expectedClassBinding: `${componenRootCSSClass}--type-dark-green`,
       },

@@ -7,7 +7,7 @@
     "
   >
     <PEntityHeader
-      v-if="currentEntity"
+      v-if="currentEntity !== undefined"
       :pLegalName="currentEntity.legalName"
       :pAccountNumber="currentEntity.accountNumber"
       :pAccountType="currentEntity.accountType"
@@ -26,6 +26,7 @@
           :pTotal="totalCount"
           :pTitle="title"
           :pDescription="description"
+          class="margin-top--6 bg--white padding--6"
         >
           <PCompletionTrackerList
             v-for="section in sections"
@@ -54,44 +55,60 @@
           padding--6
         "
       >
-        <template
+        <section
           v-for="step in steps"
+          :id="`step-${step.id}`"
           :key="step.id"
+          class="
+            prospect-conformity__step
+            flex
+            flex--direction-column
+            padding--6
+            shadow--6-bottom
+          "
         >
-          <ConformityDocuments v-if="step.id === SUPPORTING_DOCS_STEP_ID" />
-          <section
-            v-else
-            :id="`step-${step.id}`"
+          <h2
             class="
-              prospect-conformity__step
+              prospect-conformity__step-title
               flex
-              flex--direction-column
-              padding--8
+              flex--align-items-center
+              font-size--16
+              font-semibold
+              margin--0
+              margin-bottom--1
             "
           >
-            <h2
-              class="
-                prospect-conformity__step-title
-                font-size--21
-                font-semibold
-                margin--0
-                margin-bottom--3
-              "
-            >
-              {{ step.label }}
-            </h2>
-            <p
-              class="
-                prospect-conformity__step-description
-                font-size--14
-                margin--0
-              "
-            >
-              Ceci est l'écran de l'étape « {{ step.label }} ».<br>
-              Cliquez sur une étape dans le tracker à gauche pour naviguer ici.
-            </p>
-          </section>
-        </template>
+            <PIcon
+              pName="pulse"
+              :pColor="AppColors.JUNGLE_400"
+              pSize="16"
+            />
+            <span class="margin-left--1">{{ step.label }}</span>
+          </h2>
+          <ConformityDocuments v-if="step.id === SUPPORTING_DOCS_STEP_ID" />
+          <Beneficiaries
+            v-else-if="step.id === PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID"
+            :beneficiaryStepStatus="beneficiaryStep?.status"
+            @documents-saved="loadOnboardingSteps"
+          />
+          <CommercialProposal
+            v-else-if="step.id === COMMERCIAL_PROPOSAL_STEP_ID"
+            :status="commercialProposalStep?.status"
+            :isLoading="isLoadingSteps"
+            @sent="loadOnboardingSteps"
+          />
+          <p
+            v-else
+            class="
+              prospect-conformity__step-description
+              font-size--14
+              margin--0
+            "
+          >
+            {{ t('entities.prospect.conformity.stepPlaceholderTitle', { label: step.label }) }}<br>
+            {{ t('entities.prospect.conformity.stepPlaceholderHint') }}
+          </p>
+        </section>
       </div>
     </div>
     <div
@@ -107,24 +124,35 @@
       "
       data-testid="prospect-conformity-mock-banner"
     >
-      Écran mocké pour présenter le concept de mise en conformité — rendu non contractuel
+      {{ t('entities.prospect.conformity.mockBanner') }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, useTemplateRef } from 'vue'
+import { computed, onMounted, ref, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
+import { logger } from '@pulse/toolbox'
 import { useCurrentEntityStore } from '@pulse/common/stores'
+import { AppColors } from '@pulse/styleguide'
 import {
   PCompletionTracker,
   PCompletionTrackerList,
   PCompletionTrackerListItem,
   PEntityHeader,
+  PIcon,
 } from '@pulse/styleguide/components'
+import { ProspectsService } from '@entities/services/prospects/prospects.service'
+import type { OnboardingStepResponse } from '@entities/services/prospects/prospects.types'
+import { OnboardingStep } from './prospect-conformity.enums'
+import CommercialProposal from './commercial-proposal/commercial-proposal.vue'
 import ConformityDocuments from './conformity-documents/conformity-documents.vue'
 import { useProspectConformity } from './prospect-conformity.composable'
+import Beneficiaries from './beneficiaries/beneficiaries.vue'
 import {
+  COMMERCIAL_PROPOSAL_STEP_ID,
+  PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID,
   PROSPECT_CONFORMITY_DESCRIPTION,
   PROSPECT_CONFORMITY_SECTION_ORDER,
   PROSPECT_CONFORMITY_SECTION_TITLES,
@@ -133,10 +161,42 @@ import {
   SUPPORTING_DOCS_STEP_ID,
 } from './prospect-conformity.consts'
 
+const { t } = useI18n()
+
 const { currentEntity } = storeToRefs(useCurrentEntityStore())
 
 const contentRef = useTemplateRef<HTMLElement>('contentRef')
 const { selectedId, onStepClick } = useProspectConformity(contentRef)
+
+const onboardingSteps = ref<OnboardingStepResponse[]>([])
+const isLoadingSteps = ref(true)
+
+const beneficiaryStep = computed(() =>
+  onboardingSteps.value.find((s) => s.id === OnboardingStep.Beneficiary),
+)
+
+const commercialProposalStep = computed(() =>
+  onboardingSteps.value.find((s) => s.id === OnboardingStep.CommercialProposal),
+)
+
+const loadOnboardingSteps = async () => {
+  if (currentEntity.value?.prospectId === undefined || currentEntity.value.prospectId === null) {
+    isLoadingSteps.value = false
+    return
+  }
+  try {
+    const steps = await ProspectsService.fetchOnboardingSteps(currentEntity.value.prospectId)
+    if (steps !== undefined) {
+      onboardingSteps.value = steps
+    }
+  } catch (error) {
+    logger.error('Failed to load onboarding steps', error)
+  } finally {
+    isLoadingSteps.value = false
+  }
+}
+
+onMounted(loadOnboardingSteps)
 
 const title = PROSPECT_CONFORMITY_TITLE
 const description = PROSPECT_CONFORMITY_DESCRIPTION
@@ -173,7 +233,7 @@ $mock-banner-clearance: 60px;
   }
 
   &__tracker {
-    width: 340px;
+    width: 420px;
     flex-shrink: 0;
     overflow-y: auto;
     padding-bottom: $mock-banner-clearance;
@@ -183,14 +243,10 @@ $mock-banner-clearance: 60px;
     flex: 1;
     overflow-y: auto;
     padding-bottom: $mock-banner-clearance;
-    background-color: var(--p-gray-50);
   }
 
   &__step {
-    border: 1px solid var(--p-stroke-secondary);
-    border-radius: 8px;
     background-color: var(--p-surface-primary);
-    min-height: 400px;
   }
 
   &__step-description {

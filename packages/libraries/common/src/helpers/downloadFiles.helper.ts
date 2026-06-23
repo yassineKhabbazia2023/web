@@ -13,4 +13,8 @@ export const downloadFile = (
   document.body.appendChild(downloadLink)
 
   downloadLink.click()
+
+  // Release the DOM node and the object URL, otherwise both leak on every download.
+  downloadLink.remove()
+  URL.revokeObjectURL(url)
 }

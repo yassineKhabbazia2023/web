@@ -1,4 +1,4 @@
-import { type UploadFile, type UploadRawFile, type UploadStatus } from 'element-plus'
+import { type UploadStatus } from 'element-plus'
 import type { IconName } from '../../types/IconName.types'
 
 export interface PUploadFileLineProps {
@@ -6,7 +6,7 @@ export interface PUploadFileLineProps {
   pHasButton?: boolean
   pButtonIconName?: IconName
   pTitleButton?: string
-  pFile: UploadFile | UploadRawFile
+  pFileName: string
   pStatus: UploadStatus
   pMessage?: string
   pColor?: 'persian' | 'white'

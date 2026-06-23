@@ -10,6 +10,9 @@ import type {
 } from '@entities/modules/wallet/types'
 import { ProspectEligibilityStatus } from '@entities/modules/wallet/enums'
 import type { Contact } from '@entities/services/contact/contactTypes'
+import type { BeneficiariesResponse, BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
+import { OnboardingStep } from '@entities/modules/entity/prospect/conformity/prospect-conformity.enums'
+import type { OnboardingStepResponse } from './prospects.types'
 
 export class ProspectsService {
   static async fetchProspectsAccounts(searchParams?: URLSearchParams): Promise<PaginationResponse<ProspectAccountRow>> {
@@ -40,7 +43,7 @@ export class ProspectsService {
   }
 
   static async createProspect(payload: ProspectCreationPayload): Promise<void> {
-    return api.gateway.post(`${API_PREFIXES.PROSPECT}/prospects/currentuser`, payload)
+    return api.gateway.post(`${API_PREFIXES.PROSPECT}/onboarding/currentuser`, payload)
   }
 
   static async checkProspectCreationEligibility(siret: string): Promise<ProspectEligibilityStatus> {
@@ -68,5 +71,81 @@ export class ProspectsService {
       params: { search, pageSize },
     })
     return response.data.items ?? []
+  }
+
+  static async fetchBeneficiaries(prospectId: number): Promise<BeneficiariesResponse> {
+    const response = await api.gateway.get<BeneficiariesResponse>(
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/beneficiaries`,
+    )
+    return response.data
+  }
+
+  static async uploadBeneficiaryDocuments(
+    prospectId: number,
+    beneficiaryId: string,
+    documentType: BeneficiaryDocumentType,
+    files: File[],
+  ): Promise<void> {
+    const formData = new FormData()
+    formData.append('documentType', documentType)
+    for (const file of files) {
+      formData.append('files', file)
+    }
+
+    return api.gateway.post(
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/beneficiaries/${beneficiaryId}/identity-documents`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    )
+  }
+
+  static deleteProspectDocument(
+    prospectId: number,
+    documentId: number | string,
+  ): Promise<void> {
+    return api.gateway.delete(
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/documents/${documentId}`,
+    )
+  }
+
+  static async fetchOnboardingSteps(prospectId: number): Promise<OnboardingStepResponse[]> {
+    const response = await api.gateway.get<OnboardingStepResponse[]>(
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/steps`,
+    )
+    return response.data
+  }
+
+  static completeOnboardingStep(prospectId: number, step: OnboardingStep): Promise<void> {
+    return api.gateway.put(
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/steps/complete`,
+      { StepName: step },
+    )
+  }
+
+  static async downloadCommercialProposal(prospectId: number): Promise<Blob> {
+    const response = await api.gateway.get<Blob>(
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/content/currentuser`,
+      { responseType: 'blob' },
+    )
+    return response.data
+  }
+
+  static uploadCommercialProposal(prospectId: number, file: File): Promise<void> {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    return api.gateway.post(
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/currentUser`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    )
   }
 }

@@ -213,6 +213,7 @@ $tag-padding: (
   min-width: 22px;
 
   &--type-warning,
+  &--type-error,
   &--type-dark-green,
   &--type-white,
   &--type-default {
@@ -233,6 +234,12 @@ $tag-padding: (
     background: var(--p-red-500);
     border-color: var(--p-red-500);
     color: var(--p-white);
+  }
+
+  &--type-error {
+    background: var(--p-surface-error);
+    border-color: var(--p-surface-error);
+    color: var(--p-text-error);
   }
 
   &--type-dark-green {

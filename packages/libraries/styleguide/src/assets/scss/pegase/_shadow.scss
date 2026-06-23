@@ -63,3 +63,9 @@ $shadow-color: var(--p-black-rock-900-rgb);
     // Inverted shadow (going upward)
     box-shadow: 0 -24px 50px 0 rgba($shadow-color, 0.2), 0 -8px 8px 0 rgba($shadow-color, 0.05), 0 -4px 4px 0 rgba($shadow-color, 0.08), 0 -2px 2px 0 rgba($shadow-color, 0.05), 0 -2px 1px 0 rgba($shadow-color, 0.1);
 }
+
+.shadow--6-bottom {
+    // Bottom-only variant: same layers as shadow--6, with a negative spread
+    // of -blur/2 per layer to cancel the lateral bleed of the blur
+    box-shadow: 0 24px 50px -25px rgba($shadow-color, 0.2), 0 8px 8px -4px rgba($shadow-color, 0.05), 0 4px 4px -2px rgba($shadow-color, 0.08), 0 2px 2px -1px rgba($shadow-color, 0.05), 0 2px 1px -1px rgba($shadow-color, 0.1);
+}

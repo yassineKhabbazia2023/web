@@ -5,6 +5,7 @@ import {
   GED_CONTEXT_META,
   HTML_TITLE_META,
   IS_UNITARY_VIEW_META,
+  LAYOUT_GRAY_BACKGROUND_META,
   LAYOUT_META,
   LAYOUT_NO_PADDING_META,
   PERMISSIONS_META,
@@ -22,6 +23,7 @@ declare module 'vue-router' {
     [GED_CONTEXT_META]?: GedContext
     [HTML_TITLE_META]?: string
     [IS_UNITARY_VIEW_META]?: boolean
+    [LAYOUT_GRAY_BACKGROUND_META]?: boolean
     [LAYOUT_META]?: Layout
     [LAYOUT_NO_PADDING_META]?: boolean
     [PERMISSIONS_META]?: Permission[]

@@ -297,6 +297,90 @@
       "title": "A step is required before activation",
       "description": "This client folder is not yet linked to RYDGE Conseil firm on Pennylane. Consult the linking procedure to send it to your client: once the linking is completed, you will be able to make your activation request without delay.",
       "button": "View the procedure to follow"
+    },
+    "prospect": {
+      "conformity": {
+        "beneficiaries": {
+          "description": "The information has been retrieved automatically. Upload an identity document.",
+          "tabLabel": "Beneficiary {index}",
+          "documentTypeLabel": "Identity document",
+          "documentTypePlaceholder": "Select a document type",
+          "documentTypeChangeAlert": "If you wish to change the identity document type, please delete your current documents.",
+          "requiredFieldError": "Required field",
+          "documentTypes": {
+            "cni": "CNI",
+            "passport": "Passport"
+          },
+          "lastNameLabel": "Last name",
+          "firstNameLabel": "First name",
+          "selectDocumentType": "Please select a document type",
+          "upload": {
+            "cniRecto": "ID Card Front",
+            "cniVerso": "ID Card Back",
+            "passport": "Passport"
+          },
+          "uploadLabel": "Valid identity document",
+          "uploadPrefixLabel": "Drag and drop your files or",
+          "uploadSuffixLabel": "browse your computer",
+          "uploadAuthorizedFormats": "JPEG, PNG, PDF",
+          "uploadMaxSize": "5 MB",
+          "uploadDeleteButtonTitle": "Delete the document",
+          "save": "Save",
+          "saveSuccess": "The documents have been saved",
+          "saveError": "An error occurred while saving the documents",
+          "viewDocumentsButton": "View",
+          "saveDocumentsButton": "Save these documents",
+          "validateAllBeneficiariesButton": "Validate all beneficiaries",
+          "validateSuccess": "Beneficiaries have been validated successfully",
+          "validateError": "Beneficiary validation failed due to a technical error"
+        },
+        "conformityDocuments": {
+          "description": "Upload the required supporting documents below, then save them.",
+          "uploadPrefixLabel": "Drag and drop your file or",
+          "uploadSuffixLabel": "browse your computer",
+          "uploadAuthorizedFormats": "PDF, JPG, PNG",
+          "uploadMaxSize": "5 MB",
+          "uploadDeleteButtonTitle": "Delete the document",
+          "save": "Save these documents",
+          "saveSuccess": "The documents have been saved",
+          "saveError": "An error occurred while saving the documents",
+          "markSectionCompleted": "Validate the supporting documents",
+          "markSectionCompletedError": "The supporting documents validation failed due to a technical error",
+          "drawerTitle": "Documents",
+          "drawerAlert": "Find your documents here.",
+          "consult": "View",
+          "drawerClose": "Close"
+        },
+        "stepPlaceholderTitle": "This is the « {label} » step screen.",
+        "stepPlaceholderHint": "Click a step in the tracker on the left to navigate here.",
+        "mockBanner": "Mocked screen to illustrate the compliance concept — non-contractual rendering",
+        "proposal": {
+          "bannerTitle": "Commercial proposal",
+          "customerPendingAlert": "{creationStatus} Your expert will soon upload your commercial proposal with RYDGE Conseil. You will be able to find it in your space and will be notified by email.",
+          "customerPendingAlertBold": "Being created:",
+          "collabToUploadSubtitle": "Upload your commercial proposal",
+          "collabSentSubtitle": "The proposal has been sent to the client",
+          "customerDocumentSubtitle": "If you have any questions, feel free to ask your advisor",
+          "uploadLabel": "Commercial proposal",
+          "uploadPrefixLabel": "Drag the file or",
+          "uploadSuffixLabel": "browse your computer",
+          "fileSizeLimit": "5 MB",
+          "sendToCustomer": "Send to client",
+          "consult": "View",
+          "sendSuccess": "The commercial proposal has been sent to the client",
+          "sendError": "An error occurred while sending the commercial proposal",
+          "downloadError": "An error occurred while downloading the commercial proposal",
+          "loadError": "An error occurred. Please refresh the page."
+        }
+      },
+      "deleteDocumentDialog": {
+        "title": "Delete the document",
+        "confirmation": "You are about to delete the document \"{fileName}\". Are you sure you want to continue?",
+        "cancel": "Cancel",
+        "confirm": "Delete",
+        "success": "The document has been deleted",
+        "error": "The document could not be deleted due to a technical error"
+      }
     }
   }
 }

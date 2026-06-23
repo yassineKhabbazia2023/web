@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import { CUSTOMER_ROUTES } from '@customer/router/customer.routes'
-import { FEATURE_FLAG_META, IS_UNITARY_VIEW_META } from '@pulse/common/constants'
+import { FEATURE_FLAG_META, IS_UNITARY_VIEW_META, LAYOUT_GRAY_BACKGROUND_META } from '@pulse/common/constants'
 import { Feature } from '@pulse/common/enums'
 
 /**
@@ -27,6 +27,9 @@ export const prospectCustomerRoutes: RouteRecordRaw[] = [
         path: CUSTOMER_ROUTES.entity.prospect.conformity.path,
         name: CUSTOMER_ROUTES.entity.prospect.conformity.name,
         component: () => import('@pulse/entities/entity-pages').then(pages => pages.Conformity),
+        meta: {
+          [LAYOUT_GRAY_BACKGROUND_META]: true,
+        },
       },
       // DOCUMENTS
       {

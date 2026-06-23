@@ -19,6 +19,7 @@ export interface UploadProps {
   pDeleteButtonTitle?: string
   pRejectedFileMessage?: string
   pMaxFileSize?: number
+  pShowDeleteButton?: boolean
   pLabel?: string
   pInitialFiles?: UploadFile[]
 }

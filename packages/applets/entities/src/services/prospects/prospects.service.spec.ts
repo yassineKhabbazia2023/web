@@ -1,0 +1,334 @@
+import { API_PREFIXES } from '@pulse/common/constants'
+import { BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
+import {
+  OnboardingStep,
+  OnboardingStepStatus,
+} from '@entities/modules/entity/prospect/conformity/prospect-conformity.enums'
+import { getBeneficiariesResponseMock, getFileMock } from '@entities/__mocks__/beneficiaries.mocks'
+import {
+  getMockedProspectAccountRow,
+  getProspectCreationPayloadMock,
+} from '@entities/__mocks__/prospect.mocks'
+import { getMockedCollaborators } from '@entities/__mocks__/collaborators.mocks'
+import {
+  getCollaboratorTargetRolesMock,
+  getDropdownsContentMock,
+  getProspectEntitySearchResultMock,
+} from '@entities/modules/wallet/pages/prospects/components/prospect-creation-drawer/__mocks__/prospect-creation-drawer.mocks'
+import { ProspectEligibilityStatus } from '@entities/modules/wallet/enums'
+import { ProspectsService } from './prospects.service'
+import type { OnboardingStepResponse } from './prospects.types'
+
+const mocks = vi.hoisted(() => ({
+  get: vi.fn(),
+  post: vi.fn(),
+  put: vi.fn(),
+  delete: vi.fn(),
+}))
+
+vi.mock('@pulse/common/api', () => ({
+  api: {
+    gateway: {
+      get: mocks.get,
+      post: mocks.post,
+      put: mocks.put,
+      delete: mocks.delete,
+    },
+  },
+}))
+
+const prospectId = 602
+
+describe('ProspectsService', () => {
+  describe('fetchProspectsAccounts', () => {
+    it('should GET the current user prospects without a query string when no params are provided', async () => {
+      const responseData = {
+        items: [getMockedProspectAccountRow()],
+        currentPage: 1,
+        totalItems: 1,
+        totalPages: 1,
+      }
+      mocks.get.mockResolvedValueOnce({ data: responseData })
+
+      const result = await ProspectsService.fetchProspectsAccounts()
+
+      expect(mocks.get).toHaveBeenCalledWith(`${API_PREFIXES.WALLET}/prospects/currentuser`)
+      expect(result).toEqual(responseData)
+    })
+
+    it('should append the search params to the URL when provided', async () => {
+      const searchParams = new URLSearchParams({ page: '1', pageSize: '20' })
+      mocks.get.mockResolvedValueOnce({ data: { items: [], currentPage: 1, totalItems: 0, totalPages: 0 } })
+
+      await ProspectsService.fetchProspectsAccounts(searchParams)
+
+      expect(mocks.get).toHaveBeenCalledWith(
+        `${API_PREFIXES.WALLET}/prospects/currentuser?${searchParams}`,
+      )
+    })
+  })
+
+  describe('archiveProspect', () => {
+    it('should DELETE the prospect for the current user', async () => {
+      await ProspectsService.archiveProspect(prospectId)
+
+      expect(mocks.delete).toHaveBeenCalledWith(
+        `${API_PREFIXES.WALLET}/prospects/${prospectId}/currentuser`,
+      )
+    })
+  })
+
+  describe('fetchProspectCreationDropdownContent', () => {
+    it('should GET the referential infos and return the data', async () => {
+      const responseData = getDropdownsContentMock()
+      mocks.get.mockResolvedValueOnce({ data: responseData })
+
+      const result = await ProspectsService.fetchProspectCreationDropdownContent()
+
+      expect(mocks.get).toHaveBeenCalledWith(`${API_PREFIXES.PROSPECT}/referential-infos`)
+      expect(result).toEqual(responseData)
+    })
+  })
+
+  describe('searchEntities', () => {
+    it('should GET the accounts search endpoint with the query and return the data', async () => {
+      const query = 'acme'
+      const responseData = [getProspectEntitySearchResultMock()]
+      mocks.get.mockResolvedValueOnce({ data: responseData })
+
+      const result = await ProspectsService.searchEntities(query)
+
+      expect(mocks.get).toHaveBeenCalledWith(`${API_PREFIXES.PROSPECT}/accounts/search`, {
+        params: { query },
+      })
+      expect(result).toEqual(responseData)
+    })
+
+    it('should return an empty array when the response has no data', async () => {
+      mocks.get.mockResolvedValueOnce({ data: undefined })
+
+      const result = await ProspectsService.searchEntities('acme')
+
+      expect(result).toEqual([])
+    })
+  })
+
+  describe('createProspect', () => {
+    it('should POST the onboarding endpoint with the payload', async () => {
+      const payload = getProspectCreationPayloadMock()
+
+      await ProspectsService.createProspect(payload)
+
+      expect(mocks.post).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/currentuser`,
+        payload,
+      )
+    })
+  })
+
+  describe('checkProspectCreationEligibility', () => {
+    const siret = '12345678900001'
+
+    it('should GET the eligibility endpoint with the siret and a validateStatus predicate', async () => {
+      mocks.get.mockResolvedValueOnce({ status: 202 })
+
+      await ProspectsService.checkProspectCreationEligibility(siret)
+
+      expect(mocks.get).toHaveBeenCalledWith(`${API_PREFIXES.PROSPECT}/prospects/check-eligibility`, {
+        params: { siret },
+        validateStatus: expect.any(Function),
+      })
+
+      const { validateStatus } = mocks.get.mock.calls[0][1]
+      expect(validateStatus(200)).toBe(true)
+      expect(validateStatus(202)).toBe(true)
+      expect(validateStatus(400)).toBe(true)
+      expect(validateStatus(404)).toBe(false)
+    })
+
+    it('should return ELIGIBLE when the status is 202', async () => {
+      mocks.get.mockResolvedValueOnce({ status: 202 })
+
+      const result = await ProspectsService.checkProspectCreationEligibility(siret)
+
+      expect(result).toBe(ProspectEligibilityStatus.ELIGIBLE)
+    })
+
+    it('should return ALREADY_CLIENT when the status is 200', async () => {
+      mocks.get.mockResolvedValueOnce({ status: 200 })
+
+      const result = await ProspectsService.checkProspectCreationEligibility(siret)
+
+      expect(result).toBe(ProspectEligibilityStatus.ALREADY_CLIENT)
+    })
+
+    it('should return INVALID_SIRET when the status is 400', async () => {
+      mocks.get.mockResolvedValueOnce({ status: 400 })
+
+      const result = await ProspectsService.checkProspectCreationEligibility(siret)
+
+      expect(result).toBe(ProspectEligibilityStatus.INVALID_SIRET)
+    })
+  })
+
+  describe('fetchCollaboratorTargetRoles', () => {
+    it('should GET the collab roles and return the data', async () => {
+      const responseData = getCollaboratorTargetRolesMock()
+      mocks.get.mockResolvedValueOnce({ data: responseData })
+
+      const result = await ProspectsService.fetchCollaboratorTargetRoles()
+
+      expect(mocks.get).toHaveBeenCalledWith(`${API_PREFIXES.PROSPECT}/collab-roles`)
+      expect(result).toEqual(responseData)
+    })
+
+    it('should return an empty array when the response has no data', async () => {
+      mocks.get.mockResolvedValueOnce({ data: undefined })
+
+      const result = await ProspectsService.fetchCollaboratorTargetRoles()
+
+      expect(result).toEqual([])
+    })
+  })
+
+  describe('fetchCollaborators', () => {
+    it('should GET the contacts endpoint with the search and the default page size', async () => {
+      const search = 'emma'
+      const collaborators = getMockedCollaborators()
+      mocks.get.mockResolvedValueOnce({ data: { items: collaborators } })
+
+      const result = await ProspectsService.fetchCollaborators(search)
+
+      expect(mocks.get).toHaveBeenCalledWith(`${API_PREFIXES.PROSPECT}/contacts`, {
+        params: { search, pageSize: 100 },
+      })
+      expect(result).toEqual(collaborators)
+    })
+
+    it('should forward an explicit page size', async () => {
+      mocks.get.mockResolvedValueOnce({ data: { items: [] } })
+
+      await ProspectsService.fetchCollaborators('emma', 25)
+
+      expect(mocks.get).toHaveBeenCalledWith(`${API_PREFIXES.PROSPECT}/contacts`, {
+        params: { search: 'emma', pageSize: 25 },
+      })
+    })
+
+    it('should return an empty array when the response has no items', async () => {
+      mocks.get.mockResolvedValueOnce({ data: {} })
+
+      const result = await ProspectsService.fetchCollaborators('emma')
+
+      expect(result).toEqual([])
+    })
+  })
+
+  describe('fetchBeneficiaries', () => {
+    it('should GET the beneficiaries of the prospect and return the data', async () => {
+      const responseData = getBeneficiariesResponseMock()
+      mocks.get.mockResolvedValueOnce({ data: responseData })
+
+      const result = await ProspectsService.fetchBeneficiaries(prospectId)
+
+      expect(mocks.get).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/beneficiaries`,
+      )
+      expect(result).toEqual(responseData)
+    })
+  })
+
+  describe('uploadBeneficiaryDocuments', () => {
+    it('should POST a multipart form with the document type and every file', async () => {
+      const beneficiaryId = 'beneficiary-guid-1'
+      const recto = getFileMock('cni-recto.pdf')
+      const verso = getFileMock('cni-verso.pdf')
+
+      await ProspectsService.uploadBeneficiaryDocuments(
+        prospectId,
+        beneficiaryId,
+        BeneficiaryDocumentType.CNI,
+        [recto, verso],
+      )
+
+      expect(mocks.post).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/beneficiaries/${beneficiaryId}/identity-documents`,
+        expect.any(FormData),
+        { headers: { 'Content-Type': 'multipart/form-data' } },
+      )
+      const [, formData] = mocks.post.mock.calls[0]
+      expect(formData.get('documentType')).toBe(BeneficiaryDocumentType.CNI)
+      expect(formData.getAll('files')).toEqual([recto, verso])
+    })
+  })
+
+  describe('deleteProspectDocument', () => {
+    it('should DELETE the prospect document by its id', async () => {
+      const documentId = 'doc-guid-1'
+
+      await ProspectsService.deleteProspectDocument(prospectId, documentId)
+
+      expect(mocks.delete).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/documents/${documentId}`,
+      )
+    })
+  })
+
+  describe('fetchOnboardingSteps', () => {
+    it('should GET the onboarding steps of the prospect and return the data', async () => {
+      const responseData: OnboardingStepResponse[] = [
+        { id: OnboardingStep.CommercialProposal, status: OnboardingStepStatus.InProgress },
+      ]
+      mocks.get.mockResolvedValueOnce({ data: responseData })
+
+      const result = await ProspectsService.fetchOnboardingSteps(prospectId)
+
+      expect(mocks.get).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/steps`,
+      )
+      expect(result).toEqual(responseData)
+    })
+  })
+
+  describe('completeOnboardingStep', () => {
+    it('should PUT the step complete endpoint with the step name', async () => {
+      await ProspectsService.completeOnboardingStep(prospectId, OnboardingStep.CommercialProposal)
+
+      expect(mocks.put).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/steps/complete`,
+        { StepName: OnboardingStep.CommercialProposal },
+      )
+    })
+  })
+
+  describe('downloadCommercialProposal', () => {
+    it('should GET the commercial proposal content as a blob and return it', async () => {
+      const blob = new Blob(['binary'], { type: 'application/pdf' })
+      mocks.get.mockResolvedValueOnce({ data: blob })
+
+      const result = await ProspectsService.downloadCommercialProposal(prospectId)
+
+      expect(mocks.get).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/content/currentuser`,
+        { responseType: 'blob' },
+      )
+      expect(result).toBe(blob)
+    })
+  })
+
+  describe('uploadCommercialProposal', () => {
+    it('should POST a multipart form with the file', async () => {
+      const file = getFileMock('proposal.pdf')
+
+      await ProspectsService.uploadCommercialProposal(prospectId, file)
+
+      expect(mocks.post).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/currentUser`,
+        expect.any(FormData),
+        { headers: { 'Content-Type': 'multipart/form-data' } },
+      )
+      const [, formData] = mocks.post.mock.calls[0]
+      expect(formData.get('file')).toBe(file)
+    })
+  })
+})

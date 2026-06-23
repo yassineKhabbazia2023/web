@@ -297,6 +297,90 @@
       "title": "Une étape est requise avant l'activation",
       "description": "Ce dossier client n'est pas encore rattaché au cabinet RYDGE Conseil sur Pennylane. Consultez la démarche de rattachement pour la transmettre à votre client : une fois que le rattachement sera réalisé, vous pourrez faire votre demande d'activation sans délai.",
       "button": "Consulter la démarche à suivre"
+    },
+    "prospect": {
+      "conformity": {
+        "beneficiaries": {
+          "description": "Les informations ont été récupérées automatiquement. Déposez une pièce d'identité.",
+          "tabLabel": "Bénéficiaire {index}",
+          "documentTypeLabel": "Pièce d'identité",
+          "documentTypePlaceholder": "Sélectionnez un type de document",
+          "documentTypeChangeAlert": "Si vous souhaitez changer de type de justificatif d'identité, veuillez supprimer vos pièces actuelles.",
+          "requiredFieldError": "Champ obligatoire",
+          "documentTypes": {
+            "cni": "CNI",
+            "passport": "Passeport"
+          },
+          "lastNameLabel": "Nom",
+          "firstNameLabel": "Prénom",
+          "selectDocumentType": "Veuillez sélectionner un type de document",
+          "upload": {
+            "cniRecto": "CNI Recto",
+            "cniVerso": "CNI Verso",
+            "passport": "Passeport"
+          },
+          "uploadLabel": "Titre d'identité en cours de validité",
+          "uploadPrefixLabel": "Déposer le fichier ou",
+          "uploadSuffixLabel": "parcourir l'ordinateur",
+          "uploadAuthorizedFormats": "JPEG, PNG, PDF",
+          "uploadMaxSize": "5 MB",
+          "uploadDeleteButtonTitle": "Supprimer le document",
+          "save": "Enregistrer",
+          "saveSuccess": "Les documents ont bien été enregistrés",
+          "saveError": "Une erreur est survenue lors de l'enregistrement des documents",
+          "viewDocumentsButton": "Consulter",
+          "saveDocumentsButton": "Enregistrer ces documents",
+          "validateAllBeneficiariesButton": "Valider l'ensemble des bénéficiaires",
+          "validateSuccess": "Les bénéficiaires ont été validés avec succès",
+          "validateError": "La validation des bénéficiaires a échoué suite à une erreur technique"
+        },
+        "conformityDocuments": {
+          "description": "Déposez les documents justificatifs requis ci-dessous, puis enregistrez-les.",
+          "uploadPrefixLabel": "Glissez-déposez votre fichier ou",
+          "uploadSuffixLabel": "parcourez votre ordinateur",
+          "uploadAuthorizedFormats": "PDF, JPG, PNG",
+          "uploadMaxSize": "5 Mo",
+          "uploadDeleteButtonTitle": "Supprimer le document",
+          "save": "Enregistrer ces documents",
+          "saveSuccess": "Les documents ont bien été enregistrés",
+          "saveError": "Une erreur est survenue lors de l'enregistrement des documents",
+          "markSectionCompleted": "Valider les documents justificatifs",
+          "markSectionCompletedError": "La validation des documents justificatifs a échoué suite à une erreur technique",
+          "drawerTitle": "Documents",
+          "drawerAlert": "Retrouvez ici vos documents.",
+          "consult": "Consulter",
+          "drawerClose": "Fermer"
+        },
+        "stepPlaceholderTitle": "Ceci est l'écran de l'étape « {label} ».",
+        "stepPlaceholderHint": "Cliquez sur une étape dans le tracker à gauche pour naviguer ici.",
+        "mockBanner": "Écran mocké pour présenter le concept de mise en conformité — rendu non contractuel",
+        "proposal": {
+          "bannerTitle": "Proposition commerciale",
+          "customerPendingAlert": "{creationStatus} Votre expert déposera bientôt votre proposition commerciale avec RYDGE Conseil. Vous pourrez la retrouver dans votre espace et vous serez notifié par mail.",
+          "customerPendingAlertBold": "En cours de création :",
+          "collabToUploadSubtitle": "Déposer votre proposition commerciale",
+          "collabSentSubtitle": "La proposition a été envoyée au client",
+          "customerDocumentSubtitle": "Si vous avez des questions, n'hésitez pas à les poser à votre conseiller",
+          "uploadLabel": "Proposition commerciale",
+          "uploadPrefixLabel": "Glisser le fichier ou",
+          "uploadSuffixLabel": "parcourir l'ordinateur",
+          "fileSizeLimit": "5 Mo",
+          "sendToCustomer": "Envoyer au client",
+          "consult": "Consulter",
+          "sendSuccess": "La proposition commerciale a bien été envoyée au client",
+          "sendError": "Une erreur est survenue lors de l'envoi de la proposition commerciale",
+          "downloadError": "Une erreur est survenue lors du téléchargement de la proposition commerciale",
+          "loadError": "Une erreur est survenue. Veuillez rafraîchir la page."
+        }
+      },
+      "deleteDocumentDialog": {
+        "title": "Supprimer le document",
+        "confirmation": "Vous êtes sur le point de supprimer le document « {fileName} ». Êtes-vous sûr de vouloir continuer ?",
+        "cancel": "Annuler",
+        "confirm": "Supprimer",
+        "success": "Le document a bien été supprimé",
+        "error": "Le document n'a pas pu être supprimé suite à une erreur technique"
+      }
     }
   }
 }

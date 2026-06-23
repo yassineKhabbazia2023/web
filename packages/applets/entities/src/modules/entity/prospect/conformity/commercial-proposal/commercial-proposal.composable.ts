@@ -1,0 +1,83 @@
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
+import { logger } from '@pulse/toolbox'
+import { useCurrentEntityStore } from '@pulse/common/stores'
+import { displayNotification } from '@pulse/styleguide'
+import { ProspectsService } from '@entities/services/prospects/prospects.service'
+import {
+  COMMERCIAL_PROPOSAL_ACCEPTED_MIME_TYPE,
+  COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_BYTES,
+} from './commercial-proposal.consts'
+import type { CommercialProposalEmits } from './commercial-proposal.types'
+
+const I18N_KEY = 'entities.prospect.conformity.proposal'
+
+export function useCommercialProposal(emit: CommercialProposalEmits) {
+  const { t } = useI18n()
+  const { currentEntity } = storeToRefs(useCurrentEntityStore())
+
+  const selectedCommercialProposalFile = ref<File | null>(null)
+  const isDownloading = ref(false)
+  const isSending = ref(false)
+
+  const hasSelectedFile = computed(() => selectedCommercialProposalFile.value !== null)
+
+  const openCommercialProposalDocument = async (): Promise<void> => {
+    const prospectId = currentEntity.value?.prospectId
+    if (prospectId === null || prospectId === undefined) {
+      return
+    }
+    isDownloading.value = true
+    try {
+      const documentBlob = await ProspectsService.downloadCommercialProposal(prospectId)
+      window.open(URL.createObjectURL(documentBlob), '_blank', 'noopener,noreferrer')
+    } catch (error) {
+      logger.error('Error downloading commercial proposal document', error)
+      displayNotification('error', t(`${I18N_KEY}.downloadError`))
+    } finally {
+      isDownloading.value = false
+    }
+  }
+
+  const onFilesSelected = (selectedFiles: File[]): void => {
+    selectedCommercialProposalFile.value = selectedFiles.find((file) =>
+      file.type === COMMERCIAL_PROPOSAL_ACCEPTED_MIME_TYPE
+      && file.size <= COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_BYTES,
+    ) ?? null
+  }
+
+  const onFileDeleted = (): void => {
+    selectedCommercialProposalFile.value = null
+  }
+
+  const sendCommercialProposalToCustomer = async (): Promise<void> => {
+    const prospectId = currentEntity.value?.prospectId
+    if (prospectId === null || prospectId === undefined || selectedCommercialProposalFile.value === null) {
+      return
+    }
+    isSending.value = true
+    try {
+      await ProspectsService.uploadCommercialProposal(prospectId, selectedCommercialProposalFile.value)
+      selectedCommercialProposalFile.value = null
+      displayNotification('success', t(`${I18N_KEY}.sendSuccess`))
+      // Let the parent refresh the stepper and this step status from the backend
+      emit('sent')
+    } catch (error) {
+      logger.error('Error sending commercial proposal to customer', error)
+      displayNotification('error', t(`${I18N_KEY}.sendError`))
+    } finally {
+      isSending.value = false
+    }
+  }
+
+  return {
+    isDownloading,
+    isSending,
+    hasSelectedFile,
+    openCommercialProposalDocument,
+    onFilesSelected,
+    onFileDeleted,
+    sendCommercialProposalToCustomer,
+  }
+}

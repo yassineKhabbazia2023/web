@@ -37,6 +37,7 @@
           class="main-container"
           :class="{
             'main-container--no-paddings': shouldRemovePadding,
+            'bg--gray-50': shouldUseGrayBackground,
           }"
         >
           <ContentLoader v-show="isContentLoading === true" />
@@ -56,7 +57,7 @@ import { ContentLoader } from '@pulse/shared/components'
 import { useCurrentEntityRouting } from '@pulse/shared/composables'
 import { useLoadingStore } from '@pulse/common/stores'
 import UserProfile from './user-profile'
-import { LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
+import { LAYOUT_GRAY_BACKGROUND_META, LAYOUT_NO_PADDING_META } from '@pulse/common/constants'
 import { DesktopHeader } from './header'
 import { Sidebar, SidebarEntity } from './navigation'
 import type { HomeLayoutProps } from './home.layout.types'
@@ -76,6 +77,11 @@ const handleClick = () => {
 const shouldRemovePadding = computed(() => {
   const removePadding = router.currentRoute.value?.meta[LAYOUT_NO_PADDING_META] === true
   return removePadding
+})
+
+const shouldUseGrayBackground = computed(() => {
+  const useGrayBackground = router.currentRoute.value?.meta[LAYOUT_GRAY_BACKGROUND_META] === true
+  return useGrayBackground
 })
 
 </script>

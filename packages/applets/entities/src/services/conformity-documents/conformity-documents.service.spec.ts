@@ -1,28 +1,68 @@
+import { apiGatewayMock } from '@pulse/common/mocks/vitest'
+import { API_PREFIXES } from '@pulse/common/constants'
+import { ConformityDocumentType } from '@entities/enums'
 import { ConformityDocumentsService } from './conformity-documents.service'
-import { MOCKED_CONFORMITY_DOCUMENTS } from '@entities/__mocks__'
 
-const prospectEntityId = 1971
+vi.mock('@pulse/common/api', () => ({
+  api: {
+    gateway: apiGatewayMock,
+  },
+}))
+
+const prospectId = 602
 
 describe('ConformityDocumentsService', () => {
   describe('getConformityDocuments', () => {
-    it('should resolve with the mocked conformity documents', async () => {
-      const documents = await ConformityDocumentsService.getConformityDocuments(prospectEntityId)
+    it('should GET the documents of the prospect and return the data', async () => {
+      const responseData = { status: 'InProgress', isComplete: false, requiredDocs: [] }
+      apiGatewayMock.get.mockResolvedValueOnce({ data: responseData })
 
-      expect(documents).toEqual(MOCKED_CONFORMITY_DOCUMENTS)
+      const result = await ConformityDocumentsService.getConformityDocuments(prospectId)
+
+      expect(apiGatewayMock.get).toHaveBeenCalledWith(`${API_PREFIXES.PROSPECT}/prospects/${prospectId}/documents`)
+      expect(result).toEqual(responseData)
     })
+  })
 
-    it('should expose every required field on each document', async () => {
-      const documents = await ConformityDocumentsService.getConformityDocuments(prospectEntityId)
+  describe('uploadConformityDocument', () => {
+    it('should POST a multipart form with the document type and file', async () => {
+      const file = new File(['content'], 'kbis.pdf', { type: 'application/pdf' })
 
-      expect(documents.length).toBeGreaterThan(0)
-      documents.forEach((document) => {
-        expect(document.id).toEqual(expect.any(String))
-        expect(document.name).toEqual(expect.any(String))
-        expect(document.depositDate).toEqual(expect.any(String))
-        expect(document.depositedBy.firstName).toEqual(expect.any(String))
-        expect(document.depositedBy.lastName).toEqual(expect.any(String))
-        expect(document.downloadUrl).toEqual(expect.any(String))
-      })
+      await ConformityDocumentsService.uploadConformityDocument(prospectId, ConformityDocumentType.KBIS, file)
+
+      expect(apiGatewayMock.post).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/prospects/${prospectId}/documents`,
+        expect.any(FormData),
+        { headers: { 'Content-Type': 'multipart/form-data' } },
+      )
+      const [, formData] = apiGatewayMock.post.mock.calls[0]
+      expect(formData.get('documentType')).toBe('KBIS')
+      expect(formData.get('file')).toBe(file)
+    })
+  })
+
+  describe('markConformityDocumentsAsCompleted', () => {
+    it('should PUT the justificatifs complete endpoint', async () => {
+      await ConformityDocumentsService.markConformityDocumentsAsCompleted(prospectId)
+
+      expect(apiGatewayMock.put).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/prospects/${prospectId}/justificatifs/complete`,
+      )
+    })
+  })
+
+  describe('getConformityDocumentContent', () => {
+    it('should GET the document content as a blob and return it', async () => {
+      const blob = new Blob(['binary'], { type: 'application/pdf' })
+      apiGatewayMock.get.mockResolvedValueOnce({ data: blob })
+
+      const result = await ConformityDocumentsService.getConformityDocumentContent(prospectId, 42)
+
+      expect(apiGatewayMock.get).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/prospects/${prospectId}/documents/42/content`,
+        { responseType: 'blob' },
+      )
+      expect(result).toBe(blob)
     })
   })
 })

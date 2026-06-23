@@ -1,3 +1,4 @@
+export * from './conformity-documents.enums'
 export * from './provider-name.enum'
 export * from './subscription-price-type.enum'
 export * from './offers-drawer.enum'

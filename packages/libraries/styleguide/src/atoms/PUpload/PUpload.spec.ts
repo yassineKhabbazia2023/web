@@ -71,7 +71,8 @@ const createWrapper = (props = defaultProps) =>
             pIconName: { type: String },
             pIsMultiLine: { type: Boolean, default: false },
             pStatus: { type: String },
-            pFile: { type: Object },
+            pFileName: { type: String },
+            pHasButton: { type: Boolean, default: false },
             pMessage: { type: String },
           },
         },
@@ -108,6 +109,25 @@ describe('pUpload', () => {
         pDisabled: true,
       })
       expect(wrapper.find('.p-upload--disabled').exists()).toBeTruthy()
+    })
+    it('should display the delete button on file lines by default', async () => {
+      const wrapper = createWrapper() as any
+      wrapper.vm.files = [mockedFile]
+      await nextTick()
+
+      const uploadFileLine = wrapper.findComponent({ name: 'PUploadFileLine' })
+      expect(uploadFileLine.props('pHasButton')).toBe(true)
+    })
+    it('should hide the delete button on file lines when pShowDeleteButton is false', async () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pShowDeleteButton: false,
+      }) as any
+      wrapper.vm.files = [mockedFile]
+      await nextTick()
+
+      const uploadFileLine = wrapper.findComponent({ name: 'PUploadFileLine' })
+      expect(uploadFileLine.props('pHasButton')).toBe(false)
     })
   })
 
@@ -363,6 +383,64 @@ describe('pUpload', () => {
 
       expect(wrapper.emitted('delete-file')).toBeTruthy()
       expect(wrapper.emitted('delete-file')).toStrictEqual([[mockedFile]])
+    })
+  })
+
+  describe('multi-file list displayed status', () => {
+    // Auto-upload flips accepted files to `success`, but a locally selected file
+    // is only pending here, so the multi-file list must keep the neutral `ready` look.
+    it('should map an accepted (success) file to the ready status', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pUploadType: PUploadType.DRAGGER,
+      }) as any
+
+      expect(wrapper.vm.getDisplayedStatus({ ...mockedFile, status: 'success' })).toBe('ready')
+    })
+
+    it('should keep a pending (ready/uploading) file as ready', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pUploadType: PUploadType.DRAGGER,
+      }) as any
+
+      expect(wrapper.vm.getDisplayedStatus({ ...mockedFile, status: 'ready' })).toBe('ready')
+      expect(wrapper.vm.getDisplayedStatus({ ...mockedFile, status: 'uploading' })).toBe('ready')
+    })
+
+    it('should keep a rejected (fail) file as fail', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pUploadType: PUploadType.DRAGGER,
+      }) as any
+
+      expect(wrapper.vm.getDisplayedStatus({ ...mockedFile, status: 'fail' })).toBe('fail')
+    })
+
+    it('should render the file line of an accepted file with the ready status', async () => {
+      const wrapper = shallowMount(PUpload, {
+        props: { ...defaultProps, pUploadType: PUploadType.DRAGGER },
+        global: {
+          stubs: {
+            ElUpload: {
+              name: 'ElUpload',
+              template: '<div><slot name="file" :file="file" /></div>',
+              data() {
+                return { file: { ...mockedFile, status: 'success' } }
+              },
+            },
+            PIcon: { name: 'PIcon', template: '<div><slot /></div>' },
+            PUploadFileLine: {
+              name: 'PUploadFileLine',
+              template: '<div />',
+              props: { pStatus: { type: String } },
+            },
+          },
+        },
+      }) as any
+      await nextTick()
+
+      expect(wrapper.findComponent({ name: 'PUploadFileLine' }).props('pStatus')).toBe('ready')
     })
   })
 })

@@ -4,6 +4,7 @@ export const FEATURE_FLAG_META = 'feature_flag' // this meta defines the feature
 export const GED_CONTEXT_META = 'ged-context-meta' // this meta defines the ged context to be used for the route
 export const HTML_TITLE_META = 'html_title' // this meta defines the title of the page in the HTML head
 export const IS_UNITARY_VIEW_META = 'is_unitary_view' // this meta expresses that the current route has an active entity, will be removed by url driven feature
+export const LAYOUT_GRAY_BACKGROUND_META = 'layout_gray_background' // tell the layout to use a gray background
 export const LAYOUT_META = 'layout' // defines the layout to be used for the route
 export const LAYOUT_NO_PADDING_META = 'layout_no_padding' // tell the layout to remove padding
 export const PERMISSIONS_META = 'permissions' // this meta defines if the route can be only accessed by users with these permissions
