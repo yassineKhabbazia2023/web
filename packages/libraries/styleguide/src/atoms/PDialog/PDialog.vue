@@ -6,6 +6,7 @@
     :title="pTitle"
     :width="pWidth"
     :fullscreen="pFullscreen"
+    :appendToBody="pAppendToBody"
     :modal="pModal"
     :center="pCenter"
     :alignCenter="pAlignCenter"
@@ -39,6 +40,7 @@ const props = withDefaults(defineProps<PDialogProps>(), {
   pDestroyOnClose: false,
   pCloseIconName: 'x',
   pFullscreen: false,
+  pAppendToBody: false,
 })
 
 const dialogModel = computed({

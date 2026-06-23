@@ -352,6 +352,49 @@
           "consult": "Consulter",
           "drawerClose": "Fermer"
         },
+        "payment": {
+          "title": "Mandat SEPA",
+          "titleCompleted": "Mandat SEPA transmis",
+          "description": "Mettez en place le prélèvement automatique pour simplifier le règlement de vos factures.",
+          "benefits": {
+            "automatic": {
+              "label": "Automatique",
+              "text": "Plus besoin de faire un virement ou d'envoyer un chèque."
+            },
+            "secure": {
+              "label": "Sécurisé",
+              "text": "Les paiements sont encadrés par votre banque."
+            },
+            "reliable": {
+              "label": "Fiable",
+              "text": "Vos factures sont réglées à date, chaque mois."
+            }
+          },
+          "selectOtherMethod": "Sélectionner un autre moyen de paiement",
+          "startConfiguration": "Commencer la configuration",
+          "completedIntro": "Le prélèvement automatique SEPA va être mis en place pour le règlement de vos factures RYDGE Conseil. Le prélèvement aura lieu à la date prévue avec votre expert :",
+          "completedBullets": {
+            "automatic": "Les prélèvements sont effectués automatiquement à chaque échéance",
+            "secure": "Les paiements sont sécurisés et encadrés par votre banque",
+            "traceable": "Vous conservez la traçabilité de chaque prélèvement"
+          },
+          "transmittedBoxTitle": "Mandat SEPA et prélèvement automatique",
+          "transmittedTag": "Transmis",
+          "downloadMandate": "Télécharger le mandat SEPA",
+          "collaboratorPendingLabel": "En cours de création :",
+          "collaboratorPendingAlert": "Votre client n'a pas encore défini son moyen de paiement. S'il ne choisit pas le Mandat SEPA vous serez prévenu pour établir ensemble son règlement.",
+          "otherTitleCompleted": "Autre moyen de paiement",
+          "otherClientAlert": "Votre expert Rydge Conseil vous recontactera pour configurer votre moyen de paiement. Si vous changez d'avis, vous pouvez revenir au mandat SEPA à tout moment.",
+          "otherCollaboratorAlert": "Votre client a souhaité configurer un autre moyen de paiement. Les équipes RYDGE se chargeront de recontacter le client pour finaliser sa mise en place.",
+          "returnToSepa": "Revenir au mandat SEPA",
+          "updateError": "Une erreur est survenue lors de la mise à jour du moyen de paiement. Veuillez réessayer.",
+          "otherMethodConfirmation": {
+            "title": "Autre mode de paiement",
+            "description": "En choisissant un autre mode de paiement, les équipes RYDGE se chargent de vous recontacter.",
+            "cancel": "Quitter",
+            "confirm": "Continuer"
+          }
+        },
         "stepPlaceholderTitle": "Ceci est l'écran de l'étape « {label} ».",
         "stepPlaceholderHint": "Cliquez sur une étape dans le tracker à gauche pour naviguer ici.",
         "mockBanner": "Écran mocké pour présenter le concept de mise en conformité — rendu non contractuel",

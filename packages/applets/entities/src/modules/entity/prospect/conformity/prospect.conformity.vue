@@ -68,6 +68,7 @@
           "
         >
           <h2
+            v-if="step.id !== PAYMENT_STEP_ID"
             class="
               prospect-conformity__step-title
               flex
@@ -96,6 +97,10 @@
             :status="commercialProposalStep?.status"
             :isLoading="isLoadingSteps"
             @sent="loadOnboardingSteps"
+          />
+          <Payment
+            v-else-if="step.id === PAYMENT_STEP_ID"
+            :isCollaborator="isCollab"
           />
           <p
             v-else
@@ -134,7 +139,7 @@ import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
-import { useCurrentEntityStore } from '@pulse/common/stores'
+import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
 import { AppColors } from '@pulse/styleguide'
 import {
   PCompletionTracker,
@@ -150,7 +155,9 @@ import CommercialProposal from './commercial-proposal/commercial-proposal.vue'
 import ConformityDocuments from './conformity-documents/conformity-documents.vue'
 import { useProspectConformity } from './prospect-conformity.composable'
 import Beneficiaries from './beneficiaries/beneficiaries.vue'
+import Payment from './payment/payment.vue'
 import {
+  PAYMENT_STEP_ID,
   COMMERCIAL_PROPOSAL_STEP_ID,
   PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID,
   PROSPECT_CONFORMITY_DESCRIPTION,
@@ -164,6 +171,7 @@ import {
 const { t } = useI18n()
 
 const { currentEntity } = storeToRefs(useCurrentEntityStore())
+const { isCollab } = storeToRefs(useUserStore())
 
 const contentRef = useTemplateRef<HTMLElement>('contentRef')
 const { selectedId, onStepClick } = useProspectConformity(contentRef)

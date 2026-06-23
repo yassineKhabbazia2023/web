@@ -17,6 +17,8 @@ export const PROSPECT_CONFORMITY_SECTION_ORDER: readonly ProspectConformitySecti
 
 export const PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID = 'beneficiaries'
 
+export const PAYMENT_STEP_ID = 'sepa'
+
 export const PROSPECT_CONFORMITY_SECTION_TITLES: Record<ProspectConformitySection, string> = {
   [ProspectConformitySection.Bases]: 'Les bases',
   [ProspectConformitySection.Documents]: 'Les documents',
@@ -27,6 +29,6 @@ export const PROSPECT_CONFORMITY_STEPS: readonly ProspectConformityItem[] = [
   { id: PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID, label: 'Bénéficiaires effectifs', status: 'incomplete', section: ProspectConformitySection.Bases },
   { id: SUPPORTING_DOCS_STEP_ID, label: 'Documents justificatifs', status: 'incomplete', section: ProspectConformitySection.Documents },
   { id: COMMERCIAL_PROPOSAL_STEP_ID, label: 'Proposition commerciale', status: 'incomplete', section: ProspectConformitySection.Documents },
-  { id: 'sepa', label: 'Mandat SEPA', status: 'incomplete', section: ProspectConformitySection.Documents },
+  { id: PAYMENT_STEP_ID, label: 'Moyens de paiement', status: 'incomplete', section: ProspectConformitySection.Documents },
   { id: 'mission-letter', label: 'Lettre de mission', status: 'incomplete', section: ProspectConformitySection.Relation },
 ]
