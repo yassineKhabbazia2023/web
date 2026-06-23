@@ -49,13 +49,24 @@ export class ManageWalletMenuManager {
     ]
   }
 
+  static buildSelectedFoldersMenuElements(translations: ManageWalletMenuTranslations): AccessibleMenuItem[] {
+    return [
+      {
+        pIconName: 'folderSymlink',
+        pValue: translations.delegateFolders,
+        pActionName: ManageWalletAction.DELEGATE_FOLDERS,
+        pState: 'default',
+        display: true,
+      },
+    ]
+  }
+
   static getMenuElements(
     selectedFoldersCount: number,
     translations: ManageWalletMenuTranslations,
   ): PToolboxItemProps[] {
-    // empty for now, dedicated selection menus will come in a next PR
     if (selectedFoldersCount > 0) {
-      return []
+      return filterAccessibleMenuItems(ManageWalletMenuManager.buildSelectedFoldersMenuElements(translations))
     }
     return filterAccessibleMenuItems(ManageWalletMenuManager.buildWalletMenuElements(translations))
   }

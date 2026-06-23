@@ -388,8 +388,14 @@ const openDelegationDrawerOnTab = (tab: DelegationTab) => {
   isDelegationDrawerOpened.value = true
 }
 
+const openSelectedFoldersDelegationDrawer = () => {
+  delegationInitialTab.value = undefined
+  isDelegationDrawerOpened.value = true
+}
+
 const WALLET_ACTION_HANDLERS: Record<ManageWalletAction, () => void> = {
   [ManageWalletAction.DELEGATE_WALLET]: () => openDelegationDrawerOnTab(DelegationTab.DELEGATE_WALLET),
+  [ManageWalletAction.DELEGATE_FOLDERS]: () => openSelectedFoldersDelegationDrawer(),
   [ManageWalletAction.VIEW_PERMANENT_DELEGATIONS]: () => openDelegationDrawerOnTab(DelegationTab.PERMANENT_DELEGATIONS),
   [ManageWalletAction.REQUEST_DELEGATION]: () => openDelegationDrawerOnTab(DelegationTab.REQUEST_DELEGATION),
   [ManageWalletAction.PENDING_DELEGATIONS]: () => openDelegationDrawerOnTab(DelegationTab.PENDING_REQUESTS),

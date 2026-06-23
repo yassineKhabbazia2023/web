@@ -4,6 +4,7 @@ export interface ManageWalletButtonProps {
 
 export interface ManageWalletMenuTranslations {
   delegateWallet: string
+  delegateFolders: string
   viewPermanentDelegations: string
   requestDelegation: string
   pendingDelegations: string

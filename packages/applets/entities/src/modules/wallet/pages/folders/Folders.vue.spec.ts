@@ -219,6 +219,27 @@ describe('deploy', () => {
     expect(delegationDrawer.props('initialTab')).toBe(expectedTab)
   })
 
+  it('opens the selected folders delegation drawer for the delegate folders action', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    const selectedFolderIds = mockedQueryResult.items
+      .slice(0, 2)
+      .map(({ accountId }) => accountId)
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', ManageWalletAction.DELEGATE_FOLDERS)
+    await nextTick()
+
+    const delegationDrawer = wrapper.findComponent({ name: 'DelegationDrawer' })
+    expect(delegationDrawer.exists()).toBe(true)
+    expect(delegationDrawer.props('selectedFolders')).toHaveLength(2)
+    expect(delegationDrawer.props('initialTab')).toBeUndefined()
+  })
+
   it('opens the entity creator drawer for the create test account action', async () => {
     const wrapper = createWrapper()
     await flushPromises()

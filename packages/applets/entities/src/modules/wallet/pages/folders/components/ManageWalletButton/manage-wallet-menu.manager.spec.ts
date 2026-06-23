@@ -16,6 +16,7 @@ vi.mock('@pulse/common/managers', () => ({
 
 const translations: ManageWalletMenuTranslations = {
   delegateWallet: 'Delegate',
+  delegateFolders: 'Delegate folders',
   viewPermanentDelegations: 'Permanent',
   requestDelegation: 'Request',
   pendingDelegations: 'Pending',
@@ -55,11 +56,17 @@ describe('ManageWalletMenuManager', () => {
     expect(getActions(0)).toContain(ManageWalletAction.CREATE_TEST_ACCOUNT)
   })
 
-  it('returns no action when at least one folder is selected', () => {
+  it('returns the folder delegation action when at least one folder is selected', () => {
     hasPermissionMock.mockReturnValue(true)
     isDelegationRequestTabsActivatedMock.mockReturnValue(true)
 
-    expect(getActions(1)).toEqual([])
-    expect(getActions(3)).toEqual([])
+    expect(getActions(1)).toEqual([ManageWalletAction.DELEGATE_FOLDERS])
+    expect(getActions(3)).toEqual([ManageWalletAction.DELEGATE_FOLDERS])
+  })
+
+  it('uses the folder symlink icon for the folder delegation action', () => {
+    const [delegateFoldersAction] = ManageWalletMenuManager.getMenuElements(2, translations)
+
+    expect(delegateFoldersAction.pIconName).toBe('folderSymlink')
   })
 })
