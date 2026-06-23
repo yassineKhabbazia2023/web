@@ -4,10 +4,13 @@
     class="flex flex--justify-content-center margin-y--4"
     data-testid="manage-rights-loader"
   >
-    <PLoader pType="primary" pSize="50" />
+    <PLoader
+      pType="primary"
+      pSize="50"
+    />
   </div>
   <div
-    v-else-if="beneficiaries.length > 0"
+    v-else
     class="beneficiaries"
   >
     <p
@@ -19,7 +22,10 @@
     >
       {{ t('entities.prospect.conformity.beneficiaries.description') }}
     </p>
-    <PTabs v-model="activeTab">
+    <PTabs
+      v-if="beneficiaries.length > 0"
+      v-model="activeTab"
+    >
       <PTabPane
         v-for="(beneficiary, index) in beneficiaries"
         :key="beneficiary.beneficiaryId"
@@ -113,21 +119,29 @@
             :isSaving="isSaving"
             :isValidating="isValidatingAll"
             :beneficiaryStepStatus="beneficiaryStepStatus"
-            @view-documents="() => {}"
+            @view-documents="() => { }"
             @save-documents="onSaveUploadedFiles"
             @validate-all-beneficiaries="onValidateAllBeneficiaries"
           />
         </div>
       </PTabPane>
     </PTabs>
-    <DeleteDocumentDialog
-      v-model="isDeleteDialogOpen"
-      :pProspectId="currentProspectId!"
-      :pDocumentId="documentPendingDeletion?.document.id ?? undefined"
-      :pFileName="documentPendingDeletion?.document.fileName ?? undefined"
-      @deleted="onDocumentDeleted"
-    />
+    <PAlert
+      v-else
+      pType="warning"
+    >
+      <template #bold-text>
+        {{ t('entities.prospect.conformity.beneficiaries.noBeneficiariesFromInpi') }}
+      </template>
+    </PAlert>
   </div>
+  <DeleteDocumentDialog
+    v-model="isDeleteDialogOpen"
+    :pProspectId="currentProspectId!"
+    :pDocumentId="documentPendingDeletion?.document.id ?? undefined"
+    :pFileName="documentPendingDeletion?.document.fileName ?? undefined"
+    @deleted="onDocumentDeleted"
+  />
 </template>
 
 <script setup lang="ts">

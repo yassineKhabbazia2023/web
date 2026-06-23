@@ -302,6 +302,7 @@
       "conformity": {
         "beneficiaries": {
           "description": "The information has been retrieved automatically. Upload an identity document.",
+          "noBeneficiariesFromInpi": "No beneficiary has been reported by INPI",
           "tabLabel": "Beneficiary {index}",
           "documentTypeLabel": "Identity document",
           "documentTypePlaceholder": "Select a document type",

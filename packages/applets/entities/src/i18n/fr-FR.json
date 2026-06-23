@@ -302,6 +302,7 @@
       "conformity": {
         "beneficiaries": {
           "description": "Les informations ont été récupérées automatiquement. Déposez une pièce d'identité.",
+          "noBeneficiariesFromInpi": "Aucun bénéficiaire n'a été remonté par l'INPI",
           "tabLabel": "Bénéficiaire {index}",
           "documentTypeLabel": "Pièce d'identité",
           "documentTypePlaceholder": "Sélectionnez un type de document",
