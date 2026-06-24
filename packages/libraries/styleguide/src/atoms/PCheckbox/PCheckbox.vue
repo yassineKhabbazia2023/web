@@ -2,7 +2,8 @@
   <ElCheckbox
     class="p-checkbox"
     :class="{
-      'p-checkbox--rounded': pRounded
+      'p-checkbox--rounded': pRounded,
+      'p-checkbox--label-left': pLabelLeft
     }"
     :label="pLabel"
     :model-value="model"
@@ -23,6 +24,7 @@ const model = defineModel<boolean>({
 })
 withDefaults(defineProps<PCheckboxProps>(), {
   pRounded: false,
+  pLabelLeft: false,
 })
 
 const onUpdateModelValue = (value: CheckboxValueType) => {

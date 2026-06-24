@@ -21,10 +21,15 @@ const meta: Meta<typeof PCheckbox> = {
       control: 'boolean',
       description: 'Style arrondi pour la checkbox',
     },
+    pLabelLeft: {
+      control: 'boolean',
+      description: 'Place la case à droite du label',
+    },
   },
   args: {
     modelValue: false,
     pRounded: false,
+    pLabelLeft: false,
   },
 }
 
@@ -38,7 +43,7 @@ export const Default: Story = {
     setup() {
       return { args }
     },
-    template: '<PCheckbox v-model="args.modelValue" :p-rounded="args.pRounded">Accepter les conditions</PCheckbox>',
+    template: '<PCheckbox v-model="args.modelValue" :p-rounded="args.pRounded" :p-label-left="args.pLabelLeft">Accepter les conditions</PCheckbox>',
   }),
   parameters: {
     docs: {
@@ -81,6 +86,7 @@ export const WithLabels: Story = {
         <PCheckbox>Option 1</PCheckbox>
         <PCheckbox :model-value="true">Option 2</PCheckbox>
         <PCheckbox>Très long texte qui permet de tester le comportement. Dans ce cas particulier la checkbox à droite doit être centrée verticalements et le texte ne doit pas être tronqué.</PCheckbox>
+        <PCheckbox :p-label-left="true">Très long texte qui permet de tester le comportement. Dans ce cas particulier la checkbox à droite doit être centrée verticalements et le texte ne doit pas être tronqué.</PCheckbox>
       </div>
     `,
   }),
@@ -116,6 +122,27 @@ export const Rounded: Story = {
   },
 }
 
+// Label on the left
+export const LabelLeft: Story = {
+  render: () => ({
+    components: { PCheckbox },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <PCheckbox :p-label-left="true">Case à droite du label</PCheckbox>
+        <PCheckbox :p-label-left="true" :model-value="true">Case à droite du label, cochée</PCheckbox>
+      </div>
+    `,
+  }),
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story: 'Checkbox avec la case positionnée à droite du label.',
+      },
+    },
+  },
+}
+
 // Form examples
 export const FormExamples: Story = {
   render: () => ({
@@ -136,7 +163,7 @@ export const FormExamples: Story = {
           <div style="display: flex; flex-direction: column; gap: 8px;">
             <PCheckbox :model-value="true">J'accepte les conditions générales d'utilisation</PCheckbox>
             <PCheckbox :model-value="true">J'accepte la politique de confidentialité</PCheckbox>
-            <PCheckbox :model-value="false">Je souhaite recevoir la newsletter</PCheckbox>
+            <PCheckbox :model-value="false" :p-label-left="true">Je souhaite recevoir la newsletter</PCheckbox>
           </div>
         </div>
       </div>

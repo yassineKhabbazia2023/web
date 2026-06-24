@@ -20,6 +20,18 @@ describe('pCheckbox', () => {
     expect(wrapper.find('.p-checkbox--rounded')).toBeTruthy()
   })
 
+  it('should not apply the label-left modifier by default', () => {
+    const wrapper: VueWrapper<any> = createWrapper()
+
+    expect(wrapper.findComponent({ name: 'ElCheckbox' }).classes()).not.toContain('p-checkbox--label-left')
+  })
+
+  it('should apply the label-left modifier when pLabelLeft is true', () => {
+    const wrapper: VueWrapper<any> = createWrapper({ pLabelLeft: true })
+
+    expect(wrapper.findComponent({ name: 'ElCheckbox' }).classes()).toContain('p-checkbox--label-left')
+  })
+
   it('should pass false to ElCheckbox modelValue by default', () => {
     const wrapper: VueWrapper<any> = createWrapper()
 
