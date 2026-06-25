@@ -63,4 +63,22 @@ describe('pAlert', () => {
     const pIconComponent = wrapper.findComponent({ name: 'PIcon' })
     expect(pIconComponent.props('pName')).toBe('arrowHere')
   })
+  it('should let an explicit icon override the type icon', async () => {
+    const wrapper = createWrapper({ pType: 'success', pIconName: 'lock' })
+    await vi.dynamicImportSettled()
+    const pIconComponent = wrapper.findComponent({ name: 'PIcon' })
+    expect(pIconComponent.props('pName')).toBe('lock')
+  })
+  it('should render the icon at 16px by default', async () => {
+    const wrapper = createWrapper({ pType: 'main' })
+    await vi.dynamicImportSettled()
+    const pIconComponent = wrapper.findComponent({ name: 'PIcon' })
+    expect(pIconComponent.props('pSize')).toBe('16')
+  })
+  it('should render the icon at the provided size', async () => {
+    const wrapper = createWrapper({ pType: 'main', pIconSize: '32' })
+    await vi.dynamicImportSettled()
+    const pIconComponent = wrapper.findComponent({ name: 'PIcon' })
+    expect(pIconComponent.props('pSize')).toBe('32')
+  })
 })

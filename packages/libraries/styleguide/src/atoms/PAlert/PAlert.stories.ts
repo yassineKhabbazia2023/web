@@ -27,8 +27,16 @@ const meta: Meta<typeof PAlert> = {
         'checkCircle',
         'exclamationTriangle',
         'xCircle',
+        'lock',
+        'bell',
+        'star',
+        'shield',
       ],
-      description: 'Icône personnalisée (optionnel)',
+      description: 'Icône personnalisée qui remplace celle du type (optionnel)',
+    },
+    pIconSize: {
+      control: 'text',
+      description: 'Taille de l\'icône en pixels (16 par défaut)',
     },
     pClosable: {
       control: 'boolean',
@@ -38,6 +46,7 @@ const meta: Meta<typeof PAlert> = {
   args: {
     pType: 'main',
     pIconName: undefined,
+    pIconSize: '16',
     pClosable: false,
   },
 }
@@ -105,6 +114,77 @@ export const AlertTypes: Story = {
     docs: {
       description: {
         story: 'Différents types d\'alertes avec leurs couleurs et icônes respectives.',
+      },
+    },
+  },
+}
+
+// Custom icon
+export const CustomIcon: Story = {
+  render: () => ({
+    components: { PAlert },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <PAlert pType="success" pIconName="lock">
+          <template #bold-text>Compte sécurisé :</template>
+          Une icône explicite remplace celle du type (ici un cadenas sur une alerte de succès).
+        </PAlert>
+
+        <PAlert pType="main" pIconName="bell">
+          <template #bold-text>Notification :</template>
+          Vous avez de nouvelles notifications à consulter.
+        </PAlert>
+
+        <PAlert pType="information" pIconName="star">
+          <template #bold-text>Nouveauté :</template>
+          Découvrez les dernières fonctionnalités mises à votre disposition.
+        </PAlert>
+
+        <PAlert pType="warning" pIconName="shield">
+          <template #bold-text>Protection :</template>
+          Activez la protection renforcée pour sécuriser votre compte.
+        </PAlert>
+      </div>
+    `,
+  }),
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story: 'L\'icône fournie via `pIconName` remplace toujours celle déterminée par le type d\'alerte.',
+      },
+    },
+  },
+}
+
+// Icon sizes
+export const IconSizes: Story = {
+  render: () => ({
+    components: { PAlert },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <PAlert pType="information" pIconSize="16">
+          <template #bold-text>16px :</template>
+          Taille d'icône par défaut.
+        </PAlert>
+
+        <PAlert pType="information" pIconSize="24">
+          <template #bold-text>24px :</template>
+          Icône agrandie pour plus de visibilité.
+        </PAlert>
+
+        <PAlert pType="information" pIconSize="32">
+          <template #bold-text>32px :</template>
+          Grande icône pour les messages mis en avant.
+        </PAlert>
+      </div>
+    `,
+  }),
+  parameters: {
+    controls: { disable: true },
+    docs: {
+      description: {
+        story: 'La taille de l\'icône est configurable via `pIconSize` (16px par défaut).',
       },
     },
   },

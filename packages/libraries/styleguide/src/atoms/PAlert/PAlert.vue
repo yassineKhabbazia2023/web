@@ -2,7 +2,7 @@
   <div class="p-alert" :class="[typeModifierClass]">
     <PIcon
       class="p-alert__icon"
-      :size="iconSize"
+      :pSize="pIconSize"
       :pName="iconName"
     />
     <div class="p-alert__content margin-left--3">
@@ -20,8 +20,8 @@
       @click="$emit('close')"
     >
       <PIcon
-        :color="AppColors.JUNGLE_900"
-        size="16"
+        :pColor="AppColors.JUNGLE_900"
+        pSize="16"
         pName="x"
       />
     </button>
@@ -37,6 +37,7 @@ import type { PIconProps } from '../PIcon/PIcon.types'
 
 const props = withDefaults(defineProps<PAlertProps>(), {
   pType: 'main',
+  pIconSize: '16',
   pClosable: false,
 })
 
@@ -45,9 +46,12 @@ defineEmits<{
 }>()
 
 const typeModifierClass = computed(() => `p-alert--type-${props.pType}`)
-const iconSize = computed(() => props.pIconName ? 32 : 16)
 
 const iconName = computed<PIconProps['pName']>(() => {
+  // An explicit icon always wins, even on a typed alert (e.g. a lock on a success alert).
+  if (props.pIconName !== undefined) {
+    return props.pIconName
+  }
   switch (props.pType) {
     case 'success':
       return 'checkCircle'
@@ -56,7 +60,7 @@ const iconName = computed<PIconProps['pName']>(() => {
     case 'danger':
       return 'xCircle'
     default:
-      return props.pIconName ?? 'infoCircle'
+      return 'infoCircle'
   }
 })
 
