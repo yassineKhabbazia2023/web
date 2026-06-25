@@ -1,21 +1,7 @@
+import { isValidIBAN, isValidBIC, extractIBAN, extractBIC } from 'ibantools'
 import { IbanValidationError, BicValidationError } from './banking.validators.enum'
 import type { IbanValidationResult, BicValidationResult, ExtractedIban, ExtractedBic } from './banking.validators.type'
 import {
-  IBAN_FR_REGEX,
-  BBAN_FR_REGEX,
-  BIC_REGEX,
-  BANK_CODE_REGEX,
-  BRANCH_CODE_REGEX,
-  ACCOUNT_NUMBER_REGEX,
-  RIB_KEY_REGEX,
-  VALID_BIC_COUNTRY_CODES,
-  RIB_LETTER_TO_DIGIT,
-} from './banking.validators.const'
-
-// Re-export types, enums, and constants for convenience
-export { IbanValidationError, BicValidationError } from './banking.validators.enum'
-export type { IbanValidationResult, BicValidationResult, ExtractedIban, ExtractedBic } from './banking.validators.type'
-export {
   IBAN_FR_REGEX,
   BBAN_FR_REGEX,
   BIC_REGEX,
@@ -248,6 +234,27 @@ export function formatIbanFriendly(iban: string, separator = ' '): string | null
 
   // Separate every 4 characters
   return normalized.replaceAll(/(.{4})(?!$)/g, `$1${separator}`)
+}
+
+// === IBAN/BIC CONSISTENCY ===
+
+/**
+ * Checks that an IBAN and a BIC are coherent — used to flag an unreliable RIB read.
+ * Both must be individually valid (country-aware validation, mod-97 checksum and BIC
+ * structure, delegated to `ibantools`) and refer to the same country.
+ * @param iban - IBAN string (spaces are automatically removed)
+ * @param bic - BIC/SWIFT string (spaces are automatically removed)
+ * @returns true when the IBAN and BIC are both valid and share the same country
+ */
+export function areIbanAndBicCoherent(iban: string, bic: string): boolean {
+  const normalizedIban = normalizeInput(iban)
+  const normalizedBic = normalizeInput(bic)
+
+  if (isValidIBAN(normalizedIban) === false || isValidBIC(normalizedBic) === false) {
+    return false
+  }
+
+  return extractIBAN(normalizedIban).countryCode === extractBIC(normalizedBic).countryCode
 }
 
 // === BIC VALIDATION ===

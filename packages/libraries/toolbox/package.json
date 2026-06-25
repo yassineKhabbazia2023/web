@@ -14,6 +14,9 @@
     "./utils/object": "./src/utils/object/object.utils.ts",
     "./utils/dates": "./src/utils/dates/dates.utils.ts",
     "./utils/validator": "./src/utils/validators/index.ts",
+    "./utils/banking-validators": "./src/utils/banking-validators/index.ts",
+    "./utils/pdf-text-extractor": "./src/utils/pdf-text-extractor/index.ts",
+    "./utils/rib-extraction": "./src/utils/rib-extraction/index.ts",
     "./utils/string": "./src/utils/string/string.utils.ts",
     "./utils/html": "./src/utils/html/html.utils.ts",
     "./utils/http": "./src/utils/http/http.utils.ts",
@@ -29,5 +32,9 @@
     "lint:fix": "npm run lint -- --fix",
     "test": "vitest run",
     "test:ci": "vitest run --coverage"
+  },
+  "dependencies": {
+    "ibantools": "^4.5.4",
+    "pdfjs-dist": "^5.4.530"
   }
 }

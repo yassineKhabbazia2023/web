@@ -9,17 +9,19 @@ import {
   isValidBic,
   validateBic,
   extractBic,
+  areIbanAndBicCoherent,
   isValidRibKey,
   calculateRibKey,
+} from './banking.validators'
+import {
   IBAN_FR_REGEX,
   BIC_REGEX,
   BANK_CODE_REGEX,
   BRANCH_CODE_REGEX,
   ACCOUNT_NUMBER_REGEX,
   RIB_KEY_REGEX,
-  IbanValidationError,
-  BicValidationError,
-} from './banking.validators'
+} from './banking.validators.const'
+import { IbanValidationError, BicValidationError } from './banking.validators.enum'
 
 describe('banking.validators', () => {
   describe('IBAN_FR_REGEX', () => {
@@ -389,6 +391,25 @@ describe('banking.validators', () => {
     it('should return null for invalid BIC', () => {
       expect(extractBic('INVALID')).toBeNull()
       expect(extractBic('')).toBeNull()
+    })
+  })
+
+  describe('areIbanAndBicCoherent', () => {
+    it('should return true when IBAN and BIC are valid and share the same country', () => {
+      expect(areIbanAndBicCoherent('FR7630001007941234567890185', 'BNPAFRPP')).toBe(true)
+      expect(areIbanAndBicCoherent('FR76 3000 1007 9412 3456 7890 185', 'bnpafrpp')).toBe(true)
+    })
+
+    it('should return false when the IBAN and BIC countries differ', () => {
+      expect(areIbanAndBicCoherent('FR7630001007941234567890185', 'DEUTDEFF')).toBe(false)
+    })
+
+    it('should return false when the IBAN checksum is invalid', () => {
+      expect(areIbanAndBicCoherent('FR7630001007941234567890186', 'BNPAFRPP')).toBe(false)
+    })
+
+    it('should return false when the BIC is invalid', () => {
+      expect(areIbanAndBicCoherent('FR7630001007941234567890185', 'BNPAFR')).toBe(false)
     })
   })
 

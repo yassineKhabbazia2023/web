@@ -4,6 +4,20 @@ import type { ExtractedTextItem, ExtractedPageText, ExtractedTextResult } from '
 
 export type { ExtractedTextItem, ExtractedPageText, ExtractedTextResult } from './pdf-text-extractor.type'
 
+// The PDF.js worker only needs to be wired once per session.
+let isWorkerConfigured = false
+
+const configureWorker = (): void => {
+  if (isWorkerConfigured) {
+    return
+  }
+  pdfjsLib.GlobalWorkerOptions.workerPort = new Worker(
+    new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url),
+    { type: 'module' },
+  )
+  isWorkerConfigured = true
+}
+
 /**
  * Utility class for extracting text from PDF documents using PDF.js
  * Contains pure business logic without Vue dependency
@@ -15,6 +29,7 @@ export class PdfTextExtractor {
    * @returns Loaded PDF document proxy
    */
   static async loadDocument(data: ArrayBuffer): Promise<PDFDocumentProxy> {
+    configureWorker()
     const loadingTask = pdfjsLib.getDocument({ data })
     return await loadingTask.promise
   }

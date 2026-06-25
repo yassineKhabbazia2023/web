@@ -3,7 +3,7 @@ import {
   isValidIbanChecksum,
   isValidBic,
   isValidRibKey,
-} from '../utils/validators'
+} from '../banking-validators'
 import type { RibData, RibValidation, RibExtractionResult } from './rib-extraction.type'
 import {
   ibanMatcher,

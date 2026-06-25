@@ -164,8 +164,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue'
-import { GlobalWorkerOptions } from 'pdfjs-dist'
+import { ref, reactive } from 'vue'
 import PUpload from '../../atoms/PUpload'
 import { PUploadType } from '../../atoms/PUpload/PUpload.enums'
 import PLoader from '../../atoms/PLoader'
@@ -174,8 +173,8 @@ import PInput from '../../atoms/PInput'
 import PButton from '../../atoms/PButton'
 import { AppColors } from '../../utils/AppColorsEnum'
 import { useCopyClipboard } from '../../utils/clipboard'
-import { PdfTextExtractor, type ExtractedTextResult } from './pdf-text-extractor'
-import { RibExtractionService } from './services'
+import { PdfTextExtractor, type ExtractedTextResult } from '@pulse/toolbox/utils/pdf-text-extractor'
+import { RibExtractionService } from '@pulse/toolbox/utils/rib-extraction'
 
 /** Initial form data structure for RIB fields */
 const INITIAL_FORM_DATA = {
@@ -186,14 +185,6 @@ const INITIAL_FORM_DATA = {
   accountNumber: '',
   ribKey: '',
 }
-
-// Initialize PDF.js worker
-onMounted(() => {
-  GlobalWorkerOptions.workerPort = new Worker(
-    new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url),
-    { type: 'module' },
-  )
-})
 
 const uploadRef = ref<InstanceType<typeof PUpload> | null>(null)
 const isLoading = ref(false)
