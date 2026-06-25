@@ -1,5 +1,5 @@
 import type { VueWrapper } from '@vue/test-utils'
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { type Mock } from 'vitest'
 import { folderServiceMock } from '@ged/__mocks__/folder.service.mocks'
 import { type CreateFolderSectionProps }
@@ -198,9 +198,9 @@ describe('createFolderSection', () => {
       const modal = wrapper.findComponent({ name: 'CreateFolderModal' })
 
       modal.vm.$emit('on-confirm-create-folder', 'theNewFolder')
-      await nextTick()
+      await flushPromises()
 
-      expect(modal.props('isCreateFolderModalVisible')).toBeFalsy()
+      expect(wrapper.findComponent({ name: 'CreateFolderModal' }).props('isCreateFolderModalVisible')).toBeFalsy()
     })
     it('should emit update-source-folders on success create folder', async () => {
       const updatedProps: CreateFolderSectionProps = {
@@ -251,6 +251,7 @@ describe('createFolderSection', () => {
       await nextTick()
 
       expect(wrapper.vm.isDialogVisible).toBeTruthy()
+      expect(wrapper.findComponent({ name: 'CreateFolderModal' }).exists()).toBeTruthy()
     })
     describe('cancel and close action', () => {
       const cases = [
@@ -269,6 +270,7 @@ describe('createFolderSection', () => {
         async ({ action, expectedEvent }) => {
           const updatedProps: CreateFolderSectionProps = {
             ...defaultProps,
+            isCreateFolderModalVisible: true,
           }
           const wrapper = createWrapper(updatedProps)
 
@@ -278,6 +280,7 @@ describe('createFolderSection', () => {
           await nextTick()
 
           expect(wrapper.emitted(expectedEvent)).toBeTruthy()
+          expect(wrapper.findComponent({ name: 'CreateFolderModal' }).props('isCreateFolderModalVisible')).toBeFalsy()
         },
       )
     })

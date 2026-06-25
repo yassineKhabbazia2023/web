@@ -108,7 +108,14 @@ describe('documents', () => {
     it('should propagate update-source-folders event from DocumentMove', async () => {
       const wrapper = createWrapper()
       await nextTick()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments = [documentMock]
+      await nextTick()
 
+      const documentsListWrapper = findDocumentsList(wrapper)
+      await documentsListWrapper.vm.$emit('toolbox-action-triggered', 'move-document')
+      await nextTick()
       const documentMoveWrapper = findDocumentMove(wrapper)
 
       await documentMoveWrapper.vm.$emit(
@@ -141,27 +148,37 @@ describe('documents', () => {
     it('should close move modal upon DocumentMove close-move-documents-modal event', async () => {
       const wrapper = createWrapper()
       await nextTick()
+      const componentInstance = wrapper.vm
+      componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments = [documentMock]
+      await nextTick()
 
+      const documentsListWrapper = findDocumentsList(wrapper)
+      await documentsListWrapper.vm.$emit('toolbox-action-triggered', 'move-document')
+      await nextTick()
       const documentMoveWrapper = findDocumentMove(wrapper)
       await documentMoveWrapper.vm.$emit(
         'close-move-documents-modal',
       )
       await nextTick()
 
-      expect(documentMoveWrapper.props('isMoveModalOpened')).toBeFalsy()
+      expect(findDocumentMove(wrapper).props('isMoveModalOpened')).toBeFalsy()
     })
 
     it('should close modal upon DocumentUpload close-upload-documents-modal event', async () => {
       const wrapper = createWrapper()
       await nextTick()
 
+      const documentActionBarWrapper = findDocumentActionBar(wrapper)
+      await documentActionBarWrapper.vm.$emit('p-upload-files-selected', generateTestFiles(2, 'VALID'))
+      await nextTick()
       const documentUploadWrapper = findDocumentUpload(wrapper)
       await documentUploadWrapper.vm.$emit(
         'close-upload-documents-modal',
       )
       await nextTick()
 
-      expect(documentUploadWrapper.props('isUploadModalOpened')).toBeFalsy()
+      expect(findDocumentUpload(wrapper).exists()).toBeFalsy()
     })
 
     it('should navigate to folder upon PBreadcrumb p-breadcrumb-item-click event', async () => {
@@ -328,6 +345,11 @@ describe('documents', () => {
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
       componentInstance.isSearchExpanded = false
+      componentInstance.selectedDocuments =
+        [documentsResponsePayload.documentsPage.items[0]]
+      await nextTick()
+      const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
+      await documentActionBar.vm.$emit('p-action-bar-button-clicked', 'actionbar-delete-action-click')
       await nextTick()
       const deleteModal = wrapper.findComponent({ name: 'DocumentDeleteModal' })
       await nextTick()
@@ -335,8 +357,8 @@ describe('documents', () => {
       await deleteModal.vm.$emit('confirm-delete-document')
       await nextTick()
 
-      expect(deleteModal.props('isVisible')).toBeFalsy()
-      expect(deleteModal.props('documentIds')).toStrictEqual([])
+      expect(wrapper.findComponent({ name: 'DocumentDeleteModal' }).props('isVisible')).toBeFalsy()
+      expect(wrapper.findComponent({ name: 'DocumentDeleteModal' }).props('documentIds')).toStrictEqual([])
       expect(vi.mocked(fetchFolderDocuments)).toHaveBeenCalledWith({
         serviceId: foldersData[0][0].children[0].serviceId,
         folderId: foldersData[0][0].children[0].id,
@@ -357,7 +379,12 @@ describe('documents', () => {
         componentInstance.documents = documentsResponsePayload
         componentInstance.isSearchExpanded = true
         componentInstance.searchContent = 'Hello'
+        componentInstance.selectedDocuments =
+          [documentsResponsePayload.documentsPage.items[0]]
 
+        await nextTick()
+        const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
+        await documentActionBar.vm.$emit('p-action-bar-button-clicked', 'actionbar-delete-action-click')
         await nextTick()
         const deleteModal = wrapper.findComponent({ name: 'DocumentDeleteModal' })
         await nextTick()
@@ -365,8 +392,8 @@ describe('documents', () => {
         await deleteModal.vm.$emit('confirm-delete-document')
         await nextTick()
 
-        expect(deleteModal.props('isVisible')).toBeFalsy()
-        expect(deleteModal.props('documentIds')).toStrictEqual([])
+        expect(wrapper.findComponent({ name: 'DocumentDeleteModal' }).props('isVisible')).toBeFalsy()
+        expect(wrapper.findComponent({ name: 'DocumentDeleteModal' }).props('documentIds')).toStrictEqual([])
         expect(vi.mocked(fetchDocumentsByKeyWord)).toHaveBeenCalledWith({
           serviceId: foldersData[0][0].children[0].serviceId,
           folderId: foldersData[0][0].children[0].id,
@@ -383,6 +410,11 @@ describe('documents', () => {
       const wrapper = createWrapper()
       const componentInstance = wrapper.vm
       componentInstance.documents = documentsResponsePayload
+      componentInstance.selectedDocuments =
+        [documentsResponsePayload.documentsPage.items[0]]
+      await nextTick()
+      const documentActionBar = wrapper.findComponent({ name: 'DocumentsActionsBar' })
+      await documentActionBar.vm.$emit('p-action-bar-button-clicked', 'actionbar-delete-action-click')
       await nextTick()
       const deleteModal = wrapper.findComponent({ name: 'DocumentDeleteModal' })
       await nextTick()
@@ -390,7 +422,7 @@ describe('documents', () => {
       await deleteModal.vm.$emit('cancel-delete-document')
       await nextTick()
 
-      expect(deleteModal.props('isVisible')).toBeFalsy()
+      expect(wrapper.findComponent({ name: 'DocumentDeleteModal' }).props('isVisible')).toBeFalsy()
     })
 
     it('should open delete modal  when click on action bar download button', async () => {
@@ -686,6 +718,8 @@ describe('documents', () => {
           'document-selection-change',
           [documentMock],
         )
+        await nextTick()
+        await documentsListWrapper.vm.$emit('toolbox-action-triggered', 'move-document')
         await nextTick()
 
         const documentMoveWrapper = findDocumentMove(wrapper)

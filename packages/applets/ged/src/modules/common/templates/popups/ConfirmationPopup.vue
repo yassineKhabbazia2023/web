@@ -5,6 +5,7 @@
       :title="title"
       :pShowClose="showClose"
       :pAlignCenter="alignCenter"
+      pDestroyOnClose
       @close="handleClosePopup"
     >
       <div class="confirmation-popup__message">

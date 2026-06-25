@@ -4,6 +4,7 @@
       v-model="isDialogVisible"
       :pTitle="modalTitle"
       :alignCenter="isCentered"
+      pDestroyOnClose
       @close="handleCloseModal"
     >
       <p class="single-input-modal__input-label">

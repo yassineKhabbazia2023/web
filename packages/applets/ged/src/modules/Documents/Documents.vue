@@ -165,7 +165,7 @@
   />
 
   <DocumentUpload
-    v-if="selectedFolder && filesSelected"
+    v-if="selectedFolder && filesSelected.length > 0"
     :currentService="currentService"
     :currentServiceName="currentServiceName"
     :currentEntity="currentEntity"
