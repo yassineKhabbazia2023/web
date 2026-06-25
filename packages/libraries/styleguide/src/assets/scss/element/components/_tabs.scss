@@ -139,12 +139,4 @@
       }
     }
   }
-
-  #{$self}__item:not(.is-active) {
-    .p-pastille.p-pastille--type-dark-green {
-      background: var(--p-gray-50);
-      border-color: var(--p-gray-50);
-      color: var(--p-gray-500);
-    }
-  }
 }

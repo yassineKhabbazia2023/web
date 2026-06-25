@@ -17,7 +17,7 @@ export interface BeneficiaryDocumentDeletionTarget {
 }
 
 export interface UseBeneficiariesEmits {
-  (e: 'documents-saved'): void
+  (e: 'refresh-steps'): void
 }
 
 export interface BeneficiariesProps {

@@ -90,7 +90,7 @@
           <Beneficiaries
             v-else-if="step.id === PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID"
             :beneficiaryStepStatus="beneficiaryStep?.status"
-            @documents-saved="loadOnboardingSteps"
+            @refresh-steps="loadOnboardingSteps"
           />
           <CommercialProposal
             v-else-if="step.id === COMMERCIAL_PROPOSAL_STEP_ID"

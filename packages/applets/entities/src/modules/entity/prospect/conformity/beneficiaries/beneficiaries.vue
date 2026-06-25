@@ -1,12 +1,29 @@
 <template>
   <div
     v-if="isLoading"
-    class="flex flex--justify-content-center margin-y--4"
-    data-testid="manage-rights-loader"
+    class="beneficiaries-skeleton"
   >
-    <PLoader
-      pType="primary"
-      pSize="50"
+    <PSkeleton
+      pHeight="14px"
+      pWidth="60%"
+    />
+    <PSkeleton
+      pHeight="40px"
+      class="margin-top--6"
+    />
+    <div class="flex flex-gap--4 margin-top--4">
+      <PSkeleton
+        pHeight="120px"
+        pWidth="48%"
+      />
+      <PSkeleton
+        pHeight="120px"
+        pWidth="48%"
+      />
+    </div>
+    <PSkeleton
+      pHeight="40px"
+      class="margin-top--4"
     />
   </div>
   <div
@@ -33,9 +50,15 @@
       >
         <template #label>
           <span>{{ t('entities.prospect.conformity.beneficiaries.tabLabel', { index: index + 1 }) }}</span>
-          <PPastille
+          <PLoader
+            v-if="isRefreshing && activeBeneficiaryId === beneficiary.beneficiaryId"
+            pSize="12"
             class="margin-left--2"
-            pSize="small"
+          />
+          <PPastille
+            v-else
+            class="margin-left--2 beneficiary-pastille"
+            pSize="x-small"
             :pType="BeneficiariesManager.isBeneficiaryComplete(beneficiary) ? 'dark-green' : 'error'"
           />
         </template>
@@ -156,10 +179,11 @@ import {
   PFormItem,
   PFormLine,
   PInput,
-  PLoader,
   PPastille,
+  PSkeleton,
   PTabPane,
   PTabs,
+  PLoader,
 } from '@pulse/styleguide/components'
 import type { PDropdownOption } from '@pulse/styleguide/types'
 import { BeneficiaryDocumentType } from '@entities/modules/entity/prospect/types'
@@ -167,7 +191,7 @@ import { BENEFICIARY_DOCUMENT_TYPE_TRANSLATION_KEYS } from './beneficiaries.cons
 import { buildBeneficiaryFormRules } from './beneficiaries.validation'
 import { useBeneficiaries } from './beneficiaries.composable'
 import { BeneficiariesManager } from './beneficiaries.manager'
-import type { BeneficiariesProps } from './beneficiaries.types'
+import type { BeneficiariesProps, UseBeneficiariesEmits } from './beneficiaries.types'
 import { OnboardingStepStatus } from '../prospect-conformity.enums'
 import BeneficiaryActions from './components/beneficiary-actions/beneficiary-actions.vue'
 import BeneficiaryDocumentUpload from './components/beneficiary-document-upload/beneficiary-document-upload.vue'
@@ -177,12 +201,11 @@ const { t } = useI18n()
 
 const props = defineProps<BeneficiariesProps>()
 
-const emit = defineEmits<{
-  (e: 'documents-saved'): void
-}>()
+const emits = defineEmits<UseBeneficiariesEmits>()
 
 const {
   isLoading,
+  isRefreshing,
   isSaving,
   isValidatingAll,
   currentProspectId,
@@ -199,7 +222,7 @@ const {
   onDocumentDeleted,
   onSave,
   onValidateAllBeneficiaries,
-} = useBeneficiaries(emit)
+} = useBeneficiaries(emits)
 
 const beneficiaryFormRules = buildBeneficiaryFormRules(
   t('entities.prospect.conformity.beneficiaries.requiredFieldError'),
@@ -228,6 +251,9 @@ const onSaveClick = async () => {
 const activeTab = computed<string>({
   get: () => activeBeneficiaryId.value ?? '',
   set: (value: string | number) => {
+    if (isSaving.value) {
+      return
+    }
     activeBeneficiaryId.value = String(value)
   },
 })
@@ -284,3 +310,9 @@ const onSaveUploadedFiles = async () => {
   await onSaveClick()
 }
 </script>
+
+<style scoped lang="scss">
+.beneficiary-pastille {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+</style>

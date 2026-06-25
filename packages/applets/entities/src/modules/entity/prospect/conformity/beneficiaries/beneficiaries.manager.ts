@@ -17,14 +17,21 @@ export class BeneficiariesManager {
   }
 
   /**
-   * Get which document corresponds to zone based on upload order
-   * For CNI: documents[0] = recto, documents[1] = verso
-   * For PASSPORT: documents[0] = passport
+   * Get which document corresponds to zone based on document type
+   * Zone index is 0-based, fileOrder is 1-based
+   * For CNI: backend returns fileOrder - zone 0 = fileOrder 1 (recto), zone 1 = fileOrder 2 (verso)
+   * For PASSPORT: backend doesn't return fileOrder - use array index directly
    */
   static getDocumentForZone(
     beneficiary: Beneficiary,
     zoneIndex: number,
   ): BeneficiaryDocument | undefined {
+    // CNI: backend returns fileOrder, use it
+    if (beneficiary.documentType === BeneficiaryDocumentType.CNI) {
+      const targetFileOrder = zoneIndex + 1
+      return beneficiary.documents.find((doc) => doc.fileOrder === targetFileOrder)
+    }
+    // Passport: no fileOrder from backend, use array index
     return beneficiary.documents[zoneIndex]
   }
 
@@ -84,7 +91,7 @@ export class BeneficiariesManager {
    */
   static canSaveDocuments(
     beneficiary: Beneficiary,
-    formState: BeneficiaryFormState | undefined,
+    formState?: BeneficiaryFormState,
   ): boolean {
     if (formState?.documentType === null || formState?.documentType === undefined) {
       return false

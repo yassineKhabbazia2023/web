@@ -303,6 +303,7 @@
         "beneficiaries": {
           "description": "Les informations ont été récupérées automatiquement. Déposez une pièce d'identité.",
           "noBeneficiariesFromInpi": "Aucun bénéficiaire n'a été remonté par l'INPI",
+          "fetchError": "Impossible de charger les bénéficiaires",
           "tabLabel": "Bénéficiaire {index}",
           "documentTypeLabel": "Pièce d'identité",
           "documentTypePlaceholder": "Sélectionnez un type de document",
@@ -327,7 +328,7 @@
           "uploadMaxSize": "5 MB",
           "uploadDeleteButtonTitle": "Supprimer le document",
           "save": "Enregistrer",
-          "saveSuccess": "Les documents ont bien été enregistrés",
+          "saveSuccess": "{count} document(s) enregistré(s) pour {beneficiary}",
           "saveError": "Une erreur est survenue lors de l'enregistrement des documents",
           "viewDocumentsButton": "Consulter",
           "saveDocumentsButton": "Enregistrer ces documents",

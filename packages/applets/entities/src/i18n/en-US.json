@@ -303,6 +303,7 @@
         "beneficiaries": {
           "description": "The information has been retrieved automatically. Upload an identity document.",
           "noBeneficiariesFromInpi": "No beneficiary has been reported by INPI",
+          "fetchError": "Failed to load beneficiaries",
           "tabLabel": "Beneficiary {index}",
           "documentTypeLabel": "Identity document",
           "documentTypePlaceholder": "Select a document type",
@@ -327,7 +328,7 @@
           "uploadMaxSize": "5 MB",
           "uploadDeleteButtonTitle": "Delete the document",
           "save": "Save",
-          "saveSuccess": "The documents have been saved",
+          "saveSuccess": "{count} document(s) saved for {beneficiary}",
           "saveError": "An error occurred while saving the documents",
           "viewDocumentsButton": "View",
           "saveDocumentsButton": "Save these documents",

@@ -138,4 +138,46 @@ describe('beneficiaries.manager', () => {
       expect(BeneficiariesManager.canAddFiles(beneficiary, formState)).toBe(false)
     })
   })
+
+  describe('getDocumentForZone', () => {
+    it('should return document with matching fileOrder for CNI type', () => {
+      const doc1 = getBeneficiaryDocumentMock({ fileOrder: 1 })
+      const doc2 = getBeneficiaryDocumentMock({ fileOrder: 2 })
+      const beneficiary = getBeneficiaryMock({
+        documentType: BeneficiaryDocumentType.CNI,
+        documents: [doc1, doc2],
+      })
+
+      expect(BeneficiariesManager.getDocumentForZone(beneficiary, 0)).toBe(doc1)
+      expect(BeneficiariesManager.getDocumentForZone(beneficiary, 1)).toBe(doc2)
+    })
+
+    it('should return document by array index for Passport type', () => {
+      const doc1 = getBeneficiaryDocumentMock()
+      const beneficiary = getBeneficiaryMock({
+        documentType: BeneficiaryDocumentType.PASSPORT,
+        documents: [doc1],
+      })
+
+      expect(BeneficiariesManager.getDocumentForZone(beneficiary, 0)).toBe(doc1)
+    })
+
+    it('should return undefined when no document matches for CNI', () => {
+      const beneficiary = getBeneficiaryMock({
+        documentType: BeneficiaryDocumentType.CNI,
+        documents: [],
+      })
+
+      expect(BeneficiariesManager.getDocumentForZone(beneficiary, 0)).toBeUndefined()
+    })
+
+    it('should return undefined when zone index out of bounds for Passport', () => {
+      const beneficiary = getBeneficiaryMock({
+        documentType: BeneficiaryDocumentType.PASSPORT,
+        documents: [],
+      })
+
+      expect(BeneficiariesManager.getDocumentForZone(beneficiary, 0)).toBeUndefined()
+    })
+  })
 })

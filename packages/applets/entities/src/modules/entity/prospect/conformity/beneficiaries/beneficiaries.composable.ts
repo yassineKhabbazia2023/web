@@ -21,6 +21,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
   const currentProspectId = computed(() => currentEntity.value?.prospectId)
 
   const isLoading = ref(true)
+  const isRefreshing = ref(false)
   const isSaving = ref(false)
   const isValidatingAll = ref(false)
   const beneficiaries = ref<Beneficiary[]>([])
@@ -54,9 +55,13 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
   const loadBeneficiaries = async () => {
     if (currentProspectId.value === undefined || currentProspectId.value === null) {
       isLoading.value = false
+      isRefreshing.value = false
       return
     }
-    isLoading.value = true
+    // Show skeleton on first load, spinner on refresh
+    if (isLoading.value === false) {
+      isRefreshing.value = true
+    }
     try {
       const response = await ProspectsService.fetchBeneficiaries(currentProspectId.value)
       beneficiaries.value = response.beneficiaries
@@ -75,8 +80,11 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
       }
     } catch (error) {
       logger.error('Error fetching beneficiaries', error)
+      displayNotification('error', t('entities.prospect.conformity.beneficiaries.fetchError'))
+      beneficiaries.value = []
     } finally {
       isLoading.value = false
+      isRefreshing.value = false
     }
   }
 
@@ -100,6 +108,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
   const onDocumentDeleted = async () => {
     documentPendingDeletion.value = undefined
     await loadBeneficiaries()
+    emit('refresh-steps')
   }
 
   const onSave = async () => {
@@ -133,9 +142,15 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
         formState.documentType,
         formState.files,
       )
-      displayNotification('success', t(BENEFICIARIES_I18N_KEYS.SAVE_SUCCESS))
+      displayNotification(
+        'success',
+        t(BENEFICIARIES_I18N_KEYS.SAVE_SUCCESS, {
+          beneficiary: `${activeBeneficiary.firstName} ${activeBeneficiary.lastName}`,
+          count: formState.files.length,
+        }),
+      )
       await loadBeneficiaries()
-      emit('documents-saved')
+      emit('refresh-steps')
     } catch (error) {
       logger.error('Error uploading beneficiary documents', error)
       displayNotification('error', t(BENEFICIARIES_I18N_KEYS.SAVE_ERROR))
@@ -153,7 +168,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
     try {
       await ProspectsService.completeOnboardingStep(currentProspectId.value, OnboardingStep.Beneficiary)
       displayNotification('success', t(BENEFICIARIES_I18N_KEYS.VALIDATE_SUCCESS))
-      emit('documents-saved')
+      emit('refresh-steps')
     } catch (error) {
       logger.error('Failed to validate beneficiaries', error)
       displayNotification('error', t(BENEFICIARIES_I18N_KEYS.VALIDATE_ERROR))
@@ -166,6 +181,7 @@ export function useBeneficiaries(emit: UseBeneficiariesEmits) {
 
   return {
     isLoading,
+    isRefreshing,
     isSaving,
     isValidatingAll,
     currentProspectId,

@@ -24,7 +24,7 @@
           flex--grow-1
           flex--basis-0
         "
-        :pDisabled="canSave === false"
+        :pDisabled="canSave === false || isSaving"
         :pLoading="isSaving"
         @click="emit('save-documents')"
       >

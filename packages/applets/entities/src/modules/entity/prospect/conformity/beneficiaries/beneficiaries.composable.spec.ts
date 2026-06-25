@@ -130,10 +130,15 @@ describe('beneficiaries.composable', () => {
       await flushPromises()
 
       result.onRequestDocumentDeletion(firstBeneficiaryIdMock, documentMock)
-      await result.onDocumentDeleted()
+
+      const deletePromise = result.onDocumentDeleted()
+      expect(result.isRefreshing.value).toBe(true)
+
+      await deletePromise
 
       expect(result.documentPendingDeletion.value).toBeUndefined()
       expect(result.isDeleteDialogOpen.value).toBe(false)
+      expect(result.isRefreshing.value).toBe(false)
       expect(fetchBeneficiariesMock).toHaveBeenCalledTimes(2)
     })
   })
@@ -159,7 +164,7 @@ describe('beneficiaries.composable', () => {
       expect(fetchBeneficiariesMock).toHaveBeenCalledTimes(2)
       expect(result.activeBeneficiaryId.value).toBe(firstBeneficiaryIdMock)
       expect(result.isSaving.value).toBe(false)
-      expect(emitMock).toHaveBeenCalledWith('documents-saved')
+      expect(emitMock).toHaveBeenCalledWith('refresh-steps')
     })
 
     it('should not upload anything when the active tab is pristine', async () => {
