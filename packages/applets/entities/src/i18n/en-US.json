@@ -389,11 +389,82 @@
           "otherCollaboratorAlert": "Your client chose to set up another payment method. The RYDGE teams will contact the client again to finalise its setup.",
           "returnToSepa": "Back to the SEPA mandate",
           "updateError": "An error occurred while updating the payment method. Please try again.",
+          "downloadError": "Downloading your signed mandate failed. Please try again.",
           "otherMethodConfirmation": {
             "title": "Other payment method",
             "description": "By choosing another payment method, the RYDGE teams will contact you again.",
             "cancel": "Quit",
             "confirm": "Continue"
+          },
+          "configurationDrawer": {
+            "title": "Set up your direct debit payment",
+            "continue": "Continue",
+            "signatureConfirm": "The mandate is signed",
+            "abandon": "Abandon",
+            "close": "Close",
+            "accuracyConfirmation": "By continuing I confirm that the information provided is accurate",
+            "submitError": "Saving your bank details failed. Please try again.",
+            "notSignedYet": "The mandate has not been signed yet.",
+            "signatureCheckError": "Checking the signature failed. Please try again.",
+            "downloadError": "Downloading your signed mandate failed. Please try again.",
+            "steps": {
+              "generalInformation": "General information",
+              "signature": "Signature",
+              "completed": "Done"
+            },
+            "generalInformation": {
+              "infoBanner": "No direct debit will be made without your approval. It will only take place after the engagement letter is signed and in accordance with its terms.",
+              "required": "Required",
+              "requiredField": "This field is required",
+              "ribSectionTitle": "1 - Upload your bank details (RIB)",
+              "ribSectionSubtitle": "Drop your bank details document to fill in your banking information automatically.",
+              "uploadPrefixLabel": "Drop the file or",
+              "uploadSuffixLabel": "browse your computer",
+              "uploadAuthorizedFormats": "PDF",
+              "uploadMaxSize": "5 MB",
+              "extracting": "Reading your bank details…",
+              "ribUnrecognized": "We couldn't read the data from the provided bank details document, please check the file or enter the information manually",
+              "ribExtractionError": "We couldn't read your bank details document. Check the file and try again.",
+              "bankSectionTitle": "2 - Your banking information",
+              "bankSectionSubtitle": "Check and complete your account information if it was not filled in automatically.",
+              "holderLabel": "Account holder",
+              "holderPlaceholder": "E.g. Alex Bigreux",
+              "addressLine1Label": "Address line 1",
+              "addressLine1Placeholder": "E.g. 49 Rue Victor Hugo",
+              "addressLine2Label": "Address line 2",
+              "addressLine2Placeholder": "E.g. Building B, 2nd floor",
+              "postalCodeLabel": "Postal code",
+              "postalCodePlaceholder": "E.g. 69002",
+              "cityLabel": "City",
+              "cityPlaceholder": "E.g. Lyon",
+              "countryLabel": "Country",
+              "countryPlaceholder": "E.g. France",
+              "ibanLabel": "IBAN",
+              "ibanPlaceholder": "E.g. FR76 1234 5678 9876 5432",
+              "bicLabel": "BIC/SWIFT",
+              "bicPlaceholder": "BANKXXEPP",
+              "ibanBicMismatch": "The banking information entered is not recognized",
+              "encryptionReassurance": "Your data is encrypted and secure"
+            },
+            "signature": {
+              "title": "Mandate signature",
+              "description": "Your mandate has been generated and all you have to do is sign it electronically",
+              "iframeTitle": "SEPA mandate signature",
+              "blockedWarning": "The signature window could not be displayed here. Open it in a new tab to sign your mandate.",
+              "openInNewTab": "Open the signature in a new tab",
+              "directDebitAuthorization": "By signing, you authorize direct debits from this bank account."
+            },
+            "completed": {
+              "successTitle": "Your mandate is signed!",
+              "successSubtitle": "Your RYDGE advisor will set up the direct debit once the engagement starts, after the engagement letter is signed",
+              "signedMandateLabel": "Your signed mandate"
+            },
+            "quitConfirmation": {
+              "title": "Unsaved changes",
+              "description": "By leaving this page, your progress will be lost and the procedure will have to be started over.",
+              "quit": "Quit",
+              "continue": "Continue"
+            }
           }
         },
         "stepPlaceholderTitle": "This is the « {label} » step screen.",

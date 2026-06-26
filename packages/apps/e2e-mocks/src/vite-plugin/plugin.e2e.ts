@@ -56,6 +56,22 @@ function serveServiceWorker(url: string, normalizedUrl: string, staticFilesPath:
   return serveFile(res, path.join(staticFilesPath, 'mockServiceWorker.js'), 'application/javascript', false)
 }
 
+// Same-origin signing page embedded in the SEPA mandate iframe. It must be served by the dev server
+// (not MSW, whose service worker bypasses iframe navigation requests). Its "Signer" button calls the
+// MSW-mocked /mock/getaccept-sign endpoint to mark the mandate as signed for the next preference read.
+function serveGetAcceptMockPage(
+  url: string,
+  normalizedUrl: string,
+  staticFilesPath: string,
+  res: ServerResponse,
+): boolean {
+  const requestPath = url.split('?')[0]
+  if (normalizedUrl !== '/mock/getaccept-signature' && requestPath !== '/mock/getaccept-signature') {
+    return false
+  }
+  return serveFile(res, path.join(staticFilesPath, 'getaccept-signature.html'), 'text/html', false)
+}
+
 function serveE2EFixture(
   url: string,
   normalizedUrl: string,
@@ -186,6 +202,9 @@ export function e2ePlugin(options: E2EPluginOptions = {}): Plugin {
         const normalizedUrl = normalizeUrl(url, base)
 
         if (serveServiceWorker(url, normalizedUrl, staticPath, res)) {
+          return
+        }
+        if (serveGetAcceptMockPage(url, normalizedUrl, staticPath, res)) {
           return
         }
         if (isE2E === true && serveE2EFixture(url, normalizedUrl, e2ePublicFiles, res)) {

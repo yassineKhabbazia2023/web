@@ -15,3 +15,9 @@ export const PAYMENT_COMPLETED_BULLET_KEYS: readonly string[] = [
   'completedBullets.secure',
   'completedBullets.traceable',
 ]
+
+// Maximum accepted size (MB) for the RIB PDF uploaded in the configuration drawer.
+export const RIB_MAX_FILE_SIZE_MB = 5
+
+// File name used when downloading the signed SEPA mandate from the completed step.
+export const SIGNED_MANDATE_FILE_NAME = 'mandat-sepa-signe.pdf'

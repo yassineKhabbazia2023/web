@@ -389,11 +389,82 @@
           "otherCollaboratorAlert": "Votre client a souhaité configurer un autre moyen de paiement. Les équipes RYDGE se chargeront de recontacter le client pour finaliser sa mise en place.",
           "returnToSepa": "Revenir au mandat SEPA",
           "updateError": "Une erreur est survenue lors de la mise à jour du moyen de paiement. Veuillez réessayer.",
+          "downloadError": "Le téléchargement de votre mandat signé a échoué. Veuillez réessayer.",
           "otherMethodConfirmation": {
             "title": "Autre mode de paiement",
             "description": "En choisissant un autre mode de paiement, les équipes RYDGE se chargent de vous recontacter.",
             "cancel": "Quitter",
             "confirm": "Continuer"
+          },
+          "configurationDrawer": {
+            "title": "Configurer votre paiement par prélèvement",
+            "continue": "Continuer",
+            "signatureConfirm": "Le mandat est signé",
+            "abandon": "Abandonner",
+            "close": "Fermer",
+            "accuracyConfirmation": "En continuant je confirme que les informations fournies sont exactes",
+            "submitError": "L'enregistrement de vos coordonnées bancaires a échoué. Veuillez réessayer.",
+            "notSignedYet": "Le mandat n'a pas encore été signé.",
+            "signatureCheckError": "La vérification de la signature a échoué. Veuillez réessayer.",
+            "downloadError": "Le téléchargement de votre mandat signé a échoué. Veuillez réessayer.",
+            "steps": {
+              "generalInformation": "Informations générales",
+              "signature": "Signature",
+              "completed": "Terminé"
+            },
+            "generalInformation": {
+              "infoBanner": "Aucun prélèvement ne sera réalisé sans votre validation. Il interviendra uniquement après la signature de la lettre de mission et conformément aux modalités définies dans celle-ci.",
+              "required": "Obligatoire",
+              "requiredField": "Ce champ est obligatoire",
+              "ribSectionTitle": "1 - Importez votre RIB",
+              "ribSectionSubtitle": "Déposez votre RIB pour remplir automatiquement vos coordonnées bancaires.",
+              "uploadPrefixLabel": "Déposer le fichier ou",
+              "uploadSuffixLabel": "parcourir l'ordinateur",
+              "uploadAuthorizedFormats": "PDF",
+              "uploadMaxSize": "5 MB",
+              "extracting": "Lecture de votre RIB en cours…",
+              "ribUnrecognized": "Nous n'avons pas pu lire les données du RIB fourni, veuillez vérifier le fichier ou écrire les informations manuellement",
+              "ribExtractionError": "La lecture de votre RIB a échoué. Vérifiez le fichier et réessayez.",
+              "bankSectionTitle": "2 - Vos coordonnées bancaires",
+              "bankSectionSubtitle": "Vérifiez et complétez les informations de votre compte si celles-ci ne sont pas remontées automatiquement.",
+              "holderLabel": "Titulaire du compte",
+              "holderPlaceholder": "Ex : Alex Bigreux",
+              "addressLine1Label": "Adresse ligne 1",
+              "addressLine1Placeholder": "Ex : 49 Rue Victor Hugo",
+              "addressLine2Label": "Adresse ligne 2",
+              "addressLine2Placeholder": "Ex : Bâtiment B, 2e étage",
+              "postalCodeLabel": "Code postal",
+              "postalCodePlaceholder": "Ex : 69002",
+              "cityLabel": "Ville",
+              "cityPlaceholder": "Ex : Lyon",
+              "countryLabel": "Pays",
+              "countryPlaceholder": "Ex : France",
+              "ibanLabel": "IBAN",
+              "ibanPlaceholder": "Ex : FR76 1234 5678 9876 5432",
+              "bicLabel": "BIC/SWIFT",
+              "bicPlaceholder": "BANKXXEPP",
+              "ibanBicMismatch": "Les informations bancaires saisies ne sont pas reconnues",
+              "encryptionReassurance": "Vos données sont chiffrées et sécurisées"
+            },
+            "signature": {
+              "title": "Signature de mandat",
+              "description": "Votre mandat a été généré et vous n'avez plus qu'à le signer électroniquement",
+              "iframeTitle": "Signature du mandat SEPA",
+              "blockedWarning": "La fenêtre de signature n'a pas pu s'afficher ici. Ouvrez-la dans un nouvel onglet pour signer votre mandat.",
+              "openInNewTab": "Ouvrir la signature dans un nouvel onglet",
+              "directDebitAuthorization": "En signant, vous autorisez les prélèvements automatiques depuis ce compte bancaire."
+            },
+            "completed": {
+              "successTitle": "Votre mandat est signé !",
+              "successSubtitle": "Votre conseiller RYDGE mettra en place le prélèvement automatique une fois la mission commencée, après la signature de la lettre de mission",
+              "signedMandateLabel": "Votre mandat signé"
+            },
+            "quitConfirmation": {
+              "title": "Modifications non enregistrées",
+              "description": "En quittant cette page, votre progression sera perdue et la procédure devra être recommencée.",
+              "quit": "Quitter",
+              "continue": "Continuer"
+            }
           }
         },
         "stepPlaceholderTitle": "Ceci est l'écran de l'étape « {label} ».",

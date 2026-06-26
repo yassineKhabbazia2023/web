@@ -158,6 +158,32 @@ const getConformityDocumentsResponse = () => {
   }
 }
 
+// Switch this flag to test the different payment preference states (payment.vue):
+// - 'notSelected': no method chosen yet — the SEPA configuration drawer and the "autre moyen" choice are offered
+// - 'sepa': a SEPA mandate has already been configured
+// - 'other': an alternative payment method has already been chosen
+type PaymentPreferenceScenario = 'notSelected' | 'sepa' | 'other'
+const PAYMENT_PREFERENCE_SCENARIO = 'notSelected' as PaymentPreferenceScenario
+
+// Mutated at runtime by the mock signing page: the drawer's "Continue" reads the payment preference
+// to decide if the mandate is signed, so clicking "Signer" in the iframe flips this to true and the
+// next GET returns MANDATE_SEPA. Generating a new mandate (POST sepa) resets it to false.
+let isMandateSignedInMock = false
+
+const getPaymentPreferenceResponse = () => {
+  if (isMandateSignedInMock) {
+    return { paymentType: 'MANDATE_SEPA' }
+  }
+  switch (PAYMENT_PREFERENCE_SCENARIO) {
+    case 'sepa':
+      return { paymentType: 'MANDATE_SEPA' }
+    case 'other':
+      return { paymentType: 'OTHER' }
+    default:
+      return { paymentType: null }
+  }
+}
+
 export const devMockHandlers: RequestHandler[] = [
   // Add your handlers here
   http.get('*/connect/api/accounts/602/summary', () => {
@@ -205,6 +231,47 @@ export const devMockHandlers: RequestHandler[] = [
   http.get('*/prospect/api/prospects/:prospectId/documents/:documentId/content', () => {
     return new HttpResponse(new Blob(['mock document content'], { type: 'application/pdf' }), {
       headers: { 'Content-Type': 'application/pdf' },
+    })
+  }),
+
+  // --- Payment preferences & SEPA mandate (prospect onboarding) ---
+
+  http.get('*/prospect/api/onboarding/:prospectId/payment-preferences', () => {
+    return HttpResponse.json(getPaymentPreferenceResponse())
+  }),
+
+  http.delete('*/prospect/api/onboarding/:prospectId/payment-preferences', async () => {
+    await delay(800)
+    return HttpResponse.json({}, { status: 204 })
+  }),
+
+  http.post('*/prospect/api/onboarding/:prospectId/payment-preferences/other', async () => {
+    await delay(800)
+    return HttpResponse.json({}, { status: 204 })
+  }),
+
+  // Generate the SEPA mandate and hand back the same-origin signing page (served by the e2e Vite
+  // plugin). A fresh mandate is unsigned until "Signer" is clicked in that page.
+  http.post('*/prospect/api/onboarding/:prospectId/payment-preferences/sepa', async () => {
+    await delay(1500)
+    isMandateSignedInMock = false
+    return HttpResponse.json({ signatureUrl: '/mock/getaccept-signature' })
+  }),
+
+  // Hit by the mock signing page's "Signer" button to simulate the GetAccept signature: the next
+  // GET payment-preferences then reports MANDATE_SEPA, so the drawer's "Continue" proceeds.
+  http.post('*/mock/getaccept-sign', () => {
+    isMandateSignedInMock = true
+    return HttpResponse.json({}, { status: 204 })
+  }),
+
+  // Signed mandate downloaded from the completed step (the real API streams it as a binary file).
+  // To test the "mandate not signed yet" case, return `new HttpResponse(null, { status: 404 })`
+  // instead (see the real endpoint's 404 behaviour).
+  http.get('*/prospect/api/onboarding/:prospectId/payment-preferences/sepa/content', async () => {
+    await delay(800)
+    return new HttpResponse(new Blob(['mock signed SEPA mandate'], { type: 'application/octet-stream' }), {
+      headers: { 'Content-Type': 'application/octet-stream' },
     })
   }),
 ]

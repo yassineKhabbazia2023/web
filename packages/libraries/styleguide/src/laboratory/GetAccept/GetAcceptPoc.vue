@@ -270,8 +270,14 @@
             :src="recipientDocumentUrl"
             class="signing-iframe"
             allow="camera; microphone"
+            @load="onSigningIframeLoad"
             @error="onIframeError"
           />
+        </div>
+
+        <div class="status-badge status-success">
+          Iframe <code>load</code> events détectés : <strong>{{ signingIframeLoadCount }}</strong>
+          — signez et regardez si le compteur (et l'API Log) bouge au moment de la signature.
         </div>
 
         <div
@@ -442,6 +448,7 @@ const documentError = ref('')
 // Iframe state
 const iframeBlocked = ref(false)
 const isFetchingUrl = ref(false)
+const signingIframeLoadCount = ref(0)
 
 // Status state
 const documentStatus = ref('')
@@ -602,6 +609,14 @@ async function createAndSendDocument() {
 
 function onIframeError() {
   iframeBlocked.value = true
+}
+
+// We cannot read the cross-origin iframe URL, but every full navigation fires a load event. Logging
+// each one shows whether GetAccept emits a load at signature completion — the very signal the real
+// drawer relies on to re-check the payment preference on each iframe navigation.
+function onSigningIframeLoad() {
+  signingIframeLoadCount.value += 1
+  logApi('LOAD', 'signing-iframe (URL cross-origin, non lisible)', signingIframeLoadCount.value)
 }
 
 function extractSigningUrl(data: Record<string, unknown>) {

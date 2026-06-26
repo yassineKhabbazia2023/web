@@ -166,6 +166,11 @@
     v-model="isOtherMethodConfirmationVisible"
     @confirm="onConfirmOtherMethod"
   />
+
+  <PaymentConfigurationDrawer
+    v-model="isConfigurationDrawerOpen"
+    @completed="refreshPaymentPreference"
+  />
 </template>
 
 <script setup lang="ts">
@@ -177,6 +182,7 @@ import { AppColors } from '@pulse/styleguide'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { ConformityPaymentType } from '@entities/enums'
 import OtherPaymentMethodConfirmationModal from './components/other-payment-method-confirmation-modal.vue'
+import PaymentConfigurationDrawer from './components/payment-configuration-drawer/payment-configuration-drawer.vue'
 import { usePayment } from './payment.composable'
 import {
   PAYMENT_BENEFITS,
@@ -185,7 +191,6 @@ import {
 } from './payment.consts'
 import { PaymentBodyKind, PaymentFooterAction } from './payment.enums'
 import type {
-  PaymentEmits,
   PaymentFooterButton,
   PaymentProps,
 } from './payment.types'
@@ -194,16 +199,23 @@ const props = withDefaults(defineProps<PaymentProps>(), {
   isCollaborator: false,
 })
 
-const emit = defineEmits<PaymentEmits>()
-
 const { t } = useI18n()
 const { currentEntity } = storeToRefs(useCurrentEntityStore())
 
 // This card is only rendered within the prospect conformity flow, where the prospect id is always defined.
 const prospectId = currentEntity.value?.prospectId as number
 
-const { paymentType, isLoading, isSaving, selectOtherMethod, returnToSepa } = usePayment(prospectId, {
+const {
+  paymentType,
+  isLoading,
+  isSaving,
+  selectOtherMethod,
+  returnToSepa,
+  refreshPaymentPreference,
+  downloadMandate,
+} = usePayment(prospectId, {
   updateErrorMessage: t(`${PAYMENT_I18N_BASE}.updateError`),
+  downloadErrorMessage: t(`${PAYMENT_I18N_BASE}.downloadError`),
 })
 
 const isNotSelected = computed(() => paymentType.value === null)
@@ -287,20 +299,22 @@ const footerButtonClass = computed(() =>
 // Confirmation popup shown before switching to another payment method (client side only).
 const isOtherMethodConfirmationVisible = ref(false)
 
+// SEPA configuration drawer, opened from the "start configuration" action (client side only).
+const isConfigurationDrawerOpen = ref(false)
+
 const runFooterAction = (action: PaymentFooterAction): void => {
   switch (action) {
     case PaymentFooterAction.SelectOtherMethod:
-      void selectOtherMethod()
+      selectOtherMethod()
       break
     case PaymentFooterAction.ReturnToSepa:
-      void returnToSepa()
+      returnToSepa()
       break
-    // No endpoint wired in this card yet — delegated to the parent; feature implemented later.
     case PaymentFooterAction.StartConfiguration:
-      emit(PaymentFooterAction.StartConfiguration)
+      isConfigurationDrawerOpen.value = true
       break
     case PaymentFooterAction.DownloadMandate:
-      emit(PaymentFooterAction.DownloadMandate)
+      downloadMandate()
       break
   }
 }
@@ -315,7 +329,7 @@ const onFooterButtonClick = (button: PaymentFooterButton): void => {
 
 const onConfirmOtherMethod = (): void => {
   isOtherMethodConfirmationVisible.value = false
-  void selectOtherMethod()
+  selectOtherMethod()
 }
 </script>
 

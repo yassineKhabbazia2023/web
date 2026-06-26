@@ -6,9 +6,8 @@ export enum PaymentBodyKind {
   Bullets = 'bullets',
 }
 
-// Every action a footer button can trigger. Some are handled internally (service calls),
-// the others are delegated to the parent through PaymentEmits. The string values double as
-// the Vue emit event names for the delegated actions.
+// Every action a footer button can trigger, all handled internally by the card (a service call,
+// opening the configuration drawer, or downloading the signed mandate).
 export enum PaymentFooterAction {
   SelectOtherMethod = 'select-other-method',
   StartConfiguration = 'start-configuration',

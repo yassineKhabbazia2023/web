@@ -5,13 +5,6 @@ export interface PaymentProps {
   isCollaborator?: boolean
 }
 
-// Actions still delegated to the parent (no API endpoint wired in this card yet).
-export type PaymentEmitEvent = PaymentFooterAction.StartConfiguration | PaymentFooterAction.DownloadMandate
-
-export interface PaymentEmits {
-  (event: PaymentEmitEvent): void
-}
-
 export interface PaymentFooterButton {
   label: string
   action: PaymentFooterAction
@@ -30,4 +23,6 @@ export interface PaymentBenefit {
 export interface UsePaymentOptions {
   // Notification shown when a payment preference mutation fails.
   updateErrorMessage: string
+  // Notification shown when downloading the signed SEPA mandate fails.
+  downloadErrorMessage: string
 }
