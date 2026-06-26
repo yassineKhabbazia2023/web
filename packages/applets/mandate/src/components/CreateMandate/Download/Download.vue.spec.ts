@@ -30,7 +30,13 @@ const apiMocks = vi.hoisted(() => ({
   ),
 }))
 
-vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
+vi.mock('@pulse/toolbox', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@pulse/toolbox')>()
+  return {
+    ...actual,
+    logger: loggerMock,
+  }
+})
 
 vi.mock('@mandate/services/mandate', () => ({
   downloadUnsignedMandate: vi.fn(() => Promise.resolve({ data })),

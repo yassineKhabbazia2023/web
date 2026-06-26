@@ -4,19 +4,19 @@ import { displayNotification } from '@pulse/styleguide'
 import { ConformityPaymentService } from '@entities/services/conformity-payment'
 import type { UseCompletedStepParams } from './completed-step.types'
 
-// Local controller for the completed step: fetches the signed mandate PDF so it can be downloaded.
+// Local controller for the completed step: fetches the signed mandate PDF on demand and opens it in a new tab.
 // Nothing here is consumed by the drawer, so it stays self-contained.
 export function useCompletedStep(params: UseCompletedStepParams) {
   const isLoadingSignedMandate = ref(false)
-  const signedMandateBlob = ref<Blob | null>(null)
 
-  const fetchSignedMandate = async (): Promise<void> => {
+  const openSignedMandate = async (): Promise<void> => {
     if (isLoadingSignedMandate.value) {
       return
     }
     isLoadingSignedMandate.value = true
     try {
-      signedMandateBlob.value = await ConformityPaymentService.downloadSignedMandate(params.prospectId)
+      const signedMandateBlob = await ConformityPaymentService.downloadSignedMandate(params.prospectId)
+      window.open(URL.createObjectURL(signedMandateBlob), '_blank', 'noopener,noreferrer')
     } catch (error) {
       logger.error('Failed to download the signed SEPA mandate', error)
       displayNotification('error', params.downloadErrorMessage)
@@ -27,7 +27,6 @@ export function useCompletedStep(params: UseCompletedStepParams) {
 
   return {
     isLoadingSignedMandate,
-    signedMandateBlob,
-    fetchSignedMandate,
+    openSignedMandate,
   }
 }

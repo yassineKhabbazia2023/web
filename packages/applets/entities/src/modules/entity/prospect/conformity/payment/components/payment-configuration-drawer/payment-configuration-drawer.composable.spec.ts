@@ -78,14 +78,27 @@ describe('payment-configuration-drawer.composable', () => {
 
   describe('submitGeneralInformation', () => {
     it('should generate the SEPA mandate, store the signing link and advance to the signature step when valid', async () => {
-      const [result] = withSetup(() => usePaymentConfiguration(optionsMock))
-      makeSubmittable(result)
+      vi.useFakeTimers()
 
-      await result.submitGeneralInformation()
+      try {
+        const [result] = withSetup(() => usePaymentConfiguration(optionsMock))
+        makeSubmittable(result)
 
-      expect(generateSepaMandateMock).toHaveBeenCalledWith(expect.objectContaining({ prospectId: 602, ribFile }))
-      expect(result.signatureUrl.value).toBe(SIGNATURE_URL)
-      expect(result.currentStep.value).toBe(PaymentConfigurationStep.Signature)
+        const submitPromise = result.submitGeneralInformation()
+        await vi.advanceTimersByTimeAsync(499)
+
+        expect(generateSepaMandateMock).toHaveBeenCalledWith(expect.objectContaining({ prospectId: 602, ribFile }))
+        expect(result.signatureUrl.value).toBe('')
+        expect(result.currentStep.value).toBe(PaymentConfigurationStep.GeneralInformation)
+
+        await vi.advanceTimersByTimeAsync(1)
+        await submitPromise
+
+        expect(result.signatureUrl.value).toBe(SIGNATURE_URL)
+        expect(result.currentStep.value).toBe(PaymentConfigurationStep.Signature)
+      } finally {
+        vi.useRealTimers()
+      }
     })
 
     it('should not call the service when the step is invalid', async () => {

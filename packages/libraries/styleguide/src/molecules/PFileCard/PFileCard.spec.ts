@@ -92,5 +92,13 @@ describe('pFileCard', () => {
       expect(wrapper.find('.p-file-card__size').text()).toContain('PDF')
       expect(wrapper.find('.p-file-card__size').text()).toContain('25KB')
     })
+
+    it('should hide the technical details when pHideTechnicalDetails is true', () => {
+      const wrapper = createWrapper({
+        ...defaultProps,
+        pHideTechnicalDetails: true,
+      })
+      expect(wrapper.find('.p-file-card__size').exists()).toBe(false)
+    })
   })
 })

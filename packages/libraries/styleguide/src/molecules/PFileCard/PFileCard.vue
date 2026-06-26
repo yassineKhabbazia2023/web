@@ -12,8 +12,14 @@
       <p class="p-file-card__name">
         {{ pName }}
       </p>
-      <p class="p-file-card__size">
-        {{ pFormat }} • {{ pSize }}
+      <p
+        v-if="pHideTechnicalDetails === false"
+        class="p-file-card__size"
+      >
+        {{ pFormat }}
+        <template v-if="isNotNullNorEmpty(pSize)">
+          • {{ pSize }}
+        </template>
       </p>
     </div>
     <div v-if="pHasButton" class="p-file-card__group-btn">
@@ -26,12 +32,13 @@
 import { computed } from 'vue'
 import PIcon from '../../atoms/PIcon'
 import { getIconFileName } from '../../utils/fileExtension'
-import { getFileExtension } from '@pulse/toolbox'
+import { getFileExtension, isNotNullNorEmpty } from '@pulse/toolbox'
 import type { PFileCardProps } from './PFileCardTypes'
 
 const props = withDefaults(defineProps<PFileCardProps>(), {
   pHasIcon: false,
   pHasButton: false,
+  pHideTechnicalDetails: false,
 })
 
 const iconName = computed(() => {

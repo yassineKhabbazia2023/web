@@ -90,7 +90,9 @@ const onIframeError = (): void => {
 // We cannot read the cross-origin iframe URL, but every navigation fires a load event. The drawer
 // uses each one as an opportunity to re-check whether the mandate has just been signed.
 const onIframeLoad = (): void => {
-  emit('iframe-load')
+  setTimeout(() => {
+    emit('iframe-load')
+  }, 500)
 }
 </script>
 

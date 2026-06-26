@@ -13,29 +13,40 @@ const displayNotificationMock = vi.mocked(displayNotification)
 const paramsMock = { prospectId: 602, downloadErrorMessage: 'downloadError' }
 
 describe('completed-step.composable', () => {
+  const windowOpenSpy = vi.fn()
+  const createObjectUrlMock = vi.fn().mockReturnValue('blob:mocked-url')
+
   beforeEach(() => {
     downloadSignedMandateMock.mockResolvedValue(new Blob(['signed mandate'], { type: 'application/pdf' }))
+    windowOpenSpy.mockClear()
+    vi.stubGlobal('open', windowOpenSpy)
+    URL.createObjectURL = createObjectUrlMock
   })
 
-  describe('fetchSignedMandate', () => {
-    it('should download and store the signed mandate blob', async () => {
+  describe('openSignedMandate', () => {
+    it('should download the signed mandate and open it in a new tab', async () => {
+      const signedMandateBlob = new Blob(['signed mandate'], { type: 'application/pdf' })
+      downloadSignedMandateMock.mockResolvedValueOnce(signedMandateBlob)
       const [step] = withSetup(() => useCompletedStep(paramsMock))
 
-      await step.fetchSignedMandate()
+      await step.openSignedMandate()
 
       expect(downloadSignedMandateMock).toHaveBeenCalledWith(602)
-      expect(step.signedMandateBlob.value).toBeInstanceOf(Blob)
+      expect(createObjectUrlMock).toHaveBeenCalledWith(signedMandateBlob)
+      expect(windowOpenSpy).toHaveBeenCalledWith('blob:mocked-url', '_blank', 'noopener,noreferrer')
+      expect(step.isLoadingSignedMandate.value).toBe(false)
     })
 
-    it('should notify when the download fails', async () => {
+    it('should notify and not open a tab when the download fails', async () => {
       downloadSignedMandateMock.mockRejectedValueOnce(new Error('boom'))
 
       const [step] = withSetup(() => useCompletedStep(paramsMock))
 
-      await step.fetchSignedMandate()
+      await step.openSignedMandate()
 
+      expect(windowOpenSpy).not.toHaveBeenCalled()
       expect(displayNotificationMock).toHaveBeenCalledWith('error', paramsMock.downloadErrorMessage)
-      expect(step.signedMandateBlob.value).toBeNull()
+      expect(step.isLoadingSignedMandate.value).toBe(false)
     })
   })
 })

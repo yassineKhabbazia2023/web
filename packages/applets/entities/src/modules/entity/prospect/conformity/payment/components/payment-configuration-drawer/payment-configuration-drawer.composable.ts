@@ -7,6 +7,12 @@ import { ConformityPaymentService } from '@entities/services/conformity-payment'
 import { PaymentConfigurationStep } from './payment-configuration-drawer.enums'
 import type { MandateBankDetails, UsePaymentConfigurationOptions } from './payment-configuration-drawer.types'
 
+
+const waitBeforeShowingSignatureStep = (): Promise<void> =>
+  new Promise((resolve) => {
+    setTimeout(resolve, 500)
+  })
+
 // Drawer-level controller: owns the cross-step state (the bank details + RIB the submit needs, the
 // step navigation, the signature verification). The general-information and completed steps own their
 // own local state and only surface what the drawer consumes (validity, the RIB file).
@@ -56,6 +62,7 @@ export function usePaymentConfiguration(options: UsePaymentConfigurationOptions)
         ribFile: ribFile.value,
         bankDetails: { ...bankDetails },
       })
+      await waitBeforeShowingSignatureStep()
       signatureUrl.value = generatedSignatureUrl
       currentStep.value = PaymentConfigurationStep.Signature
     } catch (error) {
