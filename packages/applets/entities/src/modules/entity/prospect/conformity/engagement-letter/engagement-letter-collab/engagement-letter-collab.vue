@@ -23,7 +23,7 @@
     <PUpload
       pDrag
       pShowFileList
-      :pUploadType="PUploadType.DRAGGER"
+      :pUploadType="PUploadType.FILE_LINE"
       :pLabel="t(`${I18N_KEY}.uploadLabel`)"
       :pPrefixLabelFileLine="t(`${I18N_KEY}.uploadPrefixLabel`)"
       :pSuffixLabelFileLine="t(`${I18N_KEY}.uploadSuffixLabel`)"

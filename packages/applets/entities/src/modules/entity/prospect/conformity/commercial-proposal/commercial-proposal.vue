@@ -4,6 +4,7 @@
       commercial-proposal
       flex
       flex--direction-column
+      margin-top--4
     "
   >
     <div
@@ -11,14 +12,12 @@
       class="
         flex
         flex--justify-content-center
-        margin-top--4
       "
     >
       <PLoader pType="primary" />
     </div>
     <PAlert
       v-else-if="status === undefined"
-      class="margin-top--4"
       pType="danger"
       :pClosable="false"
     >

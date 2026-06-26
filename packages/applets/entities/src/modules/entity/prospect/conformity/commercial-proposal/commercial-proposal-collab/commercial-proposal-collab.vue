@@ -20,19 +20,10 @@
     </PButton>
   </template>
   <template v-else>
-    <p
-      class="
-        font-size--14
-        margin--0
-        margin-bottom--6
-      "
-    >
-      {{ t(`${I18N_KEY}.collabToUploadSubtitle`) }}
-    </p>
     <PUpload
       pDrag
       pShowFileList
-      :pUploadType="PUploadType.DRAGGER"
+      :pUploadType="PUploadType.FILE_LINE"
       :pLabel="t(`${I18N_KEY}.uploadLabel`)"
       :pPrefixLabelFileLine="t(`${I18N_KEY}.uploadPrefixLabel`)"
       :pSuffixLabelFileLine="t(`${I18N_KEY}.uploadSuffixLabel`)"
