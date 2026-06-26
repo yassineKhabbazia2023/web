@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: PR review skill. Reviews all changed files in the current branch against project conventions and proposes interactive fixes. Use when the user asks to review a PR, review changes, or check code quality on a branch.
+description: PR review skill. Reviews all changed files in the current branch against project conventions AND analyzes the functional logic and flows, then proposes interactive fixes. Use when the user asks to review a PR, review changes, or check code quality/logic on a branch.
 ---
 
 # PR Review
@@ -10,6 +10,8 @@ Reviews all changes in the current branch (compared to the target branch, defaul
 - `AGENTS.md` — all sections (code conventions, Vue 3 standards, CSS formatting, import restrictions)
 - `.agents/skills/file-conventions/SKILL.md` — all rules
 - `.agents/skills/testing/SKILL.md` — all rules
+
+Beyond conventions, the review also analyzes the **functional logic and the flows** the changes participate in — correctness, edge cases, data flow, async and user/navigation flows, and regression risk.
 
 The review follows a strict two-phase workflow: **full review first**, then **interactive point-by-point fixing**.
 
@@ -24,49 +26,66 @@ The review follows a strict two-phase workflow: **full review first**, then **in
    - `.agents/skills/file-conventions/SKILL.md`
    - `.agents/skills/testing/SKILL.md`
 2. **Identify Changes**: Run `git diff <base>...HEAD --name-only` where `<base>` is the target branch (default: `main`). If the user specifies a different target branch, use that instead. If the base branch does not exist locally, run `git fetch origin <base>` first and diff against `origin/<base>`.
-3. **Smart Read**: For each changed file:
+3. **Capture Intent**: Run `git log <base>..HEAD --oneline` and read the branch name to reconstruct **what the PR is supposed to do**. This intent is the reference used in Step 2b to verify the logic actually delivers it.
+4. **Smart Read**: For each changed file:
    - Skip deleted files (files that no longer exist on disk).
    - Skip binary files (images, fonts, PDFs, etc.).
    - Read the file content.
    - If the file is very large (>500 lines), focus primarily on the changed sections (hunks) and their surrounding context.
 
-### Step 2: Check every rule
+### Step 2: Review the changes
+
+The review has **two complementary dimensions**. Run both for every changed file.
+
+#### 2a — Conventions
 
 For each changed file, verify **all rules** from the three sources above. Only report violations on **changed lines** (additions and modifications in the diff). Do not flag pre-existing issues in unchanged code unless they are directly impacted by the changes (e.g., a renamed import that breaks a convention).
+
+#### 2b — Logic & flows
+
+Beyond style, analyze whether the code is **functionally correct** and whether the **flows it participates in still hold**. Confront the changes against the PR intent captured in Step 1. For each meaningful change, examine:
+
+- **Correctness** — does the code do what the PR intends? Look for inverted conditions, off-by-one, wrong operator, mismatched units, incorrect default/initial values.
+- **Edge cases** — empty/null/undefined, empty arrays, `0`, boundary values, error responses. Are nullish checks present everywhere data can be missing?
+- **Data flow** — follow the data through the change: props in → emits/events out → Pinia store reads/writes → API request/response shapes. Does each hop pass and transform the data coherently? Are `computed` and `watch` kept in sync with their sources?
+- **Async & loading flows** — are `await`s correct, are loading/error states handled, are there race conditions or unhandled promise rejections?
+- **User & navigation flows** — routing guards (auth, permissions, feature flags), redirects, modal open/close lifecycle, form submission paths. Verify both the **happy path** AND the **failure path**.
+- **Regression risk** — when the change touches a shared function, store, or component, trace its **callers** (read the relevant unchanged files) to confirm nothing downstream breaks.
+- **Intent gap** — anything the PR claims to do (per its commits/branch) but does not, or does only partially.
+
+Report logic/flow findings with the same severity scale (Step 3). When the correct behavior is **ambiguous**, raise a **question for the author** instead of inventing a fix you are unsure about.
 
 ### Step 3: Present the review
 
 Severity icons: 🔴 ERROR (must fix) · ⚠️ WARNING (should fix) · ℹ️ INFO (consider fixing)
+Type: `Conv` (convention) · `Logic` (logic/flow).
 
 ```
 ## PR Review — [branch name]
 
-X files changed · Y violations found
+X files changed · Y findings found (C conventions · L logic/flows)
 
-### Violations
+### Findings
 
-| # | Sev | File | Line | Issue |
-|---|-----|------|------|-------|
-| 1 | 🔴 | `file.vue` | 12 | Short description |
-| 2 | ⚠️ | `file.vue` | 45 | Short description |
-| 3 | ℹ️ | `other.ts` | 8 | Short description |
+| # | Sev | Type | File | Line | Issue |
+|---|-----|------|------|------|-------|
+| 1 | 🔴 | Logic | `file.vue` | 12 | Short description |
+| 2 | 🔴 | Conv | `file.vue` | 20 | Short description |
+| 3 | ⚠️ | Logic | `file.ts` | 45 | Short description |
+| 4 | ℹ️ | Conv | `other.ts` | 8 | Short description |
 
 ### Details
 
-**1. 🔴 `file.vue:12`** — Short description
-What is wrong and why.
-→ Fix: concise proposed solution
+**1. 🔴 Logic `file.vue:12`** — Short description
+What is wrong and why (for logic: which flow/case breaks).
+→ Fix: concise proposed solution — or, if behavior is ambiguous, a **question for the author**.
 
-**2. ⚠️ `file.vue:45`** — Short description
-What is wrong and why.
-→ Fix: concise proposed solution
-
-**3. ℹ️ `other.ts:8`** — Short description
+**2. 🔴 Conv `file.vue:20`** — Short description
 What is wrong and why.
 → Fix: concise proposed solution
 ```
 
-If no violations are found, confirm the PR is clean and skip Phase 2.
+If no findings are found, confirm the PR is clean and skip Phase 2.
 
 ---
 
@@ -91,6 +110,8 @@ Then for **each violation**, in order of severity (ERRORS first, then WARNINGS, 
 - **yes** → apply the fix
 - **no** → skip, move to the next
 - **skip all [severity]** → skip all remaining points of that severity level
+
+For an **ambiguous logic/flow finding** with no certain fix, present it as a **question for the author** rather than a code change: on **yes**, record it in the final summary instead of editing the file.
 
 **C. Apply the fix** (if approved):
 1. Apply the code change
@@ -128,6 +149,7 @@ If the user explicitly asks for bulk mode:
 - **Never auto-fix without asking** — always wait for user approval on each point
 - **Scope all commands to affected workspaces** — never run lint/build/test on the entire monorepo
 - **Read the full file before editing** — understand context before proposing changes
+- **Review logic & flows, not just conventions** — confront the changes against the PR intent (Step 1), trace data and user flows, and check edge cases. When unsure about expected behavior, ask the author instead of guessing a fix
 - **Point by point by default** — after the review summary, immediately present the first violation and its fix, ask for approval, then move to the next. Only switch to bulk mode if the user explicitly requests it
 - If a fix introduces a new violation, flag it immediately
 - When fixing Vue code, consult Context7 for up-to-date Vue 3 documentation

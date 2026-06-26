@@ -60,6 +60,7 @@ This is an npm workspaces monorepo with three main package categories:
 - No truthy values: use `test === true` instead of a bare `test`. The only exception is the truthy check of `isXXX`/`hasXXX`/`shouldXXX` variables, which can be used bare (e.g. `if (isLoading)`, not `if (isLoading === true)`)
 - For nullish checks, use `value === null || value === undefined` instead of `!value`, use utils like `isNullOrEmpty` when appropriate
 - **Always use `String#replaceAll()` instead of `String#replace()`** with global regex flags. For literal replacements, use `replaceAll('x', 'y')` instead of `replace(/x/g, 'y')`. This avoids regex backtracking vulnerabilities and improves readability
+- **Never prefix a function call with `void`** (e.g. write `doSomething()`, not `void doSomething()`)
 
 ### CSS Class Formatting
 
@@ -91,6 +92,7 @@ When using more than 2 CSS classes, use multi-line format:
 - Prefer template refs with `useTemplateRef()` (Vue 3.5+)
 - **Prefer `@change` (or other template events) over `watch`** when a reactive value only changes from a single source (e.g. a checkbox, an input). Use `watch` only when the value can be modified from multiple sources. A template event is more explicit and avoids unnecessary watchers.
 - **Use `@pulse/toolbox` utility helpers** instead of reinventing common checks. For example, use `isNotNullNorEmpty` from `@pulse/toolbox/utils/validator` instead of writing manual `value !== null && value !== undefined && value !== ''` checks. Always check what helpers already exist in toolbox before writing your own.
+- **Destructure composables when consuming them** instead of keeping the returned object. Top-level refs are auto-unwrapped in templates, so destructuring avoids `.value` in templates (e.g. `const { isLoading, booking } = useBookingForm()`, then `{{ isLoading }}` in the template — never `const form = useBookingForm()` then `form.isLoading.value`).
 
 ### Import Restrictions
 
@@ -101,6 +103,18 @@ In apps and applets, avoid direct imports from libraries. Use scoped package nam
 - Use `@pulse/styleguide` instead of `@styleguide`
 
 Check the `package.json` of each library to find where and how to import services, managers, etc.
+
+**Avoid deep relative imports within a package.** When an intra-package import would need 3 or more `../` segments (`../../../` or deeper), use the package's local alias instead. Each workspace exposes a `@<package>/*` alias mapped to its `src/` (e.g. `@entities/*`, `@mandate/*`, `@customer/*` — see `packages/@config/tsconfig.paths.json`). Up to 2 levels (`../` or `../../`) relative paths are fine.
+
+```ts
+// Bad: deep relative path
+import { useDocumentsConsultDrawerStore } from '../../../../documents/documents-consult-drawer/documents-consult-drawer.store'
+
+// Good: local alias from the package root
+import { useDocumentsConsultDrawerStore } from '@entities/modules/entity/prospect/documents/documents-consult-drawer/documents-consult-drawer.store'
+```
+
+These local aliases are **only** for imports within the same package. For cross-package imports, still use the scoped package name (`@pulse/common`, etc.) as above — never `@common`/`@toolbox`/`@styleguide`.
 
 ## Documentation & Tools
 
