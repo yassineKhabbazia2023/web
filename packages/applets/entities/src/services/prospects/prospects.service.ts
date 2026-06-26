@@ -139,7 +139,7 @@ export class ProspectsService {
     formData.append('file', file)
 
     return api.gateway.post(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/currentUser`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal`,
       formData,
       {
         headers: {

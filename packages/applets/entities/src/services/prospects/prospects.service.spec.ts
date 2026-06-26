@@ -323,7 +323,7 @@ describe('ProspectsService', () => {
       await ProspectsService.uploadCommercialProposal(prospectId, file)
 
       expect(mocks.post).toHaveBeenCalledWith(
-        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/currentUser`,
+        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal`,
         expect.any(FormData),
         { headers: { 'Content-Type': 'multipart/form-data' } },
       )
