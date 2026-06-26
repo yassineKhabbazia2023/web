@@ -2,6 +2,19 @@ import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { AmplitudeEvent } from '@pulse/common/enums'
 import { WalletFilterValue, WalletMenuActionValue, WalletFavoriteActivation } from './wallet-tracking.enum'
 import type { WalletCustomFilterParams } from './wallet-tracking.types'
+import { MISSION_TYPE } from '@entities/constants'
+import { EntityStatus } from '@entities/modules/wallet/enums'
+
+const MISSION_TYPE_FILTER_VALUE: Record<string, WalletFilterValue> = {
+  [MISSION_TYPE.TENUE]: WalletFilterValue.MISSION_TYPE_TENUE,
+  [MISSION_TYPE.REVISION]: WalletFilterValue.MISSION_TYPE_REVISION,
+}
+
+const DEPLOYMENT_STATUS_FILTER_VALUE: Record<string, WalletFilterValue> = {
+  [EntityStatus.TO_DEPLOY]: WalletFilterValue.STATUS_TO_DEPLOY,
+  [EntityStatus.IN_PROGRESS]: WalletFilterValue.STATUS_IN_PROGRESS,
+  [EntityStatus.CONNECTED]: WalletFilterValue.STATUS_CONNECTED,
+}
 
 export class WalletTrackingManager {
   static trackWalletSearched(searchValue: string, typeValues: string[]) {
@@ -14,7 +27,7 @@ export class WalletTrackingManager {
   static trackCustomFilterValidated(filters: WalletCustomFilterParams) {
     const activeFilters = this.getActiveFilters(filters)
 
-    const filterValues = activeFilters.length === 0
+    const filterValues: string[] = activeFilters.length === 0
       ? [WalletFilterValue.NONE]
       : activeFilters
 
@@ -61,8 +74,8 @@ export class WalletTrackingManager {
     })
   }
 
-  private static getActiveFilters(filters: WalletCustomFilterParams): WalletFilterValue[] {
-    const activeFilters: WalletFilterValue[] = []
+  private static getActiveFilters(filters: WalletCustomFilterParams): string[] {
+    const activeFilters: string[] = []
 
     if (filters.isFavoriteFilter) {
       activeFilters.push(WalletFilterValue.FAVORITES)
@@ -70,6 +83,18 @@ export class WalletTrackingManager {
 
     if (filters.isCustomerRelationFilter) {
       activeFilters.push(WalletFilterValue.CUSTOMER_RELATION)
+    }
+
+    if (filters.missionTypeFilter !== undefined && filters.missionTypeFilter.length > 0) {
+      activeFilters.push(
+        filters.missionTypeFilter.map((missionType) => MISSION_TYPE_FILTER_VALUE[missionType]).join(', '),
+      )
+    }
+
+    if (filters.deploymentStatusFilter !== undefined && filters.deploymentStatusFilter.length > 0) {
+      activeFilters.push(
+        filters.deploymentStatusFilter.map((status) => DEPLOYMENT_STATUS_FILTER_VALUE[status]).join(', '),
+      )
     }
 
     return activeFilters

@@ -14,7 +14,8 @@ export interface SearchCriteria {
   search?: string
   sorting: SortingCriteria
   accountNumber?: string
-  filterByDeploymentStatus?: string
+  filterByDeploymentStatus?: string[]
+  filterByMissionType?: string[]
   isFavoriteFilter?: boolean
   isCustomerRelationFilter?: boolean
 }
@@ -26,7 +27,8 @@ export interface FilterQueryParams {
   'sorting.field': string | undefined,
   'sorting.descending': boolean | undefined,
   accountNumber?: string,
-  deploymentStatus?: string,
+  deploymentStatus?: string[],
+  missionType?: string[],
   isFavoriteFilter?: boolean
   isCustomerRelationFilter?: boolean
 }

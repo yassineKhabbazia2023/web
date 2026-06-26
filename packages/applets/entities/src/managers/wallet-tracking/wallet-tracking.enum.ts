@@ -1,13 +1,12 @@
 export enum WalletFilterValue {
   FAVORITES = 'favoris',
   CUSTOMER_RELATION = 'en relation client',
+  MISSION_TYPE_TENUE = 'Tenue',
+  MISSION_TYPE_REVISION = 'Révision',
+  STATUS_TO_DEPLOY = 'A déployer',
+  STATUS_IN_PROGRESS = 'En cours',
+  STATUS_CONNECTED = 'Connectés',
   NONE = 'none',
-}
-
-export enum WalletStatusValue {
-  TO_DEPLOY = 'A déployer',
-  IN_PROGRESS = 'En cours',
-  CONNECTED = 'Connectés',
 }
 
 export enum WalletMenuActionValue {

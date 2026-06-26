@@ -18,5 +18,5 @@ export interface PFilterOptionProps {
     | 'gray'
   pSelected?: boolean
   pDisabled?: boolean
-  pIconName: IconName
+  pIconName?: IconName
 }

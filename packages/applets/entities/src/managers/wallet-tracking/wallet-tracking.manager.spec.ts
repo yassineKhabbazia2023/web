@@ -1,6 +1,8 @@
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { WalletTrackingManager } from './wallet-tracking.manager'
 import { WalletFilterValue, WalletMenuActionValue, WalletFavoriteActivation } from './wallet-tracking.enum'
+import { MISSION_TYPE } from '@entities/constants'
+import { EntityStatus } from '@entities/modules/wallet/enums'
 
 vi.mock('@pulse/common/services/amplitude')
 
@@ -51,6 +53,65 @@ describe('WalletTrackingManager', () => {
       expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledExactlyOnceWith(
         'Wallet Action Custom Filter Validated',
         { wallet_action_filter_value: [WalletFilterValue.FAVORITES, WalletFilterValue.CUSTOMER_RELATION] },
+      )
+    })
+
+    it('should join multiple mission types into a single comma-separated entry', () => {
+      WalletTrackingManager.trackCustomFilterValidated({
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: false,
+        missionTypeFilter: [MISSION_TYPE.TENUE, MISSION_TYPE.REVISION],
+      })
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledExactlyOnceWith(
+        'Wallet Action Custom Filter Validated',
+        { wallet_action_filter_value: [`${WalletFilterValue.MISSION_TYPE_TENUE}, ${WalletFilterValue.MISSION_TYPE_REVISION}`] },
+      )
+    })
+
+    it('should track a single mission type as a single entry', () => {
+      WalletTrackingManager.trackCustomFilterValidated({
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: false,
+        missionTypeFilter: [MISSION_TYPE.TENUE],
+      })
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledExactlyOnceWith(
+        'Wallet Action Custom Filter Validated',
+        { wallet_action_filter_value: [WalletFilterValue.MISSION_TYPE_TENUE] },
+      )
+    })
+
+    it('should join multiple deployment statuses into a single comma-separated entry', () => {
+      WalletTrackingManager.trackCustomFilterValidated({
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: false,
+        deploymentStatusFilter: [EntityStatus.TO_DEPLOY.toString(), EntityStatus.IN_PROGRESS.toString()],
+      })
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledExactlyOnceWith(
+        'Wallet Action Custom Filter Validated',
+        { wallet_action_filter_value: [`${WalletFilterValue.STATUS_TO_DEPLOY}, ${WalletFilterValue.STATUS_IN_PROGRESS}`] },
+      )
+    })
+
+    it('should track mission types and statuses as separate entries when both are active', () => {
+      WalletTrackingManager.trackCustomFilterValidated({
+        isFavoriteFilter: true,
+        isCustomerRelationFilter: false,
+        missionTypeFilter: [MISSION_TYPE.TENUE, MISSION_TYPE.REVISION],
+        deploymentStatusFilter: [EntityStatus.CONNECTED.toString()],
+      })
+
+      expect(vi.mocked(AmplitudeService.track)).toHaveBeenCalledExactlyOnceWith(
+        'Wallet Action Custom Filter Validated',
+        {
+          wallet_action_filter_value: [
+            WalletFilterValue.FAVORITES,
+            `${WalletFilterValue.MISSION_TYPE_TENUE}, ${WalletFilterValue.MISSION_TYPE_REVISION}`,
+            WalletFilterValue.STATUS_CONNECTED,
+          ],
+        },
       )
     })
   })

@@ -24,6 +24,7 @@ import { useUserStore } from '@pulse/common/stores'
 import { RouteName, RouteParam } from '@pulse/common/enums'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
+import { MISSION_TYPE } from '@entities/constants'
 
 import Folders from './Folders.vue'
 
@@ -318,7 +319,8 @@ describe('deploy', () => {
 
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 1,
-      filterByDeploymentStatus: '',
+      filterByDeploymentStatus: undefined,
+      filterByMissionType: undefined,
       isCustomerRelationFilter: false,
       isFavoriteFilter: false,
       limit: 90,
@@ -458,7 +460,7 @@ describe('deploy', () => {
 
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 0,
-      filterByDeploymentStatus: '1',
+      filterByDeploymentStatus: [EntityStatus.TO_DEPLOY.toString()],
       limit: 30,
     })
     // base call + filter call
@@ -523,7 +525,8 @@ describe('deploy', () => {
 
     const expectedSearchCriteria = getMockedSearchCriteria({
       currentPage: 0,
-      filterByDeploymentStatus: '',
+      filterByDeploymentStatus: undefined,
+      filterByMissionType: undefined,
       isCustomerRelationFilter: false,
       isFavoriteFilter: false,
       limit: 90,
@@ -666,6 +669,40 @@ describe('deploy', () => {
       expect(filterCountPastille.text()).toBe('1')
     })
 
+    it('applies mission type and status filters to the account query', async () => {
+      accountFiltersDrawer.vm.$emit('apply-filters', {
+        isFavoriteFilter: false,
+        isCustomerRelationFilter: false,
+        missionTypeFilter: [MISSION_TYPE.TENUE],
+        deploymentStatusFilter: [EntityStatus.CONNECTED.toString()],
+      })
+      await nextTick()
+      await flushPromises()
+
+      const expectedSearchCriteria = getMockedSearchCriteria({
+        currentPage: 0,
+        filterByDeploymentStatus: [EntityStatus.CONNECTED.toString()],
+        filterByMissionType: [MISSION_TYPE.TENUE],
+        isCustomerRelationFilter: false,
+        isFavoriteFilter: false,
+        limit: 90,
+        search: '',
+        sorting: {
+          descending: false,
+          field: '',
+        },
+      })
+      const filterCountPastille = wrapper.find('[data-testid="account-deploy__filter-count"]')
+
+      expect(filterCountPastille.text()).toBe('2')
+      expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+      expect(mockFetchWalletData).toHaveBeenNthCalledWith(
+        2,
+        expect.anything(),
+        expectedSearchCriteria,
+      )
+    })
+
     it('displays the "Clear all" action when filters are applied', async () => {
       // Arrange: Apply filters
       accountFiltersDrawer.vm.$emit('apply-filters', {
@@ -674,7 +711,8 @@ describe('deploy', () => {
       })
       const expectedSearchCriteria = getMockedSearchCriteria({
         currentPage: 0,
-        filterByDeploymentStatus: '',
+        filterByDeploymentStatus: undefined,
+        filterByMissionType: undefined,
         isCustomerRelationFilter: true,
         isFavoriteFilter: false,
         limit: 90,
@@ -685,6 +723,7 @@ describe('deploy', () => {
         },
       })
       await nextTick()
+      await flushPromises()
 
       // Act: Click clear button
       const clearAllButton = wrapper.find('[data-testid="account-deploy__clear-filters-button"]')
@@ -695,11 +734,10 @@ describe('deploy', () => {
 
       // Call count explanation:
       // 1 - onMounted → fetchAccountList()
-      // 2 - fetchTableDataAndFavorites() → fetchFavoriteEntities()
-      // 3 - applyAccountFilters() → fetchAccountList()
-      expect(mockFetchWalletData).toHaveBeenCalledTimes(3)
+      // 2 - searchCriteria watcher after applyAccountFilters()
+      expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
       expect(mockFetchWalletData).toHaveBeenNthCalledWith(
-        3,
+        2,
         expect.anything(),
         expectedSearchCriteria,
       )
@@ -732,7 +770,8 @@ describe('deploy', () => {
 
       const expectedSearchCriteria = getMockedSearchCriteria({
         currentPage: 0,
-        filterByDeploymentStatus: '',
+        filterByDeploymentStatus: undefined,
+        filterByMissionType: undefined,
         isCustomerRelationFilter: false,
         isFavoriteFilter: false,
         limit: 90,
@@ -746,13 +785,11 @@ describe('deploy', () => {
       // Assert: fetchAccountList() called again after clearing
       // Call count explanation:
       // 1 - onMounted → fetchAccountList()
-      // 2 - fetchTableDataAndFavorites() → fetchFavoriteEntities()
-      // 3 - applyAccountFilters() → fetchAccountList()
-      // 4 - clearAllAccountFilters() → fetchAccountList()
-      // 5 - searchCriteria watcher triggers fetchAccountList()
-      expect(mockFetchWalletData).toHaveBeenCalledTimes(5)
+      // 2 - searchCriteria watcher after applyAccountFilters()
+      // 3 - searchCriteria watcher after clearAllAccountFilters()
+      expect(mockFetchWalletData).toHaveBeenCalledTimes(3)
       expect(mockFetchWalletData).toHaveBeenNthCalledWith(
-        5,
+        3,
         expect.anything(),
         expectedSearchCriteria,
       )

@@ -6,7 +6,8 @@ const searchCriteria: SearchCriteria = {
   currentPage: 1,
   limit: 15,
   search: undefined,
-  filterByDeploymentStatus: undefined,
+  filterByDeploymentStatus: ['1', '2'],
+  filterByMissionType: ['Tenue'],
 }
 
 const fullSearchCriteria: SearchCriteria = {
@@ -18,7 +19,7 @@ const fullSearchCriteria: SearchCriteria = {
     descending: true,
   },
   accountNumber: 'ACC123',
-  filterByDeploymentStatus: 'active',
+  filterByDeploymentStatus: ['1', '2'],
   isFavoriteFilter: true,
   isCustomerRelationFilter: false,
 }
@@ -51,7 +52,6 @@ describe('test account.utils', () => {
         'sorting.field': 'name',
         'sorting.descending': true,
         accountNumber: 'ACC123',
-        deploymentStatus: 'active',
         isFavoriteFilter: true,
         isCustomerRelationFilter: false,
       })
@@ -65,6 +65,9 @@ describe('test account.utils', () => {
         'currentuser',
         `?pageNumber=${searchCriteria.currentPage}`,
         `&pageSize=${searchCriteria.limit}`,
+        `&deploymentStatus=${searchCriteria.filterByDeploymentStatus?.[0]}`,
+        `&deploymentStatus=${searchCriteria.filterByDeploymentStatus?.[1]}`,
+        `&missionType=${searchCriteria.filterByMissionType?.[0]}`,
       ].join('')
 
       expect(queryParams).toBe(expectedSearchParams)
@@ -75,6 +78,9 @@ describe('test account.utils', () => {
         'all',
         `?pageNumber=${searchCriteria.currentPage}`,
         `&pageSize=${searchCriteria.limit}`,
+        `&deploymentStatus=${searchCriteria.filterByDeploymentStatus?.[0]}`,
+        `&deploymentStatus=${searchCriteria.filterByDeploymentStatus?.[1]}`,
+        `&missionType=${searchCriteria.filterByMissionType?.[0]}`,
       ].join('')
 
       expect(queryParams).toBe(expectedSearchParams)

@@ -36,6 +36,9 @@ export function getMockedSearchCriteria(override: Partial<SearchCriteria> = {}):
     limit: 15,
     search: undefined,
     filterByDeploymentStatus: undefined,
+    filterByMissionType: undefined,
+    isFavoriteFilter: undefined,
+    isCustomerRelationFilter: undefined,
     sorting: sortingCriteria,
   }
 

@@ -8,4 +8,6 @@ export interface AccountRow {
 export interface AccountFilters {
   isFavoriteFilter: boolean,
   isCustomerRelationFilter: boolean
+  missionTypeFilter?: string[]
+  deploymentStatusFilter?: string[]
 }

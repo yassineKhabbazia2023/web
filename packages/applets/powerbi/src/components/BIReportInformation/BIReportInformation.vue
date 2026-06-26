@@ -157,7 +157,7 @@ const handleSearchAccount = async (queryString: string, callback: any) => {
     currentPage: 0,
     limit: PAGE_SIZES[0],
     search: queryString,
-    filterByDeploymentStatus: '',
+    filterByDeploymentStatus: undefined,
   }
   const searchParams = getSearchParams(defaulSearch)
   const { items } = await fetchReportAccounts(searchParams)

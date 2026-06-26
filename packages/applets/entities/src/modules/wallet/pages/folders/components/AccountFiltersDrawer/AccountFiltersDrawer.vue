@@ -13,20 +13,60 @@
     <PForm
       :pModel="internalFilters"
       pLabelPosition="top"
+      @submit.prevent
     >
-      <!-- Favorites Switch -->
-      <PFormItem>
-        <PSwitch
-          v-model="internalFilters.isFavoriteFilter"
-          :pActiveText="t('favorites')"
+      <PFormItem :pLabel="t('favorites')">
+        <PFilterOption
+          v-model:p-selected="internalFilters.isFavoriteFilter"
+          :pContent="t('favorites')"
+          pColor="default"
+          data-testid="filter-Favorites"
         />
       </PFormItem>
-      <!-- Customer Relationship Switch -->
-      <PFormItem v-if="isCollab === true">
-        <PSwitch
-          v-model="internalFilters.isCustomerRelationFilter"
-          :pActiveText="t('customerRelationship')"
+      <PFormItem
+        v-if="isCollab"
+        :pLabel="t('customerRelationship')"
+      >
+        <PFilterOption
+          v-model:p-selected="internalFilters.isCustomerRelationFilter"
+          :pContent="t('customerRelationship')"
+          pColor="default"
+          data-testid="filter-CustomerRelationship"
         />
+      </PFormItem>
+      <PFormItem
+        v-for="group in MULTI_SELECT_FILTER_GROUPS"
+        :key="group.field"
+        :pLabel="t(group.labelKey)"
+      >
+        <PFilterOption
+          :pContent="t('all')"
+          pColor="default"
+          :pSelected="isAllSelected(group)"
+          @update:p-selected="toggleAll(group, $event)"
+        />
+        <PDivider
+          p-border-style="solid"
+          pDirection="vertical"
+          pBorderColor="gray-200"
+        />
+        <div
+          class="
+            flex
+            flex--wrap
+            flex-gap--2
+          "
+        >
+          <PFilterOption
+            v-for="option in group.options"
+            :key="option.value"
+            :pContent="t(option.labelKey)"
+            pColor="default"
+            :pSelected="(internalFilters[group.field] ?? []).includes(option.value)"
+            :data-testid="`filter-${option.value}`"
+            @update:p-selected="toggleValue(group.field, option.value, $event)"
+          />
+        </div>
       </PFormItem>
     </PForm>
     <template #footer>
@@ -42,13 +82,15 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PDrawer, PDrawerActions, PForm, PFormItem, PSwitch } from '@pulse/styleguide/components'
+import { PDrawer, PDrawerActions, PFilterOption, PForm, PFormItem, PDivider } from '@pulse/styleguide/components'
 import type { PDrawerActionButton } from '@pulse/styleguide/types'
-import type { AccountFiltersDrawerProps } from './account-filters-drawer.types'
+import type { AccountFiltersDrawerProps, FilterGroupConfig, MultiSelectFilterField } from './account-filters-drawer.types'
 import { useUserStore } from '@pulse/common/stores'
 import type { AccountFilters } from '@entities/types'
 import { storeToRefs } from 'pinia'
 import { WalletTrackingManager } from '@entities/managers/wallet-tracking/wallet-tracking.manager'
+import { getDefaultAccountFilters } from './account-filters-drawer.utils'
+import { MULTI_SELECT_FILTER_GROUPS } from './account-filters-drawer.consts'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -65,6 +107,15 @@ const { t } = useI18n({
       placeholderTypeReport: 'Select a type',
       favorites: 'Favorites',
       customerRelationship: 'Customer Relationship',
+      missionType: 'Mission type',
+      revision: 'Account review',
+      status: 'Status',
+      tenue: 'Bookkeeping',
+      notSpecified: 'Not specified',
+      toDeploy: 'To deploy',
+      inProgress: 'In progress',
+      connected: 'Connected',
+      all: 'All',
     },
     'fr-FR': {
       filters: 'Filtres',
@@ -77,6 +128,15 @@ const { t } = useI18n({
       placeholderTypeReport: 'Sélectionnez un type',
       favorites: 'Favoris',
       customerRelationship: 'Relation client',
+      missionType: 'Type de mission',
+      revision: 'Révision',
+      status: 'Statut',
+      tenue: 'Tenue',
+      notSpecified: 'Non renseigné',
+      toDeploy: 'À déployer',
+      inProgress: 'En cours',
+      connected: 'Connecté',
+      all: 'Tout',
     },
   },
 })
@@ -90,6 +150,11 @@ const emit = defineEmits<{
 const userStore = useUserStore()
 const { isCollab } = storeToRefs(userStore)
 
+const internalFilters = ref<AccountFilters>(getDefaultAccountFilters())
+const hasActiveFilters = defineModel<boolean>('hasActiveFilters', {
+  default: false,
+})
+
 const backCTA = computed<PDrawerActionButton>(() => ({
   pLabel: t('reset'),
   pDisabled: hasActiveFilters.value === false,
@@ -100,38 +165,58 @@ const primaryCTA = computed<PDrawerActionButton>(() => ({
   pTestId: 'account-filters-drawer__apply-button',
 }))
 
-// #region Actions Related to Filters
-const internalFilters = ref<AccountFilters>({
-  isFavoriteFilter: false,
-  isCustomerRelationFilter: false,
-})
-const hasActiveFilters = defineModel<boolean>('hasActiveFilters', {
-  default: false,
-})
+// #region Filter helpers
+const isAllSelected = (group: FilterGroupConfig) =>
+  group.options.every(({ value }) => (internalFilters.value[group.field] ?? []).includes(value))
+
+const toggleAll = (group: FilterGroupConfig, isOn: boolean) => {
+  internalFilters.value[group.field] = isOn ? group.options.map(o => o.value) : []
+}
+
+const toggleValue = (field: MultiSelectFilterField, value: string, isOn: boolean) => {
+  const current = internalFilters.value[field] ?? []
+  internalFilters.value[field] = isOn
+    ? [...current, value]
+    : current.filter(v => v !== value)
+}
+// #endregion
+
+// #region Filter Actions
+const hasAppliedAccountFilters = (filters: AccountFilters) =>
+  filters.isFavoriteFilter ||
+  filters.isCustomerRelationFilter ||
+  (filters.missionTypeFilter?.length ?? 0) > 0 ||
+  (filters.deploymentStatusFilter?.length ?? 0) > 0
+
 const applyAccountFilters = () => {
   WalletTrackingManager.trackCustomFilterValidated(internalFilters.value)
-  hasActiveFilters.value = true
-  emit('apply-filters', internalFilters.value)
+  hasActiveFilters.value = hasAppliedAccountFilters(internalFilters.value)
+  emit('apply-filters', { ...internalFilters.value })
 }
+
 const resetAccountFilters = () => {
   hasActiveFilters.value = false
+  internalFilters.value = getDefaultAccountFilters()
   emit('reset-filters')
 }
 // #endregion
 
-// #region Drawer State and Event Handlers
+// #region Drawer State
 const isAccountFilterDrawerVisible = defineModel<boolean>({
   default: false,
 })
+
 const initializeFilters = () => {
   internalFilters.value = {
-    isFavoriteFilter: props.accountFilters.isFavoriteFilter,
-    isCustomerRelationFilter: props.accountFilters.isCustomerRelationFilter,
+    ...props.accountFilters,
+    missionTypeFilter: props.accountFilters.missionTypeFilter?.slice(),
+    deploymentStatusFilter: props.accountFilters.deploymentStatusFilter?.slice(),
   }
 }
+
 const closeAccountFiltersDrawer = () => {
-  if (!hasActiveFilters.value) {
-    internalFilters.value = { isFavoriteFilter: false, isCustomerRelationFilter: false }
+  if (hasActiveFilters.value === false) {
+    internalFilters.value = getDefaultAccountFilters()
   }
   isAccountFilterDrawerVisible.value = false
 }

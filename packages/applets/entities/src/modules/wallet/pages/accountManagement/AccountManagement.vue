@@ -139,7 +139,7 @@ const searchCriteria = ref<SearchCriteria>({
     field: '',
     descending: false,
   },
-  filterByDeploymentStatus: '',
+  filterByDeploymentStatus: undefined,
 })
 const searchResult = ref<SearchResult<RegularWalletData>>({
   currentPage: 0,

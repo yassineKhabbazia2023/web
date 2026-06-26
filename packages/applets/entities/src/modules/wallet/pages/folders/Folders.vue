@@ -243,6 +243,7 @@ import DelegationDrawer from './components/DelegationDrawer'
 import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
 import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
+import { getDefaultAccountFilters } from './components/AccountFiltersDrawer/account-filters-drawer.utils'
 import ResendActivationEmailDrawer from '@entities/components/ResendActivationEmailDrawer'
 import DeclareCustomerRelationDrawer from './components/DeclareCustomerRelationDrawer'
 import type { AccountFilters, AccountRow } from '@entities/types'
@@ -343,10 +344,7 @@ const handleDisplayResendActivationEmailDrawer = (account: AccountRow) => {
 // #region Account Filter Drawer State and Logic
 const hasActiveFilters = ref(false)
 const isFiltersDrawerOpen = ref(false)
-const accountFilters = ref<AccountFilters>({
-  isFavoriteFilter: false,
-  isCustomerRelationFilter: false,
-})
+const accountFilters = ref<AccountFilters>(getDefaultAccountFilters())
 
 const openFiltersDrawer = () => {
   isFiltersDrawerOpen.value = true
@@ -357,27 +355,44 @@ const closeFiltersDrawer = () => {
 }
 
 const accountFiltersCount = computed(() => {
-  const { isFavoriteFilter, isCustomerRelationFilter } = accountFilters.value
-  return (isFavoriteFilter ? 1 : 0) + (isCustomerRelationFilter ? 1 : 0)
+  const {
+    isFavoriteFilter,
+    isCustomerRelationFilter,
+    missionTypeFilter,
+    deploymentStatusFilter,
+  } = accountFilters.value
+
+  return (isFavoriteFilter ? 1 : 0) +
+    (isCustomerRelationFilter ? 1 : 0) +
+    (missionTypeFilter !== undefined && missionTypeFilter.length > 0 ? 1 : 0) +
+    (deploymentStatusFilter !== undefined && deploymentStatusFilter.length > 0 ? 1 : 0)
 })
 
 const applyAccountFilters = (appliedFilters: AccountFilters) => {
   accountFilters.value = appliedFilters
-  searchCriteria.value.isFavoriteFilter = appliedFilters.isFavoriteFilter
-  searchCriteria.value.isCustomerRelationFilter = appliedFilters.isCustomerRelationFilter
-  fetchAccountList()
+  searchCriteria.value = {
+    ...searchCriteria.value,
+    isFavoriteFilter: appliedFilters.isFavoriteFilter,
+    isCustomerRelationFilter: appliedFilters.isCustomerRelationFilter,
+    filterByMissionType: appliedFilters.missionTypeFilter,
+    filterByDeploymentStatus: appliedFilters.deploymentStatusFilter,
+  }
   closeFiltersDrawer()
 }
 
 const clearAllAccountFilters = () => {
-  accountFilters.value = { isFavoriteFilter: false, isCustomerRelationFilter: false }
-  searchCriteria.value.isFavoriteFilter = false
-  searchCriteria.value.isCustomerRelationFilter = false
+  accountFilters.value = getDefaultAccountFilters()
+  searchCriteria.value = {
+    ...searchCriteria.value,
+    isFavoriteFilter: false,
+    isCustomerRelationFilter: false,
+    filterByMissionType: undefined,
+    filterByDeploymentStatus: undefined,
+  }
   hasActiveFilters.value = false
-  fetchAccountList()
   closeFiltersDrawer()
 }
-// #enregion
+// #endregion
 
 // delegation part
 const isDelegationDrawerOpened = ref(false)
@@ -446,7 +461,8 @@ const searchCriteria = ref<SearchCriteria>({
     field: '',
     descending: false,
   },
-  filterByDeploymentStatus: '',
+  filterByDeploymentStatus: undefined,
+  filterByMissionType: undefined,
   isFavoriteFilter: false,
   isCustomerRelationFilter: false,
 })
@@ -620,7 +636,7 @@ const handleFilterByDeploymentStatus = (filterValue: EntityStatus) => {
   searchCriteria.value = {
     currentPage: 0,
     limit: pageSizes.value[0],
-    filterByDeploymentStatus: filterValue.toString(),
+    filterByDeploymentStatus: [filterValue.toString()],
     sorting: {
       field: '',
       descending: false,
@@ -664,4 +680,3 @@ defineExpose({ handleAddFavorite, searchCriteria, isResendActivationEmailDrawerV
   opacity: 0;
 }
 </style>
-

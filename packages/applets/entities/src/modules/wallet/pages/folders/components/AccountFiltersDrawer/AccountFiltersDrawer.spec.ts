@@ -4,8 +4,10 @@ import type { AccountFiltersDrawerProps } from './account-filters-drawer.types'
 import { useUserStore } from '@pulse/common/stores'
 
 import AccountFiltersDrawer from './AccountFiltersDrawer.vue'
-import { AccountFilters } from '@entities/types'
+import type { AccountFilters } from '@entities/types'
 import { getStoreMock } from '@pulse/common/mocks/vitest'
+import { MISSION_TYPE } from '@entities/constants'
+import { EntityStatus } from '@entities/modules/wallet/enums'
 
 const loggerErrorSpy = vi.hoisted(() => vi.fn())
 const userStoreMock = getStoreMock(useUserStore)
@@ -25,11 +27,11 @@ const stubs = {
   },
   PForm: { name: 'PForm', template: '<form><slot /></form>', props: ['pModel', 'pLabelPosition'] },
   PFormItem: { name: 'PFormItem', template: '<div><slot /></div>', props: ['pLabel'] },
-  PSwitch: {
-    name: 'PSwitch',
-    template: '<div></div>',
-    props: ['modelValue', 'pActiveText', 'pActiveColor'],
-    emits: ['update:modelValue'],
+  PFilterOption: {
+    name: 'PFilterOption',
+    template: '<button></button>',
+    props: ['pContent', 'pColor', 'pIconName', 'pSelected'],
+    emits: ['update:p-selected'],
   },
   PDrawerActions: {
     name: 'PDrawerActions',
@@ -47,6 +49,8 @@ function createWrapper(props: Partial<AccountFiltersDrawerProps> = {}) {
     accountFilters: {
       isFavoriteFilter: false,
       isCustomerRelationFilter: false,
+      missionTypeFilter: undefined,
+      deploymentStatusFilter: undefined,
     },
   }
 
@@ -56,29 +60,36 @@ function createWrapper(props: Partial<AccountFiltersDrawerProps> = {}) {
   })
 }
 
+function findFilterOptionByTestId(wrapper: ReturnType<typeof createWrapper>, testId: string) {
+  return wrapper.findAllComponents({ name: 'PFilterOption' })
+    .find(c => c.attributes('data-testid') === testId)
+}
+
 describe('AccountFiltersDrawer.vue', () => {
-  it('initializes internal filters when the drawer opens', async () => {
+  it('reflects prop filters as selected checkboxes when the drawer opens', async () => {
     const filters: AccountFilters = {
       isFavoriteFilter: true,
       isCustomerRelationFilter: false,
+      missionTypeFilter: [MISSION_TYPE.TENUE],
+      deploymentStatusFilter: ['3', '2'],
     }
     const wrapper = createWrapper({ accountFilters: filters })
 
     wrapper.findComponent({ name: 'PDrawer' }).vm.$emit('open')
     await nextTick()
 
-    const switches = wrapper.findAllComponents({ name: 'PSwitch' })
-    const isFavoriteFilterSwitch = switches[0]
-    const isCustomerRelationFilterSwitch = switches[1]
-
-    expect(isFavoriteFilterSwitch.props('modelValue')).toBe(true)
-    expect(isCustomerRelationFilterSwitch.props('modelValue')).toBe(false)
+    expect(findFilterOptionByTestId(wrapper, 'filter-Favorites')?.props('pSelected')).toBe(true)
+    expect(findFilterOptionByTestId(wrapper, `filter-${MISSION_TYPE.TENUE}`)?.props('pSelected')).toBe(true)
+    expect(findFilterOptionByTestId(wrapper, `filter-${MISSION_TYPE.REVISION}`)?.props('pSelected')).toBe(false)
+    expect(findFilterOptionByTestId(wrapper, `filter-${MISSION_TYPE.NOT_SPECIFIED}`)?.props('pSelected')).toBe(false)
   })
 
   it('emits "reset-filters" when reset is clicked', async () => {
     const filters: AccountFilters = {
       isFavoriteFilter: true,
       isCustomerRelationFilter: false,
+      missionTypeFilter: undefined,
+      deploymentStatusFilter: undefined,
     }
 
     const wrapper = createWrapper({ accountFilters: filters, hasActiveFilters: true })
@@ -93,12 +104,11 @@ describe('AccountFiltersDrawer.vue', () => {
   it('emits "apply-filters" with updated values when apply button is clicked', async () => {
     const wrapper = createWrapper()
 
-    const switches = wrapper.findAllComponents({ name: 'PSwitch' })
-    const isFavoriteFilterSwitch = switches[0]
-    const isCustomerRelationFilterSwitch = switches[1]
-
-    await isFavoriteFilterSwitch.vm.$emit('update:modelValue', true)
-    await isCustomerRelationFilterSwitch.vm.$emit('update:modelValue', true)
+    await findFilterOptionByTestId(wrapper, 'filter-Favorites')!.vm.$emit('update:p-selected', true)
+    await findFilterOptionByTestId(wrapper, 'filter-CustomerRelationship')!.vm.$emit('update:p-selected', true)
+    await findFilterOptionByTestId(wrapper, `filter-${MISSION_TYPE.TENUE}`)!.vm.$emit('update:p-selected', true)
+    await findFilterOptionByTestId(wrapper, `filter-${MISSION_TYPE.NOT_SPECIFIED}`)!.vm.$emit('update:p-selected', true)
+    await findFilterOptionByTestId(wrapper, `filter-${EntityStatus.TO_DEPLOY.toString()}`)!.vm.$emit('update:p-selected', true)
 
     const drawerActions = wrapper.findComponent({ name: 'PDrawerActions' })
     await drawerActions.vm.$emit('click-primary-cta')
@@ -107,20 +117,23 @@ describe('AccountFiltersDrawer.vue', () => {
     expect(wrapper.emitted('apply-filters')![0][0]).toEqual({
       isFavoriteFilter: true,
       isCustomerRelationFilter: true,
+      missionTypeFilter: [MISSION_TYPE.TENUE, MISSION_TYPE.NOT_SPECIFIED],
+      deploymentStatusFilter: [EntityStatus.TO_DEPLOY.toString()],
     })
   })
 
-  it('resets filters on close when no active filters', async () => {
+  it('deselects all filter checkboxes on close when no active filters', async () => {
     const wrapper = createWrapper()
+
+    await findFilterOptionByTestId(wrapper, 'filter-Favorites')!.vm.$emit('update:p-selected', true)
 
     wrapper.findComponent({ name: 'PDrawer' }).vm.$emit('close')
     await nextTick()
 
-    const switches = wrapper.findAllComponents({ name: 'PSwitch' })
-    const isFavoriteFilterSwitch = switches[0]
-    const isCustomerRelationFilterSwitch = switches[1]
-
-    expect(isFavoriteFilterSwitch.props('modelValue')).toBe(false)
-    expect(isCustomerRelationFilterSwitch.props('modelValue')).toBe(false)
+    const childFilterOptions = wrapper.findAllComponents({ name: 'PFilterOption' })
+      .filter(c => c.attributes('data-testid') !== undefined)
+    childFilterOptions.forEach((option) => {
+      expect(option.props('pSelected')).toBe(false)
+    })
   })
 })
