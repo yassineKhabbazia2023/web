@@ -98,6 +98,12 @@
             :isLoading="isLoadingSteps"
             @sent="loadOnboardingSteps"
           />
+          <EngagementLetter
+            v-else-if="step.id === ENGAGEMENT_LETTER_STEP_ID"
+            :status="engagementLetterStep?.status"
+            :isLoading="isLoadingSteps"
+            @sent="loadOnboardingSteps"
+          />
           <Payment
             v-else-if="step.id === PAYMENT_STEP_ID"
             :isCollaborator="isCollab"
@@ -152,6 +158,7 @@ import { ProspectsService } from '@entities/services/prospects/prospects.service
 import type { OnboardingStepResponse } from '@entities/services/prospects/prospects.types'
 import { OnboardingStep } from './prospect-conformity.enums'
 import CommercialProposal from './commercial-proposal/commercial-proposal.vue'
+import EngagementLetter from './engagement-letter/engagement-letter.vue'
 import ConformityDocuments from './conformity-documents/conformity-documents.vue'
 import { useProspectConformity } from './prospect-conformity.composable'
 import Beneficiaries from './beneficiaries/beneficiaries.vue'
@@ -159,6 +166,7 @@ import Payment from './payment/payment.vue'
 import {
   PAYMENT_STEP_ID,
   COMMERCIAL_PROPOSAL_STEP_ID,
+  ENGAGEMENT_LETTER_STEP_ID,
   PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID,
   PROSPECT_CONFORMITY_DESCRIPTION,
   PROSPECT_CONFORMITY_SECTION_ORDER,
@@ -185,6 +193,10 @@ const beneficiaryStep = computed(() =>
 
 const commercialProposalStep = computed(() =>
   onboardingSteps.value.find((s) => s.id === OnboardingStep.CommercialProposal),
+)
+
+const engagementLetterStep = computed(() =>
+  onboardingSteps.value.find((s) => s.id === OnboardingStep.EngagementLetter),
 )
 
 const loadOnboardingSteps = async () => {

@@ -5,7 +5,7 @@ import { useProspectConformity } from './prospect-conformity.composable'
 const KNOWN_STEP_ID = 'commercial-proposal'
 const OTHER_STEP_ID = 'supporting-docs'
 const FIRST_STEP_ID = 'beneficiaries'
-const LAST_STEP_ID = 'mission-letter'
+const LAST_STEP_ID = 'engagement-letter'
 
 let observerInstances: MockIntersectionObserver[] = []
 

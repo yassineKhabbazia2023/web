@@ -100,6 +100,7 @@ export type ImageName =
 'van' |
 'work-in-progress' |
 'pennylane-header-illustration' |
+'cloud_with_mountain_behind' |
 'meet_team_1x' |
 'meet_team_2x' |
 'meet_team_3x' |

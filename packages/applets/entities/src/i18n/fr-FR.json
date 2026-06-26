@@ -487,6 +487,28 @@
           "sendError": "Une erreur est survenue lors de l'envoi de la proposition commerciale",
           "downloadError": "Une erreur est survenue lors du téléchargement de la proposition commerciale",
           "loadError": "Une erreur est survenue. Veuillez rafraîchir la page."
+        },
+        "engagementLetter": {
+          "bannerTitle": "Lettre de mission",
+          "customerPendingAlert": "{creationStatus} Votre expert déposera bientôt votre lettre de mission. Vous pourrez la retrouver dans votre espace et vous serez notifié par mail.",
+          "customerPendingAlertBold": "En cours de création :",
+          "collabSentSubtitle": "La lettre de mission a été envoyée au client",
+          "customerDocumentSubtitle": "Si vous avez des questions, n'hésitez pas à les poser à votre conseiller",
+          "uploadLabel": "Déposer la lettre de mission signée par les deux parties",
+          "uploadPrefixLabel": "Glisser le fichier ou",
+          "uploadSuffixLabel": "parcourir l'ordinateur",
+          "fileSizeLimit": "5 Mo",
+          "rejectedFileMessage": "Seul le format PDF est accepté (max. 5 Mo)",
+          "sendToCustomer": "Envoyer au client",
+          "consult": "Consulter",
+          "sendSuccess": "La lettre de mission a bien été envoyée au client",
+          "sendError": "Une erreur est survenue lors de l'envoi de la lettre de mission",
+          "downloadError": "Une erreur est survenue lors du téléchargement de la lettre de mission",
+          "loadError": "Une erreur est survenue. Veuillez rafraîchir la page.",
+          "confirmTitle": "Envoyer la lettre de mission",
+          "confirmDescription": "Vous êtes sur le point d'envoyer la lettre de mission au client. Le document lui sera transmis et un email lui sera envoyé. Cette action est définitive. Souhaitez-vous continuer ?",
+          "confirmConfirm": "Envoyer",
+          "confirmCancel": "Annuler"
         }
       },
       "deleteDocumentDialog": {

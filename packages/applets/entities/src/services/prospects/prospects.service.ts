@@ -148,4 +148,27 @@ export class ProspectsService {
       },
     )
   }
+
+  static async downloadEngagementLetter(prospectId: number): Promise<Blob> {
+    const response = await api.gateway.get<Blob>(
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/engagement-letter/content`,
+      { responseType: 'blob' },
+    )
+    return response.data
+  }
+
+  static uploadEngagementLetter(prospectId: number, file: File): Promise<void> {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    return api.gateway.post(
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/engagement-letter`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    )
+  }
 }

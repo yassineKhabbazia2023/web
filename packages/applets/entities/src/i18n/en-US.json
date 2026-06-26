@@ -487,6 +487,28 @@
           "sendError": "An error occurred while sending the commercial proposal",
           "downloadError": "An error occurred while downloading the commercial proposal",
           "loadError": "An error occurred. Please refresh the page."
+        },
+        "engagementLetter": {
+          "bannerTitle": "Engagement letter",
+          "customerPendingAlert": "{creationStatus} Your expert will soon upload your engagement letter. You will be able to find it in your space and will be notified by email.",
+          "customerPendingAlertBold": "Being created:",
+          "collabSentSubtitle": "The engagement letter has been sent to the client",
+          "customerDocumentSubtitle": "If you have any questions, feel free to ask your advisor",
+          "uploadLabel": "Upload the engagement letter signed by both parties",
+          "uploadPrefixLabel": "Drag the file or",
+          "uploadSuffixLabel": "browse your computer",
+          "fileSizeLimit": "5 MB",
+          "rejectedFileMessage": "Only PDF format is accepted (max. 5 MB)",
+          "sendToCustomer": "Send to client",
+          "consult": "View",
+          "sendSuccess": "The engagement letter has been sent to the client",
+          "sendError": "An error occurred while sending the engagement letter",
+          "downloadError": "An error occurred while downloading the engagement letter",
+          "loadError": "An error occurred. Please refresh the page.",
+          "confirmTitle": "Send the engagement letter",
+          "confirmDescription": "You are about to send the engagement letter to the client. The document will be transmitted and an email will be sent to them. This action is final. Do you want to continue?",
+          "confirmConfirm": "Send",
+          "confirmCancel": "Cancel"
         }
       },
       "deleteDocumentDialog": {
