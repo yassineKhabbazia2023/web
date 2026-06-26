@@ -50,6 +50,7 @@ export interface PennylaneAccessResponse {
   details?: PennylaneAccessDetails
   freeTrialEndDate: string
   billingMonth: string
+  isFreeTrialExpired: boolean
 }
 
 export interface PennylaneValidationPayload {
@@ -57,4 +58,4 @@ export interface PennylaneValidationPayload {
   status: boolean
 }
 
-export type PennylaneFreeTrialInfo = Pick<PennylaneAccessResponse, 'freeTrialEndDate' | 'billingMonth'>
+export type PennylaneFreeTrialInfo = Pick<PennylaneAccessResponse, 'freeTrialEndDate' | 'billingMonth' | 'isFreeTrialExpired'>

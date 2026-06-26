@@ -34,7 +34,7 @@
           {{ t('widgets.pennylaneAmendmentFlow.step4.listItem1') }}
         </li>
         <li>
-          {{ t('widgets.pennylaneAmendmentFlow.step4.listItem2') }}<template v-if="isDelayedActivation">
+          {{ listItem2Text }}<template v-if="isDelayedActivation && isFreeTrialExpired === false">
             {{ t('widgets.pennylaneAmendmentFlow.step4.listItem2Delayed') }}
           </template><template v-else>
             {{ t('widgets.pennylaneAmendmentFlow.step4.listItem2Punctuation') }}
@@ -70,6 +70,14 @@ const props = defineProps<StepAcceptanceProps>()
 const isAccepted = defineModel<boolean>('isAccepted', { required: true })
 
 const isDelayedActivation = computed(() => props.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
+
+const isFreeTrialExpired = computed(() => props.isFreeTrialExpired === true)
+
+const listItem2Text = computed(() =>
+  isFreeTrialExpired.value
+    ? t('widgets.pennylaneAmendmentFlow.step4.listItem2Expired')
+    : t('widgets.pennylaneAmendmentFlow.step4.listItem2'),
+)
 
 function openTermsPdf() {
   openTermsPdfInNewTab()

@@ -164,6 +164,7 @@ describe('usePennylaneAmendment', () => {
         details: undefined,
         freeTrialEndDate: '2025-12-31',
         billingMonth: '1',
+        isFreeTrialExpired: false,
       })
 
       const { shouldShowPennylaneAmendmentDialog, checkPennylaneAccess } = usePennylaneAmendment()
@@ -201,6 +202,7 @@ describe('usePennylaneAmendment', () => {
         isPennylaneSignatory: true,
         freeTrialEndDate: response.freeTrialEndDate,
         billingMonth: response.billingMonth,
+        isFreeTrialExpired: false,
         details: {
           id: response.details!.id,
           accounts: response.details!.accounts,
@@ -259,6 +261,20 @@ describe('usePennylaneAmendment', () => {
 
       expect(showPennylaneAmendmentDialog.value).toBe(false)
       expect(showPennylaneAmendmentSuccessDialog.value).toBe(true)
+    })
+
+    it('should freeze the free trial info for the success dialog', async () => {
+      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValue(
+        getMockedPennylaneAccessResponse({ isFreeTrialExpired: true }),
+      )
+
+      const { pennylaneFreeTrialInfo, acceptedFreeTrialInfo, checkPennylaneAccess, captureAcceptedFreeTrialInfo } = usePennylaneAmendment()
+
+      await checkPennylaneAccess()
+      captureAcceptedFreeTrialInfo()
+
+      expect(acceptedFreeTrialInfo.value).toEqual(pennylaneFreeTrialInfo.value)
+      expect(acceptedFreeTrialInfo.value?.isFreeTrialExpired).toBe(true)
     })
   })
 

@@ -27,13 +27,14 @@
       v-model="showPennylaneAmendmentDialog"
       :access-details="pennylaneAccessDetails"
       :free-trial-info="pennylaneFreeTrialInfo"
-      @accept-success="onPennylaneAmendmentAcceptSuccess"
+      @accept-success="handleAcceptSuccess"
       @decline="onPennylaneAmendmentDecline"
     />
 
     <PennylaneAmendmentSuccessDialog
       v-model="showPennylaneAmendmentSuccessDialog"
-      :free-trial-end-date="pennylaneFreeTrialInfo?.freeTrialEndDate"
+      :free-trial-end-date="acceptedFreeTrialInfo?.freeTrialEndDate"
+      :is-free-trial-expired="acceptedFreeTrialInfo?.isFreeTrialExpired"
     />
 
     <PennylaneAmendmentDeclineDialog
@@ -97,11 +98,18 @@ const {
   showPennylaneAmendmentDeclineDialog,
   pennylaneAccessDetails,
   pennylaneFreeTrialInfo,
+  acceptedFreeTrialInfo,
   shouldShowPennylaneAmendmentDialog,
   checkPennylaneAccess,
+  captureAcceptedFreeTrialInfo,
   onPennylaneAmendmentAcceptSuccess,
   onPennylaneAmendmentDecline,
 } = usePennylaneAmendment()
+
+function handleAcceptSuccess() {
+  captureAcceptedFreeTrialInfo()
+  onPennylaneAmendmentAcceptSuccess()
+}
 
 onMounted(async () => {
   await checkPennylaneAccess()

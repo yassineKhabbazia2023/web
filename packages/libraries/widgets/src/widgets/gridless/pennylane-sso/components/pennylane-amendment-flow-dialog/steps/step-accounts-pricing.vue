@@ -139,7 +139,16 @@
       <p class="font-base margin--0">
         {{ t('widgets.pennylaneAmendmentFlow.step2.table.complianceNote') }}
       </p>
-      <p class="font-base margin--0">
+      <p
+        v-if="isFreeTrialExpired"
+        class="font-base margin--0"
+      >
+        {{ t('widgets.pennylaneAmendmentFlow.step2.table.subscriptionNoteExpired') }}
+      </p>
+      <p
+        v-else
+        class="font-base margin--0"
+      >
         {{ t('widgets.pennylaneAmendmentFlow.step2.table.subscriptionNote', {
           billingMonth: freeTrialInfo?.billingMonth
         }) }}
@@ -147,6 +156,7 @@
     </div>
 
     <PAlert
+      v-if="isFreeTrialExpired === false"
       pType="success"
       class="font-base"
     >
@@ -192,6 +202,8 @@ const { isMobile } = useResponsive()
 const props = defineProps<StepAccountsPricingProps>()
 
 const isDelayedActivation = computed(() => props.freeTrialInfo?.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
+
+const isFreeTrialExpired = computed(() => props.freeTrialInfo?.isFreeTrialExpired === true)
 
 const tableData = computed(() => {
   return props.accounts.map((account) => ({

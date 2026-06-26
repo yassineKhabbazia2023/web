@@ -12,6 +12,9 @@ export function usePennylaneAmendmentFlow() {
   const isPennylaneSignatory = ref<boolean | undefined>(undefined)
   const accessDetails = ref<PennylaneAccessDetails | undefined>(undefined)
   const freeTrialInfo = ref<PennylaneFreeTrialInfo>()
+  // free trial info frozen at acceptance time, so the success dialog keeps describing
+  // the amendment that was just signed even after the post-acceptance access re-check
+  const acceptedFreeTrialInfo = ref<PennylaneFreeTrialInfo>()
 
   const isAccessBlockedDialogOpen = ref(false)
   const isAmendmentFlowDialogOpen = ref(false)
@@ -63,7 +66,11 @@ export function usePennylaneAmendmentFlow() {
       canAccess.value = response.canAccess
       isPennylaneSignatory.value = response.isPennylaneSignatory
       accessDetails.value = response.details
-      freeTrialInfo.value = { freeTrialEndDate: response.freeTrialEndDate, billingMonth: response.billingMonth }
+      freeTrialInfo.value = {
+        freeTrialEndDate: response.freeTrialEndDate,
+        billingMonth: response.billingMonth,
+        isFreeTrialExpired: response.isFreeTrialExpired,
+      }
     } catch {
       canAccess.value = undefined
       isPennylaneSignatory.value = undefined
@@ -93,6 +100,9 @@ export function usePennylaneAmendmentFlow() {
   }
 
   async function handleAcceptSuccess() {
+    // snapshot the free trial info before the re-check overwrites it with the
+    // post-acceptance state, but open the success dialog once the re-check is done
+    acceptedFreeTrialInfo.value = freeTrialInfo.value
     await checkPennylaneAccess()
     isSuccessDialogOpen.value = true
   }
@@ -116,6 +126,7 @@ export function usePennylaneAmendmentFlow() {
     isDeclineDialogOpen,
     shouldBlockAccess,
     freeTrialInfo,
+    acceptedFreeTrialInfo,
     checkPennylaneAccess,
     handlePennylaneClick,
     handleAmendmentFlowContinue,

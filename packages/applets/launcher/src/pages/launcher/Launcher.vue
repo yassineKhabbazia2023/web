@@ -64,7 +64,8 @@
 
     <PennylaneAmendmentSuccessDialog
       v-model="isSuccessDialogOpen"
-      :free-trial-end-date="freeTrialInfo?.freeTrialEndDate"
+      :free-trial-end-date="acceptedFreeTrialInfo?.freeTrialEndDate"
+      :is-free-trial-expired="acceptedFreeTrialInfo?.isFreeTrialExpired"
     />
     <PennylaneAmendmentDeclineDialog
       v-model="isDeclineDialogOpen"
@@ -113,6 +114,7 @@ const {
   currentAccountId,
   shouldBlockAccess,
   freeTrialInfo,
+  acceptedFreeTrialInfo,
   handlePennylaneClick,
   handleAcceptSuccess,
   handleDecline,

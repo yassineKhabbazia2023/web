@@ -102,7 +102,8 @@
 
     <PennylaneAmendmentSuccessDialog
       v-model="showPennylaneAmendmentSuccessDialog"
-      :free-trial-end-date="pennylaneFreeTrialInfo?.freeTrialEndDate"
+      :free-trial-end-date="acceptedFreeTrialInfo?.freeTrialEndDate"
+      :is-free-trial-expired="acceptedFreeTrialInfo?.isFreeTrialExpired"
     />
     <PennylaneAmendmentDeclineDialog
       v-model="showPennylaneAmendmentDeclineDialog"
@@ -149,6 +150,7 @@ const {
   canAccessPennylane,
   pennylaneAccessDetails,
   pennylaneFreeTrialInfo,
+  acceptedFreeTrialInfo,
   showPennylaneAmendmentDialog,
   showPennylaneAmendmentSuccessDialog,
   showPennylaneAmendmentDeclineDialog,
@@ -156,6 +158,7 @@ const {
   shouldShowPennylaneAmendmentDialog,
   shouldShowPennylaneAccessBlockedDialog,
   checkPennylaneAccess,
+  captureAcceptedFreeTrialInfo,
   onPennylaneAmendmentAcceptSuccess,
   onPennylaneAmendmentDecline,
 } = usePennylaneAmendment()
@@ -183,6 +186,9 @@ const onSSOConnection = () => {
 }
 
 const handleAcceptSuccess = async () => {
+  // snapshot the free trial info before the re-check overwrites it with the
+  // post-acceptance state, but keep showing the success dialog once the re-check is done
+  captureAcceptedFreeTrialInfo()
   if (currentAccountId !== null) {
     await checkPennylaneAccess(currentAccountId)
   }

@@ -142,6 +142,7 @@ describe('usePennylaneAmendmentFlow', () => {
         details: undefined,
         freeTrialEndDate: '2026-10-31T00:00:00.00',
         billingMonth: 'novembre 2026',
+        isFreeTrialExpired: false,
       })
 
       const [result, app] = withSetup(() => usePennylaneAmendmentFlow())
@@ -183,6 +184,7 @@ describe('usePennylaneAmendmentFlow', () => {
         details: undefined,
         freeTrialEndDate: '2026-10-31T00:00:00.00',
         billingMonth: 'novembre 2026',
+        isFreeTrialExpired: false,
       })
 
       const [result, app] = withSetup(() => usePennylaneAmendmentFlow())
@@ -203,6 +205,7 @@ describe('usePennylaneAmendmentFlow', () => {
         details: undefined,
         freeTrialEndDate: '2026-10-31T00:00:00.00',
         billingMonth: 'novembre 2026',
+        isFreeTrialExpired: false,
       })
 
       const [result, app] = withSetup(() => usePennylaneAmendmentFlow())
@@ -225,6 +228,7 @@ describe('usePennylaneAmendmentFlow', () => {
         details: undefined,
         freeTrialEndDate: '2026-10-31T00:00:00.00',
         billingMonth: 'novembre 2026',
+        isFreeTrialExpired: false,
       })
 
       const [result, app] = withSetup(() => usePennylaneAmendmentFlow())
@@ -253,6 +257,28 @@ describe('usePennylaneAmendmentFlow', () => {
 
       expect(PennylaneService.checkPennylaneAccess).toHaveBeenCalled()
       expect(result.isSuccessDialogOpen.value).toBe(true)
+
+      app.unmount()
+    })
+
+    it('should freeze free trial info before the re-check overwrites it', async () => {
+      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValueOnce(
+        getMockedPennylaneAccessResponse({ isFreeTrialExpired: true }),
+      )
+
+      const [result, app] = withSetup(() => usePennylaneAmendmentFlow())
+
+      await flushPromises()
+
+      // the post-acceptance re-check returns a non-expired state
+      vi.mocked(PennylaneService.checkPennylaneAccess).mockResolvedValueOnce(
+        getMockedPennylaneAccessResponse({ isFreeTrialExpired: false }),
+      )
+
+      await result.handleAcceptSuccess()
+
+      expect(result.acceptedFreeTrialInfo.value?.isFreeTrialExpired).toBe(true)
+      expect(result.freeTrialInfo.value?.isFreeTrialExpired).toBe(false)
 
       app.unmount()
     })

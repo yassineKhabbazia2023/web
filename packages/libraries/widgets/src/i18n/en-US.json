@@ -75,7 +75,8 @@
           "perMonth": "month",
           "free": "Free",
           "complianceNote": "* billing in September 2026",
-          "subscriptionNote": "** billing from {billingMonth} onwards"
+          "subscriptionNote": "** billing from {billingMonth} onwards",
+          "subscriptionNoteExpired": "** billed by RYDGE Conseil from the activation date, for a full month, following the frequency of your current billing."
         },
         "freeAccessNotice": {
           "title": "Free access",
@@ -133,6 +134,7 @@
         "checkboxLabelSuffix": " and I accept:",
         "listItem1": "to entrust RYDGE Conseil with the electronic invoicing reform support mission (quality improvement of supplier repositories, answers to all your questions until September 30, 2026, preparation of the report identifying non-compliant sales invoice data, onboarding to the approved platform)",
         "listItem2": "the plan(s) proposed by RYDGE Conseil for the use of the Pennylane tool, knowing that I can choose another plan at any time, during the free period or after it according to the terms set out in this form and to modify or supplement the engagement letter I signed with RYDGE Conseil accordingly",
+        "listItem2Expired": "the plan(s) proposed by RYDGE Conseil for the use of the Pennylane tool, knowing that I can choose another plan at any time, according to the terms set out in this form and to modify or supplement the engagement letter I signed with RYDGE Conseil accordingly",
         "listItem2Punctuation": ".",
         "listItem2Delayed": "; I have noted that I will receive an email when my access to Pennylane is activated.",
         "supportNotice": "For any questions, please contact your usual contact person or the customer relations department (accompagnement{'@'}rydge.fr)",
@@ -151,6 +153,7 @@
         "descriptionPart1": "You can now access ",
         "pennylane": "Pennylane.",
         "descriptionPart2": " To give you time to familiarize yourself with these new features, ",
+        "descriptionExpiredSuffix": " For any questions about getting started with your new features, please contact your usual contact person.",
         "boldAccessPart": "you have free access to Pennylane until ",
         "descriptionDelayedPart1": "You will receive an email as soon as your access to ",
         "descriptionDelayedBold1": "Pennylane",

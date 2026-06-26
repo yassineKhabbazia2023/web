@@ -42,6 +42,7 @@
           v-else-if="currentStep === PennylaneAmendmentStep.ACCEPTANCE"
           v-model:is-accepted="isTermsAccepted"
           :free-trial-end-date="freeTrialInfo?.freeTrialEndDate"
+          :is-free-trial-expired="freeTrialInfo?.isFreeTrialExpired"
         />
 
         <div class="margin-top--auto">

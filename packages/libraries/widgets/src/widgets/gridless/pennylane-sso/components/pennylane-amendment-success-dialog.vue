@@ -19,7 +19,14 @@
       </h3>
 
       <p class="font-base margin-bottom--8 pennylane-amendment-success-dialog__description text-center">
-        <template v-if="isDelayedActivation">
+        <template v-if="isFreeTrialExpired">
+          {{ t('widgets.pennylaneAmendmentFlow.success.descriptionPart1') }}
+          <span class="font-bold">
+            {{ t('widgets.pennylaneAmendmentFlow.success.pennylane') }}
+          </span>
+          {{ t('widgets.pennylaneAmendmentFlow.success.descriptionExpiredSuffix') }}
+        </template>
+        <template v-else-if="isDelayedActivation">
           {{ t('widgets.pennylaneAmendmentFlow.success.descriptionDelayedPart1') }}
           <span class="font-bold">
             {{ t('widgets.pennylaneAmendmentFlow.success.descriptionDelayedBold1') }}
@@ -79,6 +86,8 @@ const isVisible = computed({
 })
 
 const isDelayedActivation = computed(() => props.freeTrialEndDate === DELAYED_ACTIVATION_DATE)
+
+const isFreeTrialExpired = computed(() => props.isFreeTrialExpired === true)
 
 const formattedFreeTrialEndDate = computed(() => {
   if (!props.freeTrialEndDate) {

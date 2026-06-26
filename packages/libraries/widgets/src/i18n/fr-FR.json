@@ -75,7 +75,8 @@
           "perMonth": "mois",
           "free": "Offert",
           "complianceNote": "* facturation en septembre 2026",
-          "subscriptionNote": "** facturation à partir de {billingMonth}"
+          "subscriptionNote": "** facturation à partir de {billingMonth}",
+          "subscriptionNoteExpired": "** facturation par RYDGE Conseil à compter de la date d'activation, pour un mois plein, en suivant la fréquence de votre facturation actuelle."
         },
         "freeAccessNotice": {
           "title": "Accès gratuit",
@@ -133,6 +134,7 @@
         "checkboxLabelSuffix": " et j'accepte :",
         "listItem1": "de confier à RYDGE Conseil la mission d'accompagnement à la réforme de la facturation électronique (mise en qualité des référentiels fournisseurs, réponse à toutes vos questions jusqu'au 30 septembre 2026, préparation du rapport identifiant les données de factures de vente non conformes, prise en main de la plateforme agréée)",
         "listItem2": "le ou les plan(s) proposé(s) par RYDGE Conseil pour l'utilisation de l'outil Pennylane en sachant que je peux choisir à tout moment un autre plan, durant la période de gratuité ou après celle-ci selon les modalités prévues dans ce formulaire et de modifier ou compléter en conséquence la lettre de mission que j'ai signée avec RYDGE Conseil",
+        "listItem2Expired": "le ou les plan(s) proposé(s) par RYDGE Conseil pour l'utilisation de l'outil Pennylane en sachant que je peux choisir à tout moment un autre plan, selon les modalités prévues dans ce formulaire et de modifier ou compléter en conséquence la lettre de mission que j'ai signée avec RYDGE Conseil",
         "listItem2Punctuation": ".",
         "listItem2Delayed": "; j'ai noté que je recevrai un email lors de l'activation de mon accès à Pennylane.",
         "supportNotice": "Pour toute question, rapprochez-vous de votre interlocuteur habituel ou du pôle relation client (accompagnement{'@'}rydge.fr)",
@@ -151,6 +153,7 @@
         "descriptionPart1": "Vous pouvez maintenant accéder à ",
         "pennylane": "Pennylane.",
         "descriptionPart2": " Afin de vous laisser le temps de vous approprier ces nouvelles fonctionnalités, ",
+        "descriptionExpiredSuffix": " Pour toute question sur la prise en main de vos nouvelles fonctionnalités, rapprochez-vous de votre interlocuteur habituel.",
         "boldAccessPart": "vous avez accès à Pennylane gratuitement jusqu'au ",
         "descriptionDelayedPart1": "Vous recevrez un email dès que votre accès à ",
         "descriptionDelayedBold1": "Pennylane",
