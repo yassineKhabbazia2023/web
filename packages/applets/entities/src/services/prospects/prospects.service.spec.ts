@@ -309,7 +309,7 @@ describe('ProspectsService', () => {
       const result = await ProspectsService.downloadCommercialProposal(prospectId)
 
       expect(mocks.get).toHaveBeenCalledWith(
-        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/content/currentuser`,
+        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/content`,
         { responseType: 'blob' },
       )
       expect(result).toBe(blob)

@@ -128,7 +128,7 @@ export class ProspectsService {
 
   static async downloadCommercialProposal(prospectId: number): Promise<Blob> {
     const response = await api.gateway.get<Blob>(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/content/currentuser`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/content`,
       { responseType: 'blob' },
     )
     return response.data
