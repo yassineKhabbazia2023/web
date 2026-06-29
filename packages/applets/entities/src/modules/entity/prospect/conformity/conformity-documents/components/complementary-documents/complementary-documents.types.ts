@@ -6,8 +6,6 @@ export interface ComplementaryDocumentsProps {
   maxFiles: number
   // True while the parent fetches the shared supporting-documents response.
   isLoading: boolean
-  // The supporting-documents step is completed: read-only (no save, no delete).
-  isCompleted: boolean
 }
 
 export interface ComplementaryDocumentsEmits {

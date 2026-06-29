@@ -47,7 +47,6 @@
         :documents="complementaryDocuments"
         :maxFiles="complementaryMaxFiles"
         :isLoading="isLoading"
-        :isCompleted="isCompleted"
         @saved="reload"
         @deleted="reload"
       />

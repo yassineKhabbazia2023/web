@@ -61,7 +61,7 @@
         :pFileName="document.fileName"
         pStatus="success"
         :pIconName="getIconName(document.fileName, 'filetypeNone')"
-        :pHasButton="isCollab === true && isCompleted === false"
+        :pHasButton="isCollab === true"
         pButtonIconName="trash"
         :pTitleButton="t('entities.prospect.conformity.complementaryDocuments.uploadDeleteButtonTitle')"
         @on-click-file-action="onRequestDocumentDeletion(document)"
@@ -87,7 +87,7 @@
       <PButton
         pType="primary"
         class="flex--grow-1 flex--basis-0"
-        :pDisabled="hasPendingUploads === false || isCompleted"
+        :pDisabled="hasPendingUploads === false"
         :pLoading="isSaving"
         @click="onSave"
       >
