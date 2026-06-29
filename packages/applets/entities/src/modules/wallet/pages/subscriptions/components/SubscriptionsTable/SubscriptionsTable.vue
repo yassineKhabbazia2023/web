@@ -486,9 +486,4 @@ defineExpose({
 .subscriptions-table__search {
   width: 500px;
 }
-
-.subscriptions-table__actions-toolbox .p-toolbox-item__text {
-  width: auto;
-  white-space: nowrap;
-}
 </style>
