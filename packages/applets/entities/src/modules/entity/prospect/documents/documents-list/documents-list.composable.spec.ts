@@ -6,8 +6,11 @@ import { useCurrentEntityStore } from '@pulse/common/stores'
 import type { EntitySummary } from '@pulse/common/types'
 import { ConformityDocumentsService } from '@entities/services/conformity-documents'
 import {
+  getBeneficiaryDocumentMock,
+  getComplementaryDocumentMock,
+  getConformityDocumentMock,
   getConformityDocumentsResponseMock,
-  getRequiredDocumentMock,
+  getSupportingDocumentMock,
 } from '@entities/__mocks__'
 import { formatDateToLocale } from '@entities/helpers'
 import { useDocumentsList } from './documents-list.composable'
@@ -48,39 +51,49 @@ describe('useDocumentsList', () => {
     expect(vi.mocked(ConformityDocumentsService.getConformityDocuments)).not.toHaveBeenCalled()
   })
 
-  it('should keep only uploaded documents and map them to the DocumentsListItem shape', async () => {
+  it('should flatten every document category and map them to the DocumentsListItem shape', async () => {
     setCurrentEntity(1971)
-    const uploaded = getRequiredDocumentMock()
+    const supporting = getSupportingDocumentMock()
+    const complementary = getComplementaryDocumentMock()
+    const beneficiary = getBeneficiaryDocumentMock()
+    const commercialProposal = getConformityDocumentMock({ id: 'proposal-id', fileName: 'proposal.pdf' })
+    const engagementLetter = getConformityDocumentMock({ id: 'letter-id', fileName: 'letter.pdf' })
     vi.mocked(ConformityDocumentsService.getConformityDocuments).mockResolvedValueOnce(
-      getConformityDocumentsResponseMock(),
+      getConformityDocumentsResponseMock({
+        supportingDocuments: [supporting, complementary],
+        beneficiaryDocuments: [beneficiary],
+        commercialProposal,
+        engagementLetter,
+      }),
     )
 
     const [result] = withSetup(() => useDocumentsList())
     await flushPromises()
 
+    const toItem = (document: { id: string, fileName: string, uploadedAt: string, uploadedBy: string }) => ({
+      documentId: document.id,
+      documentName: document.fileName,
+      documentDepositDate: formatDateToLocale(document.uploadedAt),
+      documentDepositedBy: document.uploadedBy,
+    })
     expect(result.documentsListItems.value).toEqual([
-      {
-        documentId: String(uploaded.fileUploadedId),
-        documentName: uploaded.fileName,
-        documentDepositDate: formatDateToLocale(uploaded.uploadedAt as string),
-        documentDepositedBy: `${uploaded.depositedBy?.firstName} ${uploaded.depositedBy?.lastName}`,
-      },
+      toItem(supporting),
+      toItem(complementary),
+      toItem(beneficiary),
+      toItem(commercialProposal),
+      toItem(engagementLetter),
     ])
   })
 
-  it('should fall back gracefully when an uploaded document misses its metadata', async () => {
+  it('should skip the commercial proposal and engagement letter when they are null', async () => {
     setCurrentEntity(1971)
+    const supporting = getSupportingDocumentMock()
     vi.mocked(ConformityDocumentsService.getConformityDocuments).mockResolvedValueOnce(
       getConformityDocumentsResponseMock({
-        requiredDocs: [
-          getRequiredDocumentMock({
-            fileUploadedId: 7,
-            fileName: null,
-            uploadedAt: null,
-            depositedBy: null,
-            label: 'Extrait Kbis',
-          }),
-        ],
+        supportingDocuments: [supporting],
+        beneficiaryDocuments: [],
+        commercialProposal: null,
+        engagementLetter: null,
       }),
     )
 
@@ -89,10 +102,10 @@ describe('useDocumentsList', () => {
 
     expect(result.documentsListItems.value).toEqual([
       {
-        documentId: '7',
-        documentName: 'Extrait Kbis',
-        documentDepositDate: '',
-        documentDepositedBy: '',
+        documentId: supporting.id,
+        documentName: supporting.fileName,
+        documentDepositDate: formatDateToLocale(supporting.uploadedAt),
+        documentDepositedBy: supporting.uploadedBy,
       },
     ])
   })
@@ -120,20 +133,20 @@ describe('useDocumentsList', () => {
   describe('downloadDocument', () => {
     it('should fetch the matching document content and trigger the download', async () => {
       setCurrentEntity(1971)
-      const uploaded = getRequiredDocumentMock()
+      const supporting = getSupportingDocumentMock()
       const blob = new Blob(['binary'])
       vi.mocked(ConformityDocumentsService.getConformityDocumentContent).mockResolvedValueOnce(blob)
 
       const [result] = withSetup(() => useDocumentsList())
       await flushPromises()
 
-      await result.downloadDocument(String(uploaded.fileUploadedId))
+      await result.downloadDocument(supporting.id)
 
       expect(vi.mocked(ConformityDocumentsService.getConformityDocumentContent)).toHaveBeenCalledWith(
         1971,
-        String(uploaded.fileUploadedId),
+        supporting.id,
       )
-      expect(vi.mocked(downloadFile)).toHaveBeenCalledWith(blob, uploaded.fileName)
+      expect(vi.mocked(downloadFile)).toHaveBeenCalledWith(blob, supporting.fileName)
     })
 
     it('should do nothing when the document id is unknown', async () => {

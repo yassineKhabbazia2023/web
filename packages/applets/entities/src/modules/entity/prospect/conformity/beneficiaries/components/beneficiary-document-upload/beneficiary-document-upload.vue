@@ -39,7 +39,7 @@
         :pSuffixLabelFileLine="t('entities.prospect.conformity.beneficiaries.uploadSuffixLabel')"
         :pAuthorizedFileFormat="t('entities.prospect.conformity.beneficiaries.uploadAuthorizedFormats')"
         :pTextLimitSize="t('entities.prospect.conformity.beneficiaries.uploadMaxSize')"
-        :pMaxFileSize="BENEFICIARY_MAX_FILE_SIZE_MB"
+        :pMaxFileSize="PROSPECT_DOCUMENT_MAX_FILE_SIZE_MB"
         :limit="1"
         @files-selected="onFilesSelected(zoneData.zone.index, $event)"
         @delete-file="onFileDeleted(zoneData.zone.index, $event)"
@@ -56,7 +56,7 @@ import { PUpload, PUploadFileLine } from '@pulse/styleguide/components'
 import { getIconName } from '@pulse/styleguide/utils/fileExtension'
 import { PUploadType } from '@pulse/styleguide/types'
 import { OnboardingStepStatus } from '../../../prospect-conformity.enums'
-import { BENEFICIARY_MAX_FILE_SIZE_MB } from '../../beneficiaries.constants'
+import { PROSPECT_DOCUMENT_MAX_FILE_SIZE_MB } from '@entities/modules/entity/prospect/prospect.constants'
 import { BeneficiariesManager } from '../../beneficiaries.manager'
 import { BeneficiaryDocumentUploadManager } from './beneficiary-document-upload.manager'
 import type {

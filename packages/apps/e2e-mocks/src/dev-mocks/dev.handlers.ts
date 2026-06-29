@@ -111,51 +111,80 @@ const getBeneficiariesResponse = () => {
   }
 }
 
-// Switch this flag to test the different states of the conformity documents section:
-// - 'inProgress': some required documents are still missing (save flow)
-// - 'readyToComplete': all required documents uploaded, section not yet validated
-// - 'completed': section validated, the whole conformity documents UX is locked
-type ConformityDocumentsScenario = 'inProgress' | 'readyToComplete' | 'completed'
-const CONFORMITY_DOCUMENTS_SCENARIO = 'completed' as ConformityDocumentsScenario
-
 const conformityDocumentsResponse = {
-  'status': 'InProgress',
-  'isComplete': false,
-  'requiredDocs': [
+  'prospectId': 602,
+  'supportingDocuments': [
     {
-      'type': 'KBIS',
-      'label': 'Extrait Kbis',
-      'fileUploadedId': 42,
-      'fileName': 'kbis_acme.pdf',
+      'id': '3fa85f64-5717-4562-b3fc-2c963f66afa8',
+      'documentType': 'KBIS',
+      'fileName': 'KBIS_ACME.pdf',
+      'contentType': 'application/pdf',
       'uploadedAt': '2026-06-10T14:32:00Z',
-      'depositedBy': { 'firstName': 'Marie', 'lastName': 'Dupont' },
+      'uploadedBy': 'marie.dupont@rydge.fr',
     },
     {
-      'type': 'DECLARATION_BENEFICIAIRES_EFFECTIFS',
-      'label': 'Déclaration des bénéficiaires effectifs',
-      'fileUploadedId': null,
-      'fileName': null,
-      'uploadedAt': null,
-      'depositedBy': null,
+      'id': '7b92c1a8-5717-4562-b3fc-2c963f66afa9',
+      'documentType': 'DECLARATION_BENEFICIAIRES_EFFECTIFS',
+      'fileName': 'Beneficiaires.pdf',
+      'contentType': 'application/pdf',
+      'uploadedAt': '2026-06-11T09:00:00Z',
+      'uploadedBy': 'marie.dupont@rydge.fr',
+    },
+    {
+      'id': '8c93d2b9-6728-5673-c4gd-3d074g77bgb0',
+      'documentType': 'AUTRES',
+      'fileName': 'Contrat_location.pdf',
+      'contentType': 'application/pdf',
+      'uploadedAt': '2026-06-12T10:00:00Z',
+      'uploadedBy': 'marie.dupont@rydge.fr',
     },
   ],
+  'beneficiaryDocuments': [
+    {
+      'id': 'd4e5f6a7-b890-1234-cdef-567890abcdef',
+      'beneficiaryId': '148cf2c3-ccfa-44d0-addd-1b46a4a6f2f9',
+      'documentType': 'CNI',
+      'fileOrder': 1,
+      'fileName': 'CNI_recto.jpg',
+      'contentType': 'image/jpeg',
+      'uploadedAt': '2026-06-09T11:00:00Z',
+      'uploadedBy': 'jean.martin@rydge.fr',
+    },
+    {
+      'id': 'e5f6a7b8-9012-3456-def0-678901abcdef',
+      'beneficiaryId': '148cf2c3-ccfa-44d0-addd-1b46a4a6f2f9',
+      'documentType': 'CNI',
+      'fileOrder': 2,
+      'fileName': 'CNI_verso.jpg',
+      'contentType': 'image/jpeg',
+      'uploadedAt': '2026-06-09T11:00:00Z',
+      'uploadedBy': 'jean.martin@rydge.fr',
+    },
+  ],
+  'commercialProposal': {
+    'id': '3fa85f64-5717-4562-b3fc-2c963f66afb0',
+    'fileName': 'Proposition_Commerciale_ACME.pdf',
+    'contentType': 'application/pdf',
+    'uploadedAt': '2026-06-11T09:00:00Z',
+    'uploadedBy': 'jean.martin@rydge.fr',
+  },
+  'engagementLetter': {
+    'id': '3fa85f64-5717-4562-b3fc-2c963f66afb2',
+    'fileName': 'Lettre_Mission_ACME.pdf',
+    'contentType': 'application/pdf',
+    'uploadedAt': '2026-06-11T09:00:00Z',
+    'uploadedBy': 'jean.martin@rydge.fr',
+  },
 }
 
-const getConformityDocumentsResponse = () => {
-  if (CONFORMITY_DOCUMENTS_SCENARIO === 'inProgress') {
-    return conformityDocumentsResponse
-  }
-  return {
-    'status': CONFORMITY_DOCUMENTS_SCENARIO === 'completed' ? 'Done' : 'InProgress',
-    'isComplete': CONFORMITY_DOCUMENTS_SCENARIO === 'completed',
-    'requiredDocs': conformityDocumentsResponse.requiredDocs.map((requiredDoc) => ({
-      ...requiredDoc,
-      'fileUploadedId': requiredDoc.fileUploadedId ?? 99,
-      'fileName': requiredDoc.fileName ?? 'declaration_acme.pdf',
-      'uploadedAt': requiredDoc.uploadedAt ?? '2026-06-11T09:00:00Z',
-      'depositedBy': requiredDoc.depositedBy ?? { 'firstName': 'Jean', 'lastName': 'Martin' },
-    })),
-  }
+const supportingDocumentsResponse = {
+  'documents': [
+    { 'type': 'KBIS', 'documents': [{ 'id': 123, 'fileName': 'KBIS_ACME.pdf' }], 'maxFiles': 1 },
+    { 'type': 'DECLARATION_BENEFICIAIRES_EFFECTIFS', 'documents': [{ 'id': 124, 'fileName': 'Beneficiaires.pdf' }], 'maxFiles': 1 },
+    { 'type': 'STATUTS', 'documents': [], 'maxFiles': 2 },
+    { 'type': 'DECLARATION_PREFECTURE', 'documents': [], 'maxFiles': 1 },
+    { 'type': 'AUTRES', 'documents': [{ 'id': 200, 'fileName': 'Contrat_location.pdf' }], 'maxFiles': 10 },
+  ],
 }
 
 // Switch this flag to test the different payment preference states (payment.vue):
@@ -194,41 +223,41 @@ export const devMockHandlers: RequestHandler[] = [
     return HttpResponse.error()
   }),
 
-  http.get('*/prospect/api/prospects/:accountId/beneficiaries', () => {
+  http.get('*/prospect/api/onboarding/:prospectId/beneficiaries', () => {
     return HttpResponse.json(getBeneficiariesResponse())
   }),
 
-  http.post('*/prospect/api/prospects/:accountId/beneficiaries/:beneficiaryId/identity-documents', async () => {
+  http.post('*/prospect/api/onboarding/:prospectId/beneficiaries/:beneficiaryId/identity-documents', async () => {
     await delay(2000)
     return HttpResponse.json({}, { status: 201 })
   }),
 
-  http.patch('*/prospect/api/prospects/:accountId/beneficiaries', async () => {
+  // Completes an onboarding step (e.g. beneficiaries, supporting documents)
+  http.put('*/prospect/api/onboarding/:prospectId/steps/complete', async () => {
     await delay(2000)
     return HttpResponse.json({}, { status: 204 })
   }),
 
-  http.get('*/prospect/api/prospects/:prospectId/documents', () => {
-    return HttpResponse.json(getConformityDocumentsResponse())
+  http.get('*/prospect/api/onboarding/:prospectId/documents', () => {
+    return HttpResponse.json(conformityDocumentsResponse)
   }),
 
-  http.post('*/prospect/api/prospects/:prospectId/documents', async () => {
+  http.get('*/prospect/api/onboarding/:accountId/supporting-documents', () => {
+    return HttpResponse.json(supportingDocumentsResponse)
+  }),
+
+  http.post('*/prospect/api/onboarding/:prospectId/supporting-documents/upload', async () => {
     await delay(2000)
     return HttpResponse.json({}, { status: 201 })
   }),
 
   // Shared endpoint: also deletes beneficiaries identity documents
-  http.delete('*/prospect/api/prospects/:prospectId/documents/:documentId', async () => {
+  http.delete('*/prospect/api/onboarding/:prospectId/documents/:documentId', async () => {
     await delay(2000)
     return HttpResponse.json({}, { status: 204 })
   }),
 
-  http.put('*/prospect/api/prospects/:prospectId/justificatifs/complete', async () => {
-    await delay(2000)
-    return HttpResponse.json({}, { status: 204 })
-  }),
-
-  http.get('*/prospect/api/prospects/:prospectId/documents/:documentId/content', () => {
+  http.get('*/prospect/api/onboarding/:prospectId/documents/:documentId/content', () => {
     return new HttpResponse(new Blob(['mock document content'], { type: 'application/pdf' }), {
       headers: { 'Content-Type': 'application/pdf' },
     })

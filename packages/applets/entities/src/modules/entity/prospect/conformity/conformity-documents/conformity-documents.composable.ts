@@ -1,158 +1,81 @@
 import { computed, onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
-import { displayNotification } from '@pulse/styleguide'
 import { useCurrentEntityStore } from '@pulse/common/stores'
-import type { ConformityDocumentType } from '@entities/enums'
+import { SupportingDocumentType } from '@entities/enums'
 import { ConformityDocumentsService } from '@entities/services/conformity-documents'
-import type { RequiredDocument } from '@entities/services/conformity-documents'
-import { ConformityDocumentsManager } from './conformity-documents.manager'
-import type {
-  ConformityDocumentDeletionTarget,
-  ConformityDocumentSelection,
-  UseConformityDocumentsOptions,
-} from './conformity-documents.types'
+import type { SupportingDocumentItem } from '@entities/services/conformity-documents'
+import { PROSPECT_DOCUMENT_DEFAULT_MAX_FILES } from '@entities/modules/entity/prospect/prospect.constants'
+import type { ConformityDocumentsEmits } from './conformity-documents.types'
 
-export function useConformityDocuments(options: UseConformityDocumentsOptions) {
-  const { currentEntity, currentEntityId } = storeToRefs(useCurrentEntityStore())
+export function useConformityDocuments(emit: ConformityDocumentsEmits) {
+  const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
-  const prospectId = computed(() => currentEntity.value?.prospectId ?? undefined)
-
-  // Will be slightly reworked once status endpoint is available
   const isLoading = ref(true)
-  const isSaving = ref(false)
-  const isMarkingCompleted = ref(false)
-  const status = ref<string>()
-  const isComplete = ref(false)
-  const requiredDocuments = ref<RequiredDocument[]>([])
-  const selectedFileByType = ref<ConformityDocumentSelection>({})
+  // True when the shared /supporting-documents fetch failed, so both sections show an alert.
+  const hasError = ref(false)
+  // Single source of truth: the /supporting-documents response, split below per child.
+  const items = ref<SupportingDocumentItem[]>([])
 
-  const hasPendingUploads = computed(() =>
-    ConformityDocumentsManager.hasPendingUploads(selectedFileByType.value),
+  const predefinedItems = computed(() =>
+    items.value.filter((item) => item.type !== SupportingDocumentType.COMPLEMENTARY),
+  )
+  const complementaryItem = computed(() =>
+    items.value.find((item) => item.type === SupportingDocumentType.COMPLEMENTARY),
+  )
+  const complementaryDocuments = computed(() => complementaryItem.value?.documents ?? [])
+  // Fallback keeps the complementary section usable when the item has no maxFiles.
+  const complementaryMaxFiles = computed(
+    () => complementaryItem.value?.maxFiles ?? PROSPECT_DOCUMENT_DEFAULT_MAX_FILES,
   )
 
-  const canMarkSectionCompleted = computed(() =>
-    ConformityDocumentsManager.canMarkCompleted(isComplete.value, requiredDocuments.value),
+  // While loading/error, items are empty: keep both cards so loaders/error alerts still show.
+  // Once loaded successfully, render each card only if the API returned matching documents.
+  const shouldDisplaySupportingDocuments = computed(
+    () => isLoading.value || hasError.value || predefinedItems.value.length > 0,
+  )
+  const shouldDisplayComplementaryDocuments = computed(
+    () => isLoading.value || hasError.value || complementaryItem.value !== undefined,
   )
 
-  const loadConformityDocuments = async () => {
+  const loadSupportingDocuments = async () => {
     if (currentEntityId.value === undefined) {
       isLoading.value = false
       return
     }
     isLoading.value = true
+    hasError.value = false
     try {
-      const response = await ConformityDocumentsService.getConformityDocuments(currentEntityId.value)
-      requiredDocuments.value = response.requiredDocs
-      status.value = response.status
-      isComplete.value = response.isComplete === true
-      selectedFileByType.value = {}
+      const response = await ConformityDocumentsService.getSupportingDocuments(currentEntityId.value)
+      items.value = response.documents
     } catch (error) {
-      logger.error('Error fetching conformity documents', error)
+      logger.error('Error fetching supporting documents', error)
+      hasError.value = true
     } finally {
       isLoading.value = false
     }
   }
 
-  const onFileSelected = (documentType: ConformityDocumentType, selectedFiles: File[]) => {
-    // PUpload enforces the single-file limit, we only mirror the current raw selection.
-    const file = selectedFiles.find((selectedFile) => selectedFile instanceof File)
-    selectedFileByType.value[documentType] = file
+  const reload = () => loadSupportingDocuments()
+
+  // Saving/deleting required documents can change the backend step status,
+  // so reload the local list and let the parent re-sync the onboarding steps.
+  const onSupportingDocumentsChanged = async () => {
+    await loadSupportingDocuments()
+    emit('refresh-steps')
   }
 
-  const onRemoveSelectedFile = (documentType: ConformityDocumentType) => {
-    selectedFileByType.value[documentType] = undefined
-  }
-
-  const onSave = async () => {
-    const entityId = currentEntityId.value
-    const pendingUploads = ConformityDocumentsManager.getPendingUploads(selectedFileByType.value)
-    if (entityId === undefined || pendingUploads.length === 0) {
-      return
-    }
-    isSaving.value = true
-    try {
-      // allSettled (not all): some POSTs may have succeeded server-side even if
-      // another fails, so we report partial failure rather than hiding it.
-      const results = await Promise.allSettled(
-        pendingUploads.map((upload) =>
-          ConformityDocumentsService.uploadConformityDocument(entityId, upload.type, upload.file),
-        ),
-      )
-      results
-        .filter((result): result is PromiseRejectedResult => result.status === 'rejected')
-        .forEach((result) => logger.error('Error uploading conformity documents', result.reason))
-      const hasFailure = results.some((result) => result.status === 'rejected')
-      displayNotification(
-        hasFailure ? 'error' : 'success',
-        hasFailure ? options.saveErrorMessage : options.saveSuccessMessage,
-      )
-    } finally {
-      isSaving.value = false
-      // Always re-sync with the server so persisted uploads appear even on partial failure.
-      await loadConformityDocuments()
-    }
-  }
-
-  const documentPendingDeletion = ref<ConformityDocumentDeletionTarget>()
-
-  const isDeleteDialogOpen = computed({
-    get: () => documentPendingDeletion.value !== undefined,
-    set: (isOpen: boolean) => {
-      if (isOpen === false) {
-        documentPendingDeletion.value = undefined
-      }
-    },
-  })
-
-  const onRequestDocumentDeletion = (document: RequiredDocument) => {
-    documentPendingDeletion.value = { document }
-  }
-
-  // The deletion itself (API call + notifications) is owned by the shared
-  // DeleteDocumentDialog, the composable only refreshes the list on success.
-  const onDocumentDeleted = async () => {
-    documentPendingDeletion.value = undefined
-    await loadConformityDocuments()
-  }
-
-  const onMarkSectionCompleted = async () => {
-    if (currentEntityId.value === undefined) {
-      return
-    }
-    isMarkingCompleted.value = true
-    try {
-      await ConformityDocumentsService.markConformityDocumentsAsCompleted(currentEntityId.value)
-      await loadConformityDocuments()
-    } catch (error) {
-      logger.error('Error marking conformity documents section as completed', error)
-      displayNotification('error', options.markCompletedErrorMessage)
-    } finally {
-      isMarkingCompleted.value = false
-    }
-  }
-
-  onMounted(loadConformityDocuments)
+  onMounted(loadSupportingDocuments)
 
   return {
-    currentEntityId,
-    prospectId,
     isLoading,
-    isSaving,
-    isMarkingCompleted,
-    status,
-    isComplete,
-    requiredDocuments,
-    selectedFileByType,
-    hasPendingUploads,
-    canMarkSectionCompleted,
-    isDeleteDialogOpen,
-    documentPendingDeletion,
-    onFileSelected,
-    onRemoveSelectedFile,
-    onSave,
-    onRequestDocumentDeletion,
-    onDocumentDeleted,
-    onMarkSectionCompleted,
+    hasError,
+    predefinedItems,
+    complementaryDocuments,
+    complementaryMaxFiles,
+    shouldDisplaySupportingDocuments,
+    shouldDisplayComplementaryDocuments,
+    reload,
+    onSupportingDocumentsChanged,
   }
 }

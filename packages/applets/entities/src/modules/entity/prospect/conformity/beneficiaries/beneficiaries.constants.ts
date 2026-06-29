@@ -15,8 +15,6 @@ export const BENEFICIARY_REQUIRED_FILES_COUNT_BY_DOCUMENT_TYPE: Record<Beneficia
   [BeneficiaryDocumentType.PASSPORT]: 1,
 }
 
-export const BENEFICIARY_MAX_FILE_SIZE_MB = 5
-
 export const BENEFICIARY_UPLOAD_ZONE_LABELS = {
   CNI_RECTO: `${BENEFICIARIES_I18N_PREFIX}.upload.cniRecto`,
   CNI_VERSO: `${BENEFICIARIES_I18N_PREFIX}.upload.cniVerso`,

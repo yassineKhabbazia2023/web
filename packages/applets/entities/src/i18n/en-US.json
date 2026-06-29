@@ -337,7 +337,8 @@
           "validateError": "Beneficiary validation failed due to a technical error"
         },
         "conformityDocuments": {
-          "description": "Upload the required supporting documents below, then save them.",
+          "title": "Supporting documents",
+          "description": "Upload the missing documents.",
           "uploadPrefixLabel": "Drag and drop your file or",
           "uploadSuffixLabel": "browse your computer",
           "uploadAuthorizedFormats": "PDF, JPG, PNG",
@@ -346,12 +347,27 @@
           "save": "Save these documents",
           "saveSuccess": "The documents have been saved",
           "saveError": "An error occurred while saving the documents",
-          "markSectionCompleted": "Validate the supporting documents",
-          "markSectionCompletedError": "The supporting documents validation failed due to a technical error",
-          "drawerTitle": "Documents",
-          "drawerAlert": "Find your documents here.",
           "consult": "View",
-          "drawerClose": "Close"
+          "documentTypeLabels": {
+            "KBIS": "Kbis extract",
+            "STATUTS": "Articles of association",
+            "DECLARATION_BENEFICIAIRES_EFFECTIFS": "Declaration of beneficial owners",
+            "DECLARATION_PREFECTURE": "Prefecture declaration"
+          }
+        },
+        "complementaryDocuments": {
+          "title": "Complementary documents (optional)",
+          "description": "If you have any complementary documents, upload them here",
+          "uploadLabel": "Other",
+          "uploadPrefixLabel": "Drop the file or",
+          "uploadSuffixLabel": "browse your computer",
+          "uploadAuthorizedFormats": "PDF, JPG, PNG",
+          "uploadMaxSize": "5 MB",
+          "uploadDeleteButtonTitle": "Delete the document",
+          "save": "Save these documents",
+          "saveSuccess": "The documents have been saved",
+          "saveError": "An error occurred while saving the documents",
+          "consult": "View"
         },
         "payment": {
           "title": "SEPA mandate",
@@ -467,6 +483,7 @@
             }
           }
         },
+        "loadError": "An error occurred. Please refresh the page.",
         "stepPlaceholderTitle": "This is the « {label} » step screen.",
         "stepPlaceholderHint": "Click a step in the tracker on the left to navigate here.",
         "mockBanner": "Mocked screen to illustrate the compliance concept — non-contractual rendering",
@@ -484,8 +501,7 @@
           "consult": "View",
           "sendSuccess": "The commercial proposal has been sent to the client",
           "sendError": "An error occurred while sending the commercial proposal",
-          "downloadError": "An error occurred while downloading the commercial proposal",
-          "loadError": "An error occurred. Please refresh the page."
+          "downloadError": "An error occurred while downloading the commercial proposal"
         },
         "engagementLetter": {
           "bannerTitle": "Engagement letter",
@@ -509,6 +525,11 @@
           "confirmConfirm": "Send",
           "confirmCancel": "Cancel"
         }
+      },
+      "documentsConsultDrawer": {
+        "title": "Documents",
+        "alert": "Find your documents here.",
+        "close": "Close"
       },
       "deleteDocumentDialog": {
         "title": "Delete the document",

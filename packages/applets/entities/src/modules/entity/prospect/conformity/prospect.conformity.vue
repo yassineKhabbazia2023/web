@@ -55,71 +55,56 @@
           padding--6
         "
       >
-        <section
+        <template
           v-for="step in steps"
-          :id="`step-${step.id}`"
           :key="step.id"
-          class="
-            prospect-conformity__step
-            flex
-            flex--direction-column
-            padding--6
-            shadow--6-bottom
-          "
         >
-          <h2
-            v-if="step.id !== PAYMENT_STEP_ID"
-            class="
-              prospect-conformity__step-title
-              flex
-              flex--align-items-center
-              font-size--16
-              font-semibold
-              margin--0
-              margin-bottom--1
-            "
-          >
-            <PIcon
-              pName="pulse"
-              :pColor="AppColors.JUNGLE_400"
-              pSize="16"
-            />
-            <span class="margin-left--1">{{ step.label }}</span>
-          </h2>
-          <ConformityDocuments v-if="step.id === SUPPORTING_DOCS_STEP_ID" />
-          <Beneficiaries
-            v-else-if="step.id === PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID"
-            :beneficiaryStepStatus="beneficiaryStep?.status"
+          <!-- The conformity-documents parent renders its own supporting documents + complementary cards. -->
+          <ConformityDocuments
+            v-if="step.id === SUPPORTING_DOCS_STEP_ID"
+            :supportingStepStatus="supportingDocumentsStep?.status"
             @refresh-steps="loadOnboardingSteps"
           />
-          <CommercialProposal
-            v-else-if="step.id === COMMERCIAL_PROPOSAL_STEP_ID"
-            :status="commercialProposalStep?.status"
-            :isLoading="isLoadingSteps"
-            @sent="loadOnboardingSteps"
-          />
-          <EngagementLetter
-            v-else-if="step.id === ENGAGEMENT_LETTER_STEP_ID"
-            :status="engagementLetterStep?.status"
-            :isLoading="isLoadingSteps"
-            @sent="loadOnboardingSteps"
-          />
-          <Payment
-            v-else-if="step.id === PAYMENT_STEP_ID"
-            :isCollaborator="isCollab"
-          />
-          <p
+          <ConformityStepCard
             v-else
-            class="
-              prospect-conformity__step-description
-              font-size--14
-              margin--0
-            "
+            :pStepId="step.id"
+            :pTitle="step.label"
+            :pHideTitle="step.id === PAYMENT_STEP_ID"
           >
-            {{ t('entities.prospect.conformity.stepPlaceholderTitle', { label: step.label }) }}<br>
-            {{ t('entities.prospect.conformity.stepPlaceholderHint') }}
-          </p>
-        </section>
+            <Beneficiaries
+              v-if="step.id === PROSPECT_CONFORMITY_BENEFICIARIES_STEP_ID"
+              :beneficiaryStepStatus="beneficiaryStep?.status"
+              @refresh-steps="loadOnboardingSteps"
+            />
+            <CommercialProposal
+              v-else-if="step.id === COMMERCIAL_PROPOSAL_STEP_ID"
+              :status="commercialProposalStep?.status"
+              :isLoading="isLoadingSteps"
+              @sent="loadOnboardingSteps"
+            />
+            <EngagementLetter
+              v-else-if="step.id === ENGAGEMENT_LETTER_STEP_ID"
+              :status="engagementLetterStep?.status"
+              :isLoading="isLoadingSteps"
+              @sent="loadOnboardingSteps"
+            />
+            <Payment
+              v-else-if="step.id === PAYMENT_STEP_ID"
+              :isCollaborator="isCollab"
+            />
+            <p
+              v-else
+              class="
+                prospect-conformity__step-description
+                font-size--14
+                margin--0
+              "
+            >
+              {{ t('entities.prospect.conformity.stepPlaceholderTitle', { label: step.label }) }}<br>
+              {{ t('entities.prospect.conformity.stepPlaceholderHint') }}
+            </p>
+          </ConformityStepCard>
+        </template>
       </div>
     </div>
     <div
@@ -137,22 +122,23 @@
     >
       {{ t('entities.prospect.conformity.mockBanner') }}
     </div>
+
+    <DocumentsConsultDrawer v-model="isConsultDrawerOpen" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref, useTemplateRef } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { onBeforeRouteLeave } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
 import { useCurrentEntityStore, useUserStore } from '@pulse/common/stores'
-import { AppColors } from '@pulse/styleguide'
 import {
   PCompletionTracker,
   PCompletionTrackerList,
   PCompletionTrackerListItem,
   PEntityHeader,
-  PIcon,
 } from '@pulse/styleguide/components'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import type { OnboardingStepResponse } from '@entities/services/prospects/prospects.types'
@@ -160,9 +146,12 @@ import { OnboardingStep } from './prospect-conformity.enums'
 import CommercialProposal from './commercial-proposal/commercial-proposal.vue'
 import EngagementLetter from './engagement-letter/engagement-letter.vue'
 import ConformityDocuments from './conformity-documents/conformity-documents.vue'
+import ConformityStepCard from './components/conformity-step-card/conformity-step-card.vue'
 import { useProspectConformity } from './prospect-conformity.composable'
 import Beneficiaries from './beneficiaries/beneficiaries.vue'
 import Payment from './payment/payment.vue'
+import DocumentsConsultDrawer from '../documents/documents-consult-drawer/documents-consult-drawer.vue'
+import { useDocumentsConsultDrawerStore } from '../documents/documents-consult-drawer/documents-consult-drawer.store'
 import {
   PAYMENT_STEP_ID,
   COMMERCIAL_PROPOSAL_STEP_ID,
@@ -180,6 +169,13 @@ const { t } = useI18n()
 
 const { currentEntity } = storeToRefs(useCurrentEntityStore())
 const { isCollab } = storeToRefs(useUserStore())
+const documentsConsultDrawerStore = useDocumentsConsultDrawerStore()
+const { isOpen: isConsultDrawerOpen } = storeToRefs(documentsConsultDrawerStore)
+
+// The drawer's open state is shared/hoisted, so reset it when leaving conformity.
+onBeforeRouteLeave(() => {
+  documentsConsultDrawerStore.close()
+})
 
 const contentRef = useTemplateRef<HTMLElement>('contentRef')
 const { selectedId, onStepClick } = useProspectConformity(contentRef)
@@ -197,6 +193,10 @@ const commercialProposalStep = computed(() =>
 
 const engagementLetterStep = computed(() =>
   onboardingSteps.value.find((s) => s.id === OnboardingStep.EngagementLetter),
+)
+
+const supportingDocumentsStep = computed(() =>
+  onboardingSteps.value.find((s) => s.id === OnboardingStep.SupportingDocuments),
 )
 
 const loadOnboardingSteps = async () => {
@@ -263,10 +263,6 @@ $mock-banner-clearance: 60px;
     flex: 1;
     overflow-y: auto;
     padding-bottom: $mock-banner-clearance;
-  }
-
-  &__step {
-    background-color: var(--p-surface-primary);
   }
 
   &__step-description {

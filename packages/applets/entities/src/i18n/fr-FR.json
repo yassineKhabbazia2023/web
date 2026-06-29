@@ -337,7 +337,8 @@
           "validateError": "La validation des bénéficiaires a échoué suite à une erreur technique"
         },
         "conformityDocuments": {
-          "description": "Déposez les documents justificatifs requis ci-dessous, puis enregistrez-les.",
+          "title": "Documents justificatifs",
+          "description": "Déposez les pièces manquantes.",
           "uploadPrefixLabel": "Glissez-déposez votre fichier ou",
           "uploadSuffixLabel": "parcourez votre ordinateur",
           "uploadAuthorizedFormats": "PDF, JPG, PNG",
@@ -346,12 +347,27 @@
           "save": "Enregistrer ces documents",
           "saveSuccess": "Les documents ont bien été enregistrés",
           "saveError": "Une erreur est survenue lors de l'enregistrement des documents",
-          "markSectionCompleted": "Valider les documents justificatifs",
-          "markSectionCompletedError": "La validation des documents justificatifs a échoué suite à une erreur technique",
-          "drawerTitle": "Documents",
-          "drawerAlert": "Retrouvez ici vos documents.",
           "consult": "Consulter",
-          "drawerClose": "Fermer"
+          "documentTypeLabels": {
+            "KBIS": "Extrait Kbis",
+            "STATUTS": "Statuts",
+            "DECLARATION_BENEFICIAIRES_EFFECTIFS": "Déclaration des bénéficiaires effectifs",
+            "DECLARATION_PREFECTURE": "Déclaration en préfecture"
+          }
+        },
+        "complementaryDocuments": {
+          "title": "Documents complémentaires (optionnel)",
+          "description": "Si vous avez des pièces complémentaires, déposez-les ici",
+          "uploadLabel": "Autres",
+          "uploadPrefixLabel": "Déposer le fichier ou",
+          "uploadSuffixLabel": "parcourir l'ordinateur",
+          "uploadAuthorizedFormats": "PDF, JPG, PNG",
+          "uploadMaxSize": "5 Mo",
+          "uploadDeleteButtonTitle": "Supprimer le document",
+          "save": "Enregistrer ces documents",
+          "saveSuccess": "Les documents ont bien été enregistrés",
+          "saveError": "Une erreur est survenue lors de l'enregistrement des documents",
+          "consult": "Consulter"
         },
         "payment": {
           "title": "Mandat SEPA",
@@ -467,6 +483,7 @@
             }
           }
         },
+        "loadError": "Une erreur est survenue. Veuillez rafraîchir la page.",
         "stepPlaceholderTitle": "Ceci est l'écran de l'étape « {label} ».",
         "stepPlaceholderHint": "Cliquez sur une étape dans le tracker à gauche pour naviguer ici.",
         "mockBanner": "Écran mocké pour présenter le concept de mise en conformité — rendu non contractuel",
@@ -484,8 +501,7 @@
           "consult": "Consulter",
           "sendSuccess": "La proposition commerciale a bien été envoyée au client",
           "sendError": "Une erreur est survenue lors de l'envoi de la proposition commerciale",
-          "downloadError": "Une erreur est survenue lors du téléchargement de la proposition commerciale",
-          "loadError": "Une erreur est survenue. Veuillez rafraîchir la page."
+          "downloadError": "Une erreur est survenue lors du téléchargement de la proposition commerciale"
         },
         "engagementLetter": {
           "bannerTitle": "Lettre de mission",
@@ -509,6 +525,11 @@
           "confirmConfirm": "Envoyer",
           "confirmCancel": "Annuler"
         }
+      },
+      "documentsConsultDrawer": {
+        "title": "Documents",
+        "alert": "Retrouvez ici vos documents.",
+        "close": "Fermer"
       },
       "deleteDocumentDialog": {
         "title": "Supprimer le document",

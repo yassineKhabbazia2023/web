@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import type { UploadFile } from 'element-plus'
-import { isFileAccepted, isFileSizeValid, getFileRejectionMessage } from './PUploadUtils'
+import type { UploadFile, UploadRawFile } from 'element-plus'
+import { isFileAccepted, isFileSizeValid, getFileRejectionMessage, getRawFile } from './PUploadUtils'
 import { BYTES_PER_MEGABYTE, OVERSIZED_FILE_MESSAGE } from './PUpload.constants'
 
 const buildUploadFile = (name: string, mimeType: string): UploadFile => ({
@@ -156,5 +156,36 @@ describe('getFileRejectionMessage', () => {
   it('should prioritize the extension message over the size message', () => {
     const file = { ...buildUploadFile('archive.zip', 'application/zip'), size: 6 * BYTES_PER_MEGABYTE }
     expect(getFileRejectionMessage(file, buildOptions())).toBe('Extension non supportée')
+  })
+})
+
+describe('getRawFile', () => {
+  it('should return the native File held in a UploadFile wrapper', () => {
+    const nativeFile = new File(['content'], 'document.pdf', { type: 'application/pdf' })
+    const uploadFile: UploadFile = {
+      name: 'document.pdf',
+      uid: 1,
+      status: 'ready',
+      raw: nativeFile as UploadFile['raw'],
+    }
+
+    expect(getRawFile(uploadFile)).toBe(nativeFile)
+  })
+
+  it('should return undefined when the UploadFile wrapper has no raw File', () => {
+    const uploadFile: UploadFile = {
+      name: 'document.pdf',
+      uid: 1,
+      status: 'ready',
+      raw: undefined,
+    }
+
+    expect(getRawFile(uploadFile)).toBeUndefined()
+  })
+
+  it('should return the file itself when a UploadRawFile (native File) is passed directly', () => {
+    const rawFile = new File(['content'], 'document.pdf', { type: 'application/pdf' }) as UploadRawFile
+
+    expect(getRawFile(rawFile)).toBe(rawFile)
   })
 })

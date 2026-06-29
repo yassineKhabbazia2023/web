@@ -19,6 +19,7 @@ export { AppColors } from './utils/AppColorsEnum'
 export { AvatarRoles } from './utils/avatar.roles'
 export { BREAKPOINT_SIZES } from './constants/breakpoint.const'
 export { getIsMobile } from './utils/responsive.utils'
+export { getRawFile } from './atoms/PUpload/PUploadUtils'
 export {
   useResponsive,
   getEffectiveIsMobile,

@@ -4,24 +4,22 @@ import { logger } from '@pulse/toolbox'
 import { downloadFile } from '@pulse/common/helpers'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { ConformityDocumentsService } from '@entities/services/conformity-documents'
-import type { RequiredDocument } from '@entities/services/conformity-documents'
+import type { ConformityDocument } from '@entities/services/conformity-documents'
 import { formatDateToLocale } from '@entities/helpers'
 import type { DocumentsListItem } from '@pulse/styleguide/types'
 
 export function useDocumentsList() {
   const { currentEntity } = storeToRefs(useCurrentEntityStore())
 
-  const documents = ref<RequiredDocument[]>([])
+  const documents = ref<ConformityDocument[]>([])
   const isLoading = ref(false)
 
   const documentsListItems = computed<DocumentsListItem[]>(() =>
     documents.value.map((document) => ({
-      documentId: String(document.fileUploadedId),
-      documentName: document.fileName ?? document.label,
-      documentDepositDate: document.uploadedAt === null ? '' : formatDateToLocale(document.uploadedAt),
-      documentDepositedBy: document.depositedBy === null
-        ? ''
-        : `${document.depositedBy.firstName} ${document.depositedBy.lastName}`,
+      documentId: document.id,
+      documentName: document.fileName,
+      documentDepositDate: formatDateToLocale(document.uploadedAt),
+      documentDepositedBy: document.uploadedBy,
     })),
   )
 
@@ -32,7 +30,13 @@ export function useDocumentsList() {
     isLoading.value = true
     try {
       const response = await ConformityDocumentsService.getConformityDocuments(currentEntity.value.accountId)
-      documents.value = response.requiredDocs.filter((document) => document.fileUploadedId !== null)
+      // Flatten every document category exposed by the endpoint into a single list.
+      documents.value = [
+        ...response.supportingDocuments,
+        ...response.beneficiaryDocuments,
+        ...(response.commercialProposal === null ? [] : [response.commercialProposal]),
+        ...(response.engagementLetter === null ? [] : [response.engagementLetter]),
+      ]
     } catch (error) {
       logger.error('Error fetching conformity documents', error)
     } finally {
@@ -41,9 +45,7 @@ export function useDocumentsList() {
   }
 
   const downloadDocument = async (documentId: string): Promise<void> => {
-    const matchingDocument = documents.value.find(
-      (item) => String(item.fileUploadedId) === documentId,
-    )
+    const matchingDocument = documents.value.find((item) => item.id === documentId)
     if (matchingDocument === undefined || currentEntity.value === undefined) {
       return
     }
@@ -52,7 +54,7 @@ export function useDocumentsList() {
         currentEntity.value.accountId,
         documentId,
       )
-      downloadFile(content, matchingDocument.fileName ?? matchingDocument.label)
+      downloadFile(content, matchingDocument.fileName)
     } catch (error) {
       logger.error('Error downloading conformity document', error)
     }

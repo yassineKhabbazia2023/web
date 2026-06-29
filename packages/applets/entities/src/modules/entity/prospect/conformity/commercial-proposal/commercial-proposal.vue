@@ -21,7 +21,7 @@
       pType="danger"
       :pClosable="false"
     >
-      {{ t('entities.prospect.conformity.proposal.loadError') }}
+      {{ t('entities.prospect.conformity.loadError') }}
     </PAlert>
     <CommercialProposalCustomer
       v-else-if="isCustomer"

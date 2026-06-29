@@ -1,7 +1,16 @@
-import type { UploadFile } from 'element-plus'
+import type { UploadFile, UploadRawFile } from 'element-plus'
 import { isNullOrEmpty, isNotNullNorEmpty } from '@pulse/toolbox/utils/validator'
 import { BYTES_PER_MEGABYTE, OVERSIZED_FILE_MESSAGE } from './PUpload.constants'
 import type { FileRejectionOptions } from './PUploadTypes'
+
+// PUpload re-emits element-plus's `delete-file` payload typed as
+// `UploadFile | UploadRawFile`: a UploadFile wraps the native File in `.raw`,
+// while a UploadRawFile already IS a File. Normalize to the native File
+// (or undefined when no raw File is attached).
+export const getRawFile = (file: UploadFile | UploadRawFile): File | undefined => {
+  const rawFile = 'raw' in file ? file.raw : file
+  return rawFile instanceof File ? rawFile : undefined
+}
 
 const isMatchingAcceptedType = (acceptedType: string, fileExtension: string, fileMimeType: string): boolean => {
   if (acceptedType.startsWith('.')) {
