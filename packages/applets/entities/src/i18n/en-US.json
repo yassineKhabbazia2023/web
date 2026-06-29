@@ -185,7 +185,13 @@
       "addCollaboratorsToFolder": "Add collaborators to folder",
       "searchLabel": "Search",
       "searchError": "An error occurred while searching. Please try again later.",
-      "hyphen": "-"
+      "hyphen": "-",
+      "recapFolderTitle": "Requested folder:",
+      "recapCollaboratorsTitle": "Collaborators to notify:",
+      "recapInfo": "By clicking \"Send request\", the mentioned collaborators will receive an email notification. Once the request is validated by at least one of them, the folder will appear in your portfolio.",
+      "sendRequest": "Send request",
+      "requestSentSuccess": "The access request has been sent",
+      "requestSentError": "The access request could not be sent due to a technical error."
     },
     "delegationDrawer": {
       "myDelegations": "My delegations",
