@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { logger } from '@pulse/toolbox'
 import { displayNotification } from '@pulse/styleguide'
+import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { ConformityPaymentService } from '@entities/services/conformity-payment'
 import type { UseCompletedStepParams } from './completed-step.types'
 
@@ -15,8 +16,12 @@ export function useCompletedStep(params: UseCompletedStepParams) {
     }
     isLoadingSignedMandate.value = true
     try {
-      const signedMandateBlob = await ConformityPaymentService.downloadSignedMandate(params.prospectId)
-      window.open(URL.createObjectURL(signedMandateBlob), '_blank', 'noopener,noreferrer')
+      const hasOpened = await openDocumentInNewTab(() =>
+        ConformityPaymentService.downloadSignedMandate(params.prospectId),
+      )
+      if (hasOpened === false) {
+        displayNotification('error', params.downloadErrorMessage)
+      }
     } catch (error) {
       logger.error('Failed to download the signed SEPA mandate', error)
       displayNotification('error', params.downloadErrorMessage)

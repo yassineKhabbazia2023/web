@@ -82,7 +82,6 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useCurrentEntityStore } from '@pulse/common/stores'
-import type { Office } from '@pulse/common/types'
 import { PButton, PCheckbox, PDrawer, PDrawerActions, PSteps } from '@pulse/styleguide/components'
 import { PStepStatus } from '@pulse/styleguide/types'
 import type { PStepsItem } from '@pulse/styleguide/types'
@@ -90,9 +89,9 @@ import { PAYMENT_I18N_BASE } from '../../payment.consts'
 import { PaymentConfigurationStep } from './payment-configuration-drawer.enums'
 import { usePaymentConfiguration } from './payment-configuration-drawer.composable'
 import GeneralInformationStep from './steps/general-information-step/general-information-step.vue'
-import SignatureStep from './steps/signature-step.vue'
+import SignatureStep from './steps/signature-step/signature-step.vue'
 import CompletedStep from './steps/completed-step/completed-step.vue'
-import QuitConfirmationModal from './quit-confirmation-modal.vue'
+import QuitConfirmationModal from './quit-confirmation-modal/quit-confirmation-modal.vue'
 
 const I18N = `${PAYMENT_I18N_BASE}.configurationDrawer`
 
@@ -106,10 +105,7 @@ const emit = defineEmits<{
 
 const { currentEntity } = storeToRefs(useCurrentEntityStore())
 
-// The summary may expose the office as a single object or as an array — handle both.
-const officeEntry = currentEntity.value?.office as Office | Office[] | undefined
-const office = Array.isArray(officeEntry) ? officeEntry[0] : officeEntry
-const officeAddress = office?.address
+const officeAddress = currentEntity.value?.office?.address
 
 const prospectId = currentEntity.value?.prospectId as number
 
@@ -197,7 +193,6 @@ const onPrimaryClick = (): void => {
       confirmSignature()
       break
     default:
-      emit('completed')
       performClose()
   }
 }
@@ -218,8 +213,13 @@ const performClose = (done?: () => void): void => {
 
 // Reset only once the close animation has finished, so the drawer never flips back to the first step
 // while it slides away. Guarded against a quick reopen happening during the transition.
+// Reaching the completed step means the mandate is signed server-side, so any close from there
+// (primary button OR the header cross) must notify the parent to refresh the payment card.
 const onDrawerClosed = (): void => {
   if (isOpen.value === false) {
+    if (currentStep.value === PaymentConfigurationStep.Completed) {
+      emit('completed')
+    }
     reset()
   }
 }

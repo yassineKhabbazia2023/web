@@ -3,6 +3,7 @@ import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { displayNotification } from '@pulse/styleguide'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
+import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { useEngagementLetter } from './engagement-letter.composable'
 import { ENGAGEMENT_LETTER_MAX_FILE_SIZE_BYTES } from './engagement-letter.consts'
 import type { EntitySummary } from '@pulse/common/types'
@@ -13,6 +14,9 @@ vi.mock('vue-i18n', () => ({
 vi.mock('@pulse/styleguide')
 vi.mock('@pulse/toolbox')
 vi.mock('@entities/services/prospects/prospects.service')
+vi.mock('@pulse/common/helpers')
+
+const openDocumentInNewTabMock = vi.mocked(openDocumentInNewTab)
 
 const I18N_KEY = 'entities.prospect.conformity.engagementLetter'
 const prospectId = 1971
@@ -87,25 +91,18 @@ describe('useEngagementLetter', () => {
   })
 
   describe('openEngagementLetterDocument', () => {
-    const windowOpenSpy = vi.fn()
-    const createObjectUrlMock = vi.fn().mockReturnValue('blob:mocked-url')
-
-    beforeEach(() => {
-      windowOpenSpy.mockClear()
-      vi.stubGlobal('open', windowOpenSpy)
-      URL.createObjectURL = createObjectUrlMock
-    })
-
-    it('should download the document and open it in a new tab', async () => {
-      const documentBlob = new Blob()
-      vi.mocked(ProspectsService.downloadEngagementLetter).mockResolvedValueOnce(documentBlob)
+    it('should open the document in a new tab for the current prospect', async () => {
+      openDocumentInNewTabMock.mockResolvedValueOnce(true)
       const { result } = mountComposable()
 
       await result.openEngagementLetterDocument()
 
+      expect(openDocumentInNewTabMock).toHaveBeenCalledOnce()
+      // The fetcher handed to the helper downloads the engagement letter for the current prospect.
+      const [fetchDocument] = openDocumentInNewTabMock.mock.calls[0]
+      await fetchDocument()
       expect(vi.mocked(ProspectsService.downloadEngagementLetter)).toHaveBeenCalledWith(prospectId)
-      expect(createObjectUrlMock).toHaveBeenCalledWith(documentBlob)
-      expect(windowOpenSpy).toHaveBeenCalledWith('blob:mocked-url', '_blank', 'noopener,noreferrer')
+      expect(vi.mocked(displayNotification)).not.toHaveBeenCalled()
       expect(result.isDownloading.value).toBe(false)
     })
 
@@ -115,16 +112,25 @@ describe('useEngagementLetter', () => {
 
       await result.openEngagementLetterDocument()
 
-      expect(vi.mocked(ProspectsService.downloadEngagementLetter)).not.toHaveBeenCalled()
+      expect(openDocumentInNewTabMock).not.toHaveBeenCalled()
     })
 
-    it('should display an error notification when the download fails', async () => {
-      vi.mocked(ProspectsService.downloadEngagementLetter).mockRejectedValueOnce(new Error('network error'))
+    it('should display an error notification when the browser blocks the popup', async () => {
+      openDocumentInNewTabMock.mockResolvedValueOnce(false)
       const { result } = mountComposable()
 
       await result.openEngagementLetterDocument()
 
-      expect(windowOpenSpy).not.toHaveBeenCalled()
+      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', `${I18N_KEY}.downloadError`)
+      expect(result.isDownloading.value).toBe(false)
+    })
+
+    it('should display an error notification when the download fails', async () => {
+      openDocumentInNewTabMock.mockRejectedValueOnce(new Error('network error'))
+      const { result } = mountComposable()
+
+      await result.openEngagementLetterDocument()
+
       expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', `${I18N_KEY}.downloadError`)
       expect(result.isDownloading.value).toBe(false)
     })

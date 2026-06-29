@@ -7,7 +7,6 @@ import { ConformityPaymentService } from '@entities/services/conformity-payment'
 import { PaymentConfigurationStep } from './payment-configuration-drawer.enums'
 import type { MandateBankDetails, UsePaymentConfigurationOptions } from './payment-configuration-drawer.types'
 
-
 const waitBeforeShowingSignatureStep = (): Promise<void> =>
   new Promise((resolve) => {
     setTimeout(resolve, 500)

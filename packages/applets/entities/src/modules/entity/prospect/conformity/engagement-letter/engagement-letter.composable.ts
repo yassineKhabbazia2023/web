@@ -5,6 +5,7 @@ import { logger } from '@pulse/toolbox'
 import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { displayNotification } from '@pulse/styleguide'
+import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import {
   ENGAGEMENT_LETTER_ACCEPTED_MIME_TYPE,
@@ -31,8 +32,12 @@ export function useEngagementLetter(emit?: EngagementLetterEmits) {
     }
     isDownloading.value = true
     try {
-      const documentBlob = await ProspectsService.downloadEngagementLetter(prospectId)
-      window.open(URL.createObjectURL(documentBlob), '_blank', 'noopener,noreferrer')
+      const hasOpened = await openDocumentInNewTab(() =>
+        ProspectsService.downloadEngagementLetter(prospectId),
+      )
+      if (hasOpened === false) {
+        displayNotification('error', t(`${I18N_KEY}.downloadError`))
+      }
     } catch (error) {
       logger.error('Error downloading engagement letter document', error)
       displayNotification('error', t(`${I18N_KEY}.downloadError`))

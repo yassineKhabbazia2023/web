@@ -49,8 +49,10 @@ export function useGeneralInformationStep(params: UseGeneralInformationStepParam
   )
 
   // Selecting (file) or removing (null) a RIB only clears the IBAN and BIC and resets the OCR error
-  // flags; the holder and address already entered are kept.
+  // flags; the holder and address already entered are kept. Resetting also drops the loading flag so a
+  // RIB removed mid-extraction never leaves the spinner stuck.
   const resetRibDerivedData = (ribFile: File | null): void => {
+    isExtractingRib.value = false
     params.bankDetails.value.iban = ''
     params.bankDetails.value.bic = ''
     params.ribFile.value = ribFile
@@ -63,6 +65,10 @@ export function useGeneralInformationStep(params: UseGeneralInformationStepParam
     isExtractingRib.value = true
     try {
       const result = await extractRibFromPdf(file)
+      // A newer RIB (or a removal) replaced this one while the OCR was running: drop the stale result.
+      if (params.ribFile.value !== file) {
+        return
+      }
       if (isNotNullNorEmpty(result.iban)) {
         params.bankDetails.value.iban = result.iban
       }
@@ -73,11 +79,15 @@ export function useGeneralInformationStep(params: UseGeneralInformationStepParam
       // The OCR "failed to read" when it couldn't produce a valid IBAN (format + checksum) and BIC.
       const ocrReadValidIban = result.validation.ibanValid === true && result.validation.ibanChecksum === true
       isRibUnrecognized.value = ocrReadValidIban === false || result.validation.bicValid === false
+      isExtractingRib.value = false
     } catch (error) {
+      // Same guard: a stale failure must not clear the RIB the user has since re-selected.
+      if (params.ribFile.value !== file) {
+        return
+      }
       logger.error('Failed to extract RIB data from PDF', error)
       params.ribFile.value = null
       hasRibExtractionFailed.value = true
-    } finally {
       isExtractingRib.value = false
     }
   }

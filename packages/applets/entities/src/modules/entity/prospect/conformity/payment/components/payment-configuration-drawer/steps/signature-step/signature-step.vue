@@ -66,10 +66,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onBeforeUnmount, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { PAlert } from '@pulse/styleguide/components'
-import { PAYMENT_I18N_BASE } from '../../../payment.consts'
+import { PAYMENT_I18N_BASE } from '../../../../payment.consts'
 
 const I18N = `${PAYMENT_I18N_BASE}.configurationDrawer.signature`
 
@@ -87,13 +87,22 @@ const onIframeError = (): void => {
   isIframeBlocked.value = true
 }
 
+let iframeLoadTimer: ReturnType<typeof setTimeout> | undefined
+
 // We cannot read the cross-origin iframe URL, but every navigation fires a load event. The drawer
 // uses each one as an opportunity to re-check whether the mandate has just been signed.
 const onIframeLoad = (): void => {
-  setTimeout(() => {
+  // Each navigation reschedules a single check; clearing first avoids stacking timers.
+  clearTimeout(iframeLoadTimer)
+  iframeLoadTimer = setTimeout(() => {
     emit('iframe-load')
   }, 500)
 }
+
+onBeforeUnmount(() => {
+  // The drawer can close during the 500ms window; don't emit after teardown.
+  clearTimeout(iframeLoadTimer)
+})
 </script>
 
 <style scoped>

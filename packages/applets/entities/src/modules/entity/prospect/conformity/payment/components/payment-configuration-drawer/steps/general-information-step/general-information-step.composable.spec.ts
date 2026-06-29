@@ -161,6 +161,62 @@ describe('general-information-step.composable', () => {
     })
   })
 
+  describe('concurrent OCR runs', () => {
+    it('should drop a stale extraction result when the RIB is removed mid-extraction', async () => {
+      let resolveExtraction!: (value: ReturnType<typeof buildExtraction>) => void
+      const pendingExtraction = new Promise<ReturnType<typeof buildExtraction>>((resolve) => {
+        resolveExtraction = resolve
+      })
+      extractRibFromPdfMock.mockReturnValueOnce(pendingExtraction)
+
+      const { bankDetails, ribFile, step } = setup()
+
+      const selectPromise = step.onRibSelected(ribPdf)
+      // The user removes the RIB while the OCR is still running.
+      step.onRibRemoved()
+      expect(ribFile.value).toBeNull()
+
+      // The slow extraction finally resolves with data for the now-removed RIB.
+      resolveExtraction(buildExtraction(VALID_FR_IBAN, MATCHING_FR_BIC))
+      await selectPromise
+      await flushPromises()
+
+      expect(bankDetails.value.iban).toBe('')
+      expect(bankDetails.value.bic).toBe('')
+      expect(ribFile.value).toBeNull()
+      expect(step.isExtractingRib.value).toBe(false)
+    })
+
+    it('should keep the latest RIB result when an earlier extraction resolves last', async () => {
+      const newerRib = new File(['rib2'], 'rib2.pdf', { type: 'application/pdf' })
+      let resolveFirstExtraction!: (value: ReturnType<typeof buildExtraction>) => void
+      const firstExtraction = new Promise<ReturnType<typeof buildExtraction>>((resolve) => {
+        resolveFirstExtraction = resolve
+      })
+      extractRibFromPdfMock.mockReturnValueOnce(firstExtraction)
+
+      const { bankDetails, ribFile, step } = setup()
+
+      const firstSelect = step.onRibSelected(ribPdf)
+      // A newer RIB is selected and its (fast) extraction fills the latest data.
+      await step.onRibSelected(newerRib)
+      await flushPromises()
+      expect(ribFile.value).toBe(newerRib)
+      expect(bankDetails.value.iban).toBe(VALID_FR_IBAN)
+
+      // The earlier, slower extraction resolves last with different data — it must be ignored.
+      resolveFirstExtraction(buildExtraction('FR7630006000011234567890189', MISMATCHING_DE_BIC))
+      await firstSelect
+      await flushPromises()
+
+      expect(ribFile.value).toBe(newerRib)
+      expect(bankDetails.value.iban).toBe(VALID_FR_IBAN)
+      expect(bankDetails.value.bic).toBe(MATCHING_FR_BIC)
+      // The stale run's early return must not leave the spinner stuck on: the latest run cleared it.
+      expect(step.isExtractingRib.value).toBe(false)
+    })
+  })
+
   describe('isGeneralInformationValid / hasIbanBicMismatch', () => {
     it('should be valid when the RIB is processed, every field is filled and IBAN/BIC are consistent', async () => {
       const { bankDetails, step } = setup({

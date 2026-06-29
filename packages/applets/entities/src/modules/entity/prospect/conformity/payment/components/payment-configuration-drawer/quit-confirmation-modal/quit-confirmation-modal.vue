@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { PButton, PDialog, PIcon } from '@pulse/styleguide/components'
-import { PAYMENT_I18N_BASE } from '../../payment.consts'
+import { PAYMENT_I18N_BASE } from '../../../payment.consts'
 
 const I18N_KEY = `${PAYMENT_I18N_BASE}.configurationDrawer.quitConfirmation`
 

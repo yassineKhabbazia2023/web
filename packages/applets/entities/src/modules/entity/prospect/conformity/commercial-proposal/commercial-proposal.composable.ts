@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { displayNotification } from '@pulse/styleguide'
+import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
 import {
   COMMERCIAL_PROPOSAL_ACCEPTED_MIME_TYPE,
@@ -30,8 +31,12 @@ export function useCommercialProposal(emit: CommercialProposalEmits) {
     }
     isDownloading.value = true
     try {
-      const documentBlob = await ProspectsService.downloadCommercialProposal(prospectId)
-      window.open(URL.createObjectURL(documentBlob), '_blank', 'noopener,noreferrer')
+      const hasOpened = await openDocumentInNewTab(() =>
+        ProspectsService.downloadCommercialProposal(prospectId),
+      )
+      if (hasOpened === false) {
+        displayNotification('error', t(`${I18N_KEY}.downloadError`))
+      }
     } catch (error) {
       logger.error('Error downloading commercial proposal document', error)
       displayNotification('error', t(`${I18N_KEY}.downloadError`))

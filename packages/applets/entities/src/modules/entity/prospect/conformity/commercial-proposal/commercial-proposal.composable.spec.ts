@@ -3,6 +3,7 @@ import { getStoreMock } from '@pulse/common/mocks/vitest'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { displayNotification } from '@pulse/styleguide'
 import { ProspectsService } from '@entities/services/prospects/prospects.service'
+import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { useCommercialProposal } from './commercial-proposal.composable'
 import { COMMERCIAL_PROPOSAL_MAX_FILE_SIZE_BYTES } from './commercial-proposal.consts'
 import type { EntitySummary } from '@pulse/common/types'
@@ -13,6 +14,9 @@ vi.mock('vue-i18n', () => ({
 vi.mock('@pulse/styleguide')
 vi.mock('@pulse/toolbox')
 vi.mock('@entities/services/prospects/prospects.service')
+vi.mock('@pulse/common/helpers')
+
+const openDocumentInNewTabMock = vi.mocked(openDocumentInNewTab)
 
 const I18N_KEY = 'entities.prospect.conformity.proposal'
 const prospectId = 1971
@@ -87,25 +91,18 @@ describe('useCommercialProposal', () => {
   })
 
   describe('openCommercialProposalDocument', () => {
-    const windowOpenSpy = vi.fn()
-    const createObjectUrlMock = vi.fn().mockReturnValue('blob:mocked-url')
-
-    beforeEach(() => {
-      windowOpenSpy.mockClear()
-      vi.stubGlobal('open', windowOpenSpy)
-      URL.createObjectURL = createObjectUrlMock
-    })
-
-    it('should download the document and open it in a new tab', async () => {
-      const documentBlob = new Blob()
-      vi.mocked(ProspectsService.downloadCommercialProposal).mockResolvedValueOnce(documentBlob)
+    it('should open the document in a new tab for the current prospect', async () => {
+      openDocumentInNewTabMock.mockResolvedValueOnce(true)
       const { result } = mountComposable()
 
       await result.openCommercialProposalDocument()
 
+      expect(openDocumentInNewTabMock).toHaveBeenCalledOnce()
+      // The fetcher handed to the helper downloads the commercial proposal for the current prospect.
+      const [fetchDocument] = openDocumentInNewTabMock.mock.calls[0]
+      await fetchDocument()
       expect(vi.mocked(ProspectsService.downloadCommercialProposal)).toHaveBeenCalledWith(prospectId)
-      expect(createObjectUrlMock).toHaveBeenCalledWith(documentBlob)
-      expect(windowOpenSpy).toHaveBeenCalledWith('blob:mocked-url', '_blank', 'noopener,noreferrer')
+      expect(vi.mocked(displayNotification)).not.toHaveBeenCalled()
       expect(result.isDownloading.value).toBe(false)
     })
 
@@ -115,16 +112,25 @@ describe('useCommercialProposal', () => {
 
       await result.openCommercialProposalDocument()
 
-      expect(vi.mocked(ProspectsService.downloadCommercialProposal)).not.toHaveBeenCalled()
+      expect(openDocumentInNewTabMock).not.toHaveBeenCalled()
     })
 
-    it('should display an error notification when the download fails', async () => {
-      vi.mocked(ProspectsService.downloadCommercialProposal).mockRejectedValueOnce(new Error('network error'))
+    it('should display an error notification when the browser blocks the popup', async () => {
+      openDocumentInNewTabMock.mockResolvedValueOnce(false)
       const { result } = mountComposable()
 
       await result.openCommercialProposalDocument()
 
-      expect(windowOpenSpy).not.toHaveBeenCalled()
+      expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', `${I18N_KEY}.downloadError`)
+      expect(result.isDownloading.value).toBe(false)
+    })
+
+    it('should display an error notification when the download fails', async () => {
+      openDocumentInNewTabMock.mockRejectedValueOnce(new Error('network error'))
+      const { result } = mountComposable()
+
+      await result.openCommercialProposalDocument()
+
       expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('error', `${I18N_KEY}.downloadError`)
       expect(result.isDownloading.value).toBe(false)
     })
