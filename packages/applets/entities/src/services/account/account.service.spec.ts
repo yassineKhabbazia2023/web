@@ -21,6 +21,8 @@ import {
   updateCustomerRelation,
   fetchAccountContactsByEmail,
   updateSignatoryStatus,
+  checkLastCollaboratorOnAccounts,
+  removeCurrentUserFromAccounts,
 } from '.'
 import type { Hub } from './account.type'
 import {
@@ -131,6 +133,14 @@ describe('test accountServices', () => {
       if (url === `${API_PREFIXES.ACCOUNT}/roles/check`) {
         return Promise.resolve({
           data: true,
+        })
+      }
+      if (url === `${API_PREFIXES.ACCOUNT}/roles/last-collaborator`) {
+        return Promise.resolve({
+          data: {
+            isLastCollaboratorOnAny: true,
+            accountIdsWhereLastCollaborator: [8],
+          },
         })
       }
       if (url === `${API_PREFIXES.WALLET}/delegations/currentuser/delegator`) {
@@ -393,6 +403,40 @@ describe('test accountServices', () => {
 
       const hasRoleOnAccount = await hasContactRoleOnCommonAccount(email, accountId)
       expect(hasRoleOnAccount).toBeTruthy()
+    })
+
+    it('should check if current user is the last collaborator on accounts', async () => {
+      const accountIds = [5, 8]
+      const result = await checkLastCollaboratorOnAccounts(accountIds)
+      const expectedUrl = `${API_PREFIXES.ACCOUNT}/roles/last-collaborator`
+      const callParameters = commonApiGetMock.mock.calls.at(-1)?.[1]?.params as URLSearchParams
+
+      expect(commonApiGetMock).toHaveBeenLastCalledWith(expectedUrl, {
+        params: callParameters,
+      })
+      expect(callParameters.getAll('accountIds')).toEqual(['5', '8'])
+      expect(result).toStrictEqual({
+        isLastCollaboratorOnAny: true,
+        accountIdsWhereLastCollaborator: [8],
+      })
+    })
+
+    it('should remove current user from accounts', async () => {
+      const response = {
+        succeeded: [
+          { accountId: 5, errorCode: null, errorMessage: null },
+        ],
+        failed: [
+          { accountId: 8, errorCode: 'ACC004', errorMessage: 'Error' },
+        ],
+      }
+      const request = { accountIds: [5, 8] }
+      postSpy.mockResolvedValueOnce({ data: response })
+
+      const result = await removeCurrentUserFromAccounts(request)
+
+      expect(postSpy).toHaveBeenLastCalledWith(`${API_PREFIXES.ACCOUNT}/roles/self-removal`, request)
+      expect(result).toStrictEqual(response)
     })
   })
 

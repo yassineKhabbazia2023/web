@@ -25,6 +25,7 @@ import { RouteName, RouteParam } from '@pulse/common/enums'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
 import { MISSION_TYPE } from '@entities/constants'
+import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersConfirmationModal/remove-from-folders-confirmation-modal.vue'
 
 import Folders from './Folders.vue'
 
@@ -36,6 +37,16 @@ vi.mock('@pulse/toolbox', () => ({
   logger: loggerMock,
   FeatureFlagManager: featureFlagManagerMock,
 }))
+
+const displayNotificationMock = vi.hoisted(() => vi.fn())
+vi.mock('@pulse/styleguide', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@pulse/styleguide')>()
+
+  return {
+    ...actual,
+    displayNotification: displayNotificationMock,
+  }
+})
 
 vi.mock('@entities/services/registry', () => registryServiceMock)
 
@@ -63,6 +74,19 @@ vi.mock('@entities/services/wallet', () => ({
   fetchAccountContacts: fetchAccountContactsMock,
   manageFavoriteEntities: manageFavoriteEntitiesMock,
 }))
+
+const checkLastCollaboratorOnAccountsMock = vi.hoisted(() => vi.fn())
+const removeCurrentUserFromAccountsMock = vi.hoisted(() => vi.fn())
+
+vi.mock('@entities/services/account', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@entities/services/account')>()
+
+  return {
+    ...actual,
+    checkLastCollaboratorOnAccounts: checkLastCollaboratorOnAccountsMock,
+    removeCurrentUserFromAccounts: removeCurrentUserFromAccountsMock,
+  }
+})
 
 vi.mock('@pulse/common/api', () => ({
   api: ({
@@ -168,6 +192,14 @@ describe('deploy', () => {
     hasPermissionMock.mockReturnValue(false)
     isManageWalletMenuActivatedMock.mockReturnValue(true)
     mockedGatewayGet.mockResolvedValue(mockedAccount)
+    checkLastCollaboratorOnAccountsMock.mockResolvedValue({
+      isLastCollaboratorOnAny: false,
+      accountIdsWhereLastCollaborator: [],
+    })
+    removeCurrentUserFromAccountsMock.mockResolvedValue({
+      succeeded: [],
+      failed: [],
+    })
     mockFetchWalletData
       .mockResolvedValue(mockedQueryResult)
   })
@@ -239,6 +271,220 @@ describe('deploy', () => {
     expect(delegationDrawer.exists()).toBe(true)
     expect(delegationDrawer.props('selectedFolders')).toHaveLength(2)
     expect(delegationDrawer.props('initialTab')).toBeUndefined()
+  })
+
+  it('checks remaining collaborator folders and opens the removal confirmation modal', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    const selectedFolderIds = mockedQueryResult.items
+      .slice(0, 2)
+      .map(({ accountId }) => accountId)
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', ManageWalletAction.REMOVE_FROM_FOLDERS)
+    await flushPromises()
+
+    const removalModal = wrapper.findComponent(RemoveFromFoldersConfirmationModal)
+    expect(checkLastCollaboratorOnAccountsMock).toHaveBeenCalledExactlyOnceWith(selectedFolderIds)
+    expect(removalModal.exists()).toBe(true)
+    expect(removalModal.props('hasRemainingCollaboratorFolder')).toBe(false)
+  })
+
+  it('displays the remaining collaborator modal and sends all selected folders for removal', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    const selectedFolderIds = mockedQueryResult.items
+      .slice(0, 2)
+      .map(({ accountId }) => accountId)
+    checkLastCollaboratorOnAccountsMock.mockResolvedValueOnce({
+      isLastCollaboratorOnAny: true,
+      accountIdsWhereLastCollaborator: [selectedFolderIds[1]],
+    })
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', ManageWalletAction.REMOVE_FROM_FOLDERS)
+    await flushPromises()
+
+    const removalModal = wrapper.findComponent(RemoveFromFoldersConfirmationModal)
+    expect(removalModal.props('hasRemainingCollaboratorFolder')).toBe(true)
+
+    removalModal.vm.$emit('confirm')
+    await flushPromises()
+
+    expect(removeCurrentUserFromAccountsMock).toHaveBeenCalledExactlyOnceWith({
+      accountIds: selectedFolderIds,
+    })
+  })
+
+  it('uses the remaining collaborator boolean to display the blocking wording', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    const selectedFolderIds = mockedQueryResult.items
+      .slice(0, 1)
+      .map(({ accountId }) => accountId)
+    checkLastCollaboratorOnAccountsMock.mockResolvedValueOnce({
+      isLastCollaboratorOnAny: true,
+      accountIdsWhereLastCollaborator: [],
+    })
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', ManageWalletAction.REMOVE_FROM_FOLDERS)
+    await flushPromises()
+
+    const removalModal = wrapper.findComponent(RemoveFromFoldersConfirmationModal)
+    expect(removalModal.props('hasRemainingCollaboratorFolder')).toBe(true)
+  })
+
+  it('keeps folders selected when the removal confirmation modal is cancelled', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    const selectedFolderIds = mockedQueryResult.items
+      .slice(0, 2)
+      .map(({ accountId }) => accountId)
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', ManageWalletAction.REMOVE_FROM_FOLDERS)
+    await flushPromises()
+
+    wrapper.findComponent(RemoveFromFoldersConfirmationModal).vm.$emit('update:modelValue', false)
+    await nextTick()
+
+    expect(wrapper.findComponent(ManageWalletButton).props('selectedFoldersCount')).toBe(2)
+  })
+
+  it('removes current user from selected folders and displays a success notification', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+    const selectedFolderIds = mockedQueryResult.items
+      .slice(0, 2)
+      .map(({ accountId }) => accountId)
+    removeCurrentUserFromAccountsMock.mockResolvedValueOnce({
+      succeeded: selectedFolderIds.map(accountId => ({
+        accountId,
+        errorCode: null,
+        errorMessage: null,
+      })),
+      failed: [],
+    })
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', ManageWalletAction.REMOVE_FROM_FOLDERS)
+    await flushPromises()
+    wrapper.findComponent(RemoveFromFoldersConfirmationModal).vm.$emit('confirm')
+    await flushPromises()
+
+    expect(removeCurrentUserFromAccountsMock).toHaveBeenCalledExactlyOnceWith({ accountIds: selectedFolderIds })
+    expect(displayNotificationMock).toHaveBeenCalledWith('success', 'You removed yourself from the 2 selected folders.')
+    expect(mockFetchWalletData).toHaveBeenCalledTimes(2)
+    expect(wrapper.findComponent(ManageWalletButton).props('selectedFoldersCount')).toBe(0)
+  })
+
+  it('displays a warning notification when multiple folders remain unprocessed', async () => {
+    const walletItems = [
+      ...mockedQueryResult.items,
+      {
+        ...mockedQueryResult.items[0],
+        accountId: 999,
+      },
+    ]
+    mockFetchWalletData.mockResolvedValueOnce({
+      ...mockedQueryResult,
+      items: walletItems,
+      totalItems: 3,
+    })
+    const wrapper = createWrapper()
+    await flushPromises()
+    const selectedFolderIds = walletItems
+      .slice(0, 3)
+      .map(({ accountId }) => accountId)
+    removeCurrentUserFromAccountsMock.mockResolvedValueOnce({
+      succeeded: [{
+        accountId: selectedFolderIds[0],
+        errorCode: null,
+        errorMessage: null,
+      }],
+      failed: selectedFolderIds.slice(1).map(accountId => ({
+        accountId,
+        errorCode: 'ACC004',
+        errorMessage: 'Error',
+      })),
+    })
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', ManageWalletAction.REMOVE_FROM_FOLDERS)
+    await flushPromises()
+    wrapper.findComponent(RemoveFromFoldersConfirmationModal).vm.$emit('confirm')
+    await flushPromises()
+
+    expect(displayNotificationMock).toHaveBeenCalledWith(
+      'warning',
+      'You removed yourself from 1 folder out of 3. The remaining folders could not be processed, please try again.',
+    )
+  })
+
+  it('displays a warning notification when one folder remains unprocessed', async () => {
+    const walletItems = [
+      ...mockedQueryResult.items,
+      {
+        ...mockedQueryResult.items[0],
+        accountId: 999,
+      },
+    ]
+    mockFetchWalletData.mockResolvedValueOnce({
+      ...mockedQueryResult,
+      items: walletItems,
+      totalItems: 3,
+    })
+    const wrapper = createWrapper()
+    await flushPromises()
+    const selectedFolderIds = walletItems
+      .slice(0, 3)
+      .map(({ accountId }) => accountId)
+    removeCurrentUserFromAccountsMock.mockResolvedValueOnce({
+      succeeded: selectedFolderIds.slice(0, 2).map(accountId => ({
+        accountId,
+        errorCode: null,
+        errorMessage: null,
+      })),
+      failed: [{
+        accountId: selectedFolderIds[2],
+        errorCode: 'ACC004',
+        errorMessage: 'Error',
+      }],
+    })
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('update:selectedFolderIds', selectedFolderIds)
+    await nextTick()
+
+    wrapper.findComponent(ManageWalletButton).vm.$emit('action-selected', ManageWalletAction.REMOVE_FROM_FOLDERS)
+    await flushPromises()
+    wrapper.findComponent(RemoveFromFoldersConfirmationModal).vm.$emit('confirm')
+    await flushPromises()
+
+    expect(displayNotificationMock).toHaveBeenCalledWith(
+      'warning',
+      'You removed yourself from 2 folders out of 3. The remaining folder could not be processed, please try again.',
+    )
   })
 
   it('opens the entity creator drawer for the create test account action', async () => {

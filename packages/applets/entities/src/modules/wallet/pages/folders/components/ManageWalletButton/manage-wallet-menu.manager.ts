@@ -58,6 +58,13 @@ export class ManageWalletMenuManager {
         pState: 'default',
         display: true,
       },
+      {
+        pIconName: 'personRemove',
+        pValue: translations.removeFromFolders,
+        pActionName: ManageWalletAction.REMOVE_FROM_FOLDERS,
+        pState: 'default',
+        display: true,
+      },
     ]
   }
 

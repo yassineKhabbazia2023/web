@@ -211,6 +211,15 @@
         }
       }
     },
+    "removeFromFoldersConfirmationModal": {
+      "title": "Remove myself from this folder? | Remove myself from these {count} folders?",
+      "remainingCollaboratorTitle": "You are the only remaining collaborator | You are the only remaining collaborator on one of these folders",
+      "content": "By confirming this removal, you will lose access to this folder and it will disappear from your portfolio. You can still find it by requesting a delegation. | By confirming this removal, you will lose access to these folders and they will disappear from your portfolio. You can still find them by requesting a delegation.",
+      "remainingCollaboratorContent": "By removing yourself, this folder will no longer be accessible to any collaborator. Anyone who wants to access it will need to contact support.",
+      "cancel": "Cancel",
+      "confirm": "Confirm",
+      "remove": "Remove myself"
+    },
     "invoices": {
       "title": "Dematerialization of RYDGE Conseil invoices",
       "description": "With RYDGE Conseil, benefit {noExtraCost} from the issuance of Firm invoices in {electronicFormat} and access to {digitalVault} containing all dematerialized invoices and credit notes, hosted with a trusted third party.",

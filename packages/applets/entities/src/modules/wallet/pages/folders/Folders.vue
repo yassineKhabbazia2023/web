@@ -82,6 +82,14 @@
         :numberOfFoldersInPortfolio="totalAccounts"
         :initialTab="delegationInitialTab"
       />
+      <RemoveFromFoldersConfirmationModal
+        v-if="isRemoveFromFoldersModalOpened"
+        v-model="isRemoveFromFoldersModalOpened"
+        :selectedFoldersCount="selectedFolders.length"
+        :has-remaining-collaborator-folder="hasRemainingCollaboratorFolder"
+        :isConfirmButtonLoading="isRemoveFromFoldersLoading"
+        @confirm="confirmRemoveFromFolders"
+      />
     </div>
     <div class="account-deploy__filters flex flex--align-items-center margin-bottom--3">
       <FormSearch
@@ -215,8 +223,9 @@ import {
   PPagination,
   PIcon,
 } from '@pulse/styleguide/components'
-import { useResponsive } from '@pulse/styleguide'
+import { displayNotification, useResponsive } from '@pulse/styleguide'
 import { fetchFavoriteEntities, manageFavoriteEntities } from '@entities/services/wallet'
+import { checkLastCollaboratorOnAccounts, removeCurrentUserFromAccounts } from '@entities/services/account'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
 import { CurrentUserManager, FeatureFlagManager } from '@pulse/common/managers'
 import type { Entity, SortingCriteria } from '@pulse/common/types'
@@ -241,6 +250,8 @@ import Filters from '../../components/Filters'
 import RegularEntityList from '../../components/entities-list/regular-entity/regular-entity.list.vue'
 import DelegationDrawer from './components/DelegationDrawer'
 import ManageWalletButton from './components/ManageWalletButton/ManageWalletButton.vue'
+import RemoveFromFoldersConfirmationModal from './components/RemoveFromFoldersConfirmationModal/remove-from-folders-confirmation-modal.vue'
+import { RemoveFromFoldersManager } from './components/RemoveFromFoldersConfirmationModal/remove-from-folders.manager'
 import EntityCreatorDrawer from './components/EntityCreatorDrawer'
 import AccountFiltersDrawer from './components/AccountFiltersDrawer/AccountFiltersDrawer.vue'
 import { getDefaultAccountFilters } from './components/AccountFiltersDrawer/account-filters-drawer.utils'
@@ -271,6 +282,14 @@ const { t } = useI18n({
       delegation: 'My delegations | Delegate my folder | Delegate my folders',
       createTestAccount: 'Create a test account',
       manageAccess: 'Manage access',
+      removeFromFoldersCheckError: 'The withdrawal action could not be prepared. Please try again in a few moments.',
+      removeFromFoldersSuccessSingle: 'You removed yourself from the selected folder.',
+      removeFromFoldersSuccessMultiple: 'You removed yourself from the {count} selected folders.',
+      removeFromFoldersPartialSuccess: 'You removed yourself from {succeededCount} {succeededFolderLabel} out of {selectedCount}. {remainingFoldersFailureMessage}',
+      removeFromFoldersSucceededFolderLabel: 'folder | folders',
+      removeFromFoldersRemainingFailureSingle: 'The remaining folder could not be processed, please try again.',
+      removeFromFoldersRemainingFailureMultiple: 'The remaining folders could not be processed, please try again.',
+      removeFromFoldersFailure: 'Your withdrawal could not be completed. Please try again in a few moments.',
     },
     'fr-FR': {
       search: 'Rechercher par raison sociale, code client, prénom, nom et e-mail du dirigeant',
@@ -284,6 +303,14 @@ const { t } = useI18n({
       delegation: 'Mes délégations | Déléguer le dossier | Déléguer les dossiers',
       createTestAccount: 'Créer un compte de test',
       manageAccess: 'Gérer les accès',
+      removeFromFoldersCheckError: 'L’action de retrait n’a pas pu être préparée. Réessayez dans quelques instants.',
+      removeFromFoldersSuccessSingle: 'Vous vous êtes retiré du dossier sélectionné.',
+      removeFromFoldersSuccessMultiple: 'Vous vous êtes retiré des {count} dossiers sélectionnés.',
+      removeFromFoldersPartialSuccess: 'Vous vous êtes retiré de {succeededCount} {succeededFolderLabel} sur {selectedCount}. {remainingFoldersFailureMessage}',
+      removeFromFoldersSucceededFolderLabel: 'dossier | dossiers',
+      removeFromFoldersRemainingFailureSingle: 'Le dossier restant n’a pas pu être traité, réessayez.',
+      removeFromFoldersRemainingFailureMultiple: 'Les dossiers restant n’ont pas pu être traités, réessayez.',
+      removeFromFoldersFailure: 'Votre retrait n’a pas pu aboutir. Réessayez dans quelques instants.',
     },
   },
 })
@@ -408,13 +435,81 @@ const openSelectedFoldersDelegationDrawer = () => {
   isDelegationDrawerOpened.value = true
 }
 
-const WALLET_ACTION_HANDLERS: Record<ManageWalletAction, () => void> = {
+const isRemoveFromFoldersModalOpened = ref(false)
+const isRemoveFromFoldersLoading = ref(false)
+const hasRemainingCollaboratorFolder = ref(false)
+
+async function openRemoveFromFoldersConfirmationModal() {
+  if (selectedFolderIds.value.length === 0) {
+    return
+  }
+
+  try {
+    const remainingCollaboratorCheck = await checkLastCollaboratorOnAccounts(selectedFolderIds.value)
+
+    hasRemainingCollaboratorFolder.value = remainingCollaboratorCheck.isLastCollaboratorOnAny
+    isRemoveFromFoldersModalOpened.value = true
+  } catch (error) {
+    logger.error('Unable to check remaining collaborator accounts', error)
+    displayNotification('error', t('removeFromFoldersCheckError'))
+  }
+}
+
+async function confirmRemoveFromFolders() {
+  if (selectedFolderIds.value.length === 0) {
+    return
+  }
+
+  isRemoveFromFoldersLoading.value = true
+  try {
+    const response = await removeCurrentUserFromAccounts({ accountIds: selectedFolderIds.value })
+    const succeededCount = response.succeeded.length
+    const selectedCount = response.succeeded.length + response.failed.length
+    const failedCount = selectedCount - succeededCount
+    const successMessageKey = selectedCount === 1
+      ? 'removeFromFoldersSuccessSingle'
+      : 'removeFromFoldersSuccessMultiple'
+    const remainingFoldersFailureMessageKey = failedCount === 1
+      ? 'removeFromFoldersRemainingFailureSingle'
+      : 'removeFromFoldersRemainingFailureMultiple'
+    const notification = RemoveFromFoldersManager.getNotification(response, selectedCount, {
+      success: t(successMessageKey, { count: selectedCount }),
+      partialSuccess: t('removeFromFoldersPartialSuccess', {
+        succeededCount,
+        selectedCount,
+        succeededFolderLabel: t('removeFromFoldersSucceededFolderLabel', succeededCount),
+        remainingFoldersFailureMessage: t(remainingFoldersFailureMessageKey),
+      }),
+      failure: t('removeFromFoldersFailure'),
+    })
+
+    displayNotification(notification.type, notification.message)
+    isRemoveFromFoldersModalOpened.value = false
+
+    if (succeededCount > 0) {
+      const succeededAccountIds = new Set(response.succeeded.map(({ accountId }) => accountId))
+      selectedFolderIds.value = selectedFolderIds.value
+        .filter(accountId => succeededAccountIds.has(accountId) === false)
+      await fetchTableDataAndFavorites()
+    }
+  } catch (error) {
+    logger.error('Unable to remove current user from selected folders', error)
+    displayNotification('error', t('removeFromFoldersFailure'))
+  } finally {
+    isRemoveFromFoldersLoading.value = false
+  }
+}
+
+const WALLET_ACTION_HANDLERS: Record<ManageWalletAction, () => void | Promise<void>> = {
   [ManageWalletAction.DELEGATE_WALLET]: () => openDelegationDrawerOnTab(DelegationTab.DELEGATE_WALLET),
   [ManageWalletAction.DELEGATE_FOLDERS]: () => openSelectedFoldersDelegationDrawer(),
+  [ManageWalletAction.REMOVE_FROM_FOLDERS]: () => openRemoveFromFoldersConfirmationModal(),
   [ManageWalletAction.VIEW_PERMANENT_DELEGATIONS]: () => openDelegationDrawerOnTab(DelegationTab.PERMANENT_DELEGATIONS),
   [ManageWalletAction.REQUEST_DELEGATION]: () => openDelegationDrawerOnTab(DelegationTab.REQUEST_DELEGATION),
   [ManageWalletAction.PENDING_DELEGATIONS]: () => openDelegationDrawerOnTab(DelegationTab.PENDING_REQUESTS),
-  [ManageWalletAction.CREATE_TEST_ACCOUNT]: () => onEntityCreatorDrawerOpen(),
+  [ManageWalletAction.CREATE_TEST_ACCOUNT]: () => {
+    onEntityCreatorDrawerOpen()
+  },
 }
 
 const onWalletAction = (action: ManageWalletAction) => WALLET_ACTION_HANDLERS[action]()

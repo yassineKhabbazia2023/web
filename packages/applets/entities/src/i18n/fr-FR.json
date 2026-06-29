@@ -211,6 +211,15 @@
         }
       }
     },
+    "removeFromFoldersConfirmationModal": {
+      "title": "Se retirer de ce dossier ? | Se retirer de ces {count} dossiers ?",
+      "remainingCollaboratorTitle": "Vous êtes le dernier collaborateur | Vous êtes le dernier collaborateur sur l’un de ces dossiers",
+      "content": "En confirmant le retrait, vous perdrez l’accès à ce dossier et il disparaîtra de votre portefeuille. Vous pourrez cependant le retrouver en demandant une délégation. | En confirmant le retrait, vous perdrez l’accès à ces dossiers et ils disparaîtront de votre portefeuille. Vous pourrez cependant les retrouver en demandant une délégation.",
+      "remainingCollaboratorContent": "En vous retirant, ce dossier ne sera plus accessible à aucun collaborateur. Toute personne souhaitant y accéder devra contacter le support.",
+      "cancel": "Annuler",
+      "confirm": "Confirmer",
+      "remove": "Se retirer"
+    },
     "invoices": {
       "title": "Dématérialisation des factures RYDGE Conseil",
       "description": "Avec RYDGE Conseil, bénéficiez {noExtraCost} de l'émission des factures Cabinet au {electronicFormat} et de l'accès à {digitalVault} contenant l'ensemble des factures et avoirs dématérialisés, hébergé auprès d'un tiers de confiance.",

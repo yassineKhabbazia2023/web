@@ -1,10 +1,21 @@
 import type { Account, AccountSignatories } from '.'
 import type { Contact } from '@entities/services/contact/contactTypes'
 import { api } from '@pulse/common/api'
+import { appendArrayParams } from '@pulse/toolbox/utils/http'
 import type { QueryResult, UserInfoApi, Office } from '@pulse/common/types'
 import { API_PREFIXES } from '@pulse/common/constants'
 import type { PatchOperation } from '@entities/services/patch-record'
-import type { AccountRow, ReferentialStructure, Hub, AccountsDelegation, PermanentDelegationApiItem, SearchAccountItem } from './account.type'
+import type {
+  AccountRow,
+  ReferentialStructure,
+  Hub,
+  AccountsDelegation,
+  PermanentDelegationApiItem,
+  SearchAccountItem,
+  LastCollaboratorCheckResponse,
+  AccountSelfRemovalRequest,
+  AccountSelfRemovalResponse,
+} from './account.type'
 import { ContactType } from '@pulse/common/enums'
 import type { AccountType } from '@pulse/common/enums'
 
@@ -85,6 +96,27 @@ export async function fetchPermanentDelegations() {
   const url = `${API_PREFIXES.WALLET}/delegations/currentuser/delegator`
 
   return await fetchGatewayApi<QueryResult<PermanentDelegationApiItem>>(url)
+}
+
+export async function checkLastCollaboratorOnAccounts(accountIds: number[]): Promise<LastCollaboratorCheckResponse> {
+  const url = `${API_PREFIXES.ACCOUNT}/roles/last-collaborator`
+  const searchParams = new URLSearchParams()
+  appendArrayParams(searchParams, 'accountIds', accountIds)
+
+  const { data } = await api.gateway.get<LastCollaboratorCheckResponse>(url, {
+    params: searchParams,
+  })
+
+  return data
+}
+
+export async function removeCurrentUserFromAccounts(
+  accountSelfRemovalRequest: AccountSelfRemovalRequest,
+): Promise<AccountSelfRemovalResponse> {
+  const url = `${API_PREFIXES.ACCOUNT}/roles/self-removal`
+  const { data } = await api.gateway.post<AccountSelfRemovalResponse>(url, accountSelfRemovalRequest)
+
+  return data
 }
 
 export async function addContactToEntity(

@@ -121,6 +121,26 @@ export interface AccountsDelegation {
   accountIds: number[]
 }
 
+export interface LastCollaboratorCheckResponse {
+  isLastCollaboratorOnAny: boolean
+  accountIdsWhereLastCollaborator: number[]
+}
+
+export interface AccountSelfRemovalRequest {
+  accountIds: number[]
+}
+
+export interface AccountSelfRemovalItem {
+  accountId: number
+  errorCode: string | null
+  errorMessage: string | null
+}
+
+export interface AccountSelfRemovalResponse {
+  succeeded: AccountSelfRemovalItem[]
+  failed: AccountSelfRemovalItem[]
+}
+
 export interface PermanentDelegationDelegatee {
   contactId: number
   firstName: string

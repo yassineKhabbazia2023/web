@@ -43,6 +43,7 @@ const { t } = useI18n({
       manageWallet: 'Manage my portfolio | Manage this folder | Manage these folders',
       delegateWallet: 'Delegate my portfolio',
       delegateFolders: 'Delegate the folder | Delegate the folders',
+      removeFromFolders: 'Remove myself from this folder | Remove myself from these folders',
       viewPermanentDelegations: 'View my permanent delegations',
       requestDelegation: 'Request a delegation',
       pendingDelegations: 'Pending delegation(s)',
@@ -52,6 +53,7 @@ const { t } = useI18n({
       manageWallet: 'Gérer mon portefeuille | Gérer ce dossier | Gérer ces dossiers',
       delegateWallet: 'Déléguer mon portefeuille',
       delegateFolders: 'Déléguer le dossier | Déléguer les dossiers',
+      removeFromFolders: 'Me retirer de ce dossier | Me retirer de ces dossiers',
       viewPermanentDelegations: 'Voir mes délégations permanentes',
       requestDelegation: 'Demander une délégation',
       pendingDelegations: 'Délégation(s) en attente',
@@ -69,6 +71,7 @@ const buttonLabel = computed(() => t('manageWallet', props.selectedFoldersCount)
 const menuTranslations = computed<ManageWalletMenuTranslations>(() => ({
   delegateWallet: t('delegateWallet'),
   delegateFolders: t('delegateFolders', props.selectedFoldersCount),
+  removeFromFolders: t('removeFromFolders', props.selectedFoldersCount),
   viewPermanentDelegations: t('viewPermanentDelegations'),
   requestDelegation: t('requestDelegation'),
   pendingDelegations: t('pendingDelegations'),

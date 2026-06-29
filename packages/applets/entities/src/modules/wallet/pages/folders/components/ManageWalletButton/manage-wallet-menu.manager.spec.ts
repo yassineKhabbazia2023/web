@@ -17,6 +17,7 @@ vi.mock('@pulse/common/managers', () => ({
 const translations: ManageWalletMenuTranslations = {
   delegateWallet: 'Delegate',
   delegateFolders: 'Delegate folders',
+  removeFromFolders: 'Remove from folders',
   viewPermanentDelegations: 'Permanent',
   requestDelegation: 'Request',
   pendingDelegations: 'Pending',
@@ -56,17 +57,24 @@ describe('ManageWalletMenuManager', () => {
     expect(getActions(0)).toContain(ManageWalletAction.CREATE_TEST_ACCOUNT)
   })
 
-  it('returns the folder delegation action when at least one folder is selected', () => {
+  it('returns selected folders actions when at least one folder is selected', () => {
     hasPermissionMock.mockReturnValue(true)
     isDelegationRequestTabsActivatedMock.mockReturnValue(true)
 
-    expect(getActions(1)).toEqual([ManageWalletAction.DELEGATE_FOLDERS])
-    expect(getActions(3)).toEqual([ManageWalletAction.DELEGATE_FOLDERS])
+    expect(getActions(1)).toEqual([
+      ManageWalletAction.DELEGATE_FOLDERS,
+      ManageWalletAction.REMOVE_FROM_FOLDERS,
+    ])
+    expect(getActions(3)).toEqual([
+      ManageWalletAction.DELEGATE_FOLDERS,
+      ManageWalletAction.REMOVE_FROM_FOLDERS,
+    ])
   })
 
-  it('uses the folder symlink icon for the folder delegation action', () => {
-    const [delegateFoldersAction] = ManageWalletMenuManager.getMenuElements(2, translations)
+  it('uses the expected icons for selected folders actions', () => {
+    const [delegateFoldersAction, removeFromFoldersAction] = ManageWalletMenuManager.getMenuElements(2, translations)
 
     expect(delegateFoldersAction.pIconName).toBe('folderSymlink')
+    expect(removeFromFoldersAction.pIconName).toBe('personRemove')
   })
 })

@@ -1,6 +1,7 @@
 export enum ManageWalletAction {
   DELEGATE_WALLET = 'delegateWallet',
   DELEGATE_FOLDERS = 'delegateFolders',
+  REMOVE_FROM_FOLDERS = 'removeFromFolders',
   VIEW_PERMANENT_DELEGATIONS = 'viewPermanentDelegations',
   REQUEST_DELEGATION = 'requestDelegation',
   PENDING_DELEGATIONS = 'pendingDelegations',
