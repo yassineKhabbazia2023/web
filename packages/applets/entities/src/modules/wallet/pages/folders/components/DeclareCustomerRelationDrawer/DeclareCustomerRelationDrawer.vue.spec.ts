@@ -1,16 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { shallowMount } from '@vue/test-utils'
-import { getMockedUserInfo } from '@pulse/common/mocks'
-import { getStoreMock } from '@pulse/common/mocks/vitest'
-import { useUserStore } from '@pulse/common/stores'
+import { flushPromises, shallowMount } from '@vue/test-utils'
 import * as styleguide from '@pulse/styleguide'
 import type { DeclareCustomerRelationDrawerProps } from './DeclareCustomerRelationDrawer.types'
 
 import DeclareCustomerRelationDrawer from '.'
 import { nextTick } from 'vue'
 
-const userStoreMock = getStoreMock(useUserStore)
-const userMock = getMockedUserInfo({ id: 1 })
 const updateCustomerRelationMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@entities/services/account', () => ({
@@ -53,7 +48,10 @@ describe('DeclareCustomerRelationDrawer', () => {
   let wrapper: ReturnType<typeof createWrapper>
   beforeEach(() => {
     wrapper = createWrapper()
-    userStoreMock.user = userMock
+    updateCustomerRelationMock.mockResolvedValue({
+      succeeded: [{ accountId: defaultProps.selectedAccount.accountId }],
+      failed: [],
+    })
   })
 
   it('should render correctly with props', () => {
@@ -75,9 +73,9 @@ describe('DeclareCustomerRelationDrawer', () => {
     const drawerActions = wrapper.findComponent({ name: 'PDrawerActions' })
     drawerActions.vm.$emit('click-primary-cta')
 
-    await nextTick()
+    await flushPromises()
 
-    expect(updateCustomerRelationMock).toHaveBeenCalledExactlyOnceWith(defaultProps.selectedAccount.accountId, userMock.id, false)
+    expect(updateCustomerRelationMock).toHaveBeenCalledExactlyOnceWith([defaultProps.selectedAccount.accountId], false)
     expect(displayNotificationMock).toHaveBeenCalledWith('success', expect.any(String))
     expect(wrapper.emitted('update-account-table')).toBeTruthy()
   })
@@ -88,9 +86,28 @@ describe('DeclareCustomerRelationDrawer', () => {
     const drawerActions = wrapper.findComponent({ name: 'PDrawerActions' })
     drawerActions.vm.$emit('click-primary-cta')
 
-    await nextTick()
+    await flushPromises()
 
     expect(displayNotificationMock).toHaveBeenCalledWith('error', expect.any(String))
+  })
+
+  it('should display error notification when the account update fails in the response', async () => {
+    const displayNotificationMock = vi.spyOn(styleguide, 'displayNotification').mockImplementation(() => { })
+    updateCustomerRelationMock.mockResolvedValueOnce({
+      succeeded: [],
+      failed: [{
+        accountId: defaultProps.selectedAccount.accountId,
+        errorCode: 'ACC004',
+        errorMessage: 'The contact has no role on the account',
+      }],
+    })
+    const drawerActions = wrapper.findComponent({ name: 'PDrawerActions' })
+    drawerActions.vm.$emit('click-primary-cta')
+
+    await flushPromises()
+
+    expect(displayNotificationMock).toHaveBeenCalledWith('error', expect.any(String))
+    expect(wrapper.emitted('update-account-table')).toBeUndefined()
   })
 
   it('should disable submit button if status did not change', async () => {

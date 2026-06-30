@@ -266,14 +266,22 @@ describe('test accountServices', () => {
   })
 
   describe('updateCustomerRelation', () => {
-    it('sends a PATCH request to the correct endpoint with the expected parameters', async () => {
-      await updateCustomerRelation(accountId, contactId, isCustomerRelation)
+    it('sends a PATCH request with the mandatory status and account identifiers', async () => {
+      const response = {
+        succeeded: [{ accountId }],
+        failed: [],
+      }
+      mockedAccountApiPatch.mockResolvedValueOnce({ data: response })
+
+      const result = await updateCustomerRelation([accountId], isCustomerRelation)
       const expectedUrl = `${API_PREFIXES.ACCOUNT}/roles/customer-relation`
 
       expect(mockedAccountApiPatch).toHaveBeenCalledOnce()
-      expect(mockedAccountApiPatch).toHaveBeenNthCalledWith(1, expectedUrl, null, {
-        params: { accountId, contactId, isCustomerRelation },
+      expect(mockedAccountApiPatch).toHaveBeenNthCalledWith(1, expectedUrl, {
+        accountIds: [accountId],
+        isCustomerRelation,
       })
+      expect(result).toStrictEqual(response)
     })
   })
 

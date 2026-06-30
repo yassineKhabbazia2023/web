@@ -62,7 +62,6 @@ import { PDrawer, PDrawerActions, PUserCard, PSwitch, PTag } from '@pulse/styleg
 import type { PDrawerActionButton } from '@pulse/styleguide/types'
 import { DeclareCustomerRelationDrawerProps } from './DeclareCustomerRelationDrawer.types'
 import { updateCustomerRelation } from '@entities/services/account'
-import { useUserStore } from '@pulse/common/stores'
 
 const { t } = useI18n({
   inheritLocale: true,
@@ -92,8 +91,6 @@ const { t } = useI18n({
     },
   },
 })
-const userStore = useUserStore()
-
 const props = defineProps<DeclareCustomerRelationDrawerProps>()
 const emit = defineEmits<{
   'update-account-table': []
@@ -125,8 +122,12 @@ const handleCloseDrawer = () => {
 const handleUpdateCustomerRelation = async () => {
   isLoading.value = true
   try {
-    if (userStore.user?.id) {
-      await updateCustomerRelation(props.selectedAccount.accountId, userStore.user?.id, hasCustomerRelationStatus.value)
+    const { failed } = await updateCustomerRelation(
+      [props.selectedAccount.accountId],
+      hasCustomerRelationStatus.value,
+    )
+    if (failed.length > 0) {
+      throw new Error(failed[0].errorMessage)
     }
     displayNotification('success', t('customerRelationUpdated'))
     emit('update-account-table')

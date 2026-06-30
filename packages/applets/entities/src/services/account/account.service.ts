@@ -16,6 +16,8 @@ import type {
   LastCollaboratorCheckResponse,
   AccountSelfRemovalRequest,
   AccountSelfRemovalResponse,
+  UpdateCustomerRelationRequest,
+  UpdateCustomerRelationResponse,
 } from './account.type'
 import { ContactType } from '@pulse/common/enums'
 import type { AccountType } from '@pulse/common/enums'
@@ -244,14 +246,20 @@ export async function hasContactRoleOnCommonAccount(email: string, accountId?: n
   return data
 }
 
-export const updateCustomerRelation = async (accountId: number, contactId: number, isCustomerRelation: boolean) => {
-  await api.gateway.patch(`${API_PREFIXES.ACCOUNT}/roles/customer-relation`, null, {
-    params: {
-      accountId,
-      contactId,
-      isCustomerRelation,
-    },
-  })
+export const updateCustomerRelation = async (
+  accountIds: number[],
+  isCustomerRelation: boolean,
+): Promise<UpdateCustomerRelationResponse> => {
+  const payload: UpdateCustomerRelationRequest = {
+    isCustomerRelation,
+    accountIds,
+  }
+  const { data } = await api.gateway.patch<UpdateCustomerRelationResponse>(
+    `${API_PREFIXES.ACCOUNT}/roles/customer-relation`,
+    payload,
+  )
+
+  return data
 }
 
 export async function fetchAccountContactsByEmail(

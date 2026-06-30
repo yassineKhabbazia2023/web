@@ -91,6 +91,26 @@ export interface AccountRow {
   isCustomerRelation: boolean
 }
 
+export interface UpdateCustomerRelationRequest {
+  isCustomerRelation: boolean
+  accountIds: number[]
+}
+
+export interface CustomerRelationUpdateSucceeded {
+  accountId: number
+}
+
+export interface CustomerRelationUpdateFailed {
+  accountId: number
+  errorCode: string
+  errorMessage: string
+}
+
+export interface UpdateCustomerRelationResponse {
+  succeeded: CustomerRelationUpdateSucceeded[]
+  failed: CustomerRelationUpdateFailed[]
+}
+
 export type ReferentialOptions = Record<string, string>
 
 export type ReferentialStructure = Record<string, ReferentialOptions>

@@ -205,8 +205,16 @@ export const entitiesHandlers = [
     return HttpResponse.json(false)
   }),
 
-  http.patch('*/account/api/roles/customer-relation', () => {
-    return HttpResponse.json({ success: true })
+  http.patch('*/account/api/roles/customer-relation', async ({ request }) => {
+    const { accountIds } = await request.json() as {
+      accountIds: number[]
+      isCustomerRelation: boolean
+    }
+
+    return HttpResponse.json({
+      succeeded: accountIds.map(accountId => ({ accountId })),
+      failed: [],
+    })
   }),
 
   http.get('*/account/api/contacts', () => {
