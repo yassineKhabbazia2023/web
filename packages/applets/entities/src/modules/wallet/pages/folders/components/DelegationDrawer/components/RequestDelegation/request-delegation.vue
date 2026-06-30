@@ -20,12 +20,6 @@
     :initialSelectedCollaborators="selectedCollaborators"
     @update:selected-collaborators="handleCollaboratorsSelected"
   />
-
-  <RecapStep
-    v-if="isRecapStep && selectedAccount"
-    :selectedAccount="selectedAccount"
-    :selectedCollaborators="selectedCollaborators"
-  />
 </template>
 
 <script setup lang="ts">
@@ -37,7 +31,6 @@ import type { Collab } from '@entities/types'
 import type { SearchAccountItem } from '@entities/services/account/account.type'
 import SelectAccountStep from './components/SelectAccountStep/select-account-step.vue'
 import SelectCollaboratorsStep from './components/SelectCollaboratorsStep/select-collaborators-step.vue'
-import RecapStep from './components/RecapStep/recap-step.vue'
 import { REQUEST_DELEGATION_STEPS } from './request-delegation.consts'
 import { MAX_SELECTED_COLLABORATORS, MIN_SELECTED_COLLABORATORS } from './components/SelectCollaboratorsStep/select-collaborators-step.consts.js'
 
@@ -56,7 +49,6 @@ const delegationStepItems = computed<PStepsItem[]>(() => [
 
 const isSelectFolderStep = computed(() => activeStep.value === REQUEST_DELEGATION_STEPS.SELECT_FOLDER)
 const isSelectCollaboratorsStep = computed(() => activeStep.value === REQUEST_DELEGATION_STEPS.SELECT_COLLABORATORS)
-const isRecapStep = computed(() => activeStep.value === REQUEST_DELEGATION_STEPS.RECAP)
 
 const canGoNext = computed(() => {
   if (activeStep.value === REQUEST_DELEGATION_STEPS.SELECT_FOLDER) {
@@ -66,10 +58,6 @@ const canGoNext = computed(() => {
   if (activeStep.value === REQUEST_DELEGATION_STEPS.SELECT_COLLABORATORS) {
     return selectedCollaborators.value.length >= MIN_SELECTED_COLLABORATORS &&
     selectedCollaborators.value.length <= MAX_SELECTED_COLLABORATORS
-  }
-
-  if (activeStep.value === REQUEST_DELEGATION_STEPS.RECAP) {
-    return selectedAccount.value !== null && selectedCollaborators.value.length > 0
   }
 
   return false
@@ -94,7 +82,6 @@ function handleCollaboratorsSelected(collabs: Collab[]) {
 
 defineExpose({
   canGoNext,
-  selectedAccount,
   selectedCollaborators,
   initiallySelectedCollaborators,
 })

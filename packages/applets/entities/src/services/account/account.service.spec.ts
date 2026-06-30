@@ -8,7 +8,6 @@ import {
   fetchReferentialHubs,
   deleteAccountDelegation,
   delegateAccounts,
-  createDelegationRequest,
   fetchPermanentDelegations,
   addContactToEntity,
   fetchContactsFromSameHub,
@@ -290,17 +289,6 @@ describe('test accountServices', () => {
       const delegationRequestMock = getMockedAccountsDelegation()
       const response = await delegateAccounts(delegationRequestMock)
       const expectedUrl = `${API_PREFIXES.WALLET}/delegations/currentuser`
-
-      expect(postSpy).toHaveBeenCalledExactlyOnceWith(expectedUrl, delegationRequestMock)
-      expect(response).toStrictEqual(responseMock)
-    })
-
-    it('create a delegation request', async () => {
-      const responseMock = true
-      postSpy.mockResolvedValue(responseMock)
-      const delegationRequestMock = { accountId, recipientIds: [contactId, 1] }
-      const response = await createDelegationRequest(delegationRequestMock)
-      const expectedUrl = `${API_PREFIXES.ACCOUNT}/delegations/requests/currentuser`
 
       expect(postSpy).toHaveBeenCalledExactlyOnceWith(expectedUrl, delegationRequestMock)
       expect(response).toStrictEqual(responseMock)

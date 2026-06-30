@@ -1,12 +1,21 @@
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
+import type { Ref, WritableComputedRef } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { displayNotification } from '@pulse/styleguide'
-import { logger } from '@pulse/toolbox'
 import { REQUEST_DELEGATION_COLLAB_STEP, REQUEST_DELEGATION_FINAL_STEP, REQUEST_DELEGATION_INITIAL_STEP } from '../components/RequestDelegation/request-delegation.consts'
 import { AmplitudeService } from '@pulse/common/services/amplitude'
-import { createDelegationRequest } from '@entities/services/account'
-import { DelegationRequestSummaryResult } from '@entities/modules/wallet/enums'
-import type { UseRequestDelegationParams } from './use-request-delegation.composable.types'
+import type { Collab } from '@entities/types'
+
+type RequestDelegationRef = {
+  canGoNext: boolean
+  selectedCollaborators: Collab[]
+  initiallySelectedCollaborators: Collab[] | null
+}
+
+interface UseRequestDelegationParams {
+  requestDelegationStep: Ref<number>
+  requestDelegationRef: Ref<RequestDelegationRef | null>
+  isDelegationDrawerOpened: WritableComputedRef<boolean>
+}
 
 export function useRequestDelegation({
   requestDelegationStep,
@@ -15,14 +24,12 @@ export function useRequestDelegation({
 }: UseRequestDelegationParams) {
   const { t } = useI18n({ useScope: 'parent' })
 
-  const isSubmitting = ref(false)
-
   const requestDelegationBackButtonLabel = computed(() =>
     requestDelegationStep.value ? t('entities.delegationDrawer.backButtonLabel') : t('entities.delegationDrawer.cancelButtonLabel'),
   )
 
   const requestDelegationPrimaryButtonLabel = computed(() =>
-    requestDelegationStep.value === REQUEST_DELEGATION_FINAL_STEP ? t('entities.requestDelegation.sendRequest') : t('entities.delegationDrawer.primaryButtonLabel'),
+    requestDelegationStep.value === REQUEST_DELEGATION_FINAL_STEP ? t('entities.delegationDrawer.submitButtonLabel') : t('entities.delegationDrawer.primaryButtonLabel'),
   )
 
   const isRequestDelegationNextDisabled = computed(() =>
@@ -31,14 +38,12 @@ export function useRequestDelegation({
 
   const requestDelegationBackCTA = computed(() => ({
     pLabel: requestDelegationBackButtonLabel.value,
-    pDisabled: isSubmitting.value,
     pTestId: 'request-delegation-previous-button',
   }))
 
   const requestDelegationPrimaryCTA = computed(() => ({
     pLabel: requestDelegationPrimaryButtonLabel.value,
     pDisabled: isRequestDelegationNextDisabled.value,
-    pLoading: isSubmitting.value,
     pTestId: 'request-delegation-next-button',
   }))
 
@@ -50,39 +55,17 @@ export function useRequestDelegation({
     }
   }
 
-  async function handleRequestDelegationNext() {
+  function handleRequestDelegationNext() {
+    handleAmplitudeEvent()
+
     if (requestDelegationStep.value === REQUEST_DELEGATION_FINAL_STEP) {
-      await submitDelegationRequest()
+      isDelegationDrawerOpened.value = false
     } else {
-      handleAmplitudeEvent()
       requestDelegationStep.value++
     }
   }
 
-  async function submitDelegationRequest() {
-    const selectedAccount = requestDelegationRef.value?.selectedAccount ?? null
-    const recipientIds = requestDelegationRef.value?.selectedCollaborators.map(({ contactId }) => contactId) ?? []
-
-    if (selectedAccount === null || recipientIds.length === 0) {
-      return
-    }
-
-    isSubmitting.value = true
-    try {
-      await createDelegationRequest({ accountId: selectedAccount.accountId, recipientIds })
-      handleAmplitudeEvent(DelegationRequestSummaryResult.SUCCEEDED)
-      displayNotification('success', t('entities.requestDelegation.requestSentSuccess'))
-      isDelegationDrawerOpened.value = false
-    } catch (error) {
-      handleAmplitudeEvent(DelegationRequestSummaryResult.FAILED)
-      displayNotification('error', t('entities.requestDelegation.requestSentError'))
-      logger.error('Failed to create delegation request', error)
-    } finally {
-      isSubmitting.value = false
-    }
-  }
-
-  function handleAmplitudeEvent(summaryResult?: DelegationRequestSummaryResult) {
+  function handleAmplitudeEvent() {
     let eventName = ''
     let eventProperties = {}
 
@@ -97,7 +80,7 @@ export function useRequestDelegation({
     } else if (requestDelegationStep.value === REQUEST_DELEGATION_FINAL_STEP) {
       eventName = 'Delegation Request Summary Completed'
       eventProperties = {
-        delegation_request_summary_completed_result: summaryResult,
+        delegation_request_summary_completed_result: 'succeeded',
       }
     }
 

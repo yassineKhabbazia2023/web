@@ -121,11 +121,6 @@ export interface AccountsDelegation {
   accountIds: number[]
 }
 
-export interface CreateDelegationRequest {
-  accountId: number
-  recipientIds: number[]
-}
-
 export interface LastCollaboratorCheckResponse {
   isLastCollaboratorOnAny: boolean
   accountIdsWhereLastCollaborator: number[]
