@@ -1,4 +1,5 @@
 import * as pdfjsLib from 'pdfjs-dist'
+import { configurePdfWorker } from '@pulse/toolbox/utils/pdf-worker'
 import type { PDFDocumentProxy, PDFPageProxy, RenderTask } from 'pdfjs-dist'
 
 /**
@@ -14,6 +15,8 @@ export class PennylaneTermsViewerManager {
   static async loadPdfDocument(
     pdfData: ArrayBuffer | Uint8Array,
   ): Promise<PDFDocumentProxy> {
+    // Wire the PDF.js worker right before it is first needed (idempotent, single source of truth).
+    configurePdfWorker()
     const loadingTask = pdfjsLib.getDocument({ data: pdfData })
     return await loadingTask.promise
   }

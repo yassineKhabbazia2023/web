@@ -12,6 +12,7 @@ import { downloadTermsPdf } from '../../pennylane-terms.helper'
 vi.mock('@pulse/toolbox', () => ({ logger: loggerMock }))
 vi.mock('@pulse/common/services/pennylane')
 vi.mock('pdfjs-dist', () => ({ getDocument: vi.fn() }))
+vi.mock('@pulse/toolbox/utils/pdf-worker', () => ({ configurePdfWorker: vi.fn() }))
 vi.mock('./pennylane-terms-viewer.manager')
 vi.mock('@pulse/styleguide', () => ({
   getIsMobile: vi.fn().mockReturnValue(false),

@@ -110,15 +110,9 @@
 import { computed } from 'vue'
 import type { ComponentPublicInstance } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { GlobalWorkerOptions } from 'pdfjs-dist'
 import { PLoader, PButton, PIcon, PAlert } from '@pulse/styleguide/components'
 import { usePennylaneTermsViewer } from './pennylane-terms-viewer.composable'
 import PennylaneTermsViewerToolbar from './pennylane-terms-viewer-toolbar.vue'
-
-GlobalWorkerOptions.workerPort = new Worker(
-  new URL('pdfjs-dist/build/pdf.worker.mjs', import.meta.url),
-  { type: 'module' },
-)
 
 const { t } = useI18n({
   inheritLocale: true,

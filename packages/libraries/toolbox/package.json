@@ -16,6 +16,7 @@
     "./utils/validator": "./src/utils/validators/index.ts",
     "./utils/banking-validators": "./src/utils/banking-validators/index.ts",
     "./utils/pdf-text-extractor": "./src/utils/pdf-text-extractor/index.ts",
+    "./utils/pdf-worker": "./src/utils/pdf-worker/index.ts",
     "./utils/rib-extraction": "./src/utils/rib-extraction/index.ts",
     "./utils/string": "./src/utils/string/string.utils.ts",
     "./utils/html": "./src/utils/html/html.utils.ts",

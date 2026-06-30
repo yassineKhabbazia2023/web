@@ -477,6 +477,7 @@
               "iframeTitle": "Signature du mandat SEPA",
               "blockedWarning": "La fenêtre de signature n'a pas pu s'afficher ici. Ouvrez-la dans un nouvel onglet pour signer votre mandat.",
               "openInNewTab": "Ouvrir la signature dans un nouvel onglet",
+              "reload": "Recharger la signature",
               "directDebitAuthorization": "En signant, vous autorisez les prélèvements automatiques depuis ce compte bancaire."
             },
             "completed": {

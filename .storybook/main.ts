@@ -2,6 +2,7 @@ import { dirname } from 'node:path'
 import type { StorybookConfig } from '@storybook/vue3-vite'
 import { fileURLToPath } from 'url'
 import { viteVirtualModule } from '../packages/@config/vite-virtual-module.ts'
+import { pdfjsLegacyAlias } from '../packages/@config/pdfjs-legacy-alias.ts'
 
 const config: StorybookConfig = {
   core: {
@@ -79,6 +80,9 @@ const config: StorybookConfig = {
     config.resolve.alias = [
       // Keep any existing aliases first
       ...existingAliases,
+      // Pin pdf.js to its LEGACY build, exactly like the app build, so PDF stories exercise the
+      // same transpiled + self-polyfilled bundle that ships to users (see pdfjs-legacy-alias).
+      pdfjsLegacyAlias,
       // vitest shim for mocks that import vitest
       {
         find: 'vitest',

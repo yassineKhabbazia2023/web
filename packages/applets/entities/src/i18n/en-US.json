@@ -477,6 +477,7 @@
               "iframeTitle": "SEPA mandate signature",
               "blockedWarning": "The signature window could not be displayed here. Open it in a new tab to sign your mandate.",
               "openInNewTab": "Open the signature in a new tab",
+              "reload": "Reload the signature",
               "directDebitAuthorization": "By signing, you authorize direct debits from this bank account."
             },
             "completed": {

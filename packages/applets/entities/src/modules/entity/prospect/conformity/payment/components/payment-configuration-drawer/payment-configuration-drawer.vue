@@ -2,6 +2,7 @@
   <div>
     <PDrawer
       v-model="isOpen"
+      class="payment-config-drawer"
       destroyOnClose
       pSize="50%"
       :pTitle="t(`${I18N}.title`)"
@@ -238,3 +239,13 @@ const requestClose = (done?: () => void): void => {
   performClose(done)
 }
 </script>
+
+<!-- Not scoped: the drawer body teleports to <body>, so scoped styles can't reach it. The custom
+     class on PDrawer (forwarded to the el-drawer root) keeps the selector specific to this drawer.
+     A flex column lets the signature step's iframe own the height and the scrolling. -->
+<style>
+.payment-config-drawer .el-drawer__body {
+  display: flex;
+  flex-direction: column;
+}
+</style>
