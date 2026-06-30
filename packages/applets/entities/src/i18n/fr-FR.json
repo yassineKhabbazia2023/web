@@ -185,7 +185,13 @@
       "addCollaboratorsToFolder": "Ajouter des collaborateurs au dossier",
       "searchLabel": "Rechercher",
       "searchError": "Une erreur est survenue lors de la recherche. Veuillez réessayer ultérieurement.",
-      "hyphen": "-"
+      "hyphen": "-",
+      "recapFolderTitle": "Dossier demandé :",
+      "recapCollaboratorsTitle": "Collaborateurs à notifier :",
+      "recapInfo": "En cliquant sur « Envoyer la demande », les collaborateurs mentionnés recevront une notification par e-mail. Une fois la demande validée par au moins l’un d’eux, le dossier apparaîtra dans votre portefeuille.",
+      "sendRequest": "Envoyer la demande",
+      "requestSentSuccess": "La demande d'accès a été envoyée",
+      "requestSentError": "La demande d'accès n'a pas pu être envoyée suite à une erreur technique."
     },
     "delegationDrawer": {
       "myDelegations": "Mes délégations",

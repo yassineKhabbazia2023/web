@@ -10,6 +10,7 @@ import type {
   ReferentialStructure,
   Hub,
   AccountsDelegation,
+  CreateDelegationRequest,
   PermanentDelegationApiItem,
   SearchAccountItem,
   LastCollaboratorCheckResponse,
@@ -88,6 +89,12 @@ export async function deleteAccountDelegation(delegationId: number, delegatorId:
 
 export async function delegateAccounts(delegationRequest: AccountsDelegation) {
   const url = `${API_PREFIXES.WALLET}/delegations/currentuser`
+
+  return await api.gateway.post(url, delegationRequest)
+}
+
+export async function createDelegationRequest(delegationRequest: CreateDelegationRequest) {
+  const url = `${API_PREFIXES.ACCOUNT}/delegations/requests/currentuser`
 
   return await api.gateway.post(url, delegationRequest)
 }

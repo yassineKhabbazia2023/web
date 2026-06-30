@@ -1,7 +1,9 @@
 import { ref, shallowRef, computed } from 'vue'
 import { AmplitudeServiceMock } from '@pulse/common/mocks/vitest'
 import type { Collab } from '@entities/types'
+import type { SearchAccountItem } from '@entities/services/account/account.type'
 import { useRequestDelegation } from './use-request-delegation.composable'
+import type { RequestDelegationRef } from './use-request-delegation.composable.types'
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({
@@ -13,10 +15,27 @@ vi.mock('@pulse/common/services/amplitude', () => ({
   AmplitudeService: AmplitudeServiceMock,
 }))
 
-type RequestDelegationRefValue = {
-  canGoNext: boolean
-  selectedCollaborators: Collab[]
-  initiallySelectedCollaborators: Collab[] | null
+const { createDelegationRequestMock, displayNotificationMock } = vi.hoisted(() => ({
+  createDelegationRequestMock: vi.fn(),
+  displayNotificationMock: vi.fn(),
+}))
+
+vi.mock('@entities/services/account', () => ({
+  createDelegationRequest: createDelegationRequestMock,
+}))
+
+vi.mock('@pulse/styleguide', () => ({
+  displayNotification: displayNotificationMock,
+}))
+
+vi.mock('@pulse/toolbox', () => ({
+  logger: { error: vi.fn(), warn: vi.fn(), info: vi.fn() },
+}))
+
+const mockAccount: SearchAccountItem = {
+  accountId: 10,
+  legalName: 'ACME',
+  accountNumber: 'A123',
 }
 
 describe('useRequestDelegation', () => {
@@ -25,16 +44,19 @@ describe('useRequestDelegation', () => {
     canGoNext = false,
     selectedCollabs: Collab[] = [],
     defaultCollabs: Collab[] | null = [],
+    selectedAccount: SearchAccountItem | null = null,
   ) => {
     const requestDelegationStep = ref(step)
-    const requestDelegationRef = shallowRef<RequestDelegationRefValue | null>({
+    const requestDelegationRef = shallowRef<RequestDelegationRef | null>({
       canGoNext,
+      selectedAccount,
       selectedCollaborators: selectedCollabs,
       initiallySelectedCollaborators: defaultCollabs,
     })
+    const setDrawerMock = vi.fn()
     const isDelegationDrawerOpened = computed({
       get: () => true,
-      set: vi.fn(),
+      set: setDrawerMock,
     })
 
     return {
@@ -46,6 +68,7 @@ describe('useRequestDelegation', () => {
       requestDelegationStep,
       requestDelegationRef,
       isDelegationDrawerOpened,
+      setDrawerMock,
     }
   }
 
@@ -55,6 +78,7 @@ describe('useRequestDelegation', () => {
 
       expect(composable.requestDelegationBackCTA.value).toEqual({
         pLabel: 'entities.delegationDrawer.cancelButtonLabel',
+        pDisabled: false,
         pTestId: 'request-delegation-previous-button',
       })
     })
@@ -64,6 +88,7 @@ describe('useRequestDelegation', () => {
 
       expect(composable.requestDelegationBackCTA.value).toEqual({
         pLabel: 'entities.delegationDrawer.backButtonLabel',
+        pDisabled: false,
         pTestId: 'request-delegation-previous-button',
       })
     })
@@ -76,16 +101,18 @@ describe('useRequestDelegation', () => {
       expect(composable.requestDelegationPrimaryCTA.value).toEqual({
         pLabel: 'entities.delegationDrawer.primaryButtonLabel',
         pDisabled: false,
+        pLoading: false,
         pTestId: 'request-delegation-next-button',
       })
     })
 
-    it('should show submit label on final step', () => {
+    it('should show send request label on final step', () => {
       const { composable } = createComposable(2, true)
 
       expect(composable.requestDelegationPrimaryCTA.value).toEqual({
-        pLabel: 'entities.delegationDrawer.submitButtonLabel',
+        pLabel: 'entities.requestDelegation.sendRequest',
         pDisabled: false,
+        pLoading: false,
         pTestId: 'request-delegation-next-button',
       })
     })
@@ -98,7 +125,7 @@ describe('useRequestDelegation', () => {
 
     it('should be disabled when ref is null', () => {
       const requestDelegationStep = ref(0)
-      const requestDelegationRef = ref<RequestDelegationRefValue | null>(null)
+      const requestDelegationRef = ref<RequestDelegationRef | null>(null)
       const isDelegationDrawerOpened = computed({
         get: () => true,
         set: vi.fn(),
@@ -116,27 +143,11 @@ describe('useRequestDelegation', () => {
 
   describe('handleRequestDelegationPrevious', () => {
     it('should close drawer on first step', () => {
-      const requestDelegationStep = ref(0)
-      const requestDelegationRef = shallowRef<RequestDelegationRefValue | null>({
-        canGoNext: false,
-        selectedCollaborators: [],
-        initiallySelectedCollaborators: [],
-      })
-      const setMock = vi.fn()
-      const isDelegationDrawerOpened = computed({
-        get: () => true,
-        set: setMock,
-      })
-
-      const composable = useRequestDelegation({
-        requestDelegationStep,
-        requestDelegationRef,
-        isDelegationDrawerOpened,
-      })
+      const { composable, setDrawerMock } = createComposable(0)
 
       composable.handleRequestDelegationPrevious()
 
-      expect(setMock).toHaveBeenCalledWith(false)
+      expect(setDrawerMock).toHaveBeenCalledWith(false)
     })
 
     it('should decrement step on other steps', () => {
@@ -199,31 +210,46 @@ describe('useRequestDelegation', () => {
       })
     })
 
-    it('should close drawer on final step', () => {
-      const requestDelegationStep = ref(2)
-      const requestDelegationRef = shallowRef<RequestDelegationRefValue | null>({
-        canGoNext: true,
-        selectedCollaborators: [],
-        initiallySelectedCollaborators: [],
-      })
-      const setMock = vi.fn()
-      const isDelegationDrawerOpened = computed({
-        get: () => true,
-        set: setMock,
-      })
+    it('should send the request, notify success and close drawer on final step', async () => {
+      createDelegationRequestMock.mockResolvedValueOnce(undefined)
+      const collabs = [{ contactId: 1 } as Collab, { contactId: 2 } as Collab]
+      const { composable, setDrawerMock } = createComposable(2, true, collabs, collabs, mockAccount)
 
-      const composable = useRequestDelegation({
-        requestDelegationStep,
-        requestDelegationRef,
-        isDelegationDrawerOpened,
+      await composable.handleRequestDelegationNext()
+
+      expect(createDelegationRequestMock).toHaveBeenCalledWith({
+        accountId: mockAccount.accountId,
+        recipientIds: [1, 2],
       })
-
-      composable.handleRequestDelegationNext()
-
-      expect(setMock).toHaveBeenCalledWith(false)
+      expect(displayNotificationMock).toHaveBeenCalledWith('success', 'entities.requestDelegation.requestSentSuccess')
+      expect(setDrawerMock).toHaveBeenCalledWith(false)
       expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Delegation Request Summary Completed', {
         delegation_request_summary_completed_result: 'succeeded',
       })
+    })
+
+    it('should notify error and keep drawer open when the request fails on final step', async () => {
+      createDelegationRequestMock.mockRejectedValueOnce(new Error('boom'))
+      const collabs = [{ contactId: 1 } as Collab]
+      const { composable, setDrawerMock } = createComposable(2, true, collabs, collabs, mockAccount)
+
+      await composable.handleRequestDelegationNext()
+
+      expect(displayNotificationMock).toHaveBeenCalledWith('error', 'entities.requestDelegation.requestSentError')
+      expect(setDrawerMock).not.toHaveBeenCalled()
+      expect(AmplitudeServiceMock.track).toHaveBeenCalledWith('Delegation Request Summary Completed', {
+        delegation_request_summary_completed_result: 'failed',
+      })
+    })
+
+    it('should not send the request when no account is selected on final step', async () => {
+      const collabs = [{ contactId: 1 } as Collab]
+      const { composable, setDrawerMock } = createComposable(2, true, collabs, collabs, null)
+
+      await composable.handleRequestDelegationNext()
+
+      expect(createDelegationRequestMock).not.toHaveBeenCalled()
+      expect(setDrawerMock).not.toHaveBeenCalled()
     })
   })
 })
