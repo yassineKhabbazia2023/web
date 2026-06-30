@@ -43,7 +43,7 @@
           <PButton
             pType="secondary"
             pSize="small"
-            @click="isDelegationDrawerOpened = true"
+            @click="openSelectedFoldersDelegationDrawer"
           >
             {{ t('delegation', selectedFolders.length) }}
           </PButton>
@@ -78,7 +78,7 @@
       <DelegationDrawer
         v-if="isDelegationDrawerOpened"
         v-model="isDelegationDrawerOpened"
-        :selectedFolders="selectedFolders"
+        :selectedFolders="foldersToDelegate"
         :numberOfFoldersInPortfolio="totalAccounts"
         :initialTab="delegationInitialTab"
       />
@@ -154,6 +154,7 @@
         @access="onClickFolder"
         @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
         @display-declare-customer-relation-drawer="handleDeclareCustomerRelationDrawer"
+        @display-delegation-drawer="handleDisplayDelegationDrawer"
         @sort-account="handleSortAccount"
       />
       <PPagination
@@ -245,7 +246,8 @@ import type {
   DeploymentStatus,
   RegularWalletData,
 } from '@entities/modules/wallet/types'
-import { useFolderSelection } from './folder-selection.composable'
+import { useFolderSelection, getSelectedFolderFromRow } from './folder-selection.composable'
+import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 import Filters from '../../components/Filters'
 import RegularEntityList from '../../components/entities-list/regular-entity/regular-entity.list.vue'
 import DelegationDrawer from './components/DelegationDrawer'
@@ -424,13 +426,26 @@ const clearAllAccountFilters = () => {
 // delegation part
 const isDelegationDrawerOpened = ref(false)
 const delegationInitialTab = ref<DelegationTab>()
+const rowDelegationFolder = ref<SelectedFolder>()
+
+const foldersToDelegate = computed<SelectedFolder[]>(() =>
+  rowDelegationFolder.value !== undefined ? [rowDelegationFolder.value] : selectedFolders.value,
+)
 
 const openDelegationDrawerOnTab = (tab: DelegationTab) => {
+  rowDelegationFolder.value = undefined
   delegationInitialTab.value = tab
   isDelegationDrawerOpened.value = true
 }
 
 const openSelectedFoldersDelegationDrawer = () => {
+  rowDelegationFolder.value = undefined
+  delegationInitialTab.value = undefined
+  isDelegationDrawerOpened.value = true
+}
+
+const handleDisplayDelegationDrawer = (row: RegularWalletData) => {
+  rowDelegationFolder.value = getSelectedFolderFromRow(row)
   delegationInitialTab.value = undefined
   isDelegationDrawerOpened.value = true
 }

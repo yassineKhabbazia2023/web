@@ -1,6 +1,31 @@
 import { ref } from 'vue'
 import { getMockedMappedAccount, getMockedWalletQueryResult } from '@entities/__mocks__/deploy-utils.mocks'
-import { useFolderSelection } from './folder-selection.composable'
+import { useFolderSelection, getSelectedFolderFromRow } from './folder-selection.composable'
+
+describe('getSelectedFolderFromRow', () => {
+  it('should map a wallet row to a selected folder', () => {
+    const folder = getMockedMappedAccount({
+      accountId: 42,
+      accountNumber: 'A42',
+      name: 'Folder name',
+      owner: {
+        contactId: 1,
+        avatarColor: 'persian',
+        email: 'owner@test.fr',
+        firstName: 'Owner',
+        initials: 'OT',
+        lastName: 'Test',
+      },
+    })
+
+    expect(getSelectedFolderFromRow(folder)).toStrictEqual({
+      accountNumber: 'A42',
+      id: 42,
+      name: 'Folder name',
+      avatarColor: 'persian',
+    })
+  })
+})
 
 describe('useFolderSelection', () => {
   it('should expose empty selected folders by default', () => {

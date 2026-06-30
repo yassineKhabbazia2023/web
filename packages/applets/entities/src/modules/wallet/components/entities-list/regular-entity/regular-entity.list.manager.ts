@@ -17,6 +17,13 @@ export class RegularEntitiesListManager {
         display: true,
       },
       {
+        pIconName: 'folderSymlink',
+        pValue: translations.delegateThisFolder,
+        pActionName: RegularEntityAction.DELEGATE_FOLDER,
+        pState: 'default',
+        display: true,
+      },
+      {
         pIconName: 'send',
         pValue: translations.resendActivationEmail,
         pActionName: RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL,

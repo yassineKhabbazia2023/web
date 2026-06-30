@@ -16,6 +16,7 @@ vi.mocked(filterAccessibleMenuItems).mockImplementation((items) => items as PToo
 const translations: MenuTranslations = {
   accessThisFolder: 'Access this folder',
   deployThisFolder: 'Deploy this folder',
+  delegateThisFolder: 'Delegate this folder',
   resendActivationEmail: 'Resend activation email',
   declareCustomerRelation: 'Declare customer relation',
   toDeploy: 'To deploy',
@@ -23,13 +24,14 @@ const translations: MenuTranslations = {
 
 describe('RegularEntitiesListManager', () => {
   describe('buildDefaultMenuElements', () => {
-    it('should return 3 menu items with correct action names', () => {
+    it('should return 4 menu items with correct action names', () => {
       const result = RegularEntitiesListManager.buildDefaultMenuElements(translations)
 
-      expect(result).toHaveLength(3)
+      expect(result).toHaveLength(4)
       expect(result[0].pActionName).toBe(RegularEntityAction.ACCESS)
-      expect(result[1].pActionName).toBe(RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL)
-      expect(result[2].pActionName).toBe(RegularEntityAction.DECLARE_CUSTOMER_RELATION)
+      expect(result[1].pActionName).toBe(RegularEntityAction.DELEGATE_FOLDER)
+      expect(result[2].pActionName).toBe(RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL)
+      expect(result[3].pActionName).toBe(RegularEntityAction.DECLARE_CUSTOMER_RELATION)
     })
 
     it('should check ACTIVATE_OFFER permission for resend email item', () => {
@@ -42,16 +44,17 @@ describe('RegularEntitiesListManager', () => {
       const result = RegularEntitiesListManager.buildDefaultMenuElements(translations)
 
       expect(result[0].pValue).toBe('Access this folder')
-      expect(result[1].pValue).toBe('Resend activation email')
-      expect(result[2].pValue).toBe('Declare customer relation')
+      expect(result[1].pValue).toBe('Delegate this folder')
+      expect(result[2].pValue).toBe('Resend activation email')
+      expect(result[3].pValue).toBe('Declare customer relation')
     })
   })
 
   describe('buildMenuToDeployElements', () => {
-    it('should return 4 items with deploy action first', () => {
+    it('should return 5 items with deploy action first', () => {
       const result = RegularEntitiesListManager.buildMenuToDeployElements(translations)
 
-      expect(result).toHaveLength(4)
+      expect(result).toHaveLength(5)
       expect(result[0].pActionName).toBe(RegularEntityAction.DEPLOY)
     })
 
@@ -59,8 +62,9 @@ describe('RegularEntitiesListManager', () => {
       const result = RegularEntitiesListManager.buildMenuToDeployElements(translations)
 
       expect(result[1].pActionName).toBe(RegularEntityAction.ACCESS)
-      expect(result[2].pActionName).toBe(RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL)
-      expect(result[3].pActionName).toBe(RegularEntityAction.DECLARE_CUSTOMER_RELATION)
+      expect(result[2].pActionName).toBe(RegularEntityAction.DELEGATE_FOLDER)
+      expect(result[3].pActionName).toBe(RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL)
+      expect(result[4].pActionName).toBe(RegularEntityAction.DECLARE_CUSTOMER_RELATION)
     })
   })
 
@@ -72,7 +76,7 @@ describe('RegularEntitiesListManager', () => {
         translations,
       )
 
-      expect(result).toHaveLength(4)
+      expect(result).toHaveLength(5)
       expect(result[0].pActionName).toBe(RegularEntityAction.DEPLOY)
     })
 
@@ -83,7 +87,7 @@ describe('RegularEntitiesListManager', () => {
         translations,
       )
 
-      expect(result).toHaveLength(3)
+      expect(result).toHaveLength(4)
       expect(result[0].pActionName).toBe(RegularEntityAction.ACCESS)
     })
 

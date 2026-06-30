@@ -273,6 +273,27 @@ describe('deploy', () => {
     expect(delegationDrawer.props('initialTab')).toBeUndefined()
   })
 
+  it('opens the delegation drawer for the single targeted folder on the row delegate action', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    const targetedFolder = mockedQueryResult.items[0]
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('displayDelegationDrawer', targetedFolder)
+    await nextTick()
+
+    const delegationDrawer = wrapper.findComponent({ name: 'DelegationDrawer' })
+    expect(delegationDrawer.exists()).toBe(true)
+    expect(delegationDrawer.props('selectedFolders')).toStrictEqual([{
+      accountNumber: targetedFolder.accountNumber,
+      id: targetedFolder.accountId,
+      name: targetedFolder.name,
+      avatarColor: targetedFolder.owner.avatarColor,
+    }])
+    expect(delegationDrawer.props('initialTab')).toBeUndefined()
+  })
+
   it('checks remaining collaborator folders and opens the removal confirmation modal', async () => {
     const wrapper = createWrapper()
     await flushPromises()

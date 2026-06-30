@@ -12,12 +12,14 @@ export type EntitiesListRegularEmit = {
   (e: 'add-favorite', accountId: number, isFavorite: boolean): void
   (e: 'displayResendActivationEmailDrawer', row: RegularWalletData): void
   (e: 'displayDeclareCustomerRelationDrawer', row: RegularWalletData): void
+  (e: 'displayDelegationDrawer', row: RegularWalletData): void
   (e: 'sort-account', sortingCriteria: SortingCriteria): void
 }
 
 export interface MenuTranslations {
   accessThisFolder: string
   deployThisFolder: string
+  delegateThisFolder: string
   resendActivationEmail: string
   declareCustomerRelation: string
   toDeploy: string

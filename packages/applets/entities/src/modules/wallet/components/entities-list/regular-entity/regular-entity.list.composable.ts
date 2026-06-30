@@ -33,6 +33,7 @@ export function useRegularEntitiesList(
   const menuTranslations = computed<MenuTranslations>(() => ({
     accessThisFolder: t(`${I18N_REGULAR_KEY}.accessThisFolder`),
     deployThisFolder: t(`${I18N_REGULAR_KEY}.deployThisFolder`),
+    delegateThisFolder: t(`${I18N_REGULAR_KEY}.delegateThisFolder`),
     resendActivationEmail: t(`${I18N_REGULAR_KEY}.resendActivationEmail`),
     declareCustomerRelation: t(`${I18N_REGULAR_KEY}.declareCustomerRelation`),
     toDeploy: t(`${I18N_REGULAR_KEY}.toDeploy`),
@@ -87,6 +88,8 @@ export function useRegularEntitiesList(
       emit('click-deploy', row.accountId, row.accountNumber, row.name)
     } else if (action === RegularEntityAction.ACCESS) {
       emit('access', row.accountId)
+    } else if (action === RegularEntityAction.DELEGATE_FOLDER) {
+      emit('displayDelegationDrawer', row)
     } else if (action === RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL) {
       emit('displayResendActivationEmailDrawer', row)
     } else if (action === RegularEntityAction.DECLARE_CUSTOMER_RELATION) {

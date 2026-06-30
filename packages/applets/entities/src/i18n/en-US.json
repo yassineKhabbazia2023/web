@@ -38,6 +38,7 @@
         "option": "Options",
         "deployThisFolder": "Deploy this folder",
         "accessThisFolder": "Access this folder",
+        "delegateThisFolder": "Delegate this folder",
         "resendActivationEmail": "Resend activation email",
         "toDeploy": "To Deploy",
         "manageAccountRights": "Manage folder permissions",

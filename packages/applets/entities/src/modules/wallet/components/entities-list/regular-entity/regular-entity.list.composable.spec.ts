@@ -187,6 +187,16 @@ describe('useRegularEntitiesList', () => {
       app.unmount()
     })
 
+    it('emits displayDelegationDrawer for delegateFolder action', () => {
+      const { result, app, emit } = setupComposable()
+
+      result.onToolboxItemClicked(RegularEntityAction.DELEGATE_FOLDER, row)
+
+      expect(emit).toHaveBeenCalledWith('displayDelegationDrawer', row)
+
+      app.unmount()
+    })
+
     it('emits displayResendActivationEmailDrawer for retryMassActivationEmail action', () => {
       const { result, app, emit } = setupComposable()
 

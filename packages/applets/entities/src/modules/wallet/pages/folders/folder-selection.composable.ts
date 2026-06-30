@@ -6,15 +6,15 @@ import type {
 } from '@entities/modules/wallet/types'
 import type { SelectedFolder } from './components/DelegationDrawer/DelegationDrawerTypes'
 
+export const getSelectedFolderFromRow = (folder: RegularWalletData): SelectedFolder => ({
+  accountNumber: folder.accountNumber,
+  id: folder.accountId,
+  name: folder.name,
+  avatarColor: folder.owner.avatarColor as SelectedFolder['avatarColor'],
+})
+
 export function useFolderSelection(searchResult: Ref<SearchResult<RegularWalletData>>) {
   const selectedFolders = ref<SelectedFolder[]>([])
-
-  const getSelectedFolderFromRow = (folder: RegularWalletData): SelectedFolder => ({
-    accountNumber: folder.accountNumber,
-    id: folder.accountId,
-    name: folder.name,
-    avatarColor: folder.owner.avatarColor as SelectedFolder['avatarColor'],
-  })
 
   const selectedFolderIds = computed<number[]>({
     get: () => selectedFolders.value.map(({ id }) => id),

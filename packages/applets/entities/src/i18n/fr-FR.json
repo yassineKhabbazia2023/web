@@ -38,6 +38,7 @@
         "option": "Actions",
         "deployThisFolder": "Déployer ce dossier",
         "accessThisFolder": "Accéder au dossier",
+        "delegateThisFolder": "Déléguer ce dossier",
         "resendActivationEmail": "Relancer le mail d'activation",
         "toDeploy": "A déployer",
         "manageAccountRights": "Gérer les droits du dossier",
