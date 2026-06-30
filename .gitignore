@@ -168,3 +168,4 @@ playwright/.cache/
 # AI stuff
 .github/copilot-instructions.md
 .claude/
+tmpclaude-*
