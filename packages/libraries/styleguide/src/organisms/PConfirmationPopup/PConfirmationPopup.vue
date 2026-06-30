@@ -4,6 +4,7 @@
     :pTitle="pTitle"
     :pShowClose="!pNoCloseButton"
     :pAlignCenter="pAlignCenter"
+    :pDestroyOnClose="pDestroyOnClose"
     @close="onClickClose"
   >
     <slot />
@@ -11,6 +12,7 @@
       <div class="margin-y--2">
         <PButton
           v-if="pCancelButtonContent"
+          pType="secondary"
           pSize="small"
           data-testid="p-confirmation-popup-cancel-button"
           @click="onCancelButtonClick"
@@ -21,6 +23,7 @@
           pType="primary"
           pSize="small"
           :pLoading="pConfirmButtonIsLoading"
+          :pDisabled="pConfirmButtonIsDisabled"
           data-testid="p-confirmation-popup-confirm-button"
           @click="onConfirmButtonClick"
         >
@@ -41,6 +44,8 @@ const props = withDefaults(defineProps<PConfirmationPopupProps>(), {
   pAlignCenter: false,
   pNoCloseButton: false,
   pConfirmButtonIsLoading: false,
+  pConfirmButtonIsDisabled: false,
+  pDestroyOnClose: false,
 })
 
 const emit = defineEmits<{

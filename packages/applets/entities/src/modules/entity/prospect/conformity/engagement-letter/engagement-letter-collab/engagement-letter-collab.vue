@@ -1,14 +1,5 @@
 <template>
   <template v-if="isCompleted">
-    <p
-      class="
-        font-size--14
-        margin--0
-        margin-bottom--6
-      "
-    >
-      {{ t(`${I18N_KEY}.collabSentSubtitle`) }}
-    </p>
     <EngagementLetterBanner @open="openEngagementLetterDocument" />
     <PButton
       pType="primary"
@@ -52,12 +43,21 @@
       :pConfirmButtonContent="t(`${I18N_KEY}.confirmConfirm`)"
       :pCancelButtonContent="t(`${I18N_KEY}.confirmCancel`)"
       :pConfirmButtonIsLoading="isSending"
+      :pConfirmButtonIsDisabled="isSignatureConfirmed === false"
       pAlignCenter
       @on-confirm-button-click="sendEngagementLetterToCustomer"
-      @on-cancel-button-click="isConfirmationVisible = false"
-      @on-close-popup="isConfirmationVisible = false"
+      @on-cancel-button-click="closeConfirmationPopup"
+      @on-close-popup="closeConfirmationPopup"
     >
-      {{ t(`${I18N_KEY}.confirmDescription`) }}
+      <p class="margin--0">
+        {{ t(`${I18N_KEY}.confirmDescription`) }}
+      </p>
+      <PCheckbox
+        v-model="isSignatureConfirmed"
+        class="margin-top--4"
+      >
+        {{ t(`${I18N_KEY}.confirmSignatureCheckboxLabel`) }}
+      </PCheckbox>
     </PConfirmationPopup>
   </template>
 </template>
@@ -65,7 +65,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { PButton, PConfirmationPopup, PUpload } from '@pulse/styleguide/components'
+import { PButton, PCheckbox, PConfirmationPopup, PUpload } from '@pulse/styleguide/components'
 import { PUploadType } from '@pulse/styleguide/types'
 import EngagementLetterBanner from '../engagement-letter-banner/engagement-letter-banner.vue'
 import { useEngagementLetter } from '../engagement-letter.composable'
@@ -84,6 +84,13 @@ defineProps<EngagementLetterCollabProps>()
 const emit = defineEmits<EngagementLetterCollabEmits>()
 
 const isConfirmationVisible = ref(false)
+
+const isSignatureConfirmed = ref(false)
+
+const closeConfirmationPopup = (): void => {
+  isConfirmationVisible.value = false
+  isSignatureConfirmed.value = false
+}
 
 const {
   isDownloading,
