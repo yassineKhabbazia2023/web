@@ -16,7 +16,7 @@ const I18N_KEY = 'entities.prospect.conformity.proposal'
 
 export function useCommercialProposal(emit: CommercialProposalEmits) {
   const { t } = useI18n()
-  const { currentEntity } = storeToRefs(useCurrentEntityStore())
+  const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
   const selectedCommercialProposalFile = ref<File | null>(null)
   const isDownloading = ref(false)
@@ -25,14 +25,13 @@ export function useCommercialProposal(emit: CommercialProposalEmits) {
   const hasSelectedFile = computed(() => selectedCommercialProposalFile.value !== null)
 
   const openCommercialProposalDocument = async (): Promise<void> => {
-    const prospectId = currentEntity.value?.prospectId
-    if (prospectId === null || prospectId === undefined) {
+    if (currentEntityId.value === undefined) {
       return
     }
     isDownloading.value = true
     try {
       const hasOpened = await openDocumentInNewTab(() =>
-        ProspectsService.downloadCommercialProposal(prospectId),
+        ProspectsService.downloadCommercialProposal(currentEntityId.value!),
       )
       if (hasOpened === false) {
         displayNotification('error', t(`${I18N_KEY}.downloadError`))
@@ -57,13 +56,12 @@ export function useCommercialProposal(emit: CommercialProposalEmits) {
   }
 
   const sendCommercialProposalToCustomer = async (): Promise<void> => {
-    const prospectId = currentEntity.value?.prospectId
-    if (prospectId === null || prospectId === undefined || selectedCommercialProposalFile.value === null) {
+    if (currentEntityId.value === undefined || selectedCommercialProposalFile.value === null) {
       return
     }
     isSending.value = true
     try {
-      await ProspectsService.uploadCommercialProposal(prospectId, selectedCommercialProposalFile.value)
+      await ProspectsService.uploadCommercialProposal(currentEntityId.value!, selectedCommercialProposalFile.value)
       selectedCommercialProposalFile.value = null
       displayNotification('success', t(`${I18N_KEY}.sendSuccess`))
       // Let the parent refresh the stepper and this step status from the backend

@@ -38,6 +38,7 @@ vi.mock('@pulse/common/api', () => ({
 }))
 
 const prospectId = 602
+const entityId = 1971
 
 describe('ProspectsService', () => {
   describe('fetchProspectsAccounts', () => {
@@ -306,10 +307,10 @@ describe('ProspectsService', () => {
       const blob = new Blob(['binary'], { type: 'application/pdf' })
       mocks.get.mockResolvedValueOnce({ data: blob })
 
-      const result = await ProspectsService.downloadCommercialProposal(prospectId)
+      const result = await ProspectsService.downloadCommercialProposal(entityId)
 
       expect(mocks.get).toHaveBeenCalledWith(
-        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/content`,
+        `${API_PREFIXES.PROSPECT}/onboarding/${entityId}/commercial-proposal/content`,
         { responseType: 'blob' },
       )
       expect(result).toBe(blob)
@@ -320,10 +321,41 @@ describe('ProspectsService', () => {
     it('should POST a multipart form with the file', async () => {
       const file = getFileMock('proposal.pdf')
 
-      await ProspectsService.uploadCommercialProposal(prospectId, file)
+      await ProspectsService.uploadCommercialProposal(entityId, file)
 
       expect(mocks.post).toHaveBeenCalledWith(
-        `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal`,
+        `${API_PREFIXES.PROSPECT}/onboarding/${entityId}/commercial-proposal`,
+        expect.any(FormData),
+        { headers: { 'Content-Type': 'multipart/form-data' } },
+      )
+      const [, formData] = mocks.post.mock.calls[0]
+      expect(formData.get('file')).toBe(file)
+    })
+  })
+
+  describe('downloadEngagementLetter', () => {
+    it('should GET the engagement letter content as a blob and return it', async () => {
+      const blob = new Blob(['binary'], { type: 'application/pdf' })
+      mocks.get.mockResolvedValueOnce({ data: blob })
+
+      const result = await ProspectsService.downloadEngagementLetter(entityId)
+
+      expect(mocks.get).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/${entityId}/engagement-letter/content`,
+        { responseType: 'blob' },
+      )
+      expect(result).toBe(blob)
+    })
+  })
+
+  describe('uploadEngagementLetter', () => {
+    it('should POST a multipart form with the file', async () => {
+      const file = getFileMock('engagement-letter.pdf')
+
+      await ProspectsService.uploadEngagementLetter(entityId, file)
+
+      expect(mocks.post).toHaveBeenCalledWith(
+        `${API_PREFIXES.PROSPECT}/onboarding/${entityId}/engagement-letter`,
         expect.any(FormData),
         { headers: { 'Content-Type': 'multipart/form-data' } },
       )

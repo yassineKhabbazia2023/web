@@ -2,7 +2,6 @@ import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { logger } from '@pulse/toolbox'
-import { isNullOrEmpty } from '@pulse/toolbox/utils/validator'
 import { useCurrentEntityStore } from '@pulse/common/stores'
 import { displayNotification } from '@pulse/styleguide'
 import { openDocumentInNewTab } from '@pulse/common/helpers'
@@ -17,7 +16,7 @@ const I18N_KEY = 'entities.prospect.conformity.engagementLetter'
 
 export function useEngagementLetter(emit?: EngagementLetterEmits) {
   const { t } = useI18n()
-  const { currentEntity } = storeToRefs(useCurrentEntityStore())
+  const { currentEntityId } = storeToRefs(useCurrentEntityStore())
 
   const selectedEngagementLetterFile = ref<File | null>(null)
   const isDownloading = ref(false)
@@ -26,14 +25,13 @@ export function useEngagementLetter(emit?: EngagementLetterEmits) {
   const hasSelectedFile = computed(() => selectedEngagementLetterFile.value !== null)
 
   const openEngagementLetterDocument = async (): Promise<void> => {
-    const prospectId = currentEntity.value?.prospectId
-    if (isNullOrEmpty(prospectId)) {
+    if (currentEntityId.value === undefined) {
       return
     }
     isDownloading.value = true
     try {
       const hasOpened = await openDocumentInNewTab(() =>
-        ProspectsService.downloadEngagementLetter(prospectId),
+        ProspectsService.downloadEngagementLetter(currentEntityId.value!),
       )
       if (hasOpened === false) {
         displayNotification('error', t(`${I18N_KEY}.downloadError`))
@@ -58,13 +56,12 @@ export function useEngagementLetter(emit?: EngagementLetterEmits) {
   }
 
   const sendEngagementLetterToCustomer = async (): Promise<void> => {
-    const prospectId = currentEntity.value?.prospectId
-    if (isNullOrEmpty(prospectId) || selectedEngagementLetterFile.value === null) {
+    if (currentEntityId.value === undefined || selectedEngagementLetterFile.value === null) {
       return
     }
     isSending.value = true
     try {
-      await ProspectsService.uploadEngagementLetter(prospectId, selectedEngagementLetterFile.value)
+      await ProspectsService.uploadEngagementLetter(currentEntityId.value!, selectedEngagementLetterFile.value)
       selectedEngagementLetterFile.value = null
       displayNotification('success', t(`${I18N_KEY}.sendSuccess`))
       // Let the parent refresh the stepper and this step status from the backend

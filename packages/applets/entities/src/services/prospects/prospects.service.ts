@@ -126,20 +126,20 @@ export class ProspectsService {
     )
   }
 
-  static async downloadCommercialProposal(prospectId: number): Promise<Blob> {
+  static async downloadCommercialProposal(entityId: number): Promise<Blob> {
     const response = await api.gateway.get<Blob>(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal/content`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${entityId}/commercial-proposal/content`,
       { responseType: 'blob' },
     )
     return response.data
   }
 
-  static uploadCommercialProposal(prospectId: number, file: File): Promise<void> {
+  static uploadCommercialProposal(entityId: number, file: File): Promise<void> {
     const formData = new FormData()
     formData.append('file', file)
 
     return api.gateway.post(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/commercial-proposal`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${entityId}/commercial-proposal`,
       formData,
       {
         headers: {
@@ -149,20 +149,20 @@ export class ProspectsService {
     )
   }
 
-  static async downloadEngagementLetter(prospectId: number): Promise<Blob> {
+  static async downloadEngagementLetter(entityId: number): Promise<Blob> {
     const response = await api.gateway.get<Blob>(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/engagement-letter/content`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${entityId}/engagement-letter/content`,
       { responseType: 'blob' },
     )
     return response.data
   }
 
-  static uploadEngagementLetter(prospectId: number, file: File): Promise<void> {
+  static uploadEngagementLetter(entityId: number, file: File): Promise<void> {
     const formData = new FormData()
     formData.append('file', file)
 
     return api.gateway.post(
-      `${API_PREFIXES.PROSPECT}/onboarding/${prospectId}/engagement-letter`,
+      `${API_PREFIXES.PROSPECT}/onboarding/${entityId}/engagement-letter`,
       formData,
       {
         headers: {

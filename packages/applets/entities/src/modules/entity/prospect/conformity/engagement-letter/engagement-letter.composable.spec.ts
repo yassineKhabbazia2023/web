@@ -6,7 +6,6 @@ import { ProspectsService } from '@entities/services/prospects/prospects.service
 import { openDocumentInNewTab } from '@pulse/common/helpers'
 import { useEngagementLetter } from './engagement-letter.composable'
 import { ENGAGEMENT_LETTER_MAX_FILE_SIZE_BYTES } from './engagement-letter.consts'
-import type { EntitySummary } from '@pulse/common/types'
 
 vi.mock('vue-i18n', () => ({
   useI18n: () => ({ t: (key: string) => key }),
@@ -19,14 +18,12 @@ vi.mock('@pulse/common/helpers')
 const openDocumentInNewTabMock = vi.mocked(openDocumentInNewTab)
 
 const I18N_KEY = 'entities.prospect.conformity.engagementLetter'
-const prospectId = 1971
+const entityId = 1971
 
 const currentEntityStoreMock = getStoreMock(useCurrentEntityStore)
 
-const setProspectId = (id: number | null | undefined): void => {
-  currentEntityStoreMock.currentEntity = id === undefined
-    ? undefined
-    : { prospectId: id } as EntitySummary
+const setEntityId = (id: number | undefined): void => {
+  currentEntityStoreMock.currentEntityId = id
 }
 
 const mountComposable = (emit = vi.fn()) => {
@@ -44,7 +41,7 @@ const buildPdfFile = (sizeInBytes?: number): File => {
 
 describe('useEngagementLetter', () => {
   beforeEach(() => {
-    setProspectId(prospectId)
+    setEntityId(entityId)
   })
 
   describe('file selection', () => {
@@ -101,13 +98,13 @@ describe('useEngagementLetter', () => {
       // The fetcher handed to the helper downloads the engagement letter for the current prospect.
       const [fetchDocument] = openDocumentInNewTabMock.mock.calls[0]
       await fetchDocument()
-      expect(vi.mocked(ProspectsService.downloadEngagementLetter)).toHaveBeenCalledWith(prospectId)
+      expect(vi.mocked(ProspectsService.downloadEngagementLetter)).toHaveBeenCalledWith(entityId)
       expect(vi.mocked(displayNotification)).not.toHaveBeenCalled()
       expect(result.isDownloading.value).toBe(false)
     })
 
     it('should do nothing when no prospect is selected', async () => {
-      setProspectId(null)
+      setEntityId(undefined)
       const { result } = mountComposable()
 
       await result.openEngagementLetterDocument()
@@ -145,7 +142,7 @@ describe('useEngagementLetter', () => {
 
       await result.sendEngagementLetterToCustomer()
 
-      expect(vi.mocked(ProspectsService.uploadEngagementLetter)).toHaveBeenCalledWith(prospectId, file)
+      expect(vi.mocked(ProspectsService.uploadEngagementLetter)).toHaveBeenCalledWith(entityId, file)
       expect(result.hasSelectedFile.value).toBe(false)
       expect(vi.mocked(displayNotification)).toHaveBeenCalledWith('success', `${I18N_KEY}.sendSuccess`)
       expect(emit).toHaveBeenCalledWith('sent')
@@ -162,7 +159,7 @@ describe('useEngagementLetter', () => {
     })
 
     it('should do nothing when no prospect is selected', async () => {
-      setProspectId(null)
+      setEntityId(undefined)
       const { result } = mountComposable()
       result.onFilesSelected([buildPdfFile()])
 
