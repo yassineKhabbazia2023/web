@@ -129,7 +129,7 @@
         "engagementLetter": "Engagement letter"
       },
       "prospectsPage": {
-        "search": "Search by folder name",
+        "search": "Search by company name, client code, SIRET",
         "searchShort": "Search...",
         "on": "on"
       },

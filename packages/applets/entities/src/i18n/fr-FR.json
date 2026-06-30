@@ -129,7 +129,7 @@
         "engagementLetter": "Lettre de mission"
       },
       "prospectsPage": {
-        "search": "Rechercher par nom de dossier",
+        "search": "Rechercher par raison sociale, code client, SIRET",
         "searchShort": "Rechercher...",
         "on": "sur"
       },
