@@ -191,11 +191,8 @@ const isActivateOffersButtonVisible = computed(
 
 const getOfferNameWithPlan = (offer: SubscriptionRequest['offer']): string => {
   const selectedPlan = OfferPlanManager.getSelectedPlan(offer.plans)
-  const selectedPricing = OfferPlanManager.getSelectedPricing(offer.plans)
   if (selectedPlan !== undefined && offer.offerCode === SubscriptionOfferCode.PENNYLANE) {
-    return selectedPricing !== undefined
-      ? `${offer.offerName} : Plan ${selectedPlan.planName} - ${selectedPricing?.label}`
-      : `${offer.offerName} : Plan ${selectedPlan.planName}`
+    return `${offer.offerName} : Plan ${selectedPlan.planName}`
   }
   return offer.offerName
 }
