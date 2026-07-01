@@ -33,6 +33,15 @@
       :key="item.type"
       class="margin-bottom--4"
     >
+      <p
+        class="
+          margin-bottom--1
+          font-bold
+        "
+      >
+        {{ t(`entities.prospect.conformity.conformityDocuments.documentTypeLabels.${item.type}`) }}
+      </p>
+
       <PUploadFileLine
         v-for="document in item.documents"
         :key="document.id"
@@ -52,7 +61,6 @@
         :pMultiple="item.maxFiles - item.documents.length > 1"
         :limit="item.maxFiles - item.documents.length"
         :pUploadType="PUploadType.FILE_LINE"
-        :pLabel="t(`entities.prospect.conformity.conformityDocuments.documentTypeLabels.${item.type}`)"
         :pAccept="PROSPECT_DOCUMENT_ACCEPTED_FORMATS"
         :pPrefixLabelFileLine="t('entities.prospect.conformity.conformityDocuments.uploadPrefixLabel')"
         :pSuffixLabelFileLine="t('entities.prospect.conformity.conformityDocuments.uploadSuffixLabel')"
