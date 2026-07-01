@@ -5,6 +5,7 @@ import type {
   ProspectCreationPayload,
   ProspectFormData,
 } from '@entities/modules/wallet/types'
+import { SIGNATORY_CONTACT_TYPE } from './prospect-creation-drawer.const'
 
 const CASE_MANAGER_ROLE_LABEL_KEY = 'MASTER_OF_FILE'
 const ACCOUNT_MANAGER_ROLE_LABEL_KEY = 'ACCOUNT_MANAGER'
@@ -12,7 +13,7 @@ const ACCOUNT_MANAGER_ROLE_LABEL_KEY = 'ACCOUNT_MANAGER'
 // Maps the dropdown values stored in the form to the backend ContactType enum.
 // Unknown keys pass through so a form value already aligned with the enum still works.
 const CONTACT_TYPE_MAPPING: Record<string, string> = {
-  isMandateSignatory: 'SIGNATAIRE',
+  [SIGNATORY_CONTACT_TYPE]: 'SIGNATAIRE',
   isDigitalVaultContact: 'COFFRE_FORT_NUMERIQUE',
   isDebtCollectionContact: 'RECOUVREMENT',
 }
@@ -27,6 +28,18 @@ export class ProspectCreationDrawerManager {
     return Object
       .entries(options)
       .map(([value, label]) => ({ pValue: value, pLabel: label }))
+  }
+
+  /**
+   * Builds the "Type de contact" dropdown options. The mandatory signatory option
+   * is locked (pDisabled) so it stays selected and cannot be removed by the user;
+   * only the other contact types remain toggleable.
+   */
+  static toContactTypeOptions(contactType: Record<string, string>): PDropdownOption[] {
+    return ProspectCreationDrawerManager.convertRecordToDropdownOptions(contactType)
+      .map((option) => option.pValue === SIGNATORY_CONTACT_TYPE
+        ? { ...option, pDisabled: true }
+        : option)
   }
 
   /**

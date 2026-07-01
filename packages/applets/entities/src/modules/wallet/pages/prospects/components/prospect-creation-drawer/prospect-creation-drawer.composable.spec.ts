@@ -47,7 +47,12 @@ describe('useProspectCreationDrawer', () => {
     expect(formData.value.interlocutorRoles).toEqual({})
     expect(formData.value.signatory.lastName).toBe('')
     expect(formData.value.signatory.firstName).toBe('')
-    expect(formData.value.signatory.contactTypes).toEqual([])
+  })
+
+  it('should pre-select the mandatory signatory contact type by default', () => {
+    const [{ formData }] = withSetup(() => useProspectCreationDrawer(steps))
+
+    expect(formData.value.signatory.contactTypes).toEqual(['isMandateSignatory'])
   })
 
   it('should go to next step', () => {

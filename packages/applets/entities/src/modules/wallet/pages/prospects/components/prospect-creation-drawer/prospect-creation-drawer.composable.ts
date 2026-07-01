@@ -7,6 +7,7 @@ import type {
   ProspectCreationDropdownContent,
   ProspectFormData,
 } from '@entities/modules/wallet/types'
+import { SIGNATORY_CONTACT_TYPE } from './prospect-creation-drawer.const'
 
 export function useProspectCreationDrawer(steps: ProspectCreationDrawerStep[]) {
   const stepIndex = ref(0)
@@ -33,7 +34,9 @@ export function useProspectCreationDrawer(steps: ProspectCreationDrawerStep[]) {
       jobTitle: '',
       department: '',
       companyRole: '',
-      contactTypes: [],
+      // The signatory role is mandatory and pre-selected: seed it in the initial
+      // state (not via a watch) so the form does not start as dirty.
+      contactTypes: [SIGNATORY_CONTACT_TYPE],
       email: '',
       mobilePhone: '',
     },

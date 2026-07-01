@@ -125,6 +125,12 @@ $select-tags-prefix-padding: (
             content: none;
           }
         }
+
+        // A locked (disabled) option stays selected but must read as disabled,
+        // so it uses the disabled text colour instead of the active green.
+        &.is-disabled.selected {
+          color: var(--p-text-disabled);
+        }
       }
     }
   }

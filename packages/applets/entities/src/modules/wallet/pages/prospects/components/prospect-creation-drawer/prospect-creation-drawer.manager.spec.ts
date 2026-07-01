@@ -34,6 +34,26 @@ describe('ProspectCreationDrawerManager', () => {
     })
   })
 
+  describe('toContactTypeOptions', () => {
+    it('returns an empty array when the record is empty', () => {
+      expect(ProspectCreationDrawerManager.toContactTypeOptions({})).toEqual([])
+    })
+
+    it('locks the mandatory signatory option and leaves the others toggleable', () => {
+      const options = ProspectCreationDrawerManager.toContactTypeOptions({
+        isMandateSignatory: 'Signataire lettre de mission / mandat',
+        isDigitalVaultContact: 'Contact coffre-fort numérique',
+        isDebtCollectionContact: 'Contact recouvrement',
+      })
+
+      expect(options).toEqual([
+        { pValue: 'isMandateSignatory', pLabel: 'Signataire lettre de mission / mandat', pDisabled: true },
+        { pValue: 'isDigitalVaultContact', pLabel: 'Contact coffre-fort numérique' },
+        { pValue: 'isDebtCollectionContact', pLabel: 'Contact recouvrement' },
+      ])
+    })
+  })
+
   describe('toCreationPayload', () => {
     const formData = getProspectFormDataMock({
       siret: '93033121000003',

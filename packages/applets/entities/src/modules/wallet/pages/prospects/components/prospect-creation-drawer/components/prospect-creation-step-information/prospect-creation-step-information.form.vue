@@ -284,7 +284,7 @@ const companyRoleOptions = computed(() =>
   ProspectCreationDrawerManager.convertRecordToDropdownOptions(props.dropdownsContent.contactHierarchicalLevel),
 )
 const contactTypeOptions = computed(() =>
-  ProspectCreationDrawerManager.convertRecordToDropdownOptions(props.dropdownsContent.contactType),
+  ProspectCreationDrawerManager.toContactTypeOptions(props.dropdownsContent.contactType),
 )
 
 const { rules, validationErrorMessageKey, validate: baseValidate } = useProspectCreationStepInformationValidation({
