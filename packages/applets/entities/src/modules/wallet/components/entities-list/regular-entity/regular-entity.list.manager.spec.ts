@@ -19,19 +19,21 @@ const translations: MenuTranslations = {
   delegateThisFolder: 'Delegate this folder',
   resendActivationEmail: 'Resend activation email',
   declareCustomerRelation: 'Declare customer relation',
+  removeCurrentUserFromThisFolder: 'Remove myself from this folder',
   toDeploy: 'To deploy',
 }
 
 describe('RegularEntitiesListManager', () => {
   describe('buildDefaultMenuElements', () => {
-    it('should return 4 menu items with correct action names', () => {
+    it('should return 5 menu items with correct action names', () => {
       const result = RegularEntitiesListManager.buildDefaultMenuElements(translations)
 
-      expect(result).toHaveLength(4)
+      expect(result).toHaveLength(5)
       expect(result[0].pActionName).toBe(RegularEntityAction.ACCESS)
       expect(result[1].pActionName).toBe(RegularEntityAction.DELEGATE_FOLDER)
       expect(result[2].pActionName).toBe(RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL)
       expect(result[3].pActionName).toBe(RegularEntityAction.DECLARE_CUSTOMER_RELATION)
+      expect(result[4].pActionName).toBe(RegularEntityAction.REMOVE_CURRENT_USER_FROM_FOLDER)
     })
 
     it('should check ACTIVATE_OFFER permission for resend email item', () => {
@@ -47,14 +49,15 @@ describe('RegularEntitiesListManager', () => {
       expect(result[1].pValue).toBe('Delegate this folder')
       expect(result[2].pValue).toBe('Resend activation email')
       expect(result[3].pValue).toBe('Declare customer relation')
+      expect(result[4].pValue).toBe('Remove myself from this folder')
     })
   })
 
   describe('buildMenuToDeployElements', () => {
-    it('should return 5 items with deploy action first', () => {
+    it('should return 6 items with deploy action first', () => {
       const result = RegularEntitiesListManager.buildMenuToDeployElements(translations)
 
-      expect(result).toHaveLength(5)
+      expect(result).toHaveLength(6)
       expect(result[0].pActionName).toBe(RegularEntityAction.DEPLOY)
     })
 
@@ -65,6 +68,7 @@ describe('RegularEntitiesListManager', () => {
       expect(result[2].pActionName).toBe(RegularEntityAction.DELEGATE_FOLDER)
       expect(result[3].pActionName).toBe(RegularEntityAction.RETRY_MASS_ACTIVATION_EMAIL)
       expect(result[4].pActionName).toBe(RegularEntityAction.DECLARE_CUSTOMER_RELATION)
+      expect(result[5].pActionName).toBe(RegularEntityAction.REMOVE_CURRENT_USER_FROM_FOLDER)
     })
   })
 
@@ -76,7 +80,7 @@ describe('RegularEntitiesListManager', () => {
         translations,
       )
 
-      expect(result).toHaveLength(5)
+      expect(result).toHaveLength(6)
       expect(result[0].pActionName).toBe(RegularEntityAction.DEPLOY)
     })
 
@@ -87,7 +91,7 @@ describe('RegularEntitiesListManager', () => {
         translations,
       )
 
-      expect(result).toHaveLength(4)
+      expect(result).toHaveLength(5)
       expect(result[0].pActionName).toBe(RegularEntityAction.ACCESS)
     })
 

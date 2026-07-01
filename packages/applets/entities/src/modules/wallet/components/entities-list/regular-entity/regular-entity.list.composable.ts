@@ -36,6 +36,7 @@ export function useRegularEntitiesList(
     delegateThisFolder: t(`${I18N_REGULAR_KEY}.delegateThisFolder`),
     resendActivationEmail: t(`${I18N_REGULAR_KEY}.resendActivationEmail`),
     declareCustomerRelation: t(`${I18N_REGULAR_KEY}.declareCustomerRelation`),
+    removeCurrentUserFromThisFolder: t(`${I18N_REGULAR_KEY}.removeCurrentUserFromThisFolder`),
     toDeploy: t(`${I18N_REGULAR_KEY}.toDeploy`),
   }))
 
@@ -94,6 +95,8 @@ export function useRegularEntitiesList(
       emit('displayResendActivationEmailDrawer', row)
     } else if (action === RegularEntityAction.DECLARE_CUSTOMER_RELATION) {
       emit('displayDeclareCustomerRelationDrawer', row)
+    } else if (action === RegularEntityAction.REMOVE_CURRENT_USER_FROM_FOLDER) {
+      emit('displayRemoveCurrentUserFromFolderModal', row)
     }
   }
 

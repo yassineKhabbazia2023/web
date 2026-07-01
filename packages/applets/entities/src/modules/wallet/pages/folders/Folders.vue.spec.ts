@@ -315,6 +315,34 @@ describe('deploy', () => {
     expect(removalModal.props('hasRemainingCollaboratorFolder')).toBe(false)
   })
 
+  it('checks the single targeted folder and removes the current user from it on the row remove action', async () => {
+    const wrapper = createWrapper()
+    await flushPromises()
+
+    const targetedFolder = mockedQueryResult.items[0]
+    removeCurrentUserFromAccountsMock.mockResolvedValueOnce({
+      succeeded: [{ accountId: targetedFolder.accountId, errorCode: null, errorMessage: null }],
+      failed: [],
+    })
+
+    const tableData = wrapper.findComponent('[data-testid=folders-table]') as VueWrapper
+    tableData.vm.$emit('displayRemoveCurrentUserFromFolderModal', targetedFolder)
+    await flushPromises()
+
+    const removalModal = wrapper.findComponent(RemoveFromFoldersConfirmationModal)
+    expect(checkLastCollaboratorOnAccountsMock).toHaveBeenCalledExactlyOnceWith([targetedFolder.accountId])
+    expect(removalModal.exists()).toBe(true)
+    expect(removalModal.props('selectedFoldersCount')).toBe(1)
+
+    removalModal.vm.$emit('confirm')
+    await flushPromises()
+
+    expect(removeCurrentUserFromAccountsMock).toHaveBeenCalledExactlyOnceWith({
+      accountIds: [targetedFolder.accountId],
+    })
+    expect(displayNotificationMock).toHaveBeenCalledWith('success', 'You removed yourself from the selected folder.')
+  })
+
   it('displays the remaining collaborator modal and sends all selected folders for removal', async () => {
     const wrapper = createWrapper()
     await flushPromises()

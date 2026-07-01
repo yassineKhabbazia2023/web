@@ -4,4 +4,5 @@ export enum RegularEntityAction {
   DELEGATE_FOLDER = 'delegateFolder',
   RETRY_MASS_ACTIVATION_EMAIL = 'retryMassActivationEmail',
   DECLARE_CUSTOMER_RELATION = 'declareCustomerRelation',
+  REMOVE_CURRENT_USER_FROM_FOLDER = 'removeCurrentUserFromFolder',
 }

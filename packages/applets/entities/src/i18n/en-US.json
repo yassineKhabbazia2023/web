@@ -42,7 +42,8 @@
         "resendActivationEmail": "Resend activation email",
         "toDeploy": "To Deploy",
         "manageAccountRights": "Manage folder permissions",
-        "declareCustomerRelation": "Declare customer relationship"
+        "declareCustomerRelation": "Declare customer relationship",
+        "removeCurrentUserFromThisFolder": "Remove myself from this folder"
       },
       "entitiesListProspects": {
         "step": "Step",

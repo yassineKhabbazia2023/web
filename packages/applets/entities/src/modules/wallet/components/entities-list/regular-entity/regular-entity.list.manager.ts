@@ -37,6 +37,13 @@ export class RegularEntitiesListManager {
         pState: 'default',
         display: true,
       },
+      {
+        pIconName: 'personRemove',
+        pValue: translations.removeCurrentUserFromThisFolder,
+        pActionName: RegularEntityAction.REMOVE_CURRENT_USER_FROM_FOLDER,
+        pState: 'default',
+        display: true,
+      },
     ]
   }
 

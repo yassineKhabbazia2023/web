@@ -85,7 +85,7 @@
       <RemoveFromFoldersConfirmationModal
         v-if="isRemoveFromFoldersModalOpened"
         v-model="isRemoveFromFoldersModalOpened"
-        :selectedFoldersCount="selectedFolders.length"
+        :selectedFoldersCount="foldersToRemoveIds.length"
         :has-remaining-collaborator-folder="hasRemainingCollaboratorFolder"
         :isConfirmButtonLoading="isRemoveFromFoldersLoading"
         @confirm="confirmRemoveFromFolders"
@@ -155,6 +155,7 @@
         @display-resend-activation-email-drawer="handleDisplayResendActivationEmailDrawer"
         @display-declare-customer-relation-drawer="handleDeclareCustomerRelationDrawer"
         @display-delegation-drawer="handleDisplayDelegationDrawer"
+        @display-remove-current-user-from-folder-modal="handleDisplayRemoveCurrentUserFromFolderModal"
         @sort-account="handleSortAccount"
       />
       <PPagination
@@ -453,14 +454,19 @@ const handleDisplayDelegationDrawer = (row: RegularWalletData) => {
 const isRemoveFromFoldersModalOpened = ref(false)
 const isRemoveFromFoldersLoading = ref(false)
 const hasRemainingCollaboratorFolder = ref(false)
+const rowRemoveCurrentUserFolderId = ref<number>()
 
-async function openRemoveFromFoldersConfirmationModal() {
-  if (selectedFolderIds.value.length === 0) {
+const foldersToRemoveIds = computed<number[]>(() =>
+  rowRemoveCurrentUserFolderId.value !== undefined ? [rowRemoveCurrentUserFolderId.value] : selectedFolderIds.value,
+)
+
+async function checkLastCollaboratorAndOpenRemovalModal() {
+  if (foldersToRemoveIds.value.length === 0) {
     return
   }
 
   try {
-    const remainingCollaboratorCheck = await checkLastCollaboratorOnAccounts(selectedFolderIds.value)
+    const remainingCollaboratorCheck = await checkLastCollaboratorOnAccounts(foldersToRemoveIds.value)
 
     hasRemainingCollaboratorFolder.value = remainingCollaboratorCheck.isLastCollaboratorOnAny
     isRemoveFromFoldersModalOpened.value = true
@@ -470,14 +476,24 @@ async function openRemoveFromFoldersConfirmationModal() {
   }
 }
 
+async function openRemoveFromFoldersConfirmationModal() {
+  rowRemoveCurrentUserFolderId.value = undefined
+  await checkLastCollaboratorAndOpenRemovalModal()
+}
+
+const handleDisplayRemoveCurrentUserFromFolderModal = async (row: RegularWalletData) => {
+  rowRemoveCurrentUserFolderId.value = row.accountId
+  await checkLastCollaboratorAndOpenRemovalModal()
+}
+
 async function confirmRemoveFromFolders() {
-  if (selectedFolderIds.value.length === 0) {
+  if (foldersToRemoveIds.value.length === 0) {
     return
   }
 
   isRemoveFromFoldersLoading.value = true
   try {
-    const response = await removeCurrentUserFromAccounts({ accountIds: selectedFolderIds.value })
+    const response = await removeCurrentUserFromAccounts({ accountIds: foldersToRemoveIds.value })
     const succeededCount = response.succeeded.length
     const selectedCount = response.succeeded.length + response.failed.length
     const failedCount = selectedCount - succeededCount

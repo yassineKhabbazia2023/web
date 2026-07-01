@@ -197,6 +197,16 @@ describe('useRegularEntitiesList', () => {
       app.unmount()
     })
 
+    it('emits displayRemoveCurrentUserFromFolderModal for removeCurrentUserFromFolder action', () => {
+      const { result, app, emit } = setupComposable()
+
+      result.onToolboxItemClicked(RegularEntityAction.REMOVE_CURRENT_USER_FROM_FOLDER, row)
+
+      expect(emit).toHaveBeenCalledWith('displayRemoveCurrentUserFromFolderModal', row)
+
+      app.unmount()
+    })
+
     it('emits displayResendActivationEmailDrawer for retryMassActivationEmail action', () => {
       const { result, app, emit } = setupComposable()
 
