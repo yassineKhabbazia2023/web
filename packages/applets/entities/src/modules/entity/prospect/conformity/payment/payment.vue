@@ -221,6 +221,10 @@ const {
 const isNotSelected = computed(() => paymentType.value === null)
 const isSepaMandate = computed(() => paymentType.value === ConformityPaymentType.MandateSepa)
 const isClient = computed(() => props.isCollaborator === false)
+const isSignatory = computed(() => currentEntity.value?.isSignatory === true)
+// Only a client who is the prospect's signatory may choose or configure the payment method.
+// Non-signatory clients (like collaborators) get a read-only "pending" alert instead of the action buttons.
+const canManagePayment = computed(() => isClient.value && isSignatory.value)
 
 const title = computed(() => {
   if (isNotSelected.value) {
@@ -234,7 +238,7 @@ const title = computed(() => {
 
 const bodyKind = computed<PaymentBodyKind>(() => {
   if (isNotSelected.value) {
-    return isClient.value ? PaymentBodyKind.Benefits : PaymentBodyKind.Alert
+    return canManagePayment.value === true ? PaymentBodyKind.Benefits : PaymentBodyKind.Alert
   }
   if (isSepaMandate.value) {
     return isClient.value ? PaymentBodyKind.Bullets : PaymentBodyKind.None
@@ -246,17 +250,29 @@ const bodyKind = computed<PaymentBodyKind>(() => {
 // Primary body text, interpreted per kind (alert message or bullets intro).
 const bodyText = computed(() => {
   if (isNotSelected.value) {
-    return isClient.value ? '' : t(`${PAYMENT_I18N_BASE}.collaboratorPendingAlert`)
+    if (canManagePayment.value === true) {
+      return ''
+    }
+    return isClient.value
+      ? t(`${PAYMENT_I18N_BASE}.nonSignatoryPendingAlert`)
+      : t(`${PAYMENT_I18N_BASE}.collaboratorPendingAlert`)
   }
   if (isSepaMandate.value) {
     return isClient.value ? t(`${PAYMENT_I18N_BASE}.completedIntro`) : ''
   }
-  return isClient.value ? t(`${PAYMENT_I18N_BASE}.otherClientAlert`) : t(`${PAYMENT_I18N_BASE}.otherCollaboratorAlert`)
+  // In the OTHER state, only a client who can manage the payment is told they may revert to SEPA;
+  // a non-signatory client gets a read-only message without that promise.
+  if (canManagePayment.value === true) {
+    return t(`${PAYMENT_I18N_BASE}.otherClientAlert`)
+  }
+  return isClient.value
+    ? t(`${PAYMENT_I18N_BASE}.otherNonSignatoryAlert`)
+    : t(`${PAYMENT_I18N_BASE}.otherCollaboratorAlert`)
 })
 
-// Bold lead rendered before the alert text — only the collaborator "pending" alert has one.
+// Bold lead rendered before the alert text — shown on the "pending" alert (collaborator and non-signatory client).
 const bodyLead = computed(() => {
-  if (isNotSelected.value && isClient.value === false) {
+  if (isNotSelected.value && canManagePayment.value === false) {
     return t(`${PAYMENT_I18N_BASE}.collaboratorPendingLabel`)
   }
   return ''
@@ -267,7 +283,7 @@ const hasDoneBox = computed(() => isSepaMandate.value)
 
 const footerButtons = computed<PaymentFooterButton[]>(() => {
   if (isNotSelected.value) {
-    return isClient.value
+    return canManagePayment.value === true
       ? [
         { label: t(`${PAYMENT_I18N_BASE}.selectOtherMethod`), action: PaymentFooterAction.SelectOtherMethod, type: 'secondary', requiresConfirmation: true },
         { label: t(`${PAYMENT_I18N_BASE}.startConfiguration`), action: PaymentFooterAction.StartConfiguration, type: 'primary' },
@@ -279,7 +295,11 @@ const footerButtons = computed<PaymentFooterButton[]>(() => {
       { label: t(`${PAYMENT_I18N_BASE}.downloadMandate`), action: PaymentFooterAction.DownloadMandate, type: 'primary', trailingIcon: 'download' },
     ]
   }
-  return [{ label: t(`${PAYMENT_I18N_BASE}.returnToSepa`), action: PaymentFooterAction.ReturnToSepa, type: 'primary' }]
+  // The OTHER state lets the user revert their choice: the signatory client (who manages the payment)
+  // and the collaborator (acting on the client's behalf). A non-signatory client cannot revert.
+  return canManagePayment.value === true || isClient.value === false
+    ? [{ label: t(`${PAYMENT_I18N_BASE}.returnToSepa`), action: PaymentFooterAction.ReturnToSepa, type: 'primary' }]
+    : []
 })
 
 // Footers with several buttons opt into the responsive stacking handled in the scoped style.

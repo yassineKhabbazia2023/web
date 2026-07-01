@@ -5,19 +5,25 @@ import { ConformityPaymentType } from '@entities/enums'
 import { ConformityPaymentService } from '@entities/services/conformity-payment'
 import Payment from './payment.vue'
 
-// Seeds the current entity (used as prospectId) and stubs the API so the story renders
-// the chosen state offline, without a backend.
-function mockPaymentPreference(paymentType: ConformityPaymentType | null): void {
-  useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ prospectId: 1 }))
+// Seeds the current entity (used as prospectId and signatory flag) and stubs the API so the
+// story renders the chosen state offline, without a backend.
+function mockPaymentPreference(paymentType: ConformityPaymentType | null, isSignatory = true): void {
+  useCurrentEntityStore().setCurrentEntity(getMockedEntitySummary({ prospectId: 1, isSignatory }))
   ConformityPaymentService.getPaymentPreference = () => Promise.resolve({ paymentType })
   ConformityPaymentService.setOtherPaymentPreference = () => Promise.resolve()
   ConformityPaymentService.resetPaymentPreference = () => Promise.resolve()
 }
 
-const renderWithState = (paymentType: ConformityPaymentType | null): Story['render'] => (args) => ({
+const renderWithState = ({
+  paymentType,
+  isSignatory = true,
+}: {
+  paymentType: ConformityPaymentType | null
+  isSignatory?: boolean
+}): Story['render'] => (args) => ({
   components: { Payment },
   setup() {
-    mockPaymentPreference(paymentType)
+    mockPaymentPreference(paymentType, isSignatory)
     return { args }
   },
   template: `
@@ -42,20 +48,32 @@ const meta: Meta<typeof Payment> = {
   args: {
     isCollaborator: false,
   },
-  render: renderWithState(null),
+  render: renderWithState({ paymentType: null }),
 }
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const NotSelected: Story = {
-  render: renderWithState(null),
+  render: renderWithState({ paymentType: null }),
+}
+
+// A client who is not the prospect's signatory cannot act: the action buttons are hidden and a
+// read-only "pending" alert is shown instead.
+export const NotSelectedNonSignatory: Story = {
+  render: renderWithState({ paymentType: null, isSignatory: false }),
 }
 
 export const MandateSepa: Story = {
-  render: renderWithState(ConformityPaymentType.MandateSepa),
+  render: renderWithState({ paymentType: ConformityPaymentType.MandateSepa }),
 }
 
 export const Other: Story = {
-  render: renderWithState(ConformityPaymentType.Other),
+  render: renderWithState({ paymentType: ConformityPaymentType.Other }),
+}
+
+// A non-signatory client sees a read-only message for the OTHER method and cannot revert to SEPA:
+// the "back to SEPA mandate" button is hidden.
+export const OtherNonSignatory: Story = {
+  render: renderWithState({ paymentType: ConformityPaymentType.Other, isSignatory: false }),
 }
