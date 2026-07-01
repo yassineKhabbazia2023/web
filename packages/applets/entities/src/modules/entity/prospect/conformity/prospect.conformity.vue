@@ -4,6 +4,8 @@
       prospect-conformity
       flex
       flex--direction-column
+      padding-top--6
+      padding-left--6
     "
   >
     <PEntityHeader
@@ -20,13 +22,13 @@
         flex--direction-row
       "
     >
-      <aside class="prospect-conformity__tracker">
+      <aside class="prospect-conformity__tracker padding-bottom--6">
         <PCompletionTracker
           :pCurrent="completedCount"
           :pTotal="totalCount"
           :pTitle="title"
           :pDescription="description"
-          class="margin-top--6 bg--white padding--6"
+          class="bg--white"
         >
           <PCompletionTrackerList
             v-for="section in sections"
@@ -52,7 +54,8 @@
           flex
           flex--direction-column
           flex-gap--6
-          padding--6
+          padding-x--6
+          padding-bottom--6
         "
       >
         <template
@@ -106,21 +109,6 @@
           </ConformityStepCard>
         </template>
       </div>
-    </div>
-    <div
-      class="
-        prospect-conformity__mock-banner
-        flex
-        flex--justify-content-center
-        flex--align-items-center
-        padding-y--3
-        padding-x--4
-        font-size--14
-        font-semibold
-      "
-      data-testid="prospect-conformity-mock-banner"
-    >
-      {{ t('entities.prospect.conformity.mockBanner') }}
     </div>
 
     <DocumentsConsultDrawer v-model="isConsultDrawerOpen" />
@@ -237,8 +225,6 @@ const sections = computed(() =>
 </script>
 
 <style scoped lang="scss">
-$mock-banner-clearance: 60px;
-
 .prospect-conformity {
   height: 100%;
   overflow: hidden;
@@ -256,30 +242,16 @@ $mock-banner-clearance: 60px;
     width: 420px;
     flex-shrink: 0;
     overflow-y: auto;
-    padding-bottom: $mock-banner-clearance;
   }
 
   &__content {
     flex: 1;
     overflow-y: auto;
-    padding-bottom: $mock-banner-clearance;
   }
 
   &__step-description {
     color: var(--p-text-neutral);
     line-height: 1.6;
-  }
-
-  &__mock-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    background-color: var(--p-surface-warning);
-    color: var(--p-text-warning);
-    border-top: 1px solid var(--p-stroke-warning, var(--p-stroke-secondary));
-    text-align: center;
   }
 }
 </style>

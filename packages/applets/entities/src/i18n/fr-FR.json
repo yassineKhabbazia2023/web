@@ -505,7 +505,6 @@
         "loadError": "Une erreur est survenue. Veuillez rafraîchir la page.",
         "stepPlaceholderTitle": "Ceci est l'écran de l'étape « {label} ».",
         "stepPlaceholderHint": "Cliquez sur une étape dans le tracker à gauche pour naviguer ici.",
-        "mockBanner": "Écran mocké pour présenter le concept de mise en conformité — rendu non contractuel",
         "proposal": {
           "bannerTitle": "Proposition commerciale",
           "customerPendingAlert": "{creationStatus} Votre expert déposera bientôt votre proposition commerciale avec RYDGE Conseil. Vous pourrez la retrouver dans votre espace et vous serez notifié par mail.",

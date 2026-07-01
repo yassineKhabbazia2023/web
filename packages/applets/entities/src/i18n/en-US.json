@@ -505,7 +505,6 @@
         "loadError": "An error occurred. Please refresh the page.",
         "stepPlaceholderTitle": "This is the « {label} » step screen.",
         "stepPlaceholderHint": "Click a step in the tracker on the left to navigate here.",
-        "mockBanner": "Mocked screen to illustrate the compliance concept — non-contractual rendering",
         "proposal": {
           "bannerTitle": "Commercial proposal",
           "customerPendingAlert": "{creationStatus} Your expert will soon upload your commercial proposal with RYDGE Conseil. You will be able to find it in your space and will be notified by email.",
