@@ -93,6 +93,8 @@ When using more than 2 CSS classes, use multi-line format:
 - **Prefer `@change` (or other template events) over `watch`** when a reactive value only changes from a single source (e.g. a checkbox, an input). Use `watch` only when the value can be modified from multiple sources. A template event is more explicit and avoids unnecessary watchers.
 - **Use `@pulse/toolbox` utility helpers** instead of reinventing common checks. For example, use `isNotNullNorEmpty` from `@pulse/toolbox/utils/validator` instead of writing manual `value !== null && value !== undefined && value !== ''` checks. Always check what helpers already exist in toolbox before writing your own.
 - **Destructure composables when consuming them** instead of keeping the returned object. Top-level refs are auto-unwrapped in templates, so destructuring avoids `.value` in templates (e.g. `const { isLoading, booking } = useBookingForm()`, then `{{ isLoading }}` in the template — never `const form = useBookingForm()` then `form.isLoading.value`).
+- **Never reference `props.xxx` in templates.** It's unnecessary in Vue 3: `defineProps` return values are already available directly in the template (e.g. `{{ bookingId }}`, not `{{ props.bookingId }}`). This only applies to templates — using `const props = defineProps<...>()` and `props.xxx` in the script is fine and does not need to be destructured.
+- **Never prefix props with a leading `p` (e.g. `pDisabled`, `pType`).** That `p` prefix is a `@pulse/styleguide` component convention only (see `PSkewedButtonProps` etc. in `packages/libraries/styleguide`). Components in apps, applets, and other libraries must use plain, unprefixed prop names (e.g. `disabled`, `type`).
 
 ### Import Restrictions
 
